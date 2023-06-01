@@ -8,8 +8,10 @@ interface Props {
   children: ReactNode
   onChangeStatus(value: any): void
   record: any
-  projectId?: any
+  projectId?: number
   isCanOperation?: boolean
+  // 1-需求，2-事务，3-缺陷
+  type?: 1 | 2 | 3
 }
 
 const ChangeStatusPopover = (props: Props) => {
@@ -46,6 +48,7 @@ const ChangeStatusPopover = (props: Props) => {
         onClose={onClosModal}
         record={props.record}
         onChangeStatusConfirm={props.onChangeStatus}
+        type={props.type}
       />
 
       <Popover
@@ -63,6 +66,7 @@ const ChangeStatusPopover = (props: Props) => {
               popoverVisible={popoverVisible}
               projectId={props.record.project_id ?? props.record.projectId}
               id={props.record.id}
+              type={props.type}
             />
           )
         }

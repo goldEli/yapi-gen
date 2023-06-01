@@ -14,6 +14,12 @@ export const DivStyle = styled.div`
   &:hover {
     border: 1px solid var(--primary-d1);
   }
+  .name {
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 `
 
 export const DefaultLabel = styled.div`
@@ -45,6 +51,13 @@ export const Label = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .labelName {
+    display: inline-block;
+    width: 80px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 `
 export const FormWrap = styled(Form)`
   box-sizing: border-box;

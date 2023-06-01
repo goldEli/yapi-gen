@@ -130,4 +130,33 @@ declare namespace Model.Sprint {
     user: { name: string; avatar: string; id: number }
     relate_users: Array<{ name: string; avatar: string; id: number }>
   }
+  interface longStroyItem {
+    id: number
+    name: string
+    category_attachment: string
+    category_id: string
+    story_prefix_key: string
+    project_id: number
+  }
+  interface pageType {
+    page: number
+    pagesize: number
+    total: number
+  }
+  interface LongStory {
+    list: longStroyItem[]
+    pager?: pageType
+  }
+  interface SprintleftList {
+    child_story_total: number
+    end_at: string
+    id: number
+    iterate_id: number
+    name: string
+    project_id: number
+    start_at: string
+    status: null
+    story_count: number
+    story_finish_count: number
+  }
 }

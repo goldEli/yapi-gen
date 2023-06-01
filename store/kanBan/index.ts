@@ -8,6 +8,8 @@ import {
 import { Options } from '@/components/SelectOptionsNormal'
 
 type SliceState = {
+  // 全屏状态
+  fullScreen: boolean
   guideVisible: Model.KanBan.guideVisible
   sortByGroupOptions?: Model.KanBan.GroupInfoItem[]
   sortByRowAndStatusOptions?: Options[]
@@ -26,6 +28,11 @@ type SliceState = {
     groupName: string
     id?: number
   }
+  modifyStatusModalInfo: {
+    visible: boolean
+    storyId?: Model.KanBan.Story['id']
+    info?: Model.Project.CheckStatusItem
+  }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]
   kanbanConfig?: Model.KanbanConfig.Config
@@ -39,10 +46,14 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  fullScreen: false,
   movingStory: null,
   kanbanConfigList: [],
   kanbanInfo: [],
   kanbanInfoByGroup: [],
+  modifyStatusModalInfo: {
+    visible: false,
+  },
   userGroupingModelInfo: {
     visible: false,
     userList: [],
@@ -50,9 +61,9 @@ const initialState: SliceState = {
   },
   sortByGroupOptions: [
     { key: 'none', value: '无', check: false },
-    { key: 'users', value: '按人员', check: true },
+    { key: 'users', value: '按人员', check: false },
     { key: 'category', value: '按类别', check: false },
-    { key: 'priority', value: '按优先级', check: false },
+    { key: 'priority', value: '按优先级', check: true },
   ],
   sortByRowAndStatusOptions: [
     // { key: 'statue', value: '按状态', check: true },
@@ -78,6 +89,21 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    setFullScreen(state, action: PayloadAction<SliceState['fullScreen']>) {
+      state.fullScreen = action.payload
+    },
+    setModifyStatusModalInfo(
+      state,
+      action: PayloadAction<SliceState['modifyStatusModalInfo']>,
+    ) {
+      state.modifyStatusModalInfo = action.payload
+    },
+    setKanbanInfoByGroup(
+      state,
+      action: PayloadAction<SliceState['kanbanInfoByGroup']>,
+    ) {
+      state.kanbanInfoByGroup = action.payload
+    },
     // setViewItemConfig(
     //   state,
     //   action: PayloadAction<SliceState['viewItemConfig']>,
@@ -194,6 +220,9 @@ export const {
   setShareModelInfo,
   setUserGroupingModelInfo,
   setMovingStory,
+  setKanbanInfoByGroup,
+  setModifyStatusModalInfo,
+  setFullScreen,
 } = slice.actions
 
 export default kanBan

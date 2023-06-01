@@ -1,15 +1,10 @@
 import React, { useMemo } from 'react'
-import styled from '@emotion/styled'
 import Issues from '../Issues'
 import UpDownBtn from '@/components/UpDownBtn'
 import MultipleAvatar from '@/components/MultipleAvatar'
-import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
 import ChooseMember from '../ChooseMember'
 import useAddUserModal from '@/hooks/useAddUserModal'
-import {
-  openUserGroupingModel,
-  saveUserGroupingModel,
-} from '@store/kanBan/kanBan.thunk'
+import { openUserGroupingModel } from '@store/kanBan/kanBan.thunk'
 import { useDispatch } from '@store/index'
 import {
   DropAreaList,

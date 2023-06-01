@@ -10,7 +10,7 @@ import * as services from '@/services'
 import { useDispatch, useSelector } from '@store/index'
 import ProjectDragging from './ProDragging'
 import { setProjectFieIdsData } from '@store/category'
-
+import { filterCategory } from '@/tools'
 const CreateFieldWrap = styled.div`
   margin: 20px 0 0 0px;
   border-left: 1px solid var(--neutral-n6-d1);
@@ -97,7 +97,11 @@ const CreateField = () => {
   const { projectInfo } = useSelector(store => store.project)
   const [payloadDataList, setPayloadDataList] = useState<any>()
   const [searchValue, setSearchValue] = useState('')
-
+  const [fieldType, setFieldType] = useState<any>(() => {
+    return { is_customize: '', content: '' }
+  })
+  const [cacheSearchlist, setCacheSearchlist] = useState<any>()
+  const { work_type } = useSelector(state => state.project)
   const option = [
     {
       label: t('newlyAdd.lineText'),
@@ -152,7 +156,11 @@ const CreateField = () => {
     setDataList(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
-    setSearchDataList(
+    const data = payloadList?.filter(
+      (item: any) => !filterIds?.includes(item.id),
+    )
+    setSearchDataList(filterCategory(work_type, data))
+    setCacheSearchlist(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
   }
@@ -179,6 +187,12 @@ const CreateField = () => {
   useEffect(() => {
     getProjectFieIdsApi()
   }, [activeCategory])
+  useEffect(() => {
+    const ids = option.map(item => item.type)
+    setSearchDataList(
+      filterCategory(work_type, cacheSearchlist, fieldType, ids),
+    )
+  }, [fieldType])
   return (
     <CreateFieldWrap draggable="false">
       <TitleStyle draggable="false" onClick={() => setCreateIcon(!createIcon)}>
@@ -263,33 +277,39 @@ const CreateField = () => {
           <Select
             style={{ width: 100 }}
             bordered={false}
-            placeholder="系统字段"
+            placeholder="所以字段"
+            allowClear
             options={[
               {
-                value: 'jack',
-                label: 'Jack',
+                value: 2,
+                label: '系统字段',
               },
               {
-                value: 'lucy',
-                label: 'Lucy',
+                value: 1,
+                label: '自定义字段',
               },
             ]}
+            onChange={e => {
+              setFieldType((p: any) => {
+                return { ...p, is_customize: e }
+              })
+            }}
           />
           <DivideWrap></DivideWrap>
           <Select
             style={{ width: 100 }}
             bordered={false}
             placeholder="所有类型"
-            options={[
-              {
-                value: 'jack',
-                label: 'Jack',
-              },
-              {
-                value: 'lucy',
-                label: 'Lucy',
-              },
-            ]}
+            allowClear
+            options={option}
+            onChange={e => {
+              setFieldType((p: any) => {
+                return {
+                  ...p,
+                  content: option.find(item => item.value === e)?.type,
+                }
+              })
+            }}
           />
         </FieldWrap>
         {searchIcon && (

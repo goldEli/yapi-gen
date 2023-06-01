@@ -5,94 +5,93 @@ import { handleId } from '../utils'
 import IconFont from '@/components/IconFont'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import PriorityIcon from '@/components/PriorityIcon'
-
-const IssueCardBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 270px;
-  height: 144px;
-  border-radius: 6px 6px 6px 6px;
-  background: var(--neutral-white-d2);
-  padding: 16px;
-  box-sizing: border-box;
-  gap: 12px;
-
-  /* .secondary-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    font-size: 12px;
-  } */
-`
-const Top = styled.div`
-  width: 100%;
-  height: 20px;
-  display: flex;
-  gap: 8px;
-`
-const TopProjectIcon = styled.img`
-  height: 18px;
-  width: 18px;
-`
-const TopText = styled.div`
-  font-size: 12px;
-  color: var(--neutral-n3);
-`
-
-const Middle = styled.div`
-  flex: 1;
-  width: 100%;
-  font-size: 14px;
-  color: var(--neutral-n1-d2);
-  line-height: 22px;
-  word-break: break-all;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* 这里是超出几行省略 */
-  overflow: hidden;
-`
-const Bottom = styled.div`
-  height: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-const BottomLeft = styled.div``
-const BottomRight = styled.div`
-  font-size: 12px;
-  color: var(--neutral-n2);
-  display: flex;
-  gap: 16px;
-`
-const PercentageBox = styled.div`
-  width: 31px;
-  display: flex;
-  align-items: center;
-`
-const Sub = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`
-const WrapIcon = styled(IconFont)`
-  font-size: 16px;
-  color: var(--neutral-n3);
-`
+import {
+  Bottom,
+  BottomLeft,
+  BottomRight,
+  IssueCardBox,
+  IssueCardBoxContainer,
+  Middle,
+  PercentageBox,
+  StoryText,
+  Sub,
+  Top,
+  TopLeft,
+  TopProjectIcon,
+  TopRight,
+  TopText,
+  WrapIcon,
+} from './styled'
+import ThreeDot from '../ThreeDot'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { getParamsValueByKey } from '@/tools'
+import { useSelector } from '@store/index'
+import useStoryIds from '../hooks/useStoryIds'
 
 interface IssueCardProps {
   item: Model.KanBan.Story
   index: number
-  groupId: Model.SprintKanBan.IssuesGroup['groupId']
+  // groupId-columnId-storyId
+  uuid: string
+  hidden?: boolean
 }
 
 const IssueCard = (props: IssueCardProps) => {
   const { item, index } = props
+  const isDragDisabled = props.item.verify_lock === 1
+
+  const [openDemandDetail] = useOpenDemandDetail()
+  const { ids } = useStoryIds()
+
+  const cardContent = (
+    <IssueCardBoxContainer hidden={props.hidden}>
+      <Top>
+        <TopLeft>
+          <TopProjectIcon src={item.project_category.attachment_path} />
+          <TopText>{item.story_prefix_key}</TopText>
+        </TopLeft>
+        <TopRight>
+          <ThreeDot story={item} />
+        </TopRight>
+      </Top>
+      <Middle>
+        <StoryText
+          onClick={e => {
+            e.stopPropagation()
+            openDemandDetail(
+              { ...props.item, demandIds: ids },
+              getParamsValueByKey('id'),
+              props.item.id,
+            )
+          }}
+        >
+          {item.name}
+        </StoryText>
+      </Middle>
+      <Bottom>
+        <BottomLeft>
+          <MultipleAvatar max={3} list={item.handlers} />
+        </BottomLeft>
+        <BottomRight>
+          <PercentageBox>{`${item.schedule}%`}</PercentageBox>
+          <Sub>
+            <WrapIcon type="apartment" />
+            {item.children_count}
+          </Sub>
+          <PriorityIcon
+            icon={item.story_config_priority.icon}
+            color={item.story_config_priority.color ?? ''}
+          />
+        </BottomRight>
+      </Bottom>
+    </IssueCardBoxContainer>
+  )
+
   return (
     <Draggable
+      isDragDisabled={isDragDisabled}
       key={item.id}
-      draggableId={handleId(props.groupId, item.id)}
+      draggableId={props.uuid}
       index={index}
     >
       {provided => (
@@ -101,29 +100,7 @@ const IssueCard = (props: IssueCardProps) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <IssueCardBox>
-            <Top>
-              <TopProjectIcon src={item.project_category.attachment_path} />
-              <TopText>{item.story_prefix_key}</TopText>
-            </Top>
-            <Middle>{item.name}</Middle>
-            <Bottom>
-              <BottomLeft>
-                <MultipleAvatar max={3} list={item.handlers} />
-              </BottomLeft>
-              <BottomRight>
-                <PercentageBox>{`${item.schedule}%`}</PercentageBox>
-                <Sub>
-                  <WrapIcon type="apartment" />
-                  {item.children_count}
-                </Sub>
-                <PriorityIcon
-                  icon={item.story_config_priority.icon}
-                  color={item.story_config_priority.color ?? ''}
-                />
-              </BottomRight>
-            </Bottom>
-          </IssueCardBox>
+          <IssueCardBox>{cardContent}</IssueCardBox>
         </div>
       )}
     </Draggable>

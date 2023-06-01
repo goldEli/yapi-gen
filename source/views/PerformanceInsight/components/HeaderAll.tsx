@@ -11,62 +11,58 @@ import CommonButton from '@/components/CommonButton'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from '@store/index'
 import { getMonthBefor, getDays } from './Date'
+import { defaults } from 'lodash'
 interface HaderProps {
   type: string
-  time: string
-  personData: Array<{
+  projectDataList: Array<{
     name: string
-    id?: number
+    id: number
   }>
+  headerParmas: Models.Efficiency.HeaderParmas
+  onSearchData: (value: number[]) => void
 }
-interface ProjectListType {
-  name: string
-  id: number
-}
-
 const HeaderAll = (props: HaderProps) => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
-  const [more, setMore] = useState(false)
   const [projectList, setProjectList] = useState<any>()
+  const [options, setOptions] = useState<number[]>()
   const [time, setTime] = useState<{ startTime: string; endTime: string }>()
-  const { headerParmas, projectDataList } = useSelector(
-    store => store.performanceInsight,
-  )
   useEffect(() => {
-    switch (headerParmas.time.type || headerParmas.time) {
-      case 0:
-        setTime({
-          startTime: headerParmas.time.time[0],
-          endTime: headerParmas.time.time[1],
-        })
-        break
+    switch (props.headerParmas.time.type) {
       case 1:
         setTime(getMonthBefor(1))
         break
       case 3:
         setTime(getMonthBefor(3))
         break
-      case 7:
-        setTime(getDays(7))
+      case 6:
+        setTime(getMonthBefor(6))
         break
-      case 15:
-        setTime(getDays(15))
+      case 14:
+        setTime(getDays(14))
+        break
+      case 28:
+        setTime(getDays(28))
+        break
+      default:
+        setTime({
+          startTime: props.headerParmas.time?.time?.[0],
+          endTime: props.headerParmas.time?.time?.[1],
+        })
         break
     }
     // 根据图表的header选择的项目塞选出选择出来的项目
-    headerParmas.projectIds?.length >= 1
+    props.headerParmas.projectIds?.length >= 1
       ? setProjectList(
-          projectDataList?.filter(el =>
-            headerParmas.projectIds.includes(el.id),
+          props.projectDataList?.filter(el =>
+            props.headerParmas.projectIds.includes(el.id),
           ),
         )
-      : setProjectList(projectDataList)
+      : setProjectList(props.projectDataList)
   }, [])
 
-  console.log(projectList, 'projectList')
   return (
     <>
       <HeaderRowBox>
@@ -85,15 +81,18 @@ const HeaderAll = (props: HaderProps) => {
               <Select
                 options={projectList}
                 more={true}
+                value={options}
                 placeholder="请选择项目"
-                onChange={(value: number[]) => console.log(value)}
+                onChange={(value: number[]) => {
+                  setOptions(value), props.onSearchData(value)
+                }}
               />
             </div>
           )}
           <PersonText>
             {' '}
-            {headerParmas.users?.length ? (
-              <span>已选 {headerParmas.users?.length}人</span>
+            {props.headerParmas.users?.length ? (
+              <span>已选 {props.headerParmas.users?.length}人</span>
             ) : (
               <span>已选 0</span>
             )}
@@ -136,7 +135,7 @@ const HeaderAll = (props: HaderProps) => {
         onConfirm={() => {
           setIsOpen(false), setIsVisibleSuccess(true)
         }}
-        personData={headerParmas.users}
+        personData={props.headerParmas.users}
       />
       {/* 导出成功 */}
       <ExportSuccess

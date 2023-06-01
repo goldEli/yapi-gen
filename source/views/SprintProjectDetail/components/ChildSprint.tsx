@@ -36,11 +36,10 @@ interface SelectItem {
   value: number
 }
 
-const ChildSprint = () => {
+const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const dispatch = useDispatch()
   const [isSearch, setIsSearch] = useState(false)
   const [searchValue, setSearchValue] = useState('')
-  const { affairsInfo } = useSelector(store => store.affairs)
   const { projectInfo } = useSelector(store => store.project)
   const [pageParams, setPageParams] = useState({ page: 1, pagesize: 20 })
   // 下拉数据
@@ -55,17 +54,18 @@ const ChildSprint = () => {
   const getList = async (page: { page: number; pagesize: number }) => {
     const response = await getAffairsChildList({
       projectId: projectInfo.id,
-      id: affairsInfo.id,
+      id: props.detail.id,
       ...page,
     })
     setDataSource(response)
   }
 
   // 获取搜索下拉事务列表
-  const getSelectList = async () => {
+  const getSelectList = async (value: string) => {
     const response = await getAffairsSelectChildren({
       projectId: projectInfo.id,
-      id: affairsInfo.id,
+      id: props.detail.id,
+      keywords: value,
     })
     setSelectList(
       response.map((i: Model.Affairs.AffairsInfo) => ({
@@ -79,7 +79,7 @@ const ChildSprint = () => {
   const getSelectRecentList = async () => {
     const response = await getAffairsSelectChildrenRecent({
       projectId: projectInfo.id,
-      id: affairsInfo.id,
+      id: props.detail.id,
     })
     setRecentList(
       response.map((i: Model.Affairs.AffairsInfo) => ({
@@ -95,11 +95,17 @@ const ChildSprint = () => {
     setIsSearch(false)
   }
 
+  // 下拉搜索
+  const onSearch = (value: string) => {
+    setSearchValue(value)
+    getSelectList(value)
+  }
+
   // 点击下拉的事务 -- 添加
   const onChangeSelect = async (value: any) => {
     await addAffairsChild({
       projectId: projectInfo.id,
-      id: affairsInfo.id,
+      id: props.detail.id,
       childId: value,
     })
     getMessage({ type: 'success', msg: '添加成功' })
@@ -151,7 +157,9 @@ const ChildSprint = () => {
     {
       title: '',
       dataIndex: 'handlers',
-      render: (text: any) => <MultipleAvatar max={3} list={text?.handlers} />,
+      render: (text: any) => (
+        <MultipleAvatar max={3} list={text?.handlers ?? []} />
+      ),
     },
     {
       title: '',
@@ -181,7 +189,6 @@ const ChildSprint = () => {
   // 点击搜素获取下拉数据列表
   const onClickSearch = () => {
     setIsSearch(true)
-    getSelectList()
     getSelectRecentList()
   }
 
@@ -190,7 +197,7 @@ const ChildSprint = () => {
     setDataSource(data)
     await affairsChildDragSort({
       projectId: projectInfo.id,
-      id: affairsInfo.id,
+      id: props.detail.id,
       childrenIds: data.list.map((i: Model.Affairs.AffairsInfo) => i.id),
     })
   }
@@ -201,11 +208,11 @@ const ChildSprint = () => {
   }
 
   useEffect(() => {
-    if (projectInfo.id && affairsInfo.id) {
+    if (projectInfo.id && props.detail.id) {
       // 获取子事务列表
       getList(pageParams)
     }
-  }, [affairsInfo, projectInfo])
+  }, [props.detail, projectInfo])
 
   return (
     <InfoItem id="sprint-childSprint" className="info_item_tab">
@@ -222,7 +229,7 @@ const ChildSprint = () => {
               placeholder="搜索事务名称或编号"
               getPopupContainer={(node: any) => node}
               style={{ width: 184 }}
-              onSearch={setSearchValue}
+              onSearch={onSearch}
               options={searchValue ? selectList : recentList}
               showSearch
               showArrow
@@ -243,10 +250,25 @@ const ChildSprint = () => {
         </CommonButton>
         {dataSource.list && (
           <>
-            <Tooltip title="3 done / 3 in progress / 4 to do">
+            <Tooltip
+              title={`${
+                props.detail.child_story_statistics?.finish_percent
+              }%已完成,${
+                (props.detail.child_story_statistics?.finish_percent || 0) +
+                (props.detail.child_story_statistics?.processing_percent || 0)
+              }%进行中,${
+                props.detail.child_story_statistics?.start_percent
+              }%未完成`}
+            >
               <ProgressWrap
-                percent={60}
-                success={{ percent: 20, strokeColor: 'var(--primary-d1)' }}
+                percent={
+                  (props.detail.child_story_statistics?.finish_percent || 0) +
+                  (props.detail.child_story_statistics?.processing_percent || 0)
+                }
+                success={{
+                  percent: props.detail.child_story_statistics?.finish_percent,
+                  strokeColor: 'var(--primary-d1)',
+                }}
                 format={percent => `已完成${percent}%`}
                 trailColor="rgba(102, 136, 255, 0.1)"
                 strokeColor="rgba(102, 136, 255, 0.4)"
@@ -254,7 +276,7 @@ const ChildSprint = () => {
             </Tooltip>
             <DragTable
               columns={columns}
-              dataSource={dataSource}
+              dataSource={dataSource.list}
               onChangeData={onDragTable}
             />
           </>

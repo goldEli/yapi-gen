@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-handler-names */
 import React, { useEffect, useRef } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { message } from 'antd'
 
-export const TextChange = () => {
+export const TextChange = (props: any) => {
   const e1 = useRef<HTMLDivElement>(null)
   const e2 = useRef<HTMLDivElement>(null)
   const e3 = useRef<HTMLSpanElement>(null)
@@ -24,6 +25,9 @@ export const TextChange = () => {
 
   return (
     <div
+      onClick={() => {
+        message.destroy()
+      }}
       style={{
         position: 'relative',
         padding: '0px 45px 0px 24px',
@@ -47,7 +51,7 @@ export const TextChange = () => {
         <CommonIconFont
           size={18}
           // eslint-disable-next-line react/jsx-handler-names
-          onClick={() => message.destroy()}
+
           type="close-solid"
         />
       </div>
@@ -69,7 +73,7 @@ export const TextChange = () => {
               lineHeight: '22px',
             }}
           >
-            12和工艺规 12和工艺规 12和工艺规 12和工艺规 12和工艺规
+            {props.text}
           </span>
         </div>
       </div>

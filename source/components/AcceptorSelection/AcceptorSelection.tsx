@@ -162,9 +162,12 @@ const AcceptorSelection = (props: any) => {
   // }, [reportContentCopy])
 
   useEffect(() => {
+    console.log(props?.value, '数据流')
+
     setIsEmail(props?.value?.isEmail)
     setPerson1(props?.value?.member ? props?.value?.member : [])
   }, [props.value])
+  console.log(person1, '人')
 
   return (
     <div

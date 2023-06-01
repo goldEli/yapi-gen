@@ -18,13 +18,19 @@ import {
 import { useDispatch } from 'react-redux'
 import ViewDialog from './components/ViewDialog'
 import { getProjectList } from '@/services/project'
-import dayjs from 'dayjs'
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 interface ItemProps {
   name: string
   id: number
 }
 interface Props {
   homeType: string
+  viewDataList: Array<Models.Efficiency.ViewItem> | undefined
+  onCreateView: (value: string, type: string, key?: string) => void
+  onDelView: (key: string) => void
+  onSetDefaulut: (id: number) => void
+  onChange: (id: number) => void
+  defalutConfig: Models.Efficiency.ConfigItem | undefined
 }
 const Iteration = (props: Props) => {
   // sprint  iteration all
@@ -58,6 +64,7 @@ const Iteration = (props: Props) => {
   const [isVisibleView, setIsVisibleView] = useState<boolean>(false)
   const [projectListAll, setProjectListAll] = useState([])
   const [projectList, setProjectList] = useState([])
+  const [timeVal, setTimeVal] = useState(1)
   // 项目的id
   const [projectIds, setProjectIds] = useState<number[]>()
   const dispatch = useDispatch()
@@ -69,7 +76,12 @@ const Iteration = (props: Props) => {
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
     props.homeType === 'all' && getProjectData()
+    switch (props.defalutConfig?.period_time) {
+      case 'two_week':
+    }
   }, [])
+  console.log(props.defalutConfig, 'defa')
+  useEffect(() => {}, [timeVal])
   // 获取项目列表
   const getProjectData = async () => {
     const res = await getProjectList({
@@ -126,6 +138,7 @@ const Iteration = (props: Props) => {
     e.stopPropagation()
     setPerson([])
   }
+  console.log(headerParmas, 'headerParmas', headerParmas)
   // 自定义时间
   const onChangeDate = (e: any, values: string[]) => {
     dispatch(
@@ -143,7 +156,13 @@ const Iteration = (props: Props) => {
   return (
     <HeaderRow>
       <Space size={16}>
-        <View />
+        <View
+          onChange={props.onChange}
+          viewDataList={props.viewDataList}
+          onCreateView={props.onCreateView}
+          onDelView={props.onDelView}
+          onSetDefaulut={props.onSetDefaulut}
+        />
         <Text onClick={() => setIsVisibleView(true)}>另存为</Text>
         {/* 保存需要人员，项目选择和时间修改后 */}
         {save && <Text>保存</Text>}
@@ -155,19 +174,18 @@ const Iteration = (props: Props) => {
             placeholder="请选择项目"
             options={projectList}
             more={more}
+            value={projectIds || []}
             onChange={(value: number[]) => {
-              dispatch(setSave(true)), setProjectIds(value)
-              dispatch(
-                setHeaderParmas({
-                  users: person,
-                  projectIds: value,
-                  view: headerParmas.view,
-                  time: {
-                    type: timekey,
-                    time: '',
-                  },
-                }),
-              )
+              setProjectIds(value),
+                dispatch(setSave(true)),
+                dispatch(
+                  setHeaderParmas({
+                    users: person,
+                    projectIds: value,
+                    view: headerParmas.view,
+                    time: headerParmas.time,
+                  }),
+                )
             }}
             onShowAll={onShowAll}
           />
@@ -214,25 +232,28 @@ const Iteration = (props: Props) => {
         {tabsActive === 0 ? (
           <SelectMain
             onChange={e => {
-              setTimekey(e), dispatch(setSave(true))
+              setTimeVal(e), setTimekey(e), dispatch(setSave(true))
               dispatch(
                 setHeaderParmas({
                   userIds: person.map(el => el.id),
                   projectIds,
-                  time: e,
+                  time: {
+                    type: e,
+                    time: e,
+                  },
                   view: headerParmas.view,
                 }),
               )
             }}
-            value={1}
+            value={timeVal}
             placeholder="请选择周期"
             list={[
               {
-                name: '近7天',
-                key: 7,
+                name: '最近2周',
+                key: 14,
               },
               {
-                name: '近15天',
+                name: '最近4周',
                 key: 15,
               },
               {
@@ -242,6 +263,10 @@ const Iteration = (props: Props) => {
               {
                 name: '近3个月',
                 key: 3,
+              },
+              {
+                name: '近6个月',
+                key: 6,
               },
               {
                 name: '自定义',
@@ -265,15 +290,22 @@ const Iteration = (props: Props) => {
           />
         )}
       </Space>
-      <AddMemberCommonModal
+      {/* <AddMemberCommonModal
         isVisible={isVisible}
         onClose={() => setIsVisible(false)}
         onConfirm={data => onConfirm(data)}
+      /> */}
+      <NewAddUserModalForTandD
+        title={'添加成员'}
+        state={2}
+        isVisible={isVisible}
+        onConfirm={onConfirm}
+        onClose={() => setIsVisible(false)}
       />
       {/* 另存为视图 */}
       <ViewDialog
         name={''}
-        title={'另存为视图'}
+        titleType={{ title: '另存为视图', type: 'add' }}
         onConfirm={val => {
           console.log(123, val)
         }}

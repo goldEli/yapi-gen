@@ -183,6 +183,7 @@ const ProjectSet = () => {
   })
 
   const [searchParams] = useSearchParams()
+  // debugger
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [isSpinning, setIsSpinning] = useState(false)
@@ -350,7 +351,7 @@ const ProjectSet = () => {
       },
     ])
     setIsSpinning(true)
-    const res2 = await getSysConfig()
+    const res2 = await getSysConfig({ project_type: 2 })
     const index = res2.findIndex((i: any) => {
       return i.type === activeDetail.types
     })

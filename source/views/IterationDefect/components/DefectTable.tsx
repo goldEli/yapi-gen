@@ -12,7 +12,6 @@ import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
-// import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import { saveSort, saveTitles } from '@store/view'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
@@ -21,6 +20,11 @@ import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
+import {
+  updateFlawPriority,
+  updateFlawStatus,
+  updateFlawTableParams,
+} from '@/services/flaw'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -110,28 +114,35 @@ const DefectTable = (props: Props) => {
     openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id, 1)
   }
 
+  // 修改优先级
   const onChangeState = async (item: any) => {
-    // try {
-    //   await updatePriority({
-    //     demandId: item.id,
-    //     priorityId: item.priorityId,
-    //     projectId,
-    //   })
-    //   getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
-    //   props.onChangeRow?.()
-    // } catch (error) {
-    //   //
-    // }
+    await updateFlawPriority({
+      id: item.id,
+      priorityId: item.priorityId,
+      projectId,
+    })
+    getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
+    props.onChangeRow?.()
   }
 
+  //  修改状态
   const onChangeStatus = async (value: any) => {
-    // try {
-    //   await updateDemandStatus(value)
-    //   getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    //   props.onChangeRow?.()
-    // } catch (error) {
-    //   //
-    // }
+    await updateFlawStatus(value)
+    getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    props.onChangeRow?.()
+  }
+
+  //  修改严重程度
+  const onChangeSeverity = async (item: any) => {
+    await updateFlawTableParams({
+      id: item.id,
+      projectId,
+      otherParams: {
+        severity: item.severity,
+      },
+    })
+    getMessage({ msg: '修改成功', type: 'success' })
+    props.onChangeRow?.()
   }
 
   const updateOrderkey = (key: any, val: any) => {
@@ -154,6 +165,7 @@ const DefectTable = (props: Props) => {
     order,
     updateOrderkey,
     onChangeStatus,
+    onChangeSeverity,
     onChangeState,
     onClickItem,
     showChildCOntent: true,
@@ -306,6 +318,7 @@ const DefectTable = (props: Props) => {
     }
   }
 
+  // 点击创建缺陷
   const onClick = () => {
     // dispatch(
     //   setAddWorkItemModal({

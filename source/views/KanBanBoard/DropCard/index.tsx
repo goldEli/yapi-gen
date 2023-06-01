@@ -3,10 +3,14 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import StateTag from '@/components/StateTag'
 import { Droppable } from 'react-beautiful-dnd'
+import { useDispatch, useSelector } from '@store/index'
+import { modifyStatus } from '@store/kanBan/kanBan.thunk'
 
 interface DropCardProps {
   source?: Model.KanbanConfig.Status
   target?: Model.KanbanConfig.Status
+  groupId: Model.KanBan.Group['id']
+  columnId: Model.KanBan.Column['id']
 }
 
 const DropCardBox = styled.div<{ active?: boolean }>`
@@ -36,7 +40,7 @@ const getState = (text: any) => {
 
 const DropCard: React.FC<DropCardProps> = props => {
   const { source, target } = props
-  const droppableId = 'inner-block-' + source?.id + '-' + target?.id
+  const { movingStory } = useSelector(store => store.kanBan)
   // return (
   //   <Droppable
   //     key={droppableId}
@@ -61,20 +65,32 @@ const DropCard: React.FC<DropCardProps> = props => {
   //     }}
   //   </Droppable>
   // )
-  const onMouseUp = useCallback(
-    (e: MouseEvent) => {
-      console.log(props.source?.status_name, props.target?.status_name)
-    },
-    [props.source, props.target],
-  )
+  const dispatch = useDispatch()
+  if (props.source?.flow_status_id === props.target?.flow_status_id) {
+    return <></>
+  }
   return (
     <DropCardBox
       onDrop={e => {
         console.log(e)
       }}
-      onMouseEnter={e => {
-        window.removeEventListener('mouseup', onMouseUp)
-        window.addEventListener('mouseup', onMouseUp)
+      onMouseUp={e => {
+        console.log(props.source, props.target)
+        if (!movingStory || !props.source || !props.target) {
+          console.error('movingStory is null')
+          return
+        }
+        dispatch(
+          modifyStatus({
+            groupId: movingStory?.groupId,
+            columnId: movingStory?.columnId,
+            targetColumnId: props.columnId,
+            targetGroupId: props.groupId,
+            storyId: movingStory?.story.id,
+            source: props.source,
+            target: props.target,
+          }),
+        )
       }}
     >
       <StateTag

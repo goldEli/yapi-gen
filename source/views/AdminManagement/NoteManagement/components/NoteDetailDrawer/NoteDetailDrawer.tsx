@@ -26,7 +26,11 @@ import {
 } from '@/views/WorkReport/Review/components/style'
 
 import { Content, Title, Text } from './style'
-import { Col, NameText } from '@/views/WorkReport/Formwork/Addperson'
+import {
+  Col,
+  DefalutIcon,
+  NameText,
+} from '@/views/WorkReport/Formwork/Addperson'
 import { getMyAllSysNoticeDetail } from '@/services/sysNotice'
 
 interface TargetTabsProps {
@@ -36,12 +40,15 @@ interface TargetTabsProps {
 // 已读未读
 
 const NoteDetailDrawer = (props: any) => {
+  const { reportIds } = props
+  console.log(reportIds, 'ids数组')
+
   const [t] = useTranslation()
   const { viewReportModal } = useSelector(store => store.workReport)
   const [focus, setFocus] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [reportIds, setReportIds] = useState<any>([])
+
   const [form] = Form.useForm()
   const [arr, setArr] = useState<any>(null)
   const leftWidth = 640
@@ -80,21 +87,40 @@ const NoteDetailDrawer = (props: any) => {
     props.onCancel()
     // 更新List页面
   }
+  const changeData = async (id: any) => {
+    const res = await getMyAllSysNoticeDetail(id)
+
+    setArr(res)
+  }
 
   // 向上查找需求
-  const onUpDemand = () => {}
+  const onUpDemand = () => {
+    const newIndex = reportIds[currentIndex - 1]
+    changeData(newIndex)
+    setCurrentIndex(reportIds.findIndex((i: any) => i === newIndex))
+  }
 
   // 向下查找需求
-  const onDownDemand = () => {}
+  const onDownDemand = () => {
+    const newIndex = reportIds[currentIndex + 1]
+    changeData(newIndex)
+    setCurrentIndex(reportIds.findIndex((i: any) => i === newIndex))
+  }
 
   const init = async () => {
-    const res = await getMyAllSysNoticeDetail(props.detailInner.id)
+    const res = await getMyAllSysNoticeDetail(props?.detailInner.id)
 
-    setArr(res.recipient_users)
+    setArr(res)
   }
   useEffect(() => {
     props.isVisible && init()
   }, [props.isVisible])
+
+  useEffect(() => {
+    setCurrentIndex(
+      reportIds.findIndex((i: any) => i === props?.detailInner?.id),
+    )
+  }, [reportIds])
 
   if (props.isVisible) {
     return (
@@ -126,32 +152,32 @@ const NoteDetailDrawer = (props: any) => {
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={
-                  reportIds?.length === 0 ||
-                  currentIndex === reportIds?.length - 1
-                }
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
-
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </DownWrap>
+              {currentIndex === 0 ? null : (
+                <UpWrap
+                  onClick={onUpDemand}
+                  id="upIcon"
+                  isOnly={currentIndex === 0}
+                >
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </UpWrap>
+              )}
+              {reportIds.length - 1 === currentIndex ? null : (
+                <DownWrap
+                  onClick={onDownDemand}
+                  id="downIcon"
+                  isOnly={currentIndex <= 0}
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </DownWrap>
+              )}
             </ChangeIconGroup>
           </Space>
         </Header>
@@ -165,18 +191,18 @@ const NoteDetailDrawer = (props: any) => {
               fontFamily: 'SiYuanMedium',
             }}
           >
-            {props.detailInner.title}
+            {arr?.title}
           </div>
           <Title> 内容</Title>
           <Editor
-            value={props.detailInner.content ?? '--'}
+            value={arr?.content ?? '--'}
             getSuggestions={() => []}
             readonly
           />
           <Title>作者</Title>
-          <Text> {props.detailInner.user.name}</Text>
+          {/* <Text> {arr.user.name}</Text> */}
           <Title>发送于</Title>
-          <Text>{props.detailInner.send_time}</Text>
+          <Text>{arr?.expire_time}</Text>
           <Title>接收人</Title>
           <div
             style={{
@@ -184,17 +210,34 @@ const NoteDetailDrawer = (props: any) => {
               flexWrap: 'wrap',
             }}
           >
-            {arr?.map((i: any) => (
+            {arr?.recipient.all ? (
               <Col
                 style={{
                   whiteSpace: 'nowrap',
                 }}
-                key={i.id}
               >
-                <CommonUserAvatar avatar={i.avatar} />
-                <NameText>{i.name}</NameText>
+                <DefalutIcon bgc="rgba(125, 189, 225, 1)">
+                  <CommonIconFont
+                    type="userAll"
+                    size={16}
+                    color="var(--neutral-white-d7)"
+                  />
+                </DefalutIcon>
+                <NameText>全员</NameText>
               </Col>
-            ))}
+            ) : (
+              arr?.recipient_users.map((i: any) => (
+                <Col
+                  style={{
+                    whiteSpace: 'nowrap',
+                  }}
+                  key={i.id}
+                >
+                  <CommonUserAvatar avatar={i.avatar} />
+                  <NameText>{i.name}</NameText>
+                </Col>
+              ))
+            )}
           </div>
         </Content>
       </Drawer>

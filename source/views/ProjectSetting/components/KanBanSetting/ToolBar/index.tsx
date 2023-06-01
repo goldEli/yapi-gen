@@ -14,6 +14,7 @@ import {
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import useProjectId from '../hooks/useProjectId'
 import SelectOptions from '../SelectOptions'
+import useI18n from '@/hooks/useI18n'
 
 interface ToolBarProps {}
 
@@ -42,19 +43,12 @@ const Right = styled.div`
   gap: 16px;
 `
 
-const IconWrap = styled(IconFont)`
-  font-size: 14px;
-  color: var(--neutral-n3);
-  &:hover {
-    color: var(--auxiliary-b1);
-  }
-`
-
 const ToolBar: React.FC<ToolBarProps> = props => {
   const { viewList } = useSelector(store => store.KanbanConfig)
   const checkedViewListItem = useMemo(() => {
     return viewList?.find(item => item.check)
   }, [viewList])
+  const { t } = useI18n()
 
   const dispatch = useDispatch()
   const handleViewList = useMemo<Model.SprintKanBan.ViewItem[]>(() => {
@@ -75,8 +69,10 @@ const ToolBar: React.FC<ToolBarProps> = props => {
   const { projectId } = useProjectId()
   const onDel = (id: number) => {
     open({
-      title: '确认删除',
-      text: '确认删除该列与状态，删除后再看板中将无法使用该列与状态',
+      title: t('confirm_deletion'),
+      text: t(
+        'confirm_to_delete_the_column_and_status,_after_deletion,_the_column_and_status_will_not_be_available_in_the_Kanban',
+      ),
       onConfirm() {
         dispatch(
           deleteKanbanConfig({
@@ -97,8 +93,8 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           onDel={key => {
             onDel(parseInt(key, 10))
           }}
-          title="视图"
-          createViewTitle="创建列与状态"
+          title={t('view')}
+          createViewTitle={t('create_columns_and_status')}
           options={handleViewList}
           onChange={key => {
             dispatch(onChangeViewList(Number(key)))
@@ -121,7 +117,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           onCreateView={() => {
             dispatch(
               openSaveAsViewModel({
-                title: '创建列与状态',
+                title: t('create_columns_and_status'),
               }),
             )
           }}
@@ -137,7 +133,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             }
           }}
         >
-          另存为
+          {t('save_as')}
         </Btn>
         <Btn
           onClick={e => {
@@ -145,7 +141,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             dispatch(saveKanbanConfig())
           }}
         >
-          保存更改
+          {t('save_Changes')}
         </Btn>
       </Left>
       <Right>

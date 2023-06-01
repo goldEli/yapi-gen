@@ -84,6 +84,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
     }))
@@ -132,6 +134,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
       pager: response.data.pager,
@@ -212,6 +216,8 @@ export const getUserInfoCreateStory: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -291,6 +297,8 @@ export const getUserInfoFinishStory: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -312,18 +320,8 @@ export const getUserInfoOverviewStatistics: any = async (params: any) => {
     target_id: params.targetId,
     project_id: params?.projectId,
   })
-  const { join, abeyance } = response.data
 
-  return {
-    firstP: join.project_count,
-    firstN: join.story_count,
-    firstD: join.iterate_count,
-    secondAll: abeyance.total,
-    secondNoFinish: abeyance.abeyance_count,
-    secondTimeOut: abeyance.expired_count,
-    secondFinish: abeyance.finish_count,
-    secondOutFinish: abeyance.expired_finish_count,
-  }
+  return response.data
 }
 
 export const getUserInfoOverviewFeed: any = async (params: any) => {
@@ -427,6 +425,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
     }))
@@ -475,6 +475,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
       pager: response.data.pager,
@@ -555,6 +557,8 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -634,6 +638,8 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,

@@ -5,6 +5,7 @@ import {
   getProjectRoleList,
   getRightSprintList,
   getLeftSprintList,
+  getLongStoryList,
 } from './sprint.thunk'
 
 type SliceState = {
@@ -19,6 +20,7 @@ type SliceState = {
   }
   leftLoading: boolean
   checkList: boolean[]
+  longStoryList: Model.Sprint.LongStory
   sprintRefresh: number
 }
 
@@ -34,6 +36,9 @@ const initialState: SliceState = {
   },
   leftLoading: false,
   checkList: [],
+  longStoryList: {
+    list: [],
+  },
   sprintRefresh: 0,
 }
 
@@ -93,6 +98,9 @@ const slice = createSlice({
     })
     builder.addCase(getLeftSprintList.rejected, state => {
       state.leftLoading = false
+    })
+    builder.addCase(getLongStoryList.fulfilled, (state, action) => {
+      state.longStoryList = action.payload
     })
   },
 })

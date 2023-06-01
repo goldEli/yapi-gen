@@ -98,8 +98,8 @@ declare namespace API.Sprint {
       period_time?: string
       start_time?: string
       end_time?: string
-      page: 1
-      pagesize: 20
+      page: number
+      pagesize: number
     }
     type Result = {
       work: Array<Model.Sprint.WorkListItem>
@@ -254,6 +254,21 @@ declare namespace API.Sprint {
       page?: number
       pagesize?: number
     }
+  }
+
+  namespace getLongStoryList {
+    type Params = {
+      order: string
+      orderkey: string
+      search: {
+        all: number
+        project_id: number
+        keyword: string
+      }
+      page: number
+      pagesize: number
+    }
+    type Result = Model.Sprint.LongStory
   }
 
   namespace SortStory {

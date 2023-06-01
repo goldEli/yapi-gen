@@ -4,6 +4,7 @@ import IconFont from '@/components/IconFont'
 import StateTag from '@/components/StateTag'
 import MoveIcon from '../MoveIcon'
 import { Draggable } from 'react-beautiful-dnd'
+import useI18n from '@/hooks/useI18n'
 
 interface StatusListItemProps {
   data: Model.KanbanConfig.Status
@@ -33,18 +34,6 @@ const ImageIcon = styled.img`
   width: 20px;
   height: 20px;
 `
-// const Text = styled.div<{ bg: string }>`
-//   width: 52px;
-//   height: 22px;
-//   background: ${props => props.bg};
-//   border-radius: 6px 6px 6px 6px;
-//   opacity: 1;
-//   font-size: 12px;
-//   color: var(--neutral-white-d7);
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `
 
 const Count = styled.div`
   font-size: 12px;
@@ -54,6 +43,7 @@ const Count = styled.div`
 const StatusListItem: React.FC<StatusListItemProps> = props => {
   const { data } = props
   const draggableId = data.flow_status_id + ''
+  const { t } = useI18n()
   return (
     <Draggable
       key={data.flow_status_id}
@@ -85,7 +75,9 @@ const StatusListItem: React.FC<StatusListItemProps> = props => {
                 }
               />
             </StatusListItemLeft>
-            <Count>{`${data.stories_count}个事务`}</Count>
+            <Count>
+              {t('count_transaction', { count: data.stories_count })}
+            </Count>
           </StatusListItemBox>
         )
       }}

@@ -21,6 +21,7 @@ const DropArea = styled.div`
   box-sizing: border-box;
   padding: 16px;
   gap: 8px;
+  position: relative;
 `
 
 const DropStatusArea = styled.div`
@@ -38,36 +39,40 @@ const Issues: React.FC<IssuesProps> = props => {
     return handleId(groupId, issues.id)
   }, [groupId, issues.id])
 
-  const { data, showStateTransitionList, disableDrop } = useDropData(
-    issues.id,
-    groupId,
+  const { data, showStateTransitionList } = useDropData(issues.id, groupId)
+  const dropCardListContent = (
+    <DropCardList
+      hidden={!showStateTransitionList}
+      list={data}
+      groupId={groupId}
+      columnId={issues.id}
+    />
   )
+  const issueCardListContent = issues.stories?.map((story, index) => {
+    const uuid = `${groupId}-${issues.id}-${story.id}`
+    return (
+      <IssueCard
+        hidden={showStateTransitionList}
+        uuid={uuid}
+        key={uuid}
+        item={story}
+        index={index}
+      />
+    )
+  })
 
   return (
     <Droppable
       key={droppableId}
       droppableId={droppableId}
-      // droppableId={'dropCardId'}
       type="drop-status"
-      isDropDisabled={disableDrop}
+      // isDropDisabled={false}
     >
       {(provided, snapshot) => {
         return (
           <DropArea ref={provided.innerRef} {...provided.droppableProps}>
-            {/* {column?.deps?.map?.((item) => {
-              return <DropStatusArea>{`123 -> ${item.title}`}</DropStatusArea>;
-            })} */}
-            {!showStateTransitionList &&
-              issues.stories?.map((story, index) => (
-                <IssueCard
-                  groupId={groupId}
-                  key={story.id}
-                  item={story}
-                  index={index}
-                />
-              ))}
-
-            {showStateTransitionList && <DropCardList list={data} />}
+            {dropCardListContent}
+            {issueCardListContent}
             {provided.placeholder}
           </DropArea>
         )

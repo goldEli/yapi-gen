@@ -141,6 +141,8 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
         type: 'company',
       },
     })
+    console.log(res, '部门列表')
+
     setTreeData(res)
     // 拍平数组
     const data = unionBy(checkedFilterData(res))
@@ -158,6 +160,8 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
         type: 'team',
       },
     })
+    console.log(res, '团队列表')
+
     setSelectDataList(res)
     setDataList(res)
   }

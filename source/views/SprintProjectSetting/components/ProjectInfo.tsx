@@ -124,9 +124,8 @@ const ProjectInfo = () => {
   const dispatch = useDispatch()
   return (
     <Wrap>
-      <div style={{ marginBottom: '0px', width: 400 }}>
+      <div style={{ marginBottom: '20px', width: 400 }}>
         {/* <CategoryDropdown projectId={605} mode="multiple"></CategoryDropdown> */}
-        {/* <LongStroyBread></LongStroyBread> */}
       </div>
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>

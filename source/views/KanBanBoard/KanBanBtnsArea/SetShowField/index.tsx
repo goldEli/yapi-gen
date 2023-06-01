@@ -66,7 +66,7 @@ const SetShowField = (props: Props) => {
             jumpToKanbanConfig(navigate)
           }}
         >
-          配置面板
+          {t('configuration_panel')}
         </div>
       ),
     },

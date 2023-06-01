@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { Checkbox } from 'antd'
 import CommonButton from './CommonButton'
 import { Editor } from '@xyfe/uikit'
+import { useTranslation } from 'react-i18next'
 
 const Footer = styled.div`
   height: 80px;
@@ -29,13 +30,47 @@ const Content = styled.div`
   min-height: 412px;
 `
 
-const NoteModal = () => {
+const NoteModal = (props: any) => {
+  const [t] = useTranslation()
+  const getLabelName = (num: string) => {
+    switch (num) {
+      case '1':
+        return t('system_notification')
+      case '2':
+        return t('daily_notification')
+      case '3':
+        return t('important_notification')
+      case '4':
+        return t('activity_notification')
+      case '5':
+        return t('holiday_notification')
+    }
+  }
   const onChange = (e: any) => {
-    console.log(`checked = ${e.target.checked}`)
+    const arrs = localStorage.getItem('noteIds')
+
+    if (arrs) {
+      const arrs2 = JSON.parse(arrs)
+      console.log(arrs2)
+      console.log(props.data.id[0])
+
+      if (arrs2.includes(props.data.id[0])) {
+        // 值存在于数组中，执行删除操作
+        const index = arrs2.indexOf(props.data.id[0])
+        arrs2.splice(index, 1)
+      } else {
+        // 值不存在于数组中，执行添加操作
+        arrs2.push(props.data.id[0])
+      }
+      localStorage.setItem('noteIds', JSON.stringify(arrs2))
+    } else {
+      localStorage.setItem('noteIds', JSON.stringify([props.data.id[0]]))
+    }
+    //
   }
   return (
     <CommonModal
-      isVisible={false}
+      isVisible={props.isVisible}
       isHeader
       width={640}
       hasFooter={
@@ -52,7 +87,9 @@ const NoteModal = () => {
               不在提醒
             </span>
           </Checkbox>
-          <CommonButton type="primary">我知道了</CommonButton>
+          <CommonButton type="primary" onClick={() => props.onClose()}>
+            我知道了
+          </CommonButton>
         </Footer>
       }
     >
@@ -66,7 +103,7 @@ const NoteModal = () => {
             lineHeight: '52px',
           }}
         >
-          系统通知
+          {getLabelName(props.data?.customData?.type)}
         </div>
         <div
           style={{
@@ -76,7 +113,7 @@ const NoteModal = () => {
             lineHeight: '20px',
           }}
         >
-          发布于2023-08-08 11:08:08
+          发布于{props.data?.customData?.expireTime}
         </div>
       </Header>
       <Content>
@@ -90,13 +127,11 @@ const NoteModal = () => {
             textAlign: 'center',
           }}
         >
-          焕然一新！知识库2.0升级详解
+          {props.data.msgBody?.title}
         </div>
 
         <Editor
-          value={
-            '强化安全性：我们加强了平台的安全性措施，采取了更严格的数据加密和访问控制措施，以保护您的个人信息和数据安全。您可以放心使用平台，直到您的隐私受到了最大程度的保护。'
-          }
+          value={props.data.msgBody?.content}
           getSuggestions={() => []}
           readonly
         />

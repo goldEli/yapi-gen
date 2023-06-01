@@ -97,6 +97,15 @@ export const delSprintItem = async (
   return response
 }
 
+export const getLongStroyList = async (
+  params: API.Sprint.getLongStoryList.Params,
+) => {
+  const response = await http.get<any, API.Sprint.getLongStoryList.Result>(
+    'getLongStoryList',
+    params,
+  )
+  return response
+}
 // 完成冲刺
 export const completeSprint = async (
   params: API.Sprint.CompleteSprint.Params,

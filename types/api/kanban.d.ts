@@ -50,7 +50,8 @@ declare namespace API.Kanban {
   // modifyKanbanIssueSort
   namespace ModifyKanbanIssueSort {
     type Params = {
-      kanban_config_id: Model.KanbanConfig.Config['id']
+      project_id: number
+      kanban_column_id: Model.KanbanConfig.Config['id']
       story_ids: Model.KanBan.Story['id'][]
     }
     type Result = null
@@ -87,5 +88,39 @@ declare namespace API.Kanban {
           use_type: 1 | 2 | 3
         }
     type Result = Model.KanBan.ViewItem
+  }
+  namespace UpdateStoryPriority {
+    type Params = {
+      project_id: number
+      id: Model.KanBan.Story['id']
+      priority: Model.KanBan.Group['id']
+    }
+    type Result = null
+  }
+
+  namespace GetFlowConfig {
+    type Params = {
+      story_id: Model.KanBan.Story['id']
+      // 项目id
+      project_id: number
+      // 目标状态id
+      category_status_to_id: number
+    }
+    type Result = {
+      id: number
+      name: string
+    }
+  }
+
+  namespace DeleteStory {
+    type Params = {
+      id: Model.KanBan.Story['id']
+      // 项目id
+      project_id: number
+    }
+    type Result = {
+      id: number
+      name: string
+    }
   }
 }

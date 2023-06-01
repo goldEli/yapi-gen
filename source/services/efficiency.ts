@@ -3,6 +3,7 @@
 /* eslint-disable max-lines */
 // 缺陷和对比接口 start
 // 对比列表
+import * as http from '../tools/http'
 export const workContrastList = async (
   params: API.Sprint.WorkContrastList.Params,
 ) => {
@@ -946,7 +947,6 @@ export const historyDefectList = async (
   }
   return res
 }
-
 // 缺陷和对比接口 end
 
 // 视图的接口 start
@@ -954,96 +954,115 @@ export const historyDefectList = async (
 export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
   // const response = await http.get<any, API.Efficiency.ViewsList.Result>(
   //   `viewsList`,
-  // params
+  // parmas
   // )
   const response = {
     data: [
       {
-        id: 27678313.95481859,
-        name: 'Duis anim',
+        id: 27,
+        name: '系统视图',
         config: {
-          sort: {
-            schedule: 'deserunt id eu ut',
-          },
-          fields: ['magna occaecat'],
-          search: {
-            user_id: 'dolore nisi occaecat pariatur aliqua',
-            system_view: 11255713.67196323,
-          },
+          project_id: [441, 437],
+          user_ids: [1],
+          start_time: '',
+          end_time: '',
+          period_time: 'two_week',
         },
         status: -69632682.78917724,
-        type: 79917760,
+        type: 1,
+        is_default: 1,
       },
       {
-        id: -72959592.7626661,
-        name: 'occaecat officia culpa est in',
+        id: 28,
+        name: 'est in',
         config: {
-          sort: {
-            schedule: 'anim d',
-          },
-          fields: [
-            'do',
-            'velit enim commodo',
-            'pariatur enim ut ipsum',
-            'dolore consequat non anim',
-            'esse',
-          ],
-          search: {
-            user_id: 'ea',
-            system_view: 62456146.633203864,
-          },
+          project_id: [441, 437],
+          user_ids: [1],
+          start_time: '',
+          end_time: '',
+          period_time: 'two_week',
         },
         status: -77288136.07175744,
-        type: 27217600,
+        type: 2,
+        is_default: 2,
       },
       {
-        id: 56721607.603690505,
+        id: 89,
         name: 'culpa',
         config: {
-          sort: {
-            schedule: 'Excepteur ullamco',
-          },
-          fields: [
-            'dolore culpa id dolor ',
-            'laborum',
-            'amet nisi est ad',
-            'aliquip',
-            'reprehenderit Ut dolor',
-          ],
-          search: {
-            user_id: 'in Ut reprehenderit velit',
-            system_view: 22009975.183798283,
-          },
+          project_id: [441, 437],
+          user_ids: [1],
+          start_time: '',
+          end_time: '',
+          period_time: 'two_week',
         },
         status: -79455814.85011317,
-        type: 3712589,
+        type: 2,
+        is_default: 2,
       },
       {
-        id: -82173928.99264961,
+        id: 74,
         name: 'aliq',
         config: {
-          sort: {
-            schedule: 'enim',
-          },
-          fields: ['enim', 'irure cupidata', 'ad laboris qui', 'sint'],
-          search: {
-            user_id: 'in irure deserunt sit',
-            system_view: 43641800.07919097,
-          },
+          project_id: [441, 437],
+          user_ids: [1],
+          start_time: '',
+          end_time: '',
+          period_time: 'two_week',
         },
         status: 32169567.50605288,
-        type: -88587158,
+        type: 2,
+        is_default: 2,
       },
     ],
   }
   return response.data.map(el => ({
     id: el.id,
     name: el.name,
+    label: el.name,
     status: el.status,
     type: el.type,
+    config: el.config,
+    key: el.id + '',
+    is_default: el.is_default,
   }))
 }
-
+// 视图修改
+export const viewsUpdate = async (
+  parmas: API.Efficiency.ViewsEditList.Params,
+) => {
+  const response = await http.put<any, API.Efficiency.ViewsEditList.Result>(
+    `viewsUpdate`,
+    parmas,
+  )
+  return response.data
+}
+// 视图新建
+export const createViewList = async (
+  parmas: API.Efficiency.ViewsEditList.Params,
+) => {
+  const response = await http.post<any, API.Efficiency.ViewsEditList.Result>(
+    `createViewList`,
+    parmas,
+  )
+  return response.data
+}
+// 删除视图
+export const delView = async (id: number) => {
+  const response = await http.delete<any, API.Efficiency.ViewsEditList.Result>(
+    `delView`,
+    id,
+  )
+  return response.data
+}
+// 设置默认视图
+export const defaultView = async (id: number) => {
+  const response = await http.patch<any, API.Efficiency.ViewsEditList.Result>(
+    `defaultView`,
+    id,
+  )
+  return response.data
+}
 // 视图的接口 end
 
 // 图表页面 start

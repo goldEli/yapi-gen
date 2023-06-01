@@ -12,8 +12,10 @@ export const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: relative;
+  position: absolute;
   z-index: 999;
+  left: 0px;
+  top: 20px;
 `
 export const SearchBox = styled.div`
   /* border: 1px solid red; */
@@ -43,6 +45,9 @@ export const ContentItem = styled.div`
     font-size: var(--font14);
     display: inline-block;
     margin: 0px 10px;
+    overflow: hidden; //超出的文本隐藏
+    text-overflow: ellipsis; //溢出用省略号显示
+    white-space: nowrap; //溢出不换行
   }
   span:nth-of-type(2) {
     color: var(--neutral-n1-d1);
@@ -50,6 +55,7 @@ export const ContentItem = styled.div`
     overflow: hidden; //超出的文本隐藏
     text-overflow: ellipsis; //溢出用省略号显示
     white-space: nowrap; //溢出不换行
+    width: 160px;
   }
 `
 export const LoadMore = styled.div`
@@ -58,6 +64,14 @@ export const LoadMore = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+`
+export const CancelParentBox = styled.div`
+  color: var(--neutral-n2);
+  font-size: var(--font14);
+  font-family: MiSans-Regular, MiSans;
+  margin-bottom: 10px;
+  margin-top: 10px;
   cursor: pointer;
 `
 export const FooterBox = styled.div`

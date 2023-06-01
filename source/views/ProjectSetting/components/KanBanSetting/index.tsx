@@ -6,10 +6,7 @@ import BoardLeft from './BoardLeft'
 import BoardRight from './BoardRight'
 import EditColumnModal from './EditColumnModal'
 import {
-  getCategoryList,
-  getKanbanConfig,
   getKanbanConfigList,
-  getKanbanConfigRemainingStatus,
   openSaveAsViewModel,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import { useDispatch, useSelector } from '@store/index'
@@ -17,7 +14,7 @@ import useProjectId from './hooks/useProjectId'
 import NoData from '@/components/NoData'
 import CommonButton from '@/components/CommonButton'
 import SaveAsViewModal from './SaveAsViewModal'
-import { PayloadAction } from '@reduxjs/toolkit'
+import useI18n from '@/hooks/useI18n'
 interface IProps {}
 const KanBanSettingBox = styled.div`
   width: 100%;
@@ -33,6 +30,7 @@ const KanBanSetting: React.FC<IProps> = props => {
   const { projectId } = useProjectId()
   const { viewList } = useSelector(store => store.KanbanConfig)
   const showNoData = !viewList?.length
+  const { t } = useI18n()
 
   // init
   useEffect(() => {
@@ -42,23 +40,19 @@ const KanBanSetting: React.FC<IProps> = props => {
   const content = useMemo(() => {
     if (showNoData) {
       return (
-        <NoData
-          subText={
-            '当前还未创建列与状态，使用列和状态来定义工作在看板上的推进方式'
-          }
-        >
+        <NoData subText={t('columns_and_statuses_have_not_been_created_yet')}>
           <CommonButton
             onClick={() => {
               dispatch(
                 openSaveAsViewModel({
-                  title: '创建视图列与状态',
+                  title: t('create_columns_and_status'),
                 }),
               )
             }}
             style={{ marginTop: 24 }}
             type="light"
           >
-            创建列与状态
+            {t('create_columns_and_status')}
           </CommonButton>
         </NoData>
       )

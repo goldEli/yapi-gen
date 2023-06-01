@@ -12,6 +12,24 @@ import { getTreeList } from '@/services/demand'
 import { storyConfigCategoryList } from '@/services/project'
 import { getStaffListAll } from './staff'
 
+//获取工作项接收处理概况
+
+export const getHisProjectCharts: any = async (params: any) => {
+  const response = await http.get(
+    `/b/efficiency/member/work_handle/statistics`,
+    params,
+  )
+  return response
+}
+//获取工作项接收处理概况
+
+export const getProjectCharts: any = async (params: any) => {
+  const response = await http.get(
+    `/b/efficiency/member/work_handle/${params}/statistics`,
+  )
+  return response
+}
+
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
     title: item.name,
@@ -544,6 +562,8 @@ export const getMineNoFinishList: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
     }))
@@ -593,6 +613,8 @@ export const getMineNoFinishList: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
           }))
@@ -677,6 +699,8 @@ export const getMineCreacteList: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -758,6 +782,8 @@ export const getMineFinishList: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -838,6 +864,8 @@ export const getMineNeedList: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
         }))
@@ -859,18 +887,8 @@ export const getMineProjectList: any = async (params: any) => {
 // 获取我的概况
 export const getMineChartsList: any = async () => {
   const response = await http.get('getMineChartsList')
-  const { join, abeyance } = response.data
 
-  return {
-    firstP: join.project_count,
-    firstN: join.story_count,
-    firstD: join.iterate_count,
-    secondAll: abeyance.total,
-    secondNoFinish: abeyance.abeyance_count,
-    secondTimeOut: abeyance.expired_count,
-    secondFinish: abeyance.finish_count,
-    secondOutFinish: abeyance.expired_finish_count,
-  }
+  return response.data
 }
 
 // 表单区域
@@ -990,6 +1008,8 @@ export const getVerifyUserList: any = async (params: any) => {
       projectId: i.project_id,
       storyPrefixKey: i.story_prefix_key,
       userInfo: i.userInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
     })),
   }
 }
@@ -1029,6 +1049,8 @@ export const getVerifyList: any = async (params: any) => {
       projectId: i.project_id,
       storyPrefixKey: i.story_prefix_key,
       userInfo: i.userInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
     })),
   }
 }

@@ -10,6 +10,7 @@ import CommonMember from '../CommonMember'
 
 interface Props {
   onInputSearch(value: string): void
+  title?: string
 }
 
 const ProjectCommonOperation = (props: Props) => {
@@ -29,7 +30,8 @@ const ProjectCommonOperation = (props: Props) => {
             isDemand
             leftIcon
             placeholder={
-              t('search_for_the_requirement_name_or_number') as string
+              props?.title ??
+              (t('search_for_the_requirement_name_or_number') as string)
             }
             onChangeSearch={props.onInputSearch}
           />

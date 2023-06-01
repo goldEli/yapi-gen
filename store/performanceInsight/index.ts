@@ -4,18 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 type SliceState = {
   save: boolean
-  headerParmas: {
-    projectIds: number[]
-    users: []
-    time: {
-      type: number
-      time: string[] | ''
-    }
-    view: {
-      title: string
-      value: number
-    }
-  }
+  headerParmas: Models.Efficiency.HeaderParmas
   projectDataList: Array<{ name: string; id: number }>
   visiblePerson: boolean
   visibleWork: boolean

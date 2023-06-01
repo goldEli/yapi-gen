@@ -18,7 +18,6 @@ export const getCategoryConfigList = async (params: any) => {
       project_id: params.projectId,
     },
   )
-
   return response.data?.map((i: any) => ({
     id: i.id,
     categoryId: i.category_id,
@@ -32,6 +31,7 @@ export const getCategoryConfigList = async (params: any) => {
     isCustomize: i.is_customize,
     fieldContent: i.field_content,
     remarks: i.remarks,
+    attr: i.attr,
   }))
 }
 
@@ -461,6 +461,7 @@ export const getDemandInfo: any = async (params: any) => {
     projectPrefix: response.data.project_prefix,
     hierarchy: response.data.hierarchy,
     level_tree: response.data.level_tree,
+    project_type: response.data.project_type,
   }
 }
 
@@ -542,6 +543,8 @@ export const getDemandList: any = async (params: any) => {
       categoryConfigList: i.category_config_list,
       storyPrefixKey: i.story_prefix_key,
       usersInfo: i.usersInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
     }))
   }
 
@@ -566,6 +569,8 @@ export const getDemandList: any = async (params: any) => {
           categoryId: i.category_id,
           storyPrefixKey: i.story_prefix_key,
           usersInfo: i.usersInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -593,6 +598,8 @@ export const getDemandList: any = async (params: any) => {
       storyPrefixKey: i.story_prefix_key,
       categoryId: i.category_id,
       usersInfo: i.usersInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
     }))
   } else if (params?.isChildren) {
     return {
@@ -644,6 +651,7 @@ export const getDemandList: any = async (params: any) => {
         categoryConfigList: i.category_config_list,
         storyPrefixKey: i.story_prefix_key,
         usersInfo: i.usersInfo,
+        is_bug: i.is_bug,
       })),
     }
   }
