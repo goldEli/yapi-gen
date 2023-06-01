@@ -4,9 +4,9 @@ import { Form, Input } from 'antd'
 import { useEffect } from 'react'
 
 interface PropsType {
-  title: string
+  titleType: { title: string; type: string } | undefined
   isVisible: boolean
-  onConfirm: (value: string) => void
+  onConfirm: (value: string, type: string) => void
   onClose: () => void
   name: string
 }
@@ -16,7 +16,7 @@ const ViewDialog = (props: PropsType) => {
   const onConfirm = async () => {
     await form.validateFields()
     const formValues = form.getFieldsValue()
-    props.onConfirm(formValues.name)
+    props.onConfirm(formValues.name, props.titleType?.type || 'add')
   }
   useEffect(() => {
     if (props.isVisible) {
@@ -26,7 +26,7 @@ const ViewDialog = (props: PropsType) => {
   return (
     <CommonModal
       isVisible={props.isVisible}
-      title={props.title}
+      title={props.titleType?.title}
       onClose={() => props.onClose()}
       onConfirm={onConfirm}
     >
