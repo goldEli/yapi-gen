@@ -6,15 +6,19 @@ import {
   closeModifyStatusModalInfo,
   saveModifyStatusModalInfo,
 } from '@store/kanBan/kanBan.thunk'
+import { getParamsValueByKey } from '@/tools'
 
 interface ModifyStatusModalProps {}
 
 const ModifyStatusModal: React.FC<ModifyStatusModalProps> = props => {
   const { modifyStatusModalInfo } = useSelector(store => store.kanBan)
+  const { projectInfo } = useSelector(store => store.project)
+
   const dispatch = useDispatch()
   if (!modifyStatusModalInfo.info) {
     return <></>
   }
+  console.log('modifyStatusModalInfo', modifyStatusModalInfo)
   return (
     <StatusModal
       isVisible={modifyStatusModalInfo.visible}
@@ -22,6 +26,7 @@ const ModifyStatusModal: React.FC<ModifyStatusModalProps> = props => {
       onClose={() => {
         dispatch(closeModifyStatusModalInfo())
       }}
+      type={projectInfo.projectType}
       // record={props.record}
       onChangeStatusConfirm={data => {
         dispatch(saveModifyStatusModalInfo(data))

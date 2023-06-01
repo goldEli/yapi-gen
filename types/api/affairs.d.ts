@@ -189,6 +189,7 @@ declare namespace API.Affairs {
         | Model.Affairs.AttachTarget[]
         | { name: string; color: string }[]
         | number
+        | number[]
       type: string
     }
   }

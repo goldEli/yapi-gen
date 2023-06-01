@@ -3,7 +3,7 @@ import CustomSelect from '@/components/CustomSelect'
 import { Select } from 'antd'
 interface Props {
   onChange: (key: number) => void
-  list: Array<{ name: string; key: number }>
+  list: Array<{ name: string; key: number }> | undefined
   placeholder: string
   value: number
 }
@@ -17,7 +17,7 @@ const SelectMain = (props: Props) => {
       suffixIcon={<CommonIconFont type="down" />}
       placeholder={props.placeholder}
       onChange={(e: number) => {
-        console.log(e, 'oo'), props.onChange(e)
+        props.onChange(e)
       }}
       getPopupContainer={(node: any) => node}
       allowClear

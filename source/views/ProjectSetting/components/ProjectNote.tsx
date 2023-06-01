@@ -350,7 +350,7 @@ const ProjectSet = () => {
       },
     ])
     setIsSpinning(true)
-    const res2 = await getSysConfig()
+    const res2 = await getSysConfig({ project_type: 1 })
     const index = res2.findIndex((i: any) => {
       return i.type === activeDetail.types
     })

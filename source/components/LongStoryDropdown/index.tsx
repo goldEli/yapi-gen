@@ -8,14 +8,23 @@ import {
   LoadMore,
   CancelParentBox,
 } from './style'
-import CommonInput from '../CommonInput'
 import InputSearch from '../InputSearch'
 import { getLongStoryList } from '@store/sprint/sprint.thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { List } from 'antd'
-const LongStoryDropdown = () => {
+import {
+  addInfoAffairs,
+  deleteInfoAffairs,
+  updateInfoAffairs,
+} from '@/services/affairs'
+interface IProps {
+  detail: Model.Affairs.AffairsInfo
+}
+const LongStoryDropdown = (props: IProps) => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
+  const { detail } = props
+  console.log('detail-----', detail)
   const { longStoryList } = useSelector(state => state.sprint)
   const [list, setList] = useState<Model.Sprint.longStroyItem[]>([])
   const [params, setParams] = useState<API.Sprint.getLongStoryList.Params>({
@@ -23,7 +32,7 @@ const LongStoryDropdown = () => {
     orderkey: 'id',
     search: {
       all: 0,
-      project_id: 604,
+      project_id: 607,
       keyword: '',
     },
     page: 1,
@@ -43,6 +52,48 @@ const LongStoryDropdown = () => {
   const getList = async () => {
     dispatch(getLongStoryList(params))
   }
+  const onConfirm = async (data: Model.Sprint.longStroyItem) => {
+    console.log(data)
+    const params = {
+      projectId: detail.projectId,
+      sprintId: detail.id,
+      type: 'parent',
+      targetId: [data.id],
+      parentId: detail.parentId,
+    }
+    // hasLongStroy 为true可以添加长故事
+    const hasLongStroy =
+      detail.level_tree?.length === 0 ||
+      (detail.level_tree?.length &&
+        detail.level_tree.every(
+          (item: { work_type: any }) => item.work_type !== 3,
+        ))
+    if (!hasLongStroy) {
+      delete params.parentId
+    }
+    const methods = hasLongStroy ? addInfoAffairs : updateInfoAffairs
+    try {
+      await methods(params)
+    } catch (error) {
+      // error
+    }
+  }
+  const deleteInfoAffairsClick = async () => {
+    if (!detail.parentId) {
+      return
+    }
+    const params = {
+      projectId: detail.projectId,
+      sprintId: detail.id,
+      type: 'parent',
+      targetId: detail.parentId,
+    }
+    try {
+      await deleteInfoAffairs(params)
+    } catch (error) {
+      // error
+    }
+  }
   useEffect(() => {
     setLoading(true)
     getList()
@@ -52,7 +103,6 @@ const LongStoryDropdown = () => {
       return
     }
     setLoading(false)
-
     setList(longStoryList.list)
   }, [longStoryList])
   return (
@@ -85,12 +135,7 @@ const LongStoryDropdown = () => {
           }
           dataSource={list}
           renderItem={(item, index) => (
-            <ContentItem
-              key={index}
-              onClick={() => {
-                console.log(item)
-              }}
-            >
+            <ContentItem key={index} onClick={() => onConfirm(item)}>
               <img src={item.category_attachment} alt="" />
               <span>{item.story_prefix_key}</span>
               <span>{item.name}</span>
@@ -98,7 +143,9 @@ const LongStoryDropdown = () => {
           )}
         ></List>
       </ContentBox>
-      <CancelParentBox>取消父项链接</CancelParentBox>
+      <CancelParentBox onClick={deleteInfoAffairsClick}>
+        取消父项链接
+      </CancelParentBox>
       <FooterBox>
         可见{list.length}个，共{longStoryList.pager?.total}个
       </FooterBox>

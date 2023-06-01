@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import LongStoryDropdown from '../LongStoryDropdown'
 import CommonIconFont from '../CommonIconFont'
 import styled from '@emotion/styled'
+import IconFont from '../IconFont'
 const BreadBox = styled.div`
   display: flex;
   align-items: center;
@@ -18,21 +19,31 @@ const LabelBox = styled.div`
   color: var(--neutral-n3);
   font-size: var(--font12);
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `
 const AffairTypeBox = styled.div`
   color: var(--neutral-n1-d1);
   font-size: var(--font12);
 `
 const HasStroyWrap = styled.div`
-  display: flex;
+  display: inline-block;
+  width: 24px;
+  svg {
+    margin: 0px;
+  }
 `
+
 interface IProps {
   longStroy?: any
+  layer?: boolean
 }
 const LongStroyBread = (props: IProps) => {
   const [visible, setVisible] = useState(false)
   const [showEditIcon, setShowEditIcon] = useState(false)
-  const { longStroy } = props
+  const [hasLongStroy, setHasLongStroy] = useState(false)
+  const { longStroy = {}, layer = false } = props
+  console.log(longStroy)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
@@ -49,51 +60,76 @@ const LongStroyBread = (props: IProps) => {
       setVisible(false)
     }
   }
-
+  useEffect(() => {
+    // hasLongStroy 为true可以添加长故事
+    const hasLongStroy =
+      longStroy?.level_tree?.length === 0 ||
+      (longStroy?.level_tree?.length &&
+        longStroy.level_tree?.every(
+          (item: { work_type: number }) => item.work_type !== 3,
+        ))
+    setHasLongStroy(hasLongStroy)
+  }, [longStroy])
   return (
     <div style={{ position: 'relative' }} ref={ref}>
       <BreadBox>
-        {longStroy ? (
-          <LongStroyWrap>
-            {showEditIcon ? (
-              <CommonIconFont
-                type="edit"
-                color="var(--neutral-n3)"
-                onMouseLeave={() => {
-                  setShowEditIcon(false)
-                }}
-                onClick={() => setVisible(true)}
-              ></CommonIconFont>
-            ) : (
-              <img
-                src="https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png"
-                alt=""
-                onMouseEnter={() => {
-                  console.log('onMouseEnter')
-                  setShowEditIcon(true)
-                }}
-                onMouseLeave={() => {
-                  console.log('onMouseLeave')
-                  setShowEditIcon(false)
-                }}
-                style={{ width: 20, marginRight: '6px' }}
-              />
+        {longStroy?.work_type === 3 ? null : (
+          <div style={{ display: 'flex' }}>
+            {layer ? null : (
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                <CommonIconFont
+                  type="right"
+                  color="var(--neutral-n1-d1)"
+                ></CommonIconFont>
+              </span>
             )}
-            <LabelBox>{longStroy.sn}</LabelBox>
-          </LongStroyWrap>
-        ) : (
-          <LongStroyWrap
-            onClick={() => {
-              setVisible(true)
-            }}
-          >
-            <CommonIconFont
-              type="edit"
-              color="var(--neutral-n3)"
-            ></CommonIconFont>
-            <LabelBox>添加长故事</LabelBox>
-          </LongStroyWrap>
+
+            {hasLongStroy === false ? (
+              <LongStroyWrap>
+                {showEditIcon ? (
+                  <HasStroyWrap>
+                    <CommonIconFont
+                      type="edit"
+                      color="var(--neutral-n3)"
+                      onMouseLeave={() => {
+                        setShowEditIcon(false)
+                      }}
+                      onClick={() => setVisible(true)}
+                    ></CommonIconFont>
+                  </HasStroyWrap>
+                ) : (
+                  <HasStroyWrap>
+                    <img
+                      src={longStroy.category_attachment}
+                      alt=""
+                      onMouseEnter={() => {
+                        setShowEditIcon(true)
+                      }}
+                      onMouseLeave={() => {
+                        setShowEditIcon(false)
+                      }}
+                      style={{ width: 20, marginRight: '6px' }}
+                    />
+                  </HasStroyWrap>
+                )}
+                <LabelBox>{longStroy?.projectPrefix}</LabelBox>
+              </LongStroyWrap>
+            ) : (
+              <LongStroyWrap
+                onClick={() => {
+                  setVisible(true)
+                }}
+              >
+                <CommonIconFont
+                  type="edit"
+                  color="var(--neutral-n3)"
+                ></CommonIconFont>
+                <LabelBox>添加长故事</LabelBox>
+              </LongStroyWrap>
+            )}
+          </div>
         )}
+
         <CommonIconFont
           type="right"
           color="var(--neutral-n1-d1)"
@@ -103,9 +139,13 @@ const LongStroyBread = (props: IProps) => {
           alt=""
           style={{ width: 20, marginRight: '6px' }}
         />
-        <AffairTypeBox title="EWEWEWEWEWEWEW">DXKJ-0003</AffairTypeBox>
+        <AffairTypeBox>
+          {longStroy?.projectPrefix}-{longStroy?.prefixKey}
+        </AffairTypeBox>
       </BreadBox>
-      {visible ? <LongStoryDropdown></LongStoryDropdown> : null}
+      {visible ? (
+        <LongStoryDropdown detail={longStroy}></LongStoryDropdown>
+      ) : null}
     </div>
   )
 }

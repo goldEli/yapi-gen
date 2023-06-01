@@ -22,13 +22,13 @@ const WanderVerify = (props: Props) => {
   const [t] = useTranslation()
   return (
     <>
-      {props.configData.is_verify &&
+      {props.configData?.is_verify &&
         props.configData.verify.verify_type === 1 && (
           <div>
             <VerifyTitle>{t('newlyAdd.reviewProcess')}</VerifyTitle>
 
             <TimelineWrap>
-              {props.configData.verify.process.map((item2: any) => (
+              {props.configData?.verify.process.map((item2: any) => (
                 <Timeline.Item key={item2}>
                   <div>
                     <div style={{ display: 'flex' }}>
