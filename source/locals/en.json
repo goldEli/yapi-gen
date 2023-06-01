@@ -1650,6 +1650,9 @@
     "please_enter_a_column_name_with_a_limit_of_30_characters": "Please enter a column name with a limit of 30 characters",
     "greatest_amount": "Greatest amount",
     "delete_column": "Delete column",
-    "highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column": "Highlights when the number of cards in a column exceeds the maximum number for that column"
+    "highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column": "Highlights when the number of cards in a column exceeds the maximum number for that column",
+    "maximum": "Maximum",
+    "moon": "Moon",
+    "people": "People"
   }
 }

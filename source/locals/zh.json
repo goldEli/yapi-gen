@@ -1585,5 +1585,8 @@
   "please_enter_a_column_name_with_a_limit_of_30_characters": "请输入列名称限30字",
   "greatest_amount": "最大数量",
   "delete_column": "删除列",
-  "highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column": "当列中的卡片数量超过该列最大数会突出显示"
+  "highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column": "当列中的卡片数量超过该列最大数会突出显示",
+  "maximum": "最大",
+  "moon": "月",
+  "people": "人"
 }

@@ -3,6 +3,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from '@store/index'
 import ScheduleListModal from '../../ScheduleListModal'
+import { useTranslation } from 'react-i18next'
 interface HeaderRenderProps {
   onChange(date: dayjs.Dayjs): void
   month: number
@@ -17,6 +18,7 @@ const CalendarHeader = styled.div`
   font-family: SiYuanMedium;
 `
 const HeaderRender: React.FC<HeaderRenderProps> = props => {
+  const [t] = useTranslation()
   const calenderTypeValue = useSelector(
     state => state.calendarPanel.calenderTypeValue,
   )
@@ -32,7 +34,7 @@ const HeaderRender: React.FC<HeaderRenderProps> = props => {
   }, [calenderTypeValue])
   return (
     <CalendarHeader>
-      {`${props.month + 1}月`}
+      {`${props.month + 1}${t('moon')}`}
       {props.month === date ? <ScheduleListModal /> : null}
     </CalendarHeader>
   )
