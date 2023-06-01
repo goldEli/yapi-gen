@@ -1577,5 +1577,13 @@
   "full_screen": "全屏",
   "move_a_status_here_to_assign_it_to_this_column": "将某一状态移动至此处，以将其分配给此列",
   "enter_the_name_of_the_column": "输入列的名称",
-  "create": "创建"
+  "create": "创建",
+  "edit_workflow": "编辑工作流",
+  "unassigned_state": "未分配状态",
+  "drag_and_drop_a_status_here_to_hide_it_from_the_board": "将状态拖放到此处，以将其在看板中隐藏",
+  "edit_column": "编辑列",
+  "please_enter_a_column_name_with_a_limit_of_30_characters": "请输入列名称限30字",
+  "greatest_amount": "最大数量",
+  "delete_column": "删除列",
+  "highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column": "当列中的卡片数量超过该列最大数会突出显示"
 }
