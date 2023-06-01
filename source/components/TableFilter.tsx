@@ -20,7 +20,6 @@ import { setFilterKeys } from '@store/project'
 import { saveValue } from '@store/view'
 import MoreSelect from './MoreSelect'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
-import { log } from 'console'
 
 const MySpan = styled.div`
   cursor: pointer;

@@ -1,7 +1,15 @@
 /* eslint-disable no-lonely-if */
 // 批量操作弹窗 -- 编辑及删除
 import { useEffect, useState } from 'react'
-import { Checkbox, DatePicker, Form, message, Select, TreeSelect } from 'antd'
+import {
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Select,
+  TreeSelect,
+} from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import {
@@ -22,6 +30,11 @@ import {
   getAffairsBatchEditConfig,
   batchAffairsEdit,
 } from '@/services/affairs'
+import {
+  batchFlawDelete,
+  batchFlawEdit,
+  getFlawBatchEditConfig,
+} from '@/services/flaw'
 
 interface Props {
   // 弹窗状态
@@ -62,10 +75,10 @@ const BatchModal = (props: Props) => {
     },
     {
       type: 2,
-      config: getBatchEditConfig,
-      update: batchEdit,
-      del: batchDelete,
-      checkboxText: '同时删除对应子需求',
+      config: getFlawBatchEditConfig,
+      update: batchFlawEdit,
+      del: batchFlawDelete,
+      checkboxText: '',
       text: '勾选的缺陷将被删除，确认删除吗？',
     },
     {
@@ -208,16 +221,21 @@ const BatchModal = (props: Props) => {
       }
     } else {
       if (values.target) {
-        // 如果是时间组件的话，需要处理成字符串，还要加是否有时分秒判断
-        params.target =
-          ['expected_start_at', 'expected_end_at'].includes(chooseType) ||
-          chooseAfter.attr === 'date'
-            ? moment(values.target).format(
-                chooseAfter.selectList[0] === 'datetime'
-                  ? 'YYYY-MM-DD HH:mm:ss'
-                  : 'YYYY-MM-DD',
-              )
-            : values.target
+        if (['severity', 'discovery_version'].includes(chooseType)) {
+          console.log(values.target)
+          params.target = values.target
+        } else {
+          // 如果是时间组件的话，需要处理成字符串，还要加是否有时分秒判断
+          params.target =
+            ['expected_start_at', 'expected_end_at'].includes(chooseType) ||
+            chooseAfter.attr === 'date'
+              ? moment(values.target).format(
+                  chooseAfter.selectList[0] === 'datetime'
+                    ? 'YYYY-MM-DD HH:mm:ss'
+                    : 'YYYY-MM-DD',
+                )
+              : values.target
+        }
       } else {
         // 如果没选target，处理target参数类型
         let targetValue: any
@@ -281,9 +299,11 @@ const BatchModal = (props: Props) => {
           onConfirm={onConfirmDelete}
         >
           <div style={{ marginBottom: 12 }}>{currentType?.text}</div>
-          <Checkbox onChange={e => setHaveChildren(e.target.checked)}>
-            {currentType?.checkboxText}
-          </Checkbox>
+          {currentType.checkboxText && (
+            <Checkbox onChange={e => setHaveChildren(e.target.checked)}>
+              {currentType?.checkboxText}
+            </Checkbox>
+          )}
         </DeleteConfirm>
       )}
       {props.type === 'edit' && (
@@ -314,6 +334,7 @@ const BatchModal = (props: Props) => {
                 onChange={onChangeType}
               />
             </Form.Item>
+            {/* 时间相关字段 */}
             {String(chooseType).includes('expected_') && (
               <Form.Item label={t('version2.updateAfter')} name="target">
                 <DatePicker
@@ -323,21 +344,30 @@ const BatchModal = (props: Props) => {
                 />
               </Form.Item>
             )}
-            {chooseType === 'class_id' &&
-              !String(chooseType).includes('custom_') && (
-                <Form.Item label={t('version2.updateAfter')} name="target">
-                  <TreeSelect
-                    showArrow
-                    showSearch
-                    getPopupContainer={node => node}
-                    allowClear
-                    treeData={chooseAfter.selectList}
-                    placeholder={t('common.pleaseSelect')}
-                  />
-                </Form.Item>
-              )}
+            {/* 解决办法 */}
+            {String(chooseType).includes('solution') && (
+              <Form.Item label={t('version2.updateAfter')} name="target">
+                <Input placeholder={t('common.pleaseEnter')} allowClear />
+              </Form.Item>
+            )}
+            {/* 分类 */}
+            {chooseType === 'class_id' && (
+              <Form.Item label={t('version2.updateAfter')} name="target">
+                <TreeSelect
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  treeData={chooseAfter.selectList}
+                  placeholder={t('common.pleaseSelect')}
+                />
+              </Form.Item>
+            )}
+            {/* 不是时间字段、分类及解决办法并且不是自定义字段 */}
             {!String(chooseType).includes('expected_') &&
               chooseType !== 'class_id' &&
+              chooseType !== 'solution' &&
+              chooseType !== 'category_id' &&
               !String(chooseType).includes('custom_') && (
                 <Form.Item
                   label={t('version2.updateAfter')}
@@ -362,8 +392,8 @@ const BatchModal = (props: Props) => {
                         'priority',
                         'iterate_id',
                         'parent_id',
-                        'class_id',
-                        'category_id',
+                        'severity',
+                        'discovery_version',
                       ].includes(chooseType)
                         ? ('' as any)
                         : 'multiple'
@@ -371,6 +401,7 @@ const BatchModal = (props: Props) => {
                   />
                 </Form.Item>
               )}
+            {/* 自定义字段但不是确认勾选 */}
             {chooseType &&
               String(chooseType).includes('custom_') &&
               chooseAfter.attr !== 'single_checkbox' && (
@@ -395,6 +426,7 @@ const BatchModal = (props: Props) => {
                   )}
                 </Form.Item>
               )}
+            {/* 自定义字段是确认勾选 */}
             {chooseType &&
               String(chooseType).includes('custom_') &&
               chooseAfter.attr === 'single_checkbox' && (
@@ -412,6 +444,7 @@ const BatchModal = (props: Props) => {
                   </CustomSelect>
                 </Form.Item>
               )}
+            {/* 类别 */}
             {chooseType === 'category_id' && (
               <Form.Item
                 label={t('version2.updateAfterStatus')}

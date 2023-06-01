@@ -632,7 +632,7 @@ const SprintDetailDrawer = () => {
                 ))}
               </ParentBox> */}
               <LongStroyBread longStroy={drawerInfo}></LongStroyBread>
-              <DemandName>
+              <DemandName style={{ marginTop: 16 }}>
                 <span
                   className="name"
                   ref={spanDom}

@@ -8,8 +8,6 @@ import UploadAttach from '@/components/UploadAttach'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
-import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
 import {
   addInfoAffairs,
   deleteInfoAffairs,
@@ -25,9 +23,6 @@ interface AffairsDetailProps {
 
 const AffairsDetail = (props: AffairsDetailProps) => {
   const [t] = useTranslation()
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const { id, sprintId } = paramsData
   const LeftDom = useRef<HTMLDivElement>(null)
   const editorRef = useRef<EditorRef>(null)
   //   当前删除的附件数据
@@ -52,8 +47,8 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       ctime: data.data.files.time,
     }
     await addInfoAffairs({
-      projectId: id,
-      sprintId,
+      projectId: projectInfo.id,
+      sprintId: props.affairsInfo.id,
       type: 'attachment',
       targetId: [obj],
     })
@@ -63,8 +58,8 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   //   确认删除附件事件
   const onDeleteConfirm = async (targetId: number) => {
     await deleteInfoAffairs({
-      projectId: id,
-      sprintId,
+      projectId: projectInfo.id,
+      sprintId: props.affairsInfo.id,
       type: 'attachment',
       targetId,
     })
@@ -91,7 +86,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
     if (editInfo === props.affairsInfo.info) return
     const params = {
       info: editInfo,
-      projectId: id,
+      projectId: projectInfo.id,
       id: props.affairsInfo.id,
       name: props.affairsInfo.name,
     }

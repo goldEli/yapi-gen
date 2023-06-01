@@ -52,6 +52,9 @@ const initialState: GlobalState = {
       attr: 'treeSelect',
     },
     { content: 'priority', attr: 'priority' },
+    { content: 'discovery_version', attr: 'fixed_radio' },
+    { content: 'severity', attr: 'severity' },
+    { content: 'solution', attr: 'text' },
     { content: 'create_at', attr: 'date' },
     { content: 'finish_at', attr: 'date' },
     {
