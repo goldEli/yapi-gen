@@ -23,6 +23,7 @@ interface View {
   onCreateView: (value: string, type: string, key?: string) => void
   onDelView: (key: string) => void
   onSetDefaulut: (id: number) => void
+  onChange: (id: number) => void
 }
 const View = (props: View) => {
   const dispatch = useDispatch()
@@ -80,6 +81,7 @@ const View = (props: View) => {
     ])
     props.viewDataList &&
       setValue(props.viewDataList.find(el => el.is_default === 1))
+    props.viewDataList && props.onChange(optionsDefault?.id || 0)
   }, [options])
   const getLabel = (el: { name: string; id: number }) => {
     return (
@@ -128,7 +130,6 @@ const View = (props: View) => {
     }))
   }
   const onOpenChange: MenuProps['onClick'] = (e: { key: string }) => {
-    console.log(e.key, 'ooo')
     setKey(e.key)
     if (e.key === 'first') {
       return
@@ -152,6 +153,7 @@ const View = (props: View) => {
         id: 0,
         config: {},
       }
+      props.onChange(item.id)
       setValue({
         ...item,
         name: item.type === 2 ? '视图' + '' + item.name : item.name,
@@ -197,7 +199,9 @@ const View = (props: View) => {
         name={dialogItem.name}
         titleType={dialogTitle}
         onConfirm={(value, type) => {
-          setDialogItem({ name: '' }), props.onCreateView(value, type, key)
+          setDialogItem({ name: '' }),
+            props.onCreateView(value, type, key),
+            setIsVisible(false)
         }}
         onClose={() => setIsVisible(false)}
         isVisible={isVisible}

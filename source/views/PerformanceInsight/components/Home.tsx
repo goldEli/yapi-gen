@@ -41,7 +41,6 @@ import {
   viewsList,
   viewsUpdate,
 } from '@/services/efficiency'
-import { StringNullableChain } from 'lodash'
 
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const navigate = useNavigate()
@@ -137,6 +136,7 @@ const Home = () => {
   const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
     useState<API.Sprint.GetStatisticsTotal.Result>()
+  const [optionVal, setOptionVal] = useState<number>(0)
   useEffect(() => {
     // 缺陷现状和工作项现状
     getWorkList()
@@ -188,6 +188,10 @@ const Home = () => {
   const onSetDefaulut = async (id: number) => {
     console.log(id, '99')
     const res = await defaultView(id)
+  }
+  const onGetOptionValue = (id: number) => {
+    console.log(id, 'oo')
+    setOptionVal(id)
   }
   // 缺陷现状和工作项现状
   const getWorkList = async () => {
@@ -316,6 +320,7 @@ const Home = () => {
         headerParmas={headerParmas}
         onCreateView={onCreateView}
         onDelView={onDelView}
+        onChange={onGetOptionValue}
         onSetDefaulut={onSetDefaulut}
       />
       <WorkingStatus
@@ -431,31 +436,13 @@ const Home = () => {
           <TextColor>单击“保存”按钮可以将更改保存在如下视图</TextColor>
           <div style={{ margin: '8px 0 0 32px' }}>
             <SelectMain
-              onChange={e => console.log(e)}
+              onChange={e => setOptionVal(e)}
               placeholder="请选择"
-              value={1}
-              list={[
-                {
-                  name: '近7天',
-                  key: 7,
-                },
-                {
-                  name: '近15天',
-                  key: 15,
-                },
-                {
-                  name: '近1月',
-                  key: 1,
-                },
-                {
-                  name: '近3个月',
-                  key: 3,
-                },
-                {
-                  name: '自定义',
-                  key: 0,
-                },
-              ]}
+              value={optionVal}
+              list={viewDataList?.map(el => ({
+                name: el.name,
+                key: Number(el.key),
+              }))}
             />
           </div>
           <Footer>
@@ -465,6 +452,7 @@ const Home = () => {
                   color: 'var(--auxiliary-text-t2-d1)',
                   cursor: 'pointer',
                 }}
+                onClick={() => dispatch(setSave(false))}
               >
                 不保存
               </span>

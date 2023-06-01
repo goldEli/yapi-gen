@@ -31,6 +31,7 @@ interface Props {
   onCreateView: (value: string, type: string, key?: string) => void
   onDelView: (key: string) => void
   onSetDefaulut: (id: number) => void
+  onChange: (id: number) => void
 }
 const Iteration = (props: Props) => {
   // sprint  iteration all
@@ -150,6 +151,7 @@ const Iteration = (props: Props) => {
     <HeaderRow>
       <Space size={16}>
         <View
+          onChange={props.onChange}
           viewDataList={props.viewDataList}
           onCreateView={props.onCreateView}
           onDelView={props.onDelView}
