@@ -79,7 +79,7 @@ const StyledWrap = styled.div`
   display: flex;
   gap: 17px;
 `
-const FullScreenDiv = styled.div<{ isScreen: boolean }>`
+export const FullScreenDiv = styled.div<{ isScreen: boolean }>`
   ${props =>
     props.isScreen
       ? `
