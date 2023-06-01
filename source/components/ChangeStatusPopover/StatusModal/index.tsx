@@ -370,11 +370,11 @@ const StatusModal = (props: StatusModalProps) => {
           </CommonButton>
           <CommonButton
             type="primary"
-            isDisable={!configData.user_has_auth}
+            isDisable={!configData?.user_has_auth}
             onClick={onConfirm}
             style={{ marginLeft: '16px' }}
           >
-            {configData.is_verify
+            {configData?.is_verify
               ? t('newlyAdd.submitReview')
               : t('common.circulation')}
           </CommonButton>
@@ -609,7 +609,7 @@ const StatusModal = (props: StatusModalProps) => {
                 )}
               </div>
             ))}
-            {configData.is_verify && configData.verify.verify_type === 2 ? (
+            {configData?.is_verify && configData?.verify.verify_type === 2 ? (
               <Form.Item
                 labelAlign="left"
                 label={t('newlyAdd.reviewPerson')}
