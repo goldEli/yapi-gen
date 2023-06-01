@@ -631,7 +631,7 @@ const SprintDetailDrawer = () => {
                   </DrawerHeader>
                 ))}
               </ParentBox> */}
-              <LongStroyBread longStroy={drawerInfo}></LongStroyBread>
+              <LongStroyBread longStroy={drawerInfo} layer></LongStroyBread>
               <DemandName>
                 <span
                   className="name"
