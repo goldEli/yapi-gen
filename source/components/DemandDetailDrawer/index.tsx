@@ -390,6 +390,7 @@ const DemandDetailDrawer = () => {
                 projectId={drawerInfo.projectId}
                 record={drawerInfo}
                 onChangeStatus={onChangeStatus}
+                type={1}
               >
                 <StateTag
                   name={drawerInfo?.status?.status?.content}

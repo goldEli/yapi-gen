@@ -252,13 +252,12 @@ declare namespace API.Sprint {
       orderkey: string
       search: {
         all: number
-        sprint_status: number
         project_id: number
+        keyword: string
       }
-      is_long_story: number
+      page: number
+      pagesize: number
     }
-    type Result = {
-      list: Model.Sprint.LongStory[]
-    }
+    type Result = Model.Sprint.LongStory
   }
 }

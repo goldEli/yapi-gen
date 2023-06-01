@@ -539,6 +539,7 @@ const SprintDetailDrawer = () => {
                 projectId={drawerInfo.projectId}
                 record={drawerInfo}
                 onChangeStatus={onChangeStatus}
+                type={2}
               >
                 <StateTag
                   name={drawerInfo?.status?.status?.content}

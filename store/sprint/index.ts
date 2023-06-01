@@ -20,7 +20,7 @@ type SliceState = {
   }
   leftLoading: boolean
   checkList: boolean[]
-  longStoryList: Model.Sprint.LongStory[]
+  longStoryList: Model.Sprint.LongStory
   sprintRefresh: number
 }
 
@@ -36,7 +36,9 @@ const initialState: SliceState = {
   },
   leftLoading: false,
   checkList: [],
-  longStoryList: [],
+  longStoryList: {
+    list: [],
+  },
   sprintRefresh: 0,
 }
 
@@ -98,6 +100,7 @@ const slice = createSlice({
       state.leftLoading = false
     })
     builder.addCase(getLongStoryList.fulfilled, (state, action) => {
+      console.log('action.payload', action.payload)
       state.longStoryList = action.payload
     })
   },

@@ -1,10 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 // 需求列表快捷编辑组件
-
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable camelcase */
 import { useEffect, useRef, useState } from 'react'
 import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
@@ -31,6 +26,8 @@ import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import { getMessage } from './Message'
 import { updateAffairsTableParams } from '@/services/affairs'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
+import { updateFlawTableParams } from '@/services/flaw'
+import { getFlawInfo } from '@store/flaw/flaw.thunk'
 
 const LimitText = styled.div`
   width: 192px;
@@ -203,7 +200,10 @@ const TableQuickEdit = (props: Props) => {
       attr: props?.type,
       value: [],
     }
-    if (props.keyText === 'iterate_id') {
+    if (
+      props.keyText === 'iterate_id' ||
+      props.keyText === 'discovery_version'
+    ) {
       // 获取迭代下拉数据
       const response = await getIterateList({ projectId })
       resultValue.value = response?.list
@@ -259,7 +259,10 @@ const TableQuickEdit = (props: Props) => {
       attr: props?.type,
       value: [],
     }
-    if (props.keyText === 'iterate_id') {
+    if (
+      props.keyText === 'iterate_id' ||
+      props.keyText === 'discovery_version'
+    ) {
       // 获取迭代下拉数据
       const response = projectInfoValues
         ?.filter((i: any) => i.key === 'iterate_name')[0]
@@ -430,14 +433,26 @@ const TableQuickEdit = (props: Props) => {
     }
 
     if (projectInfo.projectType === 1) {
-      await updateTableParams(obj)
-      if (props.isInfoPage) {
-        const result = await getDemandInfo({ projectId, id: props.item?.id })
-        dispatch(setDemandInfo(result))
+      // 缺陷
+      if (props.item.is_bug === 1) {
+        await updateFlawTableParams(obj)
+        if (props.isInfoPage) {
+          dispatch(getFlawInfo({ projectId, id: props.item?.id }))
+        } else {
+          props.onUpdate?.()
+        }
       } else {
-        props.onUpdate?.()
+        // 事务
+        await updateTableParams(obj)
+        if (props.isInfoPage) {
+          const result = await getDemandInfo({ projectId, id: props.item?.id })
+          dispatch(setDemandInfo(result))
+        } else {
+          props.onUpdate?.()
+        }
       }
     } else {
+      // 需求
       await updateAffairsTableParams(obj)
       if (props.isInfoPage) {
         dispatch(getAffairsInfo({ projectId, sprintId: props.item?.id }))

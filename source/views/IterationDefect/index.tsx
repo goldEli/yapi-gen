@@ -1,17 +1,5 @@
 /* eslint-disable no-undefined */
 import React, { useEffect, useRef, useState } from 'react'
-import CommonModal from '@/components/CommonModal'
-import CommonImport from '@/components/CommonImport'
-import {
-  getImportDownloadModel,
-  getImportExcel,
-  getImportExcelUpdate,
-  getExportFields,
-  getLoadListFields,
-  getExportExcel,
-} from '@/services/demand'
-import CommonExport from '@/components/CommonExport'
-import { useTranslation } from 'react-i18next'
 import PermissionWrap from '@/components/PermissionWrap'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
@@ -34,6 +22,7 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { saveTitles } from '@store/view'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { getFlawList } from '@/services/flaw'
 
 export const TreeContext: any = React.createContext('')
 
@@ -128,18 +117,64 @@ const Index = (props: any) => {
     }
   }
 
+  const getList = async (
+    searchParamsObj: any,
+    item?: any,
+    orderItem?: any,
+    updateState?: boolean,
+  ) => {
+    if (!updateState) {
+      setIsSpinning(true)
+    }
+    let params = {
+      projectId,
+      page: item.page,
+      pageSize: item.size,
+      order: orderItem.value,
+      orderKey: orderItem.key,
+      searchValue: searchParamsObj.searchValue,
+      statusIds: searchParamsObj.statusId,
+      iterateIds: searchParamsObj.iterateId,
+      priorityIds: searchParamsObj.priorityId,
+      userId: searchParamsObj.userId,
+      tagIds: searchParamsObj.tagId,
+      startTime: searchParamsObj.createdAtId,
+      expectedStart: searchParamsObj.expectedStartAtId,
+      expectedEnd: searchParamsObj.expectedendat,
+      updatedTime: searchParamsObj.updatedat,
+      endTime: searchParamsObj.finishAt,
+      usersNameId: searchParamsObj.usersnameId,
+      copySendId: searchParamsObj.usersCopysendNameId,
+      class_ids: searchParamsObj.class_ids,
+      category_id: searchParamsObj.category_id,
+      schedule_start: searchParamsObj.schedule_start,
+      schedule_end: searchParamsObj.schedule_end,
+      custom_field: searchParamsObj?.custom_field,
+      class_id: keyRef.current,
+      // system_view: searchChoose ? searchChoose['system_view'] : undefined,
+    }
+    // dispatch(setFilterParams(params))
+    const result = await getFlawList(params)
+    setDataList(result)
+    setIsSpinning(false)
+    // props.onIsUpdate?.()
+    // dispatch(setIsRefresh(false))
+    // setIsUpdated(false)
+    // dispatch(setIsUpdateDemand(false))
+  }
+
   // 更新缺陷列表，state： 是否有加载动画，topId: 用于树形结构展开，isClass： 是否编辑的是需求分类
   const onUpdate = (state?: boolean, topId?: any, isClass?: any) => {
-    // getList(isGrid, searchItems, pageObj, order, state, topId)
-    // // 是编辑需求分类的话，就更新左侧需求分类列表
-    // if (isClass) {
-    //   myTreeComponent?.current?.init()
-    // }
+    getList(searchItems, pageObj, order, state)
+    // 是编辑需求分类的话，就更新左侧需求分类列表
+    if (isClass) {
+      myTreeComponent?.current?.init()
+    }
   }
 
   // 刷新列表
   const refresh = () => {
-    // getList(isGrid, searchItems, pageObj, order, false, topParentId)
+    getList(searchItems, pageObj, order, false)
   }
 
   // 筛选条件
@@ -158,7 +193,7 @@ const Index = (props: any) => {
   }
 
   const onChangeRow = (topId?: any) => {
-    // getList(isGrid, searchItems, pageObj, order, false, topId)
+    getList(searchItems, pageObj, order, false)
   }
 
   // 修改排序
@@ -188,6 +223,10 @@ const Index = (props: any) => {
       getShowkey()
     }
   }, [projectInfo])
+
+  useEffect(() => {
+    getList(searchItems, pageObj, order)
+  }, [key, order, pageObj, projectId])
 
   useEffect(() => {
     // 进入主页清除已存储的筛选计数
