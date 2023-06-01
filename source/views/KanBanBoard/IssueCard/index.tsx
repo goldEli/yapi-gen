@@ -13,6 +13,7 @@ import {
   IssueCardBoxContainer,
   Middle,
   PercentageBox,
+  StoryText,
   Sub,
   Top,
   TopLeft,
@@ -22,6 +23,10 @@ import {
   WrapIcon,
 } from './styled'
 import ThreeDot from '../ThreeDot'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { getParamsValueByKey } from '@/tools'
+import { useSelector } from '@store/index'
+import useStoryIds from '../hooks/useStoryIds'
 
 interface IssueCardProps {
   item: Model.KanBan.Story
@@ -35,6 +40,9 @@ const IssueCard = (props: IssueCardProps) => {
   const { item, index } = props
   const isDragDisabled = props.item.verify_lock === 1
 
+  const [openDemandDetail] = useOpenDemandDetail()
+  const { ids } = useStoryIds()
+
   const cardContent = (
     <IssueCardBoxContainer hidden={props.hidden}>
       <Top>
@@ -46,7 +54,20 @@ const IssueCard = (props: IssueCardProps) => {
           <ThreeDot story={item} />
         </TopRight>
       </Top>
-      <Middle>{item.name}</Middle>
+      <Middle>
+        <StoryText
+          onClick={e => {
+            e.stopPropagation()
+            openDemandDetail(
+              { ...props.item, demandIds: ids },
+              getParamsValueByKey('id'),
+              props.item.id,
+            )
+          }}
+        >
+          {item.name}
+        </StoryText>
+      </Middle>
       <Bottom>
         <BottomLeft>
           <MultipleAvatar max={3} list={item.handlers} />
