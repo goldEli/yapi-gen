@@ -377,7 +377,7 @@ const CreateNoteModal = (props: any) => {
           </Form.Item>
 
           <Form.Item
-            initialValue={2}
+            initialValue={1}
             name="notice_style"
             label={<LabelTitle>{t('reminder_method')}</LabelTitle>}
             rules={[{ required: true, message: 'Please input your username!' }]}
@@ -451,7 +451,6 @@ const CreateNoteModal = (props: any) => {
                 rules={[
                   {
                     required: true,
-                    // message: t('select_schedule_send_time'),
                     validator: onValidator2,
                   },
                 ]}
