@@ -42,6 +42,7 @@ const DeleteConfirmGlobalModal: React.FC<
       }}
       onChangeVisible={() => {
         setVisible(false)
+        modalProps?.onCancel?.()
       }}
     />
   )

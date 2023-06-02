@@ -1677,6 +1677,11 @@
     "personnel_grouping": "Personnel grouping",
     "group_Name": "Group Name",
     "please_enter_a_name": "Please enter a name",
-    "search_keywords_or_numbers": "Search {{keyword}} or numbers"
+    "search_keywords_or_numbers": "Search {{keyword}} or numbers",
+    "none": "None",
+    "by_personnel": "By personnel",
+    "by_category": "By category",
+    "by_priority": "By priority",
+    "do_you_want_to_save_changes": "Do you want to save changes?"
   }
 }

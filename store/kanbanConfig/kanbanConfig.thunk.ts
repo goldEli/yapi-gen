@@ -29,7 +29,7 @@ export const handleSaveReminder = () => async (dispatch: AppDispatch) => {
   const { columnList, columnListBackup } = store.getState().KanbanConfig
   if (JSON.stringify(columnList) !== JSON.stringify(columnListBackup)) {
     openConfirmModal({
-      text: '是否保存修改？',
+      text: i18next.t('do_you_want_to_save_changes'),
       title: i18next.t('confirm'),
       onConfirm: async () => {
         const res = await dispatch(saveKanbanConfig())
@@ -46,7 +46,7 @@ export const onChangeViewList =
     const { columnList, columnListBackup } = store.getState().KanbanConfig
     if (JSON.stringify(columnList) !== JSON.stringify(columnListBackup)) {
       openConfirmModal({
-        text: '是否保存修改？',
+        text: i18next.t('do_you_want_to_save_changes'),
         title: i18next.t('confirm'),
         onConfirm: async () => {
           const res = await dispatch(saveKanbanConfig())
@@ -101,7 +101,7 @@ export const updateKanbanConfig =
       columns: columnList,
     }
     const res = await services.kanbanConfig.updateKanbanConfig(params)
-    getMessage({ type: 'success', msg: '保存成功！' })
+    getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
     dispatch(
       getKanbanConfigList({
         project_id: params.project_id,
@@ -121,7 +121,7 @@ export const saveKanbanConfig = () => async (dispatch: AppDispatch) => {
     columns: columnList,
   }
   const res = await services.kanbanConfig.updateKanbanConfig(params)
-  getMessage({ type: 'success', msg: '保存成功！' })
+  getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
 }
 
 // 删除看板配置
@@ -129,7 +129,7 @@ export const deleteKanbanConfig =
   (params: API.KanbanConfig.DeleteKanbanConfig.Params) =>
   async (dispatch: AppDispatch) => {
     const res = await services.kanbanConfig.deleteKanbanConfig(params)
-    getMessage({ type: 'success', msg: '删除成功！' })
+    getMessage({ type: 'success', msg: i18next.t('common.deleteSuccess') })
     dispatch(
       getKanbanConfigList({
         project_id: params.project_id,
@@ -233,7 +233,7 @@ export const onSaveAsViewModel =
       })
       createId = res.data.id
     }
-    getMessage({ msg: '保存成功!', type: 'success' })
+    getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
     await dispatch(
       getKanbanConfigList({
@@ -259,7 +259,7 @@ export const setDefaultKanbanConfig =
       project_id: project_id,
       is_default: 1,
     })
-    getMessage({ msg: '保存成功!', type: 'success' })
+    getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
     dispatch(
       getKanbanConfigList({
         project_id: project_id,

@@ -185,12 +185,14 @@ declare namespace API.Affairs {
     type Params = {
       projectId: number
       sprintId?: number
-      targetId:
+      parentId?: number | undefined | null
+      targetId?:
         | Model.Affairs.AttachTarget[]
         | { name: string; color: string }[]
         | number
         | number[]
       type: string
+      name?: string
     }
   }
 

@@ -135,7 +135,7 @@ const Home = () => {
     Array<Models.Efficiency.ViewItem>
   >([])
   // 'iteration''sprint' 'all'
-  const [homeType, setHomeType] = useState('iteration')
+  const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
     useState<API.Sprint.GetStatisticsTotal.Result>()
   const [optionVal, setOptionVal] = useState<number>(0)
@@ -232,7 +232,6 @@ const Home = () => {
   const onSetDefaulut = async (id: number) => {
     const res = await defaultView(id)
   }
-  console.log(headerParmas, '我是最后的灿灿')
   // 获取下拉框的值视图的
   const onGetOptionValue = (title: string, value: number) => {
     setOptionVal(value)

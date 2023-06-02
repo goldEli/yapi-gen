@@ -219,7 +219,6 @@ export const modifyPriority =
         }),
       )
     }
-    console.log(data, 123)
     dispatch(
       sortStoryServer({
         kanban_column_id: options.sourceColumnId,
@@ -620,6 +619,7 @@ export const closeShareModel = () => async (dispatch: AppDispatch) => {
 export const onShareModel = () => async (dispatch: AppDispatch) => {
   // TODO
 
-  getMessage({ msg: '保存成功!', type: 'success' })
+  getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
+
   dispatch(closeSaveAsViewModel())
 }
