@@ -20,6 +20,7 @@ import { Tooltip } from 'antd'
 import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import FlawComment from './FlawComment'
+import FlawStatus from './FlawStatus'
 
 const FlawInfo = () => {
   const [t] = useTranslation()
@@ -57,6 +58,7 @@ const FlawInfo = () => {
         <FlawDetail flawInfo={flawInfo} onUpdate={onUpdate} />
         <FlawInfoInfoItem>
           <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
+          <FlawStatus pid={id} sid={flawId} />
         </FlawInfoInfoItem>
       </FlawInfoLeft>
       <WrapRight>
