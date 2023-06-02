@@ -28,6 +28,7 @@ import AddQuickSprint from '@/components/AddQuickSprint'
 import NoteModal from '@/components/NoteModal'
 import SprintDetailDrawer from '@/components/SprintDetailDrawer'
 import FlawDetailDrawer from '@/components/FlawDetailDrawer'
+import DeleteConfirmGlobalModal from '@/components/DeleteConfirmGlobal'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -152,7 +153,7 @@ export const Container = () => {
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         <GlobalStyle />
-
+        <DeleteConfirmGlobalModal />
         <LayoutWrap id="layoutWrap">
           <HeaderWrap>
             <HeaderLeft />

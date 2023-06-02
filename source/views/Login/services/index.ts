@@ -47,7 +47,7 @@ export const checkToken = async () => {
       Language: languages[localStorage.languageMode] || 'en',
     },
   })
-  console.log(response)
+
   if (!isDevelopment) {
     const text = await response.text()
     return JSON.parse(decrypt(text))

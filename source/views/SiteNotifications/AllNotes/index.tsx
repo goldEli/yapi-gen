@@ -69,22 +69,17 @@ const Index = () => {
     lastId.current += 1
 
     if (type === 1 && lastId.current === maxPage + 1) {
-      console.log(11)
-
       setList(re4.list)
       setHasMore(false)
     } else if (type === 1) {
-      console.log(12)
       setList(re4.list)
       if (re4.list.length < 1) {
         setHasMore(false)
       }
     } else if (type === 2 && lastId.current === maxPage + 1) {
-      console.log(13)
       setList(e => e.concat(re4.list))
       setHasMore(false)
     } else if (type === 2) {
-      console.log(14)
       setList(e => e.concat(re4.list))
     }
   }

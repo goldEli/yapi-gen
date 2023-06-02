@@ -104,3 +104,28 @@ export const getDate = (type: string) => {
   }
   return date
 }
+export const getDateStr = (type: number) => {
+  console.log()
+  let date = ''
+  switch (type) {
+    case 1:
+      date = 'one_month'
+      break
+    case 3:
+      date = 'three_month'
+      break
+    case 6:
+      date = 'six_month'
+      break
+    case 14:
+      date = 'two_week'
+      break
+    case 28:
+      date = 'four_week'
+      break
+    default:
+      date = ''
+      break
+  }
+  return date
+}

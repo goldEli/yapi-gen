@@ -379,6 +379,12 @@ export const TextNum = styled.div`
     font-size: 14px;
   }
 `
+export const TextTable = styled.div`
+  width: 60px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
 export const HightChartsWrap = styled.div<{ height: number }>(
   {
     width: '100%',

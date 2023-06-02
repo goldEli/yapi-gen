@@ -17,7 +17,6 @@ import {
   LotIcon,
 } from '../Header/Style'
 import { DialogMain, DialogHeader, TextColor, Footer } from './style'
-
 import { useEffect, useState } from 'react'
 import SelectMain from '../Header/components/SelectMain'
 import CommonButton from '@/components/CommonButton'
@@ -41,8 +40,7 @@ import {
   viewsList,
   viewsUpdate,
 } from '@/services/efficiency'
-import { getDate } from './Date'
-
+import { getDate, getDateStr } from './Date'
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const { headerParmas, projectDataList } = useSelector(
     store => store.performanceInsight,
@@ -133,10 +131,11 @@ const Home = () => {
   const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
-  const [viewDataList, setViewDataList] =
-    useState<Array<Models.Efficiency.ViewItem>>()
+  const [viewDataList, setViewDataList] = useState<
+    Array<Models.Efficiency.ViewItem>
+  >([])
   // 'iteration''sprint' 'all'
-  const [homeType, setHomeType] = useState('all')
+  const [homeType, setHomeType] = useState('iteration')
   const [workDataList, setWorkDataList] =
     useState<API.Sprint.GetStatisticsTotal.Result>()
   const [optionVal, setOptionVal] = useState<number>(0)
@@ -162,7 +161,7 @@ const Home = () => {
     let filterVal: Models.Efficiency.ViewItem | undefined = res.find(
       el => el.is_default === 1,
     )
-    console.log(filterVal, 'res.find(el => el.is_default === 1)?.config')
+    setOptionVal(filterVal?.id || 0)
     setDefalutConfig(filterVal?.config)
     dispatch(
       setHeaderParmas({
@@ -172,6 +171,7 @@ const Home = () => {
           title: filterVal?.name,
           value: filterVal?.id,
         },
+        iterate_ids: filterVal?.config.iterate_ids,
         time: {
           type:
             filterVal?.config.period_time === ''
@@ -187,28 +187,40 @@ const Home = () => {
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
-    console.log(val, 'xina', type, key)
     const res =
       type === 'add'
         ? await createViewList({
             use_type: 3,
             name: val,
             config: {
-              project_id: [92, 27, 41],
-              user_ids: [37, 22, 10, 100],
-              start_time: '1992-02-27 08:42:02',
-              end_time: '1974-06-21 00:22:31',
-              period_time: 'four_week',
+              iterate_ids: headerParmas.iterate_ids,
+              project_id: headerParmas.projectIds,
+              user_ids: headerParmas.users,
+              period_time: getDateStr(headerParmas.time.type),
+              start_time:
+                headerParmas.time.type == 0 ? headerParmas.time.time[0] : '',
+              end_time:
+                headerParmas.time.type == 0 ? headerParmas.time.time[1] : '',
             },
             project_id: 18,
           })
-        : await viewsUpdate({ id: Number(key), project_id: 1, name: val })
+        : await viewsUpdate({
+            id: Number(key),
+            project_id: 1,
+            name: val,
+            config: {
+              iterate_ids: headerParmas.iterate_ids,
+              project_id: headerParmas.projectIds,
+              user_ids: headerParmas.users,
+              period_time: getDateStr(headerParmas.time.type),
+              start_time:
+                headerParmas.time.type == 0 ? headerParmas.time.time[0] : '',
+              end_time:
+                headerParmas.time.type == 0 ? headerParmas.time.time[1] : '',
+            },
+          })
     // // 刷新视图的接口
     // getViewList({ project_id: '1', use_type: 3 })
-  }
-  const onEdit = async () => {
-    console.log(headerParmas, 'edit')
-    // await viewsUpdate({ id: Number(key), project_id: 1, name: val })
   }
   // 删除视图
   const onDelView = async (key: string) => {
@@ -220,15 +232,20 @@ const Home = () => {
   const onSetDefaulut = async (id: number) => {
     const res = await defaultView(id)
   }
+  console.log(headerParmas, '我是最后的灿灿')
   // 获取下拉框的值视图的
   const onGetOptionValue = (title: string, value: number) => {
-    console.log()
     setOptionVal(value)
+    let filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
+      el => el.id === value,
+    )
+    setDefalutConfig(filterVal?.config)
     dispatch(
       setHeaderParmas({
         users: headerParmas.users,
         projectIds: headerParmas.projectIds,
         time: headerParmas.time,
+        iterate_ids: headerParmas.iterate_ids,
         view: {
           title,
           value,
@@ -349,6 +366,25 @@ const Home = () => {
       ],
     })
   }
+  // 编辑视图走缓存的参数
+  const editViews = async () => {
+    console.log(headerParmas, '我是最后的灿灿')
+    await viewsUpdate({
+      id: headerParmas.view.value,
+      project_id: 1,
+      name: headerParmas.view.title,
+      status: 1,
+      config: {
+        iterate_ids: headerParmas.iterate_ids,
+        project_id: headerParmas.projectIds,
+        user_ids: headerParmas.users,
+        period_time: getDateStr(headerParmas.time.type),
+        start_time:
+          headerParmas.time.type == 0 ? headerParmas.time.time[0] : '',
+        end_time: headerParmas.time.type == 0 ? headerParmas.time.time[1] : '',
+      },
+    })
+  }
   return (
     <div
       style={{
@@ -366,7 +402,8 @@ const Home = () => {
         onDelView={onDelView}
         onChange={onGetOptionValue}
         onSetDefaulut={onSetDefaulut}
-        onEdit={onEdit}
+        onEdit={editViews}
+        value={optionVal}
       />
       <WorkingStatus
         homeType={homeType}
@@ -481,8 +518,11 @@ const Home = () => {
           <TextColor>单击“保存”按钮可以将更改保存在如下视图</TextColor>
           <div style={{ margin: '8px 0 0 32px' }}>
             <SelectMain
-              onChange={e => setOptionVal(e)}
+              onChange={e => {
+                setOptionVal(e)
+              }}
               placeholder="请选择"
+              allowClear={false}
               value={optionVal}
               list={viewDataList?.map(el => ({
                 name: el.name,
@@ -506,7 +546,7 @@ const Home = () => {
               <CommonButton type="light" onClick={() => setIsVisible(true)}>
                 另存为
               </CommonButton>
-              <CommonButton type="primary" onClick={() => 123}>
+              <CommonButton type="primary" onClick={() => editViews()}>
                 保存
               </CommonButton>
             </Space>

@@ -63,7 +63,6 @@ const SearchList = (props: Props) => {
   }
   const init = async () => {
     const res = await getAffiliationUser(0)
-    console.log(res)
 
     setDepartmentOptions(res)
   }
@@ -210,6 +209,10 @@ const SearchList = (props: Props) => {
                   {
                     label: '已发送',
                     value: 3,
+                  },
+                  {
+                    label: '定时未发送',
+                    value: 4,
                   },
                 ]}
               />

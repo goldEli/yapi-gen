@@ -193,8 +193,6 @@ const EditExamine = (props: Props) => {
     )
   }
 
-  console.log(verifyInfo)
-
   return (
     <CommonModal
       isVisible={props.isVisible}

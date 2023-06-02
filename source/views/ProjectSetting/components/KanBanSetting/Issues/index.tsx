@@ -9,7 +9,7 @@ import useI18n from '@/hooks/useI18n'
 
 interface IssuesProps {
   issues?: Model.KanbanConfig.Category
-  groupId?: Model.SprintKanBan.IssuesGroup['groupId']
+  groupId?: Model.KanbanConfig.Column['id']
 }
 
 const DropArea = styled.div<{ showBorder: boolean }>`
