@@ -371,7 +371,6 @@ const HeaderRight = () => {
     )
   }
   const onFeedback = () => {
-    console.log('12')
     dispatch(changeFreedVisibleVisible(true))
   }
   return (

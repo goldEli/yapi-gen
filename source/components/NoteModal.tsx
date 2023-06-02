@@ -51,8 +51,6 @@ const NoteModal = (props: any) => {
 
     if (arrs) {
       const arrs2 = JSON.parse(arrs)
-      console.log(arrs2)
-      console.log(props.data.id[0])
 
       if (arrs2.includes(props.data.id[0])) {
         // 值存在于数组中，执行删除操作

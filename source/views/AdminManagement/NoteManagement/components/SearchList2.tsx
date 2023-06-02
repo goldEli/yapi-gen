@@ -63,7 +63,6 @@ const SearchList = (props: Props) => {
   }
   const init = async () => {
     const res = await getAffiliationUser(0)
-    console.log(res)
 
     setDepartmentOptions(res)
   }
