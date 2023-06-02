@@ -27,6 +27,8 @@ import AddWorkItem from '@/components/AddWorkItem'
 import AddQuickSprint from '@/components/AddQuickSprint'
 import NoteModal from '@/components/NoteModal'
 import SprintDetailDrawer from '@/components/SprintDetailDrawer'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import DeleteConfirmGlobalModal from '@/components/DeleteConfirmGlobal'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -147,11 +149,15 @@ export const Container = () => {
     setIsNextVisible(loginInfo.admin_first_login)
   }, [loginInfo, menuPermission])
 
+  // const {open, DeleteConfirmModal} = useDeleteConfirmModal()
+
   return (
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         <GlobalStyle />
-
+        <button></button>
+        {/* <DeleteConfirmModal /> */}
+        <DeleteConfirmGlobalModal />
         <LayoutWrap id="layoutWrap">
           <HeaderWrap>
             <HeaderLeft />
