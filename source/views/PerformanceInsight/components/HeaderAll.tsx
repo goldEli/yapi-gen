@@ -93,7 +93,7 @@ const HeaderAll = (props: HaderProps) => {
             {props.headerParmas.users?.length ? (
               <span>已选 {props.headerParmas.users?.length}人</span>
             ) : (
-              <span>已选 0</span>
+              <span>已选 全员</span>
             )}
           </PersonText>
           <Line />

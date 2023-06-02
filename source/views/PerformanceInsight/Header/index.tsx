@@ -218,7 +218,7 @@ const Iteration = (props: Props) => {
     dispatch(
       setHeaderParmas({
         users: person,
-        iterate_ids: val,
+        iterate_ids: [val],
         projectIds: headerParmas.projectIds,
         time: headerParmas.time,
         view: headerParmas.view,
@@ -382,7 +382,7 @@ const Iteration = (props: Props) => {
         name={''}
         titleType={{ title: '另存为视图', type: 'add' }}
         onConfirm={val => {
-          console.log(123, val)
+          props.onCreateView(val, 'add')
         }}
         onClose={() => setIsVisibleView(false)}
         isVisible={isVisibleView}
