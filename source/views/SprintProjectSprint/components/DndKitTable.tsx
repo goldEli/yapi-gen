@@ -1,4 +1,4 @@
-import { Checkbox, Menu, Tooltip, type TableColumnProps } from 'antd'
+import { Checkbox, Tooltip, type TableColumnProps } from 'antd'
 import XTable from './XTable'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import IconFont from '@/components/IconFont'

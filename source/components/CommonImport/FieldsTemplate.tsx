@@ -167,8 +167,6 @@ const FieldsTemplate = (props: Props) => {
       : await getLoadListFields({
           projectId,
           isUpdate: props?.importState,
-          isBug: 1,
-          // todo 参数变更
         })
     const basicKeys = result?.baseFields?.map((k: any) => k.field)
     const otherKeys = result?.timeAndPersonFields?.map((k: any) => k.field)

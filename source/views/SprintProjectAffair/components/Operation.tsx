@@ -340,8 +340,8 @@ const Operation = (props: Props) => {
             getImportExcelUpdate: getImportAffairsExcelUpdate,
           }}
           templateInterfaces={{
-            getExportAffairsFields,
-            getLoadAffairsListFields,
+            getExportFields: getExportAffairsFields,
+            getLoadListFields: getLoadAffairsListFields,
           }}
           stepText={t('common.uploadTransaction')}
           tips={{
@@ -374,14 +374,14 @@ const Operation = (props: Props) => {
       </CommonModal>
 
       <CommonExport
-        interfaces={{ getExportAffairsExcel }}
+        interfaces={{ getExportExcel: getExportAffairsExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}
         searchGroups={searchGroups}
         otherParams={props.otherParams}
         templateInterfaces={{
-          getExportAffairsFields,
-          getLoadAffairsListFields,
+          getExportFields: getExportAffairsFields,
+          getLoadListFields: getLoadAffairsListFields,
         }}
       />
 
