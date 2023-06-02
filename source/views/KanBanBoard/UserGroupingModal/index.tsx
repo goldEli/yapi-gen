@@ -106,11 +106,11 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
   return (
     <CommonModal
       width={528}
-      title={'人员分组'}
+      title={t('personnel_grouping')}
       isVisible={userGroupingModelInfo.visible}
       onClose={onClose}
       onConfirm={onsubmit}
-      confirmText={'确认'}
+      confirmText={t('confirm')}
     >
       <Box>
         <Form
@@ -121,10 +121,10 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
         >
           <Form.Item
             rules={[{ required: true, message: '' }]}
-            label={<LabelTitle title={'分组名称'} />}
+            label={<LabelTitle title={t('group_Name')} />}
             name="name"
           >
-            <Input maxLength={30} placeholder="请输入名称" />
+            <Input maxLength={30} placeholder={t('please_enter_a_name')} />
           </Form.Item>
         </Form>
         <UserList>
@@ -138,7 +138,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
                     onDel(item.id)
                   }}
                 >
-                  <CommonButton type="primaryText">删除</CommonButton>
+                  <CommonButton type="primaryText">{t('delete')}</CommonButton>
                 </div>
               </UserListItem>
             )

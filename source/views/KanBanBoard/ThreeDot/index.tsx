@@ -12,6 +12,7 @@ import {
 } from '@/components/TableDropdownMenu/CommonDropdownMenu'
 import { getIsPermission, getParamsValueByKey } from '@/tools'
 import { setAddWorkItemModal } from '@store/project'
+import useI18n from '@/hooks/useI18n'
 
 interface ThreeDotProps {
   story: Model.KanBan.Story
@@ -59,6 +60,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
   //     copyTextToClipboard(props.story.id + '')
   //   }
   const { projectInfo } = useSelector(store => store.project)
+  const { t } = useI18n()
 
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
@@ -67,8 +69,8 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
   const onDel = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()
     open({
-      title: '删除确认',
-      text: '确认删除该需求吗？',
+      title: t('confirm_deletion'),
+      text: t('are_you_sure_to_delete_this_requirement?'),
       onConfirm: () => {
         dispatch(
           deleteStory({
@@ -93,19 +95,19 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
                   type: 2,
                   editId: props.story.id,
                   projectId: getParamsValueByKey('id'),
-                  title: '编辑事务',
+                  title: t('editorial_affairs'),
                 },
               }),
             )
           }}
         >
-          编辑
+          {t('edit')}
         </Item>
       ),
     },
     {
       key: '2',
-      label: <Item onClick={onDel}>删除</Item>,
+      label: <Item onClick={onDel}>{t('delete')}</Item>,
     },
     {
       key: '3',
@@ -116,7 +118,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
             onCopyName(props.story.name)
           }}
         >
-          复制编号
+          {t('copy_number')}
         </Item>
       ),
     },
@@ -132,7 +134,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
             })
           }}
         >
-          复制标题
+          {t('copy_title')}
         </Item>
       ),
     },

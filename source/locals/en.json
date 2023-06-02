@@ -1660,6 +1660,23 @@
     "grouped_view": "Grouped view",
     "at_the_same_time": "At the same time, it supports work comparison and viewing according to three horizontal parameters: personnel, category, and priority",
     "columns_and_status": "Columns and status",
-    "vertical_filtering_can_be_performed_according_to_different_workflows": "Vertical filtering can be performed according to different workflows. If you need to define a workflow, you can add or edit it in the configuration kanban"
+    "vertical_filtering_can_be_performed_according_to_different_workflows": "Vertical filtering can be performed according to different workflows. If you need to define a workflow, you can add or edit it in the configuration kanban",
+    "count_person": "{{count}} person in total",
+    "group": "Group",
+    "are_you_sure_to_delete_this_requirement?": "Are you sure to delete this requirement?",
+    "editorial_affairs": "Editorial affairs",
+    "edit": "Edit",
+    "delete": "Delete",
+    "copy_number": "Copy number",
+    "copy_title": "Copy title",
+    "need": "Need",
+    "affairs": "Affairs",
+    "search": "Search",
+    "or": "Or",
+    "serial_number": "Serial number",
+    "personnel_grouping": "Personnel grouping",
+    "group_Name": "Group Name",
+    "please_enter_a_name": "Please enter a name",
+    "search_keywords_or_numbers": "Search {{keyword}} or numbers"
   }
 }
