@@ -14,7 +14,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import FlawDetail from './FlawDetail'
-import BasicDemand from './BasicDemand'
+import BasicFlaw from './BasicFlaw'
 import { useEffect, useState } from 'react'
 import { Tooltip } from 'antd'
 import { CloseWrap } from '@/components/StyleCommon'
@@ -55,7 +55,10 @@ const FlawInfo = () => {
   return (
     <FlawInfoWrap>
       <FlawInfoLeft>
-        <FlawDetail flawInfo={flawInfo} onUpdate={onUpdate} />
+        <FlawDetail
+          flawInfo={flawInfo as Model.Flaw.FlawInfo}
+          onUpdate={onUpdate}
+        />
         <FlawInfoInfoItem>
           <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
           <FlawStatus pid={id} sid={flawId} />
@@ -74,12 +77,7 @@ const FlawInfo = () => {
           </div>
         </TitleWrap>
         {activeTabs === 1 && (
-          <BasicDemand
-            detail={flawInfo}
-            onUpdate={onUpdate}
-            isOpen
-            isInfoPage
-          />
+          <BasicFlaw detail={flawInfo} onUpdate={onUpdate} isOpen isInfoPage />
         )}
         {activeTabs === 2 && (
           <FlawComment isOpen={activeTabs === 2} detail={flawInfo} />

@@ -32,8 +32,10 @@ import MultipleAvatar from '@/components/MultipleAvatar'
 import { OmitText } from '@star-yun/ui'
 
 interface RelationStoriesProps {
-  activeKey: string
+  activeKey?: string
   detail: Model.Flaw.FlawInfo
+  isOpen?: boolean
+  onUpdate(): void
 }
 
 interface SelectItem {
@@ -153,6 +155,7 @@ const RelationStories = (props: RelationStoriesProps) => {
     getMessage({ type: 'success', msg: '添加成功' })
     getList(pageObj, order)
     onClose()
+    props.onUpdate()
   }
 
   // 点击切换页码
@@ -376,10 +379,10 @@ const RelationStories = (props: RelationStoriesProps) => {
   ]
 
   useEffect(() => {
-    if (props.activeKey === '2') {
+    if (props.activeKey === '2' || props.isOpen) {
       getList(pageObj, order)
     }
-  }, [props.activeKey])
+  }, [props.activeKey, props.isOpen])
 
   return (
     <RelationWrap>
@@ -390,7 +393,7 @@ const RelationStories = (props: RelationStoriesProps) => {
         confirmText="链接"
         onConfirm={onConfirm}
       >
-        <FormWrap layout="vertical" form={form}>
+        <FormWrap layout="vertical" form={form} style={{ padding: '0 24px' }}>
           <Form.Item
             label="链接类型"
             name="type"

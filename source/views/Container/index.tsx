@@ -27,6 +27,7 @@ import AddWorkItem from '@/components/AddWorkItem'
 import AddQuickSprint from '@/components/AddQuickSprint'
 import NoteModal from '@/components/NoteModal'
 import SprintDetailDrawer from '@/components/SprintDetailDrawer'
+import FlawDetailDrawer from '@/components/FlawDetailDrawer'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -174,6 +175,7 @@ export const Container = () => {
         <AddWorkItem />
         <AddQuickSprint />
         <SprintDetailDrawer />
+        <FlawDetailDrawer />
       </ConfigProvider>
     </KitConfigProvider>
   )

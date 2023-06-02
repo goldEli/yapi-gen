@@ -50,7 +50,7 @@ const LimitLabel = (props: { label: string; width: number }) => {
   )
 }
 
-const BasicDemand = (props: Props) => {
+const BasicFlaw = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   // 折叠字段
@@ -471,4 +471,4 @@ const BasicDemand = (props: Props) => {
   )
 }
 
-export default BasicDemand
+export default BasicFlaw

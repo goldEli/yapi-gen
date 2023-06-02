@@ -65,6 +65,10 @@ const IterationDefectDetail = () => {
     copyLink(flawInfo.name, '复制成功！', '复制失败！')
   }
 
+  const onUpdate = () => {
+    dispatch(getFlawInfo({ projectId: id, id: flawId }))
+  }
+
   // 修改缺陷状态
   const onChangeStatus = async (value: any) => {
     await updateFlawStatus(value)
@@ -252,6 +256,7 @@ const IterationDefectDetail = () => {
         <RelationStories
           activeKey={tabActive}
           detail={flawInfo as Model.Flaw.FlawInfo}
+          onUpdate={onUpdate}
         />
       ),
     },
