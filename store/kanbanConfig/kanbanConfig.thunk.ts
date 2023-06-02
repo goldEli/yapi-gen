@@ -10,20 +10,54 @@ import {
 import { getMessage } from '@/components/Message'
 import { getParamsValueByKey } from '@/tools'
 import { produce } from 'immer'
+import { openConfirmModal } from '@/components/DeleteConfirmGlobal'
+import i18next from 'i18next'
 
 const name = 'KanbanConfig'
 
-export const onChangeViewList =
+export const updateViewByViewId =
   (id: Model.KanbanConfig.ConfigListItem['id']) =>
   async (dispatch: AppDispatch) => {
-    await dispatch(saveKanbanConfig())
     dispatch(setViewList(id))
     const checked = store
       .getState()
       .KanbanConfig.viewList?.find(item => item.id === id)
-
     checked && dispatch<any>(onFresh(checked))
   }
+
+export const handleSaveReminder = () => async (dispatch: AppDispatch) => {
+  const { columnList, columnListBackup } = store.getState().KanbanConfig
+  if (JSON.stringify(columnList) !== JSON.stringify(columnListBackup)) {
+    openConfirmModal({
+      text: '是否保存修改？',
+      title: i18next.t('confirm'),
+      onConfirm: async () => {
+        const res = await dispatch(saveKanbanConfig())
+      },
+    })
+  }
+}
+
+export const onChangeViewList =
+  (id: Model.KanbanConfig.ConfigListItem['id']) =>
+  async (dispatch: AppDispatch) => {
+    //
+    // 如果修改了 弹窗提醒
+    const { columnList, columnListBackup } = store.getState().KanbanConfig
+    if (JSON.stringify(columnList) !== JSON.stringify(columnListBackup)) {
+      openConfirmModal({
+        text: '是否保存修改？',
+        title: i18next.t('confirm'),
+        onConfirm: async () => {
+          const res = await dispatch(saveKanbanConfig())
+          dispatch(updateViewByViewId(id))
+        },
+      })
+      return
+    }
+    dispatch(updateViewByViewId(id))
+  }
+
 // 分类列表
 export const getCategoryList = createAsyncThunk(
   `${name}/getCategoryList`,

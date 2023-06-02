@@ -21,18 +21,15 @@ import CustomSelect from '@/components/MoreSelect'
 import DndKitTable from './components/DndKitTable'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import CreateSprintModal from './components/CreateSprintModal'
-import CompleteSprintModal from './components/CompleteSprintModal'
 import {
   getRightSprintList,
   getLeftSprintList,
 } from '@store/sprint/sprint.thunk'
 import { getStaffList } from '@/services/staff'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
-import NoData from './components/NoData'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import CategoryDropdown from '@/components/CategoryDropdown'
-import { getCategoryList } from '@/services/kanbanConfig'
 
 const SearchBox = styled.div`
   display: flex;
@@ -43,7 +40,7 @@ const SearchBox = styled.div`
 `
 const ContentWrap = styled.div`
   display: flex;
-  height: calc(100vh - 130px);
+  height: calc(100vh - 135px);
   position: relative;
 `
 
@@ -163,6 +160,9 @@ const TabItemWrap = styled.div`
   height: 100%;
   padding: 0px 24px;
   overflow: scroll;
+  .ant-spin-nested-loading img {
+    margin-top: 250px;
+  }
 `
 
 const Right = styled.div`
@@ -176,6 +176,9 @@ const Right = styled.div`
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 24px;
+  }
+  .ant-spin-nested-loading img.spinImg {
+    margin-top: 250px;
   }
 `
 const SelectWrapForList = styled(SelectWrapBedeck)`
@@ -244,8 +247,7 @@ const filterList1 = [
   },
 ]
 
-interface IProps {}
-const SprintProjectSprint: React.FC<IProps> = props => {
+const SprintProjectSprint: React.FC = () => {
   const dispatch = useDispatch()
   const {
     guideVisible,
@@ -406,17 +408,19 @@ const SprintProjectSprint: React.FC<IProps> = props => {
   }, [])
 
   useEffect(() => {
-    dispatch(
-      getRightSprintList({
-        ...searchObject,
-        search: {
-          ...searchObject.search,
-          id: leftSprintList.list
-            .filter((_, idx) => checkList[idx])
-            .map(k => k.id),
-        },
-      }),
-    )
+    if (checkList.length) {
+      dispatch(
+        getRightSprintList({
+          ...searchObject,
+          search: {
+            ...searchObject.search,
+            id: leftSprintList.list
+              .filter((_, idx) => checkList[idx])
+              .map(k => k.id),
+          },
+        }),
+      )
+    }
   }, [searchObject, checkList])
 
   useEffect(() => {

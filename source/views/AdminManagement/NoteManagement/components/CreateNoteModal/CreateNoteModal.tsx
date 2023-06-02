@@ -63,8 +63,29 @@ const CreateNoteModal = (props: any) => {
     }
     return Promise.resolve()
   }
+
+  // 验证定时发送时间
+
+  const onValidator2 = (rule: any, value: any) => {
+    console.log(value)
+    if (!value) {
+      return Promise.reject(new Error('请填写定时发送时间'))
+    }
+    const expire_time = form.getFieldValue('expire_time')
+
+    if (!expire_time) {
+      return Promise.reject(new Error('请先填写失效时间'))
+    }
+    const eTime = expire_time.valueOf()
+    const sTime = value.valueOf()
+
+    if (eTime < sTime) {
+      return Promise.reject(new Error('定时发送时间大于失效时间'))
+    }
+
+    return Promise.resolve()
+  }
   const onChange = (e: any) => {
-    console.log(`checked = ${e.target.checked}`)
     setTaskTime(e.target.checked)
   }
   const setPeople = (memebr: any) => {
@@ -182,7 +203,6 @@ const CreateNoteModal = (props: any) => {
 
   const onChangeTaskTime = (time: any, timeString: string) => {
     setTaskTimeString(timeString)
-    console.log(time, timeString)
   }
 
   function disabledDate(current: any) {
@@ -212,8 +232,6 @@ const CreateNoteModal = (props: any) => {
     }
   }
   const transformedArray = (array: any) => {
-    console.log(array)
-
     return array?.map((item: any) => {
       return {
         target_id: item.id,
@@ -243,7 +261,6 @@ const CreateNoteModal = (props: any) => {
 
       // send_time: res.expire_time ? moment(res.send_time):null,
     })
-    console.log(res, '成员')
 
     judgePeople({
       member: res.recipient?.all
@@ -360,7 +377,7 @@ const CreateNoteModal = (props: any) => {
           </Form.Item>
 
           <Form.Item
-            initialValue={2}
+            initialValue={1}
             name="notice_style"
             label={<LabelTitle>{t('reminder_method')}</LabelTitle>}
             rules={[{ required: true, message: 'Please input your username!' }]}
@@ -416,6 +433,7 @@ const CreateNoteModal = (props: any) => {
             rules={[{ required: true, message: t('select_expiration_time') }]}
           >
             <DatePicker
+              showNow={false}
               disabledDate={disabledDate2}
               showTime
               style={{
@@ -431,10 +449,14 @@ const CreateNoteModal = (props: any) => {
                 label={<LabelTitle></LabelTitle>}
                 name="send_time"
                 rules={[
-                  { required: true, message: t('select_schedule_send_time') },
+                  {
+                    required: true,
+                    validator: onValidator2,
+                  },
                 ]}
               >
                 <DatePicker
+                  showNow={false}
                   disabledDate={disabledDate}
                   showTime
                   style={{

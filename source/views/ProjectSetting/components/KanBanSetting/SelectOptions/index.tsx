@@ -82,7 +82,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
             <LabelArea>
               <span className="label">{item.value}</span>
               <DefaultTag visible={item.isDefault ?? false}>
-                {t('default')}
+                {t('default1')}
               </DefaultTag>
             </LabelArea>
             <OperationArea>

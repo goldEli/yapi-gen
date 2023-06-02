@@ -103,7 +103,6 @@ const Complete = (props: Props) => {
     },
   ]
   const activeItem = (item: { name: string; value: number }) => {
-    console.log(item)
     setIsOpen(false)
     setPopoverValue(item)
   }

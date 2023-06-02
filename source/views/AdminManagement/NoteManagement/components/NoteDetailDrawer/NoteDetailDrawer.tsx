@@ -41,7 +41,6 @@ interface TargetTabsProps {
 
 const NoteDetailDrawer = (props: any) => {
   const { reportIds } = props
-  console.log(reportIds, 'ids数组')
 
   const [t] = useTranslation()
   const { viewReportModal } = useSelector(store => store.workReport)

@@ -96,6 +96,7 @@ const TableWrap = styled(Table)`
 const DataWrap = styled.div<{ height?: any }>`
   height: ${props => props.height};
   overflow-x: auto;
+  min-height: 100px;
 `
 
 // 调整table表头

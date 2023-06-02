@@ -1571,7 +1571,7 @@
   "create_columns_and_status": "创建列与状态",
   "save_as": "另存为",
   "save_Changes": "保存更改",
-  "default": "默认",
+  "default1": "默认",
   "create_view": "创建视图",
   "count_transaction": "{{count}}个事务",
   "full_screen": "全屏",

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React from 'react'
 import { ColorBox, ColorBtn, ColorBtn2, Wrap1, Wrap2 } from './style'
 import CommonButton from '@/components/CommonButton'
@@ -142,7 +143,7 @@ const NoteCard = (props: any) => {
 
       <div
         style={{
-          height: '106px',
+          // height: '106px',
           background: '#F8F8FA',
           borderRadius: '6px 6px 6px 6px',
           marginTop: '8px',
@@ -152,14 +153,15 @@ const NoteCard = (props: any) => {
       >
         <div
           style={{
-            height: '22px',
+            // height: '22px',
             fontSize: '14px',
             color: '#323233',
             lineHeight: '22px',
           }}
-        >
-          {values.content}
-        </div>
+          dangerouslySetInnerHTML={{
+            __html: values.content,
+          }}
+        />
 
         <div
           onClick={() => props.onShowNumber(values.id)}
