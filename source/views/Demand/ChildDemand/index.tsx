@@ -64,8 +64,10 @@ const ChildDemand = () => {
   const [operationItem, setOperationItem] = useState<any>({})
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const { projectInfo } = useSelector(store => store.project)
-  const { demandInfo, isUpdateDemand } = useSelector(store => store.demand)
+  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
+  const { demandInfo } = useSelector(store => store.demand)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -134,10 +136,10 @@ const ChildDemand = () => {
   }, [isRefresh])
 
   useEffect(() => {
-    if (isUpdateDemand) {
+    if (isUpdateAddWorkItem) {
       getList(pageObj, order, orderKey)
     }
-  }, [isUpdateDemand])
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     getShowkey()

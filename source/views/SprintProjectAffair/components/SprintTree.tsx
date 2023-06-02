@@ -87,7 +87,9 @@ const SprintTree = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const { projectInfo, filterKeys, filterParams } = useSelector(
+    store => store.project,
+  )
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
@@ -102,7 +104,6 @@ const SprintTree = (props: Props) => {
   const [delayChild, setDelayChild] = useState<any>({})
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
-  const { filterParams } = useSelector(store => store.demand)
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
 
   const onChangePage = (page: number, size: number) => {

@@ -398,3 +398,31 @@ setData(
   }),
 )
 ```
+
+### 全局确认弹窗
+
+```js
+openConfirmModal({
+  title: '提醒',
+  text: '是否删除？',
+  onConfirm: () => {
+    return Promise.resolve()
+  },
+  onCancel: () => {},
+})
+```
+
+### usePrompt
+
+路由跳转前，检测是否保存
+
+```js
+import { usePrompt } from '@/tools/block'
+
+usePrompt({
+  title: '提醒',
+  text: '当前页面未保存，是否保存？',
+  when: true,
+  onConfirm: () => {},
+})
+```

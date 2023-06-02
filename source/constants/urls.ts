@@ -298,6 +298,10 @@ const urls = {
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
   // 视图列表
   viewsList: '/b/story/views/list',
+  // 近期的冲刺项目
+  recentCreateData: '/b/project/recentCreateData',
+  // 导出
+  export: 'b/efficiency/member/work_contrast/export',
   /**
    * 看板
    */
@@ -423,6 +427,10 @@ const urls = {
 
   // 获取需求流转配置
   getFlowConfig: '/b/story/flowConfig',
+
+  getParentList: function (key: string) {
+    return `/b/${key}/getlist`
+  },
 }
 export default urls
 

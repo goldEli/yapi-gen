@@ -28,13 +28,13 @@ import { css } from '@emotion/css'
 import moment from 'moment'
 import { getProjectMember } from '@/services/mine'
 import { useDispatch } from '@store/index'
-import { setIsUpdateChangeLog } from '@store/demand'
 import { CloseWrap } from './StyleCommon'
 import { getShapeLeft, getShapeRight } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import NewLoadingTransition from './NewLoadingTransition'
 import CommonButton from './CommonButton'
 import CustomSelect from './CustomSelect'
+import { setIsUpdateChangeLog } from '@store/project'
 
 export function setValue(res: any) {
   const form1Obj: any = {}

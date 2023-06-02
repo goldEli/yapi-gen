@@ -146,7 +146,7 @@ const ProjectDetailSide = () => {
   }
   const onGoBack = () => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
-    navigate(`/SprintProjectManagement/KanBan?data=${params}`)
+    navigate(`/SprintProjectManagement/Affair?data=${params}`)
   }
   const demandClick = () => {
     setSelectedKeys(['ProjectInfo'])

@@ -12,6 +12,7 @@ import InputSearch from '../InputSearch'
 import { getLongStoryList } from '@store/sprint/sprint.thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { List } from 'antd'
+import { getMessage } from '../Message'
 import {
   addInfoAffairs,
   deleteInfoAffairs,
@@ -19,20 +20,22 @@ import {
 } from '@/services/affairs'
 interface IProps {
   detail: Model.Affairs.AffairsInfo
+  onClick?(): void
 }
 const LongStoryDropdown = (props: IProps) => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
-  const { detail } = props
+  const { detail, onClick } = props
   console.log('detail-----', detail)
   const { longStoryList } = useSelector(state => state.sprint)
   const [list, setList] = useState<Model.Sprint.longStroyItem[]>([])
+  const [hasLongStroy, setHasLongStroy] = useState(false)
   const [params, setParams] = useState<API.Sprint.getLongStoryList.Params>({
     order: 'asc',
     orderkey: 'id',
     search: {
       all: 0,
-      project_id: 607,
+      project_id: detail.projectId,
       keyword: '',
     },
     page: 1,
@@ -54,24 +57,28 @@ const LongStoryDropdown = (props: IProps) => {
   }
   const onConfirm = async (data: Model.Sprint.longStroyItem) => {
     console.log(data)
-    const params = {
+
+    let params: API.Affairs.AddInfoAffairs.Params = {
       projectId: detail.projectId,
       sprintId: detail.id,
       type: 'parent',
-      targetId: [data.id],
-      parentId: detail.parentId,
     }
-    // hasLongStroy 为true可以添加长故事
-    const hasLongStroy =
-      detail.level_tree?.length === 0 ||
-      (detail.level_tree?.length &&
-        detail.level_tree.every(
-          (item: { work_type: any }) => item.work_type !== 3,
-        ))
-    if (!hasLongStroy) {
-      delete params.parentId
+    // hasLongStroy 为true新增
+    if (hasLongStroy) {
+      params = {
+        ...params,
+        targetId: [data.id],
+      }
+    } else {
+      params = {
+        ...params,
+        parentId: data.id,
+        name: detail.name,
+      }
     }
     const methods = hasLongStroy ? addInfoAffairs : updateInfoAffairs
+    getMessage({ type: 'success', msg: hasLongStroy ? '添加成功' : '编辑成功' })
+    onClick && onClick()
     try {
       await methods(params)
     } catch (error) {
@@ -90,11 +97,17 @@ const LongStoryDropdown = (props: IProps) => {
     }
     try {
       await deleteInfoAffairs(params)
+      getMessage({ type: 'success', msg: '取消关联成功' })
+      onClick && onClick()
     } catch (error) {
       // error
     }
   }
   useEffect(() => {
+    const hasLongStroy =
+      detail.level_tree?.length === 0 &&
+      (detail.work_type === 4 || detail.work_type === 5)
+    setHasLongStroy(hasLongStroy)
     setLoading(true)
     getList()
   }, [params])
@@ -143,9 +156,12 @@ const LongStoryDropdown = (props: IProps) => {
           )}
         ></List>
       </ContentBox>
-      <CancelParentBox onClick={deleteInfoAffairsClick}>
-        取消父项链接
-      </CancelParentBox>
+      {hasLongStroy ? null : (
+        <CancelParentBox onClick={deleteInfoAffairsClick}>
+          取消父项链接
+        </CancelParentBox>
+      )}
+
       <FooterBox>
         可见{list.length}个，共{longStoryList.pager?.total}个
       </FooterBox>

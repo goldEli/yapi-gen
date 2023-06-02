@@ -46,6 +46,7 @@ import {
 import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import LongStroyBread from '@/components/LongStroyBread'
+import { setIsUpdateStatus } from '@store/project'
 
 interface IProps {}
 
@@ -163,7 +164,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
     setIsShowCategory(false)
-    // dispatch(setIsUpdateStatus(true))
+    dispatch(setIsUpdateStatus(true))
     // dispatch(setIsRefresh(true))
     dispatch(getAffairsInfo({ projectId: id, sprintId }))
     setTimeout(() => {
@@ -373,7 +374,12 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       <DetailTop>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <MyBreadcrumb />
-          <LongStroyBread longStroy={affairsInfo}></LongStroyBread>
+          <LongStroyBread
+            longStroy={affairsInfo}
+            onClick={() => {
+              console.log('回调')
+            }}
+          ></LongStroyBread>
         </div>
 
         <ButtonGroup size={16}>

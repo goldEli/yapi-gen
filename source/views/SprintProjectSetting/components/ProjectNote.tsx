@@ -249,76 +249,76 @@ const ProjectSet = () => {
   function forName(code: string) {
     let name = ''
     switch (code) {
-      case '1000':
-        name = t('Create_requirements')
+      case '2000':
+        name = '创建事务'
         break
 
-      case '1001':
-        name = t('import_requirement')
+      case '2001':
+        name = '导入事务'
         break
 
-      case '1002':
-        name = t('export_requirement')
+      case '2002':
+        name = '导出事务'
         break
 
-      case '1003':
-        name = t('assign_handler')
+      case '2003':
+        name = '事务指派处理人'
         break
 
-      case '1004':
-        name = t('update_status')
+      case '2004':
+        name = '事务状态更新'
         break
 
-      case '1005':
-        name = t('commented_on_requirement')
+      case '2005':
+        name = '事务被评论'
         break
 
-      case '1006':
-        name = t('comment')
+      case '2006':
+        name = '评论@某人'
         break
 
-      case '1007':
-        name = t('delete_requirement')
+      case '2007':
+        name = '事务删除'
         break
 
-      case '1008':
-        name = t('add_cc')
+      case '2008':
+        name = '事务抄送'
         break
       case '0001':
         name = t('import_product')
         break
-      case '1100':
-        name = t('add_requirement_or_defect')
+      case '2100':
+        name = '添加冲刺事务'
         break
-      case '1101':
-        name = t('remove_requirement_or_defect')
+      case '2101':
+        name = '移除冲刺事务'
         break
-      case '1102':
-        name = t('create_iteration')
+      case '2102':
+        name = '创建冲刺'
         break
-      case '1103':
-        name = t('edit_iteration')
+      case '2103':
+        name = '编辑冲刺'
         break
-      case '1104':
-        name = t('update_iteration_status')
+      case '2104':
+        name = '冲刺完成'
         break
-      case '1105':
-        name = t('delete_iteration')
+      case '2105':
+        name = '冲刺删除'
         break
-      case '1106':
-        name = t('edit_iteration_outcome')
+      case '2106':
+        name = '添加冲刺事务'
         break
-      case '1200':
-        name = t('member_change')
+      case '2200':
+        name = '成员变更'
         break
-      case '1203':
-        name = t('edit_project')
+      case '2203':
+        name = '项目编辑'
         break
-      case '1204':
-        name = t('delete_project')
+      case '2204':
+        name = '项目删除'
         break
-      case '1205':
-        name = t('update_project_status')
+      case '2205':
+        name = '项目删除'
         break
 
       default:

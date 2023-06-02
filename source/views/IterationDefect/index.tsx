@@ -14,7 +14,11 @@ import {
 } from './style'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterKeys } from '@store/project'
+import {
+  setFilterKeys,
+  setIsUpdateAddWorkItem,
+  setFilterParams,
+} from '@store/project'
 import WrapLeft from './components/WrapLeft'
 import DefectTable from './components/DefectTable'
 import Operation from './components/Operation'
@@ -153,14 +157,14 @@ const Index = (props: any) => {
       class_id: keyRef.current,
       // system_view: searchChoose ? searchChoose['system_view'] : undefined,
     }
-    // dispatch(setFilterParams(params))
+    dispatch(setFilterParams(params))
     const result = await getFlawList(params)
     setDataList(result)
     setIsSpinning(false)
     // props.onIsUpdate?.()
     // dispatch(setIsRefresh(false))
     // setIsUpdated(false)
-    // dispatch(setIsUpdateDemand(false))
+    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   // 更新缺陷列表，state： 是否有加载动画，topId: 用于树形结构展开，isClass： 是否编辑的是需求分类

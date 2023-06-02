@@ -312,6 +312,7 @@ const ProjectDetailSide = () => {
 
   useEffect(() => {
     const key = paramsData.pageIdx
+    // debugger
     if (!key) {
       projectSide.current.style.width = '100%'
       projectSetCategory.current.style.width = '0px'
