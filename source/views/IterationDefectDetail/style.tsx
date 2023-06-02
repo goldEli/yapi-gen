@@ -24,7 +24,7 @@ export const Wrap = styled.div`
     color: var(--primary-d1);
   }
   .ant-tabs-content {
-    height: calc(100vh - 246px);
+    height: calc(100vh - 227px);
     .ant-tabs-tabpane {
       height: 100%;
     }
@@ -155,8 +155,9 @@ export const Label = styled.div`
 export const TextWrap = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
-  display: 'flex';
+  display: flex;
   flex-direction: column;
+  width: 90%;
   img: {
     max-width: 20%;
   }
@@ -295,6 +296,7 @@ export const BasicFooter = styled.div`
 export const FlawInfoWrap = styled.div({
   display: 'flex',
   height: '100%',
+  paddingBottom: 24,
 })
 
 export const FlawInfoLeft = styled.div({
@@ -527,6 +529,7 @@ export const CommentItem = styled.div<{ isShow?: boolean }>`
   justify-content: flex-start;
   margin-top: 13px;
   margin-right: 12px;
+  width: 100%;
   &:hover ${HovDiv} {
     visibility: visible;
   }
@@ -556,3 +559,37 @@ export const RedCss = styled(BlueCss)`
   color: var(--function-error);
   margin-left: 12px;
 `
+
+export const RelationWrap = styled.div`
+  height: 100%;
+  padding-left: 24px;
+`
+
+export const PriorityWrap = styled.div<{ isShow?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      color: 'var(--neutral-n1-d2)',
+      fontSize: 14,
+      marginLeft: 8,
+    },
+    '.icon': {
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 14,
+      color: 'var(--neutral-n4)',
+    },
+    '.priorityIcon': {
+      fontSize: 14,
+    },
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+    '&: hover': {
+      '.icon': {
+        visibility: isShow ? 'visible' : 'hidden',
+      },
+    },
+  }),
+)

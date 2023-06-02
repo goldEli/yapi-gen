@@ -423,7 +423,7 @@ const ChangeRecord = (props: Props) => {
       </CommonModal>
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 40px)"
+        dataWrapNormalHeight="calc(100% - 64px)"
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}
@@ -433,6 +433,7 @@ const ChangeRecord = (props: Props) => {
         pageSize={pageObj?.size}
         total={dataList?.total}
         onChange={onChangePage}
+        hasPadding
       />
     </div>
   )

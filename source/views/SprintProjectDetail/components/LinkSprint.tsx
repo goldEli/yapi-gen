@@ -295,10 +295,11 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   }
 
   // 获取关联事务下拉列表
-  const getSelectRelationSearch = async () => {
+  const getSelectRelationSearch = async (value: string) => {
     const response = await getAffairsSelectRelationSearch({
       projectId: projectInfo.id,
       id: props.detail.id,
+      searchValue: value,
     })
     setSelectList(
       response.map((i: Model.Affairs.AffairsInfo) => ({
@@ -325,8 +326,12 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   // 点击添加链接事务弹窗
   const onClickOpen = () => {
     setIsVisible(true)
-    getSelectRelationSearch()
     getSelectRelationRecent()
+  }
+
+  const onSearch = (value: string) => {
+    setSearchValue(value)
+    getSelectRelationSearch(value)
   }
 
   // 关闭链接事务弹窗

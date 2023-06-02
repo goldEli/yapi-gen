@@ -1,4 +1,32 @@
 declare namespace API.Flaw {
+  namespace FlawRelation {
+    type Params = {
+      projectId: number
+      id: number
+      relationId: number
+      type: Model.Affairs.RelationType
+    }
+  }
+
+  namespace GetFlawRelationStories {
+    type Params = {
+      projectId: number
+      id: number
+      pageSize: number
+      page: number
+      orderKey: string
+      order: string
+    }
+    type Result = {
+      pager: {
+        page: number
+        pagesize: number
+        total: number
+      }
+      list: Model.Flaw.FlawRelationStoriesInfo[]
+    }
+  }
+
   namespace DeleteFlawCommentAttach {
     type Params = {
       project_id: number

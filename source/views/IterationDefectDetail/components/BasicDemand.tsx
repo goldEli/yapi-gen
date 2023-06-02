@@ -242,7 +242,6 @@ const BasicDemand = (props: Props) => {
         (i: any) => i.content === item.content,
       )[0]
       const defaultValues = getDefaultValue(item.content)
-      console.log(defaultValues, '=1212', filterContent)
       nodeComponent = (
         <TableQuickEdit
           item={{
