@@ -62,7 +62,6 @@ const HeaderAll = (props: HaderProps) => {
         )
       : setProjectList(props.projectDataList)
   }, [])
-
   return (
     <>
       <HeaderRowBox>

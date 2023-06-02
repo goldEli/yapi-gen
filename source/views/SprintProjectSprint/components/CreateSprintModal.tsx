@@ -10,7 +10,7 @@ import { useDispatch } from '@store/index'
 import { setSprintRefresh } from '@store/sprint'
 import { Form, Input } from 'antd'
 import moment from 'moment'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChooseDate from './ChooseDate'
 
@@ -37,6 +37,7 @@ const CreateSprintModal = (props: sprintProps) => {
   const [t]: any = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useDispatch()
+  const [editData, setEditData] = useState<any>(null)
   const initNumber = useRef(0)
   const getTitle = (val: string) => {
     if (val === 'create') {
@@ -107,7 +108,7 @@ const CreateSprintModal = (props: sprintProps) => {
         })
         if (result && result.code === 0) {
           getMessage({
-            msg: '编辑成功',
+            msg: type === 'edit' ? '编辑成功' : '开始成功',
             type: 'success',
           })
           onClear(true)
@@ -147,6 +148,7 @@ const CreateSprintModal = (props: sprintProps) => {
             radio: result.data.duration?.week_type,
           },
         })
+        setEditData(result.data)
       } else {
         getMessage({
           msg: result?.message,
@@ -171,6 +173,12 @@ const CreateSprintModal = (props: sprintProps) => {
       isVisible={visible}
       onClose={() => onClear(false)}
       onConfirm={onConfirm}
+      confirmText={
+        (type === 'edit' || type === 'start') &&
+        editData?.status === 4 &&
+        editData?.story_count &&
+        '开始'
+      }
       children={
         <div className={content}>
           <div className="head">要开始此冲刺，至少需包含1个事务</div>

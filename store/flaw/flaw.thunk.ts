@@ -6,7 +6,7 @@ import { setListActiveId } from '@store/global'
 
 const name = 'flaw'
 
-// 事务列表
+// 缺陷列表
 export const getFlawList = createAsyncThunk(
   `${name}/getFlawList`,
   async (params: API.Flaw.GetFlawList.Params) => {
@@ -21,7 +21,7 @@ export const saveFlawDetailDrawer =
     dispatch(setListActiveId(params.params?.id ?? 0))
   }
 
-// 事务详情
+// 缺陷详情
 export const getFlawInfo = createAsyncThunk(
   `${name}/getFlawInfo`,
   async (params: API.Flaw.GetFlawInfo.Params) => {
@@ -30,7 +30,7 @@ export const getFlawInfo = createAsyncThunk(
   },
 )
 
-// 事务评论列表
+// 缺陷评论列表
 export const getFlawCommentList = createAsyncThunk(
   `${name}/getFlawCommentList`,
   async (params: API.Flaw.GetFlawCommentList.Params) => {

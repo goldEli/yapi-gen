@@ -46,21 +46,21 @@ const Item = styled.div`
     }
   }
 `
-const NoSprintButton = styled.div`
+const NoSprintButton = styled.div<{ isActive: boolean }>`
   cursor: pointer;
   height: 52px;
   background: var(--neutral-white-d4);
   border-radius: 6px 6px 6px 6px;
-  border: 1px solid var(--neutral-n6-d1);
+  border: ${(props: any) =>
+    props?.isActive
+      ? '1px solid var(--primary-d1)'
+      : '1px solid var(--neutral-n6-d1)'};
   line-height: 52px;
   text-align: center;
   font-size: 14px;
   font-family: MiSans-Regular, MiSans;
   font-weight: 400;
   color: var(--neutral-n2);
-  .active {
-    border: 1px solid var(--primary-d1);
-  }
   &:hover {
     border: 1px solid var(--primary-d1);
   }
@@ -124,7 +124,10 @@ const TabItem = (props: any) => {
           </div>
         </Item>
       ))}
-      <NoSprintButton>{`未创建冲刺的事务（${data.unassigned_count}）`}</NoSprintButton>
+      <NoSprintButton
+        isActive={props?.checkCommission}
+        onClick={() => props?.setCheckCommission?.(!props?.checkCommission)}
+      >{`未创建冲刺的事务（${data.unassigned_count}）`}</NoSprintButton>
     </div>
   )
 }

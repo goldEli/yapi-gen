@@ -80,6 +80,7 @@ const CompleteSprintModal = (props: sprintProps) => {
 
   useEffect(() => {
     form.setFieldsValue({
+      current: targetId,
       finish_at: moment(
         rightSprintList.find((k: any) => k.id === targetId)?.end_at,
       ),
@@ -107,7 +108,6 @@ const CompleteSprintModal = (props: sprintProps) => {
               label="当前"
               name="current"
               rules={[{ required: true, message: '请输入冲刺名称' }]}
-              initialValue={targetId}
             >
               <CustomSelect
                 options={rightSprintList
@@ -127,7 +127,19 @@ const CompleteSprintModal = (props: sprintProps) => {
               name="finish_at"
               rules={[{ required: true }]}
             >
-              <DatePicker style={{ width: '100%' }} />
+              <DatePicker
+                style={{ width: '100%' }}
+                disabledDate={current => {
+                  return (
+                    current &&
+                    current <
+                      moment(
+                        rightSprintList.find((k: any) => k.id === targetId)
+                          ?.start_at,
+                      ).startOf('day')
+                  )
+                }}
+              />
             </Form.Item>
             <Form.Item label="结果" name="result">
               <Input.TextArea
@@ -145,7 +157,8 @@ const CompleteSprintModal = (props: sprintProps) => {
               <CustomSelect
                 options={rightSprintList
                   .filter(
-                    (k: any) => k.id !== -1 && k.status === 1 && k.id !== id,
+                    (k: any) =>
+                      k.id !== -1 && k.status === 1 && k.id !== targetId,
                   )
                   .map((item: any) => ({
                     label: item.name,

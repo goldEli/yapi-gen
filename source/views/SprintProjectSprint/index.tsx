@@ -166,8 +166,10 @@ const TabItemWrap = styled.div`
 `
 
 const Right = styled.div`
-  padding: 0px 24px;
-  overflow-y: scroll;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 100%;
+  padding: 0px 0px 0px 24px;
   flex: 1;
   .header {
     display: flex;
@@ -206,7 +208,11 @@ const ClearButton = styled.div`
   white-space: nowrap;
   cursor: pointer;
 `
-const DragContent = styled.div``
+const DragContent = styled.div`
+  height: 100%;
+  overflow-y: scroll;
+  padding-bottom: 50px;
+`
 
 const filterList = [
   {
@@ -289,6 +295,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     },
     is_long_story: 0,
   })
+  const [checkCommission, setCheckCommission] = useState(false)
 
   const inform = [
     {
@@ -320,14 +327,14 @@ const SprintProjectSprint: React.FC<IProps> = props => {
       width = e.clientX - startX
       setEndWidth(width - 4 < 316 ? 312 : width - 4)
       leftRef.current.style.transition = '0s'
-    }
-    document.onmouseup = () => {
       if (leftRef && leftRef.current) {
         leftRef.current.style.width = `${
           Number(width) < 316 ? 316 : Number(width)
         }px`
         leftRef.current.style.transition = 'all 0.3s'
       }
+    }
+    document.onmouseup = () => {
       document.onmousemove = null
       document.onmouseup = null
       setFocus(false)
@@ -526,7 +533,11 @@ const SprintProjectSprint: React.FC<IProps> = props => {
             </div>
             <TabItemWrap>
               <Spin spinning={leftLoading} indicator={<NewLoadingTransition />}>
-                <TabItem data={leftSprintList} />
+                <TabItem
+                  data={leftSprintList}
+                  checkCommission={checkCommission}
+                  setCheckCommission={setCheckCommission}
+                />
                 {/* <NoData
                   size
                   subText={
@@ -646,7 +657,6 @@ const SprintProjectSprint: React.FC<IProps> = props => {
                   search: {
                     ...searchObject.search,
                     user_id: [],
-                    // todo 事务
                   },
                 })
               }}
@@ -656,7 +666,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
           </div>
           <Spin spinning={rightLoading} indicator={<NewLoadingTransition />}>
             <DragContent>
-              <DndKitTable />
+              <DndKitTable checkCommission={checkCommission} />
             </DragContent>
           </Spin>
         </Right>

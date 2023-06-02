@@ -98,6 +98,7 @@ interface Props {
   isCanOperation?: boolean
   projectId?: any
   onCurrentDetail?(item: any): void
+  children?: ReactNode
 }
 
 const ChangeSeverityPopover = (props: Props) => {
@@ -129,16 +130,19 @@ const ChangeSeverityPopover = (props: Props) => {
         )
       }
     >
-      <SeverityWrap
-        style={{
-          background: props.record.severity.color,
-          width: 'max-content',
-          cursor: props.isCanOperation ? 'pointer' : 'initial',
-        }}
-      >
-        {props.record.severity.content}
-      </SeverityWrap>
-      {/* {props.children} */}
+      {props.children && <>{props.children}</>}
+
+      {!props.children && (
+        <SeverityWrap
+          style={{
+            background: props.record.severity.color,
+            width: 'max-content',
+            cursor: props.isCanOperation ? 'pointer' : 'initial',
+          }}
+        >
+          {props.record.severity.content}
+        </SeverityWrap>
+      )}
     </Popover>
   )
 }

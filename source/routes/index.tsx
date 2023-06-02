@@ -144,6 +144,10 @@ const routes = [
             element: lazy(() => import('@/views/IterationDefect')),
           },
           {
+            path: 'DefectDetail',
+            element: lazy(() => import('@/views/IterationDefectDetail')),
+          },
+          {
             path: 'ProjectSetting',
             element: lazy(() => import('@/views/ProjectSetting')),
           },
