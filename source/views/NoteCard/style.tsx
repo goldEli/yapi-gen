@@ -18,6 +18,7 @@ export const ColorBox = styled.div<{ colors: number }>`
       : props.colors === 2
       ? ' rgba(67,186,154,0.2)'
       : 'rgba(150,151,153,0.14)'};
+
   height: 20px;
   border-radius: 6px 6px 6px 6px;
   height: 20px;

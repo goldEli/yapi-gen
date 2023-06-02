@@ -39,7 +39,7 @@ export const TextChange = (props: any) => {
           left: '-3px',
         }}
       >
-        <CommonIconFont color="#f99e54" size={18} type="bell" />
+        <CommonIconFont color="var(--function-warning)" size={18} type="bell" />
       </div>
       <div
         style={{
@@ -69,7 +69,7 @@ export const TextChange = (props: any) => {
               height: '22px',
               fontSize: '14px',
 
-              color: '#646566',
+              color: 'var(--neutral-n2)',
               lineHeight: '22px',
             }}
           >

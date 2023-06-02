@@ -54,7 +54,7 @@ const Project = () => {
       setIsShowPage(true)
     }
   }, [paramsData, projectInfo])
-
+  console.log('isShowPage', isShowPage)
   return (
     <ProjectWrap>
       {isShowPage && (
