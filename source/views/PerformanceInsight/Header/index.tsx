@@ -83,7 +83,9 @@ const Iteration = (props: Props) => {
   }
   useEffect(() => {
     // 展示的tabs不同
-    // (props.homeType === 'iteration' || props.homeType === 'sprint') && getIterateData()
+    props.homeType === 'iteration' || props.homeType === 'sprint'
+      ? getIterateData()
+      : ''
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
     props.homeType === 'all' && getProjectData()
