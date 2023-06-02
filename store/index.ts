@@ -30,7 +30,6 @@ import formWork from './formWork'
 import createScheduleVisualization from './createScheduleVisualization'
 import workReport from './workReport'
 import sprint from './sprint'
-import sprintKanBan from './sprintKanBan'
 import KanbanConfig from './kanbanConfig'
 import freed from './feedback'
 import performanceInsight from './performanceInsight'
@@ -68,7 +67,6 @@ export const store = configureStore({
     createScheduleVisualization,
     workReport,
     sprint,
-    sprintKanBan,
     KanbanConfig,
     freed,
     performanceInsight,
