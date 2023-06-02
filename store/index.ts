@@ -36,8 +36,10 @@ import freed from './feedback'
 import performanceInsight from './performanceInsight'
 import kanBan from './kanBan'
 import affairs from './affairs'
+import flaw from './flaw'
 export const store = configureStore({
   reducer: {
+    flaw,
     affairs,
     kanBan,
     counter: counterReducer,

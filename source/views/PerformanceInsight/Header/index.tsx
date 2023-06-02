@@ -18,7 +18,11 @@ import {
 import { useDispatch } from 'react-redux'
 import ViewDialog from './components/ViewDialog'
 import { getProjectList } from '@/services/project'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
+import dayjs from 'dayjs'
+import moment, { Moment } from 'moment'
+import { getDate } from '../components/Date'
 interface ItemProps {
   name: string
   id: number
@@ -29,10 +33,12 @@ interface Props {
   onCreateView: (value: string, type: string, key?: string) => void
   onDelView: (key: string) => void
   onSetDefaulut: (id: number) => void
-  onChange: (id: number) => void
+  onChange: (title: string, value: number) => void
   defalutConfig: Models.Efficiency.ConfigItem | undefined
+  onEdit: () => void
 }
 const Iteration = (props: Props) => {
+  dayjs.extend(customParseFormat)
   // sprint  iteration all
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
   const tabs1 = [
@@ -64,7 +70,7 @@ const Iteration = (props: Props) => {
   const [isVisibleView, setIsVisibleView] = useState<boolean>(false)
   const [projectListAll, setProjectListAll] = useState([])
   const [projectList, setProjectList] = useState([])
-  const [timeVal, setTimeVal] = useState(1)
+  const [timeVal, setTimeVal] = useState<any>()
   // 项目的id
   const [projectIds, setProjectIds] = useState<number[]>()
   const dispatch = useDispatch()
@@ -76,12 +82,39 @@ const Iteration = (props: Props) => {
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
     props.homeType === 'all' && getProjectData()
-    switch (props.defalutConfig?.period_time) {
-      case 'two_week':
-    }
   }, [])
-  console.log(props.defalutConfig, 'defa')
-  useEffect(() => {}, [timeVal])
+  useEffect(() => {
+    getTime(props.defalutConfig?.period_time || '')
+    setProjectIds(props.defalutConfig?.project_id)
+  }, [props.defalutConfig])
+  console.log(props.defalutConfig, 'props.defalutConfig')
+  const getTime = (type: string) => {
+    let date = getDate(type)
+    setTimekey(date)
+    props.defalutConfig?.start_time &&
+      props.defalutConfig?.end_time &&
+      setTimeVal([
+        moment(props.defalutConfig.start_time),
+        moment(props.defalutConfig.end_time),
+      ])
+    dispatch(
+      setHeaderParmas({
+        users: [],
+        projectIds,
+        time: {
+          type: date,
+          time:
+            date > 0
+              ? date
+              : [
+                  props.defalutConfig?.start_time,
+                  props.defalutConfig?.end_time,
+                ],
+        },
+        view: headerParmas.view,
+      }),
+    )
+  }
   // 获取项目列表
   const getProjectData = async () => {
     const res = await getProjectList({
@@ -138,9 +171,9 @@ const Iteration = (props: Props) => {
     e.stopPropagation()
     setPerson([])
   }
-  console.log(headerParmas, 'headerParmas', headerParmas)
   // 自定义时间
   const onChangeDate = (e: any, values: string[]) => {
+    setTimeVal([moment(values[0]), moment(values[1])])
     dispatch(
       setHeaderParmas({
         users: person,
@@ -153,6 +186,7 @@ const Iteration = (props: Props) => {
       }),
     )
   }
+
   return (
     <HeaderRow>
       <Space size={16}>
@@ -161,11 +195,12 @@ const Iteration = (props: Props) => {
           viewDataList={props.viewDataList}
           onCreateView={props.onCreateView}
           onDelView={props.onDelView}
+          defalutConfig={props.defalutConfig}
           onSetDefaulut={props.onSetDefaulut}
         />
         <Text onClick={() => setIsVisibleView(true)}>另存为</Text>
         {/* 保存需要人员，项目选择和时间修改后 */}
-        {save && <Text>保存</Text>}
+        {save && <Text onClick={props.onEdit}>保存</Text>}
       </Space>
       <Space size={16}>
         {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
@@ -232,7 +267,7 @@ const Iteration = (props: Props) => {
         {tabsActive === 0 ? (
           <SelectMain
             onChange={e => {
-              setTimeVal(e), setTimekey(e), dispatch(setSave(true))
+              setTimekey(e), dispatch(setSave(true))
               dispatch(
                 setHeaderParmas({
                   userIds: person.map(el => el.id),
@@ -245,7 +280,7 @@ const Iteration = (props: Props) => {
                 }),
               )
             }}
-            value={timeVal}
+            value={timekey}
             placeholder="请选择周期"
             list={[
               {
@@ -254,7 +289,7 @@ const Iteration = (props: Props) => {
               },
               {
                 name: '最近4周',
-                key: 15,
+                key: 28,
               },
               {
                 name: '近1月',
@@ -279,12 +314,7 @@ const Iteration = (props: Props) => {
         )}
         {timekey === 0 && (
           <RangePicker
-            format={(times: moment.Moment) => {
-              if (times.unix() === -28800 || times.unix() === 1893427200) {
-                return ''
-              }
-              return times.format('YYYY-MM-DD')
-            }}
+            value={timeVal}
             onChange={onChangeDate}
             style={{ width: '283px' }}
           />

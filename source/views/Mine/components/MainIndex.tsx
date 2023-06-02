@@ -27,8 +27,6 @@ const MainIndex = (props: Props) => {
   const [loadingState, setLoadingState] = useState<boolean>(false)
 
   const init = async () => {
-    console.log(props.type)
-
     const res = await getMineProjectList(props?.type)
     await setSwiperData(res.data)
     setLoadingState(true)

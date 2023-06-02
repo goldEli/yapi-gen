@@ -26,7 +26,7 @@ const FullScreenContainer: React.FC<FullScreenContainerProps> = props => {
   return (
     <Box
       handle={handle}
-      onChange={state => {
+      onChange={(state: any) => {
         if (!state) {
           dispatch(offFullScreenMode())
         }

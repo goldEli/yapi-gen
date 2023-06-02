@@ -411,7 +411,7 @@ const urls = {
   // 批量删除缺陷
   batchFlawDelete: '/b/flaw/batch_delete',
   // 批量编辑缺陷
-  batchFlawEdit: '/b/flaw_update',
+  batchFlawEdit: '/b/flaw/batch_update',
   // 批量编辑的下拉列表
   getBatchEditFlawConfig: '/b/flaw/batch_fields',
 

@@ -249,7 +249,6 @@ const StaffManagement = () => {
     setVisible(true)
     setEditId(datas.id)
   }
-  console.log(list)
 
   return (
     <PermissionWrap

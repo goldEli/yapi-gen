@@ -17,8 +17,6 @@ const flexCss = css`
 `
 
 const MemberModal = (props: any) => {
-  console.log(props.showId)
-
   const [t] = useTranslation()
   const [isSpinning, setIsSpinning] = useState(false)
   const [listData, setListData] = useState<any>(undefined)
@@ -119,8 +117,6 @@ const MemberModal = (props: any) => {
       key: 'department_name',
       width: 160,
       render: (text: any) => {
-        console.log(text)
-
         return <span>{text?.name || '--'}</span>
       },
     },

@@ -33,7 +33,6 @@ const NewSort = (sortProps: any) => {
 const Table = (props: any) => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const onUpdateOrderKey = (key: any, val: any) => {
-    console.log(key, val, 'key')
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     props.onUpdateOrderKey(key, val === 2 ? 'desc' : 'asc')
   }

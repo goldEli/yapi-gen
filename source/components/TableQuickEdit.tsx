@@ -197,7 +197,7 @@ const TableQuickEdit = (props: Props) => {
     }, 100)
   }
 
-  //  迭代、处理人、抄送人、需求分类、标签--- 接口获取
+  //  迭代、处理人、抄送人、需求分类、标签、发现版本--- 接口获取
   const getDefaultSelectValues = async () => {
     const resultValue: any = {
       attr: props?.type,
@@ -258,6 +258,7 @@ const TableQuickEdit = (props: Props) => {
 
   //  迭代、处理人、抄送人、需求分类、标签--- 项目信息获取
   const getDefaultSelectValuesInfo = () => {
+    console.log('项目信息回去', props)
     const resultValue: any = {
       attr: props?.type,
       value: [],
@@ -445,7 +446,7 @@ const TableQuickEdit = (props: Props) => {
           props.onUpdate?.()
         }
       } else {
-        // 事务
+        // 需求
         await updateTableParams(obj)
         if (props.isInfoPage) {
           const result = await getDemandInfo({ projectId, id: props.item?.id })
@@ -455,7 +456,7 @@ const TableQuickEdit = (props: Props) => {
         }
       }
     } else {
-      // 需求
+      // 事务
       await updateAffairsTableParams(obj)
       if (props.isInfoPage) {
         dispatch(getAffairsInfo({ projectId, sprintId: props.item?.id }))

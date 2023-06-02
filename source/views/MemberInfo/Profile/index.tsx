@@ -280,8 +280,6 @@ const Profile = () => {
   }
 
   const init = async () => {
-    console.log(11111)
-
     const res = isMember
       ? await getMemberInfoOverviewStatistics({
           targetId: userId,
@@ -344,7 +342,6 @@ const Profile = () => {
   }
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`)
     setNowYear(value)
   }
   const changeName = (key: any) => {
@@ -385,8 +382,6 @@ const Profile = () => {
 
     setNowYearOptions(res.data.years)
 
-    console.log(trans(res.data.list), '---')
-
     setChartData(trans(res.data.list))
   }
 
@@ -397,7 +392,6 @@ const Profile = () => {
   if (!loadingState) {
     return <Loading />
   }
-  console.log(data)
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment

@@ -927,7 +927,13 @@ export const getAffiliationUser = async (id: any) => {
 // 用户最近访问的项目列表
 export const getProjectRecent = async () => {
   const response = await http.get<any>('/b/project/recent')
-  return response.data.map((item: { default_home_menu: string }) => {
-    return { ...item, defaultHomeMenu: item.default_home_menu }
-  })
+  return response.data.map(
+    (item: { default_home_menu: string; project_type: string }) => {
+      return {
+        ...item,
+        defaultHomeMenu: item.default_home_menu,
+        projectType: item.project_type,
+      }
+    },
+  )
 }

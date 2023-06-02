@@ -41,6 +41,7 @@ import {
   viewsList,
   viewsUpdate,
 } from '@/services/efficiency'
+import { getDate } from './Date'
 
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const { headerParmas, projectDataList } = useSelector(
@@ -158,7 +159,31 @@ const Home = () => {
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)
-    setDefalutConfig(res.find(el => el.is_default === 1)?.config)
+    let filterVal: Models.Efficiency.ViewItem | undefined = res.find(
+      el => el.is_default === 1,
+    )
+    console.log(filterVal, 'res.find(el => el.is_default === 1)?.config')
+    setDefalutConfig(filterVal?.config)
+    dispatch(
+      setHeaderParmas({
+        users: filterVal?.config.user_ids,
+        projectIds: filterVal?.config.project_id,
+        view: {
+          title: filterVal?.name,
+          value: filterVal?.id,
+        },
+        time: {
+          type:
+            filterVal?.config.period_time === ''
+              ? 0
+              : getDate(filterVal?.config?.period_time || ''),
+          time:
+            filterVal?.config.period_time === ''
+              ? 0
+              : getDate(filterVal?.config?.period_time || ''),
+        },
+      }),
+    )
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
@@ -167,7 +192,7 @@ const Home = () => {
       type === 'add'
         ? await createViewList({
             use_type: 3,
-            name: '员工对比表1',
+            name: val,
             config: {
               project_id: [92, 27, 41],
               user_ids: [37, 22, 10, 100],
@@ -181,6 +206,10 @@ const Home = () => {
     // // 刷新视图的接口
     // getViewList({ project_id: '1', use_type: 3 })
   }
+  const onEdit = async () => {
+    console.log(headerParmas, 'edit')
+    // await viewsUpdate({ id: Number(key), project_id: 1, name: val })
+  }
   // 删除视图
   const onDelView = async (key: string) => {
     // const res = await delView(Number(key))
@@ -192,14 +221,18 @@ const Home = () => {
     const res = await defaultView(id)
   }
   // 获取下拉框的值视图的
-  const onGetOptionValue = (id: number) => {
-    setOptionVal(id)
+  const onGetOptionValue = (title: string, value: number) => {
+    console.log()
+    setOptionVal(value)
     dispatch(
       setHeaderParmas({
         users: headerParmas.users,
         projectIds: headerParmas.projectIds,
         time: headerParmas.time,
-        view: id,
+        view: {
+          title,
+          value,
+        },
       }),
     )
   }
@@ -333,6 +366,7 @@ const Home = () => {
         onDelView={onDelView}
         onChange={onGetOptionValue}
         onSetDefaulut={onSetDefaulut}
+        onEdit={onEdit}
       />
       <WorkingStatus
         homeType={homeType}
