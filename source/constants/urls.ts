@@ -298,6 +298,8 @@ const urls = {
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
   // 视图列表
   viewsList: '/b/story/views/list',
+  // 近期的冲刺项目
+  recentCreateData: '/b/project/recentCreateData',
   /**
    * 看板
    */

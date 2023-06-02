@@ -702,6 +702,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
     selectedRowKeys,
     onChange: onSelectChange,
   }
+  console.log('projectInfo-----', projectInfo)
   return (
     <PermissionWrap
       auth="b/project/member"

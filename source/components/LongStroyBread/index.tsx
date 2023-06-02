@@ -39,12 +39,14 @@ const HasStroyWrap = styled.div`
 interface IProps {
   longStroy?: any
   layer?: boolean
+  onClick?(): void
 }
 const LongStroyBread = (props: IProps) => {
   const [visible, setVisible] = useState(false)
   const [showEditIcon, setShowEditIcon] = useState(false)
   const [hasLongStroy, setHasLongStroy] = useState(false)
-  const { longStroy = {}, layer = false } = props
+  const [isHasLongStroy, setIsHasLongStroy] = useState(false)
+  const { longStroy = {}, layer = false, onClick } = props
   console.log(longStroy)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -64,18 +66,19 @@ const LongStroyBread = (props: IProps) => {
   }
   useEffect(() => {
     // hasLongStroy 为true可以添加长故事 work_type 为4,5才可以添加关联
-    const hasLongStroy =
-      longStroy?.level_tree?.length === 0 ||
-      (longStroy?.level_tree?.length &&
-        longStroy.level_tree?.every(
-          (item: { work_type: number }) => item.work_type !== 3,
-        ))
+    const hasLongStroy = longStroy.work_type === 4 || longStroy.work_type === 5
+    if (hasLongStroy) {
+      // isHasLongStroy 为true 可以新增
+      const isHasLongStroy = longStroy?.level_tree?.length === 0
+      console.log('isHasLongStroy', isHasLongStroy)
+      setIsHasLongStroy(isHasLongStroy)
+    }
     setHasLongStroy(hasLongStroy)
   }, [longStroy])
   return (
     <div style={{ position: 'relative' }} ref={ref}>
       <BreadBox>
-        {longStroy?.work_type === 3 ? null : (
+        {hasLongStroy ? (
           <div style={{ display: 'flex' }}>
             {layer ? null : (
               <span style={{ display: 'flex', alignItems: 'center' }}>
@@ -86,7 +89,19 @@ const LongStroyBread = (props: IProps) => {
               </span>
             )}
 
-            {hasLongStroy === false ? (
+            {isHasLongStroy ? (
+              <LongStroyWrap
+                onClick={() => {
+                  setVisible(true)
+                }}
+              >
+                <CommonIconFont
+                  type="edit"
+                  color="var(--neutral-n3)"
+                ></CommonIconFont>
+                <LabelBox>添加长故事</LabelBox>
+              </LongStroyWrap>
+            ) : (
               <LongStroyWrap>
                 {showEditIcon ? (
                   <HasStroyWrap>
@@ -116,21 +131,9 @@ const LongStroyBread = (props: IProps) => {
                 )}
                 <LabelBox>{longStroy?.projectPrefix}</LabelBox>
               </LongStroyWrap>
-            ) : (
-              <LongStroyWrap
-                onClick={() => {
-                  setVisible(true)
-                }}
-              >
-                <CommonIconFont
-                  type="edit"
-                  color="var(--neutral-n3)"
-                ></CommonIconFont>
-                <LabelBox>添加长故事</LabelBox>
-              </LongStroyWrap>
             )}
           </div>
-        )}
+        ) : null}
 
         <CommonIconFont
           type="right"
@@ -161,7 +164,13 @@ const LongStroyBread = (props: IProps) => {
         )}
       </BreadBox>
       {visible ? (
-        <LongStoryDropdown detail={longStroy}></LongStoryDropdown>
+        <LongStoryDropdown
+          detail={longStroy}
+          onClick={() => {
+            setVisible(false)
+            onClick && onClick()
+          }}
+        ></LongStoryDropdown>
       ) : null}
     </div>
   )

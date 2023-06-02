@@ -373,7 +373,12 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       <DetailTop>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <MyBreadcrumb />
-          <LongStroyBread longStroy={affairsInfo}></LongStroyBread>
+          <LongStroyBread
+            longStroy={affairsInfo}
+            onClick={() => {
+              console.log('回调')
+            }}
+          ></LongStroyBread>
         </div>
 
         <ButtonGroup size={16}>

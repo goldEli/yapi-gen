@@ -470,8 +470,9 @@ export const updateInfoAffairs = async (
   await http.put<any>('updateAffairs', {
     project_id: Number(params.projectId),
     id: Number(params.sprintId),
-    target_id: params.targetId,
     type: params.type,
+    parent_id: params.parentId,
+    name: params.name,
   })
 }
 // 快捷修改参数

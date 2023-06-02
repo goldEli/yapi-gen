@@ -994,7 +994,7 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
         config: {
           project_id: [441, 437],
           user_ids: [1],
-          iterate_ids: [],
+          iterate_ids: [9970],
           start_time: '',
           end_time: '',
           period_time: '',
@@ -1451,3 +1451,45 @@ export const statisticsOther = async (
   return response.data
 }
 // 图表页面 end
+// 最近的冲刺项目
+export const recentCreateData = async (params: {
+  resource_type: number
+  project_id: number
+}) => {
+  const response = await http.get<any, API.Sprint.RecentCreateData.Result>(
+    'recentCreateData',
+    params,
+  )
+  return [
+    {
+      content: '创建【需求】',
+      created_at: '2023-05-11 14:22:46',
+      feedable: {
+        id: 1003237,
+        name: '23454',
+        status: null,
+        project_id: 412,
+        deleted_at: null,
+      },
+      feedable_id: 1003237,
+      feedable_type: 'story',
+      id: 9970,
+      key: 9970,
+    },
+    {
+      content: '创建【需求123】',
+      created_at: '2023-05-11 19:22:46',
+      feedable: {
+        id: 1003237,
+        name: '23454',
+        status: null,
+        project_id: 412,
+        deleted_at: null,
+      },
+      feedable_id: 1003237,
+      feedable_type: 'story',
+      id: 9971,
+      key: 9971,
+    },
+  ]
+}
