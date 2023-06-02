@@ -9,10 +9,8 @@ import CommonIconFont from '@/components/CommonIconFont'
 import Select from './Select'
 import CommonButton from '@/components/CommonButton'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from '@store/index'
 import { getMonthBefor, getDays } from './Date'
-import { defaults } from 'lodash'
-import { getExport } from '@/services/efficiency'
+import { encryptPhp } from '@/tools/cryptoPhp'
 interface HaderProps {
   type: string
   projectDataList: Array<{
@@ -22,6 +20,8 @@ interface HaderProps {
   headerParmas: Models.Efficiency.HeaderParmas
   onSearchData: (value: number[]) => void
   onGetExportApi: (value: number[]) => void
+  projectId: number
+  homeType: string
 }
 const HeaderAll = (props: HaderProps) => {
   const navigate = useNavigate()
@@ -63,12 +63,25 @@ const HeaderAll = (props: HaderProps) => {
         )
       : setProjectList(props.projectDataList)
   }, [])
+  const onBack = () => {
+    if (props.homeType === 'all') {
+      navigate(`/Performance`)
+    } else {
+      const params = encryptPhp(
+        JSON.stringify({
+          projectId: props.projectId,
+          type: props.type,
+        }),
+      )
+      navigate(`/Performance?data=${params}`)
+    }
+  }
   return (
     <>
       <HeaderRowBox>
         <Back onClick={() => 123}>
           <CommonIconFont type="left-md" size={16} />
-          <span className="text" onClick={() => navigate(-1)}>
+          <span className="text" onClick={() => onBack()}>
             返回
           </span>
         </Back>
