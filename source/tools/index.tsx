@@ -201,7 +201,9 @@ function getTypeComponent(
         showSearch
         showArrow
         optionFilterProp="label"
-        getPopupContainer={(node: any) => node}
+        getPopupContainer={(node: any) =>
+          params.isBindBody ? document.body : node
+        }
         allowClear
         value={defaultValue}
         onRef={inputRef}
