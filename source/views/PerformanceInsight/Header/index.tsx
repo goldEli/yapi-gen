@@ -36,6 +36,7 @@ interface Props {
   onChange: (title: string, value: number) => void
   defalutConfig: Models.Efficiency.ConfigItem | undefined
   onEdit: () => void
+  value: number
 }
 const Iteration = (props: Props) => {
   dayjs.extend(customParseFormat)
@@ -73,21 +74,40 @@ const Iteration = (props: Props) => {
   const [timeVal, setTimeVal] = useState<any>()
   // 项目的id
   const [projectIds, setProjectIds] = useState<number[]>()
+  const [iterateIds, setIterateIds] = useState<number>(0)
   const dispatch = useDispatch()
   const { save, headerParmas } = useSelector(store => store.performanceInsight)
+  // tads切换
   const getTabsActive = (index: number) => {
     setTabsActive(index)
+    setTimekey(index)
   }
   useEffect(() => {
+    // 展示的tabs不同
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
     props.homeType === 'all' && getProjectData()
   }, [])
   useEffect(() => {
-    getTime(props.defalutConfig?.period_time || '')
+    // 回显的项目id
     setProjectIds(props.defalutConfig?.project_id)
+    setTabsActive(
+      props.defalutConfig?.period_time !== '' ||
+        props.defalutConfig?.start_time !== ''
+        ? 0
+        : 1,
+    )
+    getTime(props.defalutConfig?.period_time || '')
+    props.defalutConfig &&
+      props.defalutConfig?.period_time == '' &&
+      props.defalutConfig?.start_time == '' &&
+      setIterateIds(
+        props.defalutConfig?.iterate_ids?.length == 0
+          ? 0
+          : props.defalutConfig.iterate_ids[0],
+      )
   }, [props.defalutConfig])
-  console.log(props.defalutConfig, 'props.defalutConfig')
+  // 获取时间回显
   const getTime = (type: string) => {
     let date = getDate(type)
     setTimekey(date)
@@ -101,6 +121,7 @@ const Iteration = (props: Props) => {
       setHeaderParmas({
         users: [],
         projectIds,
+        iterate_ids: headerParmas?.iterate_ids,
         time: {
           type: date,
           time:
@@ -114,6 +135,10 @@ const Iteration = (props: Props) => {
         view: headerParmas.view,
       }),
     )
+    props.defalutConfig?.start_time === '' &&
+      props.defalutConfig?.end_time === '' &&
+      props.defalutConfig?.period_time === '' &&
+      setTimekey(1)
   }
   // 获取项目列表
   const getProjectData = async () => {
@@ -163,6 +188,7 @@ const Iteration = (props: Props) => {
         projectIds,
         time: headerParmas.time,
         view: headerParmas.view,
+        iterate_ids: headerParmas.iterate_ids,
       }),
     )
   }
@@ -177,6 +203,7 @@ const Iteration = (props: Props) => {
     dispatch(
       setHeaderParmas({
         users: person,
+        iterate_ids: headerParmas.iterate_ids,
         projectIds: headerParmas.projectIds,
         time: {
           type: 0,
@@ -186,12 +213,25 @@ const Iteration = (props: Props) => {
       }),
     )
   }
-
+  // 冲刺选择的
+  const oniterateChange = (val: number) => {
+    dispatch(
+      setHeaderParmas({
+        users: person,
+        iterate_ids: val,
+        projectIds: headerParmas.projectIds,
+        time: headerParmas.time,
+        view: headerParmas.view,
+      }),
+    )
+    setIterateIds(val)
+  }
   return (
     <HeaderRow>
       <Space size={16}>
         <View
           onChange={props.onChange}
+          value={props.value}
           viewDataList={props.viewDataList}
           onCreateView={props.onCreateView}
           onDelView={props.onDelView}
@@ -219,6 +259,7 @@ const Iteration = (props: Props) => {
                     projectIds: value,
                     view: headerParmas.view,
                     time: headerParmas.time,
+                    iterate_ids: headerParmas.iterate_ids,
                   }),
                 )
             }}
@@ -266,6 +307,7 @@ const Iteration = (props: Props) => {
         )}
         {tabsActive === 0 ? (
           <SelectMain
+            allowClear={false}
             onChange={e => {
               setTimekey(e), dispatch(setSave(true))
               dispatch(
@@ -277,6 +319,7 @@ const Iteration = (props: Props) => {
                     time: e,
                   },
                   view: headerParmas.view,
+                  iterate_ids: headerParmas.iterate_ids,
                 }),
               )
             }}
@@ -310,7 +353,14 @@ const Iteration = (props: Props) => {
             ]}
           />
         ) : (
-          <Sprint />
+          <Sprint
+            data={[
+              { name: '123', id: 1, key: 1 },
+              { name: '1234', id: 14, key: 14 },
+            ]}
+            value={iterateIds}
+            onChange={oniterateChange}
+          />
         )}
         {timekey === 0 && (
           <RangePicker
@@ -320,11 +370,6 @@ const Iteration = (props: Props) => {
           />
         )}
       </Space>
-      {/* <AddMemberCommonModal
-        isVisible={isVisible}
-        onClose={() => setIsVisible(false)}
-        onConfirm={data => onConfirm(data)}
-      /> */}
       <NewAddUserModalForTandD
         title={'添加成员'}
         state={2}

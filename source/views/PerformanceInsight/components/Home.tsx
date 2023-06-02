@@ -133,10 +133,11 @@ const Home = () => {
   const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
-  const [viewDataList, setViewDataList] =
-    useState<Array<Models.Efficiency.ViewItem>>()
+  const [viewDataList, setViewDataList] = useState<
+    Array<Models.Efficiency.ViewItem>
+  >([])
   // 'iteration''sprint' 'all'
-  const [homeType, setHomeType] = useState('all')
+  const [homeType, setHomeType] = useState('iteration')
   const [workDataList, setWorkDataList] =
     useState<API.Sprint.GetStatisticsTotal.Result>()
   const [optionVal, setOptionVal] = useState<number>(0)
@@ -162,7 +163,7 @@ const Home = () => {
     let filterVal: Models.Efficiency.ViewItem | undefined = res.find(
       el => el.is_default === 1,
     )
-    console.log(filterVal, 'res.find(el => el.is_default === 1)?.config')
+    setOptionVal(filterVal?.id || 0)
     setDefalutConfig(filterVal?.config)
     dispatch(
       setHeaderParmas({
@@ -172,6 +173,7 @@ const Home = () => {
           title: filterVal?.name,
           value: filterVal?.id,
         },
+        iterate_ids: filterVal?.config.iterate_ids,
         time: {
           type:
             filterVal?.config.period_time === ''
@@ -199,6 +201,7 @@ const Home = () => {
               start_time: '1992-02-27 08:42:02',
               end_time: '1974-06-21 00:22:31',
               period_time: 'four_week',
+              iterate_ids: [],
             },
             project_id: 18,
           })
@@ -222,13 +225,18 @@ const Home = () => {
   }
   // 获取下拉框的值视图的
   const onGetOptionValue = (title: string, value: number) => {
-    console.log()
+    console.log(value, '99999999')
     setOptionVal(value)
+    let filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
+      el => el.id === value,
+    )
+    setDefalutConfig(filterVal?.config)
     dispatch(
       setHeaderParmas({
         users: headerParmas.users,
         projectIds: headerParmas.projectIds,
         time: headerParmas.time,
+        iterate_ids: headerParmas.iterate_ids,
         view: {
           title,
           value,
@@ -367,6 +375,7 @@ const Home = () => {
         onChange={onGetOptionValue}
         onSetDefaulut={onSetDefaulut}
         onEdit={onEdit}
+        value={optionVal}
       />
       <WorkingStatus
         homeType={homeType}
@@ -481,8 +490,11 @@ const Home = () => {
           <TextColor>单击“保存”按钮可以将更改保存在如下视图</TextColor>
           <div style={{ margin: '8px 0 0 32px' }}>
             <SelectMain
-              onChange={e => setOptionVal(e)}
+              onChange={e => {
+                setOptionVal(e)
+              }}
               placeholder="请选择"
+              allowClear={false}
               value={optionVal}
               list={viewDataList?.map(el => ({
                 name: el.name,

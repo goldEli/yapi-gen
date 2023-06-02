@@ -64,7 +64,7 @@ const Export = (props: PropsType) => {
         personData={props.personData}
         title="查看成员"
         isVisible={isOpen}
-        onConfirm={() => 123}
+        onConfirm={() => setIsOpen(false)}
         onClose={() => setIsOpen(false)}
       />
     </>

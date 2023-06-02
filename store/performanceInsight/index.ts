@@ -13,6 +13,7 @@ type SliceState = {
 const initialState: SliceState = {
   save: false,
   headerParmas: {
+    iterate_ids: [],
     projectIds: [],
     users: [],
     time: {

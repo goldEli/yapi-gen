@@ -34,7 +34,7 @@ const SelectMain = (props: Props) => {
         onChange={changeValue}
         showSearch
         optionFilterProp="label"
-        allowClear
+        allowClear={true}
         getPopupContainer={(node: any) => node}
         placeholder={props.placeholder}
         showArrow={true}
