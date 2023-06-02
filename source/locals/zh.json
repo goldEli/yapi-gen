@@ -1617,5 +1617,6 @@
   "by_personnel": "按人员",
   "by_category": "按类别",
   "by_priority": "按优先级",
-  "do_you_want_to_save_changes": "是否保存修改？"
+  "do_you_want_to_save_changes": "是否保存修改？",
+  "remind": "提醒"
 }
