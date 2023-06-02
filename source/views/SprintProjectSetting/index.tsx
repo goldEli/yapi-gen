@@ -7,7 +7,8 @@ import ProjectInfo from './components/ProjectInfo'
 import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
 import DemandSetting from '../DemandSetting'
-import KanBanSettings from './components/KanBanSetting'
+// import KanBanSettings from './components/KanBanSetting'
+import KanBanSettings from '@/views/ProjectSetting/components/KanBanSetting'
 import HomeSettings from './components/HomeSetting'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -106,6 +107,7 @@ const Setting = () => {
   ])
   useEffect(() => {
     setSearchValue('')
+    console.log('activeTabs------', activeTabs)
   }, [activeTabs])
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))
