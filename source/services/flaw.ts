@@ -284,6 +284,13 @@ export const updateFlawComment = async (
   })
 }
 
+// 删除评论下的附件
+export const deleteFlawCommentAttach = async (
+  params: API.Flaw.DeleteFlawCommentAttach.Params,
+) => {
+  await http.delete('deleteFlawCommentAttach', params)
+}
+
 // 缺陷变更记录
 export const getFlawChangeLog = async (
   params: API.Flaw.GetFlawChangeLog.Params,
@@ -918,4 +925,63 @@ export const getShapeFlawRight = async (params: any) => {
     originalStatusUserIds: res.data.originalStatusUserIds,
   }
   return obj
+}
+
+// 获取缺陷关联工作项列表
+export const getFlawRelationStories = async (
+  params: API.Flaw.GetFlawRelationStories.Params,
+) => {
+  const response = await http.get<any, API.Flaw.GetFlawRelationStories.Result>(
+    'getFlawRelationStories',
+    {
+      pagesize: params.pageSize,
+      page: params.page,
+      orderkey: params.orderKey,
+      order: params.order,
+      project_id: params.projectId,
+      id: params.id,
+    },
+  )
+
+  return response.data
+}
+
+//  添加关联缺陷
+export const addFlawRelation = async (params: API.Flaw.FlawRelation.Params) => {
+  await http.post<any>('addFlawRelation', {
+    project_id: params.projectId,
+    id: params.id,
+    relation_id: params.relationId,
+    type: params.type,
+  })
+}
+
+// 搜索查询下拉关联事务
+export const getFlawSelectRelationSearch = async (
+  params: API.Flaw.GetFlawRelationList.Params,
+) => {
+  const response = await http.get<any, API.Flaw.GetFlawRelationList.Result>(
+    'getFlawSelectRelationSearch',
+    {
+      project_id: params.projectId,
+      id: params.id,
+      keywords: params.searchValue,
+    },
+  )
+
+  return response.data
+}
+
+// 最近子事务查询
+export const getFlawSelectRelationRecent = async (
+  params: API.Flaw.GetFlawRelationList.Params,
+) => {
+  const response = await http.get<any, API.Flaw.GetFlawRelationList.Result>(
+    'getFlawSelectRelationRecent',
+    {
+      project_id: params.projectId,
+      id: params.id,
+    },
+  )
+  return response.data
 }

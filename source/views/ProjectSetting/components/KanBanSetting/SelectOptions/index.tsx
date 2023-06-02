@@ -19,7 +19,7 @@ import {
 } from './styled'
 import useI18n from '@/hooks/useI18n'
 
-type ViewItem = {
+export type ViewItem = {
   key: string
   value: string
   check: boolean
@@ -82,7 +82,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
             <LabelArea>
               <span className="label">{item.value}</span>
               <DefaultTag visible={item.isDefault ?? false}>
-                {t('default')}
+                {t('default1')}
               </DefaultTag>
             </LabelArea>
             <OperationArea>

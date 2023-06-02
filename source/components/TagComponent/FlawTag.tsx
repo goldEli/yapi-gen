@@ -17,7 +17,6 @@ import {
   TagWrap,
 } from './style'
 import { addInfoFlaw, deleteInfoFlaw } from '@/services/flaw'
-import { getFlawInfo } from '@store/flaw/flaw.thunk'
 
 interface TagProps {
   tap?(value: any): void
@@ -28,13 +27,12 @@ interface TagProps {
   onChangeTag?(arr: any, type: string): void
   checkedTags: any
   id?: any
+  detail: Model.Flaw.FlawInfo
 }
 
 const TagBox = (props: TagProps) => {
-  const dispatch = useDispatch()
   const [t] = useTranslation()
   const { projectInfoValues } = useSelector(store => store.project)
-  const { flawInfo } = useSelector(store => store.flaw)
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
@@ -93,12 +91,11 @@ const TagBox = (props: TagProps) => {
       try {
         await addInfoFlaw({
           projectId,
-          id: flawInfo.id,
+          id: props.detail.id,
           type: 'tag',
           targetId: [{ name: item.content, color: item.color }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
-        dispatch(getFlawInfo({ projectId, id: flawInfo.id }))
         props.onChangeIsOpen(false)
       } catch (error) {
         //
@@ -152,17 +149,17 @@ interface Props {
   defaultList?: any
   id?: any
   isQuick?: boolean
+  detail: Model.Flaw.FlawInfo
+  onUpdate(): void
 }
 
 const FlawTag = (props: Props) => {
   const [t] = useTranslation()
-  const { flawInfo } = useSelector(store => store.flaw)
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
-  const dispatch = useDispatch()
   let projectId: any
   if (props?.id) {
     projectId = props?.id
@@ -200,12 +197,12 @@ const FlawTag = (props: Props) => {
       try {
         await addInfoFlaw({
           projectId,
-          id: flawInfo?.id,
+          id: props.detail?.id,
           type: 'tag',
           targetId: [{ name: newTag, color: value }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
-        dispatch(getFlawInfo({ projectId, id: flawInfo?.id }))
+        props.onUpdate()
         setNewTag('')
         setIsChooseColor(false)
         setIsClear(false)
@@ -231,12 +228,12 @@ const FlawTag = (props: Props) => {
       try {
         await deleteInfoFlaw({
           projectId,
-          id: flawInfo?.id,
+          id: props.detail?.id,
           type: 'tag',
           targetId: item.id,
         })
         getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-        dispatch(getFlawInfo({ projectId, id: flawInfo?.id }))
+        props.onUpdate()
       } catch (error) {
         //
       }
@@ -333,10 +330,14 @@ const FlawTag = (props: Props) => {
                 tap={onAddDemandTags}
                 canAdd={props.canAdd}
                 onChangeIsClear={setIsClear}
-                onChangeIsOpen={setIsOpen}
+                onChangeIsOpen={value => {
+                  setIsOpen(value)
+                  props.onUpdate()
+                }}
                 onChangeTag={props.onChangeTag}
                 checkedTags={checkedTags}
                 id={props?.id}
+                detail={props.detail}
               />
             ) : null
           }

@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from '@store/index'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import SetShowField from './SetShowField'
 import SaveAsViewModal from './SaveAsViewModal'
-import { openShareModel } from '@store/sprintKanBan/sprintKanban.thunk'
 import { DividerWrap, HasIconMenu, HoverWrap } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
 import ScreenMinHover from '@/components/ScreenMinHover'
@@ -145,7 +144,7 @@ const KanBanBtnsArea = (props: Props) => {
       />
       {/* 分享 */}
       <ScreenMinHover
-        label={'分享'}
+        label={t('share')}
         icon="share"
         onClick={() => {
           // dispatch(openShareModel())
@@ -206,7 +205,7 @@ const KanBanBtnsArea = (props: Props) => {
       <DividerWrap type="vertical" />
       {/* 全屏 */}
       <ScreenMinHover
-        label={'全屏'}
+        label={t('full_screen')}
         icon="full-screen"
         onClick={() => {
           dispatch(onFullScreenMode())

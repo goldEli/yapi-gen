@@ -18,6 +18,7 @@ import {
 import useCloseMap from '../hooks/useCloseMap'
 import useGroupType from '../hooks/useGroupType'
 import PriorityIcon from '@/components/PriorityIcon'
+import useI18n from '@/hooks/useI18n'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -29,6 +30,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const dispatch = useDispatch()
   const hidden = !!closeMap?.get(issuesGroup.id)
   const { showUserRelatedInformation, groupType, isNoGroup } = useGroupType()
+  const { t } = useI18n()
 
   const text = useMemo(() => {
     const storiesNum =
@@ -37,9 +39,13 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         return res + n
       }, 0) ?? 0
     if (!showUserRelatedInformation) {
-      return `${storiesNum}个事务`
+      return t('count_transaction', { count: storiesNum })
     }
-    return `共计${issuesGroup?.users?.length ?? 0}人，${storiesNum}个事务`
+    return `${t('count_person', {
+      count: issuesGroup?.users?.length ?? 0,
+    })}，${t('count_transaction', {
+      count: storiesNum,
+    })}`
   }, [issuesGroup, showUserRelatedInformation])
 
   const showPeople = showUserRelatedInformation && (
@@ -82,7 +88,6 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         if (issuesGroup.id === 0) {
           open({
             async onConfirm(data) {
-              console.log(data, 123)
               dispatch(
                 openUserGroupingModel({
                   userList: data,

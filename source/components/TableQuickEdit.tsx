@@ -90,6 +90,9 @@ interface Props {
 
   // 是否是详情页面
   isInfoPage?: boolean
+
+  // 人员下拉框是否绑定在body上面
+  isBindBody?: string
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -255,7 +258,6 @@ const TableQuickEdit = (props: Props) => {
 
   //  迭代、处理人、抄送人、需求分类、标签--- 项目信息获取
   const getDefaultSelectValuesInfo = () => {
-    console.log('项目信息回去', props)
     const resultValue: any = {
       attr: props?.type,
       value: [],
@@ -330,7 +332,7 @@ const TableQuickEdit = (props: Props) => {
       }))
     }
 
-    setParams(resultValue)
+    setParams({ ...resultValue, isBindBody: props.isBindBody })
     setTimeout(() => {
       inputRef.current?.focus()
     }, 100)

@@ -15,6 +15,7 @@ interface View {
   onSetDefaulut: (id: number) => void
   onChange: (title: string, value: number) => void
   defalutConfig: Models.Efficiency.ConfigItem | undefined
+  value: number
 }
 const View = (props: View) => {
   const dispatch = useDispatch()
@@ -32,9 +33,8 @@ const View = (props: View) => {
     name: '',
   })
   // 剔除来的默认视图
-  const [optionsDefault, setOptionsDefault] =
-    useState<Models.Efficiency.ViewItem>()
-  const [options, setOptions] = useState<Array<Models.Efficiency.ViewItem>>()
+  const [optionsDefault, setOptionsDefault] = useState<any>()
+  const [options, setOptions] = useState<Array<Models.Efficiency.ViewItem>>([])
   // 用于后面接口判断使用
   const [key, setKey] = useState('first')
   useEffect(() => {
@@ -72,10 +72,29 @@ const View = (props: View) => {
     ])
     props.viewDataList &&
       setValue(props.viewDataList.find(el => el.is_default === 1))
-    // optionsDefault?.id || 0
     props.viewDataList &&
+      options.length >= 1 &&
       props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
   }, [options])
+  useEffect(() => {
+    console.log('tou', props.value, value?.id)
+    if (props.value !== value?.id) {
+      const item = props.viewDataList?.find(el => el.id === props.value) || {
+        name: '',
+        id: 0,
+        label: '',
+        status: 0,
+        type: 0,
+        key: '',
+        config: { iterate_ids: [] },
+      }
+      setValue({
+        ...item,
+        name: item?.type === 2 ? '视图' + '' + item.name : item.name,
+      })
+      props.onChange(item?.name || '', item?.id || 0)
+    }
+  }, [props.value])
   const getLabel = (el: { name: string; id: number }) => {
     return (
       <Label key={el.id}>
@@ -124,7 +143,16 @@ const View = (props: View) => {
   }
   const onOpenChange: MenuProps['onClick'] = (e: { key: string }) => {
     setKey(e.key)
+    console.log(e.key, 'ooo')
     if (e.key === 'first') {
+      setValue({
+        ...optionsDefault,
+        name:
+          optionsDefault?.type === 2
+            ? '视图' + '' + optionsDefault.name
+            : optionsDefault.name,
+      })
+      props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
       return
     } else if (e.key === 'last') {
       setIsOpen(false)
@@ -144,7 +172,9 @@ const View = (props: View) => {
         name: '',
         status: 0,
         id: 0,
-        config: {},
+        config: {
+          iterate_ids: [],
+        },
       }
       props.onChange(item.name, item.id)
       setValue({
@@ -156,6 +186,7 @@ const View = (props: View) => {
           users: headerParmas.users,
           projectIds: headerParmas.projectIds,
           time: headerParmas.time,
+          iterate_ids: headerParmas.iterate_ids,
           view: {
             title: item.name,
             value: item.key,

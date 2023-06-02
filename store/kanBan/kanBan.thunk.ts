@@ -23,6 +23,7 @@ import { generatorFilterParams } from './utils'
 import _ from 'lodash'
 import { Options } from '@/components/SelectOptionsNormal'
 import { produce } from 'immer'
+import { ViewItem } from '@/views/ProjectSetting/components/KanBanSetting/SelectOptions'
 
 const name = 'kanBan'
 
@@ -218,7 +219,6 @@ export const modifyPriority =
         }),
       )
     }
-    console.log(data, 123)
     dispatch(
       sortStoryServer({
         kanban_column_id: options.sourceColumnId,
@@ -593,8 +593,7 @@ export const getStoryViewList = createAsyncThunk(
 
 // 保存视图
 export const onSaveAsViewModel =
-  (data: Partial<Model.SprintKanBan.ViewItem>) =>
-  async (dispatch: AppDispatch) => {
+  (data: Partial<ViewItem>) => async (dispatch: AppDispatch) => {
     dispatch(
       createView({
         name: data.value ?? '',
@@ -620,6 +619,7 @@ export const closeShareModel = () => async (dispatch: AppDispatch) => {
 export const onShareModel = () => async (dispatch: AppDispatch) => {
   // TODO
 
-  getMessage({ msg: '保存成功!', type: 'success' })
+  getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
+
   dispatch(closeSaveAsViewModel())
 }

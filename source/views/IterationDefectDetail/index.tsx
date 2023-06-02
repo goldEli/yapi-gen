@@ -38,6 +38,7 @@ import { setFlawInfo } from '@store/flaw'
 import FlawInfo from './components/FlawInfo'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
+import RelationStories from './components/RelationStories'
 
 const IterationDefectDetail = () => {
   const [t] = useTranslation()
@@ -62,6 +63,10 @@ const IterationDefectDetail = () => {
   // 复制标题
   const onCopy = () => {
     copyLink(flawInfo.name, '复制成功！', '复制失败！')
+  }
+
+  const onUpdate = () => {
+    dispatch(getFlawInfo({ projectId: id, id: flawId }))
   }
 
   // 修改缺陷状态
@@ -247,8 +252,13 @@ const IterationDefectDetail = () => {
           <span>关联工作项</span>
         </ActivityTabItem>
       ),
-      children: <div>12</div>,
-      //   <ChangeRecord activeKey={activeKey} />
+      children: (
+        <RelationStories
+          activeKey={tabActive}
+          detail={flawInfo as Model.Flaw.FlawInfo}
+          onUpdate={onUpdate}
+        />
+      ),
     },
     {
       key: '3',

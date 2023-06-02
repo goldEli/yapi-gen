@@ -40,31 +40,33 @@ const Export = (props: PropsType) => {
           <span>导出周期</span>
           <TextColor>{props.time}</TextColor>
         </Row>
-        <Row>
-          {props.personData?.length ? (
-            <span>已选 ({props.personData?.length}人)</span>
-          ) : (
-            <span>已选</span>
-          )}
-          <Text
-            onClick={() => {
-              props.onClose(), setIsOpen(true)
-            }}
-          >
-            查看成员{' '}
-            <CommonIconFont
-              type={'right'}
-              size={16}
-              color="var(--auxiliary-text-t2-d2)"
-            />
-          </Text>
-        </Row>
+        {props.personData?.length >= 1 && (
+          <Row>
+            {props.personData?.length ? (
+              <span>已选 ({props.personData?.length}人)</span>
+            ) : (
+              <span>已选</span>
+            )}
+            <Text
+              onClick={() => {
+                props.onClose(), setIsOpen(true)
+              }}
+            >
+              查看成员{' '}
+              <CommonIconFont
+                type={'right'}
+                size={16}
+                color="var(--auxiliary-text-t2-d2)"
+              />
+            </Text>
+          </Row>
+        )}
       </CommonModal>
       <WacthExportPerson
         personData={props.personData}
         title="查看成员"
         isVisible={isOpen}
-        onConfirm={() => 123}
+        onConfirm={() => setIsOpen(false)}
         onClose={() => setIsOpen(false)}
       />
     </>

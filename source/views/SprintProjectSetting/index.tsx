@@ -21,6 +21,7 @@ import { useState, useEffect } from 'react'
 import ProjectNote from './components/ProjectNote'
 import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 import { getProjectRoleList } from '@store/sprint/sprint.thunk'
+import KanBanBoard from '../KanBanBoard'
 const Wrap = styled.div({
   display: 'flex',
   height: 'calc(100vh - 130px)',
@@ -91,7 +92,7 @@ const Setting = () => {
       {
         name: 'Kanban配置',
         icon: 'settings',
-        content: <KanBanSettings />,
+        content: <KanBanBoard />,
         isPermission: true,
       },
     ],

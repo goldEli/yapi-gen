@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import styled from '@emotion/styled'
 import { Input, message, Popover, Space } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import IconFont from '@/components/IconFont'
@@ -17,7 +16,6 @@ import {
   TagWrap,
 } from './style'
 import { addInfoAffairs, deleteInfoAffairs } from '@/services/affairs'
-import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 
 interface TagProps {
   tap?(value: any): void
@@ -28,13 +26,13 @@ interface TagProps {
   onChangeTag?(arr: any, type: string): void
   checkedTags: any
   id?: any
+  detail: Model.Affairs.AffairsInfo
 }
 
 const TagBox = (props: TagProps) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { projectInfoValues } = useSelector(store => store.project)
-  const { affairsInfo } = useSelector(store => store.affairs)
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
@@ -93,12 +91,11 @@ const TagBox = (props: TagProps) => {
       try {
         await addInfoAffairs({
           projectId,
-          sprintId: affairsInfo.id,
+          sprintId: props.detail.id,
           type: 'tag',
           targetId: [{ name: item.content, color: item.color }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
-        dispatch(getAffairsInfo({ projectId, sprintId: affairsInfo.id }))
         props.onChangeIsOpen(false)
       } catch (error) {
         //
@@ -152,6 +149,8 @@ interface Props {
   defaultList?: any
   id?: any
   isQuick?: boolean
+  detail: Model.Affairs.AffairsInfo
+  onUpdate(): void
 }
 
 const SprintTag = (props: Props) => {
@@ -162,7 +161,6 @@ const SprintTag = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
-  const dispatch = useDispatch()
   let projectId: any
   if (props?.id) {
     projectId = props?.id
@@ -200,12 +198,12 @@ const SprintTag = (props: Props) => {
       try {
         await addInfoAffairs({
           projectId,
-          sprintId: affairsInfo?.id,
+          sprintId: props.detail?.id,
           type: 'tag',
           targetId: [{ name: newTag, color: value }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
-        dispatch(getAffairsInfo({ projectId, sprintId: affairsInfo?.id }))
+        props.onUpdate()
         setNewTag('')
         setIsChooseColor(false)
         setIsClear(false)
@@ -231,12 +229,12 @@ const SprintTag = (props: Props) => {
       try {
         await deleteInfoAffairs({
           projectId,
-          sprintId: affairsInfo?.id,
+          sprintId: props.detail?.id,
           type: 'tag',
           targetId: item.id,
         })
         getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-        dispatch(getAffairsInfo({ projectId, sprintId: affairsInfo?.id }))
+        props.onUpdate()
       } catch (error) {
         //
       }
@@ -333,10 +331,14 @@ const SprintTag = (props: Props) => {
                 tap={onAddDemandTags}
                 canAdd={props.canAdd}
                 onChangeIsClear={setIsClear}
-                onChangeIsOpen={setIsOpen}
+                onChangeIsOpen={value => {
+                  setIsOpen(value)
+                  props.onUpdate()
+                }}
                 onChangeTag={props.onChangeTag}
                 checkedTags={checkedTags}
                 id={props?.id}
+                detail={props.detail}
               />
             ) : null
           }
