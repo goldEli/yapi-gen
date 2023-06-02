@@ -107,7 +107,7 @@ export const MyDiv = styled.div<{ show?: boolean }>`
   cursor: pointer;
   background-color: ${props => (props.show ? 'var(--auxiliary-b6)' : '')};
   &:hover {
-    background-color: #f5f5f5;
+    background-color: var(--neutral-n10);
   }
 `
 const StyledShape = styled.div`

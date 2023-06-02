@@ -78,7 +78,7 @@ const NoteModal = (props: any) => {
               style={{
                 height: '22px',
                 fontSize: '14px',
-                color: '#969799',
+                color: 'var(--neutral-n3)',
                 lineHeight: '22px',
               }}
             >
@@ -97,7 +97,7 @@ const NoteModal = (props: any) => {
             height: '50px',
             fontSize: '44px',
             fontFamily: 'SiYuanMedium',
-            color: '#FFFFFF',
+            color: 'var(--neutral-white-d1)',
             lineHeight: '52px',
           }}
         >
@@ -107,7 +107,7 @@ const NoteModal = (props: any) => {
           style={{
             height: '20px',
             fontSize: '12px',
-            color: '#FFFFFF',
+            color: 'var(--neutral-white-d1)',
             lineHeight: '20px',
           }}
         >
@@ -120,7 +120,7 @@ const NoteModal = (props: any) => {
             height: '26px',
             fontSize: '18px',
             fontFamily: 'SiYuanMedium',
-            color: '#323233',
+            color: 'var(--neutral-n1-d1)',
             lineHeight: '26px',
             textAlign: 'center',
           }}

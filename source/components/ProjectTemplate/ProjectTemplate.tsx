@@ -24,18 +24,18 @@ const ProjectTemplate = (props: any) => {
       tags: [
         {
           name: '未开始',
-          color: '#43BA9A',
-          t_color: '#FFFFFF',
+          color: 'var(--function-success)',
+          t_color: 'var(--neutral-white-d1)',
         },
         {
           name: '进行中',
-          color: '#6688FF',
-          t_color: '#FFFFFF',
+          color: 'var(--primary-d2)',
+          t_color: 'var(--neutral-white-d1)',
         },
         {
           name: '已完成',
-          color: '#F2F2F4',
-          t_color: '#323233',
+          color: 'var(--neutral-n7)',
+          t_color: 'var(--neutral-n1-d1)',
         },
       ],
     },
@@ -47,23 +47,23 @@ const ProjectTemplate = (props: any) => {
       tags: [
         {
           name: '需求设计',
-          color: '#6688FF',
-          t_color: '#FFFFFF',
+          color: 'var(--primary-d2)',
+          t_color: 'var(--neutral-white-d1)',
         },
         {
           name: '美术',
-          color: '#6688FF',
-          t_color: '#FFFFFF',
+          color: 'var(--primary-d2)',
+          t_color: 'var(--neutral-white-d1)',
         },
         {
           name: '原画',
-          color: '#6688FF',
-          t_color: '#FFFFFF',
+          color: 'var(--primary-d2)',
+          t_color: 'var(--neutral-white-d1)',
         },
         {
           name: '...',
-          color: '#6688FF',
-          t_color: '#FFFFFF',
+          color: 'var(--primary-d2)',
+          t_color: 'var(--neutral-white-d1)',
         },
       ],
     },
@@ -182,7 +182,7 @@ const ProjectTemplate = (props: any) => {
               style={{
                 height: '22px',
                 fontSize: '14px',
-                color: '#323233',
+                color: 'var(--neutral-n1-d1)',
                 lineHeight: ' 22px',
                 margin: '16px 16px 8px 16px',
               }}
@@ -199,7 +199,7 @@ const ProjectTemplate = (props: any) => {
                   height: i.text ? '40px' : '0px',
                   fontSize: '12px',
                   fontWeight: 400,
-                  color: '#646566',
+                  color: 'var(--neutral-n2)',
                   lineHeight: '20px',
                 }}
               >
