@@ -1,4 +1,5 @@
 import {
+  BasicFooter,
   FlawInfoInfoItem,
   FlawInfoLabel,
   FlawInfoLeft,
@@ -13,8 +14,13 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import FlawDetail from './FlawDetail'
-import BasicDemand from './BasicDemand'
+import BasicFlaw from './BasicFlaw'
 import { useEffect, useState } from 'react'
+import { Tooltip } from 'antd'
+import { CloseWrap } from '@/components/StyleCommon'
+import CommonIconFont from '@/components/CommonIconFont'
+import FlawComment from './FlawComment'
+import FlawStatus from './FlawStatus'
 
 const FlawInfo = () => {
   const [t] = useTranslation()
@@ -28,6 +34,11 @@ const FlawInfo = () => {
   //   刷新缺陷详情
   const onUpdate = () => {
     dispatch(getFlawInfo({ projectId: id, id: flawId }))
+  }
+
+  // 跳转配置
+  const onToConfig = () => {
+    //
   }
 
   useEffect(() => {
@@ -44,9 +55,13 @@ const FlawInfo = () => {
   return (
     <FlawInfoWrap>
       <FlawInfoLeft>
-        <FlawDetail flawInfo={flawInfo} onUpdate={onUpdate} />
+        <FlawDetail
+          flawInfo={flawInfo as Model.Flaw.FlawInfo}
+          onUpdate={onUpdate}
+        />
         <FlawInfoInfoItem>
           <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
+          <FlawStatus pid={id} sid={flawId} />
         </FlawInfoInfoItem>
       </FlawInfoLeft>
       <WrapRight>
@@ -62,21 +77,22 @@ const FlawInfo = () => {
           </div>
         </TitleWrap>
         {activeTabs === 1 && (
-          <BasicDemand
-            detail={flawInfo}
-            onUpdate={onUpdate}
-            isOpen
-            isInfoPage
-          />
+          <BasicFlaw detail={flawInfo} onUpdate={onUpdate} isOpen isInfoPage />
         )}
-        {/* {activeTabs === 2 && (
-          <div>12</div>
-          //   <DemandComment
-          //     isOpen={activeTabs === 2}
-          //     detail={demandInfo}
-          //     isOpenInfo
-          //   />
-        )} */}
+        {activeTabs === 2 && (
+          <FlawComment isOpen={activeTabs === 2} detail={flawInfo} />
+        )}
+        <BasicFooter>
+          <div className="textBox">
+            <div>已创建：5天</div>
+            <span>更新日期：4分钟前</span>
+          </div>
+          <Tooltip title="配置字段">
+            <CloseWrap width={32} height={32} onClick={onToConfig}>
+              <CommonIconFont type="settings" />
+            </CloseWrap>
+          </Tooltip>
+        </BasicFooter>
       </WrapRight>
     </FlawInfoWrap>
   )

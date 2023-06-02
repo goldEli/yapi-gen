@@ -19,7 +19,7 @@ import { addInfoFlaw, deleteInfoFlaw } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
 
 interface FlawDetailProps {
-  flawInfo: Partial<Model.Flaw.FlawInfo>
+  flawInfo: Model.Flaw.FlawInfo
   onUpdate(): void
 }
 const FlawDetail = (props: FlawDetailProps) => {
@@ -105,6 +105,8 @@ const FlawDetail = (props: FlawDetailProps) => {
         <FlawTag
           defaultList={tagList}
           canAdd
+          onUpdate={props.onUpdate}
+          detail={props.flawInfo}
           addWrap={
             <AddWrap hasDash>
               <IconFont type="plus" />

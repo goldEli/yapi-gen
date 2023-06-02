@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from '@store/index'
 import { setAffairsDetailDrawer } from '@store/affairs'
 import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
 import { useNavigate } from 'react-router-dom'
+import { setFlawDetailDrawer } from '@store/flaw'
+import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 
 const useOpenDemandDetail = () => {
   const { userPreferenceConfig } = useSelector(store => store.user)
@@ -25,10 +27,8 @@ const useOpenDemandDetail = () => {
           dispatch(saveAffairsDetailDrawer({ visible: true, params: item }))
           break
         case 2:
-          // dispatch(
-          //   setAffairsDetailDrawer({ visible: true, params: { id: 1003275 } }),
-          // )
-          // dispatch(saveDemandDetailDrawer(item))
+          dispatch(setFlawDetailDrawer({ visible: true, params: item }))
+          dispatch(saveFlawDetailDrawer({ visible: true, params: item }))
           break
 
         default:

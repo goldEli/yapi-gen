@@ -414,6 +414,12 @@ const urls = {
   batchFlawEdit: '/b/flaw/batch_update',
   // 批量编辑的下拉列表
   getBatchEditFlawConfig: '/b/flaw/batch_fields',
+  // 删除缺陷评论附件
+  deleteFlawCommentAttach: '/b/flaw/comment/delete_att',
+  // 获取缺陷关联工作项
+  getFlawRelationStories: '/b/flaw/relationStories',
+  // 添加关联缺陷
+  addFlawRelation: '/b/flaw/addRelation',
 
   // 获取需求流转配置
   getFlowConfig: '/b/story/flowConfig',
