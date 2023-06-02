@@ -108,12 +108,17 @@ const ItemDropdown = (props: PropsType) => {
     )
     setIsOpen(false)
     // debugger
+    // TODO
+    console.log(el)
+
     if (el.projectType === 2) {
+      // navigate(`/SprintProjectManagement/SprintReport?data=${params}`)
+      // return
       navigate(
         `${
           el.defaultHomeMenu
             ? el.defaultHomeMenu
-            : '/SprintProjectManagement/KanBan'
+            : '/SprintProjectManagement/Affair'
         }?data=${params}`,
       )
       return
