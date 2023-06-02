@@ -188,16 +188,12 @@ const AdminSide = () => {
   )
 
   const onMenuClick = (e: any) => {
-    console.log(e)
-
     const pathObject = allSide.filter((i: any) => i.key === e.key)[0]
     pathObject.path && navigate(pathObject.path)
   }
 
   // 根据导航匹配父级key
   const getDefaultKey = (data: any, parentKeys: any) => {
-    console.log(data)
-
     for (const i in data) {
       if (data[i]?.path === location.pathname) {
         setDefaultKey([parentKeys?.key])
@@ -211,7 +207,6 @@ const AdminSide = () => {
   useEffect(() => {
     getDefaultKey(side, null)
   }, [])
-  console.log(sideList)
 
   return (
     <AdminSideWrap>

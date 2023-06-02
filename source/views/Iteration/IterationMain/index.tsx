@@ -154,7 +154,6 @@ const IterationMain = (props: Props) => {
   }
 
   const onChangeGrid = (val: any) => {
-    console.log(val, '111111111111')
     setIsGrid(val)
     setDataList({ list: undefined })
     if (keyRef.current?.id) {
@@ -266,8 +265,6 @@ const IterationMain = (props: Props) => {
   const refresh = () => {
     getList(isGrid, pageObj, searchItems, false, topParentId)
   }
-
-  console.log(isGrid)
 
   return (
     <>

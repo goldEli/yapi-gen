@@ -19,7 +19,6 @@ import { useTranslation } from 'react-i18next'
 
 const DemoColumn = (props: any) => {
   const { data: res } = props
-  console.log(res)
 
   const config = {
     seriesField: 'type',
