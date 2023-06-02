@@ -47,7 +47,7 @@ export const onChangeViewList =
     if (JSON.stringify(columnList) !== JSON.stringify(columnListBackup)) {
       openConfirmModal({
         text: i18next.t('do_you_want_to_save_changes'),
-        title: i18next.t('confirm'),
+        title: i18next.t('remind'),
         onConfirm: async () => {
           const res = await dispatch(saveKanbanConfig())
           dispatch(updateViewByViewId(id))
