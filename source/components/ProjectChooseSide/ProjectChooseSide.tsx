@@ -68,8 +68,11 @@ const ProjectChooseSide = (props: any) => {
                   {i.name}
                 </div>
                 <div className="l2">
-                  {i.status_list.map((k: any) => (
-                    <span key={k.id}>【{k.content}】-</span>
+                  {i.status_list.map((k: any, index: any) => (
+                    <span key={k.id}>
+                      【{k.content}】
+                      {i.status_list.length === index + 1 ? '' : '-'}
+                    </span>
                   ))}
                 </div>
               </Liu>
@@ -104,8 +107,8 @@ const ProjectChooseSide = (props: any) => {
         </div>
       </div>
 
-      <div className="btn">
-        <CommonButton type="primary" onClick={props?.onClose}>
+      <div style={{ zIndex: '900000' }} className="btn">
+        <CommonButton type="primary" onClick={() => props.onClose()}>
           重新选择
         </CommonButton>
       </div>
