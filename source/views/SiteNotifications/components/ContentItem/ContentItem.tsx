@@ -46,9 +46,11 @@ const ContentItem = (props: any) => {
   }
 
   function formateBlue(str: string, url?: string) {
-    if (str.includes('请前往查看')) {
-      return str.replace(
-        '请前往查看',
+    console.log(url)
+
+    if (url) {
+      return str.concat(
+        '',
         `<a  
         href="${url}" target="_target">请前往查看</a>`,
       )
