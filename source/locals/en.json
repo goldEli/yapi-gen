@@ -1636,7 +1636,7 @@
     "create_columns_and_status": "Create columns and status",
     "save_as": "Save as",
     "save_Changes": "Save Changes",
-    "default": "Default",
+    "default1": "Default",
     "create_view": "Create view",
     "count_transaction": "{{count}} transaction",
     "full_screen": "Full screen",
