@@ -25,6 +25,19 @@ export const updateViewByViewId =
     checked && dispatch<any>(onFresh(checked))
   }
 
+export const handleSaveReminder = () => async (dispatch: AppDispatch) => {
+  const { columnList, columnListBackup } = store.getState().KanbanConfig
+  if (JSON.stringify(columnList) !== JSON.stringify(columnListBackup)) {
+    openConfirmModal({
+      text: '是否保存修改？',
+      title: i18next.t('confirm'),
+      onConfirm: async () => {
+        const res = await dispatch(saveKanbanConfig())
+      },
+    })
+  }
+}
+
 export const onChangeViewList =
   (id: Model.KanbanConfig.ConfigListItem['id']) =>
   async (dispatch: AppDispatch) => {
