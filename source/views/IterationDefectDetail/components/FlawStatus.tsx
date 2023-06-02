@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
 import { getShapeFlawLeft, updateFlawStatus } from '@/services/flaw'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
+import { setIsUpdateStatus } from '@store/project'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -37,7 +38,7 @@ const FlawStatus = (props: any) => {
   const [t] = useTranslation()
   const [active, setActive] = useState<any>(0)
   const [rows, setRows] = useState(null)
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isUpdateStatus } = useSelector(store => store.project)
   const { flawInfo } = useSelector(store => store.flaw)
   const [leftList, setLeftList] = useState([])
   const dispatch = useDispatch()
@@ -66,7 +67,7 @@ const FlawStatus = (props: any) => {
     })
     setActive(flawInfo?.status?.id)
     setLeftList(res2)
-    // dispatch(setIsUpdateStatus(false))
+    dispatch(setIsUpdateStatus(false))
     setRows(res2.find((i: any) => i.id === flawInfo?.status?.id))
   }
 
@@ -92,11 +93,11 @@ const FlawStatus = (props: any) => {
     init()
   }, [])
 
-  // useEffect(() => {
-  //   if (isUpdateStatus) {
-  //     init()
-  //   }
-  // }, [isUpdateStatus])
+  useEffect(() => {
+    if (isUpdateStatus) {
+      init()
+    }
+  }, [isUpdateStatus])
 
   return (
     <div>

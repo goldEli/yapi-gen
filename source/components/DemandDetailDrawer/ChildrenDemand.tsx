@@ -21,7 +21,7 @@ interface Props {
 const ChildrenDemand = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { isUpdateDemand } = useSelector(store => store.demand)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -122,10 +122,10 @@ const ChildrenDemand = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.isOpen || isUpdateDemand) {
+    if (props.isOpen || isUpdateAddWorkItem) {
       getList()
     }
-  }, [props.isOpen, isUpdateDemand])
+  }, [props.isOpen, isUpdateAddWorkItem])
 
   return (
     <div>
