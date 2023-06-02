@@ -421,7 +421,7 @@ import { usePrompt } from '@/tools/block'
 
 usePrompt({
   title: '提醒',
-  text: '是否删除？',
+  text: '当前页面未保存，是否保存？',
   when: true,
   onConfirm: () => {},
 })
