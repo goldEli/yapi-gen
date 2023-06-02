@@ -29,8 +29,8 @@ import { setAddWorkItemModal } from '@store/project'
 import { getLongStory, moveStory, sortStory } from '@/services/sprint'
 import moment from 'moment'
 import { LatelyLongStoryMenu } from './LatelyLongStoryMenu'
-import { DropdownWrap } from '@/components/StyleCommon'
 import ClickDropdown from './ClickDropdown'
+import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 
 const MoveFont = styled(IconFont)`
   fontsize: 16;
@@ -99,6 +99,7 @@ const DndKitTable = (props: any) => {
   const [deleteItem, setDeleteItem] = useState<any>({})
   const [longStoryList, setLongStoryList] = useState<any>([])
   const [isEditLongStory, setIsEditLongStory] = useState(true)
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -238,8 +239,8 @@ const DndKitTable = (props: any) => {
 
   // 判断当前事务是否超出冲刺时间范围
   const getIsExceedTimeRange = (item: any) => {
-    const groupId = item.id?.split('-')?.[0]
-    const sprintObj = rightSprintList.find(k => k.id === Number(groupId))
+    const groupId = item.iterate_id
+    const sprintObj = rightSprintList.find(k => k.id === groupId)
     if (
       (moment(item.expected_start_at).isSame(sprintObj?.start_at) ||
         moment(item.expected_start_at).isAfter(sprintObj?.start_at)) &&
@@ -324,7 +325,7 @@ const DndKitTable = (props: any) => {
     {
       title: '长故事',
       dataIndex: 'long_story_name',
-      width: 120,
+      width: 200,
       render: (text: any, record: any) => {
         return isCanEdit ? (
           <div>{text ? text : '--'}</div>
@@ -341,7 +342,7 @@ const DndKitTable = (props: any) => {
                 <LatelyLongStoryMenu
                   setIsVisible={(item: any) => {
                     setIsVisible(true)
-                    setDeleteItem(item)
+                    setDeleteItem({ ...item, isLong: true })
                   }}
                   longStoryList={longStoryList}
                   record={record}
@@ -372,6 +373,7 @@ const DndKitTable = (props: any) => {
             defaultText={record?.handlers_name_ids || []}
             keyText="users"
             item={record}
+            isBindBody="1"
             onUpdate={() => onUpdate()}
           >
             {record?.handlers?.length ? (
@@ -493,9 +495,11 @@ const DndKitTable = (props: any) => {
           msg: result?.message,
           type: 'error',
         })
+        dispatch(setSprintRefresh(1))
       }
     } catch (error) {
       console.log(error)
+      dispatch(setSprintRefresh(1))
     }
   }
 
@@ -538,6 +542,8 @@ const DndKitTable = (props: any) => {
       const item = data[sourceIdx].stories.find(
         (_: any, i: any) => i === result.source?.index,
       )
+      const sourceList = data[sourceIdx]
+      const destList = data[destIdx]
       const source = [...data[sourceIdx].stories]
       source.splice(result.source?.index, 1)
       const dest = [...data[destIdx].stories]
@@ -551,7 +557,31 @@ const DndKitTable = (props: any) => {
         }
         return k
       })
-      dispatch(setRightSprintList(res))
+      // 判断是否超出冲刺时间范围
+      if (getIsExceedTimeRange(item)) {
+        open({
+          title: '移动事务',
+          children: (
+            <div>
+              <div>该操作会影响冲刺范围</div>
+              <div>{`${item.name} 将从冲刺【${sourceList.name}】移到冲刺【${destList.name}】。`}</div>
+            </div>
+          ),
+          onConfirm: async () => {
+            handleSort(
+              destList?.id,
+              dest?.map((k: any) => k.id),
+            )
+            dispatch(setRightSprintList(res))
+          },
+        })
+      } else {
+        handleSort(
+          destList?.id,
+          dest?.map((k: any) => k.id),
+        )
+        dispatch(setRightSprintList(res))
+      }
     }
   }
 
@@ -580,12 +610,15 @@ const DndKitTable = (props: any) => {
         onConfirm={onDeleteConfirm}
       >
         <div style={{ marginBottom: 9 }}>
-          你将永久删除该事务，删除后将不可恢复请谨慎操作!
+          你将永久删除该{deleteItem.isLong ? '长故事' : '事务'}
+          ，删除后将不可恢复请谨慎操作!
         </div>
         <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-          同时删除该事务下所有子事务
+          同时删除该{deleteItem.isLong ? '长故事' : '事务'}下所有子
+          {deleteItem.isLong ? '长故事' : '事务'}
         </Checkbox>
       </DeleteConfirm>
+      <DeleteConfirmModal />
     </DragDropContext>
   )
 }
