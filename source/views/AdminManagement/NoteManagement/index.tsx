@@ -85,6 +85,7 @@ const StaffManagement = () => {
   const { menuPermission } = useSelector(store => store.user)
   const [isShow, setIsShow] = useState<boolean>(false)
 
+  const [maxPage, setMaxPage] = useState<number>(1)
   const [page, setPage] = useState<number>(1)
   const [showId, setShowId] = useState('')
   const [pagesize, setPagesize] = useState<number>(10)
@@ -129,6 +130,7 @@ const StaffManagement = () => {
       page,
       pagesize,
     })
+    setMaxPage(data.timing_count)
     if (page === 1) {
       setList(data.list)
       if (data.pager.total <= 10) {
@@ -335,6 +337,7 @@ const StaffManagement = () => {
           display: 'flex',
           gap: '8px',
           padding: '24px',
+          alignItems: 'center',
         }}
       >
         <CommonButton
@@ -346,10 +349,13 @@ const StaffManagement = () => {
         >
           {t('send_new_notification')}
         </CommonButton>
-        <CommonButton type="primaryText">
-          {' '}
-          {t('scheduled_notification')}（3）
-        </CommonButton>
+        <span
+          style={{
+            color: 'var(--auxiliary-text-t2-d2)',
+          }}
+        >
+          {t('scheduled_notification')}（{maxPage}）
+        </span>
       </div>
       <div>
         <InfiniteScroll
