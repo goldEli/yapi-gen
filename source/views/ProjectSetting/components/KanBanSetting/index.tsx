@@ -45,8 +45,13 @@ const KanBanSetting: React.FC<IProps> = props => {
     )
   }, [columnList, columnListBackup])
 
-  usePrompt(t('do_you_want_to_save_changes'), contentNotSaved, () => {
-    dispatch(saveKanbanConfig())
+  usePrompt({
+    title: t('remind'),
+    text: t('do_you_want_to_save_changes'),
+    when: contentNotSaved,
+    onConfirm: () => {
+      dispatch(saveKanbanConfig())
+    },
   })
 
   // init

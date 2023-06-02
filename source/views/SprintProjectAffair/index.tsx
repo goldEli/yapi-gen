@@ -19,7 +19,11 @@ import styled from '@emotion/styled'
 import SprintTable from './components/SprintTable'
 import SprintTree from './components/SprintTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { setFilterKeys } from '@store/project'
+import {
+  setFilterKeys,
+  setFilterParams,
+  setIsUpdateAddWorkItem,
+} from '@store/project'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
 import { deleteAffairs, getAffairsList } from '@/services/affairs'
@@ -165,7 +169,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
       params.tree = 1
       params.topParentId = topId ?? topParentId
     }
-    // dispatch(setFilterParams(params))
+    dispatch(setFilterParams(params))
     const result = await getAffairsList(params)
     setDataList(result)
     setIsSpinning(false)
@@ -173,7 +177,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     // dispatch(setIsRefresh(false))
     setTopParentId(0)
     setIsUpdated(false)
-    // dispatch(setIsUpdateDemand(false))
+    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   // 筛选条件

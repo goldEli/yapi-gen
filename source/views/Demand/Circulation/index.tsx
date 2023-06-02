@@ -18,7 +18,7 @@ import NoData from '@/components/NoData'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { getStoryStatusLog } from '@/services/demand'
-import { setIsUpdateChangeLog } from '@store/demand'
+import { setIsUpdateChangeLog } from '@store/project'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -127,7 +127,8 @@ const Circulation = () => {
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
-  const { demandInfo, isUpdateChangeLog } = useSelector(store => store.demand)
+  const { demandInfo } = useSelector(store => store.demand)
+  const { isUpdateChangeLog } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
 

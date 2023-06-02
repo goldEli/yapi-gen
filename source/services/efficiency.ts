@@ -1493,3 +1493,9 @@ export const recentCreateData = async (params: {
     },
   ]
 }
+export const getExport = async (parmas: API.Sprint.GetExport.Params) => {
+  const response = await http.get<any>('export', parmas, {
+    responseType: 'blob',
+  })
+  return response
+}

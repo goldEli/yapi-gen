@@ -18,14 +18,18 @@ import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setFilterParamsModal,
+  setIsUpdateAddWorkItem,
+  setFilterParams,
+} from '@store/project'
 import {
   deleteDemand,
   updateDemandStatus,
   updatePriority,
   getDemandList,
 } from '@/services/demand'
-import { setFilterParams, setIsUpdateDemand } from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
@@ -55,9 +59,10 @@ const DemandWrap = (props: Props) => {
   const { iterateId } = paramsData
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const { projectInfo } = useSelector(store => store.project)
-  const { isUpdateDemand } = useSelector(store => store.demand)
-  const { iterateInfo, filterParams } = useSelector(store => store.iterate)
+  const { projectInfo, isUpdateAddWorkItem, filterParams } = useSelector(
+    store => store.project,
+  )
+  const { iterateInfo } = useSelector(store => store.iterate)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [dataList, setDataList] = useState<any>({
@@ -126,7 +131,7 @@ const DemandWrap = (props: Props) => {
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
-    dispatch(setIsUpdateDemand(false))
+    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   useEffect(() => {
@@ -145,10 +150,10 @@ const DemandWrap = (props: Props) => {
   }, [isRefresh])
 
   useEffect(() => {
-    if (isUpdateDemand) {
+    if (isUpdateAddWorkItem) {
       getList(pageObj, order, orderKey, props.searchGroups)
     }
-  }, [isUpdateDemand])
+  }, [isUpdateAddWorkItem])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })

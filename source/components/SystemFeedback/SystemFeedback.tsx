@@ -39,7 +39,7 @@ const LessWrap = styled.div`
   position: relative;
   width: 784px;
   height: 640px;
-  background: #ffffff;
+  background: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px 6px 6px 6px;
   padding: 40px 24px 80px 24px;
@@ -120,7 +120,7 @@ const SystemFeedback = () => {
               fontFamily: 'SiYuanMedium',
               height: '28px',
               fontSize: '20px',
-              color: '#323233',
+              color: 'var(--neutral-n1-d1)',
               lineHeight: '28px',
             }}
           >

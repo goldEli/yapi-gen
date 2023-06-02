@@ -8,7 +8,7 @@ export const Title = styled.div`
   height: 22px;
   font-size: 14px;
   margin: 24px 0 8px 0;
-  color: #323233;
+  color: var(--neutral-n1-d1);
   line-height: 22px;
   font-family: SiYuanMedium;
 `
@@ -17,6 +17,6 @@ export const Text = styled.div`
   font-size: 12px;
 
   font-weight: 400;
-  color: #646566;
+  color: var(--neutral-n2);
   line-height: 20px;
 `

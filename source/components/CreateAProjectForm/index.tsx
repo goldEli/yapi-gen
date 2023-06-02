@@ -90,7 +90,7 @@ const Side = styled.div<{ op: boolean }>`
   left: ${props => (props.op ? '0px' : '-320px')};
   top: 0;
   height: 100%;
-  background-color: #f8f8fa;
+  background-color: var(--neutral-n8);
   transition: all 1s;
   flex-shrink: 0;
 `

@@ -185,7 +185,7 @@ const NoteDetailDrawer = (props: any) => {
             style={{
               height: '24px',
               fontSize: '16px',
-              color: '#323233',
+              color: 'var(--neutral-n1-d1)',
               lineHeight: '24px',
               fontFamily: 'SiYuanMedium',
             }}

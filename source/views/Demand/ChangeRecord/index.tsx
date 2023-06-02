@@ -19,11 +19,11 @@ import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { setIsUpdateChangeLog } from '@store/demand'
 import { getDemandChangeLog } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
+import { setIsUpdateChangeLog } from '@store/project'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -81,7 +81,7 @@ const ChangeRecord = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const { isUpdateChangeLog } = useSelector(store => store.demand)
+  const { isUpdateChangeLog } = useSelector(store => store.project)
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
