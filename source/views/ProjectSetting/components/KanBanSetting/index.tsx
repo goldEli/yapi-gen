@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import ToolBar from './ToolBar'
 import Board from './Board'
 import BoardLeft from './BoardLeft'
@@ -7,8 +7,8 @@ import BoardRight from './BoardRight'
 import EditColumnModal from './EditColumnModal'
 import {
   getKanbanConfigList,
-  handleSaveReminder,
   openSaveAsViewModel,
+  saveKanbanConfig,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import { useDispatch, useSelector } from '@store/index'
 import useProjectId from './hooks/useProjectId'
@@ -16,6 +16,7 @@ import NoData from '@/components/NoData'
 import CommonButton from '@/components/CommonButton'
 import SaveAsViewModal from './SaveAsViewModal'
 import useI18n from '@/hooks/useI18n'
+import { usePrompt } from '@/tools/block'
 
 interface IProps {}
 const KanBanSettingBox = styled.div`
@@ -30,16 +31,27 @@ const KanBanSettingBox = styled.div`
 const KanBanSetting: React.FC<IProps> = props => {
   const dispatch = useDispatch()
   const { projectId } = useProjectId()
-  const { viewList } = useSelector(store => store.KanbanConfig)
+  const { viewList, columnList, columnListBackup } = useSelector(
+    store => store.KanbanConfig,
+  )
   const showNoData = !viewList?.length
   const { t } = useI18n()
+
+  const [contentNotSaved, setContentNotSaved] = useState(false)
+
+  useEffect(() => {
+    setContentNotSaved(
+      JSON.stringify(columnList) !== JSON.stringify(columnListBackup),
+    )
+  }, [columnList, columnListBackup])
+
+  usePrompt(t('do_you_want_to_save_changes'), contentNotSaved, () => {
+    dispatch(saveKanbanConfig())
+  })
 
   // init
   useEffect(() => {
     dispatch(getKanbanConfigList({ project_id: projectId }))
-    return () => {
-      dispatch(handleSaveReminder())
-    }
   }, [projectId])
 
   const content = useMemo(() => {
