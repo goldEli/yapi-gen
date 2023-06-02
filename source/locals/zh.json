@@ -1612,5 +1612,10 @@
   "personnel_grouping": "人员分组",
   "group_Name": "分组名称",
   "please_enter_a_name": "请输入名称",
-  "search_keywords_or_numbers": "搜索{{keyword}}或者编号"
+  "search_keywords_or_numbers": "搜索{{keyword}}或者编号",
+  "none": "无",
+  "by_personnel": "按人员",
+  "by_category": "按类别",
+  "by_priority": "按优先级",
+  "do_you_want_to_save_changes?": "是否保存修改？"
 }
