@@ -24,6 +24,8 @@ type SliceState = {
   }
   unassignStatusList: Model.KanbanConfig.Status[]
   columnList: Model.KanbanConfig.Column[]
+  // 备份用于检测是否修改，提醒用户保存
+  columnListBackup: Model.KanbanConfig.Column[]
   /**
    * 分类收起菜单控制
    */
@@ -50,7 +52,7 @@ const initialState: SliceState = {
     // { id: 5, project_id: 11, name: '进度跟踪', check: false },
   ],
   columnList: [],
-
+  columnListBackup: [],
   saveAsViewModelInfo: {
     visible: false,
   },
@@ -295,6 +297,7 @@ const slice = createSlice({
     )
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
       state.columnList = action.payload ?? []
+      state.columnListBackup = action.payload ?? []
     })
     builder.addCase(getCategoryList.fulfilled, (state, action) => {
       state.categoryList = action.payload

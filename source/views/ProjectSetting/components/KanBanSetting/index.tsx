@@ -7,6 +7,7 @@ import BoardRight from './BoardRight'
 import EditColumnModal from './EditColumnModal'
 import {
   getKanbanConfigList,
+  handleSaveReminder,
   openSaveAsViewModel,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import { useDispatch, useSelector } from '@store/index'
@@ -15,6 +16,7 @@ import NoData from '@/components/NoData'
 import CommonButton from '@/components/CommonButton'
 import SaveAsViewModal from './SaveAsViewModal'
 import useI18n from '@/hooks/useI18n'
+
 interface IProps {}
 const KanBanSettingBox = styled.div`
   width: 100%;
@@ -35,6 +37,9 @@ const KanBanSetting: React.FC<IProps> = props => {
   // init
   useEffect(() => {
     dispatch(getKanbanConfigList({ project_id: projectId }))
+    return () => {
+      dispatch(handleSaveReminder())
+    }
   }, [projectId])
 
   const content = useMemo(() => {
