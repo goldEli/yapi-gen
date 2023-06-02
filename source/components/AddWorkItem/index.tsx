@@ -26,6 +26,8 @@ import { getMessage } from '../Message'
 import { setIsUpdateCreate } from '@store/mine'
 import CreateDemandLeft from './CreateWorkItemLeft'
 import CreateDemandRight from './CreateWorkItemRight'
+import { addAffairs, updateAffairs } from '@/services/affairs'
+import { addFlaw, updateFlaw } from '@/services/flaw'
 
 const ModalFooter = styled.div({
   width: '100%',
@@ -118,8 +120,25 @@ const AddWorkItem = () => {
   }
 
   const onSaveDemand = async (values: any, hasNext?: any) => {
+    // 获取当前类别对应的work_type
+    const work_type = allCategoryList.filter(
+      (i: any) => i.id === values.category_id,
+    )[0].work_type
+
+    // 相应模块的方法
+    const methods = [
+      { type: [1], create: addDemand, update: updateDemand },
+      { type: [2], create: addFlaw, update: updateFlaw },
+      { type: [3, 4, 5, 6], create: addAffairs, update: updateAffairs },
+    ]
+
+    // 最终的方法
+    const resultMethod = methods?.filter((i: any) =>
+      i.type.includes(work_type),
+    )[0]
+
     if (params?.editId) {
-      await updateDemand({
+      await resultMethod?.update({
         projectId,
         id: params?.editId,
         ...values,
@@ -128,7 +147,7 @@ const AddWorkItem = () => {
       dispatch(setIsUpdateStatus(true))
       dispatch(setIsUpdateChangeLog(true))
     } else {
-      await addDemand({
+      await resultMethod?.create({
         projectId,
         ...values,
       })
