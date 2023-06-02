@@ -36,6 +36,7 @@ interface Props {
   defalutConfig: Models.Efficiency.ConfigItem | undefined
   onEdit: () => void
   value: number
+  projectId: number
 }
 const Iteration = (props: Props) => {
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
