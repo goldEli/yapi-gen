@@ -960,13 +960,14 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
     data: [
       {
         id: 27,
-        name: '系统视图',
+        name: '系统视图-周期时间',
         config: {
           project_id: [441, 437],
           user_ids: [1],
           start_time: '',
           end_time: '',
           period_time: 'four_week',
+          iterate_ids: [],
         },
         status: -69632682.78917724,
         type: 1,
@@ -974,8 +975,9 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
       },
       {
         id: 28,
-        name: 'est in',
+        name: '开始和结束',
         config: {
+          iterate_ids: [],
           project_id: [441, 437],
           user_ids: [1],
           start_time: '2023-10-10',
@@ -988,13 +990,14 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
       },
       {
         id: 89,
-        name: 'culpa',
+        name: '只有迭代参数',
         config: {
           project_id: [441, 437],
           user_ids: [1],
+          iterate_ids: [],
           start_time: '',
           end_time: '',
-          period_time: 'two_week',
+          period_time: '',
         },
         status: -79455814.85011317,
         type: 2,
@@ -1002,10 +1005,11 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
       },
       {
         id: 74,
-        name: 'aliq',
+        name: '周期时间',
         config: {
           project_id: [441, 437],
           user_ids: [1],
+          iterate_ids: [],
           start_time: '',
           end_time: '',
           period_time: 'two_week',
@@ -1031,21 +1035,23 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
 export const viewsUpdate = async (
   parmas: API.Efficiency.ViewsEditList.Params,
 ) => {
-  const response = await http.put<any, API.Efficiency.ViewsEditList.Result>(
-    `viewsUpdate`,
-    parmas,
-  )
-  return response.data
+  // const response = await http.put<any, API.Efficiency.ViewsEditList.Result>(
+  //   `viewsUpdate`,
+  //   parmas,
+  // )
+  console.log(parmas, 'parmas')
+  return ''
 }
 // 视图新建
 export const createViewList = async (
   parmas: API.Efficiency.ViewsEditList.Params,
 ) => {
-  const response = await http.post<any, API.Efficiency.ViewsEditList.Result>(
-    `createViewList`,
-    parmas,
-  )
-  return response.data
+  // const response = await http.post<any, API.Efficiency.ViewsEditList.Result>(
+  //   `createViewList`,
+  //   parmas,
+  // )
+  console.log(parmas, 'parmas')
+  // return response.data
 }
 // 删除视图
 export const delView = async (id: number) => {

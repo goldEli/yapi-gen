@@ -376,6 +376,7 @@ const CreateAProjectForm = () => {
         <ProjectChooseSide
           cloneIds={multipleSelectionItems}
           op={step === 3 && model === 3}
+          onClose={() => onChangeStep(2)}
         />
 
         {/* 右边 */}

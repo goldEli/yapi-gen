@@ -23,7 +23,7 @@ import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import useSetTitle from '@/hooks/useSetTitle'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import {
   getMemberGantt,
   getMemberInfoOverviewStatistics,
@@ -37,6 +37,9 @@ import { getHisProjectCharts } from '@/services/mine'
 import LineAnimation from '@/views/Mine/components/LineAnimation'
 import { FullScreenDiv } from '@/views/Mine/Profile'
 import CommonIconFont from '@/components/CommonIconFont'
+import FullScreenContainer from '@/views/KanBanBoard/FullScreenContainer'
+import { setFullScreen } from '@store/kanBan'
+import { useFullScreenHandle } from 'react-full-screen'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -179,11 +182,14 @@ const TotalWrap = styled.div({
 })
 
 const Profile = () => {
+  const handle = useFullScreenHandle()
+  const dispatch = useDispatch()
   const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
   const [nowYearOptions, setNowYearOptions] = useState<any>()
   const [nowYear, setNowYear] = useState<any>(2023)
   const { mainInfo } = useSelector(store => store.memberInfo)
+  const { fullScreen } = useSelector(store => store.kanBan)
   const { userInfo } = useSelector(store => store.user)
   const [isScreen, setIsScreen] = useState<boolean>(false)
   const { projectInfo, colorList } = useSelector(store => store.project)
@@ -605,75 +611,81 @@ const Profile = () => {
               </CenterRight>
             </Center>
           </div>
-          <FullScreenDiv isScreen={isScreen}>
-            <GatteWrap>
-              <div style={{ padding: '28px 0px 0' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
+          <FullScreenContainer>
+            <FullScreenDiv isScreen={fullScreen}>
+              <GatteWrap>
+                <div style={{ padding: '28px 0px 0' }}>
                   <div
-                    onClick={() => setIsScreen(!isScreen)}
                     style={{
-                      width: '98px',
-                      height: '32px',
                       display: 'flex',
-                      alignItems: 'center',
                       justifyContent: 'space-between',
-                      padding: '8px',
-                      cursor: 'pointer',
                     }}
                   >
-                    <CommonIconFont
-                      type={isScreen ? 'fewer-screen' : 'full-screen'}
-                    />
-                    <span>{isScreen ? '退出全屏' : '全屏'}</span>
-                  </div>
-                </div>
-                <div className={titleWrap}>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span onClick={nextMonth}>
-                      <IconFont
-                        className={hov}
-                        type="left
-              "
-                        style={{ fontSize: 15, cursor: 'pointer' }}
+                    <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
+                    <div
+                      onClick={() =>
+                        fullScreen
+                          ? handle.enter()
+                          : dispatch(setFullScreen(true))
+                      }
+                      style={{
+                        width: '98px',
+                        height: '32px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '8px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <CommonIconFont
+                        type={fullScreen ? 'fewer-screen' : 'full-screen'}
                       />
-                    </span>
+                      <span>{fullScreen ? '退出全屏' : '全屏'}</span>
+                    </div>
+                  </div>
+                  <div className={titleWrap}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <span onClick={nextMonth}>
+                        <IconFont
+                          className={hov}
+                          type="left
+              "
+                          style={{ fontSize: 15, cursor: 'pointer' }}
+                        />
+                      </span>
 
-                    <span className={timeChoose}>{forMateMonth}</span>
-                    <span onClick={prevMonth}>
-                      <IconFont
-                        className={hov}
-                        type="right
+                      <span className={timeChoose}>{forMateMonth}</span>
+                      <span onClick={prevMonth}>
+                        <IconFont
+                          className={hov}
+                          type="right
               "
-                        style={{ fontSize: 15, cursor: 'pointer' }}
-                      />
-                    </span>
+                          style={{ fontSize: 15, cursor: 'pointer' }}
+                        />
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+                {gatteData.length >= 1 && (
+                  <Mygante data={gatteData} height={380} />
+                )}
+                {gatteData.length < 1 && (
+                  <div style={{ height: 'calc(100vh - 508px)' }}>
+                    <NoData />
+                  </div>
+                )}
+              </GatteWrap>
               {gatteData.length >= 1 && (
-                <Mygante data={gatteData} height={380} />
+                <PaginationBox
+                  total={total}
+                  currentPage={pageObj.page}
+                  pageSize={pageObj.size}
+                  onChange={onChangePage}
+                />
               )}
-              {gatteData.length < 1 && (
-                <div style={{ height: 'calc(100vh - 508px)' }}>
-                  <NoData />
-                </div>
-              )}
-            </GatteWrap>
-            {gatteData.length >= 1 && (
-              <PaginationBox
-                total={total}
-                currentPage={pageObj.page}
-                pageSize={pageObj.size}
-                onChange={onChangePage}
-              />
-            )}
-          </FullScreenDiv>
+            </FullScreenDiv>
+          </FullScreenContainer>
         </Wrap>
       )}
     </>
