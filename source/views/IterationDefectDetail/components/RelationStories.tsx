@@ -36,6 +36,7 @@ interface RelationStoriesProps {
   detail: Model.Flaw.FlawInfo
   isOpen?: boolean
   onUpdate(): void
+  isDrawer?: boolean
 }
 
 interface SelectItem {
@@ -87,7 +88,7 @@ const RelationStories = (props: RelationStoriesProps) => {
     setIsSpinning(true)
     const response = await getFlawRelationStories({
       projectId: id,
-      id: flawId,
+      id: props.detail.id,
       order: orderParams.value,
       orderKey: orderParams.key,
       page: pageParams.page,
@@ -385,7 +386,7 @@ const RelationStories = (props: RelationStoriesProps) => {
   }, [props.activeKey, props.isOpen])
 
   return (
-    <RelationWrap>
+    <RelationWrap style={{ paddingLeft: props.isDrawer ? 0 : 24 }}>
       <CommonModal
         isVisible={isVisible}
         title="链接工作项"

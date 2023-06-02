@@ -131,9 +131,18 @@ export const ParentBox = styled(Space)`
 `
 
 export const DemandName = styled.div`
-  font-size: var(--font16);
-  color: var(--neutral-n1-d1);
-  font-family: SiYuanMedium;
+  .name {
+    font-size: 16px;
+    color: var(--neutral-n1-d1);
+    margin-right: 16px;
+    font-family: SiYuanMedium;
+    outline: none;
+  }
+  .icon {
+    margin-right: 16px;
+    cursor: pointer;
+  }
+  flex-wrap: wrap;
 `
 
 export const CollapseItem = styled.div`
@@ -517,5 +526,27 @@ export const DrawerHeader = styled.div`
     font-size: var(--font14);
     color: var(--neutral-n3);
     margin-right: 8px;
+  }
+`
+
+export const DetailFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  background: var(--neutral-white-d5);
+  width: 100%;
+  .textBox {
+    display: flex;
+    flex-direction: column;
+    div {
+      font-size: 12px;
+      color: var(--neutral-n3);
+      margin-bottom: 4px;
+    }
+    span {
+      font-size: 12px;
+      color: var(--neutral-n3);
+    }
   }
 `

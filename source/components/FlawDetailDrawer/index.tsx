@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { Drawer, MenuProps, Popover, Skeleton, Space } from 'antd'
-import { DragLine, MouseDom } from '../StyleCommon'
+import { Drawer, MenuProps, Popover, Skeleton, Space, Tooltip } from 'antd'
+import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import {
   BackIcon,
   ChangeIconGroup,
@@ -11,6 +12,7 @@ import {
   CollapseItemTitle,
   Content,
   DemandName,
+  DetailFooter,
   DownWrap,
   DrawerHeader,
   DropdownMenu,
@@ -27,7 +29,12 @@ import DetailsSkeleton from '../DetailsSkeleton'
 import FlawDetail from '@/views/IterationDefectDetail/components/FlawDetail'
 import RelationStories from '@/views/IterationDefectDetail/components/RelationStories'
 import BasicFlaw from '@/views/IterationDefectDetail/components/BasicFlaw'
-import { getFlawInfo } from '@/services/flaw'
+import {
+  addFlawComment,
+  deleteFlawComment,
+  getFlawInfo,
+  updateFlawComment,
+} from '@/services/flaw'
 import {
   getFlawCommentList,
   saveFlawDetailDrawer,
@@ -37,9 +44,11 @@ import { setProjectInfo } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getMessage } from '../Message'
 import { setFlawDetailDrawer } from '@store/flaw'
-import { copyLink } from '@/tools'
+import { copyLink, getIdsForAt, removeNull } from '@/tools'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import useShareModal from '@/hooks/useShareModal'
+import CommentFooter from '../CommonComment/CommentFooter'
+import CommonComment from '../CommonComment'
 
 const FlawDetailDrawer = () => {
   const normalState = {
@@ -55,16 +64,17 @@ const FlawDetailDrawer = () => {
       isOpen: false,
       dom: useRef<any>(null),
     },
-    comment: {
+    flawComment: {
       isOpen: false,
       dom: useRef<any>(null),
     },
   }
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { flawDetailDrawer } = useSelector(store => store.flaw)
+  const commentDom: any = createRef()
+  const { flawDetailDrawer, flawCommentList } = useSelector(store => store.flaw)
   const { visible, params } = flawDetailDrawer
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [focus, setFocus] = useState(false)
@@ -79,7 +89,7 @@ const FlawDetailDrawer = () => {
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
     { name: '关联工作项', key: 'relation', content: '' },
     { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
-    { name: t('requirements_review'), key: 'comment', content: '' },
+    { name: '缺陷评论', key: 'flawComment', content: '' },
   ]
 
   const isCanEdit =
@@ -140,7 +150,7 @@ const FlawDetailDrawer = () => {
     newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
     newState[item.key] = resState
     setShowState(newState)
-    if (item.key === 'demandComment') {
+    if (item.key === 'flawComment') {
       // 获取评论列表
       dispatch(
         getFlawCommentList({
@@ -328,6 +338,61 @@ const FlawDetailDrawer = () => {
     }
   }
 
+  // 提交评论
+  const onConfirmComment = async (value: { info: string }) => {
+    await addFlawComment({
+      projectId: projectInfo.id,
+      id: drawerInfo.id,
+      content: value.info,
+      a_user_ids: getIdsForAt(value.info),
+    })
+    getMessage({ type: 'success', msg: '评论成功' })
+    dispatch(
+      getFlawCommentList({
+        projectId: projectInfo.id,
+        id: drawerInfo.id,
+        page: 1,
+        pageSize: 9999,
+      }),
+    )
+    commentDom.current.cancel()
+  }
+
+  // 编辑评论
+  const onEditComment = async (value: string, commentId: number) => {
+    await updateFlawComment({
+      projectId: projectInfo.id,
+      id: commentId,
+      storyId: drawerInfo.id,
+      content: value,
+      ids: getIdsForAt(value),
+    })
+    getMessage({ type: 'success', msg: '编辑成功' })
+    dispatch(
+      getFlawCommentList({
+        projectId: projectInfo.id,
+        id: drawerInfo.id,
+        page: 1,
+        pageSize: 9999,
+      }),
+    )
+  }
+
+  // 删除评论确认
+  const onDeleteCommentConfirm = async (commentId: number) => {
+    const paramsProjectId = params.project_id ?? params.projectId
+    await deleteFlawComment({ projectId: paramsProjectId, id: commentId })
+    getMessage({ type: 'success', msg: '删除成功' })
+    dispatch(
+      getFlawCommentList({
+        projectId: paramsProjectId,
+        id: params.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+  }
+
   useEffect(() => {
     if (visible || params?.id) {
       setDemandIds(params?.demandIds || [])
@@ -344,185 +409,226 @@ const FlawDetailDrawer = () => {
   }, [])
 
   return (
-    <Drawer
-      closable={false}
-      placement="right"
-      bodyStyle={{ padding: 0, position: 'relative' }}
-      width={leftWidth}
-      open={visible}
-      onClose={onCancel}
-      destroyOnClose
-      maskClosable={false}
-      mask={false}
-      getContainer={false}
-      className="drawerRoot"
-    >
-      <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
-        <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
-      </MouseDom>
-      <Header>
-        <Space size={16}>
-          <BackIcon onClick={onCancel}>
-            <CommonIconFont
-              type="right-02"
-              size={20}
-              color="var(--neutral-n2)"
-            />
-          </BackIcon>
-          {skeletonLoading && (
-            <SkeletonStatus>
-              <Skeleton.Input active />
-            </SkeletonStatus>
-          )}
-          {!skeletonLoading && (
-            <ChangeStatusPopover
-              isCanOperation={isCanEdit && !drawerInfo.isExamine}
-              projectId={drawerInfo.projectId}
-              record={drawerInfo}
-              onChangeStatus={onChangeStatus}
-              type={1}
-            >
-              <StateTag
-                name={drawerInfo?.status?.status?.content}
-                onClick={drawerInfo.isExamine ? onExamine : void 0}
-                isShow={isCanEdit || drawerInfo.isExamine}
-                state={
-                  drawerInfo?.status?.is_start === 1 &&
-                  drawerInfo?.status?.is_end === 2
-                    ? 1
-                    : drawerInfo?.status?.is_end === 1 &&
-                      drawerInfo?.status?.is_start === 2
-                    ? 2
-                    : drawerInfo?.status?.is_start === 2 &&
-                      drawerInfo?.status?.is_end === 2
-                    ? 3
-                    : 0
-                }
+    <>
+      <ShareModal
+        copyLink={() => {
+          // Todo 待传入分享组件中复制链接方法
+        }}
+      />
+      <DeleteConfirmModal />
+      <Drawer
+        closable={false}
+        placement="right"
+        bodyStyle={{ padding: 0, position: 'relative' }}
+        width={leftWidth}
+        open={visible}
+        onClose={onCancel}
+        destroyOnClose
+        maskClosable={false}
+        mask={false}
+        getContainer={false}
+        className="drawerRoot"
+      >
+        <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
+          <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
+        </MouseDom>
+        <Header>
+          <Space size={16}>
+            <BackIcon onClick={onCancel}>
+              <CommonIconFont
+                type="right-02"
+                size={20}
+                color="var(--neutral-n2)"
               />
-            </ChangeStatusPopover>
-          )}
-        </Space>
-        <Space size={16}>
-          <ChangeIconGroup>
-            {currentIndex > 0 && (
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={
-                  demandIds?.length === 0 ||
-                  currentIndex === demandIds?.length - 1
-                }
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
+            </BackIcon>
+            {skeletonLoading && (
+              <SkeletonStatus>
+                <Skeleton.Input active />
+              </SkeletonStatus>
             )}
-            {!(
-              demandIds?.length === 0 || currentIndex === demandIds?.length - 1
-            ) && (
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
+            {!skeletonLoading && (
+              <ChangeStatusPopover
+                isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                projectId={drawerInfo.projectId}
+                record={drawerInfo}
+                onChangeStatus={onChangeStatus}
+                type={1}
               >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
+                <StateTag
+                  name={drawerInfo?.status?.status?.content}
+                  onClick={drawerInfo.isExamine ? onExamine : void 0}
+                  isShow={isCanEdit || drawerInfo.isExamine}
+                  state={
+                    drawerInfo?.status?.is_start === 1 &&
+                    drawerInfo?.status?.is_end === 2
+                      ? 1
+                      : drawerInfo?.status?.is_end === 1 &&
+                        drawerInfo?.status?.is_start === 2
+                      ? 2
+                      : drawerInfo?.status?.is_start === 2 &&
+                        drawerInfo?.status?.is_end === 2
+                      ? 3
+                      : 0
+                  }
                 />
-              </DownWrap>
+              </ChangeStatusPopover>
             )}
-          </ChangeIconGroup>
-          <div onClick={onToDetail}>
-            <CommonButton type="icon" icon="full-screen" />
-          </div>
-          <DropdownMenu
-            placement="bottomRight"
-            trigger={['click']}
-            menu={{ items }}
-            getPopupContainer={n => n}
-          >
-            <div>
-              <CommonButton type="icon" icon="more" />
-            </div>
-          </DropdownMenu>
-        </Space>
-      </Header>
-      <Content>
-        {skeletonLoading && <DetailsSkeleton />}
-        {!skeletonLoading && (
-          <>
-            <ParentBox size={8}>
-              {drawerInfo.level_tree?.map((i: any, index: number) => (
-                <DrawerHeader key={i.prefix_key}>
-                  <img src={i.category_attachment} alt="" />
-                  <div>
-                    {i.project_prefix}-{i.prefix_key}
-                  </div>
-                  <span
-                    hidden={
-                      drawerInfo.level_tree?.length <= 1 ||
-                      index === drawerInfo.level_tree?.length - 1
-                    }
-                  >
-                    /
-                  </span>
-                </DrawerHeader>
-              ))}
-            </ParentBox>
-            <DemandName>{drawerInfo.name}</DemandName>
-            {modeList.map((i: any) => (
-              <CollapseItem key={i.key}>
-                <CollapseItemTitle onClick={() => onChangeShowState(i)}>
-                  <span>{i.name}</span>
-                  <CommonIconFont
-                    type={showState[i.key].isOpen ? 'up' : 'down'}
-                    color="var(--neutral-n2)"
-                  />
-                </CollapseItemTitle>
-                <CollapseItemContent
-                  ref={showState[i.key].dom}
-                  isOpen={showState[i.key].isOpen}
+          </Space>
+          <Space size={16}>
+            <ChangeIconGroup>
+              {currentIndex > 0 && (
+                <UpWrap
+                  onClick={onUpDemand}
+                  id="upIcon"
+                  isOnly={
+                    demandIds?.length === 0 ||
+                    currentIndex === demandIds?.length - 1
+                  }
                 >
-                  {i.key === 'detailInfo' && (
-                    <FlawDetail
-                      flawInfo={drawerInfo}
-                      onUpdate={() => getFlawDetail('', demandIds)}
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </UpWrap>
+              )}
+              {!(
+                demandIds?.length === 0 ||
+                currentIndex === demandIds?.length - 1
+              ) && (
+                <DownWrap
+                  onClick={onDownDemand}
+                  id="downIcon"
+                  isOnly={currentIndex <= 0}
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </DownWrap>
+              )}
+            </ChangeIconGroup>
+            <CommonButton type="icon" icon="share" onClick={onShare} />
+            <CommonButton type="icon" icon="full-screen" onClick={onToDetail} />
+            <DropdownMenu
+              placement="bottomRight"
+              trigger={['click']}
+              menu={{ items }}
+              getPopupContainer={n => n}
+            >
+              <div>
+                <CommonButton type="icon" icon="more" />
+              </div>
+            </DropdownMenu>
+          </Space>
+        </Header>
+        <Content>
+          {skeletonLoading && <DetailsSkeleton />}
+          {!skeletonLoading && (
+            <>
+              <ParentBox size={8}>
+                {drawerInfo.level_tree?.map((i: any, index: number) => (
+                  <DrawerHeader key={i.prefix_key}>
+                    <img src={i.category_attachment} alt="" />
+                    <div>
+                      {i.project_prefix}-{i.prefix_key}
+                    </div>
+                    <span
+                      hidden={
+                        drawerInfo.level_tree?.length <= 1 ||
+                        index === drawerInfo.level_tree?.length - 1
+                      }
+                    >
+                      /
+                    </span>
+                  </DrawerHeader>
+                ))}
+              </ParentBox>
+              <DemandName>
+                <span className="name">{drawerInfo.name}</span>
+                <span className="icon" onClick={onCopy}>
+                  <CommonIconFont type="copy" color="var(--neutral-n3)" />
+                </span>
+              </DemandName>
+              {modeList.map((i: any) => (
+                <CollapseItem key={i.key}>
+                  <CollapseItemTitle onClick={() => onChangeShowState(i)}>
+                    <span>{i.name}</span>
+                    <CommonIconFont
+                      type={showState[i.key].isOpen ? 'up' : 'down'}
+                      color="var(--neutral-n2)"
                     />
-                  )}
-                  {i.key === 'relation' && showState[i.key].isOpen && (
-                    <RelationStories
-                      detail={drawerInfo}
-                      isOpen={showState[i.key].isOpen}
-                      onUpdate={() => getFlawDetail('', demandIds)}
-                    />
-                  )}
-                  {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                    <BasicFlaw
-                      detail={drawerInfo}
-                      isOpen={showState[i.key].isOpen}
-                      onUpdate={() => getFlawDetail('', demandIds)}
-                    />
-                  )}
-                  {i.key === 'Comment' && (
-                    <div>23</div>
-                    // <DemandComment
-                    //   detail={drawerInfo}
-                    //   isOpen={showState[i.key].isOpen}
-                    //   onRef={commentDom}
-                    //   isOpenInfo
-                    // />
-                  )}
-                </CollapseItemContent>
-              </CollapseItem>
-            ))}
-          </>
-        )}
-      </Content>
-    </Drawer>
+                  </CollapseItemTitle>
+                  <CollapseItemContent
+                    ref={showState[i.key].dom}
+                    isOpen={showState[i.key].isOpen}
+                  >
+                    {i.key === 'detailInfo' && (
+                      <FlawDetail
+                        flawInfo={drawerInfo}
+                        onUpdate={() => getFlawDetail('', demandIds)}
+                      />
+                    )}
+                    {i.key === 'relation' && showState[i.key].isOpen && (
+                      <RelationStories
+                        detail={drawerInfo}
+                        isOpen={showState[i.key].isOpen}
+                        onUpdate={() => getFlawDetail('', demandIds)}
+                        isDrawer
+                      />
+                    )}
+                    {i.key === 'basicInfo' && showState[i.key].isOpen && (
+                      <BasicFlaw
+                        detail={drawerInfo}
+                        isOpen={showState[i.key].isOpen}
+                        onUpdate={() => getFlawDetail('', demandIds)}
+                      />
+                    )}
+                    {i.key === 'flawComment' && (
+                      <CommonComment
+                        data={flawCommentList}
+                        onDeleteConfirm={onDeleteCommentConfirm}
+                        onEditComment={onEditComment}
+                      />
+                    )}
+                  </CollapseItemContent>
+                </CollapseItem>
+              ))}
+            </>
+          )}
+          <DetailFooter>
+            <div className="textBox">
+              <div>已创建：5天</div>
+              <span>更新日期：4分钟前</span>
+            </div>
+            <Tooltip title="配置字段">
+              <CloseWrap width={32} height={32} onClick={onConfig}>
+                <CommonIconFont type="settings" />
+              </CloseWrap>
+            </Tooltip>
+          </DetailFooter>
+        </Content>
+        <CommentFooter
+          onRef={commentDom}
+          placeholder="发表评论（按M快捷键发表评论）"
+          personList={removeNull(projectInfoValues, 'user_name')?.map(
+            (k: any) => ({
+              label: k.content,
+              id: k.id,
+            }),
+          )}
+          onConfirm={onConfirmComment}
+          style={{
+            padding: '24px 0 24px 24px',
+            width: 'calc(100% - 24px)',
+            height: 80,
+          }}
+          maxHeight="60vh"
+          hasAvatar
+        />
+      </Drawer>
+    </>
   )
 }
 

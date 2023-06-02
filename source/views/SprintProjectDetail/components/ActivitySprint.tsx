@@ -42,10 +42,10 @@ const ActivitySprint = () => {
   }
 
   // 编辑评论
-  const onEditComment = async (value: string, id: number) => {
+  const onEditComment = async (value: string, commentId: number) => {
     await updateAffairsComment({
       projectId: id,
-      id,
+      id: commentId,
       storyId: sprintId,
       content: value,
       ids: getIdsForAt(value),
