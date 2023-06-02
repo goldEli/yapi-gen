@@ -1,69 +1,62 @@
-import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+/* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { setAffairsDetailDrawer } from '@store/affairs'
 import { Drawer, MenuProps, Popover, Skeleton, Space, Tooltip } from 'antd'
 import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
-import {
-  Header,
-  BackIcon,
-  ChangeIconGroup,
-  Content,
-  ParentBox,
-  DemandName,
-  CollapseItem,
-  CollapseItemTitle,
-  CollapseItemContent,
-  DrawerHeader,
-  NextWrap,
-  SkeletonStatus,
-  UpWrap,
-  DownWrap,
-  DropdownMenu,
-  DetailFooter,
-} from './style'
-import CommonIconFont from '../CommonIconFont'
-import ChangeStatusPopover from '../ChangeStatusPopover/index'
-import StateTag from '../StateTag'
-import CommonButton from '../CommonButton'
 import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
-import { getMessage } from '../Message'
-import DetailsSkeleton from '../DetailsSkeleton'
-import ChildSprint from '@/views/SprintProjectDetail/components/ChildSprint'
-import LinkSprint from '@/views/SprintProjectDetail/components/LinkSprint'
 import {
-  addAffairsComment,
-  deleteAffairsComment,
-  getAffairsInfo,
-  updateAffairsComment,
-  updateAffairsTableParams,
-} from '@/services/affairs'
+  BackIcon,
+  ChangeIconGroup,
+  CollapseItem,
+  CollapseItemContent,
+  CollapseItemTitle,
+  Content,
+  DemandName,
+  DetailFooter,
+  DownWrap,
+  DrawerHeader,
+  DropdownMenu,
+  Header,
+  ParentBox,
+  SkeletonStatus,
+  UpWrap,
+} from './style'
+import CommonIconFont from '../CommonIconFont'
+import ChangeStatusPopover from '../ChangeStatusPopover'
+import StateTag from '../StateTag'
+import CommonButton from '../CommonButton'
+import DetailsSkeleton from '../DetailsSkeleton'
+import FlawDetail from '@/views/IterationDefectDetail/components/FlawDetail'
+import RelationStories from '@/views/IterationDefectDetail/components/RelationStories'
+import BasicFlaw from '@/views/IterationDefectDetail/components/BasicFlaw'
+import {
+  addFlawComment,
+  deleteFlawComment,
+  getFlawInfo,
+  updateFlawComment,
+} from '@/services/flaw'
+import {
+  getFlawCommentList,
+  saveFlawDetailDrawer,
+} from '@store/flaw/flaw.thunk'
 import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
-import {
-  getAffairsCommentList,
-  saveAffairsDetailDrawer,
-} from '@store/affairs/affairs.thunk'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import BasicDemand from './component/BasicDemand'
-import CommonComment from '../CommonComment'
-import useShareModal from '@/hooks/useShareModal'
+import { getMessage } from '../Message'
+import { setFlawDetailDrawer } from '@store/flaw'
 import { copyLink, getIdsForAt, removeNull } from '@/tools'
-import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import useShareModal from '@/hooks/useShareModal'
 import CommentFooter from '../CommonComment/CommentFooter'
-import LongStroyBread from '../LongStroyBread'
+import CommonComment from '../CommonComment'
 
-const SprintDetailDrawer = () => {
+const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
       isOpen: true,
       dom: useRef<any>(null),
     },
-    childSprint: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    linkSprint: {
+    relation: {
       isOpen: false,
       dom: useRef<any>(null),
     },
@@ -71,42 +64,32 @@ const SprintDetailDrawer = () => {
       isOpen: false,
       dom: useRef<any>(null),
     },
-    demandComment: {
+    flawComment: {
       isOpen: false,
       dom: useRef<any>(null),
     },
   }
   const [t] = useTranslation()
-  const leftWidth = 640
   const dispatch = useDispatch()
+  const commentDom: any = createRef()
+  const { flawDetailDrawer, flawCommentList } = useSelector(store => store.flaw)
+  const { visible, params } = flawDetailDrawer
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
-  const [skeletonLoading, setSkeletonLoading] = useState(false)
-  const spanDom = useRef<HTMLSpanElement>(null)
-  const commentDom: any = createRef()
   const [focus, setFocus] = useState(false)
+  const [skeletonLoading, setSkeletonLoading] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const [showState, setShowState] = useState<any>(normalState)
-  const { affairsDetailDrawer, affairsCommentList } = useSelector(
-    store => store.affairs,
-  )
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const leftWidth = 640
 
   const modeList = [
-    { name: '详细信息', key: 'detailInfo', content: '' },
-    { name: '子事务', key: 'childSprint', content: '' },
-    { name: '链接事务', key: 'linkSprint', content: '' },
-    { name: '基本信息', key: 'basicInfo', content: '' },
-    { name: '事务评论', key: 'demandComment', content: '' },
-  ]
-
-  const anchorList = [
-    { name: '附件', key: 'sprint-attachment', domKey: 'detailInfo' },
-    { name: '添加标签', key: 'sprint-tag', domKey: 'detailInfo' },
-    { name: '添加子事务', key: 'sprint-childSprint', domKey: 'childSprint' },
-    { name: '链接事务', key: 'sprint-linkSprint', domKey: 'linkSprint' },
+    { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
+    { name: '关联工作项', key: 'relation', content: '' },
+    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
+    { name: '缺陷评论', key: 'flawComment', content: '' },
   ]
 
   const isCanEdit =
@@ -118,6 +101,114 @@ const SprintDetailDrawer = () => {
           ? 'b/story/update'
           : 'b/transaction/update'),
     )?.length > 0
+
+  // 获取项目详情权限
+  const getProjectData = async () => {
+    const response = await getProjectInfo({
+      projectId: params.project_id ?? params.projectId,
+    })
+    dispatch(setProjectInfo(response))
+  }
+
+  // 获取事务详情
+  const getFlawDetail = async (id?: any, ids?: any) => {
+    const paramsProjectId = params.project_id ?? params.projectId
+    if (params?.isAllProject) {
+      getProjectData()
+    }
+    setDrawerInfo({})
+    setSkeletonLoading(true)
+    const info = await getFlawInfo({
+      projectId: paramsProjectId,
+      id: id ? id : params?.id,
+    })
+    info.level_tree?.push({
+      id: info.id,
+      category_id: info.category,
+      prefix_key: info.prefixKey || 0,
+      project_prefix: info.projectPrefix || '',
+      category_attachment: info.category_attachment,
+      parent_id: info.parentId || 0,
+      name: info.name,
+      work_type: 5,
+      attachment_id: 0,
+    })
+    setDrawerInfo(info)
+    setSkeletonLoading(false)
+    // 获取当前需求的下标， 用作上一下一切换
+    setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
+  }
+
+  // 改变模块显示
+  const onChangeShowState = (item: any) => {
+    const paramsProjectId = params.project_id ?? params.projectId
+    const newState = Object.assign({}, showState)
+    const resState = {
+      isOpen: !newState[item.key].isOpen,
+      dom: newState[item.key].dom,
+    }
+    newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
+    newState[item.key] = resState
+    setShowState(newState)
+    if (item.key === 'flawComment') {
+      // 获取评论列表
+      dispatch(
+        getFlawCommentList({
+          projectId: paramsProjectId,
+          id: params.id,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
+    }
+  }
+
+  // 跳转详情页面
+  const onToDetail = () => {
+    const params = encryptPhp(
+      JSON.stringify({
+        id: drawerInfo.projectId,
+        flawId: drawerInfo.id,
+      }),
+    )
+    const url = `ProjectManagement/DefectDetail?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+  }
+
+  // 向上查找需求
+  const onUpDemand = () => {
+    const newIndex = demandIds[currentIndex - 1]
+    if (!currentIndex) return
+    dispatch(
+      saveFlawDetailDrawer({
+        visible: visible,
+        params: {
+          ...params,
+          ...{ id: newIndex },
+        },
+      }),
+    )
+  }
+
+  // 向下查找需求
+  const onDownDemand = () => {
+    const newIndex = demandIds[currentIndex + 1]
+    if (currentIndex === demandIds?.length - 1) return
+    dispatch(
+      saveFlawDetailDrawer({
+        visible: visible,
+        params: {
+          ...params,
+          ...{ id: newIndex },
+        },
+      }),
+    )
+  }
+
+  // 修改状态
+  const onChangeStatus = async (value: any) => {
+    //
+  }
 
   // 是否审核
   const onExamine = () => {
@@ -151,218 +242,33 @@ const SprintDetailDrawer = () => {
     })
   }
 
-  // 获取项目详情权限
-  const getProjectData = async () => {
-    const response = await getProjectInfo({
-      projectId:
-        affairsDetailDrawer.params.project_id ??
-        affairsDetailDrawer.params.projectId,
-    })
-    dispatch(setProjectInfo(response))
-  }
-
-  // 获取事务详情
-  const getSprintDetail = async (id?: any, ids?: any) => {
-    const paramsProjectId =
-      affairsDetailDrawer.params.project_id ??
-      affairsDetailDrawer.params.projectId
-    if (affairsDetailDrawer.params?.isAllProject) {
-      getProjectData()
-    }
-    setDrawerInfo({})
-    setSkeletonLoading(true)
-    const info = await getAffairsInfo({
-      projectId: paramsProjectId,
-      sprintId: id ? id : affairsDetailDrawer.params?.id,
-    })
-    info.level_tree?.push({
-      id: info.id,
-      category_id: info.category,
-      prefix_key: info.prefixKey || 0,
-      project_prefix: info.projectPrefix || '',
-      category_attachment: info.category_attachment,
-      parent_id: info.parentId || 0,
-      name: info.name,
-      work_type: 5,
-      attachment_id: 0,
-    })
-    setDrawerInfo(info)
-    setSkeletonLoading(false)
-    // 获取当前需求的下标， 用作上一下一切换
-    setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
-  }
-
   // 关闭弹窗
   const onCancel = () => {
     dispatch(
-      setAffairsDetailDrawer({
+      setFlawDetailDrawer({
         visible: false,
         params: {},
       }),
     )
-    dispatch(saveAffairsDetailDrawer({}))
+    dispatch(saveFlawDetailDrawer({}))
     setShowState(normalState)
   }
 
-  // 跳转详情页面
-  const onToDetail = () => {
-    const params = encryptPhp(
-      JSON.stringify({
-        id: drawerInfo.projectId,
-        sprintId: drawerInfo.id,
-      }),
-    )
-    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
-    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
-  }
-
-  // 修改状态
-  const onChangeStatus = async (value: any) => {
+  //   编辑缺陷
+  const onEdit = () => {
     //
   }
 
-  // 向上查找需求
-  const onUpDemand = () => {
-    const newIndex = demandIds[currentIndex - 1]
-    if (!currentIndex) return
-    dispatch(
-      saveAffairsDetailDrawer({
-        visible: affairsDetailDrawer.visible,
-        params: {
-          ...affairsDetailDrawer.params,
-          ...{ id: newIndex },
-        },
-      }),
-    )
-  }
-
-  // 向下查找需求
-  const onDownDemand = () => {
-    const newIndex = demandIds[currentIndex + 1]
-    if (currentIndex === demandIds?.length - 1) return
-    dispatch(
-      saveAffairsDetailDrawer({
-        visible: affairsDetailDrawer.visible,
-        params: {
-          ...affairsDetailDrawer.params,
-          ...{ id: newIndex },
-        },
-      }),
-    )
-  }
-
-  // 改变模块显示
-  const onChangeShowState = (item: any) => {
-    const paramsProjectId =
-      affairsDetailDrawer.params.project_id ??
-      affairsDetailDrawer.params.projectId
-    const newState = Object.assign({}, showState)
-    const resState = {
-      isOpen: !newState[item.key].isOpen,
-      dom: newState[item.key].dom,
-    }
-    newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
-    newState[item.key] = resState
-    setShowState(newState)
-    if (item.key === 'demandComment') {
-      // 获取评论列表
-      dispatch(
-        getAffairsCommentList({
-          projectId: paramsProjectId,
-          sprintId: affairsDetailDrawer.params.id,
-          page: 1,
-          pageSize: 999,
-        }),
-      )
-    }
-  }
-
-  const getKeyDown = (e: any) => {
-    if (storeAll.getState().affairs.affairsDetailDrawer.visible) {
-      if (e.keyCode === 38) {
-        //up
-        document.getElementById('upIcon')?.click()
-      }
-      if (e.keyCode === 40) {
-        //down
-        document.getElementById('downIcon')?.click()
-      }
-    }
-  }
-
-  // 删除评论确认
-  const onDeleteCommentConfirm = async (commentId: number) => {
-    const paramsProjectId =
-      affairsDetailDrawer.params.project_id ??
-      affairsDetailDrawer.params.projectId
-    await deleteAffairsComment({ projectId: paramsProjectId, id: commentId })
-    getMessage({ type: 'success', msg: '删除成功' })
-    dispatch(
-      getAffairsCommentList({
-        projectId: paramsProjectId,
-        sprintId: affairsDetailDrawer.params.id,
-        page: 1,
-        pageSize: 999,
-      }),
-    )
-  }
-
-  // 快捷修改名称
-  const onNameConfirm = async () => {
-    const value = spanDom.current?.innerText
-    if ((value?.length || 0) <= 0) {
-      getMessage({ type: 'warning', msg: '名称不能为空' })
-      return
-    }
-    if ((value?.length || 0) > 100) {
-      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
-      return
-    }
-    if (value !== drawerInfo.name) {
-      await updateAffairsTableParams({
-        projectId: drawerInfo.project_id ?? drawerInfo.projectId,
-        id: drawerInfo.id,
-        otherParams: {
-          name: value,
-        },
-      })
-      getMessage({ type: 'success', msg: '修改成功' })
-      // 提交名称
-      setDrawerInfo({
-        ...drawerInfo,
-        name: value,
-      })
-    }
-  }
-
-  // 复制标题
-  const onCopy = () => {
-    copyLink(drawerInfo.name, '复制成功！', '复制失败！')
-  }
-
-  // 点击锚点跳转
-  const onClickAnchorList = (item: {
-    key: string
-    domKey: string
-    name?: string
-  }) => {
-    const newState = Object.assign({}, showState)
-    newState[item.domKey].isOpen = true
-    newState[item.domKey].dom.current.style.height = 'auto'
-    setShowState(newState)
-    const dom = document.getElementById(item.key)
-    setTimeout(() => {
-      dom?.scrollIntoView({
-        behavior: 'smooth',
-      })
-    }, 10)
+  //   跳转配置
+  const onConfig = () => {
+    //
   }
 
   const onDeleteSprintConfirm = () => {
     //
   }
 
-  // 删除事务弹窗
+  // 删除缺陷弹窗
   const onDelete = () => {
     openDelete({
       title: '删除确认',
@@ -384,103 +290,30 @@ const SprintDetailDrawer = () => {
     })
   }
 
-  // 跳转配置
-  const onConfig = () => {
-    //
-  }
-
-  // 提交评论
-  const onConfirmComment = async (value: { info: string }) => {
-    await addAffairsComment({
-      projectId: projectInfo.id,
-      sprintId: drawerInfo.id,
-      content: value.info,
-      a_user_ids: getIdsForAt(value.info),
-    })
-    getMessage({ type: 'success', msg: '评论成功' })
-    dispatch(
-      getAffairsCommentList({
-        projectId: projectInfo.id,
-        sprintId: drawerInfo.id,
-        page: 1,
-        pageSize: 9999,
-      }),
-    )
-    commentDom.current.cancel()
-  }
-
-  // 编辑评论
-  const onEditComment = async (value: string, commentId: number) => {
-    await updateAffairsComment({
-      projectId: projectInfo.id,
-      id: commentId,
-      storyId: drawerInfo.id,
-      content: value,
-      ids: getIdsForAt(value),
-    })
-    getMessage({ type: 'success', msg: '编辑成功' })
-    dispatch(
-      getAffairsCommentList({
-        projectId: projectInfo.id,
-        sprintId: drawerInfo.id,
-        page: 1,
-        pageSize: 9999,
-      }),
-    )
+  // 复制标题
+  const onCopy = () => {
+    copyLink(drawerInfo.name, '复制成功！', '复制失败！')
   }
 
   // 更多下拉
   const items: MenuProps['items'] = [
     {
-      label: <div onClick={onDelete}>删除</div>,
+      label: <div onClick={onEdit}>编辑</div>,
       key: '0',
+    },
+    {
+      label: <div onClick={onDelete}>删除</div>,
+      key: '1',
     },
     {
       type: 'divider',
     },
     {
-      label: (
-        <div
-          onClick={() =>
-            onClickAnchorList({
-              key: 'sprint-attachment',
-              domKey: 'detailInfo',
-            })
-          }
-        >
-          添加附件
-        </div>
-      ),
-      key: '1',
-    },
-    {
-      label: (
-        <div
-          onClick={() =>
-            onClickAnchorList({
-              key: 'sprint-childSprint',
-              domKey: 'childSprint',
-            })
-          }
-        >
-          添加子事务
-        </div>
-      ),
+      label: '复制编号',
       key: '2',
     },
     {
-      label: (
-        <div
-          onClick={() =>
-            onClickAnchorList({
-              key: 'sprint-linkSprint',
-              domKey: 'detailInfo',
-            })
-          }
-        >
-          添加标签
-        </div>
-      ),
+      label: '复制链接',
       key: '3',
     },
     {
@@ -492,23 +325,81 @@ const SprintDetailDrawer = () => {
     },
   ]
 
+  const getKeyDown = (e: any) => {
+    if (storeAll.getState().flaw.flawDetailDrawer.visible) {
+      if (e.keyCode === 38) {
+        //up
+        document.getElementById('upIcon')?.click()
+      }
+      if (e.keyCode === 40) {
+        //down
+        document.getElementById('downIcon')?.click()
+      }
+    }
+  }
+
+  // 提交评论
+  const onConfirmComment = async (value: { info: string }) => {
+    await addFlawComment({
+      projectId: projectInfo.id,
+      id: drawerInfo.id,
+      content: value.info,
+      a_user_ids: getIdsForAt(value.info),
+    })
+    getMessage({ type: 'success', msg: '评论成功' })
+    dispatch(
+      getFlawCommentList({
+        projectId: projectInfo.id,
+        id: drawerInfo.id,
+        page: 1,
+        pageSize: 9999,
+      }),
+    )
+    commentDom.current.cancel()
+  }
+
+  // 编辑评论
+  const onEditComment = async (value: string, commentId: number) => {
+    await updateFlawComment({
+      projectId: projectInfo.id,
+      id: commentId,
+      storyId: drawerInfo.id,
+      content: value,
+      ids: getIdsForAt(value),
+    })
+    getMessage({ type: 'success', msg: '编辑成功' })
+    dispatch(
+      getFlawCommentList({
+        projectId: projectInfo.id,
+        id: drawerInfo.id,
+        page: 1,
+        pageSize: 9999,
+      }),
+    )
+  }
+
+  // 删除评论确认
+  const onDeleteCommentConfirm = async (commentId: number) => {
+    const paramsProjectId = params.project_id ?? params.projectId
+    await deleteFlawComment({ projectId: paramsProjectId, id: commentId })
+    getMessage({ type: 'success', msg: '删除成功' })
+    dispatch(
+      getFlawCommentList({
+        projectId: paramsProjectId,
+        id: params.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+  }
+
   useEffect(() => {
-    if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
-      setDemandIds(affairsDetailDrawer.params?.demandIds || [])
-      getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
+    if (visible || params?.id) {
+      setDemandIds(params?.demandIds || [])
+      getFlawDetail('', params?.demandIds || [])
       setShowState(normalState)
     }
-  }, [affairsDetailDrawer])
-
-  // useEffect(() => {
-  //   if (isUpdateDemand) {
-  //     setCurrentIndex(0)
-  //     setDemandIds([])
-  //     if (isDemandDetailDrawerVisible) {
-  //       getDemandDetail()
-  //     }
-  //   }
-  // }, [isUpdateDemand])
+  }, [flawDetailDrawer])
 
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)
@@ -530,7 +421,7 @@ const SprintDetailDrawer = () => {
         placement="right"
         bodyStyle={{ padding: 0, position: 'relative' }}
         width={leftWidth}
-        open={affairsDetailDrawer.visible}
+        open={visible}
         onClose={onCancel}
         destroyOnClose
         maskClosable={false}
@@ -561,7 +452,7 @@ const SprintDetailDrawer = () => {
                 projectId={drawerInfo.projectId}
                 record={drawerInfo}
                 onChangeStatus={onChangeStatus}
-                type={2}
+                type={1}
               >
                 <StateTag
                   name={drawerInfo?.status?.status?.content}
@@ -626,7 +517,9 @@ const SprintDetailDrawer = () => {
               menu={{ items }}
               getPopupContainer={n => n}
             >
-              <CommonButton type="icon" icon="more" />
+              <div>
+                <CommonButton type="icon" icon="more" />
+              </div>
             </DropdownMenu>
           </Space>
         </Header>
@@ -634,33 +527,30 @@ const SprintDetailDrawer = () => {
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
-              <LongStroyBread longStroy={drawerInfo} layer></LongStroyBread>
-              <DemandName style={{ marginTop: 16 }}>
-                <span
-                  className="name"
-                  ref={spanDom}
-                  contentEditable
-                  onBlur={onNameConfirm}
-                >
-                  {drawerInfo.name}
-                </span>
+              <ParentBox size={8}>
+                {drawerInfo.level_tree?.map((i: any, index: number) => (
+                  <DrawerHeader key={i.prefix_key}>
+                    <img src={i.category_attachment} alt="" />
+                    <div>
+                      {i.project_prefix}-{i.prefix_key}
+                    </div>
+                    <span
+                      hidden={
+                        drawerInfo.level_tree?.length <= 1 ||
+                        index === drawerInfo.level_tree?.length - 1
+                      }
+                    >
+                      /
+                    </span>
+                  </DrawerHeader>
+                ))}
+              </ParentBox>
+              <DemandName>
+                <span className="name">{drawerInfo.name}</span>
                 <span className="icon" onClick={onCopy}>
                   <CommonIconFont type="copy" color="var(--neutral-n3)" />
                 </span>
               </DemandName>
-              <Space size={8} style={{ marginTop: 16 }}>
-                {anchorList.map(
-                  (i: { key: string; domKey: string; name: string }) => (
-                    <CommonButton
-                      key={i.key}
-                      type="light"
-                      onClick={() => onClickAnchorList(i)}
-                    >
-                      {i.name}
-                    </CommonButton>
-                  ),
-                )}
-              </Space>
               {modeList.map((i: any) => (
                 <CollapseItem key={i.key}>
                   <CollapseItemTitle onClick={() => onChangeShowState(i)}>
@@ -675,28 +565,31 @@ const SprintDetailDrawer = () => {
                     isOpen={showState[i.key].isOpen}
                   >
                     {i.key === 'detailInfo' && (
-                      <AffairsDetail
-                        affairsInfo={drawerInfo}
-                        onUpdate={() => getSprintDetail('', demandIds)}
+                      <FlawDetail
+                        flawInfo={drawerInfo}
+                        onUpdate={() => getFlawDetail('', demandIds)}
                       />
                     )}
-                    {i.key === 'childSprint' && showState[i.key].isOpen && (
-                      <ChildSprint detail={drawerInfo} />
-                    )}
-                    {i.key === 'linkSprint' && (
-                      <LinkSprint detail={drawerInfo} />
-                    )}
-                    {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                      <BasicDemand
+                    {i.key === 'relation' && showState[i.key].isOpen && (
+                      <RelationStories
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
-                        onUpdate={() => getSprintDetail('', demandIds)}
+                        onUpdate={() => getFlawDetail('', demandIds)}
+                        isDrawer
                       />
                     )}
-                    {i.key === 'demandComment' && (
+                    {i.key === 'basicInfo' && showState[i.key].isOpen && (
+                      <BasicFlaw
+                        detail={drawerInfo}
+                        isOpen={showState[i.key].isOpen}
+                        onUpdate={() => getFlawDetail('', demandIds)}
+                      />
+                    )}
+                    {i.key === 'flawComment' && (
                       <CommonComment
-                        data={affairsCommentList}
+                        data={flawCommentList}
                         onDeleteConfirm={onDeleteCommentConfirm}
+                        onEditComment={onEditComment}
                       />
                     )}
                   </CollapseItemContent>
@@ -739,4 +632,4 @@ const SprintDetailDrawer = () => {
   )
 }
 
-export default SprintDetailDrawer
+export default FlawDetailDrawer

@@ -13,7 +13,7 @@ import {
   setDefaultKanbanConfig,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import useProjectId from '../hooks/useProjectId'
-import SelectOptions from '../SelectOptions'
+import SelectOptions, { ViewItem } from '../SelectOptions'
 import useI18n from '@/hooks/useI18n'
 
 interface ToolBarProps {}
@@ -51,7 +51,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
   const { t } = useI18n()
 
   const dispatch = useDispatch()
-  const handleViewList = useMemo<Model.SprintKanBan.ViewItem[]>(() => {
+  const handleViewList = useMemo<ViewItem[]>(() => {
     const res =
       viewList?.map(item => {
         return {

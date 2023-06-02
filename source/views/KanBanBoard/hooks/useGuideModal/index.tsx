@@ -9,7 +9,7 @@ import useI18n from '@/hooks/useI18n'
 
 const useGuideModal = () => {
   const dispatch = useDispatch()
-  const { guideVisible } = useSelector(store => store.sprintKanBan)
+  const { guideVisible } = useSelector(store => store.kanBan)
   const { t } = useI18n()
   const inform = [
     {

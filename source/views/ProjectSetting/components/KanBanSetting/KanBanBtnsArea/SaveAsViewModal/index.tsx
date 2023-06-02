@@ -4,13 +4,12 @@
 import React from 'react'
 import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { getMessage } from '@/components/Message'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import {
   closeSaveAsViewModel,
   onSaveAsViewModel,
-} from '@store/sprintKanBan/sprintKanban.thunk'
+} from '@store/kanBan/kanBan.thunk'
 
 const LabelTitle = (props: any) => {
   return (
@@ -37,7 +36,7 @@ interface SaveAsViewModalProps {}
 const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
-  const { saveAsViewModelInfo } = useSelector(store => store.sprintKanBan)
+  const { saveAsViewModelInfo } = useSelector(store => store.kanBan)
   const dispatch = useDispatch()
 
   const onClose = () => {
@@ -68,7 +67,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   React.useEffect(() => {
     if (saveAsViewModelInfo.viewItem) {
       form.setFieldsValue({
-        name: saveAsViewModelInfo.viewItem.value,
+        name: saveAsViewModelInfo.viewItem.name,
       })
       return
     }

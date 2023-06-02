@@ -58,7 +58,7 @@ export const Middle = styled.div`
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* 这里是超出几行省略 */
+  -webkit-line-clamp: 2;
   overflow: hidden;
 `
 export const StoryText = styled.span`

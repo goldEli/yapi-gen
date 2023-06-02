@@ -6,10 +6,10 @@ import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
-import { closeShareModel } from '@store/sprintKanBan/sprintKanban.thunk'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import useI18n from '@/hooks/useI18n'
+import { closeShareModel } from '@store/kanBan/kanBan.thunk'
 
 interface ShareModalProps {}
 
@@ -54,7 +54,7 @@ const ModalContentBox = styled.div`
 const ShareModal: React.FC<ShareModalProps> = props => {
   const [form] = Form.useForm()
   const { t } = useI18n()
-  const { shareModelInfo } = useSelector(store => store.sprintKanBan)
+  const { shareModelInfo } = useSelector(store => store.kanBan)
   const dispatch = useDispatch()
 
   const onClose = () => {

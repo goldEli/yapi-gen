@@ -10,13 +10,13 @@ import { useDispatch, useSelector } from '@store/index'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import SetShowField from './SetShowField'
 import SaveAsViewModal from './SaveAsViewModal'
-import { openShareModel } from '@store/sprintKanBan/sprintKanban.thunk'
 import ShareModal from './ShareModal'
 import { DividerWrap, HasIconMenu, HoverWrap } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
+import { openShareModel } from '@store/kanBan/kanBan.thunk'
 
 interface Props {
   onChangeFilter?(): void

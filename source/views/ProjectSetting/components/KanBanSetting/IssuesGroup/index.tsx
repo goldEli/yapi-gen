@@ -7,7 +7,7 @@ import CategoryArea from '../CategoryArea'
 interface IssuesGroupProps {
   // issuesGroup: Model.SprintKanBan.IssuesGroup
   index: number
-  groupId: Model.SprintKanBan.IssuesGroup['groupId']
+  groupId: Model.KanbanConfig.Column['id']
 }
 
 const IssuesGroupBox = styled.div`

@@ -6,6 +6,7 @@ interface Props {
   list: Array<{ name: string; key: number }> | undefined
   placeholder: string
   value: number
+  allowClear: boolean
 }
 const SelectMain = (props: Props) => {
   return (
@@ -20,7 +21,7 @@ const SelectMain = (props: Props) => {
         props.onChange(e)
       }}
       getPopupContainer={(node: any) => node}
-      allowClear
+      allowClear={props?.allowClear || false}
     >
       {props.list?.map((i: any) => {
         return (
