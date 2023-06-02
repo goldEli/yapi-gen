@@ -10,8 +10,6 @@ type OptionsProps = {
 }
 
 const MoreOptions = (props: OptionsProps) => {
-  console.log(props.img)
-
   return (
     <Wrap>
       {props.type === 'user' && (

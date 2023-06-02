@@ -126,5 +126,5 @@ export const Tags = styled.span<{ type: number }>`
   font-size: 12px;
   padding: 2px 4px;
   margin-right: 8px;
-  color: #ffffff;
+  color: var(--neutral-white-d1);
 `

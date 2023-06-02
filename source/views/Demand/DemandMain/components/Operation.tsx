@@ -17,8 +17,11 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from '@/components/CommonExport'
 import ImportDemand from '@/components/CommonImport'
 import { useDispatch, useSelector } from '@store/index'
-import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
-import { setCreateCategory } from '@store/demand'
+import {
+  setAddWorkItemModal,
+  setCreateCategory,
+  setFilterParamsModal,
+} from '@store/project'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
 import {
@@ -148,10 +151,8 @@ const Operation = (props: Props) => {
 
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const { projectInfo, filterKeys, projectInfoValues } = useSelector(
-    store => store.project,
-  )
-  const { filterParams } = useSelector(store => store.demand)
+  const { projectInfo, filterKeys, projectInfoValues, filterParams } =
+    useSelector(store => store.project)
   const { searchChoose } = useSelector(store => store.view)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])

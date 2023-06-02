@@ -915,10 +915,10 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                     active.current = []
                   }}
                 >
-                  <CommonIconFont color="#6688FF" type="return" />
+                  <CommonIconFont color="var(--primary-d1)" type="return" />
                   <span
                     style={{
-                      color: '#6688FF',
+                      color: 'var(--primary-d1)',
                     }}
                   >
                     返回

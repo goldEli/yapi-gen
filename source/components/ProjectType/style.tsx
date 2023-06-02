@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 export const Wrap = styled.div<{ bb: boolean; type: boolean }>`
   width: ${props => (props.bb ? '476px' : '460px')};
   height: ${props => (props.bb ? '542px' : '500px')};
-  background: #ffffff;
+  background: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;

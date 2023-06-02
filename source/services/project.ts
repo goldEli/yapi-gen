@@ -15,6 +15,7 @@ import { store } from '@store/index'
 import { message } from 'antd'
 import { t } from 'i18next'
 import { getStaffListAll } from './staff'
+import urls from '@/constants/urls'
 
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
@@ -936,4 +937,18 @@ export const getProjectRecent = async () => {
       }
     },
   )
+}
+
+// 获取父需求列表
+export const getParentList = async (params: any) => {
+  const response = await http.get<any>(urls.getParentList(params.key), {
+    search: {
+      project_id: params?.projectId,
+      all: params?.all ? 1 : 0,
+    },
+  })
+  return response.data.map((i: any) => ({
+    label: i.name,
+    value: i.id,
+  }))
 }

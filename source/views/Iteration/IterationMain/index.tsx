@@ -18,16 +18,16 @@ import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { deleteDemand, getDemandInfo, getDemandList } from '@/services/demand'
-import {
-  setDemandInfo,
-  setFilterParams,
-  setIsUpdateDemand,
-} from '@store/demand'
+import { setDemandInfo } from '@store/demand'
 import { setIsRefreshList, setIsUpdateList } from '@store/iterate'
 import { Content, IterationContent } from './style'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import DemandTree from './components/DemandTree'
-import { setFilterKeys } from '@store/project'
+import {
+  setFilterKeys,
+  setIsUpdateAddWorkItem,
+  setFilterParams,
+} from '@store/project'
 import { getMessage } from '@/components/Message'
 import IterationGrid from './components/IterationGrid'
 
@@ -68,8 +68,9 @@ const IterationMain = (props: Props) => {
   const [isUpdated, setIsUpdated] = useState(false)
   // 用于当前操作层级不折叠
   const [topParentId, setTopParentId] = useState(0)
-  const { filterKeys } = useSelector(store => store.project)
-  const { isUpdateDemand } = useSelector(store => store.demand)
+  const { filterKeys, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [searchVal, setSearchVal] = useState('')
 
   const getList = async (
@@ -150,7 +151,7 @@ const IterationMain = (props: Props) => {
     setTopParentId(0)
     setIsUpdated(false)
     // 关闭更新需求状态
-    dispatch(setIsUpdateDemand(false))
+    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   const onChangeGrid = (val: any) => {
@@ -257,10 +258,10 @@ const IterationMain = (props: Props) => {
   }
 
   useEffect(() => {
-    if (isUpdateDemand) {
+    if (isUpdateAddWorkItem) {
       getList(isGrid, pageObj, searchItems, false, topParentId)
     }
-  }, [isUpdateDemand])
+  }, [isUpdateAddWorkItem])
 
   const refresh = () => {
     getList(isGrid, pageObj, searchItems, false, topParentId)

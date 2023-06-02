@@ -16,6 +16,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getFlawStatusLog } from '@/services/flaw'
+import { setIsUpdateChangeLog } from '@store/project'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -125,7 +126,7 @@ const Circulation = (props: Props) => {
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
-  // const { isUpdateChangeLog } = useSelector(store => store.demand)
+  const { isUpdateChangeLog } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
 
@@ -152,7 +153,7 @@ const Circulation = (props: Props) => {
         list: result,
       })
     }
-    // dispatch(setIsUpdateChangeLog(false))
+    dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {
@@ -168,11 +169,11 @@ const Circulation = (props: Props) => {
     }
   }, [isRefresh])
 
-  // useEffect(() => {
-  //   if (isUpdateChangeLog) {
-  //     getLogs(false)
-  //   }
-  // }, [isUpdateChangeLog])
+  useEffect(() => {
+    if (isUpdateChangeLog) {
+      getLogs(false)
+    }
+  }, [isUpdateChangeLog])
 
   // 返回自定义值
   const getValues = (key: any, values: any) => {

@@ -182,7 +182,7 @@ const AcceptorSelection = (props: any) => {
               height: '20px',
               fontSize: '12px',
               verticalAlign: 'text-bottom',
-              color: '#646566',
+              color: 'var(--neutral-n2)',
               lineHeight: '20px',
             }}
           >

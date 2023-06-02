@@ -36,12 +36,7 @@ import {
   updateDemandCategory,
   updateDemandStatus,
 } from '@/services/demand'
-import {
-  setDemandInfo,
-  setIsRefreshComment,
-  setIsUpdateDemand,
-  setIsUpdateStatus,
-} from '@store/demand'
+import { setDemandInfo } from '@store/demand'
 import { changeId } from '@store/counterSlice'
 import { onTapSearchChoose } from '@store/view'
 import { changeColorText } from '@store/color-text'
@@ -51,7 +46,12 @@ import CommonButton from '@/components/CommonButton'
 import PermissionWrap from '@/components/PermissionWrap'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
-import { setAddWorkItemModal } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsRefreshComment,
+  setIsUpdateAddWorkItem,
+  setIsUpdateStatus,
+} from '@store/project'
 
 const Wrap = styled.div`
   height: 100%;
@@ -193,8 +193,10 @@ const DemandBox = () => {
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
-  const { demandInfo, isUpdateDemand } = useSelector(store => store.demand)
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
+  const { demandInfo } = useSelector(store => store.demand)
   const { currentMenu } = useSelector(store => store.user)
   const navigate = useNavigate()
   const asyncSetTtile = useSetTitle()
@@ -230,7 +232,7 @@ const DemandBox = () => {
       dispatch(setDemandInfo(result))
     }
     setLoadingState(true)
-    dispatch(setIsUpdateDemand(false))
+    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   useEffect(() => {
@@ -243,10 +245,10 @@ const DemandBox = () => {
   }, [demandId])
 
   useEffect(() => {
-    if (isUpdateDemand) {
+    if (isUpdateAddWorkItem) {
       init()
     }
-  }, [isUpdateDemand])
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     // 获取项目信息中的需求类别

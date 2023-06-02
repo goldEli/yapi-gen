@@ -22,12 +22,10 @@ export const getId = (idStr: string) => {
 
 export const jumpToKanbanConfig = (navigate: NavigateFunction) => {
   // 如果没有配置列 跳转到列配置页面
-  // debugger
-  console.log(
-    'projectInfo----',
-    store.getState().project.projectInfo.projectType,
-  )
-  const { projectType } = store.getState().project.projectInfo
+
+  // const { projectType } = store.getState().project.projectInfo
+  const projectType = getParamsValueByKey('projectType')
+  console.log('projectType', projectType)
   const params = encryptPhp(
     JSON.stringify({
       id: getParamsValueByKey('id'),
@@ -38,6 +36,6 @@ export const jumpToKanbanConfig = (navigate: NavigateFunction) => {
   if (projectType === 2) {
     navigate(`/SprintProjectManagement/Setting?data=${params}`)
   } else {
-    // navigate(`/projectManagement/ProjectSetting?data=${params}`)
+    navigate(`/projectManagement/ProjectSetting?data=${params}`)
   }
 }

@@ -16,8 +16,11 @@ import styled from '@emotion/styled'
 import WrapLeft from './components/WrapLeft'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { setFilterKeys } from '@store/project'
-import { setFilterParams, setIsUpdateDemand } from '@store/demand'
+import {
+  setFilterKeys,
+  setFilterParams,
+  setIsUpdateAddWorkItem,
+} from '@store/project'
 import { deleteDemand, getDemandList } from '@/services/demand'
 import ManageView from '@/components/ManageView'
 import CreateViewPort from '@/components/CreateViewPort'
@@ -67,8 +70,9 @@ const DemandMain = (props: Props) => {
   const [isShowLeft, setIsShowLeft] = useState(false)
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
-  const { filterKeys } = useSelector(store => store.project)
-  const { isUpdateDemand } = useSelector(store => store.demand)
+  const { filterKeys, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [searchVal, setSearchVal] = useState('')
   const searchChoose = useSelector(store => store.view.searchChoose)
   const dispatch = useDispatch()
@@ -154,7 +158,7 @@ const DemandMain = (props: Props) => {
     dispatch(setIsRefresh(false))
     setTopParentId(0)
     setIsUpdated(false)
-    dispatch(setIsUpdateDemand(false))
+    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   useEffect(() => {
@@ -167,10 +171,10 @@ const DemandMain = (props: Props) => {
   }, [key, isGrid, order, pageObj, projectId])
 
   useEffect(() => {
-    if (isUpdateDemand) {
+    if (isUpdateAddWorkItem) {
       getList(isGrid, searchItems, pageObj, order, false, topParentId)
     }
-  }, [isUpdateDemand])
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     if (props.isUpdate) {

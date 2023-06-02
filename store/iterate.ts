@@ -7,7 +7,6 @@ export interface CounterState {
   isRefreshList: boolean
   isUpdateList: boolean
   achieveInfo: any
-  filterParams: any
   // 新增
   isCreateIterationVisible: boolean
   // 创建或编辑的参数
@@ -19,7 +18,6 @@ const initialState: CounterState = {
   isRefreshList: false,
   isUpdateList: false,
   achieveInfo: {},
-  filterParams: {},
 
   isCreateIterationVisible: false,
   createIterationParams: {},
@@ -45,10 +43,6 @@ export const iterateSlice = createSlice({
     setAchieveInfo: (state: any, action) => {
       state.achieveInfo = action.payload
     },
-    // 筛选需求列表参数，用于回填创建需求弹窗
-    setFilterParams: (state: any, action) => {
-      state.filterParams = action.payload
-    },
 
     // 创建迭代或者是编辑迭代
     setIsCreateIterationVisible: (state: any, action) => {
@@ -69,7 +63,6 @@ export const {
   setIsRefreshList,
   setIsUpdateList,
   setAchieveInfo,
-  setFilterParams,
 
   setIsCreateIterationVisible,
   setCreateIterationParams,
