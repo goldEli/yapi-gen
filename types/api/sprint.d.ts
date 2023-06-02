@@ -20,6 +20,18 @@ declare namespace API.Sprint {
       data: Model.SprintKanBan.Issues[]
     }
   }
+  namespace GetExport {
+    type Params = {
+      project_ids: string
+      user_ids: string
+      start_time: string
+      end_time: string
+      iterate_ids: string
+      period_time: string
+      page: number
+      pagesize: number
+    }
+  }
   namespace GetProjectRoleList {
     type Params = {
       project_id: number

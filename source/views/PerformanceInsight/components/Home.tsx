@@ -135,7 +135,7 @@ const Home = () => {
     Array<Models.Efficiency.ViewItem>
   >([])
   // 'iteration''sprint' 'all'
-  const [homeType, setHomeType] = useState('iteration')
+  const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
     useState<API.Sprint.GetStatisticsTotal.Result>()
   const [optionVal, setOptionVal] = useState<number>(0)

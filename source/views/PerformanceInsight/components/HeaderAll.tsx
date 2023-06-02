@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from '@store/index'
 import { getMonthBefor, getDays } from './Date'
 import { defaults } from 'lodash'
+import { getExport } from '@/services/efficiency'
 interface HaderProps {
   type: string
   projectDataList: Array<{
@@ -20,14 +21,14 @@ interface HaderProps {
   }>
   headerParmas: Models.Efficiency.HeaderParmas
   onSearchData: (value: number[]) => void
+  onGetExportApi: (value: number[]) => void
 }
 const HeaderAll = (props: HaderProps) => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
   const [projectList, setProjectList] = useState<any>()
-  const [options, setOptions] = useState<number[]>()
+  const [options, setOptions] = useState<number[]>([])
   const [time, setTime] = useState<{ startTime: string; endTime: string }>()
   useEffect(() => {
     switch (props.headerParmas.time.type) {
@@ -132,19 +133,9 @@ const HeaderAll = (props: HaderProps) => {
         isVisible={isOpen}
         onClose={() => setIsOpen(false)}
         onConfirm={() => {
-          setIsOpen(false), setIsVisibleSuccess(true)
+          setIsOpen(false), props.onGetExportApi(options)
         }}
         personData={props.headerParmas.users}
-      />
-      {/* 导出成功 */}
-      <ExportSuccess
-        title={'导出成功'}
-        text={'Excel导出成功，可在本地打开文件查看'}
-        isVisible={isVisibleSuccess}
-        onConfirm={() => {
-          setIsVisibleSuccess(false)
-        }}
-        onChangeVisible={() => setIsVisibleSuccess(false)}
       />
     </>
   )

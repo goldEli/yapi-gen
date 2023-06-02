@@ -12,12 +12,13 @@ import {
 } from '@/services/demand'
 import { getProjectInfo } from '@/services/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import {
-  setIsDemandDetailDrawerVisible,
-  setIsUpdateDemand,
-} from '@store/demand'
+import { setIsDemandDetailDrawerVisible } from '@store/demand'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { setAddWorkItemModal, setProjectInfo } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsUpdateAddWorkItem,
+  setProjectInfo,
+} from '@store/project'
 import { Drawer, message, Popover, Skeleton, Space } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -72,12 +73,12 @@ const DemandDetailDrawer = () => {
       dom: useRef<any>(null),
     },
   }
-  const {
-    isDemandDetailDrawerVisible,
-    demandDetailDrawerProps,
-    isUpdateDemand,
-  } = useSelector(store => store.demand)
-  const { projectInfo } = useSelector(store => store.project)
+  const { isDemandDetailDrawerVisible, demandDetailDrawerProps } = useSelector(
+    store => store.demand,
+  )
+  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
@@ -259,7 +260,7 @@ const DemandDetailDrawer = () => {
       await updateDemandStatus(value)
       getMessage({ msg: t('common.statusSuccess'), type: 'success' })
       getDemandDetail()
-      dispatch(setIsUpdateDemand(true))
+      dispatch(setIsUpdateAddWorkItem(true))
     } catch (error) {
       //
     }
@@ -330,14 +331,14 @@ const DemandDetailDrawer = () => {
   }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
 
   useEffect(() => {
-    if (isUpdateDemand) {
+    if (isUpdateAddWorkItem) {
       setCurrentIndex(0)
       setDemandIds([])
       if (isDemandDetailDrawerVisible) {
         getDemandDetail()
       }
     }
-  }, [isUpdateDemand])
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)

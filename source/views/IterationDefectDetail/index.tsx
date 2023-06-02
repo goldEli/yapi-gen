@@ -39,6 +39,7 @@ import FlawInfo from './components/FlawInfo'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import RelationStories from './components/RelationStories'
+import { setIsUpdateStatus } from '@store/project'
 
 const IterationDefectDetail = () => {
   const [t] = useTranslation()
@@ -94,7 +95,7 @@ const IterationDefectDetail = () => {
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
     setIsShowCategory(false)
-    // dispatch(setIsUpdateStatus(true))
+    dispatch(setIsUpdateStatus(true))
     // dispatch(setIsRefresh(true))
     dispatch(getFlawInfo({ projectId: id, id: flawId }))
     setTimeout(() => {

@@ -40,7 +40,6 @@ const CheckboxWrap = styled(Checkbox)`
 
 interface Props {
   projectId: string | number
-  parentList: any[]
   onRef: any
   fieldsList: any[]
   detail?: any
@@ -61,8 +60,12 @@ const CreateDemandRight = (props: Props) => {
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
-  const { projectInfoValues, filterParamsModal, addWorkItemModal } =
-    useSelector(store => store.project)
+  const {
+    projectInfoValues,
+    filterParamsModal,
+    addWorkItemModal,
+    addWorkItemParentList,
+  } = useSelector(store => store.project)
   const { params } = addWorkItemModal
   const { userInfo } = useSelector(store => store.user)
 
@@ -178,7 +181,7 @@ const CreateDemandRight = (props: Props) => {
 
       // 如果是子需求创建或编辑，默认父需求填入当前需求id
       if (params.isChild) {
-        hasChild = props.parentList?.filter(
+        hasChild = addWorkItemParentList?.filter(
           (i: any) => i.value === Number(params?.parentId),
         )[0]?.value
       }
@@ -215,7 +218,7 @@ const CreateDemandRight = (props: Props) => {
         // 父需求
         parent_id: params.isChild
           ? hasChild
-          : props.parentList?.filter(
+          : addWorkItemParentList?.filter(
               (i: any) => i.value === props?.detail?.parentId,
             ).length
           ? props?.detail?.parentId
@@ -233,7 +236,7 @@ const CreateDemandRight = (props: Props) => {
       // 子需求默认回填父需求
       if (params?.isChild) {
         form.setFieldsValue({
-          parent_id: props.parentList?.filter(
+          parent_id: addWorkItemParentList?.filter(
             (i: any) => i.value === Number(params?.parentId),
           )[0]?.value,
         })
@@ -371,7 +374,7 @@ const CreateDemandRight = (props: Props) => {
   }, [
     params?.editId,
     props?.detail,
-    props.parentList,
+    addWorkItemParentList,
     props.fieldsList,
     props.workStatusList,
     props.newCategory,
@@ -584,13 +587,13 @@ const CreateDemandRight = (props: Props) => {
           placeholder={t('common.pleaseParentDemand')}
           options={
             params?.editId
-              ? props.parentList?.filter(
+              ? addWorkItemParentList?.filter(
                   (k: any) =>
                     k.value !== params?.editId &&
                     k.parentId !== params?.editId &&
                     k.parentId !== props?.detail?.parentId,
                 )
-              : props.parentList
+              : addWorkItemParentList
           }
           getPopupContainer={(node: any) => node}
           optionFilterProp="label"

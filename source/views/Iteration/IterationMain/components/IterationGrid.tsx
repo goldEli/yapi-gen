@@ -93,11 +93,12 @@ const IterationGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfoValues, projectInfo } = useSelector(store => store.project)
+  const { projectInfoValues, projectInfo, filterParams } = useSelector(
+    store => store.project,
+  )
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})
   const [openDemandDetail] = useOpenDemandDetail()
-  const { filterParams } = useSelector(store => store.iterate)
 
   const hasCreate =
     !getIsPermission(projectInfo?.projectPermissions, 'b/story/save') &&

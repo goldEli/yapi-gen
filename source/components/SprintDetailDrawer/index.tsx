@@ -92,7 +92,9 @@ const SprintDetailDrawer = () => {
   const { affairsDetailDrawer, affairsCommentList } = useSelector(
     store => store.affairs,
   )
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
 
   const modeList = [
     { name: '详细信息', key: 'detailInfo', content: '' },
@@ -500,15 +502,15 @@ const SprintDetailDrawer = () => {
     }
   }, [affairsDetailDrawer])
 
-  // useEffect(() => {
-  //   if (isUpdateDemand) {
-  //     setCurrentIndex(0)
-  //     setDemandIds([])
-  //     if (isDemandDetailDrawerVisible) {
-  //       getDemandDetail()
-  //     }
-  //   }
-  // }, [isUpdateDemand])
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      setCurrentIndex(0)
+      setDemandIds([])
+      if (affairsDetailDrawer.visible) {
+        getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
+      }
+    }
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)
@@ -697,6 +699,7 @@ const SprintDetailDrawer = () => {
                       <CommonComment
                         data={affairsCommentList}
                         onDeleteConfirm={onDeleteCommentConfirm}
+                        onEditComment={onEditComment}
                       />
                     )}
                   </CollapseItemContent>
