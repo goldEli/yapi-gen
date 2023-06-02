@@ -101,8 +101,6 @@ interface Item {
   key: string
 }
 const Addperson = (props: Props) => {
-  console.log(props)
-
   const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()

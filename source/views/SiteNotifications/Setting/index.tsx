@@ -45,8 +45,6 @@ const Setting = () => {
     dispatch(setMyConfiguration(selectKeys))
   }
   useEffect(() => {
-    console.log(myConfiguration)
-
     setSelectKeys(myConfiguration)
   }, [myConfiguration])
 
@@ -86,7 +84,6 @@ const Setting = () => {
         </TitleGroup>
         <MainWrap>
           {configurations.map((i: any) => {
-            console.log(i)
             return (
               <PermissionItem
                 key={i.name}

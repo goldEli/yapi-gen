@@ -160,11 +160,10 @@ const CreateField = () => {
       (item: any) => !filterIds?.includes(item.id),
     )
     setSearchDataList(filterCategory(work_type, data))
-    console.log(work_type)
+
     setCacheSearchlist(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
-    console.log(searchDataList)
   }
   // 请求api
   const getProjectFieIdsApi = async () => {
