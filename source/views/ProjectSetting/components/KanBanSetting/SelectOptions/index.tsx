@@ -19,7 +19,7 @@ import {
 } from './styled'
 import useI18n from '@/hooks/useI18n'
 
-type ViewItem = {
+export type ViewItem = {
   key: string
   value: string
   check: boolean

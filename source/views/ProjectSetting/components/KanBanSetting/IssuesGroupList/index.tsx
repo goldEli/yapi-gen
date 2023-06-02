@@ -4,7 +4,7 @@ import useKanBanData from '../hooks/useKanBanData'
 
 interface IssuesGroupListProps {
   index: number
-  groupId: Model.SprintKanBan.IssuesGroup['groupId']
+  groupId: Model.KanbanConfig.Column['id']
 }
 
 const IssuesGroupList: React.FC<IssuesGroupListProps> = props => {

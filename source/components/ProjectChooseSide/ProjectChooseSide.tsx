@@ -60,11 +60,7 @@ const ProjectChooseSide = (props: any) => {
                     src={i.attachment_id}
                     alt=""
                   />
-                  {/* <CommonIconFont
-                    type="colorDOC-76p4mioh"
-                    size={18}
-                    color="var(--neutral-n3)"
-                  /> */}
+
                   {i.name}
                 </div>
                 <div className="l2">

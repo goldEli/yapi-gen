@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { columnsFromBackend, issueColumns } from './data'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import ColumnTitleArea from '../ColumnTitleArea'
 import useKanBanData from '../hooks/useKanBanData'

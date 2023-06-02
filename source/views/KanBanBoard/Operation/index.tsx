@@ -294,21 +294,21 @@ const Operation = (props: Props) => {
       <OperationWrap>
         <LeftBox>
           <SelectOptionsNormal
-            title="分组"
+            title={t('group')}
             options={sortByGroupOptions ?? []}
             onChange={key => {
               dispatch(onChangeSortByGroupOptions(key))
             }}
           />
           <SelectOptionsNormal
-            title="列与状态"
+            title={t('columns_and_status')}
             options={sortByRowAndStatusOptions ?? []}
             onChange={key => {
               dispatch(onChangeSortByRowAndStatusOptions(key))
             }}
           />
           <SelectOptions
-            title="视图"
+            title={t('view')}
             options={sortByView ?? []}
             onChange={key => {
               dispatch(onChangeSortByView(key))

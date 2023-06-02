@@ -4,14 +4,18 @@ import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHe
 import { useDispatch } from '@store/index'
 import { onFilter } from '@store/kanBan/kanBan.thunk'
 import useProjectType from '../hooks/useProjectType'
+import useI18n from '@/hooks/useI18n'
 
 interface TopAreaProps {}
 
 const TopArea: React.FC<TopAreaProps> = props => {
   const dispatch = useDispatch()
+  const { t } = useI18n()
   const { projectType } = useProjectType()
-  const keyword = projectType === 1 ? '需求' : '事务'
-  const title = `搜索${keyword}或者编号`
+  const keyword = projectType === 1 ? t('need') : t('affairs')
+  const title = t('search_keywords_or_numbers', {
+    keyword,
+  })
   return (
     <ProjectCommonOperation
       title={title}
