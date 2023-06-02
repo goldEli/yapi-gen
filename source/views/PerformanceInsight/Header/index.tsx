@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-handler-names */
+// eslint-disable typescript-eslint/no-extra-semi
 import { DatePicker, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import View from './components/View'
@@ -8,7 +9,6 @@ import SelectMain from './components/SelectMain'
 import { Left } from '../components/style'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from '../components/Select'
-import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { useSelector } from '@store/index'
 import {
   setSave,
@@ -18,11 +18,10 @@ import {
 import { useDispatch } from 'react-redux'
 import ViewDialog from './components/ViewDialog'
 import { getProjectList } from '@/services/project'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
-import dayjs from 'dayjs'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import { getDate } from '../components/Date'
+import { recentCreateData } from '@/services/efficiency'
 interface ItemProps {
   name: string
   id: number
@@ -39,8 +38,6 @@ interface Props {
   value: number
 }
 const Iteration = (props: Props) => {
-  dayjs.extend(customParseFormat)
-  // sprint  iteration all
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
   const tabs1 = [
     {
@@ -72,6 +69,8 @@ const Iteration = (props: Props) => {
   const [projectListAll, setProjectListAll] = useState([])
   const [projectList, setProjectList] = useState([])
   const [timeVal, setTimeVal] = useState<any>()
+  const [iterateData, setIterateData] =
+    useState<API.Sprint.RecentCreateData.Result>([])
   // 项目的id
   const [projectIds, setProjectIds] = useState<number[]>()
   const [iterateIds, setIterateIds] = useState<number>(0)
@@ -84,10 +83,19 @@ const Iteration = (props: Props) => {
   }
   useEffect(() => {
     // 展示的tabs不同
+    // (props.homeType === 'iteration' || props.homeType === 'sprint') && getIterateData()
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
     props.homeType === 'all' && getProjectData()
   }, [])
+  // 获取近期的冲刺项目
+  const getIterateData = async () => {
+    const res = await recentCreateData({
+      project_id: 1,
+      resource_type: props.homeType === 'iteration' ? 6 : 9,
+    })
+    setIterateData(res)
+  }
   useEffect(() => {
     // 回显的项目id
     setProjectIds(props.defalutConfig?.project_id)
@@ -354,10 +362,8 @@ const Iteration = (props: Props) => {
           />
         ) : (
           <Sprint
-            data={[
-              { name: '123', id: 1, key: 1 },
-              { name: '1234', id: 14, key: 14 },
-            ]}
+            homeType={props.homeType}
+            data={iterateData}
             value={iterateIds}
             onChange={oniterateChange}
           />

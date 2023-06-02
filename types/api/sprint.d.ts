@@ -7,7 +7,9 @@ declare namespace API.Sprint {
       list: Model.SprintKanBan.Task[]
     }
   }
-
+  namespace RecentCreateData {
+    type Result = Array<Model.Sprint.RecentCreateDataItem>
+  }
   namespace GetSprintIssueList {
     type Data = {
       title: string
