@@ -17,7 +17,6 @@ import {
   TagWrap,
 } from './style'
 import { addInfoFlaw, deleteInfoFlaw } from '@/services/flaw'
-import { getFlawInfo } from '@store/flaw/flaw.thunk'
 
 interface TagProps {
   tap?(value: any): void
@@ -161,7 +160,6 @@ const FlawTag = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
-  const dispatch = useDispatch()
   let projectId: any
   if (props?.id) {
     projectId = props?.id

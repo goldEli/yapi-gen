@@ -173,6 +173,8 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         <SprintTag
           defaultList={tagList}
           canAdd
+          onUpdate={props.onUpdate}
+          detail={props.affairsInfo}
           addWrap={
             <AddWrap hasDash>
               <IconFont type="plus" />
