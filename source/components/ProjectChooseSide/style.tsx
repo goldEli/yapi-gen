@@ -29,7 +29,8 @@ export const Side = styled.div<{ op: boolean }>`
   }
 `
 export const Liu = styled.div`
-  height: 52px;
+  /* height: 52px; */
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -46,7 +47,7 @@ export const Liu = styled.div`
   .l2 {
     height: 22px;
     font-size: 14px;
-    white-space: nowrap;
+    white-space: pre-wrap;
     color: #646566;
     line-height: 22px;
   }
