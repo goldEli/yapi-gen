@@ -101,9 +101,11 @@ const ItemDropdown = (props: PropsType) => {
     dispatch({ type: 'createProject/changeCreateVisible', payload: true })
   }
   const onRoute = (el: any) => {
+    console.log(el)
     const params = encryptPhp(
       JSON.stringify({
         id: el.id,
+        projectType: el.projectType,
       }),
     )
     setIsOpen(false)

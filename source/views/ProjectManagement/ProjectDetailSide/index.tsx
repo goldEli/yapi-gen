@@ -48,7 +48,6 @@ const ProjectDetailSide = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
-  const { projectType } = useSelector(state => state.createProject)
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
   const routerPath = useLocation()
   const navigate = useNavigate()
