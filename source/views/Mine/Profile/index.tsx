@@ -32,6 +32,9 @@ import { useNavigate } from 'react-router-dom'
 import { getMessage } from '@/components/Message'
 import LineAnimation from '../components/LineAnimation'
 import CommonIconFont from '@/components/CommonIconFont'
+import FullScreenContainer from '@/views/KanBanBoard/FullScreenContainer'
+import { useFullScreenHandle } from 'react-full-screen'
+import { setFullScreen } from '@store/kanBan'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -80,18 +83,8 @@ const StyledWrap = styled.div`
   gap: 17px;
 `
 export const FullScreenDiv = styled.div<{ isScreen: boolean }>`
-  ${props =>
-    props.isScreen
-      ? `
-  position: fixed;
-width: 100vw;
-height: 100vh;
-background: white;
-left: 0;
-top: 0;
-z-index: 999999999999999;
-`
-      : ''}
+  height: ${props => (props.isScreen ? '100vh' : '')};
+  background: white;
 `
 
 const Head = styled.div`
@@ -159,10 +152,11 @@ const GatteWrap = styled.div`
   border-radius: 6px;
 `
 const Profile = () => {
+  const handle = useFullScreenHandle()
   const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
   asyncSetTtile(t('title.a9'))
-
+  const { fullScreen } = useSelector(store => store.kanBan)
   const dispatch = useDispatch()
 
   const { isUpdateCreate } = useSelector(store => store.mine)
@@ -476,77 +470,81 @@ const Profile = () => {
           </CenterRight>
         </Center>
       </div>
-      <FullScreenDiv isScreen={isScreen}>
-        <GatteWrap>
-          <div style={{ padding: '28px 24px 0' }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
+      <FullScreenContainer>
+        <FullScreenDiv isScreen={fullScreen}>
+          <GatteWrap>
+            <div style={{ padding: '28px 24px 0' }}>
               <div
-                onClick={() => setIsScreen(!isScreen)}
                 style={{
-                  width: '98px',
-                  height: '32px',
                   display: 'flex',
-                  alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '8px',
-                  cursor: 'pointer',
                 }}
               >
-                <CommonIconFont
-                  type={isScreen ? 'fewer-screen' : 'full-screen'}
-                />
-                <span>{isScreen ? '退出全屏' : '全屏'}</span>
+                <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
+                <div
+                  onClick={() =>
+                    fullScreen ? handle.enter() : dispatch(setFullScreen(true))
+                  }
+                  style={{
+                    width: '98px',
+                    height: '32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '8px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <CommonIconFont
+                    type={fullScreen ? 'fewer-screen' : 'full-screen'}
+                  />
+                  <span>{fullScreen ? '退出全屏' : '全屏'}</span>
+                </div>
+              </div>
+
+              <div className={titleWrap}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span onClick={nextMonth}>
+                    <IconFont
+                      className={hov}
+                      type="left
+              "
+                      style={{ fontSize: 15, cursor: 'pointer' }}
+                    />
+                  </span>
+
+                  <span className={timeChoose}>{forMateMonth}</span>
+                  <span onClick={prevMonth}>
+                    <IconFont
+                      className={hov}
+                      type="right
+              "
+                      style={{ fontSize: 15, cursor: 'pointer' }}
+                    />
+                  </span>
+                </div>
               </div>
             </div>
-
-            <div className={titleWrap}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span onClick={nextMonth}>
-                  <IconFont
-                    className={hov}
-                    type="left
-              "
-                    style={{ fontSize: 15, cursor: 'pointer' }}
-                  />
-                </span>
-
-                <span className={timeChoose}>{forMateMonth}</span>
-                <span onClick={prevMonth}>
-                  <IconFont
-                    className={hov}
-                    type="right
-              "
-                    style={{ fontSize: 15, cursor: 'pointer' }}
-                  />
-                </span>
+            {gatteData.length >= 1 && (
+              <Mygante data={gatteData} minHeight={380} />
+            )}
+            {gatteData.length < 1 && (
+              <div style={{ height: 'calc(100vh - 508px)' }}>
+                <NoData />
               </div>
-            </div>
-          </div>
+            )}
+          </GatteWrap>
+
           {gatteData.length >= 1 && (
-            <Mygante data={gatteData} minHeight={380} />
+            <PaginationBox
+              total={total}
+              pageSize={pageObj.size}
+              currentPage={pageObj.page}
+              onChange={onChangePage}
+            />
           )}
-          {gatteData.length < 1 && (
-            <div style={{ height: 'calc(100vh - 508px)' }}>
-              <NoData />
-            </div>
-          )}
-        </GatteWrap>
-
-        {gatteData.length >= 1 && (
-          <PaginationBox
-            total={total}
-            pageSize={pageObj.size}
-            currentPage={pageObj.page}
-            onChange={onChangePage}
-          />
-        )}
-      </FullScreenDiv>
+        </FullScreenDiv>
+      </FullScreenContainer>
     </>
   )
 }
