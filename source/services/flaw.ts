@@ -284,6 +284,13 @@ export const updateFlawComment = async (
   })
 }
 
+// 删除评论下的附件
+export const deleteFlawCommentAttach = async (
+  params: API.Flaw.DeleteFlawCommentAttach.Params,
+) => {
+  await http.delete('deleteFlawCommentAttach', params)
+}
+
 // 缺陷变更记录
 export const getFlawChangeLog = async (
   params: API.Flaw.GetFlawChangeLog.Params,

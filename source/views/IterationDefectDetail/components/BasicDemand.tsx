@@ -425,7 +425,7 @@ const BasicDemand = (props: Props) => {
       style={{
         width: '100%',
         paddingLeft: props.hasPadding ? '24px' : 0,
-        height: 'calc(100% - 64px)',
+        height: 'calc(100% - 112px)',
         overflowY: 'auto',
         overflowX: 'hidden',
       }}

@@ -1,4 +1,11 @@
 declare namespace API.Flaw {
+  namespace DeleteFlawCommentAttach {
+    type Params = {
+      project_id: number
+      comment_id: number
+      att_id: string
+    }
+  }
   namespace UpdateFlawComment {
     type Params = {
       projectId: number
