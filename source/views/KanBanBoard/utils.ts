@@ -22,7 +22,6 @@ export const getId = (idStr: string) => {
 
 export const jumpToKanbanConfig = (navigate: NavigateFunction) => {
   // 如果没有配置列 跳转到列配置页面
-
   // const { projectType } = store.getState().project.projectInfo
   const projectType = getParamsValueByKey('projectType')
   console.log('projectType', projectType)
@@ -30,12 +29,12 @@ export const jumpToKanbanConfig = (navigate: NavigateFunction) => {
     JSON.stringify({
       id: getParamsValueByKey('id'),
       pageIdx: 'ProjectKanBan',
-      type: projectType === 2 ? 'ProjectKanBan' : 5,
+      type: projectType === 2 || !projectType? 'ProjectKanBan' : 5,
     }),
   )
-  if (projectType === 2) {
+  if (projectType === 2 || !projectType) {
     navigate(`/SprintProjectManagement/Setting?data=${params}`)
   } else {
-    navigate(`/projectManagement/ProjectSetting?data=${params}`)
+    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
 }

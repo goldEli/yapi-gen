@@ -165,8 +165,9 @@ const ProjectDetailSide = () => {
   }, [projectId])
 
   useEffect(() => {
+    console.log('paramsData.type',paramsData.type)
     setSelectedKeys([paramsData.type])
-  }, [])
+  }, [paramsData.type])
   useEffect(() => {}, [pathname])
   return (
     <AllWrap>
