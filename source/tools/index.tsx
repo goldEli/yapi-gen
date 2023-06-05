@@ -86,7 +86,7 @@ export function getProjectType() {
   /**
    * 2 冲刺 1 迭代
    */
-  const type = getProjectIdByUrl()
+  const type = getProjectTypeByUrl()
   if (type) {
     return type as 1 | 2
   }
