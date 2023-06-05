@@ -11,7 +11,7 @@ import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { menuList } from '../config'
+// import { menuList } from '../config'
 import DemandSettingSide from '../DemandSettingSide'
 import { Button, Menu } from 'antd'
 import {
@@ -46,6 +46,7 @@ const ProjectDetailSide = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
+  console.log('projectInfo----', projectInfo)
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
@@ -61,35 +62,45 @@ const ProjectDetailSide = () => {
       label: '项目成员',
       icon: <CommonIconFont type="team" size={18} />,
       path: '/SprintProjectManagement/Setting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/member'),
+      ).length,
       key: 'ProjectMember',
     },
     {
       label: '项目角色',
       icon: <CommonIconFont type="lock" size={18} />,
       path: '/SprintProjectManagement/Setting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/role'),
+      ).length,
       key: 'ProjectRole',
     },
     {
       label: '通知配置',
       icon: <CommonIconFont type="bell" size={18} />,
       path: '/SprintProjectManagement/Setting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/notification'),
+      ).length,
       key: 'ProjectNotify',
     },
     {
       label: '事务类型',
       icon: <CommonIconFont type="selections" size={18} />,
       path: '/SprintProjectManagement/Setting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/story_config'),
+      ).length,
       key: 'ProjectAffair',
     },
     {
       label: 'Kanban配置',
       icon: <CommonIconFont type="layout" size={18} />,
       path: '/SprintProjectManagement/Setting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/kanban'),
+      ).length,
       key: '2',
       children: [
         {
@@ -104,8 +115,56 @@ const ProjectDetailSide = () => {
       label: '首页配置',
       icon: <CommonIconFont type="settings" size={18} />,
       path: '/SprintProjectManagement/Setting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/home'),
+      ).length,
       key: 'ProjectHome',
+    },
+  ]
+  const menuList = [
+    {
+      name: '事务',
+      icon: 'book-open',
+      path: '/SprintProjectManagement/Affair',
+      isPermission:
+        projectInfo?.isPublic === 1
+          ? true
+          : projectInfo?.projectPermissions?.filter((i: any) =>
+              String(i.group_name).includes('事务'),
+            ).length,
+      key: 'Affair',
+    },
+    {
+      name: '冲刺',
+      icon: 'timer',
+      path: '/SprintProjectManagement/Sprint',
+      isPermission:
+        projectInfo?.isPublic === 1
+          ? true
+          : projectInfo?.projectPermissions?.filter((i: any) =>
+              String(i.group_name).includes('冲刺'),
+            ).length,
+      key: 'Sprint',
+    },
+    {
+      name: '看板',
+      icon: 'layout',
+      path: '/SprintProjectManagement/KanBan',
+      isPermission:
+        projectInfo?.isPublic === 1
+          ? true
+          : projectInfo?.projectPermissions?.filter(
+              (i: any) => i.identity === 'b/project/kanban',
+            ).length,
+      key: 'KanBan',
+    },
+
+    {
+      name: '报表',
+      icon: 'pie-chart-02',
+      path: '/Report/PerformanceInsight',
+      isPermission: true,
+      key: 'SprintReport',
     },
   ]
   // 获取项目信息
@@ -124,8 +183,20 @@ const ProjectDetailSide = () => {
   }
 
   // 点击切换模块
-  const onChangeRouter = (path: string) => {
+  const onChangeRouter = (i: { path: any; key: any }) => {
+    const { path, key } = i
     const params = encryptPhp(JSON.stringify({ id: projectId }))
+    if (key === 'SprintReport') {
+      const paramsData = encryptPhp(
+        JSON.stringify({
+          projectId: projectId,
+          type: 'sprint',
+          id: projectId,
+        }),
+      )
+      navigate(`/Report/PerformanceInsight?data=${paramsData}`)
+      return
+    }
     navigate(`${path}?data=${params}`)
   }
 
@@ -165,7 +236,6 @@ const ProjectDetailSide = () => {
   }, [projectId])
 
   useEffect(() => {
-    console.log('paramsData.type',paramsData.type)
     setSelectedKeys([paramsData.type])
   }, [paramsData.type])
   useEffect(() => {}, [pathname])
@@ -190,9 +260,9 @@ const ProjectDetailSide = () => {
               </Back>
             )}
             <Provider />
-
             <MenuBox>
               {pathname === '/SprintProjectManagement/Setting' ? (
+                // <div>12</div>
                 <Menu
                   items={projectSettingsList}
                   onClick={projectSettingsClick}
@@ -205,7 +275,7 @@ const ProjectDetailSide = () => {
                   <MenuItem
                     key={i.path}
                     isActive={pathname === i.path}
-                    onClick={() => onChangeRouter(i.path)}
+                    onClick={() => onChangeRouter(i)}
                     hidden={!i.isPermission}
                   >
                     <CommonIconFont type={i.icon} size={18} />

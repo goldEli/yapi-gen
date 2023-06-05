@@ -16,7 +16,6 @@ const MenuWrap = styled(Menu)`
   overflow-y: scroll;
   border-radius: 6px;
   padding: 4px;
-  padding-bottom: 20px;
   li {
     height: 32px !important;
     line-height: 32px !important;
@@ -27,6 +26,12 @@ const MenuWrap = styled(Menu)`
   li:hover {
     color: var(--neutral-n1-d1) !important;
     background: var(--hover-d3) !important;
+  }
+  .ant-dropdown-menu-item.ant-dropdown-menu-item-disabled:hover,
+  .ant-dropdown-menu-item.ant-dropdown-menu-submenu-title-disabled:hover,
+  .ant-dropdown-menu-submenu-title.ant-dropdown-menu-item-disabled:hover,
+  .ant-dropdown-menu-submenu-title.ant-dropdown-menu-submenu-title-disabled:hover {
+    background-color: transparent !important;
   }
 `
 const RemoveItemWrap = styled.div`
@@ -61,10 +66,11 @@ const MenuItemWrap = styled.div`
 `
 const NewItemWrap = styled(MenuItemWrap)`
   box-sizing: border-box;
-  border-top: 1px solid var(--neutral-n6-d1);
+`
+const LineWrap = styled.div`
   width: 180px;
-  position: relative;
-  top: 8px;
+  height: 1px;
+  background: var(--neutral-n6-d1);
 `
 
 interface Props {
@@ -75,7 +81,7 @@ interface Props {
 
 export const LatelyLongStoryMenu = (props: Props) => {
   const [t] = useTranslation()
-  const id = Number(props?.record?.id?.split('-')?.[1])
+  const id = Number(props?.record?.id?.split('_')?.[1])
   const dispatch = useDispatch()
   const { projectInfo } = useSelector(store => store.project)
   const hasDel = getIsPermission(
@@ -85,11 +91,12 @@ export const LatelyLongStoryMenu = (props: Props) => {
 
   const editLongStory = async (parent_id: number) => {
     try {
-      const result: any = updateAffairsTableParams({
+      const result: any = await updateAffairsTableParams({
         otherParams: { parent_id },
         projectId: props?.record?.project_id,
         id,
       })
+
       if (result && result.code === 0) {
         getMessage({
           msg: '长故事修改成功',
@@ -163,9 +170,28 @@ export const LatelyLongStoryMenu = (props: Props) => {
     )
     .concat([
       {
+        key: '-2',
+        disabled: true,
+        label: <LineWrap />,
+      },
+      {
         key: '-3',
         disabled: false,
-        label: <NewItemWrap>新建长故事</NewItemWrap>,
+        label: (
+          <NewItemWrap
+            onClick={() => {
+              // Todo 新建长故事
+              dispatch(
+                setAddWorkItemModal({
+                  visible: true,
+                  params: {},
+                }),
+              )
+            }}
+          >
+            新建长故事
+          </NewItemWrap>
+        ),
       },
     ])
 

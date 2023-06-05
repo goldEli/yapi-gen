@@ -439,10 +439,15 @@ const urls = {
 
   // 获取需求流转配置
   getFlowConfig: '/b/story/flowConfig',
+  // 获取需求流转配置(冲刺)
+  getFlowConfigForSprint: '/b/transaction/flowConfig',
 
   getParentList: function (key: string) {
     return `/b/${key}/getlist`
   },
+
+  // 复制视图
+  copyView: '/b/story/views/copy',
 }
 export default urls
 

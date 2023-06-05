@@ -48,6 +48,7 @@ const ProjectDetailSide = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
+  console.log('projectInfo', projectInfo)
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
   const routerPath = useLocation()
   const navigate = useNavigate()
@@ -78,19 +79,30 @@ const ProjectDetailSide = () => {
       name: 'KanBan',
       icon: 'layout',
       path: '/ProjectManagement/KanBan',
-      isPermission: true,
+      isPermission:
+        projectInfo?.isPublic === 1
+          ? true
+          : projectInfo?.projectPermissions?.filter(
+              (i: any) => i.identity === 'b/project/kanban',
+            ).length,
     },
     {
       name: '报表',
       icon: 'interation-2',
-      path: '/ProjectManagement/IterationReport',
+      path: '/Report/PerformanceInsight',
       isPermission: true,
+      key: 'Report',
     },
     {
       name: '缺陷',
       icon: 'interation-2',
       path: '/ProjectManagement/Defect',
-      isPermission: true,
+      isPermission:
+        projectInfo?.isPublic === 1
+          ? true
+          : projectInfo?.projectPermissions?.filter((i: any) =>
+              String(i.group_name).includes('缺陷'),
+            ).length,
     },
   ]
   const menuKeys = [
@@ -267,8 +279,23 @@ const ProjectDetailSide = () => {
   }
 
   // 点击切换模块
-  const onChangeRouter = (path: string) => {
+  const onChangeRouter = (i: { path: any; key: any }) => {
+    // const params = encryptPhp(JSON.stringify({ id: projectId }))
+    // navigate(`${path}?data=${params}`)
+
+    const { path, key } = i
     const params = encryptPhp(JSON.stringify({ id: projectId }))
+    if (key === 'Report') {
+      const paramsData = encryptPhp(
+        JSON.stringify({
+          projectId: projectId,
+          type: 'iteration',
+          id: projectId,
+        }),
+      )
+      navigate(`/Report/PerformanceInsight?data=${paramsData}`)
+      return
+    }
     navigate(`${path}?data=${params}`)
   }
 
@@ -378,7 +405,7 @@ const ProjectDetailSide = () => {
             <MenuItem
               key={i.path}
               isActive={routerPath.pathname === i.path}
-              onClick={() => onChangeRouter(i.path)}
+              onClick={() => onChangeRouter(i)}
               hidden={!i.isPermission}
             >
               <CommonIconFont type={i.icon} size={18} />

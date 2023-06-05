@@ -54,7 +54,6 @@ const Project = () => {
       setIsShowPage(true)
     }
   }, [paramsData, projectInfo])
-  console.log('isShowPage', isShowPage,location.pathname,path.includes(location.pathname))
   return (
     <ProjectWrap>
       {isShowPage && (

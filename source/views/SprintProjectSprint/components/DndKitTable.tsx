@@ -1,4 +1,4 @@
-import { Checkbox, Menu, Tooltip, type TableColumnProps } from 'antd'
+import { Checkbox, Tooltip, type TableColumnProps } from 'antd'
 import XTable from './XTable'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import IconFont from '@/components/IconFont'
@@ -80,6 +80,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
     '&: hover': {
       '.icon': {
         visibility: isShow ? 'visible' : 'hidden',
+        color: 'var(--primary-d2)',
       },
     },
   }),
@@ -162,8 +163,8 @@ const DndKitTable = (props: any) => {
 
   // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
-    const group_id = Number(item.id?.split('-')[0]) || 0
-    const id = Number(item.id?.split('-')[1]) || 0
+    const group_id = Number(item.id?.split('_')[0]) || 0
+    const id = Number(item.id?.split('_')[1]) || 0
     const demandIds: any[] = rightSprintList
       .find(k => k.id === group_id)
       ?.stories?.map((k: any) => k.id)
@@ -219,7 +220,7 @@ const DndKitTable = (props: any) => {
 
   // 设置选中的事务
   const onDeleteChange = (item: any) => {
-    const id = Number(item.id?.split('-')[1]) || 0
+    const id = Number(item.id?.split('_')[1]) || 0
     setDeleteItem({ ...item, id })
     setIsVisible(true)
   }
@@ -300,7 +301,7 @@ const DndKitTable = (props: any) => {
               onClickItem(record)
             }}
           >
-            <Tooltip placement="top" title={record.category}>
+            <Tooltip placement="topLeft" title={record.category}>
               <img
                 src={
                   record.category_attachment
@@ -315,7 +316,7 @@ const DndKitTable = (props: any) => {
                 alt=""
               />
             </Tooltip>
-            <Tooltip placement="top" title={value}>
+            <Tooltip placement="topLeft" title={value}>
               <span className="content">{value}</span>
             </Tooltip>
           </TitleWrap>
@@ -361,7 +362,7 @@ const DndKitTable = (props: any) => {
       key: 'handlers',
       width: 180,
       render: (text: any, temp: any) => {
-        const id = temp.id?.split('-')?.[1]
+        const id = temp.id?.split('_')?.[1]
         const record = {
           ...temp,
           id,
@@ -397,7 +398,7 @@ const DndKitTable = (props: any) => {
       key: 'priority',
       width: 180,
       render: (text: any, temp: any) => {
-        const id = temp.id?.split('-')?.[1]
+        const id = temp.id?.split('_')?.[1]
         const record = { ...temp, id }
         return (
           <ChangePriorityPopover
@@ -408,7 +409,7 @@ const DndKitTable = (props: any) => {
             onChangePriority={item => onChangeState(item)}
             record={{ project_id: projectId, id: record.id }}
           >
-            <PriorityWrap isShow={isCanEdit}>
+            <PriorityWrap isShow={!isCanEdit}>
               {text?.icon ? (
                 <IconFont
                   className="priorityIcon"
@@ -434,7 +435,7 @@ const DndKitTable = (props: any) => {
       key: 'status',
       width: 190,
       render: (text: any, temp: any) => {
-        const id = temp.id?.split('-')?.[1]
+        const id = temp.id?.split('_')?.[1]
         const record = { ...temp, id, isExamine: temp.verify_lock === 1 }
         return (
           <>
@@ -513,7 +514,6 @@ const DndKitTable = (props: any) => {
       )
       const destList = data[idx]
       const source = [...destList.stories]
-
       const item = destList.stories.find(
         (_: any, i: any) => i === result.source?.index,
       )
@@ -597,7 +597,7 @@ const DndKitTable = (props: any) => {
             data={item}
             list={item?.stories?.map((i: any) => ({
               ...i,
-              id: `${item.id}-${i.id}`,
+              id: `${item.id}_${i.id}`,
             }))}
             columns={columns}
           />

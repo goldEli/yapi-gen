@@ -548,13 +548,12 @@ export const updateInfoAffairs = async (
 }
 // 快捷修改参数
 export const updateAffairsTableParams = async (params: any) => {
-  console.log(params, 'params')
-
-  await http.put<any>('changeAffairsTableParams', {
+  const response: any = await http.put<any>('changeAffairsTableParams', {
     project_id: params.projectId,
     id: params.id,
     ...params.otherParams,
   })
+  return response
 }
 
 // 修改优先级

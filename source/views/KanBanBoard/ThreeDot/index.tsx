@@ -10,7 +10,7 @@ import {
   onCopyLink,
   onCopyName,
 } from '@/components/TableDropdownMenu/CommonDropdownMenu'
-import { getIsPermission, getParamsValueByKey } from '@/tools'
+import { getIsPermission, getProjectIdByUrl } from '@/tools'
 import { setAddWorkItemModal } from '@store/project'
 import useI18n from '@/hooks/useI18n'
 
@@ -94,7 +94,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
                 params: {
                   type: 2,
                   editId: props.story.id,
-                  projectId: getParamsValueByKey('id'),
+                  projectId: getProjectIdByUrl(),
                   title: t('editorial_affairs'),
                 },
               }),
@@ -129,7 +129,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
           onClick={e => {
             e.stopPropagation()
             onCopyLink({
-              project_id: getParamsValueByKey('id'),
+              project_id: getProjectIdByUrl(),
               id: props.story.id,
             })
           }}

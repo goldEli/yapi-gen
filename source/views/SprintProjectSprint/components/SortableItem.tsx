@@ -6,7 +6,7 @@ import './styles.css'
 export const SortableItem = (props: any) => {
   const { rightSprintList } = useSelector(state => state.sprint)
   const id = props['data-row-key']
-  const [groupId, itemId] = id.split('-')
+  const [groupId, itemId] = id.split('_')
   const { style, className, children, ...rest } = props
   const index = rightSprintList
     ?.find((item: any) => item.id === Number(groupId))

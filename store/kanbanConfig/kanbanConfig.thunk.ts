@@ -8,7 +8,7 @@ import {
   setViewList,
 } from '.'
 import { getMessage } from '@/components/Message'
-import { getParamsValueByKey } from '@/tools'
+import { getProjectIdByUrl } from '@/tools'
 import { produce } from 'immer'
 import { openConfirmModal } from '@/components/DeleteConfirmGlobal'
 import i18next from 'i18next'

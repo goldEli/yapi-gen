@@ -3,7 +3,7 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { Dropdown } from 'antd'
+import { Dropdown, Tooltip } from 'antd'
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -25,6 +25,10 @@ const ContentText = styled.div`
   }
   margin-right: 8px;
   color: var(--neutral-n1-d1);
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `
 const dropdownIcon = css({
   cursor: 'pointer',
@@ -64,9 +68,11 @@ const ClickDropdown = (props: Props) => {
           marginLeft: props.size ? 12 : 0,
         }}
       >
-        <ContentText>
-          {props.contentText ? props.contentText : '--'}
-        </ContentText>
+        <Tooltip placement="topLeft" title={props.contentText}>
+          <ContentText>
+            {props.contentText ? props.contentText : '--'}
+          </ContentText>
+        </Tooltip>
         <IconFont
           style={{
             fontSize: props.size || 14,
