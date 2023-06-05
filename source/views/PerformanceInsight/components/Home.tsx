@@ -23,7 +23,7 @@ import CommonButton from '@/components/CommonButton'
 import { useSelector } from '@store/index'
 import ViewDialog from '../Header/components/ViewDialog'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import HightChartMainBar from './HightChartMainBar'
 import HightChartMainLine from './HightChartMainLine'
 import HightChartMainPie from './HightChartMainPie'
@@ -41,6 +41,7 @@ import {
   viewsUpdate,
 } from '@/services/efficiency'
 import { getDate, getDateStr } from './Date'
+import { getParamsData } from '@/tools'
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const { headerParmas, projectDataList } = useSelector(
     store => store.performanceInsight,
@@ -50,6 +51,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
     const params = encryptPhp(
       JSON.stringify({
         data: props.data,
+        projectId: props.projectId,
         type:
           props.num === 1
             ? `Progress_${props.homeType}`
@@ -65,7 +67,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
         projectDataList,
       }),
     )
-    navigate(`/Report/ChildLevel?data=${params}`)
+    navigate(`/ChildLevel?data=${params}`)
   }
   return (
     <>
@@ -76,8 +78,8 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             <Time>{props.time}</Time>
           </Space>
         </RightRow>
-        <Text size={'12px'} onClick={() => 123}>
-          <Space size={4} onClick={() => onClick()}>
+        <Text size={'12px'} onClick={() => onClick()}>
+          <Space size={4}>
             <span>查看明细</span>
             <CommonIconFont
               type={'right'}
@@ -122,9 +124,12 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   )
 }
 const Home = () => {
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const { save, headerParmas } = useSelector(store => store.performanceInsight)
+  const [projectId, setProjectId] = useState(0)
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
   const [charts1, setCharts1] = useState<Models.Efficiency.ChartBar>()
@@ -142,6 +147,14 @@ const Home = () => {
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ConfigItem>()
   useEffect(() => {
+    console.log(paramsData, 'paramsData')
+    if (paramsData) {
+      setHomeType(paramsData.type)
+      setProjectId(paramsData.projectId)
+    } else {
+      setHomeType('all')
+      setProjectId(0)
+    }
     // 缺陷现状和工作项现状
     getWorkList()
     // 新增工作top10对比
@@ -394,6 +407,7 @@ const Home = () => {
     >
       {/*头部组件 */}
       <Header
+        projectId={projectId}
         homeType={homeType}
         defalutConfig={defalutConfig}
         viewDataList={viewDataList}
@@ -405,6 +419,7 @@ const Home = () => {
         value={optionVal}
       />
       <WorkingStatus
+        projectId={projectId}
         homeType={homeType}
         data={workDataList?.work || []}
         title={homeType === 'all' ? '现状' : '工作项现状'}
@@ -414,6 +429,7 @@ const Home = () => {
       <div style={{ margin: '32px 0' }}>
         <WorkingStatus
           num={2}
+          projectId={projectId}
           homeType={homeType}
           data={workDataList?.defect || []}
           title={'缺陷现状'}
@@ -440,6 +456,7 @@ const Home = () => {
               onChange={(val: any) => getContrastNewWork(val)}
             />
             <HightChartMainLine
+              projectId={projectId}
               chart={charts2}
               title={homeType === 'all' ? '工作完成周期' : '工作周期对比'}
               height={396}

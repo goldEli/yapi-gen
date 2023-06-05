@@ -10,6 +10,7 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { Upload, Spin, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import CommonButton from '@/components/CommonButton'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { formatFileSize } from '@/services/cos'
@@ -134,7 +135,7 @@ const ContentWrap = styled.div<{ hasBg?: true; width: number }>(
   {
     minHeight: 32,
     lineHeight: '32px',
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: 12,
     color: 'var(--neutral-n1-d1)',
   },
@@ -160,6 +161,7 @@ const IconFontWrap = styled(IconFont)({
 
 const FilesItems = styled.div({
   marginTop: 24,
+  marginLeft: 24,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -180,6 +182,8 @@ interface CommonImportProps {
   templateInterfaces: any
   // template字段modal的标题
   templateTitle: string
+  // 导入后更新
+  onUpdate(): void
 }
 
 const CommonImport = (props: CommonImportProps) => {
@@ -193,6 +197,7 @@ const CommonImport = (props: CommonImportProps) => {
     },
     templateInterfaces,
     templateTitle,
+    onUpdate,
   } = props
   const [step, setStep] = useState(1)
   const [tabs, setTabs] = useState(2)
@@ -388,7 +393,7 @@ const CommonImport = (props: CommonImportProps) => {
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <IconFont
                       style={{ fontSize: 24, marginRight: 4 }}
-                      type="colorXLS"
+                      type="colorXLS-76p4mekd"
                     />
                     <span>
                       {ele.name} ({formatFileSize(ele.size)})
@@ -412,12 +417,13 @@ const CommonImport = (props: CommonImportProps) => {
                   right: 24,
                 }}
               >
-                <Button
+                <CommonButton
+                  type="light"
                   style={{ marginRight: 16 }}
                   onClick={() => setFileList([])}
                 >
                   {t('newlyAdd.aginChoose')}
-                </Button>
+                </CommonButton>
                 <Button type="primary" onClick={onConfirmUpload}>
                   {t('newlyAdd.startUpload')}
                 </Button>
@@ -536,7 +542,7 @@ const CommonImport = (props: CommonImportProps) => {
                   {importExcel?.errorCount}，{t('newlyAdd.importErrorToast')}
                 </span>
                 <ItemWrap style={{ marginTop: 16 }}>
-                  <ContentWrap width={120} hasBg>
+                  <ContentWrap width={120} hasBg style={{ paddingLeft: 16 }}>
                     {t('newlyAdd.lineError')}
                   </ContentWrap>
                   <ContentWrap width={616} hasBg style={{ textAlign: 'left' }}>
@@ -547,7 +553,9 @@ const CommonImport = (props: CommonImportProps) => {
                   {importExcel?.errorList &&
                     Object.keys(importExcel?.errorList)?.map((i: any) => (
                       <ItemWrap key={i}>
-                        <ContentWrap width={120}>{i}</ContentWrap>
+                        <ContentWrap width={120} style={{ paddingLeft: 16 }}>
+                          {i}
+                        </ContentWrap>
                         <ContentWrap width={616} style={{ textAlign: 'left' }}>
                           {importExcel?.errorList[i].join(';')}
                         </ContentWrap>
@@ -598,16 +606,16 @@ const CommonImport = (props: CommonImportProps) => {
                 {importExcel?.successCount}
               </span>
               <Space size={16} style={{ margin: '56px 0' }}>
-                <Button
-                  style={{
-                    color: 'var(--primary-d2)',
-                    background: 'var(--neutral-n6-d1)',
-                  }}
-                  onClick={onClear}
-                >
+                <CommonButton type="light" onClick={onClear}>
                   {t('newlyAdd.continueImport')}
-                </Button>
-                <Button type="primary" onClick={onClear}>
+                </CommonButton>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    onClear()
+                    onUpdate()
+                  }}
+                >
                   {t('container.finish')}
                 </Button>
               </Space>

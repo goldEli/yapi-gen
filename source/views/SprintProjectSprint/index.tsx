@@ -267,7 +267,6 @@ const SprintProjectSprint: React.FC = () => {
     orderkey: 'id',
     search: {
       all: 1,
-      sprint_status: 0,
       project_id: projectId,
     },
     is_long_story: 0,
@@ -414,7 +413,7 @@ const SprintProjectSprint: React.FC = () => {
           ...searchObject,
           search: {
             ...searchObject.search,
-            id: leftSprintList.list
+            resource_ids: leftSprintList.list
               .filter((_, idx) => checkList[idx])
               .map(k => k.id),
           },

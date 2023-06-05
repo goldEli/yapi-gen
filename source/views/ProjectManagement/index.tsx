@@ -54,7 +54,6 @@ const Project = () => {
       setIsShowPage(true)
     }
   }, [paramsData, projectInfo])
-
   return (
     <ProjectWrap>
       {isShowPage && (

@@ -4,16 +4,13 @@ import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
 import ResizeTable from './ResizeTable'
 import NoData from '@/components/NoData'
-import { Checkbox, Collapse, Tooltip } from 'antd'
+import { Collapse, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
-import PaginationBox from '@/components/TablePagination'
 import CreateSprintModal from './CreateSprintModal'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import { getMessage } from '@/components/Message'
-import { deleteAffairs } from '@/services/affairs'
 import { useTranslation } from 'react-i18next'
 import { delSprintItem } from '@/services/sprint'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
@@ -36,7 +33,7 @@ const XTableWrap = styled.div`
     }
   }
   .ant-table-body {
-    max-height: 400px !important;
+    max-height: 520px !important;
   }
   .nodata {
     height: 50px;
@@ -71,10 +68,9 @@ const XTableWrap = styled.div`
       -1px 0 15px 0 rgba(34, 33, 81, 0.01),
       0px 15px 15px 0 rgba(34, 33, 81, 0.25);
 
-    animation: pop 200ms cubic-bezier(0.18, 0.67, 0.6, 1.22);
+    /* animation: pop 200ms cubic-bezier(0.18, 0.67, 0.6, 1.22); */
     box-shadow: var(--box-shadow-picked-up);
-    z-index: 1;
-
+    cursor: move !important;
     // 禁用单元格元素默认行为
     > td {
       border-color: transparent !important;
@@ -128,7 +124,6 @@ const PanelWrap = styled(Panel)`
 
 const XTable: React.FC<XTableProps> = props => {
   const { data, list } = props
-  const [pageObj, setPageObj] = useState<any>({})
   const [sprintModal, setSprintModal] = useState<{
     visible: boolean
     type: any
@@ -218,157 +213,161 @@ const XTable: React.FC<XTableProps> = props => {
 
   return (
     <>
-      <Droppable key={data.id} droppableId={String(data.id)}>
-        {provided => {
-          return (
-            <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
-              <Collapse
-                defaultActiveKey={['1']}
-                ghost
-                expandIcon={({ isActive }: any) => {
-                  return isActive ? (
-                    <IconFont
-                      style={{
-                        fontSize: 14,
-                        color: 'var(--neutral-n3)',
-                      }}
-                      type="down-icon"
-                    />
-                  ) : (
-                    <IconFont
-                      style={{
-                        fontSize: 14,
-                        color: 'var(--neutral-n3)',
-                      }}
-                      type="right-icon"
-                    />
-                  )
-                }}
-              >
-                <PanelWrap
-                  header={
-                    <PanelHeader
-                      onClick={e => {
-                        e.stopPropagation()
-                      }}
-                    >
-                      <div>
-                        <span className="title">{data.name}</span>
-                        <span className="date">
-                          {`${data?.start_at ? data.start_at : ''}${
-                            data?.start_at && data?.end_at ? '~ ' : ''
-                          }${data?.end_at ? data?.end_at : ''}`}
-                          {data?.story_visible_count
-                            ? `（可见${data?.story_visible_count}个，共${data?.story_count}个事务）`
-                            : ''}
-                        </span>
-                        {data.id === -1 ? null : (
-                          <>
-                            <Tooltip title="编辑">
-                              <IconFont
-                                onClick={() => {
-                                  setSprintModal({
-                                    visible: true,
-                                    type: 'edit',
-                                  })
-                                }}
-                                style={{
-                                  fontSize: 16,
-                                  color: 'var(--neutral-n3)',
-                                  marginRight: 16,
-                                }}
-                                type="edit"
-                              />
-                            </Tooltip>
-                            <Tooltip title="删除">
-                              <IconFont
-                                onClick={() => {
-                                  open({
-                                    title: '删除冲刺',
-                                    text: `确认要删除【${data.name}】的冲刺吗？`,
-                                    onConfirm: () => deleteSprint(data.id),
-                                  })
-                                }}
-                                style={{
-                                  fontSize: 16,
-                                  color: 'var(--neutral-n3)',
-                                }}
-                                type="delete"
-                              />
-                            </Tooltip>
-                          </>
-                        )}
-                      </div>
-                      {data.id === -1 ? (
-                        <CommonButton
-                          type="light"
-                          onClick={() => {
-                            setSprintModal({
-                              visible: true,
-                              type: 'create',
-                            })
-                          }}
-                        >
-                          新建冲刺
-                        </CommonButton>
-                      ) : (
-                        getSprintButton(data.status)
-                      )}
-                    </PanelHeader>
-                  }
-                  key="1"
-                >
-                  <CreateTransactionButton
-                    onClick={() => {
-                      // todo 创建新事物
-                      dispatch(
-                        setAddWorkItemModal({
-                          visible: true,
-                        }),
-                      )
-                    }}
-                  >
-                    <IconFont
-                      style={{
-                        fontSize: 16,
-                        marginRight: 8,
-                      }}
-                      type="plus"
-                    />
-                    <span>新事物</span>
-                  </CreateTransactionButton>
-                  <ResizeTable
-                    className="dnd"
-                    isSpinning={false}
-                    dataWrapNormalHeight=""
-                    col={props.columns}
-                    noData={
-                      data.id === -1 ? (
-                        <NoData subText="暂无事务" />
-                      ) : (
-                        <div className="nodata">
-                          {data.status === 4
-                            ? '从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺'
-                            : '可将已有事务拖拽到此处，来确定冲刺计划'}
-                        </div>
-                      )
-                    }
-                    dataSource={list}
-                    components={{ body: { row: SortableItem } }}
-                  />
-                  <PaginationBox
-                    total={list?.length}
-                    pageSize={10}
-                    onChange={() => {}}
-                  />
-
-                  {provided.placeholder}
-                </PanelWrap>
-              </Collapse>
-            </XTableWrap>
+      <Collapse
+        defaultActiveKey={['1']}
+        ghost
+        expandIcon={({ isActive }: any) => {
+          return isActive ? (
+            <IconFont
+              style={{
+                fontSize: 14,
+                color: 'var(--neutral-n3)',
+              }}
+              type="down-icon"
+            />
+          ) : (
+            <IconFont
+              style={{
+                fontSize: 14,
+                color: 'var(--neutral-n3)',
+              }}
+              type="right-icon"
+            />
           )
         }}
-      </Droppable>
+      >
+        <PanelWrap
+          header={
+            <PanelHeader
+              onClick={e => {
+                e.stopPropagation()
+              }}
+            >
+              <div>
+                <span className="title">{data.name}</span>
+                <span className="date">
+                  {`${data?.start_at ? data.start_at : ''}${
+                    data?.start_at && data?.end_at ? '~ ' : ''
+                  }${data?.end_at ? data?.end_at : ''}`}
+                  {data?.story_visible_count
+                    ? `（可见${data?.story_visible_count}个，共${data?.story_count}个事务）`
+                    : ''}
+                </span>
+                {data.id === -1 ? null : (
+                  <>
+                    <Tooltip title="编辑">
+                      <IconFont
+                        onClick={() => {
+                          setSprintModal({
+                            visible: true,
+                            type: 'edit',
+                          })
+                        }}
+                        style={{
+                          fontSize: 16,
+                          color: 'var(--neutral-n3)',
+                          marginRight: 16,
+                        }}
+                        type="edit"
+                      />
+                    </Tooltip>
+                    <Tooltip title="删除">
+                      <IconFont
+                        onClick={() => {
+                          open({
+                            title: '删除冲刺',
+                            text: `确认要删除【${data.name}】的冲刺吗？`,
+                            onConfirm: () => deleteSprint(data.id),
+                          })
+                        }}
+                        style={{
+                          fontSize: 16,
+                          color: 'var(--neutral-n3)',
+                        }}
+                        type="delete"
+                      />
+                    </Tooltip>
+                  </>
+                )}
+              </div>
+              {data.id === -1 ? (
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    setSprintModal({
+                      visible: true,
+                      type: 'create',
+                    })
+                  }}
+                >
+                  新建冲刺
+                </CommonButton>
+              ) : (
+                getSprintButton(data.status)
+              )}
+            </PanelHeader>
+          }
+          key="1"
+        >
+          <CreateTransactionButton
+            onClick={() => {
+              // todo 创建新事物
+              dispatch(
+                setAddWorkItemModal({
+                  visible: true,
+                }),
+              )
+            }}
+          >
+            <IconFont
+              style={{
+                fontSize: 16,
+                marginRight: 8,
+              }}
+              type="plus"
+            />
+            <span>新事物</span>
+          </CreateTransactionButton>
+          <Droppable key={data.id} droppableId={String(data.id)}>
+            {provided => (
+              <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
+                <ResizeTable
+                  className="dnd"
+                  isSpinning={false}
+                  dataWrapNormalHeight=""
+                  col={props.columns}
+                  noData={
+                    data.id === -1 ? (
+                      <NoData subText="暂无事务" />
+                    ) : (
+                      <div className="nodata">
+                        {data.status === 4
+                          ? '从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺'
+                          : '可将已有事务拖拽到此处，来确定冲刺计划'}
+                      </div>
+                    )
+                  }
+                  dataSource={list}
+                  components={{ body: { row: SortableItem } }}
+                  pagination={{
+                    total: list?.length,
+                    showTotal(total: any) {
+                      return `共 ${total}条`
+                    },
+                    defaultPageSize: 10,
+                    defaultCurrent: 1,
+                    pageSizeOptions: ['10', '20', '50'],
+                    showSizeChanger: true,
+                    showQuickJumper: true,
+                  }}
+                />
+                {provided.placeholder}
+              </XTableWrap>
+            )}
+          </Droppable>
+        </PanelWrap>
+      </Collapse>
+
       <CreateSprintModal
         type={sprintModal.type}
         visible={sprintModal.visible}

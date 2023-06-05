@@ -435,6 +435,9 @@ const Operation = (props: Props) => {
             getLoadListFields,
           }}
           templateTitle={t('newlyAdd.importChoose')}
+          onUpdate={() => {
+            // Todo 导入后更新列表
+          }}
         />
       </CommonModal>
 

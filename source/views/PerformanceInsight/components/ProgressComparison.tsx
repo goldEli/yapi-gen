@@ -59,6 +59,7 @@ interface Props {
   homeType: string
   headerParmas: Models.Efficiency.HeaderParmas
   projectDataList: Array<{ name: string; id: number }>
+  projectId: number
 }
 const ProgressComparison = (props: Props) => {
   const dispatch = useDispatch()
@@ -617,12 +618,14 @@ const ProgressComparison = (props: Props) => {
   }
   return (
     <div
-      style={{ height: '100%' }}
+      style={{ height: '100%', width: '100%' }}
       onClick={() => {
         dispatch(setVisiblePerson(false)), dispatch(setVisibleWork(false))
       }}
     >
       <HeaderAll
+        homeType={props.homeType}
+        projectId={props.projectId}
         onGetExportApi={onGetExportApi}
         onSearchData={onSearchData}
         type={props.type}

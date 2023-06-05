@@ -59,8 +59,8 @@ export const SprintDropdownMenu = (props: Props) => {
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
-  const groupId = props?.record?.id?.split('-')?.[0]
-  const id = props?.record?.id?.split('-')?.[1]
+  const groupId = props?.record?.id?.split('_')?.[0]
+  const id = props?.record?.id?.split('_')?.[1]
 
   // 复制需求链接
   const onCopyLink = () => {

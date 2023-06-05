@@ -280,6 +280,77 @@ export const getAffairsInfo = async (
   }
 }
 
+// 创建事务
+export const addAffairs: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info || ''
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText
+    ? params?.info
+    : element.innerHTML
+
+  await http.post<any>('addAffairs', {
+    project_id: Number(params.projectId),
+    name: params.name,
+    info,
+    expected_start_at: params?.expected_start_at,
+    expected_end_at: params?.expected_end_at,
+    iterate_id: params?.iterate_name || 0,
+    parent_id: params?.parent_id || 0,
+    priority: params?.priority?.id || 0,
+    users: params?.users_name,
+    copysend: params?.users_copysend_name,
+    tag: params?.tagIds,
+    attachment: params?.attachments,
+    custom_field: params?.customField,
+    category_id: params?.category_id,
+    class_id: params?.class || 0,
+    schedule: params?.schedule,
+    status: params?.status,
+  })
+}
+
+// 编辑事务
+export const updateAffairs: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info || ''
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText.trim() === ''
+    ? params?.info
+    : element.innerHTML
+  await http.put<any>('updateAffairs', {
+    project_id: params.projectId,
+    name: params.name,
+    info,
+    expected_start_at: params.expected_start_at,
+    expected_end_at: params.expected_end_at,
+    iterate_id:
+      JSON.stringify(params.iterateId) !== '[]' && params.iterate_name
+        ? params.iterate_name
+        : 0,
+    parent_id:
+      JSON.stringify(params.parentId) !== '[]' && params.parent_id
+        ? params.parent_id
+        : 0,
+    priority:
+      JSON.stringify(params.priority) !== '[]' && params.priority
+        ? params.priority?.id
+        : 0,
+    users: params?.users_name,
+    copysend: params?.users_copysend_name,
+    tag: params.tagIds,
+    attachment: params.attachments,
+    id: params.id,
+    custom_field: params?.customField,
+    class_id: params?.class || 0,
+    schedule: params?.schedule,
+  })
+}
+
 // 获取事务评论列表
 export const getAffairsCommentList = async (
   params: API.Affairs.GetAffairsCommentList.Params,
@@ -477,13 +548,12 @@ export const updateInfoAffairs = async (
 }
 // 快捷修改参数
 export const updateAffairsTableParams = async (params: any) => {
-  console.log(params, 'params')
-
-  await http.put<any>('changeAffairsTableParams', {
+  const response: any = await http.put<any>('changeAffairsTableParams', {
     project_id: params.projectId,
     id: params.id,
     ...params.otherParams,
   })
+  return response
 }
 
 // 修改优先级

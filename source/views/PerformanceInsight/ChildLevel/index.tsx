@@ -12,6 +12,7 @@ const ChildLevel = () => {
       title={paramsData.title}
       type={paramsData.type}
       homeType={paramsData.homeType}
+      projectId={paramsData.projectId}
       headerParmas={paramsData.headerParmas}
       projectDataList={paramsData.projectDataList}
     />

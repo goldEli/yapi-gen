@@ -6,7 +6,7 @@ import {
   closeModifyStatusModalInfo,
   saveModifyStatusModalInfo,
 } from '@store/kanBan/kanBan.thunk'
-import { getParamsValueByKey } from '@/tools'
+import { getProjectIdByUrl } from '@/tools'
 
 interface ModifyStatusModalProps {}
 

@@ -124,8 +124,20 @@ const ProjectDetailSide = () => {
   }
 
   // 点击切换模块
-  const onChangeRouter = (path: string) => {
+  const onChangeRouter = (i: { path: any; key: any }) => {
+    const { path, key } = i
     const params = encryptPhp(JSON.stringify({ id: projectId }))
+    if (key === 'SprintReport') {
+      const paramsData = encryptPhp(
+        JSON.stringify({
+          projectId: projectId,
+          type: 'sprint',
+          id: projectId,
+        }),
+      )
+      navigate(`/Report/PerformanceInsight?data=${paramsData}`)
+      return
+    }
     navigate(`${path}?data=${params}`)
   }
 
@@ -166,7 +178,7 @@ const ProjectDetailSide = () => {
 
   useEffect(() => {
     setSelectedKeys([paramsData.type])
-  }, [])
+  }, [paramsData.type])
   useEffect(() => {}, [pathname])
   return (
     <AllWrap>
@@ -189,7 +201,6 @@ const ProjectDetailSide = () => {
               </Back>
             )}
             <Provider />
-
             <MenuBox>
               {pathname === '/SprintProjectManagement/Setting' ? (
                 <Menu
@@ -204,7 +215,7 @@ const ProjectDetailSide = () => {
                   <MenuItem
                     key={i.path}
                     isActive={pathname === i.path}
-                    onClick={() => onChangeRouter(i.path)}
+                    onClick={() => onChangeRouter(i)}
                     hidden={!i.isPermission}
                   >
                     <CommonIconFont type={i.icon} size={18} />

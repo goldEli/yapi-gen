@@ -25,13 +25,13 @@ import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
 import CommonImport from '@/components/CommonImport'
 import {
-  getImportDownloadModel,
-  getImportExcel,
-  getImportExcelUpdate,
-  getExportFields,
-  getLoadListFields,
-  getExportExcel,
-} from '@/services/demand'
+  getImportDownloadFlawModel,
+  getImportFlawExcel,
+  getImportFlawExcelUpdate,
+  getExportFlawFields,
+  getLoadFlawListFields,
+  getExportFlawExcel,
+} from '@/services/flaw'
 import CommonExport from '@/components/CommonExport'
 import { OperationWrap } from '../style'
 
@@ -354,13 +354,13 @@ const Operation = (props: Props) => {
         <CommonImport
           templateTitle={t('defect.importChoose')}
           interfaces={{
-            getImportDownloadModel,
-            getImportExcel,
-            getImportExcelUpdate,
+            getImportDownloadModel: getImportDownloadFlawModel,
+            getImportExcel: getImportFlawExcel,
+            getImportExcelUpdate: getImportFlawExcelUpdate,
           }}
           templateInterfaces={{
-            getExportFields,
-            getLoadListFields,
+            getExportFields: getExportFlawFields,
+            getLoadListFields: getLoadFlawListFields,
           }}
           stepText={t('common.uploadDefect')}
           tips={{
@@ -389,16 +389,22 @@ const Operation = (props: Props) => {
               </>
             ),
           }}
+          onUpdate={() => {
+            // Todo 导入后更新列表
+          }}
         />
       </CommonModal>
 
       <CommonExport
-        interfaces={{ getExportExcel }}
+        interfaces={{ getExportExcel: getExportFlawExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}
         searchGroups={searchGroups}
         otherParams={props.otherParams}
-        templateInterfaces={{ getExportFields, getLoadListFields }}
+        templateInterfaces={{
+          getExportFields: getExportFlawFields,
+          getLoadListFields: getLoadFlawListFields,
+        }}
       />
 
       <OperationWrap>

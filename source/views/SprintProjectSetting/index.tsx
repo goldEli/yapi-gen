@@ -92,7 +92,7 @@ const Setting = () => {
       {
         name: 'Kanban配置',
         icon: 'settings',
-        content: <KanBanBoard />,
+        content: <KanBanSettings />,
         isPermission: true,
       },
     ],

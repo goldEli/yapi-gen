@@ -240,9 +240,9 @@ const urls = {
   // 子事务 - 最近事务
   getAffairsSelectChildrenRecent: '/b/transaction/selectChildrenRecent',
   // 添加子事务
-  addAffairsChild: '/b/transaction/addChild',
+  addAffairsChild: '/b/transaction/save/addChild',
   // 子事务拖拽排序
-  affairsChildDragSort: '/b/transaction/dragChildSort',
+  affairsChildDragSort: '/b/transaction/save/dragChildSort',
   // 子事务列表
   getAffairsChildList: '/b/transaction/children',
   // 关联事务 - 下拉查询
@@ -250,9 +250,9 @@ const urls = {
   // 关联事务 - 最近事务
   getAffairsSelectRelationRecent: '/b/transaction/selectRelationRecent',
   // 添加关联事务
-  addAffairsRelation: '/b/transaction/addRelation',
+  addAffairsRelation: '/b/transaction/save/addRelation',
   // 关联事务拖拽排序
-  affairsRelationDragSort: '/b/transaction/dragRelationSort',
+  affairsRelationDragSort: '/b/transaction/save/dragRelationSort',
   // 关联事务列表
   getAffairsRelationStoriesList: '/b/transaction/relationStories',
   // 编辑视图
@@ -423,10 +423,12 @@ const urls = {
   // 获取缺陷关联工作项
   getFlawRelationStories: '/b/flaw/relationStories',
   // 添加关联缺陷
-  addFlawRelation: '/b/flaw/addRelation',
+  addFlawRelation: '/b/flaw/save/addRelation',
 
   // 获取需求流转配置
   getFlowConfig: '/b/story/flowConfig',
+  // 获取需求流转配置(冲刺)
+  getFlowConfigForSprint: '/b/transaction/flowConfig',
 
   getParentList: function (key: string) {
     return `/b/${key}/getlist`

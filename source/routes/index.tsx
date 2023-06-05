@@ -33,6 +33,14 @@ const routes = [
         ),
       },
       {
+        path: '/Performance',
+        element: lazy(() => import('@/views/PerformanceInsight')),
+      },
+      {
+        path: '/ChildLevel',
+        element: lazy(() => import('@/views/PerformanceInsight/ChildLevel')),
+      },
+      {
         path: '/Situation',
         element: lazy(() => import('@/views/Situation')),
       },
@@ -76,12 +84,6 @@ const routes = [
           {
             path: 'PerformanceInsight',
             element: lazy(() => import('@/views/PerformanceInsight')),
-          },
-          {
-            path: 'ChildLevel',
-            element: lazy(
-              () => import('@/views/PerformanceInsight/ChildLevel'),
-            ),
           },
         ],
       },

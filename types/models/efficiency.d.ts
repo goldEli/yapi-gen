@@ -42,6 +42,7 @@ declare namespace Models.Efficiency {
     data: Array<Model.Sprint.WorkListItem>
     homeType: string
     num: number
+    projectId: number
   }
   export interface ChartBar {
     chartType: string

@@ -278,6 +278,12 @@ const CreateDemandLeft = (props: Props) => {
     }
   }
 
+  // 获取父需求列表
+  const getParentData = (type: number) => {
+    const key = type === 1 ? 'story' : type === 2 ? 'flaw' : 'transaction'
+    dispatch(getParentList({ all: true, projectId: props.projectId, key }))
+  }
+
   // 切换需求类别
   const onSelectCategory = async (value: any) => {
     if (value === categoryObj?.id) {
@@ -290,16 +296,12 @@ const CreateDemandLeft = (props: Props) => {
       onChangeSelect(value)
       setIsShowChangeCategory(true)
     } else {
-      setCategoryObj(
-        props.allCategoryList?.filter((i: any) => i.id === value)[0],
-      )
+      const result = props.allCategoryList?.filter(
+        (i: any) => i.id === value,
+      )[0]
+      setCategoryObj(result)
+      getParentData(result.work_type)
     }
-  }
-
-  // 获取父需求列表
-  const getParentData = (type: number) => {
-    const key = type === 1 ? 'story' : type === 2 ? 'flaw' : 'transaction'
-    dispatch(getParentList({ all: true, projectId: props.projectId, key }))
   }
 
   // 修改需求类别的确认
