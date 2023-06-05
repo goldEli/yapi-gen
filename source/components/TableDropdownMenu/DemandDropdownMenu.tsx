@@ -69,12 +69,11 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     beforeUrl = window.origin
     const params = encryptPhp(
       JSON.stringify({
-        type: 'info',
         id: props.record.project_id,
         demandId: props.record.id,
       }),
     )
-    const url = `/ProjectManagement/Demand?data=${params}`
+    const url = `/ProjectManagement/DemandDetail?data=${params}`
     text += `【${props.record.name}】 ${beforeUrl}${url} \n`
     copyLink(
       text,

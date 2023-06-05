@@ -62,7 +62,6 @@ const useOpenDemandDetail = () => {
         console.log(12)
         const params = encryptPhp(
           JSON.stringify({
-            type: 'info',
             id: projectId,
             demandId: id,
           }),
