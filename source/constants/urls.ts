@@ -433,6 +433,9 @@ const urls = {
   getParentList: function (key: string) {
     return `/b/${key}/getlist`
   },
+
+  // 复制视图
+  copyView: '/b/story/views/copy',
 }
 export default urls
 

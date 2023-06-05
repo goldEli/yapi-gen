@@ -38,6 +38,14 @@ export const createView = async (params: API.Kanban.CreateView.Params) => {
   return response
 }
 
+export const copyView = async (params: API.Kanban.CopyView.Params) => {
+  const response = await http.post<any, API.Kanban.CopyView.Result>(
+    urls.copyView,
+    params,
+  )
+  return response
+}
+
 export const updateView = async (params: API.Kanban.UpdateView.Params) => {
   const response = await http.put<any, API.Kanban.UpdateView.Result>(
     'updateView',
