@@ -1,13 +1,6 @@
-/* eslint-disable camelcase */
 /* eslint-disable require-unicode-regexp */
-// 需求主页-左侧需求分类
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable no-duplicate-imports */
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-undefined */
-/* eslint-disable @typescript-eslint/naming-convention */
+
 import styled from '@emotion/styled'
 import { Form, Input, message, Popover, Tree } from 'antd'
 import {

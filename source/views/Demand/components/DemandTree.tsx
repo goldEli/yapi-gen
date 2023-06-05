@@ -32,26 +32,23 @@ import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/Dema
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import ResizeTable from '@/components/ResizeTable'
-
-const Content = styled.div({
-  padding: '20px 12px 0 8px',
-  background: 'var(--neutral-white-d1)',
-  height: 'calc(100% - 32px)',
-})
+import { TableContent } from '../style'
 
 interface Props {
   data: any
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
   onChangeRow?(topId?: any): void
-  settingState: boolean
-  onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
   isSpinning?: boolean
   onUpdate(updateState?: boolean, topId?: any): void
   filterParams: any
   isUpdated?: boolean
   onUpdateTopId?(value: any): void
+  titleList?: any
+  titleList2?: any
+  titleList3?: any
+  allTitleList?: any
 }
 
 interface TreeIconProps {
@@ -91,13 +88,6 @@ const DemandTree = (props: Props) => {
   const { projectInfo, filterKeys, filterParams } = useSelector(
     store => store.project,
   )
-  const [titleList, setTitleList] = useState<any[]>([])
-  const [titleList2, setTitleList2] = useState<any[]>([])
-  const [titleList3, setTitleList3] = useState<any[]>([])
-  const [allTitleList, setAllTitleList] = useState<any[]>([])
-  const [plainOptions, setPlainOptions] = useState<any>([])
-  const [plainOptions2, setPlainOptions2] = useState<any>([])
-  const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
@@ -114,35 +104,6 @@ const DemandTree = (props: Props) => {
   const [openDemandDetail] = useOpenDemandDetail()
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
-  const getShowkey = () => {
-    setPlainOptions(projectInfo?.plainOptions || [])
-    setPlainOptions2(projectInfo?.plainOptions2 || [])
-    setPlainOptions3(projectInfo?.plainOptions3 || [])
-    setTitleList(projectInfo?.titleList || [])
-    setTitleList2(projectInfo?.titleList2 || [])
-    setTitleList3(projectInfo?.titleList3 || [])
-    setAllTitleList([
-      ...(projectInfo.titleList || []),
-      ...(projectInfo.titleList2 || []),
-      ...(projectInfo.titleList3 || []),
-    ])
-  }
-
-  useEffect(() => {
-    getShowkey()
-  }, [projectInfo])
-
-  const getCheckList = (
-    list: CheckboxValueType[],
-    list2: CheckboxValueType[],
-    list3: CheckboxValueType[],
-    all: CheckboxValueType[],
-  ) => {
-    setTitleList(list)
-    setTitleList2(list2)
-    setTitleList3(list3)
-    setAllTitleList(all)
-  }
 
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation?.({ page, size })
@@ -454,7 +415,7 @@ const DemandTree = (props: Props) => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = allTitleList
+    const arr = props.allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns?.length; j++) {
@@ -499,7 +460,13 @@ const DemandTree = (props: Props) => {
       arrList.push(Table.SELECTION_COLUMN as any)
     }
     return [...arrList, ...newList]
-  }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
+  }, [
+    props.titleList,
+    props.titleList2,
+    props.titleList3,
+    columns,
+    selectedRowKeys,
+  ])
 
   useEffect(() => {
     setData(props.data)
@@ -575,7 +542,7 @@ const DemandTree = (props: Props) => {
   }
 
   return (
-    <Content>
+    <TableContent>
       <ResizeTable
         isTree
         isSpinning={props?.isSpinning}
@@ -630,20 +597,7 @@ const DemandTree = (props: Props) => {
         total={data?.total}
         onChange={onChangePage}
       />
-
-      <OptionalFeld
-        allTitleList={allTitleList}
-        plainOptions={plainOptions.filter((i: any) => i.is_flaw !== 1)}
-        plainOptions2={plainOptions2}
-        plainOptions3={plainOptions3}
-        checkList={titleList}
-        checkList2={titleList2}
-        checkList3={titleList3}
-        isVisible={props.settingState}
-        onClose={() => props.onChangeSetting(false)}
-        getCheckList={getCheckList}
-      />
-    </Content>
+    </TableContent>
   )
 }
 

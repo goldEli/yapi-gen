@@ -1,11 +1,6 @@
+/* eslint-disable no-undefined */
 // 需求详情-流转记录
 
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable max-len */
-/* eslint-disable no-undefined */
 import styled from '@emotion/styled'
 import { Space, Spin, Timeline } from 'antd'
 import { NameWrap, ViewWrap, DelWrap } from '@/components/StyleCommon'
@@ -17,11 +12,12 @@ import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { getStoryStatusLog } from '@/services/demand'
-import { setIsUpdateChangeLog } from '@store/project'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { getStoryStatusLog } from '@/services/demand'
+import { setIsUpdateChangeLog } from '@store/project'
+import { ComputedWrap } from '../style'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -47,14 +43,6 @@ const TimeLIneWrap = styled(Timeline)({
   '.ant-timeline-item-last .ant-timeline-item-content': {
     display: 'none!important',
   },
-})
-
-const Wrap = styled.div({
-  height: '100%',
-  background: 'white',
-  overflowX: 'auto',
-  padding: '0 16px',
-  borderRadius: 6,
 })
 
 const TimeItem = styled.div({
@@ -118,16 +106,19 @@ const ContentWrap = styled.div({
   width: 'calc(100% - 70px)',
 })
 
-const Circulation = () => {
+interface Props {
+  activeKey: string
+}
+
+const Circulation = (props: Props) => {
   const [t] = useTranslation()
   const [isSpin, setIsSpin] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
+  const { demandId, id } = paramsData
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
-  const { demandInfo } = useSelector(store => store.demand)
   const { isUpdateChangeLog } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
@@ -136,8 +127,8 @@ const Circulation = () => {
     if (state) {
       setIsSpin(true)
       const result = await getStoryStatusLog({
-        projectId,
-        demandId: demandInfo?.id,
+        projectId: id,
+        demandId,
         all: true,
       })
       setStatusLogs({
@@ -147,8 +138,8 @@ const Circulation = () => {
       setIsSpin(false)
     } else {
       const result = await getStoryStatusLog({
-        projectId,
-        demandId: demandInfo?.id,
+        projectId: id,
+        demandId,
         all: true,
       })
       setStatusLogs({
@@ -159,8 +150,10 @@ const Circulation = () => {
   }
 
   useEffect(() => {
-    getLogs(true)
-  }, [])
+    if (props.activeKey === '5') {
+      getLogs(true)
+    }
+  }, [props.activeKey])
 
   useEffect(() => {
     if (isRefresh) {
@@ -185,7 +178,7 @@ const Circulation = () => {
   }
 
   return (
-    <Wrap>
+    <ComputedWrap style={{ overflow: 'auto' }}>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
         {!!statusLogs?.list && (
           <>
@@ -505,7 +498,7 @@ const Circulation = () => {
           </>
         )}
       </Spin>
-    </Wrap>
+    </ComputedWrap>
   )
 }
 

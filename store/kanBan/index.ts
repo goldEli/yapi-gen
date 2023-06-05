@@ -167,7 +167,6 @@ const slice = createSlice({
       })
     },
     setSortByView(state, action: PayloadAction<Model.KanBan.ViewItem['id']>) {
-      // onTapSearchChoose
       const current = state.sortByView?.find(item => item.id === action.payload)
       if (!current) {
         return

@@ -3,11 +3,13 @@ import React, { useEffect } from 'react'
 import useProjectId from './hooks/useProjectId'
 import { useNavigate } from 'react-router-dom'
 import {
+  copyView,
   getKanbanByGroup,
   getKanbanConfigList,
   getStoryViewList,
 } from '@store/kanBan/kanBan.thunk'
 import { jumpToKanbanConfig } from './utils'
+import { getIdByUrl } from '@/tools'
 
 const useInit = () => {
   const dispatch = useDispatch()
@@ -23,7 +25,10 @@ const useInit = () => {
         jumpToKanbanConfig(navigate)
         return
       }
-      await dispatch(getStoryViewList())
+      // 如果是分享先复制分享视图得到当前视图
+      const shareViewId = getIdByUrl('viewId')
+      const copyViewRes = await dispatch(copyView({ id: shareViewId }))
+      await dispatch(getStoryViewList(copyViewRes?.id ? copyViewRes.id : null))
       dispatch(getKanbanByGroup())
     }
     run()

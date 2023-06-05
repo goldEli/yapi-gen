@@ -320,13 +320,12 @@ const Profile = () => {
 
     const params = encryptPhp(
       JSON.stringify({
-        type: 'info',
         id: item.feedable.project_id,
         demandId: item.feedable_id,
       }),
     )
 
-    navigate(`/ProjectManagement/Demand?data=${params}`)
+    navigate(`/ProjectManagement/DemandDetail?data=${params}`)
   }
   const nextMonth = async () => {
     setMonthIndex(monthIndex - 1)

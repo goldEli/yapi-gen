@@ -1,11 +1,6 @@
-// 需求详情-子需求
-/* eslint-disable no-constant-binary-expression */
-/* eslint-disable complexity */
 /* eslint-disable no-undefined */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable no-empty-function */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable @typescript-eslint/no-empty-function */
+// 需求详情-子需求
+
 import IconFont from '@/components/IconFont'
 import { message } from 'antd'
 import styled from '@emotion/styled'
@@ -38,6 +33,7 @@ import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
 import { setAddWorkItemModal } from '@store/project'
+import { ComputedWrap } from '../style'
 
 const Operation = styled.div({
   display: 'flex',
@@ -45,7 +41,6 @@ const Operation = styled.div({
   justifyContent: 'space-between',
   height: 52,
   background: 'white',
-  borderRadius: '6px 6px 0 0',
 })
 
 const RowIconFont = styled(IconFont)({
@@ -55,7 +50,11 @@ const RowIconFont = styled(IconFont)({
   color: 'var(--primary-d2)',
 })
 
-const ChildDemand = () => {
+interface ChildDemandProps {
+  activeKey: string
+}
+
+const ChildDemand = (props: ChildDemandProps) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [deleteId, setDeleteId] = useState(0)
@@ -126,8 +125,10 @@ const ChildDemand = () => {
   }
 
   useEffect(() => {
-    getList(pageObj, order, orderKey)
-  }, [])
+    if (props.activeKey === '2') {
+      getList(pageObj, order, orderKey)
+    }
+  }, [props.activeKey])
 
   useEffect(() => {
     if (isRefresh) {
@@ -308,7 +309,7 @@ const ChildDemand = () => {
   }, [titleList, titleList2, titleList3, columns])
 
   return (
-    <div style={{ height: 'calc(100% - 74px)' }}>
+    <ComputedWrap>
       <DeleteConfirm
         text={t('common.confirmDelChildDemand')}
         isVisible={isDelete}
@@ -351,7 +352,7 @@ const ChildDemand = () => {
       </Operation>
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 92px)"
+        dataWrapNormalHeight="calc(100% - 116px)"
         col={selectColum}
         dataSource={dataList?.list}
         noData={<NoData />}
@@ -362,6 +363,7 @@ const ChildDemand = () => {
         pageSize={dataList?.pageSize}
         total={dataList?.total}
         onChange={onChangePage}
+        hasPadding
       />
 
       <OptionalFeld
@@ -376,7 +378,7 @@ const ChildDemand = () => {
         onClose={() => setIsSettingState(false)}
         getCheckList={getCheckList}
       />
-    </div>
+    </ComputedWrap>
   )
 }
 

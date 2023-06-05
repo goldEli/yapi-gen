@@ -48,6 +48,7 @@ const ProjectDetailSide = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
+  console.log('projectInfo', projectInfo)
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
   const routerPath = useLocation()
   const navigate = useNavigate()
@@ -78,7 +79,12 @@ const ProjectDetailSide = () => {
       name: 'KanBan',
       icon: 'layout',
       path: '/ProjectManagement/KanBan',
-      isPermission: true,
+      isPermission:
+        projectInfo?.isPublic === 1
+          ? true
+          : projectInfo?.projectPermissions?.filter(
+              (i: any) => i.identity === 'b/project/kanban',
+            ).length,
     },
     {
       name: '报表',
@@ -91,7 +97,12 @@ const ProjectDetailSide = () => {
       name: '缺陷',
       icon: 'interation-2',
       path: '/ProjectManagement/Defect',
-      isPermission: true,
+      isPermission:
+        projectInfo?.isPublic === 1
+          ? true
+          : projectInfo?.projectPermissions?.filter((i: any) =>
+              String(i.group_name).includes('缺陷'),
+            ).length,
     },
   ]
   const menuKeys = [
