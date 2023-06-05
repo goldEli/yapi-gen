@@ -1,4 +1,5 @@
 import urls from '@/constants/urls'
+import { getProjectType } from '@/tools'
 import * as http from '@/tools/http'
 //
 export const deleteStory = async (params: API.Kanban.DeleteStory.Params) => {
@@ -9,8 +10,10 @@ export const deleteStory = async (params: API.Kanban.DeleteStory.Params) => {
 export const getFlowConfig = async (
   params: API.Kanban.GetFlowConfig.Params,
 ) => {
+  const type = getProjectType()
+  const url = type === 2 ? urls.getFlowConfigForSprint : urls.getFlowConfig
   const response = await http.get<any, API.Kanban.GetFlowConfig.Result>(
-    urls.getFlowConfig,
+    url,
     params,
   )
   return response
@@ -60,10 +63,10 @@ export const getKanban = async (
 export const updateStoryPriority = async (
   params: API.Kanban.UpdateStoryPriority.Params,
 ) => {
-  await http.put<any, API.Kanban.UpdateStoryPriority.Result>(
-    'changeTableParams',
-    params,
-  )
+  const type = getProjectType()
+  const url =
+    type === 2 ? urls.changeAffairsTableParams : urls.changeTableParams
+  await http.put<any, API.Kanban.UpdateStoryPriority.Result>(url, params)
 }
 
 export const getStoryViewList = async (

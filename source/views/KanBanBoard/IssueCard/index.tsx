@@ -24,7 +24,7 @@ import {
 } from './styled'
 import ThreeDot from '../ThreeDot'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
-import { getParamsValueByKey } from '@/tools'
+import { getProjectIdByUrl } from '@/tools'
 import { useSelector } from '@store/index'
 import useStoryIds from '../hooks/useStoryIds'
 
@@ -60,7 +60,7 @@ const IssueCard = (props: IssueCardProps) => {
             e.stopPropagation()
             openDemandDetail(
               { ...props.item, demandIds: ids },
-              getParamsValueByKey('id'),
+              getProjectIdByUrl(),
               props.item.id,
             )
           }}
