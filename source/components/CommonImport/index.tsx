@@ -182,6 +182,8 @@ interface CommonImportProps {
   templateInterfaces: any
   // template字段modal的标题
   templateTitle: string
+  // 导入后更新
+  onUpdate(): void
 }
 
 const CommonImport = (props: CommonImportProps) => {
@@ -195,6 +197,7 @@ const CommonImport = (props: CommonImportProps) => {
     },
     templateInterfaces,
     templateTitle,
+    onUpdate,
   } = props
   const [step, setStep] = useState(1)
   const [tabs, setTabs] = useState(2)
@@ -606,7 +609,13 @@ const CommonImport = (props: CommonImportProps) => {
                 <CommonButton type="light" onClick={onClear}>
                   {t('newlyAdd.continueImport')}
                 </CommonButton>
-                <Button type="primary" onClick={onClear}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    onClear()
+                    onUpdate()
+                  }}
+                >
                   {t('container.finish')}
                 </Button>
               </Space>

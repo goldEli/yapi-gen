@@ -389,6 +389,9 @@ const Operation = (props: Props) => {
               </>
             ),
           }}
+          onUpdate={() => {
+            // Todo 导入后更新列表
+          }}
         />
       </CommonModal>
 

@@ -81,7 +81,7 @@ interface Props {
 
 export const LatelyLongStoryMenu = (props: Props) => {
   const [t] = useTranslation()
-  const id = Number(props?.record?.id?.split('-')?.[1])
+  const id = Number(props?.record?.id?.split('_')?.[1])
   const dispatch = useDispatch()
   const { projectInfo } = useSelector(store => store.project)
   const hasDel = getIsPermission(

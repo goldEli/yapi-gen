@@ -150,6 +150,7 @@ interface ResizeTableProps {
   className?: any
   components?: any
   footer?: any
+  pagination: any
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -239,7 +240,7 @@ const ResizeTable = (props: ResizeTableProps) => {
               rowKey="id"
               columns={mergeColumns}
               dataSource={props.dataSource}
-              pagination={false}
+              pagination={props?.pagination}
               components={{
                 header: {
                   cell: ResizeTitle,
@@ -248,7 +249,6 @@ const ResizeTable = (props: ResizeTableProps) => {
               }}
               scroll={{
                 x: 'max-content',
-                y: tableY,
               }}
               tableLayout="auto"
               showSorterTooltip={false}
