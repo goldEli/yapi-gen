@@ -1,7 +1,12 @@
 /* eslint-disable no-undefined */
+import CreateViewPort from '@/components/CreateViewPort'
+import ManageView from '@/components/ManageView'
 import PermissionWrap from '@/components/PermissionWrap'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
+import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import React, { useEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   ContentLeft,
   ContentMain,
@@ -9,83 +14,51 @@ import {
   ContentWrap,
   Wrap,
 } from './style'
-import { useSearchParams } from 'react-router-dom'
-import { getIsPermission, getParamsData } from '@/tools'
-import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
+import React, { useEffect, useRef, useState } from 'react'
 import WrapLeft from './components/WrapLeft'
-import { Checkbox, Popover, Space, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
-import styled from '@emotion/styled'
-import SprintTable from './components/SprintTable'
-import SprintTree from './components/SprintTree'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import {
   setFilterKeys,
   setFilterParams,
   setIsUpdateAddWorkItem,
 } from '@store/project'
-import CreateViewPort from '@/components/CreateViewPort'
-import ManageView from '@/components/ManageView'
-import { deleteAffairs, getAffairsList } from '@/services/affairs'
 import Operation from './components/Operation'
-import { saveTitles } from '@store/view'
-import { OptionalFeld } from '@/components/OptionalFeld'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import DemandTree from './components/DemandTree'
+import DemandTable from './components/DemandTable'
+import { deleteDemand, getDemandList } from '@/services/demand'
 import { getMessage } from '@/components/Message'
-
-interface IProps {}
-
-export const MoreWrap = styled.div<{ type?: any }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    height: 32,
-    borderRadius: 6,
-    padding: '0 16px',
-    fontSize: 14,
-    fontWeight: 400,
-    cursor: 'pointer',
-  },
-  ({ type }) => ({
-    background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    color: type ? 'var(--neutral-white-d7)' : 'var(--primary-d2)',
-    '&: hover': {
-      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    },
-    '&: active': {
-      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    },
-  }),
-)
+import { setIsRefresh } from '@store/user'
+import { OptionalFeld } from '@/components/OptionalFeld'
+import { saveTitles } from '@store/view'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 export const TreeContext: any = React.createContext('')
 
-const SprintProjectAffair: React.FC<IProps> = props => {
-  const dispatch = useDispatch()
-  const { currentMenu } = useSelector(store => store.user)
-  const titles = useSelector(store => store.view.tapTitles)
-  const [key, setKey] = useState()
+const DemandIndex = () => {
   const keyRef = useRef()
+  const dispatch = useDispatch()
+  const [t] = useTranslation()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const myTreeComponent: any = useRef(null)
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const [key, setKey] = useState()
+  const [isGrid, setIsGrid] = useState(0)
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [searchVal, setSearchVal] = useState('')
   const [isShowLeft, setIsShowLeft] = useState(false)
-  const [t, i18n] = useTranslation()
-  const [isVisible, setIsVisible] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
   const [searchItems, setSearchItems] = useState<any>({})
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
   // 用于当前操作层级不折叠
   const [topParentId, setTopParentId] = useState(0)
-  const [isGrid, setIsGrid] = useState(0)
-  const [deleteItem, setDeleteItem] = useState<any>({})
-  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
-  const [dataList, setDataList] = useState<any>({
-    list: undefined,
-  })
-  const [searchVal, setSearchVal] = useState('')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -93,10 +66,28 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-  const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const { filterKeys, isUpdateAddWorkItem, projectInfo } = useSelector(
+    store => store.project,
+  )
+  const { currentMenu } = useSelector(store => store.user)
+  const searchChoose = useSelector(store => store.view.searchChoose)
+  const titles = useSelector(store => store.view.tapTitles)
+  const tapSort = useSelector(store => store.view.tapSort)
+
+  const keyValue = {
+    key,
+    changeKey: (value: any) => {
+      setPageObj({ page: 1, size: pageObj.size })
+      setKey(value)
+      keyRef.current = value
+      // 添加搜索项 计数
+      const keys = value
+        ? [...filterKeys, ...['classId']]
+        : filterKeys?.filter((i: any) => i !== 'classId')
+
+      dispatch(setFilterKeys([...new Set(keys)]))
+    },
+  }
 
   const getList = async (
     state: any,
@@ -109,7 +100,9 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     if (!updateState) {
       setIsSpinning(true)
     }
+
     let params: any = {}
+
     if (state === 1) {
       params = {
         projectId,
@@ -134,7 +127,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        // system_view: searchChoose ? searchChoose['system_view'] : undefined,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     } else {
       params = {
@@ -162,7 +155,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        // system_view: searchChoose ? searchChoose['system_view'] : undefined,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     }
     if (state === 2) {
@@ -170,28 +163,16 @@ const SprintProjectAffair: React.FC<IProps> = props => {
       params.topParentId = topId ?? topParentId
     }
     dispatch(setFilterParams(params))
-    const result = await getAffairsList(params)
+    const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
-    // props.onIsUpdate?.()
-    // dispatch(setIsRefresh(false))
+    dispatch(setIsRefresh(false))
     setTopParentId(0)
     setIsUpdated(false)
     dispatch(setIsUpdateAddWorkItem(false))
   }
 
-  // 筛选条件
-  const onSearch = (params: any) => {
-    setDataList({ list: undefined })
-    setIsUpdated(true)
-    setSearchItems(params)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
-  }
-
-  // 搜索框
+  //   全局搜索
   const onInputSearch = (keyValue: any) => {
     if (searchVal !== keyValue) {
       setSearchVal(keyValue)
@@ -225,6 +206,43 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     getList(isGrid, searchItems, pageObj, order, false, topParentId)
   }
 
+  const onChangeRow = (topId?: any) => {
+    getList(isGrid, searchItems, pageObj, order, false, topId)
+  }
+
+  //   删除确认事件
+  const onDeleteConfirm = async (id: number) => {
+    await deleteDemand({ projectId, id })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    getList(isGrid, searchItems, pageObj, order)
+    myTreeComponent?.current?.init()
+  }
+
+  //   点击删除
+  const onDelete = (item: any) => {
+    setTopParentId(item?.topId)
+    open({
+      title: '删除确认',
+      text: t('common.confirmDelDemand'),
+      onConfirm() {
+        onDeleteConfirm(item.id)
+        return Promise.resolve()
+      },
+    })
+  }
+
+  //   搜索
+  const onSearch = (params: any) => {
+    setDataList({ list: undefined })
+    setIsUpdated(true)
+    setSearchItems(params)
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
+  }
+
+  //   切换模式
   const onChangeGrid = (val: any) => {
     if (val !== isGrid) {
       setIsGrid(val)
@@ -232,36 +250,17 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     }
   }
 
-  const onDelete = (item: any) => {
-    setDeleteItem(item)
-    setIsVisible(true)
-    setTopParentId(item?.topId)
-  }
-
-  // 删除事务
-  const onDeleteConfirm = async () => {
-    await deleteAffairs({
-      projectId,
-      id: deleteItem.id,
-      isDeleteChild: isDeleteCheck ? 1 : 2,
-    })
-    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    setIsVisible(false)
-    setDeleteItem({})
-    getList(isGrid, searchItems, pageObj, order)
-    myTreeComponent?.current?.init()
-  }
-
-  const onChangeRow = (topId?: any) => {
-    getList(isGrid, searchItems, pageObj, order, false, topId)
-  }
-
-  const keyValue = {
-    key,
-    changeKey: (value: any) => {
-      setKey(value)
-      keyRef.current = value
-    },
+  const getCheckList = (
+    list: CheckboxValueType[],
+    list2: CheckboxValueType[],
+    list3: CheckboxValueType[],
+    all: CheckboxValueType[],
+  ) => {
+    setTitleList(list)
+    setTitleList2(list2)
+    setTitleList3(list3)
+    setAllTitleList(all)
+    dispatch(saveTitles(all))
   }
 
   // 获取显示字段配置
@@ -286,20 +285,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     )
   }
 
-  const getCheckList = (
-    list: CheckboxValueType[],
-    list2: CheckboxValueType[],
-    list3: CheckboxValueType[],
-    all: CheckboxValueType[],
-  ) => {
-    setTitleList(list)
-    setTitleList2(list2)
-    setTitleList3(list3)
-    setAllTitleList(all)
-    dispatch(saveTitles(all))
-  }
-
-  function getTitle(arr: any, arr1: any) {
+  const getTitle = (arr: any, arr1: any) => {
     const arr2: any = []
     arr1.forEach((i: any) => {
       arr2.push(i.value)
@@ -316,19 +302,31 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   }
 
   useEffect(() => {
+    if (projectInfo?.id) {
+      getShowkey()
+    }
+  }, [projectInfo])
+
+  useEffect(() => {
     if (titles) {
       setTitleList(getTitle(titles, plainOptions))
       setTitleList2(getTitle(titles, plainOptions2))
       setTitleList3(getTitle(titles, plainOptions3))
+
       setAllTitleList(titles)
     }
   }, [titles])
 
   useEffect(() => {
-    if (projectInfo?.id) {
-      getShowkey()
+    if (tapSort) {
+      const key = Object.keys(tapSort)
+      const value = Object.values(tapSort)
+
+      if (tapSort) {
+        setOrder({ value: value[0], key: key[0] })
+      }
     }
-  }, [projectInfo])
+  }, [tapSort])
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
@@ -344,6 +342,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
       auth="/ProjectManagement/Project"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
+      <DeleteConfirmModal />
       <CreateViewPort pid={projectId} />
       <ManageView projectId={projectId} />
       <OptionalFeld
@@ -360,19 +359,6 @@ const SprintProjectAffair: React.FC<IProps> = props => {
       />
       <TreeContext.Provider value={keyValue}>
         <Wrap>
-          <DeleteConfirm
-            title={`删除【${deleteItem?.storyPrefixKey}】？`}
-            isVisible={isVisible}
-            onChangeVisible={() => setIsVisible(!isVisible)}
-            onConfirm={onDeleteConfirm}
-          >
-            <div style={{ marginBottom: 9 }}>
-              你将永久删除该事务，删除后将不可恢复请谨慎操作!
-            </div>
-            <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-              同时删除该事务下所有子事务
-            </Checkbox>
-          </DeleteConfirm>
           <ProjectCommonOperation onInputSearch={onInputSearch} />
           <ContentWrap>
             <ContentLeft>
@@ -407,23 +393,8 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                 dataLength={dataList?.total}
               />
               <ContentMain>
-                {!isGrid && (
-                  <SprintTable
-                    data={dataList}
-                    onDelete={onDelete}
-                    onChangePageNavigation={setPageObj}
-                    onChangeRow={onChangeRow}
-                    onChangeOrder={setOrder}
-                    isSpinning={isSpinning}
-                    onUpdate={onUpdate}
-                    titleList={titleList}
-                    titleList2={titleList2}
-                    titleList3={titleList3}
-                    allTitleList={allTitleList}
-                  />
-                )}
                 {isGrid === 2 && (
-                  <SprintTree
+                  <DemandTree
                     data={dataList}
                     onDelete={onDelete}
                     onChangePageNavigation={setPageObj}
@@ -447,6 +418,21 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                     isUpdated={isUpdated}
                   />
                 )}
+                {!isGrid && (
+                  <DemandTable
+                    onDelete={onDelete}
+                    data={dataList}
+                    onChangePageNavigation={setPageObj}
+                    onChangeRow={onChangeRow}
+                    onChangeOrder={setOrder}
+                    isSpinning={isSpinning}
+                    onUpdate={onUpdate}
+                    titleList={titleList}
+                    titleList2={titleList2}
+                    titleList3={titleList3}
+                    allTitleList={allTitleList}
+                  />
+                )}
               </ContentMain>
             </ContentRight>
           </ContentWrap>
@@ -455,4 +441,5 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     </PermissionWrap>
   )
 }
-export default SprintProjectAffair
+
+export default DemandIndex

@@ -12,27 +12,43 @@ import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { Popover, Space, Tooltip } from 'antd'
+import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import ExportDemand from '@/components/CommonExport'
+import ImportDemand from '@/components/CommonImport'
 import { useDispatch, useSelector } from '@store/index'
-import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setCreateCategory,
+  setFilterParamsModal,
+} from '@store/project'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
-import { OperationWrap } from '../style'
-import CommonButton from '@/components/CommonButton'
-import CommonModal from '@/components/CommonModal'
-import CommonImport from '@/components/CommonImport'
 import {
-  getImportDownloadAffairsModel,
-  getImportAffairsExcel,
-  getImportAffairsExcelUpdate,
-  getExportAffairsFields,
-  getLoadAffairsListFields,
-  getExportAffairsExcel,
-} from '@/services/affairs'
-import CommonExport from '@/components/CommonExport'
+  getImportDownloadModel,
+  getImportExcel,
+  getImportExcelUpdate,
+  getExportFields,
+  getLoadListFields,
+  getExportExcel,
+} from '@/services/demand'
+import { OperationWrap } from '../style'
 
 const StickyWrap = styled.div({
   background: 'white',
+})
+
+const LiWrap = styled.div({
+  cursor: 'pointer',
+  padding: '0 16px',
+  width: '100%',
+  height: 32,
+  display: 'flex',
+  alignItems: 'center',
+  background: 'var(--neutral-white-d3)',
+  '&: hover': {
+    background: 'var(--hover-d3)',
+  },
 })
 
 const IconWrap = styled(IconFont)({
@@ -118,10 +134,8 @@ const Operation = (props: Props) => {
 
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
-    store => store.project,
-  )
-  // const { filterParams } = useSelector(store => store.demand)
+  const { projectInfo, filterKeys, projectInfoValues, filterParams } =
+    useSelector(store => store.project)
   const { searchChoose } = useSelector(store => store.view)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
@@ -157,10 +171,6 @@ const Operation = (props: Props) => {
   )
 
   const onFilterSearch = (e: any, customField: any) => {
-    // 如果筛选未打开
-    if (filterState) {
-      return
-    }
     const params = {
       statusId: e.status,
       priorityId: e.priority,
@@ -220,6 +230,7 @@ const Operation = (props: Props) => {
         return result
       }, {})
   }
+
   useEffect(() => {
     if (searchChoose && searchChoose.system_view) {
       return
@@ -249,6 +260,58 @@ const Operation = (props: Props) => {
     setFilterState(!filterState)
   }
 
+  const onChangeCategory = (e: any, item: any) => {
+    dispatch(setCreateCategory(item))
+
+    // 需求列表筛选参数赋值给 弹窗
+    dispatch(setFilterParamsModal(filterParams))
+    setTimeout(() => {
+      dispatch(
+        setAddWorkItemModal({
+          visible: true,
+          params: { projectId: projectInfo?.id },
+        }),
+      )
+      setIsVisible(false)
+    }, 0)
+  }
+
+  const changeStatus = (
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        minWidth: i18n.language === 'zh' ? 110 : 151,
+      }}
+    >
+      {projectInfoValues
+        ?.filter((i: any) => i.key === 'category')[0]
+        ?.children?.filter((i: any) => i.status === 1)
+        ?.map((k: any) => {
+          return (
+            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
+              <img
+                src={
+                  k.category_attachment
+                    ? k.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{k.content}</span>
+            </LiWrap>
+          )
+        })}
+    </div>
+  )
+
   const onImportClick = () => {
     setIsVisible(false)
     setIsShowImport(true)
@@ -277,13 +340,13 @@ const Operation = (props: Props) => {
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>导入事务</span>
+          <span style={{ marginLeft: 8 }}>{t('newlyAdd.importDemand')}</span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem onClick={onExportClick}>
           <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>导出事务</span>
+          <span style={{ marginLeft: 8 }}>{t('newlyAdd.exportDemand')}</span>
         </MoreItem>
       )}
     </div>
@@ -314,60 +377,60 @@ const Operation = (props: Props) => {
       <CommonModal
         isVisible={isShowImport}
         width={784}
-        title={t('common.importTransaction')}
+        title={t('newlyAdd.importDemand')}
         isShowFooter
         onClose={onImportClose}
       >
-        <CommonImport
-          templateTitle={t('project.importChoose')}
-          interfaces={{
-            getImportDownloadModel: getImportDownloadAffairsModel,
-            getImportExcel: getImportAffairsExcel,
-            getImportExcelUpdate: getImportAffairsExcelUpdate,
-          }}
-          templateInterfaces={{
-            getExportAffairsFields,
-            getLoadAffairsListFields,
-          }}
-          stepText={t('common.uploadTransaction')}
+        <ImportDemand
           tips={{
             tab1: (
               <>
-                <span>{t('project.importText1')}</span>
-                <span>{t('project.importText2')}</span>
-                <span>{t('project.importText3')}</span>
-                <span>{t('project.importText4')}</span>
-                <span>{t('project.importText5')}</span>
-                <span>{t('project.importText6')}</span>
-                <span>{t('project.importText7')}</span>
-                <span>{t('project.importText8')}</span>
+                <span>{t('newlyAdd.importText2')}</span>
+                <span>{t('newlyAdd.importText3')}</span>
+                <span>{t('newlyAdd.importText4')}</span>
+                <span>{t('newlyAdd.importText5')}</span>
+                <span>{t('newlyAdd.importText6')}</span>
+                <span>{t('newlyAdd.importText7')}</span>
+                <span>{t('newlyAdd.importText8')}</span>
+                <span>{t('newlyAdd.importText9')}</span>
               </>
             ),
             tab2: (
               <>
-                <span>{t('project.importText9')}</span>
-                <span>{t('project.importText10')}</span>
-                <span>{t('project.importText11')}</span>
-                <span>{t('project.importText12')}</span>
-                <span>{t('project.importText13')}</span>
-                <span>{t('project.importText14')}</span>
-                <span>{t('project.importText15')}</span>
-                <span>{t('project.importText16')}</span>
+                <span>{t('newlyAdd.importText10')}</span>
+                <span>{t('newlyAdd.importText4')}</span>
+                <span>{t('newlyAdd.importText6')}</span>
+                <span>{t('newlyAdd.importText7')}</span>
+                <span>{t('newlyAdd.importText8')}</span>
+                <span>{t('newlyAdd.importText9')}</span>
+                <span>{t('newlyAdd.importText11')}</span>
+                <span>{t('newlyAdd.importText12')}</span>
               </>
             ),
           }}
+          stepText={t('newlyAdd.uploadDemand')}
+          interfaces={{
+            getImportDownloadModel,
+            getImportExcel,
+            getImportExcelUpdate,
+          }}
+          templateInterfaces={{
+            getExportFields,
+            getLoadListFields,
+          }}
+          templateTitle={t('newlyAdd.importChoose')}
         />
       </CommonModal>
 
-      <CommonExport
-        interfaces={{ getExportAffairsExcel }}
+      <ExportDemand
         isShowExport={isShowExport}
         onClose={setIsShowExport}
         searchGroups={searchGroups}
         otherParams={props.otherParams}
+        interfaces={{ getExportExcel }}
         templateInterfaces={{
-          getExportAffairsFields,
-          getLoadAffairsListFields,
+          getExportFields,
+          getLoadListFields,
         }}
       />
 
@@ -398,7 +461,21 @@ const Operation = (props: Props) => {
               ? 'b/story/save'
               : 'b/transaction/save',
           ) || projectInfo?.status !== 1 ? null : (
-            <CommonButton type="primary">创建事务</CommonButton>
+            <Popover
+              content={changeStatus}
+              placement="bottomLeft"
+              getPopupContainer={node => node}
+              visible={isVisible}
+              onVisibleChange={visible => setIsVisible(visible)}
+            >
+              <MoreWrap type="create">
+                <span>{t('common.createDemand')}</span>
+                <IconFont
+                  style={{ fontSize: 16, marginLeft: 8 }}
+                  type={isVisible ? 'up' : 'down'}
+                />
+              </MoreWrap>
+            </Popover>
           )}
           {hasExport && hasImport ? null : (
             <Popover
@@ -441,9 +518,11 @@ const Operation = (props: Props) => {
           noNeed
           defaultValue={defaultValue}
           onFilter={getSearchKey}
-          onSearch={onFilterSearch}
+          onSearch={(e: any, customField: any) =>
+            onFilterSearch(e, customField)
+          }
           list={searchList}
-          basicsList={filterBasicsList}
+          basicsList={filterBasicsList.filter((i: any) => i.is_flaw !== 1)}
           specialList={filterSpecialList}
           customList={filterCustomList}
         />
