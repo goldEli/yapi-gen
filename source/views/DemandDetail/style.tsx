@@ -217,6 +217,7 @@ export const BasicWrap = styled.div`
 
 export const BasicContent = styled.div`
   height: calc(100% - 60px);
+  padding-left: 24px;
 `
 
 export const BasicFooter = styled.div`
@@ -258,3 +259,46 @@ export const WrapLeft = styled.div({
 export const ComputedWrap = styled.div`
   height: calc(100vh - 229px);
 `
+
+// 需求详情-左侧信息及评论列表样式
+
+export const TitleWrap = styled.div<{ activeTabs?: any }>(
+  {
+    height: 24,
+    borderRadius: 4,
+    margin: '8px 0 16px 0',
+    display: 'flex',
+    width: 'fit-content',
+    div: {
+      padding: '0 12px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 14,
+      fontWeight: 400,
+      height: 24,
+      width: 'fit-content',
+      cursor: 'pointer',
+    },
+  },
+  ({ activeTabs }) => ({
+    '.leftWrap': {
+      color: activeTabs === 1 ? 'var(--primary-d2)' : 'var(--neutral-n3)',
+      border:
+        activeTabs === 1
+          ? '1px solid var(--primary-d2)'
+          : '1px solid var(--neutral-n6-d1)',
+      borderRadius: '4px 0 0 4px',
+      borderRight: activeTabs === 1 ? '' : 'none',
+    },
+    '.rightWrap': {
+      color: activeTabs === 2 ? 'var(--primary-d2)' : 'var(--neutral-n3)',
+      border:
+        activeTabs === 2
+          ? '1px solid var(--primary-d2)'
+          : '1px solid var(--neutral-n6-d1)',
+      borderLeft: activeTabs === 2 ? '' : 'none',
+      borderRadius: '0 4px 4px 0',
+    },
+  }),
+)

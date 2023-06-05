@@ -35,6 +35,7 @@ import {
   RedCss,
   Second,
   TextWrap,
+  haveAuto,
 } from './style'
 
 interface Props {
@@ -175,7 +176,7 @@ const DemandComment = (props: Props) => {
   }, [props.isOpen])
 
   return (
-    <>
+    <div className={props.isOpenInfo ? haveAuto : ''}>
       <EditComment
         projectId={props.detail.projectId}
         visibleEdit={isVisibleComment}
@@ -457,7 +458,7 @@ const DemandComment = (props: Props) => {
             <NoData />
           ))}
       </div>
-    </>
+    </div>
   )
 }
 

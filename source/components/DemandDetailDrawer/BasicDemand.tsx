@@ -8,7 +8,6 @@ import {
   updateTableParams,
 } from '@/services/demand'
 import { getCustomNormalValue } from '@/tools'
-import ParentDemand from '@/views/Demand/components/ParentDemand'
 import { useSelector } from '@store/index'
 import { message, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
@@ -30,7 +29,9 @@ import {
   LabelItem,
   MaxLabel,
   ShowLabel,
+  haveAuto,
 } from './style'
+import ParentDemand from '@/views/DemandDetail/components/ParentDemand'
 
 interface Props {
   detail?: any
@@ -365,7 +366,7 @@ const BasicDemand = (props: Props) => {
   }, [props.isOpen, props.detail])
 
   return (
-    <div>
+    <div className={props.isInfoPage ? haveAuto : ''}>
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {
         return (
@@ -399,6 +400,7 @@ const BasicDemand = (props: Props) => {
             </ContentWrap>
           </InfoItem>
         ))}
+
       {isShowFields && foldList?.length > 0 && (
         <ShowLabel onClick={() => setIsShowFields(false)}>
           {t('newlyAdd.close')}

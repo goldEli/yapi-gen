@@ -22,6 +22,7 @@ import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
 import DemandTag from '@/components/TagComponent/DemandTag'
 import { InfoItem, Label, TextWrap, WrapLeft } from '../style'
 import CommonButton from '@/components/CommonButton'
+import DemandStatus from './DemandStatus'
 
 const DetailDemand = () => {
   const [t] = useTranslation()

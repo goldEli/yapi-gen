@@ -1,12 +1,4 @@
 /* eslint-disable no-undefined */
-import {
-  addFlawRelation,
-  getFlawRelationStories,
-  getFlawSelectRelationRecent,
-  getFlawSelectRelationSearch,
-  updateFlawPriority,
-  updateFlawStatus,
-} from '@/services/flaw'
 import { getParamsData } from '@/tools'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -35,6 +27,8 @@ import {
   getStoryRelationStories,
   getStorySelectRelationRecent,
   getStorySelectRelationSearch,
+  updateDemandStatus,
+  updatePriority,
 } from '@/services/demand'
 
 const FormWrap = styled(Form)({
@@ -45,7 +39,6 @@ const FormWrap = styled(Form)({
 
 const RelationWrap = styled.div`
   height: 100%;
-  padding-left: 24px;
 `
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
@@ -81,7 +74,7 @@ interface RelationStoriesProps {
   activeKey?: string
   detail: Model.Flaw.FlawInfo
   isOpen?: boolean
-  onUpdate(): void
+  onUpdate?(): void
   isDrawer?: boolean
 }
 
@@ -202,7 +195,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
     getMessage({ type: 'success', msg: '添加成功' })
     getList(pageObj, order)
     onClose()
-    props.onUpdate()
+    props.onUpdate?.()
   }
 
   // 点击切换页码
@@ -218,7 +211,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   //   修改优先级
   const onChangeState = async (item: any) => {
-    await updateFlawPriority({
+    await updatePriority({
       id: item.id,
       priorityId: item.priorityId,
       projectId: id,
@@ -229,7 +222,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   //   修改状态
   const onChangeStatus = async (value: any) => {
-    await updateFlawStatus(value)
+    await updateDemandStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     getList(pageObj, order)
   }
@@ -432,7 +425,9 @@ const StoryRelation = (props: RelationStoriesProps) => {
   }, [props.activeKey, props.isOpen])
 
   return (
-    <RelationWrap style={{ paddingLeft: props.isDrawer ? 0 : 24 }}>
+    <RelationWrap
+      style={{ height: props.isDrawer ? '100%' : 'calc(100vh - 227px)' }}
+    >
       <CommonModal
         isVisible={isVisible}
         title="链接工作项"

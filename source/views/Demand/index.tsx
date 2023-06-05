@@ -1,706 +1,445 @@
 /* eslint-disable no-undefined */
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable complexity */
-/* eslint-disable camelcase */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-empty-function */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/naming-convention */
-
-import DemandMain from './DemandMain'
-import DemandInfo from './DemandInfo'
-import ChangeRecord from './ChangeRecord'
-import ChildDemand from './ChildDemand'
-import { useEffect, useState } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
-import styled from '@emotion/styled'
-import { Space, message, Popover, Form, Select, Tooltip } from 'antd'
-import DeleteConfirm from '@/components/DeleteConfirm'
-import { copyLink, getIsPermission, getParamsData } from '@/tools'
-import { useTranslation } from 'react-i18next'
-import Loading from '@/components/Loading'
-import { encryptPhp } from '@/tools/cryptoPhp'
-import { OmitText } from '@star-yun/ui'
-import Circulation from './Circulation'
-import CommonModal from '@/components/CommonModal'
-import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
-import useSetTitle from '@/hooks/useSetTitle'
-import { setIsRefresh } from '@store/user'
-import { useDispatch, useSelector } from '@store/index'
-import { getWorkflowList } from '@/services/project'
-import {
-  deleteDemand,
-  getDemandInfo,
-  updateDemandCategory,
-  updateDemandStatus,
-} from '@/services/demand'
-import { setDemandInfo } from '@store/demand'
-import { changeId } from '@store/counterSlice'
-import { onTapSearchChoose } from '@store/view'
-import { changeColorText } from '@store/color-text'
-import MyBreadcrumb from '@/components/MyBreadcrumb'
-import StateTag from '@/components/StateTag'
-import CommonButton from '@/components/CommonButton'
+import CreateViewPort from '@/components/CreateViewPort'
+import ManageView from '@/components/ManageView'
 import PermissionWrap from '@/components/PermissionWrap'
-import CustomSelect from '@/components/CustomSelect'
-import { getMessage } from '@/components/Message'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
+import { getParamsData } from '@/tools'
+import { useDispatch, useSelector } from '@store/index'
+import { useSearchParams } from 'react-router-dom'
 import {
-  setAddWorkItemModal,
-  setIsRefreshComment,
+  ContentLeft,
+  ContentMain,
+  ContentRight,
+  ContentWrap,
+  Wrap,
+} from './style'
+import React, { useEffect, useRef, useState } from 'react'
+import WrapLeft from './components/WrapLeft'
+import { useTranslation } from 'react-i18next'
+import {
+  setFilterKeys,
+  setFilterParams,
   setIsUpdateAddWorkItem,
-  setIsUpdateStatus,
 } from '@store/project'
+import Operation from './components/Operation'
+import DemandTree from './components/DemandTree'
+import DemandTable from './components/DemandTable'
+import { deleteDemand, getDemandList } from '@/services/demand'
+import { getMessage } from '@/components/Message'
+import { setIsRefresh } from '@store/user'
+import { OptionalFeld } from '@/components/OptionalFeld'
+import { saveTitles } from '@store/view'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
-const Wrap = styled.div`
-  height: 100%;
-  display: flex;
-  padding: 20px 16px 0 0px;
-  flex-direction: column;
-`
+export const TreeContext: any = React.createContext('')
 
-const DemandInfoWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  height: 32,
-  background: 'white',
-  margin: '20px 0 6px 24px',
-})
-
-const NameWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  '.demandName': {
-    fontSize: 16,
-    color: 'var(--neutral-n1-d1)',
-    marginRight: 8,
-    fontFamily: 'SiYuanMedium',
-  },
-})
-
-const ContentWrap = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  height: 'calc(100% - 80px)',
-  padding: '0 0 0 24px',
-})
-
-const MainWrap = styled(Space)({
-  borderRadius: 4,
-  background: 'white',
-  width: '100%',
-  position: 'relative',
-  borderBottom: '1px solid var(--neutral-n6-d1)',
-})
-
-const Item = styled.div<{ activeIdx: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    span: {
-      fontSize: 14,
-      fontWeight: 400,
-      marginRight: 4,
-      color: 'var(--neutral-n2) !important',
-      display: 'inline-block',
-      height: 50,
-      lineHeight: '50px',
-    },
-    div: {
-      minWidth: 20,
-      height: 20,
-      padding: '0 6px',
-      borderRadius: 10,
-      fontSize: 12,
-      color: 'var(--primary-d2)',
-      // background: 'var(--neutral-n1-d1)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  },
-  ({ activeIdx }) => ({
-    span: {
-      color: activeIdx ? 'var(--primary-d2) !important' : 'var(--neutral-n2)',
-      borderBottom: activeIdx
-        ? '2px solid var(--primary-d2)'
-        : '2px solid white',
-      fontFamily: activeIdx ? 'SiYuanMedium' : '',
-    },
-    div: {
-      color: activeIdx ? 'white' : 'var(--primary-d2)',
-      background: activeIdx ? 'var(--primary-d2)' : 'rgba(102, 136, 255, 0.10)',
-    },
-  }),
-)
-
-const FormWrap = styled(Form)({
-  '.ant-form-item': {
-    margin: '22px 0 0 0',
-  },
-})
-
-const LiWrap = styled.div({
-  cursor: 'pointer',
-  padding: '0 16px',
-  width: '100%',
-  height: 32,
-  display: 'flex',
-  alignItems: 'center',
-  background: 'var(--neutral-white-d3)',
-  '&: hover': {
-    background: 'var(--hover-d3)',
-  },
-})
-
-const MoreItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  height: 32,
-  color: 'var(--neutral-n2)',
-  fontSize: 14,
-  fontWeight: 400,
-  cursor: 'pointer',
-  padding: '0 16px',
-  '&: hover': {
-    color: 'var(--neutral-n1-d1)',
-    background: 'var(--hover-d3)',
-  },
-})
-
-const DemandBox = () => {
+const DemandIndex = () => {
+  const keyRef = useRef()
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const [form] = Form.useForm()
-  const [isVisibleMore, setIsVisibleMore] = useState(false)
-  const [isShowChange, setIsShowChange] = useState(false)
-  const [isShowCategory, setIsShowCategory] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
-  const [isDelVisible, setIsDelVisible] = useState(false)
-  const [isUpdate, setIsUpdate] = useState(false)
-  const [operationItem, setOperationItem] = useState<any>({})
-  const [loadingState, setLoadingState] = useState<boolean>(false)
-  const [colorObj, setColorObj] = useState<any>({})
-  const [resultCategory, setResultCategory] = useState([])
-  const [workList, setWorkList] = useState<any>({
-    list: undefined,
-  })
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
+  const myTreeComponent: any = useRef(null)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { type } = paramsData
-  const { demandId } = paramsData
-  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+  const [key, setKey] = useState()
+  const [isGrid, setIsGrid] = useState(0)
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [searchVal, setSearchVal] = useState('')
+  const [isShowLeft, setIsShowLeft] = useState(false)
+  const [isSettingState, setIsSettingState] = useState(false)
+  const [isSpinning, setIsSpinning] = useState(false)
+  const [searchItems, setSearchItems] = useState<any>({})
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
+  // 用于控制失焦事件与展开子需求冲突
+  const [isUpdated, setIsUpdated] = useState(false)
+  // 用于当前操作层级不折叠
+  const [topParentId, setTopParentId] = useState(0)
+  const [titleList, setTitleList] = useState<any[]>([])
+  const [titleList2, setTitleList2] = useState<any[]>([])
+  const [titleList3, setTitleList3] = useState<any[]>([])
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
+  const [plainOptions, setPlainOptions] = useState<any>([])
+  const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [plainOptions3, setPlainOptions3] = useState<any>([])
+  const { filterKeys, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
   )
-  const { demandInfo } = useSelector(store => store.demand)
   const { currentMenu } = useSelector(store => store.user)
-  const navigate = useNavigate()
-  const asyncSetTtile = useSetTitle()
-  asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
-  const isEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
-  )
-  const isDelete = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
-  )
+  const searchChoose = useSelector(store => store.view.searchChoose)
+  const titles = useSelector(store => store.view.tapTitles)
+  const tapSort = useSelector(store => store.view.tapSort)
 
-  // 计算当前选中下是否有项目管理权限
-  const resultAuth =
-    currentMenu?.children?.filter(
-      (i: any) => i.url === '/ProjectManagement/Project',
-    )?.length > 0
+  const keyValue = {
+    key,
+    changeKey: (value: any) => {
+      setPageObj({ page: 1, size: pageObj.size })
+      setKey(value)
+      keyRef.current = value
+      // 添加搜索项 计数
+      const keys = value
+        ? [...filterKeys, ...['classId']]
+        : filterKeys?.filter((i: any) => i !== 'classId')
 
-  const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter(
-      (i: any) =>
-        i.identity ===
-        (projectInfo.projectType === 1
-          ? 'b/story/update'
-          : 'b/transaction/update'),
-    )?.length > 0
+      dispatch(setFilterKeys([...new Set(keys)]))
+    },
+  }
 
-  const init = async () => {
-    if (demandId) {
-      const result = await getDemandInfo({ projectId, id: demandId })
-      dispatch(setDemandInfo(result))
+  const getList = async (
+    state: any,
+    searchParamsObj: any,
+    item?: any,
+    orderItem?: any,
+    updateState?: boolean,
+    topId?: any,
+  ) => {
+    if (!updateState) {
+      setIsSpinning(true)
     }
-    setLoadingState(true)
+
+    let params: any = {}
+
+    if (state === 1) {
+      params = {
+        projectId,
+        all: true,
+        panel: true,
+        searchValue: searchParamsObj.searchValue,
+        statusIds: searchParamsObj.statusId,
+        iterateIds: searchParamsObj.iterateId,
+        priorityIds: searchParamsObj.priorityId,
+        userId: searchParamsObj.userId,
+        tagIds: searchParamsObj.tagId,
+        startTime: searchParamsObj.createdAtId,
+        expectedStart: searchParamsObj.expectedStartAtId,
+        expectedEnd: searchParamsObj.expectedendat,
+        updatedTime: searchParamsObj.updatedat,
+        endTime: searchParamsObj.finishAt,
+        usersNameId: searchParamsObj.usersnameId,
+        copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
+        class_id: keyRef.current,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
+      }
+    } else {
+      params = {
+        projectId,
+        page: item.page,
+        pageSize: item.size,
+        order: orderItem.value,
+        orderKey: orderItem.key,
+        searchValue: searchParamsObj.searchValue,
+        statusIds: searchParamsObj.statusId,
+        iterateIds: searchParamsObj.iterateId,
+        priorityIds: searchParamsObj.priorityId,
+        userId: searchParamsObj.userId,
+        tagIds: searchParamsObj.tagId,
+        startTime: searchParamsObj.createdAtId,
+        expectedStart: searchParamsObj.expectedStartAtId,
+        expectedEnd: searchParamsObj.expectedendat,
+        updatedTime: searchParamsObj.updatedat,
+        endTime: searchParamsObj.finishAt,
+        usersNameId: searchParamsObj.usersnameId,
+        copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
+        class_id: keyRef.current,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
+      }
+    }
+    if (state === 2) {
+      params.tree = 1
+      params.topParentId = topId ?? topParentId
+    }
+    dispatch(setFilterParams(params))
+    const result = await getDemandList(params)
+    setDataList(result)
+    setIsSpinning(false)
+    dispatch(setIsRefresh(false))
+    setTopParentId(0)
+    setIsUpdated(false)
     dispatch(setIsUpdateAddWorkItem(false))
   }
 
-  useEffect(() => {
-    init()
-    return () => {
-      dispatch(changeId(0))
-      dispatch(changeColorText(''))
-      dispatch(onTapSearchChoose({}))
+  //   全局搜索
+  const onInputSearch = (keyValue: any) => {
+    if (searchVal !== keyValue) {
+      setSearchVal(keyValue)
+      const params = searchItems
+      params.searchValue = keyValue
+      setSearchItems(params)
+      setDataList({ list: undefined })
+      setIsUpdated(true)
+      setPageObj({
+        page: 1,
+        size: pageObj.size,
+      })
+      // 添加搜索项 计数
+      const keys = keyValue
+        ? [...filterKeys, ...['searchVal']]
+        : filterKeys?.filter((i: any) => i !== 'searchVal')
+      dispatch(setFilterKeys([...new Set(keys)]))
     }
-  }, [demandId])
-
-  useEffect(() => {
-    if (isUpdateAddWorkItem) {
-      init()
-    }
-  }, [isUpdateAddWorkItem])
-
-  useEffect(() => {
-    // 获取项目信息中的需求类别
-    const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
-      ?.children
-
-    setColorObj(list?.filter((k: any) => k.id === demandInfo?.category)[0])
-    setResultCategory(
-      list
-        ?.filter((i: any) => i.id !== demandInfo?.category)
-        ?.filter((i: any) => i.status === 1),
-    )
-  }, [demandInfo, projectInfoValues])
-
-  const onChangeIdx = (val: string) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: val, id: projectId, demandId }),
-    )
-    navigate(`/ProjectManagement/Demand?data=${params}`)
   }
 
-  const moreClick = (e: any) => {
-    e.stopPropagation()
-    setIsVisible(!isVisible)
+  // 更新需求列表，state： 是否有加载动画，topId: 用于树形结构展开，isClass： 是否编辑的是需求分类
+  const onUpdate = (state?: boolean, topId?: any, isClass?: any) => {
+    getList(isGrid, searchItems, pageObj, order, state, topId)
+    // 是编辑需求分类的话，就更新左侧需求分类列表
+    if (isClass) {
+      myTreeComponent?.current?.init()
+    }
   }
 
-  const onEdit = () => {
+  const refresh = () => {
+    getList(isGrid, searchItems, pageObj, order, false, topParentId)
+  }
+
+  const onChangeRow = (topId?: any) => {
+    getList(isGrid, searchItems, pageObj, order, false, topId)
+  }
+
+  //   删除确认事件
+  const onDeleteConfirm = async (id: number) => {
+    await deleteDemand({ projectId, id })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    getList(isGrid, searchItems, pageObj, order)
+    myTreeComponent?.current?.init()
+  }
+
+  //   点击删除
+  const onDelete = (item: any) => {
+    setTopParentId(item?.topId)
+    open({
+      title: '删除确认',
+      text: t('common.confirmDelDemand'),
+      onConfirm() {
+        onDeleteConfirm(item.id)
+        return Promise.resolve()
+      },
+    })
+  }
+
+  //   搜索
+  const onSearch = (params: any) => {
+    setDataList({ list: undefined })
+    setIsUpdated(true)
+    setSearchItems(params)
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
+  }
+
+  //   切换模式
+  const onChangeGrid = (val: any) => {
+    if (val !== isGrid) {
+      setIsGrid(val)
+      setDataList({ list: undefined })
+    }
+  }
+
+  const getCheckList = (
+    list: CheckboxValueType[],
+    list2: CheckboxValueType[],
+    list3: CheckboxValueType[],
+    all: CheckboxValueType[],
+  ) => {
+    setTitleList(list)
+    setTitleList2(list2)
+    setTitleList3(list3)
+    setAllTitleList(all)
+    dispatch(saveTitles(all))
+  }
+
+  // 获取显示字段配置
+  const getShowkey = () => {
+    setPlainOptions(projectInfo?.plainOptions || [])
+    setPlainOptions2(projectInfo?.plainOptions2 || [])
+    setPlainOptions3(projectInfo?.plainOptions3 || [])
+    setTitleList(projectInfo?.titleList || [])
+    setTitleList2(projectInfo?.titleList2 || [])
+    setTitleList3(projectInfo?.titleList3 || [])
+    setAllTitleList([
+      ...(projectInfo.titleList || []),
+      ...(projectInfo.titleList2 || []),
+      ...(projectInfo.titleList3 || []),
+    ])
     dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: {
-          editId: demandInfo.id,
-          projectId: demandInfo.projectId,
-          isInfo: true,
-        },
-      }),
+      saveTitles([
+        ...(projectInfo.titleList || []),
+        ...(projectInfo.titleList2 || []),
+        ...(projectInfo.titleList3 || []),
+      ]),
     )
   }
 
-  const onDeleteConfirm = async () => {
-    try {
-      await deleteDemand({ projectId, id: demandInfo.id })
-      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-      setIsDelVisible(false)
-      const params = encryptPhp(JSON.stringify({ id: projectId }))
-      navigate(`/ProjectManagement/Demand?data=${params}`)
-    } catch (error) {
-      //
-    }
-  }
+  const getTitle = (arr: any, arr1: any) => {
+    const arr2: any = []
+    arr1.forEach((i: any) => {
+      arr2.push(i.value)
+    })
 
-  const childContent = () => {
-    if (type === 'info') {
-      return <DemandInfo />
-    } else if (type === 'child') {
-      return <ChildDemand />
-    } else if (type === 'record') {
-      return <ChangeRecord />
-    }
-    return <Circulation />
-  }
-
-  const onChangeStatus = async (value: any) => {
-    try {
-      await updateDemandStatus(value)
-      dispatch(setIsRefreshComment(true))
-      getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-      if (demandId) {
-        const result = await getDemandInfo({ projectId, id: demandId })
-        dispatch(setDemandInfo(result))
+    const myArr: any = []
+    arr.forEach((i: any) => {
+      if (arr2.includes(i)) {
+        myArr.push(i)
       }
-    } catch (error) {
-      //
-    }
-  }
-
-  const onExamine = () => {
-    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
-  }
-
-  const onCloseCategory = () => {
-    setIsShowCategory(false)
-    setTimeout(() => {
-      form.resetFields()
-    }, 100)
-  }
-
-  const onConfirmCategory = async () => {
-    await form.validateFields()
-    try {
-      await updateDemandCategory({
-        projectId,
-        id: demandInfo?.id,
-        ...form.getFieldsValue(),
-      })
-      getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
-      setIsShowCategory(false)
-      dispatch(setIsUpdateStatus(true))
-      dispatch(setIsRefresh(true))
-      const result = await getDemandInfo({ projectId, id: demandInfo?.id })
-      dispatch(setDemandInfo(result))
-      setTimeout(() => {
-        form.resetFields()
-      }, 100)
-    } catch (error) {
-      //
-    }
-  }
-
-  const onChangeSelect = async (value: any) => {
-    if (value) {
-      const result = await getWorkflowList({
-        projectId: paramsData.id,
-        categoryId: value,
-      })
-      setWorkList(result)
-    } else {
-      form.resetFields()
-    }
-  }
-
-  const onClickCategory = async (k: any) => {
-    const result = await getWorkflowList({
-      projectId: paramsData.id,
-      categoryId: k.id,
     })
-    setWorkList(result)
-    form.setFieldsValue({
-      categoryId: k.id,
-    })
-    setIsShowChange(false)
-    setIsShowCategory(true)
+
+    return myArr
   }
 
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-      }}
-    >
-      {resultCategory?.map((k: any) => {
-        return (
-          <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
-            <img
-              src={
-                k.category_attachment
-                  ? k.category_attachment
-                  : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-              }
-              style={{
-                width: '18px',
-                height: '18px',
-                marginRight: '8px',
-              }}
-              alt=""
-            />
-            <span>{k.content}</span>
-          </LiWrap>
-        )
-      })}
-    </div>
-  )
-
-  const onClickMoreDelete = () => {
-    setIsDelVisible(true)
-    setIsVisibleMore(false)
-  }
-  // 复制需求id
-  const onCopyId = () => {
-    copyLink(
-      `${demandInfo?.storyPrefixKey}`,
-      t('copy_requirement_number_successfully'),
-      t('copy_requirement_number_failed'),
-    )
-  }
-
-  // 复制需求链接
-  const onCopyLink = () => {
-    let text: any = ''
-    let beforeUrl: any
-    beforeUrl = window.origin
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: demandInfo?.projectId,
-        demandId: demandInfo?.id,
-      }),
-    )
-    const url = `/ProjectManagement/Demand?data=${params}`
-    text += `【${demandInfo?.name}】 ${beforeUrl}${url} \n`
-    copyLink(
-      text,
-      t('successfully_copied_requirement_link'),
-      t('failed_copied_requirement_link'),
-    )
-  }
-
-  const moreOperation = (
-    <div
-      style={{
-        padding: '4px 0',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {!isDelete && (
-        <MoreItem onClick={onClickMoreDelete}>
-          <span>{t('p2.delete')}</span>
-        </MoreItem>
-      )}
-      <MoreItem onClick={onCopyId}>
-        <span>{t('copy_requirement_number')}</span>
-      </MoreItem>
-      <MoreItem onClick={onCopyLink}>
-        <span>{t('copy_title_link')}</span>
-      </MoreItem>
-    </div>
-  )
-
-  const content = () => {
-    if (!type) {
-      return (
-        <DemandMain
-          onSetOperationItem={setOperationItem}
-          onChangeVisible={(e: any) => moreClick(e)}
-          isUpdate={isUpdate}
-          onIsUpdate={() => setIsUpdate(false)}
-        />
-      )
+  useEffect(() => {
+    if (projectInfo?.id) {
+      getShowkey()
     }
-    return (
-      <>
-        <CommonModal
-          isVisible={isShowCategory}
-          onClose={onCloseCategory}
-          title={t('newlyAdd.changeCategory')}
-          onConfirm={onConfirmCategory}
-        >
-          <FormWrap
-            form={form}
-            layout="vertical"
-            style={{ padding: '0 20px 0 24px' }}
-          >
-            <Form.Item label={t('newlyAdd.beforeCategory')}>
-              <img
-                src={
-                  colorObj?.category_attachment
-                    ? colorObj?.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  marginRight: '8px',
-                }}
-                alt=""
-              />
-              <span>{colorObj?.content}</span>
-            </Form.Item>
-            <Form.Item
-              label={t('newlyAdd.afterCategory')}
-              name="categoryId"
-              rules={[{ required: true, message: '' }]}
-            >
-              <CustomSelect
-                placeholder={t('common.pleaseSelect')}
-                showArrow
-                showSearch
-                getPopupContainer={(node: any) => node}
-                allowClear
-                optionFilterProp="label"
-                onChange={onChangeSelect}
-                options={resultCategory?.map((k: any) => ({
-                  label: k.content,
-                  value: k.id,
-                }))}
-              />
-            </Form.Item>
-            <Form.Item
-              label={t('newlyAdd.afterStatus')}
-              name="statusId"
-              rules={[{ required: true, message: '' }]}
-            >
-              <CustomSelect
-                placeholder={t('common.pleaseSelect')}
-                showArrow
-                showSearch
-                getPopupContainer={(node: any) => node}
-                allowClear
-                optionFilterProp="label"
-                options={workList?.list?.map((k: any) => ({
-                  label: k.name,
-                  value: k.statusId,
-                }))}
-              />
-            </Form.Item>
-          </FormWrap>
-        </CommonModal>
-        <DeleteConfirm
-          text={t('common.confirmDelDemand')}
-          isVisible={isDelVisible}
-          onChangeVisible={() => setIsDelVisible(!isDelVisible)}
-          onConfirm={onDeleteConfirm}
-        />
-        <div style={{ paddingLeft: 24 }}>
-          <MyBreadcrumb
-            demand={{
-              name: demandInfo?.name,
-              cover: demandInfo?.category_attachment,
-            }}
-          />
-        </div>
-        <DemandInfoWrap>
-          <NameWrap>
-            <Tooltip title={colorObj?.content}>
-              <Popover
-                trigger={['hover']}
-                visible={isShowChange}
-                placement="bottomLeft"
-                content={changeStatus}
-                getPopupContainer={node => node}
-                onVisibleChange={visible => setIsShowChange(visible)}
-              >
-                <div>
-                  <img
-                    src={
-                      colorObj?.category_attachment
-                        ? colorObj?.category_attachment
-                        : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                    }
-                    style={{
-                      width: '18px',
-                      height: '18px',
-                      marginRight: '8px',
-                      marginBottom: '3px',
-                      borderRadius: '6px',
-                    }}
-                    alt=""
-                  />
-                </div>
-              </Popover>
-            </Tooltip>
-            <OmitText
-              width={800}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              <span className="demandName">{demandInfo?.name}</span>
-            </OmitText>
-            <ChangeStatusPopover
-              isCanOperation={isCanEdit && !demandInfo?.isExamine}
-              projectId={projectId}
-              record={demandInfo}
-              onChangeStatus={onChangeStatus}
-              type={1}
-            >
-              <StateTag
-                onClick={demandInfo?.isExamine ? onExamine : void 0}
-                isShow={isCanEdit || demandInfo?.isExamine}
-                name={demandInfo?.status?.status.content}
-                state={
-                  demandInfo?.status?.is_start === 1 &&
-                  demandInfo?.status?.is_end === 2
-                    ? 1
-                    : demandInfo?.status?.is_end === 1 &&
-                      demandInfo?.status?.is_start === 2
-                    ? 2
-                    : demandInfo?.status?.is_start === 2 &&
-                      demandInfo?.status?.is_end === 2
-                    ? 3
-                    : 0
-                }
-              />
-            </ChangeStatusPopover>
-          </NameWrap>
-          <Space size={16}>
-            {isEdit ? null : (
-              <CommonButton type="light" onClick={onEdit}>
-                {t('common.edit')}
-              </CommonButton>
-            )}
-            <Popover
-              content={moreOperation}
-              placement="bottomRight"
-              getPopupContainer={node => node}
-              key={isVisibleMore.toString()}
-              visible={isVisibleMore}
-              onVisibleChange={visible => setIsVisibleMore(visible)}
-            >
-              <div>
-                <CommonButton
-                  type="light"
-                  icon={isVisibleMore ? 'up' : 'down'}
-                  iconPlacement="right"
-                >
-                  <span>{t('moreInfo')}</span>
-                </CommonButton>
-              </div>
-            </Popover>
-          </Space>
-        </DemandInfoWrap>
-        <ContentWrap>
-          <MainWrap size={32}>
-            <Item
-              onClick={() => onChangeIdx('info')}
-              activeIdx={type === 'info'}
-            >
-              <span>{t('project.detailInfo')}</span>
-            </Item>
-            <Item
-              onClick={() => onChangeIdx('child')}
-              activeIdx={type === 'child'}
-            >
-              <span>{t('common.childDemand')}</span>
-              <div>{demandInfo?.childCount || 0}</div>
-            </Item>
-            <Item
-              onClick={() => onChangeIdx('record')}
-              activeIdx={type === 'record'}
-            >
-              <span>{t('common.changeRecord')}</span>
-              <div>{demandInfo?.changeCount || 0}</div>
-            </Item>
-            <Item
-              onClick={() => onChangeIdx('circulation')}
-              activeIdx={type === 'circulation'}
-            >
-              <span>{t('newlyAdd.circulationRecord')}</span>
-            </Item>
-          </MainWrap>
-          {childContent()}
-        </ContentWrap>
-      </>
-    )
-  }
+  }, [projectInfo])
 
-  if (!loadingState) {
-    return <Loading />
-  }
+  useEffect(() => {
+    if (titles) {
+      setTitleList(getTitle(titles, plainOptions))
+      setTitleList2(getTitle(titles, plainOptions2))
+      setTitleList3(getTitle(titles, plainOptions3))
+
+      setAllTitleList(titles)
+    }
+  }, [titles])
+
+  useEffect(() => {
+    if (tapSort) {
+      const key = Object.keys(tapSort)
+      const value = Object.values(tapSort)
+
+      if (tapSort) {
+        setOrder({ value: value[0], key: key[0] })
+      }
+    }
+  }, [tapSort])
+
+  useEffect(() => {
+    getList(isGrid, searchItems, pageObj, order)
+  }, [key, isGrid, order, pageObj, projectId])
+
+  useEffect(() => {
+    // 进入主页清除已存储的筛选计数
+    setFilterKeys([])
+  }, [])
 
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
-      <Wrap>{content()}</Wrap>
+      <DeleteConfirmModal />
+      <CreateViewPort pid={projectId} />
+      <ManageView projectId={projectId} />
+      <OptionalFeld
+        allTitleList={allTitleList}
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        plainOptions3={plainOptions3}
+        checkList={titleList}
+        checkList2={titleList2}
+        checkList3={titleList3}
+        isVisible={isSettingState}
+        onClose={() => setIsSettingState(false)}
+        getCheckList={getCheckList}
+      />
+      <TreeContext.Provider value={keyValue}>
+        <Wrap>
+          <ProjectCommonOperation onInputSearch={onInputSearch} />
+          <ContentWrap>
+            <ContentLeft>
+              <WrapLeft
+                ref={myTreeComponent}
+                projectId={projectId}
+                isShowLeft={isShowLeft}
+                onUpdate={onUpdate}
+                iKey={key}
+              />
+            </ContentLeft>
+            <ContentRight>
+              <Operation
+                pid={projectId}
+                isGrid={isGrid}
+                onChangeGrid={val => onChangeGrid(val)}
+                onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
+                onRefresh={refresh}
+                onSearch={onSearch}
+                settingState={isSettingState}
+                onChangeSetting={setIsSettingState}
+                isShowLeft={isShowLeft}
+                otherParams={{
+                  page: pageObj.page,
+                  pageSize: pageObj.size,
+                  orderKey: order.key,
+                  order: order.value,
+                  classId: key,
+                  all: isGrid,
+                  panel: isGrid,
+                }}
+                dataLength={dataList?.total}
+              />
+              <ContentMain>
+                {isGrid === 2 && (
+                  <DemandTree
+                    data={dataList}
+                    onDelete={onDelete}
+                    onChangePageNavigation={setPageObj}
+                    onChangeRow={onChangeRow}
+                    titleList={titleList}
+                    titleList2={titleList2}
+                    titleList3={titleList3}
+                    allTitleList={allTitleList}
+                    onChangeOrder={setOrder}
+                    isSpinning={isSpinning}
+                    onUpdate={onUpdate}
+                    onUpdateTopId={setTopParentId}
+                    filterParams={{
+                      ...searchItems,
+                      projectId,
+                      page: 1,
+                      pageSize: 100,
+                      order: '',
+                      orderKey: '',
+                    }}
+                    isUpdated={isUpdated}
+                  />
+                )}
+                {!isGrid && (
+                  <DemandTable
+                    onDelete={onDelete}
+                    data={dataList}
+                    onChangePageNavigation={setPageObj}
+                    onChangeRow={onChangeRow}
+                    onChangeOrder={setOrder}
+                    isSpinning={isSpinning}
+                    onUpdate={onUpdate}
+                    titleList={titleList}
+                    titleList2={titleList2}
+                    titleList3={titleList3}
+                    allTitleList={allTitleList}
+                  />
+                )}
+              </ContentMain>
+            </ContentRight>
+          </ContentWrap>
+        </Wrap>
+      </TreeContext.Provider>
     </PermissionWrap>
   )
 }
 
-export default DemandBox
+export default DemandIndex

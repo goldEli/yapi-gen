@@ -45,6 +45,7 @@ import { setIsRefresh } from '@store/user'
 import ChildDemand from './components/ChildDemand'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
+import StoryRelation from './components/StoryRelation'
 
 const DemandDetail = () => {
   const [t] = useTranslation()
@@ -308,7 +309,7 @@ const DemandDetail = () => {
           <span>关联工作项</span>
         </DetailTabItem>
       ),
-      children: <ChangeRecord activeKey={tabActive} />,
+      children: <StoryRelation activeKey={tabActive} detail={demandInfo} />,
     },
     {
       key: '4',
