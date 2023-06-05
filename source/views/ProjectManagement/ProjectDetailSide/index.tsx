@@ -83,8 +83,9 @@ const ProjectDetailSide = () => {
     {
       name: '报表',
       icon: 'interation-2',
-      path: '/ProjectManagement/IterationReport',
+      path: '/Report/PerformanceInsight',
       isPermission: true,
+      key: 'Report',
     },
     {
       name: '缺陷',
@@ -267,8 +268,23 @@ const ProjectDetailSide = () => {
   }
 
   // 点击切换模块
-  const onChangeRouter = (path: string) => {
+  const onChangeRouter = (i: { path: any; key: any }) => {
+    // const params = encryptPhp(JSON.stringify({ id: projectId }))
+    // navigate(`${path}?data=${params}`)
+
+    const { path, key } = i
     const params = encryptPhp(JSON.stringify({ id: projectId }))
+    if (key === 'Report') {
+      const paramsData = encryptPhp(
+        JSON.stringify({
+          projectId: projectId,
+          type: 'iteration',
+          id: projectId,
+        }),
+      )
+      navigate(`/Report/PerformanceInsight?data=${paramsData}`)
+      return
+    }
     navigate(`${path}?data=${params}`)
   }
 
@@ -378,7 +394,7 @@ const ProjectDetailSide = () => {
             <MenuItem
               key={i.path}
               isActive={routerPath.pathname === i.path}
-              onClick={() => onChangeRouter(i.path)}
+              onClick={() => onChangeRouter(i)}
               hidden={!i.isPermission}
             >
               <CommonIconFont type={i.icon} size={18} />
