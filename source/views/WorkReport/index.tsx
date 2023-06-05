@@ -24,7 +24,7 @@ const WorkReport = () => {
     state => state.workReport.writeReportModal,
   )
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
+  const paramsData = getParamsData(searchParams) || {}
   const { type } = paramsData
   console.log('work-----paramsData', paramsData)
   return (
