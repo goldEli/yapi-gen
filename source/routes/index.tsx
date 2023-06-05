@@ -130,6 +130,10 @@ const routes = [
             element: lazy(() => import('@/views/Demand')),
           },
           {
+            path: 'DemandDetail',
+            element: lazy(() => import('@/views/DemandDetail')),
+          },
+          {
             path: 'Iteration',
             element: lazy(() => import('@/views/Iteration')),
           },

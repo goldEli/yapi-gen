@@ -163,7 +163,7 @@ export default React.memo((props: { redirect(): void }) => {
     if (res.code === 0) {
       localStorage.token = res.data.token
       // props.redirect()
-      navigate(`/ProjectManagement`)
+      navigate(`/ProjectManagement/Project`)
     } else {
       setErrorMessage(res.msg)
       setErrorState(true)

@@ -123,4 +123,14 @@ declare namespace API.Kanban {
       name: string
     }
   }
+
+  namespace CopyView {
+    type Params = {
+      id: Model.KanBan.ViewItem['id']
+      // 项目id
+    }
+    type Result = {
+      id: Model.KanBan.ViewItem['id']
+    }
+  }
 }

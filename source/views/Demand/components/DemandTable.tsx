@@ -26,24 +26,20 @@ import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/Dema
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
-
-const Content = styled.div({
-  padding: '20px 12px 0 0px',
-  background: 'var(--neutral-white-d1)',
-  height: 'calc(100% - 32px)',
-})
+import { TableContent } from '../style'
 
 interface Props {
   data: any
-  onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
   onChangeRow?(): void
-  settingState: boolean
-  onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
   isSpinning?: boolean
   onUpdate(updateState?: boolean): void
+  titleList?: any
+  titleList2?: any
+  titleList3?: any
+  allTitleList?: any
 }
 
 const DemandTable = (props: Props) => {
@@ -55,17 +51,7 @@ const DemandTable = (props: Props) => {
   const { projectInfo, filterKeys, filterParams } = useSelector(
     store => store.project,
   )
-  const titles = useSelector(store => store.view.tapTitles)
-  const tapSort = useSelector(store => store.view.tapSort)
-  const [titleList, setTitleList] = useState<any[]>([])
-  const [titleList2, setTitleList2] = useState<any[]>([])
-  const [titleList3, setTitleList3] = useState<any[]>([])
-  const [allTitleList, setAllTitleList] = useState<any[]>([])
-  const [plainOptions, setPlainOptions] = useState<any>([])
-  const [plainOptions2, setPlainOptions2] = useState<any>([])
-  const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const [orderKey, setOrderKey] = useState<any>('')
-  const [order, setOrder] = useState<any>('')
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isShowMore, setIsShowMore] = useState(false)
   const batchDom: any = createRef()
   // 勾选的id集合
@@ -77,86 +63,10 @@ const DemandTable = (props: Props) => {
   useEffect(() => {
     dispatch(
       saveSort({
-        [orderKey]: order,
+        [order.key]: order.value,
       }),
     )
-  }, [orderKey, order])
-
-  useEffect(() => {
-    if (tapSort) {
-      const key = Object.keys(tapSort)
-      const value = Object.values(tapSort)
-
-      if (tapSort) {
-        setOrderKey(key[0])
-        setOrder(value[0])
-      }
-    }
-  }, [tapSort])
-
-  const getShowkey = () => {
-    setPlainOptions(projectInfo?.plainOptions || [])
-    setPlainOptions2(projectInfo?.plainOptions2 || [])
-    setPlainOptions3(projectInfo?.plainOptions3 || [])
-    setTitleList(projectInfo?.titleList || [])
-    setTitleList2(projectInfo?.titleList2 || [])
-    setTitleList3(projectInfo?.titleList3 || [])
-    setAllTitleList([
-      ...(projectInfo.titleList || []),
-      ...(projectInfo.titleList2 || []),
-      ...(projectInfo.titleList3 || []),
-    ])
-    dispatch(
-      saveTitles([
-        ...(projectInfo.titleList || []),
-        ...(projectInfo.titleList2 || []),
-        ...(projectInfo.titleList3 || []),
-      ]),
-    )
-  }
-
-  useEffect(() => {
-    getShowkey()
-  }, [projectInfo])
-
-  function getTitle(arr: any, arr1: any) {
-    const arr2: any = []
-    arr1.forEach((i: any) => {
-      arr2.push(i.value)
-    })
-
-    const myArr: any = []
-    arr.forEach((i: any) => {
-      if (arr2.includes(i)) {
-        myArr.push(i)
-      }
-    })
-
-    return myArr
-  }
-
-  useEffect(() => {
-    if (titles) {
-      setTitleList(getTitle(titles, plainOptions))
-      setTitleList2(getTitle(titles, plainOptions2))
-      setTitleList3(getTitle(titles, plainOptions3))
-
-      setAllTitleList(titles)
-    }
-  }, [titles])
-
-  const getCheckList = (
-    list: CheckboxValueType[],
-    list2: CheckboxValueType[],
-    list3: CheckboxValueType[],
-    all: CheckboxValueType[],
-  ) => {
-    setTitleList(list)
-    setTitleList2(list2)
-    setTitleList3(list3)
-    setAllTitleList(all)
-    dispatch(saveTitles(all))
-  }
+  }, [order])
 
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
   const onOperationCheckbox = (type: any, keys?: any) => {
@@ -215,8 +125,7 @@ const DemandTable = (props: Props) => {
   const updateOrderkey = (key: any, val: any) => {
     setSelectedRowKeys([])
     onOperationCheckbox('remove')
-    setOrderKey(key)
-    setOrder(val)
+    setOrder({ value: val, key })
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
@@ -255,8 +164,8 @@ const DemandTable = (props: Props) => {
 
   const columns = useDynamicColumns({
     projectId,
-    orderKey,
-    order,
+    orderKey: order.key,
+    order: order.value,
     updateOrderkey,
     onChangeStatus,
     onChangeState,
@@ -337,7 +246,7 @@ const DemandTable = (props: Props) => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = allTitleList
+    const arr = props.allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns?.length; j++) {
@@ -381,7 +290,13 @@ const DemandTable = (props: Props) => {
       arrList.push(Table.SELECTION_COLUMN as any)
     }
     return [...arrList, ...newList]
-  }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
+  }, [
+    props.titleList,
+    props.titleList2,
+    props.titleList3,
+    columns,
+    selectedRowKeys,
+  ])
 
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
@@ -420,7 +335,7 @@ const DemandTable = (props: Props) => {
   }
 
   return (
-    <Content>
+    <TableContent>
       <ResizeTable
         isSpinning={props.isSpinning}
         dataWrapNormalHeight="calc(100% - 64px)"
@@ -470,20 +385,7 @@ const DemandTable = (props: Props) => {
         total={props.data?.total}
         onChange={onChangePage}
       />
-
-      <OptionalFeld
-        allTitleList={allTitleList}
-        plainOptions={plainOptions.filter((i: any) => i.is_flaw !== 1)}
-        plainOptions2={plainOptions2}
-        plainOptions3={plainOptions3}
-        checkList={titleList}
-        checkList2={titleList2}
-        checkList3={titleList3}
-        isVisible={props.settingState}
-        onClose={() => props.onChangeSetting(false)}
-        getCheckList={getCheckList}
-      />
-    </Content>
+    </TableContent>
   )
 }
 

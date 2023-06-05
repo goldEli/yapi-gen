@@ -25,6 +25,7 @@ import moment from 'moment'
 import styled from '@emotion/styled'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
+import { store } from '@store/index'
 
 // 格式化日对象
 function getNowDate() {
@@ -55,13 +56,42 @@ function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 
-export function getParamsValueByKey(key: string) {
+export function getIdByUrl(key: string) {
   const url = new URL(window.location.href)
   const searchParams = url.searchParams
 
   const params = getParamsData(searchParams)
 
   return parseInt(params[key], 10)
+}
+
+export function getProjectIdByUrl() {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams)
+
+  return parseInt(params['id'], 10)
+}
+
+export function getProjectTypeByUrl() {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams)
+
+  return parseInt(params['projectType'], 10)
+}
+export function getProjectType() {
+  /**
+   * 2 冲刺 1 迭代
+   */
+  const type = getProjectIdByUrl()
+  if (type) {
+    return type as 1 | 2
+  }
+  const { projectType } = store.getState().project.projectInfo
+  return projectType as 1 | 2
 }
 
 // 需求分类树

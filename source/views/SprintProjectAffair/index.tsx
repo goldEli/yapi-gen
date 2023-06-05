@@ -252,16 +252,8 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     myTreeComponent?.current?.init()
   }
 
-  const onChangePageNavigation = (item: any) => {
-    setPageObj(item)
-  }
-
   const onChangeRow = (topId?: any) => {
     getList(isGrid, searchItems, pageObj, order, false, topId)
-  }
-
-  const onChangeOrder = (item: any) => {
-    setOrder(item)
   }
 
   const keyValue = {
@@ -398,7 +390,6 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                 isGrid={isGrid}
                 onChangeGrid={val => onChangeGrid(val)}
                 onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
-                onChangeVisible={() => setIsVisible(!isVisible)}
                 onRefresh={refresh}
                 onSearch={onSearch}
                 settingState={isSettingState}
@@ -420,9 +411,9 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                   <SprintTable
                     data={dataList}
                     onDelete={onDelete}
-                    onChangePageNavigation={onChangePageNavigation}
+                    onChangePageNavigation={setPageObj}
                     onChangeRow={onChangeRow}
-                    onChangeOrder={onChangeOrder}
+                    onChangeOrder={setOrder}
                     isSpinning={isSpinning}
                     onUpdate={onUpdate}
                     titleList={titleList}
@@ -435,13 +426,13 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                   <SprintTree
                     data={dataList}
                     onDelete={onDelete}
-                    onChangePageNavigation={onChangePageNavigation}
+                    onChangePageNavigation={setPageObj}
                     onChangeRow={onChangeRow}
                     titleList={titleList}
                     titleList2={titleList2}
                     titleList3={titleList3}
                     allTitleList={allTitleList}
-                    onChangeOrder={onChangeOrder}
+                    onChangeOrder={setOrder}
                     isSpinning={isSpinning}
                     onUpdate={onUpdate}
                     onUpdateTopId={setTopParentId}

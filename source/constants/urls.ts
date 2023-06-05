@@ -46,6 +46,14 @@ const urls = {
   deleteInfoDemand: '/b/story/update_operate/del',
   addInfoDemand: '/b/story/update_operate/add',
   updatePriority: '/b/story/update_priority',
+  // 获取需求关联工作项
+  getStoryRelationStories: '/b/story/relationStories',
+  // 添加需求关联工作项
+  addStoryRelation: '/b/story/addRelation',
+  // 关联事务 - 下拉查询
+  getStorySelectRelationSearch: '/b/story/selectRelationSearch',
+  // 关联事务 - 最近事务
+  getStorySelectRelationRecent: '/b/story/selectRelationRecent',
   getLoginDetail: '/b/userinfo',
   loginOut: '/b/logout',
   getUserDetail: '/b/userdetail',
@@ -424,13 +432,22 @@ const urls = {
   getFlawRelationStories: '/b/flaw/relationStories',
   // 添加关联缺陷
   addFlawRelation: '/b/flaw/save/addRelation',
+  // 关联事务 - 下拉查询
+  getFlawSelectRelationSearch: '/b/flaw/selectRelationSearch',
+  // 关联事务 - 最近事务
+  getFlawSelectRelationRecent: '/b/flaw/selectRelationRecent',
 
   // 获取需求流转配置
   getFlowConfig: '/b/story/flowConfig',
+  // 获取需求流转配置(冲刺)
+  getFlowConfigForSprint: '/b/transaction/flowConfig',
 
   getParentList: function (key: string) {
     return `/b/${key}/getlist`
   },
+
+  // 复制视图
+  copyView: '/b/story/views/copy',
 }
 export default urls
 

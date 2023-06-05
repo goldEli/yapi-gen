@@ -35,19 +35,6 @@ const StickyWrap = styled.div({
   background: 'white',
 })
 
-const LiWrap = styled.div({
-  cursor: 'pointer',
-  padding: '0 16px',
-  width: '100%',
-  height: 32,
-  display: 'flex',
-  alignItems: 'center',
-  background: 'var(--neutral-white-d3)',
-  '&: hover': {
-    background: 'var(--hover-d3)',
-  },
-})
-
 const IconWrap = styled(IconFont)({
   fontSize: 20,
   cursor: 'pointer',
@@ -107,7 +94,6 @@ const MoreItem = styled.div({
 interface Props {
   isGrid: any
   onChangeGrid(val: any): void
-  onChangeVisible?(e?: any): void
   onSearch(params: any): void
   onRefresh(): void
   settingState: boolean

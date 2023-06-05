@@ -16,7 +16,7 @@ import {
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
-import { getParamsValueByKey } from '@/tools'
+import { getProjectIdByUrl } from '@/tools'
 import i18n from 'i18next'
 import { onTapSearchChoose, saveValue } from '@store/view'
 import { generatorFilterParams } from './utils'
@@ -26,6 +26,15 @@ import { produce } from 'immer'
 import { ViewItem } from '@/views/ProjectSetting/components/KanBanSetting/SelectOptions'
 
 const name = 'kanBan'
+
+export const copyView =
+  (params: API.Kanban.CopyView.Params) => async (dispatch: AppDispatch) => {
+    if (!params.id) {
+      return null
+    }
+    const res = await services.kanban.copyView(params)
+    return res.data
+  }
 
 // 触发全屏模式
 export const onFullScreenMode = () => async (dispatch: AppDispatch) => {
@@ -42,7 +51,7 @@ export const deleteStory =
   async (dispatch: AppDispatch) => {
     await services.kanban.deleteStory({
       ...params,
-      project_id: getParamsValueByKey('id'),
+      project_id: getProjectIdByUrl(),
     })
     dispatch(getKanbanByGroup())
   }
@@ -97,7 +106,7 @@ export const saveModifyStatusModalInfo =
     const res = await services.affairs.updateAffairsStatus({
       ...params,
       nId: modifyStatusModalInfo.storyId,
-      projectId: getParamsValueByKey('id'),
+      projectId: getProjectIdByUrl(),
     })
 
     dispatch(getKanbanByGroup())
@@ -135,7 +144,7 @@ export const modifyStatus =
       getFlowConfig({
         story_id: options.storyId,
         // 项目id
-        project_id: getParamsValueByKey('id'),
+        project_id: getProjectIdByUrl(),
         // 目标状态id
         category_status_to_id: target.flow_status_id,
       }),
@@ -165,7 +174,7 @@ export const modifyStatus =
           // 流转到id是否是结束状态
           is_start: target.is_start,
           // 项目id
-          projectId: getParamsValueByKey('id'),
+          projectId: getProjectIdByUrl(),
         },
       }),
     )
@@ -263,7 +272,7 @@ export const updateStoryPriority =
   (params: Pick<API.Kanban.UpdateStoryPriority.Params, 'id' | 'priority'>) =>
   async (dispatch: AppDispatch) => {
     const res = await services.kanban.updateStoryPriority({
-      project_id: getParamsValueByKey('id'),
+      project_id: getProjectIdByUrl(),
       ...params,
     })
   }
@@ -286,7 +295,7 @@ export const sortStoryServer =
     const params: API.Kanban.ModifyKanbanIssueSort.Params = {
       kanban_column_id: options.kanban_column_id,
       story_ids: ids,
-      project_id: getParamsValueByKey('id'),
+      project_id: getProjectIdByUrl(),
     }
     await services.kanban.modifyKanbanIssueSort(params)
     dispatch(getKanbanByGroup())
@@ -323,7 +332,7 @@ export const closeUserGroupingModel = () => async (dispatch: AppDispatch) => {
 export const saveUserGroupingModel =
   (params: Omit<API.Kanban.CreateKanbanPeopleGrouping.Params, 'project_id'>) =>
   async (dispatch: AppDispatch) => {
-    const projectId = getParamsValueByKey('id')
+    const projectId = getProjectIdByUrl()
     const { userGroupingModelInfo } = store.getState().kanBan
     const p = {
       project_id: projectId,
@@ -352,7 +361,7 @@ export const modifyKanbanPeopleGrouping =
     >,
   ) =>
   async (dispatch: AppDispatch) => {
-    const projectId = getParamsValueByKey('id')
+    const projectId = getProjectIdByUrl()
     const res = await services.kanban.modifyKanbanPeopleGrouping({
       project_id: projectId,
       name: params.name,
@@ -404,7 +413,7 @@ export const getKanbanByGroup = createAsyncThunk(
             keyword: inputKey,
           }
         : { ...valueKey, keyword: inputKey },
-      project_id: getParamsValueByKey('id'),
+      project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
     }
     if (type === 'none') {
@@ -457,7 +466,7 @@ export const onChangeSortByRowAndStatusOptions =
     dispatch(
       getKanbanConfig({
         id: parseInt(key, 10),
-        project_id: getParamsValueByKey('id'),
+        project_id: getProjectIdByUrl(),
       }),
     )
     dispatch(getKanbanByGroup())
@@ -470,14 +479,14 @@ export const delView =
       msg: i18n.t('common.deleteSuccess') as string,
       type: 'success',
     })
-    dispatch(getStoryViewList())
+    dispatch(getStoryViewList(null))
   }
 
 // 创建视图
 export const createView =
   (params: Omit<API.Kanban.CreateView.Params, 'use_type'>) =>
   async (dispatch: AppDispatch) => {
-    const project_id = getParamsValueByKey('id')
+    const project_id = getProjectIdByUrl()
     const res = await services.kanban.createView({
       ...params,
       config: store.getState().view,
@@ -485,7 +494,7 @@ export const createView =
       use_type: 2,
     })
     getMessage({ msg: i18n.t('common.saveSuccess') as string, type: 'success' })
-    await dispatch(getStoryViewList())
+    await dispatch(getStoryViewList(null))
     dispatch(onChangeSortByView(res.data.id))
   }
 
@@ -493,7 +502,7 @@ export const updateView =
   (params: API.Kanban.UpdateView.Params) => async (dispatch: AppDispatch) => {
     await services.kanban.updateView(params)
     getMessage({ msg: i18n.t('common.editSuccess') as string, type: 'success' })
-    dispatch(getStoryViewList())
+    dispatch(getStoryViewList(null))
   }
 
 export const onFilter = () => async (dispatch: AppDispatch) => {
@@ -523,7 +532,7 @@ export const getKanbanConfigList = createAsyncThunk(
       dispatch(
         getKanbanConfig({
           id: parseInt(checked.key, 10),
-          project_id: getParamsValueByKey('id'),
+          project_id: getProjectIdByUrl(),
         }),
       )
     }
@@ -553,8 +562,9 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 // 视图列表
 export const getStoryViewList = createAsyncThunk(
   `${name}/getStoryViewList`,
-  async (_, { dispatch }) => {
-    const project_id = getParamsValueByKey('id')
+  // 指定当前视图
+  async (viewId: Model.KanBan.ViewItem['id'] | null, { dispatch }) => {
+    const project_id = getProjectIdByUrl()
     const res = await services.kanban.getStoryViewList({ project_id })
     const { data } = res
 
@@ -567,25 +577,18 @@ export const getStoryViewList = createAsyncThunk(
         isDefault: item.type === 2,
       }
     })
-    const checked = sortByView?.find(
+    // 用户已经选中过，需要恢复
+    let checked = sortByView?.find(
       item => item.check && ret.some(i => i.id === item.id),
     )
     if (checked) {
-      const params = generatorFilterParams(checked?.config)
-      dispatch(onTapSearchChoose(params))
-      return ret.map(item => {
-        if (item.id === checked?.id) {
-          return {
-            ...item,
-            check: true,
-          }
-        }
-        return item
-      })
+      checked.check = true
+    } else {
+      // 如果第一次加载 默认第一个
+      ret[0].check = true
+      checked = ret[0]
     }
-    ret[0].check = true
-    const config = ret[0]?.config ?? {}
-    const params = generatorFilterParams(config)
+    const params = generatorFilterParams(checked?.config)
     dispatch(onTapSearchChoose(params))
     return ret
   },
@@ -597,7 +600,7 @@ export const onSaveAsViewModel =
     dispatch(
       createView({
         name: data.value ?? '',
-        project_id: getParamsValueByKey('id'),
+        project_id: getProjectIdByUrl(),
       }),
     )
     console.log('onSaveAsViewModel', data)

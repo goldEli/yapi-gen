@@ -1,11 +1,5 @@
-// 需求详情-变更记录
-
 /* eslint-disable no-undefined */
-/* eslint-disable no-else-return */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/no-danger */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable max-len */
+// 需求详情-变更记录
 import { Space } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
@@ -19,11 +13,12 @@ import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { getDemandChangeLog } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
 import { setIsUpdateChangeLog } from '@store/project'
+import { ComputedWrap } from '../style'
+import { getDemandChangeLog } from '@/services/demand'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -65,12 +60,15 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-const ChangeRecord = () => {
+interface Props {
+  activeKey: string
+}
+
+const ChangeRecord = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-  const { demandId } = paramsData
+  const { demandId, id } = paramsData
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -87,7 +85,7 @@ const ChangeRecord = () => {
     setIsSpinning(true)
     const result = await getDemandChangeLog({
       demandId,
-      projectId,
+      projectId: id,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
       order: orderVal.value,
@@ -100,8 +98,10 @@ const ChangeRecord = () => {
   }
 
   useEffect(() => {
-    getList(pageObj, order)
-  }, [])
+    if (props.activeKey === '4') {
+      getList(pageObj, order)
+    }
+  }, [props.activeKey])
 
   useEffect(() => {
     if (isRefresh) {
@@ -383,7 +383,7 @@ const ChangeRecord = () => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 74px)' }}>
+    <ComputedWrap>
       <CommonModal
         isVisible={isVisible}
         title={t('project.changeInfo')}
@@ -408,11 +408,6 @@ const ChangeRecord = () => {
                 getSuggestions={() => []}
                 readonly
               />
-              {/* <div
-                dangerouslySetInnerHTML={{
-                  __html: checkDetail?.beforeField?.info,
-                }}
-              /> */}
             </ContentWrap>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -423,18 +418,13 @@ const ChangeRecord = () => {
                 getSuggestions={() => []}
                 readonly
               />
-              {/* <div
-                dangerouslySetInnerHTML={{
-                  __html: checkDetail?.afterField?.info,
-                }}
-              /> */}
             </ContentWrap>
           </div>
         </SpaceWrap>
       </CommonModal>
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 40px)"
+        dataWrapNormalHeight="calc(100% - 60px)"
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}
@@ -444,8 +434,9 @@ const ChangeRecord = () => {
         pageSize={pageObj?.size}
         total={dataList?.total}
         onChange={onChangePage}
+        hasPadding
       />
-    </div>
+    </ComputedWrap>
   )
 }
 

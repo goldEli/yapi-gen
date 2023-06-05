@@ -70,18 +70,22 @@ const SwiperCardMove = (props: any) => {
             show={swiperActive === 'all'}
           />
         </SwiperSlide>
-        {data.map((item: any) => (
-          <SwiperSlide key={item.id}>
-            <SwiperCard
-              name={item.name}
-              avtar={item.cover}
-              tap={() => {
-                onClickProject(item)
-              }}
-              show={swiperActive === item.id}
-            />
-          </SwiperSlide>
-        ))}
+        {data.map((item: any) => {
+          return (
+            <SwiperSlide key={item.id}>
+              <SwiperCard
+                project_type={item.project_type}
+                permission_type={item.permission_type}
+                name={item.name}
+                avtar={item.cover}
+                tap={() => {
+                  onClickProject(item)
+                }}
+                show={swiperActive === item.id}
+              />
+            </SwiperSlide>
+          )
+        })}
       </Swiper>
     </SwiperWrap>
   )

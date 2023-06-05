@@ -100,7 +100,36 @@ export const SwiperCard = (props: {
   name: string
   avtar: string
   all?: boolean
+  project_type?: any
+  permission_type?: any
 }) => {
+  console.log(props)
+  const changeNames1 = () => {
+    let str: string
+    switch (props.project_type) {
+      case 1:
+        str = '迭代'
+        break
+
+      default:
+        str = '冲刺'
+        break
+    }
+    return str
+  }
+  const changeNames2 = () => {
+    let str: string
+    switch (props.project_type) {
+      case 1:
+        str = '企业项目'
+        break
+
+      default:
+        str = t('demandSettingSide.teamProject')
+        break
+    }
+    return str
+  }
   return (
     <Warp
       show={props.show}
@@ -128,7 +157,7 @@ export const SwiperCard = (props: {
               whiteSpace: 'nowrap',
             }}
           >
-            {t('demandSettingSide.teamProject') as string}
+            {changeNames1()} - {changeNames2()}
           </div>
         )}
       </TextWarp>

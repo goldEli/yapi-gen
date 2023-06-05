@@ -175,7 +175,7 @@ const DemandStatusBox = (props: any) => {
         )}
         {rows && !isUpdateStatus && !demandInfo?.isExamine && (
           <ShapeContentForDetail
-            active={demandInfo.status.status}
+            active={demandInfo?.status?.status}
             sid={props.sid}
             fromId={demandInfo?.status?.id}
             tap={updateStatus}
