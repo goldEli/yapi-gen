@@ -6,6 +6,7 @@ import {
   getStoryViewList,
 } from './kanBan.thunk'
 import { Options } from '@/components/SelectOptionsNormal'
+import i18next from 'i18next'
 
 type SliceState = {
   // 全屏状态
@@ -60,22 +61,13 @@ const initialState: SliceState = {
     groupName: '',
   },
   sortByGroupOptions: [
-    { key: 'none', value: '无', check: false },
-    { key: 'users', value: '按人员', check: false },
-    { key: 'category', value: '按类别', check: false },
-    { key: 'priority', value: '按优先级', check: true },
+    { key: 'none', value: i18next.t('none'), check: false },
+    { key: 'users', value: i18next.t('by_personnel'), check: false },
+    { key: 'category', value: i18next.t('by_category'), check: false },
+    { key: 'priority', value: i18next.t('by_priority'), check: true },
   ],
-  sortByRowAndStatusOptions: [
-    // { key: 'statue', value: '按状态', check: true },
-    // { key: 'name', value: '工作流名称', check: false },
-  ],
-  sortByView: [
-    // { key: 'default', value: '看板', isDefault: true, check: true },
-    // { key: '1', value: '团队看板', check: false },
-    // { key: '2', value: '日常跟进', check: false },
-    // { key: '3', value: '重点关注', check: false },
-    // { key: '4', value: '进度跟踪', check: false },
-  ],
+  sortByRowAndStatusOptions: [],
+  sortByView: [],
   guideVisible: false,
   saveAsViewModelInfo: {
     visible: false,

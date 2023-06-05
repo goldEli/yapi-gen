@@ -258,7 +258,6 @@ const TableQuickEdit = (props: Props) => {
 
   //  迭代、处理人、抄送人、需求分类、标签--- 项目信息获取
   const getDefaultSelectValuesInfo = () => {
-    console.log('项目信息回去', props)
     const resultValue: any = {
       attr: props?.type,
       value: [],

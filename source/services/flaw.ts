@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable no-undefined */
 import { filterTreeData, transData } from '@/tools'
 import * as http from '@/tools/http'
@@ -218,6 +219,77 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
   }
 }
 
+// 添加缺陷
+export const addFlaw: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info || ''
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText
+    ? params?.info
+    : element.innerHTML
+
+  await http.post<any>('addFlaw', {
+    project_id: Number(params.projectId),
+    name: params.name,
+    info,
+    expected_start_at: params?.expected_start_at,
+    expected_end_at: params?.expected_end_at,
+    iterate_id: params?.iterate_name || 0,
+    parent_id: params?.parent_id || 0,
+    priority: params?.priority?.id || 0,
+    users: params?.users_name,
+    copysend: params?.users_copysend_name,
+    tag: params?.tagIds,
+    attachment: params?.attachments,
+    custom_field: params?.customField,
+    category_id: params?.category_id,
+    class_id: params?.class || 0,
+    schedule: params?.schedule,
+    status: params?.status,
+  })
+}
+
+// 更新缺陷
+export const updateFlaw: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info || ''
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText.trim() === ''
+    ? params?.info
+    : element.innerHTML
+  await http.put<any>('updateFlaw', {
+    project_id: params.projectId,
+    name: params.name,
+    info,
+    expected_start_at: params.expected_start_at,
+    expected_end_at: params.expected_end_at,
+    iterate_id:
+      JSON.stringify(params.iterateId) !== '[]' && params.iterate_name
+        ? params.iterate_name
+        : 0,
+    parent_id:
+      JSON.stringify(params.parentId) !== '[]' && params.parent_id
+        ? params.parent_id
+        : 0,
+    priority:
+      JSON.stringify(params.priority) !== '[]' && params.priority
+        ? params.priority?.id
+        : 0,
+    users: params?.users_name,
+    copysend: params?.users_copysend_name,
+    tag: params.tagIds,
+    attachment: params.attachments,
+    id: params.id,
+    custom_field: params?.customField,
+    class_id: params?.class || 0,
+    schedule: params?.schedule,
+  })
+}
+
 // 获取缺陷评论列表
 export const getFlawCommentList = async (
   params: API.Flaw.GetFlawCommentList.Params,
@@ -282,6 +354,13 @@ export const updateFlawComment = async (
     a_user_ids: params.ids,
     id: params.id,
   })
+}
+
+// 删除评论下的附件
+export const deleteFlawCommentAttach = async (
+  params: API.Flaw.DeleteFlawCommentAttach.Params,
+) => {
+  await http.delete('deleteFlawCommentAttach', params)
 }
 
 // 缺陷变更记录
@@ -918,4 +997,63 @@ export const getShapeFlawRight = async (params: any) => {
     originalStatusUserIds: res.data.originalStatusUserIds,
   }
   return obj
+}
+
+// 获取缺陷关联工作项列表
+export const getFlawRelationStories = async (
+  params: API.Flaw.GetFlawRelationStories.Params,
+) => {
+  const response = await http.get<any, API.Flaw.GetFlawRelationStories.Result>(
+    'getFlawRelationStories',
+    {
+      pagesize: params.pageSize,
+      page: params.page,
+      orderkey: params.orderKey,
+      order: params.order,
+      project_id: params.projectId,
+      id: params.id,
+    },
+  )
+
+  return response.data
+}
+
+//  添加关联缺陷
+export const addFlawRelation = async (params: API.Flaw.FlawRelation.Params) => {
+  await http.post<any>('addFlawRelation', {
+    project_id: params.projectId,
+    id: params.id,
+    relation_id: params.relationId,
+    type: params.type,
+  })
+}
+
+// 搜索查询下拉关联事务
+export const getFlawSelectRelationSearch = async (
+  params: API.Flaw.GetFlawRelationList.Params,
+) => {
+  const response = await http.get<any, API.Flaw.GetFlawRelationList.Result>(
+    'getFlawSelectRelationSearch',
+    {
+      project_id: params.projectId,
+      id: params.id,
+      keywords: params.searchValue,
+    },
+  )
+
+  return response.data
+}
+
+// 最近子事务查询
+export const getFlawSelectRelationRecent = async (
+  params: API.Flaw.GetFlawRelationList.Params,
+) => {
+  const response = await http.get<any, API.Flaw.GetFlawRelationList.Result>(
+    'getFlawSelectRelationRecent',
+    {
+      project_id: params.projectId,
+      id: params.id,
+    },
+  )
+  return response.data
 }

@@ -159,4 +159,10 @@ declare namespace Model.Sprint {
     story_count: number
     story_finish_count: number
   }
+  interface RecentCreateDataItem {
+    content: string
+    id: number
+    key: number
+    created_at: string
+  }
 }

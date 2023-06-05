@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-handler-names */
+// eslint-disable typescript-eslint/no-extra-semi
 import { DatePicker, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import View from './components/View'
@@ -8,7 +9,6 @@ import SelectMain from './components/SelectMain'
 import { Left } from '../components/style'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from '../components/Select'
-import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { useSelector } from '@store/index'
 import {
   setSave,
@@ -18,11 +18,10 @@ import {
 import { useDispatch } from 'react-redux'
 import ViewDialog from './components/ViewDialog'
 import { getProjectList } from '@/services/project'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
-import dayjs from 'dayjs'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import { getDate } from '../components/Date'
+import { recentCreateData } from '@/services/efficiency'
 interface ItemProps {
   name: string
   id: number
@@ -36,10 +35,10 @@ interface Props {
   onChange: (title: string, value: number) => void
   defalutConfig: Models.Efficiency.ConfigItem | undefined
   onEdit: () => void
+  value: number
+  projectId: number
 }
 const Iteration = (props: Props) => {
-  dayjs.extend(customParseFormat)
-  // sprint  iteration all
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
   const tabs1 = [
     {
@@ -71,23 +70,55 @@ const Iteration = (props: Props) => {
   const [projectListAll, setProjectListAll] = useState([])
   const [projectList, setProjectList] = useState([])
   const [timeVal, setTimeVal] = useState<any>()
+  const [iterateData, setIterateData] =
+    useState<API.Sprint.RecentCreateData.Result>([])
   // 项目的id
   const [projectIds, setProjectIds] = useState<number[]>()
+  const [iterateIds, setIterateIds] = useState<number>(0)
   const dispatch = useDispatch()
   const { save, headerParmas } = useSelector(store => store.performanceInsight)
+  // tads切换
   const getTabsActive = (index: number) => {
     setTabsActive(index)
+    setTimekey(index)
   }
   useEffect(() => {
+    // 展示的tabs不同
+    props.homeType === 'iteration' ||
+      (props.homeType === 'sprint' && getIterateData())
+
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
     props.homeType === 'all' && getProjectData()
   }, [])
+  // 获取近期的冲刺项目
+  const getIterateData = async () => {
+    const res = await recentCreateData({
+      project_id: 1,
+      resource_type: props.homeType === 'iteration' ? 6 : 9,
+    })
+    setIterateData(res)
+  }
   useEffect(() => {
-    getTime(props.defalutConfig?.period_time || '')
+    // 回显的项目id
     setProjectIds(props.defalutConfig?.project_id)
+    setTabsActive(
+      props.defalutConfig?.period_time !== '' ||
+        props.defalutConfig?.start_time !== ''
+        ? 0
+        : 1,
+    )
+    getTime(props.defalutConfig?.period_time || '')
+    props.defalutConfig &&
+      props.defalutConfig?.period_time == '' &&
+      props.defalutConfig?.start_time == '' &&
+      setIterateIds(
+        props.defalutConfig?.iterate_ids?.length == 0
+          ? 0
+          : props.defalutConfig.iterate_ids[0],
+      )
   }, [props.defalutConfig])
-  console.log(props.defalutConfig, 'props.defalutConfig')
+  // 获取时间回显
   const getTime = (type: string) => {
     let date = getDate(type)
     setTimekey(date)
@@ -101,6 +132,7 @@ const Iteration = (props: Props) => {
       setHeaderParmas({
         users: [],
         projectIds,
+        iterate_ids: headerParmas?.iterate_ids,
         time: {
           type: date,
           time:
@@ -114,6 +146,10 @@ const Iteration = (props: Props) => {
         view: headerParmas.view,
       }),
     )
+    props.defalutConfig?.start_time === '' &&
+      props.defalutConfig?.end_time === '' &&
+      props.defalutConfig?.period_time === '' &&
+      setTimekey(1)
   }
   // 获取项目列表
   const getProjectData = async () => {
@@ -163,6 +199,7 @@ const Iteration = (props: Props) => {
         projectIds,
         time: headerParmas.time,
         view: headerParmas.view,
+        iterate_ids: headerParmas.iterate_ids,
       }),
     )
   }
@@ -177,6 +214,7 @@ const Iteration = (props: Props) => {
     dispatch(
       setHeaderParmas({
         users: person,
+        iterate_ids: headerParmas.iterate_ids,
         projectIds: headerParmas.projectIds,
         time: {
           type: 0,
@@ -186,12 +224,25 @@ const Iteration = (props: Props) => {
       }),
     )
   }
-
+  // 冲刺选择的
+  const oniterateChange = (val: number) => {
+    dispatch(
+      setHeaderParmas({
+        users: person,
+        iterate_ids: [val],
+        projectIds: headerParmas.projectIds,
+        time: headerParmas.time,
+        view: headerParmas.view,
+      }),
+    )
+    setIterateIds(val)
+  }
   return (
     <HeaderRow>
       <Space size={16}>
         <View
           onChange={props.onChange}
+          value={props.value}
           viewDataList={props.viewDataList}
           onCreateView={props.onCreateView}
           onDelView={props.onDelView}
@@ -219,6 +270,7 @@ const Iteration = (props: Props) => {
                     projectIds: value,
                     view: headerParmas.view,
                     time: headerParmas.time,
+                    iterate_ids: headerParmas.iterate_ids,
                   }),
                 )
             }}
@@ -266,6 +318,7 @@ const Iteration = (props: Props) => {
         )}
         {tabsActive === 0 ? (
           <SelectMain
+            allowClear={false}
             onChange={e => {
               setTimekey(e), dispatch(setSave(true))
               dispatch(
@@ -277,6 +330,7 @@ const Iteration = (props: Props) => {
                     time: e,
                   },
                   view: headerParmas.view,
+                  iterate_ids: headerParmas.iterate_ids,
                 }),
               )
             }}
@@ -310,7 +364,12 @@ const Iteration = (props: Props) => {
             ]}
           />
         ) : (
-          <Sprint />
+          <Sprint
+            homeType={props.homeType}
+            data={iterateData}
+            value={iterateIds}
+            onChange={oniterateChange}
+          />
         )}
         {timekey === 0 && (
           <RangePicker
@@ -320,11 +379,6 @@ const Iteration = (props: Props) => {
           />
         )}
       </Space>
-      {/* <AddMemberCommonModal
-        isVisible={isVisible}
-        onClose={() => setIsVisible(false)}
-        onConfirm={data => onConfirm(data)}
-      /> */}
       <NewAddUserModalForTandD
         title={'添加成员'}
         state={2}
@@ -337,7 +391,7 @@ const Iteration = (props: Props) => {
         name={''}
         titleType={{ title: '另存为视图', type: 'add' }}
         onConfirm={val => {
-          console.log(123, val)
+          props.onCreateView(val, 'add')
         }}
         onClose={() => setIsVisibleView(false)}
         isVisible={isVisibleView}

@@ -13,11 +13,11 @@ import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { setIsUpdateChangeLog } from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
 import { getFlawChangeLog } from '@/services/flaw'
+import { setIsUpdateChangeLog } from '@store/project'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -78,7 +78,7 @@ const ChangeRecord = (props: Props) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  // const { isUpdateChangeLog } = useSelector(store => store.demand)
+  const { isUpdateChangeLog } = useSelector(store => store.project)
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
@@ -108,11 +108,11 @@ const ChangeRecord = (props: Props) => {
     }
   }, [isRefresh])
 
-  // useEffect(() => {
-  //   if (isUpdateChangeLog) {
-  //     getList(pageObj, order)
-  //   }
-  // }, [isUpdateChangeLog])
+  useEffect(() => {
+    if (isUpdateChangeLog) {
+      getList(pageObj, order)
+    }
+  }, [isUpdateChangeLog])
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
@@ -423,7 +423,7 @@ const ChangeRecord = (props: Props) => {
       </CommonModal>
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 40px)"
+        dataWrapNormalHeight="calc(100% - 64px)"
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}
@@ -433,6 +433,7 @@ const ChangeRecord = (props: Props) => {
         pageSize={pageObj?.size}
         total={dataList?.total}
         onChange={onChangePage}
+        hasPadding
       />
     </div>
   )

@@ -50,7 +50,7 @@ const LimitLabel = (props: { label: string; width: number }) => {
   )
 }
 
-const BasicDemand = (props: Props) => {
+const BasicFlaw = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   // 折叠字段
@@ -242,7 +242,6 @@ const BasicDemand = (props: Props) => {
         (i: any) => i.content === item.content,
       )[0]
       const defaultValues = getDefaultValue(item.content)
-      console.log(defaultValues, '=1212', filterContent)
       nodeComponent = (
         <TableQuickEdit
           item={{
@@ -425,7 +424,7 @@ const BasicDemand = (props: Props) => {
       style={{
         width: '100%',
         paddingLeft: props.hasPadding ? '24px' : 0,
-        height: 'calc(100% - 64px)',
+        height: 'calc(100% - 112px)',
         overflowY: 'auto',
         overflowX: 'hidden',
       }}
@@ -472,4 +471,4 @@ const BasicDemand = (props: Props) => {
   )
 }
 
-export default BasicDemand
+export default BasicFlaw

@@ -26,7 +26,7 @@ import DropDownMenu from '@/components/DropDownMenu'
 import InputSearch from '@/components/InputSearch'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfoValues } from '@store/project'
+import { setIsUpdateAddWorkItem, setProjectInfoValues } from '@store/project'
 import {
   deleteIterate,
   getIterateInfo,
@@ -42,7 +42,6 @@ import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
 import CommonButton from '@/components/CommonButton'
 import ScreenMinHover from '@/components/ScreenMinHover'
-import { setIsUpdateDemand } from '@store/demand'
 import { getMessage } from '@/components/Message'
 
 const Wrap = styled.div`
@@ -421,7 +420,7 @@ const Iteration = () => {
     }
 
     const refresh = () => {
-      dispatch(setIsUpdateDemand(true))
+      dispatch(setIsUpdateAddWorkItem(true))
     }
 
     return (

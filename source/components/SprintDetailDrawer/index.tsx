@@ -35,6 +35,7 @@ import {
   addAffairsComment,
   deleteAffairsComment,
   getAffairsInfo,
+  updateAffairsComment,
   updateAffairsTableParams,
 } from '@/services/affairs'
 import { getProjectInfo } from '@/services/project'
@@ -91,7 +92,9 @@ const SprintDetailDrawer = () => {
   const { affairsDetailDrawer, affairsCommentList } = useSelector(
     store => store.affairs,
   )
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
 
   const modeList = [
     { name: '详细信息', key: 'detailInfo', content: '' },
@@ -408,6 +411,26 @@ const SprintDetailDrawer = () => {
     commentDom.current.cancel()
   }
 
+  // 编辑评论
+  const onEditComment = async (value: string, commentId: number) => {
+    await updateAffairsComment({
+      projectId: projectInfo.id,
+      id: commentId,
+      storyId: drawerInfo.id,
+      content: value,
+      ids: getIdsForAt(value),
+    })
+    getMessage({ type: 'success', msg: '编辑成功' })
+    dispatch(
+      getAffairsCommentList({
+        projectId: projectInfo.id,
+        sprintId: drawerInfo.id,
+        page: 1,
+        pageSize: 9999,
+      }),
+    )
+  }
+
   // 更多下拉
   const items: MenuProps['items'] = [
     {
@@ -479,15 +502,15 @@ const SprintDetailDrawer = () => {
     }
   }, [affairsDetailDrawer])
 
-  // useEffect(() => {
-  //   if (isUpdateDemand) {
-  //     setCurrentIndex(0)
-  //     setDemandIds([])
-  //     if (isDemandDetailDrawerVisible) {
-  //       getDemandDetail()
-  //     }
-  //   }
-  // }, [isUpdateDemand])
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      setCurrentIndex(0)
+      setDemandIds([])
+      if (affairsDetailDrawer.visible) {
+        getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
+      }
+    }
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)
@@ -613,24 +636,6 @@ const SprintDetailDrawer = () => {
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
-              {/* <ParentBox size={8}>
-                {drawerInfo.level_tree?.map((i: any, index: number) => (
-                  <DrawerHeader key={i.prefix_key}>
-                    <img src={i.category_attachment} alt="" />
-                    <div>
-                      {i.project_prefix}-{i.prefix_key}
-                    </div>
-                    <span
-                      hidden={
-                        drawerInfo.level_tree?.length <= 1 ||
-                        index === drawerInfo.level_tree?.length - 1
-                      }
-                    >
-                      /
-                    </span>
-                  </DrawerHeader>
-                ))}
-              </ParentBox> */}
               <LongStroyBread longStroy={drawerInfo} layer></LongStroyBread>
               <DemandName style={{ marginTop: 16 }}>
                 <span
@@ -694,6 +699,7 @@ const SprintDetailDrawer = () => {
                       <CommonComment
                         data={affairsCommentList}
                         onDeleteConfirm={onDeleteCommentConfirm}
+                        onEditComment={onEditComment}
                       />
                     )}
                   </CollapseItemContent>

@@ -9,9 +9,8 @@ import CommonIconFont from '@/components/CommonIconFont'
 import Select from './Select'
 import CommonButton from '@/components/CommonButton'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from '@store/index'
 import { getMonthBefor, getDays } from './Date'
-import { defaults } from 'lodash'
+import { encryptPhp } from '@/tools/cryptoPhp'
 interface HaderProps {
   type: string
   projectDataList: Array<{
@@ -20,14 +19,16 @@ interface HaderProps {
   }>
   headerParmas: Models.Efficiency.HeaderParmas
   onSearchData: (value: number[]) => void
+  onGetExportApi: (value: number[]) => void
+  projectId: number
+  homeType: string
 }
 const HeaderAll = (props: HaderProps) => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
   const [projectList, setProjectList] = useState<any>()
-  const [options, setOptions] = useState<number[]>()
+  const [options, setOptions] = useState<number[]>([])
   const [time, setTime] = useState<{ startTime: string; endTime: string }>()
   useEffect(() => {
     switch (props.headerParmas.time.type) {
@@ -62,12 +63,25 @@ const HeaderAll = (props: HaderProps) => {
         )
       : setProjectList(props.projectDataList)
   }, [])
+  const onBack = () => {
+    if (props.homeType === 'all') {
+      navigate(`/Performance`)
+    } else {
+      const params = encryptPhp(
+        JSON.stringify({
+          projectId: props.projectId,
+          type: props.type,
+        }),
+      )
+      navigate(`/Performance?data=${params}`)
+    }
+  }
   return (
     <>
       <HeaderRowBox>
         <Back onClick={() => 123}>
           <CommonIconFont type="left-md" size={16} />
-          <span className="text" onClick={() => navigate(-1)}>
+          <span className="text" onClick={() => onBack()}>
             返回
           </span>
         </Back>
@@ -93,7 +107,7 @@ const HeaderAll = (props: HaderProps) => {
             {props.headerParmas.users?.length ? (
               <span>已选 {props.headerParmas.users?.length}人</span>
             ) : (
-              <span>已选 0</span>
+              <span>已选 全员</span>
             )}
           </PersonText>
           <Line />
@@ -132,19 +146,9 @@ const HeaderAll = (props: HaderProps) => {
         isVisible={isOpen}
         onClose={() => setIsOpen(false)}
         onConfirm={() => {
-          setIsOpen(false), setIsVisibleSuccess(true)
+          setIsOpen(false), props.onGetExportApi(options)
         }}
         personData={props.headerParmas.users}
-      />
-      {/* 导出成功 */}
-      <ExportSuccess
-        title={'导出成功'}
-        text={'Excel导出成功，可在本地打开文件查看'}
-        isVisible={isVisibleSuccess}
-        onConfirm={() => {
-          setIsVisibleSuccess(false)
-        }}
-        onChangeVisible={() => setIsVisibleSuccess(false)}
       />
     </>
   )

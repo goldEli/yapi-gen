@@ -24,7 +24,7 @@ export const Wrap = styled.div`
     color: var(--primary-d1);
   }
   .ant-tabs-content {
-    height: calc(100vh - 246px);
+    height: calc(100vh - 227px);
     .ant-tabs-tabpane {
       height: 100%;
     }
@@ -155,8 +155,9 @@ export const Label = styled.div`
 export const TextWrap = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
-  display: 'flex';
+  display: flex;
   flex-direction: column;
+  width: 90%;
   img: {
     max-width: 20%;
   }
@@ -272,7 +273,7 @@ export const BasicFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 24px;
+  padding-right: 24px;
   background: var(--neutral-white-d5);
   position: absolute;
   bottom: 0;
@@ -295,6 +296,7 @@ export const BasicFooter = styled.div`
 export const FlawInfoWrap = styled.div({
   display: 'flex',
   height: '100%',
+  paddingBottom: 24,
 })
 
 export const FlawInfoLeft = styled.div({
@@ -446,3 +448,148 @@ export const TextareaWrap = styled.div({
     bottom: 1,
   },
 })
+
+export const Second = styled.div`
+  visibility: hidden;
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  opacity: 0;
+  transition: all 1s;
+  background-color: var(--neutral-white-d6);
+`
+
+export const Card = styled.div`
+  flex: 1;
+  position: relative;
+  min-width: 290px;
+  min-height: 60px;
+  background: var(--neutral-white-d2);
+  box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 6px 6px 6px 6px;
+  opacity: 1;
+  margin: 0 16px 16px 10px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  &:hover {
+    box-shadow: 0px 0px 7px 2px rgba(40, 119, 255, 20%);
+    ${Second} {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+`
+
+export const Gred = styled.div`
+  cursor: pointer;
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  opacity: 0;
+  transition: all 1s;
+`
+
+export const BlueCss = styled.span`
+  font-size: 12px;
+  color: var(--primary-d1);
+  cursor: pointer;
+  margin-left: 5px;
+  background-color: var(--neutral-white-d6);
+  padding: 5px 8px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 6px rgb(0 0 0 / 10%);
+`
+
+export const HovDiv = styled.div`
+  visibility: hidden;
+  position: absolute;
+  right: 0px;
+`
+
+export const MyDiv = styled.div`
+  position: relative;
+`
+
+export const CommentItem = styled.div<{ isShow?: boolean }>`
+  .ar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 12px;
+  }
+
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 13px;
+  margin-right: 12px;
+  width: 100%;
+  &:hover ${HovDiv} {
+    visibility: visible;
+  }
+  p {
+    margin: 0;
+  }
+`
+
+export const CommentTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const GredParent = styled.div`
+  margin-right: 12px;
+  position: relative;
+  &:hover {
+    ${Gred} {
+      opacity: 0.6;
+      transition: all 0.1s;
+    }
+  }
+`
+
+export const RedCss = styled(BlueCss)`
+  color: var(--function-error);
+  margin-left: 12px;
+`
+
+export const RelationWrap = styled.div`
+  height: 100%;
+  padding-left: 24px;
+`
+
+export const PriorityWrap = styled.div<{ isShow?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      color: 'var(--neutral-n1-d2)',
+      fontSize: 14,
+      marginLeft: 8,
+    },
+    '.icon': {
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 14,
+      color: 'var(--neutral-n4)',
+    },
+    '.priorityIcon': {
+      fontSize: 14,
+    },
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+    '&: hover': {
+      '.icon': {
+        visibility: isShow ? 'visible' : 'hidden',
+      },
+    },
+  }),
+)

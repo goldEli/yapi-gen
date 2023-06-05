@@ -12,13 +12,14 @@ import MoreOptions from '../MoreOptions'
 import CommonModal from '../CommonModal'
 import styled from '@emotion/styled'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { getProjectInfo, getWorkflowList } from '@/services/project'
 import { getCategoryConfigList, updateDemandCategory } from '@/services/demand'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import { removeNull } from '@/tools'
 import { uploadFileToKey } from '@/services/cos'
 import DemandTag from '../TagComponent/DemandTag'
+import { getParentList } from '@store/project/project.thunk'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -66,6 +67,7 @@ interface Props {
   onGetCreateWorkItem(state: boolean): void
   // 修改需求类别同步给右侧
   onChangeCategory(value: any): void
+  onSaveProjectInfo(info: any): void
 }
 
 export const uploadFile = (file: File, editorRef: any, key2?: any) => {
@@ -87,6 +89,7 @@ export const uploadFile = (file: File, editorRef: any, key2?: any) => {
 const CreateDemandLeft = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
+  const dispatch = useDispatch()
   const editorRef = useRef<EditorRef>(null)
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLDivElement>(null)
@@ -109,7 +112,7 @@ const CreateDemandLeft = (props: Props) => {
   const { filterParamsModal, projectInfoValues, addWorkItemModal } =
     useSelector(store => store.project)
   const { params } = addWorkItemModal
-  const { createCategory } = useSelector(store => store.demand)
+  const { createCategory } = useSelector(store => store.project)
   let isCreateDemand = true
 
   // 获取工作流列表
@@ -228,6 +231,7 @@ const CreateDemandLeft = (props: Props) => {
   const getProjectInfoData = async (id: any) => {
     const result = await getProjectInfo({ projectId: id })
     setProjectInfo(result)
+    props.onSaveProjectInfo(result)
     if (result?.projectPermissions?.length <= 0) {
       onClearProjectId()
     } else {
@@ -274,6 +278,12 @@ const CreateDemandLeft = (props: Props) => {
     }
   }
 
+  // 获取父需求列表
+  const getParentData = (type: number) => {
+    const key = type === 1 ? 'story' : type === 2 ? 'flaw' : 'transaction'
+    dispatch(getParentList({ all: true, projectId: props.projectId, key }))
+  }
+
   // 切换需求类别
   const onSelectCategory = async (value: any) => {
     if (value === categoryObj?.id) {
@@ -286,9 +296,11 @@ const CreateDemandLeft = (props: Props) => {
       onChangeSelect(value)
       setIsShowChangeCategory(true)
     } else {
-      setCategoryObj(
-        props.allCategoryList?.filter((i: any) => i.id === value)[0],
-      )
+      const result = props.allCategoryList?.filter(
+        (i: any) => i.id === value,
+      )[0]
+      setCategoryObj(result)
+      getParentData(result.work_type)
     }
   }
 
@@ -297,6 +309,7 @@ const CreateDemandLeft = (props: Props) => {
     await changeCategoryForm.validateFields()
     setIsShowChangeCategory(false)
     setCategoryObj(currentCategory)
+    getParentData(currentCategory.work_type)
     setChangeCategoryFormData(changeCategoryForm.getFieldsValue())
     props.onChangeCategory(changeCategoryForm.getFieldsValue())
     setTimeout(() => {
@@ -374,18 +387,18 @@ const CreateDemandLeft = (props: Props) => {
           resultCategoryList?.filter((j: any) => j.id === props.detail.category)
             ?.length
         ) {
-          setCategoryObj(
-            resultCategoryList?.filter(
-              (j: any) => j.id === props.detail.category,
-            )[0],
-          )
+          const resultObj = resultCategoryList?.filter(
+            (j: any) => j.id === props.detail.category,
+          )[0]
+          setCategoryObj(resultObj)
+          getParentData(resultObj.work_type)
         } else {
+          const resultObj = props.allCategoryList?.filter(
+            (j: any) => j.id === props.detail.category,
+          )[0]
           // 反之查所有中的需求类别，做展示用
-          setCategoryObj(
-            props.allCategoryList?.filter(
-              (j: any) => j.id === props.detail.category,
-            )[0],
-          )
+          setCategoryObj(resultObj)
+          getParentData(resultObj.work_type)
         }
       } else {
         let hisCategoryData: any
@@ -447,6 +460,7 @@ const CreateDemandLeft = (props: Props) => {
         //   如果有修改
         if (resultCategory?.id) {
           setCategoryObj(resultCategory)
+          getParentData(resultCategory.work_type)
         }
       }
     }

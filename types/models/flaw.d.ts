@@ -1,6 +1,61 @@
 declare namespace Model.Flaw {
   // 1：关联、2：前置、3：后置、4：阻塞，5：被阻塞、6：克隆
   type RelationType = 1 | 2 | 3 | 4 | 5 | 6
+
+  interface FlawRelationStoriesData {
+    pager: {
+      page: number
+      pagesize: number
+      total: number
+    }
+    list: FlawRelationStoriesInfo[]
+  }
+
+  interface FlawRelationStoriesInfo {
+    id: number
+    name: string
+    category_status_id: number
+    category_id: number
+    schedule: number
+    priority: number | PriorityInfo
+    created_at: string
+    story_prefix_key: string
+    children_count: number
+    category_status: {
+      id: number
+      category_id: number
+      status_id: number
+      is_start: number
+      is_end: number
+      status_name: string
+      color: string
+    }
+    project_category: {
+      id: number
+      name: string
+      attachment_path: string
+    }
+    story_config_priority: {
+      id: number
+      name: string
+      content: string
+      color: string
+      icon: string
+      identity: string
+      content_txt: string
+      group_content_txt: string
+    }
+    handlers: {
+      id: number
+      name: string
+      avatar: string
+    }[]
+    pivot?: {
+      type: RelationType
+      sort: number
+    }
+  }
+
   interface FlawInfo {
     id: number
     name: string

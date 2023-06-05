@@ -146,7 +146,7 @@ const ProjectDetailSide = () => {
   }
   const onGoBack = () => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
-    navigate(`/SprintProjectManagement/KanBan?data=${params}`)
+    navigate(`/SprintProjectManagement/Affair?data=${params}`)
   }
   const demandClick = () => {
     setSelectedKeys(['ProjectInfo'])
@@ -165,8 +165,9 @@ const ProjectDetailSide = () => {
   }, [projectId])
 
   useEffect(() => {
+    console.log('paramsData.type',paramsData.type)
     setSelectedKeys([paramsData.type])
-  }, [])
+  }, [paramsData.type])
   useEffect(() => {}, [pathname])
   return (
     <AllWrap>

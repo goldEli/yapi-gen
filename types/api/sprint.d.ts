@@ -7,7 +7,9 @@ declare namespace API.Sprint {
       list: Model.SprintKanBan.Task[]
     }
   }
-
+  namespace RecentCreateData {
+    type Result = Array<Model.Sprint.RecentCreateDataItem>
+  }
   namespace GetSprintIssueList {
     type Data = {
       title: string
@@ -16,6 +18,18 @@ declare namespace API.Sprint {
     type Keys = 'todo' | 'inProgress' | 'done'
     type Result = {
       data: Model.SprintKanBan.Issues[]
+    }
+  }
+  namespace GetExport {
+    type Params = {
+      project_ids: string
+      user_ids: string
+      start_time: string
+      end_time: string
+      iterate_ids: string
+      period_time: string
+      page: number
+      pagesize: number
     }
   }
   namespace GetProjectRoleList {

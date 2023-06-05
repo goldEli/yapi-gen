@@ -14,8 +14,11 @@ import IconFont from '@/components/IconFont'
 import { Popover, Space, Tooltip } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useDispatch, useSelector } from '@store/index'
-import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
-import { setCreateCategory } from '@store/demand'
+import {
+  setAddWorkItemModal,
+  setFilterParamsModal,
+  setCreateCategory,
+} from '@store/project'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonButton from '@/components/CommonButton'
@@ -130,10 +133,13 @@ const Operation = (props: Props) => {
 
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
-    store => store.project,
-  )
-  // const { filterParams } = useSelector(store => store.demand)
+  const {
+    projectInfo,
+    colorList,
+    filterKeys,
+    projectInfoValues,
+    filterParams,
+  } = useSelector(store => store.project)
   const { searchChoose } = useSelector(store => store.view)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
@@ -262,18 +268,18 @@ const Operation = (props: Props) => {
   }
 
   const onChangeCategory = (e: any, item: any) => {
-    // dispatch(setCreateCategory(item))
-    // // 需求列表筛选参数赋值给 弹窗
-    // dispatch(setFilterParamsModal(filterParams))
-    // setTimeout(() => {
-    //   dispatch(
-    //     setAddWorkItemModal({
-    //       visible: true,
-    //       params: { projectId: projectInfo?.id },
-    //     }),
-    //   )
-    //   setIsVisible(false)
-    // }, 0)
+    dispatch(setCreateCategory(item))
+    // 需求列表筛选参数赋值给 弹窗
+    dispatch(setFilterParamsModal(filterParams))
+    setTimeout(() => {
+      dispatch(
+        setAddWorkItemModal({
+          visible: true,
+          params: { projectId: projectInfo?.id },
+        }),
+      )
+      setIsVisible(false)
+    }, 0)
   }
 
   const onImportClick = () => {

@@ -17,14 +17,13 @@ import {
   LotIcon,
 } from '../Header/Style'
 import { DialogMain, DialogHeader, TextColor, Footer } from './style'
-
 import { useEffect, useState } from 'react'
 import SelectMain from '../Header/components/SelectMain'
 import CommonButton from '@/components/CommonButton'
 import { useSelector } from '@store/index'
 import ViewDialog from '../Header/components/ViewDialog'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import HightChartMainBar from './HightChartMainBar'
 import HightChartMainLine from './HightChartMainLine'
 import HightChartMainPie from './HightChartMainPie'
@@ -41,8 +40,8 @@ import {
   viewsList,
   viewsUpdate,
 } from '@/services/efficiency'
-import { getDate } from './Date'
-
+import { getDate, getDateStr } from './Date'
+import { getParamsData } from '@/tools'
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const { headerParmas, projectDataList } = useSelector(
     store => store.performanceInsight,
@@ -52,6 +51,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
     const params = encryptPhp(
       JSON.stringify({
         data: props.data,
+        projectId: props.projectId,
         type:
           props.num === 1
             ? `Progress_${props.homeType}`
@@ -67,7 +67,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
         projectDataList,
       }),
     )
-    navigate(`/Report/ChildLevel?data=${params}`)
+    navigate(`/ChildLevel?data=${params}`)
   }
   return (
     <>
@@ -78,8 +78,8 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             <Time>{props.time}</Time>
           </Space>
         </RightRow>
-        <Text size={'12px'} onClick={() => 123}>
-          <Space size={4} onClick={() => onClick()}>
+        <Text size={'12px'} onClick={() => onClick()}>
+          <Space size={4}>
             <span>查看明细</span>
             <CommonIconFont
               type={'right'}
@@ -124,17 +124,21 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   )
 }
 const Home = () => {
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const { save, headerParmas } = useSelector(store => store.performanceInsight)
+  const [projectId, setProjectId] = useState(0)
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
   const [charts1, setCharts1] = useState<Models.Efficiency.ChartBar>()
   const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
-  const [viewDataList, setViewDataList] =
-    useState<Array<Models.Efficiency.ViewItem>>()
+  const [viewDataList, setViewDataList] = useState<
+    Array<Models.Efficiency.ViewItem>
+  >([])
   // 'iteration''sprint' 'all'
   const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
@@ -143,6 +147,14 @@ const Home = () => {
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ConfigItem>()
   useEffect(() => {
+    console.log(paramsData, 'paramsData')
+    if (paramsData) {
+      setHomeType(paramsData.type)
+      setProjectId(paramsData.projectId)
+    } else {
+      setHomeType('all')
+      setProjectId(0)
+    }
     // 缺陷现状和工作项现状
     getWorkList()
     // 新增工作top10对比
@@ -162,7 +174,7 @@ const Home = () => {
     let filterVal: Models.Efficiency.ViewItem | undefined = res.find(
       el => el.is_default === 1,
     )
-    console.log(filterVal, 'res.find(el => el.is_default === 1)?.config')
+    setOptionVal(filterVal?.id || 0)
     setDefalutConfig(filterVal?.config)
     dispatch(
       setHeaderParmas({
@@ -172,6 +184,7 @@ const Home = () => {
           title: filterVal?.name,
           value: filterVal?.id,
         },
+        iterate_ids: filterVal?.config.iterate_ids,
         time: {
           type:
             filterVal?.config.period_time === ''
@@ -187,28 +200,40 @@ const Home = () => {
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
-    console.log(val, 'xina', type, key)
     const res =
       type === 'add'
         ? await createViewList({
             use_type: 3,
             name: val,
             config: {
-              project_id: [92, 27, 41],
-              user_ids: [37, 22, 10, 100],
-              start_time: '1992-02-27 08:42:02',
-              end_time: '1974-06-21 00:22:31',
-              period_time: 'four_week',
+              iterate_ids: headerParmas.iterate_ids,
+              project_id: headerParmas.projectIds,
+              user_ids: headerParmas.users,
+              period_time: getDateStr(headerParmas.time.type),
+              start_time:
+                headerParmas.time.type == 0 ? headerParmas.time.time[0] : '',
+              end_time:
+                headerParmas.time.type == 0 ? headerParmas.time.time[1] : '',
             },
             project_id: 18,
           })
-        : await viewsUpdate({ id: Number(key), project_id: 1, name: val })
+        : await viewsUpdate({
+            id: Number(key),
+            project_id: 1,
+            name: val,
+            config: {
+              iterate_ids: headerParmas.iterate_ids,
+              project_id: headerParmas.projectIds,
+              user_ids: headerParmas.users,
+              period_time: getDateStr(headerParmas.time.type),
+              start_time:
+                headerParmas.time.type == 0 ? headerParmas.time.time[0] : '',
+              end_time:
+                headerParmas.time.type == 0 ? headerParmas.time.time[1] : '',
+            },
+          })
     // // 刷新视图的接口
     // getViewList({ project_id: '1', use_type: 3 })
-  }
-  const onEdit = async () => {
-    console.log(headerParmas, 'edit')
-    // await viewsUpdate({ id: Number(key), project_id: 1, name: val })
   }
   // 删除视图
   const onDelView = async (key: string) => {
@@ -222,13 +247,17 @@ const Home = () => {
   }
   // 获取下拉框的值视图的
   const onGetOptionValue = (title: string, value: number) => {
-    console.log()
     setOptionVal(value)
+    let filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
+      el => el.id === value,
+    )
+    setDefalutConfig(filterVal?.config)
     dispatch(
       setHeaderParmas({
         users: headerParmas.users,
         projectIds: headerParmas.projectIds,
         time: headerParmas.time,
+        iterate_ids: headerParmas.iterate_ids,
         view: {
           title,
           value,
@@ -349,6 +378,25 @@ const Home = () => {
       ],
     })
   }
+  // 编辑视图走缓存的参数
+  const editViews = async () => {
+    console.log(headerParmas, '我是最后的灿灿')
+    await viewsUpdate({
+      id: headerParmas.view.value,
+      project_id: 1,
+      name: headerParmas.view.title,
+      status: 1,
+      config: {
+        iterate_ids: headerParmas.iterate_ids,
+        project_id: headerParmas.projectIds,
+        user_ids: headerParmas.users,
+        period_time: getDateStr(headerParmas.time.type),
+        start_time:
+          headerParmas.time.type == 0 ? headerParmas.time.time[0] : '',
+        end_time: headerParmas.time.type == 0 ? headerParmas.time.time[1] : '',
+      },
+    })
+  }
   return (
     <div
       style={{
@@ -359,6 +407,7 @@ const Home = () => {
     >
       {/*头部组件 */}
       <Header
+        projectId={projectId}
         homeType={homeType}
         defalutConfig={defalutConfig}
         viewDataList={viewDataList}
@@ -366,9 +415,11 @@ const Home = () => {
         onDelView={onDelView}
         onChange={onGetOptionValue}
         onSetDefaulut={onSetDefaulut}
-        onEdit={onEdit}
+        onEdit={editViews}
+        value={optionVal}
       />
       <WorkingStatus
+        projectId={projectId}
         homeType={homeType}
         data={workDataList?.work || []}
         title={homeType === 'all' ? '现状' : '工作项现状'}
@@ -378,6 +429,7 @@ const Home = () => {
       <div style={{ margin: '32px 0' }}>
         <WorkingStatus
           num={2}
+          projectId={projectId}
           homeType={homeType}
           data={workDataList?.defect || []}
           title={'缺陷现状'}
@@ -404,6 +456,7 @@ const Home = () => {
               onChange={(val: any) => getContrastNewWork(val)}
             />
             <HightChartMainLine
+              projectId={projectId}
               chart={charts2}
               title={homeType === 'all' ? '工作完成周期' : '工作周期对比'}
               height={396}
@@ -481,8 +534,11 @@ const Home = () => {
           <TextColor>单击“保存”按钮可以将更改保存在如下视图</TextColor>
           <div style={{ margin: '8px 0 0 32px' }}>
             <SelectMain
-              onChange={e => setOptionVal(e)}
+              onChange={e => {
+                setOptionVal(e)
+              }}
               placeholder="请选择"
+              allowClear={false}
               value={optionVal}
               list={viewDataList?.map(el => ({
                 name: el.name,
@@ -506,7 +562,7 @@ const Home = () => {
               <CommonButton type="light" onClick={() => setIsVisible(true)}>
                 另存为
               </CommonButton>
-              <CommonButton type="primary" onClick={() => 123}>
+              <CommonButton type="primary" onClick={() => editViews()}>
                 保存
               </CommonButton>
             </Space>

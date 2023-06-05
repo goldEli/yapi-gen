@@ -10,7 +10,7 @@ export const Side = styled.div<{ op: boolean }>`
   /* left: ${props => (props.op ? '0px' : '-320px')};
   top: 0; */
   height: 100%;
-  background-color: #f8f8fa;
+  background-color: var(--neutral-n8);
   transition: all 1s;
   flex-shrink: 0;
   box-sizing: border-box;
@@ -19,7 +19,7 @@ export const Side = styled.div<{ op: boolean }>`
   .t1 {
     height: 22px;
     font-size: 14px;
-    color: #323233;
+    color: var(--neutral-n1-d1);
     line-height: 22px;
   }
   .btn {
@@ -29,7 +29,8 @@ export const Side = styled.div<{ op: boolean }>`
   }
 `
 export const Liu = styled.div`
-  height: 52px;
+  /* height: 52px; */
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -40,14 +41,14 @@ export const Liu = styled.div`
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #323233;
+    color: var(--neutral-n1-d1);
     line-height: 22px;
   }
   .l2 {
     height: 22px;
     font-size: 14px;
-    white-space: nowrap;
-    color: #646566;
+    white-space: pre-wrap;
+    color: var(--auxiliary-text-t2-d1);
     line-height: 22px;
   }
 `
@@ -65,14 +66,14 @@ export const People = styled.div`
       height: 22px;
       font-size: 14px;
 
-      color: #323233;
+      color: var(--neutral-n1-d1);
       line-height: 22px;
     }
     .p12 {
       height: 20px;
       font-size: 12px;
 
-      color: #969799;
+      color: var(--neutral-n3);
       line-height: 20px;
     }
   }

@@ -42,6 +42,7 @@ declare namespace Models.Efficiency {
     data: Array<Model.Sprint.WorkListItem>
     homeType: string
     num: number
+    projectId: number
   }
   export interface ChartBar {
     chartType: string
@@ -94,8 +95,10 @@ declare namespace Models.Efficiency {
     start_time?: string
     end_time?: string
     period_time?: string
+    iterate_ids: number[]
   }
   export interface HeaderParmas {
+    iterate_ids: number[]
     projectIds: number[]
     users: []
     time: {

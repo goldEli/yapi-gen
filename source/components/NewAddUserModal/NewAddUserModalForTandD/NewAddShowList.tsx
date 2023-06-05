@@ -11,7 +11,7 @@ const TreeLine = styled.div`
   height: 40px;
   transition: all 0.3s;
   :hover {
-    background-color: #f6f7f9;
+    background-color: var(--hover-d2);
   }
 `
 

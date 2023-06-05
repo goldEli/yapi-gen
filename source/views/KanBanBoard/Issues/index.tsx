@@ -9,7 +9,7 @@ import DropCard from '../DropCard'
 
 interface IssuesProps {
   issues: Model.KanBan.Column
-  groupId: Model.SprintKanBan.IssuesGroup['groupId']
+  groupId: Model.KanbanConfig.Column['id']
 }
 
 const DropArea = styled.div`

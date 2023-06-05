@@ -8,6 +8,7 @@ import { CharTitle, HighchartsReactWrap } from './style'
 const HightChartMainLine = (props: {
   height: number
   title: string
+  projectId: number
   chart: Models.Efficiency.WorkChart | undefined
 }) => {
   // 折线图

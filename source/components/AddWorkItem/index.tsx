@@ -10,27 +10,24 @@ import {
   getProjectList,
   getProjectRecent,
 } from '@/services/project'
-import {
-  addDemand,
-  getDemandInfo,
-  getDemandList,
-  updateDemand,
-} from '@/services/demand'
+import { addDemand, getDemandInfo, updateDemand } from '@/services/demand'
 import {
   setProjectInfoValues,
   setAddWorkItemModal,
   setFilterParamsModal,
+  setCreateCategory,
+  setIsUpdateStatus,
+  setIsUpdateChangeLog,
+  setIsUpdateAddWorkItem,
 } from '@store/project'
 import { removeNull } from '@/tools'
-import {
-  setCreateCategory,
-  setIsUpdateChangeLog,
-  setIsUpdateDemand,
-  setIsUpdateStatus,
-} from '@store/demand'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getMessage } from '../Message'
 import { setIsUpdateCreate } from '@store/mine'
+import CreateDemandLeft from './CreateWorkItemLeft'
+import CreateDemandRight from './CreateWorkItemRight'
+import { addAffairs, updateAffairs } from '@/services/affairs'
+import { addFlaw, updateFlaw } from '@/services/flaw'
 
 const ModalFooter = styled.div({
   width: '100%',
@@ -49,8 +46,8 @@ const AddWorkItem = () => {
   const { addWorkItemModal } = useSelector(store => store.project)
   const { params, visible } = addWorkItemModal
   const [isCreateWorkItem, setIsCreateWorkItem] = useState<any>({})
-  // 父需求列表
-  const [parentList, setParentList] = useState<any>([])
+  // // 父需求列表
+  // const [parentList, setParentList] = useState<any>([])
   // 项目列表
   const [projectList, setProjectList] = useState<any>([])
   // 所有的类别列表
@@ -58,12 +55,13 @@ const AddWorkItem = () => {
   // 项目id
   const [projectId, setProjectId] = useState('')
   // 需求详情-编辑回填
-  const [demandInfo, setDemandInfo] = useState<any>({})
+  const [modalInfo, setModalInfo] = useState<any>({})
   const [fieldList, setFieldList] = useState<any>([])
   const [workStatusList, setWorkStatusList] = useState([])
   const [newCategory, setNewCategory] = useState<any>({})
   //   是否是完成并创建下一个 -- 用于提交参数后回填
   const [isSaveParams, setIsSaveParams] = useState(false)
+  const [currentInfo, setCurrentInfo] = useState({})
 
   // 关闭弹窗
   const onCancel = () => {
@@ -80,21 +78,6 @@ const AddWorkItem = () => {
     }, 100)
   }
 
-  // 获取父需求列表
-  const getList = async (value?: any) => {
-    const result = await getDemandList({
-      projectId: value,
-      all: true,
-    })
-    const arr = result.map((i: any) => ({
-      label: i.name,
-      value: i.id,
-      parentId: i.parentId,
-    }))
-    setParentList(arr)
-    return arr
-  }
-
   // 获取项目列表
   const getProjectData = async () => {
     const res = await getProjectList({
@@ -108,7 +91,7 @@ const AddWorkItem = () => {
         projectId: params?.projectId,
         id: params?.editId,
       })
-      setDemandInfo(demandResponse)
+      setModalInfo(demandResponse)
     }
   }
 
@@ -118,7 +101,6 @@ const AddWorkItem = () => {
     setWorkStatusList([])
     const [projectInfoData] = await Promise.all([
       getProjectInfoValues({ projectId: value }),
-      getList(value),
     ])
 
     dispatch(setProjectInfoValues(projectInfoData))
@@ -131,14 +113,32 @@ const AddWorkItem = () => {
   const getRecentlyList = async () => {
     const data = await getProjectRecent()
     setProjectId(data[0]?.id || '')
+    setCurrentInfo(data[0])
     if (data[0]?.id) {
       getInit(data[0]?.id)
     }
   }
 
   const onSaveDemand = async (values: any, hasNext?: any) => {
+    // 获取当前类别对应的work_type
+    const work_type = allCategoryList.filter(
+      (i: any) => i.id === values.category_id,
+    )[0].work_type
+
+    // 相应模块的方法
+    const methods = [
+      { type: [1], create: addDemand, update: updateDemand },
+      { type: [2], create: addFlaw, update: updateFlaw },
+      { type: [3, 4, 5, 6], create: addAffairs, update: updateAffairs },
+    ]
+
+    // 最终的方法
+    const resultMethod = methods?.filter((i: any) =>
+      i.type.includes(work_type),
+    )[0]
+
     if (params?.editId) {
-      await updateDemand({
+      await resultMethod?.update({
         projectId,
         id: params?.editId,
         ...values,
@@ -147,7 +147,7 @@ const AddWorkItem = () => {
       dispatch(setIsUpdateStatus(true))
       dispatch(setIsUpdateChangeLog(true))
     } else {
-      await addDemand({
+      await resultMethod?.create({
         projectId,
         ...values,
       })
@@ -163,7 +163,7 @@ const AddWorkItem = () => {
       dispatch(setIsUpdateCreate(true))
     } else {
       // 更新列表
-      dispatch(setIsUpdateDemand(true))
+      dispatch(setIsUpdateAddWorkItem(true))
     }
 
     // 如果是快速创建，相应数据存缓存
@@ -202,6 +202,11 @@ const AddWorkItem = () => {
     if (leftValues && rightValues) {
       await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
     }
+  }
+
+  // 左侧项目切换清除右侧form表单
+  const onResetForm = () => {
+    rightDom?.current?.reset()
   }
 
   useEffect(() => {
@@ -257,7 +262,31 @@ const AddWorkItem = () => {
           display: 'flex',
         }}
       >
-        23
+        <CreateDemandLeft
+          projectList={projectList}
+          onRef={leftDom}
+          allCategoryList={allCategoryList}
+          projectId={projectId}
+          onChangeProjectId={setProjectId}
+          detail={modalInfo}
+          onGetFieldList={setFieldList}
+          onResetForm={onResetForm}
+          onGetDataAll={getInit}
+          onChangeWorkStatusList={setWorkStatusList}
+          onGetCreateWorkItem={setIsCreateWorkItem}
+          onChangeCategory={setNewCategory}
+          onSaveProjectInfo={setCurrentInfo}
+        />
+        <CreateDemandRight
+          projectId={projectId}
+          onRef={rightDom}
+          fieldsList={fieldList}
+          detail={modalInfo}
+          isSaveParams={isSaveParams}
+          workStatusList={workStatusList}
+          isCreateDemand={isCreateWorkItem}
+          newCategory={newCategory}
+        />
       </div>
     </CommonModal>
   )

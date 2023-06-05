@@ -125,7 +125,7 @@ const Circulation = (props: Props) => {
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
-  // const { isUpdateChangeLog } = useSelector(store => store.demand)
+  const { isUpdateChangeLog } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
 
@@ -168,11 +168,11 @@ const Circulation = (props: Props) => {
     }
   }, [isRefresh])
 
-  // useEffect(() => {
-  //   if (isUpdateChangeLog) {
-  //     getLogs(false)
-  //   }
-  // }, [isUpdateChangeLog])
+  useEffect(() => {
+    if (isUpdateChangeLog) {
+      getLogs(false)
+    }
+  }, [isUpdateChangeLog])
 
   // 返回自定义值
   const getValues = (key: any, values: any) => {

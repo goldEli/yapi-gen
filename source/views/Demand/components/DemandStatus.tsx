@@ -15,12 +15,9 @@ import ShapeContentForDetail from '@/components/ShapeForDetail'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { getDemandInfo, getShapeLeft } from '@/services/demand'
-import {
-  setDemandInfo,
-  setIsRefreshComment,
-  setIsUpdateStatus,
-} from '@store/demand'
+import { setDemandInfo } from '@store/demand'
 import { getMessage } from '@/components/Message'
+import { setIsRefreshComment, setIsUpdateStatus } from '@store/project'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -40,8 +37,8 @@ const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
   const [active, setActive] = useState(0)
   const [rows, setRows] = useState(null)
-  const { projectInfo } = useSelector(store => store.project)
-  const { demandInfo, isUpdateStatus } = useSelector(store => store.demand)
+  const { projectInfo, isUpdateStatus } = useSelector(store => store.project)
+  const { demandInfo } = useSelector(store => store.demand)
   const [leftList, setLeftList] = useState([])
   const dispatch = useDispatch()
   const isCanEdit =

@@ -2,6 +2,7 @@
 /* eslint-disable no-duplicate-imports */
 // 项目
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getParentList } from './project.thunk'
 
 export interface CounterState {
   projectInfo: any
@@ -17,12 +18,25 @@ export interface CounterState {
     visible: boolean
     params?: Model.Project.AddWorkItemParams
   }
+  addWorkItemParentList: any[]
   guideVisible: boolean
   addQuickSprintModal: {
     visible: boolean
     params?: Model.Project.AddQuickSprintParams
   }
   work_type?: number
+  // 是否刷新评论
+  isRefreshComment: boolean
+  // 是否更新状态 -- 需求详情使用
+  isUpdateStatus: boolean
+  // 是否更新变更记录
+  isUpdateChangeLog: boolean
+  // 需求创建选择的需求类别
+  createCategory: any
+  // 过滤的参数
+  filterParams: any
+  // 创建需求成功后是否刷新
+  isUpdateAddWorkItem: any
 }
 
 const initialState: CounterState = {
@@ -56,6 +70,7 @@ const initialState: CounterState = {
     visible: false,
     params: {},
   },
+  addWorkItemParentList: [],
   guideVisible: false,
   addQuickSprintModal: {
     visible: false,
@@ -66,6 +81,13 @@ const initialState: CounterState = {
       parentId: 0,
     },
   },
+  // ---新
+  isRefreshComment: false,
+  isUpdateStatus: false,
+  isUpdateChangeLog: false,
+  createCategory: {},
+  filterParams: {},
+  isUpdateAddWorkItem: false,
 }
 
 export const projectSlice = createSlice({
@@ -74,7 +96,7 @@ export const projectSlice = createSlice({
   reducers: {
     // 全局使用项目信息
     setProjectInfo: (state: any, action) => {
-      console.log('获取项目详情', action)
+      console.log(' action.payload---', action.payload)
       state.projectInfo = action.payload
     },
     // 关于项目的下拉数据
@@ -133,9 +155,36 @@ export const projectSlice = createSlice({
     setCategoryWorkType(state, action: PayloadAction<number>) {
       state.work_type = action.payload
     },
+    // ---- 新
+    // 需求主页选中的需求类别 -- 用于回填创建弹窗
+    setCreateCategory: (state: any, action) => {
+      state.createCategory = action.payload
+    },
+    // 更新评论列表 -- 用于流转成功后更新评论
+    setIsRefreshComment: (state: any, action) => {
+      state.isRefreshComment = action.payload
+    },
+    // 是否更新状态 -- 用于需求详情中更新状态
+    setIsUpdateStatus: (state: any, action) => {
+      state.isUpdateStatus = action.payload
+    },
+    // 是否更新变更记录 -- 用于需求详情中更新变更记录
+    setIsUpdateChangeLog: (state: any, action) => {
+      state.isUpdateChangeLog = action.payload
+    },
+    // 筛选需求列表参数，用于回填创建需求弹窗
+    setFilterParams: (state: any, action) => {
+      state.filterParams = action.payload
+    },
+    // 刷新需求
+    setIsUpdateAddWorkItem: (state: any, action) => {
+      state.isUpdateAddWorkItem = action.payload
+    },
   },
   extraReducers(builder) {
-    //
+    builder.addCase(getParentList.fulfilled, (state, action) => {
+      state.addWorkItemParentList = action.payload
+    })
   },
 })
 
@@ -152,6 +201,12 @@ export const {
   onChangeGuideVisible,
   setAddQuickSprintModal,
   setCategoryWorkType,
+  setIsRefreshComment,
+  setIsUpdateStatus,
+  setIsUpdateChangeLog,
+  setCreateCategory,
+  setFilterParams,
+  setIsUpdateAddWorkItem,
 } = projectSlice.actions
 
 export default projectSlice.reducer

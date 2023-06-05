@@ -80,10 +80,13 @@ const Operation = (props: Props) => {
 
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
-    store => store.project,
-  )
-  const { filterParams } = useSelector(store => store.demand)
+  const {
+    projectInfo,
+    colorList,
+    filterKeys,
+    projectInfoValues,
+    filterParams,
+  } = useSelector(store => store.project)
   const { searchChoose } = useSelector(store => store.view)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
@@ -294,21 +297,21 @@ const Operation = (props: Props) => {
       <OperationWrap>
         <LeftBox>
           <SelectOptionsNormal
-            title="分组"
+            title={t('group')}
             options={sortByGroupOptions ?? []}
             onChange={key => {
               dispatch(onChangeSortByGroupOptions(key))
             }}
           />
           <SelectOptionsNormal
-            title="列与状态"
+            title={t('columns_and_status')}
             options={sortByRowAndStatusOptions ?? []}
             onChange={key => {
               dispatch(onChangeSortByRowAndStatusOptions(key))
             }}
           />
           <SelectOptions
-            title="视图"
+            title={t('view')}
             options={sortByView ?? []}
             onChange={key => {
               dispatch(onChangeSortByView(key))

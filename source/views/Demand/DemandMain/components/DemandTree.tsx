@@ -88,7 +88,9 @@ const DemandTree = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const { projectInfo, filterKeys, filterParams } = useSelector(
+    store => store.project,
+  )
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -110,7 +112,6 @@ const DemandTree = (props: Props) => {
   const [delayChild, setDelayChild] = useState<any>({})
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
-  const { filterParams } = useSelector(store => store.demand)
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {

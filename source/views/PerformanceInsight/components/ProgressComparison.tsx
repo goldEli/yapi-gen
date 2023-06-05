@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   efficiencyMemberDefectList,
   efficiencyMemberWorkList,
+  getExport,
   historyDefectList,
   historyWorkList,
   memberBugList,
@@ -23,6 +24,7 @@ import {
 } from '@/services/efficiency'
 import { RowText } from './style'
 import { getDays, getMonthBefor } from './Date'
+import ExportSuccess from '../Header/components/ExportSuccess'
 
 // 进展对比tips
 const getTitleTips = (text: string, tips: string) => {
@@ -57,6 +59,7 @@ interface Props {
   homeType: string
   headerParmas: Models.Efficiency.HeaderParmas
   projectDataList: Array<{ name: string; id: number }>
+  projectId: number
 }
 const ProgressComparison = (props: Props) => {
   const dispatch = useDispatch()
@@ -98,11 +101,12 @@ const ProgressComparison = (props: Props) => {
   const [ids, setIds] = useState<number[]>([])
   const [historyWorkObj, setHistoryWorkObj] =
     useState<API.Efficiency.HistoryWorkList.Result>()
-  const [time, setTime] = useState<{ startTime: string; endTime: string }>()
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
   }
+  const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
   // 进展工作对比迭代和冲刺的
   const columns1 = [
     {
@@ -430,6 +434,7 @@ const ProgressComparison = (props: Props) => {
         break
     }
   }, [])
+  // 数据明细和进展对比查询数据的
   const onSearchData = (value: number[]) => {
     if (props.type.includes('Progress')) {
       getWorkContrastList(value)
@@ -472,6 +477,20 @@ const ProgressComparison = (props: Props) => {
       default:
         return ''
     }
+  }
+  // 导出
+  const onGetExportApi = async (option: number[]) => {
+    console.log(props, 'pp')
+    const res = await getExport({
+      project_ids: option.join(','),
+      user_ids: '',
+      start_time: '',
+      end_time: '',
+      iterate_ids: '',
+      period_time: '',
+      page: 0,
+      pagesize: 0,
+    })
   }
   // 工作进展对比大的列表
   const getWorkContrastList = async (value: number[]) => {
@@ -599,12 +618,15 @@ const ProgressComparison = (props: Props) => {
   }
   return (
     <div
-      style={{ height: '100%' }}
+      style={{ height: '100%', width: '100%' }}
       onClick={() => {
         dispatch(setVisiblePerson(false)), dispatch(setVisibleWork(false))
       }}
     >
       <HeaderAll
+        homeType={props.homeType}
+        projectId={props.projectId}
+        onGetExportApi={onGetExportApi}
         onSearchData={onSearchData}
         type={props.type}
         headerParmas={props.headerParmas}
@@ -672,6 +694,16 @@ const ProgressComparison = (props: Props) => {
         ids={ids}
         onCancel={() => dispatch(setVisibleWork(!visibleWork))}
         onChange={() => 123}
+      />
+      {/* 导出成功 */}
+      <ExportSuccess
+        title={'导出成功'}
+        text={'Excel导出成功，可在本地打开文件查看'}
+        isVisible={isVisibleSuccess}
+        onConfirm={() => {
+          setIsVisibleSuccess(false)
+        }}
+        onChangeVisible={() => setIsVisibleSuccess(false)}
       />
     </div>
   )
