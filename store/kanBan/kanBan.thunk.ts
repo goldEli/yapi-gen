@@ -27,6 +27,15 @@ import { ViewItem } from '@/views/ProjectSetting/components/KanBanSetting/Select
 
 const name = 'kanBan'
 
+export const copyView =
+  (params: API.Kanban.CopyView.Params) => async (dispatch: AppDispatch) => {
+    if (!params.id) {
+      return null
+    }
+    const res = await services.kanban.copyView(params)
+    return res.data
+  }
+
 // 触发全屏模式
 export const onFullScreenMode = () => async (dispatch: AppDispatch) => {
   dispatch(setFullScreen(true))
@@ -470,7 +479,7 @@ export const delView =
       msg: i18n.t('common.deleteSuccess') as string,
       type: 'success',
     })
-    dispatch(getStoryViewList())
+    dispatch(getStoryViewList(null))
   }
 
 // 创建视图
@@ -485,7 +494,7 @@ export const createView =
       use_type: 2,
     })
     getMessage({ msg: i18n.t('common.saveSuccess') as string, type: 'success' })
-    await dispatch(getStoryViewList())
+    await dispatch(getStoryViewList(null))
     dispatch(onChangeSortByView(res.data.id))
   }
 
@@ -493,7 +502,7 @@ export const updateView =
   (params: API.Kanban.UpdateView.Params) => async (dispatch: AppDispatch) => {
     await services.kanban.updateView(params)
     getMessage({ msg: i18n.t('common.editSuccess') as string, type: 'success' })
-    dispatch(getStoryViewList())
+    dispatch(getStoryViewList(null))
   }
 
 export const onFilter = () => async (dispatch: AppDispatch) => {
@@ -553,7 +562,8 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 // 视图列表
 export const getStoryViewList = createAsyncThunk(
   `${name}/getStoryViewList`,
-  async (_, { dispatch }) => {
+  // 指定当前视图
+  async (viewId: Model.KanBan.ViewItem['id'] | null, { dispatch }) => {
     const project_id = getProjectIdByUrl()
     const res = await services.kanban.getStoryViewList({ project_id })
     const { data } = res
@@ -567,25 +577,18 @@ export const getStoryViewList = createAsyncThunk(
         isDefault: item.type === 2,
       }
     })
-    const checked = sortByView?.find(
+    // 用户已经选中过，需要恢复
+    let checked = sortByView?.find(
       item => item.check && ret.some(i => i.id === item.id),
     )
     if (checked) {
-      const params = generatorFilterParams(checked?.config)
-      dispatch(onTapSearchChoose(params))
-      return ret.map(item => {
-        if (item.id === checked?.id) {
-          return {
-            ...item,
-            check: true,
-          }
-        }
-        return item
-      })
+      checked.check = true
+    } else {
+      // 如果第一次加载 默认第一个
+      ret[0].check = true
+      checked = ret[0]
     }
-    ret[0].check = true
-    const config = ret[0]?.config ?? {}
-    const params = generatorFilterParams(config)
+    const params = generatorFilterParams(checked?.config)
     dispatch(onTapSearchChoose(params))
     return ret
   },

@@ -56,6 +56,15 @@ function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 
+export function getIdByUrl(key: string) {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams)
+
+  return parseInt(params[key], 10)
+}
+
 export function getProjectIdByUrl() {
   const url = new URL(window.location.href)
   const searchParams = url.searchParams
