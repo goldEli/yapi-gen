@@ -26,11 +26,7 @@ import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/Dema
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
-
-const Content = styled.div`
-  background: var(--neutral-white-d1);
-  height: 100%;
-`
+import { TableContent } from '../style'
 
 interface Props {
   data: any
@@ -339,7 +335,7 @@ const DemandTable = (props: Props) => {
   }
 
   return (
-    <Content>
+    <TableContent>
       <ResizeTable
         isSpinning={props.isSpinning}
         dataWrapNormalHeight="calc(100% - 64px)"
@@ -389,7 +385,7 @@ const DemandTable = (props: Props) => {
         total={props.data?.total}
         onChange={onChangePage}
       />
-    </Content>
+    </TableContent>
   )
 }
 

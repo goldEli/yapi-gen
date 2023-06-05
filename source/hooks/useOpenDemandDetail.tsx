@@ -59,6 +59,7 @@ const useOpenDemandDetail = () => {
         )
         url = `/ProjectManagement/DefectDetail?data=${params}`
       } else {
+        console.log(12)
         const params = encryptPhp(
           JSON.stringify({
             type: 'info',
@@ -66,7 +67,7 @@ const useOpenDemandDetail = () => {
             demandId: id,
           }),
         )
-        url = `/ProjectManagement/Demand?data=${params}`
+        url = `/ProjectManagement/DemandDetail?data=${params}`
       }
       navigate(url)
     }

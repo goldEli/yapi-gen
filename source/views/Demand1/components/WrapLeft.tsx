@@ -30,64 +30,15 @@ import { useSearchParams } from 'react-router-dom'
 import { getMessage } from '@/components/Message'
 import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
 import { TreeContext } from '..'
+import {
+  ButtonsItemBox,
+  centerText,
+  FormBox,
+  rightText,
+  TitleWrap,
+  TreeBox,
+} from '../style'
 
-const Left = styled.div`
-  height: calc(100vh - 150px);
-  background-color: var(--neutral-white-d2);
-  position: relative;
-`
-
-const TitleWrap = styled.div({
-  paddingLeft: '15px',
-  whiteSpace: 'nowrap',
-  fontSize: 14,
-  color: 'var(--neutral-n1-d2)',
-  fontFamily: 'SiYuanMedium',
-})
-
-const TreeBox = styled.div`
-  width: 100% !important;
-  height: 40px;
-  border-radius: 0px 0px 0px 0px;
-  display: flex;
-  align-items: center;
-`
-const FormBox = styled.div`
-  padding: 0 20px 0 24px;
-`
-const BtnsItemBox = styled.div`
-  cursor: pointer;
-  min-width: 102px;
-  padding: 0px 10px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  border-radius: 0px 0px 0px 0px;
-  font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
-  color: var(--neutral-n2);
-  &:hover {
-    background: var(--hover-d3);
-    color: var(--neutral-n1-d2);
-  }
-`
-const centerText = css`
-  box-sizing: border-box;
-  white-space: nowrap;
-  margin-left: 10px;
-`
-const rightText = css`
-  box-sizing: border-box;
-  visibility: hidden;
-  font-size: 16px;
-  margin-left: auto;
-  color: var(--neutral-n3) !important;
-  &:hover {
-    color: var(--primary-d2);
-  }
-`
 const TreeItem = (props: any) => {
   const context: any = useContext(TreeContext)
   const inputRefDom = useRef<HTMLInputElement>(null)
@@ -203,7 +154,7 @@ const TreeItem = (props: any) => {
         ? btnsText
             .filter(item => item.id === 1)
             .map(item => (
-              <BtnsItemBox
+              <ButtonsItemBox
                 onClick={(e: any) => {
                   e.stopPropagation()
                   showVisible(item.id)
@@ -211,13 +162,13 @@ const TreeItem = (props: any) => {
                 key={item.id}
               >
                 {item.text}
-              </BtnsItemBox>
+              </ButtonsItemBox>
             ))
         : props.level === 4
         ? btnsText
             .filter(item => item.id !== 1)
             .map(item => (
-              <BtnsItemBox
+              <ButtonsItemBox
                 onClick={(e: any) => {
                   e.stopPropagation()
                   showVisible(item.id)
@@ -225,10 +176,10 @@ const TreeItem = (props: any) => {
                 key={item.id}
               >
                 {item.text}
-              </BtnsItemBox>
+              </ButtonsItemBox>
             ))
         : btnsText.map(item => (
-            <BtnsItemBox
+            <ButtonsItemBox
               onClick={(e: any) => {
                 e.stopPropagation()
                 showVisible(item.id)
@@ -236,7 +187,7 @@ const TreeItem = (props: any) => {
               key={item.id}
             >
               {item.text}
-            </BtnsItemBox>
+            </ButtonsItemBox>
           ))}
     </div>
   )

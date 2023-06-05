@@ -32,11 +32,7 @@ import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/Dema
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import ResizeTable from '@/components/ResizeTable'
-
-const Content = styled.div`
-  background: var(--neutral-white-d1);
-  height: 100%;
-`
+import { TableContent } from '../style'
 
 interface Props {
   data: any
@@ -546,7 +542,7 @@ const DemandTree = (props: Props) => {
   }
 
   return (
-    <Content>
+    <TableContent>
       <ResizeTable
         isTree
         isSpinning={props?.isSpinning}
@@ -601,7 +597,7 @@ const DemandTree = (props: Props) => {
         total={data?.total}
         onChange={onChangePage}
       />
-    </Content>
+    </TableContent>
   )
 }
 

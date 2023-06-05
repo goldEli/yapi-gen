@@ -32,80 +32,14 @@ import {
   getLoadListFields,
   getExportExcel,
 } from '@/services/demand'
-import { OperationWrap } from '../style'
-
-const StickyWrap = styled.div({
-  background: 'white',
-})
-
-const LiWrap = styled.div({
-  cursor: 'pointer',
-  padding: '0 16px',
-  width: '100%',
-  height: 32,
-  display: 'flex',
-  alignItems: 'center',
-  background: 'var(--neutral-white-d3)',
-  '&: hover': {
-    background: 'var(--hover-d3)',
-  },
-})
-
-const IconWrap = styled(IconFont)({
-  fontSize: 20,
-  cursor: 'pointer',
-  padding: 6,
-  borderRadius: 6,
-  color: 'var(--neutral-n3)',
-  '&: hover': {
-    color: 'var(--neutral-n1-d1)',
-    background: 'var(--hover-d3)',
-  },
-})
-
-export const MoreWrap = styled.div<{ type?: any }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    height: 32,
-    borderRadius: 6,
-    padding: '0 16px',
-    fontSize: 14,
-    fontWeight: 400,
-    cursor: 'pointer',
-  },
-  ({ type }) => ({
-    background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    color: type ? 'var(--neutral-white-d7)' : 'var(--primary-d2)',
-    '&: hover': {
-      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    },
-    '&: active': {
-      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    },
-  }),
-)
-
-const MoreItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  height: 32,
-  color: 'var(--neutral-n2)',
-  fontSize: 14,
-  fontWeight: 400,
-  cursor: 'pointer',
-  padding: '0 16px',
-  svg: {
-    color: 'var(--neutral-n3)',
-  },
-  '&: hover': {
-    color: 'var(--neutral-n1-d1)!important',
-    background: 'var(--hover-d3)',
-    svg: {
-      color: 'var(--neutral-n1-d1)!important',
-    },
-  },
-})
+import {
+  IconWrap,
+  LiWrap,
+  MoreItem,
+  MoreWrap,
+  OperationWrap,
+  StickyWrap,
+} from '../style'
 
 interface Props {
   isGrid: any
