@@ -116,7 +116,6 @@ const Setting = () => {
   return (
     <div style={{ height: '100%' }}>
       <SearchBox>
-        {/* <MyBreadcrumb setName={maps.get(activeTabs)?.name} /> */}
         <CommonBreadCrumd></CommonBreadCrumd>
         {activeTabs === 'ProjectMember' && (
           <div>

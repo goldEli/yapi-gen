@@ -74,7 +74,7 @@ const Setting = () => {
       icon: 'settings',
       content: <ProjectNote />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/story_config'),
+        String(i.identity).includes('b/project/notification'),
       ).length,
     },
     {
@@ -89,18 +89,22 @@ const Setting = () => {
       name: 'Kanban配置',
       icon: 'settings',
       content: <KanBanSettings />,
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/kanban'),
+      ).length,
     },
     {
       name: '首页配置',
       icon: 'settings',
       content: <HomeSettings />,
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/home'),
+      ).length,
     },
   ]
   useEffect(() => {
     setSearchValue('')
-    console.log('activeTabs----', activeTabs,currentMenu?.children)
+    console.log('activeTabs----', activeTabs, currentMenu?.children)
   }, [activeTabs])
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))

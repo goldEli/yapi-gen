@@ -15,6 +15,7 @@ import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 import { useDispatch } from '@store/index'
 import { setEditSave } from '@store/formWork'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import AddDepartmentModalForFlat from '@/components/AddDepartmentModalForFlat/AddDepartmentModalForFlat'
 import { useTranslation } from 'react-i18next'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 const AddPersonText = styled.div`
@@ -105,6 +106,7 @@ const Addperson = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
   const [isVisible, setIsVisible] = useState(false)
+  const [isVisible2, setIsVisible2] = useState(false)
   const [t]: any = useTranslation()
   // 添加部门/团队弹窗
   const [isAddVisible, setIsAddVisible] = useState(false)
@@ -113,8 +115,8 @@ const Addperson = (props: Props) => {
   const [personData, setPersonData] = useState<any>()
   // 去重
   const fitlerDataList = (data: any) => {
-    let obj: any = {}
-    let set: any = data?.reduce((cur: any, next: any) => {
+    const obj: any = {}
+    const set: any = data?.reduce((cur: any, next: any) => {
       obj[next.target_id] ? '' : (obj[next.target_id] = true && cur.push(next))
       return cur
     }, [])
@@ -142,7 +144,8 @@ const Addperson = (props: Props) => {
     dispatch(setEditSave(false))
     setIsOpen(false)
     setIsVisible(e.key === 'user')
-    setIsAddVisible(['department', 'team'].includes(e.key))
+    setIsVisible2(e.key === 'department')
+    setIsAddVisible(['team'].includes(e.key))
     setUserType(props.state)
     switch (e.key) {
       case 'user':
@@ -231,6 +234,7 @@ const Addperson = (props: Props) => {
 
     props.onChangeValues(setData)
     setIsVisible(false)
+    setIsVisible2(false)
     props.onChangePeople?.()
   }
 
@@ -285,9 +289,8 @@ const Addperson = (props: Props) => {
           />
         </DefalutIcon>
       )
-    } else {
-      return <CommonUserAvatar />
     }
+    return <CommonUserAvatar />
   }
   useEffect(() => {
     setPersonData(fitlerDataList(props.person))
@@ -336,14 +339,7 @@ const Addperson = (props: Props) => {
         ))}
       </PersonContainer>
       {/* 添加成员弹窗 */}
-      {isVisible && (
-        // <CommonModal
-        //   title={t('formWork.addUser')}
-        //   state={2}
-        //   isVisible={isVisible}
-        //   onConfirm={onConfirm}
-        //   onClose={() => setIsVisible(false)}
-        // />
+      {isVisible ? (
         <NewAddUserModalForTandD
           title={t('formWork.addUser')}
           state={2}
@@ -351,7 +347,15 @@ const Addperson = (props: Props) => {
           onConfirm={onConfirm}
           onClose={() => setIsVisible(false)}
         />
-      )}
+      ) : null}
+      {isVisible2 ? (
+        <AddDepartmentModalForFlat
+          title={t('AddDepartmentOrTeamModal.add_department')}
+          isVisible={isVisible2}
+          onConfirm={onConfirm}
+          onClose={() => setIsVisible2(false)}
+        />
+      ) : null}
       <AddDepartmentOrTeamModal
         isVisible={isAddVisible}
         onClose={() => setIsAddVisible(false)}
