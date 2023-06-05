@@ -137,11 +137,7 @@ const KanBanBtnsArea = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
-      <ShareModal
-        copyLink={() => {
-          // Todo 待传入分享组件中复制链接方法
-        }}
-      />
+      <ShareModal url={''} title={''} />
       {/* 分享 */}
       <ScreenMinHover
         label={t('share')}

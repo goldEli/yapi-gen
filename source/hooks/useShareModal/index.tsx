@@ -11,10 +11,18 @@ import SearchInput from './SearchInput'
 import { CopyButton, ModalContentBox, Tips, WarnTips } from './styled'
 import { shareView, checkUpdates } from '@/services/sprint'
 import { EMAIL_REGEXP } from '@/constants'
+import { copyLink } from '@/tools'
+import { getMessage } from '@/components/Message'
 
 interface ShareModalProps {
+  // 检查视图是否保存的 视图id
   id?: number
-  copyLink(): void
+  // 修改后的视图的配置参数
+  config?: object
+  // 复制链接所需要的url
+  url: string
+  // 用于分享后展示的标题
+  title: string
 }
 
 interface Options {
@@ -37,19 +45,44 @@ const useShareModal = () => {
   }
 
   const ShareModal: React.FC<ShareModalProps> = props => {
-    const { id, copyLink } = props
-    const [needSave, setNeedSave] = useState(false)
+    const { id, url, title, config } = props
+    const [needSave, setNeedSave] = useState(true)
     const [form] = Form.useForm()
     const [t] = useTranslation()
     const [fail, setFail] = useState(false)
-    const confirm = async () => {
-      const data = await form.validateFields()
-      console.log(data, 'data')
 
-      // todo 待调试
-      // shareView()
-      await onOkRef.current?.()
-      onClose()
+    // 确认分享
+    const confirm = async () => {
+      const data: any = await form.validateFields()
+      // 判断是人员还是邮箱
+      const params: any = {
+        title,
+        url,
+        content: data.content,
+      }
+      if (data?.name?.id) {
+        params.user_id = data.name.id
+      } else {
+        params.email = data.name
+      }
+      try {
+        const result: any = await shareView(params)
+        if (result && result.code === 0) {
+          getMessage({
+            msg: '分享成功',
+            type: 'success',
+          })
+          await onOkRef.current?.()
+          onClose()
+        } else {
+          getMessage({
+            msg: result?.message,
+            type: 'error',
+          })
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     const onsubmit = () => {
@@ -58,8 +91,8 @@ const useShareModal = () => {
     const setIsNeedSave = async () => {
       if (id) {
         const res = await checkUpdates({
-          id: id,
-          config: {},
+          id,
+          config,
         })
         // todo 待调试
         setNeedSave(true)
@@ -78,6 +111,9 @@ const useShareModal = () => {
         notFirst.current
       ) {
         return Promise.reject(new Error('请输入正确的用户名或邮箱'))
+      }
+      if (fail) {
+        setFail(false)
       }
       return Promise.resolve()
     }
@@ -104,10 +140,25 @@ const useShareModal = () => {
                 setFail(true)
               }
             }}
-            onValuesChange={changedValues => {
-              if (changedValues.name) {
+            onValuesChange={(changedValues, allValues) => {
+              const value = allValues.name
+              if (
+                changedValues.name &&
+                ((typeof allValues === 'string' &&
+                  !!value &&
+                  EMAIL_REGEXP.test(value)) ||
+                  (typeof value === 'object' && !!value))
+              ) {
                 setFail(false)
-              } else if (notFirst.current) {
+              } else if (
+                notFirst.current &&
+                !(
+                  typeof allValues === 'string' &&
+                  !!value &&
+                  EMAIL_REGEXP.test(value)
+                ) &&
+                !(typeof value === 'object' && !!value)
+              ) {
                 setFail(true)
               }
             }}
@@ -136,7 +187,7 @@ const useShareModal = () => {
             <Form.Item
               rules={[{ required: true, message: '请输入消息' }]}
               label=""
-              name="message"
+              name="content"
             >
               <Input.TextArea
                 placeholder="添加消息(必填)"
@@ -147,7 +198,7 @@ const useShareModal = () => {
         </ModalContentBox>
         <CopyButton
           onClick={() => {
-            copyLink()
+            copyLink(`${title}${url} `, '复制成功！', '复制失败！')
           }}
         >
           <IconFont type="link" />

@@ -305,9 +305,12 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     <Wrap>
       <DeleteConfirmModal />
       <ShareModal
-        copyLink={() => {
-          // Todo 传入复制方法
-        }}
+        url={location.href}
+        title={
+          affairsInfo?.name
+            ? `【${affairsInfo?.projectPrefix} ${affairsInfo?.name}】`
+            : ''
+        }
       />
       <CommonModal
         isVisible={isShowCategory}

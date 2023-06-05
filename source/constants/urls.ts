@@ -318,7 +318,7 @@ const urls = {
   // 检查试图是否保存
   checkUpdate: '/b/story/views/checkUpdate',
   // 分享视图
-  shareView: '/b/story/views/share',
+  shareView: '/b/share/web',
   /**
    * 冲刺板块
    */
