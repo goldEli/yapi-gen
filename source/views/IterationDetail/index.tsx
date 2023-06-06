@@ -35,6 +35,10 @@ import SetShowField from '@/components/SetShowField/indedx'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import TableFilter from '@/components/TableFilter'
 import InputSearch from '@/components/InputSearch'
+import { setIsUpdateAddWorkItem, setProjectInfoValues } from '@store/project'
+import IterationStatus from '@/components/IterationStatus'
+import { updateIterateStatus } from '@/services/iterate'
+import { getMessage } from '@/components/Message'
 
 const IterationDetail = () => {
   const [t] = useTranslation()
@@ -47,7 +51,6 @@ const IterationDetail = () => {
   const [settingState, setSettingState] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
   const [isRefreshList, setIsRefreshList] = useState(false)
-  //
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
@@ -245,7 +248,13 @@ const IterationDetail = () => {
               isIteration
             />
           )}
-          <Flaw activeKey={tabActive} searchGroups={searchGroups} />
+          <Flaw
+            activeKey={tabActive}
+            searchGroups={searchGroups}
+            checkList={titleList}
+            checkList2={titleList2}
+            checkList3={titleList3}
+          />
         </div>
       ),
     },
@@ -290,7 +299,7 @@ const IterationDetail = () => {
       <ScreenMinHover
         icon="sync"
         label={t('common.refresh')}
-        onClick={() => setIsRefreshList(true)}
+        onClick={() => dispatch(setIsUpdateAddWorkItem(true))}
       />
 
       <DividerWrap type="vertical" />
@@ -332,6 +341,37 @@ const IterationDetail = () => {
       obj.searchVal = value
       setSearchValue(value)
       setSearchGroups(obj)
+    }
+  }
+
+  const onChangeStatus = async (val: number) => {
+    if (val !== iterateInfo?.status) {
+      await updateIterateStatus({
+        projectId: getProjectIdByUrl(),
+        id: iterateInfo?.id,
+        status: val,
+      })
+      getMessage({ msg: t('common.editS') as string, type: 'success' })
+      const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+      // 修改迭代状态更新到项目下拉数据中
+      const newValues = beforeValues?.map((i: any) =>
+        i.key === 'iterate_name'
+          ? {
+              ...i,
+              children: i.children?.map((v: any) => ({
+                ...v,
+                status: v.id === iterateInfo?.id ? val : v.status,
+              })),
+            }
+          : i,
+      )
+      dispatch(setProjectInfoValues(newValues))
+      dispatch(
+        getIterateInfo({
+          projectId: getProjectIdByUrl(),
+          id: getIdByUrl('iterateId'),
+        }),
+      )
     }
   }
 
@@ -402,11 +442,11 @@ const IterationDetail = () => {
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
-          {/* <IterationStatus
-              hasChangeStatus={hasChangeStatus}
-              iterateInfo={iterateInfo}
-              onChangeStatus={onChangeStatus}
-            /> */}
+          <IterationStatus
+            hasChangeStatus={hasChangeStatus}
+            iterateInfo={iterateInfo}
+            onChangeStatus={onChangeStatus}
+          />
         </DetailText>
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />

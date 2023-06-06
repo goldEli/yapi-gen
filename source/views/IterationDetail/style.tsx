@@ -50,6 +50,8 @@ export const DetailTitle = styled.div`
 
 export const DetailText = styled.div`
   flex-wrap: wrap;
+  display: flex;
+  align-items: center;
   .name {
     font-size: 16px;
     color: var(--neutral-n1-d1);

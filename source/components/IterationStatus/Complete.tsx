@@ -3,7 +3,6 @@ import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
 import { Input, Popover, Radio, RadioChangeEvent, Space } from 'antd'
 import { SetStateAction, useEffect, useState } from 'react'
-
 const Titile = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);

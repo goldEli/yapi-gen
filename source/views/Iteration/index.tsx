@@ -20,8 +20,6 @@ import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import TableFilter from '@/components/TableFilter'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import IterationStatus from './components/IterationStatus'
-import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import InputSearch from '@/components/InputSearch'
 import useSetTitle from '@/hooks/useSetTitle'
@@ -43,6 +41,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import CommonButton from '@/components/CommonButton'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
+import IterationStatus from '@/components/IterationStatus'
 
 const Wrap = styled.div`
   height: 100%;

@@ -299,7 +299,7 @@ const Demand = (props: DemandProps) => {
   }, [props.searchGroups])
 
   useEffect(() => {
-    if (isRefresh || isUpdateAddWorkItem || props.activeKey === '2') {
+    if (isRefresh || isUpdateAddWorkItem) {
       getList(
         { page: 1, size: pageObj.size },
         order,
