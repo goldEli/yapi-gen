@@ -43,6 +43,7 @@ interface Props {
     iterate_id: number,
     story_id: number,
     to_iterate_id: number,
+    needFresh: boolean,
   ): void
 }
 
@@ -112,7 +113,7 @@ export const SprintDropdownMenu = (props: Props) => {
           <MenuItemWrap
             key={k.id}
             onClick={() =>
-              props.onRemoveSprintItem(Number(groupId), Number(id), k.id)
+              props.onRemoveSprintItem(Number(groupId), Number(id), k.id, true)
             }
           >
             {k.name}

@@ -44,12 +44,12 @@ export const checkUpdates = async (params: API.Sprint.CheckUpdate.Params) => {
 }
 
 // 分享视图
-export const shareView = async (params: API.Sprint.GetDefectRatio.Params) => {
-  const response = await http.post<any, API.Sprint.GetStatisticsTotal.Result>(
+export const shareView = async (params: API.Sprint.ShareView.Params) => {
+  const response = await http.post<any, API.Sprint.ShareView.Result>(
     'shareView',
     params,
   )
-  return response.data
+  return response
 }
 
 // 按冲刺分组的事务列表

@@ -309,9 +309,12 @@ const IterationDefectDetail = () => {
     <Wrap>
       <DeleteConfirmModal />
       <ShareModal
-        copyLink={() => {
-          // Todo 传入复制方法
-        }}
+        url={location.href}
+        title={
+          flawInfo?.name
+            ? `【${flawInfo?.projectPrefix} ${flawInfo?.name}】`
+            : ''
+        }
       />
       <CommonModal
         isVisible={isShowCategory}

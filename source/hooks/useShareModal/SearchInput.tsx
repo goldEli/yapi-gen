@@ -65,7 +65,7 @@ const PersonItemWrap = styled.div<{ isActive: boolean }>(
 )
 
 const SearchInput = (props: any) => {
-  const { placeholder, onChange, fail, changeFirstState } = props
+  const { placeholder, onChange, fail, changeFirstState, setFail } = props
   const [t]: any = useTranslation()
   const [popoverVisible, setPopoverVisible] = useState(false)
   const [value, setValue] = useState('')
@@ -101,8 +101,9 @@ const SearchInput = (props: any) => {
                 isActive={peopleValue?.id === i.id}
                 key={i.id}
                 onClick={() => {
+                  setFail(false)
                   setPeopleValue(i)
-                  setValue(i.name)
+                  setValue(value === i.name ? ` ${i.name}` : i.name)
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center' }}>

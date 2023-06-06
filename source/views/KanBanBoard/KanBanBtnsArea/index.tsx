@@ -5,7 +5,7 @@ import { Space, Menu, message } from 'antd'
 import styled from '@emotion/styled'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import SetShowField from './SetShowField'
@@ -38,14 +38,17 @@ const SpaceWrap = styled(Space)({
 
 const KanBanBtnsArea = (props: Props) => {
   const [t] = useTranslation()
-  const location = useLocation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
   const { projectInfo } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
   const dispatch = useDispatch()
+  const { sortByView } = useSelector(store => store.kanBan)
+  const currentView = useMemo(() => {
+    return sortByView?.find(item => item.check)
+  }, [sortByView])
+  const { valueKey } = useSelector(store => store.view)
 
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
@@ -138,9 +141,10 @@ const KanBanBtnsArea = (props: Props) => {
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       <ShareModal
-        copyLink={() => {
-          // Todo 待传入分享组件中复制链接方法
-        }}
+        id={currentView?.id}
+        config={valueKey}
+        url={window.location.href}
+        title={`【${projectInfo.name}-${currentView?.name}】`}
       />
       {/* 分享 */}
       <ScreenMinHover

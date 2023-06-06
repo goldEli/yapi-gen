@@ -411,9 +411,12 @@ const FlawDetailDrawer = () => {
   return (
     <>
       <ShareModal
-        copyLink={() => {
-          // Todo 待传入分享组件中复制链接方法
-        }}
+        url={location.href}
+        title={
+          drawerInfo?.name
+            ? `【${drawerInfo?.projectPrefix} ${drawerInfo?.name}】`
+            : ''
+        }
       />
       <DeleteConfirmModal />
       <Drawer

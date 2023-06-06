@@ -521,11 +521,7 @@ const SprintDetailDrawer = () => {
 
   return (
     <>
-      <ShareModal
-        copyLink={() => {
-          // Todo 待传入分享组件中复制链接方法
-        }}
-      />
+      <ShareModal url={location.href} title={''} />
       <DeleteConfirmModal />
       <Drawer
         closable={false}
