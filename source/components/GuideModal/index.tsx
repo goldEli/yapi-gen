@@ -96,7 +96,6 @@ const LeftButton = styled.div`
 `
 
 const GuideModal = (props: {
-  visible: boolean
   close(): void
   inform: any[]
   width: number
@@ -114,6 +113,7 @@ const GuideModal = (props: {
     transform: translate(-50%, -50%);
   `
   const [active, setActive] = useState(0)
+  const [visible, setVisible] = useState(true)
 
   const filterData = useMemo(() => {
     const filterActive = props?.inform.filter((item, index) => index === active)
@@ -147,34 +147,37 @@ const GuideModal = (props: {
     if (index >= props?.inform?.length) {
       setActive(0)
       props?.close?.()
+      setVisible(false)
     }
     setActive(index)
   }
 
-  if (!props.visible) {
-    return null
-  }
-  return createPortal(
-    <Container>
-      <Dialog>
-        {ImgData}
-        {filterData}
-        <footer className={footerCss}>
-          <LeftButton
-            onClick={() => {
-              setActive(0)
-              props?.close?.()
-            }}
-          >
-            跳过 {`(${active + 1}/${props?.inform?.length})`}
-          </LeftButton>
-          <RightButton onClick={next}>
-            {active + 1 === props?.inform?.length ? '开始工作' : '下一步'}
-          </RightButton>
-        </footer>
-      </Dialog>
-    </Container>,
-    document.body,
+  return visible ? (
+    createPortal(
+      <Container>
+        <Dialog>
+          {ImgData}
+          {filterData}
+          <footer className={footerCss}>
+            <LeftButton
+              onClick={() => {
+                setActive(0)
+                props?.close?.()
+                setVisible(false)
+              }}
+            >
+              跳过 {`(${active + 1}/${props?.inform?.length})`}
+            </LeftButton>
+            <RightButton onClick={next}>
+              {active + 1 === props?.inform?.length ? '开始工作' : '下一步'}
+            </RightButton>
+          </footer>
+        </Dialog>
+      </Container>,
+      document.body,
+    )
+  ) : (
+    <div></div>
   )
 }
 

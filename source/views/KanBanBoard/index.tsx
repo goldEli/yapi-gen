@@ -8,6 +8,7 @@ import FullScreenContainer from './FullScreenContainer'
 import ToolBar from './ToolBar'
 import TopArea from './TopArea'
 import useInit from './useInit'
+import { useSelector } from '@store/index'
 
 interface IProps {}
 const KanBanBoardBox = styled.div`
@@ -21,6 +22,7 @@ const KanBanBoardBox = styled.div`
 `
 
 const KanBanBoard: React.FC<IProps> = props => {
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const { guildModalEl } = useGuideModal()
 
   useInit()
@@ -29,7 +31,9 @@ const KanBanBoard: React.FC<IProps> = props => {
     <KanBanBoardBox>
       <TopArea />
       <ToolBar />
-      {guildModalEl}
+      {userPreferenceConfig?.guidePageConfig?.kanban === 1
+        ? guildModalEl
+        : null}
       <FullScreenContainer>
         <Board />
       </FullScreenContainer>
