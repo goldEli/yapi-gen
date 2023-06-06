@@ -42,6 +42,7 @@ import {
   Myd,
   WaiWrap,
 } from './style'
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 
 interface Props {
   visible: boolean
@@ -292,18 +293,25 @@ const CommonMember = (props: Props) => {
   return (
     <WaiWrap>
       {props.visible && (
-        <AddMemberCommonModal
-          isPermisGroup
-          userGroupId={
-            projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
-              ?.value
-          }
+        <NewAddUserModalForTandD
           title={t('project.addMember')}
+          state={2}
           isVisible={isVisible}
-          onClose={onClickCancel}
           onConfirm={handleOk}
-          projectPermission={projectPermission}
+          onClose={() => setIsVisible(false)}
         />
+        // <AddMemberCommonModal
+        //   isPermisGroup
+        //   userGroupId={
+        //     projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
+        //       ?.value
+        //   }
+        //   title={t('project.addMember')}
+        //   isVisible={isVisible}
+        //   onClose={onClickCancel}
+        //   onConfirm={handleOk}
+        //   projectPermission={projectPermission}
+        // />
       )}
 
       <DrawerWrap
