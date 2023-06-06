@@ -132,9 +132,7 @@ const useShareModal = () => {
       ) {
         return Promise.reject(new Error('请输入正确的用户名或邮箱'))
       }
-      if (fail) {
-        setFail(false)
-      }
+      setFail(false)
       return Promise.resolve()
     }
 
@@ -173,7 +171,7 @@ const useShareModal = () => {
               } else if (
                 notFirst.current &&
                 !(
-                  typeof allValues === 'string' &&
+                  typeof value === 'string' &&
                   !!value &&
                   EMAIL_REGEXP.test(value)
                 ) &&
