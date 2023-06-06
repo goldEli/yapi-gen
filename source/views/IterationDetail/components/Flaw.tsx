@@ -1,5 +1,6 @@
 interface FlawProps {
   activeKey: string
+  searchGroups: any
 }
 
 const Flaw = (props: FlawProps) => {

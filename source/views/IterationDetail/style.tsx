@@ -11,7 +11,7 @@ export const Wrap = styled.div`
     padding: 0 24px;
   }
   .ant-tabs-nav {
-    margin-bottom: 8px;
+    margin-bottom: 0px;
   }
   .ant-tabs-tab {
     padding: 16px 0;
@@ -44,6 +44,8 @@ export const DetailTitle = styled.div`
   padding: 20px 0px 6px;
   width: calc(100% - 48px);
   margin-left: 24px;
+  align-items: center;
+  justify-content: space-between;
 `
 
 export const DetailText = styled.div`
@@ -83,6 +85,11 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
 export const ComputedWrap = styled.div`
   height: calc(100vh - 229px);
 `
+
+export const OperationWrap = styled(Space)({
+  display: 'flex',
+  alignItems: 'center',
+})
 
 // 迭代概况样式
 
