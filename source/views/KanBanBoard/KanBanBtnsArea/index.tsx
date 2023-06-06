@@ -138,6 +138,7 @@ const KanBanBtnsArea = (props: Props) => {
     ]
     return <Menu items={menuItems} />
   }
+
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       <ShareModal

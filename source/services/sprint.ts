@@ -39,7 +39,10 @@ export const updateHomeSetting = (
 
 // 检查是否保存视图
 export const checkUpdates = async (params: API.Sprint.CheckUpdate.Params) => {
-  const response = await http.post('checkUpdate', params)
+  const response = await http.post<any, API.Sprint.CheckUpdate.Result>(
+    'checkUpdate',
+    params,
+  )
   return response.data
 }
 
