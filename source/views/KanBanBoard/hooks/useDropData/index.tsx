@@ -36,16 +36,12 @@ const useDropData = (
 
   // 展示状态转换释放区域
   const showStateTransitionList = React.useMemo(() => {
-    // // 人员分组和类别分组，只有同组才能转换状态
+    // 人员分组和类别分组，只有同组才能转换状态
     if (groupType === 'users' || groupType === 'category') {
       const ret =
         !!movingStory &&
         movingStory?.groupId === groupId &&
         movingStory?.columnId !== columnId
-      console.log('users', 'category', ret, {
-        groupId,
-        groupIdcurrent: movingStory?.groupId,
-      })
       return ret
     }
 
