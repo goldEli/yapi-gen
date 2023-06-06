@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 // 我的模块-所有页面公用列表及查询
 
 /* eslint-disable camelcase */

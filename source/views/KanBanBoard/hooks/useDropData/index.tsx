@@ -34,15 +34,15 @@ const useDropData = (
     return data
   }, [kanbanConfig, movingStory, columnId])
 
+  // 展示状态转换释放区域
   const showStateTransitionList = React.useMemo(() => {
-    // // 人员分组和类别分组，只有同组才能转换状态
+    // 人员分组和类别分组，只有同组才能转换状态
     if (groupType === 'users' || groupType === 'category') {
-      return (
+      const ret =
         !!movingStory &&
-        !(
-          movingStory?.columnId === columnId && movingStory?.groupId === groupId
-        )
-      )
+        movingStory?.groupId === groupId &&
+        movingStory?.columnId !== columnId
+      return ret
     }
 
     // 跨分组可拖

@@ -46,7 +46,7 @@ const ProjectDetailSide = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
-  console.log('projectInfo----', projectInfo)
+
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])

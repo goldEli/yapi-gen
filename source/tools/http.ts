@@ -170,6 +170,7 @@ client.config({
       return {
         code: data.code === 'B0015' ? data.code : Number(data.code),
         data: data.data,
+        msg: data.msg,
         message: data.msg,
       }
     },
