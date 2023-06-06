@@ -97,7 +97,7 @@ export const updateKanbanConfig =
 
 // 更新备份数据
 export const backUpKanbanConfig =
-  (params: API.KanbanConfig.UpdateKanbanConfig.Params) =>
+  (params: Pick<API.KanbanConfig.UpdateKanbanConfig.Params, 'columns'>) =>
   async (dispatch: AppDispatch) => {
     if (params.columns) {
       dispatch(setColumnListBackup(params.columns))
@@ -213,6 +213,7 @@ export const onSaveAsViewModel =
     if (!data.name) {
       return
     }
+    const { columnList } = store.getState().KanbanConfig
     let createId = 0
     if (!data.id) {
       const res = await services.kanbanConfig.createKanbanConfig({
@@ -222,13 +223,14 @@ export const onSaveAsViewModel =
       createId = res.data.id
     }
     if (!!data.id) {
-      const res = await services.kanbanConfig.updateKanbanConfig({
-        id: data.id,
+      const res = await services.kanbanConfig.createKanbanConfig({
         name: data.name,
         project_id: data.project_id,
+        columns: columnList,
       })
       createId = res.data.id
     }
+    dispatch(backUpKanbanConfig({ columns: columnList }))
     getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
     await dispatch(
@@ -236,7 +238,9 @@ export const onSaveAsViewModel =
         project_id: data.project_id,
       }),
     )
-    dispatch(onChangeViewList(createId))
+    setTimeout(() => {
+      dispatch(onChangeViewList(createId))
+    })
   }
 
 export const setDefaultKanbanConfig =
