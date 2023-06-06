@@ -1,15 +1,14 @@
 import GuideModal from '@/components/GuideModal'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import { onChangeGuideVisible } from '@store/kanBan'
-import React from 'react'
 import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
 import useI18n from '@/hooks/useI18n'
+import { updateCompanyUserPreferenceConfig } from '@/services/user'
 
 const useGuideModal = () => {
-  const dispatch = useDispatch()
-  const { guideVisible } = useSelector(store => store.kanBan)
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const { t } = useI18n()
   const inform = [
     {
@@ -39,9 +38,16 @@ const useGuideModal = () => {
     <GuideModal
       width={784}
       height={670}
-      visible={guideVisible}
       inform={inform}
-      close={() => dispatch(onChangeGuideVisible(false))}
+      close={async () => {
+        await updateCompanyUserPreferenceConfig({
+          id: userPreferenceConfig?.id,
+          previewModel: userPreferenceConfig.previewModel,
+          guidePageConfig: {
+            kanban: 2,
+          },
+        })
+      }}
     />
   )
   return {
