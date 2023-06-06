@@ -361,11 +361,14 @@ const DemandDetail = () => {
   return (
     <Wrap>
       <DeleteConfirmModal />
-      {/* <ShareModal
-        copyLink={() => {
-          // Todo 传入复制方法
-        }}
-      /> */}
+      <ShareModal
+        url={location.href}
+        title={
+          demandInfo?.name
+            ? `【${demandInfo?.projectPrefix} ${demandInfo?.name}】`
+            : ''
+        }
+      />
       <CommonModal
         isVisible={isShowCategory}
         onClose={onCloseCategory}

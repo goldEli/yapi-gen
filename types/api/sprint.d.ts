@@ -166,6 +166,9 @@ declare namespace API.Sprint {
       id: number
       config: any
     }
+    type Result = {
+      is_update: number
+    }
   }
   namespace SprintGroupList {
     type Params = {
