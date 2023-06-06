@@ -9,7 +9,7 @@ import {
   getStoryViewList,
 } from '@store/kanBan/kanBan.thunk'
 import { jumpToKanbanConfig } from './utils'
-import { getIdByUrl } from '@/tools'
+import { getIdByUrl, getValueByUrl } from '@/tools'
 
 const useInit = () => {
   const dispatch = useDispatch()
@@ -19,16 +19,29 @@ const useInit = () => {
   // init
   useEffect(() => {
     async function run() {
-      const res = await dispatch(getKanbanConfigList({ project_id: projectId }))
+      const otherConfig = getValueByUrl('otherConfig')
+      const currentRowAndStatusId = otherConfig?.currentRowAndStatusId
+      const res = await dispatch(
+        getKanbanConfigList({
+          project_id: projectId,
+          showId: currentRowAndStatusId,
+        }),
+      )
       const { sortByRowAndStatusOptions } = res.payload as any
       if (!sortByRowAndStatusOptions?.length) {
         jumpToKanbanConfig(navigate)
         return
       }
       // 如果是分享先复制分享视图得到当前视图
-      const shareViewId = getIdByUrl('viewId')
-      const copyViewRes = await dispatch(copyView({ id: shareViewId }))
-      await dispatch(getStoryViewList(copyViewRes?.id ? copyViewRes.id : null))
+      const shareViewId = getIdByUrl('valueId')
+      let id: number | null = null
+      try {
+        const copyViewRes = await dispatch(copyView({ id: shareViewId }))
+        id = copyViewRes?.id ?? null
+      } catch (error) {
+        console.error(error)
+      }
+      await dispatch(getStoryViewList(id))
       dispatch(getKanbanByGroup())
     }
     run()

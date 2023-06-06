@@ -238,9 +238,7 @@ export const onSaveAsViewModel =
         project_id: data.project_id,
       }),
     )
-    setTimeout(() => {
-      dispatch(onChangeViewList(createId))
-    })
+    dispatch(onChangeViewList(createId))
   }
 
 export const setDefaultKanbanConfig =

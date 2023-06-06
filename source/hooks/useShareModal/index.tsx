@@ -2,7 +2,7 @@
  * 另存为视图  编辑视图弹窗
  */
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
@@ -25,6 +25,8 @@ interface ShareModalProps {
   url: string
   // 用于分享后展示的标题
   title: string
+  // 用于分享的数据
+  otherConfig?: any
 }
 
 interface Options {
@@ -53,16 +55,20 @@ const useShareModal = () => {
     const [t] = useTranslation()
     const [fail, setFail] = useState(false)
     const [searchParams] = useSearchParams()
-    let new_url = ''
-    if (id && config) {
-      const paramsData = getParamsData(searchParams)
-      new_url = `${location.origin}${location.pathname}?data=${encryptPhp(
-        JSON.stringify({
-          ...paramsData,
-          valueId: id,
-        }),
-      )}`
-    }
+
+    const new_url = useMemo(() => {
+      if (id && config) {
+        const paramsData = getParamsData(searchParams)
+        return `${location.origin}${location.pathname}?data=${encryptPhp(
+          JSON.stringify({
+            ...paramsData,
+            valueId: id,
+            otherConfig: props.otherConfig,
+          }),
+        )}`
+      }
+      return ''
+    }, [id, config])
 
     // 确认分享
     const confirm = async () => {
