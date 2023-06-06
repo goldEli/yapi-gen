@@ -3,6 +3,7 @@ import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
 import {
   modifyColumn,
+  setColumnListBackup,
   setEditColumnModelInfo,
   setSaveAsViewModelInfo,
   setViewList,
@@ -25,19 +26,6 @@ export const updateViewByViewId =
     checked && dispatch<any>(onFresh(checked))
   }
 
-export const handleSaveReminder = () => async (dispatch: AppDispatch) => {
-  const { columnList, columnListBackup } = store.getState().KanbanConfig
-  if (JSON.stringify(columnList) !== JSON.stringify(columnListBackup)) {
-    openConfirmModal({
-      text: i18next.t('do_you_want_to_save_changes'),
-      title: i18next.t('remind'),
-      onConfirm: async () => {
-        const res = await dispatch(saveKanbanConfig())
-      },
-    })
-  }
-}
-
 export const onChangeViewList =
   (id: Model.KanbanConfig.ConfigListItem['id']) =>
   async (dispatch: AppDispatch) => {
@@ -50,6 +38,9 @@ export const onChangeViewList =
         title: i18next.t('remind'),
         onConfirm: async () => {
           const res = await dispatch(saveKanbanConfig())
+          dispatch(updateViewByViewId(id))
+        },
+        onCancel: () => {
           dispatch(updateViewByViewId(id))
         },
       })
@@ -95,11 +86,6 @@ export const getKanbanConfig = createAsyncThunk(
 export const updateKanbanConfig =
   (params: API.KanbanConfig.UpdateKanbanConfig.Params) =>
   async (dispatch: AppDispatch) => {
-    const { columnList } = store.getState().KanbanConfig
-    const p: API.KanbanConfig.UpdateKanbanConfig.Params = {
-      ...params,
-      columns: columnList,
-    }
     const res = await services.kanbanConfig.updateKanbanConfig(params)
     getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
     dispatch(
@@ -107,6 +93,15 @@ export const updateKanbanConfig =
         project_id: params.project_id,
       }),
     )
+  }
+
+// 更新备份数据
+export const backUpKanbanConfig =
+  (params: Pick<API.KanbanConfig.UpdateKanbanConfig.Params, 'columns'>) =>
+  async (dispatch: AppDispatch) => {
+    if (params.columns) {
+      dispatch(setColumnListBackup(params.columns))
+    }
   }
 
 // 修改看板配置(包含列)
@@ -121,6 +116,7 @@ export const saveKanbanConfig = () => async (dispatch: AppDispatch) => {
     columns: columnList,
   }
   const res = await services.kanbanConfig.updateKanbanConfig(params)
+  dispatch(backUpKanbanConfig(params))
   getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
 }
 
@@ -217,6 +213,7 @@ export const onSaveAsViewModel =
     if (!data.name) {
       return
     }
+    const { columnList } = store.getState().KanbanConfig
     let createId = 0
     if (!data.id) {
       const res = await services.kanbanConfig.createKanbanConfig({
@@ -226,13 +223,14 @@ export const onSaveAsViewModel =
       createId = res.data.id
     }
     if (!!data.id) {
-      const res = await services.kanbanConfig.updateKanbanConfig({
-        id: data.id,
+      const res = await services.kanbanConfig.createKanbanConfig({
         name: data.name,
         project_id: data.project_id,
+        columns: columnList,
       })
       createId = res.data.id
     }
+    dispatch(backUpKanbanConfig({ columns: columnList }))
     getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
     await dispatch(
@@ -240,7 +238,9 @@ export const onSaveAsViewModel =
         project_id: data.project_id,
       }),
     )
-    dispatch(onChangeViewList(createId))
+    setTimeout(() => {
+      dispatch(onChangeViewList(createId))
+    })
   }
 
 export const setDefaultKanbanConfig =
