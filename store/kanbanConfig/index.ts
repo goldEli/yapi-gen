@@ -66,6 +66,12 @@ const slice = createSlice({
   name: 'kanbanConfig',
   initialState,
   reducers: {
+    setColumnListBackup(
+      state,
+      action: PayloadAction<SliceState['columnListBackup']>,
+    ) {
+      state.columnListBackup = action.payload
+    },
     setMovingStatus(
       state,
       action: PayloadAction<{
@@ -316,6 +322,7 @@ export const {
   modifyColumn,
   setMovingStatus,
   clearMovingStatus,
+  setColumnListBackup,
 } = slice.actions
 
 export default KanbanConfig
