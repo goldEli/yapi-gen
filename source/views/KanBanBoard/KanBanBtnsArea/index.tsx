@@ -17,6 +17,7 @@ import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import useShareModal from '@/hooks/useShareModal'
 import { onFullScreenMode } from '@store/kanBan/kanBan.thunk'
+import _ from 'lodash'
 
 interface Props {
   onChangeFilter?(): void
@@ -142,7 +143,7 @@ const KanBanBtnsArea = (props: Props) => {
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       <ShareModal
         id={currentView?.id}
-        config={valueKey}
+        config={_.isEmpty(valueKey) ? { all: 1 } : valueKey}
         url={window.location.href}
         title={`【${projectInfo.name}-${currentView?.name}】`}
       />

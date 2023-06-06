@@ -562,7 +562,7 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 // 视图列表
 export const getStoryViewList = createAsyncThunk(
   `${name}/getStoryViewList`,
-  // 指定当前视图
+  // 指定当前视图id
   async (viewId: Model.KanBan.ViewItem['id'] | null, { dispatch }) => {
     const project_id = getProjectIdByUrl()
     const res = await services.kanban.getStoryViewList({ project_id })
@@ -578,9 +578,13 @@ export const getStoryViewList = createAsyncThunk(
       }
     })
     // 用户已经选中过，需要恢复
-    let checked = sortByView?.find(
-      item => item.check && ret.some(i => i.id === item.id),
-    )
+    let checked = ret?.find(item => {
+      return sortByView?.some(i => i.id === item.id && item.check)
+    })
+    // 指定打开视图
+    if (viewId) {
+      checked = ret.find(item => item.id === viewId)
+    }
     if (checked) {
       checked.check = true
     } else {
