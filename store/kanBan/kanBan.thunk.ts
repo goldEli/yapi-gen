@@ -514,20 +514,25 @@ export const onFilter = () => async (dispatch: AppDispatch) => {
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
-  async (param: API.KanbanConfig.GetKanbanConfigList.Params, { dispatch }) => {
+  async (
+    param: API.KanbanConfig.GetKanbanConfigList.Params & {
+      showId?: number
+    },
+    { dispatch },
+  ) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
     const { data } = res
     const sortByRowAndStatusOptions = data.map(item => {
       return {
-        check: false,
+        check: param.showId === item.id,
         value: item.name,
         key: item.id + '',
       }
     })
-    if (sortByRowAndStatusOptions.length) {
+    if (sortByRowAndStatusOptions.length && !param.showId) {
       sortByRowAndStatusOptions[0].check = true
     }
-    const checked = sortByRowAndStatusOptions[0]
+    const checked = sortByRowAndStatusOptions.find(item => item.check)
     if (checked) {
       dispatch(
         getKanbanConfig({
@@ -607,7 +612,6 @@ export const onSaveAsViewModel =
         project_id: getProjectIdByUrl(),
       }),
     )
-    console.log('onSaveAsViewModel', data)
     getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
   }

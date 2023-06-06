@@ -19,6 +19,7 @@ const useOpenDemandDetail = () => {
     id: any,
     type?: number,
   ) => {
+    console.log({ item, projectId, id, type })
     // 弹窗预览
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {

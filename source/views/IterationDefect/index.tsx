@@ -27,10 +27,14 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { saveTitles } from '@store/view'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { getFlawList } from '@/services/flaw'
-
+import useKeyPress from '@/hooks/useKeyPress'
 export const TreeContext: any = React.createContext('')
 
 const Index = (props: any) => {
+  const { useKeys } = useKeyPress()
+  useKeys('1', '/ProjectManagement/Iteration')
+  useKeys('2', '/ProjectManagement/KanBan')
+  useKeys('3', '/Report/PerformanceInsight')
   const keyRef = useRef()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()

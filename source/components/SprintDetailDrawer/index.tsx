@@ -521,7 +521,14 @@ const SprintDetailDrawer = () => {
 
   return (
     <>
-      <ShareModal url={location.href} title={''} />
+      <ShareModal
+        url={location.href}
+        title={
+          drawerInfo?.name
+            ? `【${drawerInfo?.projectPrefix} ${drawerInfo?.name}】`
+            : ''
+        }
+      />
       <DeleteConfirmModal />
       <Drawer
         closable={false}

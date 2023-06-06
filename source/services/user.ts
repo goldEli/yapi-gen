@@ -16,6 +16,7 @@ export const getCompanyUserPreferenceConfig: any = async () => {
     id: response.data.id,
     companyId: response.data.company_id,
     previewModel: response.data.preview_model,
+    guidePageConfig: response.data.guide_page_config,
   }
 }
 
@@ -24,6 +25,7 @@ export const updateCompanyUserPreferenceConfig: any = async (params: any) => {
   await http.post('updateCompanyUserPreferenceConfig', {
     id: params.id,
     preview_model: params.previewModel,
+    guide_page_config: params.guidePageConfig,
   })
 }
 

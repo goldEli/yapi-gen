@@ -7,6 +7,7 @@ import { setCategoryVisibleInfo } from '@store/kanbanConfig'
 import { useNavigate } from 'react-router'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import useI18n from '@/hooks/useI18n'
+import { getProjectIdByUrl } from '@/tools'
 
 interface CategoryAreaProps {
   data: Model.KanbanConfig.Category
@@ -73,7 +74,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
             e.stopPropagation()
             const params = encryptPhp(
               JSON.stringify({
-                id: 441,
+                id: getProjectIdByUrl(),
                 pageIdx: 'work',
                 // categoryItem: props.data,
                 categoryItem: {

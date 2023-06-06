@@ -3,7 +3,7 @@
 
 import CommonIconFont from '@/components/CommonIconFont'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { getParamsData } from '@/tools'
+import { getParamsData, getProjectType } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
@@ -46,7 +46,7 @@ const ProjectDetailSide = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
-  console.log('projectInfo----', projectInfo)
+
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
@@ -185,7 +185,7 @@ const ProjectDetailSide = () => {
   // 点击切换模块
   const onChangeRouter = (i: { path: any; key: any }) => {
     const { path, key } = i
-    const params = encryptPhp(JSON.stringify({ id: projectId }))
+    const params = encryptPhp(JSON.stringify({ id: projectId, type: 'sprint' }))
     if (key === 'SprintReport') {
       const paramsData = encryptPhp(
         JSON.stringify({

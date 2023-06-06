@@ -65,6 +65,15 @@ export function getIdByUrl(key: string) {
   return parseInt(params[key], 10)
 }
 
+export function getValueByUrl<T = any>(key: string): T {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams)
+
+  return params[key]
+}
+
 export function getProjectIdByUrl() {
   const url = new URL(window.location.href)
   const searchParams = url.searchParams
