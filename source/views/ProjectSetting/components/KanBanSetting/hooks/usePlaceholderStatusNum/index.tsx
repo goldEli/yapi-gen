@@ -18,7 +18,6 @@ const usePlaceholderStatusNum = (category?: Model.KanbanConfig.Category) => {
     const currentLen = category?.status?.length ?? 0
     return maxNum - currentLen
   }, [category, maxNum])
-  console.log({ category: category?.id, maxNum }, category?.status?.length)
   return {
     maxNum,
     placeholderItemsLength,
