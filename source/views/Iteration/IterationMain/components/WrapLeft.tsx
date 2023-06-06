@@ -395,9 +395,9 @@ const WrapLeft = (props: Props) => {
   const onClickInfo = (item: any) => {
     props.onChangeOperation?.(item)
     const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, iterateId: item.id }),
+      JSON.stringify({ id: projectId, iterateId: item.id }),
     )
-    navigate(`/ProjectManagement/Iteration?data=${params}`)
+    navigate(`/ProjectManagement/IterationDetail?data=${params}`)
   }
 
   const onClickItem = (item: any) => {

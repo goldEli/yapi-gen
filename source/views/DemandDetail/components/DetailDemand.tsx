@@ -167,7 +167,7 @@ const DetailDemand = () => {
       />
       <InfoItem>
         <Label>{t('new_p1.a3')}</Label>
-        {/* <DemandStatus pid={projectId} sid={demandId} /> */}
+        <DemandStatus pid={projectId} sid={demandId} />
       </InfoItem>
     </WrapLeft>
   )

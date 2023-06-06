@@ -295,7 +295,7 @@ const DemandDetail = () => {
       label: (
         <DetailTabItem>
           <span>子需求</span>
-          <ItemNumber isActive={tabActive === '1'}>
+          <ItemNumber isActive={tabActive === '2'}>
             {demandInfo?.childCount || 0}
           </ItemNumber>
         </DetailTabItem>

@@ -319,7 +319,7 @@ const Iteration = () => {
     const params = encryptPhp(
       JSON.stringify({ type: val, id: projectId, iterateId }),
     )
-    navigate(`/ProjectManagement/Iteration?data=${params}`)
+    navigate(`/ProjectManagement/IterationDetail?data=${params}`)
   }
 
   const onChangeOperation = (item: any) => {
