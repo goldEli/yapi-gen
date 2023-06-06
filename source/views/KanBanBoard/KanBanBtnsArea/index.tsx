@@ -38,10 +38,8 @@ const SpaceWrap = styled(Space)({
 
 const KanBanBtnsArea = (props: Props) => {
   const [t] = useTranslation()
-  const location = useLocation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
   const { projectInfo } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
@@ -50,6 +48,7 @@ const KanBanBtnsArea = (props: Props) => {
   const currentView = useMemo(() => {
     return sortByView?.find(item => item.check)
   }, [sortByView])
+  const { valueKey } = useSelector(store => store.view)
 
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
@@ -143,7 +142,7 @@ const KanBanBtnsArea = (props: Props) => {
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       <ShareModal
         id={currentView?.id}
-        config={currentView?.config}
+        config={valueKey}
         url={window.location.href}
         title={`【${projectInfo.name}-${currentView?.name}】`}
       />
