@@ -361,11 +361,11 @@ const DemandDetail = () => {
   return (
     <Wrap>
       <DeleteConfirmModal />
-      <ShareModal
+      {/* <ShareModal
         copyLink={() => {
           // Todo 传入复制方法
         }}
-      />
+      /> */}
       <CommonModal
         isVisible={isShowCategory}
         onClose={onCloseCategory}
