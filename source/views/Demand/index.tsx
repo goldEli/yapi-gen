@@ -31,10 +31,14 @@ import { setIsRefresh } from '@store/user'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { saveTitles } from '@store/view'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-
+import useKeyPress from '@/hooks/useKeyPress'
 export const TreeContext: any = React.createContext('')
 
 const DemandIndex = () => {
+  const { useKeys } = useKeyPress()
+  useKeys('1', '/ProjectManagement/Iteration')
+  useKeys('2', '/ProjectManagement/KanBan')
+  useKeys('3', '/Report/PerformanceInsight')
   const keyRef = useRef()
   const dispatch = useDispatch()
   const [t] = useTranslation()

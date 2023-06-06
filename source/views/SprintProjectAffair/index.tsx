@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 import PermissionWrap from '@/components/PermissionWrap'
 import { useDispatch, useSelector } from '@store/index'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, lazy } from 'react'
 import {
   ContentLeft,
   ContentMain,
@@ -32,7 +32,7 @@ import { saveTitles } from '@store/view'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { getMessage } from '@/components/Message'
-
+import useKeyPress from '@/hooks/useKeyPress'
 interface IProps {}
 
 export const MoreWrap = styled.div<{ type?: any }>(
@@ -61,6 +61,10 @@ export const MoreWrap = styled.div<{ type?: any }>(
 export const TreeContext: any = React.createContext('')
 
 const SprintProjectAffair: React.FC<IProps> = props => {
+  const { useKeys } = useKeyPress()
+  useKeys('1', '/SprintProjectManagement/Sprint')
+  useKeys('2', '/SprintProjectManagement/KanBan')
+  useKeys('3', '/Report/PerformanceInsight')
   const dispatch = useDispatch()
   const { currentMenu } = useSelector(store => store.user)
   const titles = useSelector(store => store.view.tapTitles)

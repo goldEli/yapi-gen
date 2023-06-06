@@ -2,6 +2,7 @@ import { useDispatch } from '@store/index'
 import React, { useEffect } from 'react'
 import useProjectId from './hooks/useProjectId'
 import { useNavigate } from 'react-router-dom'
+import useKeyPress from '@/hooks/useKeyPress'
 import {
   copyView,
   getKanbanByGroup,
@@ -9,12 +10,22 @@ import {
   getStoryViewList,
 } from '@store/kanBan/kanBan.thunk'
 import { jumpToKanbanConfig } from './utils'
-import { getIdByUrl } from '@/tools'
+import { getIdByUrl, getProjectType } from '@/tools'
 
 const useInit = () => {
   const dispatch = useDispatch()
   const { projectId } = useProjectId()
+  const projectType = getProjectType()
+  console.log('projectType', projectType)
   const navigate = useNavigate()
+  const { useKeys } = useKeyPress()
+  useKeys(
+    '1',
+    projectType === 1
+      ? '/ProjectManagement/Iteration'
+      : '/SprintProjectManagement/Sprint',
+  )
+  useKeys('3', '/Report/PerformanceInsight')
 
   // init
   useEffect(() => {

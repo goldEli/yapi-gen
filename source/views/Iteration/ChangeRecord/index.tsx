@@ -67,7 +67,9 @@ const ChangeRecord = (props?: any) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [searchParams] = useSearchParams()
+  // TODO
   const paramsData = getParamsData(searchParams)
+
   const projectId = paramsData.id
   const { iterateId } = paramsData
   const [dataList, setDataList] = useState<any>({

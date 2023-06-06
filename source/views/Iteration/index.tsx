@@ -43,7 +43,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import CommonButton from '@/components/CommonButton'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
-
+import useKeyPress from '@/hooks/useKeyPress'
 const Wrap = styled.div`
   height: 100%;
   display: flex;
@@ -140,6 +140,9 @@ const Item = styled.div<{ activeIdx: boolean }>(
 )
 
 const Iteration = () => {
+  const { useKeys } = useKeyPress()
+  useKeys('2', '/ProjectManagement/KanBan')
+  useKeys('3', '/Report/PerformanceInsight')
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [filterState, setFilterState] = useState(true)

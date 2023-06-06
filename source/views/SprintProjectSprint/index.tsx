@@ -30,7 +30,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import CategoryDropdown from '@/components/CategoryDropdown'
-
+import useKeyPress from '@/hooks/useKeyPress'
 const SearchBox = styled.div`
   display: flex;
   align-items: center;
@@ -249,6 +249,9 @@ const filterList1 = [
 
 const SprintProjectSprint: React.FC = () => {
   const dispatch = useDispatch()
+  const { useKeys } = useKeyPress()
+  useKeys('3', '/Report/PerformanceInsight')
+  useKeys('2', '/SprintProjectManagement/KanBan')
   const {
     guideVisible,
     leftSprintList,
