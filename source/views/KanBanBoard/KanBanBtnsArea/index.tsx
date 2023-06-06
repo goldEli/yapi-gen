@@ -5,7 +5,7 @@ import { Space, Menu, message } from 'antd'
 import styled from '@emotion/styled'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import SetShowField from './SetShowField'
@@ -46,6 +46,10 @@ const KanBanBtnsArea = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
   const dispatch = useDispatch()
+  const { sortByView } = useSelector(store => store.kanBan)
+  const currentView = useMemo(() => {
+    return sortByView?.find(item => item.check)
+  }, [sortByView])
 
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
@@ -137,7 +141,12 @@ const KanBanBtnsArea = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
-      <ShareModal url={''} title={''} />
+      <ShareModal
+        id={currentView?.id}
+        config={currentView?.config}
+        url={window.location.href}
+        title={`【${projectInfo.name}-${currentView?.name}】`}
+      />
       {/* 分享 */}
       <ScreenMinHover
         label={t('share')}

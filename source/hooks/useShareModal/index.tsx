@@ -53,9 +53,9 @@ const useShareModal = () => {
 
     // 确认分享
     const confirm = async () => {
-      const data: any = await form.validateFields()
+      const data = await form.validateFields()
       // 判断是人员还是邮箱
-      const params: any = {
+      const params: API.Sprint.ShareView.Params = {
         title,
         url,
         content: data.content,
@@ -66,7 +66,7 @@ const useShareModal = () => {
         params.email = data.name
       }
       try {
-        const result: any = await shareView(params)
+        const result = await shareView(params)
         if (result && result.code === 0) {
           getMessage({
             msg: '分享成功',
@@ -76,7 +76,7 @@ const useShareModal = () => {
           onClose()
         } else {
           getMessage({
-            msg: result?.message,
+            msg: result?.msg,
             type: 'error',
           })
         }

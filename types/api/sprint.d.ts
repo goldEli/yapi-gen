@@ -301,5 +301,6 @@ declare namespace API.Sprint {
       user_id?: number
       email?: string
     }
+    type Result = null
   }
 }
