@@ -1,6 +1,7 @@
 /* eslint-disable no-duplicate-imports */
 // 需求
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getDemandCommentList, getDemandInfo } from './demand.thunk'
 
 export interface CounterState {
   // 启用状态
@@ -10,6 +11,9 @@ export interface CounterState {
   isDemandDetailDrawerVisible: boolean
   // 需求详情弹窗预览参数
   demandDetailDrawerProps: any
+  demandCommentList: {
+    list: any[]
+  }
 }
 
 const initialState: CounterState = {
@@ -17,6 +21,9 @@ const initialState: CounterState = {
   startUsing: true,
   isDemandDetailDrawerVisible: false,
   demandDetailDrawerProps: {},
+  demandCommentList: {
+    list: [],
+  },
 }
 
 export const demandSlice = createSlice({
@@ -39,6 +46,17 @@ export const demandSlice = createSlice({
     setDemandDetailDrawerProps: (state: any, action) => {
       state.demandDetailDrawerProps = action.payload
     },
+    setAffairsCommentList(state, action) {
+      state.demandCommentList = action.payload
+    },
+  },
+  extraReducers(builder) {
+    builder.addCase(getDemandInfo.fulfilled, (state, action) => {
+      state.demandInfo = action.payload
+    })
+    builder.addCase(getDemandCommentList.fulfilled, (state, action) => {
+      state.demandCommentList = action.payload
+    })
   },
 })
 

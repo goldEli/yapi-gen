@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import {
   ButtonGroup,
   ChangeIconGroup,
-  DetailMain,
+  DetailTabItem,
   DetailText,
   DetailTitle,
   DetailTop,
@@ -11,73 +11,68 @@ import {
   DropdownMenu,
   FormWrap,
   Img,
+  ItemNumber,
   LiWrap,
-  SprintDetailDragLine,
-  SprintDetailMouseDom,
   UpWrap,
   Wrap,
 } from './style'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from '@store/index'
+import useShareModal from '@/hooks/useShareModal'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { useSearchParams } from 'react-router-dom'
+import { copyLink, getParamsData } from '@/tools'
+import { Form, MenuProps, Popover, Tabs, TabsProps, Tooltip } from 'antd'
+import CommonModal from '@/components/CommonModal'
+import CustomSelect from '@/components/CustomSelect'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
-import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
-import SprintDetailInfo from './components/SprintDetailInfo'
-import SprintDetailBasic from './components/SprintDetailBasic'
-import { useDispatch, useSelector } from '@store/index'
-import {
-  getAffairsCommentList,
-  getAffairsInfo,
-} from '@store/affairs/affairs.thunk'
-import { useSearchParams } from 'react-router-dom'
-import { copyLink, getParamsData } from '@/tools'
-import useShareModal from '@/hooks/useShareModal'
-import { Popover, Tooltip, Form, Input, Dropdown, MenuProps } from 'antd'
-import CommonModal from '@/components/CommonModal'
-import { useTranslation } from 'react-i18next'
-import CustomSelect from '@/components/CustomSelect'
+import DemandDetailInfo from './components/DemandDetailInfo'
 import { getWorkflowList } from '@/services/project'
 import { getMessage } from '@/components/Message'
+import { setDemandInfo } from '@store/demand'
+import { getDemandCommentList, getDemandInfo } from '@store/demand/demand.thunk'
 import {
-  updateAffairsCategory,
-  updateAffairsStatus,
-  updateAffairsTableParams,
-} from '@/services/affairs'
-import { setAffairsInfo } from '@store/affairs'
-import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import LongStroyBread from '@/components/LongStroyBread'
+  updateDemandCategory,
+  updateDemandStatus,
+  updateTableParams,
+} from '@/services/demand'
 import { setIsUpdateStatus } from '@store/project'
+import { setIsRefresh } from '@store/user'
+import ChildDemand from './components/ChildDemand'
+import ChangeRecord from './components/ChangeRecord'
+import Circulation from './components/Circulation'
+import StoryRelation from './components/StoryRelation'
 
-interface IProps {}
-
-const SprintProjectDetail: React.FC<IProps> = props => {
+const DemandDetail = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const spanDom = useRef<HTMLSpanElement>(null)
-  const basicInfoDom = useRef<HTMLDivElement>(null)
-  const [form] = Form.useForm()
+
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, sprintId } = paramsData
-  const { affairsInfo } = useSelector(store => store.affairs)
+  const { id, demandId } = paramsData
+  const { demandInfo } = useSelector(store => store.demand)
   const { projectInfoValues } = useSelector(store => store.project)
+  const [form] = Form.useForm()
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
-
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
-  const [focus, setFocus] = useState(false)
-  const minWidth = 400
-  const [leftWidth, setLeftWidth] = useState(400)
+
+  const [tabActive, setTabActive] = useState('1')
 
   // 复制标题
   const onCopy = () => {
-    copyLink(affairsInfo.name, '复制成功！', '复制失败！')
+    copyLink(demandInfo.name, '复制成功！', '复制失败！')
   }
 
   // 点击切换类别
@@ -141,9 +136,9 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 修改事务状态
   const onChangeStatus = async (value: any) => {
-    await updateAffairsStatus(value)
+    await updateDemandStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
+    dispatch(getDemandInfo({ projectId: id, id: demandId }))
   }
 
   // 关闭类别弹窗
@@ -157,16 +152,16 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   // 切换类别确认事件
   const onConfirmCategory = async () => {
     await form.validateFields()
-    await updateAffairsCategory({
+    await updateDemandCategory({
       projectId: id,
-      sprintId,
+      demandId,
       ...form.getFieldsValue(),
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
     setIsShowCategory(false)
     dispatch(setIsUpdateStatus(true))
-    // dispatch(setIsRefresh(true))
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
+    dispatch(setIsRefresh(true))
+    dispatch(getDemandInfo({ projectId: id, id: demandId }))
     setTimeout(() => {
       form.resetFields()
     }, 100)
@@ -183,18 +178,18 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       getMessage({ type: 'warning', msg: '名称不能超过100个字' })
       return
     }
-    if (value !== affairsInfo.name) {
-      await updateAffairsTableParams({
+    if (value !== demandInfo.name) {
+      await updateTableParams({
         projectId: id,
-        id: sprintId,
+        id: demandId,
         otherParams: {
           name: value,
         },
       })
       getMessage({ type: 'success', msg: '修改成功' })
       // 提交名称
-      setAffairsInfo({
-        ...affairsInfo,
+      setDemandInfo({
+        ...demandInfo,
         name: value,
       })
     }
@@ -242,25 +237,30 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     //
   }
 
+  //   编辑需求
+  const onEdit = () => {
+    //
+  }
+
   // 更多下拉
   const items: MenuProps['items'] = [
     {
-      label: <div onClick={onDelete}>删除</div>,
+      label: <div onClick={onEdit}>编辑</div>,
       key: '0',
+    },
+    {
+      label: <div onClick={onDelete}>删除</div>,
+      key: '1',
     },
     {
       type: 'divider',
     },
     {
-      label: '添加附件',
-      key: '1',
-    },
-    {
-      label: '添加子事务',
+      label: '复制编号',
       key: '2',
     },
     {
-      label: '添加标签',
+      label: '复制链接',
       key: '3',
     },
     {
@@ -272,18 +272,75 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     },
   ]
 
-  // 拖动线条
-  const onDragLine = () => {
-    //
+  // 监听左侧信息滚动
+  const onChangeTabs = (value: string) => {
+    setTabActive(value)
+    if (value === '1') {
+      dispatch(getDemandInfo({ projectId: id, id: demandId }))
+    }
   }
 
+  const tabItems: TabsProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <DetailTabItem>
+          <span>详细信息</span>
+        </DetailTabItem>
+      ),
+      children: <DemandDetailInfo />,
+    },
+    {
+      key: '2',
+      label: (
+        <DetailTabItem>
+          <span>子需求</span>
+          <ItemNumber isActive={tabActive === '1'}>
+            {demandInfo?.childCount || 0}
+          </ItemNumber>
+        </DetailTabItem>
+      ),
+      children: <ChildDemand activeKey={tabActive} />,
+    },
+    {
+      key: '3',
+      label: (
+        <DetailTabItem>
+          <span>关联工作项</span>
+        </DetailTabItem>
+      ),
+      children: <StoryRelation activeKey={tabActive} detail={demandInfo} />,
+    },
+    {
+      key: '4',
+      label: (
+        <DetailTabItem>
+          <span>变更记录</span>
+          <ItemNumber isActive={tabActive === '4'}>
+            {demandInfo?.changeCount || 0}
+          </ItemNumber>
+        </DetailTabItem>
+      ),
+      children: <ChangeRecord activeKey={tabActive} />,
+    },
+    {
+      key: '5',
+      label: (
+        <DetailTabItem>
+          <span>流转记录</span>
+        </DetailTabItem>
+      ),
+      children: <Circulation activeKey={tabActive} />,
+    },
+  ]
+
   useEffect(() => {
-    dispatch(setAffairsInfo({}))
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
+    dispatch(setDemandInfo({}))
+    dispatch(getDemandInfo({ projectId: id, id: demandId }))
     dispatch(
-      getAffairsCommentList({
+      getDemandCommentList({
         projectId: id,
-        sprintId,
+        demandId,
         page: 1,
         pageSize: 999,
       }),
@@ -296,21 +353,18 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       ?.children
     setResultCategory(
       list
-        ?.filter((i: any) => i.id !== affairsInfo?.category)
+        ?.filter((i: any) => i.id !== demandInfo?.category)
         ?.filter((i: any) => i.status === 1),
     )
-  }, [affairsInfo, projectInfoValues])
+  }, [demandInfo, projectInfoValues])
 
   return (
     <Wrap>
       <DeleteConfirmModal />
       <ShareModal
-        url={location.href}
-        title={
-          affairsInfo?.name
-            ? `【${affairsInfo?.projectPrefix} ${affairsInfo?.name}】`
-            : ''
-        }
+        copyLink={() => {
+          // Todo 传入复制方法
+        }}
       />
       <CommonModal
         isVisible={isShowCategory}
@@ -325,7 +379,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         >
           <Form.Item label={t('newlyAdd.beforeCategory')}>
             <img
-              src={affairsInfo?.category_attachment}
+              src={demandInfo?.category_attachment}
               style={{
                 width: '18px',
                 height: '18px',
@@ -333,7 +387,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
               }}
               alt=""
             />
-            <span>{affairsInfo?.categoryName}</span>
+            <span>{demandInfo?.categoryName}</span>
           </Form.Item>
           <Form.Item
             label={t('newlyAdd.afterCategory')}
@@ -375,15 +429,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         </FormWrap>
       </CommonModal>
       <DetailTop>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <MyBreadcrumb />
-          <LongStroyBread
-            longStroy={affairsInfo}
-            onClick={() => {
-              console.log('回调')
-            }}
-          ></LongStroyBread>
-        </div>
+        <MyBreadcrumb />
 
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />
@@ -405,9 +451,9 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             </UpWrap>
             {/* )} */}
             {/* {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) &&  ( */}
+            demandIds?.length === 0 ||
+            currentIndex === demandIds?.length - 1
+          ) &&  ( */}
             <DownWrap
               // onClick={onDownDemand}
               id="downIcon"
@@ -435,7 +481,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         </ButtonGroup>
       </DetailTop>
       <DetailTitle>
-        <Tooltip title={affairsInfo?.categoryName}>
+        <Tooltip title={demandInfo?.categoryName}>
           <Popover
             trigger={['hover']}
             visible={isShowChange}
@@ -445,7 +491,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             onVisibleChange={visible => setIsShowChange(visible)}
           >
             <div>
-              <Img src={affairsInfo.category_attachment} alt="" />
+              <Img src={demandInfo.category_attachment} alt="" />
             </div>
           </Popover>
         </Tooltip>
@@ -456,27 +502,27 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             contentEditable
             onBlur={onNameConfirm}
           >
-            {affairsInfo.name}
+            {demandInfo.name}
           </span>
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
           <ChangeStatusPopover
-            record={affairsInfo}
+            record={demandInfo}
             onChangeStatus={onChangeStatus}
-            type={2}
+            type={1}
           >
             <StateTag
-              name={affairsInfo.status?.status.content}
+              name={demandInfo.status?.status.content}
               state={
-                affairsInfo.status?.is_start === 1 &&
-                affairsInfo.status?.is_end === 2
+                demandInfo.status?.is_start === 1 &&
+                demandInfo.status?.is_end === 2
                   ? 1
-                  : affairsInfo.status?.is_end === 1 &&
-                    affairsInfo.status?.is_start === 2
+                  : demandInfo.status?.is_end === 1 &&
+                    demandInfo.status?.is_start === 2
                   ? 2
-                  : affairsInfo.status?.is_start === 2 &&
-                    affairsInfo.status?.is_end === 2
+                  : demandInfo.status?.is_start === 2 &&
+                    demandInfo.status?.is_end === 2
                   ? 3
                   : 0
               }
@@ -484,27 +530,14 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
-      <DetailMain>
-        <div
-          style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
-        >
-          <SprintDetailInfo />
-        </div>
-        <div
-          ref={basicInfoDom}
-          style={{ position: 'relative', width: leftWidth }}
-        >
-          <SprintDetailMouseDom
-            active={focus}
-            onMouseDown={onDragLine}
-            style={{ left: 0 }}
-          >
-            <SprintDetailDragLine active={focus} className="line" />
-          </SprintDetailMouseDom>
-          <SprintDetailBasic onRef={basicInfoDom} />
-        </div>
-      </DetailMain>
+      <Tabs
+        className="tabs"
+        activeKey={tabActive}
+        items={tabItems}
+        onChange={onChangeTabs}
+      />
     </Wrap>
   )
 }
-export default SprintProjectDetail
+
+export default DemandDetail

@@ -10,6 +10,67 @@
 import * as http from '@/tools/http'
 import { transData } from '@/tools'
 
+// 获取缺陷关联工作项列表
+export const getStoryRelationStories = async (
+  params: API.Flaw.GetFlawRelationStories.Params,
+) => {
+  const response = await http.get<any, API.Flaw.GetFlawRelationStories.Result>(
+    'getStoryRelationStories',
+    {
+      pagesize: params.pageSize,
+      page: params.page,
+      orderkey: params.orderKey,
+      order: params.order,
+      project_id: params.projectId,
+      id: params.id,
+    },
+  )
+
+  return response.data
+}
+
+//  添加关联缺陷
+export const addStoryRelation = async (
+  params: API.Flaw.FlawRelation.Params,
+) => {
+  await http.post<any>('addStoryRelation', {
+    project_id: params.projectId,
+    id: params.id,
+    relation_id: params.relationId,
+    type: params.type,
+  })
+}
+
+// 搜索查询下拉关联事务
+export const getStorySelectRelationSearch = async (
+  params: API.Flaw.GetFlawRelationList.Params,
+) => {
+  const response = await http.get<any, API.Flaw.GetFlawRelationList.Result>(
+    'getStorySelectRelationSearch',
+    {
+      project_id: params.projectId,
+      id: params.id,
+      keywords: params.searchValue,
+    },
+  )
+
+  return response.data
+}
+
+// 最近子事务查询
+export const getStorySelectRelationRecent = async (
+  params: API.Flaw.GetFlawRelationList.Params,
+) => {
+  const response = await http.get<any, API.Flaw.GetFlawRelationList.Result>(
+    'getStorySelectRelationRecent',
+    {
+      project_id: params.projectId,
+      id: params.id,
+    },
+  )
+  return response.data
+}
+
 // 获取需求类别配置列表
 export const getCategoryConfigList = async (params: any) => {
   const response = await http.get(

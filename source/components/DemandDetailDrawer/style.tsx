@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Input, Popover, Space } from 'antd'
+
+export const haveAuto = css`
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  overflow-x: hidden;
+`
 
 export const SkeletonStatus = styled.div`
   .ant-skeleton-input {

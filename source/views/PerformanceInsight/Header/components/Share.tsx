@@ -43,12 +43,11 @@ const Share = (props: PropsType) => {
     // 看后面这个页面需要的参数合并,具体的某个路径
     // const params = encryptPhp(
     //   JSON.stringify({
-    //     type: 'info',
     //     id: props.record.project_id,
     //     demandId: props.record.id,
     //   }),
     // )
-    // const url = `/ProjectManagement/Demand?data=${params}`
+    // const url = `/ProjectManagement/DemandDetail?data=${params}`
     // text += `${beforeUrl}${url} \n`
     copyLink(text, '复制成功！', '复制失败！')
   }

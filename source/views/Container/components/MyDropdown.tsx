@@ -229,12 +229,11 @@ const MyDropdown = (props: any) => {
     if (type === 'story') {
       iterParmas = encryptPhp(
         JSON.stringify({
-          type: 'info',
           id: el.project_id,
           demandId: el.id,
         }),
       )
-      router = `/ProjectManagement/Demand?data=${iterParmas}`
+      router = `/ProjectManagement/DemandDetail?data=${iterParmas}`
     } else {
       const resultType = el?.feedable_type ?? el?.actionable_type
       if (resultType === 'project') {
@@ -246,7 +245,6 @@ const MyDropdown = (props: any) => {
         router = `/ProjectManagement/Demand?data=${iterParmas}`
       } else {
         const params: any = {
-          type: 'info',
           id: el?.feedable?.project_id ?? el.project_id,
         }
         if (resultType === 'iterate') {
@@ -257,7 +255,7 @@ const MyDropdown = (props: any) => {
         }
         iterParmas = encryptPhp(JSON.stringify(params))
         router = `/ProjectManagement/${
-          resultType === 'iterate' ? 'Iteration' : 'Demand'
+          resultType === 'iterate' ? 'Iteration' : 'DemandDetail'
         }?data=${iterParmas}`
       }
     }

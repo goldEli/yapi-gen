@@ -3,6 +3,7 @@ import { Space, Drawer, Tooltip } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
+import { getParamsData } from '@/tools'
 import sideLogo from '/newLogo.svg'
 import {
   ChildrenMenu,
@@ -23,7 +24,7 @@ import {
 } from '../style'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getCompanyList, updateCompany } from '@/services/user'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
@@ -259,7 +260,9 @@ const HeaderLeft = () => {
   const dispatch = useDispatch()
   const routerPath = useLocation()
   const navigate = useNavigate()
-
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams) || {}
+  const { type } = paramsData
   const getActive = (item: any) => {
     let state = false
 
@@ -286,6 +289,9 @@ const HeaderLeft = () => {
         resultMenu = menuPermission?.menus?.filter((i: any) => {
           if (routerPath.pathname.includes('Sprint')) {
             return routerPath.pathname.replace('Sprint', '').includes(i.url)
+          }
+          if (type) {
+            return '/ProjectManagement'.includes(i.url)
           }
           return routerPath.pathname.includes(i.url)
         })?.[0]

@@ -193,11 +193,12 @@ const DndKitTable = (props: any) => {
     )
   }
 
-  // 移动事务
+  // 移动事务到别的冲刺
   const onRemoveSprintItem = async (
     iterate_id: number,
     story_id: number,
     to_iterate_id: number,
+    needFresh: boolean,
   ) => {
     try {
       const result = await moveStory({
@@ -211,7 +212,9 @@ const DndKitTable = (props: any) => {
           msg: '移动成功',
           type: 'success',
         })
-        dispatch(setSprintRefresh(1))
+        if (needFresh) {
+          dispatch(setSprintRefresh(1))
+        }
       }
     } catch (error) {
       console.log('error', error)
@@ -568,19 +571,30 @@ const DndKitTable = (props: any) => {
             </div>
           ),
           onConfirm: async () => {
+            onRemoveSprintItem(
+              sourceList?.id,
+              item?.id,
+              destList?.id,
+              false,
+            ).then(() => {
+              handleSort(
+                destList?.id,
+                dest?.map((k: any) => k.id),
+              )
+              dispatch(setRightSprintList(res))
+            })
+          },
+        })
+      } else {
+        onRemoveSprintItem(sourceList?.id, item?.id, destList?.id, false).then(
+          () => {
             handleSort(
               destList?.id,
               dest?.map((k: any) => k.id),
             )
             dispatch(setRightSprintList(res))
           },
-        })
-      } else {
-        handleSort(
-          destList?.id,
-          dest?.map((k: any) => k.id),
         )
-        dispatch(setRightSprintList(res))
       }
     }
   }

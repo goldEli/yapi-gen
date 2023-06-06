@@ -4,7 +4,7 @@
 /* eslint-disable camelcase */
 import { getCategoryConfigList } from '@/services/demand'
 import { getCustomNormalValue } from '@/tools'
-import ParentDemand from '@/views/Demand/components/ParentDemand'
+import ParentDemand from '@/views/DemandDetail/components/ParentDemand'
 import { useDispatch, useSelector } from '@store/index'
 import { message, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'

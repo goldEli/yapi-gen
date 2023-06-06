@@ -86,7 +86,10 @@ const ContentItem = (props: any) => {
           )}
         </div>
         <div className="msgTitle">
-          <CommonUserAvatar avatar={msg_body.optHeader} />
+          {msg_body.optHeader ? (
+            <CommonUserAvatar avatar={msg_body.optHeader} />
+          ) : null}
+
           <About className={String(read === 1 ? 'read' : 'unread')}>
             {msg_body.title}
           </About>

@@ -292,4 +292,14 @@ declare namespace API.Sprint {
       project_id: number
     }
   }
+
+  namespace ShareView {
+    type Params = {
+      title: string
+      url: string
+      content: string
+      user_id?: number
+      email?: string
+    }
+  }
 }
