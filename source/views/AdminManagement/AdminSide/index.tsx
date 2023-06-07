@@ -159,12 +159,12 @@ const AdminSide = () => {
       ],
     },
     {
-      label: '系统通知',
+      label: t('system_notification'),
       key: '5',
       icon: <IconFontStyle className="icon" type="safety-certificate" />,
       children: [
         {
-          label: '通知管理',
+          label: t('notification_management'),
           key: '/AdminManagement/NoteManagement',
           path: '/AdminManagement/NoteManagement',
         },

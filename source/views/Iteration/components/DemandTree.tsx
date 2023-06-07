@@ -41,7 +41,7 @@ import { getMessage } from '@/components/Message'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 
 const Content = styled.div({
-  padding: '20px 12px 0 8px',
+  padding: '8px 12px 0 8px',
   background: 'var(--neutral-white-d1)',
 })
 

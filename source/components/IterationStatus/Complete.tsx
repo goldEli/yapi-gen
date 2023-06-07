@@ -4,8 +4,11 @@ import {
   finishStatistics,
   incompleteIterates,
 } from '@/services/iterate'
-import { getParamsData } from '@/tools'
+import { getParamsData, getProjectIdByUrl } from '@/tools'
 import styled from '@emotion/styled'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsUpdateList } from '@store/iterate'
+import { getIterateInfo } from '@store/iterate/iterate.thunk'
 import { Radio, RadioChangeEvent, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -58,6 +61,8 @@ const Complete = (props: Props) => {
   const [checkId, setCheckId] = useState<any>()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const { iterateInfo, isUpdateList } = useSelector(store => store.iterate)
+  const dispatch = useDispatch()
 
   const getFinishStatistics = async (params: any) => {
     try {
@@ -145,6 +150,15 @@ const Complete = (props: Props) => {
       moveId: checkId,
       type: value === 1 ? 'move' : 'remove',
     })
+    if (props?.iterationId === iterateInfo.id) {
+      dispatch(
+        getIterateInfo({
+          projectId: getProjectIdByUrl(),
+          id: props?.iterationId,
+        }),
+      )
+      dispatch(setIsUpdateList(true))
+    }
   }
 
   return (
