@@ -295,7 +295,7 @@ const DemandDetail = () => {
       label: (
         <DetailTabItem>
           <span>子需求</span>
-          <ItemNumber isActive={tabActive === '1'}>
+          <ItemNumber isActive={tabActive === '2'}>
             {demandInfo?.childCount || 0}
           </ItemNumber>
         </DetailTabItem>
@@ -361,11 +361,14 @@ const DemandDetail = () => {
   return (
     <Wrap>
       <DeleteConfirmModal />
-      {/* <ShareModal
-        copyLink={() => {
-          // Todo 传入复制方法
-        }}
-      /> */}
+      <ShareModal
+        url={location.href}
+        title={
+          demandInfo?.name
+            ? `【${demandInfo?.projectPrefix} ${demandInfo?.name}】`
+            : ''
+        }
+      />
       <CommonModal
         isVisible={isShowCategory}
         onClose={onCloseCategory}

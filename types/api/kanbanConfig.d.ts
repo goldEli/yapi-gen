@@ -10,6 +10,7 @@ declare namespace API.KanbanConfig {
     type Params = {
       name: string
       project_id: number
+      columns?: Model.KanbanConfig.Column[]
     }
     type Result = {
       name: string

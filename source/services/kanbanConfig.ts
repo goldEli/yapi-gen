@@ -47,7 +47,7 @@ export const updateKanbanConfig = async (
   const response = await http.put<
     any,
     API.KanbanConfig.UpdateKanbanConfig.Result
-  >('updateKanbanConfig', params)
+  >(urls.updateKanbanConfig, params)
   return response
 }
 

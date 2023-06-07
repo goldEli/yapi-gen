@@ -16,7 +16,6 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import EditAchievements from '../../components/EditAchievements'
-import IterationStatus from '../../components/IterationStatus'
 import CommonModal from '@/components/CommonModal'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
@@ -25,6 +24,7 @@ import { updateIterateStatus } from '@/services/iterate'
 import { Editor } from '@xyfe/uikit'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
+import IterationStatus from '@/components/IterationStatus'
 
 const OperationWrap = styled.div({
   background: 'white',

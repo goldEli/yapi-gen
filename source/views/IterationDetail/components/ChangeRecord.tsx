@@ -1,10 +1,5 @@
-// 迭代详情-迭代变更记录
-
 /* eslint-disable no-undefined */
-/* eslint-disable no-else-return */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/no-danger */
-/* eslint-disable @typescript-eslint/naming-convention */
+// 需求详情-变更记录
 import { Space } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
@@ -18,18 +13,12 @@ import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { getIterateChangeLog } from '@/services/iterate'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
-
-const ContentWrap = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '60vh',
-  overflow: 'auto',
-  padding: '0 24px 16px 24px',
-})
+import { setIsUpdateChangeLog } from '@store/project'
+import { ComputedWrap } from '../style'
+import { getIterateChangeLog } from '@/services/iterate'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -42,12 +31,20 @@ const SpaceWrap = styled(Space)({
 
 const TitleWrap = styled(Space)({
   height: 40,
-  background: 'var(--neutral-n5)',
+  background: 'var(--neutral-n8)',
   padding: '0 24px',
   borderRadius: 6,
   color: 'var(--neutral-n1-d1)',
   fontSize: 14,
   marginBottom: 24,
+})
+
+const ContentWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '60vh',
+  overflow: 'auto',
+  padding: '0 24px 16px 24px',
 })
 
 const NewSort = (sortProps: any) => {
@@ -63,30 +60,32 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-const ChangeRecord = (props?: any) => {
-  const [t] = useTranslation()
-  const [isVisible, setIsVisible] = useState(false)
-  const [searchParams] = useSearchParams()
-  // TODO
-  const paramsData = getParamsData(searchParams)
+interface Props {
+  activeKey: string
+}
 
-  const projectId = paramsData.id
-  const { iterateId } = paramsData
+const ChangeRecord = (props: Props) => {
+  const [t] = useTranslation()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { iterateId, id } = paramsData
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
   const [checkDetail, setCheckDetail] = useState<any>({})
+  const [isVisible, setIsVisible] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
+  const { isUpdateChangeLog } = useSelector(store => store.project)
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
     const result = await getIterateChangeLog({
       iterateId,
-      projectId,
+      projectId: id,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
       order: orderVal.value,
@@ -95,21 +94,28 @@ const ChangeRecord = (props?: any) => {
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
-    props.onChangeUpdate()
+    dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {
-    if (isRefresh || props?.isUpdate) {
-      getList({ page: 1, size: pageObj.size }, order)
+    if (props.activeKey === '5') {
+      getList(pageObj, order)
     }
-  }, [isRefresh, props?.isUpdate])
+  }, [props.activeKey])
 
   useEffect(() => {
-    getList({ page: 1, size: pageObj.size }, order)
-  }, [])
+    if (isRefresh) {
+      getList({ page: 1, size: pageObj.size }, order)
+    }
+  }, [isRefresh])
 
-  const onClickCheck = (item: any, key: any) => {
-    item.key = key
+  useEffect(() => {
+    if (isUpdateChangeLog) {
+      getList(pageObj, order)
+    }
+  }, [isUpdateChangeLog])
+
+  const onClickCheck = (item: any) => {
     setCheckDetail(item)
     setIsVisible(true)
   }
@@ -119,8 +125,10 @@ const ChangeRecord = (props?: any) => {
       return item[i]?.length
         ? item[i]?.map((k: any) => k?.name).join(';')
         : '--'
-    } else if (i === 'attachment' || i === 'copysend') {
-      return item[i]?.length ? item[i].map((k: any) => k) : '--'
+    } else if (i === 'users' || i === 'copysend' || i === 'attachment') {
+      return item[i]?.length ? item[i].join(';') : '--'
+    } else if (i === 'status') {
+      return item[i]
     } else {
       return item[i] || '--'
     }
@@ -216,9 +224,15 @@ const ChangeRecord = (props?: any) => {
               padding: '16px 0',
             }}
           >
-            {Object.values(text).map(i => (
-              <span key={i}>{i}</span>
-            ))}
+            {Object.keys(text)?.map((i: any) =>
+              i === 'custom_field' ? (
+                (text[i] as any).map((k: any) => (
+                  <span key={k.field}>{k.name}</span>
+                ))
+              ) : (
+                <span key={Math.random()}>{text[i]}</span>
+              ),
+            )}
           </div>
         )
       },
@@ -247,10 +261,10 @@ const ChangeRecord = (props?: any) => {
           >
             {Object.keys(record?.fields).map((i: any) => (
               <span key={i}>
-                {i === 'info' || i === 'achieve_desc' ? (
+                {i === 'info' ? (
                   <span
                     style={{ cursor: 'pointer', color: 'var(--primary-d2)' }}
-                    onClick={() => onClickCheck(record, i)}
+                    onClick={() => onClickCheck(record)}
                   >
                     {text
                       ? text[i]?.length
@@ -258,6 +272,22 @@ const ChangeRecord = (props?: any) => {
                         : '--'
                       : '--'}
                   </span>
+                ) : i === 'custom_field' ? (
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {record.beforeField
+                      ? record.fields.custom_field
+                          ?.map(
+                            (m: any) => record.beforeField[i][m.field]?.value,
+                          )
+                          ?.map((k: any) => (
+                            <span key={k}>
+                              {(Array.isArray(k) ? k.join(';') : k) || '--'}
+                            </span>
+                          ))
+                      : record.fields.custom_field?.map((m: any) => (
+                          <span key={m}>--</span>
+                        ))}
+                  </div>
                 ) : (
                   <HiddenText>
                     <OmitText
@@ -300,10 +330,10 @@ const ChangeRecord = (props?: any) => {
           >
             {Object.keys(record?.fields).map((i: any) => (
               <span key={i}>
-                {i === 'info' || i === 'achieve_desc' ? (
+                {i === 'info' ? (
                   <span
                     style={{ cursor: 'pointer', color: 'var(--primary-d2)' }}
-                    onClick={() => onClickCheck(record, i)}
+                    onClick={() => onClickCheck(record)}
                   >
                     {text
                       ? text[i]?.length
@@ -311,6 +341,22 @@ const ChangeRecord = (props?: any) => {
                         : '--'
                       : '--'}
                   </span>
+                ) : i === 'custom_field' ? (
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {record.afterField
+                      ? record.fields.custom_field
+                          ?.map(
+                            (m: any) => record.afterField[i][m.field]?.value,
+                          )
+                          ?.map((k: any) => (
+                            <span key={k}>
+                              {(Array.isArray(k) ? k.join(';') : k) || '--'}
+                            </span>
+                          ))
+                      : record.fields.custom_field?.map((m: any) => (
+                          <span key={m}>--</span>
+                        ))}
+                  </div>
                 ) : (
                   <HiddenText>
                     <OmitText
@@ -337,7 +383,7 @@ const ChangeRecord = (props?: any) => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
+    <ComputedWrap>
       <CommonModal
         isVisible={isVisible}
         title={t('project.changeInfo')}
@@ -358,51 +404,27 @@ const ChangeRecord = (props?: any) => {
             <TitleWrap>{t('project.changeBefore')}</TitleWrap>
             <ContentWrap>
               <Editor
-                value={
-                  checkDetail.key === 'info'
-                    ? checkDetail?.beforeField?.info
-                    : checkDetail?.beforeField?.achieve_desc
-                }
+                value={checkDetail?.beforeField?.info}
                 getSuggestions={() => []}
                 readonly
               />
-              {/* <div
-                dangerouslySetInnerHTML={{
-                  __html:
-                    checkDetail.key === 'info'
-                      ? checkDetail?.beforeField?.info
-                      : checkDetail?.beforeField?.achieve_desc,
-                }}
-              /> */}
             </ContentWrap>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
             <ContentWrap>
               <Editor
-                value={
-                  checkDetail.key === 'info'
-                    ? checkDetail?.afterField?.info
-                    : checkDetail?.afterField?.achieve_desc
-                }
+                value={checkDetail?.afterField?.info}
                 getSuggestions={() => []}
                 readonly
               />
-              {/* <div
-                dangerouslySetInnerHTML={{
-                  __html:
-                    checkDetail.key === 'info'
-                      ? checkDetail?.afterField?.info
-                      : checkDetail?.afterField?.achieve_desc,
-                }}
-              /> */}
             </ContentWrap>
           </div>
         </SpaceWrap>
       </CommonModal>
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 64px)"
+        dataWrapNormalHeight="calc(100% - 60px)"
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}
@@ -412,8 +434,9 @@ const ChangeRecord = (props?: any) => {
         pageSize={pageObj?.size}
         total={dataList?.total}
         onChange={onChangePage}
+        hasPadding
       />
-    </div>
+    </ComputedWrap>
   )
 }
 

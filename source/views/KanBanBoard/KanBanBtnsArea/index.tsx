@@ -17,6 +17,7 @@ import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import useShareModal from '@/hooks/useShareModal'
 import { onFullScreenMode } from '@store/kanBan/kanBan.thunk'
+import _ from 'lodash'
 
 interface Props {
   onChangeFilter?(): void
@@ -44,11 +45,17 @@ const KanBanBtnsArea = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
   const dispatch = useDispatch()
-  const { sortByView } = useSelector(store => store.kanBan)
+  const { sortByView, sortByRowAndStatusOptions } = useSelector(
+    store => store.kanBan,
+  )
   const currentView = useMemo(() => {
     return sortByView?.find(item => item.check)
   }, [sortByView])
-  const { valueKey } = useSelector(store => store.view)
+  const { view } = useSelector(store => store)
+  const currentRowAndStatusId = useMemo(() => {
+    const key = sortByRowAndStatusOptions?.find(item => item.check)?.key ?? ''
+    return parseInt(key, 10)
+  }, [sortByRowAndStatusOptions])
 
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
@@ -138,13 +145,17 @@ const KanBanBtnsArea = (props: Props) => {
     ]
     return <Menu items={menuItems} />
   }
+
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       <ShareModal
         id={currentView?.id}
-        config={valueKey}
+        config={view}
         url={window.location.href}
         title={`【${projectInfo.name}-${currentView?.name}】`}
+        otherConfig={{
+          currentRowAndStatusId,
+        }}
       />
       {/* 分享 */}
       <ScreenMinHover

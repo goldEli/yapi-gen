@@ -6,6 +6,8 @@ import { handleId } from '../utils'
 import DropCardList from '../DropCardList'
 import useDropData from '../hooks/useDropData'
 import DropCard from '../DropCard'
+import { useSelector } from '@store/index'
+import useGroupType from '../hooks/useGroupType'
 
 interface IssuesProps {
   issues: Model.KanBan.Column
@@ -38,6 +40,8 @@ const Issues: React.FC<IssuesProps> = props => {
   const droppableId = useMemo(() => {
     return handleId(groupId, issues.id)
   }, [groupId, issues.id])
+  const { movingStory } = useSelector(store => store.kanBan)
+  const { groupType } = useGroupType()
 
   const { data, showStateTransitionList } = useDropData(issues.id, groupId)
   const dropCardListContent = (
@@ -50,9 +54,16 @@ const Issues: React.FC<IssuesProps> = props => {
   )
   const issueCardListContent = issues.stories?.map((story, index) => {
     const uuid = `${groupId}-${issues.id}-${story.id}`
+    // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
+    const hidden1 =
+      !!movingStory &&
+      (groupType === 'users' || groupType === 'category') &&
+      movingStory?.groupId !== groupId
+    // 如果当前展示状态转换释放区域，需要隐藏卡片
+    const hidden2 = showStateTransitionList
     return (
       <IssueCard
-        hidden={showStateTransitionList}
+        hidden={hidden1 || hidden2}
         uuid={uuid}
         key={uuid}
         item={story}

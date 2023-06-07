@@ -284,7 +284,9 @@ const ProjectDetailSide = () => {
     // navigate(`${path}?data=${params}`)
 
     const { path, key } = i
-    const params = encryptPhp(JSON.stringify({ id: projectId }))
+    const params = encryptPhp(
+      JSON.stringify({ id: projectId, type: 'iteration' }),
+    )
     if (key === 'Report') {
       const paramsData = encryptPhp(
         JSON.stringify({

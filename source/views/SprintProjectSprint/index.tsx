@@ -30,6 +30,8 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import CategoryDropdown from '@/components/CategoryDropdown'
+import useKeyPress from '@/hooks/useKeyPress'
+import { updateCompanyUserPreferenceConfig } from '@/services/user'
 
 const SearchBox = styled.div`
   display: flex;
@@ -249,6 +251,9 @@ const filterList1 = [
 
 const SprintProjectSprint: React.FC = () => {
   const dispatch = useDispatch()
+  const { useKeys } = useKeyPress()
+  useKeys('3', '/Report/PerformanceInsight')
+  useKeys('2', '/SprintProjectManagement/KanBan')
   const {
     guideVisible,
     leftSprintList,
@@ -297,6 +302,7 @@ const SprintProjectSprint: React.FC = () => {
     is_long_story: 0,
   })
   const [checkCommission, setCheckCommission] = useState(false)
+  const { userPreferenceConfig } = useSelector(store => store.user)
 
   const inform = [
     {
@@ -674,13 +680,23 @@ const SprintProjectSprint: React.FC = () => {
           </Spin>
         </Right>
       </ContentWrap>
-      <GuideModal
-        width={784}
-        height={670}
-        visible={guideVisible}
-        inform={inform}
-        close={() => dispatch(setGuideVisible(false))}
-      />
+      {userPreferenceConfig?.guidePageConfig?.sprint === 1 ? (
+        <GuideModal
+          width={784}
+          height={670}
+          inform={inform}
+          close={async () => {
+            await updateCompanyUserPreferenceConfig({
+              id: userPreferenceConfig?.id,
+              previewModel: userPreferenceConfig.previewModel,
+              guidePageConfig: {
+                sprint: 2,
+              },
+            })
+          }}
+        />
+      ) : null}
+
       <CreateSprintModal
         projectId={projectId}
         type={sprintModal.type}

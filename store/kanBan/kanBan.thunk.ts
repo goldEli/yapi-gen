@@ -514,20 +514,25 @@ export const onFilter = () => async (dispatch: AppDispatch) => {
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
-  async (param: API.KanbanConfig.GetKanbanConfigList.Params, { dispatch }) => {
+  async (
+    param: API.KanbanConfig.GetKanbanConfigList.Params & {
+      showId?: number
+    },
+    { dispatch },
+  ) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
     const { data } = res
     const sortByRowAndStatusOptions = data.map(item => {
       return {
-        check: false,
+        check: param.showId === item.id,
         value: item.name,
         key: item.id + '',
       }
     })
-    if (sortByRowAndStatusOptions.length) {
+    if (sortByRowAndStatusOptions.length && !param.showId) {
       sortByRowAndStatusOptions[0].check = true
     }
-    const checked = sortByRowAndStatusOptions[0]
+    const checked = sortByRowAndStatusOptions.find(item => item.check)
     if (checked) {
       dispatch(
         getKanbanConfig({
@@ -562,7 +567,7 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 // 视图列表
 export const getStoryViewList = createAsyncThunk(
   `${name}/getStoryViewList`,
-  // 指定当前视图
+  // 指定当前视图id
   async (viewId: Model.KanBan.ViewItem['id'] | null, { dispatch }) => {
     const project_id = getProjectIdByUrl()
     const res = await services.kanban.getStoryViewList({ project_id })
@@ -578,9 +583,13 @@ export const getStoryViewList = createAsyncThunk(
       }
     })
     // 用户已经选中过，需要恢复
-    let checked = sortByView?.find(
-      item => item.check && ret.some(i => i.id === item.id),
-    )
+    let checked = ret?.find(item => {
+      return sortByView?.some(i => i.id === item.id && item.check)
+    })
+    // 指定打开视图
+    if (viewId) {
+      checked = ret.find(item => item.id === viewId)
+    }
     if (checked) {
       checked.check = true
     } else {
@@ -603,7 +612,6 @@ export const onSaveAsViewModel =
         project_id: getProjectIdByUrl(),
       }),
     )
-    console.log('onSaveAsViewModel', data)
     getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
   }

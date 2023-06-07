@@ -10,11 +10,11 @@ import { useDispatch, useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import MoreDropdown from '@/components/MoreDropdown'
-import IterationStatus from '../../components/IterationStatus'
 import {
   setCreateIterationParams,
   setIsCreateIterationVisible,
 } from '@store/iterate'
+import IterationStatus from '@/components/IterationStatus'
 
 const DetailWrap = styled.div`
   font-size: var(--font12);

@@ -2,7 +2,7 @@
  * 另存为视图  编辑视图弹窗
  */
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
@@ -11,8 +11,10 @@ import SearchInput from './SearchInput'
 import { CopyButton, ModalContentBox, Tips, WarnTips } from './styled'
 import { shareView, checkUpdates } from '@/services/sprint'
 import { EMAIL_REGEXP } from '@/constants'
-import { copyLink } from '@/tools'
+import { copyLink, getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
+import { useSearchParams } from 'react-router-dom'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface ShareModalProps {
   // 检查视图是否保存的 视图id
@@ -23,6 +25,8 @@ interface ShareModalProps {
   url: string
   // 用于分享后展示的标题
   title: string
+  // 用于分享的数据
+  otherConfig?: any
 }
 
 interface Options {
@@ -46,10 +50,25 @@ const useShareModal = () => {
 
   const ShareModal: React.FC<ShareModalProps> = props => {
     const { id, url, title, config } = props
-    const [needSave, setNeedSave] = useState(true)
+    const [needSave, setNeedSave] = useState(false)
     const [form] = Form.useForm()
     const [t] = useTranslation()
     const [fail, setFail] = useState(false)
+    const [searchParams] = useSearchParams()
+
+    const new_url = useMemo(() => {
+      if (id && config) {
+        const paramsData = getParamsData(searchParams)
+        return `${location.origin}${location.pathname}?data=${encryptPhp(
+          JSON.stringify({
+            ...paramsData,
+            valueId: id,
+            otherConfig: props.otherConfig,
+          }),
+        )}`
+      }
+      return ''
+    }, [id, config])
 
     // 确认分享
     const confirm = async () => {
@@ -57,7 +76,7 @@ const useShareModal = () => {
       // 判断是人员还是邮箱
       const params: API.Sprint.ShareView.Params = {
         title,
-        url,
+        url: id && config ? new_url : url,
         content: data.content,
       }
       if (data?.name?.id) {
@@ -90,19 +109,26 @@ const useShareModal = () => {
     }
     const setIsNeedSave = async () => {
       if (id) {
-        const res = await checkUpdates({
-          id,
-          config,
-        })
-        // todo 待调试
-        setNeedSave(true)
+        try {
+          const res = await checkUpdates({
+            id,
+            config,
+          })
+          if (res && res.is_update === 1) {
+            setNeedSave(true)
+          } else {
+            setNeedSave(false)
+          }
+        } catch (error) {
+          console.log(error)
+        }
       }
     }
     useEffect(() => {
-      if (id) {
+      if (id && config && visible) {
         setIsNeedSave()
       }
-    }, [id])
+    }, [id, config])
 
     const onValidator = (rule: any, value: any) => {
       if (
@@ -112,9 +138,7 @@ const useShareModal = () => {
       ) {
         return Promise.reject(new Error('请输入正确的用户名或邮箱'))
       }
-      if (fail) {
-        setFail(false)
-      }
+      setFail(false)
       return Promise.resolve()
     }
 
@@ -153,7 +177,7 @@ const useShareModal = () => {
               } else if (
                 notFirst.current &&
                 !(
-                  typeof allValues === 'string' &&
+                  typeof value === 'string' &&
                   !!value &&
                   EMAIL_REGEXP.test(value)
                 ) &&
@@ -198,7 +222,11 @@ const useShareModal = () => {
         </ModalContentBox>
         <CopyButton
           onClick={() => {
-            copyLink(`${title}${url} `, '复制成功！', '复制失败！')
+            copyLink(
+              `${title}${id && config ? new_url : url} `,
+              '复制成功！',
+              '复制失败！',
+            )
           }}
         >
           <IconFont type="link" />

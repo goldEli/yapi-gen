@@ -1,6 +1,7 @@
 /* eslint-disable no-duplicate-imports */
 // 迭代
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import { getIterateInfo } from './iterate.thunk'
 
 export interface CounterState {
   iterateInfo: any
@@ -54,7 +55,9 @@ export const iterateSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    //
+    builder.addCase(getIterateInfo.fulfilled, (state, action) => {
+      state.iterateInfo = action.payload
+    })
   },
 })
 

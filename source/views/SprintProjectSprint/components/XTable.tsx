@@ -9,12 +9,12 @@ import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
 import CreateSprintModal from './CreateSprintModal'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
 import { delSprintItem } from '@/services/sprint'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal } from '@store/project'
 import CompleteSprintModal from './CompleteSprintModal'
 import { setSprintRefresh } from '@store/sprint'
@@ -138,6 +138,17 @@ const XTable: React.FC<XTableProps> = props => {
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const [completeVisible, setCompleteVisible] = useState(false)
+  const { projectInfo } = useSelector(store => store.project)
+
+  const isCanEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+  )
+
+  const isCanEditSprint = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/sprint',
+  )
 
   // 删除冲刺
   const deleteSprint = async (id: number) => {
@@ -253,81 +264,90 @@ const XTable: React.FC<XTableProps> = props => {
                     ? `（可见${data?.story_visible_count}个，共${data?.story_count}个事务）`
                     : ''}
                 </span>
-                {data.id === -1 ? null : (
-                  <>
-                    <Tooltip title="编辑">
-                      <IconFont
-                        onClick={() => {
-                          setSprintModal({
-                            visible: true,
-                            type: 'edit',
-                          })
-                        }}
-                        style={{
-                          fontSize: 16,
-                          color: 'var(--neutral-n3)',
-                          marginRight: 16,
-                        }}
-                        type="edit"
-                      />
-                    </Tooltip>
-                    <Tooltip title="删除">
-                      <IconFont
-                        onClick={() => {
-                          open({
-                            title: '删除冲刺',
-                            text: `确认要删除【${data.name}】的冲刺吗？`,
-                            onConfirm: () => deleteSprint(data.id),
-                          })
-                        }}
-                        style={{
-                          fontSize: 16,
-                          color: 'var(--neutral-n3)',
-                        }}
-                        type="delete"
-                      />
-                    </Tooltip>
-                  </>
-                )}
+                {data.id === -1
+                  ? null
+                  : !isCanEditSprint && (
+                      <>
+                        <Tooltip title="编辑">
+                          <IconFont
+                            onClick={() => {
+                              setSprintModal({
+                                visible: true,
+                                type: 'edit',
+                              })
+                            }}
+                            style={{
+                              fontSize: 16,
+                              color: 'var(--neutral-n3)',
+                              marginRight: 16,
+                            }}
+                            type="edit"
+                          />
+                        </Tooltip>
+                        <Tooltip title="删除">
+                          <IconFont
+                            onClick={() => {
+                              open({
+                                title: '删除冲刺',
+                                text: `确认要删除【${data.name}】的冲刺吗？`,
+                                onConfirm: () => deleteSprint(data.id),
+                              })
+                            }}
+                            style={{
+                              fontSize: 16,
+                              color: 'var(--neutral-n3)',
+                            }}
+                            type="delete"
+                          />
+                        </Tooltip>
+                      </>
+                    )}
               </div>
-              {data.id === -1 ? (
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    setSprintModal({
-                      visible: true,
-                      type: 'create',
-                    })
-                  }}
-                >
-                  新建冲刺
-                </CommonButton>
-              ) : (
-                getSprintButton(data.status)
+              {!isCanEditSprint && (
+                <div>
+                  {data.id === -1 ? (
+                    <CommonButton
+                      type="light"
+                      onClick={() => {
+                        setSprintModal({
+                          visible: true,
+                          type: 'create',
+                        })
+                      }}
+                    >
+                      新建冲刺
+                    </CommonButton>
+                  ) : (
+                    getSprintButton(data.status)
+                  )}
+                </div>
               )}
             </PanelHeader>
           }
           key="1"
         >
-          <CreateTransactionButton
-            onClick={() => {
-              // todo 创建新事物
-              dispatch(
-                setAddWorkItemModal({
-                  visible: true,
-                }),
-              )
-            }}
-          >
-            <IconFont
-              style={{
-                fontSize: 16,
-                marginRight: 8,
+          {!isCanEdit && (
+            <CreateTransactionButton
+              onClick={() => {
+                // todo 创建新事物
+                dispatch(
+                  setAddWorkItemModal({
+                    visible: true,
+                  }),
+                )
               }}
-              type="plus"
-            />
-            <span>新事物</span>
-          </CreateTransactionButton>
+            >
+              <IconFont
+                style={{
+                  fontSize: 16,
+                  marginRight: 8,
+                }}
+                type="plus"
+              />
+              <span>新事物</span>
+            </CreateTransactionButton>
+          )}
+
           <Droppable key={data.id} droppableId={String(data.id)}>
             {provided => (
               <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>

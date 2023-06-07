@@ -20,8 +20,6 @@ import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import TableFilter from '@/components/TableFilter'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import IterationStatus from './components/IterationStatus'
-import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import InputSearch from '@/components/InputSearch'
 import useSetTitle from '@/hooks/useSetTitle'
@@ -43,7 +41,9 @@ import PermissionWrap from '@/components/PermissionWrap'
 import CommonButton from '@/components/CommonButton'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
+import IterationStatus from '@/components/IterationStatus'
 
+import useKeyPress from '@/hooks/useKeyPress'
 const Wrap = styled.div`
   height: 100%;
   display: flex;
@@ -140,6 +140,9 @@ const Item = styled.div<{ activeIdx: boolean }>(
 )
 
 const Iteration = () => {
+  const { useKeys } = useKeyPress()
+  useKeys('2', '/ProjectManagement/KanBan')
+  useKeys('3', '/Report/PerformanceInsight')
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [filterState, setFilterState] = useState(true)
@@ -319,7 +322,7 @@ const Iteration = () => {
     const params = encryptPhp(
       JSON.stringify({ type: val, id: projectId, iterateId }),
     )
-    navigate(`/ProjectManagement/Iteration?data=${params}`)
+    navigate(`/ProjectManagement/IterationDetail?data=${params}`)
   }
 
   const onChangeOperation = (item: any) => {

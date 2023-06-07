@@ -58,10 +58,12 @@ const IssueCard = (props: IssueCardProps) => {
         <StoryText
           onClick={e => {
             e.stopPropagation()
+
             openDemandDetail(
-              { ...props.item, demandIds: ids },
+              { ...props.item, demandIds: ids, projectId: getProjectIdByUrl() },
               getProjectIdByUrl(),
               props.item.id,
+              1,
             )
           }}
         >

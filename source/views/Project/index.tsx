@@ -31,7 +31,7 @@ import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import GuideModal from '@/components/GuideModal'
 import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
-import guide_3 from './img/guide_3.png'
+import { updateCompanyUserPreferenceConfig } from '@/services/user'
 
 const ProjectManagementOptimization = () => {
   const [t] = useTranslation()
@@ -73,7 +73,9 @@ const ProjectManagementOptimization = () => {
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
   const [groupId, setGroupId] = useState<any>(null)
-  const { userInfo, currentMenu } = useSelector(store => store.user)
+  const { userInfo, currentMenu, userPreferenceConfig } = useSelector(
+    store => store.user,
+  )
   const [isSpinning, setIsSpinning] = useState(false)
   const [projectList, setProjectList] = useState<any>({
     list: undefined,
@@ -419,13 +421,22 @@ const ProjectManagementOptimization = () => {
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}
       />
-      <GuideModal
-        width={784}
-        height={700}
-        visible={guideVisible}
-        inform={inform}
-        close={() => dispatch(onChangeGuideVisible(false))}
-      />
+      {userPreferenceConfig?.guidePageConfig?.project_list === 1 ? (
+        <GuideModal
+          width={784}
+          height={700}
+          inform={inform}
+          close={async () => {
+            await updateCompanyUserPreferenceConfig({
+              id: userPreferenceConfig?.id,
+              previewModel: userPreferenceConfig.previewModel,
+              guidePageConfig: {
+                project_list: 2,
+              },
+            })
+          }}
+        />
+      ) : null}
     </PermissionWrap>
   )
 }
