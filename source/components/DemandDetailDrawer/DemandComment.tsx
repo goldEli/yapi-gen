@@ -37,6 +37,7 @@ import {
   TextWrap,
   haveAuto,
 } from './style'
+import useMkeyDown from '@/hooks/useMkeyDown'
 
 interface Props {
   detail?: any
@@ -62,6 +63,11 @@ const DemandComment = (props: Props) => {
   const [isVisibleComment, setIsVisibleComment] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
 
+  const handleShortcutEvent = () => {
+    setIsVisibleComment(true)
+  }
+
+  useMkeyDown(handleShortcutEvent)
   useImperativeHandle(props.onRef, () => {
     return {
       addComment: () => setIsVisibleComment(true),
