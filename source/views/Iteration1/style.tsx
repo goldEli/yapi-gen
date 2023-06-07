@@ -17,7 +17,7 @@ export const IterationContent = styled.div`
 // 迭代列表样式
 export const IterationListBox = styled.div<{ isShowLeft: boolean }>(
   {
-    width: 274,
+    width: 324,
     borderRight: '1px solid var(--neutral-n6-d1)',
     padding: '0px 24px 0px 0',
     background: 'white',
@@ -168,3 +168,45 @@ export const DetailWrap = styled.div`
   color: var(--neutral-n4);
   cursor: pointer;
 `
+
+// 迭代列表页
+export const IterationMain = styled.div({
+  width: '100%',
+  height: '100%',
+  overflowY: 'auto',
+  paddingLeft: '24px',
+})
+
+export const IterationMainOperation = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const IterationInfo = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  position: 'relative',
+  width: '70%',
+  '.iterationName': {
+    fontSize: 14,
+    color: 'var(--neutral-n1-d1)',
+    margin: '0 8px',
+    maxWidth: '26%',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+  },
+})
+
+export const IconWrapInfo = styled(IconFont)({
+  fontSize: 20,
+  color: 'var(--neutral-n3)',
+  cursor: 'pointer',
+  padding: 6,
+  borderRadius: 6,
+  '&: hover': {
+    color: 'var(--neutral-n1-d1)',
+    background: 'var(--hover-d3)',
+  },
+})

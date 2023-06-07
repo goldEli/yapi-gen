@@ -58,6 +58,7 @@ import { useNavigate } from 'react-router-dom'
 interface IterationListProps {
   // 是否展开左侧
   isShowLeft: boolean
+  onUpdate(): void
 }
 
 const IterationList = (props: IterationListProps) => {
