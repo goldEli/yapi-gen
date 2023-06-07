@@ -46,8 +46,8 @@ declare namespace Models.Efficiency {
   }
   export interface ChartBar {
     chartType: string
-    yData: Array<string>
-    seriesData: Array<number>
+    yData?: Array<string | undefined>
+    seriesData?: Array<number | undefined>
     time: string
   }
   export interface ChartPie {
@@ -109,5 +109,11 @@ declare namespace Models.Efficiency {
       title: string
       value: number
     }
+    period_time: string
+  }
+  export interface risk_stock_item {
+    name: string
+    number: number
+    ratio: string
   }
 }

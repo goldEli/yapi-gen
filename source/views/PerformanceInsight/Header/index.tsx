@@ -38,6 +38,37 @@ interface Props {
   value: number
   projectId: number
 }
+const periodTimes = [
+  { label: 'two_week', value: 14 },
+  { label: 'four_week', value: 28 },
+  { label: 'one_month', value: 1 },
+  { label: 'three_month', value: 3 },
+  { label: 'six_month', value: 0 },
+]
+// {
+//   name: '最近2周',
+//   key: 14,
+// },
+// {
+//   name: '最近4周',
+//   key: 28,
+// },
+// {
+//   name: '近1月',
+//   key: 1,
+// },
+// {
+//   name: '近3个月',
+//   key: 3,
+// },
+// {
+//   name: '近6个月',
+//   key: 6,
+// },
+// {
+//   name: '自定义',
+//   key: 0,
+// },
 const Iteration = (props: Props) => {
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
   const tabs1 = [
@@ -77,6 +108,7 @@ const Iteration = (props: Props) => {
   const [iterateIds, setIterateIds] = useState<number>(0)
   const dispatch = useDispatch()
   const { save, headerParmas } = useSelector(store => store.performanceInsight)
+  const { projectInfo } = useSelector(state => state.project)
   // tads切换
   const getTabsActive = (index: number) => {
     setTabsActive(index)
@@ -84,17 +116,18 @@ const Iteration = (props: Props) => {
   }
   useEffect(() => {
     // 展示的tabs不同
+    console.log('projectInfo', projectInfo)
     props.homeType === 'iteration' ||
       (props.homeType === 'sprint' && getIterateData())
 
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
     props.homeType === 'all' && getProjectData()
-  }, [])
+  }, [props.homeType])
   // 获取近期的冲刺项目
   const getIterateData = async () => {
     const res = await recentCreateData({
-      project_id: 1,
+      project_id: projectInfo.id,
       resource_type: props.homeType === 'iteration' ? 6 : 9,
     })
     setIterateData(res)
@@ -108,12 +141,12 @@ const Iteration = (props: Props) => {
         ? 0
         : 1,
     )
-    getTime(props.defalutConfig?.period_time || '')
+    getTime(props.defalutConfig?.period_time || 'four_week')
     props.defalutConfig &&
-      props.defalutConfig?.period_time == '' &&
-      props.defalutConfig?.start_time == '' &&
+      props.defalutConfig?.period_time === '' &&
+      props.defalutConfig?.start_time === '' &&
       setIterateIds(
-        props.defalutConfig?.iterate_ids?.length == 0
+        props.defalutConfig?.iterate_ids?.length === 0
           ? 0
           : props.defalutConfig.iterate_ids[0],
       )
@@ -320,6 +353,7 @@ const Iteration = (props: Props) => {
           <SelectMain
             allowClear={false}
             onChange={e => {
+              console.log(e)
               setTimekey(e), dispatch(setSave(true))
               dispatch(
                 setHeaderParmas({
@@ -331,6 +365,8 @@ const Iteration = (props: Props) => {
                   },
                   view: headerParmas.view,
                   iterate_ids: headerParmas.iterate_ids,
+                  period_time: periodTimes.find(item => item.value === e)
+                    ?.label,
                 }),
               )
             }}
