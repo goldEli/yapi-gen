@@ -3,6 +3,7 @@ import React from 'react'
 import { ColorBox, ColorBtn, ColorBtn2, Wrap1, Wrap2 } from './style'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
+import { Editor } from '@xyfe/uikit'
 
 const NoteCard = (props: any) => {
   const { values } = props
@@ -31,21 +32,38 @@ const NoteCard = (props: any) => {
     }
     return text
   }
-  const computeLength = (arr: any) => {
-    if (Array.isArray(arr)) {
+  const computeLength = (values: any) => {
+    if (values.all) {
+      return (
+        <div
+          style={{
+            height: '20px',
+            fontSize: '12px',
+            color: '#646566',
+            lineHeight: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          全员
+        </div>
+      )
+    }
+    if (Array.isArray(values.user_counts)) {
       let totalLength = 0
 
-      arr?.forEach((item: any) => {
-        totalLength += item.user_ids.length
+      values.user_counts?.forEach((item: any) => {
+        totalLength += item.count
       })
       return totalLength
     }
-    return arr.all
   }
 
   const recipientArr = (values: any) => {
-    if (Array.isArray(values)) {
-      return values.map((i: any) => (
+    if (Array.isArray(values.user_counts)) {
+      return values.user_counts.map((i: any) => (
         <div
           key={i}
           style={{
@@ -59,11 +77,10 @@ const NoteCard = (props: any) => {
             whiteSpace: 'nowrap',
           }}
         >
-          {i.name}（{i.user_ids.length}）
+          {i.name}（{i.count}）
         </div>
       ))
     }
-    return
   }
   return (
     <div>
@@ -158,15 +175,13 @@ const NoteCard = (props: any) => {
             color: '#323233',
             lineHeight: '22px',
           }}
-          dangerouslySetInnerHTML={{
-            __html: values.content,
-          }}
-        />
+        >
+          <Editor value={values.content} getSuggestions={() => []} readonly />
+        </div>
 
         <div
           onClick={() => props.onShowNumber(values.id)}
           style={{
-            height: '52px',
             borderRadius: '0px 0px 0px 0px',
             borderTop: '1px solid #ECEDEF',
             marginTop: '16px',
@@ -174,6 +189,8 @@ const NoteCard = (props: any) => {
             alignItems: 'center',
             gap: '24px',
             cursor: 'pointer',
+            flexWrap: 'wrap',
+            padding: '10px 0px',
           }}
         >
           <div
@@ -189,8 +206,8 @@ const NoteCard = (props: any) => {
               paddingRight: '24px',
             }}
           >
-            <CommonIconFont color="var(--neutral-n4)" size={16} type="team" />
-            {computeLength(values.recipient)}
+            <CommonIconFont color="var(--neutral-n4)" size={16} type="team" />(
+            {computeLength(values.recipient)})
           </div>
           {recipientArr(values.recipient)}
         </div>

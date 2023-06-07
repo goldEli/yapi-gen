@@ -8,7 +8,7 @@
 /* eslint-disable no-cond-assign */
 import UploadAttach from '@/components/UploadAttach'
 import { Form } from 'antd'
-import { createRef, useEffect, useRef } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
 import IconFont from './IconFont'
@@ -45,6 +45,7 @@ const EditComment = (props: any) => {
   const editable = useRef<HTMLInputElement>(null)
   const attachDom: any = createRef()
   const [t] = useTranslation()
+  const [isCtrlPressed, setIsCtrlPressed] = useState(false)
   const dispatch = useDispatch()
   const { projectInfoValues } = useSelector(store => store.project)
 
@@ -118,6 +119,33 @@ const EditComment = (props: any) => {
 
   const onsubmit = () => {
     form.submit()
+  }
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if (event.ctrlKey && event.key === 'Enter') {
+        handleShortcutEvent()
+      }
+    }
+
+    const handleKeyUp = (event: any) => {
+      if (event.key === 'Control') {
+        setIsCtrlPressed(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [])
+
+  const handleShortcutEvent = () => {
+    // 在此处理按下 Ctrl + 回车 触发的事件
+    console.log('Ctrl + 回车 被按下')
+    onsubmit()
   }
   return (
     <CommonModal

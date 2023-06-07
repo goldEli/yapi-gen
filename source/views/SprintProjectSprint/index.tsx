@@ -4,7 +4,6 @@ import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
 import { useTranslation } from 'react-i18next'
-import { setGuideVisible } from '@store/sprint'
 import { useDispatch, useSelector } from '@store/index'
 import styled from '@emotion/styled'
 import InputSearch from '@/components/InputSearch'
@@ -32,6 +31,7 @@ import { getParamsData } from '@/tools'
 import CategoryDropdown from '@/components/CategoryDropdown'
 import useKeyPress from '@/hooks/useKeyPress'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
+import { getLoginDetail } from '@store/user/user.thunk'
 
 const SearchBox = styled.div`
   display: flex;
@@ -255,7 +255,6 @@ const SprintProjectSprint: React.FC = () => {
   useKeys('3', '/Report/PerformanceInsight')
   useKeys('2', '/SprintProjectManagement/KanBan')
   const {
-    guideVisible,
     leftSprintList,
     checkList,
     rightLoading,
@@ -693,6 +692,7 @@ const SprintProjectSprint: React.FC = () => {
                 sprint: 2,
               },
             })
+            dispatch(getLoginDetail())
           }}
         />
       ) : null}

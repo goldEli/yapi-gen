@@ -1,4 +1,4 @@
-import { useImperativeHandle, useRef, useState } from 'react'
+import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { CommentFooterWrap } from './style'
 import { useTranslation } from 'react-i18next'
 import { Form, Input, Space } from 'antd'
@@ -7,6 +7,8 @@ import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFileToKey } from '@/services/cos'
 import { useSelector } from '@store/index'
 import CommonUserAvatar from '../CommonUserAvatar'
+import useMkeyDown from '@/hooks/useMkeyDown'
+import useShortcutCtrlEnter from '@/hooks/useShortcutCtrlEnter/useShortcutCtrlEnter'
 
 interface CommentFooterProps {
   placeholder: string
@@ -22,6 +24,7 @@ const CommentFooter = (props: CommentFooterProps) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [isReview, setIsReview] = useState(false)
+  const [isCtrlPressed, setIsCtrlPressed] = useState(false)
   const editorRef = useRef<EditorRef>(null)
   const { userInfo } = useSelector(store => store.user)
 
@@ -33,13 +36,21 @@ const CommentFooter = (props: CommentFooterProps) => {
     }
     return Promise.resolve()
   }
+  const handleShortcutEvent1 = () => {
+    setIsReview(true)
+  }
 
+  useMkeyDown(handleShortcutEvent1)
   //   提交评论
   const onComment = async () => {
     const value = await form.validateFields()
     props.onConfirm(value)
   }
 
+  const handleShortcutEvent = () => {
+    onComment()
+  }
+  useShortcutCtrlEnter(handleShortcutEvent)
   // 富文本上传
   const uploadFile = (file: File, dom: any, key2?: any) => {
     const key = uploadFileToKey(

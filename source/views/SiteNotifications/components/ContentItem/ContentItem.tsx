@@ -8,6 +8,15 @@ import { useState } from 'react'
 import { About, GrepContent, HoverWrap, Name, Time, Time2, Wrap } from './style'
 import dayjs from 'dayjs'
 import { useSelector } from '@store/index'
+import { css } from '@emotion/css'
+import { Editor } from '@xyfe/uikit'
+
+const tmgCss = css`
+  img {
+    width: 100%;
+    object-fit: contain;
+  }
+`
 
 const ContentItem = (props: any) => {
   const { send_user, msg_body, create_time, read, id, custom_data } = props.item
@@ -96,10 +105,16 @@ const ContentItem = (props: any) => {
         </div>
 
         <GrepContent status={read}>
-          <span
+          {/* <span
+            className={tmgCss}
             dangerouslySetInnerHTML={{
               __html: formateBlue(msg_body.content, custom_data.linkWebUrl),
             }}
+          /> */}
+          <Editor
+            value={formateBlue(msg_body.content, custom_data.linkWebUrl)}
+            getSuggestions={() => []}
+            readonly
           />
         </GrepContent>
       </HoverWrap>

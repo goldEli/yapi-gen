@@ -48,6 +48,9 @@ const IterationStatus = (props: Props) => {
   }
 
   const onClick = (value: any, e: any) => {
+    if (value === 2) {
+      return
+    }
     setIsVisible(false)
     props.onChangeStatus(value, e)
   }

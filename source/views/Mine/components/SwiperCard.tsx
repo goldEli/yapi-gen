@@ -148,7 +148,6 @@ export const SwiperCard = (props: {
         {!props.all && (
           <div
             style={{
-              width: '48px',
               height: '20px',
               fontSize: '12px',
               fontWeight: 400,
