@@ -32,6 +32,7 @@ import GuideModal from '@/components/GuideModal'
 import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
+import { getLoginDetail } from '@store/user/user.thunk'
 
 const ProjectManagementOptimization = () => {
   const [t] = useTranslation()
@@ -434,6 +435,7 @@ const ProjectManagementOptimization = () => {
                 project_list: 2,
               },
             })
+            dispatch(getLoginDetail())
           }}
         />
       ) : null}

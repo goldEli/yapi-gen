@@ -194,7 +194,7 @@ const CreateSprintModal = (props: sprintProps) => {
               name="name"
               rules={[{ required: true, message: '请输入冲刺名称' }]}
             >
-              <Input placeholder="新建的冲刺1" maxLength={150} />
+              <Input placeholder="新建的冲刺1" maxLength={50} />
             </Form.Item>
             <Form.Item
               label="持续时间"

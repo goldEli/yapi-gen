@@ -28,6 +28,8 @@ const Content = styled.div`
   padding: 24px;
   box-sizing: border-box;
   min-height: 412px;
+  overflow-y: scroll;
+  height: 600px;
 `
 
 const NoteModal = (props: any) => {

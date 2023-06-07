@@ -426,3 +426,36 @@ usePrompt({
   onConfirm: () => {},
 })
 ```
+
+按下 m 快捷键的操作
+
+```js
+import useMkeyDown from '@/hooks/useMkeyDown'
+const handleShortcutEvent1 = () => {
+  console.log('按下M键的操作')
+}
+
+useMkeyDown(handleShortcutEvent1)
+```
+
+按下 c 快捷键的操作
+
+```js
+import useShortcutC from '@/hooks/useShortcutC'
+const handleShortcutEvent1 = () => {
+  console.log('按下c键的操作')
+}
+
+useShortcutC(handleShortcutEvent1)
+```
+
+按下 Ctrl + 回车 快捷键的操作
+
+```js
+import useShortcutCtrlEnter from '@/hooks/useShortcutCtrlEnter/useShortcutCtrlEnter'
+const handleShortcutEvent = () => {
+  // 在此处理按下 Ctrl + 回车 触发的事件
+  console.log('Ctrl + 回车 被按下')
+}
+useShortcutCtrlEnter(handleShortcutEvent)
+```

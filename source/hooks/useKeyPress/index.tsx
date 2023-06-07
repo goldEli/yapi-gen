@@ -7,7 +7,6 @@ const useKeyPress = () => {
   const navigator = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  console.log('paramsData----', paramsData)
   const projectId = paramsData.id
   const { type } = paramsData
   const useKeys = (key: string, url: string) => {

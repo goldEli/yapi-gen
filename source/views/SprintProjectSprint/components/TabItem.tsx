@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Checkbox, Progress } from 'antd'
 import IconFont from '@/components/IconFont'
@@ -7,7 +6,6 @@ import { setCheckList } from '@store/sprint'
 
 const Item = styled.div`
   cursor: pointer;
-  height: 104px;
   background: #ffffff;
   border-radius: 6px 6px 6px 6px;
   border: 1px solid var(--neutral-n6-d1);
@@ -25,6 +23,7 @@ const Item = styled.div`
     font-weight: 500;
     color: var(--neutral-n1-d1);
     line-height: 22px;
+    margin-right: 5px;
   }
   .date {
     font-size: 12px;

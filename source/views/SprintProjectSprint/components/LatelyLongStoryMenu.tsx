@@ -136,6 +136,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
               <Tooltip title="编辑">
                 <IconFont
                   onClick={() => {
+                    // todo 编辑长故事
                     dispatch(
                       setAddWorkItemModal({
                         visible: true,
