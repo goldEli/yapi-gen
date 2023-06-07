@@ -54,22 +54,39 @@ declare namespace API.Sprint {
   }
   namespace GetCompletionRate {
     type Params = {
-      project_ids?: string
+      project_ids?: string | number
       iterate_ids?: string
       user_ids?: string
       start_time?: string
       end_time?: string
       sort?: string
+      period_time?: string
     }
-    type Result = Array<{
-      user_name: string
-      completion_rate: string
-      work_total: number
-    }>
+    type Result = {
+      list: Model.PerformanceInsight.useInfo[]
+      end_time: string
+      start_time: string
+    }
+  }
+  namespace contrastNewWork {
+    type Params = {
+      project_ids?: string | number
+      iterate_ids?: string
+      user_ids?: string
+      start_time?: string
+      end_time?: string
+      sort?: string
+      period_time?: string
+    }
+    type Result = {
+      list: Model.PerformanceInsight.useInfo[]
+      end_time: string
+      start_time: string
+    }
   }
   namespace GetDefectRatio {
     type Params = {
-      project_ids?: string
+      project_ids?: string | number
       user_ids?: string
       iterate_ids?: string
       start_time?: string
@@ -77,8 +94,13 @@ declare namespace API.Sprint {
       iterate_ids?: string
       sort?: string
       dimension?: string
+      period_time: string
     }
-    type Result = Array<{ name: string; number: number; ratio: string }>
+    type Result = {
+      list: Model.PerformanceInsight.useInfo[]
+      end_time: string
+      start_time: string
+    }
   }
   namespace GetBugList {
     type Params = {
@@ -91,8 +113,8 @@ declare namespace API.Sprint {
   }
   namespace GetStatisticsTotal {
     type Params = {
-      project_ids: Array<number>
-      iterate_ids: Array<number>
+      project_ids: string
+      iterate_ids?: Array<number> | number | string
       user_ids: Array<number>
       user_ids?: number
       start_time: string

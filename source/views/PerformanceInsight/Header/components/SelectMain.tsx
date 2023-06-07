@@ -7,6 +7,7 @@ interface Props {
   placeholder: string
   value: number
   allowClear: boolean
+  labelInValue?: boolean
 }
 const SelectMain = (props: Props) => {
   return (
@@ -20,6 +21,7 @@ const SelectMain = (props: Props) => {
       onChange={(e: number) => {
         props.onChange(e)
       }}
+      labelInValue={props.labelInValue}
       getPopupContainer={(node: any) => node}
       allowClear={props?.allowClear || false}
     >

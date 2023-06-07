@@ -24,6 +24,7 @@ const initialState: SliceState = {
       title: '',
       value: 0,
     },
+    period_time: 'four_week',
   },
   projectDataList: [],
   visiblePerson: false,
@@ -38,7 +39,7 @@ const slice = createSlice({
       state.save = action.payload
     },
     setHeaderParmas: (state, action) => {
-      state.headerParmas = action.payload
+      state.headerParmas = { ...initialState.headerParmas, ...action.payload }
     },
     setProjectDataList: (state, action) => {
       state.projectDataList = action.payload

@@ -17,7 +17,7 @@ import {
   LotIcon,
 } from '../Header/Style'
 import { DialogMain, DialogHeader, TextColor, Footer } from './style'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SelectMain from '../Header/components/SelectMain'
 import CommonButton from '@/components/CommonButton'
 import { useSelector } from '@store/index'
@@ -129,6 +129,10 @@ const Home = () => {
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const { save, headerParmas } = useSelector(store => store.performanceInsight)
+  const { projectInfo } = useSelector(state => state.project)
+  const { userInfo } = useSelector(state => state.user)
+  const [startTime, setStartTime] = useState('')
+  const [endTime, setEndTime] = useState('')
   const [projectId, setProjectId] = useState(0)
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
@@ -147,7 +151,6 @@ const Home = () => {
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ConfigItem>()
   useEffect(() => {
-    console.log(paramsData, 'paramsData')
     if (paramsData) {
       setHomeType(paramsData.type)
       setProjectId(paramsData.projectId)
@@ -155,6 +158,22 @@ const Home = () => {
       setHomeType('all')
       setProjectId(0)
     }
+    // 视图列表
+  }, [])
+  useEffect(() => {
+    if (!projectId) {
+      return
+    }
+    init()
+    // 视图列表
+    getViewList({ project_id: projectId, use_type: 3 })
+  }, [projectId])
+
+  // useEffect(() => {
+  //   console.log(11)
+  //   init()
+  // }, [])
+  const init = () => {
     // 缺陷现状和工作项现状
     getWorkList()
     // 新增工作top10对比
@@ -165,9 +184,7 @@ const Home = () => {
     getDefectRatioChart('severity')
     // 集合图表
     getStatisticsOther()
-    // 视图列表
-    getViewList({ project_id: '1', use_type: 3 })
-  }, [])
+  }
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)
@@ -266,30 +283,31 @@ const Home = () => {
     )
   }
   // 缺陷现状和工作项现状
+  //  '周期时间：two_week,four_week,one_month,three_month,six_month',
   const getWorkList = async () => {
     let res = await getStatisticsTotal({
-      project_ids: [1, 2],
-      iterate_ids: [12, 23],
-      user_ids: [1, 23, 44],
-      start_time: '2023-05-30 00:00:00',
-      end_time: '2023-05-30 00:00:00',
-      period_time:
-        '周期时间：two_week,four_week,one_month,three_month,six_month',
+      project_ids: headerParmas.projectIds?.join(','),
+      iterate_ids: headerParmas.iterate_ids?.join(','),
+      user_ids: userInfo.id,
+      start_time: '',
+      end_time: '',
+      period_time: headerParmas.period_time,
     })
     setWorkDataList(res)
   }
   // 新增工作top10对比第一个图表
   const getContrastNewWork = async (str: string) => {
-    const res = await contrastNewWork({
-      project_ids: '1,2',
-      iterate_ids: '12,23',
-      user_ids: '12,23,707',
-      start_time: '2023-05-30 00:00:00',
-      end_time: '2023-05-30 00:00:00',
+    let res = await contrastNewWork({
+      project_ids: headerParmas.projectIds?.join(','),
+      iterate_ids: headerParmas.iterate_ids?.join(','),
+      user_ids: userInfo.id,
+      start_time: startTime,
+      end_time: endTime,
       sort: str,
+      period_time: headerParmas.period_time,
     })
     setCharts1({
-      time: res.start_time + ' ~ ' + res.end_time,
+      time: `${res.start_time} ~ ${res.end_time}`,
       chartType: str,
       yData: res.list.map(el => el.user_name),
       seriesData: res.list.map(el => el.work_total),
@@ -298,15 +316,16 @@ const Home = () => {
   // 完成率top10对比 第4个图表
   const getCompletionRateChart = async (str: string) => {
     let res = await getCompletionRate({
-      project_ids: '1,2',
-      iterate_ids: '12,23',
-      user_ids: '12,23,707',
-      start_time: '2023-05-30 00:00:00',
-      end_time: '2023-05-30 00:00:00',
+      project_ids: headerParmas.projectIds?.join(','),
+      iterate_ids: headerParmas.iterate_ids?.join(','),
+      user_ids: userInfo.id,
+      start_time: startTime,
+      end_time: endTime,
       sort: str,
+      period_time: headerParmas.period_time,
     })
     setCharts4({
-      time: res.start_time + ' ~ ' + res.end_time,
+      time: `${res.start_time} ~ ${res.end_time}`,
       chartType: str,
       yData: res.list.map(el => el.user_name),
       seriesData: res.list.map(el => el.work_total),
@@ -315,38 +334,36 @@ const Home = () => {
   // 阶段缺陷占比第6个图表
   const getDefectRatioChart = async (str: string) => {
     const res = await getDefectRatio({
-      project_ids: '1,2',
-      iterate_ids: '12,23',
-      user_ids: '12,23,707',
-      start_time: '2023-05-30 00:00:00',
-      end_time: '2023-05-30 00:00:00',
+      project_ids: headerParmas.projectIds?.join(','),
+      iterate_ids: headerParmas.iterate_ids?.join(','),
+      user_ids: userInfo.id,
+      start_time: startTime,
+      end_time: endTime,
       dimension: str,
+      period_time: headerParmas.period_time,
     })
     setCharts6({
-      time: res.start_time + ' ~ ' + res.end_time,
+      time: `${res.start_time} ~ ${res.end_time}`,
       chartType: str,
-      seriesData: res.list.map(el => [el.name, parseInt(el.ratio, 10)]),
+      seriesData: res.list.map(el => [el.name!, parseInt(el.ratio!, 10)]),
     })
   }
   // 2,3,5图表集合
   const getStatisticsOther = async () => {
     const res = await statisticsOther({
-      project_ids: '1,2',
-      iterate_ids: '12,23',
-      user_ids: '12,23,707',
-      start_time: '2023-05-30 00:00:00',
-      end_time: '2023-05-30 00:00:00',
+      project_ids: headerParmas.projectIds?.join(','),
+      iterate_ids: headerParmas.iterate_ids?.join(','),
+      user_ids: userInfo.id,
+      start_time: startTime,
+      end_time: endTime,
+      period_time: headerParmas.period_time,
     })
     setCharts2({
-      time:
-        res.work_completion_period.start_time +
-        ' ~ ' +
-        res.work_completion_period.end_time,
+      time: `${res.work_completion_period.start_time} ~ ${res.work_completion_period.end_time}`,
       yData: res.work_completion_period.list.map(el => el.start_time),
       seriesData: res.work_completion_period.list.map(el => el.completed),
     })
     setCharts3({
-      time: res.risk_stock.start_time + ' ~ ' + res.risk_stock.end_time,
       total: res.risk_stock.total,
       seriesData: res.risk_stock.list.map(el => [
         el.name,

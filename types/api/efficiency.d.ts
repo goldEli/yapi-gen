@@ -19,15 +19,16 @@ declare namespace API.Efficiency {
   }
   namespace StatisticsOther {
     type Params = {
-      project_ids?: string
+      project_ids?: string | number
       iterate_ids?: string
       user_ids?: string
       start_time?: string
       end_time?: string
+      period_time: string
     }
     type Result = {
       work_completion_period: {
-        list: Models.Efficiency.Work
+        list: Models.Efficiency.Work[]
         period_number: number
         growth_rate: string
         start_time: string
@@ -43,16 +44,18 @@ declare namespace API.Efficiency {
         start_time: string
         end_time: string
       }
+      risk_stock: {
+        total: number
+        list: Models.Efficiency.risk_stock_item[]
+      }
     }
   }
   namespace ViewsList {
     type Params = {
-      project_id: string
+      project_id: number
       use_type: number
     }
-    type Result = {
-      data: Array<Models.Efficiency.ViewItem>
-    }
+    type Result = Array<Models.Efficiency.ViewItem>
   }
   namespace ViewsEditList {
     type Params = {
