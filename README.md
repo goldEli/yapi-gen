@@ -426,3 +426,12 @@ usePrompt({
   onConfirm: () => {},
 })
 ```
+
+```js
+import useMkeyDown from '@/hooks/useMkeyDown'
+const handleShortcutEvent1 = () => {
+  console.log('按下M键的操作')
+}
+
+useMkeyDown(handleShortcutEvent1)
+```
