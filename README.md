@@ -437,3 +437,14 @@ const handleShortcutEvent1 = () => {
 
 useMkeyDown(handleShortcutEvent1)
 ```
+
+按下 Ctrl + 回车 快捷键的操作
+
+```js
+import useShortcutCtrlEnter from '@/hooks/useShortcutCtrlEnter/useShortcutCtrlEnter'
+const handleShortcutEvent = () => {
+  // 在此处理按下 Ctrl + 回车 触发的事件
+  console.log('Ctrl + 回车 被按下')
+}
+useShortcutCtrlEnter(handleShortcutEvent)
+```

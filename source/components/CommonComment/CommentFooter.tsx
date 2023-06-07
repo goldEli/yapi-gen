@@ -8,6 +8,7 @@ import { uploadFileToKey } from '@/services/cos'
 import { useSelector } from '@store/index'
 import CommonUserAvatar from '../CommonUserAvatar'
 import useMkeyDown from '@/hooks/useMkeyDown'
+import useShortcutCtrlEnter from '@/hooks/useShortcutCtrlEnter/useShortcutCtrlEnter'
 
 interface CommentFooterProps {
   placeholder: string
@@ -45,33 +46,13 @@ const CommentFooter = (props: CommentFooterProps) => {
     const value = await form.validateFields()
     props.onConfirm(value)
   }
-  useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      if (event.ctrlKey && event.key === 'Enter') {
-        handleShortcutEvent()
-      }
-    }
-
-    const handleKeyUp = (event: any) => {
-      if (event.key === 'Control') {
-        setIsCtrlPressed(false)
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('keyup', handleKeyUp)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('keyup', handleKeyUp)
-    }
-  }, [])
 
   const handleShortcutEvent = () => {
     // 在此处理按下 Ctrl + 回车 触发的事件
-    console.log('Ctrl + 回车 被按下')
+    console.log('Ctrl + 回车 被按下222')
     onComment()
   }
+  useShortcutCtrlEnter(handleShortcutEvent)
   // 富文本上传
   const uploadFile = (file: File, dom: any, key2?: any) => {
     const key = uploadFileToKey(
