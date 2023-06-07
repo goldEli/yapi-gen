@@ -1,15 +1,16 @@
 import GuideModal from '@/components/GuideModal'
-import { useSelector } from '@store/index'
-import { onChangeGuideVisible } from '@store/kanBan'
+import { useDispatch, useSelector } from '@store/index'
 import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
 import useI18n from '@/hooks/useI18n'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
+import { getLoginDetail } from '@store/user/user.thunk'
 
 const useGuideModal = () => {
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { t } = useI18n()
+  const dispatch = useDispatch()
   const inform = [
     {
       key: 0,
@@ -47,6 +48,7 @@ const useGuideModal = () => {
             kanban: 2,
           },
         })
+        dispatch(getLoginDetail())
       }}
     />
   )
