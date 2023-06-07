@@ -3,6 +3,7 @@ import React from 'react'
 import { ColorBox, ColorBtn, ColorBtn2, Wrap1, Wrap2 } from './style'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
+import { Editor } from '@xyfe/uikit'
 
 const NoteCard = (props: any) => {
   const { values } = props
@@ -174,10 +175,9 @@ const NoteCard = (props: any) => {
             color: '#323233',
             lineHeight: '22px',
           }}
-          dangerouslySetInnerHTML={{
-            __html: values.content,
-          }}
-        />
+        >
+          <Editor value={values.content} getSuggestions={() => []} readonly />
+        </div>
 
         <div
           onClick={() => props.onShowNumber(values.id)}
