@@ -427,6 +427,8 @@ usePrompt({
 })
 ```
 
+按下 m 快捷键的操作
+
 ```js
 import useMkeyDown from '@/hooks/useMkeyDown'
 const handleShortcutEvent1 = () => {
