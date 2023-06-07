@@ -385,37 +385,37 @@ export const useDynamicColumns = (state: any) => {
         )
       },
     },
-    {
-      title: t('common.dealName'),
-      dataIndex: 'dealName',
-      key: 'users_name',
-      width: 180,
-      render: (text: any, record: any) => {
-        return (
-          <TableQuickEdit
-            type="fixed_select"
-            defaultText={record?.usersNameIds || []}
-            keyText="users"
-            item={record}
-            onUpdate={onUpdate}
-            isMineOrHis
-            projectId={state.projectId}
-          >
-            {record?.usersInfo && record?.usersInfo?.length > 0 && (
-              <MultipleAvatar
-                max={3}
-                list={record?.usersInfo?.map((i: any) => ({
-                  id: i.id,
-                  name: i.name,
-                  avatar: i.avatar,
-                }))}
-              />
-            )}
-            {record?.usersInfo.length <= 0 && '--'}
-          </TableQuickEdit>
-        )
-      },
-    },
+    // {
+    //   title: t('common.dealName'),
+    //   dataIndex: 'dealName',
+    //   key: 'users_name',
+    //   width: 180,
+    //   render: (text: any, record: any) => {
+    //     return (
+    //       <TableQuickEdit
+    //         type="fixed_select"
+    //         defaultText={record?.usersNameIds || []}
+    //         keyText="users"
+    //         item={record}
+    //         onUpdate={onUpdate}
+    //         isMineOrHis
+    //         projectId={state.projectId}
+    //       >
+    //         {record?.usersInfo && record?.usersInfo?.length > 0 && (
+    //           <MultipleAvatar
+    //             max={3}
+    //             list={record?.usersInfo?.map((i: any) => ({
+    //               id: i.id,
+    //               name: i.name,
+    //               avatar: i.avatar,
+    //             }))}
+    //           />
+    //         )}
+    //         {record?.usersInfo.length <= 0 && '--'}
+    //       </TableQuickEdit>
+    //     )
+    //   },
+    // },
     {
       title: <NewSort fixedKey="schedule">进度</NewSort>,
       dataIndex: 'schedule',

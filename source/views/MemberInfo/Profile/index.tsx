@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-max-depth */
 /* eslint-disable complexity */
 /* eslint-disable max-len */
 // 他的模块-他的概况
@@ -286,12 +287,13 @@ const Profile = () => {
   }
 
   const init = async () => {
-    const res = isMember
-      ? await getMemberInfoOverviewStatistics({
-          targetId: userId,
-          projectId: id,
-        })
-      : await getUserInfoOverviewStatistics({ targetId: userId })
+    // const res = isMember
+    //   ? await getMemberInfoOverviewStatistics({
+    //       targetId: userId,
+    //       projectId: id,
+    //     })
+    //   :
+    const res = await getUserInfoOverviewStatistics({ targetId: userId })
 
     setData(res)
     if (!isMember) {
@@ -401,7 +403,7 @@ const Profile = () => {
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {isMember ? (
+      {/* {isMember ? (
         <>
           <HasIdWrap>
             <HeadWrap>
@@ -485,208 +487,198 @@ const Profile = () => {
             />
           )}
         </>
-      ) : (
-        <Wrap>
-          <div>
-            <Head>
-              <div>
-                <InnerWrap>
-                  <ChartsItem>
-                    <span className={titleNumberCss3}>
-                      {data?.project_count}
-                    </span>
-                    <span className={titleTextCss}>
-                      {t('mine.totalProject')}
-                    </span>
-                  </ChartsItem>
-                  <ChartsItem>
-                    <span className={titleNumberCss}>{data?.story_count}</span>
-                    <span className={titleTextCss}>累计参与工作项</span>
-                  </ChartsItem>
-                  <ChartsItem>
-                    <span className={titleNumberCss3}>
-                      {data?.abeyance_count}
-                    </span>
-                    <span className={titleTextCss}>待办工作项</span>
-                  </ChartsItem>
-                  <ChartsItem>
-                    <span className={titleNumberCss3}>
-                      {data?.finish_count}
-                    </span>
-                    <span className={titleTextCss}>已办工作项</span>
-                  </ChartsItem>
-                  <ChartsItem>
-                    <span className={titleNumberCss3}>
-                      {data?.create_count}
-                    </span>
-                    <span className={titleTextCss}>我创建的工作项</span>
-                  </ChartsItem>
-                  <ChartsItem>
-                    <span className={titleNumberCss3}>
-                      {data?.copy_me_count}
-                    </span>
-                    <span className={titleTextCss}>抄送我的工作项</span>
-                  </ChartsItem>
-                  <ChartsItem>
-                    <span className={titleNumberCss2}>
-                      {data?.approving_count}
-                    </span>
-                    <span className={titleTextCss}>待审核的工作项</span>
-                  </ChartsItem>
-                </InnerWrap>
+      ) : ( */}
+      <Wrap>
+        <div>
+          <Head>
+            <div>
+              <InnerWrap>
+                <ChartsItem>
+                  <span className={titleNumberCss3}>{data?.project_count}</span>
+                  <span className={titleTextCss}>{t('mine.totalProject')}</span>
+                </ChartsItem>
+                <ChartsItem>
+                  <span className={titleNumberCss}>{data?.story_count}</span>
+                  <span className={titleTextCss}>累计参与工作项</span>
+                </ChartsItem>
+                <ChartsItem>
+                  <span className={titleNumberCss3}>
+                    {data?.abeyance_count}
+                  </span>
+                  <span className={titleTextCss}>待办工作项</span>
+                </ChartsItem>
+                <ChartsItem>
+                  <span className={titleNumberCss3}>{data?.finish_count}</span>
+                  <span className={titleTextCss}>已办工作项</span>
+                </ChartsItem>
+                <ChartsItem>
+                  <span className={titleNumberCss3}>{data?.create_count}</span>
+                  <span className={titleTextCss}>我创建的工作项</span>
+                </ChartsItem>
+                <ChartsItem>
+                  <span className={titleNumberCss3}>{data?.copy_me_count}</span>
+                  <span className={titleTextCss}>抄送我的工作项</span>
+                </ChartsItem>
+                <ChartsItem>
+                  <span className={titleNumberCss2}>
+                    {data?.approving_count}
+                  </span>
+                  <span className={titleTextCss}>待审核的工作项</span>
+                </ChartsItem>
+              </InnerWrap>
+            </div>
+            <div>
+              {/* <SecondTitle>{t('newlyAdd.hisNotFinish')}</SecondTitle> */}
+            </div>
+          </Head>
+          <Center>
+            <CenterRight>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <SecondTitle>工作项接收处理情况</SecondTitle>
+                <Select
+                  onChange={handleChange}
+                  defaultValue={nowYear}
+                  style={{ width: 120 }}
+                  options={nowYearOptions}
+                />
               </div>
-              <div>
-                {/* <SecondTitle>{t('newlyAdd.hisNotFinish')}</SecondTitle> */}
-              </div>
-            </Head>
-            <Center>
-              <CenterRight>
+
+              <LineAnimation data={chartData} />
+            </CenterRight>
+            <CenterRight>
+              <SecondTitle>{t('newlyAdd.hisFeed')}</SecondTitle>
+              {lineData.length < 1 ? (
+                <NoData />
+              ) : (
+                <TimeLineWrap>
+                  <Timeline>
+                    {lineData.map((item: any) => (
+                      <Timeline.Item key={item.id}>
+                        <LineItem>
+                          <span>{item.createTime}</span>
+                          <span>{item.content}</span>
+                        </LineItem>
+                        <LineItem>
+                          <HiddenText>
+                            <OmitText
+                              width={200}
+                              tipProps={{
+                                getPopupContainer: node => node,
+                              }}
+                            >
+                              {item.projectName}
+                            </OmitText>
+                          </HiddenText>
+                          <HiddenText>
+                            <OmitText
+                              width={300}
+                              tipProps={{
+                                getPopupContainer: node => node,
+                              }}
+                            >
+                              <span
+                                onClick={() => onToDetail(item)}
+                                style={{
+                                  color: 'var(--primary-d1)',
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                {item.name}
+                              </span>
+                            </OmitText>
+                          </HiddenText>
+                        </LineItem>
+                      </Timeline.Item>
+                    ))}
+                  </Timeline>
+                </TimeLineWrap>
+              )}
+            </CenterRight>
+          </Center>
+        </div>
+        <FullScreenContainer>
+          <FullScreenDiv isScreen={fullScreen}>
+            <GatteWrap>
+              <div style={{ padding: '28px 0px 0' }}>
                 <div
                   style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center',
                   }}
                 >
-                  <SecondTitle>工作项接收处理情况</SecondTitle>
-                  <Select
-                    onChange={handleChange}
-                    defaultValue={nowYear}
-                    style={{ width: 120 }}
-                    options={nowYearOptions}
-                  />
-                </div>
-
-                <LineAnimation data={chartData} />
-              </CenterRight>
-              <CenterRight>
-                <SecondTitle>{t('newlyAdd.hisFeed')}</SecondTitle>
-                {lineData.length < 1 ? (
-                  <NoData />
-                ) : (
-                  <TimeLineWrap>
-                    <Timeline>
-                      {lineData.map((item: any) => (
-                        <Timeline.Item key={item.id}>
-                          <LineItem>
-                            <span>{item.createTime}</span>
-                            <span>{item.content}</span>
-                          </LineItem>
-                          <LineItem>
-                            <HiddenText>
-                              <OmitText
-                                width={200}
-                                tipProps={{
-                                  getPopupContainer: node => node,
-                                }}
-                              >
-                                {item.projectName}
-                              </OmitText>
-                            </HiddenText>
-                            <HiddenText>
-                              <OmitText
-                                width={300}
-                                tipProps={{
-                                  getPopupContainer: node => node,
-                                }}
-                              >
-                                <span
-                                  onClick={() => onToDetail(item)}
-                                  style={{
-                                    color: 'var(--primary-d1)',
-                                    cursor: 'pointer',
-                                  }}
-                                >
-                                  {item.name}
-                                </span>
-                              </OmitText>
-                            </HiddenText>
-                          </LineItem>
-                        </Timeline.Item>
-                      ))}
-                    </Timeline>
-                  </TimeLineWrap>
-                )}
-              </CenterRight>
-            </Center>
-          </div>
-          <FullScreenContainer>
-            <FullScreenDiv isScreen={fullScreen}>
-              <GatteWrap>
-                <div style={{ padding: '28px 0px 0' }}>
+                  <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
                   <div
+                    onClick={() =>
+                      fullScreen
+                        ? handle.enter()
+                        : dispatch(setFullScreen(true))
+                    }
                     style={{
+                      width: '98px',
+                      height: '32px',
                       display: 'flex',
+                      alignItems: 'center',
                       justifyContent: 'space-between',
+                      padding: '8px',
+                      cursor: 'pointer',
                     }}
                   >
-                    <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
-                    <div
-                      onClick={() =>
-                        fullScreen
-                          ? handle.enter()
-                          : dispatch(setFullScreen(true))
-                      }
-                      style={{
-                        width: '98px',
-                        height: '32px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '8px',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <CommonIconFont
-                        type={fullScreen ? 'fewer-screen' : 'full-screen'}
-                      />
-                      <span>{fullScreen ? '退出全屏' : '全屏'}</span>
-                    </div>
-                  </div>
-                  <div className={titleWrap}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <span onClick={nextMonth}>
-                        <IconFont
-                          className={hov}
-                          type="left
-              "
-                          style={{ fontSize: 15, cursor: 'pointer' }}
-                        />
-                      </span>
-
-                      <span className={timeChoose}>{forMateMonth}</span>
-                      <span onClick={prevMonth}>
-                        <IconFont
-                          className={hov}
-                          type="right
-              "
-                          style={{ fontSize: 15, cursor: 'pointer' }}
-                        />
-                      </span>
-                    </div>
+                    <CommonIconFont
+                      type={fullScreen ? 'fewer-screen' : 'full-screen'}
+                    />
+                    <span>{fullScreen ? '退出全屏' : '全屏'}</span>
                   </div>
                 </div>
-                {gatteData.length >= 1 && (
-                  <Mygante data={gatteData} height={380} />
-                )}
-                {gatteData.length < 1 && (
-                  <div style={{ height: 'calc(100vh - 508px)' }}>
-                    <NoData />
+                <div className={titleWrap}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span onClick={nextMonth}>
+                      <IconFont
+                        className={hov}
+                        type="left
+              "
+                        style={{ fontSize: 15, cursor: 'pointer' }}
+                      />
+                    </span>
+
+                    <span className={timeChoose}>{forMateMonth}</span>
+                    <span onClick={prevMonth}>
+                      <IconFont
+                        className={hov}
+                        type="right
+              "
+                        style={{ fontSize: 15, cursor: 'pointer' }}
+                      />
+                    </span>
                   </div>
-                )}
-              </GatteWrap>
+                </div>
+              </div>
               {gatteData.length >= 1 && (
-                <PaginationBox
-                  total={total}
-                  currentPage={pageObj.page}
-                  pageSize={pageObj.size}
-                  onChange={onChangePage}
-                />
+                <Mygante data={gatteData} height={380} />
               )}
-            </FullScreenDiv>
-          </FullScreenContainer>
-        </Wrap>
-      )}
+              {gatteData.length < 1 && (
+                <div style={{ height: 'calc(100vh - 508px)' }}>
+                  <NoData />
+                </div>
+              )}
+            </GatteWrap>
+            {gatteData.length >= 1 && (
+              <PaginationBox
+                total={total}
+                currentPage={pageObj.page}
+                pageSize={pageObj.size}
+                onChange={onChangePage}
+              />
+            )}
+          </FullScreenDiv>
+        </FullScreenContainer>
+      </Wrap>
+      {/* )} */}
     </>
   )
 }
