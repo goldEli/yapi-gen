@@ -1,4 +1,4 @@
-import { useImperativeHandle, useRef, useState } from 'react'
+import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { CommentFooterWrap } from './style'
 import { useTranslation } from 'react-i18next'
 import { Form, Input, Space } from 'antd'
@@ -7,6 +7,7 @@ import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFileToKey } from '@/services/cos'
 import { useSelector } from '@store/index'
 import CommonUserAvatar from '../CommonUserAvatar'
+import useMkeyDown from '@/hooks/useMkeyDown'
 
 interface CommentFooterProps {
   placeholder: string
@@ -22,6 +23,7 @@ const CommentFooter = (props: CommentFooterProps) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [isReview, setIsReview] = useState(false)
+  const [isCtrlPressed, setIsCtrlPressed] = useState(false)
   const editorRef = useRef<EditorRef>(null)
   const { userInfo } = useSelector(store => store.user)
 
@@ -33,13 +35,43 @@ const CommentFooter = (props: CommentFooterProps) => {
     }
     return Promise.resolve()
   }
+  const handleShortcutEvent1 = () => {
+    setIsReview(true)
+  }
 
+  useMkeyDown(handleShortcutEvent1)
   //   提交评论
   const onComment = async () => {
     const value = await form.validateFields()
     props.onConfirm(value)
   }
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if (event.ctrlKey && event.key === 'Enter') {
+        handleShortcutEvent()
+      }
+    }
 
+    const handleKeyUp = (event: any) => {
+      if (event.key === 'Control') {
+        setIsCtrlPressed(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [])
+
+  const handleShortcutEvent = () => {
+    // 在此处理按下 Ctrl + 回车 触发的事件
+    console.log('Ctrl + 回车 被按下')
+    onComment()
+  }
   // 富文本上传
   const uploadFile = (file: File, dom: any, key2?: any) => {
     const key = uploadFileToKey(

@@ -73,6 +73,8 @@ const SwiperCardMove = (props: any) => {
         {data.map((item: any) => (
           <SwiperSlide key={item.id}>
             <SwiperCard
+              project_type={item.project_type}
+              permission_type={item.permission_type}
               name={item.name}
               avtar={item.cover}
               tap={() => {
