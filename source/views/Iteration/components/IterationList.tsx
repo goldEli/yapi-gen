@@ -374,6 +374,7 @@ const IterationList = (props: IterationListProps) => {
 
   //   跳转迭代详情
   const onClickInfo = (item: any) => {
+    console.log(item)
     const params = encryptPhp(
       JSON.stringify({ id: getProjectIdByUrl(), iterateId: item.id }),
     )
@@ -495,7 +496,10 @@ const IterationList = (props: IterationListProps) => {
                         <TimeWrap>
                           {item.createdTime}-{item.endTime}
                         </TimeWrap>
-                        <DetailWrap className="info" onClick={onClickInfo}>
+                        <DetailWrap
+                          className="info"
+                          onClick={() => onClickInfo(item)}
+                        >
                           <span>{t('common.info')}</span>
                           <CommonIconFont type="right" size={12} />
                         </DetailWrap>
