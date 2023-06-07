@@ -438,6 +438,17 @@ const handleShortcutEvent1 = () => {
 useMkeyDown(handleShortcutEvent1)
 ```
 
+按下 c 快捷键的操作
+
+```js
+import useShortcutC from '@/hooks/useShortcutC'
+const handleShortcutEvent1 = () => {
+  console.log('按下c键的操作')
+}
+
+useShortcutC(handleShortcutEvent1)
+```
+
 按下 Ctrl + 回车 快捷键的操作
 
 ```js
