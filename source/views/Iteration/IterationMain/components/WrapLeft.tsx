@@ -23,7 +23,7 @@ import {
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
 import { getIsPermission, getParamsData } from '@/tools/index'
@@ -46,6 +46,7 @@ import {
 import CommonButton from '@/components/CommonButton'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { getMessage } from '@/components/Message'
+import Complete from '@/components/IterationStatus/Complete'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -163,6 +164,8 @@ const WrapLeft = (props: Props) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [isCompleteVisible, setIsCompleteVisible] = useState(false)
+  const [editCompleteId, setEditCompleteId] = useState(0)
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -355,6 +358,11 @@ const WrapLeft = (props: Props) => {
     props.onChangeVisible()
   }
 
+  const onCompleteIteration = useCallback((id: number) => {
+    setIsCompleteVisible(true)
+    setEditCompleteId(id)
+  }, [])
+
   const onChangeStatus = async (value: any, e: any, item: any) => {
     e.stopPropagation()
     if (value !== item?.status) {
@@ -478,6 +486,9 @@ const WrapLeft = (props: Props) => {
                     onChangeStatus={(value: any, e: any) =>
                       onChangeStatus(value, e, item)
                     }
+                    onCompleteIteration={(id: any) => {
+                      onCompleteIteration(id)
+                    }}
                   />
                 ))}
               </div>
@@ -502,6 +513,14 @@ const WrapLeft = (props: Props) => {
             ))}
         </Spin>
       </CardGroups>
+      <Complete
+        iterationId={editCompleteId}
+        isVisible={isCompleteVisible}
+        title="完成迭代"
+        onClose={() => {
+          setIsCompleteVisible(false)
+        }}
+      />
     </Left>
   )
 }

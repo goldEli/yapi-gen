@@ -30,6 +30,7 @@ interface Props {
   hasChangeStatus: boolean
   iterateInfo: any
   onChangeStatus(value: any, e: any): void
+  onCompleteIteration?(id: number): void
 }
 
 const IterationStatus = (props: Props) => {
@@ -48,9 +49,6 @@ const IterationStatus = (props: Props) => {
   }
 
   const onClick = (value: any, e: any) => {
-    if (value === 2) {
-      return
-    }
     setIsVisible(false)
     props.onChangeStatus(value, e)
   }
@@ -68,7 +66,12 @@ const IterationStatus = (props: Props) => {
         <StatusTag status={1}>{t('common.opening1')}</StatusTag>
       </LiWrap>
 
-      <LiWrap color="var(--function-tag2)" onClick={e => onClick(2, e)}>
+      <LiWrap
+        color="var(--function-tag2)"
+        onClick={() => {
+          props?.onCompleteIteration?.(props?.iterateInfo?.id)
+        }}
+      >
         <StatusTag status={2}>{t('common.finished')}</StatusTag>
       </LiWrap>
 
@@ -115,31 +118,6 @@ const IterationStatus = (props: Props) => {
           ) : null}
         </Popover>
       )}
-      {/* 完成迭代的弹窗 */}
-      <Complete
-        data={[
-          {
-            name: '完成需求',
-            value: 56,
-          },
-          {
-            name: '完成缺陷',
-            value: 56,
-          },
-          {
-            name: '剩余需求',
-            value: 56,
-          },
-          {
-            name: '剩余缺陷',
-            value: 56,
-          },
-        ]}
-        isVisible={false}
-        title={'完成迭代'}
-        onClose={() => 123}
-        onConfirm={() => 123}
-      />
     </>
   )
 }

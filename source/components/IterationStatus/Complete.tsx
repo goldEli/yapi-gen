@@ -1,9 +1,17 @@
-import CommonIconFont from '@/components/CommonIconFont'
 import CommonModal from '@/components/CommonModal'
+import {
+  finishIteration,
+  finishStatistics,
+  incompleteIterates,
+} from '@/services/iterate'
+import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
-import { Input, Popover, Radio, RadioChangeEvent, Space } from 'antd'
-import { SetStateAction, useEffect, useState } from 'react'
-const Titile = styled.div`
+import { Radio, RadioChangeEvent, Space } from 'antd'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import CustomSelect from '../CustomSelect'
+import { getMessage } from '../Message'
+const Title = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
   padding-left: 24px;
@@ -31,118 +39,132 @@ const NameWrap = styled.div`
   font-size: 12px;
   color: var(--neutral-n12);
 `
-const Content = styled.div`
-  width: 480px;
-  height: 168px;
-  overflowy: auto;
-`
-const TitleText = styled.div`
-  font-size: 12px;
-  color: var(--neutral-n3);
-  height: 32px;
-  line-height: 32px;
-  padding-left: 16px;
-`
-const ItemName = styled.div`
-  padding-left: 16px;
-  line-height: 32px;
-  height: 32px;
-  font-size: 14px;
-  color: var(--neutral-n2);
-  &:hover {
-    cursor: pointer;
-    background-color: var(--hover-d3);
-    color: var(--neutral-n1-d1);
-  }
-`
+
 const Name = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
 `
-const InputStyle = styled(Input)({
-  width: '480px',
-})
-const PopoverStyle = styled(Popover)({
-  marginTop: '8px',
-})
 interface Props {
+  iterationId: number
   isVisible: boolean
   title: string
-  onClose: () => void
-  onConfirm: () => void
-  data: Array<{ name: string; value: number }>
+  onClose(): void
 }
 const Complete = (props: Props) => {
-  const [isOpen, setIsOpen] = useState(false)
   const [value, setValue] = useState(1)
-  const [popoverValue, setPopoverValue] = useState<{
-    name: string
-    value: number
-  }>({
-    name: '',
-    value: 0,
-  })
-  const a = [
-    {
-      type: 'no',
-      data: [
-        {
-          name: '123',
-          value: 1,
-        },
-      ],
-    },
-    {
-      type: 'yes',
-      data: [
-        {
-          name: '456',
-          value: 2,
-        },
-      ],
-    },
-  ]
-  const activeItem = (item: { name: string; value: number }) => {
-    setIsOpen(false)
-    setPopoverValue(item)
+  const [searchParams] = useSearchParams()
+  const [data, setData] = useState<any>([])
+  const [noCompleteData, setNoCompleteData] = useState<any>([])
+  const [checkId, setCheckId] = useState<any>()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+
+  const getFinishStatistics = async (params: any) => {
+    try {
+      const result: any = await finishStatistics(params)
+      if (result && result.code === 0 && result.data) {
+        const temp = Object.keys(result.data).map((k: string) => {
+          if (k === 'finished_story_count') {
+            return {
+              name: '完成需求',
+              value: result.data?.finished_story_count,
+            }
+          }
+          if (k === 'finished_bug_count') {
+            return {
+              name: '完成缺陷',
+              value: result.data?.finished_bug_count,
+            }
+          }
+          if (k === 'incomplete_story_count') {
+            return {
+              name: '剩余需求',
+              value: result.data?.incomplete_story_count,
+            }
+          }
+          if (k === 'incomplete_bug_count') {
+            return {
+              name: '剩余缺陷',
+              value: result.data?.incomplete_bug_count,
+            }
+          }
+          return {}
+        })
+        setData(temp)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
-  const content = () => {
-    return (
-      <Content>
-        {a.map(el => (
-          <>
-            <TitleText key={el.type}>{el.type}</TitleText>
-            {el.data.map(item => (
-              <ItemName onClick={() => activeItem(item)} key={item.name}>
-                {item.name}
-              </ItemName>
-            ))}
-          </>
-        ))}
-      </Content>
-    )
+
+  const getIncompleteIterates = async (params: any) => {
+    try {
+      const result: any = await incompleteIterates(params)
+      if (result && result.code === 0 && result.data) {
+        setNoCompleteData(
+          result.data.map((k: any) => ({
+            label: k.name,
+            value: k.id,
+            key: k.id,
+          })),
+        )
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  useEffect(() => {
+    if (props?.iterationId && props?.isVisible) {
+      getFinishStatistics({
+        projectId,
+        id: props?.iterationId,
+      })
+      getIncompleteIterates({
+        projectId,
+        id: props?.iterationId,
+      })
+    }
+  }, [props?.iterationId, props?.isVisible])
+
   const onChange = (e: RadioChangeEvent) => {
     setValue(e.target.value)
   }
+
+  const onConfirm = async () => {
+    if (value === 1 && !checkId) {
+      getMessage({
+        msg: '请选择迭代',
+        type: 'warning',
+      })
+      return
+    }
+    const result: any = await finishIteration({
+      projectId,
+      id: props?.iterationId,
+      moveId: checkId,
+      type: value === 1 ? 'move' : 'remove',
+    })
+  }
+
   return (
     <CommonModal
       width={528}
       isVisible={props.isVisible}
       title={props.title}
       onClose={() => props.onClose()}
-      onConfirm={() => props.onConfirm()}
+      onConfirm={onConfirm}
     >
-      <Titile>本次概况统计</Titile>
+      <Title>本次迭代概况统计</Title>
       <StatisticsWrap>
-        {props.data.map(el => (
+        {data.map((el: any) => (
           <MainWrap key={el.name}>
             <NumWrap>{el.value}</NumWrap>
             <NameWrap>{el.name}</NameWrap>
           </MainWrap>
         ))}
       </StatisticsWrap>
-      <div style={{ paddingLeft: '24px', height: 150 }}>
+      <div style={{ width: '100%', paddingLeft: '24px', height: 150 }}>
         <Radio.Group
           onChange={(e: RadioChangeEvent) => onChange(e)}
           value={value}
@@ -153,27 +175,16 @@ const Complete = (props: Props) => {
                 <Name>将剩余需求和缺陷移入其他迭代中</Name>
               </Radio>
               {value === 1 && (
-                <PopoverStyle
-                  placement="bottomRight"
-                  title={''}
-                  visible={isOpen}
-                  onVisibleChange={setIsOpen}
-                  content={content}
-                  trigger="[click]"
-                >
-                  <InputStyle
-                    type="text"
-                    value={popoverValue.name}
-                    placeholder={'请选择'}
-                    suffix={
-                      <CommonIconFont
-                        type={isOpen ? 'up' : 'down'}
-                        size={14}
-                        color="var(--neutral-n4)"
-                      />
-                    }
+                <div style={{ width: 480, marginTop: 8 }}>
+                  <CustomSelect
+                    placeholder="请选择迭代"
+                    onChange={(id: any) => {
+                      setCheckId(id)
+                    }}
+                    options={noCompleteData}
+                    style={{ width: '100%' }}
                   />
-                </PopoverStyle>
+                </div>
               )}
             </div>
             <Radio value={2}>

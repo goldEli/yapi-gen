@@ -176,3 +176,29 @@ export const updateAchieve: any = async (params: any) => {
     attachment: params.attachList,
   })
 }
+
+export const finishStatistics: any = async (params: any) => {
+  const response = await http.get<any>('finishStatistics', {
+    project_id: params.projectId,
+    id: params.id,
+  })
+  return response
+}
+
+export const incompleteIterates: any = async (params: any) => {
+  const response = await http.get<any>('incompleteIterates', {
+    project_id: params.projectId,
+    id: params.id,
+  })
+  return response
+}
+
+export const finishIteration: any = async (params: any) => {
+  const response = await http.put<any>('finishIteration', {
+    project_id: params.projectId,
+    id: params.id,
+    move_to_id: params.moveId,
+    handle_story_type: params.type,
+  })
+  return response
+}

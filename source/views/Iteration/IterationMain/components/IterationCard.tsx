@@ -104,6 +104,7 @@ interface Props {
   onChangeEdit(e: any, item: any): void
   onChangeDelete(e: any, item: any): void
   onChangeStatus(value: any, e: any): void
+  onCompleteIteration(id: number): void
 }
 
 const IterationCard = (props: Props) => {
@@ -195,6 +196,7 @@ const IterationCard = (props: Props) => {
             iterateInfo={props.item}
             hasChangeStatus={hasChangeStatus}
             onChangeStatus={props.onChangeStatus}
+            onCompleteIteration={props.onCompleteIteration}
           />
           <div style={{ width: '45%' }}>
             <Progress

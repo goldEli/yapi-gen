@@ -185,7 +185,9 @@ export const LatelyLongStoryMenu = (props: Props) => {
               dispatch(
                 setAddWorkItemModal({
                   visible: true,
-                  params: {},
+                  params: {
+                    type: 3,
+                  },
                 }),
               )
             }}
