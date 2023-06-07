@@ -333,6 +333,7 @@ const XTable: React.FC<XTableProps> = props => {
                 dispatch(
                   setAddWorkItemModal({
                     visible: true,
+                    params: { type: 4, iterateId: data.id },
                   }),
                 )
               }}

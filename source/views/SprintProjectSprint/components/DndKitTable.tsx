@@ -184,11 +184,16 @@ const DndKitTable = (props: any) => {
   }
 
   // 编辑事物
-  const onEditItem = () => {
+  const onEditItem = (record: any) => {
+    const editId = Number(record?.id?.split('_')?.[1])
     // todo 编辑事物
     dispatch(
       setAddWorkItemModal({
         visible: true,
+        params: {
+          editId,
+          projectId: record?.project_id,
+        },
       }),
     )
   }
@@ -238,6 +243,9 @@ const DndKitTable = (props: any) => {
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     setIsVisible(false)
     setDeleteItem({})
+    if (deleteItem?.isLong) {
+      getLongStoryData()
+    }
     dispatch(setSprintRefresh(1))
   }
 

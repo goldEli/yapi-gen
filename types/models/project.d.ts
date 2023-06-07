@@ -51,12 +51,11 @@ declare namespace Model.Project {
     noDataCreate?: any
     // 是否是全局创建
     overallCreate?: boolean
-    // 1-事务 2-需求 3-缺陷
-    type?: 1 | 2 | 3
+    //  1：迭代-需求类型，2：迭代-缺陷类型，3：冲刺-长故事事务类型，4：冲刺-标准事务类型，5：冲刺-故障事务类型 6-子任务
+    type?: 1 | 2 | 3 | 4 | 5 | 6
     // 弹窗名称
     title?: string
   }
-
   interface AddQuickSprintParams {
     id?: number
     name?: string

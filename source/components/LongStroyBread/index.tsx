@@ -47,7 +47,7 @@ const LongStroyBread = (props: IProps) => {
   const [hasLongStroy, setHasLongStroy] = useState(false)
   const [isHasLongStroy, setIsHasLongStroy] = useState(false)
   const { longStroy = {}, layer = false, onClick } = props
-  console.log(longStroy)
+
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
