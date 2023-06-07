@@ -63,11 +63,9 @@ const SystemFeedback = () => {
   const [form] = Form.useForm()
 
   const onConfirm = async () => {
-    console.log(1)
-
     const res = await form.validateFields()
     const data = await sendFeedback(res)
-    console.log(data)
+
     if (data.code === 0) {
       getMessage({
         msg: t('common.editSuccess') as string,
@@ -130,9 +128,7 @@ const SystemFeedback = () => {
             <Form.Item
               label={<LabelTitle>建议类型</LabelTitle>}
               name="type"
-              rules={[
-                { required: true, message: 'Please input your username!' },
-              ]}
+              rules={[{ required: true, message: '请选择类型' }]}
             >
               <Select placeholder="我想..." allowClear>
                 <Option value={1}>提供改进建议</Option>
@@ -161,7 +157,7 @@ const SystemFeedback = () => {
                         alignItems: 'center',
                       }}
                     >
-                      味甜希仁
+                      请输入内容
                     </div>
                   ),
                   whitespace: true,
