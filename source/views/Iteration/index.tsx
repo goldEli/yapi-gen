@@ -40,6 +40,7 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { Editor } from '@xyfe/uikit'
 import NoData from '@/components/NoData'
 import CommonModal from '@/components/CommonModal'
+import { getIterateInfo } from '@store/iterate/iterate.thunk'
 
 const Iteration = () => {
   const [t] = useTranslation()
@@ -208,30 +209,30 @@ const Iteration = () => {
 
   const onChangeStatus = async (val: number) => {
     if (val !== iterateInfo?.status) {
-      try {
-        await updateIterateStatus({
-          projectId: getProjectIdByUrl(),
-          id: iterateInfo?.id,
-          status: val,
-        })
-        getMessage({ msg: t('common.editS') as string, type: 'success' })
-        const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
-        // 修改迭代状态更新到项目下拉数据中
-        const newValues = beforeValues?.map((i: any) =>
-          i.key === 'iterate_name'
-            ? {
-                ...i,
-                children: i.children?.map((v: any) => ({
-                  ...v,
-                  status: v.id === iterateInfo?.id ? val : v.status,
-                })),
-              }
-            : i,
-        )
-        dispatch(setProjectInfoValues(newValues))
-      } catch (error) {
-        //
-      }
+      await updateIterateStatus({
+        projectId: getProjectIdByUrl(),
+        id: iterateInfo?.id,
+        status: val,
+      })
+      getMessage({ msg: t('common.editS') as string, type: 'success' })
+      const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+      // 修改迭代状态更新到项目下拉数据中
+      const newValues = beforeValues?.map((i: any) =>
+        i.key === 'iterate_name'
+          ? {
+              ...i,
+              children: i.children?.map((v: any) => ({
+                ...v,
+                status: v.id === iterateInfo?.id ? val : v.status,
+              })),
+            }
+          : i,
+      )
+      dispatch(setProjectInfoValues(newValues))
+      dispatch(
+        getIterateInfo({ projectId: getProjectIdByUrl(), id: iterateInfo?.id }),
+      )
+      dispatch(setIsUpdateList(true))
     }
   }
 
@@ -356,11 +357,6 @@ const Iteration = () => {
               readonly
             />
           ) : (
-            // <div
-            //   dangerouslySetInnerHTML={{
-            //     __html: props.currentDetail?.info || '--',
-            //   }}
-            // />
             <NoData />
           )}
         </div>

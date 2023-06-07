@@ -36,6 +36,7 @@ import RangePicker from '@/components/RangePicker'
 import {
   setCreateIterationParams,
   setIsCreateIterationVisible,
+  setIterateInfo,
 } from '@store/iterate'
 import NoData from '@/components/NoData'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -84,7 +85,7 @@ const IterationList = (props: IterationListProps) => {
   const dispatch = useDispatch()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
-  const { iterateInfo } = useSelector(store => store.iterate)
+  const { iterateInfo, isUpdateList } = useSelector(store => store.iterate)
   const { isRefresh } = useSelector(store => store.user)
   //   是否排序
   const [isSort, setIsSort] = useState(false)
@@ -95,6 +96,7 @@ const IterationList = (props: IterationListProps) => {
   //   卡片上的操作
   const [isVisible, setIsVisible] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
+  const [operationId, setOperationId] = useState(0)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -122,7 +124,10 @@ const IterationList = (props: IterationListProps) => {
   )
 
   // isUpdateProjectInfoValues：是否需要更新项目下拉数据
-  const getList = async (obj?: any, isUpdateProjectInfoValues?: boolean) => {
+  const getList = async (
+    isUpdateProjectInfoValues?: boolean,
+    isDeleteId?: number,
+  ) => {
     setIsSpinning(true)
     const values = form.getFieldsValue()
     if (values.startTime) {
@@ -148,12 +153,30 @@ const IterationList = (props: IterationListProps) => {
     const result = await getIterateList(params)
     setDataList(result)
     setIsSpinning(false)
-    dispatch(
-      getIterateInfo({
-        projectId: getProjectIdByUrl(),
-        id: iterateInfo.id ?? result?.list[0].id,
-      }),
-    )
+
+    // 如果删除id是当前选中的 或当前筛选没有当前选中的，则更新列表第一个
+    if (
+      isDeleteId === iterateInfo.id ||
+      result.list.filter((i: any) => i.id === iterateInfo.id)?.length <= 0
+    ) {
+      dispatch(
+        getIterateInfo({
+          projectId: getProjectIdByUrl(),
+          id: result?.list[0].id,
+        }),
+      )
+    }
+
+    // 当前操作的id跟当前展示的id一致则更新详情或者没有迭代id
+    if (operationId === iterateInfo.id || !iterateInfo.id) {
+      dispatch(
+        getIterateInfo({
+          projectId: getProjectIdByUrl(),
+          id: iterateInfo.id ?? result?.list[0].id,
+        }),
+      )
+    }
+
     // 如果需要更新项目下拉数据
     if (isUpdateProjectInfoValues) {
       const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
@@ -291,7 +314,7 @@ const IterationList = (props: IterationListProps) => {
     })
     setIsVisible(false)
     getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
-    getList({}, true)
+    getList(true, item.id)
   }
 
   //   点击卡片上的操作
@@ -299,6 +322,7 @@ const IterationList = (props: IterationListProps) => {
     e.stopPropagation()
     setIsVisible(false)
     if (type === 'edit') {
+      setOperationId(item.id)
       dispatch(setIsCreateIterationVisible(true))
       dispatch(
         setCreateIterationParams({
@@ -357,11 +381,13 @@ const IterationList = (props: IterationListProps) => {
   }
 
   //   改变状态
-  const onChangeStatus = async (val: number) => {
-    if (val !== iterateInfo?.status) {
+  const onChangeStatus = async (item: any, val: number, e: any) => {
+    e.stopPropagation()
+    if (val !== item?.status) {
+      setOperationId(item?.id)
       await updateIterateStatus({
         projectId: getProjectIdByUrl(),
-        id: iterateInfo?.id,
+        id: item?.id,
         status: val,
       })
       getMessage({ msg: t('common.editS') as string, type: 'success' })
@@ -378,6 +404,7 @@ const IterationList = (props: IterationListProps) => {
             }
           : i,
       )
+      setOperationId(item.id)
       dispatch(setProjectInfoValues(newValues))
       getList(true)
     }
@@ -388,11 +415,12 @@ const IterationList = (props: IterationListProps) => {
     dispatch(getIterateInfo({ projectId: getProjectIdByUrl(), id: item.id }))
   }
 
-  //   useEffect(() => {
-  //     if (props.isShowLeft || isRefresh) {
-  //       getList()
-  //     }
-  //   }, [props.isShowLeft, isRefresh])
+  useEffect(() => {
+    if (isRefresh || isUpdateList) {
+      setOperationId(0)
+      getList()
+    }
+  }, [isRefresh, isUpdateList])
 
   useEffect(() => {
     getList()
@@ -476,7 +504,9 @@ const IterationList = (props: IterationListProps) => {
                         <IterationStatus
                           iterateInfo={item}
                           hasChangeStatus={hasChangeStatus}
-                          onChangeStatus={onChangeStatus}
+                          onChangeStatus={(val, e) =>
+                            onChangeStatus(item, val, e)
+                          }
                         />
                         <div style={{ width: '45%' }}>
                           <Progress

@@ -135,7 +135,7 @@ const routes = [
           },
           {
             path: 'Iteration',
-            element: lazy(() => import('@/views/Iteration1')),
+            element: lazy(() => import('@/views/Iteration')),
           },
           {
             path: 'IterationDetail',
