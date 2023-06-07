@@ -589,7 +589,14 @@ const Iteration = () => {
       auth="/ProjectManagement/Project"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
-      <Wrap>{content()}</Wrap>
+      <Wrap>
+        <IterationMain
+          onChangeVisible={onChangeVisible}
+          onChangeOperation={item => onChangeOperation(item)}
+          updateState={isUpdateState}
+          onChangeIsUpdate={setIsUpdateState}
+        />
+      </Wrap>
     </PermissionWrap>
   )
 }
