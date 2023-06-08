@@ -502,6 +502,12 @@ const CreateDemandLeft = (props: Props) => {
       inputRefDom.current?.focus()
     }, 100)
   }, [])
+  const validateMaxNonEmptyLength = (_: any, value: any) => {
+    if (value && value.includes(' ')) {
+      return Promise.reject('不允许包含空格')
+    }
+    return Promise.resolve()
+  }
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
@@ -678,13 +684,16 @@ const CreateDemandLeft = (props: Props) => {
           }}
           label={t('common.demandName')}
           name="name"
-          rules={[{ required: true, message: '' }]}
+          rules={[
+            { required: true, message: '请输入内容' },
+            { max: 100, message: '最大长度为100个字符' },
+            { validator: validateMaxNonEmptyLength },
+          ]}
         >
           <Input
             autoComplete="off"
             ref={inputRefDom as any}
             placeholder={t('common.pleaseDemandName')}
-            maxLength={100}
             autoFocus
           />
         </Form.Item>
