@@ -30,13 +30,12 @@ import {
   Spin,
   Tooltip,
 } from 'antd'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import RangePicker from '@/components/RangePicker'
 import {
   setCreateIterationParams,
   setIsCreateIterationVisible,
-  setIterateInfo,
 } from '@store/iterate'
 import NoData from '@/components/NoData'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -55,12 +54,12 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { getMessage } from '@/components/Message'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
-import Complete from '@/components/IterationStatus/Complete'
 
 interface IterationListProps {
   // 是否展开左侧
   isShowLeft: boolean
   onUpdate(): void
+  onCompleteIteration(id: number): void
 }
 
 const IterationList = (props: IterationListProps) => {
@@ -101,8 +100,6 @@ const IterationList = (props: IterationListProps) => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const [isCompleteVisible, setIsCompleteVisible] = useState(false)
-  const [editCompleteId, setEditCompleteId] = useState(0)
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -418,10 +415,6 @@ const IterationList = (props: IterationListProps) => {
   const onClickItem = (item: any) => {
     dispatch(getIterateInfo({ projectId: getProjectIdByUrl(), id: item.id }))
   }
-  const onCompleteIteration = useCallback((id: number) => {
-    setIsCompleteVisible(true)
-    setEditCompleteId(id)
-  }, [])
 
   useEffect(() => {
     if (isRefresh || isUpdateList) {
@@ -519,7 +512,7 @@ const IterationList = (props: IterationListProps) => {
                             onChangeStatus(item, val, e)
                           }
                           onCompleteIteration={(id: number) => {
-                            onCompleteIteration(id)
+                            props?.onCompleteIteration?.(id)
                           }}
                         />
                         <div style={{ width: '45%' }}>
@@ -563,14 +556,6 @@ const IterationList = (props: IterationListProps) => {
             ))}
         </Spin>
       </CardGroups>
-      <Complete
-        iterationId={editCompleteId}
-        isVisible={isCompleteVisible}
-        title="完成迭代"
-        onClose={() => {
-          setIsCompleteVisible(false)
-        }}
-      />
     </IterationListBox>
   )
 }
