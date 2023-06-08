@@ -52,6 +52,7 @@ interface IProps {}
 
 const SprintProjectDetail: React.FC<IProps> = props => {
   const [t] = useTranslation()
+  const maxWidth = 800
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -274,7 +275,18 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 拖动线条
   const onDragLine = () => {
-    //
+    let width = basicInfoDom.current?.clientWidth
+
+    document.onmousemove = e => {
+      setFocus(true)
+
+      setLeftWidth(window.innerWidth - e.clientX)
+    }
+    document.onmouseup = () => {
+      document.onmousemove = null
+      document.onmouseup = null
+      setFocus(false)
+    }
   }
 
   useEffect(() => {
