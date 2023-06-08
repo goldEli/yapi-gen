@@ -47,11 +47,14 @@ import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import LongStroyBread from '@/components/LongStroyBread'
 import { setIsUpdateStatus } from '@store/project'
+import { getDemandList } from '@/services/daily'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface IProps {}
 
 const SprintProjectDetail: React.FC<IProps> = props => {
   const [t] = useTranslation()
+  const maxWidth = 800
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -66,6 +69,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
+  const [sprintIds, setSprintIds] = useState([])
 
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
@@ -74,6 +78,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const [focus, setFocus] = useState(false)
   const minWidth = 400
   const [leftWidth, setLeftWidth] = useState(400)
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   // 复制标题
   const onCopy = () => {
@@ -274,7 +279,18 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 拖动线条
   const onDragLine = () => {
-    //
+    let width = basicInfoDom.current?.clientWidth
+
+    document.onmousemove = e => {
+      setFocus(true)
+
+      setLeftWidth(window.innerWidth - e.clientX)
+    }
+    document.onmouseup = () => {
+      document.onmousemove = null
+      document.onmouseup = null
+      setFocus(false)
+    }
   }
 
   useEffect(() => {
@@ -300,6 +316,43 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         ?.filter((i: any) => i.status === 1),
     )
   }, [affairsInfo, projectInfoValues])
+
+  useEffect(() => {
+    getDemandList(id).then((res: any) => {
+      console.log(res)
+      setSprintIds(res.data.map((i: any) => i.id))
+    })
+  }, [id])
+
+  const onUpDemand = async () => {
+    const newIndex = sprintIds[currentIndex - 1]
+    const params = encryptPhp(
+      JSON.stringify({
+        id,
+        sprintId: newIndex,
+      }),
+    )
+    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    location.replace(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+    console.log('1')
+  }
+  const onDownDemand = () => {
+    const newIndex = sprintIds[currentIndex + 1]
+    const params = encryptPhp(
+      JSON.stringify({
+        id,
+        sprintId: newIndex,
+      }),
+    )
+    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    location.replace(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+  }
+  useEffect(() => {
+    setCurrentIndex(sprintIds.findIndex((i: any) => i === sprintId))
+  }, [sprintIds])
+  console.log(sprintIds)
+  console.log(sprintId)
+  console.log(currentIndex)
 
   return (
     <Wrap>
@@ -388,38 +441,32 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />
           <ChangeIconGroup>
-            {/* {currentIndex > 0 && ( */}
-            <UpWrap
-              // onClick={onUpDemand}
-              id="upIcon"
-              // isOnly={
-              //   demandIds?.length === 0 ||
-              //   currentIndex === demandIds?.length - 1
-              // }
-            >
-              <CommonIconFont
-                type="up"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </UpWrap>
-            {/* )} */}
-            {/* {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) &&  ( */}
-            <DownWrap
-              // onClick={onDownDemand}
-              id="downIcon"
-              // isOnly={currentIndex <= 0}
-            >
-              <CommonIconFont
-                type="down"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </DownWrap>
-            {/* )} */}
+            {currentIndex === 0 ? null : (
+              <UpWrap
+                onClick={onUpDemand}
+                id="upIcon"
+                isOnly={currentIndex === 0}
+              >
+                <CommonIconFont
+                  type="up"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </UpWrap>
+            )}
+            {sprintIds.length - 1 === currentIndex ? null : (
+              <DownWrap
+                onClick={onDownDemand}
+                id="downIcon"
+                isOnly={currentIndex <= 0}
+              >
+                <CommonIconFont
+                  type="down"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </DownWrap>
+            )}
           </ChangeIconGroup>
           <CommonButton type="icon" icon="share" onClick={onShare} />
           <DropdownMenu
