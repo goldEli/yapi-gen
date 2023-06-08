@@ -52,6 +52,7 @@ interface Props {
   isVisible: boolean
   title: string
   onClose(): void
+  refreshLeftList(): void
 }
 const Complete = (props: Props) => {
   const [value, setValue] = useState(1)
@@ -166,6 +167,8 @@ const Complete = (props: Props) => {
           )
           dispatch(setIsUpdateList(true))
         }
+        props?.refreshLeftList?.()
+        props?.onClose?.()
       } else {
         getMessage({
           msg: result?.message,

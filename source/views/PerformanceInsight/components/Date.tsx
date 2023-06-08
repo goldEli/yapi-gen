@@ -80,7 +80,6 @@ export const getDays = (num: number) => {
   return days
 }
 export const getDate = (type: string) => {
-  console.log()
   let date = 0
   switch (type) {
     case 'one_month':

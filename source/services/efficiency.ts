@@ -568,79 +568,9 @@ export const getStatisticsTotal = async (
   params: API.Sprint.GetStatisticsTotal.Params,
 ) => {
   const response = await http.get<any, API.Sprint.GetStatisticsTotal.Result>(
-    `getStatisticsTotal`,
+    'getStatisticsTotal',
     params,
   )
-  // const response = {
-  //   data: {
-  //     work: [
-  //       {
-  //         name: '完成率',
-  //         value: 50,
-  //         unit: '%',
-  //         icon: 'chart-02',
-  //       },
-  //       {
-  //         name: '新增工作项',
-  //         value: 40,
-  //         unit: '项',
-  //         icon: 'chart-01',
-  //       },
-  //       {
-  //         name: '已完成工作项',
-  //         value: 20,
-  //         unit: '项',
-  //         icon: 'clock-check',
-  //       },
-  //       {
-  //         name: '工作项存量',
-  //         value: 200,
-  //         unit: '项',
-  //         icon: 'demand',
-  //       },
-  //       {
-  //         name: '存量风险',
-  //         value: 10,
-  //         unit: '项',
-  //         icon: 'warning-02',
-  //       },
-  //     ],
-  //     defect: [
-  //       {
-  //         name: '缺陷修复率',
-  //         value: 60,
-  //         unit: '%',
-  //         icon: 'chart-03',
-  //       },
-  //       {
-  //         name: '待修复',
-  //         value: 20,
-  //         unit: '项',
-  //         icon: 'time',
-  //       },
-  //       {
-  //         name: '修复中',
-  //         value: 20,
-  //         unit: '项',
-  //         icon: 'chart-04',
-  //       },
-  //       {
-  //         name: '已完成',
-  //         value: 60,
-  //         unit: '项',
-  //         icon: 'check-circle',
-  //       },
-  //       {
-  //         name: '缺陷存量',
-  //         value: 120,
-  //         unit: '项',
-  //         icon: 'bug',
-  //       },
-  //     ],
-  //     start_time: '2023-04-30',
-  //     end_time: '2023-05-15',
-  //   },
-  // }
   return response.data
 }
 // 进展对比前半截
@@ -953,7 +883,7 @@ export const historyDefectList = async (
 // 视图的列表
 export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
   const response = await http.get<any, API.Efficiency.ViewsList.Result>(
-    `viewsList`,
+    'viewsList',
     parmas,
   )
   // const response = {
@@ -1028,7 +958,7 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
     status: el.status,
     type: el.type,
     config: el.config,
-    key: el.id + '',
+    key: String(el.id),
     is_default: el.is_default,
   }))
 }
@@ -1057,7 +987,7 @@ export const createViewList = async (
 // 删除视图
 export const delView = async (id: number) => {
   const response = await http.delete<any, API.Efficiency.ViewsEditList.Result>(
-    `delView`,
+    'delView',
     id,
   )
   return response.data
@@ -1065,7 +995,7 @@ export const delView = async (id: number) => {
 // 设置默认视图
 export const defaultView = async (id: number) => {
   const response = await http.patch<any, API.Efficiency.ViewsEditList.Result>(
-    `defaultView`,
+    'defaultView',
     id,
   )
   return response.data
@@ -1081,57 +1011,6 @@ export const contrastNewWork = async (
     'contrastNewWork',
     params,
   )
-  console.log('response-----', response)
-  // const response = {
-  //   data: {
-  //     list: [
-  //       {
-  //         user_name: '用户1',
-  //         work_total: 40,
-  //       },
-  //       {
-  //         user_name: '用户2',
-  //         work_total: 50,
-  //       },
-  //       {
-  //         user_name: '用户3',
-  //         work_total: 45,
-  //       },
-  //       {
-  //         user_name: '用户4',
-  //         work_total: 60,
-  //       },
-  //       {
-  //         user_name: '用户5',
-  //         work_total: 45,
-  //       },
-  //       {
-  //         user_name: '用户6',
-  //         work_total: 46,
-  //       },
-  //       {
-  //         user_name: '用户7',
-  //         work_total: 45,
-  //       },
-  //       {
-  //         user_name: '用户8',
-  //         work_total: 50,
-  //       },
-  //       {
-  //         user_name: '用户9',
-  //         work_total: 55,
-  //       },
-  //       {
-  //         user_name: '用户10',
-  //         work_total: 45,
-  //       },
-  //     ],
-  //     period_number: 14,
-  //     growth_rate: '10%',
-  //     start_time: '2023-04-30',
-  //     end_time: '2023-05-13',
-  //   },
-  // }
   return response.data
 }
 // 完成率Top10对比
@@ -1210,29 +1089,7 @@ export const getDefectRatio = async (
     'getDefectRatio',
     params,
   )
-  // const response = {
-  //   data: {
-  //     list: [
-  //       {
-  //         name: '严重',
-  //         number: 2,
-  //         ratio: '40%',
-  //       },
-  //       {
-  //         name: '一般',
-  //         number: 2,
-  //         ratio: '40%',
-  //       },
-  //       {
-  //         name: '致命',
-  //         number: 1,
-  //         ratio: '20%',
-  //       },
-  //     ],
-  //     start_time: '2023-04-30',
-  //     end_time: '2023-05-13',
-  //   },
-  // }
+
   return response.data
 }
 // 2，3，5图表
@@ -1243,213 +1100,6 @@ export const statisticsOther = async (
     'statisticsOther',
     params,
   )
-  // const response = {
-  //   data: {
-  //     work_completion_period: {
-  //       list: [
-  //         {
-  //           completed: 10,
-  //           start_time: '2023-03-05',
-  //           end_time: '2023-03-11',
-  //         },
-  //         {
-  //           completed: 12,
-  //           start_time: '2023-03-12',
-  //           end_time: '2023-03-18',
-  //         },
-  //         {
-  //           completed: 14,
-  //           start_time: '2023-03-19',
-  //           end_time: '2023-03-25',
-  //         },
-  //         {
-  //           completed: 16,
-  //           start_time: '2023-03-26',
-  //           end_time: '2023-04-01',
-  //         },
-  //         {
-  //           completed: 15,
-  //           start_time: '2023-04-02',
-  //           end_time: '2023-04-08',
-  //         },
-  //         {
-  //           completed: 16,
-  //           start_time: '2023-04-09',
-  //           end_time: '2023-04-15',
-  //         },
-  //         {
-  //           completed: 17,
-  //           start_time: '2023-04-16',
-  //           end_time: '2023-04-22',
-  //         },
-  //         {
-  //           completed: 18,
-  //           start_time: '2023-04-23',
-  //           end_time: '2023-04-29',
-  //         },
-  //         {
-  //           completed: 20,
-  //           start_time: '2023-04-30',
-  //           end_time: '2023-05-06',
-  //         },
-  //       ],
-  //       period_number: 7,
-  //       growth_rate: '15%',
-  //       start_time: '2023-04-30',
-  //       end_time: '2023-05-06',
-  //     },
-  //     risk_stock: {
-  //       total: 20,
-  //       start_time: '2023-12-08',
-  //       end_time: '2023-12-09',
-  //       list: [
-  //         {
-  //           name: '超14天',
-  //           number: 10,
-  //           ratio: '30%',
-  //         },
-  //         {
-  //           name: '超1个月',
-  //           number: 10,
-  //           ratio: '10%',
-  //         },
-  //         {
-  //           name: '超3个月',
-  //           number: 30,
-  //           ratio: '78%',
-  //         },
-  //         {
-  //           name: '超6个月',
-  //           number: -35378085,
-  //           ratio: '80%',
-  //         },
-  //         {
-  //           name: 'A long time ago',
-  //           number: 69489746,
-  //           ratio: '80%',
-  //         },
-  //       ],
-  //     },
-  //     defect_trend: {
-  //       fixed_rate: '60%',
-  //       new_total: 100,
-  //       fixed_total: 60,
-  //       not_fixed: [
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-04-30',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-01',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-02',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-03',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-04',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-05',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-06',
-  //         },
-  //       ],
-  //       fixing: [
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-04-30',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-01',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-02',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-03',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-04',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-05',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-06',
-  //         },
-  //       ],
-  //       fixed: [
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-04-30',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-01',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-02',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-03',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-04',
-  //         },
-  //         {
-  //           number: 10,
-  //           rate: '20%',
-  //           date: '2023-05-05',
-  //         },
-  //         {
-  //           number: 15,
-  //           rate: '25%',
-  //           date: '2023-05-06',
-  //         },
-  //       ],
-  //       start_time: '2023-04-30',
-  //       end_time: '2023-05-06',
-  //     },
-  //   },
-  // }
   return response.data
 }
 // 图表页面 end
@@ -1462,38 +1112,7 @@ export const recentCreateData = async (params: {
     'recentCreateData',
     params,
   )
-  return [
-    {
-      content: '创建【需求】',
-      created_at: '2023-05-11 14:22:46',
-      feedable: {
-        id: 1003237,
-        name: '23454',
-        status: null,
-        project_id: 412,
-        deleted_at: null,
-      },
-      feedable_id: 1003237,
-      feedable_type: 'story',
-      id: 9970,
-      key: 9970,
-    },
-    {
-      content: '创建【需求123】',
-      created_at: '2023-05-11 19:22:46',
-      feedable: {
-        id: 1003237,
-        name: '23454',
-        status: null,
-        project_id: 412,
-        deleted_at: null,
-      },
-      feedable_id: 1003237,
-      feedable_type: 'story',
-      id: 9971,
-      key: 9971,
-    },
-  ]
+  return response.data
 }
 export const getExport = async (parmas: API.Sprint.GetExport.Params) => {
   const response = await http.get<any>('export', parmas, {

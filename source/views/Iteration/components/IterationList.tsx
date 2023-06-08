@@ -407,7 +407,10 @@ const IterationList = (props: IterationListProps) => {
       )
       setOperationId(item.id)
       dispatch(setProjectInfoValues(newValues))
-      getList(true)
+      // Todo 这里改的不对劲，数据有延迟
+      setTimeout(() => {
+        getList(true)
+      }, 2000)
     }
   }
 

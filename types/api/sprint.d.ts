@@ -94,7 +94,7 @@ declare namespace API.Sprint {
       iterate_ids?: string
       sort?: string
       dimension?: string
-      period_time: string
+      period_time: string | undefined
     }
     type Result = {
       list: Model.PerformanceInsight.useInfo[]
@@ -115,10 +115,9 @@ declare namespace API.Sprint {
     type Params = {
       project_ids: string
       iterate_ids?: Array<number> | number | string
-      user_ids: Array<number>
-      user_ids?: number
-      start_time: string
-      end_time: string
+      user_ids?: string
+      start_time: string | undefined
+      end_time: string | undefined
       period_time?: string
     }
     type Result = {

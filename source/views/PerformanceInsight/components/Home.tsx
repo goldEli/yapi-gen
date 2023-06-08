@@ -78,11 +78,11 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             <Time>{props.time}</Time>
           </Space>
         </RightRow>
-        <Text size={'12px'} onClick={() => onClick()}>
+        <Text size="12px" onClick={() => onClick()}>
           <Space size={4}>
             <span>查看明细</span>
             <CommonIconFont
-              type={'right'}
+              type="right"
               size={14}
               color="var(--auxiliary-text-t2-d2)"
             />
@@ -105,14 +105,10 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
                   <span>{el.value}</span>
                   <span>{el.unit}</span>
                 </TextNum>
-                <Text
-                  size={'12px'}
-                  color={'var(--neutral-n2)'}
-                  onClick={() => 123}
-                >
+                <Text size="12px" color="var(--neutral-n2)" onClick={() => 123}>
                   <Space size={4}>
                     <span>{el.name}</span>
-                    <CommonIconFont type={'right'} size={12} />
+                    <CommonIconFont type="right" size={12} />
                   </Space>
                 </Text>
               </div>
@@ -131,8 +127,8 @@ const Home = () => {
   const { save, headerParmas } = useSelector(store => store.performanceInsight)
   const { projectInfo } = useSelector(state => state.project)
   const { userInfo } = useSelector(state => state.user)
-  const [startTime, setStartTime] = useState('')
-  const [endTime, setEndTime] = useState('')
+  const [startTime, setStartTime] = useState<any>()
+  const [endTime, setEndTime] = useState<any>()
   const [projectId, setProjectId] = useState(0)
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
@@ -169,10 +165,6 @@ const Home = () => {
     getViewList({ project_id: projectId, use_type: 3 })
   }, [projectId])
 
-  // useEffect(() => {
-  //   console.log(11)
-  //   init()
-  // }, [])
   const init = () => {
     // 缺陷现状和工作项现状
     getWorkList()
@@ -180,7 +172,7 @@ const Home = () => {
     getContrastNewWork('desc')
     // 完成率top10对比
     getCompletionRateChart('desc')
-    //阶段缺陷占比
+    // 阶段缺陷占比
     getDefectRatioChart('severity')
     // 集合图表
     getStatisticsOther()
@@ -188,7 +180,7 @@ const Home = () => {
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)
-    let filterVal: Models.Efficiency.ViewItem | undefined = res.find(
+    const filterVal: Models.Efficiency.ViewItem | undefined = res.find(
       el => el.is_default === 1,
     )
     setOptionVal(filterVal?.id || 0)
@@ -228,9 +220,9 @@ const Home = () => {
               user_ids: headerParmas.users,
               period_time: getDateStr(headerParmas.time.type),
               start_time:
-                headerParmas.time.type == 0 ? headerParmas.time.time[0] : '',
+                headerParmas.time.type == 0 ? headerParmas.time?.time?.[0] : '',
               end_time:
-                headerParmas.time.type == 0 ? headerParmas.time.time[1] : '',
+                headerParmas.time.type == 0 ? headerParmas.time?.time?.[1] : '',
             },
             project_id: 18,
           })
@@ -244,9 +236,13 @@ const Home = () => {
               user_ids: headerParmas.users,
               period_time: getDateStr(headerParmas.time.type),
               start_time:
-                headerParmas.time.type == 0 ? headerParmas.time.time[0] : '',
+                headerParmas.time.type === 0
+                  ? headerParmas.time?.time?.[0]
+                  : '',
               end_time:
-                headerParmas.time.type == 0 ? headerParmas.time.time[1] : '',
+                headerParmas.time.type === 0
+                  ? headerParmas.time?.time?.[1]
+                  : '',
             },
           })
     // // 刷新视图的接口
@@ -265,7 +261,7 @@ const Home = () => {
   // 获取下拉框的值视图的
   const onGetOptionValue = (title: string, value: number) => {
     setOptionVal(value)
-    let filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
+    const filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
       el => el.id === value,
     )
     setDefalutConfig(filterVal?.config)
@@ -285,26 +281,48 @@ const Home = () => {
   // 缺陷现状和工作项现状
   //  '周期时间：two_week,four_week,one_month,three_month,six_month',
   const getWorkList = async () => {
-    let res = await getStatisticsTotal({
+    const res = await getStatisticsTotal({
       project_ids: headerParmas.projectIds?.join(','),
       iterate_ids: headerParmas.iterate_ids?.join(','),
-      user_ids: userInfo.id,
-      start_time: '',
-      end_time: '',
-      period_time: headerParmas.period_time,
+      user_ids: headerParmas.users?.join(','),
+      start_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[0]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+
+      end_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[1]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+      period_time:
+        // eslint-disable-next-line no-undefined, no-negated-condition
+        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
     })
     setWorkDataList(res)
   }
   // 新增工作top10对比第一个图表
   const getContrastNewWork = async (str: string) => {
-    let res = await contrastNewWork({
+    const res = await contrastNewWork({
       project_ids: headerParmas.projectIds?.join(','),
       iterate_ids: headerParmas.iterate_ids?.join(','),
-      user_ids: userInfo.id,
-      start_time: startTime,
-      end_time: endTime,
+      user_ids: headerParmas.users?.join(','),
+      start_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[0]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+
+      end_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[1]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+      period_time:
+        // eslint-disable-next-line no-undefined, no-negated-condition
+        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
       sort: str,
-      period_time: headerParmas.period_time,
     })
     setCharts1({
       time: `${res.start_time} ~ ${res.end_time}`,
@@ -315,14 +333,25 @@ const Home = () => {
   }
   // 完成率top10对比 第4个图表
   const getCompletionRateChart = async (str: string) => {
-    let res = await getCompletionRate({
+    const res = await getCompletionRate({
+      sort: str,
       project_ids: headerParmas.projectIds?.join(','),
       iterate_ids: headerParmas.iterate_ids?.join(','),
-      user_ids: userInfo.id,
-      start_time: startTime,
-      end_time: endTime,
-      sort: str,
-      period_time: headerParmas.period_time,
+      user_ids: headerParmas.users?.join(','),
+      start_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[0]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+
+      end_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[1]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+      period_time:
+        // eslint-disable-next-line no-undefined, no-negated-condition
+        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
     })
     setCharts4({
       time: `${res.start_time} ~ ${res.end_time}`,
@@ -336,11 +365,22 @@ const Home = () => {
     const res = await getDefectRatio({
       project_ids: headerParmas.projectIds?.join(','),
       iterate_ids: headerParmas.iterate_ids?.join(','),
-      user_ids: userInfo.id,
-      start_time: startTime,
-      end_time: endTime,
+      user_ids: headerParmas.users?.join(','),
+      start_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[0]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+
+      end_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[1]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+      period_time:
+        // eslint-disable-next-line no-undefined, no-negated-condition
+        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
       dimension: str,
-      period_time: headerParmas.period_time,
     })
     setCharts6({
       time: `${res.start_time} ~ ${res.end_time}`,
@@ -353,10 +393,21 @@ const Home = () => {
     const res = await statisticsOther({
       project_ids: headerParmas.projectIds?.join(','),
       iterate_ids: headerParmas.iterate_ids?.join(','),
-      user_ids: userInfo.id,
-      start_time: startTime,
-      end_time: endTime,
-      period_time: headerParmas.period_time,
+      user_ids: headerParmas.users?.join(','),
+      start_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[0]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+
+      end_time:
+        headerParmas?.time?.type === 0
+          ? headerParmas?.time?.time?.[1]
+          : // eslint-disable-next-line no-undefined
+            undefined,
+      period_time:
+        // eslint-disable-next-line no-undefined, no-negated-condition
+        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
     })
     setCharts2({
       time: `${res.work_completion_period.start_time} ~ ${res.work_completion_period.end_time}`,
@@ -371,7 +422,7 @@ const Home = () => {
       ]),
     })
     setCharts5({
-      time: res.defect_trend.start_time + ' ~ ' + res.defect_trend.end_time,
+      time: `${res.defect_trend.start_time} ~ ${res.defect_trend.end_time}`,
       yData: res.defect_trend.not_fixed.map(el => el.date),
       fixed_rate: res.defect_trend.fixed_rate,
       new_total: res.defect_trend.new_total,
@@ -397,7 +448,6 @@ const Home = () => {
   }
   // 编辑视图走缓存的参数
   const editViews = async () => {
-    console.log(headerParmas, '我是最后的灿灿')
     await viewsUpdate({
       id: headerParmas.view.value,
       project_id: 1,
@@ -409,11 +459,32 @@ const Home = () => {
         user_ids: headerParmas.users,
         period_time: getDateStr(headerParmas.time.type),
         start_time:
-          headerParmas.time.type == 0 ? headerParmas.time.time[0] : '',
-        end_time: headerParmas.time.type == 0 ? headerParmas.time.time[1] : '',
+          headerParmas.time.type === 0
+            ? headerParmas.time.time?.[0]
+            : // eslint-disable-next-line no-undefined
+              undefined,
+        end_time:
+          headerParmas.time.type === 0
+            ? headerParmas.time.time?.[1]
+            : // eslint-disable-next-line no-undefined
+              undefined,
       },
     })
   }
+
+  useEffect(() => {
+    if (
+      headerParmas &&
+      headerParmas.time.type === 0 &&
+      !headerParmas.time.time
+    ) {
+      return
+    }
+    console.log(headerParmas, 'headerParmas')
+
+    init()
+  }, [headerParmas])
+
   return (
     <div
       style={{
@@ -422,7 +493,7 @@ const Home = () => {
         position: 'relative',
       }}
     >
-      {/*头部组件 */}
+      {/* 头部组件 */}
       <Header
         projectId={projectId}
         homeType={homeType}
@@ -440,7 +511,7 @@ const Home = () => {
         homeType={homeType}
         data={workDataList?.work || []}
         title={homeType === 'all' ? '现状' : '工作项现状'}
-        time={'2023-03-01 ~ 2023-03-14'}
+        time="2023-03-01 ~ 2023-03-14"
         num={1}
       />
       <div style={{ margin: '32px 0' }}>
@@ -449,8 +520,8 @@ const Home = () => {
           projectId={projectId}
           homeType={homeType}
           data={workDataList?.defect || []}
-          title={'缺陷现状'}
-          time={'2023-03-01 ~ 2023-03-14'}
+          title="缺陷现状"
+          time="2023-03-01 ~ 2023-03-14"
         />
       </div>
       <div style={{ width: '100%', display: 'flex' }}>
@@ -467,7 +538,7 @@ const Home = () => {
               title={
                 homeType === 'all' ? '新增工作排行Top10' : '阶段新增工作Top10'
               }
-              titleType={true}
+              titleType
               height={396}
               chart={charts1}
               onChange={(val: any) => getContrastNewWork(val)}
@@ -522,7 +593,7 @@ const Home = () => {
             <HightChartMainPie
               height={396}
               chart={charts6}
-              titleType={true}
+              titleType
               title="阶段缺陷占比"
               onChange={item => getDefectRatioChart(item.key)}
             />
@@ -530,12 +601,12 @@ const Home = () => {
         </div>
       </div>
       {/* 保存提示操作 */}
-      {save && (
+      {save ? (
         <DialogMain>
           <DialogHeader>
             <Space size={14}>
               <CommonIconFont
-                type={'Warning'}
+                type="Warning"
                 size={20}
                 color="var(--function-warning)"
               />
@@ -543,7 +614,7 @@ const Home = () => {
             </Space>
             <CommonIconFont
               onClick={() => dispatch(setSave(false))}
-              type={'close'}
+              type="close"
               size={16}
               color="var(--neutral-n2)"
             />
@@ -585,10 +656,10 @@ const Home = () => {
             </Space>
           </Footer>
         </DialogMain>
-      )}
+      ) : null}
       {/* 新建和编辑视图 1*/}
       <ViewDialog
-        name={''}
+        name=""
         titleType={{ title: '另存为视图', type: 'add' }}
         onConfirm={(value, type) => {
           onCreateView(value, type, '')

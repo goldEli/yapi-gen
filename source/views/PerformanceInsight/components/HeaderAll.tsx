@@ -29,7 +29,10 @@ const HeaderAll = (props: HaderProps) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [projectList, setProjectList] = useState<any>()
   const [options, setOptions] = useState<number[]>([])
-  const [time, setTime] = useState<{ startTime: string; endTime: string }>()
+  const [time, setTime] = useState<{
+    startTime: string | undefined
+    endTime: string | undefined
+  }>()
   useEffect(() => {
     switch (props.headerParmas.time.type) {
       case 1:

@@ -53,7 +53,7 @@ export const Label = styled.div`
   align-items: center;
   .labelName {
     display: inline-block;
-    width: 80px;
+    width: 160px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

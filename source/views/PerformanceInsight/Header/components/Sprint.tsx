@@ -10,9 +10,9 @@ interface ValueType {
   value: number
 }
 interface Props {
-  data: Array<{ id: number; content: string; key: number }> | []
+  data: Array<{ id: number; name: string; key: number }> | []
   value: number
-  onChange: (val: number) => void
+  onChange(val: number): void
   homeType: string
 }
 const Sprint = (props: Props) => {
@@ -24,16 +24,21 @@ const Sprint = (props: Props) => {
     value: 0,
   })
 
-  const getLabel = (el: { content: string; id: number }) => {
-    return <Label onClick={() => 123}>{el.content}</Label>
+  const getLabel = (el: { name: string; id: number }) => {
+    return (
+      <Label key={el.id}>
+        <span className="labelName">{el.name}</span>
+      </Label>
+    )
   }
   const getHtml = () => {
-    return props.data.map((el: any) => ({ label: getLabel(el), key: el.key }))
+    return props.data.map((el: any) => ({ label: getLabel(el), key: el.id }))
   }
   useEffect(() => {
     setItems([
       {
         label: <TitleText>近期</TitleText>,
+        disabled: true,
         key: 'first',
       },
       ...getHtml(),
@@ -51,7 +56,7 @@ const Sprint = (props: Props) => {
     if (props.value) {
       props.onChange(props.value)
       setValue({
-        title: props.data.find(el => el.id === props.value)?.content || '',
+        title: props.data.find(el => el.id === props.value)?.name || '',
         value: props.data.find(el => el.id === props.value)?.id || 0,
       })
     } else {
@@ -62,7 +67,10 @@ const Sprint = (props: Props) => {
       })
     }
   }, [props.value])
+
   const onOpenChange: MenuProps['onClick'] = (e: any) => {
+    console.log(e, 'eeeeeeeee')
+
     if (e.key === 'all') {
       setValue({
         title: props.homeType === 'iteration' ? '全部工作项' : '全部冲刺',
@@ -71,7 +79,7 @@ const Sprint = (props: Props) => {
       props.onChange(0)
     } else {
       setValue({
-        title: props.data.find(el => el.id === Number(e.key))?.content || '',
+        title: props.data.find(el => el.id === Number(e.key))?.name || '',
         value: props.data.find(el => el.id === Number(e.key))?.id || 0,
       })
       props.onChange(props.data.find(el => el.id === Number(e.key))?.id || 0)
