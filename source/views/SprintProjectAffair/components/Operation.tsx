@@ -401,7 +401,19 @@ const Operation = (props: Props) => {
               ? 'b/story/save'
               : 'b/transaction/save',
           ) || projectInfo?.status !== 1 ? null : (
-            <CommonButton type="primary">创建事务</CommonButton>
+            <CommonButton
+              onClick={() =>
+                dispatch(
+                  setAddWorkItemModal({
+                    visible: true,
+                    params: { noDataCreate: true },
+                  }),
+                )
+              }
+              type="primary"
+            >
+              创建事务
+            </CommonButton>
           )}
           {hasExport && hasImport ? null : (
             <Popover
