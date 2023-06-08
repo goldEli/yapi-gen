@@ -13,7 +13,7 @@ import {
 } from './style'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import IterationList from './components/IterationList'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import OperationGroup from '@/components/OperationGroup'
 import { useTranslation } from 'react-i18next'
 import { Space, Tooltip } from 'antd'
@@ -41,6 +41,7 @@ import { Editor } from '@xyfe/uikit'
 import NoData from '@/components/NoData'
 import CommonModal from '@/components/CommonModal'
 import { getIterateInfo } from '@store/iterate/iterate.thunk'
+import Complete from '@/components/IterationStatus/Complete'
 
 const Iteration = () => {
   const [t] = useTranslation()
@@ -74,6 +75,8 @@ const Iteration = () => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
+  const [isCompleteVisible, setIsCompleteVisible] = useState(false)
+  const [editCompleteId, setEditCompleteId] = useState(0)
 
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
@@ -236,6 +239,12 @@ const Iteration = () => {
     }
   }
 
+  // 点击迭代已完成
+  const onCompleteIteration = useCallback((id: number) => {
+    setIsCompleteVisible(true)
+    setEditCompleteId(id)
+  }, [])
+
   const getSearchKey = async (key?: any, type?: number) => {
     const filterFelid = projectInfo?.filterFelid
     if (key && type === 0) {
@@ -372,7 +381,11 @@ const Iteration = () => {
         />
         <ProjectCommonOperation onInputSearch={onInputSearch} />
         <IterationContent>
-          <IterationList isShowLeft={isShowLeft} onUpdate={refresh} />
+          <IterationList
+            isShowLeft={isShowLeft}
+            onUpdate={refresh}
+            onCompleteIteration={onCompleteIteration}
+          />
           <IterationMain>
             <IterationMainOperation>
               <IterationInfo>
@@ -423,6 +436,7 @@ const Iteration = () => {
                       hasChangeStatus={hasChangeStatus}
                       iterateInfo={iterateInfo}
                       onChangeStatus={onChangeStatus}
+                      onCompleteIteration={onCompleteIteration}
                     />
                     <Space size={8} style={{ marginLeft: 8 }}>
                       <ScreenMinHover
@@ -514,6 +528,14 @@ const Iteration = () => {
             )}
           </IterationMain>
         </IterationContent>
+        <Complete
+          iterationId={editCompleteId}
+          isVisible={isCompleteVisible}
+          title="完成迭代"
+          onClose={() => {
+            setIsCompleteVisible(false)
+          }}
+        />
       </Content>
     </PermissionWrap>
   )

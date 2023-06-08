@@ -61,7 +61,7 @@ const Complete = (props: Props) => {
   const [checkId, setCheckId] = useState<any>()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { iterateInfo, isUpdateList } = useSelector(store => store.iterate)
+  const { iterateInfo } = useSelector(store => store.iterate)
   const dispatch = useDispatch()
 
   const getFinishStatistics = async (params: any) => {
@@ -144,20 +144,36 @@ const Complete = (props: Props) => {
       })
       return
     }
-    const result: any = await finishIteration({
-      projectId,
-      id: props?.iterationId,
-      moveId: checkId,
-      type: value === 1 ? 'move' : 'remove',
-    })
-    if (props?.iterationId === iterateInfo.id) {
-      dispatch(
-        getIterateInfo({
-          projectId: getProjectIdByUrl(),
-          id: props?.iterationId,
-        }),
-      )
-      dispatch(setIsUpdateList(true))
+    try {
+      const result: any = await finishIteration({
+        projectId,
+        id: props?.iterationId,
+        moveId: checkId,
+        type: value === 1 ? 'move' : 'remove',
+      })
+
+      if (result && result.code === 0) {
+        getMessage({
+          msg: '已完成迭代',
+          type: 'success',
+        })
+        if (props?.iterationId === iterateInfo.id) {
+          dispatch(
+            getIterateInfo({
+              projectId: getProjectIdByUrl(),
+              id: props?.iterationId,
+            }),
+          )
+          dispatch(setIsUpdateList(true))
+        }
+      } else {
+        getMessage({
+          msg: result?.message,
+          type: 'error',
+        })
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 

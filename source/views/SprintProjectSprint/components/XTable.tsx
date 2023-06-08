@@ -327,7 +327,10 @@ const XTable: React.FC<XTableProps> = props => {
           key="1"
         >
           {!isCanEdit && (
-            <CreateTransactionButton
+            <CommonButton
+              type="primaryText"
+              icon="plus"
+              iconPlacement="left"
               onClick={() => {
                 // todo 创建新事物
                 dispatch(
@@ -338,15 +341,8 @@ const XTable: React.FC<XTableProps> = props => {
                 )
               }}
             >
-              <IconFont
-                style={{
-                  fontSize: 16,
-                  marginRight: 8,
-                }}
-                type="plus"
-              />
               <span>新事物</span>
-            </CreateTransactionButton>
+            </CommonButton>
           )}
 
           <Droppable key={data.id} droppableId={String(data.id)}>

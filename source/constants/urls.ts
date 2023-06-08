@@ -35,7 +35,7 @@ const urls = {
   iterateStatistics: '/b/iterate/getStatistics',
   finishStatistics: '/b/iterate/finishStatistics',
   incompleteIterates: '/b/iterate/incompleteIterates',
-  finishIteration: '/b/iterate/finish',
+  finishIteration: 'b/iterate/status/finish',
   updateDemandStatus: '/b/story/update_status',
   getDemandInfo: '/b/story/getinfo',
   getDemandList: '/b/story/getlist',
