@@ -59,6 +59,14 @@ export const Label = styled.div`
     text-overflow: ellipsis;
   }
 `
+export const LabelText = styled.span`
+  display: inline-block;
+  width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
 export const FormWrap = styled(Form)`
   box-sizing: border-box;
   padding-right: 24px;

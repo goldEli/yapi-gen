@@ -11,6 +11,8 @@ import CommonButton from '@/components/CommonButton'
 import { useNavigate } from 'react-router-dom'
 import { getMonthBefor, getDays } from './Date'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import useShareModal from '@/hooks/useShareModal'
+import { useSelector } from '@store/index'
 interface HaderProps {
   type: string
   projectDataList: Array<{
@@ -33,6 +35,8 @@ const HeaderAll = (props: HaderProps) => {
     startTime: string | undefined
     endTime: string | undefined
   }>()
+  const { ShareModal, open } = useShareModal()
+  const { projectInfo } = useSelector(store => store.project)
   useEffect(() => {
     switch (props.headerParmas.time.type) {
       case 1:
@@ -106,7 +110,6 @@ const HeaderAll = (props: HaderProps) => {
             </div>
           )}
           <PersonText>
-            {' '}
             {props.headerParmas.users?.length ? (
               <span>已选 {props.headerParmas.users?.length}人</span>
             ) : (
@@ -120,7 +123,13 @@ const HeaderAll = (props: HaderProps) => {
             </PersonText>
           )}
           <Back
-            onClick={() => setIsVisible(true)}
+            onClick={() =>
+              open({
+                onOk: () => {
+                  return Promise.resolve()
+                },
+              })
+            }
             style={{ margin: '0 16px 0 24px' }}
           >
             <CommonIconFont type="share" size={16} />
@@ -133,14 +142,16 @@ const HeaderAll = (props: HaderProps) => {
         </RightRow>
       </HeaderRowBox>
       {/* 分享  save代表是否保存的值*/}
-      <Share
-        title="分享"
-        save={true}
-        isVisible={isVisible}
-        onConfirm={() => {
-          setIsVisible(false)
-        }}
-        onClose={() => setIsVisible(false)}
+      <ShareModal
+        // 视图id
+        id={0}
+        // 视图的配置
+        config={{}}
+        url={window.location.href}
+        // 2钟不同的分享标题
+        title={`【${projectInfo.name}-${
+          true ? '工作进展对比' : '缺陷趋势分析'
+        }】`}
       />
       {/* 导出 */}
       <Export

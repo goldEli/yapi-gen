@@ -500,11 +500,17 @@ const ProgressComparison = (props: Props) => {
         value.length >= 1
           ? value.join(',')
           : props.headerParmas?.projectIds?.join?.(','),
-      iterate_ids: '12,23',
+      iterate_ids: props.headerParmas.iterate_ids?.join(','),
       user_ids: props.headerParmas.users?.join(','),
       period_time: getTimeStr(props.headerParmas?.time),
-      start_time: time.startTime,
-      end_time: time.endTime,
+      start_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : time.startTime,
+      end_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : time.endTime,
       page: pageNum,
       pagesize: pageSize,
     })
@@ -523,12 +529,25 @@ const ProgressComparison = (props: Props) => {
           ? value.length >= 1
             ? value.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
-          : '',
-      iterate_ids: '12,23',
-      user_ids: props.headerParmas.users?.join(','),
+          : // eslint-disable-next-line no-undefined
+            undefined,
+      iterate_ids: props.headerParmas.iterate_ids?.length
+        ? props.headerParmas.iterate_ids?.join(',')
+        : // eslint-disable-next-line no-undefined
+          undefined,
+      user_ids: props.headerParmas.users?.length
+        ? props.headerParmas.users?.join(',')
+        : // eslint-disable-next-line no-undefined
+          undefined,
       period_time: getTimeStr(props.headerParmas?.time),
-      start_time: time.startTime,
-      end_time: time.endTime,
+      start_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : time.startTime,
+      end_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : time.endTime,
       page: pageNum,
       pagesize: pageSize,
     })

@@ -39,7 +39,7 @@ const slice = createSlice({
       state.save = action.payload
     },
     setHeaderParmas: (state, action) => {
-      state.headerParmas = { ...initialState.headerParmas, ...action.payload }
+      state.headerParmas = { ...state.headerParmas, ...action.payload }
     },
     setProjectDataList: (state, action) => {
       state.projectDataList = action.payload
