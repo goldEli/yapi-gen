@@ -186,7 +186,7 @@ const AcceptorSelection = (props: any) => {
               lineHeight: '20px',
             }}
           >
-            同时邮件通知
+            {t('simultaneous_email_notification')}
           </span>
         </Checkbox>
       </div>

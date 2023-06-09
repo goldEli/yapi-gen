@@ -4,27 +4,30 @@ import { ColorBox, ColorBtn, ColorBtn2, Wrap1, Wrap2 } from './style'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Editor } from '@xyfe/uikit'
+import { useTranslation } from 'react-i18next'
 
 const NoteCard = (props: any) => {
+  const [t] = useTranslation()
   const { values } = props
+  console.log(values)
 
   const senseByte = (num: any) => {
     let text = ''
     switch (num) {
       case 1:
-        text = '系统更新'
+        text = t('system_notification')
         break
       case 2:
-        text = '日常通知'
+        text = t('daily_notification')
         break
       case 3:
-        text = '重要通知'
+        text = t('important_notification')
         break
       case 4:
-        text = '活动通知'
+        text = t('activity_notification')
         break
       case 5:
-        text = '放假通知'
+        text = t('holiday_notification')
         break
 
       default:
@@ -47,7 +50,7 @@ const NoteCard = (props: any) => {
             whiteSpace: 'nowrap',
           }}
         >
-          全员
+          {t('formWork.whole')}
         </div>
       )
     }
@@ -155,7 +158,7 @@ const NoteCard = (props: any) => {
           lineHeight: '20px',
         }}
       >
-        【{values.user.name}】将于{values.send_time}发送
+        【{values.user?.name}】将于{values.expire_time}发送
       </div>
 
       <div

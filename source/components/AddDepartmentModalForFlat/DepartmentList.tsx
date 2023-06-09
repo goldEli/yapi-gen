@@ -57,7 +57,7 @@ const NewAddShowList = (props: any) => {
                   }
                 >
                   <div style={{ display: 'flex', alignItems: 'end' }}>
-                    部门-- {i.name}
+                    {i.name}
                   </div>
                 </Checkbox>
               </div>
@@ -83,7 +83,7 @@ const NewAddShowList = (props: any) => {
                   .includes(i.id)}
               >
                 <div style={{ display: 'flex', alignItems: 'end' }}>
-                  无子部门 -- {i.name}
+                  {i.name}
                 </div>
               </Checkbox>
             </div>

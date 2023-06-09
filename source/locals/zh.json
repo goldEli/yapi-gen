@@ -1,4 +1,7 @@
 {
+  "save_as_draft": "存草稿",
+  "simultaneous_email_notification": "同时邮件通知",
+
   "originalArray": {
     "new": "新增待办工作流",
     "completed": "处理工作流",

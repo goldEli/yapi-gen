@@ -111,7 +111,7 @@ const CommonModal = (props: CommonModalProps) => {
                     type="secondaryText"
                     onClick={props.onSaveDraft}
                   >
-                    存草稿
+                    {t('save_as_draft')}
                   </CommonButton>
                 </div>
               ) : null}
