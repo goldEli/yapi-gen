@@ -211,6 +211,7 @@ const Iteration = () => {
   }
 
   const onChangeStatus = async (val: number) => {
+    // Todo 这里改的不对劲，数据有延迟
     if (val !== iterateInfo?.status) {
       await updateIterateStatus({
         projectId: getProjectIdByUrl(),
@@ -535,6 +536,7 @@ const Iteration = () => {
           onClose={() => {
             setIsCompleteVisible(false)
           }}
+          refreshLeftList={refresh}
         />
       </Content>
     </PermissionWrap>

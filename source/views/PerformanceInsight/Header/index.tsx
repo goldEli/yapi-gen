@@ -29,12 +29,12 @@ interface ItemProps {
 interface Props {
   homeType: string
   viewDataList: Array<Models.Efficiency.ViewItem> | undefined
-  onCreateView: (value: string, type: string, key?: string) => void
-  onDelView: (key: string) => void
-  onSetDefaulut: (id: number) => void
-  onChange: (title: string, value: number) => void
+  onCreateView(value: string, type: string, key?: string): void
+  onDelView(key: string): void
+  onSetDefaulut(id: number): void
+  onChange(title: string, value: number): void
   defalutConfig: Models.Efficiency.ConfigItem | undefined
-  onEdit: () => void
+  onEdit(): void
   value: number
   projectId: number
 }
@@ -43,32 +43,9 @@ const periodTimes = [
   { label: 'four_week', value: 28 },
   { label: 'one_month', value: 1 },
   { label: 'three_month', value: 3 },
-  { label: 'six_month', value: 0 },
+  { label: 'six_month', value: 6 },
 ]
-// {
-//   name: '最近2周',
-//   key: 14,
-// },
-// {
-//   name: '最近4周',
-//   key: 28,
-// },
-// {
-//   name: '近1月',
-//   key: 1,
-// },
-// {
-//   name: '近3个月',
-//   key: 3,
-// },
-// {
-//   name: '近6个月',
-//   key: 6,
-// },
-// {
-//   name: '自定义',
-//   key: 0,
-// },
+
 const Iteration = (props: Props) => {
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
   const tabs1 = [
@@ -116,10 +93,9 @@ const Iteration = (props: Props) => {
   }
   useEffect(() => {
     // 展示的tabs不同
-    console.log('projectInfo', projectInfo)
-    props.homeType === 'iteration' ||
-      (props.homeType === 'sprint' && getIterateData())
-
+    if (props.homeType === 'iteration' || props.homeType === 'sprint') {
+      getIterateData()
+    }
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
     props.homeType === 'all' && getProjectData()
@@ -153,7 +129,7 @@ const Iteration = (props: Props) => {
   }, [props.defalutConfig])
   // 获取时间回显
   const getTime = (type: string) => {
-    let date = getDate(type)
+    const date = getDate(type)
     setTimekey(date)
     props.defalutConfig?.start_time &&
       props.defalutConfig?.end_time &&
@@ -163,7 +139,8 @@ const Iteration = (props: Props) => {
       ])
     dispatch(
       setHeaderParmas({
-        users: [],
+        // eslint-disable-next-line no-undefined
+        users: undefined,
         projectIds,
         iterate_ids: headerParmas?.iterate_ids,
         time: {
@@ -228,7 +205,8 @@ const Iteration = (props: Props) => {
     setPerson(data)
     dispatch(
       setHeaderParmas({
-        users: data,
+        // eslint-disable-next-line no-undefined
+        users: data?.length ? data : undefined,
         projectIds,
         time: headerParmas.time,
         view: headerParmas.view,
@@ -246,7 +224,8 @@ const Iteration = (props: Props) => {
     setTimeVal([moment(values[0]), moment(values[1])])
     dispatch(
       setHeaderParmas({
-        users: person,
+        // eslint-disable-next-line no-undefined
+        users: person?.length ? person : undefined,
         iterate_ids: headerParmas.iterate_ids,
         projectIds: headerParmas.projectIds,
         time: {
@@ -259,10 +238,14 @@ const Iteration = (props: Props) => {
   }
   // 冲刺选择的
   const oniterateChange = (val: number) => {
+    console.log(val, 'valvalvalval')
+
     dispatch(
       setHeaderParmas({
-        users: person,
-        iterate_ids: [val],
+        // eslint-disable-next-line no-undefined
+        users: person?.length ? person : undefined,
+        // eslint-disable-next-line no-undefined
+        iterate_ids: val === 0 ? undefined : [val],
         projectIds: headerParmas.projectIds,
         time: headerParmas.time,
         view: headerParmas.view,
@@ -270,6 +253,7 @@ const Iteration = (props: Props) => {
     )
     setIterateIds(val)
   }
+
   return (
     <HeaderRow>
       <Space size={16}>
@@ -284,7 +268,7 @@ const Iteration = (props: Props) => {
         />
         <Text onClick={() => setIsVisibleView(true)}>另存为</Text>
         {/* 保存需要人员，项目选择和时间修改后 */}
-        {save && <Text onClick={props.onEdit}>保存</Text>}
+        {save ? <Text onClick={props.onEdit}>保存</Text> : null}
       </Space>
       <Space size={16}>
         {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
@@ -299,7 +283,8 @@ const Iteration = (props: Props) => {
                 dispatch(setSave(true)),
                 dispatch(
                   setHeaderParmas({
-                    users: person,
+                    // eslint-disable-next-line no-undefined
+                    users: person?.length ? person : undefined,
                     projectIds: value,
                     view: headerParmas.view,
                     time: headerParmas.time,
@@ -322,7 +307,7 @@ const Iteration = (props: Props) => {
           )}
           {person.length > 0 ? (
             <CommonIconFont
-              type={'close-solid'}
+              type="close-solid"
               size={14}
               color="var(--neutral-n4)"
               onClick={onClear}
@@ -340,7 +325,7 @@ const Iteration = (props: Props) => {
           <Tabs>
             {tabs.map((el, index) => (
               <span
-                className={tabsActive == index ? 'tabsActive' : ''}
+                className={tabsActive === index ? 'tabsActive' : ''}
                 onClick={() => getTabsActive(index)}
                 key={el.label}
               >
@@ -353,15 +338,17 @@ const Iteration = (props: Props) => {
           <SelectMain
             allowClear={false}
             onChange={e => {
-              console.log(e)
-              setTimekey(e), dispatch(setSave(true))
+              setTimekey(e)
+              setTimeVal([])
+              dispatch(setSave(true))
               dispatch(
                 setHeaderParmas({
                   userIds: person.map(el => el.id),
                   projectIds,
                   time: {
                     type: e,
-                    time: e,
+                    // eslint-disable-next-line no-undefined
+                    time: undefined,
                   },
                   view: headerParmas.view,
                   iterate_ids: headerParmas.iterate_ids,
@@ -416,7 +403,7 @@ const Iteration = (props: Props) => {
         )}
       </Space>
       <NewAddUserModalForTandD
-        title={'添加成员'}
+        title="添加成员"
         state={2}
         isVisible={isVisible}
         onConfirm={onConfirm}
@@ -424,7 +411,7 @@ const Iteration = (props: Props) => {
       />
       {/* 另存为视图 */}
       <ViewDialog
-        name={''}
+        name=""
         titleType={{ title: '另存为视图', type: 'add' }}
         onConfirm={val => {
           props.onCreateView(val, 'add')

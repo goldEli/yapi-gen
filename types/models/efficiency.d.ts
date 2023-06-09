@@ -103,7 +103,7 @@ declare namespace Models.Efficiency {
     users: []
     time: {
       type: number
-      time: string[] | ''
+      time: string[] | undefined
     }
     view: {
       title: string

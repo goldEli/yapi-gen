@@ -24,7 +24,7 @@ declare namespace API.Efficiency {
       user_ids?: string
       start_time?: string
       end_time?: string
-      period_time: string
+      period_time: string | undefined
     }
     type Result = {
       work_completion_period: {
