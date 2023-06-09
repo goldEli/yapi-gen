@@ -29,6 +29,7 @@ import { getMessage } from '@/components/Message'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
 import NewAddShowList from './DepartmentList'
+import { IconWrap } from '../AddDepartmentOrTeamModal/style'
 
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -141,6 +142,20 @@ const Header = styled.div`
   }
 `
 const ListItem = styled.div`
+  .departmentIcon {
+    background: #79d1c1 !important;
+  }
+  .otherType {
+    display: flex;
+    align-items: center;
+    max-width: 90%;
+  }
+  .name {
+    max-width: 76%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
   width: 230px;
   height: 36px;
   line-height: 36px;
@@ -152,15 +167,15 @@ const ListItem = styled.div`
   .del {
     display: none;
   }
-  & span:first-child {
+  /* & span:first-child {
     width: 24px;
     height: 24px;
     border-radius: 50%;
     color: var(--primary-d2);
-  }
-  & span:last-child {
+  } */
+  /* & span:last-child {
     color: var(--primary-d2);
-  }
+  } */
   &:hover {
     background: var(--hover-d2);
     cursor: pointer;
@@ -758,11 +773,13 @@ const AddDepartmentModalForFlat = (props: ModalProps) => {
           {personData.length >= 1
             ? personData.map((el: any) => (
                 <ListItem key={el.id}>
-                  <CommonUserAvatar
-                    name={el.name}
-                    fontSize={14}
-                    avatar={el.avatar}
-                  />
+                  <div className="otherType">
+                    <IconWrap className="departmentIcon">
+                      <IconFont type="branch" />
+                    </IconWrap>
+
+                    <span className="name">{el.name}</span>
+                  </div>
                   <IconFont
                     className="del"
                     type="close"
