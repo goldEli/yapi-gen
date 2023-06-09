@@ -245,6 +245,7 @@ const HaveSearchAndList = (props: Props) => {
 
   return (
     <PopoverWrap
+      overlayStyle={{ height: '20px' }}
       visible={isOpen}
       placement="bottomRight"
       trigger="click"
