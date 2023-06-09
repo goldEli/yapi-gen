@@ -106,16 +106,7 @@ const PanelHeader = styled.div`
     margin-right: 16px;
   }
 `
-const CreateTransactionButton = styled.div`
-  width: 66px;
-  font-size: 14px;
-  font-family: MiSans-Regular, MiSans;
-  font-weight: 400;
-  color: var(--auxiliary-text-t2-d2);
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`
+
 const PanelWrap = styled(Panel)`
   .ant-collapse-content-box {
     max-height: inherit !important;

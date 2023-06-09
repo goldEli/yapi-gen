@@ -298,7 +298,7 @@ const urls = {
   // 对比列表
   workContrastList: '/b/efficiency/member/work_contrast/list',
   // 缺陷分析列表
-  memberBugList: '/b/efficiency/member/bug/list',
+  memberBugList: '/b/efficiency/member/defect_contrast/list',
   // 2，3，5，图表汇总数
   statisticsOther: '/b/efficiency/statistics/other',
   // 进展对比后半截弹窗

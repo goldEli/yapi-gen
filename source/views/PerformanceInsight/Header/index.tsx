@@ -22,6 +22,8 @@ import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModa
 import moment from 'moment'
 import { getDate } from '../components/Date'
 import { recentCreateData } from '@/services/efficiency'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 interface ItemProps {
   name: string
   id: number
@@ -85,7 +87,9 @@ const Iteration = (props: Props) => {
   const [iterateIds, setIterateIds] = useState<number>(0)
   const dispatch = useDispatch()
   const { save, headerParmas } = useSelector(store => store.performanceInsight)
-  const { projectInfo } = useSelector(state => state.project)
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   // tads切换
   const getTabsActive = (index: number) => {
     setTabsActive(index)
@@ -103,7 +107,7 @@ const Iteration = (props: Props) => {
   // 获取近期的冲刺项目
   const getIterateData = async () => {
     const res = await recentCreateData({
-      project_id: projectInfo.id,
+      project_id: projectId,
       resource_type: props.homeType === 'iteration' ? 6 : 9,
     })
     setIterateData(res)
@@ -206,11 +210,14 @@ const Iteration = (props: Props) => {
     dispatch(
       setHeaderParmas({
         // eslint-disable-next-line no-undefined
-        users: data?.length ? data : undefined,
+        users: data?.length ? data.map(k => k.id) : undefined,
         projectIds,
         time: headerParmas.time,
         view: headerParmas.view,
-        iterate_ids: headerParmas.iterate_ids,
+        iterate_ids: headerParmas.iterate_ids?.length
+          ? headerParmas.iterate_ids
+          : // eslint-disable-next-line no-undefined
+            undefined,
       }),
     )
   }
@@ -218,6 +225,19 @@ const Iteration = (props: Props) => {
   const onClear = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()
     setPerson([])
+    dispatch(
+      setHeaderParmas({
+        // eslint-disable-next-line no-undefined
+        users: undefined,
+        projectIds,
+        time: headerParmas.time,
+        view: headerParmas.view,
+        iterate_ids: headerParmas.iterate_ids?.length
+          ? headerParmas.iterate_ids
+          : // eslint-disable-next-line no-undefined
+            undefined,
+      }),
+    )
   }
   // 自定义时间
   const onChangeDate = (e: any, values: string[]) => {
@@ -238,20 +258,17 @@ const Iteration = (props: Props) => {
   }
   // 冲刺选择的
   const oniterateChange = (val: number) => {
-    console.log(val, 'valvalvalval')
-
     dispatch(
       setHeaderParmas({
         // eslint-disable-next-line no-undefined
         users: person?.length ? person : undefined,
         // eslint-disable-next-line no-undefined
-        iterate_ids: val === 0 ? undefined : [val],
+        iterate_ids: val === 0 ? undefined : [...[val]],
         projectIds: headerParmas.projectIds,
         time: headerParmas.time,
         view: headerParmas.view,
       }),
     )
-    setIterateIds(val)
   }
 
   return (

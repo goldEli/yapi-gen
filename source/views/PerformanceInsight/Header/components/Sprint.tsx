@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-concat */
-import { Dropdown, MenuProps } from 'antd'
+import { Dropdown, MenuProps, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
-import { DivStyle, Label, TitleText } from '../Style'
+import { DivStyle, Label, TitleText, LabelText } from '../Style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { setSave } from '@store/performanceInsight'
 import { useDispatch } from '@store/index'
@@ -27,7 +27,9 @@ const Sprint = (props: Props) => {
   const getLabel = (el: { name: string; id: number }) => {
     return (
       <Label key={el.id}>
-        <span className="labelName">{el.name}</span>
+        <Tooltip title={el.name}>
+          <span className="labelName">{el.name}</span>
+        </Tooltip>
       </Label>
     )
   }
@@ -69,8 +71,6 @@ const Sprint = (props: Props) => {
   }, [props.value])
 
   const onOpenChange: MenuProps['onClick'] = (e: any) => {
-    console.log(e, 'eeeeeeeee')
-
     if (e.key === 'all') {
       setValue({
         title: props.homeType === 'iteration' ? '全部工作项' : '全部冲刺',
@@ -99,7 +99,9 @@ const Sprint = (props: Props) => {
       }}
     >
       <DivStyle onClick={() => setIsOpen(!isOpen)}>
-        <div>{value.title}</div>
+        <Tooltip title={value.title}>
+          <LabelText>{value.title}</LabelText>
+        </Tooltip>
         <CommonIconFont
           type={isOpen ? 'up' : 'down'}
           size={14}

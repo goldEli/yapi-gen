@@ -154,13 +154,17 @@ const Home = () => {
       setHomeType('all')
       setProjectId(0)
     }
-    // 视图列表
   }, [])
+
   useEffect(() => {
-    if (!projectId) {
-      return
-    }
-    init()
+    console.log(projectId, 'projectIdprojectIdprojectId')
+
+    dispatch(
+      setHeaderParmas({
+        // eslint-disable-next-line no-undefined
+        projectIds: projectId ? projectId : undefined,
+      }),
+    )
     // 视图列表
     getViewList({ project_id: projectId, use_type: 3 })
   }, [projectId])
@@ -185,27 +189,31 @@ const Home = () => {
     )
     setOptionVal(filterVal?.id || 0)
     setDefalutConfig(filterVal?.config)
-    dispatch(
-      setHeaderParmas({
-        users: filterVal?.config.user_ids,
-        projectIds: filterVal?.config.project_id,
-        view: {
-          title: filterVal?.name,
-          value: filterVal?.id,
-        },
-        iterate_ids: filterVal?.config.iterate_ids,
-        time: {
-          type:
-            filterVal?.config.period_time === ''
-              ? 0
-              : getDate(filterVal?.config?.period_time || ''),
-          time:
-            filterVal?.config.period_time === ''
-              ? 0
-              : getDate(filterVal?.config?.period_time || ''),
-        },
-      }),
-    )
+    // 有视图数据才设置
+    if (filterVal) {
+      dispatch(
+        setHeaderParmas({
+          users: filterVal?.config.user_ids,
+          projectIds: filterVal?.config.project_id,
+          view: {
+            title: filterVal?.name,
+            value: filterVal?.id,
+          },
+          iterate_ids: filterVal?.config.iterate_ids,
+          time: {
+            type:
+              filterVal?.config.period_time === ''
+                ? 0
+                : getDate(filterVal?.config?.period_time || ''),
+            time:
+              filterVal?.config.period_time === ''
+                ? // eslint-disable-next-line no-undefined
+                  undefined
+                : getDate(filterVal?.config?.period_time || ''),
+          },
+        }),
+      )
+    }
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
@@ -473,14 +481,18 @@ const Home = () => {
   }
 
   useEffect(() => {
+    // 统一监听参数变化，发起请求刷新页面
+    console.log(headerParmas, 'headerParmas.projectIds')
+
     if (
-      headerParmas &&
-      headerParmas.time.type === 0 &&
-      !headerParmas.time.time
+      !!headerParmas.time.time &&
+      !!headerParmas.period_time &&
+      !headerParmas.iterate_ids &&
+      !headerParmas.users &&
+      !headerParmas.projectIds
     ) {
       return
     }
-    console.log(headerParmas, 'headerParmas')
 
     init()
   }, [headerParmas])

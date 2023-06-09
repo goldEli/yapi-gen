@@ -7,96 +7,14 @@ import * as http from '../tools/http'
 export const workContrastList = async (
   params: API.Sprint.WorkContrastList.Params,
 ) => {
-  // const response = await http.get<any, API.Sprint.WorkContrastList.Result>(
-  //     'workContrastList',
-  //     params,
-  // )
-  const list = [
-    {
-      user: {
-        id: 1,
-        name: '张三',
-        department_id: 1542079930036355073,
-        job_id: 1542079890593120258,
-        avatar:
-          'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-        department: {
-          id: 1542079930036355073,
-          name: '总经办',
-        },
-        position: {
-          id: 1542079890593120258,
-          name: '总助ds',
-        },
-      },
-      completion_rate: '50%',
-      new: 40,
-      completed: 20,
-      work_stock: 200,
-      work_progress: '10|30 33%',
-      repeat_rate: '50%',
-      risk: 10,
-    },
-    {
-      user: {
-        id: 2,
-        name: '李四',
-        department_id: 1542079930036355073,
-        job_id: 1542079890593120258,
-        avatar:
-          'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-        department: {
-          id: 1542079930036355073,
-          name: 'php小组',
-        },
-        position: {
-          id: 1542079890593120258,
-          name: 'php工程师',
-        },
-      },
-      completion_rate: '50%',
-      new: 40,
-      completed: 20,
-      work_stock: 200,
-      work_progress: '10|30 33%',
-      repeat_rate: '50%',
-      risk: 10,
-    },
-  ]
+  const response = await http.get<any, API.Sprint.WorkContrastList.Result>(
+    'workContrastList',
+    params,
+  )
+  const data = response.data
   return {
-    work: [
-      {
-        name: '总完成率',
-        value: 50,
-        unit: '%',
-      },
-      {
-        name: '当期新增',
-        value: 40,
-        unit: '项',
-      },
-      {
-        name: '当期已完成',
-        value: 20,
-        unit: '项',
-      },
-      {
-        name: '总工作存量',
-        value: 200,
-        unit: '项',
-      },
-      {
-        name: '存量风险',
-        value: 10,
-        unit: '项',
-      },
-    ],
-    pager: {
-      total: 155,
-      page: 1,
-      pagesize: 20,
-    },
-    list: list.map((el: any) => ({
+    ...data,
+    list: data.list.map((el: any) => ({
       id: el.user.id,
       userName: el.user.name,
       departmentName: el.user.department.name,
@@ -115,107 +33,12 @@ export const workContrastList = async (
 export const memberBugList = async (
   params: API.Sprint.MemberBugList.Params,
 ) => {
-  // const res = await http.get<any, API.Sprint.MemberBugList.Result>(
-  //   'memberBugList',
-  //   params,
-  // )
-  const res = {
-    data: {
-      defect: [
-        {
-          name: '缺陷修复率',
-          value: 60,
-          unit: '%',
-        },
-        {
-          name: '待修复',
-          value: 20,
-          unit: '项',
-        },
-        {
-          name: '修复中',
-          value: 20,
-          unit: '项',
-        },
-        {
-          name: '已完成',
-          value: 60,
-          unit: '项',
-        },
-        {
-          name: '缺陷存量',
-          value: 120,
-          unit: '项',
-        },
-        {
-          name: '缺陷重开率',
-          value: 33,
-          unit: '%',
-        },
-        {
-          name: '存量风险',
-          value: 30,
-          unit: '项',
-        },
-      ],
-      list: [
-        {
-          user: {
-            id: 1,
-            name: '张三',
-            department_id: 1542079930036355073,
-            job_id: 1542079890593120258,
-            avatar:
-              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            department: {
-              id: 1542079930036355073,
-              name: '总经办',
-            },
-            position: {
-              id: 1542079890593120258,
-              name: '总助ds',
-            },
-          },
-          completion_rate: '50%',
-          not_fixed: 20,
-          fixing: 20,
-          fixed: 60,
-          repeat_open_rate: '10|20 50%',
-          stock_risk: 5,
-        },
-        {
-          user: {
-            id: 2,
-            name: '李四',
-            department_id: 1542079930036355073,
-            job_id: 1542079890593120258,
-            avatar:
-              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            department: {
-              id: 1542079930036355073,
-              name: '总经办',
-            },
-            position: {
-              id: 1542079890593120258,
-              name: '总助ds',
-            },
-          },
-          completion_rate: '50%',
-          not_fixed: 20,
-          fixing: 20,
-          fixed: 60,
-          repeat_open_rate: '10|20 50%',
-          stock_risk: 5,
-        },
-      ],
-      pager: {
-        total: 155,
-        page: 1,
-        pagesize: 20,
-      },
-    },
-  }
+  const res = await http.get<any, API.Sprint.MemberBugList.Result>(
+    'memberBugList',
+    params,
+  )
   return {
+    ...res.data,
     list: res.data.list.map((el: any) => ({
       id: el.user.id,
       userName: el.user.name,
@@ -228,48 +51,6 @@ export const memberBugList = async (
       repeat_open_rate: el.repeat_open_rate,
       stock_risk: el.stock_risk,
     })),
-    pager: {
-      total: 155,
-      page: 1,
-      pagesize: 20,
-    },
-    defect: [
-      {
-        name: '缺陷修复率',
-        value: 60,
-        unit: '%',
-      },
-      {
-        name: '待修复',
-        value: 20,
-        unit: '项',
-      },
-      {
-        name: '修复中',
-        value: 20,
-        unit: '项',
-      },
-      {
-        name: '已完成',
-        value: 60,
-        unit: '项',
-      },
-      {
-        name: '缺陷存量',
-        value: 120,
-        unit: '项',
-      },
-      {
-        name: '缺陷重开率',
-        value: 33,
-        unit: '%',
-      },
-      {
-        name: '存量风险',
-        value: 30,
-        unit: '项',
-      },
-    ],
   }
 }
 // 后半截弹窗顶部的详情
@@ -886,71 +667,6 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
     'viewsList',
     parmas,
   )
-  // const response = {
-  //   data: [
-  //     {
-  //       id: 27,
-  //       name: '系统视图-周期时间',
-  //       config: {
-  //         project_id: [441, 437],
-  //         user_ids: [1],
-  //         start_time: '',
-  //         end_time: '',
-  //         period_time: 'four_week',
-  //         iterate_ids: [],
-  //       },
-  //       status: -69632682.78917724,
-  //       type: 1,
-  //       is_default: 1,
-  //     },
-  //     {
-  //       id: 28,
-  //       name: '开始和结束',
-  //       config: {
-  //         iterate_ids: [],
-  //         project_id: [441, 437],
-  //         user_ids: [1],
-  //         start_time: '2023-10-10',
-  //         end_time: '2023-10-11',
-  //         period_time: '',
-  //       },
-  //       status: -77288136.07175744,
-  //       type: 2,
-  //       is_default: 2,
-  //     },
-  //     {
-  //       id: 89,
-  //       name: '只有迭代参数',
-  //       config: {
-  //         project_id: [441, 437],
-  //         user_ids: [1],
-  //         iterate_ids: [9970],
-  //         start_time: '',
-  //         end_time: '',
-  //         period_time: '',
-  //       },
-  //       status: -79455814.85011317,
-  //       type: 2,
-  //       is_default: 2,
-  //     },
-  //     {
-  //       id: 74,
-  //       name: '周期时间',
-  //       config: {
-  //         project_id: [441, 437],
-  //         user_ids: [1],
-  //         iterate_ids: [],
-  //         start_time: '',
-  //         end_time: '',
-  //         period_time: 'two_week',
-  //       },
-  //       status: 32169567.50605288,
-  //       type: 2,
-  //       is_default: 2,
-  //     },
-  //   ],
-  // }
-  console.log('response', response)
   return response.data.map(el => ({
     id: el.id,
     name: el.name,

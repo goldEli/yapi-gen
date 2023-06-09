@@ -19,7 +19,7 @@ interface Props {
     pageSize: number
   }
   paginationShow: boolean
-  onChangePage: (pageNum: number, pageSize: number) => void
+  onChangePage(pageNum: number, pageSize: number): void
 }
 const Table = (props: Props) => {
   return (
@@ -30,7 +30,7 @@ const Table = (props: Props) => {
         col={props.columns}
         dataSource={props.dataSource}
       />
-      {props.paginationShow && (
+      {props.paginationShow && props?.dataSource?.length ? (
         <PaginationBox
           currentPage={props.data?.currentPage}
           pageSize={props.data?.pageSize}
@@ -39,7 +39,7 @@ const Table = (props: Props) => {
             props.onChangePage(pageNum, pageSize)
           }
         />
-      )}
+      ) : null}
     </>
   )
 }
