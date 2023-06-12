@@ -5,10 +5,9 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
-import { useDispatch, useSelector } from '@store/index'
-import { Drawer, Form, Space } from 'antd'
+import { Drawer, Space } from 'antd'
 import { Editor } from '@xyfe/uikit'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
@@ -19,10 +18,6 @@ import {
   ChangeIconGroup,
   UpWrap,
   DownWrap,
-  TargetUserItem,
-  TargetUserContent,
-  ContactDemandBox,
-  ContactDemandItem,
 } from '@/views/WorkReport/Review/components/style'
 
 import { Content, Title, Text } from './style'
@@ -33,22 +28,17 @@ import {
 } from '@/views/WorkReport/Formwork/Addperson'
 import { getMyAllSysNoticeDetail } from '@/services/sysNotice'
 
-interface TargetTabsProps {
-  list: any
-}
-
 // 已读未读
 
 const NoteDetailDrawer = (props: any) => {
   const { reportIds } = props
 
   const [t] = useTranslation()
-  const { viewReportModal } = useSelector(store => store.workReport)
+
   const [focus, setFocus] = useState(false)
-  const [drawerInfo, setDrawerInfo] = useState<any>({})
+
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const [form] = Form.useForm()
   const [arr, setArr] = useState<any>(null)
   const leftWidth = 640
 

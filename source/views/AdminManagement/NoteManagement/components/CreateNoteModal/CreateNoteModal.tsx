@@ -8,31 +8,16 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-constant-binary-expression */
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
-import CommonModal2 from '@/components/AddUser/CommonModal'
 import { LabelTitle } from '@/views/WorkReport/Review/components/style'
 import { Editor } from '@xyfe/uikit'
-import { Checkbox, DatePicker, Dropdown, Form, Input, Radio } from 'antd'
+import { Checkbox, DatePicker, Form, Input, Radio } from 'antd'
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type1 from '/type1.png'
 import type2 from '/type2.png'
-import CommonButton from '@/components/CommonButton'
-import CommonIconFont from '@/components/CommonIconFont'
-import { setEditSave } from '@store/formWork'
-import { useDispatch } from '@store/index'
 import { useTranslation } from 'react-i18next'
-import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 
 import CommonModal from '@/components/CommonModal'
-import { seleData1 } from '@/views/WorkReport/Formwork/DataList'
-import {
-  Col,
-  DefalutIcon,
-  NameText,
-  PersonContainer,
-} from '@/views/WorkReport/Formwork/Addperson'
-import CommonUserAvatar from '@/components/CommonUserAvatar'
-import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import {
   createSysNotice,
   editCreateSysNotice,
@@ -47,7 +32,6 @@ const CreateNoteModal = (props: any) => {
   const [t] = useTranslation()
 
   const [taskTime, setTaskTime] = useState(false)
-  const [taskTimeString, setTaskTimeString] = useState<string>('')
 
   const onValidator = (rule: any, value: any) => {
     if (
@@ -199,10 +183,6 @@ const CreateNoteModal = (props: any) => {
       })
       props.onHandleOk()
     }
-  }
-
-  const onChangeTaskTime = (time: any, timeString: string) => {
-    setTaskTimeString(timeString)
   }
 
   function disabledDate(current: any) {
