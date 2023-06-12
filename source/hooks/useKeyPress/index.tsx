@@ -7,8 +7,8 @@ const useKeyPress = () => {
   const navigator = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-  const { type } = paramsData
+  const projectId = paramsData?.id
+  const { type } = paramsData || {}
   const useKeys = (key: string, url: string) => {
     useHotkeys(
       key,

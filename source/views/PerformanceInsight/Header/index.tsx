@@ -84,17 +84,18 @@ const Iteration = (props: Props) => {
     useState<API.Sprint.RecentCreateData.Result>([])
   // 项目的id
   const [projectIds, setProjectIds] = useState<number[]>()
-  const [iterateIds, setIterateIds] = useState<number>(0)
+  const [iterateIds, setIterateIds] = useState<any>()
   const dispatch = useDispatch()
-  const { save, headerParmas } = useSelector(store => store.performanceInsight)
+  const { save } = useSelector(store => store.performanceInsight)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
+  const projectId = paramsData?.id
   // tads切换
   const getTabsActive = (index: number) => {
     setTabsActive(index)
     setTimekey(index)
   }
+
   useEffect(() => {
     // 展示的tabs不同
     if (props.homeType === 'iteration' || props.homeType === 'sprint') {
@@ -127,8 +128,9 @@ const Iteration = (props: Props) => {
       props.defalutConfig?.start_time === '' &&
       setIterateIds(
         props.defalutConfig?.iterate_ids?.length === 0
-          ? 0
-          : props.defalutConfig.iterate_ids[0],
+          ? // eslint-disable-next-line no-undefined
+            undefined
+          : props.defalutConfig?.iterate_ids?.[0],
       )
   }, [props.defalutConfig])
   // 获取时间回显
@@ -141,27 +143,8 @@ const Iteration = (props: Props) => {
         moment(props.defalutConfig.start_time),
         moment(props.defalutConfig.end_time),
       ])
-    dispatch(
-      setHeaderParmas({
-        // eslint-disable-next-line no-undefined
-        users: undefined,
-        projectIds,
-        iterate_ids: headerParmas?.iterate_ids,
-        time: {
-          type: date,
-          time:
-            date > 0
-              ? date
-              : [
-                  props.defalutConfig?.start_time,
-                  props.defalutConfig?.end_time,
-                ],
-        },
-        view: headerParmas.view,
-      }),
-    )
-    props.defalutConfig?.start_time === '' &&
-      props.defalutConfig?.end_time === '' &&
+    !props.defalutConfig?.start_time &&
+      !props.defalutConfig?.end_time &&
       props.defalutConfig?.period_time === '' &&
       setTimekey(1)
   }
@@ -197,6 +180,7 @@ const Iteration = (props: Props) => {
       ),
     )
   }
+
   // 选择项目展开全部
   const onShowAll = () => {
     setProjectList(projectListAll)
@@ -211,13 +195,6 @@ const Iteration = (props: Props) => {
       setHeaderParmas({
         // eslint-disable-next-line no-undefined
         users: data?.length ? data.map(k => k.id) : undefined,
-        projectIds,
-        time: headerParmas.time,
-        view: headerParmas.view,
-        iterate_ids: headerParmas.iterate_ids?.length
-          ? headerParmas.iterate_ids
-          : // eslint-disable-next-line no-undefined
-            undefined,
       }),
     )
   }
@@ -229,13 +206,6 @@ const Iteration = (props: Props) => {
       setHeaderParmas({
         // eslint-disable-next-line no-undefined
         users: undefined,
-        projectIds,
-        time: headerParmas.time,
-        view: headerParmas.view,
-        iterate_ids: headerParmas.iterate_ids?.length
-          ? headerParmas.iterate_ids
-          : // eslint-disable-next-line no-undefined
-            undefined,
       }),
     )
   }
@@ -244,15 +214,10 @@ const Iteration = (props: Props) => {
     setTimeVal([moment(values[0]), moment(values[1])])
     dispatch(
       setHeaderParmas({
-        // eslint-disable-next-line no-undefined
-        users: person?.length ? person : undefined,
-        iterate_ids: headerParmas.iterate_ids,
-        projectIds: headerParmas.projectIds,
         time: {
           type: 0,
           time: values,
         },
-        view: headerParmas.view,
       }),
     )
   }
@@ -261,12 +226,15 @@ const Iteration = (props: Props) => {
     dispatch(
       setHeaderParmas({
         // eslint-disable-next-line no-undefined
-        users: person?.length ? person : undefined,
+        period_time: undefined,
+        time: {
+          // eslint-disable-next-line no-undefined
+          time: undefined,
+          // eslint-disable-next-line no-undefined
+          type: undefined,
+        },
         // eslint-disable-next-line no-undefined
         iterate_ids: val === 0 ? undefined : [...[val]],
-        projectIds: headerParmas.projectIds,
-        time: headerParmas.time,
-        view: headerParmas.view,
       }),
     )
   }
@@ -300,12 +268,7 @@ const Iteration = (props: Props) => {
                 dispatch(setSave(true)),
                 dispatch(
                   setHeaderParmas({
-                    // eslint-disable-next-line no-undefined
-                    users: person?.length ? person : undefined,
                     projectIds: value,
-                    view: headerParmas.view,
-                    time: headerParmas.time,
-                    iterate_ids: headerParmas.iterate_ids,
                   }),
                 )
             }}
@@ -327,7 +290,7 @@ const Iteration = (props: Props) => {
               type="close-solid"
               size={14}
               color="var(--neutral-n4)"
-              onClick={onClear}
+              onClick={() => onClear}
             />
           ) : (
             <CommonIconFont
@@ -360,15 +323,11 @@ const Iteration = (props: Props) => {
               dispatch(setSave(true))
               dispatch(
                 setHeaderParmas({
-                  userIds: person.map(el => el.id),
-                  projectIds,
                   time: {
                     type: e,
                     // eslint-disable-next-line no-undefined
                     time: undefined,
                   },
-                  view: headerParmas.view,
-                  iterate_ids: headerParmas.iterate_ids,
                   period_time: periodTimes.find(item => item.value === e)
                     ?.label,
                 }),
@@ -430,8 +389,13 @@ const Iteration = (props: Props) => {
       <ViewDialog
         name=""
         titleType={{ title: '另存为视图', type: 'add' }}
-        onConfirm={val => {
-          props.onCreateView(val, 'add')
+        onConfirm={async val => {
+          try {
+            await props.onCreateView(val, 'add')
+            setIsVisibleView(false)
+          } catch (error) {
+            console.log(error)
+          }
         }}
         onClose={() => setIsVisibleView(false)}
         isVisible={isVisibleView}

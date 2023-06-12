@@ -13,11 +13,11 @@ type SliceState = {
 const initialState: SliceState = {
   save: false,
   headerParmas: {
-    iterate_ids: [],
-    projectIds: [],
-    users: [],
+    iterate_ids: undefined,
+    projectIds: undefined,
+    users: undefined,
     time: {
-      type: -1,
+      type: 28,
       time: undefined,
     },
     view: {

@@ -95,12 +95,12 @@ declare namespace Models.Efficiency {
     start_time?: string
     end_time?: string
     period_time?: string
-    iterate_ids: number[]
+    iterate_ids?: number[]
   }
   export interface HeaderParmas {
-    iterate_ids: number[]
-    projectIds: number[]
-    users: []
+    iterate_ids?: number[]
+    projectIds?: number[]
+    users?: []
     time: {
       type: number
       time: string[] | undefined

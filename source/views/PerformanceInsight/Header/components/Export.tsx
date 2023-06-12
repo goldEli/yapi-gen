@@ -10,10 +10,7 @@ interface PropsType {
   onConfirm: () => void
   onClose: () => void
   time: string
-  personData: Array<{
-    name: string
-    id?: number
-  }>
+  personData: any
 }
 
 const Export = (props: PropsType) => {

@@ -62,10 +62,10 @@ const HeaderAll = (props: HaderProps) => {
         break
     }
     // 根据图表的header选择的项目塞选出选择出来的项目
-    props.headerParmas.projectIds?.length >= 1
+    props?.headerParmas?.projectIds?.length
       ? setProjectList(
           props.projectDataList?.filter(el =>
-            props.headerParmas.projectIds.includes(el.id),
+            props.headerParmas?.projectIds?.includes(el.id),
           ),
         )
       : setProjectList(props.projectDataList)
