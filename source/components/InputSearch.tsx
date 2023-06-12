@@ -3,8 +3,9 @@ import { changeColorText } from '@store/color-text'
 import { useDispatch, useSelector } from '@store/index'
 import { saveInputKey } from '@store/view'
 import { Input } from 'antd'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import CommonIconFont from './CommonIconFont'
+import useFKeyPress from '@/hooks/useFKeyPress/useFKeyPress'
 
 const InputStyle = styled(Input)<{ bgColor: any }>`
   /* border: 1px solid var(--neutral-n6-d1);
@@ -34,6 +35,7 @@ interface Props {
 
 const InputSearch = (props: Props) => {
   // 用于控制输入框的删除图标
+  const inputRef = useRef<any>(null)
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
 
@@ -43,9 +45,21 @@ const InputSearch = (props: Props) => {
     }
   }, [props.defaultValue])
 
+  const handleFKeyPress = useCallback(() => {
+    console.log('F键被按下')
+    // 在这里执行你想要触发的事件
+    console.log(inputRef.current)
+
+    inputRef.current!.focus({
+      preventScroll: true,
+    })
+  }, [])
+
+  useFKeyPress(handleFKeyPress)
+
   return (
     <InputStyle
-      ref={props?.ref}
+      ref={inputRef}
       bgColor={props.bgColor}
       value={value}
       style={{

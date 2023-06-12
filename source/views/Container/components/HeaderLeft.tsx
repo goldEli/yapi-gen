@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import { Space, Drawer, Tooltip } from 'antd'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
 import { getParamsData } from '@/tools'
@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next'
 import ItemDropdown from './ItemDropdown'
 import { setCurrentMenu } from '@store/user'
 import menuTag from '/menuTag.svg'
+import usePressKyey from '@/hooks/usePressKyey/usePressKyey'
 
 interface DrawerComponentProps {
   value: boolean
@@ -333,7 +334,11 @@ const HeaderLeft = () => {
     }
     navigate(url)
   }
+  const handleKeyPress = useCallback(() => {
+    setIsVisible(i => !i)
+  }, [])
 
+  usePressKyey('[', handleKeyPress)
   return (
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />

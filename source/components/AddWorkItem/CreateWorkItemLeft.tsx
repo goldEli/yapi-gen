@@ -367,6 +367,8 @@ const CreateDemandLeft = (props: Props) => {
   }
 
   useEffect(() => {
+    console.log(categoryObj)
+
     if (categoryObj?.id) {
       form.setFieldsValue({
         requiredCategory: categoryObj?.id,
@@ -383,6 +385,7 @@ const CreateDemandLeft = (props: Props) => {
         (i: any) => i.status === 1,
       )
       // 如果有需求id
+
       if (params?.editId) {
         //    如果可使用的能查到详情中的需求类别，则使用详情的， 反之使用列表的第一个
         if (
@@ -464,6 +467,15 @@ const CreateDemandLeft = (props: Props) => {
           setCategoryObj(resultCategory)
           getParentData(resultCategory.work_type)
         }
+      }
+      if (params?.type === 4) {
+        console.log(resultCategoryList)
+        const resultObj = resultCategoryList?.filter(
+          (j: any) => j.work_type === params?.type,
+        )[0]
+        setCategoryObj(resultObj)
+
+        // return
       }
     }
   }, [props.projectId, props.allCategoryList])
@@ -666,8 +678,8 @@ const CreateDemandLeft = (props: Props) => {
               {props.allCategoryList
                 ?.filter((i: any) => i.status === 1)
                 ?.filter((i: any) => {
-                  if (params?.type === 3) {
-                    return i.work_type === 3
+                  if (params?.type === 4) {
+                    return i.work_type === 4
                   }
                 })
 
