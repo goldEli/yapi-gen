@@ -87,6 +87,8 @@ export const uploadFile = (file: File, editorRef: any, key2?: any) => {
 }
 
 const CreateDemandLeft = (props: Props) => {
+  console.log(props, '数据')
+
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useDispatch()
@@ -663,6 +665,12 @@ const CreateDemandLeft = (props: Props) => {
             >
               {props.allCategoryList
                 ?.filter((i: any) => i.status === 1)
+                ?.filter((i: any) => {
+                  if (params?.type === 3) {
+                    return i.work_type === 3
+                  }
+                })
+
                 ?.map((i: any) => {
                   return (
                     <Select.Option value={i.id} key={i.id} label={i.name}>
