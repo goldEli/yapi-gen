@@ -34,6 +34,7 @@ import {
 } from '@/services/flaw'
 import CommonExport from '@/components/CommonExport'
 import { OperationWrap } from '../style'
+import useShortcutC from '@/hooks/useShortcutC'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -334,7 +335,17 @@ const Operation = (props: Props) => {
     }
     props?.onChangeIsShowLeft?.()
   }
+  const handleShortcutEvent = () => {
+    console.log('C键被按下')
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { noDataCreate: true },
+      }),
+    )
+  }
 
+  useShortcutC(handleShortcutEvent)
   return (
     <StickyWrap ref={stickyWrapDom}>
       <DeleteConfirm
@@ -434,7 +445,19 @@ const Operation = (props: Props) => {
               ? 'b/story/save'
               : 'b/transaction/save',
           ) || projectInfo?.status !== 1 ? null : (
-            <CommonButton type="primary">创建缺陷</CommonButton>
+            <CommonButton
+              type="primary"
+              onClick={() =>
+                dispatch(
+                  setAddWorkItemModal({
+                    visible: true,
+                    params: { noDataCreate: true },
+                  }),
+                )
+              }
+            >
+              创建缺陷
+            </CommonButton>
           )}
           {hasExport && hasImport ? null : (
             <Popover

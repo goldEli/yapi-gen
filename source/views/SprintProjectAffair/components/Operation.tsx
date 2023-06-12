@@ -30,6 +30,7 @@ import {
   getExportAffairsExcel,
 } from '@/services/affairs'
 import CommonExport from '@/components/CommonExport'
+import useShortcutC from '@/hooks/useShortcutC'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -220,6 +221,17 @@ const Operation = (props: Props) => {
         return result
       }, {})
   }
+  const handleShortcutEvent = () => {
+    console.log('C键被按下')
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { noDataCreate: true },
+      }),
+    )
+  }
+
+  useShortcutC(handleShortcutEvent)
   useEffect(() => {
     if (searchChoose && searchChoose.system_view) {
       return

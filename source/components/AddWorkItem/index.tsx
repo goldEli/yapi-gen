@@ -105,6 +105,8 @@ const AddWorkItem = () => {
 
     dispatch(setProjectInfoValues(projectInfoData))
     const allCategory = removeNull(projectInfoData, 'category')
+    console.log(allCategory, 'all')
+
     // 更新所有需求类别列表
     setAllCategoryList(allCategory)
   }

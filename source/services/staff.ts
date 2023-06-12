@@ -118,17 +118,16 @@ export const getStaffListAll: any = async (params: any) => {
     page: params.page,
     pagesize: params.pagesize,
   })
+  console.log(response)
 
-  return params.all
-    ? response.data.map((i: any) => ({
-        avatar: i.avatar,
-        id: i.id,
-        name: i.name,
-        nickname: i.nickname,
-        positionName: null,
-        roleName: i.role_name,
-      }))
-    : null
+  return response.data.map((i: any) => ({
+    avatar: i.avatar,
+    id: i.id,
+    name: i.name,
+    nickname: i.nickname,
+    positionName: null,
+    roleName: i.role_name,
+  }))
 }
 
 export const updateStaff: any = async (params: any) => {

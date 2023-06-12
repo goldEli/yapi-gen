@@ -26,6 +26,7 @@ import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'
 import { getMessage } from '@/components/Message'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
+import useShortcutC from '@/hooks/useShortcutC'
 
 const Content = styled.div({
   padding: '8px 12px 0 8px',
@@ -373,7 +374,12 @@ const IterationTable = (props: Props) => {
       }),
     )
   }
+  const handleShortcutEvent = () => {
+    console.log('C键被按下')
+    onCreateDemand()
+  }
 
+  useShortcutC(handleShortcutEvent)
   return (
     <Content
       style={{

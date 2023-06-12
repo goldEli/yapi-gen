@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal } from '@store/project'
 import CompleteSprintModal from './CompleteSprintModal'
 import { setSprintRefresh } from '@store/sprint'
+import useShortcutC from '@/hooks/useShortcutC'
 const { Panel } = Collapse
 
 interface XTableProps {
@@ -140,7 +141,17 @@ const XTable: React.FC<XTableProps> = props => {
     projectInfo?.projectPermissions,
     'b/sprint',
   )
+  const handleShortcutEvent = () => {
+    console.log('C键被按下')
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { type: 4, iterateId: data.id },
+      }),
+    )
+  }
 
+  useShortcutC(handleShortcutEvent)
   // 删除冲刺
   const deleteSprint = async (id: number) => {
     try {

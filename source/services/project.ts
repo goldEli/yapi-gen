@@ -39,7 +39,7 @@ export const getProjectList: any = async (params: any) => {
   if (params.all) {
     return {
       total: response.data.length,
-      list: response.data.map((i: any) => ({
+      list: response.data.list.map((i: any) => ({
         id: i.id,
         status: i.status,
         cover: i.cover,

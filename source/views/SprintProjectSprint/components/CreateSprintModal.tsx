@@ -10,9 +10,10 @@ import { useDispatch } from '@store/index'
 import { setSprintRefresh } from '@store/sprint'
 import { Form, Input } from 'antd'
 import moment from 'moment'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChooseDate from './ChooseDate'
+import useAltSKeyPress from '@/hooks/useAltSKeyPress/useAltSKeyPress'
 
 interface sprintProps {
   type: 'create' | 'start' | 'edit'
@@ -165,6 +166,13 @@ const CreateSprintModal = (props: sprintProps) => {
       getSprintInfo()
     }
   }, [editId, visible])
+  const handleAltSKeyPress = useCallback(() => {
+    console.log('ALT+S键被按下')
+    onConfirm()
+    // 在这里执行你想要触发的事件
+  }, [])
+
+  useAltSKeyPress(handleAltSKeyPress)
 
   return (
     <CommonModal
