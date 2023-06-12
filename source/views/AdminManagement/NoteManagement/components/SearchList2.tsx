@@ -3,7 +3,7 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Form, Select } from 'antd'
+import { Form } from 'antd'
 import {
   SearchLine,
   SelectWrap,
@@ -11,12 +11,6 @@ import {
 } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  getDepartmentSelectList,
-  getPositionSelectList,
-  getRoleList,
-} from '@/services/staff'
-import CustomSelect from '@/components/CustomSelect'
 import { useSelector } from '@store/index'
 import RangePicker from '@/components/RangePicker'
 import { getAffiliationUser } from '@/services/project'
@@ -53,8 +47,7 @@ const SearchList = (props: Props) => {
   const [form] = Form.useForm()
   const { isRefresh } = useSelector(store => store.user)
   const [departmentOptions, setDepartmentOptions] = useState([])
-  const [positionOptions, setPositionOptions] = useState([])
-  const [roleOptions, setRoleOptions] = useState([])
+
   const onClearForm = async () => {
     form.resetFields()
     const value = await form.validateFields()
