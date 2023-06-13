@@ -450,11 +450,14 @@ const IterationDefectDetail = () => {
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
           <ChangeStatusPopover
+            projectId={flawInfo.projectId}
+            isCanOperation
             record={flawInfo}
             onChangeStatus={onChangeStatus}
             type={3}
           >
             <StateTag
+              isShow
               name={flawInfo.status?.status.content}
               state={
                 flawInfo.status?.is_start === 1 && flawInfo.status?.is_end === 2

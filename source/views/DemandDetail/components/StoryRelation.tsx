@@ -144,6 +144,8 @@ const StoryRelation = (props: RelationStoriesProps) => {
       id: props.detail.id,
       searchValue: value,
     })
+    console.log(response, '数据')
+
     setSelectList(
       response.map((i: Model.Flaw.FlawInfo) => ({
         label: i.name,
@@ -158,6 +160,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
       projectId: projectInfo.id,
       id: props.detail.id,
     })
+    console.log(response, '数据')
     setRecentList(
       response.map((i: Model.Flaw.FlawInfo) => ({
         label: i.name,
@@ -422,6 +425,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
     if (props.activeKey === '2' || props.isOpen) {
       getList(pageObj, order)
     }
+    // getSelectRelationRecent()
   }, [props.activeKey, props.isOpen])
 
   return (

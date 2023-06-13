@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import { getTypeComponent, removeNull } from '@/tools'
@@ -213,7 +214,7 @@ const CreateDemandRight = (props: Props) => {
               ?.filter((k: any) => k.status === 1)
               ?.filter((i: any) => i.id === props?.detail?.iterateId).length
           ? props?.detail?.iterateId
-          : [],
+          : undefined,
 
         // 父需求
         parent_id: params.isChild

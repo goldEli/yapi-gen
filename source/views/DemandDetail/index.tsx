@@ -346,6 +346,10 @@ const DemandDetail = () => {
       }),
     )
   }, [])
+  // 是否审核
+  const onExamine = () => {
+    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
+  }
 
   useEffect(() => {
     // 获取项目信息中的需求类别
@@ -511,11 +515,15 @@ const DemandDetail = () => {
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
           <ChangeStatusPopover
+            projectId={demandInfo.projectId}
+            isCanOperation
             record={demandInfo}
             onChangeStatus={onChangeStatus}
             type={1}
           >
             <StateTag
+              onClick={demandInfo.isExamine ? onExamine : void 0}
+              isShow
               name={demandInfo.status?.status.content}
               state={
                 demandInfo.status?.is_start === 1 &&
