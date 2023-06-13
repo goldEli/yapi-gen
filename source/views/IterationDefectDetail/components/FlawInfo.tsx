@@ -3,7 +3,6 @@ import {
   FlawInfoInfoItem,
   FlawInfoLabel,
   FlawInfoLeft,
-  FlawInfoTextWrap,
   FlawInfoWrap,
   TitleWrap,
   WrapRight,
@@ -15,22 +14,28 @@ import { getParamsData } from '@/tools'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import FlawDetail from './FlawDetail'
 import BasicFlaw from './BasicFlaw'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Tooltip } from 'antd'
 import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import FlawComment from './FlawComment'
 import FlawStatus from './FlawStatus'
+import {
+  SprintDetailDragLine,
+  SprintDetailMouseDom,
+} from '@/views/SprintProjectDetail/style'
 
 const FlawInfo = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const basicInfoDom = useRef<HTMLDivElement>(null)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, flawId } = paramsData
   const { flawInfo, flawCommentList } = useSelector(store => store.flaw)
   const [activeTabs, setActiveTabs] = useState(1)
-
+  const [focus, setFocus] = useState(false)
+  const [leftWidth, setLeftWidth] = useState(400)
   //   刷新缺陷详情
   const onUpdate = () => {
     dispatch(getFlawInfo({ projectId: id, id: flawId }))
@@ -51,10 +56,24 @@ const FlawInfo = () => {
       }),
     )
   }, [])
+  // 拖动线条
+  const onDragLine = () => {
+    document.onmousemove = e => {
+      setFocus(true)
 
+      setLeftWidth(window.innerWidth - e.clientX)
+    }
+    document.onmouseup = () => {
+      document.onmousemove = null
+      document.onmouseup = null
+      setFocus(false)
+    }
+  }
   return (
     <FlawInfoWrap>
-      <FlawInfoLeft>
+      <FlawInfoLeft
+        style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
+      >
         <FlawDetail
           flawInfo={flawInfo as Model.Flaw.FlawInfo}
           onUpdate={onUpdate}
@@ -64,7 +83,17 @@ const FlawInfo = () => {
           <FlawStatus pid={id} sid={flawId} />
         </FlawInfoInfoItem>
       </FlawInfoLeft>
-      <WrapRight>
+      <WrapRight
+        ref={basicInfoDom}
+        style={{ position: 'relative', width: leftWidth }}
+      >
+        <SprintDetailMouseDom
+          active={focus}
+          onMouseDown={onDragLine}
+          style={{ left: 0 }}
+        >
+          <SprintDetailDragLine active={focus} className="line" />
+        </SprintDetailMouseDom>
         <TitleWrap activeTabs={activeTabs}>
           <div className="leftWrap" onClick={() => setActiveTabs(1)}>
             {t('newlyAdd.basicInfo')}
