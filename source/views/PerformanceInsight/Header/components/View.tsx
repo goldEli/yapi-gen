@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-concat */
 import CommonIconFont from '@/components/CommonIconFont'
-import { MenuProps, Dropdown, Space } from 'antd'
+import { MenuProps, Dropdown, Space, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import ViewDialog from './ViewDialog'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -10,10 +10,10 @@ import { setHeaderParmas } from '@store/performanceInsight'
 
 interface View {
   viewDataList: Array<Models.Efficiency.ViewItem> | undefined
-  onCreateView: (value: string, type: string, key?: string) => void
-  onDelView: (key: string) => void
-  onSetDefaulut: (id: number) => void
-  onChange: (title: string, value: number) => void
+  onCreateView(value: string, type: string, key?: string): void
+  onDelView(key: string): void
+  onSetDefaulut(id: number): void
+  onChange(title: string, value: number): void
   defalutConfig: Models.Efficiency.ConfigItem | undefined
   value: number
 }
@@ -48,7 +48,9 @@ const View = (props: View) => {
       {
         label: (
           <DefaultLabel>
-            <span>{optionsDefault?.name}</span>
+            <Tooltip title={optionsDefault?.name}>
+              <span className="label">{optionsDefault?.name}</span>
+            </Tooltip>
             <Btn>默认</Btn>
           </DefaultLabel>
         ),
@@ -77,7 +79,6 @@ const View = (props: View) => {
       props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
   }, [options])
   useEffect(() => {
-    console.log('tou', props.value, value?.id)
     if (props.value !== value?.id) {
       const item = props.viewDataList?.find(el => el.id === props.value) || {
         name: '',
@@ -90,7 +91,7 @@ const View = (props: View) => {
       }
       setValue({
         ...item,
-        name: item?.type === 2 ? '视图' + '' + item.name : item.name,
+        name: item?.type === 2 ? `视图${String(item.name)}` : item.name,
       })
       props.onChange(item?.name || '', item?.id || 0)
     }
@@ -98,14 +99,16 @@ const View = (props: View) => {
   const getLabel = (el: { name: string; id: number }) => {
     return (
       <Label key={el.id}>
-        <span className="labelName">{el.name}</span>
-        <span>
+        <Tooltip title={el.name}>
+          <span className="labelName">{el.name}</span>
+        </Tooltip>
+        <span className="extra">
           <Space size={12}>
             <CommonIconFont
               onClick={() => {
                 props.onSetDefaulut(el.id)
               }}
-              type={'tag-96pg0hf3'}
+              type="tag-96pg0hf3"
               size={16}
               color="var(--neutral-n3)"
             />
@@ -118,7 +121,7 @@ const View = (props: View) => {
                   }),
                   setIsVisible(true)
               }}
-              type={'edit'}
+              type="edit"
               size={16}
               color="var(--neutral-n3)"
             />
@@ -126,7 +129,7 @@ const View = (props: View) => {
               onClick={() => {
                 setDialogItem(el), setDelIsVisible(true)
               }}
-              type={'delete'}
+              type="delete"
               size={16}
               color="var(--neutral-n3)"
             />
@@ -143,17 +146,15 @@ const View = (props: View) => {
   }
   const onOpenChange: MenuProps['onClick'] = (e: { key: string }) => {
     setKey(e.key)
-    console.log(e.key, 'ooo')
     if (e.key === 'first') {
       setValue({
         ...optionsDefault,
         name:
           optionsDefault?.type === 2
-            ? '视图' + '' + optionsDefault.name
+            ? `视图${String(optionsDefault.name)}`
             : optionsDefault.name,
       })
       props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
-      return
     } else if (e.key === 'last') {
       setIsOpen(false)
       setDialogItem({ name: '' })
@@ -163,7 +164,7 @@ const View = (props: View) => {
       })
       setIsVisible(true)
     } else {
-      let item: Models.Efficiency.ViewItem = options?.find(
+      const item: Models.Efficiency.ViewItem = options?.find(
         (el: { key: string }) => el.key === e.key,
       ) || {
         label: '',
@@ -179,7 +180,7 @@ const View = (props: View) => {
       props.onChange(item.name, item.id)
       setValue({
         ...item,
-        name: item.type === 2 ? '视图' + '' + item.name : item.name,
+        name: item.type === 2 ? `视图${String(item.name)}` : item.name,
       })
       dispatch(
         setHeaderParmas({
@@ -205,8 +206,10 @@ const View = (props: View) => {
         trigger={['click']}
         menu={{ items, onClick: onOpenChange }}
         overlayStyle={{
-          width: 120,
           background: 'var(--neutral-white-d1)',
+          overflowY: 'scroll',
+          maxHeight: 350,
+          boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
         }}
       >
         <DivStyle onClick={() => setIsOpen(!isOpen)}>
@@ -231,8 +234,8 @@ const View = (props: View) => {
         isVisible={isVisible}
       />
       <DeleteConfirm
-        title={'删除确认'}
-        text={'确认删除该视图?'}
+        title="删除确认"
+        text="确认删除该视图?"
         isVisible={delIsVisible}
         onConfirm={() => {
           setDelIsVisible(false)

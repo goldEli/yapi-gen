@@ -12,7 +12,7 @@ import { Col, HightChartsWrap, Time, TitleCss } from '../Header/Style'
 import { HighchartsReactWrap, RightRow } from './style'
 interface PropsMoreDropdown {
   data: Array<{ label: string; key: string }>
-  onClickMenu: (value: { label: string; key: string }) => void
+  onClickMenu(value: { label: string; key: string }): void
   defaultValue: { label: string; key: string }
 }
 const MoreDropdown = (props: PropsMoreDropdown) => {
@@ -77,7 +77,7 @@ const HightChartMainPie = (props: {
   titleType: boolean
   title: string
   chart: Models.Efficiency.ChartPie | undefined
-  onChange?: (item: { key: string; label: string }) => void
+  onChange?(item: { key: string; label: string }): void
 }) => {
   const [tips, setTips] = useState('')
 
@@ -175,7 +175,7 @@ const HightChartMainPie = (props: {
             <Time>{props.chart?.time}</Time>
           </Space>
         </RightRow>
-        {props.titleType && (
+        {props.titleType ? (
           <MoreDropdown
             onClickMenu={(value: { label: string; key: string }) =>
               onClickMenu(value)
@@ -187,7 +187,7 @@ const HightChartMainPie = (props: {
             ]}
             defaultValue={defaultValue}
           />
-        )}
+        ) : null}
       </Col>
       <HightChartsWrap height={props.height}>
         <HighchartsReactWrap

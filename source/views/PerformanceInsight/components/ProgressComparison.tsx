@@ -525,7 +525,7 @@ const ProgressComparison = (props: Props) => {
     const time = getTime(props.headerParmas.time)
     const res = await memberBugList({
       project_ids:
-        value.length >= 1 || props.headerParmas?.projectIds.length >= 1
+        value.length >= 1 || props.headerParmas?.projectIds?.length
           ? value.length >= 1
             ? value.join(',')
             : props.headerParmas?.projectIds?.join?.(',')

@@ -87,7 +87,7 @@ export function getProjectTypeByUrl() {
   const url = new URL(window.location.href)
   const searchParams = url.searchParams
 
-  const params = getParamsData(searchParams)
+  const params = getParamsData(searchParams) || {}
 
   return parseInt(params['projectType'], 10)
 }

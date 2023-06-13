@@ -36,7 +36,7 @@ const ViewDialog = (props: PropsType) => {
           label="名称"
           rules={[{ required: true, message: '请输入视图名称' }]}
         >
-          <Input placeholder="请输入视图名称限30字" />
+          <Input maxLength={30} placeholder="请输入视图名称限30字" />
         </Form.Item>
       </FormWrap>
     </CommonModal>

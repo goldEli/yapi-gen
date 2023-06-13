@@ -682,29 +682,28 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
 export const viewsUpdate = async (
   parmas: API.Efficiency.ViewsEditList.Params,
 ) => {
-  // const response = await http.put<any, API.Efficiency.ViewsEditList.Result>(
-  //   `viewsUpdate`,
-  //   parmas,
-  // )
-  console.log(parmas, 'parmas')
-  return ''
+  const response = await http.put<any, API.Efficiency.ViewsEditList.Result>(
+    'viewsUpdate',
+    parmas,
+  )
+
+  return response.data
 }
 // 视图新建
 export const createViewList = async (
   parmas: API.Efficiency.ViewsEditList.Params,
 ) => {
-  // const response = await http.post<any, API.Efficiency.ViewsEditList.Result>(
-  //   `createViewList`,
-  //   parmas,
-  // )
-  console.log(parmas, 'parmas')
-  // return response.data
+  const response = await http.post<any, API.Efficiency.ViewsEditList.Result>(
+    'createViewList',
+    parmas,
+  )
+  return response.data
 }
 // 删除视图
 export const delView = async (id: number) => {
   const response = await http.delete<any, API.Efficiency.ViewsEditList.Result>(
     'delView',
-    id,
+    { id },
   )
   return response.data
 }
@@ -712,7 +711,7 @@ export const delView = async (id: number) => {
 export const defaultView = async (id: number) => {
   const response = await http.patch<any, API.Efficiency.ViewsEditList.Result>(
     'defaultView',
-    id,
+    { id },
   )
   return response.data
 }

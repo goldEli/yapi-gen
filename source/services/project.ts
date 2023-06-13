@@ -12,7 +12,6 @@ import { getNestedChildren, transData } from '@/tools'
 import * as http from '@/tools/http'
 import { onRest } from '@store/create-propject'
 import { store } from '@store/index'
-import { message } from 'antd'
 import { t } from 'i18next'
 import { getStaffListAll } from './staff'
 import urls from '@/constants/urls'
@@ -35,11 +34,10 @@ export const getProjectList: any = async (params: any) => {
     orderkey: params.orderKey,
     order: params.order,
   })
-
   if (params.all) {
     return {
       total: response.data.length,
-      list: response.data.list.map((i: any) => ({
+      list: response.data?.list?.map((i: any) => ({
         id: i.id,
         status: i.status,
         cover: i.cover,

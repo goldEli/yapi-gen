@@ -42,6 +42,7 @@ import {
 } from '@/services/efficiency'
 import { getDate, getDateStr } from './Date'
 import { getParamsData } from '@/tools'
+import { getMessage } from '@/components/Message'
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const { headerParmas, projectDataList } = useSelector(
     store => store.performanceInsight,
@@ -150,24 +151,13 @@ const Home = () => {
     if (paramsData) {
       setHomeType(paramsData.type)
       setProjectId(paramsData.projectId)
+      getViewList({ project_id: paramsData.projectId, use_type: 3 })
     } else {
       setHomeType('all')
       setProjectId(0)
+      getViewList({ project_id: 0, use_type: 3 })
     }
   }, [])
-
-  useEffect(() => {
-    console.log(projectId, 'projectIdprojectIdprojectId')
-
-    dispatch(
-      setHeaderParmas({
-        // eslint-disable-next-line no-undefined
-        projectIds: projectId ? projectId : undefined,
-      }),
-    )
-    // 视图列表
-    getViewList({ project_id: projectId, use_type: 3 })
-  }, [projectId])
 
   const init = () => {
     // 缺陷现状和工作项现状
@@ -181,6 +171,8 @@ const Home = () => {
     // 集合图表
     getStatisticsOther()
   }
+
+  // 获取已有视图
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)
@@ -208,8 +200,9 @@ const Home = () => {
             time:
               filterVal?.config.period_time === ''
                 ? // eslint-disable-next-line no-undefined
-                  undefined
-                : getDate(filterVal?.config?.period_time || ''),
+                  [filterVal?.config?.start_time, filterVal?.config?.end_time]
+                : // eslint-disable-next-line no-undefined
+                  undefined,
           },
         }),
       )
@@ -223,48 +216,95 @@ const Home = () => {
             use_type: 3,
             name: val,
             config: {
-              iterate_ids: headerParmas.iterate_ids,
-              project_id: headerParmas.projectIds,
-              user_ids: headerParmas.users,
-              period_time: getDateStr(headerParmas.time.type),
-              start_time:
-                headerParmas.time.type == 0 ? headerParmas.time?.time?.[0] : '',
-              end_time:
-                headerParmas.time.type == 0 ? headerParmas.time?.time?.[1] : '',
-            },
-            project_id: 18,
-          })
-        : await viewsUpdate({
-            id: Number(key),
-            project_id: 1,
-            name: val,
-            config: {
-              iterate_ids: headerParmas.iterate_ids,
+              iterate_ids:
+                // eslint-disable-next-line no-undefined
+                homeType === 'all' ? undefined : headerParmas.iterate_ids,
               project_id: headerParmas.projectIds,
               user_ids: headerParmas.users,
               period_time: getDateStr(headerParmas.time.type),
               start_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[0]
-                  : '',
+                  : // eslint-disable-next-line no-undefined
+                    undefined,
               end_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[1]
-                  : '',
+                  : // eslint-disable-next-line no-undefined
+                    undefined,
+            },
+            project_id: 0,
+          })
+        : await viewsUpdate({
+            id: Number(key),
+            project_id: 0,
+            name: val,
+            config: {
+              iterate_ids:
+                // eslint-disable-next-line no-undefined
+                homeType === 'all' ? undefined : headerParmas.iterate_ids,
+              project_id: headerParmas.projectIds,
+              user_ids: headerParmas.users,
+              period_time: getDateStr(headerParmas.time.type),
+              start_time:
+                headerParmas.time.type === 0
+                  ? headerParmas.time?.time?.[0]
+                  : // eslint-disable-next-line no-undefined
+                    undefined,
+              end_time:
+                headerParmas.time.type === 0
+                  ? headerParmas.time?.time?.[1]
+                  : // eslint-disable-next-line no-undefined
+                    undefined,
             },
           })
-    // // 刷新视图的接口
-    // getViewList({ project_id: '1', use_type: 3 })
+    if (res) {
+      getMessage({
+        msg: '保存成功',
+        type: 'success',
+      })
+      // 刷新视图的接口
+      getViewList({ project_id: projectId, use_type: 3 })
+    } else {
+      getMessage({
+        msg: '保存失败',
+        type: 'error',
+      })
+    }
   }
   // 删除视图
   const onDelView = async (key: string) => {
-    // const res = await delView(Number(key))
-    // // 刷新视图的接口
-    // getViewList({ project_id: '1', use_type: 3 })
+    const res = await delView(Number(key))
+    if (res) {
+      getMessage({
+        msg: '删除成功',
+        type: 'success',
+      })
+      // 刷新视图的接口
+      getViewList({ project_id: projectId, use_type: 3 })
+    } else {
+      getMessage({
+        msg: '删除失败',
+        type: 'error',
+      })
+    }
   }
   // 设置默认视图
   const onSetDefaulut = async (id: number) => {
     const res = await defaultView(id)
+    if (res) {
+      getMessage({
+        msg: '设置成功',
+        type: 'success',
+      })
+      // 刷新视图的接口
+      getViewList({ project_id: projectId, use_type: 3 })
+    } else {
+      getMessage({
+        msg: '设置失败',
+        type: 'error',
+      })
+    }
   }
   // 获取下拉框的值视图的
   const onGetOptionValue = (title: string, value: number) => {
@@ -275,10 +315,6 @@ const Home = () => {
     setDefalutConfig(filterVal?.config)
     dispatch(
       setHeaderParmas({
-        users: headerParmas.users,
-        projectIds: headerParmas.projectIds,
-        time: headerParmas.time,
-        iterate_ids: headerParmas.iterate_ids,
         view: {
           title,
           value,
@@ -456,9 +492,9 @@ const Home = () => {
   }
   // 编辑视图走缓存的参数
   const editViews = async () => {
-    await viewsUpdate({
+    const res = await viewsUpdate({
       id: headerParmas.view.value,
-      project_id: 1,
+      project_id: 0,
       name: headerParmas.view.title,
       status: 1,
       config: {
@@ -478,12 +514,24 @@ const Home = () => {
               undefined,
       },
     })
+    if (res) {
+      getMessage({
+        msg: '保存成功',
+        type: 'success',
+      })
+      // 刷新视图的接口
+      getViewList({ project_id: projectId, use_type: 3 })
+      dispatch(setSave(false))
+    } else {
+      getMessage({
+        msg: '保存失败',
+        type: 'error',
+      })
+    }
   }
 
   useEffect(() => {
     // 统一监听参数变化，发起请求刷新页面
-    console.log(headerParmas, 'headerParmas.projectIds')
-
     if (
       !!headerParmas.time.time &&
       !!headerParmas.period_time &&
@@ -493,7 +541,10 @@ const Home = () => {
     ) {
       return
     }
-
+    if (headerParmas.time.type === 0 && !headerParmas.time.time) {
+      return
+    }
+    console.log(headerParmas, 'headerParmasheaderParmasheaderParmas')
     init()
   }, [headerParmas])
 
@@ -508,7 +559,7 @@ const Home = () => {
       {/* 头部组件 */}
       <Header
         projectId={projectId}
-        homeType={homeType}
+        homeType={homeType || 'all'}
         defalutConfig={defalutConfig}
         viewDataList={viewDataList}
         onCreateView={onCreateView}
@@ -659,7 +710,13 @@ const Home = () => {
               </span>
             </Space>
             <Space size={16}>
-              <CommonButton type="light" onClick={() => setIsVisible(true)}>
+              <CommonButton
+                type="light"
+                onClick={() => {
+                  setIsVisible(true)
+                  dispatch(setSave(false))
+                }}
+              >
                 另存为
               </CommonButton>
               <CommonButton type="primary" onClick={() => editViews()}>
@@ -673,8 +730,13 @@ const Home = () => {
       <ViewDialog
         name=""
         titleType={{ title: '另存为视图', type: 'add' }}
-        onConfirm={(value, type) => {
-          onCreateView(value, type, '')
+        onConfirm={async (value, type) => {
+          try {
+            await onCreateView(value, type, '')
+            setIsVisible(false)
+          } catch (error) {
+            console.log(error)
+          }
         }}
         onClose={() => setIsVisible(false)}
         isVisible={isVisible}
