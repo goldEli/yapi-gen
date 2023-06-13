@@ -144,6 +144,10 @@ export const Container = () => {
         )
         navigateUrl = children?.[0]?.url
       }
+      if (!navigateUrl) {
+        navigate('/ProjectManagement/Project')
+        return
+      }
       navigate(navigateUrl)
     }
     setIsNextVisible(loginInfo.admin_first_login)
