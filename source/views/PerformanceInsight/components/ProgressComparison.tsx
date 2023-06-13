@@ -615,11 +615,13 @@ const ProgressComparison = (props: Props) => {
   // 进展对比的前半截api
   const getHistoryWorkList = async (id: number) => {
     const res = await historyWorkList({ id })
+    console.log(res, '999999')
     setHistoryWorkObj(res)
   }
   // 缺陷分析的前半截
   const getHistoryDefectList = async (id: number) => {
     const res = await historyDefectList({ id })
+    console.log(res, '999999')
     setHistoryWorkObj(res)
   }
 
@@ -644,9 +646,22 @@ const ProgressComparison = (props: Props) => {
     setMemberWorkList(res)
   }
   // 详情塞选项的回调
-  const plugSelection = (
-    parmas: API.Sprint.EfficiencyMemberWorkList.Params,
-  ) => {
+  const plugSelection = (val: API.Sprint.EfficiencyMemberWorkList.Params) => {
+    const parmas = {
+      ...val,
+      period_time: getTimeStr(props.headerParmas?.time)
+        ? getTimeStr(props.headerParmas?.time)
+        : // eslint-disable-next-line no-undefined
+          undefined,
+      start_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : props.headerParmas?.time?.time?.[0],
+      end_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : props.headerParmas?.time?.time?.[1],
+    }
     if (props.type.includes('Progress')) {
       getEfficiencyMemberWorkList(parmas)
     } else {
@@ -748,7 +763,9 @@ const ProgressComparison = (props: Props) => {
         memberWorkList={memberWorkList}
         onPageNum={id => onPageNum(id)}
         userInfo={userInfo}
-        onChange={obj => plugSelection(obj)}
+        onChange={obj => {
+          plugSelection(obj)
+        }}
         onCancel={() => {
           dispatch(setVisiblePerson(!visiblePerson))
         }}

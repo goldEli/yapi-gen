@@ -367,7 +367,7 @@ export const Footer = styled.div`
   justify-content: space-between;
 `
 export const RowTableCol = styled.div`
-  width: 100%;
+  width: 120px;
   display: flex;
   align-items: center;
   .text {

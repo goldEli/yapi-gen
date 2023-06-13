@@ -86,29 +86,6 @@ const Sprint = (props: Props) => {
     }
     dispatch(setSave(true))
   }
-  return (
-    <Dropdown
-      placement="bottomLeft"
-      visible={isOpen}
-      onVisibleChange={setIsOpen}
-      trigger={['click']}
-      menu={{ items, onClick: onOpenChange }}
-      overlayStyle={{
-        width: 120,
-        background: 'var(--neutral-white-d1)',
-      }}
-    >
-      <DivStyle onClick={() => setIsOpen(!isOpen)}>
-        <Tooltip title={value.title}>
-          <LabelText>{value.title}</LabelText>
-        </Tooltip>
-        <CommonIconFont
-          type={isOpen ? 'up' : 'down'}
-          size={14}
-          color="var(--neutral-n4)"
-        />
-      </DivStyle>
-    </Dropdown>
-  )
+  return
 }
 export default Sprint

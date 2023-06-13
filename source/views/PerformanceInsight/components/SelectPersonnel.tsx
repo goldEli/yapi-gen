@@ -38,14 +38,14 @@ interface UserInfo {
 }
 
 interface WorkType {
+  type: number
   data: Array<Models.Efficiency.CreatedWord> | []
 }
 
 // 创建和分配事务组件
 const Work = (props: WorkType) => {
-  const [list, setList] = useState<Array<Models.Efficiency.CreatedWord>>(
-    props.data,
-  )
+  console.log(props.data, 'props.data')
+  const [list, setList] = useState<Array<Models.Efficiency.CreatedWord>>([])
   const activeItem = (el: Models.Efficiency.CreatedWord) => {
     setList(
       list.map((item: Models.Efficiency.CreatedWord) => ({
@@ -55,6 +55,10 @@ const Work = (props: WorkType) => {
       })),
     )
   }
+  useEffect(() => {
+    console.log(props.data, 'props.data')
+    setList(props.data)
+  }, [props.type])
   return (
     <ItemMain>
       {list.map(el => (
@@ -89,9 +93,10 @@ interface WorkRecordsTyle {
 // 工作记录
 const WorkRecords = (props: WorkRecordsTyle) => {
   const { list } = props
+  console.log(list, 'ooooooooooooooo')
   return (
     <ItemMain>
-      {list.map(el => (
+      {list?.map(el => (
         <WorkStyle key={el.date}>
           {el.list.map(item => (
             <RowItem key={item.name + item.created_at}>
@@ -117,9 +122,33 @@ const WorkRecords = (props: WorkRecordsTyle) => {
 }
 const Main = (props: UserInfo) => {
   const [type, setType] = useState<number>(0)
+  const [dataList, setDataList] = useState<any>([])
   const onChangeIdx = (num: number) => {
     setType(num)
   }
+  useEffect(() => {
+    if (type === 1) {
+      console.log(
+        props.historyWorkObj?.created_work,
+        'props.historyWorkObj?.created_work',
+      )
+      setDataList(
+        props.historyWorkObj?.created_work.map(el => ({
+          ...el,
+          isOpen: false,
+        })),
+      )
+    } else if (type === 2) {
+      setDataList(
+        props.historyWorkObj?.work.map(el => ({
+          ...el,
+          isOpen: false,
+        })),
+      )
+      console.log(props.historyWorkObj?.work, 'props.historyWorkObj?.work')
+    }
+  }, [type])
+
   return (
     <>
       <MainStyle1>
@@ -168,27 +197,18 @@ const Main = (props: UserInfo) => {
           </Item>
         )}
       </MainWrap>
+      {type}===
       {type === 0 ? (
         <WorkRecords list={props.historyWorkObj?.work_record || []} />
       ) : (
-        <Work
-          data={
-            (type === 1
-              ? props.historyWorkObj?.created_word.map(el => ({
-                  ...el,
-                  isOpen: false,
-                }))
-              : props.historyWorkObj?.word.map(el => ({
-                  ...el,
-                  isOpen: false,
-                }))) || []
-          }
-        />
+        <Work type={type} data={dataList} />
       )}
     </>
   )
 }
 const SelectPersonnel = (props: Props) => {
+  console.log(props, 'propspropsprops')
+
   return (
     <Detail
       children={

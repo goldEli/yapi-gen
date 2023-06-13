@@ -37,7 +37,6 @@ interface UserInfo {
   onChange: (value: API.Sprint.EfficiencyMemberWorkList.Params) => void
 }
 const Main = (props: UserInfo) => {
-  console.log(props, 'props.status}')
   const columns = [
     {
       title: '编号',

@@ -13,8 +13,8 @@ declare namespace API.Efficiency {
         name: string
       }
       work_record: Array<Models.Efficiency.WorkRecord>
-      created_word: Array<Models.Efficiency.CreatedWord>
-      word: Array<Models.Efficiency.CreatedWord>
+      created_work: Array<Models.Efficiency.CreatedWord>
+      work: Array<Models.Efficiency.CreatedWord>
     }
   }
   namespace StatisticsOther {

@@ -7,7 +7,7 @@ interface ItemProps {
   label: string
   value: string
   id: string
-  avatar: string | undefined
+  avatar?: string | undefined
 }
 interface Props {
   onChange: (data: number[]) => void

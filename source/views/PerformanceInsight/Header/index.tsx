@@ -361,11 +361,21 @@ const Iteration = (props: Props) => {
             ]}
           />
         ) : (
-          <Sprint
-            homeType={props.homeType}
-            data={iterateData}
-            value={iterateIds}
-            onChange={oniterateChange}
+          <Select
+            placeholder="请选择项目"
+            options={projectList}
+            more={more}
+            value={projectIds || []}
+            onChange={(value: number[]) => {
+              setProjectIds(value),
+                dispatch(setSave(true)),
+                dispatch(
+                  setHeaderParmas({
+                    projectIds: value,
+                  }),
+                )
+            }}
+            onShowAll={onShowAll}
           />
         )}
         {timekey === 0 && (
