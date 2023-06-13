@@ -339,7 +339,7 @@ const StatusModal = (props: StatusModalProps) => {
     }
     await form.validateFields()
     const params = {
-      projectId: props?.record?.project_id,
+      projectId: props?.record?.project_id ?? props?.record?.projectId,
       nId: props?.record?.id,
       toId: props.checkStatusItem.id,
       fields: res,

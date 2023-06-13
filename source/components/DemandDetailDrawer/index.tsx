@@ -191,12 +191,11 @@ const DemandDetailDrawer = () => {
   const onToDetail = () => {
     const params = encryptPhp(
       JSON.stringify({
-        type: 'info',
         id: drawerInfo.projectId,
         demandId: drawerInfo.id,
       }),
     )
-    const url = `ProjectManagement/Demand?data=${params}`
+    const url = `ProjectManagement/DemandDetail?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
@@ -256,6 +255,8 @@ const DemandDetailDrawer = () => {
 
   // 修改状态
   const onChangeStatus = async (value: any) => {
+    console.log(value)
+
     try {
       await updateDemandStatus(value)
       getMessage({ msg: t('common.statusSuccess'), type: 'success' })

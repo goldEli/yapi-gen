@@ -52,7 +52,7 @@ const urls = {
   // 获取需求关联工作项
   getStoryRelationStories: '/b/story/relationStories',
   // 添加需求关联工作项
-  addStoryRelation: '/b/story/addRelation',
+  addStoryRelation: '/b/story/save/addRelation',
   // 关联事务 - 下拉查询
   getStorySelectRelationSearch: '/b/story/selectRelationSearch',
   // 关联事务 - 最近事务
