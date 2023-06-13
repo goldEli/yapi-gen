@@ -8,11 +8,12 @@ import { useEffect, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from './Select'
 import CommonButton from '@/components/CommonButton'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { getMonthBefor, getDays } from './Date'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import useShareModal from '@/hooks/useShareModal'
 import { useSelector } from '@store/index'
+import { getParamsData } from '@/tools'
 interface HaderProps {
   type: string
   projectDataList: Array<{
@@ -28,7 +29,6 @@ interface HaderProps {
 const HeaderAll = (props: HaderProps) => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [isVisible, setIsVisible] = useState<boolean>(false)
   const [projectList, setProjectList] = useState<any>()
   const [options, setOptions] = useState<number[]>([])
   const [time, setTime] = useState<{
@@ -37,6 +37,9 @@ const HeaderAll = (props: HaderProps) => {
   }>()
   const { ShareModal, open } = useShareModal()
   const { projectInfo } = useSelector(store => store.project)
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+
   useEffect(() => {
     switch (props.headerParmas.time.type) {
       case 1:
@@ -77,10 +80,11 @@ const HeaderAll = (props: HaderProps) => {
       const params = encryptPhp(
         JSON.stringify({
           projectId: props.projectId,
-          type: props.type,
+          type: props.homeType,
+          id: props.projectId,
         }),
       )
-      navigate(`/Performance?data=${params}`)
+      navigate(`/Report/PerformanceInsight?data=${params}`)
     }
   }
   return (
@@ -144,13 +148,33 @@ const HeaderAll = (props: HaderProps) => {
       {/* 分享  save代表是否保存的值*/}
       <ShareModal
         // 视图id
-        id={0}
+        id={props?.headerParmas?.view?.value}
         // 视图的配置
-        config={{}}
+        config={{
+          project_ids: paramsData?.headerParmas.projectIds,
+          iterate_ids: paramsData?.headerParmas.iterate_ids,
+          user_ids: paramsData?.headerParmas.users,
+          start_time:
+            paramsData?.headerParmas?.time?.type === 0
+              ? paramsData?.headerParmas?.time?.time?.[0]
+              : // eslint-disable-next-line no-undefined
+                undefined,
+          end_time:
+            paramsData?.headerParmas?.time?.type === 0
+              ? paramsData?.headerParmas?.time?.time?.[1]
+              : // eslint-disable-next-line no-undefined
+                undefined,
+          period_time:
+            // eslint-disable-next-line no-undefined, no-negated-condition
+            paramsData?.headerParmas?.time?.type !== 0
+              ? paramsData?.headerParmas.period_time
+              : // eslint-disable-next-line no-undefined
+                undefined,
+        }}
         url={window.location.href}
         // 2钟不同的分享标题
         title={`【${projectInfo.name}-${
-          true ? '工作进展对比' : '缺陷趋势分析'
+          paramsData.num === 1 ? '工作进展对比' : '缺陷趋势分析'
         }】`}
       />
       {/* 导出 */}

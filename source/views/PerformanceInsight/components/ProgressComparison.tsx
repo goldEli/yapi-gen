@@ -95,6 +95,7 @@ const ProgressComparison = (props: Props) => {
   const [total, setTotal] = useState(0)
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(15)
+  const [selectProjectIds, setSelectProjectIds] = useState<any>([])
   const [memberWorkList, setMemberWorkList] =
     useState<API.Sprint.EfficiencyMemberWorkList.Result>()
   const [statusType, setStatusType] = useState('')
@@ -141,6 +142,9 @@ const ProgressComparison = (props: Props) => {
     {
       title: '职务',
       dataIndex: 'positionName',
+      render: (text: string) => {
+        return <RowText>{text ? text : '--'}</RowText>
+      },
     },
     {
       dataIndex: 'completion_rate',
@@ -178,12 +182,25 @@ const ProgressComparison = (props: Props) => {
       },
     },
     {
-      title: '工作进度',
+      title: '进行中|已完成',
       dataIndex: 'work_progress',
     },
     {
-      title: '工作进度率',
-      dataIndex: '',
+      title: '工作进度',
+      dataIndex: 'work_progress',
+      render: (text: string) => {
+        const num = Number(text?.split('|')?.[0])
+        const total = Number(text?.split('|')?.[1])
+        return (
+          <RowText>
+            {text
+              ? num === 0
+                ? '0%'
+                : `${Number((num / total) * 100).toFixed(1)}%`
+              : '--'}
+          </RowText>
+        )
+      },
     },
     {
       dataIndex: 'repeat_rate',
@@ -413,6 +430,8 @@ const ProgressComparison = (props: Props) => {
     // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
     //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
     onSearchData([])
+    console.log(props.type, 'props.typeprops.typeprops.type')
+
     switch (props.type) {
       case 'Progress_iteration':
         setColumns(columns1)
@@ -436,6 +455,7 @@ const ProgressComparison = (props: Props) => {
   }, [])
   // 数据明细和进展对比查询数据的
   const onSearchData = (value: number[]) => {
+    setSelectProjectIds(value)
     if (props.type.includes('Progress')) {
       getWorkContrastList(value)
     } else {
@@ -493,7 +513,7 @@ const ProgressComparison = (props: Props) => {
     })
   }
   // 工作进展对比大的列表
-  const getWorkContrastList = async (value: number[]) => {
+  const getWorkContrastList = async (value: number[], page?: any) => {
     const time = props.headerParmas?.time && getTime(props.headerParmas?.time)
     const res = await workContrastList({
       project_ids:
@@ -511,17 +531,16 @@ const ProgressComparison = (props: Props) => {
         ? // eslint-disable-next-line no-undefined
           undefined
         : time.endTime,
-      page: pageNum,
-      pagesize: pageSize,
+      page: page?.pageNum || pageNum,
+      pagesize: page?.pageSize || pageSize,
     })
     setWork(res.work)
     setTableList(res.list)
     setTotal(res.pager.total)
-    // setIds(res.list.map(el => el.id))
-    setIds([1, 3, 4])
+    setIds(res.list.map(el => el.id))
   }
   // 缺陷分析大的列表
-  const getMemberBugList = async (value: number[]) => {
+  const getMemberBugList = async (value: number[], page?: any) => {
     const time = getTime(props.headerParmas.time)
     const res = await memberBugList({
       project_ids:
@@ -566,6 +585,18 @@ const ProgressComparison = (props: Props) => {
     const parmas = {
       user_id: row.id,
       type: str,
+      period_time: getTimeStr(props.headerParmas?.time)
+        ? getTimeStr(props.headerParmas?.time)
+        : // eslint-disable-next-line no-undefined
+          undefined,
+      start_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : props.headerParmas?.time?.time?.[0],
+      end_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : props.headerParmas?.time?.time?.[1],
     }
     if (props.type.includes('Progress')) {
       getEfficiencyMemberWorkList(parmas)
@@ -628,6 +659,18 @@ const ProgressComparison = (props: Props) => {
     const parmas = {
       user_id: id,
       type: statusType,
+      period_time: getTimeStr(props.headerParmas?.time)
+        ? getTimeStr(props.headerParmas?.time)
+        : // eslint-disable-next-line no-undefined
+          undefined,
+      start_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : props.headerParmas?.time?.time?.[0],
+      end_time: getTimeStr(props.headerParmas?.time)
+        ? // eslint-disable-next-line no-undefined
+          undefined
+        : props.headerParmas?.time?.time?.[1],
     }
     if (props.type.includes('Progress')) {
       getEfficiencyMemberWorkList(parmas)
@@ -635,6 +678,7 @@ const ProgressComparison = (props: Props) => {
       getEfficiencyMemberDefectList(parmas)
     }
   }
+
   return (
     <div
       style={{ height: '100%', width: '100%' }}
@@ -686,6 +730,11 @@ const ProgressComparison = (props: Props) => {
           onChangePage={(pageNum, pageSize) => {
             setPageNum(pageNum)
             setPageSize(pageSize)
+            props.type === 'Progress_iteration' ||
+            props.type === 'Progress_sprint' ||
+            props.type === 'Progress_all'
+              ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
+              : getMemberBugList(selectProjectIds, { pageNum, pageSize })
           }}
         />
       </TableStyle>

@@ -171,7 +171,18 @@ declare namespace API.Sprint {
   }
   namespace PlugSelectionUserInfo {
     type Result = {
-      userInfo: Model.Sprint.UserInfo2
+      id: number
+      name: string
+      avatar: string
+      email: string
+      departments: Array<{
+        name: string
+        id: number
+      }>
+      position: {
+        name: string
+        id: number
+      }
       status: Array<Model.Sprint.StatusInfo2>
     }
   }

@@ -163,6 +163,7 @@ declare namespace Model.Sprint {
     name: string
     id: number
     key: number
-    created_at: string
+    start_at: string
+    end_at: string
   }
 }

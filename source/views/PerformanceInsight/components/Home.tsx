@@ -66,6 +66,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             : '缺陷趋势分析',
         headerParmas,
         projectDataList,
+        num: props.num,
       }),
     )
     navigate(`/ChildLevel?data=${params}`)
@@ -148,6 +149,7 @@ const Home = () => {
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ConfigItem>()
   useEffect(() => {
+    console.log(paramsData, 'paramsData')
     if (paramsData) {
       setHomeType(paramsData.type)
       setProjectId(paramsData.projectId)
@@ -233,11 +235,11 @@ const Home = () => {
                   : // eslint-disable-next-line no-undefined
                     undefined,
             },
-            project_id: 0,
+            project_id: projectId,
           })
         : await viewsUpdate({
             id: Number(key),
-            project_id: 0,
+            project_id: projectId,
             name: val,
             config: {
               iterate_ids:

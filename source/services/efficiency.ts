@@ -11,14 +11,14 @@ export const workContrastList = async (
     'workContrastList',
     params,
   )
-  const data = response.data
+  const { data } = response
   return {
     ...data,
     list: data.list.map((el: any) => ({
       id: el.user.id,
       userName: el.user.name,
-      departmentName: el.user.department.name,
-      positionName: el.user.position.name,
+      departmentName: el.user.department?.name,
+      positionName: el.user.position?.name,
       completion_rate: el.completion_rate,
       new: el.new,
       completed: el.completed,
@@ -42,8 +42,8 @@ export const memberBugList = async (
     list: res.data.list.map((el: any) => ({
       id: el.user.id,
       userName: el.user.name,
-      departmentName: el.user.department.name,
-      positionName: el.user.position.name,
+      departmentName: el.user.department?.name,
+      positionName: el.user.position?.name,
       completion_rate: el.completion_rate,
       not_fixed: el.not_fixed,
       fixing: el.fixing,
@@ -58,49 +58,11 @@ export const plugSelectionUserInfo = async (params: {
   user_id: number
   project_ids?: number
 }) => {
-  // const response = await http.get<any, API.Sprint.PlugSelectionUserInfo.Result>(
-  //   `b/efficiency/member/search/info`,
-  //   params,
-  // )
-  const response = {
-    data: {
-      id: 1,
-      name: '张三',
-      email: 'lijianbo@dingstartech.com',
-      department_id: 1542079930036355073,
-      job_id: 1542079890593120258,
-      avatar:
-        'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-      departments: [
-        {
-          id: 1542079930036355073,
-          name: '总经办',
-        },
-        {
-          id: 1542079930036355074,
-          name: '副总裁',
-        },
-      ],
-      position: {
-        id: 1542079890593120258,
-        name: '总助ds',
-      },
-      status: [
-        {
-          id: 11462,
-          content: '规划中',
-        },
-        {
-          id: 11463,
-          content: '实现中',
-        },
-        {
-          id: 11464,
-          content: '已完成',
-        },
-      ],
-    },
-  }
+  const response = await http.get<any, API.Sprint.PlugSelectionUserInfo.Result>(
+    '/b/efficiency/member/search/info',
+    params,
+  )
+
   return {
     userInfo: {
       id: response.data.id,
@@ -120,93 +82,10 @@ export const plugSelectionUserInfo = async (params: {
 export const efficiencyMemberWorkList = async (
   params: API.Sprint.EfficiencyMemberWorkList.Params,
 ) => {
-  // const response = await http.get<
-  //   any,
-  //   API.Sprint.EfficiencyMemberWorkList.Result
-  // >(`efficiencyMemberWorkList`, params)
-  const response = {
-    data: {
-      total: {
-        name: '有返工的工作项',
-        value: 10,
-        unit: '项',
-      },
-      list: [
-        {
-          id: 1003429,
-          name: '测试123456测试123456',
-          story_prefix_key: 'CSXM2-FL-103',
-          category_attachment:
-            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
-          status: 1,
-          user: {
-            id: 1,
-            name: '张三',
-            avatar:
-              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-          },
-          relate_users: [
-            {
-              id: 2,
-              name: '杨春平',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            },
-            {
-              id: 3,
-              name: '汪志君',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            },
-            {
-              id: 3,
-              name: '付亮',
-              avatar: '',
-            },
-          ],
-          expected_end_at: '2023-05-18',
-          expected_start_at: '2023-05-18',
-          created_at: '2023-05-24 02:46:55',
-        },
-        {
-          id: 1003430,
-          name: '测试123456',
-          story_prefix_key: 'CSXM2-FL-123456',
-          category_attachment:
-            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
-          status: 2,
-          user: {
-            id: 1,
-            name: '张三',
-            avatar:
-              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-          },
-          relate_users: [
-            {
-              id: 2,
-              name: '杨春平',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            },
-            {
-              id: 3,
-              name: '汪志君',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            },
-            {
-              id: 3,
-              name: '付亮',
-              avatar: '',
-            },
-          ],
-          expected_end_at: '2023-05-18',
-          expected_start_at: '2023-05-18',
-          created_at: '2023-05-24 02:46:55',
-        },
-      ],
-    },
-  }
+  const response = await http.get<
+    any,
+    API.Sprint.EfficiencyMemberWorkList.Result
+  >('efficiencyMemberWorkList', params)
   return {
     total: response.data.total,
     list: response.data.list.map(el => ({

@@ -109,7 +109,7 @@ const Iteration = (props: Props) => {
   const getIterateData = async () => {
     const res = await recentCreateData({
       project_id: projectId,
-      resource_type: props.homeType === 'iteration' ? 6 : 9,
+      resource_type: props.homeType === 'iteration' ? 1 : 2,
     })
     setIterateData(res)
   }
@@ -223,18 +223,16 @@ const Iteration = (props: Props) => {
   }
   // 冲刺选择的
   const oniterateChange = (val: number) => {
+    const tempObj = iterateData.find((k: any) => k.id === val)
+    console.log(tempObj, 'tempObjtempObj')
     dispatch(
       setHeaderParmas({
         // eslint-disable-next-line no-undefined
-        period_time: undefined,
+        iterate_ids: val === 0 ? undefined : [val],
         time: {
-          // eslint-disable-next-line no-undefined
-          time: undefined,
-          // eslint-disable-next-line no-undefined
-          type: undefined,
+          type: 0,
+          time: [tempObj?.start_at, tempObj?.end_at],
         },
-        // eslint-disable-next-line no-undefined
-        iterate_ids: val === 0 ? undefined : [...[val]],
       }),
     )
   }
