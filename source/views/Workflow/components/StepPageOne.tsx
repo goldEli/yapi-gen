@@ -456,6 +456,7 @@ const StepPageOne = (propsOne: Props) => {
                   dataSource={dataSource}
                   columns={columns}
                   onChangeData={setDataSource}
+                  showHeader
                 />
                 <div
                   style={{

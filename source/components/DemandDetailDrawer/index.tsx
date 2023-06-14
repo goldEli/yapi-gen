@@ -31,7 +31,6 @@ import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
 import DemandComment from './DemandComment'
 import DetailDemand from './DetailDemand'
-import { throttle } from 'lodash'
 import {
   Header,
   BackIcon,

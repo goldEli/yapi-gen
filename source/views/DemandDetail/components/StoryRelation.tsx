@@ -422,10 +422,9 @@ const StoryRelation = (props: RelationStoriesProps) => {
   ]
 
   useEffect(() => {
-    if (props.activeKey === '2' || props.isOpen) {
+    if (props.activeKey === '3' || props.isOpen) {
       getList(pageObj, order)
     }
-    // getSelectRelationRecent()
   }, [props.activeKey, props.isOpen])
 
   return (

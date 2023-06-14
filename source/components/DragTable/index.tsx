@@ -14,6 +14,7 @@ interface DragTableProps {
   onChangeData(arr: any): void
   columns: any
   hasOperation?: any
+  showHeader?: boolean
 }
 
 const DragTable = (props: DragTableProps) => {
@@ -69,7 +70,7 @@ const DragTable = (props: DragTableProps) => {
       columns={[...[dragHandle], ...props.columns]}
       rowKey="index"
       sticky
-      showHeader={false}
+      showHeader={props.showHeader}
       components={{
         body: {
           wrapper: DraggableContainer,

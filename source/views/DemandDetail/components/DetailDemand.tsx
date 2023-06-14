@@ -165,10 +165,12 @@ const DetailDemand = () => {
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <InfoItem>
-        <Label>{t('new_p1.a3')}</Label>
-        <DemandStatus pid={projectId} sid={demandId} />
-      </InfoItem>
+      {demandInfo.id && (
+        <InfoItem>
+          <Label>{t('new_p1.a3')}</Label>
+          <DemandStatus pid={projectId} sid={demandId} />
+        </InfoItem>
+      )}
     </WrapLeft>
   )
 }

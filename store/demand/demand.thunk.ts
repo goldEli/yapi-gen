@@ -3,6 +3,7 @@ import * as services from '@/services'
 import { AppDispatch } from '@store/index'
 import { setDemandDetailDrawerProps } from '.'
 import { setListActiveId } from '@store/global'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 export const saveDemandDetailDrawer =
   (params: any) => async (dispatch: AppDispatch) => {
@@ -15,6 +16,7 @@ export const getDemandInfo = createAsyncThunk(
   `${name}/getDemandInfo`,
   async (params: any) => {
     const res = await services.demand.getDemandInfo(params)
+    setIsUpdateAddWorkItem(false)
     return res
   },
 )

@@ -78,10 +78,12 @@ const FlawInfo = () => {
           flawInfo={flawInfo as Model.Flaw.FlawInfo}
           onUpdate={onUpdate}
         />
-        <FlawInfoInfoItem>
-          <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
-          <FlawStatus pid={id} sid={flawId} />
-        </FlawInfoInfoItem>
+        {flawInfo.id && (
+          <FlawInfoInfoItem>
+            <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
+            <FlawStatus pid={id} sid={flawId} />
+          </FlawInfoInfoItem>
+        )}
       </FlawInfoLeft>
       <WrapRight
         ref={basicInfoDom}

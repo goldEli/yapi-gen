@@ -19,12 +19,10 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import {
   deleteDemand,
-  getDemandInfo,
   getDemandList,
   updateDemandStatus,
   updatePriority,
 } from '@/services/demand'
-import { setDemandInfo } from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
@@ -32,8 +30,9 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
-import { setAddWorkItemModal } from '@store/project'
+import { setAddWorkItemModal, setIsUpdateAddWorkItem } from '@store/project'
 import { ComputedWrap } from '../style'
+import { getDemandInfo } from '@store/demand/demand.thunk'
 
 const Operation = styled.div({
   display: 'flex',
@@ -122,6 +121,7 @@ const ChildDemand = (props: ChildDemandProps) => {
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
+    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   useEffect(() => {
@@ -139,6 +139,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       getList(pageObj, order, orderKey)
+      dispatch(getDemandInfo({ projectId, id: demandId }))
     }
   }, [isUpdateAddWorkItem])
 
@@ -159,8 +160,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   }
 
   const onUpdate = async (updateState?: boolean) => {
-    const result = await getDemandInfo({ projectId, id: demandId })
-    dispatch(setDemandInfo(result))
+    dispatch(getDemandInfo({ projectId, id: demandId }))
     getList(pageObj, order, orderKey, updateState)
   }
 
