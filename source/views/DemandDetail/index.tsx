@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import useShareModal from '@/hooks/useShareModal'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { copyLink, getParamsData } from '@/tools'
 import { Form, MenuProps, Popover, Tabs, TabsProps, Tooltip } from 'antd'
 import CommonModal from '@/components/CommonModal'
@@ -36,19 +36,26 @@ import { getMessage } from '@/components/Message'
 import { setDemandInfo } from '@store/demand'
 import { getDemandCommentList, getDemandInfo } from '@store/demand/demand.thunk'
 import {
+  deleteDemand,
   updateDemandCategory,
   updateDemandStatus,
   updateTableParams,
 } from '@/services/demand'
-import { setIsUpdateStatus } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsUpdateAddWorkItem,
+  setIsUpdateStatus,
+} from '@store/project'
 import { setIsRefresh } from '@store/user'
 import ChildDemand from './components/ChildDemand'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import StoryRelation from './components/StoryRelation'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const DemandDetail = () => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -58,7 +65,9 @@ const DemandDetail = () => {
   const paramsData = getParamsData(searchParams)
   const { id, demandId } = paramsData
   const { demandInfo } = useSelector(store => store.demand)
-  const { projectInfoValues } = useSelector(store => store.project)
+  const { projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [form] = Form.useForm()
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
@@ -139,6 +148,7 @@ const DemandDetail = () => {
     await updateDemandStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     dispatch(getDemandInfo({ projectId: id, id: demandId }))
+    dispatch(setIsUpdateStatus(true))
   }
 
   // 关闭类别弹窗
@@ -200,21 +210,21 @@ const DemandDetail = () => {
     history.go(-1)
   }
 
-  // 确认分享
-  const onShareConfirm = () => {
-    //
-  }
-
   // 确认删除
-  const onDeleteConfirm = () => {
-    //
+  const onDeleteConfirm = async () => {
+    await deleteDemand({
+      projectId: demandInfo.projectId,
+      id: demandInfo.id,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    const params = encryptPhp(JSON.stringify({ id: demandInfo.projectId }))
+    navigate(`/ProjectManagement/Demand?data=${params}`)
   }
 
   // 分享弹窗
   const onShare = () => {
     open({
       onOk: () => {
-        onShareConfirm()
         return Promise.resolve()
       },
     })
@@ -239,7 +249,41 @@ const DemandDetail = () => {
 
   //   编辑需求
   const onEdit = () => {
-    //
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: demandInfo.id,
+          projectId: demandInfo.projectId,
+        },
+      }),
+    )
+  }
+
+  // 复制需求id
+  const onCopyId = () => {
+    console.log(demandInfo)
+    copyLink(
+      `${demandInfo.projectPrefix}-${demandInfo.prefixKey}`,
+      '复制成功！',
+      '复制失败！',
+    )
+  }
+
+  // 复制需求链接
+  const onCopyLink = () => {
+    let text: any = ''
+    let beforeUrl: any
+    beforeUrl = window.origin
+    const params = encryptPhp(
+      JSON.stringify({
+        id: demandInfo.project_id,
+        demandId: demandInfo.id,
+      }),
+    )
+    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    text += `${beforeUrl}${url} \n`
+    copyLink(text, '复制成功！', '复制失败！')
   }
 
   // 更多下拉
@@ -256,11 +300,11 @@ const DemandDetail = () => {
       type: 'divider',
     },
     {
-      label: '复制编号',
+      label: <div onClick={onCopyId}>复制编号</div>,
       key: '2',
     },
     {
-      label: '复制链接',
+      label: <div onClick={onCopyLink}>复制链接</div>,
       key: '3',
     },
     {
@@ -346,6 +390,17 @@ const DemandDetail = () => {
       }),
     )
   }, [])
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      dispatch(setDemandInfo({}))
+      dispatch(getDemandInfo({ projectId: id, id: demandId }))
+      setTimeout(() => {
+        setIsUpdateAddWorkItem(false)
+      }, 0)
+    }
+  }, [isUpdateAddWorkItem])
+
   // 是否审核
   const onExamine = () => {
     getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
