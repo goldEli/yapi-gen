@@ -90,11 +90,9 @@ const HeaderAll = (props: HaderProps) => {
   return (
     <>
       <HeaderRowBox>
-        <Back onClick={() => 123}>
+        <Back onClick={() => onBack()}>
           <CommonIconFont type="left-md" size={16} />
-          <span className="text" onClick={() => onBack()}>
-            返回
-          </span>
+          <span className="text">返回</span>
         </Back>
         <RightRow>
           {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}

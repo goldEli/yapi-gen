@@ -257,6 +257,9 @@ const ProgressComparison = (props: Props) => {
     {
       title: '职务',
       dataIndex: 'positionName',
+      render: (text: string) => {
+        return <RowText>{text ? text : '--'}</RowText>
+      },
     },
     {
       dataIndex: 'completion_rate',
@@ -294,12 +297,25 @@ const ProgressComparison = (props: Props) => {
       },
     },
     {
-      title: '总工作进度',
+      title: '进行中|已完成',
       dataIndex: 'work_progress',
     },
     {
-      title: '总工作进度率',
-      dataIndex: 'storyPrefixKey',
+      title: '工作进度',
+      dataIndex: 'work_progress',
+      render: (text: string) => {
+        const num = Number(text?.split('|')?.[0])
+        const total = Number(text?.split('|')?.[1])
+        return (
+          <RowText>
+            {text
+              ? num === 0
+                ? '0%'
+                : `${Number((num / total) * 100).toFixed(1)}%`
+              : '--'}
+          </RowText>
+        )
+      },
     },
     {
       dataIndex: 'repeat_rate',
@@ -356,6 +372,9 @@ const ProgressComparison = (props: Props) => {
         ></NewSort>
       ),
       dataIndex: 'positionName',
+      render: (text: string) => {
+        return <RowText>{text ? text : '--'}</RowText>
+      },
     },
     {
       dataIndex: 'completion_rate',
@@ -430,8 +449,6 @@ const ProgressComparison = (props: Props) => {
     // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
     //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
     onSearchData([])
-    console.log(props.type, 'props.typeprops.typeprops.type')
-
     switch (props.type) {
       case 'Progress_iteration':
         setColumns(columns1)
@@ -495,7 +512,8 @@ const ProgressComparison = (props: Props) => {
       case 28:
         return 'four_week'
       default:
-        return ''
+        // eslint-disable-next-line no-undefined
+        return undefined
     }
   }
   // 导出
