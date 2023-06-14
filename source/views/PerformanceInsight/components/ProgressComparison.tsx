@@ -116,18 +116,15 @@ const ProgressComparison = (props: Props) => {
 
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-
-  console.log(paramsData, 'paramsDataparamsDataparamsDataparamsDataparamsData')
-
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     console.log(val, 'val', key)
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
-    props.type === 'Progress_iteration' ||
-    props.type === 'Progress_sprint' ||
-    props.type === 'Progress_all'
-      ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
-      : getMemberBugList(selectProjectIds, { pageNum, pageSize })
+    // props.type === 'Progress_iteration' ||
+    //   props.type === 'Progress_sprint' ||
+    //   props.type === 'Progress_all'
+    //   ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
+    //   : getMemberBugList(selectProjectIds, { pageNum, pageSize })
   }
 
   // 根据id查视图

@@ -156,7 +156,7 @@ const View = (props: View) => {
         ...optionsDefault,
       })
       props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
-      dispatch(setViewType(2))
+      dispatch(setViewType(optionsDefault.type))
       dispatch(setSave(false))
       dispatch(
         setHeaderParmas({

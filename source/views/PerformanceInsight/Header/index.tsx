@@ -74,7 +74,7 @@ const Iteration = (props: Props) => {
   const [timekey, setTimekey] = useState<number>(-1)
   const { RangePicker } = DatePicker
   const [more, setMore] = useState<boolean>(false)
-  const [person, setPerson] = useState<ItemProps[] | []>([])
+  const [person, setPerson] = useState<any>([])
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isVisibleView, setIsVisibleView] = useState<boolean>(false)
   const [projectListAll, setProjectListAll] = useState([])
@@ -124,7 +124,9 @@ const Iteration = (props: Props) => {
   }
   useEffect(() => {
     // 回显的项目id
+    console.log(props.defalutConfig, projectList, 'props.defalutConfig')
     setProjectIds(props.defalutConfig?.project_id || [])
+    setPerson(props.defalutConfig?.user_ids || [])
     getTime(props.defalutConfig?.period_time || 'one_month')
     // 回显是否是迭代还是周期
     if (props.defalutConfig?.iterate_ids) {
@@ -193,6 +195,7 @@ const Iteration = (props: Props) => {
     viewType === 1 && dispatch(setSave(true))
     setIsVisible(false)
     setPerson(data)
+    dispatch(setSave(true))
     dispatch(
       setHeaderParmas({
         // eslint-disable-next-line no-undefined
@@ -335,7 +338,7 @@ const Iteration = (props: Props) => {
               type="close-solid"
               size={14}
               color="var(--neutral-n4)"
-              onClick={() => onClear}
+              onClick={e => onClear(e)}
             />
           ) : (
             <CommonIconFont
