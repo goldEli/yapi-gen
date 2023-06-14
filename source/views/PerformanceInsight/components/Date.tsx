@@ -104,7 +104,6 @@ export const getDate = (type: string) => {
   return date
 }
 export const getDateStr = (type: number) => {
-  console.log()
   let date = ''
   switch (type) {
     case 1:

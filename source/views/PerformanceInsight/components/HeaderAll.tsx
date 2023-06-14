@@ -40,6 +40,8 @@ const HeaderAll = (props: HaderProps) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
 
+  console.log(projectInfo, 'projectInfoprojectInfoprojectInfoprojectInfo')
+
   useEffect(() => {
     switch (props.headerParmas.time.type) {
       case 1:
@@ -171,7 +173,7 @@ const HeaderAll = (props: HaderProps) => {
         }}
         url={window.location.href}
         // 2钟不同的分享标题
-        title={`【${projectInfo.name}-${
+        title={`【${projectInfo.name ? projectInfo.name : '所有项目'}-${
           paramsData.num === 1 ? '工作进展对比' : '缺陷趋势分析'
         }】`}
       />

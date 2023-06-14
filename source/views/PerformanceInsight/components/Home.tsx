@@ -149,7 +149,6 @@ const Home = () => {
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ConfigItem>()
   useEffect(() => {
-    console.log(paramsData, 'paramsData')
     if (paramsData) {
       setHomeType(paramsData.type)
       setProjectId(paramsData.projectId)

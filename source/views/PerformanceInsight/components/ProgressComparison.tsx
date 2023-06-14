@@ -10,7 +10,11 @@ import Table from './Table'
 import { Tooltip } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
-import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
+import {
+  setHeaderParmas,
+  setVisiblePerson,
+  setVisibleWork,
+} from '@store/performanceInsight'
 import { useDispatch, useSelector } from '@store/index'
 import {
   defectExport,
@@ -21,12 +25,16 @@ import {
   historyWorkList,
   memberBugList,
   plugSelectionUserInfo,
+  viewsList,
   workContrastList,
 } from '@/services/efficiency'
 import { RowText } from './style'
-import { getDays, getMonthBefor } from './Date'
+import { getDate, getDays, getMonthBefor } from './Date'
 import ExportSuccess from '../Header/components/ExportSuccess'
 import { getMessage } from '@/components/Message'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
+import { copyView } from '@/services/kanban'
 
 // 进展对比tips
 const getTitleTips = (text: string, tips: string) => {
@@ -102,14 +110,64 @@ const ProgressComparison = (props: Props) => {
     useState<API.Sprint.EfficiencyMemberWorkList.Result>()
   const [statusType, setStatusType] = useState('')
   const [ids, setIds] = useState<number[]>([])
-  const { projectInfo } = useSelector(store => store.project)
   const [historyWorkObj, setHistoryWorkObj] =
     useState<API.Efficiency.HistoryWorkList.Result>()
+
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+
+  console.log(paramsData, 'paramsDataparamsDataparamsDataparamsDataparamsData')
+
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
 
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
   }
+
+  // 根据id查视图
+  const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
+    // 1. 先copy视图
+    const result = await copyView({ id: paramsData?.valueId })
+    console.log(result, 'resultresultresultresultresult')
+
+    const res = await viewsList(parmas)
+    const filterVal: Models.Efficiency.ViewItem | undefined = res.find(
+      el => el.id === paramsData?.valueId,
+    )
+    // 有视图数据才设置
+    if (filterVal) {
+      dispatch(
+        setHeaderParmas({
+          users: filterVal?.config.user_ids,
+          projectIds: filterVal?.config.project_id,
+          view: {
+            title: filterVal?.name,
+            value: filterVal?.id,
+          },
+          iterate_ids: filterVal?.config.iterate_ids,
+          time: {
+            type:
+              filterVal?.config.period_time === ''
+                ? 0
+                : getDate(filterVal?.config?.period_time || ''),
+            time:
+              filterVal?.config.period_time === ''
+                ? // eslint-disable-next-line no-undefined
+                  [filterVal?.config?.start_time, filterVal?.config?.end_time]
+                : // eslint-disable-next-line no-undefined
+                  undefined,
+          },
+        }),
+      )
+    }
+  }
+  useEffect(() => {
+    if (paramsData?.valueId) {
+      // 获取已有视图
+      getViewList({ project_id: 0, use_type: 3 })
+    }
+  }, [paramsData?.valueId])
+
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
   // 进展工作对比迭代和冲刺的
   const columns1 = [
@@ -193,13 +251,14 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'work_progress',
       render: (text: string) => {
         const num = Number(text?.split('|')?.[0])
-        const total = Number(text?.split('|')?.[1])
+        const completeNum = Number(text?.split('|')?.[1])
+        const total = num + completeNum
         return (
           <RowText>
             {text
-              ? num === 0
+              ? completeNum === 0
                 ? '0%'
-                : `${Number((num / total) * 100).toFixed(1)}%`
+                : `${Number((completeNum / total) * 100).toFixed(0)}%`
               : '--'}
           </RowText>
         )
@@ -308,13 +367,14 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'work_progress',
       render: (text: string) => {
         const num = Number(text?.split('|')?.[0])
-        const total = Number(text?.split('|')?.[1])
+        const completeNum = Number(text?.split('|')?.[1])
+        const total = num + completeNum
         return (
           <RowText>
             {text
-              ? num === 0
+              ? completeNum === 0
                 ? '0%'
-                : `${Number((num / total) * 100).toFixed(1)}%`
+                : `${Number((completeNum / total) * 100).toFixed(0)}%`
               : '--'}
           </RowText>
         )
@@ -698,13 +758,11 @@ const ProgressComparison = (props: Props) => {
   // 进展对比的前半截api
   const getHistoryWorkList = async (id: number) => {
     const res = await historyWorkList({ id })
-    console.log(res, '999999')
     setHistoryWorkObj(res)
   }
   // 缺陷分析的前半截
   const getHistoryDefectList = async (id: number) => {
     const res = await historyDefectList({ id })
-    console.log(res, '999999')
     setHistoryWorkObj(res)
   }
 
