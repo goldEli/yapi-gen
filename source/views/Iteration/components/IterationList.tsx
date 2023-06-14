@@ -374,7 +374,6 @@ const IterationList = (props: IterationListProps) => {
 
   //   跳转迭代详情
   const onClickInfo = (item: any) => {
-    console.log(item)
     const params = encryptPhp(
       JSON.stringify({ id: getProjectIdByUrl(), iterateId: item.id }),
     )

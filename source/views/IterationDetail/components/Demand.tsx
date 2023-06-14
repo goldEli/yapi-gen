@@ -29,6 +29,7 @@ import MoreDropdown from '@/components/MoreDropdown'
 import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import CommonButton from '@/components/CommonButton'
+import { getIterateInfo } from '@store/iterate/iterate.thunk'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -299,16 +300,32 @@ const Demand = (props: DemandProps) => {
   }, [props.searchGroups])
 
   useEffect(() => {
-    if (isRefresh || isUpdateAddWorkItem) {
+    if (props.activeKey === '2') {
       getList(
         { page: 1, size: pageObj.size },
         order,
         orderKey,
         props.searchGroups,
       )
-    }
-    if (props.activeKey !== '2') {
+    } else {
       setDataList({ list: undefined })
+    }
+  }, [props.activeKey])
+
+  useEffect(() => {
+    if ((isRefresh || isUpdateAddWorkItem) && props.activeKey === '2') {
+      getList(
+        { page: 1, size: pageObj.size },
+        order,
+        orderKey,
+        props.searchGroups,
+      )
+      dispatch(
+        getIterateInfo({
+          projectId: getProjectIdByUrl(),
+          id: getIdByUrl('iterateId'),
+        }),
+      )
     }
   }, [isRefresh, isUpdateAddWorkItem, props.activeKey])
 

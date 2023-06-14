@@ -57,6 +57,7 @@ export const iterateSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(getIterateInfo.fulfilled, (state, action) => {
       state.iterateInfo = action.payload
+      state.isUpdateList = false
     })
   },
 })
