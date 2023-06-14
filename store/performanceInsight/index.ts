@@ -8,23 +8,25 @@ type SliceState = {
   projectDataList: Array<{ name: string; id: number }>
   visiblePerson: boolean
   visibleWork: boolean
+  viewType: number
 }
 
 const initialState: SliceState = {
   save: false,
+  viewType: 0,
   headerParmas: {
-    iterate_ids: undefined,
-    projectIds: undefined,
-    users: undefined,
+    iterate_ids: [],
+    projectIds: [],
+    users: [],
     time: {
-      type: 28,
+      type: 1,
       time: undefined,
     },
     view: {
       title: '',
       value: 0,
     },
-    period_time: 'four_week',
+    period_time: 'one_month',
   },
   projectDataList: [],
   visiblePerson: false,
@@ -37,6 +39,9 @@ const slice = createSlice({
   reducers: {
     setSave: (state, action) => {
       state.save = action.payload
+    },
+    setViewType: (state, action) => {
+      state.viewType = action.payload
     },
     setHeaderParmas: (state, action) => {
       state.headerParmas = { ...state.headerParmas, ...action.payload }
@@ -62,6 +67,7 @@ export const {
   setProjectDataList,
   setVisiblePerson,
   setVisibleWork,
+  setViewType,
 } = slice.actions
 
 export default performanceInsight

@@ -1,5 +1,4 @@
 import { Select } from 'antd'
-import { useState } from 'react'
 import { Segm } from './style'
 import CommonIconFont from '@/components/CommonIconFont'
 
@@ -13,10 +12,12 @@ interface Props {
   onChange: (data: number[]) => void
   onShowAll?: () => void
   onSearch?: (value: string) => void
+  onAllProject?: (type: string) => void
   options: Array<ItemProps>
   more: boolean
   placeholder: string
   value: number[] | [] | undefined
+  type: string
 }
 const SelectMain = (props: Props) => {
   const changeValue = (newValue: number[]) => {
@@ -46,6 +47,16 @@ const SelectMain = (props: Props) => {
             {menu}
             {!props.more && (
               <Segm onClick={() => props.onShowAll?.()}>查看更多</Segm>
+            )}
+            {props.type === 'iteration' && (
+              <Segm onClick={() => props.onAllProject?.(props.type)}>
+                全部工作项
+              </Segm>
+            )}
+            {props.type === 'sprint' && (
+              <Segm onClick={() => props.onAllProject?.(props.type)}>
+                全部冲刺
+              </Segm>
             )}
           </>
         )}

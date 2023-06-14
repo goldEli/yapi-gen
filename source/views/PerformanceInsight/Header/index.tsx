@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-handler-names */
 // eslint-disable typescript-eslint/no-extra-semi
+/* eslint-disable require-unicode-regexp */
 import { DatePicker, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import View from './components/View'
-import Sprint from './components/Sprint'
 import { HeaderRow, Text, Tabs, DivStyle, Btn1 } from './Style'
 import SelectMain from './components/SelectMain'
 import { Left } from '../components/style'
@@ -86,7 +86,7 @@ const Iteration = (props: Props) => {
   const [projectIds, setProjectIds] = useState<number[]>()
   const [iterateIds, setIterateIds] = useState<any>()
   const dispatch = useDispatch()
-  const { save } = useSelector(store => store.performanceInsight)
+  const { save, viewType } = useSelector(store => store.performanceInsight)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
@@ -94,6 +94,15 @@ const Iteration = (props: Props) => {
   const getTabsActive = (index: number) => {
     setTabsActive(index)
     setTimekey(index)
+    dispatch(
+      setHeaderParmas({
+        iterate_ids: [],
+        period_time: 'one_month',
+        time: {
+          type: 1,
+        },
+      }),
+    )
   }
 
   useEffect(() => {
@@ -115,23 +124,16 @@ const Iteration = (props: Props) => {
   }
   useEffect(() => {
     // 回显的项目id
-    setProjectIds(props.defalutConfig?.project_id)
-    setTabsActive(
-      props.defalutConfig?.period_time !== '' ||
-        props.defalutConfig?.start_time !== ''
-        ? 0
-        : 1,
-    )
-    getTime(props.defalutConfig?.period_time || 'four_week')
-    props.defalutConfig &&
-      props.defalutConfig?.period_time === '' &&
-      props.defalutConfig?.start_time === '' &&
-      setIterateIds(
-        props.defalutConfig?.iterate_ids?.length === 0
-          ? // eslint-disable-next-line no-undefined
-            undefined
-          : props.defalutConfig?.iterate_ids?.[0],
-      )
+    setProjectIds(props.defalutConfig?.project_id || [])
+    getTime(props.defalutConfig?.period_time || 'one_month')
+    // 回显是否是迭代还是周期
+    if (props.defalutConfig?.iterate_ids) {
+      setIterateIds(props.defalutConfig?.iterate_ids)
+      setTabsActive(1)
+    } else {
+      setTabsActive(0)
+      setIterateIds([])
+    }
   }, [props.defalutConfig])
   // 获取时间回显
   const getTime = (type: string) => {
@@ -188,7 +190,7 @@ const Iteration = (props: Props) => {
   }
   // 成员保存弹窗提示需要
   const onConfirm = (data: Array<{ name: string; id: number }>) => {
-    dispatch(setSave(true))
+    viewType === 1 && dispatch(setSave(true))
     setIsVisible(false)
     setPerson(data)
     dispatch(
@@ -214,6 +216,7 @@ const Iteration = (props: Props) => {
     setTimeVal([moment(values[0]), moment(values[1])])
     dispatch(
       setHeaderParmas({
+        period_time: '',
         time: {
           type: 0,
           time: values,
@@ -221,22 +224,64 @@ const Iteration = (props: Props) => {
       }),
     )
   }
-  // 冲刺选择的
-  const oniterateChange = (val: number) => {
-    const tempObj = iterateData.find((k: any) => k.id === val)
-    console.log(tempObj, 'tempObjtempObj')
+  // 迭代和冲刺的选择
+  const oniterateChange = (val: number[]) => {
+    const tempObj = projectList.filter((k: any) => val.includes(k.id))
+    viewType === 1 && dispatch(setSave(true))
     dispatch(
       setHeaderParmas({
-        // eslint-disable-next-line no-undefined
-        iterate_ids: val === 0 ? undefined : [val],
+        iterate_ids: val,
+        period_time: '',
         time: {
           type: 0,
-          time: [tempObj?.start_at, tempObj?.end_at],
+          time: [
+            tempObj.length >= 1 ? minDate(tempObj) : '',
+            tempObj.length >= 1 ? maxDate(tempObj) : '',
+          ],
+        },
+      }),
+    )
+    setIterateIds(val)
+  }
+  // 全部冲刺或者全部迭代
+  const onAllProject = (type: string) => {
+    const iterateIds = projectList.map((el: { id: number }) => el.id)
+    setIterateIds(iterateIds)
+    dispatch(
+      setHeaderParmas({
+        iterate_ids: iterateIds,
+        period_time: '',
+        time: {
+          type: 0,
+          time: [minDate(projectList), maxDate(projectList)],
         },
       }),
     )
   }
-
+  // 获取最小时间
+  const minDate = (data: any) => {
+    let mint: string = data.reduce(
+      (mint: string, item: { createdTime: string }) => {
+        let t: any = item.createdTime
+        return new Date(mint.replace(/-/g, '/')) >
+          new Date(t.replace(/-/g, '/'))
+          ? t
+          : mint
+      },
+      data[0].createdTime,
+    )
+    return mint
+  }
+  // 获取最大时间
+  const maxDate = (data: any) => {
+    let maxt = data.reduce((maxt: string, item: { createdTime: string }) => {
+      let t: any = item.createdTime
+      return new Date(maxt.replace(/-/g, '/')) < new Date(t.replace(/-/g, '/'))
+        ? t
+        : maxt
+    }, data[0].createdTime)
+    return maxt
+  }
   return (
     <HeaderRow>
       <Space size={16}>
@@ -251,24 +296,26 @@ const Iteration = (props: Props) => {
         />
         <Text onClick={() => setIsVisibleView(true)}>另存为</Text>
         {/* 保存需要人员，项目选择和时间修改后 */}
-        {save ? <Text onClick={props.onEdit}>保存</Text> : null}
+        {save && viewType !== 2 ? (
+          <Text onClick={props.onEdit}>保存</Text>
+        ) : null}
       </Space>
       <Space size={16}>
         {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
         {props.homeType === 'all' && (
           <Select
+            type=""
             placeholder="请选择项目"
             options={projectList}
             more={more}
             value={projectIds || []}
             onChange={(value: number[]) => {
-              setProjectIds(value),
-                dispatch(setSave(true)),
-                dispatch(
-                  setHeaderParmas({
-                    projectIds: value,
-                  }),
-                )
+              setProjectIds(value), viewType === 1 && dispatch(setSave(true))
+              dispatch(
+                setHeaderParmas({
+                  projectIds: value,
+                }),
+              )
             }}
             onShowAll={onShowAll}
           />
@@ -318,7 +365,8 @@ const Iteration = (props: Props) => {
             onChange={e => {
               setTimekey(e)
               setTimeVal([])
-              dispatch(setSave(true))
+              viewType === 1 && dispatch(setSave(true))
+              console.log()
               dispatch(
                 setHeaderParmas({
                   time: {
@@ -361,20 +409,15 @@ const Iteration = (props: Props) => {
             ]}
           />
         ) : (
+          // 是否是迭代和冲刺的项目
           <Select
+            type={props.homeType}
             placeholder="请选择项目"
             options={projectList}
             more={more}
-            value={projectIds || []}
-            onChange={(value: number[]) => {
-              setProjectIds(value),
-                dispatch(setSave(true)),
-                dispatch(
-                  setHeaderParmas({
-                    projectIds: value,
-                  }),
-                )
-            }}
+            value={iterateIds || []}
+            onChange={(value: number[]) => oniterateChange(value)}
+            onAllProject={onAllProject}
             onShowAll={onShowAll}
           />
         )}

@@ -1,7 +1,21 @@
 {
+  "select_project_type": "选择项目类型",
+  "sprint_project": "冲刺项目",
+  "iteration_project": "迭代项目",
+  "select_project_template": "选择项目模板",
+  "software_development": "软件开发",
+  "game_design": "游戏设计",
+  "import_project": "导入项目",
+  "type_of_use": "使用类型",
+  "draft": "草稿",
+  "withdrawn": "已撤回",
+  "sent": "已发送",
+  "scheduled_notifications": "定时通知",
+  "revoke": "撤回",
+  "edit_draft": "编辑草稿",
+
   "save_as_draft": "存草稿",
   "simultaneous_email_notification": "同时邮件通知",
-
   "originalArray": {
     "new": "新增待办工作流",
     "completed": "处理工作流",

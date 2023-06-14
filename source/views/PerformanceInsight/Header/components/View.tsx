@@ -6,7 +6,12 @@ import ViewDialog from './ViewDialog'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { DivStyle, DefaultLabel, DefaultLabelAdd, Btn, Label } from '../Style'
 import { useDispatch, useSelector } from '@store/index'
-import { setHeaderParmas } from '@store/performanceInsight'
+import {
+  setHeaderParmas,
+  setSave,
+  setViewType,
+} from '@store/performanceInsight'
+import { getDate } from '../../components/Date'
 
 interface View {
   viewDataList: Array<Models.Efficiency.ViewItem> | undefined
@@ -91,7 +96,7 @@ const View = (props: View) => {
       }
       setValue({
         ...item,
-        name: item?.type === 2 ? `视图${String(item.name)}` : item.name,
+        name: item.name,
       })
       props.onChange(item?.name || '', item?.id || 0)
     }
@@ -149,12 +154,37 @@ const View = (props: View) => {
     if (e.key === 'first') {
       setValue({
         ...optionsDefault,
-        name:
-          optionsDefault?.type === 2
-            ? `视图${String(optionsDefault.name)}`
-            : optionsDefault.name,
       })
       props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
+      dispatch(setViewType(2))
+      dispatch(setSave(false))
+      dispatch(
+        setHeaderParmas({
+          users: optionsDefault.config.user_ids,
+          projectIds: optionsDefault?.config.project_id,
+          iterate_ids: optionsDefault?.config.iterate_ids,
+          period_time: optionsDefault?.config.period_time,
+          time: {
+            type:
+              optionsDefault?.config.period_time === ''
+                ? 0
+                : getDate(optionsDefault?.config?.period_time || ''),
+            time:
+              optionsDefault?.config.period_time === ''
+                ? // eslint-disable-next-line no-undefined
+                  [
+                    optionsDefault?.config?.start_time,
+                    optionsDefault?.config?.end_time,
+                  ]
+                : // eslint-disable-next-line no-undefined
+                  undefined,
+          },
+          view: {
+            title: optionsDefault.name,
+            value: optionsDefault.key,
+          },
+        }),
+      )
     } else if (e.key === 'last') {
       setIsOpen(false)
       setDialogItem({ name: '' })
@@ -175,19 +205,33 @@ const View = (props: View) => {
         id: 0,
         config: {
           iterate_ids: [],
+          user_ids: [],
         },
       }
       props.onChange(item.name, item.id)
+      dispatch(setViewType(item?.type))
+      dispatch(setSave(false))
       setValue({
         ...item,
-        name: item.type === 2 ? `视图${String(item.name)}` : item.name,
       })
       dispatch(
         setHeaderParmas({
-          users: headerParmas.users,
-          projectIds: headerParmas.projectIds,
-          time: headerParmas.time,
-          iterate_ids: headerParmas.iterate_ids,
+          users: item.config.user_ids,
+          projectIds: item?.config.project_id,
+          iterate_ids: item?.config.iterate_ids,
+          period_time: item?.config.period_time,
+          time: {
+            type:
+              item?.config.period_time === ''
+                ? 0
+                : getDate(item?.config?.period_time || ''),
+            time:
+              item?.config.period_time === ''
+                ? // eslint-disable-next-line no-undefined
+                  [item?.config?.start_time, item?.config?.end_time]
+                : // eslint-disable-next-line no-undefined
+                  undefined,
+          },
           view: {
             title: item.name,
             value: item.key,

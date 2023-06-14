@@ -2,7 +2,11 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import { Space } from 'antd'
 import Header from '../Header'
-import { setHeaderParmas, setSave } from '@store/performanceInsight'
+import {
+  setHeaderParmas,
+  setSave,
+  setViewType,
+} from '@store/performanceInsight'
 import { useDispatch } from 'react-redux'
 import {
   Col,
@@ -17,7 +21,7 @@ import {
   LotIcon,
 } from '../Header/Style'
 import { DialogMain, DialogHeader, TextColor, Footer } from './style'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import SelectMain from '../Header/components/SelectMain'
 import CommonButton from '@/components/CommonButton'
 import { useSelector } from '@store/index'
@@ -126,11 +130,9 @@ const Home = () => {
   const paramsData = getParamsData(searchParams)
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
-  const { save, headerParmas } = useSelector(store => store.performanceInsight)
-  const { projectInfo } = useSelector(state => state.project)
-  const { userInfo } = useSelector(state => state.user)
-  const [startTime, setStartTime] = useState<any>()
-  const [endTime, setEndTime] = useState<any>()
+  const { save, headerParmas, viewType } = useSelector(
+    store => store.performanceInsight,
+  )
   const [projectId, setProjectId] = useState(0)
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
@@ -147,9 +149,8 @@ const Home = () => {
     useState<API.Sprint.GetStatisticsTotal.Result>()
   const [optionVal, setOptionVal] = useState<number>(0)
   const [defalutConfig, setDefalutConfig] =
-    useState<Models.Efficiency.ConfigItem>()
+    useState<Models.Efficiency.ViewItem>()
   useEffect(() => {
-    console.log(paramsData, 'paramsData')
     if (paramsData) {
       setHomeType(paramsData.type)
       setProjectId(paramsData.projectId)
@@ -160,7 +161,6 @@ const Home = () => {
       getViewList({ project_id: 0, use_type: 3 })
     }
   }, [])
-
   const init = () => {
     // 缺陷现状和工作项现状
     getWorkList()
@@ -173,7 +173,6 @@ const Home = () => {
     // 集合图表
     getStatisticsOther()
   }
-
   // 获取已有视图
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
@@ -182,9 +181,10 @@ const Home = () => {
       el => el.is_default === 1,
     )
     setOptionVal(filterVal?.id || 0)
-    setDefalutConfig(filterVal?.config)
+    setDefalutConfig(filterVal)
+    dispatch(setViewType(filterVal?.type))
     // 有视图数据才设置
-    if (filterVal) {
+    filterVal &&
       dispatch(
         setHeaderParmas({
           users: filterVal?.config.user_ids,
@@ -194,6 +194,7 @@ const Home = () => {
             value: filterVal?.id,
           },
           iterate_ids: filterVal?.config.iterate_ids,
+          period_time: filterVal?.config?.period_time,
           time: {
             type:
               filterVal?.config.period_time === ''
@@ -208,7 +209,6 @@ const Home = () => {
           },
         }),
       )
-    }
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
@@ -314,15 +314,7 @@ const Home = () => {
     const filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
       el => el.id === value,
     )
-    setDefalutConfig(filterVal?.config)
-    dispatch(
-      setHeaderParmas({
-        view: {
-          title,
-          value,
-        },
-      }),
-    )
+    setDefalutConfig(filterVal)
   }
   // 缺陷现状和工作项现状
   //  '周期时间：two_week,four_week,one_month,three_month,six_month',
@@ -494,9 +486,10 @@ const Home = () => {
   }
   // 编辑视图走缓存的参数
   const editViews = async () => {
+    console.log(defalutConfig, 'defalutConfig')
     const res = await viewsUpdate({
       id: headerParmas.view.value,
-      project_id: 0,
+      project_id: projectId,
       name: headerParmas.view.title,
       status: 1,
       config: {
@@ -535,7 +528,7 @@ const Home = () => {
   useEffect(() => {
     // 统一监听参数变化，发起请求刷新页面
     if (
-      !!headerParmas.time.time &&
+      !!headerParmas.time?.time &&
       !!headerParmas.period_time &&
       !headerParmas.iterate_ids &&
       !headerParmas.users &&
@@ -546,7 +539,9 @@ const Home = () => {
     if (headerParmas.time.type === 0 && !headerParmas.time.time) {
       return
     }
-    console.log(headerParmas, 'headerParmasheaderParmasheaderParmas')
+    if (!headerParmas.view.value) {
+      return
+    }
     init()
   }, [headerParmas])
 
@@ -562,7 +557,7 @@ const Home = () => {
       <Header
         projectId={projectId}
         homeType={homeType || 'all'}
-        defalutConfig={defalutConfig}
+        defalutConfig={defalutConfig?.config}
         viewDataList={viewDataList}
         onCreateView={onCreateView}
         onDelView={onDelView}
@@ -666,7 +661,7 @@ const Home = () => {
         </div>
       </div>
       {/* 保存提示操作 */}
-      {save ? (
+      {save && viewType !== 2 ? (
         <DialogMain>
           <DialogHeader>
             <Space size={14}>

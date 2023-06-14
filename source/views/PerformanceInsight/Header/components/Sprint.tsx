@@ -84,7 +84,6 @@ const Sprint = (props: Props) => {
       })
       props.onChange(props.data.find(el => el.id === Number(e.key))?.id || 0)
     }
-    dispatch(setSave(true))
   }
   return
 }
