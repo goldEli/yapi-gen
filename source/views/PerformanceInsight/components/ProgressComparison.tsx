@@ -35,6 +35,7 @@ import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { copyView } from '@/services/kanban'
+import { cos } from '@/services/cos'
 
 // 进展对比tips
 const getTitleTips = (text: string, tips: string) => {
@@ -120,8 +121,13 @@ const ProgressComparison = (props: Props) => {
 
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-
+    console.log(val, 'val', key)
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
+    props.type === 'Progress_iteration' ||
+    props.type === 'Progress_sprint' ||
+    props.type === 'Progress_all'
+      ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
+      : getMemberBugList(selectProjectIds, { pageNum, pageSize })
   }
 
   // 根据id查视图
