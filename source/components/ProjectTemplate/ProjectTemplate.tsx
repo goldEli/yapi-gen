@@ -148,9 +148,11 @@ const ProjectTemplate = (props: any) => {
   const onChangeTab = (t: any) => {
     setActiveTab(t)
   }
+
   const sendKey = (item: any) => {
     ids.current = item
   }
+
   useEffect(() => {
     getList(activeType, false, isHidden, searchVal, order, pageObj)
   }, [pageObj, order, props.searchId, activeTab])

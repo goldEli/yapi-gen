@@ -30,7 +30,7 @@ const ProjectType = (props: any) => {
             alt=""
           />
           <MyBtn onClick={() => props.choose(i.id)} type={i.type === 1}>
-            使用类型
+            {t('type_of_use')}
             <CommonIconFont
               type="right-md"
               size={20}

@@ -1,4 +1,30 @@
 {
+  "select_project_type": "Select the project type",
+
+  "sprint_project": "Sprint project",
+
+  "iteration_project": "iterative project",
+
+  "select_project_template": "Select project template",
+
+  "software_development": "Software development",
+
+  "game_design": "Game Design ",
+
+  "import_project": "Import project",
+
+  "type_of_use": " Type use",
+  "draft": "draft",
+
+  "withdrawn": "withdrawn",
+
+  "sent": "sent",
+
+  "scheduled_notifications": "Periodic notifications",
+
+  "revoke": "revoke",
+
+  "edit_draft": "Edit draft",
   "save_as_draft": "Save as Draft",
   "simultaneous_email_notification": "Simultaneous email notification",
   "originalArray": {

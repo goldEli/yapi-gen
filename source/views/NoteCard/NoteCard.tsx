@@ -94,10 +94,16 @@ const NoteCard = (props: any) => {
         }}
       >
         <Wrap1>
-          {values.is_draft === 1 && <ColorBox colors={3}>草稿</ColorBox>}
-          {values.is_drew_back === 1 && <ColorBox colors={3}>已撤回</ColorBox>}
-          {values.is_send === 1 && <ColorBox colors={2}>已发送</ColorBox>}
-          {values.send_time ? <ColorBox colors={1}>定时通知</ColorBox> : null}
+          {values.is_draft === 1 && (
+            <ColorBox colors={3}>{t('draft')}</ColorBox>
+          )}
+          {values.is_drew_back === 1 && (
+            <ColorBox colors={3}>{t('withdrawn')}</ColorBox>
+          )}
+          {values.is_send === 1 && <ColorBox colors={2}>{t('sent')}</ColorBox>}
+          {values.send_time ? (
+            <ColorBox colors={1}>{t('scheduled_notifications')}</ColorBox>
+          ) : null}
 
           <div
             style={{
@@ -122,30 +128,31 @@ const NoteCard = (props: any) => {
         </Wrap1>
         <Wrap2>
           <ColorBtn2>
-            <CommonIconFont type="display" /> <span>全部已读</span>
+            <CommonIconFont type="display" /> <span>{t('all_read')}</span>
           </ColorBtn2>
           {values.is_draft === 1 && (
             <ColorBtn onClick={() => props.onDel(values.id)}>
-              <CommonIconFont type="file-text" /> <span>删除</span>
+              <CommonIconFont type="file-text" /> <span>{t('delete')}</span>
             </ColorBtn>
           )}
           {values.is_drew_back === 1 && (
             <ColorBtn onClick={() => props.onDel(values.id)}>
-              <CommonIconFont type="file-text" /> <span>删除</span>
+              <CommonIconFont type="file-text" /> <span>{t('delete')}</span>
             </ColorBtn>
           )}
           {values.is_send === 1 && (
             <ColorBtn onClick={() => props.onRevocation(values.id)}>
-              <CommonIconFont type="return" /> <span>撤回</span>
+              <CommonIconFont type="return" /> <span>{t('revoke')}</span>
             </ColorBtn>
           )}
           {values.is_draft === 1 ? (
             <ColorBtn onClick={() => props.onEditDetail(values)}>
-              <CommonIconFont type="file-text" /> <span>编辑草稿</span>
+              <CommonIconFont type="file-text" /> <span>{t('edit_draft')}</span>
             </ColorBtn>
           ) : (
             <ColorBtn onClick={() => props.onShowDetail(values)}>
-              <CommonIconFont type="file-text" /> <span>查看详情</span>
+              <CommonIconFont type="file-text" />{' '}
+              <span>{t('project.checkInfo')}</span>
             </ColorBtn>
           )}
         </Wrap2>
