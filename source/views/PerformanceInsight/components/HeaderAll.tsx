@@ -101,6 +101,7 @@ const HeaderAll = (props: HaderProps) => {
           {props.type === 'Progress_all' && (
             <div style={{ marginRight: '16px' }}>
               <Select
+                type=""
                 options={projectList}
                 more={true}
                 value={options}
