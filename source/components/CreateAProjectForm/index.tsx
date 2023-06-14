@@ -65,6 +65,7 @@ const Text = styled.div<{ bgc: any }>(
     lineHeight: '32px',
     textAlign: 'center',
     fontSize: '14px',
+    whiteSpace: 'nowrap',
   },
   ({ bgc }) => ({
     backgroundColor: bgc ? 'var(--function-tag5)' : 'var(--neutral-n8)',
@@ -96,10 +97,19 @@ const Side = styled.div<{ op: boolean }>`
 `
 
 const CreateAProjectForm = () => {
-  const types = ['选择项目类型', '冲刺项目', '迭代项目']
-  const models = ['选择项目模板', '软件开发', '游戏设计', '导入项目']
   const covers = useSelector(state => state.cover.covers)
   const [t] = useTranslation()
+  const types = [
+    t('select_project_type'),
+    t('sprint_project'),
+    t('iteration_project'),
+  ]
+  const models = [
+    t('select_project_template'),
+    t('software_development'),
+    t('game_design'),
+    t('import_project'),
+  ]
   const [form] = Form.useForm()
   const [activeCover, setActiveCover] = useState<any>('')
   const [myCover, setMyCover] = useState<string>('')

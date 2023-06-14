@@ -29,6 +29,7 @@ export const MyBtn = styled.div<{ type: boolean }>`
       ? 'linear-gradient(225deg, #8db1f6 0%, #7266ff 100%)'
       : 'linear-gradient(225deg, #8DD2F6 0%, #6688FF 100%)'};
   border-radius: 6px 6px 6px 6px;
+
   position: absolute;
   right: 24px;
   bottom: 24px;
@@ -39,4 +40,22 @@ export const MyBtn = styled.div<{ type: boolean }>`
   justify-content: space-between;
   cursor: pointer;
   transition: all 1s;
+
+  &:after {
+    z-index: 999;
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    /* z-index: -1; */
+    border-radius: 6px 6px 6px 6px;
+    background: linear-gradient(225deg, #6688ff 0%, #8dd2f6 100%);
+    transition: 0.7s linear;
+  }
+  &:hover:after {
+    opacity: 1;
+  }
 `

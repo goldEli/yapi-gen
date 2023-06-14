@@ -919,6 +919,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                   <span
                     style={{
                       color: 'var(--primary-d1)',
+                      cursor: 'pointer',
                     }}
                   >
                     返回
@@ -928,6 +929,9 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                 {active.current.map((i: any) => (
                   <Breadcrumb.Item key={i.id}>
                     <span
+                      style={{
+                        cursor: 'pointer',
+                      }}
                       onClick={() => {
                         setShowTreeData({
                           children: i.children,
