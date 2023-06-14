@@ -133,7 +133,6 @@ const Iteration = (props: Props) => {
       setTabsActive(0)
       setIterateIds([])
     }
-    console.log(props.defalutConfig, 'props.defalutConfig')
   }, [props.defalutConfig])
   // 获取时间回显
   const getTime = (type: string) => {

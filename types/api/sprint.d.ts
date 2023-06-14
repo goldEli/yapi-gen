@@ -22,14 +22,12 @@ declare namespace API.Sprint {
   }
   namespace GetExport {
     type Params = {
-      project_ids: string
-      user_ids: string
-      start_time: string
-      end_time: string
-      iterate_ids: string
-      period_time: string
-      page: number
-      pagesize: number
+      project_ids?: string
+      user_ids?: string
+      start_time?: string
+      end_time?: string
+      iterate_ids?: string
+      period_time?: string
     }
   }
   namespace GetProjectRoleList {

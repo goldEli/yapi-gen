@@ -19,7 +19,7 @@ const initialState: SliceState = {
     projectIds: [],
     users: [],
     time: {
-      type: 28,
+      type: 1,
       time: undefined,
     },
     view: {
@@ -44,6 +44,7 @@ const slice = createSlice({
       state.viewType = action.payload
     },
     setHeaderParmas: (state, action) => {
+      console.log('action', action.payload)
       state.headerParmas = { ...state.headerParmas, ...action.payload }
     },
     setProjectDataList: (state, action) => {

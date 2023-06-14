@@ -529,7 +529,7 @@ const Home = () => {
   useEffect(() => {
     // 统一监听参数变化，发起请求刷新页面
     if (
-      !!headerParmas.time.time &&
+      !!headerParmas.time?.time &&
       !!headerParmas.period_time &&
       !headerParmas.iterate_ids &&
       !headerParmas.users &&
@@ -540,7 +540,11 @@ const Home = () => {
     if (headerParmas.time.type === 0 && !headerParmas.time.time) {
       return
     }
-  }, [])
+    if (!headerParmas.view.value) {
+      return
+    }
+    init()
+  }, [headerParmas])
 
   return (
     <div

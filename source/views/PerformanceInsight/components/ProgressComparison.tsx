@@ -10,9 +10,14 @@ import Table from './Table'
 import { Tooltip } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
-import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
+import {
+  setHeaderParmas,
+  setVisiblePerson,
+  setVisibleWork,
+} from '@store/performanceInsight'
 import { useDispatch, useSelector } from '@store/index'
 import {
+  defectExport,
   efficiencyMemberDefectList,
   efficiencyMemberWorkList,
   getExport,
@@ -20,11 +25,16 @@ import {
   historyWorkList,
   memberBugList,
   plugSelectionUserInfo,
+  viewsList,
   workContrastList,
 } from '@/services/efficiency'
 import { RowText } from './style'
-import { getDays, getMonthBefor } from './Date'
+import { getDate, getDays, getMonthBefor } from './Date'
 import ExportSuccess from '../Header/components/ExportSuccess'
+import { getMessage } from '@/components/Message'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
+import { copyView } from '@/services/kanban'
 
 // 进展对比tips
 const getTitleTips = (text: string, tips: string) => {
@@ -102,11 +112,62 @@ const ProgressComparison = (props: Props) => {
   const [ids, setIds] = useState<number[]>([])
   const [historyWorkObj, setHistoryWorkObj] =
     useState<API.Efficiency.HistoryWorkList.Result>()
+
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+
+  console.log(paramsData, 'paramsDataparamsDataparamsDataparamsDataparamsData')
+
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
 
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
   }
+
+  // 根据id查视图
+  const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
+    // 1. 先copy视图
+    const result = await copyView({ id: paramsData?.valueId })
+    console.log(result, 'resultresultresultresultresult')
+
+    const res = await viewsList(parmas)
+    const filterVal: Models.Efficiency.ViewItem | undefined = res.find(
+      el => el.id === paramsData?.valueId,
+    )
+    // 有视图数据才设置
+    if (filterVal) {
+      dispatch(
+        setHeaderParmas({
+          users: filterVal?.config.user_ids,
+          projectIds: filterVal?.config.project_id,
+          view: {
+            title: filterVal?.name,
+            value: filterVal?.id,
+          },
+          iterate_ids: filterVal?.config.iterate_ids,
+          time: {
+            type:
+              filterVal?.config.period_time === ''
+                ? 0
+                : getDate(filterVal?.config?.period_time || ''),
+            time:
+              filterVal?.config.period_time === ''
+                ? // eslint-disable-next-line no-undefined
+                  [filterVal?.config?.start_time, filterVal?.config?.end_time]
+                : // eslint-disable-next-line no-undefined
+                  undefined,
+          },
+        }),
+      )
+    }
+  }
+  useEffect(() => {
+    if (paramsData?.valueId) {
+      // 获取已有视图
+      getViewList({ project_id: 0, use_type: 3 })
+    }
+  }, [paramsData?.valueId])
+
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
   // 进展工作对比迭代和冲刺的
   const columns1 = [
@@ -190,13 +251,14 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'work_progress',
       render: (text: string) => {
         const num = Number(text?.split('|')?.[0])
-        const total = Number(text?.split('|')?.[1])
+        const completeNum = Number(text?.split('|')?.[1])
+        const total = num + completeNum
         return (
           <RowText>
             {text
-              ? num === 0
+              ? completeNum === 0
                 ? '0%'
-                : `${Number((num / total) * 100).toFixed(1)}%`
+                : `${Number((completeNum / total) * 100).toFixed(0)}%`
               : '--'}
           </RowText>
         )
@@ -305,13 +367,14 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'work_progress',
       render: (text: string) => {
         const num = Number(text?.split('|')?.[0])
-        const total = Number(text?.split('|')?.[1])
+        const completeNum = Number(text?.split('|')?.[1])
+        const total = num + completeNum
         return (
           <RowText>
             {text
-              ? num === 0
+              ? completeNum === 0
                 ? '0%'
-                : `${Number((num / total) * 100).toFixed(1)}%`
+                : `${Number((completeNum / total) * 100).toFixed(0)}%`
               : '--'}
           </RowText>
         )
@@ -516,19 +579,81 @@ const ProgressComparison = (props: Props) => {
         return undefined
     }
   }
+
   // 导出
   const onGetExportApi = async (option: number[]) => {
-    console.log(props, 'pp')
-    const res = await getExport({
-      project_ids: option.join(','),
-      user_ids: '',
-      start_time: '',
-      end_time: '',
-      iterate_ids: '',
-      period_time: '',
-      page: 0,
-      pagesize: 0,
-    })
+    try {
+      let result: any = null
+      // 1.工作项导出
+      if (
+        ['Progress_iteration', 'Progress_sprint', 'Progress_all'].includes(
+          props?.type,
+        )
+      ) {
+        result = await getExport({
+          project_ids: option.join(','),
+          user_ids: props?.headerParmas?.users?.join(','),
+          period_time: getTimeStr(props.headerParmas?.time)
+            ? getTimeStr(props.headerParmas?.time)
+            : // eslint-disable-next-line no-undefined
+              undefined,
+          start_time: getTimeStr(props.headerParmas?.time)
+            ? // eslint-disable-next-line no-undefined
+              undefined
+            : props.headerParmas?.time?.time?.[0],
+          end_time: getTimeStr(props.headerParmas?.time)
+            ? // eslint-disable-next-line no-undefined
+              undefined
+            : props.headerParmas?.time?.time?.[1],
+          iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
+        })
+      } else if (
+        ['Defect_iteration', 'Defect_sprint', 'Defect_all'].includes(
+          props?.type,
+        )
+      ) {
+        result = await defectExport({
+          // eslint-disable-next-line no-undefined
+          project_ids: option.join(',') ? option.join(',') : undefined,
+          user_ids: props?.headerParmas?.users?.join(','),
+          period_time: getTimeStr(props.headerParmas?.time)
+            ? getTimeStr(props.headerParmas?.time)
+            : // eslint-disable-next-line no-undefined
+              undefined,
+          start_time: getTimeStr(props.headerParmas?.time)
+            ? // eslint-disable-next-line no-undefined
+              undefined
+            : props.headerParmas?.time?.time?.[0],
+          end_time: getTimeStr(props.headerParmas?.time)
+            ? // eslint-disable-next-line no-undefined
+              undefined
+            : props.headerParmas?.time?.time?.[1],
+          iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
+        })
+      }
+
+      if (result && result.status === 200) {
+        const blob = new Blob([result.body], {
+          type: result?.headers['content-type'],
+        })
+        const blobUrl = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.download = `${props?.title}.xlsx`
+        a.href = blobUrl
+        a.click()
+        getMessage({
+          msg: '导出成功',
+          type: 'success',
+        })
+      } else {
+        getMessage({
+          msg: '导出失败',
+          type: 'error',
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
   // 工作进展对比大的列表
   const getWorkContrastList = async (value: number[], page?: any) => {
@@ -585,8 +710,8 @@ const ProgressComparison = (props: Props) => {
         ? // eslint-disable-next-line no-undefined
           undefined
         : time.endTime,
-      page: pageNum,
-      pagesize: pageSize,
+      page: page?.pageNum || pageNum,
+      pagesize: page?.pageSize || pageSize,
     })
     setWork(res.defect)
     setTableList1(res.list)
@@ -633,13 +758,11 @@ const ProgressComparison = (props: Props) => {
   // 进展对比的前半截api
   const getHistoryWorkList = async (id: number) => {
     const res = await historyWorkList({ id })
-    console.log(res, '999999')
     setHistoryWorkObj(res)
   }
   // 缺陷分析的前半截
   const getHistoryDefectList = async (id: number) => {
     const res = await historyDefectList({ id })
-    console.log(res, '999999')
     setHistoryWorkObj(res)
   }
 
