@@ -29,7 +29,7 @@ import {
 } from '@store/project'
 import { deleteDemand, getDemandList } from '@/services/demand'
 import { setIsRefresh } from '@store/user'
-import { setIsUpdateList } from '@store/iterate'
+import { setIsRefreshList, setIsUpdateList } from '@store/iterate'
 import TableFilter from '@/components/TableFilter'
 import EditAchievements from '../IterationDetail/components/EditAchievements'
 import { updateIterateStatus } from '@/services/iterate'
@@ -293,7 +293,7 @@ const Iteration = () => {
   const onChangeRow = () => {
     setDataList({ list: undefined })
     getList(isGrid, pageObj, searchItems)
-    // dispatch(setIsRefreshList(true))
+    dispatch(setIsRefreshList(true))
   }
 
   const onChangeOperation = async (item: any) => {
@@ -304,10 +304,10 @@ const Iteration = () => {
 
   const onDeleteConfirm = async (item: any) => {
     await deleteDemand({ projectId: getProjectIdByUrl(), id: item.id })
+    dispatch(setIsRefreshList(true))
     getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
     setDataList({ list: undefined })
     getList(isGrid, pageObj, searchItems)
-    //   dispatch(setIsRefreshList(true))
   }
 
   const onDelete = (item: any) => {

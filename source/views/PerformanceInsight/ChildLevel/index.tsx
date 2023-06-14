@@ -9,8 +9,6 @@ const ChildLevel = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
-  //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
   useEffect(() => {
     dispatch(setVisiblePerson(false))
     dispatch(setVisibleWork(false))
