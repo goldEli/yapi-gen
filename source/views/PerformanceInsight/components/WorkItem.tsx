@@ -131,6 +131,7 @@ const Main = (props: UserInfo) => {
       },
     },
   ]
+  console.log(paramsData, 'paramsData')
   return (
     <MainStyle>
       <UserMsg>
@@ -179,26 +180,28 @@ const Main = (props: UserInfo) => {
           options={props.status}
           notFoundContent={null}
         />
-        <Text
-          onClick={() => {
-            const params = encryptPhp(
-              JSON.stringify({
-                id: paramsData.projectId,
-                isMember: true,
-                userId: props.userInfo.id,
-              }),
-            )
-            navigate(`/MemberInfo/Profile?data=${params}`)
-          }}
-        >
-          {/* 需要跳转到他的页面 概况待办 */}
-          <span className="text">查看全部</span>
-          <CommonIconFont
-            type="right"
-            size={16}
-            color="var(--auxiliary-text-t2-d2)"
-          />
-        </Text>
+        {paramsData.homeType !== 'all' && (
+          <Text
+            onClick={() => {
+              const params = encryptPhp(
+                JSON.stringify({
+                  id: paramsData.projectId,
+                  isMember: true,
+                  userId: props.userInfo.id,
+                }),
+              )
+              navigate(`/MemberInfo/Profile?data=${params}`)
+            }}
+          >
+            {/* 需要跳转到他的页面 概况待办 */}
+            <span className="text">查看全部</span>
+            <CommonIconFont
+              type="right"
+              size={16}
+              color="var(--auxiliary-text-t2-d2)"
+            />
+          </Text>
+        )}
       </FilterType>
       <TableStyle>
         <Table
