@@ -211,7 +211,11 @@ const Flaw = (props: FlawProps) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { projectId: getProjectIdByUrl(), iterateId: iterateInfo?.id },
+        params: {
+          projectId: getProjectIdByUrl(),
+          iterateId: iterateInfo?.id,
+          type: 2,
+        },
       }),
     )
   }

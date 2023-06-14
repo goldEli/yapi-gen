@@ -90,10 +90,10 @@ const DemandStatusBox = (props: any) => {
   }, [])
 
   useEffect(() => {
-    if (isUpdateStatus) {
+    if (isUpdateStatus || demandInfo) {
       init()
     }
-  }, [isUpdateStatus])
+  }, [isUpdateStatus, demandInfo])
 
   return (
     <div>

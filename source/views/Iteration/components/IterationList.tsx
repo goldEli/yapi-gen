@@ -36,6 +36,7 @@ import RangePicker from '@/components/RangePicker'
 import {
   setCreateIterationParams,
   setIsCreateIterationVisible,
+  setIsRefreshList,
 } from '@store/iterate'
 import NoData from '@/components/NoData'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -84,8 +85,12 @@ const IterationList = (props: IterationListProps) => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
-  const { iterateInfo, isUpdateList } = useSelector(store => store.iterate)
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
+  const { iterateInfo, isUpdateList, isRefreshList } = useSelector(
+    store => store.iterate,
+  )
   const { isRefresh } = useSelector(store => store.user)
   //   是否排序
   const [isSort, setIsSort] = useState(false)
@@ -124,10 +129,7 @@ const IterationList = (props: IterationListProps) => {
   )
 
   // isUpdateProjectInfoValues：是否需要更新项目下拉数据
-  const getList = async (
-    isUpdateProjectInfoValues?: boolean,
-    isDeleteId?: number,
-  ) => {
+  const getList = async (isUpdateProjectInfoValues?: boolean, id?: number) => {
     setIsSpinning(true)
     const values = form.getFieldsValue()
     if (values.startTime) {
@@ -156,7 +158,7 @@ const IterationList = (props: IterationListProps) => {
 
     // 如果删除id是当前选中的 或当前筛选没有当前选中的，则更新列表第一个
     if (
-      isDeleteId === iterateInfo.id ||
+      id === iterateInfo.id ||
       result.list.filter((i: any) => i.id === iterateInfo.id)?.length <= 0
     ) {
       dispatch(
@@ -166,7 +168,6 @@ const IterationList = (props: IterationListProps) => {
         }),
       )
     }
-
     // 当前操作的id跟当前展示的id一致则更新详情或者没有迭代id
     if (operationId === iterateInfo.id || !iterateInfo.id) {
       dispatch(
@@ -193,6 +194,7 @@ const IterationList = (props: IterationListProps) => {
       )
       dispatch(setProjectInfoValues(newValues))
     }
+    dispatch(setIsRefreshList(false))
   }
 
   //   开始时间
@@ -404,12 +406,8 @@ const IterationList = (props: IterationListProps) => {
             }
           : i,
       )
-      setOperationId(item.id)
       dispatch(setProjectInfoValues(newValues))
-      // Todo 这里改的不对劲，数据有延迟
-      setTimeout(() => {
-        getList(true)
-      }, 2000)
+      getList(true, item?.id)
     }
   }
 
@@ -419,11 +417,11 @@ const IterationList = (props: IterationListProps) => {
   }
 
   useEffect(() => {
-    if (isRefresh || isUpdateList) {
+    if (isRefresh || isUpdateList || isUpdateAddWorkItem || isRefreshList) {
       setOperationId(0)
       getList()
     }
-  }, [isRefresh, isUpdateList])
+  }, [isRefresh, isUpdateList, isUpdateAddWorkItem, isRefreshList])
 
   useEffect(() => {
     getList()
