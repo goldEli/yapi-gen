@@ -3,7 +3,10 @@ import CommonIconFont from '@/components/CommonIconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import StateTag from '@/components/StateTag'
+import { getParamsData } from '@/tools'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import { Select, Space } from 'antd'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Detail from './Detail'
 import DetailHeader from './DetailHeader'
 import {
@@ -37,6 +40,9 @@ interface UserInfo {
   onChange: (value: API.Sprint.EfficiencyMemberWorkList.Params) => void
 }
 const Main = (props: UserInfo) => {
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const navigate = useNavigate()
   const columns = [
     {
       title: '编号',
@@ -125,7 +131,6 @@ const Main = (props: UserInfo) => {
       },
     },
   ]
-  console.log(props.userInfo, 'props.userInfo')
   return (
     <MainStyle>
       <UserMsg>
@@ -174,7 +179,18 @@ const Main = (props: UserInfo) => {
           options={props.status}
           notFoundContent={null}
         />
-        <Text>
+        <Text
+          onClick={() => {
+            const params = encryptPhp(
+              JSON.stringify({
+                id: paramsData.projectId,
+                isMember: true,
+                userId: props.userInfo.id,
+              }),
+            )
+            navigate(`/MemberInfo/Profile?data=${params}`)
+          }}
+        >
           {/* 需要跳转到他的页面 概况待办 */}
           <span className="text">查看全部</span>
           <CommonIconFont
