@@ -122,7 +122,7 @@ const Iteration = (props: Props) => {
         ? 0
         : 1,
     )
-    getTime(props.defalutConfig?.period_time || 'four_week')
+    getTime(props.defalutConfig?.period_time || 'one_month')
     props.defalutConfig &&
       props.defalutConfig?.period_time === '' &&
       props.defalutConfig?.start_time === '' &&
@@ -262,13 +262,12 @@ const Iteration = (props: Props) => {
             more={more}
             value={projectIds || []}
             onChange={(value: number[]) => {
-              setProjectIds(value),
-                dispatch(setSave(true)),
-                dispatch(
-                  setHeaderParmas({
-                    projectIds: value,
-                  }),
-                )
+              setProjectIds(value), dispatch(setSave(true)), alert(1)
+              dispatch(
+                setHeaderParmas({
+                  projectIds: value,
+                }),
+              )
             }}
             onShowAll={onShowAll}
           />

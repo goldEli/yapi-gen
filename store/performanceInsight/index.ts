@@ -17,14 +17,14 @@ const initialState: SliceState = {
     projectIds: undefined,
     users: undefined,
     time: {
-      type: 28,
+      type: 1,
       time: undefined,
     },
     view: {
       title: '',
       value: 0,
     },
-    period_time: 'four_week',
+    period_time: 'one_month',
   },
   projectDataList: [],
   visiblePerson: false,
@@ -39,6 +39,7 @@ const slice = createSlice({
       state.save = action.payload
     },
     setHeaderParmas: (state, action) => {
+      console.log('action', action.payload)
       state.headerParmas = { ...state.headerParmas, ...action.payload }
     },
     setProjectDataList: (state, action) => {
