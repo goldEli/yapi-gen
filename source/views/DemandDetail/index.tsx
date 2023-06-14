@@ -107,26 +107,29 @@ const DemandDetail = () => {
         alignItems: 'flex-start',
       }}
     >
-      {resultCategory?.map((k: any) => {
-        return (
-          <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
-            <img
-              src={
-                k.category_attachment
-                  ? k.category_attachment
-                  : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-              }
-              style={{
-                width: '18px',
-                height: '18px',
-                marginRight: '8px',
-              }}
-              alt=""
-            />
-            <span>{k.content}</span>
-          </LiWrap>
-        )
-      })}
+      {resultCategory
+        // 只能是需求的类别
+        ?.filter((i: any) => i.work_type === 1)
+        ?.map((k: any) => {
+          return (
+            <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
+              <img
+                src={
+                  k.category_attachment
+                    ? k.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{k.content}</span>
+            </LiWrap>
+          )
+        })}
     </div>
   )
 
