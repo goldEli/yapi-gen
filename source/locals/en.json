@@ -1,4 +1,28 @@
 {
+  "fill_in_project_information": "Fill in project information",
+  "not_started": "not started",
+
+  "in_progress": "in progress",
+
+  "completed": "Completed ",
+
+  "requirement_design": "Requirements Design",
+
+  "art": "fine art",
+
+  "original_artwork": "original artwork",
+
+  "import_existing_project": "Import an existing project",
+
+  "import_description": "You can import existing workflows and project members from existing projects and modify them at any time in new projects ",
+
+  "select_project_template2": "Select Project template ",
+
+  "template_description": "We prefabricated some workflows for you in the hope of reducing your workload, but we can always change them in the future.",
+
+  "my_created_projects": "Projects I created ",
+
+  "my_joined_projects": "I joined the project ",
   "select_project_type": "Select the project type",
 
   "sprint_project": "Sprint project",

@@ -425,7 +425,7 @@ const CreateAProjectForm = () => {
                 onClick={() => model && onChangeStep(3)}
               >
                 <StyleLeft bgc={step >= 3} />
-                <Text bgc={step >= 3}>填写项目信息</Text>
+                <Text bgc={step >= 3}>{t('fill_in_project_information')}</Text>
                 <StyleRight bgc={step >= 3} />
               </Col>
             </RowStyle>
