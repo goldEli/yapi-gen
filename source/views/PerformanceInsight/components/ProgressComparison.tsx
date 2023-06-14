@@ -13,6 +13,7 @@ import SelectPersonnel from './SelectPersonnel'
 import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
 import { useDispatch, useSelector } from '@store/index'
 import {
+  defectExport,
   efficiencyMemberDefectList,
   efficiencyMemberWorkList,
   getExport,
@@ -25,6 +26,7 @@ import {
 import { RowText } from './style'
 import { getDays, getMonthBefor } from './Date'
 import ExportSuccess from '../Header/components/ExportSuccess'
+import { getMessage } from '@/components/Message'
 
 // 进展对比tips
 const getTitleTips = (text: string, tips: string) => {
@@ -100,6 +102,7 @@ const ProgressComparison = (props: Props) => {
     useState<API.Sprint.EfficiencyMemberWorkList.Result>()
   const [statusType, setStatusType] = useState('')
   const [ids, setIds] = useState<number[]>([])
+  const { projectInfo } = useSelector(store => store.project)
   const [historyWorkObj, setHistoryWorkObj] =
     useState<API.Efficiency.HistoryWorkList.Result>()
   const onUpdateOrderKey = (key: any, val: any) => {
@@ -516,19 +519,81 @@ const ProgressComparison = (props: Props) => {
         return undefined
     }
   }
+
   // 导出
   const onGetExportApi = async (option: number[]) => {
-    console.log(props, 'pp')
-    const res = await getExport({
-      project_ids: option.join(','),
-      user_ids: '',
-      start_time: '',
-      end_time: '',
-      iterate_ids: '',
-      period_time: '',
-      page: 0,
-      pagesize: 0,
-    })
+    try {
+      let result: any = null
+      // 1.工作项导出
+      if (
+        ['Progress_iteration', 'Progress_sprint', 'Progress_all'].includes(
+          props?.type,
+        )
+      ) {
+        result = await getExport({
+          project_ids: option.join(','),
+          user_ids: props?.headerParmas?.users?.join(','),
+          period_time: getTimeStr(props.headerParmas?.time)
+            ? getTimeStr(props.headerParmas?.time)
+            : // eslint-disable-next-line no-undefined
+              undefined,
+          start_time: getTimeStr(props.headerParmas?.time)
+            ? // eslint-disable-next-line no-undefined
+              undefined
+            : props.headerParmas?.time?.time?.[0],
+          end_time: getTimeStr(props.headerParmas?.time)
+            ? // eslint-disable-next-line no-undefined
+              undefined
+            : props.headerParmas?.time?.time?.[1],
+          iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
+        })
+      } else if (
+        ['Defect_iteration', 'Defect_sprint', 'Defect_all'].includes(
+          props?.type,
+        )
+      ) {
+        result = await defectExport({
+          // eslint-disable-next-line no-undefined
+          project_ids: option.join(',') ? option.join(',') : undefined,
+          user_ids: props?.headerParmas?.users?.join(','),
+          period_time: getTimeStr(props.headerParmas?.time)
+            ? getTimeStr(props.headerParmas?.time)
+            : // eslint-disable-next-line no-undefined
+              undefined,
+          start_time: getTimeStr(props.headerParmas?.time)
+            ? // eslint-disable-next-line no-undefined
+              undefined
+            : props.headerParmas?.time?.time?.[0],
+          end_time: getTimeStr(props.headerParmas?.time)
+            ? // eslint-disable-next-line no-undefined
+              undefined
+            : props.headerParmas?.time?.time?.[1],
+          iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
+        })
+      }
+
+      if (result && result.status === 200) {
+        const blob = new Blob([result.body], {
+          type: result?.headers['content-type'],
+        })
+        const blobUrl = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.download = `${props?.title}.xlsx`
+        a.href = blobUrl
+        a.click()
+        getMessage({
+          msg: '导出成功',
+          type: 'success',
+        })
+      } else {
+        getMessage({
+          msg: '导出失败',
+          type: 'error',
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
   // 工作进展对比大的列表
   const getWorkContrastList = async (value: number[], page?: any) => {

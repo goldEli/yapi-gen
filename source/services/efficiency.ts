@@ -431,3 +431,10 @@ export const getExport = async (parmas: API.Sprint.GetExport.Params) => {
   })
   return response
 }
+
+export const defectExport = async (parmas: API.Sprint.GetExport.Params) => {
+  const response = await http.get<any>('defectExport', parmas, {
+    responseType: 'blob',
+  })
+  return response
+}
