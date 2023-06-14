@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Content } from '../Container'
 import Side from './Side'
-import ListSort from './components/ListSort/ListSort'
 
 const dataArray = [
   {
