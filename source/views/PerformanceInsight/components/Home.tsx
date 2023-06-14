@@ -314,14 +314,17 @@ const Home = () => {
       el => el.id === value,
     )
     setDefalutConfig(filterVal?.config)
-    dispatch(
-      setHeaderParmas({
-        view: {
-          title,
-          value,
-        },
-      }),
-    )
+    if (!title) {
+      return
+    }
+    // dispatch(
+    //   setHeaderParmas({
+    //     view: {
+    //       title,
+    //       value,
+    //     },
+    //   }),
+    // )
   }
   // 缺陷现状和工作项现状
   //  '周期时间：two_week,four_week,one_month,three_month,six_month',
@@ -534,7 +537,7 @@ const Home = () => {
   useEffect(() => {
     // 统一监听参数变化，发起请求刷新页面
     if (
-      !!headerParmas.time.time &&
+      !!headerParmas.time?.time &&
       !!headerParmas.period_time &&
       !headerParmas.iterate_ids &&
       !headerParmas.users &&
@@ -545,7 +548,9 @@ const Home = () => {
     if (headerParmas.time.type === 0 && !headerParmas.time.time) {
       return
     }
-    console.log(headerParmas, 'headerParmasheaderParmasheaderParmas')
+    if (!headerParmas.view.value) {
+      return
+    }
     init()
   }, [headerParmas])
 
