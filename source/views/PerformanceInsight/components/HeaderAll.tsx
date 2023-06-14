@@ -21,8 +21,8 @@ interface HaderProps {
     id: number
   }>
   headerParmas: Models.Efficiency.HeaderParmas
-  onSearchData: (value: number[]) => void
-  onGetExportApi: (value: number[]) => void
+  onSearchData(value: number[]): void
+  onGetExportApi(value: number[]): void
   projectId: number
   homeType: string
 }
@@ -75,7 +75,7 @@ const HeaderAll = (props: HaderProps) => {
   }, [])
   const onBack = () => {
     if (props.homeType === 'all') {
-      navigate(`/Performance`)
+      navigate('/Performance')
     } else {
       const params = encryptPhp(
         JSON.stringify({
@@ -102,7 +102,7 @@ const HeaderAll = (props: HaderProps) => {
             <div style={{ marginRight: '16px' }}>
               <Select
                 options={projectList}
-                more={true}
+                more
                 value={options}
                 placeholder="请选择项目"
                 onChange={(value: number[]) => {
@@ -119,11 +119,11 @@ const HeaderAll = (props: HaderProps) => {
             )}
           </PersonText>
           <Line />
-          {time?.startTime && time?.endTime && (
+          {time?.startTime && time?.endTime ? (
             <PersonText>
               统计时间：{time?.startTime} ~ {time?.endTime}
             </PersonText>
-          )}
+          ) : null}
           <Back
             onClick={() =>
               open({

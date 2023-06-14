@@ -312,7 +312,9 @@ const urls = {
   // 近期的冲刺项目
   recentCreateData: '/b/efficiency/filter/list',
   // 导出
-  export: 'b/efficiency/member/work_contrast/export',
+  export: '/b/efficiency/member/work_contrast/export',
+  // 缺陷导出
+  defectExport: '/b/efficiency/member/defect_contrast/export',
   /**
    * 看板
    */
