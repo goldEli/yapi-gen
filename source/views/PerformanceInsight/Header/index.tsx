@@ -155,7 +155,7 @@ const Iteration = (props: Props) => {
   // 获取项目列表
   const getProjectData = async () => {
     const res = await getProjectList({
-      self: 1,
+      // self: 1,
       all: 1,
     })
     // 默认展示10条数据
