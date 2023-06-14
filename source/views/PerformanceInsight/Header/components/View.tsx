@@ -101,6 +101,7 @@ const View = (props: View) => {
       props.onChange(item?.name || '', item?.id || 0)
     }
   }, [props.value])
+
   const getLabel = (el: { name: string; id: number }) => {
     return (
       <Label key={el.id}>

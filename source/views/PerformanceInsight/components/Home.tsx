@@ -140,6 +140,7 @@ const Home = () => {
   const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
+  const [projectViewIds, setProjectViewIds] = useState<any>([])
   const [viewDataList, setViewDataList] = useState<
     Array<Models.Efficiency.ViewItem>
   >([])
@@ -183,6 +184,8 @@ const Home = () => {
     setOptionVal(filterVal?.id || 0)
     setDefalutConfig(filterVal)
     dispatch(setViewType(filterVal?.type))
+    console.log(filterVal, 'filterVal')
+    setProjectViewIds(filterVal?.config.project_id)
     // 有视图数据才设置
     filterVal &&
       dispatch(
@@ -560,6 +563,7 @@ const Home = () => {
         defalutConfig={defalutConfig?.config}
         viewDataList={viewDataList}
         onCreateView={onCreateView}
+        projectViewIds={projectViewIds}
         onDelView={onDelView}
         onChange={onGetOptionValue}
         onSetDefaulut={onSetDefaulut}

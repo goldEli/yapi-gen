@@ -39,6 +39,7 @@ interface Props {
   onEdit(): void
   value: number
   projectId: number
+  projectViewIds: number[] | undefined
 }
 const periodTimes = [
   { label: 'two_week', value: 14 },
@@ -78,7 +79,7 @@ const Iteration = (props: Props) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isVisibleView, setIsVisibleView] = useState<boolean>(false)
   const [projectListAll, setProjectListAll] = useState([])
-  const [projectList, setProjectList] = useState([])
+  const [projectList, setProjectList] = useState<any>([])
   const [timeVal, setTimeVal] = useState<any>()
   const [iterateData, setIterateData] =
     useState<API.Sprint.RecentCreateData.Result>([])
@@ -86,7 +87,9 @@ const Iteration = (props: Props) => {
   const [projectIds, setProjectIds] = useState<number[]>()
   const [iterateIds, setIterateIds] = useState<any>()
   const dispatch = useDispatch()
-  const { save, viewType } = useSelector(store => store.performanceInsight)
+  const { save, viewType, headerParmas } = useSelector(
+    store => store.performanceInsight,
+  )
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
@@ -104,7 +107,42 @@ const Iteration = (props: Props) => {
       }),
     )
   }
-
+  useEffect(() => {
+    if (props.projectViewIds) {
+      props.homeType === 'all' && getProjectIdsList()
+    } else {
+      props.homeType === 'all' && getProjectData()
+    }
+  }, [props.projectViewIds, props.homeType])
+  const getProjectIdsList = async () => {
+    const res = await getProjectList({
+      // self: 1,
+      all: 1,
+    })
+    const filterVal = res.list
+      .filter((el: { id: number }) => props.projectViewIds?.includes(el.id))
+      .map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      }))
+    // 默认展示10条数据
+    setProjectListAll(
+      res.list.map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      })),
+    )
+    const newData = res.list
+      .slice(0, 10)
+      .map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      }))
+    setProjectList([...filterVal, ...newData])
+  }
   useEffect(() => {
     // 展示的tabs不同
     if (props.homeType === 'iteration' || props.homeType === 'sprint') {
@@ -112,7 +150,6 @@ const Iteration = (props: Props) => {
     }
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
-    props.homeType === 'all' && getProjectData()
   }, [props.homeType])
   // 获取近期的冲刺项目
   const getIterateData = async () => {
@@ -124,7 +161,6 @@ const Iteration = (props: Props) => {
   }
   useEffect(() => {
     // 回显的项目id
-    console.log(props.defalutConfig, projectList, 'props.defalutConfig')
     setProjectIds(props.defalutConfig?.project_id || [])
     setPerson(props.defalutConfig?.user_ids || [])
     getTime(props.defalutConfig?.period_time || 'one_month')
