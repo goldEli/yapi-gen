@@ -650,8 +650,8 @@ const ProgressComparison = (props: Props) => {
         ? // eslint-disable-next-line no-undefined
           undefined
         : time.endTime,
-      page: pageNum,
-      pagesize: pageSize,
+      page: page?.pageNum || pageNum,
+      pagesize: page?.pageSize || pageSize,
     })
     setWork(res.defect)
     setTableList1(res.list)
