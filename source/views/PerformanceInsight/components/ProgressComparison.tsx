@@ -128,47 +128,13 @@ const ProgressComparison = (props: Props) => {
   }
 
   // 根据id查视图
-  const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
-    // 1. 先copy视图 copy失败就是条件不满足
-    const result = await copyView({ id: paramsData?.valueId })
-    if (result && result.code === 0 && result.data) {
-      const res = await viewsList(parmas)
-      const filterVal: Models.Efficiency.ViewItem | undefined = res.find(
-        el => el.id === result.data.id,
-      )
-      // 有视图数据才设置
-      if (filterVal) {
-        dispatch(
-          setHeaderParmas({
-            users: filterVal?.config.user_ids,
-            projectIds: filterVal?.config.project_id,
-            view: {
-              title: filterVal?.name,
-              value: filterVal?.id,
-            },
-            iterate_ids: filterVal?.config.iterate_ids,
-            period_time: filterVal?.config?.period_time,
-            time: {
-              type:
-                filterVal?.config.period_time === ''
-                  ? 0
-                  : getDate(filterVal?.config?.period_time || ''),
-              time:
-                filterVal?.config.period_time === ''
-                  ? // eslint-disable-next-line no-undefined
-                    [filterVal?.config?.start_time, filterVal?.config?.end_time]
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
-            },
-          }),
-        )
-      }
-    }
+  const copyViewById = async () => {
+    // copy视图给被分享的用户的视图列表 copy失败就是条件不满足
+    await copyView({ id: paramsData?.valueId })
   }
   useEffect(() => {
     if (paramsData?.valueId) {
-      // 获取已有视图
-      getViewList({ project_id: 0, use_type: 3 })
+      copyViewById()
     }
   }, [paramsData?.valueId])
 

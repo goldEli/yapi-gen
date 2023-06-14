@@ -211,7 +211,11 @@ const Flaw = (props: FlawProps) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { projectId: getProjectIdByUrl(), iterateId: iterateInfo?.id },
+        params: {
+          projectId: getProjectIdByUrl(),
+          iterateId: iterateInfo?.id,
+          type: 2,
+        },
       }),
     )
   }
@@ -275,16 +279,26 @@ const Flaw = (props: FlawProps) => {
   }, [props.searchGroups])
 
   useEffect(() => {
-    if (isRefresh || isUpdateAddWorkItem) {
+    if (props.activeKey === '3') {
       getList(
         { page: 1, size: pageObj.size },
         order,
         orderKey,
         props.searchGroups,
       )
-    }
-    if (props.activeKey !== '3') {
+    } else {
       setDataList({ list: undefined })
+    }
+  }, [props.activeKey])
+
+  useEffect(() => {
+    if ((isRefresh || isUpdateAddWorkItem) && props.activeKey === '3') {
+      getList(
+        { page: 1, size: pageObj.size },
+        order,
+        orderKey,
+        props.searchGroups,
+      )
     }
   }, [isRefresh, isUpdateAddWorkItem, props.activeKey])
 

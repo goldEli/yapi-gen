@@ -37,20 +37,26 @@ import TableFilter from '@/components/TableFilter'
 import InputSearch from '@/components/InputSearch'
 import { setIsUpdateAddWorkItem, setProjectInfoValues } from '@store/project'
 import IterationStatus from '@/components/IterationStatus'
-import { updateIterateStatus } from '@/services/iterate'
+import { deleteIterate, updateIterateStatus } from '@/services/iterate'
 import { getMessage } from '@/components/Message'
+import {
+  setCreateIterationParams,
+  setIsCreateIterationVisible,
+} from '@store/iterate'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useNavigate } from 'react-router-dom'
 
 const IterationDetail = () => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [tabActive, setTabActive] = useState('1')
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
-  const { iterateInfo } = useSelector(store => store.iterate)
+  const { iterateInfo, isUpdateList } = useSelector(store => store.iterate)
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const [filterState, setFilterState] = useState(true)
   const [settingState, setSettingState] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
-  const [isRefreshList, setIsRefreshList] = useState(false)
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
@@ -131,14 +137,48 @@ const IterationDetail = () => {
     history.go(-1)
   }
 
+  // 更新
+  const onUpdateDetail = () => {
+    dispatch(
+      getIterateInfo({
+        projectId: getProjectIdByUrl(),
+        id: getIdByUrl('iterateId'),
+      }),
+    )
+  }
+
   // 编辑
   const onEdit = () => {
-    //
+    dispatch(setIsCreateIterationVisible(true))
+    dispatch(
+      setCreateIterationParams({
+        ...iterateInfo,
+        projectId: projectInfo?.id,
+      }),
+    )
+  }
+
+  //   删除迭代确认事件
+  const onDeleteConfirm = async (item: any) => {
+    await deleteIterate({
+      projectId: getProjectIdByUrl(),
+      id: item.id,
+    })
+    getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
+    const params = encryptPhp(JSON.stringify({ id: projectInfo?.id }))
+    navigate(`/ProjectManagement/Iteration?data=${params}`)
   }
 
   // 删除
   const onDelete = () => {
-    //
+    open({
+      title: '删除确认',
+      text: '确认删除该迭代？',
+      onConfirm() {
+        onDeleteConfirm(iterateInfo)
+        return Promise.resolve()
+      },
+    })
   }
 
   const getSearchKey = async (key?: any, typeVal?: number) => {
@@ -242,7 +282,7 @@ const IterationDetail = () => {
               onFilter={getSearchKey}
               onSearch={onFilterSearch}
               list={searchList}
-              basicsList={filterBasicsList.filter((i: any) => i.is_flaw !== 1)}
+              basicsList={filterBasicsList}
               specialList={filterSpecialList}
               customList={filterCustomList}
               isIteration
@@ -396,20 +436,20 @@ const IterationDetail = () => {
   }, [projectInfo])
 
   useEffect(() => {
-    dispatch(
-      getIterateInfo({
-        projectId: getProjectIdByUrl(),
-        id: getIdByUrl('iterateId'),
-      }),
-    )
-  }, [])
+    if (isUpdateList) {
+      onUpdateDetail()
+    }
+  }, [isUpdateList])
 
   return (
     <Wrap>
+      <DeleteConfirmModal />
       {['2', '3'].includes(tabActive) && (
         <OptionalFeld
           allTitleList={allTitleList}
-          plainOptions={plainOptions.filter((i: any) => i.is_flaw !== 1)}
+          plainOptions={plainOptions.filter((i: any) =>
+            tabActive === '2' ? i.is_flaw !== 1 : i,
+          )}
           plainOptions2={plainOptions2}
           plainOptions3={plainOptions3}
           checkList={titleList}
@@ -450,8 +490,12 @@ const IterationDetail = () => {
         </DetailText>
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />
-          <CommonButton type="icon" icon="edit" onClick={onEdit} />
-          <CommonButton type="icon" icon="delete" onClick={onDelete} />
+          {!hasEdit && (
+            <CommonButton type="icon" icon="edit" onClick={onEdit} />
+          )}
+          {!hasDel && (
+            <CommonButton type="icon" icon="delete" onClick={onDelete} />
+          )}
         </ButtonGroup>
       </DetailTitle>
       <Tabs

@@ -74,6 +74,14 @@ const CreateIteration = () => {
       all: 1,
     })
     setProjectList(res.list)
+    if (createIterationParams?.projectId) {
+      form.setFieldsValue({
+        projectId: createIterationParams?.projectId,
+        info: '',
+      })
+    } else {
+      getRecentlyList()
+    }
     // 如果有需求id则获取详情
     if (createIterationParams.id) {
       const response = await getIterateInfo({
@@ -94,13 +102,6 @@ const CreateIteration = () => {
             ]
           : null,
       })
-    }
-    if (createIterationParams?.projectId) {
-      form.setFieldsValue({
-        projectId: createIterationParams?.projectId,
-      })
-    } else {
-      getRecentlyList()
     }
   }
 

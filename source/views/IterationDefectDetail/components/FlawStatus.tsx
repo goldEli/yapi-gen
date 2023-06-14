@@ -94,10 +94,10 @@ const FlawStatus = (props: any) => {
   }, [])
 
   useEffect(() => {
-    if (isUpdateStatus) {
+    if (isUpdateStatus || flawInfo) {
       init()
     }
-  }, [isUpdateStatus])
+  }, [isUpdateStatus, flawInfo])
 
   return (
     <div>
@@ -177,8 +177,7 @@ const FlawStatus = (props: any) => {
             </span>
           </div>
         )}
-        {/* && !isUpdateStatus */}
-        {rows && !flawInfo?.isExamine && (
+        {rows && !isUpdateStatus && !flawInfo?.isExamine && (
           <ShapeContentForDetail
             active={flawInfo?.status?.status}
             sid={props.sid}
