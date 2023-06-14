@@ -97,6 +97,7 @@ const Iteration = (props: Props) => {
     dispatch(
       setHeaderParmas({
         iterate_ids: [],
+        period_time: 'one_month',
         time: {
           type: 1,
         },
@@ -215,6 +216,7 @@ const Iteration = (props: Props) => {
     setTimeVal([moment(values[0]), moment(values[1])])
     dispatch(
       setHeaderParmas({
+        period_time: '',
         time: {
           type: 0,
           time: values,
@@ -229,6 +231,7 @@ const Iteration = (props: Props) => {
     dispatch(
       setHeaderParmas({
         iterate_ids: val,
+        period_time: '',
         time: {
           type: 0,
           time: [
@@ -247,6 +250,7 @@ const Iteration = (props: Props) => {
     dispatch(
       setHeaderParmas({
         iterate_ids: iterateIds,
+        period_time: '',
         time: {
           type: 0,
           time: [minDate(projectList), maxDate(projectList)],
@@ -362,6 +366,7 @@ const Iteration = (props: Props) => {
               setTimekey(e)
               setTimeVal([])
               viewType === 1 && dispatch(setSave(true))
+              console.log()
               dispatch(
                 setHeaderParmas({
                   time: {

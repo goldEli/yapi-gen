@@ -44,7 +44,6 @@ const slice = createSlice({
       state.viewType = action.payload
     },
     setHeaderParmas: (state, action) => {
-      console.log('action', action.payload)
       state.headerParmas = { ...state.headerParmas, ...action.payload }
     },
     setProjectDataList: (state, action) => {

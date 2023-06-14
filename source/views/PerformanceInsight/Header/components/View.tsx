@@ -6,7 +6,11 @@ import ViewDialog from './ViewDialog'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { DivStyle, DefaultLabel, DefaultLabelAdd, Btn, Label } from '../Style'
 import { useDispatch, useSelector } from '@store/index'
-import { setHeaderParmas, setViewType } from '@store/performanceInsight'
+import {
+  setHeaderParmas,
+  setSave,
+  setViewType,
+} from '@store/performanceInsight'
 import { getDate } from '../../components/Date'
 
 interface View {
@@ -152,6 +156,8 @@ const View = (props: View) => {
         ...optionsDefault,
       })
       props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
+      dispatch(setViewType(2))
+      dispatch(setSave(false))
       dispatch(
         setHeaderParmas({
           users: optionsDefault.config.user_ids,
@@ -204,6 +210,7 @@ const View = (props: View) => {
       }
       props.onChange(item.name, item.id)
       dispatch(setViewType(item?.type))
+      dispatch(setSave(false))
       setValue({
         ...item,
       })

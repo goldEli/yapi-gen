@@ -145,6 +145,7 @@ const ProgressComparison = (props: Props) => {
             value: filterVal?.id,
           },
           iterate_ids: filterVal?.config.iterate_ids,
+          period_time: filterVal?.config?.period_time,
           time: {
             type:
               filterVal?.config.period_time === ''

@@ -194,6 +194,7 @@ const Home = () => {
             value: filterVal?.id,
           },
           iterate_ids: filterVal?.config.iterate_ids,
+          period_time: filterVal?.config?.period_time,
           time: {
             type:
               filterVal?.config.period_time === ''
@@ -211,7 +212,6 @@ const Home = () => {
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
-    console.log(headerParmas, 'headerParmas---view')
     const res =
       type === 'add'
         ? await createViewList({
@@ -315,7 +315,6 @@ const Home = () => {
       el => el.id === value,
     )
     setDefalutConfig(filterVal)
-    dispatch(setViewType(filterVal?.type))
   }
   // 缺陷现状和工作项现状
   //  '周期时间：two_week,four_week,one_month,three_month,six_month',
