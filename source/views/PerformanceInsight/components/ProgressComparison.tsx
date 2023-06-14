@@ -126,12 +126,11 @@ const ProgressComparison = (props: Props) => {
 
   // 根据id查视图
   const copyViewById = async () => {
-    // 1. 先copy视图 copy失败就是条件不满足
+    // copy视图给被分享的用户的视图列表 copy失败就是条件不满足
     await copyView({ id: paramsData?.valueId })
   }
   useEffect(() => {
     if (paramsData?.valueId) {
-      // 获取已有视图
       copyViewById()
     }
   }, [paramsData?.valueId])
