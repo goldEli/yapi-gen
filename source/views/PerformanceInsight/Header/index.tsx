@@ -111,10 +111,14 @@ const Iteration = (props: Props) => {
     getTime(props.defalutConfig?.period_time || 'one_month')
     // 回显是否是迭代还是周期
     if (props.iterateViewIds.length >= 1) {
-      // (props.homeType === 'iteration' || props.homeType === 'sprint') && getIterateIdsList();
+      props.homeType === 'iteration' || props.homeType === 'sprint'
+        ? getIterateIdsList()
+        : null
       setTabsActive(1)
     } else {
-      // (props.homeType === 'iteration' || props.homeType === 'sprint') && getIterateData();
+      props.homeType === 'iteration' || props.homeType === 'sprint'
+        ? getIterateData()
+        : null
       setTabsActive(0)
       setIterateIds([])
     }
