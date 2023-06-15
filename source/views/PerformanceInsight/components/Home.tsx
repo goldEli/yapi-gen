@@ -140,7 +140,8 @@ const Home = () => {
   const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
-  const [projectViewIds, setProjectViewIds] = useState<any>([])
+  const [projectViewIds, setProjectViewIds] = useState<number[] | []>([])
+  const [iterateViewIds, setIterateViewIds] = useState<number[] | []>([])
   const [viewDataList, setViewDataList] = useState<
     Array<Models.Efficiency.ViewItem>
   >([])
@@ -184,7 +185,8 @@ const Home = () => {
     setOptionVal(filterVal?.id || 0)
     setDefalutConfig(filterVal)
     dispatch(setViewType(filterVal?.type))
-    setProjectViewIds(filterVal?.config.project_id)
+    setProjectViewIds(filterVal?.config.project_id || [])
+    setIterateViewIds(filterVal?.config.iterate_ids || [])
     // 有视图数据才设置
     filterVal &&
       dispatch(
@@ -316,6 +318,8 @@ const Home = () => {
     const filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
       el => el.id === value,
     )
+    setProjectViewIds(filterVal?.config.project_id || [])
+    setIterateViewIds(filterVal?.config.iterate_ids || [])
     setDefalutConfig(filterVal)
   }
   // 缺陷现状和工作项现状
@@ -513,7 +517,6 @@ const Home = () => {
   }
   // 编辑视图走缓存的参数
   const editViews = async () => {
-    console.log(defalutConfig, 'defalutConfig')
     const res = await viewsUpdate({
       id: headerParmas.view.value,
       project_id: projectId,
@@ -588,6 +591,7 @@ const Home = () => {
         viewDataList={viewDataList}
         onCreateView={onCreateView}
         projectViewIds={projectViewIds}
+        iterateViewIds={iterateViewIds}
         onDelView={onDelView}
         onChange={onGetOptionValue}
         onSetDefaulut={onSetDefaulut}
@@ -660,7 +664,7 @@ const Home = () => {
               height={352}
               title={homeType === 'all' ? '完成率Top10' : '阶段完成率Top10'}
               onChange={(val: string) => {
-                getCompletionRateChart(val), console.log(val, 'bal')
+                getCompletionRateChart(val)
               }}
             />
           </div>

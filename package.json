@@ -147,6 +147,7 @@
       "react/jsx-no-literals": 0,
       "react-hooks/exhaustive-deps": 0,
       "array-callback-return": 0,
+      "no-extra-semi": 2,
       "max-lines": [
         2,
         1000

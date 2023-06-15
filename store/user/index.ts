@@ -32,6 +32,7 @@ const initialState: CounterState = {
     { key: '/CalendarManager', normal: 'database', active: 'calendar-sel' },
     { key: '/Report', normal: 'log-nor', active: 'log-sel' },
     { key: '/AdminManagement', normal: 'management', active: '' },
+    { key: '/Performance', normal: 'measure-nor', active: 'measure-sel' },
   ],
 }
 

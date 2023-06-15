@@ -126,7 +126,7 @@ const StaffManagement = () => {
 
     const data = await getMyAllSysNotice({
       ...searchGroups1,
-      keyword,
+      keyword: keyword ? keyword : undefined,
       page,
       pagesize,
     })
