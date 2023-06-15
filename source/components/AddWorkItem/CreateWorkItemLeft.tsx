@@ -685,7 +685,22 @@ const CreateDemandLeft = (props: Props) => {
             style={{ width: '50%' }}
             rules={[{ required: true, message: '' }]}
           >
-            <CustomSelect
+            <CategoryDropdown
+              footer={false}
+              categoryList={computedCategory()?.map((i: any) => ({
+                ...i,
+                labelName: i.name,
+              }))}
+              projectId={props.projectId as number}
+              value={categoryObj?.id}
+              onChangeCallBack={(val: Model.Project.CategoryValue[]) => {
+                //
+              }}
+              onClearCallback={() => {
+                //
+              }}
+            />
+            {/* <CustomSelect
               onSelect={onSelectCategory}
               onClear={onClearCategory}
               placeholder={t('common.selectType')}
@@ -708,7 +723,7 @@ const CreateDemandLeft = (props: Props) => {
                   </Select.Option>
                 )
               })}
-            </CustomSelect>
+            </CustomSelect> */}
           </Form.Item>
         </div>
         <Form.Item
