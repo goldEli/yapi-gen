@@ -68,7 +68,7 @@ const SystemFeedback = () => {
 
     if (data.code === 0) {
       getMessage({
-        msg: t('common.editSuccess') as string,
+        msg: t('succeed') as string,
         type: 'success',
       })
       form.resetFields()
