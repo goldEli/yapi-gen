@@ -260,7 +260,7 @@ const FlawDetailDrawer = () => {
   }
 
   //   跳转配置
-  const onConfig = () => {
+  const onToConfig = () => {
     //
   }
 
@@ -320,7 +320,7 @@ const FlawDetailDrawer = () => {
       type: 'divider',
     },
     {
-      label: <div onClick={onConfig}>配置</div>,
+      label: <div onClick={onToConfig}>配置</div>,
       key: '4',
     },
   ]
@@ -606,7 +606,7 @@ const FlawDetailDrawer = () => {
               <span>更新日期：4分钟前</span>
             </div>
             <Tooltip title="配置字段">
-              <CloseWrap width={32} height={32} onClick={onConfig}>
+              <CloseWrap width={32} height={32} onClick={onToConfig}>
                 <CommonIconFont type="settings" />
               </CloseWrap>
             </Tooltip>
