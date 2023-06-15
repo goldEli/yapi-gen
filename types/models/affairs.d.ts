@@ -323,6 +323,7 @@ declare namespace Model.Affairs {
     categoryName: string | number
     child_story_statistics: ChildStoryStatistics
     project_type: 1 | 2
+    update_at: string
   }
 
   interface AffairsInfoResult {
@@ -378,6 +379,7 @@ declare namespace Model.Affairs {
     level_tree?: Hierarchy[]
     child_story_statistics: ChildStoryStatistics
     project_type: 1 | 2
+    update_at: string
   }
 
   // 1：迭代-需求类型，2：迭代-缺陷类型，3：冲刺-长故事事务类型，4：冲刺-标准事务类型，5：冲刺-故障事务类型 6-子任务

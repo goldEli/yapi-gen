@@ -277,6 +277,7 @@ export const getAffairsInfo = async (
     child_story_statistics: response.data.child_story_statistics,
     project_type: response.data.project_type,
     work_type: response.data.work_type,
+    update_at: response.data.update_at,
   }
 }
 

@@ -10,7 +10,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
+import { detailTimeFormat, getParamsData } from '@/tools'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import FlawDetail from './FlawDetail'
 import BasicFlaw from './BasicFlaw'
@@ -115,8 +115,12 @@ const FlawInfo = () => {
         )}
         <BasicFooter>
           <div className="textBox">
-            <div>已创建：5天</div>
-            <span>更新日期：4分钟前</span>
+            <div>
+              已创建：{detailTimeFormat(flawInfo.createdTime as string)}
+            </div>
+            <span>
+              更新日期： {detailTimeFormat(flawInfo.update_at as string)}
+            </span>
           </div>
           <Tooltip title="配置字段">
             <CloseWrap width={32} height={32} onClick={onToConfig}>

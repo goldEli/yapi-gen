@@ -1,5 +1,5 @@
 import BasicDemand from '@/components/DemandDetailDrawer/BasicDemand'
-import { getParamsData } from '@/tools'
+import { detailTimeFormat, getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import { useSearchParams } from 'react-router-dom'
@@ -13,6 +13,7 @@ import { getDemandInfo } from '@store/demand/demand.thunk'
 import { getCommentList } from '@/services/demand'
 import { changeRestScroll } from '@store/scroll'
 import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
+import moment from 'moment'
 
 interface Props {
   onRef: any
@@ -61,6 +62,7 @@ const DemandDetailBasic = (props: Props) => {
     isRest ? onScrollBottom() : null
   }, [isRest])
 
+  console.log(demandInfo, '=12')
   return (
     <BasicWrap ref={props.onRef}>
       <BasicContent>
@@ -92,8 +94,11 @@ const DemandDetailBasic = (props: Props) => {
 
       <BasicFooter>
         <div className="textBox">
-          <div>已创建：5天</div>
-          <span>更新日期：4分钟前</span>
+          <div>已创建：{detailTimeFormat(demandInfo.createdTime)}</div>
+          <span>
+            更新日期：
+            {detailTimeFormat(demandInfo.update_at)}
+          </span>
         </div>
         <Tooltip title="配置字段">
           <CloseWrap width={32} height={32} onClick={onToConfig}>
