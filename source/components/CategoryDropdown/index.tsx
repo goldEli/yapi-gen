@@ -58,6 +58,8 @@ const customStyle = css`
  * onClearCallback 清楚事件
  * projectId 项目id
  * mode 是否支持多选
+ * footer 是否显示底部操作
+ * categoryList 类别列表
  */
 interface IProps {
   width?: number

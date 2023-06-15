@@ -210,6 +210,8 @@ const Operation = (props: Props) => {
     }, 0)
   }
 
+  console.log(projectInfoValues)
+
   const changeStatus = (
     <div
       style={{
@@ -222,7 +224,7 @@ const Operation = (props: Props) => {
     >
       {projectInfoValues
         ?.filter((i: any) => i.key === 'category')[0]
-        ?.children?.filter((i: any) => i.status === 1)
+        ?.children?.filter((i: any) => i.status === 1 && i.work_type === 1)
         ?.map((k: any) => {
           return (
             <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
