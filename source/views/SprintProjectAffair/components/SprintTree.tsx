@@ -176,6 +176,7 @@ const SprintTree = (props: Props) => {
           parentId: item.id,
           categoryId: item.categoryId,
           iterateId: item.iterateId,
+          type: item.work_type,
         },
       }),
     )
@@ -514,7 +515,7 @@ const SprintTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true },
+        params: { noDataCreate: true, type: 7 },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))

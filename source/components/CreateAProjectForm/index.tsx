@@ -316,6 +316,8 @@ const CreateAProjectForm = () => {
 
       if (isEditId) {
         setStep(3)
+        setType(0)
+        setModel(0)
         getProjectInfo()
       } else {
         setStep(1)
@@ -405,7 +407,7 @@ const CreateAProjectForm = () => {
             }}
           >
             <RowStyle>
-              <Col tap onClick={() => onChangeStep(1)}>
+              <Col tap={!isEditId} onClick={() => onChangeStep(1)}>
                 <StyleLeft bgc={step >= 1} />
                 <Text bgc={step >= 1}>{types[type]}</Text>
                 <StyleRight bgc={step >= 1} />

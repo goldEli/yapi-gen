@@ -1,4 +1,21 @@
 {
+  "agile_growth_suggestion": "Agile can't grow without your suggestions ",
+
+  "suggestion_type": "Suggestion type",
+
+  "i_want_to": "I want to...",
+
+  "provide_improvement_suggestion": "Provide improvement suggestion",
+
+  "provide_bug_report": "Provide functional defects ",
+
+  "raise_other_issues": "Raise other issues",
+
+  "we_value_your_ideas": "We will value your ideas very much, thank you for your help ",
+
+  "enter_content2": "Please enter content ",
+
+  "i_hope_to_be_contacted_soon": "I hope you can contact me as soon as possible ",
   "fill_in_project_information": "Fill in project information",
   "not_started": "not started",
 

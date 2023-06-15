@@ -520,8 +520,8 @@ const CreateDemandRight = (props: Props) => {
           disabled={!props.isCreateDemand}
           options={format(
             (item.content === 'iterate_name'
-              ? removeNull(projectInfoValues, item.content)?.filter(
-                  (k: any) => k.status === 4,
+              ? removeNull(projectInfoValues, item.content)?.filter((k: any) =>
+                  [4, 1].includes(k.status),
                 )
               : removeNull(projectInfoValues, item.content)
             )?.map((i: any) => ({

@@ -44,7 +44,7 @@ import { setProjectInfo } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getMessage } from '../Message'
 import { setFlawDetailDrawer } from '@store/flaw'
-import { copyLink, getIdsForAt, removeNull } from '@/tools'
+import { copyLink, detailTimeFormat, getIdsForAt, removeNull } from '@/tools'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import useShareModal from '@/hooks/useShareModal'
 import CommentFooter from '../CommonComment/CommentFooter'
@@ -260,7 +260,7 @@ const FlawDetailDrawer = () => {
   }
 
   //   跳转配置
-  const onConfig = () => {
+  const onToConfig = () => {
     //
   }
 
@@ -320,7 +320,7 @@ const FlawDetailDrawer = () => {
       type: 'divider',
     },
     {
-      label: <div onClick={onConfig}>配置</div>,
+      label: <div onClick={onToConfig}>配置</div>,
       key: '4',
     },
   ]
@@ -602,11 +602,15 @@ const FlawDetailDrawer = () => {
           )}
           <DetailFooter>
             <div className="textBox">
-              <div>已创建：5天</div>
-              <span>更新日期：4分钟前</span>
+              <div>
+                已创建：{detailTimeFormat(drawerInfo.createdTime as string)}
+              </div>
+              <span>
+                更新日期：{detailTimeFormat(drawerInfo.update_at as string)}
+              </span>
             </div>
             <Tooltip title="配置字段">
-              <CloseWrap width={32} height={32} onClick={onConfig}>
+              <CloseWrap width={32} height={32} onClick={onToConfig}>
                 <CommonIconFont type="settings" />
               </CloseWrap>
             </Tooltip>

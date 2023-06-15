@@ -524,6 +524,7 @@ export const getDemandInfo: any = async (params: any) => {
     hierarchy: response.data.hierarchy,
     level_tree: response.data.level_tree,
     project_type: response.data.project_type,
+    update_at: response.data.update_at,
   }
 }
 

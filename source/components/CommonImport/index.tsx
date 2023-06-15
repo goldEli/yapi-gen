@@ -245,6 +245,7 @@ const CommonImport = (props: CommonImportProps) => {
       setSpinLoading(false)
       setStep(3)
       dispatch(setIsRefresh(true))
+      onUpdate()
     } catch (error) {
       setStep(1)
       setSpinLoading(false)
@@ -613,7 +614,6 @@ const CommonImport = (props: CommonImportProps) => {
                   type="primary"
                   onClick={() => {
                     onClear()
-                    onUpdate()
                   }}
                 >
                   {t('container.finish')}

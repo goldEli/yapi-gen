@@ -216,6 +216,7 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
     severity: response.data.severity,
     discovery_version: response.data.discovery_version,
     is_bug: response.data.is_bug,
+    update_at: response.data.update_at,
   }
 }
 

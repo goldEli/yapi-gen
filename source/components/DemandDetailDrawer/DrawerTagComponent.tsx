@@ -159,6 +159,7 @@ const DrawerTagComponent = (props: Props) => {
           allowClear
           value={value}
           placeholder={t('common.searchOrCreate')}
+          style={{ border: '1px solid var(--neutral-n6-d1)' }}
         />
       </div>
       <div style={{ maxHeight: 200, overflow: 'auto', marginTop: 4 }}>

@@ -106,16 +106,14 @@ const ItemDropdown = (props: PropsType) => {
       JSON.stringify({
         id: el.id,
         projectType: el.projectType,
+        type: el.projectType === 2 ? 'sprint' : 'iteration',
       }),
     )
     setIsOpen(false)
     // debugger
     // TODO
     console.log(el)
-
     if (el.projectType === 2) {
-      // navigate(`/SprintProjectManagement/SprintReport?data=${params}`)
-      // return
       navigate(
         `${
           el.defaultHomeMenu

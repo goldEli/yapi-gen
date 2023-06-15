@@ -460,7 +460,12 @@ const MainTable = (props: Props) => {
     return {
       onClick: () => {
         console.log('row---', row)
-        const params = encryptPhp(JSON.stringify({ id: row.id }))
+        const params = encryptPhp(
+          JSON.stringify({
+            id: row.id,
+            type: row.projectType === 2 ? 'sprint' : 'iteration',
+          }),
+        )
 
         if (row.projectType === 2) {
           navigate(

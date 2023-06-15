@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-handler-names */
-// eslint-disable typescript-eslint/no-extra-semi
 /* eslint-disable require-unicode-regexp */
 import { DatePicker, Space } from 'antd'
 import { useEffect, useState } from 'react'
@@ -24,10 +23,6 @@ import { getDate } from '../components/Date'
 import { recentCreateData } from '@/services/efficiency'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-interface ItemProps {
-  name: string
-  id: number
-}
 interface Props {
   homeType: string
   viewDataList: Array<Models.Efficiency.ViewItem> | undefined
@@ -39,7 +34,8 @@ interface Props {
   onEdit(): void
   value: number
   projectId: number
-  projectViewIds: number[] | undefined
+  projectViewIds: any
+  iterateViewIds: any
 }
 const periodTimes = [
   { label: 'two_week', value: 14 },
@@ -75,21 +71,20 @@ const Iteration = (props: Props) => {
   const [timekey, setTimekey] = useState<number>(-1)
   const { RangePicker } = DatePicker
   const [more, setMore] = useState<boolean>(false)
+  const [more1, setMore1] = useState<boolean>(false)
   const [person, setPerson] = useState<any>([])
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isVisibleView, setIsVisibleView] = useState<boolean>(false)
   const [projectListAll, setProjectListAll] = useState([])
   const [projectList, setProjectList] = useState<any>([])
   const [timeVal, setTimeVal] = useState<any>()
-  const [iterateData, setIterateData] =
-    useState<API.Sprint.RecentCreateData.Result>([])
+  const [iterateData, setIterateData] = useState<any>([])
+  const [iterateDataAll, setIterateDataAll] = useState<any>([])
   // 项目的id
   const [projectIds, setProjectIds] = useState<number[]>()
   const [iterateIds, setIterateIds] = useState<any>()
   const dispatch = useDispatch()
-  const { save, viewType, headerParmas } = useSelector(
-    store => store.performanceInsight,
-  )
+  const { save, viewType } = useSelector(store => store.performanceInsight)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
@@ -107,13 +102,74 @@ const Iteration = (props: Props) => {
       }),
     )
   }
+  // 这两个是监听传过来的数组id，一开始展示10条，包含的id没在里面的情况
   useEffect(() => {
-    if (props.projectViewIds) {
+    // 展示的tabs不同
+    props.homeType === 'iteration' && setTabs(tabs2)
+    props.homeType === 'sprint' && setTabs(tabs1)
+    setPerson(props.defalutConfig?.user_ids || [])
+    getTime(props.defalutConfig?.period_time || 'one_month')
+    // 回显是否是迭代还是周期
+    if (props.iterateViewIds.length >= 1) {
+      props.homeType === 'iteration' || props.homeType === 'sprint'
+        ? getIterateIdsList()
+        : null
+      setTabsActive(1)
+    } else {
+      props.homeType === 'iteration' || props.homeType === 'sprint'
+        ? getIterateData()
+        : null
+      setTabsActive(0)
+      setIterateIds([])
+    }
+  }, [props.iterateViewIds, props.homeType, props.defalutConfig])
+  useEffect(() => {
+    if (props.projectViewIds.length >= 1) {
       props.homeType === 'all' && getProjectIdsList()
+      props.homeType === 'all' && setTabsActive(0)
     } else {
       props.homeType === 'all' && getProjectData()
+      props.homeType === 'all' && setTabsActive(0)
+      // 回显的项目id
+      setProjectIds([])
     }
-  }, [props.projectViewIds, props.homeType])
+  }, [props.projectViewIds, props.homeType, props.defalutConfig])
+  const getIterateIdsList = async () => {
+    const res = await recentCreateData({
+      project_id: projectId,
+      resource_type: props.homeType === 'iteration' ? 1 : 2,
+    })
+    console.log(res, '999')
+    const filterVal = res
+      .filter((el: { id: number }) => props.iterateViewIds.includes(el.id))
+      .map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      }))
+    // 默认展示10条数据
+    setIterateDataAll(
+      res.map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      })),
+    )
+    const newData = res
+      .slice(0, 10)
+      .map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      }))
+    res.length < 10 && setMore1(true)
+    // 判断里面是否有
+    const hasIds = newData.filter(el => props.iterateViewIds.includes(el.id))
+    hasIds
+      ? setIterateData([...newData])
+      : setIterateData([...filterVal, ...newData])
+    setIterateIds(props.iterateViewIds)
+  }
   const getProjectIdsList = async () => {
     const res = await getProjectList({
       // self: 1,
@@ -141,38 +197,39 @@ const Iteration = (props: Props) => {
         label: el.name,
         value: el.id,
       }))
-    setProjectList([...filterVal, ...newData])
+    // 判断里面是否有
+    const hasIds = newData.filter((el: { id: number }) =>
+      props.iterateViewIds.includes(el.id),
+    )
+    hasIds
+      ? setProjectList([...newData])
+      : setProjectList([...filterVal, ...newData])
+    // 回显的项目id
+    setProjectIds(props.projectViewIds || [])
   }
-  useEffect(() => {
-    // 展示的tabs不同
-    if (props.homeType === 'iteration' || props.homeType === 'sprint') {
-      getIterateData()
-    }
-    props.homeType === 'iteration' && setTabs(tabs2)
-    props.homeType === 'sprint' && setTabs(tabs1)
-  }, [props.homeType])
   // 获取近期的冲刺项目
   const getIterateData = async () => {
     const res = await recentCreateData({
       project_id: projectId,
       resource_type: props.homeType === 'iteration' ? 1 : 2,
     })
-    setIterateData(res)
+    setIterateDataAll(
+      res.map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      })),
+    )
+    setIterateData(
+      res.slice(0, 10).map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      })),
+    )
+    res.length <= 10 && setMore1(true)
   }
-  useEffect(() => {
-    // 回显的项目id
-    setProjectIds(props.defalutConfig?.project_id || [])
-    setPerson(props.defalutConfig?.user_ids || [])
-    getTime(props.defalutConfig?.period_time || 'one_month')
-    // 回显是否是迭代还是周期
-    if (props.defalutConfig?.iterate_ids) {
-      setIterateIds(props.defalutConfig?.iterate_ids)
-      setTabsActive(1)
-    } else {
-      setTabsActive(0)
-      setIterateIds([])
-    }
-  }, [props.defalutConfig])
+
   // 获取时间回显
   const getTime = (type: string) => {
     const date = getDate(type)
@@ -220,12 +277,6 @@ const Iteration = (props: Props) => {
       ),
     )
   }
-
-  // 选择项目展开全部
-  const onShowAll = () => {
-    setProjectList(projectListAll)
-    setMore(true)
-  }
   // 成员保存弹窗提示需要
   const onConfirm = (data: Array<{ name: string; id: number }>) => {
     viewType === 1 && dispatch(setSave(true))
@@ -265,7 +316,7 @@ const Iteration = (props: Props) => {
   }
   // 迭代和冲刺的选择
   const oniterateChange = (val: number[]) => {
-    const tempObj = projectList.filter((k: any) => val.includes(k.id))
+    const tempObj = iterateData.filter((k: any) => val.includes(k.id))
     viewType === 1 && dispatch(setSave(true))
     dispatch(
       setHeaderParmas({
@@ -284,7 +335,7 @@ const Iteration = (props: Props) => {
   }
   // 全部冲刺或者全部迭代
   const onAllProject = (type: string) => {
-    const iterateIds = projectList.map((el: { id: number }) => el.id)
+    const iterateIds = iterateData.map((el: { id: number }) => el.id)
     setIterateIds(iterateIds)
     dispatch(
       setHeaderParmas({
@@ -292,7 +343,7 @@ const Iteration = (props: Props) => {
         period_time: '',
         time: {
           type: 0,
-          time: [minDate(projectList), maxDate(projectList)],
+          time: [minDate(iterateData), maxDate(iterateData)],
         },
       }),
     )
@@ -300,25 +351,26 @@ const Iteration = (props: Props) => {
   // 获取最小时间
   const minDate = (data: any) => {
     let mint: string = data.reduce(
-      (mint: string, item: { createdTime: string }) => {
-        let t: any = item.createdTime
+      (mint: string, item: { start_at: string }) => {
+        let t: any = item.start_at
+
         return new Date(mint.replace(/-/g, '/')) >
           new Date(t.replace(/-/g, '/'))
           ? t
           : mint
       },
-      data[0].createdTime,
+      data[0].start_at,
     )
     return mint
   }
   // 获取最大时间
   const maxDate = (data: any) => {
-    let maxt = data.reduce((maxt: string, item: { createdTime: string }) => {
-      let t: any = item.createdTime
+    let maxt = data.reduce((maxt: string, item: { end_at: string }) => {
+      let t: any = item.end_at
       return new Date(maxt.replace(/-/g, '/')) < new Date(t.replace(/-/g, '/'))
         ? t
         : maxt
-    }, data[0].createdTime)
+    }, data[0].end_at)
     return maxt
   }
   return (
@@ -356,7 +408,9 @@ const Iteration = (props: Props) => {
                 }),
               )
             }}
-            onShowAll={onShowAll}
+            onShowAll={() => {
+              setProjectList(projectListAll), setMore(true)
+            }}
           />
         )}
         {/* 成员选择 */}
@@ -405,7 +459,6 @@ const Iteration = (props: Props) => {
               setTimekey(e)
               setTimeVal([])
               viewType === 1 && dispatch(setSave(true))
-              console.log()
               dispatch(
                 setHeaderParmas({
                   time: {
@@ -452,12 +505,14 @@ const Iteration = (props: Props) => {
           <Select
             type={props.homeType}
             placeholder="请选择项目"
-            options={projectList}
-            more={more}
+            options={iterateData}
+            more={more1}
             value={iterateIds || []}
             onChange={(value: number[]) => oniterateChange(value)}
             onAllProject={onAllProject}
-            onShowAll={onShowAll}
+            onShowAll={() => {
+              setMore1(true), setIterateDataAll(iterateDataAll)
+            }}
           />
         )}
         {timekey === 0 && (

@@ -203,12 +203,14 @@ const Operation = (props: Props) => {
       dispatch(
         setAddWorkItemModal({
           visible: true,
-          params: { projectId: projectInfo?.id },
+          params: { projectId: projectInfo?.id, type: 1 },
         }),
       )
       setIsVisible(false)
     }, 0)
   }
+
+  console.log(projectInfoValues)
 
   const changeStatus = (
     <div
@@ -222,7 +224,7 @@ const Operation = (props: Props) => {
     >
       {projectInfoValues
         ?.filter((i: any) => i.key === 'category')[0]
-        ?.children?.filter((i: any) => i.status === 1)
+        ?.children?.filter((i: any) => i.status === 1 && i.work_type === 1)
         ?.map((k: any) => {
           return (
             <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
@@ -353,9 +355,7 @@ const Operation = (props: Props) => {
             getLoadListFields,
           }}
           templateTitle={t('newlyAdd.importChoose')}
-          onUpdate={() => {
-            // Todo 导入后更新列表
-          }}
+          onUpdate={props.onRefresh}
         />
       </CommonModal>
 

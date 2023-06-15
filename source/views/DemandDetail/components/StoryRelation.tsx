@@ -402,7 +402,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
             item={record}
             onUpdate={onUpdate}
           >
-            {record?.usersInfo.length > 0 && (
+            {/* {record?.usersInfo.length > 0 && (
               <MultipleAvatar
                 max={3}
                 list={
@@ -413,8 +413,8 @@ const StoryRelation = (props: RelationStoriesProps) => {
                   })) || []
                 }
               />
-            )}
-            {!record?.usersInfo?.length && '--'}
+            )} */}
+            {/* {!record?.usersInfo?.length && '--'} */}
           </TableQuickEdit>
         )
       },
