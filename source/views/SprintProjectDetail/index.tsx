@@ -243,7 +243,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   }
 
   // 跳转配置
-  const onConfig = () => {
+  const onToConfig = () => {
     //
   }
 
@@ -272,7 +272,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       type: 'divider',
     },
     {
-      label: <div onClick={onConfig}>配置</div>,
+      label: <div onClick={onToConfig}>配置</div>,
       key: '4',
     },
   ]
@@ -348,9 +348,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   useEffect(() => {
     setCurrentIndex(sprintIds.findIndex((i: any) => i === sprintId))
   }, [sprintIds])
-  console.log(sprintIds)
-  console.log(sprintId)
-  console.log(currentIndex)
 
   return (
     <Wrap>
