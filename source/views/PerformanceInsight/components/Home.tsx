@@ -318,6 +318,7 @@ const Home = () => {
     const filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
       el => el.id === value,
     )
+    console.log(filterVal, 'filterVal')
     setProjectViewIds(filterVal?.config.project_id || [])
     setIterateViewIds(filterVal?.config.iterate_ids || [])
     setDefalutConfig(filterVal)
