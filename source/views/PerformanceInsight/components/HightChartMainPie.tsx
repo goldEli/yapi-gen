@@ -5,6 +5,7 @@ import {
   Myd,
 } from '@/components/CommonProjectComponent/CommonMember/style'
 import IconFont from '@/components/IconFont'
+import useSetTitle from '@/hooks/useSetTitle'
 import { Dropdown, Menu, Space } from 'antd'
 import Highcharts from 'highcharts'
 import { useEffect, useState } from 'react'
@@ -79,8 +80,6 @@ const HightChartMainPie = (props: {
   chart: Models.Efficiency.ChartPie | undefined
   onChange?(item: { key: string; label: string }): void
 }) => {
-  const [tips, setTips] = useState('')
-
   const options: any = {
     credits: {
       enabled: false,
@@ -88,11 +87,10 @@ const HightChartMainPie = (props: {
     },
     title: {
       floating: true,
-      text: props.titleType ? '' : `${props.chart?.total}项`,
       align: 'center',
+      text: props.titleType ? '' : `${props.chart?.total}项`,
       verticalAlign: 'middle',
       y: 30,
-      x: -90,
       style: {
         fontSize: 20,
       },
@@ -149,13 +147,20 @@ const HightChartMainPie = (props: {
     series: [
       {
         type: 'pie',
-        size: '90%',
+        size: '95%',
         name: 'Browser share',
         innerSize: '80%',
-        center: ['35%', '55%'],
+        center: ['100', '55%'],
         data: props.chart?.seriesData,
       },
     ],
+  }
+  const pieCallback = (c: any) => {
+    setTimeout(() => {
+      c.setTitle({
+        x: -((c.chartWidth - 233) / 2 - 10),
+      })
+    }, 50)
   }
   const [defaultValue, setDefaultValue] = useState<{
     label: string
@@ -194,6 +199,7 @@ const HightChartMainPie = (props: {
           width={400}
           highcharts={Highcharts}
           options={options}
+          callback={pieCallback}
         />
       </HightChartsWrap>
     </div>
