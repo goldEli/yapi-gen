@@ -122,10 +122,34 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
+  const categoryList = [
+    {
+      id: 1138,
+      project_id: 631,
+      company_id: 1504303190303051800,
+      name: '长故事',
+      labelName: '长故事',
+      color: '',
+      attachment_id: 457,
+      sort: 0,
+      status: 1,
+      remark: '',
+      work_type: 3,
+      is_bug: 2,
+      story_count: 2,
+      status_count: 3,
+      attachment_path:
+        'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+    },
+  ]
   return (
     <Wrap>
       <div style={{ marginBottom: '20px', width: 400 }}>
-        {/* <CategoryDropdown projectId={605} mode="multiple"></CategoryDropdown> */}
+        <CategoryDropdown
+          projectId={631}
+          footer={false}
+          categoryList={categoryList}
+        ></CategoryDropdown>
       </div>
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>
