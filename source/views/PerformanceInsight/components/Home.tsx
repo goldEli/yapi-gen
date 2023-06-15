@@ -184,7 +184,6 @@ const Home = () => {
     setOptionVal(filterVal?.id || 0)
     setDefalutConfig(filterVal)
     dispatch(setViewType(filterVal?.type))
-    console.log(filterVal, 'filterVal')
     setProjectViewIds(filterVal?.config.project_id)
     // 有视图数据才设置
     filterVal &&
@@ -339,7 +338,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
     })
     setWorkDataList(res)
   }
@@ -362,7 +366,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
       sort: str,
     })
     setCharts1({
@@ -392,7 +401,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
     })
     setCharts4({
       time: `${res.start_time} ~ ${res.end_time}`,
@@ -420,7 +434,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
       dimension: str,
     })
     setCharts6({
@@ -448,7 +467,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
     })
     setCharts2({
       time: `${res.work_completion_period.start_time} ~ ${res.work_completion_period.end_time}`,

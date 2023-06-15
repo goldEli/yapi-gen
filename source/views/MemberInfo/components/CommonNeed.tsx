@@ -114,7 +114,11 @@ const MoreWrap = (props: MoreWrapProps) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { editId: item.id, projectId: item.project_id },
+        params: {
+          editId: item.id,
+          projectId: item.project_id,
+          type: item.work_type,
+        },
       }),
     )
   }
@@ -136,6 +140,7 @@ const MoreWrap = (props: MoreWrapProps) => {
           isChild: true,
           parentId: item.id,
           categoryId: item.categoryId,
+          type: item.work_type,
         },
       }),
     )

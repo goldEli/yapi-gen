@@ -178,7 +178,7 @@ const IterationTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { editId: item.id, projectId: item.project_id },
+        params: { editId: item.id, projectId: item.project_id, type: 1 },
       }),
     )
   }
@@ -201,6 +201,7 @@ const IterationTable = (props: Props) => {
           parentId: item.id,
           iterateId: props.iterateId,
           categoryId: item.categoryId,
+          type: 1,
         },
       }),
     )
@@ -370,7 +371,7 @@ const IterationTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { projectId, iterateId: props.iterateId },
+        params: { projectId, iterateId: props.iterateId, type: 1 },
       }),
     )
   }

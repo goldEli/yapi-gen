@@ -90,10 +90,8 @@ const DemandStatusBox = (props: any) => {
   }, [])
 
   useEffect(() => {
-    if (isUpdateStatus) {
-      init()
-    }
-  }, [isUpdateStatus])
+    init()
+  }, [demandInfo])
 
   return (
     <div>
