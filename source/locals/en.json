@@ -939,7 +939,8 @@
     "uploadTransaction": "Upload transaction",
     "uploadFile": "Upload file",
     "importDefect": "Import defect",
-    "uploadDefect": "Upload defect"
+    "uploadDefect": "Upload defect",
+    "operationSuccess": "Successful operation"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",

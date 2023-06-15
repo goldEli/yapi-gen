@@ -18,7 +18,7 @@ const ModifyStatusModal: React.FC<ModifyStatusModalProps> = props => {
   if (!modifyStatusModalInfo.info) {
     return <></>
   }
-  console.log('modifyStatusModalInfo', modifyStatusModalInfo)
+
   return (
     <StatusModal
       isVisible={modifyStatusModalInfo.visible}

@@ -87,8 +87,6 @@ export const uploadFile = (file: File, editorRef: any, key2?: any) => {
 }
 
 const CreateDemandLeft = (props: Props) => {
-  console.log(props, '数据')
-
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useDispatch()
@@ -584,7 +582,7 @@ const CreateDemandLeft = (props: Props) => {
           <Form.Item label={t('newlyAdd.beforeCategory')}>
             <CategoryWrap>
               <img src={categoryObj?.category_attachment} alt="" />
-              <span>{categoryObj.name}</span>
+              <span>{categoryObj?.name}</span>
             </CategoryWrap>
           </Form.Item>
           <Form.Item

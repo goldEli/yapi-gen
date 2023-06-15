@@ -473,13 +473,14 @@ export const moveTreeList = async (params: any) => {
 
 export const updateDemandStatus: any = async (params: any) => {
   delete params.fields.reviewerValue
-  await http.put<any>('updateDemandStatus', {
+  const response = await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
     story_id: params.nId,
     category_status_to_id: params.toId,
     fields: params.fields,
     verify_user_id: params.verifyId ?? undefined,
   })
+  return response
 }
 
 export const getDemandInfo: any = async (params: any) => {
