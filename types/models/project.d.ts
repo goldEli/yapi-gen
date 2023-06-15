@@ -66,6 +66,7 @@ declare namespace Model.Project {
   interface Category {
     active?: boolean
     attachmentPath?: string
+    attachment_path?: string
     color?: string
     hasDemand?: number
     id?: number

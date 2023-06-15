@@ -69,6 +69,8 @@ interface IProps {
   projectId: number
   is_select?: number
   mode?: 'multiple' | undefined
+  footer?: boolean
+  categoryList?: Model.Project.Category[]
 }
 const CategoryDropdown = (props: IProps) => {
   const {
@@ -79,13 +81,14 @@ const CategoryDropdown = (props: IProps) => {
     value,
     mode,
     width = '100%',
+    footer = true,
+    categoryList,
   } = props
   const [options, setOptions] = useState<Model.Project.CategoryList[]>([])
   const [cacheList, setCacheList] = useState<Model.Project.Category[]>([])
   const [selectData, setSelectData] = useState<Model.Project.CategoryValue[]>(
     [],
   )
-  const memoProjectId = useMemo(() => projectId, [])
 
   const { getTypeCategory } = useCategoryList()
   const LabelElement = (props: {
@@ -104,7 +107,7 @@ const CategoryDropdown = (props: IProps) => {
       item.children.forEach(item => {
         item.name = (
           <LabelElement
-            url={item.attachmentPath}
+            url={item.attachmentPath || item.attachment_path}
             labelName={item.labelName}
           ></LabelElement>
         )
@@ -144,6 +147,7 @@ const CategoryDropdown = (props: IProps) => {
     })
     setCacheList(list)
     const data = getTypeCategory(list, 'work_type')
+    console.log(data)
     const options = getOptions(data)
     if (!options) {
       return
@@ -152,9 +156,19 @@ const CategoryDropdown = (props: IProps) => {
   }
 
   useEffect(() => {
+    if (categoryList) {
+      const data = getTypeCategory(categoryList, 'work_type')
+      const options = getOptions(data)
+      if (!options) {
+        return
+      }
+      setOptions(options)
+      return
+    }
     init()
-  }, [memoProjectId])
-  useEffect(() => {}, [value])
+  }, [projectId])
+
+  // useEffect(() => {}, [value])
   return (
     <Wrap
       placeholder="选择类别"
@@ -179,6 +193,9 @@ const CategoryDropdown = (props: IProps) => {
         }
       }}
       onFocus={() => {
+        if (categoryList) {
+          return
+        }
         const selectDataIds = selectData.map(item => item.id)
         const filterSelectData = cacheList.filter(item =>
           selectDataIds.includes(item.id),
@@ -215,16 +232,18 @@ const CategoryDropdown = (props: IProps) => {
         return (
           <>
             {menu}
-            <ClearOptionsBox>
-              <span
-                onClick={() => {
-                  onClearCallback && onClearCallback()
-                }}
-              >
-                清空所有选项
-              </span>
-              <span onClick={reverseClick}>反选</span>
-            </ClearOptionsBox>
+            {footer ? (
+              <ClearOptionsBox>
+                <span
+                  onClick={() => {
+                    onClearCallback && onClearCallback()
+                  }}
+                >
+                  清空所有选项
+                </span>
+                <span onClick={reverseClick}>反选</span>
+              </ClearOptionsBox>
+            ) : null}
           </>
         )
       }}

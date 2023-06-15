@@ -297,6 +297,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       props.onBack()
     }
   }, [projectInfo])
+  useEffect(() => {
+    console.log('location', location, paramsData)
+  }, [location.pathname])
   const updateNode = (child: { name: any }) => {
     setAffairType((prevData: any) => {
       const newData = [...prevData]
