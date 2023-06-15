@@ -337,6 +337,12 @@ const DemandIndex = () => {
   }, [key, isGrid, order, pageObj, projectId])
 
   useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      getList(isGrid, searchItems, pageObj, order)
+    }
+  }, [isUpdateAddWorkItem])
+
+  useEffect(() => {
     // 进入主页清除已存储的筛选计数
     setFilterKeys([])
   }, [])
@@ -351,7 +357,7 @@ const DemandIndex = () => {
       <ManageView projectId={projectId} />
       <OptionalFeld
         allTitleList={allTitleList}
-        plainOptions={plainOptions}
+        plainOptions={plainOptions.filter((i: any) => i.is_flaw !== 1)}
         plainOptions2={plainOptions2}
         plainOptions3={plainOptions3}
         checkList={titleList}

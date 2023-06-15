@@ -135,7 +135,7 @@ const DemandTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { editId: item.id, projectId: item.project_id },
+        params: { editId: item.id, projectId: item.project_id, type: 1 },
       }),
     )
   }
@@ -157,6 +157,7 @@ const DemandTable = (props: Props) => {
           isChild: true,
           parentId: item.id,
           categoryId: item.categoryId,
+          type: 1,
         },
       }),
     )
@@ -328,6 +329,7 @@ const DemandTable = (props: Props) => {
         visible: true,
         params: {
           noDataCreate: true,
+          type: 1,
         },
       }),
     )

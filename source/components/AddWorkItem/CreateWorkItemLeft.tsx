@@ -87,8 +87,6 @@ export const uploadFile = (file: File, editorRef: any, key2?: any) => {
 }
 
 const CreateDemandLeft = (props: Props) => {
-  console.log(props, '数据')
-
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useDispatch()
@@ -366,6 +364,22 @@ const CreateDemandLeft = (props: Props) => {
     }
   }
 
+  // 计算类别
+  const computedCategory = () => {
+    let result: any = []
+    if (params?.type) {
+      // type=7的时候返回事务下所有类型，否则返回相应的
+      result = props.allCategoryList?.filter((i: any) =>
+        params.type === 7
+          ? [3, 4, 5, 6].includes(i.work_type) && i.status === 1
+          : i.work_type === params.type && i.status === 1,
+      )
+    } else {
+      result = props.allCategoryList?.filter((i: any) => i.status === 1)
+    }
+    return result
+  }
+
   useEffect(() => {
     if (categoryObj?.id) {
       form.setFieldsValue({
@@ -521,6 +535,7 @@ const CreateDemandLeft = (props: Props) => {
       inputRefDom.current?.focus()
     }, 100)
   }, [])
+
   const validateMaxNonEmptyLength = (_: any, value: any) => {
     if (value && value.includes(' ')) {
       return Promise.reject('不允许包含空格')
@@ -565,7 +580,6 @@ const CreateDemandLeft = (props: Props) => {
       }, 100)
     }
   }, [params?.editId, props?.detail])
-  console.log(props.allCategoryList)
 
   return (
     <LeftWrap ref={leftDom}>
@@ -681,29 +695,18 @@ const CreateDemandLeft = (props: Props) => {
               value={categoryObj?.id}
               disabled={!props.projectId}
             >
-              {props.allCategoryList
-                ?.filter((i: any) => {
-                  if (params?.type === 4) {
-                    return i.work_type === 4
-                  }
-                  if (params?.type === 2) {
-                    return i.work_type === 2
-                  }
-                  return i.status === 1
-                })
-
-                ?.map((i: any) => {
-                  return (
-                    <Select.Option value={i.id} key={i.id} label={i.name}>
-                      <MoreOptions
-                        type="project"
-                        name={i.name}
-                        dec={i.dec}
-                        img={i.category_attachment}
-                      />
-                    </Select.Option>
-                  )
-                })}
+              {computedCategory()?.map((i: any) => {
+                return (
+                  <Select.Option value={i.id} key={i.id} label={i.name}>
+                    <MoreOptions
+                      type="project"
+                      name={i.name}
+                      dec={i.dec}
+                      img={i.category_attachment}
+                    />
+                  </Select.Option>
+                )
+              })}
             </CustomSelect>
           </Form.Item>
         </div>
@@ -711,7 +714,7 @@ const CreateDemandLeft = (props: Props) => {
           getValueFromEvent={event => {
             return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
-          label={t('common.demandName')}
+          label="标题"
           name="name"
           rules={[
             { required: true, message: '请输入内容' },

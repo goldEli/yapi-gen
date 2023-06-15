@@ -193,6 +193,7 @@ const DndKitTable = (props: any) => {
         params: {
           editId,
           projectId: record?.project_id,
+          type: 4,
         },
       }),
     )

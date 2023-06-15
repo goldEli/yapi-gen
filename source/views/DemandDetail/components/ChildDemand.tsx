@@ -246,7 +246,7 @@ const ChildDemand = (props: ChildDemandProps) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { editId: item.id, projectId: item.project_id },
+        params: { editId: item.id, projectId: item.project_id, type: 1 },
       }),
     )
   }
@@ -267,6 +267,7 @@ const ChildDemand = (props: ChildDemandProps) => {
           isChild: true,
           parentId: item.id,
           categoryId: item.categoryId ?? item.category,
+          type: 1,
         },
       }),
     )

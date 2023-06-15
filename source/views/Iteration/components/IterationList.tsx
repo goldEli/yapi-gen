@@ -37,6 +37,7 @@ import {
   setCreateIterationParams,
   setIsCreateIterationVisible,
   setIsRefreshList,
+  setIsUpdateList,
 } from '@store/iterate'
 import NoData from '@/components/NoData'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -155,6 +156,8 @@ const IterationList = (props: IterationListProps) => {
     const result = await getIterateList(params)
     setDataList(result)
     setIsSpinning(false)
+    dispatch(setIsRefreshList(false))
+    dispatch(setIsUpdateList(false))
 
     // 如果删除id是当前选中的 或当前筛选没有当前选中的，则更新列表第一个
     if (
@@ -194,7 +197,6 @@ const IterationList = (props: IterationListProps) => {
       )
       dispatch(setProjectInfoValues(newValues))
     }
-    dispatch(setIsRefreshList(false))
   }
 
   //   开始时间

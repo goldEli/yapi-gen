@@ -209,75 +209,6 @@ const Operation = (props: Props) => {
   const onChangeFilter = () => {
     setFilterState(!filterState)
   }
-
-  // const onChangeCategory = (e: any, item: any) => {
-  //   dispatch(setCreateCategory(item))
-
-  //   // 需求列表筛选参数赋值给 弹窗
-  //   dispatch(setFilterParamsModal(filterParams))
-  //   setTimeout(() => {
-  //     dispatch(
-  //       setAddWorkItemModal({
-  //         visible: true,
-  //         params: { projectId: projectInfo?.id },
-  //       }),
-  //     )
-  //     setIsVisible(false)
-  //   }, 0)
-  // }
-
-  // const changeStatus = (
-  //   <div
-  //     style={{
-  //       padding: '4px 0px',
-  //       display: 'flex',
-  //       flexDirection: 'column',
-  //       alignItems: 'flex-start',
-  //       minWidth: i18n.language === 'zh' ? 110 : 151,
-  //     }}
-  //   >
-  //     {projectInfoValues
-  //       ?.filter((i: any) => i.key === 'category')[0]
-  //       ?.children?.filter((i: any) => i.status === 1)
-  //       ?.map((k: any) => {
-  //         return (
-  //           <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
-  //             <img
-  //               src={
-  //                 k.category_attachment
-  //                   ? k.category_attachment
-  //                   : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-  //               }
-  //               style={{
-  //                 width: '18px',
-  //                 height: '18px',
-  //                 marginRight: '8px',
-  //               }}
-  //               alt=""
-  //             />
-  //             <span>{k.content}</span>
-  //           </LiWrap>
-  //         )
-  //       })}
-  //   </div>
-  // )
-
-  // const onImportClick = () => {
-  //   setIsVisible(false)
-  //   setIsShowImport(true)
-  //   setIsVisibleMore(false)
-  // }
-
-  // const onExportClick = () => {
-  //   if (props.dataLength > 5000) {
-  //     setIsVisibleMore(false)
-  //     setExceedState(true)
-  //     return
-  //   }
-  //   setIsVisible(false)
-  //   setIsShowExport(true)
-  //   setIsVisibleMore(false)
-  // }
   useEffect(() => {
     return () => {
       dispatch(onTapSearchChoose({}))
@@ -286,13 +217,6 @@ const Operation = (props: Props) => {
 
   return (
     <StickyWrap ref={stickyWrapDom}>
-      {/* <DeleteConfirm
-        onConfirm={() => setExceedState(false)}
-        onChangeVisible={() => setExceedState(false)}
-        isVisible={exceedState}
-        title={t('p2.toast')}
-        text={t('p2.exportDemandText')}
-      /> */}
       <DeleteConfirmModal />
       <OperationWrap>
         <LeftBox>

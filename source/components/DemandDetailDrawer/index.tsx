@@ -207,6 +207,7 @@ const DemandDetailDrawer = () => {
         params: {
           editId: item.id,
           projectId: drawerInfo.projectId,
+          type: 1,
         },
       }),
     )
@@ -230,6 +231,7 @@ const DemandDetailDrawer = () => {
           isChild: true,
           parentId: item.id,
           categoryId: item.categoryId,
+          type: 1,
         },
       }),
     )

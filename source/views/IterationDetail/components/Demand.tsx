@@ -191,6 +191,7 @@ const Demand = (props: DemandProps) => {
           isChild: true,
           parentId: item.id,
           categoryId: item.categoryId,
+          type: 2,
         },
       }),
     )
@@ -204,6 +205,7 @@ const Demand = (props: DemandProps) => {
         params: {
           editId: item.id,
           projectId: item.project_id,
+          type: 2,
         },
       }),
     )
@@ -234,7 +236,11 @@ const Demand = (props: DemandProps) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { projectId: getProjectIdByUrl(), iterateId: iterateInfo?.id },
+        params: {
+          projectId: getProjectIdByUrl(),
+          iterateId: iterateInfo?.id,
+          type: 2,
+        },
       }),
     )
   }
