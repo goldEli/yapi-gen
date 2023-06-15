@@ -258,6 +258,7 @@ const DemandDetail = () => {
         params: {
           editId: demandInfo.id,
           projectId: demandInfo.projectId,
+          type: 1,
         },
       }),
     )
