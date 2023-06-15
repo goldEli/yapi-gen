@@ -278,7 +278,7 @@ const Header = () => {
       <LeftMsg>
         <img style={{ width: '24px' }} src={activeCategory?.attachmentPath} />
         <MsgContent>
-          <div>{activeCategory?.name}</div>
+          <div>{activeCategory?.name}11111</div>
           <div>{activeCategory?.remark || '--'}</div>
         </MsgContent>
       </LeftMsg>
