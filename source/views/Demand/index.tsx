@@ -321,16 +321,16 @@ const DemandIndex = () => {
     }
   }, [titles])
 
-  useEffect(() => {
-    if (tapSort) {
-      const key = Object.keys(tapSort)
-      const value = Object.values(tapSort)
+  // useEffect(() => {
+  //   if (tapSort) {
+  //     const key = Object.keys(tapSort)
+  //     const value = Object.values(tapSort)
 
-      if (tapSort) {
-        setOrder({ value: value[0], key: key[0] })
-      }
-    }
-  }, [tapSort])
+  //     if (tapSort) {
+  //       setOrder({ value: value[0], key: key[0] })
+  //     }
+  //   }
+  // }, [tapSort])
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
