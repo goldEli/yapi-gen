@@ -175,6 +175,10 @@ const Home = () => {
     // 集合图表
     getStatisticsOther()
   }
+  const updateViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
+    const res = await viewsList(parmas)
+    setViewDataList(res)
+  }
   // 获取已有视图
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
@@ -270,7 +274,7 @@ const Home = () => {
         type: 'success',
       })
       // 刷新视图的接口
-      getViewList({ project_id: projectId, use_type: 3 })
+      updateViewList({ project_id: projectId, use_type: 3 })
     } else {
       getMessage({
         msg: '保存失败',
@@ -318,7 +322,6 @@ const Home = () => {
     const filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
       el => el.id === value,
     )
-    console.log(filterVal, 'filterVal')
     setProjectViewIds(filterVal?.config.project_id || [])
     setIterateViewIds(filterVal?.config.iterate_ids || [])
     setDefalutConfig(filterVal)
@@ -546,7 +549,7 @@ const Home = () => {
         type: 'success',
       })
       // 刷新视图的接口
-      getViewList({ project_id: projectId, use_type: 3 })
+      updateViewList({ project_id: projectId, use_type: 3 })
       dispatch(setSave(false))
     } else {
       getMessage({
