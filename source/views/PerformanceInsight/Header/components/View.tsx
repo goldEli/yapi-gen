@@ -101,6 +101,7 @@ const View = (props: View) => {
       props.onChange(item?.name || '', item?.id || 0)
     }
   }, [props.value])
+
   const getLabel = (el: { name: string; id: number }) => {
     return (
       <Label key={el.id}>
@@ -156,7 +157,7 @@ const View = (props: View) => {
         ...optionsDefault,
       })
       props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
-      dispatch(setViewType(2))
+      dispatch(setViewType(optionsDefault.type))
       dispatch(setSave(false))
       dispatch(
         setHeaderParmas({

@@ -1,4 +1,18 @@
 {
+  "fill_in_project_information": "填写项目信息",
+  "not_started": "未开始",
+  "in_progress": "进行中",
+  "completed": "已完成",
+  "requirement_design": "需求设计",
+  "art": "美术",
+  "original_artwork": "原画",
+  "import_existing_project": "已有项目导入",
+  "import_description": "可以从已有的项目里导入现有工作流和项目成员，在新的项目里也可以随时修改它",
+  "select_project_template2": "选择项目模版",
+  "template_description": "我们帮您预制了一些工作流程，希望能减少您的工作，当然今后也可以随时改变它",
+  "my_created_projects": "我创建的项目",
+  "my_joined_projects": "我加入的项目",
+
   "select_project_type": "选择项目类型",
   "sprint_project": "冲刺项目",
   "iteration_project": "迭代项目",

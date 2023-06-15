@@ -11,29 +11,30 @@ import MainTable from '../MainTable/MainTable'
 import { getProjectList } from '@/services/project'
 import MainTable2 from '../MainTable/MainTable2'
 import { TabsItem } from '../StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 const ProjectTemplate = (props: any) => {
   console.log(props.searchId)
-
+  const [t] = useTranslation()
   const arr = [
     {
       id: 1,
-      name: '软件开发',
+      name: t('software_development'),
       img: pt3,
       text: '',
       tags: [
         {
-          name: '未开始',
+          name: t('not_started'),
           color: 'var(--function-success)',
           t_color: 'var(--neutral-white-d1)',
         },
         {
-          name: '进行中',
+          name: t('in_progress'),
           color: 'var(--primary-d2)',
           t_color: 'var(--neutral-white-d1)',
         },
         {
-          name: '已完成',
+          name: t('completed'),
           color: 'var(--neutral-n7)',
           t_color: 'var(--neutral-n1-d1)',
         },
@@ -41,22 +42,22 @@ const ProjectTemplate = (props: any) => {
     },
     {
       id: 2,
-      name: '游戏设计',
+      name: t('game_design'),
       img: pt2,
       text: '',
       tags: [
         {
-          name: '需求设计',
+          name: t('requirement_design'),
           color: 'var(--primary-d2)',
           t_color: 'var(--neutral-white-d1)',
         },
         {
-          name: '美术',
+          name: t('art'),
           color: 'var(--primary-d2)',
           t_color: 'var(--neutral-white-d1)',
         },
         {
-          name: '原画',
+          name: t('original_artwork'),
           color: 'var(--primary-d2)',
           t_color: 'var(--neutral-white-d1)',
         },
@@ -69,9 +70,9 @@ const ProjectTemplate = (props: any) => {
     },
     {
       id: 3,
-      name: '已有项目导入',
+      name: t('import_existing_project'),
       img: pt1,
-      text: '可以从已有的项目里导入现有工作流和项目成员，在新的项目里也可以随时修改它。',
+      text: t('import_description'),
       tags: [],
     },
   ]
@@ -158,10 +159,8 @@ const ProjectTemplate = (props: any) => {
   }, [pageObj, order, props.searchId, activeTab])
   return (
     <div style={{ width: '1000px' }}>
-      <Title>选择项目模版</Title>
-      <Title2>
-        我们帮您预制了一些工作流程，希望能减少您的工作，当然今后也可以随时改变它
-      </Title2>
+      <Title>{t('select_project_template2')}</Title>
+      <Title2>{t('template_description')}</Title2>
       <div
         style={{
           display: 'flex',
@@ -241,10 +240,10 @@ const ProjectTemplate = (props: any) => {
           }}
         >
           <TabsItem isActive={activeTab === 1} onClick={() => onChangeTab(1)}>
-            <div>我创建的项目</div>
+            <div>{t('my_created_projects')}</div>
           </TabsItem>
           <TabsItem isActive={activeTab === 2} onClick={() => onChangeTab(2)}>
-            <div>我加入的项目</div>
+            <div>{t('my_joined_projects')}</div>
           </TabsItem>
         </div>
         <MainTable2

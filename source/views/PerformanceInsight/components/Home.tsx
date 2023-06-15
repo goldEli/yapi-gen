@@ -140,6 +140,7 @@ const Home = () => {
   const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
+  const [projectViewIds, setProjectViewIds] = useState<any>([])
   const [viewDataList, setViewDataList] = useState<
     Array<Models.Efficiency.ViewItem>
   >([])
@@ -183,6 +184,7 @@ const Home = () => {
     setOptionVal(filterVal?.id || 0)
     setDefalutConfig(filterVal)
     dispatch(setViewType(filterVal?.type))
+    setProjectViewIds(filterVal?.config.project_id)
     // 有视图数据才设置
     filterVal &&
       dispatch(
@@ -336,7 +338,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
     })
     setWorkDataList(res)
   }
@@ -359,7 +366,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
       sort: str,
     })
     setCharts1({
@@ -389,7 +401,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
     })
     setCharts4({
       time: `${res.start_time} ~ ${res.end_time}`,
@@ -417,7 +434,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
       dimension: str,
     })
     setCharts6({
@@ -445,7 +467,12 @@ const Home = () => {
             undefined,
       period_time:
         // eslint-disable-next-line no-undefined, no-negated-condition
-        headerParmas?.time?.type !== 0 ? headerParmas.period_time : undefined,
+        headerParmas?.time?.type !== 0
+          ? headerParmas.period_time
+          : headerParmas.iterate_ids?.length === 0 &&
+            headerParmas.period_time === ''
+          ? 'one_month'
+          : '',
     })
     setCharts2({
       time: `${res.work_completion_period.start_time} ~ ${res.work_completion_period.end_time}`,
@@ -560,6 +587,7 @@ const Home = () => {
         defalutConfig={defalutConfig?.config}
         viewDataList={viewDataList}
         onCreateView={onCreateView}
+        projectViewIds={projectViewIds}
         onDelView={onDelView}
         onChange={onGetOptionValue}
         onSetDefaulut={onSetDefaulut}
