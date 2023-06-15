@@ -122,27 +122,25 @@ const SystemFeedback = () => {
               lineHeight: '28px',
             }}
           >
-            Agile的成长，离不开您的建议
+            {t('agile_growth_suggestion')}
           </div>
           <Form form={form} layout="vertical">
             <Form.Item
-              label={<LabelTitle>建议类型</LabelTitle>}
+              label={<LabelTitle>{t('suggestion_type')}</LabelTitle>}
               name="type"
               rules={[{ required: true, message: '请选择类型' }]}
             >
-              <Select placeholder="我想..." allowClear>
-                <Option value={1}>提供改进建议</Option>
-                <Option value={2}>提供功能缺陷</Option>
-                <Option value={9}>提出其他问题</Option>
+              <Select placeholder={t('i_want_to')} allowClear>
+                <Option value={1}>{t('provide_improvement_suggestion')}</Option>
+                <Option value={2}>{t('provide_bug_report')}</Option>
+                <Option value={9}>{t('raise_other_issues')}</Option>
               </Select>
             </Form.Item>
             <Form.Item
               style={{
                 marginBottom: '30px',
               }}
-              label={
-                <LabelTitle>我们将会非常重视您的想法，感谢您的帮助*</LabelTitle>
-              }
+              label={<LabelTitle>{t('we_value_your_ideas')}*</LabelTitle>}
               name="content"
               rules={[
                 {
@@ -157,7 +155,7 @@ const SystemFeedback = () => {
                         alignItems: 'center',
                       }}
                     >
-                      请输入内容
+                      {t('enter_content2')}
                     </div>
                   ),
                   whitespace: true,
@@ -168,12 +166,14 @@ const SystemFeedback = () => {
               <Editor
                 upload={uploadFile}
                 getSuggestions={() => []}
-                placeholder="请输入内容"
+                placeholder={t('enter_content2')}
               />
             </Form.Item>
           </Form>
           <Footer>
-            <Checkbox onChange={onChange}>我希望可以尽快联系我</Checkbox>
+            <Checkbox onChange={onChange}>
+              {t('i_hope_to_be_contacted_soon')}
+            </Checkbox>
             <div
               style={{
                 display: 'flex',
