@@ -203,7 +203,7 @@ const Operation = (props: Props) => {
       dispatch(
         setAddWorkItemModal({
           visible: true,
-          params: { projectId: projectInfo?.id },
+          params: { projectId: projectInfo?.id, type: 1 },
         }),
       )
       setIsVisible(false)
@@ -353,9 +353,7 @@ const Operation = (props: Props) => {
             getLoadListFields,
           }}
           templateTitle={t('newlyAdd.importChoose')}
-          onUpdate={() => {
-            // Todo 导入后更新列表
-          }}
+          onUpdate={props.onRefresh}
         />
       </CommonModal>
 

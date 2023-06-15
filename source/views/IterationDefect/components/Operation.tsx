@@ -276,7 +276,7 @@ const Operation = (props: Props) => {
       dispatch(
         setAddWorkItemModal({
           visible: true,
-          params: { projectId: projectInfo?.id },
+          params: { projectId: projectInfo?.id, type: 2 },
         }),
       )
       setIsVisible(false)
@@ -340,7 +340,7 @@ const Operation = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true },
+        params: { noDataCreate: true, type: 2 },
       }),
     )
   }

@@ -321,20 +321,26 @@ const DemandIndex = () => {
     }
   }, [titles])
 
-  useEffect(() => {
-    if (tapSort) {
-      const key = Object.keys(tapSort)
-      const value = Object.values(tapSort)
+  // useEffect(() => {
+  //   if (tapSort) {
+  //     const key = Object.keys(tapSort)
+  //     const value = Object.values(tapSort)
 
-      if (tapSort) {
-        setOrder({ value: value[0], key: key[0] })
-      }
-    }
-  }, [tapSort])
+  //     if (tapSort) {
+  //       setOrder({ value: value[0], key: key[0] })
+  //     }
+  //   }
+  // }, [tapSort])
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
   }, [key, isGrid, order, pageObj, projectId])
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      getList(isGrid, searchItems, pageObj, order)
+    }
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     // 进入主页清除已存储的筛选计数
@@ -351,7 +357,7 @@ const DemandIndex = () => {
       <ManageView projectId={projectId} />
       <OptionalFeld
         allTitleList={allTitleList}
-        plainOptions={plainOptions}
+        plainOptions={plainOptions.filter((i: any) => i.is_flaw !== 1)}
         plainOptions2={plainOptions2}
         plainOptions3={plainOptions3}
         checkList={titleList}

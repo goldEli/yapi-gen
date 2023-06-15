@@ -116,6 +116,7 @@ const ChildrenDemand = (props: Props) => {
           parentId: props.detail.id,
           projectId: props.detail.projectId,
           categoryId: props.detail.categoryId ?? props.detail.category,
+          type: props.detail.work_type,
         },
       }),
     )

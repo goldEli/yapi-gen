@@ -142,7 +142,7 @@ const IterationDefectDetail = () => {
   }
 
   // 跳转配置
-  const onConfig = () => {
+  const onToConfig = () => {
     //
   }
 
@@ -188,7 +188,7 @@ const IterationDefectDetail = () => {
       type: 'divider',
     },
     {
-      label: <div onClick={onConfig}>配置</div>,
+      label: <div onClick={onToConfig}>配置</div>,
       key: '4',
     },
   ]

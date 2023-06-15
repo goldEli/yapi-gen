@@ -226,7 +226,7 @@ const Operation = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true },
+        params: { noDataCreate: true, type: 7 },
       }),
     )
   }
@@ -418,7 +418,7 @@ const Operation = (props: Props) => {
                 dispatch(
                   setAddWorkItemModal({
                     visible: true,
-                    params: { noDataCreate: true },
+                    params: { noDataCreate: true, type: 7 },
                   }),
                 )
               }
