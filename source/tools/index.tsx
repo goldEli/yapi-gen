@@ -497,6 +497,11 @@ function getIdsForAt(htmlString: string) {
   return Array.from(new Set(dataIdValues))
 }
 
+// 计算详情中使用的时间
+function detailTimeFormat(time: string) {
+  return moment(time).format('YYYY年MM月DD日 HH:mm')
+}
+
 export {
   getIdsForAt,
   getIsPermission,
@@ -512,4 +517,5 @@ export {
   getNowDate,
   isDateIntersection,
   mapToArray,
+  detailTimeFormat,
 }

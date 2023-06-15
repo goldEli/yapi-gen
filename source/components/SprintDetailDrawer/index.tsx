@@ -48,7 +48,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import BasicDemand from './component/BasicDemand'
 import CommonComment from '../CommonComment'
 import useShareModal from '@/hooks/useShareModal'
-import { copyLink, getIdsForAt, removeNull } from '@/tools'
+import { copyLink, detailTimeFormat, getIdsForAt, removeNull } from '@/tools'
 import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
 import CommentFooter from '../CommonComment/CommentFooter'
 import LongStroyBread from '../LongStroyBread'
@@ -712,8 +712,12 @@ const SprintDetailDrawer = () => {
           )}
           <DetailFooter>
             <div className="textBox">
-              <div>已创建：5天</div>
-              <span>更新日期：4分钟前</span>
+              <div>
+                已创建：{detailTimeFormat(drawerInfo.createdTime as string)}
+              </div>
+              <span>
+                更新日期：{detailTimeFormat(drawerInfo.update_at as string)}
+              </span>
             </div>
             <Tooltip title="配置字段">
               <CloseWrap width={32} height={32} onClick={onConfig}>

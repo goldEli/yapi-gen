@@ -1,5 +1,5 @@
 import BasicDemand from '@/components/SprintDetailDrawer/component/BasicDemand'
-import { getParamsData } from '@/tools'
+import { detailTimeFormat, getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import { useSearchParams, useNavigate } from 'react-router-dom'
@@ -52,8 +52,12 @@ const SprintDetailBasic = (props: Props) => {
 
       <BasicFooter>
         <div className="textBox">
-          <div>已创建：5天</div>
-          <span>更新日期：4分钟前</span>
+          <div>
+            已创建：{detailTimeFormat(affairsInfo.createdTime as string)}
+          </div>
+          <span>
+            更新日期：{detailTimeFormat(affairsInfo.update_at as string)}
+          </span>
         </div>
         <Tooltip title="配置字段">
           <CloseWrap width={32} height={32} onClick={onToConfig}>
