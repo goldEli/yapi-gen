@@ -5,7 +5,6 @@ import {
   Myd,
 } from '@/components/CommonProjectComponent/CommonMember/style'
 import IconFont from '@/components/IconFont'
-import useSetTitle from '@/hooks/useSetTitle'
 import { Dropdown, Menu, Space } from 'antd'
 import Highcharts from 'highcharts'
 import { useEffect, useState } from 'react'
@@ -155,8 +154,14 @@ const HightChartMainPie = (props: {
       },
     ],
   }
+  let timer: any = null
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
   const pieCallback = (c: any) => {
-    setTimeout(() => {
+    timer = setTimeout(() => {
       c.setTitle({
         x: -((c.chartWidth - 233) / 2 - 10),
       })
