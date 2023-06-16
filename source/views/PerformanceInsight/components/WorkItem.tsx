@@ -131,7 +131,6 @@ const Main = (props: UserInfo) => {
       },
     },
   ]
-  console.log(paramsData, 'paramsData')
   return (
     <MainStyle>
       <UserMsg>
