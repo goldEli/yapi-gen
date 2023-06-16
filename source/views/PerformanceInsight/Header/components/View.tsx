@@ -77,29 +77,28 @@ const View = (props: View) => {
         key: 'last',
       },
     ])
-    props.viewDataList &&
-      setValue(props.viewDataList.find(el => el.is_default === 1))
-    props.viewDataList &&
-      options.length >= 1 &&
-      props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
+    // props.viewDataList &&
+    //   setValue(props.viewDataList.find(el => el.is_default === 1))
+    // props.viewDataList &&
+    //   options.length >= 1 &&
+    //   props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
   }, [options])
   useEffect(() => {
-    if (props.value !== value?.id) {
-      const item = props.viewDataList?.find(el => el.id === props.value) || {
-        name: '',
-        id: 0,
-        label: '',
-        status: 0,
-        type: 0,
-        key: '',
-        config: { iterate_ids: [] },
-      }
-      setValue({
-        ...item,
-        name: item.name,
-      })
-      props.onChange(item?.name || '', item?.id || 0)
+    // if (props.value !== value?.id) {
+    const item = props.viewDataList?.find(el => el.id === props.value) || {
+      name: '',
+      id: 0,
+      label: '',
+      status: 0,
+      type: 0,
+      key: '',
+      config: { iterate_ids: [] },
     }
+    setValue({
+      ...item,
+      name: item.name,
+    })
+    props.onChange(item?.name || '', item?.id || 0)
   }, [props.value])
 
   const getLabel = (el: { name: string; id: number }) => {
@@ -272,8 +271,8 @@ const View = (props: View) => {
         titleType={dialogTitle}
         onConfirm={(value, type) => {
           setDialogItem({ name: '' }),
-            props.onCreateView(value, type, key),
-            setIsVisible(false)
+            console.log(value, type, key, 'value, type, key')
+          props.onCreateView(value, type, key), setIsVisible(false)
         }}
         onClose={() => setIsVisible(false)}
         isVisible={isVisible}

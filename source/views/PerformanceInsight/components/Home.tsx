@@ -147,6 +147,7 @@ const Home = () => {
   >([])
   // 'iteration''sprint' 'all'
   const [homeType, setHomeType] = useState('all')
+  const [viewTitle, setViewTitle] = useState('')
   const [workDataList, setWorkDataList] =
     useState<API.Sprint.GetStatisticsTotal.Result>()
   const [optionVal, setOptionVal] = useState<number>(0)
@@ -178,6 +179,8 @@ const Home = () => {
   const updateViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)
+    dispatch(setViewType(viewType))
+    setOptionVal(optionVal)
   }
   // 获取已有视图
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
@@ -187,6 +190,7 @@ const Home = () => {
       el => el.is_default === 1,
     )
     setOptionVal(filterVal?.id || 0)
+    setViewTitle(filterVal?.name || '')
     setDefalutConfig(filterVal)
     dispatch(setViewType(filterVal?.type))
     setProjectViewIds(filterVal?.config.project_id || [])
@@ -273,8 +277,14 @@ const Home = () => {
         msg: '保存成功',
         type: 'success',
       })
-      // 刷新视图的接口
-      updateViewList({ project_id: projectId, use_type: 3 })
+      // 刷新视图的接口,不是跟新的name,不刷新回显的name
+      if (type === 'add') {
+        updateViewList({ project_id: projectId, use_type: 3 })
+      } else {
+        viewTitle === val && type === 'add'
+          ? updateViewList({ project_id: projectId, use_type: 3 })
+          : getViewList({ project_id: projectId, use_type: 3 })
+      }
     } else {
       getMessage({
         msg: '保存失败',
@@ -318,6 +328,7 @@ const Home = () => {
   }
   // 获取下拉框的值视图的
   const onGetOptionValue = (title: string, value: number) => {
+    setViewTitle(title)
     setOptionVal(value)
     const filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
       el => el.id === value,
