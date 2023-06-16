@@ -67,6 +67,8 @@ const languages: {
 ]
 
 const changeLanguage = async (language: LocaleKeys) => {
+  console.log(language)
+
   const allLocals = await Promise.all([
     loadI18nLanguage(language),
     loadAntdLanguage(language),

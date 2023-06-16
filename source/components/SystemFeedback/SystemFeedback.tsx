@@ -59,6 +59,9 @@ const Footer = styled.div`
 const SystemFeedback = () => {
   const dispatch = useDispatch()
   const freedVisible = useSelector(store => store.freed.freedVisible)
+  const language = useSelector(store => store.global.language)
+  console.log(language)
+
   const [t] = useTranslation()
   const [form] = Form.useForm()
 
@@ -164,6 +167,7 @@ const SystemFeedback = () => {
               ]}
             >
               <Editor
+                language={language === 'en'}
                 upload={uploadFile}
                 getSuggestions={() => []}
                 placeholder={t('enter_content2')}
