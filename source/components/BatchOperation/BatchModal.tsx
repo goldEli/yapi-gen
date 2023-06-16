@@ -78,7 +78,7 @@ const BatchModal = (props: Props) => {
       config: getFlawBatchEditConfig,
       update: batchFlawEdit,
       del: batchFlawDelete,
-      checkboxText: '',
+      checkboxText: '同时删除对应子项',
       text: '勾选的缺陷将被删除，确认删除吗？',
     },
     {

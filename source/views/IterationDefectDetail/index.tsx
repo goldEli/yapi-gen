@@ -30,8 +30,12 @@ import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
 import { getMessage } from '@/components/Message'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
-import { updateFlawCategory, updateFlawStatus } from '@/services/flaw'
-import { useSearchParams } from 'react-router-dom'
+import {
+  deleteFlaw,
+  updateFlawCategory,
+  updateFlawStatus,
+} from '@/services/flaw'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { copyLink, getParamsData } from '@/tools'
 import { getWorkflowList } from '@/services/project'
 import { setFlawInfo } from '@store/flaw'
@@ -40,8 +44,10 @@ import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import RelationStories from './components/RelationStories'
 import { setIsUpdateStatus } from '@store/project'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const IterationDefectDetail = () => {
+  const navigate = useNavigate()
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useDispatch()
@@ -147,8 +153,14 @@ const IterationDefectDetail = () => {
   }
 
   // 确认删除
-  const onDeleteConfirm = () => {
-    //
+  const onDeleteConfirm = async () => {
+    await deleteFlaw({
+      projectId: flawInfo.projectId || 0,
+      id: flawInfo.id || 0,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    const params = encryptPhp(JSON.stringify({ id: flawInfo.projectId }))
+    navigate(`/ProjectManagement/Defect?data=${params}`)
   }
 
   // 删除缺陷弹窗
