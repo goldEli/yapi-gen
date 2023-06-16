@@ -44,12 +44,18 @@ import { setProjectInfo } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getMessage } from '../Message'
 import { setFlawDetailDrawer } from '@store/flaw'
-import { copyLink, detailTimeFormat, getIdsForAt, removeNull } from '@/tools'
+import {
+  copyLink,
+  detailTimeFormat,
+  getIdsForAt,
+  removeNull,
+  getParamsData,
+} from '@/tools'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import useShareModal from '@/hooks/useShareModal'
 import CommentFooter from '../CommonComment/CommentFooter'
 import CommonComment from '../CommonComment'
-
+import { useNavigate, useSearchParams } from 'react-router-dom'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -69,6 +75,10 @@ const FlawDetailDrawer = () => {
       dom: useRef<any>(null),
     },
   }
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams) || {}
+  const { id } = paramsData
+  const navigate = useNavigate()
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const commentDom: any = createRef()
@@ -262,6 +272,20 @@ const FlawDetailDrawer = () => {
   //   跳转配置
   const onToConfig = () => {
     //
+    console.log('demandInfo', drawerInfo)
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 4,
+        id: id,
+        categoryName: '特效',
+        pageIdx: 'DemandDetail',
+        categoryItem: {
+          id: drawerInfo.category,
+          status: 1,
+        },
+      }),
+    )
+    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
 
   const onDeleteSprintConfirm = () => {
