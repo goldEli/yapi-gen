@@ -108,6 +108,9 @@ const Flaw = (props: FlawProps) => {
       schedule_start: searchParamsObj?.schedule_start,
       schedule_end: searchParamsObj?.schedule_end,
       custom_field: searchParamsObj?.custom_field,
+      discovery_version: searchParamsObj?.discovery_version,
+      severity: searchParamsObj?.severity,
+      solution: searchParamsObj?.solution,
     }
     dispatch(setFilterParams(params))
     const result = await getFlawList(params)

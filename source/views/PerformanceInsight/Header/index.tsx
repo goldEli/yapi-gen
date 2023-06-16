@@ -139,6 +139,7 @@ const Iteration = (props: Props) => {
       project_id: projectId,
       resource_type: props.homeType === 'iteration' ? 1 : 2,
     })
+    console.log(res, '999')
     const filterVal = res
       .filter((el: { id: number }) => props.iterateViewIds.includes(el.id))
       .map((el: { id: number; name: string }) => ({
@@ -162,7 +163,11 @@ const Iteration = (props: Props) => {
         value: el.id,
       }))
     res.length < 10 && setMore1(true)
-    setIterateData([...filterVal, ...newData])
+    // 判断里面是否有
+    const hasIds = newData.filter(el => props.iterateViewIds.includes(el.id))
+    hasIds
+      ? setIterateData([...newData])
+      : setIterateData([...filterVal, ...newData])
     setIterateIds(props.iterateViewIds)
   }
   const getProjectIdsList = async () => {
@@ -192,7 +197,13 @@ const Iteration = (props: Props) => {
         label: el.name,
         value: el.id,
       }))
-    setProjectList([...filterVal, ...newData])
+    // 判断里面是否有
+    const hasIds = newData.filter((el: { id: number }) =>
+      props.iterateViewIds.includes(el.id),
+    )
+    hasIds
+      ? setProjectList([...newData])
+      : setProjectList([...filterVal, ...newData])
     // 回显的项目id
     setProjectIds(props.projectViewIds || [])
   }
@@ -217,15 +228,6 @@ const Iteration = (props: Props) => {
       })),
     )
     res.length <= 10 && setMore1(true)
-    // dispatch(
-    //   setProjectDataList(
-    //     res.map((el: { id: number; name: string }) => ({
-    //       ...el,
-    //       label: el.name,
-    //       value: el.id,
-    //     })),
-    //   ),
-    // )
   }
 
   // 获取时间回显

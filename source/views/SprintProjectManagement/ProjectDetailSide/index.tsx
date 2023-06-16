@@ -274,7 +274,12 @@ const ProjectDetailSide = () => {
                 menuList.map((i: any) => (
                   <MenuItem
                     key={i.path}
-                    isActive={pathname === i.path}
+                    isActive={
+                      (pathname ===
+                        '/SprintProjectManagement/SprintProjectDetail' &&
+                        i.path === '/SprintProjectManagement/Affair') ||
+                      pathname === i.path
+                    }
                     onClick={() => onChangeRouter(i)}
                     hidden={!i.isPermission}
                   >

@@ -332,9 +332,9 @@ const CreateDemandLeft = (props: Props) => {
 
   // 删除需求类别
   const onClearCategory = () => {
+    setCategoryObj({})
     props.onResetForm()
     props.onGetFieldList([])
-    setCategoryObj({})
   }
 
   // 获取项目数据
@@ -388,7 +388,11 @@ const CreateDemandLeft = (props: Props) => {
       })
       getCategoryField(categoryObj?.id)
       getStatusList(categoryObj?.id)
+      return
     }
+    form.setFieldsValue({
+      requiredCategory: '',
+    })
   }, [categoryObj])
 
   useEffect(() => {
@@ -486,7 +490,6 @@ const CreateDemandLeft = (props: Props) => {
           (j: any) => j.work_type === params?.type,
         )[0]
         setCategoryObj(resultObj)
-
         // return
       }
       if (params?.type === 2) {
@@ -599,7 +602,7 @@ const CreateDemandLeft = (props: Props) => {
           <Form.Item label={t('newlyAdd.beforeCategory')}>
             <CategoryWrap>
               <img src={categoryObj?.category_attachment} alt="" />
-              <span>{categoryObj.name}</span>
+              <span>{categoryObj?.name}</span>
             </CategoryWrap>
           </Form.Item>
           <Form.Item
@@ -690,16 +693,22 @@ const CreateDemandLeft = (props: Props) => {
               categoryList={computedCategory()?.map((i: any) => ({
                 ...i,
                 labelName: i.name,
+                attachmentPath: i.category_attachment,
               }))}
               projectId={props.projectId as number}
               value={categoryObj?.id}
-              onChangeCallBack={(val: Model.Project.CategoryValue[]) => {
+              onChangeCallBack={(val: number) => {
+                console.log('data---', val)
                 //
+                onSelectCategory(val)
               }}
               onClearCallback={() => {
                 //
+                onClearCategory()
               }}
+              bordered
             />
+            {/* {categoryObj?.id} */}
             {/* <CustomSelect
               onSelect={onSelectCategory}
               onClear={onClearCategory}
