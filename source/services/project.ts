@@ -939,10 +939,10 @@ export const getProjectRecent = async () => {
 
 // 获取父需求列表
 export const getParentList = async (params: any) => {
-  const response = await http.get<any>(urls.getParentList(params.key), {
+  const response = await http.get<any>('getParentList', {
     search: {
       project_id: params?.projectId,
-      all: params?.all ? 1 : 0,
+      story_id: params?.id,
     },
   })
   return response.data.map((i: any) => ({

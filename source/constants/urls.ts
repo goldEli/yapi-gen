@@ -446,10 +446,8 @@ const urls = {
   getFlowConfig: '/b/story/flowConfig',
   // 获取需求流转配置(冲刺)
   getFlowConfigForSprint: '/b/transaction/flowConfig',
-
-  getParentList: function (key: string) {
-    return `/b/${key}/getlist`
-  },
+  // 获取下拉父需求列表
+  getParentList: '/b/project/getEffectiveParentStory',
 
   // 复制视图
   copyView: '/b/story/views/copy',

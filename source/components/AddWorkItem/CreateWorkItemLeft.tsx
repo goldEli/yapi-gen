@@ -281,8 +281,7 @@ const CreateDemandLeft = (props: Props) => {
 
   // 获取父需求列表
   const getParentData = (type: number) => {
-    const key = type === 1 ? 'story' : type === 2 ? 'flaw' : 'transaction'
-    dispatch(getParentList({ all: true, projectId: props.projectId, key }))
+    dispatch(getParentList({ projectId: props.projectId, id: params?.editId }))
   }
 
   // 切换需求类别
