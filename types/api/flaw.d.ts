@@ -273,6 +273,9 @@ declare namespace API.Flaw {
 
   namespace GetFlawList {
     type Params = {
+      discovery_version: any
+      severity: any
+      solution: any
       projectId: number
       searchValue: string
       iterateIds: number[]
