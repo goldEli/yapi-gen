@@ -29,8 +29,8 @@ import {
   getAffairsCommentList,
   getAffairsInfo,
 } from '@store/affairs/affairs.thunk'
-import { useSearchParams } from 'react-router-dom'
-import { copyLink, getParamsData } from '@/tools'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import useShareModal from '@/hooks/useShareModal'
 import { Popover, Tooltip, Form, Input, Dropdown, MenuProps } from 'antd'
 import CommonModal from '@/components/CommonModal'
@@ -39,6 +39,7 @@ import CustomSelect from '@/components/CustomSelect'
 import { getWorkflowList } from '@/services/project'
 import { getMessage } from '@/components/Message'
 import {
+  deleteAffairs,
   updateAffairsCategory,
   updateAffairsStatus,
   updateAffairsTableParams,
@@ -46,7 +47,7 @@ import {
 import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import LongStroyBread from '@/components/LongStroyBread'
-import { setIsUpdateStatus } from '@store/project'
+import { setIsUpdateAddWorkItem, setIsUpdateStatus } from '@store/project'
 import { getDemandList } from '@/services/daily'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
@@ -54,7 +55,7 @@ interface IProps {}
 
 const SprintProjectDetail: React.FC<IProps> = props => {
   const [t] = useTranslation()
-
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -63,9 +64,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, sprintId } = paramsData
+  const { id, sprintId, changeIds } = paramsData
   const { affairsInfo } = useSelector(store => store.affairs)
-  const { projectInfoValues } = useSelector(store => store.project)
+  const { projectInfoValues, projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
@@ -79,6 +82,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   const [leftWidth, setLeftWidth] = useState(400)
   const [currentIndex, setCurrentIndex] = useState(0)
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/transaction/update',
+  )
 
   // 复制标题
   const onCopy = () => {
@@ -108,26 +116,24 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         alignItems: 'flex-start',
       }}
     >
-      {resultCategory?.map((k: any) => {
-        return (
-          <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
-            <img
-              src={
-                k.category_attachment
-                  ? k.category_attachment
-                  : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-              }
-              style={{
-                width: '18px',
-                height: '18px',
-                marginRight: '8px',
-              }}
-              alt=""
-            />
-            <span>{k.content}</span>
-          </LiWrap>
-        )
-      })}
+      {resultCategory
+        ?.filter((i: any) => i.work_type === affairsInfo.work_type)
+        ?.map((k: any) => {
+          return (
+            <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
+              <img
+                src={k.category_attachment}
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{k.content}</span>
+            </LiWrap>
+          )
+        })}
     </div>
   )
 
@@ -210,21 +216,21 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     history.go(-1)
   }
 
-  // 确认分享
-  const onShareConfirm = () => {
-    //
-  }
-
   // 确认删除
-  const onDeleteConfirm = () => {
-    //
+  const onDeleteConfirm = async () => {
+    await deleteAffairs({
+      projectId: affairsInfo.projectId || 0,
+      id: affairsInfo.id || 0,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    const params = encryptPhp(JSON.stringify({ id: affairsInfo.projectId }))
+    navigate(`/SprintProjectManagement/Affair?data=${params}`)
   }
 
   // 分享弹窗
   const onShare = () => {
     open({
       onOk: () => {
-        onShareConfirm()
         return Promise.resolve()
       },
     })
@@ -304,6 +310,20 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     )
   }, [])
 
+  // 向上查找需求
+  const onUpDemand = () => {
+    const newIndex = changeIds[currentIndex - 1]
+    if (!currentIndex) return
+    dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
+  }
+
+  // 向下查找需求
+  const onDownDemand = () => {
+    const newIndex = changeIds[currentIndex + 1]
+    if (currentIndex === changeIds?.length - 1) return
+    dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
+  }
+
   useEffect(() => {
     // 获取项目信息中的需求类别
     const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
@@ -313,41 +333,21 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         ?.filter((i: any) => i.id !== affairsInfo?.category)
         ?.filter((i: any) => i.status === 1),
     )
+    // 获取当前需求的下标， 用作上一下一切换
+    setCurrentIndex(
+      (changeIds || []).findIndex((i: any) => i === affairsInfo?.id),
+    )
   }, [affairsInfo, projectInfoValues])
 
   useEffect(() => {
-    getDemandList(id).then((res: any) => {
-      console.log(res)
-      setSprintIds(res.data.map((i: any) => i.id))
-    })
-  }, [id])
-
-  const onUpDemand = async () => {
-    const newIndex = sprintIds[currentIndex - 1]
-    const params = encryptPhp(
-      JSON.stringify({
-        id,
-        sprintId: newIndex,
-      }),
-    )
-    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
-    location.replace(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
-    console.log('1')
-  }
-  const onDownDemand = () => {
-    const newIndex = sprintIds[currentIndex + 1]
-    const params = encryptPhp(
-      JSON.stringify({
-        id,
-        sprintId: newIndex,
-      }),
-    )
-    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
-    location.replace(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
-  }
-  useEffect(() => {
-    setCurrentIndex(sprintIds.findIndex((i: any) => i === sprintId))
-  }, [sprintIds])
+    if (isUpdateAddWorkItem) {
+      dispatch(setAffairsInfo({}))
+      dispatch(getAffairsInfo({ projectId: id, sprintId }))
+      setTimeout(() => {
+        setIsUpdateAddWorkItem(false)
+      }, 0)
+    }
+  }, [isUpdateAddWorkItem])
 
   return (
     <Wrap>
@@ -428,7 +428,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <LongStroyBread
             longStroy={affairsInfo}
             onClick={() => {
-              console.log('回调')
+              dispatch(getAffairsInfo({ projectId: id, sprintId }))
             }}
           ></LongStroyBread>
         </div>
@@ -504,9 +504,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
           <ChangeStatusPopover
+            projectId={affairsInfo.projectId}
             record={affairsInfo}
             onChangeStatus={onChangeStatus}
             type={2}
+            isCanOperation={!hasEdit}
           >
             <StateTag
               name={affairsInfo.status?.status.content}

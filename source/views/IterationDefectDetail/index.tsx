@@ -36,7 +36,7 @@ import {
   updateFlawStatus,
 } from '@/services/flaw'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { copyLink, getParamsData } from '@/tools'
+import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import { getWorkflowList } from '@/services/project'
 import { setFlawInfo } from '@store/flaw'
 import FlawInfo from './components/FlawInfo'
@@ -65,7 +65,7 @@ const IterationDefectDetail = () => {
   const [resultCategory, setResultCategory] = useState([])
   const [tabActive, setTabActive] = useState('1')
   const { flawInfo } = useSelector(store => store.flaw)
-  const { projectInfoValues, isUpdateAddWorkItem } = useSelector(
+  const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
   )
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -73,6 +73,11 @@ const IterationDefectDetail = () => {
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/flaw/update',
+  )
 
   // 复制标题
   const onCopy = () => {
@@ -526,7 +531,7 @@ const IterationDefectDetail = () => {
           </span>
           <ChangeStatusPopover
             projectId={flawInfo.projectId}
-            isCanOperation
+            isCanOperation={!hasEdit}
             record={flawInfo}
             onChangeStatus={onChangeStatus}
             type={3}

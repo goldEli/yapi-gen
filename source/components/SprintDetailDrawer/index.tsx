@@ -33,13 +33,14 @@ import ChildSprint from '@/views/SprintProjectDetail/components/ChildSprint'
 import LinkSprint from '@/views/SprintProjectDetail/components/LinkSprint'
 import {
   addAffairsComment,
+  deleteAffairs,
   deleteAffairsComment,
   getAffairsInfo,
   updateAffairsComment,
   updateAffairsTableParams,
 } from '@/services/affairs'
 import { getProjectInfo } from '@/services/project'
-import { setProjectInfo } from '@store/project'
+import { setIsUpdateAddWorkItem, setProjectInfo } from '@store/project'
 import {
   getAffairsCommentList,
   saveAffairsDetailDrawer,
@@ -360,17 +361,26 @@ const SprintDetailDrawer = () => {
     }, 10)
   }
 
-  const onDeleteSprintConfirm = () => {
-    //
+  // 确认删除
+  const onDeleteConfirm = async () => {
+    await deleteAffairs({
+      projectId: drawerInfo.projectId,
+      id: drawerInfo.id,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    onCancel()
+    // 更新列表
+    dispatch(setIsUpdateAddWorkItem(true))
   }
 
   // 删除事务弹窗
   const onDelete = () => {
+    console.log(111212121)
     openDelete({
       title: '删除确认',
       text: '确认删除该事务？',
       onConfirm() {
-        onDeleteSprintConfirm()
+        onDeleteConfirm()
         return Promise.resolve()
       },
     })
@@ -380,7 +390,6 @@ const SprintDetailDrawer = () => {
   const onShare = () => {
     open({
       onOk: () => {
-        // onShareConfirm()
         return Promise.resolve()
       },
     })
@@ -631,7 +640,9 @@ const SprintDetailDrawer = () => {
               menu={{ items }}
               getPopupContainer={n => n}
             >
-              <CommonButton type="icon" icon="more" />
+              <div>
+                <CommonButton type="icon" icon="more" />
+              </div>
             </DropdownMenu>
           </Space>
         </Header>

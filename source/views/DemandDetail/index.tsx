@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from '@store/index'
 import useShareModal from '@/hooks/useShareModal'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { copyLink, getParamsData } from '@/tools'
+import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import { Form, MenuProps, Popover, Tabs, TabsProps, Tooltip } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
@@ -65,7 +65,7 @@ const DemandDetail = () => {
   const paramsData = getParamsData(searchParams)
   const { id, demandId, changeIds } = paramsData
   const { demandInfo } = useSelector(store => store.demand)
-  const { projectInfoValues, isUpdateAddWorkItem } = useSelector(
+  const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
   )
   const [form] = Form.useForm()
@@ -79,6 +79,11 @@ const DemandDetail = () => {
   })
 
   const [tabActive, setTabActive] = useState('1')
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
 
   // 复制标题
   const onCopy = () => {
@@ -592,7 +597,7 @@ const DemandDetail = () => {
           </span>
           <ChangeStatusPopover
             projectId={demandInfo.projectId}
-            isCanOperation
+            isCanOperation={!hasEdit}
             record={demandInfo}
             onChangeStatus={onChangeStatus}
             type={1}
