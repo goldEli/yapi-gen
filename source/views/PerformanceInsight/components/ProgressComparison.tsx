@@ -744,7 +744,6 @@ const ProgressComparison = (props: Props) => {
     parmas: API.Sprint.EfficiencyMemberWorkList.Params,
   ) => {
     const res = await efficiencyMemberWorkList(parmas)
-    console.log(res, '000', parmas)
     setMemberWorkList(res)
   }
   // 获取后半截缺陷的列表

@@ -57,7 +57,6 @@ export function getMonthBefor(num: number) {
   }
   month = month < 10 ? '0' + month : month
   resultDate = year + '-' + month + '-' + date
-  console.log(resultDate, 'resultDate')
   let endTime: any = new Date(Date.now())
   const days = {
     startTime: resultDate,

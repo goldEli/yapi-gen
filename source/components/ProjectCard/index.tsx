@@ -47,8 +47,6 @@ const TextOfIcon = (props: Props) => (
   </Tooltip>
 )
 const Index = (props: any) => {
-  console.log(props)
-
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { userInfo } = useSelector(store => store.user)

@@ -214,7 +214,6 @@ const Main = (props: UserInfo) => {
   )
 }
 const SelectPersonnel = (props: Props) => {
-  console.log(props)
   return (
     <Detail
       children={
