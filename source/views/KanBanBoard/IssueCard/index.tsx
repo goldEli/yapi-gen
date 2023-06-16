@@ -25,7 +25,6 @@ import {
 import ThreeDot from '../ThreeDot'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getProjectIdByUrl } from '@/tools'
-import { useSelector } from '@store/index'
 import useStoryIds from '../hooks/useStoryIds'
 
 interface IssueCardProps {
@@ -58,7 +57,6 @@ const IssueCard = (props: IssueCardProps) => {
         <StoryText
           onClick={e => {
             e.stopPropagation()
-
             openDemandDetail(
               { ...props.item, demandIds: ids, projectId: getProjectIdByUrl() },
               getProjectIdByUrl(),

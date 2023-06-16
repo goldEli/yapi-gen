@@ -1,4 +1,13 @@
 {
+  "agile_growth_suggestion": "Agile的成长，离不开您的建议",
+  "suggestion_type": "建议类型",
+  "i_want_to": "我想...",
+  "provide_improvement_suggestion": "提供改进建议",
+  "provide_bug_report": "提供功能缺陷",
+  "raise_other_issues": "提出其他问题",
+  "we_value_your_ideas": "我们将会非常重视您的想法，感谢您的帮助",
+  "enter_content2": "请输入内容",
+  "i_hope_to_be_contacted_soon": "我希望可以尽快联系我",
   "fill_in_project_information": "填写项目信息",
   "not_started": "未开始",
   "in_progress": "进行中",
@@ -853,7 +862,8 @@
     "uploadTransaction": "上传事务",
     "uploadFile": "上传文件",
     "importDefect": "导入缺陷",
-    "uploadDefect": "上传缺陷"
+    "uploadDefect": "上传缺陷",
+    "operationSuccess": "操作成功"
   },
   "components": {
     "noALlPermission": "你当前无任何权限，请联系企业管理员分配权限",

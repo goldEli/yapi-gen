@@ -12,6 +12,7 @@ declare namespace Model.KanBan {
     id: number
     name: string
     attachment_path: string
+    work_type: 1 | 2 | 3 | 4 | 5 | 6
   }
   // #FF5C5Eextremely-high --function-tag3
   // #FA9746high           --function-tag4

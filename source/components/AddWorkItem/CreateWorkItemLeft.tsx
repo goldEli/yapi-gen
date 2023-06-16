@@ -602,7 +602,7 @@ const CreateDemandLeft = (props: Props) => {
           <Form.Item label={t('newlyAdd.beforeCategory')}>
             <CategoryWrap>
               <img src={categoryObj?.category_attachment} alt="" />
-              <span>{categoryObj.name}</span>
+              <span>{categoryObj?.name}</span>
             </CategoryWrap>
           </Form.Item>
           <Form.Item
