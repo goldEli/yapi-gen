@@ -1,6 +1,10 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { getParamsData } from '@/tools'
+import { useDispatch } from '@store/index'
+import { setAddWorkItemModal } from '@store/project'
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import Detail from './Detail'
 import DetailHeader from './DetailHeader'
 import {
@@ -57,7 +61,6 @@ const Work = (props: WorkType) => {
     )
   }
   useEffect(() => {
-    console.log(props.historyWorkObj, 'props.historyWorkObj')
     if (props.type === 1) {
       setList(
         props.historyWorkObj?.created_work.map(el => ({
@@ -135,10 +138,15 @@ const WorkRecords = (props: WorkRecordsTyle) => {
   )
 }
 const Main = (props: UserInfo) => {
+  console.log(props, '00')
+  const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
   const [type, setType] = useState<number>(0)
   const onChangeIdx = (num: number) => {
     setType(num)
   }
+  console.log(paramsData)
   return (
     <>
       <MainStyle1>
@@ -157,7 +165,17 @@ const Main = (props: UserInfo) => {
           props.type === 'Defect_iteration' ||
           props.type === 'Defect_sprint') && (
           <BtnStyle
-          // onClick={() => setIsVisible(true)}
+            onClick={() =>
+              dispatch(
+                setAddWorkItemModal({
+                  visible: true,
+                  params: {
+                    projectId: paramsData.projectId,
+                    type: 2,
+                  },
+                }),
+              )
+            }
           >
             {/* 快捷操作，打开创建事务的弹窗 */}
             <span className="text">分配事务</span>
@@ -196,6 +214,7 @@ const Main = (props: UserInfo) => {
   )
 }
 const SelectPersonnel = (props: Props) => {
+  console.log(props)
   return (
     <Detail
       children={
