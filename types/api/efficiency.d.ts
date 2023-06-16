@@ -1,7 +1,24 @@
 declare namespace API.Efficiency {
+  namespace HistoryDefectList {
+    type Result = {
+      id: number
+      name: string
+      email: string
+      avatar: string
+      role: {
+        id: number
+        name: string
+      }
+      work_record: Array<Models.Efficiency.WorkRecord>
+      created_work: Array<Models.Efficiency.CreatedWord>
+      work: Array<Models.Efficiency.CreatedWord>
+      defect_record: Array<Models.Efficiency.WorkRecord>
+      defect: Array<Models.Efficiency.CreatedWord>
+    }
+  }
   namespace HistoryWorkList {
     type Params = {
-      id: number
+      userId: number
     }
     type Result = {
       id: number
