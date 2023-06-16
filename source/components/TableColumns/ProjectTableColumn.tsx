@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-handler-names */
 
@@ -560,7 +561,7 @@ export const useDynamicColumns = (state: any) => {
             projectId={state.projectId}
           >
             <Tooltip title={text} getPopupContainer={node => node}>
-              <span className="controlMaxWidth">{text}</span>
+              <span className="controlMaxWidth">{text ? text : '--'}</span>
             </Tooltip>
           </TableQuickEdit>
         )
