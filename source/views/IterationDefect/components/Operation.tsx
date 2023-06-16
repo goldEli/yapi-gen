@@ -181,6 +181,9 @@ const Operation = (props: Props) => {
       return
     }
     const params = {
+      discovery_version: e.discovery_version,
+      severity: e.severity,
+      solution: e.solution,
       statusId: e.status,
       priorityId: e.priority,
       iterateId: e.iterate_name,
@@ -407,6 +410,7 @@ const Operation = (props: Props) => {
       </CommonModal>
 
       <CommonExport
+        exportText={t('defect.exportDefect')}
         interfaces={{ getExportExcel: getExportFlawExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}

@@ -130,6 +130,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
           onClick={e => {
             e.stopPropagation()
             onCopyLink({
+              t,
               project_id: getProjectIdByUrl(),
               id: props.story.id,
             })
