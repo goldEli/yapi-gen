@@ -75,7 +75,7 @@ export const SprintDropdownMenu = (props: Props) => {
     )
     const url = `/SprintProjectManagement/Sprint?data=${params}`
     text += `${beforeUrl}${url} \n`
-    copyLink(text, '复制成功！', '复制失败！')
+    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
   }
 
   let menuItems = [

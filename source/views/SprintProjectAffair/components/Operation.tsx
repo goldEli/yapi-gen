@@ -232,30 +232,6 @@ const Operation = (props: Props) => {
   }
 
   useShortcutC(handleShortcutEvent)
-  useEffect(() => {
-    if (searchChoose && searchChoose.system_view) {
-      return
-    }
-    if (searchChoose) {
-      const targetSubjects = filterObj(searchChoose, (grade: any) => {
-        return grade !== null
-      })
-      const keys = Object.keys(searchChoose)
-      const filterFelid = projectInfo?.filterFelid
-      const newArr = filterFelid?.filter((i: any) => {
-        return keys.includes(i.content)
-      })
-      setSearchList(newArr)
-      dispatch(saveScreen(newArr))
-      setDefaultValue(targetSubjects)
-    }
-  }, [searchChoose])
-
-  useEffect(() => {
-    if (projectInfo?.id) {
-      getSearchKey()
-    }
-  }, [projectInfo])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
@@ -313,7 +289,35 @@ const Operation = (props: Props) => {
     }
     props?.onChangeIsShowLeft?.()
   }
+  console.log(searchList)
+  useEffect(() => {
+    if (searchChoose && searchChoose.system_view) {
+      return
+    }
+    if (searchChoose) {
+      const targetSubjects = filterObj(searchChoose, (grade: any) => {
+        return grade !== null
+      })
+      const keys = Object.keys(searchChoose)
+      const filterFelid = projectInfo?.filterFelid
+      const newArr = filterFelid?.filter((i: any) => {
+        return keys.includes(i.content)
+      })
 
+      setSearchList(newArr)
+      dispatch(saveScreen(newArr))
+      setDefaultValue(targetSubjects)
+    }
+  }, [searchChoose])
+
+  useEffect(() => {
+    if (projectInfo?.id) {
+      getSearchKey()
+    }
+  }, [projectInfo])
+  useEffect(() => {
+    getSearchKey()
+  }, [filterState])
   return (
     <StickyWrap ref={stickyWrapDom}>
       <DeleteConfirm
@@ -375,6 +379,7 @@ const Operation = (props: Props) => {
       </CommonModal>
 
       <CommonExport
+        exportText={t('project.exportTransaction')}
         interfaces={{ getExportExcel: getExportAffairsExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}

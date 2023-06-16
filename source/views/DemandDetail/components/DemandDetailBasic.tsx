@@ -2,7 +2,7 @@ import BasicDemand from '@/components/DemandDetailDrawer/BasicDemand'
 import { detailTimeFormat, getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { BasicContent, BasicFooter, BasicWrap, TitleWrap } from '../style'
 import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -14,7 +14,7 @@ import { getCommentList } from '@/services/demand'
 import { changeRestScroll } from '@store/scroll'
 import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
 import moment from 'moment'
-
+import { encryptPhp } from '@/tools/cryptoPhp'
 interface Props {
   onRef: any
 }
@@ -22,6 +22,7 @@ interface Props {
 const DemandDetailBasic = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, demandId } = paramsData
@@ -38,6 +39,20 @@ const DemandDetailBasic = (props: Props) => {
   // 跳转配置
   const onToConfig = () => {
     //
+    console.log('demandInfo', demandInfo)
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 4,
+        id: id,
+        categoryName: '特效',
+        pageIdx: 'DemandDetail',
+        categoryItem: {
+          id: demandInfo.category,
+          status: 1,
+        },
+      }),
+    )
+    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
 
   const getList = async () => {

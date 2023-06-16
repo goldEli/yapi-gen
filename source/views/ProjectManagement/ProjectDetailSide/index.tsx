@@ -405,7 +405,16 @@ const ProjectDetailSide = () => {
           {menuList.map((i: any) => (
             <MenuItem
               key={i.path}
-              isActive={routerPath.pathname === i.path}
+              // isActive={routerPath.pathname === i.path}
+              isActive={
+                (routerPath.pathname === '/ProjectManagement/DemandDetail' &&
+                  i.path === '/ProjectManagement/Demand') ||
+                (routerPath.pathname === '/ProjectManagement/IterationDetail' &&
+                  i.path === '/ProjectManagement/Iteration') ||
+                (routerPath.pathname === '/ProjectManagement/DefectDetail' &&
+                  i.path === '/ProjectManagement/Defect') ||
+                routerPath.pathname === i.path
+              }
               onClick={() => onChangeRouter(i)}
               hidden={!i.isPermission}
             >

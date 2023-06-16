@@ -49,7 +49,7 @@ const Share = (props: PropsType) => {
     // )
     // const url = `/ProjectManagement/DemandDetail?data=${params}`
     // text += `${beforeUrl}${url} \n`
-    copyLink(text, '复制成功！', '复制失败！')
+    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
   }
   return (
     <CommonModal
