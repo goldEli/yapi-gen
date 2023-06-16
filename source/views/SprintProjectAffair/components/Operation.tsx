@@ -379,6 +379,7 @@ const Operation = (props: Props) => {
       </CommonModal>
 
       <CommonExport
+        exportText={t('project.exportTransaction')}
         interfaces={{ getExportExcel: getExportAffairsExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}

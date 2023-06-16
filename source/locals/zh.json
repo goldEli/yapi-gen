@@ -448,7 +448,7 @@
     "toast": "提示",
     "exportDemandText": "导出需求会根据当前筛选条件进行导出，系统一次性最多只能导出5000个需求，请通过筛选将需求控制在5000个以内，再进行导出！",
     "pleaseEditText": "请编辑成果内容",
-    "exportFields": "导出需求字段选择",
+    "exportFields": "字段选择",
     "editAchievements": "编辑成果",
     "pComment": "评论{{inner}}的日志",
     "only1": "请输入",
@@ -1042,7 +1042,8 @@
     "importText14": "⑥ 其他字段值，请确保与项目中配置的值保持一致；",
     "importText15": "⑦ 更新方式填写“1”空数据字段覆盖原来字段参数为空；填写“0”空数据不覆盖原来字段参数；",
     "importText16": "⑧ 不支持对不在访问范围的事务进行更新。",
-    "importChoose": "导入事务字段选择"
+    "importChoose": "导入事务字段选择",
+    "exportTransaction": "导出事务"
   },
   "setting": {
     "companyInfo": "公司信息",
@@ -1594,7 +1595,8 @@
     "importText14": "⑥ 其他字段值，请确保与项目中配置的值保持一致；",
     "importText15": "⑦ 更新方式填写“1”空数据字段覆盖原来字段参数为空；填写“0”空数据不覆盖原来字段参数；",
     "importText16": "⑧ 不支持对不在访问范围的事务进行更新。",
-    "importChoose": "导入缺陷字段选择"
+    "importChoose": "导入缺陷字段选择",
+    "exportDefect": "导出缺陷"
   },
   "configuration_panel": "配置面板",
   "share": "分享",

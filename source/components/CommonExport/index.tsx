@@ -17,12 +17,15 @@ interface Props {
   interfaces: any
   // 模板modal需要的接口
   templateInterfaces: any
+  // 导出按钮的文案
+  exportText: string
 }
 
 const CommonExport = (props: Props) => {
   const {
     templateInterfaces,
     interfaces: { getExportExcel },
+    exportText,
   } = props
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -55,8 +58,9 @@ const CommonExport = (props: Props) => {
 
   return (
     <FieldsTemplate
+      exportText={exportText}
       visible={props.isShowExport}
-      title={t('p2.exportFields')}
+      title={`${exportText}${t('p2.exportFields')}`}
       onClose={() => props.onClose(false)}
       onConfirm={onConfirmTemplate}
       isExport

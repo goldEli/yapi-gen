@@ -410,6 +410,7 @@ const Operation = (props: Props) => {
       </CommonModal>
 
       <CommonExport
+        exportText={t('defect.exportDefect')}
         interfaces={{ getExportExcel: getExportFlawExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}
