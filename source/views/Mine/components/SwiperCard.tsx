@@ -103,7 +103,6 @@ export const SwiperCard = (props: {
   project_type?: any
   permission_type?: any
 }) => {
-  console.log(props)
   const changeNames1 = () => {
     let str: string
     switch (props.project_type) {

@@ -957,7 +957,9 @@
     "uploadFile": "Upload file",
     "importDefect": "Import defect",
     "uploadDefect": "Upload defect",
-    "operationSuccess": "Successful operation"
+    "operationSuccess": "Successful operation",
+    "copySuccess": "The link has been copied",
+    "copyFail": "Failed to copy the link"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",

@@ -121,6 +121,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const watchDataList = () => {
     let dataItem = null
     let filterData = null
+    // debugger
     if (startUsing) {
       filterData = categoryList?.filter((el: any) => el.status === 1)
     } else {

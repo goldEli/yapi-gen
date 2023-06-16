@@ -8,7 +8,7 @@ import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, Space } from 'antd'
 import Highcharts from 'highcharts'
 import { useEffect, useState } from 'react'
-import { Col, HightChartsWrap, Time, TitleCss } from '../Header/Style'
+import { Col, Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
 import { HighchartsReactWrap, RightRow } from './style'
 interface PropsMoreDropdown {
   data: Array<{ label: string; key: string }>
@@ -134,8 +134,8 @@ const HightChartMainPie = (props: {
         ? ''
         : '<div style="background:#fff;minWidth:108;height:76px;padding:16px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanMedium;">{point.key}</div><div>',
       pointFormat: props.titleType
-        ? '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">{point.name}:{point.y}</span></div>'
-        : '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">工作项：{point.y}</span></div>',
+        ? '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">{point.name}:{point.y}%</span></div>'
+        : '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">工作项：{point.y}%</span></div>',
       footerFormat: '</div>',
       shared: true,
       useHTML: true,
@@ -178,7 +178,7 @@ const HightChartMainPie = (props: {
   }
   return (
     <div style={{ width: '49%' }}>
-      <Col style={{ padding: '0 24px', marginBottom: '16px' }}>
+      <Col1>
         <RightRow>
           <Space size={12}>
             <TitleCss>{props.title}</TitleCss>
@@ -198,7 +198,7 @@ const HightChartMainPie = (props: {
             defaultValue={defaultValue}
           />
         ) : null}
-      </Col>
+      </Col1>
       <HightChartsWrap height={props.height}>
         <HighchartsReactWrap
           width={400}

@@ -30,8 +30,8 @@ const DetailHeader = (props: Header) => {
   }
   useEffect(() => {
     // 根据当前获取当前id的下标， 用作上一下一切换
-    setCurrentIndex((props.ids || []).findIndex((i: any) => i === 4))
-  }, [])
+    setCurrentIndex((props.ids || []).findIndex((i: any) => i === props.infoId))
+  }, [props.infoId])
   return (
     <HeaderStyle>
       <Space size={16}>
@@ -46,8 +46,7 @@ const DetailHeader = (props: Header) => {
               onClick={onUpDemand}
               id="upIcon"
               isOnly={
-                props.ids?.length === 0 ||
-                currentIndex === props.ids?.length - 1
+                props.ids?.length === 0 || currentIndex === props.ids?.length
               }
             >
               <CommonIconFont

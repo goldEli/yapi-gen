@@ -29,7 +29,7 @@ import {
   getAffairsCommentList,
   getAffairsInfo,
 } from '@store/affairs/affairs.thunk'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { copyLink, getParamsData } from '@/tools'
 import useShareModal from '@/hooks/useShareModal'
 import { Popover, Tooltip, Form, Input, Dropdown, MenuProps } from 'antd'
@@ -54,7 +54,7 @@ interface IProps {}
 
 const SprintProjectDetail: React.FC<IProps> = props => {
   const [t] = useTranslation()
-
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -245,6 +245,19 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   // 跳转配置
   const onToConfig = () => {
     //
+    console.log(111, affairsInfo)
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'sprint',
+        id: id,
+        categoryName: '需求',
+        categoryItem: {
+          id: affairsInfo.category,
+          status: 1,
+        },
+      }),
+    )
+    navigate(`/SprintProjectManagement/DemandSetting?data=${params}`)
   }
 
   // 更多下拉
@@ -429,6 +442,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             longStroy={affairsInfo}
             onClick={() => {
               console.log('回调')
+              dispatch(getAffairsInfo({ projectId: id, sprintId }))
             }}
           ></LongStroyBread>
         </div>
