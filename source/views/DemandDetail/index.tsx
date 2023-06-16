@@ -267,7 +267,6 @@ const DemandDetail = () => {
 
   // 复制需求id
   const onCopyId = () => {
-    console.log(demandInfo)
     copyLink(
       `${demandInfo.projectPrefix}-${demandInfo.prefixKey}`,
       '复制成功！',
@@ -439,8 +438,6 @@ const DemandDetail = () => {
       (changeIds || []).findIndex((i: any) => i === demandInfo?.id),
     )
   }, [demandInfo, projectInfoValues])
-
-  console.log(changeIds, '=changeIdschangeIdschangeIds')
 
   return (
     <Wrap>

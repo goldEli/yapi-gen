@@ -43,7 +43,11 @@ import FlawInfo from './components/FlawInfo'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import RelationStories from './components/RelationStories'
-import { setIsUpdateStatus } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsUpdateAddWorkItem,
+  setIsUpdateStatus,
+} from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 const IterationDefectDetail = () => {
@@ -53,7 +57,7 @@ const IterationDefectDetail = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, flawId } = paramsData
+  const { id, flawId, changeIds } = paramsData
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [isShowChange, setIsShowChange] = useState(false)
@@ -61,7 +65,10 @@ const IterationDefectDetail = () => {
   const [resultCategory, setResultCategory] = useState([])
   const [tabActive, setTabActive] = useState('1')
   const { flawInfo } = useSelector(store => store.flaw)
-  const { projectInfoValues } = useSelector(store => store.project)
+  const { projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
+  const [currentIndex, setCurrentIndex] = useState(0)
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
     list: undefined,
@@ -127,16 +134,10 @@ const IterationDefectDetail = () => {
     history.go(-1)
   }
 
-  // 确认分享
-  const onShareConfirm = () => {
-    //
-  }
-
   // 分享弹窗
   const onShare = () => {
     open({
       onOk: () => {
-        onShareConfirm()
         return Promise.resolve()
       },
     })
@@ -144,7 +145,16 @@ const IterationDefectDetail = () => {
 
   //   编辑缺陷
   const onEdit = () => {
-    //
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: flawInfo.id,
+          projectId: flawInfo.projectId,
+          type: 2,
+        },
+      }),
+    )
   }
 
   // 跳转配置
@@ -175,6 +185,31 @@ const IterationDefectDetail = () => {
     })
   }
 
+  // 复制需求id
+  const onCopyId = () => {
+    copyLink(
+      `${flawInfo.projectPrefix}-${flawInfo.prefixKey}`,
+      '复制成功！',
+      '复制失败！',
+    )
+  }
+
+  // 复制需求链接
+  const onCopyLink = () => {
+    let text: any = ''
+    let beforeUrl: any
+    beforeUrl = window.origin
+    const params = encryptPhp(
+      JSON.stringify({
+        id: flawInfo.projectId,
+        demandId: flawInfo.id,
+      }),
+    )
+    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    text += `${beforeUrl}${url} \n`
+    copyLink(text, '复制成功！', '复制失败！')
+  }
+
   // 更多下拉
   const items: MenuProps['items'] = [
     {
@@ -189,11 +224,11 @@ const IterationDefectDetail = () => {
       type: 'divider',
     },
     {
-      label: '复制编号',
+      label: <div onClick={onCopyId}>复制编号</div>,
       key: '2',
     },
     {
-      label: '复制链接',
+      label: <div onClick={onCopyLink}>复制链接</div>,
       key: '3',
     },
     {
@@ -301,6 +336,20 @@ const IterationDefectDetail = () => {
     }
   }
 
+  // 向上查找需求
+  const onUpDemand = () => {
+    const newIndex = changeIds[currentIndex - 1]
+    if (!currentIndex) return
+    dispatch(getFlawInfo({ projectId: id, id: newIndex }))
+  }
+
+  // 向下查找需求
+  const onDownDemand = () => {
+    const newIndex = changeIds[currentIndex + 1]
+    if (currentIndex === changeIds?.length - 1) return
+    dispatch(getFlawInfo({ projectId: id, id: newIndex }))
+  }
+
   useEffect(() => {
     // dispatch(setFlawInfo({}))
     dispatch(getFlawInfo({ projectId: id, id: flawId }))
@@ -315,7 +364,19 @@ const IterationDefectDetail = () => {
         ?.filter((i: any) => i.id !== flawInfo?.category)
         ?.filter((i: any) => i.status === 1),
     )
+    // 获取当前需求的下标， 用作上一下一切换
+    setCurrentIndex((changeIds || []).findIndex((i: any) => i === flawInfo?.id))
   }, [flawInfo, projectInfoValues])
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      dispatch(setFlawInfo({}))
+      dispatch(getFlawInfo({ projectId: id, id: flawId }))
+      setTimeout(() => {
+        setIsUpdateAddWorkItem(false)
+      }, 0)
+    }
+  }, [isUpdateAddWorkItem])
 
   return (
     <Wrap>
@@ -395,38 +456,37 @@ const IterationDefectDetail = () => {
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />
           <ChangeIconGroup>
-            {/* {currentIndex > 0 && ( */}
-            <UpWrap
-              // onClick={onUpDemand}
-              id="upIcon"
-              // isOnly={
-              //   demandIds?.length === 0 ||
-              //   currentIndex === demandIds?.length - 1
-              // }
-            >
-              <CommonIconFont
-                type="up"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </UpWrap>
-            {/* )} */}
-            {/* {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) &&  ( */}
-            <DownWrap
-              // onClick={onDownDemand}
-              id="downIcon"
-              // isOnly={currentIndex <= 0}
-            >
-              <CommonIconFont
-                type="down"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </DownWrap>
-            {/* )} */}
+            {currentIndex > 0 && (
+              <UpWrap
+                onClick={onUpDemand}
+                id="upIcon"
+                isOnly={
+                  changeIds?.length === 0 ||
+                  currentIndex === changeIds?.length - 1
+                }
+              >
+                <CommonIconFont
+                  type="up"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </UpWrap>
+            )}
+            {!(
+              changeIds?.length === 0 || currentIndex === changeIds?.length - 1
+            ) && (
+              <DownWrap
+                onClick={onDownDemand}
+                id="downIcon"
+                isOnly={currentIndex <= 0}
+              >
+                <CommonIconFont
+                  type="down"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </DownWrap>
+            )}
           </ChangeIconGroup>
           <CommonButton type="icon" icon="share" onClick={onShare} />
           <DropdownMenu
