@@ -26,13 +26,17 @@ const SprintDetailBasic = (props: Props) => {
 
   // 跳转配置
   const onToConfig = () => {
-    console.log(111)
+    console.log(111, affairsInfo)
     //
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',
         id: id,
         categoryName: '需求',
+        categoryItem: {
+          id: affairsInfo.category,
+          status: 1,
+        },
       }),
     )
     navigate(`/SprintProjectManagement/DemandSetting?data=${params}`)
