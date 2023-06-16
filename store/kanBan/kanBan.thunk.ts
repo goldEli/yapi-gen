@@ -103,13 +103,30 @@ export const saveModifyStatusModalInfo =
   (params: API.Affairs.UpdateAffairsStatus.Params) =>
   async (dispatch: AppDispatch) => {
     const { modifyStatusModalInfo } = store.getState().kanBan
-    const res = await services.affairs.updateAffairsStatus({
-      ...params,
-      nId: modifyStatusModalInfo.storyId,
-      projectId: getProjectIdByUrl(),
-    })
+    const { projectInfo } = store.getState().project
+    try {
+      let res = null
+      if (projectInfo?.projectType === 1) {
+        res = await services.demand.updateDemandStatus({
+          ...params,
+          nId: modifyStatusModalInfo.storyId,
+          projectId: getProjectIdByUrl(),
+        })
+      } else {
+        res = await services.affairs.updateAffairsStatus({
+          ...params,
+          nId: modifyStatusModalInfo.storyId,
+          projectId: getProjectIdByUrl(),
+        })
+      }
 
-    dispatch(getKanbanByGroup())
+      if (res && res.code === 0 && res.data) {
+        getMessage({ msg: i18n.t('common.operationSuccess'), type: 'success' })
+        dispatch(getKanbanByGroup())
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 // 状态改变
 export const modifyStatus =

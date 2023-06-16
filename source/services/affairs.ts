@@ -585,13 +585,14 @@ export const updateAffairsStatus = async (
   params: API.Affairs.UpdateAffairsStatus.Params,
 ) => {
   delete params.fields.reviewerValue
-  await http.put<any>('updateAffairsStatus', {
+  const response = await http.put<any>('updateAffairsStatus', {
     project_id: params.projectId,
     story_id: params.nId,
     category_status_to_id: params.toId,
     fields: params.fields,
     verify_user_id: params.verifyId ?? undefined,
   })
+  return response
 }
 
 export const getLoadAffairsListFields = async (

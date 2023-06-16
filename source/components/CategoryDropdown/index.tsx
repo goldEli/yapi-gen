@@ -64,15 +64,14 @@ const customStyle = css`
 interface IProps {
   width?: number
   value?: number[] | number | string
-  onChangeCallBack?(
-    data: Model.Project.CategoryValue[] | Model.Project.CategoryValue,
-  ): void
+  onChangeCallBack?(data: Model.Project.CategoryValue[] | number): void
   onClearCallback?(): void
   projectId: number
   is_select?: number
   mode?: 'multiple' | undefined
   footer?: boolean
   categoryList?: Model.Project.Category[]
+  bordered?: boolean
 }
 const CategoryDropdown = (props: IProps) => {
   const {
@@ -85,6 +84,7 @@ const CategoryDropdown = (props: IProps) => {
     width = '100%',
     footer = true,
     categoryList,
+    bordered = false,
   } = props
   const [options, setOptions] = useState<Model.Project.CategoryList[]>([])
   const [cacheList, setCacheList] = useState<Model.Project.Category[]>([])
@@ -158,6 +158,7 @@ const CategoryDropdown = (props: IProps) => {
   }
 
   useEffect(() => {
+    console.log('props', props)
     if (categoryList) {
       const data = getTypeCategory(categoryList, 'work_type')
       const options = getOptions(data)
@@ -168,7 +169,7 @@ const CategoryDropdown = (props: IProps) => {
       return
     }
     init()
-  }, [projectId])
+  }, [projectId, value])
 
   // useEffect(() => {}, [value])
   return (
@@ -181,43 +182,38 @@ const CategoryDropdown = (props: IProps) => {
           return
         }
         if (mode) {
-          const newData = data.map((item: any) => {
-            return { name: item.label.props.labelName, id: item.value }
-          })
-          setSelectData([...newData])
-          onChangeCallBack && onChangeCallBack(newData)
+          // const newData = data.map((item: any) => {
+          //   return { name: item.label.props.labelName, id: item.value }
+          // })
+          setSelectData([...data])
+          onChangeCallBack && onChangeCallBack(data)
         } else {
-          onChangeCallBack &&
-            onChangeCallBack({
-              name: data.label.props.labelName,
-              id: data.value,
-            })
+          onChangeCallBack && onChangeCallBack(data)
         }
       }}
       onFocus={() => {
-        if (categoryList) {
-          return
-        }
-        const selectDataIds = selectData.map(item => item.id)
-        const filterSelectData = cacheList.filter(item =>
-          selectDataIds.includes(item.id),
-        )
-        const otherSelectData = cacheList.filter(
-          item => !selectDataIds.includes(item.id),
-        )
-        const sortData = [...filterSelectData, ...otherSelectData]
-        const getOptions = getTypeCategory(sortData, 'work_type')
-        if (!getOptions) {
-          return
-        }
-        setOptions(getOptions)
+        // if (categoryList) {
+        //   return
+        // }
+        // const selectDataIds = selectData.map(item => item.id)
+        // const filterSelectData = cacheList.filter(item =>
+        //   selectDataIds.includes(item.id),
+        // )
+        // const otherSelectData = cacheList.filter(
+        //   item => !selectDataIds.includes(item.id),
+        // )
+        // const sortData = [...filterSelectData, ...otherSelectData]
+        // const getOptions = getTypeCategory(sortData, 'work_type')
+        // if (!getOptions) {
+        //   return
+        // }
+        // setOptions(getOptions)
       }}
       showSearch
       allowClear
       showArrow
-      bordered={false}
+      bordered={bordered}
       options={options}
-      labelInValue
       filterOption={(inputValue, option) => {
         return (
           option?.labelName?.toLowerCase().indexOf(inputValue.toLowerCase()) >=

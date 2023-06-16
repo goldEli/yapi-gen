@@ -81,6 +81,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
       },
     })
   }
+
   const items = [
     {
       key: '1',
@@ -92,7 +93,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
               setAddWorkItemModal({
                 visible: true,
                 params: {
-                  type: 2,
+                  type: props.story?.project_category?.work_type,
                   editId: props.story.id,
                   projectId: getProjectIdByUrl(),
                   title: t('editorial_affairs'),
