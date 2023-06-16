@@ -429,6 +429,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             longStroy={affairsInfo}
             onClick={() => {
               console.log('回调')
+              dispatch(getAffairsInfo({ projectId: id, sprintId }))
             }}
           ></LongStroyBread>
         </div>
