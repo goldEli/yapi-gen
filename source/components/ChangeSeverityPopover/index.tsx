@@ -135,12 +135,12 @@ const ChangeSeverityPopover = (props: Props) => {
       {!props.children && (
         <SeverityWrap
           style={{
-            background: props.record.severity.color,
+            background: props.record.severity?.color,
             width: 'max-content',
             cursor: props.isCanOperation ? 'pointer' : 'initial',
           }}
         >
-          {props.record.severity.content}
+          {props.record.severity?.content}
         </SeverityWrap>
       )}
     </Popover>
