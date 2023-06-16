@@ -178,6 +178,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   // 关闭链接事务弹窗
   const onClose = () => {
+    setSearchValue('')
     setIsVisible(false)
     form.resetFields()
   }
