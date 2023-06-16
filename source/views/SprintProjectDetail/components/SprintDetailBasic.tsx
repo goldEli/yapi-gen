@@ -31,7 +31,7 @@ const SprintDetailBasic = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',
-        id: 631,
+        id: id,
         categoryName: '需求',
       }),
     )
