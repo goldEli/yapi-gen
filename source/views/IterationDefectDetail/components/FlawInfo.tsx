@@ -9,7 +9,7 @@ import {
 } from '../style'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { detailTimeFormat, getParamsData } from '@/tools'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import FlawDetail from './FlawDetail'
@@ -20,6 +20,7 @@ import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import FlawComment from './FlawComment'
 import FlawStatus from './FlawStatus'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import {
   SprintDetailDragLine,
   SprintDetailMouseDom,
@@ -27,6 +28,7 @@ import {
 
 const FlawInfo = () => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const [searchParams] = useSearchParams()
@@ -44,6 +46,19 @@ const FlawInfo = () => {
   // 跳转配置
   const onToConfig = () => {
     //
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 4,
+        id: id,
+        categoryName: '特效',
+        pageIdx: 'DemandDetail',
+        categoryItem: {
+          id: flawInfo.category,
+          status: 1,
+        },
+      }),
+    )
+    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
 
   useEffect(() => {

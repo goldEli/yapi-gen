@@ -27,7 +27,6 @@ const SprintDetailBasic = (props: Props) => {
   // 跳转配置
   const onToConfig = () => {
     console.log(111, affairsInfo)
-    //
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',

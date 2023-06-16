@@ -38,7 +38,6 @@ const DemandDetailBasic = (props: Props) => {
 
   // 跳转配置
   const onToConfig = () => {
-    //
     console.log('demandInfo', demandInfo)
     const params = encryptPhp(
       JSON.stringify({
