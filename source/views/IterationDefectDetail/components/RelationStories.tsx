@@ -135,7 +135,9 @@ const RelationStories = (props: RelationStoriesProps) => {
 
   const onSearch = (value: string) => {
     setSearchValue(value)
-    getSelectRelationSearch(value)
+    if (value) {
+      getSelectRelationSearch(value)
+    }
   }
 
   // 关闭链接事务弹窗
@@ -379,6 +381,122 @@ const RelationStories = (props: RelationStoriesProps) => {
     },
   ]
 
+  const drawerColumns = [
+    {
+      title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
+      dataIndex: 'story_prefix_key',
+      width: 140,
+      render: (text: string) => <div>{text}</div>,
+    },
+    {
+      title: <NewSort fixedKey="name">标题</NewSort>,
+      dataIndex: 'name',
+      width: 160,
+      render: (text: any, record: Model.Flaw.FlawInfo) => (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title={text.name}
+          >
+            <img
+              src={text.attachment_path}
+              style={{
+                width: '18px',
+                height: '18px',
+                marginRight: '8px',
+              }}
+              alt=""
+            />
+          </Tooltip>
+
+          {record.name}
+        </div>
+      ),
+    },
+    {
+      title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
+      dataIndex: 'priority',
+      key: 'priority',
+      width: 100,
+      render: (text: any, record: Record<string, string | number>) => {
+        return (
+          <PriorityWrap isShow={isCanEdit}>
+            {text?.icon && (
+              <IconFont
+                className="priorityIcon"
+                type={text?.icon}
+                style={{
+                  fontSize: 20,
+                  color: text?.color,
+                }}
+              />
+            )}
+            <span style={{ marginLeft: '5px' }}>
+              {!text?.icon && <span>--</span>}
+              <IconFont className="icon" type="down-icon" />
+            </span>
+          </PriorityWrap>
+        )
+      },
+    },
+
+    {
+      title: t('common.dealName'),
+      dataIndex: 'handlers',
+      key: 'handlers',
+      width: 100,
+      render: (text: any, record: any) => {
+        return (
+          <>
+            {record?.usersInfo.length > 0 && (
+              <MultipleAvatar
+                max={3}
+                list={
+                  record?.usersInfo?.map((i: any) => ({
+                    id: i.id,
+                    name: i.name,
+                    avatar: i.avatar,
+                  })) || []
+                }
+              />
+            )}
+            {!record?.usersInfo?.length && '--'}
+          </>
+        )
+      },
+    },
+    {
+      title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
+      dataIndex: 'status',
+      key: 'status',
+      width: 100,
+      render: (text: any, record: any) => {
+        return (
+          <StateTag
+            onClick={record.isExamine ? onExamine : void 0}
+            isShow={isCanEdit || record.isExamine}
+            name={record.status.status.content}
+            state={
+              text?.is_start === 1 && text?.is_end === 2
+                ? 1
+                : text?.is_end === 1 && text?.is_start === 2
+                ? 2
+                : text?.is_start === 2 && text?.is_end === 2
+                ? 3
+                : 0
+            }
+          />
+        )
+      },
+    },
+  ]
+
   useEffect(() => {
     if (props.activeKey === '2' || props.isOpen) {
       getList(pageObj, order)
@@ -433,7 +551,7 @@ const RelationStories = (props: RelationStoriesProps) => {
       <ResizeTable
         isSpinning={isSpinning}
         dataWrapNormalHeight="calc(100% - 94px)"
-        col={columns}
+        col={props.isDrawer ? drawerColumns : columns}
         dataSource={dataSource?.list}
         noData={<NoData />}
       />

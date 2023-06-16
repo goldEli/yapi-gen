@@ -171,7 +171,9 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   const onSearch = (value: string) => {
     setSearchValue(value)
-    getSelectRelationSearch(value)
+    if (value) {
+      getSelectRelationSearch(value)
+    }
   }
 
   // 关闭链接事务弹窗
