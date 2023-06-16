@@ -8,7 +8,7 @@ import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, Space } from 'antd'
 import Highcharts from 'highcharts'
 import { useEffect, useState } from 'react'
-import { Col, HightChartsWrap, Time, TitleCss } from '../Header/Style'
+import { Col, Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
 import { HighchartsReactWrap, RightRow } from './style'
 interface PropsMoreDropdown {
   data: Array<{ label: string; key: string }>
@@ -178,7 +178,7 @@ const HightChartMainPie = (props: {
   }
   return (
     <div style={{ width: '49%' }}>
-      <Col style={{ padding: '0 24px', marginBottom: '16px' }}>
+      <Col1>
         <RightRow>
           <Space size={12}>
             <TitleCss>{props.title}</TitleCss>
@@ -198,7 +198,7 @@ const HightChartMainPie = (props: {
             defaultValue={defaultValue}
           />
         ) : null}
-      </Col>
+      </Col1>
       <HightChartsWrap height={props.height}>
         <HighchartsReactWrap
           width={400}

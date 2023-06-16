@@ -1,6 +1,6 @@
 import { Space } from 'antd'
 import Highcharts from 'highcharts'
-import { Col, HightChartsWrap, Time, TitleCss } from '../Header/Style'
+import { Col, Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
 import {
   Bor,
   BorderRow,
@@ -89,14 +89,14 @@ const HightChartMainSpline = (props: {
   }
   return (
     <div style={{ width: '49%' }}>
-      <Col style={{ padding: '0 24px', marginBottom: '16px' }}>
+      <Col1>
         <RightRow>
           <Space size={12}>
             <TitleCss>{props.title}</TitleCss>
             <Time>{props.chart?.time}</Time>
           </Space>
         </RightRow>
-      </Col>
+      </Col1>
       <div style={{ width: '100%' }}>
         <HightChartsWrap height={props.height}>
           <Row style={{ marginBottom: '32px' }}>
