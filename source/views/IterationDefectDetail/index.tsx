@@ -313,6 +313,9 @@ const IterationDefectDetail = () => {
       label: (
         <ActivityTabItem>
           <span>变更记录</span>
+          <ItemNumber isActive={tabActive === '2'}>
+            {flawInfo.changeCount}
+          </ItemNumber>
         </ActivityTabItem>
       ),
       children: <ChangeRecord activeKey={tabActive} />,
