@@ -39,9 +39,6 @@ const HeaderAll = (props: HaderProps) => {
   const { projectInfo } = useSelector(store => store.project)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-
-  console.log(projectInfo, 'projectInfoprojectInfoprojectInfoprojectInfo')
-
   useEffect(() => {
     switch (props.headerParmas.time.type) {
       case 1:

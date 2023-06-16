@@ -106,93 +106,11 @@ export const efficiencyMemberWorkList = async (
 export const efficiencyMemberDefectList = async (
   params: API.Sprint.EfficiencyMemberWorkList.Params,
 ) => {
-  // const response = await http.get<
-  //   any,
-  //   API.Sprint.EfficiencyMemberWorkList.Result
-  // >(`efficiencyMemberDefectList`, params)
-  const response = {
-    data: {
-      total: {
-        name: '重开缺陷',
-        value: 10,
-        unit: '项',
-      },
-      list: [
-        {
-          id: 1003429,
-          name: '测试123456测试123456',
-          story_prefix_key: 'CSXM2-FL-103',
-          category_attachment:
-            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
-          status: 2,
-          user: {
-            id: 1,
-            name: '张三',
-            avatar:
-              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-          },
-          relate_users: [
-            {
-              id: 2,
-              name: '杨春平',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            },
-            {
-              id: 3,
-              name: '汪志君',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            },
-            {
-              id: 3,
-              name: '付亮',
-              avatar: '',
-            },
-          ],
-          expected_end_at: '2023-05-18',
-          expected_start_at: '2023-05-18',
-          created_at: '2023-05-24 02:46:55',
-        },
-        {
-          id: 1003430,
-          name: '测试123456',
-          story_prefix_key: 'CSXM2-FL-123456',
-          category_attachment:
-            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
-          status: 3,
-          user: {
-            id: 1,
-            name: '张三',
-            avatar:
-              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-          },
-          relate_users: [
-            {
-              id: 2,
-              name: '杨春平',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            },
-            {
-              id: 3,
-              name: '汪志君',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
-            },
-            {
-              id: 3,
-              name: '付亮',
-              avatar: '',
-            },
-          ],
-          expected_end_at: '2023-05-18',
-          expected_start_at: '2023-05-18',
-          created_at: '2023-05-24 02:46:55',
-        },
-      ],
-    },
-  }
+  const response = await http.get<
+    any,
+    API.Sprint.EfficiencyMemberWorkList.Result
+  >(`efficiencyMemberDefectList`, params)
+  console.log(response.data, 'response.data--------------')
 
   return {
     total: response.data.total,
@@ -238,8 +156,7 @@ export const historyWorkList = async (
   params: API.Efficiency.HistoryWorkList.Params,
 ) => {
   const response = await http.get<any, API.Efficiency.HistoryWorkList.Result>(
-    `/b/efficiency/member/${params.id}/history/work_list`,
-    params,
+    `/b/efficiency/member/${params.userId}/history/work_list`,
   )
   return response.data
 }
@@ -247,12 +164,14 @@ export const historyWorkList = async (
 export const historyDefectList = async (
   params: API.Efficiency.HistoryWorkList.Params,
 ) => {
-  const response = await http.get<any, API.Efficiency.HistoryWorkList.Result>(
-    `b/efficiency/member/${params.id}/history/defect_list`,
-    params,
+  const response = await http.get<any, API.Efficiency.HistoryDefectList.Result>(
+    `/b/efficiency/member/${params.userId}/history/defect_list`,
   )
-
-  return response.data
+  return {
+    ...response.data,
+    work_record: response.data.defect_record,
+    work: response.data.defect,
+  }
 }
 // 缺陷和对比接口 end
 

@@ -57,6 +57,7 @@ const Work = (props: WorkType) => {
     )
   }
   useEffect(() => {
+    console.log(props.historyWorkObj, 'props.historyWorkObj')
     if (props.type === 1) {
       setList(
         props.historyWorkObj?.created_work.map(el => ({
@@ -66,7 +67,7 @@ const Work = (props: WorkType) => {
       )
     } else if (props.type === 2) {
       setList(
-        props.historyWorkObj?.work.map(el => ({
+        props.historyWorkObj?.work?.map(el => ({
           ...el,
           isOpen: false,
         })),

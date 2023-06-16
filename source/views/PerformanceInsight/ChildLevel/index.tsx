@@ -9,10 +9,6 @@ const ChildLevel = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  useEffect(() => {
-    dispatch(setVisiblePerson(false))
-    dispatch(setVisibleWork(false))
-  }, [])
   return (
     <ProgressComparison
       title={paramsData.title}
