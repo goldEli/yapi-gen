@@ -39,7 +39,9 @@ const Index = (props: any) => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const myTreeComponent: any = useRef(null)
-  const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -238,6 +240,12 @@ const Index = (props: any) => {
   useEffect(() => {
     getList(searchItems, pageObj, order)
   }, [key, order, pageObj, projectId])
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      getList(searchItems, pageObj, order)
+    }
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     // 进入主页清除已存储的筛选计数

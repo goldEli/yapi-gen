@@ -321,13 +321,13 @@ const DefectTable = (props: Props) => {
 
   // 点击创建缺陷
   const onClick = () => {
-    // dispatch(
-    //   setAddWorkItemModal({
-    //     visible: true,
-    //     params: { noDataCreate: true, type: 2 },
-    //   }),
-    // )
-    // dispatch(setFilterParamsModal(filterParams))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { noDataCreate: true, type: 2 },
+      }),
+    )
+    dispatch(setFilterParamsModal(filterParams))
   }
 
   return (
