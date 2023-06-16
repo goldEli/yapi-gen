@@ -338,7 +338,10 @@ const XTable: React.FC<XTableProps> = props => {
                 dispatch(
                   setAddWorkItemModal({
                     visible: true,
-                    params: { type: 4, iterateId: data.id },
+                    params: {
+                      type: 4,
+                      iterateId: data.id === -1 ? 0 : data.id,
+                    },
                   }),
                 )
               }}
@@ -346,7 +349,7 @@ const XTable: React.FC<XTableProps> = props => {
               <span>新事物</span>
             </CommonButton>
           )}
-
+          {String(data.id)}droppabledid
           <Droppable key={data.id} droppableId={String(data.id)}>
             {provided => (
               <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>

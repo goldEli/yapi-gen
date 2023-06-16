@@ -360,6 +360,7 @@ const Operation = (props: Props) => {
       </CommonModal>
 
       <ExportDemand
+        exportText={t('newlyAdd.exportDemand')}
         isShowExport={isShowExport}
         onClose={setIsShowExport}
         searchGroups={searchGroups}
