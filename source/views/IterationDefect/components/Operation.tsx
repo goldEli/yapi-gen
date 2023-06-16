@@ -327,6 +327,38 @@ const Operation = (props: Props) => {
     </div>
   )
 
+  const changeStatus = (
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        minWidth: i18n.language === 'zh' ? 110 : 151,
+      }}
+    >
+      {projectInfoValues
+        ?.filter((i: any) => i.key === 'category')[0]
+        ?.children?.filter((i: any) => i.status === 1 && i.work_type === 2)
+        ?.map((k: any) => {
+          return (
+            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
+              <img
+                src={k.category_attachment}
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{k.content}</span>
+            </LiWrap>
+          )
+        })}
+    </div>
+  )
+
   const onImportClose = () => {
     setIsShowImport(false)
   }
@@ -449,19 +481,21 @@ const Operation = (props: Props) => {
               ? 'b/story/save'
               : 'b/transaction/save',
           ) || projectInfo?.status !== 1 ? null : (
-            <CommonButton
-              type="primary"
-              onClick={() =>
-                dispatch(
-                  setAddWorkItemModal({
-                    visible: true,
-                    params: { noDataCreate: true, type: 2 },
-                  }),
-                )
-              }
+            <Popover
+              content={changeStatus}
+              placement="bottomLeft"
+              getPopupContainer={node => node}
+              visible={isVisible}
+              onVisibleChange={visible => setIsVisible(visible)}
             >
-              创建缺陷
-            </CommonButton>
+              <MoreWrap type="create">
+                <span>创建缺陷</span>
+                <IconFont
+                  style={{ fontSize: 16, marginLeft: 8 }}
+                  type={isVisible ? 'up' : 'down'}
+                />
+              </MoreWrap>
+            </Popover>
           )}
           {hasExport && hasImport ? null : (
             <Popover
