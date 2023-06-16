@@ -97,7 +97,7 @@ const FloatBatch = (props: Props) => {
       const url = `ProjectManagement/Demand?data=${params}`
       text += `【${element.name}】 ${beforeUrl}${url} \n`
     })
-    copyLink(text, t('version2.copyLinkSuccess'), t('version2.copyLinkError'))
+    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
   }
 
   useImperativeHandle(props.onRef, () => {

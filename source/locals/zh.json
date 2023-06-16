@@ -863,7 +863,9 @@
     "uploadFile": "上传文件",
     "importDefect": "导入缺陷",
     "uploadDefect": "上传缺陷",
-    "operationSuccess": "操作成功"
+    "operationSuccess": "操作成功",
+    "copySuccess": "已复制链接",
+    "copyFail": "复制链接失败"
   },
   "components": {
     "noALlPermission": "你当前无任何权限，请联系企业管理员分配权限",

@@ -224,8 +224,8 @@ const useShareModal = () => {
           onClick={() => {
             copyLink(
               `${title}${id && config ? new_url : url} `,
-              '复制成功！',
-              '复制失败！',
+              t('common.copySuccess'),
+              t('common.copyFail'),
             )
           }}
         >
