@@ -56,6 +56,7 @@ declare namespace Model.Flaw {
       type: RelationType
       sort: number
     }
+    relation_type: number
   }
 
   interface FlawInfo {

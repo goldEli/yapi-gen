@@ -219,9 +219,11 @@ const RelationStories = (props: RelationStoriesProps) => {
       render: (text: string) => <div>{text}</div>,
     },
     {
-      title: <NewSort fixedKey="story_prefix_key">关联关系</NewSort>,
-      dataIndex: 'story_prefix_key',
-      render: (text: string) => <div>121212</div>,
+      title: <NewSort fixedKey="relation_type">关联关系</NewSort>,
+      dataIndex: 'relation_type',
+      render: (text: string) => (
+        <div>{typeList.filter((i: any) => i.value === text)[0]?.label}</div>
+      ),
     },
     {
       title: <NewSort fixedKey="name">标题</NewSort>,

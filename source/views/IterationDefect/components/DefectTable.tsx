@@ -171,6 +171,7 @@ const DefectTable = (props: Props) => {
     onClickItem,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
+    type: 2,
   })
 
   const hasCreate = getIsPermission(
