@@ -164,6 +164,19 @@ const IterationDefectDetail = () => {
 
   // 跳转配置
   const onToConfig = () => {
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 4,
+        id: id,
+        categoryName: '特效',
+        pageIdx: 'DemandDetail',
+        categoryItem: {
+          id: flawInfo.category,
+          status: 1,
+        },
+      }),
+    )
+    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
     //
   }
 

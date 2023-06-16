@@ -4,7 +4,6 @@ import { getProjectType } from '@/tools'
 const PerformanceInsight = () => {
   const { useKeys } = useKeyPress()
   const projectType = getProjectType()
-  console.log('projectType---', projectType)
   useKeys(
     '1',
     projectType === 1

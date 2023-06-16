@@ -323,6 +323,15 @@ export const PersonText = styled.div`
 export const Col = styled.div`
   margin: 24px 24px 12px 24px;
   display: flex;
+  height: 32px;
+  align-items: center;
+  justify-content: space-between;
+`
+export const Col1 = styled.div`
+  margin: 24px 0px 12px 0px;
+  display: flex;
+  height: 32px;
+  margin-bottom: 16px;
   align-items: center;
   justify-content: space-between;
 `

@@ -26,7 +26,7 @@ const SelectMain = (props: Props) => {
   return (
     <>
       <Select
-        style={{ width: 184 }}
+        style={{ minWidth: 184 }}
         maxTagCount={1}
         mode="multiple"
         value={props.value}

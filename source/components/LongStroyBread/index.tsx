@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import { Tooltip } from 'antd'
 import { copyLink } from '@/tools'
 import IconFont from '../IconFont'
+import { useTranslation } from 'react-i18next'
 const BreadBox = styled.div`
   display: flex;
   align-items: center;
@@ -47,6 +48,7 @@ const LongStroyBread = (props: IProps) => {
   const [hasLongStroy, setHasLongStroy] = useState(false)
   const [isHasLongStroy, setIsHasLongStroy] = useState(false)
   const { longStroy = {}, layer = false, onClick } = props
+  const [t] = useTranslation()
 
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -155,7 +157,7 @@ const LongStroyBread = (props: IProps) => {
                 color="var(--primary-d2)"
                 onClick={() => {
                   console.log(111)
-                  copyLink('AA', '复制成功', '复制失败')
+                  copyLink('AA', t('common.copySuccess'), t('common.copyFail'))
                 }}
                 size={18}
               ></CommonIconFont>

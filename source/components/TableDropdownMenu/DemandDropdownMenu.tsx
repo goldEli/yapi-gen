@@ -75,11 +75,7 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     )
     const url = `/ProjectManagement/DemandDetail?data=${params}`
     text += `【${props.record.name}】 ${beforeUrl}${url} \n`
-    copyLink(
-      text,
-      t('successfully_copied_requirement_link'),
-      t('failed_copied_requirement_link'),
-    )
+    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
   }
 
   let menuItems = [

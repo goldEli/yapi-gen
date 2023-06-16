@@ -221,7 +221,6 @@ const ReportDetailDrawer = () => {
     setIsReview(false)
     dispatch(saveViewReportDetailDrawer({ visible: false, id: 0, ids: [] }))
   }
-
   // 向上查找需求
   const onUpDemand = () => {
     const newIndex = reportIds[currentIndex - 1]
@@ -267,7 +266,6 @@ const ReportDetailDrawer = () => {
       }
     }
   }
-
   // 评论
   const onComment = async (value: any) => {
     const params = {

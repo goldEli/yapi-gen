@@ -135,6 +135,8 @@ interface Props {
   isExport: boolean
   // 导出按钮loading状态
   isSpin?: any
+  // 导出按钮的文案
+  exportText?: string
 }
 
 const SortContainer = sortableContainer<any>((props: any) => <div {...props} />)
@@ -149,6 +151,7 @@ const DragHandle = sortableHandle((props: any) => <div {...props} />)
 const FieldsTemplate = (props: Props) => {
   const {
     interfaces: { getExportFields, getLoadListFields },
+    exportText,
   } = props
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -357,7 +360,7 @@ const FieldsTemplate = (props: Props) => {
               {t('common.cancel')}
             </CommonButton>
             <CommonButton onClick={onConfirm} type="primary">
-              {t('newlyAdd.exportDemand')}
+              {exportText}
             </CommonButton>
           </ModalFooter>
         )

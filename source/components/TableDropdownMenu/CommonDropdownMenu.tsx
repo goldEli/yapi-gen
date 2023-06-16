@@ -41,6 +41,7 @@ export const onCopyLink = (options: {
   project_id: number
   id: number
   route?: string
+  t: any
 }) => {
   let text: any = ''
   let beforeUrl: any
@@ -55,7 +56,7 @@ export const onCopyLink = (options: {
   const { route = '/ProjectManagement/Demand' } = options
   const url = `${route}?data=${params}`
   text += `${beforeUrl}${url} \n`
-  copyLink(text, '复制成功！', '复制失败！')
+  copyLink(text, options.t('common.copySuccess'), options.t('common.copyFail'))
 }
 export const CommonDropdownMenu = (props: Props) => {
   const [t] = useTranslation()
@@ -85,6 +86,7 @@ export const CommonDropdownMenu = (props: Props) => {
         <div
           onClick={() =>
             onCopyLink({
+              t,
               project_id: props.record.project_id,
               id: props.record.id,
             })

@@ -637,12 +637,12 @@ const SprintProjectSprint: React.FC = () => {
               <CategoryDropdown
                 projectId={projectId}
                 value={searchObject.search?.category_id}
-                onChangeCallBack={(val: Model.Project.CategoryValue[]) => {
+                onChangeCallBack={(val: number[]) => {
                   setSearchObject({
                     ...searchObject,
                     search: {
                       ...searchObject.search,
-                      category_id: val.map(item => item.id),
+                      category_id: val,
                     },
                   })
                 }}
