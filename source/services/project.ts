@@ -943,6 +943,7 @@ export const getParentList = async (params: any) => {
     search: {
       project_id: params?.projectId,
       story_id: params?.id,
+      category_id: params?.categoryId,
     },
   })
   return response.data.map((i: any) => ({

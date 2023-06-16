@@ -101,6 +101,7 @@ const ChooseItems = (props: DemandProps) => {
     const result = await getParentList({
       projectId: props.projectId,
       id: demandInfo?.id,
+      categoryId: demandInfo.categoryId,
     })
     const arr = result.map((i: any) => ({
       label: i.name,

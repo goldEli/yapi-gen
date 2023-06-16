@@ -280,8 +280,14 @@ const CreateDemandLeft = (props: Props) => {
   }
 
   // 获取父需求列表
-  const getParentData = (type: number) => {
-    dispatch(getParentList({ projectId: props.projectId, id: params?.editId }))
+  const getParentData = (id: number) => {
+    dispatch(
+      getParentList({
+        projectId: props.projectId,
+        id: params?.editId,
+        categoryId: id,
+      }),
+    )
   }
 
   // 切换需求类别
@@ -300,7 +306,6 @@ const CreateDemandLeft = (props: Props) => {
         (i: any) => i.id === value,
       )[0]
       setCategoryObj(result)
-      getParentData(result.work_type)
     }
   }
 
@@ -309,7 +314,6 @@ const CreateDemandLeft = (props: Props) => {
     await changeCategoryForm.validateFields()
     setIsShowChangeCategory(false)
     setCategoryObj(currentCategory)
-    getParentData(currentCategory.work_type)
     setChangeCategoryFormData(changeCategoryForm.getFieldsValue())
     props.onChangeCategory(changeCategoryForm.getFieldsValue())
     setTimeout(() => {
@@ -387,6 +391,7 @@ const CreateDemandLeft = (props: Props) => {
       })
       getCategoryField(categoryObj?.id)
       getStatusList(categoryObj?.id)
+      getParentData(categoryObj.id)
       return
     }
     form.setFieldsValue({
@@ -412,14 +417,12 @@ const CreateDemandLeft = (props: Props) => {
             (j: any) => j.id === props.detail.category,
           )[0]
           setCategoryObj(resultObj)
-          getParentData(resultObj.work_type)
         } else {
           const resultObj = props.allCategoryList?.filter(
             (j: any) => j.id === props.detail.category,
           )[0]
           // 反之查所有中的需求类别，做展示用
           setCategoryObj(resultObj)
-          getParentData(resultObj.work_type)
         }
       } else {
         let hisCategoryData: any
@@ -481,7 +484,6 @@ const CreateDemandLeft = (props: Props) => {
         //   如果有修改
         if (resultCategory?.id) {
           setCategoryObj(resultCategory)
-          getParentData(resultCategory.work_type)
         }
       }
       if (params?.type === 4) {

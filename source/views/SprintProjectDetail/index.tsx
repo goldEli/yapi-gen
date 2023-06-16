@@ -72,7 +72,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
-  const [sprintIds, setSprintIds] = useState([])
 
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
@@ -450,11 +449,14 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />
           <ChangeIconGroup>
-            {currentIndex === 0 ? null : (
+            {currentIndex > 0 && (
               <UpWrap
                 onClick={onUpDemand}
                 id="upIcon"
-                isOnly={currentIndex === 0}
+                isOnly={
+                  changeIds?.length === 0 ||
+                  currentIndex === changeIds?.length - 1
+                }
               >
                 <CommonIconFont
                   type="up"
@@ -463,7 +465,9 @@ const SprintProjectDetail: React.FC<IProps> = props => {
                 />
               </UpWrap>
             )}
-            {sprintIds.length - 1 === currentIndex ? null : (
+            {!(
+              changeIds?.length === 0 || currentIndex === changeIds?.length - 1
+            ) && (
               <DownWrap
                 onClick={onDownDemand}
                 id="downIcon"
