@@ -1,4 +1,10 @@
-import { createRef, useEffect, useRef, useState } from 'react'
+import {
+  createRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import { DetailInfoWrap, InfoWrap } from '../style'
 import ChildSprint from './ChildSprint'
 import LinkSprint from './LinkSprint'
@@ -16,7 +22,7 @@ import {
 import { Tabs, TabsProps } from 'antd'
 import AffairsDetail from './AffairsDetail'
 
-const SprintDetailInfo = () => {
+const SprintDetailInfo = (props: { onRef: any }) => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -83,6 +89,12 @@ const SprintDetailInfo = () => {
       behavior: 'smooth',
     })
   }
+
+  useImperativeHandle(props.onRef, () => {
+    return {
+      changeTabs: onChangeTabs,
+    }
+  })
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {

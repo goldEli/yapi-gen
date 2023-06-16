@@ -1,5 +1,5 @@
 /* eslint-disable no-undefined */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { createRef, useEffect, useRef, useState } from 'react'
 import {
   ButtonGroup,
   ChangeIconGroup,
@@ -48,7 +48,6 @@ import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import LongStroyBread from '@/components/LongStroyBread'
 import { setIsUpdateAddWorkItem, setIsUpdateStatus } from '@store/project'
-import { getDemandList } from '@/services/daily'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface IProps {}
@@ -61,6 +60,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const spanDom = useRef<HTMLSpanElement>(null)
   const basicInfoDom = useRef<HTMLDivElement>(null)
+  const sprintDetailInfoDom: any = createRef()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -253,6 +253,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     //
   }
 
+  const onChangeTabsScroll = (value: string) => {
+    sprintDetailInfoDom.current.changeTabs(value)
+  }
+
   // 更多下拉
   const items: MenuProps['items'] = [
     {
@@ -263,15 +267,25 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       type: 'divider',
     },
     {
-      label: '添加附件',
+      label: (
+        <div onClick={() => onChangeTabsScroll('sprint-attachment')}>
+          添加附件
+        </div>
+      ),
       key: '1',
     },
     {
-      label: '添加子事务',
+      label: (
+        <div onClick={() => onChangeTabsScroll('sprint-childSprint')}>
+          添加子事务
+        </div>
+      ),
       key: '2',
     },
     {
-      label: '添加标签',
+      label: (
+        <div onClick={() => onChangeTabsScroll('sprint-tag')}>添加标签</div>
+      ),
       key: '3',
     },
     {
@@ -532,7 +546,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         <div
           style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
         >
-          <SprintDetailInfo />
+          <SprintDetailInfo onRef={sprintDetailInfoDom} />
         </div>
         <div
           ref={basicInfoDom}
