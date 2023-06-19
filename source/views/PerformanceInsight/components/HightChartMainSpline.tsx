@@ -49,12 +49,14 @@ const HightChartMainSpline = (props: {
       },
     },
     yAxis: {
+      allowDecimals: false,
       tickColor: '#ECEDEF',
       gridLineColor: '#ECEDEF',
       gridLineDashStyle: 'longdash',
       borderRadius: 6,
       title: {
-        text: '',
+        text: '(个)',
+        rotation: 0,
       },
     },
     plotOptions: {
@@ -130,7 +132,7 @@ const HightChartMainSpline = (props: {
             </Row>
             <div>
               <Space size={12}>
-                <Time>修复率： {props.chart?.fixed_rate}</Time>
+                <Time>修复率： {props.chart?.fixed_rate}%</Time>
                 <Time>缺陷新增： {props.chart?.new_total}</Time>
                 <Time>修复： {props.chart?.fixed_total}</Time>
               </Space>
