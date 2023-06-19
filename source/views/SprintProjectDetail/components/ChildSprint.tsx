@@ -122,8 +122,6 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     getList(pageParams)
   }
 
-  console.log(dataSource, '=dataSourcedataSource')
-
   const columns = [
     {
       title: '',

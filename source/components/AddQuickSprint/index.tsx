@@ -5,6 +5,7 @@ import CommonModal from '../CommonModal'
 import {
   setAddQuickSprintModal,
   setIsChangeDetailAffairs,
+  setIsUpdateAddWorkItem,
 } from '@store/project'
 import { Form, Input, Select } from 'antd'
 import CustomSelect from '../CustomSelect'
@@ -62,6 +63,7 @@ const AddQuickSprint = () => {
     onClose()
     // 需要更新子事务、链接事务详情及列表
     dispatch(setIsChangeDetailAffairs(true))
+    dispatch(setIsUpdateAddWorkItem(true))
   }
 
   // 计算类别
