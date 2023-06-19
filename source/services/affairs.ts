@@ -793,7 +793,7 @@ export const getAffairsChildList = async (
     currentPage: response.data.pager?.page,
     pageSize: response.data.pager?.pagesize,
     total: response.data.pager?.total,
-    list: response.data,
+    list: response.data.list,
   }
 }
 

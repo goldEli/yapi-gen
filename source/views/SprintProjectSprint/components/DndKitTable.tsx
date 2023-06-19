@@ -529,8 +529,6 @@ const DndKitTable = (props: any) => {
 
   // 拖动事务放下后的处理
   const handleDragEnd = (result: DropResult) => {
-    console.log(result, 'resultresultresultresultresultresult')
-
     if (result.destination?.droppableId === result.source.droppableId) {
       // 同表格换位置
       const data = [...rightSprintList]
@@ -610,8 +608,6 @@ const DndKitTable = (props: any) => {
           },
         })
       } else {
-        console.log(res, 'resresresresresresresresresresres')
-
         onRemoveSprintItem(sourceList?.id, item?.id, destList?.id, false).then(
           (result: any) => {
             if (result) {

@@ -206,7 +206,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     const CategoryData = newData.filter(item =>
       workType.includes(item.work_type),
     )
-    console.log(dragCategoryList.current)
 
     const currentItem = CategoryData[prevIndex]
     CategoryData[prevIndex] = CategoryData[nextIndex]

@@ -454,6 +454,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <LongStroyBread
             longStroy={affairsInfo}
             onClick={() => {
+              console.log('affairsInfo', affairsInfo)
               dispatch(getAffairsInfo({ projectId: id, sprintId }))
             }}
           ></LongStroyBread>

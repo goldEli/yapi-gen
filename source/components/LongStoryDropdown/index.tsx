@@ -7,6 +7,7 @@ import {
   ContentItem,
   LoadMore,
   CancelParentBox,
+  activity,
 } from './style'
 import InputSearch from '../InputSearch'
 import { getLongStoryList } from '@store/sprint/sprint.thunk'
@@ -26,7 +27,7 @@ const LongStoryDropdown = (props: IProps) => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const { detail, onClick } = props
-  console.log('detail-----', detail)
+
   const { longStoryList } = useSelector(state => state.sprint)
   const [list, setList] = useState<Model.Sprint.longStroyItem[]>([])
   const [hasLongStroy, setHasLongStroy] = useState(false)
@@ -78,9 +79,9 @@ const LongStoryDropdown = (props: IProps) => {
     }
     const methods = hasLongStroy ? addInfoAffairs : updateInfoAffairs
     getMessage({ type: 'success', msg: hasLongStroy ? '添加成功' : '编辑成功' })
-    onClick && onClick()
     try {
       await methods(params)
+      onClick && onClick()
     } catch (error) {
       // error
     }
@@ -148,7 +149,11 @@ const LongStoryDropdown = (props: IProps) => {
           }
           dataSource={list}
           renderItem={(item, index) => (
-            <ContentItem key={index} onClick={() => onConfirm(item)}>
+            <ContentItem
+              key={index}
+              onClick={() => onConfirm(item)}
+              className={item.id === detail.parentId ? activity : ''}
+            >
               <img src={item.category_attachment} alt="" />
               <span>{item.story_prefix_key}</span>
               <span>{item.name}</span>

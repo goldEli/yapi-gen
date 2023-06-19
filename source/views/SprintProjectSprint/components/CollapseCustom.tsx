@@ -16,6 +16,7 @@ const CollapseHead = styled.div`
   display: flex;
   .icons {
     margin-right: 5px;
+    cursor: pointer;
   }
   .headerContent {
     flex: 1;
