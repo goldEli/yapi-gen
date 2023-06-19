@@ -113,7 +113,6 @@ export const efficiencyMemberDefectList = async (
     any,
     API.Sprint.EfficiencyMemberWorkList.Result
   >(`efficiencyMemberDefectList`, params)
-  console.log(response.data, 'response.data--------------')
 
   return {
     total: response.data.total,
