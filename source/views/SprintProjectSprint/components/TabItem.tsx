@@ -120,7 +120,7 @@ const TabItem = (props: any) => {
                     ? 0
                     : Number(
                         (item.story_finish_count / item.story_count).toFixed(2),
-                      )
+                      ) * 100
                 }
                 size="small"
                 trailColor="var(--neutral-n6-d2)"
