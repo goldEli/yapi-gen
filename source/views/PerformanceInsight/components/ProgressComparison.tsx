@@ -174,6 +174,9 @@ const ProgressComparison = (props: Props) => {
     {
       dataIndex: 'completion_rate',
       title: getTitleTips('完成率', '已完成工作项/新增工作项*100%'),
+      render: (text: string) => {
+        return <span>{text}%</span>
+      },
     },
     {
       dataIndex: 'new',
@@ -239,7 +242,7 @@ const ProgressComparison = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
-            {text}
+            {text}%
           </RowText>
         )
       },
@@ -294,6 +297,9 @@ const ProgressComparison = (props: Props) => {
     {
       dataIndex: 'completion_rate',
       title: getTitleTips('当前完成率', '已完成工作项/新增工作项*100%'),
+      render: (text: string) => {
+        return <span>{text}%</span>
+      },
     },
     {
       dataIndex: 'new',
@@ -359,7 +365,7 @@ const ProgressComparison = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
-            {text}
+            {text}%
           </RowText>
         )
       },
@@ -415,6 +421,9 @@ const ProgressComparison = (props: Props) => {
     {
       dataIndex: 'completion_rate',
       title: getTitleTips('缺陷修复率', '当期已修复缺陷/档期总缺陷*100%'),
+      render: (text: string, record: any) => {
+        return <span>{text}%</span>
+      },
     },
     {
       title: '待修复',
@@ -467,7 +476,7 @@ const ProgressComparison = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <RowText onClick={e => openDetail(e, record, 'repeat_open_rate')}>
-            {text}
+            {text}%
           </RowText>
         )
       },
@@ -555,7 +564,6 @@ const ProgressComparison = (props: Props) => {
         return undefined
     }
   }
-
   // 导出
   const onGetExportApi = async (option: number[]) => {
     try {
@@ -607,28 +615,21 @@ const ProgressComparison = (props: Props) => {
           iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
         })
       }
-
-      if (result && result.status === 200) {
-        const blob = new Blob([result.body], {
-          type: result?.headers['content-type'],
-        })
-        const blobUrl = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.download = `${props?.title}.xlsx`
-        a.href = blobUrl
-        a.click()
-        getMessage({
-          msg: '导出成功',
-          type: 'success',
-        })
-      } else {
-        getMessage({
-          msg: '导出失败',
-          type: 'error',
-        })
-      }
+      const blob = new Blob([result.body], {
+        type: result?.headers['content-type'],
+      })
+      const blobUrl = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.download = `${props?.title}.xlsx`
+      a.href = blobUrl
+      a.click()
+      setIsVisibleSuccess(true)
     } catch (error) {
       console.log(error)
+      getMessage({
+        msg: '导出失败',
+        type: 'error',
+      })
     }
   }
   // 工作进展对比大的列表
@@ -781,7 +782,6 @@ const ProgressComparison = (props: Props) => {
           undefined
         : props.headerParmas?.time?.time?.[1],
     }
-    console.log(parmas, 'parmas')
     if (props.type.includes('Progress')) {
       getEfficiencyMemberWorkList(parmas)
     } else {

@@ -55,6 +55,23 @@ const TitleWrap = styled.div`
     }
   }
 `
+const LongStoryWrap = styled.div`
+  display: flex;
+  .content {
+    max-width: 160px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .icon {
+    display: none;
+  }
+  &:hover .icon {
+    display: inline-block;
+    color: var(--primary-d2);
+  }
+`
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -99,7 +116,6 @@ const DndKitTable = (props: any) => {
   const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const [deleteItem, setDeleteItem] = useState<any>({})
   const [longStoryList, setLongStoryList] = useState<any>([])
-  const [isEditLongStory, setIsEditLongStory] = useState(true)
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
 
   const isCanEdit = getIsPermission(
@@ -221,6 +237,7 @@ const DndKitTable = (props: any) => {
         if (needFresh) {
           dispatch(setSprintRefresh(1))
         }
+        return true
       }
     } catch (error) {
       console.log('error', error)
@@ -343,27 +360,21 @@ const DndKitTable = (props: any) => {
         return isCanEdit ? (
           <div>{text ? text : '--'}</div>
         ) : (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => setIsEditLongStory(true)}
+          <ClickDropdown
+            setIsVisible={setIsVisible}
+            setDeleteItem={setDeleteItem}
+            record={record}
+            longStoryList={longStoryList}
           >
-            <ClickDropdown
-              contentText={text}
-              hasChild
-              isMoreVisible={isEditLongStory}
-              menu={
-                <LatelyLongStoryMenu
-                  setIsVisible={(item: any) => {
-                    setIsVisible(true)
-                    setDeleteItem({ ...item, isLong: true })
-                  }}
-                  longStoryList={longStoryList}
-                  record={record}
-                />
-              }
-              onChangeVisible={setIsEditLongStory}
-            />
-          </div>
+            <LongStoryWrap>
+              <Tooltip title={text}>
+                <div className="content">{text ? text : '--'}</div>
+              </Tooltip>
+              <span style={{ marginLeft: '5px' }}>
+                <IconFont className="icon" type="down-icon" />
+              </span>
+            </LongStoryWrap>
+          </ClickDropdown>
         )
       },
     },
@@ -518,6 +529,8 @@ const DndKitTable = (props: any) => {
 
   // 拖动事务放下后的处理
   const handleDragEnd = (result: DropResult) => {
+    console.log(result, 'resultresultresultresultresultresult')
+
     if (result.destination?.droppableId === result.source.droppableId) {
       // 同表格换位置
       const data = [...rightSprintList]
@@ -585,23 +598,29 @@ const DndKitTable = (props: any) => {
               item?.id,
               destList?.id,
               false,
-            ).then(() => {
+            ).then((result: any) => {
+              if (result) {
+                handleSort(
+                  destList?.id,
+                  dest?.map((k: any) => k.id),
+                )
+                dispatch(setRightSprintList(res))
+              }
+            })
+          },
+        })
+      } else {
+        console.log(res, 'resresresresresresresresresresres')
+
+        onRemoveSprintItem(sourceList?.id, item?.id, destList?.id, false).then(
+          (result: any) => {
+            if (result) {
               handleSort(
                 destList?.id,
                 dest?.map((k: any) => k.id),
               )
               dispatch(setRightSprintList(res))
-            })
-          },
-        })
-      } else {
-        onRemoveSprintItem(sourceList?.id, item?.id, destList?.id, false).then(
-          () => {
-            handleSort(
-              destList?.id,
-              dest?.map((k: any) => k.id),
-            )
-            dispatch(setRightSprintList(res))
+            }
           },
         )
       }

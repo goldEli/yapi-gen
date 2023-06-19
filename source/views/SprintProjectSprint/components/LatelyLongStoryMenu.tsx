@@ -33,6 +33,9 @@ const MenuWrap = styled(Menu)`
   .ant-dropdown-menu-submenu-title.ant-dropdown-menu-submenu-title-disabled:hover {
     background-color: transparent !important;
   }
+  li:last-child {
+    border-top: 1px solid var(--neutral-n6-d1);
+  }
 `
 const RemoveItemWrap = styled.div`
   font-size: 12px;
@@ -49,6 +52,12 @@ const MenuItemBox = styled.div`
   &:hover .edit {
     visibility: visible;
   }
+  &:hover .item {
+    max-width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 `
 
 const MenuItemWrap = styled.div`
@@ -59,24 +68,16 @@ const MenuItemWrap = styled.div`
     color: var(--neutral-n1-d1);
   }
   margin-right: 20px;
-  width: 120px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 `
 const NewItemWrap = styled(MenuItemWrap)`
   box-sizing: border-box;
-`
-const LineWrap = styled.div`
-  width: 180px;
-  height: 1px;
-  background: var(--neutral-n6-d1);
 `
 
 interface Props {
   record: any
   longStoryList: any[]
   setIsVisible(v: any): any
+  setPopoverVisible(val: boolean): void
 }
 
 export const LatelyLongStoryMenu = (props: Props) => {
@@ -88,6 +89,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
+  const { setPopoverVisible } = props
 
   const editLongStory = async (parent_id: number) => {
     try {
@@ -128,7 +130,13 @@ export const LatelyLongStoryMenu = (props: Props) => {
         label: (
           <MenuItemBox>
             <Tooltip title={k.name}>
-              <MenuItemWrap onClick={() => editLongStory(k.id)}>
+              <MenuItemWrap
+                className="item"
+                onClick={() => {
+                  setPopoverVisible(false)
+                  editLongStory(k.id)
+                }}
+              >
                 {k.name}
               </MenuItemWrap>
             </Tooltip>
@@ -136,6 +144,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
               <Tooltip title="编辑">
                 <IconFont
                   onClick={() => {
+                    setPopoverVisible(false)
                     // todo 编辑长故事
                     dispatch(
                       setAddWorkItemModal({
@@ -159,7 +168,10 @@ export const LatelyLongStoryMenu = (props: Props) => {
               {hasDel ? null : (
                 <Tooltip title="删除">
                   <IconFont
-                    onClick={() => props?.setIsVisible?.(k)}
+                    onClick={() => {
+                      setPopoverVisible(false)
+                      props?.setIsVisible?.(k)
+                    }}
                     style={{
                       fontSize: 16,
                       color: 'var(--neutral-n3)',
@@ -174,11 +186,6 @@ export const LatelyLongStoryMenu = (props: Props) => {
       })),
     )
     .concat([
-      {
-        key: '-2',
-        disabled: true,
-        label: <LineWrap />,
-      },
       {
         key: '-3',
         disabled: false,

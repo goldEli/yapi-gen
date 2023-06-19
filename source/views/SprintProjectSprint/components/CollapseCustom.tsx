@@ -1,0 +1,40 @@
+import styled from '@emotion/styled'
+import { ReactNode, useState } from 'react'
+
+interface CollapseProps {
+  isExpand: boolean
+  header: ReactNode
+  children: ReactNode
+  expandIcon: ReactNode
+  shrinkIcon: ReactNode
+}
+
+const CollapseWrap = styled.div`
+  padding: 0px 24px 24px 0px;
+`
+const CollapseHead = styled.div`
+  display: flex;
+  .icons {
+    margin-right: 5px;
+  }
+  .headerContent {
+    flex: 1;
+  }
+`
+
+const CollapseCustom = (props: CollapseProps) => {
+  const { isExpand, header, children, expandIcon, shrinkIcon } = props
+  const [expand, setExpand] = useState(isExpand)
+  return (
+    <CollapseWrap>
+      <CollapseHead>
+        <div className="icons" onClick={() => setExpand(!expand)}>
+          {expand ? expandIcon : shrinkIcon}
+        </div>
+        <div className="headerContent"> {header}</div>
+      </CollapseHead>
+      <div className="content">{expand ? children : null}</div>
+    </CollapseWrap>
+  )
+}
+export default CollapseCustom

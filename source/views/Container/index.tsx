@@ -58,6 +58,7 @@ export const Content = styled.div`
 `
 
 export const Container = () => {
+  const language1 = useSelector(store => store.global.language)
   const location = useLocation()
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
@@ -154,7 +155,7 @@ export const Container = () => {
   }, [loginInfo, menuPermission])
 
   return (
-    <KitConfigProvider local={language as any}>
+    <KitConfigProvider language={language1 === 'en'} local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         <GlobalStyle />
         <DeleteConfirmGlobalModal />

@@ -19,7 +19,7 @@ import { setAddWorkItemModal } from '@store/project'
 import CompleteSprintModal from './CompleteSprintModal'
 import { setSprintRefresh } from '@store/sprint'
 import useShortcutC from '@/hooks/useShortcutC'
-const { Panel } = Collapse
+import CollapseCustom from './CollapseCustom'
 
 interface XTableProps {
   data: any
@@ -87,7 +87,7 @@ const XTableWrap = styled.div`
     padding: 0px 16px !important;
   }
 `
-const PanelHeader = styled.div`
+const Header = styled.div`
   height: 32px;
   display: flex;
   justify-content: space-between;
@@ -105,12 +105,6 @@ const PanelHeader = styled.div`
     color: var(--neutral-n3);
     margin-left: 16px;
     margin-right: 16px;
-  }
-`
-
-const PanelWrap = styled(Panel)`
-  .ant-collapse-content-box {
-    max-height: inherit !important;
   }
 `
 
@@ -226,169 +220,158 @@ const XTable: React.FC<XTableProps> = props => {
 
   return (
     <>
-      <Collapse
-        defaultActiveKey={['1']}
-        ghost
-        expandIcon={({ isActive }: any) => {
-          return isActive ? (
-            <IconFont
-              style={{
-                fontSize: 14,
-                color: 'var(--neutral-n3)',
-              }}
-              type="down-icon"
-            />
-          ) : (
-            <IconFont
-              style={{
-                fontSize: 14,
-                color: 'var(--neutral-n3)',
-              }}
-              type="right-icon"
-            />
-          )
-        }}
-      >
-        <PanelWrap
-          header={
-            <PanelHeader
-              onClick={e => {
-                e.stopPropagation()
-              }}
-            >
-              <div>
-                <span className="title">{data.name}</span>
-                <span className="date">
-                  {`${data?.start_at ? data.start_at : ''}${
-                    data?.start_at && data?.end_at ? '~ ' : ''
-                  }${data?.end_at ? data?.end_at : ''}`}
-                  {data?.story_visible_count
-                    ? `（可见${data?.story_visible_count}个，共${data?.story_count}个事务）`
-                    : ''}
-                </span>
-                {data.id === -1
-                  ? null
-                  : !isCanEditSprint && (
-                      <>
-                        <Tooltip title="编辑">
-                          <IconFont
-                            onClick={() => {
-                              setSprintModal({
-                                visible: true,
-                                type: 'edit',
-                              })
-                            }}
-                            style={{
-                              fontSize: 16,
-                              color: 'var(--neutral-n3)',
-                              marginRight: 16,
-                            }}
-                            type="edit"
-                          />
-                        </Tooltip>
-                        <Tooltip title="删除">
-                          <IconFont
-                            onClick={() => {
-                              open({
-                                title: '删除冲刺',
-                                text: `确认要删除【${data.name}】的冲刺吗？`,
-                                onConfirm: () => deleteSprint(data.id),
-                              })
-                            }}
-                            style={{
-                              fontSize: 16,
-                              color: 'var(--neutral-n3)',
-                            }}
-                            type="delete"
-                          />
-                        </Tooltip>
-                      </>
-                    )}
-              </div>
-              {!isCanEditSprint && (
-                <div>
-                  {data.id === -1 ? (
-                    <CommonButton
-                      type="light"
-                      onClick={() => {
-                        setSprintModal({
-                          visible: true,
-                          type: 'create',
-                        })
-                      }}
-                    >
-                      新建冲刺
-                    </CommonButton>
-                  ) : (
-                    getSprintButton(data.status)
+      <CollapseCustom
+        isExpand={true}
+        expandIcon={
+          <IconFont
+            style={{
+              fontSize: 14,
+              color: 'var(--neutral-n3)',
+            }}
+            type="down-icon"
+          />
+        }
+        shrinkIcon={
+          <IconFont
+            style={{
+              fontSize: 14,
+              color: 'var(--neutral-n3)',
+            }}
+            type="right-icon"
+          />
+        }
+        header={
+          <Header>
+            <div>
+              <span className="title">{data.name}</span>
+              <span className="date">
+                {`${data?.start_at ? data.start_at : ''}${
+                  data?.start_at && data?.end_at ? '~ ' : ''
+                }${data?.end_at ? data?.end_at : ''}`}
+                {data?.story_visible_count
+                  ? `（可见${data?.story_visible_count}个，共${data?.story_count}个事务）`
+                  : ''}
+              </span>
+
+              {data.id === -1
+                ? null
+                : !isCanEditSprint && (
+                    <>
+                      <Tooltip title="编辑">
+                        <IconFont
+                          onClick={() => {
+                            setSprintModal({
+                              visible: true,
+                              type: 'edit',
+                            })
+                          }}
+                          style={{
+                            fontSize: 16,
+                            color: 'var(--neutral-n3)',
+                            marginRight: 16,
+                          }}
+                          type="edit"
+                        />
+                      </Tooltip>
+                      <Tooltip title="删除">
+                        <IconFont
+                          onClick={() => {
+                            open({
+                              title: '删除冲刺',
+                              text: `确认要删除【${data.name}】的冲刺吗？`,
+                              onConfirm: () => deleteSprint(data.id),
+                            })
+                          }}
+                          style={{
+                            fontSize: 16,
+                            color: 'var(--neutral-n3)',
+                          }}
+                          type="delete"
+                        />
+                      </Tooltip>
+                    </>
                   )}
-                </div>
-              )}
-            </PanelHeader>
-          }
-          key="1"
-        >
-          {!isCanEdit && (
-            <CommonButton
-              type="primaryText"
-              icon="plus"
-              iconPlacement="left"
-              onClick={() => {
-                // todo 创建新事物
-                dispatch(
-                  setAddWorkItemModal({
-                    visible: true,
-                    params: {
-                      type: 4,
-                      iterateId: data.id === -1 ? 0 : data.id,
-                    },
-                  }),
-                )
-              }}
-            >
-              <span>新事物</span>
-            </CommonButton>
-          )}
-          {String(data.id)}droppabledid
-          <Droppable key={data.id} droppableId={String(data.id)}>
-            {provided => (
-              <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
-                <ResizeTable
-                  className="dnd"
-                  isSpinning={false}
-                  dataWrapNormalHeight=""
-                  col={props.columns}
-                  noData={
-                    data.id === -1 ? (
-                      <NoData subText="暂无事务" />
-                    ) : (
-                      <div className="nodata">
-                        {data.status === 4
-                          ? '从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺'
-                          : '可将已有事务拖拽到此处，来确定冲刺计划'}
-                      </div>
-                    )
-                  }
-                  dataSource={list}
-                  components={{ body: { row: SortableItem } }}
-                  pagination={{
-                    total: list?.length,
-                    showTotal(total: any) {
-                      return `共 ${total}条`
-                    },
-                    defaultPageSize: 10,
-                    defaultCurrent: 1,
-                    pageSizeOptions: ['10', '20', '50'],
-                    showSizeChanger: true,
-                    showQuickJumper: true,
-                  }}
-                />
-                {provided.placeholder}
-              </XTableWrap>
+            </div>
+            {!isCanEditSprint && (
+              <div>
+                {data.id === -1 ? (
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      setSprintModal({
+                        visible: true,
+                        type: 'create',
+                      })
+                    }}
+                  >
+                    新建冲刺
+                  </CommonButton>
+                ) : (
+                  getSprintButton(data.status)
+                )}
+              </div>
             )}
-          </Droppable>
-        </PanelWrap>
-      </Collapse>
+          </Header>
+        }
+      >
+        {!isCanEdit && (
+          <CommonButton
+            type="primaryText"
+            icon="plus"
+            iconPlacement="left"
+            onClick={() => {
+              dispatch(
+                setAddWorkItemModal({
+                  visible: true,
+                  params: {
+                    type: 4,
+                    iterateId: data.id === -1 ? 0 : data.id,
+                  },
+                }),
+              )
+            }}
+          >
+            <span>新事物</span>
+          </CommonButton>
+        )}
+        <Droppable key={data.id} droppableId={String(data.id)}>
+          {provided => (
+            <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
+              <ResizeTable
+                className="dnd"
+                isSpinning={false}
+                dataWrapNormalHeight=""
+                col={props.columns}
+                noData={
+                  data.id === -1 ? (
+                    <NoData subText="暂无事务" />
+                  ) : (
+                    <div className="nodata">
+                      {data.status === 4
+                        ? '从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺'
+                        : '可将已有事务拖拽到此处，来确定冲刺计划'}
+                    </div>
+                  )
+                }
+                dataSource={list}
+                components={{ body: { row: SortableItem } }}
+                pagination={{
+                  total: list?.length,
+                  showTotal(total: any) {
+                    return `共 ${total}条`
+                  },
+                  defaultPageSize: 10,
+                  defaultCurrent: 1,
+                  pageSizeOptions: ['10', '20', '50'],
+                  showSizeChanger: true,
+                  showQuickJumper: true,
+                }}
+              />
+              {provided.placeholder}
+            </XTableWrap>
+          )}
+        </Droppable>
+      </CollapseCustom>
 
       <CreateSprintModal
         type={sprintModal.type}
