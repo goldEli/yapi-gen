@@ -358,27 +358,35 @@ const Profile = () => {
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss}>{data?.story_count}</span>
-                <span className={titleTextCss}>累计参与工作项</span>
+                <span className={titleTextCss}>
+                  {t('accumulated_work_items')}
+                </span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.abeyance_count}</span>
-                <span className={titleTextCss}>待办工作项</span>
+                <span className={titleTextCss}>{t('todo_work_items')}</span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.finish_count}</span>
-                <span className={titleTextCss}>已办工作项</span>
+                <span className={titleTextCss}>
+                  {t('completed_work_items')}
+                </span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.create_count}</span>
-                <span className={titleTextCss}>我创建的工作项</span>
+                <span className={titleTextCss}>
+                  {t('my_created_work_items')}
+                </span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.copy_me_count}</span>
-                <span className={titleTextCss}>抄送我的工作项</span>
+                <span className={titleTextCss}>{t('cc_to_me_work_items')}</span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss2}>{data?.approving_count}</span>
-                <span className={titleTextCss}>待审核的工作项</span>
+                <span className={titleTextCss}>
+                  {t('pending_approval_work_items')}
+                </span>
               </ChartsItem>
               {/* <ChartsItem>
                 <span className={titleNumberCss}>{data?.secondFinish}</span>
@@ -400,7 +408,7 @@ const Profile = () => {
                 alignItems: 'center',
               }}
             >
-              <SecondTitle>工作项接收处理情况</SecondTitle>
+              <SecondTitle>{t('work_item_receiving_processing')}</SecondTitle>
               <Select
                 onChange={handleChange}
                 defaultValue={nowYear}
