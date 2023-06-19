@@ -642,7 +642,7 @@ const SprintProjectSprint: React.FC = () => {
                     ...searchObject,
                     search: {
                       ...searchObject.search,
-                      category_id: val,
+                      category_id: val.map(item => item.id),
                     },
                   })
                 }}
