@@ -95,7 +95,7 @@ declare namespace API.Affairs {
         pagesize: number
         total: number
       }
-      data: Model.Affairs.AffairsInfo[]
+      list: Model.Affairs.AffairsInfo[]
     }
   }
   namespace BatchAffairsEdit {

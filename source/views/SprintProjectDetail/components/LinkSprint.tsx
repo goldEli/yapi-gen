@@ -134,158 +134,15 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     page: number
     pagesize: number
   }) => {
-    // const response = await getAffairsRelationStoriesList({
-    //   projectId: projectInfo.id,
-    //   id: props.detail.id,
-    //   ...page,
-    // })
-    // setAllDataSource(response)
-    const response = [
-      {
-        id: 1003010,
-        name: '需求测试',
-        category_status_id: 1821,
-        category_id: 571,
-        schedule: 0,
-        priority: 9537,
-        created_at: '2023-03-22 18:07:39',
-        story_prefix_key: 'CSXM（JXL）-2',
-        children_count: 0,
-        category_status: {
-          id: 1821,
-          category_id: 571,
-          status_id: 9540,
-          is_start: 1,
-          is_end: 2,
-          status_name: '规划中',
-          color: '#FA9746',
-        },
-        project_category: {
-          id: 571,
-          name: '测试需求类别（jx）',
-          attachment_path:
-            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
-        },
-        story_config_priority: {
-          id: 9537,
-          name: '中',
-          content: '中',
-          color: '#2877FF',
-          icon: 'middle',
-          identity: 'priority',
-          content_txt: '中',
-          group_content_txt: '',
-        },
-        handlers: [
-          {
-            id: 689,
-            name: '蒋晓龙',
-            avatar: '',
-          },
-        ],
-        pivot: {
-          type: 2,
-          sort: 1,
-        },
-      },
-      {
-        id: 10032010,
-        name: '需求测试1111',
-        category_status_id: 1821,
-        category_id: 571,
-        schedule: 0,
-        priority: 9537,
-        created_at: '2023-03-22 18:07:39',
-        story_prefix_key: 'CSXM（JXL）-2',
-        children_count: 0,
-        category_status: {
-          id: 1821,
-          category_id: 571,
-          status_id: 9540,
-          is_start: 1,
-          is_end: 2,
-          status_name: '规划中',
-          color: '#FA9746',
-        },
-        project_category: {
-          id: 571,
-          name: '测试需求类别（jx）',
-          attachment_path:
-            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
-        },
-        story_config_priority: {
-          id: 9537,
-          name: '中',
-          content: '中',
-          color: '#2877FF',
-          icon: 'middle',
-          identity: 'priority',
-          content_txt: '中',
-          group_content_txt: '',
-        },
-        handlers: [
-          {
-            id: 689,
-            name: '蒋晓龙',
-            avatar: '',
-          },
-        ],
-        pivot: {
-          type: 2,
-          sort: 1,
-        },
-      },
-      {
-        id: 10030120,
-        name: '需求测试2222',
-        category_status_id: 1821,
-        category_id: 571,
-        schedule: 0,
-        priority: 9537,
-        created_at: '2023-03-22 18:07:39',
-        story_prefix_key: 'CSXM（JXL）-2',
-        children_count: 0,
-        category_status: {
-          id: 1821,
-          category_id: 571,
-          status_id: 9540,
-          is_start: 1,
-          is_end: 2,
-          status_name: '规划中',
-          color: '#FA9746',
-        },
-        project_category: {
-          id: 571,
-          name: '测试需求类别（jx）',
-          attachment_path:
-            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
-        },
-        story_config_priority: {
-          id: 9537,
-          name: '中',
-          content: '中',
-          color: '#2877FF',
-          icon: 'middle',
-          identity: 'priority',
-          content_txt: '中',
-          group_content_txt: '',
-        },
-        handlers: [
-          {
-            id: 689,
-            name: '蒋晓龙',
-            avatar: '',
-          },
-        ],
-        pivot: {
-          type: 1,
-          sort: 1,
-        },
-      },
-    ]
+    const response = await getAffairsRelationStoriesList({
+      projectId: projectInfo.id,
+      id: props.detail.id,
+      ...page,
+    })
+    setAllDataSource(response)
     const newArr = JSON.parse(JSON.stringify(typeList))
     newArr.forEach((element: any) => {
-      response.forEach((i: any) => {
+      response.list.forEach((i: any) => {
         if (i.pivot?.type === element.value) {
           element.list.push({ ...i, index: i.id })
         }
@@ -422,7 +279,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               optionFilterProp="label"
               allowClear
               showSearch
-              onSearch={setSearchValue}
+              onSearch={onSearch}
               options={searchValue ? selectList : recentList}
             />
           </Form.Item>
@@ -442,6 +299,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
                   columns={columns}
                   dataSource={{ list: i.list }}
                   onChangeData={arr => onChangeData(i, arr)}
+                  showHeader={false}
                 />
               </div>
             )}

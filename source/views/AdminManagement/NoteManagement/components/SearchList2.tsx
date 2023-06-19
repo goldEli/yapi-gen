@@ -105,7 +105,9 @@ const SearchList = (props: Props) => {
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>发送人</span>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('p2.sender')}
+            </span>
             <Form.Item name="send_user_ids">
               <SelectWrap
                 showArrow
@@ -155,7 +157,9 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>通知类型</span>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('notification_type')}
+            </span>
             <Form.Item name="type">
               <SelectWrap
                 onChange={confirm}
