@@ -177,7 +177,7 @@ const ProjectDetailSide = () => {
   const onSprintProjectSetting = (isInit?: boolean) => {
     setSelectedKeys(['ProjectInfo'])
     const params = encryptPhp(
-      JSON.stringify({ id: projectId, pageIdx: 'main', type: 0 }),
+      JSON.stringify({ id: projectId, pageIdx: 'main', type: 'ProjectInfo' }),
     )
     navigate(`/SprintProjectManagement/Setting?data=${params}`)
   }
@@ -236,6 +236,7 @@ const ProjectDetailSide = () => {
   }, [projectId])
 
   useEffect(() => {
+    // debugger
     setSelectedKeys([paramsData.type])
   }, [paramsData.type])
   useEffect(() => {}, [pathname])

@@ -8,6 +8,7 @@ import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap, ModalFooter } from './StyleCommon'
 import CommonButton from './CommonButton'
+import { useState } from 'react'
 
 const ModalHeader = styled.div`
   display: flex;
@@ -48,7 +49,7 @@ interface CommonModalProps {
   // 自定义底部
   hasFooter?: React.ReactNode
   // 确认事件
-  onConfirm?(): void
+  onConfirm?(): any
   // 确认按钮文字
   confirmText?: string
   bodyStyle?: any
@@ -62,6 +63,7 @@ interface CommonModalProps {
 
 const CommonModal = (props: CommonModalProps) => {
   const [t] = useTranslation()
+  const [loading, setLoading] = useState(false)
   return (
     <ModalStyle
       footer={false}
@@ -122,7 +124,18 @@ const CommonModal = (props: CommonModalProps) => {
                 </CommonButton>
               )}
 
-              <CommonButton type="primary" onClick={props?.onConfirm}>
+              <CommonButton
+                type="primary"
+                loading={loading}
+                onClick={() => {
+                  if (props?.onConfirm && props?.onConfirm?.()?.finally) {
+                    setLoading(true)
+                    props?.onConfirm?.()?.finally(() => {
+                      setLoading(false)
+                    })
+                  }
+                }}
+              >
                 {props?.confirmText ? props?.confirmText : t('common.confirm')}
               </CommonButton>
             </ModalFooter>

@@ -72,7 +72,7 @@ const LongStroyBread = (props: IProps) => {
     if (hasLongStroy) {
       // isHasLongStroy 为true 可以新增
       const isHasLongStroy = longStroy?.level_tree?.length === 0
-      console.log('isHasLongStroy', isHasLongStroy)
+      console.log('isHasLongStroy', isHasLongStroy, longStroy)
       setIsHasLongStroy(isHasLongStroy)
     }
     setHasLongStroy(hasLongStroy)

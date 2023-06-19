@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-duplicate-imports */
 // 项目
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { getParentList } from './project.thunk'
 
 export interface CounterState {
