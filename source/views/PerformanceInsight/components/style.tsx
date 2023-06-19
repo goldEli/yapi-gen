@@ -20,10 +20,10 @@ export const MoreWrap = styled.div({
 export const MoreWrap1 = styled(MoreWrap)`
   padding: 0;
   background-color: transparent;
-  font-size: 12px;
+  font-size: 14px;
   .job1,
   .job {
-    color: var(--neutral-n1-d1);
+    color: var(--neutral-n2);
   }
   &:hover {
     // background-color: var(--hover-d3) !important;
