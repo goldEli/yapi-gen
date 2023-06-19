@@ -154,15 +154,14 @@ const ProgressComparison = (props: Props) => {
       },
     },
     {
-      title: (
-        <NewSort
-          fixedKey="departmentName"
-          nowKey={order.key}
-          order={order.value}
-          title={'组织'}
-          onUpdateOrderKey={onUpdateOrderKey}
-        ></NewSort>
-      ),
+      title: '组织',
+      // <NewSort
+      //   fixedKey="departmentName"
+      //   nowKey={order.key}
+      //   order={order.value}
+      //   title={'组织'}
+      //   onUpdateOrderKey={onUpdateOrderKey}
+      // ></NewSort>
       dataIndex: 'departmentName',
     },
     {
@@ -275,15 +274,14 @@ const ProgressComparison = (props: Props) => {
       },
     },
     {
-      title: (
-        <NewSort
-          fixedKey="departmentName"
-          nowKey={order.key}
-          order={order.value}
-          title={'组织'}
-          onUpdateOrderKey={onUpdateOrderKey}
-        ></NewSort>
-      ),
+      title: '组织',
+      // <NewSort
+      //   fixedKey="departmentName"
+      //   nowKey={order.key}
+      //   order={order.value}
+      //   title={'组织'}
+      //   onUpdateOrderKey={onUpdateOrderKey}
+      // ></NewSort>
       dataIndex: 'departmentName',
     },
     {

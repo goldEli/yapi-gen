@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
 import NoData from './NoData'
-import { getProjectList } from '@/services/project'
+import { getParentList, getProjectList } from '@/services/project'
 import { useSelector } from '@store/index'
 import { addInfoDemand, getDemandList } from '@/services/demand'
 import InputSearch from './InputSearch'
@@ -98,9 +98,10 @@ const ChooseItems = (props: DemandProps) => {
   const { demandInfo } = useSelector(store => store.demand)
 
   const getList = async () => {
-    const result = await getDemandList({
+    const result = await getParentList({
       projectId: props.projectId,
-      all: true,
+      id: demandInfo?.id,
+      categoryId: demandInfo.categoryId,
     })
     const arr = result.map((i: any) => ({
       label: i.name,

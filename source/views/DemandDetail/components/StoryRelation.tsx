@@ -104,12 +104,8 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter(
-      (i: any) =>
-        i.name ===
-        (projectInfo.projectType === 1
-          ? 'b/flaw/update'
-          : 'b/transaction/update'),
+    projectInfo.projectPermissions?.filter((i: any) =>
+      projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
     )?.length > 0
 
   // 类型列表
@@ -144,7 +140,6 @@ const StoryRelation = (props: RelationStoriesProps) => {
       id: props.detail.id,
       searchValue: value,
     })
-    console.log(response, '数据')
 
     setSelectList(
       response.map((i: Model.Flaw.FlawInfo) => ({
@@ -160,7 +155,6 @@ const StoryRelation = (props: RelationStoriesProps) => {
       projectId: projectInfo.id,
       id: props.detail.id,
     })
-    console.log(response, '数据')
     setRecentList(
       response.map((i: Model.Flaw.FlawInfo) => ({
         label: i.name,
@@ -177,11 +171,14 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   const onSearch = (value: string) => {
     setSearchValue(value)
-    getSelectRelationSearch(value)
+    if (value) {
+      getSelectRelationSearch(value)
+    }
   }
 
   // 关闭链接事务弹窗
   const onClose = () => {
+    setSearchValue('')
     setIsVisible(false)
     form.resetFields()
   }
@@ -259,9 +256,11 @@ const StoryRelation = (props: RelationStoriesProps) => {
       render: (text: string) => <div>{text}</div>,
     },
     {
-      title: <NewSort fixedKey="story_prefix_key">关联关系</NewSort>,
-      dataIndex: 'story_prefix_key',
-      render: (text: string) => <div>121212</div>,
+      title: <NewSort fixedKey="relation_type">关联关系</NewSort>,
+      dataIndex: 'relation_type',
+      render: (text: number) => (
+        <div>{typeList.filter((i: any) => i.value === text)[0]?.label}</div>
+      ),
     },
     {
       title: <NewSort fixedKey="name">标题</NewSort>,
@@ -279,7 +278,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
             title={text.name}
           >
             <img
-              src={text.attachment_path}
+              src={record.category_attachment}
               style={{
                 width: '18px',
                 height: '18px',
@@ -295,7 +294,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
     },
     {
       title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
-      dataIndex: 'iteration',
+      dataIndex: 'iterate_name',
       key: 'iterate_name',
       width: 120,
       render: (text: string, record: any) => {
@@ -402,7 +401,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
             item={record}
             onUpdate={onUpdate}
           >
-            {/* {record?.usersInfo.length > 0 && (
+            {record?.usersInfo.length > 0 && (
               <MultipleAvatar
                 max={3}
                 list={
@@ -413,8 +412,8 @@ const StoryRelation = (props: RelationStoriesProps) => {
                   })) || []
                 }
               />
-            )} */}
-            {/* {!record?.usersInfo?.length && '--'} */}
+            )}
+            {!record?.usersInfo?.length && '--'}
           </TableQuickEdit>
         )
       },

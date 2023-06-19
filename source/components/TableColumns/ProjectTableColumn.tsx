@@ -252,7 +252,11 @@ export const useDynamicColumns = (state: any) => {
     {
       title: (
         <NewSort fixedKey="child_story_count">
-          {projectInfo.projectType === 2 ? '子事务' : t('common.childDemand')}
+          {projectInfo.projectType === 2
+            ? '子事务'
+            : state?.type === 2
+            ? '子项'
+            : t('common.childDemand')}
         </NewSort>
       ),
       dataIndex: 'demand',

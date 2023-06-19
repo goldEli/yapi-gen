@@ -211,7 +211,7 @@ const CreateDemandRight = (props: Props) => {
         iterate_name: params.iterateId
           ? hasIterateId
           : removeNull(projectInfoValues, 'iterate_name')
-              ?.filter((k: any) => k.status === 1)
+              ?.filter((k: any) => k.status === 1 || k.status === 4)
               ?.filter((i: any) => i.id === props?.detail?.iterateId).length
           ? props?.detail?.iterateId
           : undefined,
@@ -247,7 +247,7 @@ const CreateDemandRight = (props: Props) => {
       if (params?.iterateId) {
         form.setFieldsValue({
           iterate_name: removeNull(projectInfoValues, 'iterate_name')
-            ?.filter((k: any) => k.status === 1)
+            ?.filter((k: any) => k.status === 1 || k.status === 4)
             .filter((i: any) => i.id === params?.iterateId).length
             ? params?.iterateId
             : null,
@@ -263,7 +263,7 @@ const CreateDemandRight = (props: Props) => {
           )?.[0]
           form.setFieldsValue({
             iterate_name: removeNull(projectInfoValues, 'iterate_name')
-              ?.filter((k: any) => k.status === 1)
+              ?.filter((k: any) => k.status === 1 || k.status === 4)
               .filter((i: any) => i.id === resultId).length
               ? resultId
               : null,
