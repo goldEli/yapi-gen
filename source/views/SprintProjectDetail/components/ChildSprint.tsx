@@ -32,6 +32,9 @@ import { getMessage } from '@/components/Message'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import PaginationBox from '@/components/TablePagination'
 import NoData from '@/components/NoData'
+import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
+import MoreDropdown from '@/components/MoreDropdown'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 interface SelectItem {
   label: string
@@ -39,7 +42,9 @@ interface SelectItem {
 }
 
 const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
+  const [isShowMore, setIsShowMore] = useState(false)
   const dispatch = useDispatch()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [isSearch, setIsSearch] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const { projectInfo, isChangeDetailAffairs } = useSelector(
@@ -61,7 +66,6 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       id: props.detail.id,
       ...page,
     })
-    console.log(response, '=responseresponse')
     setDataSource({
       ...response,
       list: response.list.map((i: any) => ({ ...i, index: i.id })),
@@ -120,6 +124,19 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     getMessage({ type: 'success', msg: '添加成功' })
     onCancelSearch()
     getList(pageParams)
+  }
+
+  // 删除关联工作项
+  const onDeleteChange = (item: any) => {
+    setIsShowMore(false)
+    open({
+      title: '删除确认',
+      text: '确认删除子事务？',
+      onConfirm() {
+        // 删除接口
+        return Promise.resolve()
+      },
+    })
   }
 
   const columns = [
@@ -190,6 +207,28 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     },
   ]
 
+  const operationList = [
+    {
+      width: 40,
+      render: (text: any, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreDropdown
+              isMoreVisible={isShowMore}
+              menu={
+                <RelationDropdownMenu
+                  onDeleteChange={onDeleteChange}
+                  record={record}
+                />
+              }
+              onChangeVisible={setIsShowMore}
+            />
+          </div>
+        )
+      },
+    },
+  ]
+
   // 创建子事务
   const onCreateChild = () => {
     dispatch(setAddQuickSprintModal({ visible: true, params: props.detail }))
@@ -230,10 +269,9 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     }
   }, [isChangeDetailAffairs])
 
-  console.log(props.detail, '=121212')
-
   return (
     <InfoItem id="sprint-childSprint" className="info_item_tab">
+      <DeleteConfirmModal />
       <LabelWrap>
         <Label>子事务</Label>
         {!isSearch && (
@@ -296,6 +334,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               dataSource={dataSource}
               onChangeData={onDragTable}
               showHeader={false}
+              hasOperation={operationList}
             />
           </>
         )}
