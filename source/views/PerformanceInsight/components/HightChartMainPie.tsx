@@ -8,7 +8,7 @@ import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, Space } from 'antd'
 import Highcharts from 'highcharts'
 import { useEffect, useState } from 'react'
-import { Col, Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
+import { Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
 import { HighchartsReactWrap, RightRow } from './style'
 interface PropsMoreDropdown {
   data: Array<{ label: string; key: string }>
