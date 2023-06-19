@@ -60,6 +60,7 @@ import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
 import CommentFooter from '../CommonComment/CommentFooter'
 import LongStroyBread from '../LongStroyBread'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { setActiveCategory } from '@store/category'
 const SprintDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -406,14 +407,15 @@ const SprintDetailDrawer = () => {
 
   // 跳转配置
   const onToConfig = () => {
+    //
+    dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',
         id: id,
-        categoryName: '需求',
         categoryItem: {
           id: drawerInfo.category,
-          status: 1,
+          status: drawerInfo.category_status,
         },
       }),
     )

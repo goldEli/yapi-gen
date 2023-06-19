@@ -226,7 +226,7 @@ const ProjectTemplate = (props: any) => {
       </div>
       <CommonModal
         width={784}
-        title={t('new_p1.a4')}
+        title={t('import_existing_project')}
         isVisible={visibleEdit}
         onClose={onClose}
         onConfirm={onsubmit}
