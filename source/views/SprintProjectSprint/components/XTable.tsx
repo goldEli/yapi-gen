@@ -253,7 +253,7 @@ const XTable: React.FC<XTableProps> = props => {
                   : ''}
               </span>
 
-              {data.id === -1
+              {data.id === 0
                 ? null
                 : !isCanEditSprint && (
                     <>
@@ -294,7 +294,7 @@ const XTable: React.FC<XTableProps> = props => {
             </div>
             {!isCanEditSprint && (
               <div>
-                {data.id === -1 ? (
+                {data.id === 0 ? (
                   <CommonButton
                     type="light"
                     onClick={() => {
@@ -325,7 +325,7 @@ const XTable: React.FC<XTableProps> = props => {
                   visible: true,
                   params: {
                     type: 4,
-                    iterateId: data.id === -1 ? 0 : data.id,
+                    iterateId: data.id === 0 ? 0 : data.id,
                   },
                 }),
               )
@@ -343,7 +343,7 @@ const XTable: React.FC<XTableProps> = props => {
                 dataWrapNormalHeight=""
                 col={props.columns}
                 noData={
-                  data.id === -1 ? (
+                  data.id === 0 ? (
                     <NoData subText="暂无事务" />
                   ) : (
                     <div className="nodata">
