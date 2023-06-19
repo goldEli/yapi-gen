@@ -240,7 +240,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const onDelete = () => {
     openDelete({
       title: '删除确认',
-      text: '确认删除该事务？',
+      text: `您将永久删除${affairsInfo.story_prefix_key}及其子事务，删除后将不可恢复请谨慎操作!`,
       onConfirm() {
         onDeleteConfirm()
         return Promise.resolve()

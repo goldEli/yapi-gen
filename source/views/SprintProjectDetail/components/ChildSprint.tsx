@@ -2,7 +2,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonButton from '@/components/CommonButton'
 import {
-  AddText,
   CancelText,
   InfoItem,
   InfoItemWrap,
@@ -17,11 +16,15 @@ import { Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import StateTag from '@/components/StateTag'
 import DragTable from '@/components/DragTable'
-import { setAddQuickSprintModal } from '@store/project'
+import {
+  setAddQuickSprintModal,
+  setIsChangeDetailAffairs,
+} from '@store/project'
 import { useDispatch, useSelector } from '@store/index'
 import {
   addAffairsChild,
   affairsChildDragSort,
+  deleteAffairs,
   getAffairsChildList,
   getAffairsSelectChildren,
   getAffairsSelectChildrenRecent,
@@ -30,6 +33,10 @@ import { getMessage } from '@/components/Message'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import PaginationBox from '@/components/TablePagination'
 import NoData from '@/components/NoData'
+import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
+import MoreDropdown from '@/components/MoreDropdown'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import Item from 'antd/lib/list/Item'
 
 interface SelectItem {
   label: string
@@ -37,10 +44,14 @@ interface SelectItem {
 }
 
 const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
+  const [isShowMore, setIsShowMore] = useState(false)
   const dispatch = useDispatch()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [isSearch, setIsSearch] = useState(false)
   const [searchValue, setSearchValue] = useState('')
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isChangeDetailAffairs } = useSelector(
+    store => store.project,
+  )
   const [pageParams, setPageParams] = useState({ page: 1, pagesize: 20 })
   // 下拉数据
   const [selectList, setSelectList] = useState<SelectItem[]>([])
@@ -57,7 +68,11 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       id: props.detail.id,
       ...page,
     })
-    setDataSource(response)
+    setDataSource({
+      ...response,
+      list: response.list.map((i: any) => ({ ...i, index: i.id })),
+    })
+    dispatch(setIsChangeDetailAffairs(false))
   }
 
   // 获取搜索下拉事务列表
@@ -111,6 +126,26 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     getMessage({ type: 'success', msg: '添加成功' })
     onCancelSearch()
     getList(pageParams)
+  }
+
+  // 删除子事务确认事件
+  const onDeleteConfirm = async (item: any) => {
+    await deleteAffairs({ projectId: projectInfo.id, id: item.id })
+    getMessage({ type: 'success', msg: '删除成功' })
+    getList(pageParams)
+  }
+
+  // 删除关联工作项
+  const onDeleteChange = (item: any) => {
+    setIsShowMore(false)
+    open({
+      title: '删除确认',
+      text: `您将永久删除${item.story_prefix_key}及其子事务，删除后将不可恢复请谨慎操作!`,
+      onConfirm() {
+        onDeleteConfirm(item)
+        return Promise.resolve()
+      },
+    })
   }
 
   const columns = [
@@ -181,9 +216,31 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     },
   ]
 
+  const operationList = [
+    {
+      width: 40,
+      render: (text: any, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreDropdown
+              isMoreVisible={isShowMore}
+              menu={
+                <RelationDropdownMenu
+                  onDeleteChange={onDeleteChange}
+                  record={record}
+                />
+              }
+              onChangeVisible={setIsShowMore}
+            />
+          </div>
+        )
+      },
+    },
+  ]
+
   // 创建子事务
   const onCreateChild = () => {
-    dispatch(setAddQuickSprintModal({ visible: true }))
+    dispatch(setAddQuickSprintModal({ visible: true, params: props.detail }))
   }
 
   // 点击搜素获取下拉数据列表
@@ -214,8 +271,16 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     }
   }, [props.detail, projectInfo])
 
+  useEffect(() => {
+    if (isChangeDetailAffairs) {
+      // 获取子事务列表
+      getList(pageParams)
+    }
+  }, [isChangeDetailAffairs])
+
   return (
     <InfoItem id="sprint-childSprint" className="info_item_tab">
+      <DeleteConfirmModal />
       <LabelWrap>
         <Label>子事务</Label>
         {!isSearch && (
@@ -248,7 +313,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
         <CommonButton type="primaryText" icon="plus" onClick={onCreateChild}>
           创建子事务
         </CommonButton>
-        {dataSource.list && (
+        {dataSource.total > 0 && (
           <>
             <Tooltip
               title={`${
@@ -262,8 +327,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             >
               <ProgressWrap
                 percent={
-                  (props.detail.child_story_statistics?.finish_percent || 0) +
-                  (props.detail.child_story_statistics?.processing_percent || 0)
+                  props.detail.child_story_statistics?.finish_percent || 0
                 }
                 success={{
                   percent: props.detail.child_story_statistics?.finish_percent,
@@ -276,12 +340,14 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             </Tooltip>
             <DragTable
               columns={columns}
-              dataSource={dataSource.list}
+              dataSource={dataSource}
               onChangeData={onDragTable}
+              showHeader={false}
+              hasOperation={operationList}
             />
           </>
         )}
-        {!dataSource.list && <NoData />}
+        {dataSource.total <= 0 && <NoData />}
         {dataSource.total > 20 && (
           <PaginationBox
             total={dataSource?.total}

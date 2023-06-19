@@ -113,7 +113,6 @@ const DndKitTable = (props: any) => {
   const { projectInfo } = useSelector(store => store.project)
   const [isShowMore, setIsShowMore] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const [deleteItem, setDeleteItem] = useState<any>({})
   const [longStoryList, setLongStoryList] = useState<any>([])
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
@@ -256,7 +255,6 @@ const DndKitTable = (props: any) => {
     await deleteAffairs({
       projectId,
       id: deleteItem.id,
-      isDeleteChild: isDeleteCheck ? 1 : 2,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     setIsVisible(false)
@@ -529,8 +527,6 @@ const DndKitTable = (props: any) => {
 
   // 拖动事务放下后的处理
   const handleDragEnd = (result: DropResult) => {
-    console.log(result, 'resultresultresultresultresultresult')
-
     if (result.destination?.droppableId === result.source.droppableId) {
       // 同表格换位置
       const data = [...rightSprintList]
@@ -610,8 +606,6 @@ const DndKitTable = (props: any) => {
           },
         })
       } else {
-        console.log(res, 'resresresresresresresresresresres')
-
         onRemoveSprintItem(sourceList?.id, item?.id, destList?.id, false).then(
           (result: any) => {
             if (result) {
@@ -652,13 +646,10 @@ const DndKitTable = (props: any) => {
         onConfirm={onDeleteConfirm}
       >
         <div style={{ marginBottom: 9 }}>
-          你将永久删除该{deleteItem.isLong ? '长故事' : '事务'}
+          你将永久删除该{deleteItem.isLong ? '长故事' : '事务'}下所有子
+          {deleteItem.isLong ? '长故事' : '事务'}
           ，删除后将不可恢复请谨慎操作!
         </div>
-        <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-          同时删除该{deleteItem.isLong ? '长故事' : '事务'}下所有子
-          {deleteItem.isLong ? '长故事' : '事务'}
-        </Checkbox>
       </DeleteConfirm>
       <DeleteConfirmModal />
     </DragDropContext>

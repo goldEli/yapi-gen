@@ -7,7 +7,15 @@ import {
 } from 'react-sortable-hoc'
 import { Table } from 'antd'
 import { DragTableIcon } from '../StyleCommon'
-import { useState } from 'react'
+import styled from '@emotion/styled'
+
+const TableWrap = styled(Table)`
+  .ant-table-row:hover {
+    .dropdownIcon {
+      visibility: visible;
+    }
+  }
+`
 
 interface DragTableProps {
   dataSource: any
@@ -64,10 +72,10 @@ const DragTable = (props: DragTableProps) => {
   }
 
   return (
-    <Table
+    <TableWrap
       pagination={false}
       dataSource={props.dataSource.list}
-      columns={[...[dragHandle], ...props.columns]}
+      columns={[...props.hasOperation, ...[dragHandle], ...props.columns]}
       rowKey="index"
       sticky
       showHeader={props.showHeader}

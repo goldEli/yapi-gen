@@ -7,7 +7,7 @@ import { ReactElement, useEffect, useState } from 'react'
 
 import Sort from '@/components/Sort'
 import Table from './Table'
-import { Tooltip } from 'antd'
+import { Spin, Tooltip } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
 import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
@@ -31,6 +31,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { copyView } from '@/services/kanban'
 import { cos } from '@/services/cos'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 // 进展对比tips
 const getTitleTips = (text: string, tips: string) => {
@@ -111,6 +112,7 @@ const ProgressComparison = (props: Props) => {
   const [tableBeforeAndAfter, setTableBeforeAndAfter] = useState('')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const [loading, setLoading] = useState(false)
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     console.log(val, 'val', key)
@@ -522,8 +524,10 @@ const ProgressComparison = (props: Props) => {
   const onSearchData = (value: number[]) => {
     setSelectProjectIds(value)
     if (props.type.includes('Progress')) {
+      setLoading(true)
       getWorkContrastList(value)
     } else {
+      setLoading(true)
       getMemberBugList(value)
     }
   }
@@ -658,6 +662,7 @@ const ProgressComparison = (props: Props) => {
     setTableList(res.list)
     setTotal(res.pager.total)
     setIds(res.list.map(el => el.id))
+    setLoading(false)
   }
   // 缺陷分析大的列表
   const getMemberBugList = async (value: number[], page?: any) => {
@@ -694,6 +699,7 @@ const ProgressComparison = (props: Props) => {
     setTableList1(res.list)
     setTotal(res.pager.total)
     setIds(res.list.map(el => el.id))
+    setLoading(false)
   }
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
@@ -788,13 +794,8 @@ const ProgressComparison = (props: Props) => {
       getEfficiencyMemberDefectList(parmas)
     }
   }
-  // 获取后半截缺陷的列表
-  // getEfficiencyMemberDefectList
-  // 获取后半截缺陷的列表
-  // getEfficiencyMemberDefectList
   // 弹窗详情的翻页查询
   const onPageNum = (id: number) => {
-    //
     const parmas = {
       user_id: id,
       type: statusType,
@@ -839,95 +840,103 @@ const ProgressComparison = (props: Props) => {
         dispatch(setVisiblePerson(false)), dispatch(setVisibleWork(false))
       }}
     >
-      <HeaderAll
-        homeType={props.homeType}
-        projectId={props.projectId}
-        onGetExportApi={onGetExportApi}
-        onSearchData={onSearchData}
-        type={props.type}
-        headerParmas={props.headerParmas}
-        projectDataList={props.projectDataList}
-      />
-      {/* 表格 */}
-      <Col>
-        <TitleCss>{props.title}</TitleCss>
-      </Col>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}>
-        {work?.map((el, index) => (
-          <>
-            <PersonText>
-              {el.name}: {el.value}
-              {el.unit}
-            </PersonText>
-            {index !== work?.length - 1 && <Line />}
-          </>
-        ))}
-      </div>
-      <TableStyle>
-        <Table
-          paginationShow={true}
-          columns={columns}
-          dataSource={
-            props.type === 'Progress_iteration' ||
-            props.type === 'Progress_sprint' ||
-            props.type === 'Progress_all'
-              ? tableList
-              : tableList1
-          }
-          isSpinning={false}
-          data={{
-            currentPage: pageNum,
-            total: total,
-            pageSize: pageSize,
+      <Spin
+        spinning={loading}
+        indicator={<NewLoadingTransition />}
+        size="large"
+      >
+        <HeaderAll
+          homeType={props.homeType}
+          projectId={props.projectId}
+          onGetExportApi={onGetExportApi}
+          onSearchData={onSearchData}
+          type={props.type}
+          headerParmas={props.headerParmas}
+          projectDataList={props.projectDataList}
+        />
+        {/* 表格 */}
+        <Col>
+          <TitleCss>{props.title}</TitleCss>
+        </Col>
+        <div
+          style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
+        >
+          {work?.map((el, index) => (
+            <>
+              <PersonText>
+                {el.name}: {el.value}
+                {el.unit}
+              </PersonText>
+              {index !== work?.length - 1 && <Line />}
+            </>
+          ))}
+        </div>
+        <TableStyle>
+          <Table
+            paginationShow={true}
+            columns={columns}
+            dataSource={
+              props.type === 'Progress_iteration' ||
+              props.type === 'Progress_sprint' ||
+              props.type === 'Progress_all'
+                ? tableList
+                : tableList1
+            }
+            isSpinning={false}
+            data={{
+              currentPage: pageNum,
+              total: total,
+              pageSize: pageSize,
+            }}
+            onChangePage={(pageNum, pageSize) => {
+              setPageNum(pageNum)
+              setPageSize(pageSize)
+              props.type === 'Progress_iteration' ||
+              props.type === 'Progress_sprint' ||
+              props.type === 'Progress_all'
+                ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
+                : getMemberBugList(selectProjectIds, { pageNum, pageSize })
+            }}
+          />
+        </TableStyle>
+        {/* 后半截的弹窗 */}
+        <WorkItem
+          visible={visiblePerson}
+          ids={ids}
+          status={status}
+          statusType={statusType}
+          type={props.type}
+          memberWorkList={memberWorkList}
+          onPageNum={id => onPageNum(id)}
+          userInfo={userInfo}
+          onChange={obj => {
+            plugSelection(obj)
           }}
-          onChangePage={(pageNum, pageSize) => {
-            setPageNum(pageNum)
-            setPageSize(pageSize)
-            props.type === 'Progress_iteration' ||
-            props.type === 'Progress_sprint' ||
-            props.type === 'Progress_all'
-              ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
-              : getMemberBugList(selectProjectIds, { pageNum, pageSize })
+          onCancel={() => {
+            dispatch(setVisiblePerson(!visiblePerson))
           }}
         />
-      </TableStyle>
-      {/* 后半截的弹窗 */}
-      <WorkItem
-        visible={visiblePerson}
-        ids={ids}
-        status={status}
-        statusType={statusType}
-        type={props.type}
-        memberWorkList={memberWorkList}
-        onPageNum={id => onPageNum(id)}
-        userInfo={userInfo}
-        onChange={obj => {
-          plugSelection(obj)
-        }}
-        onCancel={() => {
-          dispatch(setVisiblePerson(!visiblePerson))
-        }}
-      />
-      {/* 前半截的弹窗 */}
-      <SelectPersonnel
-        historyWorkObj={historyWorkObj}
-        onPageNum={id => onPageNum(id)}
-        type={props.type}
-        visible={visibleWork}
-        ids={ids}
-        onCancel={() => dispatch(setVisibleWork(!visibleWork))}
-        onChange={() => 123}
-      />
-      {/* 导出成功 */}
-      <ExportSuccess
-        title={'导出成功'}
-        text={'Excel导出成功，可在本地打开文件查看'}
-        isVisible={isVisibleSuccess}
-        onConfirm={() => {
-          setIsVisibleSuccess(false)
-        }}
-        onChangeVisible={() => setIsVisibleSuccess(false)}
-      />
+        {/* 前半截的弹窗 */}
+        <SelectPersonnel
+          historyWorkObj={historyWorkObj}
+          onPageNum={id => onPageNum(id)}
+          type={props.type}
+          visible={visibleWork}
+          ids={ids}
+          onCancel={() => dispatch(setVisibleWork(!visibleWork))}
+          onChange={() => 123}
+        />
+        {/* 导出成功 */}
+        <ExportSuccess
+          title={'导出成功'}
+          text={'Excel导出成功，可在本地打开文件查看'}
+          isVisible={isVisibleSuccess}
+          onConfirm={() => {
+            setIsVisibleSuccess(false)
+          }}
+          onChangeVisible={() => setIsVisibleSuccess(false)}
+        />
+      </Spin>
     </div>
   )
 }

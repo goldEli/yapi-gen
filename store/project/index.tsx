@@ -22,7 +22,7 @@ export interface CounterState {
   guideVisible: boolean
   addQuickSprintModal: {
     visible: boolean
-    params?: Model.Project.AddQuickSprintParams
+    params?: Partial<Model.Affairs.AffairsInfo>
   }
   work_type?: number
   // 是否刷新评论
@@ -37,6 +37,9 @@ export interface CounterState {
   filterParams: any
   // 创建需求成功后是否刷新
   isUpdateAddWorkItem: any
+
+  // 事务-详情/浮层更新
+  isChangeDetailAffairs: boolean
 }
 
 const initialState: CounterState = {
@@ -74,12 +77,7 @@ const initialState: CounterState = {
   guideVisible: false,
   addQuickSprintModal: {
     visible: false,
-    params: {
-      name: '',
-      icon: 'https://dev.staryuntech.com/dev-agile/attachment/category_icon/message.png',
-      parentName: '长故事',
-      parentId: 0,
-    },
+    params: {},
   },
   // ---新
   isRefreshComment: false,
@@ -88,6 +86,7 @@ const initialState: CounterState = {
   createCategory: {},
   filterParams: {},
   isUpdateAddWorkItem: false,
+  isChangeDetailAffairs: false,
 }
 
 export const projectSlice = createSlice({
@@ -179,6 +178,11 @@ export const projectSlice = createSlice({
     setIsUpdateAddWorkItem: (state: any, action) => {
       state.isUpdateAddWorkItem = action.payload
     },
+
+    // 刷新子事务列表或者链接事务列表
+    setIsChangeDetailAffairs: (state: any, action) => {
+      state.isChangeDetailAffairs = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
@@ -206,6 +210,7 @@ export const {
   setCreateCategory,
   setFilterParams,
   setIsUpdateAddWorkItem,
+  setIsChangeDetailAffairs,
 } = projectSlice.actions
 
 export default projectSlice.reducer

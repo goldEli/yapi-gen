@@ -386,7 +386,6 @@ const SprintDetailDrawer = () => {
 
   // 删除事务弹窗
   const onDelete = () => {
-    console.log(111212121)
     openDelete({
       title: '删除确认',
       text: '确认删除该事务？',
@@ -539,7 +538,7 @@ const SprintDetailDrawer = () => {
       setCurrentIndex(0)
       setDemandIds([])
       if (affairsDetailDrawer.visible) {
-        getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
+        getSprintDetail('', [])
       }
     }
   }, [isUpdateAddWorkItem])
@@ -550,6 +549,8 @@ const SprintDetailDrawer = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
+
+  console.log(demandIds, '=1212', currentIndex)
 
   return (
     <>

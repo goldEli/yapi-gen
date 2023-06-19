@@ -85,7 +85,6 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [topParentId, setTopParentId] = useState(0)
   const [isGrid, setIsGrid] = useState(0)
   const [deleteItem, setDeleteItem] = useState<any>({})
-  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -249,7 +248,6 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     await deleteAffairs({
       projectId,
       id: deleteItem.id,
-      isDeleteChild: isDeleteCheck ? 1 : 2,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     setIsVisible(false)
@@ -373,17 +371,15 @@ const SprintProjectAffair: React.FC<IProps> = props => {
       <TreeContext.Provider value={keyValue}>
         <Wrap>
           <DeleteConfirm
-            title={`删除【${deleteItem?.storyPrefixKey}】？`}
+            title="删除确认"
             isVisible={isVisible}
             onChangeVisible={() => setIsVisible(!isVisible)}
             onConfirm={onDeleteConfirm}
           >
             <div style={{ marginBottom: 9 }}>
-              你将永久删除该事务，删除后将不可恢复请谨慎操作!
+              您将永久删除{deleteItem.story_prefix_key}
+              及其子事务，删除后将不可恢复请谨慎操作!
             </div>
-            <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-              同时删除该事务下所有子事务
-            </Checkbox>
           </DeleteConfirm>
           <ProjectCommonOperation onInputSearch={onInputSearch} />
           <ContentWrap>
