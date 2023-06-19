@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from '@store/index'
 import useShareModal from '@/hooks/useShareModal'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { copyLink, getParamsData } from '@/tools'
+import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import { Form, MenuProps, Popover, Tabs, TabsProps, Tooltip } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
@@ -63,21 +63,27 @@ const DemandDetail = () => {
 
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, demandId } = paramsData
+  const { id, demandId, changeIds } = paramsData
   const { demandInfo } = useSelector(store => store.demand)
-  const { projectInfoValues, isUpdateAddWorkItem } = useSelector(
+  const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
   )
   const [form] = Form.useForm()
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0)
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
 
   const [tabActive, setTabActive] = useState('1')
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
 
   // 复制标题
   const onCopy = () => {
@@ -279,7 +285,6 @@ const DemandDetail = () => {
 
   // 复制需求id
   const onCopyId = () => {
-    console.log(demandInfo)
     copyLink(
       `${demandInfo.projectPrefix}-${demandInfo.prefixKey}`,
       '复制成功！',
@@ -395,6 +400,20 @@ const DemandDetail = () => {
     },
   ]
 
+  // 向上查找需求
+  const onUpDemand = () => {
+    const newIndex = changeIds[currentIndex - 1]
+    if (!currentIndex) return
+    dispatch(getDemandInfo({ projectId: id, id: newIndex }))
+  }
+
+  // 向下查找需求
+  const onDownDemand = () => {
+    const newIndex = changeIds[currentIndex + 1]
+    if (currentIndex === changeIds?.length - 1) return
+    dispatch(getDemandInfo({ projectId: id, id: newIndex }))
+  }
+
   useEffect(() => {
     dispatch(setDemandInfo({}))
     dispatch(getDemandInfo({ projectId: id, id: demandId }))
@@ -431,6 +450,10 @@ const DemandDetail = () => {
       list
         ?.filter((i: any) => i.id !== demandInfo?.category)
         ?.filter((i: any) => i.status === 1),
+    )
+    // 获取当前需求的下标， 用作上一下一切换
+    setCurrentIndex(
+      (changeIds || []).findIndex((i: any) => i === demandInfo?.id),
     )
   }, [demandInfo, projectInfoValues])
 
@@ -513,38 +536,37 @@ const DemandDetail = () => {
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />
           <ChangeIconGroup>
-            {/* {currentIndex > 0 && ( */}
-            <UpWrap
-              // onClick={onUpDemand}
-              id="upIcon"
-              // isOnly={
-              //   demandIds?.length === 0 ||
-              //   currentIndex === demandIds?.length - 1
-              // }
-            >
-              <CommonIconFont
-                type="up"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </UpWrap>
-            {/* )} */}
-            {/* {!(
-            demandIds?.length === 0 ||
-            currentIndex === demandIds?.length - 1
-          ) &&  ( */}
-            <DownWrap
-              // onClick={onDownDemand}
-              id="downIcon"
-              // isOnly={currentIndex <= 0}
-            >
-              <CommonIconFont
-                type="down"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </DownWrap>
-            {/* )} */}
+            {currentIndex > 0 && (
+              <UpWrap
+                onClick={onUpDemand}
+                id="upIcon"
+                isOnly={
+                  changeIds?.length === 0 ||
+                  currentIndex === changeIds?.length - 1
+                }
+              >
+                <CommonIconFont
+                  type="up"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </UpWrap>
+            )}
+            {!(
+              changeIds?.length === 0 || currentIndex === changeIds?.length - 1
+            ) && (
+              <DownWrap
+                onClick={onDownDemand}
+                id="downIcon"
+                isOnly={currentIndex <= 0}
+              >
+                <CommonIconFont
+                  type="down"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </DownWrap>
+            )}
           </ChangeIconGroup>
           <CommonButton type="icon" icon="share" onClick={onShare} />
           <DropdownMenu
@@ -588,7 +610,7 @@ const DemandDetail = () => {
           </span>
           <ChangeStatusPopover
             projectId={demandInfo.projectId}
-            isCanOperation
+            isCanOperation={!hasEdit}
             record={demandInfo}
             onChangeStatus={onChangeStatus}
             type={1}

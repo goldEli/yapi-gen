@@ -100,7 +100,9 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
 
   const getList = async (
     state: any,
@@ -337,6 +339,12 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
   }, [key, isGrid, order, pageObj, projectId])
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      getList(isGrid, searchItems, pageObj, order)
+    }
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     // 进入主页清除已存储的筛选计数

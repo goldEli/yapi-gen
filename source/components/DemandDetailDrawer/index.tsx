@@ -256,8 +256,6 @@ const DemandDetailDrawer = () => {
 
   // 修改状态
   const onChangeStatus = async (value: any) => {
-    console.log(value)
-
     try {
       await updateDemandStatus(value)
       getMessage({ msg: t('common.statusSuccess'), type: 'success' })
@@ -276,11 +274,11 @@ const DemandDetailDrawer = () => {
         id: deleteId,
       })
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-      getDemandDetail()
       setDeleteId(0)
       setIsDelete(false)
       onCancel()
       // 更新列表
+      dispatch(setIsUpdateAddWorkItem(true))
     } catch (error) {
       //
     }
