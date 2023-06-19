@@ -330,6 +330,8 @@ const BasicDemand = (props: Props) => {
     return nodeComponent
   }
 
+  console.log(props.detail, '1212121')
+
   // 返回自定义字段
   const getCustomComponent = (item: any) => {
     return (
@@ -352,7 +354,7 @@ const BasicDemand = (props: Props) => {
         <span>
           {getCustomNormalValue(
             item.fieldContent?.attr,
-            props.detail?.customField[item.content],
+            props.detail?.customField?.[item.content],
           )}
         </span>
       </TableQuickEdit>

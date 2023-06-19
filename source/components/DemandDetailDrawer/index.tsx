@@ -323,7 +323,6 @@ const DemandDetailDrawer = () => {
 
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
-      console.log(222, isDemandDetailDrawerVisible, demandDetailDrawerProps?.id)
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
       getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
       setShowState(normalState)

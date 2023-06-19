@@ -8,12 +8,10 @@ import * as http from '@/tools/http'
 export const deleteAffairs = async (params: {
   projectId: number
   id: number
-  isDeleteChild?: number
 }) => {
   await http.post<any>('deleteAffairs', {
     project_id: params.projectId,
     id: params.id,
-    is_delete_childs: params.isDeleteChild,
   })
 }
 
@@ -793,7 +791,7 @@ export const getAffairsChildList = async (
     currentPage: response.data.pager?.page,
     pageSize: response.data.pager?.pagesize,
     total: response.data.pager?.total,
-    list: response.data,
+    list: response.data.list,
   }
 }
 

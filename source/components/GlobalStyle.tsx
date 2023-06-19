@@ -803,6 +803,10 @@ const GlobalStyle = () => {
     //   .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title{
     //     padding: 0 12px;
     //  }
+    .ant-spin-nested-loading > div > .ant-spin {
+      top: 50%;
+      transform: translateY(-50%);
+    }
   `
   return <Global styles={globalCss} />
 }
