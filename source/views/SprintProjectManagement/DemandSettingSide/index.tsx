@@ -127,11 +127,10 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     } else {
       filterData = categoryList?.filter((el: any) => el.status !== 1)
     }
-    if (activeCategory?.id || categoryItem?.id) {
+    if (activeCategory?.id || paramsData?.categoryItem?.id) {
       dataItem = filterData.map((el: any) => ({
         ...el,
-        active:
-          el.id === (activeCategory?.id || categoryItem?.id) ? true : false,
+        active: el.id === (activeCategory?.id || paramsData?.categoryItem?.id),
       }))
     } else {
       dataItem = filterData.map((el: any, index: number) => ({
@@ -174,12 +173,12 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   }, [paramsType])
 
   useEffect(() => {
-    if (categoryItem) {
-      dispatch(setStartUsing(categoryItem.status === 1 ? true : false))
-      setTabsActive(categoryItem.status)
-      dispatch(setActiveCategory(categoryItem))
+    if (paramsData?.categoryItem) {
+      dispatch(setStartUsing(paramsData.categoryItem.status === 1))
+      setTabsActive(paramsData?.categoryItem.status)
+      dispatch(setActiveCategory(paramsData.categoryItem))
     }
-  }, [])
+  }, [paramsData?.categoryItem?.status])
 
   //   返回上一页
   const onGoBack = () => {
@@ -241,13 +240,13 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
 
   const filterDataItem = (num: number) => {
     let dataItem = null
-    if (activeCategory?.id || categoryItem?.id) {
+    if (activeCategory?.id || paramsData?.categoryItem?.id) {
       dataItem = categoryList
         ?.filter((el: any) => el.status === num)
         .map((el: any) => ({
           ...el,
           active:
-            el.id === (activeCategory?.id || categoryItem?.id) ? true : false,
+            el.id === (activeCategory?.id || paramsData?.categoryItem?.id),
         }))
     } else {
       dataItem = categoryList

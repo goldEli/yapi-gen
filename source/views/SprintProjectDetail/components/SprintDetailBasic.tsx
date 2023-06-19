@@ -8,6 +8,7 @@ import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Tooltip } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { setActiveCategory } from '@store/category'
 interface Props {
   onRef: any
 }
@@ -27,14 +28,14 @@ const SprintDetailBasic = (props: Props) => {
   // 跳转配置
   const onToConfig = () => {
     console.log(111, affairsInfo)
+    dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',
         id: id,
-        categoryName: '需求',
         categoryItem: {
           id: affairsInfo.category,
-          status: 1,
+          status: affairsInfo.category_status,
         },
       }),
     )
