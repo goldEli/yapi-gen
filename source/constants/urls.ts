@@ -53,6 +53,7 @@ const urls = {
   getStoryRelationStories: '/b/story/relationStories',
   // 添加需求关联工作项
   addStoryRelation: '/b/story/save/addRelation',
+  deleteStoryRelation: '/b/story/save/deleteRelation',
   // 关联事务 - 下拉查询
   getStorySelectRelationSearch: '/b/story/selectRelationSearch',
   // 关联事务 - 最近事务
@@ -262,6 +263,7 @@ const urls = {
   getAffairsSelectRelationRecent: '/b/transaction/selectRelationRecent',
   // 添加关联事务
   addAffairsRelation: '/b/transaction/save/addRelation',
+  deleteAffairsRelation: '/b/transaction/save/deleteRelation',
   // 关联事务拖拽排序
   affairsRelationDragSort: '/b/transaction/save/dragRelationSort',
   // 关联事务列表
@@ -437,6 +439,7 @@ const urls = {
   getFlawRelationStories: '/b/flaw/relationStories',
   // 添加关联缺陷
   addFlawRelation: '/b/flaw/save/addRelation',
+  deleteFlawRelation: '/b/flaw/save/deleteRelation',
   // 关联事务 - 下拉查询
   getFlawSelectRelationSearch: '/b/flaw/selectRelationSearch',
   // 关联事务 - 最近事务

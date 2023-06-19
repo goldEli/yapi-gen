@@ -3,6 +3,13 @@
 import { filterTreeData, transData } from '@/tools'
 import * as http from '@/tools/http'
 
+// 删除关联
+export const deleteFlawRelation = async (
+  params: API.Flaw.DeleteRelation.Params,
+) => {
+  await http.delete<any>('deleteFlawRelation', params)
+}
+
 // 删除缺陷
 export const deleteFlaw = async (params: {
   projectId: number
