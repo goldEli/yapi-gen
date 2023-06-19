@@ -111,13 +111,14 @@ const icon = css`
   }
 `
 
-const ButtonWrap = styled(Button as any)<{ size?: any }>`
+const ButtonWrap = styled(Button)<{ size?: any }>`
   display: flex;
   align-items: center;
   height: ${props => (props.size === 'small' ? '24px' : '32px')};
 `
 
 interface Props {
+  loading?: boolean
   hidden?: any
   onClick?: React.MouseEventHandler<HTMLButtonElement>
   // 按钮文本
@@ -224,6 +225,7 @@ const CommonButton = (props: Props) => {
       disabled={props.isDisable}
       hidden={props.hidden}
       size={props.size}
+      loading={props?.loading}
     >
       {props.children}
     </ButtonWrap>
