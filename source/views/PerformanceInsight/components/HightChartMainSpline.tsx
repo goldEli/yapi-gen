@@ -49,12 +49,14 @@ const HightChartMainSpline = (props: {
       },
     },
     yAxis: {
+      allowDecimals: false,
       tickColor: '#ECEDEF',
       gridLineColor: '#ECEDEF',
       gridLineDashStyle: 'longdash',
       borderRadius: 6,
       title: {
-        text: '',
+        text: '(个)',
+        rotation: 0,
       },
     },
     plotOptions: {
