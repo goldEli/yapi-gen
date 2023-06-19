@@ -36,7 +36,6 @@ declare namespace API.Efficiency {
   }
   namespace StatisticsOther {
     type Params = {
-      project_id: number
       project_ids?: string | number
       iterate_ids?: string
       user_ids?: string
