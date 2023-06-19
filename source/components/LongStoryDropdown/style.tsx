@@ -26,6 +26,7 @@ export const ContentBox = styled.div`
   padding-top: 14px;
   box-sizing: border-box;
   overflow-y: auto;
+  /* padding: 0px; */
   .title {
     color: var(--neutral-n3);
     font-size: var(--font12);
@@ -37,6 +38,10 @@ export const ContentItem = styled.div`
   align-items: center;
   display: flex;
   cursor: pointer;
+
+  &:hover {
+    background: var(--hover-d1);
+  }
   img {
     width: 20px;
   }
@@ -56,6 +61,11 @@ export const ContentItem = styled.div`
     text-overflow: ellipsis; //溢出用省略号显示
     white-space: nowrap; //溢出不换行
     width: 160px;
+  }
+`
+export const activity = css`
+  span {
+    color: var(--primary-d1) !important;
   }
 `
 export const LoadMore = styled.div`

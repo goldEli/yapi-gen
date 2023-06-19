@@ -174,6 +174,9 @@ const ProgressComparison = (props: Props) => {
     {
       dataIndex: 'completion_rate',
       title: getTitleTips('完成率', '已完成工作项/新增工作项*100%'),
+      render: (text: string) => {
+        return <span>{text}%</span>
+      },
     },
     {
       dataIndex: 'new',
@@ -239,7 +242,7 @@ const ProgressComparison = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
-            {text}
+            {text}%
           </RowText>
         )
       },
@@ -294,6 +297,9 @@ const ProgressComparison = (props: Props) => {
     {
       dataIndex: 'completion_rate',
       title: getTitleTips('当前完成率', '已完成工作项/新增工作项*100%'),
+      render: (text: string) => {
+        return <span>{text}%</span>
+      },
     },
     {
       dataIndex: 'new',
@@ -359,7 +365,7 @@ const ProgressComparison = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
-            {text}
+            {text}%
           </RowText>
         )
       },
@@ -415,6 +421,9 @@ const ProgressComparison = (props: Props) => {
     {
       dataIndex: 'completion_rate',
       title: getTitleTips('缺陷修复率', '当期已修复缺陷/档期总缺陷*100%'),
+      render: (text: string, record: any) => {
+        return <span>{text}%</span>
+      },
     },
     {
       title: '待修复',
@@ -467,7 +476,7 @@ const ProgressComparison = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <RowText onClick={e => openDetail(e, record, 'repeat_open_rate')}>
-            {text}
+            {text}%
           </RowText>
         )
       },
