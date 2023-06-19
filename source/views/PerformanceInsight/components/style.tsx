@@ -37,11 +37,13 @@ export const MoreWrap1 = styled(MoreWrap)`
   }
 `
 export const HeaderStyle = styled.div`
+  width: 100%;
   height: 52px;
   background: var(--neutral-white-d5);
   border-bottom: 1px solid var(--neutral-n6-d2);
   padding: 0 24px;
   display: flex;
+  padding-right: 40px;
   align-items: center;
   justify-content: space-between;
 `
