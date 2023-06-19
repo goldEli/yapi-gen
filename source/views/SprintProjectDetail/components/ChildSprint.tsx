@@ -2,7 +2,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonButton from '@/components/CommonButton'
 import {
-  AddText,
   CancelText,
   InfoItem,
   InfoItemWrap,
@@ -17,7 +16,10 @@ import { Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import StateTag from '@/components/StateTag'
 import DragTable from '@/components/DragTable'
-import { setAddQuickSprintModal } from '@store/project'
+import {
+  setAddQuickSprintModal,
+  setIsChangeDetailAffairs,
+} from '@store/project'
 import { useDispatch, useSelector } from '@store/index'
 import {
   addAffairsChild,
@@ -40,7 +42,9 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const dispatch = useDispatch()
   const [isSearch, setIsSearch] = useState(false)
   const [searchValue, setSearchValue] = useState('')
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isChangeDetailAffairs } = useSelector(
+    store => store.project,
+  )
   const [pageParams, setPageParams] = useState({ page: 1, pagesize: 20 })
   // 下拉数据
   const [selectList, setSelectList] = useState<SelectItem[]>([])
@@ -57,7 +61,12 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       id: props.detail.id,
       ...page,
     })
-    setDataSource(response)
+    console.log(response, '=responseresponse')
+    setDataSource({
+      ...response,
+      list: response.list.map((i: any) => ({ ...i, index: i.id })),
+    })
+    dispatch(setIsChangeDetailAffairs(false))
   }
 
   // 获取搜索下拉事务列表
@@ -112,6 +121,8 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     onCancelSearch()
     getList(pageParams)
   }
+
+  console.log(dataSource, '=dataSourcedataSource')
 
   const columns = [
     {
@@ -183,7 +194,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
 
   // 创建子事务
   const onCreateChild = () => {
-    dispatch(setAddQuickSprintModal({ visible: true }))
+    dispatch(setAddQuickSprintModal({ visible: true, params: props.detail }))
   }
 
   // 点击搜素获取下拉数据列表
@@ -213,6 +224,13 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       getList(pageParams)
     }
   }, [props.detail, projectInfo])
+
+  useEffect(() => {
+    if (isChangeDetailAffairs) {
+      // 获取子事务列表
+      getList(pageParams)
+    }
+  }, [isChangeDetailAffairs])
 
   return (
     <InfoItem id="sprint-childSprint" className="info_item_tab">
@@ -276,8 +294,9 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             </Tooltip>
             <DragTable
               columns={columns}
-              dataSource={dataSource.list}
+              dataSource={dataSource}
               onChangeData={onDragTable}
+              showHeader={false}
             />
           </>
         )}

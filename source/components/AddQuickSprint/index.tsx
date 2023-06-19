@@ -2,7 +2,10 @@
 
 import { useDispatch, useSelector } from '@store/index'
 import CommonModal from '../CommonModal'
-import { setAddQuickSprintModal } from '@store/project'
+import {
+  setAddQuickSprintModal,
+  setIsChangeDetailAffairs,
+} from '@store/project'
 import { Form, Input, Select } from 'antd'
 import CustomSelect from '../CustomSelect'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +13,8 @@ import MoreOptions from '../MoreOptions'
 import styled from '@emotion/styled'
 import { addQuickAffairs } from '@/services/affairs'
 import { getMessage } from '../Message'
+import { removeNull } from '@/tools'
+import { AFFAIRS_CHILD_TYPE } from '@/constants'
 
 const ParentWrap = styled.div`
   height: 24px;
@@ -33,29 +38,11 @@ const ParentWrap = styled.div`
 const AddQuickSprint = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { addQuickSprintModal, projectInfo } = useSelector(
+  const { addQuickSprintModal, projectInfo, projectInfoValues } = useSelector(
     store => store.project,
   )
   const { visible, params } = addQuickSprintModal
   const [form] = Form.useForm()
-
-  const list = [
-    {
-      content: '故事',
-      icon: 'https://dev.staryuntech.com/dev-agile/attachment/category_icon/message.png',
-      id: 0,
-    },
-    {
-      content: '故事1',
-      icon: 'https://dev.staryuntech.com/dev-agile/attachment/category_icon/message.png',
-      id: 1,
-    },
-    {
-      content: '故事2',
-      icon: 'https://dev.staryuntech.com/dev-agile/attachment/category_icon/message.png',
-      id: 2,
-    },
-  ]
 
   //   关闭弹窗
   const onClose = () => {
@@ -69,12 +56,26 @@ const AddQuickSprint = () => {
     await addQuickAffairs({
       ...form.getFieldsValue(),
       projectId: projectInfo.id,
-      parent_id: params?.parentId,
+      parent_id: params?.id,
     })
     getMessage({ type: 'success', msg: '创建成功' })
     onClose()
-    // 需要更新详情及列表
+    // 需要更新子事务、链接事务详情及列表
+    dispatch(setIsChangeDetailAffairs(true))
   }
+
+  // 计算类别
+  const computedCategory = () => {
+    let allCategoryList: any = removeNull(projectInfoValues, 'category')
+    let result = allCategoryList?.filter(
+      (i: any) =>
+        AFFAIRS_CHILD_TYPE[params?.work_type ?? 3]?.includes(i.work_type) &&
+        i.status === 1,
+    )
+    return result
+  }
+
+  console.log(computedCategory(), removeNull(projectInfoValues, 'category'))
 
   return (
     <CommonModal
@@ -87,8 +88,8 @@ const AddQuickSprint = () => {
       <Form form={form} layout="vertical" style={{ padding: '0 24px' }}>
         <Form.Item label="创建以下事务的子事务">
           <ParentWrap>
-            <img src={params?.icon} alt="" />
-            <span>{params?.parentName}</span>
+            <img src={params?.category_attachment} alt="" />
+            <span>{params?.categoryName}</span>
           </ParentWrap>
         </Form.Item>
         <Form.Item
@@ -103,10 +104,15 @@ const AddQuickSprint = () => {
             getPopupContainer={(node: any) => node}
             showSearch
           >
-            {list?.map((i: any) => {
+            {computedCategory()?.map((i: any) => {
               return (
-                <Select.Option value={i.id} key={i.id} label={i.content}>
-                  <MoreOptions type="project" name={i.content} img={i.icon} />
+                <Select.Option value={i.id} key={i.id} label={i.name}>
+                  <MoreOptions
+                    type="project"
+                    name={i.name}
+                    dec={i.dec}
+                    img={i.category_attachment}
+                  />
                 </Select.Option>
               )
             })}
