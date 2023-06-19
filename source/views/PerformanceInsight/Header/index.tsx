@@ -139,7 +139,6 @@ const Iteration = (props: Props) => {
       project_id: projectId,
       resource_type: props.homeType === 'iteration' ? 1 : 2,
     })
-    console.log(res, '999')
     const filterVal = res
       .filter((el: { id: number }) => props.iterateViewIds.includes(el.id))
       .map((el: { id: number; name: string }) => ({

@@ -154,15 +154,14 @@ const ProgressComparison = (props: Props) => {
       },
     },
     {
-      title:
-        '组织',
-        // <NewSort
-        //   fixedKey="departmentName"
-        //   nowKey={order.key}
-        //   order={order.value}
-        //   title={'组织'}
-        //   onUpdateOrderKey={onUpdateOrderKey}
-        // ></NewSort>
+      title: '组织',
+      // <NewSort
+      //   fixedKey="departmentName"
+      //   nowKey={order.key}
+      //   order={order.value}
+      //   title={'组织'}
+      //   onUpdateOrderKey={onUpdateOrderKey}
+      // ></NewSort>
       dataIndex: 'departmentName',
     },
     {
@@ -275,15 +274,14 @@ const ProgressComparison = (props: Props) => {
       },
     },
     {
-      title:
-        '组织',
-        // <NewSort
-        //   fixedKey="departmentName"
-        //   nowKey={order.key}
-        //   order={order.value}
-        //   title={'组织'}
-        //   onUpdateOrderKey={onUpdateOrderKey}
-        // ></NewSort>
+      title: '组织',
+      // <NewSort
+      //   fixedKey="departmentName"
+      //   nowKey={order.key}
+      //   order={order.value}
+      //   title={'组织'}
+      //   onUpdateOrderKey={onUpdateOrderKey}
+      // ></NewSort>
       dataIndex: 'departmentName',
     },
     {
@@ -557,7 +555,6 @@ const ProgressComparison = (props: Props) => {
         return undefined
     }
   }
-
   // 导出
   const onGetExportApi = async (option: number[]) => {
     try {
@@ -609,28 +606,21 @@ const ProgressComparison = (props: Props) => {
           iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
         })
       }
-
-      if (result && result.status === 200) {
-        const blob = new Blob([result.body], {
-          type: result?.headers['content-type'],
-        })
-        const blobUrl = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.download = `${props?.title}.xlsx`
-        a.href = blobUrl
-        a.click()
-        getMessage({
-          msg: '导出成功',
-          type: 'success',
-        })
-      } else {
-        getMessage({
-          msg: '导出失败',
-          type: 'error',
-        })
-      }
+      const blob = new Blob([result.body], {
+        type: result?.headers['content-type'],
+      })
+      const blobUrl = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.download = `${props?.title}.xlsx`
+      a.href = blobUrl
+      a.click()
+      setIsVisibleSuccess(true)
     } catch (error) {
       console.log(error)
+      getMessage({
+        msg: '导出失败',
+        type: 'error',
+      })
     }
   }
   // 工作进展对比大的列表
@@ -783,7 +773,6 @@ const ProgressComparison = (props: Props) => {
           undefined
         : props.headerParmas?.time?.time?.[1],
     }
-    console.log(parmas, 'parmas')
     if (props.type.includes('Progress')) {
       getEfficiencyMemberWorkList(parmas)
     } else {
