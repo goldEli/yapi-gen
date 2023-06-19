@@ -45,6 +45,7 @@ declare namespace Model.Affairs {
       sort: number
     }
     work_type: number
+    relation_type: number
   }
   interface ListUsersInfo {
     avatar: string

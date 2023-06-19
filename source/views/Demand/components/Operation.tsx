@@ -210,8 +210,6 @@ const Operation = (props: Props) => {
     }, 0)
   }
 
-  console.log(projectInfoValues)
-
   const changeStatus = (
     <div
       style={{

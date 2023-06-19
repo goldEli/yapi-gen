@@ -1,7 +1,14 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import { Space } from 'antd'
 import Highcharts from 'highcharts'
-import { Col, HightChartsWrap, Time, TitleCss, Text } from '../Header/Style'
+import {
+  Col,
+  HightChartsWrap,
+  Time,
+  TitleCss,
+  Text,
+  Col1,
+} from '../Header/Style'
 import { CharTitle, HighchartsReactWrap, RightRow } from './style'
 
 // 图表位置柱状图
@@ -93,7 +100,7 @@ const HightChartMainBar = (props: {
   }
   return (
     <div style={{ width: '49%' }}>
-      <Col style={{ padding: '0 24px', marginBottom: '16px' }}>
+      <Col1>
         <RightRow>
           <Space size={12}>
             <TitleCss>{props.title}</TitleCss>
@@ -114,7 +121,7 @@ const HightChartMainBar = (props: {
             </span>
           </Space>
         </Text>
-      </Col>
+      </Col1>
       <div style={{ width: '100%' }}>
         <HightChartsWrap height={props.height}>
           {props.titleType ? (

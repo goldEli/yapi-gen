@@ -154,15 +154,14 @@ const ProgressComparison = (props: Props) => {
       },
     },
     {
-      title: (
-        <NewSort
-          fixedKey="departmentName"
-          nowKey={order.key}
-          order={order.value}
-          title={'组织'}
-          onUpdateOrderKey={onUpdateOrderKey}
-        ></NewSort>
-      ),
+      title: '组织',
+      // <NewSort
+      //   fixedKey="departmentName"
+      //   nowKey={order.key}
+      //   order={order.value}
+      //   title={'组织'}
+      //   onUpdateOrderKey={onUpdateOrderKey}
+      // ></NewSort>
       dataIndex: 'departmentName',
     },
     {
@@ -219,13 +218,18 @@ const ProgressComparison = (props: Props) => {
         const completeNum = Number(text?.split('|')?.[1])
         const total = num + completeNum
         return (
-          <RowText onClick={e => openDetail(e, record, 'work_progress')}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             {text
               ? completeNum === 0
                 ? '0%'
                 : `${Number((completeNum / total) * 100).toFixed(0)}%`
               : '--'}
-          </RowText>
+          </div>
         )
       },
     },
@@ -270,15 +274,14 @@ const ProgressComparison = (props: Props) => {
       },
     },
     {
-      title: (
-        <NewSort
-          fixedKey="departmentName"
-          nowKey={order.key}
-          order={order.value}
-          title={'组织'}
-          onUpdateOrderKey={onUpdateOrderKey}
-        ></NewSort>
-      ),
+      title: '组织',
+      // <NewSort
+      //   fixedKey="departmentName"
+      //   nowKey={order.key}
+      //   order={order.value}
+      //   title={'组织'}
+      //   onUpdateOrderKey={onUpdateOrderKey}
+      // ></NewSort>
       dataIndex: 'departmentName',
     },
     {
@@ -335,13 +338,18 @@ const ProgressComparison = (props: Props) => {
         const completeNum = Number(text?.split('|')?.[1])
         const total = num + completeNum
         return (
-          <RowText onClick={e => openDetail(e, record, 'work_progress')}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             {text
               ? completeNum === 0
                 ? '0%'
                 : `${Number((completeNum / total) * 100).toFixed(0)}%`
               : '--'}
-          </RowText>
+          </div>
         )
       },
     },
@@ -442,9 +450,10 @@ const ProgressComparison = (props: Props) => {
       },
     },
     {
-      dataIndex: 'repeat_open_rate',
+      dataIndex: 'repeat_open',
       title: getTitleTips('缺陷重开', '当期重开缺陷/当期总缺陷*100%'),
       render: (text: string, record: any) => {
+        console.log(record, 'record')
         return (
           <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
             {text}
@@ -457,18 +466,20 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'repeat_open_rate',
       render: (text: string, record: any) => {
         return (
-          <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
+          <RowText onClick={e => openDetail(e, record, 'repeat_open_rate')}>
             {text}
           </RowText>
         )
       },
     },
     {
-      dataIndex: 'stock_risk',
+      dataIndex: 'stock_count',
       title: getTitleTips('缺陷存量', '当期未修复缺陷'),
       render: (text: string, record: any) => {
         return (
-          <RowText onClick={e => openDetail(e, record, 'risk')}>{text}</RowText>
+          <RowText onClick={e => openDetail(e, record, 'stock_count')}>
+            {text}
+          </RowText>
         )
       },
     },
@@ -744,7 +755,6 @@ const ProgressComparison = (props: Props) => {
     parmas: API.Sprint.EfficiencyMemberWorkList.Params,
   ) => {
     const res = await efficiencyMemberWorkList(parmas)
-    console.log(res, '000', parmas)
     setMemberWorkList(res)
   }
   // 获取后半截缺陷的列表

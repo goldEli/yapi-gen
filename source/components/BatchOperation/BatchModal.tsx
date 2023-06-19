@@ -78,7 +78,7 @@ const BatchModal = (props: Props) => {
       config: getFlawBatchEditConfig,
       update: batchFlawEdit,
       del: batchFlawDelete,
-      checkboxText: '',
+      checkboxText: '同时删除对应子项',
       text: '勾选的缺陷将被删除，确认删除吗？',
     },
     {
@@ -222,7 +222,6 @@ const BatchModal = (props: Props) => {
     } else {
       if (values.target) {
         if (['severity', 'discovery_version'].includes(chooseType)) {
-          console.log(values.target)
           params.target = values.target
         } else {
           // 如果是时间组件的话，需要处理成字符串，还要加是否有时分秒判断

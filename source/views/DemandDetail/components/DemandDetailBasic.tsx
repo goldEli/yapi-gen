@@ -38,7 +38,6 @@ const DemandDetailBasic = (props: Props) => {
 
   // 跳转配置
   const onToConfig = () => {
-    //
     console.log('demandInfo', demandInfo)
     const params = encryptPhp(
       JSON.stringify({
@@ -77,7 +76,6 @@ const DemandDetailBasic = (props: Props) => {
     isRest ? onScrollBottom() : null
   }, [isRest])
 
-  console.log(demandInfo, '=12')
   return (
     <BasicWrap ref={props.onRef}>
       <BasicContent>

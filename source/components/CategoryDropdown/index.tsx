@@ -64,7 +64,7 @@ const customStyle = css`
 interface IProps {
   width?: number
   value?: number[] | number | string
-  onChangeCallBack?(data: Model.Project.CategoryValue[] | number): void
+  onChangeCallBack?(data: number[] | number): void
   onClearCallback?(): void
   projectId: number
   is_select?: number
@@ -120,6 +120,7 @@ const CategoryDropdown = (props: IProps) => {
   // 反选
   const reverseClick = () => {
     const { value } = props
+    // debugger
     if (!mode) {
       return
     }
@@ -135,9 +136,9 @@ const CategoryDropdown = (props: IProps) => {
           return !value?.includes(item.id)
         })
         .map(item => {
-          return { id: item.id, name: item.labelName }
+          return item.id
         })
-      onChangeCallBack && onChangeCallBack(reverseData)
+      onChangeCallBack && onChangeCallBack(reverseData as number[])
     }
   }
   const init = async () => {

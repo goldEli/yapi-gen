@@ -33,13 +33,14 @@ import ChildSprint from '@/views/SprintProjectDetail/components/ChildSprint'
 import LinkSprint from '@/views/SprintProjectDetail/components/LinkSprint'
 import {
   addAffairsComment,
+  deleteAffairs,
   deleteAffairsComment,
   getAffairsInfo,
   updateAffairsComment,
   updateAffairsTableParams,
 } from '@/services/affairs'
 import { getProjectInfo } from '@/services/project'
-import { setProjectInfo } from '@store/project'
+import { setIsUpdateAddWorkItem, setProjectInfo } from '@store/project'
 import {
   getAffairsCommentList,
   saveAffairsDetailDrawer,
@@ -48,11 +49,17 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import BasicDemand from './component/BasicDemand'
 import CommonComment from '../CommonComment'
 import useShareModal from '@/hooks/useShareModal'
-import { copyLink, detailTimeFormat, getIdsForAt, removeNull } from '@/tools'
+import {
+  copyLink,
+  detailTimeFormat,
+  getIdsForAt,
+  removeNull,
+  getParamsData,
+} from '@/tools'
 import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
 import CommentFooter from '../CommonComment/CommentFooter'
 import LongStroyBread from '../LongStroyBread'
-
+import { useNavigate, useSearchParams } from 'react-router-dom'
 const SprintDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -76,6 +83,10 @@ const SprintDetailDrawer = () => {
       dom: useRef<any>(null),
     },
   }
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams) || {}
+  const { id } = paramsData
   const [t] = useTranslation()
   const leftWidth = 640
   const dispatch = useDispatch()
@@ -360,17 +371,26 @@ const SprintDetailDrawer = () => {
     }, 10)
   }
 
-  const onDeleteSprintConfirm = () => {
-    //
+  // 确认删除
+  const onDeleteConfirm = async () => {
+    await deleteAffairs({
+      projectId: drawerInfo.projectId,
+      id: drawerInfo.id,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    onCancel()
+    // 更新列表
+    dispatch(setIsUpdateAddWorkItem(true))
   }
 
   // 删除事务弹窗
   const onDelete = () => {
+    console.log(111212121)
     openDelete({
       title: '删除确认',
       text: '确认删除该事务？',
       onConfirm() {
-        onDeleteSprintConfirm()
+        onDeleteConfirm()
         return Promise.resolve()
       },
     })
@@ -380,15 +400,26 @@ const SprintDetailDrawer = () => {
   const onShare = () => {
     open({
       onOk: () => {
-        // onShareConfirm()
         return Promise.resolve()
       },
     })
   }
 
   // 跳转配置
-  const onConfig = () => {
+  const onToConfig = () => {
     //
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'sprint',
+        id: id,
+        categoryName: '需求',
+        categoryItem: {
+          id: drawerInfo.category,
+          status: 1,
+        },
+      }),
+    )
+    navigate(`/SprintProjectManagement/DemandSetting?data=${params}`)
   }
 
   // 提交评论
@@ -489,7 +520,7 @@ const SprintDetailDrawer = () => {
       type: 'divider',
     },
     {
-      label: <div onClick={onConfig}>配置</div>,
+      label: <div onClick={onToConfig}>配置</div>,
       key: '4',
     },
   ]
@@ -631,7 +662,9 @@ const SprintDetailDrawer = () => {
               menu={{ items }}
               getPopupContainer={n => n}
             >
-              <CommonButton type="icon" icon="more" />
+              <div>
+                <CommonButton type="icon" icon="more" />
+              </div>
             </DropdownMenu>
           </Space>
         </Header>
@@ -720,7 +753,7 @@ const SprintDetailDrawer = () => {
               </span>
             </div>
             <Tooltip title="配置字段">
-              <CloseWrap width={32} height={32} onClick={onConfig}>
+              <CloseWrap width={32} height={32} onClick={onToConfig}>
                 <CommonIconFont type="settings" />
               </CloseWrap>
             </Tooltip>

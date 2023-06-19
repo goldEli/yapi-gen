@@ -59,6 +59,7 @@ const Footer = styled.div`
 const SystemFeedback = () => {
   const dispatch = useDispatch()
   const freedVisible = useSelector(store => store.freed.freedVisible)
+
   const [t] = useTranslation()
   const [form] = Form.useForm()
 

@@ -30,24 +30,34 @@ import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
 import { getMessage } from '@/components/Message'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
-import { updateFlawCategory, updateFlawStatus } from '@/services/flaw'
-import { useSearchParams } from 'react-router-dom'
-import { copyLink, getParamsData } from '@/tools'
+import {
+  deleteFlaw,
+  updateFlawCategory,
+  updateFlawStatus,
+} from '@/services/flaw'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import { getWorkflowList } from '@/services/project'
 import { setFlawInfo } from '@store/flaw'
 import FlawInfo from './components/FlawInfo'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import RelationStories from './components/RelationStories'
-import { setIsUpdateStatus } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsUpdateAddWorkItem,
+  setIsUpdateStatus,
+} from '@store/project'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const IterationDefectDetail = () => {
+  const navigate = useNavigate()
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, flawId } = paramsData
+  const { id, flawId, changeIds } = paramsData
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [isShowChange, setIsShowChange] = useState(false)
@@ -55,11 +65,19 @@ const IterationDefectDetail = () => {
   const [resultCategory, setResultCategory] = useState([])
   const [tabActive, setTabActive] = useState('1')
   const { flawInfo } = useSelector(store => store.flaw)
-  const { projectInfoValues } = useSelector(store => store.project)
+  const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
+    store => store.project,
+  )
+  const [currentIndex, setCurrentIndex] = useState(0)
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/flaw/update',
+  )
 
   // 复制标题
   const onCopy = () => {
@@ -121,16 +139,10 @@ const IterationDefectDetail = () => {
     history.go(-1)
   }
 
-  // 确认分享
-  const onShareConfirm = () => {
-    //
-  }
-
   // 分享弹窗
   const onShare = () => {
     open({
       onOk: () => {
-        onShareConfirm()
         return Promise.resolve()
       },
     })
@@ -138,17 +150,45 @@ const IterationDefectDetail = () => {
 
   //   编辑缺陷
   const onEdit = () => {
-    //
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: flawInfo.id,
+          projectId: flawInfo.projectId,
+          type: 2,
+        },
+      }),
+    )
   }
 
   // 跳转配置
   const onToConfig = () => {
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 4,
+        id: id,
+        categoryName: '特效',
+        pageIdx: 'DemandDetail',
+        categoryItem: {
+          id: flawInfo.category,
+          status: 1,
+        },
+      }),
+    )
+    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
     //
   }
 
   // 确认删除
-  const onDeleteConfirm = () => {
-    //
+  const onDeleteConfirm = async () => {
+    await deleteFlaw({
+      projectId: flawInfo.projectId || 0,
+      id: flawInfo.id || 0,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    const params = encryptPhp(JSON.stringify({ id: flawInfo.projectId }))
+    navigate(`/ProjectManagement/Defect?data=${params}`)
   }
 
   // 删除缺陷弹窗
@@ -161,6 +201,31 @@ const IterationDefectDetail = () => {
         return Promise.resolve()
       },
     })
+  }
+
+  // 复制需求id
+  const onCopyId = () => {
+    copyLink(
+      `${flawInfo.projectPrefix}-${flawInfo.prefixKey}`,
+      '复制成功！',
+      '复制失败！',
+    )
+  }
+
+  // 复制需求链接
+  const onCopyLink = () => {
+    let text: any = ''
+    let beforeUrl: any
+    beforeUrl = window.origin
+    const params = encryptPhp(
+      JSON.stringify({
+        id: flawInfo.projectId,
+        demandId: flawInfo.id,
+      }),
+    )
+    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    text += `${beforeUrl}${url} \n`
+    copyLink(text, '复制成功！', '复制失败！')
   }
 
   // 更多下拉
@@ -177,11 +242,11 @@ const IterationDefectDetail = () => {
       type: 'divider',
     },
     {
-      label: '复制编号',
+      label: <div onClick={onCopyId}>复制编号</div>,
       key: '2',
     },
     {
-      label: '复制链接',
+      label: <div onClick={onCopyLink}>复制链接</div>,
       key: '3',
     },
     {
@@ -266,6 +331,9 @@ const IterationDefectDetail = () => {
       label: (
         <ActivityTabItem>
           <span>变更记录</span>
+          <ItemNumber isActive={tabActive === '2'}>
+            {flawInfo.changeCount}
+          </ItemNumber>
         </ActivityTabItem>
       ),
       children: <ChangeRecord activeKey={tabActive} />,
@@ -289,6 +357,20 @@ const IterationDefectDetail = () => {
     }
   }
 
+  // 向上查找需求
+  const onUpDemand = () => {
+    const newIndex = changeIds[currentIndex - 1]
+    if (!currentIndex) return
+    dispatch(getFlawInfo({ projectId: id, id: newIndex }))
+  }
+
+  // 向下查找需求
+  const onDownDemand = () => {
+    const newIndex = changeIds[currentIndex + 1]
+    if (currentIndex === changeIds?.length - 1) return
+    dispatch(getFlawInfo({ projectId: id, id: newIndex }))
+  }
+
   useEffect(() => {
     // dispatch(setFlawInfo({}))
     dispatch(getFlawInfo({ projectId: id, id: flawId }))
@@ -303,7 +385,19 @@ const IterationDefectDetail = () => {
         ?.filter((i: any) => i.id !== flawInfo?.category)
         ?.filter((i: any) => i.status === 1),
     )
+    // 获取当前需求的下标， 用作上一下一切换
+    setCurrentIndex((changeIds || []).findIndex((i: any) => i === flawInfo?.id))
   }, [flawInfo, projectInfoValues])
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      dispatch(setFlawInfo({}))
+      dispatch(getFlawInfo({ projectId: id, id: flawId }))
+      setTimeout(() => {
+        setIsUpdateAddWorkItem(false)
+      }, 0)
+    }
+  }, [isUpdateAddWorkItem])
 
   return (
     <Wrap>
@@ -383,38 +477,37 @@ const IterationDefectDetail = () => {
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />
           <ChangeIconGroup>
-            {/* {currentIndex > 0 && ( */}
-            <UpWrap
-              // onClick={onUpDemand}
-              id="upIcon"
-              // isOnly={
-              //   demandIds?.length === 0 ||
-              //   currentIndex === demandIds?.length - 1
-              // }
-            >
-              <CommonIconFont
-                type="up"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </UpWrap>
-            {/* )} */}
-            {/* {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) &&  ( */}
-            <DownWrap
-              // onClick={onDownDemand}
-              id="downIcon"
-              // isOnly={currentIndex <= 0}
-            >
-              <CommonIconFont
-                type="down"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </DownWrap>
-            {/* )} */}
+            {currentIndex > 0 && (
+              <UpWrap
+                onClick={onUpDemand}
+                id="upIcon"
+                isOnly={
+                  changeIds?.length === 0 ||
+                  currentIndex === changeIds?.length - 1
+                }
+              >
+                <CommonIconFont
+                  type="up"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </UpWrap>
+            )}
+            {!(
+              changeIds?.length === 0 || currentIndex === changeIds?.length - 1
+            ) && (
+              <DownWrap
+                onClick={onDownDemand}
+                id="downIcon"
+                isOnly={currentIndex <= 0}
+              >
+                <CommonIconFont
+                  type="down"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </DownWrap>
+            )}
           </ChangeIconGroup>
           <CommonButton type="icon" icon="share" onClick={onShare} />
           <DropdownMenu
@@ -451,7 +544,7 @@ const IterationDefectDetail = () => {
           </span>
           <ChangeStatusPopover
             projectId={flawInfo.projectId}
-            isCanOperation
+            isCanOperation={!hasEdit}
             record={flawInfo}
             onChangeStatus={onChangeStatus}
             type={3}
