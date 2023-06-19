@@ -47,6 +47,8 @@ const HightChartMainSpline = (props: {
           fontSize: '12px',
         },
       },
+      min: 0,
+      max: 10,
     },
     yAxis: {
       allowDecimals: false,
@@ -54,9 +56,14 @@ const HightChartMainSpline = (props: {
       gridLineColor: '#ECEDEF',
       gridLineDashStyle: 'longdash',
       borderRadius: 6,
+      lineWidth: 1,
+      tickWidth: 1,
       title: {
-        text: '(个)',
+        text: ' (个) ',
         rotation: 0,
+        align: 'high',
+        offset: 37,
+        y: 4,
       },
     },
     plotOptions: {
@@ -72,6 +79,9 @@ const HightChartMainSpline = (props: {
           symbol: 'circle',
         },
       },
+    },
+    scrollbar: {
+      enabled: true,
     },
     tooltip: {
       backgroundColor: '#fff',
