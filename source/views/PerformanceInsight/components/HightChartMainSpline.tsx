@@ -1,6 +1,6 @@
 import { Space } from 'antd'
 import Highcharts from 'highcharts'
-import { Col, Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
+import { Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
 import {
   Bor,
   BorderRow,
