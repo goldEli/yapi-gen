@@ -32,7 +32,15 @@ import {
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import useShareModal from '@/hooks/useShareModal'
-import { Popover, Tooltip, Form, Input, Dropdown, MenuProps } from 'antd'
+import {
+  Popover,
+  Tooltip,
+  Form,
+  Input,
+  Dropdown,
+  MenuProps,
+  Checkbox,
+} from 'antd'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
 import CustomSelect from '@/components/CustomSelect'
@@ -72,6 +80,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
 
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
@@ -220,6 +229,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     await deleteAffairs({
       projectId: affairsInfo.projectId || 0,
       id: affairsInfo.id || 0,
+      isDeleteChild: isDeleteCheck ? 1 : 2,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     const params = encryptPhp(JSON.stringify({ id: affairsInfo.projectId }))
@@ -239,7 +249,17 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const onDelete = () => {
     openDelete({
       title: '删除确认',
-      text: `您将永久删除${affairsInfo.story_prefix_key}及其子事务，删除后将不可恢复请谨慎操作!`,
+      text: (
+        <>
+          <div style={{ marginBottom: 9 }}>
+            你将永久删除${affairsInfo.story_prefix_key}
+            ，删除后将不可恢复请谨慎操作!
+          </div>
+          <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
+            同时删除该所有子事务
+          </Checkbox>
+        </>
+      ),
       onConfirm() {
         onDeleteConfirm()
         return Promise.resolve()
@@ -454,7 +474,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <LongStroyBread
             longStroy={affairsInfo}
             onClick={() => {
-              console.log('affairsInfo', affairsInfo)
               dispatch(getAffairsInfo({ projectId: id, sprintId }))
             }}
           ></LongStroyBread>

@@ -92,6 +92,8 @@ const CategoryDropdown = (props: IProps) => {
     [],
   )
 
+  console.log(categoryList, '=categoryListcategoryListcategoryList')
+
   const { getTypeCategory } = useCategoryList()
   const LabelElement = (props: {
     url: string | undefined
@@ -150,7 +152,6 @@ const CategoryDropdown = (props: IProps) => {
     })
     setCacheList(list)
     const data = getTypeCategory(list, 'work_type')
-    console.log(data)
     const options = getOptions(data)
     if (!options) {
       return
@@ -172,7 +173,6 @@ const CategoryDropdown = (props: IProps) => {
     init()
   }, [projectId, value])
 
-  // useEffect(() => {}, [value])
   return (
     <Wrap
       placeholder="选择类别"

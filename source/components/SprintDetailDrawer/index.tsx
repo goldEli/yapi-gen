@@ -548,8 +548,6 @@ const SprintDetailDrawer = () => {
     }
   }, [])
 
-  console.log(demandIds, '=1212', currentIndex)
-
   return (
     <>
       <ShareModal
