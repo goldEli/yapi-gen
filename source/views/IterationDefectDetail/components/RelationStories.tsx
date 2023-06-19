@@ -1,6 +1,7 @@
 /* eslint-disable no-undefined */
 import {
   addFlawRelation,
+  deleteFlawRelation,
   getFlawRelationStories,
   getFlawSelectRelationRecent,
   getFlawSelectRelationSearch,
@@ -218,6 +219,18 @@ const RelationStories = (props: RelationStoriesProps) => {
     )
   }
 
+  // 删除关联确认事件
+  const onDeleteConfirm = async (item: any) => {
+    await deleteFlawRelation({
+      project_id: id,
+      id: props.detail.id,
+      relation_id: item.id,
+      type: item.relation_type,
+    })
+    getMessage({ type: 'success', msg: '删除成功' })
+    onUpdate()
+  }
+
   // 删除关联工作项
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
@@ -225,7 +238,7 @@ const RelationStories = (props: RelationStoriesProps) => {
       title: '删除确认',
       text: '确认删除该关联工作项？',
       onConfirm() {
-        // 删除接口
+        onDeleteConfirm(item)
         return Promise.resolve()
       },
     })

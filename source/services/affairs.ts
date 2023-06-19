@@ -4,14 +4,23 @@ import urls from '@/constants/urls'
 import { filterTreeData, transData } from '@/tools'
 import * as http from '@/tools/http'
 
+// 删除关联
+export const deleteAffairsRelation = async (
+  params: API.Affairs.DeleteRelation.Params,
+) => {
+  await http.delete<any>('deleteAffairsRelation', params)
+}
+
 // 删除事务
 export const deleteAffairs = async (params: {
   projectId: number
   id: number
+  isDeleteChild?: number
 }) => {
   await http.post<any>('deleteAffairs', {
     project_id: params.projectId,
     id: params.id,
+    is_delete_childs: params.isDeleteChild,
   })
 }
 

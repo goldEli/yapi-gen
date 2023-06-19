@@ -330,8 +330,6 @@ const BasicDemand = (props: Props) => {
     return nodeComponent
   }
 
-  console.log(props.detail, '1212121')
-
   // 返回自定义字段
   const getCustomComponent = (item: any) => {
     return (

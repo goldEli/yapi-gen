@@ -116,6 +116,7 @@ const DndKitTable = (props: any) => {
   const [deleteItem, setDeleteItem] = useState<any>({})
   const [longStoryList, setLongStoryList] = useState<any>([])
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -255,6 +256,7 @@ const DndKitTable = (props: any) => {
     await deleteAffairs({
       projectId,
       id: deleteItem.id,
+      isDeleteChild: isDeleteCheck ? 1 : 2,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     setIsVisible(false)
@@ -646,10 +648,13 @@ const DndKitTable = (props: any) => {
         onConfirm={onDeleteConfirm}
       >
         <div style={{ marginBottom: 9 }}>
-          你将永久删除该{deleteItem.isLong ? '长故事' : '事务'}下所有子
-          {deleteItem.isLong ? '长故事' : '事务'}
+          你将永久删除该{deleteItem.isLong ? '长故事' : '事务'}
           ，删除后将不可恢复请谨慎操作!
         </div>
+        <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
+          同时删除该{deleteItem.isLong ? '长故事' : '事务'}下所有子
+          {deleteItem.isLong ? '长故事' : '事务'}
+        </Checkbox>
       </DeleteConfirm>
       <DeleteConfirmModal />
     </DragDropContext>
