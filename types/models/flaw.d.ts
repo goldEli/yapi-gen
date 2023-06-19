@@ -21,6 +21,8 @@ declare namespace Model.Flaw {
     created_at: string
     story_prefix_key: string
     children_count: number
+    categoryConfigList: any
+    category_config_list: any
     category_status: {
       id: number
       category_id: number
@@ -54,6 +56,7 @@ declare namespace Model.Flaw {
       type: RelationType
       sort: number
     }
+    relation_type: number
   }
 
   interface FlawInfo {

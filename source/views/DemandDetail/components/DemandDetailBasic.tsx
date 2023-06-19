@@ -76,7 +76,6 @@ const DemandDetailBasic = (props: Props) => {
     isRest ? onScrollBottom() : null
   }, [isRest])
 
-  console.log(demandInfo, '=12')
   return (
     <BasicWrap ref={props.onRef}>
       <BasicContent>

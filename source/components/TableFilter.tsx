@@ -465,7 +465,9 @@ const TableFilter = (props: any) => {
                                 projectInfoValues
                                   ?.filter((k: any) => k.key === i.key)[0]
                                   ?.children?.map((v: any) => ({
-                                    label: v.content_txt,
+                                    label: v.content_txt
+                                      ? v.content_txt
+                                      : v.content,
                                     value: v.id,
                                     id: v.id,
                                   })),

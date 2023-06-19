@@ -60,7 +60,6 @@ const FlawInfo = () => {
     )
     navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
-
   useEffect(() => {
     dispatch(
       getFlawCommentList({

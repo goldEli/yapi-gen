@@ -19,7 +19,6 @@ const useOpenDemandDetail = () => {
     id: any,
     type?: number,
   ) => {
-    console.log({ item, projectId, id, type })
     // 弹窗预览
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
@@ -48,6 +47,7 @@ const useOpenDemandDetail = () => {
           JSON.stringify({
             id: projectId,
             sprintId: id,
+            changeIds: item.demandIds,
           }),
         )
         url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
@@ -56,15 +56,16 @@ const useOpenDemandDetail = () => {
           JSON.stringify({
             id: projectId,
             flawId: id,
+            changeIds: item.demandIds,
           }),
         )
         url = `/ProjectManagement/DefectDetail?data=${params}`
       } else {
-        console.log(12)
         const params = encryptPhp(
           JSON.stringify({
             id: projectId,
             demandId: id,
+            changeIds: item.demandIds,
           }),
         )
         url = `/ProjectManagement/DemandDetail?data=${params}`

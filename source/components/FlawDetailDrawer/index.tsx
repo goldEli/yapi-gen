@@ -31,16 +31,22 @@ import RelationStories from '@/views/IterationDefectDetail/components/RelationSt
 import BasicFlaw from '@/views/IterationDefectDetail/components/BasicFlaw'
 import {
   addFlawComment,
+  deleteFlaw,
   deleteFlawComment,
   getFlawInfo,
   updateFlawComment,
+  updateFlawStatus,
 } from '@/services/flaw'
 import {
   getFlawCommentList,
   saveFlawDetailDrawer,
 } from '@store/flaw/flaw.thunk'
 import { getProjectInfo } from '@/services/project'
-import { setProjectInfo } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsUpdateAddWorkItem,
+  setProjectInfo,
+} from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getMessage } from '../Message'
 import { setFlawDetailDrawer } from '@store/flaw'
@@ -84,7 +90,9 @@ const FlawDetailDrawer = () => {
   const commentDom: any = createRef()
   const { flawDetailDrawer, flawCommentList } = useSelector(store => store.flaw)
   const { visible, params } = flawDetailDrawer
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [focus, setFocus] = useState(false)
@@ -217,7 +225,10 @@ const FlawDetailDrawer = () => {
 
   // 修改状态
   const onChangeStatus = async (value: any) => {
-    //
+    await updateFlawStatus(value)
+    getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    getFlawDetail()
+    dispatch(setIsUpdateAddWorkItem(true))
   }
 
   // 是否审核
@@ -266,7 +277,16 @@ const FlawDetailDrawer = () => {
 
   //   编辑缺陷
   const onEdit = () => {
-    //
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: drawerInfo.id,
+          projectId: drawerInfo.projectId,
+          type: 2,
+        },
+      }),
+    )
   }
 
   //   跳转配置
@@ -288,8 +308,15 @@ const FlawDetailDrawer = () => {
     navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
 
-  const onDeleteSprintConfirm = () => {
-    //
+  // 确认删除
+  const onDeleteConfirm = async () => {
+    await deleteFlaw({
+      projectId: drawerInfo.projectId || 0,
+      id: drawerInfo.id || 0,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    onCancel()
+    dispatch(setIsUpdateAddWorkItem(true))
   }
 
   // 删除缺陷弹窗
@@ -298,7 +325,7 @@ const FlawDetailDrawer = () => {
       title: '删除确认',
       text: '确认删除该事务？',
       onConfirm() {
-        onDeleteSprintConfirm()
+        onDeleteConfirm()
         return Promise.resolve()
       },
     })
@@ -308,7 +335,6 @@ const FlawDetailDrawer = () => {
   const onShare = () => {
     open({
       onOk: () => {
-        // onShareConfirm()
         return Promise.resolve()
       },
     })
@@ -317,6 +343,31 @@ const FlawDetailDrawer = () => {
   // 复制标题
   const onCopy = () => {
     copyLink(drawerInfo.name, '复制成功！', '复制失败！')
+  }
+
+  // 复制需求id
+  const onCopyId = () => {
+    copyLink(
+      `${drawerInfo.projectPrefix}-${drawerInfo.prefixKey}`,
+      '复制成功！',
+      '复制失败！',
+    )
+  }
+
+  // 复制需求链接
+  const onCopyLink = () => {
+    let text: any = ''
+    let beforeUrl: any
+    beforeUrl = window.origin
+    const params = encryptPhp(
+      JSON.stringify({
+        id: drawerInfo.projectId,
+        demandId: drawerInfo.id,
+      }),
+    )
+    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    text += `${beforeUrl}${url} \n`
+    copyLink(text, '复制成功！', '复制失败！')
   }
 
   // 更多下拉
@@ -333,11 +384,11 @@ const FlawDetailDrawer = () => {
       type: 'divider',
     },
     {
-      label: '复制编号',
+      label: <div onClick={onCopyId}>复制编号</div>,
       key: '2',
     },
     {
-      label: '复制链接',
+      label: <div onClick={onCopyLink}>复制链接</div>,
       key: '3',
     },
     {
@@ -424,6 +475,16 @@ const FlawDetailDrawer = () => {
       setShowState(normalState)
     }
   }, [flawDetailDrawer])
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      setCurrentIndex(0)
+      setDemandIds([])
+      if (visible) {
+        getFlawDetail()
+      }
+    }
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)

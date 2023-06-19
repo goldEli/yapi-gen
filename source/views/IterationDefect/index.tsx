@@ -26,11 +26,14 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { saveTitles } from '@store/view'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { getFlawList } from '@/services/flaw'
+import { deleteFlaw, getFlawList } from '@/services/flaw'
 import useKeyPress from '@/hooks/useKeyPress'
+import { getMessage } from '@/components/Message'
+import { useTranslation } from 'react-i18next'
 export const TreeContext: any = React.createContext('')
 
 const Index = (props: any) => {
+  const [t] = useTranslation()
   const { useKeys } = useKeyPress()
   useKeys('1', '/ProjectManagement/Iteration')
   useKeys('2', '/ProjectManagement/KanBan')
@@ -39,7 +42,9 @@ const Index = (props: any) => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const myTreeComponent: any = useRef(null)
-  const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -213,8 +218,11 @@ const Index = (props: any) => {
   }
 
   // 删除确认事件
-  const onDeleteConfirm = async (item: number) => {
-    //
+  const onDeleteConfirm = async (id: number) => {
+    await deleteFlaw({ projectId, id })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    getList(searchItems, pageObj, order)
+    myTreeComponent?.current?.init()
   }
 
   // 删除弹窗
@@ -238,6 +246,12 @@ const Index = (props: any) => {
   useEffect(() => {
     getList(searchItems, pageObj, order)
   }, [key, order, pageObj, projectId])
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      getList(searchItems, pageObj, order)
+    }
+  }, [isUpdateAddWorkItem])
 
   useEffect(() => {
     // 进入主页清除已存储的筛选计数

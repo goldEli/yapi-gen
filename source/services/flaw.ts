@@ -1022,7 +1022,13 @@ export const getFlawRelationStories = async (
     },
   )
 
-  return response.data
+  return {
+    list: response.data.list.map((i: any) => ({
+      ...i,
+      categoryConfigList: i.category_config_list,
+    })),
+    pager: response.data.pager,
+  }
 }
 
 //  添加关联缺陷
