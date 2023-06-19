@@ -368,7 +368,7 @@ const DndKitTable = (props: any) => {
           >
             <LongStoryWrap>
               <Tooltip title={text}>
-                <div className="content">{text}</div>
+                <div className="content">{text ? text : '--'}</div>
               </Tooltip>
               <span style={{ marginLeft: '5px' }}>
                 <IconFont className="icon" type="down-icon" />
