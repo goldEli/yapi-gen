@@ -24,7 +24,6 @@ interface View {
 }
 const View = (props: View) => {
   const dispatch = useDispatch()
-  const { headerParmas } = useSelector(store => store.performanceInsight)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [items, setItems] = useState<MenuProps['items']>([])
   const [value, setValue] = useState<Models.Efficiency.ViewItem>()
@@ -37,6 +36,7 @@ const View = (props: View) => {
   const [dialogItem, setDialogItem] = useState<{ name: string; id?: number }>({
     name: '',
   })
+  const [valueType, setValueType] = useState<Models.Efficiency.ViewItem>()
   // 剔除来的默认视图
   const [optionsDefault, setOptionsDefault] = useState<any>()
   const [options, setOptions] = useState<Array<Models.Efficiency.ViewItem>>([])
@@ -84,7 +84,6 @@ const View = (props: View) => {
     //   props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
   }, [options])
   useEffect(() => {
-    // if (props.value !== value?.id) {
     const item = props.viewDataList?.find(el => el.id === props.value) || {
       name: '',
       id: 0,
@@ -100,7 +99,7 @@ const View = (props: View) => {
     })
     props.onChange(item?.name || '', item?.id || 0)
   }, [props.value])
-
+  console.log(valueType, 'ValueType')
   const getLabel = (el: { name: string; id: number }) => {
     return (
       <Label key={el.id}>
@@ -241,6 +240,7 @@ const View = (props: View) => {
       setIsOpen(false)
     }
   }
+  console.log(props, 'props')
   return (
     <>
       <Dropdown
@@ -257,7 +257,9 @@ const View = (props: View) => {
         }}
       >
         <DivStyle onClick={() => setIsOpen(!isOpen)}>
-          <div className="name">{value?.name}</div>
+          <div className="name">
+            {value?.type === 1 ? '视图' : ''} {value?.name}
+          </div>
           <CommonIconFont
             type={isOpen ? 'up' : 'down'}
             size={14}

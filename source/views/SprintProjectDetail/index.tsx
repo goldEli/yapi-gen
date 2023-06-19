@@ -57,6 +57,7 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import LongStroyBread from '@/components/LongStroyBread'
 import { setIsUpdateAddWorkItem, setIsUpdateStatus } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { setActiveCategory } from '@store/category'
 
 interface IProps {}
 
@@ -271,14 +272,14 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const onToConfig = () => {
     //
     console.log(111, affairsInfo)
+    dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',
         id: id,
-        categoryName: '需求',
         categoryItem: {
           id: affairsInfo.category,
-          status: 1,
+          status: affairsInfo.category_status,
         },
       }),
     )

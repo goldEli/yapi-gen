@@ -15,6 +15,7 @@ import { changeRestScroll } from '@store/scroll'
 import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { setActiveCategory } from '@store/category'
 interface Props {
   onRef: any
 }
@@ -39,15 +40,15 @@ const DemandDetailBasic = (props: Props) => {
   // 跳转配置
   const onToConfig = () => {
     console.log('demandInfo', demandInfo)
+    dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
         type: 4,
         id: id,
-        categoryName: '特效',
         pageIdx: 'DemandDetail',
         categoryItem: {
           id: demandInfo.category,
-          status: 1,
+          status: demandInfo.category_status,
         },
       }),
     )
