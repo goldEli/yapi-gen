@@ -115,7 +115,13 @@ const TabItem = (props: any) => {
             <div style={{ width: 108 }}>
               <Progress
                 strokeColor="var(--function-success)"
-                percent={Number(item.story_finish_count / item.story_count)}
+                percent={
+                  item.story_finish_count === 0
+                    ? 0
+                    : Number(
+                        (item.story_finish_count / item.story_count).toFixed(2),
+                      )
+                }
                 size="small"
                 trailColor="var(--neutral-n6-d2)"
               />
