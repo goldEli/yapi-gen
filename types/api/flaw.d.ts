@@ -1,4 +1,12 @@
 declare namespace API.Flaw {
+  namespace DeleteRelation {
+    type Params = {
+      project_id: number
+      id: number
+      relation_id: number
+      type: Model.Affairs.RelationType
+    }
+  }
   namespace FlawRelation {
     type Params = {
       projectId: number

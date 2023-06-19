@@ -1,4 +1,12 @@
 declare namespace API.Affairs {
+  namespace DeleteRelation {
+    type Params = {
+      project_id: number
+      id: number
+      relation_id: number
+      type: Model.Affairs.RelationType
+    }
+  }
   namespace UpdateAffairsComment {
     type Params = {
       projectId: number

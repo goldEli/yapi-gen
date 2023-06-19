@@ -14,12 +14,16 @@ import { useSelector } from '@store/index'
 import {
   addAffairsRelation,
   affairsRelationDragSort,
+  deleteAffairsRelation,
   getAffairsRelationStoriesList,
   getAffairsSelectRelationRecent,
   getAffairsSelectRelationSearch,
 } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 import PaginationBox from '@/components/TablePagination'
+import MoreDropdown from '@/components/MoreDropdown'
+import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const FormWrap = styled(Form)`
   padding: 0 24px;
@@ -32,6 +36,8 @@ interface SelectItem {
 }
 
 const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
+  const [isShowMore, setIsShowMore] = useState(false)
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
   const [isVisible, setIsVisible] = useState(false)
   const [searchValue, setSearchValue] = useState('')
@@ -116,6 +122,53 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
           }
         />
       ),
+    },
+  ]
+
+  // 删除关联确认事件
+  const onDeleteConfirm = async (item: any) => {
+    await deleteAffairsRelation({
+      project_id: projectInfo.id,
+      id: props.detail.id,
+      relation_id: item.id,
+      type: item.pivot.type,
+    })
+    getMessage({ type: 'success', msg: '删除成功' })
+    getRelationStoriesList(pageParams)
+  }
+
+  // 删除关联工作项
+  const onDeleteChange = (item: any) => {
+    setIsShowMore(false)
+    open({
+      title: '删除确认',
+      text: '确认删除链接事务？',
+      onConfirm() {
+        onDeleteConfirm(item)
+        return Promise.resolve()
+      },
+    })
+  }
+
+  const operationList = [
+    {
+      width: 40,
+      render: (text: any, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreDropdown
+              isMoreVisible={isShowMore}
+              menu={
+                <RelationDropdownMenu
+                  onDeleteChange={onDeleteChange}
+                  record={record}
+                />
+              }
+              onChangeVisible={setIsShowMore}
+            />
+          </div>
+        )
+      },
     },
   ]
 
@@ -245,6 +298,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
 
   return (
     <InfoItem id="sprint-linkSprint" className="info_item_tab">
+      <DeleteConfirmModal />
       <CommonModal
         isVisible={isVisible}
         title="链接事务"
@@ -300,6 +354,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
                   dataSource={{ list: i.list }}
                   onChangeData={arr => onChangeData(i, arr)}
                   showHeader={false}
+                  hasOperation={operationList}
                 />
               </div>
             )}

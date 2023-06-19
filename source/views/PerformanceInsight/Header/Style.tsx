@@ -272,6 +272,7 @@ export const HeaderRowBox = styled.div`
   justify-content: space-between;
   margin: 0 24px;
   height: 80px;
+  padding-right: 24px;
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
 export const Back = styled.div`

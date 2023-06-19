@@ -79,13 +79,13 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [searchItems, setSearchItems] = useState<any>({})
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
   // 用于当前操作层级不折叠
   const [topParentId, setTopParentId] = useState(0)
   const [isGrid, setIsGrid] = useState(0)
   const [deleteItem, setDeleteItem] = useState<any>({})
-  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -373,13 +373,14 @@ const SprintProjectAffair: React.FC<IProps> = props => {
       <TreeContext.Provider value={keyValue}>
         <Wrap>
           <DeleteConfirm
-            title={`删除【${deleteItem?.storyPrefixKey}】？`}
+            title="删除确认"
             isVisible={isVisible}
             onChangeVisible={() => setIsVisible(!isVisible)}
             onConfirm={onDeleteConfirm}
           >
             <div style={{ marginBottom: 9 }}>
-              你将永久删除该事务，删除后将不可恢复请谨慎操作!
+              您将永久删除{deleteItem.story_prefix_key}
+              ，删除后将不可恢复请谨慎操作!
             </div>
             <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
               同时删除该事务下所有子事务

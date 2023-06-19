@@ -1,12 +1,49 @@
 import styled from '@emotion/styled'
-import { Modal, Space } from 'antd'
+import { Modal, Space, Dropdown } from 'antd'
 import { HighchartsReact } from 'highcharts-react-official'
+export const DropdownWrap = styled(Dropdown)({
+  background: 'none',
+  '&:active': {
+    background: 'none',
+  },
+})
+export const MoreWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: 32,
+  borderRadius: 6,
+  padding: '0 16px',
+  fontSize: 14,
+  fontWeight: 400,
+  cursor: 'pointer',
+})
+export const MoreWrap1 = styled(MoreWrap)`
+  padding: 0;
+  background-color: transparent;
+  font-size: 14px;
+  .job1,
+  .job {
+    color: var(--neutral-n2);
+  }
+  &:hover {
+    // background-color: var(--hover-d3) !important;
+    .job {
+      color: var(--primary-d2);
+    }
+    .job1 {
+      color: var(--primary-d2);
+      transform: rotate(180deg);
+    }
+  }
+`
 export const HeaderStyle = styled.div`
+  width: 100%;
   height: 52px;
   background: var(--neutral-white-d5);
   border-bottom: 1px solid var(--neutral-n6-d2);
   padding: 0 24px;
   display: flex;
+  padding-right: 40px;
   align-items: center;
   justify-content: space-between;
 `

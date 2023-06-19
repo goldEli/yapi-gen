@@ -40,6 +40,13 @@ const HightChartMainBar = (props: {
     legend: {
       enabled: false,
     },
+    plotOptions: {
+      column: {
+        borderWidth: 0,
+        maxPointWidth: 30,
+        pointWidth: 24,
+      },
+    },
     xAxis: {
       minorGridLineColor: '#D5D6D9',
       tickColor: '#D5D6D9',
@@ -62,7 +69,7 @@ const HightChartMainBar = (props: {
         tickColor: '#ECEDEF',
         gridLineColor: '#ECEDEF',
         gridLineDashStyle: 'longdash',
-        borderRadius: 6,
+        // borderRadius: 6,
         min: 0,
         max: 100,
         title: {
@@ -93,6 +100,8 @@ const HightChartMainBar = (props: {
     colors: ['#43BA9A'],
     series: [
       {
+        innerWidth: 1,
+        outerWidth: 10,
         borderRadius: 4,
         data: props.chart?.seriesData,
       },

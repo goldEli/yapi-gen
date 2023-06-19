@@ -1,15 +1,12 @@
 // eslint-disable @typescript-eslint/no-invalid-this
 // eslint-disable consistent-this
-import {
-  MoreWrap2,
-  Myd,
-} from '@/components/CommonProjectComponent/CommonMember/style'
+import { Myd } from '@/components/CommonProjectComponent/CommonMember/style'
 import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, Space } from 'antd'
 import Highcharts from 'highcharts'
 import { useEffect, useState } from 'react'
 import { Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
-import { HighchartsReactWrap, RightRow } from './style'
+import { HighchartsReactWrap, RightRow, MoreWrap1 } from './style'
 interface PropsMoreDropdown {
   data: Array<{ label: string; key: string }>
   onClickMenu(value: { label: string; key: string }): void
@@ -51,7 +48,7 @@ const MoreDropdown = (props: PropsMoreDropdown) => {
       getPopupContainer={node => node}
       onVisibleChange={setIsVisible}
     >
-      <MoreWrap2
+      <MoreWrap1
         style={{
           padding: '0 8px',
         }}
@@ -67,7 +64,7 @@ const MoreDropdown = (props: PropsMoreDropdown) => {
         <span className="job1">
           <IconFont style={{ fontSize: 14 }} type="down" />
         </span>
-      </MoreWrap2>
+      </MoreWrap1>
     </Dropdown>
   )
 }

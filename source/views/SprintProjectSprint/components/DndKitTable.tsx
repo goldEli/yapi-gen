@@ -113,10 +113,10 @@ const DndKitTable = (props: any) => {
   const { projectInfo } = useSelector(store => store.project)
   const [isShowMore, setIsShowMore] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const [deleteItem, setDeleteItem] = useState<any>({})
   const [longStoryList, setLongStoryList] = useState<any>([])
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,

@@ -11,7 +11,7 @@ import CommonButton from './CommonButton'
 export interface DeleteConfirmProps {
   isVisible: boolean
   title?: string
-  text?: string
+  text?: any
   onChangeVisible?: () => void
   onConfirm(): void
   children?: any

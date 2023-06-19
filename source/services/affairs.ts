@@ -4,6 +4,13 @@ import urls from '@/constants/urls'
 import { filterTreeData, transData } from '@/tools'
 import * as http from '@/tools/http'
 
+// 删除关联
+export const deleteAffairsRelation = async (
+  params: API.Affairs.DeleteRelation.Params,
+) => {
+  await http.delete<any>('deleteAffairsRelation', params)
+}
+
 // 删除事务
 export const deleteAffairs = async (params: {
   projectId: number
@@ -278,6 +285,7 @@ export const getAffairsInfo = async (
     project_type: response.data.project_type,
     work_type: response.data.work_type,
     update_at: response.data.update_at,
+    category_status: response.category_status,
   }
 }
 

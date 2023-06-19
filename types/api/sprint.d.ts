@@ -111,7 +111,7 @@ declare namespace API.Sprint {
   }
   namespace GetStatisticsTotal {
     type Params = {
-      project_ids: string | undefined
+      project_ids: string | number
       iterate_ids?: Array<number> | number | string
       user_ids?: string
       start_time: string | undefined

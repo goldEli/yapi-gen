@@ -48,7 +48,9 @@ const CommentFooter = (props: CommentFooterProps) => {
   }
 
   const handleShortcutEvent = () => {
-    onComment()
+    if (isReview) {
+      onComment()
+    }
   }
   useShortcutCtrlEnter(handleShortcutEvent)
   // 富文本上传

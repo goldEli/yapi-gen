@@ -25,6 +25,7 @@ import {
   SprintDetailDragLine,
   SprintDetailMouseDom,
 } from '@/views/SprintProjectDetail/style'
+import { setActiveCategory } from '@store/category'
 
 const FlawInfo = () => {
   const [t] = useTranslation()
@@ -46,15 +47,15 @@ const FlawInfo = () => {
   // 跳转配置
   const onToConfig = () => {
     //
+    dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
         type: 4,
         id: id,
-        categoryName: '特效',
         pageIdx: 'DemandDetail',
         categoryItem: {
           id: flawInfo.category,
-          status: 1,
+          status: flawInfo.category_status,
         },
       }),
     )

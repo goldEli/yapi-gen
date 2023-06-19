@@ -352,7 +352,7 @@ const BasicDemand = (props: Props) => {
         <span>
           {getCustomNormalValue(
             item.fieldContent?.attr,
-            props.detail?.customField[item.content],
+            props.detail?.customField?.[item.content],
           )}
         </span>
       </TableQuickEdit>

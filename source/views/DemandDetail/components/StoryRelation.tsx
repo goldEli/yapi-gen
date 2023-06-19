@@ -24,12 +24,16 @@ import { OmitText } from '@star-yun/ui'
 import styled from '@emotion/styled'
 import {
   addStoryRelation,
+  deleteStoryRelation,
   getStoryRelationStories,
   getStorySelectRelationRecent,
   getStorySelectRelationSearch,
   updateDemandStatus,
   updatePriority,
 } from '@/services/demand'
+import MoreDropdown from '@/components/MoreDropdown'
+import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -85,6 +89,7 @@ interface SelectItem {
 
 const StoryRelation = (props: RelationStoriesProps) => {
   const [t] = useTranslation()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -95,6 +100,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
+  const [isShowMore, setIsShowMore] = useState(false)
   const [dataSource, setDataSource] =
     useState<Model.Flaw.FlawRelationStoriesData>()
   // 下拉数据
@@ -249,7 +255,51 @@ const StoryRelation = (props: RelationStoriesProps) => {
     )
   }
 
+  // 删除关联确认事件
+  const onDeleteConfirm = async (item: any) => {
+    await deleteStoryRelation({
+      project_id: id,
+      id: props.detail.id,
+      relation_id: item.id,
+      type: item.relation_type,
+    })
+    getMessage({ type: 'success', msg: '删除成功' })
+    onUpdate()
+  }
+
+  // 删除关联工作项
+  const onDeleteChange = (item: any) => {
+    setIsShowMore(false)
+    open({
+      title: '删除确认',
+      text: '确认删除该关联工作项？',
+      onConfirm() {
+        onDeleteConfirm(item)
+        return Promise.resolve()
+      },
+    })
+  }
+
   const columns = [
+    {
+      width: 40,
+      render: (text: any, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreDropdown
+              isMoreVisible={isShowMore}
+              menu={
+                <RelationDropdownMenu
+                  onDeleteChange={onDeleteChange}
+                  record={record}
+                />
+              }
+              onChangeVisible={setIsShowMore}
+            />
+          </div>
+        )
+      },
+    },
     {
       title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
       dataIndex: 'story_prefix_key',
@@ -430,6 +480,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
     <RelationWrap
       style={{ height: props.isDrawer ? '100%' : 'calc(100vh - 227px)' }}
     >
+      <DeleteConfirmModal />
       <CommonModal
         isVisible={isVisible}
         title="链接工作项"
