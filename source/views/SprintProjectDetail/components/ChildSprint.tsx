@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   addAffairsChild,
   affairsChildDragSort,
+  deleteAffairs,
   getAffairsChildList,
   getAffairsSelectChildren,
   getAffairsSelectChildrenRecent,
@@ -35,6 +36,7 @@ import NoData from '@/components/NoData'
 import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
 import MoreDropdown from '@/components/MoreDropdown'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import Item from 'antd/lib/list/Item'
 
 interface SelectItem {
   label: string
@@ -126,14 +128,21 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     getList(pageParams)
   }
 
+  // 删除子事务确认事件
+  const onDeleteConfirm = async (item: any) => {
+    await deleteAffairs({ projectId: projectInfo.id, id: item.id })
+    getMessage({ type: 'success', msg: '删除成功' })
+    getList(pageParams)
+  }
+
   // 删除关联工作项
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     open({
       title: '删除确认',
-      text: '确认删除子事务？',
+      text: `您将永久删除${item.story_prefix_key}及其子事务，删除后将不可恢复请谨慎操作!`,
       onConfirm() {
-        // 删除接口
+        onDeleteConfirm(item)
         return Promise.resolve()
       },
     })
@@ -304,7 +313,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
         <CommonButton type="primaryText" icon="plus" onClick={onCreateChild}>
           创建子事务
         </CommonButton>
-        {dataSource.list && (
+        {dataSource.total > 0 && (
           <>
             <Tooltip
               title={`${
@@ -338,7 +347,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             />
           </>
         )}
-        {!dataSource.list && <NoData />}
+        {dataSource.total <= 0 && <NoData />}
         {dataSource.total > 20 && (
           <PaginationBox
             total={dataSource?.total}
