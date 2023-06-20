@@ -193,6 +193,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
           <NewItemWrap
             onClick={() => {
               // Todo 新建长故事
+              setPopoverVisible(false)
               dispatch(
                 setAddWorkItemModal({
                   visible: true,
