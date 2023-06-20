@@ -329,7 +329,6 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               showArrow
               optionFilterProp="label"
               onChange={onChangeSelect}
-              mode="multiple"
               allowClear
               autoFocus
             />
