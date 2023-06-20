@@ -32,6 +32,7 @@ interface Props {
   // 是否有筛选条件
   hasFilter?: boolean
   sendKey(item: any): void
+  less?: boolean
 }
 
 const StatusWrap = styled.div({
@@ -481,7 +482,9 @@ const MainTable = (props: Props) => {
       <ResizeTable
         rowSelection={rowSelection}
         isSpinning={false}
-        dataWrapNormalHeight="calc(100vh - 300px)"
+        dataWrapNormalHeight={
+          props.less ? 'calc(100vh - 500px)' : 'calc(100vh - 300px)'
+        }
         col={selectColum}
         dataSource={props.projectList?.list}
         onRow={onTableRow as any}
