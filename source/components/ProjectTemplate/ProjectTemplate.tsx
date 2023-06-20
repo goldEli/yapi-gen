@@ -254,6 +254,7 @@ const ProjectTemplate = (props: any) => {
           </TabsItem>
         </div>
         <MainTable2
+          less
           sendKey={sendKey}
           onChangePageNavigation={onChangePageNavigation}
           order={order}
