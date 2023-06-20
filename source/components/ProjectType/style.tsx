@@ -13,7 +13,7 @@ export const Wrap = styled.div<{ bb: boolean; type: boolean }>`
   position: relative;
   transition: all 0.8s;
   :hover {
-    border-top: 2px solid ${props => (props.type ? '#7773fe' : '#8DD2F6')};
+    border-top: 2px solid ${props => (props.type ? '#8DD2F6' : '#7773fe')};
     transform: translateY(-10px);
   }
 
@@ -26,8 +26,8 @@ export const MyBtn = styled.div<{ type: boolean }>`
   height: 40px;
   background-image: ${props =>
     props.type
-      ? 'linear-gradient(225deg, #8db1f6 0%, #7266ff 100%)'
-      : 'linear-gradient(225deg, #8DD2F6 0%, #6688FF 100%)'};
+      ? 'linear-gradient(225deg, #8DD2F6 0%, #6688FF 100%)'
+      : 'linear-gradient(225deg, #8db1f6 0%, #7266ff 100%)'};
   border-radius: 6px 6px 6px 6px;
 
   position: absolute;

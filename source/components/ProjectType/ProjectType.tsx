@@ -12,16 +12,18 @@ import IconFont from '../IconFont'
 import CommonIconFont from '../CommonIconFont'
 
 const ProjectType = (props: any) => {
+  console.log(props)
+
   const [t, { language: isRefresh }] = useTranslation()
 
   const arr = [
-    { id: 2, img: type1, en_img: type1_en, type: 2 },
-    { id: 1, img: type2, en_img: type2_en, type: 1 },
+    { id: 2, img: type1, en_img: type1_en, type: 2, hov: 0 },
+    { id: 1, img: type2, en_img: type2_en, type: 1, hov: 1 },
   ]
   return (
     <div style={{ display: 'flex', gap: '64px' }}>
       {arr.map((i: any) => (
-        <Wrap type={props.type === i.id} bb={isRefresh === 'en'} key={i.id}>
+        <Wrap type={i.hov} bb={isRefresh === 'en'} key={i.id}>
           <img
             style={{
               width: '100%',
