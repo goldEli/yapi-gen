@@ -630,7 +630,7 @@ const Home = () => {
           homeType={homeType}
           data={workDataList?.work || []}
           title={homeType === 'all' ? '现状' : '工作项现状'}
-          time="2023-03-01 ~ 2023-03-14"
+          time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
           num={1}
         />
         <div style={{ margin: '32px 0' }}>
@@ -640,7 +640,7 @@ const Home = () => {
             homeType={homeType}
             data={workDataList?.defect || []}
             title="缺陷现状"
-            time="2023-03-01 ~ 2023-03-14"
+            time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
           />
         </div>
         <div style={{ width: '100%', display: 'flex' }}>
