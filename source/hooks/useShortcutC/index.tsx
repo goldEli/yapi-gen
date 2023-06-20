@@ -1,10 +1,14 @@
 import { useEffect } from 'react'
+import useInputStatus from '../useInputStatus'
 
 const useShortcutC = (callback: any) => {
+  const isInputFocused = useInputStatus()
   useEffect(() => {
     const handleKeyDown = (event: any) => {
       if (event.key === 'c') {
-        callback()
+        if (!isInputFocused) {
+          callback()
+        }
       }
     }
 

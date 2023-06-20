@@ -24,6 +24,8 @@ import PaginationBox from '@/components/TablePagination'
 import MoreDropdown from '@/components/MoreDropdown'
 import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { PriorityWrapTable } from '@/components/StyleCommon'
+import IconFont from '@/components/IconFont'
 
 const FormWrap = styled(Form)`
   padding: 0 24px;
@@ -97,13 +99,36 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     {
       title: '',
       dataIndex: 'story_config_priority',
-      render: (text: any) => <CommonIconFont type={text.icon} />,
+      render: (text: any) => (
+        <PriorityWrapTable isShow={false}>
+          {text?.icon && (
+            <IconFont
+              className="priorityIcon"
+              type={text?.icon}
+              style={{
+                fontSize: 20,
+                color: text?.color,
+              }}
+            />
+          )}
+          <span style={{ marginLeft: '5px' }}>
+            {!text?.icon && <span>--</span>}
+            <IconFont className="icon" type="down-icon" />
+          </span>
+        </PriorityWrapTable>
+      ),
     },
     {
       title: '',
       dataIndex: 'handlers',
-      render: (text: any) => <div>12</div>,
-      // <MultipleAvatar max={3} list={text?.handlers} />
+      render: (text: any) => (
+        <>
+          {text?.length > 0 && (
+            <MultipleAvatar max={3} list={text?.handlers ?? []} />
+          )}
+          {text?.length <= 0 && '--'}
+        </>
+      ),
     },
     {
       title: '',
@@ -131,7 +156,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       project_id: projectInfo.id,
       id: props.detail.id,
       relation_id: item.id,
-      type: item.pivot.type,
+      type: item.relation_type,
     })
     getMessage({ type: 'success', msg: '删除成功' })
     getRelationStoriesList(pageParams)
@@ -196,7 +221,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     const newArr = JSON.parse(JSON.stringify(typeList))
     newArr.forEach((element: any) => {
       response.list.forEach((i: any) => {
-        if (i.pivot?.type === element.value) {
+        if (i.relation_type === element.value) {
           element.list.push({ ...i, index: i.id })
         }
       })
