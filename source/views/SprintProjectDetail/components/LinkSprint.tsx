@@ -14,6 +14,7 @@ import { useSelector } from '@store/index'
 import {
   addAffairsRelation,
   affairsRelationDragSort,
+  deleteAffairsRelation,
   getAffairsRelationStoriesList,
   getAffairsSelectRelationRecent,
   getAffairsSelectRelationSearch,
@@ -124,6 +125,18 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     },
   ]
 
+  // 删除关联确认事件
+  const onDeleteConfirm = async (item: any) => {
+    await deleteAffairsRelation({
+      project_id: projectInfo.id,
+      id: props.detail.id,
+      relation_id: item.id,
+      type: item.pivot.type,
+    })
+    getMessage({ type: 'success', msg: '删除成功' })
+    getRelationStoriesList(pageParams)
+  }
+
   // 删除关联工作项
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
@@ -131,7 +144,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       title: '删除确认',
       text: '确认删除链接事务？',
       onConfirm() {
-        // 删除接口
+        onDeleteConfirm(item)
         return Promise.resolve()
       },
     })

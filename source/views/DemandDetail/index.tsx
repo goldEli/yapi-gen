@@ -52,6 +52,7 @@ import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import StoryRelation from './components/StoryRelation'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { setActiveCategory } from '@store/category'
 
 const DemandDetail = () => {
   const [t] = useTranslation()
@@ -253,16 +254,16 @@ const DemandDetail = () => {
 
   // 跳转配置
   const onToConfig = () => {
-    //
+    // return
+    dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
         type: 4,
         id: id,
-        categoryName: '特效',
         pageIdx: 'DemandDetail',
         categoryItem: {
           id: demandInfo.category,
-          status: 1,
+          status: demandInfo.category_status,
         },
       }),
     )

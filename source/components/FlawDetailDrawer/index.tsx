@@ -62,6 +62,7 @@ import useShareModal from '@/hooks/useShareModal'
 import CommentFooter from '../CommonComment/CommentFooter'
 import CommonComment from '../CommonComment'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { setActiveCategory } from '@store/category'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -292,16 +293,15 @@ const FlawDetailDrawer = () => {
   //   跳转配置
   const onToConfig = () => {
     //
-    console.log('demandInfo', drawerInfo)
+    dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
         type: 4,
         id: id,
-        categoryName: '特效',
         pageIdx: 'DemandDetail',
         categoryItem: {
           id: drawerInfo.category,
-          status: 1,
+          status: drawerInfo.category_status,
         },
       }),
     )

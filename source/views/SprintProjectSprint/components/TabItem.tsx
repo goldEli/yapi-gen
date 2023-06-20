@@ -3,6 +3,7 @@ import { Checkbox, Progress } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { setCheckList } from '@store/sprint'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Item = styled.div`
   cursor: pointer;
@@ -66,8 +67,9 @@ const NoSprintButton = styled.div<{ isActive: boolean }>`
 `
 
 const TabItem = (props: any) => {
-  const { data } = props
+  const { data, activeKey, currentFilter } = props
   const { checkList } = useSelector(state => state.sprint)
+  const { userInfo } = useSelector(state => state.user)
   const dispatch = useDispatch()
 
   return (
@@ -82,6 +84,15 @@ const TabItem = (props: any) => {
                 const temp = [...checkList]
                 temp[idx] = e.target.checked
                 dispatch(setCheckList(temp))
+                // 存储本地缓存 上次操作选中的
+                // localStorage.setItem(
+                //   encryptPhp(JSON.stringify({ id: userInfo.id })),
+                //   JSON.stringify({
+                //     checkList: temp,
+                //     activeKey,
+                //     currentFilter,
+                //   }),
+                // )
               }}
             />
           </div>
@@ -119,8 +130,11 @@ const TabItem = (props: any) => {
                   item.story_finish_count === 0
                     ? 0
                     : Number(
-                        (item.story_finish_count / item.story_count).toFixed(2),
-                      ) * 100
+                        (
+                          (item.story_finish_count / item.story_count) *
+                          100
+                        ).toFixed(2),
+                      )
                 }
                 size="small"
                 trailColor="var(--neutral-n6-d2)"

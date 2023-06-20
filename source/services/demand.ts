@@ -10,6 +10,13 @@
 import * as http from '@/tools/http'
 import { transData } from '@/tools'
 
+// 删除关联
+export const deleteStoryRelation = async (
+  params: API.Flaw.DeleteRelation.Params,
+) => {
+  await http.delete<any>('deleteStoryRelation', params)
+}
+
 // 获取缺陷关联工作项列表
 export const getStoryRelationStories = async (
   params: API.Flaw.GetFlawRelationStories.Params,
@@ -531,6 +538,7 @@ export const getDemandInfo: any = async (params: any) => {
     level_tree: response.data.level_tree,
     project_type: response.data.project_type,
     update_at: response.data.update_at,
+    category_status: response.category_status,
   }
 }
 

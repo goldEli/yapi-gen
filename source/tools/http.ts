@@ -178,6 +178,7 @@ client.config({
 })
 
 type ResponseData<T> = {
+  category_status: any
   code:
     | 'A0204'
     | 'A0203'

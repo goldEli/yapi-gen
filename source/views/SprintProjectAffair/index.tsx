@@ -79,6 +79,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [searchItems, setSearchItems] = useState<any>({})
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
   // 用于当前操作层级不折叠
@@ -248,6 +249,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     await deleteAffairs({
       projectId,
       id: deleteItem.id,
+      isDeleteChild: isDeleteCheck ? 1 : 2,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     setIsVisible(false)
@@ -378,8 +380,11 @@ const SprintProjectAffair: React.FC<IProps> = props => {
           >
             <div style={{ marginBottom: 9 }}>
               您将永久删除{deleteItem.story_prefix_key}
-              及其子事务，删除后将不可恢复请谨慎操作!
+              ，删除后将不可恢复请谨慎操作!
             </div>
+            <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
+              同时删除该事务下所有子事务
+            </Checkbox>
           </DeleteConfirm>
           <ProjectCommonOperation onInputSearch={onInputSearch} />
           <ContentWrap>

@@ -20,10 +20,10 @@ export const MoreWrap = styled.div({
 export const MoreWrap1 = styled(MoreWrap)`
   padding: 0;
   background-color: transparent;
-  font-size: 12px;
+  font-size: 14px;
   .job1,
   .job {
-    color: var(--neutral-n1-d1);
+    color: var(--neutral-n2);
   }
   &:hover {
     // background-color: var(--hover-d3) !important;
@@ -37,11 +37,13 @@ export const MoreWrap1 = styled(MoreWrap)`
   }
 `
 export const HeaderStyle = styled.div`
+  width: 100%;
   height: 52px;
   background: var(--neutral-white-d5);
   border-bottom: 1px solid var(--neutral-n6-d2);
   padding: 0 24px;
   display: flex;
+  padding-right: 40px;
   align-items: center;
   justify-content: space-between;
 `
