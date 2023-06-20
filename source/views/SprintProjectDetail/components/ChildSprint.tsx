@@ -10,7 +10,7 @@ import {
   ProgressWrap,
 } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
-import { CloseWrap } from '@/components/StyleCommon'
+import { CloseWrap, PriorityWrapTable } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
@@ -28,6 +28,7 @@ import {
   getAffairsChildList,
   getAffairsSelectChildren,
   getAffairsSelectChildrenRecent,
+  updateAffairsPriority,
 } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 import MultipleAvatar from '@/components/MultipleAvatar'
@@ -37,6 +38,9 @@ import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdow
 import MoreDropdown from '@/components/MoreDropdown'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import Item from 'antd/lib/list/Item'
+import ChangePriorityPopover from '@/components/ChangePriorityPopover'
+import IconFont from '@/components/IconFont'
+import { useTranslation } from 'react-i18next'
 
 interface SelectItem {
   label: string
@@ -44,6 +48,7 @@ interface SelectItem {
 }
 
 const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
+  const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
   const dispatch = useDispatch()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -187,13 +192,37 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     {
       title: '',
       dataIndex: 'story_config_priority',
-      render: (text: any) => <CommonIconFont type={text?.icon} />,
+      render: (text: any, record: any) => {
+        return (
+          <PriorityWrapTable isShow={false}>
+            {text?.icon && (
+              <IconFont
+                className="priorityIcon"
+                type={text?.icon}
+                style={{
+                  fontSize: 20,
+                  color: text?.color,
+                }}
+              />
+            )}
+            <span style={{ marginLeft: '5px' }}>
+              {!text?.icon && <span>--</span>}
+              <IconFont className="icon" type="down-icon" />
+            </span>
+          </PriorityWrapTable>
+        )
+      },
     },
     {
       title: '',
       dataIndex: 'handlers',
       render: (text: any) => (
-        <MultipleAvatar max={3} list={text?.handlers ?? []} />
+        <>
+          {text?.length > 0 && (
+            <MultipleAvatar max={3} list={text?.handlers ?? []} />
+          )}
+          {text?.length <= 0 && '--'}
+        </>
       ),
     },
     {
