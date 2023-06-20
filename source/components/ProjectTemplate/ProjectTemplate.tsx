@@ -230,7 +230,7 @@ const ProjectTemplate = (props: any) => {
         isVisible={visibleEdit}
         onClose={onClose}
         onConfirm={onsubmit}
-        confirmText={t('newlyAdd.submit')}
+        confirmText={t('common.confirm2')}
       >
         <div
           style={{
