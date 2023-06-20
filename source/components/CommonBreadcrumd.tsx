@@ -53,7 +53,7 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
           <a
             onClick={() => {
               const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
-              navigate(`/SprintProjectManagement/KanBan?data=${params}`)
+              navigate(`/SprintProjectManagement/Affair?data=${params}`)
             }}
           >
             <img
