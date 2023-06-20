@@ -304,11 +304,11 @@ const CreateAProjectForm = () => {
       getLeader()
     }
   }, [leaderId])
-  useEffect(() => {
-    if (multipleSelectionItems.length === 1) {
-      getProjectInfo()
-    }
-  }, [multipleSelectionItems])
+  // useEffect(() => {
+  //   if (multipleSelectionItems.length === 1) {
+  //     getProjectInfo()
+  //   }
+  // }, [multipleSelectionItems])
 
   useEffect(() => {
     if (createVisible) {
