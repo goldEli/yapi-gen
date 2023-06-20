@@ -33,8 +33,6 @@ import useKeyPress from '@/hooks/useKeyPress'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
 import { setAddWorkItemModal } from '@store/project'
-import { encryptPhp } from '@/tools/cryptoPhp'
-import { setCheckList } from '@store/sprint'
 
 const SearchBox = styled.div`
   display: flex;
@@ -264,7 +262,6 @@ const SprintProjectSprint: React.FC = () => {
     leftLoading,
     sprintRefresh,
   } = useSelector(store => store.sprint)
-  const { userInfo } = useSelector(state => state.user)
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -299,7 +296,7 @@ const SprintProjectSprint: React.FC = () => {
     orderkey: 'id',
     search: {
       all: 1,
-      sprint_status: 0,
+      sprint_status: 1,
       project_id: projectId,
     },
     is_long_story: 0,
@@ -413,7 +410,7 @@ const SprintProjectSprint: React.FC = () => {
   useEffect(() => {
     // 获取经办人数据
     getUserList()
-    // 获取本地存储上次操作的数据
+    // // 获取本地存储上次操作的数据
     // const tempObj = localStorage.getItem(
     //   encryptPhp(JSON.stringify({ id: userInfo.id })),
     // )
@@ -422,25 +419,8 @@ const SprintProjectSprint: React.FC = () => {
     //   setActiveKey(cacheObject?.activeKey)
     //   setCurrentFilter(cacheObject?.currentFilter)
     //   dispatch(setCheckList(cacheObject?.checkList))
-
-    //   setSearchObject({
-    //     ...searchObject,
-    //     search: {
-    //       ...searchObject.search,
-    //       sprint_status: cacheObject?.currentFilter?.id,
-    //     },
-    //     is_long_story: cacheObject?.activeKey,
-    //   })
-    //   setLeftSearchObject({
-    //     ...leftSearchObject,
-    //     search: {
-    //       ...searchObject.search,
-    //       sprint_status: cacheObject?.currentFilter?.id,
-    //     },
-    //     is_long_story: cacheObject?.activeKey,
-    //   })
     // }
-  }, [userInfo])
+  }, [])
 
   useEffect(() => {
     if (checkList.length) {
@@ -459,7 +439,6 @@ const SprintProjectSprint: React.FC = () => {
   }, [searchObject, checkList])
 
   useEffect(() => {
-    console.log(leftSearchObject, 'leftSearchObjectleftSearchObject')
     dispatch(getLeftSprintList(leftSearchObject))
   }, [leftSearchObject])
 
