@@ -29,6 +29,7 @@ import NoteModal from '@/components/NoteModal'
 import SprintDetailDrawer from '@/components/SprintDetailDrawer'
 import FlawDetailDrawer from '@/components/FlawDetailDrawer'
 import DeleteConfirmGlobalModal from '@/components/DeleteConfirmGlobal'
+import { changeCreateVisible } from '@store/create-propject'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -160,7 +161,11 @@ export const Container = () => {
         <GlobalStyle />
         <DeleteConfirmGlobalModal />
         <LayoutWrap id="layoutWrap">
-          <HeaderWrap>
+          <HeaderWrap
+            onClick={() => {
+              dispatch(changeCreateVisible(false))
+            }}
+          >
             <HeaderLeft />
             <HeaderRight />
           </HeaderWrap>
