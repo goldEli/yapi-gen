@@ -340,7 +340,7 @@ const ProjectManagementOptimization = () => {
               width={184}
               bgColor="var(--neutral-white-d4)"
               length={12}
-              placeholder={t('please_enter_the_project')}
+              placeholder="输入项目名称或键"
               onChangeSearch={(value: string) => setSearchVal(value)}
               leftIcon
             />

@@ -31,7 +31,14 @@ const ProjectChooseSide = (props: any) => {
 
   return (
     <Side op={props.op}>
-      <div className="t1">从{info?.name}导入工作流</div>
+      <div
+        style={{
+          fontFamily: 'SiYuanMedium',
+        }}
+        className="t1"
+      >
+        从{info?.name}导入工作流
+      </div>
       <div
         style={{
           overflowY: 'auto',
@@ -46,7 +53,9 @@ const ProjectChooseSide = (props: any) => {
               color="var(--neutral-n3)"
             />
 
-            <span style={{ marginLeft: '8px' }}>工作流</span>
+            <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
+              工作流
+            </span>
           </TitleStyle>
           <ScaleDiv hi={!infoIcon}>
             {info?.category_list.map((i: any) => (
@@ -83,7 +92,7 @@ const ProjectChooseSide = (props: any) => {
               color="var(--neutral-n3)"
             />
 
-            <span style={{ marginLeft: '8px' }}>
+            <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
               项目成员（{info?.member_list.length}）
             </span>
           </TitleStyle>
