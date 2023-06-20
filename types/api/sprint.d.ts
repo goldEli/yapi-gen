@@ -52,7 +52,6 @@ declare namespace API.Sprint {
   }
   namespace GetCompletionRate {
     type Params = {
-      project_id: number
       project_ids?: string | number
       iterate_ids?: string
       user_ids?: string
@@ -69,7 +68,6 @@ declare namespace API.Sprint {
   }
   namespace contrastNewWork {
     type Params = {
-      project_id: number
       project_ids?: string | number
       iterate_ids?: string
       user_ids?: string
@@ -86,7 +84,6 @@ declare namespace API.Sprint {
   }
   namespace GetDefectRatio {
     type Params = {
-      project_id: number
       project_ids?: string | number
       user_ids?: string
       iterate_ids?: string
@@ -114,8 +111,7 @@ declare namespace API.Sprint {
   }
   namespace GetStatisticsTotal {
     type Params = {
-      project_id: number
-      project_ids: string | undefined
+      project_ids: string | number
       iterate_ids?: Array<number> | number | string
       user_ids?: string
       start_time: string | undefined

@@ -344,8 +344,7 @@ const Home = () => {
   const getWorkList = async () => {
     setLoading(true)
     const res = await getStatisticsTotal({
-      project_id: projectId,
-      project_ids: headerParmas.projectIds?.join(','),
+      project_ids: headerParmas.projectIds?.join(',') || projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -374,8 +373,7 @@ const Home = () => {
   // 新增工作top10对比第一个图表
   const getContrastNewWork = async (str: string) => {
     const res = await contrastNewWork({
-      project_id: projectId,
-      project_ids: headerParmas.projectIds?.join(','),
+      project_ids: headerParmas.projectIds?.join(',') || projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -409,9 +407,8 @@ const Home = () => {
   // 完成率top10对比 第4个图表
   const getCompletionRateChart = async (str: string) => {
     const res = await getCompletionRate({
-      project_id: projectId,
       sort: str,
-      project_ids: headerParmas.projectIds?.join(','),
+      project_ids: headerParmas.projectIds?.join(',') || projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -444,8 +441,7 @@ const Home = () => {
   // 阶段缺陷占比第6个图表
   const getDefectRatioChart = async (str: string) => {
     const res = await getDefectRatio({
-      project_id: projectId,
-      project_ids: headerParmas.projectIds?.join(','),
+      project_ids: headerParmas.projectIds?.join(',') || projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -478,8 +474,7 @@ const Home = () => {
   // 2,3,5图表集合
   const getStatisticsOther = async () => {
     const res = await statisticsOther({
-      project_id: projectId,
-      project_ids: headerParmas.projectIds?.join(','),
+      project_ids: headerParmas.projectIds?.join(',') || projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:

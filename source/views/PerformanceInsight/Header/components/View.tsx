@@ -99,7 +99,6 @@ const View = (props: View) => {
     })
     props.onChange(item?.name || '', item?.id || 0)
   }, [props.value])
-  console.log(valueType, 'ValueType')
   const getLabel = (el: { name: string; id: number }) => {
     return (
       <Label key={el.id}>
@@ -240,7 +239,6 @@ const View = (props: View) => {
       setIsOpen(false)
     }
   }
-  console.log(props, 'props')
   return (
     <>
       <Dropdown
@@ -273,8 +271,8 @@ const View = (props: View) => {
         titleType={dialogTitle}
         onConfirm={(value, type) => {
           setDialogItem({ name: '' }),
-            console.log(value, type, key, 'value, type, key')
-          props.onCreateView(value, type, key), setIsVisible(false)
+            props.onCreateView(value, type, key),
+            setIsVisible(false)
         }}
         onClose={() => setIsVisible(false)}
         isVisible={isVisible}
