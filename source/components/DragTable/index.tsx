@@ -75,7 +75,11 @@ const DragTable = (props: DragTableProps) => {
     <TableWrap
       pagination={false}
       dataSource={props.dataSource.list}
-      columns={[...props.hasOperation, ...[dragHandle], ...props.columns]}
+      columns={[
+        ...(props.hasOperation || []),
+        ...[dragHandle],
+        ...props.columns,
+      ]}
       rowKey="index"
       sticky
       showHeader={props.showHeader}

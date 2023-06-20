@@ -159,7 +159,13 @@ const ProjectTemplate = (props: any) => {
   }, [pageObj, order, props.searchId, activeTab])
   return (
     <div style={{ width: '1000px' }}>
-      <Title>{t('select_project_template2')}</Title>
+      <Title
+        style={{
+          fontFamily: 'SiYuanMedium',
+        }}
+      >
+        {t('select_project_template2')}
+      </Title>
       <Title2>{t('template_description')}</Title2>
       <div
         style={{
@@ -186,6 +192,7 @@ const ProjectTemplate = (props: any) => {
                 color: 'var(--neutral-n1-d1)',
                 lineHeight: ' 22px',
                 margin: '16px 16px 8px 16px',
+                fontFamily: 'SiYuanMedium',
               }}
             >
               {i.name}
@@ -230,7 +237,7 @@ const ProjectTemplate = (props: any) => {
         isVisible={visibleEdit}
         onClose={onClose}
         onConfirm={onsubmit}
-        confirmText={t('newlyAdd.submit')}
+        confirmText={t('common.confirm2')}
       >
         <div
           style={{
@@ -247,6 +254,7 @@ const ProjectTemplate = (props: any) => {
           </TabsItem>
         </div>
         <MainTable2
+          less
           sendKey={sendKey}
           onChangePageNavigation={onChangePageNavigation}
           order={order}

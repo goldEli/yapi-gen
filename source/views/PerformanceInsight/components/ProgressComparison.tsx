@@ -115,7 +115,6 @@ const ProgressComparison = (props: Props) => {
   const [loading, setLoading] = useState(false)
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    console.log(val, 'val', key)
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
     // props.type === 'Progress_iteration' ||
     //   props.type === 'Progress_sprint' ||
@@ -146,6 +145,7 @@ const ProgressComparison = (props: Props) => {
           <RowText
             onClick={(event: any) => {
               event.stopPropagation()
+              dispatch(setVisiblePerson(false))
               dispatch(setVisibleWork(true))
               getDatail(record)
             }}
@@ -269,6 +269,7 @@ const ProgressComparison = (props: Props) => {
           <RowText
             onClick={(event: any) => {
               dispatch(setVisibleWork(true))
+              dispatch(setVisiblePerson(false))
               event.stopPropagation()
               getDatail(record)
             }}
@@ -392,6 +393,7 @@ const ProgressComparison = (props: Props) => {
           <RowText
             onClick={(event: any) => {
               event.stopPropagation()
+              dispatch(setVisiblePerson(false))
               dispatch(setVisibleWork(true))
               getDatail(record)
             }}
@@ -464,7 +466,6 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'repeat_open',
       title: getTitleTips('缺陷重开', '当期重开缺陷/当期总缺陷*100%'),
       render: (text: string, record: any) => {
-        console.log(record, 'record')
         return (
           <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
             {text}
@@ -496,8 +497,8 @@ const ProgressComparison = (props: Props) => {
     },
   ]
   useEffect(() => {
-    // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
-    //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
+    // 进展对比 Progress_iteration-迭代 Progress_sprint 冲刺 Progress_all 全局
+    //缺陷 Defect_iteration-迭代 Defect_iteration 冲刺 Defect_all 全局
     onSearchData([])
     switch (props.type) {
       case 'Progress_iteration':
@@ -523,10 +524,12 @@ const ProgressComparison = (props: Props) => {
   // 数据明细和进展对比查询数据的
   const onSearchData = (value: number[]) => {
     setSelectProjectIds(value)
+    // 进展对比
     if (props.type.includes('Progress')) {
       setLoading(true)
       getWorkContrastList(value)
     } else {
+      // 缺陷分析
       setLoading(true)
       getMemberBugList(value)
     }
@@ -564,8 +567,7 @@ const ProgressComparison = (props: Props) => {
       case 28:
         return 'four_week'
       default:
-        // eslint-disable-next-line no-undefined
-        return undefined
+        return ''
     }
   }
   // 导出
@@ -579,19 +581,17 @@ const ProgressComparison = (props: Props) => {
         )
       ) {
         result = await getExport({
-          project_ids: option.join(','),
+          project_ids:
+            option.length >= 1 ? option.join(',') : props.projectId + '',
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
-            : // eslint-disable-next-line no-undefined
-              undefined,
+            : '',
           start_time: getTimeStr(props.headerParmas?.time)
-            ? // eslint-disable-next-line no-undefined
-              undefined
+            ? ''
             : props.headerParmas?.time?.time?.[0],
           end_time: getTimeStr(props.headerParmas?.time)
-            ? // eslint-disable-next-line no-undefined
-              undefined
+            ? ''
             : props.headerParmas?.time?.time?.[1],
           iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
         })
@@ -601,20 +601,17 @@ const ProgressComparison = (props: Props) => {
         )
       ) {
         result = await defectExport({
-          // eslint-disable-next-line no-undefined
-          project_ids: option.join(',') ? option.join(',') : undefined,
+          project_ids:
+            option.length >= 1 ? option.join(',') : props.projectId + '',
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
-            : // eslint-disable-next-line no-undefined
-              undefined,
+            : '',
           start_time: getTimeStr(props.headerParmas?.time)
-            ? // eslint-disable-next-line no-undefined
-              undefined
+            ? ''
             : props.headerParmas?.time?.time?.[0],
           end_time: getTimeStr(props.headerParmas?.time)
-            ? // eslint-disable-next-line no-undefined
-              undefined
+            ? ''
             : props.headerParmas?.time?.time?.[1],
           iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
         })
@@ -641,20 +638,16 @@ const ProgressComparison = (props: Props) => {
     const time = props.headerParmas?.time && getTime(props.headerParmas?.time)
     const res = await workContrastList({
       project_ids:
-        value.length >= 1
-          ? value.join(',')
-          : props.headerParmas?.projectIds?.join?.(','),
+        value.length >= 1 || props.headerParmas?.projectIds?.length
+          ? value.length >= 1
+            ? value.join(',')
+            : props.headerParmas?.projectIds?.join?.(',')
+          : props.projectId + '',
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
       user_ids: props.headerParmas.users?.join(','),
       period_time: getTimeStr(props.headerParmas?.time),
-      start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
-        : time.startTime,
-      end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
-        : time.endTime,
+      start_time: getTimeStr(props.headerParmas?.time) ? '' : time.startTime,
+      end_time: getTimeStr(props.headerParmas?.time) ? '' : time.endTime,
       page: page?.pageNum || pageNum,
       pagesize: page?.pageSize || pageSize,
     })
@@ -673,25 +666,16 @@ const ProgressComparison = (props: Props) => {
           ? value.length >= 1
             ? value.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
-          : // eslint-disable-next-line no-undefined
-            undefined,
+          : props.projectId + '',
       iterate_ids: props.headerParmas.iterate_ids?.length
         ? props.headerParmas.iterate_ids?.join(',')
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       user_ids: props.headerParmas.users?.length
         ? props.headerParmas.users?.join(',')
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       period_time: getTimeStr(props.headerParmas?.time),
-      start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
-        : time.startTime,
-      end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
-        : time.endTime,
+      start_time: getTimeStr(props.headerParmas?.time) ? '' : time.startTime,
+      end_time: getTimeStr(props.headerParmas?.time) ? '' : time.endTime,
       page: page?.pageNum || pageNum,
       pagesize: page?.pageSize || pageSize,
     })
@@ -703,10 +687,10 @@ const ProgressComparison = (props: Props) => {
   }
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
-    console.log(str)
     setTableBeforeAndAfter('after')
     event.stopPropagation()
     dispatch(setVisiblePerson(true))
+    dispatch(setVisibleWork(false))
     getUserInfo(row.id)
     setStatusType(str)
     const parmas = {
@@ -714,15 +698,12 @@ const ProgressComparison = (props: Props) => {
       type: str,
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[0],
       end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[1],
     }
     if (props.type.includes('Progress')) {
@@ -753,7 +734,13 @@ const ProgressComparison = (props: Props) => {
 
   // 后半截的详情弹窗上半截的获取用户信息
   const getUserInfo = async (id: number) => {
-    const res = await plugSelectionUserInfo({ user_id: id, project_ids: 0 })
+    const res = await plugSelectionUserInfo({
+      user_id: id,
+      project_ids:
+        selectProjectIds.length >= 1
+          ? selectProjectIds.join(',')
+          : props.projectId + '',
+    })
     setUserInfo(res.userInfo)
     setStatus(res.status)
   }
@@ -777,15 +764,12 @@ const ProgressComparison = (props: Props) => {
       ...val,
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[0],
       end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[1],
     }
     if (props.type.includes('Progress')) {
@@ -801,15 +785,12 @@ const ProgressComparison = (props: Props) => {
       type: statusType,
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[0],
       end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[1],
     }
     // 前半截是一个接口，后半截是两个接口

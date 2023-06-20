@@ -87,7 +87,9 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
         </RightRow>
         <Text size="12px" onClick={() => onClick()}>
           <Space size={4}>
-            <span>查看明细</span>
+            <span style={{ display: 'inline-block', height: '20px' }}>
+              查看明细
+            </span>
             <CommonIconFont
               type="right"
               size={14}
@@ -143,6 +145,7 @@ const Home = () => {
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
   const [projectViewIds, setProjectViewIds] = useState<number[] | []>([])
   const [iterateViewIds, setIterateViewIds] = useState<number[] | []>([])
+  const [valueHeaderStr, setValueHeaderStr] = useState<string>('')
   const [viewDataList, setViewDataList] = useState<
     Array<Models.Efficiency.ViewItem>
   >([])
@@ -591,8 +594,9 @@ const Home = () => {
     if (!headerParmas.view.value) {
       return
     }
-    console.log(2343, headerParmas.view.value)
-    headerParmas.view.value && init()
+    // 监听对象第一次会走两次接口 转成字符窜判断
+    setValueHeaderStr(JSON.stringify(headerParmas))
+    valueHeaderStr !== JSON.stringify(headerParmas) && init()
   }, [headerParmas])
 
   return (
@@ -628,7 +632,7 @@ const Home = () => {
           homeType={homeType}
           data={workDataList?.work || []}
           title={homeType === 'all' ? '现状' : '工作项现状'}
-          time="2023-03-01 ~ 2023-03-14"
+          time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
           num={1}
         />
         <div style={{ margin: '32px 0' }}>
@@ -638,7 +642,7 @@ const Home = () => {
             homeType={homeType}
             data={workDataList?.defect || []}
             title="缺陷现状"
-            time="2023-03-01 ~ 2023-03-14"
+            time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
           />
         </div>
         <div style={{ width: '100%', display: 'flex' }}>

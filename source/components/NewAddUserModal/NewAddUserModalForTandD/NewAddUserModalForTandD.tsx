@@ -441,8 +441,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     }
     return newArr
   }
-  // 勾选复选框
-
   // 把team组成大数组去过滤父级
   const dataTeam: any = []
   const getKeyData = (res: any, preId: any) => {
@@ -456,23 +454,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     }
     return Array.from(new Set(dataTeam))
   }
-  // 全选
-  const checkAllChange = (e: any) => {
-    if (e.target.checked) {
-      if (tabsActive === 1) {
-        const keys = treeData2.map((el: any) => el.id)
-        setCheckedKeys(keys)
-      } else {
-        const keys = tabsTreeDataList?.map((item: any) => item.id)
-        setCheckedKeys(keys)
-      }
-      const data = tabsTreeDataList?.map((item: any) => item)
-      setPersonData(data)
-    } else {
-      setCheckedKeys([])
-      setPersonData([])
-    }
-  }
+
   // 下拉框选中
   const handleChange = async (value: any) => {
     setSearchVal(value)

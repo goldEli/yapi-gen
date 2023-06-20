@@ -306,11 +306,11 @@ const CreateAProjectForm = () => {
       getLeader()
     }
   }, [leaderId])
-  useEffect(() => {
-    if (multipleSelectionItems.length === 1) {
-      getProjectInfo()
-    }
-  }, [multipleSelectionItems])
+  // useEffect(() => {
+  //   if (multipleSelectionItems.length === 1) {
+  //     getProjectInfo()
+  //   }
+  // }, [multipleSelectionItems])
 
   useEffect(() => {
     if (createVisible) {
@@ -363,6 +363,13 @@ const CreateAProjectForm = () => {
     form.resetFields()
   }, [model])
 
+  const onTapModel = () => {
+    if (type) {
+      onChangeStep(2)
+      setModel(0)
+    }
+  }
+
   return (
     <CommonModal2
       noFooter={step !== 3}
@@ -410,7 +417,14 @@ const CreateAProjectForm = () => {
             }}
           >
             <RowStyle>
-              <Col tap={!isEditId} onClick={() => onChangeStep(1)}>
+              <Col
+                tap={!isEditId}
+                onClick={() => {
+                  onChangeStep(1)
+                  setType(0)
+                  setModel(0)
+                }}
+              >
                 <StyleLeft bgc={step >= 1} />
                 <Text bgc={step >= 1}>{types[type]}</Text>
                 <StyleRight bgc={step >= 1} />
@@ -418,7 +432,7 @@ const CreateAProjectForm = () => {
               <Col
                 tap={!!type}
                 style={{ transform: 'translate(-20px, 0px)' }}
-                onClick={() => type && onChangeStep(2)}
+                onClick={onTapModel}
               >
                 <StyleLeft bgc={step >= 2} />
                 <Text bgc={step >= 2}>{models[model]}</Text>

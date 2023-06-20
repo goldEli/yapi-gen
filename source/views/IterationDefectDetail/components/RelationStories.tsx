@@ -344,7 +344,7 @@ const RelationStories = (props: RelationStoriesProps) => {
               Object.keys(record.categoryConfigList).includes('priority')
             }
             onChangePriority={item => onChangeState(item)}
-            record={{ project_id: id, id: props.detail.id }}
+            record={{ project_id: id, id: record.id }}
           >
             <PriorityWrap isShow={isCanEdit}>
               {text?.icon && (

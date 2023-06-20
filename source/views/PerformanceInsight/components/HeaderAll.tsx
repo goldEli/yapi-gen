@@ -97,7 +97,7 @@ const HeaderAll = (props: HaderProps) => {
           {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
           {/* // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
         //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
-          {props.type === 'Progress_all' && (
+          {props.type === 'Progress_all' && projectList?.length >= 1 && (
             <div style={{ marginRight: '16px' }}>
               <Select
                 type=""
