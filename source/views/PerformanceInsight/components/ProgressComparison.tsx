@@ -145,6 +145,7 @@ const ProgressComparison = (props: Props) => {
           <RowText
             onClick={(event: any) => {
               event.stopPropagation()
+              dispatch(setVisiblePerson(false))
               dispatch(setVisibleWork(true))
               getDatail(record)
             }}
@@ -268,6 +269,7 @@ const ProgressComparison = (props: Props) => {
           <RowText
             onClick={(event: any) => {
               dispatch(setVisibleWork(true))
+              dispatch(setVisiblePerson(false))
               event.stopPropagation()
               getDatail(record)
             }}
@@ -391,6 +393,7 @@ const ProgressComparison = (props: Props) => {
           <RowText
             onClick={(event: any) => {
               event.stopPropagation()
+              dispatch(setVisiblePerson(false))
               dispatch(setVisibleWork(true))
               getDatail(record)
             }}
@@ -687,6 +690,7 @@ const ProgressComparison = (props: Props) => {
     setTableBeforeAndAfter('after')
     event.stopPropagation()
     dispatch(setVisiblePerson(true))
+    dispatch(setVisibleWork(false))
     getUserInfo(row.id)
     setStatusType(str)
     const parmas = {
@@ -730,7 +734,13 @@ const ProgressComparison = (props: Props) => {
 
   // 后半截的详情弹窗上半截的获取用户信息
   const getUserInfo = async (id: number) => {
-    const res = await plugSelectionUserInfo({ user_id: id, project_ids: 0 })
+    const res = await plugSelectionUserInfo({
+      user_id: id,
+      project_ids:
+        selectProjectIds.length >= 1
+          ? selectProjectIds.join(',')
+          : props.projectId + '',
+    })
     setUserInfo(res.userInfo)
     setStatus(res.status)
   }
