@@ -143,6 +143,7 @@ const Home = () => {
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
   const [projectViewIds, setProjectViewIds] = useState<number[] | []>([])
   const [iterateViewIds, setIterateViewIds] = useState<number[] | []>([])
+  const [valueHeaderStr, setValueHeaderStr] = useState<string>('')
   const [viewDataList, setViewDataList] = useState<
     Array<Models.Efficiency.ViewItem>
   >([])
@@ -591,7 +592,9 @@ const Home = () => {
     if (!headerParmas.view.value) {
       return
     }
-    init()
+    // 监听对象第一次会走两次接口 转成字符窜判断
+    setValueHeaderStr(JSON.stringify(headerParmas))
+    valueHeaderStr !== JSON.stringify(headerParmas) && init()
   }, [headerParmas])
 
   return (

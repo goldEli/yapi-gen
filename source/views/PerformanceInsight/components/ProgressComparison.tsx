@@ -115,7 +115,6 @@ const ProgressComparison = (props: Props) => {
   const [loading, setLoading] = useState(false)
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    console.log(val, 'val', key)
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
     // props.type === 'Progress_iteration' ||
     //   props.type === 'Progress_sprint' ||
@@ -464,7 +463,6 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'repeat_open',
       title: getTitleTips('缺陷重开', '当期重开缺陷/当期总缺陷*100%'),
       render: (text: string, record: any) => {
-        console.log(record, 'record')
         return (
           <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
             {text}
@@ -579,7 +577,8 @@ const ProgressComparison = (props: Props) => {
         )
       ) {
         result = await getExport({
-          project_ids: option.join(','),
+          project_ids:
+            option.length >= 1 ? option.join(',') : props.projectId + '',
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -602,7 +601,8 @@ const ProgressComparison = (props: Props) => {
       ) {
         result = await defectExport({
           // eslint-disable-next-line no-undefined
-          project_ids: option.join(',') ? option.join(',') : undefined,
+          project_ids:
+            option.length >= 1 ? option.join(',') : props.projectId + '',
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -641,9 +641,12 @@ const ProgressComparison = (props: Props) => {
     const time = props.headerParmas?.time && getTime(props.headerParmas?.time)
     const res = await workContrastList({
       project_ids:
-        value.length >= 1
-          ? value.join(',')
-          : props.headerParmas?.projectIds?.join?.(','),
+        value.length >= 1 || props.headerParmas?.projectIds?.length
+          ? value.length >= 1
+            ? value.join(',')
+            : props.headerParmas?.projectIds?.join?.(',')
+          : // eslint-disable-next-line no-undefined
+            props.projectId + '',
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
       user_ids: props.headerParmas.users?.join(','),
       period_time: getTimeStr(props.headerParmas?.time),
@@ -674,7 +677,7 @@ const ProgressComparison = (props: Props) => {
             ? value.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
           : // eslint-disable-next-line no-undefined
-            undefined,
+            props.projectId + '',
       iterate_ids: props.headerParmas.iterate_ids?.length
         ? props.headerParmas.iterate_ids?.join(',')
         : // eslint-disable-next-line no-undefined
@@ -703,7 +706,6 @@ const ProgressComparison = (props: Props) => {
   }
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
-    console.log(str)
     setTableBeforeAndAfter('after')
     event.stopPropagation()
     dispatch(setVisiblePerson(true))

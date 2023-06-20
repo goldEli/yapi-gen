@@ -75,7 +75,7 @@ const CreateSprintModal = (props: sprintProps) => {
           start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
           end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
           duration: {
-            is_weekend: value?.group?.include,
+            is_weekend: value?.group?.include ? 1 : 2,
             week_type: value?.group?.radio,
           },
           info: value?.info,
@@ -102,7 +102,7 @@ const CreateSprintModal = (props: sprintProps) => {
           start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
           end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
           duration: {
-            is_weekend: value?.group?.include,
+            is_weekend: value?.group?.include ? 1 : 2,
             week_type: value?.group?.radio,
           },
           info: value?.info,
@@ -145,7 +145,7 @@ const CreateSprintModal = (props: sprintProps) => {
           info: result.data.info,
           group: {
             date: [moment(result.data.start_at), moment(result.data.end_at)],
-            include: result.data.duration?.is_weekend,
+            include: result.data.duration?.is_weekend === 1,
             radio: result.data.duration?.week_type,
           },
         })
@@ -184,8 +184,10 @@ const CreateSprintModal = (props: sprintProps) => {
       confirmText={
         (type === 'edit' || type === 'start') &&
         editData?.status === 4 &&
-        editData?.story_count &&
-        '开始'
+        editData?.story_count
+          ? '开始'
+          : // eslint-disable-next-line no-undefined
+            undefined
       }
       children={
         <div className={content}>

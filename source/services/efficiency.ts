@@ -253,64 +253,6 @@ export const getCompletionRate = async (
     'getCompletionRate',
     params,
   )
-  // const response = {
-  //   data: {
-  //     list: [
-  //       {
-  //         user_name: '用户1',
-  //         completion_rate: '90%',
-  //         work_total: 40,
-  //       },
-  //       {
-  //         user_name: '用户2',
-  //         completion_rate: '80%',
-  //         work_total: 50,
-  //       },
-  //       {
-  //         user_name: '用户3',
-  //         completion_rate: '70%',
-  //         work_total: 45,
-  //       },
-  //       {
-  //         user_name: '用户4',
-  //         completion_rate: '65%',
-  //         work_total: 60,
-  //       },
-  //       {
-  //         user_name: '用户5',
-  //         completion_rate: '60%',
-  //         work_total: 45,
-  //       },
-  //       {
-  //         user_name: '用户6',
-  //         completion_rate: '50%',
-  //         work_total: 46,
-  //       },
-  //       {
-  //         user_name: '用户7',
-  //         completion_rate: '40%',
-  //         work_total: 45,
-  //       },
-  //       {
-  //         user_name: '用户8',
-  //         completion_rate: '35%',
-  //         work_total: 50,
-  //       },
-  //       {
-  //         user_name: '用户9',
-  //         completion_rate: '30%',
-  //         work_total: 55,
-  //       },
-  //       {
-  //         user_name: '用户10',
-  //         completion_rate: '25%',
-  //         work_total: 45,
-  //       },
-  //     ],
-  //     start_time: '2023-04-30',
-  //     end_time: '2023-05-15',
-  //   },
-  // }
   return response.data
 }
 // 阶段缺陷占比

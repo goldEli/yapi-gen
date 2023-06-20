@@ -562,7 +562,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       })
       setOptionsDrop(false)
     } catch (error) {
-      getMessage({ msg: error as string, type: 'error' })
+      // getMessage({ msg: error as string, type: 'error' })
     }
   }
   const selectColumns: any = useMemo(() => {

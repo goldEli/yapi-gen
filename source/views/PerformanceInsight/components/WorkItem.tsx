@@ -80,7 +80,7 @@ const Main = (props: UserInfo) => {
       },
     },
     {
-      title: '处理人',
+      title: '创建人',
       dataIndex: 'expected_start_at',
       render: (
         text: string,
@@ -96,7 +96,7 @@ const Main = (props: UserInfo) => {
       },
     },
     {
-      title: '创建人',
+      title: '处理人',
       dataIndex: 'expected_start_at',
       render: (
         text: string,
