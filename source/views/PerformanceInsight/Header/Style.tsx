@@ -11,6 +11,8 @@ export const DivStyle = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
   &:hover {
     border: 1px solid var(--primary-d1);
   }
