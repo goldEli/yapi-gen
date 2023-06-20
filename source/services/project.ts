@@ -8,15 +8,15 @@
 // 项目
 
 import { getMessage } from '@/components/Message'
-import { getNestedChildren, transData } from '@/tools'
+import { transData } from '@/tools'
 import * as http from '@/tools/http'
 import { onRest } from '@store/create-propject'
 import { store } from '@store/index'
 import { t } from 'i18next'
 import { getStaffListAll } from './staff'
-import urls from '@/constants/urls'
 
 export const getProjectList: any = async (params: any) => {
+  console.log(params, 'params')
   const response: any = await http.get<any>('getProjectList', {
     search: {
       project_types: params.project_types,
