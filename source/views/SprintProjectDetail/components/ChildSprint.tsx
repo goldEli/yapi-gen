@@ -187,7 +187,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     {
       title: '',
       dataIndex: 'story_config_priority',
-      render: (text: any) => <CommonIconFont type={text.icon} />,
+      render: (text: any) => <CommonIconFont type={text?.icon} />,
     },
     {
       title: '',
