@@ -87,6 +87,8 @@ const Iteration = (props: Props) => {
   const { save, viewType } = useSelector(store => store.performanceInsight)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const [iterateApi, setIterateApi] = useState<any>([])
+  const [projectApi, setProjectApi] = useState<any>()
   const projectId = paramsData?.id
   // tads切换
   const getTabsActive = (index: number) => {
@@ -124,6 +126,25 @@ const Iteration = (props: Props) => {
     }
   }, [props.iterateViewIds, props.homeType, props.defalutConfig])
   useEffect(() => {
+    props.homeType === 'iteration' || props.homeType === 'sprint'
+      ? getIterateApi()
+      : getProjectApi()
+  }, [props.homeType])
+  const getIterateApi = async () => {
+    const res: any = await recentCreateData({
+      project_id: projectId,
+      resource_type: props.homeType === 'iteration' ? 1 : 2,
+    })
+    setIterateApi(res)
+  }
+  const getProjectApi = async () => {
+    const res = await getProjectList({
+      // self: 1,
+      all: 1,
+    })
+    setProjectApi(res)
+  }
+  useEffect(() => {
     if (props.projectViewIds.length >= 1) {
       props.homeType === 'all' && getProjectIdsList()
       props.homeType === 'all' && setTabsActive(0)
@@ -135,12 +156,8 @@ const Iteration = (props: Props) => {
     }
   }, [props.projectViewIds, props.homeType, props.defalutConfig])
   const getIterateIdsList = async () => {
-    const res = await recentCreateData({
-      project_id: projectId,
-      resource_type: props.homeType === 'iteration' ? 1 : 2,
-    })
-    const filterVal = res
-      .filter((el: { id: number }) => props.iterateViewIds.includes(el.id))
+    const filterVal = iterateApi
+      ?.filter((el: { id: number }) => props.iterateViewIds.includes(el.id))
       .map((el: { id: number; name: string }) => ({
         ...el,
         label: el.name,
@@ -148,34 +165,32 @@ const Iteration = (props: Props) => {
       }))
     // 默认展示10条数据
     setIterateDataAll(
-      res.map((el: { id: number; name: string }) => ({
+      iterateApi?.map((el: { id: number; name: string }) => ({
         ...el,
         label: el.name,
         value: el.id,
       })),
     )
-    const newData = res
-      .slice(0, 10)
+    const newData = iterateApi
+      ?.slice(0, 10)
       .map((el: { id: number; name: string }) => ({
         ...el,
         label: el.name,
         value: el.id,
       }))
-    res.length < 10 && setMore1(true)
+    iterateApi.length < 10 && setMore1(true)
     // 判断里面是否有
-    const hasIds = newData.filter(el => props.iterateViewIds.includes(el.id))
-    hasIds
+    const hasIds = newData.filter((el: { id: number }) =>
+      props.iterateViewIds.includes(el.id),
+    )
+    hasIds?.length >= 1
       ? setIterateData([...newData])
       : setIterateData([...filterVal, ...newData])
     setIterateIds(props.iterateViewIds)
   }
   const getProjectIdsList = async () => {
-    const res = await getProjectList({
-      // self: 1,
-      all: 1,
-    })
-    const filterVal = res.list
-      .filter((el: { id: number }) => props.projectViewIds?.includes(el.id))
+    const filterVal = projectApi?.list
+      ?.filter((el: { id: number }) => props.projectViewIds?.includes(el.id))
       .map((el: { id: number; name: string }) => ({
         ...el,
         label: el.name,
@@ -183,14 +198,14 @@ const Iteration = (props: Props) => {
       }))
     // 默认展示10条数据
     setProjectListAll(
-      res.list.map((el: { id: number; name: string }) => ({
+      projectApi?.list?.map((el: { id: number; name: string }) => ({
         ...el,
         label: el.name,
         value: el.id,
       })),
     )
-    const newData = res.list
-      .slice(0, 10)
+    const newData = projectApi?.list
+      ?.slice(0, 10)
       .map((el: { id: number; name: string }) => ({
         ...el,
         label: el.name,
@@ -200,7 +215,7 @@ const Iteration = (props: Props) => {
     const hasIds = newData.filter((el: { id: number }) =>
       props.iterateViewIds.includes(el.id),
     )
-    hasIds
+    hasIds?.length >= 1
       ? setProjectList([...newData])
       : setProjectList([...filterVal, ...newData])
     // 回显的项目id
@@ -208,25 +223,21 @@ const Iteration = (props: Props) => {
   }
   // 获取近期的冲刺项目
   const getIterateData = async () => {
-    const res = await recentCreateData({
-      project_id: projectId,
-      resource_type: props.homeType === 'iteration' ? 1 : 2,
-    })
     setIterateDataAll(
-      res.map((el: { id: number; name: string }) => ({
+      iterateApi.map((el: { id: number; name: string }) => ({
         ...el,
         label: el.name,
         value: el.id,
       })),
     )
     setIterateData(
-      res.slice(0, 10).map((el: { id: number; name: string }) => ({
+      iterateApi.slice(0, 10).map((el: { id: number; name: string }) => ({
         ...el,
         label: el.name,
         value: el.id,
       })),
     )
-    res.length <= 10 && setMore1(true)
+    iterateApi.length <= 10 && setMore1(true)
   }
 
   // 获取时间回显
@@ -246,29 +257,27 @@ const Iteration = (props: Props) => {
   }
   // 获取项目列表
   const getProjectData = async () => {
-    const res = await getProjectList({
-      // self: 1,
-      all: 1,
-    })
     // 默认展示10条数据
     setProjectListAll(
-      res.list.map((el: { id: number; name: string }) => ({
+      projectApi?.list?.map((el: { id: number; name: string }) => ({
         ...el,
         label: el.name,
         value: el.id,
       })),
     )
     setProjectList(
-      res.list.slice(0, 10).map((el: { id: number; name: string }) => ({
-        ...el,
-        label: el.name,
-        value: el.id,
-      })),
+      projectApi?.list
+        ?.slice(0, 10)
+        .map((el: { id: number; name: string }) => ({
+          ...el,
+          label: el.name,
+          value: el.id,
+        })),
     )
-    res.list.length <= 10 && setMore(true)
+    projectApi?.list?.length <= 10 && setMore(true)
     dispatch(
       setProjectDataList(
-        res.list.map((el: { id: number; name: string }) => ({
+        projectApi?.list?.map((el: { id: number; name: string }) => ({
           ...el,
           label: el.name,
           value: el.id,
