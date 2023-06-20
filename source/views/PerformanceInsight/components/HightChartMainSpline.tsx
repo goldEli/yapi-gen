@@ -47,8 +47,6 @@ const HightChartMainSpline = (props: {
           fontSize: '12px',
         },
       },
-      min: 0,
-      max: 10,
     },
     yAxis: {
       allowDecimals: false,
