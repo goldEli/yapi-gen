@@ -222,18 +222,35 @@ const MyDropdown = (props: any) => {
     onClickIsOpen()
     navigate('/ProjectManagement/Mine/Profile')
   }
+  /**
+   *
+   * @param el
+   * @param type story 待办和已办
+   * @param feedable_type project -项目  iterate-冲刺、迭代   story-需求、事务（缺陷
+   */
   // 接口上下接口不同，取值不同，需要加判断取
   const onRoute = (el: any, type: string) => {
     let iterParmas = null
+    const paramsKey: { [key: string]: string } = {
+      1: 'demandId',
+      2: 'sprintId',
+    }
+    const urlMaps: { [key: number]: string } = {
+      1: '/ProjectManagement/DemandDetail',
+      2: '/SprintProjectManagement/SprintProjectDetail',
+    }
     let router = ''
+    // debugger
     if (type === 'story') {
       iterParmas = encryptPhp(
         JSON.stringify({
           id: el.project_id,
-          demandId: el.id,
+          // demandId: el.id,
+          [paramsKey[el.project_type]]: el.id,
         }),
       )
-      router = `/ProjectManagement/DemandDetail?data=${iterParmas}`
+      // router = `/ProjectManagement/DemandDetail?data=${iterParmas}`
+      router = `${urlMaps[el.project_type]}?data=${iterParmas}`
     } else {
       const resultType = el?.feedable_type ?? el?.actionable_type
       if (resultType === 'project') {
@@ -251,12 +268,22 @@ const MyDropdown = (props: any) => {
           params.iterateId = el?.feedable_id ?? el.id
         }
         if (resultType === 'story') {
-          params.demandId = el?.feedable_id ?? el.id
+          // sprintId
+          // params.demandId = el?.feedable_id ?? el.id
+          params[paramsKey[el.feedable.project.project_type]] =
+            el?.feedable_id ?? el.id
         }
         iterParmas = encryptPhp(JSON.stringify(params))
-        router = `/ProjectManagement/${
-          resultType === 'iterate' ? 'Iteration' : 'DemandDetail'
-        }?data=${iterParmas}`
+        if (el.feedable.project.project_type === 1) {
+          router = `/ProjectManagement/${
+            resultType === 'iterate' ? 'Iteration' : 'DemandDetail'
+          }?data=${iterParmas}`
+        }
+        if (el.feedable.project.project_type === 2) {
+          router = `/SprintProjectManagement/${
+            resultType === 'iterate' ? 'Affair' : 'SprintProjectDetail'
+          }?data=${iterParmas}`
+        }
       }
     }
     setIsOpen(false)
