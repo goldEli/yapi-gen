@@ -13,13 +13,13 @@ const useInputStatus = () => {
     }
 
     // 监听全局的输入焦点事件
-    document.addEventListener('focusin', handleFocus)
-    document.addEventListener('focusout', handleBlur)
+    document.addEventListener('focus', handleFocus)
+    document.addEventListener('blur', handleBlur)
 
     return () => {
       // 在组件卸载时移除事件监听器
-      document.removeEventListener('focusin', handleFocus)
-      document.removeEventListener('focusout', handleBlur)
+      document.removeEventListener('focus', handleFocus)
+      document.removeEventListener('blur', handleBlur)
     }
   }, [])
 
