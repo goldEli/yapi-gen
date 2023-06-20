@@ -85,9 +85,11 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             <Time>{props.time}</Time>
           </Space>
         </RightRow>
-        <Text size="14px" onClick={() => onClick()}>
+        <Text size="12px" onClick={() => onClick()}>
           <Space size={4}>
-            <span>查看明细</span>
+            <span style={{ display: 'inline-block', height: '20px' }}>
+              查看明细
+            </span>
             <CommonIconFont
               type="right"
               size={14}
