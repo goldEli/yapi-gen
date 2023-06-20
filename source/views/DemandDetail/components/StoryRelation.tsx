@@ -217,6 +217,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   //   修改优先级
   const onChangeState = async (item: any) => {
+    console.log(item, '121212')
     await updatePriority({
       id: item.id,
       priorityId: item.priorityId,
@@ -383,7 +384,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
               Object.keys(record.categoryConfigList).includes('priority')
             }
             onChangePriority={item => onChangeState(item)}
-            record={{ project_id: id, id: props.detail.id }}
+            record={{ project_id: id, id: record.id }}
           >
             <PriorityWrap isShow={isCanEdit}>
               {text?.icon && (
