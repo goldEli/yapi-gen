@@ -45,7 +45,7 @@ import styled from '@emotion/styled'
 import ProjectType from '../ProjectType/ProjectType'
 import ProjectTemplate from '../ProjectTemplate/ProjectTemplate'
 import ProjectChooseSide from '../ProjectChooseSide/ProjectChooseSide'
-
+import { setProjectInfo } from '@store/project'
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
@@ -133,6 +133,7 @@ const CreateAProjectForm = () => {
   const [type, setType] = useState(0)
   const [model, setModel] = useState<any>(0)
   const [multipleSelectionItems, setMultipleSelectionItems] = useState<any>([])
+
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
     setMyCover(data.url)
@@ -149,6 +150,7 @@ const CreateAProjectForm = () => {
     }
     if (isEditId) {
       dispatch(postEditCreate({ ...obj, id: isEditId }))
+      dispatch(setProjectInfo({ ...obj, id: isEditId }))
       setLeaderId(0)
       return
     }
