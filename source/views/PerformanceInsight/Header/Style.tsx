@@ -331,7 +331,7 @@ export const Col = styled.div`
   justify-content: space-between;
 `
 export const Col1 = styled.div`
-  margin: 24px 0px 12px 0px;
+  margin: 0px 0px 12px 0px;
   display: flex;
   height: 32px;
   margin-bottom: 16px;
@@ -390,7 +390,6 @@ export const LotBox = styled.div`
   background: var(--neutral-n10);
   border-radius: 6px;
   margin-right: 24px;
-  margin-bottom: 24px;
   padding: 16px;
   &:hover {
     background: var(--neutral--white-d6);
