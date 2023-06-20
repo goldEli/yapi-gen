@@ -591,7 +591,8 @@ const Home = () => {
     if (!headerParmas.view.value) {
       return
     }
-    init()
+    console.log(2343, headerParmas.view.value)
+    headerParmas.view.value && init()
   }, [headerParmas])
 
   return (

@@ -72,12 +72,10 @@ const RelationStories = (props: RelationStoriesProps) => {
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) =>
-        i.name ===
-        (projectInfo.projectType === 1
-          ? 'b/flaw/update'
-          : 'b/transaction/update'),
+      (i: any) => i.identity === 'b/flaw/update',
     )?.length > 0
+
+  console.log(projectInfo, '=projectInfo')
 
   // 类型列表
   const typeList = [

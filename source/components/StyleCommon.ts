@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 // 两次以上的公共样式
@@ -929,6 +930,35 @@ const DragTableIcon = styled(IconFont)`
   cursor: pointer;
 `
 
+const PriorityWrapTable = styled.div<{ isShow?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      color: 'var(--neutral-n1-d2)',
+      fontSize: 14,
+      marginLeft: 8,
+    },
+    '.icon': {
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 14,
+      color: 'var(--neutral-n4)',
+    },
+    '.priorityIcon': {
+      fontSize: 14,
+    },
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+    '&: hover': {
+      '.icon': {
+        visibility: isShow ? 'visible' : 'hidden',
+      },
+    },
+  }),
+)
+
 export {
   ChartsItem2,
   title1Css1,
@@ -981,4 +1011,5 @@ export {
   MouseDom,
   SeverityWrap,
   DragTableIcon,
+  PriorityWrapTable,
 }

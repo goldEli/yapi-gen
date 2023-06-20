@@ -1,10 +1,14 @@
 import React from 'react'
+import useInputStatus from '../useInputStatus'
 
 const usePressKyey = (targetKey: string, callback: any) => {
+  const isInputFocused = useInputStatus()
   React.useEffect(() => {
     const handleKeyPress = (event: any) => {
       if (event.key === targetKey) {
-        callback()
+        if (!isInputFocused) {
+          callback()
+        }
       }
     }
 

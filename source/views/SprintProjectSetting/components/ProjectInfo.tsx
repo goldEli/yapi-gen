@@ -12,8 +12,6 @@ import { getIsPermission } from '@/tools'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { editProject } from '@store/create-propject'
-import CategoryDropdown from '@/components/CategoryDropdown'
-import LongStroyBread from '@/components/LongStroyBread'
 const Wrap = styled.div({
   background: 'white',
   height: '100%',
@@ -122,16 +120,9 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-
   return (
     <Wrap>
-      <div style={{ marginBottom: '20px', width: 400 }}>
-        {/* <CategoryDropdown
-          projectId={631}
-          footer={false}
-          categoryList={categoryList}
-        ></CategoryDropdown> */}
-      </div>
+      <div style={{ marginBottom: '20px', width: 400 }}></div>
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>
         <CardGroup size={32}>

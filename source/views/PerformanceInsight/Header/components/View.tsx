@@ -99,12 +99,13 @@ const View = (props: View) => {
     })
     props.onChange(item?.name || '', item?.id || 0)
   }, [props.value])
-  const getLabel = (el: { name: string; id: number }) => {
+  const getLabel = (el: { name: string; id: number; type: number }) => {
     return (
       <Label key={el.id}>
         <Tooltip title={el.name}>
           <span className="labelName">{el.name}</span>
         </Tooltip>
+
         <span className="extra">
           <Space size={12}>
             <CommonIconFont
@@ -115,27 +116,31 @@ const View = (props: View) => {
               size={16}
               color="var(--neutral-n3)"
             />
-            <CommonIconFont
-              onClick={() => {
-                setDialogItem(el),
-                  setDialogTitle({
-                    title: '编辑视图',
-                    type: 'edit',
-                  }),
-                  setIsVisible(true)
-              }}
-              type="edit"
-              size={16}
-              color="var(--neutral-n3)"
-            />
-            <CommonIconFont
-              onClick={() => {
-                setDialogItem(el), setDelIsVisible(true)
-              }}
-              type="delete"
-              size={16}
-              color="var(--neutral-n3)"
-            />
+            {el.type === 1 && (
+              <CommonIconFont
+                onClick={() => {
+                  setDialogItem(el),
+                    setDialogTitle({
+                      title: '编辑视图',
+                      type: 'edit',
+                    }),
+                    setIsVisible(true)
+                }}
+                type="edit"
+                size={16}
+                color="var(--neutral-n3)"
+              />
+            )}
+            {el.type === 1 && (
+              <CommonIconFont
+                onClick={() => {
+                  setDialogItem(el), setDelIsVisible(true)
+                }}
+                type="delete"
+                size={16}
+                color="var(--neutral-n3)"
+              />
+            )}
           </Space>
         </span>
       </Label>

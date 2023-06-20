@@ -40,10 +40,6 @@ declare namespace Model.Affairs {
       name: string
       avatar: string
     }[]
-    pivot?: {
-      type: RelationType
-      sort: number
-    }
     work_type: number
     relation_type: number
   }

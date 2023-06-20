@@ -12,6 +12,7 @@ import {
   ClickWrap,
   HiddenText,
   ListNameWrap,
+  PriorityWrapTable,
   SeverityWrap,
   ShowWrap,
 } from '@/components/StyleCommon'
@@ -30,35 +31,6 @@ import { getCustomNormalValue } from '@/tools'
 import MultipleAvatar from '../MultipleAvatar'
 import CommonIconFont from '../CommonIconFont'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
-
-const PriorityWrap = styled.div<{ isShow?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    div: {
-      color: 'var(--neutral-n1-d2)',
-      fontSize: 14,
-      marginLeft: 8,
-    },
-    '.icon': {
-      marginLeft: 8,
-      visibility: 'hidden',
-      fontSize: 14,
-      color: 'var(--neutral-n4)',
-    },
-    '.priorityIcon': {
-      fontSize: 14,
-    },
-  },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
-    '&: hover': {
-      '.icon': {
-        visibility: isShow ? 'visible' : 'hidden',
-      },
-    },
-  }),
-)
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -229,7 +201,7 @@ export const useDynamicColumns = (state: any) => {
             onChangePriority={item => state.onChangeState(item, record)}
             record={{ project_id: state.projectId, id: record.id }}
           >
-            <PriorityWrap isShow={isCanEdit}>
+            <PriorityWrapTable isShow={isCanEdit}>
               {text?.icon && (
                 <IconFont
                   className="priorityIcon"
@@ -244,7 +216,7 @@ export const useDynamicColumns = (state: any) => {
                 {!text?.icon && <span>--</span>}
                 <IconFont className="icon" type="down-icon" />
               </span>
-            </PriorityWrap>
+            </PriorityWrapTable>
           </ChangePriorityPopover>
         )
       },
