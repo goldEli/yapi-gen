@@ -101,8 +101,9 @@ const CreateAProjectForm = () => {
   const [t] = useTranslation()
   const types = [
     t('select_project_type'),
-    t('sprint_project'),
+
     t('iteration_project'),
+    t('sprint_project'),
   ]
   const models = [
     t('select_project_template'),
