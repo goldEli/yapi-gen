@@ -751,7 +751,7 @@ const CreateDemandLeft = (props: Props) => {
           <Input
             autoComplete="off"
             ref={inputRefDom as any}
-            placeholder={t('common.pleaseDemandName')}
+            placeholder="请输入标题"
             autoFocus
           />
         </Form.Item>
