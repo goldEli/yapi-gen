@@ -625,7 +625,7 @@ const DndKitTable = (props: any) => {
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       {(props?.checkCommission
-        ? rightSprintList.filter((i: any) => i.id === -1)
+        ? rightSprintList.filter((i: any) => i.id === 0)
         : rightSprintList
       )?.map((item: any) => {
         return (
