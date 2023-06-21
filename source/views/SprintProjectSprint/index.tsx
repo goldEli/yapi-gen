@@ -106,7 +106,7 @@ const RightIcon = styled.div`
   }
   .filter {
     width: 120px;
-    height: 104px;
+    padding: 4px 0px;
     background: #ffffff;
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
     border-radius: 6px 6px 6px 6px;
@@ -646,14 +646,14 @@ const SprintProjectSprint: React.FC = () => {
                 optionFilterProp="label"
                 showArrow
                 showSearch
-                value={searchObject.search?.user_id}
+                value={searchObject.search?.user_ids}
                 options={userOptions}
                 onChange={(users: any) => {
                   setSearchObject({
                     ...searchObject,
                     search: {
                       ...searchObject.search,
-                      user_id: users,
+                      user_ids: users,
                     },
                   })
                 }}
@@ -692,7 +692,7 @@ const SprintProjectSprint: React.FC = () => {
                   ...searchObject,
                   search: {
                     ...searchObject.search,
-                    user_id: [],
+                    user_ids: [],
                   },
                 })
                 dispatch(setCheckList(checkList.map(() => true)))

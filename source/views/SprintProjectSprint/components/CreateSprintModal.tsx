@@ -14,9 +14,10 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChooseDate from './ChooseDate'
 import useAltSKeyPress from '@/hooks/useAltSKeyPress/useAltSKeyPress'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 interface sprintProps {
-  type: 'create' | 'start' | 'edit'
+  type: 'create' | 'start' | 'edit' | 'update'
   visible: boolean
   onClose(): void
   projectId: number
@@ -40,6 +41,7 @@ const CreateSprintModal = (props: sprintProps) => {
   const dispatch = useDispatch()
   const [editData, setEditData] = useState<any>(null)
   const initNumber = useRef(0)
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const getTitle = (val: string) => {
     if (val === 'create') {
       return '新建冲刺'
@@ -94,29 +96,62 @@ const CreateSprintModal = (props: sprintProps) => {
           })
         }
       }
-      if (type === 'edit' || type === 'start') {
-        const result: any = await updateSprintInfo({
-          id: editId as any,
-          project_id: projectId,
-          name: value?.name,
-          start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
-          end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
-          duration: {
-            is_weekend: value?.group?.include ? 1 : 2,
-            week_type: value?.group?.radio,
-          },
-          info: value?.info,
-        })
-        if (result && result.code === 0) {
-          getMessage({
-            msg: type === 'edit' ? '编辑成功' : '开始成功',
-            type: 'success',
+      if (type === 'edit' || type === 'start' || type === 'update') {
+        // 先判断更改的时间是否在事务的时间范围内
+        const updateSprint = async () => {
+          const result: any = await updateSprintInfo({
+            id: editId as any,
+            project_id: projectId,
+            name: value?.name,
+            start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
+            end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
+            duration: {
+              is_weekend: value?.group?.include ? 1 : 2,
+              week_type: value?.group?.radio,
+            },
+            info: value?.info,
           })
-          onClear(true)
+          if (result && result.code === 0) {
+            getMessage({
+              msg:
+                type === 'edit'
+                  ? '编辑成功'
+                  : type === 'update'
+                  ? '更新成功'
+                  : '开始成功',
+              type: 'success',
+            })
+            onClear(true)
+          } else {
+            getMessage({
+              msg: result?.message,
+              type: 'error',
+            })
+          }
+        }
+        if (
+          (moment(value?.group?.date?.[0]).isSame(
+            editData?.between_date?.[0],
+          ) ||
+            moment(value?.group?.date?.[0]).isBefore(
+              editData?.between_date?.[0],
+            )) &&
+          (moment(value?.group?.date?.[1]).isSame(
+            editData?.between_date?.[1],
+          ) ||
+            moment(value?.group?.date?.[1]).isAfter(
+              editData?.between_date?.[1],
+            ))
+        ) {
+          updateSprint()
         } else {
-          getMessage({
-            msg: result?.message,
-            type: 'error',
+          open({
+            title: '更新冲刺',
+            okText: '更新',
+            children: (
+              <div>子事务超出设置的冲刺日期范围，建议调整冲刺或事务日期</div>
+            ),
+            onConfirm: updateSprint,
           })
         }
       }
@@ -164,7 +199,11 @@ const CreateSprintModal = (props: sprintProps) => {
   }
 
   useEffect(() => {
-    if (editId && (type === 'edit' || type === 'start') && visible) {
+    if (
+      editId &&
+      (type === 'edit' || type === 'start' || type === 'update') &&
+      visible
+    ) {
       getSprintInfo()
     }
   }, [editId, visible])
@@ -177,57 +216,64 @@ const CreateSprintModal = (props: sprintProps) => {
   useAltSKeyPress(handleAltSKeyPress)
 
   return (
-    <CommonModal
-      title={getTitle(type)}
-      width={528}
-      isVisible={visible}
-      onClose={() => onClear(false)}
-      onConfirm={onConfirm}
-      confirmText={
-        (type === 'edit' || type === 'start') &&
-        editData?.status === 4 &&
-        editData?.story_count
-          ? '开始'
-          : // eslint-disable-next-line no-undefined
-            undefined
-      }
-      children={
-        <div className={content}>
-          <div className="head">要开始此冲刺，至少需包含1个事务</div>
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{ span: 24 }}
-            wrapperCol={{ span: 24 }}
-            autoComplete="off"
-          >
-            <Form.Item
-              label="冲刺名称"
-              name="name"
-              rules={[{ required: true, message: '请输入冲刺名称' }]}
+    <>
+      <CommonModal
+        title={getTitle(type)}
+        width={528}
+        isVisible={visible}
+        onClose={() => onClear(false)}
+        onConfirm={onConfirm}
+        confirmText={
+          (type === 'edit' || type === 'start') &&
+          editData?.status === 4 &&
+          editData?.story_count
+            ? '开始'
+            : type === 'create'
+            ? '新建'
+            : type === 'update'
+            ? '更新'
+            : // eslint-disable-next-line no-undefined
+              undefined
+        }
+        children={
+          <div className={content}>
+            <div className="head">要开始此冲刺，至少需包含1个事务</div>
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              autoComplete="off"
             >
-              <Input placeholder="新建的冲刺1" maxLength={50} />
-            </Form.Item>
-            <Form.Item
-              label="持续时间"
-              name="group"
-              initialValue={{ include: true, radio: 1, date: [] }}
-              rules={[{ required: true, validator: onValidator }]}
-            >
-              <ChooseDate initNumber={initNumber} />
-            </Form.Item>
-            <Form.Item label="冲刺目标" name="info">
-              <Input.TextArea
-                showCount
-                maxLength={300}
-                autoSize={{ minRows: 1, maxRows: 5 }}
-                placeholder="请输入"
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      }
-    />
+              <Form.Item
+                label="冲刺名称"
+                name="name"
+                rules={[{ required: true, message: '请输入冲刺名称' }]}
+              >
+                <Input placeholder="新建的冲刺1" maxLength={50} />
+              </Form.Item>
+              <Form.Item
+                label="持续时间"
+                name="group"
+                initialValue={{ include: true, radio: 1, date: [] }}
+                rules={[{ required: true, validator: onValidator }]}
+              >
+                <ChooseDate initNumber={initNumber} />
+              </Form.Item>
+              <Form.Item label="冲刺目标" name="info">
+                <Input.TextArea
+                  showCount
+                  maxLength={300}
+                  autoSize={{ minRows: 1, maxRows: 5 }}
+                  placeholder="请输入"
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        }
+      />
+      <DeleteConfirmModal />
+    </>
   )
 }
 

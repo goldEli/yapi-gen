@@ -317,6 +317,17 @@ const DndKitTable = (props: any) => {
       dataIndex: 'story_prefix_key',
       key: 'story_prefix_key',
       width: 200,
+      render(value, record) {
+        return (
+          <TitleWrap
+            onClick={() => {
+              onClickItem(record)
+            }}
+          >
+            <span className="content">{value}</span>
+          </TitleWrap>
+        )
+      },
     },
     {
       title: '标题',
@@ -596,6 +607,7 @@ const DndKitTable = (props: any) => {
       ) {
         open({
           title: '移动事务',
+          okText: '移动',
           children: (
             <div>
               <div>该操作会影响冲刺范围</div>
