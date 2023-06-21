@@ -135,17 +135,17 @@ const XTable: React.FC<XTableProps> = props => {
     projectInfo?.projectPermissions,
     'b/sprint',
   )
-  const handleShortcutEvent = () => {
-    console.log('C键被按下')
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: { type: 4, iterateId: data.id },
-      }),
-    )
-  }
+  // const handleShortcutEvent = () => {
+  //   console.log('C键被按下')
+  //   dispatch(
+  //     setAddWorkItemModal({
+  //       visible: true,
+  //       params: { type: 4, iterateId: data.id },
+  //     }),
+  //   )
+  // }
 
-  useShortcutC(handleShortcutEvent)
+  // useShortcutC(handleShortcutEvent)
   // 删除冲刺
   const deleteSprint = async (id: number) => {
     try {
