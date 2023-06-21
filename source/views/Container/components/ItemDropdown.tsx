@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from '@store/index'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { t } from 'i18next'
+import { changeCreateVisible } from '@store/create-propject'
 
 interface PropsType {
   text: string
@@ -96,10 +97,6 @@ const ItemDropdown = (props: PropsType) => {
     onFectProjectList()
   }, [isOpen])
 
-  const onCreate = () => {
-    setIsOpen(false)
-    dispatch({ type: 'createProject/changeCreateVisible', payload: true })
-  }
   const onRoute = (el: any) => {
     console.log(el)
     const params = encryptPhp(
@@ -165,7 +162,13 @@ const ItemDropdown = (props: PropsType) => {
           {(
             userInfo.company_permissions?.map((i: any) => i.identity) || []
           ).includes('b/project/save') && (
-            <div onClick={onCreate}>
+            <div
+              onClick={(e: any) => {
+                e.stopPropagation()
+                dispatch(changeCreateVisible(true))
+                setIsOpen(false)
+              }}
+            >
               <IconFont
                 type="plus"
                 style={{

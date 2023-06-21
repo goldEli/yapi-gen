@@ -20,6 +20,7 @@ declare namespace Model.KanbanConfig {
     is_end: 1 | 2
     kanban_column_id?: number
     can_flow_status?: number[]
+    category_name: string
   }
   interface Category {
     id: number
