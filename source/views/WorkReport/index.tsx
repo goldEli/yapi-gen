@@ -26,7 +26,6 @@ const WorkReport = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams) || {}
   const { type } = paramsData
-  console.log('work-----paramsData', paramsData)
   return (
     <WorkReportWrap>
       <HasSideCommonLayout
@@ -35,10 +34,8 @@ const WorkReport = () => {
           <>
             {String(pathname).includes('/Report/Formwork') && <FormWorkSide />}
             {String(pathname).includes('/Report/Review/') && <ReviewSide />}
-            {type === 'sprint' && <ProjectDetailSide></ProjectDetailSide>}
-            {type === 'iteration' && (
-              <ProjectDetailSideIteration></ProjectDetailSideIteration>
-            )}
+            {type === 'sprint' && <ProjectDetailSide />}
+            {type === 'iteration' && <ProjectDetailSideIteration />}
           </>
         }
       >

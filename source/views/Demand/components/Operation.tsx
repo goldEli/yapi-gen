@@ -203,7 +203,7 @@ const Operation = (props: Props) => {
       dispatch(
         setAddWorkItemModal({
           visible: true,
-          params: { projectId: projectInfo?.id, type: 1 },
+          params: { projectId: projectInfo?.id, type: 1, title: '创建需求' },
         }),
       )
       setIsVisible(false)

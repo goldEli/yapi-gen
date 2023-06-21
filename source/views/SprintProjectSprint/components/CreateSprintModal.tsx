@@ -144,7 +144,9 @@ const CreateSprintModal = (props: sprintProps) => {
           name: result.data.name,
           info: result.data.info,
           group: {
-            date: [moment(result.data.start_at), moment(result.data.end_at)],
+            date: result.data.start_at
+              ? [moment(result.data.start_at), moment(result.data.end_at)]
+              : null,
             include: result.data.duration?.is_weekend === 1,
             radio: result.data.duration?.week_type,
           },
