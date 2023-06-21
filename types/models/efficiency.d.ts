@@ -60,6 +60,7 @@ declare namespace Models.Efficiency {
     completed: number
     start_time: string
     end_time?: string
+    is_current: boolean
   }
   export interface WorkChart {
     time: string
