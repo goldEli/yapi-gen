@@ -526,6 +526,14 @@ const DndKitTable = (props: any) => {
     }
   }
 
+  // 判断当前进行中的冲刺是否只有一条，只有一条的话拖走前弹出提示窗口
+  const haveOnlyOne = (item: any) => {
+    if (item?.status === 1 && item?.stories?.length === 1) {
+      return true
+    }
+    return false
+  }
+
   // 拖动事务放下后的处理
   const handleDragEnd = (result: DropResult) => {
     if (result.destination?.droppableId === result.source.droppableId) {
@@ -581,8 +589,9 @@ const DndKitTable = (props: any) => {
       })
       // 判断是否超出冲刺时间范围
       if (
-        getIsExceedTimeRange(item) &&
-        Number(result.destination?.droppableId) !== 0
+        (getIsExceedTimeRange(item) &&
+          Number(result.destination?.droppableId) !== 0) ||
+        haveOnlyOne(sourceList)
       ) {
         open({
           title: '移动事务',
