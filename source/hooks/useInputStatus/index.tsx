@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 
 const useInputStatus = () => {
   const [isInputFocused, setIsInputFocused] = useState(false)
+  console.log(isInputFocused, '状态')
 
   useEffect(() => {
-    const handleFocus = () => {
+    const handleFocus = (e: any) => {
       setIsInputFocused(true)
     }
 
@@ -13,13 +14,13 @@ const useInputStatus = () => {
     }
 
     // 监听全局的输入焦点事件
-    document.addEventListener('focus', handleFocus)
-    document.addEventListener('blur', handleBlur)
+    document.addEventListener('focusin', handleFocus)
+    document.addEventListener('focusout', handleBlur)
 
     return () => {
       // 在组件卸载时移除事件监听器
-      document.removeEventListener('focus', handleFocus)
-      document.removeEventListener('blur', handleBlur)
+      document.removeEventListener('focusin', handleFocus)
+      document.removeEventListener('focusout', handleBlur)
     }
   }, [])
 
