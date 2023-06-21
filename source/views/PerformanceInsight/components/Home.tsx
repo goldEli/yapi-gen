@@ -154,7 +154,12 @@ const Home = () => {
   const [loading, setLoading] = useState(false)
   const [viewTitle, setViewTitle] = useState('')
   const [workDataList, setWorkDataList] =
-    useState<API.Sprint.GetStatisticsTotal.Result>()
+    useState<API.Sprint.GetStatisticsTotal.Result>({
+      end_time: '',
+      start_time: '',
+      work: [],
+      defect: [],
+    })
   const [optionVal, setOptionVal] = useState<number>(0)
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ViewItem>()
@@ -632,7 +637,7 @@ const Home = () => {
           homeType={homeType}
           data={workDataList?.work || []}
           title={homeType === 'all' ? '现状' : '工作项现状'}
-          time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
+          time={workDataList?.start_time + ' ~ ' + workDataList.end_time}
           num={1}
         />
         <div style={{ margin: '32px 0' }}>
