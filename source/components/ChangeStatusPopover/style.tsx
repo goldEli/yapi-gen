@@ -97,6 +97,11 @@ export const ExcessiveProvider = styled.div`
     top: -26px;
     color: var(--neutral-n3);
     font-size: 12px;
+    width: 80%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: center;
   }
 `
 

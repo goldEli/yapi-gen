@@ -178,7 +178,12 @@ const IterationTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { editId: item.id, projectId: item.project_id, type: 1 },
+        params: {
+          editId: item.id,
+          projectId: item.project_id,
+          type: 1,
+          title: '编辑需求',
+        },
       }),
     )
   }
@@ -202,6 +207,7 @@ const IterationTable = (props: Props) => {
           iterateId: props.iterateId,
           categoryId: item.categoryId,
           type: 1,
+          title: '创建子需求',
         },
       }),
     )
@@ -371,7 +377,12 @@ const IterationTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { projectId, iterateId: props.iterateId, type: 1 },
+        params: {
+          projectId,
+          iterateId: props.iterateId,
+          type: 1,
+          title: '创建需求',
+        },
       }),
     )
   }

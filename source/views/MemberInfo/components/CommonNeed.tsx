@@ -110,6 +110,7 @@ const MoreWrap = (props: MoreWrapProps) => {
 
   // 点击编辑
   const onEditChange = (item: any) => {
+    console.log(item, '=121212')
     setIsMoreVisible(false)
     dispatch(
       setAddWorkItemModal({
@@ -118,6 +119,12 @@ const MoreWrap = (props: MoreWrapProps) => {
           editId: item.id,
           projectId: item.project_id,
           type: item.work_type,
+          title:
+            item.project_type === 1
+              ? item.is_bug === 1
+                ? '编辑缺陷'
+                : '编辑需求'
+              : '编辑事务',
         },
       }),
     )
@@ -141,6 +148,12 @@ const MoreWrap = (props: MoreWrapProps) => {
           parentId: item.id,
           categoryId: item.categoryId,
           type: item.work_type,
+          title:
+            item.project_type === 1
+              ? item.is_bug === 1
+                ? '创建缺陷'
+                : '创建需求'
+              : '创建事务',
         },
       }),
     )

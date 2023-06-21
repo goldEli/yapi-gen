@@ -358,7 +358,10 @@ const HeaderRight = () => {
           <ChangeItem
             key={i.key}
             height={40}
-            onClick={() => onCreate(i.key)}
+            onClick={(e: any) => {
+              e.stopPropagation()
+              onCreate(i.key)
+            }}
             hidden={!i.isPermission}
           >
             <Space size={8}>

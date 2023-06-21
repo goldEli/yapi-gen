@@ -28,6 +28,7 @@ import {
 } from './style'
 import { unionBy } from 'lodash'
 import { useTranslation } from 'react-i18next'
+import { getProjectList, getProjectMember } from '@/services/project'
 
 type ChooseAddType = 1 | 2 | 3 | undefined | 4 | null
 
@@ -44,6 +45,8 @@ interface AddDepartmentModalProps {
   onClose(): void
   onConfirm(list: MemberItem[]): void
   type: ChooseAddType
+  projectId?: number
+  users?: number[]
 }
 
 const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
@@ -254,7 +257,16 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
     setCheckedList(resultList)
     setCheckedKeys(resultList.map((i: any) => i.id))
   }
-
+  const getProjectPersonData = async () => {
+    const res = await getProjectMember({
+      all: true,
+      projectId: props.projectId,
+    })
+    setCheckedList(
+      res.filter((el: { id: number }) => props.users?.includes(el.id)),
+    )
+    setDataList(res)
+  }
   useEffect(() => {
     if (props.isVisible) {
       switch (props.type) {
@@ -264,10 +276,11 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
         case 3:
           getTeamList()
           break
+        case 2:
+          getProjectPersonData()
       }
     }
   }, [props.isVisible])
-
   return (
     <CommonModal
       isVisible={props.isVisible}
@@ -358,6 +371,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
                     value: 'id',
                   }}
                 />
+                {checkedKeys}
                 <TreeStyle
                   multiple
                   showIcon
@@ -403,13 +417,15 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
               checkedList.map((i: MemberItem) => (
                 <ListItem key={i.id}>
                   {props.type === 2 && (
-                    <>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <CommonUserAvatar avatar={i.avatar} fontSize={14} />
-                      <div className="name">{i.name}</div>
-                    </>
+                      <div className="name" style={{ marginLeft: '8px' }}>
+                        {i.name}
+                      </div>
+                    </div>
                   )}
-                  <div className="otherType">
-                    {props.type !== 2 && (
+                  {props.type !== 2 && (
+                    <div className="otherType">
                       <IconWrap
                         className={
                           props.type === 3 ? 'teamIcon' : 'departmentIcon '
@@ -419,9 +435,10 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
                           type={props.type === 3 ? 'team-2' : 'branch'}
                         />
                       </IconWrap>
-                    )}
-                    <span className="name">{i.name}</span>
-                  </div>
+
+                      <span className="name">{i.name}</span>
+                    </div>
+                  )}
                   <IconFont
                     onClick={() => onDeleteItem(i)}
                     className="closeIcon"

@@ -153,6 +153,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
                           editId: k.id,
                           projectId: k.project_id,
                           type: 3,
+                          title: '编辑事务',
                         },
                       }),
                     )
@@ -199,6 +200,8 @@ export const LatelyLongStoryMenu = (props: Props) => {
                   visible: true,
                   params: {
                     type: 3,
+                    noDataCreate: true,
+                    title: '创建事务',
                   },
                 }),
               )

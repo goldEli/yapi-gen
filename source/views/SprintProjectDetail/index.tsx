@@ -481,7 +481,9 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         </div>
 
         <ButtonGroup size={16}>
-          <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          {changeIds.length > 0 && (
+            <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          )}
           <ChangeIconGroup>
             {currentIndex > 0 && (
               <UpWrap

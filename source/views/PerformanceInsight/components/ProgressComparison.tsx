@@ -466,11 +466,7 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'repeat_open',
       title: getTitleTips('缺陷重开', '当期重开缺陷/当期总缺陷*100%'),
       render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
-            {text}
-          </RowText>
-        )
+        return <RowText>{text}</RowText>
       },
     },
     {
@@ -478,7 +474,7 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'repeat_open_rate',
       render: (text: string, record: any) => {
         return (
-          <RowText onClick={e => openDetail(e, record, 'repeat_open_rate')}>
+          <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
             {text}%
           </RowText>
         )
@@ -489,9 +485,7 @@ const ProgressComparison = (props: Props) => {
       title: getTitleTips('缺陷存量', '当期未修复缺陷'),
       render: (text: string, record: any) => {
         return (
-          <RowText onClick={e => openDetail(e, record, 'stock_count')}>
-            {text}
-          </RowText>
+          <RowText onClick={e => openDetail(e, record, 'risk')}>{text}</RowText>
         )
       },
     },
@@ -696,6 +690,10 @@ const ProgressComparison = (props: Props) => {
     const parmas = {
       user_id: row.id,
       type: str,
+      project_ids:
+        selectProjectIds.length >= 1
+          ? selectProjectIds.join(',')
+          : props.projectId + '',
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
         : '',

@@ -246,7 +246,12 @@ const ChildDemand = (props: ChildDemandProps) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { editId: item.id, projectId: item.project_id, type: 1 },
+        params: {
+          editId: item.id,
+          projectId: item.project_id,
+          type: 1,
+          title: '编辑需求',
+        },
       }),
     )
   }
@@ -268,6 +273,7 @@ const ChildDemand = (props: ChildDemandProps) => {
           parentId: item.id,
           categoryId: item.categoryId ?? item.category,
           type: 1,
+          title: '创建子需求',
         },
       }),
     )

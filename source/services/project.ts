@@ -261,6 +261,7 @@ export const addProject: any = async (params: any) => {
     leader_id: params?.leader_id,
     model_type: params?.model_type,
     project_type: params?.project_type,
+    clone_project_id: params?.clone_project_id,
   })
   if (res.code === 0) {
     getMessage({ msg: t('common.createSuccess') as string, type: 'success' })

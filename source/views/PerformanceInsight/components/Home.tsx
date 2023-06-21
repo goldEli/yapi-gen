@@ -352,7 +352,9 @@ const Home = () => {
   const getWorkList = async () => {
     setLoading(true)
     const res = await getStatisticsTotal({
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -381,7 +383,9 @@ const Home = () => {
   // 新增工作top10对比第一个图表
   const getContrastNewWork = async (str: string) => {
     const res = await contrastNewWork({
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -416,7 +420,9 @@ const Home = () => {
   const getCompletionRateChart = async (str: string) => {
     const res = await getCompletionRate({
       sort: str,
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -449,7 +455,9 @@ const Home = () => {
   // 阶段缺陷占比第6个图表
   const getDefectRatioChart = async (str: string) => {
     const res = await getDefectRatio({
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -482,7 +490,9 @@ const Home = () => {
   // 2,3,5图表集合
   const getStatisticsOther = async () => {
     const res = await statisticsOther({
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -505,6 +515,7 @@ const Home = () => {
           ? 'one_month'
           : '',
     })
+    // console.log(res.work_completion_period, 'res.work_completion_period')
     setCharts2({
       time: `${res.work_completion_period.start_time} ~ ${res.work_completion_period.end_time}`,
       yData: res.work_completion_period.list.map(el => el.start_time),
