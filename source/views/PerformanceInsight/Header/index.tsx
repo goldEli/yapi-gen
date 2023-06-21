@@ -136,12 +136,12 @@ const Iteration = (props: Props) => {
     iterateApi,
     projectApi,
   ])
-
   const getIterateApi = async () => {
     const res: any = await recentCreateData({
       project_id: projectId,
       resource_type: props.homeType === 'iteration' ? 1 : 2,
     })
+    console.log(res, 'rew')
     setIterateApi(res)
   }
   const getProjectApi = async () => {
