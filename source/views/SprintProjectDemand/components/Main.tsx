@@ -319,6 +319,10 @@ const Main = (props: any) => {
     } else if (event.dataTransfer.getData('DragItem')) {
       dragItem = JSON.parse(event.dataTransfer.getData('DragItem'))
     }
+    // 拖拽被加进去的不要
+    if (!dragItem.title || !dragItem.storyId) {
+      return
+    }
     dragItem.isFold = state
     const filterDataF = getCategoryConfigF.filter(
       (el: any) => el.storyId !== dragItem.storyId,

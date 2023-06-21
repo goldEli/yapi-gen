@@ -17,6 +17,7 @@ import {
   TagWrap,
 } from './style'
 import { addInfoFlaw, deleteInfoFlaw } from '@/services/flaw'
+import { getProjectInfoValuesStore } from '@store/project/project.thunk'
 
 interface TagProps {
   tap?(value: any): void
@@ -32,6 +33,7 @@ interface TagProps {
 
 const TagBox = (props: TagProps) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const { projectInfoValues } = useSelector(store => store.project)
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
@@ -155,6 +157,7 @@ interface Props {
 
 const FlawTag = (props: Props) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -202,6 +205,7 @@ const FlawTag = (props: Props) => {
           targetId: [{ name: newTag, color: value }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
+        dispatch(getProjectInfoValuesStore({ projectId }))
         props.onUpdate()
         setNewTag('')
         setIsChooseColor(false)
