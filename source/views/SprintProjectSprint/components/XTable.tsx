@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { SortableItem } from './SortableItem'
 import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
@@ -167,6 +167,8 @@ const XTable: React.FC<XTableProps> = props => {
     }
   }
 
+  const memoizedCallback = useCallback(open, [])
+
   const getSprintButton = (status: number) => {
     switch (status) {
       case 4:
@@ -331,7 +333,7 @@ const XTable: React.FC<XTableProps> = props => {
               )
             }}
           >
-            <span>新事物</span>
+            <span>新事务</span>
           </CommonButton>
         )}
         <Droppable key={data.id} droppableId={String(data.id)}>

@@ -104,6 +104,11 @@ const Iteration = (props: Props) => {
       }),
     )
   }
+  useEffect(() => {
+    props.homeType === 'iteration' || props.homeType === 'sprint'
+      ? getIterateApi()
+      : getProjectApi()
+  }, [props.homeType])
   // 这两个是监听传过来的数组id，一开始展示10条，包含的id没在里面的情况
   useEffect(() => {
     // 展示的tabs不同
@@ -124,12 +129,14 @@ const Iteration = (props: Props) => {
       setTabsActive(0)
       setIterateIds([])
     }
-  }, [props.iterateViewIds, props.homeType, props.defalutConfig])
-  useEffect(() => {
-    props.homeType === 'iteration' || props.homeType === 'sprint'
-      ? getIterateApi()
-      : getProjectApi()
-  }, [props.homeType])
+  }, [
+    props.iterateViewIds,
+    props.homeType,
+    props.defalutConfig,
+    iterateApi,
+    projectApi,
+  ])
+
   const getIterateApi = async () => {
     const res: any = await recentCreateData({
       project_id: projectId,
