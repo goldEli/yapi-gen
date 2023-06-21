@@ -18,8 +18,8 @@ import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal } from '@store/project'
 import CompleteSprintModal from './CompleteSprintModal'
 import { setSprintRefresh } from '@store/sprint'
-import useShortcutC from '@/hooks/useShortcutC'
 import CollapseCustom from './CollapseCustom'
+import { CloseWrap } from '@/components/StyleCommon'
 
 interface XTableProps {
   data: any
@@ -221,7 +221,7 @@ const XTable: React.FC<XTableProps> = props => {
   return (
     <>
       <CollapseCustom
-        isExpand={true}
+        isExpand
         expandIcon={
           <IconFont
             style={{
@@ -242,7 +242,7 @@ const XTable: React.FC<XTableProps> = props => {
         }
         header={
           <Header>
-            <div>
+            <div style={{ display: 'flex' }}>
               <span className="title">{data.name}</span>
               <span className="date">
                 {`${data?.start_at ? data.start_at : ''}${
@@ -257,37 +257,45 @@ const XTable: React.FC<XTableProps> = props => {
                 ? null
                 : !isCanEditSprint && (
                     <>
-                      <Tooltip title="编辑">
-                        <IconFont
-                          onClick={() => {
-                            setSprintModal({
-                              visible: true,
-                              type: 'edit',
-                            })
-                          }}
-                          style={{
-                            fontSize: 16,
-                            color: 'var(--neutral-n3)',
-                            marginRight: 16,
-                          }}
-                          type="edit"
-                        />
+                      <Tooltip title={data.status === 4 ? '编辑' : '更新'}>
+                        <CloseWrap
+                          width={24}
+                          height={24}
+                          style={{ marginRight: 12 }}
+                        >
+                          <IconFont
+                            onClick={() => {
+                              setSprintModal({
+                                visible: true,
+                                type: data.status === 4 ? 'edit' : 'update',
+                              })
+                            }}
+                            style={{
+                              fontSize: 16,
+                              color: 'var(--neutral-n3)',
+                            }}
+                            type="edit"
+                          />
+                        </CloseWrap>
                       </Tooltip>
+
                       <Tooltip title="删除">
-                        <IconFont
-                          onClick={() => {
-                            open({
-                              title: '删除冲刺',
-                              text: `确认要删除【${data.name}】的冲刺吗？`,
-                              onConfirm: () => deleteSprint(data.id),
-                            })
-                          }}
-                          style={{
-                            fontSize: 16,
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="delete"
-                        />
+                        <CloseWrap width={24} height={24}>
+                          <IconFont
+                            onClick={() => {
+                              open({
+                                title: '删除冲刺',
+                                text: `确认要删除【${data.name}】的冲刺吗？`,
+                                onConfirm: () => deleteSprint(data.id),
+                              })
+                            }}
+                            style={{
+                              fontSize: 16,
+                              color: 'var(--neutral-n3)',
+                            }}
+                            type="delete"
+                          />
+                        </CloseWrap>
                       </Tooltip>
                     </>
                   )}
