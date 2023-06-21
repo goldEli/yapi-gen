@@ -208,6 +208,7 @@ const DemandDetailDrawer = () => {
           editId: item.id,
           projectId: drawerInfo.projectId,
           type: 1,
+          title: '编辑需求',
         },
       }),
     )
@@ -232,6 +233,7 @@ const DemandDetailDrawer = () => {
           parentId: item.id,
           categoryId: item.categoryId,
           type: 1,
+          title: '创建子需求',
         },
       }),
     )

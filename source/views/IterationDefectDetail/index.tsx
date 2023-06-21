@@ -158,6 +158,7 @@ const IterationDefectDetail = () => {
           editId: flawInfo.id,
           projectId: flawInfo.projectId,
           type: 2,
+          title: '编辑缺陷',
         },
       }),
     )
@@ -476,7 +477,9 @@ const IterationDefectDetail = () => {
       <DetailTop>
         <MyBreadcrumb />
         <ButtonGroup size={16}>
-          <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          {changeIds.length > 0 && (
+            <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          )}
           <ChangeIconGroup>
             {currentIndex > 0 && (
               <UpWrap

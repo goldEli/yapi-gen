@@ -89,7 +89,7 @@ const AddQuickSprint = () => {
         <Form.Item label="创建以下事务的子事务">
           <ParentWrap>
             <img src={params?.category_attachment} alt="" />
-            <span>{params?.categoryName}</span>
+            <span>{params?.category}</span>
           </ParentWrap>
         </Form.Item>
         <Form.Item

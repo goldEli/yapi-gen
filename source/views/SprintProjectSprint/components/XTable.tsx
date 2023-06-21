@@ -326,6 +326,7 @@ const XTable: React.FC<XTableProps> = props => {
                   params: {
                     type: 4,
                     iterateId: data.id === 0 ? 0 : data.id,
+                    title: '创建事务',
                   },
                 }),
               )

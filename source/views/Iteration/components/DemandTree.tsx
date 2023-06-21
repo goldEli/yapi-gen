@@ -219,7 +219,7 @@ const DemandTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { projectId, editId: item.id, type: 1 },
+        params: { projectId, editId: item.id, type: 1, title: '编辑需求' },
       }),
     )
   }
@@ -246,6 +246,7 @@ const DemandTree = (props: Props) => {
           categoryId: item.categoryId,
           iterateId: item.iterateId,
           type: 1,
+          title: '创建子需求',
         },
       }),
     )
@@ -593,7 +594,12 @@ const DemandTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { projectId, iterateId: props.iterateId, type: 1 },
+        params: {
+          projectId,
+          iterateId: props.iterateId,
+          type: 1,
+          title: '创建需求',
+        },
       }),
     )
   }

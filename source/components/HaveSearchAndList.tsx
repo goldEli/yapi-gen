@@ -89,25 +89,21 @@ interface DemandProps {
   // 是否是操作父需求
   isOperationParent?: boolean
   placeholder: string
+  detail: any
 }
 
 const ChooseItems = (props: DemandProps) => {
   const [dataList, setDataList] = useState<any>([])
   const [projectList, setProjectList] = useState<any>([])
   const inputRefDom = useRef<HTMLInputElement>(null)
-  const { demandInfo } = useSelector(store => store.demand)
 
   const getList = async () => {
     const result = await getParentList({
       projectId: props.projectId,
-      id: demandInfo?.id,
-      categoryId: demandInfo.categoryId,
+      id: props.detail?.id,
+      categoryId: props.detail.categoryId ?? props.detail.category,
     })
-    const arr = result.map((i: any) => ({
-      label: i.name,
-      value: i.id,
-    }))
-    setDataList(arr)
+    setDataList(result)
   }
 
   const getProjectData = async () => {
@@ -141,22 +137,22 @@ const ChooseItems = (props: DemandProps) => {
       {props?.isOperationParent && (
         <MaxWrap>
           {dataList
-            ?.filter((item: any) => item.value !== demandInfo?.id)
+            ?.filter((item: any) => item.value !== props.detail?.id)
             ?.filter((k: any) => String(k.label).includes(value))
             ?.map((i: any) => (
               <DemandItem
                 onClick={() => props.tap?.(i)}
-                isActive={i.value === demandInfo.parentId}
+                isActive={i.value === props.detail?.id.parentId}
                 key={i.value}
               >
                 {i.label}
-                {i.value === demandInfo.parentId && (
+                {i.value === props.detail?.id.parentId && (
                   <IconfontWrap type="check" />
                 )}
               </DemandItem>
             ))}
           {dataList
-            ?.filter((item: any) => item.value !== demandInfo?.id)
+            ?.filter((item: any) => item.value !== props.detail?.id?.id)
             ?.filter((k: any) => String(k.label).includes(value))?.length <=
             0 && <NoData size="mini" />}
         </MaxWrap>
@@ -202,6 +198,7 @@ interface Props {
   //单独区分项目切换
   isProjectChange?: boolean
   onUpdate(): void
+  detail: any
 }
 
 const HaveSearchAndList = (props: Props) => {
@@ -258,6 +255,7 @@ const HaveSearchAndList = (props: Props) => {
             projectId={props?.projectId}
             isOperationParent={props?.isOperationParent}
             placeholder={props.placeholder}
+            detail={props.detail}
           />
         )
       }

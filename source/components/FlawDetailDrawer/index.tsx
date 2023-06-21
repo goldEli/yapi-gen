@@ -285,6 +285,7 @@ const FlawDetailDrawer = () => {
           editId: drawerInfo.id,
           projectId: drawerInfo.projectId,
           type: 2,
+          title: '编辑缺陷',
         },
       }),
     )

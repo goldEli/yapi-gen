@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, getProjectIdByUrl } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { Popover, Space, Tooltip } from 'antd'
@@ -224,7 +224,7 @@ const Operation = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 7 },
+        params: { noDataCreate: true, type: 7, title: '创建事务' },
       }),
     )
   }
@@ -419,7 +419,12 @@ const Operation = (props: Props) => {
                 dispatch(
                   setAddWorkItemModal({
                     visible: true,
-                    params: { noDataCreate: true, type: 7 },
+                    params: {
+                      type: 7,
+                      title: '创建事务',
+                      projectId: getProjectIdByUrl(),
+                      noDataCreate: true,
+                    },
                   }),
                 )
               }
