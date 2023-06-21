@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { SortableItem } from './SortableItem'
 import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
 import ResizeTable from './ResizeTable'
 import NoData from '@/components/NoData'
-import { Collapse, Tooltip } from 'antd'
+import { Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
 import CreateSprintModal from './CreateSprintModal'
@@ -135,17 +135,17 @@ const XTable: React.FC<XTableProps> = props => {
     projectInfo?.projectPermissions,
     'b/sprint',
   )
-  const handleShortcutEvent = () => {
-    console.log('C键被按下')
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: { type: 4, iterateId: data.id },
-      }),
-    )
-  }
+  // const handleShortcutEvent = () => {
+  //   console.log('C键被按下')
+  //   dispatch(
+  //     setAddWorkItemModal({
+  //       visible: true,
+  //       params: { type: 4, iterateId: data.id },
+  //     }),
+  //   )
+  // }
 
-  useShortcutC(handleShortcutEvent)
+  // useShortcutC(handleShortcutEvent)
   // 删除冲刺
   const deleteSprint = async (id: number) => {
     try {
@@ -166,8 +166,6 @@ const XTable: React.FC<XTableProps> = props => {
       console.log(error)
     }
   }
-
-  const memoizedCallback = useCallback(open, [])
 
   const getSprintButton = (status: number) => {
     switch (status) {

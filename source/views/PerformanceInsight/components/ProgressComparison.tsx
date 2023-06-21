@@ -215,29 +215,29 @@ const ProgressComparison = (props: Props) => {
       title: '进行中|已完成',
       dataIndex: 'work_progress',
     },
-    {
-      title: '工作进度',
-      dataIndex: 'work_progress',
-      render: (text: string, record: any) => {
-        const num = Number(text?.split('|')?.[0])
-        const completeNum = Number(text?.split('|')?.[1])
-        const total = num + completeNum
-        return (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            {text
-              ? completeNum === 0
-                ? '0%'
-                : `${Number((completeNum / total) * 100).toFixed(0)}%`
-              : '--'}
-          </div>
-        )
-      },
-    },
+    // {
+    //   title: '工作进度',
+    //   dataIndex: 'work_progress',
+    //   render: (text: string, record: any) => {
+    //     const num = Number(text?.split('|')?.[0])
+    //     const completeNum = Number(text?.split('|')?.[1])
+    //     const total = num + completeNum
+    //     return (
+    //       <div
+    //         style={{
+    //           display: 'flex',
+    //           alignItems: 'center',
+    //         }}
+    //       >
+    //         {text
+    //           ? completeNum === 0
+    //             ? '0%'
+    //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
+    //           : '--'}
+    //       </div>
+    //     )
+    //   },
+    // },
     {
       dataIndex: 'repeat_rate',
       title: getTitleTips('工作重复率', '审批不通过次数/全部审批次数*100%'),
@@ -339,29 +339,29 @@ const ProgressComparison = (props: Props) => {
       title: '进行中|已完成',
       dataIndex: 'work_progress',
     },
-    {
-      title: '工作进度',
-      dataIndex: 'work_progress',
-      render: (text: string, record: any) => {
-        const num = Number(text?.split('|')?.[0])
-        const completeNum = Number(text?.split('|')?.[1])
-        const total = num + completeNum
-        return (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            {text
-              ? completeNum === 0
-                ? '0%'
-                : `${Number((completeNum / total) * 100).toFixed(0)}%`
-              : '--'}
-          </div>
-        )
-      },
-    },
+    // {
+    //   title: '工作进度',
+    //   dataIndex: 'work_progress',
+    //   render: (text: string, record: any) => {
+    //     const num = Number(text?.split('|')?.[0])
+    //     const completeNum = Number(text?.split('|')?.[1])
+    //     const total = num + completeNum
+    //     return (
+    //       <div
+    //         style={{
+    //           display: 'flex',
+    //           alignItems: 'center',
+    //         }}
+    //       >
+    //         {text
+    //           ? completeNum === 0
+    //             ? '0%'
+    //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
+    //           : '--'}
+    //       </div>
+    //     )
+    //   },
+    // },
     {
       dataIndex: 'repeat_rate',
       title: getTitleTips('总工作重复率', '审批不通过次数/全部审批次数*100%'),

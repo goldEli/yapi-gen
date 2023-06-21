@@ -33,6 +33,7 @@ import useKeyPress from '@/hooks/useKeyPress'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
 import { setAddWorkItemModal } from '@store/project'
+import { setCheckList } from '@store/sprint'
 
 const SearchBox = styled.div`
   display: flex;
@@ -692,6 +693,8 @@ const SprintProjectSprint: React.FC = () => {
                     user_id: [],
                   },
                 })
+                dispatch(setCheckList(checkList.map(() => true)))
+                setCheckCommission(false)
               }}
             >
               {t('common.clearForm')}
