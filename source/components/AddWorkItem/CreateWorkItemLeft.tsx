@@ -21,6 +21,7 @@ import { uploadFileToKey } from '@/services/cos'
 import DemandTag from '../TagComponent/DemandTag'
 import { getParentList } from '@store/project/project.thunk'
 import CategoryDropdown from '../CategoryDropdown'
+import { AFFAIRS_CHILD_TYPE } from '@/constants'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -433,7 +434,7 @@ const CreateDemandLeft = (props: Props) => {
           )
         }
         let resultCategory: any = {}
-        // 如果是子需求的话，继承父级的需求类别
+        // 如果是创建子需求的话
         if (params?.isChild) {
           // 判断父需求类别是否被关闭，是则取列表第一条
           const isExistence = resultCategoryList?.filter(
@@ -491,15 +492,12 @@ const CreateDemandLeft = (props: Props) => {
           (j: any) => j.work_type === params?.type,
         )[0]
         setCategoryObj(resultObj)
-        // return
       }
       if (params?.type === 2) {
         const resultObj = resultCategoryList?.filter(
           (j: any) => j.work_type === params?.type,
         )[0]
         setCategoryObj(resultObj)
-
-        // return
       }
     }
   }, [props.projectId, props.allCategoryList])
@@ -699,7 +697,6 @@ const CreateDemandLeft = (props: Props) => {
               projectId={props.projectId as number}
               value={categoryObj?.id}
               onChangeCallBack={(val: number) => {
-                console.log('data---', val)
                 //
                 onSelectCategory(val)
               }}

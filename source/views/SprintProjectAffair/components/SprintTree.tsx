@@ -19,7 +19,11 @@ import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import PaginationBox from '@/components/TablePagination'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
-import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
+import {
+  setAddQuickSprintModal,
+  setAddWorkItemModal,
+  setFilterParamsModal,
+} from '@store/project'
 import { getMessage } from '@/components/Message'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
@@ -167,20 +171,7 @@ const SprintTree = (props: Props) => {
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
     setIsShowMore(false)
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: {
-          projectId,
-          isChild: true,
-          parentId: item.id,
-          categoryId: item.categoryId,
-          iterateId: item.iterateId,
-          type: item.work_type,
-          title: '创建子事务',
-        },
-      }),
-    )
+    dispatch(setAddQuickSprintModal({ visible: true, params: item }))
   }
 
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除

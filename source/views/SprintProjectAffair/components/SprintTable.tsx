@@ -14,7 +14,11 @@ import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
-import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
+import {
+  setAddQuickSprintModal,
+  setAddWorkItemModal,
+  setFilterParamsModal,
+} from '@store/project'
 import PaginationBox from '@/components/TablePagination'
 import { saveSort } from '@store/view'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
@@ -147,19 +151,7 @@ const SprintTable = (props: Props) => {
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setIsShowMore(false)
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: {
-          projectId: item.project_id,
-          isChild: true,
-          parentId: item.id,
-          categoryId: item.categoryId,
-          type: item.work_type,
-          title: '创建子事务',
-        },
-      }),
-    )
+    dispatch(setAddQuickSprintModal({ visible: true, params: item }))
   }
 
   const columns = useDynamicColumns({

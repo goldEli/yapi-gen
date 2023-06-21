@@ -92,8 +92,6 @@ const CategoryDropdown = (props: IProps) => {
     [],
   )
 
-  console.log(categoryList, '=categoryListcategoryListcategoryList')
-
   const { getTypeCategory } = useCategoryList()
   const LabelElement = (props: {
     url: string | undefined
