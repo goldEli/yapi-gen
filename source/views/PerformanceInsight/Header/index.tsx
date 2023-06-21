@@ -129,19 +129,12 @@ const Iteration = (props: Props) => {
       setTabsActive(0)
       setIterateIds([])
     }
-  }, [
-    props.iterateViewIds,
-    props.homeType,
-    props.defalutConfig,
-    iterateApi,
-    projectApi,
-  ])
+  }, [props.iterateViewIds, props.homeType, props.defalutConfig, iterateApi])
   const getIterateApi = async () => {
     const res: any = await recentCreateData({
       project_id: projectId,
       resource_type: props.homeType === 'iteration' ? 1 : 2,
     })
-    console.log(res, 'rew')
     setIterateApi(res)
   }
   const getProjectApi = async () => {
@@ -161,7 +154,7 @@ const Iteration = (props: Props) => {
       // 回显的项目id
       setProjectIds([])
     }
-  }, [props.projectViewIds, props.homeType, props.defalutConfig])
+  }, [props.projectViewIds, props.homeType, props.defalutConfig, projectApi])
   const getIterateIdsList = async () => {
     const filterVal = iterateApi
       ?.filter((el: { id: number }) => props.iterateViewIds.includes(el.id))
