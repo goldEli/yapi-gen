@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { SortableItem } from './SortableItem'
 import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
 import ResizeTable from './ResizeTable'
 import NoData from '@/components/NoData'
-import { Collapse, Tooltip } from 'antd'
+import { Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
 import CreateSprintModal from './CreateSprintModal'
@@ -166,8 +166,6 @@ const XTable: React.FC<XTableProps> = props => {
       console.log(error)
     }
   }
-
-  const memoizedCallback = useCallback(open, [])
 
   const getSprintButton = (status: number) => {
     switch (status) {

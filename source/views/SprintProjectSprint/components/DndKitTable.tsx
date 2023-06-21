@@ -482,7 +482,7 @@ const DndKitTable = (props: any) => {
                 }
               />
             </ChangeStatusPopover>
-            {getIsExceedTimeRange(temp) ? (
+            {getIsExceedTimeRange(temp) && record?.iterate_id !== 0 ? (
               <Tooltip placement="top" title="该事务超出冲刺时间范围">
                 <IconFont
                   style={{
@@ -580,7 +580,10 @@ const DndKitTable = (props: any) => {
         return k
       })
       // 判断是否超出冲刺时间范围
-      if (getIsExceedTimeRange(item)) {
+      if (
+        getIsExceedTimeRange(item) &&
+        Number(result.destination?.droppableId) !== 0
+      ) {
         open({
           title: '移动事务',
           children: (
