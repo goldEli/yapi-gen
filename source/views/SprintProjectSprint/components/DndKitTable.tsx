@@ -28,7 +28,6 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { setAddWorkItemModal } from '@store/project'
 import { getLongStory, moveStory, sortStory } from '@/services/sprint'
 import moment from 'moment'
-import { LatelyLongStoryMenu } from './LatelyLongStoryMenu'
 import ClickDropdown from './ClickDropdown'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 
@@ -626,7 +625,7 @@ const DndKitTable = (props: any) => {
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       {(props?.checkCommission
-        ? rightSprintList.filter((i: any) => i.id === -1)
+        ? rightSprintList.filter((i: any) => i.id === 0)
         : rightSprintList
       )?.map((item: any) => {
         return (

@@ -72,25 +72,32 @@ const TabItem = (props: any) => {
   return (
     <div>
       {data?.list?.map((item: any, idx: number) => (
-        <Item key={item.id}>
+        <Item
+          key={item.id}
+          onClick={() => {
+            const temp = [...checkList]
+            temp[idx] = !temp[idx]
+            dispatch(setCheckList(temp))
+          }}
+        >
           <div className="title">
             <span>{item.name}</span>
             <Checkbox
               checked={checkList[idx]}
-              onChange={e => {
-                const temp = [...checkList]
-                temp[idx] = e.target.checked
-                dispatch(setCheckList(temp))
-                // // 存储本地缓存 上次操作选中的
-                // localStorage.setItem(
-                //   encryptPhp(JSON.stringify({ id: userInfo.id })),
-                //   JSON.stringify({
-                //     checkList: temp,
-                //     activeKey,
-                //     currentFilter,
-                //   }),
-                // )
-              }}
+              // onChange={e => {
+              //   const temp = [...checkList]
+              //   temp[idx] = e.target.checked
+              //   dispatch(setCheckList(temp))
+              //   // // 存储本地缓存 上次操作选中的
+              //   // localStorage.setItem(
+              //   //   encryptPhp(JSON.stringify({ id: userInfo.id })),
+              //   //   JSON.stringify({
+              //   //     checkList: temp,
+              //   //     activeKey,
+              //   //     currentFilter,
+              //   //   }),
+              //   // )
+              // }}
             />
           </div>
           <div className="date">
