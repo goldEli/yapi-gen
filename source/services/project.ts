@@ -16,7 +16,6 @@ import { t } from 'i18next'
 import { getStaffListAll } from './staff'
 
 export const getProjectList: any = async (params: any) => {
-  console.log(params, 'params')
   const response: any = await http.get<any>('getProjectList', {
     search: {
       project_types: params.project_types,
