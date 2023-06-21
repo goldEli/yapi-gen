@@ -535,7 +535,10 @@ const DemandDetail = () => {
         <MyBreadcrumb />
 
         <ButtonGroup size={16}>
-          <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          {/* 分享不展示返回按钮 */}
+          {changeIds.length > 0 && (
+            <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          )}
           <ChangeIconGroup>
             {currentIndex > 0 && (
               <UpWrap
