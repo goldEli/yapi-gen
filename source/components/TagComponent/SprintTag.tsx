@@ -16,6 +16,7 @@ import {
   TagWrap,
 } from './style'
 import { addInfoAffairs, deleteInfoAffairs } from '@/services/affairs'
+import { getProjectInfoValuesStore } from '@store/project/project.thunk'
 
 interface TagProps {
   tap?(value: any): void
@@ -155,7 +156,7 @@ interface Props {
 
 const SprintTag = (props: Props) => {
   const [t] = useTranslation()
-  const { affairsInfo } = useSelector(store => store.affairs)
+  const dispatch = useDispatch()
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -203,6 +204,7 @@ const SprintTag = (props: Props) => {
           targetId: [{ name: newTag, color: value }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
+        dispatch(getProjectInfoValuesStore({ projectId }))
         props.onUpdate()
         setNewTag('')
         setIsChooseColor(false)

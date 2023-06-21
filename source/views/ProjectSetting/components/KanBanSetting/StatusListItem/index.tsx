@@ -5,7 +5,7 @@ import StateTag from '@/components/StateTag'
 import MoveIcon from '../MoveIcon'
 import { Draggable } from 'react-beautiful-dnd'
 import useI18n from '@/hooks/useI18n'
-
+import { Tooltip } from 'antd'
 interface StatusListItemProps {
   data: Model.KanbanConfig.Status
   index: number
@@ -60,7 +60,9 @@ const StatusListItem: React.FC<StatusListItemProps> = props => {
           >
             <StatusListItemLeft>
               <MoveIcon active={snapshot.isDragging} />
-              {!props.hiddenIcon && <ImageIcon src={data.attachment_path} />}
+              <Tooltip title={data.category_name}>
+                {!props.hiddenIcon && <ImageIcon src={data.attachment_path} />}
+              </Tooltip>
               {/* <Text bg={item.status_color}>{item.status_name}</Text> */}
               <StateTag
                 name={data.status_name}

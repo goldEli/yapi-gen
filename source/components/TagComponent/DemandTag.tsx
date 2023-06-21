@@ -22,6 +22,7 @@ import {
   TagItem,
   TagWrap,
 } from './style'
+import { getProjectInfoValuesStore } from '@store/project/project.thunk'
 
 interface TagProps {
   tap?(value: any): void
@@ -213,6 +214,7 @@ const DemandTag = (props: Props) => {
           targetId: [{ name: newTag, color: value }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
+        dispatch(getProjectInfoValuesStore({ projectId }))
         const result = await getDemandInfo({
           projectId,
           id: demandInfo?.id,

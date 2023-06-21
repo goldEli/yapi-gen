@@ -11,3 +11,12 @@ export const getParentList = createAsyncThunk(
     return res
   },
 )
+
+// 项目配置列表
+export const getProjectInfoValuesStore = createAsyncThunk(
+  `${name}/getProjectInfoValuesStore`,
+  async (params: any) => {
+    const res = await services.project.getProjectInfoValues(params)
+    return res
+  },
+)
