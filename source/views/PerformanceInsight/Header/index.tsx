@@ -23,6 +23,7 @@ import { getDate } from '../components/Date'
 import { recentCreateData } from '@/services/efficiency'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 interface Props {
   homeType: string
   viewDataList: Array<Models.Efficiency.ViewItem> | undefined
@@ -84,7 +85,9 @@ const Iteration = (props: Props) => {
   const [projectIds, setProjectIds] = useState<number[]>()
   const [iterateIds, setIterateIds] = useState<any>()
   const dispatch = useDispatch()
-  const { save, viewType } = useSelector(store => store.performanceInsight)
+  const { save, viewType, headerParmas } = useSelector(
+    store => store.performanceInsight,
+  )
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [iterateApi, setIterateApi] = useState<any>([])
@@ -356,6 +359,7 @@ const Iteration = (props: Props) => {
       }),
     )
   }
+  console.log(headerParmas)
   // 获取最小时间
   const minDate = (data: any) => {
     let mint: string = data.reduce(
@@ -531,9 +535,18 @@ const Iteration = (props: Props) => {
           />
         )}
       </Space>
-      <NewAddUserModalForTandD
+      {/* <NewAddUserModalForTandD
         title="添加成员"
         state={2}
+        isVisible={isVisible}
+        onConfirm={onConfirm}
+        onClose={() => setIsVisible(false)}
+      /> */}
+      {/* 项目走的 */}
+      <AddDepartmentOrTeamModal
+        users={headerParmas.users}
+        projectId={paramsData?.id}
+        type={2}
         isVisible={isVisible}
         onConfirm={onConfirm}
         onClose={() => setIsVisible(false)}
