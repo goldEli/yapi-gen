@@ -118,8 +118,6 @@ export const getStaffListAll: any = async (params: any) => {
     page: params.page,
     pagesize: params.pagesize,
   })
-  console.log(response)
-
   return response.data.map((i: any) => ({
     avatar: i.avatar,
     id: i.id,
