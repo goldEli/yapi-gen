@@ -19,6 +19,8 @@ import {
   HoverDiv,
   Tags,
 } from './style'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   type: string
@@ -26,28 +28,36 @@ type Props = {
   text: string
 }
 
-const TextOfIcon = (props: Props) => (
-  <Tooltip placement="bottom" title={props.text}>
-    <HoverDiv>
-      <IconFont
-        style={{
-          color: 'inherit',
-        }}
-        type={props.type}
-      />
-      <span
-        style={{
-          marginLeft: '5px',
-          color: 'inherit',
-        }}
-      >
-        {props.num}
-      </span>
-    </HoverDiv>
-  </Tooltip>
+const TextOfIcon = (props: any) => (
+  <div
+    onClick={(e: any) => {
+      e.stopPropagation()
+      props.changeRouter()
+    }}
+  >
+    <Tooltip placement="bottom" title={props.text}>
+      <HoverDiv>
+        <IconFont
+          style={{
+            color: 'inherit',
+          }}
+          type={props.type}
+        />
+        <span
+          style={{
+            marginLeft: '5px',
+            color: 'inherit',
+          }}
+        >
+          {props.num}
+        </span>
+      </HoverDiv>
+    </Tooltip>
+  </div>
 )
 const Index = (props: any) => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { userInfo } = useSelector(store => store.user)
   const isDel2 = (
@@ -65,12 +75,12 @@ const Index = (props: any) => {
     {
       type: 'demand',
       num: props.item.storyCount,
-      text: '事务数',
+      text: props.item.projectType === 1 ? '需求数' : '事务数',
     },
     {
       type: 'interation-2',
       num: props.item.iterateCount,
-      text: '冲刺数',
+      text: props.item.projectType === 1 ? '迭代数' : '冲刺数',
     },
   ]
 
@@ -124,6 +134,44 @@ const Index = (props: any) => {
         break
     }
   }
+  const onChangeRouter = (type: string) => {
+    console.log(type)
+    if (type === 'user-alone') {
+      const params = encryptPhp(
+        JSON.stringify({
+          type: 1,
+          id: props.item.id,
+        }),
+      )
+      navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+    } else if (type === 'demand') {
+      if (props.item.projectType === 1) {
+        const params = encryptPhp(
+          JSON.stringify({ id: props.item.id, type: 'iteration' }),
+        )
+        navigate(`/ProjectManagement/Demand?data=${params}`)
+      } else {
+        const params = encryptPhp(
+          JSON.stringify({ id: props.item.id, type: 'iteration' }),
+        )
+        navigate(`/SprintProjectManagement/Affair?data=${params}`)
+      }
+    } else if (type === 'interation-2') {
+      if (props.item.projectType === 1) {
+        const params = encryptPhp(
+          JSON.stringify({ id: props.item.id, type: 'iteration' }),
+        )
+        navigate(`/ProjectManagement/Iteration?data=${params}`)
+      } else {
+        const params = encryptPhp(
+          JSON.stringify({ id: props.item.id, type: 'iteration' }),
+        )
+        navigate(`/SprintProjectManagement/Sprint?data=${params}`)
+      }
+    }
+  }
+  console.log(props.item)
+
   return (
     <ProjectCard>
       <Image
@@ -172,6 +220,7 @@ const Index = (props: any) => {
           <ShowWrap>
             {arr.map((i: any) => (
               <TextOfIcon
+                changeRouter={() => onChangeRouter(i.type)}
                 key={i.type}
                 type={i.type}
                 text={i.text}
