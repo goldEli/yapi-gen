@@ -38,54 +38,57 @@ const customBox = css`
 const ChooseDate = (props: any) => {
   const { onChange, value, initNumber } = props
   const [params, setParams] = useState<any>({})
+  const today = new Date()
+  const tomorrow = new Date(today)
+  tomorrow.setDate(today.getDate() + 1)
 
   const getDay = (type: number, include: boolean) => {
     // 根据几周来计算结束日期
     switch (type) {
       case 1:
         if (include) {
-          return moment(new Date()).add(6, 'day')
+          return moment(tomorrow).add(6, 'day')
         }
-        if (moment(new Date()).day() === 0) {
-          return moment(new Date()).add(4, 'day')
+        if (moment(tomorrow).day() === 0) {
+          return moment(tomorrow).add(4, 'day')
         }
-        if (moment(new Date()).day() === 6) {
-          return moment(new Date()).add(5, 'day')
+        if (moment(tomorrow).day() === 6) {
+          return moment(tomorrow).add(5, 'day')
         }
-        return moment(new Date()).add(6, 'day')
+        return moment(tomorrow).add(6, 'day')
       case 2:
         if (include) {
-          return moment(new Date()).add(13, 'day')
+          return moment(tomorrow).add(13, 'day')
         }
-        if (moment(new Date()).day() === 0) {
-          return moment(new Date()).add(11, 'day')
+        if (moment(tomorrow).day() === 0) {
+          return moment(tomorrow).add(11, 'day')
         }
-        if (moment(new Date()).day() === 6) {
-          return moment(new Date()).add(12, 'day')
+        if (moment(tomorrow).day() === 6) {
+          return moment(tomorrow).add(12, 'day')
         }
-        return moment(new Date()).add(13, 'day')
+        return moment(tomorrow).add(13, 'day')
       case 3:
         if (include) {
-          return moment(new Date()).add(20, 'day')
+          return moment(tomorrow).add(20, 'day')
         }
-        if (moment(new Date()).day() === 0) {
-          return moment(new Date()).add(18, 'day')
+        if (moment(tomorrow).day() === 0) {
+          return moment(tomorrow).add(18, 'day')
         }
-        if (moment(new Date()).day() === 6) {
-          return moment(new Date()).add(19, 'day')
+        if (moment(tomorrow).day() === 6) {
+          return moment(tomorrow).add(19, 'day')
         }
-        return moment(new Date()).add(20, 'day')
+        return moment(tomorrow).add(20, 'day')
       case 4:
         if (include) {
-          return moment(new Date()).add(27, 'day')
+          return moment(tomorrow).add(27, 'day')
         }
-        if (moment(new Date()).day() === 0) {
-          return moment(new Date()).add(25, 'day')
+        if (moment(tomorrow).day() === 0) {
+          return moment(tomorrow).add(25, 'day')
         }
-        if (moment(new Date()).day() === 6) {
-          return moment(new Date()).add(26, 'day')
+        if (moment(tomorrow).day() === 6) {
+          return moment(tomorrow).add(26, 'day')
         }
-        return moment(new Date()).add(27, 'day')
+        return moment(tomorrow).add(27, 'day')
       default:
         return null
     }
@@ -98,7 +101,7 @@ const ChooseDate = (props: any) => {
         date:
           value.radio === 0
             ? value.date
-            : [moment(new Date()), getDay(value?.radio, value.radio)],
+            : [moment(tomorrow), getDay(value?.radio, value.radio)],
       }
       setParams(temp)
       if (initNumber.current === 0) {
@@ -120,12 +123,12 @@ const ChooseDate = (props: any) => {
             setParams({
               ...params,
               include: checked,
-              date: [moment(new Date()), getDay(params?.radio, checked)],
+              date: [moment(tomorrow), getDay(params?.radio, checked)],
             })
             onChange({
               ...params,
               include: checked,
-              date: [moment(new Date()), getDay(params?.radio, checked)],
+              date: [moment(tomorrow), getDay(params?.radio, checked)],
             })
           }}
         />
@@ -147,7 +150,7 @@ const ChooseDate = (props: any) => {
                 ...params,
                 radio: e.target.value,
                 date: [
-                  moment(new Date()),
+                  moment(tomorrow),
                   getDay(e.target.value, params.include),
                 ],
               })
@@ -155,7 +158,7 @@ const ChooseDate = (props: any) => {
                 ...params,
                 radio: e.target.value,
                 date: [
-                  moment(new Date()),
+                  moment(tomorrow),
                   getDay(e.target.value, params.include),
                 ],
               })

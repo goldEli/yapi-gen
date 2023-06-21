@@ -128,11 +128,14 @@ const CommonModal = (props: CommonModalProps) => {
                 type="primary"
                 loading={loading}
                 onClick={() => {
-                  if (props?.onConfirm && props?.onConfirm?.()?.finally) {
-                    setLoading(true)
-                    props?.onConfirm?.()?.finally(() => {
-                      setLoading(false)
-                    })
+                  if (props?.onConfirm) {
+                    const pm = props?.onConfirm?.()
+                    if (pm?.finally) {
+                      setLoading(true)
+                      pm?.finally(() => {
+                        setLoading(false)
+                      })
+                    }
                   }
                 }}
               >

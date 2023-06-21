@@ -145,6 +145,7 @@ const ProgressComparison = (props: Props) => {
           <RowText
             onClick={(event: any) => {
               event.stopPropagation()
+              dispatch(setVisiblePerson(false))
               dispatch(setVisibleWork(true))
               getDatail(record)
             }}
@@ -214,29 +215,29 @@ const ProgressComparison = (props: Props) => {
       title: '进行中|已完成',
       dataIndex: 'work_progress',
     },
-    {
-      title: '工作进度',
-      dataIndex: 'work_progress',
-      render: (text: string, record: any) => {
-        const num = Number(text?.split('|')?.[0])
-        const completeNum = Number(text?.split('|')?.[1])
-        const total = num + completeNum
-        return (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            {text
-              ? completeNum === 0
-                ? '0%'
-                : `${Number((completeNum / total) * 100).toFixed(0)}%`
-              : '--'}
-          </div>
-        )
-      },
-    },
+    // {
+    //   title: '工作进度',
+    //   dataIndex: 'work_progress',
+    //   render: (text: string, record: any) => {
+    //     const num = Number(text?.split('|')?.[0])
+    //     const completeNum = Number(text?.split('|')?.[1])
+    //     const total = num + completeNum
+    //     return (
+    //       <div
+    //         style={{
+    //           display: 'flex',
+    //           alignItems: 'center',
+    //         }}
+    //       >
+    //         {text
+    //           ? completeNum === 0
+    //             ? '0%'
+    //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
+    //           : '--'}
+    //       </div>
+    //     )
+    //   },
+    // },
     {
       dataIndex: 'repeat_rate',
       title: getTitleTips('工作重复率', '审批不通过次数/全部审批次数*100%'),
@@ -268,6 +269,7 @@ const ProgressComparison = (props: Props) => {
           <RowText
             onClick={(event: any) => {
               dispatch(setVisibleWork(true))
+              dispatch(setVisiblePerson(false))
               event.stopPropagation()
               getDatail(record)
             }}
@@ -337,29 +339,29 @@ const ProgressComparison = (props: Props) => {
       title: '进行中|已完成',
       dataIndex: 'work_progress',
     },
-    {
-      title: '工作进度',
-      dataIndex: 'work_progress',
-      render: (text: string, record: any) => {
-        const num = Number(text?.split('|')?.[0])
-        const completeNum = Number(text?.split('|')?.[1])
-        const total = num + completeNum
-        return (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            {text
-              ? completeNum === 0
-                ? '0%'
-                : `${Number((completeNum / total) * 100).toFixed(0)}%`
-              : '--'}
-          </div>
-        )
-      },
-    },
+    // {
+    //   title: '工作进度',
+    //   dataIndex: 'work_progress',
+    //   render: (text: string, record: any) => {
+    //     const num = Number(text?.split('|')?.[0])
+    //     const completeNum = Number(text?.split('|')?.[1])
+    //     const total = num + completeNum
+    //     return (
+    //       <div
+    //         style={{
+    //           display: 'flex',
+    //           alignItems: 'center',
+    //         }}
+    //       >
+    //         {text
+    //           ? completeNum === 0
+    //             ? '0%'
+    //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
+    //           : '--'}
+    //       </div>
+    //     )
+    //   },
+    // },
     {
       dataIndex: 'repeat_rate',
       title: getTitleTips('总工作重复率', '审批不通过次数/全部审批次数*100%'),
@@ -391,6 +393,7 @@ const ProgressComparison = (props: Props) => {
           <RowText
             onClick={(event: any) => {
               event.stopPropagation()
+              dispatch(setVisiblePerson(false))
               dispatch(setVisibleWork(true))
               getDatail(record)
             }}
@@ -494,8 +497,8 @@ const ProgressComparison = (props: Props) => {
     },
   ]
   useEffect(() => {
-    // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
-    //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
+    // 进展对比 Progress_iteration-迭代 Progress_sprint 冲刺 Progress_all 全局
+    //缺陷 Defect_iteration-迭代 Defect_iteration 冲刺 Defect_all 全局
     onSearchData([])
     switch (props.type) {
       case 'Progress_iteration':
@@ -521,10 +524,12 @@ const ProgressComparison = (props: Props) => {
   // 数据明细和进展对比查询数据的
   const onSearchData = (value: number[]) => {
     setSelectProjectIds(value)
+    // 进展对比
     if (props.type.includes('Progress')) {
       setLoading(true)
       getWorkContrastList(value)
     } else {
+      // 缺陷分析
       setLoading(true)
       getMemberBugList(value)
     }
@@ -562,8 +567,7 @@ const ProgressComparison = (props: Props) => {
       case 28:
         return 'four_week'
       default:
-        // eslint-disable-next-line no-undefined
-        return undefined
+        return ''
     }
   }
   // 导出
@@ -582,15 +586,12 @@ const ProgressComparison = (props: Props) => {
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
-            : // eslint-disable-next-line no-undefined
-              undefined,
+            : '',
           start_time: getTimeStr(props.headerParmas?.time)
-            ? // eslint-disable-next-line no-undefined
-              undefined
+            ? ''
             : props.headerParmas?.time?.time?.[0],
           end_time: getTimeStr(props.headerParmas?.time)
-            ? // eslint-disable-next-line no-undefined
-              undefined
+            ? ''
             : props.headerParmas?.time?.time?.[1],
           iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
         })
@@ -600,21 +601,17 @@ const ProgressComparison = (props: Props) => {
         )
       ) {
         result = await defectExport({
-          // eslint-disable-next-line no-undefined
           project_ids:
             option.length >= 1 ? option.join(',') : props.projectId + '',
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
-            : // eslint-disable-next-line no-undefined
-              undefined,
+            : '',
           start_time: getTimeStr(props.headerParmas?.time)
-            ? // eslint-disable-next-line no-undefined
-              undefined
+            ? ''
             : props.headerParmas?.time?.time?.[0],
           end_time: getTimeStr(props.headerParmas?.time)
-            ? // eslint-disable-next-line no-undefined
-              undefined
+            ? ''
             : props.headerParmas?.time?.time?.[1],
           iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
         })
@@ -645,19 +642,12 @@ const ProgressComparison = (props: Props) => {
           ? value.length >= 1
             ? value.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
-          : // eslint-disable-next-line no-undefined
-            props.projectId + '',
+          : props.projectId + '',
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
       user_ids: props.headerParmas.users?.join(','),
       period_time: getTimeStr(props.headerParmas?.time),
-      start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
-        : time.startTime,
-      end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
-        : time.endTime,
+      start_time: getTimeStr(props.headerParmas?.time) ? '' : time.startTime,
+      end_time: getTimeStr(props.headerParmas?.time) ? '' : time.endTime,
       page: page?.pageNum || pageNum,
       pagesize: page?.pageSize || pageSize,
     })
@@ -676,25 +666,16 @@ const ProgressComparison = (props: Props) => {
           ? value.length >= 1
             ? value.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
-          : // eslint-disable-next-line no-undefined
-            props.projectId + '',
+          : props.projectId + '',
       iterate_ids: props.headerParmas.iterate_ids?.length
         ? props.headerParmas.iterate_ids?.join(',')
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       user_ids: props.headerParmas.users?.length
         ? props.headerParmas.users?.join(',')
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       period_time: getTimeStr(props.headerParmas?.time),
-      start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
-        : time.startTime,
-      end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
-        : time.endTime,
+      start_time: getTimeStr(props.headerParmas?.time) ? '' : time.startTime,
+      end_time: getTimeStr(props.headerParmas?.time) ? '' : time.endTime,
       page: page?.pageNum || pageNum,
       pagesize: page?.pageSize || pageSize,
     })
@@ -709,6 +690,7 @@ const ProgressComparison = (props: Props) => {
     setTableBeforeAndAfter('after')
     event.stopPropagation()
     dispatch(setVisiblePerson(true))
+    dispatch(setVisibleWork(false))
     getUserInfo(row.id)
     setStatusType(str)
     const parmas = {
@@ -716,15 +698,12 @@ const ProgressComparison = (props: Props) => {
       type: str,
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[0],
       end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[1],
     }
     if (props.type.includes('Progress')) {
@@ -755,7 +734,13 @@ const ProgressComparison = (props: Props) => {
 
   // 后半截的详情弹窗上半截的获取用户信息
   const getUserInfo = async (id: number) => {
-    const res = await plugSelectionUserInfo({ user_id: id, project_ids: 0 })
+    const res = await plugSelectionUserInfo({
+      user_id: id,
+      project_ids:
+        selectProjectIds.length >= 1
+          ? selectProjectIds.join(',')
+          : props.projectId + '',
+    })
     setUserInfo(res.userInfo)
     setStatus(res.status)
   }
@@ -779,15 +764,12 @@ const ProgressComparison = (props: Props) => {
       ...val,
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[0],
       end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[1],
     }
     if (props.type.includes('Progress')) {
@@ -803,15 +785,12 @@ const ProgressComparison = (props: Props) => {
       type: statusType,
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
-        : // eslint-disable-next-line no-undefined
-          undefined,
+        : '',
       start_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[0],
       end_time: getTimeStr(props.headerParmas?.time)
-        ? // eslint-disable-next-line no-undefined
-          undefined
+        ? ''
         : props.headerParmas?.time?.time?.[1],
     }
     // 前半截是一个接口，后半截是两个接口

@@ -119,6 +119,8 @@ declare namespace API.Sprint {
       period_time?: string
     }
     type Result = {
+      end_time: string
+      start_time: string
       work: Array<Model.Sprint.WorkListItem>
       defect: Array<Model.Sprint.DefectListItem>
     }

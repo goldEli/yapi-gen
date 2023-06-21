@@ -108,7 +108,8 @@ const HightChartMainPie = (props: {
       labelFormatter: function () {
         // eslint-disable-next-line
         const _this: any = this
-        return `<div style='fontSize: 14px;color:#646566;display:flex; width: 204px;height:26px;lineHeight:14px;paddingBottom:2px;whiteSpace: nowrap; overflow: hidden; textOverflow: ellipsis'>${_this?.name}: ${_this.y}%</div>`
+        return `<div style='
+        fontWeight: 400;fontFamily: MiSans-Regular, MiSans; !important;fontSize: 14px;color:#646566;display:flex; width: 204px;height:26px;lineHeight:14px;paddingBottom:2px;whiteSpace: nowrap; overflow: hidden; textOverflow: ellipsis'>${_this?.name}: ${_this.y}%</div>`
       },
     },
     plotOptions: {
@@ -129,7 +130,7 @@ const HightChartMainPie = (props: {
       borderRadius: 6,
       headerFormat: props.titleType
         ? ''
-        : '<div style="background:#fff;minWidth:108;height:76px;padding:16px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanMedium;">{point.key}</div><div>',
+        : '<div style="background:#fff;minWidth:108;height:76px;padding:16px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanRegular;">{point.key}</div><div>',
       pointFormat: props.titleType
         ? '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">{point.name}:{point.y}%</span></div>'
         : '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">工作项：{point.y}%</span></div>',

@@ -28,7 +28,6 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { setAddWorkItemModal } from '@store/project'
 import { getLongStory, moveStory, sortStory } from '@/services/sprint'
 import moment from 'moment'
-import { LatelyLongStoryMenu } from './LatelyLongStoryMenu'
 import ClickDropdown from './ClickDropdown'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 
@@ -483,7 +482,7 @@ const DndKitTable = (props: any) => {
                 }
               />
             </ChangeStatusPopover>
-            {getIsExceedTimeRange(temp) ? (
+            {getIsExceedTimeRange(temp) && record?.iterate_id !== 0 ? (
               <Tooltip placement="top" title="该事务超出冲刺时间范围">
                 <IconFont
                   style={{
@@ -581,7 +580,10 @@ const DndKitTable = (props: any) => {
         return k
       })
       // 判断是否超出冲刺时间范围
-      if (getIsExceedTimeRange(item)) {
+      if (
+        getIsExceedTimeRange(item) &&
+        Number(result.destination?.droppableId) !== 0
+      ) {
         open({
           title: '移动事务',
           children: (
@@ -626,7 +628,7 @@ const DndKitTable = (props: any) => {
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       {(props?.checkCommission
-        ? rightSprintList.filter((i: any) => i.id === -1)
+        ? rightSprintList.filter((i: any) => i.id === 0)
         : rightSprintList
       )?.map((item: any) => {
         return (

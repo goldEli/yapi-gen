@@ -533,7 +533,7 @@ const AddWorkflow = (props: Props) => {
       >
         <div style={{ paddingRight: 20 }}>
           <TableTitle>
-            <span style={{ width: '40%' }}>{t('newlyAdd.statusName')}</span>
+            <span style={{ width: '40%' }}>{t('newlyAdd.statusName')}1</span>
             <span style={{ width: '45%' }}>{t('newlyAdd.demandCategory')}</span>
             <span style={{ width: '15%' }}>{t('newlyAdd.operation')}</span>
           </TableTitle>
