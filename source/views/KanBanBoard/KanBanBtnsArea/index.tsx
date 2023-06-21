@@ -51,7 +51,9 @@ const KanBanBtnsArea = (props: Props) => {
   const currentView = useMemo(() => {
     return sortByView?.find(item => item.check)
   }, [sortByView])
-  const { view } = useSelector(store => store)
+  let { view } = useSelector(store => store)
+  const { viewItemConfig } = useSelector(state => state.kanBan)
+  view = { ...view, titles: viewItemConfig?.titles }
   const currentRowAndStatusId = useMemo(() => {
     const key = sortByRowAndStatusOptions?.find(item => item.check)?.key ?? ''
     return parseInt(key, 10)
