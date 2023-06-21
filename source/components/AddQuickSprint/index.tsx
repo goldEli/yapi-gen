@@ -77,8 +77,6 @@ const AddQuickSprint = () => {
     return result
   }
 
-  console.log(computedCategory(), removeNull(projectInfoValues, 'category'))
-
   return (
     <CommonModal
       confirmText="创建"

@@ -2,7 +2,7 @@
 /* eslint-disable no-duplicate-imports */
 // 项目
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { getParentList } from './project.thunk'
+import { getParentList, getProjectInfoValuesStore } from './project.thunk'
 
 export interface CounterState {
   projectInfo: any
@@ -187,6 +187,9 @@ export const projectSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
       state.addWorkItemParentList = action.payload
+    })
+    builder.addCase(getProjectInfoValuesStore.fulfilled, (state, action) => {
+      state.projectInfoValues = action.payload
     })
   },
 })
