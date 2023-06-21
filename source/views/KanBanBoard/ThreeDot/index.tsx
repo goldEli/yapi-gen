@@ -116,7 +116,11 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
         <Item
           onClick={e => {
             e.stopPropagation()
-            onCopyName(props.story.name)
+            onCopyLink({
+              t,
+              project_id: getProjectIdByUrl(),
+              id: props.story.id,
+            })
           }}
         >
           {t('copy_number')}
@@ -129,11 +133,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
         <Item
           onClick={e => {
             e.stopPropagation()
-            onCopyLink({
-              t,
-              project_id: getProjectIdByUrl(),
-              id: props.story.id,
-            })
+            onCopyName(props.story.name)
           }}
         >
           {t('copy_title')}

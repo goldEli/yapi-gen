@@ -143,6 +143,7 @@ const CreateAProjectForm = () => {
     const formData = await form.validateFields()
 
     const obj = {
+      clone_project_id: multipleSelectionItems[0],
       model_type: model,
       project_type: type,
       cover: activeCover,
@@ -154,6 +155,7 @@ const CreateAProjectForm = () => {
       setLeaderId(0)
       return
     }
+
     dispatch(postCreate(obj))
     setLeaderId(0)
   }
@@ -359,7 +361,10 @@ const CreateAProjectForm = () => {
   }
 
   useEffect(() => {
-    setMultipleSelectionItems([])
+    if (model !== 3) {
+      setMultipleSelectionItems([])
+    }
+
     form.resetFields()
   }, [model])
 
@@ -369,6 +374,7 @@ const CreateAProjectForm = () => {
       setModel(0)
     }
   }
+  console.log(multipleSelectionItems, '克隆ID')
 
   return (
     <CommonModal2
