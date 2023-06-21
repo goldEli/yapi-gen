@@ -104,6 +104,12 @@ const MoreWrap = (props: MoreWrapProps) => {
           projectId: item.project_id,
           editId: item.id,
           type: item.work_type,
+          title:
+            item.project_type === 1
+              ? item.is_bug === 1
+                ? '编辑缺陷'
+                : '编辑需求'
+              : '编辑事务',
         },
       }),
     )
@@ -127,6 +133,12 @@ const MoreWrap = (props: MoreWrapProps) => {
           parentId: item.id,
           categoryId: item.categoryId,
           type: item.work_type,
+          title:
+            item.project_type === 1
+              ? item.is_bug === 1
+                ? '创建缺陷'
+                : '创建需求'
+              : '创建事务',
         },
       }),
     )

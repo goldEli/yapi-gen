@@ -191,13 +191,14 @@ const Demand = (props: DemandProps) => {
           isChild: true,
           parentId: item.id,
           categoryId: item.categoryId,
-          type: 2,
+          type: 1,
+          title: '创建子需求',
         },
       }),
     )
   }
 
-  // 编辑子需求
+  // 编辑需求
   const onEditChange = (item: any) => {
     dispatch(
       setAddWorkItemModal({
@@ -205,7 +206,8 @@ const Demand = (props: DemandProps) => {
         params: {
           editId: item.id,
           projectId: item.project_id,
-          type: 2,
+          type: 1,
+          title: '编辑需求',
         },
       }),
     )
@@ -239,7 +241,8 @@ const Demand = (props: DemandProps) => {
         params: {
           projectId: getProjectIdByUrl(),
           iterateId: iterateInfo?.id,
-          type: 2,
+          type: 1,
+          title: '创建需求',
         },
       }),
     )

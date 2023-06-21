@@ -325,7 +325,7 @@ const DefectTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 2 },
+        params: { noDataCreate: true, type: 2, title: '创建缺陷' },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))

@@ -156,6 +156,7 @@ const SprintTable = (props: Props) => {
           parentId: item.id,
           categoryId: item.categoryId,
           type: item.work_type,
+          title: '创建子事务',
         },
       }),
     )
@@ -324,7 +325,7 @@ const SprintTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 7 },
+        params: { noDataCreate: true, type: 7, title: '创建事务' },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))

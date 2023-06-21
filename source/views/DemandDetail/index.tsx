@@ -279,6 +279,7 @@ const DemandDetail = () => {
           editId: demandInfo.id,
           projectId: demandInfo.projectId,
           type: 1,
+          title: '编辑需求',
         },
       }),
     )

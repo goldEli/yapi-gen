@@ -534,6 +534,8 @@ const SprintProjectSprint: React.FC = () => {
                           visible: true,
                           params: {
                             type: 3,
+                            title: '创建事务',
+                            noDataCreate: true,
                           },
                         }),
                       )

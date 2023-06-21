@@ -158,6 +158,7 @@ const IterationDefectDetail = () => {
           editId: flawInfo.id,
           projectId: flawInfo.projectId,
           type: 2,
+          title: '编辑缺陷',
         },
       }),
     )

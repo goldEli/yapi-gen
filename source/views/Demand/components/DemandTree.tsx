@@ -169,7 +169,7 @@ const DemandTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { editId: item.id, projectId, type: 1 },
+        params: { editId: item.id, projectId, type: 1, title: '编辑需求' },
       }),
     )
   }
@@ -197,6 +197,7 @@ const DemandTree = (props: Props) => {
           categoryId: item.categoryId,
           iterateId: item.iterateId,
           type: 1,
+          title: '创建子需求',
         },
       }),
     )
@@ -536,7 +537,7 @@ const DemandTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 1 },
+        params: { noDataCreate: true, type: 1, title: '创建需求' },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))

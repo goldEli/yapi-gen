@@ -218,6 +218,7 @@ const Flaw = (props: FlawProps) => {
           projectId: getProjectIdByUrl(),
           iterateId: iterateInfo?.id,
           type: 2,
+          title: '创建缺陷',
         },
       }),
     )
