@@ -21,7 +21,7 @@ const ColumnTitleAreaBox = styled.div`
   background: var(--neutral-white-d2);
   position: sticky;
   top: 0px;
-  z-index: 200;
+  z-index: 20;
 `
 
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {

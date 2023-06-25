@@ -53,3 +53,12 @@ export const sendFeedback: any = async (params: any) => {
 
   return response
 }
+
+// 不再提醒
+export const noSysNotice: any = async (id: any) => {
+  const response: any = await http.post<any>(
+    `/b/sys_notice/${id}/without_notice`,
+  )
+
+  return response
+}
