@@ -69,7 +69,6 @@ const ChildDemand = (props: ChildDemandProps) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { demandId } = paramsData
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -116,7 +115,7 @@ const ChildDemand = (props: ChildDemandProps) => {
       pageSize: item ? item.size : 10,
       order: orderValue,
       orderKey: orderKeyValue,
-      parentId: demandId,
+      parentId: demandInfo.id,
     })
     setDataList(result)
     setIsSpinning(false)
@@ -138,7 +137,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       getList(pageObj, order, orderKey)
-      dispatch(getDemandInfo({ projectId, id: demandId }))
+      dispatch(getDemandInfo({ projectId, id: demandInfo.id }))
     }
   }, [isUpdateAddWorkItem])
 
@@ -159,7 +158,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   }
 
   const onUpdate = async (updateState?: boolean) => {
-    dispatch(getDemandInfo({ projectId, id: demandId }))
+    dispatch(getDemandInfo({ projectId, id: demandInfo.id }))
     getList(pageObj, order, orderKey, updateState)
   }
 

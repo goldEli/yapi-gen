@@ -153,7 +153,7 @@ const DemandDetail = () => {
   const onChangeStatus = async (value: any) => {
     await updateDemandStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getDemandInfo({ projectId: id, id: demandId }))
+    dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
     // dispatch(setIsUpdateStatus(true))
   }
 
@@ -170,14 +170,14 @@ const DemandDetail = () => {
     await form.validateFields()
     await updateDemandCategory({
       projectId: id,
-      demandId,
+      demandId: demandInfo.id,
       ...form.getFieldsValue(),
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
     setIsShowCategory(false)
     dispatch(setIsUpdateStatus(true))
     dispatch(setIsRefresh(true))
-    dispatch(getDemandInfo({ projectId: id, id: demandId }))
+    dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
     setTimeout(() => {
       form.resetFields()
     }, 100)
@@ -197,7 +197,7 @@ const DemandDetail = () => {
     if (value !== demandInfo.name) {
       await updateTableParams({
         projectId: id,
-        id: demandId,
+        id: demandInfo.id,
         otherParams: {
           name: value,
         },
@@ -340,7 +340,7 @@ const DemandDetail = () => {
   const onChangeTabs = (value: string) => {
     setTabActive(value)
     if (value === '1') {
-      dispatch(getDemandInfo({ projectId: id, id: demandId }))
+      dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
     }
   }
 
@@ -428,7 +428,7 @@ const DemandDetail = () => {
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       dispatch(setDemandInfo({}))
-      dispatch(getDemandInfo({ projectId: id, id: demandId }))
+      dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
     }
   }, [isUpdateAddWorkItem])
 

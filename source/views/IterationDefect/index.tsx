@@ -276,7 +276,10 @@ const Index = (props: any) => {
       />
       <TreeContext.Provider value={keyValue}>
         <Wrap>
-          <ProjectCommonOperation onInputSearch={onInputSearch} />
+          <ProjectCommonOperation
+            onInputSearch={onInputSearch}
+            title="搜索缺陷名称或编号"
+          />
           <ContentWrap>
             <ContentLeft>
               <WrapLeft
