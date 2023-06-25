@@ -29,7 +29,6 @@ const DetailDemand = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { demandId } = paramsData
   const { projectInfo } = useSelector(store => store.project)
   const { demandInfo } = useSelector(store => store.demand)
   const [tagList, setTagList] = useState<any>([])
@@ -65,11 +64,11 @@ const DetailDemand = () => {
     try {
       await addInfoDemand({
         projectId,
-        demandId,
+        demandId: demandInfo.id,
         type: 'attachment',
         targetId: [obj],
       })
-      const result = await getDemandInfo({ projectId, id: demandId })
+      const result = await getDemandInfo({ projectId, id: demandInfo.id })
       dispatch(setDemandInfo(result))
       onBottom?.()
     } catch (error) {
@@ -86,12 +85,12 @@ const DetailDemand = () => {
     try {
       await deleteInfoDemand({
         projectId,
-        demandId,
+        demandId: demandInfo.id,
         type: 'attachment',
         targetId: files,
       })
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-      const result = await getDemandInfo({ projectId, id: demandId })
+      const result = await getDemandInfo({ projectId, id: demandInfo.id })
       dispatch(setDemandInfo(result))
       onBottom?.()
     } catch (error) {
@@ -168,7 +167,7 @@ const DetailDemand = () => {
       {demandInfo.id && (
         <InfoItem>
           <Label>{t('new_p1.a3')}</Label>
-          <DemandStatus pid={projectId} sid={demandId} />
+          <DemandStatus pid={projectId} sid={demandInfo.id} />
         </InfoItem>
       )}
     </WrapLeft>

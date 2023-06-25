@@ -97,7 +97,7 @@ const CompleteSprintModal = (props: sprintProps) => {
       confirmText="完成"
       children={
         <div className={content}>
-          <div className="head">要开始此冲刺，至少需包含1个事务</div>
+          <div className="head">请选择要完成的冲刺</div>
           <Form
             form={form}
             labelCol={{ span: 24 }}
@@ -149,6 +149,7 @@ const CompleteSprintModal = (props: sprintProps) => {
                 placeholder="请输入"
               />
             </Form.Item>
+            <div className="head">未完成的事务移动至</div>
             <Form.Item
               label="移动至"
               name="move_target"

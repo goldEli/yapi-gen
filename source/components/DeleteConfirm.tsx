@@ -19,6 +19,8 @@ export interface DeleteConfirmProps {
   notCancel?: boolean
   onCancel?: () => void
   onCancelState?: boolean
+  okText?: string
+  cancelText?: string
 }
 
 const ModalHeader = styled.div({
@@ -80,6 +82,8 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
       keyboard={false}
       wrapClassName="vertical-center-modal"
       focusTriggerAfterClose={false}
+      okText={props?.okText}
+      cancelText={props?.cancelText}
     >
       <ModalHeader>
         <Title>
@@ -117,11 +121,11 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
       <ModalFooter size={16}>
         {!props?.notCancel && (
           <CommonButton onClick={props.onChangeVisible} type="light">
-            {t('cancel')}
+            {props?.cancelText ? props?.cancelText : t('cancel')}
           </CommonButton>
         )}
         <CommonButton type="primary" onClick={props.onConfirm}>
-          {t('confirm')}
+          {props?.okText ? props?.okText : t('confirm')}
         </CommonButton>
       </ModalFooter>
     </ModalStyle>

@@ -19,11 +19,7 @@ import styled from '@emotion/styled'
 import SprintTable from './components/SprintTable'
 import SprintTree from './components/SprintTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import {
-  setFilterKeys,
-  setFilterParams,
-  setIsUpdateAddWorkItem,
-} from '@store/project'
+import { setFilterKeys, setFilterParams } from '@store/project'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
 import { deleteAffairs, getAffairsList } from '@/services/affairs'
@@ -183,7 +179,6 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     // dispatch(setIsRefresh(false))
     setTopParentId(0)
     setIsUpdated(false)
-    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   // 筛选条件
@@ -386,7 +381,10 @@ const SprintProjectAffair: React.FC<IProps> = props => {
               同时删除该事务下所有子事务
             </Checkbox>
           </DeleteConfirm>
-          <ProjectCommonOperation onInputSearch={onInputSearch} />
+          <ProjectCommonOperation
+            onInputSearch={onInputSearch}
+            title="搜索事务名称或编号"
+          />
           <ContentWrap>
             <ContentLeft>
               <WrapLeft

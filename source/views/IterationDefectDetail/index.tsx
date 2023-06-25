@@ -43,11 +43,7 @@ import FlawInfo from './components/FlawInfo'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import RelationStories from './components/RelationStories'
-import {
-  setAddWorkItemModal,
-  setIsUpdateAddWorkItem,
-  setIsUpdateStatus,
-} from '@store/project'
+import { setAddWorkItemModal, setIsUpdateStatus } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 
@@ -56,7 +52,7 @@ const IterationDefectDetail = () => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useDispatch()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, flawId, changeIds } = paramsData
   const { open, ShareModal } = useShareModal()
@@ -86,14 +82,14 @@ const IterationDefectDetail = () => {
   }
 
   const onUpdate = () => {
-    dispatch(getFlawInfo({ projectId: id, id: flawId }))
+    dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
   }
 
   // 修改缺陷状态
   const onChangeStatus = async (value: any) => {
     await updateFlawStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getFlawInfo({ projectId: id, id: flawId }))
+    dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
   }
 
   // 关闭类别弹窗
@@ -109,14 +105,14 @@ const IterationDefectDetail = () => {
     await form.validateFields()
     await updateFlawCategory({
       projectId: id,
-      id: flawId,
+      id: flawInfo.id,
       ...form.getFieldsValue(),
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
     setIsShowCategory(false)
     dispatch(setIsUpdateStatus(true))
     // dispatch(setIsRefresh(true))
-    dispatch(getFlawInfo({ projectId: id, id: flawId }))
+    dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
     setTimeout(() => {
       form.resetFields()
     }, 100)
@@ -355,7 +351,7 @@ const IterationDefectDetail = () => {
   const onChangeTabs = (value: string) => {
     setTabActive(value)
     if (value === '1') {
-      dispatch(getFlawInfo({ projectId: id, id: flawId }))
+      dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
     }
   }
 
@@ -364,6 +360,10 @@ const IterationDefectDetail = () => {
     const newIndex = changeIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(getFlawInfo({ projectId: id, id: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, flawId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   // 向下查找需求
@@ -371,6 +371,10 @@ const IterationDefectDetail = () => {
     const newIndex = changeIds[currentIndex + 1]
     if (currentIndex === changeIds?.length - 1) return
     dispatch(getFlawInfo({ projectId: id, id: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, flawId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   useEffect(() => {
@@ -394,10 +398,7 @@ const IterationDefectDetail = () => {
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       dispatch(setFlawInfo({}))
-      dispatch(getFlawInfo({ projectId: id, id: flawId }))
-      setTimeout(() => {
-        setIsUpdateAddWorkItem(false)
-      }, 0)
+      dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
     }
   }, [isUpdateAddWorkItem])
 

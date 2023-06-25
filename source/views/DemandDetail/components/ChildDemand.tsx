@@ -30,7 +30,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
-import { setAddWorkItemModal, setIsUpdateAddWorkItem } from '@store/project'
+import { setAddWorkItemModal } from '@store/project'
 import { ComputedWrap } from '../style'
 import { getDemandInfo } from '@store/demand/demand.thunk'
 
@@ -69,7 +69,6 @@ const ChildDemand = (props: ChildDemandProps) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { demandId } = paramsData
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -116,12 +115,11 @@ const ChildDemand = (props: ChildDemandProps) => {
       pageSize: item ? item.size : 10,
       order: orderValue,
       orderKey: orderKeyValue,
-      parentId: demandId,
+      parentId: demandInfo.id,
     })
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
-    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   useEffect(() => {
@@ -139,7 +137,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       getList(pageObj, order, orderKey)
-      dispatch(getDemandInfo({ projectId, id: demandId }))
+      dispatch(getDemandInfo({ projectId, id: demandInfo.id }))
     }
   }, [isUpdateAddWorkItem])
 
@@ -160,7 +158,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   }
 
   const onUpdate = async (updateState?: boolean) => {
-    dispatch(getDemandInfo({ projectId, id: demandId }))
+    dispatch(getDemandInfo({ projectId, id: demandInfo.id }))
     getList(pageObj, order, orderKey, updateState)
   }
 
