@@ -705,6 +705,7 @@ const SprintProjectSprint: React.FC = () => {
                   search: {
                     ...searchObject.search,
                     user_ids: [],
+                    category_id: [],
                   },
                 })
                 dispatch(setCheckList(checkList.map(() => true)))
