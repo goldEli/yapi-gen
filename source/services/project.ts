@@ -106,6 +106,7 @@ export const getProjectInfoOnly: any = async (params: any, isClone?: any) => {
 export const getProjectInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectInfo', {
     id: params.projectId,
+    is_bug: params.isBug,
   })
 
   const plainOptions = response.data.storyConfig.display_fidlds

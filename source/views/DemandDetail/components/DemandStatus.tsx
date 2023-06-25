@@ -17,7 +17,8 @@ import { useDispatch, useSelector } from '@store/index'
 import { getDemandInfo, getShapeLeft } from '@/services/demand'
 import { setDemandInfo } from '@store/demand'
 import { getMessage } from '@/components/Message'
-import { setIsRefreshComment, setIsUpdateStatus } from '@store/project'
+import { setIsUpdateStatus } from '@store/project'
+import { getDemandCommentList } from '@store/demand/demand.thunk'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -79,7 +80,14 @@ const DemandStatusBox = (props: any) => {
         id: props.sid,
       })
       dispatch(setDemandInfo(result))
-      dispatch(setIsRefreshComment(true))
+      dispatch(
+        getDemandCommentList({
+          projectId: props.pid,
+          demandId: props.sid,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
     } catch (error) {
       //
     }

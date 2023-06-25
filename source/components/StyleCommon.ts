@@ -9,6 +9,17 @@ import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
+const TextWrapEdit = styled.div`
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
+  display: 'flex';
+  flex-direction: column;
+  cursor: pointer;
+  img: {
+    max-width: 20%;
+  }
+`
+
 const DragLine = styled.div<{ active: boolean }>`
   height: 100%;
   width: 2px;
@@ -1012,4 +1023,5 @@ export {
   SeverityWrap,
   DragTableIcon,
   PriorityWrapTable,
+  TextWrapEdit,
 }

@@ -51,7 +51,7 @@ const DefectTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, filterKeys, filterParams } = useSelector(
+  const { projectFlawInfo, filterKeys, filterParams } = useSelector(
     store => store.project,
   )
   const tapSort = useSelector(store => store.view.tapSort)
@@ -61,7 +61,7 @@ const DefectTable = (props: Props) => {
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  asyncSetTtile(`缺陷【${projectInfo.name}】`)
+  asyncSetTtile(`缺陷【${projectFlawInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
 
@@ -175,22 +175,26 @@ const DefectTable = (props: Props) => {
   })
 
   const hasCreate = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
+    projectFlawInfo?.projectPermissions,
+    projectFlawInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
   )
 
   const hasBatch = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/batch' : 'b/transaction/batch',
+    projectFlawInfo?.projectPermissions,
+    projectFlawInfo.projectType === 1 ? 'b/story/batch' : 'b/transaction/batch',
   )
 
   const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+    projectFlawInfo?.projectPermissions,
+    projectFlawInfo.projectType === 1
+      ? 'b/story/update'
+      : 'b/transaction/update',
   )
   const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
+    projectFlawInfo?.projectPermissions,
+    projectFlawInfo.projectType === 1
+      ? 'b/story/delete'
+      : 'b/transaction/delete',
   )
 
   //  点击批量

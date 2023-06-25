@@ -1,7 +1,6 @@
 import BasicDemand from '@/components/DemandDetailDrawer/BasicDemand'
 import { detailTimeFormat, getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { BasicContent, BasicFooter, BasicWrap, TitleWrap } from '../style'
 import { CloseWrap } from '@/components/StyleCommon'
@@ -10,10 +9,8 @@ import { Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getDemandInfo } from '@store/demand/demand.thunk'
-import { getCommentList } from '@/services/demand'
 import { changeRestScroll } from '@store/scroll'
 import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
-import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 interface Props {
@@ -27,10 +24,9 @@ const DemandDetailBasic = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id } = paramsData
-  const { demandInfo } = useSelector(store => store.demand)
+  const { demandInfo, demandCommentList } = useSelector(store => store.demand)
   const isRest = useSelector(store => store.scroll.isRest)
   const [activeTabs, setActiveTabs] = useState(1)
-  const [commentTotal, setCommentTotal] = useState(0)
 
   // 更新详情
   const onUpdate = () => {
@@ -39,7 +35,6 @@ const DemandDetailBasic = (props: Props) => {
 
   // 跳转配置
   const onToConfig = () => {
-    console.log('demandInfo', demandInfo)
     dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
@@ -54,20 +49,6 @@ const DemandDetailBasic = (props: Props) => {
     )
     navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
-
-  const getList = async () => {
-    const result = await getCommentList({
-      projectId: id,
-      demandId: demandInfo.id,
-      page: 1,
-      pageSize: 999,
-    })
-    setCommentTotal(result?.list?.length)
-  }
-
-  useEffect(() => {
-    getList()
-  }, [])
 
   const onScrollBottom = () => {
     dispatch(changeRestScroll(false))
@@ -86,7 +67,9 @@ const DemandDetailBasic = (props: Props) => {
           </div>
           <div className="rightWrap" onClick={() => setActiveTabs(2)}>
             {t('common.comment')}{' '}
-            {commentTotal > 99 ? `${commentTotal}+` : commentTotal}
+            {demandCommentList.list.length > 99
+              ? `${demandCommentList.list.length}+`
+              : demandCommentList.list.length}
           </div>
         </TitleWrap>
         {activeTabs === 1 && (
