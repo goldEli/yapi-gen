@@ -86,6 +86,7 @@ const Header = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
+  // debugger
   const { startUsing, activeCategory, categoryList } = useSelector(
     store => store.category,
   )
@@ -241,7 +242,8 @@ const Header = () => {
                       (i: any) =>
                         i.id !== activeCategory?.id &&
                         i?.statusCount &&
-                        i.isCheck === 1,
+                        i.isCheck === 1 &&
+                        i.work_type === activeCategory.work_type,
                     )
                     ?.map((k: any) => ({ label: k.name, value: k.id }))}
                 />

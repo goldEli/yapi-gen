@@ -36,7 +36,6 @@ const View = (props: View) => {
   const [dialogItem, setDialogItem] = useState<{ name: string; id?: number }>({
     name: '',
   })
-  const [valueType, setValueType] = useState<Models.Efficiency.ViewItem>()
   // 剔除来的默认视图
   const [optionsDefault, setOptionsDefault] = useState<any>()
   const [options, setOptions] = useState<Array<Models.Efficiency.ViewItem>>([])
@@ -180,7 +179,7 @@ const View = (props: View) => {
                     optionsDefault?.config?.end_time,
                   ]
                 : // eslint-disable-next-line no-undefined
-                  undefined,
+                  '',
           },
           view: {
             title: optionsDefault.name,
@@ -233,7 +232,7 @@ const View = (props: View) => {
                 ? // eslint-disable-next-line no-undefined
                   [item?.config?.start_time, item?.config?.end_time]
                 : // eslint-disable-next-line no-undefined
-                  undefined,
+                  '',
           },
           view: {
             title: item.name,

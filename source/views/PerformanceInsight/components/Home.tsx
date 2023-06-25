@@ -205,6 +205,7 @@ const Home = () => {
     dispatch(setViewType(filterVal?.type))
     setProjectViewIds(filterVal?.config.project_id || [])
     setIterateViewIds(filterVal?.config.iterate_ids || [])
+    console.log(filterVal, 'filterVal')
     // 有视图数据才设置
     filterVal &&
       dispatch(
@@ -219,22 +220,20 @@ const Home = () => {
           period_time: filterVal?.config?.period_time,
           time: {
             type:
-              filterVal?.config.period_time === ''
+              filterVal?.config.start_time === ''
                 ? 0
                 : getDate(filterVal?.config?.period_time || ''),
             time:
-              filterVal?.config.period_time === ''
-                ? // eslint-disable-next-line no-undefined
-                  [filterVal?.config?.start_time, filterVal?.config?.end_time]
-                : // eslint-disable-next-line no-undefined
-                  undefined,
+              filterVal?.config.start_time == ''
+                ? ''
+                : [filterVal?.config?.start_time, filterVal?.config?.end_time],
           },
         }),
       )
   }
+  console.log(headerParmas, 'HeaderParmas')
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
-    console.log(headerParmas.time.type, 'headerParmas.time.type')
     const res =
       type === 'add'
         ? await createViewList({
@@ -546,17 +545,17 @@ const Home = () => {
         {
           name: '待修复',
           dataNum: res.defect_trend.fixed.map(el => el.number),
-          data: res.defect_trend.not_fixed.map(el => parseInt(el.rate, 10)),
+          data: res.defect_trend.not_fixed.map(el => parseInt(el.number, 10)),
         },
         {
           name: '修复中',
           dataNum: res.defect_trend.fixed.map(el => el.number),
-          data: res.defect_trend.fixing.map(el => parseInt(el.rate, 10)),
+          data: res.defect_trend.fixing.map(el => parseInt(el.number, 10)),
         },
         {
           name: '已完成',
           dataNum: res.defect_trend.fixed.map(el => el.number),
-          data: res.defect_trend.fixed.map(el => parseInt(el.rate, 10)),
+          data: res.defect_trend.fixed.map(el => parseInt(el.number, 10)),
         },
       ],
     })
@@ -603,26 +602,22 @@ const Home = () => {
 
   useEffect(() => {
     // 统一监听参数变化，发起请求刷新页面
-    if (
-      !!headerParmas.time?.time &&
-      !!headerParmas.period_time &&
-      !headerParmas.iterate_ids &&
-      !headerParmas.users &&
-      !headerParmas.projectIds
-    ) {
-      return
-    }
-    if (headerParmas.time.type === 0 && !headerParmas.time.time) {
-      return
-    }
+    // if (
+    //   !!headerParmas.time?.time &&
+    //   !!headerParmas.period_time &&
+    //   !headerParmas.iterate_ids &&
+    //   !headerParmas.users &&
+    //   !headerParmas.projectIds
+    // ) {
+    //   return
+    // }
+    // if (headerParmas.time.type === 0 && !headerParmas.time.time) {
+    //   return
+    // }
     if (!headerParmas.view.value) {
       return
     }
-    console.log(
-      valueHeaderStr !== JSON.stringify(headerParmas),
-      headerParmas,
-      'wo s ces',
-    )
+
     // 监听对象第一次会走两次接口 转成字符窜判断
     setValueHeaderStr(JSON.stringify(headerParmas))
     valueHeaderStr !== JSON.stringify(headerParmas) && init()
