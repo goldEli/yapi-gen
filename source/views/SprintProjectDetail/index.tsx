@@ -529,7 +529,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <DropdownMenu
             placement="bottomRight"
             trigger={['click']}
-            menu={{ items }}
+            menu={{
+              items:
+                // 子任务不存在子事务模块
+                affairsInfo.work_type === 6
+                  ? items.filter((i: any) => i.key !== '2')
+                  : items,
+            }}
             getPopupContainer={n => n}
           >
             <div>

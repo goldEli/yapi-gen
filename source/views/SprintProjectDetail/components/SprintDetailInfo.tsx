@@ -134,7 +134,12 @@ const SprintDetailInfo = (props: { onRef: any }) => {
         <Tabs
           className="tabs"
           activeKey={tabActive}
-          items={items}
+          items={
+            // 子任务不存在子事务模块
+            affairsInfo.work_type === 6
+              ? items.filter((i: any) => i.key !== 'sprint-childSprint')
+              : items
+          }
           onChange={onChangeTabs}
         />
       )}
@@ -147,7 +152,9 @@ const SprintDetailInfo = (props: { onRef: any }) => {
           affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
           onUpdate={onUpdate}
         />
-        <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+        {affairsInfo.work_type !== 6 && (
+          <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+        )}
         <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
         <ActivitySprint />
       </DetailInfoWrap>
