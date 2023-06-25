@@ -376,7 +376,13 @@ const Sortable = (props: any) => {
                       </div>
                     </ListMsg>
                     <div style={{ flex: 1 }}>
-                      {optionFields.find(ele => ele.type === child.attr)?.label}
+                      {
+                        optionFields.find(
+                          ele =>
+                            ele.type === child.attr ||
+                            child?.fieldContent?.attr,
+                        )?.label
+                      }
                     </div>
                     <div style={{ flex: 1 }}>
                       {' '}
