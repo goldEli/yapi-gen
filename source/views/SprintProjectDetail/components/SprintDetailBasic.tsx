@@ -17,12 +17,12 @@ const SprintDetailBasic = (props: Props) => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, sprintId } = paramsData
+  const { id } = paramsData
   const { affairsInfo } = useSelector(store => store.affairs)
   const navigate = useNavigate()
   // 更新详情
   const onUpdate = () => {
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
   }
 
   // 跳转配置
