@@ -10,8 +10,6 @@ import { setReportContent, setReportContentCopy } from '@store/formWork'
 import { useDispatch, useSelector } from '@store/index'
 
 const AcceptorSelection = (props: any) => {
-  console.log(props.value, '进来的值')
-
   const dispatch = useDispatch()
   const [isEmail, setIsEmail] = useState(false)
   const [t] = useTranslation()
@@ -93,26 +91,14 @@ const AcceptorSelection = (props: any) => {
           target_type: el.target_type,
           target_value: el.target_value,
         })) || []
-      d1 = [...person1, ...val1]
+      d1 = [...val1]
     }
 
-    const d1v = d1.find(
-      (item: any) =>
-        item.user_type === 1 &&
-        (item.key === 'all' || item?.target_value?.key === 'all'),
-    )
-    console.log(d1)
     props.onChange({
       member: d1,
 
       isEmail,
     })
-    // dispatch(
-    //   setReportContentCopy({
-    //     is_all_write: d1v ? 1 : 2,
-    //     template_configs: [...d1],
-    //   }),
-    // )
   }
   // 组装数据
   const assemblyData = () => {
@@ -124,8 +110,6 @@ const AcceptorSelection = (props: any) => {
 
     // 有已经存在的情况，需要过滤掉
     if (reportContentCopy.is_all_write === 1) {
-      console.log('feji')
-
       const newData1 = [
         {
           user_type: 1,
@@ -162,12 +146,9 @@ const AcceptorSelection = (props: any) => {
   // }, [reportContentCopy])
 
   useEffect(() => {
-    console.log(props?.value, '数据流')
-
     setIsEmail(props?.value?.isEmail)
     setPerson1(props?.value?.member ? props?.value?.member : [])
   }, [props.value])
-  console.log(person1, '人')
 
   return (
     <div
@@ -191,6 +172,7 @@ const AcceptorSelection = (props: any) => {
         </Checkbox>
       </div>
       <Addperson
+        data={props.data}
         onChangedel={val => onChangedel(val, 1)}
         onChangeValues={val => onChangeValues(val, 1)}
         person={person1}

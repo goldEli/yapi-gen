@@ -96,10 +96,12 @@ interface Props {
   state: number
   onChangeValues(value: any): void
   onChangedel(value: any): void
+  data?: any
 }
 interface Item {
   label: string
   key: string
+  data?: any
 }
 const Addperson = (props: Props) => {
   const dispatch = useDispatch()
@@ -113,6 +115,10 @@ const Addperson = (props: Props) => {
   const [userType, setUserType] = useState<number>(0)
   const [targetType, setTargetType] = useState<number>(0)
   const [personData, setPersonData] = useState<any>()
+  const [defaultPersonData, setDefaultPersonData] = useState<any>(
+    () => props.data,
+  )
+
   // 去重
   const fitlerDataList = (data: any) => {
     const obj: any = {}
@@ -341,6 +347,9 @@ const Addperson = (props: Props) => {
       {/* 添加成员弹窗 */}
       {isVisible ? (
         <NewAddUserModalForTandD
+          defaultPeople={props.person
+            .filter((i: any) => i.target_type === 1)
+            .map((k: any) => k.target_id)}
           title={t('formWork.addUser')}
           state={2}
           isVisible={isVisible}
