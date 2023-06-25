@@ -7,7 +7,11 @@ import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import {
+  setProjectFlawInfo,
+  setProjectInfo,
+  setProjectInfoValues,
+} from '@store/project'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
@@ -223,9 +227,13 @@ const ProjectDetailSide = () => {
   }
 
   // 获取项目信息
-  const getInfo = async () => {
-    const result = await getProjectInfo({ projectId })
-    dispatch(setProjectInfo(result))
+  const getInfo = async (isBug?: number) => {
+    const result = await getProjectInfo({ projectId, isBug })
+    if (isBug === 1) {
+      dispatch(setProjectFlawInfo(result))
+    } else {
+      dispatch(setProjectInfo(result))
+    }
   }
 
   //   点击需求设置
@@ -256,7 +264,8 @@ const ProjectDetailSide = () => {
   }
 
   useEffect(() => {
-    getInfo()
+    // 区分是缺陷还是需求
+    getInfo(location.pathname.includes('/Defect') ? 1 : 2)
     getProjectInfoValuesData()
     if ([0, 1, 2].includes(paramsData?.type)) {
       onChangeSet()
@@ -286,6 +295,11 @@ const ProjectDetailSide = () => {
     const params = encryptPhp(
       JSON.stringify({ id: projectId, type: 'iteration' }),
     )
+    // 缺陷单独存储项目信息
+    if (path.includes('Defect')) {
+      getInfo(1)
+    }
+
     if (key === 'Report') {
       const paramsData = encryptPhp(
         JSON.stringify({
