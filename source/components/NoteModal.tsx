@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CommonModal from './CommonModal'
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd'
 import CommonButton from './CommonButton'
 import { Editor } from '@xyfe/uikit'
 import { useTranslation } from 'react-i18next'
+import { noSysNotice } from '@/services/sysNotice'
 
 const Footer = styled.div`
   height: 80px;
@@ -33,6 +34,8 @@ const Content = styled.div`
 `
 
 const NoteModal = (props: any) => {
+  console.log(props.data.customData?.id, '消息内容')
+  const [checked, setChecked] = useState(false)
   const [t] = useTranslation()
   const getLabelName = (num: string) => {
     switch (num) {
@@ -49,6 +52,7 @@ const NoteModal = (props: any) => {
     }
   }
   const onChange = (e: any) => {
+    setChecked(e.target.checked)
     const arrs = localStorage.getItem('noteIds')
 
     if (arrs) {
@@ -75,7 +79,7 @@ const NoteModal = (props: any) => {
       width={640}
       hasFooter={
         <Footer>
-          <Checkbox onChange={onChange}>
+          <Checkbox checked={checked} onChange={onChange}>
             <span
               style={{
                 height: '22px',
@@ -87,7 +91,15 @@ const NoteModal = (props: any) => {
               不在提醒
             </span>
           </Checkbox>
-          <CommonButton type="primary" onClick={() => props.onClose()}>
+          <CommonButton
+            type="primary"
+            onClick={() => {
+              props.onClose()
+              if (checked) {
+                noSysNotice(props.data.customData.id)
+              }
+            }}
+          >
             我知道了
           </CommonButton>
         </Footer>
