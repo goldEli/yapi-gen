@@ -515,10 +515,12 @@ const Home = () => {
           ? 'one_month'
           : '',
     })
-    // console.log(res.work_completion_period, 'res.work_completion_period')
+    const time = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
     setCharts2({
       time: `${res.work_completion_period.start_time} ~ ${res.work_completion_period.end_time}`,
-      yData: res.work_completion_period.list.map(el => el.start_time),
+      yData: res.work_completion_period.list.map((el, i) =>
+        el.is_current ? '当前' : `第${time[i]}周期`,
+      ),
       seriesData: res.work_completion_period.list.map(el => el.completed),
     })
     setCharts3({
