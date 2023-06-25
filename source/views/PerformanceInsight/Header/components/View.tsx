@@ -36,7 +36,6 @@ const View = (props: View) => {
   const [dialogItem, setDialogItem] = useState<{ name: string; id?: number }>({
     name: '',
   })
-  const [valueType, setValueType] = useState<Models.Efficiency.ViewItem>()
   // 剔除来的默认视图
   const [optionsDefault, setOptionsDefault] = useState<any>()
   const [options, setOptions] = useState<Array<Models.Efficiency.ViewItem>>([])

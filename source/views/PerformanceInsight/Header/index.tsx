@@ -116,7 +116,6 @@ const Iteration = (props: Props) => {
     // 展示的tabs不同
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
-    console.log(props.defalutConfig, 'props.defalutConfig')
     setPerson(props.defalutConfig?.user_ids || [])
     getTime(props.defalutConfig?.period_time || '')
     // 回显是否是迭代还是周期

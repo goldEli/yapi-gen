@@ -205,6 +205,7 @@ const Home = () => {
     dispatch(setViewType(filterVal?.type))
     setProjectViewIds(filterVal?.config.project_id || [])
     setIterateViewIds(filterVal?.config.iterate_ids || [])
+    console.log(filterVal, 'filterVal')
     // 有视图数据才设置
     filterVal &&
       dispatch(
@@ -601,29 +602,22 @@ const Home = () => {
 
   useEffect(() => {
     // 统一监听参数变化，发起请求刷新页面
-    if (
-      !!headerParmas.time?.time &&
-      !!headerParmas.period_time &&
-      !headerParmas.iterate_ids &&
-      !headerParmas.users &&
-      !headerParmas.projectIds
-    ) {
-      return
-    }
-    if (headerParmas.time.type === 0 && !headerParmas.time.time) {
-      return
-    }
+    // if (
+    //   !!headerParmas.time?.time &&
+    //   !!headerParmas.period_time &&
+    //   !headerParmas.iterate_ids &&
+    //   !headerParmas.users &&
+    //   !headerParmas.projectIds
+    // ) {
+    //   return
+    // }
+    // if (headerParmas.time.type === 0 && !headerParmas.time.time) {
+    //   return
+    // }
     if (!headerParmas.view.value) {
       return
     }
-    console.log(
-      valueHeaderStr !== JSON.stringify(headerParmas),
-      headerParmas,
-      'wo s ces',
-    )
-    if (JSON.stringify(headerParmas) === valueHeaderStr) {
-      console.log('ppp')
-    }
+
     // 监听对象第一次会走两次接口 转成字符窜判断
     setValueHeaderStr(JSON.stringify(headerParmas))
     valueHeaderStr !== JSON.stringify(headerParmas) && init()
