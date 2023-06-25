@@ -179,7 +179,7 @@ const View = (props: View) => {
                     optionsDefault?.config?.end_time,
                   ]
                 : // eslint-disable-next-line no-undefined
-                  undefined,
+                  '',
           },
           view: {
             title: optionsDefault.name,
@@ -232,7 +232,7 @@ const View = (props: View) => {
                 ? // eslint-disable-next-line no-undefined
                   [item?.config?.start_time, item?.config?.end_time]
                 : // eslint-disable-next-line no-undefined
-                  undefined,
+                  '',
           },
           view: {
             title: item.name,
