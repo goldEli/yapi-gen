@@ -478,6 +478,7 @@ const DndKitTable = (props: any) => {
               projectId={projectId}
               record={record}
               onChangeStatus={item => onChangeStatus(item)}
+              type={2}
             >
               <StateTag
                 onClick={record.isExamine ? onExamine : void 0}

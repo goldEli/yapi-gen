@@ -31,6 +31,7 @@ const CreateNoteModal = (props: any) => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
 
+  const [defaultData, setDefaultData] = useState([])
   const [taskTime, setTaskTime] = useState(false)
 
   const onValidator = (rule: any, value: any) => {
@@ -51,7 +52,6 @@ const CreateNoteModal = (props: any) => {
   // 验证定时发送时间
 
   const onValidator2 = (rule: any, value: any) => {
-    console.log(value)
     if (!value) {
       return Promise.reject(new Error('请填写定时发送时间'))
     }
@@ -232,6 +232,8 @@ const CreateNoteModal = (props: any) => {
 
   const getEditData = async () => {
     const res = await getMyAllSysNoticeDetail(props.editId)
+
+    setDefaultData(res.recipient.user_ids)
     form.setFieldsValue({
       content: res.content,
       title: res.title,
@@ -353,7 +355,7 @@ const CreateNoteModal = (props: any) => {
             label={<LabelTitle>{t('recipient')}</LabelTitle>}
             rules={[{ required: true, message: '请选择接收对象!' }]}
           >
-            <AcceptorSelection />
+            <AcceptorSelection data={defaultData} />
           </Form.Item>
 
           <Form.Item

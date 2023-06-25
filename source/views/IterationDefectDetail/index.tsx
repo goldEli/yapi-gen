@@ -52,7 +52,7 @@ const IterationDefectDetail = () => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useDispatch()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, flawId, changeIds } = paramsData
   const { open, ShareModal } = useShareModal()
@@ -360,6 +360,10 @@ const IterationDefectDetail = () => {
     const newIndex = changeIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(getFlawInfo({ projectId: id, id: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, flawId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   // 向下查找需求
@@ -367,6 +371,10 @@ const IterationDefectDetail = () => {
     const newIndex = changeIds[currentIndex + 1]
     if (currentIndex === changeIds?.length - 1) return
     dispatch(getFlawInfo({ projectId: id, id: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, flawId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   useEffect(() => {

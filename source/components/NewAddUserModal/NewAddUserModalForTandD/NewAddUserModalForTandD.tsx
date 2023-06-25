@@ -28,6 +28,7 @@ import { getMessage } from '@/components/Message'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
 import NewAddShowList from './NewAddShowList'
+import { getAffiliationUser } from '@/services/project'
 
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -226,11 +227,11 @@ interface ModalProps {
   isCalendar?: boolean
   // 展示某一个
   state?: number
+  defaultPeople?: any
 }
 
 const NewAddUserModalForTandD = (props: ModalProps) => {
   const [t] = useTranslation()
-
   const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组
   const [selectDataList, setSelectDataList] = useState<any>()
@@ -294,8 +295,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       if (res[i].staffs?.length >= 1) {
         const data = res[i].staffs?.map((el: any) => ({
           ...el,
-          staffs: { ...el, id: `department_id_${el.id}` },
-          id: `department_id_${el.id}`,
+          staffs: { ...el, id: el.id },
+          id: el.id,
         }))
         if (res[i].children) {
           res[i].children = [...res[i]?.children, ...data]
@@ -307,8 +308,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
         newTreeData(res[i].children)
         res[i].staffs = res[i].staffs?.map((el: any) => ({
           ...el,
-          staffs: { ...el, id: `department_id_${el.id}` },
-          id: `department_id_${el.id}`,
+          staffs: { ...el, id: el.id },
+          id: el.id,
         }))
       }
     }
@@ -482,12 +483,9 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     if (props.isPermisGroup) {
       await form.validateFields()
 
-      props?.onConfirm?.(
-        tabsActive === 1 ? setData : personData,
-        form.getFieldsValue().userGroupId,
-      )
+      props?.onConfirm?.(personData, form.getFieldsValue().userGroupId)
     } else {
-      props?.onConfirm?.(tabsActive === 1 ? setData : personData)
+      props?.onConfirm?.(personData)
     }
   }
 
@@ -584,7 +582,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   // 处理数据有children解析为key作为右边
 
   const getHaveChildBykeys = (keys: any) => {
-    //部门的处理方法
+    // 部门的处理方法
     if (tabsActive === 1) {
       const flattenedStaffs = [
         ...new Set(
@@ -667,7 +665,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     if (tabsActive === 1) {
       const allStaffs = flattenStaffs([showTreeData])
 
-      //去重
+      // 去重
       const newData = allStaffs.reduce((acc: any, current: any) => {
         // 使用对象来检查已经存在的id值
         const ids = acc.map((item: any) => item.id)
@@ -680,7 +678,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
         return acc
       }, [])
 
-      //判断 拿到的是否包含一部分
+      // 判断 拿到的是否包含一部分
       const isSomeHave = personData.some((item: any) =>
         newData.map((i: { id: any }) => i.id).includes(item.id),
       )
@@ -693,9 +691,9 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       return
     }
     // setKeys(showTreeData)
-    //拿到所有child
+    // 拿到所有child
     const findBottomChildrens = findBottomChildren([showTreeData])
-    //去重
+    // 去重
     const newData = findBottomChildrens.reduce((acc: any, current: any) => {
       // 使用对象来检查已经存在的id值
       const ids = acc.map((item: any) => item.id)
@@ -708,7 +706,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       return acc
     }, [])
 
-    //判断 拿到的是否包含一部分
+    // 判断 拿到的是否包含一部分
     const isSomeHave = personData.some((item: any) =>
       newData.map((i: { id: any }) => i.id).includes(item.id),
     )
@@ -724,7 +722,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   const isSomeChoose = () => {
     if (showTreeData && tabsActive === 0) {
       const findBottomChildrens = findBottomChildren([showTreeData])
-      //去重
+      // 去重
       const newData = findBottomChildrens.reduce((acc: any, current: any) => {
         // 使用对象来检查已经存在的id值
         const ids = acc.map((item: any) => item.id)
@@ -746,7 +744,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     }
     if (showTreeData && tabsActive === 1) {
       const findBottomChildrens = flattenStaffs([showTreeData])
-      //去重
+      // 去重
       const newData = findBottomChildrens.reduce((acc: any, current: any) => {
         // 使用对象来检查已经存在的id值
         const ids = acc.map((item: any) => item.id)
@@ -771,7 +769,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   const isAllChoose = () => {
     if (showTreeData && tabsActive === 0) {
       const findBottomChildrens = findBottomChildren([showTreeData])
-      //去重
+      // 去重
       const newData = findBottomChildrens.reduce((acc: any, current: any) => {
         // 使用对象来检查已经存在的id值
         const ids = acc.map((item: any) => item.id)
@@ -793,7 +791,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     }
     if (showTreeData && tabsActive === 1) {
       const findBottomChildrens = findBottomChildren([showTreeData])
-      //去重
+      // 去重
       const newData = findBottomChildrens.reduce((acc: any, current: any) => {
         // 使用对象来检查已经存在的id值
         const ids = acc.map((item: any) => item.id)
@@ -814,6 +812,50 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       return isAll
     }
   }
+  function getFilterArr(arr1: any, arr2: any, type?: any) {
+    return arr1.filter((i: any) => {
+      if (type) {
+        const splitArr = i.id.split('_')
+
+        const result = splitArr.length > 1 ? splitArr[2] : ''
+
+        return arr2.includes(Number(result))
+      }
+      return arr2.includes(i.id)
+    })
+  }
+  const setDefaultPeople = async () => {
+    const res = await getAffiliationUser(0)
+
+    const data = getFilterArr(res, props.defaultPeople)
+    setPersonData(
+      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
+    )
+  }
+  useEffect(
+    () => {
+      if (props.defaultPeople && props.defaultPeople.length > 0) {
+        setDefaultPeople()
+        // if (tabsActive === 0) {
+        //   if (selectDataList?.length > 0) {
+        //     const data = getFilterArr(selectDataList, props.defaultPeople)
+        //     console.log(data)
+        //     setPersonData(data)
+        //   }
+        // }
+        // if (tabsActive === 1) {
+        //   if (selectDataList?.length > 0) {
+        //     const data = getFilterArr(selectDataList, props.defaultPeople)
+
+        //     setPersonData(data)
+        //   }
+        // }
+      }
+    },
+    [
+      // props.defaultPeople, tabsActive, selectDataList
+    ],
+  )
 
   return (
     <ModalStyle
@@ -847,6 +889,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
           <SelectStyle
             notFoundContent={null}
             showSearch
+            allowClear
             style={{ width: 270 }}
             // eslint-disable-next-line no-undefined
             value={searchVal || undefined}
@@ -864,7 +907,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                   className={tabsActive === index ? 'tabsActive' : ''}
                   onClick={() => {
                     setCheckedKeys([])
-                    setPersonData([])
+                    setSelectDataList([])
+                    // setPersonData([])
                     setSearchVal('')
                     setTabsActive(index)
                     setShowTreeData({
