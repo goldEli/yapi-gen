@@ -14,11 +14,7 @@ import {
 } from './style'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  setFilterKeys,
-  setIsUpdateAddWorkItem,
-  setFilterParams,
-} from '@store/project'
+import { setFilterKeys, setFilterParams } from '@store/project'
 import WrapLeft from './components/WrapLeft'
 import DefectTable from './components/DefectTable'
 import Operation from './components/Operation'
@@ -176,7 +172,6 @@ const Index = (props: any) => {
     // props.onIsUpdate?.()
     // dispatch(setIsRefresh(false))
     // setIsUpdated(false)
-    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   // 更新缺陷列表，state： 是否有加载动画，topId: 用于树形结构展开，isClass： 是否编辑的是需求分类

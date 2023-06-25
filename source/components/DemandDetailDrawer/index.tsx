@@ -262,7 +262,7 @@ const DemandDetailDrawer = () => {
       await updateDemandStatus(value)
       getMessage({ msg: t('common.statusSuccess'), type: 'success' })
       getDemandDetail()
-      dispatch(setIsUpdateAddWorkItem(true))
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     } catch (error) {
       //
     }
@@ -280,7 +280,7 @@ const DemandDetailDrawer = () => {
       setIsDelete(false)
       onCancel()
       // 更新列表
-      dispatch(setIsUpdateAddWorkItem(true))
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     } catch (error) {
       //
     }

@@ -381,7 +381,7 @@ const SprintDetailDrawer = () => {
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     onCancel()
     // 更新列表
-    dispatch(setIsUpdateAddWorkItem(true))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 删除事务弹窗

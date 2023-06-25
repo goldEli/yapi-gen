@@ -36,7 +36,7 @@ export interface CounterState {
   // 过滤的参数
   filterParams: any
   // 创建需求成功后是否刷新
-  isUpdateAddWorkItem: any
+  isUpdateAddWorkItem: number
 
   // 事务-详情/浮层更新
   isChangeDetailAffairs: boolean
@@ -85,7 +85,7 @@ const initialState: CounterState = {
   isUpdateChangeLog: false,
   createCategory: {},
   filterParams: {},
-  isUpdateAddWorkItem: false,
+  isUpdateAddWorkItem: 0,
   isChangeDetailAffairs: false,
 }
 

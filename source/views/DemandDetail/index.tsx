@@ -41,11 +41,7 @@ import {
   updateDemandStatus,
   updateTableParams,
 } from '@/services/demand'
-import {
-  setAddWorkItemModal,
-  setIsUpdateAddWorkItem,
-  setIsUpdateStatus,
-} from '@store/project'
+import { setAddWorkItemModal, setIsUpdateStatus } from '@store/project'
 import { setIsRefresh } from '@store/user'
 import ChildDemand from './components/ChildDemand'
 import ChangeRecord from './components/ChangeRecord'
@@ -433,9 +429,6 @@ const DemandDetail = () => {
     if (isUpdateAddWorkItem) {
       dispatch(setDemandInfo({}))
       dispatch(getDemandInfo({ projectId: id, id: demandId }))
-      setTimeout(() => {
-        setIsUpdateAddWorkItem(false)
-      }, 0)
     }
   }, [isUpdateAddWorkItem])
 

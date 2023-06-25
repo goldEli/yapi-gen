@@ -11,15 +11,8 @@ import {
   setAddWorkItemModal,
   setFilterParams,
   setFilterParamsModal,
-  setIsUpdateAddWorkItem,
 } from '@store/project'
 import { setIsRefresh } from '@store/user'
-import {
-  deleteDemand,
-  updateDemandStatus,
-  updatePriority,
-  getDemandList,
-} from '@/services/demand'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -117,7 +110,6 @@ const Flaw = (props: FlawProps) => {
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
-    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   const onChangePage = (page: number, size: number) => {

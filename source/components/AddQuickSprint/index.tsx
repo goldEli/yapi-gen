@@ -39,9 +39,12 @@ const ParentWrap = styled.div`
 const AddQuickSprint = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { addQuickSprintModal, projectInfo, projectInfoValues } = useSelector(
-    store => store.project,
-  )
+  const {
+    addQuickSprintModal,
+    projectInfo,
+    projectInfoValues,
+    isUpdateAddWorkItem,
+  } = useSelector(store => store.project)
   const { visible, params } = addQuickSprintModal
   const [form] = Form.useForm()
 
@@ -63,7 +66,7 @@ const AddQuickSprint = () => {
     onClose()
     // 需要更新子事务、链接事务详情及列表
     dispatch(setIsChangeDetailAffairs(true))
-    dispatch(setIsUpdateAddWorkItem(true))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 计算类别

@@ -43,11 +43,7 @@ import FlawInfo from './components/FlawInfo'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import RelationStories from './components/RelationStories'
-import {
-  setAddWorkItemModal,
-  setIsUpdateAddWorkItem,
-  setIsUpdateStatus,
-} from '@store/project'
+import { setAddWorkItemModal, setIsUpdateStatus } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 
@@ -395,9 +391,6 @@ const IterationDefectDetail = () => {
     if (isUpdateAddWorkItem) {
       dispatch(setFlawInfo({}))
       dispatch(getFlawInfo({ projectId: id, id: flawId }))
-      setTimeout(() => {
-        setIsUpdateAddWorkItem(false)
-      }, 0)
     }
   }, [isUpdateAddWorkItem])
 

@@ -304,6 +304,7 @@ const SprintProjectSprint: React.FC = () => {
   })
   const [checkCommission, setCheckCommission] = useState(false)
   const { userPreferenceConfig } = useSelector(store => store.user)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
 
   const inform = [
     {
@@ -450,6 +451,12 @@ const SprintProjectSprint: React.FC = () => {
     }
   }, [sprintRefresh])
 
+  useEffect(() => {
+    // 监听创建事务，刷新页面
+    dispatch(getLeftSprintList(leftSearchObject))
+    dispatch(getRightSprintList(searchObject))
+  }, [isUpdateAddWorkItem])
+
   const filterContent = (
     <div className="filter">
       {(activeKey === 0 ? filterList : filterList1).map((item: any) => (
@@ -528,7 +535,6 @@ const SprintProjectSprint: React.FC = () => {
                         type: 'create',
                       })
                     } else {
-                      // Todo 新建长故事
                       dispatch(
                         setAddWorkItemModal({
                           visible: true,
