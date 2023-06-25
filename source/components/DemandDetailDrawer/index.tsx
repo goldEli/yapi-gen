@@ -48,7 +48,10 @@ import {
   DownWrap,
 } from './style'
 import CommonButton from '../CommonButton'
-import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
+import {
+  getDemandCommentList,
+  saveDemandDetailDrawer,
+} from '@store/demand/demand.thunk'
 import { getMessage } from '../Message'
 import { DemandOperationDropdownMenu } from '../TableDropdownMenu/DemandDropdownMenu'
 import DetailsSkeleton from '../DetailsSkeleton'
@@ -263,6 +266,14 @@ const DemandDetailDrawer = () => {
       getMessage({ msg: t('common.statusSuccess'), type: 'success' })
       getDemandDetail()
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+      dispatch(
+        getDemandCommentList({
+          projectId: drawerInfo.projectId,
+          demandId: drawerInfo.id,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
     } catch (error) {
       //
     }
@@ -456,7 +467,7 @@ const DemandDetailDrawer = () => {
               open={isMoreVisible}
               onOpenChange={setIsMoreVisible}
               placement="bottomRight"
-              trigger={['click', 'hover']}
+              trigger={['click']}
               getPopupContainer={n => n}
               content={
                 <DemandOperationDropdownMenu

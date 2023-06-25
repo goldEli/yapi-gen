@@ -154,7 +154,14 @@ const DemandDetail = () => {
     await updateDemandStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
-    // dispatch(setIsUpdateStatus(true))
+    dispatch(
+      getDemandCommentList({
+        projectId: id,
+        demandId: demandInfo.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   // 关闭类别弹窗

@@ -90,6 +90,14 @@ const IterationDefectDetail = () => {
     await updateFlawStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
+    dispatch(
+      getFlawCommentList({
+        projectId: id,
+        id: flawInfo.id || 0,
+        page: 1,
+        pageSize: 20,
+      }),
+    )
   }
 
   // 关闭类别弹窗

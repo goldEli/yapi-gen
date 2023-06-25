@@ -230,6 +230,14 @@ const FlawDetailDrawer = () => {
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     getFlawDetail()
     dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    dispatch(
+      getFlawCommentList({
+        projectId: projectInfo.id,
+        id: drawerInfo.id,
+        page: 1,
+        pageSize: 9999,
+      }),
+    )
   }
 
   // 是否审核
