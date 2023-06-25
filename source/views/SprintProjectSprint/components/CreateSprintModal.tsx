@@ -130,18 +130,19 @@ const CreateSprintModal = (props: sprintProps) => {
           }
         }
         if (
-          (moment(value?.group?.date?.[0]).isSame(
+          ((moment(value?.group?.date?.[0]).isSame(
             editData?.between_date?.[0],
           ) ||
             moment(value?.group?.date?.[0]).isBefore(
               editData?.between_date?.[0],
             )) &&
-          (moment(value?.group?.date?.[1]).isSame(
-            editData?.between_date?.[1],
-          ) ||
-            moment(value?.group?.date?.[1]).isAfter(
+            (moment(value?.group?.date?.[1]).isSame(
               editData?.between_date?.[1],
-            ))
+            ) ||
+              moment(value?.group?.date?.[1]).isAfter(
+                editData?.between_date?.[1],
+              ))) ||
+          editData?.between_date?.every((i: any) => !i)
         ) {
           updateSprint()
         } else {

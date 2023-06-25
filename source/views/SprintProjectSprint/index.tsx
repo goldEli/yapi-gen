@@ -187,6 +187,12 @@ const Right = styled.div`
 `
 const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-left: 16px;
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(
+      .ant-select-customize-input
+    )
+    .ant-select-selector {
+    box-shadow: 0 0 0 0px;
+  }
 `
 const CategorySelectWrap = styled.div`
   width: 280px;
@@ -699,6 +705,7 @@ const SprintProjectSprint: React.FC = () => {
                   search: {
                     ...searchObject.search,
                     user_ids: [],
+                    category_id: [],
                   },
                 })
                 dispatch(setCheckList(checkList.map(() => true)))

@@ -99,7 +99,6 @@ const Iteration = (props: Props) => {
     setTimekey(index)
     dispatch(
       setHeaderParmas({
-        iterate_ids: [],
         period_time: 'one_month',
         time: {
           type: 1,
@@ -359,7 +358,6 @@ const Iteration = (props: Props) => {
       }),
     )
   }
-  console.log(headerParmas)
   // 获取最小时间
   const minDate = (data: any) => {
     let mint: string = data.reduce(

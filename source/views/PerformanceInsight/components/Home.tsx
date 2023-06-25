@@ -234,6 +234,7 @@ const Home = () => {
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
+    console.log(headerParmas.time.type, 'headerParmas.time.type')
     const res =
       type === 'add'
         ? await createViewList({
@@ -245,7 +246,12 @@ const Home = () => {
                 homeType === 'all' ? undefined : headerParmas.iterate_ids,
               project_id: headerParmas.projectIds,
               user_ids: headerParmas.users,
-              period_time: getDateStr(headerParmas.time.type),
+              period_time:
+                headerParmas.time.type === 0
+                  ? ''
+                  : getDateStr(headerParmas.time.type)
+                  ? getDateStr(headerParmas.time.type)
+                  : 'one_month',
               start_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[0]
@@ -597,22 +603,26 @@ const Home = () => {
 
   useEffect(() => {
     // 统一监听参数变化，发起请求刷新页面
-    // if (
-    //   !!headerParmas.time?.time &&
-    //   !!headerParmas.period_time &&
-    //   !headerParmas.iterate_ids &&
-    //   !headerParmas.users &&
-    //   !headerParmas.projectIds
-    // ) {
-    //   return
-    // }
-    // if (headerParmas.time.type === 0 && !headerParmas.time.time) {
-    //   return
-    // }
-    // if (!headerParmas.view.value) {
-    //   return
-    // }
-    console.log(valueHeaderStr !== JSON.stringify(headerParmas), 'wo s ces')
+    if (
+      !!headerParmas.time?.time &&
+      !!headerParmas.period_time &&
+      !headerParmas.iterate_ids &&
+      !headerParmas.users &&
+      !headerParmas.projectIds
+    ) {
+      return
+    }
+    if (headerParmas.time.type === 0 && !headerParmas.time.time) {
+      return
+    }
+    if (!headerParmas.view.value) {
+      return
+    }
+    console.log(
+      valueHeaderStr !== JSON.stringify(headerParmas),
+      headerParmas,
+      'wo s ces',
+    )
     // 监听对象第一次会走两次接口 转成字符窜判断
     setValueHeaderStr(JSON.stringify(headerParmas))
     valueHeaderStr !== JSON.stringify(headerParmas) && init()
