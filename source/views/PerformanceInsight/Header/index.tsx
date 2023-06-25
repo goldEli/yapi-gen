@@ -116,8 +116,9 @@ const Iteration = (props: Props) => {
     // 展示的tabs不同
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
+    console.log(props.defalutConfig, 'props.defalutConfig')
     setPerson(props.defalutConfig?.user_ids || [])
-    getTime(props.defalutConfig?.period_time || 'one_month')
+    getTime(props.defalutConfig?.period_time || '')
     // 回显是否是迭代还是周期
     if (props.iterateViewIds.length >= 1) {
       props.homeType === 'iteration' || props.homeType === 'sprint'
@@ -473,8 +474,7 @@ const Iteration = (props: Props) => {
                 setHeaderParmas({
                   time: {
                     type: e,
-                    // eslint-disable-next-line no-undefined
-                    time: undefined,
+                    time: '',
                   },
                   period_time: periodTimes.find(item => item.value === e)
                     ?.label,
