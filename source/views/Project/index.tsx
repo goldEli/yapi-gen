@@ -85,6 +85,9 @@ const ProjectManagementOptimization = () => {
   const { groupId: storeGid, typeId } = useSelector(
     state => state.createProject,
   )
+
+  console.log('isGrid', isGrid)
+
   const inform = [
     {
       key: 0,
@@ -422,7 +425,7 @@ const ProjectManagementOptimization = () => {
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}
       />
-      {userPreferenceConfig?.guidePageConfig?.project_list === 1 ? (
+      {userPreferenceConfig?.guidePageConfig?.project_list === 1 && isGrid ? (
         <GuideModal
           width={784}
           height={700}
