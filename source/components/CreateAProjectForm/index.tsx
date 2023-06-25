@@ -244,6 +244,7 @@ const CreateAProjectForm = () => {
   const getProjectInfo = async () => {
     const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
     const res2 = await getAffiliationUser(res.team_id)
+    console.log(res2, 'rererer')
 
     setSelectLeaders(
       res2.map((i: any) => ({
@@ -374,7 +375,6 @@ const CreateAProjectForm = () => {
       setModel(0)
     }
   }
-  console.log(multipleSelectionItems, '克隆ID')
 
   return (
     <CommonModal2
