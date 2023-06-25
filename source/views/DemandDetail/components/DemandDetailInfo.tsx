@@ -16,16 +16,17 @@ const DemandDetailInfo = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, demandId } = paramsData
+  const { id } = paramsData
   const LeftDom = useRef<HTMLDivElement>(null)
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const [focus, setFocus] = useState(false)
   const minWidth = 400
   const [leftWidth, setLeftWidth] = useState(400)
+  const { demandInfo } = useSelector(store => store.demand)
 
   // 更新
   const onUpdate = () => {
-    dispatch(getDemandInfo({ projectId: id, id: demandId }))
+    dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
   }
 
   // 拖动线条

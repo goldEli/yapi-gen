@@ -34,19 +34,18 @@ const FlawInfo = () => {
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, flawId } = paramsData
+  const { id } = paramsData
   const { flawInfo, flawCommentList } = useSelector(store => store.flaw)
   const [activeTabs, setActiveTabs] = useState(1)
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(400)
   //   刷新缺陷详情
   const onUpdate = () => {
-    dispatch(getFlawInfo({ projectId: id, id: flawId }))
+    dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
   }
 
   // 跳转配置
   const onToConfig = () => {
-    //
     dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
@@ -65,7 +64,7 @@ const FlawInfo = () => {
     dispatch(
       getFlawCommentList({
         projectId: id,
-        id: flawId,
+        id: flawInfo.id || 0,
         page: 1,
         pageSize: 999,
       }),
@@ -96,7 +95,7 @@ const FlawInfo = () => {
         {flawInfo.id && (
           <FlawInfoInfoItem>
             <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
-            <FlawStatus pid={id} sid={flawId} />
+            <FlawStatus pid={id} sid={flawInfo.id} />
           </FlawInfoInfoItem>
         )}
       </FlawInfoLeft>

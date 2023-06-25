@@ -233,7 +233,7 @@ declare namespace API.Affairs {
   namespace AddAffairsComment {
     type Params = {
       projectId: number
-      sprintId: number
+      sprintId?: number
       content: string
       attachment?: Model.Affairs.AddAffairsCommentAttach[]
       a_user_ids?: (string | null)[]

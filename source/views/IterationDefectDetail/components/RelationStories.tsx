@@ -54,7 +54,7 @@ const RelationStories = (props: RelationStoriesProps) => {
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, flawId } = paramsData
+  const { id } = paramsData
   const { projectInfo } = useSelector(store => store.project)
   const [searchValue, setSearchValue] = useState('')
   const [isVisible, setIsVisible] = useState(false)

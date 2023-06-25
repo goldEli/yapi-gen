@@ -82,14 +82,14 @@ const IterationDefectDetail = () => {
   }
 
   const onUpdate = () => {
-    dispatch(getFlawInfo({ projectId: id, id: flawId }))
+    dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
   }
 
   // 修改缺陷状态
   const onChangeStatus = async (value: any) => {
     await updateFlawStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getFlawInfo({ projectId: id, id: flawId }))
+    dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
   }
 
   // 关闭类别弹窗
@@ -105,14 +105,14 @@ const IterationDefectDetail = () => {
     await form.validateFields()
     await updateFlawCategory({
       projectId: id,
-      id: flawId,
+      id: flawInfo.id,
       ...form.getFieldsValue(),
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
     setIsShowCategory(false)
     dispatch(setIsUpdateStatus(true))
     // dispatch(setIsRefresh(true))
-    dispatch(getFlawInfo({ projectId: id, id: flawId }))
+    dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
     setTimeout(() => {
       form.resetFields()
     }, 100)
@@ -351,7 +351,7 @@ const IterationDefectDetail = () => {
   const onChangeTabs = (value: string) => {
     setTabActive(value)
     if (value === '1') {
-      dispatch(getFlawInfo({ projectId: id, id: flawId }))
+      dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
     }
   }
 
@@ -390,7 +390,7 @@ const IterationDefectDetail = () => {
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       dispatch(setFlawInfo({}))
-      dispatch(getFlawInfo({ projectId: id, id: flawId }))
+      dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
     }
   }, [isUpdateAddWorkItem])
 

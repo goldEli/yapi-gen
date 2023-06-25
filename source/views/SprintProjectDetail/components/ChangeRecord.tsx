@@ -67,7 +67,7 @@ const ChangeRecord = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { sprintId, id } = paramsData
+  const { id } = paramsData
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -79,11 +79,12 @@ const ChangeRecord = (props: Props) => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateChangeLog } = useSelector(store => store.project)
+  const { affairsInfo } = useSelector(store => store.affairs)
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
     const result = await getAffairsChangeLog({
-      sprintId,
+      sprintId: affairsInfo.id || 0,
       projectId: id,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,

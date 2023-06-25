@@ -22,6 +22,7 @@ import TableQuickEdit from '@/components/TableQuickEdit'
 import {
   CanOperation,
   IconFontWrapEdit,
+  SeverityWrap,
   SliderWrap,
 } from '@/components/StyleCommon'
 import CommonButton from '@/components/CommonButton'
@@ -32,6 +33,7 @@ import {
   updateAffairsTableParams,
 } from '@/services/affairs'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
+import ChangeSeverityPopover from '@/components/ChangeSeverityPopover'
 
 interface Props {
   detail?: any
@@ -134,6 +136,25 @@ const BasicDemand = (props: Props) => {
     return Object.keys(needChangeList).includes(key) ? needChangeList[key] : key
   }
 
+  // 修改严重程度
+  const onChangeSeverity = async (item: any) => {
+    await updateAffairsTableParams({
+      sprintId: item.id,
+      projectId: props.detail.projectId,
+      otherParams: {
+        severity: item.severity,
+      },
+    })
+    getMessage({ msg: '修改成功', type: 'success' })
+    props.onUpdate?.()
+    dispatch(
+      getAffairsInfo({
+        projectId: props.detail.projectId,
+        sprintId: props.detail?.id,
+      }),
+    )
+  }
+
   const getFieldData = async () => {
     const result = await getCategoryConfigList({
       projectId: props.detail?.projectId,
@@ -186,13 +207,19 @@ const BasicDemand = (props: Props) => {
           ? props.detail?.copySend?.map((i: any) => i.copysend.name).join(';')
           : '--',
       }
-    } else if (content === 'iterate_name') {
+    } else if (['iterate_name'].includes(content)) {
       // 迭代取值
       value = {
         defaultText:
           props.detail?.iterateName === '--' ? '' : props.detail?.iterateName,
         defaultHtml:
           props.detail?.iterateName === '--' ? '--' : props.detail?.iterateName,
+      }
+    } else if (content === 'discovery_version') {
+      // 发现版本取值
+      value = {
+        defaultText: props.detail?.discovery_version_name ?? '--',
+        defaultHtml: props.detail?.discovery_version_name ?? '--',
       }
     } else if (content === 'class') {
       // 需求分类取值
@@ -216,6 +243,13 @@ const BasicDemand = (props: Props) => {
         defaultHtml: props.detail?.expectedEnd || '--',
         valueType: ['date'],
       }
+    } else if (content === 'solution') {
+      // 解决方法
+      value = {
+        defaultText: props.detail?.solution || '',
+        defaultHtml: props.detail?.solution || '--',
+        valueType: ['text'],
+      }
     }
     return value
   }
@@ -225,11 +259,14 @@ const BasicDemand = (props: Props) => {
     let nodeComponent
 
     // 如果不属于下列字段的则渲染
-    if (!['schedule', 'parent_id', 'priority'].includes(item.content)) {
+    if (
+      !['schedule', 'parent_id', 'priority', 'severity'].includes(item.content)
+    ) {
       const filterContent = basicFieldList?.filter(
         (i: any) => i.content === item.content,
       )[0]
       const defaultValues = getDefaultValue(item.content)
+      console.log(defaultValues, '=defaultValuesdefaultValuesdefaultValues')
       nodeComponent = (
         <TableQuickEdit
           item={{
@@ -334,6 +371,38 @@ const BasicDemand = (props: Props) => {
             </CanOperation>
           </div>
         </ChangePriorityPopover>
+      )
+    } else if (item.content === 'severity') {
+      nodeComponent = (
+        <ChangeSeverityPopover
+          isCanOperation={isCanEdit}
+          record={{
+            id: props.detail.id,
+            project_id: props.detail.projectId,
+          }}
+          onChangeSeverity={onChangeSeverity}
+        >
+          <div
+            style={{
+              cursor: isCanEdit ? 'pointer' : 'inherit',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <CanOperation isCanEdit={isCanEdit}>
+              <SeverityWrap
+                style={{
+                  background: props.detail.severity?.color,
+                  width: 'max-content',
+                  cursor: isCanEdit ? 'pointer' : 'initial',
+                }}
+              >
+                {props.detail.severity?.content}
+              </SeverityWrap>
+              {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
+            </CanOperation>
+          </div>
+        </ChangeSeverityPopover>
       )
     }
 

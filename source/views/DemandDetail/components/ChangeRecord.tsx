@@ -68,7 +68,7 @@ const ChangeRecord = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { demandId, id } = paramsData
+  const { id } = paramsData
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -80,11 +80,12 @@ const ChangeRecord = (props: Props) => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateChangeLog } = useSelector(store => store.project)
+  const { demandInfo } = useSelector(store => store.demand)
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
     const result = await getDemandChangeLog({
-      demandId,
+      demandId: demandInfo.id,
       projectId: id,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,

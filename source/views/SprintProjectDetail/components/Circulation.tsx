@@ -121,20 +121,21 @@ const Circulation = (props: Props) => {
   const [isSpin, setIsSpin] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { sprintId, id } = paramsData
+  const { id } = paramsData
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
   const { isUpdateChangeLog } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
+  const { affairsInfo } = useSelector(store => store.affairs)
 
   const getLogs = async (state: boolean) => {
     if (state) {
       setIsSpin(true)
       const result = await getAffairsStatusLog({
         projectId: id,
-        sprintId,
+        sprintId: affairsInfo.id || 0,
         all: true,
       })
       setStatusLogs({
@@ -145,7 +146,7 @@ const Circulation = (props: Props) => {
     } else {
       const result = await getAffairsStatusLog({
         projectId: id,
-        sprintId,
+        sprintId: affairsInfo.id || 0,
         all: true,
       })
       setStatusLogs({

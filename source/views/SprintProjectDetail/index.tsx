@@ -163,7 +163,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const onChangeStatus = async (value: any) => {
     await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
   }
 
   // 关闭类别弹窗
@@ -179,14 +179,14 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     await form.validateFields()
     await updateAffairsCategory({
       projectId: id,
-      sprintId,
+      sprintId: affairsInfo.id || 0,
       ...form.getFieldsValue(),
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
     setIsShowCategory(false)
     dispatch(setIsUpdateStatus(true))
     // dispatch(setIsRefresh(true))
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
     setTimeout(() => {
       form.resetFields()
     }, 100)
@@ -206,7 +206,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     if (value !== affairsInfo.name) {
       await updateAffairsTableParams({
         projectId: id,
-        id: sprintId,
+        id: affairsInfo.id || 0,
         otherParams: {
           name: value,
         },
@@ -387,7 +387,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       dispatch(setAffairsInfo({}))
-      dispatch(getAffairsInfo({ projectId: id, sprintId }))
+      dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
     }
   }, [isUpdateAddWorkItem])
 
@@ -470,7 +470,12 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <LongStroyBread
             longStroy={affairsInfo}
             onClick={() => {
-              dispatch(getAffairsInfo({ projectId: id, sprintId }))
+              dispatch(
+                getAffairsInfo({
+                  projectId: id,
+                  sprintId: affairsInfo.id || 0,
+                }),
+              )
             }}
           ></LongStroyBread>
         </div>

@@ -103,6 +103,19 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       })),
     )
     setEditInfo(props.affairsInfo.info || '')
+    console.log(
+      props.affairsInfo,
+      '=props.affairsInfoprops.affairsInfo',
+      props.affairsInfo?.attachment?.map((i: any) => ({
+        url: i.attachment.path,
+        id: i.id,
+        size: i.attachment.size,
+        time: i.created_at,
+        name: i.attachment.name,
+        suffix: i.attachment.ext,
+        username: i.user_name ?? '--',
+      })),
+    )
   }, [props.affairsInfo])
 
   return (

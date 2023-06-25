@@ -381,7 +381,10 @@ const SprintProjectAffair: React.FC<IProps> = props => {
               同时删除该事务下所有子事务
             </Checkbox>
           </DeleteConfirm>
-          <ProjectCommonOperation onInputSearch={onInputSearch} />
+          <ProjectCommonOperation
+            onInputSearch={onInputSearch}
+            title="搜索事务名称或编号"
+          />
           <ContentWrap>
             <ContentLeft>
               <WrapLeft
