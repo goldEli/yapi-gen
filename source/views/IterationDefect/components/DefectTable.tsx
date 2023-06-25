@@ -85,6 +85,10 @@ const DefectTable = (props: Props) => {
     }
   }, [tapSort])
 
+  useEffect(() => {
+    setSelectedRowKeys([])
+  }, [projectId])
+
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
   const onOperationCheckbox = (type: any, keys?: any) => {
     const redClassElements = document.getElementsByClassName(
