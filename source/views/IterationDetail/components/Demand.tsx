@@ -11,7 +11,6 @@ import {
   setAddWorkItemModal,
   setFilterParams,
   setFilterParamsModal,
-  setIsUpdateAddWorkItem,
 } from '@store/project'
 import { setIsRefresh } from '@store/user'
 import {
@@ -118,7 +117,6 @@ const Demand = (props: DemandProps) => {
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
-    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   const onChangePage = (page: number, size: number) => {

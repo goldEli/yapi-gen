@@ -16,7 +16,7 @@ export const getDemandInfo = createAsyncThunk(
   `${name}/getDemandInfo`,
   async (params: any) => {
     const res = await services.demand.getDemandInfo(params)
-    setIsUpdateAddWorkItem(false)
+    setIsUpdateAddWorkItem(0)
     return res
   },
 )

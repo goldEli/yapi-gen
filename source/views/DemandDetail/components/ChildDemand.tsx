@@ -30,7 +30,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
-import { setAddWorkItemModal, setIsUpdateAddWorkItem } from '@store/project'
+import { setAddWorkItemModal } from '@store/project'
 import { ComputedWrap } from '../style'
 import { getDemandInfo } from '@store/demand/demand.thunk'
 
@@ -121,7 +121,6 @@ const ChildDemand = (props: ChildDemandProps) => {
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
-    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   useEffect(() => {

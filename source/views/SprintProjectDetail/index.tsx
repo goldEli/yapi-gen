@@ -55,7 +55,7 @@ import {
 import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import LongStroyBread from '@/components/LongStroyBread'
-import { setIsUpdateAddWorkItem, setIsUpdateStatus } from '@store/project'
+import { setIsUpdateStatus } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 
@@ -270,8 +270,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 跳转配置
   const onToConfig = () => {
-    //
-    console.log(111, affairsInfo)
     dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
@@ -390,9 +388,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     if (isUpdateAddWorkItem) {
       dispatch(setAffairsInfo({}))
       dispatch(getAffairsInfo({ projectId: id, sprintId }))
-      setTimeout(() => {
-        setIsUpdateAddWorkItem(false)
-      }, 0)
     }
   }, [isUpdateAddWorkItem])
 

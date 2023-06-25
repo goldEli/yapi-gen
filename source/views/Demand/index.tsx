@@ -17,11 +17,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react'
 import WrapLeft from './components/WrapLeft'
 import { useTranslation } from 'react-i18next'
-import {
-  setFilterKeys,
-  setFilterParams,
-  setIsUpdateAddWorkItem,
-} from '@store/project'
+import { setFilterKeys, setFilterParams } from '@store/project'
 import Operation from './components/Operation'
 import DemandTree from './components/DemandTree'
 import DemandTable from './components/DemandTable'
@@ -173,7 +169,6 @@ const DemandIndex = () => {
     dispatch(setIsRefresh(false))
     setTopParentId(0)
     setIsUpdated(false)
-    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   //   全局搜索

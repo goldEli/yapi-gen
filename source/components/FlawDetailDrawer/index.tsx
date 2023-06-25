@@ -229,7 +229,7 @@ const FlawDetailDrawer = () => {
     await updateFlawStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     getFlawDetail()
-    dispatch(setIsUpdateAddWorkItem(true))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 是否审核
@@ -317,7 +317,7 @@ const FlawDetailDrawer = () => {
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     onCancel()
-    dispatch(setIsUpdateAddWorkItem(true))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 删除缺陷弹窗
