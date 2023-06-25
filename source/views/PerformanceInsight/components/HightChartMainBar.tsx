@@ -69,7 +69,6 @@ const HightChartMainBar = (props: {
         tickColor: '#ECEDEF',
         gridLineColor: '#ECEDEF',
         gridLineDashStyle: 'longdash',
-        // borderRadius: 6,
         min: 0,
         max: 100,
         title: {
