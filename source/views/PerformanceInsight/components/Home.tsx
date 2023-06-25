@@ -234,6 +234,7 @@ const Home = () => {
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
+    console.log(headerParmas.time.type, 'headerParmas.time.type')
     const res =
       type === 'add'
         ? await createViewList({
@@ -245,7 +246,12 @@ const Home = () => {
                 homeType === 'all' ? undefined : headerParmas.iterate_ids,
               project_id: headerParmas.projectIds,
               user_ids: headerParmas.users,
-              period_time: getDateStr(headerParmas.time.type),
+              period_time:
+                headerParmas.time.type === 0
+                  ? ''
+                  : getDateStr(headerParmas.time.type)
+                  ? getDateStr(headerParmas.time.type)
+                  : 'one_month',
               start_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[0]

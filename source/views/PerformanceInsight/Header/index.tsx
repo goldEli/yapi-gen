@@ -358,7 +358,6 @@ const Iteration = (props: Props) => {
       }),
     )
   }
-  console.log(headerParmas)
   // 获取最小时间
   const minDate = (data: any) => {
     let mint: string = data.reduce(
