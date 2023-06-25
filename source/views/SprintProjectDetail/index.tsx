@@ -71,7 +71,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const sprintDetailInfoDom: any = createRef()
   const [form] = Form.useForm()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, sprintId, changeIds } = paramsData
   const { affairsInfo } = useSelector(store => store.affairs)
@@ -360,6 +360,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     const newIndex = changeIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, sprintId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   // 向下查找需求
@@ -367,6 +371,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     const newIndex = changeIds[currentIndex + 1]
     if (currentIndex === changeIds?.length - 1) return
     dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, sprintId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   useEffect(() => {
