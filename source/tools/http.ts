@@ -72,6 +72,7 @@ client.config({
           `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket` ||
           (options.extra as any)?.isLogin,
       )
+
       options.headers.Authorization = localStorage.getItem('agileToken') || ''
       options.headers.Language = localStorage.getItem('language') || ''
       options.headers.System = getSystem()

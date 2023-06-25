@@ -383,13 +383,6 @@ const SprintProjectSprint: React.FC = () => {
   const onChangeFilter = (item: any) => {
     setCurrentFilter(item)
     setIsFilter(false)
-    setSearchObject({
-      ...searchObject,
-      search: {
-        ...searchObject.search,
-        sprint_status: item.id,
-      },
-    })
     setLeftSearchObject({
       ...leftSearchObject,
       search: {
@@ -418,32 +411,20 @@ const SprintProjectSprint: React.FC = () => {
   useEffect(() => {
     // 获取经办人数据
     getUserList()
-    // // 获取本地存储上次操作的数据
-    // const tempObj = localStorage.getItem(
-    //   encryptPhp(JSON.stringify({ id: userInfo.id })),
-    // )
-    // if (tempObj) {
-    //   const cacheObject = JSON.parse(tempObj)
-    //   setActiveKey(cacheObject?.activeKey)
-    //   setCurrentFilter(cacheObject?.currentFilter)
-    //   dispatch(setCheckList(cacheObject?.checkList))
-    // }
   }, [])
 
   useEffect(() => {
-    if (checkList.length) {
-      dispatch(
-        getRightSprintList({
-          ...searchObject,
-          search: {
-            ...searchObject.search,
-            resource_ids: leftSprintList.list
-              .filter((_, idx) => checkList[idx])
-              .map(k => k.id),
-          },
-        }),
-      )
-    }
+    dispatch(
+      getRightSprintList({
+        ...searchObject,
+        search: {
+          ...searchObject.search,
+          resource_ids: leftSprintList.list
+            .filter((_, idx) => checkList[idx])
+            .map(k => k.id),
+        },
+      }),
+    )
   }, [searchObject, checkList])
 
   useEffect(() => {

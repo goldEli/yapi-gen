@@ -308,7 +308,7 @@ const Sortable = (props: any) => {
                       </div>
                       <div style={{ flex: 1 }}>
                         {' '}
-                        {child.isCustomize === 2 ? '系统字段' : '自定义字段'}
+                        {child.isCustomize === 2 ? '系统字段1' : '自定义字段'}
                       </div>
                     </div>
                     <RightOperate>
@@ -379,7 +379,13 @@ const Sortable = (props: any) => {
                     </ListMsg>
                     <div style={{ flex: 1 }}>
                       {' '}
-                      {optionFields.find(ele => ele.type === child.attr)?.label}
+                      {
+                        optionFields.find(
+                          ele =>
+                            ele.type === child.attr ||
+                            child?.fieldContent?.attr,
+                        )?.label
+                      }
                     </div>
                     <div style={{ flex: 1 }}>
                       {' '}

@@ -241,7 +241,8 @@ const Header = () => {
                       (i: any) =>
                         i.id !== activeCategory?.id &&
                         i?.statusCount &&
-                        i.isCheck === 1,
+                        i.isCheck === 1 &&
+                        i.work_type === activeCategory.work_type,
                     )
                     ?.map((k: any) => ({ label: k.name, value: k.id }))}
                 />

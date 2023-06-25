@@ -10,6 +10,7 @@ import IconFont from '@/components/IconFont'
 import SearchInput from './SearchInput'
 import { CopyButton, ModalContentBox, Tips, WarnTips } from './styled'
 import { shareView, checkUpdates } from '@/services/sprint'
+import { viewsUpdate } from '@/services/efficiency'
 import { EMAIL_REGEXP } from '@/constants'
 import { copyLink, getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
@@ -27,6 +28,8 @@ interface ShareModalProps {
   title: string
   // 用于分享的数据
   otherConfig?: any
+  // 名字 name
+  name?: string
 }
 
 interface Options {
@@ -49,7 +52,8 @@ const useShareModal = () => {
   }
 
   const ShareModal: React.FC<ShareModalProps> = props => {
-    const { id, url, title, config } = props
+    // debugger
+    const { id, url, title, config, name } = props
     const [needSave, setNeedSave] = useState(false)
     const [form] = Form.useForm()
     const [t] = useTranslation()
@@ -72,6 +76,12 @@ const useShareModal = () => {
 
     // 确认分享
     const confirm = async () => {
+      // return
+      const saveViewsParams = {
+        id: id ?? 0,
+        name: name ?? '',
+        config: config,
+      }
       const data = await form.validateFields()
       // 判断是人员还是邮箱
       const params: API.Sprint.ShareView.Params = {
@@ -84,23 +94,26 @@ const useShareModal = () => {
       } else {
         params.email = data.name
       }
-      try {
-        const result = await shareView(params)
-        if (result && result.code === 0) {
-          getMessage({
-            msg: '分享成功',
-            type: 'success',
-          })
-          await onOkRef.current?.()
-          onClose()
-        } else {
-          getMessage({
-            msg: result?.msg,
-            type: 'error',
-          })
+      if (id && needSave) {
+        try {
+          await viewsUpdate(saveViewsParams)
+          const result = await shareView(params)
+          if (result && result.code === 0) {
+            getMessage({
+              msg: '分享成功',
+              type: 'success',
+            })
+            await onOkRef.current?.()
+            onClose()
+          } else {
+            getMessage({
+              msg: result?.msg,
+              type: 'error',
+            })
+          }
+        } catch (error) {
+          console.log(error)
         }
-      } catch (error) {
-        console.log(error)
       }
     }
 
