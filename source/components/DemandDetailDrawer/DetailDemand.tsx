@@ -2,19 +2,24 @@
 
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { addInfoDemand, deleteInfoDemand } from '@/services/demand'
+import {
+  addInfoDemand,
+  deleteInfoDemand,
+  updateDemandEditor,
+} from '@/services/demand'
 import { useSelector } from '@store/index'
 import { message } from 'antd'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '../DeleteConfirm'
 import IconFont from '../IconFont'
-import { AddWrap } from '../StyleCommon'
+import { AddWrap, TextWrapEdit } from '../StyleCommon'
 import UploadAttach from '../UploadAttach'
 import { ContentItem, Label } from './style'
 import DrawerTagComponent from './DrawerTagComponent'
-import { Editor } from '@xyfe/uikit'
+import { Editor, EditorRef } from '@xyfe/uikit'
 import { getMessage } from '../Message'
+import styled from '@emotion/styled'
 
 interface DetailDemand {
   detail: any
@@ -26,6 +31,9 @@ const DetailDemand = (props: DetailDemand) => {
   const { projectInfo } = useSelector(store => store.project)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
+  const [isEditInfo, setIsEditInfo] = useState(false)
+  const [editInfo, setEditInfo] = useState('')
+  const editorRef = useRef<EditorRef>(null)
 
   const onDeleteInfoAttach = async (file: any) => {
     setIsDelVisible(true)
@@ -71,6 +79,25 @@ const DetailDemand = (props: DetailDemand) => {
     setIsDelVisible(false)
   }
 
+  // 富文本失焦
+  const onBlurEditor = async () => {
+    setIsEditInfo(false)
+
+    if (editInfo === props.detail.info) return
+    const params = {
+      info: editInfo,
+      projectId: projectInfo.id,
+      id: props.detail.id,
+      name: props.detail.name,
+    }
+    await updateDemandEditor(params)
+    props.onUpdate()
+  }
+
+  useEffect(() => {
+    setEditInfo(props.detail.info)
+  }, [props.detail])
+
   return (
     <>
       <DeleteConfirm
@@ -81,15 +108,33 @@ const DetailDemand = (props: DetailDemand) => {
       />
       <ContentItem>
         <Label>{t('requirement_description')}</Label>
-        {props.detail.info ? (
+        {(isEditInfo || editInfo) && (
           <Editor
-            value={props.detail.info}
+            value={editInfo}
             getSuggestions={() => []}
-            readonly
+            readonly={!isEditInfo}
+            ref={editorRef}
+            onReadonlyClick={() => {
+              setIsEditInfo(true)
+              setTimeout(() => {
+                editorRef.current?.focus()
+              }, 10)
+            }}
+            onChange={(value: string) => setEditInfo(value)}
+            onBlur={onBlurEditor}
           />
-        ) : (
-          // <div dangerouslySetInnerHTML={{ __html: props.detail.info }} />
-          '--'
+        )}
+        {!isEditInfo && !editInfo && (
+          <TextWrapEdit
+            onClick={() => {
+              setIsEditInfo(true)
+              setTimeout(() => {
+                editorRef.current?.focus()
+              }, 10)
+            }}
+          >
+            --
+          </TextWrapEdit>
         )}
       </ContentItem>
       <ContentItem>

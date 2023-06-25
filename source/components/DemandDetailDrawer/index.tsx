@@ -9,6 +9,7 @@ import {
   deleteDemand,
   getDemandInfo,
   updateDemandStatus,
+  updateTableParams,
 } from '@/services/demand'
 import { getProjectInfo } from '@/services/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -55,6 +56,7 @@ import {
 import { getMessage } from '../Message'
 import { DemandOperationDropdownMenu } from '../TableDropdownMenu/DemandDropdownMenu'
 import DetailsSkeleton from '../DetailsSkeleton'
+import { copyLink } from '@/tools'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -93,6 +95,7 @@ const DemandDetailDrawer = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const commentDom: any = createRef()
+  const spanDom = useRef<HTMLSpanElement>(null)
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -257,6 +260,39 @@ const DemandDetailDrawer = () => {
   // 是否审核
   const onExamine = () => {
     getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
+  }
+
+  // 快捷修改名称
+  const onNameConfirm = async () => {
+    const value = spanDom.current?.innerText
+    if ((value?.length || 0) <= 0) {
+      getMessage({ type: 'warning', msg: '名称不能为空' })
+      return
+    }
+    if ((value?.length || 0) > 100) {
+      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      return
+    }
+    if (value !== drawerInfo.name) {
+      await updateTableParams({
+        projectId: drawerInfo.project_id ?? drawerInfo.projectId,
+        id: drawerInfo.id,
+        otherParams: {
+          name: value,
+        },
+      })
+      getMessage({ type: 'success', msg: '修改成功' })
+      // 提交名称
+      setDrawerInfo({
+        ...drawerInfo,
+        name: value,
+      })
+    }
+  }
+
+  // 复制标题
+  const onCopy = () => {
+    copyLink(drawerInfo.name, '复制成功！', '复制失败！')
   }
 
   // 修改状态
@@ -508,7 +544,19 @@ const DemandDetailDrawer = () => {
                   </DrawerHeader>
                 ))}
               </ParentBox>
-              <DemandName>{drawerInfo.name}</DemandName>
+              <DemandName>
+                <span
+                  className="name"
+                  ref={spanDom}
+                  contentEditable
+                  onBlur={onNameConfirm}
+                >
+                  {drawerInfo.name}
+                </span>
+                <span className="icon" onClick={onCopy}>
+                  <CommonIconFont type="copy" color="var(--neutral-n3)" />
+                </span>
+              </DemandName>
               {modeList.map((i: any) => (
                 <CollapseItem key={i.key}>
                   <CollapseItemTitle onClick={() => onChangeShowState(i)}>

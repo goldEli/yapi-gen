@@ -3,6 +3,16 @@
 import { filterTreeData, transData } from '@/tools'
 import * as http from '@/tools/http'
 
+// 编辑富文本
+export const updateFlawEditor = async (params: any) => {
+  await http.put<any>('updateFlaw', {
+    project_id: params.projectId,
+    info: params.info,
+    id: params.id,
+    name: params.name,
+  })
+}
+
 // 删除关联
 export const deleteFlawRelation = async (
   params: API.Flaw.DeleteRelation.Params,

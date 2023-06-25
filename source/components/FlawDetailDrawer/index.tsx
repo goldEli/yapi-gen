@@ -36,6 +36,7 @@ import {
   getFlawInfo,
   updateFlawComment,
   updateFlawStatus,
+  updateFlawTableParams,
 } from '@/services/flaw'
 import {
   getFlawCommentList,
@@ -103,6 +104,7 @@ const FlawDetailDrawer = () => {
   const [demandIds, setDemandIds] = useState([])
   const [showState, setShowState] = useState<any>(normalState)
   const leftWidth = 640
+  const spanDom = useRef<HTMLSpanElement>(null)
 
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
@@ -222,6 +224,39 @@ const FlawDetailDrawer = () => {
         },
       }),
     )
+  }
+
+  // 快捷修改名称
+  const onNameConfirm = async () => {
+    const value = spanDom.current?.innerText
+    if ((value?.length || 0) <= 0) {
+      getMessage({ type: 'warning', msg: '名称不能为空' })
+      return
+    }
+    if ((value?.length || 0) > 100) {
+      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      return
+    }
+    if (value !== drawerInfo.name) {
+      await updateFlawTableParams({
+        projectId: drawerInfo.project_id ?? drawerInfo.projectId,
+        id: drawerInfo.id,
+        otherParams: {
+          name: value,
+        },
+      })
+      getMessage({ type: 'success', msg: '修改成功' })
+      // 提交名称
+      setDrawerInfo({
+        ...drawerInfo,
+        name: value,
+      })
+    }
+  }
+
+  // 复制标题
+  const onCopy = () => {
+    copyLink(drawerInfo.name, '复制成功！', '复制失败！')
   }
 
   // 修改状态
@@ -347,11 +382,6 @@ const FlawDetailDrawer = () => {
         return Promise.resolve()
       },
     })
-  }
-
-  // 复制标题
-  const onCopy = () => {
-    copyLink(drawerInfo.name, '复制成功！', '复制失败！')
   }
 
   // 复制需求id
@@ -643,7 +673,14 @@ const FlawDetailDrawer = () => {
                 ))}
               </ParentBox>
               <DemandName>
-                <span className="name">{drawerInfo.name}</span>
+                <span
+                  className="name"
+                  ref={spanDom}
+                  contentEditable
+                  onBlur={onNameConfirm}
+                >
+                  {drawerInfo.name}
+                </span>
                 <span className="icon" onClick={onCopy}>
                   <CommonIconFont type="copy" color="var(--neutral-n3)" />
                 </span>

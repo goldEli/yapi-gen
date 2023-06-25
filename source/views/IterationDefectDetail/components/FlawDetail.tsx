@@ -6,16 +6,16 @@ import {
   FlawInfoTextWrap,
   FlawInfoWrap,
 } from '../style'
-import { Editor } from '@xyfe/uikit'
+import { Editor, EditorRef } from '@xyfe/uikit'
 import FlawTag from '@/components/TagComponent/FlawTag'
 import { useTranslation } from 'react-i18next'
-import { AddWrap } from '@/components/StyleCommon'
+import { AddWrap, TextWrapEdit } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSelector } from '@store/index'
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
-import { addInfoFlaw, deleteInfoFlaw } from '@/services/flaw'
+import { addInfoFlaw, deleteInfoFlaw, updateFlawEditor } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
 
 interface FlawDetailProps {
@@ -27,6 +27,9 @@ const FlawDetail = (props: FlawDetailProps) => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { projectInfo } = useSelector(store => store.project)
   const [tagList, setTagList] = useState<any>([])
+  const [isEditInfo, setIsEditInfo] = useState(false)
+  const [editInfo, setEditInfo] = useState('')
+  const editorRef = useRef<EditorRef>(null)
 
   //   添加附件
   const onAddInfoAttach = async (data: any) => {
@@ -70,6 +73,21 @@ const FlawDetail = (props: FlawDetailProps) => {
     })
   }
 
+  // 富文本失焦
+  const onBlurEditor = async () => {
+    setIsEditInfo(false)
+
+    if (editInfo === props.flawInfo.info) return
+    const params = {
+      info: editInfo,
+      projectId: projectInfo.id,
+      id: props.flawInfo.id,
+      name: props.flawInfo.name,
+    }
+    await updateFlawEditor(params)
+    props.onUpdate()
+  }
+
   useEffect(() => {
     setTagList(
       props.flawInfo?.tag?.map((i: any) => ({
@@ -78,6 +96,7 @@ const FlawDetail = (props: FlawDetailProps) => {
         name: i.tag?.content,
       })),
     )
+    setEditInfo(props.flawInfo.info)
   }, [props.flawInfo])
 
   return (
@@ -90,14 +109,33 @@ const FlawDetail = (props: FlawDetailProps) => {
         activeState
       >
         <FlawInfoLabel>描述</FlawInfoLabel>
-        {props.flawInfo?.info ? (
+        {(isEditInfo || editInfo) && (
           <Editor
-            value={props.flawInfo?.info}
+            value={editInfo}
             getSuggestions={() => []}
-            readonly
+            readonly={!isEditInfo}
+            ref={editorRef}
+            onReadonlyClick={() => {
+              setIsEditInfo(true)
+              setTimeout(() => {
+                editorRef.current?.focus()
+              }, 10)
+            }}
+            onChange={(value: string) => setEditInfo(value)}
+            onBlur={onBlurEditor}
           />
-        ) : (
-          <FlawInfoTextWrap>--</FlawInfoTextWrap>
+        )}
+        {!isEditInfo && !editInfo && (
+          <TextWrapEdit
+            onClick={() => {
+              setIsEditInfo(true)
+              setTimeout(() => {
+                editorRef.current?.focus()
+              }, 10)
+            }}
+          >
+            --
+          </TextWrapEdit>
         )}
       </FlawInfoInfoItem>
       <FlawInfoInfoItem>
