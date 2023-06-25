@@ -158,7 +158,6 @@ const CategoryDropdown = (props: IProps) => {
   }
 
   useEffect(() => {
-    console.log('props', props)
     if (categoryList) {
       const data = getTypeCategory(categoryList, 'work_type')
       const options = getOptions(data)

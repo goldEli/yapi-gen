@@ -374,7 +374,6 @@ const CreateAProjectForm = () => {
       setModel(0)
     }
   }
-  console.log(multipleSelectionItems, '克隆ID')
 
   return (
     <CommonModal2

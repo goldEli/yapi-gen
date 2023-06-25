@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 
 const useInputStatus = () => {
   const [isInputFocused, setIsInputFocused] = useState(false)
-  console.log(isInputFocused, '状态')
-
   useEffect(() => {
     const handleFocus = (e: any) => {
       setIsInputFocused(true)
