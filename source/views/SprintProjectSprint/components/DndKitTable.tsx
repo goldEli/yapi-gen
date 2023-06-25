@@ -209,6 +209,7 @@ const DndKitTable = (props: any) => {
           editId,
           projectId: record?.project_id,
           type: 4,
+          title: '编辑事务',
         },
       }),
     )
@@ -316,6 +317,17 @@ const DndKitTable = (props: any) => {
       dataIndex: 'story_prefix_key',
       key: 'story_prefix_key',
       width: 200,
+      render(value, record) {
+        return (
+          <TitleWrap
+            onClick={() => {
+              onClickItem(record)
+            }}
+          >
+            <span className="content">{value}</span>
+          </TitleWrap>
+        )
+      },
     },
     {
       title: '标题',
@@ -466,6 +478,7 @@ const DndKitTable = (props: any) => {
               projectId={projectId}
               record={record}
               onChangeStatus={item => onChangeStatus(item)}
+              type={2}
             >
               <StateTag
                 onClick={record.isExamine ? onExamine : void 0}
@@ -595,6 +608,7 @@ const DndKitTable = (props: any) => {
       ) {
         open({
           title: '移动事务',
+          okText: '移动',
           children: (
             <div>
               <div>该操作会影响冲刺范围</div>

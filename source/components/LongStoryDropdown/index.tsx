@@ -78,9 +78,13 @@ const LongStoryDropdown = (props: IProps) => {
       }
     }
     const methods = hasLongStroy ? addInfoAffairs : updateInfoAffairs
-    getMessage({ type: 'success', msg: hasLongStroy ? '添加成功' : '编辑成功' })
     try {
       await methods(params)
+      getMessage({
+        type: 'success',
+        msg: hasLongStroy ? '添加成功' : '编辑成功',
+      })
+
       onClick && onClick()
     } catch (error) {
       // error

@@ -127,7 +127,7 @@ const TabItem = (props: any) => {
               />
               <span className="text">{item.child_story_total}</span>
             </div>
-            <div style={{ width: 108 }}>
+            <div style={{ width: 76 }}>
               <Progress
                 strokeColor="var(--function-success)"
                 percent={
@@ -137,7 +137,7 @@ const TabItem = (props: any) => {
                         (
                           (item.story_finish_count / item.story_count) *
                           100
-                        ).toFixed(2),
+                        ).toFixed(0),
                       )
                 }
                 size="small"

@@ -380,10 +380,9 @@ const UploadAttach = (props: any) => {
         arr.push(obj)
       })
       setFileList(arr)
+    } else {
+      setFileList([])
     }
-    // else {
-    //   setFileList([])
-    // }
   }
   useEffect(() => {
     setDefaultList()

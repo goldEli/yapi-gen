@@ -106,7 +106,7 @@ const RightIcon = styled.div`
   }
   .filter {
     width: 120px;
-    height: 104px;
+    padding: 4px 0px;
     background: #ffffff;
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
     border-radius: 6px 6px 6px 6px;
@@ -187,6 +187,12 @@ const Right = styled.div`
 `
 const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-left: 16px;
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(
+      .ant-select-customize-input
+    )
+    .ant-select-selector {
+    box-shadow: 0 0 0 0px;
+  }
 `
 const CategorySelectWrap = styled.div`
   width: 280px;
@@ -304,6 +310,7 @@ const SprintProjectSprint: React.FC = () => {
   })
   const [checkCommission, setCheckCommission] = useState(false)
   const { userPreferenceConfig } = useSelector(store => store.user)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
 
   const inform = [
     {
@@ -450,6 +457,12 @@ const SprintProjectSprint: React.FC = () => {
     }
   }, [sprintRefresh])
 
+  useEffect(() => {
+    // 监听创建事务，刷新页面
+    dispatch(getLeftSprintList(leftSearchObject))
+    dispatch(getRightSprintList(searchObject))
+  }, [isUpdateAddWorkItem])
+
   const filterContent = (
     <div className="filter">
       {(activeKey === 0 ? filterList : filterList1).map((item: any) => (
@@ -528,12 +541,13 @@ const SprintProjectSprint: React.FC = () => {
                         type: 'create',
                       })
                     } else {
-                      // Todo 新建长故事
                       dispatch(
                         setAddWorkItemModal({
                           visible: true,
                           params: {
                             type: 3,
+                            title: '创建事务',
+                            noDataCreate: true,
                           },
                         }),
                       )
@@ -644,14 +658,14 @@ const SprintProjectSprint: React.FC = () => {
                 optionFilterProp="label"
                 showArrow
                 showSearch
-                value={searchObject.search?.user_id}
+                value={searchObject.search?.user_ids}
                 options={userOptions}
                 onChange={(users: any) => {
                   setSearchObject({
                     ...searchObject,
                     search: {
                       ...searchObject.search,
-                      user_id: users,
+                      user_ids: users,
                     },
                   })
                 }}
@@ -690,7 +704,8 @@ const SprintProjectSprint: React.FC = () => {
                   ...searchObject,
                   search: {
                     ...searchObject.search,
-                    user_id: [],
+                    user_ids: [],
+                    category_id: [],
                   },
                 })
                 dispatch(setCheckList(checkList.map(() => true)))

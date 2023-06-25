@@ -331,7 +331,8 @@ const Sortable = (props: any) => {
                         {child?.content === 'users_name' ||
                         child?.content === 'user_name' ||
                         child?.content === 'finish_at' ||
-                        child?.content === 'created_at' ? (
+                        child?.content === 'created_at' ||
+                        child?.content === 'priority' ? (
                           <DelBtnText> {t('p2.delete')}</DelBtnText>
                         ) : (
                           <DelBtn
@@ -375,7 +376,13 @@ const Sortable = (props: any) => {
                       </div>
                     </ListMsg>
                     <div style={{ flex: 1 }}>
-                      {optionFields.find(ele => ele.type === child.attr)?.label}
+                      {
+                        optionFields.find(
+                          ele =>
+                            ele.type === child.attr ||
+                            child?.fieldContent?.attr,
+                        )?.label
+                      }
                     </div>
                     <div style={{ flex: 1 }}>
                       {' '}

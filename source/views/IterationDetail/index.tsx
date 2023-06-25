@@ -53,7 +53,9 @@ const IterationDetail = () => {
   const [tabActive, setTabActive] = useState('1')
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { iterateInfo, isUpdateList } = useSelector(store => store.iterate)
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [filterState, setFilterState] = useState(true)
   const [settingState, setSettingState] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
@@ -339,7 +341,9 @@ const IterationDetail = () => {
       <ScreenMinHover
         icon="sync"
         label={t('common.refresh')}
-        onClick={() => dispatch(setIsUpdateAddWorkItem(true))}
+        onClick={() =>
+          dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+        }
       />
 
       <DividerWrap type="vertical" />

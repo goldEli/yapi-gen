@@ -26,7 +26,7 @@ const DemandDetailBasic = (props: Props) => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, demandId } = paramsData
+  const { id } = paramsData
   const { demandInfo } = useSelector(store => store.demand)
   const isRest = useSelector(store => store.scroll.isRest)
   const [activeTabs, setActiveTabs] = useState(1)
@@ -34,7 +34,7 @@ const DemandDetailBasic = (props: Props) => {
 
   // 更新详情
   const onUpdate = () => {
-    dispatch(getDemandInfo({ projectId: id, id: demandId }))
+    dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
   }
 
   // 跳转配置
@@ -58,7 +58,7 @@ const DemandDetailBasic = (props: Props) => {
   const getList = async () => {
     const result = await getCommentList({
       projectId: id,
-      demandId,
+      demandId: demandInfo.id,
       page: 1,
       pageSize: 999,
     })

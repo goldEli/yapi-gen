@@ -133,7 +133,9 @@ const CommonModal = (props: CommonModalProps) => {
                     if (pm?.finally) {
                       setLoading(true)
                       pm?.finally(() => {
-                        setLoading(false)
+                        setTimeout(() => {
+                          setLoading(false)
+                        }, 1000)
                       })
                     }
                   }

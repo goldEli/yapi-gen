@@ -43,7 +43,9 @@ const AddWorkItem = () => {
   const dispatch = useDispatch()
   const rightDom: any = createRef()
   const leftDom: any = createRef()
-  const { addWorkItemModal } = useSelector(store => store.project)
+  const { addWorkItemModal, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const { params, visible } = addWorkItemModal
   const [isCreateWorkItem, setIsCreateWorkItem] = useState<any>({})
   // // 父需求列表
@@ -165,7 +167,7 @@ const AddWorkItem = () => {
       dispatch(setIsUpdateCreate(true))
     } else {
       // 更新列表
-      dispatch(setIsUpdateAddWorkItem(true))
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
 
     // 如果是快速创建，相应数据存缓存

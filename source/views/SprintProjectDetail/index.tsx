@@ -55,7 +55,7 @@ import {
 import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import LongStroyBread from '@/components/LongStroyBread'
-import { setIsUpdateAddWorkItem, setIsUpdateStatus } from '@store/project'
+import { setIsUpdateStatus } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 
@@ -71,7 +71,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const sprintDetailInfoDom: any = createRef()
   const [form] = Form.useForm()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, sprintId, changeIds } = paramsData
   const { affairsInfo } = useSelector(store => store.affairs)
@@ -163,7 +163,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const onChangeStatus = async (value: any) => {
     await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
   }
 
   // 关闭类别弹窗
@@ -179,14 +179,14 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     await form.validateFields()
     await updateAffairsCategory({
       projectId: id,
-      sprintId,
+      sprintId: affairsInfo.id || 0,
       ...form.getFieldsValue(),
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
     setIsShowCategory(false)
     dispatch(setIsUpdateStatus(true))
     // dispatch(setIsRefresh(true))
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
     setTimeout(() => {
       form.resetFields()
     }, 100)
@@ -206,7 +206,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     if (value !== affairsInfo.name) {
       await updateAffairsTableParams({
         projectId: id,
-        id: sprintId,
+        id: affairsInfo.id || 0,
         otherParams: {
           name: value,
         },
@@ -270,8 +270,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 跳转配置
   const onToConfig = () => {
-    //
-    console.log(111, affairsInfo)
     dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
@@ -362,6 +360,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     const newIndex = changeIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, sprintId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   // 向下查找需求
@@ -369,6 +371,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     const newIndex = changeIds[currentIndex + 1]
     if (currentIndex === changeIds?.length - 1) return
     dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, sprintId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   useEffect(() => {
@@ -389,10 +395,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       dispatch(setAffairsInfo({}))
-      dispatch(getAffairsInfo({ projectId: id, sprintId }))
-      setTimeout(() => {
-        setIsUpdateAddWorkItem(false)
-      }, 0)
+      dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
     }
   }, [isUpdateAddWorkItem])
 
@@ -475,13 +478,20 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <LongStroyBread
             longStroy={affairsInfo}
             onClick={() => {
-              dispatch(getAffairsInfo({ projectId: id, sprintId }))
+              dispatch(
+                getAffairsInfo({
+                  projectId: id,
+                  sprintId: affairsInfo.id || 0,
+                }),
+              )
             }}
           ></LongStroyBread>
         </div>
 
         <ButtonGroup size={16}>
-          <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          {changeIds.length > 0 && (
+            <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          )}
           <ChangeIconGroup>
             {currentIndex > 0 && (
               <UpWrap
@@ -519,7 +529,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <DropdownMenu
             placement="bottomRight"
             trigger={['click']}
-            menu={{ items }}
+            menu={{
+              items:
+                // 子任务不存在子事务模块
+                affairsInfo.work_type === 6
+                  ? items.filter((i: any) => i.key !== '2')
+                  : items,
+            }}
             getPopupContainer={n => n}
           >
             <div>

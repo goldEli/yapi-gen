@@ -381,7 +381,7 @@ const SprintDetailDrawer = () => {
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     onCancel()
     // 更新列表
-    dispatch(setIsUpdateAddWorkItem(true))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 删除事务弹窗
@@ -659,7 +659,13 @@ const SprintDetailDrawer = () => {
             <DropdownMenu
               placement="bottomRight"
               trigger={['click']}
-              menu={{ items }}
+              menu={{
+                items:
+                  // 子任务不存在子事务模块
+                  drawerInfo.work_type === 6
+                    ? items.filter((i: any) => i.key !== '2')
+                    : items,
+              }}
               getPopupContainer={n => n}
             >
               <div>
@@ -687,19 +693,23 @@ const SprintDetailDrawer = () => {
                 </span>
               </DemandName>
               <Space size={8} style={{ marginTop: 16 }}>
-                {anchorList.map(
-                  (i: { key: string; domKey: string; name: string }) => (
-                    <CommonButton
-                      key={i.key}
-                      type="light"
-                      onClick={() => onClickAnchorList(i)}
-                    >
-                      {i.name}
-                    </CommonButton>
-                  ),
-                )}
+                {(drawerInfo.work_type === 6
+                  ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
+                  : anchorList
+                ).map((i: { key: string; domKey: string; name: string }) => (
+                  <CommonButton
+                    key={i.key}
+                    type="light"
+                    onClick={() => onClickAnchorList(i)}
+                  >
+                    {i.name}
+                  </CommonButton>
+                ))}
               </Space>
-              {modeList.map((i: any) => (
+              {(drawerInfo.work_type === 6
+                ? modeList.filter((i: any) => i.key !== 'childSprint')
+                : modeList
+              ).map((i: any) => (
                 <CollapseItem key={i.key}>
                   <CollapseItemTitle onClick={() => onChangeShowState(i)}>
                     <span>{i.name}</span>

@@ -260,19 +260,23 @@ const Main = (props: any) => {
       is_fold: el.isFold || el.is_fold,
       is_required: el.isRequired || el.is_required,
     }))
-    await configSave({
-      id: activeCategory.id,
-      project_id: projectInfo.id,
-      data: newData,
-    })
-    getMessage({ msg: t('common.saveSuccess'), type: 'success' })
-    await dispatch(
-      getCategoryConfigList({
-        projectId: projectInfo.id,
-        categoryId: activeCategory.id,
-      }),
-    )
-    props.onBack()
+    try {
+      await configSave({
+        id: activeCategory.id,
+        project_id: projectInfo.id,
+        data: newData,
+      })
+      getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+      await dispatch(
+        getCategoryConfigList({
+          projectId: projectInfo.id,
+          categoryId: activeCategory.id,
+        }),
+      )
+      props.onBack()
+    } catch (error) {
+      props.onBack()
+    }
   }
   useEffect(() => {
     if (props.isSave) {

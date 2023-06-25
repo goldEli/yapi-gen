@@ -208,6 +208,7 @@ const DemandDetailDrawer = () => {
           editId: item.id,
           projectId: drawerInfo.projectId,
           type: 1,
+          title: '编辑需求',
         },
       }),
     )
@@ -232,6 +233,7 @@ const DemandDetailDrawer = () => {
           parentId: item.id,
           categoryId: item.categoryId,
           type: 1,
+          title: '创建子需求',
         },
       }),
     )
@@ -260,7 +262,7 @@ const DemandDetailDrawer = () => {
       await updateDemandStatus(value)
       getMessage({ msg: t('common.statusSuccess'), type: 'success' })
       getDemandDetail()
-      dispatch(setIsUpdateAddWorkItem(true))
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     } catch (error) {
       //
     }
@@ -278,7 +280,7 @@ const DemandDetailDrawer = () => {
       setIsDelete(false)
       onCancel()
       // 更新列表
-      dispatch(setIsUpdateAddWorkItem(true))
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     } catch (error) {
       //
     }

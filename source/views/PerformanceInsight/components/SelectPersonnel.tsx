@@ -146,7 +146,6 @@ const Main = (props: UserInfo) => {
   const onChangeIdx = (num: number) => {
     setType(num)
   }
-  console.log(paramsData)
   return (
     <>
       <MainStyle1>
@@ -171,7 +170,9 @@ const Main = (props: UserInfo) => {
                   visible: true,
                   params: {
                     projectId: paramsData.projectId,
-                    type: 2,
+                    type: 7,
+                    title: '创建事务',
+                    noDataCreate: true,
                   },
                 }),
               )

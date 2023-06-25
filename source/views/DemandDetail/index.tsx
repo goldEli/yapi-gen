@@ -41,11 +41,7 @@ import {
   updateDemandStatus,
   updateTableParams,
 } from '@/services/demand'
-import {
-  setAddWorkItemModal,
-  setIsUpdateAddWorkItem,
-  setIsUpdateStatus,
-} from '@store/project'
+import { setAddWorkItemModal, setIsUpdateStatus } from '@store/project'
 import { setIsRefresh } from '@store/user'
 import ChildDemand from './components/ChildDemand'
 import ChangeRecord from './components/ChangeRecord'
@@ -62,7 +58,7 @@ const DemandDetail = () => {
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const spanDom = useRef<HTMLSpanElement>(null)
 
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, demandId, changeIds } = paramsData
   const { demandInfo } = useSelector(store => store.demand)
@@ -157,7 +153,7 @@ const DemandDetail = () => {
   const onChangeStatus = async (value: any) => {
     await updateDemandStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getDemandInfo({ projectId: id, id: demandId }))
+    dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
     // dispatch(setIsUpdateStatus(true))
   }
 
@@ -174,14 +170,14 @@ const DemandDetail = () => {
     await form.validateFields()
     await updateDemandCategory({
       projectId: id,
-      demandId,
+      demandId: demandInfo.id,
       ...form.getFieldsValue(),
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
     setIsShowCategory(false)
     dispatch(setIsUpdateStatus(true))
     dispatch(setIsRefresh(true))
-    dispatch(getDemandInfo({ projectId: id, id: demandId }))
+    dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
     setTimeout(() => {
       form.resetFields()
     }, 100)
@@ -201,7 +197,7 @@ const DemandDetail = () => {
     if (value !== demandInfo.name) {
       await updateTableParams({
         projectId: id,
-        id: demandId,
+        id: demandInfo.id,
         otherParams: {
           name: value,
         },
@@ -279,6 +275,7 @@ const DemandDetail = () => {
           editId: demandInfo.id,
           projectId: demandInfo.projectId,
           type: 1,
+          title: '编辑需求',
         },
       }),
     )
@@ -343,7 +340,7 @@ const DemandDetail = () => {
   const onChangeTabs = (value: string) => {
     setTabActive(value)
     if (value === '1') {
-      dispatch(getDemandInfo({ projectId: id, id: demandId }))
+      dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
     }
   }
 
@@ -406,6 +403,10 @@ const DemandDetail = () => {
     const newIndex = changeIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(getDemandInfo({ projectId: id, id: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, demandId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   // 向下查找需求
@@ -413,6 +414,10 @@ const DemandDetail = () => {
     const newIndex = changeIds[currentIndex + 1]
     if (currentIndex === changeIds?.length - 1) return
     dispatch(getDemandInfo({ projectId: id, id: newIndex }))
+    const params = encryptPhp(
+      JSON.stringify({ id, changeIds, demandId: newIndex }),
+    )
+    setSearchParams(`data=${params}`)
   }
 
   useEffect(() => {
@@ -431,10 +436,7 @@ const DemandDetail = () => {
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       dispatch(setDemandInfo({}))
-      dispatch(getDemandInfo({ projectId: id, id: demandId }))
-      setTimeout(() => {
-        setIsUpdateAddWorkItem(false)
-      }, 0)
+      dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
     }
   }, [isUpdateAddWorkItem])
 
@@ -535,7 +537,10 @@ const DemandDetail = () => {
         <MyBreadcrumb />
 
         <ButtonGroup size={16}>
-          <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          {/* 分享不展示返回按钮 */}
+          {changeIds.length > 0 && (
+            <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          )}
           <ChangeIconGroup>
             {currentIndex > 0 && (
               <UpWrap

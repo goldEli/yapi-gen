@@ -24,7 +24,6 @@ import { DividerWrap } from '@/components/StyleCommon'
 import {
   setFilterKeys,
   setFilterParams,
-  setIsUpdateAddWorkItem,
   setProjectInfoValues,
 } from '@store/project'
 import { deleteDemand, getDemandList } from '@/services/demand'
@@ -135,8 +134,6 @@ const Iteration = () => {
     dispatch(setIsUpdateList(false))
     setTopParentId(0)
     setIsUpdated(false)
-    // 关闭更新需求状态
-    dispatch(setIsUpdateAddWorkItem(false))
   }
 
   //   搜索
@@ -211,7 +208,6 @@ const Iteration = () => {
   }
 
   const onChangeStatus = async (val: number) => {
-    // Todo 这里改的不对劲，数据有延迟
     if (val !== iterateInfo?.status) {
       await updateIterateStatus({
         projectId: getProjectIdByUrl(),

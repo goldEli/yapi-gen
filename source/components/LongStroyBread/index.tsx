@@ -49,7 +49,7 @@ const LongStroyBread = (props: IProps) => {
   const [isHasLongStroy, setIsHasLongStroy] = useState(false)
   const { longStroy = {}, layer = false, onClick } = props
   const [t] = useTranslation()
-
+  console.log('longStroy', longStroy)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
@@ -72,7 +72,6 @@ const LongStroyBread = (props: IProps) => {
     if (hasLongStroy) {
       // isHasLongStroy 为true 可以新增
       const isHasLongStroy = longStroy?.level_tree?.length === 0
-      console.log('isHasLongStroy', isHasLongStroy, longStroy)
       setIsHasLongStroy(isHasLongStroy)
     }
     setHasLongStroy(hasLongStroy)
@@ -131,7 +130,26 @@ const LongStroyBread = (props: IProps) => {
                     />
                   </HasStroyWrap>
                 )}
-                <LabelBox>{longStroy?.projectPrefix}</LabelBox>
+                {longStroy.level_tree.map((item: any, index: number) => {
+                  return (
+                    <Tooltip
+                      placement="top"
+                      title={item.name}
+                      zIndex={999999}
+                      key={item.id}
+                    >
+                      <LabelBox>
+                        {`${item.project_prefix}-${item.prefix_key}`}{' '}
+                        {index !== longStroy.level_tree.length - 1 && (
+                          <CommonIconFont
+                            type="right"
+                            color="var(--neutral-n1-d1)"
+                          ></CommonIconFont>
+                        )}
+                      </LabelBox>
+                    </Tooltip>
+                  )
+                })}
               </LongStroyWrap>
             )}
           </div>
@@ -146,9 +164,11 @@ const LongStroyBread = (props: IProps) => {
           alt=""
           style={{ width: 20, marginRight: '6px' }}
         />
-        <AffairTypeBox>
-          {longStroy?.projectPrefix}-{longStroy?.prefixKey}
-        </AffairTypeBox>
+        <Tooltip placement="top" title={longStroy.name} zIndex={999999}>
+          <AffairTypeBox>
+            {longStroy?.projectPrefix}-{longStroy?.prefixKey}
+          </AffairTypeBox>
+        </Tooltip>
         {layer ? null : (
           <Tooltip placement="top" title="复制链接" zIndex={999999}>
             <span style={{ display: 'flex', alignItems: 'center' }}>

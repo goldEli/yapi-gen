@@ -104,6 +104,7 @@ const ParentDemand = (props: Props) => {
           isOperationParent
           placeholder={t('common.searchParent')}
           onUpdate={props.onUpdate}
+          detail={props.detail}
         />
       )}
     </div>

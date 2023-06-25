@@ -234,6 +234,7 @@ const Home = () => {
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
+    console.log(headerParmas.time.type, 'headerParmas.time.type')
     const res =
       type === 'add'
         ? await createViewList({
@@ -245,7 +246,12 @@ const Home = () => {
                 homeType === 'all' ? undefined : headerParmas.iterate_ids,
               project_id: headerParmas.projectIds,
               user_ids: headerParmas.users,
-              period_time: getDateStr(headerParmas.time.type),
+              period_time:
+                headerParmas.time.type === 0
+                  ? ''
+                  : getDateStr(headerParmas.time.type)
+                  ? getDateStr(headerParmas.time.type)
+                  : 'one_month',
               start_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[0]
@@ -352,7 +358,9 @@ const Home = () => {
   const getWorkList = async () => {
     setLoading(true)
     const res = await getStatisticsTotal({
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -381,7 +389,9 @@ const Home = () => {
   // 新增工作top10对比第一个图表
   const getContrastNewWork = async (str: string) => {
     const res = await contrastNewWork({
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -416,7 +426,9 @@ const Home = () => {
   const getCompletionRateChart = async (str: string) => {
     const res = await getCompletionRate({
       sort: str,
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -449,7 +461,9 @@ const Home = () => {
   // 阶段缺陷占比第6个图表
   const getDefectRatioChart = async (str: string) => {
     const res = await getDefectRatio({
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -482,7 +496,9 @@ const Home = () => {
   // 2,3,5图表集合
   const getStatisticsOther = async () => {
     const res = await statisticsOther({
-      project_ids: headerParmas.projectIds?.join(',') || projectId,
+      project_ids: headerParmas.projectIds
+        ? headerParmas.projectIds?.join(',')
+        : paramsData?.projectId,
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -505,9 +521,12 @@ const Home = () => {
           ? 'one_month'
           : '',
     })
+    const time = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
     setCharts2({
       time: `${res.work_completion_period.start_time} ~ ${res.work_completion_period.end_time}`,
-      yData: res.work_completion_period.list.map(el => el.start_time),
+      yData: res.work_completion_period.list.map((el, i) =>
+        el.is_current ? '当前' : `第${time[i]}周期`,
+      ),
       seriesData: res.work_completion_period.list.map(el => el.completed),
     })
     setCharts3({
@@ -599,6 +618,11 @@ const Home = () => {
     if (!headerParmas.view.value) {
       return
     }
+    console.log(
+      valueHeaderStr !== JSON.stringify(headerParmas),
+      headerParmas,
+      'wo s ces',
+    )
     // 监听对象第一次会走两次接口 转成字符窜判断
     setValueHeaderStr(JSON.stringify(headerParmas))
     valueHeaderStr !== JSON.stringify(headerParmas) && init()

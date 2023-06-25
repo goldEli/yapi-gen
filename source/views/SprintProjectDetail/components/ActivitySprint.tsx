@@ -17,7 +17,7 @@ const ActivitySprint = () => {
   const [activeKey, setActiveKey] = useState('1')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, sprintId } = paramsData
+  const { id } = paramsData
   const { affairsCommentList, affairsInfo } = useSelector(
     store => store.affairs,
   )
@@ -27,7 +27,7 @@ const ActivitySprint = () => {
     dispatch(
       getAffairsCommentList({
         projectId: id,
-        sprintId,
+        sprintId: affairsInfo.id || 0,
         page: 1,
         pageSize: 999,
       }),
@@ -46,7 +46,7 @@ const ActivitySprint = () => {
     await updateAffairsComment({
       projectId: id,
       id: commentId,
-      storyId: sprintId,
+      storyId: affairsInfo.id || 0,
       content: value,
       ids: getIdsForAt(value),
     })

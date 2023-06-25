@@ -26,7 +26,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, sprintId } = paramsData
+  const { id } = paramsData
   const LeftDom = useRef<HTMLDivElement>(null)
   const commentDom: any = createRef()
   const { affairsInfo } = useSelector(store => store.affairs)
@@ -38,7 +38,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
   const onConfirmComment = async (value: { info: string }) => {
     await addAffairsComment({
       projectId: id,
-      sprintId,
+      sprintId: affairsInfo.id,
       content: value.info,
       a_user_ids: getIdsForAt(value.info),
     })
@@ -46,7 +46,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
     dispatch(
       getAffairsCommentList({
         projectId: id,
-        sprintId,
+        sprintId: affairsInfo.id || 0,
         page: 1,
         pageSize: 9999,
       }),
@@ -118,7 +118,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
 
   // 更新
   const onUpdate = () => {
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id }))
   }
 
   useEffect(() => {
@@ -134,7 +134,12 @@ const SprintDetailInfo = (props: { onRef: any }) => {
         <Tabs
           className="tabs"
           activeKey={tabActive}
-          items={items}
+          items={
+            // 子任务不存在子事务模块
+            affairsInfo.work_type === 6
+              ? items.filter((i: any) => i.key !== 'sprint-childSprint')
+              : items
+          }
           onChange={onChangeTabs}
         />
       )}
@@ -147,7 +152,9 @@ const SprintDetailInfo = (props: { onRef: any }) => {
           affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
           onUpdate={onUpdate}
         />
-        <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+        {affairsInfo.work_type !== 6 && (
+          <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+        )}
         <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
         <ActivitySprint />
       </DetailInfoWrap>
