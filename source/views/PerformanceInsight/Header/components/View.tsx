@@ -47,7 +47,6 @@ const View = (props: View) => {
     props.viewDataList &&
       setOptions(props.viewDataList.filter(el => el.is_default !== 1) || [])
   }, [props.viewDataList])
-  console.log(props, 'ppp')
   useEffect(() => {
     setItems([
       {
