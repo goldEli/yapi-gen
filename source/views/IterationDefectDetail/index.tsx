@@ -490,7 +490,7 @@ const IterationDefectDetail = () => {
       <DetailTop>
         <MyBreadcrumb />
         <ButtonGroup size={16}>
-          {changeIds.length > 0 && (
+          {changeIds && changeIds.length > 0 && (
             <CommonButton type="icon" icon="left-md" onClick={onBack} />
           )}
           <ChangeIconGroup>

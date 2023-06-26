@@ -550,7 +550,7 @@ const DemandDetail = () => {
 
         <ButtonGroup size={16}>
           {/* 分享不展示返回按钮 */}
-          {changeIds.length > 0 && (
+          {changeIds && changeIds.length > 0 && (
             <CommonButton type="icon" icon="left-md" onClick={onBack} />
           )}
           <ChangeIconGroup>
