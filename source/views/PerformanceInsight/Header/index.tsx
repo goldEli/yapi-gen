@@ -287,10 +287,8 @@ const Iteration = (props: Props) => {
       ),
     )
   }
-  console.log(person, 'person')
   // 成员保存弹窗提示需要
   const onConfirm = (data: Array<{ name: string; id: number }>) => {
-    console.log(data, 'data')
     viewType === 1 && dispatch(setSave(true))
     setIsVisible(false)
     setPerson(data)
@@ -302,7 +300,6 @@ const Iteration = (props: Props) => {
       }),
     )
   }
-  console.log(headerParmas, 'ppp------headerParmas')
   // 清除选择的成员
   const onClear = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()
@@ -317,6 +314,7 @@ const Iteration = (props: Props) => {
   // 自定义时间
   const onChangeDate = (e: any, values: string[]) => {
     setTimeVal([moment(values[0]), moment(values[1])])
+    dispatch(setSave(true))
     dispatch(
       setHeaderParmas({
         period_time: '',
@@ -386,7 +384,6 @@ const Iteration = (props: Props) => {
     }, data[0].end_at)
     return maxt
   }
-  console.log(props, paramsData, 'ppp')
   return (
     <HeaderRow>
       <Space size={16}>
@@ -470,9 +467,11 @@ const Iteration = (props: Props) => {
           <SelectMain
             allowClear={false}
             onChange={e => {
+              console.log(8888888888, e)
               setTimekey(e)
               setTimeVal([])
-              viewType === 1 && dispatch(setSave(true))
+              viewType === 1 && e !== 0 && dispatch(setSave(true))
+              e === 0 && dispatch(setSave(false))
               dispatch(
                 setHeaderParmas({
                   time: {

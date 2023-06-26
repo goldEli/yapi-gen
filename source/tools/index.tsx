@@ -61,7 +61,6 @@ export function getIdByUrl(key: string) {
   const searchParams = url.searchParams
 
   const params = getParamsData(searchParams)
-
   return parseInt(params[key], 10)
 }
 

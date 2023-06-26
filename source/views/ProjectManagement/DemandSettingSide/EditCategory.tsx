@@ -44,7 +44,7 @@ interface EditorProps {
   item?: any
   onClose(): void
   onUpdate(): void
-  workType?: string
+  workType?: number
 }
 
 const EditorCategory = (props: EditorProps) => {

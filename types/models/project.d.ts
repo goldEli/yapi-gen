@@ -81,10 +81,10 @@ declare namespace Model.Project {
   }
   interface CategoryList {
     name: string
-    children: Category[]
     visible: boolean
-    workType: string
-    // id?: number
+    workType: number
+    children: Category[]
+    projectType: string
   }
   interface CategoryValue {
     name: string | undefined
