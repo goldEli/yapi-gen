@@ -60,7 +60,7 @@ const DemandDetail = () => {
 
   const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, demandId, changeIds } = paramsData
+  const { id, demandId, changeIds, newOpen } = paramsData
   const { demandInfo } = useSelector(store => store.demand)
   const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
@@ -220,7 +220,12 @@ const DemandDetail = () => {
 
   // 返回
   const onBack = () => {
-    history.go(-1)
+    if (newOpen) {
+      const params = encryptPhp(JSON.stringify({ id: demandInfo.projectId }))
+      navigate(`/ProjectManagement/Demand?data=${params}`)
+    } else {
+      history.go(-1)
+    }
   }
 
   // 确认删除
@@ -545,7 +550,7 @@ const DemandDetail = () => {
 
         <ButtonGroup size={16}>
           {/* 分享不展示返回按钮 */}
-          {changeIds.length > 0 && (
+          {changeIds && changeIds.length > 0 && (
             <CommonButton type="icon" icon="left-md" onClick={onBack} />
           )}
           <ChangeIconGroup>

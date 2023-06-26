@@ -225,6 +225,7 @@ const SprintDetailDrawer = () => {
       JSON.stringify({
         id: drawerInfo.projectId,
         sprintId: drawerInfo.id,
+        newOpen: true,
       }),
     )
     const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`

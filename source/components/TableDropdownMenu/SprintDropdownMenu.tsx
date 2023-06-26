@@ -27,6 +27,7 @@ const MenuWrap = styled(Menu)`
 
 interface Props {
   record: any
+  onEditChange(row: any): void
   onDeleteChange(row: any): void
   onCreateChild(row: any): void
   // 是否是所有项目
@@ -44,6 +45,11 @@ export const SprintDropdownMenu = (props: Props) => {
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
+  )
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/transaction/update',
   )
 
   // 复制需求id
@@ -81,6 +87,12 @@ export const SprintDropdownMenu = (props: Props) => {
       ),
     },
     {
+      key: '3',
+      label: (
+        <div onClick={() => props.onEditChange(props.record)}>编辑事务</div>
+      ),
+    },
+    {
       key: '5',
       label: <div onClick={onCopyId}>复制编号</div>,
     },
@@ -96,6 +108,9 @@ export const SprintDropdownMenu = (props: Props) => {
     }
     if (hasCreate) {
       menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '3')
     }
   }
 

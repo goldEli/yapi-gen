@@ -159,6 +159,7 @@ const KanBanBtnsArea = (props: Props) => {
         otherConfig={{
           currentRowAndStatusId,
         }}
+        type={currentView?.type}
       />
       {/* 分享 */}
       <ScreenMinHover

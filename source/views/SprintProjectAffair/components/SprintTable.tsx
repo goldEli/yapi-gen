@@ -158,6 +158,22 @@ const SprintTable = (props: Props) => {
     dispatch(setAddQuickSprintModal({ visible: true, params: item }))
   }
 
+  // 点击编辑
+  const onEditChange = (item: any) => {
+    setIsShowMore(false)
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: item.id,
+          projectId,
+          type: item.work_type,
+          title: '编辑事务',
+        },
+      }),
+    )
+  }
+
   const columns = useDynamicColumns({
     projectId,
     orderKey,
@@ -269,6 +285,7 @@ const SprintTable = (props: Props) => {
                       <SprintDropdownMenu
                         onDeleteChange={onDeleteChange}
                         onCreateChild={onCreateChild}
+                        onEditChange={onEditChange}
                         record={record}
                       />
                     )

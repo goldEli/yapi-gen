@@ -76,11 +76,6 @@ const View = (props: View) => {
         key: 'last',
       },
     ])
-    // props.viewDataList &&
-    //   setValue(props.viewDataList.find(el => el.is_default === 1))
-    // props.viewDataList &&
-    //   options.length >= 1 &&
-    //   props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
   }, [options])
   useEffect(() => {
     const item = props.viewDataList?.find(el => el.id === props.value) || {

@@ -20,7 +20,7 @@ const initialState: SliceState = {
     users: [],
     time: {
       type: 1,
-      time: undefined,
+      time: '',
     },
     view: {
       title: '',

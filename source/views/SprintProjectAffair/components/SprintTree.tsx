@@ -174,6 +174,22 @@ const SprintTree = (props: Props) => {
     dispatch(setAddQuickSprintModal({ visible: true, params: item }))
   }
 
+  // 点击编辑
+  const onEditChange = (item: any) => {
+    setIsShowMore(false)
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: item.id,
+          projectId,
+          type: item.work_type,
+          title: '编辑事务',
+        },
+      }),
+    )
+  }
+
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
   const onOperationCheckbox = (type: any, keys?: any) => {
     const redClassElements = document.getElementsByClassName(
@@ -416,6 +432,7 @@ const SprintTree = (props: Props) => {
                       <SprintDropdownMenu
                         onDeleteChange={onDeleteChange}
                         onCreateChild={onCreateChild}
+                        onEditChange={onEditChange}
                         record={record}
                       />
                     )
