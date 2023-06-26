@@ -73,7 +73,7 @@ const SelectOptionsNormal: React.FC<SelectBoxProps> = props => {
   }, [props.options, key])
 
   const title = useMemo(() => {
-    return `${props.title}：${value}`
+    return `${props.title}：${value ? value : ''}`
   }, [props.title, value])
 
   return (

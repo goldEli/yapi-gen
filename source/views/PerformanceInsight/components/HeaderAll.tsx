@@ -147,6 +147,7 @@ const HeaderAll = (props: HaderProps) => {
       <ShareModal
         // 视图id
         id={props?.headerParmas?.view?.value}
+        name={props?.headerParmas?.view?.title}
         // 视图的配置
         config={{
           project_ids: paramsData?.headerParmas.projectIds,
