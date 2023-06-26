@@ -54,6 +54,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   )
   const navigate = useNavigate()
   const onClick = () => {
+    console.log(projectDataList, 'projectDataList', headerParmas)
     const params = encryptPhp(
       JSON.stringify({
         data: props.data,
@@ -63,15 +64,15 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             ? `Progress_${props.homeType}`
             : `Defect_${props.homeType}`,
         homeType: props.homeType,
+        headerParmas,
+        num: props.num,
+        viewType: props.viewType,
         title:
           props.num === 1 && props.homeType === 'all'
             ? '数据明细'
             : props.num === 1
             ? '工作进展对比'
             : '缺陷趋势分析',
-        headerParmas,
-        projectDataList,
-        num: props.num,
       }),
     )
     navigate(`/ChildLevel?data=${params}`)
@@ -620,6 +621,13 @@ const Home = () => {
 
     // 监听对象第一次会走两次接口 转成字符窜判断
     setValueHeaderStr(JSON.stringify(headerParmas))
+    if (
+      !headerParmas.period_time &&
+      headerParmas.time.type === 0 &&
+      !headerParmas.time.time[0]
+    ) {
+      return
+    }
     valueHeaderStr !== JSON.stringify(headerParmas) && init()
   }, [headerParmas])
 
@@ -651,8 +659,10 @@ const Home = () => {
           onEdit={editViews}
           value={optionVal}
         />
+        {viewType}---
         <WorkingStatus
           projectId={projectId}
+          viewType={viewType}
           homeType={homeType}
           data={workDataList?.work || []}
           title={homeType === 'all' ? '现状' : '工作项现状'}
@@ -661,6 +671,7 @@ const Home = () => {
         />
         <div style={{ margin: '32px 0' }}>
           <WorkingStatus
+            viewType={viewType}
             num={2}
             projectId={projectId}
             homeType={homeType}

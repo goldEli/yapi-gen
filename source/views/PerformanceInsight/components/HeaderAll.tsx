@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-handler-names */
 // 全局的头部
-import Share from '../Header/components/Share'
 import Export from '../Header/components/Export'
-import ExportSuccess from '../Header/components/ExportSuccess'
 import { HeaderRowBox, Back, RightRow, PersonText, Line } from '../Header/Style'
 import { useEffect, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -14,17 +12,15 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import useShareModal from '@/hooks/useShareModal'
 import { useSelector } from '@store/index'
 import { getParamsData } from '@/tools'
+import { getProjectList } from '@/services/project'
 interface HaderProps {
   type: string
-  projectDataList: Array<{
-    name: string
-    id: number
-  }>
   headerParmas: Models.Efficiency.HeaderParmas
   onSearchData(value: number[]): void
   onGetExportApi(value: number[]): void
   projectId: number
   homeType: string
+  viewType: number
 }
 const HeaderAll = (props: HaderProps) => {
   const navigate = useNavigate()
@@ -39,7 +35,35 @@ const HeaderAll = (props: HaderProps) => {
   const { projectInfo } = useSelector(store => store.project)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const getProjectApi = async () => {
+    const res = await getProjectList({
+      // self: 1,
+      all: 1,
+    })
+    props?.headerParmas?.projectIds?.length
+      ? setProjectList(
+          res.list
+            ?.filter((el: { id: number }) =>
+              props.headerParmas?.projectIds?.includes(el.id),
+            )
+            .map((el: { id: number; name: string }) => ({
+              ...el,
+              label: el.name,
+              value: el.id,
+            })),
+        )
+      : setProjectList(
+          res.list.map((el: { id: number; name: string }) => ({
+            ...el,
+            label: el.name,
+            value: el.id,
+          })),
+        )
+  }
   useEffect(() => {
+    if (props.type === 'Progress_all' || props.type === 'Defect_all') {
+      getProjectApi()
+    }
     switch (props.headerParmas.time.type) {
       case 1:
         setTime(getMonthBefor(1))
@@ -63,14 +87,8 @@ const HeaderAll = (props: HaderProps) => {
         })
         break
     }
+    console.log(props, 'pppp')
     // 根据图表的header选择的项目塞选出选择出来的项目
-    props?.headerParmas?.projectIds?.length
-      ? setProjectList(
-          props.projectDataList?.filter(el =>
-            props.headerParmas?.projectIds?.includes(el.id),
-          ),
-        )
-      : setProjectList(props.projectDataList)
   }, [])
   const onBack = () => {
     if (props.homeType === 'all') {
@@ -86,31 +104,37 @@ const HeaderAll = (props: HaderProps) => {
       navigate(`/Report/PerformanceInsight?data=${params}`)
     }
   }
+  console.log(paramsData, 'paramsData--123')
   return (
     <>
       <HeaderRowBox>
-        <Back onClick={() => onBack()}>
-          <CommonIconFont type="left-md" size={16} />
-          <span className="text">返回</span>
-        </Back>
+        {paramsData.valueId ? (
+          <div />
+        ) : (
+          <Back onClick={() => onBack()}>
+            <CommonIconFont type="left-md" size={16} />
+            <span className="text">返回</span>
+          </Back>
+        )}
         <RightRow>
           {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
           {/* // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
         //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
-          {props.type === 'Progress_all' && projectList?.length >= 1 && (
-            <div style={{ marginRight: '16px' }}>
-              <Select
-                type=""
-                options={projectList}
-                more
-                value={options}
-                placeholder="请选择项目"
-                onChange={(value: number[]) => {
-                  setOptions(value), props.onSearchData(value)
-                }}
-              />
-            </div>
-          )}
+          {(props.type === 'Progress_all' || props.type === 'Defect_all') &&
+            projectList?.length >= 1 && (
+              <div style={{ marginRight: '16px' }}>
+                <Select
+                  type=""
+                  options={projectList}
+                  more
+                  value={options}
+                  placeholder="请选择项目"
+                  onChange={(value: number[]) => {
+                    setOptions(value), props.onSearchData(value)
+                  }}
+                />
+              </div>
+            )}
           <PersonText>
             {props.headerParmas.users?.length ? (
               <span>已选 {props.headerParmas.users?.length}人</span>
@@ -147,6 +171,7 @@ const HeaderAll = (props: HaderProps) => {
       <ShareModal
         // 视图id
         id={props?.headerParmas?.view?.value}
+        viewType={props.viewType}
         // 视图的配置
         config={{
           project_ids: paramsData?.headerParmas.projectIds,

@@ -43,6 +43,7 @@ declare namespace Models.Efficiency {
     homeType: string
     num: number
     projectId: number
+    viewType: number
   }
   export interface ChartBar {
     chartType: string
@@ -104,7 +105,7 @@ declare namespace Models.Efficiency {
     users?: []
     time: {
       type: number
-      time: string[] | undefined
+      time: string[] | string
     }
     view: {
       title: string
