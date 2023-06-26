@@ -373,7 +373,10 @@ const IterationDefectDetail = () => {
     if (!currentIndex) return
     dispatch(getFlawInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
-      JSON.stringify({ id, changeIds, flawId: newIndex }),
+      JSON.stringify({
+        ...paramsData,
+        ...{ id, changeIds, demandId: newIndex },
+      }),
     )
     setSearchParams(`data=${params}`)
   }
@@ -384,7 +387,10 @@ const IterationDefectDetail = () => {
     if (currentIndex === changeIds?.length - 1) return
     dispatch(getFlawInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
-      JSON.stringify({ id, changeIds, flawId: newIndex }),
+      JSON.stringify({
+        ...paramsData,
+        ...{ id, changeIds, demandId: newIndex },
+      }),
     )
     setSearchParams(`data=${params}`)
   }

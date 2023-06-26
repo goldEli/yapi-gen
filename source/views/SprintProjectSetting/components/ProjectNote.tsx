@@ -318,7 +318,7 @@ const ProjectSet = () => {
         name = '项目删除'
         break
       case '2205':
-        name = '项目删除'
+        name = '项目状态变更'
         break
 
       default:

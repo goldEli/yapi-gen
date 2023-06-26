@@ -226,6 +226,7 @@ const SprintDetailDrawer = () => {
         id: drawerInfo.projectId,
         sprintId: drawerInfo.id,
         newOpen: true,
+        changeIds: demandIds,
       }),
     )
     const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
