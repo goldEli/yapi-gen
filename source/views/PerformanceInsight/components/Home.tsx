@@ -659,7 +659,6 @@ const Home = () => {
           onEdit={editViews}
           value={optionVal}
         />
-        {viewType}---
         <WorkingStatus
           projectId={projectId}
           viewType={viewType}
