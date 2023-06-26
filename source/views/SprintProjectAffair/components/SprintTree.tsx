@@ -460,6 +460,10 @@ const SprintTree = (props: Props) => {
     }
   }, [props.data?.list])
 
+  useEffect(() => {
+    setSelectedRowKeys([])
+  }, [projectId])
+
   // 获取所有的子级
   const getAllItems = (childrenList: any = [], arr: any = []) => {
     childrenList?.forEach((element: any) => {

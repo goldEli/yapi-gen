@@ -93,7 +93,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           onDel={key => {
             onDel(parseInt(key, 10))
           }}
-          title={t('view')}
+          title={t('columns_and_status')}
           createViewTitle={t('create_columns_and_status')}
           options={handleViewList}
           onChange={key => {

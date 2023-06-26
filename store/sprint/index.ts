@@ -59,10 +59,7 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['leftSprintList']>,
     ) {
-      state.leftSprintList = {
-        ...state.leftSprintList,
-        ...action.payload,
-      }
+      state.leftSprintList = { ...action.payload }
     },
     setCheckList(state, action: PayloadAction<SliceState['checkList']>) {
       state.checkList = action.payload

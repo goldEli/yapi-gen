@@ -38,13 +38,13 @@ const Index = (props: any) => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const myTreeComponent: any = useRef(null)
-  const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
+  const { projectFlawInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const [key, setKey] = useState()
+  const [key, setKey] = useState<any>()
   const [searchVal, setSearchVal] = useState('')
   const [searchItems, setSearchItems] = useState<any>({})
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
@@ -63,7 +63,7 @@ const Index = (props: any) => {
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
 
-  const keyValue = {
+  const keyValueTree = {
     key,
     changeKey: (value: any) => {
       setKey(value)
@@ -86,22 +86,22 @@ const Index = (props: any) => {
 
   // 获取显示字段配置
   const getShowkey = () => {
-    setPlainOptions(projectInfo?.plainOptions || [])
-    setPlainOptions2(projectInfo?.plainOptions2 || [])
-    setPlainOptions3(projectInfo?.plainOptions3 || [])
-    setTitleList(projectInfo?.titleList || [])
-    setTitleList2(projectInfo?.titleList2 || [])
-    setTitleList3(projectInfo?.titleList3 || [])
+    setPlainOptions(projectFlawInfo?.plainOptions || [])
+    setPlainOptions2(projectFlawInfo?.plainOptions2 || [])
+    setPlainOptions3(projectFlawInfo?.plainOptions3 || [])
+    setTitleList(projectFlawInfo?.titleList || [])
+    setTitleList2(projectFlawInfo?.titleList2 || [])
+    setTitleList3(projectFlawInfo?.titleList3 || [])
     setAllTitleList([
-      ...(projectInfo.titleList || []),
-      ...(projectInfo.titleList2 || []),
-      ...(projectInfo.titleList3 || []),
+      ...(projectFlawInfo.titleList || []),
+      ...(projectFlawInfo.titleList2 || []),
+      ...(projectFlawInfo.titleList3 || []),
     ])
     dispatch(
       saveTitles([
-        ...(projectInfo.titleList || []),
-        ...(projectInfo.titleList2 || []),
-        ...(projectInfo.titleList3 || []),
+        ...(projectFlawInfo.titleList || []),
+        ...(projectFlawInfo.titleList2 || []),
+        ...(projectFlawInfo.titleList3 || []),
       ]),
     )
   }
@@ -233,14 +233,24 @@ const Index = (props: any) => {
   }
 
   useEffect(() => {
-    if (projectInfo?.id) {
+    if (projectFlawInfo?.id) {
       getShowkey()
     }
-  }, [projectInfo])
+  }, [projectFlawInfo])
 
   useEffect(() => {
     getList(searchItems, pageObj, order)
-  }, [key, order, pageObj, projectId])
+  }, [key, order, pageObj])
+
+  useEffect(() => {
+    setPageObj({ page: 1, size: 20 })
+    setOrder({ value: '', key: '' })
+    setKey('')
+    setSearchVal('')
+    setSearchItems({})
+    keyValueTree.changeKey('')
+    getList({}, { page: 1, size: 20 }, { value: '', key: '' })
+  }, [projectId])
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
@@ -274,7 +284,7 @@ const Index = (props: any) => {
         onClose={() => setIsSettingState(false)}
         getCheckList={getCheckList}
       />
-      <TreeContext.Provider value={keyValue}>
+      <TreeContext.Provider value={keyValueTree}>
         <Wrap>
           <ProjectCommonOperation
             onInputSearch={onInputSearch}

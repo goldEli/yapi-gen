@@ -6,6 +6,7 @@ import { getParentList, getProjectInfoValuesStore } from './project.thunk'
 
 export interface CounterState {
   projectInfo: any
+  projectFlawInfo: any
   workList: any
   colorList: any[]
   isChangeProject: number | string
@@ -25,8 +26,6 @@ export interface CounterState {
     params?: Partial<Model.Affairs.AffairsInfo>
   }
   work_type?: number
-  // 是否刷新评论
-  isRefreshComment: boolean
   // 是否更新状态 -- 需求详情使用
   isUpdateStatus: boolean
   // 是否更新变更记录
@@ -44,6 +43,7 @@ export interface CounterState {
 
 const initialState: CounterState = {
   projectInfo: {},
+  projectFlawInfo: {},
   workList: {
     list: undefined,
   },
@@ -80,7 +80,6 @@ const initialState: CounterState = {
     params: {},
   },
   // ---新
-  isRefreshComment: false,
   isUpdateStatus: false,
   isUpdateChangeLog: false,
   createCategory: {},
@@ -96,6 +95,10 @@ export const projectSlice = createSlice({
     // 全局使用项目信息
     setProjectInfo: (state: any, action) => {
       state.projectInfo = action.payload
+    },
+    // 全局使用项目信息 - 缺陷
+    setProjectFlawInfo: (state: any, action) => {
+      state.projectFlawInfo = action.payload
     },
     // 关于项目的下拉数据
     setProjectInfoValues: (state: any, action) => {
@@ -158,10 +161,6 @@ export const projectSlice = createSlice({
     setCreateCategory: (state: any, action) => {
       state.createCategory = action.payload
     },
-    // 更新评论列表 -- 用于流转成功后更新评论
-    setIsRefreshComment: (state: any, action) => {
-      state.isRefreshComment = action.payload
-    },
     // 是否更新状态 -- 用于需求详情中更新状态
     setIsUpdateStatus: (state: any, action) => {
       state.isUpdateStatus = action.payload
@@ -196,6 +195,7 @@ export const projectSlice = createSlice({
 
 export const {
   setProjectInfo,
+  setProjectFlawInfo,
   setWorkList,
   setIsChangeProject,
   setFilterParamsModal,
@@ -207,7 +207,6 @@ export const {
   onChangeGuideVisible,
   setAddQuickSprintModal,
   setCategoryWorkType,
-  setIsRefreshComment,
   setIsUpdateStatus,
   setIsUpdateChangeLog,
   setCreateCategory,

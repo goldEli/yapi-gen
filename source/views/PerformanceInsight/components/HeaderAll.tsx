@@ -172,6 +172,7 @@ const HeaderAll = (props: HaderProps) => {
         // 视图id
         id={props?.headerParmas?.view?.value}
         viewType={props.viewType}
+        name={props?.headerParmas?.view?.title}
         // 视图的配置
         config={{
           project_ids: paramsData?.headerParmas.projectIds,

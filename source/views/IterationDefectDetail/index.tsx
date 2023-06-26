@@ -62,9 +62,8 @@ const IterationDefectDetail = () => {
   const [resultCategory, setResultCategory] = useState([])
   const [tabActive, setTabActive] = useState('1')
   const { flawInfo } = useSelector(store => store.flaw)
-  const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
-    store => store.project,
-  )
+  const { projectInfoValues, isUpdateAddWorkItem, projectFlawInfo } =
+    useSelector(store => store.project)
   const [currentIndex, setCurrentIndex] = useState(0)
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
@@ -72,7 +71,7 @@ const IterationDefectDetail = () => {
   })
 
   const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
+    projectFlawInfo?.projectPermissions,
     'b/flaw/update',
   )
 
@@ -90,6 +89,14 @@ const IterationDefectDetail = () => {
     await updateFlawStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
+    dispatch(
+      getFlawCommentList({
+        projectId: id,
+        id: flawInfo.id || 0,
+        page: 1,
+        pageSize: 20,
+      }),
+    )
   }
 
   // 关闭类别弹窗

@@ -164,6 +164,14 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
+    dispatch(
+      getAffairsCommentList({
+        projectId: id,
+        sprintId: affairsInfo.id || 0,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   // 关闭类别弹窗
@@ -579,6 +587,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             isCanOperation={!hasEdit}
           >
             <StateTag
+              isShow={!hasEdit}
               name={affairsInfo.status?.status.content}
               state={
                 affairsInfo.status?.is_start === 1 &&

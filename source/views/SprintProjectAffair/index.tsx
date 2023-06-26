@@ -64,7 +64,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const dispatch = useDispatch()
   const { currentMenu } = useSelector(store => store.user)
   const titles = useSelector(store => store.view.tapTitles)
-  const [key, setKey] = useState()
+  const [key, setKey] = useState<any>()
   const keyRef = useRef()
   const myTreeComponent: any = useRef(null)
   const [isShowLeft, setIsShowLeft] = useState(false)
@@ -257,7 +257,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     getList(isGrid, searchItems, pageObj, order, false, topId)
   }
 
-  const keyValue = {
+  const keyValueTree = {
     key,
     changeKey: (value: any) => {
       setKey(value)
@@ -333,7 +333,18 @@ const SprintProjectAffair: React.FC<IProps> = props => {
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, order, pageObj, projectId])
+  }, [key, isGrid, order, pageObj])
+
+  useEffect(() => {
+    setPageObj({ page: 1, size: 20 })
+    setOrder({ value: '', key: '' })
+    setKey('')
+    setIsGrid(0)
+    setSearchVal('')
+    setSearchItems({})
+    keyValueTree.changeKey('')
+    getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
+  }, [projectId])
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
@@ -365,7 +376,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         onClose={() => setIsSettingState(false)}
         getCheckList={getCheckList}
       />
-      <TreeContext.Provider value={keyValue}>
+      <TreeContext.Provider value={keyValueTree}>
         <Wrap>
           <DeleteConfirm
             title="删除确认"
