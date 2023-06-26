@@ -10,6 +10,16 @@
 import * as http from '@/tools/http'
 import { transData } from '@/tools'
 
+// 编辑富文本
+export const updateDemandEditor = async (params: any) => {
+  await http.put<any>('updateDemand', {
+    project_id: params.projectId,
+    info: params.info,
+    id: params.id,
+    name: params.name,
+  })
+}
+
 // 删除关联
 export const deleteStoryRelation = async (
   params: API.Flaw.DeleteRelation.Params,

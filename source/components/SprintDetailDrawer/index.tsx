@@ -37,6 +37,7 @@ import {
   deleteAffairsComment,
   getAffairsInfo,
   updateAffairsComment,
+  updateAffairsStatus,
   updateAffairsTableParams,
 } from '@/services/affairs'
 import { getProjectInfo } from '@/services/project'
@@ -232,7 +233,17 @@ const SprintDetailDrawer = () => {
 
   // 修改状态
   const onChangeStatus = async (value: any) => {
-    //
+    await updateAffairsStatus(value)
+    getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    getSprintDetail('', demandIds || [])
+    dispatch(
+      getAffairsCommentList({
+        projectId: projectInfo.id,
+        sprintId: drawerInfo.id,
+        page: 1,
+        pageSize: 9999,
+      }),
+    )
   }
 
   // 向上查找需求

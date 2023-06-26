@@ -135,7 +135,7 @@ const Operation = (props: Props) => {
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
   const {
-    projectInfo,
+    projectFlawInfo,
     colorList,
     filterKeys,
     projectInfoValues,
@@ -166,13 +166,17 @@ const Operation = (props: Props) => {
   const dispatch = useDispatch()
 
   const hasImport = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/import' : 'b/transaction/import',
+    projectFlawInfo?.projectPermissions,
+    projectFlawInfo.projectType === 1
+      ? 'b/story/import'
+      : 'b/transaction/import',
   )
 
   const hasExport = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
+    projectFlawInfo?.projectPermissions,
+    projectFlawInfo.projectType === 1
+      ? 'b/story/export'
+      : 'b/transaction/export',
   )
 
   const onFilterSearch = (e: any, customField: any) => {
@@ -208,7 +212,7 @@ const Operation = (props: Props) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
-    const filterFelid = projectInfo?.filterFelid
+    const filterFelid = projectFlawInfo?.filterFelid
 
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
@@ -227,9 +231,9 @@ const Operation = (props: Props) => {
 
     setSearchList(arr)
     dispatch(saveScreen(arr))
-    setFilterBasicsList(projectInfo?.filterBasicsList)
-    setFilterSpecialList(projectInfo?.filterSpecialList)
-    setFilterCustomList(projectInfo?.filterCustomList)
+    setFilterBasicsList(projectFlawInfo?.filterBasicsList)
+    setFilterSpecialList(projectFlawInfo?.filterSpecialList)
+    setFilterCustomList(projectFlawInfo?.filterCustomList)
   }
 
   function filterObj(mainObject: any, filterFunction: any) {
@@ -251,7 +255,7 @@ const Operation = (props: Props) => {
         return grade !== null
       })
       const keys = Object.keys(searchChoose)
-      const filterFelid = projectInfo?.filterFelid
+      const filterFelid = projectFlawInfo?.filterFelid
       const newArr = filterFelid?.filter((i: any) => {
         return keys.includes(i.content)
       })
@@ -262,10 +266,10 @@ const Operation = (props: Props) => {
   }, [searchChoose])
 
   useEffect(() => {
-    if (projectInfo?.id) {
+    if (projectFlawInfo?.id) {
       getSearchKey()
     }
-  }, [projectInfo])
+  }, [projectFlawInfo])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
@@ -279,7 +283,11 @@ const Operation = (props: Props) => {
       dispatch(
         setAddWorkItemModal({
           visible: true,
-          params: { projectId: projectInfo?.id, type: 2, title: '创建缺陷' },
+          params: {
+            projectId: projectFlawInfo?.id,
+            type: 2,
+            title: '创建缺陷',
+          },
         }),
       )
       setIsVisible(false)
@@ -311,7 +319,7 @@ const Operation = (props: Props) => {
         flexDirection: 'column',
       }}
     >
-      {hasImport || projectInfo?.status !== 1 ? null : (
+      {hasImport || projectFlawInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
           <span style={{ marginLeft: 8 }}>导入缺陷</span>
@@ -474,11 +482,11 @@ const Operation = (props: Props) => {
             </Tooltip>
           )}
           {getIsPermission(
-            projectInfo?.projectPermissions,
-            projectInfo.projectType === 1
+            projectFlawInfo?.projectPermissions,
+            projectFlawInfo.projectType === 1
               ? 'b/story/save'
               : 'b/transaction/save',
-          ) || projectInfo?.status !== 1 ? null : (
+          ) || projectFlawInfo?.status !== 1 ? null : (
             <Popover
               content={changeStatus}
               placement="bottomLeft"

@@ -21,7 +21,6 @@ import { uploadFileToKey } from '@/services/cos'
 import DemandTag from '../TagComponent/DemandTag'
 import { getParentList } from '@store/project/project.thunk'
 import CategoryDropdown from '../CategoryDropdown'
-import { AFFAIRS_CHILD_TYPE } from '@/constants'
 
 const LeftWrap = styled.div({
   height: '100%',

@@ -43,7 +43,7 @@ const DemandIndex = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const [key, setKey] = useState()
+  const [key, setKey] = useState<any>()
   const [isGrid, setIsGrid] = useState(0)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
@@ -72,9 +72,8 @@ const DemandIndex = () => {
   const { currentMenu } = useSelector(store => store.user)
   const searchChoose = useSelector(store => store.view.searchChoose)
   const titles = useSelector(store => store.view.tapTitles)
-  const tapSort = useSelector(store => store.view.tapSort)
 
-  const keyValue = {
+  const keyValueTree = {
     key,
     changeKey: (value: any) => {
       setPageObj({ page: 1, size: pageObj.size })
@@ -316,20 +315,20 @@ const DemandIndex = () => {
     }
   }, [titles])
 
-  // useEffect(() => {
-  //   if (tapSort) {
-  //     const key = Object.keys(tapSort)
-  //     const value = Object.values(tapSort)
-
-  //     if (tapSort) {
-  //       setOrder({ value: value[0], key: key[0] })
-  //     }
-  //   }
-  // }, [tapSort])
-
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, order, pageObj, projectId])
+  }, [key, isGrid, order, pageObj])
+
+  useEffect(() => {
+    setPageObj({ page: 1, size: 20 })
+    setOrder({ value: '', key: '' })
+    setKey('')
+    setIsGrid(0)
+    setSearchVal('')
+    setSearchItems({})
+    keyValueTree.changeKey('')
+    getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
+  }, [projectId])
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
@@ -381,7 +380,7 @@ const DemandIndex = () => {
         onClose={() => setIsSettingState(false)}
         getCheckList={getCheckList}
       />
-      <TreeContext.Provider value={keyValue}>
+      <TreeContext.Provider value={keyValueTree}>
         <Wrap>
           <ProjectCommonOperation onInputSearch={onInputSearch} />
           <ContentWrap>

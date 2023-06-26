@@ -97,7 +97,7 @@ const TreeItem = (props: any) => {
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visiblePop, setVisiblePop] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectFlawInfo } = useSelector(store => store.project)
   const btnsText = [
     {
       id: 1,
@@ -254,7 +254,7 @@ const TreeItem = (props: any) => {
       </span>
       {props.pid === 0 ||
       getIsPermission(
-        projectInfo?.projectPermissions,
+        projectFlawInfo?.projectPermissions,
         'b/project/story/class',
       ) ? (
         ''

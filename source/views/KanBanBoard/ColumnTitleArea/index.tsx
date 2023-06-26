@@ -25,16 +25,26 @@ const ColumnTitleAreaBox = styled.div`
 `
 
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
+  // debugger
   const { kanbanConfig, kanbanInfoByGroup } = useSelector(store => store.kanBan)
   return (
     <ColumnTitleAreaBox>
       {kanbanConfig?.columns?.map(item => {
-        const num = kanbanInfoByGroup?.reduce?.((res, group) => {
-          const len =
-            group.columns?.find(column => column.id === item.id)?.stories
-              .length ?? 0
-          return len + res
-        }, 0)
+        // const num = kanbanInfoByGroup?.reduce?.((res, group) => {
+        //   const len =
+        //     group.columns?.find(column => column.id === item.id)?.stories
+        //       .length ?? 0
+        //   return len + res
+        // }, 0)
+        let storyData = kanbanInfoByGroup?.reduce?.((res: any[], group) => {
+          const storiesIds = group.columns
+            ?.find(column => column.id === item.id)
+            ?.stories.map(item => item.id) ?? [0]
+          res.push(storiesIds)
+          return res
+        }, [])
+        storyData = [...new Set(storyData.flat())]
+        const num = storyData.length
         return (
           <ColumnTitle key={item.id}>{`${item.name}（${num}）`}</ColumnTitle>
         )

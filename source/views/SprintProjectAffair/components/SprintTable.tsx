@@ -77,6 +77,10 @@ const SprintTable = (props: Props) => {
   }, [orderKey, order])
 
   useEffect(() => {
+    setSelectedRowKeys([])
+  }, [projectId])
+
+  useEffect(() => {
     if (tapSort) {
       const key = Object.keys(tapSort)
       const value = Object.values(tapSort)

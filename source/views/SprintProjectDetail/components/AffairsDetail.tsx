@@ -2,12 +2,12 @@ import { InfoItem, Label, TextWrap } from '../style'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import CommonButton from '@/components/CommonButton'
-import { AddWrap } from '@/components/StyleCommon'
+import { AddWrap, TextWrapEdit } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import {
   addInfoAffairs,
   deleteInfoAffairs,
@@ -129,7 +129,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         }}
       >
         <Label>描述</Label>
-        {editInfo ? (
+        {(isEditInfo || editInfo) && (
           <Editor
             value={editInfo}
             getSuggestions={() => []}
@@ -139,13 +139,23 @@ const AffairsDetail = (props: AffairsDetailProps) => {
               setIsEditInfo(true)
               setTimeout(() => {
                 editorRef.current?.focus()
-              }, 0)
+              }, 10)
             }}
             onChange={(value: string) => setEditInfo(value)}
             onBlur={onBlurEditor}
           />
-        ) : (
-          <TextWrap>--</TextWrap>
+        )}
+        {!isEditInfo && !editInfo && (
+          <TextWrapEdit
+            onClick={() => {
+              setIsEditInfo(true)
+              setTimeout(() => {
+                editorRef.current?.focus()
+              }, 10)
+            }}
+          >
+            --
+          </TextWrapEdit>
         )}
       </InfoItem>
       <InfoItem id="sprint-attachment" className="info_item_tab">

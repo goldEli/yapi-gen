@@ -152,6 +152,7 @@ const KanBanBtnsArea = (props: Props) => {
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       <ShareModal
         id={currentView?.id}
+        name={currentView?.name}
         config={view}
         url={window.location.href}
         title={`【${projectInfo.name}-${currentView?.name}】`}
