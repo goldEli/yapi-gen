@@ -374,7 +374,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     if (!currentIndex) return
     dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
     const params = encryptPhp(
-      JSON.stringify({ id, changeIds, sprintId: newIndex }),
+      JSON.stringify({
+        ...paramsData,
+        ...{ id, changeIds, demandId: newIndex },
+      }),
     )
     setSearchParams(`data=${params}`)
   }
@@ -385,7 +388,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     if (currentIndex === changeIds?.length - 1) return
     dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
     const params = encryptPhp(
-      JSON.stringify({ id, changeIds, sprintId: newIndex }),
+      JSON.stringify({
+        ...paramsData,
+        ...{ id, changeIds, demandId: newIndex },
+      }),
     )
     setSearchParams(`data=${params}`)
   }
