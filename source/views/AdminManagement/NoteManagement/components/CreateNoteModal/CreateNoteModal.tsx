@@ -341,8 +341,8 @@ const CreateNoteModal = (props: any) => {
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Radio.Group>
-              <Radio value={1}>{t('daily_notification')}</Radio>
-              <Radio value={2}>{t('system_notification')}</Radio>
+              <Radio value={2}>{t('daily_notification')}</Radio>
+              <Radio value={1}>{t('system_notification')}</Radio>
               <Radio defaultChecked value={3}>
                 {t('important_notification')}
               </Radio>

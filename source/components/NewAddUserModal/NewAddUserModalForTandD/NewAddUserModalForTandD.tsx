@@ -231,6 +231,8 @@ interface ModalProps {
 }
 
 const NewAddUserModalForTandD = (props: ModalProps) => {
+  console.log(props.defaultPeople)
+
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组
@@ -832,30 +834,28 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
     )
   }
-  useEffect(
-    () => {
-      if (props.defaultPeople && props.defaultPeople.length > 0) {
-        setDefaultPeople()
-        // if (tabsActive === 0) {
-        //   if (selectDataList?.length > 0) {
-        //     const data = getFilterArr(selectDataList, props.defaultPeople)
-        //     console.log(data)
-        //     setPersonData(data)
-        //   }
-        // }
-        // if (tabsActive === 1) {
-        //   if (selectDataList?.length > 0) {
-        //     const data = getFilterArr(selectDataList, props.defaultPeople)
+  useEffect(() => {
+    if (props.defaultPeople && props.defaultPeople.length > 0) {
+      setDefaultPeople()
+      // if (tabsActive === 0) {
+      //   if (selectDataList?.length > 0) {
+      //     const data = getFilterArr(selectDataList, props.defaultPeople)
+      //     console.log(data)
+      //     setPersonData(data)
+      //   }
+      // }
+      // if (tabsActive === 1) {
+      //   if (selectDataList?.length > 0) {
+      //     const data = getFilterArr(selectDataList, props.defaultPeople)
 
-        //     setPersonData(data)
-        //   }
-        // }
-      }
-    },
-    [
-      // props.defaultPeople, tabsActive, selectDataList
-    ],
-  )
+      //     setPersonData(data)
+      //   }
+      // }
+    }
+  }, [
+    props.defaultPeople,
+    // props.defaultPeople, tabsActive, selectDataList
+  ])
 
   return (
     <ModalStyle

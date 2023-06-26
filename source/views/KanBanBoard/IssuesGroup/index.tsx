@@ -95,6 +95,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
               )
               return Promise.resolve()
             },
+            people: issuesGroup.users?.map(item => item.id),
           })
           return
         }
@@ -109,6 +110,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
             )
             return Promise.resolve()
           },
+          people: issuesGroup.users?.map(item => item.id),
         })
       }}
     >
