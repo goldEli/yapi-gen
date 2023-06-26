@@ -28,6 +28,8 @@ interface ShareModalProps {
   title: string
   // 用于分享的数据
   otherConfig?: any
+  // 判断视图是否系统视图（2）还是其他视图 （1）
+  viewType?: number
   // 名字 name
   name?: string
   type?: number

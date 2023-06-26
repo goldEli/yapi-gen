@@ -2,7 +2,9 @@ import React, { useEffect } from 'react'
 import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import { ProjectWrap } from './style'
 import ProjectDetailSide from './ProjectDetailSide'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from '@store/index'
+import { saveInputKey } from '@store/view'
 interface IProps {}
 const Project: React.FC<IProps> = props => {
   const path = [
@@ -15,6 +17,11 @@ const Project: React.FC<IProps> = props => {
     '/SprintProjectManagement/WorkFlow',
     '/SprintProjectManagement/SprintProjectDetail',
   ]
+  const location = useLocation()
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(saveInputKey(''))
+  }, [location.pathname])
   return (
     <ProjectWrap>
       <>

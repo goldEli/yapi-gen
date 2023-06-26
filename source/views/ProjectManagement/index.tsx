@@ -1,9 +1,15 @@
 import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
 import { useEffect, useState } from 'react'
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
+import {
+  Outlet,
+  useNavigate,
+  useSearchParams,
+  useLocation,
+} from 'react-router-dom'
+import { useDispatch, useSelector } from '@store/index'
+import { saveInputKey } from '@store/view'
 import ProjectDetailSide from './ProjectDetailSide'
 
 const ProjectWrap = styled.div`
@@ -17,6 +23,9 @@ const Project = () => {
   const { projectInfo } = useSelector(store => store.project)
   const [isShowPage, setIsShowPage] = useState(false)
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const dispatch = useDispatch()
   let paramsData: any
   if (
     !(
@@ -30,7 +39,6 @@ const Project = () => {
   ) {
     paramsData = getParamsData(searchParams)
   }
-  const navigate = useNavigate()
 
   const path = [
     '/ProjectManagement/ProjectSetting',
@@ -57,6 +65,9 @@ const Project = () => {
       setIsShowPage(true)
     }
   }, [paramsData, projectInfo])
+  useEffect(() => {
+    dispatch(saveInputKey(''))
+  }, [location.pathname])
   return (
     <ProjectWrap>
       {isShowPage && (

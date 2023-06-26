@@ -287,8 +287,10 @@ const Iteration = (props: Props) => {
       ),
     )
   }
+  console.log(person, 'person')
   // 成员保存弹窗提示需要
   const onConfirm = (data: Array<{ name: string; id: number }>) => {
+    console.log(data, 'data')
     viewType === 1 && dispatch(setSave(true))
     setIsVisible(false)
     setPerson(data)
@@ -300,6 +302,7 @@ const Iteration = (props: Props) => {
       }),
     )
   }
+  console.log(headerParmas, 'ppp------headerParmas')
   // 清除选择的成员
   const onClear = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()
@@ -383,6 +386,7 @@ const Iteration = (props: Props) => {
     }, data[0].end_at)
     return maxt
   }
+  console.log(props, paramsData, 'ppp')
   return (
     <HeaderRow>
       <Space size={16}>
@@ -532,22 +536,27 @@ const Iteration = (props: Props) => {
           />
         )}
       </Space>
-      {/* <NewAddUserModalForTandD
-        title="添加成员"
-        state={2}
-        isVisible={isVisible}
-        onConfirm={onConfirm}
-        onClose={() => setIsVisible(false)}
-      /> */}
-      {/* 项目走的 */}
-      <AddDepartmentOrTeamModal
-        users={headerParmas.users}
-        projectId={paramsData?.id}
-        type={2}
-        isVisible={isVisible}
-        onConfirm={onConfirm}
-        onClose={() => setIsVisible(false)}
-      />
+      {props.homeType === 'all' ? (
+        <NewAddUserModalForTandD
+          title="添加成员"
+          state={2}
+          defaultPeople={headerParmas.users}
+          isVisible={isVisible}
+          onConfirm={onConfirm}
+          onClose={() => setIsVisible(false)}
+        />
+      ) : (
+        /* 项目走的 */
+        <AddDepartmentOrTeamModal
+          users={headerParmas.users}
+          projectId={paramsData?.id}
+          type={2}
+          isVisible={isVisible}
+          onConfirm={onConfirm}
+          onClose={() => setIsVisible(false)}
+        />
+      )}
+
       {/* 另存为视图 */}
       <ViewDialog
         name=""
