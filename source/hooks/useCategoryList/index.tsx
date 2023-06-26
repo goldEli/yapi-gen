@@ -108,8 +108,9 @@ const useCategory = () => {
     for (let i = 0; i < arr.length; i++) {
       const item = arr[i]
       const key = item[filed]
-      if (categoryData.find(item => item.workType === key)) {
-        categoryData.find(item => item.workType === key)?.children.push(item)
+      const currentItem = categoryData.find(item => item.workType === key)
+      if (currentItem) {
+        currentItem?.children.push(item)
       }
     }
     if (!projectType) {
