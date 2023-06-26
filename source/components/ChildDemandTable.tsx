@@ -1,3 +1,6 @@
+/* eslint-disable react/display-name */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-duplicate-imports */
 // 子需求表格
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -27,6 +30,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import StateTag from './StateTag'
 import TableColorText from './TableColorText'
 import MultipleAvatar from './MultipleAvatar'
+import React from 'react'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -40,15 +44,15 @@ const NewSort = (sortProps: any) => {
     </Sort>
   )
 }
-
-const ChildDemandTable = (props: {
+interface Props {
   value: any
   row: any
   id?: any
   hasIcon?: boolean
   // 是否是从我的模块或者他的模块使用
   isMineOrHis?: boolean
-}) => {
+}
+const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   let projectId: any
@@ -63,7 +67,6 @@ const ChildDemandTable = (props: {
     list: undefined,
   })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { colorList } = useSelector(store => store.project)
   const [openDemandDetail] = useOpenDemandDetail()
   let isCanEdit: any
 
@@ -312,6 +315,7 @@ const ChildDemandTable = (props: {
       }
     >
       <ClickWrap
+        ref={ref}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -329,6 +333,6 @@ const ChildDemandTable = (props: {
       </ClickWrap>
     </Popover>
   )
-}
+})
 
 export default ChildDemandTable

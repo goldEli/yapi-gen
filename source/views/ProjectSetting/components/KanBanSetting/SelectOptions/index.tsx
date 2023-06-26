@@ -162,6 +162,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
   }, [props.options, key, props.operation, props.createViewTitle])
 
   const title = useMemo(() => {
+    console.log(props.title, 'props.title')
     return `${props.title}：${value}`
   }, [props.title, value])
 

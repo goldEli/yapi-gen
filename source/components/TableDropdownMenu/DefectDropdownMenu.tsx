@@ -27,6 +27,7 @@ const MenuWrap = styled(Menu)`
 
 interface Props {
   record: any
+  onEditChange(row: any): void
   onDeleteChange(row: any): void
   // 是否是所有项目
   isAllProject?: boolean
@@ -38,7 +39,12 @@ export const DefectDropdownMenu = (props: Props) => {
 
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
+    'b/flaw/delete',
+  )
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/flaw/update',
   )
 
   // 复制需求id
@@ -64,6 +70,14 @@ export const DefectDropdownMenu = (props: Props) => {
 
   let menuItems = [
     {
+      key: '1',
+      label: (
+        <div onClick={() => props.onEditChange(props.record)}>
+          {t('common.edit')}
+        </div>
+      ),
+    },
+    {
       key: '2',
       label: (
         <div onClick={() => props.onDeleteChange(props.record)}>
@@ -82,6 +96,9 @@ export const DefectDropdownMenu = (props: Props) => {
   ]
 
   if (!props.isAllProject) {
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
     if (hasDel) {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }

@@ -77,6 +77,10 @@ const SprintTable = (props: Props) => {
   }, [orderKey, order])
 
   useEffect(() => {
+    setSelectedRowKeys([])
+  }, [projectId])
+
+  useEffect(() => {
     if (tapSort) {
       const key = Object.keys(tapSort)
       const value = Object.values(tapSort)
@@ -152,6 +156,22 @@ const SprintTable = (props: Props) => {
   const onCreateChild = (item: any) => {
     setIsShowMore(false)
     dispatch(setAddQuickSprintModal({ visible: true, params: item }))
+  }
+
+  // 点击编辑
+  const onEditChange = (item: any) => {
+    setIsShowMore(false)
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: item.id,
+          projectId,
+          type: item.work_type,
+          title: '编辑事务',
+        },
+      }),
+    )
   }
 
   const columns = useDynamicColumns({
@@ -265,6 +285,7 @@ const SprintTable = (props: Props) => {
                       <SprintDropdownMenu
                         onDeleteChange={onDeleteChange}
                         onCreateChild={onCreateChild}
+                        onEditChange={onEditChange}
                         record={record}
                       />
                     )

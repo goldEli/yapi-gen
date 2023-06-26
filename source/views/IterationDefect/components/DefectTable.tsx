@@ -85,6 +85,10 @@ const DefectTable = (props: Props) => {
     }
   }, [tapSort])
 
+  useEffect(() => {
+    setSelectedRowKeys([])
+  }, [projectId])
+
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
   const onOperationCheckbox = (type: any, keys?: any) => {
     const redClassElements = document.getElementsByClassName(
@@ -158,6 +162,22 @@ const DefectTable = (props: Props) => {
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     props.onDelete(item)
+  }
+
+  // 点击编辑
+  const onEditChange = (item: any) => {
+    setIsShowMore(false)
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: item.id,
+          projectId,
+          type: 2,
+          title: '编辑缺陷',
+        },
+      }),
+    )
   }
 
   const columns = useDynamicColumns({
@@ -276,6 +296,7 @@ const DefectTable = (props: Props) => {
                     ) : (
                       <DefectDropdownMenu
                         onDeleteChange={onDeleteChange}
+                        onEditChange={onEditChange}
                         record={record}
                       />
                     )

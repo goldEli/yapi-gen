@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { store } from '../../store'
 import * as http from '../tools/http'
+import { onlySysNotice } from './sysNotice'
 
 // 获取登录信息
 export const getLoginDetail: any = async (isLogin?: boolean) => {
@@ -66,6 +67,7 @@ export const login = async () => {
     )
 
     localStorage.setItem('agileToken', response.data.token)
+    onlySysNotice()
   } catch (error) {
     await getTicket()
   }

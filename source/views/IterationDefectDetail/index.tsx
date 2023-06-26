@@ -54,7 +54,7 @@ const IterationDefectDetail = () => {
   const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, flawId, changeIds } = paramsData
+  const { id, flawId, changeIds, newOpen } = paramsData
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [isShowChange, setIsShowChange] = useState(false)
@@ -140,7 +140,12 @@ const IterationDefectDetail = () => {
 
   // 返回
   const onBack = () => {
-    history.go(-1)
+    if (newOpen) {
+      const params = encryptPhp(JSON.stringify({ id: flawInfo.projectId }))
+      navigate(`/ProjectManagement/Defect?data=${params}`)
+    } else {
+      history.go(-1)
+    }
   }
 
   // 分享弹窗
@@ -368,7 +373,10 @@ const IterationDefectDetail = () => {
     if (!currentIndex) return
     dispatch(getFlawInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
-      JSON.stringify({ id, changeIds, flawId: newIndex }),
+      JSON.stringify({
+        ...paramsData,
+        ...{ id, changeIds, demandId: newIndex },
+      }),
     )
     setSearchParams(`data=${params}`)
   }
@@ -379,7 +387,10 @@ const IterationDefectDetail = () => {
     if (currentIndex === changeIds?.length - 1) return
     dispatch(getFlawInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
-      JSON.stringify({ id, changeIds, flawId: newIndex }),
+      JSON.stringify({
+        ...paramsData,
+        ...{ id, changeIds, demandId: newIndex },
+      }),
     )
     setSearchParams(`data=${params}`)
   }
@@ -485,7 +496,7 @@ const IterationDefectDetail = () => {
       <DetailTop>
         <MyBreadcrumb />
         <ButtonGroup size={16}>
-          {changeIds.length > 0 && (
+          {changeIds && changeIds.length > 0 && (
             <CommonButton type="icon" icon="left-md" onClick={onBack} />
           )}
           <ChangeIconGroup>

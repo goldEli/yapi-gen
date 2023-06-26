@@ -198,6 +198,8 @@ const DemandDetailDrawer = () => {
       JSON.stringify({
         id: drawerInfo.projectId,
         demandId: drawerInfo.id,
+        newOpen: true,
+        changeIds: demandIds,
       }),
     )
     const url = `ProjectManagement/DemandDetail?data=${params}`

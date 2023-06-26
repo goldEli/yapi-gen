@@ -44,7 +44,7 @@ const Index = (props: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const [key, setKey] = useState()
+  const [key, setKey] = useState<any>()
   const [searchVal, setSearchVal] = useState('')
   const [searchItems, setSearchItems] = useState<any>({})
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
@@ -63,7 +63,7 @@ const Index = (props: any) => {
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
 
-  const keyValue = {
+  const keyValueTree = {
     key,
     changeKey: (value: any) => {
       setKey(value)
@@ -240,7 +240,17 @@ const Index = (props: any) => {
 
   useEffect(() => {
     getList(searchItems, pageObj, order)
-  }, [key, order, pageObj, projectId])
+  }, [key, order, pageObj])
+
+  useEffect(() => {
+    setPageObj({ page: 1, size: 20 })
+    setOrder({ value: '', key: '' })
+    setKey('')
+    setSearchVal('')
+    setSearchItems({})
+    keyValueTree.changeKey('')
+    getList({}, { page: 1, size: 20 }, { value: '', key: '' })
+  }, [projectId])
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
@@ -274,7 +284,7 @@ const Index = (props: any) => {
         onClose={() => setIsSettingState(false)}
         getCheckList={getCheckList}
       />
-      <TreeContext.Provider value={keyValue}>
+      <TreeContext.Provider value={keyValueTree}>
         <Wrap>
           <ProjectCommonOperation
             onInputSearch={onInputSearch}

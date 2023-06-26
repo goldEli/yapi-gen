@@ -89,6 +89,7 @@ export const Sub = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 `
 export const WrapIcon = styled(IconFont)`
   font-size: 16px;

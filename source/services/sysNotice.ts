@@ -14,13 +14,13 @@ export const editCreateSysNotice: any = async (params: any) => {
 
   return response
 }
-//删除通知
+// 删除通知
 export const delSysNotice: any = async (id: any) => {
   const response: any = await http.delete<any>(`/b/sys_notice/${id}/destroy`)
 
   return response
 }
-//撤回通知
+// 撤回通知
 export const recallSysNotice: any = async (id: any) => {
   const response: any = await http.put<any>(`/b/sys_notice/${id}/recall`)
 
@@ -59,6 +59,13 @@ export const noSysNotice: any = async (id: any) => {
   const response: any = await http.post<any>(
     `/b/sys_notice/${id}/without_notice`,
   )
+
+  return response
+}
+
+// 登录只调一次
+export const onlySysNotice: any = async () => {
+  const response: any = await http.post<any>('/b/sys_notice/again/send_notice')
 
   return response
 }

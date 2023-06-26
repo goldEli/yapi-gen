@@ -87,7 +87,6 @@ const slice = createSlice({
     })
     builder.addCase(getLeftSprintList.fulfilled, (state, action) => {
       state.leftSprintList = action.payload
-      state.checkList = []
       state.checkList = new Array(action.payload?.list?.length).fill(true)
       state.leftLoading = false
     })
