@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 const NoteCard = (props: any) => {
   const [t] = useTranslation()
   const { values } = props
-  console.log(values)
 
   const senseByte = (num: any) => {
     let text = ''

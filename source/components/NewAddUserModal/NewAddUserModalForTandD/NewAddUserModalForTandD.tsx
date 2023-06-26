@@ -231,7 +231,6 @@ interface ModalProps {
 }
 
 const NewAddUserModalForTandD = (props: ModalProps) => {
-  console.log(props, 'props')
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组

@@ -268,6 +268,26 @@ const CreateAProjectForm = () => {
     setLeaderId(res.team_id)
     setCanChooseLeader(false)
   }
+  const getProjectInfo2 = async () => {
+    const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
+    const res2 = await getAffiliationUser(res.team_id)
+    console.log(res2, 'rererer')
+
+    setSelectLeaders(
+      res2.map((i: any) => ({
+        name: i.name,
+        id: i.id,
+        img: i.avatar,
+      })),
+    )
+    setActiveCover(res.cover)
+    // setMyCover(res.cover)
+    form.setFieldsValue({
+      team_id: res.team_id,
+    })
+    setLeaderId(res.team_id)
+    setCanChooseLeader(false)
+  }
 
   const getLeader = async () => {
     const res = await getAffiliationUser(leaderId)
@@ -309,11 +329,11 @@ const CreateAProjectForm = () => {
       getLeader()
     }
   }, [leaderId])
-  // useEffect(() => {
-  //   if (multipleSelectionItems.length === 1) {
-  //     getProjectInfo()
-  //   }
-  // }, [multipleSelectionItems])
+  useEffect(() => {
+    if (multipleSelectionItems.length === 1) {
+      getProjectInfo2()
+    }
+  }, [multipleSelectionItems])
 
   useEffect(() => {
     if (createVisible) {
@@ -581,7 +601,9 @@ const CreateAProjectForm = () => {
                     rules={[{ required: true, message: '' }]}
                   >
                     <CustomSelect
-                      disabled={!!isEditId}
+                      disabled={
+                        !!isEditId || multipleSelectionItems.length >= 1
+                      }
                       placeholder={t('please_select_your_affiliation')}
                       onChange={(value: any) => {
                         setLeaderId(value)
