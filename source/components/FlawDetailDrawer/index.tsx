@@ -190,6 +190,7 @@ const FlawDetailDrawer = () => {
       JSON.stringify({
         id: drawerInfo.projectId,
         flawId: drawerInfo.id,
+        newOpen: true,
       }),
     )
     const url = `ProjectManagement/DefectDetail?data=${params}`

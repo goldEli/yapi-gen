@@ -73,7 +73,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const [form] = Form.useForm()
   const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, sprintId, changeIds } = paramsData
+  const { id, sprintId, changeIds, newOpen } = paramsData
   const { affairsInfo } = useSelector(store => store.affairs)
   const { projectInfoValues, projectInfo, isUpdateAddWorkItem } = useSelector(
     store => store.project,
@@ -230,7 +230,12 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 返回
   const onBack = () => {
-    history.go(-1)
+    if (newOpen) {
+      const params = encryptPhp(JSON.stringify({ id: affairsInfo.projectId }))
+      navigate(`/SprintProjectManagement/Affair?data=${params}`)
+    } else {
+      history.go(-1)
+    }
   }
 
   // 确认删除
