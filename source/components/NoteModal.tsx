@@ -34,7 +34,6 @@ const Content = styled.div`
 `
 
 const NoteModal = (props: any) => {
-  console.log(props.data.customData?.id, '消息内容')
   const [checked, setChecked] = useState(false)
   const [t] = useTranslation()
   const getLabelName = (num: string) => {

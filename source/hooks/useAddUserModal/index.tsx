@@ -10,14 +10,23 @@ const useAddUserModal = () => {
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const [title, setTitle] = useState('')
+  const [people, setPeople] = useState([])
   const onConfirmRef = useRef<OnConfirm>()
-  const open = (options: { onConfirm: OnConfirm; title?: string }) => {
+  const open = (options: {
+    onConfirm: OnConfirm
+    title?: string
+    people?: any
+  }) => {
+    console.log(options.people)
+
     setVisible(true)
+    setPeople(options.people)
     onConfirmRef.current = options.onConfirm
     setTitle(options.title ?? t('formWork.addUser'))
   }
   const AddUserModalElement = (
     <NewAddUserModalForTandD
+      defaultPeople={people}
       title={title}
       state={2}
       isVisible={visible}
