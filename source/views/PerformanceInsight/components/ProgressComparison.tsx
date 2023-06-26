@@ -30,7 +30,6 @@ import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { copyView } from '@/services/kanban'
-import { cos } from '@/services/cos'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 // 进展对比tips
@@ -62,10 +61,11 @@ interface Props {
   // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局 //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
   type: string
   title: string
+  viewType: number
   //代表是全局还是冲刺迭代
   homeType: string
   headerParmas: Models.Efficiency.HeaderParmas
-  projectDataList: Array<{ name: string; id: number }>
+  // projectDataList: Array<{ name: string; id: number }>
   projectId: number
 }
 const ProgressComparison = (props: Props) => {
@@ -830,8 +830,9 @@ const ProgressComparison = (props: Props) => {
           onGetExportApi={onGetExportApi}
           onSearchData={onSearchData}
           type={props.type}
+          viewType={props.viewType}
           headerParmas={props.headerParmas}
-          projectDataList={props.projectDataList}
+          // projectDataList={props.projectDataList}
         />
         {/* 表格 */}
         <Col>

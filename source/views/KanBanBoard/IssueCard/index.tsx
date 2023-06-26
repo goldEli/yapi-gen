@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
 import { handleId } from '../utils'
@@ -26,6 +26,7 @@ import ThreeDot from '../ThreeDot'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getProjectIdByUrl } from '@/tools'
 import useStoryIds from '../hooks/useStoryIds'
+import ChildDemandTable from '@/components/ChildDemandTable'
 
 interface IssueCardProps {
   item: Model.KanBan.Story
@@ -38,7 +39,7 @@ interface IssueCardProps {
 const IssueCard = (props: IssueCardProps) => {
   const { item, index } = props
   const isDragDisabled = props.item.verify_lock === 1
-
+  const childRef = useRef<any>(null)
   const [openDemandDetail] = useOpenDemandDetail()
   const { ids } = useStoryIds()
 
@@ -74,9 +75,20 @@ const IssueCard = (props: IssueCardProps) => {
         </BottomLeft>
         <BottomRight>
           <PercentageBox>{`${item.schedule}%`}</PercentageBox>
-          <Sub>
+          <Sub
+            onClick={(e: any) => {
+              e.stopPropagation()
+              if (childRef.current) {
+                childRef.current!.click()
+              }
+            }}
+          >
             <WrapIcon type="apartment" />
-            {item.children_count}
+            <ChildDemandTable
+              ref={childRef}
+              value={item.children_count}
+              row={{ id: item.id }}
+            />
           </Sub>
           <PriorityIcon
             icon={item.story_config_priority.icon}
