@@ -341,25 +341,26 @@ const DemandIndex = () => {
     // 进入主页清除已存储的筛选计数
     setFilterKeys([])
     return () => {
-      dispatch(
-        onTapTitles([
-          'prefix_key',
-          'name',
-          'status',
-          'priority',
-          'child_story_count',
-          'iterate_name',
-          'category',
-          'schedule',
-          'users_name',
-          'created_at',
-          'expected_start_at',
-          'expected_end_at',
-        ]),
-      )
+      // dispatch(
+      //   onTapTitles([
+      //     'prefix_key',
+      //     'name',
+      //     'status',
+      //     'priority',
+      //     'child_story_count',
+      //     'iterate_name',
+      //     'category',
+      //     'schedule',
+      //     'users_name',
+      //     'created_at',
+      //     'expected_start_at',
+      //     'expected_end_at',
+      //   ]),
+      // )
     }
   }, [])
-
+  console.log(titleList, '2222222222')
+  console.log(projectInfo, '飞机')
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"
