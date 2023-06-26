@@ -137,6 +137,7 @@ const Header = () => {
   }
   // 删除逻辑
   const onDelete = () => {
+    // debugger
     if (activeCategory?.hasDemand) {
       setHasDeleteVisible(true)
     } else {
