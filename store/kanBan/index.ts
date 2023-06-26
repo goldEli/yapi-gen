@@ -184,10 +184,6 @@ const slice = createSlice({
       const { kanbanConfigList, sortByRowAndStatusOptions } = action.payload
       state.kanbanConfigList = kanbanConfigList
       state.sortByRowAndStatusOptions = sortByRowAndStatusOptions
-      console.log(
-        sortByRowAndStatusOptions,
-        'sortByRowAndStatusOptionssortByRowAndStatusOptionssortByRowAndStatusOptions',
-      )
     })
     builder.addCase(getStoryViewList.fulfilled, (state, action) => {
       state.sortByView = action.payload

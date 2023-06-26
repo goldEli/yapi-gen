@@ -45,9 +45,8 @@ const KanBanBtnsArea = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
   const dispatch = useDispatch()
-  const { sortByView, sortByRowAndStatusOptions } = useSelector(
-    store => store.kanBan,
-  )
+  const { sortByView, sortByRowAndStatusOptions, sortByGroupOptions } =
+    useSelector(store => store.kanBan)
   const currentView = useMemo(() => {
     return sortByView?.find(item => item.check)
   }, [sortByView])
@@ -58,6 +57,11 @@ const KanBanBtnsArea = (props: Props) => {
     const key = sortByRowAndStatusOptions?.find(item => item.check)?.key ?? ''
     return parseInt(key, 10)
   }, [sortByRowAndStatusOptions])
+
+  const currentGroupKey = useMemo(() => {
+    const key = sortByGroupOptions?.find(item => item.check)?.key ?? ''
+    return key
+  }, [sortByGroupOptions])
 
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
@@ -158,6 +162,7 @@ const KanBanBtnsArea = (props: Props) => {
         title={`【${projectInfo.name}-${currentView?.name}】`}
         otherConfig={{
           currentRowAndStatusId,
+          currentGroupKey,
         }}
         type={currentView?.type}
       />
