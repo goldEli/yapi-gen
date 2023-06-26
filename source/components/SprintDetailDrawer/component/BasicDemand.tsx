@@ -4,7 +4,6 @@
 /* eslint-disable camelcase */
 import { getCategoryConfigList } from '@/services/demand'
 import { getCustomNormalValue } from '@/tools'
-import ParentDemand from '@/views/DemandDetail/components/ParentDemand'
 import { useDispatch, useSelector } from '@store/index'
 import { message, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
@@ -34,6 +33,7 @@ import {
 } from '@/services/affairs'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import ChangeSeverityPopover from '@/components/ChangeSeverityPopover'
+import DetailParent from '@/components/DetailParent'
 
 interface Props {
   detail?: any
@@ -328,16 +328,12 @@ const BasicDemand = (props: Props) => {
       )
     } else if (item.content === 'parent_id') {
       nodeComponent = (
-        <ParentDemand
-          onUpdate={props.onUpdate}
+        <DetailParent
+          hasEdit={isCanEdit}
           detail={props.detail}
-          projectId={props.detail?.projectId}
-          isRight
-          addWrap={
-            <CommonButton icon="plus" type="primaryText">
-              {t('common.add23')}
-            </CommonButton>
-          }
+          onUpdate={props.onUpdate}
+          type={3}
+          canOperationKeys={canOperationKeys}
         />
       )
     } else if (item.content === 'priority') {
