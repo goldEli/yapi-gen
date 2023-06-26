@@ -416,7 +416,10 @@ const DemandDetail = () => {
     if (!currentIndex) return
     dispatch(getDemandInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
-      JSON.stringify({ id, changeIds, demandId: newIndex }),
+      JSON.stringify({
+        ...paramsData,
+        ...{ id, changeIds, demandId: newIndex },
+      }),
     )
     setSearchParams(`data=${params}`)
   }
@@ -427,7 +430,10 @@ const DemandDetail = () => {
     if (currentIndex === changeIds?.length - 1) return
     dispatch(getDemandInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
-      JSON.stringify({ id, changeIds, demandId: newIndex }),
+      JSON.stringify({
+        ...paramsData,
+        ...{ id, changeIds, demandId: newIndex },
+      }),
     )
     setSearchParams(`data=${params}`)
   }
