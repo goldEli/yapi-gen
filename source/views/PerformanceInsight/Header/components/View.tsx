@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import ViewDialog from './ViewDialog'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { DivStyle, DefaultLabel, DefaultLabelAdd, Btn, Label } from '../Style'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch } from '@store/index'
 import {
   setHeaderParmas,
   setSave,
