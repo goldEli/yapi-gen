@@ -472,7 +472,7 @@ const Iteration = () => {
                 onFilter={getSearchKey}
                 onSearch={onFilterSearch}
                 list={searchList}
-                basicsList={filterBasicsList.filter(
+                basicsList={filterBasicsList?.filter(
                   (i: any) => i.is_flaw !== 1,
                 )}
                 specialList={filterSpecialList}
