@@ -110,6 +110,7 @@ const CreateNoteModal = (props: any) => {
     const res = await form.validateFields()
 
     res.expire_time = res.expire_time.format('YYYY-MM-DD HH:mm:ss')
+    res.send_time = res.send_time?.format('YYYY-MM-DD HH:mm:ss')
     const obj = {
       send_email: res.recipient2.isEmail ? 1 : 2,
 
