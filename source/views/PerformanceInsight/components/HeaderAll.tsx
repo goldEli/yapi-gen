@@ -87,18 +87,23 @@ const HeaderAll = (props: HaderProps) => {
         })
         break
     }
-    console.log(props, 'pppp')
     // 根据图表的header选择的项目塞选出选择出来的项目
   }, [])
   const onBack = () => {
     if (props.homeType === 'all') {
-      navigate('/Performance')
+      const params = encryptPhp(
+        JSON.stringify({
+          view: props.headerParmas.view,
+        }),
+      )
+      navigate(`/Performance?data=${params}`)
     } else {
       const params = encryptPhp(
         JSON.stringify({
           projectId: props.projectId,
           type: props.homeType,
           id: props.projectId,
+          view: props.headerParmas.view,
         }),
       )
       navigate(`/Report/PerformanceInsight?data=${params}`)
@@ -107,14 +112,10 @@ const HeaderAll = (props: HaderProps) => {
   return (
     <>
       <HeaderRowBox>
-        {paramsData.valueId ? (
-          <div />
-        ) : (
-          <Back onClick={() => onBack()}>
-            <CommonIconFont type="left-md" size={16} />
-            <span className="text">返回</span>
-          </Back>
-        )}
+        <Back onClick={() => onBack()}>
+          <CommonIconFont type="left-md" size={16} />
+          <span className="text">返回</span>
+        </Back>
         <RightRow>
           {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
           {/* // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局

@@ -94,7 +94,9 @@ const FloatBatch = (props: Props) => {
       const params = encryptPhp(
         JSON.stringify({ type: 'info', id: projectId, demandId: element.id }),
       )
-      const url = `ProjectManagement/Demand?data=${params}`
+      const url = `ProjectManagement/${
+        props.type === 1 ? 'Demand' : 'Defect'
+      }?data=${params}`
       text += `【${element.name}】 ${beforeUrl}${url} \n`
     })
     copyLink(text, t('common.copySuccess'), t('common.copyFail'))

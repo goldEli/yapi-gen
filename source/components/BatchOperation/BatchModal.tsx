@@ -64,6 +64,8 @@ const BatchModal = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfoValues } = useSelector(store => store.project)
+  // 是否包含标准事务类型-个数
+  const [hasStandard, setHasStandard] = useState(false)
   const modelMethods = [
     {
       type: 1,
@@ -108,6 +110,17 @@ const BatchModal = (props: Props) => {
       getBatchEditConfigList()
     }
   }, [props.type])
+
+  useEffect(() => {
+    if (
+      props.modelType === 3 &&
+      props.selectRows.filter((i: any) => [5, 4].includes(i.work_type))
+        ?.length > 0
+    ) {
+      setHasStandard(true)
+      setHaveChildren(true)
+    }
+  }, [props.selectRows])
 
   useEffect(() => {
     const list = JSON.parse(JSON.stringify(chooseSelect))
@@ -288,6 +301,36 @@ const BatchModal = (props: Props) => {
     setCurrentTypeItem(chooseSelect?.filter((i: any) => i.value === value)[0])
   }
 
+  // 获取删除文字
+  const getDeleteText = () => {
+    if (props.modelType === 3) {
+      // 如果勾选的全部都是子任务类型，则不显示勾选框
+      if (
+        props.selectRows.filter((i: any) => i.work_type === 6)?.length ===
+        props.selectRows?.length
+      ) {
+        return ''
+      } else {
+        // 如果是包含了标准事务类型，则禁用并勾选，如果是长故事类型就展示勾选框
+        return (
+          <Checkbox
+            checked={haveChildren}
+            disabled={hasStandard}
+            onChange={e => setHaveChildren(e.target.checked)}
+          >
+            {currentType?.checkboxText}
+          </Checkbox>
+        )
+      }
+    } else {
+      return (
+        <Checkbox onChange={e => setHaveChildren(e.target.checked)}>
+          {currentType?.checkboxText}
+        </Checkbox>
+      )
+    }
+  }
+
   return (
     <>
       {props.type === 'delete' && (
@@ -298,11 +341,7 @@ const BatchModal = (props: Props) => {
           onConfirm={onConfirmDelete}
         >
           <div style={{ marginBottom: 12 }}>{currentType?.text}</div>
-          {currentType.checkboxText && (
-            <Checkbox onChange={e => setHaveChildren(e.target.checked)}>
-              {currentType?.checkboxText}
-            </Checkbox>
-          )}
+          {getDeleteText()}
         </DeleteConfirm>
       )}
       {props.type === 'edit' && (
