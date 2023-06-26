@@ -216,6 +216,21 @@ const Flaw = (props: FlawProps) => {
     )
   }
 
+  // 点击编辑
+  const onEditChange = (item: any) => {
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: item.id,
+          projectId: getProjectIdByUrl(),
+          type: 2,
+          title: '编辑缺陷',
+        },
+      }),
+    )
+  }
+
   const columns = useDynamicColumns({
     projectId: getProjectIdByUrl(),
     orderKey,
@@ -254,6 +269,7 @@ const Flaw = (props: FlawProps) => {
                   menu={
                     <DefectDropdownMenu
                       onDeleteChange={onDeleteChange}
+                      onEditChange={onEditChange}
                       record={record}
                     />
                   }
