@@ -164,6 +164,22 @@ const DefectTable = (props: Props) => {
     props.onDelete(item)
   }
 
+  // 点击编辑
+  const onEditChange = (item: any) => {
+    setIsShowMore(false)
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: item.id,
+          projectId,
+          type: 2,
+          title: '编辑缺陷',
+        },
+      }),
+    )
+  }
+
   const columns = useDynamicColumns({
     projectId,
     orderKey,
@@ -280,6 +296,7 @@ const DefectTable = (props: Props) => {
                     ) : (
                       <DefectDropdownMenu
                         onDeleteChange={onDeleteChange}
+                        onEditChange={onEditChange}
                         record={record}
                       />
                     )
