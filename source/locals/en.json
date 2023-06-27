@@ -1,228 +1,126 @@
 {
   "create_work_item": "Create work item",
   "accumulated_work_items": "Cumulative participating work items",
-
   "todo_work_items": "To be done work items",
-
   "completed_work_items": "Completed work items",
-
   "my_created_work_items": "Work items I created ",
-
   "cc_to_me_work_items": "CC my work items",
-
   "pending_approval_work_items": "Work item to be reviewed ",
-
   "work_item_receiving_processing": "work item receiving processing",
   "agile_growth_suggestion": "Agile can't grow without your suggestions ",
-
   "suggestion_type": "Suggestion type",
-
   "i_want_to": "I want to...",
-
   "provide_improvement_suggestion": "Provide improvement suggestion",
-
   "provide_bug_report": "Provide functional defects ",
-
   "raise_other_issues": "Raise other issues",
-
   "we_value_your_ideas": "We will value your ideas very much, thank you for your help ",
-
   "enter_content2": "Please enter content ",
-
   "i_hope_to_be_contacted_soon": "I hope you can contact me as soon as possible ",
   "fill_in_project_information": "Fill in project information",
   "not_started": "not started",
-
   "in_progress": "in progress",
-
   "completed": "Completed ",
-
   "requirement_design": "Requirements Design",
-
   "art": "fine art",
-
   "original_artwork": "original artwork",
-
   "import_existing_project": "Import an existing project",
-
   "import_description": "You can import existing workflows and project members from existing projects and modify them at any time in new projects ",
-
   "select_project_template2": "Select Project template ",
-
   "template_description": "We prefabricated some workflows for you in the hope of reducing your workload, but we can always change them in the future.",
-
   "my_created_projects": "Projects I created ",
-
   "my_joined_projects": "I joined the project ",
   "select_project_type": "Select the project type",
-
   "sprint_project": "Sprint project",
-
   "iteration_project": "iterative project",
-
   "select_project_template": "Select project template",
-
   "software_development": "Software development",
-
   "game_design": "Game Design ",
-
   "import_project": "Import project",
-
   "type_of_use": " Type use",
   "draft": "draft",
-
   "withdrawn": "withdrawn",
-
   "sent": "sent",
-
   "scheduled_notifications": "Periodic notifications",
-
   "revoke": "revoke",
-
   "edit_draft": "Edit draft",
   "save_as_draft": "Save as Draft",
   "simultaneous_email_notification": "Simultaneous email notification",
   "originalArray": {
     "new": "New backlog workflow ",
-
     "completed": "Process the workflow ",
-
     "create": "Create workflow ",
-
     "verify": "Verify work item"
   },
   "edit_notification": "Edit notification",
-
   "send_notification": "Send notification",
-
   "notification_title": "notification title",
-
   "enter_title": "Please enter the title",
-
   "enter_title_max_length": "Please enter a notification title of up to 20 words ",
-
   "notification_content": "notification content",
-
   "enter_content": "Please enter notification content",
-
   "enter_content_max_length": "Please enter notification content of up to 200 words ",
-
   "notification_type": "notification type",
-
   "daily_notification": "daily notification",
-
   "system_notification": "System notification",
-
   "important_notification": "important notification",
-
   "activity_notification": "Activity notification",
-
   "holiday_notification": "holiday notification",
-
   "recipient": "Recipient ",
-
   "reminder_method": "reminder method",
-
   "popup_reminder": "popup reminder",
-
   "top_banner_reminder": "Top banner ",
-
   "expiration_time": "expiration_time",
-
   "select_expiration_time": "Please select expiration time",
-
   "schedule_send": "scheduled sending",
-
   "select_schedule_send_time": "Please select a scheduled sending time",
   "confirm_to_delete_the_message": " Are you sure to delete this message?",
-
   "retract_confirmation": " withdraw confirmation",
-
   "Confirm_to_withdraw_the_message": "confirm withdrawal news?",
-
   "notification_management": " Notification management",
-
   "enter_notification_content": " Enter notification content",
-
   "send_new_notification": "Send a new notification",
-
   "scheduled_notification": "scheduled notification",
   "member_change": "Member change",
-
   "edit_project": "Project editor ",
-
   "delete_project": "Delete the project",
-
   "update_project_status": "Project status change ",
-
   "add_requirement_or_defect": "Add requirement/Defect ",
-
   "remove_requirement_or_defect": "Remove requirement/Defect ",
-
   "create_iteration": "Create iteration",
-
   "edit_iteration": "Iteration edit ",
-
   "update_iteration_status": "iteration status update ",
-
   "delete_iteration": "Iteration delete ",
-
   "edit_iteration_outcome": "Edit the iteration result ",
   "Create_requirements": "Create Requirements",
   "import_requirement": "Import requirement",
-
   "export_requirement": "Export requirement",
-
   "import_product": "Import product",
-
   "assign_handler": "Requirements  handler",
-
   "update_status": "Requirement status update ",
-
   "commented_on_requirement": "Requirement was commented ",
-
   "comment": "Comment ",
-
   "delete_requirement": "Requirement to delete ",
-
   "add_cc": "Make A Play For",
   "pm": "Project Management",
-
   "systematic_notification": "System Notification",
-
   "schedule_management": "Schedule Management",
   "Invitations": "Invite me to participate",
   "work_report": "Work report",
   "pending_my_approval": "Pending my approval",
-
   "me_in_the_comments": "@me in comments",
-
   "created_the_task": "The task was created ",
-
   "system_notice": "System Notice",
-
   "Reminder": "Reminder",
-
   "my_approval": "I approved ",
-
   "to_do": "To do",
-
   "calendar_reminder": "Calendar Reminder",
-
   "This ": "I was invited to participate ",
-
   "mentioned_in_comments": "Mentioned In Comments",
-
   "created_tasks": "The task was created ",
-
   "who_submitted_the_report": "Who submitted the briefing ",
-
   "report_reminder": "Report reminder",
-
   "waiting_for_my_approval": "Wait for my approval",
-
   "invitationss": "The schedule to which I am invited ",
-
   "system_announcement": "System announcement",
   "nm": "Nothing More",
   "incident": "incident",
@@ -1772,5 +1670,53 @@
   "by_category": "By category",
   "by_priority": "By priority",
   "do_you_want_to_save_changes": "Do you want to save changes?",
-  "remind": "Remind"
+  "remind": "Remind",
+  "performance": {
+    "save": "保存",
+    "save1": "另存为",
+    "nosave": "不保存",
+    "tWeek": "最近2周",
+    "fWeek": "最近4周",
+    "oMonth": "近1月",
+    "tMonth": "近3月",
+    "sMonth": "近6月",
+    "custom": "自定义",
+    "presentSituation": "现状",
+    "qPresentSituation": "缺陷现状",
+    "presentSituation1": "工作项现状",
+    "title1": "新增工作排行Top10",
+    "title2": "工作完成周期",
+    "title3": "存量风险",
+    "title4": "完成率Top10",
+    "title5": "缺陷趋势",
+    "title6": "阶段缺陷占比",
+    "title01": "阶段新增工作Top10",
+    "title02": "工作周期对比",
+    "title03": "阶段存量风险",
+    "title04": "阶段完成率Top10",
+    "sort1": "由高到低",
+    "sort2": "由低到高",
+    "sort3": "按优先级",
+    "sort4": "按严重程度",
+    "sort5": "按状态",
+    "watch": "查看明细",
+    "all": "全员",
+    "time": "按周期",
+    "dd": "按迭代",
+    "back": "返回",
+    "title05": "数据明细",
+    "title06": "工作进展对比",
+    "title07": "缺陷趋势分析",
+    "statistics": "统计时间",
+    "select": "已选",
+    "exportTitle": "按周期导出",
+    "exportMsg": "将按照筛选结果导出Excel，如需其他结果请重新筛选",
+    "exportMsg1": "导出周期",
+    "exportSuccess": "导出成功",
+    "exportSuccessMsg": "Excel导出成功，可在本地打开文件查看",
+    "save1Msg": "检测到此视图有未保存的更改",
+    "save2Msg": "单击“保存”按钮可以将更改保存在如下视图",
+    "share": "分享",
+    "export": "导出"
+  }
 }
