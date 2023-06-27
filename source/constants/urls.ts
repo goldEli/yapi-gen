@@ -359,6 +359,7 @@ const urls = {
   sortStory: '/b/sprint/sort',
   // 长故事下拉列表
   getLongStory: '/b/transaction/getLongStory',
+  getMoveTo: '/b/sprint/getMoveTo',
   /**
    * 视图管理
    */

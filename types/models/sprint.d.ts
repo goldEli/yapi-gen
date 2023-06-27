@@ -166,4 +166,8 @@ declare namespace Model.Sprint {
     start_at: string
     end_at: string
   }
+  interface GetMoveToList {
+    name: string
+    id: number
+  }
 }
