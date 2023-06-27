@@ -88,10 +88,7 @@ const FlawInfo = () => {
       <FlawInfoLeft
         style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
       >
-        <FlawDetail
-          flawInfo={flawInfo as Model.Flaw.FlawInfo}
-          onUpdate={onUpdate}
-        />
+        <FlawDetail flawInfo={flawInfo as Model.Flaw.FlawInfo} isInfoPage />
         {flawInfo.id && (
           <FlawInfoInfoItem>
             <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>

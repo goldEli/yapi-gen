@@ -36,7 +36,7 @@ const DetailDemand = () => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
   const dispatch = useDispatch()
-  const dId = useRef<null>()
+  const dId = useRef<any>()
 
   useEffect(() => {
     setTagList(
@@ -97,6 +97,7 @@ const DetailDemand = () => {
 
     setIsDelVisible(false)
   }
+
   return (
     <WrapLeft ref={LeftDom}>
       <InfoItem
