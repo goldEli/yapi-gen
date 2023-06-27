@@ -501,6 +501,21 @@ function detailTimeFormat(time: string) {
   return moment(time).format('YYYY年MM月DD日 HH:mm')
 }
 
+// 获取树形结构下匹配的数据
+function onComputedFindChild(arr: any, parentId: any) {
+  let res = arr.find((item: any) => item.id === parentId)
+  if (res) {
+    return res
+  } else {
+    arr.forEach((element: any) => {
+      if (element.children instanceof Array && element.children.length > 0) {
+        res = onComputedFindChild(element.children, parentId)
+        if (res) return res
+      }
+    })
+  }
+}
+
 export {
   getIdsForAt,
   getIsPermission,
@@ -517,4 +532,5 @@ export {
   isDateIntersection,
   mapToArray,
   detailTimeFormat,
+  onComputedFindChild,
 }

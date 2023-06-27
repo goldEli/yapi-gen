@@ -24,7 +24,7 @@ import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
 import { deleteAffairs, getAffairsList } from '@/services/affairs'
 import Operation from './components/Operation'
-import { saveTitles } from '@store/view'
+import { onTapSearchChoose, saveTitles } from '@store/view'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { getMessage } from '@/components/Message'
@@ -237,6 +237,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     setDeleteItem(item)
     setIsVisible(true)
     setTopParentId(item?.topId)
+    setIsDeleteCheck([4, 5].includes(item.work_type))
   }
 
   // 删除事务
@@ -332,19 +333,20 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   }, [projectInfo])
 
   useEffect(() => {
+    console.log('useEffect', pageObj)
     getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, order, pageObj])
+  }, [key, isGrid, projectId, order, pageObj])
 
-  useEffect(() => {
-    setPageObj({ page: 1, size: 20 })
-    setOrder({ value: '', key: '' })
-    setKey('')
-    setIsGrid(0)
-    setSearchVal('')
-    setSearchItems({})
-    keyValueTree.changeKey('')
-    getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
-  }, [projectId])
+  // useEffect(() => {
+  //   setPageObj({ page: 1, size: 20 })
+  //   setOrder({ value: '', key: '' })
+  //   setKey('')
+  //   setIsGrid(0)
+  //   setSearchVal('')
+  //   setSearchItems({})
+  //   keyValueTree.changeKey('')
+  //   getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
+  // }, [projectId])
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
@@ -354,7 +356,8 @@ const SprintProjectAffair: React.FC<IProps> = props => {
 
   useEffect(() => {
     // 进入主页清除已存储的筛选计数
-    setFilterKeys([])
+    dispatch(setFilterKeys([]))
+    dispatch(onTapSearchChoose(''))
   }, [])
 
   return (
@@ -388,9 +391,15 @@ const SprintProjectAffair: React.FC<IProps> = props => {
               您将永久删除{deleteItem.story_prefix_key}
               ，删除后将不可恢复请谨慎操作!
             </div>
-            <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-              同时删除该事务下所有子事务
-            </Checkbox>
+            {deleteItem.work_type !== 6 && (
+              <Checkbox
+                disabled={[4, 5].includes(deleteItem.work_type)}
+                checked={isDeleteCheck}
+                onChange={e => setIsDeleteCheck(e.target.checked)}
+              >
+                同时删除该事务下所有子事务
+              </Checkbox>
+            )}
           </DeleteConfirm>
           <ProjectCommonOperation
             onInputSearch={onInputSearch}
