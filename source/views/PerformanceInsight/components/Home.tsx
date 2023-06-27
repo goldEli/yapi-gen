@@ -165,7 +165,7 @@ const Home = () => {
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ViewItem>()
   useEffect(() => {
-    if (paramsData.type && paramsData.projectId) {
+    if (paramsData?.type && paramsData?.projectId) {
       setHomeType(paramsData.type)
       setProjectId(paramsData.projectId)
       getViewList({ project_id: paramsData.projectId, use_type: 3 })
