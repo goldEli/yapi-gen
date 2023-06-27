@@ -165,7 +165,7 @@ const Home = () => {
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ViewItem>()
   useEffect(() => {
-    if (paramsData) {
+    if (paramsData.type && paramsData.projectId) {
       setHomeType(paramsData.type)
       setProjectId(paramsData.projectId)
       getViewList({ project_id: paramsData.projectId, use_type: 3 })
@@ -175,6 +175,7 @@ const Home = () => {
       getViewList({ project_id: 0, use_type: 3 })
     }
   }, [])
+  console.log(headerParmas, 'projectId')
   const init = () => {
     // 缺陷现状和工作项现状
     getWorkList()
@@ -242,9 +243,7 @@ const Home = () => {
             use_type: 3,
             name: val,
             config: {
-              iterate_ids:
-                // eslint-disable-next-line no-undefined
-                homeType === 'all' ? undefined : headerParmas.iterate_ids,
+              iterate_ids: homeType === 'all' ? [] : headerParmas.iterate_ids,
               project_id: headerParmas.projectIds,
               user_ids: headerParmas.users,
               period_time:
@@ -256,13 +255,11 @@ const Home = () => {
               start_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[0]
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
+                  : '',
               end_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[1]
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
+                  : '',
             },
             project_id: projectId,
           })
@@ -271,22 +268,18 @@ const Home = () => {
             project_id: projectId,
             name: val,
             config: {
-              iterate_ids:
-                // eslint-disable-next-line no-undefined
-                homeType === 'all' ? undefined : headerParmas.iterate_ids,
+              iterate_ids: homeType === 'all' ? [] : headerParmas.iterate_ids,
               project_id: headerParmas.projectIds,
               user_ids: headerParmas.users,
               period_time: getDateStr(headerParmas.time.type),
               start_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[0]
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
+                  : '',
               end_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[1]
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
+                  : '',
             },
           })
     if (res) {
@@ -417,18 +410,11 @@ const Home = () => {
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[0]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[0] : '',
 
       end_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[1]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[1] : '',
       period_time:
-        // eslint-disable-next-line no-undefined, no-negated-condition
         headerParmas?.time?.type !== 0
           ? headerParmas.period_time
           : !headerParmas.period_time
@@ -451,18 +437,11 @@ const Home = () => {
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[0]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[0] : '',
 
       end_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[1]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[1] : '',
       period_time:
-        // eslint-disable-next-line no-undefined, no-negated-condition
         headerParmas?.time?.type !== 0
           ? headerParmas.period_time
           : !headerParmas.period_time
@@ -485,18 +464,11 @@ const Home = () => {
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[0]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[0] : '',
 
       end_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[1]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[1] : '',
       period_time:
-        // eslint-disable-next-line no-undefined, no-negated-condition
         headerParmas?.time?.type !== 0
           ? headerParmas.period_time
           : !headerParmas.period_time
@@ -556,15 +528,9 @@ const Home = () => {
         user_ids: headerParmas.users,
         period_time: getDateStr(headerParmas.time.type),
         start_time:
-          headerParmas.time.type === 0
-            ? headerParmas.time.time?.[0]
-            : // eslint-disable-next-line no-undefined
-              undefined,
+          headerParmas.time.type === 0 ? headerParmas.time.time?.[0] : '',
         end_time:
-          headerParmas.time.type === 0
-            ? headerParmas.time.time?.[1]
-            : // eslint-disable-next-line no-undefined
-              undefined,
+          headerParmas.time.type === 0 ? headerParmas.time.time?.[1] : '',
       },
     })
     if (res) {
