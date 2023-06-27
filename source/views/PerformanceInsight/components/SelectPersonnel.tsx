@@ -77,7 +77,6 @@ const Work = (props: WorkType) => {
       )
     }
   }, [props.type])
-  console.log(list, '000')
   return (
     <ItemMain>
       {list?.map(el => (
