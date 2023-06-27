@@ -135,7 +135,7 @@ const Index = (props: any) => {
     }
   }
   const onChangeRouter = (type: string) => {
-    console.log(type)
+    // console.log(type)
     if (type === 'user-alone') {
       const params = encryptPhp(
         JSON.stringify({
@@ -170,7 +170,7 @@ const Index = (props: any) => {
       }
     }
   }
-  console.log(props.item)
+  // console.log(props.item)
 
   return (
     <ProjectCard>

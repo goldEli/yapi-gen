@@ -157,7 +157,7 @@ const CreateSprintModal = (props: sprintProps) => {
         }
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -195,7 +195,7 @@ const CreateSprintModal = (props: sprintProps) => {
         })
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -209,7 +209,7 @@ const CreateSprintModal = (props: sprintProps) => {
     }
   }, [editId, visible])
   const handleAltSKeyPress = useCallback(() => {
-    console.log('ALT+S键被按下')
+    // console.log('ALT+S键被按下')
     onConfirm()
     // 在这里执行你想要触发的事件
   }, [])

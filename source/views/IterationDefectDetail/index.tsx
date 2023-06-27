@@ -371,7 +371,6 @@ const IterationDefectDetail = () => {
   const onUpDemand = () => {
     const newIndex = changeIds[currentIndex - 1]
     if (!currentIndex) return
-    dispatch(getFlawInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
@@ -385,7 +384,6 @@ const IterationDefectDetail = () => {
   const onDownDemand = () => {
     const newIndex = changeIds[currentIndex + 1]
     if (currentIndex === changeIds?.length - 1) return
-    dispatch(getFlawInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
@@ -396,9 +394,10 @@ const IterationDefectDetail = () => {
   }
 
   useEffect(() => {
-    // dispatch(setFlawInfo({}))
-    dispatch(getFlawInfo({ projectId: id, id: flawId }))
-  }, [])
+    if (flawId && id) {
+      dispatch(getFlawInfo({ projectId: id, id: flawId }))
+    }
+  }, [flawId, id])
 
   useEffect(() => {
     // 获取项目信息中的需求类别

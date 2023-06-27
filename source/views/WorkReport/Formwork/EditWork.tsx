@@ -127,7 +127,7 @@ const EditWork = (props: PropsType) => {
         ? (arrData = [...dataList, configs])
         : arrData.splice(index, 0, configs)
       isEmpty ? setDataList([...dataList, configs]) : setDataList(arrData)
-      console.log([...dataList, configs], 'confi')
+      // console.log([...dataList, configs], 'confi')
     } else if (type === 'edit') {
       arrData[index] = configs
       setDataList(arrData)

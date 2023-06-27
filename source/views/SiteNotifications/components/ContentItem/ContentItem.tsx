@@ -55,7 +55,7 @@ const ContentItem = (props: any) => {
   }
 
   function formateBlue(str: string, url?: string) {
-    console.log(url)
+    // console.log(url)
 
     if (url) {
       return str.concat(

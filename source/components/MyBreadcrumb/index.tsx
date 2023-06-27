@@ -30,7 +30,7 @@ const MyBreadcrumb = (props: any) => {
           <a
             onClick={() => {
               const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
-              console.log('projectInfo', projectInfo)
+              // console.log('projectInfo', projectInfo)
               if (projectInfo.projectType === 1) {
                 navigate(`/ProjectManagement/Demand?data=${params}`)
                 return

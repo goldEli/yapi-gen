@@ -46,9 +46,7 @@ const InputSearch = (props: Props) => {
   }, [props.defaultValue])
 
   const handleFKeyPress = useCallback(() => {
-    console.log('F键被按下')
     // 在这里执行你想要触发的事件
-    console.log(inputRef.current)
 
     inputRef.current!.focus({
       preventScroll: true,

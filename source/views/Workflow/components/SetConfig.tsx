@@ -303,7 +303,7 @@ const SetConfig = (props: Props) => {
       getMessage({ msg: t('newlyAdd.needNormal'), type: 'warning' })
       return
     }
-    console.log('params-----', params)
+    // console.log('params-----', params)
     await saveWorkflowConfig(params)
     getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
     onClose()

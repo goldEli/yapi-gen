@@ -356,23 +356,24 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   }
 
   useEffect(() => {
-    dispatch(setAffairsInfo({}))
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
-    dispatch(
-      getAffairsCommentList({
-        projectId: id,
-        sprintId,
-        page: 1,
-        pageSize: 999,
-      }),
-    )
-  }, [])
+    if (sprintId && id) {
+      dispatch(setAffairsInfo({}))
+      dispatch(getAffairsInfo({ projectId: id, sprintId }))
+      dispatch(
+        getAffairsCommentList({
+          projectId: id,
+          sprintId,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
+    }
+  }, [sprintId, id])
 
   // 向上查找需求
   const onUpDemand = () => {
     const newIndex = changeIds[currentIndex - 1]
     if (!currentIndex) return
-    dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
@@ -386,7 +387,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const onDownDemand = () => {
     const newIndex = changeIds[currentIndex + 1]
     if (currentIndex === changeIds?.length - 1) return
-    dispatch(getAffairsInfo({ projectId: id, sprintId: newIndex }))
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,

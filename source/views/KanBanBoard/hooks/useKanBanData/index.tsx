@@ -43,7 +43,7 @@ const useKanBanData = () => {
   }
 
   const onDragStart = (start: DragStart) => {
-    console.log('onDragStart', start)
+    // console.log('onDragStart', start)
     const { columnId, groupId } = getIdsFromDraggableId(start.draggableId)
     const story = getStory(start.draggableId) ?? null
     if (!story) {
@@ -65,7 +65,7 @@ const useKanBanData = () => {
   }
   // refactor with immerjs
   const onDragEnd = (result: DropResult) => {
-    console.log('onDragEnd', result)
+    // console.log('onDragEnd', result)
     dispatch(setMovingStory(null))
     if (!result.destination) return
     const { source, destination } = result

@@ -98,7 +98,7 @@ const ItemDropdown = (props: PropsType) => {
   }, [isOpen])
 
   const onRoute = (el: any) => {
-    console.log(el)
+    // console.log(el)
     const params = encryptPhp(
       JSON.stringify({
         id: el.id,
@@ -109,7 +109,7 @@ const ItemDropdown = (props: PropsType) => {
     setIsOpen(false)
     // debugger
     // TODO
-    console.log(el)
+    // console.log(el)
     if (el.projectType === 2) {
       navigate(
         `${

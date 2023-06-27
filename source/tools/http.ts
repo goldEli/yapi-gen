@@ -165,7 +165,7 @@ client.config({
         data.code !== 'B0015'
       ) {
         getMessage({ msg: data.message, type: 'error' })
-        console.log(data.message, 'request error')
+        // console.log(data.message, 'request error')
         return Promise.reject()
       }
       return {

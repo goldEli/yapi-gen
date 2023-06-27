@@ -19,7 +19,7 @@ const CalendarWeek: React.FC<CalendarWeekProps> = props => {
     store => store.calendar,
   )
   const dispatch = useDispatch()
-  console.log('chonhgfub/calendar/daysOfWeek')
+  // console.log('chonhgfub/calendar/daysOfWeek')
   React.useEffect(() => {
     if (!calenderTypeValue) {
       return
