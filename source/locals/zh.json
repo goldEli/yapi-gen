@@ -1,4 +1,6 @@
 {
+  "create_work_item": "创建工作项",
+
   "accumulated_work_items": "累计参与工作项",
   "todo_work_items": "待办工作项",
   "completed_work_items": "已办工作项",

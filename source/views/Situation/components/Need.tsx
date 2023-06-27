@@ -72,15 +72,15 @@ const Need = (props: any) => {
     },
     series: [
       {
-        name: '创建需求',
+        name: t('Create_requirements'),
         data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
       },
       {
-        name: '进行中',
+        name: t('situation.ongoing'),
         data: [0, 1, 2, 19, 38, 0, 0, 0, 0, 0, 0, 0],
       },
       {
-        name: '已结束',
+        name: t('situation.end'),
         data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
       },
     ],
@@ -93,7 +93,7 @@ const Need = (props: any) => {
         {/* <TextBlueWrap> */}
         <ChartsItem>
           <span className={title1Css1}>{data?.total ?? 0}</span>
-          <span className={title2Css}>{t('common.createDemand')}</span>
+          <span className={title2Css}>{t('create_work_item')}</span>
         </ChartsItem>
         {/* </TextBlueWrap> */}
         {/* <HomeWrap> */}

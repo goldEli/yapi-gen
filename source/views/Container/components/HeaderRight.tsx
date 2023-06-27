@@ -373,7 +373,8 @@ const HeaderRight = () => {
       </ChangeItems>
     )
   }
-  const onFeedback = () => {
+  const onFeedback = (e: any) => {
+    e.stopPropagation()
     dispatch(changeFreedVisibleVisible(true))
   }
   return (

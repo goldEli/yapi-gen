@@ -132,7 +132,7 @@ const NoteCard = (props: any) => {
 
           {(values.is_drew_back === 1 || values.is_draft === 1) && (
             <ColorBtn onClick={() => props.onDel(values.id)}>
-              <CommonIconFont type="file-text" /> <span>{t('delete')}</span>
+              <CommonIconFont type="file-text" /> <span>{t('p2.delete')}</span>
             </ColorBtn>
           )}
           {values.is_send === 1 && values.is_drew_back === 2 && (
