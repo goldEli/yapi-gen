@@ -27,7 +27,11 @@ import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
-import { updateAffairsPriority, updateAffairsStatus } from '@/services/affairs'
+import {
+  updateAffairsPriority,
+  updateAffairsStatus,
+  updateAffairsTableParams,
+} from '@/services/affairs'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -174,6 +178,19 @@ const SprintTable = (props: Props) => {
     )
   }
 
+  //  修改严重程度
+  const onChangeSeverity = async (item: any) => {
+    await updateAffairsTableParams({
+      id: item.id,
+      projectId,
+      otherParams: {
+        severity: item.severity,
+      },
+    })
+    getMessage({ msg: '修改成功', type: 'success' })
+    props.onChangeRow?.()
+  }
+
   const columns = useDynamicColumns({
     projectId,
     orderKey,
@@ -184,6 +201,7 @@ const SprintTable = (props: Props) => {
     onClickItem,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
+    onChangeSeverity,
   })
 
   const hasCreate = getIsPermission(
