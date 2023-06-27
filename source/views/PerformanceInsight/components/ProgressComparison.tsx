@@ -651,7 +651,7 @@ const ProgressComparison = (props: Props) => {
     setIds(res.list.map(el => el.id))
     setLoading(false)
   }
-  console.log(props.headerParmas, 'props.headerParmas')
+
   // 缺陷分析大的列表
   const getMemberBugList = async (value: number[], page?: any) => {
     const time = getTime(props.headerParmas.time)

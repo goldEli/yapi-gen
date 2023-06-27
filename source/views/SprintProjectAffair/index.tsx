@@ -237,6 +237,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     setDeleteItem(item)
     setIsVisible(true)
     setTopParentId(item?.topId)
+    setIsDeleteCheck([4, 5].includes(item.work_type))
   }
 
   // 删除事务
@@ -390,9 +391,15 @@ const SprintProjectAffair: React.FC<IProps> = props => {
               您将永久删除{deleteItem.story_prefix_key}
               ，删除后将不可恢复请谨慎操作!
             </div>
-            <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-              同时删除该事务下所有子事务
-            </Checkbox>
+            {deleteItem.work_type !== 6 && (
+              <Checkbox
+                disabled={[4, 5].includes(deleteItem.work_type)}
+                checked={isDeleteCheck}
+                onChange={e => setIsDeleteCheck(e.target.checked)}
+              >
+                同时删除该事务下所有子事务
+              </Checkbox>
+            )}
           </DeleteConfirm>
           <ProjectCommonOperation
             onInputSearch={onInputSearch}
