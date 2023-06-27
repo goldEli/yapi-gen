@@ -838,7 +838,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       // if (tabsActive === 0) {
       //   if (selectDataList?.length > 0) {
       //     const data = getFilterArr(selectDataList, props.defaultPeople)
-      //     console.log(data)
+      //     // console.log(data)
       //     setPersonData(data)
       //   }
       // }

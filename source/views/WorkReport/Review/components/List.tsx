@@ -156,7 +156,7 @@ const List = () => {
       setListData(res.list)
       setTotal(res.pager.total)
     } catch (error) {
-      console.log('error', error)
+      // console.log('error', error)
     }
   }
 

@@ -387,7 +387,7 @@ const ProjectSet = () => {
     init2()
   }, [isRefresh, activeDetail])
 
-  console.log(activeDetail)
+  // console.log(activeDetail)
 
   const onSavePermission = async () => {
     const res = await editSaveConfig({
@@ -407,7 +407,7 @@ const ProjectSet = () => {
 
   const onChange = (ty: any, less: any, ins: any, check: any) => {
     const newA: any = JSON.parse(JSON.stringify(permissionList))
-    console.log(ty, less, ins, check)
+    // console.log(ty, less, ins, check)
     let c: any = ''
     if (check === 1) {
       c = 2
@@ -427,7 +427,7 @@ const ProjectSet = () => {
     }
     setPermissionList(newA)
   }
-  console.log(permissionList)
+  // console.log(permissionList)
 
   return (
     <PermissionWrap

@@ -68,8 +68,8 @@ export class EventBus implements IEventBus {
 }
 
 // EventBus.getInstance().register('hello-world', (name: string) => {
-//   if (name) console.log('Hello ' + name)
-//   else console.log('Hello world')
+//   if (name) // console.log('Hello ' + name)
+//   else // console.log('Hello world')
 // })
 
 // EventBus.getInstance().dispatch<string>('hello-world', 'Luis')

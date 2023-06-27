@@ -459,7 +459,7 @@ const MainTable = (props: Props) => {
   const onTableRow = useCallback((row: any) => {
     return {
       onClick: () => {
-        console.log('row---', row)
+        // console.log('row---', row)
         const params = encryptPhp(
           JSON.stringify({
             id: row.id,

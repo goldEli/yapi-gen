@@ -358,8 +358,8 @@ const DemandIndex = () => {
       // )
     }
   }, [])
-  console.log(titleList, '2222222222')
-  console.log(projectInfo, '飞机')
+  // console.log(titleList, '2222222222')
+  // console.log(projectInfo, '飞机')
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"

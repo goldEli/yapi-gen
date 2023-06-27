@@ -69,7 +69,7 @@ export const getConfig: any = async (projectId: any) => {
   const response: any = await http.get<any>(
     `/b/project/tip/${projectId}/config`,
   )
-  console.log(response.data)
+  // console.log(response.data)
 
   return response.data.list
 }

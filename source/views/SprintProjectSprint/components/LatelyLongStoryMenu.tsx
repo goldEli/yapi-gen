@@ -112,7 +112,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
         })
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 

@@ -53,7 +53,7 @@ const HomeSetting: React.FC<IProps> = props => {
     }
   }
   useEffect(() => {
-    console.log(111, projectInfo)
+    // console.log(111, projectInfo)
     if (!projectInfo.defaultHomeMenu) {
       return
     }

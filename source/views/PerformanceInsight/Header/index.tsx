@@ -467,7 +467,7 @@ const Iteration = (props: Props) => {
           <SelectMain
             allowClear={false}
             onChange={e => {
-              console.log(8888888888, e)
+              // console.log(8888888888, e)
               setTimekey(e)
               setTimeVal([])
               viewType === 1 && e !== 0 && dispatch(setSave(true))
@@ -565,7 +565,7 @@ const Iteration = (props: Props) => {
             await props.onCreateView(val, 'add')
             setIsVisibleView(false)
           } catch (error) {
-            console.log(error)
+            // console.log(error)
           }
         }}
         onClose={() => setIsVisibleView(false)}

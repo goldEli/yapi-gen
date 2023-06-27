@@ -136,7 +136,7 @@ const XTable: React.FC<XTableProps> = props => {
     'b/sprint',
   )
   // const handleShortcutEvent = () => {
-  //   console.log('C键被按下')
+  //   // console.log('C键被按下')
   //   dispatch(
   //     setAddWorkItemModal({
   //       visible: true,
@@ -163,7 +163,7 @@ const XTable: React.FC<XTableProps> = props => {
         })
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 

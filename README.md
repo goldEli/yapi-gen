@@ -356,14 +356,14 @@ interface Props {
 ```js
  <Editor
   onBlur={() => {
-    console.log('失焦')
-    console.log(text)
+    // console.log('失焦')
+    // console.log(text)
 
     setMyReadonly(true)
   }}
   onReadonlyClick={() => {
     setMyReadonly(false)
-    console.log('只读模式点击')
+    // console.log('只读模式点击')
   }}
   value={text}
   onChange={setText}
@@ -432,7 +432,7 @@ usePrompt({
 ```js
 import useMkeyDown from '@/hooks/useMkeyDown'
 const handleShortcutEvent1 = () => {
-  console.log('按下M键的操作')
+  // console.log('按下M键的操作')
 }
 
 useMkeyDown(handleShortcutEvent1)
@@ -443,7 +443,7 @@ useMkeyDown(handleShortcutEvent1)
 ```js
 import useShortcutC from '@/hooks/useShortcutC'
 const handleShortcutEvent1 = () => {
-  console.log('按下c键的操作')
+  // console.log('按下c键的操作')
 }
 
 useShortcutC(handleShortcutEvent1)
@@ -455,7 +455,7 @@ useShortcutC(handleShortcutEvent1)
 import useShortcutCtrlEnter from '@/hooks/useShortcutCtrlEnter/useShortcutCtrlEnter'
 const handleShortcutEvent = () => {
   // 在此处理按下 Ctrl + 回车 触发的事件
-  console.log('Ctrl + 回车 被按下')
+  // console.log('Ctrl + 回车 被按下')
 }
 useShortcutCtrlEnter(handleShortcutEvent)
 ```

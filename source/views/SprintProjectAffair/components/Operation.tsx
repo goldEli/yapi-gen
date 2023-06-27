@@ -220,7 +220,7 @@ const Operation = (props: Props) => {
       }, {})
   }
   const handleShortcutEvent = () => {
-    console.log('C键被按下')
+    // console.log('C键被按下')
     dispatch(
       setAddWorkItemModal({
         visible: true,
@@ -287,7 +287,7 @@ const Operation = (props: Props) => {
     }
     props?.onChangeIsShowLeft?.()
   }
-  console.log(searchList)
+  // console.log(searchList)
   useEffect(() => {
     if (searchChoose && searchChoose.system_view) {
       return

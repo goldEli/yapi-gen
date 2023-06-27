@@ -68,7 +68,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       disPatch(setScheduleInfoDropdown({ visible: false }))
       disPatch(refreshCalendarPanelScheduleList())
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
   const confirmDelete = async () => {
@@ -84,7 +84,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       disPatch(refreshCalendarPanelScheduleList())
       disPatch(setIsAddOrDelete(true))
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
   return (

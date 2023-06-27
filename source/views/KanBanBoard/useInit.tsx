@@ -17,7 +17,7 @@ const useInit = () => {
   const dispatch = useDispatch()
   const { projectId } = useProjectId()
   const projectType = getProjectType()
-  console.log('projectType', projectType)
+  // console.log('projectType', projectType)
   const navigate = useNavigate()
   const { useKeys } = useKeyPress()
   useKeys(
