@@ -6,7 +6,11 @@ import styled from '@emotion/styled'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import { useSelector, useDispatch } from '@store/index'
-import { setRightSprintList, setSprintRefresh } from '@store/sprint'
+import {
+  setRightSprintList,
+  setSprintRefresh,
+  setSprintRightListRefresh,
+} from '@store/sprint'
 import { useTranslation } from 'react-i18next'
 import StateTag from '@/components/StateTag'
 import { getIsPermission, getParamsData } from '@/tools'
@@ -235,7 +239,7 @@ const DndKitTable = (props: any) => {
           type: 'success',
         })
         if (needFresh) {
-          dispatch(setSprintRefresh(1))
+          dispatch(setSprintRightListRefresh(1))
         }
         return true
       }
@@ -620,7 +624,7 @@ const DndKitTable = (props: any) => {
               sourceList?.id,
               item?.id,
               destList?.id,
-              false,
+              true,
             ).then((result: any) => {
               if (result) {
                 handleSort(
@@ -633,7 +637,7 @@ const DndKitTable = (props: any) => {
           },
         })
       } else {
-        onRemoveSprintItem(sourceList?.id, item?.id, destList?.id, false).then(
+        onRemoveSprintItem(sourceList?.id, item?.id, destList?.id, true).then(
           (result: any) => {
             if (result) {
               handleSort(

@@ -159,7 +159,7 @@ const CompleteSprintModal = (props: sprintProps) => {
                 options={rightSprintList
                   .filter(
                     (k: any) =>
-                      k.id !== -1 && k.status === 1 && k.id !== targetId,
+                      (k.status === 1 && k.id !== targetId) || k.id === 0,
                   )
                   .map((item: any) => ({
                     label: item.name,

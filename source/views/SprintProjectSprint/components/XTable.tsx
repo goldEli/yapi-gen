@@ -248,7 +248,7 @@ const XTable: React.FC<XTableProps> = props => {
                 {`${data?.start_at ? data.start_at : ''}${
                   data?.start_at && data?.end_at ? '~ ' : ''
                 }${data?.end_at ? data?.end_at : ''}`}
-                {data?.story_visible_count
+                {data?.story_visible_count > 0 || data?.story_count > 0
                   ? `（可见${data?.story_visible_count}个，共${data?.story_count}个事务）`
                   : ''}
               </span>

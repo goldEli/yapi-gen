@@ -22,6 +22,7 @@ type SliceState = {
   checkList: boolean[]
   longStoryList: Model.Sprint.LongStory
   sprintRefresh: number
+  sprintRightListRefresh: number
 }
 
 const initialState: SliceState = {
@@ -40,6 +41,7 @@ const initialState: SliceState = {
     list: [],
   },
   sprintRefresh: 0,
+  sprintRightListRefresh: 0,
 }
 
 const slice = createSlice({
@@ -69,6 +71,13 @@ const slice = createSlice({
       action: PayloadAction<SliceState['sprintRefresh']>,
     ) {
       state.sprintRefresh = action.payload + state.sprintRefresh
+    },
+    setSprintRightListRefresh(
+      state,
+      action: PayloadAction<SliceState['sprintRefresh']>,
+    ) {
+      state.sprintRightListRefresh =
+        action.payload + state.sprintRightListRefresh
     },
   },
   extraReducers(builder) {
@@ -110,6 +119,7 @@ export const {
   setLeftSprintList,
   setCheckList,
   setSprintRefresh,
+  setSprintRightListRefresh,
 } = slice.actions
 
 export default sprint
