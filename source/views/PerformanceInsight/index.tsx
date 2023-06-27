@@ -16,6 +16,7 @@ const PerformanceInsight = () => {
       ? '/ProjectManagement/KanBan'
       : '/SprintProjectManagement/KanBan',
   )
+  useKeys('5', projectType === 1 ? '/ProjectManagement/Demand' : '')
   return (
     <div style={{ width: '100%' }}>
       <Home />

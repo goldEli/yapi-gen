@@ -13,6 +13,9 @@ const useKeyPress = () => {
     useHotkeys(
       key,
       () => {
+        if (!url) {
+          return
+        }
         const paramsData = encryptPhp(
           JSON.stringify({
             projectId: projectId,
