@@ -67,7 +67,7 @@ const DemoColumn = (props: any) => {
 const Iteration = (props: any) => {
   const [t] = useTranslation()
   const { data } = props
-  console.log(data?.chartsData, 'data?.chartsData')
+  // console.log(data?.chartsData, 'data?.chartsData')
   return (
     <ChartsWrap>
       <div className={titleCss}>{t('common.iterateSurvey')}</div>

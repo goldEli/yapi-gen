@@ -144,7 +144,6 @@ const EditComment = (props: any) => {
 
   const handleShortcutEvent = () => {
     // 在此处理按下 Ctrl + 回车 触发的事件
-    console.log('Ctrl + 回车 被按下')
     onsubmit()
   }
   return (

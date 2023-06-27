@@ -116,7 +116,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
 
   const [cacheData, setCacheData] = useState<Model.Project.CategoryList[]>()
   const dragCategoryList = useRef<Model.Project.Category[]>()
-  const [workType, setWorkType] = useState('')
+  const [workType, setWorkType] = useState(0)
   const tabs = [
     {
       label: t('start_using'),
@@ -157,7 +157,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       }))
     }
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
-    const affairTypeData = getTypeCategory(dataItem, 'work_type')
+    const affairTypeData = getTypeCategory(dataItem, 'work_type', 'iteration')
     setAffairType(affairTypeData)
     setCacheData(_.cloneDeep(affairTypeData))
 
@@ -219,7 +219,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     const CategoryData = newData.filter(item =>
       workType.includes(item.work_type),
     )
-    console.log(dragCategoryList.current)
+    // console.log(dragCategoryList.current)
 
     const currentItem = CategoryData[prevIndex]
     CategoryData[prevIndex] = CategoryData[nextIndex]
@@ -228,6 +228,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     const list = getTypeCategory(
       [...CategoryData, ...otherCategoryData],
       'work_type',
+      'iteration',
     )
     if (!list) {
       return
@@ -385,7 +386,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                     style={{ fontSize: 14 }}
                     type="plus"
                     onClick={e => {
-                      console.log('item', item)
+                      // console.log('item', item)
                       e.stopPropagation()
                       setIsVisible(true)
                       setWorkType(item.workType)

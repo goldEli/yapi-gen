@@ -125,7 +125,7 @@ export const saveModifyStatusModalInfo =
         dispatch(getKanbanByGroup())
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 // 状态改变

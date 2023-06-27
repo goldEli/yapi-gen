@@ -129,17 +129,13 @@ const NoteCard = (props: any) => {
           <ColorBtn2>
             <CommonIconFont type="display" /> <span>{t('all_read')}</span>
           </ColorBtn2>
-          {values.is_draft === 1 && (
+
+          {(values.is_drew_back === 1 || values.is_draft === 1) && (
             <ColorBtn onClick={() => props.onDel(values.id)}>
               <CommonIconFont type="file-text" /> <span>{t('delete')}</span>
             </ColorBtn>
           )}
-          {values.is_drew_back === 1 && (
-            <ColorBtn onClick={() => props.onDel(values.id)}>
-              <CommonIconFont type="file-text" /> <span>{t('delete')}</span>
-            </ColorBtn>
-          )}
-          {values.is_send === 1 && (
+          {values.is_send === 1 && values.is_drew_back === 2 && (
             <ColorBtn onClick={() => props.onRevocation(values.id)}>
               <CommonIconFont type="return" /> <span>{t('revoke')}</span>
             </ColorBtn>

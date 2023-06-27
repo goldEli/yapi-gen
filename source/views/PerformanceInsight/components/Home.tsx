@@ -774,7 +774,7 @@ const Home = () => {
               await onCreateView(value, type, '')
               setIsVisible(false)
             } catch (error) {
-              console.log(error)
+              // console.log(error)
             }
           }}
           onClose={() => setIsVisible(false)}

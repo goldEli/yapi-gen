@@ -86,7 +86,7 @@ const ProjectManagementOptimization = () => {
     state => state.createProject,
   )
 
-  console.log('isGrid', isGrid)
+  // console.log('isGrid', isGrid)
 
   const inform = [
     {
@@ -283,7 +283,7 @@ const ProjectManagementOptimization = () => {
     })
   }
   const onChangeProjectType = (data: any) => {
-    console.log(data, '数据')
+    // console.log(data, '数据')
     setProjectTypes(data)
   }
   // 切换分组查询列表

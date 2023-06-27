@@ -141,7 +141,7 @@ const DndKitTable = (props: any) => {
         setLongStoryList(result.data)
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -240,7 +240,7 @@ const DndKitTable = (props: any) => {
         return true
       }
     } catch (error) {
-      console.log('error', error)
+      // console.log('error', error)
     }
   }
 
@@ -534,7 +534,7 @@ const DndKitTable = (props: any) => {
         dispatch(setSprintRefresh(1))
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       dispatch(setSprintRefresh(1))
     }
   }
