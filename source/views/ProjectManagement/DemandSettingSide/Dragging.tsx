@@ -147,7 +147,11 @@ const SliderList = (props: any) => {
       <MenuItem
         onClick={() => {
           const params = encryptPhp(
-            JSON.stringify({ id: projectInfo?.id, pageIdx: 'main', type: 3 }),
+            JSON.stringify({
+              id: projectInfo?.id,
+              pageIdx: 'ProjectAffair',
+              type: 4,
+            }),
           )
           location.pathname === '/ProjectManagement/WorkFlow' &&
             navigate(`/ProjectManagement/ProjectSetting?data=${params}`)

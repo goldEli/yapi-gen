@@ -231,6 +231,7 @@ const MyDropdown = (props: any) => {
   // 接口上下接口不同，取值不同，需要加判断取
   const onRoute = (el: any, type: string) => {
     let iterParmas = null
+    // debugger
     const paramsKey: { [key: string]: string } = {
       1: 'demandId',
       2: 'sprintId',
@@ -259,7 +260,11 @@ const MyDropdown = (props: any) => {
             id: el.feedable_id,
           }),
         )
-        router = `/ProjectManagement/Demand?data=${iterParmas}`
+        const url =
+          el.feedable.project_type === 2
+            ? '/SprintProjectManagement/Affair'
+            : '/ProjectManagement/Demand'
+        router = `${url}?data=${iterParmas}`
       } else {
         const params: any = {
           id: el?.feedable?.project_id ?? el.project_id,
