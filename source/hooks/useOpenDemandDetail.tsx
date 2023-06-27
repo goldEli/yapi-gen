@@ -6,7 +6,10 @@ import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
 import { useNavigate } from 'react-router-dom'
 import { setFlawDetailDrawer, setFlawInfo } from '@store/flaw'
 import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
-import { setIsUpdateAddWorkItem } from '@store/project'
+import {
+  setIsChangeDetailAffairs,
+  setIsUpdateAddWorkItem,
+} from '@store/project'
 import { setDemandInfo } from '@store/demand'
 
 const useOpenDemandDetail = () => {
@@ -22,6 +25,7 @@ const useOpenDemandDetail = () => {
     type?: number,
   ) => {
     dispatch(setIsUpdateAddWorkItem(0))
+    dispatch(setIsChangeDetailAffairs(false))
     // 弹窗预览
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {

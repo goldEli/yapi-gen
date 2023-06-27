@@ -509,39 +509,42 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           {changeIds && changeIds.length > 0 && (
             <CommonButton type="icon" icon="left-md" onClick={onBack} />
           )}
-          <ChangeIconGroup>
-            {currentIndex > 0 && (
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={
-                  changeIds?.length === 0 ||
-                  currentIndex === changeIds?.length - 1
-                }
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
-            )}
-            {!(
-              changeIds?.length === 0 || currentIndex === changeIds?.length - 1
-            ) && (
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </DownWrap>
-            )}
-          </ChangeIconGroup>
+          {changeIds?.length > 1 && (
+            <ChangeIconGroup>
+              {currentIndex > 0 && (
+                <UpWrap
+                  onClick={onUpDemand}
+                  id="upIcon"
+                  isOnly={
+                    changeIds?.length === 0 ||
+                    currentIndex === changeIds?.length - 1
+                  }
+                >
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </UpWrap>
+              )}
+              {!(
+                changeIds?.length === 0 ||
+                currentIndex === changeIds?.length - 1
+              ) && (
+                <DownWrap
+                  onClick={onDownDemand}
+                  id="downIcon"
+                  isOnly={currentIndex <= 0}
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </DownWrap>
+              )}
+            </ChangeIconGroup>
+          )}
           <CommonButton type="icon" icon="share" onClick={onShare} />
           <DropdownMenu
             placement="bottomRight"
