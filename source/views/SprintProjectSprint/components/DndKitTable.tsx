@@ -113,7 +113,9 @@ const DndKitTable = (props: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [isShowMore, setIsShowMore] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [deleteItem, setDeleteItem] = useState<any>({})
@@ -151,7 +153,7 @@ const DndKitTable = (props: any) => {
 
   useEffect(() => {
     getLongStoryData()
-  }, [])
+  }, [isUpdateAddWorkItem])
 
   // 更改状态
   const onChangeStatus = async (value: any) => {
@@ -553,6 +555,8 @@ const DndKitTable = (props: any) => {
 
   // 拖动事务放下后的处理
   const handleDragEnd = (result: DropResult) => {
+    // 没有操作权限直接无效
+    if (isCanEdit) return
     if (result.destination?.droppableId === result.source.droppableId) {
       // 同表格换位置
       const data = [...rightSprintList]
@@ -606,9 +610,8 @@ const DndKitTable = (props: any) => {
       })
       // 判断是否超出冲刺时间范围
       if (
-        (getIsExceedTimeRange(item) &&
-          Number(result.destination?.droppableId) !== 0) ||
-        haveOnlyOne(sourceList)
+        (getIsExceedTimeRange(item) || haveOnlyOne(sourceList)) &&
+        Number(result.destination?.droppableId) !== 0
       ) {
         open({
           title: '移动事务',
