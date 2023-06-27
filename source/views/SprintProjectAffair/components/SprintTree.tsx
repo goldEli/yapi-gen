@@ -33,6 +33,7 @@ import {
   getAffairsList,
   updateAffairsPriority,
   updateAffairsStatus,
+  updateAffairsTableParams,
 } from '@/services/affairs'
 
 const Content = styled.div`
@@ -318,6 +319,21 @@ const SprintTree = (props: Props) => {
     )
   }
 
+  //  修改严重程度
+  const onChangeSeverity = async (item: any) => {
+    setComputedTopId(item?.topId)
+    props.onUpdateTopId?.(item.topId)
+    await updateAffairsTableParams({
+      id: item.id,
+      projectId,
+      otherParams: {
+        severity: item.severity,
+      },
+    })
+    getMessage({ msg: '修改成功', type: 'success' })
+    props.onChangeRow?.()
+  }
+
   const columns = useDynamicColumns({
     projectId,
     orderKey,
@@ -330,6 +346,7 @@ const SprintTree = (props: Props) => {
     onUpdate: props?.onUpdate,
     isTree: true,
     onChangeTree: getTreeIcon,
+    onChangeSeverity,
   })
 
   const hasCreate = getIsPermission(
