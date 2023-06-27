@@ -431,7 +431,6 @@ const SprintProjectSprint: React.FC = () => {
         },
       }),
     )
-    console.log(checkList, 'checkListcheckListcheckListcheckList', searchObject)
   }, [searchObject, checkList])
 
   useEffect(() => {
@@ -441,25 +440,28 @@ const SprintProjectSprint: React.FC = () => {
   useEffect(() => {
     if (sprintRefresh > 0) {
       dispatch(getLeftSprintList(leftSearchObject))
-      dispatch(getRightSprintList(searchObject))
     }
   }, [sprintRefresh])
 
   useEffect(() => {
     if (sprintRightListRefresh > 0) {
-      console.log(
-        searchObject,
-        'searchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObject',
+      dispatch(
+        getRightSprintList({
+          ...searchObject,
+          search: {
+            ...searchObject.search,
+            resource_ids: leftSprintList.list
+              .filter((_, idx) => checkList[idx])
+              .map(k => k.id),
+          },
+        }),
       )
-
-      dispatch(getRightSprintList(searchObject))
     }
   }, [sprintRightListRefresh])
 
   useEffect(() => {
     // 监听创建事务，刷新页面
     dispatch(getLeftSprintList(leftSearchObject))
-    dispatch(getRightSprintList(searchObject))
   }, [isUpdateAddWorkItem])
 
   const filterContent = (
