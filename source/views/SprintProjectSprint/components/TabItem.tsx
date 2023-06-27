@@ -111,13 +111,13 @@ const TabItem = (props: any) => {
                 type="recover"
                 style={{
                   fontSize: 16,
-                  marginLeft: 2,
+                  marginRight: 3,
                   color: 'var(--neutral-n3)',
                 }}
               />
               <span className="text">{`${item.story_finish_count}/${item.story_count}`}</span>
               <IconFont
-                type="branch"
+                type="apartment"
                 style={{
                   fontSize: 16,
                   marginLeft: 12,

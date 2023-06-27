@@ -36,6 +36,7 @@ const DetailDemand = () => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
   const dispatch = useDispatch()
+  const dId = useRef<null>()
 
   useEffect(() => {
     setTagList(
@@ -45,6 +46,7 @@ const DetailDemand = () => {
         name: i.tag?.content,
       })),
     )
+    dId.current = demandInfo?.id
   }, [demandInfo])
 
   const onBottom = () => {
@@ -61,19 +63,15 @@ const DetailDemand = () => {
       ctime: data.data.files.time,
     }
 
-    try {
-      await addInfoDemand({
-        projectId,
-        demandId: demandInfo.id,
-        type: 'attachment',
-        targetId: [obj],
-      })
-      const result = await getDemandInfo({ projectId, id: demandInfo.id })
-      dispatch(setDemandInfo(result))
-      onBottom?.()
-    } catch (error) {
-      //
-    }
+    await addInfoDemand({
+      projectId,
+      demandId: dId.current,
+      type: 'attachment',
+      targetId: [obj],
+    })
+    const result = await getDemandInfo({ projectId, id: dId.current })
+    dispatch(setDemandInfo(result))
+    onBottom?.()
   }
 
   const onDeleteInfoAttach = async (file: any) => {

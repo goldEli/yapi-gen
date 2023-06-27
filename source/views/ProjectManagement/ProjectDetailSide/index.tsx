@@ -51,7 +51,7 @@ const ProjectDetailSide = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, projectFlawInfo } = useSelector(store => store.project)
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
   const routerPath = useLocation()
   const navigate = useNavigate()
@@ -65,6 +65,10 @@ const ProjectDetailSide = () => {
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
               String(i.group_name).includes('需求'),
+            ).length || projectFlawInfo?.isPublic === 1
+          ? true
+          : projectFlawInfo?.projectPermissions?.filter((i: any) =>
+              String(i.group_name).includes('需求'),
             ).length,
     },
     {
@@ -76,6 +80,10 @@ const ProjectDetailSide = () => {
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
               String(i.group_name).includes('迭代'),
+            ).length || projectFlawInfo?.isPublic === 1
+          ? true
+          : projectFlawInfo?.projectPermissions?.filter((i: any) =>
+              String(i.group_name).includes('迭代'),
             ).length,
     },
     {
@@ -86,6 +94,10 @@ const ProjectDetailSide = () => {
         projectInfo?.isPublic === 1
           ? true
           : projectInfo?.projectPermissions?.filter(
+              (i: any) => i.identity === 'b/project/kanban',
+            ).length || projectFlawInfo?.isPublic === 1
+          ? true
+          : projectFlawInfo?.projectPermissions?.filter(
               (i: any) => i.identity === 'b/project/kanban',
             ).length,
     },
@@ -104,6 +116,10 @@ const ProjectDetailSide = () => {
         projectInfo?.isPublic === 1
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
+              String(i.group_name).includes('缺陷'),
+            ).length || projectFlawInfo?.isPublic === 1
+          ? true
+          : projectFlawInfo?.projectPermissions?.filter((i: any) =>
               String(i.group_name).includes('缺陷'),
             ).length,
     },

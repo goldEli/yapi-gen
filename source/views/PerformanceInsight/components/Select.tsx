@@ -1,6 +1,7 @@
 import { Select } from 'antd'
 import { Segm } from './style'
 import CommonIconFont from '@/components/CommonIconFont'
+import { useEffect, useState } from 'react'
 
 interface ItemProps {
   label: string
@@ -20,9 +21,18 @@ interface Props {
   type: string
 }
 const SelectMain = (props: Props) => {
+  const [options, setOptions] = useState<any>([])
   const changeValue = (newValue: number[]) => {
     props.onChange(newValue)
   }
+  useEffect(() => {
+    // 根据id去重`
+    const newData = props.options?.filter((item, index, self) => {
+      const i = self.findIndex(t => t.id === item.id)
+      return i === index
+    })
+    setOptions(newData)
+  }, [props.value])
   return (
     <>
       <Select
@@ -30,7 +40,7 @@ const SelectMain = (props: Props) => {
         maxTagCount={1}
         mode="multiple"
         value={props.value}
-        options={props.options}
+        options={options}
         suffixIcon={<CommonIconFont type="down" />}
         onChange={changeValue}
         showSearch
@@ -40,10 +50,10 @@ const SelectMain = (props: Props) => {
         placeholder={props.placeholder}
         showArrow={true}
         autoClearSearchValue
-        dropdownStyle={{ minWidth: 184 }}
+        dropdownStyle={{ width: 184 }}
         dropdownMatchSelectWidth={false}
         dropdownRender={(menu: any) => (
-          <>
+          <div style={{ minWidth: '184px' }}>
             {menu}
             {!props.more && (
               <Segm onClick={() => props.onShowAll?.()}>查看更多</Segm>
@@ -58,7 +68,7 @@ const SelectMain = (props: Props) => {
                 全部冲刺
               </Segm>
             )}
-          </>
+          </div>
         )}
       ></Select>
     </>
