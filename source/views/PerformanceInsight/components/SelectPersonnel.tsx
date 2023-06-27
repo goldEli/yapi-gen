@@ -95,7 +95,9 @@ const Work = (props: WorkType) => {
             : el.list.map(item => (
                 <RowItem key={item.name}>
                   <Row>
-                    <span className="title">{item.parent_name}</span>
+                    <span className="title">
+                      {item.parent_name ? item.parent_name : '--'}
+                    </span>
                     <span className="time">{item.expected_end_at} 到期</span>
                   </Row>
                   <span className="msg">{item.name}</span>
