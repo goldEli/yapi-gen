@@ -1,12 +1,66 @@
 /* eslint-disable react/no-danger */
-import React from 'react'
+import React, { useState } from 'react'
 import { ColorBox, ColorBtn, ColorBtn2, Wrap1, Wrap2 } from './style'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Editor } from '@xyfe/uikit'
 import { useTranslation } from 'react-i18next'
+import { Popover } from 'antd'
+
+const ReadCard = () => {
+  return (
+    <div
+      style={{
+        width: '480px',
+        height: '330px',
+      }}
+    >
+      <div
+        style={{
+          height: '40px',
+          backgroundColor: '#ebeced',
+          lineHeight: '40px',
+          color: 'black',
+          fontFamily: 'SiYuanMedium',
+          paddingLeft: '20px',
+        }}
+      >
+        消息接收人列表
+      </div>
+      <div
+        style={{
+          display: 'flex',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'SiYuanMedium',
+            height: '290px',
+            flex: 1,
+            padding: '10px',
+            borderRight: '1px solid #ebeced',
+          }}
+        >
+          0人未读
+        </div>
+        <div
+          style={{
+            fontFamily: 'SiYuanMedium',
+            height: '290px',
+            flex: 1,
+            padding: '10px',
+          }}
+        >
+          5人已读
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const NoteCard = (props: any) => {
+  const [popoverVisible, setPopoverVisible] = useState(false)
+
   const [t] = useTranslation()
   const { values } = props
 
@@ -126,9 +180,19 @@ const NoteCard = (props: any) => {
           </div>
         </Wrap1>
         <Wrap2>
-          <ColorBtn2>
-            <CommonIconFont type="display" /> <span>{t('all_read')}</span>
-          </ColorBtn2>
+          <Popover
+            open={popoverVisible}
+            onOpenChange={setPopoverVisible}
+            placement="bottomLeft"
+            trigger="click"
+            destroyTooltipOnHide
+            getPopupContainer={n => (props.isShow ? n : document.body)}
+            content={ReadCard}
+          >
+            <ColorBtn2>
+              <CommonIconFont type="display" /> <span>{t('all_read')}</span>
+            </ColorBtn2>
+          </Popover>
 
           {(values.is_drew_back === 1 || values.is_draft === 1) && (
             <ColorBtn onClick={() => props.onDel(values.id)}>

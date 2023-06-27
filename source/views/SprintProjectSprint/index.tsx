@@ -89,6 +89,7 @@ const TabsWrap = styled.div`
   .active {
     background: #ffffff;
     color: var(--primary-d2);
+    font-family: SiYuanMedium;
   }
 `
 
@@ -98,10 +99,10 @@ const RightIcon = styled.div`
   display: flex;
   align-items: center;
   .line {
-    width: 0px;
+    width: 1px;
     height: 16px;
     opacity: 1;
-    border: 1px solid var(--neutral-n6-d1);
+    background-color: var(--neutral-n6-d1);
     margin: 0px 10px;
   }
   .filter {
@@ -532,38 +533,40 @@ const SprintProjectSprint: React.FC = () => {
                 </div>
               </TabsWrap>
               <RightIcon>
-                <CloseWrap
-                  style={isCanEditSprint ? {} : { visibility: 'hidden' }}
-                  width={24}
-                  height={24}
-                  onClick={() => {
-                    if (activeKey === 0) {
-                      setSprintModal({
-                        visible: true,
-                        type: 'create',
-                      })
-                    } else {
-                      dispatch(
-                        setAddWorkItemModal({
+                <Tooltip title={activeKey === 0 ? '新建冲刺' : '新建长故事'}>
+                  <CloseWrap
+                    style={isCanEditSprint ? {} : { visibility: 'hidden' }}
+                    width={32}
+                    height={32}
+                    onClick={() => {
+                      if (activeKey === 0) {
+                        setSprintModal({
                           visible: true,
-                          params: {
-                            type: 3,
-                            title: '创建事务',
-                            noDataCreate: true,
-                          },
-                        }),
-                      )
-                    }
-                  }}
-                >
-                  <IconFont
-                    style={{
-                      fontSize: 18,
-                      color: 'var(--neutral-n3)',
+                          type: 'create',
+                        })
+                      } else {
+                        dispatch(
+                          setAddWorkItemModal({
+                            visible: true,
+                            params: {
+                              type: 3,
+                              title: '创建事务',
+                              noDataCreate: true,
+                            },
+                          }),
+                        )
+                      }
                     }}
-                    type="plus"
-                  />
-                </CloseWrap>
+                  >
+                    <IconFont
+                      style={{
+                        fontSize: 20,
+                        color: 'var(--neutral-n3)',
+                      }}
+                      type="plus"
+                    />
+                  </CloseWrap>
+                </Tooltip>
                 <div
                   className="line"
                   style={isCanEditSprint ? {} : { visibility: 'hidden' }}
