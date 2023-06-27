@@ -350,11 +350,12 @@ const Home = () => {
   // 缺陷现状和工作项现状
   //  '周期时间：two_week,four_week,one_month,three_month,six_month',
   const getWorkList = async () => {
+    console.log(paramsData?.projectId, 'paramsData?.projectId')
     setLoading(true)
     const res = await getStatisticsTotal({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId + '',
+        : projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -377,7 +378,7 @@ const Home = () => {
     const res = await contrastNewWork({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId + '',
+        : projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -406,7 +407,7 @@ const Home = () => {
       sort: str,
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId + '',
+        : projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -433,7 +434,7 @@ const Home = () => {
     const res = await getDefectRatio({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId + '',
+        : projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -460,7 +461,7 @@ const Home = () => {
     const res = await statisticsOther({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId + '',
+        : projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:

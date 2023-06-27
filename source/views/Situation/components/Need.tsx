@@ -93,7 +93,7 @@ const Need = (props: any) => {
         {/* <TextBlueWrap> */}
         <ChartsItem>
           <span className={title1Css1}>{data?.total ?? 0}</span>
-          <span className={title2Css}>{t('common.createDemand')}</span>
+          <span className={title2Css}>创建工作项</span>
         </ChartsItem>
         {/* </TextBlueWrap> */}
         {/* <HomeWrap> */}
