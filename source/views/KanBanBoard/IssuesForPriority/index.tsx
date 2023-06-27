@@ -8,57 +8,40 @@ import useDropData from '../hooks/useDropData'
 import DropCard from '../DropCard'
 import { useSelector } from '@store/index'
 import useGroupType from '../hooks/useGroupType'
+import { DropArea } from '../Issues'
 
 interface IssuesProps {
   issues: Model.KanBan.Column
   groupId: Model.KanbanConfig.Column['id']
+  index: number
 }
 
-export const DropArea = styled.div<{ active?: boolean }>`
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  background: ${props => (props.active ? 'red' : 'var(--neutral-n9)')};
-  width: 302px;
-  box-sizing: border-box;
-  padding: 16px;
-  gap: 8px;
-  position: relative;
-`
-
-const DropStatusArea = styled.div`
-  width: 100%;
-  height: 100px;
-  box-sizing: border-box;
-  border: 1px solid purple;
-  &:hover {
-    border: 1px solid green;
-  }
-`
-const Issues: React.FC<IssuesProps> = props => {
+const IssuesForPriority: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
   const droppableId = useMemo(() => {
     return handleId(groupId, issues.id)
   }, [groupId, issues.id])
-  const { movingStory } = useSelector(store => store.kanBan)
+  const { movingStory, kanbanInfoByGroup } = useSelector(store => store.kanBan)
   const { groupType } = useGroupType()
-  const columnId = issues.id
 
   const { data } = useDropData(issues.id)
+  const columnId = issues?.id
+  const movingStoryIssuesIndex = useMemo(() => {
+    const ret = kanbanInfoByGroup.find(item => item.id === groupId)
+    return ret?.columns.findIndex(item => item.id === columnId)
+  }, [kanbanInfoByGroup, groupId, columnId])
 
   const showStateTransitionList = React.useMemo(() => {
-    // 人员分组和类别分组，只有同组才能转换状态
-    // if (groupType === 'users' || groupType === 'category') {
-    const ret =
-      !!movingStory &&
-      movingStory?.groupId === groupId &&
-      movingStory?.columnId !== columnId
+    if (movingStoryIssuesIndex === props.index) {
+      return false
+    }
+    const ret = !!movingStory && movingStory?.columnId !== columnId
     return ret
     // }
 
     // 跨分组可拖
     // return !!movingStory && movingStory?.columnId !== columnId
-  }, [movingStory, columnId, data, groupId, groupType])
+  }, [movingStory, columnId, movingStoryIssuesIndex, props.index])
 
   const dropCardListContent = (
     <DropCardList
@@ -98,6 +81,7 @@ const Issues: React.FC<IssuesProps> = props => {
       {(provided, snapshot) => {
         return (
           <DropArea
+            key={droppableId}
             // active={snapshot.isDraggingOver}
             ref={provided.innerRef}
             {...provided.droppableProps}
@@ -112,4 +96,4 @@ const Issues: React.FC<IssuesProps> = props => {
   )
 }
 
-export default Issues
+export default IssuesForPriority

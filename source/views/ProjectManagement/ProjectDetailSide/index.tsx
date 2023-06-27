@@ -353,6 +353,7 @@ const ProjectDetailSide = () => {
 
   useEffect(() => {
     const key = paramsData.pageIdx
+    console.log('key----', key)
     // debugger
     if (!key) {
       projectSide.current.style.width = '100%'
@@ -368,9 +369,11 @@ const ProjectDetailSide = () => {
       projectSetSide.current.style.display = 'block'
       return
     }
+    // debugger
+    console.log('key----', 1)
     projectSetSide.current.style.width = '0px'
-    projectSetCategory.current.style.width = '100%'
     projectSide.current.style.width = '0px'
+    projectSetCategory.current.style.width = '100%'
     projectSetCategory.current.style.display = 'block'
     // if (paramsData?.pageIdx) {
     //   if (projectSide.current === null) return

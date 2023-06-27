@@ -77,6 +77,7 @@ const Work = (props: WorkType) => {
       )
     }
   }, [props.type])
+  console.log(list, '000')
   return (
     <ItemMain>
       {list?.map(el => (
@@ -94,8 +95,10 @@ const Work = (props: WorkType) => {
             : el.list.map(item => (
                 <RowItem key={item.name}>
                   <Row>
-                    <span className="title">{item.parent_name}</span>
-                    <span className="time">{item.created_at} 到期</span>
+                    <span className="title">
+                      {item.parent_name ? item.parent_name : '--'}
+                    </span>
+                    <span className="time">{item.expected_end_at} 到期</span>
                   </Row>
                   <span className="msg">{item.name}</span>
                 </RowItem>

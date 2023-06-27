@@ -31,7 +31,16 @@ const DemandDetailInfo = () => {
 
   // 拖动线条
   const onDragLine = () => {
-    //
+    document.onmousemove = e => {
+      setFocus(true)
+
+      setLeftWidth(window.innerWidth - e.clientX)
+    }
+    document.onmouseup = () => {
+      document.onmousemove = null
+      document.onmouseup = null
+      setFocus(false)
+    }
   }
 
   return (
