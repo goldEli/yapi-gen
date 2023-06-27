@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap, ModalFooter } from './StyleCommon'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonButton from './CommonButton'
 import { useState } from 'react'
 
@@ -63,7 +64,6 @@ interface CommonModalProps {
 
 const CommonModal = (props: CommonModalProps) => {
   const [t] = useTranslation()
-  const [loading, setLoading] = useState(false)
   return (
     <ModalStyle
       footer={false}
@@ -126,19 +126,8 @@ const CommonModal = (props: CommonModalProps) => {
 
               <CommonButton
                 type="primary"
-                loading={loading}
                 onClick={() => {
-                  if (props?.onConfirm) {
-                    const pm = props?.onConfirm?.()
-                    if (pm?.finally) {
-                      setLoading(true)
-                      pm?.finally(() => {
-                        setTimeout(() => {
-                          setLoading(false)
-                        }, 1000)
-                      })
-                    }
-                  }
+                  props?.onConfirm?.()
                 }}
               >
                 {props?.confirmText ? props?.confirmText : t('common.confirm')}

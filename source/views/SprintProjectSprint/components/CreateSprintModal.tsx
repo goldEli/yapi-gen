@@ -234,7 +234,7 @@ const CreateSprintModal = (props: sprintProps) => {
             : type === 'update'
             ? '更新'
             : // eslint-disable-next-line no-undefined
-              undefined
+              '编辑'
         }
         children={
           <div className={content}>
@@ -263,7 +263,6 @@ const CreateSprintModal = (props: sprintProps) => {
               </Form.Item>
               <Form.Item label="冲刺目标" name="info">
                 <Input.TextArea
-                  showCount
                   maxLength={300}
                   autoSize={{ minRows: 1, maxRows: 5 }}
                   placeholder="请输入"
