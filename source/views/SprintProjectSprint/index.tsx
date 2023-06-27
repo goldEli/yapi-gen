@@ -27,7 +27,7 @@ import {
 import { getStaffList } from '@/services/staff'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import CategoryDropdown from '@/components/CategoryDropdown'
 import useKeyPress from '@/hooks/useKeyPress'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
@@ -268,6 +268,7 @@ const SprintProjectSprint: React.FC = () => {
     rightLoading,
     leftLoading,
     sprintRefresh,
+    sprintRightListRefresh,
   } = useSelector(store => store.sprint)
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -311,6 +312,11 @@ const SprintProjectSprint: React.FC = () => {
   const [checkCommission, setCheckCommission] = useState(false)
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { isUpdateAddWorkItem } = useSelector(store => store.project)
+  const { projectInfo } = useSelector(store => store.project)
+  const isCanEditSprint = !getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/sprint',
+  )
 
   const inform = [
     {
@@ -425,6 +431,7 @@ const SprintProjectSprint: React.FC = () => {
         },
       }),
     )
+    console.log(checkList, 'checkListcheckListcheckListcheckList', searchObject)
   }, [searchObject, checkList])
 
   useEffect(() => {
@@ -437,6 +444,17 @@ const SprintProjectSprint: React.FC = () => {
       dispatch(getRightSprintList(searchObject))
     }
   }, [sprintRefresh])
+
+  useEffect(() => {
+    if (sprintRightListRefresh > 0) {
+      console.log(
+        searchObject,
+        'searchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObjectsearchObject',
+      )
+
+      dispatch(getRightSprintList(searchObject))
+    }
+  }, [sprintRightListRefresh])
 
   useEffect(() => {
     // 监听创建事务，刷新页面
@@ -513,6 +531,7 @@ const SprintProjectSprint: React.FC = () => {
               </TabsWrap>
               <RightIcon>
                 <CloseWrap
+                  style={isCanEditSprint ? {} : { visibility: 'hidden' }}
                   width={24}
                   height={24}
                   onClick={() => {
@@ -543,7 +562,10 @@ const SprintProjectSprint: React.FC = () => {
                     type="plus"
                   />
                 </CloseWrap>
-                <div className="line" />
+                <div
+                  className="line"
+                  style={isCanEditSprint ? {} : { visibility: 'hidden' }}
+                />
                 <Popover
                   trigger="click"
                   placement="bottomRight"
