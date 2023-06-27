@@ -141,14 +141,14 @@ const SprintTree = (props: Props) => {
       projectId,
     })
     getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
-    props.onChangeRow?.()
+    props.onChangeRow?.(row.topId)
   }
 
   // 修改状态
   const onChangeStatus = async (value: any, row?: any) => {
     await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    props.onChangeRow?.()
+    props.onChangeRow?.(row.topId)
   }
 
   // 点击排序
