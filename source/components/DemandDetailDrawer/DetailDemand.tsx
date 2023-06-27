@@ -49,17 +49,13 @@ const DetailDemand = (props: DetailDemand) => {
       ctime: data.data.files.time,
     }
 
-    try {
-      await addInfoDemand({
-        projectId: props.detail.projectId,
-        demandId: props.detail.id,
-        type: 'attachment',
-        targetId: [obj],
-      })
-      props.onUpdate()
-    } catch (error) {
-      //
-    }
+    await addInfoDemand({
+      projectId: props.detail.projectId,
+      demandId: props.detail.id,
+      type: 'attachment',
+      targetId: [obj],
+    })
+    props.onUpdate()
   }
 
   const onDeleteConfirm = async () => {
