@@ -373,7 +373,7 @@ const IterationDefectDetail = () => {
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
-        ...{ id, changeIds, demandId: newIndex },
+        ...{ id, changeIds, flawId: newIndex },
       }),
     )
     setSearchParams(`data=${params}`)
@@ -386,7 +386,7 @@ const IterationDefectDetail = () => {
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
-        ...{ id, changeIds, demandId: newIndex },
+        ...{ id, changeIds, flawId: newIndex },
       }),
     )
     setSearchParams(`data=${params}`)

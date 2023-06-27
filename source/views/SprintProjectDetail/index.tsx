@@ -376,7 +376,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
-        ...{ id, changeIds, demandId: newIndex },
+        ...{ id, changeIds, sprintId: newIndex },
       }),
     )
     setSearchParams(`data=${params}`)
@@ -389,7 +389,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
-        ...{ id, changeIds, demandId: newIndex },
+        ...{ id, changeIds, sprintId: newIndex },
       }),
     )
     setSearchParams(`data=${params}`)
