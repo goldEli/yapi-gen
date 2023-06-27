@@ -116,11 +116,6 @@ const SprintDetailInfo = (props: { onRef: any }) => {
     setTabActive(arr[arr.length - 1])
   }
 
-  // 更新
-  const onUpdate = () => {
-    dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id }))
-  }
-
   useEffect(() => {
     window?.addEventListener('scroll', handleScroll, true)
     return () => {
@@ -150,7 +145,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
       >
         <AffairsDetail
           affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
-          onUpdate={onUpdate}
+          isInfoPage
         />
         {affairsInfo.work_type !== 6 && (
           <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />

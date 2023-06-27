@@ -68,7 +68,7 @@ const LongStroyBread = (props: IProps) => {
   }
   useEffect(() => {
     // hasLongStroy 为true可以添加长故事 work_type 为4,5才可以添加关联
-    const hasLongStroy = longStroy.work_type === 4 || longStroy.work_type === 5
+    const hasLongStroy = longStroy.work_type !== 3
     if (hasLongStroy) {
       // isHasLongStroy 为true 可以新增
       const isHasLongStroy = longStroy?.level_tree?.length === 0
@@ -121,7 +121,12 @@ const LongStroyBread = (props: IProps) => {
                       src={longStroy.category_attachment}
                       alt=""
                       onMouseEnter={() => {
-                        setShowEditIcon(true)
+                        if (
+                          longStroy.work_type === 4 ||
+                          longStroy.work_type === 5
+                        ) {
+                          setShowEditIcon(true)
+                        }
                       }}
                       onMouseLeave={() => {
                         setShowEditIcon(false)
