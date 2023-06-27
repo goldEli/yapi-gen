@@ -204,6 +204,7 @@ const Home = () => {
     } else {
       filterVal = res.find(el => el.is_default === 1)
     }
+    console.log(filterVal, 'filterVal')
     setOptionVal(filterVal?.id || 0)
     setViewTitle(filterVal?.name || '')
     setDefalutConfig(filterVal)
@@ -224,7 +225,8 @@ const Home = () => {
           period_time: filterVal?.config?.period_time,
           time: {
             type:
-              filterVal?.config.start_time === ''
+              filterVal?.config.start_time === '' &&
+              !filterVal?.config?.period_time
                 ? 0
                 : getDate(filterVal?.config?.period_time || ''),
             time:

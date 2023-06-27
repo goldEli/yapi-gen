@@ -583,7 +583,7 @@ export const useDynamicColumns = (state: any) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {record.discovery_version_name || '--'}
+                {record.discovery_version || '--'}
               </OmitText>
             </HiddenText>
           </TableQuickEdit>

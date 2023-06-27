@@ -179,10 +179,10 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
       usersInfo: i.usersInfo,
       is_bug: i.is_bug,
       project_type: i.project_type,
-      solution: i.solution,
-      discovery_version_name: i.discovery_version_name,
+      discovery_version: i.discovery_version_name,
+      discovery_version_id: i.discovery_version,
       severity: i.severity,
-      discovery_version: i.discovery_version,
+      solution: i.solution,
     })),
   }
 }
@@ -273,6 +273,9 @@ export const addFlaw: any = async (params: any) => {
     class_id: params?.class || 0,
     schedule: params?.schedule,
     status: params?.status,
+    solution: params.solution,
+    severity: params.severity || 0,
+    discovery_version: params.discovery_version,
   })
 }
 
@@ -312,6 +315,9 @@ export const updateFlaw: any = async (params: any) => {
     custom_field: params?.customField,
     class_id: params?.class || 0,
     schedule: params?.schedule,
+    solution: params.solution,
+    severity: params.severity || 0,
+    discovery_version: params.discovery_version,
   })
 }
 

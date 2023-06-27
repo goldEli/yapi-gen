@@ -50,7 +50,7 @@ import {
 } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getMessage } from '../Message'
-import { setFlawDetailDrawer } from '@store/flaw'
+import { setFlawDetailDrawer, setFlawInfo } from '@store/flaw'
 import {
   copyLink,
   detailTimeFormat,
@@ -196,6 +196,10 @@ const FlawDetailDrawer = () => {
     )
     const url = `ProjectManagement/DefectDetail?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+    setTimeout(() => {
+      dispatch(setIsUpdateAddWorkItem(false))
+      dispatch(setFlawInfo({}))
+    }, 0)
   }
 
   // 向上查找需求

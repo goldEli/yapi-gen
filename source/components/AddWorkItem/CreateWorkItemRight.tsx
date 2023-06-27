@@ -5,7 +5,7 @@ import { getTypeComponent, removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
-import { Checkbox, DatePicker, Form, Select, TreeSelect } from 'antd'
+import { Checkbox, DatePicker, Form, Input, Select, TreeSelect } from 'antd'
 import moment from 'moment'
 import { useState, useEffect, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,7 +13,8 @@ import ChangePriorityPopover from '../ChangePriorityPopover'
 import CustomSelect from '../CustomSelect'
 import IconFont from '../IconFont'
 import StateTag from '../StateTag'
-import { PriorityWrap, SliderWrap } from '../StyleCommon'
+import { PriorityWrap, SeverityWrap, SliderWrap } from '../StyleCommon'
+import ChangeSeverityPopover from '../ChangeSeverityPopover'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -59,6 +60,7 @@ const CreateDemandRight = (props: Props) => {
   // 不折叠字段
   const [notFoldList, setNotFoldList] = useState<any>([])
   const [priorityDetail, setPriorityDetail] = useState<any>({})
+  const [severity, setSeverity] = useState<any>(0)
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
   const {
@@ -153,6 +155,8 @@ const CreateDemandRight = (props: Props) => {
 
       // 回显优先级
       setPriorityDetail(props?.detail.priority)
+      // 回显严重程度
+      setSeverity(props?.detail.severity)
 
       // 开始时间
       if (props?.detail?.expectedStart) {
@@ -286,6 +290,15 @@ const CreateDemandRight = (props: Props) => {
           'priority',
         )?.filter((i: any) => i.id === priorityId)?.[0]
 
+        // 筛选值-严重程度
+        const severityId = filterParamsModal?.severityIds?.filter(
+          (i: any) => i !== -1,
+        )?.[0]
+        const resultSeverity = removeNull(
+          projectInfoValues,
+          'severity',
+        )?.filter((i: any) => i.id === severityId)?.[0]
+
         // 筛选回填处理人、抄送人、需求分类、优先级
         form.setFieldsValue({
           users_copysend_name: filterParamsModal?.copySendId?.filter(
@@ -296,8 +309,10 @@ const CreateDemandRight = (props: Props) => {
           ),
           class: resultClass,
           priority: resultPriority?.id,
+          severity: resultSeverity?.id,
         })
         setPriorityDetail(resultPriority)
+        setSeverity(resultSeverity?.id)
 
         // 筛选回填预计开始时间
         if (filterParamsModal?.expectedStart?.length > 0) {
@@ -364,6 +379,11 @@ const CreateDemandRight = (props: Props) => {
             (i: any) => i.id === hisCategoryData?.priority,
           )?.[0],
         )
+        setSeverity(
+          removeNull(projectInfoValues, 'severity')?.filter(
+            (i: any) => i.id === hisCategoryData?.severity,
+          )?.[0]?.id,
+        )
         if (
           hisCategoryData?.customField &&
           JSON.stringify(hisCategoryData?.customField) !== '{}'
@@ -409,6 +429,7 @@ const CreateDemandRight = (props: Props) => {
   const onReset = () => {
     form.resetFields()
     setPriorityDetail({})
+    setSeverity(0)
     setIsShowFields(false)
   }
 
@@ -421,6 +442,7 @@ const CreateDemandRight = (props: Props) => {
     const values = form.getFieldsValue()
     values.priority =
       JSON.stringify(priorityDetail) === '{}' ? null : priorityDetail
+    values.severity = severity
 
     Object.keys(values)?.forEach((k: any) => {
       values[k] = values[k] ? values[k] : ''
@@ -486,6 +508,14 @@ const CreateDemandRight = (props: Props) => {
     })
   }
 
+  // 修改优先级
+  const onChangeSeverity = (item: any) => {
+    setSeverity(item.severity)
+    form.setFieldsValue({
+      severity: item.severity,
+    })
+  }
+
   const format = (a: any) => {
     const newA = a.filter((j: any) => {
       return j.value === info
@@ -501,17 +531,24 @@ const CreateDemandRight = (props: Props) => {
   const getBasicTypeComponent = (item: any) => {
     let nodeComponent
 
-    // 下拉多选 抄送人，处理人，迭代
+    // 下拉多选 抄送人，处理人，迭代,发现版本
     if (
-      ['users_copysend_name', 'iterate_name', 'users_name'].includes(
-        item.content,
-      )
+      [
+        'users_copysend_name',
+        'iterate_name',
+        'users_name',
+        'discovery_version',
+      ].includes(item.content)
     ) {
       nodeComponent = (
         <CustomSelect
           style={{ width: '100%' }}
           showArrow
-          mode={item.content === 'iterate_name' ? (null as any) : 'multiple'}
+          mode={
+            ['discovery_version', 'iterate_name'].includes(item.content)
+              ? (null as any)
+              : 'multiple'
+          }
           showSearch
           placeholder={t('common.pleaseSelect')}
           getPopupContainer={(node: any) => node}
@@ -519,7 +556,7 @@ const CreateDemandRight = (props: Props) => {
           optionFilterProp="label"
           disabled={!props.isCreateDemand}
           options={format(
-            (item.content === 'iterate_name'
+            (['discovery_version', 'iterate_name'].includes(item.content)
               ? removeNull(projectInfoValues, item.content)?.filter((k: any) =>
                   [4, 1].includes(k.status),
                 )
@@ -560,6 +597,30 @@ const CreateDemandRight = (props: Props) => {
           </PriorityWrap>
         </ChangePriorityPopover>
       )
+    } else if (item.content === 'severity') {
+      // 优先级
+      nodeComponent = (
+        <ChangeSeverityPopover
+          isCanOperation
+          onChangeSeverity={(row: any) => onChangeSeverity(row)}
+          record={{ project_id: props?.projectId }}
+          projectId={props?.projectId}
+        >
+          <SeverityWrap
+            style={{
+              background: removeNull(projectInfoValues, 'severity')?.filter(
+                (i: any) => i.id === severity,
+              )?.[0]?.color,
+              width: 'max-content',
+              cursor: 'pointer',
+            }}
+          >
+            {removeNull(projectInfoValues, 'severity')?.filter(
+              (i: any) => i.id === severity,
+            )?.[0]?.content || '--'}
+          </SeverityWrap>
+        </ChangeSeverityPopover>
+      )
     } else if (item.content === 'class') {
       // 需求分类
       nodeComponent = (
@@ -599,6 +660,15 @@ const CreateDemandRight = (props: Props) => {
           getPopupContainer={(node: any) => node}
           optionFilterProp="label"
           allowClear
+        />
+      )
+    } else if (item.content === 'solution') {
+      // 解决办法
+      nodeComponent = (
+        <Input
+          placeholder={t('common.pleaseEnter')}
+          allowClear
+          autoComplete="off"
         />
       )
     } else {

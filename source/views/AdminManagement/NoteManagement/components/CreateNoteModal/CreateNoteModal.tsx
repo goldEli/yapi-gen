@@ -126,7 +126,7 @@ const CreateNoteModal = (props: any) => {
         form.resetFields()
         props.onClose()
         getMessage({
-          msg: t('common.editSuccess') as string,
+          msg: t('succeed') as string,
           type: 'success',
         })
         props.onHandleOk()
@@ -166,7 +166,7 @@ const CreateNoteModal = (props: any) => {
         form.resetFields()
         props.onClose()
         getMessage({
-          msg: t('common.editSuccess') as string,
+          msg: t('succeed') as string,
           type: 'success',
         })
         props.onHandleOk()

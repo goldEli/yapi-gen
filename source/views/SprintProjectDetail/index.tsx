@@ -357,7 +357,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   useEffect(() => {
     if (sprintId && id) {
-      dispatch(setAffairsInfo({}))
       dispatch(getAffairsInfo({ projectId: id, sprintId }))
       dispatch(
         getAffairsCommentList({
@@ -377,7 +376,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
-        ...{ id, changeIds, demandId: newIndex },
+        ...{ id, changeIds, sprintId: newIndex },
       }),
     )
     setSearchParams(`data=${params}`)
@@ -390,7 +389,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
-        ...{ id, changeIds, demandId: newIndex },
+        ...{ id, changeIds, sprintId: newIndex },
       }),
     )
     setSearchParams(`data=${params}`)
@@ -413,8 +412,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
-      dispatch(setAffairsInfo({}))
-      dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
+      dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id }))
     }
   }, [isUpdateAddWorkItem])
 
@@ -511,39 +509,42 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           {changeIds && changeIds.length > 0 && (
             <CommonButton type="icon" icon="left-md" onClick={onBack} />
           )}
-          <ChangeIconGroup>
-            {currentIndex > 0 && (
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={
-                  changeIds?.length === 0 ||
-                  currentIndex === changeIds?.length - 1
-                }
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
-            )}
-            {!(
-              changeIds?.length === 0 || currentIndex === changeIds?.length - 1
-            ) && (
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </DownWrap>
-            )}
-          </ChangeIconGroup>
+          {changeIds?.length > 1 && (
+            <ChangeIconGroup>
+              {currentIndex > 0 && (
+                <UpWrap
+                  onClick={onUpDemand}
+                  id="upIcon"
+                  isOnly={
+                    changeIds?.length === 0 ||
+                    currentIndex === changeIds?.length - 1
+                  }
+                >
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </UpWrap>
+              )}
+              {!(
+                changeIds?.length === 0 ||
+                currentIndex === changeIds?.length - 1
+              ) && (
+                <DownWrap
+                  onClick={onDownDemand}
+                  id="downIcon"
+                  isOnly={currentIndex <= 0}
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </DownWrap>
+              )}
+            </ChangeIconGroup>
+          )}
           <CommonButton type="icon" icon="share" onClick={onShare} />
           <DropdownMenu
             placement="bottomRight"

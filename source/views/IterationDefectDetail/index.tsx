@@ -38,7 +38,6 @@ import {
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import { getWorkflowList } from '@/services/project'
-import { setFlawInfo } from '@store/flaw'
 import FlawInfo from './components/FlawInfo'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
@@ -374,7 +373,7 @@ const IterationDefectDetail = () => {
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
-        ...{ id, changeIds, demandId: newIndex },
+        ...{ id, changeIds, flawId: newIndex },
       }),
     )
     setSearchParams(`data=${params}`)
@@ -387,7 +386,7 @@ const IterationDefectDetail = () => {
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
-        ...{ id, changeIds, demandId: newIndex },
+        ...{ id, changeIds, flawId: newIndex },
       }),
     )
     setSearchParams(`data=${params}`)
@@ -414,7 +413,6 @@ const IterationDefectDetail = () => {
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
-      dispatch(setFlawInfo({}))
       dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
     }
   }, [isUpdateAddWorkItem])
@@ -498,39 +496,42 @@ const IterationDefectDetail = () => {
           {changeIds && changeIds.length > 0 && (
             <CommonButton type="icon" icon="left-md" onClick={onBack} />
           )}
-          <ChangeIconGroup>
-            {currentIndex > 0 && (
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={
-                  changeIds?.length === 0 ||
-                  currentIndex === changeIds?.length - 1
-                }
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
-            )}
-            {!(
-              changeIds?.length === 0 || currentIndex === changeIds?.length - 1
-            ) && (
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </DownWrap>
-            )}
-          </ChangeIconGroup>
+          {changeIds?.length > 1 && (
+            <ChangeIconGroup>
+              {currentIndex > 0 && (
+                <UpWrap
+                  onClick={onUpDemand}
+                  id="upIcon"
+                  isOnly={
+                    changeIds?.length === 0 ||
+                    currentIndex === changeIds?.length - 1
+                  }
+                >
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </UpWrap>
+              )}
+              {!(
+                changeIds?.length === 0 ||
+                currentIndex === changeIds?.length - 1
+              ) && (
+                <DownWrap
+                  onClick={onDownDemand}
+                  id="downIcon"
+                  isOnly={currentIndex <= 0}
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </DownWrap>
+              )}
+            </ChangeIconGroup>
+          )}
           <CommonButton type="icon" icon="share" onClick={onShare} />
           <DropdownMenu
             placement="bottomRight"

@@ -1,6 +1,6 @@
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { setAffairsDetailDrawer } from '@store/affairs'
+import { setAffairsDetailDrawer, setAffairsInfo } from '@store/affairs'
 import { Drawer, MenuProps, Popover, Skeleton, Space, Tooltip } from 'antd'
 import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
 import {
@@ -231,6 +231,10 @@ const SprintDetailDrawer = () => {
     )
     const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+    setTimeout(() => {
+      dispatch(setIsUpdateAddWorkItem(false))
+      dispatch(setAffairsInfo({}))
+    }, 0)
   }
 
   // 修改状态

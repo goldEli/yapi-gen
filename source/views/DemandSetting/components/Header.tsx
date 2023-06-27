@@ -11,6 +11,7 @@ import {
   getWorkflowList,
   changeCategoryStatus,
 } from '@/services/project'
+import { setProjectInfoValues } from '@store/project'
 import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -89,7 +90,8 @@ const Header = () => {
   const { startUsing, activeCategory, categoryList } = useSelector(
     store => store.category,
   )
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+
   const [checked, setChecked] = useState(startUsing)
   const [isDelete, setIsDelete] = useState(false)
   const [hasDeleteVisible, setHasDeleteVisible] = useState(false)
@@ -192,11 +194,20 @@ const Header = () => {
   }
   // 开关
   const onChangeOpenState = async (e: boolean) => {
+    const projectInfoValuesData = JSON.parse(JSON.stringify(projectInfoValues))
     await changeCategoryStatus({
       projectId: projectInfo.id,
       id: activeCategory?.id,
       status: e ? 1 : 2,
     })
+    projectInfoValuesData
+      .filter((item: { key: string }) => item.key === 'category')[0]
+      .children.forEach((item: { id: any; status: number }) => {
+        if (item.id === activeCategory.id) {
+          item.status = e ? 1 : 2
+        }
+      })
+    dispatch(setProjectInfoValues(projectInfoValuesData))
     await dispatch(storyConfigCategoryList({ projectId: projectInfo.id }))
     let dataItem = null
     if (e) {

@@ -13,7 +13,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getIsPermission, getParamsData, onComputedFindChild } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
@@ -33,6 +33,7 @@ import {
   getAffairsList,
   updateAffairsPriority,
   updateAffairsStatus,
+  updateAffairsTableParams,
 } from '@/services/affairs'
 
 const Content = styled.div`
@@ -125,7 +126,12 @@ const SprintTree = (props: Props) => {
       const currentDemandTop = props.data?.list?.filter(
         (i: any) => i.id === item.topId,
       )?.[0]
-      demandIds = currentDemandTop.children?.map((k: any) => k.id)
+      // 查找列表下与之父级匹配的数组
+      let resultData = onComputedFindChild(
+        currentDemandTop.children,
+        item.parentId,
+      )
+      demandIds = resultData.children?.map((k: any) => k.id)
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
@@ -140,14 +146,14 @@ const SprintTree = (props: Props) => {
       projectId,
     })
     getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
-    props.onChangeRow?.()
+    props.onChangeRow?.(row.topId)
   }
 
   // 修改状态
   const onChangeStatus = async (value: any, row?: any) => {
     await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    props.onChangeRow?.()
+    props.onChangeRow?.(row.topId)
   }
 
   // 点击排序
@@ -318,6 +324,21 @@ const SprintTree = (props: Props) => {
     )
   }
 
+  //  修改严重程度
+  const onChangeSeverity = async (item: any) => {
+    setComputedTopId(item?.topId)
+    props.onUpdateTopId?.(item.topId)
+    await updateAffairsTableParams({
+      id: item.id,
+      projectId,
+      otherParams: {
+        severity: item.severity,
+      },
+    })
+    getMessage({ msg: '修改成功', type: 'success' })
+    props.onChangeRow?.()
+  }
+
   const columns = useDynamicColumns({
     projectId,
     orderKey,
@@ -330,6 +351,7 @@ const SprintTree = (props: Props) => {
     onUpdate: props?.onUpdate,
     isTree: true,
     onChangeTree: getTreeIcon,
+    onChangeSeverity,
   })
 
   const hasCreate = getIsPermission(
