@@ -651,6 +651,7 @@ const ProgressComparison = (props: Props) => {
     setIds(res.list.map(el => el.id))
     setLoading(false)
   }
+  console.log(props.headerParmas, 'props.headerParmas')
   // 缺陷分析大的列表
   const getMemberBugList = async (value: number[], page?: any) => {
     const time = getTime(props.headerParmas.time)
@@ -909,6 +910,7 @@ const ProgressComparison = (props: Props) => {
         {/* 导出成功 */}
         <ExportSuccess
           title={'导出成功'}
+          notCancel={true}
           text={'Excel导出成功，可在本地打开文件查看'}
           isVisible={isVisibleSuccess}
           onConfirm={() => {

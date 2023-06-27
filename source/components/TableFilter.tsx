@@ -316,6 +316,9 @@ const TableFilter = (props: any) => {
   useEffect(() => {
     form.resetFields()
     form.setFieldsValue(props.defaultValue)
+    if (Object.keys(props.defaultValue).length === 0) {
+      return
+    }
     confirm()
   }, [props.defaultValue])
 

@@ -24,7 +24,7 @@ import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
 import { deleteAffairs, getAffairsList } from '@/services/affairs'
 import Operation from './components/Operation'
-import { saveTitles } from '@store/view'
+import { onTapSearchChoose, saveTitles } from '@store/view'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { getMessage } from '@/components/Message'
@@ -333,19 +333,20 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   }, [projectInfo])
 
   useEffect(() => {
+    console.log('useEffect', pageObj)
     getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, order, pageObj])
+  }, [key, isGrid, projectId, order, pageObj])
 
-  useEffect(() => {
-    setPageObj({ page: 1, size: 20 })
-    setOrder({ value: '', key: '' })
-    setKey('')
-    setIsGrid(0)
-    setSearchVal('')
-    setSearchItems({})
-    keyValueTree.changeKey('')
-    getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
-  }, [projectId])
+  // useEffect(() => {
+  //   setPageObj({ page: 1, size: 20 })
+  //   setOrder({ value: '', key: '' })
+  //   setKey('')
+  //   setIsGrid(0)
+  //   setSearchVal('')
+  //   setSearchItems({})
+  //   keyValueTree.changeKey('')
+  //   getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
+  // }, [projectId])
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
@@ -355,7 +356,8 @@ const SprintProjectAffair: React.FC<IProps> = props => {
 
   useEffect(() => {
     // 进入主页清除已存储的筛选计数
-    setFilterKeys([])
+    dispatch(setFilterKeys([]))
+    dispatch(onTapSearchChoose(''))
   }, [])
 
   return (
