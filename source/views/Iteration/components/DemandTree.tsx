@@ -22,7 +22,7 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getIsPermission, getParamsData, onComputedFindChild } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
@@ -168,7 +168,12 @@ const DemandTree = (props: Props) => {
       const currentDemandTop = props.data?.list?.filter(
         (i: any) => i.id === item.topId,
       )?.[0]
-      demandIds = currentDemandTop.children?.map((k: any) => k.id)
+      // 查找列表下与之父级匹配的数组
+      let resultData = onComputedFindChild(
+        currentDemandTop.children,
+        item.parentId,
+      )
+      demandIds = resultData.children?.map((k: any) => k.id)
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
