@@ -26,8 +26,8 @@ const SelectMain = (props: Props) => {
     props.onChange(newValue)
   }
   useEffect(() => {
-    // 根据id去重
-    const newData = props.options.filter((item, index, self) => {
+    // 根据id去重`
+    const newData = props.options?.filter((item, index, self) => {
       const i = self.findIndex(t => t.id === item.id)
       return i === index
     })
