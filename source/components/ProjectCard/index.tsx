@@ -143,7 +143,13 @@ const Index = (props: any) => {
           id: props.item.id,
         }),
       )
-      navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+      let url = null
+      if (props.item.projectType === 1) {
+        url = '/ProjectManagement/Demand'
+      } else {
+        url = '/SprintProjectManagement/Affair'
+      }
+      navigate(`${url}?data=${params}`)
     } else if (type === 'demand') {
       if (props.item.projectType === 1) {
         const params = encryptPhp(
