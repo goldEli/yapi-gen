@@ -12,17 +12,20 @@ import { useTranslation } from 'react-i18next'
 import { AddWrap, TextWrapEdit } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
 import { addInfoFlaw, deleteInfoFlaw, updateFlawEditor } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
+import { getFlawInfo } from '@store/flaw/flaw.thunk'
 
 interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
-  onUpdate(): void
+  isInfoPage?: boolean
+  onUpdate?(): void
 }
 const FlawDetail = (props: FlawDetailProps) => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { projectFlawInfo } = useSelector(store => store.project)
@@ -30,6 +33,15 @@ const FlawDetail = (props: FlawDetailProps) => {
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
   const editorRef = useRef<EditorRef>(null)
+  const dId = useRef<any>()
+
+  const onUpdate = () => {
+    if (props.isInfoPage) {
+      dispatch(getFlawInfo({ projectId: projectFlawInfo.id, id: dId.current }))
+    } else {
+      props.onUpdate?.()
+    }
+  }
 
   //   添加附件
   const onAddInfoAttach = async (data: any) => {
@@ -42,11 +54,11 @@ const FlawDetail = (props: FlawDetailProps) => {
     }
     await addInfoFlaw({
       projectId: projectFlawInfo.id,
-      id: props.flawInfo.id,
+      id: dId.current,
       type: 'attachment',
       targetId: [obj],
     })
-    props.onUpdate()
+    onUpdate()
   }
 
   //   确认删除附件事件
@@ -57,7 +69,7 @@ const FlawDetail = (props: FlawDetailProps) => {
       type: 'attachment',
       targetId,
     })
-    props.onUpdate()
+    onUpdate()
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
   }
 
@@ -85,7 +97,7 @@ const FlawDetail = (props: FlawDetailProps) => {
       name: props.flawInfo.name,
     }
     await updateFlawEditor(params)
-    props.onUpdate()
+    onUpdate()
   }
 
   useEffect(() => {
@@ -97,6 +109,7 @@ const FlawDetail = (props: FlawDetailProps) => {
       })),
     )
     setEditInfo(props.flawInfo.info)
+    dId.current = props.flawInfo.id
   }, [props.flawInfo])
 
   return (
@@ -143,7 +156,7 @@ const FlawDetail = (props: FlawDetailProps) => {
         <FlawTag
           defaultList={tagList}
           canAdd
-          onUpdate={props.onUpdate}
+          onUpdate={onUpdate}
           detail={props.flawInfo}
           addWrap={
             <AddWrap hasDash>

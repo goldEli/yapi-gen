@@ -358,7 +358,8 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             >
               <ProgressWrap
                 percent={
-                  props.detail.child_story_statistics?.finish_percent || 0
+                  (props.detail.child_story_statistics?.finish_percent || 0) +
+                  (props.detail.child_story_statistics?.processing_percent || 0)
                 }
                 success={{
                   percent: props.detail.child_story_statistics?.finish_percent,
