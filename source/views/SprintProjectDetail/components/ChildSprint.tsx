@@ -279,8 +279,11 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   }
 
   // 表格拖拽排序
-  const onDragTable = async (data: { list: Model.Affairs.AffairsInfo[] }) => {
-    setDataSource(data)
+  const onChangeData = async (data: { list: Model.Affairs.AffairsInfo[] }) => {
+    setDataSource({
+      ...dataSource,
+      list: data.list,
+    })
     await affairsChildDragSort({
       projectId: projectInfo.id,
       id: props.detail.id,
@@ -369,7 +372,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             <DragTable
               columns={columns}
               dataSource={dataSource}
-              onChangeData={onDragTable}
+              onChangeData={arr => onChangeData(arr)}
               showHeader={false}
               hasOperation={operationList}
             />
