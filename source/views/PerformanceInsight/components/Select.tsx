@@ -36,7 +36,7 @@ const SelectMain = (props: Props) => {
   return (
     <>
       <Select
-        style={{ width: 184 }}
+        style={{ minWidth: 184 }}
         maxTagCount={1}
         mode="multiple"
         value={props.value}
@@ -53,7 +53,7 @@ const SelectMain = (props: Props) => {
         dropdownStyle={{ width: 184 }}
         dropdownMatchSelectWidth={false}
         dropdownRender={(menu: any) => (
-          <div style={{ width: '184px' }}>
+          <div style={{ minWidth: '184px' }}>
             {menu}
             {!props.more && (
               <Segm onClick={() => props.onShowAll?.()}>查看更多</Segm>
