@@ -30,6 +30,7 @@ import SprintDetailDrawer from '@/components/SprintDetailDrawer'
 import FlawDetailDrawer from '@/components/FlawDetailDrawer'
 import DeleteConfirmGlobalModal from '@/components/DeleteConfirmGlobal'
 import { changeCreateVisible } from '@store/create-propject'
+import { changeFreedVisibleVisible } from '@store/feedback'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -164,6 +165,7 @@ export const Container = () => {
           <HeaderWrap
             onClick={() => {
               dispatch(changeCreateVisible(false))
+              dispatch(changeFreedVisibleVisible(false))
             }}
           >
             <HeaderLeft />
