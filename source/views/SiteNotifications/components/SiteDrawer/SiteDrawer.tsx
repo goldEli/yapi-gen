@@ -60,7 +60,7 @@ const SiteDrawer = () => {
     },
     {
       id: '4',
-      text: '通知',
+      text: t('notification'),
     },
 
     {

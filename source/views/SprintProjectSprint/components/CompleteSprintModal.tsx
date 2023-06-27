@@ -1,7 +1,7 @@
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
-import { completeSprint } from '@/services/sprint'
+import { completeSprint, getMoveTo } from '@/services/sprint'
 import { css } from '@emotion/css'
 import { useDispatch, useSelector } from '@store/index'
 import { setSprintRefresh } from '@store/sprint'
@@ -32,6 +32,7 @@ const CompleteSprintModal = (props: sprintProps) => {
   const { rightSprintList } = useSelector(store => store.sprint)
   const [targetId, setTargetId] = useState(id)
   const dispatch = useDispatch()
+  const [list, setList] = useState<any>([])
 
   const onClear = (isFresh?: boolean) => {
     form.setFieldsValue({
@@ -54,7 +55,6 @@ const CompleteSprintModal = (props: sprintProps) => {
         project_id: projectId,
         finish_at: moment(value.finish_at).format('YYYY-MM-DD'),
         result: value.result,
-        move_type: 1,
         move_target: value.move_target,
       })
       if (result && result.code === 0) {
@@ -77,6 +77,22 @@ const CompleteSprintModal = (props: sprintProps) => {
   useEffect(() => {
     setTargetId(id)
   }, [id])
+
+  const getMoveToList = async () => {
+    const result = await getMoveTo({
+      project_id: projectId,
+      iterate_id: targetId,
+    })
+    if (result) {
+      setList(result)
+    }
+  }
+
+  useEffect(() => {
+    if (visible) {
+      getMoveToList()
+    }
+  }, [visible, targetId])
 
   useEffect(() => {
     form.setFieldsValue({
@@ -156,16 +172,11 @@ const CompleteSprintModal = (props: sprintProps) => {
               rules={[{ required: true }]}
             >
               <CustomSelect
-                options={rightSprintList
-                  .filter(
-                    (k: any) =>
-                      (k.status === 1 && k.id !== targetId) || k.id === 0,
-                  )
-                  .map((item: any) => ({
-                    label: item.name,
-                    value: item.id,
-                    key: item.id,
-                  }))}
+                options={list.map((item: any) => ({
+                  label: item.name,
+                  value: item.id,
+                  key: item.id,
+                }))}
               />
             </Form.Item>
           </Form>

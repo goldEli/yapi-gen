@@ -134,3 +134,12 @@ export const getLongStory = async (params: API.Sprint.GetLongStory.Params) => {
   const response = await http.get('getLongStory', params)
   return response
 }
+
+// 长故事下拉列表
+export const getMoveTo = async (params: API.Sprint.GetMoveTo.Params) => {
+  const response = await http.get<any, API.Sprint.GetMoveTo.Result>(
+    'getMoveTo',
+    params,
+  )
+  return response.data
+}
