@@ -13,7 +13,7 @@ import {
 } from '@/services/demand'
 import { getProjectInfo } from '@/services/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { setIsDemandDetailDrawerVisible } from '@store/demand'
+import { setDemandInfo, setIsDemandDetailDrawerVisible } from '@store/demand'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import {
   setAddWorkItemModal,
@@ -204,6 +204,10 @@ const DemandDetailDrawer = () => {
     )
     const url = `ProjectManagement/DemandDetail?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+    setTimeout(() => {
+      dispatch(setIsUpdateAddWorkItem(false))
+      dispatch(setDemandInfo({}))
+    }, 0)
   }
 
   // 点击编辑

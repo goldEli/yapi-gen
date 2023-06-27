@@ -1,11 +1,13 @@
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { useDispatch, useSelector } from '@store/index'
-import { setAffairsDetailDrawer } from '@store/affairs'
+import { setAffairsDetailDrawer, setAffairsInfo } from '@store/affairs'
 import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
 import { useNavigate } from 'react-router-dom'
-import { setFlawDetailDrawer } from '@store/flaw'
+import { setFlawDetailDrawer, setFlawInfo } from '@store/flaw'
 import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
+import { setIsUpdateAddWorkItem } from '@store/project'
+import { setDemandInfo } from '@store/demand'
 
 const useOpenDemandDetail = () => {
   const { userPreferenceConfig } = useSelector(store => store.user)
@@ -19,6 +21,7 @@ const useOpenDemandDetail = () => {
     id: any,
     type?: number,
   ) => {
+    dispatch(setIsUpdateAddWorkItem(0))
     // 弹窗预览
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
@@ -40,6 +43,9 @@ const useOpenDemandDetail = () => {
           break
       }
     } else {
+      dispatch(setAffairsInfo({}))
+      dispatch(setDemandInfo({}))
+      dispatch(setFlawInfo({}))
       let url = ''
 
       if (type === 1) {

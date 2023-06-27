@@ -357,7 +357,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   useEffect(() => {
     if (sprintId && id) {
-      dispatch(setAffairsInfo({}))
       dispatch(getAffairsInfo({ projectId: id, sprintId }))
       dispatch(
         getAffairsCommentList({
@@ -413,8 +412,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
-      dispatch(setAffairsInfo({}))
-      dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
+      dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id }))
     }
   }, [isUpdateAddWorkItem])
 
