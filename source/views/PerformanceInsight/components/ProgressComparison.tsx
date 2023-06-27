@@ -620,7 +620,7 @@ const ProgressComparison = (props: Props) => {
       a.click()
       setIsVisibleSuccess(true)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       getMessage({
         msg: '导出失败',
         type: 'error',

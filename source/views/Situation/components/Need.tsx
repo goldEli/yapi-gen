@@ -85,7 +85,7 @@ const Need = (props: any) => {
       },
     ],
   }
-  console.log(data?.chartsData, 'data11?.chartsData')
+  // console.log(data?.chartsData, 'data11?.chartsData')
   return (
     <ChartsWrap>
       <div className={titleCss}>{t('situation.demandSurvey')}</div>

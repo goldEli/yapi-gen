@@ -70,7 +70,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
         <Text>{props.data.name}</Text>
         <CommonButton
           onClick={e => {
-            console.log({ e })
+            // console.log({ e })
             e.stopPropagation()
             const params = encryptPhp(
               JSON.stringify({

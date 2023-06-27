@@ -4,26 +4,26 @@ import { oneHourHeight } from '../../config'
 import { v4 as uuidv4 } from 'uuid'
 
 export const getEndTimeByHeight = (startTime: number, height: number) => {
-  // console.log('==================')
+  // // console.log('==================')
   // const offsetTop = Math.round(delta?.y ?? 0)
-  // console.log('offsetTop', offsetTop)
+  // // console.log('offsetTop', offsetTop)
   const offsetMinute = Math.floor(height / (oneHourHeight / 60))
-  // console.log('offsetMinute', offsetMinute)
+  // // console.log('offsetMinute', offsetMinute)
   // const direction = offsetMinute < 0 ? -1 : 1
-  // console.log('direction', direction)
+  // // console.log('direction', direction)
   // 每次移动是15分钟的倍数
   const step = Math.ceil(offsetMinute / 15)
   const moveMinute = step * 15
-  // console.log('moveMinute', moveMinute)
+  // // console.log('moveMinute', moveMinute)
 
   // const newStartTime = dayjs(startTime).add(moveMinute, 'minute')
-  // console.log('newStartTime', newStartTime.format('HH:mm'))
+  // // console.log('newStartTime', newStartTime.format('HH:mm'))
   const newEndTime = dayjs(startTime).add(moveMinute, 'minute')
-  console.log(
-    'newEndTime',
-    dayjs(startTime).format('HH:mm'),
-    newEndTime.format('HH:mm'),
-  )
+  // console.log(
+  //   'newEndTime',
+  //   dayjs(startTime).format('HH:mm'),
+  //   newEndTime.format('HH:mm'),
+  // )
   return newEndTime
 }
 

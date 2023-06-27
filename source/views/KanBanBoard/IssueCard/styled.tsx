@@ -18,7 +18,8 @@ export const IssueCardBoxContainer = styled.div<{ hidden?: boolean }>`
   padding: 16px;
   box-sizing: border-box;
   background: var(--neutral-white-d2);
-  opacity: ${props => (props.hidden ? 0 : 1)};
+  visibility: ${props => (props.hidden ? 'hidden' : 'visible')};
+  /* display: ${props => (props.hidden ? 'none' : 'flex')}; */
   width: 100%;
   height: 100%;
   display: flex;

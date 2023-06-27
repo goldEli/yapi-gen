@@ -36,7 +36,7 @@ const MainGrid = (props: Props) => {
   const onToDetail = (item: any) => {
     const params = encryptPhp(JSON.stringify({ id: item.id }))
     dispatch(setProjectType(item.prefix))
-    console.log('project_type', item)
+    // console.log('project_type', item)
     if (item.projectType === 2) {
       navigate(
         `${

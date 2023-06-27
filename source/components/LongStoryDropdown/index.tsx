@@ -43,7 +43,7 @@ const LongStoryDropdown = (props: IProps) => {
     pagesize: 2,
   })
   const onLoadMore = () => {
-    console.log('加载更多')
+    // console.log('加载更多')
     if (list.length === longStoryList.pager?.total) {
       return
     }
@@ -57,7 +57,7 @@ const LongStoryDropdown = (props: IProps) => {
     dispatch(getLongStoryList(params))
   }
   const onConfirm = async (data: Model.Sprint.longStroyItem) => {
-    console.log(data)
+    // console.log(data)
 
     let params: API.Affairs.AddInfoAffairs.Params = {
       projectId: detail.projectId,
@@ -130,7 +130,7 @@ const LongStoryDropdown = (props: IProps) => {
           leftIcon
           placeholder="输入长故事标题或编号"
           onChangeSearch={e => {
-            console.log(e)
+            // console.log(e)
             setParams((p: API.Sprint.getLongStoryList.Params) => {
               let { search } = { ...p }
               search = { ...search, keyword: e }

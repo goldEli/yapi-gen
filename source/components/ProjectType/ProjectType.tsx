@@ -13,7 +13,7 @@ import CommonIconFont from '../CommonIconFont'
 import { Title } from '../ProjectTemplate/style'
 
 const ProjectType = (props: any) => {
-  console.log(props)
+  // console.log(props)
 
   const [t, { language: isRefresh }] = useTranslation()
 

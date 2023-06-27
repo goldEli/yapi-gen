@@ -92,7 +92,7 @@ const SystemFeedback = () => {
   }
 
   const onChange = (e: any) => {
-    console.log(`checked = ${e.target.checked}`)
+    // console.log(`checked = ${e.target.checked}`)
   }
   return (
     <CommonModal2

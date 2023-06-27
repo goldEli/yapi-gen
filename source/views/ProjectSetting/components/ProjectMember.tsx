@@ -542,7 +542,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
     record: any,
     index: number,
   ) => {
-    console.log(data, record, index)
+    // console.log(data, record, index)
     try {
       await updateProjectRole({
         user_group_id: data.id,
@@ -559,7 +559,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       })
       setOptionsDrop(false)
     } catch (error) {
-      console.log('error', error)
+      // console.log('error', error)
       // getMessage({ msg: error as string, type: 'error' })
     }
   }

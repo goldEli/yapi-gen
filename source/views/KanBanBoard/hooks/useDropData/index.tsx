@@ -4,10 +4,10 @@ import useGroupType from '../useGroupType'
 
 const useDropData = (
   columnId: Model.KanBan.Column['id'],
-  groupId: Model.KanBan.Group['id'],
+  // groupId: Model.KanBan.Group['id'],
 ) => {
   const { kanbanConfig, movingStory } = useSelector(store => store.kanBan)
-  const { groupType } = useGroupType()
+  // const { groupType } = useGroupType()
 
   const data = React.useMemo(() => {
     if (!movingStory || !kanbanConfig) {
@@ -33,21 +33,21 @@ const useDropData = (
 
     return data
   }, [kanbanConfig, movingStory, columnId])
-
+  // console.log(movingStory, { groupId, columnId, groupType })
   // 展示状态转换释放区域
-  const showStateTransitionList = React.useMemo(() => {
-    // 人员分组和类别分组，只有同组才能转换状态
-    if (groupType === 'users' || groupType === 'category') {
-      const ret =
-        !!movingStory &&
-        movingStory?.groupId === groupId &&
-        movingStory?.columnId !== columnId
-      return ret
-    }
+  // const showStateTransitionList = React.useMemo(() => {
+  //   // 人员分组和类别分组，只有同组才能转换状态
+  //   if (groupType === 'users' || groupType === 'category') {
+  //     const ret =
+  //       !!movingStory &&
+  //       movingStory?.groupId === groupId &&
+  //       movingStory?.columnId !== columnId
+  //     return ret
+  //   }
 
-    // 跨分组可拖
-    return !!movingStory && movingStory?.columnId !== columnId
-  }, [movingStory, columnId, data, groupId, groupType])
+  //   // 跨分组可拖
+  //   return !!movingStory && movingStory?.columnId !== columnId
+  // }, [movingStory, columnId, data, groupId, groupType])
 
   // const disableDrop = React.useMemo(() => {
   //   // 如果是人员分组 只能在同组拖动
@@ -61,7 +61,7 @@ const useDropData = (
 
   return {
     data,
-    showStateTransitionList,
+    // showStateTransitionList,
     // disableDrop,
   }
 }

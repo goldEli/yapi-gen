@@ -25,7 +25,7 @@ const CalendarYear: React.FC<CalendarYearProps> = props => {
       year: dayjs(calendarYear).year(),
       calendar_ids: checkedCalendarList.map(item => item.calendar_id),
     }
-    console.log('params----', params)
+    // console.log('params----', params)
     disPatch(getCalendarDaysOfYearList(params))
   }, [calendarYear])
   return (

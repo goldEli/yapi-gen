@@ -379,7 +379,7 @@ const Operation = (props: Props) => {
     props?.onChangeIsShowLeft?.()
   }
   const handleShortcutEvent = () => {
-    console.log('C键被按下')
+    // console.log('C键被按下')
     dispatch(
       setAddWorkItemModal({
         visible: true,
