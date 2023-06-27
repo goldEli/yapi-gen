@@ -26,10 +26,11 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
 
   const { data } = useDropData(issues.id)
   const columnId = issues?.id
+
   const movingStoryIssuesIndex = useMemo(() => {
     const ret = kanbanInfoByGroup.find(item => item.id === groupId)
-    return ret?.columns.findIndex(item => item.id === columnId)
-  }, [kanbanInfoByGroup, groupId, columnId])
+    return ret?.columns.findIndex(item => item.id === movingStory?.columnId)
+  }, [kanbanInfoByGroup, groupId, movingStory])
 
   const showStateTransitionList = React.useMemo(() => {
     if (movingStoryIssuesIndex === props.index) {

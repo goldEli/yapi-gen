@@ -414,7 +414,6 @@ const IterationDefectDetail = () => {
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
-      dispatch(setFlawInfo({}))
       dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
     }
   }, [isUpdateAddWorkItem])

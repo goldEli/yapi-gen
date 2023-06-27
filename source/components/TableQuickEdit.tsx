@@ -210,7 +210,7 @@ const TableQuickEdit = (props: Props) => {
       // 获取迭代下拉数据
       const response = await getIterateList({ projectId })
       resultValue.value = response?.list
-        ?.filter((k: any) => k.status === 1)
+        ?.filter((k: any) => k.status === 1 || k.status === 4)
         ?.map((i: any) => ({
           label: i.name,
           value: i.id,
@@ -272,7 +272,7 @@ const TableQuickEdit = (props: Props) => {
         ?.children?.filter((i: any) => i.id !== -1)
 
       resultValue.value = response
-        ?.filter((k: any) => k.status === 1)
+        ?.filter((k: any) => k.status === 1 || k.status === 4)
         ?.map((i: any) => ({
           label: i.content,
           value: i.id,

@@ -278,7 +278,6 @@ declare namespace API.Sprint {
       id: number
       finish_at: string
       result?: string | undefined
-      move_type: number
       move_target: number
     }
   }
@@ -303,6 +302,13 @@ declare namespace API.Sprint {
       page?: number
       pagesize?: number
     }
+  }
+  namespace GetMoveTo {
+    type Params = {
+      project_id: number
+      iterate_id: number
+    }
+    type Result = Model.Sprint.GetMoveToList
   }
 
   namespace getLongStoryList {

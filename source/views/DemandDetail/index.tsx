@@ -438,7 +438,6 @@ const DemandDetail = () => {
 
   useEffect(() => {
     if (demandId && id) {
-      dispatch(setDemandInfo({}))
       dispatch(getDemandInfo({ projectId: id, id: demandId }))
       dispatch(
         getDemandCommentList({
@@ -453,7 +452,6 @@ const DemandDetail = () => {
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
-      dispatch(setDemandInfo({}))
       dispatch(getDemandInfo({ projectId: id, id: demandInfo.id }))
     }
   }, [isUpdateAddWorkItem])

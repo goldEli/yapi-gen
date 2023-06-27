@@ -141,6 +141,8 @@ const AddWorkItem = () => {
       i.type.includes(work_type),
     )[0]
 
+    console.log(values, '=valuesvaluesvaluesvalues')
+
     if (params?.editId) {
       await resultMethod?.update({
         projectId,
