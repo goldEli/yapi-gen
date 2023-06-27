@@ -120,7 +120,7 @@ const useShareModal = () => {
             })
           }
         } catch (error) {
-          console.log(error)
+          // console.log(error)
         }
       }
     }
@@ -141,7 +141,7 @@ const useShareModal = () => {
             setNeedSave(false)
           }
         } catch (error) {
-          console.log(error)
+          // console.log(error)
         }
       }
     }

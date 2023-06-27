@@ -387,7 +387,7 @@ const IterationTable = (props: Props) => {
     )
   }
   const handleShortcutEvent = () => {
-    console.log('C键被按下')
+    // console.log('C键被按下')
     onCreateDemand()
   }
 

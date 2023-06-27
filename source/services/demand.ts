@@ -156,7 +156,7 @@ export const getShapeRight = async (params: any) => {
 
   const filterMemberList = selectData.project_member
 
-  // console.log(filterMemberList, '处理人、抄送人')
+  // // console.log(filterMemberList, '处理人、抄送人')
 
   // 分类
 
@@ -198,7 +198,7 @@ export const getShapeRight = async (params: any) => {
     name: i.content,
   }))
 
-  // console.log(filterGetTagList, '标签')
+  // // console.log(filterGetTagList, '标签')
 
   // 优先级
 
@@ -207,7 +207,7 @@ export const getShapeRight = async (params: any) => {
     name: i.content,
   }))
 
-  // console.log(filterGetPriOrStu, '优先级')
+  // // console.log(filterGetPriOrStu, '优先级')
 
   const filterFieldsList = res.data.fields.map((item: any, index: number) => {
     if (item.title.includes('时间') && !item.attr) {
@@ -465,7 +465,7 @@ export const addTreeList = async (params: any, tag: string) => {
     remark: params.remark,
   })
 
-  // console.log(res)
+  // // console.log(res)
 
   return res
 }
@@ -477,7 +477,7 @@ export const delTreeList = async (params: any) => {
     id: params?.id,
   })
 
-  // console.log(res)
+  // // console.log(res)
 
   return res
 }

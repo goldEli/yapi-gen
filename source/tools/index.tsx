@@ -458,7 +458,7 @@ export const filterCategory = (
   fieldType?: any,
   ids?: string[],
 ) => {
-  console.log(fieldType, ids)
+  // console.log(fieldType, ids)
   let array: any = data?.filter((item: { title: string }) => {
     if (work_type !== 2 && work_type !== 5) {
       return !FAULT_MAPS.includes(item.title)

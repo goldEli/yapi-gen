@@ -219,7 +219,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     const CategoryData = newData.filter(item =>
       workType.includes(item.work_type),
     )
-    console.log(dragCategoryList.current)
+    // console.log(dragCategoryList.current)
 
     const currentItem = CategoryData[prevIndex]
     CategoryData[prevIndex] = CategoryData[nextIndex]
@@ -386,7 +386,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                     style={{ fontSize: 14 }}
                     type="plus"
                     onClick={e => {
-                      console.log('item', item)
+                      // console.log('item', item)
                       e.stopPropagation()
                       setIsVisible(true)
                       setWorkType(item.workType)

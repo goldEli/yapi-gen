@@ -282,7 +282,7 @@ const Profile = () => {
 
     setNowYearOptions(res.data.years)
 
-    console.log(trans(res.data.list), '---')
+    // // console.log(trans(res.data.list), '---')
 
     setChartData(trans(res.data.list))
   }
@@ -337,13 +337,13 @@ const Profile = () => {
     setPageObj({ page, size })
   }
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`)
+    // console.log(`selected ${value}`)
     setNowYear(value)
   }
   if (!loadingState) {
     return <Loading />
   }
-  console.log(data)
+  // console.log(data)
 
   return (
     <>

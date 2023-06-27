@@ -138,7 +138,7 @@ const WorkRecords = (props: WorkRecordsTyle) => {
   )
 }
 const Main = (props: UserInfo) => {
-  console.log(props, '00')
+  // console.log(props, '00')
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)

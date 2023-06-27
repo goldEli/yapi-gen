@@ -127,7 +127,7 @@ declare namespace API.Sprint {
   }
   namespace WorkContrastList {
     type Params = {
-      project_ids?: string
+      project_ids?: string | number
       iterate_ids?: string
       user_ids?: string
       period_time?: string

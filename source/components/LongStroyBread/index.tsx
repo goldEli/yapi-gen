@@ -49,7 +49,7 @@ const LongStroyBread = (props: IProps) => {
   const [isHasLongStroy, setIsHasLongStroy] = useState(false)
   const { longStroy = {}, layer = false, onClick } = props
   const [t] = useTranslation()
-  console.log('longStroy', longStroy)
+  // console.log('longStroy', longStroy)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
@@ -130,7 +130,7 @@ const LongStroyBread = (props: IProps) => {
                     />
                   </HasStroyWrap>
                 )}
-                {longStroy.level_tree.map((item: any, index: number) => {
+                {longStroy.level_tree?.map((item: any, index: number) => {
                   return (
                     <Tooltip
                       placement="top"
@@ -140,7 +140,7 @@ const LongStroyBread = (props: IProps) => {
                     >
                       <LabelBox>
                         {`${item.project_prefix}-${item.prefix_key}`}{' '}
-                        {index !== longStroy.level_tree.length - 1 && (
+                        {index !== longStroy.level_tree?.length - 1 && (
                           <CommonIconFont
                             type="right"
                             color="var(--neutral-n1-d1)"
@@ -176,7 +176,7 @@ const LongStroyBread = (props: IProps) => {
                 type="link"
                 color="var(--primary-d2)"
                 onClick={() => {
-                  console.log(111)
+                  // console.log(111)
                   copyLink('AA', t('common.copySuccess'), t('common.copyFail'))
                 }}
                 size={18}

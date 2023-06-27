@@ -414,7 +414,6 @@ const DemandDetail = () => {
   const onUpDemand = () => {
     const newIndex = changeIds[currentIndex - 1]
     if (!currentIndex) return
-    dispatch(getDemandInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
@@ -428,7 +427,6 @@ const DemandDetail = () => {
   const onDownDemand = () => {
     const newIndex = changeIds[currentIndex + 1]
     if (currentIndex === changeIds?.length - 1) return
-    dispatch(getDemandInfo({ projectId: id, id: newIndex }))
     const params = encryptPhp(
       JSON.stringify({
         ...paramsData,
@@ -439,17 +437,19 @@ const DemandDetail = () => {
   }
 
   useEffect(() => {
-    dispatch(setDemandInfo({}))
-    dispatch(getDemandInfo({ projectId: id, id: demandId }))
-    dispatch(
-      getDemandCommentList({
-        projectId: id,
-        demandId,
-        page: 1,
-        pageSize: 999,
-      }),
-    )
-  }, [])
+    if (demandId && id) {
+      dispatch(setDemandInfo({}))
+      dispatch(getDemandInfo({ projectId: id, id: demandId }))
+      dispatch(
+        getDemandCommentList({
+          projectId: id,
+          demandId,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
+    }
+  }, [demandId, id])
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {

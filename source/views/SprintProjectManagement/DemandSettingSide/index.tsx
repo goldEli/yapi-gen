@@ -139,7 +139,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     }
     // debugger
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
-    // console.log('dataItem', dataItem)
+    // // console.log('dataItem', dataItem)
     // debugger
     const affairTypeData = getTypeCategory(dataItem, 'work_type', 'sprint')
     if (!affairTypeData) {
@@ -298,7 +298,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     }
   }, [projectInfo])
   useEffect(() => {
-    console.log('location', location, paramsData)
+    // console.log('location', location, paramsData)
   }, [location.pathname])
   const updateNode = (child: { name: any }) => {
     setAffairType((prevData: any) => {
