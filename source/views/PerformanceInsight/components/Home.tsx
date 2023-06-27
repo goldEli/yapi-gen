@@ -354,7 +354,7 @@ const Home = () => {
     const res = await getStatisticsTotal({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -377,7 +377,7 @@ const Home = () => {
     const res = await contrastNewWork({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -406,7 +406,7 @@ const Home = () => {
       sort: str,
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -433,7 +433,7 @@ const Home = () => {
     const res = await getDefectRatio({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -460,7 +460,7 @@ const Home = () => {
     const res = await statisticsOther({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
