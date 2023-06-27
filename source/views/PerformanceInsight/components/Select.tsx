@@ -36,7 +36,7 @@ const SelectMain = (props: Props) => {
   return (
     <>
       <Select
-        style={{ minWidth: 184 }}
+        style={{ width: 184 }}
         maxTagCount={1}
         mode="multiple"
         value={props.value}
@@ -50,10 +50,10 @@ const SelectMain = (props: Props) => {
         placeholder={props.placeholder}
         showArrow={true}
         autoClearSearchValue
-        dropdownStyle={{ minWidth: 184 }}
+        dropdownStyle={{ width: 184 }}
         dropdownMatchSelectWidth={false}
         dropdownRender={(menu: any) => (
-          <>
+          <div style={{ width: '184px' }}>
             {menu}
             {!props.more && (
               <Segm onClick={() => props.onShowAll?.()}>查看更多</Segm>
@@ -68,7 +68,7 @@ const SelectMain = (props: Props) => {
                 全部冲刺
               </Segm>
             )}
-          </>
+          </div>
         )}
       ></Select>
     </>

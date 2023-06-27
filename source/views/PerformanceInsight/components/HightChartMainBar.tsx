@@ -1,14 +1,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import { Space } from 'antd'
 import Highcharts from 'highcharts'
-import {
-  Col,
-  HightChartsWrap,
-  Time,
-  TitleCss,
-  Text,
-  Col1,
-} from '../Header/Style'
+import { HightChartsWrap, Time, TitleCss, Text, Col1 } from '../Header/Style'
 import { CharTitle, HighchartsReactWrap, RightRow } from './style'
 
 // 图表位置柱状图
