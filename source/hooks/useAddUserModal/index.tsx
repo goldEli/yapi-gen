@@ -17,7 +17,7 @@ const useAddUserModal = () => {
     title?: string
     people?: any
   }) => {
-    console.log(options.people)
+    // console.log(options.people)
 
     setVisible(true)
     setPeople(options.people)

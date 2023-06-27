@@ -106,7 +106,7 @@ export default React.memo((props: { redirect(): void }) => {
   //     if (!/^([a-zA-Z\d])+$/gu.test(form.password) || ![/[a-z]+/gu, /[A-Z]+/gu, /\d+/gu].every(i => i.test(form.password))) {
   //       setFocusNumber(5)
   //       setErrorMessage(languageMode.passwordError)
-  //       console.log(111)
+  //       // console.log(111)
   //       return
   //     }
   //   } else if(val === 3 && form.code){

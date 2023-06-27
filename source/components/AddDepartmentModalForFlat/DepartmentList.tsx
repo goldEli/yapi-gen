@@ -16,7 +16,7 @@ const TreeLine = styled.div`
 `
 
 const NewAddShowList = (props: any) => {
-  console.log(props, '父传子')
+  // console.log(props, '父传子')
 
   const { selectKeys } = props
 

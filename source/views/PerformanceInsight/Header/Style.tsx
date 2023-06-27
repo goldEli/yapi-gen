@@ -54,30 +54,37 @@ export const Btn = styled.span`
   border-radius: 6px;
   margin-left: 8px;
 `
-export const Label = styled.div`
-  height: 32px;
-  display: flex;
-  justify-content: space-between;
-  border-sizing: border-box;
-  align-items: center;
-  .labelName {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 160px;
-  }
-  &:hover .labelName {
-    max-width: 80px;
-  }
 
-  &:hover .extra {
-    display: inline-block;
-  }
-  .extra {
-    display: none;
-  }
-`
+export const Label = styled.div(
+  {
+    width: '100%',
+    height: '32px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    borderSizing: 'border-box',
+    alignItems: 'center',
+    '.labelName': {
+      display: 'inline-block',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      maxWidth: '160px',
+    },
+    '&:hover .labelName': {
+      maxWidth: '80px',
+    },
+
+    '&:hover .extra': {
+      display: 'inline-block',
+    },
+    '.extra': {
+      display: 'none',
+    },
+  },
+  // ({ active }) => ({
+  //   background: active ? 'red' : ''
+  // }),
+)
 export const LabelText = styled.span`
   display: inline-block;
   width: 160px;

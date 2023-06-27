@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-handler-names */
+/* eslint-disable no-negated-condition */
 import CommonIconFont from '@/components/CommonIconFont'
 import { Space, Spin } from 'antd'
 import Header from '../Header'
@@ -54,7 +55,6 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   )
   const navigate = useNavigate()
   const onClick = () => {
-    console.log(projectDataList, 'projectDataList', headerParmas)
     const params = encryptPhp(
       JSON.stringify({
         data: props.data,
@@ -165,7 +165,7 @@ const Home = () => {
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ViewItem>()
   useEffect(() => {
-    if (paramsData) {
+    if (paramsData?.type && paramsData?.projectId) {
       setHomeType(paramsData.type)
       setProjectId(paramsData.projectId)
       getViewList({ project_id: paramsData.projectId, use_type: 3 })
@@ -175,6 +175,7 @@ const Home = () => {
       getViewList({ project_id: 0, use_type: 3 })
     }
   }, [])
+  console.log(headerParmas, 'projectId')
   const init = () => {
     // 缺陷现状和工作项现状
     getWorkList()
@@ -197,16 +198,18 @@ const Home = () => {
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)
-    const filterVal: Models.Efficiency.ViewItem | undefined = res.find(
-      el => el.is_default === 1,
-    )
+    let filterVal: any = {}
+    if (paramsData?.view?.value) {
+      filterVal = res.find(el => el.id === Number(paramsData.view.value))
+    } else {
+      filterVal = res.find(el => el.is_default === 1)
+    }
     setOptionVal(filterVal?.id || 0)
     setViewTitle(filterVal?.name || '')
     setDefalutConfig(filterVal)
     dispatch(setViewType(filterVal?.type))
     setProjectViewIds(filterVal?.config.project_id || [])
     setIterateViewIds(filterVal?.config.iterate_ids || [])
-    console.log(filterVal, 'filterVal')
     // 有视图数据才设置
     filterVal &&
       dispatch(
@@ -232,7 +235,6 @@ const Home = () => {
         }),
       )
   }
-  console.log(headerParmas, 'HeaderParmas')
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
     const res =
@@ -241,9 +243,7 @@ const Home = () => {
             use_type: 3,
             name: val,
             config: {
-              iterate_ids:
-                // eslint-disable-next-line no-undefined
-                homeType === 'all' ? undefined : headerParmas.iterate_ids,
+              iterate_ids: homeType === 'all' ? [] : headerParmas.iterate_ids,
               project_id: headerParmas.projectIds,
               user_ids: headerParmas.users,
               period_time:
@@ -255,13 +255,11 @@ const Home = () => {
               start_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[0]
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
+                  : '',
               end_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[1]
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
+                  : '',
             },
             project_id: projectId,
           })
@@ -270,22 +268,18 @@ const Home = () => {
             project_id: projectId,
             name: val,
             config: {
-              iterate_ids:
-                // eslint-disable-next-line no-undefined
-                homeType === 'all' ? undefined : headerParmas.iterate_ids,
+              iterate_ids: homeType === 'all' ? [] : headerParmas.iterate_ids,
               project_id: headerParmas.projectIds,
               user_ids: headerParmas.users,
               period_time: getDateStr(headerParmas.time.type),
               start_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[0]
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
+                  : '',
               end_time:
                 headerParmas.time.type === 0
                   ? headerParmas.time?.time?.[1]
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
+                  : '',
             },
           })
     if (res) {
@@ -360,28 +354,20 @@ const Home = () => {
     const res = await getStatisticsTotal({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[0]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[0] : '',
 
       end_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[1]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[1] : '',
       period_time:
-        // eslint-disable-next-line no-undefined, no-negated-condition
         headerParmas?.time?.type !== 0
           ? headerParmas.period_time
-          : headerParmas.iterate_ids?.length === 0 &&
-            headerParmas.period_time === ''
-          ? 'one_month'
-          : '',
+          : !headerParmas.period_time
+          ? ''
+          : 'one_month',
     })
     setWorkDataList(res)
     setLoading(false)
@@ -391,28 +377,20 @@ const Home = () => {
     const res = await contrastNewWork({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[0]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[0] : '',
 
       end_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[1]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[1] : '',
       period_time:
-        // eslint-disable-next-line no-undefined, no-negated-condition
         headerParmas?.time?.type !== 0
           ? headerParmas.period_time
-          : headerParmas.iterate_ids?.length === 0 &&
-            headerParmas.period_time === ''
-          ? 'one_month'
-          : '',
+          : !headerParmas.period_time
+          ? ''
+          : 'one_month',
       sort: str,
     })
     setCharts1({
@@ -428,28 +406,20 @@ const Home = () => {
       sort: str,
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[0]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[0] : '',
 
       end_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[1]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[1] : '',
       period_time:
-        // eslint-disable-next-line no-undefined, no-negated-condition
         headerParmas?.time?.type !== 0
           ? headerParmas.period_time
-          : headerParmas.iterate_ids?.length === 0 &&
-            headerParmas.period_time === ''
-          ? 'one_month'
-          : '',
+          : !headerParmas.period_time
+          ? ''
+          : 'one_month',
     })
     setCharts4({
       time: `${res.start_time} ~ ${res.end_time}`,
@@ -463,28 +433,20 @@ const Home = () => {
     const res = await getDefectRatio({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[0]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[0] : '',
 
       end_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[1]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[1] : '',
       period_time:
-        // eslint-disable-next-line no-undefined, no-negated-condition
         headerParmas?.time?.type !== 0
           ? headerParmas.period_time
-          : headerParmas.iterate_ids?.length === 0 &&
-            headerParmas.period_time === ''
-          ? 'one_month'
-          : '',
+          : !headerParmas.period_time
+          ? ''
+          : 'one_month',
       dimension: str,
     })
     setCharts6({
@@ -498,28 +460,20 @@ const Home = () => {
     const res = await statisticsOther({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : paramsData?.projectId,
+        : paramsData?.projectId + '',
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[0]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[0] : '',
 
       end_time:
-        headerParmas?.time?.type === 0
-          ? headerParmas?.time?.time?.[1]
-          : // eslint-disable-next-line no-undefined
-            undefined,
+        headerParmas?.time?.type === 0 ? headerParmas?.time?.time?.[1] : '',
       period_time:
-        // eslint-disable-next-line no-undefined, no-negated-condition
         headerParmas?.time?.type !== 0
           ? headerParmas.period_time
-          : headerParmas.iterate_ids?.length === 0 &&
-            headerParmas.period_time === ''
-          ? 'one_month'
-          : '',
+          : !headerParmas.period_time
+          ? ''
+          : 'one_month',
     })
     const time = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
     setCharts2({
@@ -574,15 +528,9 @@ const Home = () => {
         user_ids: headerParmas.users,
         period_time: getDateStr(headerParmas.time.type),
         start_time:
-          headerParmas.time.type === 0
-            ? headerParmas.time.time?.[0]
-            : // eslint-disable-next-line no-undefined
-              undefined,
+          headerParmas.time.type === 0 ? headerParmas.time.time?.[0] : '',
         end_time:
-          headerParmas.time.type === 0
-            ? headerParmas.time.time?.[1]
-            : // eslint-disable-next-line no-undefined
-              undefined,
+          headerParmas.time.type === 0 ? headerParmas.time.time?.[1] : '',
       },
     })
     if (res) {
@@ -630,7 +578,6 @@ const Home = () => {
     }
     valueHeaderStr !== JSON.stringify(headerParmas) && init()
   }, [headerParmas])
-
   return (
     <div
       style={{
@@ -827,7 +774,7 @@ const Home = () => {
               await onCreateView(value, type, '')
               setIsVisible(false)
             } catch (error) {
-              console.log(error)
+              // console.log(error)
             }
           }}
           onClose={() => setIsVisible(false)}

@@ -72,7 +72,7 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
     })
   }
   useEffect(() => {
-    console.log(11)
+    // console.log(11)
     inputRefDom.current?.focus()
   }, [])
   useEffect(() => {
@@ -136,7 +136,7 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                       key={idx}
                       color={getColorWithOpacityPointOne(ele.color)}
                       onClick={() => {
-                        console.log('ele.schedule_id----', ele.schedule_id)
+                        // console.log('ele.schedule_id----', ele.schedule_id)
                         disPatch(
                           setInitScheduleInfoDropdown({ schedule_id: 0 }),
                         )

@@ -192,7 +192,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       ...values,
       searchValue: props?.searchValue,
     })
-    console.log('resulue', result)
+    // console.log('resulue', result)
     setMemberList(result)
     setIsSpinning(false)
     dispatch(setIsUpdateMember(false))
@@ -545,7 +545,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
     record: any,
     index: number,
   ) => {
-    console.log(data, record, index)
+    // console.log(data, record, index)
     try {
       await updateProjectRole({
         user_group_id: data.id,
@@ -702,7 +702,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
     selectedRowKeys,
     onChange: onSelectChange,
   }
-  console.log('projectInfo-----', projectInfo)
+  // console.log('projectInfo-----', projectInfo)
   return (
     <PermissionWrap
       auth="b/project/member"

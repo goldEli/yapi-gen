@@ -14,7 +14,7 @@ import { TabsItem } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
 
 const ProjectTemplate = (props: any) => {
-  console.log(props.searchId)
+  // console.log(props.searchId)
   const [t] = useTranslation()
   const arr = [
     {

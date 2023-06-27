@@ -37,7 +37,7 @@ const CommentFooter = (props: CommentFooterProps) => {
     return Promise.resolve()
   }
   const handleShortcutEvent1 = () => {
-    console.log('m')
+    // console.log('m')
 
     setIsReview(true)
   }

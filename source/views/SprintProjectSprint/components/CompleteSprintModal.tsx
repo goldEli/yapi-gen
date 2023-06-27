@@ -70,7 +70,7 @@ const CompleteSprintModal = (props: sprintProps) => {
         })
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 

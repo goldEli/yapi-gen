@@ -51,7 +51,7 @@ const arrayToJSON = async array => {
 
 ;(async () => {
   const result = await arrayToJSON(zhArr)
-  console.log(result)
+  // console.log(result)
   /**
     {
       objZh: { hello: '你好', made_in_China: '中国制造' },

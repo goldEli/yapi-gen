@@ -95,7 +95,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [affairType, setAffairType] = useState<Model.Project.CategoryList[]>([])
   const [cacheData, setCacheData] = useState<Model.Project.CategoryList[]>()
   const dragCategoryList = useRef<Model.Project.Category[]>()
-  const [workType, setWorkType] = useState('')
+  const [workType, setWorkType] = useState(0)
   const dragCategoryIds = useRef<number[]>()
   const { getTypeCategory } = useCategory()
 
@@ -139,9 +139,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     }
     // debugger
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
-    // console.log('dataItem', dataItem)
+    // // console.log('dataItem', dataItem)
     // debugger
-    const affairTypeData = getTypeCategory(dataItem, 'work_type')
+    const affairTypeData = getTypeCategory(dataItem, 'work_type', 'sprint')
     if (!affairTypeData) {
       return
     }
@@ -213,6 +213,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     const list = getTypeCategory(
       [...CategoryData, ...otherCategoryData],
       'work_type',
+      'sprint',
     )
     if (!list) {
       return
@@ -297,7 +298,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     }
   }, [projectInfo])
   useEffect(() => {
-    console.log('location', location, paramsData)
+    // console.log('location', location, paramsData)
   }, [location.pathname])
   const updateNode = (child: { name: any }) => {
     setAffairType((prevData: any) => {

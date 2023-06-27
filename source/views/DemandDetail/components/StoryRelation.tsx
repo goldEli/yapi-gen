@@ -217,7 +217,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   //   修改优先级
   const onChangeState = async (item: any) => {
-    console.log(item, '121212')
+    // console.log(item, '121212')
     await updatePriority({
       id: item.id,
       priorityId: item.priorityId,

@@ -31,7 +31,7 @@ import {
   ShowLabel,
   haveAuto,
 } from './style'
-import ParentDemand from '@/views/DemandDetail/components/ParentDemand'
+import DetailParent from '../DetailParent'
 
 interface Props {
   detail?: any
@@ -280,17 +280,12 @@ const BasicDemand = (props: Props) => {
       )
     } else if (item.content === 'parent_id') {
       nodeComponent = (
-        <ParentDemand
-          onUpdate={props.onUpdate}
+        <DetailParent
+          hasEdit={isCanEdit}
           detail={props.detail}
-          projectId={props.detail?.projectId}
-          isRight
-          addWrap={
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>{t('common.add23')}</div>
-            </AddWrap>
-          }
+          onUpdate={props.onUpdate}
+          type={1}
+          canOperationKeys={canOperationKeys}
         />
       )
     } else if (item.content === 'priority') {

@@ -410,7 +410,7 @@ const SprintProjectSprint: React.FC = () => {
       const data = await getStaffList({ all: 1 })
       setUserOptions(data.map(generateOptions))
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 

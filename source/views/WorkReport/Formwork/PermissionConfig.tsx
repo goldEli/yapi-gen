@@ -90,7 +90,6 @@ const PermissionConfig = (props: PropsType) => {
   }
   // 根据接口拆解数据
   const onChangeValues = (values: any, num: number) => {
-    console.log(values, 'values')
     let d1: any = person1 || []
     let d2 = person2 || []
     let d3 = person3 || []
