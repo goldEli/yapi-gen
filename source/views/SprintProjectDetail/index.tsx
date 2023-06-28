@@ -55,7 +55,7 @@ import {
 import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import LongStroyBread from '@/components/LongStroyBread'
-import { setIsUpdateStatus } from '@store/project'
+import { setIsUpdateChangeLog, setIsUpdateStatus } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 
@@ -172,6 +172,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         pageSize: 999,
       }),
     )
+    dispatch(setIsUpdateChangeLog(true))
   }
 
   // 关闭类别弹窗

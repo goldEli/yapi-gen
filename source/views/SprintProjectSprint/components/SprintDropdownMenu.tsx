@@ -106,7 +106,12 @@ export const SprintDropdownMenu = (props: Props) => {
     },
   ].concat(
     rightSprintList
-      .filter(k => k.id !== -1 && k.status === 1 && k.id !== Number(groupId))
+      .filter(
+        k =>
+          k.id !== 0 &&
+          (k.status === 1 || k.status === 4) &&
+          k.id !== Number(groupId),
+      )
       .map(k => ({
         key: k.id,
         label: (

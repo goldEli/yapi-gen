@@ -502,17 +502,21 @@ function detailTimeFormat(time: string) {
 }
 
 // 获取树形结构下匹配的数据
-function onComputedFindChild(arr: any, parentId: any) {
-  let res = arr.find((item: any) => item.id === parentId)
+function onComputedFindChild(obj: any, parentId: number) {
+  let res = obj.id === parentId ? obj : null
   if (res) {
     return res
   } else {
-    arr.forEach((element: any) => {
-      if (element.children instanceof Array && element.children.length > 0) {
-        res = onComputedFindChild(element.children, parentId)
+    for (let index = 0; index < obj.children.length; index++) {
+      if (
+        obj.children[index].children instanceof Array &&
+        obj.children[index].children?.length > 0
+      ) {
+        res = onComputedFindChild(obj.children[index], parentId)
         if (res) return res
       }
-    })
+    }
+    return null
   }
 }
 

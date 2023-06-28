@@ -7,7 +7,7 @@ import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import {
   addInfoAffairs,
   deleteInfoAffairs,
@@ -15,13 +15,16 @@ import {
 } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 
 interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
-  onUpdate(): void
+  onUpdate?(): void
+  isInfoPage?: boolean
 }
 
 const AffairsDetail = (props: AffairsDetailProps) => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const LeftDom = useRef<HTMLDivElement>(null)
   const editorRef = useRef<EditorRef>(null)
@@ -31,10 +34,21 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   const [editInfo, setEditInfo] = useState('')
   const { projectInfo } = useSelector(store => store.project)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
+  const dId = useRef<any>()
 
   const onBottom = () => {
     const dom: any = LeftDom?.current
     dom.scrollTop = dom.scrollHeight
+  }
+
+  const onUpdate = () => {
+    if (props.isInfoPage) {
+      dispatch(
+        getAffairsInfo({ projectId: projectInfo.id, sprintId: dId.current }),
+      )
+    } else {
+      props.onUpdate?.()
+    }
   }
 
   //   添加附件
@@ -48,11 +62,11 @@ const AffairsDetail = (props: AffairsDetailProps) => {
     }
     await addInfoAffairs({
       projectId: projectInfo.id,
-      sprintId: props.affairsInfo.id,
+      sprintId: dId.current,
       type: 'attachment',
       targetId: [obj],
     })
-    props.onUpdate()
+    onUpdate()
   }
 
   //   确认删除附件事件
@@ -63,7 +77,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       type: 'attachment',
       targetId,
     })
-    props.onUpdate()
+    onUpdate()
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
   }
 
@@ -91,7 +105,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       name: props.affairsInfo.name,
     }
     await updateEditor(params)
-    props.onUpdate()
+    onUpdate()
   }
 
   useEffect(() => {
@@ -103,6 +117,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       })),
     )
     setEditInfo(props.affairsInfo.info || '')
+    dId.current = props.affairsInfo.id
   }, [props.affairsInfo])
 
   return (
@@ -183,7 +198,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         <SprintTag
           defaultList={tagList}
           canAdd
-          onUpdate={props.onUpdate}
+          onUpdate={onUpdate}
           detail={props.affairsInfo}
           addWrap={
             <AddWrap hasDash>

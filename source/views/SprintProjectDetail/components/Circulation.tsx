@@ -16,6 +16,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getAffairsStatusLog } from '@/services/affairs'
+import { setIsUpdateChangeLog } from '@store/project'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -153,7 +154,7 @@ const Circulation = (props: Props) => {
         list: result,
       })
     }
-    // dispatch(setIsUpdateChangeLog(false))
+    dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {

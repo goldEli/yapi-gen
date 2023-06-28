@@ -3,6 +3,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import { Space, Spin } from 'antd'
 import Header from '../Header'
+import { useTranslation } from 'react-i18next'
 import {
   setHeaderParmas,
   setSave,
@@ -137,7 +138,10 @@ const Home = () => {
   const { save, headerParmas, viewType } = useSelector(
     store => store.performanceInsight,
   )
-  const [projectId, setProjectId] = useState(0)
+  const [t] = useTranslation()
+  const [projectId, setProjectId] = useState(
+    paramsData?.projectId ? paramsData?.projectId : 0,
+  )
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
   const [charts1, setCharts1] = useState<Models.Efficiency.ChartBar>()
@@ -614,7 +618,11 @@ const Home = () => {
           viewType={viewType}
           homeType={homeType}
           data={workDataList?.work || []}
-          title={homeType === 'all' ? '现状' : '工作项现状'}
+          title={
+            homeType === 'all'
+              ? t('performance.presentSituation')
+              : t('performance.presentSituation1')
+          }
           time={workDataList?.start_time + ' ~ ' + workDataList.end_time}
           num={1}
         />
@@ -625,7 +633,7 @@ const Home = () => {
             projectId={projectId}
             homeType={homeType}
             data={workDataList?.defect || []}
-            title="缺陷现状"
+            title={t('performance.qPresentSituation')}
             time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
           />
         </div>
@@ -641,7 +649,9 @@ const Home = () => {
             >
               <HightChartMainBar
                 title={
-                  homeType === 'all' ? '新增工作排行Top10' : '阶段新增工作Top10'
+                  homeType === 'all'
+                    ? t('performance.title1')
+                    : t('performance.title01')
                 }
                 titleType
                 height={396}
@@ -651,7 +661,11 @@ const Home = () => {
               <HightChartMainLine
                 projectId={projectId}
                 chart={charts2}
-                title={homeType === 'all' ? '工作完成周期' : '工作周期对比'}
+                title={
+                  homeType === 'all'
+                    ? t('performance.title2')
+                    : t('performance.title02')
+                }
                 height={396}
               />
             </div>
@@ -668,14 +682,22 @@ const Home = () => {
                 height={352}
                 chart={charts3}
                 titleType={false}
-                title={homeType === 'all' ? '存量风险' : '阶段存量风险'}
+                title={
+                  homeType === 'all'
+                    ? t('performance.title3')
+                    : t('performance.title03')
+                }
               />
               {/* 柱状图 */}
               <HightChartMainBar
                 titleType={false}
                 chart={charts4}
                 height={352}
-                title={homeType === 'all' ? '完成率Top10' : '阶段完成率Top10'}
+                title={
+                  homeType === 'all'
+                    ? t('performance.title4')
+                    : t('performance.title04')
+                }
                 onChange={(val: string) => {
                   getCompletionRateChart(val)
                 }}
@@ -691,7 +713,7 @@ const Home = () => {
               }}
             >
               <HightChartMainSpline
-                title="缺陷趋势"
+                title={t('performance.title5')}
                 chart={charts5}
                 height={396}
               />
@@ -699,7 +721,7 @@ const Home = () => {
                 height={396}
                 chart={charts6}
                 titleType
-                title="阶段缺陷占比"
+                title={t('performance.title6')}
                 onChange={item => getDefectRatioChart(item.key)}
               />
             </div>
@@ -715,7 +737,7 @@ const Home = () => {
                   size={20}
                   color="var(--function-warning)"
                 />
-                <span>检测到此视图有未保存的更改</span>
+                <span>{t('performance.save1Msg')}</span>
               </Space>
               <CommonIconFont
                 onClick={() => dispatch(setSave(false))}
@@ -724,7 +746,7 @@ const Home = () => {
                 color="var(--neutral-n2)"
               />
             </DialogHeader>
-            <TextColor>单击“保存”按钮可以将更改保存在如下视图</TextColor>
+            <TextColor>{t('performance.save2Msg')}</TextColor>
             <div style={{ margin: '8px 0 0 32px' }}>
               <SelectMain
                 onChange={e => {
@@ -748,7 +770,7 @@ const Home = () => {
                   }}
                   onClick={() => dispatch(setSave(false))}
                 >
-                  不保存
+                  {t('performance.nosave')}
                 </span>
               </Space>
               <Space size={16}>
@@ -759,10 +781,10 @@ const Home = () => {
                     dispatch(setSave(false))
                   }}
                 >
-                  另存为
+                  {t('performance.save1')}
                 </CommonButton>
                 <CommonButton type="primary" onClick={() => editViews()}>
-                  保存
+                  {t('performance.save')}
                 </CommonButton>
               </Space>
             </Footer>
