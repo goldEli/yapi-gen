@@ -1717,9 +1717,11 @@
     "save1Msg": "检测到此视图有未保存的更改",
     "save2Msg": "单击“保存”按钮可以将更改保存在如下视图",
     "share": "分享",
-    "export": "导出成功",
+    "export": "导出",
     "saveView": "另存为视图",
-    "watchMenber": "查看成员"
+    "watchMenber": "查看成员",
+    "people": "人",
+    "allPeople": "已选 全员"
   },
   "addView": "新建视图",
   "updateView": "编辑视图",

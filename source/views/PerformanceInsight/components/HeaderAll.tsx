@@ -130,7 +130,7 @@ const HeaderAll = (props: HaderProps) => {
                   options={projectList}
                   more
                   value={options}
-                  placeholder="请选择项目"
+                  placeholder={t('common.pleaseProject')}
                   onChange={(value: number[]) => {
                     setOptions(value), props.onSearchData(value)
                   }}
@@ -139,9 +139,12 @@ const HeaderAll = (props: HaderProps) => {
             )}
           <PersonText>
             {props.headerParmas.users?.length ? (
-              <span>已选 {props.headerParmas.users?.length}人</span>
+              <span>
+                {t('performance.select')} {props.headerParmas.users?.length}
+                {t('performance.people')}
+              </span>
             ) : (
-              <span>已选 全员</span>
+              <span>{t('performance.allPeople')}</span>
             )}
           </PersonText>
           <Line />
