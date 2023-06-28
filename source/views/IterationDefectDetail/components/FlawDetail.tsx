@@ -22,7 +22,7 @@ import { getFlawInfo } from '@store/flaw/flaw.thunk'
 interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
   isInfoPage?: boolean
-  onUpdate?(): void
+  onUpdate?(value?: boolean): void
 }
 const FlawDetail = (props: FlawDetailProps) => {
   const dispatch = useDispatch()
@@ -35,11 +35,11 @@ const FlawDetail = (props: FlawDetailProps) => {
   const editorRef = useRef<EditorRef>(null)
   const dId = useRef<any>()
 
-  const onUpdate = () => {
+  const onUpdate = (value?: boolean) => {
     if (props.isInfoPage) {
       dispatch(getFlawInfo({ projectId: projectFlawInfo.id, id: dId.current }))
     } else {
-      props.onUpdate?.()
+      props.onUpdate?.(value)
     }
   }
 
@@ -58,7 +58,7 @@ const FlawDetail = (props: FlawDetailProps) => {
       type: 'attachment',
       targetId: [obj],
     })
-    onUpdate()
+    onUpdate(true)
   }
 
   //   确认删除附件事件
@@ -69,7 +69,7 @@ const FlawDetail = (props: FlawDetailProps) => {
       type: 'attachment',
       targetId,
     })
-    onUpdate()
+    onUpdate(true)
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
   }
 
@@ -97,7 +97,7 @@ const FlawDetail = (props: FlawDetailProps) => {
       name: props.flawInfo.name,
     }
     await updateFlawEditor(params)
-    onUpdate()
+    onUpdate(true)
   }
 
   useEffect(() => {

@@ -180,11 +180,23 @@ const CreateDemandLeft = (props: Props) => {
     setTagCheckedList([])
   }
 
+  // 获取父需求列表
+  const getParentData = (id?: number) => {
+    dispatch(
+      getParentList({
+        projectId: props.projectId,
+        id: params?.editId,
+        categoryId: id ?? categoryObj.id,
+      }),
+    )
+  }
+
   useImperativeHandle(props.onRef, () => {
     return {
       confirm: onConfirm,
       reset: onReset,
       update: onSubmitUpdate,
+      updateParentData: getParentData,
     }
   })
 
@@ -279,17 +291,6 @@ const CreateDemandLeft = (props: Props) => {
     }
   }
 
-  // 获取父需求列表
-  const getParentData = (id: number) => {
-    dispatch(
-      getParentList({
-        projectId: props.projectId,
-        id: params?.editId,
-        categoryId: id,
-      }),
-    )
-  }
-
   // 切换需求类别
   const onSelectCategory = async (value: any) => {
     if (value === categoryObj?.id) {
@@ -306,6 +307,7 @@ const CreateDemandLeft = (props: Props) => {
         (i: any) => i.id === value,
       )[0]
       setCategoryObj(result)
+      props.onResetForm()
     }
   }
 
@@ -318,6 +320,7 @@ const CreateDemandLeft = (props: Props) => {
     props.onChangeCategory(changeCategoryForm.getFieldsValue())
     setTimeout(() => {
       changeCategoryForm.resetFields()
+      props.onResetForm()
     }, 100)
   }
 
@@ -465,8 +468,8 @@ const CreateDemandLeft = (props: Props) => {
         ) {
           resultCategory = resultCategoryList[0]
         }
-        // 迭代创建 ,当前只有迭代是需要做筛选类别回填
-        if (params?.iterateId) {
+        // 迭代创建 ,当前只有迭代是需要做筛选类别回填、如果是事务列表无数据创建
+        if (params?.iterateId || params?.type === 7) {
           // 如果是有筛选条件的，回填筛选条件
           if (filterParamsModal?.category_id?.length) {
             const resultId = filterParamsModal?.category_id?.filter(

@@ -33,8 +33,6 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
   }, [kanbanInfoByGroup, groupId, movingStory])
 
   const showStateTransitionList = React.useMemo(() => {
-    console.log(movingStoryIssuesIndex, props.index, 'props.index')
-
     if (movingStoryIssuesIndex === props.index) {
       return false
     }

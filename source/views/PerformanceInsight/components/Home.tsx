@@ -51,9 +51,8 @@ import { getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
-  const { headerParmas, projectDataList } = useSelector(
-    store => store.performanceInsight,
-  )
+  const [t] = useTranslation()
+  const { headerParmas } = useSelector(store => store.performanceInsight)
   const navigate = useNavigate()
   const onClick = () => {
     const params = encryptPhp(
@@ -70,10 +69,10 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
         viewType: props.viewType,
         title:
           props.num === 1 && props.homeType === 'all'
-            ? '数据明细'
+            ? t('performance.title05')
             : props.num === 1
-            ? '工作进展对比'
-            : '缺陷趋势分析',
+            ? t('performance.title06')
+            : t('performance.title07'),
       }),
     )
     navigate(`/ChildLevel?data=${params}`)
@@ -90,7 +89,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
         <Text size="12px" onClick={() => onClick()}>
           <Space size={4}>
             <span style={{ display: 'inline-block', height: '20px' }}>
-              查看明细
+              {t('performance.watch')}
             </span>
             <CommonIconFont
               type="right"
@@ -289,10 +288,7 @@ const Home = () => {
             },
           })
     if (res) {
-      getMessage({
-        msg: '保存成功',
-        type: 'success',
-      })
+      getMessage({ msg: t('common.saveSuccess'), type: 'success' })
       // 刷新视图的接口,不是跟新的name,不刷新回显的name
       if (type === 'add') {
         updateViewList({ project_id: projectId, use_type: 3 })
@@ -541,10 +537,7 @@ const Home = () => {
       },
     })
     if (res) {
-      getMessage({
-        msg: '保存成功',
-        type: 'success',
-      })
+      getMessage({ msg: t('common.saveSuccess'), type: 'success' })
       // 刷新视图的接口
       updateViewList({ project_id: projectId, use_type: 3 })
       dispatch(setSave(false))
@@ -752,7 +745,7 @@ const Home = () => {
                 onChange={e => {
                   setOptionVal(e)
                 }}
-                placeholder="请选择"
+                placeholder={t('common.pleaseSelect')}
                 allowClear={false}
                 value={optionVal}
                 list={viewDataList?.map(el => ({
@@ -793,7 +786,7 @@ const Home = () => {
         {/* 新建和编辑视图 1*/}
         <ViewDialog
           name=""
-          titleType={{ title: '另存为视图', type: 'add' }}
+          titleType={{ title: t('performance.saveView'), type: 'add' }}
           onConfirm={async (value, type) => {
             try {
               await onCreateView(value, type, '')

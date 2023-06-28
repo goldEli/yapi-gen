@@ -39,7 +39,7 @@ interface RelationStoriesProps {
   activeKey?: string
   detail: Model.Flaw.FlawInfo
   isOpen?: boolean
-  onUpdate(): void
+  onUpdate(value?: boolean): void
   isDrawer?: boolean
 }
 
@@ -161,7 +161,7 @@ const RelationStories = (props: RelationStoriesProps) => {
     getMessage({ type: 'success', msg: '添加成功' })
     getList(pageObj, order)
     onClose()
-    props.onUpdate()
+    props.onUpdate(true)
   }
 
   // 点击切换页码

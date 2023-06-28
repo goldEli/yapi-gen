@@ -114,6 +114,10 @@ export const modifyKanbanPeopleGrouping = async (
 export const getKanbanByGroup = async (
   params: Omit<API.Kanban.GetKanbanByGroup.Params, 'pagesize' | 'page'>,
 ) => {
+  if (params.search?.iterate_name) {
+    params.search.iterate_id = params.search.iterate_name
+    delete params.search.iterate_name
+  }
   const response = await http.get<any, API.Kanban.GetKanbanByGroup.Result>(
     'getKanbanByGroup',
     {

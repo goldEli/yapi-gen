@@ -9,6 +9,7 @@ import { Left } from '../components/style'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from '../components/Select'
 import { useSelector } from '@store/index'
+import { useTranslation } from 'react-i18next'
 import {
   setSave,
   setHeaderParmas,
@@ -93,6 +94,7 @@ const Iteration = (props: Props) => {
   const [iterateApi, setIterateApi] = useState<any>([])
   const [projectApi, setProjectApi] = useState<any>()
   const projectId = paramsData?.id
+  const [t] = useTranslation()
   // tads切换
   const getTabsActive = (index: number) => {
     setTabsActive(index)
@@ -396,10 +398,12 @@ const Iteration = (props: Props) => {
           defalutConfig={props.defalutConfig}
           onSetDefaulut={props.onSetDefaulut}
         />
-        <Text onClick={() => setIsVisibleView(true)}>另存为</Text>
+        <Text onClick={() => setIsVisibleView(true)}>
+          {t('performance.save1')}
+        </Text>
         {/* 保存需要人员，项目选择和时间修改后 */}
         {save && viewType !== 2 ? (
-          <Text onClick={props.onEdit}>保存</Text>
+          <Text onClick={props.onEdit}>{t('performance.save')}</Text>
         ) : null}
       </Space>
       <Space size={16}>
@@ -407,7 +411,7 @@ const Iteration = (props: Props) => {
         {props.homeType === 'all' && (
           <Select
             type=""
-            placeholder="请选择项目"
+            placeholder={t('common.pleaseSelect')}
             options={projectList}
             more={more}
             value={projectIds || []}
@@ -428,11 +432,11 @@ const Iteration = (props: Props) => {
         <DivStyle onClick={() => setIsVisible(true)}>
           {person.length > 0 ? (
             <Left>
-              <span>成员</span>
+              <span>{t('project.member')}</span>
               <Btn1>已选{person.length}人</Btn1>
             </Left>
           ) : (
-            <span>全员</span>
+            <span>{t('performance.all')}</span>
           )}
           {person.length > 0 ? (
             <CommonIconFont
@@ -483,30 +487,30 @@ const Iteration = (props: Props) => {
               )
             }}
             value={timekey}
-            placeholder="请选择周期"
+            placeholder={t('common.pleaseSelect')}
             list={[
               {
-                name: '最近2周',
+                name: t('performance.tWeek'),
                 key: 14,
               },
               {
-                name: '最近4周',
+                name: t('performance.fWeek'),
                 key: 28,
               },
               {
-                name: '近1月',
+                name: t('performance.oMonth'),
                 key: 1,
               },
               {
-                name: '近3个月',
+                name: t('performance.tMonth'),
                 key: 3,
               },
               {
-                name: '近6个月',
+                name: t('performance.sMonth'),
                 key: 6,
               },
               {
-                name: '自定义',
+                name: t('performance.custom'),
                 key: 0,
               },
             ]}
@@ -515,7 +519,7 @@ const Iteration = (props: Props) => {
           // 是否是迭代和冲刺的项目
           <Select
             type={props.homeType}
-            placeholder="请选择项目"
+            placeholder={t('common.pleaseProject')}
             options={iterateData}
             more={more1}
             value={iterateIds || []}
@@ -536,7 +540,7 @@ const Iteration = (props: Props) => {
       </Space>
       {props.homeType === 'all' ? (
         <NewAddUserModalForTandD
-          title="添加成员"
+          title={t('calendarManager.add_a_member')}
           state={2}
           defaultPeople={headerParmas.users}
           isVisible={isVisible}
@@ -558,7 +562,7 @@ const Iteration = (props: Props) => {
       {/* 另存为视图 */}
       <ViewDialog
         name=""
-        titleType={{ title: '另存为视图', type: 'add' }}
+        titleType={{ title: t('performance.saveView'), type: 'add' }}
         onConfirm={async val => {
           try {
             await props.onCreateView(val, 'add')
