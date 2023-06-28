@@ -467,8 +467,8 @@ const CreateDemandLeft = (props: Props) => {
         ) {
           resultCategory = resultCategoryList[0]
         }
-        // 迭代创建 ,当前只有迭代是需要做筛选类别回填
-        if (params?.iterateId) {
+        // 迭代创建 ,当前只有迭代是需要做筛选类别回填、如果是事务列表无数据创建
+        if (params?.iterateId || params?.type === 7) {
           // 如果是有筛选条件的，回填筛选条件
           if (filterParamsModal?.category_id?.length) {
             const resultId = filterParamsModal?.category_id?.filter(
