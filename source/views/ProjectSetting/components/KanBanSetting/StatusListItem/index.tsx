@@ -42,6 +42,7 @@ const Count = styled.div`
 
 const StatusListItem: React.FC<StatusListItemProps> = props => {
   const { data } = props
+  // debugger
   const draggableId = data.flow_status_id + ''
   const { t } = useI18n()
   return (

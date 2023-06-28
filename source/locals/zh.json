@@ -1,4 +1,5 @@
 {
+  "unread": "人未读",
   "create_work_item": "创建工作项",
   "accumulated_work_items": "累计参与工作项",
   "todo_work_items": "待办工作项",
@@ -1716,6 +1717,8 @@
     "save1Msg": "检测到此视图有未保存的更改",
     "save2Msg": "单击“保存”按钮可以将更改保存在如下视图",
     "share": "分享",
-    "export": "导出"
+    "export": "导出",
+    "saveView": "另存为视图",
+    "watchMenber": "查看成员"
   }
 }

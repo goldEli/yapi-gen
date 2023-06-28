@@ -5,10 +5,19 @@
 // 员工
 
 import * as http from '../tools/http'
-
+export const getStaffListApi: any = async (params: any) => {
+  const response = await http.post('getStaffList', {
+    search: {
+      id: params.id,
+    },
+  })
+  return response.data
+}
 export const getStaffList: any = async (params: any) => {
+  console.log(params, 'params')
   const response = await http.get('getStaffList', {
     search: {
+      id: params?.id,
       job_id: params?.jobId,
       department_id: params?.departmentId,
       user_group_id: params?.userGroupId,

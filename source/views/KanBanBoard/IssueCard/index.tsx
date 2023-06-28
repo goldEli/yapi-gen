@@ -5,6 +5,7 @@ import { handleId } from '../utils'
 import IconFont from '@/components/IconFont'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import PriorityIcon from '@/components/PriorityIcon'
+import { Tooltip } from 'antd'
 import {
   Bottom,
   BottomLeft,
@@ -38,6 +39,7 @@ interface IssueCardProps {
 
 const IssueCard = (props: IssueCardProps) => {
   const { item, index } = props
+  // debugger
   const isDragDisabled = props.item.verify_lock === 1
   const childRef = useRef<any>(null)
   const [openDemandDetail] = useOpenDemandDetail()
@@ -47,7 +49,9 @@ const IssueCard = (props: IssueCardProps) => {
     <IssueCardBoxContainer hidden={props.hidden}>
       <Top>
         <TopLeft>
-          <TopProjectIcon src={item.project_category.attachment_path} />
+          <Tooltip title={item.project_category.name}>
+            <TopProjectIcon src={item.project_category.attachment_path} />
+          </Tooltip>
           <TopText>{item.story_prefix_key}</TopText>
         </TopLeft>
         <TopRight>

@@ -8,8 +8,8 @@ const useFKeyPress = (callback: any) => {
   React.useEffect(() => {
     const handleKeyPress = (event: any) => {
       if (event.key === 'f') {
-        event.preventDefault()
         if (!isInputFocused) {
+          event.preventDefault()
           callback()
         }
       }

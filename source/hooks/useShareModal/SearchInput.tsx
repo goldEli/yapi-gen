@@ -76,7 +76,6 @@ const SearchInput = (props: any) => {
     const response = await getStaffList({ all: 1 })
     setStaffList(response)
   }
-
   useEffect(() => {
     getUserList()
   }, [])
