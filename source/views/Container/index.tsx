@@ -31,6 +31,10 @@ import FlawDetailDrawer from '@/components/FlawDetailDrawer'
 import DeleteConfirmGlobalModal from '@/components/DeleteConfirmGlobal'
 import { changeCreateVisible } from '@store/create-propject'
 import { changeFreedVisibleVisible } from '@store/feedback'
+import { setAffairsDetailDrawer } from '@store/affairs'
+import { setFlawDetailDrawer } from '@store/flaw'
+import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
+import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -83,7 +87,11 @@ export const Container = () => {
   }
 
   const onCloseDemandDetail = (e: any) => {
-    if (!storeAll.getState().demand.isDemandDetailDrawerVisible) {
+    if (
+      !storeAll.getState().demand.isDemandDetailDrawerVisible &&
+      !storeAll.getState().affairs.affairsDetailDrawer.visible &&
+      !storeAll.getState().flaw.flawDetailDrawer.visible
+    ) {
       return
     }
     if (
@@ -91,13 +99,19 @@ export const Container = () => {
       typeof e.target?.className !== 'string' ||
       (!e.target?.parentElement?.className?.includes('canClickDetail') &&
         !e.target?.className?.includes('canClickDetail') &&
-        storeAll.getState().demand.isDemandDetailDrawerVisible)
+        (!storeAll.getState().demand.isDemandDetailDrawerVisible ||
+          !storeAll.getState().affairs.affairsDetailDrawer.visible ||
+          !storeAll.getState().flaw.flawDetailDrawer.visible))
     ) {
       dispatch({
         type: 'demand/setIsDemandDetailDrawerVisible',
         payload: false,
       })
+      dispatch(setAffairsDetailDrawer({ visible: false, params: {} }))
+      dispatch(setFlawDetailDrawer({ visible: false, params: {} }))
       dispatch(saveDemandDetailDrawer({}))
+      dispatch(saveAffairsDetailDrawer({}))
+      dispatch(saveFlawDetailDrawer({}))
     }
   }
 

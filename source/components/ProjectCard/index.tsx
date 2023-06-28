@@ -78,7 +78,7 @@ const Index = (props: any) => {
       text: props.item.projectType === 1 ? '需求数' : '事务数',
     },
     {
-      type: 'interation-2',
+      type: props.item.projectType === 1 ? 'interation-2' : 'alarm',
       num: props.item.iterateCount,
       text: props.item.projectType === 1 ? '迭代数' : '冲刺数',
     },
