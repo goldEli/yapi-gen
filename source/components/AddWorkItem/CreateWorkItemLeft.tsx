@@ -779,6 +779,7 @@ const CreateDemandLeft = (props: Props) => {
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 onBottom={onBottom}
+                isBug={[2, 5].includes(categoryObj.work_type)}
                 addWrap={
                   <AddWrap
                     style={{

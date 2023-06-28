@@ -314,6 +314,7 @@ const RelationStories = (props: RelationStoriesProps) => {
             keyText="iterate_id"
             item={record}
             onUpdate={onUpdate}
+            isBug
           >
             <HiddenText>
               <OmitText
@@ -409,6 +410,7 @@ const RelationStories = (props: RelationStoriesProps) => {
             keyText="users"
             item={record}
             onUpdate={onUpdate}
+            isBug
           >
             {record?.usersInfo.length > 0 && (
               <MultipleAvatar

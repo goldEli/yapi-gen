@@ -128,7 +128,7 @@ const XTable: React.FC<XTableProps> = props => {
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+    'b/transaction/update',
   )
 
   const isCanEditSprint = getIsPermission(
