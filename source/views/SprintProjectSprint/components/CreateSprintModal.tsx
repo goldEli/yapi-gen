@@ -60,11 +60,13 @@ const CreateSprintModal = (props: sprintProps) => {
 
   const onClear = (isFresh?: boolean) => {
     initNumber.current = 0
-    form.resetFields()
     onClose()
     if (isFresh) {
       dispatch(setSprintRefresh(1))
     }
+    setTimeout(() => {
+      form.resetFields()
+    }, 500)
   }
 
   const onConfirm = async () => {
@@ -162,7 +164,7 @@ const CreateSprintModal = (props: sprintProps) => {
   }
 
   const onValidator = (rule: any, value: any) => {
-    if (!value || !value?.date) {
+    if (!value || !value?.date || value?.date?.length <= 0) {
       return Promise.reject(new Error('请选择持续时间'))
     }
     return Promise.resolve()
