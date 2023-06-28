@@ -57,6 +57,9 @@ const CloseWrap = styled.div<{ width?: any; height?: any }>`
   justify-content: center;
   cursor: pointer;
   border-radius: 6px;
+  .custom svg {
+    color: var(--neutral-n3);
+  }
   svg {
     color: var(--neutral-n2);
   }

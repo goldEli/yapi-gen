@@ -24,6 +24,7 @@ const Item = styled.div`
     color: var(--neutral-n1-d1);
     line-height: 22px;
     margin-right: 5px;
+    word-break: break-all;
   }
   .date {
     font-size: 12px;

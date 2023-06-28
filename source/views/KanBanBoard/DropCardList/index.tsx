@@ -18,9 +18,9 @@ const DropCardListBox = styled.div<{ hidden?: boolean }>`
   display: ${props => (props.hidden ? 'none' : 'flex')};
   gap: 8px;
   flex-direction: column;
-  /* position: absolute;
+  position: absolute;
   top: 0px;
-  left: 0px; */
+  left: 0px;
 `
 
 const DropCardList: React.FC<DropCardListProps> = props => {
