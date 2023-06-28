@@ -60,11 +60,13 @@ const CreateSprintModal = (props: sprintProps) => {
 
   const onClear = (isFresh?: boolean) => {
     initNumber.current = 0
-    form.resetFields()
     onClose()
     if (isFresh) {
       dispatch(setSprintRefresh(1))
     }
+    setTimeout(() => {
+      form.resetFields()
+    }, 500)
   }
 
   const onConfirm = async () => {
@@ -162,9 +164,10 @@ const CreateSprintModal = (props: sprintProps) => {
   }
 
   const onValidator = (rule: any, value: any) => {
-    if (!value || !value?.date) {
+    if ((!value || !value?.date) && initNumber.current !== 1) {
       return Promise.reject(new Error('请选择持续时间'))
     }
+    initNumber.current++
     return Promise.resolve()
   }
 
@@ -256,7 +259,8 @@ const CreateSprintModal = (props: sprintProps) => {
               <Form.Item
                 label="持续时间"
                 name="group"
-                initialValue={{ include: true, radio: 1, date: [] }}
+                // eslint-disable-next-line no-undefined
+                initialValue={{ include: true, radio: 1, date: undefined }}
                 rules={[{ required: true, validator: onValidator }]}
               >
                 <ChooseDate initNumber={initNumber} />

@@ -98,11 +98,7 @@ const ChooseDate = (props: any) => {
     if (value) {
       const temp = {
         ...value,
-        date: value.date
-          ? value.radio === 0
-            ? value.date
-            : [moment(tomorrow), getDay(value?.radio, value.radio)]
-          : null,
+        date: value.date ? value.date : null,
       }
       setParams(temp)
       if (initNumber.current === 0) {
