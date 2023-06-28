@@ -306,6 +306,7 @@ const CreateDemandLeft = (props: Props) => {
         (i: any) => i.id === value,
       )[0]
       setCategoryObj(result)
+      props.onResetForm()
     }
   }
 
@@ -318,6 +319,7 @@ const CreateDemandLeft = (props: Props) => {
     props.onChangeCategory(changeCategoryForm.getFieldsValue())
     setTimeout(() => {
       changeCategoryForm.resetFields()
+      props.onResetForm()
     }, 100)
   }
 

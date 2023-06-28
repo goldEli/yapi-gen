@@ -1,4 +1,5 @@
 {
+  "unread": "unread",
   "create_work_item": "Create work item",
   "accumulated_work_items": "Cumulative participating work items",
   "todo_work_items": "To be done work items",
