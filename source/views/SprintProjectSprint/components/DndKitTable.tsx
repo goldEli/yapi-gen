@@ -44,7 +44,7 @@ const MoveFont = styled(IconFont)`
   }
   cursor: move;
 `
-const TitleWrap = styled.div`
+const TitleWrap = styled.div<{ isClose?: boolean }>`
   display: flex;
   align-items: center;
   .content {
@@ -56,8 +56,12 @@ const TitleWrap = styled.div`
     &:hover {
       color: var(--primary-d2);
     }
+    text-decoration: ${(props: any) =>
+      props.isClose ? 'line-through' : 'inherit'};
+    color: ${(props: any) => (props.isClose ? 'var(--neutral-n3)' : 'inherit')};
   }
 `
+
 const LongStoryWrap = styled.div`
   display: flex;
   .content {
@@ -326,6 +330,9 @@ const DndKitTable = (props: any) => {
       render(value, record) {
         return (
           <TitleWrap
+            style={{
+              color: record.status?.is_end === 1 ? 'var(--neutral-n3)' : '',
+            }}
             onClick={() => {
               onClickItem(record)
             }}
@@ -346,6 +353,7 @@ const DndKitTable = (props: any) => {
             onClick={() => {
               onClickItem(record)
             }}
+            isClose={record.status?.is_end === 1}
           >
             <Tooltip placement="topLeft" title={record.category}>
               <img

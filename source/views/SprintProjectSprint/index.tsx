@@ -67,29 +67,43 @@ const TabsWrap = styled.div`
   box-sizing: border-box;
   padding-left: 2px;
   margin-bottom: 16px;
-  background: var(--hover-d2);
   border-radius: 4px 4px 4px 4px;
   display: flex;
   align-items: center;
   font-size: 12px;
   color: var(--neutral-n2);
   cursor: pointer;
+  position: relative;
+  background: var(--hover-d2);
   .tab1 {
-    width: 56px;
+    width: 60px;
     height: 28px;
     line-height: 28px;
     text-align: center;
+    z-index: 2;
   }
   .tab2 {
     line-height: 28px;
     text-align: center;
     width: 68px;
     height: 28px;
+    z-index: 2;
   }
   .active {
-    background: #ffffff;
     color: var(--primary-d2);
     font-family: SiYuanMedium;
+  }
+  .move {
+    background: #ffffff;
+    position: absolute;
+    width: 56px;
+    height: 28px;
+    transition: all 0.8s;
+  }
+
+  .left {
+    transform: translateX(56px);
+    width: 68px;
   }
 `
 
@@ -519,6 +533,7 @@ const SprintProjectSprint: React.FC = () => {
             </MouseDom>
             <div className="header">
               <TabsWrap>
+                <div className={`move ${activeKey === 1 ? 'left' : ''}`}></div>
                 <div
                   className={`tab1 ${activeKey === 0 ? 'active' : ''}`}
                   onClick={changeSprintTab}

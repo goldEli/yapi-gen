@@ -69,3 +69,11 @@ export const onlySysNotice: any = async () => {
 
   return response
 }
+// 已读未读用户列表
+export const getReadMyAllSysNoticeNumber: any = async (params: any) => {
+  const response: any = await http.get<any>(
+    `/b/sys_notice/${params}/read/user_list`,
+  )
+
+  return response.data
+}
