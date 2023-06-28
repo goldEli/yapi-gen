@@ -1672,6 +1672,7 @@
   "do_you_want_to_save_changes": "Do you want to save changes?",
   "remind": "Remind",
   "performance": {
+    "saveView": "另存为视图",
     "save": "保存",
     "save1": "另存为",
     "nosave": "不保存",

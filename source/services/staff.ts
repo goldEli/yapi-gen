@@ -7,8 +7,10 @@
 import * as http from '../tools/http'
 
 export const getStaffList: any = async (params: any) => {
+  console.log(params, 'params')
   const response = await http.get('getStaffList', {
     search: {
+      id: params?.id,
       job_id: params?.jobId,
       department_id: params?.departmentId,
       user_group_id: params?.userGroupId,
