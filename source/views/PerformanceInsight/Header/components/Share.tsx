@@ -2,7 +2,6 @@ import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonModal from '@/components/CommonModal'
 import { copyLink } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
 import { Form, Space } from 'antd'
 import { useEffect } from 'react'
@@ -58,9 +57,7 @@ const Share = (props: PropsType) => {
       title={props.title}
       onClose={props.onClose}
     >
-      {save ? (
-        <MsgText1>当前视图未保存，分享时将为您保存为“视图”</MsgText1>
-      ) : null}
+      {save ? <MsgText1>{t('common.copySuccess')}</MsgText1> : null}
       <FormWrap form={form} layout="vertical" style={{ padding: '0 24px' }}>
         <Form.Item
           name="name"

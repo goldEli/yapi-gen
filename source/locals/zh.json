@@ -1716,8 +1716,16 @@
     "save1Msg": "检测到此视图有未保存的更改",
     "save2Msg": "单击“保存”按钮可以将更改保存在如下视图",
     "share": "分享",
-    "export": "导出",
+    "export": "导出成功",
     "saveView": "另存为视图",
     "watchMenber": "查看成员"
-  }
+  },
+  "addView": "新建视图",
+  "updateView": "编辑视图",
+  "m": "默认",
+  "j": "近期",
+  "allWork": "全部工作项",
+  "allIn": "全部冲刺",
+  "s": "筛选状态",
+  "watcjAll": "查看全部"
 }

@@ -22,7 +22,7 @@ const WacthExportPerson = (props: PropsType) => {
   console.log(props.personData)
   const columns = [
     {
-      title: '姓名',
+      title: t('common.name'),
       dataIndex: 'name',
       key: 'name',
       render: (text: string) => {
@@ -41,7 +41,7 @@ const WacthExportPerson = (props: PropsType) => {
       },
     },
     {
-      title: '部门',
+      title: t('common.department'),
       dataIndex: 'department_name',
       key: 'addredepartment_namess',
       render: (text: string) => {
@@ -49,7 +49,7 @@ const WacthExportPerson = (props: PropsType) => {
       },
     },
     {
-      title: '职务',
+      title: t('common.job'),
       dataIndex: 'position_name',
       key: 'position_name',
       render: (text: string) => {
@@ -57,12 +57,12 @@ const WacthExportPerson = (props: PropsType) => {
       },
     },
     {
-      title: '电话',
+      title: t('common.phone'),
       dataIndex: 'phone',
       key: 'phone',
     },
     {
-      title: '邮箱',
+      title: t('mailbox'),
       dataIndex: 'email',
       key: 'email',
     },

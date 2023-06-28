@@ -9,6 +9,7 @@ import { Select, Space } from 'antd'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Detail from './Detail'
 import DetailHeader from './DetailHeader'
+import { useTranslation } from 'react-i18next'
 import {
   TableStyle,
   Title,
@@ -40,12 +41,13 @@ interface UserInfo {
   onChange: (value: API.Sprint.EfficiencyMemberWorkList.Params) => void
 }
 const Main = (props: UserInfo) => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
   const columns = [
     {
-      title: '编号',
+      title: t('common.serialNumber'),
       dataIndex: 'story_prefix_key',
       render: (text: string, record: { category_attachment: string }) => {
         return (
@@ -56,7 +58,7 @@ const Main = (props: UserInfo) => {
       },
     },
     {
-      title: '标题',
+      title: t('common.title'),
       dataIndex: 'name',
       render: (text: string, record: { category_attachment: string }) => {
         return (
@@ -68,7 +70,7 @@ const Main = (props: UserInfo) => {
       },
     },
     {
-      title: '状态',
+      title: t('common.status'),
       dataIndex: 'status',
       render: (text: number) => {
         return (
@@ -80,7 +82,7 @@ const Main = (props: UserInfo) => {
       },
     },
     {
-      title: '创建人',
+      title: t('common.createName'),
       dataIndex: 'expected_start_at',
       render: (
         text: string,
@@ -96,7 +98,7 @@ const Main = (props: UserInfo) => {
       },
     },
     {
-      title: '处理人',
+      title: t('common.dealName'),
       dataIndex: 'expected_start_at',
       render: (
         text: string,
@@ -120,7 +122,7 @@ const Main = (props: UserInfo) => {
       },
     },
     {
-      title: '创建时间',
+      title: t('common.createTime'),
       dataIndex: 'created_at',
       render: (text: string, record: { category_attachment: string }) => {
         return (
@@ -167,7 +169,7 @@ const Main = (props: UserInfo) => {
           style={{
             width: 184,
           }}
-          placeholder={'筛选状态'}
+          placeholder={t('s')}
           onChange={(newValue: any) => {
             props.onChange({
               user_id: props.userInfo.id,
@@ -193,7 +195,7 @@ const Main = (props: UserInfo) => {
             }}
           >
             {/* 需要跳转到他的页面 概况待办 */}
-            <span className="text">查看全部</span>
+            <span className="text">{t('watcjAll')}</span>
             <CommonIconFont
               type="right"
               size={16}
