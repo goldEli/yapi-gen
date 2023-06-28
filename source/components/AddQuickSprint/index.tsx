@@ -80,6 +80,8 @@ const AddQuickSprint = () => {
     return result
   }
 
+  console.log(params)
+
   return (
     <CommonModal
       confirmText="创建"
@@ -92,7 +94,7 @@ const AddQuickSprint = () => {
         <Form.Item label="创建以下事务的子事务">
           <ParentWrap>
             <img src={params?.category_attachment} alt="" />
-            <span>{params?.category}</span>
+            <span>{params?.categoryName ?? params?.category}</span>
           </ParentWrap>
         </Form.Item>
         <Form.Item

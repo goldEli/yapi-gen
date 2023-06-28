@@ -13,6 +13,7 @@ import useShareModal from '@/hooks/useShareModal'
 import { useSelector } from '@store/index'
 import { getParamsData } from '@/tools'
 import { getProjectList } from '@/services/project'
+import { useTranslation } from 'react-i18next'
 interface HaderProps {
   type: string
   headerParmas: Models.Efficiency.HeaderParmas
@@ -23,6 +24,7 @@ interface HaderProps {
   viewType: number
 }
 const HeaderAll = (props: HaderProps) => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [projectList, setProjectList] = useState<any>()
@@ -114,7 +116,7 @@ const HeaderAll = (props: HaderProps) => {
       <HeaderRowBox>
         <Back onClick={() => onBack()}>
           <CommonIconFont type="left-md" size={16} />
-          <span className="text">返回</span>
+          <span className="text">{t('performance.back')}</span>
         </Back>
         <RightRow>
           {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
@@ -145,7 +147,8 @@ const HeaderAll = (props: HaderProps) => {
           <Line />
           {time?.startTime && time?.endTime ? (
             <PersonText>
-              统计时间：{time?.startTime} ~ {time?.endTime}
+              {t('performance.statistics')}
+              {time?.startTime} ~ {time?.endTime}
             </PersonText>
           ) : null}
           <Back
@@ -159,11 +162,11 @@ const HeaderAll = (props: HaderProps) => {
             style={{ margin: '0 16px 0 24px' }}
           >
             <CommonIconFont type="share" size={16} />
-            <span className="text">分享</span>
+            <span className="text">{t('performance.share')}</span>
           </Back>
           <CommonButton type="primary" onClick={() => setIsOpen(true)}>
             <CommonIconFont type="export" size={16} />
-            导出
+            {t('performance.export')}
           </CommonButton>
         </RightRow>
       </HeaderRowBox>
@@ -204,7 +207,7 @@ const HeaderAll = (props: HaderProps) => {
       {/* 导出 */}
       <Export
         time={`${time?.startTime} ~ ${time?.endTime}`}
-        title="按周期导出"
+        title={t('performance.exportTitle')}
         isVisible={isOpen}
         onClose={() => setIsOpen(false)}
         onConfirm={() => {

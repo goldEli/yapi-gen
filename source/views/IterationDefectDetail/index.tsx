@@ -42,7 +42,11 @@ import FlawInfo from './components/FlawInfo'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import RelationStories from './components/RelationStories'
-import { setAddWorkItemModal, setIsUpdateStatus } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsUpdateChangeLog,
+  setIsUpdateStatus,
+} from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 
@@ -96,6 +100,7 @@ const IterationDefectDetail = () => {
         pageSize: 20,
       }),
     )
+    dispatch(setIsUpdateChangeLog(true))
   }
 
   // 关闭类别弹窗
