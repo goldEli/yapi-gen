@@ -80,8 +80,6 @@ const AddQuickSprint = () => {
     return result
   }
 
-  console.log(params)
-
   return (
     <CommonModal
       confirmText="创建"
