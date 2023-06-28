@@ -446,7 +446,7 @@ const CreateAProjectForm = () => {
               <Col
                 tap={!isEditId}
                 onClick={() => {
-                  onChangeStep(1)
+                  isEditId ? null : onChangeStep(1)
                   setType(0)
                   setModel(0)
                 }}
