@@ -1,7 +1,7 @@
 import CommonModal from '@/components/CommonModal'
 import { Table } from 'antd'
 import { TableRow, TextTable } from '../Style'
-import { getStaffList } from '@/services/staff'
+import { getStaffListApi } from '@/services/staff'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -71,7 +71,7 @@ const WacthExportPerson = (props: PropsType) => {
     props.isVisible && getDatalist()
   }, [props.isVisible])
   const getDatalist = async () => {
-    const res = await getStaffList({
+    const res = await getStaffListApi({
       all: 1,
       project_id: '',
       id: props.personData,
