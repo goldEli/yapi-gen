@@ -121,11 +121,8 @@ const DemandTree = (props: Props) => {
         (i: any) => i.id === item.topId,
       )?.[0]
       // 查找列表下与之父级匹配的数组
-      let resultData = onComputedFindChild(
-        currentDemandTop.children,
-        item.parentId,
-      )
-      demandIds = resultData.children?.map((k: any) => k.id)
+      let resultData = onComputedFindChild(currentDemandTop, item.parentId)
+      demandIds = resultData?.children?.map((k: any) => k.id)
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
