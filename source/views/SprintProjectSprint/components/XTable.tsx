@@ -270,9 +270,9 @@ const XTable: React.FC<XTableProps> = props => {
                                 type: data.status === 4 ? 'edit' : 'update',
                               })
                             }}
+                            className="custom"
                             style={{
                               fontSize: 16,
-                              color: 'var(--neutral-n3)',
                             }}
                             type="edit"
                           />
@@ -289,9 +289,9 @@ const XTable: React.FC<XTableProps> = props => {
                                 onConfirm: () => deleteSprint(data.id),
                               })
                             }}
+                            className="custom"
                             style={{
                               fontSize: 16,
-                              color: 'var(--neutral-n3)',
                             }}
                             type="delete"
                           />

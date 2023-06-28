@@ -294,6 +294,8 @@ const DndKitTable = (props: any) => {
 
   const columns: TableColumnProps<any>[] = [
     {
+      width: 48,
+      align: 'center',
       render: (text: any, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>

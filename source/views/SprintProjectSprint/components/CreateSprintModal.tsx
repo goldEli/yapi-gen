@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import ChooseDate from './ChooseDate'
 import useAltSKeyPress from '@/hooks/useAltSKeyPress/useAltSKeyPress'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import styled from '@emotion/styled'
 
 interface sprintProps {
   type: 'create' | 'start' | 'edit' | 'update'
@@ -31,6 +32,11 @@ const content = css`
     font-family: MiSans-Regular, MiSans;
     font-weight: 400;
     color: var(--neutral-n3);
+  }
+`
+const CustomWrap = styled.div`
+  .ant-form-item-label > label {
+    height: 20px;
   }
 `
 
@@ -227,8 +233,6 @@ const CreateSprintModal = (props: sprintProps) => {
   }, [])
 
   useEffect(() => {
-    console.log(1322222222222)
-
     if (visible) {
       setTimeout(() => {
         inputRef?.current?.focus?.()
@@ -268,36 +272,40 @@ const CreateSprintModal = (props: sprintProps) => {
               wrapperCol={{ span: 24 }}
               autoComplete="off"
             >
-              <Form.Item
-                label="冲刺名称"
-                name="name"
-                rules={[{ required: true, message: '请输入冲刺名称' }]}
-              >
-                <Input
-                  ref={inputRef}
-                  placeholder="新建的冲刺1"
-                  maxLength={50}
-                />
-              </Form.Item>
-              <Form.Item
-                label="持续时间"
-                name="group"
-                // eslint-disable-next-line no-undefined
-                initialValue={{
-                  include: true,
-                  radio: 0,
-                }}
-                rules={[{ required: true, validator: onValidator }]}
-              >
-                <ChooseDate initNumber={initNumber} />
-              </Form.Item>
-              <Form.Item label="冲刺目标" name="info">
-                <Input.TextArea
-                  maxLength={300}
-                  autoSize={{ minRows: 1, maxRows: 5 }}
-                  placeholder="请输入"
-                />
-              </Form.Item>
+              <CustomWrap>
+                <Form.Item
+                  label="冲刺名称"
+                  name="name"
+                  rules={[{ required: true, message: '请输入冲刺名称' }]}
+                >
+                  <Input
+                    ref={inputRef}
+                    placeholder="新建的冲刺1"
+                    maxLength={50}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="持续时间"
+                  name="group"
+                  // eslint-disable-next-line no-undefined
+                  initialValue={{
+                    include: true,
+                    radio: 0,
+                  }}
+                  rules={[{ required: true, validator: onValidator }]}
+                >
+                  <ChooseDate initNumber={initNumber} />
+                </Form.Item>
+
+                <Form.Item label="冲刺目标" name="info">
+                  <Input.TextArea
+                    maxLength={300}
+                    autoSize={{ minRows: 1, maxRows: 5 }}
+                    placeholder="请输入"
+                  />
+                </Form.Item>
+              </CustomWrap>
             </Form>
           </div>
         }
