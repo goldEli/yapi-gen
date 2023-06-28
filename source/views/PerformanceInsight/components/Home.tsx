@@ -51,9 +51,8 @@ import { getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
-  const { headerParmas, projectDataList } = useSelector(
-    store => store.performanceInsight,
-  )
+  const [t] = useTranslation()
+  const { headerParmas } = useSelector(store => store.performanceInsight)
   const navigate = useNavigate()
   const onClick = () => {
     const params = encryptPhp(
@@ -70,10 +69,10 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
         viewType: props.viewType,
         title:
           props.num === 1 && props.homeType === 'all'
-            ? '数据明细'
+            ? t('performance.title05')
             : props.num === 1
-            ? '工作进展对比'
-            : '缺陷趋势分析',
+            ? t('performance.title06')
+            : t('performance.title07'),
       }),
     )
     navigate(`/ChildLevel?data=${params}`)
@@ -90,7 +89,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
         <Text size="12px" onClick={() => onClick()}>
           <Space size={4}>
             <span style={{ display: 'inline-block', height: '20px' }}>
-              查看明细
+              {t('performance.watch')}
             </span>
             <CommonIconFont
               type="right"
