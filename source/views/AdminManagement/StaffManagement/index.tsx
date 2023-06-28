@@ -29,7 +29,6 @@ import {
   getStaffList,
   refreshStaff,
   updateStaff,
-  getRoleList,
   batchUpdateStaff,
 } from '@/services/staff'
 import { useDispatch, useSelector } from '@store/index'
@@ -142,7 +141,6 @@ const StaffManagement = () => {
   )?.length
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
-  const [roleOptions, setRoleOptions] = useState<number[]>([])
 
   const getStaffListData = async () => {
     setIsSpinning(true)
@@ -591,7 +589,6 @@ const StaffManagement = () => {
           setBatchEditVisible(false)
         }}
         onConfirm={onConfirmBatchEdit}
-        roleOptions={roleOptions}
       />
       <BatchAction
         open={selectedRowKeys.length > 0}
