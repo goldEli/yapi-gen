@@ -37,10 +37,23 @@ const ReadCard = (props: any) => {
           lineHeight: '40px',
           color: 'black',
           fontFamily: 'SiYuanMedium',
-          paddingLeft: '20px',
+          padding: ' 0px 20px',
+          borderRadius: '6px 6px 0px 0px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
-        消息接收人列表
+        <span>消息接收人列表</span>
+        <IconFont
+          onClick={() => props.onClose()}
+          style={{
+            fontSize: 20,
+            color: 'var(--neutral-n2)',
+            cursor: 'pointer',
+          }}
+          type="close"
+        />{' '}
       </div>
       <div
         style={{
@@ -69,7 +82,12 @@ const ReadCard = (props: any) => {
                 console.log(el)
 
                 return (
-                  <div key={el.user.id}>
+                  <div
+                    style={{
+                      margin: '4px 0 ',
+                    }}
+                    key={el.user.id}
+                  >
                     <CommonUserAvatar
                       name={el.user.name}
                       fontSize={14}
@@ -101,7 +119,12 @@ const ReadCard = (props: any) => {
                 console.log(el)
 
                 return (
-                  <div key={el.user.id}>
+                  <div
+                    style={{
+                      margin: '4px 0 ',
+                    }}
+                    key={el.user.id}
+                  >
                     <CommonUserAvatar
                       name={el.user.name}
                       fontSize={14}
@@ -248,7 +271,12 @@ const NoteCard = (props: any) => {
             trigger="click"
             destroyTooltipOnHide
             getPopupContainer={n => (props.isShow ? n : document.body)}
-            content={<ReadCard id={props.values.id} />}
+            content={
+              <ReadCard
+                onClose={() => setPopoverVisible(false)}
+                id={props.values.id}
+              />
+            }
           >
             <ColorBtn2>
               <CommonIconFont type="display" /> <span>{t('all_read')}</span>
