@@ -6,6 +6,7 @@ import { Input } from 'antd'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import CommonIconFont from './CommonIconFont'
 import useFKeyPress from '@/hooks/useFKeyPress/useFKeyPress'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 const InputStyle = styled(Input)<{ bgColor: any }>`
   /* border: 1px solid var(--neutral-n6-d1);
@@ -53,7 +54,13 @@ const InputSearch = (props: Props) => {
     })
   }, [])
 
-  useFKeyPress(handleFKeyPress)
+  useHotkeys(
+    'f',
+    () => {
+      handleFKeyPress()
+    },
+    [],
+  )
 
   return (
     <InputStyle
