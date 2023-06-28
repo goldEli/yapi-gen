@@ -182,7 +182,11 @@ const LongStroyBread = (props: IProps) => {
                 color="var(--primary-d2)"
                 onClick={() => {
                   // console.log(111)
-                  copyLink('AA', t('common.copySuccess'), t('common.copyFail'))
+                  copyLink(
+                    window.location.href,
+                    t('common.copySuccess'),
+                    t('common.copyFail'),
+                  )
                 }}
                 size={18}
               ></CommonIconFont>

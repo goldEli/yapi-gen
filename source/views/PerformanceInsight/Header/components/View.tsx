@@ -12,7 +12,7 @@ import {
   setViewType,
 } from '@store/performanceInsight'
 import { getDate } from '../../components/Date'
-
+import { useTranslation } from 'react-i18next'
 interface View {
   viewDataList: Array<Models.Efficiency.ViewItem> | undefined
   onCreateView(value: string, type: string, key?: string): void
@@ -24,6 +24,7 @@ interface View {
 }
 const View = (props: View) => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [items, setItems] = useState<MenuProps['items']>([])
   const [value, setValue] = useState<Models.Efficiency.ViewItem>()
@@ -55,7 +56,7 @@ const View = (props: View) => {
             <Tooltip title={optionsDefault?.name}>
               <span className="label">{optionsDefault?.name}</span>
             </Tooltip>
-            <Btn>默认</Btn>
+            <Btn>{t('m')}</Btn>
           </DefaultLabel>
         ),
         key: 'first',
@@ -70,7 +71,7 @@ const View = (props: View) => {
       {
         label: (
           <DefaultLabelAdd>
-            <span>新建视图</span>
+            <span>{t('addView')}</span>
           </DefaultLabelAdd>
         ),
         key: 'last',
@@ -115,7 +116,7 @@ const View = (props: View) => {
                 onClick={() => {
                   setDialogItem(el),
                     setDialogTitle({
-                      title: '编辑视图',
+                      title: t('updateView'),
                       type: 'edit',
                     }),
                     setIsVisible(true)
@@ -186,7 +187,7 @@ const View = (props: View) => {
       setIsOpen(false)
       setDialogItem({ name: '' })
       setDialogTitle({
-        title: '新建视图',
+        title: t('addView'),
         type: 'add',
       })
       setIsVisible(true)
@@ -277,8 +278,8 @@ const View = (props: View) => {
         isVisible={isVisible}
       />
       <DeleteConfirm
-        title="删除确认"
-        text="确认删除该视图?"
+        title={t('confirmationOfDeletion')}
+        text={t('confirmDeletingTheView')}
         isVisible={delIsVisible}
         onConfirm={() => {
           setDelIsVisible(false)

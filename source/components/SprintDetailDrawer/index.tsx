@@ -232,7 +232,7 @@ const SprintDetailDrawer = () => {
     const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     setTimeout(() => {
-      dispatch(setIsUpdateAddWorkItem(false))
+      dispatch(setIsUpdateAddWorkItem(0))
       dispatch(setAffairsInfo({}))
     }, 0)
   }
@@ -363,6 +363,7 @@ const SprintDetailDrawer = () => {
         ...drawerInfo,
         name: value,
       })
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
   }
 
@@ -541,6 +542,14 @@ const SprintDetailDrawer = () => {
       key: '4',
     },
   ]
+
+  // 操作后更新列表
+  const onOperationUpdate = (value?: boolean) => {
+    getSprintDetail('', demandIds)
+    if (!value) {
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    }
+  }
 
   useEffect(() => {
     if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
@@ -742,7 +751,7 @@ const SprintDetailDrawer = () => {
                     {i.key === 'detailInfo' && (
                       <AffairsDetail
                         affairsInfo={drawerInfo}
-                        onUpdate={() => getSprintDetail('', demandIds)}
+                        onUpdate={onOperationUpdate}
                       />
                     )}
                     {i.key === 'childSprint' && showState[i.key].isOpen && (
@@ -755,7 +764,7 @@ const SprintDetailDrawer = () => {
                       <BasicDemand
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
-                        onUpdate={() => getSprintDetail('', demandIds)}
+                        onUpdate={onOperationUpdate}
                       />
                     )}
                     {i.key === 'demandComment' && (

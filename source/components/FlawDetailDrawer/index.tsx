@@ -197,7 +197,7 @@ const FlawDetailDrawer = () => {
     const url = `ProjectManagement/DefectDetail?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     setTimeout(() => {
-      dispatch(setIsUpdateAddWorkItem(false))
+      dispatch(setIsUpdateAddWorkItem(0))
       dispatch(setFlawInfo({}))
     }, 0)
   }
@@ -257,6 +257,7 @@ const FlawDetailDrawer = () => {
         ...drawerInfo,
         name: value,
       })
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
   }
 
@@ -513,6 +514,14 @@ const FlawDetailDrawer = () => {
     )
   }
 
+  // 操作后更新列表
+  const onOperationUpdate = (value?: boolean) => {
+    getFlawDetail('', demandIds)
+    if (!value) {
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    }
+  }
+
   useEffect(() => {
     if (visible || params?.id) {
       setDemandIds(params?.demandIds || [])
@@ -707,14 +716,14 @@ const FlawDetailDrawer = () => {
                     {i.key === 'detailInfo' && (
                       <FlawDetail
                         flawInfo={drawerInfo}
-                        onUpdate={() => getFlawDetail('', demandIds)}
+                        onUpdate={onOperationUpdate}
                       />
                     )}
                     {i.key === 'relation' && showState[i.key].isOpen && (
                       <RelationStories
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
-                        onUpdate={() => getFlawDetail('', demandIds)}
+                        onUpdate={onOperationUpdate}
                         isDrawer
                       />
                     )}
@@ -722,7 +731,7 @@ const FlawDetailDrawer = () => {
                       <BasicFlaw
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
-                        onUpdate={() => getFlawDetail('', demandIds)}
+                        onUpdate={onOperationUpdate}
                       />
                     )}
                     {i.key === 'flawComment' && (

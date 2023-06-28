@@ -450,7 +450,7 @@ const CreateDemandRight = (props: Props) => {
 
       // 处理预计结束时间和预计开始时间
       if (['expected_end_at', 'expected_start_at'].includes(k)) {
-        values[k] = moment(values[k.content]).format('YYYY-MM-DD')
+        values[k] = values[k] ? moment(values[k]).format('YYYY-MM-DD') : ''
       }
 
       // 处理自定义字段中时间参数
