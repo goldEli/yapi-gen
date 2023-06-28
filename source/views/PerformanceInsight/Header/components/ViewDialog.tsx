@@ -2,7 +2,7 @@ import CommonModal from '@/components/CommonModal'
 import { FormWrap } from '../Style'
 import { Form, Input } from 'antd'
 import { useEffect } from 'react'
-
+import { useTranslation } from 'react-i18next'
 interface PropsType {
   titleType: { title: string; type: string } | undefined
   isVisible: boolean
@@ -13,6 +13,7 @@ interface PropsType {
 
 const ViewDialog = (props: PropsType) => {
   const [form] = Form.useForm()
+  const [t] = useTranslation()
   const onConfirm = async () => {
     await form.validateFields()
     const formValues = form.getFieldsValue()
@@ -33,10 +34,18 @@ const ViewDialog = (props: PropsType) => {
       <FormWrap form={form} layout="vertical" style={{ padding: '0 24px' }}>
         <Form.Item
           name="name"
-          label="名称"
-          rules={[{ required: true, message: '请输入视图名称' }]}
+          label={t('name1')}
+          rules={[
+            {
+              required: true,
+              message: t('please_enter_a_view_name_limited_to_20_words'),
+            },
+          ]}
         >
-          <Input maxLength={30} placeholder="请输入视图名称限30字" />
+          <Input
+            maxLength={20}
+            placeholder={t('please_enter_a_view_name_limited_to_20_words')}
+          />
         </Form.Item>
       </FormWrap>
     </CommonModal>

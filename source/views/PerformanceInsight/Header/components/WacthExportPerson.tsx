@@ -1,7 +1,7 @@
 import CommonModal from '@/components/CommonModal'
 import { Table } from 'antd'
 import { TableRow, TextTable } from '../Style'
-import { getStaffList } from '@/services/staff'
+import { getStaffListApi } from '@/services/staff'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -19,9 +19,10 @@ interface PropsType {
 const WacthExportPerson = (props: PropsType) => {
   const [t] = useTranslation()
   const [data, setData] = useState()
+  console.log(props.personData)
   const columns = [
     {
-      title: '姓名',
+      title: t('common.name'),
       dataIndex: 'name',
       key: 'name',
       render: (text: string) => {
@@ -40,7 +41,7 @@ const WacthExportPerson = (props: PropsType) => {
       },
     },
     {
-      title: '部门',
+      title: t('common.department'),
       dataIndex: 'department_name',
       key: 'addredepartment_namess',
       render: (text: string) => {
@@ -48,7 +49,7 @@ const WacthExportPerson = (props: PropsType) => {
       },
     },
     {
-      title: '职务',
+      title: t('common.job'),
       dataIndex: 'position_name',
       key: 'position_name',
       render: (text: string) => {
@@ -56,12 +57,12 @@ const WacthExportPerson = (props: PropsType) => {
       },
     },
     {
-      title: '电话',
+      title: t('common.phone'),
       dataIndex: 'phone',
       key: 'phone',
     },
     {
-      title: '邮箱',
+      title: t('mailbox'),
       dataIndex: 'email',
       key: 'email',
     },
@@ -70,13 +71,12 @@ const WacthExportPerson = (props: PropsType) => {
     props.isVisible && getDatalist()
   }, [props.isVisible])
   const getDatalist = async () => {
-    const res = await getStaffList({
-      search: {
-        all: 1,
-        project_id: '',
-        id: [1418, 713],
-      },
+    const res = await getStaffListApi({
+      all: 1,
+      project_id: '',
+      id: props.personData,
     })
+    console.log(res.list)
     setData(res.list)
   }
   return (

@@ -289,10 +289,7 @@ const Home = () => {
             },
           })
     if (res) {
-      getMessage({
-        msg: '保存成功',
-        type: 'success',
-      })
+      getMessage({ msg: t('common.saveSuccess'), type: 'success' })
       // 刷新视图的接口,不是跟新的name,不刷新回显的name
       if (type === 'add') {
         updateViewList({ project_id: projectId, use_type: 3 })
@@ -541,10 +538,7 @@ const Home = () => {
       },
     })
     if (res) {
-      getMessage({
-        msg: '保存成功',
-        type: 'success',
-      })
+      getMessage({ msg: t('common.saveSuccess'), type: 'success' })
       // 刷新视图的接口
       updateViewList({ project_id: projectId, use_type: 3 })
       dispatch(setSave(false))
@@ -752,7 +746,7 @@ const Home = () => {
                 onChange={e => {
                   setOptionVal(e)
                 }}
-                placeholder="请选择"
+                placeholder={t('common.pleaseSelect')}
                 allowClear={false}
                 value={optionVal}
                 list={viewDataList?.map(el => ({
@@ -793,7 +787,7 @@ const Home = () => {
         {/* 新建和编辑视图 1*/}
         <ViewDialog
           name=""
-          titleType={{ title: '另存为视图', type: 'add' }}
+          titleType={{ title: t('performance.saveView'), type: 'add' }}
           onConfirm={async (value, type) => {
             try {
               await onCreateView(value, type, '')

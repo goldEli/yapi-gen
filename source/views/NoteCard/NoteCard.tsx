@@ -279,7 +279,12 @@ const NoteCard = (props: any) => {
             }
           >
             <ColorBtn2>
-              <CommonIconFont type="display" /> <span>{t('all_read')}</span>
+              <CommonIconFont type="display" />{' '}
+              <span>
+                {values.unread_count === 0
+                  ? t('all_read')
+                  : `${values.unread_count}${t('unread')}`}
+              </span>
             </ColorBtn2>
           </Popover>
 

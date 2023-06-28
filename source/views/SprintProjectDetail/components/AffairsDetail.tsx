@@ -19,7 +19,7 @@ import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 
 interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
-  onUpdate?(): void
+  onUpdate?(value?: boolean): void
   isInfoPage?: boolean
 }
 
@@ -41,13 +41,13 @@ const AffairsDetail = (props: AffairsDetailProps) => {
     dom.scrollTop = dom.scrollHeight
   }
 
-  const onUpdate = () => {
+  const onUpdate = (value?: boolean) => {
     if (props.isInfoPage) {
       dispatch(
         getAffairsInfo({ projectId: projectInfo.id, sprintId: dId.current }),
       )
     } else {
-      props.onUpdate?.()
+      props.onUpdate?.(value)
     }
   }
 
@@ -66,7 +66,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       type: 'attachment',
       targetId: [obj],
     })
-    onUpdate()
+    onUpdate(true)
   }
 
   //   确认删除附件事件
@@ -77,7 +77,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       type: 'attachment',
       targetId,
     })
-    onUpdate()
+    onUpdate(true)
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
   }
 
@@ -105,7 +105,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       name: props.affairsInfo.name,
     }
     await updateEditor(params)
-    onUpdate()
+    onUpdate(true)
   }
 
   useEffect(() => {
