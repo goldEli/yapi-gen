@@ -42,6 +42,7 @@ const CreateSprintModal = (props: sprintProps) => {
   const [editData, setEditData] = useState<any>(null)
   const initNumber = useRef(0)
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
+  const inputRef = useRef<any>(null)
   const getTitle = (val: string) => {
     if (val === 'create') {
       return '新建冲刺'
@@ -149,8 +150,16 @@ const CreateSprintModal = (props: sprintProps) => {
           updateSprint()
         } else {
           open({
-            title: '更新冲刺',
-            okText: '更新',
+            title: getTitle(type),
+            okText:
+              (type === 'edit' || type === 'start') &&
+              editData?.status === 4 &&
+              editData?.story_count
+                ? '开始'
+                : type === 'update'
+                ? '更新'
+                : // eslint-disable-next-line no-undefined
+                  '编辑',
             children: (
               <div>子事务超出设置的冲刺日期范围，建议调整冲刺或事务日期</div>
             ),
@@ -217,6 +226,16 @@ const CreateSprintModal = (props: sprintProps) => {
     // 在这里执行你想要触发的事件
   }, [])
 
+  useEffect(() => {
+    console.log(1322222222222)
+
+    if (visible) {
+      setTimeout(() => {
+        inputRef?.current?.focus?.()
+      }, 500)
+    }
+  }, [visible])
+
   useAltSKeyPress(handleAltSKeyPress)
 
   return (
@@ -254,13 +273,20 @@ const CreateSprintModal = (props: sprintProps) => {
                 name="name"
                 rules={[{ required: true, message: '请输入冲刺名称' }]}
               >
-                <Input placeholder="新建的冲刺1" maxLength={50} />
+                <Input
+                  ref={inputRef}
+                  placeholder="新建的冲刺1"
+                  maxLength={50}
+                />
               </Form.Item>
               <Form.Item
                 label="持续时间"
                 name="group"
                 // eslint-disable-next-line no-undefined
-                initialValue={{ include: true, radio: 1, date: undefined }}
+                initialValue={{
+                  include: true,
+                  radio: 0,
+                }}
                 rules={[{ required: true, validator: onValidator }]}
               >
                 <ChooseDate initNumber={initNumber} />
