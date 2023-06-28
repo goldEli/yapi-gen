@@ -6,6 +6,7 @@ import CommonButton from './CommonButton'
 import { Editor } from '@xyfe/uikit'
 import { useTranslation } from 'react-i18next'
 import { noSysNotice } from '@/services/sysNotice'
+import { setReadApi } from '@/services/SiteNotifications'
 
 const Footer = styled.div`
   height: 80px;
@@ -94,6 +95,7 @@ const NoteModal = (props: any) => {
             type="primary"
             onClick={() => {
               props.onClose()
+              setReadApi([props.data.customData.id])
               if (checked) {
                 noSysNotice(props.data.customData.id)
               }
