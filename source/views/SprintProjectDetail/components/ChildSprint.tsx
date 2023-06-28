@@ -350,22 +350,24 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               title={`${
                 props.detail.child_story_statistics?.finish_percent
               }%已完成,${
-                (props.detail.child_story_statistics?.finish_percent || 0) +
-                (props.detail.child_story_statistics?.processing_percent || 0)
+                props.detail.child_story_statistics?.processing_percent || 0
               }%进行中,${
                 props.detail.child_story_statistics?.start_percent
               }%未完成`}
             >
               <ProgressWrap
                 percent={
-                  (props.detail.child_story_statistics?.finish_percent || 0) +
-                  (props.detail.child_story_statistics?.processing_percent || 0)
+                  props.detail.child_story_statistics?.processing_percent || 0
                 }
                 success={{
                   percent: props.detail.child_story_statistics?.finish_percent,
                   strokeColor: 'var(--primary-d1)',
                 }}
-                format={percent => `已完成${percent}%`}
+                format={() =>
+                  `已完成${
+                    props.detail.child_story_statistics?.finish_percent || 0
+                  }%`
+                }
                 trailColor="rgba(102, 136, 255, 0.1)"
                 strokeColor="rgba(102, 136, 255, 0.4)"
               />

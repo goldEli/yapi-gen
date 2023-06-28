@@ -23,7 +23,7 @@ import styled from '@emotion/styled'
 
 interface DetailDemand {
   detail: any
-  onUpdate(): void
+  onUpdate(value?: boolean): void
 }
 
 const DetailDemand = (props: DetailDemand) => {
@@ -55,7 +55,7 @@ const DetailDemand = (props: DetailDemand) => {
       type: 'attachment',
       targetId: [obj],
     })
-    props.onUpdate()
+    props.onUpdate(true)
   }
 
   const onDeleteConfirm = async () => {
@@ -67,7 +67,7 @@ const DetailDemand = (props: DetailDemand) => {
         targetId: files,
       })
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-      props.onUpdate()
+      props.onUpdate(true)
     } catch (error) {
       //
     }

@@ -376,6 +376,14 @@ const DemandDetailDrawer = () => {
     }
   }
 
+  // 操作后更新列表
+  const onOperationUpdate = (value?: boolean) => {
+    getDemandDetail('', demandIds)
+    if (!value) {
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    }
+  }
+
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
@@ -579,7 +587,7 @@ const DemandDetailDrawer = () => {
                     {i.key === 'detailInfo' && (
                       <DetailDemand
                         detail={drawerInfo}
-                        onUpdate={() => getDemandDetail('', demandIds)}
+                        onUpdate={onOperationUpdate}
                       />
                     )}
                     {i.key === 'detailDemands' && showState[i.key].isOpen && (
@@ -592,7 +600,7 @@ const DemandDetailDrawer = () => {
                       <BasicDemand
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
-                        onUpdate={() => getDemandDetail('', demandIds)}
+                        onUpdate={onOperationUpdate}
                       />
                     )}
                     {i.key === 'demandComment' && (
