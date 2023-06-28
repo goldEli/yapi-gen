@@ -1,13 +1,28 @@
 /* eslint-disable react/no-danger */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ColorBox, ColorBtn, ColorBtn2, Wrap1, Wrap2 } from './style'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Editor } from '@xyfe/uikit'
 import { useTranslation } from 'react-i18next'
 import { Popover } from 'antd'
+import { getReadMyAllSysNoticeNumber } from '@/services/sysNotice'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
+import IconFont from '@/components/IconFont'
+import { ListItem } from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 
-const ReadCard = () => {
+const ReadCard = (props: any) => {
+  const [value, setValue] = useState<any>({})
+  const init = async () => {
+    const data = await getReadMyAllSysNoticeNumber(props.id)
+    console.log(data, 'fffff')
+    setValue(data)
+  }
+
+  useEffect(() => {
+    init()
+  }, [props.id])
+
   return (
     <div
       style={{
@@ -41,7 +56,29 @@ const ReadCard = () => {
             borderRight: '1px solid #ebeced',
           }}
         >
-          0人未读
+          <div>{value?.unread ?? 0}人未读</div>
+          <div
+            style={{
+              overflow: 'scroll',
+              height: '245px',
+            }}
+          >
+            {value?.list
+              ?.filter((i: any) => i.read === 0)
+              .map((el: any) => {
+                console.log(el)
+
+                return (
+                  <div key={el.user.id}>
+                    <CommonUserAvatar
+                      name={el.user.name}
+                      fontSize={14}
+                      avatar={el.user.avatar}
+                    />
+                  </div>
+                )
+              })}
+          </div>
         </div>
         <div
           style={{
@@ -51,7 +88,29 @@ const ReadCard = () => {
             padding: '10px',
           }}
         >
-          5人已读
+          <div>{value?.read ?? 0}人已读</div>
+          <div
+            style={{
+              overflow: 'scroll',
+              height: '245px',
+            }}
+          >
+            {value?.list
+              ?.filter((i: any) => i.read === 1)
+              .map((el: any) => {
+                console.log(el)
+
+                return (
+                  <div key={el.user.id}>
+                    <CommonUserAvatar
+                      name={el.user.name}
+                      fontSize={14}
+                      avatar={el.user.avatar}
+                    />
+                  </div>
+                )
+              })}
+          </div>
         </div>
       </div>
     </div>
@@ -59,6 +118,8 @@ const ReadCard = () => {
 }
 
 const NoteCard = (props: any) => {
+  console.log(props, 'dddd')
+
   const [popoverVisible, setPopoverVisible] = useState(false)
 
   const [t] = useTranslation()
@@ -187,7 +248,7 @@ const NoteCard = (props: any) => {
             trigger="click"
             destroyTooltipOnHide
             getPopupContainer={n => (props.isShow ? n : document.body)}
-            content={ReadCard}
+            content={<ReadCard id={props.values.id} />}
           >
             <ColorBtn2>
               <CommonIconFont type="display" /> <span>{t('all_read')}</span>
