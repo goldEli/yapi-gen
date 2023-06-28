@@ -1,7 +1,7 @@
 import CommonModal from '@/components/CommonModal'
 import { Table } from 'antd'
 import { TableRow, TextTable } from '../Style'
-import { getStaffList } from '@/services/staff'
+import { getStaffListApi } from '@/services/staff'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -19,6 +19,7 @@ interface PropsType {
 const WacthExportPerson = (props: PropsType) => {
   const [t] = useTranslation()
   const [data, setData] = useState()
+  console.log(props.personData)
   const columns = [
     {
       title: '姓名',
@@ -70,13 +71,12 @@ const WacthExportPerson = (props: PropsType) => {
     props.isVisible && getDatalist()
   }, [props.isVisible])
   const getDatalist = async () => {
-    const res = await getStaffList({
-      search: {
-        all: 1,
-        project_id: '',
-        id: [1418, 713],
-      },
+    const res = await getStaffListApi({
+      all: 1,
+      project_id: '',
+      id: props.personData,
     })
+    console.log(res.list)
     setData(res.list)
   }
   return (

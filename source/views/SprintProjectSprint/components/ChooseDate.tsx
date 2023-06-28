@@ -100,7 +100,6 @@ const ChooseDate = (props: any) => {
         ...value,
         date: value.date ? value.date : null,
       }
-
       setParams(temp)
       if (initNumber.current === 0) {
         onChange(temp)

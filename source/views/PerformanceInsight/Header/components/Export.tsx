@@ -3,7 +3,7 @@ import CommonModal from '@/components/CommonModal'
 import { useState } from 'react'
 import { MsgText, Row, Text, TextColor } from '../Style'
 import WacthExportPerson from './WacthExportPerson'
-
+import { useTranslation } from 'react-i18next'
 interface PropsType {
   title: string
   isVisible: boolean
@@ -15,6 +15,8 @@ interface PropsType {
 
 const Export = (props: PropsType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [t] = useTranslation()
+  console.log(props.personData, 'props.personData')
   return (
     <>
       <CommonModal
@@ -29,27 +31,27 @@ const Export = (props: PropsType) => {
             size={16}
             color="var(--function-warning)"
           />
-          <span className="text">
-            将按照筛选结果导出Excel，如需其他结果请重新筛选
-          </span>
+          <span className="text">{t('performance.exportMsg')}</span>
         </MsgText>
         <Row>
-          <span>导出周期</span>
+          <span> {t('performance.exportMsg1')}</span>
           <TextColor>{props.time}</TextColor>
         </Row>
         {props.personData?.length >= 1 && (
           <Row>
             {props.personData?.length ? (
-              <span>已选 ({props.personData?.length}人)</span>
+              <span>
+                {t('performance.select')} ({props.personData?.length}人)
+              </span>
             ) : (
-              <span>已选</span>
+              <span>{t('performance.select')}</span>
             )}
             <Text
               onClick={() => {
                 props.onClose(), setIsOpen(true)
               }}
             >
-              查看成员{' '}
+              {t('performance.watchMenber')}
               <CommonIconFont
                 type={'right'}
                 size={16}
@@ -61,7 +63,7 @@ const Export = (props: PropsType) => {
       </CommonModal>
       <WacthExportPerson
         personData={props.personData}
-        title="查看成员"
+        title={t('performance.watchMenber')}
         isVisible={isOpen}
         onConfirm={() => setIsOpen(false)}
         onClose={() => setIsOpen(false)}
