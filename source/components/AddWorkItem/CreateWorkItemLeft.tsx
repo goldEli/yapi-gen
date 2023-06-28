@@ -372,14 +372,18 @@ const CreateDemandLeft = (props: Props) => {
   const computedCategory = () => {
     let result: any = []
     if (params?.type) {
-      // type=7的时候返回事务下所有类型，否则返回相应的
+      // type=7的时候返回事务下除子任务的所有类型，否则返回相应的
       result = props.allCategoryList?.filter((i: any) =>
         params.type === 7
-          ? [3, 4, 5, 6].includes(i.work_type) && i.status === 1
+          ? [3, 4, 5].includes(i.work_type) && i.status === 1
           : i.work_type === params.type && i.status === 1,
       )
     } else {
-      result = props.allCategoryList?.filter((i: any) => i.status === 1)
+      result = props.allCategoryList?.filter((i: any) =>
+        projectInfo.projectType === 1
+          ? i.status === 1
+          : [3, 4, 5].includes(i.work_type) && i.status === 1,
+      )
     }
     return result
   }
@@ -705,31 +709,6 @@ const CreateDemandLeft = (props: Props) => {
               }}
               bordered
             />
-            {/* {categoryObj?.id} */}
-            {/* <CustomSelect
-              onSelect={onSelectCategory}
-              onClear={onClearCategory}
-              placeholder={t('common.selectType')}
-              allowClear
-              showArrow
-              getPopupContainer={(node: any) => node}
-              showSearch
-              value={categoryObj?.id}
-              disabled={!props.projectId}
-            >
-              {computedCategory()?.map((i: any) => {
-                return (
-                  <Select.Option value={i.id} key={i.id} label={i.name}>
-                    <MoreOptions
-                      type="project"
-                      name={i.name}
-                      dec={i.dec}
-                      img={i.category_attachment}
-                    />
-                  </Select.Option>
-                )
-              })}
-            </CustomSelect> */}
           </Form.Item>
         </div>
         <Form.Item

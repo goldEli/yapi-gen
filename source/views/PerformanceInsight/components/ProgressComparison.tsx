@@ -4,7 +4,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import HeaderAll from './HeaderAll'
 import { PersonText, TitleCss, Col, Line, TableStyle } from '../Header/Style'
 import { ReactElement, useEffect, useState } from 'react'
-
+import { useTranslation } from 'react-i18next'
 import Sort from '@/components/Sort'
 import Table from './Table'
 import { Spin, Tooltip } from 'antd'
@@ -113,6 +113,7 @@ const ProgressComparison = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [loading, setLoading] = useState(false)
+  const [t] = useTranslation()
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -909,9 +910,9 @@ const ProgressComparison = (props: Props) => {
         />
         {/* 导出成功 */}
         <ExportSuccess
-          title={'导出成功'}
+          title={t('performance.exportSuccess')}
           notCancel={true}
-          text={'Excel导出成功，可在本地打开文件查看'}
+          text={t('performance.exportSuccessMsg')}
           isVisible={isVisibleSuccess}
           onConfirm={() => {
             setIsVisibleSuccess(false)
