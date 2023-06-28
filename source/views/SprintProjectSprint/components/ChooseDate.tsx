@@ -120,12 +120,10 @@ const ChooseDate = (props: any) => {
             setParams({
               ...params,
               include: checked,
-              date: [moment(tomorrow), getDay(params?.radio, checked)],
-            })
-            onChange({
-              ...params,
-              include: checked,
-              date: [moment(tomorrow), getDay(params?.radio, checked)],
+              [params?.radio ? 'date' : '']: [
+                moment(tomorrow),
+                getDay(params?.radio, checked),
+              ],
             })
           }}
         />
