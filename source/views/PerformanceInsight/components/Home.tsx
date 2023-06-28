@@ -139,7 +139,9 @@ const Home = () => {
     store => store.performanceInsight,
   )
   const [t] = useTranslation()
-  const [projectId, setProjectId] = useState(0)
+  const [projectId, setProjectId] = useState(
+    paramsData?.projectId ? paramsData?.projectId : 0,
+  )
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
   const [charts1, setCharts1] = useState<Models.Efficiency.ChartBar>()
