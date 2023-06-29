@@ -9,7 +9,7 @@ export const Title = styled.div`
 export const Title2 = styled.div`
   height: 20px;
   font-size: 12px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   font-weight: 400;
   color: var(--neutral-n3);
   line-height: 20px;

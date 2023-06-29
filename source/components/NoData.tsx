@@ -47,6 +47,7 @@ const NoData = (props: Props) => {
             fontSize: 14,
             marginTop: 24,
             textAlign: 'center',
+            fontFamily: 'SiYuanRegular',
           }}
         >
           {props.haveFilter ? t('version2.noDataFilter') : props?.subText}

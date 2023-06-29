@@ -75,7 +75,7 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
   }
   .submitTimeText {
     font-size: 12px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: #969799;
     margin-left: 12px;
@@ -84,7 +84,7 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
     display: flex;
     align-items: center;
     font-size: 12px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: ${(props: any) => (props.isCanImport ? '#646566' : '#bbbdbf')};
     cursor: ${(props: any) => (props.isCanImport ? 'pointer' : 'not-allowed')};

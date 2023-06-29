@@ -109,7 +109,7 @@ const HightChartMainPie = (props: {
         // eslint-disable-next-line
         const _this: any = this
         return `<div style='
-        fontWeight: 400;fontFamily: MiSans-Regular, MiSans; !important;fontSize: 14px;color:#646566;display:flex; width: 204px;height:26px;lineHeight:14px;paddingBottom:2px;whiteSpace: nowrap; overflow: hidden; textOverflow: ellipsis'>${_this?.name}: ${_this.y}%</div>`
+        fontWeight: 400;fontFamily: SiYuanRegular; !important;fontSize: 14px;color:#646566;display:flex; width: 204px;height:26px;lineHeight:14px;paddingBottom:2px;whiteSpace: nowrap; overflow: hidden; textOverflow: ellipsis'>${_this?.name}: ${_this.y}%</div>`
       },
     },
     plotOptions: {
