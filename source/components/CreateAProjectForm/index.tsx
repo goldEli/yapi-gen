@@ -734,6 +734,7 @@ const CreateAProjectForm = () => {
                   <Form.Item
                     label={<FormTitleSmall text={t('version2.projectGroup')} />}
                     name="groups"
+                    initialValue={groupId ? [groupId] : undefined}
                   >
                     <CustomSelect
                       placeholder={t('common.pleaseSelect')}
