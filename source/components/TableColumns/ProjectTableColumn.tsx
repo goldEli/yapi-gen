@@ -135,6 +135,7 @@ export const useDynamicColumns = (state: any) => {
               item={record}
               onUpdate={() => onUpdate(record)}
               isDemandName
+              isBug={state.type === 2}
             >
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
@@ -264,6 +265,7 @@ export const useDynamicColumns = (state: any) => {
             keyText="iterate_id"
             item={record}
             onUpdate={() => onUpdate(record)}
+            isBug={state.type === 2}
           >
             <HiddenText>
               <OmitText
@@ -292,6 +294,7 @@ export const useDynamicColumns = (state: any) => {
             keyText="class_id"
             item={record}
             onUpdate={() => onUpdate(record, true)}
+            isBug={state.type === 2}
           >
             <HiddenText>
               <OmitText
@@ -320,6 +323,7 @@ export const useDynamicColumns = (state: any) => {
             defaultText={text?.split(';') || []}
             item={record}
             onUpdate={() => onUpdate(record)}
+            isBug={state.type === 2}
           >
             <HiddenText>
               <OmitText
@@ -364,6 +368,7 @@ export const useDynamicColumns = (state: any) => {
             keyText="users"
             item={record}
             onUpdate={() => onUpdate(record)}
+            isBug={state.type === 2}
           >
             {record?.usersInfo.length > 0 && (
               <MultipleAvatar
@@ -437,6 +442,7 @@ export const useDynamicColumns = (state: any) => {
             keyText="copysend"
             item={record}
             onUpdate={() => onUpdate(record)}
+            isBug={state.type === 2}
           >
             <MultipleAvatar
               max={3}
@@ -475,6 +481,7 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
             value={['datetime']}
+            isBug={state.type === 2}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -497,6 +504,7 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
             value={['datetime']}
+            isBug={state.type === 2}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -535,6 +543,7 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
             projectId={state.projectId}
+            isBug={state.type === 2}
           >
             <Tooltip title={text} getPopupContainer={node => node}>
               <span className="controlMaxWidth">{text ? text : '--'}</span>
@@ -575,6 +584,7 @@ export const useDynamicColumns = (state: any) => {
             keyText="discovery_version"
             item={record}
             onUpdate={() => onUpdate(record)}
+            isBug={state.type === 2}
           >
             <HiddenText>
               <OmitText
@@ -626,6 +636,7 @@ export const useDynamicColumns = (state: any) => {
               remarks={currentFields?.remarks}
               isCustom
               defaultTextValues={text?.true_value}
+              isBug={state.type === 2}
             >
               <span>{getCustomNormalValue(currentFields?.attr, text)}</span>
             </TableQuickEdit>

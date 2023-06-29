@@ -113,7 +113,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
         >
           <Form.Item
             rules={[{ required: true, message: '' }]}
-            label={<LabelTitle title={t('name1')} />}
+            label={t('name1')}
             name="name"
           >
             <Input

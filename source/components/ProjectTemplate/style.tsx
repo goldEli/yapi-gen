@@ -9,7 +9,7 @@ export const Title = styled.div`
 export const Title2 = styled.div`
   height: 20px;
   font-size: 12px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   font-weight: 400;
   color: var(--neutral-n3);
   line-height: 20px;
@@ -20,7 +20,7 @@ export const Small = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.8s;
+  transition: all 0.5s;
   :hover {
     border: 1px solid var(--primary-d2);
     transform: translateY(-10px);

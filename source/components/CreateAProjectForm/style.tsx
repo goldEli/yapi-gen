@@ -14,7 +14,7 @@ export const CoverAreaWrap = styled.div`
   box-sizing: content-box;
   width: 368px;
   padding-right: 24px;
-  border-right: 1px solid var(--neutral-n6-d2);
+  /* border-right: 1px solid var(--neutral-n6-d2); */
 `
 
 export const CoverArea = styled.div`

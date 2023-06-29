@@ -129,11 +129,11 @@ const DndKitTable = (props: any) => {
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+    'b/transaction/update',
   )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
+    'b/transaction/delete',
   )
 
   // 获取长故事列表
@@ -294,6 +294,8 @@ const DndKitTable = (props: any) => {
 
   const columns: TableColumnProps<any>[] = [
     {
+      width: 48,
+      align: 'center',
       render: (text: any, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>

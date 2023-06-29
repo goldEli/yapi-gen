@@ -202,10 +202,10 @@ const slice = createSlice({
       // 获取目标数据
       const destinationData = state.unassignStatusList
       // 源移除的卡片数据
-      // 源移除的卡片数据
       const [removed] = sourceData?.status?.splice(source.index, 1) ?? []
       // 移除的卡片数据插入目标中
       if (removed) {
+        removed.attachment_path = sourceData?.attachment_path
         destinationData?.splice(destination.index, 0, removed)
       }
     },

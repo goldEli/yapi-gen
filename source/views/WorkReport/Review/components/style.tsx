@@ -254,7 +254,7 @@ export const ContentHeadWrap = styled.div`
   }
   .submitTimeText {
     font-size: 12px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: #969799;
     margin-left: 12px;

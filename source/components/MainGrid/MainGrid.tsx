@@ -42,7 +42,7 @@ const MainGrid = (props: Props) => {
         `${
           item.defaultHomeMenu
             ? item.defaultHomeMenu
-            : '/SprintProjectManagement/KanBan'
+            : '/SprintProjectManagement/Affair'
         }?data=${params}`,
       )
       return

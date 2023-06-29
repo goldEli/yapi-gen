@@ -65,7 +65,7 @@ const RemoveBox = styled.div`
   display: flex;
   align-items: center;
   padding-left: 16px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
 `
 const MoreDropdown = (props: DropDownProps) => {
   const [isVisible, setIsVisible] = useState(false)

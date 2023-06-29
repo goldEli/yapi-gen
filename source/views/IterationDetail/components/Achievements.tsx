@@ -191,6 +191,7 @@ const Achievements = (props: Props) => {
         <div className={labelWrap}>
           <span className={label}>{t('common.attachment') as string}</span>
           <UploadAttach
+            power
             defaultList={attachList}
             onChangeAttachment={onChangeAttachment}
             onBottom={onBottom}
