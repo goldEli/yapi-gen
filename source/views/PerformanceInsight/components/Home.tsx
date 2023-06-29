@@ -142,9 +142,26 @@ const Home = () => {
     paramsData?.projectId ? paramsData?.projectId : 0,
   )
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
-  const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
-  const [charts1, setCharts1] = useState<Models.Efficiency.ChartBar>()
-  const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
+  const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>({
+    chartType: '',
+    yData: [],
+    seriesData: [],
+    time: '',
+    growth_rate: 0,
+  })
+  const [charts1, setCharts1] = useState<Models.Efficiency.ChartBar>({
+    chartType: '',
+    yData: [],
+    seriesData: [],
+    time: '',
+    growth_rate: 0,
+  })
+  const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>({
+    growth_rate: 0,
+    time: '',
+    yData: [],
+    seriesData: [],
+  })
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
   const [projectViewIds, setProjectViewIds] = useState<number[] | []>([])
@@ -178,7 +195,6 @@ const Home = () => {
       getViewList({ project_id: 0, use_type: 3 })
     }
   }, [])
-  console.log(headerParmas, 'projectId')
   const init = () => {
     // 缺陷现状和工作项现状
     getWorkList()
@@ -207,7 +223,6 @@ const Home = () => {
     } else {
       filterVal = res.find(el => el.is_default === 1)
     }
-    console.log(filterVal, 'filterVal')
     setOptionVal(filterVal?.id || 0)
     setViewTitle(filterVal?.name || '')
     setDefalutConfig(filterVal)
@@ -352,7 +367,6 @@ const Home = () => {
   // 缺陷现状和工作项现状
   //  '周期时间：two_week,four_week,one_month,three_month,six_month',
   const getWorkList = async () => {
-    console.log(paramsData?.projectId, 'paramsData?.projectId')
     setLoading(true)
     const res = await getStatisticsTotal({
       project_ids: headerParmas.projectIds
@@ -397,6 +411,7 @@ const Home = () => {
       sort: str,
     })
     setCharts1({
+      growth_rate: res.growth_rate,
       time: `${res.start_time} ~ ${res.end_time}`,
       chartType: str,
       yData: res.list.map(el => el.user_name),
@@ -425,6 +440,7 @@ const Home = () => {
           : 'one_month',
     })
     setCharts4({
+      growth_rate: 0,
       time: `${res.start_time} ~ ${res.end_time}`,
       chartType: str,
       yData: res.list.map(el => el.user_name),
@@ -480,6 +496,7 @@ const Home = () => {
     })
     const time = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
     setCharts2({
+      growth_rate: res.work_completion_period.growth_rate,
       time: `${res.work_completion_period.start_time} ~ ${res.work_completion_period.end_time}`,
       yData: res.work_completion_period.list.map((el, i) =>
         el.is_current ? '当前' : `第${time[i]}周期`,
