@@ -307,7 +307,7 @@ const Sortable = (props: any) => {
                         }
                       </div>
                       <div style={{ flex: 1 }}>
-                        {child?.is_customize === 2 ? '系统字段' : '自定义字段'}
+                        {child?.isCustomize === 2 ? '系统字段' : '自定义字段'}
                       </div>
                     </div>
                     <RightOperate>

@@ -24,7 +24,6 @@ const LabelTitle = (props: any) => {
     >
       <span
         style={{
-          fontFamily: 'SiYuanMedium',
           fontSize: '14px',
         }}
       >
@@ -42,6 +41,9 @@ const DelBtn = styled.div`
   left: 26px;
   cursor: pointer;
   z-index: 100;
+  &:hover {
+    color: var(--primary-d2);
+  }
 `
 
 interface EditColumnModalProps {}
@@ -118,14 +120,24 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
           </Form.Item>
           {/* max_num */}
           <Form.Item
-            extra={t(
-              'highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column',
-            )}
+            extra={
+              <div
+                style={{
+                  marginTop: 8,
+                  fontSize: 12,
+                  color: 'var(--neutral-n3)',
+                }}
+              >
+                {t(
+                  'highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column',
+                )}
+              </div>
+            }
             rules={[{ required: true, message: '' }]}
             label={<LabelTitle title={t('greatest_amount')} />}
             name="max_num"
           >
-            <InputNumber min={0} defaultValue={1} />
+            <InputNumber min={0} defaultValue={1} style={{ width: '100%' }} />
           </Form.Item>
         </Form>
       </div>

@@ -71,7 +71,11 @@ const Left = styled.div`
 const IconWrap = styled(IconFont)`
   font-size: 20px;
   color: var(--neutral-n1-d1);
+  &:hover svg {
+    color: var(--primary-d2);
+  }
 `
+
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const { columnList } = useKanBanData()
   const item = columnList?.[props.index ?? 0]

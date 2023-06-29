@@ -7,11 +7,7 @@ import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  setProjectFlawInfo,
-  setProjectInfo,
-  setProjectInfoValues,
-} from '@store/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
@@ -51,7 +47,7 @@ const ProjectDetailSide = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
-  const { projectInfo, projectFlawInfo } = useSelector(store => store.project)
+  const { projectInfo } = useSelector(store => store.project)
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
   const routerPath = useLocation()
   const navigate = useNavigate()
@@ -65,10 +61,6 @@ const ProjectDetailSide = () => {
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
               String(i.group_name).includes('需求'),
-            ).length || projectFlawInfo?.isPublic === 1
-          ? true
-          : projectFlawInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('需求'),
             ).length,
     },
     {
@@ -80,10 +72,6 @@ const ProjectDetailSide = () => {
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
               String(i.group_name).includes('迭代'),
-            ).length || projectFlawInfo?.isPublic === 1
-          ? true
-          : projectFlawInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('迭代'),
             ).length,
     },
     {
@@ -94,10 +82,6 @@ const ProjectDetailSide = () => {
         projectInfo?.isPublic === 1
           ? true
           : projectInfo?.projectPermissions?.filter(
-              (i: any) => i.identity === 'b/project/kanban',
-            ).length || projectFlawInfo?.isPublic === 1
-          ? true
-          : projectFlawInfo?.projectPermissions?.filter(
               (i: any) => i.identity === 'b/project/kanban',
             ).length,
     },
@@ -116,10 +100,6 @@ const ProjectDetailSide = () => {
         projectInfo?.isPublic === 1
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('缺陷'),
-            ).length || projectFlawInfo?.isPublic === 1
-          ? true
-          : projectFlawInfo?.projectPermissions?.filter((i: any) =>
               String(i.group_name).includes('缺陷'),
             ).length,
     },
@@ -255,13 +235,13 @@ const ProjectDetailSide = () => {
   }
 
   // 获取项目信息
-  const getInfo = async (isBug?: number) => {
-    const result = await getProjectInfo({ projectId, isBug })
-    if (isBug === 1) {
-      dispatch(setProjectFlawInfo(result))
-    } else {
-      dispatch(setProjectInfo(result))
-    }
+  const getInfo = async () => {
+    getProjectInfoValuesData()
+    const result = await getProjectInfo({
+      projectId,
+      isBug: location.pathname.includes('/Defect') ? 1 : 2,
+    })
+    dispatch(setProjectInfo(result))
   }
 
   //   点击需求设置
@@ -292,9 +272,7 @@ const ProjectDetailSide = () => {
   }
 
   useEffect(() => {
-    // 区分是缺陷还是需求
-    getInfo(location.pathname.includes('/Defect') ? 1 : 2)
-    getProjectInfoValuesData()
+    getInfo()
     if ([0, 1, 2].includes(paramsData?.type)) {
       onChangeSet()
     }
@@ -323,10 +301,7 @@ const ProjectDetailSide = () => {
     const params = encryptPhp(
       JSON.stringify({ id: projectId, type: 'iteration' }),
     )
-    // 缺陷单独存储项目信息
-    if (path.includes('Defect')) {
-      getInfo(1)
-    }
+    getInfo()
 
     if (key === 'Report') {
       const paramsData = encryptPhp(
@@ -381,8 +356,6 @@ const ProjectDetailSide = () => {
 
   useEffect(() => {
     const key = paramsData.pageIdx
-    console.log('key----', key)
-    // debugger
     if (!key) {
       projectSide.current.style.width = '100%'
       projectSetCategory.current.style.width = '0px'
@@ -397,8 +370,6 @@ const ProjectDetailSide = () => {
       projectSetSide.current.style.display = 'block'
       return
     }
-    // debugger
-    console.log('key----', 1)
     projectSetSide.current.style.width = '0px'
     projectSide.current.style.width = '0px'
     projectSetCategory.current.style.width = '100%'

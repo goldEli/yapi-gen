@@ -6,7 +6,6 @@ import { getParentList, getProjectInfoValuesStore } from './project.thunk'
 
 export interface CounterState {
   projectInfo: any
-  projectFlawInfo: any
   workList: any
   colorList: any[]
   isChangeProject: number | string
@@ -43,7 +42,6 @@ export interface CounterState {
 
 const initialState: CounterState = {
   projectInfo: {},
-  projectFlawInfo: {},
   workList: {
     list: undefined,
   },
@@ -95,10 +93,6 @@ export const projectSlice = createSlice({
     // 全局使用项目信息
     setProjectInfo: (state: any, action) => {
       state.projectInfo = action.payload
-    },
-    // 全局使用项目信息 - 缺陷
-    setProjectFlawInfo: (state: any, action) => {
-      state.projectFlawInfo = action.payload
     },
     // 关于项目的下拉数据
     setProjectInfoValues: (state: any, action) => {
@@ -195,7 +189,6 @@ export const projectSlice = createSlice({
 
 export const {
   setProjectInfo,
-  setProjectFlawInfo,
   setWorkList,
   setIsChangeProject,
   setFilterParamsModal,
