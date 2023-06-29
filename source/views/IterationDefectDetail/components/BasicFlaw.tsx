@@ -60,13 +60,13 @@ const BasicFlaw = (props: Props) => {
   const [schedule, setSchedule] = useState(props.detail?.schedule || 0)
   const { basicFieldList } = useSelector(store => store.global)
   const { userInfo } = useSelector(store => store.user)
-  const { projectFlawInfo } = useSelector(store => store.project)
+  const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
   const { affairsDetailDrawer } = useSelector(store => store.affairs)
 
   const isCanEdit =
-    projectFlawInfo.projectPermissions?.length > 0 &&
-    projectFlawInfo.projectPermissions?.filter(
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter(
       (i: any) => i.identity === 'b/flaw/update',
     )?.length > 0
 

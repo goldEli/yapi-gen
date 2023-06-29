@@ -68,8 +68,9 @@ const IterationDefectDetail = () => {
   const [resultCategory, setResultCategory] = useState([])
   const [tabActive, setTabActive] = useState('1')
   const { flawInfo } = useSelector(store => store.flaw)
-  const { projectInfoValues, isUpdateAddWorkItem, projectFlawInfo } =
-    useSelector(store => store.project)
+  const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
+    store => store.project,
+  )
   const [currentIndex, setCurrentIndex] = useState(0)
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
@@ -78,7 +79,7 @@ const IterationDefectDetail = () => {
   const spanDom = useRef<HTMLSpanElement>(null)
 
   const hasEdit = getIsPermission(
-    projectFlawInfo?.projectPermissions,
+    projectInfo?.projectPermissions,
     'b/flaw/update',
   )
 
