@@ -14,9 +14,9 @@ const primary = css`
   background: var(--auxiliary-b1) !important;
   color: var(--auxiliary-text-t1-d1) !important;
   border: 1px solid transparent !important;
-  span {
+  /* span {
     color: var(--auxiliary-text-t1-d1) !important;
-  }
+  } */
   &:hover {
     background: var(--auxiliary-b2) !important;
     color: var(--auxiliary-text-t1-d1) !important;
@@ -24,6 +24,11 @@ const primary = css`
   &:active {
     background: var(--auxiliary-b3) !important;
     color: var(--auxiliary-text-t1-d1) !important;
+  }
+  &:disabled {
+    background: var(--auxiliary-b10) !important;
+    color: var(--auxiliary-t4) !important;
+    cursor: no-drop !important;
   }
 `
 
@@ -39,6 +44,11 @@ const light = css`
     background: var(--auxiliary-b5) !important;
     color: var(--auxiliary-text-t2-d2) !important;
   }
+  &:disabled {
+    background: var(--auxiliary-b10) !important;
+    color: var(--auxiliary-t4) !important;
+    cursor: no-drop !important;
+  }
 `
 const secondary = css`
   background: var(--auxiliary-b4) !important;
@@ -51,6 +61,11 @@ const secondary = css`
   &:active {
     background: var(--auxiliary-b6) !important;
     color: var(--auxiliary-text-t2-d2) !important;
+  }
+  &:disabled {
+    background: var(--auxiliary-b10) !important;
+    color: var(--auxiliary-t4) !important;
+    cursor: no-drop !important;
   }
 `
 const danger = css`
@@ -65,6 +80,11 @@ const danger = css`
     background: var(--auxiliary-b9) !important;
     color: var(--auxiliary-text-t3) !important;
   }
+  &:disabled {
+    background: var(--auxiliary-b10) !important;
+    color: var(--auxiliary-t4) !important;
+    cursor: no-drop !important;
+  }
 `
 const primaryText = css`
   background: transparent !important;
@@ -78,6 +98,11 @@ const primaryText = css`
     background: var(--auxiliary-b5) !important;
     color: var(--auxiliary-text-t2-d2) !important;
   }
+  &:disabled {
+    background: var(--auxiliary-b10) !important;
+    color: var(--auxiliary-t4) !important;
+    cursor: no-drop !important;
+  }
 `
 const secondaryText = css`
   background: transparent !important;
@@ -90,6 +115,11 @@ const secondaryText = css`
   &:active {
     background: var(--auxiliary-b5) !important;
     color: var(--auxiliary-text-t2-d2) !important;
+  }
+  &:disabled {
+    background: var(--auxiliary-b10) !important;
+    color: var(--auxiliary-t4) !important;
+    cursor: no-drop !important;
   }
 `
 const icon = css`
@@ -108,6 +138,11 @@ const icon = css`
     background: var(--auxiliary-b5) !important;
     color: var(--auxiliary-text-t2-d2) !important;
     border: 1px solid transparent !important;
+  }
+  &:disabled {
+    background: var(--auxiliary-b10) !important;
+    color: var(--auxiliary-t4) !important;
+    cursor: no-drop !important;
   }
 `
 
@@ -164,18 +199,12 @@ const CommonButton = (props: Props) => {
     border-radius: 6px;
     padding: 0 16px;
     box-sizing: border-box;
-    /* font-size: var(--font14); */
     cursor: pointer;
     display: flex;
     align-items: center;
     span:first-child {
       display: flex;
       align-items: center;
-    }
-    &:disabled {
-      background: var(--auxiliary-b10) !important;
-      color: var(--auxiliary-t4) !important;
-      cursor: no-drop !important;
     }
   `
 

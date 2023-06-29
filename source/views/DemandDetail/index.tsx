@@ -627,14 +627,17 @@ const DemandDetail = () => {
           </Popover>
         </Tooltip>
         <DetailText>
-          <span
-            className="name"
-            ref={spanDom}
-            contentEditable
-            onBlur={onNameConfirm}
-          >
-            {demandInfo.name}
-          </span>
+          {!hasEdit && (
+            <span
+              className="name"
+              ref={spanDom}
+              contentEditable
+              onBlur={onNameConfirm}
+            >
+              {demandInfo.name}
+            </span>
+          )}
+          {hasEdit && <span className="name">{demandInfo.name}</span>}=
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>

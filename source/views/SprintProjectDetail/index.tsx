@@ -581,14 +581,17 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           </Popover>
         </Tooltip>
         <DetailText>
-          <span
-            className="name"
-            ref={spanDom}
-            contentEditable
-            onBlur={onNameConfirm}
-          >
-            {affairsInfo.name}
-          </span>
+          {!hasEdit && (
+            <span
+              className="name"
+              ref={spanDom}
+              contentEditable
+              onBlur={onNameConfirm}
+            >
+              {affairsInfo.name}
+            </span>
+          )}
+          {hasEdit && <span className="name">{affairsInfo.name}</span>}
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>

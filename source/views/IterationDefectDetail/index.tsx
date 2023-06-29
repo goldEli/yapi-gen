@@ -19,7 +19,7 @@ import {
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Form, MenuProps, Popover, Tabs, TabsProps, Tooltip } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import CustomSelect from '@/components/CustomSelect'
@@ -34,6 +34,7 @@ import {
   deleteFlaw,
   updateFlawCategory,
   updateFlawStatus,
+  updateFlawTableParams,
 } from '@/services/flaw'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { copyLink, getIsPermission, getParamsData } from '@/tools'
@@ -44,11 +45,13 @@ import Circulation from './components/Circulation'
 import RelationStories from './components/RelationStories'
 import {
   setAddWorkItemModal,
+  setIsUpdateAddWorkItem,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
 } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
+import { setFlawInfo } from '@store/flaw'
 
 const IterationDefectDetail = () => {
   const navigate = useNavigate()
@@ -72,6 +75,7 @@ const IterationDefectDetail = () => {
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+  const spanDom = useRef<HTMLSpanElement>(null)
 
   const hasEdit = getIsPermission(
     projectFlawInfo?.projectPermissions,
@@ -81,6 +85,35 @@ const IterationDefectDetail = () => {
   // 复制标题
   const onCopy = () => {
     copyLink(flawInfo.name, '复制成功！', '复制失败！')
+  }
+
+  // 快捷修改名称
+  const onNameConfirm = async () => {
+    const value = spanDom.current?.innerText
+    if ((value?.length || 0) <= 0) {
+      getMessage({ type: 'warning', msg: '名称不能为空' })
+      return
+    }
+    if ((value?.length || 0) > 100) {
+      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      return
+    }
+    if (value !== flawInfo.name) {
+      await updateFlawTableParams({
+        projectId: flawInfo.projectId,
+        id: flawInfo.id,
+        otherParams: {
+          name: value,
+        },
+      })
+      getMessage({ type: 'success', msg: '修改成功' })
+      // 提交名称
+      setFlawInfo({
+        ...flawInfo,
+        name: value,
+      })
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    }
   }
 
   const onUpdate = () => {
@@ -566,7 +599,17 @@ const IterationDefectDetail = () => {
           </Popover>
         </Tooltip>
         <DetailText>
-          <span className="name">{flawInfo.name}</span>
+          {!hasEdit && (
+            <span
+              className="name"
+              ref={spanDom}
+              contentEditable
+              onBlur={onNameConfirm}
+            >
+              {flawInfo.name}
+            </span>
+          )}
+          {hasEdit && <span className="name">{flawInfo.name}</span>}
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
