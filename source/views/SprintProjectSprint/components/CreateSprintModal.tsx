@@ -16,6 +16,8 @@ import ChooseDate from './ChooseDate'
 import useAltSKeyPress from '@/hooks/useAltSKeyPress/useAltSKeyPress'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import styled from '@emotion/styled'
+import { getProjectInfoValues } from '@/services/project'
+import { setProjectInfoValues } from '@store/project'
 
 interface sprintProps {
   type: 'create' | 'start' | 'edit' | 'update'
@@ -75,6 +77,14 @@ const CreateSprintModal = (props: sprintProps) => {
       form.resetFields()
     }, 500)
   }
+  // 更新事务页面的冲刺数据
+  const updateSprintList = async () => {
+    const [projectInfoData] = await Promise.all([
+      getProjectInfoValues({ projectId }),
+    ])
+
+    dispatch(setProjectInfoValues(projectInfoData))
+  }
 
   const onConfirm = async () => {
     const value = await form.validateFields()
@@ -97,6 +107,7 @@ const CreateSprintModal = (props: sprintProps) => {
             msg: '创建成功',
             type: 'success',
           })
+          updateSprintList()
           onClear(true)
         } else {
           getMessage({
