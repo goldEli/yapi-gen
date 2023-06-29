@@ -20,7 +20,7 @@ export const Small = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.8s;
+  transition: all 0.5s;
   :hover {
     border: 1px solid var(--primary-d2);
     transform: translateY(-10px);

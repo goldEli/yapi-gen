@@ -11,7 +11,7 @@ export const Side = styled.div<{ op: boolean }>`
   top: 0; */
   height: 100%;
   background-color: var(--neutral-n8);
-  transition: all 1s;
+  transition: all 0.5s;
   flex-shrink: 0;
   box-sizing: border-box;
   padding: 24px;

@@ -11,7 +11,7 @@ export const Wrap = styled.div<{ bb: boolean; type: boolean }>`
   box-sizing: border-box;
   padding: 24px;
   position: relative;
-  transition: all 0.8s;
+  transition: all 0.5s;
   :hover {
     border-top: 2px solid ${props => (props.type ? '#8DD2F6' : '#7773fe')};
     transform: translateY(-10px);

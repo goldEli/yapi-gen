@@ -121,7 +121,7 @@ const CreateActionBar = (props: Props) => {
   return (
     <WrapRight>
       <Space size={8}>
-        <SelectWrapBedeck>
+        <SelectWrapBedeck style={{ marginRight: '4px' }}>
           <span style={{ margin: '0 16px', fontSize: '14px' }}>项目类型</span>
 
           <SelectWrap
