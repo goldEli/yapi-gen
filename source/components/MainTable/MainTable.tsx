@@ -472,7 +472,7 @@ const MainTable = (props: Props) => {
             `${
               row.defaultHomeMenu
                 ? row.defaultHomeMenu
-                : '/SprintProjectManagement/KanBan'
+                : '/SprintProjectManagement/Affair'
             }?data=${params}`,
           )
           return

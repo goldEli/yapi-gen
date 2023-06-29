@@ -123,10 +123,11 @@ export const SideFooter = styled.div`
 `
 export const BackStyle = styled.div`
   width: 100%;
-  height: 48px;
+  /* height: 48px; */
   display: flex;
   align-items: center;
   padding: 0 16px;
+  padding-bottom: 14px;
   color: var(--neutral-n3);
   font-size: 12px;
   &:hover {

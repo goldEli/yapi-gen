@@ -46,6 +46,7 @@ declare namespace API.Efficiency {
     type Result = {
       work_completion_period: {
         list: Models.Efficiency.Work[]
+        growth_rate: number
         period_number: number
         growth_rate: string
         start_time: string
