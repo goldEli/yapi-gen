@@ -1,8 +1,8 @@
 /**
  * 另存为视图  编辑视图弹窗
  */
-import React from 'react'
-import { Form, Input, InputRef } from 'antd'
+import React, { useRef } from 'react'
+import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
@@ -38,12 +38,14 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
   const { saveAsViewModelInfo } = useSelector(store => store.KanbanConfig)
-  // const inputRef = React.useRef<InputRef>(null)
-  // React.useEffect(() => {
-  //   inputRef.current?.focus?.({
-  //     cursor: 'start',
-  //   })
-  // }, [saveAsViewModelInfo])
+  const inputRef = useRef<any>()
+  React.useEffect(() => {
+    if (saveAsViewModelInfo.visible) {
+      setTimeout(() => {
+        inputRef.current?.focus?.()
+      }, 500)
+    }
+  }, [saveAsViewModelInfo.visible])
 
   React.useEffect(() => {
     if (saveAsViewModelInfo.viewItem) {
@@ -111,7 +113,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
         >
           <Form.Item
             rules={[{ required: true, message: '' }]}
-            label={<LabelTitle title={t('name1')} />}
+            label={t('name1')}
             name="name"
           >
             <Input
@@ -119,7 +121,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
               placeholder={t(
                 'please_enter_the_real_view_name_limit_30_characters',
               )}
-              // ref={inputRef}
+              ref={inputRef}
             />
           </Form.Item>
         </Form>

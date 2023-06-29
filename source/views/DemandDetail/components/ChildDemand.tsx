@@ -232,11 +232,11 @@ const ChildDemand = (props: ChildDemandProps) => {
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+    'b/story/update',
   )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
+    'b/story/delete',
   )
 
   // 点击编辑

@@ -222,6 +222,7 @@ const CategorySelectWrap = styled.div`
   .title {
     font-size: 14;
     white-space: nowrap;
+    margin-right: 16px;
   }
 `
 const ClearButton = styled.div`

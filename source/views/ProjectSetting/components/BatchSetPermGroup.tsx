@@ -1,18 +1,17 @@
 import { Form } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import CommonModal from '@/components/CommonModal'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
+import { getRoleList } from '@/services/staff'
 const BatchSetPermGroup = (props: {
   isVisible: boolean
   onClose(): void
   onConfirm(roleId: string): void
-  roleOptions?: number[]
 }) => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
-
+  const [roleOptions, setRoleOptions] = useState<any>([])
   useEffect(() => {
     if (!props.isVisible) {
       form.resetFields()
@@ -24,7 +23,15 @@ const BatchSetPermGroup = (props: {
       props.onConfirm(res.userGroupId)
     })
   }
-
+  useEffect(() => {
+    props.isVisible && getRoleListApi()
+  }, [props.isVisible])
+  const getRoleListApi = async () => {
+    const res = await getRoleList()
+    setRoleOptions(
+      res.data.map((el: any) => ({ label: el.name, value: el.id })),
+    )
+  }
   return (
     <CommonModal
       width={528}
@@ -51,7 +58,7 @@ const BatchSetPermGroup = (props: {
             getPopupContainer={(node: any) => node}
             showSearch
             optionFilterProp="label"
-            options={props?.roleOptions}
+            options={roleOptions}
           />
         </Form.Item>
       </Form>

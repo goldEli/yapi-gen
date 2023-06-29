@@ -196,25 +196,21 @@ const DefectTable = (props: Props) => {
 
   const hasCreate = getIsPermission(
     projectFlawInfo?.projectPermissions,
-    projectFlawInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
+    'b/flaw/save',
   )
 
   const hasBatch = getIsPermission(
     projectFlawInfo?.projectPermissions,
-    projectFlawInfo.projectType === 1 ? 'b/story/batch' : 'b/transaction/batch',
+    'b/flaw/batch',
   )
 
   const hasEdit = getIsPermission(
     projectFlawInfo?.projectPermissions,
-    projectFlawInfo.projectType === 1
-      ? 'b/story/update'
-      : 'b/transaction/update',
+    'b/flaw/update',
   )
   const hasDel = getIsPermission(
     projectFlawInfo?.projectPermissions,
-    projectFlawInfo.projectType === 1
-      ? 'b/story/delete'
-      : 'b/transaction/delete',
+    'b/flaw/delete',
   )
 
   //  点击批量

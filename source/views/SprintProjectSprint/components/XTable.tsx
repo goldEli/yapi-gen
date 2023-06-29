@@ -128,7 +128,7 @@ const XTable: React.FC<XTableProps> = props => {
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+    'b/transaction/update',
   )
 
   const isCanEditSprint = getIsPermission(
@@ -270,9 +270,9 @@ const XTable: React.FC<XTableProps> = props => {
                                 type: data.status === 4 ? 'edit' : 'update',
                               })
                             }}
+                            className="custom"
                             style={{
                               fontSize: 16,
-                              color: 'var(--neutral-n3)',
                             }}
                             type="edit"
                           />
@@ -289,9 +289,9 @@ const XTable: React.FC<XTableProps> = props => {
                                 onConfirm: () => deleteSprint(data.id),
                               })
                             }}
+                            className="custom"
                             style={{
                               fontSize: 16,
-                              color: 'var(--neutral-n3)',
                             }}
                             type="delete"
                           />

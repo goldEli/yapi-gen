@@ -93,6 +93,7 @@ interface Props {
 
   // 人员下拉框是否绑定在body上面
   isBindBody?: string
+  isBug?: boolean
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -118,12 +119,7 @@ const TableQuickEdit = (props: Props) => {
     ['text', 'textarea', 'number', 'integer'].includes(String(props.type))
 
   if (props.isMineOrHis) {
-    isCanEdit =
-      props?.item?.project?.isEdit ||
-      // -----------待修改
-      props?.projectPermissions?.filter(
-        (i: any) => i.identity === 'b/story/update',
-      )
+    isCanEdit = props?.item?.project?.isEdit
     projectId = props?.item?.project_id
     canClick = isCan && isCanEdit
   } else {
@@ -133,7 +129,9 @@ const TableQuickEdit = (props: Props) => {
         (i: any) =>
           i.identity ===
           (projectInfo.projectType === 1
-            ? 'b/story/update'
+            ? props.isBug
+              ? 'b/flaw/update'
+              : 'b/story/update'
             : 'b/transaction/update'),
       )?.length > 0
     const paramsData = getParamsData(searchParams)

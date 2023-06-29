@@ -110,8 +110,8 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) =>
-      projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+    projectInfo.projectPermissions?.filter(
+      (i: any) => i.identity === 'b/story/update',
     )?.length > 0
 
   // 类型列表

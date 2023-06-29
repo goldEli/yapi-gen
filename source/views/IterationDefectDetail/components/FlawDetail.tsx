@@ -185,6 +185,7 @@ const FlawDetail = (props: FlawDetailProps) => {
               onC
               del={onDeleteInfoAttach}
               add={onAddInfoAttach}
+              isBug
               addWrap={
                 <CommonButton type="primaryText" icon="plus">
                   添加附件

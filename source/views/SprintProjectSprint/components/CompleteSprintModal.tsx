@@ -1,7 +1,7 @@
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
-import { completeSprint, getMoveTo } from '@/services/sprint'
+import { completeSprint, getMoveTo, getSprintDetail } from '@/services/sprint'
 import { css } from '@emotion/css'
 import { useDispatch, useSelector } from '@store/index'
 import { setSprintRefresh } from '@store/sprint'
@@ -91,17 +91,28 @@ const CompleteSprintModal = (props: sprintProps) => {
   useEffect(() => {
     if (visible) {
       getMoveToList()
+      getSprintInfo()
     }
   }, [visible, targetId])
 
-  useEffect(() => {
-    form.setFieldsValue({
-      current: targetId,
-      finish_at: moment(
-        rightSprintList.find((k: any) => k.id === targetId)?.end_at,
-      ),
+  // 获取冲刺详情
+  const getSprintInfo = async () => {
+    const result: any = await getSprintDetail({
+      project_id: projectId,
+      id: targetId,
     })
-  }, [targetId])
+    if (result && result.code === 0 && result.data) {
+      form.setFieldsValue({
+        current: targetId,
+        finish_at: moment(result.data.end_at),
+      })
+    } else {
+      getMessage({
+        msg: result?.message,
+        type: 'error',
+      })
+    }
+  }
 
   return (
     <CommonModal
