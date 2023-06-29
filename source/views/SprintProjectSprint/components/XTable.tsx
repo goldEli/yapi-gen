@@ -242,7 +242,7 @@ const XTable: React.FC<XTableProps> = props => {
         }
         header={
           <Header>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <span className="title">{data.name}</span>
               <span className="date">
                 {`${data?.start_at ? data.start_at : ''}${
