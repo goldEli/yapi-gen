@@ -45,6 +45,12 @@ const DelBtn = styled.div`
     color: var(--primary-d2);
   }
 `
+const CustomNumberWrap = styled.div`
+  .ant-input-number:focus,
+  .ant-input-number-focused {
+    border-color: #7598ff;
+  }
+`
 
 interface EditColumnModalProps {}
 
@@ -137,7 +143,9 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
             label={<LabelTitle title={t('greatest_amount')} />}
             name="max_num"
           >
-            <InputNumber min={0} defaultValue={1} style={{ width: '100%' }} />
+            <CustomNumberWrap>
+              <InputNumber min={0} defaultValue={1} style={{ width: '100%' }} />
+            </CustomNumberWrap>
           </Form.Item>
         </Form>
       </div>
