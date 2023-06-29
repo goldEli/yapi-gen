@@ -10,7 +10,7 @@
     "checkType": "tsc --noEmit",
     "preview": "vite preview",
     "prepare": "husky install",
-    "tran": "node .\\script\\translate\\index.js",
+    "tran": "npx @samuel.miao/tran -u http://35.84.160.169:8008/bbs/translate",
     "findCN": "npx @samuel.miao/findcn"
   },
   "dependencies": {
