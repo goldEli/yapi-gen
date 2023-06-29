@@ -56,6 +56,7 @@ const HomeSetting: React.FC<IProps> = props => {
   useEffect(() => {
     // console.log(projectInfo.defaultHomeMenu)
     if (!projectInfo.defaultHomeMenu) {
+      setValue('/ProjectManagement/Demand')
       return
     }
     setValue(projectInfo.defaultHomeMenu)

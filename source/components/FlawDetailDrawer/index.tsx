@@ -684,14 +684,17 @@ const FlawDetailDrawer = () => {
                 ))}
               </ParentBox>
               <DemandName>
-                <span
-                  className="name"
-                  ref={spanDom}
-                  contentEditable
-                  onBlur={onNameConfirm}
-                >
-                  {drawerInfo.name}
-                </span>
+                {isCanEdit && (
+                  <span
+                    className="name"
+                    ref={spanDom}
+                    contentEditable
+                    onBlur={onNameConfirm}
+                  >
+                    {drawerInfo.name}
+                  </span>
+                )}
+                {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <span className="icon" onClick={onCopy}>
                   <CommonIconFont type="copy" color="var(--neutral-n3)" />
                 </span>

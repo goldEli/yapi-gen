@@ -38,6 +38,7 @@ export const Back = styled.div`
     color: var(--primary-d1);
   }
 `
+
 const ProjectDetailSide = () => {
   const [t] = useTranslation()
   const projectSide = useRef<HTMLDivElement>(null)
@@ -53,14 +54,16 @@ const ProjectDetailSide = () => {
   const projectSettingsList = [
     {
       label: '项目信息',
-      icon: <CommonIconFont type="file-text" size={18} />,
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="file-text" size={18} />
+      ),
       path: '/SprintProjectManagement/Setting',
       isPermission: true,
       key: 'ProjectInfo',
     },
     {
       label: '项目成员',
-      icon: <CommonIconFont type="team" size={18} />,
+      icon: <CommonIconFont color="var(--neutral-n3)" type="team" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/member'),
@@ -69,7 +72,7 @@ const ProjectDetailSide = () => {
     },
     {
       label: '项目角色',
-      icon: <CommonIconFont type="lock" size={18} />,
+      icon: <CommonIconFont color="var(--neutral-n3)" type="lock" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/role'),
@@ -78,7 +81,7 @@ const ProjectDetailSide = () => {
     },
     {
       label: '通知配置',
-      icon: <CommonIconFont type="bell" size={18} />,
+      icon: <CommonIconFont color="var(--neutral-n3)" type="bell" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/notification'),
@@ -87,7 +90,9 @@ const ProjectDetailSide = () => {
     },
     {
       label: '事务类型',
-      icon: <CommonIconFont type="selections" size={18} />,
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="selections" size={18} />
+      ),
       path: '/SprintProjectManagement/Setting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/story_config'),
@@ -96,7 +101,9 @@ const ProjectDetailSide = () => {
     },
     {
       label: 'Kanban配置',
-      icon: <CommonIconFont type="layout" size={18} />,
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="layout" size={18} />
+      ),
       path: '/SprintProjectManagement/Setting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/kanban'),
@@ -113,7 +120,9 @@ const ProjectDetailSide = () => {
     },
     {
       label: '首页配置',
-      icon: <CommonIconFont type="settings" size={18} />,
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="settings" size={18} />
+      ),
       path: '/SprintProjectManagement/Setting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/home'),
@@ -265,10 +274,29 @@ const ProjectDetailSide = () => {
               {pathname === '/SprintProjectManagement/Setting' ? (
                 // <div>12</div>
                 <Menu
+                  // expandIcon={({ isOpen }) => {
+                  //   return (
+                  //     <div className="custom" style={{ marginLeft: 10 }}>
+                  //       {isOpen ? (
+                  //         <CommonIconFont
+                  //           color="var(--neutral-n3)"
+                  //           type="up"
+                  //           size={18}
+                  //         />
+                  //       ) : (
+                  //         <CommonIconFont
+                  //           color="var(--neutral-n3)"
+                  //           type="down"
+                  //           size={18}
+                  //         />
+                  //       )}
+                  //     </div>
+                  //   )
+                  // }}
                   items={projectSettingsList}
                   onClick={projectSettingsClick}
                   mode="inline"
-                  style={{ background: 'transparent' }}
+                  style={{ background: 'transparent', border: 'none' }}
                   selectedKeys={selectedKeys}
                 ></Menu>
               ) : (
@@ -284,7 +312,11 @@ const ProjectDetailSide = () => {
                     onClick={() => onChangeRouter(i)}
                     hidden={!i.isPermission}
                   >
-                    <CommonIconFont type={i.icon} size={18} />
+                    <CommonIconFont
+                      color="var(--neutral-n3)"
+                      type={i.icon}
+                      size={18}
+                    />
                     <div>{i.name}</div>
                   </MenuItem>
                 ))

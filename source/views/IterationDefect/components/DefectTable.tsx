@@ -51,7 +51,7 @@ const DefectTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectFlawInfo, filterKeys, filterParams } = useSelector(
+  const { projectInfo, filterKeys, filterParams } = useSelector(
     store => store.project,
   )
   const tapSort = useSelector(store => store.view.tapSort)
@@ -61,7 +61,7 @@ const DefectTable = (props: Props) => {
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  asyncSetTtile(`缺陷【${projectFlawInfo.name}】`)
+  asyncSetTtile(`缺陷【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
 
@@ -195,21 +195,21 @@ const DefectTable = (props: Props) => {
   })
 
   const hasCreate = getIsPermission(
-    projectFlawInfo?.projectPermissions,
+    projectInfo?.projectPermissions,
     'b/flaw/save',
   )
 
   const hasBatch = getIsPermission(
-    projectFlawInfo?.projectPermissions,
+    projectInfo?.projectPermissions,
     'b/flaw/batch',
   )
 
   const hasEdit = getIsPermission(
-    projectFlawInfo?.projectPermissions,
+    projectInfo?.projectPermissions,
     'b/flaw/update',
   )
   const hasDel = getIsPermission(
-    projectFlawInfo?.projectPermissions,
+    projectInfo?.projectPermissions,
     'b/flaw/delete',
   )
 

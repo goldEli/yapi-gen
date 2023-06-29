@@ -253,10 +253,10 @@ const CreateDemandLeft = (props: Props) => {
       const save =
         result.projectType === 1 ? 'b/story/save' : 'b/transaction/save'
       // 是否有创建需求权限
-      isCreateDemand = result?.projectPermissions?.filter(
-        (i: any) => i.identity === (params?.editId ? update : save),
-      )?.length
-
+      isCreateDemand =
+        result?.projectPermissions?.filter(
+          (i: any) => i.identity === (params?.editId ? update : save),
+        )?.length > 0
       props.onGetCreateWorkItem(isCreateDemand)
     }
   }

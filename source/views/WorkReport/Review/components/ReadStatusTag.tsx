@@ -12,7 +12,7 @@ const ReadSateTagWrap = styled.div`
   span {
     margin-left: 7px;
     font-size: 14px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: #323233;
   }

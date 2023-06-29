@@ -79,7 +79,7 @@ export const LoadMore = styled.div`
 export const CancelParentBox = styled.div`
   color: var(--neutral-n2);
   font-size: var(--font14);
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   margin-bottom: 10px;
   margin-top: 10px;
   cursor: pointer;

@@ -9,7 +9,7 @@ const HightChartMainBar = (props: {
   titleType: boolean
   height: number
   title: string
-  chart: Models.Efficiency.ChartBar | undefined
+  chart: Models.Efficiency.ChartBar
   onChange: (val: string) => void
 }) => {
   // 图表位置柱状图
@@ -134,7 +134,13 @@ const HightChartMainBar = (props: {
                 size={16}
                 color="var(--function-error)"
               />
-              <span className="time">较前14天 -10%</span>
+              <span className="time">
+                较前14天{' '}
+                {props.chart.growth_rate > 0
+                  ? `+${props.chart?.growth_rate}`
+                  : props.chart?.growth_rate}
+                %
+              </span>
             </CharTitle>
           ) : null}
 

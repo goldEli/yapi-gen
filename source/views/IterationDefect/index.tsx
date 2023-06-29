@@ -38,7 +38,7 @@ const Index = (props: any) => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const myTreeComponent: any = useRef(null)
-  const { projectFlawInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
+  const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
   const [searchParams] = useSearchParams()
@@ -86,22 +86,22 @@ const Index = (props: any) => {
 
   // 获取显示字段配置
   const getShowkey = () => {
-    setPlainOptions(projectFlawInfo?.plainOptions || [])
-    setPlainOptions2(projectFlawInfo?.plainOptions2 || [])
-    setPlainOptions3(projectFlawInfo?.plainOptions3 || [])
-    setTitleList(projectFlawInfo?.titleList || [])
-    setTitleList2(projectFlawInfo?.titleList2 || [])
-    setTitleList3(projectFlawInfo?.titleList3 || [])
+    setPlainOptions(projectInfo?.plainOptions || [])
+    setPlainOptions2(projectInfo?.plainOptions2 || [])
+    setPlainOptions3(projectInfo?.plainOptions3 || [])
+    setTitleList(projectInfo?.titleList || [])
+    setTitleList2(projectInfo?.titleList2 || [])
+    setTitleList3(projectInfo?.titleList3 || [])
     setAllTitleList([
-      ...(projectFlawInfo.titleList || []),
-      ...(projectFlawInfo.titleList2 || []),
-      ...(projectFlawInfo.titleList3 || []),
+      ...(projectInfo.titleList || []),
+      ...(projectInfo.titleList2 || []),
+      ...(projectInfo.titleList3 || []),
     ])
     dispatch(
       saveTitles([
-        ...(projectFlawInfo.titleList || []),
-        ...(projectFlawInfo.titleList2 || []),
-        ...(projectFlawInfo.titleList3 || []),
+        ...(projectInfo.titleList || []),
+        ...(projectInfo.titleList2 || []),
+        ...(projectInfo.titleList3 || []),
       ]),
     )
   }
@@ -233,10 +233,10 @@ const Index = (props: any) => {
   }
 
   useEffect(() => {
-    if (projectFlawInfo?.id) {
+    if (projectInfo?.id) {
       getShowkey()
     }
-  }, [projectFlawInfo])
+  }, [projectInfo])
 
   useEffect(() => {
     getList(searchItems, pageObj, order)
