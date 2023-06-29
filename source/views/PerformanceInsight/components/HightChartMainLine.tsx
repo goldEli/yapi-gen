@@ -16,7 +16,7 @@ const HightChartMainLine = (props: {
   height: number
   title: string
   projectId: number
-  chart: Models.Efficiency.WorkChart | undefined
+  chart: Models.Efficiency.WorkChart
 }) => {
   // 折线图
   const options = {
@@ -100,7 +100,13 @@ const HightChartMainLine = (props: {
               size={16}
               color="var(--function-success)"
             />
-            <span className="time">环比 +10%</span>
+            <span className="time">
+              环比{' '}
+              {props.chart.growth_rate > 0
+                ? `+${props.chart?.growth_rate}`
+                : props.chart?.growth_rate}
+              %
+            </span>
           </CharTitle>
           <div>
             <HighchartsReactWrap

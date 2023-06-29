@@ -585,6 +585,7 @@ const StaffManagement = () => {
       />
       <BatchSetPermGroup
         isVisible={batchEditVisible}
+        projectState={false}
         onClose={() => {
           setBatchEditVisible(false)
         }}
