@@ -47,7 +47,7 @@ const BatchSetPermGroup = (props: {
     <CommonModal
       width={528}
       onClose={() => props.onClose()}
-      title={t('common.batchConfigPermission') + 999}
+      title={t('common.batchConfigPermission')}
       isVisible={props.isVisible}
       onConfirm={onConfirm}
     >
