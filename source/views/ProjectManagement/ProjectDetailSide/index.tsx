@@ -283,6 +283,7 @@ const ProjectDetailSide = () => {
 
   //   返回上一页
   const onGoBack = () => {
+    getInfo()
     projectSetSide.current.style.width = '0px'
     projectSide.current.style.width = '100%'
     const params = encryptPhp(JSON.stringify({ id: projectId }))
