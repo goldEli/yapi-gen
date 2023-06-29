@@ -259,10 +259,11 @@ const CommonModal = (props: ModalProps) => {
           userGroupId: props?.userGroupId,
         })
     }
-    if (projectInfo?.teamId && props.isPermisGroup) {
-      setTabs(tabs.filter(el => el.key === '1'))
-      setTabsActive(1)
-    }
+    // 如果是团队项目并且可以操作权限组的
+    // if (projectInfo?.teamId && props.isPermisGroup) {
+    //   setTabs(tabs.filter(el => el.key === '1'))
+    //   setTabsActive(1)
+    // }
   }, [props.isVisible])
   // 勾选后获取到成员
   let checkdFilterDataList: any = []
