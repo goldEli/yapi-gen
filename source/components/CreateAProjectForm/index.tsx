@@ -238,7 +238,11 @@ const CreateAProjectForm = () => {
     form.setFieldsValue({
       team_id: 0,
       groups: groupId ? [groupId] : undefined,
+      isPublic: 2,
     })
+    // form.setFieldsValue({
+    //   isPublic: 2,
+    // })
   }
 
   //编辑项目逻辑
@@ -322,8 +326,11 @@ const CreateAProjectForm = () => {
   ]
   useEffect(() => {
     if (leaderId === 0) {
+      console.log(pro)
+
       setPros(pro.slice(0, 2))
     } else {
+      console.log(pro)
       setPros(pro)
     }
     if (leaderId || leaderId === 0) {
@@ -352,6 +359,9 @@ const CreateAProjectForm = () => {
     }
 
     form.resetFields()
+    form.setFieldsValue({
+      isPublic: 2,
+    })
     setLock(true)
 
     setMyCover('')
@@ -396,6 +406,7 @@ const CreateAProjectForm = () => {
       setModel(0)
     }
   }
+  console.log(pros)
 
   return (
     <CommonModal2
