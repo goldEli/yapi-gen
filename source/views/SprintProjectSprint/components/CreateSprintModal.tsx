@@ -36,7 +36,7 @@ const content = css`
 `
 const CustomWrap = styled.div`
   .ant-form-item-label > label {
-    height: 20px;
+    height: 22px;
   }
 `
 

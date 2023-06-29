@@ -179,6 +179,9 @@ const TabItemWrap = styled.div`
   height: 100%;
   padding: 0px 24px;
   overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .ant-spin-nested-loading img {
     margin-top: 250px;
   }
