@@ -240,9 +240,6 @@ const CreateAProjectForm = () => {
       groups: groupId ? [groupId] : undefined,
       isPublic: 2,
     })
-    // form.setFieldsValue({
-    //   isPublic: 2,
-    // })
   }
 
   //编辑项目逻辑
@@ -347,7 +344,9 @@ const CreateAProjectForm = () => {
     if (createVisible) {
       getGroupData()
       setActiveCover(covers[0]?.path)
-
+      form.setFieldsValue({
+        isPublic: 2,
+      })
       if (isEditId) {
         setStep(3)
         setType(0)
@@ -359,9 +358,7 @@ const CreateAProjectForm = () => {
     }
 
     form.resetFields()
-    form.setFieldsValue({
-      isPublic: 2,
-    })
+
     setLock(true)
 
     setMyCover('')
@@ -406,7 +403,10 @@ const CreateAProjectForm = () => {
       setModel(0)
     }
   }
-  console.log(pros)
+
+  useEffect(() => {
+    console.log(pros, '权限')
+  }, [pros])
 
   return (
     <CommonModal2
@@ -713,6 +713,7 @@ const CreateAProjectForm = () => {
                   <Form.Item
                     label={<FormTitleSmall text={t('Permission')} />}
                     name="isPublic"
+                    initialValue={2}
                   >
                     <CustomSelect
                       // disabled={canChooseLeader}

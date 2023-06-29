@@ -135,21 +135,25 @@ const Index = (props: any) => {
     }
   }
   const onChangeRouter = (type: string) => {
+    console.log(type)
+
     // console.log(type)
     if (type === 'user-alone') {
       const params = encryptPhp(
         JSON.stringify({
           type: 1,
           id: props.item.id,
+          pageIdx: 'member',
         }),
       )
-      let url = null
-      if (props.item.projectType === 1) {
-        url = '/ProjectManagement/Demand'
-      } else {
-        url = '/SprintProjectManagement/Affair'
-      }
-      navigate(`${url}?data=${params}`)
+      navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+      // let url = null
+      // if (props.item.projectType === 1) {
+      //   url = '/ProjectManagement/Demand'
+      // } else {
+      //   url = '/SprintProjectManagement/Affair'
+      // }
+      // navigate(`${url}?data=${params}`)
     } else if (type === 'demand') {
       if (props.item.projectType === 1) {
         const params = encryptPhp(
@@ -174,6 +178,11 @@ const Index = (props: any) => {
         )
         navigate(`/SprintProjectManagement/Sprint?data=${params}`)
       }
+    } else if (type === 'alarm') {
+      const params = encryptPhp(
+        JSON.stringify({ id: props.item.id, type: 'iteration' }),
+      )
+      navigate(`/SprintProjectManagement/Sprint?data=${params}`)
     }
   }
   // console.log(props.item)
