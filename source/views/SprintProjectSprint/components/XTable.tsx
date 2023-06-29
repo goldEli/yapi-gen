@@ -15,11 +15,12 @@ import { useTranslation } from 'react-i18next'
 import { delSprintItem } from '@/services/sprint'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector } from '@store/index'
-import { setAddWorkItemModal } from '@store/project'
+import { setAddWorkItemModal, setProjectInfoValues } from '@store/project'
 import CompleteSprintModal from './CompleteSprintModal'
 import { setSprintRefresh } from '@store/sprint'
 import CollapseCustom from './CollapseCustom'
 import { CloseWrap } from '@/components/StyleCommon'
+import { getProjectInfoValues } from '@/services/project'
 
 interface XTableProps {
   data: any
@@ -146,6 +147,16 @@ const XTable: React.FC<XTableProps> = props => {
   // }
 
   // useShortcutC(handleShortcutEvent)
+
+  // 更新事务页面的冲刺数据
+  const updateSprintList = async () => {
+    const [projectInfoData] = await Promise.all([
+      getProjectInfoValues({ projectId }),
+    ])
+
+    dispatch(setProjectInfoValues(projectInfoData))
+  }
+
   // 删除冲刺
   const deleteSprint = async (id: number) => {
     try {
@@ -156,6 +167,7 @@ const XTable: React.FC<XTableProps> = props => {
           type: 'success',
         })
         dispatch(setSprintRefresh(1))
+        updateSprintList()
       } else {
         getMessage({
           msg: result?.message,
