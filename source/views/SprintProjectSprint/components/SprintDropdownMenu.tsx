@@ -54,11 +54,11 @@ export const SprintDropdownMenu = (props: Props) => {
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+    'b/transaction/update',
   )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
+    'b/transaction/delete',
   )
   const groupId = props?.record?.id?.split('_')?.[0]
   const id = props?.record?.id?.split('_')?.[1]

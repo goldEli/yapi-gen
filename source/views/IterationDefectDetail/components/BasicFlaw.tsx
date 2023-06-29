@@ -19,7 +19,6 @@ import {
   SeverityWrap,
   SliderWrap,
 } from '@/components/StyleCommon'
-import CommonButton from '@/components/CommonButton'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import IconFont from '@/components/IconFont'
 import { updateFlawPriority, updateFlawTableParams } from '@/services/flaw'
@@ -68,11 +67,7 @@ const BasicFlaw = (props: Props) => {
   const isCanEdit =
     projectFlawInfo.projectPermissions?.length > 0 &&
     projectFlawInfo.projectPermissions?.filter(
-      (i: any) =>
-        i.identity ===
-        (projectFlawInfo.projectType === 1
-          ? 'b/story/update'
-          : 'b/transaction/update'),
+      (i: any) => i.identity === 'b/flaw/update',
     )?.length > 0
 
   // 修改进度
@@ -256,6 +251,7 @@ const BasicFlaw = (props: Props) => {
           onUpdate={props.onUpdate}
           isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
           isInfoPage={props.isInfoPage}
+          isBug
         >
           {defaultValues?.defaultHtml}
         </TableQuickEdit>
@@ -398,6 +394,7 @@ const BasicFlaw = (props: Props) => {
         onUpdate={props.onUpdate}
         isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
         isInfoPage={props.isInfoPage}
+        isBug
       >
         <span>
           {getCustomNormalValue(
