@@ -27,6 +27,7 @@ export const getProjectList: any = async (params: any) => {
       status: Number(params.status) || '',
       all: params.all ? 1 : 0,
       group: params?.groupId,
+      is_clone: params?.is_clone,
     },
     pagesize: params.pageSize,
     page: params.page,

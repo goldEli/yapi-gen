@@ -112,6 +112,7 @@ const ProjectTemplate = (props: any) => {
       status: isDisable ? 1 : 0,
       is_my_created: activeTab,
       self: activeTab === 2,
+      is_clone: 1,
     }
     if (isTable) {
       params.all = true

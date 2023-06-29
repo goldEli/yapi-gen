@@ -15,16 +15,16 @@ const SpaceWrapItem = styled.div`
 `
 
 const AddProject = styled.div({
-  height: 144,
-  marginLeft: '8px',
-  marginTop: '-8px',
+  border: '1px solid var(--neutral-n5)',
+  height: 124,
+
   borderRadius: 4,
   background: 'white',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  width: 220,
+  width: 272,
   cursor: 'pointer',
   div: {
     color: 'var(--neutral-n2)',
@@ -33,6 +33,7 @@ const AddProject = styled.div({
     color: 'var(--neutral-n3)',
   },
   '&: hover': {
+    border: '1px solid var(--primary-d1)',
     div: {
       color: 'var(--primary-d1)',
     },
