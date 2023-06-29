@@ -76,11 +76,7 @@ const BasicDemand = (props: Props) => {
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) =>
-        i.identity ===
-        (projectInfo.projectType === 1
-          ? 'b/story/update'
-          : 'b/transaction/update'),
+      (i: any) => i.identity === 'b/transaction/update',
     )?.length > 0
 
   // 修改进度

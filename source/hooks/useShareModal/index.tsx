@@ -170,7 +170,7 @@ const useShareModal = () => {
         isVisible={visible}
         onClose={onClose}
         onConfirm={onsubmit}
-        confirmText="确认"
+        confirmText="分享"
       >
         <ModalContentBox>
           {needSave ? (

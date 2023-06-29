@@ -45,11 +45,7 @@ const DemandStatusBox = (props: any) => {
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) =>
-        i.identity ===
-        (projectInfo.projectType === 1
-          ? 'b/story/update'
-          : 'b/transaction/update'),
+      (i: any) => i.identity === 'b/story/update',
     )?.length > 0
 
   const onChangeIdx = (id: any, row: any) => {

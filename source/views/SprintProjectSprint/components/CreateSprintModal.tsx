@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import ChooseDate from './ChooseDate'
 import useAltSKeyPress from '@/hooks/useAltSKeyPress/useAltSKeyPress'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import styled from '@emotion/styled'
 
 interface sprintProps {
   type: 'create' | 'start' | 'edit' | 'update'
@@ -28,9 +29,14 @@ const content = css`
   padding: 0px 24px;
   .head {
     font-size: 12px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: var(--neutral-n3);
+  }
+`
+const CustomWrap = styled.div`
+  .ant-form-item-label > label {
+    height: 22px;
   }
 `
 
@@ -42,6 +48,7 @@ const CreateSprintModal = (props: sprintProps) => {
   const [editData, setEditData] = useState<any>(null)
   const initNumber = useRef(0)
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
+  const inputRef = useRef<any>(null)
   const getTitle = (val: string) => {
     if (val === 'create') {
       return '新建冲刺'
@@ -149,8 +156,16 @@ const CreateSprintModal = (props: sprintProps) => {
           updateSprint()
         } else {
           open({
-            title: '更新冲刺',
-            okText: '更新',
+            title: getTitle(type),
+            okText:
+              (type === 'edit' || type === 'start') &&
+              editData?.status === 4 &&
+              editData?.story_count
+                ? '开始'
+                : type === 'update'
+                ? '更新'
+                : // eslint-disable-next-line no-undefined
+                  '编辑',
             children: (
               <div>子事务超出设置的冲刺日期范围，建议调整冲刺或事务日期</div>
             ),
@@ -217,6 +232,14 @@ const CreateSprintModal = (props: sprintProps) => {
     // 在这里执行你想要触发的事件
   }, [])
 
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        inputRef?.current?.focus?.()
+      }, 500)
+    }
+  }, [visible])
+
   useAltSKeyPress(handleAltSKeyPress)
 
   return (
@@ -249,29 +272,40 @@ const CreateSprintModal = (props: sprintProps) => {
               wrapperCol={{ span: 24 }}
               autoComplete="off"
             >
-              <Form.Item
-                label="冲刺名称"
-                name="name"
-                rules={[{ required: true, message: '请输入冲刺名称' }]}
-              >
-                <Input placeholder="新建的冲刺1" maxLength={50} />
-              </Form.Item>
-              <Form.Item
-                label="持续时间"
-                name="group"
-                // eslint-disable-next-line no-undefined
-                initialValue={{ include: true, radio: 1, date: undefined }}
-                rules={[{ required: true, validator: onValidator }]}
-              >
-                <ChooseDate initNumber={initNumber} />
-              </Form.Item>
-              <Form.Item label="冲刺目标" name="info">
-                <Input.TextArea
-                  maxLength={300}
-                  autoSize={{ minRows: 1, maxRows: 5 }}
-                  placeholder="请输入"
-                />
-              </Form.Item>
+              <CustomWrap>
+                <Form.Item
+                  label="冲刺名称"
+                  name="name"
+                  rules={[{ required: true, message: '请输入冲刺名称' }]}
+                >
+                  <Input
+                    ref={inputRef}
+                    placeholder="新建的冲刺1"
+                    maxLength={50}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="持续时间"
+                  name="group"
+                  // eslint-disable-next-line no-undefined
+                  initialValue={{
+                    include: true,
+                    radio: 0,
+                  }}
+                  rules={[{ required: true, validator: onValidator }]}
+                >
+                  <ChooseDate initNumber={initNumber} />
+                </Form.Item>
+
+                <Form.Item label="冲刺目标" name="info">
+                  <Input.TextArea
+                    maxLength={300}
+                    autoSize={{ minRows: 1, maxRows: 5 }}
+                    placeholder="请输入"
+                  />
+                </Form.Item>
+              </CustomWrap>
             </Form>
           </div>
         }

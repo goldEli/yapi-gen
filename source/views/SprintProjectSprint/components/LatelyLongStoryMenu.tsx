@@ -27,19 +27,18 @@ const MenuWrap = styled(Menu)`
     color: var(--neutral-n1-d1) !important;
     background: var(--hover-d3) !important;
   }
-  .ant-dropdown-menu-item.ant-dropdown-menu-item-disabled:hover,
-  .ant-dropdown-menu-item.ant-dropdown-menu-submenu-title-disabled:hover,
-  .ant-dropdown-menu-submenu-title.ant-dropdown-menu-item-disabled:hover,
-  .ant-dropdown-menu-submenu-title.ant-dropdown-menu-submenu-title-disabled:hover {
-    background-color: transparent !important;
+  li.ant-menu-item-disabled:hover {
+    background: transparent !important;
+    cursor: default;
   }
+
   li:last-child {
     border-top: 1px solid var(--neutral-n6-d1);
   }
 `
 const RemoveItemWrap = styled.div`
   font-size: 12px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   color: var(--neutral-n3);
 `
 
@@ -62,7 +61,7 @@ const MenuItemBox = styled.div`
 
 const MenuItemWrap = styled.div`
   font-size: 14px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   color: var(--neutral-n2);
   &:hover {
     color: var(--neutral-n1-d1);

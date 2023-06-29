@@ -80,23 +80,6 @@ const AddWorkItem = () => {
     }, 100)
   }
 
-  // 获取项目列表
-  const getProjectData = async () => {
-    const res = await getProjectList({
-      self: 1,
-      all: 1,
-    })
-    setProjectList(res.list)
-    // 如果有需求id则获取详情
-    if (params?.editId) {
-      const demandResponse = await getDemandInfo({
-        projectId: params?.projectId,
-        id: params?.editId,
-      })
-      setModalInfo(demandResponse)
-    }
-  }
-
   //   切换项目id获取初始展示数据
   const getInit = async (value?: any) => {
     setAllCategoryList([])
@@ -114,12 +97,41 @@ const AddWorkItem = () => {
   }
 
   // 获取最近项目列表 -- 使用列表的第一个
-  const getRecentlyList = async () => {
+  const getRecentlyList = async (arr: any) => {
     const data = await getProjectRecent()
-    setProjectId(data[0]?.id || '')
-    setCurrentInfo(data[0])
-    if (data[0]?.id) {
-      getInit(data[0]?.id)
+    // 最近的项目id
+    const recentId = data[0]?.id
+    // 获取只有开启状态的列表
+    const resultProject = arr?.filter((i: any) => i.status === 1)
+    // 最终的列表是否包含最近项目id
+    const hasRecent = resultProject.find((i: any) => i.id === recentId)
+    // 最终的项目id
+    const resultId = hasRecent ? recentId : resultProject[0]?.id
+    setProjectId(resultId)
+    setCurrentInfo(hasRecent ? data[0] : resultProject[0])
+    if (resultId) {
+      getInit(resultId)
+    }
+  }
+
+  // 获取项目列表
+  const getProjectData = async () => {
+    const res = await getProjectList({
+      self: 1,
+      all: 1,
+    })
+    setProjectList(res.list)
+    // 如果有需求id则获取详情
+    if (params?.editId) {
+      const demandResponse = await getDemandInfo({
+        projectId: params?.projectId,
+        id: params?.editId,
+      })
+      setModalInfo(demandResponse)
+    }
+    // 全局创建和快速创建获取最近项目
+    if (!params?.projectId) {
+      getRecentlyList(res.list)
     }
   }
 
@@ -140,8 +152,6 @@ const AddWorkItem = () => {
     const resultMethod = methods?.filter((i: any) =>
       i.type.includes(work_type),
     )[0]
-
-    console.log(values, '=valuesvaluesvaluesvalues')
 
     if (params?.editId) {
       await resultMethod?.update({
@@ -188,6 +198,7 @@ const AddWorkItem = () => {
     // 是否是完成并创建下一个
     if (hasNext) {
       leftDom.current.update()
+      leftDom.current.updateParentData()
       setIsSaveParams(true)
     } else {
       dispatch(setCreateCategory({}))
@@ -221,10 +232,6 @@ const AddWorkItem = () => {
       if (params?.projectId) {
         getInit(params?.projectId)
         setProjectId(params?.projectId)
-      }
-      // 全局创建和快速创建获取最近项目
-      if (!params?.projectId) {
-        getRecentlyList()
       }
     }
   }, [visible])

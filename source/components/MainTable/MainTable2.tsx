@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Menu, Progress } from 'antd'
-import { ClickWrap, HiddenText } from '@/components/StyleCommon'
+
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useMemo, useState } from 'react'
 import Sort from '@/components/Sort'
@@ -21,6 +21,7 @@ import ResizeTable from '../ResizeTable'
 import { editProject } from '@store/create-propject'
 import { useDispatch } from 'react-redux'
 import CommonButton from '../CommonButton'
+import { HiddenText } from '../StyleCommon'
 
 interface Props {
   onChangeOperation?(type: string, item: any, e: any): void
@@ -74,7 +75,12 @@ const ImgWrap = styled.div<{ url?: string }>(
     backgroundImage: `url(${url})`,
   }),
 )
-
+const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+  ({ isClose, isName }) => ({
+    color: isClose ? 'var(--neutral-n3)' : '',
+    textDecoration: isName && isClose ? 'line-through' : '',
+  }),
+)
 const MoreContent = (props: any) => {
   const [t] = useTranslation()
 
@@ -487,23 +493,8 @@ const MainTable = (props: Props) => {
         }
         col={selectColum}
         dataSource={props.projectList?.list}
-        onRow={onTableRow as any}
-        noData={
-          <NoData
-            subText={hasCreate ? '' : t('version2.noDataCreateProject')}
-            haveFilter={props?.hasFilter}
-          >
-            {!hasCreate && (
-              <CommonButton
-                type="light"
-                onClick={props.onAddClick}
-                style={{ marginTop: 24 }}
-              >
-                {t('common.createProject')}
-              </CommonButton>
-            )}
-          </NoData>
-        }
+        // onRow={onTableRow as any}
+        noData={<NoData haveFilter={props?.hasFilter}></NoData>}
       />
       <PaginationBox
         total={props.projectList?.total}

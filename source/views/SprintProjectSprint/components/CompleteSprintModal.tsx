@@ -1,13 +1,14 @@
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
-import { completeSprint, getMoveTo } from '@/services/sprint'
+import { completeSprint, getMoveTo, getSprintDetail } from '@/services/sprint'
 import { css } from '@emotion/css'
 import { useDispatch, useSelector } from '@store/index'
 import { setSprintRefresh } from '@store/sprint'
 import { DatePicker, Form, Input } from 'antd'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import styled from '@emotion/styled'
 
 interface sprintProps {
   visible: boolean
@@ -20,9 +21,14 @@ const content = css`
   padding: 0px 24px;
   .head {
     font-size: 12px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: var(--neutral-n3);
+  }
+`
+const CustomWrap = styled.div`
+  .ant-form-item-label > label {
+    height: 22px;
   }
 `
 
@@ -91,17 +97,28 @@ const CompleteSprintModal = (props: sprintProps) => {
   useEffect(() => {
     if (visible) {
       getMoveToList()
+      getSprintInfo()
     }
   }, [visible, targetId])
 
-  useEffect(() => {
-    form.setFieldsValue({
-      current: targetId,
-      finish_at: moment(
-        rightSprintList.find((k: any) => k.id === targetId)?.end_at,
-      ),
+  // 获取冲刺详情
+  const getSprintInfo = async () => {
+    const result: any = await getSprintDetail({
+      project_id: projectId,
+      id: targetId,
     })
-  }, [targetId])
+    if (result && result.code === 0 && result.data) {
+      form.setFieldsValue({
+        current: targetId,
+        finish_at: moment(result.data.end_at),
+      })
+    } else {
+      getMessage({
+        msg: result?.message,
+        type: 'error',
+      })
+    }
+  }
 
   return (
     <CommonModal
@@ -120,65 +137,67 @@ const CompleteSprintModal = (props: sprintProps) => {
             wrapperCol={{ span: 24 }}
             autoComplete="off"
           >
-            <Form.Item
-              label="当前"
-              name="current"
-              rules={[{ required: true, message: '请输入冲刺名称' }]}
-            >
-              <CustomSelect
-                options={rightSprintList
-                  .filter((k: any) => k.id !== -1 && k.status === 1)
-                  .map((item: any) => ({
+            <CustomWrap>
+              <Form.Item
+                label="当前"
+                name="current"
+                rules={[{ required: true, message: '请输入冲刺名称' }]}
+              >
+                <CustomSelect
+                  options={rightSprintList
+                    .filter((k: any) => k.id !== -1 && k.status === 1)
+                    .map((item: any) => ({
+                      label: item.name,
+                      value: item.id,
+                      key: item.id,
+                    }))}
+                  onChange={(value: number) => {
+                    setTargetId(value)
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                label="结束日期"
+                name="finish_at"
+                rules={[{ required: true }]}
+              >
+                <DatePicker
+                  style={{ width: '100%' }}
+                  disabledDate={current => {
+                    return (
+                      current &&
+                      current <
+                        moment(
+                          rightSprintList.find((k: any) => k.id === targetId)
+                            ?.start_at,
+                        ).startOf('day')
+                    )
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="结果" name="result">
+                <Input.TextArea
+                  showCount
+                  maxLength={300}
+                  autoSize={{ minRows: 1, maxRows: 5 }}
+                  placeholder="请输入"
+                />
+              </Form.Item>
+              <div className="head">未完成的事务移动至</div>
+              <Form.Item
+                label="移动至"
+                name="move_target"
+                rules={[{ required: true }]}
+              >
+                <CustomSelect
+                  options={list.map((item: any) => ({
                     label: item.name,
                     value: item.id,
                     key: item.id,
                   }))}
-                onChange={(value: number) => {
-                  setTargetId(value)
-                }}
-              />
-            </Form.Item>
-            <Form.Item
-              label="结束日期"
-              name="finish_at"
-              rules={[{ required: true }]}
-            >
-              <DatePicker
-                style={{ width: '100%' }}
-                disabledDate={current => {
-                  return (
-                    current &&
-                    current <
-                      moment(
-                        rightSprintList.find((k: any) => k.id === targetId)
-                          ?.start_at,
-                      ).startOf('day')
-                  )
-                }}
-              />
-            </Form.Item>
-            <Form.Item label="结果" name="result">
-              <Input.TextArea
-                showCount
-                maxLength={300}
-                autoSize={{ minRows: 1, maxRows: 5 }}
-                placeholder="请输入"
-              />
-            </Form.Item>
-            <div className="head">未完成的事务移动至</div>
-            <Form.Item
-              label="移动至"
-              name="move_target"
-              rules={[{ required: true }]}
-            >
-              <CustomSelect
-                options={list.map((item: any) => ({
-                  label: item.name,
-                  value: item.id,
-                  key: item.id,
-                }))}
-              />
-            </Form.Item>
+                />
+              </Form.Item>
+            </CustomWrap>
           </Form>
         </div>
       }

@@ -353,21 +353,21 @@ const SprintTree = (props: Props) => {
 
   const hasCreate = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
+    'b/transaction/save',
   )
 
   const hasBatch = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/batch' : 'b/transaction/batch',
+    'b/transaction/batch',
   )
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+    'b/transaction/update',
   )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
+    'b/transaction/delete',
   )
 
   //  点击批量

@@ -11,7 +11,7 @@ const customBox = css`
     display: flex;
     align-items: center;
     font-size: 12px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: var(--neutral-n2);
     margin-bottom: 8px;
@@ -27,7 +27,7 @@ const customBox = css`
     align-items: center;
     .line {
       font-size: 14px;
-      font-family: MiSans-Regular, MiSans;
+      font-family: SiYuanRegular;
       font-weight: 400;
       color: var(--neutral-n1-d1);
       margin: 0px 16px;
@@ -120,12 +120,10 @@ const ChooseDate = (props: any) => {
             setParams({
               ...params,
               include: checked,
-              date: [moment(tomorrow), getDay(params?.radio, checked)],
-            })
-            onChange({
-              ...params,
-              include: checked,
-              date: [moment(tomorrow), getDay(params?.radio, checked)],
+              [params?.radio ? 'date' : '']: [
+                moment(tomorrow),
+                getDay(params?.radio, checked),
+              ],
             })
           }}
         />

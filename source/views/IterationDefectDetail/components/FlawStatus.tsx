@@ -38,18 +38,16 @@ const FlawStatus = (props: any) => {
   const [t] = useTranslation()
   const [active, setActive] = useState<any>(0)
   const [rows, setRows] = useState(null)
-  const { projectInfo, isUpdateStatus } = useSelector(store => store.project)
+  const { projectFlawInfo, isUpdateStatus } = useSelector(
+    store => store.project,
+  )
   const { flawInfo } = useSelector(store => store.flaw)
   const [leftList, setLeftList] = useState([])
   const dispatch = useDispatch()
   const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter(
-      (i: any) =>
-        i.identity ===
-        (projectInfo.projectType === 1
-          ? 'b/story/update'
-          : 'b/transaction/update'),
+    projectFlawInfo.projectPermissions?.length > 0 &&
+    projectFlawInfo.projectPermissions?.filter(
+      (i: any) => i.identity === 'b/flaw/update',
     )?.length > 0
 
   const onChangeIdx = (id: any, row: any) => {

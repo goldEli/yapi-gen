@@ -180,11 +180,23 @@ const CreateDemandLeft = (props: Props) => {
     setTagCheckedList([])
   }
 
+  // 获取父需求列表
+  const getParentData = (id?: number) => {
+    dispatch(
+      getParentList({
+        projectId: props.projectId,
+        id: params?.editId,
+        categoryId: id ?? categoryObj.id,
+      }),
+    )
+  }
+
   useImperativeHandle(props.onRef, () => {
     return {
       confirm: onConfirm,
       reset: onReset,
       update: onSubmitUpdate,
+      updateParentData: getParentData,
     }
   })
 
@@ -277,17 +289,6 @@ const CreateDemandLeft = (props: Props) => {
       changeCategoryForm.resetFields()
       setCurrentCategory({})
     }
-  }
-
-  // 获取父需求列表
-  const getParentData = (id: number) => {
-    dispatch(
-      getParentList({
-        projectId: props.projectId,
-        id: params?.editId,
-        categoryId: id,
-      }),
-    )
   }
 
   // 切换需求类别
@@ -778,6 +779,7 @@ const CreateDemandLeft = (props: Props) => {
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 onBottom={onBottom}
+                isBug={[2, 5].includes(categoryObj.work_type)}
                 addWrap={
                   <AddWrap
                     style={{

@@ -723,7 +723,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
             setBatchEditVisible(false)
           }}
           onConfirm={onConfirmBatchEdit}
-          roleOptions={projectPermission}
         />
         <ProjectOverModal
           id={operationItem}

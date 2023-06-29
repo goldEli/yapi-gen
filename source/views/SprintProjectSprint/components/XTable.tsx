@@ -43,7 +43,7 @@ const XTableWrap = styled.div`
     border-radius: 6px 6px 6px 6px;
     border: 1px dashed var(--neutral-n6-d1);
     font-size: 12px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     color: var(--neutral-n3);
     text-align: center;
     &:hover {
@@ -100,7 +100,7 @@ const Header = styled.div`
   }
   .date {
     font-size: 12px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: var(--neutral-n3);
     margin-left: 16px;
@@ -128,7 +128,7 @@ const XTable: React.FC<XTableProps> = props => {
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+    'b/transaction/update',
   )
 
   const isCanEditSprint = getIsPermission(
@@ -242,7 +242,7 @@ const XTable: React.FC<XTableProps> = props => {
         }
         header={
           <Header>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <span className="title">{data.name}</span>
               <span className="date">
                 {`${data?.start_at ? data.start_at : ''}${
@@ -270,9 +270,9 @@ const XTable: React.FC<XTableProps> = props => {
                                 type: data.status === 4 ? 'edit' : 'update',
                               })
                             }}
+                            className="custom"
                             style={{
                               fontSize: 16,
-                              color: 'var(--neutral-n3)',
                             }}
                             type="edit"
                           />
@@ -289,9 +289,9 @@ const XTable: React.FC<XTableProps> = props => {
                                 onConfirm: () => deleteSprint(data.id),
                               })
                             }}
+                            className="custom"
                             style={{
                               fontSize: 16,
-                              color: 'var(--neutral-n3)',
                             }}
                             type="delete"
                           />

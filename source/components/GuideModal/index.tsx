@@ -59,8 +59,6 @@ const textBoxCss = css`
   .desc {
     height: 22px;
     font-size: 14px;
-    font-family: MiSans-Regular, MiSans;
-    font-weight: 400;
     color: var(--neutral-n2);
     line-height: 22px;
     margin-top: 8px;
@@ -75,7 +73,7 @@ const RightButton = styled.div`
   text-align: center;
   line-height: 32px;
   font-size: 14px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   font-weight: 400;
   color: var(--auxiliary-text-t1-d1);
   cursor: pointer;
@@ -87,7 +85,7 @@ const LeftButton = styled.div`
   background: var(--auxiliary-b4);
   border-radius: 6px 6px 6px 6px;
   font-size: 14px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   font-weight: 400;
   color: var(--auxiliary-text-t2-d1);
   line-height: 32px;
