@@ -488,22 +488,7 @@ const MainTable = (props: Props) => {
         col={selectColum}
         dataSource={props.projectList?.list}
         onRow={onTableRow as any}
-        noData={
-          <NoData
-            subText={hasCreate ? '' : t('version2.noDataCreateProject')}
-            haveFilter={props?.hasFilter}
-          >
-            {!hasCreate && (
-              <CommonButton
-                type="light"
-                onClick={props.onAddClick}
-                style={{ marginTop: 24 }}
-              >
-                {t('common.createProject')}
-              </CommonButton>
-            )}
-          </NoData>
-        }
+        noData={<NoData haveFilter={props?.hasFilter}></NoData>}
       />
       <PaginationBox
         total={props.projectList?.total}
