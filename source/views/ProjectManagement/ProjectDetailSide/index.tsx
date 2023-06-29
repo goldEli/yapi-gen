@@ -169,35 +169,45 @@ const ProjectDetailSide = () => {
       label: '项目成员',
       icon: <CommonIconFont type="team" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/member'),
+      ).length,
       key: 'member',
     },
     {
       label: '项目角色',
       icon: <CommonIconFont type="lock" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/role'),
+      ).length,
       key: 'permission',
     },
     {
       label: '通知配置',
       icon: <CommonIconFont type="bell" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/notification'),
+      ).length,
       key: 'note',
     },
     {
       label: '类型配置',
       icon: <CommonIconFont type="selections" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/story_config'),
+      ).length,
       key: 'ProjectAffair',
     },
     {
       label: 'Kanban配置',
       icon: <CommonIconFont type="layout" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/kanban'),
+      ).length,
       key: '2',
       children: [
         {
@@ -212,7 +222,9 @@ const ProjectDetailSide = () => {
       label: '首页配置',
       icon: <CommonIconFont type="settings" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/home'),
+      ).length,
       key: 'ProjectHome',
     },
   ]
@@ -460,7 +472,7 @@ const ProjectDetailSide = () => {
               items={sideList}
               onClick={projectSettingsClick}
               mode="inline"
-              style={{ background: 'transparent' }}
+              style={{ background: 'transparent', border: 'none' }}
               selectedKeys={selectedKeys}
             ></Menu>
           }

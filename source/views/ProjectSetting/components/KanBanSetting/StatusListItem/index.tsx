@@ -12,7 +12,7 @@ interface StatusListItemProps {
   hiddenIcon?: boolean
 }
 
-const StatusListItemBox = styled.div`
+const StatusListItemBox = styled.div<{ active: boolean }>`
   width: 100%;
   height: 44px;
   background: var(--neutral-white-d1);
@@ -23,6 +23,8 @@ const StatusListItemBox = styled.div`
   padding: 0 16px;
   box-sizing: border-box;
   flex-shrink: 0;
+  box-shadow: ${(props: any) =>
+    props.active ? '0px 0px 15px 6px rgba(0,0,0,0.12)' : ''};
 `
 const StatusListItemLeft = styled.div`
   display: flex;
@@ -42,7 +44,6 @@ const Count = styled.div`
 
 const StatusListItem: React.FC<StatusListItemProps> = props => {
   const { data } = props
-  // debugger
   const draggableId = data.flow_status_id + ''
   const { t } = useI18n()
   return (
@@ -54,6 +55,7 @@ const StatusListItem: React.FC<StatusListItemProps> = props => {
       {(provided, snapshot) => {
         return (
           <StatusListItemBox
+            active={snapshot.isDragging}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}

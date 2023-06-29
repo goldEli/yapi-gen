@@ -23,15 +23,20 @@ const MenuWrap = styled(Menu)`
     color: var(--neutral-n1-d1) !important;
     background: var(--hover-d3) !important;
   }
+  .ant-dropdown-menu-item.ant-dropdown-menu-item-disabled:hover,
+  .ant-dropdown-menu-item.ant-dropdown-menu-submenu-title-disabled:hover,
+  .ant-dropdown-menu-submenu-title.ant-dropdown-menu-item-disabled:hover,
+  .ant-dropdown-menu-submenu-title.ant-dropdown-menu-submenu-title-disabled:hover {
+    background: transparent !important;
+    cursor: inherit;
+  }
 `
 const RemoveItemWrap = styled.div`
   font-size: 12px;
-  font-family: MiSans-Regular, MiSans;
   color: var(--neutral-n3);
 `
 const MenuItemWrap = styled.div`
   font-size: 14px;
-  font-family: MiSans-Regular, MiSans;
   color: var(--neutral-n2);
 `
 

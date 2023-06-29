@@ -709,6 +709,14 @@ const GlobalStyle = () => {
       color: var(--primary-d2);
     }
 
+    .ant-menu-light .ant-menu-item:hover,
+    .ant-menu-light .ant-menu-item-active,
+    .ant-menu-light .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+    .ant-menu-light .ant-menu-submenu-active,
+    .ant-menu-light .ant-menu-submenu-title:hover .custom svg {
+      color: var(--primary-d2);
+    }
+
     .ant-dropdown-menu-item {
       min-width: 120px;
       background-color: var(--neutral-white-d5);

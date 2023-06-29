@@ -47,9 +47,17 @@ declare namespace Models.Efficiency {
   }
   export interface ChartBar {
     chartType: string
-    yData?: Array<string | undefined>
+    yData: Array<string | undefined>
     seriesData?: Array<number | undefined>
     time: string
+    growth_rate: number
+  }
+  export interface ChartBar4 {
+    chartType: string
+    yData: Array<string | undefined>
+    seriesData?: Array<number | undefined>
+    time: string
+    growth_rate: number
   }
   export interface ChartPie {
     chartType?: string
@@ -64,6 +72,7 @@ declare namespace Models.Efficiency {
     is_current: boolean
   }
   export interface WorkChart {
+    growth_rate: number
     time: string
     yData: string[]
     seriesData: number[]

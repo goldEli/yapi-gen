@@ -106,6 +106,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
                   dispatch(openEditColumnModel(item))
                 }}
                 type="edit"
+                style={{ color: 'var(--neutral-n2)' }}
               />
             </ColumnTitle>
 

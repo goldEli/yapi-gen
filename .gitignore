@@ -23,5 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-/script/translate/zhArr.js
+i18n.txt
 /temp

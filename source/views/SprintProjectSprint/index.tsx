@@ -98,7 +98,8 @@ const TabsWrap = styled.div`
     position: absolute;
     width: 56px;
     height: 28px;
-    transition: all 0.8s;
+    transition: all 0.4s;
+    border-radius: 4px;
   }
 
   .left {
@@ -130,7 +131,7 @@ const RightIcon = styled.div`
       height: 32px;
       padding: 0px 16px;
       font-size: 14px;
-      font-family: MiSans-Regular, MiSans;
+      font-family: SiYuanRegular;
       font-weight: 400;
       color: var(--neutral-n2);
       display: flex;
@@ -179,6 +180,9 @@ const TabItemWrap = styled.div`
   height: 100%;
   padding: 0px 24px;
   overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .ant-spin-nested-loading img {
     margin-top: 250px;
   }

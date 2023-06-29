@@ -29,14 +29,14 @@ const content = css`
   padding: 0px 24px;
   .head {
     font-size: 12px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: var(--neutral-n3);
   }
 `
 const CustomWrap = styled.div`
   .ant-form-item-label > label {
-    height: 20px;
+    height: 22px;
   }
 `
 

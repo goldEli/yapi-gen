@@ -37,7 +37,7 @@ const ProjectChooseSide = (props: any) => {
         }}
         className="t1"
       >
-        从{info?.name}导入工作流
+        从【{info?.name}】导入工作流
       </div>
       <div
         style={{
