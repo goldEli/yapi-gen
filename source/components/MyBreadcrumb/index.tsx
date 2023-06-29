@@ -3,14 +3,17 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
 import { Breadcrumb } from 'antd'
 import { t } from 'i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
-
+import { getParamsData } from '@/tools'
 const MyBreadcrumb = (props: any) => {
   const navigate = useNavigate()
   const location = useLocation()
   const projectInfo = useSelector(state => state.project.projectInfo)
-
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { type } = paramsData
+  // debugger
   return (
     <Breadcrumb
       separator={
@@ -68,7 +71,7 @@ const MyBreadcrumb = (props: any) => {
                   type: 0,
                 }),
               )
-              navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+              // navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
             }}
             style={{ color: 'var(--neutral-n1-d1)' }}
           >
@@ -126,6 +129,11 @@ const MyBreadcrumb = (props: any) => {
             {props.user.name}
             {t('details_of')}
           </span>
+        </Breadcrumb.Item>
+      ) : null}
+      {type === 5 ? (
+        <Breadcrumb.Item>
+          <span>列与状态</span>
         </Breadcrumb.Item>
       ) : null}
     </Breadcrumb>

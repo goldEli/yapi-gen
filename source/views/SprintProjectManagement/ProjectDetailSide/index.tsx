@@ -268,7 +268,7 @@ const ProjectDetailSide = () => {
                   items={projectSettingsList}
                   onClick={projectSettingsClick}
                   mode="inline"
-                  style={{ background: 'transparent' }}
+                  style={{ background: 'transparent', border: 'none' }}
                   selectedKeys={selectedKeys}
                 ></Menu>
               ) : (

@@ -281,7 +281,8 @@ const Sortable = (props: any) => {
                           type={
                             option?.find(
                               (item: any) =>
-                                child?.fieldContent?.attr === item.type,
+                                child?.fieldContent?.attr === item.type ||
+                                item.type === child.attr,
                             )?.icon
                           }
                           size={24}
@@ -358,7 +359,8 @@ const Sortable = (props: any) => {
                         type={
                           option.find(
                             (item: any) =>
-                              child?.fieldContent?.attr === item.type,
+                              child?.fieldContent?.attr === item.type ||
+                              item.type === child.attr,
                           )?.icon
                         }
                         size={24}
