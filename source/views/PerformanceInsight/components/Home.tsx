@@ -345,7 +345,7 @@ const Home = () => {
         type: 'success',
       })
       // 刷新视图的接口
-      getViewList({ project_id: projectId, use_type: 3 })
+      updateViewList({ project_id: projectId, use_type: 3 })
     } else {
       getMessage({
         msg: '设置失败',
@@ -593,6 +593,7 @@ const Home = () => {
     ) {
       return
     }
+    console.log(headerParmas, 'headerParmas')
     valueHeaderStr !== JSON.stringify(headerParmas) && init()
   }, [headerParmas])
   return (
