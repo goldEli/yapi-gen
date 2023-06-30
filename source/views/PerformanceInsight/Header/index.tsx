@@ -184,7 +184,7 @@ const Iteration = (props: Props) => {
       }))
     iterateApi.length < 10 && setMore1(true)
     // 判断里面是否有
-    const hasIds = newData.filter((el: { id: number }) =>
+    const hasIds = newData?.filter((el: { id: number }) =>
       props.iterateViewIds.includes(el.id),
     )
     hasIds?.length >= 1
@@ -216,7 +216,7 @@ const Iteration = (props: Props) => {
         value: el.id,
       }))
     // 判断里面是否有
-    const hasIds = newData.filter((el: { id: number }) =>
+    const hasIds = newData?.filter((el: { id: number }) =>
       props.iterateViewIds.includes(el.id),
     )
     hasIds?.length >= 1
