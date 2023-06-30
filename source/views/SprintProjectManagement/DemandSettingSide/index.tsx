@@ -358,7 +358,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                     <AffairTypeText>{item.name}</AffairTypeText>
                   </div>
                   <IconFont
-                    style={{ fontSize: 14 }}
+                    style={{ fontSize: 16, color: 'var(--neutral-n2)' }}
                     type="plus"
                     onClick={e => {
                       e.stopPropagation()

@@ -19,7 +19,6 @@ interface PropsType {
 const WacthExportPerson = (props: PropsType) => {
   const [t] = useTranslation()
   const [data, setData] = useState()
-  console.log(props.personData)
   const columns = [
     {
       title: t('common.name'),

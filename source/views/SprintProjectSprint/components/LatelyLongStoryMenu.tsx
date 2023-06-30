@@ -38,7 +38,7 @@ const MenuWrap = styled(Menu)`
 `
 const RemoveItemWrap = styled.div`
   font-size: 12px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   color: var(--neutral-n3);
 `
 
@@ -61,7 +61,7 @@ const MenuItemBox = styled.div`
 
 const MenuItemWrap = styled.div`
   font-size: 14px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   color: var(--neutral-n2);
   &:hover {
     color: var(--neutral-n1-d1);

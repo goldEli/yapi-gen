@@ -32,7 +32,7 @@ const Tips = styled.div<{ show: boolean }>`
   display: ${props => (props.show ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--neutral-n3);
   position: absolute;
   left: 0;

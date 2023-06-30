@@ -4,14 +4,20 @@ import CommonModal from '@/components/CommonModal'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getRoleList } from '@/services/staff'
+import { getProjectPermission } from '@/services/project'
 const BatchSetPermGroup = (props: {
   isVisible: boolean
   onClose(): void
   onConfirm(roleId: string): void
+  // 项目设置进来时状态为true,需要项目ID
+  projectState: boolean
+  projectId?: number
 }) => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
-  const [roleOptions, setRoleOptions] = useState<any>([])
+  const [roleOptions, setRoleOptions] = useState<
+    { label: string; value: number }[]
+  >([])
   useEffect(() => {
     if (!props.isVisible) {
       form.resetFields()
@@ -24,14 +30,27 @@ const BatchSetPermGroup = (props: {
     })
   }
   useEffect(() => {
-    props.isVisible && getRoleListApi()
+    props.isVisible && getRoleListApi(props.projectState)
   }, [props.isVisible])
-  const getRoleListApi = async () => {
-    const res = await getRoleList()
-    setRoleOptions(
-      res.data.map((el: any) => ({ label: el.name, value: el.id })),
-    )
+  // 后台管理的接口与项目设置的接口不同
+  const getRoleListApi = async (state: boolean) => {
+    let data = null
+    if (state) {
+      const res = await getProjectPermission({ projectId: props.projectId })
+      data = res.list.map((el: { name: string; id: number }) => ({
+        label: el.name,
+        value: el.id,
+      }))
+    } else {
+      const res = await getRoleList()
+      data = res.data.map((el: { name: string; id: number }) => ({
+        label: el.name,
+        value: el.id,
+      }))
+    }
+    setRoleOptions(data)
   }
+
   return (
     <CommonModal
       width={528}

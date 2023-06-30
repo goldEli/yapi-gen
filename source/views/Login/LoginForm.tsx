@@ -162,8 +162,10 @@ export default React.memo((props: { redirect(): void }) => {
     const res = await toLogin(data)
     if (res.code === 0) {
       localStorage.token = res.data.token
-      // props.redirect()
-      navigate(`/ProjectManagement/Project`)
+      // localStorage.agileToken = res.data.token
+      props.redirect()
+
+      // navigate(`/ProjectManagement/Project`)
     } else {
       setErrorMessage(res.msg)
       setErrorState(true)
@@ -174,10 +176,10 @@ export default React.memo((props: { redirect(): void }) => {
     try {
       const response = await checkToken()
       if (response.code == 0) {
-        props.redirect()
+        // props.redirect()
       }
     } catch (error) {
-      localStorage.removeItem('token')
+      localStorage.clear()
     }
   }
 
@@ -251,7 +253,7 @@ export default React.memo((props: { redirect(): void }) => {
   const Lang = styled.span`
     display: inline-block;
     font-size: 14px;
-    font-family: MiSans-Regular, MiSans;
+    font-family: SiYuanRegular;
     font-weight: 400;
     color: var(--neutral-n2);
     line-height: 22px;

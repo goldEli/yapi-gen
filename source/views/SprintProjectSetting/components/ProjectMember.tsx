@@ -31,6 +31,7 @@ import TableSelectOptions from '@/components/TableSelectOptions'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import { updateProjectRole } from '@/services/sprint'
 import { getProjectRole } from '@store/create-propject/thunks'
+import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
 import {
   addMember,
   getProjectInfo,
@@ -49,7 +50,6 @@ import ProjectOverModal from '@/components/ProjectOverModal'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
-import BatchSetPermGroup from './BatchSetPermGroup'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
 import { menuList } from '@/views/SprintProjectManagement/config'
@@ -206,22 +206,8 @@ const ProjectMember = (props: { searchValue?: string }) => {
     }))
     setJobList(arr)
   }
-
-  // 获取项目权限组
-  const getPermission = async () => {
-    const res = await getProjectPermission({ projectId })
-    setProjectPermission(
-      res.list?.map((i: any) => ({
-        label: i.name,
-        value: i.id,
-        tagLabel: i.label,
-      })),
-    )
-  }
-
   useEffect(() => {
     getJobList()
-    getPermission()
     // dispatch(getProjectRole({ projectId }))
   }, [])
 
@@ -723,8 +709,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
           onClose={() => {
             setBatchEditVisible(false)
           }}
+          projectState={true}
+          projectId={projectId}
           onConfirm={onConfirmBatchEdit}
-          roleOptions={projectPermission}
         />
         <ProjectOverModal
           id={operationItem}

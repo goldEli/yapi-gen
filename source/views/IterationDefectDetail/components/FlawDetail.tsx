@@ -28,7 +28,7 @@ const FlawDetail = (props: FlawDetailProps) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
-  const { projectFlawInfo } = useSelector(store => store.project)
+  const { projectInfo } = useSelector(store => store.project)
   const [tagList, setTagList] = useState<any>([])
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
@@ -37,7 +37,7 @@ const FlawDetail = (props: FlawDetailProps) => {
 
   const onUpdate = (value?: boolean) => {
     if (props.isInfoPage) {
-      dispatch(getFlawInfo({ projectId: projectFlawInfo.id, id: dId.current }))
+      dispatch(getFlawInfo({ projectId: projectInfo.id, id: dId.current }))
     } else {
       props.onUpdate?.(value)
     }
@@ -53,7 +53,7 @@ const FlawDetail = (props: FlawDetailProps) => {
       ctime: data.data.files.time,
     }
     await addInfoFlaw({
-      projectId: projectFlawInfo.id,
+      projectId: projectInfo.id,
       id: dId.current,
       type: 'attachment',
       targetId: [obj],
@@ -64,7 +64,7 @@ const FlawDetail = (props: FlawDetailProps) => {
   //   确认删除附件事件
   const onDeleteConfirm = async (targetId: number) => {
     await deleteInfoFlaw({
-      projectId: projectFlawInfo.id,
+      projectId: projectInfo.id,
       id: props.flawInfo.id,
       type: 'attachment',
       targetId,
@@ -92,7 +92,7 @@ const FlawDetail = (props: FlawDetailProps) => {
     if (editInfo === props.flawInfo.info) return
     const params = {
       info: editInfo,
-      projectId: projectFlawInfo.id,
+      projectId: projectInfo.id,
       id: props.flawInfo.id,
       name: props.flawInfo.name,
     }
@@ -168,7 +168,7 @@ const FlawDetail = (props: FlawDetailProps) => {
       <FlawInfoInfoItem activeState>
         <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel>
         <div>
-          {projectFlawInfo?.projectPermissions?.filter(
+          {projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',
           ).length > 0 && (
             <UploadAttach
@@ -193,7 +193,7 @@ const FlawDetail = (props: FlawDetailProps) => {
               }
             />
           )}
-          {projectFlawInfo?.projectPermissions?.filter(
+          {projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',
           ).length <= 0 && <span>--</span>}
         </div>

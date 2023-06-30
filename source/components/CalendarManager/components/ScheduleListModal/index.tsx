@@ -103,7 +103,7 @@ const dateClass = css`
 const gregorianDateClass = css`
   color: var(--neutral-n3);
   font-size: 12px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
 `
 const ScheduleListModal: React.FC<ScheduleListProps> = props => {
   const { scheduleListModal } = useSelector(state => state.schedule)

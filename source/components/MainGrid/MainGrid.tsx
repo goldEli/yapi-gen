@@ -10,9 +10,10 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDispatch, useSelector } from '@store/index'
-import { DataWrap, SpaceWrap, SpaceWrapItem } from './style'
+import { AddProject, DataWrap, SpaceWrap, SpaceWrapItem } from './style'
 import { changeCreateVisible, setProjectType } from '@store/create-propject'
 import CommonButton from '../CommonButton'
+import IconFont from '../IconFont'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -42,7 +43,7 @@ const MainGrid = (props: Props) => {
         `${
           item.defaultHomeMenu
             ? item.defaultHomeMenu
-            : '/SprintProjectManagement/KanBan'
+            : '/SprintProjectManagement/Affair'
         }?data=${params}`,
       )
       return
@@ -76,6 +77,15 @@ const MainGrid = (props: Props) => {
                 </div>
               </SpaceWrapItem>
             ))}
+            {!isPermission && (
+              <AddProject onClick={onAddClick}>
+                <IconFont
+                  style={{ fontSize: 24, marginBottom: 16 }}
+                  type="plus"
+                />
+                <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
+              </AddProject>
+            )}
           </SpaceWrap>
         ) : isPermission ? (
           <NoData />

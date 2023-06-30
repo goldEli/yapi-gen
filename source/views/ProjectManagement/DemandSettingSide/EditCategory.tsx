@@ -21,7 +21,8 @@ import { useSearchParams } from 'react-router-dom'
 import { uploadFileByTask } from '@/services/cos'
 import { DelButton } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
-
+import { useSelector, useDispatch } from '@store/index'
+import { setProjectInfoValues } from '@store/project'
 const FormWrap = styled(Form)({
   '.ant-form-item': {
     margin: '22px 0 0 0',
@@ -56,6 +57,8 @@ const EditorCategory = (props: EditorProps) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [colorList, setColorList] = useState<any>()
   const [hiddenUpload, setHiddenUpload] = useState(false)
+  const { projectInfoValues } = useSelector(store => store.project)
+  const dispatch = useDispatch()
   // 图标icon
   const getIconList = async () => {
     const list: any = await getCategoryIconList()
@@ -111,8 +114,29 @@ const EditorCategory = (props: EditorProps) => {
         //
       }
     } else {
+      // debugger
       try {
-        await addStoryConfigCategory({ ...params, work_type: props.workType })
+        const res = await addStoryConfigCategory({
+          ...params,
+          work_type: props.workType,
+        })
+        const projectInfoValuesData = JSON.parse(
+          JSON.stringify(projectInfoValues),
+        )
+        const data = res.data[0]
+        projectInfoValuesData.forEach(
+          (item: { children: any[]; key: string }) => {
+            if (item.key === 'category') {
+              item.children.push({
+                ...data,
+                content_txt: data.name,
+                content: data.name,
+              })
+            }
+          },
+        )
+        console.log('res', res, projectInfoValues)
+        dispatch(setProjectInfoValues(projectInfoValuesData))
         getMessage({ msg: t('common.createSuccess'), type: 'success' })
         onReset()
       } catch (error) {

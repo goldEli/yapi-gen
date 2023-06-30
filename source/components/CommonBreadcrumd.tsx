@@ -21,15 +21,16 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { type } = paramsData
+  // debugger
   const navigate = useNavigate()
   const projectInfo = useSelector(state => state.project.projectInfo)
 
   const maps: mapsInterface = {
-    ProjectInfo: '项目设置',
+    ProjectInfo: '项目信息',
     ProjectMember: '项目成员',
     ProjectRole: '项目角色',
     ProjectNotify: '通知配置',
-    ProjectKanBan: '列与状态',
+    ProjectKanBan: 'Kanban配置',
     ProjectHome: '首页配置',
     ProjectAffair: '事务类型',
   }
@@ -75,8 +76,16 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
         </Breadcrumb.Item>
       ) : null}
       <Breadcrumb.Item>
+        <a>项目设置</a>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>
         <a className={lastBreadcrumb}>{maps[type] || maps.ProjectInfo}</a>
       </Breadcrumb.Item>
+      {type === 'ProjectKanBan' ? (
+        <Breadcrumb.Item>
+          <a className={lastBreadcrumb}>列与状态</a>
+        </Breadcrumb.Item>
+      ) : null}
     </Breadcrumb>
   )
 }

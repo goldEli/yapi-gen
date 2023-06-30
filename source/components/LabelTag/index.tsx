@@ -26,7 +26,7 @@ const LabelWrap = styled.span<{ zh: boolean }>`
   background-size: cover;
   font-size: 12px;
   line-height: 20px;
-  font-family: MiSans-Regular, MiSans;
+  font-family: SiYuanRegular;
   text-align: center;
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;

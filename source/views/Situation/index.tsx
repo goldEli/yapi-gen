@@ -65,10 +65,10 @@ const Situation = () => {
       user: {
         total: res.user_statistics.user_total,
         boyCount: res.user_statistics.user_count.find(
-          (i: any) => i.gender === 2,
+          (i: any) => i.gender === 1,
         ).count,
         girlCount: res.user_statistics.user_count.find(
-          (i: any) => i.gender === 1,
+          (i: any) => i.gender === 2,
         ).count,
         chartsData: res.user_statistics.position_count.map(
           (item: { position_name: any; count: any }) => {

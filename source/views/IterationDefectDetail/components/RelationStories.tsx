@@ -55,7 +55,7 @@ const RelationStories = (props: RelationStoriesProps) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id } = paramsData
-  const { projectFlawInfo } = useSelector(store => store.project)
+  const { projectInfo } = useSelector(store => store.project)
   const [searchValue, setSearchValue] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
@@ -70,8 +70,8 @@ const RelationStories = (props: RelationStoriesProps) => {
   const [recentList, setRecentList] = useState<SelectItem[]>([])
 
   const isCanEdit =
-    projectFlawInfo.projectPermissions?.length > 0 &&
-    projectFlawInfo.projectPermissions?.filter(
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter(
       (i: any) => i.identity === 'b/flaw/update',
     )?.length > 0
 
@@ -103,7 +103,7 @@ const RelationStories = (props: RelationStoriesProps) => {
   // 获取关联事务下拉列表
   const getSelectRelationSearch = async (value: string) => {
     const response = await getFlawSelectRelationSearch({
-      projectId: projectFlawInfo.id,
+      projectId: projectInfo.id,
       id: props.detail.id,
       searchValue: value,
     })
@@ -118,7 +118,7 @@ const RelationStories = (props: RelationStoriesProps) => {
   // 获取最近关联事务下拉列表
   const getSelectRelationRecent = async () => {
     const response = await getFlawSelectRelationRecent({
-      projectId: projectFlawInfo.id,
+      projectId: projectInfo.id,
       id: props.detail.id,
     })
     setRecentList(
@@ -155,7 +155,7 @@ const RelationStories = (props: RelationStoriesProps) => {
     const values = form.getFieldsValue()
     await addFlawRelation({
       ...values,
-      projectId: projectFlawInfo.id,
+      projectId: projectInfo.id,
       id: props.detail.id,
     })
     getMessage({ type: 'success', msg: '添加成功' })

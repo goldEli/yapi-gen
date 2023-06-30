@@ -722,6 +722,8 @@ const ProjectMember = (props: { searchValue?: string }) => {
           onClose={() => {
             setBatchEditVisible(false)
           }}
+          projectState={true}
+          projectId={projectId}
           onConfirm={onConfirmBatchEdit}
         />
         <ProjectOverModal

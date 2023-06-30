@@ -47,6 +47,7 @@ import { getMessage } from '@/components/Message'
 import { setAddWorkItemModal } from '@store/project'
 import SystemFeedback from '@/components/SystemFeedback/SystemFeedback'
 import { changeFreedVisibleVisible } from '@store/feedback'
+import { useNavigate } from 'react-router-dom'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
@@ -162,7 +163,7 @@ const HeaderRight = () => {
   const [isCreateVisible, setIsCreateVisible] = useState(false)
   const [isInfoVisible, setIsInfoVisible] = useState(false)
   const [isConfirmLogout, setIsConfirmLogout] = useState(false)
-
+  const navigate = useNavigate()
   const userList = [
     { name: t('language'), isRight: true, icon: 'earth', key: 0 },
     // { name: t('theme_switching'), isRight: true, icon: 'theme', key: 1 },
@@ -267,12 +268,13 @@ const HeaderRight = () => {
   const toLoginOut = async () => {
     sessionStorage.removeItem('saveRouter')
     try {
-      await loginOut()
-      setTimeout(() => {
-        localStorage.removeItem('agileToken')
-        localStorage.removeItem('quickCreateData')
-        getTicket()
-      }, 100)
+      const res = await loginOut()
+      console.log(res)
+      if (res.code === 0) {
+        localStorage.clear()
+        navigate('/login')
+        // getTicket()
+      }
     } catch (error) {
       //
     }

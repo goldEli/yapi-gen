@@ -27,6 +27,7 @@ export const getProjectList: any = async (params: any) => {
       status: Number(params.status) || '',
       all: params.all ? 1 : 0,
       group: params?.groupId,
+      is_clone: params?.is_clone,
     },
     pagesize: params.pageSize,
     page: params.page,
@@ -530,13 +531,14 @@ export const changeCategoryStatus: any = async (params: any) => {
 }
 
 export const addStoryConfigCategory: any = async (params: any) => {
-  await http.post<any>('addCategory', {
+  const res = await http.post<any>('addCategory', {
     name: params.name,
     attachment_id: params.attachment_id,
     project_id: params.projectId,
     remark: params.remark,
     work_type: params.work_type,
   })
+  return res
 }
 
 export const updateStoryConfigCategory: any = async (params: any) => {

@@ -700,7 +700,13 @@ const SprintDetailDrawer = () => {
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
-              <LongStroyBread longStroy={drawerInfo} layer></LongStroyBread>
+              <LongStroyBread
+                longStroy={drawerInfo}
+                layer
+                onClick={() => {
+                  onOperationUpdate()
+                }}
+              ></LongStroyBread>
               <DemandName style={{ marginTop: 16 }}>
                 <span
                   className="name"
