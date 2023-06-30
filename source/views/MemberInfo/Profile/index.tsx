@@ -550,7 +550,7 @@ const Profile = () => {
                   alignItems: 'center',
                 }}
               >
-                <SecondTitle>工作项接收处理情况</SecondTitle>
+                <SecondTitle>{t('work_item_receiving_processing')}</SecondTitle>
                 <Select
                   onChange={handleChange}
                   defaultValue={nowYear}
@@ -642,7 +642,9 @@ const Profile = () => {
                     <CommonIconFont
                       type={fullScreen ? 'fewer-screen' : 'full-screen'}
                     />
-                    <span>{fullScreen ? '退出全屏' : '全屏'}</span>
+                    <span>
+                      {fullScreen ? t('exit_full_screen') : t('full_screen')}
+                    </span>
                   </div>
                 </div>
                 <div className={titleWrap}>

@@ -10,8 +10,8 @@
     "checkType": "tsc --noEmit",
     "preview": "vite preview",
     "prepare": "husky install",
-    "tran": "npx @samuel.miao/tran -u http://35.84.160.169:8008/bbs/translate",
-    "findCN": "npx @samuel.miao/findcn"
+    "tran": "npx ifuntran -u http://35.84.160.169:8008/bbs/translate",
+    "findCN": "npx ifuncheckcn"
   },
   "dependencies": {
     "@ant-design/plots": "^1.2.3",

@@ -176,10 +176,10 @@ export default React.memo((props: { redirect(): void }) => {
     try {
       const response = await checkToken()
       if (response.code == 0) {
-        props.redirect()
+        // props.redirect()
       }
     } catch (error) {
-      localStorage.removeItem('token')
+      localStorage.clear()
     }
   }
 

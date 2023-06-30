@@ -467,7 +467,7 @@ const HeaderRight = () => {
             <CommonIconFont type="question" size={24} />
           </CloseWrap>
         </Tooltip>
-        <Tooltip title="反馈">
+        <Tooltip title={t('feedback') as string}>
           <CloseWrap width={32} height={32} onClick={onFeedback}>
             <CommonIconFont type="draft" size={24} />
           </CloseWrap>
