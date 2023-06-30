@@ -141,19 +141,19 @@ const Index = (props: any) => {
     if (type === 'user-alone') {
       const params = encryptPhp(
         JSON.stringify({
-          type: 1,
+          type: props.item.projectType === 2 ? 'ProjectMember' : 1,
           id: props.item.id,
           pageIdx: 'member',
         }),
       )
-      navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
-      // let url = null
-      // if (props.item.projectType === 1) {
-      //   url = '/ProjectManagement/Demand'
-      // } else {
-      //   url = '/SprintProjectManagement/Affair'
-      // }
-      // navigate(`${url}?data=${params}`)
+      // navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+      let url = null
+      if (props.item.projectType === 1) {
+        url = '/ProjectManagement/ProjectSetting'
+      } else {
+        url = '/SprintProjectManagement/Setting'
+      }
+      navigate(`${url}?data=${params}`)
     } else if (type === 'demand') {
       if (props.item.projectType === 1) {
         const params = encryptPhp(

@@ -223,7 +223,11 @@ const Operation = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 7, title: '创建事务' },
+        params: {
+          type: 7,
+          title: '创建事务',
+          projectId: getProjectIdByUrl(),
+        },
       }),
     )
   }
@@ -422,7 +426,6 @@ const Operation = (props: Props) => {
                       type: 7,
                       title: '创建事务',
                       projectId: getProjectIdByUrl(),
-                      noDataCreate: true,
                     },
                   }),
                 )

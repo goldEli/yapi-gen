@@ -178,6 +178,7 @@ const ProjectDetailSide = () => {
   ]
   // 获取项目信息
   const getInfo = async () => {
+    getProjectInfoValuesData()
     const result = await getProjectInfo({ projectId })
     dispatch(setProjectInfo(result))
   }
@@ -212,6 +213,7 @@ const ProjectDetailSide = () => {
   // 项目设计导航
   const projectSettingsClick = ({ item, key }: any) => {
     setSelectedKeys(key)
+    // debugger
     const params = encryptPhp(
       JSON.stringify({
         type: key,
@@ -225,6 +227,7 @@ const ProjectDetailSide = () => {
     navigate(`${item.props.path}?data=${params}`)
   }
   const onGoBack = () => {
+    getInfo()
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/SprintProjectManagement/Affair?data=${params}`)
   }

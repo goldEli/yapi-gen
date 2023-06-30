@@ -70,25 +70,12 @@ const Need = (props: any) => {
         enableMouseTracking: false,
       },
     },
-    series: [
-      {
-        name: t('Create_requirements'),
-        data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
-      },
-      {
-        name: t('situation.ongoing'),
-        data: [0, 1, 2, 19, 38, 0, 0, 0, 0, 0, 0, 0],
-      },
-      {
-        name: t('situation.end'),
-        data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
-      },
-    ],
+    series: data?.chartsData,
   }
   // console.log(data?.chartsData, 'data11?.chartsData')
   return (
     <ChartsWrap>
-      <div className={titleCss}>{t('situation.demandSurvey')}</div>
+      <div className={titleCss}>{t('work_item_summary')}</div>
       <TextWrap>
         {/* <TextBlueWrap> */}
         <ChartsItem>
@@ -112,7 +99,7 @@ const Need = (props: any) => {
         </ChartsItem>
         {/* </HomeWrap> */}
       </TextWrap>
-      <div className={chartsTitle}>{t('situation.demandDiagram')}</div>
+      <div className={chartsTitle}>{t('work_item_accumulated_chart')}</div>
       <HightChartsWrap style={{ height: '300px' }}>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </HightChartsWrap>
