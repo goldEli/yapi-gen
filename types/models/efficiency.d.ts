@@ -51,6 +51,7 @@ declare namespace Models.Efficiency {
     seriesData?: Array<number | undefined>
     time: string
     growth_rate: number
+    period_number?: number
   }
   export interface ChartBar4 {
     chartType: string
@@ -76,6 +77,7 @@ declare namespace Models.Efficiency {
     time: string
     yData: string[]
     seriesData: number[]
+    period_number: number
   }
   export interface Defect {
     number: number

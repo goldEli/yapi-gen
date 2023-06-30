@@ -128,7 +128,7 @@ const HightChartMainBar = (props: {
           {props.titleType ? (
             <CharTitle>
               <span>统计周期</span>
-              <span className="day">14天</span>
+              <span className="day">{props.chart?.period_number}天</span>
               <CommonIconFont
                 type={'down-left'}
                 size={16}

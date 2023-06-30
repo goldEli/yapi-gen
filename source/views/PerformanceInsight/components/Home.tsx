@@ -155,12 +155,14 @@ const Home = () => {
     seriesData: [],
     time: '',
     growth_rate: 0,
+    period_number: 0,
   })
   const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>({
     growth_rate: 0,
     time: '',
     yData: [],
     seriesData: [],
+    period_number: 0,
   })
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
@@ -416,6 +418,7 @@ const Home = () => {
       chartType: str,
       yData: res.list.map(el => el.user_name),
       seriesData: res.list.map(el => el.work_total),
+      period_number: res.period_number,
     })
   }
   // 完成率top10对比 第4个图表
@@ -501,6 +504,7 @@ const Home = () => {
       yData: res.work_completion_period.list.map((el, i) =>
         el.is_current ? '当前' : `第${time[i]}周期`,
       ),
+      period_number: res.work_completion_period.period_number,
       seriesData: res.work_completion_period.list.map(el => el.completed),
     })
     setCharts3({
