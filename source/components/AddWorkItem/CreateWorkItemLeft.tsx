@@ -376,12 +376,23 @@ const CreateDemandLeft = (props: Props) => {
   const computedCategory = () => {
     let result: any = []
     if (params?.type) {
-      // type=7的时候返回事务下除子任务的所有类型，否则返回相应的
-      result = props.allCategoryList?.filter((i: any) =>
-        params.type === 7
-          ? [3, 4, 5].includes(i.work_type) && i.status === 1
-          : i.work_type === params.type && i.status === 1,
-      )
+      switch (params?.type) {
+        case 7:
+          result = props.allCategoryList?.filter(
+            (i: any) => [3, 4, 5].includes(i.work_type) && i.status === 1,
+          )
+          break
+        case 8:
+          result = props.allCategoryList?.filter(
+            (i: any) => [4, 5].includes(i.work_type) && i.status === 1,
+          )
+          break
+        default:
+          result = props.allCategoryList?.filter(
+            (i: any) => i.work_type === params.type && i.status === 1,
+          )
+          break
+      }
     } else {
       result = props.allCategoryList?.filter((i: any) =>
         projectInfo.projectType === 1
@@ -481,6 +492,11 @@ const CreateDemandLeft = (props: Props) => {
         if (createCategory.id) {
           resultCategory = createCategory
         }
+        console.log(
+          resultCategory,
+          '=resultCategoryresultCategory',
+          resultCategoryData,
+        )
         //   如果有修改
         if (resultCategory?.id) {
           setCategoryObj(resultCategory)

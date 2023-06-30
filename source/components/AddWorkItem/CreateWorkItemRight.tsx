@@ -592,7 +592,11 @@ const CreateDemandRight = (props: Props) => {
             />
             <div>
               <span>{priorityDetail?.content_txt || '--'}</span>
-              <IconFont className="icon" type="down-icon" />
+              <IconFont
+                style={{ color: 'var(--neutral-n4)' }}
+                className="icon"
+                type="down-icon"
+              />
             </div>
           </PriorityWrap>
         </ChangePriorityPopover>

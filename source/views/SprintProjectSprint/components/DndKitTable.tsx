@@ -76,7 +76,7 @@ const LongStoryWrap = styled.div`
   }
   &:hover .icon {
     display: inline-block;
-    color: var(--primary-d2);
+    color: var(--neutral-n4);
   }
 `
 
@@ -218,7 +218,7 @@ const DndKitTable = (props: any) => {
         params: {
           editId,
           projectId: record?.project_id,
-          type: 4,
+          type: record.work_type,
           title: '编辑事务',
         },
       }),
@@ -282,10 +282,11 @@ const DndKitTable = (props: any) => {
     const groupId = item.iterate_id
     const sprintObj = rightSprintList.find(k => k.id === groupId)
     if (
-      (moment(item.expected_start_at).isSame(sprintObj?.start_at) ||
+      ((moment(item.expected_start_at).isSame(sprintObj?.start_at) ||
         moment(item.expected_start_at).isAfter(sprintObj?.start_at)) &&
-      (moment(item.expected_end_at).isSame(sprintObj?.end_at) ||
-        moment(item.expected_end_at).isBefore(sprintObj?.end_at))
+        (moment(item.expected_end_at).isSame(sprintObj?.end_at) ||
+          moment(item.expected_end_at).isBefore(sprintObj?.end_at))) ||
+      (!item.expected_start_at && !item.expected_end_at)
     ) {
       return false
     }
@@ -472,7 +473,11 @@ const DndKitTable = (props: any) => {
               ) : null}
               <span style={{ marginLeft: '5px' }}>
                 {!text?.icon && <span>--</span>}
-                <IconFont className="icon" type="down-icon" />
+                <IconFont
+                  className="icon"
+                  style={{ color: 'var(--neutral-n4)' }}
+                  type="down-icon"
+                />
               </span>
             </PriorityWrap>
           </ChangePriorityPopover>
@@ -667,7 +672,7 @@ const DndKitTable = (props: any) => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {(props?.checkCommission
+      {(props?.activeKey === 0 && props?.checkCommission?.[props?.activeKey]
         ? rightSprintList.filter((i: any) => i.id === 0)
         : rightSprintList
       )?.map((item: any) => {

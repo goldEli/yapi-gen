@@ -75,7 +75,6 @@ const WacthExportPerson = (props: PropsType) => {
       project_id: '',
       id: props.personData,
     })
-    console.log(res.list)
     setData(res.list)
   }
   return (

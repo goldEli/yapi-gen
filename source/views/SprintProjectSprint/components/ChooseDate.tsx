@@ -1,3 +1,4 @@
+import { getMessage } from '@/components/Message'
 import { css } from '@emotion/css'
 import { DatePicker, Radio, Space, Switch } from 'antd'
 import moment from 'moment'
@@ -50,10 +51,12 @@ const ChooseDate = (props: any) => {
           return moment(tomorrow).add(6, 'day')
         }
         if (moment(tomorrow).day() === 0) {
-          return moment(tomorrow).add(4, 'day')
-        }
-        if (moment(tomorrow).day() === 6) {
+          // 星期天
           return moment(tomorrow).add(5, 'day')
+        }
+        if (moment(tomorrow).day() === 1) {
+          // 星期一
+          return moment(tomorrow).add(4, 'day')
         }
         return moment(tomorrow).add(6, 'day')
       case 2:
@@ -61,10 +64,11 @@ const ChooseDate = (props: any) => {
           return moment(tomorrow).add(13, 'day')
         }
         if (moment(tomorrow).day() === 0) {
-          return moment(tomorrow).add(11, 'day')
-        }
-        if (moment(tomorrow).day() === 6) {
           return moment(tomorrow).add(12, 'day')
+        }
+        if (moment(tomorrow).day() === 1) {
+          // 星期一
+          return moment(tomorrow).add(11, 'day')
         }
         return moment(tomorrow).add(13, 'day')
       case 3:
@@ -72,10 +76,11 @@ const ChooseDate = (props: any) => {
           return moment(tomorrow).add(20, 'day')
         }
         if (moment(tomorrow).day() === 0) {
-          return moment(tomorrow).add(18, 'day')
-        }
-        if (moment(tomorrow).day() === 6) {
           return moment(tomorrow).add(19, 'day')
+        }
+        if (moment(tomorrow).day() === 1) {
+          // 星期一
+          return moment(tomorrow).add(18, 'day')
         }
         return moment(tomorrow).add(20, 'day')
       case 4:
@@ -83,10 +88,11 @@ const ChooseDate = (props: any) => {
           return moment(tomorrow).add(27, 'day')
         }
         if (moment(tomorrow).day() === 0) {
-          return moment(tomorrow).add(25, 'day')
-        }
-        if (moment(tomorrow).day() === 6) {
           return moment(tomorrow).add(26, 'day')
+        }
+        if (moment(tomorrow).day() === 1) {
+          // 星期一
+          return moment(tomorrow).add(25, 'day')
         }
         return moment(tomorrow).add(27, 'day')
       default:

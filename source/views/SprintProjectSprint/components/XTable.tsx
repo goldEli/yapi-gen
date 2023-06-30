@@ -65,13 +65,14 @@ const XTableWrap = styled.div`
 
   .dragOverlay {
     --scale: 1.02;
-    --box-shadow-picked-up: 0 0 0 calc(1px / var(--scale-x, 1))
+    /* --box-shadow-picked-up: 0 0 0 calc(1px / var(--scale-x, 1))
         rgba(63, 63, 68, 0.05),
       -1px 0 15px 0 rgba(34, 33, 81, 0.01),
-      0px 15px 15px 0 rgba(34, 33, 81, 0.25);
-
+      0px 15px 15px 0 rgba(34, 33, 81, 0.25); */
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
     /* animation: pop 200ms cubic-bezier(0.18, 0.67, 0.6, 1.22); */
-    box-shadow: var(--box-shadow-picked-up);
+    background-color: var(--neutral-white-d1);
     cursor: move !important;
     // 禁用单元格元素默认行为
     > td {
@@ -107,6 +108,16 @@ const Header = styled.div`
     margin-left: 16px;
     margin-right: 16px;
   }
+`
+const DisabledButton = styled.div`
+  background: var(--auxiliary-b10) !important;
+  color: var(--auxiliary-t4) !important;
+  cursor: no-drop !important;
+  width: 88px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  border-radius: 6px 6px 6px 6px;
 `
 
 const XTable: React.FC<XTableProps> = props => {
@@ -198,22 +209,8 @@ const XTable: React.FC<XTableProps> = props => {
         )
       case 1:
         return data?.stories?.length === 0 ? (
-          <Tooltip
-            placement="top"
-            title="此冲刺不含任何事务"
-            getPopupContainer={node => node}
-          >
-            <div>
-              <CommonButton
-                type="light"
-                isDisable
-                onClick={() => {
-                  setCompleteVisible(true)
-                }}
-              >
-                完成冲刺
-              </CommonButton>
-            </div>
+          <Tooltip title="此冲刺不含任何事务" getPopupContainer={node => node}>
+            <DisabledButton>完成冲刺</DisabledButton>
           </Tooltip>
         ) : (
           <CommonButton
@@ -344,7 +341,7 @@ const XTable: React.FC<XTableProps> = props => {
                 setAddWorkItemModal({
                   visible: true,
                   params: {
-                    type: 4,
+                    type: 8,
                     iterateId: data.id === 0 ? 0 : data.id,
                     title: '创建事务',
                   },

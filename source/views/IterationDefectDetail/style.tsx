@@ -114,10 +114,6 @@ export const DetailText = styled.div`
     font-family: SiYuanMedium;
     outline: none;
   }
-  .icon {
-    margin-right: 16px;
-    cursor: pointer;
-  }
 `
 
 export const DetailMain = styled.div`

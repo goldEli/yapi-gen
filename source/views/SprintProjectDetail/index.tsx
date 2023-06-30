@@ -58,6 +58,7 @@ import LongStroyBread from '@/components/LongStroyBread'
 import { setIsUpdateChangeLog, setIsUpdateStatus } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
+import CopyIcon from '@/components/CopyIcon'
 
 interface IProps {}
 
@@ -592,9 +593,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             </span>
           )}
           {hasEdit && <span className="name">{affairsInfo.name}</span>}
-          <span className="icon" onClick={onCopy}>
-            <CommonIconFont type="copy" color="var(--neutral-n3)" />
-          </span>
+          <CopyIcon onCopy={onCopy} />
           <ChangeStatusPopover
             projectId={affairsInfo.projectId}
             record={affairsInfo}

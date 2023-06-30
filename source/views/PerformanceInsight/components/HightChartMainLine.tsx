@@ -94,7 +94,7 @@ const HightChartMainLine = (props: {
         <HightChartsWrap height={props.height}>
           <CharTitle>
             <span>统计周期</span>
-            <span className="day">14天</span>
+            <span className="day">{props.chart.period_number}</span>
             <CommonIconFont
               type={'up-right'}
               size={16}

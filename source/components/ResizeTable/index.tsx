@@ -196,7 +196,7 @@ const ResizeTable = (props: ResizeTableProps) => {
     if (!col.width) {
       return {
         ...col,
-        width: 100,
+        width: index ? 100 : 40,
       }
     }
     return {
