@@ -16,7 +16,6 @@ interface PropsType {
 const Export = (props: PropsType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [t] = useTranslation()
-  console.log(props.personData, 'props.personData')
   return (
     <>
       <CommonModal

@@ -23,6 +23,7 @@ const Page = () => {
   const redirect = async () => {
     const ticketResponse = await getTicket()
     const { ticket } = ticketResponse.data
+
     const url = getQueryParam('redirect')
     const type = getQueryParam('type')
     const arr = ['zh', 'en']
@@ -38,7 +39,7 @@ const Page = () => {
         location.href = newUrl.href
       }
     } else {
-      const urlVal = import.meta.env.__OA_URL__
+      const urlVal = '/ProjectManagement/Project'
       location.href = location.href.includes('localhost')
         ? `http://192.168.2.9:8080?ticket=${ticket}&language=${arr[lang]}`
         : `${urlVal}?ticket=${ticket}&language=${arr[lang]}`
@@ -48,7 +49,7 @@ const Page = () => {
   const check = async () => {
     try {
       const response = await checkToken()
-      if (response.code == 0) {
+      if (response.code === 0) {
         setIsAuthorized(true)
         const userData = response.data?.info
         localStorage.setItem('userAdmin', JSON.stringify(userData || {}))
@@ -62,8 +63,8 @@ const Page = () => {
   }
 
   useEffect(() => {
-    localStorage.removeItem('token')
-    check()
+    localStorage.clear()
+    // check()
   }, [])
   if (isAuthorized && target && target !== 'oa') {
     return (

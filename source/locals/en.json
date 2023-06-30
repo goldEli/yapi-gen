@@ -1,4 +1,17 @@
 {
+  "content": "Content ",
+
+  "author": "Author ",
+
+  "sent_at": "send to ",
+
+  "receiver": "receiver",
+
+  "exit_full_screen": "ExitFullScreen",
+  "feedback": "Feedback ",
+  "work_item_summary": "work item summary",
+
+  "work_item_accumulated_chart": "Work item accumulation chart",
   "unread": "unread",
   "create_work_item": "Create work item",
   "accumulated_work_items": "Cumulative participating work items",

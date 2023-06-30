@@ -124,12 +124,9 @@ const Main = (props: UserInfo) => {
     {
       title: t('common.createTime'),
       dataIndex: 'created_at',
+      width: 200,
       render: (text: string, record: { category_attachment: string }) => {
-        return (
-          <RowTableCol>
-            <div className="text">{text}</div>
-          </RowTableCol>
-        )
+        return <div className="text">{text}</div>
       },
     },
   ]

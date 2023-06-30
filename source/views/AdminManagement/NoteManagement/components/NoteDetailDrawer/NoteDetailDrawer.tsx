@@ -182,17 +182,17 @@ const NoteDetailDrawer = (props: any) => {
           >
             {arr?.title}
           </div>
-          <Title> 内容</Title>
+          <Title> {t('content')}</Title>
           <Editor
             value={arr?.content ?? '--'}
             getSuggestions={() => []}
             readonly
           />
-          <Title>作者</Title>
+          <Title>{t('author')}</Title>
           {/* <Text> {arr.user.name}</Text> */}
-          <Title>发送于</Title>
+          <Title>{t('sent_at')}</Title>
           <Text>{arr?.expire_time}</Text>
-          <Title>接收人</Title>
+          <Title>{t('receiver')}</Title>
           <div
             style={{
               display: 'flex',
@@ -212,7 +212,7 @@ const NoteDetailDrawer = (props: any) => {
                     color="var(--neutral-white-d7)"
                   />
                 </DefalutIcon>
-                <NameText>全员</NameText>
+                <NameText>{t('all')}</NameText>
               </Col>
             ) : (
               arr?.recipient_users.map((i: any) => (
