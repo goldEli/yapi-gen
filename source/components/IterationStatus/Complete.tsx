@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateList } from '@store/iterate'
 import { getIterateInfo } from '@store/iterate/iterate.thunk'
 import { Radio, RadioChangeEvent, Space } from 'antd'
+import { defaults } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CustomSelect from '../CustomSelect'
@@ -65,46 +66,50 @@ const Complete = (props: Props) => {
   const { iterateInfo } = useSelector(store => store.iterate)
   const dispatch = useDispatch()
   const [num, setNum] = useState(0)
-
+  const getItem = (key: string, item: any) => {
+    switch (key) {
+      case 'finished_story_count':
+        return {
+          name: '完成需求',
+          value: item?.finished_story_count,
+          key: 'finished_story_count',
+        }
+      case 'finished_bug_count':
+        return {
+          name: '完成缺陷',
+          value: item?.finished_bug_count,
+          key: 'finished_bug_count',
+        }
+      case 'incomplete_story_count':
+        return {
+          name: '剩余需求',
+          value: item?.incomplete_story_count,
+          key: 'incomplete_story_count',
+        }
+      case 'incomplete_bug_count':
+        return {
+          name: '剩余缺陷',
+          value: item?.incomplete_bug_count,
+          key: 'incomplete_bug_count',
+        }
+      default:
+        return {}
+    }
+  }
   const getFinishStatistics = async (params: any) => {
     try {
       const result: any = await finishStatistics(params)
 
       if (result && result.code === 0 && result.data) {
-        const temp = Object.keys(result.data).map((k: string) => {
-          if (k === 'finished_story_count') {
-            return {
-              name: '完成需求',
-              value: result.data?.finished_story_count,
-              key: 'finished_story_count',
-            }
-          }
-          if (k === 'finished_bug_count') {
-            return {
-              name: '完成缺陷',
-              value: result.data?.finished_bug_count,
-              key: 'finished_bug_count',
-            }
-          }
-          if (k === 'incomplete_story_count') {
-            return {
-              name: '剩余需求',
-              value: result.data?.incomplete_story_count,
-              key: 'incomplete_story_count',
-            }
-          }
-          if (k === 'incomplete_bug_count') {
-            return {
-              name: '剩余缺陷',
-              value: result.data?.incomplete_bug_count,
-              key: 'incomplete_bug_count',
-            }
-          }
-          return {}
-        })
+        const temp: any = Object.keys(result.data).map((k: string) =>
+          getItem(k, result.data),
+        )
         const numB =
-          temp.find(el => el.key === 'incomplete_bug_count')?.value +
-          temp.find(el => el.key === 'incomplete_story_count')?.value
+          temp.find((el: { key: string }) => el.key === 'incomplete_bug_count')
+            ?.value +
+          temp.find(
+            (el: { key: string }) => el.key === 'incomplete_story_count',
+          )?.value
         setNum(numB)
         setData(temp)
       }
