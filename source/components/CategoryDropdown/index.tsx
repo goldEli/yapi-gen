@@ -159,7 +159,9 @@ const CategoryDropdown = (props: IProps) => {
 
   useEffect(() => {
     if (categoryList) {
+      console.log(categoryList, '=categoryListcategoryList33333')
       const data = getTypeCategory(categoryList, 'work_type')
+      console.log(data, '=12121')
       const options = getOptions(data)
       if (!options) {
         return
