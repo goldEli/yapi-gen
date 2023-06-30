@@ -717,6 +717,7 @@ const SprintProjectSprint: React.FC = () => {
             <CategorySelectWrap>
               <span className="title">事务类型</span>
               <CategoryDropdown
+                type
                 projectId={projectId}
                 value={searchObject.search?.category_id}
                 onChangeCallBack={(val: number[]) => {

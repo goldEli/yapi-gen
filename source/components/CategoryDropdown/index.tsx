@@ -72,6 +72,7 @@ interface IProps {
   footer?: boolean
   categoryList?: Model.Project.Category[]
   bordered?: boolean
+  type?: boolean
 }
 const CategoryDropdown = (props: IProps) => {
   const {
@@ -85,6 +86,7 @@ const CategoryDropdown = (props: IProps) => {
     footer = true,
     categoryList,
     bordered = false,
+    type = false,
   } = props
   const [options, setOptions] = useState<Model.Project.CategoryList[]>([])
   const [cacheList, setCacheList] = useState<Model.Project.Category[]>([])
@@ -149,7 +151,7 @@ const CategoryDropdown = (props: IProps) => {
       return { ...item, labelName: item.name }
     })
     setCacheList(list)
-    const data = getTypeCategory(list, 'work_type')
+    const data = getTypeCategory(list, 'work_type', '', type)
     const options = getOptions(data)
     if (!options) {
       return
@@ -159,7 +161,7 @@ const CategoryDropdown = (props: IProps) => {
 
   useEffect(() => {
     if (categoryList) {
-      const data = getTypeCategory(categoryList, 'work_type')
+      const data = getTypeCategory(categoryList, 'work_type', '', type)
       const options = getOptions(data)
       if (!options) {
         return

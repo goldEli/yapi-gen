@@ -59,8 +59,9 @@ const useCategory = () => {
     arr: Model.Project.Category[],
     filed: 'work_type',
     projectType?: string,
+    type?: boolean,
   ) => {
-    const categoryData: Model.Project.CategoryList[] = [
+    let categoryData: Model.Project.CategoryList[] = [
       {
         name: '需求类型',
         visible: true,
@@ -105,6 +106,11 @@ const useCategory = () => {
       },
     ]
     // debugger
+    if (type) {
+      categoryData = categoryData.filter(
+        item => item.workType === 4 || item.workType === 5,
+      )
+    }
     for (let i = 0; i < arr.length; i++) {
       const item = arr[i]
       const key = item[filed]
