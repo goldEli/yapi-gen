@@ -168,17 +168,9 @@ const CreateSprintModal = (props: sprintProps) => {
         } else {
           open({
             title: getTitle(type),
-            okText:
-              (type === 'edit' || type === 'start') &&
-              editData?.status === 4 &&
-              editData?.story_count
-                ? '开始'
-                : type === 'update'
-                ? '更新'
-                : // eslint-disable-next-line no-undefined
-                  '编辑',
+            okText: '确认',
             children: (
-              <div>子事务超出设置的冲刺日期范围，建议调整冲刺或事务日期</div>
+              <div>该操作超出设置的冲刺日期范围，建议调整冲刺或事务日期</div>
             ),
             onConfirm: updateSprint,
           })

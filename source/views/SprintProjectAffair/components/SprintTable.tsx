@@ -288,6 +288,7 @@ const SprintTable = (props: Props) => {
 
     const arrList = [
       {
+        width: 48,
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
