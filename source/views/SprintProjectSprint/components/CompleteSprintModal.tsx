@@ -81,8 +81,10 @@ const CompleteSprintModal = (props: sprintProps) => {
   }
 
   useEffect(() => {
-    setTargetId(id)
-  }, [id])
+    if (visible) {
+      setTargetId(id)
+    }
+  }, [id, visible])
 
   const getMoveToList = async () => {
     const result = await getMoveTo({

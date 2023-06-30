@@ -558,6 +558,7 @@ const TableQuickEdit = (props: Props) => {
                     <IconFontWrapEdit
                       onClick={() => setIsShowControl(true)}
                       isTable={isShowIcon}
+                      style={{ color: 'var(--neutral-n4)' }}
                       type={
                         props?.isInfo ||
                         !['text', 'textarea', 'number', 'integer'].includes(

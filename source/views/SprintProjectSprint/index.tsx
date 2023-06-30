@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import GuideModal from '@/components/GuideModal'
 import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
@@ -329,7 +329,7 @@ const SprintProjectSprint: React.FC = () => {
     },
     is_long_story: 0,
   })
-  const [checkCommission, setCheckCommission] = useState(false)
+  const [checkCommission, setCheckCommission] = useState([false, false])
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { isUpdateAddWorkItem } = useSelector(store => store.project)
   const { projectInfo } = useSelector(store => store.project)
@@ -445,9 +445,12 @@ const SprintProjectSprint: React.FC = () => {
         ...searchObject,
         search: {
           ...searchObject.search,
-          resource_ids: leftSprintList.list
-            .filter((_, idx) => checkList[idx])
-            .map(k => k.id),
+          resource_ids:
+            activeKey === 1 && searchObject.is_no_creation_long_story === 1
+              ? []
+              : leftSprintList.list
+                  .filter((_, idx) => checkList[idx])
+                  .map(k => k.id),
         },
       }),
     )
@@ -483,6 +486,16 @@ const SprintProjectSprint: React.FC = () => {
     // 监听创建事务，刷新页面
     dispatch(getLeftSprintList(leftSearchObject))
   }, [isUpdateAddWorkItem])
+
+  const checkNoCreateLongStory = useCallback(
+    (val: boolean) => {
+      setSearchObject({
+        ...searchObject,
+        is_no_creation_long_story: val ? 1 : 0,
+      })
+    },
+    [searchObject],
+  )
 
   const filterContent = (
     <div className="filter">
@@ -613,6 +626,7 @@ const SprintProjectSprint: React.FC = () => {
                   setCheckCommission={setCheckCommission}
                   activeKey={activeKey}
                   currentFilter={currentFilter}
+                  checkNoCreateLongStory={checkNoCreateLongStory}
                 />
                 {/* <NoData
                   size
@@ -737,7 +751,7 @@ const SprintProjectSprint: React.FC = () => {
                   },
                 })
                 dispatch(setCheckList(checkList.map(() => true)))
-                setCheckCommission(false)
+                setCheckCommission([false, false])
               }}
             >
               {t('common.clearForm')}
@@ -745,7 +759,10 @@ const SprintProjectSprint: React.FC = () => {
           </div>
           <Spin spinning={rightLoading} indicator={<NewLoadingTransition />}>
             <DragContent>
-              <DndKitTable checkCommission={checkCommission} />
+              <DndKitTable
+                activeKey={activeKey}
+                checkCommission={checkCommission}
+              />
             </DragContent>
           </Spin>
         </Right>
