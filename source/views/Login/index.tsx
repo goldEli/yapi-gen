@@ -23,6 +23,7 @@ const Page = () => {
   const redirect = async () => {
     const ticketResponse = await getTicket()
     const { ticket } = ticketResponse.data
+
     const url = getQueryParam('redirect')
     const type = getQueryParam('type')
     const arr = ['zh', 'en']
@@ -38,7 +39,7 @@ const Page = () => {
         location.href = newUrl.href
       }
     } else {
-      const urlVal = import.meta.env.__OA_URL__
+      const urlVal = '/ProjectManagement/Project'
       location.href = location.href.includes('localhost')
         ? `http://192.168.2.9:8080?ticket=${ticket}&language=${arr[lang]}`
         : `${urlVal}?ticket=${ticket}&language=${arr[lang]}`

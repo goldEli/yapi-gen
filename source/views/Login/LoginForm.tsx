@@ -162,8 +162,10 @@ export default React.memo((props: { redirect(): void }) => {
     const res = await toLogin(data)
     if (res.code === 0) {
       localStorage.token = res.data.token
-      // props.redirect()
-      navigate(`/ProjectManagement/Project`)
+      // localStorage.agileToken = res.data.token
+      props.redirect()
+
+      // navigate(`/ProjectManagement/Project`)
     } else {
       setErrorMessage(res.msg)
       setErrorState(true)
