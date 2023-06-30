@@ -174,7 +174,6 @@ const Main = (props: UserInfo) => {
                     projectId: paramsData.projectId,
                     type: 7,
                     title: '创建事务',
-                    noDataCreate: true,
                   },
                 }),
               )

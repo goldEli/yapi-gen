@@ -184,7 +184,7 @@ const Iteration = (props: Props) => {
       }))
     iterateApi.length < 10 && setMore1(true)
     // 判断里面是否有
-    const hasIds = newData.filter((el: { id: number }) =>
+    const hasIds = newData?.filter((el: { id: number }) =>
       props.iterateViewIds.includes(el.id),
     )
     hasIds?.length >= 1
@@ -193,6 +193,7 @@ const Iteration = (props: Props) => {
     setIterateIds(props.iterateViewIds)
   }
   const getProjectIdsList = async () => {
+    console.log(projectApi, 'projectApi')
     const filterVal = projectApi?.list
       ?.filter((el: { id: number }) => props.projectViewIds?.includes(el.id))
       .map((el: { id: number; name: string }) => ({
@@ -216,7 +217,7 @@ const Iteration = (props: Props) => {
         value: el.id,
       }))
     // 判断里面是否有
-    const hasIds = newData.filter((el: { id: number }) =>
+    const hasIds = newData?.filter((el: { id: number }) =>
       props.iterateViewIds.includes(el.id),
     )
     hasIds?.length >= 1

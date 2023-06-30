@@ -114,6 +114,7 @@ const CreateDemandLeft = (props: Props) => {
     useSelector(store => store.project)
   const { params } = addWorkItemModal
   const { createCategory } = useSelector(store => store.project)
+  const [resultCategoryData, setResultCategoryData] = useState([])
   let isCreateDemand = true
 
   // 获取工作流列表
@@ -408,12 +409,9 @@ const CreateDemandLeft = (props: Props) => {
 
   useEffect(() => {
     if (props.projectId && props.allCategoryList?.length > 0) {
-      // 过滤掉未开启的类别
-      const resultCategoryList = props.allCategoryList?.filter(
-        (i: any) => i.status === 1,
-      )
+      const resultCategoryList = computedCategory()
+      setResultCategoryData(resultCategoryList)
       // 如果有需求id
-
       if (params?.editId) {
         //    如果可使用的能查到详情中的需求类别，则使用详情的， 反之使用列表的第一个
         if (
@@ -446,9 +444,8 @@ const CreateDemandLeft = (props: Props) => {
           const isExistence = resultCategoryList?.filter(
             (i: any) => i.id === params?.categoryId,
           )
-          resultCategory = isExistence?.length
-            ? isExistence[0]
-            : resultCategoryList[0]
+          resultCategory =
+            isExistence?.length > 0 ? isExistence[0] : resultCategoryList[0]
         }
         // 如果是快速创建并且有缓存数据
         if (params?.isQuickCreate && hisCategoryData?.categoryId) {
@@ -456,22 +453,17 @@ const CreateDemandLeft = (props: Props) => {
           const isExistence = resultCategoryList?.filter(
             (i: any) => i.id === hisCategoryData?.categoryId,
           )
-          resultCategory = isExistence?.length
-            ? isExistence[0]
-            : resultCategoryList[0]
+          resultCategory =
+            isExistence?.length > 0 ? isExistence[0] : resultCategoryList[0]
         }
         // 如果是快速创建没有缓存数据，取列表第一个
-        if (
-          (params?.isQuickCreate && !hisCategoryData?.categoryId) ||
-          params?.noDataCreate ||
-          params?.overallCreate
-        ) {
+        if (params?.isQuickCreate && !hisCategoryData?.categoryId) {
           resultCategory = resultCategoryList[0]
         }
-        // 迭代创建 ,当前只有迭代是需要做筛选类别回填、如果是事务列表无数据创建
-        if (params?.iterateId || params?.type === 7) {
-          // 如果是有筛选条件的，回填筛选条件
-          if (filterParamsModal?.category_id?.length) {
+        // 迭代创建 ,当前只有迭代是需要做筛选类别回填、如果是列表无数据创建
+        if (params?.iterateId || params?.noDataCreate) {
+          // 如果是有筛选条件的，回填筛选条件第一个
+          if (filterParamsModal?.category_id?.length > 0) {
             const resultId = filterParamsModal?.category_id?.filter(
               (i: any) => i !== -1,
             )?.[0]
@@ -481,6 +473,7 @@ const CreateDemandLeft = (props: Props) => {
             )[0]
             resultCategory = resultObj
           } else {
+            // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
             resultCategory = resultCategoryList[0]
           }
         }
@@ -492,18 +485,6 @@ const CreateDemandLeft = (props: Props) => {
         if (resultCategory?.id) {
           setCategoryObj(resultCategory)
         }
-      }
-      if (params?.type === 4) {
-        const resultObj = resultCategoryList?.filter(
-          (j: any) => j.work_type === params?.type,
-        )[0]
-        setCategoryObj(resultObj)
-      }
-      if (params?.type === 2) {
-        const resultObj = resultCategoryList?.filter(
-          (j: any) => j.work_type === params?.type,
-        )[0]
-        setCategoryObj(resultObj)
       }
     }
   }, [props.projectId, props.allCategoryList])
@@ -695,7 +676,7 @@ const CreateDemandLeft = (props: Props) => {
           >
             <CategoryDropdown
               footer={false}
-              categoryList={computedCategory()?.map((i: any) => ({
+              categoryList={resultCategoryData?.map((i: any) => ({
                 ...i,
                 labelName: i.name,
                 attachmentPath: i.category_attachment,
@@ -779,7 +760,7 @@ const CreateDemandLeft = (props: Props) => {
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 onBottom={onBottom}
-                isBug={[2, 5].includes(categoryObj.work_type)}
+                isBug={[2, 5].includes(categoryObj?.work_type)}
                 addWrap={
                   <AddWrap
                     style={{
