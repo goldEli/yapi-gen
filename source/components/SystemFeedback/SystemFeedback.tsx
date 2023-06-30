@@ -111,7 +111,11 @@ const SystemFeedback = () => {
       isVisible={freedVisible}
       // title={isEditId ? t('edit_item') : t('common.createProject')}
     >
-      <Wrap>
+      <Wrap
+        onClick={e => {
+          e.stopPropagation()
+        }}
+      >
         <LessWrap>
           <div
             style={{
