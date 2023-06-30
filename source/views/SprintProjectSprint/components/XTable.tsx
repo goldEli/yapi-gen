@@ -341,7 +341,7 @@ const XTable: React.FC<XTableProps> = props => {
                 setAddWorkItemModal({
                   visible: true,
                   params: {
-                    type: 4,
+                    type: 8,
                     iterateId: data.id === 0 ? 0 : data.id,
                     title: '创建事务',
                   },
