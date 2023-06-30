@@ -1,4 +1,13 @@
 {
+  "content": "内容",
+  "author": "作者",
+  "sent_at": "发送于",
+  "receiver": "接收人",
+
+  "exit_full_screen": "退出全屏",
+  "feedback": "反馈",
+  "work_item_summary": "工作项概括",
+  "work_item_accumulated_chart": "工作项累计图",
   "unread": "人未读",
   "create_work_item": "创建工作项",
   "accumulated_work_items": "累计参与工作项",

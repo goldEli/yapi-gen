@@ -35,6 +35,8 @@ const Content = styled.div`
 `
 
 const NoteModal = (props: any) => {
+  console.log(props)
+
   const [checked, setChecked] = useState(false)
   const [t] = useTranslation()
   const getLabelName = (num: string) => {
@@ -95,7 +97,7 @@ const NoteModal = (props: any) => {
             type="primary"
             onClick={() => {
               props.onClose()
-              setReadApi([props.data.customData.id])
+              setReadApi(props.data.id)
               if (checked) {
                 noSysNotice(props.data.customData.id)
               }

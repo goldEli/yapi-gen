@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateList } from '@store/iterate'
 import { getIterateInfo } from '@store/iterate/iterate.thunk'
 import { Radio, RadioChangeEvent, Space } from 'antd'
+import { defaults } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CustomSelect from '../CustomSelect'
@@ -64,38 +65,52 @@ const Complete = (props: Props) => {
   const projectId = paramsData.id
   const { iterateInfo } = useSelector(store => store.iterate)
   const dispatch = useDispatch()
-
+  const [num, setNum] = useState(0)
+  const getItem = (key: string, item: any) => {
+    switch (key) {
+      case 'finished_story_count':
+        return {
+          name: '完成需求',
+          value: item?.finished_story_count,
+          key: 'finished_story_count',
+        }
+      case 'finished_bug_count':
+        return {
+          name: '完成缺陷',
+          value: item?.finished_bug_count,
+          key: 'finished_bug_count',
+        }
+      case 'incomplete_story_count':
+        return {
+          name: '剩余需求',
+          value: item?.incomplete_story_count,
+          key: 'incomplete_story_count',
+        }
+      case 'incomplete_bug_count':
+        return {
+          name: '剩余缺陷',
+          value: item?.incomplete_bug_count,
+          key: 'incomplete_bug_count',
+        }
+      default:
+        return {}
+    }
+  }
   const getFinishStatistics = async (params: any) => {
     try {
       const result: any = await finishStatistics(params)
+
       if (result && result.code === 0 && result.data) {
-        const temp = Object.keys(result.data).map((k: string) => {
-          if (k === 'finished_story_count') {
-            return {
-              name: '完成需求',
-              value: result.data?.finished_story_count,
-            }
-          }
-          if (k === 'finished_bug_count') {
-            return {
-              name: '完成缺陷',
-              value: result.data?.finished_bug_count,
-            }
-          }
-          if (k === 'incomplete_story_count') {
-            return {
-              name: '剩余需求',
-              value: result.data?.incomplete_story_count,
-            }
-          }
-          if (k === 'incomplete_bug_count') {
-            return {
-              name: '剩余缺陷',
-              value: result.data?.incomplete_bug_count,
-            }
-          }
-          return {}
-        })
+        const temp: any = Object.keys(result.data).map((k: string) =>
+          getItem(k, result.data),
+        )
+        const numB =
+          temp.find((el: { key: string }) => el.key === 'incomplete_bug_count')
+            ?.value +
+          temp.find(
+            (el: { key: string }) => el.key === 'incomplete_story_count',
+          )?.value
+        setNum(numB)
         setData(temp)
       }
     } catch (error) {
@@ -138,19 +153,20 @@ const Complete = (props: Props) => {
   }
 
   const onConfirm = async () => {
-    if (value === 1 && !checkId) {
+    if (value === 1 && !checkId && num !== 0) {
       getMessage({
         msg: '请选择迭代',
         type: 'warning',
       })
       return
     }
+
     try {
       const result: any = await finishIteration({
         projectId,
         id: props?.iterationId,
         moveId: checkId,
-        type: value === 1 ? 'move' : 'remove',
+        type: num === 0 ? '' : value === 1 ? 'move' : 'remove',
       })
 
       if (result && result.code === 0) {
@@ -179,7 +195,6 @@ const Complete = (props: Props) => {
       // console.log(error)
     }
   }
-
   return (
     <CommonModal
       width={528}
@@ -197,33 +212,35 @@ const Complete = (props: Props) => {
           </MainWrap>
         ))}
       </StatisticsWrap>
-      <div style={{ width: '100%', paddingLeft: '24px', height: 150 }}>
+      <div style={{ width: '100%', paddingLeft: '24px', height: 'auto' }}>
         <Radio.Group
           onChange={(e: RadioChangeEvent) => onChange(e)}
           value={value}
         >
-          <Space direction="vertical" size={24}>
-            <div>
-              <Radio value={1}>
-                <Name>将剩余需求和缺陷移入其他迭代中</Name>
+          {num > 0 && (
+            <Space direction="vertical" size={24}>
+              <div>
+                <Radio value={1}>
+                  <Name>将剩余需求和缺陷移入其他迭代中</Name>
+                </Radio>
+                {value === 1 && (
+                  <div style={{ width: 480, marginTop: 8 }}>
+                    <CustomSelect
+                      placeholder="请选择迭代"
+                      onChange={(id: any) => {
+                        setCheckId(id)
+                      }}
+                      options={noCompleteData}
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+                )}
+              </div>
+              <Radio value={2}>
+                <Name>移除剩余需求和缺陷</Name>
               </Radio>
-              {value === 1 && (
-                <div style={{ width: 480, marginTop: 8 }}>
-                  <CustomSelect
-                    placeholder="请选择迭代"
-                    onChange={(id: any) => {
-                      setCheckId(id)
-                    }}
-                    options={noCompleteData}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-              )}
-            </div>
-            <Radio value={2}>
-              <Name>移除剩余需求和缺陷</Name>
-            </Radio>
-          </Space>
+            </Space>
+          )}
         </Radio.Group>
       </div>
     </CommonModal>
