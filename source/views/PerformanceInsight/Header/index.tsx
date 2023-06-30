@@ -193,6 +193,7 @@ const Iteration = (props: Props) => {
     setIterateIds(props.iterateViewIds)
   }
   const getProjectIdsList = async () => {
+    console.log(projectApi, 'projectApi')
     const filterVal = projectApi?.list
       ?.filter((el: { id: number }) => props.projectViewIds?.includes(el.id))
       .map((el: { id: number; name: string }) => ({
