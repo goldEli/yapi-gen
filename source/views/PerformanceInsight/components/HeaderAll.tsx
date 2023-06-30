@@ -61,6 +61,7 @@ const HeaderAll = (props: HaderProps) => {
             value: el.id,
           })),
         )
+    setOptions(props.headerParmas?.projectIds || [])
   }
   useEffect(() => {
     if (props.type === 'Progress_all' || props.type === 'Defect_all') {
