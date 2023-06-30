@@ -218,7 +218,7 @@ const DndKitTable = (props: any) => {
         params: {
           editId,
           projectId: record?.project_id,
-          type: 4,
+          type: record.work_type,
           title: '编辑事务',
         },
       }),
