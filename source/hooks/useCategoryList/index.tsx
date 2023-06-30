@@ -59,7 +59,7 @@ const useCategory = () => {
     arr: Model.Project.Category[],
     filed: 'work_type',
     projectType?: string,
-    type?: false,
+    type?: boolean,
   ) => {
     let categoryData: Model.Project.CategoryList[] = [
       {
