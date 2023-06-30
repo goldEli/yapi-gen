@@ -15,7 +15,9 @@ const BatchSetPermGroup = (props: {
 }) => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
-  const [roleOptions, setRoleOptions] = useState<any>([])
+  const [roleOptions, setRoleOptions] = useState<
+    { label: string; value: number }[]
+  >([])
   useEffect(() => {
     if (!props.isVisible) {
       form.resetFields()
@@ -35,10 +37,16 @@ const BatchSetPermGroup = (props: {
     let data = null
     if (state) {
       const res = await getProjectPermission({ projectId: props.projectId })
-      data = res.list.map((el: any) => ({ label: el.name, value: el.id }))
+      data = res.list.map((el: { name: string; id: number }) => ({
+        label: el.name,
+        value: el.id,
+      }))
     } else {
       const res = await getRoleList()
-      data = res.data.map((el: any) => ({ label: el.name, value: el.id }))
+      data = res.data.map((el: { name: string; id: number }) => ({
+        label: el.name,
+        value: el.id,
+      }))
     }
     setRoleOptions(data)
   }
