@@ -70,20 +70,7 @@ const Need = (props: any) => {
         enableMouseTracking: false,
       },
     },
-    series: [
-      {
-        name: t('create_work_item'),
-        data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
-      },
-      {
-        name: t('situation.ongoing'),
-        data: [0, 1, 2, 19, 38, 0, 0, 0, 0, 0, 0, 0],
-      },
-      {
-        name: t('situation.end'),
-        data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
-      },
-    ],
+    series: data?.chartsData,
   }
   // console.log(data?.chartsData, 'data11?.chartsData')
   return (
