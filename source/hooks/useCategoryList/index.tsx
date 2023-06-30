@@ -107,7 +107,9 @@ const useCategory = () => {
     ]
     // debugger
     if (type) {
-      categoryData = categoryData.filter(item => item.workType !== 3)
+      categoryData = categoryData.filter(
+        item => item.workType === 4 || item.workType === 5,
+      )
     }
     for (let i = 0; i < arr.length; i++) {
       const item = arr[i]
