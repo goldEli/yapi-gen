@@ -552,6 +552,13 @@ const GlobalStyle = () => {
       border-top: 1px solid var(--neutral-n6-d1);
     }
 
+    /* 表格头部移入显示拖拽 */
+    .ant-table-cell:hover {
+      .react-resizable-handle {
+        border-right: 1px solid var(--primary-d1);
+      }
+    }
+
     .ant-table-cell .ant-popover {
       z-index: 2 !important;
     }
@@ -814,6 +821,10 @@ const GlobalStyle = () => {
     .ant-spin-nested-loading > div > .ant-spin {
       top: 50%;
       transform: translateY(-50%);
+    }
+
+    .ant-tabs-ink-bar {
+      background: var(--primary-d2);
     }
   `
   return <Global styles={globalCss} />

@@ -62,6 +62,7 @@ import CommentFooter from '../CommonComment/CommentFooter'
 import LongStroyBread from '../LongStroyBread'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { setActiveCategory } from '@store/category'
+import CopyIcon from '../CopyIcon'
 const SprintDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -716,9 +717,7 @@ const SprintDetailDrawer = () => {
                 >
                   {drawerInfo.name}
                 </span>
-                <span className="icon" onClick={onCopy}>
-                  <CommonIconFont type="copy" color="var(--neutral-n3)" />
-                </span>
+                <CopyIcon onCopy={onCopy} />
               </DemandName>
               <Space size={8} style={{ marginTop: 16 }}>
                 {(drawerInfo.work_type === 6

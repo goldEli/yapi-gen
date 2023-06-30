@@ -17,15 +17,11 @@ const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   align-items: center;
   justify-content: space-between;
   font-family: SiYuanRegular;
-  /* height: ${props => props.height || 32}px; */
   cursor: pointer;
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n2)'};
   &:hover {
-    /* color: var(--primary-d2); */
-    svg {
-      /* color: var(--primary-d2); */
-    }
+    color: var(--neutral-n1-d1);
   }
 `
 interface Props {

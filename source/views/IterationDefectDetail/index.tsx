@@ -52,6 +52,7 @@ import {
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 import { setFlawInfo } from '@store/flaw'
+import CopyIcon from '@/components/CopyIcon'
 
 const IterationDefectDetail = () => {
   const navigate = useNavigate()
@@ -611,9 +612,7 @@ const IterationDefectDetail = () => {
             </span>
           )}
           {hasEdit && <span className="name">{flawInfo.name}</span>}
-          <span className="icon" onClick={onCopy}>
-            <CommonIconFont type="copy" color="var(--neutral-n3)" />
-          </span>
+          <CopyIcon onCopy={onCopy} />
           <ChangeStatusPopover
             projectId={flawInfo.projectId}
             isCanOperation={!hasEdit}
