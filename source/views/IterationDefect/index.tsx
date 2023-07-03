@@ -34,6 +34,7 @@ const Index = (props: any) => {
   useKeys('1', '/ProjectManagement/Iteration')
   useKeys('2', '/ProjectManagement/KanBan')
   useKeys('3', '/Report/PerformanceInsight')
+  useKeys('5', '/ProjectManagement/Demand')
   const keyRef = useRef()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()
