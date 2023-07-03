@@ -179,11 +179,11 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   }
 
   useEffect(() => {
-    if (paramsType) {
-      getList()
-    } else {
-      getList()
-    }
+    // if (paramsType) {
+    //   getList()
+    // } else {
+    //   getList()
+    // }
   }, [paramsType])
 
   useEffect(() => {

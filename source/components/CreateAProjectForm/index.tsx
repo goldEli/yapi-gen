@@ -133,7 +133,7 @@ const CreateAProjectForm = () => {
   const [type, setType] = useState(0)
   const [model, setModel] = useState<any>(0)
   const [multipleSelectionItems, setMultipleSelectionItems] = useState<any>([])
-
+  const { projectInfo } = useSelector(state => state.project)
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
     setMyCover(data.url)
@@ -151,8 +151,8 @@ const CreateAProjectForm = () => {
       ...formData,
     }
     if (isEditId) {
-      dispatch(postEditCreate({ ...obj, id: isEditId }))
-      dispatch(setProjectInfo({ ...obj, id: isEditId }))
+      dispatch(postEditCreate({ ...pro, ...obj, id: isEditId }))
+      dispatch(setProjectInfo({ ...projectInfo, ...obj, id: isEditId }))
       setLeaderId(0)
       return
     }
