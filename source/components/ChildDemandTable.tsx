@@ -104,7 +104,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
         </NewSort>
       ),
       dataIndex: 'storyPrefixKey',
-      width: 100,
+      width: 160,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -146,11 +146,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
               alignItems: 'center',
             }}
           >
-            <Tooltip
-              placement="top"
-              getPopupContainer={node => node}
-              title={record.categoryRemark}
-            >
+            <Tooltip title={record.categoryRemark}>
               <img
                 src={
                   record.category_attachment
@@ -166,7 +162,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
               />
             </Tooltip>
 
-            <Tooltip title={text} getPopupContainer={node => node}>
+            <Tooltip title={text}>
               <ListNameWrap
                 className="canClickDetail"
                 isName
@@ -195,14 +191,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
       render: (text: string) => {
         return (
           <HiddenText>
-            <OmitText
-              width={100}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text || '--'}
-            </OmitText>
+            <OmitText width={100}>{text || '--'}</OmitText>
           </HiddenText>
         )
       },
@@ -296,7 +285,13 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxHeight: 310, overflow: 'auto', width: 950 }}>
+        <div
+          style={{
+            maxHeight: 310,
+            overflow: 'auto',
+            width: 950,
+          }}
+        >
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
               <Table

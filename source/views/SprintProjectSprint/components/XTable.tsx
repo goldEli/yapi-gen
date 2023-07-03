@@ -361,6 +361,7 @@ const XTable: React.FC<XTableProps> = props => {
                     type: 8,
                     iterateId: data.id === 0 ? 0 : data.id,
                     title: '创建事务',
+                    projectId,
                   },
                 }),
               )

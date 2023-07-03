@@ -123,7 +123,7 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-
+  console.log('projectInfo', projectInfo)
   return (
     <Wrap>
       <InfoLeft>
@@ -135,6 +135,10 @@ const ProjectInfo = () => {
           </CardItem>
           <CardItem>
             <div>{projectInfo.iterateCount || 0}</div>
+            <span>缺陷</span>
+          </CardItem>
+          <CardItem>
+            <div>{projectInfo.bug_count || 0}</div>
             <span>{t('project.iterateEdition')}</span>
           </CardItem>
           <CardItem>

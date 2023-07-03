@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-handler-names */
 // 公用我的/他的需求列表表格
 import IconFont from '@/components/IconFont'
@@ -249,17 +250,23 @@ export const useDynamicColumns = (state: any) => {
       width: 120,
       render: (text: string, record: any) => {
         return (
-          <TableQuickEdit
-            type="fixed_radio"
-            defaultText={text}
-            keyText="iterate_id"
-            item={record}
-            onUpdate={onUpdate}
-            isMineOrHis
-            projectId={state.projectId}
-          >
-            {text || '--'}
-          </TableQuickEdit>
+          <>
+            {[3, 6].includes(record.work_type) ? (
+              <>{text || '--'}</>
+            ) : (
+              <TableQuickEdit
+                type="fixed_radio"
+                defaultText={text}
+                keyText="iterate_id"
+                item={record}
+                onUpdate={onUpdate}
+                isMineOrHis
+                projectId={state.projectId}
+              >
+                {text || '--'}
+              </TableQuickEdit>
+            )}
+          </>
         )
       },
     },
