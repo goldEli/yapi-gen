@@ -65,9 +65,8 @@ const NoSprintButton = styled.div<{ isActive: boolean }>`
     border: 1px solid var(--primary-d1);
   }
 `
-
 const TabItem = (props: any) => {
-  const { data, activeKey } = props
+  const { data, activeKey, checkNoCreateLongStory } = props
   const { checkList } = useSelector(state => state.sprint)
   const dispatch = useDispatch()
   return (
@@ -149,8 +148,15 @@ const TabItem = (props: any) => {
         </Item>
       ))}
       <NoSprintButton
-        isActive={props?.checkCommission}
-        onClick={() => props?.setCheckCommission?.(!props?.checkCommission)}
+        isActive={props?.checkCommission?.[activeKey]}
+        onClick={() => {
+          const temp = [...props?.checkCommission]
+          temp[activeKey] = !temp[activeKey]
+          props?.setCheckCommission?.(temp)
+          if (activeKey === 1) {
+            checkNoCreateLongStory(temp[activeKey])
+          }
+        }}
       >{`未创建${activeKey === 0 ? '冲刺' : '长故事'}的事务（${
         data.unassigned_count
       }）`}</NoSprintButton>

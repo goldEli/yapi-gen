@@ -45,6 +45,7 @@ import {
 } from '@store/iterate'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
+import CopyIcon from '@/components/CopyIcon'
 
 const IterationDetail = () => {
   const [t] = useTranslation()
@@ -483,9 +484,7 @@ const IterationDetail = () => {
       <DetailTitle>
         <DetailText>
           <span className="name">{iterateInfo.name}</span>
-          <span className="icon" onClick={onCopy}>
-            <CommonIconFont type="copy" color="var(--neutral-n3)" />
-          </span>
+          <CopyIcon onCopy={onCopy} />
           <IterationStatus
             hasChangeStatus={hasChangeStatus}
             iterateInfo={iterateInfo}

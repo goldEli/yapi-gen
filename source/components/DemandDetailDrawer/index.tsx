@@ -57,6 +57,7 @@ import { getMessage } from '../Message'
 import { DemandOperationDropdownMenu } from '../TableDropdownMenu/DemandDropdownMenu'
 import DetailsSkeleton from '../DetailsSkeleton'
 import { copyLink } from '@/tools'
+import CopyIcon from '../CopyIcon'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -567,9 +568,7 @@ const DemandDetailDrawer = () => {
                 )}
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
 
-                <span className="icon" onClick={onCopy}>
-                  <CommonIconFont type="copy" color="var(--neutral-n3)" />
-                </span>
+                <CopyIcon onCopy={onCopy} />
               </DemandName>
               {modeList.map((i: any) => (
                 <CollapseItem key={i.key}>

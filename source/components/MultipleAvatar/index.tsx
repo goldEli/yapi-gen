@@ -42,7 +42,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
     return (
       <CommonUserAvatar
         isBorder
-        name={props.list[0].name}
+        name={props.list[0]?.name}
         avatar={props.list[0]?.avatar}
       />
     )

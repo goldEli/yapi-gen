@@ -36,6 +36,18 @@ const HasStroyWrap = styled.div`
     margin: 0px;
   }
 `
+const SpanWrap = styled.span`
+  display: flex;
+  align-items: center;
+  svg {
+    color: var(--neutral-n3);
+  }
+  &:hover {
+    svg {
+      color: var(--primary-d2);
+    }
+  }
+`
 
 interface IProps {
   longStroy?: any
@@ -176,12 +188,11 @@ const LongStroyBread = (props: IProps) => {
         </Tooltip>
         {layer ? null : (
           <Tooltip placement="top" title="复制链接" zIndex={999999}>
-            <span style={{ display: 'flex', alignItems: 'center' }}>
+            <SpanWrap style={{}}>
               <CommonIconFont
                 type="link"
                 color="var(--primary-d2)"
                 onClick={() => {
-                  // console.log(111)
                   copyLink(
                     window.location.href,
                     t('common.copySuccess'),
@@ -190,7 +201,7 @@ const LongStroyBread = (props: IProps) => {
                 }}
                 size={18}
               ></CommonIconFont>
-            </span>
+            </SpanWrap>
           </Tooltip>
         )}
       </BreadBox>

@@ -64,6 +64,7 @@ import CommentFooter from '../CommonComment/CommentFooter'
 import CommonComment from '../CommonComment'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { setActiveCategory } from '@store/category'
+import CopyIcon from '../CopyIcon'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -695,9 +696,7 @@ const FlawDetailDrawer = () => {
                   </span>
                 )}
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
-                <span className="icon" onClick={onCopy}>
-                  <CommonIconFont type="copy" color="var(--neutral-n3)" />
-                </span>
+                <CopyIcon onCopy={onCopy} />
               </DemandName>
               {modeList.map((i: any) => (
                 <CollapseItem key={i.key}>
