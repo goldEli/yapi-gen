@@ -16,6 +16,7 @@ import {
   OperationArea,
   Options,
   SelectOptionsBox,
+  CustomWrap,
 } from './styled'
 
 export interface Options {
@@ -77,20 +78,22 @@ const SelectOptionsNormal: React.FC<SelectBoxProps> = props => {
   }, [props.title, value])
 
   return (
-    <DropDownMenu
-      isVisible={isVisibleFormat}
-      onChangeVisible={setIsVisibleFormat}
-      menu={<Menu items={menuItems} />}
-      isActive
-    >
-      <SelectOptionsBox>
-        <span>{title}</span>
-        <IconFont
-          style={{ fontSize: 16, marginLeft: 8 }}
-          type={isVisibleFormat ? 'up' : 'down'}
-        />
-      </SelectOptionsBox>
-    </DropDownMenu>
+    <CustomWrap>
+      <DropDownMenu
+        isVisible={isVisibleFormat}
+        onChangeVisible={setIsVisibleFormat}
+        menu={<Menu items={menuItems} />}
+        isActive
+      >
+        <SelectOptionsBox>
+          <span>{title}</span>
+          <IconFont
+            style={{ fontSize: 16, marginLeft: 8 }}
+            type={isVisibleFormat ? 'up' : 'down'}
+          />
+        </SelectOptionsBox>
+      </DropDownMenu>
+    </CustomWrap>
   )
 }
 

@@ -35,6 +35,9 @@ export const LabelArea = styled.div`
   display: flex;
   gap: 8px;
   margin-right: 16px;
+  .label {
+    color: var(--neutral-n2);
+  }
 `
 
 export const DefaultTag = styled.div<{ visible: boolean }>`
@@ -71,6 +74,15 @@ export const IconWrap = styled(IconFont)<{ visible: boolean }>`
   color: var(--neutral-n3);
   &:hover {
     color: var(--auxiliary-b1);
+  }
+`
+export const CustomWrap = styled.div`
+  .ant-dropdown-menu-item,
+  .ant-dropdown-menu-submenu-title {
+    padding: 0px 12px;
+  }
+  .ant-dropdown-menu-item-divider {
+    margin: 4px 12px;
   }
 `
 

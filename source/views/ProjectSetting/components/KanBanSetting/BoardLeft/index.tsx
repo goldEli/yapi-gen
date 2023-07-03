@@ -39,10 +39,14 @@ const BoardLeft: React.FC<BoardLeftProps> = props => {
   return (
     <BoardLeftBox>
       <Title>{t('unassigned_state')}</Title>
-      <StatusList list={unassignStatusList} />
-      <Tips show={!unassignStatusList.length}>
-        {t('drag_and_drop_a_status_here_to_hide_it_from_the_board')}
-      </Tips>
+      <StatusList
+        list={unassignStatusList}
+        tips={
+          <Tips show={!unassignStatusList.length}>
+            {t('drag_and_drop_a_status_here_to_hide_it_from_the_board')}
+          </Tips>
+        }
+      />
     </BoardLeftBox>
   )
 }
