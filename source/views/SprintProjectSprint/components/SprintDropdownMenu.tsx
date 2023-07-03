@@ -84,7 +84,7 @@ export const SprintDropdownMenu = (props: Props) => {
     const url = `/ProjectManagement/DemandDetail?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
-      `【${props.record.story_prefix_key}】+${text}`,
+      `【${props.record.story_prefix_key}】${text}`,
       t('common.copySuccess'),
       t('common.copyFail'),
     )
