@@ -138,6 +138,7 @@ const CreateNoteModal = (props: any) => {
     if (res2.code === 0) {
       form.resetFields()
       props.onClose()
+      setTaskTime(false)
       getMessage({
         msg: t('common.editSuccess') as string,
         type: 'success',
