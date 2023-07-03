@@ -102,6 +102,9 @@ export const efficiencyMemberWorkList = async (
       status: el.status,
       relate_users: el.relate_users,
       user: el.user,
+      project_type: el.project_type,
+      story_type: el.story_type,
+      project_id: el.project_id,
     })),
   }
 }
@@ -128,6 +131,9 @@ export const efficiencyMemberDefectList = async (
         status: any
         relate_users: any
         user: any
+        project_type: number
+        story_type: number
+        project_id: number
       }) => ({
         id: el.id,
         name: el.name,
@@ -139,6 +145,9 @@ export const efficiencyMemberDefectList = async (
         status: el.status,
         relate_users: el.relate_users,
         user: el.user,
+        project_type: el.project_type,
+        story_type: el.story_type,
+        project_id: el.project_id,
       }),
     ),
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Wrap,
   SearchBox,
@@ -27,6 +27,7 @@ const LongStoryDropdown = (props: IProps) => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const { detail, onClick } = props
+  const cacheProjectId = useRef(0)
 
   const { longStoryList } = useSelector(state => state.sprint)
   const [list, setList] = useState<Model.Sprint.longStroyItem[]>([])
@@ -114,8 +115,11 @@ const LongStoryDropdown = (props: IProps) => {
       (detail.work_type === 4 || detail.work_type === 5)
     setHasLongStroy(hasLongStroy)
     setLoading(true)
+    if (longStoryList?.list.length) {
+      return
+    }
     getList()
-  }, [params])
+  }, [params.search.project_id])
   useEffect(() => {
     if (!longStoryList) {
       return

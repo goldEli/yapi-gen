@@ -1,4 +1,10 @@
 {
+  "top": "顶部",
+  "window": "窗口",
+  "send_type": "发送类型",
+
+  "unsent_scheduled": "定时未发送",
+  "time_of_departure": "时间",
   "content": "内容",
   "author": "作者",
   "sent_at": "发送于",
@@ -198,8 +204,8 @@
   "copy_requirement_number_failed": "复制需求编号失败！",
   "add_sub_requirements": "添加子需求",
   "add_a_comment": "添加评论",
-  "copy_requirement_number": "复制需求编号",
-  "copy_title_link": "复制标题链接",
+  "copy_requirement_number": "复制编号",
+  "copy_title_link": "复制链接",
   "subrequirements": "子需求",
   "create_sub_requirements": "创建子需求",
   "requirements_review": "需求评论",

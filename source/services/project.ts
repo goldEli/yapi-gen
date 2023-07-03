@@ -335,6 +335,7 @@ export const getProjectMember: any = async (params: any) => {
       nickname: i.nickname,
       positionName: i.position_name,
       roleName: i.role_name,
+      is_admin: i.is_admin,
     }))
   } else {
     return {
