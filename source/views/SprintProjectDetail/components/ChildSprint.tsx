@@ -218,9 +218,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       dataIndex: 'handlers',
       render: (text: any) => (
         <>
-          {text?.length > 0 && (
-            <MultipleAvatar max={3} list={text?.handlers ?? []} />
-          )}
+          {text?.length > 0 && <MultipleAvatar max={3} list={text ?? []} />}
           {text?.length <= 0 && '--'}
         </>
       ),
@@ -244,6 +242,8 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       ),
     },
   ]
+
+  console.log(dataSource, '=dataSourcedataSource')
 
   const operationList = [
     {

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable complexity */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -262,7 +263,6 @@ const BasicDemand = (props: Props) => {
         (i: any) => i.content === item.content,
       )[0]
       const defaultValues = getDefaultValue(item.content)
-      // console.log(defaultValues, '=defaultValuesdefaultValuesdefaultValues')
       nodeComponent = (
         <TableQuickEdit
           item={{
@@ -448,16 +448,28 @@ const BasicDemand = (props: Props) => {
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {
         return (
-          <InfoItem key={i.content}>
-            <LimitLabel label={i.title} width={90} />
-            <ContentWrap
-              style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
-            >
-              {i.isCustomize === 1
-                ? getCustomComponent(i)
-                : getBasicTypeComponent(i)}
-            </ContentWrap>
-          </InfoItem>
+          <div
+            key={i.content}
+            style={{
+              // 冲刺项目下-长故事和子任务不显示冲刺
+              display:
+                [3, 6].includes(props.detail.work_type) &&
+                i.content === 'iterate_name'
+                  ? 'none'
+                  : 'block',
+            }}
+          >
+            <InfoItem>
+              <LimitLabel label={i.title} width={90} />
+              <ContentWrap
+                style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
+              >
+                {i.isCustomize === 1
+                  ? getCustomComponent(i)
+                  : getBasicTypeComponent(i)}
+              </ContentWrap>
+            </InfoItem>
+          </div>
         )
       })}
       {!isShowFields && foldList?.length > 0 && (
