@@ -102,7 +102,9 @@ const ProgressComparison = (props: Props) => {
   const [total, setTotal] = useState(0)
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(15)
-  const [selectProjectIds, setSelectProjectIds] = useState<any>([])
+  const [selectProjectIds, setSelectProjectIds] = useState<any>(
+    props.headerParmas?.projectIds,
+  )
   const [memberWorkList, setMemberWorkList] =
     useState<API.Sprint.EfficiencyMemberWorkList.Result>()
   const [statusType, setStatusType] = useState('')
