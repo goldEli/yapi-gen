@@ -19,6 +19,7 @@ import {
   UserMsg,
   UserInfo,
   RowTableCol,
+  Row,
 } from './style'
 import Table from './Table'
 interface Props {
@@ -49,10 +50,21 @@ const Main = (props: UserInfo) => {
     {
       title: t('common.serialNumber'),
       dataIndex: 'story_prefix_key',
-      render: (text: string, record: { category_attachment: string }) => {
+      render: (
+        text: string,
+        record: {
+          id: number
+          project_id: number
+          category_attachment: string
+          project_type: number
+          story_type: number
+        },
+      ) => {
         return (
           <RowTableCol>
-            <div className="text">{text}</div>
+            <div className="text" onClick={() => onGoTo(record)}>
+              {text}
+            </div>
           </RowTableCol>
         )
       },
@@ -91,8 +103,8 @@ const Main = (props: UserInfo) => {
         return (
           <CommonUserAvatar
             size="large"
-            avatar={record.user.avatar}
-            name={record.user.name}
+            avatar={record.user?.avatar}
+            name={record.user?.name}
           />
         )
       },
@@ -111,11 +123,11 @@ const Main = (props: UserInfo) => {
             {record.relate_users.length === 1 ? (
               <CommonUserAvatar
                 size="large"
-                avatar={record.relate_users[0].avatar}
-                name={record.relate_users[0].name}
+                avatar={record.relate_users[0]?.avatar}
+                name={record.relate_users[0]?.name}
               />
             ) : (
-              <MultipleAvatar max={3} list={record.relate_users} />
+              <MultipleAvatar max={3} list={record.relate_users || []} />
             )}
           </>
         )
@@ -130,13 +142,56 @@ const Main = (props: UserInfo) => {
       },
     },
   ]
+  const onGoTo = (row: {
+    id: number
+    project_type: number
+    story_type: number
+    project_id: number
+  }) => {
+    // 事务
+    if (row.project_type === 2) {
+      const params = encryptPhp(
+        JSON.stringify({
+          id: row.project_id,
+          sprintId: row.id,
+          newOpen: true,
+          changeIds: [],
+        }),
+      )
+      const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+      window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+    } else if (row.project_type === 1 && row.story_type === 2) {
+      // 缺陷
+      const params = encryptPhp(
+        JSON.stringify({
+          id: row.project_id,
+          flawId: row.id,
+          newOpen: true,
+          changeIds: [],
+        }),
+      )
+      const url = `ProjectManagement/DefectDetail?data=${params}`
+      window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+    } else {
+      // 需求
+      const params = encryptPhp(
+        JSON.stringify({
+          id: row.project_id,
+          demandId: row.id,
+          newOpen: true,
+          changeIds: [],
+        }),
+      )
+      const url = `ProjectManagement/DemandDetail?data=${params}`
+      window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+    }
+  }
   return (
     <MainStyle>
       <UserMsg>
         <CommonUserAvatar size="large" avatar={props.userInfo.avatar} />
         <UserInfo>
           <div>
-            {' '}
             {props.userInfo.name}（{props.userInfo.email}）
           </div>
           <div className="msg">
@@ -158,8 +213,9 @@ const Main = (props: UserInfo) => {
         </UserInfo>
       </UserMsg>
       <Title>
-        {props.memberWorkList?.total.name}：{props.memberWorkList?.total.value}
-        {props.memberWorkList?.total.unit}
+        {props.memberWorkList?.total?.name}：
+        {props.memberWorkList?.total?.value}
+        {props.memberWorkList?.total?.unit}
       </Title>
       <FilterType>
         <Select

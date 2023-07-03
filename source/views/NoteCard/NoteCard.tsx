@@ -298,6 +298,11 @@ const NoteCard = (props: any) => {
               <CommonIconFont type="return" /> <span>{t('revoke')}</span>
             </ColorBtn>
           )}
+          {values.send_time ? (
+            <ColorBtn onClick={() => props.onRevocation(values.id)}>
+              <CommonIconFont type="return" /> <span>{t('revoke')}</span>
+            </ColorBtn>
+          ) : null}
           {values.is_draft === 1 ? (
             <ColorBtn onClick={() => props.onEditDetail(values)}>
               <CommonIconFont type="file-text" /> <span>{t('edit_draft')}</span>
@@ -318,7 +323,9 @@ const NoteCard = (props: any) => {
           lineHeight: '20px',
         }}
       >
-        【{values.user?.name}】将于{values.expire_time}发送
+        {values.send_time
+          ? `【${values.user?.name}】将于${values.send_time}发送`
+          : `【${values.user?.name}】发送于${values.created_at}`}
       </div>
 
       <div

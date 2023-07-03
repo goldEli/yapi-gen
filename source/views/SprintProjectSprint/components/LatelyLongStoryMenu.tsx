@@ -32,7 +32,7 @@ const MenuWrap = styled(Menu)`
     cursor: default;
   }
 
-  li:last-child {
+  li:nth-last-child(2) {
     border-top: 1px solid var(--neutral-n6-d1);
   }
 `
@@ -77,6 +77,7 @@ interface Props {
   longStoryList: any[]
   setIsVisible(v: any): any
   setPopoverVisible(val: boolean): void
+  clearLongStory(val: number): void
 }
 
 export const LatelyLongStoryMenu = (props: Props) => {
@@ -88,7 +89,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
-  const { setPopoverVisible } = props
+  const { setPopoverVisible, clearLongStory } = props
 
   const editLongStory = async (parent_id: number) => {
     try {
@@ -208,6 +209,21 @@ export const LatelyLongStoryMenu = (props: Props) => {
             }}
           >
             新建长故事
+          </NewItemWrap>
+        ),
+      },
+      {
+        key: '-4',
+        disabled: false,
+        label: (
+          <NewItemWrap
+            onClick={() => {
+              // Todo 取消链接
+              clearLongStory?.(id)
+              setPopoverVisible(false)
+            }}
+          >
+            取消链接
           </NewItemWrap>
         ),
       },

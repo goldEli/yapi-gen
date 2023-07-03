@@ -27,6 +27,12 @@ const useInit = () => {
       : '/SprintProjectManagement/Sprint',
   )
   useKeys('3', '/Report/PerformanceInsight')
+  useKeys(
+    '5',
+    projectType === 1
+      ? '/ProjectManagement/Demand'
+      : '/SprintProjectManagement/Affair',
+  )
 
   // init
   useEffect(() => {

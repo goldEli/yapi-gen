@@ -17,22 +17,29 @@ const priorityIconBgColor = {
 
 const PriorityIconBox = styled(IconFont)<{
   color: string
-  iconType?: Model.KanBan.StoryConfigPriority['icon']
 }>`
   font-size: 16px;
   color: ${props => props.color};
+`
+
+const PriorityIconWrap = styled.div<{
+  iconType?: Model.KanBan.StoryConfigPriority['icon']
+}>`
+  width: 20px;
+  height: 20px;
+  border-radius: 24px 24px 24px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: ${props =>
     props.iconType ? priorityIconBgColor[props.iconType] : ''};
-  border-radius: 50%;
 `
 
 const PriorityIcon: React.FC<PriorityIconProps> = props => {
   return (
-    <PriorityIconBox
-      type={props.icon ?? ''}
-      iconType={props.icon}
-      color={props.color}
-    />
+    <PriorityIconWrap iconType={props.icon}>
+      <PriorityIconBox type={props.icon ?? ''} color={props.color} />
+    </PriorityIconWrap>
   )
 }
 

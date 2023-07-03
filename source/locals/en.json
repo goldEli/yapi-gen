@@ -1,4 +1,12 @@
 {
+  "top": "top",
+
+  "window": "window",
+
+  "send_type": "Send type",
+
+  "unsent_scheduled": "Scheduled not sent ",
+  "time_of_departure": " Time of departure",
   "content": "Content ",
 
   "author": "Author ",

@@ -21,7 +21,9 @@ import { useSearchParams } from 'react-router-dom'
 import { uploadFileByTask } from '@/services/cos'
 import { DelButton } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
-
+import { useDispatch } from '@store/index'
+import { setActiveCategory, setStartUsing } from '@store/category'
+import { storyConfigCategoryList } from '@store/category/thunk'
 const FormWrap = styled(Form)({
   '.ant-form-item': {
     margin: '22px 0 0 0',
@@ -53,9 +55,11 @@ const EditorCategory = (props: EditorProps) => {
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const { id } = paramsData
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [colorList, setColorList] = useState<any>()
   const [hiddenUpload, setHiddenUpload] = useState(false)
+  const dispatch = useDispatch()
   // 图标icon
   const getIconList = async () => {
     const list: any = await getCategoryIconList()
@@ -112,8 +116,14 @@ const EditorCategory = (props: EditorProps) => {
       }
     } else {
       try {
-        await addStoryConfigCategory({ ...params, work_type: props.workType })
+        let res = await addStoryConfigCategory({
+          ...params,
+          work_type: props.workType,
+        })
         getMessage({ msg: t('common.createSuccess'), type: 'success' })
+        dispatch(setActiveCategory(res.data[0]))
+        await dispatch(storyConfigCategoryList({ projectId: id }))
+        dispatch(setStartUsing(false))
         onReset()
       } catch (error) {
         //

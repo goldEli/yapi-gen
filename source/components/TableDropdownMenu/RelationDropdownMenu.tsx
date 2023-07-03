@@ -48,7 +48,11 @@ const RelationDropdownMenu = (props: Props) => {
     )
     const url = `/ProjectManagement/DemandDetail?data=${params}`
     text += `${beforeUrl}${url} \n`
-    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
+    copyLink(
+      `【${props?.record.storyPrefixKey}】${text}`,
+      t('common.copySuccess'),
+      t('common.copyFail'),
+    )
   }
 
   let menuItems = [

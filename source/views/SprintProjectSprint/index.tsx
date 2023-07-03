@@ -212,6 +212,9 @@ const SelectWrapForList = styled(SelectWrapBedeck)`
     .ant-select-selector {
     box-shadow: 0 0 0 0px;
   }
+  .ant-select-selection-placeholder {
+    color: var(--neutral-n4);
+  }
 `
 const CategorySelectWrap = styled.div`
   width: 296px;
@@ -301,6 +304,7 @@ const SprintProjectSprint: React.FC = () => {
     search: {
       all: 1,
       project_id: projectId,
+      is_finish: 1,
     },
     is_long_story: 0,
   })
@@ -451,6 +455,7 @@ const SprintProjectSprint: React.FC = () => {
               : leftSprintList.list
                   .filter((_, idx) => checkList[idx])
                   .map(k => k.id),
+          is_finish: leftSearchObject?.search?.sprint_status,
         },
       }),
     )
@@ -476,6 +481,7 @@ const SprintProjectSprint: React.FC = () => {
             resource_ids: leftSprintList.list
               .filter((_, idx) => checkList[idx])
               .map(k => k.id),
+            is_finish: leftSearchObject?.search?.sprint_status,
           },
         }),
       )
@@ -718,6 +724,7 @@ const SprintProjectSprint: React.FC = () => {
             <CategorySelectWrap>
               <span className="title">事务类型</span>
               <CategoryDropdown
+                type
                 projectId={projectId}
                 value={searchObject.search?.category_id}
                 onChangeCallBack={(val: number[]) => {

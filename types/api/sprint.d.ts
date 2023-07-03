@@ -78,6 +78,7 @@ declare namespace API.Sprint {
     }
     type Result = {
       growth_rate: number
+      period_number: number
       list: Model.PerformanceInsight.useInfo[]
       end_time: string
       start_time: string

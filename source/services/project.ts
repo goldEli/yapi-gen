@@ -203,7 +203,6 @@ export const getProjectInfo: any = async (params: any) => {
       (item: any) => item.group_name === '自定义字段',
     )
   }
-
   return {
     cover: response.data.cover,
     name: response.data.name,
@@ -212,6 +211,7 @@ export const getProjectInfo: any = async (params: any) => {
     userName: response.data.user_name,
     createTime: response.data.created_at,
     demandCount: response.data.story_count,
+    bug_count: response.data.bug_count,
     iterateCount: response.data.iterate_count,
     memberCount: response.data.member_count,
     endTime: response.data.stop_at,
@@ -335,6 +335,7 @@ export const getProjectMember: any = async (params: any) => {
       nickname: i.nickname,
       positionName: i.position_name,
       roleName: i.role_name,
+      is_admin: i.is_admin,
     }))
   } else {
     return {
