@@ -585,6 +585,7 @@ const SprintProjectSprint: React.FC = () => {
                               type: 3,
                               title: '创建事务',
                               noDataCreate: true,
+                              projectId,
                             },
                           }),
                         )

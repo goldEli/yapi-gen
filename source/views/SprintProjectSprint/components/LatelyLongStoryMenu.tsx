@@ -201,6 +201,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
                     type: 3,
                     noDataCreate: true,
                     title: '创建事务',
+                    projectId: props?.record?.project_id,
                   },
                 }),
               )
