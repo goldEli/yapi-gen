@@ -127,6 +127,9 @@ declare namespace Model.Sprint {
     expected_start_at: string | undefined
     expected_end_at: string | undefined
     status: number
+    project_type: number
+    project_id: number
+    story_type: number
     user: { name: string; avatar: string; id: number }
     relate_users: Array<{ name: string; avatar: string; id: number }>
   }
