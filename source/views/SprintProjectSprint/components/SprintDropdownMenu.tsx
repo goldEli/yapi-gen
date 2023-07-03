@@ -73,14 +73,15 @@ export const SprintDropdownMenu = (props: Props) => {
   // 复制需求链接
   const onCopyLink = () => {
     let text: any = ''
-    let beforeUrl: any
+    let beforeUrl: any = ''
     beforeUrl = window.origin
     const params = encryptPhp(
       JSON.stringify({
         id: props.record.project_id,
+        demandId: id,
       }),
     )
-    const url = `/SprintProjectManagement/Sprint?data=${params}`
+    const url = `/ProjectManagement/DemandDetail?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${props.record.story_prefix_key}】+${text}`,

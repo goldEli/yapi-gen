@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { css } from '@emotion/css'
-import classNames from 'classnames'
 
 interface UpDownBtnProps {
   isOpen: boolean
@@ -14,16 +12,11 @@ const IconWrap = styled(IconFont)`
   cursor: pointer;
 `
 
-const close = css`
-  transform: rotate(180deg);
-  transition: 0.2;
-`
-
 const UpDownBtn: React.FC<UpDownBtnProps> = props => {
-  const classname = useMemo(() => {
-    return classNames({ [close]: props.isOpen })
+  const type = useMemo(() => {
+    return props.isOpen ? 'right-icon' : 'down-icon'
   }, [props.isOpen])
-  return <IconWrap className={classname} type="down-icon" />
+  return <IconWrap type={type} />
 }
 
 export default UpDownBtn

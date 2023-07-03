@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import styled from '@emotion/styled'
 import StatusListItem from '../StatusListItem'
 import { Droppable } from 'react-beautiful-dnd'
@@ -6,6 +6,7 @@ import { UNASSIGNED_STATUS } from '../constant'
 
 interface StatusListProps {
   list: Model.KanbanConfig.Status[]
+  tips: ReactNode
 }
 
 const StatusListBox = styled.div`
@@ -34,6 +35,7 @@ const StatusList: React.FC<StatusListProps> = props => {
                 />
               )
             })}
+            {props?.tips}
             {provided.placeholder}
           </StatusListBox>
         )

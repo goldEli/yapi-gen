@@ -9,11 +9,13 @@ interface Props {
   setDeleteItem: any
   record: any
   longStoryList: any
+  clearLongStory(val: number): void
 }
 
 const ClickDropdown = (props: Props) => {
   const [popoverVisible, setPopoverVisible] = useState(false)
-  const { setIsVisible, setDeleteItem, record, longStoryList } = props
+  const { setIsVisible, setDeleteItem, record, longStoryList, clearLongStory } =
+    props
   return (
     <Popover
       visible={popoverVisible}
@@ -31,6 +33,7 @@ const ClickDropdown = (props: Props) => {
           longStoryList={longStoryList}
           record={record}
           setPopoverVisible={setPopoverVisible}
+          clearLongStory={clearLongStory}
         />
       }
     >

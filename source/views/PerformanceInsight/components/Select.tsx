@@ -33,6 +33,9 @@ const SelectMain = (props: Props) => {
     })
     setOptions(newData)
   }, [props.value])
+  useEffect(() => {
+    setOptions(props.options)
+  }, [props.options])
   return (
     <>
       <Select
