@@ -4,12 +4,14 @@ import styled from '@emotion/styled'
 export const HoverIcon = styled.div`
   cursor: pointer;
   visibility: hidden;
+  &:hover svg {
+    color: var(--primary-d2);
+  }
 `
 export const IssueCardBox = styled.div`
   width: 270px;
   height: 144px;
   border-radius: 6px 6px 6px 6px;
-
   &:hover ${HoverIcon} {
     visibility: visible;
   }
@@ -25,6 +27,10 @@ export const IssueCardBoxContainer = styled.div<{ hidden?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  &:hover {
+    box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
+  }
+  border-radius: 6px 6px 6px 6px;
 `
 export const Top = styled.div`
   width: 100%;

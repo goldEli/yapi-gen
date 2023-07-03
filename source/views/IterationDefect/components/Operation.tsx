@@ -333,7 +333,12 @@ const Operation = (props: Props) => {
   const changeStatus = (
     <div
       style={{
-        padding: '4px 0px',
+        padding: projectInfoValues
+          ?.filter((i: any) => i.key === 'category')[0]
+          ?.children?.filter((i: any) => i.status === 1 && i.work_type === 2)
+          ?.length
+          ? '4px 0px'
+          : '',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',

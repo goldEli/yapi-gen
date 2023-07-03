@@ -516,6 +516,10 @@ const ProgressComparison = (props: Props) => {
         break
     }
   }, [])
+  // 回显选中项目id
+  useEffect(() => {
+    setSelectProjectIds(props.headerParmas?.projectIds)
+  }, [props.headerParmas?.projectIds])
   // 数据明细和进展对比查询数据的
   const onSearchData = (value: number[]) => {
     setSelectProjectIds(value)

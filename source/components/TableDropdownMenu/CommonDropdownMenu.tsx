@@ -56,7 +56,11 @@ export const onCopyLink = (options: {
   const { route = '/ProjectManagement/Demand' } = options
   const url = `${route}?data=${params}`
   text += `${beforeUrl}${url} \n`
-  copyLink(text, options.t('common.copySuccess'), options.t('common.copyFail'))
+  copyLink(
+    `【${name}`,
+    options.t('common.copySuccess'),
+    options.t('common.copyFail'),
+  )
 }
 export const CommonDropdownMenu = (props: Props) => {
   const [t] = useTranslation()
