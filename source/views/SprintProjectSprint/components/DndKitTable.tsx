@@ -372,7 +372,7 @@ const DndKitTable = (props: any) => {
             }}
             isClose={record.status?.is_end === 1}
           >
-            <Tooltip placement="topLeft" title={record.category}>
+            <Tooltip placement="top" title={record?.category_name}>
               <img
                 src={
                   record.category_attachment
