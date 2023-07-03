@@ -41,8 +41,11 @@ import NoData from '@/components/NoData'
 import CommonModal from '@/components/CommonModal'
 import { getIterateInfo } from '@store/iterate/iterate.thunk'
 import Complete from '@/components/IterationStatus/Complete'
+import useKeyPress from '@/hooks/useKeyPress'
 
 const Iteration = () => {
+  const { useKeys } = useKeyPress()
+  useKeys('5', '/ProjectManagement/Demand')
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { currentMenu } = useSelector(store => store.user)

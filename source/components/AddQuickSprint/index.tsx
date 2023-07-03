@@ -101,7 +101,7 @@ const AddQuickSprint = () => {
           rules={[{ required: true, message: '' }]}
         >
           <CustomSelect
-            placeholder={t('common.searchProject')}
+            placeholder={'请输入类别名称'}
             allowClear
             showArrow
             getPopupContainer={(node: any) => node}
