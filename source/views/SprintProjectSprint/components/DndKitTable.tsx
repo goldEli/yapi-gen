@@ -286,7 +286,8 @@ const DndKitTable = (props: any) => {
         moment(item.expected_start_at).isAfter(sprintObj?.start_at)) &&
         (moment(item.expected_end_at).isSame(sprintObj?.end_at) ||
           moment(item.expected_end_at).isBefore(sprintObj?.end_at))) ||
-      (!item.expected_start_at && !item.expected_end_at)
+      (!item.expected_start_at && !item.expected_end_at) ||
+      (!sprintObj?.start_at && !sprintObj?.end_at)
     ) {
       return false
     }

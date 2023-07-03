@@ -91,8 +91,8 @@ const Main = (props: UserInfo) => {
         return (
           <CommonUserAvatar
             size="large"
-            avatar={record.user.avatar}
-            name={record.user.name}
+            avatar={record.user?.avatar}
+            name={record.user?.name}
           />
         )
       },
@@ -111,11 +111,11 @@ const Main = (props: UserInfo) => {
             {record.relate_users.length === 1 ? (
               <CommonUserAvatar
                 size="large"
-                avatar={record.relate_users[0].avatar}
-                name={record.relate_users[0].name}
+                avatar={record.relate_users[0]?.avatar}
+                name={record.relate_users[0]?.name}
               />
             ) : (
-              <MultipleAvatar max={3} list={record.relate_users} />
+              <MultipleAvatar max={3} list={record.relate_users || []} />
             )}
           </>
         )
@@ -158,8 +158,9 @@ const Main = (props: UserInfo) => {
         </UserInfo>
       </UserMsg>
       <Title>
-        {props.memberWorkList?.total.name}：{props.memberWorkList?.total.value}
-        {props.memberWorkList?.total.unit}
+        {props.memberWorkList?.total?.name}：
+        {props.memberWorkList?.total?.value}
+        {props.memberWorkList?.total?.unit}
       </Title>
       <FilterType>
         <Select
