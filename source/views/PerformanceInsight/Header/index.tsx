@@ -316,6 +316,11 @@ const Iteration = (props: Props) => {
   }
   // 自定义时间
   const onChangeDate = (e: any, values: string[]) => {
+    if (values[0] === '' && values[1] === '') {
+      setTimeVal(values)
+      dispatch(setSave(false))
+      return
+    }
     setTimeVal([moment(values[0]), moment(values[1])])
     dispatch(setSave(true))
     dispatch(

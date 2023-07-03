@@ -413,5 +413,8 @@ export const RowTableCol = styled.div`
     overflow: hidden;
     white-space: nowrap;
   }
+  .text:hover {
+    cursor: pointer;
+  }
 `
 export const HomeModal = styled(Modal)({})
