@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-handler-names */
@@ -259,25 +260,31 @@ export const useDynamicColumns = (state: any) => {
       width: 120,
       render: (text: string, record: any) => {
         return (
-          <TableQuickEdit
-            type="fixed_radio"
-            defaultText={text}
-            keyText="iterate_id"
-            item={record}
-            onUpdate={() => onUpdate(record)}
-            isBug={state.type === 2}
-          >
-            <HiddenText>
-              <OmitText
-                width={120}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
+          <>
+            {[3, 6].includes(record.work_type) ? (
+              <>{text || '--'}</>
+            ) : (
+              <TableQuickEdit
+                type="fixed_radio"
+                defaultText={text}
+                keyText="iterate_id"
+                item={record}
+                onUpdate={() => onUpdate(record)}
+                isBug={state.type === 2}
               >
-                {text || '--'}
-              </OmitText>
-            </HiddenText>
-          </TableQuickEdit>
+                <HiddenText>
+                  <OmitText
+                    width={120}
+                    tipProps={{
+                      getPopupContainer: node => node,
+                    }}
+                  >
+                    {text || '--'}
+                  </OmitText>
+                </HiddenText>
+              </TableQuickEdit>
+            )}
+          </>
         )
       },
     },
