@@ -111,6 +111,7 @@ export const MainStyle1 = styled.div`
 `
 export const MainStyle = styled.div`
   padding: 24px;
+  height: 100%;
 `
 export const UserMsg = styled.div`
   display: flex;
@@ -151,8 +152,7 @@ export const Title = styled.div`
   margin: 24px 0;
 `
 export const TableStyle = styled.div`
-  height: 408px;
-  overflow-y: auto;
+  height: calc(100% - 200px);
   padding: 24px 0px 0 0px;
 `
 export const BtnStyle = styled.div`
