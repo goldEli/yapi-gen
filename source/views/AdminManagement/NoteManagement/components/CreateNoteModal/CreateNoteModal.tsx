@@ -274,7 +274,9 @@ const CreateNoteModal = (props: any) => {
       form.resetFields()
     }
   }, [props.editId, props.isVisible])
-
+  const onsubmit = () => {
+    form.submit()
+  }
   return (
     <CommonModal
       onSaveDraft={onSaveDraft}
@@ -283,7 +285,7 @@ const CreateNoteModal = (props: any) => {
       width={784}
       title={props.editId ? t('edit_notification') : t('send_notification')}
       onClose={props.onClose}
-      onConfirm={onHandleOk}
+      onConfirm={onsubmit}
     >
       <div
         style={{
@@ -293,7 +295,23 @@ const CreateNoteModal = (props: any) => {
           height: 'calc(100vh - 300px)',
         }}
       >
-        <Form form={form} layout="vertical">
+        <Form
+          form={form}
+          onFinish={onHandleOk}
+          layout="vertical"
+          onFinishFailed={() => {
+            setTimeout(() => {
+              const errorList = (document as any).querySelectorAll(
+                '.ant-form-item-has-error',
+              )
+
+              errorList[0].scrollIntoView({
+                block: 'center',
+                behavior: 'smooth',
+              })
+            }, 200)
+          }}
+        >
           <Form.Item
             label={<LabelTitle>{t('notification_title')}</LabelTitle>}
             name="title"
