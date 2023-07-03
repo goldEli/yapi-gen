@@ -53,6 +53,8 @@ interface Props {
 }
 
 export const SprintDropdownMenu = (props: Props) => {
+  console.log(props)
+
   const [t] = useTranslation()
   const { rightSprintList } = useSelector(state => state.sprint)
   const { projectInfo } = useSelector(store => store.project)
@@ -80,7 +82,11 @@ export const SprintDropdownMenu = (props: Props) => {
     )
     const url = `/SprintProjectManagement/Sprint?data=${params}`
     text += `${beforeUrl}${url} \n`
-    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
+    copyLink(
+      `【${props.record.story_prefix_key}】+${text}`,
+      t('common.copySuccess'),
+      t('common.copyFail'),
+    )
   }
 
   let menuItems = [
