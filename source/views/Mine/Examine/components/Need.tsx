@@ -271,7 +271,7 @@ const Need = (props: any) => {
           >
             <div>{t('newlyAdd.mineSubmit')}</div>
           </TabsItem>
-          <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
+          <LabNumber isActive={activeTab === 1}>{count?.verify}23</LabNumber>
         </div>
         <SearchWrap>
           <div style={{ position: 'absolute', top: '0px', right: '24px' }}>

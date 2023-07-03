@@ -20,9 +20,9 @@ interface MultipleAvatarProps {
 }
 
 const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
-  const data = props.list.slice(0, props.max)
-  const len = props.list.length
-  const hiddenNum = len - data.length
+  const data = props.list?.slice(0, props.max)
+  const len = props.list?.length
+  const hiddenNum = len - data?.length
 
   const text = React.useMemo(() => {
     if (hiddenNum > 99) {
@@ -33,9 +33,9 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
 
   const width = useMemo(() => {
     if (hiddenNum) {
-      return (data.length + 1) * 22
+      return (data?.length + 1) * 22
     }
-    return data.length * 22
+    return data?.length * 22
   }, [data, hiddenNum])
 
   if (len === 1) {
@@ -48,7 +48,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
     )
   }
 
-  const items = props.list.map((item, idx) => {
+  const items = props.list?.map((item, idx) => {
     return {
       key: item?.id + '' + idx,
       label: (
@@ -63,14 +63,14 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       // trigger={['click']}
     >
       <MultipleAvatarBox width={width}>
-        {data.map((item, idx) => {
+        {data?.map((item, idx) => {
           return (
             <AvatarBox left={idx * 20} key={item.id}>
               <CommonUserAvatar isBorder avatar={item?.avatar} />
             </AvatarBox>
           )
         })}
-        <MoreIcon show={hiddenNum > 0} left={data.length * 20}>
+        <MoreIcon show={hiddenNum > 0} left={data?.length * 20}>
           {text}
         </MoreIcon>
       </MultipleAvatarBox>
