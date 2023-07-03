@@ -70,7 +70,12 @@ export const SprintDropdownMenu = (props: Props) => {
     )
     const url = `/ProjectManagement/DemandDetail?data=${params}`
     text += `${beforeUrl}${url} \n`
-    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
+    copyLink(
+      `【${props?.record.storyPrefixKey}】
+    ${text}`,
+      t('common.copySuccess'),
+      t('common.copyFail'),
+    )
   }
 
   let menuItems = [
@@ -98,6 +103,7 @@ export const SprintDropdownMenu = (props: Props) => {
     },
     {
       key: '6',
+      // 改复制链接
       label: <div onClick={onCopyLink}>复制链接</div>,
     },
   ]
