@@ -258,7 +258,7 @@ const DndKitTable = (props: any) => {
           type: 'success',
         })
         if (needFresh) {
-          dispatch(setSprintRightListRefresh(1))
+          dispatch(setSprintRefresh(1))
         }
         return true
       }
