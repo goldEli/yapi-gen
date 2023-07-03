@@ -88,7 +88,9 @@ export const category = createSlice({
     },
     // 当前选中的需求类别
     setActiveCategory: (state: any, action) => {
-      state.activeCategory = action.payload
+      if (action.payload) {
+        state.activeCategory = action.payload
+      }
     },
     setGetCategoryConfigArray: (state: any, action) => {
       state.getCategoryConfigArray = action.payload

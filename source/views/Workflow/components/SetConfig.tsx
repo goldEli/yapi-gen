@@ -775,6 +775,7 @@ const SetConfig = (props: Props) => {
             onChange={e => {
               setCirculationName(e.target.value)
             }}
+            maxLength={20}
           ></Input>
         </ItemWrap>
         <ItemWrap style={{ marginTop: 24 }}>
