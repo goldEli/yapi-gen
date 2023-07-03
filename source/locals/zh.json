@@ -1,4 +1,10 @@
 {
+  "top": "顶部",
+  "window": "窗口",
+  "send_type": "发送类型",
+
+  "unsent_scheduled": "定时未发送",
+  "time_of_departure": "发送时间",
   "content": "内容",
   "author": "作者",
   "sent_at": "发送于",

@@ -40,6 +40,7 @@ import {
   OperationWrap,
   StickyWrap,
 } from '../style'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 interface Props {
   isGrid: any
@@ -209,7 +210,18 @@ const Operation = (props: Props) => {
       setIsVisible(false)
     }, 0)
   }
-
+  useHotkeys(
+    'c',
+    () => {
+      dispatch(
+        setAddWorkItemModal({
+          visible: true,
+          params: { projectId: projectInfo?.id, type: 1, title: '创建需求' },
+        }),
+      )
+    },
+    [],
+  )
   const changeStatus = (
     <div
       style={{
