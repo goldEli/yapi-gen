@@ -126,7 +126,9 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>接收人</span>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('receiver')}
+            </span>
             <Form.Item name="receive_user_ids">
               <SelectWrap
                 onChange={confirm}
@@ -146,7 +148,7 @@ const SearchList = (props: Props) => {
           </SelectWrapBedeck>
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              {t('setting.operationTime')}
+              {t('time_of_departure')}
             </span>
             <Form.Item name="times" noStyle>
               <RangePicker
@@ -171,11 +173,11 @@ const SearchList = (props: Props) => {
                 allowClear
                 options={[
                   {
-                    label: '顶部',
+                    label: t('top'),
                     value: '1',
                   },
                   {
-                    label: '窗口',
+                    label: t('window'),
                     value: '2',
                   },
                 ]}
@@ -183,7 +185,9 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>发送类型</span>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('send_type')}
+            </span>
             <Form.Item name="send_type">
               <SelectWrap
                 mode="multiple"
@@ -196,19 +200,19 @@ const SearchList = (props: Props) => {
                 allowClear
                 options={[
                   {
-                    label: '草稿',
+                    label: t('draft'),
                     value: 1,
                   },
                   {
-                    label: '已撤回',
+                    label: t('withdrawn'),
                     value: 2,
                   },
                   {
-                    label: '已发送',
+                    label: t('sent'),
                     value: 3,
                   },
                   {
-                    label: '定时未发送',
+                    label: t('unsent_scheduled'),
                     value: 4,
                   },
                 ]}
