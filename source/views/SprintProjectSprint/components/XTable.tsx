@@ -21,6 +21,7 @@ import { setSprintRefresh } from '@store/sprint'
 import CollapseCustom from './CollapseCustom'
 import { CloseWrap } from '@/components/StyleCommon'
 import { getProjectInfoValues } from '@/services/project'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 interface XTableProps {
   data: any
@@ -226,6 +227,22 @@ const XTable: React.FC<XTableProps> = props => {
         return null
     }
   }
+  useHotkeys(
+    'c',
+    () => {
+      dispatch(
+        setAddWorkItemModal({
+          visible: true,
+          params: {
+            type: 8,
+            iterateId: data.id === 0 ? 0 : data.id,
+            title: '创建事务',
+          },
+        }),
+      )
+    },
+    [],
+  )
 
   return (
     <>

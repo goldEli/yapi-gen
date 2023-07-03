@@ -465,13 +465,13 @@ const ProgressComparison = (props: Props) => {
     },
     {
       dataIndex: 'repeat_open',
-      title: getTitleTips('缺陷重开', '当期重开缺陷/当期总缺陷*100%'),
+      title: '缺陷重开',
       render: (text: string, record: any) => {
         return <RowText>{text}</RowText>
       },
     },
     {
-      title: '缺陷重开率',
+      title: getTitleTips('缺陷重开率', '当期重开缺陷/当期总缺陷*100%'),
       dataIndex: 'repeat_open_rate',
       render: (text: string, record: any) => {
         return (

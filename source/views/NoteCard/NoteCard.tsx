@@ -324,8 +324,8 @@ const NoteCard = (props: any) => {
         }}
       >
         {values.send_time
-          ? `【${values.user?.name}】将于${values.expire_time}发送`
-          : `【${values.user?.name}】发送于${values.expire_time}`}
+          ? `【${values.user?.name}】将于${values.send_time}发送`
+          : `【${values.user?.name}】发送于${values.created_at}`}
       </div>
 
       <div
