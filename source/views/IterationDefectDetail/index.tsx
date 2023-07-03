@@ -274,7 +274,11 @@ const IterationDefectDetail = () => {
     )
     const url = `/ProjectManagement/DemandDetail?data=${params}`
     text += `${beforeUrl}${url} \n`
-    copyLink(text, '复制成功！', '复制失败！')
+    copyLink(
+      `【${flawInfo.projectPrefix}-${flawInfo.prefixKey}】${text}`,
+      '复制成功！',
+      '复制失败！',
+    )
   }
 
   // 更多下拉
