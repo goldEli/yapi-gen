@@ -206,9 +206,22 @@ const ProjectMember = (props: { searchValue?: string }) => {
     }))
     setJobList(arr)
   }
+  // 获取项目权限组
+  const getPermission = async () => {
+    const res = await getProjectPermission({ projectId })
+    setProjectPermission(
+      res.list?.map((i: any) => ({
+        label: i.name,
+        value: i.id,
+        tagLabel: i.label,
+      })),
+    )
+  }
+
   useEffect(() => {
     getJobList()
-    // dispatch(getProjectRole({ projectId }))
+    getPermission()
+    dispatch(getProjectRole({ projectId }))
   }, [])
 
   useEffect(() => {
@@ -724,7 +737,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
             projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
               ?.value
           }
-          title={t('project.addMember')}
+          title={t('project.addMember') + '1'}
           isVisible={isAddVisible}
           onClose={onClickCancel}
           onConfirm={handleOk}
