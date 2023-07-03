@@ -16,6 +16,12 @@ const ChooseMemberBox = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  &:hover svg {
+    color: var(--primary-d2);
+  }
+  &:hover {
+    border: 1px dashed var(--primary-d2);
+  }
 `
 
 const ChooseMember: React.FC<ChooseMemberProps> = props => {

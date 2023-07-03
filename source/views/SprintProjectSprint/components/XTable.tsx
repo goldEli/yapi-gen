@@ -294,7 +294,7 @@ const XTable: React.FC<XTableProps> = props => {
                             onClick={() => {
                               open({
                                 title: '删除冲刺',
-                                text: `确认要删除【${data.name}】的冲刺吗？`,
+                                text: `确认要删除【${data.name}】的冲刺吗，该冲刺内的事务将移动至代办事项内`,
                                 onConfirm: () => deleteSprint(data.id),
                               })
                             }}

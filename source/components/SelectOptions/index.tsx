@@ -17,6 +17,7 @@ import {
   Options,
   SelectOptionsBox,
 } from './styled'
+import { CustomWrap } from '../SelectOptionsNormal/styled'
 
 export interface Options {
   id: number
@@ -30,11 +31,11 @@ interface SelectBoxProps {
   onChange(key: number): void
   options: Options[]
   operation?: Options['operation']
-  onCreateView?: () => void
+  onCreateView?(): void
   createViewTitle?: string
-  onDel?: (key: number) => void
-  onEdit?: (key: number) => void
-  onDefault?: (key: number) => void
+  onDel?(key: number): void
+  onEdit?(key: number): void
+  onDefault?(key: number): void
 }
 
 const SelectOptions: React.FC<SelectBoxProps> = props => {
@@ -172,20 +173,22 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
   }, [props.title, value])
 
   return (
-    <DropDownMenu
-      isVisible={isVisibleFormat}
-      onChangeVisible={setIsVisibleFormat}
-      menu={<Menu items={menuItems} />}
-      isActive
-    >
-      <SelectOptionsBox>
-        <span>{title}</span>
-        <IconFont
-          style={{ fontSize: 16, marginLeft: 8 }}
-          type={isVisibleFormat ? 'up' : 'down'}
-        />
-      </SelectOptionsBox>
-    </DropDownMenu>
+    <CustomWrap>
+      <DropDownMenu
+        isVisible={isVisibleFormat}
+        onChangeVisible={setIsVisibleFormat}
+        menu={<Menu items={menuItems} />}
+        isActive
+      >
+        <SelectOptionsBox>
+          <span>{title}</span>
+          <IconFont
+            style={{ fontSize: 16, marginLeft: 8 }}
+            type={isVisibleFormat ? 'up' : 'down'}
+          />
+        </SelectOptionsBox>
+      </DropDownMenu>
+    </CustomWrap>
   )
 }
 

@@ -22,11 +22,12 @@ import {
   deleteAffairs,
   updateAffairsPriority,
   updateAffairsStatus,
+  updateAffairsTableParams,
 } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import { SprintDropdownMenu } from './SprintDropdownMenu'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import MoreDropdown from '@/components/MoreDropdown'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { setAddWorkItemModal } from '@store/project'
@@ -165,6 +166,18 @@ const DndKitTable = (props: any) => {
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     dispatch(setSprintRefresh(1))
   }
+
+  // 解除关联长故事
+  const disassociateLongStory = useCallback(async (val: any) => {
+    await updateAffairsTableParams({
+      projectId,
+      id: val,
+      otherParams: {
+        parent_id: 0,
+      },
+    })
+    dispatch(setSprintRightListRefresh(1))
+  }, [])
 
   // 更改优先级
   const onChangeState = async (item: any) => {
@@ -394,6 +407,7 @@ const DndKitTable = (props: any) => {
             setDeleteItem={setDeleteItem}
             record={record}
             longStoryList={longStoryList}
+            clearLongStory={disassociateLongStory}
           >
             <LongStoryWrap>
               <Tooltip title={text}>
