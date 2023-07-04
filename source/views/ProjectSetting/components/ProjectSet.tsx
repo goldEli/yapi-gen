@@ -97,7 +97,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
-    height: 52,
+    height: 44,
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
