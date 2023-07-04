@@ -138,6 +138,7 @@ const ProgressComparison = (props: Props) => {
   }, [paramsData?.valueId])
 
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
+  const [spinning, setSpinning] = useState<boolean>(false)
   // 进展工作对比迭代和冲刺的
   const columns1 = [
     {
@@ -756,6 +757,7 @@ const ProgressComparison = (props: Props) => {
   ) => {
     const res = await efficiencyMemberWorkList(parmas)
     setMemberWorkList(res)
+    setSpinning(false)
   }
   // 获取后半截缺陷的列表
   const getEfficiencyMemberDefectList = async (
@@ -763,6 +765,7 @@ const ProgressComparison = (props: Props) => {
   ) => {
     const res = await efficiencyMemberDefectList(parmas)
     setMemberWorkList(res)
+    setSpinning(false)
   }
   // 详情塞选项的回调
   const plugSelection = (val: API.Sprint.EfficiencyMemberWorkList.Params) => {
@@ -778,6 +781,7 @@ const ProgressComparison = (props: Props) => {
         ? ''
         : props.headerParmas?.time?.time?.[1],
     }
+    setSpinning(true)
     if (props.type.includes('Progress')) {
       getEfficiencyMemberWorkList(parmas)
     } else {
@@ -799,6 +803,7 @@ const ProgressComparison = (props: Props) => {
         ? ''
         : props.headerParmas?.time?.time?.[1],
     }
+    setSpinning(true)
     // 前半截是一个接口，后半截是两个接口
     if (props.type.includes('Progress')) {
       if (tableBeforeAndAfter === 'after') {
@@ -889,6 +894,7 @@ const ProgressComparison = (props: Props) => {
         </TableStyle>
         {/* 后半截的弹窗 */}
         <WorkItem
+          spinning={spinning}
           visible={visiblePerson}
           ids={ids}
           status={status}
