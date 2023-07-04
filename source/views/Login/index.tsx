@@ -78,7 +78,6 @@ const Page = () => {
     width: 100%;
     height: 100%;
     background: var(--primary-d1);
-    box-shadow: inset -5px 0px 8px 0px rgba(84, 93, 124, 0.09);
     border-radius: 12px 12px 12px 12px;
     position: relative;
     overflow-x: hidden;
@@ -165,6 +164,11 @@ const Page = () => {
     left: 0px;
     bottom: 0px;
   `
+  const FooterText = styled.div`
+    font-size: 12px;
+    font-family: SiYuanRegular;
+    color: var(--neutral-n3);
+  `
 
   return (
     <div className={style.page}>
@@ -185,7 +189,7 @@ const Page = () => {
               <ItemTitle>IFUN Agile 敏捷系统</ItemTitle>
               <ItemIntroduce>
                 IFUN Agile
-                敏捷智能研发管理系统提供了全过程、全方位的敏捷研发管理解决方案管理解决方。
+                敏捷智能研发管理系统提供了全过程、全方位的敏捷研发管理解决方案。
               </ItemIntroduce>
               <ItemImage src="/loginBg2.png" />
             </CarouselItem>
@@ -201,9 +205,9 @@ const Page = () => {
       </div>
       <div className={style.right}>
         <LoginForm redirect={redirect} />
-        <div className="footer">
+        <FooterText>
           © {dayjs().format('YYYY')} IFUN All Rights Reserved.
-        </div>
+        </FooterText>
       </div>
     </div>
   )

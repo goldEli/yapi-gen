@@ -48,6 +48,7 @@ const KanBanSetting: React.FC<IProps> = props => {
   usePrompt({
     title: t('remind'),
     text: t('do_you_want_to_save_changes'),
+    okText: t('common.save'),
     when: contentNotSaved,
     onConfirm: () => {
       dispatch(saveKanbanConfig())

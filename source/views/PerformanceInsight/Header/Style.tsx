@@ -150,6 +150,7 @@ export const Tabs = styled.div`
     background-color: var(--neutral-white-d6);
     color: var(--primary-d2);
     border-radius: 4px;
+    transition: all 0.5s;
   }
 `
 export const TitleText = styled.div`
@@ -387,7 +388,7 @@ export const Time = styled.span`
   color: var(--neutral-n3);
 `
 export const DataWrap = styled.div`
-  margin: 16px 24px 0 24px;
+  margin: 16px 0px 0 24px;
   display: flex;
   flex-wrap: wrap;
 `
@@ -405,7 +406,7 @@ export const LotBox = styled.div`
   }
 `
 export const TextNum = styled.div`
-  min-width: 51px;
+  width: 51px;
   display: flex;
   align-items: center;
   height: 24px;
@@ -443,3 +444,43 @@ export const HightChartsWrap = styled.div<{ height: number }>(
     height: height + 'px',
   }),
 )
+
+export const Wrap = styled.div`
+  /* position: relative; */
+  padding-top: 56px;
+  height: 100%;
+  padding-bottom: 100px;
+`
+
+export const TabsWrap = styled.div`
+  position: relative;
+  width: 322px;
+  padding: 2px;
+  display: flex;
+  background-color: var(--hover-d2);
+  border-radius: 4px;
+`
+
+export const ActiveTab = styled.div`
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  width: 80px;
+  padding: 4px 16px;
+  border-radius: 4px;
+  height: 30px;
+
+  background: var(--neutral-white-d6);
+  transition: left 0.4s;
+`
+
+export const TabsWrapItem = styled.div<{ active: boolean }>`
+  z-index: 1;
+  padding: 4px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  /* background: ${props =>
+    props.active ? 'var(--neutral-white-d6);' : ''}; */
+  color: ${props => (props.active ? 'var(--primary-d2);' : '')};
+  transition: all 0.5s;
+`

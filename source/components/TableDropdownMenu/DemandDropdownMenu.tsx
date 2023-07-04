@@ -74,7 +74,7 @@ export const DemandOperationDropdownMenu = (props: Props) => {
       }),
     )
     const url = `/ProjectManagement/DemandDetail?data=${params}`
-    text += `【${props.record.name}】 ${beforeUrl}${url} \n`
+    text += ` ${beforeUrl}${url} \n`
     copyLink(
       `【${props?.record.storyPrefixKey}】${text}`,
       t('common.copySuccess'),

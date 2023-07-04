@@ -237,6 +237,7 @@ const GlobalStyle = () => {
     .ant-spin-container {
       width: 100%;
       height: 100%;
+      overflow: hidden;
     }
 
     //table样式 --- start
@@ -786,6 +787,9 @@ const GlobalStyle = () => {
     }
     .ant-dropdown {
       box-shadow: none;
+      .ant-dropdown-menu-item-divider {
+        margin: 0 16px;
+      }
     }
     .drag-up {
       animation: dragup ease 0.2s 1;

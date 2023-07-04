@@ -604,7 +604,6 @@ const Home = () => {
     <div
       style={{
         overflowY: 'auto',
-        height: 'calc(100% - 24px)',
         position: 'relative',
       }}
     >

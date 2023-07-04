@@ -107,6 +107,7 @@ const useWebsocket = () => {
     const res = await getLoginDetail()
 
     creatWebSocket(res?.data?.comAuth?.token, res?.data?.id)
+    console.log('socket2')
   }
 
   //  关闭 WebSocket

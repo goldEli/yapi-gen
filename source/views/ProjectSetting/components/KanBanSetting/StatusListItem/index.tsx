@@ -67,6 +67,7 @@ const StatusListItem: React.FC<StatusListItemProps> = props => {
                 {!props.hiddenIcon && <ImageIcon src={data.attachment_path} />}
               </Tooltip>
               {/* <Text bg={item.status_color}>{item.status_name}</Text> */}
+
               <StateTag
                 name={data.status_name}
                 state={
@@ -78,6 +79,7 @@ const StatusListItem: React.FC<StatusListItemProps> = props => {
                     ? 3
                     : 0
                 }
+                categoryName={data.category_name}
               />
             </StatusListItemLeft>
             <Count>

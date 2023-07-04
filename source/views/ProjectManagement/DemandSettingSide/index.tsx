@@ -137,7 +137,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
 
   // 监听跟新
   const watchDataList = () => {
-    // debugger
     let dataItem = null
     let filterData = null
     if (startUsing) {
@@ -179,10 +178,15 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   }
 
   useEffect(() => {
+    // debugger
+    if (paramsType === 4) {
+      getList()
+    }
     // if (paramsType) {
     //   getList()
     // } else {
     //   getList()
+
     // }
   }, [paramsType])
 

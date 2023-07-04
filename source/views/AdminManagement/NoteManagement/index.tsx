@@ -201,7 +201,7 @@ const StaffManagement = () => {
           setHasMore(true)
           setPage(1)
           getMessage({
-            msg: t('common.editSuccess') as string,
+            msg: t('succeed') as string,
             type: 'success',
           })
           getStaffListData()
@@ -222,7 +222,7 @@ const StaffManagement = () => {
           setPage(1)
 
           getMessage({
-            msg: t('common.editSuccess') as string,
+            msg: t('succeed') as string,
             type: 'success',
           })
           getStaffListData()

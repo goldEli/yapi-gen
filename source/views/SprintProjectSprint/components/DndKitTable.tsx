@@ -258,7 +258,7 @@ const DndKitTable = (props: any) => {
           type: 'success',
         })
         if (needFresh) {
-          dispatch(setSprintRightListRefresh(1))
+          dispatch(setSprintRefresh(1))
         }
         return true
       }
@@ -337,25 +337,43 @@ const DndKitTable = (props: any) => {
     },
     {
       dataIndex: 'sort',
-      render: () => <MoveFont type="move" />,
+      render: () => <MoveFont type="move" style={{ fontSize: 16 }} />,
     },
     {
       title: '编号',
       dataIndex: 'story_prefix_key',
       key: 'story_prefix_key',
       width: 200,
-      render(value, record) {
+      render(value, temp) {
+        const id = temp.id?.split('_')?.[1]
+        const record = { ...temp, id, isExamine: temp.verify_lock === 1 }
         return (
-          <TitleWrap
-            style={{
-              color: record.status?.is_end === 1 ? 'var(--neutral-n3)' : '',
-            }}
-            onClick={() => {
-              onClickItem(record)
-            }}
-          >
-            <span className="content">{value}</span>
-          </TitleWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {getIsExceedTimeRange(temp) && record?.iterate_id !== 0 ? (
+              <Tooltip placement="top" title="该事务超出冲刺时间范围">
+                <IconFont
+                  style={{
+                    fontSize: 16,
+                    color: 'var(--function-warning)',
+                    marginRight: 5,
+                  }}
+                  type="warning-02"
+                />
+              </Tooltip>
+            ) : (
+              <div style={{ width: 21 }}></div>
+            )}
+            <TitleWrap
+              style={{
+                color: record.status?.is_end === 1 ? 'var(--neutral-n3)' : '',
+              }}
+              onClick={() => {
+                onClickItem(record)
+              }}
+            >
+              <span className="content">{value}</span>
+            </TitleWrap>
+          </div>
         )
       },
     },
@@ -372,7 +390,7 @@ const DndKitTable = (props: any) => {
             }}
             isClose={record.status?.is_end === 1}
           >
-            <Tooltip placement="topLeft" title={record.category}>
+            <Tooltip placement="top" title={record?.category_name}>
               <img
                 src={
                   record.category_attachment
@@ -508,42 +526,28 @@ const DndKitTable = (props: any) => {
         const id = temp.id?.split('_')?.[1]
         const record = { ...temp, id, isExamine: temp.verify_lock === 1 }
         return (
-          <>
-            <ChangeStatusPopover
-              isCanOperation={!isCanEdit && !record.isExamine}
-              projectId={projectId}
-              record={record}
-              onChangeStatus={item => onChangeStatus(item)}
-              type={2}
-            >
-              <StateTag
-                onClick={record.isExamine ? onExamine : void 0}
-                isShow={!isCanEdit || !record.verify_lock}
-                name={record?.status?.status?.content}
-                state={
-                  text?.is_start === 1 && text?.is_end === 2
-                    ? 1
-                    : text?.is_end === 1 && text?.is_start === 2
-                    ? 2
-                    : text?.is_start === 2 && text?.is_end === 2
-                    ? 3
-                    : 0
-                }
-              />
-            </ChangeStatusPopover>
-            {getIsExceedTimeRange(temp) && record?.iterate_id !== 0 ? (
-              <Tooltip placement="top" title="该事务超出冲刺时间范围">
-                <IconFont
-                  style={{
-                    fontSize: 16,
-                    marginLeft: 20,
-                    color: 'var(--function-warning)',
-                  }}
-                  type="warning-02"
-                />
-              </Tooltip>
-            ) : null}
-          </>
+          <ChangeStatusPopover
+            isCanOperation={!isCanEdit && !record.isExamine}
+            projectId={projectId}
+            record={record}
+            onChangeStatus={item => onChangeStatus(item)}
+            type={2}
+          >
+            <StateTag
+              onClick={record.isExamine ? onExamine : void 0}
+              isShow={!isCanEdit || !record.verify_lock}
+              name={record?.status?.status?.content}
+              state={
+                text?.is_start === 1 && text?.is_end === 2
+                  ? 1
+                  : text?.is_end === 1 && text?.is_start === 2
+                  ? 2
+                  : text?.is_start === 2 && text?.is_end === 2
+                  ? 3
+                  : 0
+              }
+            />
+          </ChangeStatusPopover>
         )
       },
     },

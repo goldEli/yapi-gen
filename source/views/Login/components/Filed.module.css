@@ -30,6 +30,9 @@
   margin-left: 15px;
   border: none;
   min-width: 30px;
+  color: var(--neutral-n1-d1);
+  font-size: 16px;
+  font-family: SiYuanMedium;
 }
 
 .input:focus {

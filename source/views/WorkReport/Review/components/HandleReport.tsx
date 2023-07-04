@@ -93,7 +93,7 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
       white-space: nowrap;
     }
     &:hover {
-      color: var(--primary-d2);
+      color: ${(props: any) => (props.isCanImport ? 'var(--primary-d2)' : '')};
     }
   }
 `
