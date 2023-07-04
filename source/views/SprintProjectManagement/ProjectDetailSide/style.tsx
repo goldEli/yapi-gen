@@ -37,8 +37,8 @@ export const SideTop = styled.div`
   align-items: center;
   padding: 24px 24px 14px;
   img {
-    width: 30px;
-    height: 30px;
+    width: 33px;
+    height: 33px;
     border-radius: 4px;
     margin-right: 8px;
   }

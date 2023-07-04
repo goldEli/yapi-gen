@@ -27,7 +27,7 @@ const primary = css`
   }
   &:disabled {
     background: var(--auxiliary-b10) !important;
-    color: var(--auxiliary-t4) !important;
+    color: var(--neutral-n4) !important;
     cursor: no-drop !important;
   }
 `
