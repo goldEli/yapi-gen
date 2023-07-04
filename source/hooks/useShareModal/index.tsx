@@ -14,6 +14,8 @@ import {
   Tips,
   WarnTips,
   GetCopyButton,
+  LoadingButton,
+  loadingImage,
 } from './styled'
 import { shareView, checkUpdates } from '@/services/sprint'
 import { viewsUpdate, createViewList } from '@/services/efficiency'
@@ -22,6 +24,7 @@ import { copyLink, getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import shareImage from './shareLoading.gif'
 
 interface ShareModalProps {
   // 检查视图是否保存的 视图id
@@ -70,8 +73,9 @@ const useShareModal = () => {
 
     const [searchParams] = useSearchParams()
     const paramsData = getParamsData(searchParams)
-    const projectId = paramsData.id
-    const [copyId, setCopyId] = useState(id)
+    const projectId = paramsData?.id
+    const [copyId, setCopyId] = useState(viewType === 2 ? 0 : id)
+    const [loading, setLoading] = useState(false)
 
     const new_url = useMemo(() => {
       if (id && config && !type) {
@@ -85,7 +89,13 @@ const useShareModal = () => {
         )}`
       }
       return ''
-    }, [id, copyId, config, type])
+    }, [id, config, type])
+
+    useEffect(() => {
+      if (viewType === 2) {
+        setCopyId(id)
+      }
+    }, [id])
 
     // 确认分享
     const confirm = async () => {
@@ -174,6 +184,7 @@ const useShareModal = () => {
       return Promise.resolve()
     }
 
+    // 点击获取链接
     const getCopyLink = async () => {
       const saveViewsParams = {
         use_type: 2,
@@ -181,7 +192,14 @@ const useShareModal = () => {
         config: config,
         project_id: projectId,
       }
-      const res = await createViewList(saveViewsParams)
+      setLoading(true)
+      const res: any = await createViewList(saveViewsParams)
+      if (res && res.data) {
+        setCopyId(res.data?.id)
+        // setLoading(false)
+      } else {
+        // setLoading(false)
+      }
     }
 
     return (
@@ -263,10 +281,32 @@ const useShareModal = () => {
           </Form>
         </ModalContentBox>
         {viewType === 2 ? (
-          <GetCopyButton onClick={getCopyLink}>
-            <IconFont type="link" />
-            获取链接
-          </GetCopyButton>
+          copyId ? (
+            loading ? (
+              <LoadingButton>
+                <img width={16} src="/shareLoading.gif" />
+                <span>获取中...</span>
+              </LoadingButton>
+            ) : (
+              <GetCopyButton onClick={getCopyLink}>
+                <IconFont type="link" />
+                获取链接
+              </GetCopyButton>
+            )
+          ) : (
+            <CopyButton
+              onClick={() => {
+                copyLink(
+                  `${title}${id && config ? new_url : url} `,
+                  t('common.copySuccess'),
+                  t('common.copyFail'),
+                )
+              }}
+            >
+              <IconFont type="link" />
+              <span>复制链接</span>
+            </CopyButton>
+          )
         ) : (
           <CopyButton
             onClick={() => {

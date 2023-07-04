@@ -51,6 +51,24 @@ export const GetCopyButton = styled.div`
   cursor: pointer;
   z-index: 99;
 `
+export const LoadingButton = styled.div`
+  width: 109px;
+  height: 32px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+  align-items: center;
+  position: absolute;
+  bottom: 24px;
+  left: 0px;
+  z-index: 99;
+  color: var(--primary-d1);
+`
+export const loadingImage = styled.img`
+  width: 16px;
+  height: 16px;
+`
 
 export const ModalContentBox = styled.div`
   padding: 0 24px;
