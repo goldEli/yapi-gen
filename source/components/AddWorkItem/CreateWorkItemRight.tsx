@@ -49,6 +49,7 @@ interface Props {
   workStatusList?: any
   isCreateDemand?: boolean
   newCategory?: any
+  categoryType?: number
 }
 
 const CreateDemandRight = (props: Props) => {
@@ -530,7 +531,6 @@ const CreateDemandRight = (props: Props) => {
   // 返回基本字段
   const getBasicTypeComponent = (item: any) => {
     let nodeComponent
-
     // 下拉多选 抄送人，处理人，迭代,发现版本
     if (
       [
@@ -554,7 +554,11 @@ const CreateDemandRight = (props: Props) => {
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
-          disabled={!props.isCreateDemand}
+          disabled={
+            !props.isCreateDemand ||
+            (item.content === 'iterate_name' &&
+              [3, 6].includes(props.categoryType || props.detail.work_type))
+          }
           options={format(
             (['discovery_version', 'iterate_name'].includes(item.content)
               ? removeNull(projectInfoValues, item.content)?.filter((k: any) =>
