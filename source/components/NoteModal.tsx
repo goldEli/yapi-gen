@@ -90,7 +90,7 @@ const NoteModal = (props: any) => {
                 lineHeight: '22px',
               }}
             >
-              不在提醒
+              不再提醒
             </span>
           </Checkbox>
           <CommonButton
