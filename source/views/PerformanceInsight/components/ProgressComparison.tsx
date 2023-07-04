@@ -24,7 +24,7 @@ import {
   workContrastList,
 } from '@/services/efficiency'
 import { RowText } from './style'
-import { getDate, getDays, getMonthBefor } from './Date'
+import { getDays, getMonthBefor } from './Date'
 import ExportSuccess from '../Header/components/ExportSuccess'
 import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
@@ -37,7 +37,7 @@ const getTitleTips = (text: string, tips: string) => {
   return (
     <div style={{ display: 'flex', cursor: 'pointer' }}>
       {text}
-      <Tooltip title={tips} trigger="click">
+      <Tooltip title={tips} placement="topRight" trigger="click">
         <div style={{ margin: '0 8px' }}>
           <CommonIconFont type="question" size={16} />
         </div>
