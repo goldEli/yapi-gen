@@ -54,8 +54,16 @@ import StoryRelation from './components/StoryRelation'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '@/components/CopyIcon'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 const DemandDetail = () => {
+  useHotkeys('down,up', event => {
+    if (event.key === 'ArrowDown') {
+      document.getElementById('downIcon')?.click()
+    } else {
+      document.getElementById('upIcon')?.click()
+    }
+  })
   const [t] = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
