@@ -49,35 +49,66 @@ const View = (props: View) => {
       setOptions(props.viewDataList.filter(el => el.is_default !== 1) || [])
   }, [props.viewDataList])
   useEffect(() => {
-    setItems([
-      {
-        label: (
-          <DefaultLabel>
-            <Tooltip title={optionsDefault?.name}>
-              <span className="label">{optionsDefault?.name}</span>
-            </Tooltip>
-            <Btn>{t('m')}</Btn>
-          </DefaultLabel>
-        ),
-        key: 'first',
-      },
-      {
-        type: 'divider',
-      },
-      ...(getHtml() || []),
-      {
-        type: 'divider',
-      },
-      {
-        label: (
-          <DefaultLabelAdd>
-            <span>{t('addView')}</span>
-          </DefaultLabelAdd>
-        ),
-        key: 'last',
-      },
-    ])
+    if (options.length < 1) {
+      setItems([
+        {
+          label: (
+            <DefaultLabel>
+              <Tooltip title={optionsDefault?.name}>
+                <span className="label">{optionsDefault?.name}</span>
+              </Tooltip>
+              <Btn>{t('m')}</Btn>
+            </DefaultLabel>
+          ),
+          key: 'first',
+        },
+        {
+          type: 'divider',
+        },
+        ...(getHtml() || []),
+        {
+          label: (
+            <DefaultLabelAdd>
+              <span>{t('addView')}</span>
+            </DefaultLabelAdd>
+          ),
+          key: 'last',
+        },
+      ])
+    } else {
+      setItems([
+        {
+          label: (
+            <DefaultLabel>
+              <Tooltip title={optionsDefault?.name}>
+                <span className="label">{optionsDefault?.name}</span>
+              </Tooltip>
+              <Btn>{t('m')}</Btn>
+            </DefaultLabel>
+          ),
+          key: 'first',
+        },
+        {
+          type: 'divider',
+        },
+        ...(getHtml() || []),
+        {
+          type: 'divider',
+        },
+        {
+          label: (
+            <DefaultLabelAdd>
+              <span>{t('addView')}</span>
+            </DefaultLabelAdd>
+          ),
+          key: 'last',
+        },
+      ])
+    }
+
+    console.log(options, 'pp')
   }, [options])
+  console.log(options, '999')
   useEffect(() => {
     const item = props.viewDataList?.find(el => el.id === props.value) || {
       name: '',
@@ -249,8 +280,8 @@ const View = (props: View) => {
         menu={{ items, onClick: onOpenChange }}
         overlayStyle={{
           background: 'var(--neutral-white-d1)',
-          overflowY: 'scroll',
-          maxHeight: 350,
+          // overflowY: 'scroll',
+          // maxHeight: 350,
           boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
         }}
       >
