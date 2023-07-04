@@ -91,13 +91,15 @@ const FloatBatch = (props: Props) => {
     let beforeUrl: any
     beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
     props.selectRows?.forEach((element: any) => {
+      console.log(element)
+
       const params = encryptPhp(
         JSON.stringify({ type: 'info', id: projectId, demandId: element.id }),
       )
       const url = `ProjectManagement/${
         props.type === 1 ? 'Demand' : 'Defect'
       }?data=${params}`
-      text += `【${element.name}】 ${beforeUrl}${url} \n`
+      text += `【${element.storyPrefixKey}】 ${beforeUrl}${url} \n`
     })
     copyLink(text, t('common.copySuccess'), t('common.copyFail'))
   }
@@ -146,7 +148,7 @@ const FloatBatch = (props: Props) => {
               <Tooltip
                 placement="top"
                 getPopupContainer={node => node}
-                title={t('version2.link')}
+                title={t('version2.link') + '1'}
               >
                 <div className={boxItem} onClick={onCopy}>
                   <IconFont type="attachment" />
