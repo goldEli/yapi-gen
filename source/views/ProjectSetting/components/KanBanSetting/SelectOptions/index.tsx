@@ -19,7 +19,8 @@ import {
 } from './styled'
 import useI18n from '@/hooks/useI18n'
 import { getMessage } from '@/components/Message'
-
+import { setIsSettingDefault } from '@store/kanbanConfig'
+import { useDispatch } from '@store/index'
 export type ViewItem = {
   key: string
   value: string
@@ -42,12 +43,13 @@ interface SelectBoxProps {
 const SelectOptions: React.FC<SelectBoxProps> = props => {
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
   const { t } = useI18n()
-
+  const dispatch = useDispatch()
   // 切换显示类型
   const onClickMenuFormat = (key: string) => {
     // getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
     props.onChange(key)
     setIsVisibleFormat(false)
+    dispatch(setIsSettingDefault(false))
   }
 
   const [value, key] = useMemo(() => {
@@ -95,6 +97,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                   visible={!!props.onDefault}
                   onClick={e => {
                     e.stopPropagation()
+                    dispatch(setIsSettingDefault(true))
                     setIsVisibleFormat(false)
                     props?.onDefault?.(item.key)
                   }}
