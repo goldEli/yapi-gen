@@ -55,13 +55,6 @@ const SiteNotifications = () => {
         },
       })
     } else if (wsData.data.customData.noticeStyle === '1') {
-      const arrs = localStorage.getItem('noteIds')
-      if (arrs) {
-        const arrs2 = JSON.parse(arrs)
-        if (arrs2.includes(wsData.data.msgIds[0])) {
-          return
-        }
-      }
       setFirst(true)
       setFirst2({
         customData: wsData.data.customData,

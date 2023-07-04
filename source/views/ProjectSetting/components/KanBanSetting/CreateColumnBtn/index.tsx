@@ -12,6 +12,8 @@ import {
   TextBtn,
 } from './styled'
 import useI18n from '@/hooks/useI18n'
+import useKanBanData from '../hooks/useKanBanData'
+import { getMessage } from '@/components/Message'
 
 interface CreateColumnBtnProps {}
 
@@ -21,7 +23,7 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
   const dispatch = useDispatch()
   const [inputValue, setInputValue] = useState('')
   const { t } = useI18n()
-
+  const { columnList } = useKanBanData()
   useEffect(() => {
     if (inputTagRef.current) {
       inputTagRef.current?.focus?.()
@@ -56,6 +58,10 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
         <TextBtn
           onClick={e => {
             if (!inputValue) {
+              return
+            }
+            if (columnList.find(item => item.name === inputValue)) {
+              getMessage({ msg: '列名称已存在', type: 'error' })
               return
             }
             e.stopPropagation()

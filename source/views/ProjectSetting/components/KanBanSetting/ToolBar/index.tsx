@@ -101,6 +101,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           }}
           operation
           onDefault={key => {
+            // return
             dispatch(
               setDefaultKanbanConfig({
                 id: Number(key),

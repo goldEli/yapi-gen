@@ -154,7 +154,7 @@ const IconWrap = styled(IconFont)<{ isActive: any }>(
     padding: 6,
     borderRadius: 6,
     '&: hover': {
-      color: 'var(--neutral-n1-d1)',
+      color: 'var(--primary-d1)',
       background: 'var(--hover-d3)',
     },
   },
@@ -248,6 +248,15 @@ const DragContent = styled.div`
   height: 100%;
   overflow-y: scroll;
   padding-bottom: 50px;
+`
+
+const CustomCloseWrap = styled(CloseWrap)`
+  svg {
+    color: var(--neutral-n3);
+  }
+  &:hover svg {
+    color: var(--primary-d1);
+  }
 `
 
 const filterList = [
@@ -417,6 +426,8 @@ const SprintProjectSprint: React.FC = () => {
       ...leftSearchObject,
       search: {
         ...searchObject.search,
+        // eslint-disable-next-line no-undefined
+        is_finish: undefined,
         sprint_status: item.id,
       },
     })
@@ -573,7 +584,7 @@ const SprintProjectSprint: React.FC = () => {
               </TabsWrap>
               <RightIcon>
                 <Tooltip title={activeKey === 0 ? '新建冲刺' : '新建长故事'}>
-                  <CloseWrap
+                  <CustomCloseWrap
                     style={isCanEditSprint ? {} : { visibility: 'hidden' }}
                     width={32}
                     height={32}
@@ -601,11 +612,11 @@ const SprintProjectSprint: React.FC = () => {
                     <IconFont
                       style={{
                         fontSize: 20,
-                        color: 'var(--neutral-n3)',
+                        color: 'var(--neutral-n3) !important',
                       }}
                       type="plus"
                     />
-                  </CloseWrap>
+                  </CustomCloseWrap>
                 </Tooltip>
                 <div
                   className="line"

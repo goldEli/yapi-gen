@@ -156,7 +156,7 @@ const ProjectDetailSide = () => {
       key: 'Sprint',
     },
     {
-      name: '看板',
+      name: 'KanBan',
       icon: 'layout',
       path: '/SprintProjectManagement/KanBan',
       isPermission:

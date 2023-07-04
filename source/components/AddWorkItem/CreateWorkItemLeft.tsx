@@ -69,6 +69,7 @@ interface Props {
   // 修改需求类别同步给右侧
   onChangeCategory(value: any): void
   onSaveProjectInfo(info: any): void
+  onChangeCategoryType(value: number): void
 }
 
 export const uploadFile = (file: File, editorRef: any, key2?: any) => {
@@ -308,6 +309,7 @@ const CreateDemandLeft = (props: Props) => {
         (i: any) => i.id === value,
       )[0]
       setCategoryObj(result)
+      props.onChangeCategoryType(result.work_type)
       props.onResetForm()
     }
   }
@@ -319,6 +321,7 @@ const CreateDemandLeft = (props: Props) => {
     setCategoryObj(currentCategory)
     setChangeCategoryFormData(changeCategoryForm.getFieldsValue())
     props.onChangeCategory(changeCategoryForm.getFieldsValue())
+    props.onChangeCategoryType(currentCategory.work_type)
     setTimeout(() => {
       changeCategoryForm.resetFields()
       props.onResetForm()

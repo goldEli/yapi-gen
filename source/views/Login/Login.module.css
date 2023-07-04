@@ -28,7 +28,7 @@
 }
 .title > p {
   font-size: 24px;
-  font-family: Microsoft YaHei-Regular, Microsoft YaHei;
+  font-family: SiYuanMedium;
   font-weight: 400;
   color: #323233;
   line-height: 28px;
@@ -317,16 +317,15 @@
 }
 
 .language > .popups > .popups_item:hover {
-  color: #617ef2;
+  color: var(--primary-d2);
   font-weight: 500;
   background: #f7f8fa;
 }
 
 .language > .popups > .popups_item_active {
   font-weight: 500;
-  color: #617ef2;
+  color: var(--primary-d2);
   pointer-events: none;
-  background: #edf2ff;
 }
 
 .toast {
