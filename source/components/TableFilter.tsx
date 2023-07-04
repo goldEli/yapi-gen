@@ -172,7 +172,7 @@ export const NumericInput = (props: any) => {
         onBlur={onPress}
         allowClear
       />
-      <span className={danweiCss}>{t('newlyAdd.unit')}</span>
+      {/* <span className={danweiCss}>{t('newlyAdd.unit')}</span> */}
     </>
   )
 }
