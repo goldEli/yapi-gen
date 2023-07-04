@@ -1,8 +1,10 @@
 /* eslint-disable */
 // @ts-nocheck
 // 字段
+import styled from '@emotion/styled'
 import { useRef, useState, useReducer } from 'react'
 import style from './Filed.module.css'
+
 export default (props: any) => {
   const [isFocus, setIsFocus] = useState(false)
   const [bigChar, setBigChar] = useState(false)
@@ -33,6 +35,7 @@ export default (props: any) => {
       return `${style.field}`
     }
   }
+
   return (
     <div ref={myForm} className={getClass()}>
       <img

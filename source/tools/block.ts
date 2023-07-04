@@ -33,9 +33,10 @@ export function usePrompt(props: {
   title: string
   text: string
   when: boolean
+  okText: string
   onConfirm: () => void
 }) {
-  const { title, text, when, onConfirm } = props
+  const { title, text, when, onConfirm, okText } = props
   // useEffect(() => {
   //   if (when) {
   //     window.onbeforeunload = function () {
@@ -57,6 +58,7 @@ export function usePrompt(props: {
       openConfirmModal({
         title,
         text,
+        okText,
         onConfirm: () => {
           resolve(true)
           onConfirm()
