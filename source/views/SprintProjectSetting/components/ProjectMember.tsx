@@ -221,7 +221,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   useEffect(() => {
     getJobList()
     getPermission()
-    dispatch(getProjectRole({ projectId }))
+    // dispatch(getProjectRole({ projectId }))
   }, [])
 
   useEffect(() => {
