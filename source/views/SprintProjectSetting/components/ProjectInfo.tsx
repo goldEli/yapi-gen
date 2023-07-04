@@ -19,7 +19,7 @@ const Wrap = styled.div({
   borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
-  padding: '24px 0 24px 24px',
+  padding: '12px 0 24px 24px',
 })
 
 const InfoLeft = styled.div({
@@ -97,6 +97,7 @@ const CardItem = styled.div({
   span: {
     fontSize: 14,
     color: 'var(--neutral-n3)',
+    marginTop: '4px',
   },
 })
 

@@ -70,7 +70,7 @@ const HeaderTop = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   zIndex: 1,
-  // marginBottom: 20,
+  marginBottom: 20,
 })
 
 const Content = styled.div({
@@ -347,14 +347,15 @@ const ProjectMember = (props: { searchValue?: string }) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <CommonUserAvatar avatar={record.avatar} size="large" />
-            <span
+            <div
               style={{
                 marginLeft: 12,
+                display: 'flex',
                 color: 'var(--neutral-n1-d1)',
                 fontSize: 14,
               }}
             >
-              {text}
+              <span>{text}</span>
               {record.is_admin === 1 && (
                 <Tooltip
                   placement="top"
@@ -372,7 +373,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
                   </div>
                 </Tooltip>
               )}
-            </span>
+            </div>
           </div>
         )
       },

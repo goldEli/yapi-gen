@@ -2,10 +2,10 @@ import React from 'react'
 
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import {useSelector} from '@store/index'
+import { useSelector } from '@store/index'
 const SelectOptions = styled.div`
   position: absolute;
-  top: 30px;
+  top: 40px;
   left: 0px;
   width: 120px;
   background: #ffffff;
@@ -31,23 +31,28 @@ const SelectItem = styled.div`
   }
 `
 interface IProps {
-  roleName:string,
-  callBack(data:Model.Sprint.ProjectSettings) : void
+  roleName: string
+  callBack(data: Model.Sprint.ProjectSettings): void
 }
 const TableSelectOptions = (props: IProps) => {
-  const {projectRoleList}=useSelector(state=>state.sprint)
+  const { projectRoleList } = useSelector(state => state.sprint)
   return (
     <SelectOptions>
       {projectRoleList?.map((item, index) => (
-        <SelectItem key={index} onClick={()=>{
-          props.callBack(item)
-        }}>
-          <span className={props.roleName === item.name ? 'activity' : ''}>{item.name}</span>
-          {props.roleName === item.name&& (
+        <SelectItem
+          key={index}
+          onClick={() => {
+            props.callBack(item)
+          }}
+        >
+          <span className={props.roleName === item.name ? 'activity' : ''}>
+            {item.name}
+          </span>
+          {props.roleName === item.name && (
             <IconFont
               type="check"
               style={{ marginLeft: '30px' }}
-              className={props.roleName === item.name? 'activity' : ''}
+              className={props.roleName === item.name ? 'activity' : ''}
             ></IconFont>
           )}
         </SelectItem>

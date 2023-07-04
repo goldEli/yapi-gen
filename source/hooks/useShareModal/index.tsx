@@ -32,6 +32,7 @@ interface ShareModalProps {
   viewType?: number
   // 名字 name
   name?: string
+  // 1：需求列表，2：看板，3：报表
   type?: number
 }
 
