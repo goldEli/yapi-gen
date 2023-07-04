@@ -18,7 +18,7 @@ export const Small = styled.div`
   height: 265px;
   width: 288px;
   border: 1px solid var(--neutral-n6-d1);
-  border-radius: 6px;
+  border-radius: 13px 13px 6px 6px;
   cursor: pointer;
   transition: all 0.5s;
   :hover {

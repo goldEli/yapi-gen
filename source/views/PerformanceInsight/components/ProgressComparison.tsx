@@ -138,6 +138,7 @@ const ProgressComparison = (props: Props) => {
   }, [paramsData?.valueId])
 
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
+  const [spinning, setSpinning] = useState<boolean>(false)
   // 进展工作对比迭代和冲刺的
   const columns1 = [
     {
@@ -583,7 +584,7 @@ const ProgressComparison = (props: Props) => {
       ) {
         result = await getExport({
           project_ids:
-            option.length >= 1 ? option.join(',') : props.projectId + '',
+            option?.length >= 1 ? option?.join(',') : props.projectId + '',
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -603,7 +604,7 @@ const ProgressComparison = (props: Props) => {
       ) {
         result = await defectExport({
           project_ids:
-            option.length >= 1 ? option.join(',') : props.projectId + '',
+            option?.length >= 1 ? option?.join(',') : props.projectId + '',
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -639,9 +640,9 @@ const ProgressComparison = (props: Props) => {
     const time = props.headerParmas?.time && getTime(props.headerParmas?.time)
     const res = await workContrastList({
       project_ids:
-        value.length >= 1 || props.headerParmas?.projectIds?.length
-          ? value.length >= 1
-            ? value.join(',')
+        value?.length >= 1 || props.headerParmas?.projectIds?.length
+          ? value?.length >= 1
+            ? value?.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
           : props.projectId + '',
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
@@ -699,7 +700,7 @@ const ProgressComparison = (props: Props) => {
       user_id: row.id,
       type: str,
       project_ids:
-        selectProjectIds.length >= 1
+        selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
           : props.projectId + '',
       period_time: getTimeStr(props.headerParmas?.time)
@@ -743,7 +744,7 @@ const ProgressComparison = (props: Props) => {
     const res = await plugSelectionUserInfo({
       user_id: id,
       project_ids:
-        selectProjectIds.length >= 1
+        selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
           : props.projectId + '',
     })
@@ -756,6 +757,7 @@ const ProgressComparison = (props: Props) => {
   ) => {
     const res = await efficiencyMemberWorkList(parmas)
     setMemberWorkList(res)
+    setSpinning(false)
   }
   // 获取后半截缺陷的列表
   const getEfficiencyMemberDefectList = async (
@@ -763,6 +765,7 @@ const ProgressComparison = (props: Props) => {
   ) => {
     const res = await efficiencyMemberDefectList(parmas)
     setMemberWorkList(res)
+    setSpinning(false)
   }
   // 详情塞选项的回调
   const plugSelection = (val: API.Sprint.EfficiencyMemberWorkList.Params) => {
@@ -778,6 +781,7 @@ const ProgressComparison = (props: Props) => {
         ? ''
         : props.headerParmas?.time?.time?.[1],
     }
+    setSpinning(true)
     if (props.type.includes('Progress')) {
       getEfficiencyMemberWorkList(parmas)
     } else {
@@ -799,6 +803,7 @@ const ProgressComparison = (props: Props) => {
         ? ''
         : props.headerParmas?.time?.time?.[1],
     }
+    setSpinning(true)
     // 前半截是一个接口，后半截是两个接口
     if (props.type.includes('Progress')) {
       if (tableBeforeAndAfter === 'after') {
@@ -889,6 +894,7 @@ const ProgressComparison = (props: Props) => {
         </TableStyle>
         {/* 后半截的弹窗 */}
         <WorkItem
+          spinning={spinning}
           visible={visiblePerson}
           ids={ids}
           status={status}

@@ -18,6 +18,7 @@ import {
   SelectOptionsBox,
 } from './styled'
 import useI18n from '@/hooks/useI18n'
+import { getMessage } from '@/components/Message'
 
 export type ViewItem = {
   key: string
@@ -111,6 +112,11 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                 <IconWrap
                   visible={!!props.onDel}
                   onClick={e => {
+                    if (item.isDefault) {
+                      console.log(11)
+                      getMessage({ type: 'error', msg: '默认项 无法删除' })
+                      return
+                    }
                     e.stopPropagation()
                     setIsVisibleFormat(false)
                     props?.onDel?.(item.key)

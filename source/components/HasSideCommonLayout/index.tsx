@@ -184,7 +184,7 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
           style={{
             minWidth: `${1440 - leftWidth}px`,
             height: '100%',
-            overflow: 'scroll',
+            // overflow: 'scroll',
           }}
         >
           {props.children}
