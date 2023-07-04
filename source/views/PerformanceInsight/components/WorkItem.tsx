@@ -211,28 +211,12 @@ const Main = (props: UserInfo) => {
           </div>
         </UserInfo>
       </UserMsg>
-      <Title>
-        {props.memberWorkList?.total?.name}：
-        {props.memberWorkList?.total?.value}
-        {props.memberWorkList?.total?.unit}
-      </Title>
       <FilterType>
-        <Select
-          style={{
-            width: 184,
-          }}
-          placeholder={t('s')}
-          onChange={(newValue: any) => {
-            props.onChange({
-              user_id: props.userInfo.id,
-              type: props.statusType,
-              status_id: newValue,
-            })
-          }}
-          suffixIcon={<CommonIconFont type="down" />}
-          options={props.status}
-          notFoundContent={null}
-        />
+        <Title>
+          {props.memberWorkList?.total?.name}：
+          {props.memberWorkList?.total?.value}
+          {props.memberWorkList?.total?.unit}
+        </Title>
         {paramsData.homeType !== 'all' && (
           <Text
             onClick={() => {
@@ -256,6 +240,22 @@ const Main = (props: UserInfo) => {
           </Text>
         )}
       </FilterType>
+      <Select
+        style={{
+          width: 184,
+        }}
+        placeholder={t('s')}
+        onChange={(newValue: any) => {
+          props.onChange({
+            user_id: props.userInfo.id,
+            type: props.statusType,
+            status_id: newValue,
+          })
+        }}
+        suffixIcon={<CommonIconFont type="down" />}
+        options={props.status}
+        notFoundContent={null}
+      />
       <TableStyle>
         <Table
           paginationShow={false}
@@ -280,7 +280,6 @@ const WorkItem = (props: Props) => {
     <Detail
       children={
         <>
-          {/*  */}
           <Spin spinning={props.spinning} indicator={<NewLoadingTransition />}>
             <DetailHeader
               ids={props.ids}

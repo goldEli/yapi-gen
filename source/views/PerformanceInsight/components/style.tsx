@@ -315,6 +315,7 @@ export const RowText = styled.div`
   align-items: center;
   &:hover {
     cursor: pointer;
+    color: var(--primary-d1);
   }
 `
 export const CharTitle = styled.div`

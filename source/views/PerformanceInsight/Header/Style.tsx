@@ -162,7 +162,7 @@ export const TitleText = styled.div`
 export const MsgText = styled.div`
   padding: 0 16px;
   margin: 0 24px;
-  width: 384px;
+  // width: 384px;
   height: 40px;
   border-radius: 6px;
   background: rgba(250, 151, 70, 0.1);
