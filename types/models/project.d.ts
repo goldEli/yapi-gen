@@ -55,13 +55,8 @@ declare namespace Model.Project {
     type?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
     // 弹窗名称
     title?: string
-  }
-  interface AddQuickSprintParams {
-    id?: number
-    name?: string
-    icon?: string
-    parentName?: string
-    parentId?: number
+    // 是否创建子事务
+    isCreateAffairsChild?: boolean
   }
   interface Category {
     active?: boolean

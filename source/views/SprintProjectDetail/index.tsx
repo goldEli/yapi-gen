@@ -397,6 +397,17 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     setSearchParams(`data=${params}`)
   }
 
+  const getKeyDown = (e: any) => {
+    if (e.keyCode === 38) {
+      //up
+      document.getElementById('upIcon')?.click()
+    }
+    if (e.keyCode === 40) {
+      //down
+      document.getElementById('downIcon')?.click()
+    }
+  }
+
   useEffect(() => {
     // 获取项目信息中的需求类别
     const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
@@ -417,6 +428,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id }))
     }
   }, [isUpdateAddWorkItem])
+
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
 
   return (
     <Wrap>
