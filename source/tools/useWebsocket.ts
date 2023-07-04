@@ -69,7 +69,7 @@ const useWebsocket = () => {
     ws.current.onerror = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
-
+    console.log(ws.current?.readyState, 'socket2')
     ws.current.onmessage = throttle(
       (e: any) => {
         const data = JSON.parse(e.data)
@@ -107,7 +107,6 @@ const useWebsocket = () => {
     const res = await getLoginDetail()
 
     creatWebSocket(res?.data?.comAuth?.token, res?.data?.id)
-    console.log('socket2')
   }
 
   //  关闭 WebSocket
@@ -136,6 +135,8 @@ const useWebsocket = () => {
   }, [ws])
 
   useEffect(() => {
+    console.log(readyState)
+
     if (readyState.key === 3) {
       reconnect()
     }
