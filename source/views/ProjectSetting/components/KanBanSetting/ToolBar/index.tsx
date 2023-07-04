@@ -15,7 +15,8 @@ import {
 import useProjectId from '../hooks/useProjectId'
 import SelectOptions, { ViewItem } from '../SelectOptions'
 import useI18n from '@/hooks/useI18n'
-
+import { Tooltip } from 'antd'
+import { setIsSettingDefault } from '@store/kanbanConfig'
 interface ToolBarProps {}
 
 const ToolBarBox = styled.div`
@@ -146,41 +147,55 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         </Btn>
       </Left>
       <Right>
-        <CommonButton
-          onClick={() => {
-            if (checkedViewListItem?.id) {
-              dispatch(
-                setDefaultKanbanConfig({
-                  id: checkedViewListItem?.id,
-                }),
-              )
-            }
-          }}
-          type="icon"
-          icon="tag-96pg0hf3"
-        />
-        <CommonButton
-          onClick={() => {
-            if (current?.key) {
-              dispatch(
-                openSaveAsViewModel({
-                  id: Number(current.key),
-                }),
-              )
-            }
-          }}
-          type="icon"
-          icon="edit"
-        />
-        <CommonButton
-          onClick={() => {
-            if (checkedViewListItem?.id) {
-              onDel(checkedViewListItem?.id)
-            }
-          }}
-          type="icon"
-          icon="delete"
-        />
+        <Tooltip title="设为默认">
+          <div>
+            <CommonButton
+              onClick={() => {
+                if (checkedViewListItem?.id) {
+                  dispatch(setIsSettingDefault(true))
+
+                  dispatch(
+                    setDefaultKanbanConfig({
+                      id: checkedViewListItem?.id,
+                    }),
+                  )
+                }
+              }}
+              type="icon"
+              icon="tag-96pg0hf3"
+            />
+          </div>
+        </Tooltip>
+        <Tooltip title="编辑">
+          <div>
+            <CommonButton
+              onClick={() => {
+                if (current?.key) {
+                  dispatch(
+                    openSaveAsViewModel({
+                      id: Number(current.key),
+                    }),
+                  )
+                }
+              }}
+              type="icon"
+              icon="edit"
+            />
+          </div>
+        </Tooltip>
+        <Tooltip title="删除">
+          <div>
+            <CommonButton
+              onClick={() => {
+                if (checkedViewListItem?.id) {
+                  onDel(checkedViewListItem?.id)
+                }
+              }}
+              type="icon"
+              icon="delete"
+            />
+          </div>
+        </Tooltip>
       </Right>
     </ToolBarBox>
   )

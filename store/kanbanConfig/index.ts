@@ -35,6 +35,8 @@ type SliceState = {
   }[]
   // 正在拖动的状态
   movingStatus: Model.KanbanConfig.Status | null
+  // 是否设为默认
+  isSettingDefault?: boolean
 }
 
 const initialState: SliceState = {
@@ -51,6 +53,7 @@ const initialState: SliceState = {
     visible: false,
   },
   unassignStatusList: [],
+  isSettingDefault: false,
 }
 interface DragResult {
   source: {
@@ -284,6 +287,9 @@ const slice = createSlice({
         }
       })
     },
+    setIsSettingDefault(state, action: PayloadAction<boolean>) {
+      state.isSettingDefault = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
@@ -323,6 +329,7 @@ export const {
   setMovingStatus,
   clearMovingStatus,
   setColumnListBackup,
+  setIsSettingDefault,
 } = slice.actions
 
 export default KanbanConfig

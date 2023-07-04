@@ -74,11 +74,25 @@ const useShareModal = () => {
     const [searchParams] = useSearchParams()
     const paramsData = getParamsData(searchParams)
     const projectId = paramsData?.id
-    const [copyId, setCopyId] = useState(viewType === 2 ? 0 : id)
+    const [copyId, setCopyId] = useState(0)
     const [loading, setLoading] = useState(false)
 
     const new_url = useMemo(() => {
-      if (id && config && !type) {
+      if (id && config) {
+        const paramsData = getParamsData(searchParams)
+        return `${location.origin}${location.pathname}?data=${encryptPhp(
+          JSON.stringify({
+            ...paramsData,
+            valueId: id,
+            otherConfig: props.otherConfig,
+          }),
+        )}`
+      }
+      return ''
+    }, [id, config])
+
+    const copyUrl = useMemo(() => {
+      if (copyId && config && type) {
         const paramsData = getParamsData(searchParams)
         return `${location.origin}${location.pathname}?data=${encryptPhp(
           JSON.stringify({
@@ -89,13 +103,13 @@ const useShareModal = () => {
         )}`
       }
       return ''
-    }, [id, config, type])
+    }, [copyId, config, type])
 
     useEffect(() => {
-      if (viewType === 2) {
-        setCopyId(id)
+      if (!visible) {
+        setCopyId(0)
       }
-    }, [id])
+    }, [visible])
 
     // 确认分享
     const confirm = async () => {
@@ -120,13 +134,16 @@ const useShareModal = () => {
       if (id && needSave) {
         try {
           if (viewType === 2) {
-            // todo 系统试图保存
-            const res = await createViewList(saveViewsParams)
-            console.log(res)
+            // 系统视图，走创建接口
+            getCopyLink()
           } else {
+            // 更新视图
             await viewsUpdate(saveViewsParams)
           }
-          const result = await shareView(params)
+          const result = await shareView({
+            ...params,
+            url: copyId ? copyUrl : params.url,
+          })
           if (result && result.code === 0) {
             getMessage({
               msg: '分享成功',
@@ -194,11 +211,15 @@ const useShareModal = () => {
       }
       setLoading(true)
       const res: any = await createViewList(saveViewsParams)
-      if (res && res.data) {
-        setCopyId(res.data?.id)
-        // setLoading(false)
+      if (res?.id) {
+        setTimeout(() => {
+          setCopyId(res?.id)
+          setLoading(false)
+        }, 500)
       } else {
-        // setLoading(false)
+        setTimeout(() => {
+          setLoading(false)
+        }, 500)
       }
     }
 
@@ -282,22 +303,10 @@ const useShareModal = () => {
         </ModalContentBox>
         {viewType === 2 ? (
           copyId ? (
-            loading ? (
-              <LoadingButton>
-                <img width={16} src="/shareLoading.gif" />
-                <span>获取中...</span>
-              </LoadingButton>
-            ) : (
-              <GetCopyButton onClick={getCopyLink}>
-                <IconFont type="link" />
-                获取链接
-              </GetCopyButton>
-            )
-          ) : (
             <CopyButton
               onClick={() => {
                 copyLink(
-                  `${title}${id && config ? new_url : url} `,
+                  `${title}${copyUrl} `,
                   t('common.copySuccess'),
                   t('common.copyFail'),
                 )
@@ -306,6 +315,16 @@ const useShareModal = () => {
               <IconFont type="link" />
               <span>复制链接</span>
             </CopyButton>
+          ) : loading ? (
+            <LoadingButton>
+              <img width={16} src="/shareLoading.gif" />
+              <span>获取中...</span>
+            </LoadingButton>
+          ) : (
+            <GetCopyButton onClick={getCopyLink}>
+              <IconFont type="link" />
+              获取链接
+            </GetCopyButton>
           )
         ) : (
           <CopyButton
