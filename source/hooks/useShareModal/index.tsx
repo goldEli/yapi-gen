@@ -78,7 +78,7 @@ const useShareModal = () => {
     const [loading, setLoading] = useState(false)
 
     const new_url = useMemo(() => {
-      if (id && config && !type) {
+      if (id && config) {
         const paramsData = getParamsData(searchParams)
         return `${location.origin}${location.pathname}?data=${encryptPhp(
           JSON.stringify({
@@ -89,7 +89,7 @@ const useShareModal = () => {
         )}`
       }
       return ''
-    }, [id, config, type])
+    }, [id, config])
 
     const copyUrl = useMemo(() => {
       if (copyId && config && type) {
