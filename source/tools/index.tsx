@@ -201,12 +201,18 @@ function getTypeComponent(
       />
     )
   } else if (params?.attr === 'number' && params?.value[0] === 'integer') {
+    const onSubmit = (value: any) => {
+      const result = String(value).includes('.')
+        ? Number(String(value).split('.')[0])
+        : value
+      onBlur(result)
+    }
     child = (
       <InputNumber
         placeholder={params.remarks || ''}
-        onBlur={e => (isModal ? onBlur(e.target.value || '') : void 0)}
-        onPressEnter={(e: any) => (isModal ? onBlur(e.target.value) : void 0)}
-        step={1}
+        onBlur={e => (isModal ? onSubmit(e.target.value || '') : void 0)}
+        onPressEnter={(e: any) => (isModal ? onSubmit(e.target.value) : void 0)}
+        min={0}
         style={{ width: '100%', minWidth: 192 }}
         defaultValue={defaultValue}
         ref={inputRef}
