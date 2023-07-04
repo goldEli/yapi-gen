@@ -223,10 +223,11 @@ export const onSaveAsViewModel =
       createId = res.data.id
     }
     if (!!data.id) {
-      const res = await services.kanbanConfig.createKanbanConfig({
+      const res = await services.kanbanConfig.updateKanbanConfig({
         name: data.name,
         project_id: data.project_id,
         columns: columnList,
+        id: data.id,
       })
       createId = res.data.id
     }
