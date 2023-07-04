@@ -5,11 +5,12 @@ import MultipleAvatar from '@/components/MultipleAvatar'
 import StateTag from '@/components/StateTag'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { Select, Space } from 'antd'
+import { Select, Space, Spin } from 'antd'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Detail from './Detail'
 import DetailHeader from './DetailHeader'
 import { useTranslation } from 'react-i18next'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 import {
   TableStyle,
   Title,
@@ -23,6 +24,7 @@ import {
 } from './style'
 import Table from './Table'
 interface Props {
+  spinning: boolean
   visible: boolean
   status: Array<Model.Sprint.StatusInfo1>
   userInfo: Model.Sprint.UserInfo2
@@ -278,10 +280,11 @@ const Main = (props: UserInfo) => {
 }
 const WorkItem = (props: Props) => {
   return (
-    <>
-      <Detail
-        children={
-          <>
+    <Detail
+      children={
+        <>
+          {/*  */}
+          <Spin spinning={props.spinning} indicator={<NewLoadingTransition />}>
             <DetailHeader
               ids={props.ids}
               onCancel={() => props.onCancel()}
@@ -295,11 +298,11 @@ const WorkItem = (props: Props) => {
               userInfo={props.userInfo}
               status={props.status}
             />
-          </>
-        }
-        visible={props.visible}
-      />
-    </>
+          </Spin>
+        </>
+      }
+      visible={props.visible}
+    />
   )
 }
 export default WorkItem

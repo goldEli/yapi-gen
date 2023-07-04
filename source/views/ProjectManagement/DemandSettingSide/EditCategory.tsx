@@ -23,6 +23,8 @@ import { DelButton } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
 import { useSelector, useDispatch } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
+import { setActiveCategory, setStartUsing } from '@store/category'
+import { storyConfigCategoryList } from '@store/category/thunk'
 const FormWrap = styled(Form)({
   '.ant-form-item': {
     margin: '22px 0 0 0',
@@ -54,6 +56,7 @@ const EditorCategory = (props: EditorProps) => {
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const { id } = paramsData
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [colorList, setColorList] = useState<any>()
   const [hiddenUpload, setHiddenUpload] = useState(false)
@@ -138,6 +141,9 @@ const EditorCategory = (props: EditorProps) => {
         console.log('res', res, projectInfoValues)
         dispatch(setProjectInfoValues(projectInfoValuesData))
         getMessage({ msg: t('common.createSuccess'), type: 'success' })
+        dispatch(setActiveCategory(res.data[0]))
+        await dispatch(storyConfigCategoryList({ projectId: id }))
+        dispatch(setStartUsing(false))
         onReset()
       } catch (error) {
         //
