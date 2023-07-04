@@ -452,7 +452,8 @@ const TableFilter = (props: any) => {
                         onConfirm={confirm}
                         options={
                           i.key === 'users_name' ||
-                          i.key === 'users_copysend_name'
+                          i.key === 'users_copysend_name' ||
+                          i.key === 'user_name'
                             ? format(
                                 deWeight(
                                   projectInfoValues
