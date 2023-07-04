@@ -141,7 +141,7 @@ const HeaderAll = (props: HaderProps) => {
           <PersonText>
             {props.headerParmas.users?.length ? (
               <span>
-                {t('performance.select')} {props.headerParmas.users?.length}
+                {t('performance.select')}： {props.headerParmas.users?.length}
                 {t('performance.people')}
               </span>
             ) : (

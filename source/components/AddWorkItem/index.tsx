@@ -64,6 +64,7 @@ const AddWorkItem = () => {
   //   是否是完成并创建下一个 -- 用于提交参数后回填
   const [isSaveParams, setIsSaveParams] = useState(false)
   const [currentInfo, setCurrentInfo] = useState({})
+  const [categoryType, setCategoryType] = useState(0)
 
   // 关闭弹窗
   const onCancel = () => {
@@ -90,7 +91,6 @@ const AddWorkItem = () => {
 
     dispatch(setProjectInfoValues(projectInfoData))
     const allCategory = removeNull(projectInfoData, 'category')
-    // console.log(allCategory, 'all')
 
     // 更新所有需求类别列表
     setAllCategoryList(allCategory)
@@ -128,6 +128,7 @@ const AddWorkItem = () => {
         id: params?.editId,
       })
       setModalInfo(demandResponse)
+      console.log(demandResponse, '=demandResponse')
     }
     // 全局创建和快速创建获取最近项目
     if (!params?.projectId) {
@@ -289,6 +290,7 @@ const AddWorkItem = () => {
           onGetCreateWorkItem={setIsCreateWorkItem}
           onChangeCategory={setNewCategory}
           onSaveProjectInfo={setCurrentInfo}
+          onChangeCategoryType={setCategoryType}
         />
         <CreateDemandRight
           projectId={projectId}
@@ -299,6 +301,7 @@ const AddWorkItem = () => {
           workStatusList={workStatusList}
           isCreateDemand={isCreateWorkItem}
           newCategory={newCategory}
+          categoryType={categoryType}
         />
       </div>
     </CommonModal>

@@ -136,7 +136,7 @@ const BasicDemand = (props: Props) => {
   // 修改严重程度
   const onChangeSeverity = async (item: any) => {
     await updateAffairsTableParams({
-      sprintId: item.id,
+      id: item.id,
       projectId: props.detail.projectId,
       otherParams: {
         severity: item.severity,
@@ -270,7 +270,7 @@ const BasicDemand = (props: Props) => {
             ...{ categoryConfigList: canOperationKeys },
           }}
           isInfo
-          keyText={filterContent?.keyText}
+          keyText={filterContent?.keyText ?? item.content}
           type={filterContent?.attr}
           defaultText={defaultValues?.defaultText}
           value={defaultValues.valueType || null}
@@ -435,6 +435,8 @@ const BasicDemand = (props: Props) => {
       getFieldData()
     }
   }, [props.isOpen, props.detail])
+
+  console.log(foldList, '===', notFoldList)
 
   return (
     <div

@@ -135,16 +135,6 @@ const TableQuickEdit = (props: Props) => {
             : 'b/transaction/update'),
       )?.length > 0
     const paramsData = getParamsData(searchParams)
-    if (props.keyText === 'tag') {
-      console.log(
-        isCan,
-        '=isCanEditisCanEdit',
-        isCanEdit,
-        props.keyText,
-        ' isCan && isCanEdit',
-        isCan && isCanEdit,
-      )
-    }
     projectId = paramsData?.id
     canClick = isCan && isCanEdit
   }
@@ -525,8 +515,9 @@ const TableQuickEdit = (props: Props) => {
       {/* 如果是详情或者是表格上可编辑字段 */}
       {(Object.keys(props.item.categoryConfigList).includes(props.keyText) ||
         props.isInfo ||
-        props.keyText === 'name' ||
-        props.keyText === 'tag') && (
+        ['name', 'tag', 'solution', 'discovery_version'].includes(
+          props.keyText,
+        )) && (
         <>
           {!isShowControl && (
             <>
@@ -590,8 +581,9 @@ const TableQuickEdit = (props: Props) => {
       {/* 不能操作的并且不是详情快捷操作，只展示 */}
       {!Object.keys(props.item.categoryConfigList).includes(props.keyText) &&
         !props.isInfo &&
-        props.keyText !== 'name' &&
-        props.keyText !== 'tag' && (
+        !['name', 'tag', 'solution', 'discovery_version'].includes(
+          props.keyText,
+        ) && (
           <DisableWrap>
             {(!['text', 'textarea'].includes(props.type as any) ||
               props.isDemandName) && <div>{props.children}</div>}

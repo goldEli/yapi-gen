@@ -549,6 +549,7 @@ export const getDemandInfo: any = async (params: any) => {
     project_type: response.data.project_type,
     update_at: response.data.update_at,
     category_status: response.category_status,
+    work_type: response.data.work_type,
   }
 }
 
