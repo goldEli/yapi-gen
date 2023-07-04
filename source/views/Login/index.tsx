@@ -41,7 +41,7 @@ const Page = () => {
     } else {
       const urlVal = '/ProjectManagement/Project'
       location.href = location.href.includes('localhost')
-        ? `http://192.168.2.9:8080?ticket=${ticket}&language=${arr[lang]}`
+        ? `http://192.168.2.64:8000?ticket=${ticket}&language=${arr[lang]}`
         : `${urlVal}?ticket=${ticket}&language=${arr[lang]}`
     }
   }
@@ -63,6 +63,8 @@ const Page = () => {
   }
 
   useEffect(() => {
+    console.log('clear')
+
     localStorage.clear()
     // check()
   }, [])
