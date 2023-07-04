@@ -84,6 +84,10 @@ export const CustomWrap = styled.div`
   .ant-dropdown-menu-item-divider {
     margin: 4px 12px;
   }
+  .ant-dropdown-menu {
+    height: 300px;
+    overflow: scroll;
+  }
 `
 
 export const HasIconMenu = styled.div<{ isCheck?: boolean }>(
