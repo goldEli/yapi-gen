@@ -168,7 +168,7 @@ const HightChartMainPie = (props: {
   const [defaultValue, setDefaultValue] = useState<{
     label: string
     key: string
-  }>({ label: '按优先级', key: 'priority' })
+  }>({ label: '按严重程度', key: 'severity' })
   // 切换状态
   const onClickMenu = async (item: { label: string; key: string }) => {
     setDefaultValue(item)

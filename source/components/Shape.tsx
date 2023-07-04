@@ -562,7 +562,7 @@ export const ShapeContent = (props: any) => {
   }
 
   const formatName = (content: any, name: any, id: any) => {
-    if (content === 'users_name' && id === info) {
+    if ((content === 'users_name' || content === 'user_name') && id === info) {
       return `${name} （${t('myself')}）`
     }
     if (rightList?.originalStatusUserIds.includes(id)) {

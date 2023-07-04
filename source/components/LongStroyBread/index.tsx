@@ -194,7 +194,7 @@ const LongStroyBread = (props: IProps) => {
                 color="var(--primary-d2)"
                 onClick={() => {
                   copyLink(
-                    window.location.href,
+                    `【${longStroy?.projectPrefix}-${longStroy?.prefixKey}】${window.location.href}`,
                     t('common.copySuccess'),
                     t('common.copyFail'),
                   )

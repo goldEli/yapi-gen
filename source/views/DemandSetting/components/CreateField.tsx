@@ -277,6 +277,7 @@ const CreateField = () => {
           <Select
             style={{ width: 100 }}
             bordered={false}
+            suffixIcon={<CommonIconFont type="down" />}
             placeholder="所以字段"
             allowClear
             options={[
@@ -301,6 +302,7 @@ const CreateField = () => {
             bordered={false}
             placeholder="所有类型"
             allowClear
+            suffixIcon={<CommonIconFont type="down" />}
             options={option}
             onChange={e => {
               setFieldType((p: any) => {
