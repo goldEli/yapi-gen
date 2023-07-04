@@ -81,7 +81,14 @@ const NoteModal = (props: any) => {
       width={640}
       hasFooter={
         <Footer>
-          <Checkbox checked={checked} onChange={onChange}>
+          <span></span>
+          {/* <Checkbox
+            style={{
+              opacity: 1,
+            }}
+            checked={checked}
+            onChange={onChange}
+          >
             <span
               style={{
                 height: '22px',
@@ -90,9 +97,9 @@ const NoteModal = (props: any) => {
                 lineHeight: '22px',
               }}
             >
-              不在提醒
+              不再提醒
             </span>
-          </Checkbox>
+          </Checkbox> */}
           <CommonButton
             type="primary"
             onClick={() => {
