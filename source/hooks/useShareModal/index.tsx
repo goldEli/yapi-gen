@@ -8,7 +8,13 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import IconFont from '@/components/IconFont'
 import SearchInput from './SearchInput'
-import { CopyButton, ModalContentBox, Tips, WarnTips } from './styled'
+import {
+  CopyButton,
+  ModalContentBox,
+  Tips,
+  WarnTips,
+  GetCopyButton,
+} from './styled'
 import { shareView, checkUpdates } from '@/services/sprint'
 import { viewsUpdate, createViewList } from '@/services/efficiency'
 import { EMAIL_REGEXP } from '@/constants'
@@ -32,6 +38,7 @@ interface ShareModalProps {
   viewType?: number
   // 名字 name
   name?: string
+  // type:用途，1：需求列表，2：看板，3：报表
   type?: number
 }
 
@@ -48,7 +55,6 @@ const useShareModal = () => {
   }
 
   const onOkRef = useRef<Options['onOk'] | null>(null)
-
   const open = (options: Options) => {
     onOkRef.current = options.onOk
     setVisible(true)
@@ -56,26 +62,30 @@ const useShareModal = () => {
 
   const ShareModal: React.FC<ShareModalProps> = props => {
     // debugger
-    const { id, url, title, config, name, type } = props
+    const { id, url, title, config, name, type, viewType } = props
     const [needSave, setNeedSave] = useState(false)
     const [form] = Form.useForm()
     const [t] = useTranslation()
     const [fail, setFail] = useState(false)
+
     const [searchParams] = useSearchParams()
+    const paramsData = getParamsData(searchParams)
+    const projectId = paramsData.id
+    const [copyId, setCopyId] = useState(id)
 
     const new_url = useMemo(() => {
-      if (id && config) {
+      if (id && config && !type) {
         const paramsData = getParamsData(searchParams)
         return `${location.origin}${location.pathname}?data=${encryptPhp(
           JSON.stringify({
             ...paramsData,
-            valueId: id,
+            valueId: copyId,
             otherConfig: props.otherConfig,
           }),
         )}`
       }
       return ''
-    }, [id, config])
+    }, [id, copyId, config, type])
 
     // 确认分享
     const confirm = async () => {
@@ -99,9 +109,10 @@ const useShareModal = () => {
       }
       if (id && needSave) {
         try {
-          if (type === 2) {
+          if (viewType === 2) {
             // todo 系统试图保存
-            await createViewList(saveViewsParams)
+            const res = await createViewList(saveViewsParams)
+            console.log(res)
           } else {
             await viewsUpdate(saveViewsParams)
           }
@@ -161,6 +172,16 @@ const useShareModal = () => {
       }
       setFail(false)
       return Promise.resolve()
+    }
+
+    const getCopyLink = async () => {
+      const saveViewsParams = {
+        use_type: 2,
+        name: name ?? '',
+        config: config,
+        project_id: projectId,
+      }
+      const res = await createViewList(saveViewsParams)
     }
 
     return (
@@ -241,18 +262,25 @@ const useShareModal = () => {
             </Form.Item>
           </Form>
         </ModalContentBox>
-        <CopyButton
-          onClick={() => {
-            copyLink(
-              `${title}${id && config ? new_url : url} `,
-              t('common.copySuccess'),
-              t('common.copyFail'),
-            )
-          }}
-        >
-          <IconFont type="link" />
-          <span>复制链接</span>
-        </CopyButton>
+        {viewType === 2 ? (
+          <GetCopyButton onClick={getCopyLink}>
+            <IconFont type="link" />
+            获取链接
+          </GetCopyButton>
+        ) : (
+          <CopyButton
+            onClick={() => {
+              copyLink(
+                `${title}${id && config ? new_url : url} `,
+                t('common.copySuccess'),
+                t('common.copyFail'),
+              )
+            }}
+          >
+            <IconFont type="link" />
+            <span>复制链接</span>
+          </CopyButton>
+        )}
       </CommonModal>
     )
   }

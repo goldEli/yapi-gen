@@ -138,6 +138,9 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
         system_view: searchChoose ? searchChoose['system_view'] : undefined,
+        discovery_version: searchParamsObj?.discovery_version,
+        severity: searchParamsObj?.severity,
+        solution: searchParamsObj?.solution,
       }
     } else {
       params = {
@@ -166,6 +169,9 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
         system_view: searchChoose ? searchChoose['system_view'] : undefined,
+        discovery_version: searchParamsObj?.discovery_version,
+        severity: searchParamsObj?.severity,
+        solution: searchParamsObj?.solution,
       }
     }
     if (state === 2) {

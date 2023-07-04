@@ -80,6 +80,13 @@ const LongStoryWrap = styled.div`
     color: var(--neutral-n4);
   }
 `
+const CustomMoreDropdownWrap = styled.div`
+  display: flex;
+  align-items: center;
+  svg {
+    color: var(--neutral-n3);
+  }
+`
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -313,7 +320,7 @@ const DndKitTable = (props: any) => {
       align: 'center',
       render: (text: any, record: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <CustomMoreDropdownWrap>
             {!isCanEdit && !hasDel && (
               <MoreDropdown
                 hasChild
@@ -331,7 +338,7 @@ const DndKitTable = (props: any) => {
                 onChangeVisible={setIsShowMore}
               />
             )}
-          </div>
+          </CustomMoreDropdownWrap>
         )
       },
     },
@@ -348,7 +355,14 @@ const DndKitTable = (props: any) => {
         const id = temp.id?.split('_')?.[1]
         const record = { ...temp, id, isExamine: temp.verify_lock === 1 }
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+              left: -19,
+            }}
+          >
             {getIsExceedTimeRange(temp) && record?.iterate_id !== 0 ? (
               <Tooltip placement="top" title="该事务超出冲刺时间范围">
                 <IconFont
@@ -365,10 +379,10 @@ const DndKitTable = (props: any) => {
             )}
             <TitleWrap
               style={{
-                color: record.status?.is_end === 1 ? 'var(--neutral-n3)' : '',
+                color: temp.status?.is_end === 1 ? 'var(--neutral-n3)' : '',
               }}
               onClick={() => {
-                onClickItem(record)
+                onClickItem(temp)
               }}
             >
               <span className="content">{value}</span>
