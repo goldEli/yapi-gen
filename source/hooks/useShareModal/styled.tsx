@@ -35,6 +35,23 @@ export const CopyButton = styled.div`
   z-index: 99;
 `
 
+export const GetCopyButton = styled.div`
+  width: 112px;
+  height: 32px;
+  border-radius: 6px 6px 6px 6px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+  align-items: center;
+  color: var(--auxiliary-text-t2-d1);
+  position: absolute;
+  bottom: 24px;
+  left: 0px;
+  cursor: pointer;
+  z-index: 99;
+`
+
 export const ModalContentBox = styled.div`
   padding: 0 24px;
 `
