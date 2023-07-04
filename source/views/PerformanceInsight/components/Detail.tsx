@@ -12,7 +12,7 @@ const Detail = (props: Props) => {
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
     const drawer: HTMLElement = document.querySelector(
-      '.drawerRoot .ant-drawer-content-wrapper',
+      '.drawerRoot .ant-drawer-content-wrapper ',
     )!
     const drawerBody: HTMLElement = document.querySelector(
       '.drawerRoot .ant-drawer-body',
@@ -37,7 +37,6 @@ const Detail = (props: Props) => {
   }
   // 关闭弹窗
   const onCancel = () => {
-    // console.log(999)
     setFocus(false)
     // dispatch(saveViewReportDetailDrawer({ visible: false, id: 0, ids: [] }))
   }

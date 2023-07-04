@@ -830,6 +830,9 @@ const GlobalStyle = () => {
     .ant-tabs-ink-bar {
       background: var(--primary-d2);
     }
+    .ant-drawer-inline {
+      position: fixed;
+    }
   `
   return <Global styles={globalCss} />
 }

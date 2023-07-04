@@ -73,7 +73,7 @@ const HeaderTop = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   zIndex: 1,
-  // marginBottom: 20,
+  marginBottom: 20,
 })
 
 const Content = styled.div({
@@ -348,32 +348,33 @@ const ProjectMember = (props: { searchValue?: string }) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <CommonUserAvatar avatar={record.avatar} size="large" />
-            <span
+            <div
               style={{
                 marginLeft: 12,
+                display: 'flex',
                 color: 'var(--neutral-n1-d1)',
                 fontSize: 14,
               }}
             >
-              {text}
-            </span>
-            {record.is_admin === 1 && (
-              <Tooltip
-                placement="top"
-                title="项目负责人"
-                getPopupContainer={node => node}
-                zIndex={99999}
-                trigger="hover"
-              >
-                <div style={{ cursor: 'pointer' }}>
-                  <CommonIconFont
-                    type="leader"
-                    size={20}
-                    color="#FA9746"
-                  ></CommonIconFont>
-                </div>
-              </Tooltip>
-            )}
+              <span>{text}</span>
+              {record.is_admin === 1 && (
+                <Tooltip
+                  placement="top"
+                  title="项目负责人"
+                  getPopupContainer={node => node}
+                  zIndex={99999}
+                  trigger="hover"
+                >
+                  <div style={{ cursor: 'pointer' }}>
+                    <CommonIconFont
+                      type="leader"
+                      size={20}
+                      color="#FA9746"
+                    ></CommonIconFont>
+                  </div>
+                </Tooltip>
+              )}
+            </div>
           </div>
         )
       },

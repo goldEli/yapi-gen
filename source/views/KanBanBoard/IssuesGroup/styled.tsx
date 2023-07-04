@@ -9,7 +9,7 @@ export const IssuesGroupBox = styled.div`
 
 export const DropAreaList = styled.div<{ hidden: boolean }>`
   display: ${props => (props.hidden ? 'none' : 'flex')};
-  width: 100%;
+  width: 1000%;
   gap: 16px;
   /* min-height: 80vh; */
 `

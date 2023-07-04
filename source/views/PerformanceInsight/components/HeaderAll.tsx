@@ -141,7 +141,7 @@ const HeaderAll = (props: HaderProps) => {
           <PersonText>
             {props.headerParmas.users?.length ? (
               <span>
-                {t('performance.select')} {props.headerParmas.users?.length}
+                {t('performance.select')}： {props.headerParmas.users?.length}
                 {t('performance.people')}
               </span>
             ) : (
@@ -179,6 +179,7 @@ const HeaderAll = (props: HaderProps) => {
         // 视图id
         id={props?.headerParmas?.view?.value}
         viewType={props.viewType}
+        type={3}
         name={props?.headerParmas?.view?.title}
         // 视图的配置
         config={{

@@ -147,6 +147,9 @@ export const getAffairsList = async (
     'getAffairsList',
     {
       search: {
+        discovery_version: params?.discovery_version,
+        severity: params?.severity,
+        solution: params?.solution,
         project_id: params?.projectId,
         keyword: params?.searchValue,
         iterate_id: params?.iterateIds,
@@ -293,7 +296,11 @@ export const getAffairsInfo = async (
     project_type: response.data.project_type,
     work_type: response.data.work_type,
     update_at: response.data.update_at,
-    category_status: response.category_status,
+    category_status: response.data.category_status,
+    severity: response.data.severity,
+    solution: response.data.solution,
+    discovery_version_name: response.data.discovery_version_name,
+    discovery_version: response.data.discovery_version,
   }
 }
 

@@ -583,9 +583,7 @@ export const useDynamicColumns = (state: any) => {
             onUpdate={onUpdate}
             projectId={state.projectId}
           >
-            <Tooltip title={text} getPopupContainer={node => node}>
-              <span className="controlMaxWidth">{text}</span>
-            </Tooltip>
+            <span className="controlMaxWidth">{text ? text : '--'}</span>
           </TableQuickEdit>
         )
       },
@@ -599,9 +597,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <ChangeSeverityPopover
             isCanOperation={
-              !(
-                record.project?.isPublic !== 1 && !record.project?.isUserMember
-              ) && Object.keys(record.categoryConfigList).includes('severity')
+              !(record.project?.isPublic !== 1 && !record.project?.isUserMember)
             }
             onChangeSeverity={item => state.onChangeSeverity(item, record)}
             record={record}
