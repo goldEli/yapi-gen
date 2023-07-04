@@ -95,6 +95,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const searchChoose = useSelector(store => store.view.searchChoose)
   const projectId = paramsData.id
   const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
     store => store.project,
@@ -136,7 +137,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        // system_view: searchChoose ? searchChoose['system_view'] : undefined,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     } else {
       params = {
@@ -164,7 +165,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        // system_view: searchChoose ? searchChoose['system_view'] : undefined,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     }
     if (state === 2) {
