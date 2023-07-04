@@ -197,7 +197,7 @@ export const RowItem = styled.div`
   flex-direction: column;
   .title {
     font-size: 14px;
-    font-family: SiYuanRegular;
+    font-family: SiYuanMedium;
     color: var(--neutral-n1-d1);
   }
   .msg {

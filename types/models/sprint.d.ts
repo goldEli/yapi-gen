@@ -132,6 +132,7 @@ declare namespace Model.Sprint {
     story_type: number
     user: { name: string; avatar: string; id: number }
     relate_users: Array<{ name: string; avatar: string; id: number }>
+    story_config_status: any
   }
   interface longStroyItem {
     id: number
