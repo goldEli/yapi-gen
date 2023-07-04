@@ -73,12 +73,12 @@ const Index = (props: any) => {
       text: t('project.projectCount'),
     },
     {
-      type: 'demand',
+      type: props.item.projectType === 1 ? 'demand' : 'timer',
       num: props.item.storyCount,
       text: props.item.projectType === 1 ? '需求数' : '事务数',
     },
     {
-      type: props.item.projectType === 1 ? 'interation-2' : 'alarm',
+      type: props.item.projectType === 1 ? 'interation-2' : 'book-open',
       num: props.item.iterateCount,
       text: props.item.projectType === 1 ? '迭代数' : '冲刺数',
     },

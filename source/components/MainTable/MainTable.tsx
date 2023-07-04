@@ -434,9 +434,13 @@ const MainTable = (props: Props) => {
 
     const arrList = [
       {
+        width: 1,
         render: (text: any, record: any) => {
           return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              id={'ddd'}
+              style={{ display: 'flex', alignItems: 'center', width: '15px' }}
+            >
               {hasEdit && hasDelete && hasStop && hasStart ? null : (
                 <MoreContent
                   onChange={props?.onChangeOperation}

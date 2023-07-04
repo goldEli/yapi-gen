@@ -105,6 +105,7 @@ export const efficiencyMemberWorkList = async (
       project_type: el.project_type,
       story_type: el.story_type,
       project_id: el.project_id,
+      story_config_status: el.story_config_status,
     })),
   }
 }
@@ -134,6 +135,7 @@ export const efficiencyMemberDefectList = async (
         project_type: number
         story_type: number
         project_id: number
+        story_config_status: any
       }) => ({
         id: el.id,
         name: el.name,
@@ -148,6 +150,7 @@ export const efficiencyMemberDefectList = async (
         project_type: el.project_type,
         story_type: el.story_type,
         project_id: el.project_id,
+        story_config_status: el.story_config_status,
       }),
     ),
   }

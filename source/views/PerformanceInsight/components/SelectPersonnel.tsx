@@ -140,7 +140,6 @@ const WorkRecords = (props: WorkRecordsTyle) => {
   )
 }
 const Main = (props: UserInfo) => {
-  // console.log(props, '00')
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -155,8 +154,9 @@ const Main = (props: UserInfo) => {
           <CommonUserAvatar size="large" avatar={props.user.avatar} />
           <UserInfo>
             <div>
-              {' '}
-              {props.historyWorkObj?.name}（{props.historyWorkObj?.email}）
+              {props.historyWorkObj?.name}（
+              {props.historyWorkObj?.email ? props.historyWorkObj?.email : '--'}
+              ）
             </div>
             <div className="msg">{props.historyWorkObj?.role.name}</div>
           </UserInfo>

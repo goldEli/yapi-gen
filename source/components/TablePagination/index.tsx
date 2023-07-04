@@ -19,6 +19,7 @@ const PaginationBox = (props: PropType) => {
       className="pagination-box"
     >
       <Pagination
+        hideOnSinglePage
         current={props.currentPage}
         defaultCurrent={1}
         total={props.total}

@@ -584,7 +584,7 @@ const ProgressComparison = (props: Props) => {
       ) {
         result = await getExport({
           project_ids:
-            option.length >= 1 ? option.join(',') : props.projectId + '',
+            option?.length >= 1 ? option?.join(',') : props.projectId + '',
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -604,7 +604,7 @@ const ProgressComparison = (props: Props) => {
       ) {
         result = await defectExport({
           project_ids:
-            option.length >= 1 ? option.join(',') : props.projectId + '',
+            option?.length >= 1 ? option?.join(',') : props.projectId + '',
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -640,9 +640,9 @@ const ProgressComparison = (props: Props) => {
     const time = props.headerParmas?.time && getTime(props.headerParmas?.time)
     const res = await workContrastList({
       project_ids:
-        value.length >= 1 || props.headerParmas?.projectIds?.length
-          ? value.length >= 1
-            ? value.join(',')
+        value?.length >= 1 || props.headerParmas?.projectIds?.length
+          ? value?.length >= 1
+            ? value?.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
           : props.projectId + '',
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
@@ -700,7 +700,7 @@ const ProgressComparison = (props: Props) => {
       user_id: row.id,
       type: str,
       project_ids:
-        selectProjectIds.length >= 1
+        selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
           : props.projectId + '',
       period_time: getTimeStr(props.headerParmas?.time)
@@ -744,7 +744,7 @@ const ProgressComparison = (props: Props) => {
     const res = await plugSelectionUserInfo({
       user_id: id,
       project_ids:
-        selectProjectIds.length >= 1
+        selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
           : props.projectId + '',
     })
