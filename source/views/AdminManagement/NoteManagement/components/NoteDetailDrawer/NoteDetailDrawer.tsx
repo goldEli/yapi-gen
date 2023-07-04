@@ -191,7 +191,7 @@ const NoteDetailDrawer = (props: any) => {
           <Title>{t('author')}</Title>
           {/* <Text> {arr.user.name}</Text> */}
           <Title>{t('sent_at')}</Title>
-          <Text>{arr.send_time ? arr?.send_time : arr?.created_at}</Text>
+          <Text>{arr?.send_time ? arr?.send_time : arr?.created_at}</Text>
           <Title>{t('receiver')}</Title>
           <div
             style={{
