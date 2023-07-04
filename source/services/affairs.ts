@@ -147,6 +147,9 @@ export const getAffairsList = async (
     'getAffairsList',
     {
       search: {
+        discovery_version: params?.discovery_version,
+        severity: params?.severity,
+        solution: params?.solution,
         project_id: params?.projectId,
         keyword: params?.searchValue,
         iterate_id: params?.iterateIds,

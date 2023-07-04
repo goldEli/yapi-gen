@@ -72,7 +72,7 @@ export const login = async () => {
       console.log('socket1')
 
       onlySysNotice()
-    }, 5000)
+    }, 10000)
   } catch (error) {
     await getTicket()
   }

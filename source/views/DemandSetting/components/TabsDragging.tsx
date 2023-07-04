@@ -288,25 +288,37 @@ const Sortable = (props: any) => {
                           color="var(--neutral-n2-d2)"
                         />
                       </IconBox>
-                      <ListMsg>
+                      <ListMsg
+                        style={{ display: 'flex', flexDirection: 'column' }}
+                      >
                         <div>{child?.title}</div>
-                        <div>
-                          {t(
-                            option?.find(
-                              (item: any) =>
-                                child?.fieldContent?.attr === item.type,
-                            )?.label,
-                          )}
-                        </div>
+                        {option?.find(
+                          (item: any) =>
+                            child?.fieldContent?.attr === item.type,
+                        )?.label ? (
+                          <div>
+                            {t(
+                              option?.find(
+                                (item: any) =>
+                                  child?.fieldContent?.attr === item.type,
+                              )?.label,
+                            )}
+                          </div>
+                        ) : (
+                          <div>--</div>
+                        )}
                       </ListMsg>
-                      <div style={{ flex: 1 }}>
-                        {' '}
+                      <div
+                        style={{ flex: 1, height: '40px', lineHeight: '40px' }}
+                      >
                         {
                           optionFields.find(ele => ele.type === child.attr)
                             ?.label
                         }
                       </div>
-                      <div style={{ flex: 1 }}>
+                      <div
+                        style={{ flex: 1, height: '40px', lineHeight: '40px' }}
+                      >
                         {child?.isCustomize === 2 ? '系统字段' : '自定义字段'}
                       </div>
                     </div>
@@ -351,7 +363,9 @@ const Sortable = (props: any) => {
                 </Tooltip>
               ) : (
                 <ItemList>
-                  <div style={{ display: 'flex', width: '100%' }}>
+                  <div
+                    style={{ display: 'flex', width: '100%', height: '40px' }}
+                  >
                     <IconBox>
                       <CommonIconFont
                         type={
@@ -377,7 +391,9 @@ const Sortable = (props: any) => {
                         )}
                       </div>
                     </ListMsg>
-                    <div style={{ flex: 1 }}>
+                    <div
+                      style={{ flex: 1, height: '40px', lineHeight: '40px' }}
+                    >
                       {
                         optionFields.find(
                           ele =>
@@ -386,8 +402,9 @@ const Sortable = (props: any) => {
                         )?.label
                       }
                     </div>
-                    <div style={{ flex: 1 }}>
-                      {' '}
+                    <div
+                      style={{ flex: 1, height: '40px', lineHeight: '40px' }}
+                    >
                       {child?.is_customize === 2 ? '系统字段' : '自定义字段'}
                     </div>
                   </div>

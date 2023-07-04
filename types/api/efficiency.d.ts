@@ -85,7 +85,7 @@ declare namespace API.Efficiency {
       config?: Models.Efficiency.ConfigItem
     }
     type Result = {
-      data: boolean
+      data: any
     }
   }
 }

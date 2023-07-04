@@ -249,6 +249,9 @@ declare namespace API.Affairs {
 
   namespace GetAffairsList {
     type Params = {
+      discovery_version: any
+      severity: any
+      solution: any
       projectId: number
       searchValue: string
       iterateIds: number[]

@@ -447,7 +447,7 @@ const Home = () => {
       time: `${res.start_time} ~ ${res.end_time}`,
       chartType: str,
       yData: res.list.map(el => el.user_name),
-      seriesData: res.list.map(el => el.work_total),
+      seriesData: res.list.map(el => el.completion_rate),
     })
   }
   // 阶段缺陷占比第6个图表
@@ -667,7 +667,7 @@ const Home = () => {
                     ? t('performance.title1')
                     : t('performance.title01')
                 }
-                titleType
+                titleType={true}
                 height={396}
                 chart={charts1}
                 onChange={(val: any) => getContrastNewWork(val)}

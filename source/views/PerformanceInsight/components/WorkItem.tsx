@@ -191,7 +191,8 @@ const Main = (props: UserInfo) => {
         <CommonUserAvatar size="large" avatar={props.userInfo.avatar} />
         <UserInfo>
           <div>
-            {props.userInfo.name}（{props.userInfo.email}）
+            {props.userInfo?.name}（
+            {props.userInfo?.email ? props.userInfo.email : '--'}）
           </div>
           <div className="msg">
             <Space size={4}>
