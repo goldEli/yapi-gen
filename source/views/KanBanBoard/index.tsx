@@ -15,7 +15,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 interface IProps {}
 const KanBanBoardBox = styled.div`
   width: 100%;
-  height: 100%;
+  // height: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -31,20 +31,22 @@ const KanBanBoard: React.FC<IProps> = props => {
   useInit()
 
   return (
-    <KanBanBoardBox>
-      <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
-        <TopArea />
-        <ToolBar />
-        {userPreferenceConfig?.guidePageConfig?.kanban === 1
-          ? guildModalEl
-          : null}
-        <FullScreenContainer>
-          <Board />
-        </FullScreenContainer>
-        <UserGroupingModal />
-        <ModifyStatusModal />
-      </Spin>
-    </KanBanBoardBox>
+    <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
+      <KanBanBoardBox>
+        <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
+          <TopArea />
+          <ToolBar />
+          {userPreferenceConfig?.guidePageConfig?.kanban === 1
+            ? guildModalEl
+            : null}
+          <FullScreenContainer>
+            <Board />
+          </FullScreenContainer>
+          <UserGroupingModal />
+          <ModifyStatusModal />
+        </Spin>
+      </KanBanBoardBox>
+    </div>
   )
 }
 export default KanBanBoard
