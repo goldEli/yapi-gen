@@ -28,6 +28,7 @@ import {
 } from '@store/kanBan/kanBan.thunk'
 import SelectOptionsNormal from '@/components/SelectOptionsNormal'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { setSpinning } from '@store/kanBan'
 const OperationWrap = styled.div({
   minHeight: 32,
   minWidth: '800px',
@@ -74,7 +75,6 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const { sortByGroupOptions, sortByRowAndStatusOptions, sortByView } =
     useSelector(store => store.kanBan)
-
   const [filterState, setFilterState] = useState(true)
   const [defaultValue, setDefaultValue] = useState({})
 
@@ -268,6 +268,7 @@ const Operation = (props: Props) => {
             onChangeFilter={onChangeFilter}
             onChangeGrid={props.onChangeGrid}
             onRefresh={() => {
+              dispatch(setSpinning(true))
               dispatch(onRefreshKanBan())
             }}
             isGrid={props.isGrid}

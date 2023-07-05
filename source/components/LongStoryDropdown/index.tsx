@@ -64,7 +64,10 @@ const LongStoryDropdown = (props: IProps) => {
     let params: API.Affairs.AddInfoAffairs.Params = {
       projectId: detail.projectId,
       sprintId:
-        detail.level_tree?.length === 0
+        detail.level_tree?.length === 0 ||
+        !detail.level_tree?.find(
+          (e: { work_type: number }) => e.work_type === 4 || e.work_type === 5,
+        )?.id
           ? detail.id
           : detail.level_tree?.find(
               (e: { work_type: number }) =>
@@ -105,9 +108,18 @@ const LongStoryDropdown = (props: IProps) => {
     }
     const params = {
       projectId: detail.projectId,
-      sprintId: detail.id,
+      sprintId:
+        detail.level_tree?.length === 0 ||
+        !detail.level_tree?.find(
+          (e: { work_type: number }) => e.work_type === 4 || e.work_type === 5,
+        )?.id
+          ? detail.id
+          : detail.level_tree?.find(
+              (e: { work_type: number }) =>
+                e.work_type === 4 || e.work_type === 5,
+            )?.id,
       type: 'parent',
-      targetId: detail.parentId,
+      targetId: 0,
     }
     try {
       await deleteInfoAffairs(params)
@@ -119,6 +131,7 @@ const LongStoryDropdown = (props: IProps) => {
   }
   useEffect(() => {
     // debugger
+    console.log('detail', detail)
     const hasLongStroy =
       detail.level_tree?.length === 0 ||
       (detail.level_tree?.length &&
@@ -127,9 +140,6 @@ const LongStoryDropdown = (props: IProps) => {
         ))
     setHasLongStroy(hasLongStroy)
     setLoading(true)
-    // if (longStoryList?.list.length) {
-    //   return
-    // }
     getList()
   }, [params.search.project_id, params.pagesize])
   useEffect(() => {
@@ -172,7 +182,14 @@ const LongStoryDropdown = (props: IProps) => {
             <ContentItem
               key={index}
               onClick={() => onConfirm(item)}
-              className={item.id === detail.parentId ? activity : ''}
+              className={
+                item.id ===
+                detail.level_tree.find(
+                  (item: { work_type: number }) => item.work_type === 3,
+                )?.id
+                  ? activity
+                  : ''
+              }
             >
               <img src={item.category_attachment} alt="" />
               <span>{item.story_prefix_key}</span>
