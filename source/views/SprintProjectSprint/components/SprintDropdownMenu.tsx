@@ -30,6 +30,13 @@ const MenuWrap = styled(Menu)`
     background: transparent !important;
     cursor: inherit;
   }
+  .ant-dropdown-menu-item.ant-dropdown-menu-item-disabled,
+  .ant-dropdown-menu-item.ant-dropdown-menu-submenu-title-disabled,
+  .ant-dropdown-menu-submenu-title.ant-dropdown-menu-item-disabled,
+  .ant-dropdown-menu-submenu-title.ant-dropdown-menu-submenu-title-disabled {
+    background: transparent !important;
+    cursor: inherit;
+  }
 `
 const RemoveItemWrap = styled.div`
   font-size: 12px;
@@ -53,8 +60,6 @@ interface Props {
 }
 
 export const SprintDropdownMenu = (props: Props) => {
-  console.log(props)
-
   const [t] = useTranslation()
   const { rightSprintList } = useSelector(state => state.sprint)
   const { projectInfo } = useSelector(store => store.project)
