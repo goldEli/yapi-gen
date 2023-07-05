@@ -59,10 +59,18 @@ import { setIsUpdateChangeLog, setIsUpdateStatus } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '@/components/CopyIcon'
-
+import { useHotkeys } from 'react-hotkeys-hook'
+import { keys } from 'highcharts'
 interface IProps {}
 
 const SprintProjectDetail: React.FC<IProps> = props => {
+  useHotkeys('down,up', event => {
+    if (event.key === 'ArrowDown') {
+      document.getElementById('downIcon')?.click()
+    } else {
+      document.getElementById('upIcon')?.click()
+    }
+  })
   const [t] = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -397,6 +405,17 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     setSearchParams(`data=${params}`)
   }
 
+  const getKeyDown = (e: any) => {
+    if (e.keyCode === 38) {
+      //up
+      document.getElementById('upIcon')?.click()
+    }
+    if (e.keyCode === 40) {
+      //down
+      document.getElementById('downIcon')?.click()
+    }
+  }
+
   useEffect(() => {
     // 获取项目信息中的需求类别
     const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
@@ -417,6 +436,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id }))
     }
   }, [isUpdateAddWorkItem])
+
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
 
   return (
     <Wrap>

@@ -33,6 +33,7 @@ type SliceState = {
     visible: boolean
     storyId?: Model.KanBan.Story['id']
     info?: Model.Project.CheckStatusItem
+    groupId?: Model.KanBan.Group['id']
   }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]

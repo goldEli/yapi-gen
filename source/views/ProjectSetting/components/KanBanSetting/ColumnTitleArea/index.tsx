@@ -78,6 +78,7 @@ const IconWrap = styled(IconFont)`
 
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const { columnList } = useKanBanData()
+  console.log('columnList-----', columnList)
   const item = columnList?.[props.index ?? 0]
   const draggableId = item.id + '1'
   const dispatch = useDispatch()
