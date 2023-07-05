@@ -148,6 +148,7 @@ const slice = createSlice({
       if (!current) {
         return
       }
+
       state.sortByGroupOptions?.forEach(item => {
         item.check = false
         if (item.key === current?.key) {

@@ -64,6 +64,8 @@ declare namespace API.Efficiency {
       }
       risk_stock: {
         total: number
+        start_time: string
+        end_time: string
         list: Models.Efficiency.risk_stock_item[]
       }
     }

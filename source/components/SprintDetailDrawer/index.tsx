@@ -1,6 +1,10 @@
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { setAffairsDetailDrawer, setAffairsInfo } from '@store/affairs'
+import {
+  setAffairsCommentList,
+  setAffairsDetailDrawer,
+  setAffairsInfo,
+} from '@store/affairs'
 import { Drawer, MenuProps, Popover, Skeleton, Space, Tooltip } from 'antd'
 import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
 import {
@@ -521,7 +525,7 @@ const SprintDetailDrawer = () => {
         <div
           onClick={() =>
             onClickAnchorList({
-              key: 'sprint-linkSprint',
+              key: 'sprint-tag',
               domKey: 'detailInfo',
             })
           }
@@ -532,11 +536,26 @@ const SprintDetailDrawer = () => {
       key: '3',
     },
     {
+      label: (
+        <div
+          onClick={() =>
+            onClickAnchorList({
+              key: 'sprint-linkSprint',
+              domKey: 'linkSprint',
+            })
+          }
+        >
+          链接事务
+        </div>
+      ),
+      key: '4',
+    },
+    {
       type: 'divider',
     },
     {
       label: <div onClick={onToConfig}>配置</div>,
-      key: '4',
+      key: '5',
     },
   ]
 
@@ -550,6 +569,7 @@ const SprintDetailDrawer = () => {
 
   useEffect(() => {
     if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
+      dispatch(setAffairsCommentList({ list: [] }))
       setDemandIds(affairsDetailDrawer.params?.demandIds || [])
       getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
       setShowState(normalState)

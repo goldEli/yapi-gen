@@ -58,6 +58,7 @@ import { DemandOperationDropdownMenu } from '../TableDropdownMenu/DemandDropdown
 import DetailsSkeleton from '../DetailsSkeleton'
 import { copyLink } from '@/tools'
 import CopyIcon from '../CopyIcon'
+import StoryRelation from '@/views/DemandDetail/components/StoryRelation'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -66,6 +67,10 @@ const DemandDetailDrawer = () => {
       dom: useRef<any>(null),
     },
     detailDemands: {
+      isOpen: false,
+      dom: useRef<any>(null),
+    },
+    relation: {
       isOpen: false,
       dom: useRef<any>(null),
     },
@@ -107,6 +112,7 @@ const DemandDetailDrawer = () => {
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
     { name: t('common.childDemand'), key: 'detailDemands', content: '' },
+    { name: '关联工作项', key: 'relation', content: '' },
     { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
     { name: t('requirements_review'), key: 'demandComment', content: '' },
   ]
@@ -593,6 +599,14 @@ const DemandDetailDrawer = () => {
                       <ChildrenDemand
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
+                      />
+                    )}
+                    {i.key === 'relation' && showState[i.key].isOpen && (
+                      <StoryRelation
+                        detail={drawerInfo}
+                        isOpen={showState[i.key].isOpen}
+                        onUpdate={onOperationUpdate}
+                        isDrawer
                       />
                     )}
                     {i.key === 'basicInfo' && showState[i.key].isOpen && (

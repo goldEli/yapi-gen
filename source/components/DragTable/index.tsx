@@ -89,6 +89,10 @@ const DragTable = (props: DragTableProps) => {
           row: DraggableBodyRow,
         },
       }}
+      scroll={{
+        x: 'max-content',
+      }}
+      tableLayout="auto"
     />
   )
 }

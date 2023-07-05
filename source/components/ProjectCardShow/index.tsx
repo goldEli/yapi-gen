@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 // 项目卡片 children传入右上操作
 
 import { Progress, Tooltip } from 'antd'
@@ -33,20 +34,20 @@ const Index = (props: any) => {
           arrowPointAtCenter
           autoAdjustOverflow={false}
           placement="top"
-          title={props.names ?? t('project_name_xxx')}
+          title={null ?? (t('project_name_xxx') as string)}
         >
           <CardRightFirst>
-            {props.names ?? t('project_name_xxx')}
+            {null ?? (t('project_name_xxx') as string)}
           </CardRightFirst>
         </Tooltip>
 
         <CardRightSecond>
-          {t('functionary')}
-          {props.user ?? 'XXX'}
+          {t('functionary') as string}
+          {null ?? 'XXX'}
         </CardRightSecond>
         <CardRightSecond>
-          {t('keyM')}
-          {props.prefix ?? 'DXKJ'}
+          {t('keyM') as string}
+          {null ?? 'XXXXX'}
         </CardRightSecond>
         <TransformWrap>
           <ProgressWrap>

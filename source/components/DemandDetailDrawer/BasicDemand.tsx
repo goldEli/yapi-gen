@@ -230,7 +230,7 @@ const BasicDemand = (props: Props) => {
           isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
           isInfoPage={props.isInfoPage}
         >
-          {defaultValues.defaultHtml}
+          {defaultValues?.defaultHtml}
         </TableQuickEdit>
       )
     } else if (item.content === 'schedule') {

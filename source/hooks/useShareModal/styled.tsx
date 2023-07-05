@@ -33,6 +33,9 @@ export const CopyButton = styled.div`
   left: 0px;
   cursor: pointer;
   z-index: 99;
+  &:hover {
+    color: var(--primary-d1);
+  }
 `
 
 export const GetCopyButton = styled.div`
@@ -50,6 +53,9 @@ export const GetCopyButton = styled.div`
   left: 0px;
   cursor: pointer;
   z-index: 99;
+  &:hover {
+    color: var(--primary-d1);
+  }
 `
 export const LoadingButton = styled.div`
   width: 109px;

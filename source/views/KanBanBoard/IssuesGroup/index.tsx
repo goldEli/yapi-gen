@@ -113,7 +113,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         })
       }}
     >
-      <ChooseMember />
+      <ChooseMember id={issuesGroup.id} />
     </div>
   )
 
