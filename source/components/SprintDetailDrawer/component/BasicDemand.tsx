@@ -444,7 +444,6 @@ const BasicDemand = (props: Props) => {
         width: '100%',
         paddingLeft: props.hasPadding ? '24px' : 0,
         height: '100%',
-        overflow: 'auto',
       }}
     >
       <Label>{t('newlyAdd.basicInfo')}</Label>
