@@ -57,7 +57,9 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
           ref={inputTagRef}
           placeholder={t('enter_the_name_of_the_column')}
           style={{ width: 182 }}
+          maxLength={30}
         />
+
         <TextBtn
           onClick={e => {
             if (!inputValue) {

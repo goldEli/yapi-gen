@@ -46,6 +46,7 @@ type SliceState = {
     status?: Model.KanbanConfig.Status
     groupId: Model.KanBan.Group['id']
   } | null
+  spinning?: boolean
 }
 
 const initialState: SliceState = {
@@ -64,10 +65,10 @@ const initialState: SliceState = {
     groupName: '',
   },
   sortByGroupOptions: [
-    { key: 'none', value: i18next.t('none'), check: false },
+    { key: 'none', value: i18next.t('none'), check: true },
     { key: 'users', value: i18next.t('by_personnel'), check: false },
     { key: 'category', value: i18next.t('by_category'), check: false },
-    { key: 'priority', value: i18next.t('by_priority'), check: true },
+    { key: 'priority', value: i18next.t('by_priority'), check: false },
   ],
   sortByRowAndStatusOptions: [],
   sortByView: [],
@@ -78,6 +79,7 @@ const initialState: SliceState = {
   shareModelInfo: {
     visible: false,
   },
+  spinning: false,
 }
 
 const slice = createSlice({
@@ -185,6 +187,9 @@ const slice = createSlice({
         }
       })
     },
+    setSpinning(state, action: PayloadAction<boolean>) {
+      state.spinning = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
@@ -221,6 +226,7 @@ export const {
   setModifyStatusModalInfo,
   setFullScreen,
   changeRight,
+  setSpinning,
 } = slice.actions
 
 export default kanBan

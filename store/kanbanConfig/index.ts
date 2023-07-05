@@ -151,7 +151,7 @@ const slice = createSlice({
         id: getNumberId(state.columnList?.map(item => item.id)),
         kanban_config_id: kanban_config_id ?? 0,
         name: action.payload,
-        max_num: 1,
+        max_num: 100,
         categories,
       }
       state.columnList.push(list)

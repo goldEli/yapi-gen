@@ -57,11 +57,9 @@ interface IProps {
 const LongStroyBread = (props: IProps) => {
   const [visible, setVisible] = useState(false)
   const [showEditIcon, setShowEditIcon] = useState(false)
-  const [hasLongStroy, setHasLongStroy] = useState(false)
   const [isHasLongStroy, setIsHasLongStroy] = useState(false)
   const { longStroy = {}, layer = false, onClick } = props
   const [t] = useTranslation()
-  // console.log('longStroy', longStroy)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
@@ -79,16 +77,6 @@ const LongStroyBread = (props: IProps) => {
     }
   }
   useEffect(() => {
-    // hasLongStroy 为true可以添加长故事 work_type 为4,5才可以添加关联
-    // longStroy.work_type !== 3
-    const hasLongStroy = true
-    console.log('longStroy', longStroy)
-    // if (hasLongStroy) {
-    //   // isHasLongStroy 为true 可以新增
-    //   const isHasLongStroy = longStroy?.level_tree?.length === 0
-    //   setIsHasLongStroy(isHasLongStroy)
-    // }
-    // level_tree含有work_type===3 直接展示  否则添加一个添加长故事面包屑
     if (
       longStroy?.level_tree?.some(
         (item: { work_type: number }) => item.work_type === 3,
@@ -112,55 +100,7 @@ const LongStroyBread = (props: IProps) => {
             </span>
           )}
           {/* 显示添加长故事按钮还是显示编辑按钮 */}
-          {/* {isHasLongStroy ? (
-            <LongStroyWrap>
-              {showEditIcon ? (
-                <HasStroyWrap>
-                  <CommonIconFont
-                    type="edit"
-                    color="var(--neutral-n3)"
-                    onMouseLeave={() => {
-                      setShowEditIcon(false)
-                    }}
-                    onClick={() => setVisible(true)}
-                  ></CommonIconFont>
-                </HasStroyWrap>
-              ) : (
-                <HasStroyWrap>
-                  <img
-                    src={longStroy.category_attachment}
-                    alt=""
-                    onMouseEnter={() => {
-                      if (
-                        longStroy.work_type === 4 ||
-                        longStroy.work_type === 5
-                      ) {
-                        setShowEditIcon(true)
-                      }
-                    }}
-                    onMouseLeave={() => {
-                      setShowEditIcon(false)
-                    }}
-                    style={{ width: 20, marginRight: '6px' }}
-                  />
-                </HasStroyWrap>
-              )}
-            </LongStroyWrap>
-          ) : (
-            <LongStroyWrap
-              onClick={() => {
-                setVisible(true)
-              }}
-            >
-              <CommonIconFont
-                type="edit"
-                color="var(--neutral-n3)"
-              ></CommonIconFont>
-              <LabelBox>添加长故事</LabelBox>
-            </LongStroyWrap>
-          )} */}
         </div>
-
         {/* 事务显示层级关系 */}
         {longStroy.level_tree?.length === 0 ||
         (longStroy.level_tree?.length && !isHasLongStroy) ? (
@@ -221,12 +161,15 @@ const LongStroyBread = (props: IProps) => {
           )
         })}
         {/* 事务本身 */}
-        <CommonIconFont
-          type="right"
-          color="var(--neutral-n1-d1)"
-        ></CommonIconFont>
+        {longStroy.level_tree?.length === 0 ? null : (
+          <CommonIconFont
+            type="right"
+            color="var(--neutral-n1-d1)"
+          ></CommonIconFont>
+        )}
+
         <img
-          src="https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png"
+          src={longStroy.category_attachment}
           alt=""
           style={{ width: 20, marginRight: '6px' }}
         />

@@ -5,6 +5,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
 import { getParamsData } from '@/tools'
 import sideLogo from '/newLogo.svg'
+import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import {
   ChildrenMenu,
   ChildrenMenuItem,
@@ -54,6 +55,23 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   })
   // 点击菜单
   const onChangeCurrentMenu = (item: any) => {
+    dispatch(
+      setHeaderParmas({
+        iterate_ids: [],
+        projectIds: [],
+        users: [],
+        time: {
+          type: 1,
+          time: '',
+        },
+        view: {
+          title: '',
+          value: 0,
+        },
+        period_time: 'one_month',
+      }),
+    )
+    dispatch(setSave(false))
     props.onChange(false)
     const navigateUrl =
       item.children?.length > 0
@@ -156,7 +174,6 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           </div>
         </CompanyCards>
       </CommonModal>
-
       {/* 左侧弹层 */}
       <Drawer
         headerStyle={{ display: 'none' }}

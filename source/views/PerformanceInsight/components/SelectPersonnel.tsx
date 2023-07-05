@@ -118,9 +118,9 @@ const WorkRecords = (props: WorkRecordsTyle) => {
       {list?.map(el => (
         <WorkStyle key={el.date}>
           {el.list.map(item => (
-            <RowItem key={item.name + item.created_at}>
+            <RowItem key={item?.name + item.created_at}>
               <Row>
-                <span className="title">{item.name}</span>
+                <span className="title">{item?.name}</span>
                 <span className="time">{item.created_at}</span>
               </Row>
               <span className="msg">
@@ -158,7 +158,7 @@ const Main = (props: UserInfo) => {
               {props.historyWorkObj?.email ? props.historyWorkObj?.email : '--'}
               ）
             </div>
-            <div className="msg">{props.historyWorkObj?.role.name}</div>
+            <div className="msg">{props.historyWorkObj?.role?.name}</div>
           </UserInfo>
         </UserMsg>
         {(props.type === 'Progress_iteration' ||
