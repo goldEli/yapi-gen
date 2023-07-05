@@ -228,6 +228,7 @@ const NoteCard = (props: any) => {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
+          marginBottom: '10px',
         }}
       >
         <Wrap1>
@@ -346,7 +347,12 @@ const NoteCard = (props: any) => {
             lineHeight: '22px',
           }}
         >
-          <Editor value={values.content} getSuggestions={() => []} readonly />
+          <Editor
+            color="transparent"
+            value={values.content}
+            getSuggestions={() => []}
+            readonly
+          />
         </div>
 
         <div
