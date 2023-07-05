@@ -84,7 +84,6 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const { t } = useI18n()
 
   const { textRef, isTextOverflowed } = useIsTextOverflowed(item.name)
-  console.log(item.id, 'keykekyekykekykekykeky', columnList)
   return (
     <Draggable draggableId={draggableId} index={props.index}>
       {(provided, snapshot) => {

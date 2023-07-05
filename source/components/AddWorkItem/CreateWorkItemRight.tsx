@@ -224,7 +224,7 @@ const CreateDemandRight = (props: Props) => {
         // 发现版本
         discovery_version: removeNull(projectInfoValues, 'iterate_name')
           ?.filter((k: any) => k.status === 1 || k.status === 4)
-          ?.filter((i: any) => i.id === props?.detail?.iterateId).length
+          ?.filter((i: any) => i.id === props?.detail?.discovery_version).length
           ? props?.detail?.discovery_version
           : undefined,
 

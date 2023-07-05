@@ -4,6 +4,8 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
+import CommonIconFont from '@/components/CommonIconFont'
+import { getMessage } from '@/components/Message'
 
 interface ColumnTitleAreaProps {}
 const ColumnTitle = styled.span`
@@ -24,9 +26,24 @@ const ColumnTitleAreaBox = styled.div`
   z-index: 20;
 `
 
+const MaxText = styled.div`
+  display: flex;
+  align-items: center;
+  color: var(--function-warning);
+  font-size: 12px;
+  margin-left: 8px;
+  span {
+    margin-left: 4px;
+  }
+  svg {
+    font-size: 16px;
+  }
+`
+
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   // debugger
   const { kanbanConfig, kanbanInfoByGroup } = useSelector(store => store.kanBan)
+
   return (
     <ColumnTitleAreaBox>
       {kanbanConfig?.columns?.map(item => {
@@ -46,7 +63,15 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
         storyData = [...new Set(storyData.flat())]
         const num = storyData.length
         return (
-          <ColumnTitle key={item.id}>{`${item.name}（${num}）`}</ColumnTitle>
+          <ColumnTitle key={item.id}>
+            {`${item.name}（${num}）`}
+            {num > item.max_num && (
+              <MaxText>
+                <CommonIconFont type="warning-02" />
+                <span>已超过最大数</span>
+              </MaxText>
+            )}
+          </ColumnTitle>
         )
       })}
     </ColumnTitleAreaBox>

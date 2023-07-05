@@ -32,7 +32,7 @@ const RelationDropdownMenu = (props: Props) => {
 
   // 复制需求id
   const onCopyId = () => {
-    copyLink(`${props?.record.storyPrefixKey}`, '复制成功！', '复制失败！')
+    copyLink(`${props?.record.story_prefix_key}`, '复制成功！', '复制失败！')
   }
 
   // 复制需求链接
@@ -49,7 +49,7 @@ const RelationDropdownMenu = (props: Props) => {
     const url = `/ProjectManagement/DemandDetail?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
-      `【${props?.record.storyPrefixKey}】${text}`,
+      `【${props?.record.story_prefix_key}】${text}`,
       t('common.copySuccess'),
       t('common.copyFail'),
     )

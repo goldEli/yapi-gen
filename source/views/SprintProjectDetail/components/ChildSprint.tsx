@@ -240,8 +240,6 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     },
   ]
 
-  console.log(dataSource, '=dataSourcedataSource')
-
   const operationList = [
     {
       width: 40,
