@@ -18,6 +18,8 @@ const StatusListBox = styled.div`
   flex: 1;
   overflow: auto;
   height: 0;
+  padding-right: 10px; /* 为滚动条留出空间 */
+  box-sizing: border-box;
 `
 
 const StatusList: React.FC<StatusListProps> = props => {

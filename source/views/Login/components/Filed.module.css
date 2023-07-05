@@ -12,6 +12,10 @@
   margin-bottom: 24px;
   border-radius: 4px;
 }
+.field:hover {
+  border: 1px solid #617ef2;
+  cursor: pointer;
+}
 
 .active {
   border: 1px solid #617ef2;
