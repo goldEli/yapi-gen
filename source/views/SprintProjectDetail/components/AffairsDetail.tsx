@@ -16,6 +16,7 @@ import {
 import { getMessage } from '@/components/Message'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
+import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 
 interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
@@ -135,6 +136,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         <Label>描述</Label>
         {(isEditInfo || editInfo) && (
           <Editor
+            upload={uploadFile}
             value={editInfo}
             getSuggestions={() => []}
             readonly={!isEditInfo}
