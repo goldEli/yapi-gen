@@ -18,7 +18,7 @@ const PerformanceInsight = () => {
   )
   useKeys('5', projectType === 1 ? '/ProjectManagement/Demand' : '')
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
       <Home />
     </div>
   )

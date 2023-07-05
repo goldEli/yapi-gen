@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 需求主页-需求表格模式
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
@@ -14,11 +15,7 @@ import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  setAddQuickSprintModal,
-  setAddWorkItemModal,
-  setFilterParamsModal,
-} from '@store/project'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import PaginationBox from '@/components/TablePagination'
 import { saveSort } from '@store/view'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
@@ -159,7 +156,23 @@ const SprintTable = (props: Props) => {
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setIsShowMore(false)
-    dispatch(setAddQuickSprintModal({ visible: true, params: item }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId,
+          type:
+            item.work_type === 3
+              ? 8
+              : [4, 5].includes(item.work_type)
+              ? 6
+              : undefined,
+          title: '创建子事务',
+          isCreateAffairsChild: true,
+          parentId: item.id,
+        },
+      }),
+    )
   }
 
   // 点击编辑

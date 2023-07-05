@@ -26,8 +26,8 @@ import { getMessage } from '../Message'
 import { setIsUpdateCreate } from '@store/mine'
 import CreateDemandLeft from './CreateWorkItemLeft'
 import CreateDemandRight from './CreateWorkItemRight'
-import { addAffairs, updateAffairs } from '@/services/affairs'
-import { addFlaw, updateFlaw } from '@/services/flaw'
+import { addAffairs, getAffairsInfo, updateAffairs } from '@/services/affairs'
+import { addFlaw, getFlawInfo, updateFlaw } from '@/services/flaw'
 
 const ModalFooter = styled.div({
   width: '100%',
@@ -48,8 +48,6 @@ const AddWorkItem = () => {
   )
   const { params, visible } = addWorkItemModal
   const [isCreateWorkItem, setIsCreateWorkItem] = useState<any>({})
-  // // 父需求列表
-  // const [parentList, setParentList] = useState<any>([])
   // 项目列表
   const [projectList, setProjectList] = useState<any>([])
   // 所有的类别列表
@@ -75,6 +73,7 @@ const AddWorkItem = () => {
     setProjectId('')
     setFieldList([])
     setNewCategory({})
+    setCategoryType(0)
     setTimeout(() => {
       leftDom.current?.reset()
       rightDom.current?.reset()
@@ -123,12 +122,25 @@ const AddWorkItem = () => {
     setProjectList(res.list)
     // 如果有需求id则获取详情
     if (params?.editId) {
-      const demandResponse = await getDemandInfo({
-        projectId: params?.projectId,
-        id: params?.editId,
-      })
+      let demandResponse: any
+      if (params.type === 1) {
+        demandResponse = await getDemandInfo({
+          projectId: params?.projectId,
+          id: params?.editId,
+        })
+      } else if (params.type === 2) {
+        demandResponse = await getFlawInfo({
+          projectId: params?.projectId,
+          id: params?.editId,
+        })
+      } else {
+        demandResponse = await getAffairsInfo({
+          projectId: params?.projectId,
+          sprintId: params?.editId,
+        })
+      }
+
       setModalInfo(demandResponse)
-      console.log(demandResponse, '=demandResponse')
     }
     // 全局创建和快速创建获取最近项目
     if (!params?.projectId) {
@@ -209,6 +221,7 @@ const AddWorkItem = () => {
         leftDom.current?.reset()
         rightDom.current?.reset()
         dispatch(setFilterParamsModal({}))
+        onCancel()
       }, 100)
     }
   }

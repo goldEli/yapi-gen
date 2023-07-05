@@ -138,15 +138,6 @@ export const projectSlice = createSlice({
     ) {
       state.guideVisible = action.payload
     },
-    setAddQuickSprintModal(
-      state,
-      action: PayloadAction<CounterState['addQuickSprintModal']>,
-    ) {
-      state.addQuickSprintModal = {
-        ...state.addQuickSprintModal,
-        ...action.payload,
-      }
-    },
     setCategoryWorkType(state, action: PayloadAction<number>) {
       state.work_type = action.payload
     },
@@ -198,7 +189,6 @@ export const {
   setIsUpdateMember,
   setAddWorkItemModal,
   onChangeGuideVisible,
-  setAddQuickSprintModal,
   setCategoryWorkType,
   setIsUpdateStatus,
   setIsUpdateChangeLog,

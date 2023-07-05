@@ -112,7 +112,7 @@ declare namespace Models.Efficiency {
   }
   export interface HeaderParmas {
     iterate_ids?: number[]
-    projectIds?: number[]
+    projectIds?: number[] | []
     users?: []
     time: {
       type: number

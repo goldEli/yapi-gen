@@ -652,13 +652,13 @@ const Home = () => {
           />
         </div>
         <div style={{ width: '100%', display: 'flex' }}>
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '100%', paddingBottom: '24px' }}>
             <div
               style={{
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'space-between',
-                padding: '0 24px',
+                padding: '0 24px ',
               }}
             >
               <HightChartMainBar
