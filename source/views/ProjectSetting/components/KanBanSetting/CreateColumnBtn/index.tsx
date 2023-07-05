@@ -14,6 +14,7 @@ import {
 import useI18n from '@/hooks/useI18n'
 import useKanBanData from '../hooks/useKanBanData'
 import { getMessage } from '@/components/Message'
+import { changeRight } from '@store/kanBan'
 
 interface CreateColumnBtnProps {}
 
@@ -40,7 +41,9 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
       <BtnBox
         show={!isEdit}
         onClick={() => {
+          // 爆改向右
           setIsEdit(true)
+          dispatch(changeRight())
         }}
       >
         <IconWrap type="plus" />
@@ -69,6 +72,7 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
             e.stopPropagation()
             onCancel()
             dispatch(createColumn(inputValue))
+            dispatch(changeRight())
           }}
           active
         >
