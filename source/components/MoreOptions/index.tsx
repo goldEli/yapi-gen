@@ -7,6 +7,7 @@ type OptionsProps = {
   name: string
   dec?: string
   img?: string
+  number?: string
 }
 
 const MoreOptions = (props: OptionsProps) => {
@@ -33,7 +34,9 @@ const MoreOptions = (props: OptionsProps) => {
           }}
         >
           <WrapTextImg src={props.img ?? erp} />
-          <WrapText className="selectText">{props.name}</WrapText>
+          <WrapText className="selectText">
+            {props.number} {props.name}
+          </WrapText>
         </div>
       )}
       {props.type === 'promise' && (

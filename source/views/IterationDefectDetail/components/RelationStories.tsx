@@ -9,6 +9,7 @@ import {
   updateFlawStatus,
 } from '@/services/flaw'
 import { getParamsData } from '@/tools'
+import MoreOptions from '@/components/MoreOptions'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { FormWrap, PriorityWrap, RelationWrap } from '../style'
@@ -18,7 +19,7 @@ import NoData from '@/components/NoData'
 import PaginationBox from '@/components/TablePagination'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
-import { Form, Tooltip } from 'antd'
+import { Form, Tooltip, Select } from 'antd'
 import { useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
 import Sort from '@/components/Sort'
@@ -68,7 +69,8 @@ const RelationStories = (props: RelationStoriesProps) => {
   const [selectList, setSelectList] = useState<SelectItem[]>([])
   // 最近事务数据
   const [recentList, setRecentList] = useState<SelectItem[]>([])
-
+  //根据搜索框的值来放的数据
+  const [options, setOptions] = useState<any>([])
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -107,10 +109,12 @@ const RelationStories = (props: RelationStoriesProps) => {
       id: props.detail.id,
       searchValue: value,
     })
-    setSelectList(
-      response.map((i: Model.Flaw.FlawInfo) => ({
-        label: i.name,
+    setOptions(
+      response.map((i: any) => ({
+        label: i?.story_prefix_key + '' + i.name,
         value: i.id,
+        id: i.id,
+        cover: i?.project_category?.attachment_path,
       })),
     )
   }
@@ -121,10 +125,12 @@ const RelationStories = (props: RelationStoriesProps) => {
       projectId: projectInfo.id,
       id: props.detail.id,
     })
-    setRecentList(
+    setOptions(
       response.map((i: Model.Flaw.FlawInfo) => ({
-        label: i.name,
+        label: i.story_prefix_key + '' + i.name,
         value: i.id,
+        id: i.id,
+        cover: i.project_category.attachment_path,
       })),
     )
   }
@@ -132,7 +138,6 @@ const RelationStories = (props: RelationStoriesProps) => {
   // 点击添加链接事务弹窗
   const onClickOpen = () => {
     setIsVisible(true)
-    getSelectRelationRecent()
   }
 
   const onSearch = (value: string) => {
@@ -552,7 +557,16 @@ const RelationStories = (props: RelationStoriesProps) => {
       getList(pageObj, order)
     }
   }, [props.activeKey, props.isOpen])
-
+  useEffect(() => {
+    if (isVisible && !searchValue) {
+      getSelectRelationRecent()
+    }
+  }, [searchValue, isVisible])
+  const onSelect = (value: any) => {
+    form.setFieldsValue({
+      relationId: value,
+    })
+  }
   return (
     <RelationWrap style={{ paddingLeft: props.isDrawer ? 0 : 24 }}>
       <DeleteConfirmModal />
@@ -584,15 +598,29 @@ const RelationStories = (props: RelationStoriesProps) => {
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              placeholder="搜索工作项"
-              getPopupContainer={(node: any) => node}
-              showArrow
-              optionFilterProp="label"
-              allowClear
-              showSearch
               onSearch={onSearch}
-              options={searchValue ? selectList : recentList}
-            />
+              allowClear
+              showArrow
+              onClear={() => []}
+              getPopupContainer={(node: any) => node}
+              showSearch
+              onSelect={onSelect}
+              placeholder="搜索工作项"
+              optionFilterProp="label"
+            >
+              {options?.map((i: any) => {
+                return (
+                  <Select.Option value={i.value} key={i.value} label={i.label}>
+                    <MoreOptions
+                      type="project"
+                      name={i.label}
+                      number={i.number}
+                      img={i.cover}
+                    />
+                  </Select.Option>
+                )
+              })}
+            </CustomSelect>
           </Form.Item>
         </FormWrap>
       </CommonModal>
