@@ -42,6 +42,7 @@ declare namespace Model.Affairs {
     }[]
     work_type: number
     relation_type: number
+    level_tree: any
   }
   interface ListUsersInfo {
     avatar: string
