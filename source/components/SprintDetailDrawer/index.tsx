@@ -187,17 +187,17 @@ const SprintDetailDrawer = () => {
       projectId: paramsProjectId,
       sprintId: id ? id : affairsDetailDrawer.params?.id,
     })
-    info.level_tree?.push({
-      id: info.id,
-      category_id: info.category,
-      prefix_key: info.prefixKey || 0,
-      project_prefix: info.projectPrefix || '',
-      category_attachment: info.category_attachment,
-      parent_id: info.parentId || 0,
-      name: info.name,
-      work_type: 5,
-      attachment_id: 0,
-    })
+    // info.level_tree?.push({
+    //   id: info.id,
+    //   category_id: info.category,
+    //   prefix_key: info.prefixKey || 0,
+    //   project_prefix: info.projectPrefix || '',
+    //   category_attachment: info.category_attachment,
+    //   parent_id: info.parentId || 0,
+    //   name: info.name,
+    //   work_type: 5,
+    //   attachment_id: 0,
+    // })
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
