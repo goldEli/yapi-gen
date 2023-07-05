@@ -1,6 +1,7 @@
 declare namespace Model.PerformanceInsight {
   type useInfo = {
     user_name?: string
+    completion_rate: number
     work_total?: number | undefined
     name?: string
     ratio?: string | undefined

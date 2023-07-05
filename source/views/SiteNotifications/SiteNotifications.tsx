@@ -310,6 +310,7 @@ const SiteNotifications = () => {
     init2()
   }, [isRefresh])
   useEffect(() => {
+    console.log(wsData, '长链接消息')
     if (wsData) {
       sendMsg()
     }

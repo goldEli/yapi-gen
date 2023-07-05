@@ -41,17 +41,18 @@ const LongStoryDropdown = (props: IProps) => {
       keyword: '',
     },
     page: 1,
-    pagesize: 2,
+    pagesize: 10,
   })
   const onLoadMore = () => {
-    // console.log('加载更多')
+    console.log('加载更多')
+    // debugger
     if (list.length === longStoryList.pager?.total) {
       return
     }
     setParams((p: API.Sprint.getLongStoryList.Params) => {
       let { search } = { ...p }
       search = { ...search }
-      return { ...p, search, pagesize: p.pagesize + 2 }
+      return { ...p, search, pagesize: p.pagesize + 10 }
     })
   }
   const getList = async () => {
@@ -115,11 +116,11 @@ const LongStoryDropdown = (props: IProps) => {
       (detail.work_type === 4 || detail.work_type === 5)
     setHasLongStroy(hasLongStroy)
     setLoading(true)
-    if (longStoryList?.list.length) {
-      return
-    }
+    // if (longStoryList?.list.length) {
+    //   return
+    // }
     getList()
-  }, [params.search.project_id])
+  }, [params.search.project_id, params.pagesize])
   useEffect(() => {
     if (!longStoryList) {
       return

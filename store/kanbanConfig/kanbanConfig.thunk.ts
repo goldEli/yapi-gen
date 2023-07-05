@@ -177,8 +177,11 @@ export const onFresh =
       project_id: currentViewListItem.project_id,
       id: currentViewListItem.id,
     }
+    // debugger  设为默认的时候 不走获取看板配置接口
     dispatch(getKanbanConfigRemainingStatus(params))
-    dispatch(getKanbanConfig(params))
+    if (!store.getState().KanbanConfig.isSettingDefault) {
+      dispatch(getKanbanConfig(params))
+    }
     dispatch(getCategoryList({ project_id: params.project_id }))
   }
 
@@ -258,7 +261,11 @@ export const setDefaultKanbanConfig =
       project_id: project_id,
       is_default: 1,
     })
-    getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
+    if (store.getState().KanbanConfig.isSettingDefault) {
+      getMessage({ msg: '设置默认成功', type: 'success' })
+    } else {
+      getMessage({ msg: i18next.t('common.saveSuccess'), type: 'success' })
+    }
     dispatch(
       getKanbanConfigList({
         project_id: project_id,
