@@ -122,6 +122,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
       window.removeEventListener('scroll', handleScroll, false)
     }
   }, [])
+  console.log(affairsInfo, 'ddd')
 
   return (
     <InfoWrap>
