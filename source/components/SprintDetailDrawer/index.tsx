@@ -45,7 +45,11 @@ import {
   updateAffairsTableParams,
 } from '@/services/affairs'
 import { getProjectInfo } from '@/services/project'
-import { setIsUpdateAddWorkItem, setProjectInfo } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsUpdateAddWorkItem,
+  setProjectInfo,
+} from '@store/project'
 import {
   getAffairsCommentList,
   saveAffairsDetailDrawer,
@@ -60,6 +64,7 @@ import {
   getIdsForAt,
   removeNull,
   getParamsData,
+  getIsPermission,
 } from '@/tools'
 import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
 import CommentFooter from '../CommonComment/CommentFooter'
@@ -134,6 +139,15 @@ const SprintDetailDrawer = () => {
     projectInfo.projectPermissions?.filter(
       (i: any) => i.identity === 'b/transaction/update',
     )?.length > 0
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/transaction/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/transaction/delete',
+  )
 
   // 是否审核
   const onExamine = () => {
@@ -424,6 +438,21 @@ const SprintDetailDrawer = () => {
     })
   }
 
+  // 编辑事务
+  const onEdit = () => {
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: drawerInfo.id,
+          projectId: drawerInfo.project_id ?? drawerInfo.projectId,
+          type: drawerInfo.work_type,
+          title: '编辑事务',
+        },
+      }),
+    )
+  }
+
   // 跳转配置
   const onToConfig = () => {
     //
@@ -481,90 +510,108 @@ const SprintDetailDrawer = () => {
     )
   }
 
-  // 更多下拉
-  const items: MenuProps['items'] = [
-    {
-      label: <div onClick={onDelete}>删除</div>,
-      key: '0',
-    },
-    {
-      type: 'divider',
-    },
-    {
-      label: (
-        <div
-          onClick={() =>
-            onClickAnchorList({
-              key: 'sprint-attachment',
-              domKey: 'detailInfo',
-            })
-          }
-        >
-          添加附件
-        </div>
-      ),
-      key: '1',
-    },
-    {
-      label: (
-        <div
-          onClick={() =>
-            onClickAnchorList({
-              key: 'sprint-childSprint',
-              domKey: 'childSprint',
-            })
-          }
-        >
-          添加子事务
-        </div>
-      ),
-      key: '2',
-    },
-    {
-      label: (
-        <div
-          onClick={() =>
-            onClickAnchorList({
-              key: 'sprint-tag',
-              domKey: 'detailInfo',
-            })
-          }
-        >
-          添加标签
-        </div>
-      ),
-      key: '3',
-    },
-    {
-      label: (
-        <div
-          onClick={() =>
-            onClickAnchorList({
-              key: 'sprint-linkSprint',
-              domKey: 'linkSprint',
-            })
-          }
-        >
-          链接事务
-        </div>
-      ),
-      key: '4',
-    },
-    {
-      type: 'divider',
-    },
-    {
-      label: <div onClick={onToConfig}>配置</div>,
-      key: '5',
-    },
-  ]
-
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
     getSprintDetail('', demandIds)
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
+  }
+
+  // 菜单
+  const onGetMenu = () => {
+    // 更多下拉
+    let items: MenuProps['items'] = [
+      {
+        label: <div onClick={onEdit}>编辑</div>,
+        key: '6',
+      },
+      {
+        label: <div onClick={onDelete}>删除</div>,
+        key: '0',
+      },
+
+      {
+        type: 'divider',
+      },
+      {
+        label: (
+          <div
+            onClick={() =>
+              onClickAnchorList({
+                key: 'sprint-attachment',
+                domKey: 'detailInfo',
+              })
+            }
+          >
+            添加附件
+          </div>
+        ),
+        key: '1',
+      },
+      {
+        label: (
+          <div
+            onClick={() =>
+              onClickAnchorList({
+                key: 'sprint-childSprint',
+                domKey: 'childSprint',
+              })
+            }
+          >
+            添加子事务
+          </div>
+        ),
+        key: '2',
+      },
+      {
+        label: (
+          <div
+            onClick={() =>
+              onClickAnchorList({
+                key: 'sprint-tag',
+                domKey: 'detailInfo',
+              })
+            }
+          >
+            添加标签
+          </div>
+        ),
+        key: '3',
+      },
+      {
+        label: (
+          <div
+            onClick={() =>
+              onClickAnchorList({
+                key: 'sprint-linkSprint',
+                domKey: 'linkSprint',
+              })
+            }
+          >
+            链接事务
+          </div>
+        ),
+        key: '4',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        label: <div onClick={onToConfig}>配置</div>,
+        key: '5',
+      },
+    ]
+    if (hasEdit) {
+      items = items.filter((i: any) => i.key !== '6')
+    }
+    if (hasDel) {
+      items = items.filter((i: any) => i.key !== '0')
+    }
+    // 子任务不存在子事务模块
+    return drawerInfo.work_type === 6
+      ? items.filter((i: any) => i.key !== '2')
+      : items
   }
 
   useEffect(() => {
@@ -703,11 +750,7 @@ const SprintDetailDrawer = () => {
               placement="bottomRight"
               trigger={['click']}
               menu={{
-                items:
-                  // 子任务不存在子事务模块
-                  drawerInfo.work_type === 6
-                    ? items.filter((i: any) => i.key !== '2')
-                    : items,
+                items: onGetMenu(),
               }}
               getPopupContainer={n => n}
             >

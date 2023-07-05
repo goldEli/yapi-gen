@@ -40,7 +40,7 @@ declare namespace Model.Affairs {
       name: string
       avatar: string
     }[]
-    work_type: number
+    work_type: WorkType
     relation_type: number
     level_tree: any
   }
