@@ -436,6 +436,17 @@ const IterationDefectDetail = () => {
     setSearchParams(`data=${params}`)
   }
 
+  const getKeyDown = (e: any) => {
+    if (e.keyCode === 38) {
+      //up
+      document.getElementById('upIcon')?.click()
+    }
+    if (e.keyCode === 40) {
+      //down
+      document.getElementById('downIcon')?.click()
+    }
+  }
+
   useEffect(() => {
     if (flawId && id) {
       dispatch(getFlawInfo({ projectId: id, id: flawId }))
@@ -460,6 +471,13 @@ const IterationDefectDetail = () => {
       dispatch(getFlawInfo({ projectId: id, id: flawInfo.id }))
     }
   }, [isUpdateAddWorkItem])
+
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
 
   return (
     <Wrap>

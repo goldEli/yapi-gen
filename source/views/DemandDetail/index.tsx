@@ -454,6 +454,17 @@ const DemandDetail = () => {
     setSearchParams(`data=${params}`)
   }
 
+  const getKeyDown = (e: any) => {
+    if (e.keyCode === 38) {
+      //up
+      document.getElementById('upIcon')?.click()
+    }
+    if (e.keyCode === 40) {
+      //down
+      document.getElementById('downIcon')?.click()
+    }
+  }
+
   useEffect(() => {
     if (demandId && id) {
       dispatch(getDemandInfo({ projectId: id, id: demandId }))
@@ -493,6 +504,13 @@ const DemandDetail = () => {
       (changeIds || []).findIndex((i: any) => i === demandInfo?.id),
     )
   }, [demandInfo, projectInfoValues])
+
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
 
   return (
     <Wrap>

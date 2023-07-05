@@ -26,6 +26,7 @@ import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdow
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { PriorityWrapTable } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
+import NoData from '@/components/NoData'
 
 const FormWrap = styled(Form)`
   padding: 0 24px;
@@ -181,6 +182,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <MoreDropdown
               isMoreVisible={isShowMore}
+              hasChild
               menu={
                 <RelationDropdownMenu
                   onDeleteChange={onDeleteChange}
@@ -383,8 +385,8 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             )}
           </>
         ))}
-
-        {allDataSource.total > 20 && (
+        {allDataSource.list?.length <= 0 && <NoData />}
+        {allDataSource.list?.length > 20 && (
           <PaginationBox
             total={allDataSource?.total}
             currentPage={allDataSource?.currentPage}

@@ -1670,7 +1670,7 @@
   "at_the_same_time": "At the same time, it supports work comparison and viewing according to three horizontal parameters: personnel, category, and priority",
   "columns_and_status": "Columns and status",
   "vertical_filtering_can_be_performed_according_to_different_workflows": "Vertical filtering can be performed according to different workflows. If you need to define a workflow, you can add or edit it in the configuration kanban",
-  "count_person": "{{count}} person in total",
+  "count_person": "Total {{count}} transactions",
   "group": "Group",
   "are_you_sure_to_delete_this_requirement?": "Are you sure to delete this requirement?",
   "editorial_affairs": "Editorial affairs",
