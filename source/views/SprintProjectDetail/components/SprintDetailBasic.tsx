@@ -44,15 +44,18 @@ const SprintDetailBasic = (props: Props) => {
   return (
     <BasicWrap ref={props.onRef}>
       <BasicContent>
-        <BasicDemand
-          onUpdate={onUpdate}
-          detail={affairsInfo}
-          isOpen
-          hasPadding
-          isInfoPage
-        />
+        <div
+          style={{ width: '100%', height: 'calc(100% - 60px),overflow: auto' }}
+        >
+          <BasicDemand
+            onUpdate={onUpdate}
+            detail={affairsInfo}
+            isOpen
+            hasPadding
+            isInfoPage
+          />
+        </div>
       </BasicContent>
-
       <BasicFooter>
         <div className="textBox">
           <div>
