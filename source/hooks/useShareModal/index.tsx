@@ -15,7 +15,6 @@ import {
   WarnTips,
   GetCopyButton,
   LoadingButton,
-  loadingImage,
 } from './styled'
 import { shareView, checkUpdates } from '@/services/sprint'
 import { viewsUpdate, createViewList } from '@/services/efficiency'
@@ -24,7 +23,6 @@ import { copyLink, getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import shareImage from './shareLoading.gif'
 
 interface ShareModalProps {
   // 检查视图是否保存的 视图id
@@ -132,17 +130,28 @@ const useShareModal = () => {
         params.email = data.name
       }
       if (id && needSave) {
+        let tempId: any = 0
         try {
           if (viewType === 2) {
             // 系统视图，走创建接口
-            getCopyLink()
+            tempId = await getCopyLink()
           } else {
             // 更新视图
             await viewsUpdate(saveViewsParams)
           }
+          let tempUrl = ''
+          if (viewType === 2 && tempId) {
+            tempUrl = `${location.origin}${location.pathname}?data=${encryptPhp(
+              JSON.stringify({
+                ...paramsData,
+                valueId: tempId,
+                otherConfig: props.otherConfig,
+              }),
+            )}`
+          }
           const result = await shareView({
             ...params,
-            url: copyId ? copyUrl : params.url,
+            url: viewType === 2 && tempId ? tempUrl : params.url,
           })
           if (result && result.code === 0) {
             getMessage({
@@ -221,6 +230,7 @@ const useShareModal = () => {
           setLoading(false)
         }, 500)
       }
+      return res?.id
     }
 
     return (

@@ -32,6 +32,12 @@ const MenuWrap = styled(Menu)`
     cursor: default;
   }
 
+  .ant-menu-item-disabled,
+  .ant-menu-submenu-disabled {
+    background: transparent !important;
+    cursor: default;
+  }
+
   li:nth-last-child(2) {
     border-top: 1px solid var(--neutral-n6-d1);
   }
