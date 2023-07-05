@@ -64,6 +64,16 @@ export const addStoryRelation = async (
   })
 }
 
+// 关联需求拖拽排序
+export const storyRelationDragSort = async (params: any) => {
+  await http.post<any>('storyRelationDragSort', {
+    project_id: params.projectId,
+    id: params.id,
+    relation_ids: params.relationIds,
+    type: params.type,
+  })
+}
+
 // 搜索查询下拉关联事务
 export const getStorySelectRelationSearch = async (
   params: API.Flaw.GetFlawRelationList.Params,

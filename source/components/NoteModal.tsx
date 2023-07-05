@@ -29,9 +29,9 @@ const Header = styled.div`
 const Content = styled.div`
   padding: 24px;
   box-sizing: border-box;
-  min-height: 412px;
+
   overflow-y: scroll;
-  height: 600px;
+  height: calc(100vh - 400px);
 `
 
 const NoteModal = (props: any) => {

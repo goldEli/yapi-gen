@@ -26,7 +26,6 @@ const ProjectChooseSide = (props: any) => {
 
   useEffect(() => {
     init()
-    // console.log(props.cloneIds, '克隆ID')
   }, [props.cloneIds])
 
   return (
