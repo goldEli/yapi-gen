@@ -383,10 +383,9 @@ const Profile = () => {
   }
   const getYearList = async () => {
     const res = await getHisProjectCharts({
-      year: nowYear,
+      year: nowYear + '',
       user_id: userId,
     })
-
     setNowYearOptions(res.data.years)
 
     setChartData(trans(res.data.list))
