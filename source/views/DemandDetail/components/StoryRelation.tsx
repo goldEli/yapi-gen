@@ -8,7 +8,8 @@ import NoData from '@/components/NoData'
 import PaginationBox from '@/components/TablePagination'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
-import { Form, Tooltip } from 'antd'
+import MoreOptions from '@/components/MoreOptions'
+import { Form, Tooltip, Select } from 'antd'
 import { useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
 import Sort from '@/components/Sort'
@@ -107,7 +108,8 @@ const StoryRelation = (props: RelationStoriesProps) => {
   const [selectList, setSelectList] = useState<SelectItem[]>([])
   // 最近事务数据
   const [recentList, setRecentList] = useState<SelectItem[]>([])
-
+  //根据搜索框的值来放的数据
+  const [options, setOptions] = useState<any>([])
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -147,10 +149,12 @@ const StoryRelation = (props: RelationStoriesProps) => {
       searchValue: value,
     })
 
-    setSelectList(
-      response.map((i: Model.Flaw.FlawInfo) => ({
-        label: i.name,
+    setOptions(
+      response.map((i: any) => ({
+        label: i?.story_prefix_key + '' + i.name,
         value: i.id,
+        id: i.id,
+        cover: i?.project_category?.attachment_path,
       })),
     )
   }
@@ -164,7 +168,10 @@ const StoryRelation = (props: RelationStoriesProps) => {
     setRecentList(
       response.map((i: Model.Flaw.FlawInfo) => ({
         label: i.name,
+        number: i.story_prefix_key,
         value: i.id,
+        id: i.id,
+        cover: i.project_category.attachment_path,
       })),
     )
   }
@@ -172,7 +179,6 @@ const StoryRelation = (props: RelationStoriesProps) => {
   // 点击添加链接事务弹窗
   const onClickOpen = () => {
     setIsVisible(true)
-    getSelectRelationRecent()
   }
 
   const onSearch = (value: string) => {
@@ -476,7 +482,16 @@ const StoryRelation = (props: RelationStoriesProps) => {
       getList(pageObj, order)
     }
   }, [props.activeKey, props.isOpen])
-
+  useEffect(() => {
+    if (isVisible && !searchValue) {
+      getSelectRelationRecent()
+    }
+  }, [searchValue, isVisible])
+  const onSelect = (value: any) => {
+    form.setFieldsValue({
+      relationId: value,
+    })
+  }
   return (
     <RelationWrap
       style={{ height: props.isDrawer ? '100%' : 'calc(100vh - 227px)' }}
@@ -491,7 +506,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
       >
         <FormWrap layout="vertical" form={form} style={{ padding: '0 24px' }}>
           <Form.Item
-            label="链接类型"
+            label="链接类型123"
             name="type"
             rules={[{ required: true, message: '' }]}
           >
@@ -510,15 +525,29 @@ const StoryRelation = (props: RelationStoriesProps) => {
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              placeholder="搜索工作项"
-              getPopupContainer={(node: any) => node}
-              showArrow
-              optionFilterProp="label"
-              allowClear
-              showSearch
               onSearch={onSearch}
-              options={searchValue ? selectList : recentList}
-            />
+              allowClear
+              showArrow
+              onClear={() => []}
+              getPopupContainer={(node: any) => node}
+              showSearch
+              onSelect={onSelect}
+              placeholder="搜索工作项"
+              optionFilterProp="label"
+            >
+              {options?.map((i: any) => {
+                return (
+                  <Select.Option value={i.id} key={i.id} label={i.name}>
+                    <MoreOptions
+                      type="project"
+                      number={i.number}
+                      name={i.name}
+                      img={i?.cover}
+                    />
+                  </Select.Option>
+                )
+              })}
+            </CustomSelect>
           </Form.Item>
         </FormWrap>
       </CommonModal>
