@@ -10,6 +10,7 @@ import i18next from 'i18next'
 
 type SliceState = {
   // 全屏状态
+  containRight: boolean
   fullScreen: boolean
   guideVisible: Model.KanBan.guideVisible
   sortByGroupOptions?: Model.KanBan.GroupInfoItem[]
@@ -48,6 +49,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  containRight: false,
   fullScreen: false,
   movingStory: null,
   kanbanConfigList: [],
@@ -82,6 +84,9 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    changeRight(state) {
+      state.containRight = !state.containRight
+    },
     setFullScreen(state, action: PayloadAction<SliceState['fullScreen']>) {
       state.fullScreen = action.payload
     },
@@ -215,6 +220,7 @@ export const {
   setKanbanInfoByGroup,
   setModifyStatusModalInfo,
   setFullScreen,
+  changeRight,
 } = slice.actions
 
 export default kanBan
