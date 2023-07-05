@@ -265,6 +265,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
     setCheckedList(
       res.filter((el: { id: number }) => props.users?.includes(el.id)),
     )
+    setSelectDataList(res)
     setDataList(res)
   }
   useEffect(() => {
@@ -312,7 +313,11 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
                 />
                 <CheckBoxWrap>
                   <Checkbox
-                    checked={selectDataList.length === checkedList.length}
+                    checked={
+                      selectDataList.length > 0 &&
+                      checkedList.length > 0 &&
+                      selectDataList.length === checkedList.length
+                    }
                     onChange={(e: any) => checkAllChange(e)}
                     indeterminate={
                       checkedList.length > 0 &&
