@@ -82,7 +82,6 @@ const RelationStories = (props: RelationStoriesProps) => {
     { label: '后置', value: 3 },
     { label: '阻塞', value: 4 },
     { label: '被阻塞', value: 5 },
-    { label: '克隆', value: 6 },
   ]
 
   //   获取关联项列表

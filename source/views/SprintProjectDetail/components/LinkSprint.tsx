@@ -204,7 +204,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     { label: '后置', value: 3, list: [] },
     { label: '阻塞', value: 4, list: [] },
     { label: '被阻塞', value: 5, list: [] },
-    { label: '克隆', value: 6, list: [] },
   ]
 
   // 获取关联事务列表
