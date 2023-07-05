@@ -302,6 +302,7 @@ const slice = createSlice({
       },
     )
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
+      console.log('columnList--', action.payload)
       state.columnList = action.payload ?? []
       state.columnListBackup = action.payload ?? []
     })
