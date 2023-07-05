@@ -170,10 +170,10 @@ const FlawComment = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.isOpen) {
+    if (props.isOpen && props.detail.id) {
       getList()
     }
-  }, [props.isOpen])
+  }, [props.isOpen || props.detail.id])
 
   return (
     <>

@@ -1,6 +1,6 @@
 declare namespace Model.Affairs {
-  // 1：关联、2：前置、3：后置、4：阻塞，5：被阻塞、6：克隆
-  type RelationType = 1 | 2 | 3 | 4 | 5 | 6
+  // 1：关联、2：前置、3：后置、4：阻塞，5：被阻塞
+  type RelationType = 1 | 2 | 3 | 4 | 5
   interface AffairsInfo {
     id: number
     name: string

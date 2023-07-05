@@ -16,6 +16,7 @@ interface IssuesProps {
 
 export const DropArea = styled.div<{ active?: boolean }>`
   min-height: 100px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   background: ${props => (props.active ? 'red' : 'var(--neutral-n9)')};
