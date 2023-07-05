@@ -271,7 +271,10 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
 
   // 关闭链接事务弹窗
   const onClose = () => {
+    setSearchValue('')
     setIsVisible(false)
+    setSelectList([])
+    setRecentList([])
     form.resetFields()
   }
 
