@@ -9,8 +9,6 @@ import ToolBar from './ToolBar'
 import TopArea from './TopArea'
 import useInit from './useInit'
 import { useSelector } from '@store/index'
-import { Spin } from 'antd'
-import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 interface IProps {}
 const KanBanBoardBox = styled.div`
@@ -25,14 +23,12 @@ const KanBanBoardBox = styled.div`
 
 const KanBanBoard: React.FC<IProps> = props => {
   const { userPreferenceConfig } = useSelector(store => store.user)
-  const { spinning } = useSelector(state => state.kanBan)
   const { guildModalEl } = useGuideModal()
 
   useInit()
 
   return (
     <KanBanBoardBox>
-      <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
         <TopArea />
         <ToolBar />
         {userPreferenceConfig?.guidePageConfig?.kanban === 1
@@ -43,7 +39,6 @@ const KanBanBoard: React.FC<IProps> = props => {
         </FullScreenContainer>
         <UserGroupingModal />
         <ModifyStatusModal />
-      </Spin>
     </KanBanBoardBox>
   )
 }

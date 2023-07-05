@@ -159,7 +159,8 @@ export const getKanbanConfigList = createAsyncThunk(
     // 从缓存中取出
 
     // 更新相关数据
-    const checkedViewListItem = ret.find(item => item.check)
+    // const checkedViewListItem = ret.find(item => item.check)
+    const checkedViewListItem = ret[ret.length-1]
     if (checkedViewListItem) {
       dispatch<any>(onFresh(checkedViewListItem))
     }
@@ -177,6 +178,7 @@ export const onFresh =
       project_id: currentViewListItem.project_id,
       id: currentViewListItem.id,
     }
+    // TODO这里currentViewListItem获取的是上一次
     // debugger  设为默认的时候 不走获取看板配置接口
     dispatch(getKanbanConfigRemainingStatus(params))
     if (!store.getState().KanbanConfig.isSettingDefault) {

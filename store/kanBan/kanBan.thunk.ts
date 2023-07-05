@@ -446,6 +446,7 @@ export const getKanbanByGroup = createAsyncThunk(
     }
     if (type === 'none') {
       const res = await services.kanban.getKanban(params)
+      store.dispatch(setSpinning(false))
       return [
         {
           // 无分组id
@@ -462,6 +463,7 @@ export const getKanbanByGroup = createAsyncThunk(
       group_by: type,
     })
     store.dispatch(setSpinning(false))
+
     return res.data
   },
 )
