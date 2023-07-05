@@ -95,6 +95,8 @@ const AffairsDetail = (props: AffairsDetailProps) => {
 
   // 富文本失焦
   const onBlurEditor = async () => {
+    console.log(1, '失焦')
+
     setIsEditInfo(false)
 
     if (editInfo === props.affairsInfo.info) return
@@ -198,7 +200,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         <SprintTag
           defaultList={tagList}
           canAdd
-          onUpdate={onUpdate}
+          onUpdate={() => onUpdate()}
           detail={props.affairsInfo}
           addWrap={
             <AddWrap hasDash>

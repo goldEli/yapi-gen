@@ -26,7 +26,7 @@ const CommentEditor = (props: CommentEditorProps) => {
   // 富文本失焦
   const onBlurEditor = async () => {
     setIsEditInfo(false)
-    props.onEditComment(editInfo)
+    // props.onEditComment(editInfo)
   }
 
   // 只读编辑
@@ -64,7 +64,7 @@ const CommentEditor = (props: CommentEditorProps) => {
       readonly={!isEditInfo}
       onReadonlyClick={onReadonlyClick}
       onChange={(value: string) => setEditInfo(value)}
-      onBlur={onBlurEditor}
+      onBlur={() => onBlurEditor()}
     />
   )
 }
