@@ -139,365 +139,374 @@ const ProgressComparison = (props: Props) => {
 
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
   const [spinning, setSpinning] = useState<boolean>(false)
-  // 进展工作对比迭代和冲刺的
-  const columns1 = [
-    {
-      dataIndex: 'userName',
-      title: '用户',
-      render: (text: string, record: any) => {
-        return (
-          <RowText
-            onClick={(event: any) => {
-              event.stopPropagation()
-              dispatch(setVisiblePerson(false))
-              dispatch(setVisibleWork(true))
-              getDatail(record)
-            }}
-          >
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      title: '组织',
-      // <NewSort
-      //   fixedKey="departmentName"
-      //   nowKey={order.key}
-      //   order={order.value}
-      //   title={'组织'}
-      //   onUpdateOrderKey={onUpdateOrderKey}
-      // ></NewSort>
-      dataIndex: 'departmentName',
-    },
-    {
-      title: '职务',
-      dataIndex: 'positionName',
-      render: (text: string) => {
-        return <RowText>{text ? text : '--'}</RowText>
-      },
-    },
-    {
-      dataIndex: 'completion_rate',
-      title: getTitleTips('完成率', '已完成工作项/新增工作项*100%'),
-      render: (text: string) => {
-        return <span>{text}%</span>
-      },
-    },
-    {
-      dataIndex: 'new',
-      title: '新增工作项',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'new')}>{text}</RowText>
-        )
-      },
-    },
-    {
-      title: '已完成工作项',
-      dataIndex: 'completed',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'completed')}>
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      title: '工作项存量',
-      dataIndex: 'work_stock',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'work_stock')}>
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      title: '进行中|已完成',
-      dataIndex: 'work_progress',
-    },
-    // {
-    //   title: '工作进度',
-    //   dataIndex: 'work_progress',
-    //   render: (text: string, record: any) => {
-    //     const num = Number(text?.split('|')?.[0])
-    //     const completeNum = Number(text?.split('|')?.[1])
-    //     const total = num + completeNum
-    //     return (
-    //       <div
-    //         style={{
-    //           display: 'flex',
-    //           alignItems: 'center',
-    //         }}
-    //       >
-    //         {text
-    //           ? completeNum === 0
-    //             ? '0%'
-    //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
-    //           : '--'}
-    //       </div>
-    //     )
-    //   },
-    // },
-    {
-      dataIndex: 'repeat_rate',
-      title: getTitleTips('工作重复率', '审批不通过次数/全部审批次数*100%'),
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
-            {text}%
-          </RowText>
-        )
-      },
-    },
-    {
-      dataIndex: 'risk',
-      title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'risk')}>{text}</RowText>
-        )
-      },
-    },
-  ]
-  //进展工作对比全局的
-  const columns2 = [
-    {
-      dataIndex: 'userName',
-      title: '用户',
-      render: (text: string, record: any) => {
-        return (
-          <RowText
-            onClick={(event: any) => {
-              dispatch(setVisibleWork(true))
-              dispatch(setVisiblePerson(false))
-              event.stopPropagation()
-              getDatail(record)
-            }}
-          >
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      title: '组织',
-      // <NewSort
-      //   fixedKey="departmentName"
-      //   nowKey={order.key}
-      //   order={order.value}
-      //   title={'组织'}
-      //   onUpdateOrderKey={onUpdateOrderKey}
-      // ></NewSort>
-      dataIndex: 'departmentName',
-    },
-    {
-      title: '职务',
-      dataIndex: 'positionName',
-      render: (text: string) => {
-        return <RowText>{text ? text : '--'}</RowText>
-      },
-    },
-    {
-      dataIndex: 'completion_rate',
-      title: getTitleTips('当前完成率', '已完成工作项/新增工作项*100%'),
-      render: (text: string) => {
-        return <span>{text}%</span>
-      },
-    },
-    {
-      dataIndex: 'new',
-      title: '当前新增工作项',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'new')}>{text}</RowText>
-        )
-      },
-    },
-    {
-      title: '当前已完成工作项',
-      dataIndex: 'completed',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'completed')}>
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      title: '总工作项存量',
-      dataIndex: 'work_stock',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'work_stock')}>
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      title: '进行中|已完成',
-      dataIndex: 'work_progress',
-    },
-    // {
-    //   title: '工作进度',
-    //   dataIndex: 'work_progress',
-    //   render: (text: string, record: any) => {
-    //     const num = Number(text?.split('|')?.[0])
-    //     const completeNum = Number(text?.split('|')?.[1])
-    //     const total = num + completeNum
-    //     return (
-    //       <div
-    //         style={{
-    //           display: 'flex',
-    //           alignItems: 'center',
-    //         }}
-    //       >
-    //         {text
-    //           ? completeNum === 0
-    //             ? '0%'
-    //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
-    //           : '--'}
-    //       </div>
-    //     )
-    //   },
-    // },
-    {
-      dataIndex: 'repeat_rate',
-      title: getTitleTips('总工作重复率', '审批不通过次数/全部审批次数*100%'),
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
-            {text}%
-          </RowText>
-        )
-      },
-    },
-    {
-      dataIndex: 'risk',
-      title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'risk')}>{text}</RowText>
-        )
-      },
-    },
-  ]
-  // 缺陷迭代和冲刺的全局
-  const columns3 = [
-    {
-      dataIndex: 'userName',
-      title: '用户',
-      render: (text: string, record: any) => {
-        return (
-          <RowText
-            onClick={(event: any) => {
-              event.stopPropagation()
-              dispatch(setVisiblePerson(false))
-              dispatch(setVisibleWork(true))
-              getDatail(record)
-            }}
-          >
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      title: '组织',
-      dataIndex: 'departmentName',
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="positionName"
-          nowKey={order.key}
-          order={order.value}
-          title={'职务'}
-          onUpdateOrderKey={onUpdateOrderKey}
-        ></NewSort>
-      ),
-      dataIndex: 'positionName',
-      render: (text: string) => {
-        return <RowText>{text ? text : '--'}</RowText>
-      },
-    },
-    {
-      dataIndex: 'completion_rate',
-      title: getTitleTips('缺陷修复率', '当期已修复缺陷/档期总缺陷*100%'),
-      render: (text: string, record: any) => {
-        return <span>{text}%</span>
-      },
-    },
-    {
-      title: '待修复',
-      dataIndex: 'not_fixed',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'not_fixed')}>
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      title: '修复中',
-      dataIndex: 'fixing',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'fixing')}>
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      title: '已完成',
-      dataIndex: 'fixed',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'fixed')}>
-            {text}
-          </RowText>
-        )
-      },
-    },
-    {
-      dataIndex: 'repeat_open',
-      title: '缺陷重开',
-      render: (text: string, record: any) => {
-        return <RowText>{text}</RowText>
-      },
-    },
-    {
-      title: getTitleTips('缺陷重开率', '当期重开缺陷/当期总缺陷*100%'),
-      dataIndex: 'repeat_open_rate',
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
-            {text}%
-          </RowText>
-        )
-      },
-    },
-    {
-      dataIndex: 'stock_count',
-      title: getTitleTips('缺陷存量', '当期未修复缺陷'),
-      render: (text: string, record: any) => {
-        return (
-          <RowText onClick={e => openDetail(e, record, 'risk')}>{text}</RowText>
-        )
-      },
-    },
-  ]
   useEffect(() => {
+    // 进展工作对比迭代和冲刺的
+    const columns1 = [
+      {
+        dataIndex: 'userName',
+        title: '用户',
+        render: (text: string, record: any) => {
+          return (
+            <RowText
+              onClick={(event: any) => {
+                event.stopPropagation()
+                dispatch(setVisiblePerson(false))
+                dispatch(setVisibleWork(true))
+                getDatail(record)
+              }}
+            >
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '组织',
+        // <NewSort
+        //   fixedKey="departmentName"
+        //   nowKey={order.key}
+        //   order={order.value}
+        //   title={'组织'}
+        //   onUpdateOrderKey={onUpdateOrderKey}
+        // ></NewSort>
+        dataIndex: 'departmentName',
+      },
+      {
+        title: '职务',
+        dataIndex: 'positionName',
+        render: (text: string) => {
+          return <RowText>{text ? text : '--'}</RowText>
+        },
+      },
+      {
+        dataIndex: 'completion_rate',
+        title: getTitleTips('完成率', '已完成工作项/新增工作项*100%'),
+        render: (text: string) => {
+          return <span>{text}%</span>
+        },
+      },
+      {
+        dataIndex: 'new',
+        title: '新增工作项',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'new')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '已完成工作项',
+        dataIndex: 'completed',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'completed')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '工作项存量',
+        dataIndex: 'work_stock',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'work_stock')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '进行中|已完成',
+        dataIndex: 'work_progress',
+      },
+      // {
+      //   title: '工作进度',
+      //   dataIndex: 'work_progress',
+      //   render: (text: string, record: any) => {
+      //     const num = Number(text?.split('|')?.[0])
+      //     const completeNum = Number(text?.split('|')?.[1])
+      //     const total = num + completeNum
+      //     return (
+      //       <div
+      //         style={{
+      //           display: 'flex',
+      //           alignItems: 'center',
+      //         }}
+      //       >
+      //         {text
+      //           ? completeNum === 0
+      //             ? '0%'
+      //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
+      //           : '--'}
+      //       </div>
+      //     )
+      //   },
+      // },
+      {
+        dataIndex: 'repeat_rate',
+        title: getTitleTips('工作重复率', '审批不通过次数/全部审批次数*100%'),
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
+              {text}%
+            </RowText>
+          )
+        },
+      },
+      {
+        dataIndex: 'risk',
+        title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'risk')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+    ]
+    //进展工作对比全局的
+    const columns2 = [
+      {
+        dataIndex: 'userName',
+        title: '用户',
+        render: (text: string, record: any) => {
+          return (
+            <RowText
+              onClick={(event: any) => {
+                dispatch(setVisibleWork(true))
+                dispatch(setVisiblePerson(false))
+                event.stopPropagation()
+                getDatail(record)
+              }}
+            >
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '组织',
+        // <NewSort
+        //   fixedKey="departmentName"
+        //   nowKey={order.key}
+        //   order={order.value}
+        //   title={'组织'}
+        //   onUpdateOrderKey={onUpdateOrderKey}
+        // ></NewSort>
+        dataIndex: 'departmentName',
+      },
+      {
+        title: '职务',
+        dataIndex: 'positionName',
+        render: (text: string) => {
+          return <RowText>{text ? text : '--'}</RowText>
+        },
+      },
+      {
+        dataIndex: 'completion_rate',
+        title: getTitleTips('当前完成率', '已完成工作项/新增工作项*100%'),
+        render: (text: string) => {
+          return <span>{text}%</span>
+        },
+      },
+      {
+        dataIndex: 'new',
+        title: '当前新增工作项',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'new')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '当前已完成工作项',
+        dataIndex: 'completed',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'completed')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '总工作项存量',
+        dataIndex: 'work_stock',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'work_stock')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '进行中|已完成',
+        dataIndex: 'work_progress',
+      },
+      // {
+      //   title: '工作进度',
+      //   dataIndex: 'work_progress',
+      //   render: (text: string, record: any) => {
+      //     const num = Number(text?.split('|')?.[0])
+      //     const completeNum = Number(text?.split('|')?.[1])
+      //     const total = num + completeNum
+      //     return (
+      //       <div
+      //         style={{
+      //           display: 'flex',
+      //           alignItems: 'center',
+      //         }}
+      //       >
+      //         {text
+      //           ? completeNum === 0
+      //             ? '0%'
+      //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
+      //           : '--'}
+      //       </div>
+      //     )
+      //   },
+      // },
+      {
+        dataIndex: 'repeat_rate',
+        title: getTitleTips('总工作重复率', '审批不通过次数/全部审批次数*100%'),
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
+              {text}%
+            </RowText>
+          )
+        },
+      },
+      {
+        dataIndex: 'risk',
+        title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'risk')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+    ]
+    // 缺陷迭代和冲刺的全局
+    const columns3 = [
+      {
+        dataIndex: 'userName',
+        title: '用户',
+        render: (text: string, record: any) => {
+          return (
+            <RowText
+              onClick={(event: any) => {
+                event.stopPropagation()
+                dispatch(setVisiblePerson(false))
+                dispatch(setVisibleWork(true))
+                getDatail(record)
+              }}
+            >
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '组织',
+        dataIndex: 'departmentName',
+      },
+      {
+        title: (
+          <NewSort
+            fixedKey="positionName"
+            nowKey={order.key}
+            order={order.value}
+            title={'职务'}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
+        dataIndex: 'positionName',
+        render: (text: string) => {
+          return <RowText>{text ? text : '--'}</RowText>
+        },
+      },
+      {
+        dataIndex: 'completion_rate',
+        title: getTitleTips('缺陷修复率', '当期已修复缺陷/档期总缺陷*100%'),
+        render: (text: string, record: any) => {
+          return <span>{text}%</span>
+        },
+      },
+      {
+        title: '待修复',
+        dataIndex: 'not_fixed',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'not_fixed')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '修复中',
+        dataIndex: 'fixing',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'fixing')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        title: '已完成',
+        dataIndex: 'fixed',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'fixed')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+      {
+        dataIndex: 'repeat_open',
+        title: '缺陷重开',
+        render: (text: string, record: any) => {
+          return <RowText>{text}</RowText>
+        },
+      },
+      {
+        title: getTitleTips('缺陷重开率', '当期重开缺陷/当期总缺陷*100%'),
+        dataIndex: 'repeat_open_rate',
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
+              {text}%
+            </RowText>
+          )
+        },
+      },
+      {
+        dataIndex: 'stock_count',
+        title: getTitleTips('缺陷存量', '当期未修复缺陷'),
+        render: (text: string, record: any) => {
+          return (
+            <RowText onClick={e => openDetail(e, record, 'risk')}>
+              {text}
+            </RowText>
+          )
+        },
+      },
+    ]
     // 进展对比 Progress_iteration-迭代 Progress_sprint 冲刺 Progress_all 全局
     //缺陷 Defect_iteration-迭代 Defect_iteration 冲刺 Defect_all 全局
-    onSearchData([])
     switch (props.type) {
       case 'Progress_iteration':
         setColumns(columns1)
@@ -518,11 +527,10 @@ const ProgressComparison = (props: Props) => {
         setColumns(columns3)
         break
     }
-  }, [])
-  // 回显选中项目id
+  }, [props.type, selectProjectIds])
   useEffect(() => {
-    setSelectProjectIds(props.headerParmas?.projectIds)
-  }, [props.headerParmas?.projectIds])
+    onSearchData([])
+  }, [])
   // 数据明细和进展对比查询数据的
   const onSearchData = (value: number[]) => {
     setSelectProjectIds(value)
@@ -690,6 +698,8 @@ const ProgressComparison = (props: Props) => {
   }
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
+    console.log(selectProjectIds, 'opende')
+    ces()
     setTableBeforeAndAfter('after')
     event.stopPropagation()
     dispatch(setVisiblePerson(true))
@@ -825,6 +835,9 @@ const ProgressComparison = (props: Props) => {
     dispatch(setVisiblePerson(false))
     dispatch(setVisibleWork(false))
   }, [])
+  const ces = () => {
+    console.log(selectProjectIds, 'ppp')
+  }
   return (
     <div
       style={{ height: '100%', width: '100%' }}
@@ -848,7 +861,7 @@ const ProgressComparison = (props: Props) => {
           // projectDataList={props.projectDataList}
         />
         {/* 表格 */}
-        <Col>
+        <Col onClick={ces}>
           <TitleCss>{props.title}</TitleCss>
         </Col>
         <div

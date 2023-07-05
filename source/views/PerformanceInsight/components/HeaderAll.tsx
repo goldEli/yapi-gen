@@ -38,16 +38,15 @@ const HeaderAll = (props: HaderProps) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const getProjectApi = async () => {
-    const res = await getProjectList({
+    const res: any = await getProjectList({
       // self: 1,
       all: 1,
     })
-    props?.headerParmas?.projectIds?.length
+    const idsP = props.headerParmas.projectIds || []
+    idsP?.length >= 1
       ? setProjectList(
           res.list
-            ?.filter((el: { id: number }) =>
-              props.headerParmas?.projectIds?.includes(el.id),
-            )
+            ?.filter((el: any) => idsP?.includes(el.id))
             .map((el: { id: number; name: string }) => ({
               ...el,
               label: el.name,
