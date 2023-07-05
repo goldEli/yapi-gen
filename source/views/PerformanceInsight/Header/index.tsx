@@ -193,7 +193,6 @@ const Iteration = (props: Props) => {
     setIterateIds(props.iterateViewIds)
   }
   const getProjectIdsList = async () => {
-    console.log(projectApi, 'projectApi')
     const filterVal = projectApi?.list
       ?.filter((el: { id: number }) => props.projectViewIds?.includes(el.id))
       .map((el: { id: number; name: string }) => ({
@@ -350,6 +349,7 @@ const Iteration = (props: Props) => {
         },
       }),
     )
+
     setIterateIds(val)
   }
   // 全部冲刺或者全部迭代
@@ -373,8 +373,8 @@ const Iteration = (props: Props) => {
       (mint: string, item: { start_at: string }) => {
         let t: any = item.start_at
 
-        return new Date(mint.replace(/-/g, '/')) >
-          new Date(t.replace(/-/g, '/'))
+        return new Date(mint?.replace(/-/g, '/')) >
+          new Date(t?.replace(/-/g, '/'))
           ? t
           : mint
       },
@@ -386,7 +386,8 @@ const Iteration = (props: Props) => {
   const maxDate = (data: any) => {
     let maxt = data.reduce((maxt: string, item: { end_at: string }) => {
       let t: any = item.end_at
-      return new Date(maxt.replace(/-/g, '/')) < new Date(t.replace(/-/g, '/'))
+      return new Date(maxt?.replace(/-/g, '/')) <
+        new Date(t?.replace(/-/g, '/'))
         ? t
         : maxt
     }, data[0].end_at)
@@ -525,7 +526,7 @@ const Iteration = (props: Props) => {
           // 是否是迭代和冲刺的项目
           <Select
             type={props.homeType}
-            placeholder={t('common.pleaseProject')}
+            placeholder={'请选择冲刺项目'}
             options={iterateData}
             more={more1}
             value={iterateIds || []}

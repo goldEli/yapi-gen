@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import DemandSettingSide from '../DemandSettingSide'
 import { Button, Menu } from 'antd'
+import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import {
   AllWrap,
   MenuBox,
@@ -297,7 +298,23 @@ const ProjectDetailSide = () => {
   const onChangeRouter = (i: { path: any; key: any }) => {
     // const params = encryptPhp(JSON.stringify({ id: projectId }))
     // navigate(`${path}?data=${params}`)
-
+    dispatch(
+      setHeaderParmas({
+        iterate_ids: [],
+        projectIds: [],
+        users: [],
+        time: {
+          type: 1,
+          time: '',
+        },
+        view: {
+          title: '',
+          value: 0,
+        },
+        period_time: 'one_month',
+      }),
+    )
+    dispatch(setSave(false))
     const { path, key } = i
     const params = encryptPhp(
       JSON.stringify({ id: projectId, type: 'iteration' }),
@@ -475,6 +492,7 @@ const ProjectDetailSide = () => {
               mode="inline"
               style={{ background: 'transparent', border: 'none' }}
               selectedKeys={selectedKeys}
+              defaultOpenKeys={['2']}
             ></Menu>
           }
         </MenuBox>

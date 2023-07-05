@@ -13,6 +13,7 @@ import {
   setMovingStory,
   setModifyStatusModalInfo,
   setFullScreen,
+  setSpinning,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -460,6 +461,7 @@ export const getKanbanByGroup = createAsyncThunk(
       ...params,
       group_by: type,
     })
+    store.dispatch(setSpinning(false))
     return res.data
   },
 )

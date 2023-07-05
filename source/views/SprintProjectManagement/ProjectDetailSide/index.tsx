@@ -301,6 +301,7 @@ const ProjectDetailSide = () => {
                   mode="inline"
                   style={{ background: 'transparent', border: 'none' }}
                   selectedKeys={selectedKeys}
+                  defaultOpenKeys={['2']}
                 ></Menu>
               ) : (
                 menuList.map((i: any) => (
