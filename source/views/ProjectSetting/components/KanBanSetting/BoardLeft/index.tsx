@@ -10,7 +10,7 @@ const BoardLeftBox = styled.div`
   width: 320px;
   height: 100%;
   background: var(--neutral-n9);
-  padding: 13px 16px;
+  padding: 13px 0px 13px 16px;
   display: flex;
   flex-direction: column;
   gap: 29px;

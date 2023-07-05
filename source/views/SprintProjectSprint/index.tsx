@@ -254,8 +254,17 @@ const CustomCloseWrap = styled(CloseWrap)`
   svg {
     color: var(--neutral-n3);
   }
-  &:hover svg {
-    color: var(--primary-d1);
+  &:hover {
+    background: var(--hover-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+  &:active {
+    background: var(--neutral-n6-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
   }
 `
 

@@ -85,7 +85,7 @@ export const CustomWrap = styled.div`
     margin: 4px 12px;
   }
   .ant-dropdown-menu {
-    height: 300px;
+    max-height: 300px;
     overflow: scroll;
   }
 `

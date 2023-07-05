@@ -32,6 +32,8 @@ const BtnRow = styled.div`
   display: flex;
 `
 const MainWrap = styled.div`
+  height: 90%;
+  overflow: auto;
   margin-top: 24px;
 `
 const TitleWrap = styled.div`
@@ -226,7 +228,7 @@ const WriteReport = (props: Props) => {
         <div
           style={{
             height: 'calc(90vh - 136px)',
-            overflow: 'scroll',
+            overflow: 'hidden',
             padding: ' 0 24px',
           }}
         >
