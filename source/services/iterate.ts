@@ -84,7 +84,6 @@ export const getIterateInfo: any = async (params: any) => {
     project_id: params.projectId,
     id: params.id,
   })
-
   return {
     name: response.data.name,
     id: response.data.id,
@@ -95,6 +94,7 @@ export const getIterateInfo: any = async (params: any) => {
     startTime: response.data.start_at,
     endTime: response.data.end_at,
     changeCount: response.data.app_changelog_count || 0,
+    bug_count: response.data.bug_count,
   }
 }
 

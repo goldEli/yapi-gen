@@ -510,7 +510,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              placeholder="请选择工作项"
+              placeholder="搜索工作项"
               getPopupContainer={(node: any) => node}
               showArrow
               optionFilterProp="label"

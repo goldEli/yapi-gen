@@ -225,12 +225,12 @@ const BasicDemand = (props: Props) => {
           keyText={filterContent?.keyText}
           type={filterContent?.attr}
           defaultText={defaultValues?.defaultText}
-          value={defaultValues.valueType || null}
+          value={defaultValues?.valueType || null}
           onUpdate={props.onUpdate}
           isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
           isInfoPage={props.isInfoPage}
         >
-          {defaultValues.defaultHtml}
+          {defaultValues?.defaultHtml}
         </TableQuickEdit>
       )
     } else if (item.content === 'schedule') {
