@@ -112,6 +112,7 @@ const ContentItem = (props: any) => {
             }}
           /> */}
           <Editor
+            color="transparent"
             value={formateBlue(msg_body.content, custom_data.linkWebUrl)}
             getSuggestions={() => []}
             readonly
