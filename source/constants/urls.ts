@@ -53,6 +53,8 @@ const urls = {
   getStoryRelationStories: '/b/story/relationStories',
   // 添加需求关联工作项
   addStoryRelation: '/b/story/save/addRelation',
+  // 关联事务拖拽排序
+  storyRelationDragSort: '/b/story/save/dragRelationSort',
   deleteStoryRelation: '/b/story/save/deleteRelation',
   // 关联事务 - 下拉查询
   getStorySelectRelationSearch: '/b/story/selectRelationSearch',
@@ -440,6 +442,8 @@ const urls = {
   getFlawRelationStories: '/b/flaw/relationStories',
   // 添加关联缺陷
   addFlawRelation: '/b/flaw/save/addRelation',
+  // 关联事务拖拽排序
+  flawRelationDragSort: '/b/flaw/save/dragRelationSort',
   deleteFlawRelation: '/b/flaw/save/deleteRelation',
   // 关联事务 - 下拉查询
   getFlawSelectRelationSearch: '/b/flaw/selectRelationSearch',

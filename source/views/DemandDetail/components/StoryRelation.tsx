@@ -29,18 +29,26 @@ import {
   getStoryRelationStories,
   getStorySelectRelationRecent,
   getStorySelectRelationSearch,
+  storyRelationDragSort,
   updateDemandStatus,
   updatePriority,
 } from '@/services/demand'
 import MoreDropdown from '@/components/MoreDropdown'
 import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import DragTable from '@/components/DragTable'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
     margin: '22px 0 0 0',
   },
 })
+
+export const SubLabel = styled.div`
+  margin: 8px 0;
+  font-size: 12px;
+  color: var(--neutral-n3);
+`
 
 const RelationWrap = styled.div`
   height: 100%;
@@ -104,10 +112,17 @@ const StoryRelation = (props: RelationStoriesProps) => {
   const [isShowMore, setIsShowMore] = useState(false)
   const [dataSource, setDataSource] =
     useState<Model.Flaw.FlawRelationStoriesData>()
-  // 下拉数据
-  const [selectList, setSelectList] = useState<SelectItem[]>([])
-  // 最近事务数据
-  const [recentList, setRecentList] = useState<SelectItem[]>([])
+  const [allDataSource, setAllDataSource] = useState<any>({
+    list: undefined,
+  })
+  const [resultData, setResultData] = useState<
+    {
+      label: string
+      value: number
+      list: Model.Affairs.AffairsInfo[]
+    }[]
+  >([])
+
   //根据搜索框的值来放的数据
   const [options, setOptions] = useState<any>([])
   const isCanEdit =
@@ -118,12 +133,11 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   // 类型列表
   const typeList = [
-    { label: '关联', value: 1 },
-    { label: '前置', value: 2 },
-    { label: '后置', value: 3 },
-    { label: '阻塞', value: 4 },
-    { label: '被阻塞', value: 5 },
-    { label: '克隆', value: 6 },
+    { label: '关联', value: 1, list: [] },
+    { label: '前置', value: 2, list: [] },
+    { label: '后置', value: 3, list: [] },
+    { label: '阻塞', value: 4, list: [] },
+    { label: '被阻塞', value: 5, list: [] },
   ]
 
   //   获取关联项列表
@@ -138,6 +152,16 @@ const StoryRelation = (props: RelationStoriesProps) => {
       pageSize: pageParams.size,
     })
     setDataSource(response)
+    setAllDataSource(response)
+    const newArr = JSON.parse(JSON.stringify(typeList))
+    newArr.forEach((element: any) => {
+      response.list.forEach((i: any) => {
+        if (i.relation_type === element.value) {
+          element.list.push({ ...i, index: i.id })
+        }
+      })
+    })
+    setResultData(newArr)
     setIsSpinning(false)
   }
 
@@ -165,10 +189,9 @@ const StoryRelation = (props: RelationStoriesProps) => {
       projectId: projectInfo.id,
       id: props.detail.id,
     })
-    setRecentList(
+    setOptions(
       response.map((i: Model.Flaw.FlawInfo) => ({
-        label: i.name,
-        number: i.story_prefix_key,
+        label: i.story_prefix_key + '' + i.name,
         value: i.id,
         id: i.id,
         cover: i.project_category.attachment_path,
@@ -477,6 +500,164 @@ const StoryRelation = (props: RelationStoriesProps) => {
     },
   ]
 
+  const drawerColumns = [
+    {
+      title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
+      dataIndex: 'story_prefix_key',
+      width: 140,
+      render: (text: string) => <div>{text}</div>,
+    },
+    {
+      title: <NewSort fixedKey="name">标题</NewSort>,
+      dataIndex: 'name',
+      width: 160,
+      render: (text: any, record: Model.Flaw.FlawInfo) => (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title={text.name}
+          >
+            <img
+              src={record.category_attachment}
+              style={{
+                width: '18px',
+                height: '18px',
+                marginRight: '8px',
+              }}
+              alt=""
+            />
+          </Tooltip>
+
+          {record.name}
+        </div>
+      ),
+    },
+    {
+      title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
+      dataIndex: 'priority',
+      key: 'priority',
+      width: 100,
+      render: (text: any, record: Record<string, string | number>) => {
+        return (
+          <PriorityWrap isShow={isCanEdit}>
+            {text?.icon && (
+              <IconFont
+                className="priorityIcon"
+                type={text?.icon}
+                style={{
+                  fontSize: 20,
+                  color: text?.color,
+                }}
+              />
+            )}
+            <span style={{ marginLeft: '5px' }}>
+              {!text?.icon && <span>--</span>}
+              <IconFont className="icon" type="down-icon" />
+            </span>
+          </PriorityWrap>
+        )
+      },
+    },
+
+    {
+      title: t('common.dealName'),
+      dataIndex: 'handlers',
+      key: 'handlers',
+      width: 100,
+      render: (text: any, record: any) => {
+        return (
+          <>
+            {record?.usersInfo.length > 0 && (
+              <MultipleAvatar
+                max={3}
+                list={
+                  record?.usersInfo?.map((i: any) => ({
+                    id: i.id,
+                    name: i.name,
+                    avatar: i.avatar,
+                  })) || []
+                }
+              />
+            )}
+            {!record?.usersInfo?.length && '--'}
+          </>
+        )
+      },
+    },
+    {
+      title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
+      dataIndex: 'status',
+      key: 'status',
+      width: 100,
+      render: (text: any, record: any) => {
+        return (
+          <StateTag
+            onClick={record.isExamine ? onExamine : void 0}
+            isShow={isCanEdit || record.isExamine}
+            name={record.status.status.content}
+            state={
+              text?.is_start === 1 && text?.is_end === 2
+                ? 1
+                : text?.is_end === 1 && text?.is_start === 2
+                ? 2
+                : text?.is_start === 2 && text?.is_end === 2
+                ? 3
+                : 0
+            }
+          />
+        )
+      },
+    },
+  ]
+
+  // 改变顺序
+  const onChangeData = async (
+    item: any,
+    data: { list: Model.Flaw.FlawInfo[] },
+  ) => {
+    setResultData(
+      resultData.map((i: any) => ({
+        ...i,
+        list: item.value === i.value ? data.list : i.list,
+      })),
+    )
+    await storyRelationDragSort({
+      projectId: projectInfo.id,
+      id: props.detail.id,
+      relationIds: data.list.map((i: Model.Flaw.FlawInfo) => i.id),
+      type: item.value,
+    })
+  }
+
+  const operationList = [
+    {
+      width: 40,
+      render: (text: any, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreDropdown
+              isMoreVisible={isShowMore}
+              hasChild
+              menu={
+                <RelationDropdownMenu
+                  onDeleteChange={onDeleteChange}
+                  record={record}
+                />
+              }
+              onChangeVisible={setIsShowMore}
+            />
+          </div>
+        )
+      },
+    },
+  ]
+
   useEffect(() => {
     if (props.activeKey === '3' || props.isOpen) {
       getList(pageObj, order)
@@ -554,20 +735,54 @@ const StoryRelation = (props: RelationStoriesProps) => {
       <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
         链接工作项
       </CommonButton>
-      <ResizeTable
-        isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 94px)"
-        col={columns}
-        dataSource={dataSource?.list}
-        noData={<NoData />}
-      />
-      <PaginationBox
-        currentPage={dataSource?.pager?.page || 0}
-        pageSize={pageObj?.size}
-        total={dataSource?.pager?.total || 0}
-        onChange={onChangePage}
-        hasPadding
-      />
+      {!props.isDrawer && (
+        <>
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="calc(100% - 94px)"
+            col={columns}
+            dataSource={dataSource?.list}
+            noData={<NoData />}
+          />
+          <PaginationBox
+            currentPage={dataSource?.pager?.page || 0}
+            pageSize={pageObj?.size}
+            total={dataSource?.pager?.total || 0}
+            onChange={onChangePage}
+            hasPadding
+          />
+        </>
+      )}
+      {/* 缺陷浮层 */}
+      {props.isDrawer && (
+        <>
+          {resultData.map((i: any) => (
+            <>
+              {i.list.length > 0 && (
+                <div key={i.value}>
+                  <SubLabel>{i.label}</SubLabel>
+                  <DragTable
+                    columns={drawerColumns}
+                    dataSource={{ list: i.list }}
+                    onChangeData={arr => onChangeData(i, arr)}
+                    showHeader={false}
+                    hasOperation={operationList}
+                  />
+                </div>
+              )}
+            </>
+          ))}
+          {allDataSource.list?.length <= 0 && <NoData />}
+          {/* {allDataSource.list?.length > 20 && (
+            <PaginationBox
+              total={allDataSource.pager?.total}
+              currentPage={allDataSource.pager?.page}
+              pageSize={allDataSource.pager?.pagesize}
+              onChange={onChangePage}
+            />
+          )} */}
+        </>
+      )}
     </RelationWrap>
   )
 }

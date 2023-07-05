@@ -61,15 +61,17 @@ const FlawInfo = () => {
     navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
   useEffect(() => {
-    dispatch(
-      getFlawCommentList({
-        projectId: id,
-        id: flawInfo.id || 0,
-        page: 1,
-        pageSize: 999,
-      }),
-    )
-  }, [])
+    if (flawInfo?.id) {
+      dispatch(
+        getFlawCommentList({
+          projectId: id,
+          id: flawInfo.id || 0,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
+    }
+  }, [flawInfo])
   // 拖动线条
   const onDragLine = () => {
     document.onmousemove = e => {

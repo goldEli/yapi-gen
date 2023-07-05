@@ -50,7 +50,11 @@ import {
 } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getMessage } from '../Message'
-import { setFlawDetailDrawer, setFlawInfo } from '@store/flaw'
+import {
+  setFlawCommentList,
+  setFlawDetailDrawer,
+  setFlawInfo,
+} from '@store/flaw'
 import {
   copyLink,
   detailTimeFormat,
@@ -525,6 +529,7 @@ const FlawDetailDrawer = () => {
 
   useEffect(() => {
     if (visible || params?.id) {
+      dispatch(setFlawCommentList({ list: [] }))
       setDemandIds(params?.demandIds || [])
       getFlawDetail('', params?.demandIds || [])
       setShowState(normalState)
