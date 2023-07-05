@@ -43,8 +43,6 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       return t('count_transaction', { count: storiesNum })
     }
     return `${t('count_person', {
-      count: issuesGroup?.users?.length ?? 0,
-    })}，${t('count_transaction', {
       count: storiesNum,
     })}`
   }, [issuesGroup, showUserRelatedInformation])

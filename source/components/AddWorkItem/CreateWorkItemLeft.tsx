@@ -461,6 +461,11 @@ const CreateDemandLeft = (props: Props) => {
           resultCategory =
             isExistence?.length > 0 ? isExistence[0] : resultCategoryList[0]
         }
+        // 如果是创建子事务的话
+        if (params?.isCreateAffairsChild) {
+          resultCategory =
+            resultCategoryList?.length === 1 ? resultCategoryList[0] : undefined
+        }
         // 如果是快速创建并且有缓存数据
         if (params?.isQuickCreate && hisCategoryData?.categoryId) {
           // 判断需求类别是否被关闭，是则取列表第一条
@@ -495,11 +500,6 @@ const CreateDemandLeft = (props: Props) => {
         if (createCategory.id) {
           resultCategory = createCategory
         }
-        console.log(
-          resultCategory,
-          '=resultCategoryresultCategory',
-          resultCategoryData,
-        )
         //   如果有修改
         if (resultCategory?.id) {
           setCategoryObj(resultCategory)
@@ -695,6 +695,7 @@ const CreateDemandLeft = (props: Props) => {
           >
             <CategoryDropdown
               footer={false}
+              isClear={!params?.editId}
               categoryList={resultCategoryData?.map((i: any) => ({
                 ...i,
                 labelName: i.name,

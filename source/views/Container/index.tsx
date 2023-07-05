@@ -24,7 +24,6 @@ import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import AddWorkItem from '@/components/AddWorkItem'
-import AddQuickSprint from '@/components/AddQuickSprint'
 import NoteModal from '@/components/NoteModal'
 import SprintDetailDrawer from '@/components/SprintDetailDrawer'
 import FlawDetailDrawer from '@/components/FlawDetailDrawer'
@@ -200,7 +199,6 @@ export const Container = () => {
         <ReportDetailDrawer />
         <SiteDrawer />
         <AddWorkItem />
-        <AddQuickSprint />
         <SprintDetailDrawer />
         <FlawDetailDrawer />
       </ConfigProvider>
