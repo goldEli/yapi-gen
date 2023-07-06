@@ -161,7 +161,7 @@ const AdminSide = () => {
     {
       label: t('system_notification'),
       key: '5',
-      icon: <IconFontStyle className="icon" type="safety-certificate" />,
+      icon: <IconFontStyle className="icon" type="bell" />,
       children: [
         {
           label: t('notification_management'),

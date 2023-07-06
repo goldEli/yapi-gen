@@ -497,6 +497,7 @@ const MainTable = (props: Props) => {
         noData={<NoData haveFilter={props?.hasFilter}></NoData>}
       />
       <PaginationBox
+        isP
         total={props.projectList?.total}
         currentPage={props.projectList?.currentPage}
         pageSize={props.projectList?.pageSize}
