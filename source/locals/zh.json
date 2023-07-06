@@ -1622,6 +1622,7 @@
     "importChoose": "导入缺陷字段选择",
     "exportDefect": "导出缺陷"
   },
+  "createGroup": "创建分组",
   "noDelete": "默认项无法删除",
   "configuration_panel": "配置面板",
   "share": "分享",
