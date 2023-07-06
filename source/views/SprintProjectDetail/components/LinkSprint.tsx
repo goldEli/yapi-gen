@@ -249,12 +249,11 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       projectId: projectInfo.id,
       id: props.detail.id,
     })
-    setRecentList(
-      response.map((i: Model.Affairs.AffairsInfo) => ({
-        label: i.name,
-        value: i.id,
-      })),
-    )
+    const list = response.map((i: Model.Affairs.AffairsInfo) => ({
+      label: i.name,
+      value: i.id,
+    }))
+    setRecentList(list)
   }
 
   // 点击添加链接事务弹窗
@@ -322,7 +321,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       getRelationStoriesList(pageParams)
     }
   }, [props.detail, projectInfo])
-
   return (
     <InfoItem id="sprint-linkSprint" className="info_item_tab">
       <DeleteConfirmModal />
