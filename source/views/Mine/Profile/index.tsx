@@ -50,6 +50,11 @@ const hov = css`
     color: rgba(40, 119, 255, 1);
   }
 `
+const BBQdiv = styled.div`
+  :hover {
+    color: var(--primary-d1);
+  }
+`
 const titleWrap = css`
   display: flex;
   justify-content: space-between;
@@ -132,11 +137,11 @@ const TimeLineWrap = styled.div`
   border-radius: 6px;
   box-sizing: border-box;
   padding: 10px 0 10px 10px;
-  margin-top: 16px;
+  /* margin-top: 16px; */
   /* overflow-y: scroll; */
   /* overflow-x: hidden; */
   height: 320px;
-  padding-top: 25px;
+  padding-top: 10px;
   padding-left: 16px;
 `
 const LineItem = styled.div`
@@ -298,7 +303,7 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-  }, [monthIndex, pageObj])
+  }, [monthIndex, pageObj, fullScreen])
 
   const forMateMonth = useMemo(() => {
     const newDate = moment()
@@ -346,7 +351,7 @@ const Profile = () => {
   // console.log(data)
 
   return (
-    <>
+    <div style={{ overflow: 'auto', height: 'calc(100vh - 103px)' }}>
       <div>
         <Head>
           <div>
@@ -488,12 +493,12 @@ const Profile = () => {
                 }}
               >
                 <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
-                <div
+                <BBQdiv
                   onClick={() =>
                     fullScreen ? handle.enter() : dispatch(setFullScreen(true))
                   }
                   style={{
-                    width: '98px',
+                    // width: '98px',
                     height: '32px',
                     display: 'flex',
                     alignItems: 'center',
@@ -505,8 +510,10 @@ const Profile = () => {
                   <CommonIconFont
                     type={fullScreen ? 'fewer-screen' : 'full-screen'}
                   />
-                  <span>{fullScreen ? '退出全屏' : '全屏'}</span>
-                </div>
+                  <span style={{ marginLeft: '10px' }}>
+                    {fullScreen ? '退出全屏' : '全屏'}
+                  </span>
+                </BBQdiv>
               </div>
 
               <div className={titleWrap}>
@@ -532,27 +539,39 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            {gatteData.length >= 1 && (
-              <Mygante data={gatteData} minHeight={380} />
-            )}
-            {gatteData.length < 1 && (
-              <div style={{ height: 'calc(100vh - 508px)' }}>
-                <NoData />
-              </div>
-            )}
-          </GatteWrap>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: fullScreen ? '90vh' : '',
+              }}
+            >
+              {gatteData.length >= 1 && (
+                <Mygante
+                  data={gatteData}
+                  minHeight={fullScreen ? '85vh' : 380}
+                />
+              )}
+              {gatteData.length < 1 && (
+                <div style={{ height: 'calc(100vh - 508px)' }}>
+                  <NoData />
+                </div>
+              )}
 
-          {gatteData.length >= 1 && (
-            <PaginationBox
-              total={total}
-              pageSize={pageObj.size}
-              currentPage={pageObj.page}
-              onChange={onChangePage}
-            />
-          )}
+              {gatteData.length >= 1 && (
+                <PaginationBox
+                  total={total}
+                  pageSize={pageObj.size}
+                  currentPage={pageObj.page}
+                  onChange={onChangePage}
+                />
+              )}
+            </div>
+          </GatteWrap>
         </FullScreenDiv>
       </FullScreenContainer>
-    </>
+    </div>
   )
 }
 
