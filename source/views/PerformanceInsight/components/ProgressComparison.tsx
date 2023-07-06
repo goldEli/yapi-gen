@@ -10,11 +10,7 @@ import Table from './Table'
 import { Spin, Tooltip } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
-import {
-  setHeaderParmas,
-  setVisiblePerson,
-  setVisibleWork,
-} from '@store/performanceInsight'
+import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
 import { useDispatch, useSelector } from '@store/index'
 import {
   defectExport,
