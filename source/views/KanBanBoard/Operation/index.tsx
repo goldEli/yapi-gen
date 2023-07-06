@@ -75,6 +75,7 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const { sortByGroupOptions, sortByRowAndStatusOptions, sortByView } =
     useSelector(store => store.kanBan)
+  // debugger
   const [filterState, setFilterState] = useState(true)
   const [defaultValue, setDefaultValue] = useState({})
 

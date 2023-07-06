@@ -135,11 +135,11 @@ const ProjectInfo = () => {
             <span>{t('common.demand')}</span>
           </CardItem>
           <CardItem>
-            <div>{projectInfo.iterateCount || 0}</div>
+            <div>{projectInfo.bug_count || 0}</div>
             <span>缺陷</span>
           </CardItem>
           <CardItem>
-            <div>{projectInfo.bug_count || 0}</div>
+            <div>{projectInfo.iterateCount || 0}</div>
             <span>{t('project.iterateEdition')}</span>
           </CardItem>
           <CardItem>

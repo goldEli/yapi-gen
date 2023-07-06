@@ -83,6 +83,7 @@ const ChartsItem2 = styled.span`
   border-right: 1px solid var(--neutral-n6-d1);
 `
 const ChartsItem = styled.span`
+  cursor: pointer;
   align-items: center;
   display: flex;
   flex-direction: column;
