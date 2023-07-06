@@ -195,6 +195,7 @@ const slice = createSlice({
     builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
       const { kanbanConfigList, sortByRowAndStatusOptions } = action.payload
       state.kanbanConfigList = kanbanConfigList
+      // debugger
       state.sortByRowAndStatusOptions = sortByRowAndStatusOptions
     })
     builder.addCase(getStoryViewList.fulfilled, (state, action) => {
