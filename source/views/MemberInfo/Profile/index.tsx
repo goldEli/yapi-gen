@@ -36,7 +36,7 @@ import PaginationBox from '@/components/TablePagination'
 import { getMessage } from '@/components/Message'
 import { getHisProjectCharts } from '@/services/mine'
 import LineAnimation from '@/views/Mine/components/LineAnimation'
-import { FullScreenDiv } from '@/views/Mine/Profile'
+import { BBQdiv, FullScreenDiv } from '@/views/Mine/Profile'
 import CommonIconFont from '@/components/CommonIconFont'
 import FullScreenContainer from '@/views/KanBanBoard/FullScreenContainer'
 import { setFullScreen } from '@store/kanBan'
@@ -304,7 +304,7 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-  }, [monthIndex, pageObj])
+  }, [monthIndex, pageObj, fullScreen])
 
   const forMateMonth = useMemo(() => {
     const newDate = moment()
@@ -401,92 +401,7 @@ const Profile = () => {
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
-    <>
-      {/* {isMember ? (
-        <>
-          <HasIdWrap>
-            <HeadWrap>
-              <SecondTitle
-                style={{ marginBottom: 16, display: 'inline-block' }}
-              >
-                {t('newlyAdd.hisSurvey')}
-              </SecondTitle>
-              <TotalWrap>
-                <ChartsItem>
-                  <span className={titleNumberCss3}>{data?.secondAll}</span>
-                  <span className={titleTextCss}>{t('mine.total')}</span>
-                </ChartsItem>
-                <ChartsItem>
-                  <span className={titleNumberCss3}>
-                    {data?.secondNoFinish}
-                  </span>
-                  <span className={titleTextCss}>{t('mine.needDeal')}</span>
-                </ChartsItem>
-                <ChartsItem>
-                  <span className={titleNumberCss2}>{data?.secondTimeOut}</span>
-                  <span className={titleTextCss}>{t('mine.overdue')}</span>
-                </ChartsItem>
-                <ChartsItem>
-                  <span className={titleNumberCss}>{data?.secondFinish}</span>
-                  <span className={titleTextCss}>{t('mine.finishOn')}</span>
-                </ChartsItem>
-                <ChartsItem>
-                  <span className={titleNumberCss2}>
-                    {data?.secondOutFinish}
-                  </span>
-                  <span className={titleTextCss}>{t('mine.finishOver')}</span>
-                </ChartsItem>
-              </TotalWrap>
-            </HeadWrap>
-            <GatteWrap style={{ margin: 0 }}>
-              <div>
-                <SecondTitle>{t('newlyAdd.hisGantt')}</SecondTitle>
-                <div className={titleWrap}>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span onClick={nextMonth}>
-                      <IconFont
-                        className={hov}
-                        type="left"
-                        style={{ fontSize: 15, cursor: 'pointer' }}
-                      />
-                    </span>
-
-                    <span className={timeChoose}>{forMateMonth}</span>
-                    <span onClick={prevMonth}>
-                      <IconFont
-                        className={hov}
-                        type="right
-              "
-                        style={{ fontSize: 15, cursor: 'pointer' }}
-                      />
-                    </span>
-                  </div>
-                </div>
-              </div>
-              {gatteData.length >= 1 && (
-                <Mygante
-                  data={gatteData}
-                  height="calc(100vh - 430px)"
-                  minHeight={300}
-                />
-              )}
-              {gatteData.length < 1 && (
-                <div style={{ height: 'calc(100vh - 372px)' }}>
-                  <NoData />
-                </div>
-              )}
-            </GatteWrap>
-          </HasIdWrap>
-          {gatteData.length >= 1 && (
-            <PaginationBox
-              total={total}
-              currentPage={pageObj.page}
-              pageSize={pageObj.size}
-              onChange={onChangePage}
-            />
-          )}
-        </>
-      ) : ( */}
+    <div style={{ overflow: 'auto', height: 'calc(100vh - 103px)' }}>
       <Wrap>
         <div>
           <Head>
@@ -622,14 +537,14 @@ const Profile = () => {
                   }}
                 >
                   <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
-                  <div
+                  <BBQdiv
                     onClick={() =>
                       fullScreen
                         ? handle.enter()
                         : dispatch(setFullScreen(true))
                     }
                     style={{
-                      width: '98px',
+                      // width: '98px',
                       height: '32px',
                       display: 'flex',
                       alignItems: 'center',
@@ -641,10 +556,10 @@ const Profile = () => {
                     <CommonIconFont
                       type={fullScreen ? 'fewer-screen' : 'full-screen'}
                     />
-                    <span>
+                    <span style={{ marginLeft: '10px' }}>
                       {fullScreen ? t('exit_full_screen') : t('full_screen')}
                     </span>
-                  </div>
+                  </BBQdiv>
                 </div>
                 <div className={titleWrap}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -669,28 +584,40 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              {gatteData.length >= 1 && (
-                <Mygante data={gatteData} height={380} />
-              )}
-              {gatteData.length < 1 && (
-                <div style={{ height: 'calc(100vh - 508px)' }}>
-                  <NoData />
-                </div>
-              )}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  height: fullScreen ? '90vh' : '',
+                }}
+              >
+                {gatteData.length >= 1 && (
+                  <Mygante
+                    data={gatteData}
+                    minHeight={fullScreen ? '85vh' : 380}
+                  />
+                )}
+                {gatteData.length < 1 && (
+                  <div style={{ height: 'calc(100vh - 508px)' }}>
+                    <NoData />
+                  </div>
+                )}
+                {gatteData.length >= 1 && (
+                  <PaginationBox
+                    total={total}
+                    currentPage={pageObj.page}
+                    pageSize={pageObj.size}
+                    onChange={onChangePage}
+                  />
+                )}
+              </div>
             </GatteWrap>
-            {gatteData.length >= 1 && (
-              <PaginationBox
-                total={total}
-                currentPage={pageObj.page}
-                pageSize={pageObj.size}
-                onChange={onChangePage}
-              />
-            )}
           </FullScreenDiv>
         </FullScreenContainer>
       </Wrap>
       {/* )} */}
-    </>
+    </div>
   )
 }
 

@@ -29,6 +29,7 @@ import {
   updateFlawTableParams,
 } from '@/services/flaw'
 import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
+import { getIterateInfo } from '@store/iterate/iterate.thunk'
 
 interface FlawProps {
   activeKey: string
@@ -310,6 +311,12 @@ const Flaw = (props: FlawProps) => {
         order,
         orderKey,
         props.searchGroups,
+      )
+      dispatch(
+        getIterateInfo({
+          projectId: getProjectIdByUrl(),
+          id: getIdByUrl('iterateId'),
+        }),
       )
     }
   }, [isRefresh, isUpdateAddWorkItem, props.activeKey])
