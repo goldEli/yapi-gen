@@ -390,7 +390,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                     style={{ fontSize: 14 }}
                     type="plus"
                     onClick={e => {
-                      // console.log('item', item)
                       e.stopPropagation()
                       setIsVisible(true)
                       setWorkType(item.workType)

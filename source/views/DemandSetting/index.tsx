@@ -10,6 +10,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { getCategoryConfigList } from '@store/category/thunk'
 import NoData from '@/components/NoData'
 import { setCategoryWorkType } from '@store/project'
+import DeleteConfirm from '@/components/DeleteConfirm'
 const Wrap = styled.div`
   width: 100%;
   display: flex;
@@ -34,6 +35,7 @@ const DemandSetting = () => {
   const { projectInfo } = useSelector(store => store.project)
   const { currentMenu } = useSelector(store => store.user)
   const [isNoData, setIsNoData] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const { activeCategory, getCategoryConfigDataList } = useSelector(
     store => store.category,
   )
@@ -83,7 +85,7 @@ const DemandSetting = () => {
           <Header />
           {isOperate && (
             <ButtonStyle>
-              <CommonButton type="light" onClick={onCancel}>
+              <CommonButton type="light" onClick={() => setIsVisible(true)}>
                 {t('common.cancel')}
               </CommonButton>
               <CommonButton
@@ -111,6 +113,16 @@ const DemandSetting = () => {
           subText={t('add_the_requirement_state_to_configure_the_workflow')}
         />
       )}
+      <DeleteConfirm
+        text={'当前编辑内容还未保存是否保存？'}
+        isVisible={isVisible}
+        onChangeVisible={() => {
+          onCancel(), setIsVisible(false)
+        }}
+        onConfirm={() => {
+          save(), setIsVisible(false)
+        }}
+      />
     </PermissionWrap>
   )
 }

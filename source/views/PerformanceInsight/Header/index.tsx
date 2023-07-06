@@ -478,7 +478,6 @@ const Iteration = (props: Props) => {
           <SelectMain
             allowClear={false}
             onChange={e => {
-              console.log(e, 'ppp')
               setTimekey(e)
               setTimeVal([])
               viewType === 1 && e !== 0 && dispatch(setSave(true))
