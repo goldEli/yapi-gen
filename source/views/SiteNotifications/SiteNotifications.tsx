@@ -15,7 +15,12 @@ import {
   setMyEmailConfiguration,
 } from '@store/SiteNotifications'
 import { Badge, message, notification } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react'
 import {
   getAllNoteSet,
   getContactStatistics,
@@ -26,7 +31,7 @@ import { useTranslation } from 'react-i18next'
 import { TextChange } from '@/components/TextChange/TextChange'
 import NoteModal from '@/components/NoteModal'
 
-const SiteNotifications = () => {
+const SiteNotifications = (props: any, ref: any) => {
   const [first, setFirst] = useState(false)
   const [first2, setFirst2] = useState({})
   const [t] = useTranslation()
@@ -315,6 +320,15 @@ const SiteNotifications = () => {
       sendMsg()
     }
   }, [wsData])
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        first,
+      }
+    },
+    [first],
+  )
 
   return (
     <>
@@ -340,4 +354,4 @@ const SiteNotifications = () => {
   )
 }
 
-export default SiteNotifications
+export default forwardRef(SiteNotifications)
