@@ -537,8 +537,15 @@ export const createView =
   }
 
 export const updateView =
-  (params: API.Kanban.UpdateView.Params) => async (dispatch: AppDispatch) => {
-    await services.kanban.updateView(params)
+  (params: Omit<API.Kanban.UpdateView.Params, 'use_type'>) =>
+  async (dispatch: AppDispatch) => {
+    const project_id = getProjectIdByUrl()
+    const res = await services.kanban.updateView({
+      ...params,
+      config: store.getState().view,
+      project_id,
+      use_type: 2,
+    })
     getMessage({ msg: i18n.t('common.editSuccess') as string, type: 'success' })
     dispatch(getStoryViewList(null))
   }
@@ -647,12 +654,25 @@ export const getStoryViewList = createAsyncThunk(
 // 保存视图
 export const onSaveAsViewModel =
   (data: Partial<ViewItem>) => async (dispatch: AppDispatch) => {
-    dispatch(
-      createView({
-        name: data.value ?? '',
-        project_id: getProjectIdByUrl(),
-      }),
-    )
+    // debugger
+    if (data.id) {
+      dispatch(
+        updateView({
+          name: data.value ?? '',
+          project_id: getProjectIdByUrl(),
+          id: data.id ?? 0,
+          type: 1,
+        }),
+      )
+    } else {
+      dispatch(
+        createView({
+          name: data.value ?? '',
+          project_id: getProjectIdByUrl(),
+        }),
+      )
+    }
+
     getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
   }
