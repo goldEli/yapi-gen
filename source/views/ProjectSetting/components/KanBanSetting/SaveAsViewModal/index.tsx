@@ -48,7 +48,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   }, [saveAsViewModelInfo.visible])
 
   React.useEffect(() => {
-    if (saveAsViewModelInfo.viewItem) {
+    if (saveAsViewModelInfo?.viewItem?.id) {
       form.setFieldsValue({
         name: saveAsViewModelInfo.viewItem.name,
       })
@@ -73,6 +73,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
         id: saveAsViewModelInfo.viewItem?.id ?? 0,
         name: data.name as string,
         project_id: projectId,
+        isSaveAs: saveAsViewModelInfo.isSaveAs,
       }),
     )
   }

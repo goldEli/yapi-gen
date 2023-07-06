@@ -10,7 +10,11 @@ import Table from './Table'
 import { Spin, Tooltip } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
-import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
+import {
+  setHeaderParmas,
+  setVisiblePerson,
+  setVisibleWork,
+} from '@store/performanceInsight'
 import { useDispatch, useSelector } from '@store/index'
 import {
   defectExport,
@@ -33,11 +37,15 @@ import { copyView } from '@/services/kanban'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 // 进展对比tips
-const getTitleTips = (text: string, tips: string) => {
+const getTitleTips = (text: string, tips: string, position?: string) => {
   return (
     <div style={{ display: 'flex', cursor: 'pointer' }}>
       {text}
-      <Tooltip title={tips} placement="topRight" trigger="click">
+      <Tooltip
+        title={tips}
+        placement={position === 'right' ? 'topRight' : 'top'}
+        trigger="click"
+      >
         <div style={{ margin: '0 8px' }}>
           <CommonIconFont type="question" size={16} />
         </div>
@@ -258,7 +266,11 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'risk',
-        title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
+        title: getTitleTips(
+          '存量风险',
+          '（当期）超过14天未完成的工作项',
+          'right',
+        ),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'risk')}>
@@ -495,7 +507,7 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'stock_count',
-        title: getTitleTips('缺陷存量', '当期未修复缺陷'),
+        title: getTitleTips('缺陷存量', '当期未修复缺陷', 'right'),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'risk')}>
@@ -529,7 +541,7 @@ const ProgressComparison = (props: Props) => {
     }
   }, [props.type, selectProjectIds])
   useEffect(() => {
-    onSearchData([])
+    onSearchData(props.headerParmas?.projectIds || [])
   }, [])
   // 数据明细和进展对比查询数据的
   const onSearchData = (value: number[]) => {
@@ -698,8 +710,6 @@ const ProgressComparison = (props: Props) => {
   }
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
-    console.log(selectProjectIds, 'opende')
-    ces()
     setTableBeforeAndAfter('after')
     event.stopPropagation()
     dispatch(setVisiblePerson(true))
@@ -835,9 +845,6 @@ const ProgressComparison = (props: Props) => {
     dispatch(setVisiblePerson(false))
     dispatch(setVisibleWork(false))
   }, [])
-  const ces = () => {
-    console.log(selectProjectIds, 'ppp')
-  }
   return (
     <div
       style={{ height: '100%', width: '100%' }}
@@ -861,7 +868,7 @@ const ProgressComparison = (props: Props) => {
           // projectDataList={props.projectDataList}
         />
         {/* 表格 */}
-        <Col onClick={ces}>
+        <Col>
           <TitleCss>{props.title}</TitleCss>
         </Col>
         <div

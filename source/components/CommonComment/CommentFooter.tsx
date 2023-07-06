@@ -47,6 +47,8 @@ const CommentFooter = (props: CommentFooterProps) => {
   const onComment = async () => {
     const value = await form.validateFields()
     props.onConfirm(value)
+    form.resetFields()
+    setIsReview(false)
   }
 
   const handleShortcutEvent = () => {

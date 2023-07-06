@@ -183,7 +183,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         ref={inputRefDom as any}
         style={{
           width: 196,
-          margin: props?.hasMargin ? '0 16px' : '0 16px 0 0',
+          margin: props?.hasMargin ? '0 24px' : '0 16px 0 0',
           border: errorState
             ? '1px solid var(--function-error)'
             : '1px solid var(--neutral-n6-d1)',

@@ -10,7 +10,6 @@ export const HoverIcon = styled.div`
 `
 export const IssueCardBox = styled.div`
   width: 270px;
-  height: 144px;
   border-radius: 6px 6px 6px 6px;
   &:hover ${HoverIcon} {
     visibility: visible;
@@ -23,7 +22,7 @@ export const IssueCardBoxContainer = styled.div<{ hidden?: boolean }>`
   visibility: ${props => (props.hidden ? 'hidden' : 'visible')};
   /* display: ${props => (props.hidden ? 'none' : 'flex')}; */
   width: 100%;
-  height: 100%;
+  min-height: 144px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -62,11 +61,11 @@ export const Middle = styled.div`
   color: var(--neutral-n1-d2);
   line-height: 22px;
   word-break: break-all;
-  text-overflow: ellipsis;
+  // text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+  // -webkit-box-orient: vertical;
+  // -webkit-line-clamp: 2;
+  // overflow: hidden;
 `
 export const StoryText = styled.span`
   cursor: pointer;

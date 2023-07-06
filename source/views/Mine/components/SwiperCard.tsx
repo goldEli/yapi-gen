@@ -54,7 +54,7 @@ const Warp = styled.div<{ show?: boolean }>(
 
 const ImgWrap = styled.div<{ show?: boolean; address?: any }>(
   ({ show, address }) => ({
-    filter: String(show ? 'brightness(70%)' : ''),
+    // filter: String(show ? 'brightness(70%)' : ''),
     backgroundImage: `url(${address})`,
   }),
   {
@@ -87,6 +87,7 @@ const NameWrap = styled.div<{ show?: boolean }>(
 const TextWarp = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'center',
   paddingLeft: '8px',
   height: 40,
   background: 'white',

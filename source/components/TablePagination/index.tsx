@@ -7,6 +7,7 @@ interface PropType {
   currentPage?: number
   onChange(page: number, pageSize: number): void
   hasPadding?: boolean
+  isP?: boolean
 }
 
 const PaginationBox = (props: PropType) => {
@@ -19,7 +20,7 @@ const PaginationBox = (props: PropType) => {
       className="pagination-box"
     >
       <Pagination
-        hideOnSinglePage
+        hideOnSinglePage={props.isP}
         current={props.currentPage}
         defaultCurrent={1}
         total={props.total}

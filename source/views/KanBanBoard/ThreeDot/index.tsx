@@ -160,6 +160,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
           <IconFont
             style={{
               color: 'var(--neutral-n3)',
+              fontSize: 16,
             }}
             type="more"
           />

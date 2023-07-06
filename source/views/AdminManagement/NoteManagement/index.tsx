@@ -65,7 +65,7 @@ export const DataWrap = styled.div({
 })
 
 const inputSearch = css`
-  margin-right: 24px;
+  margin-right: 1px;
 `
 
 const settingWrap = css`
@@ -336,7 +336,7 @@ const StaffManagement = () => {
         style={{
           display: 'flex',
           gap: '8px',
-          padding: '24px',
+          padding: '0 24px 24px 24px',
           alignItems: 'center',
         }}
       >

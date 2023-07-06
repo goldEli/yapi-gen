@@ -17,6 +17,7 @@ import SelectOptions, { ViewItem } from '../SelectOptions'
 import useI18n from '@/hooks/useI18n'
 import { Tooltip } from 'antd'
 import { setIsSettingDefault } from '@store/kanbanConfig'
+import { getMessage } from '@/components/Message'
 interface ToolBarProps {}
 
 const ToolBarBox = styled.div`
@@ -129,7 +130,8 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             if (current?.key) {
               dispatch(
                 openSaveAsViewModel({
-                  id: Number(current.key),
+                  title: t('save_as_view'),
+                  isSaveAs: true,
                 }),
               )
             }
@@ -187,6 +189,10 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           <div>
             <CommonButton
               onClick={() => {
+                if (checkedViewListItem?.is_default === 1) {
+                  getMessage({ type: 'error', msg: t('noDelete') })
+                  return
+                }
                 if (checkedViewListItem?.id) {
                   onDel(checkedViewListItem?.id)
                 }

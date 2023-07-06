@@ -13,12 +13,13 @@ import { useSelector } from '@store/index'
 interface IProps {}
 const KanBanBoardBox = styled.div`
   width: 100%;
-  height: 100%;
+  // height: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px;
+  height: 100%;
 `
 
 const KanBanBoard: React.FC<IProps> = props => {
@@ -29,16 +30,16 @@ const KanBanBoard: React.FC<IProps> = props => {
 
   return (
     <KanBanBoardBox>
-        <TopArea />
-        <ToolBar />
-        {userPreferenceConfig?.guidePageConfig?.kanban === 1
-          ? guildModalEl
-          : null}
-        <FullScreenContainer>
-          <Board />
-        </FullScreenContainer>
-        <UserGroupingModal />
-        <ModifyStatusModal />
+      <TopArea />
+      <ToolBar />
+      {userPreferenceConfig?.guidePageConfig?.kanban === 1
+        ? guildModalEl
+        : null}
+      <FullScreenContainer>
+        <Board />
+      </FullScreenContainer>
+      <UserGroupingModal />
+      <ModifyStatusModal />
     </KanBanBoardBox>
   )
 }

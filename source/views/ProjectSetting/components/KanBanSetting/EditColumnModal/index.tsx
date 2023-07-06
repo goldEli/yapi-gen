@@ -60,6 +60,7 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const { editColumnModelInfo } = useSelector(store => store.KanbanConfig)
   React.useEffect(() => {
+    // debugger
     if (editColumnModelInfo.columnInfo) {
       form.setFieldsValue({
         name: editColumnModelInfo.columnInfo.name,
@@ -143,14 +144,20 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
             label={<LabelTitle title={t('greatest_amount')} />}
             name="max_num"
           >
-            <CustomNumberWrap>
+            {/* <CustomNumberWrap>
               <InputNumber
                 min={0}
                 defaultValue={1}
                 style={{ width: '100%' }}
                 max={100}
               />
-            </CustomNumberWrap>
+            </CustomNumberWrap> */}
+            <InputNumber
+              min={0}
+              defaultValue={1}
+              style={{ width: '100%' }}
+              max={100}
+            />
           </Form.Item>
         </Form>
       </div>
