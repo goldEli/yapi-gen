@@ -104,15 +104,21 @@ export const closeModifyStatusModalInfo =
 export const saveModifyStatusModalInfo =
   (params: API.Affairs.UpdateAffairsStatus.Params) =>
   async (dispatch: AppDispatch) => {
-    const { modifyStatusModalInfo } = store.getState().kanBan
+    const { modifyStatusModalInfo, sortByGroupOptions } =
+      store.getState().kanBan
     const { projectInfo } = store.getState().project
-    // 修改优先级
-    await dispatch(
-      updateStoryPriority({
-        id: modifyStatusModalInfo.storyId ?? 0,
-        priority: modifyStatusModalInfo.groupId ?? 0,
-      }),
+    // 只有按优先级分组才用修改优先级
+    const isPriorityGroup = sortByGroupOptions?.find(
+      k => k.key === 'priority' && k.check,
     )
+    if (isPriorityGroup) {
+      await dispatch(
+        updateStoryPriority({
+          id: modifyStatusModalInfo.storyId ?? 0,
+          priority: modifyStatusModalInfo.groupId ?? 0,
+        }),
+      )
+    }
     try {
       let res = null
       if (projectInfo?.projectType === 1) {
@@ -149,7 +155,7 @@ export const modifyStatus =
     target: Model.KanbanConfig.Status
   }) =>
   async (dispatch: AppDispatch) => {
-    const { kanbanInfoByGroup } = store.getState().kanBan
+    const { kanbanInfoByGroup, sortByGroupOptions } = store.getState().kanBan
     const { source, target, storyId } = options
     const data = produce(kanbanInfoByGroup, draft => {
       const stories =
@@ -175,6 +181,7 @@ export const modifyStatus =
         category_status_to_id: target.flow_status_id,
       }),
     )
+    console.log(sortByGroupOptions, 'sortByGroupOptions')
 
     dispatch(
       openModifyStatusModalInfo({
@@ -614,6 +621,7 @@ export const getStoryViewList = createAsyncThunk(
         isDefault: item.type === 2,
       }
     })
+    // debugger
     // 用户已经选中过，需要恢复
     let checked = ret?.find(item => {
       return sortByView?.some(i => i.id === item.id && item.check)
@@ -626,8 +634,9 @@ export const getStoryViewList = createAsyncThunk(
       checked.check = true
     } else {
       // 如果第一次加载 默认第一个
-      ret[0].check = true
-      checked = ret[0]
+      const index = ret.findIndex(item => item.type === 2)
+      ret[index].check = true
+      checked = ret[index]
     }
     const params = generatorFilterParams(checked?.config)
     dispatch(onTapSearchChoose(params))

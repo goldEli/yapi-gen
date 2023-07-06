@@ -48,7 +48,8 @@ const UserList = styled.div`
   flex: 1;
   height: 0;
   overflow-y: auto;
-  max-height: 60vh;
+  max-height: 50vh;
+  overflow-x: hidden;
 `
 const UserListItem = styled.div`
   display: flex;
