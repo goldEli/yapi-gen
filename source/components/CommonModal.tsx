@@ -60,10 +60,12 @@ interface CommonModalProps {
   dex?: number
   isHeader?: boolean
   onSaveDraft?(): void
+  isDisable?: boolean
 }
 
 const CommonModal = (props: CommonModalProps) => {
   const [t] = useTranslation()
+  const { isDisable = false } = props
   return (
     <ModalStyle
       footer={false}
@@ -126,6 +128,7 @@ const CommonModal = (props: CommonModalProps) => {
 
               <CommonButton
                 type="primary"
+                isDisable={isDisable}
                 onClick={() => {
                   props?.onConfirm?.()
                 }}

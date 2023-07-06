@@ -102,8 +102,9 @@ const LongStroyBread = (props: IProps) => {
           {/* 显示添加长故事按钮还是显示编辑按钮 */}
         </div>
         {/* 事务显示层级关系 */}
-        {longStroy.level_tree?.length === 0 ||
-        (longStroy.level_tree?.length && !isHasLongStroy) ? (
+        {(longStroy.level_tree?.length === 0 ||
+          (longStroy.level_tree?.length && !isHasLongStroy)) &&
+        longStroy.work_type !== 3 ? (
           <LongStroyWrap
             onClick={() => {
               setVisible(true)

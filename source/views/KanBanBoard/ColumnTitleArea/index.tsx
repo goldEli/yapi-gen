@@ -51,10 +51,11 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
       }
       const eleAttr = [...refBox.current?.children].map(item => {
         return {
-          number: item.getAttribute('data-num'),
-          max_num: item.getAttribute('data-max_num'),
+          number: Number(item.getAttribute('data-num')),
+          max_num: Number(item.getAttribute('data-max_num')),
         }
       })
+      console.log('eleAttr--', eleAttr)
       if (
         eleAttr.some(item => {
           if (!item.number || !item.max_num) {
@@ -65,7 +66,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
       ) {
         getMessage({ type: 'warning', msg: '卡片已超过该列最大数' })
       }
-    }, 300)
+    }, 500)
   }, [ColumnTitleRef.current])
   return (
     <ColumnTitleAreaBox ref={refBox}>
