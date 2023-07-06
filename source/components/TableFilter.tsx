@@ -215,6 +215,8 @@ export const NumericInput2 = (props: any) => {
 }
 
 const TableFilter = (props: any) => {
+  console.log('执行')
+
   const [t] = useTranslation()
   const info = useGetloginInfo()
   const { list, basicsList, specialList, customList } = props

@@ -11,6 +11,7 @@ import {
   onSaveAsViewModel,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import useProjectId from '../hooks/useProjectId'
+import { getMessage } from '@/components/Message'
 
 const LabelTitle = (props: any) => {
   return (
@@ -37,7 +38,9 @@ interface SaveAsViewModalProps {}
 const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
-  const { saveAsViewModelInfo } = useSelector(store => store.KanbanConfig)
+  const { saveAsViewModelInfo, viewList } = useSelector(
+    store => store.KanbanConfig,
+  )
   const inputRef = useRef<any>()
   React.useEffect(() => {
     if (saveAsViewModelInfo.visible) {
@@ -67,6 +70,10 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
 
   const confirm = async () => {
     const data = await form.validateFields()
+    if (viewList?.some(item => item.name === data.name)) {
+      getMessage({ type: 'error', msg: '列已经存在' })
+      return
+    }
     dispatch(
       onSaveAsViewModel({
         // ...saveAsViewModelInfo.viewItem,

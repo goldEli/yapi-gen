@@ -425,7 +425,16 @@ const isEmpty = (data: any) => {
     return _.isEmpty(value)
   })
 }
+function bbh(data: any) {
+  const filteredData: any = {}
 
+  for (const key in data) {
+    if (key.includes('custom')) {
+      filteredData[key] = data[key]
+    }
+  }
+  return filteredData
+}
 // 获取故事列表（分组）
 export const getKanbanByGroup = createAsyncThunk(
   `${name}/getKanbanByGroup`,
@@ -441,13 +450,22 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
+    console.log(valueKey, 'valueKey')
+
     const params = {
       search: isEmpty(valueKey)
         ? {
             all: 1,
             keyword: inputKey,
           }
-        : { ...valueKey, keyword: inputKey },
+        : {
+            ...valueKey,
+            user_id: valueKey.user_name,
+            category_id: valueKey.category,
+            iterate_id: valueKey.iterate_name,
+            custom_field: bbh(valueKey),
+            keyword: inputKey,
+          },
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
     }
@@ -537,8 +555,15 @@ export const createView =
   }
 
 export const updateView =
-  (params: API.Kanban.UpdateView.Params) => async (dispatch: AppDispatch) => {
-    await services.kanban.updateView(params)
+  (params: Omit<API.Kanban.UpdateView.Params, 'use_type'>) =>
+  async (dispatch: AppDispatch) => {
+    const project_id = getProjectIdByUrl()
+    const res = await services.kanban.updateView({
+      ...params,
+      config: store.getState().view,
+      project_id,
+      use_type: 2,
+    })
     getMessage({ msg: i18n.t('common.editSuccess') as string, type: 'success' })
     dispatch(getStoryViewList(null))
   }
@@ -647,12 +672,25 @@ export const getStoryViewList = createAsyncThunk(
 // 保存视图
 export const onSaveAsViewModel =
   (data: Partial<ViewItem>) => async (dispatch: AppDispatch) => {
-    dispatch(
-      createView({
-        name: data.value ?? '',
-        project_id: getProjectIdByUrl(),
-      }),
-    )
+    // debugger
+    if (data.id) {
+      dispatch(
+        updateView({
+          name: data.value ?? '',
+          project_id: getProjectIdByUrl(),
+          id: data.id ?? 0,
+          type: 1,
+        }),
+      )
+    } else {
+      dispatch(
+        createView({
+          name: data.value ?? '',
+          project_id: getProjectIdByUrl(),
+        }),
+      )
+    }
+
     getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
   }
