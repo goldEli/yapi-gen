@@ -219,7 +219,7 @@ const SelectPersonnel = (props: Props) => {
   return (
     <Detail
       children={
-        <>
+        <div className="workItem">
           <DetailHeader
             ids={props.ids}
             onCancel={() => props.onCancel()}
@@ -231,7 +231,7 @@ const SelectPersonnel = (props: Props) => {
             historyWorkObj={props.historyWorkObj}
             user={{ avatar: '123', name: ['1'] }}
           />
-        </>
+        </div>
       }
       visible={props.visible}
     />
