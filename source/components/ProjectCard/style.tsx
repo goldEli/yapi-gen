@@ -62,6 +62,9 @@ export const HoverIcon = styled.div`
   top: 19px;
   right: 16px;
   visibility: hidden;
+  &:hover svg {
+    color: var(--primary-d1);
+  }
 `
 
 export const EndTag = styled.div`
