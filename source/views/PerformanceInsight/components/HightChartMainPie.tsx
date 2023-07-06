@@ -102,8 +102,8 @@ const HightChartMainPie = (props: {
       align: 'right',
       verticalAlign: 'center',
       borderWidth: 0,
-      y: 45,
-      itemMarginBottom: 16,
+      // y: 45,
+      itemMarginTop: 8,
       useHTML: true,
       labelFormatter: function () {
         // eslint-disable-next-line
@@ -144,8 +144,7 @@ const HightChartMainPie = (props: {
     series: [
       {
         type: 'pie',
-        size: '95%',
-        name: 'Browser share',
+        size: '100%',
         innerSize: '80%',
         center: ['100', '55%'],
         data: props.chart?.seriesData,
