@@ -159,7 +159,7 @@ const HeaderRight = () => {
   const dispatch = useDispatch()
   const { language } = useSelector(store => store.global)
   const { userInfo } = useSelector(store => store.user)
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
   const [isCreateVisible, setIsCreateVisible] = useState(false)
   const [isInfoVisible, setIsInfoVisible] = useState(false)

@@ -29,9 +29,11 @@ const Board = () => {
   )
   const { isUpdateAddWorkItem } = useSelector(state => state.project)
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(getKanbanByGroup())
   }, [isUpdateAddWorkItem])
+
   return (
     <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
       <Container

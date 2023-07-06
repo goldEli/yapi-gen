@@ -441,13 +441,20 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
+    console.log(valueKey, 'valueKey')
+
     const params = {
       search: isEmpty(valueKey)
         ? {
             all: 1,
             keyword: inputKey,
           }
-        : { ...valueKey, keyword: inputKey },
+        : {
+            ...valueKey,
+            user_id: valueKey.user_name,
+            category_id: valueKey.category,
+            keyword: inputKey,
+          },
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
     }
