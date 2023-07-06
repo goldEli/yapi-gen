@@ -19,6 +19,7 @@ const KanBanBoardBox = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 20px;
+  height: 100%;
 `
 
 const KanBanBoard: React.FC<IProps> = props => {
