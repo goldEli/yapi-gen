@@ -10,7 +10,11 @@ import Table from './Table'
 import { Spin, Tooltip } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
-import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
+import {
+  setHeaderParmas,
+  setVisiblePerson,
+  setVisibleWork,
+} from '@store/performanceInsight'
 import { useDispatch, useSelector } from '@store/index'
 import {
   defectExport,
@@ -537,7 +541,7 @@ const ProgressComparison = (props: Props) => {
     }
   }, [props.type, selectProjectIds])
   useEffect(() => {
-    onSearchData([])
+    onSearchData(props.headerParmas?.projectIds || [])
   }, [])
   // 数据明细和进展对比查询数据的
   const onSearchData = (value: number[]) => {
@@ -706,8 +710,6 @@ const ProgressComparison = (props: Props) => {
   }
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
-    console.log(selectProjectIds, 'opende')
-    ces()
     setTableBeforeAndAfter('after')
     event.stopPropagation()
     dispatch(setVisiblePerson(true))
@@ -843,9 +845,6 @@ const ProgressComparison = (props: Props) => {
     dispatch(setVisiblePerson(false))
     dispatch(setVisibleWork(false))
   }, [])
-  const ces = () => {
-    console.log(selectProjectIds, 'ppp')
-  }
   return (
     <div
       style={{ height: '100%', width: '100%' }}
@@ -869,7 +868,7 @@ const ProgressComparison = (props: Props) => {
           // projectDataList={props.projectDataList}
         />
         {/* 表格 */}
-        <Col onClick={ces}>
+        <Col>
           <TitleCss>{props.title}</TitleCss>
         </Col>
         <div

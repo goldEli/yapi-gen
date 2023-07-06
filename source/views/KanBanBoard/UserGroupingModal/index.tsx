@@ -111,6 +111,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
       onClose={onClose}
       onConfirm={onsubmit}
       confirmText={t('confirm')}
+      isDisable={userList.length === 0}
     >
       <Box>
         <Form
