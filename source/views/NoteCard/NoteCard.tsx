@@ -366,7 +366,7 @@ const NoteCard = (props: any) => {
             gap: '24px',
             cursor: 'pointer',
             flexWrap: 'wrap',
-            padding: '10px 0px',
+            paddingTop: '10px',
           }}
         >
           <div
