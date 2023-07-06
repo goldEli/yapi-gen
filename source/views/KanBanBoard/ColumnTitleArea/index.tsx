@@ -6,15 +6,25 @@ import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import CommonIconFont from '@/components/CommonIconFont'
 import { getMessage } from '@/components/Message'
+import { Tooltip } from 'antd'
 
 interface ColumnTitleAreaProps {}
 const ColumnTitle = styled.span`
   width: 302px;
-  height: 48px;
+  height: 32px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  padding: 0 24px;
+  background: var(--neutral-n9);
+  margin-bottom: 16px;
+  .name {
+    max-width: 52%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 `
 
 const ColumnTitleAreaBox = styled.div`
@@ -29,15 +39,13 @@ const ColumnTitleAreaBox = styled.div`
 const MaxText = styled.div`
   display: flex;
   align-items: center;
-  color: var(--function-warning);
+  background: var(--function-warning);
   font-size: 12px;
   margin-left: 8px;
-  span {
-    margin-left: 4px;
-  }
-  svg {
-    font-size: 16px;
-  }
+  cursor: pointer;
+  padding: 0 4px;
+  border-radius: 4px;
+  color: var(--neutral-white-d1);
 `
 
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
@@ -92,12 +100,11 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
             data-num={num}
             data-max_num={item.max_num}
           >
-            {`${item.name}（${num}）`}
+            <div className="name">{item.name}</div>（{num}）
             {num > item.max_num && (
-              <MaxText>
-                <CommonIconFont type="warning-02" />
-                <span>已超过最大数</span>
-              </MaxText>
+              <Tooltip title="已超过最大数">
+                <MaxText>最大：{item.max_num}</MaxText>
+              </Tooltip>
             )}
           </ColumnTitle>
         )

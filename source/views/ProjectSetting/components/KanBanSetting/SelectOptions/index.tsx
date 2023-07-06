@@ -116,8 +116,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                   visible={!!props.onDel}
                   onClick={e => {
                     if (item.isDefault) {
-                      console.log(11)
-                      getMessage({ type: 'error', msg: '默认项 无法删除' })
+                      getMessage({ type: 'error', msg: t('noDelete') })
                       return
                     }
                     e.stopPropagation()
