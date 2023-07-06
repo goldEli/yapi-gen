@@ -558,6 +558,7 @@ export const getKanbanConfigList = createAsyncThunk(
         check: param.showId === item.id,
         value: item.name,
         key: item.id + '',
+        is_default: item.is_default,
       }
     })
     if (sortByRowAndStatusOptions.length && !param.showId) {

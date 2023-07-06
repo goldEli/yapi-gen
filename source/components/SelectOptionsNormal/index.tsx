@@ -18,11 +18,13 @@ import {
   SelectOptionsBox,
   CustomWrap,
 } from './styled'
+import useI18n from '@/hooks/useI18n'
 
 export interface Options {
   key: string
   value: string
   check: boolean
+  is_default?: number
 }
 
 interface SelectBoxProps {
@@ -33,7 +35,7 @@ interface SelectBoxProps {
 
 const SelectOptionsNormal: React.FC<SelectBoxProps> = props => {
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
-
+  const { t } = useI18n()
   // 切换显示类型
   const onClickMenuFormat = (key: string) => {
     // getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
@@ -47,6 +49,7 @@ const SelectOptionsNormal: React.FC<SelectBoxProps> = props => {
   }, [props.options])
 
   const renderOption = (item: Options) => {
+    // debugger
     return {
       key: item.key,
       label: (
@@ -57,6 +60,9 @@ const SelectOptionsNormal: React.FC<SelectBoxProps> = props => {
           <Options>
             <LabelArea>
               <span className="label">{item.value}</span>
+              <DefaultTag visible={item.is_default === 1}>
+                {t('default1')}
+              </DefaultTag>
             </LabelArea>
             <OperationArea>
               <CheckIcon visible={item.check}>
