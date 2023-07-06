@@ -75,6 +75,9 @@ const slice = createSlice({
     saveSort: (state, action) => {
       state.sort = action.payload
     },
+    clearValue: state => {
+      state.valueKey = {}
+    },
     setCreateViewPort: (state, action) => {
       state.createViewPort = {
         ...state.createViewPort,
@@ -91,6 +94,7 @@ const slice = createSlice({
 })
 
 export const {
+  clearValue,
   onTapInputKey,
   changeCreateVisible,
   changeViewVisible,

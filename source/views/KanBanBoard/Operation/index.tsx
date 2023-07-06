@@ -14,7 +14,12 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 // import ImportDemand from './ImportDemand'
 import { useDispatch, useSelector } from '@store/index'
 
-import { onTapSearchChoose, saveScreen } from '@store/view'
+import {
+  clearValue,
+  onTapSearchChoose,
+  saveScreen,
+  saveValue,
+} from '@store/view'
 import KanBanBtnsArea from '../KanBanBtnsArea'
 
 import SelectOptions from '@/components/SelectOptions'
@@ -217,6 +222,7 @@ const Operation = (props: Props) => {
   useEffect(() => {
     return () => {
       dispatch(onTapSearchChoose({}))
+      dispatch(clearValue())
     }
   }, [])
 

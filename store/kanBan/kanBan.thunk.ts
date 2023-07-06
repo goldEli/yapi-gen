@@ -425,7 +425,16 @@ const isEmpty = (data: any) => {
     return _.isEmpty(value)
   })
 }
+function bbh(data: any) {
+  const filteredData: any = {}
 
+  for (const key in data) {
+    if (key.includes('custom')) {
+      filteredData[key] = data[key]
+    }
+  }
+  return filteredData
+}
 // 获取故事列表（分组）
 export const getKanbanByGroup = createAsyncThunk(
   `${name}/getKanbanByGroup`,
@@ -453,6 +462,8 @@ export const getKanbanByGroup = createAsyncThunk(
             ...valueKey,
             user_id: valueKey.user_name,
             category_id: valueKey.category,
+            iterate_id: valueKey.iterate_name,
+            custom_field: bbh(valueKey),
             keyword: inputKey,
           },
       project_id: getProjectIdByUrl(),

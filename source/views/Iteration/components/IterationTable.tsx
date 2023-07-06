@@ -390,8 +390,10 @@ const IterationTable = (props: Props) => {
     // console.log('C键被按下')
     onCreateDemand()
   }
-
   useShortcutC(handleShortcutEvent)
+  useEffect(() => {
+    setSelectedRowKeys([])
+  }, [props.data?.list])
   return (
     <Content
       style={{
