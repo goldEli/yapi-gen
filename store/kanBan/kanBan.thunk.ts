@@ -621,6 +621,7 @@ export const getStoryViewList = createAsyncThunk(
         isDefault: item.type === 2,
       }
     })
+    // debugger
     // 用户已经选中过，需要恢复
     let checked = ret?.find(item => {
       return sortByView?.some(i => i.id === item.id && item.check)
@@ -633,8 +634,9 @@ export const getStoryViewList = createAsyncThunk(
       checked.check = true
     } else {
       // 如果第一次加载 默认第一个
-      ret[0].check = true
-      checked = ret[0]
+      const index = ret.findIndex(item => item.type === 2)
+      ret[index].check = true
+      checked = ret[index]
     }
     const params = generatorFilterParams(checked?.config)
     dispatch(onTapSearchChoose(params))
