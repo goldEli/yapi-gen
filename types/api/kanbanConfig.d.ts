@@ -25,7 +25,7 @@ declare namespace API.KanbanConfig {
   namespace UpdateKanbanConfig {
     type Params = Pick<
       Model.KanbanConfig.Config,
-      'id' | 'name' | 'project_id' | 'is_default' | 'columns'
+      'id' | 'name' | 'project_id' | 'is_default' | 'columns' | 'isSaveAs'
     >
     // type Params = {
     //   // 必需 看板配置id

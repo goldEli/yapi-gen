@@ -221,6 +221,7 @@ export const openSaveAsViewModel =
   (options?: {
     id?: Model.KanbanConfig.ConfigListItem['id']
     title?: string
+    isSaveAs?: boolean
   }) =>
   async (dispatch: AppDispatch) => {
     const { viewList } = store.getState()?.KanbanConfig
@@ -230,6 +231,7 @@ export const openSaveAsViewModel =
         visible: true,
         viewItem,
         title: options?.title,
+        isSaveAs: options?.isSaveAs,
       }),
     )
   }
@@ -251,6 +253,8 @@ export const onSaveAsViewModel =
       const res = await services.kanbanConfig.createKanbanConfig({
         name: data.name,
         project_id: data.project_id,
+        // eslint-disable-next-line no-undefined
+        columns: data.isSaveAs ? columnList : undefined,
       })
       createId = res.data.id
     }
