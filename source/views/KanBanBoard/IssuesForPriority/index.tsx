@@ -72,6 +72,9 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
     )
   })
 
+  const minHeight =
+    showStateTransitionList && data.length > 0 ? data.length * 156 + 20 : 100
+
   return (
     <Droppable
       key={droppableId}
@@ -82,6 +85,7 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
       {(provided, snapshot) => {
         return (
           <DropArea
+            minHeight={minHeight}
             key={droppableId}
             // active={snapshot.isDraggingOver}
             ref={provided.innerRef}

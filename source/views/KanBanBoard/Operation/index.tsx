@@ -55,6 +55,11 @@ const LeftBox = styled.div`
   display: flex;
   gap: 8px;
 `
+const Btn = styled.div`
+  font-size: 14px;
+  color: var(--auxiliary-text-t2-d2);
+  cursor: pointer;
+`
 const RightBox = styled.div``
 
 const StickyWrap = styled.div`
@@ -80,7 +85,6 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const { sortByGroupOptions, sortByRowAndStatusOptions, sortByView } =
     useSelector(store => store.kanBan)
-  // debugger
   const [filterState, setFilterState] = useState(true)
   const [defaultValue, setDefaultValue] = useState({})
 
@@ -269,6 +273,8 @@ const Operation = (props: Props) => {
               dispatch(openSaveAsViewModel())
             }}
           />
+          {/* <Btn>{t('save_as')}</Btn>
+          <Btn>{t('save_Changes')}</Btn> */}
         </LeftBox>
         <RightBox>
           <KanBanBtnsArea
