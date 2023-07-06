@@ -109,7 +109,7 @@ export const saveModifyStatusModalInfo =
       store.getState().kanBan
     const { projectInfo } = store.getState().project
     // 只有按优先级分组才用修改优先级
-    const isPriorityGroup = sortByGroupOptions?.filter(
+    const isPriorityGroup = sortByGroupOptions?.find(
       k => k.key === 'priority' && k.check,
     )
     if (isPriorityGroup) {
@@ -442,13 +442,20 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
+    console.log(valueKey, 'valueKey')
+
     const params = {
       search: isEmpty(valueKey)
         ? {
             all: 1,
             keyword: inputKey,
           }
-        : { ...valueKey, keyword: inputKey },
+        : {
+            ...valueKey,
+            user_id: valueKey.user_name,
+            category_id: valueKey.category,
+            keyword: inputKey,
+          },
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
     }
@@ -538,8 +545,15 @@ export const createView =
   }
 
 export const updateView =
-  (params: API.Kanban.UpdateView.Params) => async (dispatch: AppDispatch) => {
-    await services.kanban.updateView(params)
+  (params: Omit<API.Kanban.UpdateView.Params, 'use_type'>) =>
+  async (dispatch: AppDispatch) => {
+    const project_id = getProjectIdByUrl()
+    const res = await services.kanban.updateView({
+      ...params,
+      config: store.getState().view,
+      project_id,
+      use_type: 2,
+    })
     getMessage({ msg: i18n.t('common.editSuccess') as string, type: 'success' })
     dispatch(getStoryViewList(null))
   }
@@ -622,6 +636,7 @@ export const getStoryViewList = createAsyncThunk(
         isDefault: item.type === 2,
       }
     })
+    // debugger
     // 用户已经选中过，需要恢复
     let checked = ret?.find(item => {
       return sortByView?.some(i => i.id === item.id && item.check)
@@ -634,8 +649,9 @@ export const getStoryViewList = createAsyncThunk(
       checked.check = true
     } else {
       // 如果第一次加载 默认第一个
-      ret[0].check = true
-      checked = ret[0]
+      const index = ret.findIndex(item => item.type === 2)
+      ret[index].check = true
+      checked = ret[index]
     }
     const params = generatorFilterParams(checked?.config)
     dispatch(onTapSearchChoose(params))
@@ -646,12 +662,25 @@ export const getStoryViewList = createAsyncThunk(
 // 保存视图
 export const onSaveAsViewModel =
   (data: Partial<ViewItem>) => async (dispatch: AppDispatch) => {
-    dispatch(
-      createView({
-        name: data.value ?? '',
-        project_id: getProjectIdByUrl(),
-      }),
-    )
+    // debugger
+    if (data.id) {
+      dispatch(
+        updateView({
+          name: data.value ?? '',
+          project_id: getProjectIdByUrl(),
+          id: data.id ?? 0,
+          type: 1,
+        }),
+      )
+    } else {
+      dispatch(
+        createView({
+          name: data.value ?? '',
+          project_id: getProjectIdByUrl(),
+        }),
+      )
+    }
+
     getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
   }

@@ -5,7 +5,7 @@ import MultipleAvatar from '@/components/MultipleAvatar'
 import StateTag from '@/components/StateTag'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { Select, Space, Spin } from 'antd'
+import { Select, Space } from 'antd'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Detail from './Detail'
 import DetailHeader from './DetailHeader'
@@ -20,9 +20,10 @@ import {
   UserMsg,
   UserInfo,
   RowTableCol,
-  Row,
+  SpinStyle,
 } from './style'
 import Table from './Table'
+import styled from '@emotion/styled/types/base'
 interface Props {
   spinning: boolean
   visible: boolean
@@ -280,8 +281,11 @@ const WorkItem = (props: Props) => {
   return (
     <Detail
       children={
-        <>
-          <Spin spinning={props.spinning} indicator={<NewLoadingTransition />}>
+        <div className="workItem">
+          <SpinStyle
+            spinning={props.spinning}
+            indicator={<NewLoadingTransition />}
+          >
             <DetailHeader
               ids={props.ids}
               onCancel={() => props.onCancel()}
@@ -295,8 +299,8 @@ const WorkItem = (props: Props) => {
               userInfo={props.userInfo}
               status={props.status}
             />
-          </Spin>
-        </>
+          </SpinStyle>
+        </div>
       }
       visible={props.visible}
     />

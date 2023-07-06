@@ -237,9 +237,15 @@ const GlobalStyle = () => {
     .ant-spin-container {
       width: 100%;
       height: 100%;
-      overflow: hidden;
     }
-
+    .workItem {
+      height: 100vh;
+      overflow: hidden;
+      .ant-spin-nested-loading,
+      .ant-spin-container {
+        overflow: hidden;
+      }
+    }
     //table样式 --- start
     .ant-table-thead > tr > th {
       height: 44px;

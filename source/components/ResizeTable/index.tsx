@@ -30,7 +30,7 @@ const TableWrap = styled(Table)`
   }
   .ant-table-selection-column {
     text-align: left;
-    width: 70px;
+    width: 50px;
   }
   .ant-table-thead > tr {
     height: 44px;

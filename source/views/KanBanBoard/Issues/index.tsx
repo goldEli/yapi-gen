@@ -14,8 +14,8 @@ interface IssuesProps {
   groupId: Model.KanbanConfig.Column['id']
 }
 
-export const DropArea = styled.div<{ active?: boolean }>`
-  min-height: 100px;
+export const DropArea = styled.div<{ active?: boolean; minHeight?: number }>`
+  min-height: ${props => props.minHeight}px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -60,6 +60,7 @@ const Issues: React.FC<IssuesProps> = props => {
     // 跨分组可拖
     // return !!movingStory && movingStory?.columnId !== columnId
   }, [movingStory, columnId, data, groupId, groupType])
+  // const showStateTransitionList = true
 
   const dropCardListContent = (
     <DropCardList
@@ -89,6 +90,8 @@ const Issues: React.FC<IssuesProps> = props => {
     )
   })
 
+  const minHeight =
+    showStateTransitionList && data.length > 0 ? data.length * 156 + 20 : 100
   return (
     <Droppable
       key={droppableId}
@@ -99,6 +102,7 @@ const Issues: React.FC<IssuesProps> = props => {
       {(provided, snapshot) => {
         return (
           <DropArea
+            minHeight={minHeight}
             // active={snapshot.isDraggingOver}
             ref={provided.innerRef}
             {...provided.droppableProps}

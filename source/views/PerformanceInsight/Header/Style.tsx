@@ -401,7 +401,7 @@ export const LotBox = styled.div`
   padding: 16px;
   &:hover {
     background: var(--neutral--white-d6);
-    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 0px 19px -2px rgba(0, 0, 0, 0.12);
     cursor: pointer;
   }
 `
