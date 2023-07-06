@@ -1,5 +1,6 @@
 /* eslint-disable array-callback-return */
 import CommonIconFont from '@/components/CommonIconFont'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd'
 
@@ -7,11 +8,19 @@ const TreeLine = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px 0 15px;
+  padding: 0 15px 0 15px;
   height: 40px;
+  border-radius: 6px;
   transition: all 0.3s;
   :hover {
     background-color: var(--hover-d2);
+  }
+  :hover svg {
+    color: var(--primary-d1);
+  }
+  & .ant-checkbox-wrapper {
+    display: flex;
+    align-items: unset;
   }
 `
 
@@ -54,9 +63,7 @@ const NewAddShowList = (props: any) => {
                       })
                     }
                   >
-                    <div style={{ display: 'flex', alignItems: 'end' }}>
-                      部门-- {i.name}
-                    </div>
+                    <div>部门-- {i.name}</div>
                   </Checkbox>
                 </div>
 
@@ -83,9 +90,11 @@ const NewAddShowList = (props: any) => {
                     .map((i: { id: any }) => i.id)
                     .includes(i.id)}
                 >
-                  <div style={{ display: 'flex', alignItems: 'end' }}>
-                    成员-- {i.name}
-                  </div>
+                  <CommonUserAvatar
+                    name={i.name}
+                    fontSize={14}
+                    avatar={i.avatar}
+                  />
                 </Checkbox>
               </div>
             </TreeLine>
@@ -120,9 +129,7 @@ const NewAddShowList = (props: any) => {
                     )
                   }
                 >
-                  <div style={{ display: 'flex', alignItems: 'end' }}>
-                    团队-- {i.name}
-                  </div>
+                  <div>团队-- {i.name}</div>
                 </Checkbox>
               </div>
 
@@ -146,9 +153,11 @@ const NewAddShowList = (props: any) => {
                   .map((i: { id: any }) => i.id)
                   .includes(i.id)}
               >
-                <div style={{ display: 'flex', alignItems: 'end' }}>
-                  成员-- {i.name}
-                </div>
+                <CommonUserAvatar
+                  name={i.name}
+                  fontSize={14}
+                  avatar={i.avatar}
+                />
               </Checkbox>
             </div>
           </TreeLine>

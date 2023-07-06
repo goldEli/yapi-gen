@@ -5,6 +5,8 @@ import React from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
+import { Tooltip } from 'antd'
+import useI18n from '@/hooks/useI18n'
 
 interface ChooseMemberProps {
   id: number
@@ -47,18 +49,21 @@ const CustomCloseWrap = styled(CloseWrap)`
 `
 
 const ChooseMember: React.FC<ChooseMemberProps> = props => {
+  const { t } = useI18n()
   return props?.id === 0 ? (
-    <CustomCloseWrap>
-      <IconFont
-        className="icon"
-        type="plus"
-        style={{
-          color: 'var(--neutral-n3)',
-          fontSize: '18px',
-        }}
-        // onClick={() => setIsOpen(true)}
-      />
-    </CustomCloseWrap>
+    <Tooltip title={t('createGroup')}>
+      <CustomCloseWrap>
+        <IconFont
+          className="icon"
+          type="plus"
+          style={{
+            color: 'var(--neutral-n3)',
+            fontSize: '18px',
+          }}
+          // onClick={() => setIsOpen(true)}
+        />
+      </CustomCloseWrap>
+    </Tooltip>
   ) : (
     <ChooseMemberBox>
       <IconFont

@@ -381,16 +381,15 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                 >
                   <div style={{ cursor: 'pointer' }}>
                     <IconFont
-                      style={{ fontSize: 12 }}
-                      type={affairType[index].visible ? 'down' : 'up'}
+                      style={{ fontSize: 12, color: 'var(--neutral-n3)' }}
+                      type={affairType[index].visible ? 'down-icon' : 'up-icon'}
                     />
-                    <AffairTypeText>{item.name}</AffairTypeText>
+                    <AffairTypeText>{item.name}1</AffairTypeText>
                   </div>
                   <IconFont
                     style={{ fontSize: 14 }}
                     type="plus"
                     onClick={e => {
-                      // console.log('item', item)
                       e.stopPropagation()
                       setIsVisible(true)
                       setWorkType(item.workType)

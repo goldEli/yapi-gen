@@ -1629,6 +1629,7 @@
     "importChoose": "Import defect field selection",
     "exportDefect": "Export defect"
   },
+  "createGroup": "Create a group",
   "noDelete": "Default items cannot be deleted",
   "configuration_panel": "Configuration panel",
   "share": "Share",

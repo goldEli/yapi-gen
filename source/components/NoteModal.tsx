@@ -133,7 +133,7 @@ const NoteModal = (props: any) => {
             lineHeight: '20px',
           }}
         >
-          发布于{props.data?.customData?.expireTime}
+          发布于{props.data?.customData?.sendTime}
         </div>
       </Header>
       <Content>

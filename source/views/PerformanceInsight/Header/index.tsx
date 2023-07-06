@@ -482,16 +482,17 @@ const Iteration = (props: Props) => {
               setTimeVal([])
               viewType === 1 && e !== 0 && dispatch(setSave(true))
               e === 0 && dispatch(setSave(false))
-              dispatch(
-                setHeaderParmas({
-                  time: {
-                    type: e,
-                    time: '',
-                  },
-                  period_time: periodTimes.find(item => item.value === e)
-                    ?.label,
-                }),
-              )
+              e !== 0 &&
+                dispatch(
+                  setHeaderParmas({
+                    time: {
+                      type: e,
+                      time: '',
+                    },
+                    period_time: periodTimes.find(item => item.value === e)
+                      ?.label,
+                  }),
+                )
             }}
             value={timekey}
             placeholder={t('common.pleaseSelect')}

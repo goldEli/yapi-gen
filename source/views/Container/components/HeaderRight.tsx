@@ -9,7 +9,7 @@ import { getTicket, loginOut } from '@/services/user'
 import { useDispatch, useSelector } from '@store/index'
 import { changeLanguage, type LocaleKeys } from '@/locals'
 import { message, Popover, Space, Tooltip } from 'antd'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import {
   ChangeItem,
   ChangeItems,
@@ -159,11 +159,13 @@ const HeaderRight = () => {
   const dispatch = useDispatch()
   const { language } = useSelector(store => store.global)
   const { userInfo } = useSelector(store => store.user)
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isCreateVisible, setIsCreateVisible] = useState(false)
   const [isInfoVisible, setIsInfoVisible] = useState(false)
   const [isConfirmLogout, setIsConfirmLogout] = useState(false)
   const navigate = useNavigate()
+  const childStateRef = useRef<any>()
   const userList = [
     { name: t('language'), isRight: true, icon: 'earth', key: 0 },
     // { name: t('theme_switching'), isRight: true, icon: 'theme', key: 1 },
@@ -310,7 +312,17 @@ const HeaderRight = () => {
   const onHelp = () => {
     window.open(helpPdf)
   }
+  const handleTooltipVisibleChange = (visible: any) => {
+    console.log(visible, 'visible')
+    console.log(childStateRef.current, 'visible2')
 
+    if (childStateRef.current.first) {
+      return
+    }
+    setIsModalVisible(!visible)
+    // 否则，根据 visible 属性来改变 Tooltip 的显示状态
+    // 可以在这里添加其他逻辑
+  }
   const userContent = (
     <UserInfoWrap>
       <UserInfoTop>
@@ -457,9 +469,13 @@ const HeaderRight = () => {
           </CreateIcon>
         )}
 
-        <Tooltip title={t('container.notice') as string}>
+        <Tooltip
+          open={!isModalVisible}
+          onOpenChange={handleTooltipVisibleChange}
+          title={t('container.notice') as string}
+        >
           <CloseWrap width={32} height={32}>
-            <SiteNotifications />
+            <SiteNotifications ref={childStateRef} />
           </CloseWrap>
         </Tooltip>
         <Tooltip title={t('container.help') as string}>
