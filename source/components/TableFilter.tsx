@@ -316,12 +316,15 @@ const TableFilter = (props: any) => {
   useEffect(() => {
     form.resetFields()
     form.setFieldsValue(props.defaultValue)
-    if (Object.keys(props.defaultValue).length === 0) {
+    // 页面报错加的这条
+    if (!props.defaultValue) {
+      return
+    } else if (Object.keys(props.defaultValue)?.length === 0) {
       return
     }
     confirm()
   }, [props.defaultValue])
-
+  console.log(props.defaultValue, 'props.defaultValue')
   useEffect(() => {
     if (Object.hasOwn(searchChoose || {}, 'system_view')) {
       form.resetFields()

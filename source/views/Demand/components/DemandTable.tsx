@@ -346,7 +346,9 @@ const DemandTable = (props: Props) => {
     )
     dispatch(setFilterParamsModal(filterParams))
   }
-
+  useEffect(() => {
+    setSelectedRowKeys([])
+  }, [props.data?.list])
   return (
     <TableContent>
       <ResizeTable

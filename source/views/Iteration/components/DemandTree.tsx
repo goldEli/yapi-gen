@@ -535,6 +535,7 @@ const DemandTree = (props: Props) => {
         setComputedTopId(0)
       }
     }
+    setSelectedRowKeys([])
   }, [props.data?.list])
 
   useLayoutEffect(() => {
