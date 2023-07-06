@@ -93,9 +93,10 @@ const useControlScrollPlane = (columnNum: number) => {
         })
     }, [columnNum, columnWidth, widthRatio])
 
+    const gap = widthRatio * columnGap > 1 ? widthRatio * columnGap : 1
     return (
       <ControlScrollPlaneBox>
-        <Content gap={widthRatio * columnGap} className="controlScrollPlaneBox">
+        <Content gap={gap} className="controlScrollPlaneBox">
           <WindowArea
             size={{
               width: windowWidth,

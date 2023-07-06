@@ -702,7 +702,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
     selectedRowKeys,
     onChange: onSelectChange,
   }
-
+  useEffect(() => {
+    setSelectedRowKeys([])
+  }, [memberList?.list])
   return (
     <PermissionWrap
       auth="b/project/member"
@@ -745,7 +747,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
           onConfirm={handleOk}
           projectPermission={projectPermission}
         />
-
         <BatchAction
           open={selectedRowKeys.length > 0}
           onCancel={() => setSelectedRowKeys([])}

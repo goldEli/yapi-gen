@@ -117,6 +117,7 @@ const ProjectInfo = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
+  console.log('projectInfo', projectInfo)
   const { userInfo } = useSelector(store => store.user)
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
@@ -210,8 +211,12 @@ const ProjectInfo = () => {
               <div>{t('project_type')}：</div>
               <span>
                 {projectInfo.permissionType === 1
-                  ? t('enterprise_project')
-                  : t('teamwork')}
+                  ? t('enterprise_project', {
+                      type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                    })
+                  : t('teamwork', {
+                      type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                    })}
               </span>
             </InfoItem>
           </Line>

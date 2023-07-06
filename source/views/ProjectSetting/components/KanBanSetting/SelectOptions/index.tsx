@@ -27,6 +27,7 @@ export type ViewItem = {
   check: boolean
   isDefault?: boolean
   operation?: boolean
+  id?: number
 }
 interface SelectBoxProps {
   title: string

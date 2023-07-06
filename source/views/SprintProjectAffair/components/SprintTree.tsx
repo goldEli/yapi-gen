@@ -507,6 +507,7 @@ const SprintTree = (props: Props) => {
         setComputedTopId(0)
       }
     }
+    setSelectedRowKeys([])
   }, [props.data?.list])
 
   useEffect(() => {

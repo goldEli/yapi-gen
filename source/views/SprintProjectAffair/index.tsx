@@ -24,7 +24,12 @@ import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
 import { deleteAffairs, getAffairsList } from '@/services/affairs'
 import Operation from './components/Operation'
-import { onTapSearchChoose, saveTitles } from '@store/view'
+import {
+  clearValue,
+  onTapSearchChoose,
+  saveTitles,
+  saveValue,
+} from '@store/view'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { getMessage } from '@/components/Message'
@@ -362,6 +367,8 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   }, [isUpdateAddWorkItem])
 
   useEffect(() => {
+    console.log('进入主页清除已存储的筛选计数')
+    dispatch(clearValue())
     // 进入主页清除已存储的筛选计数
     dispatch(setFilterKeys([]))
     dispatch(onTapSearchChoose(''))

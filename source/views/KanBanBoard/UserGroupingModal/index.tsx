@@ -27,7 +27,7 @@ const LabelTitle = (props: any) => {
     >
       <span
         style={{
-          fontFamily: 'SiYuanMedium',
+          fontFamily: props.fontWeight ? '' : 'SiYuanMedium',
           fontSize: '14px',
         }}
       >
@@ -55,6 +55,13 @@ const UserListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 12px;
+  height: 48px;
+  border-radius: 6px;
+  &:hover {
+    background: var(--hover-d2);
+    cursor: pointer;
+  }
 `
 
 const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
@@ -123,7 +130,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
         >
           <Form.Item
             rules={[{ required: true, message: '' }]}
-            label={<LabelTitle title={t('group_Name')} />}
+            label={<LabelTitle title={t('group_Name')} fontWeight={400} />}
             name="name"
           >
             <Input maxLength={30} placeholder={t('please_enter_a_name')} />
@@ -140,7 +147,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
                     onDel(item.id)
                   }}
                 >
-                  <CommonButton type="primaryText">{t('delete')}</CommonButton>
+                  <span style={{ color: 'var(--primary-d2)' }}>移除</span>
                 </div>
               </UserListItem>
             )

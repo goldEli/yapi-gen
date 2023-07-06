@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Modal, Space, Dropdown } from 'antd'
+import { Modal, Space, Dropdown, Spin } from 'antd'
 import { HighchartsReact } from 'highcharts-react-official'
 export const DropdownWrap = styled(Dropdown)({
   background: 'none',
@@ -186,7 +186,9 @@ export const TitleType = styled.div`
   font-size: 12px;
 `
 export const ItemMain = styled.div`
-  margin-bottom: 24px;
+  padding-bottom: 24px;
+  overflow: auto;
+  height: calc(100% - 220px);
 `
 export const ItemMain1 = styled.div`
   margin-top: 24px;
@@ -418,4 +420,12 @@ export const RowTableCol = styled.div`
     cursor: pointer;
   }
 `
+export const SpinStyle = styled(Spin)({
+  '.ant-spin-nested-loading,.ant-spin-container': {
+    width: '100%',
+    height: '100%',
+    overflow: 'hidden',
+  },
+})
+
 export const HomeModal = styled(Modal)({})

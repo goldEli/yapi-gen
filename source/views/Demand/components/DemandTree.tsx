@@ -5,13 +5,10 @@
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { createRef, useEffect, useMemo, useRef, useState } from 'react'
-import { message, Menu, Table } from 'antd'
-import styled from '@emotion/styled'
+import { createRef, useEffect, useMemo, useState } from 'react'
+import { Menu, Table } from 'antd'
 import { ExpendedWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
-import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -490,6 +487,7 @@ const DemandTree = (props: Props) => {
         setComputedTopId(0)
       }
     }
+    setSelectedRowKeys([])
   }, [props.data?.list])
 
   useEffect(() => {

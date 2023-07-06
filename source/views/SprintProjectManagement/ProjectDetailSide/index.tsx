@@ -7,7 +7,11 @@ import { getParamsData, getProjectType } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import {
+  setFilterKeys,
+  setProjectInfo,
+  setProjectInfoValues,
+} from '@store/project'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
@@ -25,6 +29,7 @@ import {
   WrapDetail,
   WrapCategory,
 } from './style'
+import { clearValue, onTapSearchChoose } from '@store/view'
 
 export const Back = styled.div`
   font-size: 12px;
@@ -194,6 +199,10 @@ const ProjectDetailSide = () => {
 
   // 点击切换模块
   const onChangeRouter = (i: { path: any; key: any }) => {
+    dispatch(clearValue())
+    // 进入主页清除已存储的筛选计数
+    dispatch(setFilterKeys([]))
+    dispatch(onTapSearchChoose(''))
     const { path, key } = i
     const params = encryptPhp(JSON.stringify({ id: projectId, type: 'sprint' }))
     if (key === 'SprintReport') {

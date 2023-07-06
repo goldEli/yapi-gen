@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
 import { createRef, useEffect, useMemo, useState } from 'react'
-import { Button, Menu, Table } from 'antd'
+import { Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
@@ -341,7 +341,7 @@ const SprintTable = (props: Props) => {
     columns,
     selectedRowKeys,
   ])
-
+  console.log(selectedRowKeys, 'selectedRowKeys')
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
     const resultKeys = selected
@@ -375,7 +375,9 @@ const SprintTable = (props: Props) => {
     )
     dispatch(setFilterParamsModal(filterParams))
   }
-
+  useEffect(() => {
+    setSelectedRowKeys([])
+  }, [props.data.list])
   return (
     <Content>
       <ResizeTable

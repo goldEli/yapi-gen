@@ -143,6 +143,7 @@ const StaffManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
 
   const getStaffListData = async () => {
+    setSelectedRowKeys([])
     setIsSpinning(true)
     const res = await getStaffList({
       jobId: searchGroups.jobId,

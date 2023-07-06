@@ -339,7 +339,6 @@ const Iteration = () => {
       getSearchKey()
     }
   }, [projectInfo])
-
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"
@@ -371,6 +370,7 @@ const Iteration = () => {
         </div>
       </CommonModal>
       <DeleteConfirmModal />
+
       <Content>
         <EditAchievements
           isAchievements={isAchievements}
