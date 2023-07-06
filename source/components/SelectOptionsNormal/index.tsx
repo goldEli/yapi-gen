@@ -6,6 +6,7 @@ import React, { useMemo, useState } from 'react'
 import { Menu } from 'antd'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
+import { useDispatch } from '@store/index'
 import {
   BtnsArea,
   CheckIcon,
@@ -19,6 +20,7 @@ import {
   CustomWrap,
 } from './styled'
 import useI18n from '@/hooks/useI18n'
+import { setSpinning } from '@store/kanBan'
 
 export interface Options {
   key: string
@@ -36,8 +38,10 @@ interface SelectBoxProps {
 const SelectOptionsNormal: React.FC<SelectBoxProps> = props => {
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
   const { t } = useI18n()
+  const dispatch = useDispatch()
   // 切换显示类型
   const onClickMenuFormat = (key: string) => {
+    dispatch(setSpinning(true))
     // getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
     props.onChange(key)
     setIsVisibleFormat(false)
