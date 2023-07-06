@@ -116,13 +116,12 @@ const Row = styled.div`
   }
 `
 const RightPerson = styled.div`
-  overflow: auto;
-  width: 264px;
+  /* overflow: auto; */
+  width: 300px;
   height: 100%;
   padding-left: 24px;
 `
 const Header = styled.div`
-  width: 230px;
   display: flex;
   height: 36px;
   background: var(--neutral-n7);
@@ -141,7 +140,6 @@ const Header = styled.div`
   }
 `
 export const ListItem = styled.div`
-  width: 230px;
   height: 36px;
   line-height: 36px;
   border-radius: 6px;
@@ -993,6 +991,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
             style={{
               height: '320px',
               overflow: 'scroll',
+              paddingRight: '24px',
             }}
           >
             <NewAddShowList
@@ -1012,23 +1011,30 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
             </span>
             <span onClick={() => clearPerson()}>{t('commonModal.clear')}</span>
           </Header>
-          {personData.length >= 1
-            ? personData.map((el: any) => (
-                <ListItem key={el.id}>
-                  <CommonUserAvatar
-                    name={el.name}
-                    fontSize={14}
-                    avatar={el.avatar}
-                  />
-                  <IconFont
-                    className="del"
-                    type="close"
-                    style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
-                    onClick={() => delPersonDataList(el)}
-                  />
-                </ListItem>
-              ))
-            : null}
+          <div
+            style={{
+              overflow: 'scroll',
+              height: '425px',
+            }}
+          >
+            {personData.length >= 1
+              ? personData.map((el: any) => (
+                  <ListItem key={el.id}>
+                    <CommonUserAvatar
+                      name={el.name}
+                      fontSize={14}
+                      avatar={el.avatar}
+                    />
+                    <IconFont
+                      className="del"
+                      type="close"
+                      style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
+                      onClick={() => delPersonDataList(el)}
+                    />
+                  </ListItem>
+                ))
+              : null}
+          </div>
         </RightPerson>
       </CreatePerson>
       <ModalFooter>
