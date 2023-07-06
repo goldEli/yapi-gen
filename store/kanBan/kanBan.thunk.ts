@@ -108,7 +108,7 @@ export const saveModifyStatusModalInfo =
       store.getState().kanBan
     const { projectInfo } = store.getState().project
     // 只有按优先级分组才用修改优先级
-    const isPriorityGroup = sortByGroupOptions?.filter(
+    const isPriorityGroup = sortByGroupOptions?.find(
       k => k.key === 'priority' && k.check,
     )
     if (isPriorityGroup) {
