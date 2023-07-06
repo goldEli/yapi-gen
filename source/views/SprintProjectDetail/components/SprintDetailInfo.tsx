@@ -115,11 +115,11 @@ const SprintDetailInfo = (props: { onRef: any }) => {
     })
     setTabActive(arr[arr.length - 1])
   }
-  const scrollRefDom = scrollRef.current
+  const LeftDomC = LeftDom.current
   useEffect(() => {
-    scrollRefDom?.addEventListener('scroll', handleScroll, true)
+    LeftDomC?.addEventListener('scroll', handleScroll, true)
     return () => {
-      scrollRefDom?.removeEventListener('scroll', handleScroll, false)
+      LeftDomC?.removeEventListener('scroll', handleScroll, false)
     }
   }, [])
 
@@ -138,23 +138,21 @@ const SprintDetailInfo = (props: { onRef: any }) => {
           onChange={onChangeTabs}
         />
       )}
-      <div ref={scrollRef}>
-        <DetailInfoWrap
-          ref={LeftDom}
-          className="sprintDetail_dom"
-          isScroll={isScroll}
-        >
-          <AffairsDetail
-            affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
-            isInfoPage
-          />
-          {affairsInfo.work_type !== 6 && (
-            <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
-          )}
-          <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
-          <ActivitySprint />
-        </DetailInfoWrap>
-      </div>
+      <DetailInfoWrap
+        ref={LeftDom}
+        className="sprintDetail_dom"
+        isScroll={isScroll}
+      >
+        <AffairsDetail
+          affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
+          isInfoPage
+        />
+        {affairsInfo.work_type !== 6 && (
+          <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+        )}
+        <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+        <ActivitySprint />
+      </DetailInfoWrap>
       <CommentFooter
         onRef={commentDom}
         placeholder="发表评论（按M快捷键发表评论）"

@@ -41,7 +41,7 @@ const NumWrap = styled.div`
 `
 const NameWrap = styled.div`
   font-size: 12px;
-  color: var(--neutral-n12);
+  color: var(--neutral-n2);
 `
 
 const Name = styled.div`
@@ -198,6 +198,7 @@ const Complete = (props: Props) => {
   return (
     <CommonModal
       width={528}
+      confirmText={'完成'}
       isVisible={props.isVisible}
       title={props.title}
       onClose={() => props.onClose()}
