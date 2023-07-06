@@ -158,14 +158,14 @@ const MemberModal = (props: any) => {
     >
       <div
         style={{
-          height: '648px',
+          height: 'calc(100vh - 200px)',
           overflow: 'auto',
           padding: '0 24px',
         }}
       >
         <ResizeTable
           isSpinning={isSpinning}
-          dataWrapNormalHeight="100%"
+          dataWrapNormalHeight="calc(100vh - 200px)"
           col={colums}
           dataSource={listData}
           noData={<NoData />}

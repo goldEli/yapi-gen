@@ -1065,6 +1065,18 @@ export const addFlawRelation = async (params: API.Flaw.FlawRelation.Params) => {
   })
 }
 
+// 关联缺陷拖拽排序
+export const flawRelationDragSort = async (
+  params: API.Flaw.FlawRelationDragSort.Params,
+) => {
+  await http.post<any>('flawRelationDragSort', {
+    project_id: params.projectId,
+    id: params.id,
+    relation_ids: params.relationIds,
+    type: params.type,
+  })
+}
+
 // 搜索查询下拉关联事务
 export const getFlawSelectRelationSearch = async (
   params: API.Flaw.GetFlawRelationList.Params,

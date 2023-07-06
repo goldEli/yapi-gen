@@ -227,7 +227,7 @@ const IterationDetail = () => {
 
     setSearchGroups(params)
   }
-
+  console.log(iterateInfo, 'iterateInfo')
   const tabItems: TabsProps['items'] = [
     {
       key: '1',
@@ -276,6 +276,9 @@ const IterationDetail = () => {
       label: (
         <DetailTabItem>
           <span>缺陷</span>
+          <ItemNumber isActive={tabActive === '3'}>
+            {iterateInfo?.bug_count || 0}
+          </ItemNumber>
         </DetailTabItem>
       ),
       children: (
@@ -445,7 +448,7 @@ const IterationDetail = () => {
       onUpdateDetail()
     }
   }, [isUpdateList])
-
+  console.log(tabItems, 'tabItems')
   return (
     <Wrap>
       <DeleteConfirmModal />

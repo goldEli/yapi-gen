@@ -78,14 +78,12 @@ const IconWrap = styled(IconFont)`
 
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const { columnList } = useKanBanData()
-  console.log('columnList-----', columnList)
   const item = columnList?.[props.index ?? 0]
   const draggableId = item.id + '1'
   const dispatch = useDispatch()
   const { t } = useI18n()
 
   const { textRef, isTextOverflowed } = useIsTextOverflowed(item.name)
-
   return (
     <Draggable draggableId={draggableId} index={props.index}>
       {(provided, snapshot) => {
@@ -117,7 +115,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
 
             <IssuesGroupList
               groupId={item.id}
-              key={item.id}
+              key={item.id + '_'}
               index={props.index}
             />
           </ColumnTitleAreaBox>

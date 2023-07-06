@@ -13,6 +13,7 @@ import {
   setMovingStory,
   setModifyStatusModalInfo,
   setFullScreen,
+  setSpinning,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -70,6 +71,7 @@ export const openModifyStatusModalInfo =
   (params: {
     info: Model.Project.CheckStatusItem
     storyId: Model.KanBan.Story['id']
+    groupId: Model.KanBan.Group['id']
   }) =>
   async (dispatch: AppDispatch) => {
     dispatch(
@@ -104,6 +106,13 @@ export const saveModifyStatusModalInfo =
   async (dispatch: AppDispatch) => {
     const { modifyStatusModalInfo } = store.getState().kanBan
     const { projectInfo } = store.getState().project
+    // 修改优先级
+    await dispatch(
+      updateStoryPriority({
+        id: modifyStatusModalInfo.storyId ?? 0,
+        priority: modifyStatusModalInfo.groupId ?? 0,
+      }),
+    )
     try {
       let res = null
       if (projectInfo?.projectType === 1) {
@@ -166,9 +175,11 @@ export const modifyStatus =
         category_status_to_id: target.flow_status_id,
       }),
     )
+
     dispatch(
       openModifyStatusModalInfo({
         storyId,
+        groupId: options?.targetGroupId,
         info: {
           // 可流转的状态列表
           content: target.status_name,
@@ -435,6 +446,7 @@ export const getKanbanByGroup = createAsyncThunk(
     }
     if (type === 'none') {
       const res = await services.kanban.getKanban(params)
+      store.dispatch(setSpinning(false))
       return [
         {
           // 无分组id
@@ -450,6 +462,8 @@ export const getKanbanByGroup = createAsyncThunk(
       ...params,
       group_by: type,
     })
+    store.dispatch(setSpinning(false))
+
     return res.data
   },
 )

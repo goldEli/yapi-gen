@@ -59,7 +59,7 @@ export const memberBugList = async (
 // 后半截弹窗顶部的详情
 export const plugSelectionUserInfo = async (params: {
   user_id: number
-  project_ids?: number
+  project_ids?: any
 }) => {
   const response = await http.get<any, API.Sprint.PlugSelectionUserInfo.Result>(
     '/b/efficiency/member/search/info',

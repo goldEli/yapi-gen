@@ -105,10 +105,7 @@ const View = (props: View) => {
         },
       ])
     }
-
-    console.log(options, 'pp')
   }, [options])
-  console.log(options, '999')
   useEffect(() => {
     const item = props.viewDataList?.find(el => el.id === props.value) || {
       name: '',
@@ -280,8 +277,6 @@ const View = (props: View) => {
         menu={{ items, onClick: onOpenChange }}
         overlayStyle={{
           background: 'var(--neutral-white-d1)',
-          // overflowY: 'scroll',
-          // maxHeight: 350,
           boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
         }}
       >

@@ -31,7 +31,7 @@ const LongStoryDropdown = (props: IProps) => {
 
   const { longStoryList } = useSelector(state => state.sprint)
   const [list, setList] = useState<Model.Sprint.longStroyItem[]>([])
-  const [hasLongStroy, setHasLongStroy] = useState(false)
+  const [hasLongStroy, setHasLongStroy] = useState<any>()
   const [params, setParams] = useState<API.Sprint.getLongStoryList.Params>({
     order: 'asc',
     orderkey: 'id',
@@ -59,11 +59,20 @@ const LongStoryDropdown = (props: IProps) => {
     dispatch(getLongStoryList(params))
   }
   const onConfirm = async (data: Model.Sprint.longStroyItem) => {
-    // console.log(data)
-
+    console.log(data, detail)
+    // debuggers
     let params: API.Affairs.AddInfoAffairs.Params = {
       projectId: detail.projectId,
-      sprintId: detail.id,
+      sprintId:
+        detail.level_tree?.length === 0 ||
+        !detail.level_tree?.find(
+          (e: { work_type: number }) => e.work_type === 4 || e.work_type === 5,
+        )?.id
+          ? detail.id
+          : detail.level_tree?.find(
+              (e: { work_type: number }) =>
+                e.work_type === 4 || e.work_type === 5,
+            ).id,
       type: 'parent',
     }
     // hasLongStroy 为true新增
@@ -79,6 +88,7 @@ const LongStoryDropdown = (props: IProps) => {
         name: detail.name,
       }
     }
+    // debugger
     const methods = hasLongStroy ? addInfoAffairs : updateInfoAffairs
     try {
       await methods(params)
@@ -98,9 +108,18 @@ const LongStoryDropdown = (props: IProps) => {
     }
     const params = {
       projectId: detail.projectId,
-      sprintId: detail.id,
+      sprintId:
+        detail.level_tree?.length === 0 ||
+        !detail.level_tree?.find(
+          (e: { work_type: number }) => e.work_type === 4 || e.work_type === 5,
+        )?.id
+          ? detail.id
+          : detail.level_tree?.find(
+              (e: { work_type: number }) =>
+                e.work_type === 4 || e.work_type === 5,
+            )?.id,
       type: 'parent',
-      targetId: detail.parentId,
+      targetId: 0,
     }
     try {
       await deleteInfoAffairs(params)
@@ -111,14 +130,16 @@ const LongStoryDropdown = (props: IProps) => {
     }
   }
   useEffect(() => {
+    // debugger
+    console.log('detail', detail)
     const hasLongStroy =
-      detail.level_tree?.length === 0 &&
-      (detail.work_type === 4 || detail.work_type === 5)
+      detail.level_tree?.length === 0 ||
+      (detail.level_tree?.length &&
+        !detail.level_tree.some(
+          (item: { work_type: number }) => item.work_type === 3,
+        ))
     setHasLongStroy(hasLongStroy)
     setLoading(true)
-    // if (longStoryList?.list.length) {
-    //   return
-    // }
     getList()
   }, [params.search.project_id, params.pagesize])
   useEffect(() => {
@@ -161,7 +182,14 @@ const LongStoryDropdown = (props: IProps) => {
             <ContentItem
               key={index}
               onClick={() => onConfirm(item)}
-              className={item.id === detail.parentId ? activity : ''}
+              className={
+                item.id ===
+                detail.level_tree.find(
+                  (item: { work_type: number }) => item.work_type === 3,
+                )?.id
+                  ? activity
+                  : ''
+              }
             >
               <img src={item.category_attachment} alt="" />
               <span>{item.story_prefix_key}</span>

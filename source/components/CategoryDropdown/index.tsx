@@ -73,6 +73,7 @@ interface IProps {
   categoryList?: Model.Project.Category[]
   bordered?: boolean
   type?: boolean
+  isClear?: boolean
 }
 const CategoryDropdown = (props: IProps) => {
   const {
@@ -210,7 +211,7 @@ const CategoryDropdown = (props: IProps) => {
         // setOptions(getOptions)
       }}
       showSearch
-      allowClear
+      allowClear={props.isClear}
       showArrow
       bordered={bordered}
       options={options}

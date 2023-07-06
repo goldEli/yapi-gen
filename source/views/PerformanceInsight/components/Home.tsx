@@ -508,6 +508,7 @@ const Home = () => {
       seriesData: res.work_completion_period.list.map(el => el.completed),
     })
     setCharts3({
+      time: `${res.risk_stock.start_time} ~ ${res.risk_stock.end_time}`,
       total: res.risk_stock.total,
       seriesData: res.risk_stock.list.map(el => [
         el.name,
@@ -569,35 +570,26 @@ const Home = () => {
       })
     }
   }
-
   useEffect(() => {
-    // 统一监听参数变化，发起请求刷新页面
-    // if (
-    //   !!headerParmas.time?.time &&
-    //   !!headerParmas.period_time &&
-    //   !headerParmas.iterate_ids &&
-    //   !headerParmas.users &&
-    //   !headerParmas.projectIds
-    // ) {
-    //   return
-    // }
-    // if (headerParmas.time.type === 0 && !headerParmas.time.time) {
-    //   return
-    // }
-    if (!headerParmas.view.value) {
+    if (headerParmas.view.value === 0) {
       return
     }
-
     // 监听对象第一次会走两次接口 转成字符窜判断
     setValueHeaderStr(JSON.stringify(headerParmas))
     if (
       !headerParmas.period_time &&
       headerParmas.time.type === 0 &&
-      !headerParmas.time.time[0]
+      !headerParmas.time.time[0] &&
+      headerParmas.iterate_ids?.length === 0
     ) {
+      dispatch(
+        setHeaderParmas({
+          period_time: 'one_month',
+        }),
+      )
       return
     }
-    console.log(headerParmas, 'headerParmas')
+
     valueHeaderStr !== JSON.stringify(headerParmas) && init()
   }, [headerParmas])
   return (
@@ -652,13 +644,13 @@ const Home = () => {
           />
         </div>
         <div style={{ width: '100%', display: 'flex' }}>
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '100%', paddingBottom: '24px' }}>
             <div
               style={{
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'space-between',
-                padding: '0 24px',
+                padding: '0 24px ',
               }}
             >
               <HightChartMainBar

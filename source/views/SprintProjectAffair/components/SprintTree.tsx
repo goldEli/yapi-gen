@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 需求主页-需求树形模式
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -19,11 +20,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import PaginationBox from '@/components/TablePagination'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
-import {
-  setAddQuickSprintModal,
-  setAddWorkItemModal,
-  setFilterParamsModal,
-} from '@store/project'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { getMessage } from '@/components/Message'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
@@ -174,7 +171,23 @@ const SprintTree = (props: Props) => {
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
     setIsShowMore(false)
-    dispatch(setAddQuickSprintModal({ visible: true, params: item }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId,
+          type:
+            item.work_type === 3
+              ? 8
+              : [4, 5].includes(item.work_type)
+              ? 6
+              : undefined,
+          title: '创建子事务',
+          isCreateAffairsChild: true,
+          parentId: item.id,
+        },
+      }),
+    )
   }
 
   // 点击编辑

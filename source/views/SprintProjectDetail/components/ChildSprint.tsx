@@ -16,10 +16,7 @@ import { Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import StateTag from '@/components/StateTag'
 import DragTable from '@/components/DragTable'
-import {
-  setAddQuickSprintModal,
-  setIsChangeDetailAffairs,
-} from '@store/project'
+import { setAddWorkItemModal, setIsChangeDetailAffairs } from '@store/project'
 import { useDispatch, useSelector } from '@store/index'
 import {
   addAffairsChild,
@@ -243,8 +240,6 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     },
   ]
 
-  console.log(dataSource, '=dataSourcedataSource')
-
   const operationList = [
     {
       width: 40,
@@ -253,6 +248,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <MoreDropdown
               isMoreVisible={isShowMore}
+              hasChild
               menu={
                 <RelationDropdownMenu
                   onDeleteChange={onDeleteChange}
@@ -269,7 +265,23 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
 
   // 创建子事务
   const onCreateChild = () => {
-    dispatch(setAddQuickSprintModal({ visible: true, params: props.detail }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          ...props.detail,
+          type:
+            props.detail.work_type === 3
+              ? 8
+              : [4, 5].includes(props.detail.work_type)
+              ? 6
+              : undefined,
+          title: '创建子事务',
+          isCreateAffairsChild: true,
+          parentId: props.detail.id,
+        },
+      }),
+    )
   }
 
   // 点击搜素获取下拉数据列表

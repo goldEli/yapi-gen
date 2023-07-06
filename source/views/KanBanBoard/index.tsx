@@ -29,16 +29,16 @@ const KanBanBoard: React.FC<IProps> = props => {
 
   return (
     <KanBanBoardBox>
-      <TopArea />
-      <ToolBar />
-      {userPreferenceConfig?.guidePageConfig?.kanban === 1
-        ? guildModalEl
-        : null}
-      <FullScreenContainer>
-        <Board />
-      </FullScreenContainer>
-      <UserGroupingModal />
-      <ModifyStatusModal />
+        <TopArea />
+        <ToolBar />
+        {userPreferenceConfig?.guidePageConfig?.kanban === 1
+          ? guildModalEl
+          : null}
+        <FullScreenContainer>
+          <Board />
+        </FullScreenContainer>
+        <UserGroupingModal />
+        <ModifyStatusModal />
     </KanBanBoardBox>
   )
 }

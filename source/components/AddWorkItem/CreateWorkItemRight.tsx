@@ -157,7 +157,7 @@ const CreateDemandRight = (props: Props) => {
       // 回显优先级
       setPriorityDetail(props?.detail.priority)
       // 回显严重程度
-      setSeverity(props?.detail.severity)
+      setSeverity(props?.detail.severity?.id)
 
       // 开始时间
       if (props?.detail?.expectedStart) {
@@ -221,6 +221,13 @@ const CreateDemandRight = (props: Props) => {
           ? props?.detail?.iterateId
           : undefined,
 
+        // 发现版本
+        discovery_version: removeNull(projectInfoValues, 'iterate_name')
+          ?.filter((k: any) => k.status === 1 || k.status === 4)
+          ?.filter((i: any) => i.id === props?.detail?.discovery_version).length
+          ? props?.detail?.discovery_version
+          : undefined,
+
         // 父需求
         parent_id: params.isChild
           ? hasChild
@@ -232,6 +239,9 @@ const CreateDemandRight = (props: Props) => {
 
         // 需求分类
         class: props?.detail.class || null,
+
+        // 解决办法
+        solution: props.detail.solution || '',
       })
     } else {
       form.setFieldsValue({
@@ -240,7 +250,7 @@ const CreateDemandRight = (props: Props) => {
         )?.[0]?.statusId,
       })
       // 子需求默认回填父需求
-      if (params?.isChild) {
+      if (params?.isChild || params?.isCreateAffairsChild) {
         form.setFieldsValue({
           parent_id: addWorkItemParentList?.filter(
             (i: any) => i.value === Number(params?.parentId),
@@ -650,7 +660,7 @@ const CreateDemandRight = (props: Props) => {
       // 父需求
       nodeComponent = (
         <CustomSelect
-          disabled={!props.isCreateDemand}
+          disabled={!props.isCreateDemand || params?.isCreateAffairsChild}
           style={{ width: '100%' }}
           showArrow
           showSearch

@@ -114,6 +114,17 @@ declare namespace API.Flaw {
     }
   }
 
+  namespace FlawRelationDragSort {
+    type Params = {
+      projectId: number
+      id?: number
+      relationIds: number[]
+      type: Model.Affairs.RelationType
+    }
+
+    type Result = Model.Flaw.FlawInfo[]
+  }
+
   namespace GetFlawRelationList {
     type Params = {
       projectId: number

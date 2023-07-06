@@ -26,6 +26,7 @@ import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdow
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { PriorityWrapTable } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
+import NoData from '@/components/NoData'
 
 const FormWrap = styled(Form)`
   padding: 0 24px;
@@ -181,6 +182,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <MoreDropdown
               isMoreVisible={isShowMore}
+              hasChild
               menu={
                 <RelationDropdownMenu
                   onDeleteChange={onDeleteChange}
@@ -202,7 +204,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     { label: '后置', value: 3, list: [] },
     { label: '阻塞', value: 4, list: [] },
     { label: '被阻塞', value: 5, list: [] },
-    { label: '克隆', value: 6, list: [] },
   ]
 
   // 获取关联事务列表
@@ -269,7 +270,10 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
 
   // 关闭链接事务弹窗
   const onClose = () => {
+    setSearchValue('')
     setIsVisible(false)
+    setSelectList([])
+    setRecentList([])
     form.resetFields()
   }
 
@@ -287,11 +291,11 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     onClose()
   }
 
-  // 点击切换页码
-  const onChangePage = (page: number, size: number) => {
-    setPageParams({ page, pagesize: size })
-    getRelationStoriesList({ page, pagesize: size })
-  }
+  // // 点击切换页码
+  // const onChangePage = (page: number, size: number) => {
+  //   setPageParams({ page, pagesize: size })
+  //   getRelationStoriesList({ page, pagesize: size })
+  // }
 
   // 改变顺序
   const onChangeData = async (
@@ -383,15 +387,15 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             )}
           </>
         ))}
-
-        {allDataSource.total > 20 && (
+        {allDataSource.list?.length <= 0 && <NoData />}
+        {/* {allDataSource.list?.length > 20 && (
           <PaginationBox
             total={allDataSource?.total}
             currentPage={allDataSource?.currentPage}
             pageSize={allDataSource?.pageSize}
             onChange={onChangePage}
           />
-        )}
+        )} */}
       </InfoItemWrap>
     </InfoItem>
   )

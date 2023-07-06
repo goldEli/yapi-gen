@@ -273,12 +273,12 @@ const BasicDemand = (props: Props) => {
           keyText={filterContent?.keyText ?? item.content}
           type={filterContent?.attr}
           defaultText={defaultValues?.defaultText}
-          value={defaultValues.valueType || null}
+          value={defaultValues?.valueType || null}
           onUpdate={props.onUpdate}
           isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
           isInfoPage={props.isInfoPage}
         >
-          {defaultValues.defaultHtml}
+          {defaultValues?.defaultHtml}
         </TableQuickEdit>
       )
     } else if (item.content === 'schedule') {
@@ -444,7 +444,6 @@ const BasicDemand = (props: Props) => {
         width: '100%',
         paddingLeft: props.hasPadding ? '24px' : 0,
         height: '100%',
-        overflow: 'auto',
       }}
     >
       <Label>{t('newlyAdd.basicInfo')}</Label>

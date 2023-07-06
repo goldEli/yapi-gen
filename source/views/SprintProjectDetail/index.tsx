@@ -55,7 +55,11 @@ import {
 import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import LongStroyBread from '@/components/LongStroyBread'
-import { setIsUpdateChangeLog, setIsUpdateStatus } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsUpdateChangeLog,
+  setIsUpdateStatus,
+} from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '@/components/CopyIcon'
@@ -100,6 +104,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   const [leftWidth, setLeftWidth] = useState(400)
   const [currentIndex, setCurrentIndex] = useState(0)
+
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/transaction/delete',
+  )
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -276,7 +285,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       text: (
         <>
           <div style={{ marginBottom: 9 }}>
-            你将永久删除${affairsInfo.story_prefix_key}
+            你将永久删除{affairsInfo.story_prefix_key}
             ，删除后将不可恢复请谨慎操作!
           </div>
           <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
@@ -289,6 +298,21 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         return Promise.resolve()
       },
     })
+  }
+
+  // 编辑事务
+  const onEdit = () => {
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: affairsInfo.id,
+          projectId: affairsInfo.projectId,
+          type: affairsInfo.work_type,
+          title: '编辑事务',
+        },
+      }),
+    )
   }
 
   // 跳转配置
@@ -311,45 +335,71 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     sprintDetailInfoDom.current.changeTabs(value)
   }
 
-  // 更多下拉
-  const items: MenuProps['items'] = [
-    {
-      label: <div onClick={onDelete}>删除</div>,
-      key: '0',
-    },
-    {
-      type: 'divider',
-    },
-    {
-      label: (
-        <div onClick={() => onChangeTabsScroll('sprint-attachment')}>
-          添加附件
-        </div>
-      ),
-      key: '1',
-    },
-    {
-      label: (
-        <div onClick={() => onChangeTabsScroll('sprint-childSprint')}>
-          添加子事务
-        </div>
-      ),
-      key: '2',
-    },
-    {
-      label: (
-        <div onClick={() => onChangeTabsScroll('sprint-tag')}>添加标签</div>
-      ),
-      key: '3',
-    },
-    {
-      type: 'divider',
-    },
-    {
-      label: <div onClick={onToConfig}>配置</div>,
-      key: '4',
-    },
-  ]
+  // 菜单
+  const onGetMenu = () => {
+    // 更多下拉
+    let items: MenuProps['items'] = [
+      {
+        label: <div onClick={onEdit}>编辑</div>,
+        key: '6',
+      },
+      {
+        label: <div onClick={onDelete}>删除</div>,
+        key: '0',
+      },
+
+      {
+        type: 'divider',
+      },
+      {
+        label: (
+          <div onClick={() => onChangeTabsScroll('sprint-attachment')}>
+            添加附件
+          </div>
+        ),
+        key: '1',
+      },
+      {
+        label: (
+          <div onClick={() => onChangeTabsScroll('sprint-childSprint')}>
+            添加子事务
+          </div>
+        ),
+        key: '2',
+      },
+      {
+        label: (
+          <div onClick={() => onChangeTabsScroll('sprint-tag')}>添加标签</div>
+        ),
+        key: '3',
+      },
+      {
+        label: (
+          <div onClick={() => onChangeTabsScroll('sprint-linkSprint')}>
+            链接事务
+          </div>
+        ),
+        key: '4',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        label: <div onClick={onToConfig}>配置</div>,
+        key: '5',
+      },
+    ]
+    if (hasEdit) {
+      items = items.filter((i: any) => i.key !== '6')
+    }
+    if (hasDel) {
+      items = items.filter((i: any) => i.key !== '0')
+    }
+    // 子任务不存在子事务模块
+    return affairsInfo.work_type === 6
+      ? items.filter((i: any) => i.key !== '2')
+      : items
+  }
 
   // 拖动线条
   const onDragLine = () => {
@@ -405,6 +455,17 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     setSearchParams(`data=${params}`)
   }
 
+  const getKeyDown = (e: any) => {
+    if (e.keyCode === 38) {
+      //up
+      document.getElementById('upIcon')?.click()
+    }
+    if (e.keyCode === 40) {
+      //down
+      document.getElementById('downIcon')?.click()
+    }
+  }
+
   useEffect(() => {
     // 获取项目信息中的需求类别
     const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
@@ -425,6 +486,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id }))
     }
   }, [isUpdateAddWorkItem])
+
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
 
   return (
     <Wrap>
@@ -560,11 +628,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             placement="bottomRight"
             trigger={['click']}
             menu={{
-              items:
-                // 子任务不存在子事务模块
-                affairsInfo.work_type === 6
-                  ? items.filter((i: any) => i.key !== '2')
-                  : items,
+              items: onGetMenu(),
             }}
             getPopupContainer={n => n}
           >

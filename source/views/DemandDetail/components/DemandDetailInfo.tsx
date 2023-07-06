@@ -48,6 +48,7 @@ const DemandDetailInfo = () => {
       <div
         style={{
           position: 'relative',
+          height: '100%',
           width: `calc(100% - ${leftWidth}px)`,
         }}
       >

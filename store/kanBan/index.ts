@@ -10,6 +10,7 @@ import i18next from 'i18next'
 
 type SliceState = {
   // 全屏状态
+  containRight: boolean
   fullScreen: boolean
   guideVisible: Model.KanBan.guideVisible
   sortByGroupOptions?: Model.KanBan.GroupInfoItem[]
@@ -33,6 +34,7 @@ type SliceState = {
     visible: boolean
     storyId?: Model.KanBan.Story['id']
     info?: Model.Project.CheckStatusItem
+    groupId?: Model.KanBan.Group['id']
   }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]
@@ -44,9 +46,11 @@ type SliceState = {
     status?: Model.KanbanConfig.Status
     groupId: Model.KanBan.Group['id']
   } | null
+  spinning?: boolean
 }
 
 const initialState: SliceState = {
+  containRight: false,
   fullScreen: false,
   movingStory: null,
   kanbanConfigList: [],
@@ -61,10 +65,10 @@ const initialState: SliceState = {
     groupName: '',
   },
   sortByGroupOptions: [
-    { key: 'none', value: i18next.t('none'), check: false },
+    { key: 'none', value: i18next.t('none'), check: true },
     { key: 'users', value: i18next.t('by_personnel'), check: false },
     { key: 'category', value: i18next.t('by_category'), check: false },
-    { key: 'priority', value: i18next.t('by_priority'), check: true },
+    { key: 'priority', value: i18next.t('by_priority'), check: false },
   ],
   sortByRowAndStatusOptions: [],
   sortByView: [],
@@ -75,12 +79,16 @@ const initialState: SliceState = {
   shareModelInfo: {
     visible: false,
   },
+  spinning: false,
 }
 
 const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    changeRight(state) {
+      state.containRight = !state.containRight
+    },
     setFullScreen(state, action: PayloadAction<SliceState['fullScreen']>) {
       state.fullScreen = action.payload
     },
@@ -145,6 +153,7 @@ const slice = createSlice({
       if (!current) {
         return
       }
+
       state.sortByGroupOptions?.forEach(item => {
         item.check = false
         if (item.key === current?.key) {
@@ -177,6 +186,9 @@ const slice = createSlice({
           item.check = true
         }
       })
+    },
+    setSpinning(state, action: PayloadAction<boolean>) {
+      state.spinning = action.payload
     },
   },
   extraReducers(builder) {
@@ -213,6 +225,8 @@ export const {
   setKanbanInfoByGroup,
   setModifyStatusModalInfo,
   setFullScreen,
+  changeRight,
+  setSpinning,
 } = slice.actions
 
 export default kanBan

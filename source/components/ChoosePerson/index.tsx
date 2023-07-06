@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonUserAvatar from '../CommonUserAvatar'
 import NoData from '../NoData'
-import { NameWrap } from '../StyleCommon'
 
 const PersonItemWrap = styled.div({
   height: 44,
@@ -52,7 +51,7 @@ const ChoosePerson = (props: ChoosePersonProps) => {
   }, [props.visible])
 
   return (
-    <div style={{ padding: '16px 0', minWidth: 240 }}>
+    <div style={{ padding: '16px 0', width: 240 }}>
       <div style={{ padding: '0 16px' }}>
         <Input
           value={value}

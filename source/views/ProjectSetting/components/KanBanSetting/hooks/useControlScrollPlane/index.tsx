@@ -7,6 +7,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { DraggableData } from 'react-rnd'
 import { DraggableEvent } from 'react-draggable'
 import { Content, ControlScrollPlaneBox, Strip, WindowArea } from './styled'
+import { useSelector } from '@store/index'
 
 interface ControlScrollPlaneProps {}
 
@@ -18,7 +19,9 @@ const columnWidth = 302
 const columnGap = 16
 
 const useControlScrollPlane = (columnNum: number) => {
+  const containRight = useSelector(store => store.kanBan.containRight)
   // 需要控制滚动条的容器
+  // debugger
   const containerRef = useRef<HTMLDivElement>(null)
   // 容器可视区域宽高
   const [width, setWidth] = useState(0)
@@ -50,7 +53,7 @@ const useControlScrollPlane = (columnNum: number) => {
     return () => {
       observer.disconnect()
     }
-  }, [])
+  }, [containRight])
 
   // 缩略图与容器宽高比列
   const widthRatio = planeWidth / childWidth
@@ -75,8 +78,7 @@ const useControlScrollPlane = (columnNum: number) => {
     return () => {
       containerRef.current?.removeEventListener('scroll', onScroll)
     }
-  }, [widthRatio, heightRatio])
-
+  }, [widthRatio, heightRatio, columnNum])
   // 缩略的可视宽高
   const windowHeight = planeHeight * (height / childHeight)
   const windowWidth = planeWidth * (width / childWidth)

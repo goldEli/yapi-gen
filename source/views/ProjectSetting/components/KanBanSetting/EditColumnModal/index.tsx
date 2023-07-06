@@ -144,7 +144,12 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
             name="max_num"
           >
             <CustomNumberWrap>
-              <InputNumber min={0} defaultValue={1} style={{ width: '100%' }} />
+              <InputNumber
+                min={0}
+                defaultValue={1}
+                style={{ width: '100%' }}
+                max={100}
+              />
             </CustomNumberWrap>
           </Form.Item>
         </Form>

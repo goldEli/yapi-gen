@@ -2,6 +2,7 @@
 import {
   addFlawRelation,
   deleteFlawRelation,
+  flawRelationDragSort,
   getFlawRelationStories,
   getFlawSelectRelationRecent,
   getFlawSelectRelationSearch,
@@ -9,6 +10,7 @@ import {
   updateFlawStatus,
 } from '@/services/flaw'
 import { getParamsData } from '@/tools'
+import MoreOptions from '@/components/MoreOptions'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { FormWrap, PriorityWrap, RelationWrap } from '../style'
@@ -18,7 +20,7 @@ import NoData from '@/components/NoData'
 import PaginationBox from '@/components/TablePagination'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
-import { Form, Tooltip } from 'antd'
+import { Form, Tooltip, Select } from 'antd'
 import { useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
 import Sort from '@/components/Sort'
@@ -34,6 +36,14 @@ import { OmitText } from '@star-yun/ui'
 import MoreDropdown from '@/components/MoreDropdown'
 import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import DragTable from '@/components/DragTable'
+import styled from '@emotion/styled'
+
+export const SubLabel = styled.div`
+  margin: 8px 0;
+  font-size: 12px;
+  color: var(--neutral-n3);
+`
 
 interface RelationStoriesProps {
   activeKey?: string
@@ -64,11 +74,19 @@ const RelationStories = (props: RelationStoriesProps) => {
   const [isShowMore, setIsShowMore] = useState(false)
   const [dataSource, setDataSource] =
     useState<Model.Flaw.FlawRelationStoriesData>()
-  // 下拉数据
-  const [selectList, setSelectList] = useState<SelectItem[]>([])
-  // 最近事务数据
-  const [recentList, setRecentList] = useState<SelectItem[]>([])
+  const [allDataSource, setAllDataSource] = useState<any>({
+    list: undefined,
+  })
+  const [resultData, setResultData] = useState<
+    {
+      label: string
+      value: number
+      list: Model.Affairs.AffairsInfo[]
+    }[]
+  >([])
 
+  //根据搜索框的值来放的数据
+  const [options, setOptions] = useState<any>([])
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -77,12 +95,11 @@ const RelationStories = (props: RelationStoriesProps) => {
 
   // 类型列表
   const typeList = [
-    { label: '关联', value: 1 },
-    { label: '前置', value: 2 },
-    { label: '后置', value: 3 },
-    { label: '阻塞', value: 4 },
-    { label: '被阻塞', value: 5 },
-    { label: '克隆', value: 6 },
+    { label: '关联', value: 1, list: [] },
+    { label: '前置', value: 2, list: [] },
+    { label: '后置', value: 3, list: [] },
+    { label: '阻塞', value: 4, list: [] },
+    { label: '被阻塞', value: 5, list: [] },
   ]
 
   //   获取关联项列表
@@ -97,6 +114,16 @@ const RelationStories = (props: RelationStoriesProps) => {
       pageSize: pageParams.size,
     })
     setDataSource(response)
+    setAllDataSource(response)
+    const newArr = JSON.parse(JSON.stringify(typeList))
+    newArr.forEach((element: any) => {
+      response.list.forEach((i: any) => {
+        if (i.relation_type === element.value) {
+          element.list.push({ ...i, index: i.id })
+        }
+      })
+    })
+    setResultData(newArr)
     setIsSpinning(false)
   }
 
@@ -107,10 +134,12 @@ const RelationStories = (props: RelationStoriesProps) => {
       id: props.detail.id,
       searchValue: value,
     })
-    setSelectList(
-      response.map((i: Model.Flaw.FlawInfo) => ({
-        label: i.name,
+    setOptions(
+      response.map((i: any) => ({
+        label: i?.story_prefix_key + '' + i.name,
         value: i.id,
+        id: i.id,
+        cover: i?.project_category?.attachment_path,
       })),
     )
   }
@@ -121,10 +150,12 @@ const RelationStories = (props: RelationStoriesProps) => {
       projectId: projectInfo.id,
       id: props.detail.id,
     })
-    setRecentList(
+    setOptions(
       response.map((i: Model.Flaw.FlawInfo) => ({
-        label: i.name,
+        label: i.story_prefix_key + '' + i.name,
         value: i.id,
+        id: i.id,
+        cover: i.project_category.attachment_path,
       })),
     )
   }
@@ -132,7 +163,6 @@ const RelationStories = (props: RelationStoriesProps) => {
   // 点击添加链接事务弹窗
   const onClickOpen = () => {
     setIsVisible(true)
-    getSelectRelationRecent()
   }
 
   const onSearch = (value: string) => {
@@ -287,7 +317,7 @@ const RelationStories = (props: RelationStoriesProps) => {
             title={text.name}
           >
             <img
-              src={text.attachment_path}
+              src={record.category_attachment}
               style={{
                 width: '18px',
                 height: '18px',
@@ -455,7 +485,7 @@ const RelationStories = (props: RelationStoriesProps) => {
             title={text.name}
           >
             <img
-              src={text.attachment_path}
+              src={record.category_attachment}
               style={{
                 width: '18px',
                 height: '18px',
@@ -547,12 +577,63 @@ const RelationStories = (props: RelationStoriesProps) => {
     },
   ]
 
+  // 改变顺序
+  const onChangeData = async (
+    item: any,
+    data: { list: Model.Flaw.FlawInfo[] },
+  ) => {
+    setResultData(
+      resultData.map((i: any) => ({
+        ...i,
+        list: item.value === i.value ? data.list : i.list,
+      })),
+    )
+    await flawRelationDragSort({
+      projectId: projectInfo.id,
+      id: props.detail.id,
+      relationIds: data.list.map((i: Model.Flaw.FlawInfo) => i.id),
+      type: item.value,
+    })
+  }
+
+  const operationList = [
+    {
+      width: 40,
+      render: (text: any, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreDropdown
+              isMoreVisible={isShowMore}
+              hasChild
+              menu={
+                <RelationDropdownMenu
+                  onDeleteChange={onDeleteChange}
+                  record={record}
+                />
+              }
+              onChangeVisible={setIsShowMore}
+            />
+          </div>
+        )
+      },
+    },
+  ]
+
   useEffect(() => {
     if (props.activeKey === '2' || props.isOpen) {
       getList(pageObj, order)
     }
   }, [props.activeKey, props.isOpen])
-
+  useEffect(() => {
+    if (isVisible && !searchValue) {
+      getSelectRelationRecent()
+    }
+  }, [searchValue, isVisible])
+  const onSelect = (value: any) => {
+    form.setFieldsValue({
+      relationId: value,
+    })
+  }
   return (
     <RelationWrap style={{ paddingLeft: props.isDrawer ? 0 : 24 }}>
       <DeleteConfirmModal />
@@ -584,35 +665,84 @@ const RelationStories = (props: RelationStoriesProps) => {
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              placeholder="请选择工作项"
-              getPopupContainer={(node: any) => node}
-              showArrow
-              optionFilterProp="label"
-              allowClear
-              showSearch
               onSearch={onSearch}
-              options={searchValue ? selectList : recentList}
-            />
+              allowClear
+              showArrow
+              onClear={() => []}
+              getPopupContainer={(node: any) => node}
+              showSearch
+              onSelect={onSelect}
+              placeholder="搜索工作项"
+              optionFilterProp="label"
+            >
+              {options?.map((i: any) => {
+                return (
+                  <Select.Option value={i.value} key={i.value} label={i.label}>
+                    <MoreOptions
+                      type="project"
+                      name={i.label}
+                      number={i.number}
+                      img={i.cover}
+                    />
+                  </Select.Option>
+                )
+              })}
+            </CustomSelect>
           </Form.Item>
         </FormWrap>
       </CommonModal>
       <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
         链接工作项
       </CommonButton>
-      <ResizeTable
-        isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 94px)"
-        col={props.isDrawer ? drawerColumns : columns}
-        dataSource={dataSource?.list}
-        noData={<NoData />}
-      />
-      <PaginationBox
-        currentPage={dataSource?.pager?.page || 0}
-        pageSize={pageObj?.size}
-        total={dataSource?.pager?.total || 0}
-        onChange={onChangePage}
-        hasPadding
-      />
+      {/* 缺陷详情 */}
+      {!props.isDrawer && (
+        <>
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="calc(100% - 94px)"
+            col={props.isDrawer ? drawerColumns : columns}
+            dataSource={dataSource?.list}
+            noData={<NoData />}
+          />
+          <PaginationBox
+            currentPage={dataSource?.pager?.page || 0}
+            pageSize={pageObj?.size}
+            total={dataSource?.pager?.total || 0}
+            onChange={onChangePage}
+            hasPadding
+          />
+        </>
+      )}
+      {/* 缺陷浮层 */}
+      {props.isDrawer && (
+        <>
+          {resultData.map((i: any) => (
+            <>
+              {i.list.length > 0 && (
+                <div key={i.value}>
+                  <SubLabel>{i.label}</SubLabel>
+                  <DragTable
+                    columns={drawerColumns}
+                    dataSource={{ list: i.list }}
+                    onChangeData={arr => onChangeData(i, arr)}
+                    showHeader={false}
+                    hasOperation={operationList}
+                  />
+                </div>
+              )}
+            </>
+          ))}
+          {allDataSource.list?.length <= 0 && <NoData />}
+          {/* {allDataSource.list?.length > 20 && (
+            <PaginationBox
+              total={allDataSource.pager?.total}
+              currentPage={allDataSource.pager?.page}
+              pageSize={allDataSource.pager?.pagesize}
+              onChange={onChangePage}
+            />
+          )} */}
+        </>
+      )}
     </RelationWrap>
   )
 }

@@ -16,6 +16,7 @@ import {
 import { getMessage } from '@/components/Message'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
+import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 
 interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
@@ -95,6 +96,8 @@ const AffairsDetail = (props: AffairsDetailProps) => {
 
   // 富文本失焦
   const onBlurEditor = async () => {
+    console.log(1, '失焦')
+
     setIsEditInfo(false)
 
     if (editInfo === props.affairsInfo.info) return
@@ -133,6 +136,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         <Label>描述</Label>
         {(isEditInfo || editInfo) && (
           <Editor
+            upload={uploadFile}
             value={editInfo}
             getSuggestions={() => []}
             readonly={!isEditInfo}
@@ -198,7 +202,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         <SprintTag
           defaultList={tagList}
           canAdd
-          onUpdate={onUpdate}
+          onUpdate={() => onUpdate()}
           detail={props.affairsInfo}
           addWrap={
             <AddWrap hasDash>

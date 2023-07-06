@@ -33,7 +33,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
   const { projectInfoValues } = useSelector(store => store.project)
   const [tabActive, setTabActive] = useState('sprint-info')
   const [isScroll, setIsScroll] = useState(false)
-
+  const scrollRef = useRef<HTMLTableElement>(null)
   // 提交评论
   const onConfirmComment = async (value: { info: string }) => {
     await addAffairsComment({
@@ -115,11 +115,11 @@ const SprintDetailInfo = (props: { onRef: any }) => {
     })
     setTabActive(arr[arr.length - 1])
   }
-
+  const scrollRefDom = scrollRef.current
   useEffect(() => {
-    window?.addEventListener('scroll', handleScroll, true)
+    scrollRefDom?.addEventListener('scroll', handleScroll, true)
     return () => {
-      window.removeEventListener('scroll', handleScroll, false)
+      scrollRefDom?.removeEventListener('scroll', handleScroll, false)
     }
   }, [])
 
@@ -138,21 +138,23 @@ const SprintDetailInfo = (props: { onRef: any }) => {
           onChange={onChangeTabs}
         />
       )}
-      <DetailInfoWrap
-        ref={LeftDom}
-        className="sprintDetail_dom"
-        isScroll={isScroll}
-      >
-        <AffairsDetail
-          affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
-          isInfoPage
-        />
-        {affairsInfo.work_type !== 6 && (
-          <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
-        )}
-        <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
-        <ActivitySprint />
-      </DetailInfoWrap>
+      <div ref={scrollRef}>
+        <DetailInfoWrap
+          ref={LeftDom}
+          className="sprintDetail_dom"
+          isScroll={isScroll}
+        >
+          <AffairsDetail
+            affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
+            isInfoPage
+          />
+          {affairsInfo.work_type !== 6 && (
+            <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+          )}
+          <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+          <ActivitySprint />
+        </DetailInfoWrap>
+      </div>
       <CommentFooter
         onRef={commentDom}
         placeholder="发表评论（按M快捷键发表评论）"
