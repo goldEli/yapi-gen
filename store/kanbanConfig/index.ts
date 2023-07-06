@@ -17,6 +17,7 @@ type SliceState = {
     visible: boolean
     title?: string
     viewItem?: Model.KanbanConfig.Config
+    isSaveAs?: boolean
   }
   editColumnModelInfo: {
     visible: boolean
