@@ -104,15 +104,21 @@ export const closeModifyStatusModalInfo =
 export const saveModifyStatusModalInfo =
   (params: API.Affairs.UpdateAffairsStatus.Params) =>
   async (dispatch: AppDispatch) => {
-    const { modifyStatusModalInfo } = store.getState().kanBan
+    const { modifyStatusModalInfo, sortByGroupOptions } =
+      store.getState().kanBan
     const { projectInfo } = store.getState().project
-    // 修改优先级
-    await dispatch(
-      updateStoryPriority({
-        id: modifyStatusModalInfo.storyId ?? 0,
-        priority: modifyStatusModalInfo.groupId ?? 0,
-      }),
+    // 只有按优先级分组才用修改优先级
+    const isPriorityGroup = sortByGroupOptions?.find(
+      k => k.key === 'priority' && k.check,
     )
+    if (isPriorityGroup) {
+      await dispatch(
+        updateStoryPriority({
+          id: modifyStatusModalInfo.storyId ?? 0,
+          priority: modifyStatusModalInfo.groupId ?? 0,
+        }),
+      )
+    }
     try {
       let res = null
       if (projectInfo?.projectType === 1) {
@@ -149,7 +155,7 @@ export const modifyStatus =
     target: Model.KanbanConfig.Status
   }) =>
   async (dispatch: AppDispatch) => {
-    const { kanbanInfoByGroup } = store.getState().kanBan
+    const { kanbanInfoByGroup, sortByGroupOptions } = store.getState().kanBan
     const { source, target, storyId } = options
     const data = produce(kanbanInfoByGroup, draft => {
       const stories =
@@ -175,6 +181,7 @@ export const modifyStatus =
         category_status_to_id: target.flow_status_id,
       }),
     )
+    console.log(sortByGroupOptions, 'sortByGroupOptions')
 
     dispatch(
       openModifyStatusModalInfo({
