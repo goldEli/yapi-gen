@@ -227,7 +227,7 @@ const IterationDetail = () => {
 
     setSearchGroups(params)
   }
-  console.log(iterateInfo, 'iterateInfo')
+
   const tabItems: TabsProps['items'] = [
     {
       key: '1',
@@ -448,7 +448,7 @@ const IterationDetail = () => {
       onUpdateDetail()
     }
   }, [isUpdateList])
-  console.log(tabItems, 'tabItems')
+
   return (
     <Wrap>
       <DeleteConfirmModal />
