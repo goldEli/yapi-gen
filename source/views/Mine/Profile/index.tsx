@@ -66,8 +66,9 @@ const timeChoose = css`
   margin: 0 8px;
 `
 const titleNumberCss = css`
-  color: rgba(67, 186, 154, 1);
+  color: var(--neutral-n1-d1);
   font-size: 24px;
+  font-family: SiYuanMedium;
 `
 const titleNumberCss2 = css`
   color: rgba(250, 151, 70, 1);
@@ -76,6 +77,7 @@ const titleNumberCss2 = css`
 const titleNumberCss3 = css`
   color: var(--primary-d1);
   font-size: 24px;
+  font-family: SiYuanMedium;
 `
 const titleTextCss = css`
   color: rgba(100, 101, 102, 1);
@@ -345,6 +347,9 @@ const Profile = () => {
     // console.log(`selected ${value}`)
     setNowYear(value)
   }
+  const changeActive = (value: any) => {
+    navigate(value)
+  }
   if (!loadingState) {
     return <Loading />
   }
@@ -358,7 +363,7 @@ const Profile = () => {
             {/* <SecondTitle>{t('mine.basicSurvey')}</SecondTitle> */}
             <InnerWrap>
               <ChartsItem>
-                <span className={titleNumberCss3}>{data?.project_count}</span>
+                <span className={titleNumberCss}>{data?.project_count}</span>
                 <span className={titleTextCss}>{t('mine.totalProject')}</span>
               </ChartsItem>
               <ChartsItem>
@@ -367,28 +372,44 @@ const Profile = () => {
                   {t('accumulated_work_items')}
                 </span>
               </ChartsItem>
-              <ChartsItem>
+              <div
+                style={{
+                  width: '0px',
+                  borderLeft: '1px solid var(--neutral-n6-d1)',
+                }}
+              ></div>
+              <ChartsItem
+                onClick={() => changeActive('/ProjectManagement/Mine/Carbon')}
+              >
                 <span className={titleNumberCss3}>{data?.abeyance_count}</span>
                 <span className={titleTextCss}>{t('todo_work_items')}</span>
               </ChartsItem>
-              <ChartsItem>
+              <ChartsItem
+                onClick={() => changeActive('/ProjectManagement/Mine/Finished')}
+              >
                 <span className={titleNumberCss3}>{data?.finish_count}</span>
                 <span className={titleTextCss}>
                   {t('completed_work_items')}
                 </span>
               </ChartsItem>
-              <ChartsItem>
+              <ChartsItem
+                onClick={() => changeActive('/ProjectManagement/Mine/Create')}
+              >
                 <span className={titleNumberCss3}>{data?.create_count}</span>
                 <span className={titleTextCss}>
                   {t('my_created_work_items')}
                 </span>
               </ChartsItem>
-              <ChartsItem>
+              <ChartsItem
+                onClick={() => changeActive('/ProjectManagement/Mine/Agenda')}
+              >
                 <span className={titleNumberCss3}>{data?.copy_me_count}</span>
                 <span className={titleTextCss}>{t('cc_to_me_work_items')}</span>
               </ChartsItem>
-              <ChartsItem>
-                <span className={titleNumberCss2}>{data?.approving_count}</span>
+              <ChartsItem
+                onClick={() => changeActive('/ProjectManagement/Mine/Examine')}
+              >
+                <span className={titleNumberCss3}>{data?.approving_count}</span>
                 <span className={titleTextCss}>
                   {t('pending_approval_work_items')}
                 </span>
