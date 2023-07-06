@@ -40,5 +40,6 @@ declare namespace Model.KanbanConfig {
   }
   interface Config extends ConfigListItem {
     columns?: Column[]
+    isSaveAs?: boolean
   }
 }
