@@ -143,38 +143,35 @@ const RightIcon = styled.div`
     }
     .active {
       color: var(--primary-d2);
+      svg {
+        color: var(--primary-d2);
+      }
     }
   }
 `
-const IconWrap = styled(IconFont)<{ isActive: any }>(
-  {
-    fontSize: 20,
-    color: 'var(--neutral-n3)',
-    cursor: 'pointer',
-    padding: 6,
-    borderRadius: 6,
-    '&: hover': {
-      color: 'var(--primary-d1)',
-      background: 'var(--hover-d3)',
-    },
-  },
-  ({ isActive }) => ({
-    color: isActive ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)',
-    background: isActive ? 'var(--hover-d3)' : 'white',
-  }),
-)
 
-const IconBox = styled(IconFont)({
-  fontSize: 20,
-  color: 'var(--neutral-n3)',
-  cursor: 'pointer',
-  padding: 6,
-  borderRadius: 6,
-  '&: hover': {
-    color: 'var(--neutral-n1-d1)',
-    background: 'var(--hover-d3)',
-  },
-})
+const IconBox = styled(CloseWrap)<{ isActive?: boolean }>`
+  font-size: 20px;
+  cursor: pointer;
+  padding: 6px;
+  svg {
+    color: ${props =>
+      props.isActive ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
+  }
+  background: ${props => (props.isActive ? 'var(--hover-d1)' : 'white')};
+  &:hover {
+    background: var(--hover-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+  &:active {
+    background: var(--neutral-n6-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+`
 
 const TabItemWrap = styled.div`
   height: 100%;
@@ -640,7 +637,9 @@ const SprintProjectSprint: React.FC = () => {
                   onVisibleChange={onVisibleChange}
                 >
                   <Tooltip title={t('common.search')}>
-                    <IconWrap type="filter" isActive={isFilter} />
+                    <IconBox isActive={isFilter}>
+                      <IconFont type="filter" />
+                    </IconBox>
                   </Tooltip>
                 </Popover>
               </RightIcon>
@@ -694,13 +693,15 @@ const SprintProjectSprint: React.FC = () => {
                 getTooltipContainer={node => node}
                 title={isExpand ? t('common.collapseMenu') : ''}
               >
-                <IconBox
-                  onClick={() => {
-                    setIsExpand(false)
-                  }}
-                  type="outdent"
-                  color="black"
-                />
+                <IconBox>
+                  <IconFont
+                    onClick={() => {
+                      setIsExpand(false)
+                    }}
+                    type="outdent"
+                    color="black"
+                  />
+                </IconBox>
               </Tooltip>
             ) : (
               <Tooltip
@@ -709,13 +710,15 @@ const SprintProjectSprint: React.FC = () => {
                 getTooltipContainer={node => node}
                 title={isExpand ? '' : t('common.openMenu')}
               >
-                <IconBox
-                  onClick={() => {
-                    setIsExpand(true)
-                  }}
-                  type="indent"
-                  color="black"
-                />
+                <IconBox>
+                  <IconFont
+                    onClick={() => {
+                      setIsExpand(true)
+                    }}
+                    type="indent"
+                    color="black"
+                  />
+                </IconBox>
               </Tooltip>
             )}
             <SelectWrapForList>

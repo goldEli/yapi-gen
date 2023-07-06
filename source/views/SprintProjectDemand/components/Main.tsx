@@ -443,6 +443,7 @@ const Main = (props: any) => {
           />
         )}
         <DeleteConfirm
+          text={'确认删除该类型？'}
           isVisible={isVisible}
           onChangeVisible={() => setIsVisible(false)}
           onConfirm={() => delConfig()}
