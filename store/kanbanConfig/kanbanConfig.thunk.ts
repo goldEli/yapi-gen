@@ -20,10 +20,10 @@ export const updateViewByViewId =
   (id: Model.KanbanConfig.ConfigListItem['id']) =>
   async (dispatch: AppDispatch) => {
     await dispatch(setViewList(id))
-    // const checked = store
-    //   .getState()
-    //   .KanbanConfig.viewList?.find(item => item.id === id)
-    // checked && dispatch<any>(onFresh(checked))
+    const checked = store
+      .getState()
+      .KanbanConfig.viewList?.find(item => item.id === id)
+    checked && dispatch<any>(onFresh(checked))
   }
 
 export const onChangeViewList =
@@ -144,7 +144,6 @@ export const getKanbanConfigList = createAsyncThunk(
   ) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
     const { viewList } = store.getState().KanbanConfig
-
     // 有默认选中的情况
     if (param.defaultCheckedId) {
       const ret = res.data.map(item => {
@@ -186,8 +185,8 @@ export const getKanbanConfigList = createAsyncThunk(
     // 从缓存中取出
 
     // 更新相关数据
-    // const checkedViewListItem = ret.find(item => item.check)
-    const checkedViewListItem = ret[ret.length-1]
+    const checkedViewListItem = ret.find(item => item.check)
+    // const checkedViewListItem = ret[ret.length - 1]
     if (checkedViewListItem) {
       dispatch<any>(onFresh(checkedViewListItem))
     }
