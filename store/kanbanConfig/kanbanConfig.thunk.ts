@@ -19,11 +19,11 @@ const name = 'KanbanConfig'
 export const updateViewByViewId =
   (id: Model.KanbanConfig.ConfigListItem['id']) =>
   async (dispatch: AppDispatch) => {
-    dispatch(setViewList(id))
-    const checked = store
-      .getState()
-      .KanbanConfig.viewList?.find(item => item.id === id)
-    checked && dispatch<any>(onFresh(checked))
+    await dispatch(setViewList(id))
+    // const checked = store
+    //   .getState()
+    //   .KanbanConfig.viewList?.find(item => item.id === id)
+    // checked && dispatch<any>(onFresh(checked))
   }
 
 export const onChangeViewList =
@@ -136,9 +136,36 @@ export const deleteKanbanConfig =
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
-  async (param: API.KanbanConfig.GetKanbanConfigList.Params, { dispatch }) => {
+  async (
+    param: API.KanbanConfig.GetKanbanConfigList.Params & {
+      defaultCheckedId?: number
+    },
+    { dispatch },
+  ) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
     const { viewList } = store.getState().KanbanConfig
+
+    // 有默认选中的情况
+    if (param.defaultCheckedId) {
+      const ret = res.data.map(item => {
+        if (param.defaultCheckedId === item.id) {
+          return {
+            ...item,
+            check: true,
+          }
+        }
+        return {
+          ...item,
+          check: false,
+        }
+      })
+      const current = res.data?.find(item => item.id === param.defaultCheckedId)
+      if (current) {
+        dispatch<any>(onFresh(current))
+      }
+      return ret
+    }
+
     const currentCheck = viewList?.find(
       item => res.data.some(i => i.id === item.id) && item.check,
     )
@@ -159,7 +186,8 @@ export const getKanbanConfigList = createAsyncThunk(
     // 从缓存中取出
 
     // 更新相关数据
-    const checkedViewListItem = ret.find(item => item.check)
+    // const checkedViewListItem = ret.find(item => item.check)
+    const checkedViewListItem = ret[ret.length - 1]
     if (checkedViewListItem) {
       dispatch<any>(onFresh(checkedViewListItem))
     }
@@ -177,6 +205,7 @@ export const onFresh =
       project_id: currentViewListItem.project_id,
       id: currentViewListItem.id,
     }
+    // TODO这里currentViewListItem获取的是上一次
     // debugger  设为默认的时候 不走获取看板配置接口
     dispatch(getKanbanConfigRemainingStatus(params))
     if (!store.getState().KanbanConfig.isSettingDefault) {
@@ -240,6 +269,7 @@ export const onSaveAsViewModel =
     await dispatch(
       getKanbanConfigList({
         project_id: data.project_id,
+        defaultCheckedId: createId,
       }),
     )
     dispatch(onChangeViewList(createId))
