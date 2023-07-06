@@ -1,7 +1,7 @@
 /**
  * kanban 列title区域
  */
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -41,11 +41,34 @@ const MaxText = styled.div`
 `
 
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
-  // debugger
   const { kanbanConfig, kanbanInfoByGroup } = useSelector(store => store.kanBan)
-
+  const refBox = useRef<HTMLDivElement>(null)
+  const ColumnTitleRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    setTimeout(() => {
+      if (!refBox.current) {
+        return
+      }
+      const eleAttr = [...refBox.current?.children].map(item => {
+        return {
+          number: item.getAttribute('data-num'),
+          max_num: item.getAttribute('data-max_num'),
+        }
+      })
+      if (
+        eleAttr.some(item => {
+          if (!item.number || !item.max_num) {
+            return false
+          }
+          return item.number > item.max_num
+        })
+      ) {
+        getMessage({ type: 'warning', msg: '卡片已超过该列最大数' })
+      }
+    }, 300)
+  }, [ColumnTitleRef.current])
   return (
-    <ColumnTitleAreaBox>
+    <ColumnTitleAreaBox ref={refBox}>
       {kanbanConfig?.columns?.map(item => {
         // const num = kanbanInfoByGroup?.reduce?.((res, group) => {
         //   const len =
@@ -63,7 +86,12 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
         storyData = [...new Set(storyData.flat())]
         const num = storyData.length
         return (
-          <ColumnTitle key={item.id}>
+          <ColumnTitle
+            key={item.id}
+            ref={ColumnTitleRef}
+            data-num={num}
+            data-max_num={item.max_num}
+          >
             {`${item.name}（${num}）`}
             {num > item.max_num && (
               <MaxText>
