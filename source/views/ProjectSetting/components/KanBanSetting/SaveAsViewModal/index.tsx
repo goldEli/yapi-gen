@@ -81,6 +81,8 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
     form.submit()
   }
 
+  console.log(saveAsViewModelInfo, 'saveAsViewModelInfo')
+
   const title = React.useMemo(() => {
     if (saveAsViewModelInfo.title) {
       return saveAsViewModelInfo.title

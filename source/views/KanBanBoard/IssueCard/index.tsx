@@ -1,8 +1,5 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import styled from '@emotion/styled'
-import { handleId } from '../utils'
-import IconFont from '@/components/IconFont'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import PriorityIcon from '@/components/PriorityIcon'
 import { Tooltip } from 'antd'
@@ -28,6 +25,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getProjectIdByUrl } from '@/tools'
 import useStoryIds from '../hooks/useStoryIds'
 import ChildDemandTable from '@/components/ChildDemandTable'
+import { useSelector } from '@store/index'
 
 interface IssueCardProps {
   item: Model.KanBan.Story
@@ -44,6 +42,7 @@ const IssueCard = (props: IssueCardProps) => {
   const childRef = useRef<any>(null)
   const [openDemandDetail] = useOpenDemandDetail()
   const { ids } = useStoryIds()
+  const { projectInfo } = useSelector(store => store.project)
 
   const cardContent = (
     <IssueCardBoxContainer hidden={props.hidden}>
@@ -78,7 +77,9 @@ const IssueCard = (props: IssueCardProps) => {
           <MultipleAvatar max={3} list={item.handlers} />
         </BottomLeft>
         <BottomRight>
-          <PercentageBox>{`${item.schedule}%`}</PercentageBox>
+          {projectInfo.projectType === 1 && (
+            <PercentageBox>{`${item.schedule}%`}</PercentageBox>
+          )}
           <Sub
             onClick={(e: any) => {
               e.stopPropagation()
