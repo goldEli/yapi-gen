@@ -56,9 +56,9 @@ export const Col = styled.div`
     border-radius: 50%;
   }
   &:hover {
-    cursor: pointer;
-    background-color: var(--neutral-white-d4);
-    box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
+    /* cursor: pointer; */
+    /* background-color: var(--neutral-white-d4); */
+    /* box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09); */
   }
 `
 export const NameText = styled.div`
