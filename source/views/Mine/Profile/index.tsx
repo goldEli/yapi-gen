@@ -50,7 +50,7 @@ const hov = css`
     color: rgba(40, 119, 255, 1);
   }
 `
-const BBQdiv = styled.div`
+export const BBQdiv = styled.div`
   :hover {
     color: var(--primary-d1);
   }
@@ -532,7 +532,7 @@ const Profile = () => {
                     type={fullScreen ? 'fewer-screen' : 'full-screen'}
                   />
                   <span style={{ marginLeft: '10px' }}>
-                    {fullScreen ? '退出全屏' : '全屏'}
+                    {fullScreen ? t('exit_full_screen') : t('full_screen')}
                   </span>
                 </BBQdiv>
               </div>
