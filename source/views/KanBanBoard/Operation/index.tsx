@@ -267,8 +267,21 @@ const Operation = (props: Props) => {
               dispatch(openSaveAsViewModel())
             }}
           />
-          {/* <Btn>{t('save_as')}</Btn>
-          <Btn>{t('save_Changes')}</Btn> */}
+          <Btn
+            onClick={() => {
+              dispatch(openSaveAsViewModel())
+            }}
+          >
+            {t('save_as')}
+          </Btn>
+          <Btn
+            onClick={() => {
+              const currentId = sortByView?.find(item => item.check)?.id
+              dispatch(openSaveAsViewModel(currentId, true))
+            }}
+          >
+            {t('save_Changes')}
+          </Btn>
         </LeftBox>
         <RightBox>
           <KanBanBtnsArea

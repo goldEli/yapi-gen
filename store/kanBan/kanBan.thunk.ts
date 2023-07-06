@@ -607,10 +607,21 @@ export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
 }
 
 export const openSaveAsViewModel =
-  (id?: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
+  (id?: Model.KanBan.ViewItem['id'], type?: boolean) =>
+  async (dispatch: AppDispatch) => {
     const { sortByView } = store.getState()?.kanBan
     const viewItem = sortByView?.find(item => item?.id === id)
-    dispatch(setSaveAsViewModelInfo({ visible: true, viewItem }))
+    if (type && viewItem) {
+      dispatch(setSaveAsViewModelInfo({ visible: false, viewItem }))
+      // onSaveAsViewModel(viewItem)
+      dispatch(
+        onSaveAsViewModel({
+          ...viewItem,
+        }),
+      )
+    } else {
+      dispatch(setSaveAsViewModelInfo({ visible: true, viewItem }))
+    }
   }
 
 export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
@@ -661,7 +672,7 @@ export const getStoryViewList = createAsyncThunk(
 // 保存视图
 export const onSaveAsViewModel =
   (data: Partial<ViewItem>) => async (dispatch: AppDispatch) => {
-    // debugger
+    // debuggers
     if (data.id) {
       dispatch(
         updateView({

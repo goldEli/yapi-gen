@@ -217,8 +217,12 @@ const ProjectInfo = () => {
               <div>{t('project_type')}：</div>
               <span>
                 {projectInfo.permissionType === 1
-                  ? t('enterprise_project')
-                  : t('teamwork')}
+                  ? t('enterprise_project', {
+                      type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                    })
+                  : t('teamwork', {
+                      type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                    })}
               </span>
             </InfoItem>
           </Line>
