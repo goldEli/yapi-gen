@@ -131,6 +131,7 @@ const Operation = (props: Props) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
+    console.log(key, '=keykeykeykey', type)
     const filterFelid = projectInfo?.filterFelid
 
     if (key && type === 0) {
@@ -147,6 +148,11 @@ const Operation = (props: Props) => {
       return
     }
     const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
+    console.log(
+      filterFelid,
+      '=filterFelidfilterFelidfilterFelid',
+      projectInfo?.filterFelid,
+    )
 
     setSearchList(arr)
     dispatch(saveScreen(arr))

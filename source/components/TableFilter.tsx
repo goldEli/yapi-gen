@@ -314,12 +314,14 @@ const TableFilter = (props: any) => {
   }
 
   useEffect(() => {
-    form.resetFields()
-    form.setFieldsValue(props.defaultValue)
-    if (Object.keys(props.defaultValue).length === 0) {
-      return
+    if (props.defaultValue) {
+      form.resetFields()
+      form.setFieldsValue(props.defaultValue)
+      if (Object.keys(props.defaultValue).length === 0) {
+        return
+      }
+      confirm()
     }
-    confirm()
   }, [props.defaultValue])
 
   useEffect(() => {
@@ -426,6 +428,7 @@ const TableFilter = (props: any) => {
       }))
       .concat(newB)
   }
+
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>

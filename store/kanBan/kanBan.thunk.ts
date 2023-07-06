@@ -90,6 +90,7 @@ export const closeModifyStatusModalInfo =
         visible: false,
       }),
     )
+    dispatch(getKanbanByGroup())
 
     /**
      * 看板数据更新后，卡片的位置没有更新，手动触发滚动条触发

@@ -226,7 +226,6 @@ function getTypeComponent(
         style={{ minWidth: 192 }}
         showArrow
         showSearch
-        getPopupContainer={node => node}
         allowClear
         treeData={params?.value}
         value={defaultValue}
@@ -245,9 +244,6 @@ function getTypeComponent(
         showSearch
         showArrow
         optionFilterProp="label"
-        getPopupContainer={(node: any) =>
-          params.isBindBody ? document.body : node
-        }
         allowClear
         value={defaultValue}
         onRef={inputRef}
@@ -277,7 +273,6 @@ function getTypeComponent(
         showSearch
         showArrow
         optionFilterProp="label"
-        getPopupContainer={(node: any) => node}
         allowClear
         value={defaultValue}
         onRef={inputRef}
