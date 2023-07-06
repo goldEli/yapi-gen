@@ -83,6 +83,7 @@ const DemandDetail = () => {
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
+  const { userInfo } = useSelector(store => store.user)
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
     list: undefined,
@@ -519,7 +520,7 @@ const DemandDetail = () => {
         url={location.href}
         title={
           demandInfo?.name
-            ? `【${demandInfo?.projectPrefix} ${demandInfo?.name}】`
+            ? `【${demandInfo?.projectPrefix}-${demandInfo?.name}-${userInfo?.name}】`
             : ''
         }
       />

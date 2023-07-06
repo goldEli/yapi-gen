@@ -488,6 +488,22 @@ export const onChangeSortByView =
     await dispatch(saveValue(current.config?.search ?? {}))
     const params = generatorFilterParams(current.config)
     await dispatch(onTapSearchChoose(params))
+    // 根据视图 设置 分组|列与状态|筛选条件的回显
+    const { sortByRowAndStatusOptions } = store.getState().kanBan
+    const temp1 = sortByRowAndStatusOptions?.find(k => k.is_default === 1)?.key
+    const temp2 = sortByRowAndStatusOptions?.[0]?.key
+    await dispatch(
+      setSortByGroupOptions(
+        current.type === 2 ? 'none' : current?.config?.currentGroupKey,
+      ),
+    )
+    await dispatch(
+      setSortByRowAndStatusOptions(
+        current.type === 2
+          ? temp1 || temp2
+          : current?.config?.currentRowAndStatusId,
+      ),
+    )
     dispatch(getKanbanByGroup())
   }
 // 修改分组
@@ -525,9 +541,19 @@ export const createView =
   (params: Omit<API.Kanban.CreateView.Params, 'use_type'>) =>
   async (dispatch: AppDispatch) => {
     const project_id = getProjectIdByUrl()
+    const { sortByGroupOptions, sortByRowAndStatusOptions } =
+      store.getState().kanBan
+    const currentRowAndStatusId = sortByRowAndStatusOptions?.find(
+      k => k.check,
+    )?.key
+    const currentGroupKey = sortByGroupOptions?.find(k => k.check)?.key
     const res = await services.kanban.createView({
       ...params,
-      config: store.getState().view,
+      config: {
+        ...store.getState().view,
+        currentRowAndStatusId,
+        currentGroupKey,
+      },
       project_id,
       use_type: 2,
     })
@@ -621,7 +647,7 @@ export const getStoryViewList = createAsyncThunk(
         isDefault: item.type === 2,
       }
     })
-    // debugger
+
     // 用户已经选中过，需要恢复
     let checked = ret?.find(item => {
       return sortByView?.some(i => i.id === item.id && item.check)

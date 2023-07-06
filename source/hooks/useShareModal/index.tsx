@@ -68,7 +68,6 @@ const useShareModal = () => {
     const [form] = Form.useForm()
     const [t] = useTranslation()
     const [fail, setFail] = useState(false)
-
     const [searchParams] = useSearchParams()
     const paramsData = getParamsData(searchParams)
     const projectId = paramsData?.id
