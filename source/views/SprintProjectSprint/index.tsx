@@ -265,37 +265,37 @@ const CustomCloseWrap = styled(CloseWrap)`
   }
 `
 
-const filterList = [
-  {
-    id: 1,
-    name: '未完成的',
-  },
-  {
-    id: 2,
-    name: '已完成的',
-  },
-  {
-    id: 0,
-    name: '全部冲刺',
-  },
-]
-
-const filterList1 = [
-  {
-    id: 1,
-    name: '未完成的',
-  },
-  {
-    id: 2,
-    name: '已完成的',
-  },
-  {
-    id: 0,
-    name: '全部长故事',
-  },
-]
-
 const SprintProjectSprint: React.FC = () => {
+  const [t] = useTranslation()
+  const filterList = [
+    {
+      id: 1,
+      name: t('sprint.unfinished'),
+    },
+    {
+      id: 2,
+      name: t('sprint.completed'),
+    },
+    {
+      id: 0,
+      name: t('sprint.allSprint'),
+    },
+  ]
+
+  const filterList1 = [
+    {
+      id: 1,
+      name: t('sprint.unfinished'),
+    },
+    {
+      id: 2,
+      name: t('sprint.completed'),
+    },
+    {
+      id: 0,
+      name: t('sprint.allLongStory'),
+    },
+  ]
   const dispatch = useDispatch()
   const { useKeys } = useKeyPress()
   useKeys('3', '/Report/PerformanceInsight')
@@ -308,7 +308,7 @@ const SprintProjectSprint: React.FC = () => {
     sprintRefresh,
     sprintRightListRefresh,
   } = useSelector(store => store.sprint)
-  const [t] = useTranslation()
+
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -319,7 +319,6 @@ const SprintProjectSprint: React.FC = () => {
     search: {
       all: 1,
       project_id: projectId,
-      is_finish: 1,
     },
     is_long_story: 0,
   })
@@ -433,7 +432,6 @@ const SprintProjectSprint: React.FC = () => {
       search: {
         ...searchObject.search,
         // eslint-disable-next-line no-undefined
-        is_finish: undefined,
         sprint_status: item.id,
       },
     })
@@ -472,7 +470,6 @@ const SprintProjectSprint: React.FC = () => {
               : leftSprintList.list
                   .filter((_, idx) => checkList[idx])
                   .map(k => k.id),
-          is_finish: leftSearchObject?.search?.sprint_status,
         },
       }),
     )
@@ -498,7 +495,6 @@ const SprintProjectSprint: React.FC = () => {
             resource_ids: leftSprintList.list
               .filter((_, idx) => checkList[idx])
               .map(k => k.id),
-            is_finish: leftSearchObject?.search?.sprint_status,
           },
         }),
       )

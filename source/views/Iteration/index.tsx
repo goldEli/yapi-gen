@@ -19,7 +19,11 @@ import { useTranslation } from 'react-i18next'
 import { Space, Tooltip } from 'antd'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import IterationStatus from '@/components/IterationStatus'
-import { getIsPermission, getProjectIdByUrl } from '@/tools'
+import {
+  getIsPermission,
+  getProjectIdByUrl,
+  onComputedPermission,
+} from '@/tools'
 import { DividerWrap } from '@/components/StyleCommon'
 import {
   setFilterKeys,
@@ -339,10 +343,20 @@ const Iteration = () => {
       getSearchKey()
     }
   }, [projectInfo])
+
+  const resultAuth = onComputedPermission(
+    currentMenu,
+    '/ProjectManagement/Project',
+  )
+
   return (
     <PermissionWrap
-      auth="/ProjectManagement/Project"
-      permission={currentMenu?.children?.map((i: any) => i.url)}
+      auth={resultAuth ? 'b/iterate/' : '/ProjectManagement/Project'}
+      permission={
+        resultAuth
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
     >
       <CommonModal
         width={784}

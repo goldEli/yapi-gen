@@ -73,6 +73,7 @@ const WaterMarkManagement = () => {
       key: 'watermark',
     },
   ]
+
   return (
     <PermissionWrap
       auth="/AdminManagement/WaterMarkManagement"

@@ -427,7 +427,7 @@ const ProjectSet = () => {
 
   return (
     <PermissionWrap
-      auth="b/project/role"
+      auth="b/project/notification"
       permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
     >
       <div style={{ height: '100%', position: 'relative' }}>

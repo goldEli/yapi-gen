@@ -597,7 +597,9 @@ export const useDynamicColumns = (state: any) => {
         return (
           <ChangeSeverityPopover
             isCanOperation={
-              !(record.project?.isPublic !== 1 && !record.project?.isUserMember)
+              !(
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              ) && Object.keys(record.categoryConfigList).includes('severity')
             }
             onChangeSeverity={item => state.onChangeSeverity(item, record)}
             record={record}

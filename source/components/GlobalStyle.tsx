@@ -636,7 +636,7 @@ const GlobalStyle = () => {
     }
     /* checkbox */
     .ant-checkbox-checked::after {
-      border: 1px solid var(--primary-d1);
+      border: 0px solid var(--primary-d1);
     }
     .ant-checkbox-wrapper:hover .ant-checkbox-inner,
     .ant-checkbox:hover .ant-checkbox-inner,

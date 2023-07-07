@@ -182,6 +182,7 @@ const Main = (props: any) => {
       title: item.title,
       remarks: item.remarks,
       content: item.content,
+      attr: item.attr,
       fieldContent: item?.field_content || item?.fieldContent,
       id: item.dragtype === 'move' ? item.id : 0,
       storyId: item.storyId,
@@ -216,6 +217,7 @@ const Main = (props: any) => {
   }
   //拖动传递过来的参数
   const onDrop = (state: any, event: any, index: any) => {
+    console.log(event, 'event')
     setConfigType(state)
     setDraggingIndex(index)
     // 自定义字段只能添加20个
@@ -228,6 +230,7 @@ const Main = (props: any) => {
     const dragItem = event.dataTransfer.getData('DragItem')
       ? JSON.parse(event.dataTransfer.getData('DragItem'))
       : null
+    console.log(dragItem, 'dragItem')
     if (customizeNum?.length === 20 && evevtObj?.dragtype === 'add') {
       getMessage({ msg: t('newlyAdd.maxAddFields'), type: 'warning' })
       return

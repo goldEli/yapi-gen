@@ -11,6 +11,7 @@ import { getCategoryConfigList } from '@store/category/thunk'
 import NoData from '@/components/NoData'
 import { setCategoryWorkType } from '@store/project'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { onComputedPermission } from '@/tools'
 const Wrap = styled.div`
   width: 100%;
   display: flex;
@@ -40,10 +41,10 @@ const DemandSetting = () => {
     store => store.category,
   )
   // 计算当前选中下是否有项目管理权限
-  const resultAuth =
-    currentMenu?.children?.filter(
-      (i: any) => i.url === '/ProjectManagement/Project',
-    )?.length > 0
+  const resultAuth = onComputedPermission(
+    currentMenu,
+    '/ProjectManagement/Project',
+  )
   useSelector(store => store.category)
   const save = () => {
     setIsSave(true)

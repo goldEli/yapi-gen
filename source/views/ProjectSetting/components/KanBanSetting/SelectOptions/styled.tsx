@@ -18,6 +18,20 @@ export const SelectOptionsBox = styled.div`
   }
 `
 
+export const CustomWrap = styled.div`
+  .ant-dropdown-menu-item,
+  .ant-dropdown-menu-submenu-title {
+    padding: 0px 12px;
+  }
+  .ant-dropdown-menu-item-divider {
+    margin: 4px 12px;
+  }
+  .ant-dropdown-menu {
+    max-height: 300px;
+    overflow: scroll;
+  }
+`
+
 export const OperationArea = styled.div`
   min-width: 50px;
 `

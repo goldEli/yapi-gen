@@ -1753,5 +1753,11 @@
   "allWork": "All work items",
   "allIn": "All Sprints",
   "s": "Filter Status",
-  "watcjAll": "View All"
+  "watcjAll": "View All",
+  "sprint": {
+    "unfinished": "Unfinished",
+    "completed": "Completed",
+    "allSprint": "All sprint",
+    "allLongStory": "All long stories"
+  }
 }
