@@ -426,7 +426,16 @@ const isEmpty = (data: any) => {
     return _.isEmpty(value)
   })
 }
+function bbh(data: any) {
+  const filteredData: any = {}
 
+  for (const key in data) {
+    if (key.includes('custom')) {
+      filteredData[key] = data[key]
+    }
+  }
+  return filteredData
+}
 // 获取故事列表（分组）
 export const getKanbanByGroup = createAsyncThunk(
   `${name}/getKanbanByGroup`,
@@ -454,6 +463,8 @@ export const getKanbanByGroup = createAsyncThunk(
             ...valueKey,
             user_id: valueKey.user_name,
             category_id: valueKey.category,
+            iterate_id: valueKey.iterate_name,
+            custom_field: bbh(valueKey),
             keyword: inputKey,
           },
       project_id: getProjectIdByUrl(),
@@ -496,6 +507,22 @@ export const onChangeSortByView =
     await dispatch(saveValue(current.config?.search ?? {}))
     const params = generatorFilterParams(current.config)
     await dispatch(onTapSearchChoose(params))
+    // 根据视图 设置 分组|列与状态|筛选条件的回显
+    const { sortByRowAndStatusOptions } = store.getState().kanBan
+    const temp1 = sortByRowAndStatusOptions?.find(k => k.is_default === 1)?.key
+    const temp2 = sortByRowAndStatusOptions?.[0]?.key
+    await dispatch(
+      setSortByGroupOptions(
+        current.type === 2 ? 'none' : current?.config?.currentGroupKey,
+      ),
+    )
+    await dispatch(
+      setSortByRowAndStatusOptions(
+        current.type === 2
+          ? temp1 || temp2
+          : current?.config?.currentRowAndStatusId,
+      ),
+    )
     dispatch(getKanbanByGroup())
   }
 // 修改分组
@@ -533,9 +560,19 @@ export const createView =
   (params: Omit<API.Kanban.CreateView.Params, 'use_type'>) =>
   async (dispatch: AppDispatch) => {
     const project_id = getProjectIdByUrl()
+    const { sortByGroupOptions, sortByRowAndStatusOptions } =
+      store.getState().kanBan
+    const currentRowAndStatusId = sortByRowAndStatusOptions?.find(
+      k => k.check,
+    )?.key
+    const currentGroupKey = sortByGroupOptions?.find(k => k.check)?.key
     const res = await services.kanban.createView({
       ...params,
-      config: store.getState().view,
+      config: {
+        ...store.getState().view,
+        currentRowAndStatusId,
+        currentGroupKey,
+      },
       project_id,
       use_type: 2,
     })
@@ -608,10 +645,21 @@ export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
 }
 
 export const openSaveAsViewModel =
-  (id?: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
+  (id?: Model.KanBan.ViewItem['id'], type?: boolean) =>
+  async (dispatch: AppDispatch) => {
     const { sortByView } = store.getState()?.kanBan
     const viewItem = sortByView?.find(item => item?.id === id)
-    dispatch(setSaveAsViewModelInfo({ visible: true, viewItem }))
+    if (type && viewItem) {
+      dispatch(setSaveAsViewModelInfo({ visible: false, viewItem }))
+      // onSaveAsViewModel(viewItem)
+      dispatch(
+        onSaveAsViewModel({
+          ...viewItem,
+        }),
+      )
+    } else {
+      dispatch(setSaveAsViewModelInfo({ visible: true, viewItem }))
+    }
   }
 
 export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
@@ -636,7 +684,7 @@ export const getStoryViewList = createAsyncThunk(
         isDefault: item.type === 2,
       }
     })
-    // debugger
+
     // 用户已经选中过，需要恢复
     let checked = ret?.find(item => {
       return sortByView?.some(i => i.id === item.id && item.check)
@@ -662,7 +710,7 @@ export const getStoryViewList = createAsyncThunk(
 // 保存视图
 export const onSaveAsViewModel =
   (data: Partial<ViewItem>) => async (dispatch: AppDispatch) => {
-    // debugger
+    // debuggers
     if (data.id) {
       dispatch(
         updateView({

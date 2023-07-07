@@ -215,6 +215,8 @@ export const NumericInput2 = (props: any) => {
 }
 
 const TableFilter = (props: any) => {
+  console.log('执行')
+
   const [t] = useTranslation()
   const info = useGetloginInfo()
   const { list, basicsList, specialList, customList } = props
@@ -314,16 +316,16 @@ const TableFilter = (props: any) => {
   }
 
   useEffect(() => {
-    if (props.defaultValue) {
-      form.resetFields()
-      form.setFieldsValue(props.defaultValue)
-      if (Object.keys(props.defaultValue).length === 0) {
-        return
-      }
-      confirm()
+    form.resetFields()
+    form.setFieldsValue(props.defaultValue)
+    // 页面报错加的这条
+    if (!props.defaultValue) {
+      return
+    } else if (Object.keys(props.defaultValue)?.length === 0) {
+      return
     }
   }, [props.defaultValue])
-
+  console.log(props.defaultValue, 'props.defaultValue')
   useEffect(() => {
     if (Object.hasOwn(searchChoose || {}, 'system_view')) {
       form.resetFields()

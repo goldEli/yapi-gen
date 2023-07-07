@@ -91,6 +91,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const { projectInfoValues, projectInfo, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
+  const { userInfo } = useSelector(store => store.user)
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
@@ -501,7 +502,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         url={location.href}
         title={
           affairsInfo?.name
-            ? `【${affairsInfo?.projectPrefix} ${affairsInfo?.name}】`
+            ? `【${affairsInfo?.projectPrefix}-${affairsInfo?.name}-${userInfo?.name}】`
             : ''
         }
       />

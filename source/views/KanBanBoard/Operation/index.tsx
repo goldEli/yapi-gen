@@ -14,7 +14,12 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 // import ImportDemand from './ImportDemand'
 import { useDispatch, useSelector } from '@store/index'
 
-import { onTapSearchChoose, saveScreen } from '@store/view'
+import {
+  clearValue,
+  onTapSearchChoose,
+  saveScreen,
+  saveValue,
+} from '@store/view'
 import KanBanBtnsArea from '../KanBanBtnsArea'
 
 import SelectOptions from '@/components/SelectOptions'
@@ -219,6 +224,7 @@ const Operation = (props: Props) => {
   useEffect(() => {
     return () => {
       dispatch(onTapSearchChoose({}))
+      dispatch(clearValue())
     }
   }, [])
 
@@ -269,8 +275,21 @@ const Operation = (props: Props) => {
               dispatch(openSaveAsViewModel())
             }}
           />
-          {/* <Btn>{t('save_as')}</Btn>
-          <Btn>{t('save_Changes')}</Btn> */}
+          <Btn
+            onClick={() => {
+              dispatch(openSaveAsViewModel())
+            }}
+          >
+            {t('save_as')}
+          </Btn>
+          <Btn
+            onClick={() => {
+              const currentId = sortByView?.find(item => item.check)?.id
+              dispatch(openSaveAsViewModel(currentId, true))
+            }}
+          >
+            {t('save_Changes')}
+          </Btn>
         </LeftBox>
         <RightBox>
           <KanBanBtnsArea

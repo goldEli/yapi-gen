@@ -35,6 +35,7 @@ const HeaderAll = (props: HaderProps) => {
   }>()
   const { ShareModal, open } = useShareModal()
   const { projectInfo } = useSelector(store => store.project)
+  const { userInfo } = useSelector(store => store.user)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const getProjectApi = async () => {
@@ -206,7 +207,7 @@ const HeaderAll = (props: HaderProps) => {
         // 2钟不同的分享标题
         title={`【${projectInfo.name ? projectInfo.name : '所有项目'}-${
           paramsData.num === 1 ? '工作进展对比' : '缺陷趋势分析'
-        }】`}
+        }-${userInfo?.name}】`}
       />
       {/* 导出 */}
       <Export

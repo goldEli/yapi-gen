@@ -387,7 +387,6 @@ const Operation = (props: Props) => {
           getLoadListFields,
         }}
       />
-
       <OperationWrap>
         <Space size={16} style={{ position: 'relative' }}>
           {props.isShowLeft ? (
