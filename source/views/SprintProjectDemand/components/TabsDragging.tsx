@@ -312,7 +312,6 @@ const Sortable = (props: any) => {
                         {child.isCustomize === 2 ? '系统字段' : '自定义字段'}
                       </div>
                     </div>
-                    0{' '}
                     <RightOperate>
                       {child?.content === 'users_name' ||
                       child?.content === 'user_name' ||
