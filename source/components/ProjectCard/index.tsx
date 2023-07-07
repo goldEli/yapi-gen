@@ -135,8 +135,6 @@ const Index = (props: any) => {
     }
   }
   const onChangeRouter = (type: string) => {
-    console.log(type)
-
     // console.log(type)
     if (type === 'user-alone') {
       const params = encryptPhp(
@@ -178,11 +176,23 @@ const Index = (props: any) => {
         )
         navigate(`/SprintProjectManagement/Sprint?data=${params}`)
       }
-    } else if (type === 'alarm') {
+    } else if (type === 'timer') {
       const params = encryptPhp(
         JSON.stringify({ id: props.item.id, type: 'iteration' }),
       )
       navigate(`/SprintProjectManagement/Sprint?data=${params}`)
+    } else if (type === 'book-open') {
+      if (props.item.projectType === 1) {
+        const params = encryptPhp(
+          JSON.stringify({ id: props.item.id, type: 'iteration' }),
+        )
+        navigate(`/ProjectManagement/Demand?data=${params}`)
+      } else {
+        const params = encryptPhp(
+          JSON.stringify({ id: props.item.id, type: 'iteration' }),
+        )
+        navigate(`/SprintProjectManagement/Affair?data=${params}`)
+      }
     }
   }
   // console.log(props.item)
