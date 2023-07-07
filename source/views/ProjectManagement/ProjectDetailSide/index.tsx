@@ -430,7 +430,13 @@ const ProjectDetailSide = () => {
           <SideInfo>
             <div>{projectInfo.name}</div>
             <span>
-              {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+              {projectInfo.teamId
+                ? t('teamwork', {
+                    type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                  })
+                : t('enterprise_project', {
+                    type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                  })}
             </span>
           </SideInfo>
         </SideTop>
@@ -475,7 +481,13 @@ const ProjectDetailSide = () => {
           <SideInfo>
             <div>{projectInfo.name}</div>
             <span>
-              {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+              {projectInfo.teamId
+                ? t('teamwork', {
+                    type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                  })
+                : t('enterprise_project', {
+                    type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                  })}
             </span>
           </SideInfo>
         </SideTop>

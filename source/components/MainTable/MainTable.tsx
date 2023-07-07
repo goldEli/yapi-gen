@@ -390,10 +390,8 @@ const MainTable = (props: Props) => {
       ),
       dataIndex: 'team_id',
       width: 160,
-      render: (text: number) => {
-        return (
-          <span>{text === 0 ? t('enterprise_project') : t('teamwork')}</span>
-        )
+      render: (text: number, record: any) => {
+        return <span>{text === 0 ? '企业项目' : '团队项目'}</span>
       },
     },
     {
