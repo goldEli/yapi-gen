@@ -578,6 +578,7 @@ export const createView =
     })
     getMessage({ msg: i18n.t('common.saveSuccess') as string, type: 'success' })
     await dispatch(getStoryViewList(null))
+
     dispatch(onChangeSortByView(res.data.id))
   }
 
@@ -674,7 +675,12 @@ export const openSaveAsViewModel =
   }
 
 export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
-  dispatch(setSaveAsViewModelInfo({ visible: false }))
+  dispatch(
+    setSaveAsViewModelInfo({
+      visible: false,
+      viewItem: { id: 0, name: '', check: false, type: 1, status: 1 },
+    }),
+  )
 }
 
 // 视图列表
@@ -739,7 +745,6 @@ export const onSaveAsViewModel =
         }),
       )
     }
-
     getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
   }
