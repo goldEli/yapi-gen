@@ -1,11 +1,6 @@
 export const generatorFilterParams = (config: any = {}) => {
   if (!config?.searchKey?.length) {
-    return {
-      iterate_name: null,
-      status: null,
-      priority: null,
-      created_at: null,
-    }
+    return
   }
   const searchChoose = config['valueKey']
   // dispatch(setView(config))
