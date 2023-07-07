@@ -29,6 +29,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   const [t] = useTranslation()
   const LeftDom = useRef<HTMLDivElement>(null)
   const editorRef = useRef<EditorRef>(null)
+  const editorRef2 = useRef<any>()
   //   当前删除的附件数据
   const [tagList, setTagList] = useState<any>([])
   const [isEditInfo, setIsEditInfo] = useState(false)
@@ -99,10 +100,11 @@ const AffairsDetail = (props: AffairsDetailProps) => {
     console.log(1, '失焦')
 
     setIsEditInfo(false)
+    console.log(editInfo, props.affairsInfo.info, '-')
 
-    if (editInfo === props.affairsInfo.info) return
+    if (editorRef2.current === props.affairsInfo.info) return
     const params = {
-      info: editInfo,
+      info: editorRef2.current,
       projectId: projectInfo.id,
       id: props.affairsInfo.id,
       name: props.affairsInfo.name,
@@ -147,8 +149,12 @@ const AffairsDetail = (props: AffairsDetailProps) => {
                 editorRef.current?.focus()
               }, 10)
             }}
-            onChange={(value: string) => setEditInfo(value)}
-            onBlur={onBlurEditor}
+            onChange={(value: string) => {
+              console.log(value)
+              setEditInfo(value)
+              editorRef2.current = value
+            }}
+            onBlur={() => onBlurEditor()}
           />
         )}
         {!isEditInfo && !editInfo && (
