@@ -5,7 +5,15 @@ import {
   setAffairsDetailDrawer,
   setAffairsInfo,
 } from '@store/affairs'
-import { Drawer, MenuProps, Popover, Skeleton, Space, Tooltip } from 'antd'
+import {
+  Checkbox,
+  Drawer,
+  MenuProps,
+  Popover,
+  Skeleton,
+  Space,
+  Tooltip,
+} from 'antd'
 import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
 import {
   Header,
@@ -72,6 +80,7 @@ import LongStroyBread from '../LongStroyBread'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '../CopyIcon'
+import DeleteConfirm from '../DeleteConfirm'
 const SprintDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -103,7 +112,6 @@ const SprintDetailDrawer = () => {
   const leftWidth = 640
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
-  const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const spanDom = useRef<HTMLSpanElement>(null)
   const commentDom: any = createRef()
@@ -112,6 +120,8 @@ const SprintDetailDrawer = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const [showState, setShowState] = useState<any>(normalState)
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const { affairsDetailDrawer, affairsCommentList } = useSelector(
     store => store.affairs,
   )
@@ -420,14 +430,8 @@ const SprintDetailDrawer = () => {
 
   // 删除事务弹窗
   const onDelete = () => {
-    openDelete({
-      title: '删除确认',
-      text: '确认删除该事务？',
-      onConfirm() {
-        onDeleteConfirm()
-        return Promise.resolve()
-      },
-    })
+    setIsVisible(true)
+    setIsDeleteCheck([4, 5].includes(drawerInfo.work_type))
   }
 
   // 分享弹窗
@@ -641,6 +645,8 @@ const SprintDetailDrawer = () => {
     }
   }, [])
 
+  console.log(drawerInfo)
+
   return (
     <>
       <ShareModal
@@ -651,7 +657,26 @@ const SprintDetailDrawer = () => {
             : ''
         }
       />
-      <DeleteConfirmModal />
+      <DeleteConfirm
+        title="删除确认"
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      >
+        <div style={{ marginBottom: 9 }}>
+          您将永久删除{drawerInfo.projectPrefix}-{drawerInfo.prefixKey}
+          ，删除后将不可恢复请谨慎操作!
+        </div>
+        {drawerInfo.work_type !== 6 && (
+          <Checkbox
+            disabled={[4, 5].includes(drawerInfo.work_type)}
+            checked={isDeleteCheck}
+            onChange={e => setIsDeleteCheck(e.target.checked)}
+          >
+            同时删除该事务下所有子事务
+          </Checkbox>
+        )}
+      </DeleteConfirm>
       <Drawer
         closable={false}
         placement="right"

@@ -286,7 +286,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       text: (
         <>
           <div style={{ marginBottom: 9 }}>
-            你将永久删除{affairsInfo.story_prefix_key}
+            你将永久删除{affairsInfo.projectPrefix}-{affairsInfo.prefixKey}
             ，删除后将不可恢复请谨慎操作!
           </div>
           <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
