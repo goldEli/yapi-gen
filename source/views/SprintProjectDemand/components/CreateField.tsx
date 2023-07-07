@@ -186,7 +186,7 @@ const CreateField = () => {
     filterData(getCategoryConfigArray, getProjectFieIdsData)
   }, [getCategoryConfigArray, getProjectFieIdsData])
   useEffect(() => {
-    getProjectFieIdsApi()
+    activeCategory?.id && getProjectFieIdsApi()
   }, [activeCategory])
   useEffect(() => {
     const ids = option.map(item => item.type)
