@@ -52,6 +52,7 @@ const useInit = () => {
         jumpToKanbanConfig(navigate)
         return
       }
+
       // 如果分享的分组有值则先采用分享的值
       if (currentGroupKey) {
         await dispatch(setSortByGroupOptions(currentGroupKey))
