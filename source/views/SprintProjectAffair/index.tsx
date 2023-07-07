@@ -10,7 +10,7 @@ import {
   Wrap,
 } from './style'
 import { useSearchParams } from 'react-router-dom'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getIsPermission, getParamsData, onComputedPermission } from '@/tools'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import WrapLeft from './components/WrapLeft'
 import { Checkbox, Popover, Space, Tooltip } from 'antd'
@@ -367,17 +367,25 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   }, [isUpdateAddWorkItem])
 
   useEffect(() => {
-    console.log('进入主页清除已存储的筛选计数')
     dispatch(clearValue())
     // 进入主页清除已存储的筛选计数
     dispatch(setFilterKeys([]))
     dispatch(onTapSearchChoose(''))
   }, [])
 
+  const resultAuth = onComputedPermission(
+    currentMenu,
+    '/ProjectManagement/Project',
+  )
+
   return (
     <PermissionWrap
-      auth="/ProjectManagement/Project"
-      permission={currentMenu?.children?.map((i: any) => i.url)}
+      auth={resultAuth ? 'b/transaction/' : '/ProjectManagement/Project'}
+      permission={
+        resultAuth
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
     >
       <CreateViewPort pid={projectId} />
       <ManageView projectId={projectId} />

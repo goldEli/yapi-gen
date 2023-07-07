@@ -79,12 +79,7 @@ const ProjectDetailSide = () => {
       name: 'KanBan',
       icon: 'layout',
       path: '/ProjectManagement/KanBan',
-      isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter(
-              (i: any) => i.identity === 'b/project/kanban',
-            ).length,
+      isPermission: true,
     },
     {
       name: '报表',
@@ -170,45 +165,50 @@ const ProjectDetailSide = () => {
       label: '项目成员',
       icon: <CommonIconFont type="team" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/member'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/member'),
+        ).length > 0,
       key: 'member',
     },
     {
       label: '项目角色',
       icon: <CommonIconFont type="lock" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/role'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/role'),
+        ).length > 0,
       key: 'permission',
     },
     {
       label: '通知配置',
       icon: <CommonIconFont type="bell" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/notification'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/notification'),
+        ).length > 0,
       key: 'note',
     },
     {
       label: '类型配置',
       icon: <CommonIconFont type="selections" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/story_config'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/story_config'),
+        ).length > 0,
       key: 'ProjectAffair',
     },
     {
       label: 'Kanban配置',
       icon: <CommonIconFont type="layout" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/kanban'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/kanban'),
+        ).length > 0,
       key: '2',
       children: [
         {
@@ -223,9 +223,10 @@ const ProjectDetailSide = () => {
       label: '首页配置',
       icon: <CommonIconFont type="settings" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/home'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/home'),
+        ).length > 0,
       key: 'ProjectHome',
     },
   ]
@@ -487,7 +488,7 @@ const ProjectDetailSide = () => {
         <MenuBox>
           {
             <Menu
-              items={sideList}
+              items={sideList?.filter((i: any) => i.isPermission)}
               onClick={projectSettingsClick}
               mode="inline"
               style={{ background: 'transparent', border: 'none' }}
