@@ -159,7 +159,7 @@ const CreateField = () => {
     const data = payloadList?.filter(
       (item: any) => !filterIds?.includes(item.id),
     )
-    setSearchDataList(filterCategory(work_type, data))
+    setSearchDataList(filterCategory(activeCategory?.work_type, data))
     setCacheSearchlist(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
@@ -190,7 +190,12 @@ const CreateField = () => {
   useEffect(() => {
     const ids = option.map(item => item.type)
     setSearchDataList(
-      filterCategory(work_type, cacheSearchlist, fieldType, ids),
+      filterCategory(
+        activeCategory?.work_type,
+        cacheSearchlist,
+        fieldType,
+        ids,
+      ),
     )
   }, [fieldType])
   return (

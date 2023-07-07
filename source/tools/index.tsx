@@ -11,18 +11,8 @@
 import { decryptPhp } from './cryptoPhp'
 import dayjs from 'dayjs'
 import { FAULT_MAPS } from '../constants/index'
-import {
-  Select,
-  Input,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  message,
-  Checkbox,
-  Radio,
-} from 'antd'
+import { Input, DatePicker, InputNumber, TreeSelect } from 'antd'
 import moment from 'moment'
-import styled from '@emotion/styled'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
 import { store } from '@store/index'
@@ -461,7 +451,6 @@ export const filterCategory = (
   fieldType?: any,
   ids?: string[],
 ) => {
-  // console.log(fieldType, ids)
   let array: any = data?.filter((item: { title: string }) => {
     if (work_type !== 2 && work_type !== 5) {
       return !FAULT_MAPS.includes(item.title)
