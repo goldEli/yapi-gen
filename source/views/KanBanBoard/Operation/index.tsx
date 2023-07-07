@@ -33,7 +33,7 @@ import {
 } from '@store/kanBan/kanBan.thunk'
 import SelectOptionsNormal from '@/components/SelectOptionsNormal'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { setSpinning } from '@store/kanBan'
+import { setSortByGroupOptions, setSpinning } from '@store/kanBan'
 const OperationWrap = styled.div({
   minHeight: 32,
   minWidth: '800px',
@@ -225,6 +225,7 @@ const Operation = (props: Props) => {
     return () => {
       dispatch(onTapSearchChoose({}))
       dispatch(clearValue())
+      dispatch(setSortByGroupOptions('none'))
     }
   }, [])
 

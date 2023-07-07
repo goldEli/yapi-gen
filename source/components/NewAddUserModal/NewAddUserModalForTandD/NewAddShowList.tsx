@@ -90,11 +90,18 @@ const NewAddShowList = (props: any) => {
                     .map((i: { id: any }) => i.id)
                     .includes(i.id)}
                 >
-                  <CommonUserAvatar
-                    name={i.name}
-                    fontSize={14}
-                    avatar={i.avatar}
-                  />
+                  <div
+                    id="12"
+                    style={{
+                      marginTop: '-1px',
+                    }}
+                  >
+                    <CommonUserAvatar
+                      name={i.name}
+                      fontSize={14}
+                      avatar={i.avatar}
+                    />
+                  </div>
                 </Checkbox>
               </div>
             </TreeLine>
@@ -153,11 +160,18 @@ const NewAddShowList = (props: any) => {
                   .map((i: { id: any }) => i.id)
                   .includes(i.id)}
               >
-                <CommonUserAvatar
-                  name={i.name}
-                  fontSize={14}
-                  avatar={i.avatar}
-                />
+                <div
+                  id="12"
+                  style={{
+                    marginTop: '-1px',
+                  }}
+                >
+                  <CommonUserAvatar
+                    name={i.name}
+                    fontSize={14}
+                    avatar={i.avatar}
+                  />
+                </div>
               </Checkbox>
             </div>
           </TreeLine>

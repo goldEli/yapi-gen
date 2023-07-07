@@ -103,8 +103,8 @@ const Main = (props: UserInfo) => {
         return (
           <CommonUserAvatar
             size="large"
-            avatar={record.user?.avatar}
-            name={record.user?.name}
+            avatar={record.user?.avatar || ''}
+            name={record.user?.name || ''}
           />
         )
       },
@@ -123,8 +123,8 @@ const Main = (props: UserInfo) => {
             {record.relate_users.length === 1 ? (
               <CommonUserAvatar
                 size="large"
-                avatar={record.relate_users[0]?.avatar}
-                name={record.relate_users[0]?.name}
+                avatar={record.relate_users[0]?.avatar || ''}
+                name={record.relate_users[0]?.name || ''}
               />
             ) : (
               <MultipleAvatar max={3} list={record.relate_users || []} />
@@ -193,7 +193,7 @@ const Main = (props: UserInfo) => {
         <UserInfo>
           <div>
             {props.userInfo?.name}（
-            {props.userInfo?.email ? props.userInfo.email : '--'}）
+            {props.userInfo?.email ? props.userInfo?.email : '--'}）
           </div>
           <div className="msg">
             <Space size={4}>

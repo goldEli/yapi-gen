@@ -527,7 +527,7 @@ const Iteration = (props: Props) => {
           // 是否是迭代和冲刺的项目
           <Select
             type={props.homeType}
-            placeholder={'请选择冲刺项目'}
+            placeholder={'请选择冲刺'}
             options={iterateData}
             more={more1}
             value={iterateIds || []}

@@ -105,6 +105,9 @@ export const category = createSlice({
         isFoldF: [],
       }
     },
+    setCategoryList: (state: any, action) => {
+      state.categoryList = []
+    },
   },
   extraReducers(builder) {
     builder.addCase(storyConfigCategoryList.fulfilled, (state, action) => {
@@ -131,6 +134,7 @@ export const {
   setGetCategoryConfigArray,
   setProjectFieIdsData,
   setCategoryConfigDataList,
+  setCategoryList,
 } = category.actions
 
 export default category.reducer

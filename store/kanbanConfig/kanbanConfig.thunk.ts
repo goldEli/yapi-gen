@@ -210,6 +210,7 @@ export const onFresh =
     if (!store.getState().KanbanConfig.isSettingDefault) {
       dispatch(getKanbanConfig(params))
     }
+    // dispatch(getKanbanConfig(params))
     dispatch(getCategoryList({ project_id: params.project_id }))
   }
 

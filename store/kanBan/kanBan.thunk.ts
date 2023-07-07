@@ -579,6 +579,7 @@ export const createView =
     })
     getMessage({ msg: i18n.t('common.saveSuccess') as string, type: 'success' })
     await dispatch(getStoryViewList(null))
+
     dispatch(onChangeSortByView(res.data.id))
   }
 
@@ -644,7 +645,18 @@ export const getKanbanConfigList = createAsyncThunk(
 
 // 刷新看板
 export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
+  const data = store.getState().kanBan.sortByRowAndStatusOptions
+  const checked = data?.find(item => item.check)
+  if (!checked) {
+    return
+  }
   dispatch(getKanbanByGroup())
+  dispatch(
+    getKanbanConfig({
+      id: parseInt(checked.key, 10),
+      project_id: getProjectIdByUrl(),
+    }),
+  )
 }
 
 export const openSaveAsViewModel =
@@ -666,7 +678,12 @@ export const openSaveAsViewModel =
   }
 
 export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
-  dispatch(setSaveAsViewModelInfo({ visible: false }))
+  dispatch(
+    setSaveAsViewModelInfo({
+      visible: false,
+      viewItem: { id: 0, name: '', check: false, type: 1, status: 1 },
+    }),
+  )
 }
 
 // 视图列表
@@ -731,7 +748,6 @@ export const onSaveAsViewModel =
         }),
       )
     }
-
     getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
   }
