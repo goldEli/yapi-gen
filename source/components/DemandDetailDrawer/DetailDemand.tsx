@@ -34,7 +34,7 @@ const DetailDemand = (props: DetailDemand) => {
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
   const editorRef = useRef<EditorRef>(null)
-
+  const editorRef2 = useRef<any>()
   const onDeleteInfoAttach = async (file: any) => {
     setIsDelVisible(true)
     setFiles(file)
@@ -79,9 +79,9 @@ const DetailDemand = (props: DetailDemand) => {
   const onBlurEditor = async () => {
     setIsEditInfo(false)
 
-    if (editInfo === props.detail.info) return
+    if (editorRef2.current === props.detail.info) return
     const params = {
-      info: editInfo,
+      info: editorRef2.current,
       projectId: projectInfo.id,
       id: props.detail.id,
       name: props.detail.name,
@@ -116,8 +116,12 @@ const DetailDemand = (props: DetailDemand) => {
                 editorRef.current?.focus()
               }, 10)
             }}
-            onChange={(value: string) => setEditInfo(value)}
-            onBlur={onBlurEditor}
+            onChange={(value: string) => {
+              console.log(value)
+              setEditInfo(value)
+              editorRef2.current = value
+            }}
+            onBlur={() => onBlurEditor()}
           />
         )}
         {!isEditInfo && !editInfo && (
