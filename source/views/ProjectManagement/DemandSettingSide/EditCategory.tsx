@@ -165,13 +165,14 @@ const EditorCategory = (props: EditorProps) => {
     setPath(val.path)
     state === 1 ? setHiddenUpload(true) : setHiddenUpload(false)
   }
-
   return (
     <CommonModal
       isVisible={props.isVisible}
       title={
         props?.type === 'edit'
-          ? t('newlyAdd.editCategory')
+          ? props.item.work_type === 1 || props.item.work_type === 2
+            ? t('newlyAdd.editCategory')
+            : '编辑类别'
           : t('newlyAdd.createCategory')
       }
       onClose={onClose}

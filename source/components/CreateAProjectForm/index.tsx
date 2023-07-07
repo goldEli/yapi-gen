@@ -228,9 +228,7 @@ const CreateAProjectForm = () => {
 
     setAffiliations(
       result2.map((i: any) => ({
-        name: `${i.team_id === 0 ? t('enterprise_project') : t('teamwork')}/${
-          i.name
-        }`,
+        name: `${i.team_id === 0 ? '企业项目' : '团队项目'}/${i.name}`,
         id: i.team_id,
         img: i.logo,
       })),

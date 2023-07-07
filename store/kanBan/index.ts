@@ -206,6 +206,7 @@ const slice = createSlice({
       state.kanbanInfoByGroup = action.payload
     })
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
+      // debugger
       state.kanbanConfig = action.payload
     })
   },

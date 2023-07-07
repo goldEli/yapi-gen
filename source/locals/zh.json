@@ -1747,5 +1747,11 @@
   "allWork": "全部工作项",
   "allIn": "全部冲刺",
   "s": "筛选状态",
-  "watcjAll": "查看全部"
+  "watcjAll": "查看全部",
+  "sprint": {
+    "unfinished": "未完成的",
+    "completed": "已完成的",
+    "allSprint": "全部冲刺",
+    "allLongStory": "全部长故事"
+  }
 }

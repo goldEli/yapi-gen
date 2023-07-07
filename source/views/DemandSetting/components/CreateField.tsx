@@ -159,7 +159,7 @@ const CreateField = () => {
     const data = payloadList?.filter(
       (item: any) => !filterIds?.includes(item.id),
     )
-    setSearchDataList(filterCategory(activeCategory?.work_type, data))
+    setSearchDataList(filterCategory(activeCategory.work_type, data))
     setCacheSearchlist(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
