@@ -7,9 +7,9 @@ import DragTable from '@/components/DragTable'
 import CommonModal from '@/components/CommonModal'
 import { Form, Select, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
+import MoreOptions from '@/components/MoreOptions'
 import styled from '@emotion/styled'
 import MultipleAvatar from '@/components/MultipleAvatar'
-import CommonIconFont from '@/components/CommonIconFont'
 import { useSelector } from '@store/index'
 import {
   addAffairsRelation,
@@ -53,6 +53,8 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const [allDataSource, setAllDataSource] = useState<any>({
     list: undefined,
   })
+  //根据搜索框的值来放的数据
+  const [options, setOptions] = useState<any>([])
   const [resultData, setResultData] = useState<
     {
       label: string
@@ -235,10 +237,12 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       id: props.detail.id,
       searchValue: value,
     })
-    setSelectList(
-      response.map((i: Model.Affairs.AffairsInfo) => ({
-        label: i.name,
+    setOptions(
+      response.map((i: any) => ({
+        label: i?.story_prefix_key + '' + i.name,
         value: i.id,
+        id: i.id,
+        cover: i?.project_category?.attachment_path,
       })),
     )
   }
@@ -249,11 +253,14 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       projectId: projectInfo.id,
       id: props.detail.id,
     })
-    const list = response.map((i: Model.Affairs.AffairsInfo) => ({
-      label: i.name,
-      value: i.id,
-    }))
-    setRecentList(list)
+    setOptions(
+      response.map((i: Model.Affairs.AffairsInfo) => ({
+        label: i.story_prefix_key + '' + i.name,
+        value: i.id,
+        id: i.id,
+        cover: i.project_category.attachment_path,
+      })),
+    )
   }
 
   // 点击添加链接事务弹窗
@@ -321,6 +328,16 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       getRelationStoriesList(pageParams)
     }
   }, [props.detail, projectInfo])
+  const onSelect = (value: any) => {
+    form.setFieldsValue({
+      relationId: value,
+    })
+  }
+  useEffect(() => {
+    if (isVisible && !searchValue) {
+      getSelectRelationRecent()
+    }
+  }, [searchValue, isVisible])
   return (
     <InfoItem id="sprint-linkSprint" className="info_item_tab">
       <DeleteConfirmModal />
@@ -353,14 +370,28 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
           >
             <CustomSelect
               placeholder="请选择事务"
+              onSearch={onSearch}
               getPopupContainer={(node: any) => node}
               showArrow
               optionFilterProp="label"
               allowClear
               showSearch
-              onSearch={onSearch}
-              options={searchValue ? selectList : recentList}
-            />
+              onSelect={onSelect}
+            >
+              {options?.map((i: any) => {
+                console.log(i, 'ooo')
+                return (
+                  <Select.Option value={i.id} key={i.id} label={i.label}>
+                    <MoreOptions
+                      type="project"
+                      number={i.number}
+                      name={i.label}
+                      img={i?.cover}
+                    />
+                  </Select.Option>
+                )
+              })}
+            </CustomSelect>
           </Form.Item>
         </FormWrap>
       </CommonModal>
