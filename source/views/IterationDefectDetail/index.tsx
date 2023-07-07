@@ -72,6 +72,7 @@ const IterationDefectDetail = () => {
   const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
   )
+  const { userInfo } = useSelector(store => store.user)
   const [currentIndex, setCurrentIndex] = useState(0)
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
@@ -486,7 +487,7 @@ const IterationDefectDetail = () => {
         url={location.href}
         title={
           flawInfo?.name
-            ? `【${flawInfo?.projectPrefix} ${flawInfo?.name}】`
+            ? `【${flawInfo?.projectPrefix}-${flawInfo?.name}-${userInfo?.name}】`
             : ''
         }
       />

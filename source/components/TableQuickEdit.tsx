@@ -91,8 +91,8 @@ interface Props {
   // 是否是详情页面
   isInfoPage?: boolean
 
-  // 人员下拉框是否绑定在body上面
-  isBindBody?: string
+  // // 人员下拉框是否绑定在body上面
+  // isBindBody?: string
   isBug?: boolean
 }
 
@@ -330,7 +330,7 @@ const TableQuickEdit = (props: Props) => {
       }))
     }
 
-    setParams({ ...resultValue, isBindBody: props.isBindBody })
+    setParams(resultValue)
     setTimeout(() => {
       inputRef.current?.focus()
     }, 100)

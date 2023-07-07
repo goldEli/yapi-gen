@@ -110,6 +110,7 @@ const FlawDetailDrawer = () => {
   const [showState, setShowState] = useState<any>(normalState)
   const leftWidth = 640
   const spanDom = useRef<HTMLSpanElement>(null)
+  const { userInfo } = useSelector(store => store.user)
 
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
@@ -559,7 +560,7 @@ const FlawDetailDrawer = () => {
         url={location.href}
         title={
           drawerInfo?.name
-            ? `【${drawerInfo?.projectPrefix} ${drawerInfo?.name}】`
+            ? `【${drawerInfo?.projectPrefix}-${drawerInfo?.name}-${userInfo?.name}】`
             : ''
         }
       />

@@ -173,6 +173,7 @@ const Operation = (props: Props) => {
       return
     }
     const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
+    console.log(2323232, arr)
     setSearchList(arr)
 
     dispatch(saveScreen(arr))
@@ -204,6 +205,7 @@ const Operation = (props: Props) => {
       const newArr = filterFelid?.filter((i: any) => {
         return keys.includes(i.content)
       })
+      console.log(2323232, searchChoose)
       setSearchList(newArr)
       dispatch(saveScreen(newArr))
       setDefaultValue(targetSubjects)
@@ -273,8 +275,21 @@ const Operation = (props: Props) => {
               dispatch(openSaveAsViewModel())
             }}
           />
-          {/* <Btn>{t('save_as')}</Btn>
-          <Btn>{t('save_Changes')}</Btn> */}
+          <Btn
+            onClick={() => {
+              dispatch(openSaveAsViewModel())
+            }}
+          >
+            {t('save_as')}
+          </Btn>
+          <Btn
+            onClick={() => {
+              const currentId = sortByView?.find(item => item.check)?.id
+              dispatch(openSaveAsViewModel(currentId, true))
+            }}
+          >
+            {t('save_Changes')}
+          </Btn>
         </LeftBox>
         <RightBox>
           <KanBanBtnsArea
@@ -291,7 +306,6 @@ const Operation = (props: Props) => {
           />
         </RightBox>
       </OperationWrap>
-
       <div
         style={{
           height: filterState ? '0px' : 'initial',
@@ -299,14 +313,15 @@ const Operation = (props: Props) => {
         }}
       >
         <TableFilter
-          noNeed
           defaultValue={defaultValue}
           onFilter={getSearchKey}
           onSearch={(e: any, customField: any) =>
             onFilterSearch(e, customField)
           }
           list={searchList}
-          basicsList={filterBasicsList?.filter((i: any) => i.is_flaw !== 1)}
+          basicsList={filterBasicsList?.filter((i: any) =>
+            projectInfo?.projectType === 1 ? i.is_flaw !== 1 : i,
+          )}
           specialList={filterSpecialList}
           customList={filterCustomList}
         />

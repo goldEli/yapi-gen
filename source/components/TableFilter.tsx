@@ -324,7 +324,6 @@ const TableFilter = (props: any) => {
     } else if (Object.keys(props.defaultValue)?.length === 0) {
       return
     }
-    confirm()
   }, [props.defaultValue])
   console.log(props.defaultValue, 'props.defaultValue')
   useEffect(() => {
@@ -431,6 +430,7 @@ const TableFilter = (props: any) => {
       }))
       .concat(newB)
   }
+
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>

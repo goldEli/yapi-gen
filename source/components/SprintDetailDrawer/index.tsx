@@ -118,6 +118,7 @@ const SprintDetailDrawer = () => {
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
+  const { userInfo } = useSelector(store => store.user)
 
   const modeList = [
     { name: '详细信息', key: 'detailInfo', content: '' },
@@ -646,7 +647,7 @@ const SprintDetailDrawer = () => {
         url={location.href}
         title={
           drawerInfo?.name
-            ? `【${drawerInfo?.projectPrefix} ${drawerInfo?.name}】`
+            ? `【${drawerInfo?.projectPrefix}-${drawerInfo?.name}-${userInfo?.name}】`
             : ''
         }
       />

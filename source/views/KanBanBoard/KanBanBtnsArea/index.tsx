@@ -45,6 +45,7 @@ const KanBanBtnsArea = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
   const dispatch = useDispatch()
+  const { userInfo } = useSelector(store => store.user)
   const { sortByView, sortByRowAndStatusOptions, sortByGroupOptions } =
     useSelector(store => store.kanBan)
   const currentView = useMemo(() => {
@@ -159,7 +160,7 @@ const KanBanBtnsArea = (props: Props) => {
         name={currentView?.name}
         config={view}
         url={window.location.href}
-        title={`【${projectInfo.name}-${currentView?.name}】`}
+        title={`【${projectInfo.name}-${currentView?.name}-${userInfo?.name}】`}
         otherConfig={{
           currentRowAndStatusId,
           currentGroupKey,
