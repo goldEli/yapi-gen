@@ -91,8 +91,8 @@ interface Props {
   // 是否是详情页面
   isInfoPage?: boolean
 
-  // 人员下拉框是否绑定在body上面
-  isBindBody?: string
+  // // 人员下拉框是否绑定在body上面
+  // isBindBody?: string
   isBug?: boolean
 }
 
@@ -330,7 +330,7 @@ const TableQuickEdit = (props: Props) => {
       }))
     }
 
-    setParams({ ...resultValue, isBindBody: props.isBindBody })
+    setParams(resultValue)
     setTimeout(() => {
       inputRef.current?.focus()
     }, 100)
@@ -515,9 +515,7 @@ const TableQuickEdit = (props: Props) => {
       {/* 如果是详情或者是表格上可编辑字段 */}
       {(Object.keys(props.item.categoryConfigList).includes(props.keyText) ||
         props.isInfo ||
-        ['name', 'tag', 'solution', 'discovery_version'].includes(
-          props.keyText,
-        )) && (
+        ['name', 'tag'].includes(props.keyText)) && (
         <>
           {!isShowControl && (
             <>
@@ -581,9 +579,7 @@ const TableQuickEdit = (props: Props) => {
       {/* 不能操作的并且不是详情快捷操作，只展示 */}
       {!Object.keys(props.item.categoryConfigList).includes(props.keyText) &&
         !props.isInfo &&
-        !['name', 'tag', 'solution', 'discovery_version'].includes(
-          props.keyText,
-        ) && (
+        !['name', 'tag'].includes(props.keyText) && (
           <DisableWrap>
             {(!['text', 'textarea'].includes(props.type as any) ||
               props.isDemandName) && <div>{props.children}</div>}

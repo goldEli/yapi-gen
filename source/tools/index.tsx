@@ -226,7 +226,6 @@ function getTypeComponent(
         style={{ minWidth: 192 }}
         showArrow
         showSearch
-        getPopupContainer={node => node}
         allowClear
         treeData={params?.value}
         value={defaultValue}
@@ -245,9 +244,6 @@ function getTypeComponent(
         showSearch
         showArrow
         optionFilterProp="label"
-        getPopupContainer={(node: any) =>
-          params.isBindBody ? document.body : node
-        }
         allowClear
         value={defaultValue}
         onRef={inputRef}
@@ -277,7 +273,6 @@ function getTypeComponent(
         showSearch
         showArrow
         optionFilterProp="label"
-        getPopupContainer={(node: any) => node}
         allowClear
         value={defaultValue}
         onRef={inputRef}
@@ -528,6 +523,13 @@ function onComputedFindChild(obj: any, parentId: number) {
   }
 }
 
+// 计算user_menu_list中是否有当前路由
+function onComputedPermission(currentMenu: any, url: string) {
+  return (
+    currentMenu?.children?.filter((i: any) => i.url === url)?.length > 0 || true
+  )
+}
+
 export {
   getIdsForAt,
   getIsPermission,
@@ -545,4 +547,5 @@ export {
   mapToArray,
   detailTimeFormat,
   onComputedFindChild,
+  onComputedPermission,
 }

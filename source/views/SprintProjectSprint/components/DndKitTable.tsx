@@ -472,7 +472,6 @@ const DndKitTable = (props: any) => {
             defaultText={record?.handlers_name_ids || []}
             keyText="users"
             item={record}
-            isBindBody="1"
             onUpdate={() => onUpdate()}
           >
             {record?.handlers?.length ? (

@@ -56,6 +56,13 @@ const ProjectDetailSide = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
+  console.log(
+    projectInfo,
+    '=projectInfoprojectInfo',
+    projectInfo?.projectPermissions?.filter((i: any) =>
+      String(i.identity).includes('b/project/member'),
+    ).length > 0,
+  )
   const projectSettingsList = [
     {
       label: '项目信息',
@@ -70,27 +77,30 @@ const ProjectDetailSide = () => {
       label: '项目成员',
       icon: <CommonIconFont color="var(--neutral-n3)" type="team" size={18} />,
       path: '/SprintProjectManagement/Setting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/member'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/member'),
+        ).length > 0,
       key: 'ProjectMember',
     },
     {
       label: '项目角色',
       icon: <CommonIconFont color="var(--neutral-n3)" type="lock" size={18} />,
       path: '/SprintProjectManagement/Setting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/role'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/role'),
+        ).length > 0,
       key: 'ProjectRole',
     },
     {
       label: '通知配置',
       icon: <CommonIconFont color="var(--neutral-n3)" type="bell" size={18} />,
       path: '/SprintProjectManagement/Setting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/notification'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/notification'),
+        ).length > 0,
       key: 'ProjectNotify',
     },
     {
@@ -99,9 +109,10 @@ const ProjectDetailSide = () => {
         <CommonIconFont color="var(--neutral-n3)" type="selections" size={18} />
       ),
       path: '/SprintProjectManagement/Setting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/story_config'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/story_config'),
+        ).length > 0,
       key: 'ProjectAffair',
     },
     {
@@ -110,9 +121,10 @@ const ProjectDetailSide = () => {
         <CommonIconFont color="var(--neutral-n3)" type="layout" size={18} />
       ),
       path: '/SprintProjectManagement/Setting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/kanban'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/kanban'),
+        ).length > 0,
       key: '2',
       children: [
         {
@@ -129,9 +141,10 @@ const ProjectDetailSide = () => {
         <CommonIconFont color="var(--neutral-n3)" type="settings" size={18} />
       ),
       path: '/SprintProjectManagement/Setting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/home'),
-      ).length,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/home'),
+        ).length > 0,
       key: 'ProjectHome',
     },
   ]
@@ -164,12 +177,7 @@ const ProjectDetailSide = () => {
       name: 'KanBan',
       icon: 'layout',
       path: '/SprintProjectManagement/KanBan',
-      isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter(
-              (i: any) => i.identity === 'b/project/kanban',
-            ).length,
+      isPermission: true,
       key: 'KanBan',
     },
 
@@ -271,7 +279,13 @@ const ProjectDetailSide = () => {
               <SideInfo>
                 <div>{projectInfo.name}</div>
                 <span>
-                  {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+                  {projectInfo.teamId
+                    ? t('teamwork', {
+                        type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                      })
+                    : t('enterprise_project', {
+                        type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                      })}
                 </span>
               </SideInfo>
             </SideTop>
@@ -305,7 +319,9 @@ const ProjectDetailSide = () => {
                   //     </div>
                   //   )
                   // }}
-                  items={projectSettingsList}
+                  items={projectSettingsList?.filter(
+                    (i: any) => i.isPermission,
+                  )}
                   onClick={projectSettingsClick}
                   mode="inline"
                   style={{ background: 'transparent', border: 'none' }}
