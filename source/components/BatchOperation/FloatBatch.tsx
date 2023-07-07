@@ -148,7 +148,7 @@ const FloatBatch = (props: Props) => {
               <Tooltip
                 placement="top"
                 getPopupContainer={node => node}
-                title={t('version2.link') + '1'}
+                title={t('version2.link')}
               >
                 <div className={boxItem} onClick={onCopy}>
                   <IconFont type="attachment" />

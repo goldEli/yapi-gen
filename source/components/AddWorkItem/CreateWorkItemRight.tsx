@@ -125,7 +125,7 @@ const CreateDemandRight = (props: Props) => {
         } else if (['text', 'textarea'].includes(element?.fieldContent?.attr)) {
           resultCustom[element?.content] = customValue
         } else if (['single_checkbox'].includes(element?.fieldContent?.attr)) {
-          resultCustom[element?.content] = customValue === 1
+          resultCustom[element?.content] = customValue
         }
       })
     }

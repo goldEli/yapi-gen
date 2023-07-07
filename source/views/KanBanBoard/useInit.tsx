@@ -38,6 +38,7 @@ const useInit = () => {
   useEffect(() => {
     async function run() {
       const otherConfig = getValueByUrl('otherConfig')
+      console.log('getValueByUrl', getValueByUrl('type'))
       const currentRowAndStatusId = otherConfig?.currentRowAndStatusId
       const currentGroupKey = otherConfig?.currentGroupKey
       const res = await dispatch(
@@ -51,6 +52,7 @@ const useInit = () => {
         jumpToKanbanConfig(navigate)
         return
       }
+
       // 如果分享的分组有值则先采用分享的值
       if (currentGroupKey) {
         await dispatch(setSortByGroupOptions(currentGroupKey))
