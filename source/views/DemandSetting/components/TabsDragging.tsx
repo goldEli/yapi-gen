@@ -327,7 +327,8 @@ const Sortable = (props: any) => {
                       child?.content === 'user_name' ||
                       child?.content === 'finish_at' ||
                       child?.content === 'created_at' ||
-                      child?.content === 'schedule' ? (
+                      child?.content === 'schedule' ||
+                      child?.content === 'priority' ? (
                         <Checkbox disabled={true} />
                       ) : (
                         <Checkbox

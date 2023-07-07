@@ -38,6 +38,7 @@ const useInit = () => {
   useEffect(() => {
     async function run() {
       const otherConfig = getValueByUrl('otherConfig')
+      console.log('getValueByUrl', getValueByUrl('type'))
       const currentRowAndStatusId = otherConfig?.currentRowAndStatusId
       const currentGroupKey = otherConfig?.currentGroupKey
       const res = await dispatch(

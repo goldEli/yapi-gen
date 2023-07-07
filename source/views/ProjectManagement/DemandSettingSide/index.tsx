@@ -6,13 +6,7 @@ import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import _ from 'lodash'
-import {
-  JSXElementConstructor,
-  ReactElement,
-  useEffect,
-  useState,
-  useRef,
-} from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
@@ -24,15 +18,12 @@ import {
   SideTop,
   WrapSet,
   BackStyle,
-  TitleStyle,
-  NoDataCreateWrap,
   AffairTypeWrap,
   AffairTypeHeader,
   AffairTypeText,
-  AffairTypeList,
 } from './style'
 import Dragging from './Dragging'
-import { setStartUsing } from '@store/category'
+import { setStartUsing, setCategoryList } from '@store/category'
 // eslint-disable-next-line no-duplicate-imports
 import {
   getCategoryConfigList,
@@ -46,19 +37,8 @@ import {
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
-import { CloseWrap } from '@/components/StyleCommon'
 import useCategory from '@/hooks/useCategoryList'
-const IconFontStyle = styled(IconFont)({
-  color: 'var(--neutral-n2)',
-  fontSize: '18px',
-  borderRadius: '6px',
-  padding: '5px',
-  '&: hover': {
-    background: 'var(--hover-d1)',
-    color: 'var(--neutral-n1-d1)',
-    cursor: 'pointer',
-  },
-})
+
 const Tabs = styled.div`
   height: 24px;
   border-radius: 4px;
@@ -115,7 +95,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
 
   const [cacheData, setCacheData] = useState<Model.Project.CategoryList[]>()
-  const dragCategoryList = useRef<Model.Project.Category[]>()
   const [workType, setWorkType] = useState(0)
   const tabs = [
     {
@@ -125,11 +104,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       label: t('no_start_using'),
     },
   ]
-
-  const isCreate = projectInfo?.projectPermissions?.filter(
-    (i: any) => i.identity === 'b/project/story_config',
-  )?.length
-
   // 需求类别侧边栏
   const getList = async (type?: string) => {
     await dispatch(storyConfigCategoryList({ projectId: paramsData.id }, type))
@@ -178,18 +152,14 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   }
 
   useEffect(() => {
-    // debugger
     if (paramsType === 4) {
       getList()
     }
-    // if (paramsType) {
-    //   getList()
-    // } else {
-    //   getList()
-
-    // }
+    return () => {
+      dispatch(setActiveCategory({}))
+      dispatch(setCategoryList([]))
+    }
   }, [paramsType])
-
   useEffect(() => {
     if (paramsData?.categoryItem) {
       dispatch(setStartUsing(paramsData?.categoryItem.status === 1))

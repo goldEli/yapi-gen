@@ -20,15 +20,12 @@ import {
   SideTop,
   WrapSet,
   BackStyle,
-  TitleStyle,
-  NoDataCreateWrap,
   AffairTypeWrap,
   AffairTypeHeader,
   AffairTypeText,
-  AffairTypeList,
 } from './style'
 import Dragging from './Dragging'
-import { setStartUsing } from '@store/category'
+import { setStartUsing, setCategoryList } from '@store/category'
 // eslint-disable-next-line no-duplicate-imports
 import { getCategoryConfigList } from '@store/category/thunk'
 import {
@@ -38,7 +35,6 @@ import {
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
-import { CloseWrap } from '@/components/StyleCommon'
 import useCategory from '@/hooks/useCategoryList'
 const Tabs = styled.div`
   height: 24px;
@@ -163,23 +159,23 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
         }),
       ))
   }
-
   useEffect(() => {
-    if (paramsType) {
-      getList()
-    } else {
-      getList()
+    getList()
+    return () => {
+      dispatch(setActiveCategory({}))
+      dispatch(setCategoryList([]))
     }
-  }, [paramsType])
+  }, [])
 
   useEffect(() => {
     if (paramsData?.categoryItem) {
       dispatch(setStartUsing(paramsData.categoryItem.status === 1))
       setTabsActive(paramsData?.categoryItem.status)
       dispatch(setActiveCategory(paramsData.categoryItem))
+    } else {
+      dispatch(setActiveCategory({}))
     }
   }, [paramsData?.categoryItem?.status])
-
   //   返回上一页
   const onGoBack = () => {
     props.onClick()
@@ -297,9 +293,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       props.onBack()
     }
   }, [projectInfo])
-  useEffect(() => {
-    // console.log('location', location, paramsData)
-  }, [location.pathname])
+
   const updateNode = (child: { name: any }) => {
     setAffairType((prevData: any) => {
       const newData = [...prevData]
