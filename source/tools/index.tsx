@@ -523,6 +523,13 @@ function onComputedFindChild(obj: any, parentId: number) {
   }
 }
 
+// 计算user_menu_list中是否有当前路由
+function onComputedPermission(currentMenu: any, url: string) {
+  return (
+    currentMenu?.children?.filter((i: any) => i.url === url)?.length > 0 || true
+  )
+}
+
 export {
   getIdsForAt,
   getIsPermission,
@@ -540,4 +547,5 @@ export {
   mapToArray,
   detailTimeFormat,
   onComputedFindChild,
+  onComputedPermission,
 }

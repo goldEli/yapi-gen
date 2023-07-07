@@ -4,7 +4,7 @@ import ManageView from '@/components/ManageView'
 import PermissionWrap from '@/components/PermissionWrap'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
-import { getParamsData } from '@/tools'
+import { getParamsData, onComputedPermission } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { useSearchParams } from 'react-router-dom'
 import {
@@ -358,10 +358,19 @@ const DemandIndex = () => {
       // )
     }
   }, [])
+
+  const resultAuth = onComputedPermission(
+    currentMenu,
+    '/ProjectManagement/Project',
+  )
   return (
     <PermissionWrap
-      auth="/ProjectManagement/Project"
-      permission={currentMenu?.children?.map((i: any) => i.url)}
+      auth={resultAuth ? 'b/story/' : '/ProjectManagement/Project'}
+      permission={
+        resultAuth
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
     >
       <DeleteConfirmModal />
       <CreateViewPort pid={projectId} />

@@ -114,23 +114,28 @@ const Setting = () => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))
   }, [])
   return (
-    <div style={{ height: '100%' }}>
-      <SearchBox>
-        <CommonBreadCrumd></CommonBreadCrumd>
-        {activeTabs === 'ProjectMember' && (
-          <div>
-            <InputSearch
-              onChangeSearch={setSearchValue}
-              placeholder={t('project.pleaseNickname')}
-              leftIcon
-            />
-          </div>
-        )}
-      </SearchBox>
-      <Wrap>
-        <Content>{maps.get(activeTabs)?.content}</Content>
-      </Wrap>
-    </div>
+    <PermissionWrap
+      auth="/ProjectManagement/Project"
+      permission={currentMenu?.children?.map((i: any) => i.url)}
+    >
+      <div style={{ height: '100%' }}>
+        <SearchBox>
+          <CommonBreadCrumd></CommonBreadCrumd>
+          {activeTabs === 'ProjectMember' && (
+            <div>
+              <InputSearch
+                onChangeSearch={setSearchValue}
+                placeholder={t('project.pleaseNickname')}
+                leftIcon
+              />
+            </div>
+          )}
+        </SearchBox>
+        <Wrap>
+          <Content>{maps.get(activeTabs)?.content}</Content>
+        </Wrap>
+      </div>
+    </PermissionWrap>
   )
 }
 

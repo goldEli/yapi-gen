@@ -4,7 +4,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
+import { getParamsData, onComputedPermission } from '@/tools'
 import {
   ContentLeft,
   ContentMain,
@@ -63,6 +63,7 @@ const Index = (props: any) => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
+  const { currentMenu } = useSelector(store => store.user)
 
   const keyValueTree = {
     key,
@@ -264,11 +265,19 @@ const Index = (props: any) => {
     setFilterKeys([])
   }, [])
 
+  const resultAuth = onComputedPermission(
+    currentMenu,
+    '/ProjectManagement/Project',
+  )
+
   return (
     <PermissionWrap
-      // /ProjectManagement/Project
-      auth=""
-      permission={['']}
+      auth={resultAuth ? 'b/flaw/' : '/ProjectManagement/Project'}
+      permission={
+        resultAuth
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
     >
       <DeleteConfirmModal />
       <CreateViewPort pid={projectId} />

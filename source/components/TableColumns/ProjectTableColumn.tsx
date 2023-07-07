@@ -565,7 +565,10 @@ export const useDynamicColumns = (state: any) => {
       render: (text: any, record: any) => {
         return (
           <ChangeSeverityPopover
-            isCanOperation={isCanEdit}
+            isCanOperation={
+              isCanEdit &&
+              Object.keys(record.categoryConfigList).includes('severity')
+            }
             onChangeSeverity={item => state.onChangeSeverity(item, record)}
             record={record}
             projectId={state.projectId}
