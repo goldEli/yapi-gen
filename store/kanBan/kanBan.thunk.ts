@@ -451,8 +451,6 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
-    console.log(valueKey, 'valueKey')
-
     const params = {
       search: isEmpty(valueKey)
         ? {
@@ -470,6 +468,7 @@ export const getKanbanByGroup = createAsyncThunk(
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
     }
+
     if (type === 'none') {
       const res = await services.kanban.getKanban(params)
       store.dispatch(setSpinning(false))
@@ -498,15 +497,14 @@ export const getKanbanByGroup = createAsyncThunk(
 export const onChangeSortByView =
   (id: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
     await dispatch(setSortByView(id))
+    const views = store.getState().view
     const current = store
       .getState()
       .kanBan.sortByView?.find(item => item.id === id)
     if (!current) {
       return
     }
-    await dispatch(saveValue(current.config?.search ?? {}))
-    const params = generatorFilterParams(current.config)
-    await dispatch(onTapSearchChoose(params))
+
     // 根据视图 设置 分组|列与状态|筛选条件的回显
     const { sortByRowAndStatusOptions } = store.getState().kanBan
     const temp1 = sortByRowAndStatusOptions?.find(k => k.is_default === 1)?.key
@@ -523,6 +521,9 @@ export const onChangeSortByView =
           : current?.config?.currentRowAndStatusId,
       ),
     )
+    const params = generatorFilterParams(current.config)
+    await dispatch(saveValue(params))
+    await dispatch(onTapSearchChoose(params ?? { system_view: 1 }))
     dispatch(getKanbanByGroup())
   }
 // 修改分组
@@ -597,6 +598,8 @@ export const updateView =
 
 export const onFilter = () => async (dispatch: AppDispatch) => {
   setTimeout(() => {
+    console.log('这里；额')
+
     dispatch(getKanbanByGroup())
   })
 }
