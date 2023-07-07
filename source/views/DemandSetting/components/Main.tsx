@@ -182,6 +182,7 @@ const Main = (props: any) => {
       title: item.title,
       remarks: item.remarks,
       content: item.content,
+      attr: item.attr,
       fieldContent: item?.field_content || item?.fieldContent,
       id: item.dragtype === 'move' ? item.id : 0,
       storyId: item.storyId,
