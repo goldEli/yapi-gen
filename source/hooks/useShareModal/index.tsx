@@ -23,6 +23,8 @@ import { copyLink, getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { useDispatch } from '@store/index'
+import { getStoryViewList } from '@store/kanBan/kanBan.thunk'
 
 interface ShareModalProps {
   // 检查视图是否保存的 视图id
@@ -50,9 +52,17 @@ interface Options {
 const useShareModal = () => {
   const [visible, setVisible] = useState(false)
   const notFirst = useRef(false)
-  const onClose = () => {
+  const dispatch = useDispatch()
+  const updateViewListForKanBan = async () => {
+    await dispatch(getStoryViewList(null))
+  }
+  const onClose = (val1: any, val2: any) => {
     setVisible(false)
     notFirst.current = false
+    // 分享系统视图需要更新下视图列表
+    if (val1 === 2 && val2 === 2) {
+      updateViewListForKanBan()
+    }
   }
 
   const onOkRef = useRef<Options['onOk'] | null>(null)
@@ -158,7 +168,7 @@ const useShareModal = () => {
               type: 'success',
             })
             await onOkRef.current?.()
-            onClose()
+            onClose(viewType, type)
           } else {
             getMessage({
               msg: result?.msg,
@@ -237,7 +247,7 @@ const useShareModal = () => {
         width={528}
         title="分享"
         isVisible={visible}
-        onClose={onClose}
+        onClose={() => onClose(viewType, type)}
         onConfirm={onsubmit}
         confirmText="分享"
       >

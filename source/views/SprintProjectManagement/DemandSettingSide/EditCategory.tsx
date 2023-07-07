@@ -149,11 +149,7 @@ const EditorCategory = (props: EditorProps) => {
   return (
     <CommonModal
       isVisible={props.isVisible}
-      title={
-        props?.type === 'edit'
-          ? t('newlyAdd.editCategory')
-          : t('newlyAdd.createCategory')
-      }
+      title={props?.type === 'edit' ? '编辑类别' : '创建类别'}
       onClose={onClose}
       onConfirm={() => onConfirm(props)}
       confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
