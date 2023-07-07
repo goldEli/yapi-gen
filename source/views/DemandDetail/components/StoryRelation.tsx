@@ -176,6 +176,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
     setOptions(
       response.map((i: any) => ({
         label: i?.story_prefix_key + '' + i.name,
+        name: i.story_prefix_key + '' + i.name,
         value: i.id,
         id: i.id,
         cover: i?.project_category?.attachment_path,
@@ -192,6 +193,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
     setOptions(
       response.map((i: Model.Flaw.FlawInfo) => ({
         label: i.story_prefix_key + '' + i.name,
+        name: i.story_prefix_key + '' + i.name,
         value: i.id,
         id: i.id,
         cover: i.project_category.attachment_path,
