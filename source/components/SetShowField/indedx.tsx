@@ -24,6 +24,13 @@ const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
     color: var(--neutral-n1-d1);
   }
 `
+
+const CustomLabel = styled.span`
+  color: var(--neutral-n2) !important;
+  &:hover {
+    color: var(--neutral-n1-d1) !important;
+  }
+`
 interface Props {
   // 是否有预览模式
   notView?: boolean
@@ -61,7 +68,7 @@ const SetShowField = (props: Props) => {
     },
     {
       key: '1-1',
-      label: t('requirement_opening_mode'),
+      label: <CustomLabel>{t('requirement_opening_mode')}</CustomLabel>,
       children: [
         {
           key: '1',
