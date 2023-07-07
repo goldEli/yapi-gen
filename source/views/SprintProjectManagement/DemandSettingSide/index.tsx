@@ -347,7 +347,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                   <div style={{ cursor: 'pointer' }}>
                     <IconFont
                       style={{ fontSize: 12 }}
-                      type={affairType[index].visible ? 'down' : 'up'}
+                      type={affairType[index].visible ? 'down-icon' : 'up-icon'}
                     />
                     <AffairTypeText>{item.name}</AffairTypeText>
                   </div>
