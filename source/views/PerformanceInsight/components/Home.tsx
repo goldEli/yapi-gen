@@ -213,7 +213,6 @@ const Home = () => {
     const res = await viewsList(parmas)
     setViewDataList(res)
     dispatch(setViewType(viewType))
-    setOptionVal(optionVal)
   }
   // 获取已有视图
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
