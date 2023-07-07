@@ -131,7 +131,7 @@ const DetailParent = (props: DetailParentProps) => {
           showSearch
           showArrow
           optionFilterProp="label"
-          getPopupContainer={(node: any) => node}
+          // getPopupContainer={(node: any) => node}
           allowClear={
             props.type === 3 && props.detail.work_type === 6 ? false : true
           }

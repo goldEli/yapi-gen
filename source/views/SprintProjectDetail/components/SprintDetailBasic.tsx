@@ -22,7 +22,7 @@ const SprintDetailBasic = (props: Props) => {
   const navigate = useNavigate()
   // 更新详情
   const onUpdate = () => {
-    // dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
   }
 
   // 跳转配置
