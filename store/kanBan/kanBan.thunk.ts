@@ -641,7 +641,18 @@ export const getKanbanConfigList = createAsyncThunk(
 
 // 刷新看板
 export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
+  const data = store.getState().kanBan.sortByRowAndStatusOptions
+  const checked = data?.find(item => item.check)
+  if (!checked) {
+    return
+  }
   dispatch(getKanbanByGroup())
+  dispatch(
+    getKanbanConfig({
+      id: parseInt(checked.key, 10),
+      project_id: getProjectIdByUrl(),
+    }),
+  )
 }
 
 export const openSaveAsViewModel =
