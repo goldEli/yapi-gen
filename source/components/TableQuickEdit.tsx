@@ -414,7 +414,7 @@ const TableQuickEdit = (props: Props) => {
     if (props?.isCustom) {
       obj.otherParams = {
         custom_field: {
-          [props?.keyText]: newValue || '',
+          [props?.keyText]: newValue || newValue === 0 ? newValue : '',
         },
       }
     } else if (props.keyText === 'tag') {
@@ -432,6 +432,8 @@ const TableQuickEdit = (props: Props) => {
         [props?.keyText]: newValue || newValue === 0 ? newValue : '',
       }
     }
+
+    console.log(obj.otherParams)
 
     if (projectInfo.projectType === 1) {
       // 缺陷

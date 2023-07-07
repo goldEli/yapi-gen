@@ -313,6 +313,7 @@ const Main = (props: any) => {
   }
   // 空白区域的情况
   const onDropEmpty = (event: any, state: number) => {
+    props.onIsOperate(true)
     setConfigType(state)
     setDraggingIndex(-1)
     const evevtObj: any = event.dataTransfer.getData('item')
