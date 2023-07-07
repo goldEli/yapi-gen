@@ -153,13 +153,17 @@ const SliderList = (props: any) => {
               <CommonIconFont
                 type={
                   option?.find(
-                    (item: any) => dragItem?.field_content?.attr === item.type,
+                    (item: any) =>
+                      dragItem?.field_content?.attr === item.type ||
+                      dragItem.attr === item.type,
                   )?.icon
                 }
                 size={19}
                 color="var(--neutral-n1-d1)"
               />
-              <span style={{ marginLeft: '8px' }}>{dragItem.title}</span>
+              <span style={{ marginLeft: '8px' }}>
+                {dragItem.title}--{dragItem.attr}
+              </span>
             </div>
             <div className="delIcon">
               {dragItem?.is_customize === 1 && <IconFontStyle type="delete" />}
@@ -180,7 +184,9 @@ const SliderList = (props: any) => {
             <CommonIconFont
               type={
                 option?.find(
-                  (item: any) => children?.field_content?.attr === item.type,
+                  (item: any) =>
+                    children?.field_content?.attr === item.type ||
+                    children.attr === item.type,
                 )?.icon
               }
               size={19}

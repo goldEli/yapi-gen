@@ -369,7 +369,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              placeholder="请选择事务"
+              placeholder="请搜索事务"
               onSearch={onSearch}
               getPopupContainer={(node: any) => node}
               showArrow
@@ -379,7 +379,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               onSelect={onSelect}
             >
               {options?.map((i: any) => {
-                console.log(i, 'ooo')
                 return (
                   <Select.Option value={i.id} key={i.id} label={i.label}>
                     <MoreOptions
