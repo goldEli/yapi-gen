@@ -205,7 +205,7 @@ const Operation = (props: Props) => {
       const newArr = filterFelid?.filter((i: any) => {
         return keys.includes(i.content)
       })
-      console.log(2323232, searchChoose)
+      console.log('yangyangyangyangynag', searchChoose)
       setSearchList(newArr)
       dispatch(saveScreen(newArr))
       setDefaultValue(targetSubjects)

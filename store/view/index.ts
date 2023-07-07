@@ -65,6 +65,8 @@ const slice = createSlice({
       state.searchKey = action.payload
     },
     saveValue: (state, action) => {
+      console.log('state', state, action.payload)
+
       state.valueKey = action.payload
     },
     // 操作时保存表格标题的值
