@@ -90,7 +90,7 @@ const ProjectDetailSide = () => {
     },
     {
       name: '缺陷',
-      icon: 'interation-2',
+      icon: 'bug',
       path: '/ProjectManagement/Defect',
       isPermission:
         projectInfo?.isPublic === 1

@@ -668,7 +668,7 @@
     "maxAddFields": "自定义字段最多可添加20个",
     "pleaseChooseColor": "请选择需求类别颜色！",
     "editCategory": "编辑需求类别",
-    "createCategory": "创建需求类别",
+    "createCategory": "创建类别",
     "categoryName": "类别名称",
     "pleaseCategory": "请输入中英文字符限10个字",
     "categoryRemark": "类别说明",

@@ -19,7 +19,7 @@ const Wrap = styled.div({
   borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
-  padding: '12px 0 24px 24px',
+  padding: '0px 0 24px 24px',
 })
 
 const InfoLeft = styled.div({
@@ -117,14 +117,13 @@ const ProjectInfo = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
-  console.log('projectInfo', projectInfo)
   const { userInfo } = useSelector(store => store.user)
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
   return (
     <Wrap>
-      <div style={{ marginBottom: '20px', width: 400 }}></div>
+      <div style={{ width: 400 }}></div>
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>
         <CardGroup size={32}>
