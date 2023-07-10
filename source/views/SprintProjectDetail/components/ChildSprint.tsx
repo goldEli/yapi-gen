@@ -7,7 +7,8 @@ import {
   InfoItemWrap,
   Label,
   LabelWrap,
-  ProgressWrap,
+  ProgressWrapBox,
+  ProgressWrapLine,
 } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { CloseWrap, PriorityWrapTable } from '@/components/StyleCommon'
@@ -364,31 +365,31 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
         {dataSource.total > 0 && (
           <>
             <Tooltip
-              title={`${
+              title={`${t('completed1')} ${
                 props.detail.child_story_statistics?.finish_percent
-              }%${t('completed1')},${
-                props.detail.child_story_statistics?.processing_percent || 0
-              }%${t('inProgress')},${
+              }%; ${t('inProgress')} ${
+                props.detail.child_story_statistics?.processing_percent
+              }%; ${t('incomplete')} ${
                 props.detail.child_story_statistics?.start_percent
-              }%${t('incomplete')}`}
+              }%`}
             >
-              <ProgressWrap
-                percent={
-                  props.detail.child_story_statistics?.processing_percent || 0
-                }
-                success={{
-                  percent: props.detail.child_story_statistics?.finish_percent,
-                  strokeColor: 'var(--primary-d1)',
-                }}
-                format={() =>
-                  `${t('completed1')}${
-                    props.detail.child_story_statistics?.finish_percent || 0
-                  }%`
-                }
-                trailColor="rgba(102, 136, 255, 0.1)"
-                strokeColor="rgba(102, 136, 255, 0.4)"
-              />
+              <ProgressWrapBox>
+                <ProgressWrapLine
+                  one={props.detail.child_story_statistics?.finish_percent}
+                  tow={props.detail.child_story_statistics?.processing_percent}
+                  three={props.detail.child_story_statistics?.start_percent}
+                >
+                  <div className="one" />
+                  <div className="two" />
+                  <div className="three" />
+                </ProgressWrapLine>
+                <div className="finish">
+                  {t('completed1')}
+                  {props.detail.child_story_statistics?.finish_percent}%
+                </div>
+              </ProgressWrapBox>
             </Tooltip>
+
             <DragTable
               columns={columns}
               dataSource={dataSource}

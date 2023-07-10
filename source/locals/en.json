@@ -1878,7 +1878,16 @@
     "endDate": "End date",
     "result": "Result",
     "removeTo": "Unfinished transactions are moved to",
-    "moveTo": "Move to"
+    "moveTo": "Move to",
+    "shareSuccess": "Share success",
+    "shareInputTip": "Please enter the correct username or email address",
+    "noSaveView": "The current view is not saved, it will be saved for you as when sharing “view”",
+    "shareErrorTip1": "Please enter your username or email address (required)",
+    "shareTip1": "The recipient will receive the shared site message",
+    "pleaseInputMessage": "Please enter a message",
+    "shareErrorTip2": "Add Message (Required)",
+    "acquiring": "Getting...",
+    "getLink": "Get the link"
   },
   "sprintProject": {
     "affairs": "Affairs",
