@@ -14,7 +14,7 @@ export const MoreIcon = styled.div<{ left: number; show: boolean }>`
   border-radius: 50px 50px 50px 50px;
   opacity: 1;
   color: var(--neutral-n2);
-  border: 2px solid var(--neutral-white-d2);
+  border: 1px solid var(--neutral-white-d2);
   font-size: 12px;
   box-sizing: border-box;
   display: ${props => (props.show ? 'flex' : 'none')};

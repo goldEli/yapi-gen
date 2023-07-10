@@ -153,7 +153,9 @@ const SliderList = (props: any) => {
               <CommonIconFont
                 type={
                   option?.find(
-                    (item: any) => dragItem?.field_content?.attr === item.type,
+                    (item: any) =>
+                      dragItem?.field_content?.attr === item.type ||
+                      dragItem.attr === item.type,
                   )?.icon
                 }
                 size={19}
@@ -180,7 +182,9 @@ const SliderList = (props: any) => {
             <CommonIconFont
               type={
                 option?.find(
-                  (item: any) => children?.field_content?.attr === item.type,
+                  (item: any) =>
+                    children?.field_content?.attr === item.type ||
+                    children.attr === item.type,
                 )?.icon
               }
               size={19}
