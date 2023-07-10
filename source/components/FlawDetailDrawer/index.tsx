@@ -61,6 +61,7 @@ import {
   getIdsForAt,
   removeNull,
   getParamsData,
+  getProjectIdByUrl,
 } from '@/tools'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import useShareModal from '@/hooks/useShareModal'
@@ -557,7 +558,16 @@ const FlawDetailDrawer = () => {
   return (
     <>
       <ShareModal
-        url={location.href}
+        url={`${
+          location.origin
+        }/ProjectManagement/DefectDetail?data=${encryptPhp(
+          JSON.stringify({
+            ...paramsData,
+            flawId: drawerInfo?.id,
+            id: getProjectIdByUrl(),
+            newOpen: true,
+          }),
+        )}`}
         title={
           drawerInfo?.name
             ? `【${drawerInfo?.projectPrefix}-${drawerInfo?.name}-${userInfo?.name}】`

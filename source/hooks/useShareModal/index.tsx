@@ -138,9 +138,10 @@ const useShareModal = () => {
       } else {
         params.email = data.name
       }
-      if (id && needSave) {
+      try {
         let tempId: any = 0
-        try {
+        let tempUrl = ''
+        if (id && needSave) {
           if (viewType === 2) {
             // 系统视图，走创建接口
             tempId = await getCopyLink()
@@ -148,7 +149,7 @@ const useShareModal = () => {
             // 更新视图
             await viewsUpdate(saveViewsParams)
           }
-          let tempUrl = ''
+
           if (viewType === 2 && tempId) {
             tempUrl = `${location.origin}${location.pathname}?data=${encryptPhp(
               JSON.stringify({
@@ -158,26 +159,26 @@ const useShareModal = () => {
               }),
             )}`
           }
-          const result = await shareView({
-            ...params,
-            url: viewType === 2 && tempId ? tempUrl : params.url,
-          })
-          if (result && result.code === 0) {
-            getMessage({
-              msg: '分享成功',
-              type: 'success',
-            })
-            await onOkRef.current?.()
-            onClose(viewType, type)
-          } else {
-            getMessage({
-              msg: result?.msg,
-              type: 'error',
-            })
-          }
-        } catch (error) {
-          // console.log(error)
         }
+        const result = await shareView({
+          ...params,
+          url: viewType === 2 && tempId ? tempUrl : params.url,
+        })
+        if (result && result.code === 0) {
+          getMessage({
+            msg: '分享成功',
+            type: 'success',
+          })
+          await onOkRef.current?.()
+          onClose(viewType, type)
+        } else {
+          getMessage({
+            msg: result?.msg,
+            type: 'error',
+          })
+        }
+      } catch (error) {
+        // console.log(error)
       }
     }
 
