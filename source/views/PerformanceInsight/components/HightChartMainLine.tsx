@@ -2,13 +2,13 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { Space } from 'antd'
 import Highcharts from 'highcharts'
 import {
-  Col,
   Col1,
   HightChartsWrap,
   RightRow,
   Time,
   TitleCss,
 } from '../Header/Style'
+import { useTranslation } from 'react-i18next'
 import { CharTitle, HighchartsReactWrap } from './style'
 
 // 图表折线图
@@ -80,6 +80,7 @@ const HightChartMainLine = (props: {
       },
     ],
   }
+  const [t] = useTranslation()
   return (
     <div style={{ width: '49%' }}>
       <Col1>
@@ -93,7 +94,7 @@ const HightChartMainLine = (props: {
       <div style={{ width: '100%' }}>
         <HightChartsWrap height={props.height}>
           <CharTitle>
-            <span>统计周期</span>
+            <span>{t('performance.statisticalPeriod')}</span>
             <span className="day">{props.chart.period_number}天</span>
             <CommonIconFont
               type={'up-right'}
@@ -101,7 +102,7 @@ const HightChartMainLine = (props: {
               color="var(--function-success)"
             />
             <span className="time">
-              环比{' '}
+              {t('performance.ringRatio')}
               {props.chart.growth_rate > 0
                 ? `+${props.chart?.growth_rate}`
                 : props.chart?.growth_rate}
