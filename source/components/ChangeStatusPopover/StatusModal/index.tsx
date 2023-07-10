@@ -7,7 +7,15 @@ import CustomSelect from '@/components/CustomSelect'
 import { ModalFooter } from '@/components/StyleCommon'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import { getShapeRight } from '@/services/demand'
-import { DatePicker, Divider, Form, Input, Tooltip, TreeSelect } from 'antd'
+import {
+  DatePicker,
+  Divider,
+  Form,
+  Input,
+  Select,
+  Tooltip,
+  TreeSelect,
+} from 'antd'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -429,6 +437,31 @@ const StatusModal = (props: StatusModalProps) => {
                     />
                   </Form.Item>
                 )}
+                {i.type === 'single_checkbox' && (
+                  <Form.Item
+                    label={<LabelComponent title={i.title} />}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                    style={{ marginTop: 2 }}
+                  >
+                    <CustomSelect
+                      placeholder={t('common.pleaseSelect')}
+                      showSearch
+                      showArrow
+                      optionFilterProp="label"
+                      getPopupContainer={(node: any) => node}
+                      allowClear
+                    >
+                      <Select.Option value={0}>{t('untick')}</Select.Option>
+                      <Select.Option value={1}>{t('check')}</Select.Option>
+                    </CustomSelect>
+                  </Form.Item>
+                )}
 
                 {['select', 'radio'].includes(i.type) && (
                   <Form.Item
@@ -502,7 +535,7 @@ const StatusModal = (props: StatusModalProps) => {
                           label: item.name,
                           value: item.id,
                         }))}
-                        optionFilterProp="name"
+                        optionFilterProp="label"
                       />
                     </Form.Item>
                   )}

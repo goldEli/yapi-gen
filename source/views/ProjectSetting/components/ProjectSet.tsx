@@ -439,10 +439,18 @@ const ProjectSet = () => {
     />
   )
 
+  // 判断是否详情回来，并且权限是不是有
+  const isLength =
+    projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
+
   return (
     <PermissionWrap
       auth="b/project/role"
-      permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
+      permission={
+        isLength
+          ? ['0']
+          : projectInfo?.projectPermissions?.map((i: any) => i.identity)
+      }
     >
       <div style={{ height: '100%' }}>
         <DeleteConfirm

@@ -1,9 +1,9 @@
-import { getMessage } from '@/components/Message'
 import { css } from '@emotion/css'
 import { DatePicker, Radio, Space, Switch } from 'antd'
 import moment from 'moment'
 
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const { RangePicker } = DatePicker
 
@@ -22,6 +22,9 @@ const customBox = css`
   }
   .radio {
     margin-bottom: 8px;
+    .custom {
+      white-space: nowrap;
+    }
   }
   .date {
     display: flex;
@@ -38,6 +41,7 @@ const customBox = css`
 
 const ChooseDate = (props: any) => {
   const { onChange, value, initNumber } = props
+  const [t] = useTranslation()
   const [params, setParams] = useState<any>({})
   const today = new Date()
   const tomorrow = new Date(today)
@@ -118,7 +122,7 @@ const ChooseDate = (props: any) => {
   return (
     <div className={customBox}>
       <div className="switch">
-        <span className="title">是否包含周六周日</span>
+        <span className="title">{t('sprint.includeWeek')}</span>
         <Switch
           size="small"
           checked={params.include}
@@ -167,13 +171,21 @@ const ChooseDate = (props: any) => {
           }}
           value={params.radio}
         >
-          <Space size="middle">
-            <Radio value={1}>一周</Radio>
-            <Radio value={2}>二周</Radio>
-            <Radio value={3}>三周</Radio>
-            <Radio value={4}>四周</Radio>
-            <Radio value={0}>自定义</Radio>
-          </Space>
+          <Radio value={1}>
+            <span className="custom">{t('sprint.one')}</span>
+          </Radio>
+          <Radio value={2}>
+            <span className="custom">{t('sprint.two')}</span>
+          </Radio>
+          <Radio value={3}>
+            <span className="custom">{t('sprint.three')}</span>
+          </Radio>
+          <Radio value={4}>
+            <span className="custom">{t('sprint.four')}</span>
+          </Radio>
+          <Radio value={0}>
+            <span className="custom">{t('sprint.custom')}</span>
+          </Radio>
         </Radio.Group>
       </div>
       <div className="date">

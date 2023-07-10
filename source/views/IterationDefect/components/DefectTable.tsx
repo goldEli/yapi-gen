@@ -61,7 +61,7 @@ const DefectTable = (props: Props) => {
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  asyncSetTtile(`缺陷【${projectInfo.name}】`)
+  asyncSetTtile(`${t('defect1')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
 
@@ -146,7 +146,7 @@ const DefectTable = (props: Props) => {
         severity: item.severity,
       },
     })
-    getMessage({ msg: '修改成功', type: 'success' })
+    getMessage({ msg: t('successfullyModified'), type: 'success' })
     props.onChangeRow?.()
   }
 
@@ -174,7 +174,7 @@ const DefectTable = (props: Props) => {
           editId: item.id,
           projectId,
           type: 2,
-          title: '编辑缺陷',
+          title: t('editorialDefect'),
         },
       }),
     )
@@ -346,7 +346,7 @@ const DefectTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 2, title: '创建缺陷' },
+        params: { noDataCreate: true, type: 2, title: t('createDefect') },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))
@@ -372,7 +372,9 @@ const DefectTable = (props: Props) => {
         }
         noData={
           <NoData
-            subText={hasCreate ? '' : '当前项目还未创建缺陷，创建一个吧~'}
+            subText={
+              hasCreate ? '' : t('theCurrentProjectHasNotCreatedADefectCreate')
+            }
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
@@ -381,7 +383,7 @@ const DefectTable = (props: Props) => {
                 onClick={onClick}
                 style={{ marginTop: 24 }}
               >
-                创建缺陷
+                {t('createDefect')}
               </CommonButton>
             )}
           </NoData>

@@ -42,7 +42,14 @@ const getTitleTips = (text: string, tips: string, position?: string) => {
         placement={position === 'right' ? 'topRight' : 'top'}
         trigger="click"
       >
-        <div style={{ margin: '0 8px' }}>
+        <div
+          style={{
+            width: '45px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <CommonIconFont type="question" size={16} />
         </div>
       </Tooltip>
@@ -148,7 +155,7 @@ const ProgressComparison = (props: Props) => {
     const columns1 = [
       {
         dataIndex: 'userName',
-        title: '用户',
+        title: t('performance.user'),
         render: (text: string, record: any) => {
           return (
             <RowText
@@ -165,7 +172,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '组织',
+        title: t('performance.organize'),
         // <NewSort
         //   fixedKey="departmentName"
         //   nowKey={order.key}
@@ -176,7 +183,7 @@ const ProgressComparison = (props: Props) => {
         dataIndex: 'departmentName',
       },
       {
-        title: '职务',
+        title: t('performance.position'),
         dataIndex: 'positionName',
         render: (text: string) => {
           return <RowText>{text ? text : '--'}</RowText>
@@ -184,14 +191,17 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: getTitleTips('完成率', '已完成工作项/新增工作项*100%'),
+        title: getTitleTips(
+          t('performance.completionRate'),
+          t('performance.completedWorkWork'),
+        ),
         render: (text: string) => {
           return <span>{text}%</span>
         },
       },
       {
         dataIndex: 'new',
-        title: '新增工作项',
+        title: t('performance.addWorkItem'),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'new')}>
@@ -201,7 +211,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '已完成工作项',
+        title: t('performance.completedWorkItem'),
         dataIndex: 'completed',
         render: (text: string, record: any) => {
           return (
@@ -212,7 +222,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '工作项存量',
+        title: t('performance.workItemInventory'),
         dataIndex: 'work_stock',
         render: (text: string, record: any) => {
           return (
@@ -223,7 +233,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '进行中|已完成',
+        title: t('performance.in'),
         dataIndex: 'work_progress',
       },
       // {
@@ -251,7 +261,10 @@ const ProgressComparison = (props: Props) => {
       // },
       {
         dataIndex: 'repeat_rate',
-        title: getTitleTips('工作重复率', '审批不通过次数/全部审批次数*100%'),
+        title: getTitleTips(
+          t('performance.workRepetitionRate'),
+          t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+        ),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
@@ -263,8 +276,8 @@ const ProgressComparison = (props: Props) => {
       {
         dataIndex: 'risk',
         title: getTitleTips(
-          '存量风险',
-          '（当期）超过14天未完成的工作项',
+          t('performance.stockRisk'),
+          t('performance.workItemsNotCompletedForMoreThanDays'),
           'right',
         ),
         render: (text: string, record: any) => {
@@ -280,7 +293,7 @@ const ProgressComparison = (props: Props) => {
     const columns2 = [
       {
         dataIndex: 'userName',
-        title: '用户',
+        title: t('performance.user'),
         render: (text: string, record: any) => {
           return (
             <RowText
@@ -297,7 +310,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '组织',
+        title: t('performance.organize'),
         // <NewSort
         //   fixedKey="departmentName"
         //   nowKey={order.key}
@@ -308,7 +321,7 @@ const ProgressComparison = (props: Props) => {
         dataIndex: 'departmentName',
       },
       {
-        title: '职务',
+        title: t('performance.position'),
         dataIndex: 'positionName',
         render: (text: string) => {
           return <RowText>{text ? text : '--'}</RowText>
@@ -316,14 +329,17 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: getTitleTips('当前完成率', '已完成工作项/新增工作项*100%'),
+        title: getTitleTips(
+          t('performance.currentCompletionRate'),
+          t('performance.completedWorkWork'),
+        ),
         render: (text: string) => {
           return <span>{text}%</span>
         },
       },
       {
         dataIndex: 'new',
-        title: '当前新增工作项',
+        title: t('performance.currentlyNewWorkItem'),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'new')}>
@@ -333,7 +349,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '当前已完成工作项',
+        title: t('performance.currentlyCompletedWorkItems'),
         dataIndex: 'completed',
         render: (text: string, record: any) => {
           return (
@@ -344,7 +360,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '总工作项存量',
+        title: t('performance.totalWorkItemInventory'),
         dataIndex: 'work_stock',
         render: (text: string, record: any) => {
           return (
@@ -355,7 +371,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '进行中|已完成',
+        title: t('performance.in'),
         dataIndex: 'work_progress',
       },
       // {
@@ -383,7 +399,10 @@ const ProgressComparison = (props: Props) => {
       // },
       {
         dataIndex: 'repeat_rate',
-        title: getTitleTips('总工作重复率', '审批不通过次数/全部审批次数*100%'),
+        title: getTitleTips(
+          t('performance.totalJobRepetitionRate'),
+          t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+        ),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
@@ -394,7 +413,11 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'risk',
-        title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
+        title: getTitleTips(
+          t('performance.stockRisk'),
+          t('performance.workItemsNotCompletedForMoreThanDays'),
+          'right',
+        ),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'risk')}>
@@ -408,7 +431,7 @@ const ProgressComparison = (props: Props) => {
     const columns3 = [
       {
         dataIndex: 'userName',
-        title: '用户',
+        title: t('performance.user'),
         render: (text: string, record: any) => {
           return (
             <RowText
@@ -425,7 +448,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '组织',
+        title: t('performance.organize'),
         dataIndex: 'departmentName',
       },
       {
@@ -434,7 +457,7 @@ const ProgressComparison = (props: Props) => {
             fixedKey="positionName"
             nowKey={order.key}
             order={order.value}
-            title={'职务'}
+            title={t('performance.position')}
             onUpdateOrderKey={onUpdateOrderKey}
           ></NewSort>
         ),
@@ -445,13 +468,16 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: getTitleTips('缺陷修复率', '当期已修复缺陷/档期总缺陷*100%'),
+        title: getTitleTips(
+          t('performance.defectRepairRate'),
+          t('performance.defectsRepairedInTheCurrentDefectsInThe'),
+        ),
         render: (text: string, record: any) => {
           return <span>{text}%</span>
         },
       },
       {
-        title: '待修复',
+        title: t('performance.toBeFixed'),
         dataIndex: 'not_fixed',
         render: (text: string, record: any) => {
           return (
@@ -462,7 +488,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '修复中',
+        title: t('performance.repairing'),
         dataIndex: 'fixing',
         render: (text: string, record: any) => {
           return (
@@ -473,7 +499,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: '已完成',
+        title: t('performance.completed'),
         dataIndex: 'fixed',
         render: (text: string, record: any) => {
           return (
@@ -485,13 +511,16 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'repeat_open',
-        title: '缺陷重开',
+        title: t('performance.bugReopening'),
         render: (text: string, record: any) => {
           return <RowText>{text}</RowText>
         },
       },
       {
-        title: getTitleTips('缺陷重开率', '当期重开缺陷/当期总缺陷*100%'),
+        title: getTitleTips(
+          t('performance.defectRate'),
+          t('performance.defectsReopenedInTheCurrentDefectsInTheCurrent'),
+        ),
         dataIndex: 'repeat_open_rate',
         render: (text: string, record: any) => {
           return (
@@ -503,7 +532,11 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'stock_count',
-        title: getTitleTips('缺陷存量', '当期未修复缺陷', 'right'),
+        title: getTitleTips(
+          t('performance.stockRisk'),
+          t('performance.defectsNotFixedInTheCurrentPeriod'),
+          'right',
+        ),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'risk')}>

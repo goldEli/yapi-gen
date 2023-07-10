@@ -447,7 +447,7 @@ const Main = (props: any) => {
           />
         )}
         <DeleteConfirm
-          text={'确认删除该类型？'}
+          text={'确认删除该字段？'}
           isVisible={isVisible}
           onChangeVisible={() => setIsVisible(false)}
           onConfirm={() => delConfig()}

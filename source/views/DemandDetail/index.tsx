@@ -98,7 +98,7 @@ const DemandDetail = () => {
 
   // 复制标题
   const onCopy = () => {
-    copyLink(demandInfo.name, '复制成功！', '复制失败！')
+    copyLink(demandInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
   // 点击切换类别
@@ -209,11 +209,11 @@ const DemandDetail = () => {
   const onNameConfirm = async () => {
     const value = spanDom.current?.innerText
     if ((value?.length || 0) <= 0) {
-      getMessage({ type: 'warning', msg: '名称不能为空' })
+      getMessage({ type: 'warning', msg: t('nameIsRequired') })
       return
     }
     if ((value?.length || 0) > 100) {
-      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      getMessage({ type: 'warning', msg: t('nameCannotExceedCharacters') })
       return
     }
     if (value !== demandInfo.name) {
@@ -224,7 +224,7 @@ const DemandDetail = () => {
           name: value,
         },
       })
-      getMessage({ type: 'success', msg: '修改成功' })
+      getMessage({ type: 'success', msg: t('successfullyModified') })
       // 提交名称
       setDemandInfo({
         ...demandInfo,
@@ -266,8 +266,8 @@ const DemandDetail = () => {
   // 删除事务弹窗
   const onDelete = () => {
     openDelete({
-      title: '删除确认',
-      text: '确认删除该事务？',
+      title: t('deleteConfirmation'),
+      text: t('areYouSureToDeleteThisTransaction'),
       onConfirm() {
         onDeleteConfirm()
         return Promise.resolve()
@@ -302,7 +302,7 @@ const DemandDetail = () => {
           editId: demandInfo.id,
           projectId: demandInfo.projectId,
           type: 1,
-          title: '编辑需求',
+          title: t('editingRequirements'),
         },
       }),
     )
@@ -312,8 +312,8 @@ const DemandDetail = () => {
   const onCopyId = () => {
     copyLink(
       `${demandInfo.projectPrefix}-${demandInfo.prefixKey}`,
-      '复制成功！',
-      '复制失败！',
+      t('copysuccess'),
+      t('copyfailed'),
     )
   }
 
@@ -340,29 +340,29 @@ const DemandDetail = () => {
   // 更多下拉
   const items: MenuProps['items'] = [
     {
-      label: <div onClick={onEdit}>编辑</div>,
+      label: <div onClick={onEdit}>{t('common.edit')}</div>,
       key: '0',
     },
     {
-      label: <div onClick={onDelete}>删除</div>,
+      label: <div onClick={onDelete}>{t('common.del')}</div>,
       key: '1',
     },
     {
       type: 'divider',
     },
     {
-      label: <div onClick={onCopyId}>复制编号</div>,
+      label: <div onClick={onCopyId}>{t('copy_requirement_number')}</div>,
       key: '2',
     },
     {
-      label: <div onClick={onCopyLink}>复制链接</div>,
+      label: <div onClick={onCopyLink}>{t('copy_title_link')}</div>,
       key: '3',
     },
     {
       type: 'divider',
     },
     {
-      label: <div onClick={onToConfig}>配置</div>,
+      label: <div onClick={onToConfig}>{t('configuration')}</div>,
       key: '4',
     },
   ]
@@ -380,7 +380,7 @@ const DemandDetail = () => {
       key: '1',
       label: (
         <DetailTabItem>
-          <span>详细信息</span>
+          <span>{t('details')}</span>
         </DetailTabItem>
       ),
       children: <DemandDetailInfo />,
@@ -389,7 +389,7 @@ const DemandDetail = () => {
       key: '2',
       label: (
         <DetailTabItem>
-          <span>子需求</span>
+          <span>{t('subRequirement')}</span>
           <ItemNumber isActive={tabActive === '2'}>
             {demandInfo?.childCount || 0}
           </ItemNumber>
@@ -401,7 +401,7 @@ const DemandDetail = () => {
       key: '3',
       label: (
         <DetailTabItem>
-          <span>关联工作项</span>
+          <span>{t('associatedWorkItems')}</span>
         </DetailTabItem>
       ),
       children: <StoryRelation activeKey={tabActive} detail={demandInfo} />,
@@ -410,7 +410,7 @@ const DemandDetail = () => {
       key: '4',
       label: (
         <DetailTabItem>
-          <span>变更记录</span>
+          <span>{t('changeLog')}</span>
           <ItemNumber isActive={tabActive === '4'}>
             {demandInfo?.changeCount || 0}
           </ItemNumber>
@@ -422,7 +422,7 @@ const DemandDetail = () => {
       key: '5',
       label: (
         <DetailTabItem>
-          <span>流转记录</span>
+          <span>{t('circulationRecords')}</span>
         </DetailTabItem>
       ),
       children: <Circulation activeKey={tabActive} />,
@@ -669,7 +669,7 @@ const DemandDetail = () => {
               {demandInfo.name}
             </span>
           )}
-          {hasEdit && <span className="name">{demandInfo.name}</span>}=
+          {hasEdit && <span className="name">{demandInfo.name}</span>}
           <CopyIcon onCopy={onCopy} />
           <ChangeStatusPopover
             projectId={demandInfo.projectId}

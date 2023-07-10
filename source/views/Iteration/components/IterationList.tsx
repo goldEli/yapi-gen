@@ -336,8 +336,8 @@ const IterationList = (props: IterationListProps) => {
       )
     } else if (type === 'del') {
       open({
-        title: '删除确认',
-        text: '确认删除该迭代？',
+        title: t('deleteConfirmation'),
+        text: t('areYouSureYouWantToDeleteThis'),
         onConfirm() {
           onDeleteConfirm(item)
           return Promise.resolve()

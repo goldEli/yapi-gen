@@ -21,6 +21,7 @@ import {
 } from '@store/affairs/affairs.thunk'
 import { Tabs, TabsProps } from 'antd'
 import AffairsDetail from './AffairsDetail'
+import { t } from 'i18next'
 
 const SprintDetailInfo = (props: { onRef: any }) => {
   const dispatch = useDispatch()
@@ -55,30 +56,30 @@ const SprintDetailInfo = (props: { onRef: any }) => {
   }
 
   // tab标签栏
-  const items: TabsProps['items'] = [
+  const items: any = [
     {
       key: 'sprint-info',
-      label: '描述',
+      label: t('describe'),
     },
     {
       key: 'sprint-attachment',
-      label: '附件',
+      label: t('attachment'),
     },
     {
       key: 'sprint-tag',
-      label: '标签',
+      label: t('tag'),
     },
     {
       key: 'sprint-childSprint',
-      label: '子事务',
+      label: t('subtransaction'),
     },
     {
       key: 'sprint-linkSprint',
-      label: '链接事务',
+      label: t('linkAffairs'),
     },
     {
       key: 'sprint-activity',
-      label: '活动',
+      label: t('activity'),
     },
   ]
 
@@ -155,7 +156,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
       </DetailInfoWrap>
       <CommentFooter
         onRef={commentDom}
-        placeholder="发表评论（按M快捷键发表评论）"
+        placeholder={t('postComment')}
         personList={removeNull(projectInfoValues, 'user_name')?.map(
           (k: any) => ({
             label: k.content,

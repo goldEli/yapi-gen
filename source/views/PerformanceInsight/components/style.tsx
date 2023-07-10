@@ -281,7 +281,7 @@ export const Item = styled.div<{ activeIdx: boolean }>(
 export const Segm = styled.div`
   height: 32px;
   line-height: 32px;
-  padding-left: 24px;
+  padding-left: 16px;
   &:hover {
     color: var(--primary-d1);
     cursor: pointer;

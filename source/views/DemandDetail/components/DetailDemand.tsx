@@ -147,7 +147,7 @@ const DetailDemand = () => {
               add={onAddInfoAttach}
               addWrap={
                 <CommonButton type="primaryText" icon="plus">
-                  添加附件
+                  {t('addAttachments')}
                 </CommonButton>
               }
             />

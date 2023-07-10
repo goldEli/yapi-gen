@@ -9,7 +9,6 @@ import Detail from './Detail'
 import DetailHeader from './DetailHeader'
 import {
   Line,
-  ItemMain1,
   TypeBox,
   MainStyle1,
   UserInfo,
@@ -84,7 +83,7 @@ const Work = (props: WorkType) => {
           <TitleType onClick={() => activeItem(el)}>
             <span>{el.status_name}</span>
             <CommonIconFont
-              type={el.isOpen ? 'up' : 'down'}
+              type={el.isOpen ? 'down' : 'up'}
               size={16}
               color="var(--neutral-n2)"
             />

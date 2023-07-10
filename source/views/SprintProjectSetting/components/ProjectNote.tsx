@@ -250,75 +250,75 @@ const ProjectSet = () => {
     let name = ''
     switch (code) {
       case '2000':
-        name = '创建事务'
+        name = t('sprintProject.createTransaction')
         break
 
       case '2001':
-        name = '导入事务'
+        name = t('sprintProject.importTransaction')
         break
 
       case '2002':
-        name = '导出事务'
+        name = t('sprintProject.exportTransaction')
         break
 
       case '2003':
-        name = '事务指派处理人'
+        name = t('sprintProject.appointedHandler')
         break
 
       case '2004':
-        name = '事务状态更新'
+        name = t('sprintProject.transactionStatusUpdate')
         break
 
       case '2005':
-        name = '事务被评论'
+        name = t('sprintProject.transactionIsCommented')
         break
 
       case '2006':
-        name = '评论@某人'
+        name = t('sprintProject.comment')
         break
 
       case '2007':
-        name = '事务删除'
+        name = t('sprintProject.transactionDelete')
         break
 
       case '2008':
-        name = '事务抄送'
+        name = t('sprintProject.transactionCc')
         break
       case '0001':
         name = t('import_product')
         break
       case '2100':
-        name = '添加冲刺事务'
+        name = t('sprintProject.addASprintTransaction')
         break
       case '2101':
-        name = '移除冲刺事务'
+        name = t('sprintProject.removeSprintTransaction')
         break
       case '2102':
-        name = '创建冲刺'
+        name = t('sprintProject.createASprint')
         break
       case '2103':
-        name = '编辑冲刺'
+        name = t('sprintProject.editSprint')
         break
       case '2104':
-        name = '冲刺完成'
+        name = t('sprintProject.sprintComplete')
         break
       case '2105':
-        name = '冲刺删除'
+        name = t('sprintProject.sprintDelete')
         break
       case '2106':
-        name = '添加冲刺事务'
+        name = t('sprintProject.addASprintTransaction')
         break
       case '2200':
-        name = '成员变更'
+        name = t('sprintProject.memberChange')
         break
       case '2203':
-        name = '项目编辑'
+        name = t('sprintProject.projectEditor')
         break
       case '2204':
-        name = '项目删除'
+        name = t('sprintProject.itemDelete')
         break
       case '2205':
-        name = '项目状态变更'
+        name = t('sprintProject.projectStatusChange')
         break
 
       default:
@@ -330,21 +330,21 @@ const ProjectSet = () => {
     setDataList([
       {
         id: 108,
-        name: '事务',
+        name: t('sprintProject.affairs'),
         type: 1,
         label: '管理员',
         types: 'demand',
       },
       {
         id: 109,
-        name: '冲刺',
+        name: t('sprintProject.sprint'),
         type: 2,
         label: '编辑者',
         types: 'iteration',
       },
       {
         id: 110,
-        name: '项目',
+        name: t('sprintProject.project'),
         type: 3,
         label: '参与者',
         types: 'project',
@@ -427,12 +427,19 @@ const ProjectSet = () => {
     }
     setPermissionList(newA)
   }
-  // console.log(permissionList)
+
+  // 判断是否详情回来，并且权限是不是有
+  const isLength =
+    projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
 
   return (
     <PermissionWrap
       auth="b/project/notification"
-      permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
+      permission={
+        isLength
+          ? ['0']
+          : projectInfo?.projectPermissions?.map((i: any) => i.identity)
+      }
     >
       <div style={{ height: '100%', position: 'relative' }}>
         <div

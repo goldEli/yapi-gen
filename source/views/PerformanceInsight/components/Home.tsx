@@ -115,7 +115,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
                   <span>{el.value}</span>
                   <span>{el.unit}</span>
                 </TextNum>
-                <Text size="12px" color="var(--neutral-n2)" onClick={() => 123}>
+                <Text size="12px" color="var(--neutral-n2)">
                   <Space size={4}>
                     <span>{el.name}</span>
                     <CommonIconFont type="right" size={12} />
@@ -325,7 +325,7 @@ const Home = () => {
     const res = await delView(Number(key))
     if (res) {
       getMessage({
-        msg: '删除成功',
+        msg: t('common.deleteSuccess'),
         type: 'success',
       })
       // 刷新视图的接口
@@ -726,7 +726,7 @@ const Home = () => {
                 height={396}
                 chart={charts6}
                 titleType
-                title={t('performance.title6')}
+                title={t('performance.home9')}
                 onChange={item => getDefectRatioChart(item.key)}
               />
             </div>

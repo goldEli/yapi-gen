@@ -108,11 +108,11 @@ export const SwiperCard = (props: {
     let str: string
     switch (props.project_type) {
       case 1:
-        str = '迭代'
+        str = t('iteration')
         break
 
       default:
-        str = '冲刺'
+        str = t('sprint2')
         break
     }
     return str
@@ -121,7 +121,7 @@ export const SwiperCard = (props: {
     let str: string
     switch (props.project_type) {
       case 1:
-        str = '企业项目'
+        str = t('enterprise_project2')
         break
 
       default:

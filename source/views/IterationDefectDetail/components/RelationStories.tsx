@@ -95,11 +95,11 @@ const RelationStories = (props: RelationStoriesProps) => {
 
   // 类型列表
   const typeList = [
-    { label: '关联', value: 1, list: [] },
-    { label: '前置', value: 2, list: [] },
-    { label: '后置', value: 3, list: [] },
-    { label: '阻塞', value: 4, list: [] },
-    { label: '被阻塞', value: 5, list: [] },
+    { label: t('associate'), value: 1, list: [] },
+    { label: t('front'), value: 2, list: [] },
+    { label: t('rear'), value: 3, list: [] },
+    { label: t('block'), value: 4, list: [] },
+    { label: t('blocked'), value: 5, list: [] },
   ]
 
   //   获取关联项列表
@@ -188,7 +188,7 @@ const RelationStories = (props: RelationStoriesProps) => {
       projectId: projectInfo.id,
       id: props.detail.id,
     })
-    getMessage({ type: 'success', msg: '添加成功' })
+    getMessage({ type: 'success', msg: t('addedSuccessfully') })
     getList(pageObj, order)
     onClose()
     props.onUpdate(true)
@@ -253,7 +253,7 @@ const RelationStories = (props: RelationStoriesProps) => {
       relation_id: item.id,
       type: item.relation_type,
     })
-    getMessage({ type: 'success', msg: '删除成功' })
+    getMessage({ type: 'success', msg: t('successfullyDeleted') })
     onUpdate()
   }
 
@@ -261,8 +261,8 @@ const RelationStories = (props: RelationStoriesProps) => {
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     open({
-      title: '删除确认',
-      text: '确认删除该关联工作项？',
+      title: t('deleteConfirmation'),
+      text: t('areYouSureYouWantToDeleteThisAssociatedWork'),
       onConfirm() {
         onDeleteConfirm(item)
         return Promise.resolve()
@@ -295,14 +295,16 @@ const RelationStories = (props: RelationStoriesProps) => {
       render: (text: string) => <div>{text}</div>,
     },
     {
-      title: <NewSort fixedKey="relation_type">关联关系</NewSort>,
+      title: (
+        <NewSort fixedKey="relation_type">{t('connectionRelation')}</NewSort>
+      ),
       dataIndex: 'relation_type',
       render: (text: string) => (
         <div>{typeList.filter((i: any) => i.value === text)[0]?.label}</div>
       ),
     },
     {
-      title: <NewSort fixedKey="name">标题</NewSort>,
+      title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       render: (text: any, record: Model.Flaw.FlawInfo) => (
         <div
@@ -469,7 +471,7 @@ const RelationStories = (props: RelationStoriesProps) => {
       render: (text: string) => <div>{text}</div>,
     },
     {
-      title: <NewSort fixedKey="name">标题</NewSort>,
+      title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       width: 160,
       render: (text: any, record: Model.Flaw.FlawInfo) => (
@@ -639,19 +641,19 @@ const RelationStories = (props: RelationStoriesProps) => {
       <DeleteConfirmModal />
       <CommonModal
         isVisible={isVisible}
-        title="链接工作项"
+        title={t('linkWorkItem')}
         onClose={onClose}
-        confirmText="链接"
+        confirmText={t('link')}
         onConfirm={onConfirm}
       >
         <FormWrap layout="vertical" form={form} style={{ padding: '0 24px' }}>
           <Form.Item
-            label="链接类型"
+            label={t('linkType')}
             name="type"
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              placeholder="请选择类型"
+              placeholder={t('pleaseChooseTheType')}
               getPopupContainer={(node: any) => node}
               options={typeList}
               showArrow
@@ -660,7 +662,7 @@ const RelationStories = (props: RelationStoriesProps) => {
             />
           </Form.Item>
           <Form.Item
-            label="工作项"
+            label={t('workItem')}
             name="relationId"
             rules={[{ required: true, message: '' }]}
           >
@@ -672,7 +674,7 @@ const RelationStories = (props: RelationStoriesProps) => {
               getPopupContainer={(node: any) => node}
               showSearch
               onSelect={onSelect}
-              placeholder="搜索工作项"
+              placeholder={t('searchForWorkItems')}
               optionFilterProp="label"
             >
               {options?.map((i: any) => {
@@ -692,7 +694,7 @@ const RelationStories = (props: RelationStoriesProps) => {
         </FormWrap>
       </CommonModal>
       <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
-        链接工作项
+        {t('linkWorkItem')}
       </CommonButton>
       {/* 缺陷详情 */}
       {!props.isDrawer && (

@@ -64,13 +64,12 @@ const SiteDrawer = () => {
     },
 
     {
-      id: '3',
-      text: t('all'),
-    },
-
-    {
       id: '2',
       text: t('atmy'),
+    },
+    {
+      id: '3',
+      text: t('all'),
     },
   ]
 
@@ -131,7 +130,7 @@ const SiteDrawer = () => {
     }
     if (id === '4') {
       newName.current = undefined
-      atmy.current = ['1600']
+      atmy.current = ['150']
       lastId.current = 1
       fetchMoreData(1)
     }

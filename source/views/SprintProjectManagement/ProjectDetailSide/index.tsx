@@ -56,16 +56,9 @@ const ProjectDetailSide = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
-  console.log(
-    projectInfo,
-    '=projectInfoprojectInfo',
-    projectInfo?.projectPermissions?.filter((i: any) =>
-      String(i.identity).includes('b/project/member'),
-    ).length > 0,
-  )
   const projectSettingsList = [
     {
-      label: '项目信息',
+      label: t('sprintProject.projectInformation'),
       icon: (
         <CommonIconFont color="var(--neutral-n3)" type="file-text" size={18} />
       ),
@@ -74,7 +67,7 @@ const ProjectDetailSide = () => {
       key: 'ProjectInfo',
     },
     {
-      label: '项目成员',
+      label: t('sprintProject.projectMember'),
       icon: <CommonIconFont color="var(--neutral-n3)" type="team" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission:
@@ -84,7 +77,7 @@ const ProjectDetailSide = () => {
       key: 'ProjectMember',
     },
     {
-      label: '项目角色',
+      label: t('sprintProject.projectRole'),
       icon: <CommonIconFont color="var(--neutral-n3)" type="lock" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission:
@@ -94,7 +87,7 @@ const ProjectDetailSide = () => {
       key: 'ProjectRole',
     },
     {
-      label: '通知配置',
+      label: t('sprintProject.notificationConfiguration'),
       icon: <CommonIconFont color="var(--neutral-n3)" type="bell" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission:
@@ -104,7 +97,7 @@ const ProjectDetailSide = () => {
       key: 'ProjectNotify',
     },
     {
-      label: '事务类型',
+      label: t('sprintProject.transactionType'),
       icon: (
         <CommonIconFont color="var(--neutral-n3)" type="selections" size={18} />
       ),
@@ -116,7 +109,7 @@ const ProjectDetailSide = () => {
       key: 'ProjectAffair',
     },
     {
-      label: 'Kanban配置',
+      label: t('sprintProject.kanbanConfiguration'),
       icon: (
         <CommonIconFont color="var(--neutral-n3)" type="layout" size={18} />
       ),
@@ -128,7 +121,7 @@ const ProjectDetailSide = () => {
       key: '2',
       children: [
         {
-          label: '列与状态',
+          label: t('sprintProject.columnsAndStatus'),
           path: '/SprintProjectManagement/Setting',
           isPermission: true,
           key: 'ProjectKanBan',
@@ -136,7 +129,7 @@ const ProjectDetailSide = () => {
       ],
     },
     {
-      label: '首页配置',
+      label: t('sprintProject.homeConfiguration'),
       icon: (
         <CommonIconFont color="var(--neutral-n3)" type="settings" size={18} />
       ),
@@ -150,27 +143,29 @@ const ProjectDetailSide = () => {
   ]
   const menuList = [
     {
-      name: '事务',
+      name: t('sprintProject.affairs'),
       icon: 'book-open',
       path: '/SprintProjectManagement/Affair',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('事务'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('事务'),
+        ).length,
       key: 'Affair',
     },
     {
-      name: '冲刺',
+      name: t('sprintProject.sprint'),
       icon: 'timer',
       path: '/SprintProjectManagement/Sprint',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('冲刺'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('冲刺'),
+        ).length,
       key: 'Sprint',
     },
     {
@@ -182,7 +177,7 @@ const ProjectDetailSide = () => {
     },
 
     {
-      name: '报表',
+      name: t('sprintProject.report'),
       icon: 'pie-chart-02',
       path: '/Report/PerformanceInsight',
       isPermission: true,

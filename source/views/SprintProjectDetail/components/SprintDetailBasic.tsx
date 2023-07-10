@@ -9,11 +9,13 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { Tooltip } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
+import { useTranslation } from 'react-i18next'
 interface Props {
   onRef: any
 }
 
 const SprintDetailBasic = (props: Props) => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -55,13 +57,15 @@ const SprintDetailBasic = (props: Props) => {
       <BasicFooter>
         <div className="textBox">
           <div>
-            已创建：{detailTimeFormat(affairsInfo.createdTime as string)}
+            {t('created')}
+            {detailTimeFormat(affairsInfo.createdTime as string)}
           </div>
           <span>
-            更新日期：{detailTimeFormat(affairsInfo.update_at as string)}
+            {t('updated')}
+            {detailTimeFormat(affairsInfo.update_at as string)}
           </span>
         </div>
-        <Tooltip title="配置字段">
+        <Tooltip title={t('configurationFields')}>
           <CloseWrap width={32} height={32} onClick={onToConfig}>
             <CommonIconFont type="settings" />
           </CloseWrap>

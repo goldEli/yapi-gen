@@ -112,7 +112,7 @@ const DemandDetailDrawer = () => {
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
     { name: t('common.childDemand'), key: 'detailDemands', content: '' },
-    { name: '关联工作项', key: 'relation', content: '' },
+    { name: '关联工作项2', key: 'relation', content: '' },
     { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
     { name: t('requirements_review'), key: 'demandComment', content: '' },
   ]
@@ -223,7 +223,7 @@ const DemandDetailDrawer = () => {
           editId: item.id,
           projectId: drawerInfo.projectId,
           type: 1,
-          title: '编辑需求',
+          title: t('editingRequirements'),
         },
       }),
     )
@@ -248,7 +248,7 @@ const DemandDetailDrawer = () => {
           parentId: item.id,
           categoryId: item.categoryId,
           type: 1,
-          title: '创建子需求',
+          title: t('createSubrequirements'),
         },
       }),
     )
@@ -275,11 +275,11 @@ const DemandDetailDrawer = () => {
   const onNameConfirm = async () => {
     const value = spanDom.current?.innerText
     if ((value?.length || 0) <= 0) {
-      getMessage({ type: 'warning', msg: '名称不能为空' })
+      getMessage({ type: 'warning', msg: t('nameIsRequired') })
       return
     }
     if ((value?.length || 0) > 100) {
-      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      getMessage({ type: 'warning', msg: t('nameCannotExceedCharacters') })
       return
     }
     if (value !== drawerInfo.name) {
@@ -290,7 +290,7 @@ const DemandDetailDrawer = () => {
           name: value,
         },
       })
-      getMessage({ type: 'success', msg: '修改成功' })
+      getMessage({ type: 'success', msg: t('successfullyModified') })
       // 提交名称
       setDrawerInfo({
         ...drawerInfo,
@@ -301,7 +301,7 @@ const DemandDetailDrawer = () => {
 
   // 复制标题
   const onCopy = () => {
-    copyLink(drawerInfo.name, '复制成功！', '复制失败！')
+    copyLink(drawerInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
   // 修改状态
@@ -381,6 +381,9 @@ const DemandDetailDrawer = () => {
 
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
+    console.log('关联工作项')
+    return
+
     getDemandDetail('', demandIds)
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))

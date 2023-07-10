@@ -143,7 +143,7 @@ const DemandTable = (props: Props) => {
           editId: item.id,
           projectId: item.project_id,
           type: 1,
-          title: '编辑需求',
+          title: t('editingRequirements'),
         },
       }),
     )
@@ -167,7 +167,7 @@ const DemandTable = (props: Props) => {
           parentId: item.id,
           categoryId: item.categoryId,
           type: 1,
-          title: '创建子需求',
+          title: t('createSubrequirements'),
         },
       }),
     )
@@ -340,7 +340,7 @@ const DemandTable = (props: Props) => {
         params: {
           noDataCreate: true,
           type: 1,
-          title: '创建需求',
+          title: t('createRequirements'),
         },
       }),
     )

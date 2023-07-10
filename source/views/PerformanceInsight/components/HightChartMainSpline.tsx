@@ -1,5 +1,6 @@
 import { Space } from 'antd'
 import Highcharts from 'highcharts'
+import { useTranslation } from 'react-i18next'
 import { Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
 import {
   Bor,
@@ -97,6 +98,7 @@ const HightChartMainSpline = (props: {
     },
     series: props.chart?.seriesData,
   }
+  const [t] = useTranslation()
   return (
     <div style={{ width: '49%' }}>
       <Col1>
@@ -118,7 +120,7 @@ const HightChartMainSpline = (props: {
                     <Radius color="#F6BD16 " />
                     <Bor color="#F6BD16" />
                   </BorderRow>
-                  <span className="text">待修复</span>
+                  <span className="text">{t('performance.toBeFixed')}</span>
                 </BorderRow>
                 <BorderRow>
                   <BorderRow>
@@ -126,7 +128,7 @@ const HightChartMainSpline = (props: {
                     <Radius color="#6688FF" />
                     <Bor color="#6688FF" />
                   </BorderRow>
-                  <span className="text">修复中</span>
+                  <span className="text">{t('performance.repairing')}</span>
                 </BorderRow>
                 <BorderRow>
                   <BorderRow>
@@ -134,15 +136,21 @@ const HightChartMainSpline = (props: {
                     <Radius color="#43BA9A" />
                     <Bor color="#43BA9A" />
                   </BorderRow>
-                  <span className="text">已完成</span>
+                  <span className="text">{t('performance.completed')}</span>
                 </BorderRow>
               </Space>
             </Row>
             <div>
               <Space size={12}>
-                <Time>修复率： {props.chart?.fixed_rate}%</Time>
-                <Time>缺陷新增： {props.chart?.new_total}</Time>
-                <Time>修复： {props.chart?.fixed_total}</Time>
+                <Time>
+                  {t('performance.repairRate')}: {props.chart?.fixed_rate}%
+                </Time>
+                <Time>
+                  {t('performance.defectAdded')}: {props.chart?.new_total}
+                </Time>
+                <Time>
+                  {t('performance.bug')}: {props.chart?.fixed_total}
+                </Time>
               </Space>
             </div>
           </Row>

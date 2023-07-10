@@ -22,7 +22,7 @@ const Wrap = styled.div({
   borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
-  padding: '12px 0 24px 24px',
+  padding: '0px 0 24px 24px',
 })
 
 const InfoLeft = styled.div({
@@ -136,7 +136,7 @@ const ProjectInfo = () => {
           </CardItem>
           <CardItem>
             <div>{projectInfo.bug_count || 0}</div>
-            <span>缺陷</span>
+            <span>{t('sprintProject.defect')}</span>
           </CardItem>
           <CardItem>
             <div>{projectInfo.iterateCount || 0}</div>
@@ -218,10 +218,16 @@ const ProjectInfo = () => {
               <span>
                 {projectInfo.permissionType === 1
                   ? t('enterprise_project', {
-                      type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                      type:
+                        projectInfo.projectType === 1
+                          ? t('sprintProject.iteration')
+                          : t('sprintProject.sprint'),
                     })
                   : t('teamwork', {
-                      type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                      type:
+                        projectInfo.projectType === 1
+                          ? t('sprintProject.iteration')
+                          : t('sprintProject.sprint'),
                     })}
               </span>
             </InfoItem>

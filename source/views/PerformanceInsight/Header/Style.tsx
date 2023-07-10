@@ -101,7 +101,8 @@ export const FormWrap = styled(Form)`
   }
 `
 export const HeaderRow = styled.div`
-  margin: 20px 24px 32px 24px;
+  margin: 0 24px;
+  height: 72px;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CommonModal2 from '../CommonModal2'
 import styled from '@emotion/styled'
 import { Checkbox, Form, Input, Select } from 'antd'
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { changeFreedVisibleVisible } from '@store/feedback'
 import { sendFeedback } from '@/services/sysNotice'
 import { getMessage } from '../Message'
+
 const { Option } = Select
 const ModalFooter = styled.div({
   position: 'absolute',
@@ -59,13 +60,14 @@ const Footer = styled.div`
 const SystemFeedback = () => {
   const dispatch = useDispatch()
   const freedVisible = useSelector(store => store.freed.freedVisible)
-
+  const [first, setFirst] = useState(false)
   const [t] = useTranslation()
   const [form] = Form.useForm()
 
   const onConfirm = async () => {
     const res = await form.validateFields()
-    const data = await sendFeedback(res)
+
+    const data = await sendFeedback({ ...res, quickly_reply: first ? 1 : 2 })
 
     if (data.code === 0) {
       getMessage({
@@ -92,8 +94,15 @@ const SystemFeedback = () => {
   }
 
   const onChange = (e: any) => {
+    setFirst(e.target.checked)
     // console.log(`checked = ${e.target.checked}`)
   }
+  useEffect(() => {
+    if (freedVisible) {
+      setFirst(false)
+    }
+  }, [freedVisible])
+
   return (
     <CommonModal2
       noFooter
@@ -176,7 +185,7 @@ const SystemFeedback = () => {
             </Form.Item>
           </Form>
           <Footer>
-            <Checkbox onChange={onChange}>
+            <Checkbox onChange={onChange} value={first}>
               {t('i_hope_to_be_contacted_soon')}
             </Checkbox>
             <div

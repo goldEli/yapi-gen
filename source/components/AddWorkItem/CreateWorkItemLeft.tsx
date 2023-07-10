@@ -547,7 +547,7 @@ const CreateDemandLeft = (props: Props) => {
 
   const validateMaxNonEmptyLength = (_: any, value: any) => {
     if (value && value.includes(' ')) {
-      return Promise.reject('不允许包含空格')
+      return Promise.reject(t('spacesAreNotAllowed'))
     }
     return Promise.resolve()
   }
@@ -688,7 +688,7 @@ const CreateDemandLeft = (props: Props) => {
             </CustomSelect>
           </Form.Item>
           <Form.Item
-            label="类别"
+            label={t('category')}
             name="requiredCategory"
             style={{ width: '50%' }}
             rules={[{ required: true, message: '' }]}
@@ -719,18 +719,18 @@ const CreateDemandLeft = (props: Props) => {
           getValueFromEvent={event => {
             return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
-          label="标题"
+          label={t('common.title')}
           name="name"
           rules={[
-            { required: true, message: '请输入内容' },
-            { max: 100, message: '最大长度为100个字符' },
+            { required: true, message: t('pleaseEnterContent') },
+            { max: 100, message: t('maximumLengthIsCharacters') },
             { validator: validateMaxNonEmptyLength },
           ]}
         >
           <Input
             autoComplete="off"
             ref={inputRefDom as any}
-            placeholder="请输入标题"
+            placeholder={t('pleaseEnterATitle')}
             autoFocus
           />
         </Form.Item>
