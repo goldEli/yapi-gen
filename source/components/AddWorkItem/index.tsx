@@ -252,7 +252,7 @@ const AddWorkItem = () => {
 
   return (
     <CommonModal
-      title={params?.title ?? '添加工作项'}
+      title={params?.title ?? t('addWorkItem')}
       isVisible={visible}
       onClose={onCancel}
       width="88%"

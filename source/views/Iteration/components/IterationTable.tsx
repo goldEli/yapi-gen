@@ -182,7 +182,7 @@ const IterationTable = (props: Props) => {
           editId: item.id,
           projectId: item.project_id,
           type: 1,
-          title: '编辑需求',
+          title: t('editingRequirements'),
         },
       }),
     )
@@ -207,7 +207,7 @@ const IterationTable = (props: Props) => {
           iterateId: props.iterateId,
           categoryId: item.categoryId,
           type: 1,
-          title: '创建子需求',
+          title: t('createSubrequirements'),
         },
       }),
     )
@@ -381,7 +381,7 @@ const IterationTable = (props: Props) => {
           projectId,
           iterateId: props.iterateId,
           type: 1,
-          title: '创建需求',
+          title: t('createRequirements'),
         },
       }),
     )

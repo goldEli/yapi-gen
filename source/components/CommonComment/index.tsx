@@ -101,8 +101,8 @@ const CommonComment = (props: CommonCommentProps) => {
   const onDeleteComment = (item: any) => {
     if (!item.isEdit) {
       open({
-        title: '删除确认',
-        text: '确认删除该评论？',
+        title: t('deleteConfirmation'),
+        text: t('areYouSureToDeleteThisComment'),
         onConfirm: () => {
           props.onDeleteConfirm(item.id)
           return Promise.resolve()

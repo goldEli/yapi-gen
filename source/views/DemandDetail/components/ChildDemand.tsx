@@ -248,7 +248,7 @@ const ChildDemand = (props: ChildDemandProps) => {
           editId: item.id,
           projectId: item.project_id,
           type: 1,
-          title: '编辑需求',
+          title: t('editingRequirements'),
         },
       }),
     )
@@ -271,7 +271,7 @@ const ChildDemand = (props: ChildDemandProps) => {
           parentId: item.id,
           categoryId: item.categoryId ?? item.category,
           type: 1,
-          title: '创建子需求',
+          title: t('createSubrequirements'),
         },
       }),
     )

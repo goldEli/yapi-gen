@@ -8,8 +8,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { ChartsItem, HiddenText, SecondTitle } from '@/components/StyleCommon'
-import { Select, Timeline, message } from 'antd'
+import {
+  ChartsItem,
+  HiddenText,
+  SecondTitle,
+  ChartsItem1,
+} from '@/components/StyleCommon'
+import { Select, Timeline } from 'antd'
 import Gantt from '@/components/Gantt'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
@@ -362,16 +367,16 @@ const Profile = () => {
           <div>
             {/* <SecondTitle>{t('mine.basicSurvey')}</SecondTitle> */}
             <InnerWrap>
-              <ChartsItem>
+              <ChartsItem1>
                 <span className={titleNumberCss}>{data?.project_count}</span>
                 <span className={titleTextCss}>{t('mine.totalProject')}</span>
-              </ChartsItem>
-              <ChartsItem>
+              </ChartsItem1>
+              <ChartsItem1>
                 <span className={titleNumberCss}>{data?.story_count}</span>
                 <span className={titleTextCss}>
                   {t('accumulated_work_items')}
                 </span>
-              </ChartsItem>
+              </ChartsItem1>
               <div
                 style={{
                   width: '0px',

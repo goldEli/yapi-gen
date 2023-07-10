@@ -142,8 +142,8 @@ const FlawComment = (props: Props) => {
   // 删除评论
   const onDeleteComment = (item: any) => {
     open({
-      title: '删除确认',
-      text: '确认删除该评论？',
+      title: t('deleteConfirmation'),
+      text: t('areYouSureToDeleteThisComment'),
       onConfirm() {
         onDeleteConfirm(item)
         return Promise.resolve()

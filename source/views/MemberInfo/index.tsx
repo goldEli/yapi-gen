@@ -61,12 +61,18 @@ const MemberInfo = () => {
     return null
   }
 
+  // 判断是否详情回来，并且权限是不是有
+  const isLength =
+    projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
+
   return (
     <PermissionWrap
       auth={isMember ? 'b/project/member/info' : 'b/companyuser/info'}
       permission={
         isMember
-          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          ? isLength
+            ? ['0']
+            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
           : userInfo?.company_permissions?.map((i: any) => i.identity)
       }
     >

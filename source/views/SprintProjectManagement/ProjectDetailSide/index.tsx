@@ -56,13 +56,6 @@ const ProjectDetailSide = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
-  console.log(
-    projectInfo,
-    '=projectInfoprojectInfo',
-    projectInfo?.projectPermissions?.filter((i: any) =>
-      String(i.identity).includes('b/project/member'),
-    ).length > 0,
-  )
   const projectSettingsList = [
     {
       label: t('sprintProject.projectInformation'),
@@ -154,11 +147,12 @@ const ProjectDetailSide = () => {
       icon: 'book-open',
       path: '/SprintProjectManagement/Affair',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('事务'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('事务'),
+        ).length,
       key: 'Affair',
     },
     {
@@ -166,11 +160,12 @@ const ProjectDetailSide = () => {
       icon: 'timer',
       path: '/SprintProjectManagement/Sprint',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('冲刺'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('冲刺'),
+        ).length,
       key: 'Sprint',
     },
     {

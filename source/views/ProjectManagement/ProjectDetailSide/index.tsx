@@ -58,22 +58,24 @@ const ProjectDetailSide = () => {
       icon: 'demand',
       path: '/ProjectManagement/Demand',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('需求'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('需求'),
+        ).length,
     },
     {
       name: t('iteration'),
       icon: 'interation-2',
       path: '/ProjectManagement/Iteration',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('迭代'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('迭代'),
+        ).length,
     },
     {
       name: 'KanBan',
@@ -90,14 +92,15 @@ const ProjectDetailSide = () => {
     },
     {
       name: '缺陷',
-      icon: 'interation-2',
+      icon: 'bug',
       path: '/ProjectManagement/Defect',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('缺陷'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('缺陷'),
+        ).length,
     },
   ]
   const menuKeys = [
