@@ -130,7 +130,7 @@ const SiteDrawer = () => {
     }
     if (id === '4') {
       newName.current = undefined
-      atmy.current = ['1600']
+      atmy.current = ['150']
       lastId.current = 1
       fetchMoreData(1)
     }
