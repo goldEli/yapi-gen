@@ -76,6 +76,10 @@ const DemandSetting = () => {
   useEffect(() => {
     dispatch(setCategoryWorkType(3))
   }, [])
+
+  // 判断是否详情回来，并且权限是不是有
+  const isLength =
+    projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
   return (
     <PermissionWrap
       auth={
@@ -83,7 +87,9 @@ const DemandSetting = () => {
       }
       permission={
         resultAuth
-          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          ? isLength
+            ? ['0']
+            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
           : currentMenu?.children?.map((i: any) => i.url)
       }
     >

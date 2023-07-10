@@ -89,6 +89,12 @@ const ChartsItem = styled.span`
   flex-direction: column;
   justify-content: space-between;
 `
+const ChartsItem1 = styled.span`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
 const titleCss = css`
   color: var(--neutral-n1-d1);
   padding-left: 8px;
@@ -975,6 +981,7 @@ const PriorityWrapTable = styled.div<{ isShow?: boolean }>(
 )
 
 export {
+  ChartsItem1,
   ChartsItem2,
   title1Css1,
   HiddenText,

@@ -142,7 +142,7 @@ const BasicDemand = (props: Props) => {
         severity: item.severity,
       },
     })
-    getMessage({ msg: '修改成功', type: 'success' })
+    getMessage({ msg: t('successfullyModified'), type: 'success' })
     props.onUpdate?.()
     dispatch(
       getAffairsInfo({
@@ -435,8 +435,6 @@ const BasicDemand = (props: Props) => {
       getFieldData()
     }
   }, [props.isOpen, props.detail])
-
-  console.log(foldList, '===', notFoldList)
 
   return (
     <div

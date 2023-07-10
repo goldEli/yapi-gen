@@ -40,14 +40,7 @@ PS D:\miaoyu\projects\scrum> npm run findCN
 
 ###### 自动生成国际化资源
 
-添加文件`script\translate\zhArr.js`
-
-```js
-// 数组中天剑要翻译的中文
-const zhArr = ['你好', '中国制造']
-
-module.exports = zhArr
-```
+最顶级添加文件 i18n.txt
 
 然后执行命令
 

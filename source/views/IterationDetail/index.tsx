@@ -132,7 +132,7 @@ const IterationDetail = () => {
 
   // 复制标题
   const onCopy = () => {
-    copyLink(iterateInfo.name, '复制成功！', '复制失败！')
+    copyLink(iterateInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
   // 返回
@@ -175,8 +175,8 @@ const IterationDetail = () => {
   // 删除
   const onDelete = () => {
     open({
-      title: '删除确认',
-      text: '确认删除该迭代？',
+      title: t('deleteConfirmation'),
+      text: t('areYouSureYouWantToDeleteThis'),
       onConfirm() {
         onDeleteConfirm(iterateInfo)
         return Promise.resolve()
@@ -233,7 +233,7 @@ const IterationDetail = () => {
       key: '1',
       label: (
         <DetailTabItem>
-          <span>迭代概况</span>
+          <span>{t('iterationOverview')}</span>
         </DetailTabItem>
       ),
       children: <Overview activeKey={tabActive} />,
@@ -242,7 +242,7 @@ const IterationDetail = () => {
       key: '2',
       label: (
         <DetailTabItem>
-          <span>需求</span>
+          <span>{t('need1')}</span>
           <ItemNumber isActive={tabActive === '2'}>
             {iterateInfo?.storyCount || 0}
           </ItemNumber>
@@ -275,7 +275,7 @@ const IterationDetail = () => {
       key: '3',
       label: (
         <DetailTabItem>
-          <span>缺陷</span>
+          <span>{t('defect1')}</span>
           <ItemNumber isActive={tabActive === '3'}>
             {iterateInfo?.bug_count || 0}
           </ItemNumber>
@@ -308,7 +308,7 @@ const IterationDetail = () => {
       key: '4',
       label: (
         <DetailTabItem>
-          <span>迭代成果</span>
+          <span>{t('iterativeResults')}</span>
         </DetailTabItem>
       ),
       children: <Achieve activeKey={tabActive} />,
@@ -317,7 +317,7 @@ const IterationDetail = () => {
       key: '5',
       label: (
         <DetailTabItem>
-          <span>变更记录</span>
+          <span>{t('changeLog')}</span>
           <ItemNumber isActive={tabActive === '5'}>
             {iterateInfo?.changeCount || 0}
           </ItemNumber>
@@ -475,8 +475,8 @@ const IterationDetail = () => {
             <InputSearch
               placeholder={
                 tabActive === '2'
-                  ? '请搜索需求名称或需求编号'
-                  : '请搜索缺陷名称或缺陷编号'
+                  ? t('pleaseSearchForTheRequirementNameOrRequirementNumber')
+                  : t('pleaseSearchForDefectNameOrDefectNumber')
               }
               onChangeSearch={onPressEnter}
               leftIcon

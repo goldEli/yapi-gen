@@ -378,12 +378,18 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     '/ProjectManagement/Project',
   )
 
+  // 判断是否详情回来，并且权限是不是有
+  const isLength =
+    projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
+
   return (
     <PermissionWrap
       auth={resultAuth ? 'b/transaction/' : '/ProjectManagement/Project'}
       permission={
         resultAuth
-          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          ? isLength
+            ? ['0']
+            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
           : currentMenu?.children?.map((i: any) => i.url)
       }
     >
@@ -404,14 +410,16 @@ const SprintProjectAffair: React.FC<IProps> = props => {
       <TreeContext.Provider value={keyValueTree}>
         <Wrap>
           <DeleteConfirm
-            title="删除确认"
+            title={t('deleteConfirmation')}
             isVisible={isVisible}
             onChangeVisible={() => setIsVisible(!isVisible)}
             onConfirm={onDeleteConfirm}
           >
             <div style={{ marginBottom: 9 }}>
-              您将永久删除{deleteItem.story_prefix_key}
-              ，删除后将不可恢复请谨慎操作!
+              {t(
+                'youWillPermanentlyDeleteWhichCannotBeRecoveredAfterPleaseBe',
+                { key: deleteItem.story_prefix_key },
+              )}
             </div>
             {deleteItem.work_type !== 6 && (
               <Checkbox
@@ -419,13 +427,13 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                 checked={isDeleteCheck}
                 onChange={e => setIsDeleteCheck(e.target.checked)}
               >
-                同时删除该事务下所有子事务
+                {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
               </Checkbox>
             )}
           </DeleteConfirm>
           <ProjectCommonOperation
             onInputSearch={onInputSearch}
-            title="搜索事务名称或编号"
+            title={t('search_for_transaction_name_or_number')}
           />
           <ContentWrap>
             <ContentLeft>

@@ -42,7 +42,14 @@ const getTitleTips = (text: string, tips: string, position?: string) => {
         placement={position === 'right' ? 'topRight' : 'top'}
         trigger="click"
       >
-        <div style={{ margin: '0 8px' }}>
+        <div
+          style={{
+            width: '45px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <CommonIconFont type="question" size={16} />
         </div>
       </Tooltip>
@@ -409,6 +416,7 @@ const ProgressComparison = (props: Props) => {
         title: getTitleTips(
           t('performance.stockRisk'),
           t('performance.workItemsNotCompletedForMoreThanDays'),
+          'right',
         ),
         render: (text: string, record: any) => {
           return (

@@ -103,7 +103,6 @@ const HightChartMainPie = (props: {
       align: 'right',
       verticalAlign: 'center',
       borderWidth: 0,
-      // y: 45,
       itemMarginTop: 8,
       useHTML: true,
       labelFormatter: function () {

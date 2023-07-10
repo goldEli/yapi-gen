@@ -169,7 +169,7 @@ const Flaw = (props: FlawProps) => {
         severity: item.severity,
       },
     })
-    getMessage({ msg: '修改成功', type: 'success' })
+    getMessage({ msg: t('successfullyModified'), type: 'success' })
     onUpdate()
   }
 
@@ -192,8 +192,8 @@ const Flaw = (props: FlawProps) => {
   //   删除
   const onDeleteChange = (item: any) => {
     open({
-      title: '删除确认',
-      text: '确认删除该子需求？',
+      title: t('deleteConfirmation'),
+      text: t('areYouSureToDeleteThis'),
       onConfirm() {
         onDeleteConfirm(item)
         return Promise.resolve()
@@ -211,7 +211,7 @@ const Flaw = (props: FlawProps) => {
           projectId: getProjectIdByUrl(),
           iterateId: iterateInfo?.id,
           type: 2,
-          title: '创建缺陷',
+          title: t('createDefect'),
         },
       }),
     )
@@ -226,7 +226,7 @@ const Flaw = (props: FlawProps) => {
           editId: item.id,
           projectId: getProjectIdByUrl(),
           type: 2,
-          title: '编辑缺陷',
+          title: t('editorialDefect'),
         },
       }),
     )
@@ -338,7 +338,7 @@ const Flaw = (props: FlawProps) => {
             iconPlacement="left"
             onClick={onCreateFlaw}
           >
-            创建缺陷
+            {t('createDefect')}
           </CommonButton>
         </div>
       )}

@@ -136,7 +136,9 @@ const CompanyInfo = () => {
                   <span>{t('setting.currentProject')}</span>
                 </CardWrap>
                 <CardWrap>
-                  <div>{companyInfo.userCount}</div>
+                  <div style={{ fontSize: 32, lineHeight: '44px' }}>
+                    {companyInfo.userCount}
+                  </div>
                   <span>{t('setting.companyStaff')}</span>
                 </CardWrap>
               </Space>

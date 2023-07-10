@@ -146,10 +146,6 @@ const routes = [
             element: lazy(() => import('@/views/KanBanBoard')),
           },
           {
-            path: 'IterationReport',
-            element: lazy(() => import('@/views/IterationReport')),
-          },
-          {
             path: 'Defect',
             element: lazy(() => import('@/views/IterationDefect')),
           },

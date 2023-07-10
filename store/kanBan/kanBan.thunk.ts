@@ -591,9 +591,19 @@ export const updateView =
   (params: Omit<API.Kanban.UpdateView.Params, 'use_type'>) =>
   async (dispatch: AppDispatch) => {
     const project_id = getProjectIdByUrl()
+    const { sortByGroupOptions, sortByRowAndStatusOptions } =
+      store.getState().kanBan
+    const currentRowAndStatusId = sortByRowAndStatusOptions?.find(
+      k => k.check,
+    )?.key
+    const currentGroupKey = sortByGroupOptions?.find(k => k.check)?.key
     const res = await services.kanban.updateView({
       ...params,
-      config: store.getState().view,
+      config: {
+        ...store.getState().view,
+        currentRowAndStatusId,
+        currentGroupKey,
+      },
       project_id,
       use_type: 2,
     })
