@@ -472,16 +472,16 @@ const TableFilter = (props: any) => {
                                     })),
                                 ),
                               )
-                            : deWeight(
-                                projectInfoValues
-                                  ?.filter((k: any) => k.key === i.key)[0]
-                                  ?.children?.map((v: any) => ({
-                                    label: v.content_txt
-                                      ? v.content_txt
-                                      : v.content,
-                                    value: v.id,
-                                    id: v.id,
-                                  })),
+                            : format(
+                                deWeight(
+                                  projectInfoValues
+                                    ?.filter((k: any) => k.key === i.key)[0]
+                                    ?.children?.map((v: any) => ({
+                                      label: v.content_txt,
+                                      value: v.id,
+                                      id: v.id,
+                                    })),
+                                ),
                               )
                         }
                       />
