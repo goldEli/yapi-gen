@@ -22,7 +22,7 @@ export const IssueCardBoxContainer = styled.div<{ hidden?: boolean }>`
   visibility: ${props => (props.hidden ? 'hidden' : 'visible')};
   /* display: ${props => (props.hidden ? 'none' : 'flex')}; */
   width: 100%;
-  min-height: 144px;
+  min-height: 122px;
   display: flex;
   flex-direction: column;
   gap: 12px;

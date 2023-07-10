@@ -356,7 +356,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                         affairType[index].visible ? 'down-icon' : 'right-icon'
                       }
                     />
-                    <AffairTypeText>{item.name}1</AffairTypeText>
+                    <AffairTypeText>{item.name}</AffairTypeText>
                   </div>
                   <IconFont
                     style={{ fontSize: 14 }}

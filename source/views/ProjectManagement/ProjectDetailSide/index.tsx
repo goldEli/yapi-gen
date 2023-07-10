@@ -92,7 +92,7 @@ const ProjectDetailSide = () => {
     },
     {
       name: '缺陷',
-      icon: 'interation-2',
+      icon: 'bug',
       path: '/ProjectManagement/Defect',
       isPermission:
         // projectInfo?.isPublic === 1
@@ -158,14 +158,14 @@ const ProjectDetailSide = () => {
     // },
 
     {
-      label: '项目信息',
+      label: t('sprintProject.projectInformation'),
       icon: <CommonIconFont type="file-text" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission: true,
       key: 'info',
     },
     {
-      label: '项目成员',
+      label: t('sprintProject.projectMember'),
       icon: <CommonIconFont type="team" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission:
@@ -175,7 +175,7 @@ const ProjectDetailSide = () => {
       key: 'member',
     },
     {
-      label: '项目角色',
+      label: t('sprintProject.projectRole'),
       icon: <CommonIconFont type="lock" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission:
@@ -185,7 +185,7 @@ const ProjectDetailSide = () => {
       key: 'permission',
     },
     {
-      label: '通知配置',
+      label: t('sprintProject.notificationConfiguration'),
       icon: <CommonIconFont type="bell" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission:
@@ -195,7 +195,7 @@ const ProjectDetailSide = () => {
       key: 'note',
     },
     {
-      label: '类型配置',
+      label: t('sprintProject.transactionType'),
       icon: <CommonIconFont type="selections" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission:
@@ -205,7 +205,7 @@ const ProjectDetailSide = () => {
       key: 'ProjectAffair',
     },
     {
-      label: 'Kanban配置',
+      label: t('sprintProject.kanbanConfiguration'),
       icon: <CommonIconFont type="layout" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission:
@@ -215,7 +215,7 @@ const ProjectDetailSide = () => {
       key: '2',
       children: [
         {
-          label: '列与状态',
+          label: t('sprintProject.columnsAndStatus'),
           path: '/ProjectManagement/ProjectSetting',
           isPermission: true,
           key: 'ProjectKanBan',
@@ -223,7 +223,7 @@ const ProjectDetailSide = () => {
       ],
     },
     {
-      label: '首页配置',
+      label: t('sprintProject.homeConfiguration'),
       icon: <CommonIconFont type="settings" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission:

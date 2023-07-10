@@ -839,6 +839,10 @@ const GlobalStyle = () => {
     .ant-drawer-inline {
       position: fixed;
     }
+    .highcharts-legend-item {
+      width: 8px !important;
+      height: 8px !important;
+    }
   `
   return <Global styles={globalCss} />
 }

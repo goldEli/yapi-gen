@@ -288,11 +288,11 @@ const CreateField = () => {
             options={[
               {
                 value: 2,
-                label: '系统字段',
+                label: t('sprintProject.systemField'),
               },
               {
                 value: 1,
-                label: '自定义字段',
+                label: t('sprintProject.customField'),
               },
             ]}
             onChange={e => {
@@ -305,7 +305,7 @@ const CreateField = () => {
           <Select
             style={{ width: 100 }}
             bordered={false}
-            placeholder="所有类型"
+            placeholder={t('sprintProject.allTypes')}
             allowClear
             suffixIcon={<CommonIconFont type="down" />}
             options={option}

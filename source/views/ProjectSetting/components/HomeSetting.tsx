@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from '@store/index'
 import { updateHomeSetting } from '@/services/sprint'
 import { getMessage } from '@/components/Message'
 import { setProjectInfo } from '@store/project/index'
+import { useTranslation } from 'react-i18next'
 const Wrap = styled.div`
   padding-left: 24px;
 `
@@ -28,14 +29,15 @@ const RadioWrap = styled.div`
 interface IProps {}
 const HomeSetting: React.FC<IProps> = props => {
   const [value, setValue] = useState('')
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const { projectInfo } = useSelector(state => state.project)
   const urls = [
-    { url: '/ProjectManagement/Demand', name: '需求' },
-    { url: '/ProjectManagement/Iteration', name: '迭代' },
-    { url: '/ProjectManagement/KanBan', name: 'Kanban' },
-    { url: '/Report/PerformanceInsight', name: '报表' },
-    { url: '/ProjectManagement/Defect', name: '缺陷' },
+    { url: '/ProjectManagement/Demand', name: t('sprintProject.need') },
+    { url: '/ProjectManagement/Iteration', name: t('sprintProject.iteration') },
+    { url: '/ProjectManagement/KanBan', name: t('sprintProject.kanban') },
+    { url: '/Report/PerformanceInsight', name: t('sprintProject.report') },
+    { url: '/ProjectManagement/Defect', name: t('sprintProject.defect') },
   ]
   // console.log(projectInfo)
   const onChange = async (e: any) => {
@@ -63,8 +65,8 @@ const HomeSetting: React.FC<IProps> = props => {
   }, [])
   return (
     <Wrap>
-      <Title>项目首页配置</Title>
-      <SubTitle>定义项目默认首页位置</SubTitle>
+      <Title>{t('sprintProject.projectHomeConfiguration')}</Title>
+      <SubTitle>{t('sprintProject.defineProjectDefaultHomeLocation')}</SubTitle>
       <RadioWrap>
         <Radio.Group onChange={onChange} value={value}>
           {urls.map(item => (

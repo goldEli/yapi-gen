@@ -9,6 +9,7 @@ import { DatePicker, Form, Input } from 'antd'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
+import { useTranslation } from 'react-i18next'
 
 interface sprintProps {
   visible: boolean
@@ -39,6 +40,7 @@ const CompleteSprintModal = (props: sprintProps) => {
   const [targetId, setTargetId] = useState(id)
   const dispatch = useDispatch()
   const [list, setList] = useState<any>([])
+  const [t]: any = useTranslation()
 
   const onClear = (isFresh?: boolean) => {
     form.setFieldsValue({
@@ -65,7 +67,7 @@ const CompleteSprintModal = (props: sprintProps) => {
       })
       if (result && result.code === 0) {
         getMessage({
-          msg: '完成冲刺',
+          msg: t('sprint.completeSprint'),
           type: 'success',
         })
         onClear(true)
@@ -124,15 +126,15 @@ const CompleteSprintModal = (props: sprintProps) => {
 
   return (
     <CommonModal
-      title="完成冲刺"
+      title={t('sprint.completeSprint')}
       width={528}
       isVisible={visible}
       onClose={() => onClear(false)}
       onConfirm={onConfirm}
-      confirmText="完成"
+      confirmText={t('sprint.finish')}
       children={
         <div className={content}>
-          <div className="head">请选择要完成的冲刺</div>
+          <div className="head">{t('sprint.pleaseChooseSprint')}</div>
           <Form
             form={form}
             labelCol={{ span: 24 }}
@@ -141,9 +143,11 @@ const CompleteSprintModal = (props: sprintProps) => {
           >
             <CustomWrap>
               <Form.Item
-                label="当前"
+                label={t('sprint.current')}
                 name="current"
-                rules={[{ required: true, message: '请输入冲刺名称' }]}
+                rules={[
+                  { required: true, message: t('sprint.pleaseChooseSprint') },
+                ]}
               >
                 <CustomSelect
                   options={rightSprintList
@@ -159,7 +163,7 @@ const CompleteSprintModal = (props: sprintProps) => {
                 />
               </Form.Item>
               <Form.Item
-                label="结束日期"
+                label={t('sprint.endDate')}
                 name="finish_at"
                 rules={[{ required: true }]}
               >
@@ -177,17 +181,17 @@ const CompleteSprintModal = (props: sprintProps) => {
                   }}
                 />
               </Form.Item>
-              <Form.Item label="结果" name="result">
+              <Form.Item label={t('sprint.result')} name="result">
                 <Input.TextArea
                   showCount
                   maxLength={300}
                   autoSize={{ minRows: 1, maxRows: 5 }}
-                  placeholder="请输入"
+                  placeholder={t('common.pleaseEnter')}
                 />
               </Form.Item>
-              <div className="head">未完成的事务移动至</div>
+              <div className="head">{t('sprint.removeTo')}</div>
               <Form.Item
-                label="移动至"
+                label={t('sprint.moveTo')}
                 name="move_target"
                 rules={[{ required: true }]}
               >

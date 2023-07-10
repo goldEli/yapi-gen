@@ -137,6 +137,7 @@ const RightIcon = styled.div`
       display: flex;
       align-items: center;
       justify-content: space-between;
+      white-space: nowrap;
       &:hover {
         background: var(--hover-d3);
       }
@@ -575,17 +576,23 @@ const SprintProjectSprint: React.FC = () => {
                   className={`tab1 ${activeKey === 0 ? 'active' : ''}`}
                   onClick={changeSprintTab}
                 >
-                  冲刺
+                  {t('sprint.sprint')}
                 </div>
                 <div
                   className={`tab2 ${activeKey === 1 ? 'active' : ''}`}
                   onClick={changeStoryTab}
                 >
-                  长故事
+                  {t('sprint.longStory')}
                 </div>
               </TabsWrap>
               <RightIcon>
-                <Tooltip title={activeKey === 0 ? '新建冲刺' : '新建长故事'}>
+                <Tooltip
+                  title={
+                    activeKey === 0
+                      ? t('sprint.createSprint')
+                      : t('sprint.createStory')
+                  }
+                >
                   <CustomCloseWrap
                     style={isCanEditSprint ? {} : { visibility: 'hidden' }}
                     width={32}
@@ -602,7 +609,7 @@ const SprintProjectSprint: React.FC = () => {
                             visible: true,
                             params: {
                               type: 3,
-                              title: '创建事务',
+                              title: t('sprint.createTransaction'),
                               noDataCreate: true,
                               projectId,
                             },
@@ -650,31 +657,6 @@ const SprintProjectSprint: React.FC = () => {
                   currentFilter={currentFilter}
                   checkNoCreateLongStory={checkNoCreateLongStory}
                 />
-                {/* <NoData
-                  size
-                  subText={
-                    <div>
-                      创建您的第一个冲刺，
-                      <div style={{ marginTop: 0 }}>
-                        以便开始为您的团队分解工作任务！
-                      </div>
-                    </div>
-                  }
-                  children={
-                    <CommonButton
-                      type="light"
-                      style={{ marginTop: 24 }}
-                      onClick={() => {
-                        setSprintModal({
-                          visible: true,
-                          type: 'create',
-                        })
-                      }}
-                    >
-                      创建新的冲刺
-                    </CommonButton>
-                  }
-                /> */}
               </Spin>
             </TabItemWrap>
           </Left>
@@ -718,7 +700,9 @@ const SprintProjectSprint: React.FC = () => {
               </Tooltip>
             )}
             <SelectWrapForList>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>经办人</span>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('sprint.agent')}
+              </span>
               <CustomSelect
                 style={{ width: 148 }}
                 getPopupContainer={(node: any) => node}
@@ -741,7 +725,7 @@ const SprintProjectSprint: React.FC = () => {
               />
             </SelectWrapForList>
             <CategorySelectWrap>
-              <span className="title">事务类型</span>
+              <span className="title">{t('sprint.transactionType')}</span>
               <CategoryDropdown
                 type
                 projectId={projectId}
