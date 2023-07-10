@@ -231,7 +231,6 @@ const DndKitTable = (props: any) => {
   // 编辑事物
   const onEditItem = (record: any) => {
     const editId = Number(record?.id?.split('_')?.[1])
-    // todo 编辑事物
     dispatch(
       setAddWorkItemModal({
         visible: true,
@@ -239,7 +238,7 @@ const DndKitTable = (props: any) => {
           editId,
           projectId: record?.project_id,
           type: record.work_type,
-          title: '编辑事务',
+          title: t('sprint.editTransaction'),
         },
       }),
     )
@@ -261,7 +260,7 @@ const DndKitTable = (props: any) => {
       })
       if (result && result.code === 0) {
         getMessage({
-          msg: '移动成功',
+          msg: t('sprint.moveSuccess'),
           type: 'success',
         })
         if (needFresh) {
@@ -347,7 +346,7 @@ const DndKitTable = (props: any) => {
       render: () => <MoveFont type="move" style={{ fontSize: 16 }} />,
     },
     {
-      title: '编号',
+      title: t('sprint.Number'),
       dataIndex: 'story_prefix_key',
       key: 'story_prefix_key',
       width: 200,
@@ -364,7 +363,7 @@ const DndKitTable = (props: any) => {
             }}
           >
             {getIsExceedTimeRange(temp) && record?.iterate_id !== 0 ? (
-              <Tooltip placement="top" title="该事务超出冲刺时间范围">
+              <Tooltip placement="top" title={t('sprint.outOf')}>
                 <IconFont
                   style={{
                     fontSize: 16,
@@ -392,7 +391,7 @@ const DndKitTable = (props: any) => {
       },
     },
     {
-      title: '标题',
+      title: t('common.title'),
       dataIndex: 'name',
       key: 'name',
       width: 200,
@@ -427,7 +426,7 @@ const DndKitTable = (props: any) => {
       },
     },
     {
-      title: '长故事',
+      title: t('sprint.longStory'),
       dataIndex: 'long_story_name',
       width: 200,
       render: (text: any, record: any) => {
@@ -453,9 +452,9 @@ const DndKitTable = (props: any) => {
         )
       },
     },
-    { title: '子事务', dataIndex: 'child_story_count' },
+    { title: t('sprint.sub'), dataIndex: 'child_story_count' },
     {
-      title: '经办人',
+      title: t('sprint.agent'),
       dataIndex: 'handlers',
       key: 'handlers',
       width: 180,
@@ -576,7 +575,7 @@ const DndKitTable = (props: any) => {
       })
       if (result && result.code === 0) {
         getMessage({
-          msg: '移动成功',
+          msg: t('sprint.moveSuccess'),
           type: 'success',
         })
       } else {
@@ -661,12 +660,14 @@ const DndKitTable = (props: any) => {
         Number(result.destination?.droppableId) !== 0
       ) {
         open({
-          title: '移动事务',
-          okText: '移动',
+          title: t('sprint.moveTransaction'),
+          okText: t('sprint.move'),
           children: (
             <div>
-              <div>该操作会影响冲刺范围</div>
-              <div>{`${item.name} 将从冲刺【${sourceList.name}】移到冲刺【${destList.name}】。`}</div>
+              <div>{t('sprint.affect')}</div>
+              <div>{`${item.name} ${t('sprint.will')}【${sourceList.name}】${t(
+                'sprint.to',
+              )}【${destList.name}】。`}</div>
             </div>
           ),
           onConfirm: async () => {
@@ -721,18 +722,21 @@ const DndKitTable = (props: any) => {
         )
       })}
       <DeleteConfirm
-        title={`删除【${deleteItem?.story_prefix_key}】？`}
+        title={`${t('sprint.delete')}【${deleteItem?.story_prefix_key}】？`}
         isVisible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
       >
         <div style={{ marginBottom: 9 }}>
-          你将永久删除该{deleteItem.isLong ? '长故事' : '事务'}
-          ，删除后将不可恢复请谨慎操作!
+          {t('sprint.permanentlyDelete')}
+          {deleteItem.isLong ? t('sprint.longStory') : t('affairs')}，
+          {t('sprint.caution')}!
         </div>
         <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-          同时删除该{deleteItem.isLong ? '长故事' : '事务'}下所有子
-          {deleteItem.isLong ? '长故事' : '事务'}
+          {t('sprint.also')}
+          {deleteItem.isLong ? t('sprint.longStory') : t('affairs')}
+          {t('sprint.subOwner')}
+          {deleteItem.isLong ? t('sprint.longStory') : t('affairs')}
         </Checkbox>
       </DeleteConfirm>
       <DeleteConfirmModal />
