@@ -451,6 +451,8 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
+    console.log(valueKey)
+
     const params = {
       search: isEmpty(valueKey)
         ? {
@@ -464,6 +466,8 @@ export const getKanbanByGroup = createAsyncThunk(
             iterate_id: valueKey.iterate_name,
             custom_field: bbh(valueKey),
             keyword: inputKey,
+            schedule_start: valueKey?.schedule?.start,
+            schedule_end: valueKey?.schedule?.end,
           },
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),

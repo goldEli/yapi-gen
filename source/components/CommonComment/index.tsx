@@ -12,6 +12,7 @@ import { Editor, EditorRef } from '@xyfe/uikit'
 import { removeNull } from '@/tools'
 import NoData from '../NoData'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { uploadFile } from '../AddWorkItem/CreateWorkItemLeft'
 
 interface CommentEditorProps {
   item: any
@@ -52,6 +53,7 @@ const CommentEditor = (props: CommentEditorProps) => {
 
   return (
     <Editor
+      upload={uploadFile}
       at
       ref={editorRef}
       value={editInfo}
