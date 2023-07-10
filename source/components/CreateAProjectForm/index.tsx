@@ -709,6 +709,7 @@ const CreateAProjectForm = () => {
                     </CustomSelect>
                   </Form.Item>
                   <Form.Item
+                    rules={[{ required: true, message: '' }]}
                     label={<FormTitleSmall text={t('Permission')} />}
                     name="isPublic"
                     initialValue={2}

@@ -23,11 +23,11 @@ const CommentEditor = (props: CommentEditorProps) => {
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
   const { projectInfoValues } = useSelector(store => store.project)
-
+  const editorRef2 = useRef<any>()
   // 富文本失焦
   const onBlurEditor = async () => {
+    props.onEditComment(editorRef2.current)
     setIsEditInfo(false)
-    // props.onEditComment(editInfo)
   }
 
   // 只读编辑
@@ -64,8 +64,8 @@ const CommentEditor = (props: CommentEditorProps) => {
         }),
       )}
       readonly={!isEditInfo}
-      onReadonlyClick={onReadonlyClick}
-      onChange={(value: string) => setEditInfo(value)}
+      onReadonlyClick={() => onReadonlyClick()}
+      onChange={(value: string) => (editorRef2.current = value)}
       onBlur={() => onBlurEditor()}
     />
   )
