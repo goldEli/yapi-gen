@@ -83,7 +83,7 @@ const Work = (props: WorkType) => {
           <TitleType onClick={() => activeItem(el)}>
             <span>{el.status_name}</span>
             <CommonIconFont
-              type={el.isOpen ? 'up' : 'down'}
+              type={el.isOpen ? 'down' : 'up'}
               size={16}
               color="var(--neutral-n2)"
             />
