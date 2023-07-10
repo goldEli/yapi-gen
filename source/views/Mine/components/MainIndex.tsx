@@ -38,6 +38,8 @@ const MainIndex = (props: Props) => {
   }, [])
 
   const getProjectId = (value: any) => {
+    console.log(value)
+
     setProjectId(value)
   }
 

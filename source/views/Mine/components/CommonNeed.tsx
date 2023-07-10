@@ -146,26 +146,28 @@ const MoreWrap = (props: MoreWrapProps) => {
 
   return (
     <>
-      {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
-        <MoreDropdown
-          isMoreVisible={isMoreVisible}
-          onChangeVisible={setIsMoreVisible}
-          menu={
-            <DemandOperationDropdownMenu
-              onEditChange={onEditChange}
-              onDeleteChange={onDeleteChange}
-              onCreateChild={onCreateChild}
-              record={props?.record}
-              isAllProject={props.isAllProject}
-            />
-          }
-        />
-      )}
+      {/* {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && ( */}
+      <MoreDropdown
+        isMoreVisible={isMoreVisible}
+        onChangeVisible={setIsMoreVisible}
+        menu={
+          <DemandOperationDropdownMenu
+            onEditChange={onEditChange}
+            onDeleteChange={onDeleteChange}
+            onCreateChild={onCreateChild}
+            record={props?.record}
+            isAllProject={props.isAllProject}
+          />
+        }
+      />
+      {/* )} */}
     </>
   )
 }
 
 const CommonNeed = (props: any) => {
+  console.log(props.id)
+
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
@@ -380,6 +382,11 @@ const CommonNeed = (props: any) => {
         },
       },
     ]
+    console.log(newList)
+    if (props.id === 0) {
+      const index = newList.findIndex((i: any) => i.key === 'iterate_name')
+      newList.splice(index, 1)
+    }
     return [...arrList, ...newList]
   }, [titleList, columns])
 
@@ -411,6 +418,8 @@ const CommonNeed = (props: any) => {
       dispatch(setProjectInfoValues(result))
     }
     const res2 = await getProjectInfo({ projectId: props.id })
+    console.log(res2)
+
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
     setPlainOptions3(res2.plainOptions3)
@@ -474,6 +483,8 @@ const CommonNeed = (props: any) => {
     list3: CheckboxValueType[],
     all: CheckboxValueType[],
   ) => {
+    console.log(list)
+
     setTitleList(list)
     setTitleList2(list2)
     setTitleList3(list3)
