@@ -146,21 +146,21 @@ const MoreWrap = (props: MoreWrapProps) => {
 
   return (
     <>
-      {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
-        <MoreDropdown
-          isMoreVisible={isMoreVisible}
-          onChangeVisible={setIsMoreVisible}
-          menu={
-            <DemandOperationDropdownMenu
-              onEditChange={onEditChange}
-              onDeleteChange={onDeleteChange}
-              onCreateChild={onCreateChild}
-              record={props?.record}
-              isAllProject={props.isAllProject}
-            />
-          }
-        />
-      )}
+      {/* {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && ( */}
+      <MoreDropdown
+        isMoreVisible={isMoreVisible}
+        onChangeVisible={setIsMoreVisible}
+        menu={
+          <DemandOperationDropdownMenu
+            onEditChange={onEditChange}
+            onDeleteChange={onDeleteChange}
+            onCreateChild={onCreateChild}
+            record={props?.record}
+            isAllProject={props.isAllProject}
+          />
+        }
+      />
+      {/* )} */}
     </>
   )
 }
