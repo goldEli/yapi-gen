@@ -27,6 +27,7 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { PriorityWrapTable } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
+import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)`
   padding: 0 24px;
@@ -39,6 +40,7 @@ interface SelectItem {
 }
 
 const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
+  const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
@@ -159,7 +161,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       relation_id: item.id,
       type: item.relation_type,
     })
-    getMessage({ type: 'success', msg: '删除成功' })
+    getMessage({ type: 'success', msg: t('successfullyDeleted') })
     getRelationStoriesList(pageParams)
   }
 
@@ -167,8 +169,8 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     open({
-      title: '删除确认',
-      text: '确认删除链接事务？',
+      title: t('deleteConfirmation'),
+      text: t('are_you_sure_to_delete_the_linked_transaction'),
       onConfirm() {
         onDeleteConfirm(item)
         return Promise.resolve()
@@ -201,11 +203,11 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
 
   // 类型列表
   const typeList = [
-    { label: '关联', value: 1, list: [] },
-    { label: '前置', value: 2, list: [] },
-    { label: '后置', value: 3, list: [] },
-    { label: '阻塞', value: 4, list: [] },
-    { label: '被阻塞', value: 5, list: [] },
+    { label: t('associate'), value: 1, list: [] },
+    { label: t('front'), value: 2, list: [] },
+    { label: t('rear'), value: 3, list: [] },
+    { label: t('block'), value: 4, list: [] },
+    { label: t('blocked'), value: 5, list: [] },
   ]
 
   // 获取关联事务列表
@@ -292,7 +294,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       projectId: projectInfo.id,
       id: props.detail.id,
     })
-    getMessage({ type: 'success', msg: '添加成功' })
+    getMessage({ type: 'success', msg: t('addedSuccessfully') })
     getRelationStoriesList(pageParams)
     onClose()
   }
@@ -343,19 +345,19 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       <DeleteConfirmModal />
       <CommonModal
         isVisible={isVisible}
-        title="链接事务"
+        title={t('linkAffairs')}
         onClose={onClose}
-        confirmText="链接"
+        confirmText={t('link')}
         onConfirm={onConfirm}
       >
         <FormWrap layout="vertical" form={form}>
           <Form.Item
-            label="链接类型"
+            label={t('linkType')}
             name="type"
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              placeholder="请选择类型"
+              placeholder={t('pleaseChooseTheType')}
               getPopupContainer={(node: any) => node}
               options={typeList}
               showArrow
@@ -364,12 +366,12 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             />
           </Form.Item>
           <Form.Item
-            label="事务"
+            label={t('affairs1')}
             name="relationId"
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              placeholder="请搜索事务"
+              placeholder={t('searchAffairs')}
               onSearch={onSearch}
               getPopupContainer={(node: any) => node}
               showArrow
@@ -394,10 +396,10 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      <Label>链接事务</Label>
+      <Label>{t('linkAffairs')}</Label>
       <InfoItemWrap>
         <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
-          创建链接的事务
+          {t('createLinkAffairs')}
         </CommonButton>
         {resultData.map((i: any) => (
           <>

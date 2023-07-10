@@ -91,13 +91,16 @@ const DemandDetailBasic = (props: Props) => {
 
       <BasicFooter>
         <div className="textBox">
-          <div>已创建：{detailTimeFormat(demandInfo.createdTime)}</div>
+          <div>
+            {t('created')}
+            {detailTimeFormat(demandInfo.createdTime)}
+          </div>
           <span>
-            更新日期：
+            {t('updated')}
             {detailTimeFormat(demandInfo.update_at)}
           </span>
         </div>
-        <Tooltip title="配置字段">
+        <Tooltip title={t('configurationFields')}>
           <CloseWrap width={32} height={32} onClick={onToConfig}>
             <CommonIconFont type="settings" />
           </CloseWrap>

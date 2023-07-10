@@ -220,7 +220,7 @@ const DemandIndex = () => {
   const onDelete = (item: any) => {
     setTopParentId(item?.topId)
     open({
-      title: '删除确认',
+      title: t('deleteConfirmation'),
       text: t('common.confirmDelDemand'),
       onConfirm() {
         onDeleteConfirm(item.id)

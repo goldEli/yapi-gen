@@ -87,18 +87,18 @@ const IterationDefectDetail = () => {
 
   // 复制标题
   const onCopy = () => {
-    copyLink(flawInfo.name, '复制成功！', '复制失败！')
+    copyLink(flawInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
   // 快捷修改名称
   const onNameConfirm = async () => {
     const value = spanDom.current?.innerText
     if ((value?.length || 0) <= 0) {
-      getMessage({ type: 'warning', msg: '名称不能为空' })
+      getMessage({ type: 'warning', msg: t('nameIsRequired') })
       return
     }
     if ((value?.length || 0) > 100) {
-      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      getMessage({ type: 'warning', msg: t('nameCannotExceedCharacters') })
       return
     }
     if (value !== flawInfo.name) {
@@ -109,7 +109,7 @@ const IterationDefectDetail = () => {
           name: value,
         },
       })
-      getMessage({ type: 'success', msg: '修改成功' })
+      getMessage({ type: 'success', msg: t('successfullyModified') })
       // 提交名称
       setFlawInfo({
         ...flawInfo,
@@ -206,7 +206,7 @@ const IterationDefectDetail = () => {
           editId: flawInfo.id,
           projectId: flawInfo.projectId,
           type: 2,
-          title: '编辑缺陷',
+          title: t('editorialDefect'),
         },
       }),
     )
@@ -244,8 +244,8 @@ const IterationDefectDetail = () => {
   // 删除缺陷弹窗
   const onDelete = () => {
     openDelete({
-      title: '删除确认',
-      text: '确认删除该缺陷？',
+      title: t('deleteConfirmation'),
+      text: t('areYouSureToDeleteThisFlaw'),
       onConfirm() {
         onDeleteConfirm()
         return Promise.resolve()
@@ -257,8 +257,8 @@ const IterationDefectDetail = () => {
   const onCopyId = () => {
     copyLink(
       `${flawInfo.projectPrefix}-${flawInfo.prefixKey}`,
-      '复制成功！',
-      '复制失败！',
+      t('copysuccess'),
+      t('copyfailed'),
     )
   }
 
@@ -277,37 +277,37 @@ const IterationDefectDetail = () => {
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${flawInfo.projectPrefix}-${flawInfo.prefixKey}】${text}`,
-      '复制成功！',
-      '复制失败！',
+      t('copysuccess'),
+      t('copyfailed'),
     )
   }
 
   // 更多下拉
   const items: MenuProps['items'] = [
     {
-      label: <div onClick={onEdit}>编辑</div>,
+      label: <div onClick={onEdit}>{t('common.edit')}</div>,
       key: '0',
     },
     {
-      label: <div onClick={onDelete}>删除</div>,
+      label: <div onClick={onDelete}>{t('common.del')}</div>,
       key: '1',
     },
     {
       type: 'divider',
     },
     {
-      label: <div onClick={onCopyId}>复制编号</div>,
+      label: <div onClick={onCopyId}>{t('copy_requirement_number')}</div>,
       key: '2',
     },
     {
-      label: <div onClick={onCopyLink}>复制链接</div>,
+      label: <div onClick={onCopyLink}>{t('copy_title_link')}</div>,
       key: '3',
     },
     {
       type: 'divider',
     },
     {
-      label: <div onClick={onToConfig}>配置</div>,
+      label: <div onClick={onToConfig}>{t('configuration')}</div>,
       key: '4',
     },
   ]
@@ -360,7 +360,7 @@ const IterationDefectDetail = () => {
       key: '1',
       label: (
         <ActivityTabItem>
-          <span>详细信息</span>
+          <span>{t('details')}</span>
         </ActivityTabItem>
       ),
       children: <FlawInfo />,
@@ -369,7 +369,7 @@ const IterationDefectDetail = () => {
       key: '2',
       label: (
         <ActivityTabItem>
-          <span>关联工作项</span>
+          <span>{t('associatedWorkItems')}</span>
         </ActivityTabItem>
       ),
       children: (
@@ -384,7 +384,7 @@ const IterationDefectDetail = () => {
       key: '3',
       label: (
         <ActivityTabItem>
-          <span>变更记录</span>
+          <span>{t('changeLog')}</span>
           <ItemNumber isActive={tabActive === '2'}>
             {flawInfo.changeCount}
           </ItemNumber>
@@ -396,7 +396,7 @@ const IterationDefectDetail = () => {
       key: '4',
       label: (
         <ActivityTabItem>
-          <span>流转记录</span>
+          <span>{t('circulationRecords')}</span>
         </ActivityTabItem>
       ),
       children: <Circulation activeKey={tabActive} />,

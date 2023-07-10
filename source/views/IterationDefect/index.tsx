@@ -225,8 +225,10 @@ const Index = (props: any) => {
   // 删除弹窗
   const onDelete = (item: any) => {
     open({
-      title: `删除确认【${item.storyPrefixKey}】`,
-      text: '你将永久删除该缺陷，删除后将不可恢复请谨慎操作！',
+      title: `${t('confirmationOfDeletion')}【${item.storyPrefixKey}】`,
+      text: t(
+        'youWillPermanentlyDeleteThisAndItWillNotBeRecoverableAfterPleaseOperateWith',
+      ),
       onConfirm: () => {
         onDeleteConfirm(item.id)
         return Promise.resolve()
@@ -298,7 +300,7 @@ const Index = (props: any) => {
         <Wrap>
           <ProjectCommonOperation
             onInputSearch={onInputSearch}
-            title="搜索缺陷名称或编号"
+            title={t('searchForDefectNameOrNumber')}
           />
           <ContentWrap>
             <ContentLeft>

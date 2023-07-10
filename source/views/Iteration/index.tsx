@@ -316,8 +316,8 @@ const Iteration = () => {
   const onDelete = (item: any) => {
     setTopParentId(item?.topId)
     open({
-      title: '删除确认',
-      text: '确认删除该迭代？',
+      title: t('deleteConfirmation'),
+      text: t('areYouSureYouWantToDeleteThis'),
       onConfirm() {
         onDeleteConfirm(item)
         return Promise.resolve()
@@ -545,7 +545,7 @@ const Iteration = () => {
         <Complete
           iterationId={editCompleteId}
           isVisible={isCompleteVisible}
-          title="完成迭代"
+          title={t('finishIteration')}
           onClose={() => {
             setIsCompleteVisible(false)
           }}

@@ -125,7 +125,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       id: props.detail.id,
       childId: value,
     })
-    getMessage({ type: 'success', msg: '添加成功' })
+    getMessage({ type: 'success', msg: t('addedSuccessfully') })
     onCancelSearch()
     getList(pageParams)
   }
@@ -133,7 +133,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   // 删除子事务确认事件
   const onDeleteConfirm = async (item: any) => {
     await deleteAffairs({ projectId: projectInfo.id, id: item.id })
-    getMessage({ type: 'success', msg: '删除成功' })
+    getMessage({ type: 'success', msg: t('successfullyDeleted') })
     getList(pageParams)
   }
 
@@ -141,8 +141,11 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     open({
-      title: '删除确认',
-      text: `您将永久删除${item.story_prefix_key}及其子事务，删除后将不可恢复请谨慎操作!`,
+      title: t('deleteConfirmation'),
+      text: t(
+        'youWillPermanentlyDeleteAndItsWhichCannotBeRecoveredAfterPleaseOperateWith',
+        { key: item.story_prefix_key },
+      ),
       onConfirm() {
         onDeleteConfirm(item)
         return Promise.resolve()
@@ -276,7 +279,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               : [4, 5].includes(props.detail.work_type)
               ? 6
               : undefined,
-          title: '创建子事务',
+          title: t('createSubtransaction'),
           isCreateAffairsChild: true,
           parentId: props.detail.id,
         },
@@ -326,7 +329,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     <InfoItem id="sprint-childSprint" className="info_item_tab">
       <DeleteConfirmModal />
       <LabelWrap>
-        <Label>子事务</Label>
+        <Label>{t('subtransaction')}</Label>
         {!isSearch && (
           <CloseWrap width={24} height={24} onClick={onClickSearch}>
             <CommonIconFont type="search" />
@@ -335,7 +338,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
         {isSearch && (
           <Space size={16}>
             <CustomSelect
-              placeholder="搜索事务名称或编号"
+              placeholder={t('search_for_transaction_name_or_number')}
               getPopupContainer={(node: any) => node}
               style={{ width: 184 }}
               onSearch={onSearch}
@@ -347,25 +350,27 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               allowClear
               autoFocus
             />
-            <CancelText onClick={onCancelSearch}>取消</CancelText>
+            <CancelText onClick={onCancelSearch}>
+              {t('common.cancel')}
+            </CancelText>
           </Space>
         )}
       </LabelWrap>
 
       <InfoItemWrap>
         <CommonButton type="primaryText" icon="plus" onClick={onCreateChild}>
-          创建子事务
+          {t('createSubtransaction')}
         </CommonButton>
         {dataSource.total > 0 && (
           <>
             <Tooltip
               title={`${
                 props.detail.child_story_statistics?.finish_percent
-              }%已完成,${
+              }%${t('completed1')},${
                 props.detail.child_story_statistics?.processing_percent || 0
-              }%进行中,${
+              }%${t('inProgress')},${
                 props.detail.child_story_statistics?.start_percent
-              }%未完成`}
+              }%${t('incomplete')}`}
             >
               <ProgressWrap
                 percent={
@@ -376,7 +381,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
                   strokeColor: 'var(--primary-d1)',
                 }}
                 format={() =>
-                  `已完成${
+                  `${t('completed1')}${
                     props.detail.child_story_statistics?.finish_percent || 0
                   }%`
                 }

@@ -231,7 +231,7 @@ const Operation = (props: Props) => {
         visible: true,
         params: {
           type: 7,
-          title: '创建事务',
+          title: t('createTransaction'),
           projectId: getProjectIdByUrl(),
         },
       }),
@@ -272,13 +272,13 @@ const Operation = (props: Props) => {
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>导入事务</span>
+          <span style={{ marginLeft: 8 }}>{t('importTransaction')}</span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem onClick={onExportClick}>
           <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>导出事务</span>
+          <span style={{ marginLeft: 8 }}>{t('exportTransaction')}</span>
         </MoreItem>
       )}
     </div>
@@ -430,7 +430,7 @@ const Operation = (props: Props) => {
                     visible: true,
                     params: {
                       type: 7,
-                      title: '创建事务',
+                      title: t('createTransaction'),
                       projectId: getProjectIdByUrl(),
                     },
                   }),
@@ -438,7 +438,7 @@ const Operation = (props: Props) => {
               }
               type="primary"
             >
-              创建事务
+              {t('createTransaction')}
             </CommonButton>
           )}
           {hasExport && hasImport ? null : (

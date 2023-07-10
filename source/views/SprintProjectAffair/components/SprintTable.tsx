@@ -65,7 +65,7 @@ const SprintTable = (props: Props) => {
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  asyncSetTtile(`事务【${projectInfo.name}】`)
+  asyncSetTtile(`${t('affairs1')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
 
@@ -167,7 +167,7 @@ const SprintTable = (props: Props) => {
               : [4, 5].includes(item.work_type)
               ? 6
               : undefined,
-          title: '创建子事务',
+          title: t('createSubtransaction'),
           isCreateAffairsChild: true,
           parentId: item.id,
         },
@@ -185,7 +185,7 @@ const SprintTable = (props: Props) => {
           editId: item.id,
           projectId,
           type: item.work_type,
-          title: '编辑事务',
+          title: t('editorialAffairs'),
         },
       }),
     )
@@ -200,7 +200,7 @@ const SprintTable = (props: Props) => {
         severity: item.severity,
       },
     })
-    getMessage({ msg: '修改成功', type: 'success' })
+    getMessage({ msg: t('successfullyModified'), type: 'success' })
     props.onChangeRow?.()
   }
 
@@ -370,7 +370,7 @@ const SprintTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 7, title: '创建事务' },
+        params: { noDataCreate: true, type: 7, title: t('createTransaction') },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))
@@ -396,7 +396,11 @@ const SprintTable = (props: Props) => {
         }
         noData={
           <NoData
-            subText={hasCreate ? '' : '当前项目还未创建事务，创建一个吧~'}
+            subText={
+              hasCreate
+                ? ''
+                : t('theCurrentProjectHasNotCreatedATransactionCreate')
+            }
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
@@ -405,7 +409,7 @@ const SprintTable = (props: Props) => {
                 onClick={onClick}
                 style={{ marginTop: 24 }}
               >
-                创建事务
+                {t('createTransaction')}
               </CommonButton>
             )}
           </NoData>

@@ -11,8 +11,10 @@ import { useDispatch, useSelector } from '@store/index'
 import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
 import { deleteAffairsComment, updateAffairsComment } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
+import { useTranslation } from 'react-i18next'
 
 const ActivitySprint = () => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const [activeKey, setActiveKey] = useState('1')
   const [searchParams] = useSearchParams()
@@ -37,7 +39,7 @@ const ActivitySprint = () => {
   // 删除评论
   const onDeleteCommentConfirm = async (commentId: number) => {
     await deleteAffairsComment({ projectId: id, id: commentId })
-    getMessage({ type: 'success', msg: '删除成功' })
+    getMessage({ type: 'success', msg: t('successfullyDeleted') })
     getList()
   }
 
@@ -50,7 +52,7 @@ const ActivitySprint = () => {
       content: value,
       ids: getIdsForAt(value),
     })
-    getMessage({ type: 'success', msg: '编辑成功' })
+    getMessage({ type: 'success', msg: t('successfullyModified') })
     getList()
   }
 
@@ -59,7 +61,7 @@ const ActivitySprint = () => {
       key: '1',
       label: (
         <ActivityTabItem>
-          <span>评论</span>
+          <span>{t('comment1')}</span>
           <ItemNumber isActive={activeKey === '1'}>
             {affairsCommentList?.list.length || 0}
           </ItemNumber>
@@ -77,7 +79,7 @@ const ActivitySprint = () => {
       key: '2',
       label: (
         <ActivityTabItem>
-          <span>变更记录</span>
+          <span>{t('changeLog')}</span>
           <ItemNumber isActive={activeKey === '2'}>
             {affairsInfo.changeCount}
           </ItemNumber>
@@ -89,7 +91,7 @@ const ActivitySprint = () => {
       key: '3',
       label: (
         <ActivityTabItem>
-          <span>流转记录</span>
+          <span>{t('circulationRecords')}</span>
         </ActivityTabItem>
       ),
       children: <Circulation activeKey={activeKey} />,
@@ -105,7 +107,7 @@ const ActivitySprint = () => {
 
   return (
     <InfoItem id="sprint-activity" className="info_item_tab">
-      <Label>活动</Label>
+      <Label>{t('activity')}</Label>
       <Tabs defaultActiveKey={activeKey} items={items} onChange={onChange} />
     </InfoItem>
   )
