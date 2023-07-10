@@ -9,7 +9,6 @@ import Detail from './Detail'
 import DetailHeader from './DetailHeader'
 import {
   Line,
-  ItemMain1,
   TypeBox,
   MainStyle1,
   UserInfo,

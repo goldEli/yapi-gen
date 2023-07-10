@@ -23,7 +23,6 @@ import {
   SpinStyle,
 } from './style'
 import Table from './Table'
-import styled from '@emotion/styled/types/base'
 interface Props {
   spinning: boolean
   visible: boolean
