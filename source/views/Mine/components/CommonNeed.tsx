@@ -327,6 +327,8 @@ const CommonNeed = (props: any) => {
 
   // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
+    console.log(item, '是迭代还是冲刺')
+
     if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
       getMessage({ msg: t('common.notCheckInfo'), type: 'warning' })
     } else {
@@ -341,7 +343,12 @@ const CommonNeed = (props: any) => {
       }
       item.isMineOrHis = true
       item.isAllProject = props.id === 0
-      openDemandDetail({ ...item, ...{ demandIds } }, item.project_id, item.id)
+      openDemandDetail(
+        { ...item, ...{ demandIds } },
+        item.project_id,
+        item.id,
+        item.project_type === 2 ? 1 : undefined,
+      )
     }
   }
 
