@@ -148,17 +148,6 @@ const XTable: React.FC<XTableProps> = props => {
     projectInfo?.projectPermissions,
     'b/sprint',
   )
-  // const handleShortcutEvent = () => {
-  //   // console.log('C键被按下')
-  //   dispatch(
-  //     setAddWorkItemModal({
-  //       visible: true,
-  //       params: { type: 4, iterateId: data.id },
-  //     }),
-  //   )
-  // }
-
-  // useShortcutC(handleShortcutEvent)
 
   // 更新事务页面的冲刺数据
   const updateSprintList = async () => {
@@ -175,7 +164,7 @@ const XTable: React.FC<XTableProps> = props => {
       const result: any = await delSprintItem({ id, project_id: projectId })
       if (result && result.code === 0) {
         getMessage({
-          msg: '删除成功',
+          msg: t('common.deleteSuccess'),
           type: 'success',
         })
         dispatch(setSprintRefresh(1))
@@ -205,13 +194,16 @@ const XTable: React.FC<XTableProps> = props => {
               })
             }}
           >
-            开始冲刺
+            {t('sprint.startSprint')}
           </CommonButton>
         )
       case 1:
         return data?.stories?.length === 0 ? (
-          <Tooltip title="此冲刺不含任何事务" getPopupContainer={node => node}>
-            <DisabledButton>完成冲刺</DisabledButton>
+          <Tooltip
+            title={t('sprint.noBusiness')}
+            getPopupContainer={node => node}
+          >
+            <DisabledButton>{t('sprint.completeSprint')}</DisabledButton>
           </Tooltip>
         ) : (
           <CommonButton
@@ -220,7 +212,7 @@ const XTable: React.FC<XTableProps> = props => {
               setCompleteVisible(true)
             }}
           >
-            完成冲刺
+            {t('sprint.completeSprint')}
           </CommonButton>
         )
       default:
@@ -236,7 +228,7 @@ const XTable: React.FC<XTableProps> = props => {
           params: {
             type: 8,
             iterateId: data.id === 0 ? 0 : data.id,
-            title: '创建事务',
+            title: t('sprint.createTransaction'),
           },
         }),
       )
@@ -275,7 +267,11 @@ const XTable: React.FC<XTableProps> = props => {
                   data?.start_at && data?.end_at ? '~ ' : ''
                 }${data?.end_at ? data?.end_at : ''}`}
                 {data?.story_visible_count > 0 || data?.story_count > 0
-                  ? `（可见${data?.story_visible_count}个，共${data?.story_count}个事务）`
+                  ? `（${t('sprint.visible')}${data?.story_visible_count}${t(
+                      'sprint.number',
+                    )}，${t('sprint.total')}${data?.story_count}${t(
+                      'sprint.number',
+                    )}${t('affairs')}）`
                   : ''}
               </span>
 
@@ -283,7 +279,13 @@ const XTable: React.FC<XTableProps> = props => {
                 ? null
                 : !isCanEditSprint && (
                     <>
-                      <Tooltip title={data.status === 4 ? '编辑' : '更新'}>
+                      <Tooltip
+                        title={
+                          data.status === 4
+                            ? t('sprint.edit')
+                            : t('sprint.update')
+                        }
+                      >
                         <CloseWrap
                           width={24}
                           height={24}
@@ -305,13 +307,17 @@ const XTable: React.FC<XTableProps> = props => {
                         </CloseWrap>
                       </Tooltip>
 
-                      <Tooltip title="删除">
+                      <Tooltip title={t('common.del')}>
                         <CloseWrap width={24} height={24}>
                           <IconFont
                             onClick={() => {
                               open({
-                                title: '删除冲刺',
-                                text: `确认要删除【${data.name}】的冲刺吗，该冲刺内的事务将移动至代办事项内`,
+                                title: t('sprint.deleteSprint'),
+                                text: `${t('sprint.confirmDelete')}【${
+                                  data.name
+                                }】${t('sprint.ofSprint')}，${t(
+                                  'sprint.removeSprintToAgency',
+                                )}`,
                                 onConfirm: () => deleteSprint(data.id),
                               })
                             }}
@@ -338,7 +344,7 @@ const XTable: React.FC<XTableProps> = props => {
                       })
                     }}
                   >
-                    新建冲刺
+                    {t('sprint.createSprint')}
                   </CommonButton>
                 ) : (
                   getSprintButton(data.status)
@@ -360,14 +366,14 @@ const XTable: React.FC<XTableProps> = props => {
                   params: {
                     type: 8,
                     iterateId: data.id === 0 ? 0 : data.id,
-                    title: '创建事务',
+                    title: t('sprint.createTransaction'),
                     projectId,
                   },
                 }),
               )
             }}
           >
-            <span>新事务</span>
+            <span>{t('sprint.newAffairs')}</span>
           </CommonButton>
         )}
         <Droppable key={data.id} droppableId={String(data.id)}>
@@ -380,12 +386,12 @@ const XTable: React.FC<XTableProps> = props => {
                 col={props.columns}
                 noData={
                   data.id === 0 ? (
-                    <NoData subText="暂无事务" />
+                    <NoData subText={t('sprint.noTransaction')} />
                   ) : (
                     <div className="nodata">
                       {data.status === 4
-                        ? '从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺'
-                        : '可将已有事务拖拽到此处，来确定冲刺计划'}
+                        ? t('sprint.desc1')
+                        : t('sprint.desc2')}
                     </div>
                   )
                 }
@@ -394,7 +400,7 @@ const XTable: React.FC<XTableProps> = props => {
                 pagination={{
                   total: list?.length,
                   showTotal(total: any) {
-                    return `共 ${total}条`
+                    return `${t('sprint.total')} ${total}${t('sprint.pieces')}`
                   },
                   defaultPageSize: 10,
                   defaultCurrent: 1,

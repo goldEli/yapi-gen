@@ -129,11 +129,11 @@ const ProjectInfo = () => {
         <CardGroup size={32}>
           <CardItem>
             <div>{projectInfo.demandCount || 0}</div>
-            <span>事务</span>
+            <span>{t('sprintProject.affairs')}</span>
           </CardItem>
           <CardItem>
             <div>{projectInfo.iterateCount || 0}</div>
-            <span>冲刺</span>
+            <span>{t('sprintProject.sprint')}</span>
           </CardItem>
           <CardItem>
             <div>{projectInfo.memberCount || 0}</div>

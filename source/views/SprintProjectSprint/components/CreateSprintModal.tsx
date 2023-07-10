@@ -53,16 +53,16 @@ const CreateSprintModal = (props: sprintProps) => {
   const inputRef = useRef<any>(null)
   const getTitle = (val: string) => {
     if (val === 'create') {
-      return '新建冲刺'
+      return t('sprint.createSprint')
     }
     if (val === 'edit') {
-      return '编辑冲刺'
+      return t('sprint.editSprint')
     }
     if (val === 'start') {
-      return '开始冲刺'
+      return t('sprint.startSprint')
     }
     if (val === 'update') {
-      return '更新冲刺'
+      return t('sprint.updateSprint')
     }
     return ''
   }
@@ -104,7 +104,7 @@ const CreateSprintModal = (props: sprintProps) => {
 
         if (result && result.code === 0) {
           getMessage({
-            msg: '创建成功',
+            msg: t('common.createSuccess'),
             type: 'success',
           })
           updateSprintList()
@@ -135,10 +135,10 @@ const CreateSprintModal = (props: sprintProps) => {
             getMessage({
               msg:
                 type === 'edit'
-                  ? '编辑成功'
+                  ? t('common.editSuccess')
                   : type === 'update'
-                  ? '更新成功'
-                  : '开始成功',
+                  ? t('sprint.updateSuccess')
+                  : t('sprint.startSuccess'),
               type: 'success',
             })
             onClear(true)
@@ -168,10 +168,8 @@ const CreateSprintModal = (props: sprintProps) => {
         } else {
           open({
             title: getTitle(type),
-            okText: '确认',
-            children: (
-              <div>该操作超出设置的冲刺日期范围，建议调整冲刺或事务日期</div>
-            ),
+            okText: t('common.confirm2'),
+            children: <div>{t('sprint.warning')}</div>,
             onConfirm: updateSprint,
           })
         }
@@ -183,7 +181,7 @@ const CreateSprintModal = (props: sprintProps) => {
 
   const onValidator = (rule: any, value: any) => {
     if ((!value || !value?.date) && initNumber.current !== 1) {
-      return Promise.reject(new Error('请选择持续时间'))
+      return Promise.reject(new Error(t('sprint.pleaseChooseTime')))
     }
     initNumber.current++
     return Promise.resolve()
@@ -257,17 +255,17 @@ const CreateSprintModal = (props: sprintProps) => {
           (type === 'edit' || type === 'start') &&
           editData?.status === 4 &&
           editData?.story_count
-            ? '开始'
+            ? t('sprint.start')
             : type === 'create'
-            ? '新建'
+            ? t('sprint.create')
             : type === 'update'
-            ? '更新'
+            ? t('sprint.update')
             : // eslint-disable-next-line no-undefined
-              '编辑'
+              t('sprint.edit')
         }
         children={
           <div className={content}>
-            <div className="head">要开始此冲刺，至少需包含1个事务</div>
+            <div className="head">{t('sprint.tips')}</div>
             <Form
               form={form}
               name="basic"
@@ -277,19 +275,19 @@ const CreateSprintModal = (props: sprintProps) => {
             >
               <CustomWrap>
                 <Form.Item
-                  label="冲刺名称"
+                  label={t('sprint.sprintName')}
                   name="name"
-                  rules={[{ required: true, message: '请输入冲刺名称' }]}
+                  rules={[{ required: true, message: t('sprint.pleaseInput') }]}
                 >
                   <Input
                     ref={inputRef}
-                    placeholder="新建的冲刺1"
+                    placeholder={t('sprint.newSprint1')}
                     maxLength={50}
                   />
                 </Form.Item>
 
                 <Form.Item
-                  label="持续时间"
+                  label={t('sprint.duration')}
                   name="group"
                   // eslint-disable-next-line no-undefined
                   initialValue={{
@@ -301,11 +299,11 @@ const CreateSprintModal = (props: sprintProps) => {
                   <ChooseDate initNumber={initNumber} />
                 </Form.Item>
 
-                <Form.Item label="冲刺目标" name="info">
+                <Form.Item label={t('sprint.sprintTarget')} name="info">
                   <Input.TextArea
                     maxLength={300}
                     autoSize={{ minRows: 1, maxRows: 5 }}
-                    placeholder="请输入"
+                    placeholder={t('common.pleaseEnter')}
                   />
                 </Form.Item>
               </CustomWrap>
