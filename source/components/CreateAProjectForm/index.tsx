@@ -134,6 +134,7 @@ const CreateAProjectForm = () => {
   const [model, setModel] = useState<any>(0)
   const [multipleSelectionItems, setMultipleSelectionItems] = useState<any>([])
   const { projectInfo } = useSelector(state => state.project)
+  const { isRefresh } = useSelector(state => state.user)
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
     setMyCover(data.url)
@@ -331,7 +332,7 @@ const CreateAProjectForm = () => {
     if (leaderId || leaderId === 0) {
       getLeader()
     }
-  }, [leaderId])
+  }, [leaderId, isRefresh])
   useEffect(() => {
     if (multipleSelectionItems.length === 1) {
       getProjectInfo2()

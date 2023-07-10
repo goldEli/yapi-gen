@@ -1,4 +1,10 @@
 {
+  "message_receiver_list": "List of message recipients ",
+
+  "person_unread": "person not read",
+
+  "person_read": "Person read",
+
   "enterprise_project2": "Enterprise Project ",
 
   "sprint2": "Sprint ",

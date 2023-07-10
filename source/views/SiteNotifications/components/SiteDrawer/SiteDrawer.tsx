@@ -64,13 +64,12 @@ const SiteDrawer = () => {
     },
 
     {
-      id: '3',
-      text: t('all'),
-    },
-
-    {
       id: '2',
       text: t('atmy'),
+    },
+    {
+      id: '3',
+      text: t('all'),
     },
   ]
 
