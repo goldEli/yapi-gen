@@ -33,6 +33,7 @@ const FlawDetail = (props: FlawDetailProps) => {
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
   const editorRef = useRef<EditorRef>(null)
+  const editorRef2 = useRef<any>()
   const dId = useRef<any>()
 
   const onUpdate = (value?: boolean) => {
@@ -89,9 +90,9 @@ const FlawDetail = (props: FlawDetailProps) => {
   const onBlurEditor = async () => {
     setIsEditInfo(false)
 
-    if (editInfo === props.flawInfo.info) return
+    if (editorRef2.current === props.flawInfo.info) return
     const params = {
-      info: editInfo,
+      info: editorRef2.current,
       projectId: projectInfo.id,
       id: props.flawInfo.id,
       name: props.flawInfo.name,
@@ -122,7 +123,7 @@ const FlawDetail = (props: FlawDetailProps) => {
         activeState
       >
         <FlawInfoLabel>描述</FlawInfoLabel>
-        {(isEditInfo || editInfo) && (
+        {isEditInfo || editInfo ? (
           <Editor
             value={editInfo}
             getSuggestions={() => []}
@@ -134,10 +135,10 @@ const FlawDetail = (props: FlawDetailProps) => {
                 editorRef.current?.focus()
               }, 10)
             }}
-            onChange={(value: string) => setEditInfo(value)}
-            onBlur={onBlurEditor}
+            onChange={(value: string) => (editorRef2.current = value)}
+            onBlur={() => onBlurEditor()}
           />
-        )}
+        ) : null}
         {!isEditInfo && !editInfo && (
           <TextWrapEdit
             onClick={() => {
