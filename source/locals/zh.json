@@ -8,7 +8,7 @@
   "window": "窗口",
   "send_type": "发送类型",
 
-  "unsent_scheduled": "定时未发送",
+  "unsent_scheduled": "定时通知",
   "time_of_departure": "时间",
   "content": "内容",
   "author": "作者",
@@ -1868,7 +1868,16 @@
     "endDate": "结束日期",
     "result": "结果",
     "removeTo": "未完成的事务移动至",
-    "moveTo": "移动至"
+    "moveTo": "移动至",
+    "shareSuccess": "分享成功",
+    "shareInputTip": "请输入正确的用户名或邮箱",
+    "noSaveView": "当前视图未保存，分享时将为您保存为“视图”",
+    "shareErrorTip1": "请输入用户名或邮箱地址(必填)",
+    "shareTip1": "接收人将会收到分享的站内消息",
+    "pleaseInputMessage": "请输入消息",
+    "shareErrorTip2": "添加消息(必填)",
+    "acquiring": "获取中...",
+    "getLink": "获取链接"
   },
   "sprintProject": {
     "affairs": "事务",

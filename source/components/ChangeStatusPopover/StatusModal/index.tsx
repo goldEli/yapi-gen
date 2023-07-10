@@ -535,7 +535,7 @@ const StatusModal = (props: StatusModalProps) => {
                           label: item.name,
                           value: item.id,
                         }))}
-                        optionFilterProp="name"
+                        optionFilterProp="label"
                       />
                     </Form.Item>
                   )}
