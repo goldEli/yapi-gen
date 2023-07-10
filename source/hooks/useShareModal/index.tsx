@@ -166,7 +166,7 @@ const useShareModal = () => {
         })
         if (result && result.code === 0) {
           getMessage({
-            msg: '分享成功',
+            msg: t('sprint.shareSuccess'),
             type: 'success',
           })
           await onOkRef.current?.()
@@ -214,7 +214,7 @@ const useShareModal = () => {
         !(typeof value === 'object' && !!value) &&
         notFirst.current
       ) {
-        return Promise.reject(new Error('请输入正确的用户名或邮箱'))
+        return Promise.reject(new Error(t('sprint.shareInputTip')))
       }
       setFail(false)
       return Promise.resolve()
@@ -246,16 +246,14 @@ const useShareModal = () => {
     return (
       <CommonModal
         width={528}
-        title="分享"
+        title={t('share')}
         isVisible={visible}
         onClose={() => onClose(viewType, type)}
         onConfirm={onsubmit}
-        confirmText="分享"
+        confirmText={t('share')}
       >
         <ModalContentBox>
-          {needSave ? (
-            <WarnTips>当前视图未保存，分享时将为您保存为“视图”</WarnTips>
-          ) : null}
+          {needSave ? <WarnTips>{t('sprint.noSaveView')}</WarnTips> : null}
           <Form
             form={form}
             onFinish={confirm}
@@ -300,7 +298,7 @@ const useShareModal = () => {
               name="name"
             >
               <SearchInput
-                placeholder="请输入用户名或邮箱地址(必填)"
+                placeholder={t('sprint.shareErrorTip1')}
                 fail={fail}
                 changeFirstState={() => {
                   notFirst.current = true
@@ -308,14 +306,16 @@ const useShareModal = () => {
                 setFail={setFail}
               />
             </Form.Item>
-            <Tips>接收人将会收到分享的站内消息</Tips>
+            <Tips>{t('sprint.shareTip1')}</Tips>
             <Form.Item
-              rules={[{ required: true, message: '请输入消息' }]}
+              rules={[
+                { required: true, message: t('sprint.pleaseInputMessage') },
+              ]}
               label=""
               name="content"
             >
               <Input.TextArea
-                placeholder="添加消息(必填)"
+                placeholder={t('sprint.shareErrorTip2')}
                 style={{ height: 148 }}
               />
             </Form.Item>
@@ -333,17 +333,17 @@ const useShareModal = () => {
               }}
             >
               <IconFont type="link" />
-              <span>复制链接</span>
+              <span>{t('copy_Link')}</span>
             </CopyButton>
           ) : loading ? (
             <LoadingButton>
               <img width={16} src="/shareLoading.gif" />
-              <span>获取中...</span>
+              <span>{t('sprint.acquiring')}</span>
             </LoadingButton>
           ) : (
             <GetCopyButton onClick={getCopyLink}>
               <IconFont type="link" />
-              获取链接
+              {t('sprint.getLink')}
             </GetCopyButton>
           )
         ) : (
@@ -357,7 +357,7 @@ const useShareModal = () => {
             }}
           >
             <IconFont type="link" />
-            <span>复制链接</span>
+            <span>{t('copy_Link')}</span>
           </CopyButton>
         )}
       </CommonModal>

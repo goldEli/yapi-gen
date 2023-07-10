@@ -53,6 +53,7 @@ export const GetCopyButton = styled.div`
   left: 0px;
   cursor: pointer;
   z-index: 99;
+  white-space: nowrap;
   &:hover {
     color: var(--primary-d1);
   }
