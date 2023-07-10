@@ -1,6 +1,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import { Space } from 'antd'
 import Highcharts from 'highcharts'
+import { useTranslation } from 'react-i18next'
 import { HightChartsWrap, Time, TitleCss, Text, Col1 } from '../Header/Style'
 import { CharTitle, HighchartsReactWrap, RightRow } from './style'
 
@@ -12,6 +13,7 @@ const HightChartMainBar = (props: {
   chart: Models.Efficiency.ChartBar
   onChange: (val: string) => void
 }) => {
+  const [t] = useTranslation()
   // 图表位置柱状图
   const options = {
     credits: {
@@ -124,7 +126,9 @@ const HightChartMainBar = (props: {
           <Space size={4}>
             <CommonIconFont type={'sort'} size={14} />
             <span>
-              {props.chart?.chartType === 'desc' ? '由高到低' : '由低到高'}
+              {props.chart?.chartType === 'desc'
+                ? t('performance.sort1')
+                : t('performance.sort2')}
             </span>
           </Space>
         </Text>
@@ -133,7 +137,7 @@ const HightChartMainBar = (props: {
         <HightChartsWrap height={props.height}>
           {props.titleType ? (
             <CharTitle>
-              <span>统计周期</span>
+              <span>{t('performance.statisticalPeriod')}</span>
               <span className="day">{props.chart?.period_number}天</span>
               <CommonIconFont
                 type={'down-left'}
@@ -141,7 +145,7 @@ const HightChartMainBar = (props: {
                 color="var(--function-error)"
               />
               <span className="time">
-                较前14天{' '}
+                {t('performance.daysBefore')}
                 {props.chart.growth_rate > 0
                   ? `+${props.chart?.growth_rate}`
                   : props.chart?.growth_rate}

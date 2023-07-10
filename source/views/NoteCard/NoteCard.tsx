@@ -12,6 +12,7 @@ import IconFont from '@/components/IconFont'
 import { ListItem } from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 
 const ReadCard = (props: any) => {
+  const [t] = useTranslation()
   const [value, setValue] = useState<any>({})
   const init = async () => {
     const data = await getReadMyAllSysNoticeNumber(props.id)
@@ -44,7 +45,7 @@ const ReadCard = (props: any) => {
           alignItems: 'center',
         }}
       >
-        <span>消息接收人列表</span>
+        <span>{t('message_receiver_list')}</span>
         <IconFont
           onClick={() => props.onClose()}
           style={{
@@ -69,7 +70,10 @@ const ReadCard = (props: any) => {
             borderRight: '1px solid #ebeced',
           }}
         >
-          <div>{value?.unread ?? 0}人未读</div>
+          <div>
+            {value?.unread ?? 0}
+            {t('person_unread')}
+          </div>
           <div
             style={{
               overflow: 'scroll',
@@ -106,7 +110,10 @@ const ReadCard = (props: any) => {
             padding: '10px',
           }}
         >
-          <div>{value?.read ?? 0}人已读</div>
+          <div>
+            {value?.read ?? 0}
+            {t('person_read')}
+          </div>
           <div
             style={{
               overflow: 'scroll',

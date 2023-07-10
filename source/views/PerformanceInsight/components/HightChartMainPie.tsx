@@ -5,6 +5,7 @@ import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, Space } from 'antd'
 import Highcharts from 'highcharts'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
 import { HighchartsReactWrap, RightRow, MoreWrap1 } from './style'
 interface PropsMoreDropdown {
@@ -152,6 +153,7 @@ const HightChartMainPie = (props: {
     ],
   }
   let timer: any = null
+  const [t] = useTranslation()
   useEffect(() => {
     return () => {
       clearTimeout(timer)
@@ -167,7 +169,7 @@ const HightChartMainPie = (props: {
   const [defaultValue, setDefaultValue] = useState<{
     label: string
     key: string
-  }>({ label: '按严重程度', key: 'severity' })
+  }>({ label: t('performance.sort4'), key: 'severity' })
   // 切换状态
   const onClickMenu = async (item: { label: string; key: string }) => {
     setDefaultValue(item)
@@ -188,9 +190,9 @@ const HightChartMainPie = (props: {
               onClickMenu(value)
             }
             data={[
-              { label: '按严重程度', key: 'severity' },
-              { label: '按优先级', key: 'priority' },
-              { label: '按状态', key: 'status' },
+              { label: t('performance.sort4'), key: 'severity' },
+              { label: t('performance.sort3'), key: 'priority' },
+              { label: t('performance.sort5'), key: 'status' },
             ]}
             defaultValue={defaultValue}
           />
