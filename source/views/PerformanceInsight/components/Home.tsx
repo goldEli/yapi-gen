@@ -325,7 +325,7 @@ const Home = () => {
     const res = await delView(Number(key))
     if (res) {
       getMessage({
-        msg: '删除成功',
+        msg: t('common.deleteSuccess'),
         type: 'success',
       })
       // 刷新视图的接口
@@ -689,7 +689,7 @@ const Home = () => {
                 titleType={false}
                 title={
                   homeType === 'all'
-                    ? t('performance.title3')
+                    ? t('performance.home9')
                     : t('performance.title03')
                 }
               />
@@ -726,7 +726,7 @@ const Home = () => {
                 height={396}
                 chart={charts6}
                 titleType
-                title={t('performance.title6')}
+                title={t('performance.home9')}
                 onChange={item => getDefectRatioChart(item.key)}
               />
             </div>

@@ -669,7 +669,7 @@ const DemandDetail = () => {
               {demandInfo.name}
             </span>
           )}
-          {hasEdit && <span className="name">{demandInfo.name}</span>}=
+          {hasEdit && <span className="name">{demandInfo.name}</span>}
           <CopyIcon onCopy={onCopy} />
           <ChangeStatusPopover
             projectId={demandInfo.projectId}

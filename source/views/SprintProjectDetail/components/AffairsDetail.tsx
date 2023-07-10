@@ -97,12 +97,14 @@ const AffairsDetail = (props: AffairsDetailProps) => {
 
   // 富文本失焦
   const onBlurEditor = async () => {
-    setIsEditInfo(false)
-    console.log(editInfo, props.affairsInfo.info, '-')
+    console.log('详情失焦')
 
-    if (editInfo === props.affairsInfo.info) return
+    setIsEditInfo(false)
+    console.log(editorRef2.current, props.affairsInfo.info, '-')
+
+    if (editorRef2.current === props.affairsInfo.info) return
     const params = {
-      info: editInfo,
+      info: editorRef2.current,
       projectId: projectInfo.id,
       id: props.affairsInfo.id,
       name: props.affairsInfo.name,
@@ -149,7 +151,8 @@ const AffairsDetail = (props: AffairsDetailProps) => {
             }}
             onChange={(value: string) => {
               console.log(value)
-              setEditInfo(value)
+              // setEditInfo(value)
+              editorRef2.current = value
             }}
             onBlur={() => onBlurEditor()}
           />

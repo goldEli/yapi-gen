@@ -101,9 +101,10 @@ const StoryRelation = (props: RelationStoriesProps) => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
+
   const paramsData = getParamsData(searchParams)
-  const { id } = paramsData
   const { projectInfo } = useSelector(store => store.project)
+  const { id } = paramsData || { id: projectInfo.id }
   const [searchValue, setSearchValue] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })

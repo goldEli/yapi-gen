@@ -77,6 +77,7 @@ export const IconWrap = styled(IconFont)<{ visible: boolean }>`
   }
 `
 export const CustomWrap = styled.div`
+  min-width: 100px;
   .ant-dropdown-menu-item,
   .ant-dropdown-menu-submenu-title {
     padding: 0px 12px;
