@@ -7,6 +7,7 @@ import { useSelector } from '@store/index'
 import { getParamsData } from '@/tools'
 import CommonIconFont from './CommonIconFont'
 import { t } from 'i18next'
+import { useTranslation } from 'react-i18next'
 interface IProps {
   item?: any
 }
@@ -21,18 +22,19 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { type } = paramsData
+  const [t] = useTranslation()
   // debugger
   const navigate = useNavigate()
   const projectInfo = useSelector(state => state.project.projectInfo)
 
   const maps: mapsInterface = {
-    ProjectInfo: '项目信息',
-    ProjectMember: '项目成员',
-    ProjectRole: '项目角色',
-    ProjectNotify: '通知配置',
-    ProjectKanBan: 'Kanban配置',
-    ProjectHome: '首页配置',
-    ProjectAffair: '事务类型',
+    ProjectInfo: t('sprintProject.projectInformation'),
+    ProjectMember: t('sprintProject.projectMember'),
+    ProjectRole: t('sprintProject.projectRole'),
+    ProjectNotify: t('sprintProject.notificationConfiguration'),
+    ProjectKanBan: t('sprintProject.kanbanConfiguration'),
+    ProjectHome: t('sprintProject.homeConfiguration'),
+    ProjectAffair: t('sprintProject.transactionType'),
   }
   return (
     <Breadcrumb
@@ -76,7 +78,7 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
         </Breadcrumb.Item>
       ) : null}
       <Breadcrumb.Item>
-        <a>项目设置</a>
+        <a>{t('sprintProject.projectSettings')}</a>
       </Breadcrumb.Item>
       <Breadcrumb.Item>
         <a className={lastBreadcrumb}>{maps[type] || maps.ProjectInfo}</a>

@@ -34,6 +34,7 @@ import {
 import SelectOptionsNormal from '@/components/SelectOptionsNormal'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { setSortByGroupOptions, setSpinning } from '@store/kanBan'
+import { getMessage } from '@/components/Message'
 const OperationWrap = styled.div({
   minHeight: 32,
   minWidth: '800px',
@@ -285,6 +286,10 @@ const Operation = (props: Props) => {
           </Btn>
           <Btn
             onClick={() => {
+              if (sortByView?.find(item => item.check && item.type === 2)) {
+                getMessage({ type: 'warning', msg: '系统视图不能编辑' })
+                return
+              }
               const currentId = sortByView?.find(item => item.check)?.id
               dispatch(openSaveAsViewModel(currentId, true))
             }}
