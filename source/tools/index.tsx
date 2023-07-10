@@ -67,7 +67,7 @@ export function getProjectIdByUrl() {
   const url = new URL(window.location.href)
   const searchParams = url.searchParams
 
-  const params = getParamsData(searchParams)
+  const params = getParamsData(searchParams) || {}
 
   return parseInt(params['id'], 10)
 }
