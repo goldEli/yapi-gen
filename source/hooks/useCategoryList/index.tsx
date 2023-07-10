@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 type affairProps = {
   [key in string]: Model.Project.Category[]
 }
@@ -55,6 +56,7 @@ type affairProps = {
 // export default useCategory
 
 const useCategory = () => {
+  const [t] = useTranslation()
   const getTypeCategory = (
     arr: Model.Project.Category[],
     filed: 'work_type',
@@ -77,28 +79,28 @@ const useCategory = () => {
         projectType: 'iteration',
       },
       {
-        name: '长故事类型',
+        name: t('sprintProject.longStoryType'),
         visible: true,
         workType: 3,
         children: [],
         projectType: 'sprint',
       },
       {
-        name: '标准事务类型',
+        name: t('sprintProject.standardTransactionType'),
         visible: true,
         workType: 4,
         children: [],
         projectType: 'sprint',
       },
       {
-        name: '故障事务类型',
+        name: t('sprintProject.faultTransactionType'),
         visible: true,
         workType: 5,
         children: [],
         projectType: 'sprint',
       },
       {
-        name: '子任务类型',
+        name: t('sprintProject.subtaskType'),
         visible: true,
         workType: 6,
         children: [],

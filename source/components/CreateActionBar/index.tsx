@@ -122,7 +122,9 @@ const CreateActionBar = (props: Props) => {
     <WrapRight>
       <Space size={8}>
         <SelectWrapBedeck style={{ marginRight: '4px' }}>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>项目类型</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {t('project_type')}
+          </span>
 
           <SelectWrap
             mode="multiple"

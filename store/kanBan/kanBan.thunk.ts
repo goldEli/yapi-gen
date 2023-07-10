@@ -451,6 +451,8 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
+    console.log(valueKey)
+
     const params = {
       search: isEmpty(valueKey)
         ? {
@@ -464,6 +466,8 @@ export const getKanbanByGroup = createAsyncThunk(
             iterate_id: valueKey.iterate_name,
             custom_field: bbh(valueKey),
             keyword: inputKey,
+            schedule_start: valueKey?.schedule?.start,
+            schedule_end: valueKey?.schedule?.end,
           },
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
@@ -594,13 +598,12 @@ export const updateView =
       use_type: 2,
     })
     getMessage({ msg: i18n.t('common.editSuccess') as string, type: 'success' })
-    dispatch(getStoryViewList(null))
+
+    dispatch(getStoryViewList(params.id))
   }
 
 export const onFilter = () => async (dispatch: AppDispatch) => {
   setTimeout(() => {
-    console.log('这里；额')
-
     dispatch(getKanbanByGroup())
   })
 }
@@ -730,7 +733,6 @@ export const getStoryViewList = createAsyncThunk(
 // 保存视图
 export const onSaveAsViewModel =
   (data: Partial<ViewItem>) => async (dispatch: AppDispatch) => {
-    // debuggers
     if (data.id) {
       dispatch(
         updateView({

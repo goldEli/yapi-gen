@@ -167,7 +167,7 @@ const SprintTag = (props: Props) => {
     projectId = props?.id
   } else {
     const paramsData = getParamsData(searchParams)
-    projectId = paramsData.id
+    projectId = paramsData?.id
   }
   const checkedTags = props.defaultList?.map((i: any) => ({
     color: i?.color,
