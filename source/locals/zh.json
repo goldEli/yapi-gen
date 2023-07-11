@@ -1877,7 +1877,12 @@
     "pleaseInputMessage": "请输入消息",
     "shareErrorTip2": "添加消息(必填)",
     "acquiring": "获取中...",
-    "getLink": "获取链接"
+    "getLink": "获取链接",
+    "longStoryUpdateSuccess": "长故事修改成功",
+    "recent": "近期",
+    "cancelLink": "取消链接",
+    "delTransaction": "删除事务",
+    "moveToSprint": "移至冲刺"
   },
   "sprintProject": {
     "affairs": "事务",

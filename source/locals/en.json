@@ -1887,7 +1887,12 @@
     "pleaseInputMessage": "Please enter a message",
     "shareErrorTip2": "Add Message (Required)",
     "acquiring": "Getting...",
-    "getLink": "Get the link"
+    "getLink": "Get the link",
+    "longStoryUpdateSuccess": "Long story modified successfully",
+    "recent": "recent",
+    "cancelLink": "Cancel the link",
+    "delTransaction": "Delete the transaction",
+    "moveToSprint": "Move to sprint"
   },
   "sprintProject": {
     "affairs": "Affairs",
