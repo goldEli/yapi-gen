@@ -91,15 +91,15 @@ const ProjectManagementOptimization = () => {
   const inform = [
     {
       key: 0,
-      title: '项目管理的第一步',
-      desc: '这里可以按冲刺或迭代创建项目，选择不同的类型可以契合不同团队来管理您的项目',
+      title: t('project.stepTitle1'),
+      desc: t('project.stepDesc1'),
       img: guide_1,
     },
     {
       key: 1,
-      title: '项目管理的第二步',
-      desc: '1. 这里鼠标移入点击后可以直接进入相应的模块，点击您负责的项目开始工作吧',
-      extra: '2. 在工作过程中您可以随时对项目进行编辑删除和结束ta',
+      title: t('project.stepTitle2'),
+      desc: t('project.stepDesc2'),
+      extra: t('project.stepExtra'),
       img: guide_2,
     },
   ]
