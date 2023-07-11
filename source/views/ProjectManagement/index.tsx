@@ -2,6 +2,8 @@ import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
+import { setActiveCategory } from '@store/category/index'
+import { setCategoryList } from '@store/category'
 import {
   Outlet,
   useNavigate,
@@ -68,6 +70,10 @@ const Project = () => {
   useEffect(() => {
     dispatch(saveInputKey(''))
   }, [location.pathname])
+  useEffect(() => {
+    dispatch(setActiveCategory({}))
+    dispatch(setCategoryList([]))
+  }, [])
   return (
     <ProjectWrap>
       {isShowPage && (
