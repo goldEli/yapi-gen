@@ -1,8 +1,8 @@
 // 登陆页面
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useReducer } from 'react'
 import LoginForm from './LoginForm'
 import style from './index.module.css'
-import { systemData } from './login'
+import { reducer, installState } from './login'
 import AuthorizedLogin from './AuthorizedLogin'
 import {
   getCaptcha,
@@ -20,6 +20,18 @@ import { Carousel } from 'antd'
 const Page = () => {
   const [isAuthorized, setIsAuthorized] = useState(true)
   const target = getQueryParam('target')
+  const [languageMode, dispatch]: [any, any] = useReducer(reducer, installState)
+  const chooseLanguageMode = (index: number) => {
+    dispatch({
+      type: index,
+    })
+  }
+  useEffect(() => {
+    const arr = ['zh', 'en']
+    const lang = getQueryParam('language') || 'zh'
+    localStorage.setItem('languageMode', String(arr.findIndex(i => i === lang)))
+    chooseLanguageMode(arr.findIndex(i => i === lang))
+  }, [])
   const redirect = async () => {
     const ticketResponse = await getTicket()
     const { ticket } = ticketResponse.data
@@ -143,7 +155,6 @@ const Page = () => {
     margin-bottom: 8px;
   `
   const ItemIntroduce = styled.div`
-    width: 496px;
     height: 44px;
     font-size: 14px;
     font-family: SiYuanRegular;
@@ -151,6 +162,7 @@ const Page = () => {
     color: #ffffff;
     line-height: 22px;
     margin-bottom: 50px;
+    padding-right: 72px;
   `
   const ItemImage = styled.img`
     width: 100%;
@@ -181,32 +193,29 @@ const Page = () => {
           <BottomBgImage src="/bottomBg.png" />
           <CarouselWrap effect="fade" autoplay>
             <CarouselItem>
-              <ItemTitle>专业的项目协作工具</ItemTitle>
-              <ItemIntroduce>
-                提供项目管理、需求管理、缺陷管理、任务管理、Kanban管理、版本管理等丰富的项目管理功能及效能数据统计。
-              </ItemIntroduce>
+              <ItemTitle>{languageMode.CarouselTitle1}</ItemTitle>
+              <ItemIntroduce>{languageMode.CarouselDesc1}</ItemIntroduce>
               <ItemImage src="/loginBg1.png" />
             </CarouselItem>
             <CarouselItem>
-              <ItemTitle>IFUN Agile 敏捷系统</ItemTitle>
-              <ItemIntroduce>
-                IFUN Agile
-                敏捷智能研发管理系统提供了全过程、全方位的敏捷研发管理解决方案。
-              </ItemIntroduce>
+              <ItemTitle>{languageMode.CarouselTitle2}</ItemTitle>
+              <ItemIntroduce>{languageMode.CarouselDesc2}</ItemIntroduce>
               <ItemImage src="/loginBg2.png" />
             </CarouselItem>
             <CarouselItem>
-              <ItemTitle>效能洞察</ItemTitle>
-              <ItemIntroduce>
-                交付过程观测和研发效能度量分析工具，提供丰富的度量图表覆盖软件交付全生命周期，在交付过程中提前暴露交付风险，保障交付效率和质量，多维度可视化分析团队效能状态、及时发现问题。
-              </ItemIntroduce>
+              <ItemTitle>{languageMode.CarouselTitle3}</ItemTitle>
+              <ItemIntroduce>{languageMode.CarouselDesc3}</ItemIntroduce>
               <ItemImage src="/loginBg3.png" />
             </CarouselItem>
           </CarouselWrap>
         </LeftWrap>
       </div>
       <div className={style.right}>
-        <LoginForm redirect={redirect} />
+        <LoginForm
+          redirect={redirect}
+          dispatch={dispatch}
+          languageMode={languageMode}
+        />
         <FooterText>
           © {dayjs().format('YYYY')} IFUN All Rights Reserved.
         </FooterText>

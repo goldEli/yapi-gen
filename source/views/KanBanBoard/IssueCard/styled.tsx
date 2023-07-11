@@ -16,6 +16,7 @@ export const IssueCardBox = styled.div`
   }
 `
 export const IssueCardBoxContainer = styled.div<{ hidden?: boolean }>`
+  position: relative;
   padding: 16px;
   box-sizing: border-box;
   background: var(--neutral-white-d2);
@@ -78,6 +79,7 @@ export const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 `
 export const BottomLeft = styled.div``
 export const BottomRight = styled.div`
@@ -100,4 +102,18 @@ export const Sub = styled.div`
 export const WrapIcon = styled(IconFont)`
   font-size: 16px;
   color: var(--neutral-n3);
+`
+export const TooltipText = styled.div`
+  width: 560px;
+  padding: 8px 16px;
+  min-height: 172px;
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  position: absolute;
+  background: var(--neutral-white-d6);
+  z-index: 9999;
+  left: -14px;
+  font-size: 14px;
+  color: var(--neutral-n1-d1);
+  margin-top: 8px;
 `
