@@ -4,6 +4,21 @@ import { store } from '../../store'
 import * as http from '../tools/http'
 import { onlySysNotice } from './sysNotice'
 
+// 获取人员信息
+export const getUserIntroList = async (params: { ids: string }) => {
+  const response: any = await http.get<any, any>('getUserIntroList', params)
+
+  return {
+    list: response.data.list.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+      avatar: i.avatar,
+      department: i.department,
+      position: i.position,
+    })),
+  }
+}
+
 // 获取登录信息
 export const getLoginDetail: any = async (isLogin?: boolean) => {
   const response = await http.get('getLoginDetail', {}, { extra: { isLogin } })

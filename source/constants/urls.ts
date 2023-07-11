@@ -459,6 +459,8 @@ const urls = {
 
   // 复制视图
   copyView: '/b/story/views/copy',
+  // 获取人员信息
+  getUserIntroList: '/b/user/intro',
 }
 export default urls
 
