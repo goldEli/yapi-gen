@@ -564,7 +564,7 @@ const SprintProjectSprint: React.FC = () => {
                 },
               })
             }}
-            placeholder="搜索事务或描述"
+            placeholder={t('sprint.searchTips')}
             leftIcon
           />
         </div>

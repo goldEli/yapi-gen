@@ -892,7 +892,9 @@
     "uploadDefect": "上传缺陷",
     "operationSuccess": "操作成功",
     "copySuccess": "已复制链接",
-    "copyFail": "复制链接失败"
+    "copyFail": "复制链接失败",
+    "chooseCategory": "选择类别",
+    "clearAll": "清空所有选项"
   },
   "components": {
     "noALlPermission": "你当前无任何权限，请联系企业管理员分配权限",
@@ -1882,7 +1884,8 @@
     "recent": "近期",
     "cancelLink": "取消链接",
     "delTransaction": "删除事务",
-    "moveToSprint": "移至冲刺"
+    "moveToSprint": "移至冲刺",
+    "searchTips": "搜索事务或描述"
   },
   "sprintProject": {
     "affairs": "事务",
