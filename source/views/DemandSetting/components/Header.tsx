@@ -127,6 +127,7 @@ const Header = () => {
         id: projectInfo.id,
         pageIdx: 'work',
         categoryItem: activeCategory,
+        type: 4,
       }),
     )
     navigate(`/ProjectManagement/WorkFlow?data=${params}`)

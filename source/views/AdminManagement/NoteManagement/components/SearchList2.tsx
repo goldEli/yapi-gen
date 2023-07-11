@@ -174,11 +174,11 @@ const SearchList = (props: Props) => {
                 options={[
                   {
                     label: t('top'),
-                    value: '1',
+                    value: '2',
                   },
                   {
                     label: t('window'),
-                    value: '2',
+                    value: '1',
                   },
                 ]}
               />

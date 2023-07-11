@@ -88,9 +88,39 @@ const CreateSprintModal = (props: sprintProps) => {
 
   const onConfirm = async () => {
     const value = await form.validateFields()
-    try {
-      if (type === 'create') {
-        const result: any = await createSprint({
+    if (type === 'create') {
+      const result: any = await createSprint({
+        project_id: projectId,
+        name: value?.name,
+        start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
+        end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
+        duration: {
+          is_weekend: value?.group?.include ? 1 : 2,
+          week_type: value?.group?.radio,
+        },
+        info: value?.info,
+      })
+
+      if (result && result.code === 0) {
+        getMessage({
+          msg: t('common.createSuccess'),
+          type: 'success',
+        })
+        updateSprintList()
+        onClear(true)
+      } else {
+        getMessage({
+          msg: result?.message,
+          type: 'error',
+        })
+      }
+      return result
+    }
+    if (type === 'edit' || type === 'start' || type === 'update') {
+      // 先判断更改的时间是否在事务的时间范围内
+      const updateSprint = async () => {
+        const result: any = await updateSprintInfo({
+          id: editId as any,
           project_id: projectId,
           name: value?.name,
           start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
@@ -101,13 +131,16 @@ const CreateSprintModal = (props: sprintProps) => {
           },
           info: value?.info,
         })
-
         if (result && result.code === 0) {
           getMessage({
-            msg: t('common.createSuccess'),
+            msg:
+              type === 'edit'
+                ? t('common.editSuccess')
+                : type === 'update'
+                ? t('sprint.updateSuccess')
+                : t('sprint.startSuccess'),
             type: 'success',
           })
-          updateSprintList()
           onClear(true)
         } else {
           getMessage({
@@ -116,66 +149,28 @@ const CreateSprintModal = (props: sprintProps) => {
           })
         }
       }
-      if (type === 'edit' || type === 'start' || type === 'update') {
-        // 先判断更改的时间是否在事务的时间范围内
-        const updateSprint = async () => {
-          const result: any = await updateSprintInfo({
-            id: editId as any,
-            project_id: projectId,
-            name: value?.name,
-            start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
-            end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
-            duration: {
-              is_weekend: value?.group?.include ? 1 : 2,
-              week_type: value?.group?.radio,
-            },
-            info: value?.info,
-          })
-          if (result && result.code === 0) {
-            getMessage({
-              msg:
-                type === 'edit'
-                  ? t('common.editSuccess')
-                  : type === 'update'
-                  ? t('sprint.updateSuccess')
-                  : t('sprint.startSuccess'),
-              type: 'success',
-            })
-            onClear(true)
-          } else {
-            getMessage({
-              msg: result?.message,
-              type: 'error',
-            })
-          }
-        }
-        if (
-          ((moment(value?.group?.date?.[0]).isSame(
+      if (
+        ((moment(value?.group?.date?.[0]).isSame(editData?.between_date?.[0]) ||
+          moment(value?.group?.date?.[0]).isBefore(
             editData?.between_date?.[0],
+          )) &&
+          (moment(value?.group?.date?.[1]).isSame(
+            editData?.between_date?.[1],
           ) ||
-            moment(value?.group?.date?.[0]).isBefore(
-              editData?.between_date?.[0],
-            )) &&
-            (moment(value?.group?.date?.[1]).isSame(
+            moment(value?.group?.date?.[1]).isAfter(
               editData?.between_date?.[1],
-            ) ||
-              moment(value?.group?.date?.[1]).isAfter(
-                editData?.between_date?.[1],
-              ))) ||
-          editData?.between_date?.every((i: any) => !i)
-        ) {
-          updateSprint()
-        } else {
-          open({
-            title: getTitle(type),
-            okText: t('common.confirm2'),
-            children: <div>{t('sprint.warning')}</div>,
-            onConfirm: updateSprint,
-          })
-        }
+            ))) ||
+        editData?.between_date?.every((i: any) => !i)
+      ) {
+        updateSprint()
+      } else {
+        open({
+          title: getTitle(type),
+          okText: t('common.confirm2'),
+          children: <div>{t('sprint.warning')}</div>,
+          onConfirm: updateSprint,
+        })
       }
-    } catch (error) {
-      // console.log(error)
     }
   }
 
@@ -263,54 +258,53 @@ const CreateSprintModal = (props: sprintProps) => {
             : // eslint-disable-next-line no-undefined
               t('sprint.edit')
         }
-        children={
-          <div className={content}>
-            <div className="head">{t('sprint.tips')}</div>
-            <Form
-              form={form}
-              name="basic"
-              labelCol={{ span: 24 }}
-              wrapperCol={{ span: 24 }}
-              autoComplete="off"
-            >
-              <CustomWrap>
-                <Form.Item
-                  label={t('sprint.sprintName')}
-                  name="name"
-                  rules={[{ required: true, message: t('sprint.pleaseInput') }]}
-                >
-                  <Input
-                    ref={inputRef}
-                    placeholder={t('sprint.newSprint1')}
-                    maxLength={50}
-                  />
-                </Form.Item>
+      >
+        <div className={content}>
+          <div className="head">{t('sprint.tips')}</div>
+          <Form
+            form={form}
+            name="basic"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            autoComplete="off"
+          >
+            <CustomWrap>
+              <Form.Item
+                label={t('sprint.sprintName')}
+                name="name"
+                rules={[{ required: true, message: t('sprint.pleaseInput') }]}
+              >
+                <Input
+                  ref={inputRef}
+                  placeholder={t('sprint.newSprint1')}
+                  maxLength={50}
+                />
+              </Form.Item>
 
-                <Form.Item
-                  label={t('sprint.duration')}
-                  name="group"
-                  // eslint-disable-next-line no-undefined
-                  initialValue={{
-                    include: true,
-                    radio: 0,
-                  }}
-                  rules={[{ required: true, validator: onValidator }]}
-                >
-                  <ChooseDate initNumber={initNumber} />
-                </Form.Item>
+              <Form.Item
+                label={t('sprint.duration')}
+                name="group"
+                // eslint-disable-next-line no-undefined
+                initialValue={{
+                  include: true,
+                  radio: 0,
+                }}
+                rules={[{ required: true, validator: onValidator }]}
+              >
+                <ChooseDate initNumber={initNumber} />
+              </Form.Item>
 
-                <Form.Item label={t('sprint.sprintTarget')} name="info">
-                  <Input.TextArea
-                    maxLength={300}
-                    autoSize={{ minRows: 1, maxRows: 5 }}
-                    placeholder={t('common.pleaseEnter')}
-                  />
-                </Form.Item>
-              </CustomWrap>
-            </Form>
-          </div>
-        }
-      />
+              <Form.Item label={t('sprint.sprintTarget')} name="info">
+                <Input.TextArea
+                  maxLength={300}
+                  autoSize={{ minRows: 1, maxRows: 5 }}
+                  placeholder={t('common.pleaseEnter')}
+                />
+              </Form.Item>
+            </CustomWrap>
+          </Form>
+        </div>
+      </CommonModal>
       <DeleteConfirmModal />
     </>
   )

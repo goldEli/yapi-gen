@@ -40,6 +40,7 @@ const LessWrap = styled.div`
   position: relative;
   width: 784px;
   height: 640px;
+
   background: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px 6px 6px 6px;
@@ -150,6 +151,7 @@ const SystemFeedback = () => {
                 <Option value={9}>{t('raise_other_issues')}</Option>
               </Select>
             </Form.Item>
+
             <Form.Item
               style={{
                 marginBottom: '30px',
@@ -177,11 +179,13 @@ const SystemFeedback = () => {
                 },
               ]}
             >
-              <Editor
-                upload={uploadFile}
-                getSuggestions={() => []}
-                placeholder={t('enter_content2')}
-              />
+              <div style={{ height: '360px', overflow: 'scroll' }}>
+                <Editor
+                  upload={uploadFile}
+                  getSuggestions={() => []}
+                  placeholder={t('enter_content2')}
+                />
+              </div>
             </Form.Item>
           </Form>
           <Footer>

@@ -92,34 +92,38 @@ const useControlScrollPlane = (columnNum: number) => {
           return <Strip key={idx} width={columnWidth * widthRatio} />
         })
     }, [columnNum, columnWidth, widthRatio])
-
     const gap = widthRatio * columnGap > 1 ? widthRatio * columnGap : 1
     return (
-      <ControlScrollPlaneBox>
-        <Content gap={gap} className="controlScrollPlaneBox">
-          <WindowArea
-            size={{
-              width: windowWidth,
-              height: windowHeight,
-            }}
-            bounds=".controlScrollPlaneBox"
-            enableResizing={false}
-            position={position}
-            onDrag={(e: DraggableEvent, data: DraggableData) => {
-              e.stopPropagation()
-              const { y, x } = data
-              containerRef.current?.scrollTo(x / widthRatio, y / heightRatio)
-              isMovingRef.current = true
-            }}
-            onDragStop={(e: DraggableEvent, data: DraggableData) => {
-              isMovingRef.current = false
-              const { y, x } = data
-              setPosition({ x, y })
-            }}
-          />
-          {thumbnailContent}
-        </Content>
-      </ControlScrollPlaneBox>
+      // ui要求一列时不展示
+      columnNum > 1 ? (
+        <ControlScrollPlaneBox>
+          <Content gap={gap} className="controlScrollPlaneBox">
+            <WindowArea
+              size={{
+                width: windowWidth,
+                height: windowHeight,
+              }}
+              bounds=".controlScrollPlaneBox"
+              enableResizing={false}
+              position={position}
+              onDrag={(e: DraggableEvent, data: DraggableData) => {
+                e.stopPropagation()
+                const { y, x } = data
+                containerRef.current?.scrollTo(x / widthRatio, y / heightRatio)
+                isMovingRef.current = true
+              }}
+              onDragStop={(e: DraggableEvent, data: DraggableData) => {
+                isMovingRef.current = false
+                const { y, x } = data
+                setPosition({ x, y })
+              }}
+            />
+            {thumbnailContent}
+          </Content>
+        </ControlScrollPlaneBox>
+      ) : (
+        <></>
+      )
     )
   }
   return {

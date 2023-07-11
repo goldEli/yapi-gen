@@ -24,6 +24,7 @@ const Triangle = styled.div`
 `
 const Warp = styled.div<{ show?: boolean }>(
   {
+    overflow: 'hidden',
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
@@ -66,6 +67,7 @@ const ImgWrap = styled.div<{ show?: boolean; address?: any }>(
     overflow: 'hidden',
     borderRadius: '4px ',
     backgroundSize: 'cover',
+    flexShrink: 0,
   },
 )
 
@@ -148,12 +150,15 @@ export const SwiperCard = (props: {
         {!props.all && (
           <div
             style={{
+              width: '130px',
               height: '20px',
               fontSize: '12px',
               fontWeight: 400,
               color: 'var(--neutral-n2)',
               lineHeight: '20px',
               whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
             }}
           >
             {changeNames1()} - {changeNames2()}

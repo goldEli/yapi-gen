@@ -170,7 +170,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   useEffect(() => {
     if (paramsData?.categoryItem) {
       dispatch(setStartUsing(paramsData.categoryItem.status === 1))
-      setTabsActive(paramsData?.categoryItem.status)
+      setTabsActive(paramsData?.categoryItem.status === 1 ? 0 : 1)
       dispatch(setActiveCategory(paramsData.categoryItem))
     } else {
       dispatch(setActiveCategory({}))
