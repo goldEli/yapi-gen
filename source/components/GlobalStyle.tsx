@@ -185,6 +185,9 @@ const GlobalStyle = () => {
     .ant-badge-multiple-words {
       padding: 0 2px;
     }
+    .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+      background-color: #6688ff;
+    }
     .ant-input {
       input {
         font-family: SiYuanRegular;
