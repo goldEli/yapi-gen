@@ -11,6 +11,8 @@ import {
 import { useDispatch, useSelector } from '@store/index'
 import { saveInputKey } from '@store/view'
 import { getParamsData } from '@/tools'
+import { setActiveCategory } from '@store/category/index'
+import { setCategoryList } from '@store/category'
 interface IProps {}
 const Project: React.FC<IProps> = props => {
   const path = [
@@ -52,6 +54,10 @@ const Project: React.FC<IProps> = props => {
   useEffect(() => {
     dispatch(saveInputKey(''))
   }, [location.pathname])
+  useEffect(() => {
+    dispatch(setActiveCategory({}))
+    dispatch(setCategoryList([]))
+  }, [])
   return (
     <ProjectWrap>
       {isShowPage && (
