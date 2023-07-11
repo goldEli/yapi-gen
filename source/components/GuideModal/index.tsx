@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { createPortal } from 'react-dom'
 import { css } from '@emotion/css'
+import { useTranslation } from 'react-i18next'
 
 const imgBoxCss = css`
   box-sizing: border-box;
@@ -57,7 +58,6 @@ const textBoxCss = css`
     line-height: 26px;
   }
   .desc {
-    height: 22px;
     font-size: 14px;
     color: var(--neutral-n2);
     line-height: 22px;
@@ -112,6 +112,7 @@ const GuideModal = (props: {
   `
   const [active, setActive] = useState(0)
   const [visible, setVisible] = useState(true)
+  const [t] = useTranslation()
 
   const filterData = useMemo(() => {
     const filterActive = props?.inform.filter((item, index) => index === active)
@@ -164,10 +165,12 @@ const GuideModal = (props: {
                 setVisible(false)
               }}
             >
-              跳过 {`(${active + 1}/${props?.inform?.length})`}
+              {t('sprint.skip')} {`(${active + 1}/${props?.inform?.length})`}
             </LeftButton>
             <RightButton onClick={next}>
-              {active + 1 === props?.inform?.length ? '开始工作' : '下一步'}
+              {active + 1 === props?.inform?.length
+                ? t('sprint.startWork')
+                : t('sprint.nextStep')}
             </RightButton>
           </footer>
         </Dialog>

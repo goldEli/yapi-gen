@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import PriorityIcon from '@/components/PriorityIcon'
+import IconFont from '@/components/IconFont'
 import { Tooltip } from 'antd'
 import {
   Bottom,
@@ -37,13 +38,12 @@ interface IssueCardProps {
 
 const IssueCard = (props: IssueCardProps) => {
   const { item, index } = props
-  // debugger
   const isDragDisabled = props.item.verify_lock === 1
   const childRef = useRef<any>(null)
   const [openDemandDetail] = useOpenDemandDetail()
   const { ids } = useStoryIds()
   const { projectInfo } = useSelector(store => store.project)
-
+  console.log(item, 'item')
   const cardContent = (
     <IssueCardBoxContainer hidden={props.hidden}>
       <Top>
@@ -77,6 +77,16 @@ const IssueCard = (props: IssueCardProps) => {
           <MultipleAvatar max={3} list={item.handlers} />
         </BottomLeft>
         <BottomRight>
+          <Tooltip title={'123'} placement={'top'} trigger="click">
+            <IconFont
+              type="target"
+              style={{
+                fontSize: 16,
+                paddingTop: '3px',
+                color: 'var(--neutral-n1)',
+              }}
+            />
+          </Tooltip>
           {projectInfo.projectType === 1 && (
             <PercentageBox>{`${item.schedule}%`}</PercentageBox>
           )}

@@ -1074,7 +1074,12 @@
     "importText15": "⑦ 更新方式填写“1”空数据字段覆盖原来字段参数为空；填写“0”空数据不覆盖原来字段参数；",
     "importText16": "⑧ 不支持对不在访问范围的事务进行更新。",
     "importChoose": "导入事务字段选择",
-    "exportTransaction": "导出事务"
+    "exportTransaction": "导出事务",
+    "stepTitle1": "项目管理的第一步",
+    "stepTitle2": "项目管理的第二步",
+    "stepDesc1": "这里可以按冲刺或迭代创建项目，选择不同的类型可以契合不同团队来管理您的项目",
+    "stepDesc2": "1. 这里鼠标移入点击后可以直接进入相应的模块，点击您负责的项目开始工作吧",
+    "stepExtra": "2. 在工作过程中您可以随时对项目进行编辑删除和结束ta"
   },
   "setting": {
     "companyInfo": "公司信息",
@@ -1885,7 +1890,16 @@
     "cancelLink": "取消链接",
     "delTransaction": "删除事务",
     "moveToSprint": "移至冲刺",
-    "searchTips": "搜索事务或描述"
+    "searchTips": "搜索事务或描述",
+    "stepTitle1": "开始冲刺前的第一步",
+    "stepTitle2": "开始冲刺前的第二步",
+    "stepTitle3": "开始冲刺前的第三步",
+    "stepDesc1": "这里可以为积压的工作创建一个工作目标，提前来规划您的工作",
+    "stepDesc2": "点击编辑冲刺，为您的冲刺团队准备好目标规则，开始工作吧",
+    "stepDesc3": "为冲刺添加积压的工作，并点击开始冲刺来完成冲刺目标；另外您还可以为事务加上长故事定制功能集",
+    "skip": "跳过",
+    "startWork": "开始工作",
+    "nextStep": "下一步"
   },
   "sprintProject": {
     "affairs": "事务",

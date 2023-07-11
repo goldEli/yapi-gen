@@ -513,6 +513,8 @@ const DemandDetail = () => {
     }
   }, [])
 
+  console.log(demandInfo, 'demandInfo')
+
   return (
     <Wrap>
       <DeleteConfirmModal />
@@ -520,7 +522,9 @@ const DemandDetail = () => {
         url={location.href}
         title={
           demandInfo?.name
-            ? `【${demandInfo?.projectPrefix}-${demandInfo?.name}-${userInfo?.name}】`
+            ? `【${demandInfo?.projectPrefix}${
+                demandInfo?.prefixKey ? '-' : ''
+              }${demandInfo?.prefixKey}-${demandInfo?.name}-${userInfo?.name}】`
             : ''
         }
       />
