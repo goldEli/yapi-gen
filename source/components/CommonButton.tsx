@@ -4,9 +4,9 @@
 
 import { useThrottle } from '@/hooks/useThrottle'
 import { css } from '@emotion/css'
-import { Space, Button } from 'antd'
+import { Space } from 'antd'
 import IconFont from './IconFont'
-// import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import styled from '@emotion/styled'
 import { MouseEvent } from 'react'
 
@@ -214,9 +214,8 @@ const CommonButton = (props: Props) => {
       <ButtonWrap
         size={props.size}
         className={commonCss}
-        onClick={props.onClick}
+        onClick={props.onClick as any}
         disabled={props.isDisable}
-        loading={props?.loading}
       >
         {props.iconPlacement !== 'right' && (
           <Space size={8}>
@@ -239,9 +238,8 @@ const CommonButton = (props: Props) => {
     return (
       <ButtonWrap
         className={commonCss}
-        onClick={props.onClick}
+        onClick={props.onClick as any}
         disabled={props.isDisable}
-        loading={props?.loading}
       >
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
       </ButtonWrap>
@@ -252,11 +250,10 @@ const CommonButton = (props: Props) => {
     <ButtonWrap
       style={props?.style}
       className={commonCss}
-      onClick={props.onClick}
+      onClick={props.onClick as any}
       disabled={props.isDisable}
       hidden={props.hidden}
       size={props.size}
-      loading={props?.loading}
     >
       {props.children}
     </ButtonWrap>

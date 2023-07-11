@@ -12,7 +12,7 @@ import { LabelTitle } from '@/views/WorkReport/Review/components/style'
 import { Editor } from '@xyfe/uikit'
 import { Checkbox, DatePicker, Form, Input, Radio } from 'antd'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type1 from '/type1.png'
 import type2 from '/type2.png'
 import { useTranslation } from 'react-i18next'
@@ -30,7 +30,7 @@ import { getMessage } from '@/components/Message'
 const CreateNoteModal = (props: any) => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
-
+  const inputRefDom = useRef<HTMLInputElement>(null)
   const [defaultData, setDefaultData] = useState([])
   const [taskTime, setTaskTime] = useState(false)
 
@@ -271,6 +271,9 @@ const CreateNoteModal = (props: any) => {
     if (props.editId && props.isVisible) {
       getEditData()
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
     return () => {
       form.resetFields()
     }
@@ -318,7 +321,11 @@ const CreateNoteModal = (props: any) => {
             name="title"
             rules={[{ required: true, message: t('enter_title') }]}
           >
-            <Input maxLength={20} placeholder={t('enter_title_max_length')} />
+            <Input
+              ref={inputRefDom as any}
+              maxLength={20}
+              placeholder={t('enter_title_max_length')}
+            />
           </Form.Item>
           <Form.Item
             style={{

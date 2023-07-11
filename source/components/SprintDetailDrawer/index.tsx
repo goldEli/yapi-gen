@@ -73,6 +73,7 @@ import {
   removeNull,
   getParamsData,
   getIsPermission,
+  getProjectIdByUrl,
 } from '@/tools'
 import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
 import CommentFooter from '../CommonComment/CommentFooter'
@@ -652,7 +653,16 @@ const SprintDetailDrawer = () => {
   return (
     <>
       <ShareModal
-        url={location.href}
+        url={`${
+          location.origin
+        }/SprintProjectManagement/SprintProjectDetail?data=${encryptPhp(
+          JSON.stringify({
+            ...paramsData,
+            sprintId: drawerInfo?.id,
+            id: getProjectIdByUrl(),
+            newOpen: true,
+          }),
+        )}`}
         title={
           drawerInfo?.name
             ? `【${drawerInfo?.projectPrefix}-${drawerInfo?.name}-${userInfo?.name}】`

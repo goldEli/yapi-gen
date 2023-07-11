@@ -843,6 +843,10 @@ const GlobalStyle = () => {
       width: 8px !important;
       height: 8px !important;
     }
+    .ant-tooltip {
+      max-width: 300px;
+      min-width: 30px;
+    }
   `
   return <Global styles={globalCss} />
 }

@@ -107,7 +107,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
 
       if (result && result.code === 0) {
         getMessage({
-          msg: '长故事修改成功',
+          msg: t('sprint.longStoryUpdateSuccess'),
           type: 'success',
         })
         dispatch(setSprintRefresh(1))
@@ -126,7 +126,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
     {
       key: '-1',
       disabled: true,
-      label: <RemoveItemWrap>近期</RemoveItemWrap>,
+      label: <RemoveItemWrap>{t('sprint.recent')}</RemoveItemWrap>,
     },
   ]
     .concat(
@@ -147,11 +147,10 @@ export const LatelyLongStoryMenu = (props: Props) => {
               </MenuItemWrap>
             </Tooltip>
             <div className="edit">
-              <Tooltip title="编辑">
+              <Tooltip title={t('sprint.edit')}>
                 <IconFont
                   onClick={() => {
                     setPopoverVisible(false)
-                    // todo 编辑长故事
                     dispatch(
                       setAddWorkItemModal({
                         visible: true,
@@ -159,7 +158,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
                           editId: k.id,
                           projectId: k.project_id,
                           type: 3,
-                          title: '编辑事务',
+                          title: t('sprint.editTransaction'),
                         },
                       }),
                     )
@@ -173,7 +172,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
                 />
               </Tooltip>
               {hasDel ? null : (
-                <Tooltip title="删除">
+                <Tooltip title={t('sprint.delete')}>
                   <IconFont
                     onClick={() => {
                       setPopoverVisible(false)
@@ -199,7 +198,6 @@ export const LatelyLongStoryMenu = (props: Props) => {
         label: (
           <NewItemWrap
             onClick={() => {
-              // Todo 新建长故事
               setPopoverVisible(false)
               dispatch(
                 setAddWorkItemModal({
@@ -207,14 +205,14 @@ export const LatelyLongStoryMenu = (props: Props) => {
                   params: {
                     type: 3,
                     noDataCreate: true,
-                    title: '创建事务',
+                    title: t('sprint.createTransaction'),
                     projectId: props?.record?.project_id,
                   },
                 }),
               )
             }}
           >
-            新建长故事
+            {t('sprint.createStory')}
           </NewItemWrap>
         ),
       },
@@ -224,12 +222,12 @@ export const LatelyLongStoryMenu = (props: Props) => {
         label: (
           <NewItemWrap
             onClick={() => {
-              // Todo 取消链接
+              //  取消链接
               clearLongStory?.(id)
               setPopoverVisible(false)
             }}
           >
-            取消链接
+            {t('sprint.cancelLink')}
           </NewItemWrap>
         ),
       },

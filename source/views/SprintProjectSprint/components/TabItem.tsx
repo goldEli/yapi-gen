@@ -103,7 +103,7 @@ const TabItem = (props: any) => {
               />
               <span className="text">{`${item.story_finish_count}/${item.story_count}`}</span>
               <IconFont
-                type="apartment"
+                type="apartment02"
                 style={{
                   fontSize: 16,
                   marginLeft: 12,
