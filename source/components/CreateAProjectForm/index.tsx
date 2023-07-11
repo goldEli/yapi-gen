@@ -50,7 +50,9 @@ export type IndexRef = {
   postValue(): Record<string, unknown>
 }
 export const Col = styled.div<{ tap: boolean }>`
-  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 200px;
   height: 32px;
   display: flex;
   &:hover {

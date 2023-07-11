@@ -192,7 +192,7 @@ const ProjectTemplate = (props: any) => {
                 fontSize: '14px',
                 color: 'var(--neutral-n1-d1)',
                 lineHeight: ' 22px',
-                margin: '16px 16px 8px 16px',
+                margin: '16px 16px 0px 16px',
                 fontFamily: 'SiYuanMedium',
               }}
             >
@@ -200,7 +200,7 @@ const ProjectTemplate = (props: any) => {
             </div>
             <div
               style={{
-                margin: '16px 16px 8px 16px',
+                margin: '6px 16px 8px 16px',
               }}
             >
               <div
@@ -214,20 +214,22 @@ const ProjectTemplate = (props: any) => {
               >
                 {i.text}
               </div>
-              {i.tags.map((j: any) => (
-                <span
-                  style={{
-                    padding: '1px 8px',
-                    marginRight: '16px',
-                    borderRadius: '6px',
-                    color: j.t_color,
-                    backgroundColor: j.color,
-                  }}
-                  key={j.name}
-                >
-                  {j.name}
-                </span>
-              ))}
+              <div style={{ display: 'inline-flex', flexWrap: 'wrap' }}>
+                {i.tags.map((j: any) => (
+                  <span
+                    style={{
+                      padding: '1px 8px',
+                      margin: '2px 4px',
+                      borderRadius: '6px',
+                      color: j.t_color,
+                      backgroundColor: j.color,
+                    }}
+                    key={j.name}
+                  >
+                    {j.name}
+                  </span>
+                ))}
+              </div>
             </div>
           </Small>
         ))}
