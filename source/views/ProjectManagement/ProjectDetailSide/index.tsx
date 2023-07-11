@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import DemandSettingSide from '../DemandSettingSide'
-import { Button, Menu } from 'antd'
+import { Menu } from 'antd'
 import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import {
   AllWrap,
@@ -26,7 +26,15 @@ import {
   WrapDetail,
   WrapCategory,
 } from './style'
-
+export const MenuStyle = styled(Menu)({
+  '& .ant-menu-item-selected': {
+    background: 'var(--gradient-left)',
+    color: 'var(--primary-d2)',
+  },
+  '& .ant-menu-item-selected::after': {
+    borderRight: '3px solid var(--primary-d1)',
+  },
+})
 export const Back = styled.div`
   font-size: 12px;
   display: flex;
@@ -502,14 +510,14 @@ const ProjectDetailSide = () => {
         <Provider />
         <MenuBox>
           {
-            <Menu
+            <MenuStyle
               items={sideList?.filter((i: any) => i.isPermission)}
               onClick={projectSettingsClick}
               mode="inline"
               style={{ background: 'transparent', border: 'none' }}
               selectedKeys={selectedKeys}
               defaultOpenKeys={['2']}
-            ></Menu>
+            ></MenuStyle>
           }
         </MenuBox>
       </WrapSet>

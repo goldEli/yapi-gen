@@ -216,7 +216,6 @@ const CommonButton = (props: Props) => {
         className={commonCss}
         onClick={props.onClick as any}
         disabled={props.isDisable}
-        loading={props?.loading}
       >
         {props.iconPlacement !== 'right' && (
           <Space size={8}>
@@ -241,7 +240,6 @@ const CommonButton = (props: Props) => {
         className={commonCss}
         onClick={props.onClick as any}
         disabled={props.isDisable}
-        loading={props?.loading}
       >
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
       </ButtonWrap>
@@ -256,7 +254,6 @@ const CommonButton = (props: Props) => {
       disabled={props.isDisable}
       hidden={props.hidden}
       size={props.size}
-      loading={props?.loading}
     >
       {props.children}
     </ButtonWrap>
