@@ -8,15 +8,14 @@ import { Space } from 'antd'
 import IconFont from './IconFont'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import styled from '@emotion/styled'
-import { MouseEvent } from 'react'
 
 const primary = css`
   background: var(--auxiliary-b1) !important;
   color: var(--auxiliary-text-t1-d1) !important;
   border: 1px solid transparent !important;
-  /* span {
+  span {
     color: var(--auxiliary-text-t1-d1) !important;
-  } */
+  }
   &:hover {
     background: var(--auxiliary-b2) !important;
     color: var(--auxiliary-text-t1-d1) !important;
@@ -24,11 +23,6 @@ const primary = css`
   &:active {
     background: var(--auxiliary-b3) !important;
     color: var(--auxiliary-text-t1-d1) !important;
-  }
-  &:disabled {
-    background: var(--auxiliary-b10) !important;
-    color: var(--neutral-n4) !important;
-    cursor: no-drop !important;
   }
 `
 
@@ -44,15 +38,10 @@ const light = css`
     background: var(--auxiliary-b5) !important;
     color: var(--auxiliary-text-t2-d2) !important;
   }
-  &:disabled {
-    background: var(--auxiliary-b10) !important;
-    color: var(--auxiliary-t4) !important;
-    cursor: no-drop !important;
-  }
 `
 const secondary = css`
   background: var(--auxiliary-b4) !important;
-  color: var(--auxiliary-b1) !important ;
+  color: var(--neutral-n2) !important ;
   border: 1px solid transparent !important;
   &:hover {
     background: var(--auxiliary-b5) !important;
@@ -61,11 +50,6 @@ const secondary = css`
   &:active {
     background: var(--auxiliary-b6) !important;
     color: var(--auxiliary-text-t2-d2) !important;
-  }
-  &:disabled {
-    background: var(--auxiliary-b10) !important;
-    color: var(--auxiliary-t4) !important;
-    cursor: no-drop !important;
   }
 `
 const danger = css`
@@ -80,11 +64,6 @@ const danger = css`
     background: var(--auxiliary-b9) !important;
     color: var(--auxiliary-text-t3) !important;
   }
-  &:disabled {
-    background: var(--auxiliary-b10) !important;
-    color: var(--auxiliary-t4) !important;
-    cursor: no-drop !important;
-  }
 `
 const primaryText = css`
   background: transparent !important;
@@ -98,11 +77,6 @@ const primaryText = css`
     background: var(--auxiliary-b5) !important;
     color: var(--auxiliary-text-t2-d2) !important;
   }
-  &:disabled {
-    background: var(--auxiliary-b10) !important;
-    color: var(--auxiliary-t4) !important;
-    cursor: no-drop !important;
-  }
 `
 const secondaryText = css`
   background: transparent !important;
@@ -115,11 +89,6 @@ const secondaryText = css`
   &:active {
     background: var(--auxiliary-b5) !important;
     color: var(--auxiliary-text-t2-d2) !important;
-  }
-  &:disabled {
-    background: var(--auxiliary-b10) !important;
-    color: var(--auxiliary-t4) !important;
-    cursor: no-drop !important;
   }
 `
 const icon = css`
@@ -139,23 +108,16 @@ const icon = css`
     color: var(--auxiliary-text-t2-d2) !important;
     border: 1px solid transparent !important;
   }
-  &:disabled {
-    background: var(--auxiliary-b10) !important;
-    color: var(--auxiliary-t4) !important;
-    cursor: no-drop !important;
-  }
 `
 
-const ButtonWrap = styled(Button)<{ size?: any }>`
+const ButtonWrap = styled(Button)`
   display: flex;
   align-items: center;
-  height: ${props => (props.size === 'small' ? '24px' : '32px')};
 `
 
 interface Props {
-  loading?: boolean
   hidden?: any
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  onClick?(): void
   // 按钮文本
   children?: React.ReactNode
   // 按钮类型
@@ -197,8 +159,10 @@ const CommonButton = (props: Props) => {
   const commonCss = css`
     ${allButton[props.type]};
     border-radius: 6px;
+    height: 32px;
     padding: 0 16px;
     box-sizing: border-box;
+    font-size: var(--font14);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -206,17 +170,21 @@ const CommonButton = (props: Props) => {
       display: flex;
       align-items: center;
     }
+    &:disabled {
+      background: var(--auxiliary-b10);
+      color: var(--auxiliary-t4);
+      cursor: no-drop;
+    }
   `
 
   //   如果有图标
   if (props.icon && props.type !== 'icon') {
     return (
       <ButtonWrap
-        size={props.size}
         className={commonCss}
-        onClick={props.onClick as any}
+        onClick={props.onClick}
         disabled={props.isDisable}
-        loading={props?.loading}
+        size={props.size}
       >
         {props.iconPlacement !== 'right' && (
           <Space size={8}>
@@ -239,9 +207,9 @@ const CommonButton = (props: Props) => {
     return (
       <ButtonWrap
         className={commonCss}
-        onClick={props.onClick as any}
+        onClick={props.onClick}
         disabled={props.isDisable}
-        loading={props?.loading}
+        size={props.size}
       >
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
       </ButtonWrap>
@@ -252,11 +220,10 @@ const CommonButton = (props: Props) => {
     <ButtonWrap
       style={props?.style}
       className={commonCss}
-      onClick={props.onClick as any}
+      onClick={props.onClick}
       disabled={props.isDisable}
       hidden={props.hidden}
       size={props.size}
-      loading={props?.loading}
     >
       {props.children}
     </ButtonWrap>
