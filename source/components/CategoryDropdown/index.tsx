@@ -7,6 +7,7 @@ import NoData from '../NoData'
 import { storyConfigCategoryList } from '@/services/project'
 import useCategoryList from '@/hooks/useCategoryList'
 import { css } from '@emotion/css'
+import { useTranslation } from 'react-i18next'
 const Wrap = styled(Select)`
   /* margin-bottom: 10px; */
   .ant-select-selection-overflow-item {
@@ -94,6 +95,7 @@ const CategoryDropdown = (props: IProps) => {
   const [selectData, setSelectData] = useState<Model.Project.CategoryValue[]>(
     [],
   )
+  const [t] = useTranslation()
 
   const { getTypeCategory } = useCategoryList()
   const LabelElement = (props: {
@@ -175,7 +177,7 @@ const CategoryDropdown = (props: IProps) => {
 
   return (
     <Wrap
-      placeholder="选择类别"
+      placeholder={t('common.chooseCategory')}
       value={value}
       style={{ width: width }}
       onChange={(data: any) => {
@@ -238,9 +240,9 @@ const CategoryDropdown = (props: IProps) => {
                     onClearCallback && onClearCallback()
                   }}
                 >
-                  清空所有选项
+                  {t('common.clearAll')}
                 </span>
-                <span onClick={reverseClick}>反选</span>
+                <span onClick={reverseClick}>{t('invert_selection')}</span>
               </ClearOptionsBox>
             ) : null}
           </>

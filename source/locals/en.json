@@ -902,7 +902,9 @@
     "uploadDefect": "Upload defect",
     "operationSuccess": "Successful operation",
     "copySuccess": "The link has been copied",
-    "copyFail": "Failed to copy the link"
+    "copyFail": "Failed to copy the link",
+    "chooseCategory": "Select category",
+    "clearAll": "Clear all options"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",
@@ -1892,7 +1894,8 @@
     "recent": "recent",
     "cancelLink": "Cancel the link",
     "delTransaction": "Delete the transaction",
-    "moveToSprint": "Move to sprint"
+    "moveToSprint": "Move to sprint",
+    "searchTips": "Search for a transaction or description"
   },
   "sprintProject": {
     "affairs": "Affairs",
