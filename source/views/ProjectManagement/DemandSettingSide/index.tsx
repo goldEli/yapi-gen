@@ -152,13 +152,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   }
 
   useEffect(() => {
-    if (paramsType === 4) {
-      getList()
-    }
-    return () => {
-      dispatch(setActiveCategory({}))
-      dispatch(setCategoryList([]))
-    }
+    paramsType === 4 && getList()
   }, [paramsType])
   useEffect(() => {
     if (paramsData?.categoryItem) {
