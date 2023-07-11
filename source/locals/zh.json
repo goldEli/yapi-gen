@@ -1970,6 +1970,7 @@
   "details": "详细信息",
   "subRequirement": "子需求",
   "associatedWorkItems": "关联工作项",
+  "linkWorkItems": "链接工作项",
   "changeLog": "变更记录",
   "circulationRecords": "流转记录",
   "areYouSureYouWantToDeleteThis": "确认删除该迭代？",
