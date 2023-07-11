@@ -424,7 +424,7 @@ export const useDynamicColumns = (state: any) => {
     //   },
     // },
     {
-      title: <NewSort fixedKey="schedule">进度</NewSort>,
+      title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
