@@ -43,10 +43,6 @@ const Box = styled.div`
   flex-direction: column;
 `
 const UserList = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  height: 0;
   overflow-y: auto;
   max-height: 50vh;
   overflow-x: hidden;
