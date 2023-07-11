@@ -175,7 +175,7 @@ const HeaderRight = () => {
 
   const createList = [
     {
-      name: '添加工作项',
+      name: t('addWorkItem'),
       key: 'all',
       icon: 'demand',
       isPermission: true,

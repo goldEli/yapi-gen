@@ -86,7 +86,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   //   删除附件弹窗
   const onDeleteInfoAttach = async (file?: any) => {
     open({
-      title: '删除确认',
+      title: t('deleteConfirmation'),
       text: t('p2.del'),
       onConfirm: () => {
         onDeleteConfirm(file)
@@ -193,7 +193,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
               add={onAddInfoAttach}
               addWrap={
                 <CommonButton type="primaryText" icon="plus">
-                  添加附件
+                  {t('addAttachments')}
                 </CommonButton>
               }
             />

@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import DemandSettingSide from '../DemandSettingSide'
-import { Button, Menu } from 'antd'
+import { Menu } from 'antd'
 import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import {
   AllWrap,
@@ -26,7 +26,15 @@ import {
   WrapDetail,
   WrapCategory,
 } from './style'
-
+export const MenuStyle = styled(Menu)({
+  '& .ant-menu-item-selected': {
+    background: 'var(--gradient-left)',
+    color: 'var(--primary-d2)',
+  },
+  '& .ant-menu-item-selected::after': {
+    borderRight: '3px solid var(--primary-d1)',
+  },
+})
 export const Back = styled.div`
   font-size: 12px;
   display: flex;
@@ -58,22 +66,24 @@ const ProjectDetailSide = () => {
       icon: 'demand',
       path: '/ProjectManagement/Demand',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('需求'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('需求'),
+        ).length,
     },
     {
       name: t('iteration'),
       icon: 'interation-2',
       path: '/ProjectManagement/Iteration',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('迭代'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('迭代'),
+        ).length,
     },
     {
       name: 'KanBan',
@@ -90,14 +100,15 @@ const ProjectDetailSide = () => {
     },
     {
       name: '缺陷',
-      icon: 'interation-2',
+      icon: 'bug',
       path: '/ProjectManagement/Defect',
       isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('缺陷'),
-            ).length,
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('缺陷'),
+        ).length,
     },
   ]
   const menuKeys = [
@@ -499,14 +510,14 @@ const ProjectDetailSide = () => {
         <Provider />
         <MenuBox>
           {
-            <Menu
+            <MenuStyle
               items={sideList?.filter((i: any) => i.isPermission)}
               onClick={projectSettingsClick}
               mode="inline"
               style={{ background: 'transparent', border: 'none' }}
               selectedKeys={selectedKeys}
               defaultOpenKeys={['2']}
-            ></Menu>
+            ></MenuStyle>
           }
         </MenuBox>
       </WrapSet>

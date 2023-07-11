@@ -106,7 +106,7 @@ const SprintTree = (props: Props) => {
   const [delayChild, setDelayChild] = useState<any>({})
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
-  asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
+  asyncSetTtile(`${t('affairs1')}【${projectInfo.name}】`)
 
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation?.({ page, size })
@@ -182,7 +182,7 @@ const SprintTree = (props: Props) => {
               : [4, 5].includes(item.work_type)
               ? 6
               : undefined,
-          title: '创建子事务',
+          title: t('createSubtransaction'),
           isCreateAffairsChild: true,
           parentId: item.id,
         },
@@ -200,7 +200,7 @@ const SprintTree = (props: Props) => {
           editId: item.id,
           projectId,
           type: item.work_type,
-          title: '编辑事务',
+          title: t('editorialAffairs'),
         },
       }),
     )
@@ -345,7 +345,7 @@ const SprintTree = (props: Props) => {
         severity: item.severity,
       },
     })
-    getMessage({ msg: '修改成功', type: 'success' })
+    getMessage({ msg: t('successfullyModified'), type: 'success' })
     props.onChangeRow?.()
   }
 
@@ -561,7 +561,7 @@ const SprintTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 7, title: '创建事务' },
+        params: { noDataCreate: true, type: 7, title: t('createTransaction') },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))
@@ -590,7 +590,11 @@ const SprintTree = (props: Props) => {
         }
         noData={
           <NoData
-            subText={hasCreate ? '' : '当前项目还未创建事务，创建一个吧~'}
+            subText={
+              hasCreate
+                ? ''
+                : t('theCurrentProjectHasNotCreatedATransactionCreate')
+            }
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
@@ -599,7 +603,7 @@ const SprintTree = (props: Props) => {
                 onClick={onClick}
                 style={{ marginTop: 24 }}
               >
-                创建事务
+                {t('createTransaction')}
               </CommonButton>
             )}
           </NoData>

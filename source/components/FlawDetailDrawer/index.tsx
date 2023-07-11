@@ -61,6 +61,7 @@ import {
   getIdsForAt,
   removeNull,
   getParamsData,
+  getProjectIdByUrl,
 } from '@/tools'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import useShareModal from '@/hooks/useShareModal'
@@ -114,9 +115,9 @@ const FlawDetailDrawer = () => {
 
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
-    { name: '关联工作项', key: 'relation', content: '' },
+    { name: t('associatedWorkItems'), key: 'relation', content: '' },
     { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
-    { name: '缺陷评论', key: 'flawComment', content: '' },
+    { name: t('defectComment'), key: 'flawComment', content: '' },
   ]
 
   const isCanEdit =
@@ -238,11 +239,11 @@ const FlawDetailDrawer = () => {
   const onNameConfirm = async () => {
     const value = spanDom.current?.innerText
     if ((value?.length || 0) <= 0) {
-      getMessage({ type: 'warning', msg: '名称不能为空' })
+      getMessage({ type: 'warning', msg: t('nameIsRequired') })
       return
     }
     if ((value?.length || 0) > 100) {
-      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      getMessage({ type: 'warning', msg: t('nameCannotExceedCharacters') })
       return
     }
     if (value !== drawerInfo.name) {
@@ -253,7 +254,7 @@ const FlawDetailDrawer = () => {
           name: value,
         },
       })
-      getMessage({ type: 'success', msg: '修改成功' })
+      getMessage({ type: 'success', msg: t('successfullyModified') })
       // 提交名称
       setDrawerInfo({
         ...drawerInfo,
@@ -265,7 +266,7 @@ const FlawDetailDrawer = () => {
 
   // 复制标题
   const onCopy = () => {
-    copyLink(drawerInfo.name, '复制成功！', '复制失败！')
+    copyLink(drawerInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
   // 修改状态
@@ -337,7 +338,7 @@ const FlawDetailDrawer = () => {
           editId: drawerInfo.id,
           projectId: drawerInfo.projectId,
           type: 2,
-          title: '编辑缺陷',
+          title: t('editorialDefect'),
         },
       }),
     )
@@ -375,7 +376,7 @@ const FlawDetailDrawer = () => {
   // 删除缺陷弹窗
   const onDelete = () => {
     openDelete({
-      title: '删除确认',
+      title: t('deleteConfirmation'),
       text: '确认删除该事务？',
       onConfirm() {
         onDeleteConfirm()
@@ -397,8 +398,8 @@ const FlawDetailDrawer = () => {
   const onCopyId = () => {
     copyLink(
       `${drawerInfo.projectPrefix}-${drawerInfo.prefixKey}`,
-      '复制成功！',
-      '复制失败！',
+      t('copysuccess'),
+      t('copyfailed'),
     )
   }
 
@@ -417,37 +418,37 @@ const FlawDetailDrawer = () => {
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${drawerInfo.projectPrefix}-${drawerInfo.prefixKey}】${text}`,
-      '复制成功！',
-      '复制失败！',
+      t('copysuccess'),
+      t('copyfailed'),
     )
   }
 
   // 更多下拉
   const items: MenuProps['items'] = [
     {
-      label: <div onClick={onEdit}>编辑</div>,
+      label: <div onClick={onEdit}>{t('common.edit')}</div>,
       key: '0',
     },
     {
-      label: <div onClick={onDelete}>删除</div>,
+      label: <div onClick={onDelete}>{t('common.del')}</div>,
       key: '1',
     },
     {
       type: 'divider',
     },
     {
-      label: <div onClick={onCopyId}>复制编号</div>,
+      label: <div onClick={onCopyId}>{t('copy_requirement_number')}</div>,
       key: '2',
     },
     {
-      label: <div onClick={onCopyLink}>复制链接</div>,
+      label: <div onClick={onCopyLink}>{t('copy_title_link')}</div>,
       key: '3',
     },
     {
       type: 'divider',
     },
     {
-      label: <div onClick={onToConfig}>配置</div>,
+      label: <div onClick={onToConfig}>{t('configuration')}</div>,
       key: '4',
     },
   ]
@@ -473,7 +474,7 @@ const FlawDetailDrawer = () => {
       content: value.info,
       a_user_ids: getIdsForAt(value.info),
     })
-    getMessage({ type: 'success', msg: '评论成功' })
+    getMessage({ type: 'success', msg: t('project.replaySuccess') })
     dispatch(
       getFlawCommentList({
         projectId: projectInfo.id,
@@ -494,7 +495,7 @@ const FlawDetailDrawer = () => {
       content: value,
       ids: getIdsForAt(value),
     })
-    getMessage({ type: 'success', msg: '编辑成功' })
+    getMessage({ type: 'success', msg: t('common.editSuccess') })
     dispatch(
       getFlawCommentList({
         projectId: projectInfo.id,
@@ -509,7 +510,7 @@ const FlawDetailDrawer = () => {
   const onDeleteCommentConfirm = async (commentId: number) => {
     const paramsProjectId = params.project_id ?? params.projectId
     await deleteFlawComment({ projectId: paramsProjectId, id: commentId })
-    getMessage({ type: 'success', msg: '删除成功' })
+    getMessage({ type: 'success', msg: t('common.deleteSuccess') })
     dispatch(
       getFlawCommentList({
         projectId: paramsProjectId,
@@ -557,7 +558,16 @@ const FlawDetailDrawer = () => {
   return (
     <>
       <ShareModal
-        url={location.href}
+        url={`${
+          location.origin
+        }/ProjectManagement/DefectDetail?data=${encryptPhp(
+          JSON.stringify({
+            ...paramsData,
+            flawId: drawerInfo?.id,
+            id: getProjectIdByUrl(),
+            newOpen: true,
+          }),
+        )}`}
         title={
           drawerInfo?.name
             ? `【${drawerInfo?.projectPrefix}-${drawerInfo?.name}-${userInfo?.name}】`
@@ -757,13 +767,15 @@ const FlawDetailDrawer = () => {
           <DetailFooter>
             <div className="textBox">
               <div>
-                已创建：{detailTimeFormat(drawerInfo.createdTime as string)}
+                {t('created')}{' '}
+                {detailTimeFormat(drawerInfo.createdTime as string)}
               </div>
               <span>
-                更新日期：{detailTimeFormat(drawerInfo.update_at as string)}
+                {t('updated')}
+                {detailTimeFormat(drawerInfo.update_at as string)}
               </span>
             </div>
-            <Tooltip title="配置字段">
+            <Tooltip title={t('configurationFields')}>
               <CloseWrap width={32} height={32} onClick={onToConfig}>
                 <CommonIconFont type="settings" />
               </CloseWrap>
@@ -772,7 +784,7 @@ const FlawDetailDrawer = () => {
         </Content>
         <CommentFooter
           onRef={commentDom}
-          placeholder="发表评论（按M快捷键发表评论）"
+          placeholder={t('postComment')}
           personList={removeNull(projectInfoValues, 'user_name')?.map(
             (k: any) => ({
               label: k.content,

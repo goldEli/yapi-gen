@@ -225,8 +225,10 @@ const Index = (props: any) => {
   // 删除弹窗
   const onDelete = (item: any) => {
     open({
-      title: `删除确认【${item.storyPrefixKey}】`,
-      text: '你将永久删除该缺陷，删除后将不可恢复请谨慎操作！',
+      title: `${t('confirmationOfDeletion')}【${item.storyPrefixKey}】`,
+      text: t(
+        'youWillPermanentlyDeleteThisAndItWillNotBeRecoverableAfterPleaseOperateWith',
+      ),
       onConfirm: () => {
         onDeleteConfirm(item.id)
         return Promise.resolve()
@@ -270,12 +272,18 @@ const Index = (props: any) => {
     '/ProjectManagement/Project',
   )
 
+  // 判断是否详情回来，并且权限是不是有
+  const isLength =
+    projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
+
   return (
     <PermissionWrap
       auth={resultAuth ? 'b/flaw/' : '/ProjectManagement/Project'}
       permission={
         resultAuth
-          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          ? isLength
+            ? ['0']
+            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
           : currentMenu?.children?.map((i: any) => i.url)
       }
     >
@@ -298,7 +306,7 @@ const Index = (props: any) => {
         <Wrap>
           <ProjectCommonOperation
             onInputSearch={onInputSearch}
-            title="搜索缺陷名称或编号"
+            title={t('searchForDefectNameOrNumber')}
           />
           <ContentWrap>
             <ContentLeft>

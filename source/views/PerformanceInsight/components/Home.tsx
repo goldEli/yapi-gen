@@ -115,7 +115,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
                   <span>{el.value}</span>
                   <span>{el.unit}</span>
                 </TextNum>
-                <Text size="12px" color="var(--neutral-n2)" onClick={() => 123}>
+                <Text size="12px" color="var(--neutral-n2)">
                   <Space size={4}>
                     <span>{el.name}</span>
                     <CommonIconFont type="right" size={12} />
@@ -689,7 +689,7 @@ const Home = () => {
                 titleType={false}
                 title={
                   homeType === 'all'
-                    ? t('performance.home9')
+                    ? t('performance.title3')
                     : t('performance.title03')
                 }
               />

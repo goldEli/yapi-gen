@@ -129,13 +129,14 @@ const FlawInfo = () => {
         <BasicFooter>
           <div className="textBox">
             <div>
-              已创建：{detailTimeFormat(flawInfo.createdTime as string)}
+              {t('created')}
+              {detailTimeFormat(flawInfo.createdTime as string)}
             </div>
             <span>
-              更新日期： {detailTimeFormat(flawInfo.update_at as string)}
+              {t('updated')} {detailTimeFormat(flawInfo.update_at as string)}
             </span>
           </div>
-          <Tooltip title="配置字段">
+          <Tooltip title={t('configurationFields')}>
             <CloseWrap width={32} height={32} onClick={onToConfig}>
               <CommonIconFont type="settings" />
             </CloseWrap>

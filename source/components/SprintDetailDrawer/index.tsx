@@ -5,7 +5,15 @@ import {
   setAffairsDetailDrawer,
   setAffairsInfo,
 } from '@store/affairs'
-import { Drawer, MenuProps, Popover, Skeleton, Space, Tooltip } from 'antd'
+import {
+  Checkbox,
+  Drawer,
+  MenuProps,
+  Popover,
+  Skeleton,
+  Space,
+  Tooltip,
+} from 'antd'
 import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
 import {
   Header,
@@ -65,6 +73,7 @@ import {
   removeNull,
   getParamsData,
   getIsPermission,
+  getProjectIdByUrl,
 } from '@/tools'
 import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
 import CommentFooter from '../CommonComment/CommentFooter'
@@ -72,6 +81,7 @@ import LongStroyBread from '../LongStroyBread'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '../CopyIcon'
+import DeleteConfirm from '../DeleteConfirm'
 const SprintDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -103,7 +113,6 @@ const SprintDetailDrawer = () => {
   const leftWidth = 640
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
-  const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const spanDom = useRef<HTMLSpanElement>(null)
   const commentDom: any = createRef()
@@ -112,6 +121,8 @@ const SprintDetailDrawer = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const [showState, setShowState] = useState<any>(normalState)
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const { affairsDetailDrawer, affairsCommentList } = useSelector(
     store => store.affairs,
   )
@@ -121,18 +132,22 @@ const SprintDetailDrawer = () => {
   const { userInfo } = useSelector(store => store.user)
 
   const modeList = [
-    { name: '详细信息', key: 'detailInfo', content: '' },
-    { name: '子事务', key: 'childSprint', content: '' },
-    { name: '链接事务', key: 'linkSprint', content: '' },
-    { name: '基本信息', key: 'basicInfo', content: '' },
-    { name: '事务评论', key: 'demandComment', content: '' },
+    { name: t('details'), key: 'detailInfo', content: '' },
+    { name: t('subtransaction'), key: 'childSprint', content: '' },
+    { name: t('linkAffairs'), key: 'linkSprint', content: '' },
+    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
+    { name: t('businessReview'), key: 'demandComment', content: '' },
   ]
 
   const anchorList = [
-    { name: '附件', key: 'sprint-attachment', domKey: 'detailInfo' },
-    { name: '添加标签', key: 'sprint-tag', domKey: 'detailInfo' },
-    { name: '添加子事务', key: 'sprint-childSprint', domKey: 'childSprint' },
-    { name: '链接事务', key: 'sprint-linkSprint', domKey: 'linkSprint' },
+    { name: t('attachment'), key: 'sprint-attachment', domKey: 'detailInfo' },
+    { name: t('addTag'), key: 'sprint-tag', domKey: 'detailInfo' },
+    {
+      name: t('addChildAffairs'),
+      key: 'sprint-childSprint',
+      domKey: 'childSprint',
+    },
+    { name: t('linkAffairs'), key: 'sprint-linkSprint', domKey: 'linkSprint' },
   ]
 
   const isCanEdit =
@@ -343,7 +358,7 @@ const SprintDetailDrawer = () => {
       affairsDetailDrawer.params.project_id ??
       affairsDetailDrawer.params.projectId
     await deleteAffairsComment({ projectId: paramsProjectId, id: commentId })
-    getMessage({ type: 'success', msg: '删除成功' })
+    getMessage({ type: 'success', msg: t('successfullyDeleted') })
     dispatch(
       getAffairsCommentList({
         projectId: paramsProjectId,
@@ -358,11 +373,11 @@ const SprintDetailDrawer = () => {
   const onNameConfirm = async () => {
     const value = spanDom.current?.innerText
     if ((value?.length || 0) <= 0) {
-      getMessage({ type: 'warning', msg: '名称不能为空' })
+      getMessage({ type: 'warning', msg: t('nameIsRequired') })
       return
     }
     if ((value?.length || 0) > 100) {
-      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      getMessage({ type: 'warning', msg: t('nameCannotExceedCharacters') })
       return
     }
     if (value !== drawerInfo.name) {
@@ -373,7 +388,7 @@ const SprintDetailDrawer = () => {
           name: value,
         },
       })
-      getMessage({ type: 'success', msg: '修改成功' })
+      getMessage({ type: 'success', msg: t('successfullyModified') })
       // 提交名称
       setDrawerInfo({
         ...drawerInfo,
@@ -385,7 +400,7 @@ const SprintDetailDrawer = () => {
 
   // 复制标题
   const onCopy = () => {
-    copyLink(drawerInfo.name, '复制成功！', '复制失败！')
+    copyLink(drawerInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
   // 点击锚点跳转
@@ -420,14 +435,8 @@ const SprintDetailDrawer = () => {
 
   // 删除事务弹窗
   const onDelete = () => {
-    openDelete({
-      title: '删除确认',
-      text: '确认删除该事务？',
-      onConfirm() {
-        onDeleteConfirm()
-        return Promise.resolve()
-      },
-    })
+    setIsVisible(true)
+    setIsDeleteCheck([4, 5].includes(drawerInfo.work_type))
   }
 
   // 分享弹窗
@@ -448,7 +457,7 @@ const SprintDetailDrawer = () => {
           editId: drawerInfo.id,
           projectId: drawerInfo.project_id ?? drawerInfo.projectId,
           type: drawerInfo.work_type,
-          title: '编辑事务',
+          title: t('editorialAffairs'),
         },
       }),
     )
@@ -479,7 +488,7 @@ const SprintDetailDrawer = () => {
       content: value.info,
       a_user_ids: getIdsForAt(value.info),
     })
-    getMessage({ type: 'success', msg: '评论成功' })
+    getMessage({ type: 'success', msg: t('project.replaySuccess') })
     dispatch(
       getAffairsCommentList({
         projectId: projectInfo.id,
@@ -500,7 +509,7 @@ const SprintDetailDrawer = () => {
       content: value,
       ids: getIdsForAt(value),
     })
-    getMessage({ type: 'success', msg: '编辑成功' })
+    getMessage({ type: 'success', msg: t('common.editSuccess') })
     dispatch(
       getAffairsCommentList({
         projectId: projectInfo.id,
@@ -524,11 +533,11 @@ const SprintDetailDrawer = () => {
     // 更多下拉
     let items: MenuProps['items'] = [
       {
-        label: <div onClick={onEdit}>编辑</div>,
+        label: <div onClick={onEdit}>{t('common.edit')}</div>,
         key: '6',
       },
       {
-        label: <div onClick={onDelete}>删除</div>,
+        label: <div onClick={onDelete}>{t('common.del')}</div>,
         key: '0',
       },
 
@@ -545,7 +554,7 @@ const SprintDetailDrawer = () => {
               })
             }
           >
-            添加附件
+            {t('addAttachments')}
           </div>
         ),
         key: '1',
@@ -560,7 +569,7 @@ const SprintDetailDrawer = () => {
               })
             }
           >
-            添加子事务
+            {t('addChildAffairs')}
           </div>
         ),
         key: '2',
@@ -575,7 +584,7 @@ const SprintDetailDrawer = () => {
               })
             }
           >
-            添加标签
+            {t('addTag')}
           </div>
         ),
         key: '3',
@@ -590,7 +599,7 @@ const SprintDetailDrawer = () => {
               })
             }
           >
-            链接事务
+            {t('linkAffairs')}
           </div>
         ),
         key: '4',
@@ -599,7 +608,7 @@ const SprintDetailDrawer = () => {
         type: 'divider',
       },
       {
-        label: <div onClick={onToConfig}>配置</div>,
+        label: <div onClick={onToConfig}>{t('configuration')}</div>,
         key: '5',
       },
     ]
@@ -644,14 +653,43 @@ const SprintDetailDrawer = () => {
   return (
     <>
       <ShareModal
-        url={location.href}
+        url={`${
+          location.origin
+        }/SprintProjectManagement/SprintProjectDetail?data=${encryptPhp(
+          JSON.stringify({
+            ...paramsData,
+            sprintId: drawerInfo?.id,
+            id: getProjectIdByUrl(),
+            newOpen: true,
+          }),
+        )}`}
         title={
           drawerInfo?.name
             ? `【${drawerInfo?.projectPrefix}-${drawerInfo?.name}-${userInfo?.name}】`
             : ''
         }
       />
-      <DeleteConfirmModal />
+      <DeleteConfirm
+        title={t('deleteConfirmation')}
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      >
+        <div style={{ marginBottom: 9 }}>
+          {t('youWillPermanentlyDeleteWhichCannotBeRecoveredAfterPleaseBe', {
+            key: `${drawerInfo.projectPrefix}-${drawerInfo.prefixKey}`,
+          })}
+        </div>
+        {drawerInfo.work_type !== 6 && (
+          <Checkbox
+            disabled={[4, 5].includes(drawerInfo.work_type)}
+            checked={isDeleteCheck}
+            onChange={e => setIsDeleteCheck(e.target.checked)}
+          >
+            {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
+          </Checkbox>
+        )}
+      </DeleteConfirm>
       <Drawer
         closable={false}
         placement="right"
@@ -847,13 +885,15 @@ const SprintDetailDrawer = () => {
           <DetailFooter>
             <div className="textBox">
               <div>
-                已创建：{detailTimeFormat(drawerInfo.createdTime as string)}
+                {t('created')}
+                {detailTimeFormat(drawerInfo.createdTime as string)}
               </div>
               <span>
-                更新日期：{detailTimeFormat(drawerInfo.update_at as string)}
+                {t('updated')}
+                {detailTimeFormat(drawerInfo.update_at as string)}
               </span>
             </div>
-            <Tooltip title="配置字段">
+            <Tooltip title={t('configurationFields')}>
               <CloseWrap width={32} height={32} onClick={onToConfig}>
                 <CommonIconFont type="settings" />
               </CloseWrap>
@@ -862,7 +902,7 @@ const SprintDetailDrawer = () => {
         </Content>
         <CommentFooter
           onRef={commentDom}
-          placeholder="发表评论（按M快捷键发表评论）"
+          placeholder={t('postComment')}
           personList={removeNull(projectInfoValues, 'user_name')?.map(
             (k: any) => ({
               label: k.content,

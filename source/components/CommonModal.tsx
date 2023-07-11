@@ -7,9 +7,7 @@ import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap, ModalFooter } from './StyleCommon'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonButton from './CommonButton'
-import { useState } from 'react'
 
 const ModalHeader = styled.div`
   display: flex;

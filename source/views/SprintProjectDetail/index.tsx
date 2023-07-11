@@ -118,7 +118,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 复制标题
   const onCopy = () => {
-    copyLink(affairsInfo.name, '复制成功！', '复制失败！')
+    copyLink(affairsInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
   // 点击切换类别
@@ -224,11 +224,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const onNameConfirm = async () => {
     const value = spanDom.current?.innerText
     if ((value?.length || 0) <= 0) {
-      getMessage({ type: 'warning', msg: '名称不能为空' })
+      getMessage({ type: 'warning', msg: t('nameIsRequired') })
       return
     }
     if ((value?.length || 0) > 100) {
-      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      getMessage({ type: 'warning', msg: t('nameCannotExceedCharacters') })
       return
     }
     if (value !== affairsInfo.name) {
@@ -239,7 +239,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           name: value,
         },
       })
-      getMessage({ type: 'success', msg: '修改成功' })
+      getMessage({ type: 'success', msg: t('successfullyModified') })
       // 提交名称
       setAffairsInfo({
         ...affairsInfo,
@@ -282,15 +282,16 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   // 删除事务弹窗
   const onDelete = () => {
     openDelete({
-      title: '删除确认',
+      title: t('deleteConfirmation'),
       text: (
         <>
           <div style={{ marginBottom: 9 }}>
-            你将永久删除{affairsInfo.story_prefix_key}
-            ，删除后将不可恢复请谨慎操作!
+            {t('youWillPermanentlyDeleteWhichCannotBeRecoveredAfterPleaseBe', {
+              key: `${affairsInfo.projectPrefix}-${affairsInfo.prefixKey}`,
+            })}
           </div>
           <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-            同时删除该所有子事务
+            {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
           </Checkbox>
         </>
       ),
@@ -310,7 +311,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           editId: affairsInfo.id,
           projectId: affairsInfo.projectId,
           type: affairsInfo.work_type,
-          title: '编辑事务',
+          title: t('editorialAffairs'),
         },
       }),
     )
@@ -341,11 +342,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     // 更多下拉
     let items: MenuProps['items'] = [
       {
-        label: <div onClick={onEdit}>编辑</div>,
+        label: <div onClick={onEdit}>{t('common.edit')}</div>,
         key: '6',
       },
       {
-        label: <div onClick={onDelete}>删除</div>,
+        label: <div onClick={onDelete}>{t('common.del')}</div>,
         key: '0',
       },
 
@@ -355,7 +356,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       {
         label: (
           <div onClick={() => onChangeTabsScroll('sprint-attachment')}>
-            添加附件
+            {t('addAttachments')}
           </div>
         ),
         key: '1',
@@ -363,21 +364,23 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       {
         label: (
           <div onClick={() => onChangeTabsScroll('sprint-childSprint')}>
-            添加子事务
+            {t('addChildAffairs')}
           </div>
         ),
         key: '2',
       },
       {
         label: (
-          <div onClick={() => onChangeTabsScroll('sprint-tag')}>添加标签</div>
+          <div onClick={() => onChangeTabsScroll('sprint-tag')}>
+            {t('addTag')}
+          </div>
         ),
         key: '3',
       },
       {
         label: (
           <div onClick={() => onChangeTabsScroll('sprint-linkSprint')}>
-            链接事务
+            {t('linkAffairs')}
           </div>
         ),
         key: '4',
@@ -386,7 +389,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         type: 'divider',
       },
       {
-        label: <div onClick={onToConfig}>配置</div>,
+        label: <div onClick={onToConfig}>{t('configuration')}</div>,
         key: '5',
       },
     ]

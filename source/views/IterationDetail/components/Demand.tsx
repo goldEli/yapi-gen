@@ -190,7 +190,7 @@ const Demand = (props: DemandProps) => {
           parentId: item.id,
           categoryId: item.categoryId,
           type: 1,
-          title: '创建子需求',
+          title: t('createSubrequirements'),
         },
       }),
     )
@@ -205,7 +205,7 @@ const Demand = (props: DemandProps) => {
           editId: item.id,
           projectId: item.project_id,
           type: 1,
-          title: '编辑需求',
+          title: t('editingRequirements'),
         },
       }),
     )
@@ -221,8 +221,8 @@ const Demand = (props: DemandProps) => {
   //   删除
   const onDeleteChange = (item: any) => {
     open({
-      title: '删除确认',
-      text: '确认删除该子需求？',
+      title: t('deleteConfirmation'),
+      text: t('areYouSureToDeleteThis'),
       onConfirm() {
         onDeleteConfirm(item)
         return Promise.resolve()
@@ -240,7 +240,7 @@ const Demand = (props: DemandProps) => {
           projectId: getProjectIdByUrl(),
           iterateId: iterateInfo?.id,
           type: 1,
-          title: '创建需求',
+          title: t('createRequirements'),
         },
       }),
     )

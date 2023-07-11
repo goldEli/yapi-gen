@@ -409,8 +409,13 @@ const SprintProjectSprint: React.FC = () => {
     })
     setLeftSearchObject({
       ...leftSearchObject,
+      search: {
+        ...leftSearchObject.search,
+        sprint_status: filterList[0]?.id,
+      },
       is_long_story: 0,
     })
+    setCurrentFilter(filterList[0])
   }
 
   const changeStoryTab = () => {
@@ -421,8 +426,13 @@ const SprintProjectSprint: React.FC = () => {
     })
     setLeftSearchObject({
       ...leftSearchObject,
+      search: {
+        ...leftSearchObject.search,
+        sprint_status: filterList1[0]?.id,
+      },
       is_long_story: 1,
     })
+    setCurrentFilter(filterList1[0])
   }
 
   const onChangeFilter = (item: any) => {
@@ -554,7 +564,7 @@ const SprintProjectSprint: React.FC = () => {
                 },
               })
             }}
-            placeholder="搜索事务或描述"
+            placeholder={t('sprint.searchTips')}
             leftIcon
           />
         </div>

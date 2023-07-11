@@ -111,7 +111,7 @@ const BasicFlaw = (props: Props) => {
         severity: item.severity,
       },
     })
-    getMessage({ msg: '修改成功', type: 'success' })
+    getMessage({ msg: t('successfullyModified'), type: 'success' })
     props.onUpdate?.()
   }
 

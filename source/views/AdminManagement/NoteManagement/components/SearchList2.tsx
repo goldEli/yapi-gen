@@ -162,7 +162,7 @@ const SearchList = (props: Props) => {
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('notification_type')}
             </span>
-            <Form.Item name="type">
+            <Form.Item name="notice_style">
               <SelectWrap
                 onChange={confirm}
                 style={{ width: '100%' }}

@@ -297,9 +297,12 @@ const DndKitTable = (props: any) => {
   }
 
   // 判断当前事务是否超出冲刺时间范围
-  const getIsExceedTimeRange = (item: any) => {
+  const getIsExceedTimeRange = (item: any, sprint?: any) => {
+    let sprintObj = sprint
     const groupId = item.iterate_id
-    const sprintObj = rightSprintList.find(k => k.id === groupId)
+    if (!sprintObj) {
+      sprintObj = rightSprintList.find(k => k.id === groupId)
+    }
     if (
       ((moment(item.expected_start_at).isSame(sprintObj?.start_at) ||
         moment(item.expected_start_at).isAfter(sprintObj?.start_at)) &&
@@ -656,7 +659,7 @@ const DndKitTable = (props: any) => {
       })
       // 判断是否超出冲刺时间范围
       if (
-        (getIsExceedTimeRange(item) || haveOnlyOne(sourceList)) &&
+        (getIsExceedTimeRange(item, destList) || haveOnlyOne(sourceList)) &&
         Number(result.destination?.droppableId) !== 0
       ) {
         open({

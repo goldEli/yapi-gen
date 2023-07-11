@@ -22,7 +22,14 @@ const ProjectCommonOperation = (props: Props) => {
   return (
     <>
       <SearchBox>
-        <div style={{ paddingLeft: '24px' }}>
+        <div
+          style={{
+            paddingLeft: '24px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <MyBreadcrumb />
         </div>
         <SearchOrProjectMember size={16}>

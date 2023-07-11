@@ -282,7 +282,7 @@ const Operation = (props: Props) => {
           params: {
             projectId: projectInfo?.id,
             type: 2,
-            title: '创建缺陷',
+            title: t('createDefect'),
           },
         }),
       )
@@ -318,13 +318,13 @@ const Operation = (props: Props) => {
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>导入缺陷</span>
+          <span style={{ marginLeft: 8 }}>{t('importDefect')}</span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem onClick={onExportClick}>
           <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>导出缺陷</span>
+          <span style={{ marginLeft: 8 }}>{t('exportDefect')}</span>
         </MoreItem>
       )}
     </div>
@@ -384,7 +384,7 @@ const Operation = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 2, title: '创建缺陷' },
+        params: { noDataCreate: true, type: 2, title: t('createDefect') },
       }),
     )
   }
@@ -496,7 +496,7 @@ const Operation = (props: Props) => {
               onVisibleChange={visible => setIsVisible(visible)}
             >
               <MoreWrap type="create">
-                <span>创建缺陷</span>
+                <span>{t('createDefect')}</span>
                 <IconFont
                   style={{ fontSize: 16, marginLeft: 8 }}
                   type={isVisible ? 'up' : 'down'}

@@ -2,6 +2,43 @@ import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Progress, Space } from 'antd'
 
+export const ProgressWrapBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  .finish {
+    font-size: 12px;
+    color: var(--neutral-n2);
+  }
+`
+
+export const ProgressWrapLine = styled.div<{
+  one: number
+  tow: number
+  three: number
+}>`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  div {
+    border-radius: 8px;
+    height: 8px;
+  }
+  .one {
+    width: ${props => props.one}%;
+    background: var(--primary-d1);
+  }
+  .two {
+    width: ${props => props.tow}%;
+    background: var(--primary-d1);
+    opacity: 0.4;
+  }
+  .three {
+    width: ${props => props.three}%;
+    background: var(--function-tag5);
+  }
+`
+
 export const Wrap = styled.div`
   height: 100%;
   display: flex;
