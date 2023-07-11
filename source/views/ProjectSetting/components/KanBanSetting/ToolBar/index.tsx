@@ -24,7 +24,6 @@ const ToolBarBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-right: 59px;
   box-sizing: border-box;
 `
 const Btn = styled.div`

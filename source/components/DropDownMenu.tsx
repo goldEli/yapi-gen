@@ -27,9 +27,9 @@ const DropDownMenu = (props: Props) => {
       onOpenChange={visible => props.onChangeVisible?.(visible)}
     >
       <div>
-        <ScreenMinHover isActive={props.isActive} icon={props?.icon}>
-          {props.children}
-        </ScreenMinHover>
+        {/* <ScreenMinHover isActive={props.isActive} icon={props?.icon}> */}
+        {props.children}
+        {/* </ScreenMinHover> */}
       </div>
     </Dropdown>
   )
