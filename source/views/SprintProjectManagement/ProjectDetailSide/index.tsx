@@ -56,13 +56,7 @@ const ProjectDetailSide = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
-  console.log(
-    projectInfo,
-    '=projectInfoprojectInfo',
-    projectInfo?.projectPermissions?.filter((i: any) =>
-      String(i.identity).includes('b/project/member'),
-    ).length > 0,
-  )
+
   const projectSettingsList = [
     {
       label: t('sprintProject.projectInformation'),
