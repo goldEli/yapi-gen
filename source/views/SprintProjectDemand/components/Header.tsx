@@ -121,6 +121,7 @@ const Header = () => {
 
   // 点击跳转配置工作流
   const onSetWorkFlow = () => {
+    console.log('activeCategory---', activeCategory)
     const params = encryptPhp(
       JSON.stringify({
         id: projectInfo.id,

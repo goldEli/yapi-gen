@@ -17,7 +17,7 @@ const ViewDialog = (props: PropsType) => {
   const onConfirm = async () => {
     await form.validateFields()
     const formValues = form.getFieldsValue()
-    props.onConfirm(formValues.name, props.titleType?.type || 'add')
+    await props.onConfirm(formValues.name, props.titleType?.type || 'add')
   }
   useEffect(() => {
     if (props.isVisible) {

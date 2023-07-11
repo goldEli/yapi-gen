@@ -85,8 +85,8 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
     )
   }
 
-  const onsubmit = () => {
-    form.submit()
+  const onsubmit = async () => {
+    await form.submit()
   }
 
   const title = React.useMemo(() => {

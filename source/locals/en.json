@@ -1980,6 +1980,7 @@
   "details": "Details",
   "subRequirement": "Sub requirement",
   "associatedWorkItems": "Associated Work Items",
+  "linkWorkItems": "Link Work Items",
   "changeLog": "Change log",
   "circulationRecords": "Circulation records",
   "areYouSureYouWantToDeleteThis": "Are you sure you want to delete this iteration?",
