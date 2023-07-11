@@ -179,13 +179,12 @@ const SystemFeedback = () => {
                 },
               ]}
             >
-              <div style={{ height: '360px', overflow: 'scroll' }}>
-                <Editor
-                  upload={uploadFile}
-                  getSuggestions={() => []}
-                  placeholder={t('enter_content2')}
-                />
-              </div>
+              <Editor
+                maxHeight="340px"
+                upload={uploadFile}
+                getSuggestions={() => []}
+                placeholder={t('enter_content2')}
+              />
             </Form.Item>
           </Form>
           <Footer>
