@@ -25,6 +25,7 @@ import {
   WrapSet,
   WrapDetail,
   WrapCategory,
+  SettingMenu,
 } from './style'
 export const MenuStyle = styled(Menu)({
   '& .ant-menu-item-selected': {
@@ -121,50 +122,6 @@ const ProjectDetailSide = () => {
     'ProjectHome',
   ]
   const sideList = [
-    // {
-    //   name: t('project.projectInformation'),
-    //   icon: 'file-text',
-    //   path: '/ProjectManagement/ProjectSetting',
-    //   isPermission: true,
-    //   key: 'info',
-    // },
-    // {
-    //   name: t('project.projectMember'),
-    //   icon: 'team',
-    //   path: '/ProjectManagement/ProjectSetting',
-    //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-    //     String(i.identity).includes('b/project/member'),
-    //   ).length,
-    //   key: 'member',
-    // },
-    // {
-    //   name: t('project.projectPermissionGroup'),
-    //   icon: 'lock',
-    //   path: '/ProjectManagement/ProjectSetting',
-    //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-    //     String(i.identity).includes('b/project/role'),
-    //   ).length,
-    //   key: 'permission',
-    // },
-    // {
-    //   name: t('newlyAdd.demandSet'),
-    //   icon: 'settings',
-    //   path: '/ProjectManagement/ProjectSetting',
-    //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-    //     String(i.identity).includes('b/project/story_config'),
-    //   ).length,
-    //   key: 'main',
-    // },
-    // {
-    //   name: t('notification_settings'),
-    //   icon: 'bell',
-    //   path: '/ProjectManagement/ProjectSetting',
-    //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-    //     String(i.identity).includes('b/project/notification'),
-    //   ).length,
-    //   key: 'note',
-    // },
-
     {
       label: t('sprintProject.projectInformation'),
       icon: <CommonIconFont type="file-text" size={18} />,

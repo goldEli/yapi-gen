@@ -1,4 +1,15 @@
 import styled from '@emotion/styled'
+import { Menu } from 'antd'
+
+export const SettingMenu = styled(Menu)`
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background: var(--gradient-left) !important;
+  }
+  .ant-menu-inline .ant-menu-selected::after,
+  .ant-menu-inline .ant-menu-item-selected::after {
+    opacity: 0;
+  }
+`
 
 export const AllWrap = styled.div`
   display: flex;

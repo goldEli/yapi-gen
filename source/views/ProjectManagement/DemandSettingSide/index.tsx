@@ -113,6 +113,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const watchDataList = () => {
     let dataItem = null
     let filterData = null
+    // debugger
     if (startUsing) {
       filterData = categoryList?.filter((el: any) => el.status === 1)
     } else {
@@ -152,12 +153,13 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   }
 
   useEffect(() => {
+    // debugger
     paramsType === 4 && getList()
   }, [paramsType])
   useEffect(() => {
     if (paramsData?.categoryItem) {
       dispatch(setStartUsing(paramsData?.categoryItem.status === 1))
-      setTabsActive(paramsData?.categoryItem.status)
+      setTabsActive(paramsData?.categoryItem.status === 1 ? 0 : 1)
       dispatch(setActiveCategory(paramsData?.categoryItem))
     }
   }, [paramsData?.categoryItem?.status])

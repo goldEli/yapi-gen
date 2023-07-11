@@ -185,6 +185,9 @@ const GlobalStyle = () => {
     .ant-badge-multiple-words {
       padding: 0 2px;
     }
+    .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+      background-color: #6688ff;
+    }
     .ant-input {
       input {
         font-family: SiYuanRegular;
@@ -703,7 +706,7 @@ const GlobalStyle = () => {
     .ant-input-number-focused,
     .ant-select-selector,
     .ant-select:hover {
-      box-shadow: initial;
+      box-shadow: initial !important;
       .ant-dropdown-menu-item:hover {
         background-color: var(--hover-d3);
         color: var(--neutral-n1-d1);

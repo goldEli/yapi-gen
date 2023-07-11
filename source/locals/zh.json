@@ -8,7 +8,7 @@
   "window": "窗口",
   "send_type": "发送类型",
 
-  "unsent_scheduled": "定时通知",
+  "unsent_scheduled": "定时未发送",
   "time_of_departure": "时间",
   "content": "内容",
   "author": "作者",
@@ -1789,7 +1789,7 @@
     "totalWorkItemInventory": "总工作项存量",
     "defectRepairRate": "缺陷修复率",
     "defectsRepairedInTheCurrentDefectsInThe": "当期已修复缺陷/档期总缺陷*100%",
-    "bugReopening": "缺陷 | 重开",
+    "bugReopening": "重开 | 缺陷 ",
     "defectRate": "缺陷重开率",
     "defectsReopenedInTheCurrentDefectsInTheCurrent": "当期重开缺陷/当期总缺陷*100%",
     "defectsNotFixedInTheCurrentPeriod": "当期未修复缺陷",
