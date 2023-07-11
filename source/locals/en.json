@@ -902,7 +902,9 @@
     "uploadDefect": "Upload defect",
     "operationSuccess": "Successful operation",
     "copySuccess": "The link has been copied",
-    "copyFail": "Failed to copy the link"
+    "copyFail": "Failed to copy the link",
+    "chooseCategory": "Select category",
+    "clearAll": "Clear all options"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",
@@ -1887,7 +1889,13 @@
     "pleaseInputMessage": "Please enter a message",
     "shareErrorTip2": "Add Message (Required)",
     "acquiring": "Getting...",
-    "getLink": "Get the link"
+    "getLink": "Get the link",
+    "longStoryUpdateSuccess": "Long story modified successfully",
+    "recent": "recent",
+    "cancelLink": "Cancel the link",
+    "delTransaction": "Delete the transaction",
+    "moveToSprint": "Move to sprint",
+    "searchTips": "Search for a transaction or description"
   },
   "sprintProject": {
     "affairs": "Affairs",
@@ -1972,6 +1980,7 @@
   "details": "Details",
   "subRequirement": "Sub requirement",
   "associatedWorkItems": "Associated Work Items",
+  "linkWorkItems": "Link Work Items",
   "changeLog": "Change log",
   "circulationRecords": "Circulation records",
   "areYouSureYouWantToDeleteThis": "Are you sure you want to delete this iteration?",

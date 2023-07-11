@@ -369,7 +369,7 @@ const IterationDefectDetail = () => {
       key: '2',
       label: (
         <ActivityTabItem>
-          <span>{t('associatedWorkItems')}</span>
+          <span>{t('linkWorkItems')}</span>
         </ActivityTabItem>
       ),
       children: (

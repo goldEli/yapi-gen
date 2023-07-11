@@ -98,13 +98,13 @@ export const SprintDropdownMenu = (props: Props) => {
   let menuItems = [
     {
       key: '1',
-      label: <MenuItemWrap onClick={onCopyLink}>复制链接</MenuItemWrap>,
+      label: <MenuItemWrap onClick={onCopyLink}>{t('copy_Link')}</MenuItemWrap>,
     },
     {
       key: '2',
       label: (
         <MenuItemWrap onClick={() => props.onEditItem(props.record)}>
-          编辑事务
+          {t('sprint.editTransaction')}
         </MenuItemWrap>
       ),
     },
@@ -112,14 +112,14 @@ export const SprintDropdownMenu = (props: Props) => {
       key: '3',
       label: (
         <MenuItemWrap onClick={() => props.onDeleteChange(props.record)}>
-          删除事务
+          {t('sprint.delTransaction')}
         </MenuItemWrap>
       ),
     },
     {
       key: '4',
       disabled: true,
-      label: <RemoveItemWrap>移至冲刺</RemoveItemWrap>,
+      label: <RemoveItemWrap>{t('sprint.moveToSprint')}</RemoveItemWrap>,
     },
   ].concat(
     rightSprintList

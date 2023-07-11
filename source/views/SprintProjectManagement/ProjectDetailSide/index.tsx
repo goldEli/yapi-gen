@@ -43,7 +43,18 @@ export const Back = styled.div`
     color: var(--primary-d1);
   }
 `
-
+export const MenuStyle = styled(Menu)({
+  '& .ant-menu-item-selected': {
+    background: 'var(--gradient-left) !important',
+    color: 'var(--primary-d2)',
+  },
+  '& .ant-menu-item-selected .anticon': {
+    color: 'var(--primary-d2) !important',
+  },
+  '& .ant-menu-item-selected::after': {
+    borderRight: '3px solid var(--primary-d1) !important',
+  },
+})
 const ProjectDetailSide = () => {
   const [t] = useTranslation()
   const projectSide = useRef<HTMLDivElement>(null)
@@ -260,10 +271,10 @@ const ProjectDetailSide = () => {
   }, [projectId])
 
   useEffect(() => {
-    // debugger
     setSelectedKeys([paramsData.type])
   }, [paramsData.type])
   useEffect(() => {}, [pathname])
+  console.log(projectSettingsList)
   return (
     <AllWrap>
       {pathname !== '/SprintProjectManagement/DemandSetting' &&
@@ -294,7 +305,7 @@ const ProjectDetailSide = () => {
             <MenuBox>
               {pathname === '/SprintProjectManagement/Setting' ? (
                 // <div>12</div>
-                <Menu
+                <MenuStyle
                   // expandIcon={({ isOpen }) => {
                   //   return (
                   //     <div className="custom" style={{ marginLeft: 10 }}>
@@ -322,7 +333,7 @@ const ProjectDetailSide = () => {
                   style={{ background: 'transparent', border: 'none' }}
                   selectedKeys={selectedKeys}
                   defaultOpenKeys={['2']}
-                ></Menu>
+                ></MenuStyle>
               ) : (
                 menuList.map((i: any) => (
                   <MenuItem

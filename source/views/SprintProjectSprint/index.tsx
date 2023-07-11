@@ -24,10 +24,9 @@ import {
   getRightSprintList,
   getLeftSprintList,
 } from '@store/sprint/sprint.thunk'
-import { getStaffList } from '@/services/staff'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { useSearchParams } from 'react-router-dom'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getIsPermission, getParamsData, removeNull } from '@/tools'
 import CategoryDropdown from '@/components/CategoryDropdown'
 import useKeyPress from '@/hooks/useKeyPress'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
@@ -337,7 +336,6 @@ const SprintProjectSprint: React.FC = () => {
     visible: false,
     type: 'create',
   })
-  const [userOptions, setUserOptions] = useState<any[]>([])
   const [leftSearchObject, setLeftSearchObject] = useState<any>({
     order: 'desc',
     orderkey: 'id',
@@ -351,7 +349,7 @@ const SprintProjectSprint: React.FC = () => {
   const [checkCommission, setCheckCommission] = useState([false, false])
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { isUpdateAddWorkItem } = useSelector(store => store.project)
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const isCanEditSprint = !getIsPermission(
     projectInfo?.projectPermissions,
     'b/sprint',
@@ -409,8 +407,13 @@ const SprintProjectSprint: React.FC = () => {
     })
     setLeftSearchObject({
       ...leftSearchObject,
+      search: {
+        ...leftSearchObject.search,
+        sprint_status: filterList[0]?.id,
+      },
       is_long_story: 0,
     })
+    setCurrentFilter(filterList[0])
   }
 
   const changeStoryTab = () => {
@@ -421,8 +424,13 @@ const SprintProjectSprint: React.FC = () => {
     })
     setLeftSearchObject({
       ...leftSearchObject,
+      search: {
+        ...leftSearchObject.search,
+        sprint_status: filterList1[0]?.id,
+      },
       is_long_story: 1,
     })
+    setCurrentFilter(filterList1[0])
   }
 
   const onChangeFilter = (item: any) => {
@@ -437,27 +445,6 @@ const SprintProjectSprint: React.FC = () => {
       },
     })
   }
-
-  const generateOptions = (item: any) => {
-    return {
-      label: item.name,
-      value: item.id,
-      id: item.id,
-    }
-  }
-  const getUserList = async () => {
-    try {
-      const data = await getStaffList({ all: 1 })
-      setUserOptions(data.map(generateOptions))
-    } catch (error) {
-      // console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    // 获取经办人数据
-    getUserList()
-  }, [])
 
   useEffect(() => {
     dispatch(
@@ -554,7 +541,7 @@ const SprintProjectSprint: React.FC = () => {
                 },
               })
             }}
-            placeholder="搜索事务或描述"
+            placeholder={t('sprint.searchTips')}
             leftIcon
           />
         </div>
@@ -711,7 +698,13 @@ const SprintProjectSprint: React.FC = () => {
                 showArrow
                 showSearch
                 value={searchObject.search?.user_ids}
-                options={userOptions}
+                options={removeNull(projectInfoValues, 'user_name')?.map(
+                  (k: any) => ({
+                    label: k.content,
+                    id: k.id,
+                    value: k.id,
+                  }),
+                )}
                 onChange={(users: any) => {
                   setSearchObject({
                     ...searchObject,

@@ -223,7 +223,7 @@ const useShareModal = () => {
     // 点击获取链接
     const getCopyLink = async () => {
       const saveViewsParams = {
-        use_type: 2,
+        use_type: type,
         name: name ?? '',
         config: config,
         project_id: projectId,

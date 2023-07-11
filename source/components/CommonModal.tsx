@@ -7,9 +7,7 @@ import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap, ModalFooter } from './StyleCommon'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonButton from './CommonButton'
-import { useState } from 'react'
 
 const ModalHeader = styled.div`
   display: flex;
@@ -129,9 +127,7 @@ const CommonModal = (props: CommonModalProps) => {
               <CommonButton
                 type="primary"
                 isDisable={isDisable}
-                onClick={() => {
-                  props?.onConfirm?.()
-                }}
+                onClick={props?.onConfirm}
               >
                 {props?.confirmText ? props?.confirmText : t('common.confirm')}
               </CommonButton>
