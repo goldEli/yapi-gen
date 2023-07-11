@@ -64,6 +64,8 @@ export const DemandOperationDropdownMenu = (props: Props) => {
 
   // 复制需求链接
   const onCopyLink = () => {
+    console.log(props.record)
+
     let text: any = ''
     let beforeUrl: any
     beforeUrl = window.origin
@@ -73,6 +75,16 @@ export const DemandOperationDropdownMenu = (props: Props) => {
         demandId: props.record.id,
       }),
     )
+    if (props.record.project_type === 2) {
+      const url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
+      text += ` ${beforeUrl}${url} \n`
+      copyLink(
+        `【${props?.record.storyPrefixKey}】${text}`,
+        t('common.copySuccess'),
+        t('common.copyFail'),
+      )
+      return
+    }
     const url = `/ProjectManagement/DemandDetail?data=${params}`
     text += ` ${beforeUrl}${url} \n`
     copyLink(
