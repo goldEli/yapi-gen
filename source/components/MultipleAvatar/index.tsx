@@ -20,7 +20,6 @@ interface MultipleAvatarProps {
 
 const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
   const [visible, setVisible] = useState(false)
-  const [visible1, setVisible1] = useState(false)
   const [items, setItems] = useState(
     props.list?.map((item, idx) => {
       return {
@@ -60,7 +59,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
         label: (
           <ItemRow>
             <CommonUserAvatar isBorder name={item.name} avatar={item.avatar} />
-            <Text>({item.position})</Text>
+            <Text>({item.position ? item.position : '--'})</Text>
           </ItemRow>
         ),
       }
