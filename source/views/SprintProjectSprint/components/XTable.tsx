@@ -4,7 +4,7 @@ import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
 import ResizeTable from './ResizeTable'
 import NoData from '@/components/NoData'
-import { Tooltip } from 'antd'
+import { Popover, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
 import CreateSprintModal from './CreateSprintModal'
@@ -19,7 +19,7 @@ import { setAddWorkItemModal, setProjectInfoValues } from '@store/project'
 import CompleteSprintModal from './CompleteSprintModal'
 import { setSprintRefresh } from '@store/sprint'
 import CollapseCustom from './CollapseCustom'
-import { CloseWrap } from '@/components/StyleCommon'
+import { CloseWrap, PopoverTargetText } from '@/components/StyleCommon'
 import { getProjectInfoValues } from '@/services/project'
 import { useHotkeys } from 'react-hotkeys-hook'
 
@@ -236,6 +236,8 @@ const XTable: React.FC<XTableProps> = props => {
     [],
   )
 
+  console.log(data, '=datadatadata')
+
   return (
     <>
       <CollapseCustom
@@ -274,6 +276,27 @@ const XTable: React.FC<XTableProps> = props => {
                     )}${t('affairs')}）`
                   : ''}
               </span>
+              <Popover
+                content={
+                  <PopoverTargetText>
+                    {data.iterate_info || '--'}
+                  </PopoverTargetText>
+                }
+                placement="bottom"
+                trigger="click"
+              >
+                <Tooltip title="冲刺目标">
+                  <CloseWrap width={24} height={24} style={{ marginRight: 12 }}>
+                    <IconFont
+                      className="custom"
+                      style={{
+                        fontSize: 16,
+                      }}
+                      type="target"
+                    />
+                  </CloseWrap>
+                </Tooltip>
+              </Popover>
 
               {data.id === 0
                 ? null
