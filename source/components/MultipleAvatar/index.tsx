@@ -61,7 +61,6 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
   return (
     <Dropdown
       menu={{ items }}
-      open={true}
       disabled={props.disableDropDown}
       // trigger={['click']}
     >
