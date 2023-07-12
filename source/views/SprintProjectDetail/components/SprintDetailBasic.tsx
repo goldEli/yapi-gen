@@ -10,6 +10,7 @@ import { Tooltip } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 import { useTranslation } from 'react-i18next'
+import { setIsUpdateChangeLog } from '@store/project'
 interface Props {
   onRef: any
 }
@@ -25,6 +26,7 @@ const SprintDetailBasic = (props: Props) => {
   // 更新详情
   const onUpdate = () => {
     dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id || 0 }))
+    dispatch(setIsUpdateChangeLog(true))
   }
 
   // 跳转配置
