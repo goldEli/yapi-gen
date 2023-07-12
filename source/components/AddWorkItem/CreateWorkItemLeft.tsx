@@ -1,3 +1,4 @@
+/* eslint-disable prefer-named-capture-group */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-undefined */
 /* eslint-disable require-unicode-regexp */
@@ -545,13 +546,6 @@ const CreateDemandLeft = (props: Props) => {
     }, 100)
   }, [])
 
-  const validateMaxNonEmptyLength = (_: any, value: any) => {
-    if (value && value.includes(' ')) {
-      return Promise.reject(t('spacesAreNotAllowed'))
-    }
-    return Promise.resolve()
-  }
-
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
     // 需求id为真并且与需求详情id匹配
@@ -717,14 +711,13 @@ const CreateDemandLeft = (props: Props) => {
         </div>
         <Form.Item
           getValueFromEvent={event => {
-            return event.target.value.replace(/(?<start>^\s*)/g, '')
+            return event.target.value.replace(/(^\s*)|(\s*$)/g, '')
           }}
           label={t('common.title')}
           name="name"
           rules={[
             { required: true, message: t('pleaseEnterContent') },
             { max: 100, message: t('maximumLengthIsCharacters') },
-            { validator: validateMaxNonEmptyLength },
           ]}
         >
           <Input

@@ -17,7 +17,7 @@ export const getProjectList: any = async () => {
     order: 'asc',
   })
 
-  const data = response.data.map((item: any) => {
+  const data = response.data.list.map((item: any) => {
     return {
       id: item.id,
       title: item.name,
