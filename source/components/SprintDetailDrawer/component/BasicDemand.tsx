@@ -35,6 +35,7 @@ import {
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import ChangeSeverityPopover from '@/components/ChangeSeverityPopover'
 import DetailParent from '@/components/DetailParent'
+import MultipleAvatar from '@/components/MultipleAvatar'
 
 interface Props {
   detail?: any
@@ -259,6 +260,11 @@ const BasicDemand = (props: Props) => {
     if (
       !['schedule', 'parent_id', 'priority', 'severity'].includes(item.content)
     ) {
+      console.log(
+        item.content,
+        '=item.contentitem.contentitem.content',
+        props.detail,
+      )
       const filterContent = basicFieldList?.filter(
         (i: any) => i.content === item.content,
       )[0]
@@ -278,7 +284,27 @@ const BasicDemand = (props: Props) => {
           isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
           isInfoPage={props.isInfoPage}
         >
-          {defaultValues?.defaultHtml}
+          {['users_copysend_name', 'users_name'].includes(item.content) && (
+            <MultipleAvatar
+              max={3}
+              list={
+                item.content === 'users_name'
+                  ? props.detail?.user?.map((i: any) => ({
+                      id: i.user.id,
+                      name: i.user.name,
+                      avatar: i.user.avatar,
+                    }))
+                  : props.detail?.copySend?.map((i: any) => ({
+                      id: i.copysend.id,
+                      name: i.copysend.name,
+                      avatar: i.copysend.avatar,
+                    }))
+              }
+            />
+          )}
+          {!['users_copysend_name', 'users_name'].includes(item.content) && (
+            <>{defaultValues?.defaultHtml}</>
+          )}
         </TableQuickEdit>
       )
     } else if (item.content === 'schedule') {

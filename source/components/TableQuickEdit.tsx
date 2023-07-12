@@ -433,8 +433,6 @@ const TableQuickEdit = (props: Props) => {
       }
     }
 
-    console.log(obj.otherParams)
-
     if (projectInfo.projectType === 1) {
       // 缺陷
       if (props.item.is_bug === 1) {
