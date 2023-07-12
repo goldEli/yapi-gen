@@ -282,6 +282,7 @@ const SprintDetailDrawer = () => {
         pageSize: 9999,
       }),
     )
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 向上查找需求
