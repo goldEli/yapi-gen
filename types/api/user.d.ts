@@ -1,6 +1,1 @@
-declare interface API {
-  getUser: {
-    key: string
-    url: string
-  }
-}
+declare namespace API.User {}

@@ -324,6 +324,7 @@ const TableFilter = (props: any) => {
     } else if (Object.keys(props.defaultValue)?.length === 0) {
       return
     }
+    confirm()
   }, [props.defaultValue])
   console.log(props.defaultValue, 'props.defaultValue')
   useEffect(() => {

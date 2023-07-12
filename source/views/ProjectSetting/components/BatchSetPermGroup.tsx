@@ -24,10 +24,9 @@ const BatchSetPermGroup = (props: {
     }
   }, [props.isVisible])
 
-  const onConfirm = () => {
-    form.validateFields().then(res => {
-      props.onConfirm(res.userGroupId)
-    })
+  const onConfirm = async () => {
+    await form.validateFields()
+    await props.onConfirm(form.getFieldsValue().userGroupId)
   }
   useEffect(() => {
     props.isVisible && getRoleListApi(props.projectState)

@@ -1,7 +1,8 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import PriorityIcon from '@/components/PriorityIcon'
+import IconFont from '@/components/IconFont'
 import { Tooltip } from 'antd'
 import {
   Bottom,
@@ -19,6 +20,7 @@ import {
   TopRight,
   TopText,
   WrapIcon,
+  TooltipText,
 } from './styled'
 import ThreeDot from '../ThreeDot'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
@@ -36,14 +38,14 @@ interface IssueCardProps {
 }
 
 const IssueCard = (props: IssueCardProps) => {
+  const [isOpen, setIsOpen] = useState(false)
   const { item, index } = props
-  // debugger
   const isDragDisabled = props.item.verify_lock === 1
   const childRef = useRef<any>(null)
   const [openDemandDetail] = useOpenDemandDetail()
   const { ids } = useStoryIds()
   const { projectInfo } = useSelector(store => store.project)
-
+  console.log(item, 'item')
   const cardContent = (
     <IssueCardBoxContainer hidden={props.hidden}>
       <Top>
@@ -72,35 +74,58 @@ const IssueCard = (props: IssueCardProps) => {
           {item.name}
         </StoryText>
       </Middle>
-      <Bottom>
-        <BottomLeft>
-          <MultipleAvatar max={3} list={item.handlers} />
-        </BottomLeft>
-        <BottomRight>
-          {projectInfo.projectType === 1 && (
-            <PercentageBox>{`${item.schedule}%`}</PercentageBox>
-          )}
-          <Sub
-            onClick={(e: any) => {
-              e.stopPropagation()
-              if (childRef.current) {
-                childRef.current!.click()
-              }
-            }}
-          >
-            <WrapIcon type="apartment" />
-            <ChildDemandTable
-              ref={childRef}
-              value={item.children_count}
-              row={{ id: item.id }}
+      <div style={{ width: '100%', height: '22px', position: 'relative' }}>
+        <Bottom>
+          <BottomLeft>
+            <MultipleAvatar max={3} list={item.handlers} />
+          </BottomLeft>
+          <BottomRight>
+            <Tooltip
+              title={'123'}
+              placement={'top'}
+              trigger="click"
+              open={isOpen}
+              onOpenChange={e => setIsOpen(e)}
+            >
+              <IconFont
+                type="target"
+                style={{
+                  fontSize: 16,
+                  paddingTop: '3px',
+                  color: 'var(--neutral-n1)',
+                }}
+              />
+            </Tooltip>
+            {projectInfo.projectType === 1 && (
+              <PercentageBox>{`${item.schedule}%`}</PercentageBox>
+            )}
+            <Sub
+              onClick={(e: any) => {
+                e.stopPropagation()
+                if (childRef.current) {
+                  childRef.current!.click()
+                }
+              }}
+            >
+              <WrapIcon type="apartment" />
+              <ChildDemandTable
+                ref={childRef}
+                value={item.children_count}
+                row={{ id: item.id }}
+              />
+            </Sub>
+            <PriorityIcon
+              icon={item.story_config_priority.icon}
+              color={item.story_config_priority.color ?? ''}
             />
-          </Sub>
-          <PriorityIcon
-            icon={item.story_config_priority.icon}
-            color={item.story_config_priority.color ?? ''}
-          />
-        </BottomRight>
-      </Bottom>
+          </BottomRight>
+        </Bottom>
+        {isOpen && (
+          <TooltipText>
+            我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷
+          </TooltipText>
+        )}
+      </div>
     </IssueCardBoxContainer>
   )
 

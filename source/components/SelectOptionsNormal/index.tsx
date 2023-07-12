@@ -95,6 +95,7 @@ const SelectOptionsNormal: React.FC<SelectBoxProps> = props => {
         onChangeVisible={setIsVisibleFormat}
         menu={<Menu items={menuItems} />}
         isActive
+        notIcon
       >
         <SelectOptionsBox>
           <span>{title}</span>

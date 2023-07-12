@@ -35,6 +35,15 @@ const language = [
     codeError: '动态口令不正确',
     authorizedLogin: '授权登录将获取以下权限',
     AgileLogin: '登录IFUN Agile',
+    CarouselTitle1: '专业的项目协作工具',
+    CarouselTitle2: 'IFUN Agile 智能研发管理',
+    CarouselTitle3: '效能洞察',
+    CarouselDesc1:
+      '提供项目管理、需求管理、缺陷管理、任务管理、Kanban管理、版本管理等丰富的项目管理功能及效能数据统计。',
+    CarouselDesc2:
+      '为研发过程中提供标准化管理和沉淀工具，方便测试人员对用例进行标准化管理和沉淀，同时实现需求、缺陷、用例关联，告别测试用例重复撰写、进展反馈不同步的问题。',
+    CarouselDesc3:
+      '交付过程观测和研发效能度量分析工具，提供丰富的度量图表覆盖软件交付全生命周期，在交付过程中提前暴露交付风险，保障交付效率和质量，多维度可视化分析团队效能状态、及时发现问题。',
   },
   {
     id: 1,
@@ -72,6 +81,15 @@ const language = [
     codeError: 'Incorrect dynamic password',
     authorizedLogin: 'Authorizing login will obtain the following permissions',
     AgileLogin: 'Login as the IFUN Agile account',
+    CarouselTitle1: 'Professional project collaboration tools',
+    CarouselTitle2: 'IFUN Agile Intelligent R&D management',
+    CarouselTitle3: 'Performance insight',
+    CarouselDesc1:
+      'Provide project management, requirements management, defect management, task management, Kanban management, version management and other rich project management functions and performance data statistics.',
+    CarouselDesc2:
+      'Provide standardized management and precipitation tools for the research and development process, which is convenient for testers to standardize management and precipitation of use cases, and realize the association of requirements, defects and use cases, and bid farewell to the problems of repeated writing of test cases and asynchronous progress feedback.',
+    CarouselDesc3:
+      'Delivery process observation and development of performance measurement analysis tools, providing a wealth of measurement charts covering the entire life cycle of software delivery, in the delivery process to expose delivery risks in advance, ensure delivery efficiency and quality, multi-dimensional visual analysis of team performance status, timely detection of problems.',
   },
 ]
 const reducer = (prevState: LanguageMode, action: { type: number }) => {
@@ -140,6 +158,12 @@ export type LanguageMode = {
   and: string
   auth: string
   oaAuth: string
+  CarouselTitle1: string
+  CarouselTitle2: string
+  CarouselTitle3: string
+  CarouselDesc1: string
+  CarouselDesc2: string
+  CarouselDesc3: string
 }
 enum InputMode {
   NORMAL,

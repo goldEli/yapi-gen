@@ -56,6 +56,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       ),
     }
   })
+  console.log(props, 'MultipleAvatarBox', items)
   return (
     <Dropdown
       menu={{ items }}

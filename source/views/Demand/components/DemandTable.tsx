@@ -4,11 +4,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
 import { createRef, useEffect, useMemo, useState } from 'react'
-import { message, Menu, Table } from 'antd'
-import styled from '@emotion/styled'
+import { Menu, Table } from 'antd'
 import { useSearchParams } from 'react-router-dom'
-import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -19,7 +16,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { saveSort, saveTitles } from '@store/view'
+import { saveSort } from '@store/view'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getMessage } from '@/components/Message'
 import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
@@ -349,6 +346,7 @@ const DemandTable = (props: Props) => {
   useEffect(() => {
     setSelectedRowKeys([])
   }, [props.data?.list])
+  console.log(selectColum, 'selectColum')
   return (
     <TableContent>
       <ResizeTable

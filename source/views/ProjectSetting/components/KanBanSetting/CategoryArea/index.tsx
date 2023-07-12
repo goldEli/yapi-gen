@@ -68,7 +68,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
         <UpDownBtn isOpen={isOpen} />
         <IconImg src={props.data.attachment_path} />
         <Text>{props.data.name}</Text>
-        <CommonButton
+        <div
           onClick={e => {
             // console.log({ e })
             e.stopPropagation()
@@ -93,10 +93,9 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
             )
             navigate(`/SprintProjectManagement/WorkFlow?data=${params}`)
           }}
-          type="secondary"
         >
-          {t('edit_workflow')}
-        </CommonButton>
+          <CommonButton type="secondary">{t('edit_workflow')}</CommonButton>
+        </div>
       </TitleArea>
       {children}
     </CategoryAreaBox>

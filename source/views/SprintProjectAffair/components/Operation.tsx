@@ -158,6 +158,8 @@ const Operation = (props: Props) => {
   )
 
   const onFilterSearch = (e: any, customField: any) => {
+    console.log(e, customField, '字段')
+
     // 如果筛选未打开
     if (filterState) {
       return

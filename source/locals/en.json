@@ -1084,7 +1084,12 @@
     "importText15": "⑦ Update Mode Fill in '1' empty data field overwriting the original field parameter. Fill in '0' empty data does not overwrite the original field parameter;",
     "importText16": "⑧ Updates to transactions that are not accessible are not supported。",
     "importChoose": "Import the transaction field selection",
-    "exportTransaction": "Export transaction"
+    "exportTransaction": "Export transaction",
+    "stepTitle1": "The first step in project management",
+    "stepTitle2": "The second step of project management",
+    "stepDesc1": "Here you can create projects by sprint or iteration, choose different types to fit different teams to manage your projects",
+    "stepDesc2": "1. Here, you can directly enter the corresponding module after clicking the mouse. Click the project you are responsible for to start working",
+    "stepExtra": "2. In the process of work, you can edit, delete and end ta at any time"
   },
   "setting": {
     "companyInfo": "Company Info",
@@ -1895,7 +1900,16 @@
     "cancelLink": "Cancel the link",
     "delTransaction": "Delete the transaction",
     "moveToSprint": "Move to sprint",
-    "searchTips": "Search for a transaction or description"
+    "searchTips": "Search for a transaction or description",
+    "stepTitle1": "The first step before you start sprinting",
+    "stepTitle2": "Start the second step before sprinting",
+    "stepTitle3": "Start the third step before sprinting",
+    "stepDesc1": "Here you can create a work goal for your backlog and plan your work ahead of time",
+    "stepDesc2": "Click Edit Sprint, have the target rules ready for your sprint team, and get to work",
+    "stepDesc3": "Add backlog for sprint and click Start Sprint to complete sprint goal; You can also customize feature sets for transactions plus long stories",
+    "skip": "Skip",
+    "startWork": "Start to work",
+    "nextStep": "Next step"
   },
   "sprintProject": {
     "affairs": "Affairs",
