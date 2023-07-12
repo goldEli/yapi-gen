@@ -62,6 +62,8 @@ export const SprintDropdownMenu = (props: Props) => {
     let text: any = ''
     let beforeUrl: any
     beforeUrl = window.origin
+    console.log(props)
+
     const params = encryptPhp(
       JSON.stringify({
         id: props.record.project_id,
