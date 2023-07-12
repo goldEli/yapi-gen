@@ -980,6 +980,17 @@ const PriorityWrapTable = styled.div<{ isShow?: boolean }>(
   }),
 )
 
+const PopoverTargetText = styled.div`
+  max-width: 560px;
+  padding: 8px 16px;
+  max-height: 172px;
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  background: var(--neutral-white-d6);
+  font-size: 14px;
+  color: var(--neutral-n1-d1);
+`
+
 export {
   ChartsItem1,
   ChartsItem2,
@@ -1035,4 +1046,5 @@ export {
   DragTableIcon,
   PriorityWrapTable,
   TextWrapEdit,
+  PopoverTargetText,
 }

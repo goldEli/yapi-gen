@@ -32,6 +32,7 @@ import {
   haveAuto,
 } from './style'
 import DetailParent from '../DetailParent'
+import MultipleAvatar from '../MultipleAvatar'
 
 interface Props {
   detail?: any
@@ -230,7 +231,27 @@ const BasicDemand = (props: Props) => {
           isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
           isInfoPage={props.isInfoPage}
         >
-          {defaultValues?.defaultHtml}
+          {['users_copysend_name', 'users_name'].includes(item.content) && (
+            <MultipleAvatar
+              max={3}
+              list={
+                item.content === 'users_name'
+                  ? props.detail?.user?.map((i: any) => ({
+                      id: i.user.id,
+                      name: i.user.name,
+                      avatar: i.user.avatar,
+                    }))
+                  : props.detail?.copySend?.map((i: any) => ({
+                      id: i.copysend.id,
+                      name: i.copysend.name,
+                      avatar: i.copysend.avatar,
+                    }))
+              }
+            />
+          )}
+          {!['users_copysend_name', 'users_name'].includes(item.content) && (
+            <>{defaultValues?.defaultHtml}</>
+          )}
         </TableQuickEdit>
       )
     } else if (item.content === 'schedule') {

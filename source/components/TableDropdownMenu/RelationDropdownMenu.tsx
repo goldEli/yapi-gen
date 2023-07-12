@@ -29,7 +29,7 @@ interface Props {
 
 const RelationDropdownMenu = (props: Props) => {
   const [t] = useTranslation()
-
+  const pid = useSelector(store => store.project.projectInfo.id)
   // 复制需求id
   const onCopyId = () => {
     copyLink(`${props?.record.story_prefix_key}`, '复制成功！', '复制失败！')
@@ -40,13 +40,15 @@ const RelationDropdownMenu = (props: Props) => {
     let text: any = ''
     let beforeUrl: any
     beforeUrl = window.origin
+    console.log(props)
+
     const params = encryptPhp(
       JSON.stringify({
-        id: props.record.project_id,
-        demandId: props.record.id,
+        id: pid,
+        sprintId: props.record.id,
       }),
     )
-    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    const url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${props?.record.story_prefix_key}】${text}`,

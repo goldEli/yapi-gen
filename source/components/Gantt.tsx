@@ -114,8 +114,6 @@ const Gantt = (props: Props) => {
       return formatFunc(date)
     }
     gantt.templates.tooltip_text = function (start, end, task) {
-      console.log(task)
-
       return (
         `<b>${
           i18n.language === 'zh' ? t('common.title') + '：' : 'Title:'
