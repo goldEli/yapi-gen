@@ -99,13 +99,7 @@ const Main = (props: UserInfo) => {
         text: string,
         record: { user: { avatar: string; name: string } },
       ) => {
-        return (
-          <CommonUserAvatar
-            size="large"
-            avatar={record.user?.avatar || ''}
-            name={record.user?.name || ''}
-          />
-        )
+        return <MultipleAvatar max={1} list={[record.user]} />
       },
     },
     {
@@ -118,17 +112,10 @@ const Main = (props: UserInfo) => {
         },
       ) => {
         return (
-          <>
-            {record.relate_users.length === 1 ? (
-              <CommonUserAvatar
-                size="large"
-                avatar={record.relate_users[0]?.avatar || ''}
-                name={record.relate_users[0]?.name || ''}
-              />
-            ) : (
-              <MultipleAvatar max={3} list={record.relate_users || []} />
-            )}
-          </>
+          <MultipleAvatar
+            max={record.relate_users.length === 1 ? 1 : 3}
+            list={record.relate_users}
+          />
         )
       },
     },

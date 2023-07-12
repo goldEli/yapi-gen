@@ -1754,7 +1754,7 @@
     "people": "人",
     "allPeople": "已选：全员",
     "statisticalPeriod": "统计周期",
-    "daysBefore": "较前14天",
+    "daysBefore": "较前{{day}}天",
     "ringRatio": "环比",
     "fromHighToLow": "由高到低",
     "lowToHigh": "由低到高",

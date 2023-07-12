@@ -12,8 +12,8 @@ export const getUserIntroList = async (params: { ids: string }) => {
       id: i.id,
       name: i.name,
       avatar: i.avatar,
-      department: i.department.name,
-      position: i.position.name,
+      department: i.department?.name,
+      position: i.position?.name,
     })),
   }
 }
