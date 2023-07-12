@@ -30,15 +30,28 @@ const useOpenDemandDetail = () => {
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
         case 1:
-          dispatch(setAffairsDetailDrawer({ visible: true, params: item }))
+          // 关闭其他两个浮层
+          dispatch(saveFlawDetailDrawer({ visible: false }))
+          dispatch({
+            type: 'demand/setIsDemandDetailDrawerVisible',
+            payload: false,
+          })
           dispatch(saveAffairsDetailDrawer({ visible: true, params: item }))
           break
         case 2:
-          dispatch(setFlawDetailDrawer({ visible: true, params: item }))
+          // 关闭其他两个浮层
+          dispatch(saveAffairsDetailDrawer({ visible: false }))
+          dispatch({
+            type: 'demand/setIsDemandDetailDrawerVisible',
+            payload: false,
+          })
           dispatch(saveFlawDetailDrawer({ visible: true, params: item }))
           break
 
         default:
+          // 关闭其他两个浮层
+          dispatch(saveAffairsDetailDrawer({ visible: false }))
+          dispatch(saveFlawDetailDrawer({ visible: false }))
           dispatch({
             type: 'demand/setIsDemandDetailDrawerVisible',
             payload: true,

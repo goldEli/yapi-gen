@@ -33,7 +33,7 @@ export const MenuStyle = styled(Menu)({
     color: 'var(--primary-d2)',
   },
   '& .ant-menu-item-selected::after': {
-    borderRight: '3px solid var(--primary-d1)',
+    borderRight: 0,
   },
 })
 export const Back = styled.div`
@@ -390,7 +390,7 @@ const ProjectDetailSide = () => {
   useEffect(() => {
     const key = paramsData.pageIdx === 'main' ? 'info' : paramsData.pageIdx
     setSelectedKeys([key])
-  }, [])
+  }, [paramsData.pageIdx])
   return (
     <AllWrap>
       <WrapDetail ref={projectSide}>
@@ -401,10 +401,16 @@ const ProjectDetailSide = () => {
             <span>
               {projectInfo.teamId
                 ? t('teamwork', {
-                    type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                    type:
+                      projectInfo.projectType === 1
+                        ? t('sprintProject.iteration')
+                        : t('sprintProject.sprint'),
                   })
                 : t('enterprise_project', {
-                    type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                    type:
+                      projectInfo.projectType === 1
+                        ? t('sprintProject.iteration')
+                        : t('sprintProject.sprint'),
                   })}
             </span>
           </SideInfo>
@@ -427,7 +433,11 @@ const ProjectDetailSide = () => {
               onClick={() => onChangeRouter(i)}
               hidden={!i.isPermission}
             >
-              <CommonIconFont type={i.icon} size={18} />
+              <CommonIconFont
+                type={i.icon}
+                size={18}
+                color="var(--neutral-n3)"
+              />
               <div>{i.name}</div>
             </MenuItem>
           ))}
@@ -452,10 +462,16 @@ const ProjectDetailSide = () => {
             <span>
               {projectInfo.teamId
                 ? t('teamwork', {
-                    type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                    type:
+                      projectInfo.projectType === 1
+                        ? t('sprintProject.iteration')
+                        : t('sprintProject.sprint'),
                   })
                 : t('enterprise_project', {
-                    type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                    type:
+                      projectInfo.projectType === 1
+                        ? t('sprintProject.iteration')
+                        : t('sprintProject.sprint'),
                   })}
             </span>
           </SideInfo>

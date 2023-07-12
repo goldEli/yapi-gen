@@ -207,6 +207,7 @@ function getTypeComponent(
         defaultValue={defaultValue}
         ref={inputRef}
         autoComplete="off"
+        precision={0}
       />
     )
   } else if (params?.attr === 'treeSelect') {
