@@ -73,7 +73,7 @@ const DemandDetail = () => {
 
   const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, demandId, changeIds, newOpen } = paramsData
+  const { id, demandId, changeIds, newOpen, type } = paramsData
   const { demandInfo } = useSelector(store => store.demand)
   const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
@@ -89,7 +89,7 @@ const DemandDetail = () => {
     list: undefined,
   })
 
-  const [tabActive, setTabActive] = useState('1')
+  const [tabActive, setTabActive] = useState(type ?? '1')
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
