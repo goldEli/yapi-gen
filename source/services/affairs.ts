@@ -301,6 +301,7 @@ export const getAffairsInfo = async (
     solution: response.data.solution,
     discovery_version_name: response.data.discovery_version_name,
     discovery_version: response.data.discovery_version,
+    iterate_info: response.data.iterate_info,
   }
 }
 

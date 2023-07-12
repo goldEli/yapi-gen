@@ -2046,5 +2046,6 @@
   "theSelectedTransactionWillBeConfirmTo": "勾选的事务将被删除，确认删除吗？",
   "defectComment": "缺陷评论",
   "areYouSureYouWantToDeleteThisFlaw": "确认删除该缺陷？",
-  "businessReview": "事务评论"
+  "businessReview": "事务评论",
+  "targetInfo": "目标："
 }

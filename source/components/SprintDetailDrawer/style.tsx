@@ -1,6 +1,19 @@
 import styled from '@emotion/styled'
 import { Dropdown, Space } from 'antd'
 
+export const TargetWrap = styled.div`
+  flex-wrap: wrap;
+  margin-top: 16px;
+  font-size: 14px;
+  .icon {
+    margin-right: 8px;
+    display: inline;
+  }
+  .label {
+    font-family: SiYuanMedium;
+  }
+`
+
 export const ContentWrap = styled.div<{ notHover?: any }>(
   {
     color: 'var(--neutral-n1-d1)',
