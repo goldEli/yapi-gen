@@ -112,7 +112,7 @@ const DemandDetailDrawer = () => {
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
     { name: t('common.childDemand'), key: 'detailDemands', content: '' },
-    { name: '关联工作项2', key: 'relation', content: '' },
+    { name: '关联工作项', key: 'relation', content: '' },
     { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
     { name: t('requirements_review'), key: 'demandComment', content: '' },
   ]
@@ -381,9 +381,6 @@ const DemandDetailDrawer = () => {
 
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
-    console.log('关联工作项')
-    return
-
     getDemandDetail('', demandIds)
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
