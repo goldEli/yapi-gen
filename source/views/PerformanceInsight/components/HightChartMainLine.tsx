@@ -50,8 +50,6 @@ const HightChartMainLine = (props: {
       categories: props.chart?.yData,
     },
     yAxis: {
-      min: 0,
-      max: 100,
       title: {
         text: false,
       },

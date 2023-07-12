@@ -57,15 +57,13 @@ const HightChartMainBar = (props: {
       style: {
         color: '#646566',
       },
-      categories: props.chart?.yData,
+      // categories: props.chart?.yData,
     },
     yAxis: [
       {
         tickColor: '#ECEDEF',
         gridLineColor: '#ECEDEF',
         gridLineDashStyle: 'longdash',
-        min: 0,
-        max: 100,
         title: {
           text: false,
         },
@@ -145,7 +143,9 @@ const HightChartMainBar = (props: {
                 color="var(--function-error)"
               />
               <span className="time">
-                {t('performance.daysBefore')}
+                {t('performance.daysBefore', {
+                  day: props.chart?.period_number,
+                })}
                 {props.chart.growth_rate > 0
                   ? `+${props.chart?.growth_rate}`
                   : props.chart?.growth_rate}

@@ -28,6 +28,7 @@ import CreateDemandLeft from './CreateWorkItemLeft'
 import CreateDemandRight from './CreateWorkItemRight'
 import { addAffairs, getAffairsInfo, updateAffairs } from '@/services/affairs'
 import { addFlaw, getFlawInfo, updateFlaw } from '@/services/flaw'
+import moment from 'moment'
 
 const ModalFooter = styled.div({
   width: '100%',
@@ -230,6 +231,17 @@ const AddWorkItem = () => {
   const onSaveCategory = async (hasNext?: number) => {
     const leftValues = await leftDom.current.confirm()
     const rightValues = await rightDom.current.confirm()
+    if (
+      moment(rightValues['expected_end_at']).isBefore(
+        moment(rightValues['expected_start_at']),
+      )
+    ) {
+      getMessage({
+        type: 'warning',
+        msg: t('version2.endTimeComputedStartTime'),
+      })
+      return
+    }
     if (leftValues && rightValues) {
       await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
     }

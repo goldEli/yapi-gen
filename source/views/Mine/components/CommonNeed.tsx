@@ -266,8 +266,6 @@ const CommonNeed = (props: any) => {
         searchGroups,
       }
       const res = await getMineNoFinishList(params)
-      console.log(res, '数据源')
-
       setManyListData({ list: res })
       setIsSpin(false)
       dispatch(setIsUpdateCreate(false))
@@ -572,7 +570,7 @@ const CommonNeed = (props: any) => {
       ]}
     />
   )
-  console.log(manyListData, '222很多很多', isMany)
+  console.log(selectColum, '222很多很多')
 
   return (
     <>

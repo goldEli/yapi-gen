@@ -381,6 +381,7 @@ const XTable: React.FC<XTableProps> = props => {
             return (
               <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
                 <ResizeTable
+                  id={data?.id}
                   height={
                     snapshot.isDraggingOver
                       ? data.stories?.length

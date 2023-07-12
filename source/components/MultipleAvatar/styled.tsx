@@ -39,6 +39,7 @@ export const ItemRow = styled.div`
   width: 240px;
   display: flex;
   alignitems: center;
+  cursor: pointer;
 `
 export const Text = styled.span`
   margin-left: 2px;

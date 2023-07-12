@@ -224,7 +224,7 @@ const useShareModal = () => {
     const getCopyLink = async () => {
       const saveViewsParams = {
         use_type: type,
-        name: name ?? '',
+        name: viewType === 2 ? '分享的视图' : name ?? '',
         config: config,
         project_id: projectId,
       }

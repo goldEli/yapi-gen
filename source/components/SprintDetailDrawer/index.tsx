@@ -282,6 +282,7 @@ const SprintDetailDrawer = () => {
         pageSize: 9999,
       }),
     )
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 向上查找需求
@@ -414,12 +415,12 @@ const SprintDetailDrawer = () => {
     newState[item.domKey].isOpen = true
     newState[item.domKey].dom.current.style.height = 'auto'
     setShowState(newState)
-    const dom = document.getElementById(item.key)
     setTimeout(() => {
+      const dom = document.getElementById(item.key)
       dom?.scrollIntoView({
         behavior: 'smooth',
       })
-    }, 10)
+    }, 100)
   }
 
   // 确认删除
