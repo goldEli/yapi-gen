@@ -25,7 +25,7 @@ export const WrapSet = styled.div`
 export const SideTop = styled.div`
   display: flex;
   align-items: center;
-  padding: 24px 24px 16px;
+  padding: 24px 24px 14px;
   img {
     width: 32px;
     height: 32px;
@@ -126,13 +126,16 @@ export const BackStyle = styled.div`
   /* height: 48px; */
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 19px;
   padding-bottom: 14px;
   color: var(--neutral-n3);
   font-size: 12px;
   &:hover {
     cursor: pointer;
     color: var(--primary-d2);
+  }
+  span:last-child {
+    margin-left: 2px;
   }
 `
 export const TitleStyle = styled.div`
