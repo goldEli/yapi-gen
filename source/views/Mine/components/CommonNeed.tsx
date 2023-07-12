@@ -265,7 +265,9 @@ const CommonNeed = (props: any) => {
         searchGroups,
       }
       const res = await getMineNoFinishList(params)
-      setManyListData({ list: res.list })
+      console.log(res, '数据源')
+
+      setManyListData({ list: res })
       setIsSpin(false)
       dispatch(setIsUpdateCreate(false))
       setTotal(res?.total)
@@ -405,7 +407,7 @@ const CommonNeed = (props: any) => {
         },
       },
     ]
-    console.log(newList)
+
     if (props.id === 0) {
       const index = newList.findIndex((i: any) => i.key === 'iterate_name')
       newList.splice(index, 1)
@@ -565,6 +567,7 @@ const CommonNeed = (props: any) => {
       ]}
     />
   )
+  console.log(manyListData, '222很多很多', isMany)
 
   return (
     <>
