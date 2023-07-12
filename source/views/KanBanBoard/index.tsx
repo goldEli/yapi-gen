@@ -17,7 +17,7 @@ const KanBanBoardBox = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  /* gap: 20px; */
   padding: 20px;
   height: 100%;
 `
