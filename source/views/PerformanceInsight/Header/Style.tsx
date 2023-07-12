@@ -399,6 +399,7 @@ export const LotBox = styled.div`
   background: var(--neutral-n10);
   border-radius: 6px;
   margin-right: 24px;
+  margin-bottom: 24px;
   padding: 16px;
   &:hover {
     background: var(--neutral--white-d6);
