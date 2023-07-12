@@ -661,15 +661,9 @@ export const getMemberInfoOverviewStatistics: any = async (params: any) => {
     target_id: params.targetId,
     project_id: params.projectId,
   })
-  const { abeyance } = response.data
+  console.log(response, '----------')
 
-  return {
-    secondAll: abeyance.total,
-    secondNoFinish: abeyance.abeyance_count,
-    secondTimeOut: abeyance.expired_count,
-    secondFinish: abeyance.finish_count,
-    secondOutFinish: abeyance.expired_finish_count,
-  }
+  return response.data
 }
 
 export const getMainInfo: any = async (params: any) => {
