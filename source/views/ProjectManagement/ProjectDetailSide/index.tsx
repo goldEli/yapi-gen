@@ -27,15 +27,46 @@ import {
   WrapCategory,
   SettingMenu,
 } from './style'
-export const MenuStyle = styled(Menu)({
-  '& .ant-menu-item-selected': {
-    background: 'var(--gradient-left)',
-    color: 'var(--primary-d2)',
-  },
-  '& .ant-menu-item-selected::after': {
-    borderRight: 0,
-  },
-})
+export const MenuStyle = styled(Menu)`
+  svg {
+    color: var(--neutral-n3);
+  }
+  .ant-menu-item:hover {
+    color: var(--primary-d2) !important;
+    svg {
+      color: var(--primary-d2) !important;
+    }
+  }
+  .ant-menu-item-selected,
+  .ant-menu-submenu-selected {
+    svg {
+      color: var(--primary-d2) !important;
+    }
+    background: linear-gradient(
+      90deg,
+      #ebefff 0%,
+      rgba(243, 246, 255, 0) 100%
+    ) !important;
+    color: var(--primary-d2) !important;
+    .ant-menu-submenu-arrow {
+      color: var(--primary-d2) !important;
+    }
+  }
+  .ant-menu-submenu-selected {
+    background: transparent !important;
+  }
+  .ant-menu-item-selected::after {
+    border-right: 0;
+  }
+  .ant-menu-submenu-title {
+    &:hover {
+      svg {
+        color: var(--primary-d2) !important;
+      }
+      color: var(--primary-d2) !important;
+    }
+  }
+`
 export const Back = styled.div`
   font-size: 12px;
   display: flex;

@@ -242,7 +242,7 @@
   "project_name_xxx": " Project name XXX",
   "please_specify_the_recipient_of_the_project": " Please specify who is the recipient of this project",
   "switch_preview_mode_successfully": " Switched preview_mode successfully!",
-  "requirement_opening_mode": " Requirement opening mode",
+  "requirement_opening_mode": " Detail opening mode",
   "popup_preview": " popover preview",
   "details_preview": " detail preview",
   "participated_in_this_team": " Participated in this team",
@@ -2058,5 +2058,6 @@
   "theSelectedTransactionWillBeConfirmTo": "The selected transaction will be deleted, confirm to delete?",
   "defectComment": "Defect comment",
   "areYouSureYouWantToDeleteThisFlaw": "Are you sure you want to delete this defect?",
-  "businessReview": "Business review"
+  "businessReview": "Business review",
+  "targetInfo": "Objective："
 }

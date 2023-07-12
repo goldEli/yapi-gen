@@ -46,8 +46,17 @@ const MoveFont = styled(IconFont)`
   cursor: move;
 `
 const TitleWrap = styled.div<{ isClose?: boolean }>`
+  width: 100%;
   display: flex;
   align-items: center;
+  .titleBox {
+    width: 100%;
+    max-width: 400px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
   .content {
     width: 160px;
     display: inline-block;
@@ -351,7 +360,7 @@ const DndKitTable = (props: any) => {
       title: t('sprint.Number'),
       dataIndex: 'story_prefix_key',
       key: 'story_prefix_key',
-      width: 200,
+      width: 150,
       render(value, temp) {
         const id = temp.id?.split('_')?.[1]
         const record = { ...temp, id, isExamine: temp.verify_lock === 1 }
@@ -396,7 +405,7 @@ const DndKitTable = (props: any) => {
       title: t('common.title'),
       dataIndex: 'name',
       key: 'name',
-      width: 200,
+      width: 400,
       render(value, record) {
         return (
           <TitleWrap
@@ -421,7 +430,7 @@ const DndKitTable = (props: any) => {
               />
             </Tooltip>
             <Tooltip placement="topLeft" title={value}>
-              <span className="content">{value}</span>
+              <span className="titleBox">{value}</span>
             </Tooltip>
           </TitleWrap>
         )

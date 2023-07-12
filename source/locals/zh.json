@@ -231,7 +231,7 @@
   "project_name_xxx": "项目名称XXX",
   "please_specify_the_recipient_of_the_project": "请指定项目接收人",
   "switch_preview_mode_successfully": "切换预览模式成功！",
-  "requirement_opening_mode": "需求打开方式",
+  "requirement_opening_mode": "详情打开方式",
   "popup_preview": "弹窗预览",
   "details_preview": "详情预览",
   "participated_in_this_team": "在本团队中参与了",
@@ -2048,5 +2048,6 @@
   "theSelectedTransactionWillBeConfirmTo": "勾选的事务将被删除，确认删除吗？",
   "defectComment": "缺陷评论",
   "areYouSureYouWantToDeleteThisFlaw": "确认删除该缺陷？",
-  "businessReview": "事务评论"
+  "businessReview": "事务评论",
+  "targetInfo": "目标："
 }

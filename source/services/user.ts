@@ -7,14 +7,13 @@ import { onlySysNotice } from './sysNotice'
 // 获取人员信息
 export const getUserIntroList = async (params: { ids: string }) => {
   const response: any = await http.get<any, any>('getUserIntroList', params)
-
   return {
-    list: response.data.list.map((i: any) => ({
+    list: response.data.map((i: any) => ({
       id: i.id,
       name: i.name,
       avatar: i.avatar,
-      department: i.department,
-      position: i.position,
+      department: i.department.name,
+      position: i.position.name,
     })),
   }
 }
