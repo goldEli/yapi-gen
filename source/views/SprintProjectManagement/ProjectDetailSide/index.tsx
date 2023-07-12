@@ -43,18 +43,17 @@ export const Back = styled.div`
     color: var(--primary-d1);
   }
 `
-export const MenuStyle = styled(Menu)({
-  '& .ant-menu-item-selected': {
-    background: 'var(--gradient-left) !important',
-    color: 'var(--primary-d2)',
-  },
-  '& .ant-menu-item-selected .anticon': {
-    color: 'var(--primary-d2) !important',
-  },
-  '& .ant-menu-item-selected::after': {
-    borderRight: '3px solid var(--primary-d1) !important',
-  },
-})
+export const MenuStyle = styled(Menu)`
+  .ant-menu-item:hover {
+    color: var(--primary-d2) !important;
+    svg {
+      color: var(--primary-d2) !important;
+    }
+  }
+  .ant-menu-item-selected::after {
+    border-right: 0;
+  }
+`
 const ProjectDetailSide = () => {
   const [t] = useTranslation()
   const projectSide = useRef<HTMLDivElement>(null)
@@ -287,10 +286,16 @@ const ProjectDetailSide = () => {
                 <span>
                   {projectInfo.teamId
                     ? t('teamwork', {
-                        type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                        type:
+                          projectInfo.projectType === 1
+                            ? t('sprintProject.iteration')
+                            : t('sprintProject.sprint'),
                       })
                     : t('enterprise_project', {
-                        type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                        type:
+                          projectInfo.projectType === 1
+                            ? t('sprintProject.iteration')
+                            : t('sprintProject.sprint'),
                       })}
                 </span>
               </SideInfo>

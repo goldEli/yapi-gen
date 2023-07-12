@@ -23,7 +23,6 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
   const paramsData = getParamsData(searchParams)
   const { type } = paramsData
   const [t] = useTranslation()
-  // debugger
   const navigate = useNavigate()
   const projectInfo = useSelector(state => state.project.projectInfo)
 
@@ -77,9 +76,23 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
           </a>
         </Breadcrumb.Item>
       ) : null}
-      <Breadcrumb.Item>
-        <a>{t('sprintProject.projectSettings')}</a>
-      </Breadcrumb.Item>
+      {type === 'ProjectAffair' && (
+        <Breadcrumb.Item
+          onClick={() => {
+            const params = encryptPhp(
+              JSON.stringify({
+                id: projectInfo.id,
+                pageIdx: 'info',
+                type: 'ProjectInfo',
+              }),
+            )
+            navigate(`/SprintProjectManagement/Setting?data=${params}`)
+          }}
+        >
+          <a>{t('sprintProject.projectSettings')}</a>
+        </Breadcrumb.Item>
+      )}
+
       <Breadcrumb.Item>
         <a className={lastBreadcrumb}>{maps[type] || maps.ProjectInfo}</a>
       </Breadcrumb.Item>
