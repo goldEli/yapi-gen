@@ -3,7 +3,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import PriorityIcon from '@/components/PriorityIcon'
 import IconFont from '@/components/IconFont'
-import { Tooltip } from 'antd'
+import { Popover, Tooltip } from 'antd'
 import {
   Bottom,
   BottomLeft,
@@ -20,7 +20,7 @@ import {
   TopRight,
   TopText,
   WrapIcon,
-  TooltipText,
+  PopoverText,
 } from './styled'
 import ThreeDot from '../ThreeDot'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
@@ -45,7 +45,7 @@ const IssueCard = (props: IssueCardProps) => {
   const [openDemandDetail] = useOpenDemandDetail()
   const { ids } = useStoryIds()
   const { projectInfo } = useSelector(store => store.project)
-  console.log(item, 'item')
+
   const cardContent = (
     <IssueCardBoxContainer hidden={props.hidden}>
       <Top>
@@ -80,25 +80,29 @@ const IssueCard = (props: IssueCardProps) => {
             <MultipleAvatar max={3} list={item.handlers} />
           </BottomLeft>
           <BottomRight>
-            <Tooltip
-              title={'123'}
-              placement={'top'}
-              trigger="click"
-              open={isOpen}
-              onOpenChange={e => setIsOpen(e)}
-            >
-              <IconFont
-                type="target"
-                style={{
-                  fontSize: 16,
-                  paddingTop: '3px',
-                  color: 'var(--neutral-n1)',
-                }}
-              />
-            </Tooltip>
             {projectInfo.projectType === 1 && (
               <PercentageBox>{`${item.schedule}%`}</PercentageBox>
             )}
+            <Popover
+              content={<PopoverText>{item.iterate_info || '--'}</PopoverText>}
+              placement="bottom"
+              trigger="click"
+            >
+              <Tooltip
+                title="冲刺目标"
+                placement="top"
+                trigger="click"
+                open={isOpen}
+                onOpenChange={e => setIsOpen(e)}
+              >
+                <WrapIcon
+                  type="target"
+                  style={{
+                    paddingTop: '3px',
+                  }}
+                />
+              </Tooltip>
+            </Popover>
             <Sub
               onClick={(e: any) => {
                 e.stopPropagation()
@@ -114,17 +118,15 @@ const IssueCard = (props: IssueCardProps) => {
                 row={{ id: item.id }}
               />
             </Sub>
-            <PriorityIcon
-              icon={item.story_config_priority.icon}
-              color={item.story_config_priority.color ?? ''}
-            />
+            {item.story_config_priority.icon && (
+              <PriorityIcon
+                icon={item.story_config_priority.icon}
+                color={item.story_config_priority.color ?? ''}
+              />
+            )}
           </BottomRight>
         </Bottom>
-        {isOpen && (
-          <TooltipText>
-            我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷我是你赵大爷
-          </TooltipText>
-        )}
+        {/* {isOpen && <TooltipText>{item.iterate_info || '--'}</TooltipText>} */}
       </div>
     </IssueCardBoxContainer>
   )
