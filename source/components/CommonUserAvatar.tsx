@@ -46,7 +46,7 @@ interface UserAvatarProps {
 
 const CommonUserAvatar = (props: UserAvatarProps) => {
   const { theme } = useSelector(store => store.global)
-  console.log(props, 'props')
+  // console.log(props, 'props')
   return (
     <UserAvatarWrap>
       <AvatarBox size={props.size} isBorder={props.isBorder}>

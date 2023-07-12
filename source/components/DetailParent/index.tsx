@@ -38,7 +38,6 @@ const DetailParent = (props: DetailParentProps) => {
 
   //   获取父需求列表
   const getParentData = async () => {
-    // console.log(props.detail, '=props.detailprops.detail')
     const response = await getParentList({
       projectId: props.detail.projectId,
       id: props.detail.id,

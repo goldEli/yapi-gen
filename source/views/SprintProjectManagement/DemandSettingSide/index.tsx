@@ -161,10 +161,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   }
   useEffect(() => {
     getList()
-    return () => {
-      dispatch(setActiveCategory({}))
-      dispatch(setCategoryList([]))
-    }
   }, [])
 
   useEffect(() => {
@@ -173,7 +169,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       setTabsActive(paramsData?.categoryItem.status === 1 ? 0 : 1)
       dispatch(setActiveCategory(paramsData.categoryItem))
     } else {
-      dispatch(setActiveCategory({}))
+      // dispatch(setActiveCategory({}))
     }
   }, [paramsData?.categoryItem?.status])
   //   返回上一页
@@ -252,7 +248,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
           active: index === 0 ? true : false,
         }))
     }
-    dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
+    // dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
     return dataItem
   }
 
@@ -266,7 +262,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     }
     getCategoryConfig(dataItem)
   }, [startUsing, categoryList])
-
   // 切换tab
   const getTabsActive = async (index: any) => {
     let dataItem = null
@@ -377,6 +372,8 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                           categoryId: child.id || 695,
                         }),
                       )
+                      console.log(99999, child)
+                      dispatch(setActiveCategory(child))
                       updateNode(child)
                     }}
                     // TODO
