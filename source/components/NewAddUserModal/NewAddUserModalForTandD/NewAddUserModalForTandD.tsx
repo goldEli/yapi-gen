@@ -734,10 +734,17 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       }, [])
 
       let isAll: boolean
+      let isAll2: boolean
 
       isAll = newData.some((item: any) =>
         personData.map((i: { id: any }) => i.id).includes(item.id),
       )
+      isAll2 = newData.every((item: any) =>
+        personData.map((i: { id: any }) => i.id).includes(item.id),
+      )
+      if (isAll2) {
+        return false
+      }
       return isAll
     }
     if (showTreeData && tabsActive === 1) {
@@ -756,10 +763,17 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       }, [])
 
       let isAll: boolean
+      let isAll2: boolean
 
       isAll = newData.some((item: any) =>
         personData.map((i: { id: any }) => i.id).includes(item.id),
       )
+      // isAll2 = newData.every((item: any) =>
+      //   personData.map((i: { id: any }) => i.id).includes(item.id),
+      // )
+      // if (isAll2) {
+      //   return false
+      // }
       return isAll
     }
   }
