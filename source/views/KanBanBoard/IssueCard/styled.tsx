@@ -104,14 +104,3 @@ export const WrapIcon = styled(IconFont)`
   font-size: 16px;
   color: var(--neutral-n3);
 `
-
-export const PopoverText = styled.div`
-  max-width: 560px;
-  padding: 8px 16px;
-  max-height: 172px;
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  border-radius: 6px;
-  background: var(--neutral-white-d6);
-  font-size: 14px;
-  color: var(--neutral-n1-d1);
-`

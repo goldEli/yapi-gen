@@ -10,7 +10,12 @@ interface CollapseProps {
 }
 
 const CollapseWrap = styled.div`
-  padding: 0px 24px 24px 0px;
+  padding: 24px;
+  background: #ffffff;
+  margin-bottom: 12px;
+  .ant-table-pagination.ant-pagination {
+    margin: 0px;
+  }
 `
 const CollapseHead = styled.div`
   display: flex;

@@ -136,7 +136,8 @@ const RelationStories = (props: RelationStoriesProps) => {
     })
     setOptions(
       response.map((i: any) => ({
-        label: i?.story_prefix_key + '' + i.name,
+        label: i.story_prefix_key,
+        labelName: i.name,
         value: i.id,
         id: i.id,
         cover: i?.project_category?.attachment_path,
@@ -152,7 +153,8 @@ const RelationStories = (props: RelationStoriesProps) => {
     })
     setOptions(
       response.map((i: Model.Flaw.FlawInfo) => ({
-        label: i.story_prefix_key + '' + i.name,
+        label: i.story_prefix_key,
+        labelName: i.name,
         value: i.id,
         id: i.id,
         cover: i.project_category.attachment_path,
@@ -438,7 +440,7 @@ const RelationStories = (props: RelationStoriesProps) => {
         return (
           <TableQuickEdit
             type="fixed_select"
-            defaultText={record?.usersNameIds || []}
+            defaultText={record?.usersInfo?.map((i: any) => i.id) || []}
             keyText="users"
             item={record}
             onUpdate={onUpdate}
@@ -683,7 +685,7 @@ const RelationStories = (props: RelationStoriesProps) => {
                     <MoreOptions
                       type="project"
                       name={i.label}
-                      number={i.number}
+                      labelName={i.labelName}
                       img={i.cover}
                     />
                   </Select.Option>

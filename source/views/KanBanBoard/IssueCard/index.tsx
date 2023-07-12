@@ -20,7 +20,6 @@ import {
   TopRight,
   TopText,
   WrapIcon,
-  PopoverText,
 } from './styled'
 import ThreeDot from '../ThreeDot'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
@@ -28,6 +27,7 @@ import { getProjectIdByUrl } from '@/tools'
 import useStoryIds from '../hooks/useStoryIds'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useSelector } from '@store/index'
+import { PopoverTargetText } from '@/components/StyleCommon'
 
 interface IssueCardProps {
   item: Model.KanBan.Story
@@ -84,7 +84,11 @@ const IssueCard = (props: IssueCardProps) => {
               <PercentageBox>{`${item.schedule}%`}</PercentageBox>
             )}
             <Popover
-              content={<PopoverText>{item.iterate_info || '--'}</PopoverText>}
+              content={
+                <PopoverTargetText>
+                  {item.iterate_info || '--'}
+                </PopoverTargetText>
+              }
               placement="bottom"
               trigger="click"
             >
