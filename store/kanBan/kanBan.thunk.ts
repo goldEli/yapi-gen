@@ -182,7 +182,6 @@ export const modifyStatus =
         category_status_to_id: target.flow_status_id,
       }),
     )
-    console.log(sortByGroupOptions, 'sortByGroupOptions')
 
     dispatch(
       openModifyStatusModalInfo({
@@ -451,7 +450,6 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
-    console.log(valueKey)
 
     const params = {
       search: isEmpty(valueKey)

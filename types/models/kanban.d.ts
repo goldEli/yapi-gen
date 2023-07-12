@@ -68,6 +68,7 @@ declare namespace Model.KanBan {
     category_status_id: number
     project_category: ProjectCategory
     story_config_priority: StoryConfigPriority
+    iterate_info: string
     handlers: Handler[]
     // 1 不能操作 2 可以操作
     verify_lock: 1 | 2

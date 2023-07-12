@@ -151,6 +151,7 @@ interface ResizeTableProps {
   components?: any
   footer?: any
   pagination: any
+  height?: any
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -236,6 +237,7 @@ const ResizeTable = (props: ResizeTableProps) => {
         <Spin indicator={<NewLoadingTransition />} spinning={props.isSpinning}>
           {!!props.dataSource && props.dataSource?.length > 0 && (
             <TableWrap
+              style={{ height: props?.height }}
               className={props?.className}
               rowKey="id"
               columns={mergeColumns}

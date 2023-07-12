@@ -1,5 +1,6 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
+import { Popover } from 'antd'
 
 export const HoverIcon = styled.div`
   cursor: pointer;
@@ -103,17 +104,14 @@ export const WrapIcon = styled(IconFont)`
   font-size: 16px;
   color: var(--neutral-n3);
 `
-export const TooltipText = styled.div`
-  width: 560px;
+
+export const PopoverText = styled.div`
+  max-width: 560px;
   padding: 8px 16px;
-  min-height: 172px;
+  max-height: 172px;
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px;
-  position: absolute;
   background: var(--neutral-white-d6);
-  z-index: 9999;
-  left: -14px;
   font-size: 14px;
   color: var(--neutral-n1-d1);
-  margin-top: 8px;
 `
