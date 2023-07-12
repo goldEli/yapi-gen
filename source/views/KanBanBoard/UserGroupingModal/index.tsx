@@ -6,15 +6,11 @@ import { Form, Input, InputRef } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 
-import useProjectId from '../hooks/useProjectId'
 import {
   closeUserGroupingModel,
   saveUserGroupingModel,
 } from '@store/kanBan/kanBan.thunk'
-import CommonUserAvatar from '@/components/CommonUserAvatar'
-import CommonButton from '@/components/CommonButton'
-import { produce } from 'immer'
-
+import MultipleAvatar from '@/components/MultipleAvatar'
 interface UserGroupingModalProps {}
 
 const LabelTitle = (props: any) => {
@@ -136,7 +132,16 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
           {userList.map(item => {
             return (
               <UserListItem key={item.id}>
-                <CommonUserAvatar avatar={item.avatar} name={item.name} />
+                <MultipleAvatar
+                  max={1}
+                  list={[
+                    {
+                      avatar: item.avatar,
+                      id: item.id,
+                      name: item.name,
+                    },
+                  ]}
+                />
                 <div
                   onClick={e => {
                     e.stopPropagation()

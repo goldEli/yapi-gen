@@ -49,14 +49,7 @@ const TitleWrap = styled.div<{ isClose?: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
-  .titleBox {
-    width: 100%;
-    max-width: 400px;
-    display: inline-block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
+
   .content {
     width: 160px;
     display: inline-block;
@@ -69,6 +62,16 @@ const TitleWrap = styled.div<{ isClose?: boolean }>`
     text-decoration: ${(props: any) =>
       props.isClose ? 'line-through' : 'inherit'};
     color: ${(props: any) => (props.isClose ? 'var(--neutral-n3)' : 'inherit')};
+  }
+`
+const CustomWidthBox = styled.div`
+  padding-right: 20px;
+  .content {
+    max-width: 400px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 `
 
@@ -95,6 +98,11 @@ const CustomMoreDropdownWrap = styled.div`
   svg {
     color: var(--neutral-n3);
   }
+`
+
+const CustomReactBox = styled.div`
+  background: var(--neutral-n8);
+  padding: 12px;
 `
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
@@ -430,7 +438,24 @@ const DndKitTable = (props: any) => {
               />
             </Tooltip>
             <Tooltip placement="topLeft" title={value}>
-              <span className="titleBox">{value}</span>
+              <CustomWidthBox>
+                <span
+                  style={{
+                    maxWidth: 400,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    display: 'inline-block',
+                  }}
+                  className={
+                    value?.length > 27
+                      ? `customControlMaxWidth_${record?.iterate_id}`
+                      : ''
+                  }
+                >
+                  {value}
+                </span>
+              </CustomWidthBox>
             </Tooltip>
           </TitleWrap>
         )
@@ -716,22 +741,24 @@ const DndKitTable = (props: any) => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {(props?.activeKey === 0 && props?.checkCommission?.[props?.activeKey]
-        ? rightSprintList.filter((i: any) => i.id === 0)
-        : rightSprintList
-      )?.map((item: any) => {
-        return (
-          <XTable
-            key={item.id}
-            data={item}
-            list={item?.stories?.map((i: any) => ({
-              ...i,
-              id: `${item.id}_${i.id}`,
-            }))}
-            columns={columns}
-          />
-        )
-      })}
+      <CustomReactBox>
+        {(props?.activeKey === 0 && props?.checkCommission?.[props?.activeKey]
+          ? rightSprintList.filter((i: any) => i.id === 0)
+          : rightSprintList
+        )?.map((item: any) => {
+          return (
+            <XTable
+              key={item.id}
+              data={item}
+              list={item?.stories?.map((i: any) => ({
+                ...i,
+                id: `${item.id}_${i.id}`,
+              }))}
+              columns={columns}
+            />
+          )
+        })}
+      </CustomReactBox>
       <DeleteConfirm
         title={`${t('sprint.delete')}【${deleteItem?.story_prefix_key}】？`}
         isVisible={isVisible}
