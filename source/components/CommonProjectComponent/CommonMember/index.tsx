@@ -362,7 +362,11 @@ const CommonMember = (props: Props) => {
             projectInfo?.projectPermissions,
             'b/project/member/save',
           ) ? null : (
-            <CommonButton type="primary" onClick={() => setIsVisible(true)}>
+            <CommonButton
+              type="primary"
+              onClick={() => setIsVisible(true)}
+              style={{ marginLeft: '16px' }}
+            >
               {t('project.addMember1')}
             </CommonButton>
           )}

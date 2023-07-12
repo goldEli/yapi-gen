@@ -297,7 +297,11 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
               <Table
                 rowKey="id"
                 pagination={false}
-                columns={columnsChild}
+                columns={
+                  props.row.project_type === 2
+                    ? columnsChild?.filter((i: any) => i.key !== 'schedule')
+                    : columnsChild
+                }
                 dataSource={dataList?.list}
                 scroll={{ x: 'max-content', y: 259 }}
                 tableLayout="auto"

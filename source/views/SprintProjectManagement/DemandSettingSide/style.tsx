@@ -216,14 +216,16 @@ export const NoDataCreateWrap = styled.div({
   },
 })
 
-export const AffairTypeWrap = styled.div``
+export const AffairTypeWrap = styled.div`
+  margin-top: 16px;
+`
 export const AffairTypeHeader = styled.div`
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0px 16px;
-  margin-bottom: 18px;
+  margin-bottom: 4px;
 `
 export const AffairTypeList = styled.div`
   height: 30px;

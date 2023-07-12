@@ -74,6 +74,16 @@ const LongStoryDropdown = (props: IProps) => {
                 e.work_type === 4 || e.work_type === 5,
             ).id,
       type: 'parent',
+      name:
+        detail.level_tree?.length === 0 ||
+        !detail.level_tree?.find(
+          (e: { work_type: number }) => e.work_type === 4 || e.work_type === 5,
+        )?.name
+          ? detail.name
+          : detail.level_tree?.find(
+              (e: { work_type: number }) =>
+                e.work_type === 4 || e.work_type === 5,
+            ).name,
     }
     // hasLongStroy 为true新增
     if (hasLongStroy) {
@@ -85,7 +95,7 @@ const LongStoryDropdown = (props: IProps) => {
       params = {
         ...params,
         parentId: data.id,
-        name: detail.name,
+        // name: detail.name,
       }
     }
     // debugger
