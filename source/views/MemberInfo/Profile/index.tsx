@@ -432,13 +432,13 @@ const Profile = () => {
                 <ChartsItem>
                   <span className={titleNumberCss3}>{data?.create_count}</span>
                   <span className={titleTextCss}>
-                    {t('my_created_work_items')}
+                    {t('my_created_work_items2')}
                   </span>
                 </ChartsItem>
                 <ChartsItem>
                   <span className={titleNumberCss3}>{data?.copy_me_count}</span>
                   <span className={titleTextCss}>
-                    {t('cc_to_me_work_items')}
+                    {t('cc_to_me_work_items2')}
                   </span>
                 </ChartsItem>
                 <ChartsItem>
