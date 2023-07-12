@@ -10,14 +10,13 @@ export const getProjectList: any = async () => {
   const response: any = await http.get<any>('getProjectList', {
     search: {
       self: 1,
-
       all: 1,
     },
     orderkey: 'name',
     order: 'asc',
   })
 
-  const data = response.data.list.map((item: any) => {
+  const data = response?.data?.list?.map((item: any) => {
     return {
       id: item.id,
       title: item.name,

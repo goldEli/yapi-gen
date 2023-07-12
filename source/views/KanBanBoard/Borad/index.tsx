@@ -5,7 +5,8 @@ import KanBanSortByPerson from '../KanBanSortByPerson'
 import useControlScrollPlane from '@/views/ProjectSetting/components/KanBanSetting/hooks/useControlScrollPlane'
 import { Spin } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
-import { getKanbanByGroup } from '@store/kanBan/kanBan.thunk'
+import { getKanbanByGroup, getKanbanConfig } from '@store/kanBan/kanBan.thunk'
+import { getProjectIdByUrl } from '@/tools'
 
 const Container = styled.div<{ padding: number }>`
   display: flex;
@@ -24,14 +25,23 @@ const Container = styled.div<{ padding: number }>`
 const Board = () => {
   const { kanbanConfig, fullScreen } = useSelector(store => store.kanBan)
   const { spinning } = useSelector(state => state.kanBan)
+  const { sortByRowAndStatusOptions } = useSelector(state => state.kanBan)
   const { ControlScrollPlane, containerRef } = useControlScrollPlane(
     kanbanConfig?.columns?.length ?? 0,
   )
   const { isUpdateAddWorkItem } = useSelector(state => state.project)
   const dispatch = useDispatch()
-
+  const currentColumn = sortByRowAndStatusOptions?.find(item => item.check)
   useEffect(() => {
+    if (!currentColumn) {
+      return
+    }
+    const params = {
+      id: parseInt(currentColumn?.key, 10) ?? 0,
+      project_id: getProjectIdByUrl(),
+    }
     dispatch(getKanbanByGroup())
+    dispatch(getKanbanConfig(params))
   }, [isUpdateAddWorkItem])
 
   return (

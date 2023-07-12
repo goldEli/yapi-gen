@@ -432,7 +432,6 @@ const TableQuickEdit = (props: Props) => {
         [props?.keyText]: newValue || newValue === 0 ? newValue : '',
       }
     }
-
     if (projectInfo.projectType === 1) {
       // 缺陷
       if (props.item.is_bug === 1) {

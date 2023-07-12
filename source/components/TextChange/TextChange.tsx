@@ -25,9 +25,6 @@ export const TextChange = (props: any) => {
 
   return (
     <div
-      onClick={() => {
-        message.destroy()
-      }}
       style={{
         position: 'relative',
         padding: '0px 45px 0px 24px',

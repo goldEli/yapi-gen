@@ -57,15 +57,13 @@ const HightChartMainBar = (props: {
       style: {
         color: '#646566',
       },
-      categories: props.chart?.yData,
+      // categories: props.chart?.yData,
     },
     yAxis: [
       {
         tickColor: '#ECEDEF',
         gridLineColor: '#ECEDEF',
         gridLineDashStyle: 'longdash',
-        min: 0,
-        max: 100,
         title: {
           text: false,
         },

@@ -241,7 +241,8 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     })
     setOptions(
       response.map((i: any) => ({
-        label: i?.story_prefix_key + '' + i.name,
+        label: i.story_prefix_key,
+        labelName: i.name,
         value: i.id,
         id: i.id,
         cover: i?.project_category?.attachment_path,
@@ -257,7 +258,8 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     })
     setOptions(
       response.map((i: Model.Affairs.AffairsInfo) => ({
-        label: i.story_prefix_key + '' + i.name,
+        label: i.story_prefix_key,
+        labelName: i.name,
         value: i.id,
         id: i.id,
         cover: i.project_category.attachment_path,
@@ -385,7 +387,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
                   <Select.Option value={i.id} key={i.id} label={i.label}>
                     <MoreOptions
                       type="project"
-                      number={i.number}
+                      labelName={i.labelName}
                       name={i.label}
                       img={i?.cover}
                     />

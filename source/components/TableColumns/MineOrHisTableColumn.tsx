@@ -392,13 +392,16 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'userName',
       key: 'user_name',
       width: 120,
-      render: (text: string) => {
+      render: (
+        text: string,
+        row: { userName: string; user_avatar: string; user_id: number },
+      ) => {
         return (
           <MultipleAvatar
-            max={3}
-            list={text.split(';')?.map((i: any) => ({
-              name: i,
-            }))}
+            max={1}
+            list={[
+              { name: row.userName, avatar: row.user_avatar, id: row.user_id },
+            ]}
           />
         )
       },
