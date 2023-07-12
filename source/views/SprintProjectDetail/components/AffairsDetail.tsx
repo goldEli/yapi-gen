@@ -1,4 +1,4 @@
-import { InfoItem, Label, TextWrap } from '../style'
+import { InfoItem, Label, TargetWrap, TextWrap } from '../style'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import CommonButton from '@/components/CommonButton'
@@ -17,6 +17,7 @@ import { getMessage } from '@/components/Message'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
+import { CommonIconFont } from '@/components/CommonIconFont'
 
 interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
@@ -97,11 +98,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
 
   // 富文本失焦
   const onBlurEditor = async () => {
-    console.log('详情失焦')
-
     setIsEditInfo(false)
-    console.log(editorRef2.current, props.affairsInfo.info, '-')
-
     if (editorRef2.current === props.affairsInfo.info) return
     const params = {
       info: editorRef2.current,
@@ -128,6 +125,24 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   return (
     <>
       <DeleteConfirmModal />
+      {/* 只有标准事务类型和故障事务类型才有 */}
+      {[4, 5].includes(props.affairsInfo?.work_type) && props.isInfoPage && (
+        <InfoItem>
+          <TargetWrap>
+            <span className="icon">
+              <CommonIconFont
+                type="target"
+                size={16}
+                color="var(--function-warning)"
+              />
+            </span>
+            <span>
+              <span className="label">{t('targetInfo')}</span>
+              {props.affairsInfo?.iterate_info || '--'}
+            </span>
+          </TargetWrap>
+        </InfoItem>
+      )}
       <InfoItem
         className="info_item_tab"
         id="sprint-info"
@@ -135,7 +150,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           marginTop: '0px',
         }}
       >
-        <Label>描述</Label>
+        <Label>{t('describe')}</Label>
         {(isEditInfo || editInfo) && (
           <Editor
             upload={uploadFile}

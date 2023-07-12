@@ -320,7 +320,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
       >
         {props?.hasIcon && (
           <IconFont
-            type="apartment"
+            type="apartment02"
             style={{ color: 'var(--neutral-n3)', fontSize: 16, marginRight: 8 }}
           />
         )}

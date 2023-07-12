@@ -699,7 +699,7 @@ const GlobalStyle = () => {
     .ant-pagination-item-active:hover a {
       color: var(--primary-d2);
     }
-    .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+    /* .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
     .ant-select-show-arrow,
     .ant-select-focused,
     .ant-picker-focused,
@@ -716,7 +716,7 @@ const GlobalStyle = () => {
         color: var(--neutral-n1-d1);
       }
       border-color: var(--neutral-n6-d1);
-    }
+    } */
 
     .ant-menu-light .ant-menu-item:hover,
     .ant-menu-light .ant-menu-item-active,

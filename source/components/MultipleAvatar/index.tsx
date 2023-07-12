@@ -1,12 +1,10 @@
 /**
  * 多个头像展示组件
  */
-import React, { useMemo } from 'react'
-import styled from '@emotion/styled'
+import React, { useEffect, useMemo } from 'react'
 import CommonUserAvatar from '../CommonUserAvatar'
-import DropDownMenu from '../DropDownMenu'
-import { Dropdown, Menu } from 'antd'
-import { AvatarBox, MoreIcon, MultipleAvatarBox } from './styled'
+import { Dropdown } from 'antd'
+import { AvatarBox, MoreIcon, MultipleAvatarBox, ItemRow, Text } from './styled'
 
 interface MultipleAvatarProps {
   list: {
@@ -38,25 +36,31 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
     return data?.length * 22
   }, [data, hiddenNum])
 
-  if (len === 1) {
-    return (
-      <CommonUserAvatar
-        isBorder
-        name={props.list[0]?.name}
-        avatar={props.list[0]?.avatar}
-      />
-    )
-  }
+  // if (len === 1) {
+  //   return (
+  //     <CommonUserAvatar
+  //       isBorder
+  //       name={props.list[0]?.name}
+  //       avatar={props.list[0]?.avatar}
+  //     />
+  //   )
+  // }
 
   const items = props.list?.map((item, idx) => {
     return {
       key: item?.id + '' + idx,
       label: (
-        <CommonUserAvatar isBorder name={item.name} avatar={item?.avatar} />
+        <ItemRow>
+          <CommonUserAvatar isBorder name={item.name} avatar={item?.avatar} />
+          <Text>(前端开发)</Text>
+        </ItemRow>
       ),
     }
   })
   console.log(props, 'MultipleAvatarBox', items)
+  useEffect(() => {
+    console.log(props.list, props.list)
+  }, [props.list])
   return (
     <Dropdown
       menu={{ items }}

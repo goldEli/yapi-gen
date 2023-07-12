@@ -2,6 +2,19 @@ import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Progress, Space } from 'antd'
 
+export const TargetWrap = styled.div`
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 14px;
+  .icon {
+    margin-right: 8px;
+    display: inline;
+  }
+  .label {
+    font-family: SiYuanMedium;
+  }
+`
+
 export const ProgressWrapBox = styled.div`
   display: flex;
   align-items: center;
