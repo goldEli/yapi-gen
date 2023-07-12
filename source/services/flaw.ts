@@ -183,6 +183,7 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
       discovery_version_id: i.discovery_version,
       severity: i.severity,
       solution: i.solution,
+      userAvatar: i.user_avatar,
     })),
   }
 }
