@@ -245,6 +245,7 @@ const DragContent = styled.div`
   height: 100%;
   overflow-y: scroll;
   padding-bottom: 50px;
+  background: var(--neutral-n8);
 `
 
 const CustomCloseWrap = styled(CloseWrap)`
