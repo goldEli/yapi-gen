@@ -56,6 +56,7 @@ const SiteNotifications = (props: any, ref: any) => {
         content: <TextChange text={wsData.data.msgBody.title} />,
         className: 'custom-class',
         onClick: () => {
+          message.destroy()
           dispatch(changeVisible(!isVisible))
         },
       })
