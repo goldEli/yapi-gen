@@ -152,6 +152,7 @@ interface ResizeTableProps {
   footer?: any
   pagination: any
   height?: any
+  id?: number
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -208,9 +209,9 @@ const ResizeTable = (props: ResizeTableProps) => {
       ...col,
       onHeaderCell: (column: any) => {
         if (column.key === 'name') {
-          const doms =
-            document.querySelectorAll<HTMLSpanElement>('.controlMaxWidth')
-
+          const doms = document.querySelectorAll<HTMLSpanElement>(
+            `.customControlMaxWidth_${props?.id}`,
+          )
           if (doms) {
             doms.forEach(dom => {
               const level = Number(dom.className.split('level')[1])
