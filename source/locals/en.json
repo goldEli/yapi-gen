@@ -36,6 +36,8 @@
   "completed_work_items": "Completed work items",
   "my_created_work_items": "Work items I created ",
   "cc_to_me_work_items": "CC my work items",
+  "my_created_work_items2": "Work items I created ",
+  "cc_to_me_work_items2": "CC my work items",
   "pending_approval_work_items": "Work item to be reviewed ",
   "work_item_receiving_processing": "work item receiving processing",
   "agile_growth_suggestion": "Agile can't grow without your suggestions ",

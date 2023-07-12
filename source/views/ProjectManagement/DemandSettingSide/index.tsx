@@ -153,7 +153,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   }
 
   useEffect(() => {
-    // debugger
     paramsType === 4 && getList()
   }, [paramsType])
   useEffect(() => {
