@@ -1,7 +1,7 @@
 /**
  * 多个头像展示组件
  */
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { Dropdown } from 'antd'
 import { AvatarBox, MoreIcon, MultipleAvatarBox, ItemRow, Text } from './styled'
@@ -58,6 +58,9 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
     }
   })
   console.log(props, 'MultipleAvatarBox', items)
+  useEffect(() => {
+    console.log(props.list, props.list)
+  }, [props.list])
   return (
     <Dropdown
       menu={{ items }}

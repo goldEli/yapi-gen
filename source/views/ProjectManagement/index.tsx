@@ -70,6 +70,10 @@ const Project = () => {
   useEffect(() => {
     dispatch(saveInputKey(''))
   }, [location.pathname])
+  useEffect(() => {
+    dispatch(setActiveCategory({}))
+    dispatch(setCategoryList([]))
+  }, [])
   return (
     <ProjectWrap>
       {isShowPage && (
