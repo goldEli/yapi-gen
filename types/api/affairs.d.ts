@@ -186,6 +186,7 @@ declare namespace API.Affairs {
     type Params = {
       projectId: number
       sprintId?: number
+      id?: number
       priorityId: number
     }
   }

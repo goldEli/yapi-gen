@@ -182,7 +182,7 @@ const CommonButton = (props: Props) => {
     return (
       <ButtonWrap
         className={commonCss}
-        onClick={props.onClick}
+        onClick={props.onClick as any}
         disabled={props.isDisable}
         size={props.size}
       >
@@ -207,7 +207,7 @@ const CommonButton = (props: Props) => {
     return (
       <ButtonWrap
         className={commonCss}
-        onClick={props.onClick}
+        onClick={props.onClick as any}
         disabled={props.isDisable}
         size={props.size}
       >
@@ -220,7 +220,7 @@ const CommonButton = (props: Props) => {
     <ButtonWrap
       style={props?.style}
       className={commonCss}
-      onClick={props.onClick}
+      onClick={props.onClick as any}
       disabled={props.isDisable}
       hidden={props.hidden}
       size={props.size}
