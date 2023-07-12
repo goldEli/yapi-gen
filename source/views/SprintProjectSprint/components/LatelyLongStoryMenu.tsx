@@ -53,6 +53,16 @@ const MenuItemBox = styled.div`
   align-items: center;
   .edit {
     visibility: hidden;
+    .svg1 {
+      &:hover svg {
+        color: var(--primary-d1);
+      }
+    }
+    .svg2 {
+      &:hover svg {
+        color: var(--primary-d1);
+      }
+    }
   }
   &:hover .edit {
     visibility: visible;
@@ -135,7 +145,19 @@ export const LatelyLongStoryMenu = (props: Props) => {
         disabled: false,
         label: (
           <MenuItemBox>
-            <Tooltip title={k.name}>
+            {k.name?.length >= 14 ? (
+              <Tooltip title={k.name}>
+                <MenuItemWrap
+                  className="item"
+                  onClick={() => {
+                    setPopoverVisible(false)
+                    editLongStory(k.id)
+                  }}
+                >
+                  {k.name}
+                </MenuItemWrap>
+              </Tooltip>
+            ) : (
               <MenuItemWrap
                 className="item"
                 onClick={() => {
@@ -145,46 +167,44 @@ export const LatelyLongStoryMenu = (props: Props) => {
               >
                 {k.name}
               </MenuItemWrap>
-            </Tooltip>
+            )}
             <div className="edit">
-              <Tooltip title={t('sprint.edit')}>
+              <IconFont
+                className="svg1"
+                onClick={() => {
+                  setPopoverVisible(false)
+                  dispatch(
+                    setAddWorkItemModal({
+                      visible: true,
+                      params: {
+                        editId: k.id,
+                        projectId: k.project_id,
+                        type: 3,
+                        title: t('sprint.editTransaction'),
+                      },
+                    }),
+                  )
+                }}
+                style={{
+                  fontSize: 16,
+                  color: 'var(--neutral-n3)',
+                  marginRight: 2,
+                }}
+                type="edit"
+              />
+              {hasDel ? null : (
                 <IconFont
+                  className="svg2"
                   onClick={() => {
                     setPopoverVisible(false)
-                    dispatch(
-                      setAddWorkItemModal({
-                        visible: true,
-                        params: {
-                          editId: k.id,
-                          projectId: k.project_id,
-                          type: 3,
-                          title: t('sprint.editTransaction'),
-                        },
-                      }),
-                    )
+                    props?.setIsVisible?.(k)
                   }}
                   style={{
                     fontSize: 16,
                     color: 'var(--neutral-n3)',
-                    marginRight: 12,
                   }}
-                  type="edit"
+                  type="delete"
                 />
-              </Tooltip>
-              {hasDel ? null : (
-                <Tooltip title={t('sprint.delete')}>
-                  <IconFont
-                    onClick={() => {
-                      setPopoverVisible(false)
-                      props?.setIsVisible?.(k)
-                    }}
-                    style={{
-                      fontSize: 16,
-                      color: 'var(--neutral-n3)',
-                    }}
-                    type="delete"
-                  />
-                </Tooltip>
               )}
             </div>
           </MenuItemBox>

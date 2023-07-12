@@ -377,41 +377,56 @@ const XTable: React.FC<XTableProps> = props => {
           </CommonButton>
         )}
         <Droppable key={data.id} droppableId={String(data.id)}>
-          {provided => (
-            <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
-              <ResizeTable
-                className="dnd"
-                isSpinning={false}
-                dataWrapNormalHeight=""
-                col={props.columns}
-                noData={
-                  data.id === 0 ? (
-                    <NoData subText={t('sprint.noTransaction')} />
-                  ) : (
-                    <div className="nodata">
-                      {data.status === 4
-                        ? t('sprint.desc1')
-                        : t('sprint.desc2')}
-                    </div>
-                  )
-                }
-                dataSource={list}
-                components={{ body: { row: SortableItem } }}
-                pagination={{
-                  total: list?.length,
-                  showTotal(total: any) {
-                    return `${t('sprint.total')} ${total}${t('sprint.pieces')}`
-                  },
-                  defaultPageSize: 10,
-                  defaultCurrent: 1,
-                  pageSizeOptions: ['10', '20', '50'],
-                  showSizeChanger: true,
-                  showQuickJumper: true,
-                }}
-              />
-              {provided.placeholder}
-            </XTableWrap>
-          )}
+          {(provided, snapshot) => {
+            return (
+              <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
+                <ResizeTable
+                  height={
+                    snapshot.isDraggingOver
+                      ? data.stories?.length
+                        ? data.stories.length <= 9
+                          ? (data.stories.length + 1) * 70
+                          : (data.stories.length + 1) * 52
+                        : // eslint-disable-next-line no-undefined
+                          undefined
+                      : // eslint-disable-next-line no-undefined
+                        undefined
+                  }
+                  dataWrapNormalHeight=""
+                  className="dnd"
+                  isSpinning={false}
+                  col={props.columns}
+                  noData={
+                    data.id === 0 ? (
+                      <NoData subText={t('sprint.noTransaction')} />
+                    ) : (
+                      <div className="nodata">
+                        {data.status === 4
+                          ? t('sprint.desc1')
+                          : t('sprint.desc2')}
+                      </div>
+                    )
+                  }
+                  dataSource={list}
+                  components={{ body: { row: SortableItem } }}
+                  pagination={{
+                    total: list?.length,
+                    showTotal(total: any) {
+                      return `${t('sprint.total')} ${total}${t(
+                        'sprint.pieces',
+                      )}`
+                    },
+                    defaultPageSize: 10,
+                    defaultCurrent: 1,
+                    pageSizeOptions: ['10', '20', '50'],
+                    showSizeChanger: true,
+                    showQuickJumper: true,
+                  }}
+                />
+                {provided.placeholder}
+              </XTableWrap>
+            )
+          }}
         </Droppable>
       </CollapseCustom>
 
