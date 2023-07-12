@@ -287,13 +287,12 @@ const Profile = () => {
   }
 
   const init = async () => {
-    // const res = isMember
-    //   ? await getMemberInfoOverviewStatistics({
-    //       targetId: userId,
-    //       projectId: id,
-    //     })
-    //   :
-    const res = await getUserInfoOverviewStatistics({ targetId: userId })
+    const res = isMember
+      ? await getMemberInfoOverviewStatistics({
+          targetId: userId,
+          projectId: id,
+        })
+      : await getUserInfoOverviewStatistics({ targetId: userId })
 
     setData(res)
     if (!isMember) {
