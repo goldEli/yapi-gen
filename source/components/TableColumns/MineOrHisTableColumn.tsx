@@ -197,7 +197,12 @@ export const useDynamicColumns = (state: any) => {
                 record.project?.isPublic !== 1 && !record.project?.isUserMember
               ) && Object.keys(record.categoryConfigList).includes('priority')
             }
-            onChangePriority={item => state.updatePriority(item, record)}
+            onChangePriority={item =>
+              state.updatePriority(
+                item,
+                record.project_type === 1 ? (record.is_bug === 1 ? 3 : 1) : 2,
+              )
+            }
             record={record}
             projectId={state.projectId}
           >
@@ -337,6 +342,7 @@ export const useDynamicColumns = (state: any) => {
       width: 190,
       // eslint-disable-next-line complexity
       render: (text: any, record: any) => {
+        console.log(record, '=recordrecordrecordrecordrecordrecordrecord')
         return (
           <ChangeStatusPopover
             isCanOperation={
@@ -348,7 +354,12 @@ export const useDynamicColumns = (state: any) => {
             }
             projectId={record.project_id}
             record={record}
-            onChangeStatus={(value: any) => state.updateStatus(value, record)}
+            onChangeStatus={(value: any) =>
+              state.updateStatus(
+                value,
+                record.project_type === 1 ? (record.is_bug === 1 ? 3 : 1) : 2,
+              )
+            }
             type={record.project_type === 1 ? (record.is_bug === 1 ? 3 : 1) : 2}
           >
             <StateTag
@@ -392,37 +403,37 @@ export const useDynamicColumns = (state: any) => {
         )
       },
     },
-    // {
-    //   title: t('common.dealName'),
-    //   dataIndex: 'dealName',
-    //   key: 'users_name',
-    //   width: 180,
-    //   render: (text: any, record: any) => {
-    //     return (
-    //       <TableQuickEdit
-    //         type="fixed_select"
-    //         defaultText={record?.usersNameIds || []}
-    //         keyText="users"
-    //         item={record}
-    //         onUpdate={onUpdate}
-    //         isMineOrHis
-    //         projectId={state.projectId}
-    //       >
-    //         {record?.usersInfo && record?.usersInfo?.length > 0 && (
-    //           <MultipleAvatar
-    //             max={3}
-    //             list={record?.usersInfo?.map((i: any) => ({
-    //               id: i.id,
-    //               name: i.name,
-    //               avatar: i.avatar,
-    //             }))}
-    //           />
-    //         )}
-    //         {record?.usersInfo.length <= 0 && '--'}
-    //       </TableQuickEdit>
-    //     )
-    //   },
-    // },
+    {
+      title: t('common.dealName'),
+      dataIndex: 'dealName',
+      key: 'users_name',
+      width: 180,
+      render: (text: any, record: any) => {
+        return (
+          <TableQuickEdit
+            type="fixed_select"
+            defaultText={record?.usersNameIds || []}
+            keyText="users"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+            projectId={state.projectId}
+          >
+            {record?.usersInfo && record?.usersInfo?.length > 0 && (
+              <MultipleAvatar
+                max={3}
+                list={(record?.usersInfo || [])?.map((i: any) => ({
+                  id: i.id,
+                  name: i.name,
+                  avatar: i.avatar,
+                }))}
+              />
+            )}
+            {record?.usersInfo.length <= 0 && '--'}
+          </TableQuickEdit>
+        )
+      },
+    },
     {
       title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
       dataIndex: 'schedule',

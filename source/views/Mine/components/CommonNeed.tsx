@@ -54,6 +54,8 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
+import { updateAffairsPriority, updateAffairsStatus } from '@/services/affairs'
+import { updateFlawPriority, updateFlawStatus } from '@/services/flaw'
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -296,9 +298,16 @@ const CommonNeed = (props: any) => {
     }
   }
 
-  const updateStatus = async (res1: any) => {
+  const updateStatus = async (res1: any, type?: number) => {
+    // 1是需求，2是事务，3是缺陷
+    const methodsList = [
+      { type: 1, url: updateDemandStatus },
+      { type: 2, url: updateAffairsStatus },
+      { type: 3, url: updateFlawStatus },
+    ]
+    const currentType = methodsList.filter((i: any) => i.type === type)[0]
     try {
-      await updateDemandStatus(res1)
+      await currentType.url(res1)
       getMessage({
         msg: t('common.circulationSuccess') as string,
         type: 'success',
@@ -308,15 +317,24 @@ const CommonNeed = (props: any) => {
       //
     }
   }
-  const updatePriority = async (res1: any) => {
-    const res = await updatePriorityStatus(res1)
-    if (res.code === 0) {
+  const updatePriority = async (res1: any, type?: number) => {
+    // 1是需求，2是事务，3是缺陷
+    const methodsList = [
+      { type: 1, url: updatePriorityStatus },
+      { type: 2, url: updateAffairsPriority },
+      { type: 3, url: updateFlawPriority },
+    ]
+    const currentType = methodsList.filter((i: any) => i.type === type)[0]
+    try {
+      await currentType.url(res1)
       getMessage({
         msg: t('common.prioritySuccess') as string,
         type: 'success',
       })
+      init()
+    } catch (error) {
+      //
     }
-    init()
   }
 
   const showDel = (record: any) => {
