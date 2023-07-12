@@ -49,14 +49,7 @@ const TitleWrap = styled.div<{ isClose?: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
-  .titleBox {
-    width: 100%;
-    max-width: 400px;
-    display: inline-block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
+
   .content {
     width: 160px;
     display: inline-block;
@@ -69,6 +62,16 @@ const TitleWrap = styled.div<{ isClose?: boolean }>`
     text-decoration: ${(props: any) =>
       props.isClose ? 'line-through' : 'inherit'};
     color: ${(props: any) => (props.isClose ? 'var(--neutral-n3)' : 'inherit')};
+  }
+`
+const CustomWidthBox = styled.div`
+  padding-right: 20px;
+  .content {
+    max-width: 400px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 `
 
@@ -430,7 +433,24 @@ const DndKitTable = (props: any) => {
               />
             </Tooltip>
             <Tooltip placement="topLeft" title={value}>
-              <span className="titleBox">{value}</span>
+              <CustomWidthBox>
+                <span
+                  style={{
+                    maxWidth: 400,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    display: 'inline-block',
+                  }}
+                  className={
+                    value?.length > 27
+                      ? `customControlMaxWidth_${record?.iterate_id}`
+                      : ''
+                  }
+                >
+                  {value}
+                </span>
+              </CustomWidthBox>
             </Tooltip>
           </TitleWrap>
         )

@@ -121,7 +121,7 @@ const RelatedNeed = (props: any) => {
       <AddWrap
         onClick={() => {
           setShow(true)
-          props.onBootom()
+          props?.onBootom()
         }}
         hasColor
       >
