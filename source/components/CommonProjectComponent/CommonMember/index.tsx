@@ -43,7 +43,7 @@ import {
   WaiWrap,
 } from './style'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
-
+import CommonButton from '@/components/CommonButton'
 interface Props {
   visible: boolean
   onChangeVisible(): void
@@ -59,13 +59,16 @@ interface DropDownProps {
 }
 const RemoveBox = styled.div`
   height: 32px;
-  background: var(--hover-d3);
+  /* background: var(--hover-d3); */
   color: var(--function-error);
   font-size: var(--font14);
   display: flex;
   align-items: center;
   padding-left: 16px;
   font-family: SiYuanRegular;
+  &:hover {
+    background: var(--hover-d3);
+  }
 `
 const MoreDropdown = (props: DropDownProps) => {
   const [isVisible, setIsVisible] = useState(false)
@@ -359,9 +362,9 @@ const CommonMember = (props: Props) => {
             projectInfo?.projectPermissions,
             'b/project/member/save',
           ) ? null : (
-            <ButtonWrap type="primary" onClick={() => setIsVisible(true)}>
+            <CommonButton type="primary" onClick={() => setIsVisible(true)}>
               {t('project.addMember1')}
-            </ButtonWrap>
+            </CommonButton>
           )}
         </div>
         {memberList?.length > 0 ? (

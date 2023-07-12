@@ -1,20 +1,19 @@
 /* eslint-disable react/prop-types */
-import React, { useState, forwardRef, useEffect, useMemo, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Select, Tag } from 'antd'
 import styled from '@emotion/styled'
-import CommonIconFont from '../CommonIconFont'
-import NoData from '../NoData'
 import { storyConfigCategoryList } from '@/services/project'
 import useCategoryList from '@/hooks/useCategoryList'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
+import CustomSelect from '../CustomSelect'
 const Wrap = styled(Select)`
-  /* margin-bottom: 10px; */
+  overflow-y: auto;
   .ant-select-selection-overflow-item {
     .inputLabel {
-      overflow: hidden; //超出的文本隐藏
-      text-overflow: ellipsis; //溢出用省略号显示
-      white-space: nowrap; //溢出不换行 */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       width: 60px;
     }
   }
@@ -22,13 +21,8 @@ const Wrap = styled(Select)`
 const LabelBox = styled.div`
   display: flex;
   align-items: center;
-  /* margin-bottom: 6px; */
   span {
     margin-left: 4px;
-    /* width: 60px;
-    overflow: hidden; //超出的文本隐藏
-    text-overflow: ellipsis; //溢出用省略号显示
-    white-space: nowrap; //溢出不换行 */
   }
 `
 
@@ -48,8 +42,9 @@ const ClearOptionsBox = styled.div`
   }
 `
 const customStyle = css`
-  .ant-select-item-option {
-    margin-bottom: 6px;
+  .ant-select-item {
+    line-height: 2;
+    /* margin-bottom: 6px; */
   }
 `
 /**
@@ -185,32 +180,11 @@ const CategoryDropdown = (props: IProps) => {
           return
         }
         if (mode) {
-          // const newData = data.map((item: any) => {
-          //   return { name: item.label.props.labelName, id: item.value }
-          // })
           setSelectData([...data])
           onChangeCallBack && onChangeCallBack(data)
         } else {
           onChangeCallBack && onChangeCallBack(data)
         }
-      }}
-      onFocus={() => {
-        // if (categoryList) {
-        //   return
-        // }
-        // const selectDataIds = selectData.map(item => item.id)
-        // const filterSelectData = cacheList.filter(item =>
-        //   selectDataIds.includes(item.id),
-        // )
-        // const otherSelectData = cacheList.filter(
-        //   item => !selectDataIds.includes(item.id),
-        // )
-        // const sortData = [...filterSelectData, ...otherSelectData]
-        // const getOptions = getTypeCategory(sortData, 'work_type')
-        // if (!getOptions) {
-        //   return
-        // }
-        // setOptions(getOptions)
       }}
       showSearch
       allowClear={props.isClear}
