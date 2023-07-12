@@ -13,7 +13,6 @@ const MyBreadcrumb = (props: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { type } = paramsData
-  // debugger
   return (
     <Breadcrumb
       separator={
@@ -60,18 +59,18 @@ const MyBreadcrumb = (props: any) => {
         </Breadcrumb.Item>
       ) : null}
 
-      {location.pathname === '/ProjectManagement/ProjectSetting' && (
+      {type === 4 && (
         <Breadcrumb.Item>
           <a
             onClick={() => {
               const params = encryptPhp(
                 JSON.stringify({
                   id: projectInfo.id,
-                  pageIdx: 'info',
+                  pageIdx: 'main',
                   type: 0,
                 }),
               )
-              // navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+              navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
             }}
             style={{ color: 'var(--neutral-n1-d1)' }}
           >

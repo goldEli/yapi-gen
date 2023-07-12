@@ -6,7 +6,7 @@ export const SelectOptionsBox = styled.div`
   align-items: center;
   height: 32px;
   border-radius: 6px;
-  padding: 0 16px;
+  padding: 0 8px;
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;

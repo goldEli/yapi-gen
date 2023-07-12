@@ -186,7 +186,9 @@ const CommonNeed = (props: any) => {
   const [openDemandDetail] = useOpenDemandDetail()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId } = paramsData
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -369,7 +371,12 @@ const CommonNeed = (props: any) => {
       }
       item.isMineOrHis = true
       item.isAllProject = props.id === 0
-      openDemandDetail({ ...item, ...{ demandIds } }, item.project_id, item.id)
+      openDemandDetail(
+        { ...item, ...{ demandIds } },
+        item.project_id,
+        item.id,
+        item.project_type === 2 ? 1 : undefined,
+      )
     }
   }
 
@@ -492,11 +499,11 @@ const CommonNeed = (props: any) => {
 
   // 监听语言变化及是否需要更新创建
   useEffect(() => {
-    if (isRefresh) {
+    if (isRefresh || isUpdateAddWorkItem) {
       init()
       getShowkey()
     }
-  }, [isRefresh])
+  }, [isRefresh, isUpdateAddWorkItem])
 
   const showModal = () => {
     setIsModalVisible(true)

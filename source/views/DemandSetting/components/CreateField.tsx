@@ -46,6 +46,11 @@ const FieldWrap = styled.div`
   .ant-select-selection-placeholder {
     color: var(--auxiliary-text-t2-d1);
   }
+  .ant-select {
+    &:hover {
+      background: var(--hover-d1);
+    }
+  }
 `
 const DivideWrap = styled.div`
   width: 1px;
@@ -283,7 +288,7 @@ const CreateField = () => {
             style={{ width: 100 }}
             bordered={false}
             suffixIcon={<CommonIconFont type="down" />}
-            placeholder="所以字段"
+            placeholder={t('sprintProject.allFields')}
             allowClear
             options={[
               {

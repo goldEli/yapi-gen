@@ -166,14 +166,14 @@ const MoreWrap = (props: MoreWrapProps) => {
 }
 
 const CommonNeed = (props: any) => {
-  console.log(props.id)
-
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateCreate } = useSelector(store => store.mine)
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isMany, setIsMany] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
@@ -327,8 +327,6 @@ const CommonNeed = (props: any) => {
 
   // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
-    console.log(item, '是迭代还是冲刺')
-
     if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
       getMessage({ msg: t('common.notCheckInfo'), type: 'warning' })
     } else {
@@ -470,11 +468,11 @@ const CommonNeed = (props: any) => {
 
   // 监听语言变化及是否需要更新创建
   useEffect(() => {
-    if (isRefresh || isUpdateCreate) {
+    if (isRefresh || isUpdateCreate || isUpdateAddWorkItem) {
       init()
       getShowkey()
     }
-  }, [isRefresh, isUpdateCreate])
+  }, [isRefresh, isUpdateCreate, isUpdateAddWorkItem])
 
   const showModal = () => {
     setIsModalVisible(true)
