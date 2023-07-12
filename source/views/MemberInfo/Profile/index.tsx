@@ -293,6 +293,7 @@ const Profile = () => {
           projectId: id,
         })
       : await getUserInfoOverviewStatistics({ targetId: userId })
+    console.log(res, '464-----------------------')
 
     setData(res)
     if (!isMember) {
@@ -397,6 +398,7 @@ const Profile = () => {
   if (!loadingState) {
     return <Loading />
   }
+  console.log(data)
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment

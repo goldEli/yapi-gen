@@ -94,7 +94,8 @@ const Header = styled.div`
   height: 32px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  margin-bottom: 12px;
   .title {
     font-size: 14px;
     font-family: SiYuanMedium;
@@ -108,6 +109,7 @@ const Header = styled.div`
     color: var(--neutral-n3);
     margin-left: 16px;
     margin-right: 16px;
+    white-space: nowrap;
   }
 `
 const DisabledButton = styled.div`
@@ -235,8 +237,6 @@ const XTable: React.FC<XTableProps> = props => {
     },
     [],
   )
-
-  console.log(data, '=datadatadata')
 
   return (
     <>

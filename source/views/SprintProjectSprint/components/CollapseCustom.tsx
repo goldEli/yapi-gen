@@ -10,13 +10,20 @@ interface CollapseProps {
 }
 
 const CollapseWrap = styled.div`
-  padding: 0px 24px 24px 0px;
+  padding: 12px 12px 0px 12px;
+  background: #ffffff;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  .ant-table-pagination.ant-pagination {
+    margin: 0px;
+  }
 `
 const CollapseHead = styled.div`
   display: flex;
   .icons {
     margin-right: 5px;
     cursor: pointer;
+    margin-top: 5px;
   }
   .headerContent {
     flex: 1;

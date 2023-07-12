@@ -49,7 +49,6 @@ const TitleWrap = styled.div<{ isClose?: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
-
   .content {
     width: 160px;
     display: inline-block;
@@ -64,7 +63,7 @@ const TitleWrap = styled.div<{ isClose?: boolean }>`
     color: ${(props: any) => (props.isClose ? 'var(--neutral-n3)' : 'inherit')};
   }
 `
-const CustomWidthBox = styled.div`
+const CustomWidthBox = styled.div<{ isClose?: boolean }>`
   padding-right: 20px;
   .content {
     max-width: 400px;
@@ -72,6 +71,9 @@ const CustomWidthBox = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    text-decoration: ${(props: any) =>
+      props.isClose ? 'line-through' : 'inherit'};
+    color: ${(props: any) => (props.isClose ? 'var(--neutral-n3)' : 'inherit')};
   }
 `
 
@@ -98,6 +100,11 @@ const CustomMoreDropdownWrap = styled.div`
   svg {
     color: var(--neutral-n3);
   }
+`
+
+const CustomReactBox = styled.div`
+  background: var(--neutral-n8);
+  padding: 12px;
 `
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
@@ -433,14 +440,21 @@ const DndKitTable = (props: any) => {
               />
             </Tooltip>
             <Tooltip placement="topLeft" title={value}>
-              <CustomWidthBox>
+              <CustomWidthBox isClose={record.status?.is_end === 1}>
                 <span
                   style={{
+                    marginTop: 6,
                     maxWidth: 400,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
                     display: 'inline-block',
+                    textDecoration:
+                      record.status?.is_end === 1 ? 'line-through' : 'inherit',
+                    color:
+                      record.status?.is_end === 1
+                        ? 'var(--neutral-n3)'
+                        : 'inherit',
                   }}
                   className={
                     value?.length > 27
@@ -736,22 +750,24 @@ const DndKitTable = (props: any) => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {(props?.activeKey === 0 && props?.checkCommission?.[props?.activeKey]
-        ? rightSprintList.filter((i: any) => i.id === 0)
-        : rightSprintList
-      )?.map((item: any) => {
-        return (
-          <XTable
-            key={item.id}
-            data={item}
-            list={item?.stories?.map((i: any) => ({
-              ...i,
-              id: `${item.id}_${i.id}`,
-            }))}
-            columns={columns}
-          />
-        )
-      })}
+      <CustomReactBox>
+        {(props?.activeKey === 0 && props?.checkCommission?.[props?.activeKey]
+          ? rightSprintList.filter((i: any) => i.id === 0)
+          : rightSprintList
+        )?.map((item: any) => {
+          return (
+            <XTable
+              key={item.id}
+              data={item}
+              list={item?.stories?.map((i: any) => ({
+                ...i,
+                id: `${item.id}_${i.id}`,
+              }))}
+              columns={columns}
+            />
+          )
+        })}
+      </CustomReactBox>
       <DeleteConfirm
         title={`${t('sprint.delete')}【${deleteItem?.story_prefix_key}】？`}
         isVisible={isVisible}

@@ -189,13 +189,13 @@ const Right = styled.div`
   overflow-x: scroll;
   overflow-y: hidden;
   height: 100%;
-  padding: 0px 0px 0px 24px;
   flex: 1;
   .header {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 24px;
+    padding-left: 24px;
   }
   .ant-spin-nested-loading img.spinImg {
     margin-top: 250px;
@@ -245,6 +245,7 @@ const DragContent = styled.div`
   height: 100%;
   overflow-y: scroll;
   padding-bottom: 50px;
+  background: var(--neutral-n8);
 `
 
 const CustomCloseWrap = styled(CloseWrap)`

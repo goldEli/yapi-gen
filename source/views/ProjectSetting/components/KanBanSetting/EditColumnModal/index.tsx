@@ -150,7 +150,7 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
               min={0}
               defaultValue={1}
               style={{ width: '100%' }}
-              max={100}
+              max={999999}
             />
           </Form.Item>
         </Form>
