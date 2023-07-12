@@ -138,7 +138,9 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     await updateCompany(companyParams)
     sessionStorage.removeItem('saveRouter')
     setIsChangeCompany(false)
-    location.reload()
+    // navigate('/Situation')
+    location.replace(`${location.origin}/Situation`)
+    // location.reload()
   }
 
   return (

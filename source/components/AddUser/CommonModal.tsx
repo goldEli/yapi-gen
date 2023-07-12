@@ -428,8 +428,8 @@ const CommonModal = (props: ModalProps) => {
   }
   // 勾选复选框
   const onCheck = (checkedKey: any, e: any) => {
+    // debugger
     // console.log(checkedKey, e.checkedNodes)
-
     checkdFilterDataList = []
     if (tabsActive === 1) {
       const data = getStaffs(e.checkedNodes)
@@ -443,7 +443,10 @@ const CommonModal = (props: ModalProps) => {
       const fatherData = getKeyData(treeData, 0)
       setCheckedKeys(checkedKey)
       setPersonData(
-        e.checkedNodes?.filter((item: any) => !fatherData?.includes(item.id)),
+        e.checkedNodes?.filter(
+          (item: any) =>
+            !fatherData?.includes(item.id) && typeof item.id === 'number',
+        ),
       )
     }
   }

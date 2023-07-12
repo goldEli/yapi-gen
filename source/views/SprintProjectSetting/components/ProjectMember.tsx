@@ -54,7 +54,7 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
 import { menuList } from '@/views/SprintProjectManagement/config'
 import CommonIconFont from '@/components/CommonIconFont'
-
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 const Wrap = styled.div({
   padding: '0 24px',
   display: 'flex',
@@ -740,7 +740,19 @@ const ProjectMember = (props: { searchValue?: string }) => {
           close={() => setIsDelete(!isDelete)}
           confirm={() => getList(order, pageObj)}
         />
-        <AddMemberCommonModal
+        {/* <AddMemberCommonModal
+          isPermisGroup
+          userGroupId={
+            projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
+              ?.value
+          }
+          title={t('project.addMember') + '1'}
+          isVisible={isAddVisible}
+          onClose={onClickCancel}
+          onConfirm={handleOk}
+          projectPermission={projectPermission}
+        /> */}
+        <NewAddUserModalForTandD
           isPermisGroup
           userGroupId={
             projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
