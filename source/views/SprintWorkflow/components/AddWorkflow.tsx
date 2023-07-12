@@ -183,7 +183,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         ref={inputRefDom as any}
         style={{
           width: 196,
-          margin: props?.hasMargin ? '0 16px' : '0 16px 0 0',
+          margin: props?.hasMargin ? '0 16px 0 24px' : '0 16px 0 0',
           border: errorState
             ? '1px solid var(--function-error)'
             : '1px solid var(--neutral-n6-d1)',
@@ -533,7 +533,7 @@ const AddWorkflow = (props: Props) => {
       >
         <div style={{ paddingRight: 20 }}>
           <TableTitle>
-            <span style={{ width: '40%' }}>{t('newlyAdd.statusName')}1</span>
+            <span style={{ width: '40%' }}>{t('newlyAdd.statusName')}</span>
             <span style={{ width: '45%' }}>{t('newlyAdd.demandCategory')}</span>
             <span style={{ width: '15%' }}>{t('newlyAdd.operation')}</span>
           </TableTitle>

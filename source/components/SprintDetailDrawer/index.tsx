@@ -32,6 +32,7 @@ import {
   DownWrap,
   DropdownMenu,
   DetailFooter,
+  TargetWrap,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
@@ -835,6 +836,22 @@ const SprintDetailDrawer = () => {
                   </CommonButton>
                 ))}
               </Space>
+              {/* 只有标准事务类型和故障事务类型才有 */}
+              {[4, 5].includes(drawerInfo.work_type) && (
+                <TargetWrap>
+                  <span className="icon">
+                    <CommonIconFont
+                      type="target"
+                      size={16}
+                      color="var(--function-warning)"
+                    />
+                  </span>
+                  <span>
+                    <span className="label">{t('targetInfo')}</span>
+                    {drawerInfo?.iterate_info || '--'}
+                  </span>
+                </TargetWrap>
+              )}
               {(drawerInfo.work_type === 6
                 ? modeList.filter((i: any) => i.key !== 'childSprint')
                 : modeList

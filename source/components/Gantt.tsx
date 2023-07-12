@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 我的模块和他的模块甘特图
 
 /* eslint-disable prefer-template */
@@ -90,6 +91,10 @@ interface Props {
 const Gantt = (props: Props) => {
   const [t, i18n] = useTranslation()
 
+  const getC = (str: string) => {
+    return str.replace(/[^\u4e00-\u9fa5]/g, '')
+  }
+
   const init = () => {
     gantt.config.date_scale = '%m/%j, %D'
     gantt.config.scale_height = 44
@@ -109,6 +114,8 @@ const Gantt = (props: Props) => {
       return formatFunc(date)
     }
     gantt.templates.tooltip_text = function (start, end, task) {
+      console.log(task)
+
       return (
         `<b>${
           i18n.language === 'zh' ? t('common.title') + '：' : 'Title:'
@@ -117,7 +124,9 @@ const Gantt = (props: Props) => {
         '<br/>' +
         String(
           task.statusTitle
-            ? `<span style="color: ${task.statusColor}">${task.statusTitle}</span>`
+            ? `<span style="color: ${task.statusColor}">${getC(
+                task.statusName,
+              )}</span>`
             : `<span style="color: var(--neutral-n3);text-decoration:line-through">${t(
                 'newlyAdd.statusDel',
               )}</span>`,

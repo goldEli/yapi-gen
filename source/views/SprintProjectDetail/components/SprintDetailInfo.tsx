@@ -28,7 +28,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id } = paramsData
-  const LeftDom = useRef<HTMLDivElement>(null)
+  const LeftDomDetailInfo = useRef<HTMLDivElement>(null)
   const commentDom: any = createRef()
   const { affairsInfo } = useSelector(store => store.affairs)
   const { projectInfoValues } = useSelector(store => store.project)
@@ -116,13 +116,13 @@ const SprintDetailInfo = (props: { onRef: any }) => {
     })
     setTabActive(arr[arr.length - 1])
   }
-  const LeftDomC = LeftDom.current
+  const LeftDomC = LeftDomDetailInfo.current
   useEffect(() => {
     LeftDomC?.addEventListener('scroll', handleScroll, true)
     return () => {
       LeftDomC?.removeEventListener('scroll', handleScroll, false)
     }
-  }, [])
+  }, [LeftDomC])
 
   return (
     <InfoWrap>
@@ -140,7 +140,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
         />
       )}
       <DetailInfoWrap
-        ref={LeftDom}
+        ref={LeftDomDetailInfo}
         className="sprintDetail_dom"
         isScroll={isScroll}
       >

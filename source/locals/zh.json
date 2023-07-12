@@ -26,6 +26,8 @@
   "completed_work_items": "已办工作项",
   "my_created_work_items": "我创建的工作项",
   "cc_to_me_work_items": "抄送我的工作项",
+  "my_created_work_items2": "他创建的工作项",
+  "cc_to_me_work_items2": "抄送他的工作项",
   "pending_approval_work_items": "待审核的工作项",
   "work_item_receiving_processing": "工作项接收处理情况",
   "agile_growth_suggestion": "Agile的成长，离不开您的建议",
@@ -2046,5 +2048,6 @@
   "theSelectedTransactionWillBeConfirmTo": "勾选的事务将被删除，确认删除吗？",
   "defectComment": "缺陷评论",
   "areYouSureYouWantToDeleteThisFlaw": "确认删除该缺陷？",
-  "businessReview": "事务评论"
+  "businessReview": "事务评论",
+  "targetInfo": "目标："
 }

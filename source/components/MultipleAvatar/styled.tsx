@@ -34,3 +34,12 @@ export const AvatarBox = styled.div<{ left: number }>`
   top: 0;
   left: ${props => props.left + 'px'};
 `
+
+export const ItemRow = styled.div`
+  width: 240px;
+  display: flex;
+  alignitems: center;
+`
+export const Text = styled.span`
+  margin-left: 2px;
+`

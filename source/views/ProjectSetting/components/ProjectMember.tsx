@@ -27,6 +27,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import {
   addMember,
@@ -744,7 +745,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           close={() => setIsDelete(!isDelete)}
           confirm={() => getList(order, pageObj)}
         />
-        <AddMemberCommonModal
+        <NewAddUserModalForTandD
           isPermisGroup
           userGroupId={
             projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
