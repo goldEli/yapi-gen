@@ -592,7 +592,7 @@ export const updateAffairsPriority = async (
 ) => {
   await http.put<any>('updateAffairsPriority', {
     priority: params.priorityId,
-    id: params.sprintId,
+    id: params.id,
     project_id: params.projectId,
   })
 }
