@@ -94,8 +94,8 @@ const Header = styled.div`
   height: 32px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 10px;
+  align-items: center;
+  margin-bottom: 12px;
   .title {
     font-size: 14px;
     font-family: SiYuanMedium;
