@@ -95,6 +95,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-bottom: 10px;
   .title {
     font-size: 14px;
     font-family: SiYuanMedium;
@@ -108,6 +109,7 @@ const Header = styled.div`
     color: var(--neutral-n3);
     margin-left: 16px;
     margin-right: 16px;
+    white-space: nowrap;
   }
 `
 const DisabledButton = styled.div`

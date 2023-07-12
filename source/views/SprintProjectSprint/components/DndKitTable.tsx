@@ -100,6 +100,11 @@ const CustomMoreDropdownWrap = styled.div`
   }
 `
 
+const CustomReactBox = styled.div`
+  background: var(--neutral-n8);
+  padding: 12px;
+`
+
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
     display: 'flex',
@@ -736,22 +741,24 @@ const DndKitTable = (props: any) => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {(props?.activeKey === 0 && props?.checkCommission?.[props?.activeKey]
-        ? rightSprintList.filter((i: any) => i.id === 0)
-        : rightSprintList
-      )?.map((item: any) => {
-        return (
-          <XTable
-            key={item.id}
-            data={item}
-            list={item?.stories?.map((i: any) => ({
-              ...i,
-              id: `${item.id}_${i.id}`,
-            }))}
-            columns={columns}
-          />
-        )
-      })}
+      <CustomReactBox>
+        {(props?.activeKey === 0 && props?.checkCommission?.[props?.activeKey]
+          ? rightSprintList.filter((i: any) => i.id === 0)
+          : rightSprintList
+        )?.map((item: any) => {
+          return (
+            <XTable
+              key={item.id}
+              data={item}
+              list={item?.stories?.map((i: any) => ({
+                ...i,
+                id: `${item.id}_${i.id}`,
+              }))}
+              columns={columns}
+            />
+          )
+        })}
+      </CustomReactBox>
       <DeleteConfirm
         title={`${t('sprint.delete')}【${deleteItem?.story_prefix_key}】？`}
         isVisible={isVisible}
