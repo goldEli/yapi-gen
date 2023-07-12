@@ -36,6 +36,12 @@ const NewAddShowList = (props: any) => {
   const choose = (item: any) => {
     props.setKeys(item)
   }
+  function getT(value: any, value2: any) {
+    if (value) {
+      return false
+    }
+    return value2
+  }
   if (props.isDe) {
     return (
       <div>
@@ -46,14 +52,19 @@ const NewAddShowList = (props: any) => {
                 <div>
                   <Checkbox
                     onChange={() => choose(i)}
-                    indeterminate={
-                      i.children.length > 0 &&
-                      i.children.some((item: any) =>
-                        selectKeys
+                    indeterminate={getT(
+                      i.children.every((item: any) => {
+                        return selectKeys
                           .map((i: { id: any }) => i.id)
-                          .includes(item.id),
-                      )
-                    }
+                          .includes(item.id)
+                      }),
+                      i.children.length > 0 &&
+                        i.children.some((item: any) =>
+                          selectKeys
+                            .map((i: { id: any }) => i.id)
+                            .includes(item.id),
+                        ),
+                    )}
                     checked={
                       i.children.length > 0 &&
                       i.children.every((item: any) => {
@@ -127,14 +138,19 @@ const NewAddShowList = (props: any) => {
                         .includes(item.id)
                     })
                   }
-                  indeterminate={
-                    i.children.length > 0 &&
-                    i.children.some((item: any) =>
-                      selectKeys
+                  indeterminate={getT(
+                    i.children.every((item: any) => {
+                      return selectKeys
                         .map((i: { id: any }) => i.id)
-                        .includes(item.id),
-                    )
-                  }
+                        .includes(item.id)
+                    }),
+                    i.children.length > 0 &&
+                      i.children.some((item: any) =>
+                        selectKeys
+                          .map((i: { id: any }) => i.id)
+                          .includes(item.id),
+                      ),
+                  )}
                 >
                   <div>团队-- {i.name}</div>
                 </Checkbox>

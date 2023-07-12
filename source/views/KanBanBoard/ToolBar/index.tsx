@@ -11,6 +11,7 @@ const ToolBarBox = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
+  margin: 20px 0px;
   /* position: relative; */
 `
 

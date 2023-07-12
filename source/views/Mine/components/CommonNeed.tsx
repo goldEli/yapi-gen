@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable react/jsx-no-useless-fragment */
 // 我的模块-所有页面公用列表及查询
 
@@ -320,6 +321,8 @@ const CommonNeed = (props: any) => {
     }
   }
   const updatePriority = async (res1: any, type?: number) => {
+    console.log('优先级', res1, type)
+
     // 1是需求，2是事务，3是缺陷
     const methodsList = [
       { type: 1, url: updatePriorityStatus },
@@ -327,6 +330,8 @@ const CommonNeed = (props: any) => {
       { type: 3, url: updateFlawPriority },
     ]
     const currentType = methodsList.filter((i: any) => i.type === type)[0]
+    console.log(currentType)
+
     try {
       await currentType.url(res1)
       getMessage({

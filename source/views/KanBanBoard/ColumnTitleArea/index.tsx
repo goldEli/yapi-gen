@@ -102,7 +102,10 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
             data-num={num}
             data-max_num={item.max_num}
           >
-            <div className="name">{item.name}</div>（{num}）
+            <Tooltip title={item.name}>
+              <div className="name">{item.name}</div>
+            </Tooltip>
+            （{num}）
             {num > item.max_num && (
               <Tooltip title="已超过最大数">
                 <MaxText>最大：{item.max_num}</MaxText>
