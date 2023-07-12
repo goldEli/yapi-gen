@@ -440,7 +440,7 @@ const RelationStories = (props: RelationStoriesProps) => {
         return (
           <TableQuickEdit
             type="fixed_select"
-            defaultText={record?.usersNameIds || []}
+            defaultText={record?.usersInfo?.map((i: any) => i.id) || []}
             keyText="users"
             item={record}
             onUpdate={onUpdate}

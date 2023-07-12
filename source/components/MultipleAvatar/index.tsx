@@ -19,6 +19,7 @@ interface MultipleAvatarProps {
 }
 
 const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
+  console.log(props.list)
   const [visible, setVisible] = useState(false)
   const [items, setItems] = useState(
     props.list?.map((item, idx) => {
@@ -65,6 +66,9 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       }
     })
     setItems(data)
+  }
+  if (len === 0) {
+    return <>--</>
   }
   if (len === 1) {
     return (
