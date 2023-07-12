@@ -1,11 +1,12 @@
 /**
  * 多个头像展示组件
  */
-import React, { useEffect, useMemo } from 'react'
+/* eslint-disable react/jsx-handler-names */
+import React, { useEffect, useMemo, useState } from 'react'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { Dropdown } from 'antd'
 import { AvatarBox, MoreIcon, MultipleAvatarBox, ItemRow, Text } from './styled'
-
+import { getUserIntroList } from '@/services/user'
 interface MultipleAvatarProps {
   list: {
     id?: number
@@ -18,6 +19,20 @@ interface MultipleAvatarProps {
 }
 
 const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
+  const [visible, setVisible] = useState(false)
+  const [visible1, setVisible1] = useState(false)
+  const [items, setItems] = useState(
+    props.list?.map((item, idx) => {
+      return {
+        key: item?.id + '' + idx,
+        label: (
+          <ItemRow>
+            <CommonUserAvatar isBorder name={item.name} avatar={item?.avatar} />
+          </ItemRow>
+        ),
+      }
+    }),
+  )
   const data = props.list?.slice(0, props.max)
   const len = props.list?.length
   const hiddenNum = len - data?.length
@@ -36,36 +51,50 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
     return data?.length * 22
   }, [data, hiddenNum])
 
-  // if (len === 1) {
-  //   return (
-  //     <CommonUserAvatar
-  //       isBorder
-  //       name={props.list[0]?.name}
-  //       avatar={props.list[0]?.avatar}
-  //     />
-  //   )
-  // }
-
-  const items = props.list?.map((item, idx) => {
-    return {
-      key: item?.id + '' + idx,
-      label: (
-        <ItemRow>
-          <CommonUserAvatar isBorder name={item.name} avatar={item?.avatar} />
-          <Text>(前端开发)</Text>
-        </ItemRow>
-      ),
-    }
-  })
-  console.log(props, 'MultipleAvatarBox', items)
-  useEffect(() => {
-    console.log(props.list, props.list)
-  }, [props.list])
+  const getUserIntroListApi = async () => {
+    const ids = props.list.map(el => el.id)
+    const res = await getUserIntroList({ ids: ids.join(',') })
+    const data = res.list.map((item: any, idx: number) => {
+      return {
+        key: item.id + '' + idx,
+        label: (
+          <ItemRow>
+            <CommonUserAvatar isBorder name={item.name} avatar={item.avatar} />
+            <Text>({item.position})</Text>
+          </ItemRow>
+        ),
+      }
+    })
+    setItems(data)
+  }
+  if (len === 1) {
+    return (
+      <Dropdown
+        menu={{ items }}
+        onVisibleChange={e => {
+          setVisible(e), e && getUserIntroListApi()
+        }}
+        visible={visible}
+      >
+        <div onClick={e => e.preventDefault()}>
+          <CommonUserAvatar
+            isBorder
+            avatar={props.list[0].avatar}
+            name={props.list[0].name}
+          />
+        </div>
+      </Dropdown>
+    )
+  }
   return (
     <Dropdown
+      visible={visible}
       menu={{ items }}
       disabled={props.disableDropDown}
       // trigger={['click']}
+      onVisibleChange={e => {
+        setVisible(e), e && getUserIntroListApi()
+      }}
     >
       <MultipleAvatarBox width={width}>
         {data?.map((item, idx) => {
