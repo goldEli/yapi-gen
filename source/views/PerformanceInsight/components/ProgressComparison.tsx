@@ -77,7 +77,7 @@ interface Props {
   homeType: string
   headerParmas: Models.Efficiency.HeaderParmas
   // projectDataList: Array<{ name: string; id: number }>
-  projectId: number
+  projectId: number | string
 }
 const ProgressComparison = (props: Props) => {
   const dispatch = useDispatch()

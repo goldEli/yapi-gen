@@ -72,7 +72,7 @@ declare namespace API.Efficiency {
   }
   namespace ViewsList {
     type Params = {
-      project_id: number
+      project_id: number | string
       use_type: number
     }
     type Result = Array<Models.Efficiency.ViewItem>

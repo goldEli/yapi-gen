@@ -68,6 +68,7 @@ export const CoverAreaImageWrap = styled.div<{ color?: string }>`
     visibility: visible;
   }
   :hover {
+    cursor: pointer;
     ::after {
       content: '';
       position: absolute;

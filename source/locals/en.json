@@ -1,4 +1,5 @@
 {
+  "submit successfully": " Submit successfully",
   "message_receiver_list": "List of message recipients ",
 
   "person_unread": "person not read",
@@ -1728,6 +1729,7 @@
     "cc": "Sprint",
     "theTransactionAssignedToHimAssignsBug": "Defects assigned to him",
     "selectcc": "Please select a sprint",
+    "selectdd": "Please select iteration",
     "presentSituation": "Current situation",
     "qPresentSituation": "Defect Status",
     "presentSituation1": " Work Item Status",

@@ -52,14 +52,16 @@ export const loginOut: any = async () => {
 
 // 跳转登录
 export const getTicket = () => {
-  const url = new URL(import.meta.env.__SSO_URL__)
-  url.searchParams.set('type', '0')
-  url.searchParams.set('redirect', location.href)
-  url.searchParams.set('target', 'agile')
-  url.searchParams.set('language', localStorage.getItem('language') || 'zh')
-  localStorage.removeItem('language')
+  localStorage.clear()
+  location.replace(`${location.origin}/login`)
+  // const url = new URL(import.meta.env.__SSO_URL__)
+  // url.searchParams.set('type', '0')
+  // url.searchParams.set('redirect', location.href)
+  // url.searchParams.set('target', 'agile')
+  // url.searchParams.set('language', localStorage.getItem('language') || 'zh')
+  // localStorage.removeItem('language')
 
-  location.href = url.href
+  // location.href = url.href
 }
 
 // 获取登录者信息

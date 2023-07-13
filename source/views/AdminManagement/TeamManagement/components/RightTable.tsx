@@ -297,7 +297,7 @@ const RightTable = () => {
         onRefresh={onFetchMemberList}
         onShowAddMemberModal={() => setAddMemberVisible(true)}
       />
-      <TableBox>
+      <TableBox style={{ overflow: 'hidden', height: '80%' }}>
         <Table
           onUpdateOrderKey={onUpdateOrderKey}
           onEditRow={(row: any, state: string) => {
