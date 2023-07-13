@@ -6,6 +6,7 @@ import { setAddWorkItemModal } from '@store/project'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Detail from './Detail'
+import { useTranslation } from 'react-i18next'
 import DetailHeader from './DetailHeader'
 import {
   Line,
@@ -139,6 +140,7 @@ const WorkRecords = (props: WorkRecordsTyle) => {
   )
 }
 const Main = (props: UserInfo) => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -179,13 +181,13 @@ const Main = (props: UserInfo) => {
             }
           >
             {/* 快捷操作，打开创建事务的弹窗 */}
-            <span className="text">分配事务</span>
+            <span className="text">{t('performance.fpsw')}</span>
           </BtnStyle>
         )}
       </MainStyle1>
       <MainWrap size={32}>
         <Item onClick={() => onChangeIdx(0)} activeIdx={type === 0}>
-          <span>工作记录</span>
+          <span>{t('performance.workRecord')}</span>
         </Item>
         {/* // 进展对比 Progress_iteration-迭代 Progress_sprint冲刺 Progress_all全局
        //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
@@ -194,15 +196,21 @@ const Main = (props: UserInfo) => {
         props.type === 'Progress_all' ? (
           <>
             <Item onClick={() => onChangeIdx(1)} activeIdx={type === 1}>
-              <span>他创建的事务</span>
+              <span>{t('performance.theBusinessHeCreated')}</span>
             </Item>
             <Item onClick={() => onChangeIdx(2)} activeIdx={type === 2}>
-              <span>分配给他的事务</span>
+              <span>
+                {t(
+                  'performance.theTransactionAssignedToHimAssignsTheTransaction',
+                )}
+              </span>
             </Item>
           </>
         ) : (
           <Item onClick={() => onChangeIdx(2)} activeIdx={type === 2}>
-            <span>分配给他的缺陷</span>
+            <span>
+              {t('performance.theTransactionAssignedToHimAssignsBug')}
+            </span>
           </Item>
         )}
       </MainWrap>
