@@ -273,6 +273,7 @@ const HeaderRight = () => {
       const res = await loginOut()
       console.log(res)
       if (res.code === 0) {
+        message.destroy()
         localStorage.clear()
         navigate('/login')
       }
