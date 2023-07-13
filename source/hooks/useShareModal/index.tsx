@@ -72,7 +72,6 @@ const useShareModal = () => {
   }
 
   const ShareModal: React.FC<ShareModalProps> = props => {
-    // debugger
     const { id, url, title, config, name, type, viewType } = props
     const [needSave, setNeedSave] = useState(false)
     const [form] = Form.useForm()

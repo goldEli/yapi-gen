@@ -2064,5 +2064,6 @@
   "defectComment": "缺陷评论",
   "areYouSureYouWantToDeleteThisFlaw": "确认删除该缺陷？",
   "businessReview": "事务评论",
-  "targetInfo": "目标："
+  "targetInfo": "目标：",
+  "yc": "移出项目成员"
 }

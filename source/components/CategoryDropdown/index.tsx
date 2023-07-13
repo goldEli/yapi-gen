@@ -120,7 +120,7 @@ const CategoryDropdown = (props: IProps) => {
   // 反选
   const reverseClick = () => {
     const { value } = props
-    // debugger
+
     if (!mode) {
       return
     }

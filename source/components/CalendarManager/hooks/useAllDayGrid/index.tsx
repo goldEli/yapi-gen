@@ -85,7 +85,6 @@ const useAllDayGrid = (props: {
     }
   }
   const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // debugger
     // 如果拖拽了日程 不触发创建
     if (window.isMovingSchedule) {
       return

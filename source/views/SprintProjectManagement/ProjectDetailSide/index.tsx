@@ -261,7 +261,7 @@ const ProjectDetailSide = () => {
   // 项目设计导航
   const projectSettingsClick = ({ item, key }: any) => {
     setSelectedKeys(key)
-    // debugger
+
     const params = encryptPhp(
       JSON.stringify({
         type: key,
