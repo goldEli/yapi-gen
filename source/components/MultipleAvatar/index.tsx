@@ -59,8 +59,8 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
         key: item.id + '' + idx,
         label: (
           <ItemRow>
-            <CommonUserAvatar isBorder name={item.name} avatar={item.avatar} />
-            <Text>({item.position ? item.position : '--'})</Text>
+            <CommonUserAvatar isBorder name={item.name} avatar={item.avatar} />(
+            <Text>{item.position ? item.position : '--'}</Text>)
           </ItemRow>
         ),
       }
