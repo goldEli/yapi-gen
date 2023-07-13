@@ -81,9 +81,14 @@ export const login = async () => {
     )
 
     localStorage.setItem('agileToken', response.data.token)
+    localStorage.setItem('isYes', '1')
 
     setTimeout(() => {
-      onlySysNotice()
+      if (localStorage.getItem('isYes') === '1') {
+        console.log('socket1')
+
+        onlySysNotice()
+      }
     }, 10000)
   } catch (error) {
     await getTicket()

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
+import { onlySysNotice } from '@/services/sysNotice'
 import { getLoginDetail, getTicket, loginOut } from '@/services/user'
 import { debounce, throttle } from 'lodash'
 import { useState, useRef, useEffect } from 'react'
@@ -135,7 +136,7 @@ const useWebsocket = () => {
   }, [ws])
 
   useEffect(() => {
-    console.log(readyState)
+    console.log(readyState, 'socket状态')
 
     if (readyState.key === 3) {
       reconnect()
