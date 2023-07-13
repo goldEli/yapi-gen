@@ -191,7 +191,7 @@ const ProjectDetailSide = () => {
       key: 'note',
     },
     {
-      label: t('sprintProject.transactionType'),
+      label: t('sprintProject.typeConfiguration'),
       icon: <CommonIconFont type="selections" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission:

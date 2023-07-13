@@ -79,4 +79,7 @@ export const loadingImage = styled.img`
 
 export const ModalContentBox = styled.div`
   padding: 0 24px;
+  .ant-form-item-explain-error {
+    font-size: 12px;
+  }
 `
