@@ -56,12 +56,12 @@ const ImgWrap = styled.div<{ url?: string }>(
     marginRight: '8px',
     borderRadius: 4,
     boxSizing: 'border-box',
-    border: '1px solid white',
+    // border: '1px solid white',
     cursor: 'pointer',
     backgroundSize: '100%',
     backgroundPosition: 'center',
     '&: hover': {
-      border: '1px solid var(--primary-d2)',
+      // border: '1px solid var(--primary-d2)',
     },
   },
   ({ url }) => ({
