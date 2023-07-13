@@ -43,4 +43,9 @@ export const ItemRow = styled.div`
 `
 export const Text = styled.span`
   margin-left: 2px;
+  width: 200px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `

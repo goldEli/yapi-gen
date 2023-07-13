@@ -103,11 +103,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       label: t('no_start_using'),
     },
   ]
-
-  const isCreate = projectInfo?.projectPermissions?.filter(
-    (i: any) => i.identity === 'b/project/story_config',
-  )?.length
-
   // 需求类别侧边栏
   const getList = async (type?: string) => {
     await dispatch(storyConfigCategoryList({ projectId: paramsData.id }, type))
