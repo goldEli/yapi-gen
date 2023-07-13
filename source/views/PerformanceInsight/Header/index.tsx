@@ -51,21 +51,21 @@ const Iteration = (props: Props) => {
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
   const tabs1 = [
     {
-      label: '按周期',
+      label: 'performance.time',
       key: '1',
     },
     {
-      label: '按冲刺',
+      label: 'performance.cc',
       key: '2',
     },
   ]
   const tabs2 = [
     {
-      label: '按周期',
+      label: 'performance.time',
       key: '1',
     },
     {
-      label: '按迭代',
+      label: 'performance.dd',
       key: '2',
     },
   ]
@@ -463,13 +463,13 @@ const Iteration = (props: Props) => {
         </DivStyle>
         {(props.homeType === 'sprint' || props.homeType === 'iteration') && (
           <Tabs>
-            {tabs.map((el, index) => (
+            {tabs.map((el: { label: any }, index) => (
               <span
                 className={tabsActive === index ? 'tabsActive' : ''}
                 onClick={() => getTabsActive(index)}
                 key={el.label}
               >
-                {el.label}
+                {t(el.label)}
               </span>
             ))}
           </Tabs>
@@ -527,7 +527,7 @@ const Iteration = (props: Props) => {
           // 是否是迭代和冲刺的项目
           <Select
             type={props.homeType}
-            placeholder={'请选择冲刺'}
+            placeholder={t('performance.selectcc')}
             options={iterateData}
             more={more1}
             value={iterateIds || []}

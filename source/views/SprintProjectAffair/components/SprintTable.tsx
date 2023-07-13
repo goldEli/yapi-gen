@@ -125,7 +125,7 @@ const SprintTable = (props: Props) => {
 
   const onChangeState = async (item: any) => {
     await updateAffairsPriority({
-      sprintId: item.id,
+      id: item.id,
       priorityId: item.priorityId,
       projectId,
     })
