@@ -50,6 +50,9 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const showPeople = showUserRelatedInformation && (
     <div
       onClick={e => {
+        if (issuesGroup.users?.length === 0) {
+          return
+        }
         e.stopPropagation()
         dispatch(
           openUserGroupingModel({
