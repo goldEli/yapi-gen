@@ -320,9 +320,11 @@ const CommonMember = (props: Props) => {
         title={
           <HeaderWrap>
             <span>
-              {t('project.projectMemberAll', {
-                count: projectInfo.memberCount || '--',
-              })}
+              {projectInfo.memberCount
+                ? t('project.projectMemberAll', {
+                    count: projectInfo.memberCount,
+                  })
+                : t('project.projectMember')}
             </span>
             <CloseWrap width={32} height={32} onClick={props.onChangeVisible}>
               <IconFont
