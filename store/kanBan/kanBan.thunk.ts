@@ -506,7 +506,6 @@ export const onChangeSortByView =
     if (!current) {
       return
     }
-
     // 根据视图 设置 分组|列与状态|筛选条件的回显
     const { sortByRowAndStatusOptions } = store.getState().kanBan
     const temp1 = sortByRowAndStatusOptions?.find(k => k.is_default === 1)?.key
@@ -516,13 +515,11 @@ export const onChangeSortByView =
         current.type === 2 ? 'none' : current?.config?.currentGroupKey,
       ),
     )
-    await dispatch(
-      setSortByRowAndStatusOptions(
-        current.type === 2
-          ? temp1 || temp2
-          : current?.config?.currentRowAndStatusId,
-      ),
-    )
+    const currentRowAndStatusId =
+      current.type === 2
+        ? temp1 || temp2
+        : current?.config?.currentRowAndStatusId
+    await dispatch(setSortByRowAndStatusOptions(String(currentRowAndStatusId)))
     const params = generatorFilterParams(current.config)
     await dispatch(saveValue(params))
     await dispatch(onTapSearchChoose(params ?? { system_view: 1 }))

@@ -25,7 +25,7 @@ type affairProps = {
 //       { name: '子任务类型', visible: true, workType: '6', children: [] },
 //     ]
 //     const obj: affairProps = {}
-//     // debugger
+//
 //     for (let i = 0; i < arr.length; i++) {
 //       const item = arr[i]
 //       const key = item[filed]
@@ -107,7 +107,7 @@ const useCategory = () => {
         projectType: 'sprint',
       },
     ]
-    // debugger
+
     if (type) {
       categoryData = categoryData.filter(
         item => item.workType === 4 || item.workType === 5,

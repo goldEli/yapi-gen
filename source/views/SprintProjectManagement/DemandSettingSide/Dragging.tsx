@@ -196,7 +196,6 @@ const Sortable = (props: any) => {
             props.onClick(i, child)
           }}
           onMove={(prevIndex: any, nextIndex: any) => {
-            // debugger
             const newList = [...list]
             newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
             setList(newList)

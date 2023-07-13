@@ -86,7 +86,7 @@ const Header = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
-  // debugger
+
   const { startUsing, activeCategory, categoryList } = useSelector(
     store => store.category,
   )
@@ -139,7 +139,6 @@ const Header = () => {
   }
   // 删除逻辑
   const onDelete = () => {
-    // debugger
     if (activeCategory?.hasDemand) {
       setHasDeleteVisible(true)
     } else {

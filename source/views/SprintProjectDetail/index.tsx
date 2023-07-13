@@ -505,7 +505,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         url={location.href}
         title={
           affairsInfo?.name
-            ? `【${affairsInfo?.projectPrefix}-${affairsInfo?.name}-${userInfo?.name}】`
+            ? `【${affairsInfo?.projectPrefix}${
+                affairsInfo?.prefixKey ? '-' : ''
+              }${affairsInfo?.prefixKey}-${affairsInfo?.name}-${
+                userInfo?.name
+              }】`
             : ''
         }
       />

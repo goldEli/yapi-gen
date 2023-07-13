@@ -55,7 +55,7 @@ const HandOverModal = (props: any) => {
   }
   return (
     <CommonModal
-      title={t('quitAndHandover')}
+      title={props?.title || t('quitAndHandover')}
       onClose={props.close}
       isVisible={props.visible}
       onConfirm={onConfirm}

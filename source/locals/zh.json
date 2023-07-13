@@ -1,4 +1,10 @@
 {
+  "from": "从",
+  "import_workflow": "导入工作流",
+  "workflow": "工作流",
+  "project_members": "项目成员",
+  "reselect": "重新选择",
+  "submit_successfully": "提交成功",
   "message_receiver_list": "消息接收人列表",
   "person_unread": "人未读",
   "person_read": "人已读",
@@ -1735,6 +1741,7 @@
     "time": "按周期",
     "cc": "按冲刺",
     "selectcc": "请选择冲刺",
+    "selectdd": "请选择迭代",
     "dd": "按迭代",
     "back": "返回",
     "title05": "数据明细",
@@ -2062,5 +2069,6 @@
   "defectComment": "缺陷评论",
   "areYouSureYouWantToDeleteThisFlaw": "确认删除该缺陷？",
   "businessReview": "事务评论",
-  "targetInfo": "目标："
+  "targetInfo": "目标：",
+  "yc": "移出项目成员"
 }

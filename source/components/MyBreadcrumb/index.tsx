@@ -32,9 +32,11 @@ const MyBreadcrumb = (props: any) => {
           <a
             onClick={() => {
               const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
-              // console.log('projectInfo', projectInfo)
               if (projectInfo.projectType === 1) {
-                navigate(`/ProjectManagement/Demand?data=${params}`)
+                // 之前需求迭代跳转统一跳到了需求，需要区分迭代是迭代的，需求是需求的
+                location.pathname.includes('/ProjectManagement/Iteration')
+                  ? navigate(`/ProjectManagement/Iteration?data=${params}`)
+                  : navigate(`/ProjectManagement/Demand?data=${params}`)
                 return
               }
               navigate(`/SprintProjectManagement/Affair?data=${params}`)

@@ -75,6 +75,7 @@ export const BottomTitle = styled.div({
   borderLeft: '3px solid var(--primary-d1)',
   marginBottom: 16,
   lineHeight: '16px',
+  fontFamily: 'SiYuanMedium',
 })
 
 const CardWrap = styled.div({
@@ -115,7 +116,9 @@ const CompanyInfo = () => {
           ?.children?.map((i: any) => i.url)}
       >
         <Header>
-          <span>{t('setting.companyInfo')}</span>
+          <span style={{ fontFamily: 'SiYuanMedium' }}>
+            {t('setting.companyInfo')}
+          </span>
         </Header>
         <Content>
           <InfoWrap>

@@ -231,7 +231,7 @@ const MyDropdown = (props: any) => {
   // 接口上下接口不同，取值不同，需要加判断取
   const onRoute = (el: any, type: string) => {
     let iterParmas = null
-    // debugger
+
     const paramsKey: { [key: string]: string } = {
       1: 'demandId',
       2: 'sprintId',
@@ -241,7 +241,7 @@ const MyDropdown = (props: any) => {
       2: '/SprintProjectManagement/SprintProjectDetail',
     }
     let router = ''
-    // debugger
+
     if (type === 'story') {
       iterParmas = encryptPhp(
         JSON.stringify({

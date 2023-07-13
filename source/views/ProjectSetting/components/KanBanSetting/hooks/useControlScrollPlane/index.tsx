@@ -21,7 +21,7 @@ const columnGap = 16
 const useControlScrollPlane = (columnNum: number) => {
   const containRight = useSelector(store => store.kanBan.containRight)
   // 需要控制滚动条的容器
-  // debugger
+
   const containerRef = useRef<HTMLDivElement>(null)
   // 容器可视区域宽高
   const [width, setWidth] = useState(0)
