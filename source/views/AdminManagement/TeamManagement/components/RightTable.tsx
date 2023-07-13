@@ -7,20 +7,19 @@ import Table from './Table'
 import Pagination from '@/components/TablePagination'
 import CommonModal from '@/components/CommonModal'
 import { useState, useEffect } from 'react'
-import { Form, Select, message, Tooltip } from 'antd'
+import { Form, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useDispatch, useSelector } from '@store/index'
 import { getMemberList } from '@store/teams/thunk'
 import * as services from '@/services'
-import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { GENDER_MAP } from '@/constants'
 import TeamOverModal from '@/components/TeamOverModal'
 import { t } from 'i18next'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
-
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 const RightWrap = styled.div`
   flex: 1;
   padding: 0 24px;
@@ -126,8 +125,6 @@ const RightTable = () => {
   const [activeMember, setActiveMember] = useState<any>(null)
   const [searchVal, setSearchVal] = useState('')
   const [addMemberVisible, setAddMemberVisible] = useState(false)
-  const [orderKey, setOrderKey] = useState<any>()
-  const [order, setOrder] = useState<any>(3)
   const options = [
     {
       value: 1,
@@ -180,11 +177,6 @@ const RightTable = () => {
   }
 
   const onDelConfirm = async () => {
-    // if (activeMember?.team_is_admin === 1) {
-    //   message.warning(t('team_administrators_cannot_be_removed') as string)
-    //   setDelIsVisible(false)
-    //   return
-    // }
     try {
       await services.setting.deleteMemberList({
         id: activeMember?.team_id,
@@ -352,12 +344,13 @@ const RightTable = () => {
         close={() => setDelIsVisible2(false)}
         visible={delIsVisible2}
       />
-      <AddMemberCommonModal
+      <NewAddUserModalForTandD
+        title={t('project.addMember')}
+        state={2}
         isPermisGroup={false}
-        title={t('add_a_member')}
         isVisible={addMemberVisible}
+        onConfirm={onAddConfirm}
         onClose={() => setAddMemberVisible(false)}
-        onConfirm={list => onAddConfirm(list)}
       />
     </RightWrap>
   )
