@@ -1970,7 +1970,8 @@
     "editTemplate": "编辑模板",
     "rightsProfile": "权限配置",
     "confirmDeletionOfThisField": "确认删除该字段？",
-    "columnsAndStatus": "列与状态"
+    "columnsAndStatus": "列与状态",
+    "typeConfiguration": "类型配置"
   },
   "editingRequirements": "编辑需求",
   "createSubrequirements": "创建子需求",

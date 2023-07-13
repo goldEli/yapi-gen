@@ -1984,7 +1984,8 @@
     "editTemplate": "Edit template",
     "rightsProfile": "Rights Profile",
     "confirmDeletionOfThisField": "Confirm deletion of this field?",
-    "columnsAndStatus": "Columns and status"
+    "columnsAndStatus": "Columns and status",
+    "typeConfiguration": "Type configuration"
   },
   "editingRequirements": "Editing requirements",
   "createSubrequirements": "Create subrequirements",
