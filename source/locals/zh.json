@@ -1,4 +1,9 @@
 {
+  "from": "从",
+  "import_workflow": "导入工作流",
+  "workflow": "工作流",
+  "project_members": "项目成员",
+  "reselect": "重新选择",
   "submit_successfully": "提交成功",
   "message_receiver_list": "消息接收人列表",
   "person_unread": "人未读",
