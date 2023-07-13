@@ -153,7 +153,9 @@ client.config({
           localStorage.removeItem('agileToken')
           localStorage.removeItem('saveRouter')
           localStorage.removeItem('quickCreateData')
-          getTicket()
+          localStorage.clear()
+          location.replace(`${location.origin}/login`)
+          // getTicket()
         }, 500)
       }
       // A0301特殊处理-私有项目没有权限查看
