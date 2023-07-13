@@ -444,7 +444,7 @@ const Main = (props: any) => {
           />
         )}
         <DeleteConfirm
-          text={'确认删除该字段？'}
+          text={t('sprintProject.confirmDeletionOfThisField')}
           isVisible={isVisible}
           onChangeVisible={() => setIsVisible(false)}
           onConfirm={() => delConfig()}

@@ -14,7 +14,7 @@ const IconWrap = styled(IconFont)`
 
 const UpDownBtn: React.FC<UpDownBtnProps> = props => {
   const type = useMemo(() => {
-    return props.isOpen ? 'right-icon' : 'down-icon'
+    return props.isOpen ? 'down-icon' : 'right-icon'
   }, [props.isOpen])
   return <IconWrap type={type} />
 }

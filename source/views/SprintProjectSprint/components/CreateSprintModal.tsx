@@ -86,6 +86,39 @@ const CreateSprintModal = (props: sprintProps) => {
     dispatch(setProjectInfoValues(projectInfoData))
   }
 
+  // 先判断更改的时间是否在事务的时间范围内
+  const updateSprint = async (value: any) => {
+    const result: any = await updateSprintInfo({
+      id: editId as any,
+      project_id: projectId,
+      name: value?.name,
+      start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
+      end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
+      duration: {
+        is_weekend: value?.group?.include ? 1 : 2,
+        week_type: value?.group?.radio,
+      },
+      info: value?.info,
+    })
+    if (result && result.code === 0) {
+      getMessage({
+        msg:
+          type === 'edit'
+            ? t('common.editSuccess')
+            : type === 'update'
+            ? t('sprint.updateSuccess')
+            : t('sprint.startSuccess'),
+        type: 'success',
+      })
+      onClear(true)
+    } else {
+      getMessage({
+        msg: result?.message,
+        type: 'error',
+      })
+    }
+  }
+
   const onConfirm = async () => {
     const value = await form.validateFields()
     if (type === 'create') {
@@ -117,8 +150,19 @@ const CreateSprintModal = (props: sprintProps) => {
       return result
     }
     if (type === 'edit' || type === 'start' || type === 'update') {
-      // 先判断更改的时间是否在事务的时间范围内
-      const updateSprint = async () => {
+      if (
+        ((moment(value?.group?.date?.[0]).isSame(editData?.between_date?.[0]) ||
+          moment(value?.group?.date?.[0]).isBefore(
+            editData?.between_date?.[0],
+          )) &&
+          (moment(value?.group?.date?.[1]).isSame(
+            editData?.between_date?.[1],
+          ) ||
+            moment(value?.group?.date?.[1]).isAfter(
+              editData?.between_date?.[1],
+            ))) ||
+        editData?.between_date?.every((i: any) => !i)
+      ) {
         const result: any = await updateSprintInfo({
           id: editId as any,
           project_id: projectId,
@@ -148,27 +192,12 @@ const CreateSprintModal = (props: sprintProps) => {
             type: 'error',
           })
         }
-      }
-      if (
-        ((moment(value?.group?.date?.[0]).isSame(editData?.between_date?.[0]) ||
-          moment(value?.group?.date?.[0]).isBefore(
-            editData?.between_date?.[0],
-          )) &&
-          (moment(value?.group?.date?.[1]).isSame(
-            editData?.between_date?.[1],
-          ) ||
-            moment(value?.group?.date?.[1]).isAfter(
-              editData?.between_date?.[1],
-            ))) ||
-        editData?.between_date?.every((i: any) => !i)
-      ) {
-        updateSprint()
       } else {
         open({
           title: getTitle(type),
           okText: t('common.confirm2'),
           children: <div>{t('sprint.warning')}</div>,
-          onConfirm: updateSprint,
+          onConfirm: () => updateSprint(value),
         })
       }
     }

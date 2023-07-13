@@ -701,8 +701,10 @@ const GlobalStyle = () => {
     .ant-select-show-arrow,
     .ant-select-focused,
     .ant-picker-focused,
-    .ant-input-number-focused {
-      box-shadow: initial !important;
+    .ant-input-number-focused,
+    .ant-select-selector,
+    .ant-select:hover {
+      box-shadow: inherit !important;
       .ant-dropdown-menu-item:hover {
         background-color: var(--hover-d3);
         color: var(--neutral-n1-d1);
@@ -712,6 +714,10 @@ const GlobalStyle = () => {
         color: var(--neutral-n1-d1);
       }
       border-color: var(--neutral-n6-d1);
+    }
+
+    .ant-select:hover {
+      border-color: 1px solid red !important;
     }
 
     .ant-menu-light .ant-menu-item:hover,
@@ -845,6 +851,17 @@ const GlobalStyle = () => {
     .ant-tooltip {
       max-width: 300px;
       min-width: 30px;
+    }
+    .ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
+      box-shadow: none !important;
+    }
+    .ant-picker-focused {
+      box-shadow: none !important;
+    }
+    .ant-picker-input > input:focus,
+    .ant-picker-input > input-focused {
+      box-shadow: none !important;
+      outline: 0;
     }
   `
   return <Global styles={globalCss} />

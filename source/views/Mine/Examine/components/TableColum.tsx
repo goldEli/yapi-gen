@@ -142,13 +142,17 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="user_name">{t('newlyAdd.submitName')}</NewSort>,
       dataIndex: 'userName',
       key: 'user_name',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <MultipleAvatar
             max={3}
-            list={text?.split(';')?.map((i: any) => ({
-              name: i,
-            }))}
+            list={[
+              {
+                name: record?.userName,
+                id: record?.userId,
+                avatar: record?.userAvatar,
+              },
+            ]}
           />
         )
       },
