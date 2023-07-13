@@ -850,6 +850,17 @@ const GlobalStyle = () => {
       max-width: 300px;
       min-width: 30px;
     }
+    .ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
+      box-shadow: none !important;
+    }
+    .ant-picker-focused {
+      box-shadow: none !important;
+    }
+    .ant-picker-input > input:focus,
+    .ant-picker-input > input-focused {
+      box-shadow: none !important;
+      outline: 0;
+    }
   `
   return <Global styles={globalCss} />
 }

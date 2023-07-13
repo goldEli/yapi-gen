@@ -1950,7 +1950,16 @@
     "kanban": "KanBan",
     "defect": "缺陷",
     "need": "需求",
-    "iteration": "迭代"
+    "iteration": "迭代",
+    "systemGrouping": "系统分组",
+    "customRole": "自定义角色",
+    "role": "角色",
+    "demandSetting": "需求设置",
+    "configureWorkflow": "配置工作流",
+    "editTemplate": "编辑模板",
+    "rightsProfile": "权限配置",
+    "confirmDeletionOfThisField": "确认删除该字段？",
+    "columnsAndStatus": "列与状态"
   },
   "editingRequirements": "编辑需求",
   "createSubrequirements": "创建子需求",
