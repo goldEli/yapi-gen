@@ -32,8 +32,6 @@ import {
 } from '../../styles'
 import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
-import { colorMap } from '../../config'
-import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { DatePickerProps, RangePickerProps } from 'antd/lib/date-picker'
@@ -47,7 +45,7 @@ import { useTranslation } from 'react-i18next'
 import { getScheduleInfo } from '@/services/schedule'
 import { setVisualizationTime, setIsAddOrDelete } from '@store/schedule'
 import { getMessage } from '@/components/Message'
-
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 interface DefaultTime {
   value?: number
   id: number
@@ -601,11 +599,12 @@ const CreateSchedule = () => {
           setCurrentRepeat(0)
         }}
       />
-      <AddMemberCommonModal
-        isVisible={isChooseVisible}
+      <NewAddUserModalForTandD
         title={t('calendarManager.add_a_member')}
-        onClose={() => setIsChooseVisible(false)}
+        state={2}
+        isVisible={isChooseVisible}
         onConfirm={onAddConfirm}
+        onClose={() => setIsChooseVisible(false)}
       />
       <Drawer
         closable={false}
