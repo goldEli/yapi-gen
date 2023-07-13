@@ -267,6 +267,12 @@ export const LabelTitle = styled.span`
   font-weight: 500;
   color: var(--neutral-n1-d1);
   line-height: 22px;
+  .ant-form-item-label
+    > label.ant-form-item-required:not(
+      .ant-form-item-required-mark-optional
+    )::after {
+    content: '';
+  }
 `
 
 export const LabelMessage = css`
