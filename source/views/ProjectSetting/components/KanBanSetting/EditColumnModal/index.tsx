@@ -54,7 +54,6 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const { editColumnModelInfo } = useSelector(store => store.KanbanConfig)
   React.useEffect(() => {
-    // debugger
     if (editColumnModelInfo.columnInfo) {
       form.setFieldsValue({
         name: editColumnModelInfo.columnInfo.name,

@@ -183,7 +183,7 @@ const ProjectSet = () => {
   })
 
   const [searchParams] = useSearchParams()
-  // debugger
+
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [isSpinning, setIsSpinning] = useState(false)
