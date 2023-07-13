@@ -64,11 +64,20 @@ const HisSide = () => {
   }
 
   const onGoBack = () => {
+    // debuggers
     if (isMember) {
       const params = encryptPhp(
-        JSON.stringify({ id: projectInfo?.id, pageIdx: 'main', type: 1 }),
+        JSON.stringify({
+          id: projectInfo?.id,
+          pageIdx: 'main',
+          type: projectInfo.projectType === 1 ? 1 : 'ProjectMember',
+        }),
       )
-      navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+      const url =
+        projectInfo.projectType === 1
+          ? '/ProjectManagement/ProjectSetting'
+          : '/SprintProjectManagement/Setting'
+      navigate(`${url}?data=${params}`)
     } else {
       navigate('/AdminManagement/StaffManagement')
     }
