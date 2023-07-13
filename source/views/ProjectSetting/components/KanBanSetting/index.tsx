@@ -49,6 +49,7 @@ const KanBanSetting: React.FC<IProps> = props => {
     title: t('remind'),
     text: t('do_you_want_to_save_changes'),
     okText: t('common.save'),
+    cancelText: t('common.giveUp'),
     when: contentNotSaved,
     onConfirm: () => {
       dispatch(saveKanbanConfig())

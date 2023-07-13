@@ -16,7 +16,10 @@ export const IssueCardBox = styled.div`
     visibility: visible;
   }
 `
-export const IssueCardBoxContainer = styled.div<{ hidden?: boolean }>`
+export const IssueCardBoxContainer = styled.div<{
+  hidden?: boolean
+  isDragOver?: any
+}>`
   position: relative;
   padding: 16px;
   box-sizing: border-box;
@@ -28,6 +31,8 @@ export const IssueCardBoxContainer = styled.div<{ hidden?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  box-shadow: ${props =>
+    props.isDragOver ? '0px 0px 10px 0px rgba(9, 9, 9, 0.09)' : ''};
   &:hover {
     box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
   }

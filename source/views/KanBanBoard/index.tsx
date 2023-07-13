@@ -27,12 +27,13 @@ const KanBanBoard: React.FC<IProps> = props => {
   const { guildModalEl } = useGuideModal()
 
   useInit()
-
+  const { sortByRowAndStatusOptions } = useSelector(store => store.kanBan)
   return (
     <KanBanBoardBox>
       <TopArea />
       <ToolBar />
-      {userPreferenceConfig?.guidePageConfig?.kanban === 1
+      {userPreferenceConfig?.guidePageConfig?.kanban === 1 &&
+      sortByRowAndStatusOptions?.length
         ? guildModalEl
         : null}
       <FullScreenContainer>
