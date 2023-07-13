@@ -130,9 +130,16 @@ const ProjectTemplate = (props: any) => {
     setVisibleEdit(false)
   }
   const onsubmit = () => {
+    console.log(111)
+    if (!ids.current) {
+      return
+    }
+
     props.getIdS(ids.current)
     setVisibleEdit(false)
+
     props.choose(3)
+    ids.current = null
   }
   const onChangePageNavigation = (item: any) => {
     setPageObj({
