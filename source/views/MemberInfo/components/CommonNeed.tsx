@@ -90,7 +90,7 @@ const SearchWrap = styled.div({
 })
 
 const MainWrap = styled.div({
-  height: 'calc(100vh - 128px)',
+  height: 'calc(100vh - 126px)',
   overflow: 'scroll',
   padding: ' 0 24px',
   '.ant-spin-nested-loading': {

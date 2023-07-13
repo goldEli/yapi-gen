@@ -567,7 +567,6 @@ const CommonNeed = (props: any) => {
       ]}
     />
   )
-  console.log(selectColum, '222很多很多')
 
   return (
     <>
@@ -577,7 +576,6 @@ const CommonNeed = (props: any) => {
           justifyContent: 'space-between',
           display: 'flex',
           borderBottom: '1px solid var(--neutral-n6-d1)',
-          // paddingLeft: '24px',
         }}
       >
         <div
@@ -592,7 +590,7 @@ const CommonNeed = (props: any) => {
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>
         <SearchWrap>
-          <div style={{ position: 'absolute', top: '0px', right: '24px' }}>
+          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
             <InputSearch
               placeholder={t('common.pleaseSearchDemand')}
               onChangeSearch={onPressEnter}
@@ -672,7 +670,7 @@ const CommonNeed = (props: any) => {
         <div style={{ padding: '0 24px' }}>
           <ResizeTable
             isSpinning={isSpin}
-            dataWrapNormalHeight="calc(100vh - 330px)"
+            dataWrapNormalHeight="calc(100vh - 342px)"
             col={selectColum}
             dataSource={listData?.list}
             noData={<NoData />}
