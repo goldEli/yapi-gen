@@ -312,7 +312,6 @@ const ProjectManagementOptimization = () => {
   const onExit = () => {
     setStepsEnabled(false)
   }
-
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"
@@ -337,7 +336,9 @@ const ProjectManagementOptimization = () => {
             marginBottom: '20px',
           }}
         >
-          <LeftTitle title={t('all_enterprises')} />
+          <LeftTitle
+            title={t(typeId === 0 ? 'project.mineJoin' : 'all_enterprises')}
+          />
           <div>
             <InputSearch
               width={184}

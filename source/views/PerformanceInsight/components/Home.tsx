@@ -139,7 +139,7 @@ const Home = () => {
   )
   const [t] = useTranslation()
   const [projectId, setProjectId] = useState(
-    paramsData?.projectId ? paramsData?.projectId : 0,
+    paramsData?.projectId ? paramsData?.projectId : '',
   )
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>({
@@ -193,8 +193,8 @@ const Home = () => {
       getViewList({ project_id: paramsData.projectId, use_type: 3 })
     } else {
       setHomeType('all')
-      setProjectId(0)
-      getViewList({ project_id: 0, use_type: 3 })
+      setProjectId('')
+      getViewList({ project_id: '', use_type: 3 })
     }
   }, [])
   const init = () => {
@@ -235,7 +235,7 @@ const Home = () => {
       dispatch(
         setHeaderParmas({
           users: filterVal?.config.user_ids,
-          projectIds: filterVal?.config.project_id,
+          projectIds: filterVal?.config.project_id || '',
           view: {
             title: filterVal?.name,
             value: filterVal?.id,
@@ -307,11 +307,11 @@ const Home = () => {
       getMessage({ msg: t('common.saveSuccess'), type: 'success' })
       // 刷新视图的接口,不是跟新的name,不刷新回显的name
       if (type === 'add') {
-        updateViewList({ project_id: projectId, use_type: 3 })
+        updateViewList({ project_id: projectId || '', use_type: 3 })
       } else {
         viewTitle === val && type === 'add'
           ? updateViewList({ project_id: projectId, use_type: 3 })
-          : getViewList({ project_id: projectId, use_type: 3 })
+          : getViewList({ project_id: projectId || '', use_type: 3 })
       }
     } else {
       getMessage({

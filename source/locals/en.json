@@ -1729,6 +1729,7 @@
     "cc": "Sprint",
     "theTransactionAssignedToHimAssignsBug": "Defects assigned to him",
     "selectcc": "Please select a sprint",
+    "selectdd": "Please select iteration",
     "presentSituation": "Current situation",
     "qPresentSituation": "Defect Status",
     "presentSituation1": " Work Item Status",
