@@ -351,7 +351,8 @@ const StaffManagement = () => {
         </CommonButton>
         <span
           style={{
-            color: 'var(--auxiliary-text-t2-d2)',
+            color: 'var(--neutral-n3)',
+            marginLeft: 8,
           }}
         >
           {t('scheduled_notification')}（{maxPage}）
