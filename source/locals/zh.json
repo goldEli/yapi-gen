@@ -624,7 +624,7 @@
     "afterStatus": "变更后需求状态",
     "circulationRecord": "流转记录",
     "operation": "操作",
-    "demandSet": "需求设置",
+    "demandSet": "类别设置",
     "editExamineSuccess": "修改审核状态成功",
     "examine": "审核",
     "refuse": "拒绝",
