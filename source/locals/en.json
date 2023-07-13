@@ -1671,6 +1671,7 @@
   "save_as_view": "Save as view",
   "name1": "Name",
   "please_enter_the_real_view_name_limit_30_characters": "Please enter the real view name limit 30 characters",
+  "please_enter_column_name": "Please enter the real column name limit 30 characters",
   "confirm_deletion": "Confirm deletion",
   "confirm_to_delete_the_column_and_status,_after_deletion,_the_column_and_status_will_not_be_available_in_the_Kanban": "Confirm to delete the column and status, after deletion, the column and status will not be available in the Kanban",
   "create_columns_and_status": "Create columns and status",

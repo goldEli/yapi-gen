@@ -126,9 +126,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
           >
             <Input
               maxLength={30}
-              placeholder={t(
-                'please_enter_the_real_view_name_limit_30_characters',
-              )}
+              placeholder={t('please_enter_column_name')}
               ref={inputRef}
             />
           </Form.Item>
