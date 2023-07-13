@@ -5,7 +5,7 @@ import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { CloseWrap } from '@/components/StyleCommon'
-import { getTicket, loginOut } from '@/services/user'
+import { loginOut } from '@/services/user'
 import { useDispatch, useSelector } from '@store/index'
 import { changeLanguage, type LocaleKeys } from '@/locals'
 import { message, Popover, Space, Tooltip } from 'antd'
@@ -275,7 +275,6 @@ const HeaderRight = () => {
       if (res.code === 0) {
         localStorage.clear()
         navigate('/login')
-        // getTicket()
       }
     } catch (error) {
       //

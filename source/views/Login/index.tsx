@@ -58,22 +58,6 @@ const Page = () => {
     }
   }
 
-  const check = async () => {
-    try {
-      const response = await checkToken()
-      if (response.code === 0) {
-        setIsAuthorized(true)
-        const userData = response.data?.info
-        localStorage.setItem('userAdmin', JSON.stringify(userData || {}))
-      } else {
-        setIsAuthorized(false)
-      }
-    } catch (error) {
-      setIsAuthorized(false)
-      localStorage.removeItem('token')
-    }
-  }
-
   useEffect(() => {
     console.log('clear')
 

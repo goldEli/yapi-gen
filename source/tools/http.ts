@@ -153,7 +153,9 @@ client.config({
           localStorage.removeItem('agileToken')
           localStorage.removeItem('saveRouter')
           localStorage.removeItem('quickCreateData')
-          getTicket()
+          localStorage.clear()
+          location.replace(`${location.origin}/login`)
+          // getTicket()
         }, 500)
       }
       // A0301特殊处理-私有项目没有权限查看
@@ -164,8 +166,7 @@ client.config({
         data.code !== 'A0301' &&
         data.code !== 'B0015'
       ) {
-        getMessage({ msg: data.message, type: 'error' })
-        // console.log(data.message, 'request error')
+        getMessage({ msg: data.msg ?? data.message, type: 'error' })
         return Promise.reject()
       }
       return {

@@ -16,13 +16,7 @@ import {
   systemData,
 } from './login'
 import React from 'react'
-import {
-  getCaptcha,
-  toLogin,
-  checkToken,
-  getTicket,
-  checkSecret,
-} from './services'
+import { getCaptcha, toLogin, checkToken, checkSecret } from './services'
 import { getQueryParam } from './utils'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'

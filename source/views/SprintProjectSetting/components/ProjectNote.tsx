@@ -554,31 +554,26 @@ const ProjectSet = () => {
                             </span>
                           ))}
                         </span>
-                        <span
-                          style={{
-                            width: '600px',
-                          }}
-                        >
-                          {i.objects.map((k: any) => (
-                            <span
-                              style={{
-                                display: 'inline-block',
-                                width: '150px',
-                                whiteSpace: 'nowrap',
-                              }}
-                              key={k.name}
+
+                        {i.objects.map((k: any) => (
+                          <span
+                            style={{
+                              display: 'inline-block',
+                              width: '150px',
+                              whiteSpace: 'nowrap',
+                            }}
+                            key={k.name}
+                          >
+                            <Checkbox
+                              onChange={() =>
+                                onChange(i.code, 'ob', k.name, k.is_check)
+                              }
+                              checked={k.is_check === 1}
                             >
-                              <Checkbox
-                                onChange={() =>
-                                  onChange(i.code, 'ob', k.name, k.is_check)
-                                }
-                                checked={k.is_check === 1}
-                              >
-                                {k.text}
-                              </Checkbox>
-                            </span>
-                          ))}
-                        </span>
+                              {k.text}
+                            </Checkbox>
+                          </span>
+                        ))}
                       </MainWrapItem>
                     )
                   })}
