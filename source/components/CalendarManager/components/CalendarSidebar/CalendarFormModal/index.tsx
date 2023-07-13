@@ -17,7 +17,7 @@ import {
 } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import CalendarColor from '../../CalendarColor'
-import AddMemberCommonModal from '@/components/AddUser/CommonModal'
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import IconFont from '@/components/IconFont'
 import {
@@ -446,11 +446,12 @@ const CalendarFormModal = () => {
   return (
     <>
       {isChooseVisible && (
-        <AddMemberCommonModal
-          isVisible={isChooseVisible}
+        <NewAddUserModalForTandD
           title={t('calendarManager.add_a_member')}
-          onClose={() => setIsChooseVisible(false)}
+          state={2}
+          isVisible={isChooseVisible}
           onConfirm={onAddConfirm}
+          onClose={() => setIsVisible(false)}
           {...addMemberProps}
         />
       )}

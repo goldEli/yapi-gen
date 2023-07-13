@@ -26,7 +26,6 @@ import SetPermissionWrap from './SetPermission'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import {

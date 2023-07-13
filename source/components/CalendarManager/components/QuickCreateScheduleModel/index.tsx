@@ -12,7 +12,6 @@ import {
   message,
 } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import IconFont from '@/components/IconFont'
 import {
@@ -32,7 +31,7 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonButton from '@/components/CommonButton'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import moment from 'moment'
-import { colorMap } from '../../config'
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import { setIsAddOrDelete } from '@store/schedule'
 import { setScheduleModal } from '@store/calendar'
@@ -291,14 +290,15 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   return (
     <>
-      <AddMemberCommonModal
-        isVisible={isChooseVisible && !!position}
+      <NewAddUserModalForTandD
         title={t('calendarManager.add_a_member')}
+        state={2}
+        isVisible={isChooseVisible && !!position}
+        onConfirm={onAddConfirm}
         onClose={() => {
           setIsChooseVisible(false)
           EventBus.getInstance().dispatch('cancelCreateSchedule')
         }}
-        onConfirm={onAddConfirm}
       />
       <Drawer
         closable={false}

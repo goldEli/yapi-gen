@@ -284,28 +284,23 @@ const CommonMember = (props: Props) => {
     dispatch(setProjectInfo(result))
     dispatch(setIsUpdateMember(true))
   }
+  console.log(projectPermission, 'projectPermission')
   return (
     <WaiWrap>
       {props.visible && (
         <NewAddUserModalForTandD
           title={t('project.addMember')}
           state={2}
+          isPermisGroup
           isVisible={isVisible}
           onConfirm={handleOk}
+          userGroupId={
+            projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
+              ?.value
+          }
+          projectPermission={projectPermission}
           onClose={() => setIsVisible(false)}
         />
-        // <AddMemberCommonModal
-        //   isPermisGroup
-        //   userGroupId={
-        //     projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
-        //       ?.value
-        //   }
-        //   title={t('project.addMember')}
-        //   isVisible={isVisible}
-        //   onClose={onClickCancel}
-        //   onConfirm={handleOk}
-        //   projectPermission={projectPermission}
-        // />
       )}
 
       <DrawerWrap
