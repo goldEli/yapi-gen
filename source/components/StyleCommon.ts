@@ -113,7 +113,7 @@ const titleCss = css`
 `
 
 const title1Css = css`
-  color: var(--neutral-n2);
+  color: var(--neutral-n1-d1);
   font-size: 24px;
 `
 const title1Css1 = css`
