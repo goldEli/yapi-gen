@@ -124,7 +124,7 @@ const useShareModal = () => {
       const saveViewsParams = {
         id: id ?? 0,
         name: name ?? '',
-        config: config,
+        config: { ...(config || {}), ...(props.otherConfig || {}) },
       }
       const data = await form.validateFields()
       // 判断是人员还是邮箱
@@ -225,7 +225,7 @@ const useShareModal = () => {
       const saveViewsParams = {
         use_type: type,
         name: viewType === 2 ? '分享的视图' : name ?? '',
-        config: config,
+        config: { ...(config || {}), ...(props.otherConfig || {}) },
         project_id: projectId,
       }
       setLoading(true)
