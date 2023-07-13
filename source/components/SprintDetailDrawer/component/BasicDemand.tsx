@@ -107,7 +107,7 @@ const BasicDemand = (props: Props) => {
   const onChangeState = async (item: any) => {
     try {
       await updateAffairsPriority({
-        sprintId: props.detail.id,
+        id: props.detail.id,
         priorityId: item.priorityId,
         projectId: props.detail.projectId,
       })

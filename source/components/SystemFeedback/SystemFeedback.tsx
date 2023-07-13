@@ -156,7 +156,7 @@ const SystemFeedback = () => {
               style={{
                 marginBottom: '30px',
               }}
-              label={<LabelTitle>{t('we_value_your_ideas')}*</LabelTitle>}
+              label={<LabelTitle>{t('we_value_your_ideas')}</LabelTitle>}
               name="content"
               rules={[
                 {
