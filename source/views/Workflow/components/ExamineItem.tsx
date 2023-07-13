@@ -205,19 +205,19 @@ const ExamineItem = (props: Props) => {
       name: t('newlyAdd.sequence'),
       value: 1,
       icon: 'right',
-      tips: '需要按添加审核人的顺序依次审核“通过”后才能向下流转',
+      tips: t('other.text1'),
     },
     {
       name: t('newlyAdd.andExamine'),
       value: 2,
       icon: 'and',
-      tips: '多个审核人会同时收到该审核需求，需要每个人都“通过”后向下流转',
+      tips: t('other.text2'),
     },
     {
       name: t('newlyAdd.orExamine'),
       value: 3,
       icon: 'line',
-      tips: '多个审核人会同时收到该审核需求，任意一人“通过”后向下流转',
+      tips: t('other.text3'),
     },
   ]
 

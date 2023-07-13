@@ -122,7 +122,7 @@ const FlawDetail = (props: FlawDetailProps) => {
         }}
         activeState
       >
-        <FlawInfoLabel>描述</FlawInfoLabel>
+        <FlawInfoLabel>{t('describe')}</FlawInfoLabel>
         {isEditInfo || editInfo ? (
           <Editor
             value={editInfo}

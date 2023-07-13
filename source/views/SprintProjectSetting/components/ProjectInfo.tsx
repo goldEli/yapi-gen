@@ -211,10 +211,16 @@ const ProjectInfo = () => {
               <span>
                 {projectInfo.permissionType === 1
                   ? t('enterprise_project', {
-                      type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                      type:
+                        projectInfo.projectType === 1
+                          ? t('common.iterate')
+                          : t('sprint2'),
                     })
                   : t('teamwork', {
-                      type: projectInfo.projectType === 1 ? '迭代' : '冲刺',
+                      type:
+                        projectInfo.projectType === 1
+                          ? t('common.iterate')
+                          : t('sprint2'),
                     })}
               </span>
             </InfoItem>

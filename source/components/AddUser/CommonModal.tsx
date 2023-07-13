@@ -230,7 +230,6 @@ const CommonModal = (props: ModalProps) => {
   const [checkedKeys, setCheckedKeys] = useState<any>()
   const [personData, setPersonData] = useState<any>([])
   const [tabsTreeDataList, setTabsTreeDataList] = useState<any>([])
-  const [teamId, setTeamId] = useState<any>([])
   const [tabs, setTabs] = useState([
     {
       label: t('commonModal.labelTitle'),

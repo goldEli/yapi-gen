@@ -1,6 +1,7 @@
 import { Tooltip } from 'antd'
 import CommonIconFont from './CommonIconFont'
 import styled from '@emotion/styled'
+import { useTranslation } from 'react-i18next'
 
 const SpanWrap = styled.span`
   margin-right: 16px;
@@ -17,8 +18,9 @@ interface CopyIconProps {
 }
 
 const CopyIcon = (props: CopyIconProps) => {
+  const [t] = useTranslation()
   return (
-    <Tooltip placement="top" title="复制">
+    <Tooltip placement="top" title={t('other.copy')}>
       <SpanWrap onClick={props.onCopy}>
         <CommonIconFont type="copy" color="var(--neutral-n3)" />
       </SpanWrap>

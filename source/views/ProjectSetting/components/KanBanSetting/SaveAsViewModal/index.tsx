@@ -71,7 +71,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   const confirm = async () => {
     const data = await form.validateFields()
     if (viewList?.some(item => item.name === data.name)) {
-      getMessage({ type: 'error', msg: '列与状态名称已存在' })
+      getMessage({ type: 'error', msg: t('other.nameExits') })
       return
     }
     dispatch(

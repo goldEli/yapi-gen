@@ -5,7 +5,7 @@
 import styled from '@emotion/styled'
 import projectImg from '/projectImg.png'
 import { Dropdown } from 'antd'
-import { t } from 'i18next'
+import { useTranslation } from 'react-i18next'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',
@@ -102,15 +102,16 @@ const SwiperCard = (props: {
   project_type?: any
   permission_type?: any
 }) => {
+  const [t] = useTranslation()
   const changeNames1 = () => {
     let str: string
     switch (props.project_type) {
       case 1:
-        str = '迭代'
+        str = t('common.iterate')
         break
 
       default:
-        str = '冲刺'
+        str = t('sprint2')
         break
     }
     return str
@@ -119,7 +120,7 @@ const SwiperCard = (props: {
     let str: string
     switch (props.project_type) {
       case 1:
-        str = '企业项目'
+        str = t('enterprise_project2')
         break
 
       default:

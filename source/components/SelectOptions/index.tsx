@@ -18,6 +18,7 @@ import {
   SelectOptionsBox,
 } from './styled'
 import { CustomWrap } from '../SelectOptionsNormal/styled'
+import { useTranslation } from 'react-i18next'
 
 export interface Options {
   id: number
@@ -39,6 +40,7 @@ interface SelectBoxProps {
 }
 
 const SelectOptions: React.FC<SelectBoxProps> = props => {
+  const [t] = useTranslation()
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
 
   // 切换显示类型
@@ -64,7 +66,9 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
           <Options>
             <LabelArea>
               <span className="label">{item.name}</span>
-              <DefaultTag visible={item.isDefault ?? false}>默认</DefaultTag>
+              <DefaultTag visible={item.isDefault ?? false}>
+                {t('default1')}
+              </DefaultTag>
             </LabelArea>
             <OperationArea>
               <CheckIcon visible={item.check}>
@@ -87,7 +91,9 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
           <Options>
             <LabelArea>
               <span className="label">{item.name}</span>
-              <DefaultTag visible={item.isDefault ?? false}>默认</DefaultTag>
+              <DefaultTag visible={item.isDefault ?? false}>
+                {t('default1')}
+              </DefaultTag>
             </LabelArea>
             <OperationArea>
               <CheckIcon visible={item.check}>
@@ -157,7 +163,9 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                 }}
               >
                 <span className="label">
-                  {props.createViewTitle ? props.createViewTitle : '创建视图'}
+                  {props.createViewTitle
+                    ? props.createViewTitle
+                    : t('creating_a_view')}
                 </span>
               </Options>
             </HasIconMenu>

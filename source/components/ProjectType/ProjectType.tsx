@@ -29,7 +29,7 @@ const ProjectType = (props: any) => {
           marginBottom: '30px',
         }}
       >
-        选择项目类型
+        {t('select_project_type')}
       </Title>
       <div style={{ display: 'flex', gap: '64px' }}>
         {arr.map((i: any) => (

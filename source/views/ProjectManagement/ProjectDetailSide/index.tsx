@@ -124,14 +124,14 @@ const ProjectDetailSide = () => {
       isPermission: true,
     },
     {
-      name: '报表',
+      name: t('version2.report'),
       icon: 'pie-chart-02',
       path: '/Report/PerformanceInsight',
       isPermission: true,
       key: 'Report',
     },
     {
-      name: '缺陷',
+      name: t('sprintProject.defect'),
       icon: 'bug',
       path: '/ProjectManagement/Defect',
       isPermission:

@@ -231,7 +231,11 @@ const CreateAProjectForm = () => {
 
     setAffiliations(
       result2.map((i: any) => ({
-        name: `${i.team_id === 0 ? '企业项目' : '团队项目'}/${i.name}`,
+        name: `${
+          i.team_id === 0
+            ? t('enterprise_project2')
+            : t('demandSettingSide.teamProject')
+        }/${i.name}`,
         id: i.team_id,
         img: i.logo,
       })),
@@ -404,10 +408,6 @@ const CreateAProjectForm = () => {
       setModel(0)
     }
   }
-
-  useEffect(() => {
-    console.log(pros, '权限')
-  }, [pros])
 
   return (
     <CommonModal2

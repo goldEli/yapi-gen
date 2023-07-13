@@ -287,7 +287,7 @@ const Operation = (props: Props) => {
           <Btn
             onClick={() => {
               if (sortByView?.find(item => item.check && item.type === 2)) {
-                getMessage({ type: 'warning', msg: '系统视图不能编辑' })
+                getMessage({ type: 'warning', msg: t('other.systemNot') })
                 return
               }
               const currentId = sortByView?.find(item => item.check)?.id

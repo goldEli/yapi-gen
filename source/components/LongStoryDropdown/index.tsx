@@ -19,6 +19,7 @@ import {
   deleteInfoAffairs,
   updateInfoAffairs,
 } from '@/services/affairs'
+import { useTranslation } from 'react-i18next'
 interface IProps {
   detail: Model.Affairs.AffairsInfo
   onClick?(): void
@@ -27,8 +28,7 @@ const LongStoryDropdown = (props: IProps) => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const { detail, onClick } = props
-  const cacheProjectId = useRef(0)
-
+  const [t] = useTranslation()
   const { longStoryList } = useSelector(state => state.sprint)
   const [list, setList] = useState<Model.Sprint.longStroyItem[]>([])
   const [hasLongStroy, setHasLongStroy] = useState<any>()
@@ -44,8 +44,6 @@ const LongStoryDropdown = (props: IProps) => {
     pagesize: 10,
   })
   const onLoadMore = () => {
-    console.log('加载更多')
-    // debugger
     if (list.length === longStoryList.pager?.total) {
       return
     }
@@ -59,8 +57,6 @@ const LongStoryDropdown = (props: IProps) => {
     dispatch(getLongStoryList(params))
   }
   const onConfirm = async (data: Model.Sprint.longStroyItem) => {
-    console.log(data, detail)
-    // debuggers
     let params: API.Affairs.AddInfoAffairs.Params = {
       projectId: detail.projectId,
       sprintId:
@@ -104,7 +100,7 @@ const LongStoryDropdown = (props: IProps) => {
       await methods(params)
       getMessage({
         type: 'success',
-        msg: hasLongStroy ? '添加成功' : '编辑成功',
+        msg: hasLongStroy ? t('successfully_added') : t('common.editSuccess'),
       })
 
       onClick && onClick()
@@ -133,7 +129,7 @@ const LongStoryDropdown = (props: IProps) => {
     }
     try {
       await deleteInfoAffairs(params)
-      getMessage({ type: 'success', msg: '取消关联成功' })
+      getMessage({ type: 'success', msg: t('other.cancelRelation') })
       onClick && onClick()
     } catch (error) {
       // error
@@ -164,7 +160,7 @@ const LongStoryDropdown = (props: IProps) => {
       <SearchBox>
         <InputSearch
           leftIcon
-          placeholder="输入长故事标题或编号"
+          placeholder={t('other.pleaseLongStoryOrNumber')}
           onChangeSearch={e => {
             // console.log(e)
             setParams((p: API.Sprint.getLongStoryList.Params) => {
@@ -176,15 +172,15 @@ const LongStoryDropdown = (props: IProps) => {
         ></InputSearch>
       </SearchBox>
       <ContentBox>
-        <span className="title">全部长故事</span>
+        <span className="title">{t('other.allLongStory')}</span>
         <List
           itemLayout="horizontal"
           loading={loading}
           loadMore={
             <LoadMore onClick={onLoadMore}>
               {list.length === longStoryList.pager?.total
-                ? '没有更多了'
-                : '加载更多'}
+                ? t('other.notMore')
+                : t('other.loadingMore')}
             </LoadMore>
           }
           dataSource={list}
@@ -210,12 +206,15 @@ const LongStoryDropdown = (props: IProps) => {
       </ContentBox>
       {hasLongStroy ? null : (
         <CancelParentBox onClick={deleteInfoAffairsClick}>
-          取消父项链接
+          {t('other.cancelParentLink')}
         </CancelParentBox>
       )}
 
       <FooterBox>
-        可见{list.length}个，共{longStoryList.pager?.total}个
+        {t('other.canSeeAll', {
+          len: list.length,
+          count: longStoryList.pager?.total,
+        })}
       </FooterBox>
     </Wrap>
   )

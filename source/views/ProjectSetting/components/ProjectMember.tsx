@@ -360,7 +360,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
               {record.is_admin === 1 && (
                 <Tooltip
                   placement="top"
-                  title="项目负责人"
+                  title={t('project_leader')}
                   getPopupContainer={node => node}
                   zIndex={99999}
                   trigger="hover"

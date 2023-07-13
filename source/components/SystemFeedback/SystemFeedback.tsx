@@ -143,7 +143,7 @@ const SystemFeedback = () => {
             <Form.Item
               label={<LabelTitle>{t('suggestion_type')}</LabelTitle>}
               name="type"
-              rules={[{ required: true, message: '请选择类型' }]}
+              rules={[{ required: true, message: t('common.selectType') }]}
             >
               <Select placeholder={t('i_want_to')} allowClear>
                 <Option value={1}>{t('provide_improvement_suggestion')}</Option>

@@ -2,6 +2,7 @@ import { Select } from 'antd'
 import { Segm } from './style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface ItemProps {
   label: string
@@ -21,6 +22,7 @@ interface Props {
   type: string
 }
 const SelectMain = (props: Props) => {
+  const [t] = useTranslation()
   const [options, setOptions] = useState<any>([])
   const changeValue = (newValue: number[]) => {
     props.onChange(newValue)
@@ -59,16 +61,18 @@ const SelectMain = (props: Props) => {
           <div style={{ minWidth: '184px' }}>
             {menu}
             {!props.more && (
-              <Segm onClick={() => props.onShowAll?.()}>查看更多</Segm>
+              <Segm onClick={() => props.onShowAll?.()}>
+                {t('other.checkMore')}
+              </Segm>
             )}
             {props.type === 'iteration' && (
               <Segm onClick={() => props.onAllProject?.(props.type)}>
-                全部工作项
+                {t('allWork')}
               </Segm>
             )}
             {props.type === 'sprint' && (
               <Segm onClick={() => props.onAllProject?.(props.type)}>
-                全部冲刺
+                {t('allIn')}
               </Segm>
             )}
           </div>

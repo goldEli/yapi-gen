@@ -130,7 +130,7 @@ const DemandSetting = () => {
         />
       )}
       <DeleteConfirm
-        text={'当前编辑内容还未保存是否保存？'}
+        text={t('other.isSave')}
         isVisible={isVisible}
         onChangeVisible={() => {
           onCancel(), setIsVisible(false)

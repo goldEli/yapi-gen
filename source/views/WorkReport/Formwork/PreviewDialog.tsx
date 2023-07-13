@@ -11,12 +11,12 @@ import ChoosePeople from './ChoosePeople'
 import IconFont from '@/components/IconFont'
 // import { AddWrap } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
-import { t } from 'i18next'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import styled from '@emotion/styled'
 
 import { useSelector } from '@store/index'
+import { useTranslation } from 'react-i18next'
 // 添加符号 例： 标签添加与附件添加
 const AddWrap = styled.div({
   display: 'flex',
@@ -114,6 +114,7 @@ const EditorMain = (props: EditorPropsType) => {
   )
 }
 const WhiteDay = (props: Props) => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const { templateContentConfigs } = useSelector(store => store.formWork)
   const leftDom: any = useRef<HTMLInputElement>(null)
@@ -232,7 +233,7 @@ const WhiteDay = (props: Props) => {
             }}
           >
             <IconFont type="plus" />
-            添加附件
+            {t('calendarManager.addAdjunct')}
           </AddWrap>
         </Form.Item>
       )
@@ -272,7 +273,7 @@ const WhiteDay = (props: Props) => {
             }}
           >
             <IconFont type="plus" />
-            关联需求
+            {t('p2.RelatedRequirements')}
           </AddWrap>
         </Form.Item>
       )

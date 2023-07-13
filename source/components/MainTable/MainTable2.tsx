@@ -405,10 +405,12 @@ const MainTable = (props: Props) => {
           <span>
             {text === 0
               ? t('enterprise_project', {
-                  type: record.projectType === 1 ? '迭代' : '冲刺',
+                  type:
+                    record.projectType === 1 ? t('iteration') : t('sprint2'),
                 })
               : t('teamwork', {
-                  type: record.projectType === 1 ? '迭代' : '冲刺',
+                  type:
+                    record.projectType === 1 ? t('iteration') : t('sprint2'),
                 })}
           </span>
         )

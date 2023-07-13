@@ -337,8 +337,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
   // 团队
   const getTeam = async () => {
-    console.log('部门')
-
     const res = await getDepartmentUserList({
       search: {
         project_id:
@@ -526,8 +524,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
   // 获取最底层的children数组
   function findBottomChildren(tree: any) {
-    console.log(tree, '树数据')
-
     const result: any = []
 
     function traverse(node: any) {
@@ -666,8 +662,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   // 新的全选逻辑
   const checkAllChangeNew = () => {
     if (tabsActive === 1) {
-      console.log('1def')
-
       const allStaffs = flattenStaffs([showTreeData])
 
       // 去重
@@ -697,8 +691,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     }
     // setKeys(showTreeData)
     // 拿到所有child
-    console.log('数据', showTreeData)
-
     const findBottomChildrens = findBottomChildren([showTreeData])
     // 去重
     const newData = findBottomChildrens.reduce((acc: any, current: any) => {
@@ -971,7 +963,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                       cursor: 'pointer',
                     }}
                   >
-                    返回
+                    {t('demandSettingSide.back')}
                   </span>
                 </Breadcrumb.Item>
 

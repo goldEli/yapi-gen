@@ -5,9 +5,10 @@ import { TitleStyle } from '@/views/DemandSetting/components/Main'
 import CommonIconFont from '../CommonIconFont'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { getProjectInfoOnly } from '@/services/project'
-import { spawn } from 'child_process'
+import { useTranslation } from 'react-i18next'
 
 const ProjectChooseSide = (props: any) => {
+  const [t] = useTranslation()
   const [infoIcon, setInfoIcon] = useState(true)
   const [infoIcon2, setInfoIcon2] = useState(true)
   const [info, setInfo] = useState<any>()
@@ -36,7 +37,7 @@ const ProjectChooseSide = (props: any) => {
         }}
         className="t1"
       >
-        从【{info?.name}】导入工作流
+        {t('other.formImportWork', { name: info?.name })}
       </div>
       <div
         style={{
@@ -53,7 +54,7 @@ const ProjectChooseSide = (props: any) => {
             />
 
             <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
-              工作流
+              {t('other.workFlow')}
             </span>
           </TitleStyle>
           <ScaleDiv hi={!infoIcon}>
@@ -92,7 +93,9 @@ const ProjectChooseSide = (props: any) => {
             />
 
             <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
-              项目成员（{info?.member_list.length}）
+              {t('project.projectMemberAll', {
+                count: info?.member_list.length,
+              })}
             </span>
           </TitleStyle>
           <ScaleDiv hi={!infoIcon2}>
@@ -113,7 +116,7 @@ const ProjectChooseSide = (props: any) => {
 
       <div style={{ zIndex: '900000' }} className="btn">
         <CommonButton type="primary" onClick={() => props.onClose()}>
-          重新选择
+          {t('newlyAdd.aginChoose')}
         </CommonButton>
       </div>
     </Side>

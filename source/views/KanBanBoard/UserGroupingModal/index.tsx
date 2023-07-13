@@ -157,7 +157,9 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
                     onDel(item.id)
                   }}
                 >
-                  <span style={{ color: 'var(--primary-d2)' }}>移除</span>
+                  <span style={{ color: 'var(--primary-d2)' }}>
+                    {t('common.move')}
+                  </span>
                 </div>
               </UserListItem>
             )

@@ -3,6 +3,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd'
+import { t } from 'i18next'
 
 const TreeLine = styled.div`
   display: flex;
@@ -74,7 +75,9 @@ const NewAddShowList = (props: any) => {
                       })
                     }
                   >
-                    <div>部门-- {i.name}</div>
+                    <div>
+                      {t('common.department')}-- {i.name}
+                    </div>
                   </Checkbox>
                 </div>
 
@@ -125,7 +128,6 @@ const NewAddShowList = (props: any) => {
     <div>
       {props.treeData?.children.map((i: any) => {
         if (i.team_id) {
-          console.log('飞机')
           return (
             <TreeLine key={i.id}>
               <div>
@@ -179,7 +181,9 @@ const NewAddShowList = (props: any) => {
                     ),
                 )}
               >
-                <div>团队-- {i.name}</div>
+                <div>
+                  {t('commonModal.labelTitle')}-- {i.name}
+                </div>
               </Checkbox>
             </div>
 

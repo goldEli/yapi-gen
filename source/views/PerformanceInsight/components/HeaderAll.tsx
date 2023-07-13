@@ -205,8 +205,12 @@ const HeaderAll = (props: HaderProps) => {
         }}
         url={window.location.href}
         // 2钟不同的分享标题
-        title={`【${projectInfo.name ? projectInfo.name : '所有项目'}-${
-          paramsData.num === 1 ? '工作进展对比' : '缺陷趋势分析'
+        title={`【${
+          projectInfo.name ? projectInfo.name : t('mine.allProject')
+        }-${
+          paramsData.num === 1
+            ? t('performance.title06')
+            : t('performance.title07')
         }-${userInfo?.name}】`}
       />
       {/* 导出 */}

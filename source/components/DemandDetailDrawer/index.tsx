@@ -112,7 +112,7 @@ const DemandDetailDrawer = () => {
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
     { name: t('common.childDemand'), key: 'detailDemands', content: '' },
-    { name: '关联工作项', key: 'relation', content: '' },
+    { name: t('associatedWorkItems'), key: 'relation', content: '' },
     { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
     { name: t('requirements_review'), key: 'demandComment', content: '' },
   ]

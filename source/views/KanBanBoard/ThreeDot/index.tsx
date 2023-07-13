@@ -133,7 +133,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
         <Item
           onClick={e => {
             e.stopPropagation()
-            onCopyName(props.story.name)
+            onCopyName(props.story.name, t)
           }}
         >
           {t('copy_title')}

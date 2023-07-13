@@ -71,6 +71,7 @@ const RemoveBox = styled.div`
   }
 `
 const MoreDropdown = (props: DropDownProps) => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const onClickItem = (item: any) => {
     setIsVisible(false)
@@ -106,7 +107,7 @@ const MoreDropdown = (props: DropDownProps) => {
             props.openRemoveModal(props.row)
           }}
         >
-          移除成员
+          {t('calendarManager.remove_members')}
         </RemoveBox>
       ),
     })

@@ -33,8 +33,8 @@ interface Props {
 }
 
 // 复制需求id
-export const onCopyName = (name: string) => {
-  copyLink(`${name}`, '复制成功！', '复制失败！')
+export const onCopyName = (name: string, t: any) => {
+  copyLink(`${name}`, t.t('copysuccess'), t.t('copyfailed'))
 }
 // 复制需求链接
 export const onCopyLink = (options: {
@@ -82,7 +82,11 @@ export const CommonDropdownMenu = (props: Props) => {
     },
     {
       key: '5',
-      label: <div onClick={() => onCopyName(props.record.name)}>复制标题</div>,
+      label: (
+        <div onClick={() => onCopyName(props.record.name, t)}>
+          {t('copy_title')}
+        </div>
+      ),
     },
     {
       key: '6',
@@ -96,7 +100,7 @@ export const CommonDropdownMenu = (props: Props) => {
             })
           }
         >
-          复制链接
+          {t('copy_title_link')}
         </div>
       ),
     },

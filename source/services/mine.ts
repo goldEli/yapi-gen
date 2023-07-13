@@ -555,12 +555,7 @@ export const getMineNoFinishList: any = async (params: any) => {
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
-              isEdit: Object.values(i.project.permissions).includes(
-                'b/story/update',
-              ),
-              isDelete: Object.values(i.project.permissions).includes(
-                'b/story/delete',
-              ),
+              permissions: i.project.permissions,
             },
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
@@ -607,12 +602,7 @@ export const getMineNoFinishList: any = async (params: any) => {
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
-              isEdit: Object.values(i.project.permissions).includes(
-                'b/story/update',
-              ),
-              isDelete: Object.values(i.project.permissions).includes(
-                'b/story/delete',
-              ),
+              permissions: i.project.permissions,
             },
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
@@ -694,12 +684,7 @@ export const getMineCreacteList: any = async (params: any) => {
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
-            isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
-            ),
-            isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
-            ),
+            permissions: i.project.permissions,
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
@@ -778,12 +763,7 @@ export const getMineFinishList: any = async (params: any) => {
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
-            isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
-            ),
-            isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
-            ),
+            permissions: i.project.permissions,
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
@@ -861,12 +841,7 @@ export const getMineNeedList: any = async (params: any) => {
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
-            isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
-            ),
-            isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
-            ),
+            permissions: i.project.permissions,
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,

@@ -65,6 +65,8 @@ const AddWorkItem = () => {
   const [currentInfo, setCurrentInfo] = useState({})
   const [categoryType, setCategoryType] = useState(0)
 
+  console.log(params, '=12121212121212121212121212121212')
+
   // 关闭弹窗
   const onCancel = () => {
     dispatch(setAddWorkItemModal({ visible: false }))

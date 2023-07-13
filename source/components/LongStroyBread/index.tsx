@@ -110,7 +110,7 @@ const LongStroyBread = (props: IProps) => {
               setVisible(true)
             }}
           >
-            <LabelBox>添加长故事</LabelBox>
+            <LabelBox>{t('other.addLongStory')}</LabelBox>
             <CommonIconFont
               type="right"
               color="var(--neutral-n1-d1)"
@@ -180,7 +180,7 @@ const LongStroyBread = (props: IProps) => {
           </AffairTypeBox>
         </Tooltip>
         {layer ? null : (
-          <Tooltip placement="top" title="复制链接" zIndex={999999}>
+          <Tooltip placement="top" title={t('copy_title_link')} zIndex={999999}>
             <SpanWrap style={{}}>
               <CommonIconFont
                 type="link"

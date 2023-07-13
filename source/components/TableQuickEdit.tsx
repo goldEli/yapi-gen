@@ -364,7 +364,10 @@ const TableQuickEdit = (props: Props) => {
   // 操作框改变
   const onChange = async (newValue: any, type?: any) => {
     if (props.item.categoryConfigList[props.keyText] === 1 && !newValue) {
-      getMessage({ msg: `${props.keyText}为必填字段！`, type: 'warning' })
+      getMessage({
+        msg: `${props.keyText}${t('is_required')}`,
+        type: 'warning',
+      })
       setIsShowControl(false)
       return
     }
