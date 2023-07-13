@@ -129,7 +129,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             if (current?.key) {
               dispatch(
                 openSaveAsViewModel({
-                  title: t('save_as_view'),
+                  title: t('create_columns_and_status'),
                   isSaveAs: true,
                 }),
               )
