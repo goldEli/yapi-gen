@@ -32,8 +32,8 @@ export const useDeleteConfirmModal = () => {
       <DeleteConfirm
         {...modalProps}
         isVisible={deleteModalVisible}
-        onConfirm={() => {
-          onConfirm.current?.()
+        onConfirm={async () => {
+          await onConfirm.current?.()
           setDeleteModalVisible(false)
         }}
         onChangeVisible={() => {

@@ -164,8 +164,7 @@ client.config({
         data.code !== 'A0301' &&
         data.code !== 'B0015'
       ) {
-        getMessage({ msg: data.message, type: 'error' })
-        // console.log(data.message, 'request error')
+        getMessage({ msg: data.msg ?? data.message, type: 'error' })
         return Promise.reject()
       }
       return {
