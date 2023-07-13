@@ -112,7 +112,7 @@ const SetBreadcrumb = () => {
 
   return (
     <SetTitleWrap>
-      <MyBreadcrumb setName={'配置工作流'} />
+      <MyBreadcrumb setName={t('sprintProject.configureWorkflow')} />
       {/* <BackWrap onClick={onBack}>
         <IconFont type="return" style={{ fontSize: 16, marginRight: 6 }} />
         <span>{t('newlyAdd.back')}</span>
@@ -201,7 +201,7 @@ const Workflow = () => {
           <RowStyle>
             <Col onClick={() => onChangeStep(1)}>
               <StyleLeft bgc={step === 1} />
-              <Text bgc={step === 1}>编辑模板</Text>
+              <Text bgc={step === 1}>{t('sprintProject.editTemplate')}</Text>
               <StyleRight bgc={step === 1} />
             </Col>
             <Col
@@ -209,7 +209,7 @@ const Workflow = () => {
               onClick={() => onChangeStep(2)}
             >
               <StyleLeft bgc={step === 2} />
-              <Text bgc={step === 2}>权限配置</Text>
+              <Text bgc={step === 2}>{t('sprintProject.rightsProfile')}</Text>
               <StyleRight bgc={step === 2} />
             </Col>
           </RowStyle>

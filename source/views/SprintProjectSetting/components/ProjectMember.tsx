@@ -746,7 +746,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
             projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
               ?.value
           }
-          title={t('project.addMember') + '1'}
+          title={t('project.addMember') }
           isVisible={isAddVisible}
           onClose={onClickCancel}
           onConfirm={handleOk}
@@ -758,7 +758,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
             projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
               ?.value
           }
-          title={t('project.addMember') + '1'}
+          title={t('project.addMember')}
           isVisible={isAddVisible}
           onClose={onClickCancel}
           onConfirm={handleOk}

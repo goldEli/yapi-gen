@@ -212,6 +212,9 @@ const SelectWrapForList = styled(SelectWrapBedeck)`
   .ant-select-selection-placeholder {
     color: var(--neutral-n4);
   }
+  .ant-select-clear {
+    margin-top: -8px;
+  }
 `
 const CategorySelectWrap = styled.div`
   width: 296px;

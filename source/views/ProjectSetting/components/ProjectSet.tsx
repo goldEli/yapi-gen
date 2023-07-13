@@ -501,7 +501,7 @@ const ProjectSet = () => {
             <SetMain>
               <SetLeft>
                 <Title>
-                  角色
+                  {t('sprintProject.role')}
                   <CloseWrap width={24} height={24}>
                     <IconFont
                       style={{ fontSize: 18 }}
@@ -538,7 +538,9 @@ const ProjectSet = () => {
                   ))}
                 </MenuItems> */}
                 <MenuItems>
-                  <MenuItemsTitle>系统分组</MenuItemsTitle>
+                  <MenuItemsTitle>
+                    {t('sprintProject.systemGrouping')}
+                  </MenuItemsTitle>
                   {dataList
                     ?.filter((item: { type: number }) => item.type === 1)
                     .map((item: any) => (
@@ -563,7 +565,9 @@ const ProjectSet = () => {
                     ))}
                 </MenuItems>
                 <MenuItems>
-                  <MenuItemsTitle>自定义角色</MenuItemsTitle>
+                  <MenuItemsTitle>
+                    {t('sprintProject.customRole')}
+                  </MenuItemsTitle>
                   {dataList
                     ?.filter((item: { type: number }) => item.type === 2)
                     .map((item: any) => (

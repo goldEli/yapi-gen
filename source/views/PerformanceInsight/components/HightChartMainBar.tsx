@@ -57,7 +57,7 @@ const HightChartMainBar = (props: {
       style: {
         color: '#646566',
       },
-      // categories: props.chart?.yData,
+      categories: props.chart?.yData,
     },
     yAxis: [
       {
@@ -142,6 +142,7 @@ const HightChartMainBar = (props: {
                 size={16}
                 color="var(--function-error)"
               />
+              {props.chart?.period_number}
               <span className="time">
                 {t('performance.daysBefore', {
                   day: props.chart?.period_number,

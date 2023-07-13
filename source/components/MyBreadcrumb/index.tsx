@@ -92,11 +92,14 @@ const MyBreadcrumb = (props: any) => {
               style={{ color: 'var(--neutral-n1-d1)' }}
               onClick={() => navigate(-1)}
             >
-              需求设置
+              {t('sprintProject.demandSetting') as string}
             </a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            <a style={{ color: 'var(--neutral-n3)' }}>配置工作流</a>
+            <a style={{ color: 'var(--neutral-n3)' }}>
+              {' '}
+              {t('sprintProject.configureWorkflow') as string}
+            </a>
           </Breadcrumb.Item>
         </>
       )}
