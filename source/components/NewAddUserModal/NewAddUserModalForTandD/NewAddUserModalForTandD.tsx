@@ -718,7 +718,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       newData.map((i: { id: any }) => i.id).includes(item.id),
     )
     console.log(newData)
-    if (!newData.every((obj: any) => obj.hasOwnProperty('team_id'))) {
+    if (!newData.some((obj: any) => obj.hasOwnProperty('team_id'))) {
       return
     }
     if (isSomeHave) {
