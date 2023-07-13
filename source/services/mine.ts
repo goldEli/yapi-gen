@@ -1008,6 +1008,8 @@ export const getVerifyUserList: any = async (params: any) => {
       categoryColor: i.category_color,
       categoryAttachment: i.category_attachment,
       userName: i.user_name,
+      userId: i.user_id,
+      userAvatar: i.user_avatar,
       usersName: i.users_name,
       statusFromTo: i.status_from_to,
       projectId: i.project_id,
