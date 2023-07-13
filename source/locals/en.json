@@ -907,7 +907,8 @@
     "copySuccess": "The link has been copied",
     "copyFail": "Failed to copy the link",
     "chooseCategory": "Select category",
-    "clearAll": "Clear all options"
+    "clearAll": "Clear all options",
+    "giveUp": "Give up saving"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",
@@ -1712,7 +1713,7 @@
   "by_personnel": "By personnel",
   "by_category": "By category",
   "by_priority": "By priority",
-  "do_you_want_to_save_changes": "Do you want to save changes?",
+  "do_you_want_to_save_changes": "The current list and status have not been saved. Do you want to save it?",
   "remind": "Remind",
   "performance": {
     "fpsw": "transaction",
