@@ -364,6 +364,7 @@ const DndKitTable = (props: any) => {
     },
     {
       dataIndex: 'sort',
+      width: 48,
       render: () => <MoveFont type="move" style={{ fontSize: 16 }} />,
     },
     {

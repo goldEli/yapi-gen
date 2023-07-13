@@ -16,6 +16,7 @@ const TableWrap = styled(Table)`
   .ant-table-content {
     height: 100%;
   }
+
   .ant-table-tbody .tagLength {
     visibility: hidden;
   }
@@ -113,7 +114,7 @@ const ResizeTitle = (props: any) => {
       height={0}
       onResize={onResize}
       draggableOpts={{ enableUserSelectHack: false }}
-      minConstraints={[200, 200]}
+      minConstraints={[50, 50]}
       handle={
         <span
           className="react-resizable-handle"
