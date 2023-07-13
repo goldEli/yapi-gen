@@ -181,7 +181,7 @@ const TabItemWrap = styled.div`
     display: none;
   }
   .ant-spin-nested-loading img {
-    margin-top: 250px;
+    margin-top: 200px;
   }
 `
 
@@ -198,7 +198,7 @@ const Right = styled.div`
     padding-left: 24px;
   }
   .ant-spin-nested-loading img.spinImg {
-    margin-top: 250px;
+    margin-top: 120px;
   }
 `
 const SelectWrapForList = styled(SelectWrapBedeck)`
