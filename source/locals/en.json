@@ -1965,7 +1965,16 @@
     "kanban": "KanBan",
     "defect": "Defect",
     "need": "Need",
-    "iteration": "Iteration"
+    "iteration": "Iteration",
+    "systemGrouping": "System grouping",
+    "customRole": "Custom role",
+    "role": "Role",
+    "demandSetting": "Demand setting",
+    "configureWorkflow": "Configure Workflow",
+    "editTemplate": "Edit template",
+    "rightsProfile": "Rights Profile",
+    "confirmDeletionOfThisField": "Confirm deletion of this field?",
+    "columnsAndStatus": "Columns and status"
   },
   "editingRequirements": "Editing requirements",
   "createSubrequirements": "Create subrequirements",
