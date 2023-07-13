@@ -98,7 +98,9 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
       </Breadcrumb.Item>
       {type === 'ProjectKanBan' ? (
         <Breadcrumb.Item>
-          <a className={lastBreadcrumb}>列与状态</a>
+          <a className={lastBreadcrumb}>
+            {t('sprintProject.columnsAndStatus')}
+          </a>
         </Breadcrumb.Item>
       ) : null}
     </Breadcrumb>
