@@ -238,8 +238,6 @@ const XTable: React.FC<XTableProps> = props => {
     [],
   )
 
-  console.log(data, '=datadatadata')
-
   return (
     <>
       <CollapseCustom

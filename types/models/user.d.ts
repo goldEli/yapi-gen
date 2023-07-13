@@ -4,5 +4,6 @@ declare namespace Model.User {
     id: number
     avatar?: string
     team_id?: number
+    position_name?: string
   }
 }

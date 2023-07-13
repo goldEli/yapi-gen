@@ -45,12 +45,6 @@ const DelBtn = styled.div`
     color: var(--primary-d2);
   }
 `
-const CustomNumberWrap = styled.div`
-  .ant-input-number:focus,
-  .ant-input-number-focused {
-    border-color: #7598ff;
-  }
-`
 
 interface EditColumnModalProps {}
 

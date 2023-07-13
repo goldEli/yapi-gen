@@ -57,7 +57,7 @@ const HightChartMainBar = (props: {
       style: {
         color: '#646566',
       },
-      // categories: props.chart?.yData,
+      categories: props.chart?.yData,
     },
     yAxis: [
       {

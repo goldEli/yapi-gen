@@ -55,7 +55,11 @@ const UserListItem = styled.div`
     cursor: pointer;
   }
 `
-
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  width: 90%;
+`
 const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
@@ -132,16 +136,21 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
           {userList.map(item => {
             return (
               <UserListItem key={item.id}>
-                <MultipleAvatar
-                  max={1}
-                  list={[
-                    {
-                      avatar: item.avatar,
-                      id: item.id,
-                      name: item.name,
-                    },
-                  ]}
-                />
+                <Row>
+                  <MultipleAvatar
+                    max={1}
+                    list={[
+                      {
+                        avatar: item.avatar,
+                        id: item.id,
+                        name: item.name,
+                      },
+                    ]}
+                  />
+                  <span>
+                    ({item?.position_name ? item?.position_name : '--'})
+                  </span>
+                </Row>
                 <div
                   onClick={e => {
                     e.stopPropagation()
