@@ -52,6 +52,8 @@ export const loginOut: any = async () => {
 
 // 跳转登录
 export const getTicket = () => {
+  // localStorage.clear()
+  // location.replace(`${location.origin}/login`)
   const url = new URL(import.meta.env.__SSO_URL__)
   url.searchParams.set('type', '0')
   url.searchParams.set('redirect', location.href)

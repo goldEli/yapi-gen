@@ -65,6 +65,10 @@ export const NameText = styled.div`
   flex: 1;
   padding: 0 10px;
   min-width: 40px;
+  max-width: 120px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `
 export const DefalutIcon = styled.div<{ bgc?: any }>(
   {

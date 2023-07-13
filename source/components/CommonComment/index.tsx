@@ -50,6 +50,7 @@ const CommentEditor = (props: CommentEditorProps) => {
       }
     }
   }, [props.item])
+  console.log(projectInfoValues, 'eddd')
 
   return (
     <Editor
@@ -57,12 +58,12 @@ const CommentEditor = (props: CommentEditorProps) => {
       at
       ref={editorRef}
       value={editInfo}
-      getSuggestions={removeNull(projectInfoValues, 'user_name')?.map(
-        (k: any) => ({
+      getSuggestions={() => {
+        return removeNull(projectInfoValues, 'user_name')?.map((k: any) => ({
           label: k.content,
           id: k.id,
-        }),
-      )}
+        }))
+      }}
       readonly={!isEditInfo}
       onReadonlyClick={() => onReadonlyClick()}
       onChange={(value: string) => (editorRef2.current = value)}

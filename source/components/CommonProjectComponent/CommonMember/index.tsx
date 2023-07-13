@@ -4,15 +4,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Drawer, Dropdown, Form, Menu, message } from 'antd'
+import { Drawer, Dropdown, Form, Menu } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
-import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
 import HandOverModal from '@/components/ProjectOverModal'
@@ -33,7 +31,6 @@ import { getMessage } from '@/components/Message'
 import InputSearch from '@/components/InputSearch'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import {
-  ButtonWrap,
   DrawerWrap,
   HeaderWrap,
   ListItem,
@@ -77,7 +74,6 @@ const MoreDropdown = (props: DropDownProps) => {
     setIsVisible(false)
     props.onClickMenu(item, props.row)
   }
-
   const menu = () => {
     const menuItems: any = []
     props.roleOptions?.forEach((i: any, idx: any) => {
@@ -180,6 +176,7 @@ const CommonMember = (props: Props) => {
       all: true,
       searchValue: search,
     })
+
     // 更新项目成员下拉
     if (isUpdateProjectInfoValues) {
       const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
@@ -263,11 +260,6 @@ const CommonMember = (props: Props) => {
       getPermission()
     }
   }, [search, props.visible])
-
-  const onClickCancel = () => {
-    setIsVisible(false)
-  }
-
   const handleOk = async (list?: any, id?: any) => {
     let userGroupId = id
     if (list.length <= 0) {
@@ -293,38 +285,33 @@ const CommonMember = (props: Props) => {
     dispatch(setProjectInfo(result))
     dispatch(setIsUpdateMember(true))
   }
-
   return (
     <WaiWrap>
       {props.visible && (
         <NewAddUserModalForTandD
           title={t('project.addMember')}
           state={2}
+          isPermisGroup
           isVisible={isVisible}
           onConfirm={handleOk}
+          userGroupId={
+            projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
+              ?.value
+          }
+          projectPermission={projectPermission}
           onClose={() => setIsVisible(false)}
         />
-        // <AddMemberCommonModal
-        //   isPermisGroup
-        //   userGroupId={
-        //     projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
-        //       ?.value
-        //   }
-        //   title={t('project.addMember')}
-        //   isVisible={isVisible}
-        //   onClose={onClickCancel}
-        //   onConfirm={handleOk}
-        //   projectPermission={projectPermission}
-        // />
       )}
 
       <DrawerWrap
         title={
           <HeaderWrap>
             <span>
-              {t('project.projectMemberAll', {
-                count: projectInfo.memberCount,
-              })}
+              {projectInfo.memberCount
+                ? t('project.projectMemberAll', {
+                    count: projectInfo.memberCount,
+                  })
+                : t('project.projectMember')}
             </span>
             <CloseWrap width={32} height={32} onClick={props.onChangeVisible}>
               <IconFont
@@ -418,6 +405,7 @@ const CommonMember = (props: Props) => {
         )}
       </DrawerWrap>
       <HandOverModal
+        title={t('yc')}
         visible={handOvervisible}
         close={() => {
           setHandOvervisible(false)

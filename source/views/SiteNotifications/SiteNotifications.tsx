@@ -57,7 +57,7 @@ const SiteNotifications = (props: any, ref: any) => {
         className: 'custom-class',
         onClick: () => {
           message.destroy()
-          dispatch(changeVisible(!isVisible))
+          // dispatch(changeVisible(!isVisible))
         },
       })
     } else if (wsData.data.customData.noticeStyle === '1') {

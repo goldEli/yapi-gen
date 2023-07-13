@@ -7,6 +7,7 @@ import { HeaderRow, Text, Tabs, DivStyle, Btn1 } from './Style'
 import SelectMain from './components/SelectMain'
 import { Left } from '../components/style'
 import CommonIconFont from '@/components/CommonIconFont'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
 import Select from '../components/Select'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
@@ -393,196 +394,215 @@ const Iteration = (props: Props) => {
     }, data[0].end_at)
     return maxt
   }
+  console.log(props, 'props')
   return (
-    <HeaderRow>
-      <Space size={16}>
-        <View
-          onChange={props.onChange}
-          value={props.value}
-          viewDataList={props.viewDataList}
-          onCreateView={props.onCreateView}
-          onDelView={props.onDelView}
-          defalutConfig={props.defalutConfig}
-          onSetDefaulut={props.onSetDefaulut}
-        />
-        <Text onClick={() => setIsVisibleView(true)}>
-          {t('performance.save1')}
-        </Text>
-        {/* 保存需要人员，项目选择和时间修改后 */}
-        {save && viewType !== 2 ? (
-          <Text onClick={props.onEdit}>{t('performance.save')}</Text>
-        ) : null}
-      </Space>
-      <Space size={16}>
-        {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
-        {props.homeType === 'all' && (
-          <Select
-            type=""
-            placeholder={t('common.pleaseSelect')}
-            options={projectList}
-            more={more}
-            value={projectIds || []}
-            onChange={(value: number[]) => {
-              setProjectIds(value), viewType === 1 && dispatch(setSave(true))
-              dispatch(
-                setHeaderParmas({
-                  projectIds: value,
-                }),
-              )
-            }}
-            onShowAll={() => {
-              setProjectList(projectListAll), setMore(true)
-            }}
+    <div>
+      {(props.homeType === 'iteration' || props.homeType === 'sprint') && (
+        <div
+          style={{
+            margin: '20px 0px 0px 24px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <MyBreadcrumb />
+        </div>
+      )}
+      <HeaderRow>
+        <Space size={16}>
+          <View
+            onChange={props.onChange}
+            value={props.value}
+            viewDataList={props.viewDataList}
+            onCreateView={props.onCreateView}
+            onDelView={props.onDelView}
+            defalutConfig={props.defalutConfig}
+            onSetDefaulut={props.onSetDefaulut}
           />
-        )}
-        {/* 成员选择 */}
-        <DivStyle onClick={() => setIsVisible(true)}>
-          {person.length > 0 ? (
-            <Left>
-              <span>{t('project.member')}</span>
-              <Btn1>{t('version2.checked', { count: person.length })}</Btn1>
-            </Left>
-          ) : (
-            <span>{t('performance.all')}</span>
-          )}
-          {person.length > 0 ? (
-            <CommonIconFont
-              type="close-solid"
-              size={14}
-              color="var(--neutral-n4)"
-              onClick={e => onClear(e)}
-            />
-          ) : (
-            <CommonIconFont
-              onClick={() => setIsVisible(true)}
-              type={isVisible ? 'up' : 'down'}
-              size={14}
-              color="var(--neutral-n4)"
-            />
-          )}
-        </DivStyle>
-        {(props.homeType === 'sprint' || props.homeType === 'iteration') && (
-          <Tabs>
-            {tabs.map((el: { label: any }, index) => (
-              <span
-                className={tabsActive === index ? 'tabsActive' : ''}
-                onClick={() => getTabsActive(index)}
-                key={el.label}
-              >
-                {t(el.label)}
-              </span>
-            ))}
-          </Tabs>
-        )}
-        {tabsActive === 0 ? (
-          <SelectMain
-            allowClear={false}
-            onChange={e => {
-              setTimekey(e)
-              setTimeVal([])
-              viewType === 1 && e !== 0 && dispatch(setSave(true))
-              e === 0 && dispatch(setSave(false))
-              e !== 0 &&
+          <Text onClick={() => setIsVisibleView(true)}>
+            {t('performance.save1')}
+          </Text>
+          {/* 保存需要人员，项目选择和时间修改后 */}
+          {save && viewType !== 2 ? (
+            <Text onClick={props.onEdit}>{t('performance.save')}</Text>
+          ) : null}
+        </Space>
+        <Space size={16}>
+          {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
+          {props.homeType === 'all' && (
+            <Select
+              type=""
+              placeholder={t('common.pleaseSelect')}
+              options={projectList}
+              more={more}
+              value={projectIds || []}
+              onChange={(value: number[]) => {
+                setProjectIds(value), viewType === 1 && dispatch(setSave(true))
                 dispatch(
                   setHeaderParmas({
-                    time: {
-                      type: e,
-                      time: '',
-                    },
-                    period_time: periodTimes.find(item => item.value === e)
-                      ?.label,
+                    projectIds: value,
                   }),
                 )
-            }}
-            value={timekey}
-            placeholder={t('common.pleaseSelect')}
-            list={[
-              {
-                name: t('performance.tWeek'),
-                key: 14,
-              },
-              {
-                name: t('performance.fWeek'),
-                key: 28,
-              },
-              {
-                name: t('performance.oMonth'),
-                key: 1,
-              },
-              {
-                name: t('performance.tMonth'),
-                key: 3,
-              },
-              {
-                name: t('performance.sMonth'),
-                key: 6,
-              },
-              {
-                name: t('performance.custom'),
-                key: 0,
-              },
-            ]}
+              }}
+              onShowAll={() => {
+                setProjectList(projectListAll), setMore(true)
+              }}
+            />
+          )}
+          {/* 成员选择 */}
+          <DivStyle onClick={() => setIsVisible(true)}>
+            {person.length > 0 ? (
+              <Left>
+                <span>{t('project.member')}</span>
+                <Btn1>{t('version2.checked', { count: person.length })}</Btn1>
+              </Left>
+            ) : (
+              <span>{t('performance.all')}</span>
+            )}
+            {person.length > 0 ? (
+              <CommonIconFont
+                type="close-solid"
+                size={14}
+                color="var(--neutral-n4)"
+                onClick={e => onClear(e)}
+              />
+            ) : (
+              <CommonIconFont
+                onClick={() => setIsVisible(true)}
+                type={isVisible ? 'up' : 'down'}
+                size={14}
+                color="var(--neutral-n4)"
+              />
+            )}
+          </DivStyle>
+          {(props.homeType === 'sprint' || props.homeType === 'iteration') && (
+            <Tabs>
+              {tabs.map((el: { label: any }, index) => (
+                <span
+                  className={tabsActive === index ? 'tabsActive' : ''}
+                  onClick={() => getTabsActive(index)}
+                  key={el.label}
+                >
+                  {t(el.label)}
+                </span>
+              ))}
+            </Tabs>
+          )}
+          {tabsActive === 0 ? (
+            <SelectMain
+              allowClear={false}
+              onChange={e => {
+                setTimekey(e)
+                setTimeVal([])
+                viewType === 1 && e !== 0 && dispatch(setSave(true))
+                e === 0 && dispatch(setSave(false))
+                e !== 0 &&
+                  dispatch(
+                    setHeaderParmas({
+                      time: {
+                        type: e,
+                        time: '',
+                      },
+                      period_time: periodTimes.find(item => item.value === e)
+                        ?.label,
+                    }),
+                  )
+              }}
+              value={timekey}
+              placeholder={t('common.pleaseSelect')}
+              list={[
+                {
+                  name: t('performance.tWeek'),
+                  key: 14,
+                },
+                {
+                  name: t('performance.fWeek'),
+                  key: 28,
+                },
+                {
+                  name: t('performance.oMonth'),
+                  key: 1,
+                },
+                {
+                  name: t('performance.tMonth'),
+                  key: 3,
+                },
+                {
+                  name: t('performance.sMonth'),
+                  key: 6,
+                },
+                {
+                  name: t('performance.custom'),
+                  key: 0,
+                },
+              ]}
+            />
+          ) : (
+            // 是否是迭代和冲刺的项目
+            <Select
+              type={props.homeType}
+              placeholder={
+                props.homeType === 'iteration'
+                  ? t('performance.selectdd')
+                  : t('performance.selectcc')
+              }
+              options={iterateData}
+              more={more1}
+              value={iterateIds || []}
+              onChange={(value: number[]) => oniterateChange(value)}
+              onAllProject={onAllProject}
+              onShowAll={() => {
+                setMore1(true), setIterateDataAll(iterateDataAll)
+              }}
+            />
+          )}
+          {timekey === 0 && (
+            <RangePicker
+              value={timeVal}
+              onChange={onChangeDate}
+              style={{ width: '283px' }}
+            />
+          )}
+        </Space>
+        {props.homeType === 'all' ? (
+          <NewAddUserModalForTandD
+            title={t('calendarManager.add_a_member')}
+            state={2}
+            defaultPeople={headerParmas.users}
+            isVisible={isVisible}
+            onConfirm={onConfirm}
+            onClose={() => setIsVisible(false)}
           />
         ) : (
-          // 是否是迭代和冲刺的项目
-          <Select
-            type={props.homeType}
-            placeholder={t('performance.selectcc')}
-            options={iterateData}
-            more={more1}
-            value={iterateIds || []}
-            onChange={(value: number[]) => oniterateChange(value)}
-            onAllProject={onAllProject}
-            onShowAll={() => {
-              setMore1(true), setIterateDataAll(iterateDataAll)
-            }}
+          /* 项目走的 */
+          <AddDepartmentOrTeamModal
+            users={headerParmas.users}
+            projectId={paramsData?.id}
+            type={2}
+            isVisible={isVisible}
+            onConfirm={onConfirm}
+            onClose={() => setIsVisible(false)}
           />
         )}
-        {timekey === 0 && (
-          <RangePicker
-            value={timeVal}
-            onChange={onChangeDate}
-            style={{ width: '283px' }}
-          />
-        )}
-      </Space>
-      {props.homeType === 'all' ? (
-        <NewAddUserModalForTandD
-          title={t('calendarManager.add_a_member')}
-          state={2}
-          defaultPeople={headerParmas.users}
-          isVisible={isVisible}
-          onConfirm={onConfirm}
-          onClose={() => setIsVisible(false)}
-        />
-      ) : (
-        /* 项目走的 */
-        <AddDepartmentOrTeamModal
-          users={headerParmas.users}
-          projectId={paramsData?.id}
-          type={2}
-          isVisible={isVisible}
-          onConfirm={onConfirm}
-          onClose={() => setIsVisible(false)}
-        />
-      )}
 
-      {/* 另存为视图 */}
-      <ViewDialog
-        name=""
-        titleType={{ title: t('performance.saveView'), type: 'add' }}
-        onConfirm={async val => {
-          try {
-            await props.onCreateView(val, 'add')
-            setIsVisibleView(false)
-          } catch (error) {
-            // console.log(error)
-          }
-        }}
-        onClose={() => setIsVisibleView(false)}
-        isVisible={isVisibleView}
-      />
-    </HeaderRow>
+        {/* 另存为视图 */}
+        <ViewDialog
+          name=""
+          titleType={{ title: t('performance.saveView'), type: 'add' }}
+          onConfirm={async val => {
+            try {
+              await props.onCreateView(val, 'add')
+              setIsVisibleView(false)
+            } catch (error) {
+              // console.log(error)
+            }
+          }}
+          onClose={() => setIsVisibleView(false)}
+          isVisible={isVisibleView}
+        />
+      </HeaderRow>
+    </div>
   )
 }
 export default Iteration

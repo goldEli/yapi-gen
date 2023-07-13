@@ -26,11 +26,9 @@ import SetPermissionWrap from './SetPermission'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import TableSelectOptions from '@/components/TableSelectOptions'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import { updateProjectRole } from '@/services/sprint'
-import { getProjectRole } from '@store/create-propject/thunks'
 import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
 import {
   addMember,
@@ -347,7 +345,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CommonUserAvatar avatar={record.avatar} size="large" />
+            <CommonUserAvatar avatar={record.avatar} size="small" />
             <div
               style={{
                 marginLeft: 12,
@@ -740,18 +738,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           close={() => setIsDelete(!isDelete)}
           confirm={() => getList(order, pageObj)}
         />
-        {/* <AddMemberCommonModal
-          isPermisGroup
-          userGroupId={
-            projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
-              ?.value
-          }
-          title={t('project.addMember') }
-          isVisible={isAddVisible}
-          onClose={onClickCancel}
-          onConfirm={handleOk}
-          projectPermission={projectPermission}
-        /> */}
+
         <NewAddUserModalForTandD
           isPermisGroup
           userGroupId={

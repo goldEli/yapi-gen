@@ -72,7 +72,7 @@ const SystemFeedback = () => {
 
     if (data.code === 0) {
       getMessage({
-        msg: t('succeed') as string,
+        msg: t('submit_successfully') as string,
         type: 'success',
       })
       form.resetFields()
@@ -205,7 +205,7 @@ const SystemFeedback = () => {
               </CommonButton>
 
               <CommonButton onClick={onConfirm} type="primary">
-                {t('common.confirm')}
+                {t('newlyAdd.submit')}
               </CommonButton>
             </div>
           </Footer>

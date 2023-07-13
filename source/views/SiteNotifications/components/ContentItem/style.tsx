@@ -64,7 +64,7 @@ export const Wrap2 = styled.div`
 export const Name = styled.div`
   height: 22px;
   font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
+  font-family: SiYuanMedium;
   font-weight: 400;
   color: var(--neutral-n1-d1);
   line-height: 22px;
@@ -82,11 +82,12 @@ export const Tip = styled.div`
 
 export const About = styled.div`
   height: 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
   line-height: 20px;
   margin-left: 4px;
+  color: var(--neutral-n3);
 `
 
 export const GrepContent = styled.div<{ status?: boolean }>`

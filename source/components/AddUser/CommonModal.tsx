@@ -427,7 +427,6 @@ const CommonModal = (props: ModalProps) => {
   }
   // 勾选复选框
   const onCheck = (checkedKey: any, e: any) => {
-    // debugger
     // console.log(checkedKey, e.checkedNodes)
     checkdFilterDataList = []
     if (tabsActive === 1) {

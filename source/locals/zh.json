@@ -1,4 +1,10 @@
 {
+  "from": "从",
+  "import_workflow": "导入工作流",
+  "workflow": "工作流",
+  "project_members": "项目成员",
+  "reselect": "重新选择",
+  "submit_successfully": "提交成功",
   "message_receiver_list": "消息接收人列表",
   "person_unread": "人未读",
   "person_read": "人已读",
@@ -624,7 +630,7 @@
     "afterStatus": "变更后需求状态",
     "circulationRecord": "流转记录",
     "operation": "操作",
-    "demandSet": "需求设置",
+    "demandSet": "类别设置",
     "editExamineSuccess": "修改审核状态成功",
     "examine": "审核",
     "refuse": "拒绝",
@@ -896,7 +902,8 @@
     "copySuccess": "已复制链接",
     "copyFail": "复制链接失败",
     "chooseCategory": "选择类别",
-    "clearAll": "清空所有选项"
+    "clearAll": "清空所有选项",
+    "giveUp": "放弃保存"
   },
   "components": {
     "noALlPermission": "你当前无任何权限，请联系企业管理员分配权限",
@@ -1700,8 +1707,8 @@
   "by_personnel": "按人员",
   "by_category": "按类别",
   "by_priority": "按优先级",
-  "do_you_want_to_save_changes": "是否保存修改？",
-  "remind": "提醒",
+  "do_you_want_to_save_changes": "当前的列表与状态还未保存，是否保存？",
+  "remind": "保存提示",
   "performance": {
     "save": "保存",
     "save1": "另存为",
@@ -1735,6 +1742,7 @@
     "time": "按周期",
     "cc": "按冲刺",
     "selectcc": "请选择冲刺",
+    "selectdd": "请选择迭代",
     "dd": "按迭代",
     "back": "返回",
     "title05": "数据明细",
@@ -1963,7 +1971,8 @@
     "editTemplate": "编辑模板",
     "rightsProfile": "权限配置",
     "confirmDeletionOfThisField": "确认删除该字段？",
-    "columnsAndStatus": "列与状态"
+    "columnsAndStatus": "列与状态",
+    "typeConfiguration": "类型配置"
   },
   "editingRequirements": "编辑需求",
   "createSubrequirements": "创建子需求",
@@ -2143,5 +2152,6 @@
     "pleaseObj": "请选择接收对象",
     "nameExits": "列名称已存在",
     "setNormal": "设为默认"
-  }
+  },
+  "yc": "移出项目成员"
 }

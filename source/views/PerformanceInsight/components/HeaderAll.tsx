@@ -19,7 +19,7 @@ interface HaderProps {
   headerParmas: Models.Efficiency.HeaderParmas
   onSearchData(value: number[]): void
   onGetExportApi(value: number[]): void
-  projectId: number
+  projectId: number | string
   homeType: string
   viewType: number
 }

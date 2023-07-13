@@ -117,7 +117,6 @@ const EditorCategory = (props: EditorProps) => {
         //
       }
     } else {
-      // debugger
       try {
         const res = await addStoryConfigCategory({
           ...params,

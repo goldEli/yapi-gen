@@ -48,8 +48,8 @@ const IssueCard = (props: IssueCardProps) => {
   const { ids } = useStoryIds()
   const { projectInfo } = useSelector(store => store.project)
 
-  const cardContent = (
-    <IssueCardBoxContainer hidden={props.hidden}>
+  const cardContent = (dragOver: any) => (
+    <IssueCardBoxContainer isDragOver={dragOver} hidden={props.hidden}>
       <Top>
         <TopLeft>
           <Tooltip title={item.project_category.name}>
@@ -144,13 +144,13 @@ const IssueCard = (props: IssueCardProps) => {
       draggableId={props.uuid}
       index={index}
     >
-      {provided => (
+      {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <IssueCardBox>{cardContent}</IssueCardBox>
+          <IssueCardBox>{cardContent(snapshot?.draggingOver)}</IssueCardBox>
         </div>
       )}
     </Draggable>

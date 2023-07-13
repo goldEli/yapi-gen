@@ -365,7 +365,14 @@ const HeaderLeft = () => {
         <CloseWrap width={32} height={32} onClick={() => setIsVisible(true)}>
           <CommonIconFont type="menu-02" size={24} color="var(--neutral-n2)" />
         </CloseWrap>
-        <Space size={8}>
+        <Space
+          size={8}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '3px 0 0 0',
+          }}
+        >
           {currentMenu ? (
             <>
               <CommonIconFont

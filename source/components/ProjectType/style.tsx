@@ -4,10 +4,11 @@ export const Wrap = styled.div<{ bb: boolean; type: boolean }>`
   width: ${props => (props.bb ? '476px' : '460px')};
   height: ${props => (props.bb ? '542px' : '500px')};
   background: var(--neutral-white-d1);
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
-  border-top: 2px solid transparent;
+  border: 1px solid #ecedef;
+  /* border-top: 2px solid transparent; */
   box-sizing: border-box;
   padding: 24px;
   position: relative;
@@ -15,6 +16,7 @@ export const Wrap = styled.div<{ bb: boolean; type: boolean }>`
   :hover {
     border-top: 2px solid ${props => (props.type ? '#8DD2F6' : '#7773fe')};
     transform: translateY(-10px);
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   }
 
   img {

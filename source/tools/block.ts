@@ -33,10 +33,11 @@ export function usePrompt(props: {
   title: string
   text: string
   when: boolean
-  okText: string
+  okText?: string
+  cancelText?: string
   onConfirm: () => void
 }) {
-  const { title, text, when, onConfirm, okText } = props
+  const { title, text, when, onConfirm, okText, cancelText } = props
   // useEffect(() => {
   //   if (when) {
   //     window.onbeforeunload = function () {
@@ -59,6 +60,7 @@ export function usePrompt(props: {
         title,
         text,
         okText,
+        cancelText,
         onConfirm: () => {
           resolve(true)
           onConfirm()

@@ -68,6 +68,7 @@ const ItemRow = styled(Row)`
   > img {
     width: 32px;
     height: 32px;
+    border-radius: 4px;
   }
 `
 const ItemTitle = styled.div`
@@ -107,7 +108,7 @@ const ItemDropdown = (props: PropsType) => {
       }),
     )
     setIsOpen(false)
-    // debugger
+
     // TODO
     // console.log(el)
     if (el.projectType === 2) {

@@ -33,7 +33,8 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
     ProjectNotify: t('sprintProject.notificationConfiguration'),
     ProjectKanBan: t('sprintProject.kanbanConfiguration'),
     ProjectHome: t('sprintProject.homeConfiguration'),
-    ProjectAffair: t('sprintProject.transactionType'),
+    ProjectAffair: t('newlyAdd.demandSet'),
+    work: t('newlyAdd.demandSet'),
   }
   return (
     <Breadcrumb
@@ -76,7 +77,7 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
           </a>
         </Breadcrumb.Item>
       ) : null}
-      {type === 'ProjectAffair' && (
+      {(type === 'ProjectAffair' || type === 'work') && (
         <Breadcrumb.Item
           onClick={() => {
             const params = encryptPhp(
@@ -89,13 +90,29 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
             navigate(`/SprintProjectManagement/Setting?data=${params}`)
           }}
         >
-          <a>{t('sprintProject.projectSettings')}</a>
+          <a style={{ color: 'var(--neutral-n1-d1)' }}>
+            {t('sprintProject.projectSettings')}
+          </a>
         </Breadcrumb.Item>
       )}
 
-      <Breadcrumb.Item>
+      <Breadcrumb.Item
+        onClick={() => {
+          if (type === 'work') {
+            navigate(-1)
+          }
+        }}
+      >
         <a className={lastBreadcrumb}>{maps[type] || maps.ProjectInfo}</a>
       </Breadcrumb.Item>
+      {type === 'work' && (
+        <Breadcrumb.Item>
+          <a className={lastBreadcrumb}>
+            {t('sprintProject.configureWorkflow')}
+          </a>
+        </Breadcrumb.Item>
+      )}
+
       {type === 'ProjectKanBan' ? (
         <Breadcrumb.Item>
           <a className={lastBreadcrumb}>

@@ -18,7 +18,7 @@ const PersonItemWrap = styled.div({
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    background: 'var(--neutral-n6-d1)',
+    background: 'var(--hover-d3)',
   },
 })
 

@@ -46,6 +46,10 @@ const IconWrap = styled(IconFont)({
     color: 'var(--neutral-n1-d1)',
     background: 'var(--hover-d3)',
   },
+  ' &:active': {
+    background: 'var(--neutral-n6-d1)',
+    color: 'var(--neutral-n1-d1)',
+  },
 })
 
 export const MoreWrap = styled.div<{ type?: any }>(

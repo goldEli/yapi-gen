@@ -94,7 +94,7 @@ const LongStoryDropdown = (props: IProps) => {
         // name: detail.name,
       }
     }
-    // debugger
+
     const methods = hasLongStroy ? addInfoAffairs : updateInfoAffairs
     try {
       await methods(params)
@@ -136,7 +136,6 @@ const LongStoryDropdown = (props: IProps) => {
     }
   }
   useEffect(() => {
-    // debugger
     console.log('detail', detail)
     const hasLongStroy =
       detail.level_tree?.length === 0 ||

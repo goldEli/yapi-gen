@@ -9,7 +9,6 @@ import { Form } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import ChoosePeople from './ChoosePeople'
 import IconFont from '@/components/IconFont'
-// import { AddWrap } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
@@ -18,12 +17,11 @@ import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 // 添加符号 例： 标签添加与附件添加
-const AddWrap = styled.div({
+const AddWrapText = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   boxSizing: 'border-box',
-  cursor: 'pointer',
   borderRadius: 6,
   color: 'var(--primary-d2)',
   width: 'fit-content',
@@ -227,14 +225,15 @@ const WhiteDay = (props: Props) => {
             },
           ]}
         >
-          <AddWrap
+          <AddWrapText
             style={{
+              cursor: '',
               marginBottom: '20px',
             }}
           >
             <IconFont type="plus" />
             {t('calendarManager.addAdjunct')}
-          </AddWrap>
+          </AddWrapText>
         </Form.Item>
       )
     } else if (item.type === 4) {
@@ -267,14 +266,14 @@ const WhiteDay = (props: Props) => {
           }
           name="needs"
         >
-          <AddWrap
+          <AddWrapText
             style={{
               marginBottom: '20px',
             }}
           >
             <IconFont type="plus" />
             {t('p2.RelatedRequirements')}
-          </AddWrap>
+          </AddWrapText>
         </Form.Item>
       )
     }

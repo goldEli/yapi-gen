@@ -161,6 +161,7 @@ const Table = (props: any) => {
     },
     {
       title: t('newlyAdd.operation'),
+      width: 220,
       dataIndex: 'action',
       render: (text: string, record: any) => (
         <OperationWrap>

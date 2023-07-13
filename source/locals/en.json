@@ -1,4 +1,14 @@
 {
+  "from": "from",
+
+  "import_workflow": "Import workflow",
+
+  "workflow": "Workflow ",
+
+  "project_members": "Project members",
+
+  "reselect": "reselect",
+  "submit successfully": " Submit successfully",
   "message_receiver_list": "List of message recipients ",
 
   "person_unread": "person not read",
@@ -906,7 +916,8 @@
     "copySuccess": "The link has been copied",
     "copyFail": "Failed to copy the link",
     "chooseCategory": "Select category",
-    "clearAll": "Clear all options"
+    "clearAll": "Clear all options",
+    "giveUp": "Give up saving"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",
@@ -1711,7 +1722,7 @@
   "by_personnel": "By personnel",
   "by_category": "By category",
   "by_priority": "By priority",
-  "do_you_want_to_save_changes": "Do you want to save changes?",
+  "do_you_want_to_save_changes": "The current list and status have not been saved. Do you want to save it?",
   "remind": "Remind",
   "performance": {
     "fpsw": "transaction",
@@ -1728,6 +1739,7 @@
     "cc": "Sprint",
     "theTransactionAssignedToHimAssignsBug": "Defects assigned to him",
     "selectcc": "Please select a sprint",
+    "selectdd": "Please select iteration",
     "presentSituation": "Current situation",
     "qPresentSituation": "Defect Status",
     "presentSituation1": " Work Item Status",
@@ -1973,7 +1985,8 @@
     "editTemplate": "Edit template",
     "rightsProfile": "Rights Profile",
     "confirmDeletionOfThisField": "Confirm deletion of this field?",
-    "columnsAndStatus": "Columns and status"
+    "columnsAndStatus": "Columns and status",
+    "typeConfiguration": "Type configuration"
   },
   "editingRequirements": "Editing requirements",
   "createSubrequirements": "Create subrequirements",
@@ -2153,5 +2166,6 @@
     "pleaseObj": "Please select a recipient",
     "nameExits": "Column name already exists",
     "setNormal": "Set as default"
-  }
+  },
+  "yc": "Remove project members"
 }

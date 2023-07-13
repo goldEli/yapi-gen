@@ -52,7 +52,7 @@ const MaxText = styled.div`
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const [t] = useTranslation()
   const { kanbanConfig, kanbanInfoByGroup } = useSelector(store => store.kanBan)
-  // debugger
+
   const refBox = useRef<HTMLDivElement>(null)
   const ColumnTitleRef = useRef<HTMLDivElement>(null)
   useEffect(() => {

@@ -372,7 +372,7 @@ const NoteCard = (props: any) => {
             marginTop: '16px',
             display: 'flex',
             alignItems: 'center',
-            gap: '24px',
+            gap: '12px',
             cursor: 'pointer',
             flexWrap: 'wrap',
             paddingTop: '10px',

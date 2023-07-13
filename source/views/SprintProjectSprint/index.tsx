@@ -181,7 +181,7 @@ const TabItemWrap = styled.div`
     display: none;
   }
   .ant-spin-nested-loading img {
-    margin-top: 250px;
+    margin-top: 200px;
   }
 `
 
@@ -198,7 +198,7 @@ const Right = styled.div`
     padding-left: 24px;
   }
   .ant-spin-nested-loading img.spinImg {
-    margin-top: 250px;
+    margin-top: 120px;
   }
 `
 const SelectWrapForList = styled(SelectWrapBedeck)`
@@ -662,14 +662,12 @@ const SprintProjectSprint: React.FC = () => {
                 getTooltipContainer={node => node}
                 title={isExpand ? t('common.collapseMenu') : ''}
               >
-                <IconBox>
-                  <IconFont
-                    onClick={() => {
-                      setIsExpand(false)
-                    }}
-                    type="outdent"
-                    color="black"
-                  />
+                <IconBox
+                  onClick={() => {
+                    setIsExpand(false)
+                  }}
+                >
+                  <IconFont type="outdent" color="black" />
                 </IconBox>
               </Tooltip>
             ) : (
@@ -679,14 +677,12 @@ const SprintProjectSprint: React.FC = () => {
                 getTooltipContainer={node => node}
                 title={isExpand ? '' : t('common.openMenu')}
               >
-                <IconBox>
-                  <IconFont
-                    onClick={() => {
-                      setIsExpand(true)
-                    }}
-                    type="indent"
-                    color="black"
-                  />
+                <IconBox
+                  onClick={() => {
+                    setIsExpand(true)
+                  }}
+                >
+                  <IconFont type="indent" color="black" />
                 </IconBox>
               </Tooltip>
             )}

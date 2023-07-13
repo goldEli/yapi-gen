@@ -38,7 +38,7 @@ const Wrap = styled.div({
 })
 
 const SetTitleWrap = styled.div({
-  margin: '8px 24px 20px 8px',
+  margin: '10px 24px 20px 8px',
 
   display: 'flex',
   alignItems: 'center',
@@ -58,7 +58,7 @@ const ContentWrap = styled.div({
   background: 'white',
   width: '100%',
   height: 'calc(100% - 35px)',
-  padding: 24,
+  padding: '4px 16px 0px 8px',
   overflow: 'auto',
   position: 'relative',
 })
