@@ -108,7 +108,7 @@ const ItemDropdown = (props: PropsType) => {
       }),
     )
     setIsOpen(false)
-    // debugger
+
     // TODO
     // console.log(el)
     if (el.projectType === 2) {
