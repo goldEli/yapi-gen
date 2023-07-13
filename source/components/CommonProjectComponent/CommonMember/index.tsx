@@ -284,7 +284,6 @@ const CommonMember = (props: Props) => {
     dispatch(setProjectInfo(result))
     dispatch(setIsUpdateMember(true))
   }
-  console.log(projectPermission, 'projectPermission')
   return (
     <WaiWrap>
       {props.visible && (
