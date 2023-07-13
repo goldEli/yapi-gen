@@ -77,7 +77,7 @@ const MainGrid = (props: Props) => {
                 </div>
               </SpaceWrapItem>
             ))}
-            {!isPermission && (
+            {/* {!isPermission && (
               <AddProject onClick={onAddClick}>
                 <IconFont
                   style={{ fontSize: 24, marginBottom: 16 }}
@@ -85,7 +85,7 @@ const MainGrid = (props: Props) => {
                 />
                 <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
               </AddProject>
-            )}
+            )} */}
           </SpaceWrap>
         ) : isPermission ? (
           <NoData />
