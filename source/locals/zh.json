@@ -1,4 +1,9 @@
 {
+  "from": "从",
+  "import_workflow": "导入工作流",
+  "workflow": "工作流",
+  "project_members": "项目成员",
+  "reselect": "重新选择",
   "submit_successfully": "提交成功",
   "message_receiver_list": "消息接收人列表",
   "person_unread": "人未读",
@@ -625,7 +630,7 @@
     "afterStatus": "变更后需求状态",
     "circulationRecord": "流转记录",
     "operation": "操作",
-    "demandSet": "需求设置",
+    "demandSet": "类别设置",
     "editExamineSuccess": "修改审核状态成功",
     "examine": "审核",
     "refuse": "拒绝",

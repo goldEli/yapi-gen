@@ -1,4 +1,13 @@
 {
+  "from": "from",
+
+  "import_workflow": "Import workflow",
+
+  "workflow": "Workflow ",
+
+  "project_members": "Project members",
+
+  "reselect": "reselect",
   "submit successfully": " Submit successfully",
   "message_receiver_list": "List of message recipients ",
 

@@ -127,6 +127,7 @@ const Header = () => {
         id: projectInfo.id,
         pageIdx: 'work',
         categoryItem: activeCategory,
+        type: 'work',
       }),
     )
     navigate(`/SprintProjectManagement/WorkFlow?data=${params}`)

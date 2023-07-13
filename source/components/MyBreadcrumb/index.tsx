@@ -94,7 +94,8 @@ const MyBreadcrumb = (props: any) => {
               style={{ color: 'var(--neutral-n1-d1)' }}
               onClick={() => navigate(-1)}
             >
-              {t('sprintProject.demandSetting') as string}
+              {/* {t('sprintProject.demandSetting') as string} */}
+              {t('newlyAdd.demandSet') as string}
             </a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
@@ -107,7 +108,7 @@ const MyBreadcrumb = (props: any) => {
       )}
       {location.pathname === '/ProjectManagement/ProjectSetting' &&
       props.setName ? (
-        <Breadcrumb.Item>{props.setName}</Breadcrumb.Item>
+        <Breadcrumb.Item> {props.setName}</Breadcrumb.Item>
       ) : null}
       {location.pathname === '/ProjectManagement/Demand' && props.demand ? (
         <Breadcrumb.Item>

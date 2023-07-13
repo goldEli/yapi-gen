@@ -150,7 +150,7 @@ const SliderList = (props: any) => {
             JSON.stringify({
               id: projectInfo?.id,
               pageIdx: 'main',
-              type: 3,
+              type: 'ProjectAffair',
             }),
           )
           location.pathname === '/SprintProjectManagement/WorkFlow' &&
