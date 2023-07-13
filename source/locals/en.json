@@ -1848,7 +1848,7 @@
     "removeSprintToAgency": "The affairs in the sprint will be moved to the agency",
     "newAffairs": "New affairs",
     "noTransaction": "No business at the moment",
-    "desc": "Drag or create a new transaction from the to-do list to plan the sprint's work, add a transaction and edit the sprint after clicking Start Sprint",
+    "desc1": "Drag or create a new transaction from the to-do list to plan the sprint's work, add a transaction and edit the sprint after clicking Start Sprint",
     "desc2": "You can drag and drop existing transactions here to determine the sprint plan",
     "pieces": "pieces",
     "editTransaction": "Editorial transaction",
