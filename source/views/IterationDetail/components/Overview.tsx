@@ -176,6 +176,7 @@ const Overview = (props: OverviewProps) => {
             {iterateInfo?.info ? (
               <TargetWrap>
                 <Editor
+                  color="transparent"
                   value={iterateInfo.info || '--'}
                   getSuggestions={() => []}
                   readonly

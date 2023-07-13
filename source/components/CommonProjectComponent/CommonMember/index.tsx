@@ -76,7 +76,6 @@ const MoreDropdown = (props: DropDownProps) => {
     setIsVisible(false)
     props.onClickMenu(item, props.row)
   }
-
   const menu = () => {
     const menuItems: any = []
     props.roleOptions?.forEach((i: any, idx: any) => {
@@ -179,6 +178,7 @@ const CommonMember = (props: Props) => {
       all: true,
       searchValue: search,
     })
+
     // 更新项目成员下拉
     if (isUpdateProjectInfoValues) {
       const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
@@ -292,7 +292,6 @@ const CommonMember = (props: Props) => {
     dispatch(setProjectInfo(result))
     dispatch(setIsUpdateMember(true))
   }
-
   return (
     <WaiWrap>
       {props.visible && (
@@ -321,9 +320,11 @@ const CommonMember = (props: Props) => {
         title={
           <HeaderWrap>
             <span>
-              {t('project.projectMemberAll', {
-                count: projectInfo.memberCount,
-              })}
+              {projectInfo.memberCount
+                ? t('project.projectMemberAll', {
+                    count: projectInfo.memberCount,
+                  })
+                : t('project.projectMember')}
             </span>
             <CloseWrap width={32} height={32} onClick={props.onChangeVisible}>
               <IconFont
@@ -417,6 +418,7 @@ const CommonMember = (props: Props) => {
         )}
       </DrawerWrap>
       <HandOverModal
+        title={t('yc')}
         visible={handOvervisible}
         close={() => {
           setHandOvervisible(false)

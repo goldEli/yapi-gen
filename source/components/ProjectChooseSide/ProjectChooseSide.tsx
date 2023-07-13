@@ -5,12 +5,13 @@ import { TitleStyle } from '@/views/DemandSetting/components/Main'
 import CommonIconFont from '../CommonIconFont'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { getProjectInfoOnly } from '@/services/project'
-import { spawn } from 'child_process'
+import { useTranslation } from 'react-i18next'
 
 const ProjectChooseSide = (props: any) => {
   const [infoIcon, setInfoIcon] = useState(true)
   const [infoIcon2, setInfoIcon2] = useState(true)
   const [info, setInfo] = useState<any>()
+  const [t] = useTranslation()
 
   const init = async () => {
     if (props.cloneIds[0]) {
@@ -36,7 +37,7 @@ const ProjectChooseSide = (props: any) => {
         }}
         className="t1"
       >
-        从【{info?.name}】导入工作流
+        {t('from')}【{info?.name}】 {t('import_workflow')}
       </div>
       <div
         style={{
@@ -53,7 +54,7 @@ const ProjectChooseSide = (props: any) => {
             />
 
             <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
-              工作流
+              {t('workflow')}
             </span>
           </TitleStyle>
           <ScaleDiv hi={!infoIcon}>
@@ -92,7 +93,7 @@ const ProjectChooseSide = (props: any) => {
             />
 
             <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
-              项目成员（{info?.member_list.length}）
+              {t('project_members')}（{info?.member_list.length}）
             </span>
           </TitleStyle>
           <ScaleDiv hi={!infoIcon2}>
@@ -113,7 +114,7 @@ const ProjectChooseSide = (props: any) => {
 
       <div style={{ zIndex: '900000' }} className="btn">
         <CommonButton type="primary" onClick={() => props.onClose()}>
-          重新选择
+          {t('reselect')}
         </CommonButton>
       </div>
     </Side>

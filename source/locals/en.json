@@ -1,4 +1,13 @@
 {
+  "from": "from",
+
+  "import_workflow": "Import workflow",
+
+  "workflow": "Workflow ",
+
+  "project_members": "Project members",
+
+  "reselect": "reselect",
   "submit successfully": " Submit successfully",
   "message_receiver_list": "List of message recipients ",
 
@@ -1976,7 +1985,8 @@
     "editTemplate": "Edit template",
     "rightsProfile": "Rights Profile",
     "confirmDeletionOfThisField": "Confirm deletion of this field?",
-    "columnsAndStatus": "Columns and status"
+    "columnsAndStatus": "Columns and status",
+    "typeConfiguration": "Type configuration"
   },
   "editingRequirements": "Editing requirements",
   "createSubrequirements": "Create subrequirements",
@@ -2075,5 +2085,6 @@
   "defectComment": "Defect comment",
   "areYouSureYouWantToDeleteThisFlaw": "Are you sure you want to delete this defect?",
   "businessReview": "Business review",
-  "targetInfo": "Objective："
+  "targetInfo": "Objective：",
+  "yc": "Remove project members"
 }

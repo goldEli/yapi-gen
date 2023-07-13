@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
+import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 import {
   Col,
   Col2,
@@ -28,6 +29,7 @@ import {
   Text,
 } from '../WorkReport/Formwork/RightWrap'
 import { getMessage } from '@/components/Message'
+import { reduce } from 'lodash'
 
 const Wrap = styled.div({
   padding: 16,
@@ -38,7 +40,7 @@ const Wrap = styled.div({
 })
 
 const SetTitleWrap = styled.div({
-  margin: '8px 24px 20px 8px',
+  margin: '10px 24px 20px 8px',
 
   display: 'flex',
   alignItems: 'center',
@@ -58,9 +60,10 @@ const ContentWrap = styled.div({
   background: 'white',
   width: '100%',
   height: 'calc(100% - 35px)',
-  padding: 24,
+  // padding: 24,
   overflow: 'auto',
   position: 'relative',
+  padding: '4px 16px 0px 8px',
 })
 
 const LabelWrap = styled.div({
@@ -112,7 +115,8 @@ const SetBreadcrumb = () => {
 
   return (
     <SetTitleWrap>
-      <MyBreadcrumb setName={t('sprintProject.configureWorkflow')} />
+      <CommonBreadCrumd />
+
       {/* <BackWrap onClick={onBack}>
         <IconFont type="return" style={{ fontSize: 16, marginRight: 6 }} />
         <span>{t('newlyAdd.back')}</span>

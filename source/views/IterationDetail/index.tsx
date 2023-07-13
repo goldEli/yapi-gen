@@ -10,11 +10,10 @@ import {
   Wrap,
 } from './style'
 import CommonButton from '@/components/CommonButton'
-import { Dropdown, Menu, Space, Tabs, TabsProps, Tooltip } from 'antd'
-import CommonIconFont from '@/components/CommonIconFont'
+import { Tabs, TabsProps } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import {
   copyLink,

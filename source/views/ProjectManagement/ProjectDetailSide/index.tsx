@@ -124,14 +124,14 @@ const ProjectDetailSide = () => {
       isPermission: true,
     },
     {
-      name: '报表',
+      name: t('sprintProject.report'),
       icon: 'pie-chart-02',
       path: '/Report/PerformanceInsight',
       isPermission: true,
       key: 'Report',
     },
     {
-      name: '缺陷',
+      name: t('sprintProject.defect'),
       icon: 'bug',
       path: '/ProjectManagement/Defect',
       isPermission:
@@ -191,7 +191,7 @@ const ProjectDetailSide = () => {
       key: 'note',
     },
     {
-      label: t('sprintProject.transactionType'),
+      label: t('sprintProject.typeConfiguration'),
       icon: <CommonIconFont type="selections" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission:

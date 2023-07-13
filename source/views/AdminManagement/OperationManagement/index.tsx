@@ -157,7 +157,7 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'name',
-      width: 400,
+      width: 100,
       render: (text: string, record: any) => (
         <CommonUserAvatar avatar={record.avatar} size="small" name={text} />
       ),
@@ -174,7 +174,7 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'time',
-      width: 400,
+      width: 100,
     },
     {
       title: (
@@ -188,7 +188,7 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'type',
-      width: 300,
+      width: 100,
       render: (text: string) => {
         return <div>{typeList.filter(i => i.value === text)[0]?.label}</div>
       },

@@ -32,9 +32,11 @@ const MyBreadcrumb = (props: any) => {
           <a
             onClick={() => {
               const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
-              // console.log('projectInfo', projectInfo)
               if (projectInfo.projectType === 1) {
-                navigate(`/ProjectManagement/Demand?data=${params}`)
+                // 之前需求迭代跳转统一跳到了需求，需要区分迭代是迭代的，需求是需求的
+                location.pathname.includes('/ProjectManagement/Iteration')
+                  ? navigate(`/ProjectManagement/Iteration?data=${params}`)
+                  : navigate(`/ProjectManagement/Demand?data=${params}`)
                 return
               }
               navigate(`/SprintProjectManagement/Affair?data=${params}`)
@@ -92,7 +94,8 @@ const MyBreadcrumb = (props: any) => {
               style={{ color: 'var(--neutral-n1-d1)' }}
               onClick={() => navigate(-1)}
             >
-              {t('sprintProject.demandSetting') as string}
+              {/* {t('sprintProject.demandSetting') as string} */}
+              {t('newlyAdd.demandSet') as string}
             </a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
@@ -105,7 +108,7 @@ const MyBreadcrumb = (props: any) => {
       )}
       {location.pathname === '/ProjectManagement/ProjectSetting' &&
       props.setName ? (
-        <Breadcrumb.Item>{props.setName}</Breadcrumb.Item>
+        <Breadcrumb.Item> {props.setName}</Breadcrumb.Item>
       ) : null}
       {location.pathname === '/ProjectManagement/Demand' && props.demand ? (
         <Breadcrumb.Item>
