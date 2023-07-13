@@ -48,10 +48,14 @@ const XTableWrap = styled.div`
     font-family: SiYuanRegular;
     color: var(--neutral-n3);
     text-align: center;
-    &:hover {
+    /* &:hover {
       border: 1px dashed var(--primary-d1);
-    }
+    } */
     margin-top: 17px;
+  }
+
+  .isDraggingOver {
+    border: 1px dashed var(--primary-d1);
   }
 
   // 元素拖动样式
@@ -94,8 +98,8 @@ const Header = styled.div`
   height: 32px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 10px;
+  align-items: center;
+  margin-bottom: 12px;
   .title {
     font-size: 14px;
     font-family: SiYuanMedium;
@@ -113,14 +117,16 @@ const Header = styled.div`
   }
 `
 const DisabledButton = styled.div`
+  display: flex;
+  align-items: center;
   background: var(--auxiliary-b10) !important;
   color: var(--auxiliary-t4) !important;
   cursor: no-drop !important;
-  width: 88px;
+  min-width: 88px;
   height: 32px;
-  line-height: 32px;
-  text-align: center;
   border-radius: 6px 6px 6px 6px;
+  white-space: nowrap;
+  padding: 4px 15px;
 `
 
 const XTable: React.FC<XTableProps> = props => {
@@ -185,10 +191,11 @@ const XTable: React.FC<XTableProps> = props => {
   const getSprintButton = (status: number) => {
     switch (status) {
       case 4:
-        return (
+        return data?.stories?.length === 0 ? (
+          <DisabledButton>{t('sprint.startSprint')}</DisabledButton>
+        ) : (
           <CommonButton
             type="light"
-            isDisable={data?.stories?.length === 0}
             onClick={() => {
               setSprintModal({
                 visible: true,
@@ -238,8 +245,6 @@ const XTable: React.FC<XTableProps> = props => {
     [],
   )
 
-  console.log(data, '=datadatadata')
-
   return (
     <>
       <CollapseCustom
@@ -278,27 +283,33 @@ const XTable: React.FC<XTableProps> = props => {
                     )}${t('affairs')}）`
                   : ''}
               </span>
-              <Popover
-                content={
-                  <PopoverTargetText>
-                    {data.iterate_info || '--'}
-                  </PopoverTargetText>
-                }
-                placement="bottom"
-                trigger="click"
-              >
-                <Tooltip title="冲刺目标">
-                  <CloseWrap width={24} height={24} style={{ marginRight: 12 }}>
-                    <IconFont
-                      className="custom"
-                      style={{
-                        fontSize: 16,
-                      }}
-                      type="target"
-                    />
-                  </CloseWrap>
-                </Tooltip>
-              </Popover>
+              {data.id === 0 ? null : (
+                <Popover
+                  content={
+                    <PopoverTargetText>
+                      {data.iterate_info || '--'}
+                    </PopoverTargetText>
+                  }
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <Tooltip title={t('sprint.sprintTarget')}>
+                    <CloseWrap
+                      width={24}
+                      height={24}
+                      style={{ marginRight: 12 }}
+                    >
+                      <IconFont
+                        className="custom"
+                        style={{
+                          fontSize: 16,
+                        }}
+                        type="target"
+                      />
+                    </CloseWrap>
+                  </Tooltip>
+                </Popover>
+              )}
 
               {data.id === 0
                 ? null
@@ -426,7 +437,11 @@ const XTable: React.FC<XTableProps> = props => {
                     data.id === 0 ? (
                       <NoData subText={t('sprint.noTransaction')} />
                     ) : (
-                      <div className="nodata">
+                      <div
+                        className={`nodata ${
+                          snapshot.isDraggingOver ? 'isDraggingOver' : ''
+                        }`}
+                      >
                         {data.status === 4
                           ? t('sprint.desc1')
                           : t('sprint.desc2')}

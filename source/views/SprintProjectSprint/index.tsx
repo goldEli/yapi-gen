@@ -212,6 +212,9 @@ const SelectWrapForList = styled(SelectWrapBedeck)`
   .ant-select-selection-placeholder {
     color: var(--neutral-n4);
   }
+  .ant-select-clear {
+    margin-top: -8px;
+  }
 `
 const CategorySelectWrap = styled.div`
   width: 296px;
@@ -245,6 +248,7 @@ const DragContent = styled.div`
   height: 100%;
   overflow-y: scroll;
   padding-bottom: 50px;
+  background: var(--neutral-n8);
 `
 
 const CustomCloseWrap = styled(CloseWrap)`

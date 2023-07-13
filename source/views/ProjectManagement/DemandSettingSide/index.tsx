@@ -113,7 +113,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const watchDataList = () => {
     let dataItem = null
     let filterData = null
-    // debugger
     if (startUsing) {
       filterData = categoryList?.filter((el: any) => el.status === 1)
     } else {
@@ -134,8 +133,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     const affairTypeData = getTypeCategory(dataItem, 'work_type', 'iteration')
     setAffairType(affairTypeData)
     setCacheData(_.cloneDeep(affairTypeData))
-
-    // setList(dataItem)
   }
 
   // 需求类别中间列表
@@ -188,7 +185,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     const CategoryData = newData.filter(item =>
       workType.includes(item.work_type),
     )
-    // console.log(dragCategoryList.current)
 
     const currentItem = CategoryData[prevIndex]
     CategoryData[prevIndex] = CategoryData[nextIndex]

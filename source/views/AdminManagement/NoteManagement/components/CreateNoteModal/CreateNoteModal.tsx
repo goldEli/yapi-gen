@@ -26,6 +26,16 @@ import {
 import moment from 'moment'
 import AcceptorSelection from '@/components/AcceptorSelection/AcceptorSelection'
 import { getMessage } from '@/components/Message'
+import styled from '@emotion/styled'
+const RedDiv = styled.div`
+  &
+    .ant-form-item-label
+    > label.ant-form-item-required:not(
+      .ant-form-item-required-mark-optional
+    )::after {
+    content: '';
+  }
+`
 
 const CreateNoteModal = (props: any) => {
   const [form] = Form.useForm()
@@ -451,7 +461,7 @@ const CreateNoteModal = (props: any) => {
             />
           </Form.Item>
 
-          <div>
+          <RedDiv>
             <Checkbox onChange={onChange}>{t('schedule_send')}</Checkbox>
             {taskTime ? (
               <Form.Item
@@ -474,7 +484,7 @@ const CreateNoteModal = (props: any) => {
                 />
               </Form.Item>
             ) : null}
-          </div>
+          </RedDiv>
         </Form>
       </div>
     </CommonModal>

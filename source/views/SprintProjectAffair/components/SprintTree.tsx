@@ -135,7 +135,7 @@ const SprintTree = (props: Props) => {
   // 修改优先级
   const onChangeState = async (item: any, row?: any) => {
     await updateAffairsPriority({
-      sprintId: item.id,
+      id: item.id,
       priorityId: item.priorityId,
       projectId,
     })

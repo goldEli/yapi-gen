@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable max-lines */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
@@ -336,6 +337,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
   // 团队
   const getTeam = async () => {
+    console.log('部门')
+
     const res = await getDepartmentUserList({
       search: {
         project_id:
@@ -523,6 +526,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
   // 获取最底层的children数组
   function findBottomChildren(tree: any) {
+    console.log(tree, '树数据')
+
     const result: any = []
 
     function traverse(node: any) {
@@ -661,6 +666,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   // 新的全选逻辑
   const checkAllChangeNew = () => {
     if (tabsActive === 1) {
+      console.log('1def')
+
       const allStaffs = flattenStaffs([showTreeData])
 
       // 去重
@@ -690,6 +697,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     }
     // setKeys(showTreeData)
     // 拿到所有child
+    console.log('数据', showTreeData)
+
     const findBottomChildrens = findBottomChildren([showTreeData])
     // 去重
     const newData = findBottomChildrens.reduce((acc: any, current: any) => {
@@ -708,7 +717,10 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     const isSomeHave = personData.some((item: any) =>
       newData.map((i: { id: any }) => i.id).includes(item.id),
     )
-
+    console.log(newData)
+    if (!newData.every((obj: any) => obj.hasOwnProperty('team_id'))) {
+      return
+    }
     if (isSomeHave) {
       setPersonData(filterUniqueItems(personData, newData))
     } else {

@@ -200,9 +200,7 @@ const GlobalStyle = () => {
     .ant-input-focused {
       box-shadow: inherit !important;
     }
-    /* .ant-progress-text {
-      color: var(--neutral-n2) !important;
-    } */
+
     .ant-form-item {
       padding-top: 2px !important;
     }
@@ -699,13 +697,11 @@ const GlobalStyle = () => {
     .ant-pagination-item-active:hover a {
       color: var(--primary-d2);
     }
-    /* .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+    .ant-select:not(.ant-select-disabled):hover,
     .ant-select-show-arrow,
     .ant-select-focused,
     .ant-picker-focused,
-    .ant-input-number-focused,
-    .ant-select-selector,
-    .ant-select:hover {
+    .ant-input-number-focused {
       box-shadow: initial !important;
       .ant-dropdown-menu-item:hover {
         background-color: var(--hover-d3);
@@ -716,7 +712,7 @@ const GlobalStyle = () => {
         color: var(--neutral-n1-d1);
       }
       border-color: var(--neutral-n6-d1);
-    } */
+    }
 
     .ant-menu-light .ant-menu-item:hover,
     .ant-menu-light .ant-menu-item-active,

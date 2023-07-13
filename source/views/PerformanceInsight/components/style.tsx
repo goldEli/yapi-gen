@@ -199,6 +199,11 @@ export const RowItem = styled.div`
   flex-direction: column;
   .title {
     font-size: 14px;
+    width: 70%;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     font-family: SiYuanMedium;
     color: var(--neutral-n1-d1);
   }

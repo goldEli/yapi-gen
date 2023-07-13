@@ -61,13 +61,13 @@ const IterationDefectDetail = () => {
   const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id, flawId, changeIds, newOpen } = paramsData
+  const { id, flawId, changeIds, newOpen, type } = paramsData
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
-  const [tabActive, setTabActive] = useState('1')
+  const [tabActive, setTabActive] = useState(type ?? '1')
   const { flawInfo } = useSelector(store => store.flaw)
   const { projectInfoValues, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,

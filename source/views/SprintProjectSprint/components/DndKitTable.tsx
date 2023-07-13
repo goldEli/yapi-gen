@@ -49,7 +49,6 @@ const TitleWrap = styled.div<{ isClose?: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
-
   .content {
     width: 160px;
     display: inline-block;
@@ -64,7 +63,7 @@ const TitleWrap = styled.div<{ isClose?: boolean }>`
     color: ${(props: any) => (props.isClose ? 'var(--neutral-n3)' : 'inherit')};
   }
 `
-const CustomWidthBox = styled.div`
+const CustomWidthBox = styled.div<{ isClose?: boolean }>`
   padding-right: 20px;
   .content {
     max-width: 400px;
@@ -72,6 +71,9 @@ const CustomWidthBox = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    text-decoration: ${(props: any) =>
+      props.isClose ? 'line-through' : 'inherit'};
+    color: ${(props: any) => (props.isClose ? 'var(--neutral-n3)' : 'inherit')};
   }
 `
 
@@ -206,7 +208,7 @@ const DndKitTable = (props: any) => {
   // 更改优先级
   const onChangeState = async (item: any) => {
     await updateAffairsPriority({
-      sprintId: item.id,
+      id: item.id,
       priorityId: item.priorityId,
       projectId,
     })
@@ -362,6 +364,7 @@ const DndKitTable = (props: any) => {
     },
     {
       dataIndex: 'sort',
+      width: 48,
       render: () => <MoveFont type="move" style={{ fontSize: 16 }} />,
     },
     {
@@ -438,14 +441,21 @@ const DndKitTable = (props: any) => {
               />
             </Tooltip>
             <Tooltip placement="topLeft" title={value}>
-              <CustomWidthBox>
+              <CustomWidthBox isClose={record.status?.is_end === 1}>
                 <span
                   style={{
+                    marginTop: 6,
                     maxWidth: 400,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
                     display: 'inline-block',
+                    textDecoration:
+                      record.status?.is_end === 1 ? 'line-through' : 'inherit',
+                    color:
+                      record.status?.is_end === 1
+                        ? 'var(--neutral-n3)'
+                        : 'inherit',
                   }}
                   className={
                     value?.length > 27

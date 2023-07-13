@@ -124,46 +124,31 @@ const NewAddShowList = (props: any) => {
   return (
     <div>
       {props.treeData?.children.map((i: any) => {
-        if (i.children && i.children.length >= 1) {
+        if (i.team_id) {
+          console.log('飞机')
           return (
             <TreeLine key={i.id}>
               <div>
                 <Checkbox
                   onChange={() => choose(i)}
-                  checked={
-                    i.children.length > 0 &&
-                    i.children.every((item: any) => {
-                      return selectKeys
-                        .map((i: { id: any }) => i.id)
-                        .includes(item.id)
-                    })
-                  }
-                  indeterminate={getT(
-                    i.children.every((item: any) => {
-                      return selectKeys
-                        .map((i: { id: any }) => i.id)
-                        .includes(item.id)
-                    }),
-                    i.children.length > 0 &&
-                      i.children.some((item: any) =>
-                        selectKeys
-                          .map((i: { id: any }) => i.id)
-                          .includes(item.id),
-                      ),
-                  )}
+                  checked={selectKeys
+                    .map((i: { id: any }) => i.id)
+                    .includes(i.id)}
                 >
-                  <div>团队-- {i.name}</div>
+                  <div
+                    id="12"
+                    style={{
+                      marginTop: '-1px',
+                    }}
+                  >
+                    <CommonUserAvatar
+                      name={i.name}
+                      fontSize={14}
+                      avatar={i.avatar}
+                    />
+                  </div>
                 </Checkbox>
               </div>
-
-              {i.children && i.children.length >= 1 ? (
-                <CommonIconFont
-                  onClick={() =>
-                    i.children && i.children.length >= 1 ? tap(i.id) : null
-                  }
-                  type="right"
-                />
-              ) : null}
             </TreeLine>
           )
         }
@@ -171,25 +156,41 @@ const NewAddShowList = (props: any) => {
           <TreeLine key={i.id}>
             <div>
               <Checkbox
-                onChange={() => choose(i)}
-                checked={selectKeys
-                  .map((i: { id: any }) => i.id)
-                  .includes(i.id)}
+                onChange={() => (i.children.length >= 1 ? choose(i) : null)}
+                checked={
+                  i.children.length > 0 &&
+                  i.children.every((item: any) => {
+                    return selectKeys
+                      .map((i: { id: any }) => i.id)
+                      .includes(item.id)
+                  })
+                }
+                indeterminate={getT(
+                  i.children.every((item: any) => {
+                    return selectKeys
+                      .map((i: { id: any }) => i.id)
+                      .includes(item.id)
+                  }),
+                  i.children.length > 0 &&
+                    i.children.some((item: any) =>
+                      selectKeys
+                        .map((i: { id: any }) => i.id)
+                        .includes(item.id),
+                    ),
+                )}
               >
-                <div
-                  id="12"
-                  style={{
-                    marginTop: '-1px',
-                  }}
-                >
-                  <CommonUserAvatar
-                    name={i.name}
-                    fontSize={14}
-                    avatar={i.avatar}
-                  />
-                </div>
+                <div>团队-- {i.name}</div>
               </Checkbox>
             </div>
+
+            {i.children && i.children.length >= 1 ? (
+              <CommonIconFont
+                onClick={() =>
+                  i.children && i.children.length >= 1 ? tap(i.id) : null
+                }
+                type="right"
+              />
+            ) : null}
           </TreeLine>
         )
       })}

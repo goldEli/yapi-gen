@@ -103,11 +103,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       label: t('no_start_using'),
     },
   ]
-
-  const isCreate = projectInfo?.projectPermissions?.filter(
-    (i: any) => i.identity === 'b/project/story_config',
-  )?.length
-
   // 需求类别侧边栏
   const getList = async (type?: string) => {
     await dispatch(storyConfigCategoryList({ projectId: paramsData.id }, type))
@@ -133,18 +128,13 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
         active: index === 0 ? true : false,
       }))
     }
-    // debugger
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
-    // // console.log('dataItem', dataItem)
-    // debugger
     const affairTypeData = getTypeCategory(dataItem, 'work_type', 'sprint')
     if (!affairTypeData) {
       return
     }
     setAffairType(affairTypeData)
     setCacheData(_.cloneDeep(affairTypeData))
-    // return
-    // setList(dataItem)
   }
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
@@ -248,7 +238,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
           active: index === 0 ? true : false,
         }))
     }
-    // dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
+    dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
     return dataItem
   }
 
