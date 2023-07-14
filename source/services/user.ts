@@ -54,7 +54,8 @@ export const loginOut: any = async () => {
 export const getTicket = () => {
   // localStorage.clear()
   // location.replace(`${location.origin}/login`)
-  const url = new URL(import.meta.env.__SSO_URL__)
+  // const url = new URL(import.meta.env.__SSO_URL__)
+  const url = new URL(`${location.origin}/login`)
   url.searchParams.set('type', '0')
   url.searchParams.set('redirect', location.href)
   url.searchParams.set('target', 'agile')

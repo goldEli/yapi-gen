@@ -130,6 +130,7 @@ const DemandSetting = () => {
         />
       )}
       <DeleteConfirm
+        title={t('sprintProject.confirmCancel')}
         text={t('other.isSave')}
         isVisible={isVisible}
         onChangeVisible={() => {

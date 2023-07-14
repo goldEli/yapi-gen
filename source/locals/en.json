@@ -1079,7 +1079,7 @@
     "joinTime": "Join Time",
     "confirmDelMember": "Are you sure you want to delete the current member?",
     "pleaseNickname": "Enter nickname name",
-    "projectPermissionGroup": "Project Permission",
+    "projectPermissionGroup": "Project Role",
     "addChildDemand": "Add sub requirement",
     "importText1": "① The 'transaction type' field is required;",
     "importText2": "② The 'Title' field is mandatory;",
@@ -1988,7 +1988,8 @@
     "rightsProfile": "Rights Profile",
     "confirmDeletionOfThisField": "Confirm deletion of this field?",
     "columnsAndStatus": "Columns and status",
-    "typeConfiguration": "Type configuration"
+    "typeConfiguration": "Type configuration",
+    "confirmCancel": "Confirm Cancel"
   },
   "editingRequirements": "Editing requirements",
   "createSubrequirements": "Create subrequirements",

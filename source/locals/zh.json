@@ -169,7 +169,7 @@
   "atmy": "@我的",
   "notification": "通知",
   "notificationCenter": "通知中心",
-  "notification_settings": "通知设置",
+  "notification_settings": "通知配置",
   "operand": "操作对象",
   "email_notification": "邮件通知",
   "ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout": "接收有关您关注项目的提及、邀请和评论的电子邮件更新",
@@ -1065,7 +1065,7 @@
     "joinTime": "加入时间",
     "confirmDelMember": "确认要删除当前成员？",
     "pleaseNickname": "输入昵称姓名",
-    "projectPermissionGroup": "项目权限组",
+    "projectPermissionGroup": "项目角色",
     "addChildDemand": "添加子需求",
     "importText1": "① “事务类型”字段为必填项；",
     "importText2": "② “标题”字段为必填项；",
@@ -1974,7 +1974,8 @@
     "rightsProfile": "权限配置",
     "confirmDeletionOfThisField": "确认删除该字段？",
     "columnsAndStatus": "列与状态",
-    "typeConfiguration": "类型配置"
+    "typeConfiguration": "类型配置",
+    "confirmCancel": "确认取消"
   },
   "editingRequirements": "编辑需求",
   "createSubrequirements": "创建子需求",
