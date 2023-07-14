@@ -159,7 +159,10 @@ const ProjectDetailSide = () => {
         {
           label: t('sprintProject.columnsAndStatus'),
           path: '/SprintProjectManagement/Setting',
-          isPermission: true,
+          isPermission:
+            projectInfo?.projectPermissions?.filter((i: any) =>
+              String(i.identity).includes('b/project/kanban'),
+            ).length > 0,
           key: 'ProjectKanBan',
         },
       ],
@@ -208,7 +211,10 @@ const ProjectDetailSide = () => {
       name: 'KanBan',
       icon: 'layout',
       path: '/SprintProjectManagement/KanBan',
-      isPermission: true,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/kanban'),
+        ).length > 0,
       key: 'KanBan',
     },
 
