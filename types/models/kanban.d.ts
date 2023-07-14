@@ -72,6 +72,8 @@ declare namespace Model.KanBan {
     handlers: Handler[]
     // 1 不能操作 2 可以操作
     verify_lock: 1 | 2
+    // 1是迭代，2是冲刺
+    project_type: 1 | 2
   }
   type Column = Omit<Model.KanbanConfig.Column, 'categories'> & {
     stories: Story[]
