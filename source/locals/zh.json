@@ -1656,7 +1656,7 @@
   "save_as_view": "另存为视图",
   "name1": "名称",
   "please_enter_the_real_view_name_limit_30_characters": "请输入视图名称限30字",
-  "please_enter_column_name": "请输入列与状态限30字",
+  "please_enter_column_name": "请输入列与状态名称限30字",
   "confirm_deletion": "确认删除",
   "confirm_to_delete_the_column_and_status,_after_deletion,_the_column_and_status_will_not_be_available_in_the_Kanban": "确认删除该列与状态，删除后再看板中将无法使用该列与状态",
   "create_columns_and_status": "创建列与状态",
