@@ -4,13 +4,7 @@ import LoginForm from './LoginForm'
 import style from './index.module.css'
 import { reducer, installState } from './login'
 import AuthorizedLogin from './AuthorizedLogin'
-import {
-  getCaptcha,
-  toLogin,
-  checkToken,
-  getTicket,
-  checkSecret,
-} from './services'
+import { getTicket } from './services'
 import { getQueryParam } from './utils'
 import dayjs from 'dayjs'
 import GlobalStyle from '@/components/GlobalStyle'
@@ -78,7 +72,7 @@ const Page = () => {
     background: var(--primary-d1);
     border-radius: 12px 12px 12px 12px;
     position: relative;
-    overflow-x: hidden;
+    // overflow-x: hidden;
     &::-webkit-scrollbar {
       display: none;
     }
@@ -86,7 +80,7 @@ const Page = () => {
 
   const CarouselWrap = styled(Carousel)`
     width: 90% !important;
-    max-width: 700px !important;
+    max-width: 70vh !important;
     min-width: 400px !important;
     position: absolute !important;
     z-index: 99;
@@ -128,6 +122,7 @@ const Page = () => {
 
   const CarouselItem = styled.div`
     padding-top: 72px;
+    height: 100%;
   `
 
   const ItemTitle = styled.div`
@@ -150,7 +145,6 @@ const Page = () => {
   `
   const ItemImage = styled.img`
     width: 100%;
-    margin-bottom: 32px;
   `
   const TopBgImage = styled.img`
     position: absolute;
