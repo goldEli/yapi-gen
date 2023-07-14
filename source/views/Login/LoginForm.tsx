@@ -46,7 +46,7 @@ export default React.memo(
     const [errorMessage, setErrorMessage] = useState('')
     const [errorState, setErrorState] = useState(false)
     const [focusNumber, setFocusNumber] = useState(0)
-    const target = getQueryParam('target')
+    const target = ''
     const [agree, setAgree] = useState(true)
 
     useEffect(() => {
@@ -79,37 +79,7 @@ export default React.memo(
       } else if (focusNumber === 3) {
         setErrorMessage(languageMode.codeWarning)
       }
-      // else if(focusNumber === 4) {
-      //   setErrorMessage(languageMode.userError)
-      // } else if(focusNumber === 5) {
-      //   setErrorMessage(languageMode.passwordError)
-      // }else if(focusNumber === 6) {
-      //   setErrorMessage(languageMode.codeError)
-      // }
     }, [props?.languageMode])
-
-    // const onCheckValue = (val: number) => {
-    //   if(val === 1 && form.username) {
-    //     if (!/^[0-9]*$/gu.test(form.username)) {
-    //       setFocusNumber(4)
-    //       setErrorMessage(languageMode.userError)
-    //       return
-    //     }
-    //   } else if (val === 2 && form.password) {
-    //     if (!/^([a-zA-Z\d])+$/gu.test(form.password) || ![/[a-z]+/gu, /[A-Z]+/gu, /\d+/gu].every(i => i.test(form.password))) {
-    //       setFocusNumber(5)
-    //       setErrorMessage(languageMode.passwordError)
-    //       // console.log(111)
-    //       return
-    //     }
-    //   } else if(val === 3 && form.code){
-    //     if (!/^[0-9]*$/gu.test(form.code)) {
-    //       setFocusNumber(6)
-    //       setErrorMessage(languageMode.codeError)
-    //       return
-    //     }
-    //   }
-    // }
 
     const login = async () => {
       if (!(form.username && form.password && form.code)) {
@@ -126,24 +96,6 @@ export default React.memo(
         return
       }
 
-      // if (!/^[0-9]*$/gu.test(form.username)) {
-      //   setFocusNumber(4)
-      //   setErrorMessage(languageMode.userError)
-      //   return
-      // }
-
-      // if (!/^([a-zA-Z\d])+$/gu.test(form.password) || ![/[a-z]+/gu, /[A-Z]+/gu, /\d+/gu].every(i => i.test(form.password))) {
-      //   setFocusNumber(5)
-      //   setErrorMessage(languageMode.passwordError)
-      //   return
-      // }
-
-      // if (!/^[0-9]*$/gu.test(form.code)) {
-      //   setFocusNumber(6)
-      //   setErrorMessage(languageMode.codeError)
-      //   return
-      // }
-
       const data = {
         account: form.username,
         captchaCode: form.code,
@@ -156,6 +108,9 @@ export default React.memo(
       if (res.code === 0) {
         localStorage.token = res.data.token
         // localStorage.agileToken = res.data.token
+        console.log(res, '自己登录的token')
+
+        // return
         props.redirect()
 
         // navigate(`/ProjectManagement/Project`)
@@ -383,12 +338,7 @@ export default React.memo(
           </div>
 
           <div>
-            <p>
-              {languageMode.authorizedLogin}
-              {/* {languageMode.readed}
-            <a> {languageMode.agreement}</a> {languageMode.and}
-            <a> {languageMode.privacy}</a> {languageMode.getPermission} */}
-            </p>
+            <p>{languageMode.authorizedLogin}</p>
             <ul className={style.agree_ul}>
               <li> {languageMode.publicInformation}</li>
               <li> {languageMode.book}</li>
@@ -396,27 +346,6 @@ export default React.memo(
           </div>
         </div>
 
-        {/* <div className={style.language}>
-        <div className={style.lang}>
-          {
-            language[languageMode.id].name
-          }
-          {language.map((value, index) => (
-            <>
-              {index === 0 ? null : "  |  "}
-              <div
-                onClick={() => chooseLanguageMode(index)}
-                className={`${style.popups_item} ${
-                  languageMode.id == index ? style.popups_item_active : ""
-                }`}
-                key={index}
-              >
-                {value.name}
-              </div>
-            </>
-          ))}
-        </div>
-      </div> */}
         <div className={style.headWrap}>
           <div>
             <img src="/sso/logo.png" width={207} />

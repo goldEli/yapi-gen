@@ -34,6 +34,8 @@ const Page = () => {
   }, [])
   const redirect = async () => {
     const ticketResponse = await getTicket()
+    console.log(ticketResponse, 'ticket内容')
+    // return
     const { ticket } = ticketResponse.data
 
     const url = getQueryParam('redirect')
@@ -53,7 +55,7 @@ const Page = () => {
     } else {
       const urlVal = '/ProjectManagement/Project'
       location.href = location.href.includes('localhost')
-        ? `http://192.168.2.64:8000?ticket=${ticket}&language=${arr[lang]}`
+        ? `http://localhost:8000?ticket=${ticket}&language=${arr[lang]}`
         : `${urlVal}?ticket=${ticket}&language=${arr[lang]}`
     }
   }
@@ -64,13 +66,13 @@ const Page = () => {
     localStorage.clear()
     // check()
   }, [])
-  if (isAuthorized && target && target !== 'oa') {
-    return (
-      <div className={style.pageAuth}>
-        <AuthorizedLogin redirect={redirect} />
-      </div>
-    )
-  }
+  // if (isAuthorized && target && target !== 'oa') {
+  //   return (
+  //     <div className={style.pageAuth}>
+  //       <AuthorizedLogin redirect={redirect} />
+  //     </div>
+  //   )
+  // }
 
   const LeftWrap = styled.div`
     width: 100%;
