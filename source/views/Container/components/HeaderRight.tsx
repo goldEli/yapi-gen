@@ -270,16 +270,15 @@ const HeaderRight = () => {
   const toLoginOut = async () => {
     message.destroy()
     sessionStorage.removeItem('saveRouter')
-    try {
-      const res = await loginOut()
-      console.log(res)
-      if (res.code === 0) {
-        localStorage.clear()
-        navigate('/login')
-      }
-    } catch (error) {
-      //
+
+    const res = await loginOut()
+
+    if (res.code === 0) {
+      localStorage.clear()
+      navigate('/login')
     }
+
+    //
   }
 
   // 创建需求
