@@ -50,7 +50,7 @@ const DetailParent = (props: DetailParentProps) => {
   const onChange = async (newValue: any, type?: any) => {
     if (props.canOperationKeys['parent_id'] === 1 && !newValue) {
       getMessage({
-        msg: '父需求是必填项',
+        msg: t('other.is_required_parent'),
         type: 'warning',
       })
       setIsShowControl(false)
@@ -78,7 +78,7 @@ const DetailParent = (props: DetailParentProps) => {
   const onBlur = (val: any) => {
     if (props.canOperationKeys['parent_id'] === 1 && !val) {
       getMessage({
-        msg: '父需求是必填项',
+        msg: t('other.is_required_parent'),
         type: 'warning',
       })
       setIsShowControl(false)
@@ -125,7 +125,7 @@ const DetailParent = (props: DetailParentProps) => {
     <div style={{ width: '100%' }}>
       {isShowControl && (
         <CustomSelect
-          placeholder="请选择父需求"
+          placeholder={t('common.pleaseParentDemand')}
           style={{ width: '100%', minWidth: 192 }}
           showSearch
           showArrow

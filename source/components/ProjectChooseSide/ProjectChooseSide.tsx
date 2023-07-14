@@ -8,10 +8,10 @@ import { getProjectInfoOnly } from '@/services/project'
 import { useTranslation } from 'react-i18next'
 
 const ProjectChooseSide = (props: any) => {
+  const [t] = useTranslation()
   const [infoIcon, setInfoIcon] = useState(true)
   const [infoIcon2, setInfoIcon2] = useState(true)
   const [info, setInfo] = useState<any>()
-  const [t] = useTranslation()
 
   const init = async () => {
     if (props.cloneIds[0]) {
@@ -37,7 +37,7 @@ const ProjectChooseSide = (props: any) => {
         }}
         className="t1"
       >
-        {t('from')}【{info?.name}】 {t('import_workflow')}
+        {t('other.formImportWork', { name: info?.name })}
       </div>
       <div
         style={{
@@ -54,7 +54,7 @@ const ProjectChooseSide = (props: any) => {
             />
 
             <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
-              {t('workflow')}
+              {t('other.workFlow')}
             </span>
           </TitleStyle>
           <ScaleDiv hi={!infoIcon}>
@@ -93,7 +93,9 @@ const ProjectChooseSide = (props: any) => {
             />
 
             <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
-              {t('project_members')}（{info?.member_list.length}）
+              {t('project.projectMemberAll', {
+                count: info?.member_list.length,
+              })}
             </span>
           </TitleStyle>
           <ScaleDiv hi={!infoIcon2}>
@@ -114,7 +116,7 @@ const ProjectChooseSide = (props: any) => {
 
       <div style={{ zIndex: '900000' }} className="btn">
         <CommonButton type="primary" onClick={() => props.onClose()}>
-          {t('reselect')}
+          {t('newlyAdd.aginChoose')}
         </CommonButton>
       </div>
     </Side>

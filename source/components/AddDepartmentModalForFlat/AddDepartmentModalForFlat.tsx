@@ -709,7 +709,7 @@ const AddDepartmentModalForFlat = (props: ModalProps) => {
                       color: 'var(--primary-d1)',
                     }}
                   >
-                    返回
+                    {t('newlyAdd.back')}
                   </span>
                 </Breadcrumb.Item>
 

@@ -75,12 +75,18 @@ const Index = (props: any) => {
     {
       type: props.item.projectType === 1 ? 'demand' : 'timer',
       num: props.item.storyCount,
-      text: props.item.projectType === 1 ? '需求数' : '冲刺数',
+      text:
+        props.item.projectType === 1
+          ? t('other.demandNumber')
+          : t('other.springNumber'),
     },
     {
       type: props.item.projectType === 1 ? 'interation-2' : 'book-open',
       num: props.item.iterateCount,
-      text: props.item.projectType === 1 ? '迭代数' : '事务数',
+      text:
+        props.item.projectType === 1
+          ? t('other.iterationNumber')
+          : t('other.affairsNumber'),
     },
   ]
 
@@ -215,9 +221,9 @@ const Index = (props: any) => {
         >
           <CardRightFirst>
             {props.item.projectType === 1 ? (
-              <Tags type={1}> 迭代</Tags>
+              <Tags type={1}> {t('iteration')}</Tags>
             ) : (
-              <Tags type={2}> 冲刺</Tags>
+              <Tags type={2}> {t('sprint2')}</Tags>
             )}
 
             {props.item.name}

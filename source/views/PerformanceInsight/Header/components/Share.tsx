@@ -61,19 +61,33 @@ const Share = (props: PropsType) => {
       <FormWrap form={form} layout="vertical" style={{ padding: '0 24px' }}>
         <Form.Item
           name="name"
-          rules={[{ required: true, message: '请输入用户名或邮箱地址' }]}
+          rules={[
+            {
+              required: true,
+              message: t('please_enter_a_username_or_email_address'),
+            },
+          ]}
         >
-          <InputStyle placeholder="请输入用户名或邮箱地址" />
+          <InputStyle
+            placeholder={t('please_enter_a_username_or_email_address')}
+          />
         </Form.Item>
       </FormWrap>
 
-      <TitleMsg>接收人将会收到分享的站内消息</TitleMsg>
+      <TitleMsg>
+        {t('the_recipient_will_receive_the_shared_site_message')}
+      </TitleMsg>
       <Form.Item
         name="name"
-        rules={[{ required: true, message: '请输入用户名或邮箱地址' }]}
+        rules={[
+          {
+            required: true,
+            message: t('please_enter_a_username_or_email_address'),
+          },
+        ]}
       >
         <TextAreaStyle
-          placeholder="添加消息"
+          placeholder={t('add_message')}
           autoSize={{ minRows: 8, maxRows: 100 }}
         />
       </Form.Item>
@@ -87,7 +101,7 @@ const Share = (props: PropsType) => {
           <span
             style={{ color: 'var(--auxiliary-text-t2-d1)', cursor: 'pointer' }}
           >
-            复制链接
+            {t('copy_title_link')}
           </span>
         </Space>
         <Space size={16}>
@@ -95,7 +109,7 @@ const Share = (props: PropsType) => {
             {t('common.cancel')}
           </CommonButton>
           <CommonButton type="primary" onClick={() => onConfirm()}>
-            分享
+            {t('share')}
           </CommonButton>
         </Space>
       </Footer>

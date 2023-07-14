@@ -19,7 +19,6 @@ import { ContentItem, Label } from './style'
 import DrawerTagComponent from './DrawerTagComponent'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { getMessage } from '../Message'
-import styled from '@emotion/styled'
 
 interface DetailDemand {
   detail: any

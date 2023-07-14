@@ -5,7 +5,7 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { Divider, Skeleton } from 'antd'
 
@@ -35,6 +35,7 @@ import {
   recallSysNotice,
 } from '@/services/sysNotice'
 import NoData from '@/components/NoData'
+import { AnyIfEmpty } from 'react-redux'
 
 export const tableWrapP = css`
   display: flex;
@@ -84,10 +85,11 @@ const StaffManagement = () => {
   const { userInfo, isRefresh } = useSelector(store => store.user)
   const { menuPermission } = useSelector(store => store.user)
   const [isShow, setIsShow] = useState<boolean>(false)
-
+  const heightV = useRef<HTMLDivElement>(null)
   const [maxPage, setMaxPage] = useState<number>(1)
   const [page, setPage] = useState<number>(1)
   const [showId, setShowId] = useState('')
+  const [lheight, setLheight] = useState<any>()
   const [pagesize, setPagesize] = useState<number>(10)
   const [editId, setEditId] = useState<any>()
   const [keyword, setKeyword] = useState<string>()
@@ -201,7 +203,7 @@ const StaffManagement = () => {
           setHasMore(true)
           setPage(1)
           getMessage({
-            msg: t('succeed') as string,
+            msg: t('common.deleteSuccess') as string,
             type: 'success',
           })
           getStaffListData()
@@ -251,6 +253,10 @@ const StaffManagement = () => {
     setVisible(true)
     setEditId(datas.id)
   }
+  useEffect(() => {
+    setLheight(heightV?.current?.offsetHeight)
+    console.log(heightV?.current?.offsetHeight)
+  }, [isShow])
 
   return (
     <PermissionWrap
@@ -326,6 +332,7 @@ const StaffManagement = () => {
         </div>
       </div>
       <div
+        ref={heightV}
         style={{
           padding: '0 24px',
         }}
@@ -364,7 +371,7 @@ const StaffManagement = () => {
           next={() => fetchMoreData()}
           style={{
             overflow: 'auto',
-            height: 'calc(100vh - 320px)',
+            height: `calc(100vh - 220px - ${lheight}px)`,
             padding: '0px 24px',
 
             display: 'flex',

@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CustomSelect from '../CustomSelect'
 import { getMessage } from '../Message'
+import { useTranslation } from 'react-i18next'
 const Title = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
@@ -56,6 +57,7 @@ interface Props {
   refreshLeftList(): void
 }
 const Complete = (props: Props) => {
+  const [t] = useTranslation()
   const [value, setValue] = useState(1)
   const [searchParams] = useSearchParams()
   const [data, setData] = useState<any>([])
@@ -70,25 +72,25 @@ const Complete = (props: Props) => {
     switch (key) {
       case 'finished_story_count':
         return {
-          name: '完成需求',
+          name: t('other.finishDemand'),
           value: item?.finished_story_count,
           key: 'finished_story_count',
         }
       case 'finished_bug_count':
         return {
-          name: '完成缺陷',
+          name: t('other.finishFlaw'),
           value: item?.finished_bug_count,
           key: 'finished_bug_count',
         }
       case 'incomplete_story_count':
         return {
-          name: '剩余需求',
+          name: t('other.residueDemand'),
           value: item?.incomplete_story_count,
           key: 'incomplete_story_count',
         }
       case 'incomplete_bug_count':
         return {
-          name: '剩余缺陷',
+          name: t('other.residueFlaw'),
           value: item?.incomplete_bug_count,
           key: 'incomplete_bug_count',
         }
@@ -155,7 +157,7 @@ const Complete = (props: Props) => {
   const onConfirm = async () => {
     if (value === 1 && !checkId && num !== 0) {
       getMessage({
-        msg: '请选择迭代',
+        msg: t('other.please_iteration'),
         type: 'warning',
       })
       return
@@ -171,7 +173,7 @@ const Complete = (props: Props) => {
 
       if (result && result.code === 0) {
         getMessage({
-          msg: '已完成迭代',
+          msg: t('other.finish_iteration'),
           type: 'success',
         })
         if (props?.iterationId === iterateInfo.id) {
@@ -198,13 +200,13 @@ const Complete = (props: Props) => {
   return (
     <CommonModal
       width={528}
-      confirmText={'完成'}
+      confirmText={t('other.finish')}
       isVisible={props.isVisible}
       title={props.title}
       onClose={() => props.onClose()}
       onConfirm={onConfirm}
     >
-      <Title>本次迭代概况统计</Title>
+      <Title>{t('other.iterationAll')}</Title>
       <StatisticsWrap>
         {data.map((el: any) => (
           <MainWrap key={el.name}>
@@ -222,12 +224,12 @@ const Complete = (props: Props) => {
             <Space direction="vertical" size={24}>
               <div>
                 <Radio value={1}>
-                  <Name>将剩余需求和缺陷移入其他迭代中</Name>
+                  <Name>{t('other.removeResidueOther')}</Name>
                 </Radio>
                 {value === 1 && (
                   <div style={{ width: 480, marginTop: 8 }}>
                     <CustomSelect
-                      placeholder="请选择迭代"
+                      placeholder={t('other.please_iteration')}
                       onChange={(id: any) => {
                         setCheckId(id)
                       }}
@@ -238,7 +240,7 @@ const Complete = (props: Props) => {
                 )}
               </div>
               <Radio value={2}>
-                <Name>移除剩余需求和缺陷</Name>
+                <Name>{t('other.residueDemandOrFlaw')}</Name>
               </Radio>
             </Space>
           )}

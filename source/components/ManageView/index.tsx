@@ -84,7 +84,7 @@ const ManageView = (props: { projectId: number }) => {
       id: record.key,
       project_id: props.projectId,
     })
-    getMessage({ type: 'success', msg: '编辑成功！' })
+    getMessage({ type: 'success', msg: t('common.editSuccess') })
   }
 
   // 修改视图名称
@@ -95,7 +95,7 @@ const ManageView = (props: { projectId: number }) => {
       return
     }
     if (!value) {
-      getMessage({ type: 'warning', msg: '视图名称不能为空！' })
+      getMessage({ type: 'warning', msg: t('other.viewNotNull') })
       return
     }
     const newData = [...data]
@@ -110,7 +110,7 @@ const ManageView = (props: { projectId: number }) => {
       id: record.key,
       project_id: props.projectId,
     })
-    getMessage({ type: 'success', msg: '编辑成功！' })
+    getMessage({ type: 'success', msg: t('common.editSuccess') })
     setTimeout(() => {
       setOperationObj({})
     }, 200)
@@ -194,7 +194,7 @@ const ManageView = (props: { projectId: number }) => {
                     style={{ color: 'var(--primary-d2)', cursor: 'pointer' }}
                     onClick={() => (window.isCloseView = true)}
                   >
-                    完成
+                    {t('container.finish')}
                   </span>
                   <span
                     style={{ color: 'var(--primary-d2)', cursor: 'pointer' }}
@@ -202,7 +202,7 @@ const ManageView = (props: { projectId: number }) => {
                       window.isCloseView = true
                     }}
                   >
-                    取消
+                    {t('common.cancel')}
                   </span>
                 </Space>
               )}
@@ -263,7 +263,7 @@ const ManageView = (props: { projectId: number }) => {
     })
     setData(newData)
     onCloseDelete()
-    getMessage({ type: 'success', msg: '删除成功！' })
+    getMessage({ type: 'success', msg: t('common.deleteSuccess') })
   }
 
   useEffect(() => {

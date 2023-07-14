@@ -86,7 +86,7 @@ const Setting = () => {
       ).length,
     },
     {
-      name: 'Kanban配置',
+      name: t('other.kanbanConfig'),
       icon: 'settings',
       content: <KanBanSettings />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
@@ -94,7 +94,7 @@ const Setting = () => {
       ).length,
     },
     {
-      name: '首页配置',
+      name: t('other.homeConfig'),
       icon: 'settings',
       content: <HomeSettings />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>

@@ -66,7 +66,7 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
               return
             }
             if (columnList.find(item => item.name === inputValue)) {
-              getMessage({ msg: '列名称已存在', type: 'error' })
+              getMessage({ msg: t('other.nameExits'), type: 'error' })
               return
             }
             e.stopPropagation()

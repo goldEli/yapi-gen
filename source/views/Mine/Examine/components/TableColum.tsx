@@ -114,7 +114,7 @@ export const useDynamicColumns = (state: any) => {
                   marginLeft: '4px',
                 }}
               >
-                离职交接
+                {t('quitAndHandover')}
               </div>
             )}
           </div>

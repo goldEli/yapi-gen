@@ -137,19 +137,19 @@ const CreateActionBar = (props: Props) => {
             allowClear
             options={[
               {
-                label: '冲刺-企业项目 ',
+                label: t('other.affairs_public'),
                 value: 1,
               },
               {
-                label: ' 冲刺-团队项目 ',
+                label: t('other.affairs_team'),
                 value: 2,
               },
               {
-                label: '迭代-企业项目',
+                label: t('other.iteration_public'),
                 value: 3,
               },
               {
-                label: '迭代-团队项目',
+                label: t('other.iteration_team'),
                 value: 4,
               },
             ]}

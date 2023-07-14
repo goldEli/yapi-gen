@@ -237,11 +237,16 @@ const MainTable = (props: Props) => {
       width: 160,
     },
     {
-      title: '类型',
+      title: t('other.category'),
       dataIndex: 'project_type',
       width: 160,
       render: (text: number) => {
-        return <div>{text === 1 ? '迭代' : '冲刺'}项目</div>
+        return (
+          <div>
+            {text === 1 ? t('iteration') : t('sprint2')}
+            {t('other.project')}
+          </div>
+        )
       },
     },
     {
@@ -386,7 +391,13 @@ const MainTable = (props: Props) => {
       dataIndex: 'team_id',
       width: 160,
       render: (text: number, record: any) => {
-        return <span>{text === 0 ? '企业项目' : '团队项目'}</span>
+        return (
+          <span>
+            {text === 0
+              ? t('enterprise_project2')
+              : t('demandSettingSide.teamProject')}
+          </span>
+        )
       },
     },
     {

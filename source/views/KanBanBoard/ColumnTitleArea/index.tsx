@@ -7,6 +7,7 @@ import { useSelector } from '@store/index'
 import CommonIconFont from '@/components/CommonIconFont'
 import { getMessage } from '@/components/Message'
 import { Tooltip } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 interface ColumnTitleAreaProps {}
 const ColumnTitle = styled.span`
@@ -49,6 +50,7 @@ const MaxText = styled.div`
 `
 
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
+  const [t] = useTranslation()
   const { kanbanConfig, kanbanInfoByGroup } = useSelector(store => store.kanBan)
 
   const refBox = useRef<HTMLDivElement>(null)
@@ -73,7 +75,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
           return item.number > item.max_num
         })
       ) {
-        getMessage({ type: 'warning', msg: '卡片已超过该列最大数' })
+        getMessage({ type: 'warning', msg: t('other.cardMax') })
       }
     }, 500)
   }, [ColumnTitleRef.current])
@@ -107,8 +109,10 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
             </Tooltip>
             （{num}）
             {num > item.max_num && (
-              <Tooltip title="已超过最大数">
-                <MaxText>最大：{item.max_num}</MaxText>
+              <Tooltip title={t('other.maxEd')}>
+                <MaxText>
+                  {t('maximum')}：{item.max_num}
+                </MaxText>
               </Tooltip>
             )}
           </ColumnTitle>

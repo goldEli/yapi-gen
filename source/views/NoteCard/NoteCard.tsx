@@ -16,7 +16,6 @@ const ReadCard = (props: any) => {
   const [value, setValue] = useState<any>({})
   const init = async () => {
     const data = await getReadMyAllSysNoticeNumber(props.id)
-    console.log(data, 'fffff')
     setValue(data)
   }
 
@@ -332,8 +331,11 @@ const NoteCard = (props: any) => {
         }}
       >
         {values.send_time
-          ? `【${values.user?.name}】将于${values.send_time}发送`
-          : `【${values.user?.name}】发送于${values.created_at}`}
+          ? t('other.send', { name: values.user?.name, time: values.send_time })
+          : t('other.send1', {
+              name: values.user?.name,
+              time: values.created_at,
+            })}
       </div>
 
       <div
@@ -394,48 +396,6 @@ const NoteCard = (props: any) => {
           </div>
           {recipientArr(values.recipient)}
         </div>
-        {/* <div
-          style={{
-            height: '52px',
-            borderRadius: '0px 0px 0px 0px',
-            borderTop: '1px solid #ECEDEF',
-            marginTop: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '24px',
-          }}
-        >
-          <div
-            style={{
-              height: '20px',
-              fontSize: '12px',
-              color: '#646566',
-              lineHeight: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              borderRight: '1px solid #ECEDEF',
-              paddingRight: '24px',
-            }}
-          >
-            <CommonIconFont color="#646566" size={16} type="team-2" />
-            持续截止时间
-          </div>
-
-          <div
-            style={{
-              height: '20px',
-              fontSize: '12px',
-              color: '#646566',
-              lineHeight: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-          >
-            2023年4月17日12:00:19
-          </div>
-        </div> */}
       </div>
     </div>
   )

@@ -43,7 +43,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
       content: value.info,
       a_user_ids: getIdsForAt(value.info),
     })
-    getMessage({ type: 'success', msg: '评论成功' })
+    getMessage({ type: 'success', msg: t('conSuccess') })
     dispatch(
       getAffairsCommentList({
         projectId: id,

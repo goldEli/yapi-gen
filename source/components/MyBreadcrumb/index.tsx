@@ -2,13 +2,14 @@
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
 import { Breadcrumb } from 'antd'
-import { t } from 'i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
 import { getParamsData } from '@/tools'
+import { useTranslation } from 'react-i18next'
 const MyBreadcrumb = (props: any) => {
   const navigate = useNavigate()
   const location = useLocation()
+  const [t] = useTranslation()
   const projectInfo = useSelector(state => state.project.projectInfo)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -138,7 +139,7 @@ const MyBreadcrumb = (props: any) => {
       ) : null}
       {type === 5 ? (
         <Breadcrumb.Item>
-          <span>列与状态</span>
+          <span>{t('other.colOrStatus')}</span>
         </Breadcrumb.Item>
       ) : null}
     </Breadcrumb>

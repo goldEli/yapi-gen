@@ -207,7 +207,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     await form.validateFields()
     await updateAffairsCategory({
       projectId: id,
-      sprintId: affairsInfo.id || 0,
+      id: affairsInfo.id || 0,
       ...form.getFieldsValue(),
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
