@@ -606,7 +606,7 @@ export const updateAffairsCategory = async (
 ) => {
   await http.put<any>('updateAffairsCategory', {
     project_id: params.projectId,
-    story_id: params.sprintId,
+    story_id: params.id,
     category_id: params.categoryId,
     status_id: params.statusId,
   })

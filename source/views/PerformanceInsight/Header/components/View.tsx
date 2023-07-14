@@ -282,7 +282,7 @@ const View = (props: View) => {
       >
         <DivStyle onClick={() => setIsOpen(!isOpen)}>
           <div className="name">
-            {value?.type === 1 ? '视图' : ''} {value?.name}
+            {value?.type === 1 ? t('view') : ''} {value?.name}
           </div>
           <CommonIconFont
             type={isOpen ? 'up' : 'down'}

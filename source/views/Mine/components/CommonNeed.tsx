@@ -57,6 +57,8 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
 import { updateAffairsPriority, updateAffairsStatus } from '@/services/affairs'
 import { updateFlawPriority, updateFlawStatus } from '@/services/flaw'
+import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
+import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -110,9 +112,9 @@ const MoreWrap = (props: MoreWrapProps) => {
           title:
             item.project_type === 1
               ? item.is_bug === 1
-                ? '编辑缺陷'
-                : '编辑需求'
-              : '编辑事务',
+                ? t('editorialDefect')
+                : t('requirementsForEditing')
+              : t('editorial_affairs'),
         },
       }),
     )
@@ -126,6 +128,14 @@ const MoreWrap = (props: MoreWrapProps) => {
 
   // 点击创建子需求
   const onCreateChild = (item: any) => {
+    let type: any =
+      item.project_type === 1
+        ? 1
+        : item.is_bug === 1
+        ? 2
+        : item.work_type === 3
+        ? 8
+        : 6
     setIsMoreVisible(false)
     dispatch(
       setAddWorkItemModal({
@@ -133,37 +143,92 @@ const MoreWrap = (props: MoreWrapProps) => {
         params: {
           projectId: item.project_id,
           isChild: true,
+          isCreateAffairsChild: item.project_type === 2,
           parentId: item.id,
-          categoryId: item.categoryId,
-          type: item.work_type,
+          categoryId: item.category_id ?? item.categoryId,
+          type,
           title:
             item.project_type === 1
               ? item.is_bug === 1
-                ? '创建缺陷'
-                : '创建需求'
-              : '创建事务',
+                ? t('createSubtransaction')
+                : t('create_sub_requirements')
+              : t('createSubtransaction'),
         },
       }),
     )
   }
 
+  const onComputed = () => {
+    let isEdit: boolean
+    let isDelete: boolean
+    if (props?.record?.project_type === 1) {
+      isEdit = Object.values(props?.record?.project?.permissions).includes(
+        'b/story/update',
+      )
+      isDelete = Object.values(props?.record?.project?.permissions).includes(
+        'b/story/delete',
+      )
+    } else if (
+      props?.record?.project_type === 2 &&
+      props?.record?.is_bug === 1
+    ) {
+      isEdit = Object.values(props?.record?.project?.permissions).includes(
+        'b/flaw/update',
+      )
+      isDelete = Object.values(props?.record?.project?.permissions).includes(
+        'b/flaw/delete',
+      )
+    } else {
+      isEdit = Object.values(props?.record?.project?.permissions).includes(
+        'b/transaction/update',
+      )
+      isDelete = Object.values(props?.record?.project?.permissions).includes(
+        'b/transaction/delete',
+      )
+    }
+    return isEdit || isDelete
+  }
+
   return (
     <>
-      {/* {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && ( */}
-      <MoreDropdown
-        isMoreVisible={isMoreVisible}
-        onChangeVisible={setIsMoreVisible}
-        menu={
-          <DemandOperationDropdownMenu
-            onEditChange={onEditChange}
-            onDeleteChange={onDeleteChange}
-            onCreateChild={onCreateChild}
-            record={props?.record}
-            isAllProject={props.isAllProject}
-          />
-        }
-      />
-      {/* )} */}
+      {onComputed() && (
+        <MoreDropdown
+          isMoreVisible={isMoreVisible}
+          onChangeVisible={setIsMoreVisible}
+          menu={
+            <>
+              {props?.record?.project_type === 1 && (
+                <DemandOperationDropdownMenu
+                  onEditChange={onEditChange}
+                  onDeleteChange={onDeleteChange}
+                  onCreateChild={onCreateChild}
+                  record={props?.record}
+                  isAllProject={props.isAllProject}
+                />
+              )}
+              {props?.record?.project_type === 2 &&
+                props.record?.is_bug === 1 && (
+                  <DefectDropdownMenu
+                    onEditChange={onEditChange}
+                    onDeleteChange={onDeleteChange}
+                    record={props?.record}
+                    isAllProject={props.isAllProject}
+                  />
+                )}
+              {props?.record?.project_type === 2 &&
+                props.record?.is_bug !== 1 && (
+                  <SprintDropdownMenu
+                    onEditChange={onEditChange}
+                    onDeleteChange={onDeleteChange}
+                    onCreateChild={onCreateChild}
+                    record={props?.record}
+                    isAllProject={props.isAllProject}
+                  />
+                )}
+            </>
+          }
+        />
+      )}
     </>
   )
 }
@@ -567,7 +632,6 @@ const CommonNeed = (props: any) => {
       ]}
     />
   )
-  console.log(selectColum, '222很多很多')
 
   return (
     <>
@@ -577,7 +641,6 @@ const CommonNeed = (props: any) => {
           justifyContent: 'space-between',
           display: 'flex',
           borderBottom: '1px solid var(--neutral-n6-d1)',
-          // paddingLeft: '24px',
         }}
       >
         <div
@@ -592,7 +655,7 @@ const CommonNeed = (props: any) => {
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>
         <SearchWrap>
-          <div style={{ position: 'absolute', top: '0px', right: '24px' }}>
+          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
             <InputSearch
               placeholder={t('common.pleaseSearchDemand')}
               onChangeSearch={onPressEnter}
@@ -672,7 +735,7 @@ const CommonNeed = (props: any) => {
         <div style={{ padding: '0 24px' }}>
           <ResizeTable
             isSpinning={isSpin}
-            dataWrapNormalHeight="calc(100vh - 330px)"
+            dataWrapNormalHeight="calc(100vh - 342px)"
             col={selectColum}
             dataSource={listData?.list}
             noData={<NoData />}

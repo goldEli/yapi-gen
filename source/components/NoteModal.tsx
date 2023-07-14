@@ -51,27 +51,6 @@ const NoteModal = (props: any) => {
         return t('holiday_notification')
     }
   }
-  const onChange = (e: any) => {
-    setChecked(e.target.checked)
-    const arrs = localStorage.getItem('noteIds')
-
-    if (arrs) {
-      const arrs2 = JSON.parse(arrs)
-
-      if (arrs2.includes(props.data.id[0])) {
-        // 值存在于数组中，执行删除操作
-        const index = arrs2.indexOf(props.data.id[0])
-        arrs2.splice(index, 1)
-      } else {
-        // 值不存在于数组中，执行添加操作
-        arrs2.push(props.data.id[0])
-      }
-      localStorage.setItem('noteIds', JSON.stringify(arrs2))
-    } else {
-      localStorage.setItem('noteIds', JSON.stringify([props.data.id[0]]))
-    }
-    //
-  }
   return (
     <CommonModal
       isVisible={props.isVisible}
@@ -80,24 +59,7 @@ const NoteModal = (props: any) => {
       hasFooter={
         <Footer>
           <span></span>
-          {/* <Checkbox
-            style={{
-              opacity: 1,
-            }}
-            checked={checked}
-            onChange={onChange}
-          >
-            <span
-              style={{
-                height: '22px',
-                fontSize: '14px',
-                color: 'var(--neutral-n3)',
-                lineHeight: '22px',
-              }}
-            >
-              不再提醒
-            </span>
-          </Checkbox> */}
+
           <CommonButton
             type="primary"
             onClick={() => {
@@ -108,7 +70,7 @@ const NoteModal = (props: any) => {
               }
             }}
           >
-            我知道了
+            {t('other.iKnown')}
           </CommonButton>
         </Footer>
       }
@@ -133,7 +95,8 @@ const NoteModal = (props: any) => {
             lineHeight: '20px',
           }}
         >
-          发布于{props.data?.customData?.sendTime}
+          {t('other.release')}
+          {props.data?.customData?.sendTime}
         </div>
       </Header>
       <Content>

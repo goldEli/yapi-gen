@@ -22,6 +22,8 @@ import { uploadFileToKey } from '@/services/cos'
 import DemandTag from '../TagComponent/DemandTag'
 import { getParentList } from '@store/project/project.thunk'
 import CategoryDropdown from '../CategoryDropdown'
+import { updateFlawCategory } from '@/services/flaw'
+import { updateAffairsCategory } from '@/services/affairs'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -147,9 +149,23 @@ const CreateDemandLeft = (props: Props) => {
       name: i.name,
       color: i.color,
     }))
+    // 获取当前类别对应的work_type
+    const work_type = props.allCategoryList.filter(
+      (i: any) => i.id === values.category_id,
+    )[0].work_type
+    // 相应模块的方法
+    const methods = [
+      { type: [1], url: updateDemandCategory },
+      { type: [2], url: updateFlawCategory },
+      { type: [3, 4, 5, 6], url: updateAffairsCategory },
+    ]
+    // 最终的方法
+    const resultMethod = methods?.filter((i: any) =>
+      i.type.includes(work_type),
+    )[0]
     // 如果是编辑需求并且切换了新的需求类别
     if (params?.editId && JSON.stringify(changeCategoryFormData) !== '{}') {
-      await updateDemandCategory({
+      await resultMethod?.url({
         projectId: props.projectId,
         id: params?.editId,
         ...changeCategoryFormData,

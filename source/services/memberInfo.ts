@@ -77,12 +77,7 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
-              isEdit: Object.values(i.project.permissions).includes(
-                'b/story/update',
-              ),
-              isDelete: Object.values(i.project.permissions).includes(
-                'b/story/delete',
-              ),
+              permissions: i.project.permissions,
             },
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
@@ -128,12 +123,7 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
-              isEdit: Object.values(i.project.permissions).includes(
-                'b/story/update',
-              ),
-              isDelete: Object.values(i.project.permissions).includes(
-                'b/story/delete',
-              ),
+              permissions: i.project.permissions,
             },
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
@@ -211,12 +201,7 @@ export const getUserInfoCreateStory: any = async (params: any) => {
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
-            isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
-            ),
-            isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
-            ),
+            permissions: i.project.permissions,
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
@@ -293,12 +278,7 @@ export const getUserInfoFinishStory: any = async (params: any) => {
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
-            isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
-            ),
-            isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
-            ),
+            permissions: i.project.permissions,
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
@@ -422,12 +402,7 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
-              isEdit: Object.values(i.project.permissions).includes(
-                'b/story/update',
-              ),
-              isDelete: Object.values(i.project.permissions).includes(
-                'b/story/delete',
-              ),
+              permissions: i.project.permissions,
             },
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
@@ -473,12 +448,7 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
-              isEdit: Object.values(i.project.permissions).includes(
-                'b/story/update',
-              ),
-              isDelete: Object.values(i.project.permissions).includes(
-                'b/story/delete',
-              ),
+              permissions: i.project.permissions,
             },
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
@@ -556,12 +526,7 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
-            isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
-            ),
-            isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
-            ),
+            permissions: i.project.permissions,
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
@@ -638,12 +603,7 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
-            isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
-            ),
-            isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
-            ),
+            permissions: i.project.permissions,
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,

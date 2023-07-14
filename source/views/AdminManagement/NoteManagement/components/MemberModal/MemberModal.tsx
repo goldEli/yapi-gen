@@ -151,7 +151,7 @@ const MemberModal = (props: any) => {
   return (
     <CommonModal
       onClose={() => props.onCloseMember()}
-      title="查看成员"
+      title={t('performance.watchMenber')}
       width={832}
       hasFooter={<span></span>}
       isVisible={props.isVisible}

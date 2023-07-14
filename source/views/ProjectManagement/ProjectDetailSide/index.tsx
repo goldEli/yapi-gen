@@ -127,7 +127,7 @@ const ProjectDetailSide = () => {
         ).length > 0,
     },
     {
-      name: t('sprintProject.report'),
+      name: t('version2.report'),
       icon: 'pie-chart-02',
       path: '/Report/PerformanceInsight',
       isPermission: true,

@@ -87,19 +87,19 @@ const Project = (props: any) => {
         <ChartsItem2 />
         <ChartsItem>
           <span className={title1Css}>{data?.sprint_team_count ?? 0}</span>
-          <span className={title2Css}>冲刺-团队项目</span>
+          <span className={title2Css}>{t('other.affairs_team')}</span>
         </ChartsItem>
         <ChartsItem>
           <span className={title1Css}>{data?.sprint_company_count ?? 0}</span>
-          <span className={title2Css}>冲刺-企业项目</span>
+          <span className={title2Css}>{t('other.affairs_public')}</span>
         </ChartsItem>
         <ChartsItem>
           <span className={title1Css}>{data?.iterate_team_count ?? 0}</span>
-          <span className={title2Css}>迭代-团队项目</span>
+          <span className={title2Css}>{t('other.iteration_team')}</span>
         </ChartsItem>
         <ChartsItem>
           <span className={title1Css}>{data?.iterate_company_count ?? 0}</span>
-          <span className={title2Css}>迭代-企业项目</span>
+          <span className={title2Css}>{t('other.iteration_public')}</span>
         </ChartsItem>
         {/* </HomeWrap> */}
       </TextWrap>

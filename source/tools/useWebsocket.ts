@@ -136,8 +136,6 @@ const useWebsocket = () => {
   }, [ws])
 
   useEffect(() => {
-    console.log(readyState, 'socket状态')
-
     if (readyState.key === 3) {
       reconnect()
     }

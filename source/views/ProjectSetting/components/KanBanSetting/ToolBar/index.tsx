@@ -148,7 +148,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         </Btn>
       </Left>
       <Right>
-        <Tooltip title="设为默认">
+        <Tooltip title={t('other.setNormal')}>
           <div>
             <CommonButton
               onClick={() => {
@@ -167,7 +167,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             />
           </div>
         </Tooltip>
-        <Tooltip title="编辑">
+        <Tooltip title={t('common.edit')}>
           <div>
             <CommonButton
               onClick={() => {
@@ -184,7 +184,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             />
           </div>
         </Tooltip>
-        <Tooltip title="删除">
+        <Tooltip title={t('common.del')}>
           <div>
             <CommonButton
               onClick={() => {

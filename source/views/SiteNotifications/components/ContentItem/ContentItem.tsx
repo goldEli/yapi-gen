@@ -10,6 +10,7 @@ import dayjs from 'dayjs'
 import { useSelector } from '@store/index'
 import { css } from '@emotion/css'
 import { Editor } from '@xyfe/uikit'
+import { useTranslation } from 'react-i18next'
 
 const tmgCss = css`
   img {
@@ -19,6 +20,7 @@ const tmgCss = css`
 `
 
 const ContentItem = (props: any) => {
+  const [t] = useTranslation()
   const { send_user, msg_body, create_time, read, id, custom_data } = props.item
   const [choose, setChoose] = useState(false)
   const cha = useSelector(store => store.user.loginInfo.timeDiff)
@@ -33,16 +35,20 @@ const ContentItem = (props: any) => {
     milliseconds = nowNew - millisecond
     if (milliseconds <= 1000 * 60 * 1) {
       // 小于一分钟展示为刚刚
-      timeSpanStr = '刚刚'
+      timeSpanStr = t('other.gangang')
     } else if (1000 * 60 * 1 < milliseconds && milliseconds <= 1000 * 60 * 60) {
       // 大于一分钟小于一小时展示为分钟
-      timeSpanStr = `${Math.round(milliseconds / (1000 * 60))}分钟前`
+      timeSpanStr = t('other.minBefore', {
+        number: Math.round(milliseconds / (1000 * 60)),
+      })
     } else if (
       1000 * 60 * 60 * 1 < milliseconds &&
       milliseconds <= 1000 * 60 * 60 * 24
     ) {
       // 大于一小时小于一天展示为小时
-      timeSpanStr = `${Math.round(milliseconds / (1000 * 60 * 60))}小时前`
+      timeSpanStr = t('other.hourBefore', {
+        number: Math.round(milliseconds / (1000 * 60 * 60)),
+      })
     } else {
       timeSpanStr = dayjs.unix(time / 1000).format('YYYY-MM-DD HH:mm:ss')
     }
@@ -61,7 +67,7 @@ const ContentItem = (props: any) => {
       return str.concat(
         '',
         `<a  
-        href="${url}" target="_target">请前往查看</a>`,
+        href="${url}" target="_target">${t('other.checkTo')}</a>`,
       )
     }
 

@@ -455,7 +455,7 @@ const Iteration = (props: Props) => {
             {person.length > 0 ? (
               <Left>
                 <span>{t('project.member')}</span>
-                <Btn1>已选{person.length}人</Btn1>
+                <Btn1>{t('version2.checked', { count: person.length })}</Btn1>
               </Left>
             ) : (
               <span>{t('performance.all')}</span>

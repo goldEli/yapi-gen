@@ -65,14 +65,14 @@ const useCategory = () => {
   ) => {
     let categoryData: Model.Project.CategoryList[] = [
       {
-        name: '需求类型',
+        name: t('other.demandType'),
         visible: true,
         workType: 1,
         children: [],
         projectType: 'iteration',
       },
       {
-        name: '缺陷类型',
+        name: t('other.flawType'),
         visible: true,
         workType: 2,
         children: [],
