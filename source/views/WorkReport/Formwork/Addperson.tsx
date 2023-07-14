@@ -19,7 +19,6 @@ import AddDepartmentModalForFlat from '@/components/AddDepartmentModalForFlat/Ad
 import { useTranslation } from 'react-i18next'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 const AddPersonText = styled.div`
-  margin-left: 26px;
   display: flex;
   margin-bottom: 12px;
 `
@@ -35,9 +34,9 @@ const AddPersonTitleText = styled.div`
 `
 export const PersonContainer = styled.div`
   width: 100%;
-  padding: 0 24px;
+
   display: flex;
-  margin-bottom: 20px;
+
   flex-wrap: wrap;
 `
 export const Col = styled.div`

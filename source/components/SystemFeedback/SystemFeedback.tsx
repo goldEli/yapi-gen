@@ -205,7 +205,7 @@ const SystemFeedback = () => {
               </CommonButton>
 
               <CommonButton onClick={onConfirm} type="primary">
-                {t('newlyAdd.submit')}
+                {t('send')}
               </CommonButton>
             </div>
           </Footer>
