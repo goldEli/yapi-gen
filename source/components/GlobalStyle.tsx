@@ -863,6 +863,14 @@ const GlobalStyle = () => {
       box-shadow: none !important;
       outline: 0;
     }
+    ..ant-carousel .slick-slider {
+      height: 100%;
+    }
+    .ant-carousel,
+    .ant-carousel .slick-slider {
+      width: 100%;
+      height: 100%;
+    }
   `
   return <Global styles={globalCss} />
 }

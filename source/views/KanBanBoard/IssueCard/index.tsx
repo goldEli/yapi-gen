@@ -121,7 +121,7 @@ const IssueCard = (props: IssueCardProps) => {
               <ChildDemandTable
                 ref={childRef}
                 value={item.children_count}
-                row={{ id: item.id }}
+                row={{ id: item.id, project_type: item.project_type }}
               />
             </Sub>
             {item.story_config_priority.icon && (

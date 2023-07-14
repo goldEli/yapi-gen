@@ -93,6 +93,10 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
           >
             {dropCardListContent}
             {issueCardListContent}
+            {snapshot.isDraggingOver ? (
+              // 用空div占位来触发滚动条刷新页面
+              <div style={{ height: '100vh' }}></div>
+            ) : null}
             {provided.placeholder}
           </DropArea>
         )

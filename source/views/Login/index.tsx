@@ -4,13 +4,7 @@ import LoginForm from './LoginForm'
 import style from './index.module.css'
 import { reducer, installState } from './login'
 import AuthorizedLogin from './AuthorizedLogin'
-import {
-  getCaptcha,
-  toLogin,
-  checkToken,
-  getTicket,
-  checkSecret,
-} from './services'
+import { getTicket } from './services'
 import { getQueryParam } from './utils'
 import dayjs from 'dayjs'
 import GlobalStyle from '@/components/GlobalStyle'
@@ -34,6 +28,8 @@ const Page = () => {
   }, [])
   const redirect = async () => {
     const ticketResponse = await getTicket()
+    console.log(ticketResponse, 'ticket内容')
+    // return
     const { ticket } = ticketResponse.data
 
     const url = getQueryParam('redirect')
@@ -53,7 +49,7 @@ const Page = () => {
     } else {
       const urlVal = '/ProjectManagement/Project'
       location.href = location.href.includes('localhost')
-        ? `http://192.168.2.64:8000?ticket=${ticket}&language=${arr[lang]}`
+        ? `http://localhost:8000?ticket=${ticket}&language=${arr[lang]}`
         : `${urlVal}?ticket=${ticket}&language=${arr[lang]}`
     }
   }
@@ -64,13 +60,13 @@ const Page = () => {
     localStorage.clear()
     // check()
   }, [])
-  if (isAuthorized && target && target !== 'oa') {
-    return (
-      <div className={style.pageAuth}>
-        <AuthorizedLogin redirect={redirect} />
-      </div>
-    )
-  }
+  // if (isAuthorized && target && target !== 'oa') {
+  //   return (
+  //     <div className={style.pageAuth}>
+  //       <AuthorizedLogin redirect={redirect} />
+  //     </div>
+  //   )
+  // }
 
   const LeftWrap = styled.div`
     width: 100%;
@@ -78,7 +74,7 @@ const Page = () => {
     background: var(--primary-d1);
     border-radius: 12px 12px 12px 12px;
     position: relative;
-    overflow-x: hidden;
+    // overflow-x: hidden;
     &::-webkit-scrollbar {
       display: none;
     }
@@ -86,7 +82,7 @@ const Page = () => {
 
   const CarouselWrap = styled(Carousel)`
     width: 90% !important;
-    max-width: 700px !important;
+    max-width: 70vh !important;
     min-width: 400px !important;
     position: absolute !important;
     z-index: 99;
@@ -128,6 +124,7 @@ const Page = () => {
 
   const CarouselItem = styled.div`
     padding-top: 72px;
+    height: 100%;
   `
 
   const ItemTitle = styled.div`
@@ -150,7 +147,6 @@ const Page = () => {
   `
   const ItemImage = styled.img`
     width: 100%;
-    margin-bottom: 32px;
   `
   const TopBgImage = styled.img`
     position: absolute;
