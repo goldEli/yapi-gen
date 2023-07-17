@@ -157,8 +157,6 @@ const List = () => {
       }
       // 当前id等于请求时得id才执行赋值，避免未取消的请求造成数据错误
       if (res?.type === sessionStorage.getItem('reportListId')) {
-        console.log('zoulesda ')
-
         setIsSpinning(false)
         setListData(res.list)
         setTotal(res.pager.total)
