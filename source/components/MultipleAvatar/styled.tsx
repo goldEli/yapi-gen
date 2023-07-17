@@ -49,3 +49,42 @@ export const Text = styled.span`
   overflow: hidden;
   white-space: nowrap;
 `
+export const LabelContentWrap = styled.div`
+  position: relative;
+`
+export const DetailWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: -294px;
+  width: 283px;
+`
+export const HeaderWrap = styled.div`
+  height: 70px;
+  background: linear-gradient(225deg, #8dd2f6 0%, #6688ff 100%);
+  border-radius: 6px 6px 0px 0px;
+  padding: 12px;
+`
+export const Name = styled.div`
+  color: var(--neutral-white-d7);
+  font-size: 14px;
+  display: flex;
+  height: 22px;
+`
+export const BottomWrap = styled.div`
+  border-radius: 0px 0px 6px 6px;
+  background: var(--neutral-white-d2);
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  padding-bottom: 12px;
+`
+export const Email = styled.div`
+  color: var(--neutral-white-d7);
+  align-items: center;
+`
+export const ItemWrap = styled.div`
+  display: flex;
+  padding-top: 12px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--neutral-n1-d1);
+  padding: 12px 12px 0 12px;
+`

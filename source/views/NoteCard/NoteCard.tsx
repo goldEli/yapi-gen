@@ -10,7 +10,23 @@ import { getReadMyAllSysNoticeNumber } from '@/services/sysNotice'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import IconFont from '@/components/IconFont'
 import { ListItem } from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
+import styled from '@emotion/styled'
 
+const MyDiv = styled.div`
+  width: 480px;
+  height: 320px;
+  padding-bottom: 16px;
+  /* 修改滚动条轨道的背景色 */
+  & ::-webkit-scrollbar-thumb {
+    background-color: var(--neutral-n6-d1);
+    :hover {
+      background-color: var(--neutral-n5);
+    }
+  }
+  & ::-webkit-scrollbar {
+    width: 4px;
+  }
+`
 const ReadCard = (props: any) => {
   const [t] = useTranslation()
   const [value, setValue] = useState<any>({})
@@ -24,17 +40,12 @@ const ReadCard = (props: any) => {
   }, [props.id])
 
   return (
-    <div
-      style={{
-        width: '480px',
-        height: '330px',
-      }}
-    >
+    <MyDiv>
       <div
         style={{
-          height: '40px',
-          backgroundColor: '#ebeced',
-          lineHeight: '40px',
+          height: '56px',
+          // backgroundColor: '#ebeced',
+          lineHeight: '56px',
           color: 'black',
           fontFamily: 'SiYuanMedium',
           padding: ' 0px 20px',
@@ -62,21 +73,37 @@ const ReadCard = (props: any) => {
       >
         <div
           style={{
-            fontFamily: 'SiYuanMedium',
-            height: '290px',
+            height: '240px',
             flex: 1,
-            padding: '10px',
+            padding: ' 0px 4px 0px 24px',
             borderRight: '1px solid #ebeced',
           }}
         >
-          <div>
-            {value?.unread ?? 0}
-            {t('person_unread')}
+          <div
+            style={{
+              paddingLeft: '2px',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'SiYuanMedium',
+                fontSize: '14px',
+              }}
+            >
+              {value?.unread ?? 0}
+            </span>
+            <span
+              style={{
+                fontSize: '12px',
+              }}
+            >
+              {t('person_unread')}
+            </span>
           </div>
           <div
             style={{
               overflow: 'scroll',
-              height: '245px',
+              height: '215px',
             }}
           >
             {value?.list
@@ -87,7 +114,7 @@ const ReadCard = (props: any) => {
                 return (
                   <div
                     style={{
-                      margin: '4px 0 ',
+                      margin: '6px 0 ',
                     }}
                     key={el.user.id}
                   >
@@ -103,20 +130,37 @@ const ReadCard = (props: any) => {
         </div>
         <div
           style={{
-            fontFamily: 'SiYuanMedium',
-            height: '290px',
+            height: '240px',
             flex: 1,
-            padding: '10px',
+            padding: ' 0px 4px 0px 24px',
           }}
         >
-          <div>
-            {value?.read ?? 0}
-            {t('person_read')}
+          <div
+            style={{
+              paddingLeft: '2px',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'SiYuanMedium',
+                fontSize: '14px',
+              }}
+            >
+              {value?.read ?? 0}
+            </span>
+            <span
+              style={{
+                fontFamily: 'SiYuanMedium',
+                fontSize: '12px',
+              }}
+            >
+              {t('person_read')}
+            </span>
           </div>
           <div
             style={{
               overflow: 'scroll',
-              height: '245px',
+              height: '215px',
             }}
           >
             {value?.list
@@ -127,7 +171,7 @@ const ReadCard = (props: any) => {
                 return (
                   <div
                     style={{
-                      margin: '4px 0 ',
+                      margin: '6px 0 ',
                     }}
                     key={el.user.id}
                   >
@@ -142,7 +186,7 @@ const ReadCard = (props: any) => {
           </div>
         </div>
       </div>
-    </div>
+    </MyDiv>
   )
 }
 
@@ -271,29 +315,31 @@ const NoteCard = (props: any) => {
           </div>
         </Wrap1>
         <Wrap2>
-          <Popover
-            open={popoverVisible}
-            onOpenChange={setPopoverVisible}
-            placement="bottomLeft"
-            trigger="click"
-            destroyTooltipOnHide
-            getPopupContainer={n => (props.isShow ? n : document.body)}
-            content={
-              <ReadCard
-                onClose={() => setPopoverVisible(false)}
-                id={props.values.id}
-              />
-            }
-          >
-            <ColorBtn2>
-              <CommonIconFont type="display" />{' '}
-              <span>
-                {values.unread_count === 0
-                  ? t('all_read')
-                  : `${values.unread_count}${t('unread')}`}
-              </span>
-            </ColorBtn2>
-          </Popover>
+          {values.send_time ? null : (
+            <Popover
+              open={popoverVisible}
+              onOpenChange={setPopoverVisible}
+              placement="bottomLeft"
+              trigger="click"
+              destroyTooltipOnHide
+              getPopupContainer={n => (props.isShow ? n : document.body)}
+              content={
+                <ReadCard
+                  onClose={() => setPopoverVisible(false)}
+                  id={props.values.id}
+                />
+              }
+            >
+              <ColorBtn2>
+                <CommonIconFont type="display" />{' '}
+                <span>
+                  {values.unread_count === 0
+                    ? t('all_read')
+                    : `${values.unread_count}${t('unread')}`}
+                </span>
+              </ColorBtn2>
+            </Popover>
+          )}
 
           {(values.is_drew_back === 1 || values.is_draft === 1) && (
             <ColorBtn onClick={() => props.onDel(values.id)}>

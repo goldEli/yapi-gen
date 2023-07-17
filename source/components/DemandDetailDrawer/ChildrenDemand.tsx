@@ -8,10 +8,11 @@ import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
 import NoData from '../NoData'
 import StateTag from '../StateTag'
-import { PriorityWrap } from '../StyleCommon'
+import { LinkWrap, PriorityWrap } from '../StyleCommon'
 import { Label } from './style'
 import { setAddWorkItemModal } from '@store/project'
 import MultipleAvatar from '../MultipleAvatar'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface Props {
   detail?: any
@@ -21,24 +22,49 @@ interface Props {
 const ChildrenDemand = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { isUpdateAddWorkItem } = useSelector(store => store.project)
+  const { isUpdateAddWorkItem, projectInfo } = useSelector(
+    store => store.project,
+  )
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-
+  // 跳转详情页面
+  const onToDetail = (record: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        id: projectInfo?.id,
+        demandId: record?.id,
+        newOpen: true,
+      }),
+    )
+    const url = `ProjectManagement/DemandDetail?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+  }
   const columnsChild = [
     {
       title: t('common.demandName'),
       dataIndex: 'storyPrefixKey',
-      render: (text: string) => {
-        return <div>{text}</div>
+      render: (text: string, record: any) => {
+        return (
+          <LinkWrap>
+            <span className="content" onClick={() => onToDetail(record)}>
+              {text}
+            </span>
+          </LinkWrap>
+        )
       },
     },
     {
       title: t('common.demandName'),
       dataIndex: 'name',
       render: (text: string, record: any) => {
-        return <div>{record.name}</div>
+        return (
+          <LinkWrap>
+            <span className="content" onClick={() => onToDetail(record)}>
+              {text}
+            </span>
+          </LinkWrap>
+        )
       },
     },
     {

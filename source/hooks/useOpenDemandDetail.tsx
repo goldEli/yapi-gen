@@ -24,9 +24,16 @@ const useOpenDemandDetail = () => {
     id: any,
     type?: number,
   ) => {
+    console.log('进来了,', item, id, type)
+
     dispatch(setIsUpdateAddWorkItem(0))
     dispatch(setIsChangeDetailAffairs(false))
     // 弹窗预览
+    console.log(
+      userPreferenceConfig.previewModel,
+      'userPreferenceConfig.previewModel',
+    )
+
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
         case 1:

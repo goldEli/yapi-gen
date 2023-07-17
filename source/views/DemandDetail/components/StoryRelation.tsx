@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
-import { HiddenText } from '@/components/StyleCommon'
+import { HiddenText, LinkWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import MultipleAvatar from '@/components/MultipleAvatar'
@@ -37,6 +37,7 @@ import MoreDropdown from '@/components/MoreDropdown'
 import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import DragTable from '@/components/DragTable'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -314,6 +315,18 @@ const StoryRelation = (props: RelationStoriesProps) => {
       },
     })
   }
+  // 跳转详情页面
+  const onToDetail = (record: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        id: projectInfo?.id,
+        demandId: record?.id,
+        newOpen: true,
+      }),
+    )
+    const url = `ProjectManagement/DemandDetail?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+  }
 
   const columns = [
     {
@@ -512,7 +525,13 @@ const StoryRelation = (props: RelationStoriesProps) => {
       title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
       dataIndex: 'story_prefix_key',
       width: 140,
-      render: (text: string) => <div>{text}</div>,
+      render: (text: string, record: any) => (
+        <LinkWrap>
+          <span className="content" onClick={() => onToDetail(record)}>
+            {text}
+          </span>
+        </LinkWrap>
+      ),
     },
     {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
@@ -540,8 +559,11 @@ const StoryRelation = (props: RelationStoriesProps) => {
               alt=""
             />
           </Tooltip>
-
-          {record.name}
+          <LinkWrap>
+            <span className="content" onClick={() => onToDetail(record)}>
+              {record.name}
+            </span>
+          </LinkWrap>
         </div>
       ),
     },

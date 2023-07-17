@@ -1,6 +1,13 @@
 import { DragLine, MouseDom } from '@/components/StyleCommon'
+import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Progress, Space } from 'antd'
+
+export const haveAuto = css`
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  overflow-x: hidden;
+`
 
 export const Wrap = styled.div`
   height: 100%;
@@ -148,16 +155,65 @@ export const Label = styled.div`
   height: 32px;
   line-height: 32px;
 `
-export const TextWrap = styled.div`
-  color: var(--neutral-n1-d1);
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  img: {
-    max-width: 20%;
-  }
-`
+export const TextWrap = styled.div({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  marginLeft: 12,
+  '.textTop': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    position: 'relative',
+    '.name': {
+      color: 'black',
+      fontSize: 14,
+      marginRight: 12,
+    },
+    '.anticon': {
+      color: 'var(--neutral-n3)',
+      fontSize: 16,
+      position: 'absolute',
+      right: 0,
+      top: 3,
+      display: 'none',
+    },
+  },
+  '.common': {
+    fontSize: 12,
+    color: 'var(--neutral-n3)',
+    whiteSpace: 'nowrap',
+  },
+  '.statusText': {
+    width: 'calc(100% - 120px)',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+  '.content': {
+    color: 'var(--neutral-n2)',
+    fontSize: 12,
+    fontWeight: 400,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+
+    WebkitLineClamp: 4,
+    WebkitBoxOrient: 'vertical',
+    paddingRight: 30,
+    flexWrap: 'wrap',
+    wordBreak: 'break-all',
+    img: {
+      display: 'block',
+      height: 100,
+      objectFit: 'contain',
+    },
+    table: {
+      'td,th': {
+        height: '20px',
+        border: '1px solid black',
+      },
+    },
+  },
+})
 
 export const InfoItemWrap = styled.div`
   /* width: max-content; */
@@ -295,13 +351,21 @@ export const FlawInfoWrap = styled.div({
   paddingBottom: 24,
 })
 
-export const FlawInfoLeft = styled.div({
-  width: '80%',
-  height: '100%',
-  overflow: 'auto',
-  padding: '0 20px 0px 24px',
-  position: 'relative',
-})
+export const FlawInfoLeft = styled.div`
+  width: 80%;
+  height: 100%;
+  overflow: auto;
+  padding: 0 20px 0 24px;
+  position: relative;
+  .review {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    svg {
+      cursor: auto;
+    }
+  }
+`
 
 export const FlawInfoInfoItem = styled.div<{ activeState?: any }>({
   display: 'flex',
@@ -507,6 +571,9 @@ export const HovDiv = styled.div`
   visibility: hidden;
   position: absolute;
   right: 0px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `
 
 export const MyDiv = styled.div`

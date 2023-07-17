@@ -38,15 +38,6 @@ const Table = (props: any) => {
   }
   const columns: any = [
     {
-      title: t('nickname') as string,
-      dataIndex: 'nickname',
-      key: 'nickname',
-      width: 160,
-      render: (text: string, record: any) => (
-        <CommonUserAvatar avatar={record.avatar} size="small" name={text} />
-      ),
-    },
-    {
       title: (
         <NewSort
           nowKey={order.key}
@@ -54,12 +45,24 @@ const Table = (props: any) => {
           fixedKey="name"
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('project.realName')}
+          {t('common.name')}
         </NewSort>
       ),
       dataIndex: 'name',
       key: 'name',
-      width: 160,
+      width: 230,
+      render: (text: any, record: any) => {
+        return (
+          <div style={{ width: '100%', display: 'flex' }}>
+            <CommonUserAvatar
+              avatar={record.avatar}
+              size="small"
+              name={record.name}
+            />
+            {record.nickname && `(${record.nickname}) `}
+          </div>
+        )
+      },
     },
     {
       title: (
@@ -69,7 +72,6 @@ const Table = (props: any) => {
           order={order.value}
           fixedKey="gender"
         >
-          {' '}
           {t('project.gender0')}
         </NewSort>
       ),

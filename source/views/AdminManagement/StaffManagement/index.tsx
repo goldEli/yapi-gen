@@ -118,7 +118,7 @@ const StaffManagement = () => {
   const [isVisibleFieldsB, setIsVisibleFieldsB] = useState(false)
   const [isVisibleFieldsC, setIsVisibleFieldsC] = useState(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
-    'nickname',
+    'name',
     'department_name',
     'position_name',
     'gender',

@@ -65,6 +65,8 @@ import { setActiveCategory } from '@store/category'
 import CopyIcon from '@/components/CopyIcon'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { keys } from 'highcharts'
+import StatusExamine from '@/components/StatusExamine'
+import { cancelVerify } from '@/services/mine'
 interface IProps {}
 
 const SprintProjectDetail: React.FC<IProps> = props => {
@@ -470,6 +472,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     }
   }
 
+  // 取消审核
+  const onCancelExamine = async () => {
+    await cancelVerify(affairsInfo.id)
+    getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
+    dispatch(getAffairsInfo({ projectId: id, sprintId: affairsInfo.id }))
+  }
+
   useEffect(() => {
     // 获取项目信息中的需求类别
     const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
@@ -648,6 +657,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           </ButtonGroup>
         )}
       </DetailTop>
+      {affairsInfo?.isExamine && (
+        <div style={{ padding: '0 24px' }}>
+          <StatusExamine type={2} onCancel={onCancelExamine} />
+        </div>
+      )}
       <DetailTitle>
         <Tooltip title={affairsInfo?.categoryName}>
           <Popover

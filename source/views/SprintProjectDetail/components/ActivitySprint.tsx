@@ -45,6 +45,9 @@ const ActivitySprint = () => {
 
   // 编辑评论
   const onEditComment = async (value: string, commentId: number) => {
+    if (affairsInfo?.info === value || !value) {
+      return
+    }
     await updateAffairsComment({
       projectId: id,
       id: commentId,

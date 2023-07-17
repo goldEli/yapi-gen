@@ -824,6 +824,17 @@ export const deleteComment: any = async (params: any) => {
   })
 }
 
+// 编辑评论
+export const updateDemandComment = async (params: any) => {
+  await http.post<any>('updateDemandComment', {
+    project_id: params.projectId,
+    story_id: params.storyId,
+    content: params.content,
+    a_user_ids: params.ids,
+    id: params.id,
+  })
+}
+
 export const addDemand: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info || ''

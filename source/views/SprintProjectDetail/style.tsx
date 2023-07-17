@@ -157,6 +157,14 @@ export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
   height: ${props =>
     props.isScroll ? 'calc(100% - 100px)' : 'calc(100% - 40px)'};
   overflow: auto;
+  .review {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    svg {
+      cursor: auto;
+    }
+  }
 `
 
 export const InfoItem = styled.div`
@@ -339,6 +347,21 @@ export const BasicFooter = styled.div`
     span {
       font-size: 12px;
       color: var(--neutral-n3);
+    }
+  }
+`
+
+export const LinkWrap = styled.div`
+  display: flex;
+  align-items: center;
+  .content {
+    cursor: pointer;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    &:hover {
+      color: var(--primary-d2);
     }
   }
 `
