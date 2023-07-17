@@ -124,7 +124,7 @@ export const Tags = styled.span<{ type: number }>`
   background: ${props =>
     props.type === 1
       ? 'linear-gradient(225deg, #8dd2f6 0%, #6688ff 100%)'
-      : 'linear-gradient(225deg, #8DB1F6 0%, #7266FF 100%);'};
+      : 'linear-gradient(225deg, #FFA29C 0%, #F6856C 100%);'};
   border-radius: 4px 4px 4px 4px;
   font-size: 12px;
   padding: 2px 4px;
