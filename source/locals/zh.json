@@ -2163,5 +2163,5 @@
     "cancelTextFlaw": "该缺陷正在审核中，现在不能流转操作！",
     "cancelExamineSuccess": "取消审核成功"
   },
-  "yc": "移出项目成员"
+  "yc": "移除项目成员"
 }
