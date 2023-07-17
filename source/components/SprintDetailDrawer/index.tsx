@@ -83,6 +83,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '../CopyIcon'
 import DeleteConfirm from '../DeleteConfirm'
+import StatusExamine from '../StatusExamine'
+import { cancelVerify } from '@/services/mine'
 const SprintDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -530,6 +532,13 @@ const SprintDetailDrawer = () => {
     }
   }
 
+  // 取消审核
+  const onCancelExamine = async () => {
+    await cancelVerify(drawerInfo.id)
+    getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
+    onOperationUpdate(true)
+  }
+
   // 菜单
   const onGetMenu = () => {
     // 更多下拉
@@ -812,6 +821,11 @@ const SprintDetailDrawer = () => {
                   onOperationUpdate()
                 }}
               ></LongStroyBread>
+              {drawerInfo?.isExamine && (
+                <div style={{ marginBottom: 16 }}>
+                  <StatusExamine type={2} onCancel={onCancelExamine} />
+                </div>
+              )}
               <DemandName style={{ marginTop: 16 }}>
                 <span
                   className="name"

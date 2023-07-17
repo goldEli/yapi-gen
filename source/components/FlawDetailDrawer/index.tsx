@@ -70,6 +70,8 @@ import CommonComment from '../CommonComment'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '../CopyIcon'
+import StatusExamine from '../StatusExamine'
+import { cancelVerify } from '@/services/mine'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -529,6 +531,13 @@ const FlawDetailDrawer = () => {
     }
   }
 
+  // 取消审核
+  const onCancelExamine = async () => {
+    await cancelVerify(drawerInfo.id)
+    getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
+    onOperationUpdate(true)
+  }
+
   useEffect(() => {
     if (visible || params?.id) {
       dispatch(setFlawCommentList({ list: [] }))
@@ -704,6 +713,11 @@ const FlawDetailDrawer = () => {
                   </DrawerHeader>
                 ))}
               </ParentBox>
+              {drawerInfo?.isExamine && (
+                <div style={{ marginBottom: 16 }}>
+                  <StatusExamine type={3} onCancel={onCancelExamine} />
+                </div>
+              )}
               <DemandName>
                 {isCanEdit && (
                   <span
