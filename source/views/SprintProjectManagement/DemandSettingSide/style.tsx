@@ -226,6 +226,14 @@ export const AffairTypeHeader = styled.div`
   justify-content: space-between;
   padding: 0px 16px;
   margin-bottom: 4px;
+
+  > span {
+    padding: 2px;
+    &:hover {
+      background: var(--hover-d1);
+      border-radius: 4px;
+    }
+  }
 `
 export const AffairTypeList = styled.div`
   height: 30px;
