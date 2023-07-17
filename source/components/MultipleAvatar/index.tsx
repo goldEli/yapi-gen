@@ -14,7 +14,7 @@ import {
   Text,
   Email,
   Name,
-  FatherBox,
+  LabelContentWrap,
   ItemWrap,
   BottomWrap,
   DetailWrap,
@@ -80,7 +80,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       return {
         key: item.id + '' + idx,
         label: (
-          <FatherBox>
+          <LabelContentWrap>
             <ItemRow
               onMouseEnter={() => setActive(idx + 1)}
               onMouseLeave={() => setActive(0)}
@@ -169,7 +169,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
                 </BottomWrap>
               </DetailWrap>
             )}
-          </FatherBox>
+          </LabelContentWrap>
         ),
       }
     })

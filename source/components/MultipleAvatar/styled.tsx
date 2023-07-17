@@ -49,7 +49,7 @@ export const Text = styled.span`
   overflow: hidden;
   white-space: nowrap;
 `
-export const FatherBox = styled.div`
+export const LabelContentWrap = styled.div`
   position: relative;
 `
 export const DetailWrap = styled.div`
