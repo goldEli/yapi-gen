@@ -181,6 +181,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },

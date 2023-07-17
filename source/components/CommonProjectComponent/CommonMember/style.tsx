@@ -116,6 +116,7 @@ export const HeaderWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  fontFamily: 'SiYuanMedium',
 })
 
 export const Myd = styled.div<{ active: boolean }>`

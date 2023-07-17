@@ -91,9 +91,9 @@ const ToolBar: React.FC<ToolBarProps> = props => {
       <Left>
         <DeleteConfirmModal />
         <SelectOptions
-          onDel={key => {
-            onDel(parseInt(key, 10))
-          }}
+          // onDel={key => {
+          //   onDel(parseInt(key, 10))
+          // }}
           title={t('columns_and_status')}
           createViewTitle={t('create_columns_and_status')}
           options={handleViewList}
@@ -101,21 +101,21 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             dispatch(onChangeViewList(Number(key)))
           }}
           operation
-          onDefault={key => {
-            // return
-            dispatch(
-              setDefaultKanbanConfig({
-                id: Number(key),
-              }),
-            )
-          }}
-          onEdit={key => {
-            dispatch(
-              openSaveAsViewModel({
-                id: Number(key),
-              }),
-            )
-          }}
+          // onDefault={key => {
+          //   // return
+          //   dispatch(
+          //     setDefaultKanbanConfig({
+          //       id: Number(key),
+          //     }),
+          //   )
+          // }}
+          // onEdit={key => {
+          //   dispatch(
+          //     openSaveAsViewModel({
+          //       id: Number(key),
+          //     }),
+          //   )
+          // }}
           onCreateView={() => {
             dispatch(
               openSaveAsViewModel({
@@ -154,7 +154,6 @@ const ToolBar: React.FC<ToolBarProps> = props => {
               onClick={() => {
                 if (checkedViewListItem?.id) {
                   dispatch(setIsSettingDefault(true))
-
                   dispatch(
                     setDefaultKanbanConfig({
                       id: checkedViewListItem?.id,

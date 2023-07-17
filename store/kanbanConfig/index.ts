@@ -7,7 +7,7 @@ import {
   getKanbanConfigList,
   getKanbanConfigRemainingStatus,
 } from './kanbanConfig.thunk'
-import { store } from '..'
+import { store } from '@store/index'
 
 type SliceState = {
   projectId?: Model.KanbanConfig.Config['project_id']
@@ -291,6 +291,16 @@ const slice = createSlice({
     setIsSettingDefault(state, action: PayloadAction<boolean>) {
       state.isSettingDefault = action.payload
     },
+    setUnassignStatusList(
+      state,
+      action: PayloadAction<SliceState['unassignStatusList']>,
+    ) {
+      state.unassignStatusList = [
+        ...state.unassignStatusList,
+        ...action.payload,
+      ]
+      console.log(state.unassignStatusList)
+    },
   },
   extraReducers(builder) {
     builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
@@ -332,6 +342,7 @@ export const {
   clearMovingStatus,
   setColumnListBackup,
   setIsSettingDefault,
+  setUnassignStatusList,
 } = slice.actions
 
 export default KanbanConfig
