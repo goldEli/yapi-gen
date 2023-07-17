@@ -42,6 +42,7 @@ const urls = {
   getDemandChangeLog: '/b/story/getchangelog',
   getCommentList: '/b/story/comment/getlist',
   addComment: '/b/story/comment/save',
+  updateDemandComment: '/b/story/comment/update',
   deleteComment: '/b/story/comment/delete',
   addDemand: '/b/story/save',
   updateDemand: '/b/story/update',

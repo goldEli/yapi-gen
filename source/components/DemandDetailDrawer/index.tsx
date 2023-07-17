@@ -6,8 +6,11 @@
 // 需求详情弹窗预览模式
 
 import {
+  addComment,
+  deleteComment,
   deleteDemand,
   getDemandInfo,
+  updateDemandComment,
   updateDemandStatus,
   updateTableParams,
 } from '@/services/demand'
@@ -20,14 +23,14 @@ import {
   setIsUpdateAddWorkItem,
   setProjectInfo,
 } from '@store/project'
-import { Drawer, message, Popover, Skeleton, Space } from 'antd'
+import { Drawer, message, Popover, Skeleton, Space, Tooltip } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import CommonIconFont from '../CommonIconFont'
 import DeleteConfirm from '../DeleteConfirm'
 import StateTag from '../StateTag'
-import { DragLine, MouseDom } from '../StyleCommon'
+import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
 import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
 import DemandComment from './DemandComment'
@@ -47,6 +50,7 @@ import {
   SkeletonStatus,
   UpWrap,
   DownWrap,
+  DetailFooter,
 } from './style'
 import CommonButton from '../CommonButton'
 import {
@@ -56,11 +60,21 @@ import {
 import { getMessage } from '../Message'
 import { DemandOperationDropdownMenu } from '../TableDropdownMenu/DemandDropdownMenu'
 import DetailsSkeleton from '../DetailsSkeleton'
-import { copyLink } from '@/tools'
+import {
+  copyLink,
+  detailTimeFormat,
+  getIdsForAt,
+  getProjectIdByUrl,
+  removeNull,
+} from '@/tools'
 import CopyIcon from '../CopyIcon'
 import StoryRelation from '@/views/DemandDetail/components/StoryRelation'
 import StatusExamine from '../StatusExamine'
 import { cancelVerify } from '@/services/mine'
+import CommentFooter from '../CommonComment/CommentFooter'
+import CommonComment from '../CommonComment'
+import { setActiveCategory } from '@store/category'
+import { useNavigate } from 'react-router-dom'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -85,13 +99,16 @@ const DemandDetailDrawer = () => {
       dom: useRef<any>(null),
     },
   }
-  const { isDemandDetailDrawerVisible, demandDetailDrawerProps } = useSelector(
-    store => store.demand,
-  )
-  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+  const {
+    isDemandDetailDrawerVisible,
+    demandDetailDrawerProps,
+    demandCommentList,
+  } = useSelector(store => store.demand)
+  const { projectInfo, isUpdateAddWorkItem, projectInfoValues } = useSelector(
     store => store.project,
   )
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -389,11 +406,86 @@ const DemandDetailDrawer = () => {
     }
   }
 
+  //   跳转配置
+  const onToConfig = () => {
+    onCancel()
+    dispatch(setActiveCategory({}))
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 4,
+        id: getProjectIdByUrl(),
+        pageIdx: 'DemandDetail',
+        categoryItem: {
+          id: drawerInfo.category,
+          status: drawerInfo.category_status,
+        },
+      }),
+    )
+    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+  }
+
   // 取消审核
   const onCancelExamine = async () => {
     await cancelVerify(drawerInfo.id)
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
     onOperationUpdate(true)
+  }
+
+  // 提交评论
+  const onConfirmComment = async (value: { info: string }) => {
+    await addComment({
+      projectId: projectInfo.id,
+      demandId: drawerInfo.id,
+      content: value.info,
+      a_user_ids: getIdsForAt(value.info),
+    })
+    getMessage({ type: 'success', msg: t('project.replaySuccess') })
+    dispatch(
+      getDemandCommentList({
+        projectId: drawerInfo.projectId,
+        demandId: drawerInfo.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+    commentDom.current.cancel()
+  }
+
+  // 编辑评论
+  const onEditComment = async (value: string, commentId: number) => {
+    if (drawerInfo?.info === value || !value) {
+      return
+    }
+    await updateDemandComment({
+      projectId: projectInfo.id,
+      id: commentId,
+      storyId: drawerInfo.id,
+      content: value,
+      ids: getIdsForAt(value),
+    })
+    getMessage({ type: 'success', msg: t('common.editSuccess') })
+    dispatch(
+      getDemandCommentList({
+        projectId: drawerInfo.projectId,
+        demandId: drawerInfo.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+  }
+
+  // 删除评论确认
+  const onDeleteCommentConfirm = async (commentId: number) => {
+    await deleteComment({ projectId: projectInfo.id, id: commentId })
+    getMessage({ type: 'success', msg: t('common.deleteSuccess') })
+    dispatch(
+      getDemandCommentList({
+        projectId: drawerInfo.projectId,
+        demandId: drawerInfo.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   useEffect(() => {
@@ -631,11 +723,10 @@ const DemandDetailDrawer = () => {
                       />
                     )}
                     {i.key === 'demandComment' && (
-                      <DemandComment
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                        onRef={commentDom}
-                        isOpenInfo
+                      <CommonComment
+                        data={demandCommentList}
+                        onDeleteConfirm={onDeleteCommentConfirm}
+                        onEditComment={onEditComment}
                       />
                     )}
                   </CollapseItemContent>
@@ -643,7 +734,42 @@ const DemandDetailDrawer = () => {
               ))}
             </>
           )}
+          <DetailFooter>
+            <div className="textBox">
+              <div>
+                {t('created')}{' '}
+                {detailTimeFormat(drawerInfo.createdTime as string)}
+              </div>
+              <span>
+                {t('updated')}
+                {detailTimeFormat(drawerInfo.update_at as string)}
+              </span>
+            </div>
+            <Tooltip title={t('configurationFields')}>
+              <CloseWrap width={32} height={32} onClick={onToConfig}>
+                <CommonIconFont type="settings" />
+              </CloseWrap>
+            </Tooltip>
+          </DetailFooter>
         </Content>
+        <CommentFooter
+          onRef={commentDom}
+          placeholder={t('postComment')}
+          personList={removeNull(projectInfoValues, 'user_name')?.map(
+            (k: any) => ({
+              label: k.content,
+              id: k.id,
+            }),
+          )}
+          onConfirm={onConfirmComment}
+          style={{
+            padding: '24px 0 24px 24px',
+            width: 'calc(100% - 24px)',
+            height: 80,
+          }}
+          maxHeight="60vh"
+          hasAvatar
+        />
       </Drawer>
     </>
   )

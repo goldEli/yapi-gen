@@ -129,7 +129,7 @@ const FlawInfo = () => {
           <BasicFlaw detail={flawInfo} onUpdate={onUpdate} isOpen isInfoPage />
         )}
         {activeTabs === 2 && (
-          <FlawComment isOpen={activeTabs === 2} detail={flawInfo} />
+          <FlawComment isOpen={activeTabs === 2} detail={flawInfo} isOpenInfo />
         )}
         <BasicFooter>
           <div className="textBox">
