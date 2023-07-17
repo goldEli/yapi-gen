@@ -4,9 +4,14 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable react/no-danger */
 /* eslint-disable no-undefined */
-import { addComment, deleteComment, getCommentList } from '@/services/demand'
+import {
+  addComment,
+  deleteComment,
+  getCommentList,
+  updateDemandComment,
+} from '@/services/demand'
 import { delCommonAt } from '@/services/user'
-import { bytesToSize } from '@/tools'
+import { bytesToSize, getIdsForAt } from '@/tools'
 import { OmitText } from '@star-yun/ui'
 import { useSelector } from '@store/index'
 import { Editor } from '@xyfe/uikit'
@@ -20,7 +25,7 @@ import EditComment from '../EditComment'
 import IconFont from '../IconFont'
 import { getMessage } from '../Message'
 import NoData from '../NoData'
-import { HiddenText } from '../StyleCommon'
+import { CloseWrap, HiddenText } from '../StyleCommon'
 import { fileIconMap } from '../UploadAttach'
 import {
   BlueCss,
@@ -38,6 +43,7 @@ import {
   haveAuto,
 } from './style'
 import useMkeyDown from '@/hooks/useMkeyDown'
+import CommentEditor from '../CommentEditor'
 
 interface Props {
   detail?: any
@@ -175,6 +181,32 @@ const DemandComment = (props: Props) => {
     }
   }
 
+  // 点击编辑评论按钮
+  const onEdit = (item: any) => {
+    const result =
+      dataList?.list.map((i: any) => ({
+        ...i,
+        isEdit: i.id === item.id ? true : false,
+      })) || []
+    setDataList({ list: result })
+  }
+
+  // 编辑评论
+  const onEditComment = async (value: string, commentId: number) => {
+    if (props.detail?.info === value || !value) {
+      return
+    }
+    await updateDemandComment({
+      projectId: projectInfo.id,
+      id: commentId,
+      storyId: props.detail.id,
+      content: value,
+      ids: getIdsForAt(value),
+    })
+    getMessage({ type: 'success', msg: t('common.editSuccess') })
+    getList()
+  }
+
   useEffect(() => {
     if (props.isOpen) {
       getList()
@@ -237,11 +269,25 @@ const DemandComment = (props: Props) => {
                   <TextWrap>
                     <MyDiv>
                       <HovDiv>
+                        {isComment &&
+                        userInfo?.id === item.userId &&
+                        !item.isEdit ? (
+                          <CloseWrap
+                            width={24}
+                            height={24}
+                            onClick={() => onEdit(item)}
+                          >
+                            <IconFont type="edit" style={{ fontSize: 16 }} />
+                          </CloseWrap>
+                        ) : null}
                         {isComment && userInfo?.id === item.userId ? (
-                          <IconFont
-                            type="close"
+                          <CloseWrap
+                            width={24}
+                            height={24}
                             onClick={() => onDeleteComment(item)}
-                          />
+                          >
+                            <IconFont type="delete" style={{ fontSize: 16 }} />
+                          </CloseWrap>
                         ) : null}
                       </HovDiv>
 
@@ -280,14 +326,9 @@ const DemandComment = (props: Props) => {
                     <div className="common" style={{ paddingRight: 30 }}>
                       {item.createdTime}
                     </div>
-                    <Editor
-                      value={
-                        /(?<start>^<p>*)|(?<end><\p>*$)/g.test(item.content)
-                          ? item.content
-                          : `<p>${item.content}</p>`
-                      }
-                      getSuggestions={() => []}
-                      readonly
+                    <CommentEditor
+                      item={item}
+                      onEditComment={value => onEditComment(value, item.id)}
                     />
                     {item.attachment?.length > 0 && (
                       <div
