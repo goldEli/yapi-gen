@@ -65,17 +65,17 @@ export const getReportDetailById: any = async (params: any) => {
 
 export const getRepSentList: any = async (params: any) => {
   const response = await http.get('repSentList', params)
-  return response.data
+  return { ...response.data, type: '1' }
 }
 
 export const getRepReceivedList: any = async (params: any) => {
   const response = await http.get('repReceivedList', params)
-  return response.data
+  return { ...response.data, type: '2' }
 }
 
 export const getRepPublicList: any = async (params: any) => {
   const response = await http.get('repPublicList', params)
-  return response.data
+  return { ...response.data, type: '3' }
 }
 
 export const supplyReport: any = async (params: any) => {
