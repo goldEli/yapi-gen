@@ -37,15 +37,6 @@ const Table = (props: any) => {
     props.onUpdateOrderKey(key, val === 2 ? 'desc' : 'asc')
   }
   const columns: any = [
-    // {
-    //   title: t('nickname') as string,
-    //   dataIndex: 'nickname',
-    //   key: 'nickname',
-    //   width: 160,
-    //   render: (text: string, record: any) => (
-    //     <CommonUserAvatar avatar={record.avatar} size="small" name={text} />
-    //   ),
-    // },
     {
       title: (
         <NewSort
@@ -54,12 +45,12 @@ const Table = (props: any) => {
           fixedKey="name"
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          姓名
+          {t('common.name')}
         </NewSort>
       ),
       dataIndex: 'name',
       key: 'name',
-      width: 180,
+      width: 230,
       render: (text: any, record: any) => {
         return (
           <div style={{ width: '100%', display: 'flex' }}>

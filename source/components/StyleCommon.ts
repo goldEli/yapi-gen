@@ -1007,7 +1007,19 @@ const LinkWrap = styled.div`
   }
 `
 
+const Tag = styled.div`
+  height: 20px;
+  background: rgba(161, 118, 251, 0.1);
+  border-radius: 4px;
+  color: #7641e8;
+  text-align: center;
+  line-height: 20px;
+  padding: 0 8px;
+  margin-left: 8px;
+  font-size: 12px;
+`
 export {
+  Tag,
   ChartsItem1,
   ChartsItem2,
   title1Css1,

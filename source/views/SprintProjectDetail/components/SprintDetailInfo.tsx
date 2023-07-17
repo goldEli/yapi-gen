@@ -22,6 +22,7 @@ import {
 import { Tabs, TabsProps } from 'antd'
 import AffairsDetail from './AffairsDetail'
 import { t } from 'i18next'
+import { CommonIconFont } from '@/components/CommonIconFont'
 
 const SprintDetailInfo = (props: { onRef: any }) => {
   const dispatch = useDispatch()
@@ -153,6 +154,11 @@ const SprintDetailInfo = (props: { onRef: any }) => {
         )}
         <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
         <ActivitySprint />
+        {affairsInfo?.isExamine && (
+          <div className="review">
+            <CommonIconFont type="review" size={64} />
+          </div>
+        )}
       </DetailInfoWrap>
       <CommentFooter
         onRef={commentDom}

@@ -97,6 +97,11 @@ const FlawInfo = () => {
             <FlawStatus pid={id} sid={flawInfo.id} />
           </FlawInfoInfoItem>
         )}
+        {flawInfo?.isExamine && (
+          <div className="review">
+            <CommonIconFont type="review" size={64} />
+          </div>
+        )}
       </FlawInfoLeft>
       <WrapRight
         ref={basicInfoDom}
@@ -124,7 +129,7 @@ const FlawInfo = () => {
           <BasicFlaw detail={flawInfo} onUpdate={onUpdate} isOpen isInfoPage />
         )}
         {activeTabs === 2 && (
-          <FlawComment isOpen={activeTabs === 2} detail={flawInfo} />
+          <FlawComment isOpen={activeTabs === 2} detail={flawInfo} isOpenInfo />
         )}
         <BasicFooter>
           <div className="textBox">

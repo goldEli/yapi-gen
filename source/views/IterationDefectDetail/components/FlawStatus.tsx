@@ -19,6 +19,8 @@ import { getMessage } from '@/components/Message'
 import { getShapeFlawLeft, updateFlawStatus } from '@/services/flaw'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import { setIsUpdateStatus } from '@store/project'
+import StatusExamine from '@/components/StatusExamine'
+import { cancelVerify } from '@/services/mine'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -85,6 +87,13 @@ const FlawStatus = (props: any) => {
     }
   }
 
+  // 取消审核
+  const onCancelExamine = async () => {
+    await cancelVerify(flawInfo.id)
+    getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
+    dispatch(getFlawInfo({ projectId: props.pid, id: props.sid }))
+  }
+
   useEffect(() => {
     init()
   }, [])
@@ -142,36 +151,7 @@ const FlawStatus = (props: any) => {
 
       <div>
         {flawInfo?.isExamine && (
-          <div
-            style={{
-              backgroundColor: 'var(--neutral-n6-d1)',
-              width: '100%',
-              height: '54px',
-              zIndex: 1,
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              marginTop: '10px',
-              paddingLeft: '18px',
-            }}
-          >
-            <IconFont
-              type="Warning"
-              style={{
-                fontSize: 17,
-                color: '#FA9746',
-              }}
-            />
-            <span
-              style={{
-                color: 'var(--neutral-n3)',
-                fontSize: '14px',
-                marginLeft: '10px',
-              }}
-            >
-              {t('newlyAdd.underReview')}
-            </span>
-          </div>
+          <StatusExamine type={3} onCancel={onCancelExamine} />
         )}
         {rows && !isUpdateStatus && !flawInfo?.isExamine && (
           <ShapeContentForDetail

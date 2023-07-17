@@ -1,19 +1,11 @@
 // 公司成员列表
 
 /* eslint-disable react/jsx-handler-names */
-import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
-import { OmitText } from '@star-yun/ui'
-import { HiddenText } from '@/components/StyleCommon'
+import { Tag } from '@/components/StyleCommon'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-
-const flexCss = css`
-  display: flex;
-  align-items: center;
-`
-
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const NewSort = (props: any) => {
@@ -30,55 +22,25 @@ export const useDynamicColumns = (state: any) => {
   }
   return [
     {
-      width: 140,
-      title: t('common.nickname'),
-      dataIndex: 'nickname',
-      key: 'nickname',
-      render: (text: any, record: any) => {
-        return (
-          <div className={flexCss}>
-            {record.avatar ? (
-              <img
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  marginRight: 8,
-                }}
-                src={record.avatar}
-                alt=""
-              />
-            ) : (
-              <span
-                style={{
-                  marginRight: 8,
-                }}
-              >
-                <CommonUserAvatar size="small" />
-              </span>
-            )}
-            <HiddenText>
-              <OmitText
-                width={100}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
-              >
-                {text}
-              </OmitText>
-            </HiddenText>
-          </div>
-        )
-      },
-    },
-    {
-      width: 200,
-      title: <NewSort fixedKey="name">{t('project.realName')}</NewSort>,
+      title: <NewSort fixedKey="name">{t('common.name')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      render: (text: string | number) => {
-        return <div>{text}</div>
+      width: 260,
+      render: (text: any, record: any) => {
+        console.log(record, 'record')
+        console.log(record.handover_status)
+        return (
+          <div style={{ width: '100%', display: 'flex' }}>
+            <CommonUserAvatar
+              avatar={record.avatar}
+              size="small"
+              name={record.name}
+            />
+            {record.handover_status}
+            {record.nickname && `(${record.nickname}) `}
+            {record.handover_status === 2 && <Tag>{t('quitAndHandover')}</Tag>}
+          </div>
+        )
       },
     },
     {
