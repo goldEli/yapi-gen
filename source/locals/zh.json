@@ -2154,7 +2154,8 @@
     "pleaseText": "定时发送时间大于失效时间",
     "pleaseObj": "请选择接收对象",
     "nameExits": "列名称已存在",
-    "setNormal": "设为默认"
+    "setNormal": "设为默认",
+    "setTime": "未设置到期时间"
   },
   "yc": "移除项目成员"
 }

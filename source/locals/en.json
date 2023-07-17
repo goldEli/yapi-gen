@@ -2168,7 +2168,8 @@
     "pleaseText": "Scheduled sending time is later than the expiration time",
     "pleaseObj": "Please select a recipient",
     "nameExits": "Column name already exists",
-    "setNormal": "Set as default"
+    "setNormal": "Set as default",
+    "setTime": "No expiration time set"
   },
   "yc": "Remove project members"
 }
