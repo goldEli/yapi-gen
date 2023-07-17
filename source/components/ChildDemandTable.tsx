@@ -26,11 +26,14 @@ import NoData from '@/components/NoData'
 import IconFont from './IconFont'
 import { useSelector } from '@store/index'
 import { getDemandList } from '@/services/demand'
+import { getChildAffairsList } from '@/services/affairs'
+import { getChildFlawList } from '@/services/flaw'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import StateTag from './StateTag'
 import TableColorText from './TableColorText'
 import MultipleAvatar from './MultipleAvatar'
 import React from 'react'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -68,16 +71,39 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
   })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [openDemandDetail] = useOpenDemandDetail()
+  const { projectInfo } = useSelector(store => store.project)
   let isCanEdit: any
 
   const getList = async (item: any) => {
-    const result = await getDemandList({
-      projectId,
-      all: true,
-      parentId: props.row.id,
-      order: item.value,
-      orderKey: item.key,
-    })
+    // 需要区分是那种类型的子需求
+    let result = null
+    if (projectInfo.projectType === 2) {
+      const temp = await getChildAffairsList({
+        projectId,
+        all: true,
+        parentId: props.row.id,
+        order: item.value,
+        orderKey: item.key,
+      })
+      result = temp?.list
+    } else if (location.href?.includes('Demand')) {
+      result = await getDemandList({
+        projectId,
+        all: true,
+        parentId: props.row.id,
+        order: item.value,
+        orderKey: item.key,
+      })
+    } else if (location.href?.includes('Defect')) {
+      const temp = await getChildFlawList({
+        projectId,
+        all: true,
+        parentId: props.row.id,
+        order: item.value,
+        orderKey: item.key,
+      })
+      result = temp?.list
+    }
     setDataList({ list: result })
   }
 
@@ -89,6 +115,42 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     getList({ value: val === 2 ? 'desc' : 'asc', key })
+  }
+
+  // 跳转详情页面
+  const onToDetail = (record: any) => {
+    let params = null
+    let url = ''
+    if (projectInfo?.projectType === 2) {
+      params = encryptPhp(
+        JSON.stringify({
+          id: projectId,
+          sprintId: record?.id,
+          newOpen: true,
+        }),
+      )
+      url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    } else if (projectInfo?.projectType === 1 && record.is_bug === 1) {
+      params = encryptPhp(
+        JSON.stringify({
+          id: projectId,
+          flawId: record?.id,
+          newOpen: true,
+        }),
+      )
+      url = `ProjectManagement/DefectDetail?data=${params}`
+    } else if (projectInfo?.projectType === 1 && record.is_bug !== 1) {
+      params = encryptPhp(
+        JSON.stringify({
+          id: projectId,
+          demandId: record?.id,
+          newOpen: true,
+        }),
+      )
+      url = `ProjectManagement/DemandDetail?data=${params}`
+    }
+
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
   const columnsChild = [
@@ -111,6 +173,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
             <ClickWrap
               className="canClickDetail"
               isClose={record.status?.is_end === 1}
+              onClick={() => onToDetail(record)}
             >
               {text}
             </ClickWrap>
