@@ -1,14 +1,14 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Dropdown } from 'antd'
+import { Dropdown, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import * as services from '@/services'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from '@store/index'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { t } from 'i18next'
 import { changeCreateVisible } from '@store/create-propject'
+import { useTranslation } from 'react-i18next'
 
 interface PropsType {
   text: string
@@ -54,7 +54,7 @@ const Title = styled.div`
 `
 const Row = styled.div`
   width: 100%;
-  padding: 0 24px;
+  padding: 0 16px;
   height: 52px;
   display: flex;
   align-items: center;
@@ -72,18 +72,35 @@ const ItemRow = styled(Row)`
   }
 `
 const ItemTitle = styled.div`
-  width: 100%;
+  width: 193px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 14px;
   font-weight: 400;
   margin-left: 12px;
   color: var(--neutral-n1-d1);
 `
+const ItemTag = styled.div<{ isSprint: boolean }>`
+  height: 16px;
+  padding: 0 4px;
+  font-size: 12px;
+  background: ${props =>
+    props.isSprint
+      ? 'linear-gradient(225deg, #8db1f6 0%, #7266ff 100%)'
+      : 'linear-gradient(225deg, #8DD2F6 0%, #6688FF 100%)'};
+  border-radius: 4px 4px 4px 4px;
+  color: var(--neutral-white-d7);
+  line-height: 16px;
+`
+
 const Border = styled.div`
   margin: 0 16px;
   text-align: center;
   border-bottom: 1px solid var(--neutral-n6-d2);
 `
 const ItemDropdown = (props: PropsType) => {
+  const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
   const navigate = useNavigate()
   const [itemArr, setItemArr] = useState([])
@@ -128,12 +145,27 @@ const ItemDropdown = (props: PropsType) => {
     )
   }
   const itmeMain = (item: any) => {
-    return item.map((el: any) => (
-      <ItemRow key={el.id} onClick={() => onRoute(el)}>
-        <img src={el.cover} />
-        <ItemTitle>{el.name}</ItemTitle>
-      </ItemRow>
-    ))
+    return item.map((el: any) => {
+      return el.name?.length > 13 ? (
+        <Tooltip placement="right" key={el.id} title={el.name}>
+          <ItemRow onClick={() => onRoute(el)}>
+            <img src={el.cover} />
+            <ItemTitle>{el.name}</ItemTitle>
+            <ItemTag isSprint={el.projectType === 2}>
+              {el.projectType === 1 ? t('iteration') : t('sprint2')}
+            </ItemTag>
+          </ItemRow>
+        </Tooltip>
+      ) : (
+        <ItemRow key={el.id} onClick={() => onRoute(el)}>
+          <img src={el.cover} />
+          <ItemTitle>{el.name}</ItemTitle>
+          <ItemTag isSprint={el.projectType === 2}>
+            {el.projectType === 1 ? t('iteration') : t('sprint2')}
+          </ItemTag>
+        </ItemRow>
+      )
+    })
   }
   const dropdownRender = () => {
     return (

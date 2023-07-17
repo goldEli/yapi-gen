@@ -59,6 +59,8 @@ import DetailsSkeleton from '../DetailsSkeleton'
 import { copyLink } from '@/tools'
 import CopyIcon from '../CopyIcon'
 import StoryRelation from '@/views/DemandDetail/components/StoryRelation'
+import StatusExamine from '../StatusExamine'
+import { cancelVerify } from '@/services/mine'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -387,6 +389,13 @@ const DemandDetailDrawer = () => {
     }
   }
 
+  // 取消审核
+  const onCancelExamine = async () => {
+    await cancelVerify(drawerInfo.id)
+    getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
+    onOperationUpdate(true)
+  }
+
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
@@ -561,6 +570,11 @@ const DemandDetailDrawer = () => {
                   </DrawerHeader>
                 ))}
               </ParentBox>
+              {drawerInfo?.isExamine && (
+                <div style={{ marginBottom: 16 }}>
+                  <StatusExamine type={1} onCancel={onCancelExamine} />
+                </div>
+              )}
               <DemandName>
                 {isCanEdit && (
                   <span

@@ -295,13 +295,21 @@ export const FlawInfoWrap = styled.div({
   paddingBottom: 24,
 })
 
-export const FlawInfoLeft = styled.div({
-  width: '80%',
-  height: '100%',
-  overflow: 'auto',
-  padding: '0 20px 0px 24px',
-  position: 'relative',
-})
+export const FlawInfoLeft = styled.div`
+  width: 80%;
+  height: 100%;
+  overflow: auto;
+  padding: 0 20px 0 24px;
+  position: relative;
+  .review {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    svg {
+      cursor: auto;
+    }
+  }
+`
 
 export const FlawInfoInfoItem = styled.div<{ activeState?: any }>({
   display: 'flex',

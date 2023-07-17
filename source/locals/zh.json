@@ -2154,7 +2154,14 @@
     "pleaseText": "定时发送时间大于失效时间",
     "pleaseObj": "请选择接收对象",
     "nameExits": "列名称已存在",
-    "setNormal": "设为默认"
+    "setNormal": "设为默认",
+    "areYouCancelDemand": "确认取消当前需求审核？",
+    "areYouCancelAffairs": "确认取消当前事务审核？",
+    "areYouCancelFlaw": "确认取消当前缺陷审核？",
+    "cancelTextDemand": "该需求正在审核中，现在不能流转操作！",
+    "cancelTextAffairs": "该事务正在审核中，现在不能流转操作！",
+    "cancelTextFlaw": "该缺陷正在审核中，现在不能流转操作！",
+    "cancelExamineSuccess": "取消审核成功"
   },
   "yc": "移除项目成员"
 }

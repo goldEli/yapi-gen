@@ -2168,7 +2168,14 @@
     "pleaseText": "Scheduled sending time is later than the expiration time",
     "pleaseObj": "Please select a recipient",
     "nameExits": "Column name already exists",
-    "setNormal": "Set as default"
+    "setNormal": "Set as default",
+    "areYouCancelDemand": "Are you sure to cancel the current requirement review?",
+    "areYouCancelAffairs": "Are you sure to cancel the current transaction audit?",
+    "areYouCancelFlaw": "Are you sure to cancel the current defect audit?",
+    "cancelTextDemand": "The requirement is currently under review and cannot be circulated for operation!",
+    "cancelTextAffairs": "This transaction is currently under review and cannot be processed at this time!",
+    "cancelTextFlaw": "The defect is currently under review and cannot be circulated for operation!",
+    "cancelExamineSuccess": "Successfully cancelled the review"
   },
   "yc": "Remove project members"
 }
