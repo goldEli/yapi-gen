@@ -125,6 +125,14 @@ export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
   width: 100%;
   height: 100%;
   overflow: auto;
+  .review {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    svg {
+      cursor: auto;
+    }
+  }
 `
 
 export const InfoItem = styled.div`

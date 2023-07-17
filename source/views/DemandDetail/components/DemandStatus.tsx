@@ -10,7 +10,7 @@ import styled from '@emotion/styled'
 import { Divider, message } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { updateDemandStatus } from '@/services/mine'
+import { cancelVerify, updateDemandStatus } from '@/services/mine'
 import ShapeContentForDetail from '@/components/ShapeForDetail'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
@@ -19,6 +19,7 @@ import { setDemandInfo } from '@store/demand'
 import { getMessage } from '@/components/Message'
 import { setIsUpdateStatus } from '@store/project'
 import { getDemandCommentList } from '@store/demand/demand.thunk'
+import StatusExamine from '@/components/StatusExamine'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -89,6 +90,17 @@ const DemandStatusBox = (props: any) => {
     }
   }
 
+  // 取消审核
+  const onCancelExamine = async () => {
+    await cancelVerify(demandInfo.id)
+    getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
+    const result = await getDemandInfo({
+      projectId: props.pid,
+      id: props.sid,
+    })
+    dispatch(setDemandInfo(result))
+  }
+
   useEffect(() => {
     init()
   }, [])
@@ -144,36 +156,7 @@ const DemandStatusBox = (props: any) => {
 
       <div>
         {demandInfo?.isExamine && (
-          <div
-            style={{
-              backgroundColor: 'var(--neutral-n6-d1)',
-              width: '100%',
-              height: '54px',
-              zIndex: 1,
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              marginTop: '10px',
-              paddingLeft: '18px',
-            }}
-          >
-            <IconFont
-              type="Warning"
-              style={{
-                fontSize: 17,
-                color: '#FA9746',
-              }}
-            />
-            <span
-              style={{
-                color: 'var(--neutral-n3)',
-                fontSize: '14px',
-                marginLeft: '10px',
-              }}
-            >
-              {t('newlyAdd.underReview')}
-            </span>
-          </div>
+          <StatusExamine type={1} onCancel={onCancelExamine} />
         )}
         {rows && !isUpdateStatus && !demandInfo?.isExamine && (
           <ShapeContentForDetail

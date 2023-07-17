@@ -11,6 +11,8 @@ import { getParamsData } from '@/tools'
 import { getDemandInfo } from '@store/demand/demand.thunk'
 import DetailDemand from './DetailDemand'
 import DemandDetailBasic from './DemandDetailBasic'
+import IconFont from '@/components/IconFont'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const DemandDetailInfo = () => {
   const dispatch = useDispatch()
@@ -54,6 +56,11 @@ const DemandDetailInfo = () => {
       >
         <DetailInfoWrap ref={LeftDom}>
           <DetailDemand />
+          {demandInfo?.isExamine && (
+            <div className="review">
+              <CommonIconFont type="review" size={64} />
+            </div>
+          )}
         </DetailInfoWrap>
       </div>
       <div

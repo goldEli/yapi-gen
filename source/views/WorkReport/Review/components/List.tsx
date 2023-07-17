@@ -140,21 +140,27 @@ const List = () => {
     try {
       setListData([])
       setIsSpinning(true)
-      let res
+      let res = null
       switch (id) {
         case 1:
           res = await getRepSentList({ ...pageObj, ...queryParams })
           break
         case 2:
-          res = await getRepReceivedList({ ...pageObj, ...queryParams })
+          res = await getRepReceivedList({
+            ...pageObj,
+            ...queryParams,
+          })
           break
         case 3:
           res = await getRepPublicList({ ...pageObj, ...queryParams })
           break
       }
-      setIsSpinning(false)
-      setListData(res.list)
-      setTotal(res.pager.total)
+      // 当前id等于请求时得id才执行赋值，避免未取消的请求造成数据错误
+      if (res?.type === sessionStorage.getItem('reportListId')) {
+        setIsSpinning(false)
+        setListData(res.list)
+        setTotal(res.pager.total)
+      }
     } catch (error) {
       // console.log('error', error)
     }
@@ -174,6 +180,7 @@ const List = () => {
   }, [pageObj, queryParams])
 
   useEffect(() => {
+    sessionStorage.setItem('reportListId', String(id))
     setQueryParams({})
     setPageObj({ ...pageObj, page: 1 })
   }, [id])
