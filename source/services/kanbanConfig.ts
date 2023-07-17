@@ -10,7 +10,7 @@ export const getCategoryList = async (
   )
   return response
 }
-
+// 获取列与状态
 export const getKanbanConfigList = async (
   params: API.KanbanConfig.GetKanbanConfigList.Params,
 ) => {

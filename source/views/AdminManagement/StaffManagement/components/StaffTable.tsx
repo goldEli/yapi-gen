@@ -35,6 +35,7 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'nickname',
       key: 'nickname',
       render: (text: any, record: any) => {
+        const NickName = record.nickname ? <>({record.nickname})</> : null
         return (
           <div className={flexCss}>
             {record.avatar ? (
@@ -58,7 +59,7 @@ export const useDynamicColumns = (state: any) => {
                 <CommonUserAvatar size="small" />
               </span>
             )}
-            <HiddenText>
+            {/* <HiddenText>
               <OmitText
                 width={100}
                 tipProps={{
@@ -66,6 +67,20 @@ export const useDynamicColumns = (state: any) => {
                 }}
               >
                 {text}
+              </OmitText>
+            </HiddenText> */}
+
+            <HiddenText>
+              <OmitText
+                width={100}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                <div>
+                  {record.name}
+                  {NickName}
+                </div>
               </OmitText>
             </HiddenText>
           </div>
@@ -219,6 +234,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
