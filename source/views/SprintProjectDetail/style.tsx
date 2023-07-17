@@ -157,6 +157,14 @@ export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
   height: ${props =>
     props.isScroll ? 'calc(100% - 100px)' : 'calc(100% - 40px)'};
   overflow: auto;
+  .review {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    svg {
+      cursor: auto;
+    }
+  }
 `
 
 export const InfoItem = styled.div`

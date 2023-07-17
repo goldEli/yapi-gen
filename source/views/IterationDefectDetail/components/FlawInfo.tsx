@@ -97,6 +97,11 @@ const FlawInfo = () => {
             <FlawStatus pid={id} sid={flawInfo.id} />
           </FlawInfoInfoItem>
         )}
+        {flawInfo?.isExamine && (
+          <div className="review">
+            <CommonIconFont type="review" size={64} />
+          </div>
+        )}
       </FlawInfoLeft>
       <WrapRight
         ref={basicInfoDom}
