@@ -99,7 +99,13 @@ const Work = (props: WorkType) => {
                       {item.parent_name ? item.parent_name : '--'}
                     </span>
                     <span className="time">
-                      {item.expected_end_at} {t('other.due')}
+                      {item.expected_end_at ? (
+                        <>
+                          {item.expected_end_at} {t('other.due')}
+                        </>
+                      ) : (
+                        t('other.setTime')
+                      )}
                     </span>
                   </Row>
                   <span className="msg">{item.name}</span>
