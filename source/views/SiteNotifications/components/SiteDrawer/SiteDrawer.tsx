@@ -163,6 +163,7 @@ const SiteDrawer = () => {
 
   const setReads = async (values: any) => {
     const res = await setReadApi(values)
+    setList([])
     await new Promise(resolve => setTimeout(resolve, 2000))
     if (res.code === 0) {
       const res2 = await getContactStatistics()
