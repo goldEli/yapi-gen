@@ -991,6 +991,22 @@ const PopoverTargetText = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
 `
+
+const LinkWrap = styled.div`
+  display: flex;
+  align-items: center;
+  .content {
+    cursor: pointer;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    &:hover {
+      color: var(--primary-d2);
+    }
+  }
+`
+
 const Tag = styled.div`
   height: 20px;
   background: rgba(161, 118, 251, 0.1);
@@ -1059,4 +1075,5 @@ export {
   PriorityWrapTable,
   TextWrapEdit,
   PopoverTargetText,
+  LinkWrap,
 }

@@ -9,6 +9,7 @@ import {
   LabelWrap,
   ProgressWrapBox,
   ProgressWrapLine,
+  LinkWrap,
 } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { CloseWrap, PriorityWrapTable } from '@/components/StyleCommon'
@@ -26,7 +27,6 @@ import {
   getAffairsChildList,
   getAffairsSelectChildren,
   getAffairsSelectChildrenRecent,
-  updateAffairsPriority,
 } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 import MultipleAvatar from '@/components/MultipleAvatar'
@@ -35,10 +35,9 @@ import NoData from '@/components/NoData'
 import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
 import MoreDropdown from '@/components/MoreDropdown'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import Item from 'antd/lib/list/Item'
-import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface SelectItem {
   label: string
@@ -63,6 +62,19 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const [dataSource, setDataSource] = useState<any>({
     list: undefined,
   })
+
+  // 跳转详情页面
+  const onToDetail = (record: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        id: projectInfo?.id,
+        sprintId: record?.id,
+        newOpen: true,
+      }),
+    )
+    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+  }
 
   // 获取子事务列表
   const getList = async (page: { page: number; pagesize: number }) => {
@@ -158,7 +170,13 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     {
       title: '',
       dataIndex: 'story_prefix_key',
-      render: (text: string) => <div>{text}</div>,
+      render: (text: string, record: any) => (
+        <LinkWrap>
+          <span className="content" onClick={() => onToDetail(record)}>
+            {text}
+          </span>
+        </LinkWrap>
+      ),
     },
     {
       title: '',
@@ -185,8 +203,11 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               alt=""
             />
           </Tooltip>
-
-          {record.name}
+          <LinkWrap>
+            <span className="content" onClick={() => onToDetail(record)}>
+              {record.name}
+            </span>
+          </LinkWrap>
         </div>
       ),
     },

@@ -28,10 +28,27 @@ import { PriorityWrapTable } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const FormWrap = styled(Form)`
   padding: 0 24px;
   height: 160px;
+`
+const LinkWrap = styled.div`
+  display: flex;
+  align-items: center;
+  .content {
+    cursor: pointer;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    &:hover {
+      color: var(--primary-d2);
+    }
+  }
 `
 
 interface SelectItem {
@@ -55,6 +72,9 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const [allDataSource, setAllDataSource] = useState<any>({
     list: undefined,
   })
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData?.id
   //根据搜索框的值来放的数据
   const [options, setOptions] = useState<any>([])
   const [resultData, setResultData] = useState<
@@ -65,11 +85,30 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     }[]
   >([])
 
+  // 跳转详情页面
+  const onToDetail = (record: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        id: projectId,
+        sprintId: record.id,
+        newOpen: true,
+      }),
+    )
+    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
+  }
+
   const columns = [
     {
       title: '',
       dataIndex: 'story_prefix_key',
-      render: (text: string) => <div>{text}</div>,
+      render: (text: string, record: any) => (
+        <LinkWrap>
+          <span className="content" onClick={() => onToDetail(record)}>
+            {text}
+          </span>
+        </LinkWrap>
+      ),
     },
     {
       title: '',
@@ -96,8 +135,11 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               alt=""
             />
           </Tooltip>
-
-          {record.name}
+          <LinkWrap>
+            <span className="content" onClick={() => onToDetail(record)}>
+              {record.name}
+            </span>
+          </LinkWrap>
         </div>
       ),
     },

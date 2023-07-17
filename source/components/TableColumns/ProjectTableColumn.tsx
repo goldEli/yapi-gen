@@ -79,7 +79,7 @@ export const useDynamicColumns = (state: any) => {
   const arr = [
     {
       width: 140,
-      title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
+      title: 1111111,
       dataIndex: 'storyPrefixKey',
       key: 'prefix_key',
       render: (text: string, record: any) => {
