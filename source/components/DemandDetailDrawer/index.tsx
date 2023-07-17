@@ -6,8 +6,11 @@
 // 需求详情弹窗预览模式
 
 import {
+  addComment,
+  deleteComment,
   deleteDemand,
   getDemandInfo,
+  updateDemandComment,
   updateDemandStatus,
   updateTableParams,
 } from '@/services/demand'
@@ -56,11 +59,13 @@ import {
 import { getMessage } from '../Message'
 import { DemandOperationDropdownMenu } from '../TableDropdownMenu/DemandDropdownMenu'
 import DetailsSkeleton from '../DetailsSkeleton'
-import { copyLink } from '@/tools'
+import { copyLink, getIdsForAt, removeNull } from '@/tools'
 import CopyIcon from '../CopyIcon'
 import StoryRelation from '@/views/DemandDetail/components/StoryRelation'
 import StatusExamine from '../StatusExamine'
 import { cancelVerify } from '@/services/mine'
+import CommentFooter from '../CommonComment/CommentFooter'
+import CommonComment from '../CommonComment'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -85,10 +90,12 @@ const DemandDetailDrawer = () => {
       dom: useRef<any>(null),
     },
   }
-  const { isDemandDetailDrawerVisible, demandDetailDrawerProps } = useSelector(
-    store => store.demand,
-  )
-  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+  const {
+    isDemandDetailDrawerVisible,
+    demandDetailDrawerProps,
+    demandCommentList,
+  } = useSelector(store => store.demand)
+  const { projectInfo, isUpdateAddWorkItem, projectInfoValues } = useSelector(
     store => store.project,
   )
   const [t] = useTranslation()
@@ -396,6 +403,60 @@ const DemandDetailDrawer = () => {
     onOperationUpdate(true)
   }
 
+  // 提交评论
+  const onConfirmComment = async (value: { info: string }) => {
+    await addComment({
+      projectId: projectInfo.id,
+      demandId: drawerInfo.id,
+      content: value.info,
+      a_user_ids: getIdsForAt(value.info),
+    })
+    getMessage({ type: 'success', msg: t('project.replaySuccess') })
+    dispatch(
+      getDemandCommentList({
+        projectId: drawerInfo.projectId,
+        demandId: drawerInfo.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+    commentDom.current.cancel()
+  }
+
+  // 编辑评论
+  const onEditComment = async (value: string, commentId: number) => {
+    await updateDemandComment({
+      projectId: projectInfo.id,
+      id: commentId,
+      storyId: drawerInfo.id,
+      content: value,
+      ids: getIdsForAt(value),
+    })
+    getMessage({ type: 'success', msg: t('common.editSuccess') })
+    dispatch(
+      getDemandCommentList({
+        projectId: drawerInfo.projectId,
+        demandId: drawerInfo.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+  }
+
+  // 删除评论确认
+  const onDeleteCommentConfirm = async (commentId: number) => {
+    await deleteComment({ projectId: projectInfo.id, id: commentId })
+    getMessage({ type: 'success', msg: t('common.deleteSuccess') })
+    dispatch(
+      getDemandCommentList({
+        projectId: drawerInfo.projectId,
+        demandId: drawerInfo.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+  }
+
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
@@ -631,19 +692,44 @@ const DemandDetailDrawer = () => {
                       />
                     )}
                     {i.key === 'demandComment' && (
+                      <CommonComment
+                        data={demandCommentList}
+                        onDeleteConfirm={onDeleteCommentConfirm}
+                        onEditComment={onEditComment}
+                      />
+                    )}
+                    {/* {i.key === 'demandComment' && (
                       <DemandComment
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
                         onRef={commentDom}
                         isOpenInfo
                       />
-                    )}
+                    )} */}
                   </CollapseItemContent>
                 </CollapseItem>
               ))}
             </>
           )}
         </Content>
+        <CommentFooter
+          onRef={commentDom}
+          placeholder={t('postComment')}
+          personList={removeNull(projectInfoValues, 'user_name')?.map(
+            (k: any) => ({
+              label: k.content,
+              id: k.id,
+            }),
+          )}
+          onConfirm={onConfirmComment}
+          style={{
+            padding: '24px 0 24px 24px',
+            width: 'calc(100% - 24px)',
+            height: 80,
+          }}
+          maxHeight="60vh"
+          hasAvatar
+        />
       </Drawer>
     </>
   )

@@ -289,16 +289,6 @@ const DemandComment = (props: Props) => {
                       getSuggestions={() => []}
                       readonly
                     />
-                    {/* <div
-                      dangerouslySetInnerHTML={{
-                        __html: /(?<start>^<p>*)|(?<end><\p>*$)/g.test(
-                          item.content,
-                        )
-                          ? item.content
-                          : `<p>${item.content}</p>`,
-                      }}
-                    /> */}
-
                     {item.attachment?.length > 0 && (
                       <div
                         style={{
