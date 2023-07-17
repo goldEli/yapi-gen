@@ -19,6 +19,9 @@ const MyDiv = styled.div`
   /* 修改滚动条轨道的背景色 */
   & ::-webkit-scrollbar-thumb {
     background-color: var(--neutral-n6-d1);
+    :hover {
+      background-color: var(--neutral-n5);
+    }
   }
   & ::-webkit-scrollbar {
     width: 4px;
@@ -70,20 +73,32 @@ const ReadCard = (props: any) => {
       >
         <div
           style={{
-            fontFamily: 'SiYuanMedium',
             height: '240px',
             flex: 1,
-            padding: ' 0px 4px 0px 16px',
+            padding: ' 0px 4px 0px 24px',
             borderRight: '1px solid #ebeced',
           }}
         >
           <div
             style={{
-              paddingLeft: '8px',
+              paddingLeft: '2px',
             }}
           >
-            {value?.unread ?? 0}
-            {t('person_unread')}
+            <span
+              style={{
+                fontFamily: 'SiYuanMedium',
+                fontSize: '14px',
+              }}
+            >
+              {value?.unread ?? 0}
+            </span>
+            <span
+              style={{
+                fontSize: '12px',
+              }}
+            >
+              {t('person_unread')}
+            </span>
           </div>
           <div
             style={{
@@ -99,7 +114,7 @@ const ReadCard = (props: any) => {
                 return (
                   <div
                     style={{
-                      margin: '4px 0 ',
+                      margin: '6px 0 ',
                     }}
                     key={el.user.id}
                   >
@@ -115,19 +130,32 @@ const ReadCard = (props: any) => {
         </div>
         <div
           style={{
-            fontFamily: 'SiYuanMedium',
             height: '240px',
             flex: 1,
-            padding: ' 0px 4px 0px 16px',
+            padding: ' 0px 4px 0px 24px',
           }}
         >
           <div
             style={{
-              paddingLeft: '8px',
+              paddingLeft: '2px',
             }}
           >
-            {value?.read ?? 0}
-            {t('person_read')}
+            <span
+              style={{
+                fontFamily: 'SiYuanMedium',
+                fontSize: '14px',
+              }}
+            >
+              {value?.read ?? 0}
+            </span>
+            <span
+              style={{
+                fontFamily: 'SiYuanMedium',
+                fontSize: '12px',
+              }}
+            >
+              {t('person_read')}
+            </span>
           </div>
           <div
             style={{
@@ -143,7 +171,7 @@ const ReadCard = (props: any) => {
                 return (
                   <div
                     style={{
-                      margin: '4px 0 ',
+                      margin: '6px 0 ',
                     }}
                     key={el.user.id}
                   >

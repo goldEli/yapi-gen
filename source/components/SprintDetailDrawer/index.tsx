@@ -469,7 +469,7 @@ const SprintDetailDrawer = () => {
 
   // 跳转配置
   const onToConfig = () => {
-    //
+    onCancel()
     dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
@@ -506,6 +506,9 @@ const SprintDetailDrawer = () => {
 
   // 编辑评论
   const onEditComment = async (value: string, commentId: number) => {
+    if (drawerInfo?.info === value || !value) {
+      return
+    }
     await updateAffairsComment({
       projectId: projectInfo.id,
       id: commentId,

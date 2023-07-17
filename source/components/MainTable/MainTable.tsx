@@ -21,6 +21,7 @@ import ResizeTable from '../ResizeTable'
 import { editProject } from '@store/create-propject'
 import { useDispatch } from 'react-redux'
 import CommonButton from '../CommonButton'
+import { Tags } from '../ProjectCard/style'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -243,8 +244,13 @@ const MainTable = (props: Props) => {
       render: (text: number) => {
         return (
           <div>
-            {text === 1 ? t('iteration') : t('sprint2')}
-            {t('other.project')}
+            {/* {text === 1 ? t('iteration') : t('sprint2')}
+            {t('other.project')} */}
+            {text === 1 ? (
+              <Tags type={1}> {t('iteration')}</Tags>
+            ) : (
+              <Tags type={2}> {t('sprint2')}</Tags>
+            )}
           </div>
         )
       },

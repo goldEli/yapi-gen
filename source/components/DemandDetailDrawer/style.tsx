@@ -3,6 +3,28 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Input, Popover, Space } from 'antd'
 
+export const DetailFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  background: var(--neutral-white-d5);
+  width: 100%;
+  .textBox {
+    display: flex;
+    flex-direction: column;
+    div {
+      font-size: 12px;
+      color: var(--neutral-n3);
+      margin-bottom: 4px;
+    }
+    span {
+      font-size: 12px;
+      color: var(--neutral-n3);
+    }
+  }
+`
+
 export const haveAuto = css`
   height: calc(100% - 40px);
   overflow-y: auto;
@@ -227,6 +249,9 @@ export const HovDiv = styled.div`
   visibility: hidden;
   position: absolute;
   right: 0px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `
 
 export const MyDiv = styled.div`
