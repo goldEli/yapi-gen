@@ -34,6 +34,19 @@ import {
 } from '@/services/SiteNotifications'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import NoData from '@/components/NoData'
+import styled from '@emotion/styled'
+const BlueDiv = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  :hover {
+    color: var(--primary-d2);
+  }
+  :hover svg {
+    color: var(--primary-d2);
+  }
+`
 
 const SiteDrawer = () => {
   const [t] = useTranslation()
@@ -347,7 +360,7 @@ const SiteDrawer = () => {
                 display: 'flex',
               }}
             >
-              <Tooltip title={t('set')}>
+              {/* <Tooltip title={t('set')}>
                 <CloseWrap
                   style={{
                     margin: '0 4px',
@@ -364,29 +377,25 @@ const SiteDrawer = () => {
                     type="settings"
                   />
                 </CloseWrap>
-              </Tooltip>
-              <Tooltip title={t('new_page')}>
-                <CloseWrap
-                  style={{
-                    margin: 0,
-                  }}
-                  onClick={() => {
-                    const url = 'SiteNotifications/AllNote/1'
-                    window.open(
-                      `${window.origin}${import.meta.env.__URL_HASH__}${url}`,
-                    )
-                    // navigate()
-                    // dispatch(changeVisible(false))
-                  }}
-                  width={32}
-                  height={32}
-                >
-                  <IconFont
-                    style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
-                    type="file-text"
-                  />
-                </CloseWrap>
-              </Tooltip>
+              </Tooltip> */}
+              {/* <Tooltip title={t('new_page')}> */}
+              <BlueDiv
+                onClick={() => {
+                  const url = 'SiteNotifications/AllNote/1'
+                  window.open(
+                    `${window.origin}${import.meta.env.__URL_HASH__}${url}`,
+                  )
+                  // navigate()
+                  // dispatch(changeVisible(false))
+                }}
+              >
+                <span>{t('new_page')}</span>
+                <IconFont
+                  style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+                  type="right"
+                />
+              </BlueDiv>
+              {/* </Tooltip> */}
             </div>
           </MyFooter>
         </div>
