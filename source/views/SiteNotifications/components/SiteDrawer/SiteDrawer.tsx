@@ -389,7 +389,7 @@ const SiteDrawer = () => {
                   // dispatch(changeVisible(false))
                 }}
               >
-                <span>{t('new_page')}</span>
+                <span>{t('notificationCenter')}</span>
                 <IconFont
                   style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
                   type="right"
