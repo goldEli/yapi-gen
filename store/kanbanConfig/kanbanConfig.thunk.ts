@@ -186,8 +186,11 @@ export const getKanbanConfigList = createAsyncThunk(
 
     // 更新相关数据
     const checkedViewListItem = ret.find(item => item.check)
-    // const checkedViewListItem = ret[ret.length - 1]
-    if (checkedViewListItem) {
+    // 如果是设为默认就不走刷新逻辑
+    if (
+      checkedViewListItem &&
+      !store.getState().KanbanConfig.isSettingDefault
+    ) {
       dispatch<any>(onFresh(checkedViewListItem))
     }
     return ret
@@ -204,10 +207,7 @@ export const onFresh =
       project_id: currentViewListItem.project_id,
       id: currentViewListItem.id,
     }
-    // 设为默认的时候 不走获取看板配置接口
-    // if (!store.getState().KanbanConfig.isSettingDefault) {
-    //   dispatch(getKanbanConfig(params))
-    // }
+
     dispatch(getKanbanConfigRemainingStatus(params))
     dispatch(getKanbanConfig(params))
     dispatch(getCategoryList({ project_id: params.project_id }))

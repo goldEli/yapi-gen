@@ -554,8 +554,12 @@ const DemandTree = (props: Props) => {
   const getAllItems = (childrenList: any = [], arr: any = []) => {
     childrenList?.forEach((element: any) => {
       arr.push(element)
-      if (element.children && element.children.length)
-        getAllItems(element.children, arr)
+      if (
+        (element.children && element.children.length > 0) ||
+        (element.allChildrenIds && element.allChildrenIds?.length > 0)
+      ) {
+        getAllItems(element.children ?? element.allChildrenIds, arr)
+      }
     })
     return arr
   }

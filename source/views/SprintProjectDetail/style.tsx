@@ -350,3 +350,18 @@ export const BasicFooter = styled.div`
     }
   }
 `
+
+export const LinkWrap = styled.div`
+  display: flex;
+  align-items: center;
+  .content {
+    cursor: pointer;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    &:hover {
+      color: var(--primary-d2);
+    }
+  }
+`

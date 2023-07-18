@@ -704,6 +704,7 @@ const DemandDetail = () => {
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
+      {tabActive}
       <Tabs
         className="tabs"
         activeKey={tabActive}

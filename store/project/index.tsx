@@ -38,6 +38,11 @@ export interface CounterState {
 
   // 事务-详情/浮层更新
   isChangeDetailAffairs: boolean
+  // 详情的全屏弹窗
+  isDetailScreenModal: {
+    visible: boolean
+    params: Partial<Model.Project.DetailScreenModalParams>
+  }
 }
 
 const initialState: CounterState = {
@@ -84,12 +89,20 @@ const initialState: CounterState = {
   filterParams: {},
   isUpdateAddWorkItem: 0,
   isChangeDetailAffairs: false,
+  isDetailScreenModal: {
+    visible: false,
+    params: {},
+  },
 }
 
 export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
+    // 关闭详情弹层
+    setIsDetailScreenModal: (state: any, action) => {
+      state.isDetailScreenModal = action.payload
+    },
     // 全局使用项目信息
     setProjectInfo: (state: any, action) => {
       state.projectInfo = action.payload
@@ -179,6 +192,7 @@ export const projectSlice = createSlice({
 })
 
 export const {
+  setIsDetailScreenModal,
   setProjectInfo,
   setWorkList,
   setIsChangeProject,
