@@ -167,7 +167,9 @@ export const useDynamicColumns = (state: any) => {
     {
       title: (
         <NewSort fixedKey="child_story_count">
-          {state.projectType === 2 ? '子事务' : t('common.childDemand')}
+          {state.projectType === 2
+            ? t('subtransaction')
+            : t('common.childDemand')}
         </NewSort>
       ),
       dataIndex: 'demand',
@@ -247,7 +249,7 @@ export const useDynamicColumns = (state: any) => {
     {
       title: (
         <NewSort fixedKey="iterate_name">
-          {state.projectType === 2 ? '冲刺' : t('common.iterate')}
+          {state.projectType === 2 ? t('sprint2') : t('common.iterate')}
         </NewSort>
       ),
       dataIndex: 'iteration',
@@ -276,7 +278,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="class">分类</NewSort>,
+      title: <NewSort fixedKey="class">{t('other.class')}</NewSort>,
       dataIndex: 'class',
       key: 'class',
       width: 120,
@@ -342,7 +344,6 @@ export const useDynamicColumns = (state: any) => {
       width: 190,
       // eslint-disable-next-line complexity
       render: (text: any, record: any) => {
-        console.log(record, '=recordrecordrecordrecordrecordrecordrecord')
         return (
           <ChangeStatusPopover
             isCanOperation={
@@ -583,7 +584,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="solution">解决方法</NewSort>,
+      title: <NewSort fixedKey="solution">{t('other.resolvent')}</NewSort>,
       dataIndex: 'solution',
       key: 'solution',
       width: 200,
@@ -603,7 +604,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="severity">严重程度</NewSort>,
+      title: <NewSort fixedKey="severity">{t('other.severity')}</NewSort>,
       dataIndex: 'severity',
       key: 'severity',
       width: 200,
@@ -623,7 +624,11 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="discovery_version">发现版本</NewSort>,
+      title: (
+        <NewSort fixedKey="discovery_version">
+          {t('other.discovery_version')}
+        </NewSort>
+      ),
       dataIndex: 'discovery_version',
       key: 'discovery_version',
       width: 120,

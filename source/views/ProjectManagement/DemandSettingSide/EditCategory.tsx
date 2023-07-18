@@ -171,7 +171,7 @@ const EditorCategory = (props: EditorProps) => {
         props?.type === 'edit'
           ? props.item.work_type === 1 || props.item.work_type === 2
             ? t('newlyAdd.editCategory')
-            : '编辑类别'
+            : t('other.editCategory')
           : t('newlyAdd.createCategory')
       }
       onClose={onClose}

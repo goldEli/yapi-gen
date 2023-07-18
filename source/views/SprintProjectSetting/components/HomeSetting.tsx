@@ -49,7 +49,7 @@ const HomeSetting: React.FC<IProps> = props => {
         id: projectInfo.id,
         default_home_menu: e.target.value,
       })
-      getMessage({ msg: '配置成功', type: 'success' })
+      getMessage({ msg: t('other.configSuccess'), type: 'success' })
       dispatch(
         setProjectInfo({ ...projectInfo, defaultHomeMenu: e.target.value }),
       )

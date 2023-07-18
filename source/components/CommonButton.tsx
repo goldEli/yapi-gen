@@ -171,8 +171,10 @@ const CommonButton = (props: Props) => {
       align-items: center;
     }
     &:disabled {
-      background: var(--auxiliary-b10);
-      color: var(--auxiliary-t4);
+      background: var(--auxiliary-b10) !important;
+      span {
+        color: var(--auxiliary-t4) !important;
+      }
       cursor: no-drop;
     }
   `

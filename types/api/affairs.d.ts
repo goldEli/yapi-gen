@@ -177,7 +177,7 @@ declare namespace API.Affairs {
   namespace UpdateAffairsCategory {
     type Params = {
       projectId: number
-      sprintId?: number
+      id?: number
       categoryId: number
       statusId: number
     }

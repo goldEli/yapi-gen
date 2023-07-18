@@ -228,11 +228,11 @@ const Profile = () => {
             : 0
         };">${
           k?.is_start === 1 && k?.is_end === 2
-            ? '待办'
+            ? t('to_do')
             : k?.is_end === 1 && k?.is_start === 2
-            ? '已完成'
+            ? t('common.finished')
             : k?.is_start === 2 && k?.is_end === 2
-            ? '进行中'
+            ? t('situation.ongoing')
             : 0
         }</span>`,
         statusTitle: k.statusName,

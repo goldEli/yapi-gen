@@ -54,7 +54,7 @@ const Setting = () => {
     [
       'ProjectInfo',
       {
-        name: '项目信息',
+        name: t('sprintProject.projectInformation'),
         icon: 'file-text',
         content: <ProjectInfo />,
         isPermission: true,
@@ -63,7 +63,7 @@ const Setting = () => {
     [
       'ProjectMember',
       {
-        name: '项目成员',
+        name: t('project.projectMember'),
         icon: 'team',
         content: <ProjectMember searchValue={searchValue} />,
         isPermission: true,
@@ -72,7 +72,7 @@ const Setting = () => {
     [
       'ProjectRole',
       {
-        name: '项目角色',
+        name: t('sprintProject.projectRole'),
         icon: 'lock',
         content: <ProjectSet />,
         isPermission: true,
@@ -81,7 +81,7 @@ const Setting = () => {
     [
       'ProjectNotify',
       {
-        name: '通知配置',
+        name: t('sprintProject.notificationConfiguration'),
         icon: 'settings',
         content: <ProjectNote />,
         isPermission: true,
@@ -90,7 +90,7 @@ const Setting = () => {
     [
       'ProjectKanBan',
       {
-        name: 'Kanban配置',
+        name: t('other.kanbanConfig'),
         icon: 'settings',
         content: <KanBanSettings />,
         isPermission: true,
@@ -99,7 +99,7 @@ const Setting = () => {
     [
       'ProjectHome',
       {
-        name: '首页配置',
+        name: t('other.homeConfig'),
         icon: 'settings',
         content: <HomeSettings />,
         isPermission: true,

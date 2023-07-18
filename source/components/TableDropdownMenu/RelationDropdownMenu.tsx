@@ -32,7 +32,11 @@ const RelationDropdownMenu = (props: Props) => {
   const pid = useSelector(store => store.project.projectInfo.id)
   // 复制需求id
   const onCopyId = () => {
-    copyLink(`${props?.record.story_prefix_key}`, '复制成功！', '复制失败！')
+    copyLink(
+      `${props?.record.story_prefix_key}`,
+      t('copysuccess'),
+      t('copyfailed'),
+    )
   }
 
   // 复制需求链接
@@ -68,11 +72,11 @@ const RelationDropdownMenu = (props: Props) => {
     },
     {
       key: '2',
-      label: <div onClick={onCopyId}>复制编号</div>,
+      label: <div onClick={onCopyId}>{t('copy_requirement_number')}</div>,
     },
     {
       key: '3',
-      label: <div onClick={onCopyLink}>复制链接</div>,
+      label: <div onClick={onCopyLink}>{t('copy_title_link')}</div>,
     },
   ]
 

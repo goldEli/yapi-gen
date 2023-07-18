@@ -1,6 +1,7 @@
 import { Select } from 'antd'
 import { useState } from 'react'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { useTranslation } from 'react-i18next'
 
 interface ItemProps {
   label: string
@@ -24,6 +25,7 @@ for (let i = 10; i < 36; i++) {
   })
 }
 const Member = (props: Props) => {
+  const [t] = useTranslation()
   const [value, setValue] = useState<string[]>([])
   const changeValue = (newValue: string[]) => {
     setValue(newValue)
@@ -42,7 +44,7 @@ const Member = (props: Props) => {
         getPopupContainer={node => node}
         value={value}
         defaultActiveFirstOption={false}
-        placeholder="全员"
+        placeholder={t('formWork.whole')}
         showArrow={false}
         autoClearSearchValue
         filterOption={false}

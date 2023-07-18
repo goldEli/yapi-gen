@@ -6,7 +6,6 @@ import { Checkbox } from 'antd'
 import { useEffect, useState } from 'react'
 import Addperson from '@/views/WorkReport/Formwork/Addperson'
 import { useTranslation } from 'react-i18next'
-import { setReportContent, setReportContentCopy } from '@store/formWork'
 import { useDispatch, useSelector } from '@store/index'
 
 const AcceptorSelection = (props: any) => {
@@ -100,50 +99,6 @@ const AcceptorSelection = (props: any) => {
       isEmail,
     })
   }
-  // 组装数据
-  const assemblyData = () => {
-    // 谁可以写
-    let data1 =
-      reportContentCopy.template_configs?.filter(
-        (item: { user_type: number }) => item.user_type === 1,
-      ) || []
-
-    // 有已经存在的情况，需要过滤掉
-    if (reportContentCopy.is_all_write === 1) {
-      const newData1 = [
-        {
-          user_type: 1,
-          key: 'all',
-          name: '全员',
-          avatar: '',
-          target_id: -1,
-          target_value: {
-            user_type: 1,
-            key: 'all',
-            name: '全员',
-            avatar: '',
-          },
-        },
-        ...data1,
-      ]
-      const hasAll = data1.find((el: any) => el.target_value.key === 'all')
-
-      props.onChange({
-        member: hasAll ? data1 : newData1,
-
-        isEmail,
-      })
-    }
-
-    reportContentCopy.is_all_write === 2 && setPerson1(data1)
-  }
-  // useEffect(() => {
-  //   reportContentCopy && assemblyData()
-
-  //   return () => {
-  //     dispatch(setReportContentCopy(null))
-  //   }
-  // }, [reportContentCopy])
 
   useEffect(() => {
     setIsEmail(props?.value?.isEmail)

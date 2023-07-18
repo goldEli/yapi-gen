@@ -768,7 +768,7 @@ const SetConfig = (props: Props) => {
     >
       <div style={{ height: 544, overflowY: 'auto', padding: '0 16px 0 24px' }}>
         <ItemWrap style={{ marginTop: 8 }}>
-          <LabelWrap>流转名称</LabelWrap>
+          <LabelWrap>{t('other.name')}</LabelWrap>
           <Input
             style={{ width: 184 }}
             value={circulationName}

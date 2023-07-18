@@ -63,18 +63,18 @@ const CreateNoteModal = (props: any) => {
 
   const onValidator2 = (rule: any, value: any) => {
     if (!value) {
-      return Promise.reject(new Error('请填写定时发送时间'))
+      return Promise.reject(new Error(t('other.pleaseSendTime')))
     }
     const expire_time = form.getFieldValue('expire_time')
 
     if (!expire_time) {
-      return Promise.reject(new Error('请先填写失效时间'))
+      return Promise.reject(new Error(t('other.pleaseTime')))
     }
     const eTime = expire_time.valueOf()
     const sTime = value.valueOf()
 
     if (eTime < sTime) {
-      return Promise.reject(new Error('定时发送时间大于失效时间'))
+      return Promise.reject(new Error(t('other.pleaseText')))
     }
 
     return Promise.resolve()
@@ -390,7 +390,7 @@ const CreateNoteModal = (props: any) => {
           <Form.Item
             name="recipient2"
             label={<LabelTitle>{t('recipient')}</LabelTitle>}
-            rules={[{ required: true, message: '请选择接收对象!' }]}
+            rules={[{ required: true, message: t('other.pleaseObj') }]}
           >
             <AcceptorSelection data={defaultData} />
           </Form.Item>

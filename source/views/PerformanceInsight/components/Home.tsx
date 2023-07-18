@@ -315,7 +315,7 @@ const Home = () => {
       }
     } else {
       getMessage({
-        msg: '保存失败',
+        msg: t('other.saveFailed'),
         type: 'error',
       })
     }
@@ -332,7 +332,7 @@ const Home = () => {
       getViewList({ project_id: projectId, use_type: 3 })
     } else {
       getMessage({
-        msg: '删除失败',
+        msg: t('other.deleteFailed'),
         type: 'error',
       })
     }
@@ -342,14 +342,14 @@ const Home = () => {
     const res = await defaultView(id)
     if (res) {
       getMessage({
-        msg: '设置成功',
+        msg: t('other.setSuccess'),
         type: 'success',
       })
       // 刷新视图的接口
       updateViewList({ project_id: projectId, use_type: 3 })
     } else {
       getMessage({
-        msg: '设置失败',
+        msg: t('other.setFailed'),
         type: 'error',
       })
     }
@@ -501,8 +501,10 @@ const Home = () => {
       growth_rate: res.work_completion_period.growth_rate,
       time: `${res.work_completion_period.start_time} ~ ${res.work_completion_period.end_time}`,
       yData: res.work_completion_period.list.map((el, i) =>
-        el.is_current ? '当前' : `第${time[i]}周期`,
-      ),
+        el.is_current
+          ? t('other.current')
+          : t('other.cycle', { count: time[i] as any }),
+      ) as any,
       period_number: res.work_completion_period.period_number,
       seriesData: res.work_completion_period.list.map(el => el.completed),
     })
@@ -522,17 +524,17 @@ const Home = () => {
       fixed_total: res.defect_trend.fixed_total,
       seriesData: [
         {
-          name: '待修复',
+          name: t('performance.toBeFixed'),
           dataNum: res.defect_trend.fixed.map(el => el.number),
           data: res.defect_trend.not_fixed.map(el => parseInt(el.number, 10)),
         },
         {
-          name: '修复中',
+          name: t('performance.repairing'),
           dataNum: res.defect_trend.fixed.map(el => el.number),
           data: res.defect_trend.fixing.map(el => parseInt(el.number, 10)),
         },
         {
-          name: '已完成',
+          name: t('performance.completed'),
           dataNum: res.defect_trend.fixed.map(el => el.number),
           data: res.defect_trend.fixed.map(el => parseInt(el.number, 10)),
         },
@@ -564,7 +566,7 @@ const Home = () => {
       dispatch(setSave(false))
     } else {
       getMessage({
-        msg: '保存失败',
+        msg: t('other.saveFailed'),
         type: 'error',
       })
     }

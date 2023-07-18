@@ -140,7 +140,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
           onChange(issuesGroup.id)
         }}
       >
-        <UpDownBtn isOpen={hidden} />
+        <UpDownBtn isOpen={!hidden} />
         {icon}
         <Title>{issuesGroup.name}</Title>
       </TitleBtn>

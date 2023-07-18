@@ -48,6 +48,7 @@ interface WorkType {
 
 // 创建和分配事务组件
 const Work = (props: WorkType) => {
+  const [t] = useTranslation()
   const [list, setList] = useState<
     Array<Models.Efficiency.CreatedWord> | undefined
   >([])
@@ -97,7 +98,9 @@ const Work = (props: WorkType) => {
                     <span className="title">
                       {item.parent_name ? item.parent_name : '--'}
                     </span>
-                    <span className="time">{item.expected_end_at} 到期</span>
+                    <span className="time">
+                      {item.expected_end_at} {t('other.due')}
+                    </span>
                   </Row>
                   <span className="msg">{item.name}</span>
                 </RowItem>
@@ -112,6 +115,7 @@ interface WorkRecordsTyle {
 }
 // 工作记录
 const WorkRecords = (props: WorkRecordsTyle) => {
+  const [t] = useTranslation()
   const { list } = props
   return (
     <ItemMain>
@@ -124,8 +128,10 @@ const WorkRecords = (props: WorkRecordsTyle) => {
                 <span className="time">{item.created_at}</span>
               </Row>
               <span className="msg">
-                状态由【{item.status_from.content}】更改为【
-                {item.status_to.content}】
+                {t('other.statusTo', {
+                  from: item.status_from.content,
+                  to: item.status_to.content,
+                })}
               </span>
             </RowItem>
           ))}
@@ -174,7 +180,7 @@ const Main = (props: UserInfo) => {
                   params: {
                     projectId: paramsData.projectId,
                     type: 7,
-                    title: '创建事务',
+                    title: t('createTransaction'),
                   },
                 }),
               )

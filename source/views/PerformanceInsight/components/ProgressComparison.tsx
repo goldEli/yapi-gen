@@ -679,7 +679,7 @@ const ProgressComparison = (props: Props) => {
     } catch (error) {
       // console.log(error)
       getMessage({
-        msg: '导出失败',
+        msg: t('other.exportFailed'),
         type: 'error',
       })
     }

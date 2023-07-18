@@ -49,7 +49,11 @@ export const DefectDropdownMenu = (props: Props) => {
 
   // 复制需求id
   const onCopyId = () => {
-    copyLink(`${props?.record.storyPrefixKey}`, '复制成功！', '复制失败！')
+    copyLink(
+      `${props?.record.storyPrefixKey}`,
+      t('copysuccess'),
+      t('copyfailed'),
+    )
   }
 
   // 复制需求链接
@@ -91,11 +95,11 @@ export const DefectDropdownMenu = (props: Props) => {
     },
     {
       key: '5',
-      label: <div onClick={onCopyId}>复制编号</div>,
+      label: <div onClick={onCopyId}>{t('copy_requirement_number')}</div>,
     },
     {
       key: '6',
-      label: <div onClick={onCopyLink}>复制链接</div>,
+      label: <div onClick={onCopyLink}>{t('copy_title_link')}</div>,
     },
   ]
 

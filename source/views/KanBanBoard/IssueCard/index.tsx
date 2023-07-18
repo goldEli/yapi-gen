@@ -28,6 +28,7 @@ import useStoryIds from '../hooks/useStoryIds'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useSelector } from '@store/index'
 import { PopoverTargetText } from '@/components/StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 interface IssueCardProps {
   item: Model.KanBan.Story
@@ -38,6 +39,7 @@ interface IssueCardProps {
 }
 
 const IssueCard = (props: IssueCardProps) => {
+  const [t] = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const { item, index } = props
   const isDragDisabled = props.item.verify_lock === 1
@@ -93,7 +95,7 @@ const IssueCard = (props: IssueCardProps) => {
               trigger="click"
             >
               <Tooltip
-                title="冲刺目标"
+                title={t('sprint.sprintTarget')}
                 placement="top"
                 trigger="click"
                 open={isOpen}
@@ -119,7 +121,7 @@ const IssueCard = (props: IssueCardProps) => {
               <ChildDemandTable
                 ref={childRef}
                 value={item.children_count}
-                row={{ id: item.id }}
+                row={{ id: item.id, project_type: item.project_type }}
               />
             </Sub>
             {item.story_config_priority.icon && (

@@ -408,27 +408,6 @@ const ShapeContentForDetail = (props: any) => {
     const res2 = await form.validateFields()
     const res = JSON.parse(JSON.stringify(res2))
     for (const key in res) {
-      // if (key === 'users_name') {
-      //   const newArr = res[key].filter((i: any) => {
-      //     return typeof i === 'string'
-      //   })
-      //   const newArr1 = res[key].filter((i: any) => {
-      //     return typeof i !== 'string'
-      //   })
-
-      //   const arr = Array.from(
-      //     new Set([
-      //       ...String(newArr)
-      //         .split(',')
-      //         .map(k => Number(k)),
-      //       ...newArr1,
-      //     ]),
-      //   )
-      //   if (newArr.length >= 1) {
-      //     res[key] = arr
-      //   }
-      // }
-
       if (typeof res[key] === 'undefined') {
         res[key] = null
       }

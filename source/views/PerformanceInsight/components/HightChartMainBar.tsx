@@ -142,7 +142,6 @@ const HightChartMainBar = (props: {
                 size={16}
                 color="var(--function-error)"
               />
-              {props.chart?.period_number}
               <span className="time">
                 {t('performance.daysBefore', {
                   day: props.chart?.period_number,
