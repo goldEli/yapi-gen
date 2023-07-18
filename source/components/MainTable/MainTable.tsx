@@ -510,6 +510,7 @@ const MainTable = (props: Props) => {
         col={selectColum}
         dataSource={props.projectList?.list}
         onRow={onTableRow as any}
+        rowClassName="clickable-row"
         noData={
           <NoData
             subText={hasCreate ? '' : t('version2.noDataCreateProject')}
