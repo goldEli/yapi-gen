@@ -107,7 +107,6 @@ const useCategory = () => {
         projectType: 'sprint',
       },
     ]
-
     if (type) {
       categoryData = categoryData.filter(
         item => item.workType === 4 || item.workType === 5,

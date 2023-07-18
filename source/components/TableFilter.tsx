@@ -453,55 +453,68 @@ const TableFilter = (props: any) => {
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
-                      {/* {i.key === 'category' ? (
-                        <CategoryDropdown
-                          type
-                          mode="multiple"
-                          projectId={631}
-                          categoryList={
-                            projectInfoValues?.filter(
-                              (k: any) => k.key === i.key,
-                            )[0]?.children
+                      {i.key === 'category' ? (
+                        <div style={{ width: '200px' }}>
+                          <CategoryDropdown
+                            mode="multiple"
+                            projectId={631}
+                            categoryList={projectInfoValues
+                              ?.filter((k: any) => k.key === i.key)[0]
+                              ?.children.map(
+                                (item: {
+                                  name: any
+                                  category_attachment: string
+                                }) => ({
+                                  ...item,
+                                  labelName: item.name,
+                                  attachmentPath: item.category_attachment,
+                                }),
+                              )}
+                            onChangeCallBack={data => {
+                              form.setFieldValue('category', data)
+                              confirm('category')
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <MoreSelect
+                          onConfirm={confirm}
+                          options={
+                            i.key === 'users_name' ||
+                            i.key === 'users_copysend_name' ||
+                            i.key === 'user_name'
+                              ? format(
+                                  deWeight(
+                                    projectInfoValues
+                                      ?.filter((k: any) => k.key === i.key)[0]
+                                      ?.children?.map((v: any) => ({
+                                        label: v.content_txt || v.content,
+                                        value: v.id,
+                                        id: v.id,
+                                      })),
+                                  ),
+                                )
+                              : format(
+                                  deWeight(
+                                    projectInfoValues
+                                      ?.filter((k: any) => k.key === i.key)[0]
+                                      ?.children?.map((v: any) => ({
+                                        label:
+                                          i.key === 'iterate_name'
+                                            ? `${v.content_txt || v.content} ${
+                                                v?.start_at
+                                                  ? `(${v?.start_at}~${v?.end_at})`
+                                                  : ''
+                                              } `
+                                            : v.content_txt || v.content,
+                                        value: v.id,
+                                        id: v.id,
+                                      })),
+                                  ),
+                                )
                           }
                         />
-                      ) : ( */}
-                      <MoreSelect
-                        onConfirm={confirm}
-                        options={
-                          i.key === 'users_name' ||
-                          i.key === 'users_copysend_name' ||
-                          i.key === 'user_name'
-                            ? format(
-                                deWeight(
-                                  projectInfoValues
-                                    ?.filter((k: any) => k.key === i.key)[0]
-                                    ?.children?.map((v: any) => ({
-                                      label: v.content_txt || v.content,
-                                      value: v.id,
-                                      id: v.id,
-                                    })),
-                                ),
-                              )
-                            : format(
-                                deWeight(
-                                  projectInfoValues
-                                    ?.filter((k: any) => k.key === i.key)[0]
-                                    ?.children?.map((v: any) => ({
-                                      label:
-                                        i.key === 'iterate_name'
-                                          ? `${v.content_txt || v.content} ${
-                                              v?.start_at
-                                                ? `(${v?.start_at}~${v?.end_at})`
-                                                : ''
-                                            } `
-                                          : v.content_txt || v.content,
-                                      value: v.id,
-                                      id: v.id,
-                                    })),
-                                ),
-                              )
-                        }
-                      />
+                      )}
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
                       <IconFont type="close-solid" className="icon" />

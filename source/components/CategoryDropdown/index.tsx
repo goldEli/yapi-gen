@@ -62,7 +62,7 @@ interface IProps {
   value?: number[] | number | string
   onChangeCallBack?(data: number[] | number): void
   onClearCallback?(): void
-  projectId: number
+  projectId?: number
   is_select?: number
   mode?: 'multiple' | undefined
   footer?: boolean
