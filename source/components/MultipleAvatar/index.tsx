@@ -19,7 +19,6 @@ interface MultipleAvatarProps {
 }
 
 const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
-  console.log(props.list)
   const [visible, setVisible] = useState(false)
   const [items, setItems] = useState(
     props.list?.map((item, idx) => {

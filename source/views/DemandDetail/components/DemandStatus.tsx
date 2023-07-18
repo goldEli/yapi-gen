@@ -175,7 +175,7 @@ const DemandStatusBox = (props: any) => {
             </span>
           </div>
         )}
-        {rows && !isUpdateStatus && !demandInfo?.isExamine && (
+        {rows && !demandInfo?.isExamine && (
           <ShapeContentForDetail
             active={demandInfo?.status?.status}
             sid={props.sid}
