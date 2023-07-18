@@ -1,64 +1,27 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { Dropdown, Menu } from 'antd'
+import { Dropdown } from 'antd'
 import IconFont from '@/components/IconFont'
 import { HoverIcon } from '../IssueCard/styled'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector } from '@store/index'
 import { deleteStory } from '@store/kanBan/kanBan.thunk'
-import {
-  onCopyLink,
-  onCopyName,
-} from '@/components/TableDropdownMenu/CommonDropdownMenu'
-import { getIsPermission, getProjectIdByUrl } from '@/tools'
+import { copyLink, getIsPermission, getProjectIdByUrl } from '@/tools'
 import { setAddWorkItemModal } from '@store/project'
 import useI18n from '@/hooks/useI18n'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface ThreeDotProps {
   story: Model.KanBan.Story
 }
-//   //  点击复制链接
-//   const onCopy = () => {
-//     let text: any = ''
-//     let beforeUrl: any
-//     beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
-//     props.selectRows?.forEach((element: any) => {
-//       const params = encryptPhp(
-//         JSON.stringify({ type: 'info', id: projectId, demandId: element.id }),
-//       )
-//       const url = `ProjectManagement/Demand?data=${params}`
-//       text += `【${element.name}】 ${beforeUrl}${url} \n`
-//     })
-//     copyLink(text, t('version2.copyLinkSuccess'), t('version2.copyLinkError'))
-//   }
 
 const Item = styled.div`
   width: 100%;
 `
-// function copyTextToClipboard(text: string) {
-//   navigator.clipboard
-//     .writeText(text)
-//     .then(() => {
-//       getMessage({
-//         msg: '复制成功！',
-//         type: 'success',
-//       })
-//     })
-//     .catch(error => {
-//       console.error('Error copying text: ', error)
-//     })
-// }
+
 const ThreeDot: React.FC<ThreeDotProps> = props => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()
-  //   const copyTitle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-  //     e.stopPropagation()
-  //     copyTextToClipboard(props.story.name)
-  //   }
-  //   const copyNo = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-  //     e.stopPropagation()
-  //     copyTextToClipboard(props.story.id + '')
-  //   }
   const { projectInfo } = useSelector(store => store.project)
   const { t } = useI18n()
 
@@ -66,6 +29,55 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+  )
+
+  // 复制需求id
+  const onCopyNumber = (id: string) => {
+    copyLink(id, t('copysuccess'), t('copyfailed'))
+  }
+
+  //  点击复制链接
+  const onCopy = (record: any) => {
+    let text: any = ''
+    let beforeUrl: any = ''
+    beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
+    let params = null
+    let url = ''
+    if (projectInfo.projectType === 2) {
+      params = encryptPhp(
+        JSON.stringify({
+          id: projectInfo.id,
+          sprintId: record.id,
+          newOpen: true,
+        }),
+      )
+      url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    } else if (projectInfo.projectType === 1 && record.is_bug === 1) {
+      params = encryptPhp(
+        JSON.stringify({
+          id: projectInfo.id,
+          flawId: record.id,
+          newOpen: true,
+        }),
+      )
+      url = `ProjectManagement/DefectDetail?data=${params}`
+    } else if (projectInfo.projectType === 1 && record.is_bug !== 1) {
+      params = encryptPhp(
+        JSON.stringify({
+          id: projectInfo.id,
+          demandId: record.id,
+          newOpen: true,
+        }),
+      )
+      url = `ProjectManagement/DemandDetail?data=${params}`
+    }
+    text += `【${record.story_prefix_key}-${record.name}】 ${beforeUrl}${url} \n`
+    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
+  }
+
   const onDel = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()
     open({
@@ -116,11 +128,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
         <Item
           onClick={e => {
             e.stopPropagation()
-            onCopyLink({
-              t,
-              project_id: getProjectIdByUrl(),
-              id: props.story.id,
-            })
+            onCopyNumber(String(props.story.story_prefix_key))
           }}
         >
           {t('copy_number')}
@@ -133,7 +141,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
         <Item
           onClick={e => {
             e.stopPropagation()
-            onCopyName(props.story.name, t)
+            onCopy(props.story)
           }}
         >
           {t('copy_title')}
@@ -142,7 +150,10 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
     },
   ].filter(item => {
     if (item.key === '2') {
-      return hasDel
+      return !hasDel
+    }
+    if (item.key === '1') {
+      return !hasEdit
     }
     return true
   })
