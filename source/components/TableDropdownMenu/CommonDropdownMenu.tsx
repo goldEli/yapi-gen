@@ -66,6 +66,8 @@ export const CommonDropdownMenu = (props: Props) => {
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
 
+  console.log(projectInfo, '=projectInfoprojectInfo')
+
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
