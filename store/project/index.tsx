@@ -41,7 +41,7 @@ export interface CounterState {
   // 详情的全屏弹窗
   isDetailScreenModal: {
     visible: boolean
-    params: Partial<Model.Project.DetailScreenModalParams>
+    params: Model.Project.DetailScreenModalParams
   }
 }
 
@@ -91,7 +91,7 @@ const initialState: CounterState = {
   isChangeDetailAffairs: false,
   isDetailScreenModal: {
     visible: false,
-    params: {},
+    params: { id: 0 },
   },
 }
 
@@ -101,7 +101,10 @@ export const projectSlice = createSlice({
   reducers: {
     // 关闭详情弹层
     setIsDetailScreenModal: (state: any, action) => {
-      state.isDetailScreenModal = action.payload
+      state.isDetailScreenModal = {
+        ...state.isDetailScreenModal,
+        ...action.payload,
+      }
     },
     // 全局使用项目信息
     setProjectInfo: (state: any, action) => {
