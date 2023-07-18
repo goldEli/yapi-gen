@@ -36,7 +36,15 @@ export const copyView =
     const res = await services.kanban.copyView(params)
     return res.data
   }
-
+export const deleteKanbanGroup =
+  (params: { id: number }) => async (dispatch: AppDispatch) => {
+    const res = await services.kanban.deleteKanbanGroup({
+      ...params,
+      project_id: getProjectIdByUrl(),
+    })
+    dispatch(getKanbanByGroup())
+    return res
+  }
 // 触发全屏模式
 export const onFullScreenMode = () => async (dispatch: AppDispatch) => {
   dispatch(setFullScreen(true))
