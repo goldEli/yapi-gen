@@ -91,15 +91,38 @@ const FloatBatch = (props: Props) => {
     let beforeUrl: any
     beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
     props.selectRows?.forEach((element: any) => {
-      console.log(element)
+      let params = null
+      let url = ''
+      if (props.type === 3) {
+        params = encryptPhp(
+          JSON.stringify({
+            id: projectId,
+            sprintId: element.id,
+            newOpen: true,
+          }),
+        )
+        url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+      } else if (props.type === 2) {
+        params = encryptPhp(
+          JSON.stringify({
+            id: projectId,
+            flawId: element.id,
+            newOpen: true,
+          }),
+        )
+        url = `ProjectManagement/DefectDetail?data=${params}`
+      } else if (props.type === 1) {
+        params = encryptPhp(
+          JSON.stringify({
+            id: projectId,
+            demandId: element.id,
+            newOpen: true,
+          }),
+        )
+        url = `ProjectManagement/DemandDetail?data=${params}`
+      }
 
-      const params = encryptPhp(
-        JSON.stringify({ type: 'info', id: projectId, demandId: element.id }),
-      )
-      const url = `ProjectManagement/${
-        props.type === 1 ? 'Demand' : 'Defect'
-      }?data=${params}`
-      text += `【${element.storyPrefixKey}】 ${beforeUrl}${url} \n`
+      text += `【${element.storyPrefixKey}-${element.name}】 ${beforeUrl}${url} \n`
     })
     copyLink(text, t('common.copySuccess'), t('common.copyFail'))
   }

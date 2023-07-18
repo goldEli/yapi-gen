@@ -1,7 +1,7 @@
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Space } from 'antd'
-
+import CustomSelect from '@/components/CustomSelect'
 // 需求详情主页样式
 export const Wrap = styled.div`
   height: 100%;
@@ -13,6 +13,7 @@ export const Wrap = styled.div`
   }
   .ant-tabs-nav {
     margin-bottom: 8px;
+    border-bottom: 1px solid transparent;
   }
   .ant-tabs-tab {
     padding: 16px 0;
@@ -23,6 +24,12 @@ export const Wrap = styled.div`
   }
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     color: var(--primary-d1);
+  }
+  .ant-tabs-top > .ant-tabs-nav::before,
+  .ant-tabs-bottom > .ant-tabs-nav::before,
+  .ant-tabs-top > div > .ant-tabs-nav::before,
+  .ant-tabs-bottom > div > .ant-tabs-nav::before {
+    border-bottom: 1px solid transparent;
   }
 `
 
@@ -310,3 +317,68 @@ export const TitleWrap = styled.div<{ activeTabs?: any }>(
     },
   }),
 )
+export const DelButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: -7px;
+  top: -7px;
+  width: 15px;
+  height: 15px;
+  visibility: hidden;
+  z-index: 2;
+  .icon {
+    font-size: 16px;
+    color: var(--neutral-n4);
+    cursor: pointer;
+    &:hover {
+      color: var(--neutral-n3);
+    }
+  }
+`
+export const SelectWrap = styled(CustomSelect)`
+  .ant-select-selection-placeholder {
+    color: var(--neutral-black);
+  }
+  .ant-select-selector {
+    min-width: 140px;
+    border: none !important;
+    outline: none !important;
+  }
+
+  .ant-select-selection-placeholder {
+    color: var(--neutral-n4);
+  }
+`
+export const SelectWrapBedeck = styled.div`
+  min-height: 32px;
+  position: relative;
+  border: 1px solid var(--active);
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  &:hover ${DelButton} {
+    visibility: visible;
+  }
+  span {
+    white-space: nowrap;
+  }
+  .ant-form-item {
+    margin-bottom: 0;
+    padding-top: 0 !important;
+  }
+  .ant-picker {
+    border: none;
+  }
+  .ant-select-selector {
+    border: none !important;
+    background-color: transparent !important;
+  }
+  .ant-select-selection-placeholder {
+    color: black;
+  }
+  .ant-select-clear {
+    right: 12px;
+  }
+`

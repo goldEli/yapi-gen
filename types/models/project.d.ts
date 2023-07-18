@@ -1,4 +1,8 @@
 declare namespace Model.Project {
+  interface DetailScreenModalParams {
+    id: number
+    type: 1 | 2 | 3
+  }
   interface CheckStatusItem {
     // 可流转的状态列表
     canChange?: string[]

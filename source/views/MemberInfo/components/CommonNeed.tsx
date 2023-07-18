@@ -88,7 +88,7 @@ const SearchWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   marginBottom: '20px',
-  borderBottom: '1px solid var(--neutral-n6-d1)',
+  // borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const MainWrap = styled.div({
@@ -660,7 +660,12 @@ const CommonNeed = (props: any) => {
 
   return (
     <MainWrap>
-      <div style={{ justifyContent: 'space-between' }}>
+      <div
+        style={{
+          justifyContent: 'space-between',
+          borderBottom: isShowSearch ? '' : '1px solid var(--neutral-n6-d1)',
+        }}
+      >
         <SearchWrap>
           <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
             <InputSearch
@@ -723,17 +728,18 @@ const CommonNeed = (props: any) => {
           </Space>
         </SearchWrap>
       </div>
-
       {isShowSearch && props.id !== 0 && (
-        <TableFilter
-          onFilter={getSearchKey}
-          onSearch={onSearch}
-          list={searchList}
-          basicsList={filterBasicsList}
-          specialList={filterSpecialList}
-          customList={filterCustomList}
-          hasLeft
-        />
+        <div>
+          <TableFilter
+            onFilter={getSearchKey}
+            onSearch={onSearch}
+            list={searchList}
+            basicsList={filterBasicsList}
+            specialList={filterSpecialList}
+            customList={filterCustomList}
+            hasLeft
+          />
+        </div>
       )}
       {!isMany && (
         <div
