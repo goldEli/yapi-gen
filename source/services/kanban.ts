@@ -138,3 +138,10 @@ export const modifyKanbanIssueSort = async (
   )
   return response
 }
+
+export const deleteKanbanGroup = async (
+  params: API.Kanban.DeleteStory.Params,
+) => {
+  const res = await http.delete('deleteKanbanGroup', params)
+  return res
+}

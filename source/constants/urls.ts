@@ -279,7 +279,8 @@ const urls = {
   modifySchedule: function (id: Model.Schedule.Info['schedule_id']) {
     return `/b/calendar/schedule/${id}`
   },
-
+  //  删除看板分组
+  deleteKanbanGroup: '/b/project/kanban/deleteGroup',
   // 看板配置列表
   getKanbanConfigList: '/b/project/kanban/configs/index',
   // 看板配置
