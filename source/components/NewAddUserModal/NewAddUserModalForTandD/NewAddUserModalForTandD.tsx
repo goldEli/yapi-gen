@@ -506,11 +506,15 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
 
   const getTapData = (datas: any) => {
+    console.log(datas, 'f飞机')
+
     active.current.push(datas)
     setShowTreeData({ children: datas.children, staffs: datas.staffs })
   }
   // 选中节点
   const setKeys = (keys: any) => {
+    console.log(keys, 'fff放松放松')
+
     if (keys.children && keys.children.length >= 1) {
       getHaveChildBykeys(keys)
     } else {
@@ -888,6 +892,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     props.isVisible,
     // props.defaultPeople, tabsActive, selectDataList
   ])
+  console.log(personData, '233')
 
   return (
     <ModalStyle
@@ -1053,8 +1058,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
             }}
           >
             {personData.length >= 1
-              ? personData.map((el: any) => (
-                  <ListItem key={el.id}>
+              ? personData.map((el: any, index: any) => (
+                  <ListItem key={index}>
                     <CommonUserAvatar
                       name={el.name}
                       fontSize={14}
