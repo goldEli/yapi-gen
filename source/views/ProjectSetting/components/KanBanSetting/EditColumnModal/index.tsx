@@ -8,11 +8,13 @@ import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import {
   closeEditColumnModel,
+  getKanbanConfigRemainingStatus,
   onOkEditColumnModel,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import styled from '@emotion/styled'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { deleteColumn } from '@store/kanbanConfig'
+import { deleteColumn, setUnassignStatusList } from '@store/kanbanConfig'
+import useKanBanData from '../hooks/useKanBanData'
 
 const LabelTitle = (props: any) => {
   return (
@@ -53,6 +55,8 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
   const [t] = useTranslation()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const { editColumnModelInfo } = useSelector(store => store.KanbanConfig)
+  const { columnList } = useKanBanData()
+  const { unassignStatusList } = useSelector(store => store.KanbanConfig)
   React.useEffect(() => {
     if (editColumnModelInfo.columnInfo) {
       form.setFieldsValue({
@@ -156,6 +160,12 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
       </div>
       <DelBtn
         onClick={() => {
+          const status = (editColumnModelInfo?.columnInfo?.categories || [])
+            .filter(item => item.status?.length)
+            .reduce((pre: any, current: any) => {
+              pre.push(...current.status)
+              return pre
+            }, [])
           open({
             title: t('confirm_deletion'),
             text: t(
@@ -166,6 +176,7 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
                 return Promise.reject()
               }
               dispatch(deleteColumn(editColumnModelInfo.columnInfo?.id))
+              dispatch(setUnassignStatusList(status))
               onClose()
               return Promise.resolve()
             },

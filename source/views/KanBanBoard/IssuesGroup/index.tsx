@@ -4,7 +4,10 @@ import UpDownBtn from '@/components/UpDownBtn'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import ChooseMember from '../ChooseMember'
 import useAddUserModal from '@/hooks/useAddUserModal'
-import { openUserGroupingModel } from '@store/kanBan/kanBan.thunk'
+import {
+  openUserGroupingModel,
+  deleteKanbanGroup,
+} from '@store/kanBan/kanBan.thunk'
 import { useDispatch } from '@store/index'
 import {
   DropAreaList,
@@ -14,12 +17,15 @@ import {
   Text,
   Title,
   TitleBtn,
+  DelIcon,
 } from './styled'
 import useCloseMap from '../hooks/useCloseMap'
 import useGroupType from '../hooks/useGroupType'
 import PriorityIcon from '@/components/PriorityIcon'
 import useI18n from '@/hooks/useI18n'
 import IssuesForPriority from '../IssuesForPriority'
+import IconFont from '@/components/IconFont'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -28,9 +34,11 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
   const { AddUserModalElement, open } = useAddUserModal()
   const { closeMap, onChange } = useCloseMap()
+  const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const hidden = !!closeMap?.get(issuesGroup.id)
   const { showUserRelatedInformation, groupType, isNoGroup } = useGroupType()
+
   const { t } = useI18n()
 
   const text = useMemo(() => {
@@ -119,7 +127,27 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       <ChooseMember id={issuesGroup.id} />
     </div>
   )
-
+  const delBtn = !!issuesGroup.id && (
+    <DelIcon>
+      <IconFont
+        type="delete"
+        style={{ color: 'var(--neutral-n3)', fontSize: 18 }}
+        onClick={() => {
+          openDelete({
+            title: t('confirm_deletion'),
+            text: '确认删除该分组',
+            onConfirm() {
+              const params = {
+                id: issuesGroup.id,
+              }
+              dispatch(deleteKanbanGroup(params))
+              return Promise.resolve()
+            },
+          })
+        }}
+      ></IconFont>
+    </DelIcon>
+  )
   const icon = useMemo(() => {
     if (showUserRelatedInformation) {
       return <></>
@@ -148,11 +176,13 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       {addPeopleBtn}
       {AddUserModalElement}
       <Text>{text}</Text>
+      {delBtn}
     </GroupTitleArea>
   )
   return (
     <IssuesGroupBox>
       {titleArea}
+      <DeleteConfirmModal />
       <DropAreaList hidden={hidden}>
         {issuesGroup?.columns?.map((column, index) => {
           if (groupType === 'priority') {

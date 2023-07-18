@@ -40,3 +40,20 @@ export const ImgIcon = styled.img`
   width: 20px;
   height: 20px;
 `
+export const DelIcon = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  position: relative;
+  top: 1px;
+  &:hover {
+    background: var(--hover-d1);
+    border-radius: 4px;
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+`
