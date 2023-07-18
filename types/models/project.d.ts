@@ -1,7 +1,14 @@
 declare namespace Model.Project {
   interface DetailScreenModalParams {
+    // 项目id
     id: number
-    type: 1 | 2 | 3
+    // 上下切换数组
+    changeIds?: []
+    //  1是事务，2是缺陷，3是需求
+    specialType?: 1 | 2 | 3
+    sprintId?: number
+    flawId?: number
+    demandId?: number
   }
   interface CheckStatusItem {
     // 可流转的状态列表
