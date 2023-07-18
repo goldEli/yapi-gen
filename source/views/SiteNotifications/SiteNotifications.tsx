@@ -50,13 +50,21 @@ const SiteNotifications = (props: any, ref: any) => {
   }
   const sendMsg = () => {
     if (wsData.data.customData.noticeStyle === '2') {
+      const element: any = document.getElementsByClassName('ant-message')
+
       message.success({
         icon: <span></span>,
         duration: 0,
+
         content: <TextChange text={wsData.data.msgBody.title} />,
         className: 'custom-class',
         onClick: () => {
-          message.destroy()
+          // message.destroy('infoKey')
+          for (let i = 0; i < element.length; i++) {
+            const childNode = element[i]
+            childNode.remove()
+          }
+
           // dispatch(changeVisible(!isVisible))
         },
       })

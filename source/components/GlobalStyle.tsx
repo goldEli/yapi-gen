@@ -154,6 +154,9 @@ const GlobalStyle = () => {
   const colors = [white, black]
 
   const globalCss = css`
+    .clickable-row {
+      cursor: pointer;
+    }
     ${colors[theme]}
     .ant-form-item-label > label {
       color: var(--neutral-n1-d1);
@@ -188,6 +191,7 @@ const GlobalStyle = () => {
     .ant-checkbox-indeterminate .ant-checkbox-inner::after {
       background-color: #6688ff;
     }
+
     .ant-input {
       input {
         font-family: SiYuanRegular;

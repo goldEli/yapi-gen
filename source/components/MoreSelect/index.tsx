@@ -100,6 +100,7 @@ const index = (props: any) => {
         </>
       )}
       options={prepositionItems}
+      fieldNames={{ label: 'label', value: 'value', option: 'children' }}
     />
   )
 }

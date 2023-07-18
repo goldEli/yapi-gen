@@ -174,7 +174,7 @@ const Operation = (props: Props) => {
       return
     }
     const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
-    console.log(2323232, arr)
+
     setSearchList(arr)
 
     dispatch(saveScreen(arr))

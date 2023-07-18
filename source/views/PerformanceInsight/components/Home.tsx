@@ -184,6 +184,7 @@ const Home = () => {
       defect: [],
     })
   const [optionVal, setOptionVal] = useState<number>(0)
+  const { isRefresh } = useSelector(store => store.user)
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ViewItem>()
   useEffect(() => {
@@ -197,6 +198,9 @@ const Home = () => {
       getViewList({ project_id: '', use_type: 3 })
     }
   }, [])
+  useEffect(() => {
+    isRefresh && init()
+  }, [isRefresh])
   const init = () => {
     // 缺陷现状和工作项现状
     getWorkList()
