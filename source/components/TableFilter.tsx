@@ -20,6 +20,7 @@ import { setFilterKeys } from '@store/project'
 import { saveValue } from '@store/view'
 import MoreSelect from './MoreSelect'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import CategoryDropdown from './CategoryDropdown'
 
 const MySpan = styled.div`
   cursor: pointer;
@@ -452,6 +453,18 @@ const TableFilter = (props: any) => {
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
+                      {/* {i.key === 'category' ? (
+                        <CategoryDropdown
+                          type
+                          mode="multiple"
+                          projectId={631}
+                          categoryList={
+                            projectInfoValues?.filter(
+                              (k: any) => k.key === i.key,
+                            )[0]?.children
+                          }
+                        />
+                      ) : ( */}
                       <MoreSelect
                         onConfirm={confirm}
                         options={
@@ -463,7 +476,7 @@ const TableFilter = (props: any) => {
                                   projectInfoValues
                                     ?.filter((k: any) => k.key === i.key)[0]
                                     ?.children?.map((v: any) => ({
-                                      label: v.content_txt,
+                                      label: v.content_txt || v.content,
                                       value: v.id,
                                       id: v.id,
                                     })),
@@ -474,7 +487,14 @@ const TableFilter = (props: any) => {
                                   projectInfoValues
                                     ?.filter((k: any) => k.key === i.key)[0]
                                     ?.children?.map((v: any) => ({
-                                      label: v.content_txt || v.content,
+                                      label:
+                                        i.key === 'iterate_name'
+                                          ? `${v.content_txt || v.content} ${
+                                              v?.start_at
+                                                ? `(${v?.start_at}~${v?.end_at})`
+                                                : ''
+                                            } `
+                                          : v.content_txt || v.content,
                                       value: v.id,
                                       id: v.id,
                                     })),
