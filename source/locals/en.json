@@ -453,7 +453,7 @@
     "personCheckbox": "Person Checkbox",
     "chooseRange": "Choose Range",
     "link": "Link",
-    "checked": "Checked ({{count}})",
+    "checked": "check({{count}})",
     "batchEdit": "Batch Edit",
     "batchDelete": "Batch delete",
     "batchCopyLink": "Batch Copy Link",
