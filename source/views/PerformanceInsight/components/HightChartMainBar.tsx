@@ -136,7 +136,11 @@ const HightChartMainBar = (props: {
           {props.titleType ? (
             <CharTitle>
               <span>{t('performance.statisticalPeriod')}</span>
-              <span className="day">{props.chart?.period_number}天</span>
+              <span className="day">
+                {t('performance.days', {
+                  day: props.chart?.period_number,
+                })}
+              </span>
               <CommonIconFont
                 type={'down-left'}
                 size={16}
