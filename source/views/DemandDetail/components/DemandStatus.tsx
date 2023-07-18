@@ -158,7 +158,7 @@ const DemandStatusBox = (props: any) => {
         {demandInfo?.isExamine && (
           <StatusExamine type={1} onCancel={onCancelExamine} />
         )}
-        {rows && !isUpdateStatus && !demandInfo?.isExamine && (
+        {rows && !demandInfo?.isExamine && (
           <ShapeContentForDetail
             active={demandInfo?.status?.status}
             sid={props.sid}

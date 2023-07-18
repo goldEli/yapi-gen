@@ -94,7 +94,6 @@ const HightChartMainLine = (props: {
           <CharTitle>
             <span>{t('performance.statisticalPeriod')}</span>
             <span className="day">
-              {' '}
               {t('performance.days', {
                 day: props.chart?.period_number,
               })}

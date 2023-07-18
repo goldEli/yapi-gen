@@ -1784,6 +1784,7 @@
     "allPeople": "All employees selected",
     "statisticalPeriod": "Statistical period",
     "daysBefore": "{{day}} days before",
+    "days": "Day{{day}}",
     "ringRatio": "Ring ratio",
     "fromHighToLow": "From high to low",
     "lowToHigh": "Low to high",

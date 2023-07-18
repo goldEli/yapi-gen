@@ -462,8 +462,25 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     if (hasVal.length >= 1) {
       getMessage({ msg: t('commonModal.warnningMsg1'), type: 'warning' })
     } else {
-      const filterVal: any = selectDataList.filter((el: any) => el.id === value)
+      const filterVal: any =
+        tabsActive === 0
+          ? selectDataList.filter((el: any) => el.id === value)
+          : selectDataList
+              .filter((el: any) => el.id === value)
+              .map((i: any) => {
+                return {
+                  id: i.id,
+                  department_id: i.department_id,
+                  name: i.name,
+                  nickname: i.nickname,
+                  avatar: i.avatar,
+                }
+              })
+      // const filterVal: any = selectDataList.filter((el: any) => el.id === value)
+      console.log(filterVal)
+
       setCheckedKeys([...checkedKeys, filterVal.find((item: any) => item).id])
+
       setPersonData([...personData, ...filterVal])
     }
   }
