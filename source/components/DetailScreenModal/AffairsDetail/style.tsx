@@ -1,6 +1,6 @@
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
-import { Dropdown, Form, Space } from 'antd'
+import { Dropdown, Form, Progress, Space } from 'antd'
 
 export const Wrap = styled.div`
   height: 100%;
@@ -171,8 +171,8 @@ export const BasicFooter = styled.div`
   }
 `
 
-export const InfoWrap = styled.div`
-  height: calc(100vh - 265px);
+export const InfoWrap = styled.div<{ height: any }>`
+  height: ${props => props.height};
   flex: 1;
   position: relative;
   .tabs {
@@ -208,5 +208,140 @@ export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
     svg {
       cursor: auto;
     }
+  }
+`
+
+// 详情里组件
+
+export const ActivityTabItem = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const InfoItem = styled.div`
+  display: flex;
+  margin-top: 20px;
+  position: relative;
+  flex-direction: column;
+  padding: 0 24px;
+`
+
+export const ItemNumber = styled.div<{ isActive?: boolean }>`
+  margin-left: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props =>
+    props.isActive ? 'var(--primary-d1)' : 'var(--function-tag5)'};
+  color: ${props =>
+    props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
+`
+
+export const Label = styled.div`
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
+  min-width: 120px;
+  font-family: SiYuanMedium;
+  margin-bottom: 8px;
+  height: 32px;
+  line-height: 32px;
+`
+
+export const TargetWrap = styled.div`
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 14px;
+  .icon {
+    margin-right: 8px;
+    display: inline;
+  }
+  .label {
+    font-family: SiYuanMedium;
+  }
+`
+
+export const CancelText = styled.div`
+  font-size: 14px;
+  color: var(--auxiliary-text-t2-d1);
+  cursor: pointer;
+`
+
+export const ProgressWrap = styled(Progress)`
+  width: 100%;
+  margin: 4px 0;
+  .ant-progress-outer {
+    margin-right: calc(-4em - 16px);
+    padding-right: calc(4em + 24px);
+  }
+  .ant-progress-text {
+    font-size: 12px;
+    color: var(--neutral-n2);
+  }
+`
+
+export const LinkWrap = styled.div`
+  display: flex;
+  align-items: center;
+  .content {
+    cursor: pointer;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    &:hover {
+      color: var(--primary-d2);
+    }
+  }
+`
+
+export const LabelWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const ProgressWrapBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  .finish {
+    font-size: 12px;
+    color: var(--neutral-n2);
+  }
+`
+
+export const SubLabel = styled.div`
+  margin: 8px 0;
+  font-size: 12px;
+  color: var(--neutral-n3);
+`
+
+export const ProgressWrapLine = styled.div<{
+  one: number
+  tow: number
+  three: number
+}>`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  div {
+    border-radius: 8px;
+    height: 8px;
+  }
+  .one {
+    width: ${props => props.one}%;
+    background: var(--primary-d1);
+  }
+  .two {
+    width: ${props => props.tow}%;
+    background: var(--primary-d1);
+    opacity: 0.4;
+  }
+  .three {
+    width: ${props => props.three}%;
+    background: var(--function-tag5);
   }
 `

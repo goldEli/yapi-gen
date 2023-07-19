@@ -10,16 +10,16 @@ import {
 import { DetailInfoWrap, InfoWrap } from '../style'
 import { Tabs } from 'antd'
 import { useTranslation } from 'react-i18next'
-import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
-import ChildSprint from '@/views/SprintProjectDetail/components/ChildSprint'
-import LinkSprint from '@/views/SprintProjectDetail/components/LinkSprint'
-import ActivitySprint from '@/views/SprintProjectDetail/components/ActivitySprint'
-import CommonIconFont from '@/components/CommonIconFont'
-import CommentFooter from '@/components/CommonComment/CommentFooter'
 import { getIdsForAt, getProjectIdByUrl, removeNull } from '@/tools'
 import { addAffairsComment } from '@/services/affairs'
 import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
 import { getMessage } from '@/components/Message'
+import LinkSprint from './LinkSprint'
+import ActivitySprint from './ActivitySprint'
+import AffairsDetail from './AffairsDetail'
+import CommentFooter from '@/components/CommonComment/CommentFooter'
+import CommonIconFont from '@/components/CommonIconFont'
+import ChildSprint from './ChildSprint'
 
 interface Props {
   onRef: any
@@ -126,7 +126,12 @@ const AffairsInfo = (props: Props) => {
   }, [LeftDomC])
 
   return (
-    <InfoWrap>
+    <InfoWrap
+      height={`calc(100vh - ${
+        (affairsInfo?.isExamine ? 236 : 187) +
+        (document.getElementById('DetailText')?.clientHeight || 25)
+      }px)`}
+    >
       {isScroll && (
         <Tabs
           className="tabs"
