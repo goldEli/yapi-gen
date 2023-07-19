@@ -155,10 +155,6 @@ const ProjectManagementOptimization = () => {
     projectTypes,
   ])
 
-  useEffect(() => {
-    dispatch(getProjectCover())
-  }, [])
-
   // 更新列表
   const onUpdate = () => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
@@ -303,10 +299,6 @@ const ProjectManagementOptimization = () => {
     if (typeId || typeId === 0) {
       setActiveType(typeId)
       setGroupId(null)
-      setPageObj({
-        page: 1,
-        size: pageObj.size,
-      })
     }
   }, [typeId])
   const onExit = () => {

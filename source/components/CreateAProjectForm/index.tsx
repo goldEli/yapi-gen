@@ -46,6 +46,7 @@ import ProjectType from '../ProjectType/ProjectType'
 import ProjectTemplate from '../ProjectTemplate/ProjectTemplate'
 import ProjectChooseSide from '../ProjectChooseSide/ProjectChooseSide'
 import { setProjectInfo } from '@store/project'
+import { getProjectCover } from '@store/cover/thunks'
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
@@ -347,6 +348,7 @@ const CreateAProjectForm = () => {
 
   useEffect(() => {
     if (createVisible) {
+      dispatch(getProjectCover())
       getGroupData()
       setActiveCover(covers[0]?.path)
       form.setFieldsValue({
