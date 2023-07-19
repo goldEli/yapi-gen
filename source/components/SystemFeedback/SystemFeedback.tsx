@@ -27,7 +27,7 @@ const ModalFooter = styled.div({
 
 const Wrap = styled.div`
   width: 100%;
-  background-image: url('/feedback.png');
+  background-image: url('/feedback.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
