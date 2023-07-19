@@ -281,9 +281,8 @@ export const HeaderRowBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 24px;
+  margin: 0 48px;
   height: 80px;
-  padding-right: 24px;
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
 export const Back = styled.div`
@@ -333,7 +332,7 @@ export const PersonText = styled.div`
   color: var(--neutral-n3);
 `
 export const Col = styled.div`
-  margin: 24px 24px 12px 24px;
+  margin: 24px 48px 12px 48px;
   display: flex;
   height: 32px;
   align-items: center;
@@ -364,8 +363,8 @@ export const TitleCss = styled.div`
   }
 `
 export const TableStyle = styled.div`
-  height: calc(100% - 300px);
-  padding: 24px 24px 0 24px;
+  height: calc(100% - 257px);
+  padding: 24px 48px 0 48px;
 `
 export const Btn1 = styled.div`
   min-width: 60px;

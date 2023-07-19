@@ -901,7 +901,7 @@ const ProgressComparison = (props: Props) => {
           <TitleCss>{props.title}</TitleCss>
         </Col>
         <div
-          style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
+          style={{ display: 'flex', alignItems: 'center', padding: '0 48px' }}
         >
           {work?.map((el, index) => (
             <>
