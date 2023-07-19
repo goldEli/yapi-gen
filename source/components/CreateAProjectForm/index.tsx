@@ -348,7 +348,6 @@ const CreateAProjectForm = () => {
 
   useEffect(() => {
     if (createVisible) {
-      dispatch(getProjectCover())
       getGroupData()
       setActiveCover(covers[0]?.path)
       form.setFieldsValue({
