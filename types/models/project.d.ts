@@ -9,6 +9,7 @@ declare namespace Model.Project {
     sprintId?: number
     flawId?: number
     demandId?: number
+    type?: string
   }
   interface CheckStatusItem {
     // 可流转的状态列表

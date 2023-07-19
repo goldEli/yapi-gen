@@ -30,6 +30,7 @@ import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { copyView } from '@/services/kanban'
+import { setListActiveId } from '@store/global'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 // 进展对比tips
@@ -155,12 +156,13 @@ const ProgressComparison = (props: Props) => {
     const columns1 = [
       {
         dataIndex: 'userName',
-        title: t('performance.user'),
+        title: t('performance.user') + '999',
         render: (text: string, record: any) => {
           return (
             <RowText
               onClick={(event: any) => {
                 event.stopPropagation()
+                dispatch(setListActiveId(record?.id ?? 0))
                 dispatch(setVisiblePerson(false))
                 dispatch(setVisibleWork(true))
                 getDatail(record)
@@ -301,6 +303,7 @@ const ProgressComparison = (props: Props) => {
                 dispatch(setVisibleWork(true))
                 dispatch(setVisiblePerson(false))
                 event.stopPropagation()
+                dispatch(setListActiveId(record?.id ?? 0))
                 getDatail(record)
               }}
             >
@@ -437,6 +440,7 @@ const ProgressComparison = (props: Props) => {
             <RowText
               onClick={(event: any) => {
                 event.stopPropagation()
+                dispatch(setListActiveId(record?.id ?? 0))
                 dispatch(setVisiblePerson(false))
                 dispatch(setVisibleWork(true))
                 getDatail(record)
@@ -623,6 +627,7 @@ const ProgressComparison = (props: Props) => {
   }
   // 导出
   const onGetExportApi = async (option: number[]) => {
+    setLoading(true)
     try {
       let result: any = null
       // 1.工作项导出
@@ -676,7 +681,9 @@ const ProgressComparison = (props: Props) => {
       a.href = blobUrl
       a.click()
       setIsVisibleSuccess(true)
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       // console.log(error)
       getMessage({
         msg: t('other.exportFailed'),
@@ -740,6 +747,7 @@ const ProgressComparison = (props: Props) => {
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
     setTableBeforeAndAfter('after')
+    dispatch(setListActiveId(row?.id ?? 0))
     event.stopPropagation()
     dispatch(setVisiblePerson(true))
     dispatch(setVisibleWork(false))
@@ -873,12 +881,15 @@ const ProgressComparison = (props: Props) => {
   useEffect(() => {
     dispatch(setVisiblePerson(false))
     dispatch(setVisibleWork(false))
+    dispatch(setListActiveId(0))
   }, [])
   return (
     <div
       style={{ height: '100%', width: '100%' }}
       onClick={() => {
-        dispatch(setVisiblePerson(false)), dispatch(setVisibleWork(false))
+        dispatch(setListActiveId(0)),
+          dispatch(setVisiblePerson(false)),
+          dispatch(setVisibleWork(false))
       }}
     >
       <Spin
@@ -901,7 +912,7 @@ const ProgressComparison = (props: Props) => {
           <TitleCss>{props.title}</TitleCss>
         </Col>
         <div
-          style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
+          style={{ display: 'flex', alignItems: 'center', padding: '0 48px' }}
         >
           {work?.map((el, index) => (
             <>

@@ -7,7 +7,7 @@ import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useNavigate } from 'react-router-dom'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
-import { setIsUpdateChangeLog } from '@store/project'
+import { setIsDetailScreenModal, setIsUpdateChangeLog } from '@store/project'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import BasicDemand from '@/components/SprintDetailDrawer/component/BasicDemand'
@@ -36,6 +36,7 @@ const AffairsBasic = (props: Props) => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
+    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',

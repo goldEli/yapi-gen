@@ -157,6 +157,8 @@ export const MainWrap = styled.div({
   width: '100%',
 })
 const MenuItemsTitle = styled.div`
+  height: 44px;
+  line-height: 44px;
   padding: 0px 16px;
   color: var(--neutral-n3);
   font-size: var(--font12);

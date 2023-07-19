@@ -66,7 +66,7 @@ export const Name = styled.div`
   font-size: 14px;
   font-family: SiYuanMedium;
   font-weight: 400;
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n1-d1) !important;
   line-height: 22px;
   margin-right: 8px;
 `
@@ -87,10 +87,11 @@ export const About = styled.div`
   font-weight: 400;
   line-height: 20px;
   margin-left: 4px;
-  color: var(--neutral-n3);
+  color: var(--neutral-n3) !important;
 `
 
 export const GrepContent = styled.div<{ status?: boolean }>`
+  word-break: break-all;
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;

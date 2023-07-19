@@ -31,7 +31,7 @@ const Content = styled.div`
   box-sizing: border-box;
 
   overflow-y: scroll;
-  height: calc(100vh - 400px);
+  height: calc(100vh - 600px);
 `
 
 const NoteModal = (props: any) => {
@@ -79,7 +79,7 @@ const NoteModal = (props: any) => {
         <div
           style={{
             height: '50px',
-            fontSize: '44px',
+            fontSize: '32px',
             fontFamily: 'SiYuanMedium',
             color: 'var(--neutral-white-d1)',
             lineHeight: '52px',
