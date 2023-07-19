@@ -74,10 +74,10 @@ export const GrepTitle = styled.span`
 
 export const GrepTitle2 = styled.span`
   margin-right: 16px;
-  color: var(--neutral-n3);
+  color: var(--neutral-n1-d1);
   font-size: 12px;
   cursor: pointer;
-  :hover {
+  :active {
     color: var(--primary-d1);
   }
 `

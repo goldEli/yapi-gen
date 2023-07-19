@@ -213,6 +213,9 @@ const Home = () => {
     // 集合图表
     getStatisticsOther()
   }
+  useEffect(() => {
+    isRefresh && init()
+  }, [isRefresh])
   const updateViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)

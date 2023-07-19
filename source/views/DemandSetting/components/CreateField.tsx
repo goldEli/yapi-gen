@@ -11,6 +11,13 @@ import { useDispatch, useSelector } from '@store/index'
 import ProjectDragging from './ProDragging'
 import { setProjectFieIdsData } from '@store/category'
 import { filterCategory } from '@/tools'
+const SelectStyle = styled(Select)<{ isActive?: any }>({}, ({ isActive }) => ({
+  '.ant-select-selection-placeholder,.ant-select-arrow': {
+    color: isActive
+      ? 'var(--primary-d2) !important'
+      : 'var(--auxiliary-text-t2-d1)',
+  },
+}))
 const CreateFieldWrap = styled.div`
   margin: 20px 0 0 0px;
   border-left: 1px solid var(--neutral-n6-d1);
@@ -45,11 +52,6 @@ const FieldWrap = styled.div`
   align-items: center;
   .ant-select-selection-placeholder {
     color: var(--auxiliary-text-t2-d1);
-  }
-  .ant-select {
-    &:hover {
-      background: var(--hover-d1);
-    }
   }
 `
 const DivideWrap = styled.div`
@@ -106,7 +108,8 @@ const CreateField = () => {
     return { is_customize: '', content: '' }
   })
   const [cacheSearchlist, setCacheSearchlist] = useState<any>()
-  const { work_type } = useSelector(state => state.project)
+  const [typeIsOpen, setTypeIsOpen] = useState(false)
+  const [fieldIsOpen, setFieldIsOpen] = useState(false)
   const option = [
     {
       label: t('newlyAdd.lineText'),
@@ -284,10 +287,14 @@ const CreateField = () => {
           )}
         </BottomTitleStyle>
         <FieldWrap>
-          <Select
+          <SelectStyle
             style={{ width: 100 }}
             bordered={false}
-            suffixIcon={<CommonIconFont type="down" />}
+            isActive={fieldIsOpen}
+            onDropdownVisibleChange={e => setFieldIsOpen(e)}
+            suffixIcon={
+              <CommonIconFont type={fieldIsOpen ? 'up' : 'down'} size={16} />
+            }
             placeholder={t('sprintProject.allFields')}
             allowClear
             options={[
@@ -307,12 +314,16 @@ const CreateField = () => {
             }}
           />
           <DivideWrap></DivideWrap>
-          <Select
+          <SelectStyle
             style={{ width: 100 }}
             bordered={false}
+            isActive={typeIsOpen}
             placeholder={t('sprintProject.allTypes')}
             allowClear
-            suffixIcon={<CommonIconFont type="down" />}
+            onDropdownVisibleChange={e => setTypeIsOpen(e)}
+            suffixIcon={
+              <CommonIconFont type={typeIsOpen ? 'up' : 'down'} size={16} />
+            }
             options={option}
             onChange={e => {
               setFieldType((p: any) => {

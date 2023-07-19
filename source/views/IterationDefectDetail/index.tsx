@@ -336,22 +336,24 @@ const IterationDefectDetail = () => {
         alignItems: 'flex-start',
       }}
     >
-      {resultCategory?.map((k: any) => {
-        return (
-          <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
-            <img
-              src={k.category_attachment}
-              style={{
-                width: '18px',
-                height: '18px',
-                marginRight: '8px',
-              }}
-              alt=""
-            />
-            <span>{k.content}</span>
-          </LiWrap>
-        )
-      })}
+      {resultCategory
+        ?.filter((i: any) => i.work_type === 2)
+        ?.map((k: any) => {
+          return (
+            <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
+              <img
+                src={k.category_attachment}
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{k.content}</span>
+            </LiWrap>
+          )
+        })}
     </div>
   )
 

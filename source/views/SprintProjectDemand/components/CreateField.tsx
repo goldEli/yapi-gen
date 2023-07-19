@@ -11,6 +11,13 @@ import { useDispatch, useSelector } from '@store/index'
 import ProjectDragging from './ProDragging'
 import { setProjectFieIdsData } from '@store/category'
 import { filterCategory } from '@/tools'
+const SelectStyle = styled(Select)<{ isActive?: any }>({}, ({ isActive }) => ({
+  '.ant-select-selection-placeholder,.ant-select-arrow': {
+    color: isActive
+      ? 'var(--primary-d2) !important'
+      : 'var(--auxiliary-text-t2-d1)',
+  },
+}))
 const CreateFieldWrap = styled.div`
   margin: 20px 0 0 0px;
   border-left: 1px solid var(--neutral-n6-d1);
@@ -95,13 +102,13 @@ const CreateField = () => {
   const [dataList, setDataList] = useState<any>()
   const [searchDataList, setSearchDataList] = useState<any>()
   const { projectInfo } = useSelector(store => store.project)
-  const [payloadDataList, setPayloadDataList] = useState<any>()
   const [searchValue, setSearchValue] = useState('')
   const [fieldType, setFieldType] = useState<any>(() => {
     return { is_customize: '', content: '' }
   })
+  const [typeIsOpen, setTypeIsOpen] = useState(false)
+  const [fieldIsOpen, setFieldIsOpen] = useState(false)
   const [cacheSearchlist, setCacheSearchlist] = useState<any>()
-  const { work_type } = useSelector(state => state.project)
   const option = [
     {
       label: t('newlyAdd.lineText'),
@@ -169,7 +176,6 @@ const CreateField = () => {
   const getProjectFieIdsApi = async () => {
     const payloadList = await services.demand.getProjectFieIds(projectInfo.id)
     dispatch(setProjectFieIdsData(payloadList))
-    setPayloadDataList(payloadList)
     setDataList(payloadList)
   }
   // 根据输入框过滤
@@ -278,9 +284,14 @@ const CreateField = () => {
           )}
         </BottomTitleStyle>
         <FieldWrap>
-          <Select
+          <SelectStyle
             style={{ width: 100 }}
             bordered={false}
+            isActive={fieldIsOpen}
+            onDropdownVisibleChange={e => setFieldIsOpen(e)}
+            suffixIcon={
+              <CommonIconFont type={fieldIsOpen ? 'up' : 'down'} size={16} />
+            }
             placeholder={t('sprintProject.allFields')}
             allowClear
             options={[
@@ -300,11 +311,16 @@ const CreateField = () => {
             }}
           />
           <DivideWrap></DivideWrap>
-          <Select
+          <SelectStyle
             style={{ width: 100 }}
             bordered={false}
+            isActive={typeIsOpen}
             placeholder={t('sprintProject.allTypes')}
             allowClear
+            onDropdownVisibleChange={e => setTypeIsOpen(e)}
+            suffixIcon={
+              <CommonIconFont type={typeIsOpen ? 'up' : 'down'} size={16} />
+            }
             options={option}
             onChange={e => {
               setFieldType((p: any) => {
