@@ -408,7 +408,7 @@ export const LotBox = styled.div`
   }
 `
 export const TextNum = styled.div`
-  width: 51px;
+  width: 48px;
   display: flex;
   align-items: center;
   height: 24px;
