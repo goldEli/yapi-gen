@@ -39,6 +39,7 @@ import {
 import {
   setAddWorkItemModal,
   setIsDetailScreenModal,
+  setIsUpdateAddWorkItem,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
 } from '@store/project'
@@ -207,6 +208,7 @@ const AffairsDetail = () => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
+    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
     const resultParams = encryptPhp(
       JSON.stringify({
         type: 'sprint',
@@ -233,8 +235,10 @@ const AffairsDetail = () => {
       isDeleteChild: isDeleteCheck ? 1 : 2,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    const params = encryptPhp(JSON.stringify({ id: affairsInfo.projectId }))
-    navigate(`/SprintProjectManagement/Affair?data=${params}`)
+    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    setTimeout(() => {
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    }, 0)
   }
 
   // 删除事务弹窗
@@ -439,6 +443,16 @@ const AffairsDetail = () => {
     }
   }
 
+  // 关闭弹窗
+  const onClose = () => {
+    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+  }
+
+  // 是否审核
+  const onExamine = () => {
+    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
+  }
+
   useEffect(() => {
     if (visible) {
       dispatch(
@@ -456,7 +470,7 @@ const AffairsDetail = () => {
         }),
       )
     }
-  }, [visible])
+  }, [visible, params])
 
   useEffect(() => {
     // 获取项目信息中的需求类别
@@ -474,7 +488,7 @@ const AffairsDetail = () => {
   }, [affairsInfo, projectInfoValues])
 
   useEffect(() => {
-    if (isUpdateAddWorkItem) {
+    if (isUpdateAddWorkItem && visible) {
       dispatch(
         getAffairsInfo({ projectId: params.id, sprintId: affairsInfo.id }),
       )
@@ -631,7 +645,7 @@ const AffairsDetail = () => {
                 <CommonButton type="icon" icon="more" />
               </div>
             </DropdownMenu>
-            <CommonButton type="icon" icon="close" />
+            <CommonButton onClick={onClose} type="icon" icon="close" />
           </ButtonGroup>
         )}
       </DetailTop>
@@ -655,7 +669,7 @@ const AffairsDetail = () => {
             </div>
           </Popover>
         </Tooltip>
-        <DetailText>
+        <DetailText id="DetailText">
           {!hasEdit && (
             <span
               className="name"
@@ -673,9 +687,10 @@ const AffairsDetail = () => {
             record={affairsInfo}
             onChangeStatus={onChangeStatus}
             type={2}
-            isCanOperation={!hasEdit}
+            isCanOperation={!hasEdit && !affairsInfo.isExamine}
           >
             <StateTag
+              onClick={affairsInfo.isExamine ? onExamine : void 0}
               isShow={!hasEdit}
               name={affairsInfo.status?.status.content}
               state={

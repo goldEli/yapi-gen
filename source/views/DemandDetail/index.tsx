@@ -845,7 +845,7 @@ const DemandDetail = () => {
           <CopyIcon onCopy={onCopy} />
           <ChangeStatusPopover
             projectId={demandInfo.projectId}
-            isCanOperation={!hasEdit}
+            isCanOperation={!hasEdit && demandInfo.isExamine}
             record={demandInfo}
             onChangeStatus={onChangeStatus}
             type={1}
