@@ -271,7 +271,7 @@ const NoteCard = (props: any) => {
           </div>
         </Wrap1>
         <Wrap2>
-          {values.send_time ? (
+          {values.send_time && values.is_send !== 1 ? (
             <span
               style={{
                 color: '#646566',
