@@ -1,13 +1,22 @@
 // 详情弹层
 
 import { useDispatch, useSelector } from '@store/index'
-import CommonModal2 from '../CommonModal2'
 import { setIsDetailScreenModal } from '@store/project'
+import { Content, ModalWrap } from './style'
+import DemandDetail from './DemandDetail'
+import FlawDetail from './FlawDetail'
+import AffairsDetail from './AffairsDetail'
 
 const DetailScreenModal = () => {
   const dispatch = useDispatch()
   const { isDetailScreenModal } = useSelector(store => store.project)
   const { visible, params } = isDetailScreenModal
+
+  const detailContent = [
+    { specialType: 1, content: <AffairsDetail /> },
+    { specialType: 2, content: <FlawDetail /> },
+    { specialType: 3, content: <DemandDetail /> },
+  ]
 
   //   关闭弹窗
   const onClose = () => {
@@ -15,20 +24,35 @@ const DetailScreenModal = () => {
   }
 
   return (
-    <CommonModal2
-      noFooter
+    <ModalWrap
+      footer={false}
+      open={visible}
+      closable={false}
+      title={false}
+      maskClosable={false}
+      destroyOnClose
+      keyboard={false}
+      wrapClassName="vertical-center-modal"
+      focusTriggerAfterClose={false}
+      mask={false}
       bodyStyle={{
-        height: '100vh',
+        height: 'calc(100vh - 56px)',
         minWidth: '1400px',
+        marginTop: 56,
       }}
       width="100vw"
-      dex={50}
-      isShowMask={false}
-      isVisible={visible}
-      onClose={onClose}
+      onCancel={onClose}
+      zIndex={50}
     >
-      1
-    </CommonModal2>
+      {/* 渲染相应的模块 */}
+      <Content>
+        {
+          detailContent?.filter(
+            (i: any) => i.specialType === params.specialType,
+          )[0]?.content
+        }
+      </Content>
+    </ModalWrap>
   )
 }
 

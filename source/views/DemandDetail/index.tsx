@@ -199,7 +199,7 @@ const DemandDetail = () => {
     await form.validateFields()
     await updateDemandCategory({
       projectId: id,
-      demandId: demandInfo.id,
+      id: demandInfo.id,
       ...form.getFieldsValue(),
     })
     getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })

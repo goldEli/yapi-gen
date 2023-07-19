@@ -1,13 +1,14 @@
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { useDispatch, useSelector } from '@store/index'
-import { setAffairsDetailDrawer, setAffairsInfo } from '@store/affairs'
+import { setAffairsInfo } from '@store/affairs'
 import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
 import { useNavigate } from 'react-router-dom'
-import { setFlawDetailDrawer, setFlawInfo } from '@store/flaw'
+import { setFlawInfo } from '@store/flaw'
 import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 import {
   setIsChangeDetailAffairs,
+  setIsDetailScreenModal,
   setIsUpdateAddWorkItem,
 } from '@store/project'
 import { setDemandInfo } from '@store/demand'
@@ -24,16 +25,9 @@ const useOpenDemandDetail = () => {
     id: any,
     type?: number,
   ) => {
-    console.log('进来了,', item, id, type)
-
     dispatch(setIsUpdateAddWorkItem(0))
     dispatch(setIsChangeDetailAffairs(false))
     // 弹窗预览
-    console.log(
-      userPreferenceConfig.previewModel,
-      'userPreferenceConfig.previewModel',
-    )
-
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
         case 1:
@@ -70,37 +64,46 @@ const useOpenDemandDetail = () => {
       dispatch(setAffairsInfo({}))
       dispatch(setDemandInfo({}))
       dispatch(setFlawInfo({}))
-      let url = ''
+      let params: any = {
+        changeIds: item.demandIds,
+        id: projectId,
+        specialType: type,
+      }
+      // let url = ''
 
       if (type === 1) {
-        const params = encryptPhp(
-          JSON.stringify({
-            id: projectId,
-            sprintId: id,
-            changeIds: item.demandIds,
-          }),
-        )
-        url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
+        params.sprintId = id
+        // const params = encryptPhp(
+        //   JSON.stringify({
+        //     id: projectId,
+        //     sprintId: id,
+        //     changeIds: item.demandIds,
+        //   }),
+        // )
+        // url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
       } else if (type === 2) {
-        const params = encryptPhp(
-          JSON.stringify({
-            id: projectId,
-            flawId: id,
-            changeIds: item.demandIds,
-          }),
-        )
-        url = `/ProjectManagement/DefectDetail?data=${params}`
+        params.flawId = id
+        // const params = encryptPhp(
+        //   JSON.stringify({
+        //     id: projectId,
+        //     flawId: id,
+        //     changeIds: item.demandIds,
+        //   }),
+        // )
+        // url = `/ProjectManagement/DefectDetail?data=${params}`
       } else {
-        const params = encryptPhp(
-          JSON.stringify({
-            id: projectId,
-            demandId: id,
-            changeIds: item.demandIds,
-          }),
-        )
-        url = `/ProjectManagement/DemandDetail?data=${params}`
+        params.demandId = id
+        // const params = encryptPhp(
+        //   JSON.stringify({
+        //     id: projectId,
+        //     demandId: id,
+        //     changeIds: item.demandIds,
+        //   }),
+        // )
+        // url = `/ProjectManagement/DemandDetail?data=${params}`
       }
-      navigate(url)
+      // navigate(url)
+      dispatch(setIsDetailScreenModal({ visible: true, params }))
     }
   }
 
