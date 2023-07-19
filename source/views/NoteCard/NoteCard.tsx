@@ -271,29 +271,39 @@ const NoteCard = (props: any) => {
           </div>
         </Wrap1>
         <Wrap2>
-          <Popover
-            open={popoverVisible}
-            onOpenChange={setPopoverVisible}
-            placement="bottomLeft"
-            trigger="click"
-            destroyTooltipOnHide
-            getPopupContainer={n => (props.isShow ? n : document.body)}
-            content={
-              <ReadCard
-                onClose={() => setPopoverVisible(false)}
-                id={props.values.id}
-              />
-            }
-          >
-            <ColorBtn2>
-              <CommonIconFont type="display" />{' '}
-              <span>
-                {values.unread_count === 0
-                  ? t('all_read')
-                  : `${values.unread_count}${t('unread')}`}
-              </span>
-            </ColorBtn2>
-          </Popover>
+          {values.send_time ? (
+            <span
+              style={{
+                color: '#646566',
+              }}
+            >
+              {t('to_be_released')}
+            </span>
+          ) : (
+            <Popover
+              open={popoverVisible}
+              onOpenChange={setPopoverVisible}
+              placement="bottomLeft"
+              trigger="click"
+              destroyTooltipOnHide
+              getPopupContainer={n => (props.isShow ? n : document.body)}
+              content={
+                <ReadCard
+                  onClose={() => setPopoverVisible(false)}
+                  id={props.values.id}
+                />
+              }
+            >
+              <ColorBtn2>
+                <CommonIconFont type="display" />{' '}
+                <span>
+                  {values.unread_count === 0
+                    ? t('all_read')
+                    : `${values.unread_count}${t('unread')}`}
+                </span>
+              </ColorBtn2>
+            </Popover>
+          )}
 
           {(values.is_drew_back === 1 || values.is_draft === 1) && (
             <ColorBtn onClick={() => props.onDel(values.id)}>
