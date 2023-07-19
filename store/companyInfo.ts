@@ -2,7 +2,7 @@
 // 公司信息
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getCompanyInfo } from '@/services/setting'
-import normalCompany from '/normalCompany.svg'
+import normalCompany from '/normalCompany.jpg'
 
 export interface CounterState {
   value: any

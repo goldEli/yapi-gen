@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import normalCompany from '/normalCompany.svg'
+import normalCompany from '/normalCompany.jpg'
 import { Dropdown } from 'antd'
 
 const DropdownWrap = styled(Dropdown)({
