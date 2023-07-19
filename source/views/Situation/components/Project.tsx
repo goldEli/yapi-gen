@@ -7,8 +7,6 @@ import {
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
-  HomeWrap,
-  TextBlueWrap,
   TextWrap,
   title1Css,
   title1Css1,

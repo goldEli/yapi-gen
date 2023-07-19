@@ -21,20 +21,13 @@ const DemoColumn = (props: any) => {
   const { data: res } = props
 
   const config = {
-    seriesField: 'type',
-    color: ['#6688FF'],
-    columnStyle: {
-      radius: [6, 6, 0, 0],
-    },
     data: res,
     xField: 'type',
     yField: 'sales',
-    appendPadding: 20,
-    legend: {
-      itemHeight: 20,
-    },
     label: {
+      // 可手动配置 label 数据标签位置
       position: 'top',
+      // 配置样式
       style: {
         fill: 'var(--neutral-black)',
       },
@@ -56,6 +49,10 @@ const DemoColumn = (props: any) => {
           },
         },
       },
+    },
+    color: ['#6688FF'],
+    columnStyle: {
+      radius: [6, 6, 0, 0],
     },
   }
   if (res) {

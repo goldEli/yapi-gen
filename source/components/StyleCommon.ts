@@ -117,7 +117,7 @@ const title1Css = css`
   font-size: 24px;
 `
 const title1Css1 = css`
-  color: var(--primary-d1);
+  color: var(--neutral-n1-d1);
   font-size: 24px;
 `
 
