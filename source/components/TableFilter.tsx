@@ -42,6 +42,15 @@ const Wrap = styled.div({
   alignItems: 'center',
 })
 
+const SelectWrap = styled.div`
+  min-width: 160px;
+  .ant-select-selection-placeholder {
+    color: var(--neutral-n4);
+  }
+  display: flex;
+  align-items: center;
+`
+
 const ClearForm = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -454,28 +463,29 @@ const TableFilter = (props: any) => {
                     </span>
                     <Form.Item name={i.key}>
                       {i.key === 'category' ? (
-                        <div style={{ width: '200px' }}>
+                        <SelectWrap>
                           <CategoryDropdown
                             mode="multiple"
-                            projectId={631}
-                            categoryList={projectInfoValues
-                              ?.filter((k: any) => k.key === i.key)[0]
-                              ?.children.map(
-                                (item: {
-                                  name: any
-                                  category_attachment: string
-                                }) => ({
-                                  ...item,
-                                  labelName: item.name,
-                                  attachmentPath: item.category_attachment,
-                                }),
-                              )}
+                            categoryList={
+                              projectInfoValues
+                                ?.filter((k: any) => k.key === i.key)[0]
+                                ?.children.map(
+                                  (item: {
+                                    name: any
+                                    category_attachment: string
+                                  }) => ({
+                                    ...item,
+                                    labelName: item.name,
+                                    attachmentPath: item.category_attachment,
+                                  }),
+                                ) || []
+                            }
                             onChangeCallBack={data => {
                               form.setFieldValue('category', data)
                               confirm('category')
                             }}
                           />
-                        </div>
+                        </SelectWrap>
                       ) : (
                         <MoreSelect
                           onConfirm={confirm}

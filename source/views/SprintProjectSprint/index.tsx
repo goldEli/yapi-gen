@@ -217,7 +217,7 @@ const SelectWrapForList = styled(SelectWrapBedeck)`
   }
 `
 const CategorySelectWrap = styled.div`
-  width: 296px;
+  min-width: 296px;
   height: 32px;
   display: flex;
   align-items: center;
