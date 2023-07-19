@@ -180,7 +180,7 @@ const SystemFeedback = () => {
               ]}
             >
               <Editor
-                height="360px"
+                height="366px"
                 maxHeight="340px"
                 upload={uploadFile}
                 getSuggestions={() => []}
