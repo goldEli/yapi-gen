@@ -19,7 +19,7 @@ const Container = styled.div`
   }
 `
 const SearchItemList = styled.div`
-  width: 352px;
+  // width: 352px;
   height: 44px;
   border-radius: 8px;
   background-color: var(--neutral-n8);

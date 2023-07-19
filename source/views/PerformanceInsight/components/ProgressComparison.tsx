@@ -623,6 +623,7 @@ const ProgressComparison = (props: Props) => {
   }
   // 导出
   const onGetExportApi = async (option: number[]) => {
+    setLoading(true)
     try {
       let result: any = null
       // 1.工作项导出
@@ -676,7 +677,9 @@ const ProgressComparison = (props: Props) => {
       a.href = blobUrl
       a.click()
       setIsVisibleSuccess(true)
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       // console.log(error)
       getMessage({
         msg: t('other.exportFailed'),
@@ -901,7 +904,7 @@ const ProgressComparison = (props: Props) => {
           <TitleCss>{props.title}</TitleCss>
         </Col>
         <div
-          style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
+          style={{ display: 'flex', alignItems: 'center', padding: '0 48px' }}
         >
           {work?.map((el, index) => (
             <>
