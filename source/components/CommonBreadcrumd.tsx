@@ -18,6 +18,15 @@ const lastBreadcrumb = css`
   color: var(--neutral-n3) !important;
   font-size: var(--font12) !important;
 `
+const breadStyle = css`
+  span {
+    &:hover {
+      text-decoration: underline !important;
+      text-decoration-color: var(--neutral-n1-d1) !important;
+      padding-bottom: 4px !important;
+    }
+  }
+`
 const CommonBreadCrumd: React.FC = (props: IProps) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -45,10 +54,11 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
       <Breadcrumb.Item>
         {' '}
         <a
+          className={breadStyle}
           onClick={() => navigate('/ProjectManagement/Project')}
           style={{ color: 'var(--neutral-n1-d1)' }}
         >
-          {t('title.project') as string}
+          <span>{t('title.project') as string}</span>
         </a>
       </Breadcrumb.Item>
       {projectInfo.name ? (
@@ -58,6 +68,7 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
               const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
               navigate(`/SprintProjectManagement/Affair?data=${params}`)
             }}
+            className={breadStyle}
           >
             <img
               style={{

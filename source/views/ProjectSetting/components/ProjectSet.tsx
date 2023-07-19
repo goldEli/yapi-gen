@@ -587,6 +587,7 @@ const ProjectSet = () => {
                           isMoreVisible={isMoreVisible}
                           onChangeVisible={setIsMoreVisible}
                           menu={menu(item)}
+                          hasChild
                         />
                       </MenuItem>
                     ))}
