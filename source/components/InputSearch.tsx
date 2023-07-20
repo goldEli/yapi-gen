@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import styled from '@emotion/styled'
 import { changeColorText } from '@store/color-text'
 import { useDispatch, useSelector } from '@store/index'
@@ -46,18 +47,20 @@ const InputSearch = (props: Props) => {
     }
   }, [props.defaultValue])
 
-  const handleFKeyPress = useCallback(() => {
+  const handleFKeyPress = useCallback((event?: any) => {
     // 在这里执行你想要触发的事件
-
-    inputRef.current!.focus({
-      preventScroll: true,
-    })
+    if (event.key === 'F' || event.key === 'f') {
+      event.preventDefault()
+      inputRef.current!.focus({
+        preventScroll: true,
+      })
+    }
   }, [])
 
   useHotkeys(
     'f',
     () => {
-      handleFKeyPress()
+      handleFKeyPress(event)
     },
     [],
   )
