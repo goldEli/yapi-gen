@@ -56,6 +56,7 @@ declare namespace Model.KanBan {
   // 分组类型，users:用户分组，priority：优先级，category：类别
   type GroupType = 'users' | 'priority' | 'category'
   interface Story {
+    is_bug: number
     id: number
     name: string
     category_id: number

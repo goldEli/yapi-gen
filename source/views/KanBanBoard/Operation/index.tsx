@@ -274,7 +274,8 @@ const Operation = (props: Props) => {
               dispatch(openSaveAsViewModel(key))
             }}
             onCreateView={() => {
-              dispatch(openSaveAsViewModel())
+              // eslint-disable-next-line no-undefined
+              dispatch(openSaveAsViewModel(undefined, false, true))
             }}
           />
           <Btn
