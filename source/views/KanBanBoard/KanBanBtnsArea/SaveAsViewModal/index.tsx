@@ -61,8 +61,11 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
     if (saveAsViewModelInfo.viewItem) {
       return t('edit_view')
     }
+    if (saveAsViewModelInfo.isCreate) {
+      return t('create_view')
+    }
     return t('save_as_view')
-  }, [saveAsViewModelInfo.viewItem])
+  }, [saveAsViewModelInfo])
 
   React.useEffect(() => {
     if (saveAsViewModelInfo.viewItem) {

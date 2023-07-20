@@ -139,7 +139,7 @@ const HightChartMainPie = (props: {
       useHTML: true,
     },
     colors: props.titleType
-      ? ['#FF5C5E', '#FA9746', '#F6BD16']
+      ? props.chart?.color
       : ['#4267ED', '#6688FF', '#9CB0F8', '#CED7F8', '#E3E9FA '],
     series: [
       {

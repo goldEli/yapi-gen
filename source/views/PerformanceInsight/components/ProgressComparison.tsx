@@ -892,6 +892,13 @@ const ProgressComparison = (props: Props) => {
           onGetExportApi={onGetExportApi}
           onSearchData={onSearchData}
           type={props.type}
+          tableList={
+            props.type === 'Progress_iteration' ||
+            props.type === 'Progress_sprint' ||
+            props.type === 'Progress_all'
+              ? tableList
+              : tableList1
+          }
           viewType={props.viewType}
           headerParmas={props.headerParmas}
           // projectDataList={props.projectDataList}

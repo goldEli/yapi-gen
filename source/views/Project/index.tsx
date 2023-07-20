@@ -304,6 +304,8 @@ const ProjectManagementOptimization = () => {
   const onExit = () => {
     setStepsEnabled(false)
   }
+  console.log(operationDetail, 'operationDetail')
+
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"
@@ -411,9 +413,16 @@ const ProjectManagementOptimization = () => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
+
       <DeleteConfirm
         title={t('mark.endP')}
-        text={t('common.stopProjectToast', { name: operationDetail?.name })}
+        text={t('common.stopProjectToast', {
+          name: operationDetail?.name,
+          name1:
+            operationDetail?.project_type === 2
+              ? t('Transaction_sprint')
+              : t('Requirement_iteration'),
+        })}
         isVisible={isStop}
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}

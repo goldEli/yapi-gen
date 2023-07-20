@@ -173,7 +173,7 @@ enum InputMode {
 
 const systemData: any = {
   agile: {
-    logo: '/sso/iFUNAgileLogo.svg',
+    logo: '/sso/iFUNAgileLogo.png',
     name: 'IFUN Agile',
     loginFormTitle: 'AgileLogin',
   },

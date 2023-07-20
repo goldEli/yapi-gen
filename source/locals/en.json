@@ -1,4 +1,8 @@
 {
+  "Transaction_sprint": "Transaction Sprint",
+
+  "Requirement_iteration": "Requirements Iteration",
+  "project_handover": "Project handover",
   "to_be_released": " To be released",
   "send": " send",
   "from": "from",
@@ -1977,7 +1981,7 @@
     "projectHomeConfiguration": "Project Home Configuration",
     "defineProjectDefaultHomeLocation": "Define project default home location",
     "transactionList": "Transaction list",
-    "kanban": "KanBan",
+    "kanban": "Kanban",
     "defect": "Defect",
     "need": "Need",
     "iteration": "Iteration",

@@ -324,10 +324,8 @@ const TableFilter = (props: any) => {
     }
     confirm()
   }, [props.defaultValue])
-  console.log(props.defaultValue, 'props.defaultValue')
-  useEffect(() => {
-    console.log(searchChoose, 'searchChoosesearchChoosesearchChoose')
 
+  useEffect(() => {
     if (Object.hasOwn(searchChoose || {}, 'system_view')) {
       form.resetFields()
       confirm()
