@@ -10,7 +10,7 @@ import { setSprintRefresh } from '@store/sprint'
 import { Menu, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 
-const MenuWrap = styled(Menu)`
+const MenuWrap = styled(Menu)<{ isEnd?: boolean }>`
   max-width: 240px;
   max-height: 300px;
   overflow-y: scroll;
@@ -38,7 +38,7 @@ const MenuWrap = styled(Menu)`
     cursor: default;
   }
 
-  li:nth-last-child(2) {
+  li:nth-last-child(${props => (props.isEnd ? 1 : 2)}) {
     border-top: 1px solid var(--neutral-n6-d1);
   }
 `
@@ -105,6 +105,8 @@ export const LatelyLongStoryMenu = (props: Props) => {
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
   const { setPopoverVisible, clearLongStory } = props
 
   const editLongStory = async (parent_id: number) => {
@@ -132,7 +134,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
     }
   }
 
-  const menuItems: any = [
+  let menuItems: any = [
     {
       key: '-1',
       disabled: true,
@@ -168,45 +170,47 @@ export const LatelyLongStoryMenu = (props: Props) => {
                 {k.name}
               </MenuItemWrap>
             )}
-            <div className="edit">
-              <IconFont
-                className="svg1"
-                onClick={() => {
-                  setPopoverVisible(false)
-                  dispatch(
-                    setAddWorkItemModal({
-                      visible: true,
-                      params: {
-                        editId: k.id,
-                        projectId: k.project_id,
-                        type: 3,
-                        title: t('sprint.editTransaction'),
-                      },
-                    }),
-                  )
-                }}
-                style={{
-                  fontSize: 16,
-                  color: 'var(--neutral-n3)',
-                  marginRight: 2,
-                }}
-                type="edit"
-              />
-              {hasDel ? null : (
+            {!isEnd && (
+              <div className="edit">
                 <IconFont
-                  className="svg2"
+                  className="svg1"
                   onClick={() => {
                     setPopoverVisible(false)
-                    props?.setIsVisible?.(k)
+                    dispatch(
+                      setAddWorkItemModal({
+                        visible: true,
+                        params: {
+                          editId: k.id,
+                          projectId: k.project_id,
+                          type: 3,
+                          title: t('sprint.editTransaction'),
+                        },
+                      }),
+                    )
                   }}
                   style={{
                     fontSize: 16,
                     color: 'var(--neutral-n3)',
+                    marginRight: 2,
                   }}
-                  type="delete"
+                  type="edit"
                 />
-              )}
-            </div>
+                {hasDel && isEnd ? null : (
+                  <IconFont
+                    className="svg2"
+                    onClick={() => {
+                      setPopoverVisible(false)
+                      props?.setIsVisible?.(k)
+                    }}
+                    style={{
+                      fontSize: 16,
+                      color: 'var(--neutral-n3)',
+                    }}
+                    type="delete"
+                  />
+                )}
+              </div>
+            )}
           </MenuItemBox>
         ),
       })),
@@ -253,5 +257,9 @@ export const LatelyLongStoryMenu = (props: Props) => {
       },
     ])
 
-  return <MenuWrap style={{ minWidth: 56 }} items={menuItems} />
+  if (isEnd) {
+    menuItems = menuItems.filter((i: any) => !['-3'].includes(i.key))
+  }
+
+  return <MenuWrap style={{ minWidth: 56 }} items={menuItems} isEnd={isEnd} />
 }

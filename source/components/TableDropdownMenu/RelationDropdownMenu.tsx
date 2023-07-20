@@ -29,7 +29,12 @@ interface Props {
 
 const RelationDropdownMenu = (props: Props) => {
   const [t] = useTranslation()
+  const { projectInfo } = useSelector(store => store.project)
   const pid = useSelector(store => store.project.projectInfo.id)
+
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   // 复制需求id
   const onCopyId = () => {
     copyLink(
@@ -80,7 +85,12 @@ const RelationDropdownMenu = (props: Props) => {
     },
   ]
 
-  return <MenuWrap style={{ minWidth: 56 }} items={menuItems} />
+  return (
+    <MenuWrap
+      style={{ minWidth: 56 }}
+      items={isEnd ? menuItems?.filter((i: any) => i.key !== '1') : menuItems}
+    />
+  )
 }
 
 export default RelationDropdownMenu
