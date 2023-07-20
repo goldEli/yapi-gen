@@ -645,7 +645,11 @@ const RelationStories = (props: RelationStoriesProps) => {
     <RelationWrap
       style={{
         paddingLeft: props.isDrawer ? 0 : 24,
-        height: isEnd ? 'calc(100vh - 198px)' : 'calc(100vh - 237px)',
+        height: props.isDrawer
+          ? '100%'
+          : isEnd
+          ? 'calc(100vh - 188px)'
+          : 'calc(100vh - 227px)',
       }}
     >
       <DeleteConfirmModal />

@@ -69,7 +69,8 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
   }
 
   const confirm = async () => {
-    const data = await form.validateFields()
+    let data = await form.validateFields()
+    data = { ...data, name: data.name.trim() }
     if (!editColumnModelInfo.columnInfo) {
       return
     }

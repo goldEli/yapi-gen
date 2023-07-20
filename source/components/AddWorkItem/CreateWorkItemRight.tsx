@@ -103,7 +103,9 @@ const CreateDemandRight = (props: Props) => {
           ].includes(element?.fieldContent?.attr)
         ) {
           // 判断是否是下拉框，是则去除空选项
-          const values = customValue?.filter((i: any) => i !== -1)
+          const values = isFilter
+            ? customValue?.filter((i: any) => i !== -1)
+            : [customValue]
 
           // 判断是否是单选，是则取第一个
           const resultValue = ['select', 'radio', 'user_select'].includes(

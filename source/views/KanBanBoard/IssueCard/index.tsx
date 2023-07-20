@@ -36,17 +36,23 @@ interface IssueCardProps {
   // groupId-columnId-storyId
   uuid: string
   hidden?: boolean
+  stories?: any
 }
 
 const IssueCard = (props: IssueCardProps) => {
   const [t] = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
-  const { item, index } = props
+  const { item, index, stories } = props
   const isDragDisabled = props.item.verify_lock === 1
   const childRef = useRef<any>(null)
   const [openDemandDetail] = useOpenDemandDetail()
-  const { ids } = useStoryIds()
   const { projectInfo } = useSelector(store => store.project)
+
+  const getElementsAroundIndex = (arr: any, index: number) => {
+    const startIndex = Math.max(0, index - 200)
+    const endIndex = Math.min(arr.length - 1, index + 200)
+    return arr.slice(startIndex, endIndex + 1)
+  }
 
   const cardContent = (dragOver: any) => (
     <IssueCardBoxContainer isDragOver={dragOver} hidden={props.hidden}>
@@ -74,8 +80,15 @@ const IssueCard = (props: IssueCardProps) => {
               type = 2
             }
             // return
+            const findId = stories?.findIndex((i: any) => i.id === item.id)
+            const ids = stories?.map((i: any) => i.id)
+            const maxIds = getElementsAroundIndex(ids, findId)
             openDemandDetail(
-              { ...props.item, demandIds: ids, projectId: getProjectIdByUrl() },
+              {
+                ...props.item,
+                demandIds: stories?.length > 400 ? maxIds : ids,
+                projectId: getProjectIdByUrl(),
+              },
               getProjectIdByUrl(),
               props.item.id,
               type,
