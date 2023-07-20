@@ -175,13 +175,6 @@ const ProgressComparison = (props: Props) => {
       },
       {
         title: t('performance.organize'),
-        // <NewSort
-        //   fixedKey="departmentName"
-        //   nowKey={order.key}
-        //   order={order.value}
-        //   title={'组织'}
-        //   onUpdateOrderKey={onUpdateOrderKey}
-        // ></NewSort>
         dataIndex: 'departmentName',
       },
       {
@@ -238,29 +231,6 @@ const ProgressComparison = (props: Props) => {
         title: t('performance.in'),
         dataIndex: 'work_progress',
       },
-      // {
-      //   title: '工作进度',
-      //   dataIndex: 'work_progress',
-      //   render: (text: string, record: any) => {
-      //     const num = Number(text?.split('|')?.[0])
-      //     const completeNum = Number(text?.split('|')?.[1])
-      //     const total = num + completeNum
-      //     return (
-      //       <div
-      //         style={{
-      //           display: 'flex',
-      //           alignItems: 'center',
-      //         }}
-      //       >
-      //         {text
-      //           ? completeNum === 0
-      //             ? '0%'
-      //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
-      //           : '--'}
-      //       </div>
-      //     )
-      //   },
-      // },
       {
         dataIndex: 'repeat_rate',
         title: getTitleTips(
@@ -314,13 +284,6 @@ const ProgressComparison = (props: Props) => {
       },
       {
         title: t('performance.organize'),
-        // <NewSort
-        //   fixedKey="departmentName"
-        //   nowKey={order.key}
-        //   order={order.value}
-        //   title={'组织'}
-        //   onUpdateOrderKey={onUpdateOrderKey}
-        // ></NewSort>
         dataIndex: 'departmentName',
       },
       {
@@ -377,29 +340,6 @@ const ProgressComparison = (props: Props) => {
         title: t('performance.in'),
         dataIndex: 'work_progress',
       },
-      // {
-      //   title: '工作进度',
-      //   dataIndex: 'work_progress',
-      //   render: (text: string, record: any) => {
-      //     const num = Number(text?.split('|')?.[0])
-      //     const completeNum = Number(text?.split('|')?.[1])
-      //     const total = num + completeNum
-      //     return (
-      //       <div
-      //         style={{
-      //           display: 'flex',
-      //           alignItems: 'center',
-      //         }}
-      //       >
-      //         {text
-      //           ? completeNum === 0
-      //             ? '0%'
-      //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
-      //           : '--'}
-      //       </div>
-      //     )
-      //   },
-      // },
       {
         dataIndex: 'repeat_rate',
         title: getTitleTips(
@@ -898,6 +838,13 @@ const ProgressComparison = (props: Props) => {
         size="large"
       >
         <HeaderAll
+          tableList={
+            props.type === 'Progress_iteration' ||
+            props.type === 'Progress_sprint' ||
+            props.type === 'Progress_all'
+              ? tableList
+              : tableList1
+          }
           homeType={props.homeType}
           projectId={props.projectId}
           onGetExportApi={onGetExportApi}
@@ -905,7 +852,6 @@ const ProgressComparison = (props: Props) => {
           type={props.type}
           viewType={props.viewType}
           headerParmas={props.headerParmas}
-          // projectDataList={props.projectDataList}
         />
         {/* 表格 */}
         <Col>
