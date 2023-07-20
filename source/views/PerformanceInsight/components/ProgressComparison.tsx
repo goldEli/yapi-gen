@@ -30,6 +30,7 @@ import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { copyView } from '@/services/kanban'
+import { setListActiveId } from '@store/global'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 // 进展对比tips
@@ -155,12 +156,13 @@ const ProgressComparison = (props: Props) => {
     const columns1 = [
       {
         dataIndex: 'userName',
-        title: t('performance.user'),
+        title: t('performance.user') + '999',
         render: (text: string, record: any) => {
           return (
             <RowText
               onClick={(event: any) => {
                 event.stopPropagation()
+                dispatch(setListActiveId(record?.id ?? 0))
                 dispatch(setVisiblePerson(false))
                 dispatch(setVisibleWork(true))
                 getDatail(record)
@@ -173,13 +175,6 @@ const ProgressComparison = (props: Props) => {
       },
       {
         title: t('performance.organize'),
-        // <NewSort
-        //   fixedKey="departmentName"
-        //   nowKey={order.key}
-        //   order={order.value}
-        //   title={'组织'}
-        //   onUpdateOrderKey={onUpdateOrderKey}
-        // ></NewSort>
         dataIndex: 'departmentName',
       },
       {
@@ -236,29 +231,6 @@ const ProgressComparison = (props: Props) => {
         title: t('performance.in'),
         dataIndex: 'work_progress',
       },
-      // {
-      //   title: '工作进度',
-      //   dataIndex: 'work_progress',
-      //   render: (text: string, record: any) => {
-      //     const num = Number(text?.split('|')?.[0])
-      //     const completeNum = Number(text?.split('|')?.[1])
-      //     const total = num + completeNum
-      //     return (
-      //       <div
-      //         style={{
-      //           display: 'flex',
-      //           alignItems: 'center',
-      //         }}
-      //       >
-      //         {text
-      //           ? completeNum === 0
-      //             ? '0%'
-      //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
-      //           : '--'}
-      //       </div>
-      //     )
-      //   },
-      // },
       {
         dataIndex: 'repeat_rate',
         title: getTitleTips(
@@ -301,6 +273,7 @@ const ProgressComparison = (props: Props) => {
                 dispatch(setVisibleWork(true))
                 dispatch(setVisiblePerson(false))
                 event.stopPropagation()
+                dispatch(setListActiveId(record?.id ?? 0))
                 getDatail(record)
               }}
             >
@@ -311,13 +284,6 @@ const ProgressComparison = (props: Props) => {
       },
       {
         title: t('performance.organize'),
-        // <NewSort
-        //   fixedKey="departmentName"
-        //   nowKey={order.key}
-        //   order={order.value}
-        //   title={'组织'}
-        //   onUpdateOrderKey={onUpdateOrderKey}
-        // ></NewSort>
         dataIndex: 'departmentName',
       },
       {
@@ -374,29 +340,6 @@ const ProgressComparison = (props: Props) => {
         title: t('performance.in'),
         dataIndex: 'work_progress',
       },
-      // {
-      //   title: '工作进度',
-      //   dataIndex: 'work_progress',
-      //   render: (text: string, record: any) => {
-      //     const num = Number(text?.split('|')?.[0])
-      //     const completeNum = Number(text?.split('|')?.[1])
-      //     const total = num + completeNum
-      //     return (
-      //       <div
-      //         style={{
-      //           display: 'flex',
-      //           alignItems: 'center',
-      //         }}
-      //       >
-      //         {text
-      //           ? completeNum === 0
-      //             ? '0%'
-      //             : `${Number((completeNum / total) * 100).toFixed(0)}%`
-      //           : '--'}
-      //       </div>
-      //     )
-      //   },
-      // },
       {
         dataIndex: 'repeat_rate',
         title: getTitleTips(
@@ -437,6 +380,7 @@ const ProgressComparison = (props: Props) => {
             <RowText
               onClick={(event: any) => {
                 event.stopPropagation()
+                dispatch(setListActiveId(record?.id ?? 0))
                 dispatch(setVisiblePerson(false))
                 dispatch(setVisibleWork(true))
                 getDatail(record)
@@ -743,6 +687,7 @@ const ProgressComparison = (props: Props) => {
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
     setTableBeforeAndAfter('after')
+    dispatch(setListActiveId(row?.id ?? 0))
     event.stopPropagation()
     dispatch(setVisiblePerson(true))
     dispatch(setVisibleWork(false))
@@ -876,12 +821,15 @@ const ProgressComparison = (props: Props) => {
   useEffect(() => {
     dispatch(setVisiblePerson(false))
     dispatch(setVisibleWork(false))
+    dispatch(setListActiveId(0))
   }, [])
   return (
     <div
       style={{ height: '100%', width: '100%' }}
       onClick={() => {
-        dispatch(setVisiblePerson(false)), dispatch(setVisibleWork(false))
+        dispatch(setListActiveId(0)),
+          dispatch(setVisiblePerson(false)),
+          dispatch(setVisibleWork(false))
       }}
     >
       <Spin
@@ -890,6 +838,13 @@ const ProgressComparison = (props: Props) => {
         size="large"
       >
         <HeaderAll
+          tableList={
+            props.type === 'Progress_iteration' ||
+            props.type === 'Progress_sprint' ||
+            props.type === 'Progress_all'
+              ? tableList
+              : tableList1
+          }
           homeType={props.homeType}
           projectId={props.projectId}
           onGetExportApi={onGetExportApi}
@@ -897,7 +852,6 @@ const ProgressComparison = (props: Props) => {
           type={props.type}
           viewType={props.viewType}
           headerParmas={props.headerParmas}
-          // projectDataList={props.projectDataList}
         />
         {/* 表格 */}
         <Col>

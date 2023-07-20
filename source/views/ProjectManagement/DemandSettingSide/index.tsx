@@ -38,6 +38,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import useCategory from '@/hooks/useCategoryList'
+import { CloseWrap } from '@/components/StyleCommon'
 
 const Tabs = styled.div`
   height: 24px;
@@ -349,7 +350,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                     />
                     <AffairTypeText>{item.name}</AffairTypeText>
                   </div>
-                  <IconFont
+                  {/* <IconFont
                     style={{ fontSize: 14 }}
                     type="plus"
                     onClick={e => {
@@ -357,7 +358,18 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                       setIsVisible(true)
                       setWorkType(item.workType)
                     }}
-                  />
+                  /> */}
+                  <CloseWrap width={24} height={24}>
+                    <IconFont
+                      style={{ fontSize: 18, color: 'var(--neutral-n2)' }}
+                      type="plus"
+                      onClick={e => {
+                        e.stopPropagation()
+                        setIsVisible(true)
+                        setWorkType(item.workType)
+                      }}
+                    />
+                  </CloseWrap>
                 </AffairTypeHeader>
 
                 <MenuBox

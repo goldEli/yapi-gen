@@ -22,6 +22,7 @@ interface HaderProps {
   projectId: number | string
   homeType: string
   viewType: number
+  tableList: Array<{ id: number }>
 }
 const HeaderAll = (props: HaderProps) => {
   const [t] = useTranslation()
@@ -168,7 +169,11 @@ const HeaderAll = (props: HaderProps) => {
             <CommonIconFont type="share" size={16} />
             <span className="text">{t('performance.share')}</span>
           </Back>
-          <CommonButton type="primary" onClick={() => setIsOpen(true)}>
+          <CommonButton
+            isDisable={props.tableList?.length < 1}
+            type="primary"
+            onClick={() => setIsOpen(true)}
+          >
             <CommonIconFont type="export" size={16} />
             {t('performance.export')}
           </CommonButton>

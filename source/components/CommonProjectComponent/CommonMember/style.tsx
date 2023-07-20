@@ -51,6 +51,11 @@ export const ListItem = styled.div({
       'span:first-child': {
         color: 'var(--neutral-n1-d2)',
         fontSize: 14,
+        width: '240px',
+        display: 'inline-block',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
       },
       'span:last-child': {
         color: 'var(--neutral-n4)',
