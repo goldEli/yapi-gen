@@ -55,11 +55,9 @@ interface ChildDemandProps {
 
 const ChildDemand = (props: ChildDemandProps) => {
   const [t] = useTranslation()
-  const [isVisible, setIsVisible] = useState(false)
   const [deleteId, setDeleteId] = useState(0)
   const [isDelete, setIsDelete] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
-  const [operationItem, setOperationItem] = useState<any>({})
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { projectInfo, isUpdateAddWorkItem } = useSelector(
@@ -144,6 +142,12 @@ const ChildDemand = (props: ChildDemandProps) => {
   useEffect(() => {
     getShowkey()
   }, [projectInfo])
+
+  useEffect(() => {
+    if (demandInfo?.id) {
+      getList(pageObj, order, orderKey)
+    }
+  }, [demandInfo])
 
   const getCheckList = (
     list: CheckboxValueType[],

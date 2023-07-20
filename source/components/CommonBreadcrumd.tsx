@@ -14,9 +14,16 @@ interface IProps {
 interface mapsInterface {
   [key: string]: string
 }
-const lastBreadcrumb = css`
-  color: var(--neutral-n3) !important;
-  font-size: var(--font12) !important;
+const lastBreadcrumb = css``
+
+const customBread = css`
+  li a {
+    color: var(--neutral-n1-d1) !important;
+  }
+  li:last-child a {
+    color: var(--neutral-n3) !important;
+    font-size: var(--font12) !important;
+  }
 `
 const CommonBreadCrumd: React.FC = (props: IProps) => {
   const [searchParams] = useSearchParams()
@@ -38,6 +45,7 @@ const CommonBreadCrumd: React.FC = (props: IProps) => {
   }
   return (
     <Breadcrumb
+      className={customBread}
       separator={
         <CommonIconFont type="right" size={14} color="var(--neutral-n1-d1)" />
       }

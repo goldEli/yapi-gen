@@ -2,7 +2,7 @@
 // 公司信息
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getCompanyInfo } from '@/services/setting'
-import normalCompany from '/normalCompany.svg'
+import normalCompany from '/normalCompany.jpg'
 
 export interface CounterState {
   value: any
@@ -19,7 +19,7 @@ export const getAsyncCompanyInfo = createAsyncThunk(
   async () => {
     const res = await getCompanyInfo()
 
-    res.logo = res.logo || normalCompany
+    res.logo = res.logo?.length > 0 ? res.logo : normalCompany
     return res
   },
 )

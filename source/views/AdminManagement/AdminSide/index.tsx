@@ -105,7 +105,6 @@ const AdminSide = () => {
   const currentMenuMap = fromPairs(
     (currentMenu?.children || [])?.map((i: any) => [i.url, i]),
   )
-
   const side: any = [
     {
       label: t('corporate_information'),
@@ -173,7 +172,18 @@ const AdminSide = () => {
   ]
 
   const onFilter = (list: any[]) => {
-    return list.filter(i => (i.path ? currentMenuMap[i.path] : true))
+    const maps = currentMenu?.children?.map((item: { url: any }) => item.url)
+    list.forEach(item => {
+      if (item.children) {
+        item.children = item.children.filter((item: { path: any }) =>
+          maps?.includes(item.path),
+        )
+        item.isPermission = item.children.length !== 0
+      } else {
+        item.isPermission = maps?.includes(item.path)
+      }
+    })
+    return list
   }
 
   const sideList = onFilter(side).map(item => {
@@ -226,9 +236,10 @@ const AdminSide = () => {
         openKeys={defaultKey}
         onOpenChange={e => setDefaultKey(e)}
         mode="inline"
-        items={sideList?.filter(
-          (i: any) => !(['3', '4'].includes(i.key) && !i.children?.length),
-        )}
+        // items={sideList?.filter(
+        //   (i: any) => !(['3', '4'].includes(i.key) && !i.children?.length),
+        // )}
+        items={sideList.filter(item => item.isPermission)}
         onSelect={onMenuClick}
       />
     </AdminSideWrap>

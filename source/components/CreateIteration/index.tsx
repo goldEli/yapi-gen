@@ -61,31 +61,11 @@ const CreateIteration = () => {
     }
   }
 
-  // 获取最近项目列表 -- 使用列表的第一个
-  const getRecentlyList = async () => {
-    const data = await getProjectRecent()
-    getProjectInfoData(data[0]?.id)
-  }
-
-  // 获取项目列表
-  const getProjectData = async () => {
-    const res = await getProjectList({
-      self: 1,
-      all: 1,
-    })
-    setProjectList(res.list)
-    if (createIterationParams?.projectId) {
-      form.setFieldsValue({
-        projectId: createIterationParams?.projectId,
-        info: '',
-      })
-    } else {
-      getRecentlyList()
-    }
+  const getIterationInfo = async (projectId: number) => {
     // 如果有需求id则获取详情
     if (createIterationParams.id) {
       const response = await getIterateInfo({
-        projectId: createIterationParams.projectId,
+        projectId: projectId,
         id: createIterationParams?.id,
       })
       setTimes([
@@ -103,6 +83,57 @@ const CreateIteration = () => {
           : null,
       })
     }
+  }
+
+  // 获取最近项目列表 -- 使用列表的第一个
+  const getRecentlyList = async () => {
+    const data = await getProjectRecent()
+    const resultData = data.filter((i: any) => i.status !== 2)
+    // getProjectInfoData(resultData[0]?.id)
+  }
+
+  // 获取项目列表
+  const getProjectData = async () => {
+    const res = await getProjectList({
+      self: 1,
+      all: 1,
+    })
+    setProjectList(res.list)
+    // 当前项目是否是开启状态
+    const hasProjectId =
+      res.list?.filter(
+        (i: any) => i.id === createIterationParams?.projectId && i.status !== 2,
+      )?.length > 0
+    if (createIterationParams?.projectId && hasProjectId) {
+      form.setFieldsValue({
+        projectId: createIterationParams?.projectId,
+        info: '',
+      })
+      getIterationInfo(createIterationParams?.projectId)
+    } else {
+      // getRecentlyList()
+    }
+    // // 如果有需求id则获取详情
+    // if (createIterationParams.id) {
+    //   const response = await getIterateInfo({
+    //     projectId: createIterationParams.projectId,
+    //     id: createIterationParams?.id,
+    //   })
+    //   setTimes([
+    //     moment(response.createdTime || response?.startTime || 0),
+    //     moment(response.endTime || 1893427200),
+    //   ])
+    //   form.setFieldsValue({
+    //     info: response?.info,
+    //     iterationName: response.name,
+    //     time: response.endTime
+    //       ? [
+    //           moment(response.createdTime || response?.startTime || 0),
+    //           moment(response.endTime || 1893427200),
+    //         ]
+    //       : null,
+    //   })
+    // }
   }
 
   //   关闭弹窗
@@ -176,7 +207,7 @@ const CreateIteration = () => {
         <Form
           layout="vertical"
           form={form}
-          initialValues={createIterationParams}
+          // initialValues={createIterationParams}
         >
           <Form.Item
             label={t('common.iterateName')}

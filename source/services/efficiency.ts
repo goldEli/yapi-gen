@@ -77,7 +77,7 @@ export const plugSelectionUserInfo = async (params: {
     },
     status: response.data.status.map(el => ({
       label: el.content,
-      value: el.id,
+      value: el.content,
     })),
   }
 }

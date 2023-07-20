@@ -73,7 +73,8 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
   }
 
   const confirm = async () => {
-    const data = await form.validateFields()
+    let data = await form.validateFields()
+    data = { ...data, name: data.name.trim() }
     if (!editColumnModelInfo.columnInfo) {
       return
     }
@@ -154,6 +155,7 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
               defaultValue={1}
               style={{ width: '100%' }}
               max={999999}
+              precision={0}
             />
           </Form.Item>
         </Form>

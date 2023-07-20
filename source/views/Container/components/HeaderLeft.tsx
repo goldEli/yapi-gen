@@ -33,6 +33,7 @@ import ItemDropdown from './ItemDropdown'
 import { setCurrentMenu } from '@store/user'
 import menuTag from '/menuTag.svg'
 import usePressKyey from '@/hooks/usePressKyey/usePressKyey'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 interface DrawerComponentProps {
   value: boolean
@@ -115,7 +116,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     const res2 = await getCompanyList()
 
     setActiveId(userInfo.company_id)
-    setCompanyList(res2.data)
+    setCompanyList(res2)
   }
 
   // 点击切换公司弹窗
@@ -356,8 +357,14 @@ const HeaderLeft = () => {
   const handleKeyPress = useCallback(() => {
     setIsVisible(i => !i)
   }, [])
+  useHotkeys(
+    '[',
+    () => {
+      handleKeyPress()
+    },
+    [],
+  )
 
-  usePressKyey('[', handleKeyPress)
   return (
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />

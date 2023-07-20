@@ -40,6 +40,10 @@ const ChildrenDemand = (props: Props) => {
     const url = `ProjectManagement/DemandDetail?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
+
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   const columnsChild = [
     {
       title: t('common.demandName'),
@@ -158,14 +162,16 @@ const ChildrenDemand = (props: Props) => {
   return (
     <div>
       <Label>{t('subrequirements')}</Label>
-      <CommonButton
-        onClick={onCreateChild}
-        type="primaryText"
-        iconPlacement="left"
-        icon="plus"
-      >
-        {t('create_sub_requirements')}
-      </CommonButton>
+      {!isEnd && (
+        <CommonButton
+          onClick={onCreateChild}
+          type="primaryText"
+          iconPlacement="left"
+          icon="plus"
+        >
+          {t('create_sub_requirements')}
+        </CommonButton>
+      )}
       {!!dataList?.list &&
         (dataList?.list?.length > 0 ? (
           <Table

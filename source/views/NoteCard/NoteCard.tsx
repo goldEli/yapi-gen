@@ -315,7 +315,15 @@ const NoteCard = (props: any) => {
           </div>
         </Wrap1>
         <Wrap2>
-          {values.send_time ? null : (
+          {values.send_time && values.is_send !== 1 ? (
+            <span
+              style={{
+                color: '#646566',
+              }}
+            >
+              {t('to_be_released')}
+            </span>
+          ) : (
             <Popover
               open={popoverVisible}
               onOpenChange={setPopoverVisible}

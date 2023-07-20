@@ -68,6 +68,7 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
         key={uuid}
         item={story}
         index={index}
+        stories={issues.stories}
       />
     )
   })

@@ -20,6 +20,7 @@ type SliceState = {
   saveAsViewModelInfo: {
     visible: boolean
     viewItem?: Model.KanBan.ViewItem
+    isCreate?: boolean
   }
   shareModelInfo: {
     visible: boolean

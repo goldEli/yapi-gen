@@ -1,4 +1,9 @@
 {
+  "Transaction_sprint": "Transaction Sprint",
+
+  "Requirement_iteration": "Requirements Iteration",
+  "project_handover": "Project handover",
+  "to_be_released": " To be released",
   "send": " send",
   "from": "from",
 
@@ -1860,7 +1865,7 @@
     "deleteSprint": "Delete the sprint",
     "confirmDelete": "Confirm that you want to delete",
     "ofSprint": "of the sprint",
-    "removeSprintToAgency": "The affairs in the sprint will be moved to the agency",
+    "removeSprintToAgency": "The affairs in the sprint will be moved to the to-do list",
     "newAffairs": "New affairs",
     "noTransaction": "No business at the moment",
     "desc1": "Drag or create a new transaction from the to-do list to plan the sprint's work, add a transaction and edit the sprint after clicking Start Sprint",
@@ -1977,7 +1982,7 @@
     "projectHomeConfiguration": "Project Home Configuration",
     "defineProjectDefaultHomeLocation": "Define project default home location",
     "transactionList": "Transaction list",
-    "kanban": "KanBan",
+    "kanban": "Kanban",
     "defect": "Defect",
     "need": "Need",
     "iteration": "Iteration",

@@ -44,7 +44,7 @@ const SprintDetailInfo = (props: { onRef: any }) => {
       content: value.info,
       a_user_ids: getIdsForAt(value.info),
     })
-    getMessage({ type: 'success', msg: t('conSuccess') })
+    getMessage({ type: 'success', msg: t('p2.conSuccess') })
     dispatch(
       getAffairsCommentList({
         projectId: id,
