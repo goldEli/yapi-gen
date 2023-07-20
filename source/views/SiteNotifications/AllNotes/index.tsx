@@ -85,6 +85,7 @@ const Index = () => {
     }
   }
   const setReads = async (values: any) => {
+    setList([])
     const res = await setReadApi(values)
     await new Promise(resolve => setTimeout(resolve, 2000))
     if (res.code === 0) {
