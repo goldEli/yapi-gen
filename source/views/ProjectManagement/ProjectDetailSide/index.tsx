@@ -118,7 +118,7 @@ const ProjectDetailSide = () => {
         ).length,
     },
     {
-      name: 'KanBan',
+      name: 'Kanban',
       icon: 'layout',
       path: '/ProjectManagement/KanBan',
       isPermission:
