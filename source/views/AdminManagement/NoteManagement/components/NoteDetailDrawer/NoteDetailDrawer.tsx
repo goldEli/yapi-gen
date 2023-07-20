@@ -121,7 +121,6 @@ const NoteDetailDrawer = (props: any) => {
         open={props.isVisible}
         onClose={onCancel}
         destroyOnClose
-        maskClosable={false}
         mask={false}
         getContainer={false}
         className="drawerRoot"
