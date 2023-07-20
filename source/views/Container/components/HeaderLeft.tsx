@@ -33,7 +33,7 @@ import ItemDropdown from './ItemDropdown'
 import { setCurrentMenu } from '@store/user'
 import menuTag from '/menuTag.svg'
 import usePressKyey from '@/hooks/usePressKyey/usePressKyey'
-
+import { useHotkeys } from 'react-hotkeys-hook'
 interface DrawerComponentProps {
   value: boolean
   onChange(value: boolean): void
@@ -356,8 +356,14 @@ const HeaderLeft = () => {
   const handleKeyPress = useCallback(() => {
     setIsVisible(i => !i)
   }, [])
+  useHotkeys(
+    '[',
+    () => {
+      handleKeyPress()
+    },
+    [],
+  )
 
-  usePressKyey('[', handleKeyPress)
   return (
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />
