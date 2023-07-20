@@ -1,4 +1,7 @@
 {
+  "Transaction_sprint": "Transaction Sprint",
+
+  "Requirement_iteration": "Requirements Iteration",
   "project_handover": "Project handover",
   "to_be_released": " To be released",
   "send": " send",

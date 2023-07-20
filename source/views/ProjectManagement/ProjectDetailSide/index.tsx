@@ -293,7 +293,9 @@ const ProjectDetailSide = () => {
     getInfo()
     projectSetSide.current.style.width = '0px'
     projectSide.current.style.width = '100%'
-    const params = encryptPhp(JSON.stringify({ id: projectId }))
+    const params = encryptPhp(
+      JSON.stringify({ id: projectId, type: 'iteration' }),
+    )
     navigate(`/ProjectManagement/Demand?data=${params}`)
     setTimeout(() => {
       projectSetSide.current.style.display = 'none'

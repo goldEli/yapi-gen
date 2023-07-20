@@ -65,11 +65,20 @@ const IssueCard = (props: IssueCardProps) => {
         <StoryText
           onClick={e => {
             e.stopPropagation()
+            // debugger
+            let type = 0
+            if (props.item.project_type === 2) {
+              type = 1
+            }
+            if (props.item.project_type === 1 && props.item.is_bug === 1) {
+              type = 2
+            }
+            // return
             openDemandDetail(
               { ...props.item, demandIds: ids, projectId: getProjectIdByUrl() },
               getProjectIdByUrl(),
               props.item.id,
-              1,
+              type,
             )
           }}
         >

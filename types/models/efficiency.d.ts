@@ -63,6 +63,7 @@ declare namespace Models.Efficiency {
   export interface ChartPie {
     chartType?: string
     time?: string
+    color?: Array<string>
     seriesData: Array<[string, number]>
     total?: number
   }
