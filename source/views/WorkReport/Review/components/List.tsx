@@ -65,6 +65,10 @@ const ListHead = styled.div({
 
 const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-right: 16px;
+  margin-bottom: 16px;
+  .ant-select-selection-placeholder {
+    color: var(--neutral-n4) !important;
+  }
 `
 
 const ClearButton = styled.div`
@@ -76,6 +80,7 @@ const ClearButton = styled.div`
   color: #6688ff;
   line-height: 22px;
   margin-left: 24px;
+  margin-bottom: 16px;
   white-space: nowrap;
   cursor: pointer;
 `
@@ -683,7 +688,7 @@ const List = () => {
         <ClearButton onClick={restQuery}>{t('common.clearForm')}</ClearButton>
       </ListHead>
 
-      <Divider style={{ margin: '20px 0' }} />
+      <Divider style={{ margin: '4px 0px 20px 0px' }} />
       <ResizeTable
         isSpinning={isSpinning}
         dataWrapNormalHeight="calc(100vh - 264px)"

@@ -34,6 +34,8 @@ const content = css`
     font-family: SiYuanRegular;
     font-weight: 400;
     color: var(--neutral-n3);
+    line-height: 20px;
+    margin-bottom: 24px;
   }
 `
 const CustomWrap = styled.div`

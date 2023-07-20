@@ -106,7 +106,7 @@ declare namespace Model.Sprint {
     }
   }
   interface StatusInfo1 {
-    value: number
+    value: string
     label: string
   }
   interface StatusInfo2 {

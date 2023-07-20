@@ -6,6 +6,16 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import { css } from '@emotion/css'
+const breadStyle = css`
+  span {
+    &:hover {
+      text-decoration: underline !important;
+      text-decoration-color: var(--neutral-n1-d1) !important;
+      padding-bottom: 4px !important;
+    }
+  }
+`
 const MyBreadcrumb = (props: any) => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -24,13 +34,15 @@ const MyBreadcrumb = (props: any) => {
         <a
           onClick={() => navigate('/ProjectManagement/Project')}
           style={{ color: 'var(--neutral-n1-d1)' }}
+          className={breadStyle}
         >
-          {t('title.project') as string}
+          <span>{t('title.project') as string}</span>
         </a>
       </Breadcrumb.Item>
       {projectInfo.name ? (
         <Breadcrumb.Item>
           <a
+            className={breadStyle}
             onClick={() => {
               const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
               if (projectInfo.projectType === 1) {

@@ -478,6 +478,10 @@ const Home = () => {
       dimension: str,
     })
     setCharts6({
+      color:
+        str === 'status'
+          ? ['#FA9746', '#43BA9A', '#6688FF']
+          : ['#FF5C5E', '#FA9746', '#BBBDBF', '#6688FF', '#43BA9A', '#A176FB'],
       time: `${res.start_time} ~ ${res.end_time}`,
       chartType: str,
       seriesData: res.list.map(el => [el.name!, parseInt(el.ratio!, 10)]),

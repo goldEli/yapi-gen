@@ -12,6 +12,7 @@ import {
   setIsUpdateAddWorkItem,
 } from '@store/project'
 import { setDemandInfo } from '@store/demand'
+import { setListActiveId } from '@store/global'
 
 const useOpenDemandDetail = () => {
   const { userPreferenceConfig } = useSelector(store => store.user)
@@ -27,6 +28,7 @@ const useOpenDemandDetail = () => {
   ) => {
     dispatch(setIsUpdateAddWorkItem(0))
     dispatch(setIsChangeDetailAffairs(false))
+    // dispatch(setListActiveId(id ?? 0))
     // 弹窗预览
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
@@ -67,7 +69,7 @@ const useOpenDemandDetail = () => {
       let params: any = {
         changeIds: item.demandIds,
         id: projectId,
-        specialType: type,
+        specialType: type ?? 3,
       }
       // let url = ''
 

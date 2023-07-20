@@ -237,7 +237,7 @@ const Main = (props: UserInfo) => {
           props.onChange({
             user_id: props.userInfo.id,
             type: props.statusType,
-            status_id: newValue,
+            status_name: newValue,
           })
         }}
         suffixIcon={<CommonIconFont type="down" />}
