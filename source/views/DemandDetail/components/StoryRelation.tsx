@@ -124,6 +124,9 @@ const StoryRelation = (props: RelationStoriesProps) => {
     }[]
   >([])
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   //根据搜索框的值来放的数据
   const [options, setOptions] = useState<any>([])
   const isCanEdit =
@@ -682,7 +685,13 @@ const StoryRelation = (props: RelationStoriesProps) => {
   }
   return (
     <RelationWrap
-      style={{ height: props.isDrawer ? '100%' : 'calc(100vh - 227px)' }}
+      style={{
+        height: props.isDrawer
+          ? '100%'
+          : isEnd
+          ? 'calc(100vh - 188px)'
+          : 'calc(100vh - 227px)',
+      }}
     >
       <DeleteConfirmModal />
       <CommonModal
@@ -739,9 +748,12 @@ const StoryRelation = (props: RelationStoriesProps) => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
-        {t('linkWorkItem')}
-      </CommonButton>
+      {!isEnd && (
+        <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
+          {t('linkWorkItem')}
+        </CommonButton>
+      )}
+
       {!props.isDrawer && (
         <>
           <ResizeTable

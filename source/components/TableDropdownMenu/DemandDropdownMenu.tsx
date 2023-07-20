@@ -53,6 +53,9 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     'b/story/delete',
   )
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   // 复制需求id
   const onCopyId = () => {
     copyLink(
@@ -143,6 +146,9 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     }
     if (hasCreate) {
       menuItems = menuItems.filter((i: any) => i.key !== '3')
+    }
+    if (isEnd) {
+      menuItems = menuItems.filter((i: any) => !['1', '2', '3'].includes(i.key))
     }
   }
 

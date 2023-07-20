@@ -101,6 +101,9 @@ const IterationDetail = () => {
     'b/iterate/del',
   )
 
+  // 项目是否已结束
+  const isEnd = projectInfo?.status === 2
+
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/get',
@@ -495,10 +498,10 @@ const IterationDetail = () => {
         </DetailText>
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />
-          {!hasEdit && (
+          {!hasEdit && !isEnd && (
             <CommonButton type="icon" icon="edit" onClick={onEdit} />
           )}
-          {!hasDel && (
+          {!hasDel && !isEnd && (
             <CommonButton type="icon" icon="delete" onClick={onDelete} />
           )}
         </ButtonGroup>

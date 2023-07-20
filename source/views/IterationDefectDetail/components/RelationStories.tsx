@@ -85,6 +85,9 @@ const RelationStories = (props: RelationStoriesProps) => {
     }[]
   >([])
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   //根据搜索框的值来放的数据
   const [options, setOptions] = useState<any>([])
   const isCanEdit =
@@ -639,7 +642,12 @@ const RelationStories = (props: RelationStoriesProps) => {
     })
   }
   return (
-    <RelationWrap style={{ paddingLeft: props.isDrawer ? 0 : 24 }}>
+    <RelationWrap
+      style={{
+        paddingLeft: props.isDrawer ? 0 : 24,
+        height: isEnd ? 'calc(100vh - 198px)' : 'calc(100vh - 237px)',
+      }}
+    >
       <DeleteConfirmModal />
       <CommonModal
         isVisible={isVisible}
@@ -695,9 +703,11 @@ const RelationStories = (props: RelationStoriesProps) => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
-        {t('linkWorkItem')}
-      </CommonButton>
+      {!isEnd && (
+        <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
+          {t('linkWorkItem')}
+        </CommonButton>
+      )}
       {/* 缺陷详情 */}
       {!props.isDrawer && (
         <>
