@@ -34,6 +34,7 @@ import { setCurrentMenu } from '@store/user'
 import menuTag from '/menuTag.svg'
 import usePressKyey from '@/hooks/usePressKyey/usePressKyey'
 import { useHotkeys } from 'react-hotkeys-hook'
+
 interface DrawerComponentProps {
   value: boolean
   onChange(value: boolean): void
@@ -115,7 +116,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     const res2 = await getCompanyList()
 
     setActiveId(userInfo.company_id)
-    setCompanyList(res2.data)
+    setCompanyList(res2)
   }
 
   // 点击切换公司弹窗

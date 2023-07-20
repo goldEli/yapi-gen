@@ -3,6 +3,7 @@
 import { store } from '../../store'
 import * as http from '../tools/http'
 import { onlySysNotice } from './sysNotice'
+import normalCompany from '/normalCompany.jpg'
 
 // 获取人员信息
 export const getUserIntroList = async (params: { ids: string }) => {
@@ -109,7 +110,10 @@ export const login = async () => {
 // 获取公司信息
 export const getCompanyList: any = async () => {
   const response = await http.get('getCompanyList')
-  return response
+  return response.data.map((i: any) => ({
+    ...i,
+    logo: i.logo?.length > 0 ? i.logo : normalCompany,
+  }))
 }
 
 // 切换公司
