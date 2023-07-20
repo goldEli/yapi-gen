@@ -1,3 +1,4 @@
+/* eslint-disable no-promise-executor-return */
 /* eslint-disable no-empty */
 /* eslint-disable require-atomic-updates */
 /* eslint-disable no-undefined */
@@ -85,6 +86,7 @@ const Index = () => {
   }
   const setReads = async (values: any) => {
     const res = await setReadApi(values)
+    await new Promise(resolve => setTimeout(resolve, 2000))
     if (res.code === 0) {
       const res2 = await getContactStatistics()
       let num = 0
