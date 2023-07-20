@@ -85,6 +85,9 @@ const IterationDefectDetail = () => {
     'b/flaw/update',
   )
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   // 复制标题
   const onCopy = () => {
     copyLink(flawInfo.name, t('copysuccess'), t('copyfailed'))
@@ -312,6 +315,13 @@ const IterationDefectDetail = () => {
     },
   ]
 
+  const onGetMenu = () => {
+    if (isEnd) {
+      return items.splice(3.4)
+    }
+    return items
+  }
+
   // 点击切换类别
   const onClickCategory = async (k: any) => {
     const result = await getWorkflowList({
@@ -387,7 +397,7 @@ const IterationDefectDetail = () => {
       label: (
         <ActivityTabItem>
           <span>{t('changeLog')}</span>
-          <ItemNumber isActive={tabActive === '2'}>
+          <ItemNumber isActive={tabActive === '3'}>
             {flawInfo.changeCount}
           </ItemNumber>
         </ActivityTabItem>
@@ -602,7 +612,7 @@ const IterationDefectDetail = () => {
             <DropdownMenu
               placement="bottomRight"
               trigger={['click']}
-              menu={{ items }}
+              menu={{ items: onGetMenu() }}
               getPopupContainer={n => n}
             >
               <div>

@@ -36,6 +36,9 @@ const Achieve = (props: AchieveProps) => {
     'b/iterate/achieve',
   )
 
+  // 项目是否已结束
+  const isEnd = projectInfo?.status === 2
+
   // 获取迭代成果详情
   const getInfo = async () => {
     const result = await getAchieveInfo({
@@ -53,7 +56,7 @@ const Achieve = (props: AchieveProps) => {
   return (
     <div>
       <div className={wrap}>
-        {isCanEdit ? null : (
+        {!isCanEdit && !isEnd && (
           <div
             style={{
               display: 'flex',

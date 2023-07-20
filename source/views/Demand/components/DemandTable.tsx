@@ -346,7 +346,7 @@ const DemandTable = (props: Props) => {
   useEffect(() => {
     setSelectedRowKeys([])
   }, [props.data?.list])
-  console.log(selectColum, 'selectColum')
+
   return (
     <TableContent>
       <ResizeTable

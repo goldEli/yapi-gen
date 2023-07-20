@@ -359,6 +359,9 @@ const SprintProjectSprint: React.FC = () => {
     'b/sprint',
   )
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   const inform = [
     {
       key: 0,
@@ -577,50 +580,55 @@ const SprintProjectSprint: React.FC = () => {
                 </div>
               </TabsWrap>
               <RightIcon>
-                <Tooltip
-                  title={
-                    activeKey === 0
-                      ? t('sprint.createSprint')
-                      : t('sprint.createStory')
-                  }
-                >
-                  <CustomCloseWrap
-                    style={isCanEditSprint ? {} : { visibility: 'hidden' }}
-                    width={32}
-                    height={32}
-                    onClick={() => {
-                      if (activeKey === 0) {
-                        setSprintModal({
-                          visible: true,
-                          type: 'create',
-                        })
-                      } else {
-                        dispatch(
-                          setAddWorkItemModal({
-                            visible: true,
-                            params: {
-                              type: 3,
-                              title: t('sprint.createTransaction'),
-                              noDataCreate: true,
-                              projectId,
-                            },
-                          }),
-                        )
-                      }
-                    }}
+                {!isEnd && (
+                  <Tooltip
+                    title={
+                      activeKey === 0
+                        ? t('sprint.createSprint')
+                        : t('sprint.createStory')
+                    }
                   >
-                    <IconFont
-                      style={{
-                        fontSize: 20,
-                        color: 'var(--neutral-n3) !important',
+                    <CustomCloseWrap
+                      style={isCanEditSprint ? {} : { visibility: 'hidden' }}
+                      width={32}
+                      height={32}
+                      onClick={() => {
+                        if (activeKey === 0) {
+                          setSprintModal({
+                            visible: true,
+                            type: 'create',
+                          })
+                        } else {
+                          dispatch(
+                            setAddWorkItemModal({
+                              visible: true,
+                              params: {
+                                type: 3,
+                                title: t('sprint.createTransaction'),
+                                noDataCreate: true,
+                                projectId,
+                              },
+                            }),
+                          )
+                        }
                       }}
-                      type="plus"
-                    />
-                  </CustomCloseWrap>
-                </Tooltip>
+                    >
+                      <IconFont
+                        style={{
+                          fontSize: 20,
+                          color: 'var(--neutral-n3) !important',
+                        }}
+                        type="plus"
+                      />
+                    </CustomCloseWrap>
+                  </Tooltip>
+                )}
+                {isEnd && <div style={{ width: 32 }} />}
                 <div
                   className="line"
-                  style={isCanEditSprint ? {} : { visibility: 'hidden' }}
+                  style={
+                    isCanEditSprint && !isEnd ? {} : { visibility: 'hidden' }
+                  }
                 />
                 <Popover
                   trigger="click"
