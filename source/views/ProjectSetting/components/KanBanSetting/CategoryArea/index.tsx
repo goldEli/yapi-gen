@@ -7,7 +7,7 @@ import { setCategoryVisibleInfo } from '@store/kanbanConfig'
 import { useNavigate } from 'react-router'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import useI18n from '@/hooks/useI18n'
-import { getProjectIdByUrl } from '@/tools'
+import { getProjectIdByUrl, getProjectType } from '@/tools'
 
 interface CategoryAreaProps {
   data: Model.KanbanConfig.Category
@@ -71,11 +71,15 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
         <div
           onClick={e => {
             // console.log({ e })
+            // debugger
+            console.log('getProjectType', getProjectType())
+            const type = getProjectType()
             e.stopPropagation()
             const params = encryptPhp(
               JSON.stringify({
                 id: getProjectIdByUrl(),
                 pageIdx: 'work',
+                type: type === 1 ? 4 : 'work',
                 // categoryItem: props.data,
                 categoryItem: {
                   name: props.data.name,
@@ -91,7 +95,11 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
                 },
               }),
             )
-            navigate(`/SprintProjectManagement/WorkFlow?data=${params}`)
+            if (type === 2) {
+              navigate(`/SprintProjectManagement/WorkFlow?data=${params}`)
+              return
+            }
+            navigate(`/ProjectManagement/WorkFlow?data=${params}`)
           }}
         >
           <CommonButton type="secondary">{t('edit_workflow')}</CommonButton>
