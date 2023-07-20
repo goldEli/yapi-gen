@@ -429,7 +429,7 @@ const CalendarSet = () => {
             {t('calendarManager.remind_me_only_of_accepted_schedules')}
           </Checkbox>
         </div>
-        <div id="calendar-import">
+        {/* <div id="calendar-import">
           <Title>
             <div className="name">{t('calendarManager.calendar_import')}</div>
             <Tooltip title={t('calendarManager.can_import_text')}>
@@ -496,7 +496,7 @@ const CalendarSet = () => {
             }))}
             onChange={setExportIds}
           />
-        </div>
+        </div> */}
       </ContentWrap>
     </CalendarSetWrap>
   )

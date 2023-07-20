@@ -152,6 +152,9 @@ const XTable: React.FC<XTableProps> = props => {
     'b/transaction/update',
   )
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   const isCanEditSprint = getIsPermission(
     projectInfo?.projectPermissions,
     'b/sprint',
@@ -313,7 +316,8 @@ const XTable: React.FC<XTableProps> = props => {
 
               {data.id === 0
                 ? null
-                : !isCanEditSprint && (
+                : !isCanEditSprint &&
+                  !isEnd && (
                     <>
                       <Tooltip
                         title={
@@ -368,7 +372,7 @@ const XTable: React.FC<XTableProps> = props => {
                     </>
                   )}
             </div>
-            {!isCanEditSprint && (
+            {!isCanEditSprint && !isEnd && (
               <div>
                 {data.id === 0 ? (
                   <CommonButton
@@ -390,7 +394,7 @@ const XTable: React.FC<XTableProps> = props => {
           </Header>
         }
       >
-        {!isCanEdit && (
+        {!isCanEdit && !isEnd && (
           <CommonButton
             type="primaryText"
             icon="plus"

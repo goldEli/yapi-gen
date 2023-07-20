@@ -21,10 +21,15 @@ interface Props {
 const ChildrenDemand = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { isUpdateAddWorkItem } = useSelector(store => store.project)
+  const { isUpdateAddWorkItem, projectInfo } = useSelector(
+    store => store.project,
+  )
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
+
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
 
   const columnsChild = [
     {
@@ -132,14 +137,16 @@ const ChildrenDemand = (props: Props) => {
   return (
     <div>
       <Label>{t('subrequirements')}</Label>
-      <CommonButton
-        onClick={onCreateChild}
-        type="primaryText"
-        iconPlacement="left"
-        icon="plus"
-      >
-        {t('create_sub_requirements')}
-      </CommonButton>
+      {!isEnd && (
+        <CommonButton
+          onClick={onCreateChild}
+          type="primaryText"
+          iconPlacement="left"
+          icon="plus"
+        >
+          {t('create_sub_requirements')}
+        </CommonButton>
+      )}
       {!!dataList?.list &&
         (dataList?.list?.length > 0 ? (
           <Table

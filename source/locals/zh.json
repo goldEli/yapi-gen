@@ -1849,7 +1849,7 @@
     "deleteSprint": "删除冲刺",
     "confirmDelete": "确认要删除",
     "ofSprint": "的冲刺吗",
-    "removeSprintToAgency": "该冲刺内的事务将移动至代办事项内",
+    "removeSprintToAgency": "该冲刺内的事务将移动至待办事项内",
     "newAffairs": "新事务",
     "noTransaction": "暂无事务",
     "desc1": "从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺",
