@@ -63,7 +63,10 @@ const index = (props: any) => {
   }
 
   const prepositionItems = useMemo(() => {
-    if (props.value?.length >= 1) {
+    if (
+      props.value?.length >= 1 &&
+      props.options?.every((i: any) => !i.children)
+    ) {
       const reRroup = props.value.concat(
         getArrDifference(props.options, props.value),
       )
@@ -100,7 +103,7 @@ const index = (props: any) => {
         </>
       )}
       options={prepositionItems}
-      fieldNames={{ label: 'label', value: 'value', option: 'children' }}
+      fieldNames={{ label: 'label', value: 'value', options: 'children' }}
     />
   )
 }

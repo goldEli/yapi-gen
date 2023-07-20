@@ -228,15 +228,15 @@ const KanBanBtnsArea = (props: Props) => {
         onClick={props.onRefresh}
       />
       {/* 全屏 */}
-      {/* <DividerWrap type="vertical" />
-      
+      <DividerWrap type="vertical" />
+
       <ScreenMinHover
         label={t('full_screen')}
         icon="full-screen"
         onClick={() => {
           dispatch(onFullScreenMode())
         }}
-      /> */}
+      />
       <DividerWrap type="vertical" />
 
       {/* 设置 */}

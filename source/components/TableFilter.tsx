@@ -504,6 +504,18 @@ const TableFilter = (props: any) => {
                                       })),
                                   ),
                                 )
+                              : i.key === 'status'
+                              ? projectInfoValues
+                                  ?.filter((k: any) => k.key === i.key)[0]
+                                  ?.children?.filter((l: any) => l.id > 0)
+                                  .map((v: any) => ({
+                                    label: v.name,
+                                    children: v?.statuss?.map((val: any) => ({
+                                      label: val.content_txt || val.content,
+                                      value: val.id,
+                                      id: val.id,
+                                    })),
+                                  }))
                               : format(
                                   deWeight(
                                     projectInfoValues
