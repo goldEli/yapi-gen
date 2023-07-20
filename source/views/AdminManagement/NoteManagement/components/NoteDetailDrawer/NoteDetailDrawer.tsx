@@ -27,6 +27,7 @@ import {
   NameText,
 } from '@/views/WorkReport/Formwork/Addperson'
 import { getMyAllSysNoticeDetail } from '@/services/sysNotice'
+import { messageDrawer } from '@/views/SiteNotifications/components/SiteDrawer/style'
 
 // 已读未读
 
@@ -121,9 +122,8 @@ const NoteDetailDrawer = (props: any) => {
         open={props.isVisible}
         onClose={onCancel}
         destroyOnClose
-        mask={false}
         getContainer={false}
-        className="drawerRoot"
+        className={messageDrawer}
       >
         <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
           <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />

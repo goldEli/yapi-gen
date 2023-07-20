@@ -113,7 +113,7 @@ const ProgressComparison = (props: Props) => {
   )
   const [total, setTotal] = useState(0)
   const [pageNum, setPageNum] = useState(1)
-  const [pageSize, setPageSize] = useState(15)
+  const [pageSize, setPageSize] = useState(50)
   const [selectProjectIds, setSelectProjectIds] = useState<any>(
     props.headerParmas?.projectIds,
   )
