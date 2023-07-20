@@ -36,6 +36,7 @@ const Email = () => {
   )
   const onChange = (checked: boolean) => {
     setActive(checked)
+    setChoose([])
   }
 
   const onChoose = (id: any) => {
