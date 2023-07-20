@@ -499,7 +499,6 @@ export const getKanbanByGroup = createAsyncThunk(
 export const onChangeSortByView =
   (id: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
     await dispatch(setSortByView(id))
-    const views = store.getState().view
     const current = store
       .getState()
       .kanBan.sortByView?.find(item => item.id === id)
@@ -528,7 +527,9 @@ export const onChangeSortByView =
       project_id: getProjectIdByUrl(),
     }
     // 更新kanbanConfig
-    dispatch(getKanbanConfig(tempParams))
+    if (currentRowAndStatusId) {
+      dispatch(getKanbanConfig(tempParams))
+    }
     dispatch(getKanbanByGroup())
   }
 // 修改分组
