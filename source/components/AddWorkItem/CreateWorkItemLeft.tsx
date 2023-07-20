@@ -431,6 +431,7 @@ const CreateDemandLeft = (props: Props) => {
       getCategoryField(categoryObj?.id)
       getStatusList(categoryObj?.id)
       getParentData(categoryObj.id)
+      props.onChangeCategoryType(categoryObj?.work_type)
       return
     }
     form.setFieldsValue({

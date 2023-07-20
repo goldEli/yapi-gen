@@ -138,6 +138,7 @@ const DemandSetting = () => {
         onConfirm={() => {
           save(), setIsVisible(false)
         }}
+        title={t('sprintProject.confirmCancel')}
       />
     </PermissionWrap>
   )

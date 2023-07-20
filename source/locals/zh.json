@@ -1849,7 +1849,7 @@
     "deleteSprint": "删除冲刺",
     "confirmDelete": "确认要删除",
     "ofSprint": "的冲刺吗",
-    "removeSprintToAgency": "该冲刺内的事务将移动至代办事项内",
+    "removeSprintToAgency": "该冲刺内的事务将移动至待办事项内",
     "newAffairs": "新事务",
     "noTransaction": "暂无事务",
     "desc1": "从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺",
@@ -1966,7 +1966,7 @@
     "projectHomeConfiguration": "项目首页配置",
     "defineProjectDefaultHomeLocation": "定义项目默认首页位置",
     "transactionList": "事务列表",
-    "kanban": "KanBan",
+    "kanban": "Kanban",
     "defect": "缺陷",
     "need": "需求",
     "iteration": "迭代",
@@ -1979,7 +1979,8 @@
     "rightsProfile": "权限配置",
     "confirmDeletionOfThisField": "确认删除该字段？",
     "columnsAndStatus": "列与状态",
-    "typeConfiguration": "类型配置"
+    "typeConfiguration": "类型配置",
+    "confirmCancel": "确认取消"
   },
   "editingRequirements": "编辑需求",
   "createSubrequirements": "创建子需求",

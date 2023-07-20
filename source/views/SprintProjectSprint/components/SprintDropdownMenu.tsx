@@ -72,6 +72,9 @@ export const SprintDropdownMenu = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/transaction/delete',
   )
+
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
   const groupId = props?.record?.id?.split('_')?.[0]
   const id = props?.record?.id?.split('_')?.[1]
 
@@ -150,6 +153,10 @@ export const SprintDropdownMenu = (props: Props) => {
   }
   if (hasEdit) {
     menuItems = menuItems.filter((i: any) => i.key !== '2')
+  }
+
+  if (isEnd) {
+    menuItems = menuItems.filter((i: any) => !['2', '3'].includes(i.key))
   }
 
   return <MenuWrap style={{ minWidth: 56 }} items={menuItems} />

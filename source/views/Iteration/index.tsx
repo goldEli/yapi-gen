@@ -32,7 +32,11 @@ import {
 } from '@store/project'
 import { deleteDemand, getDemandList } from '@/services/demand'
 import { setIsRefresh } from '@store/user'
-import { setIsRefreshList, setIsUpdateList } from '@store/iterate'
+import {
+  setIsRefreshList,
+  setIsUpdateList,
+  setIterateInfo,
+} from '@store/iterate'
 import TableFilter from '@/components/TableFilter'
 import EditAchievements from '../IterationDetail/components/EditAchievements'
 import { updateIterateStatus } from '@/services/iterate'
@@ -343,6 +347,10 @@ const Iteration = () => {
       getSearchKey()
     }
   }, [projectInfo])
+
+  useEffect(() => {
+    dispatch(setIterateInfo({}))
+  }, [])
 
   const resultAuth = onComputedPermission(
     currentMenu,

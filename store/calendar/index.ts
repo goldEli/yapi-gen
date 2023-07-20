@@ -79,8 +79,8 @@ const initialState: SliceState = {
     { name: 'calendarManager.view_options', key: 'view' },
     { name: 'calendarManager.schedule_settings', key: 'schedule' },
     { name: 'calendarManager.notification_settings', key: 'notice' },
-    { name: 'calendarManager.calendar_import', key: 'import' },
-    { name: 'calendarManager.calendar_export', key: 'export' },
+    // { name: 'calendarManager.calendar_import', key: 'import' },
+    // { name: 'calendarManager.calendar_export', key: 'export' },
   ],
   routerMenu: {
     name: '',
