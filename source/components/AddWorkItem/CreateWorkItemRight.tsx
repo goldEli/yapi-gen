@@ -538,9 +538,11 @@ const CreateDemandRight = (props: Props) => {
 
     return newA.concat(newB)
   }
+
   // 返回基本字段
   const getBasicTypeComponent = (item: any) => {
     let nodeComponent
+
     // 下拉多选 抄送人，处理人，迭代,发现版本
     if (
       [
