@@ -189,7 +189,7 @@ declare namespace API.Sprint {
     }
   }
   namespace EfficiencyMemberWorkList {
-    type Params = { user_id: number; type: string; status_name?: number }
+    type Params = { user_id: number; type: string; status_name?: string }
     type Result = {
       total: Model.Sprint.Total
       list: Array<Model.Sprint.List>

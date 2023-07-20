@@ -391,12 +391,10 @@ const SprintProjectSprint: React.FC = () => {
       setFocus(true)
       width = e.clientX - startX
       setEndWidth(width - 4 < 316 ? 312 : width - 4)
-      leftRef.current.style.transition = '0s'
       if (leftRef && leftRef.current) {
         leftRef.current.style.width = `${
           Number(width) < 316 ? 316 : Number(width)
         }px`
-        leftRef.current.style.transition = 'all 0.3s'
       }
     }
     document.onmouseup = () => {

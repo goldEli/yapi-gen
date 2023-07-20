@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Drawer, Dropdown, Form, Menu } from 'antd'
+import { Drawer, Dropdown, Form, Menu, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -193,6 +193,7 @@ const CommonMember = (props: Props) => {
       )
       dispatch(setProjectInfoValues(newValues))
     }
+
     setMemberList(result)
   }
 
@@ -366,10 +367,18 @@ const CommonMember = (props: Props) => {
                 <div className="avatarBox">
                   <CommonUserAvatar avatar={i.avatar} size="large" />
                   <div className="info">
-                    <span>
-                      {i.name}
-                      {i.nickname ? `(${i.nickname})` : ''}
-                    </span>
+                    <Tooltip
+                      title={
+                        i.name.length + (i.nickname?.length ?? 0) > 25
+                          ? i.name + (i.nickname ?? '')
+                          : ''
+                      }
+                    >
+                      <span>
+                        {i.name}
+                        {i.nickname ? `(${i.nickname})` : ''}
+                      </span>
+                    </Tooltip>
                     <span>
                       {i.positionName || '--'}
                       {i.is_admin === 1 ? `  （${t('new_p1.a8')}）` : ''}
@@ -389,7 +398,7 @@ const CommonMember = (props: Props) => {
                     style={{
                       color: 'var(--neutral-n3)',
                       fontSize: '12px',
-                      marginRight: '18px',
+                      marginRight: '4px',
                     }}
                   >
                     {i.roleName}

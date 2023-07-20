@@ -22,7 +22,7 @@ interface HaderProps {
   projectId: number | string
   homeType: string
   viewType: number
-  tableList: any
+  tableList: Array<{ id: number }>
 }
 const HeaderAll = (props: HaderProps) => {
   const [t] = useTranslation()
