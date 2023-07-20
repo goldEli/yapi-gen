@@ -1994,7 +1994,8 @@
     "rightsProfile": "Rights Profile",
     "confirmDeletionOfThisField": "Confirm deletion of this field?",
     "columnsAndStatus": "Columns and status",
-    "typeConfiguration": "Type configuration"
+    "typeConfiguration": "Type configuration",
+    "confirmCancel": "Confirm Canel"
   },
   "editingRequirements": "Editing requirements",
   "createSubrequirements": "Create subrequirements",

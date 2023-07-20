@@ -282,7 +282,7 @@ const ProjectDetailSide = () => {
   }
   const onGoBack = () => {
     getInfo()
-    const params = encryptPhp(JSON.stringify({ id: projectId }))
+    const params = encryptPhp(JSON.stringify({ id: projectId, type: 'sprint' }))
     navigate(`/SprintProjectManagement/Affair?data=${params}`)
   }
   const demandClick = () => {
