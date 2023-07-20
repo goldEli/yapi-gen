@@ -22,7 +22,6 @@ const DetailScreenModal = () => {
   const onClose = () => {
     dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
   }
-  console.log(params, '=paramsparamsparamsparams')
 
   return (
     <ModalWrap
