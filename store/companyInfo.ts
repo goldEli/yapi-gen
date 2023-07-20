@@ -19,7 +19,7 @@ export const getAsyncCompanyInfo = createAsyncThunk(
   async () => {
     const res = await getCompanyInfo()
 
-    res.logo = res.logo || normalCompany
+    res.logo = res.logo?.length > 0 ? res.logo : normalCompany
     return res
   },
 )
