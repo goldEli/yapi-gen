@@ -251,9 +251,6 @@ const ResizeTable = (props: ResizeTableProps) => {
               expandable={props?.expandable}
               onRow={props.onRow as any}
               rowClassName={(row: any) => {
-                console.log(row.id, listActiveId)
-                console.log(props.rowClassName)
-
                 return row.id === listActiveId
                   ? 'activeListItem'
                   : props.rowClassName
