@@ -517,7 +517,12 @@ export const onChangeSortByView =
     const currentRowAndStatusId =
       current.type === 2
         ? temp1 || temp2
-        : current?.config?.currentRowAndStatusId
+        : sortByRowAndStatusOptions?.some(
+            (k: any) => k.key === current?.config?.currentRowAndStatusId,
+          )
+        ? current?.config?.currentRowAndStatusId
+        : temp1 || temp2
+
     await dispatch(setSortByRowAndStatusOptions(String(currentRowAndStatusId)))
     const params = generatorFilterParams(current.config)
     await dispatch(saveValue(params))
