@@ -116,7 +116,7 @@ const SystemFeedback = () => {
         dispatch(changeFreedVisibleVisible(false))
       }}
       width="100vw"
-      dex={50}
+      dex={143}
       isShowMask={false}
       isVisible={freedVisible}
       // title={isEditId ? t('edit_item') : t('common.createProject')}
@@ -180,6 +180,7 @@ const SystemFeedback = () => {
               ]}
             >
               <Editor
+                height="366px"
                 maxHeight="340px"
                 upload={uploadFile}
                 getSuggestions={() => []}
