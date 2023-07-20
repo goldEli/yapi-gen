@@ -524,6 +524,7 @@ export const getDemandInfo: any = async (params: any) => {
 
   return {
     category_attachment: response.data.category_attachment,
+    categoryName: response.data.category,
     id: response.data.id,
     name: response.data.name || '--',
     info: response.data.info.replaceAll('\n', '<br/>'),

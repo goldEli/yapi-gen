@@ -462,8 +462,25 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     if (hasVal.length >= 1) {
       getMessage({ msg: t('commonModal.warnningMsg1'), type: 'warning' })
     } else {
-      const filterVal: any = selectDataList.filter((el: any) => el.id === value)
+      const filterVal: any =
+        tabsActive === 0
+          ? selectDataList.filter((el: any) => el.id === value)
+          : selectDataList
+              .filter((el: any) => el.id === value)
+              .map((i: any) => {
+                return {
+                  id: i.id,
+                  department_id: i.department_id,
+                  name: i.name,
+                  nickname: i.nickname,
+                  avatar: i.avatar,
+                }
+              })
+      // const filterVal: any = selectDataList.filter((el: any) => el.id === value)
+      console.log(filterVal)
+
       setCheckedKeys([...checkedKeys, filterVal.find((item: any) => item).id])
+
       setPersonData([...personData, ...filterVal])
     }
   }
@@ -489,11 +506,15 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
 
   const getTapData = (datas: any) => {
+    console.log(datas, 'f飞机')
+
     active.current.push(datas)
     setShowTreeData({ children: datas.children, staffs: datas.staffs })
   }
   // 选中节点
   const setKeys = (keys: any) => {
+    console.log(keys, 'fff放松放松')
+
     if (keys.children && keys.children.length >= 1) {
       getHaveChildBykeys(keys)
     } else {
@@ -871,6 +892,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     props.isVisible,
     // props.defaultPeople, tabsActive, selectDataList
   ])
+  console.log(personData, '233')
 
   return (
     <ModalStyle
@@ -1036,8 +1058,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
             }}
           >
             {personData.length >= 1
-              ? personData.map((el: any) => (
-                  <ListItem key={el.id}>
+              ? personData.map((el: any, index: any) => (
+                  <ListItem key={index}>
                     <CommonUserAvatar
                       name={el.name}
                       fontSize={14}

@@ -133,9 +133,11 @@ export const Container = () => {
     changeLanguage(languageParams)
     init()
     dispatch(getStatus())
+    console.log('第一次获取')
+    dispatch(getProjectCover())
     dispatch(getLoginDetail())
     dispatch(getAsyncCompanyInfo())
-    dispatch(getProjectCover())
+    // dispatch(getProjectCover())
   }, [])
 
   useEffect(() => {

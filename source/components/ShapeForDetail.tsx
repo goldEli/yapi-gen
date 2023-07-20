@@ -393,7 +393,9 @@ const ShapeContentForDetail = (props: any) => {
   }
 
   useEffect(() => {
-    init2()
+    if (props.row.id !== props.sid) {
+      init2()
+    }
   }, [props.row])
 
   const onClear = () => {

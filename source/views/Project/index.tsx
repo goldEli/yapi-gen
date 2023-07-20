@@ -29,8 +29,8 @@ import { Content, Wrap } from './style'
 import ProjectSide from './ProjectSide'
 import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import GuideModal from '@/components/GuideModal'
-import guide_1 from './img/guide_1.png'
-import guide_2 from './img/guide_2.png'
+import guide_1 from './img/guide_1.jpg'
+import guide_2 from './img/guide_2.jpg'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
 
@@ -154,10 +154,6 @@ const ProjectManagementOptimization = () => {
     isRest,
     projectTypes,
   ])
-
-  useEffect(() => {
-    dispatch(getProjectCover())
-  }, [])
 
   // 更新列表
   const onUpdate = () => {
@@ -303,10 +299,6 @@ const ProjectManagementOptimization = () => {
     if (typeId || typeId === 0) {
       setActiveType(typeId)
       setGroupId(null)
-      setPageObj({
-        page: 1,
-        size: pageObj.size,
-      })
     }
   }, [typeId])
   const onExit = () => {

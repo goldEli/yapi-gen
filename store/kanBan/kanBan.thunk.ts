@@ -668,20 +668,19 @@ export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
 }
 
 export const openSaveAsViewModel =
-  (id?: Model.KanBan.ViewItem['id'], type?: boolean) =>
+  (id?: Model.KanBan.ViewItem['id'], type?: boolean, isCreate?: boolean) =>
   async (dispatch: AppDispatch) => {
     const { sortByView } = store.getState()?.kanBan
     const viewItem = sortByView?.find(item => item?.id === id)
     if (type && viewItem) {
       dispatch(setSaveAsViewModelInfo({ visible: false, viewItem }))
-      // onSaveAsViewModel(viewItem)
       dispatch(
         onSaveAsViewModel({
           ...viewItem,
         }),
       )
     } else {
-      dispatch(setSaveAsViewModelInfo({ visible: true, viewItem }))
+      dispatch(setSaveAsViewModelInfo({ visible: true, viewItem, isCreate }))
     }
   }
 

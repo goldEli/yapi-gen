@@ -172,21 +172,8 @@ enum InputMode {
 }
 
 const systemData: any = {
-  oa: {
-    logo: '/sso/logo.svg',
-    logoNamePic: '/sso/IFUN_OA.svg',
-    loginFormTitle: 'OALogin',
-  },
-  meeting: {
-    logo: '/sso/iFUNMeetingLogo.svg',
-    name: 'IFUN Meeting',
-  },
-  mail: {
-    logo: '/sso/iFUNMailLogo.svg',
-    name: 'IFUN Mail',
-  },
   agile: {
-    logo: '/sso/iFUNAgileLogo.svg',
+    logo: '/sso/iFUNAgileLogo.png',
     name: 'IFUN Agile',
     loginFormTitle: 'AgileLogin',
   },

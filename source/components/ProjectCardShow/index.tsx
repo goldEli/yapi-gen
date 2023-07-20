@@ -23,11 +23,7 @@ type Props = {
 const Index = (props: any) => {
   return (
     <ProjectCard>
-      <Image
-        src={
-          props.img ?? 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
-        }
-      />
+      <Image src={props.img} />
 
       <CardRight>
         <Tooltip
