@@ -186,6 +186,7 @@ const Home = () => {
   const [optionVal, setOptionVal] = useState<number>(0)
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ViewItem>()
+  const { isRefresh } = useSelector(store => store.user)
   useEffect(() => {
     if (paramsData?.type && paramsData?.projectId) {
       setHomeType(paramsData.type)
@@ -209,6 +210,9 @@ const Home = () => {
     // 集合图表
     getStatisticsOther()
   }
+  useEffect(() => {
+    isRefresh && init()
+  }, [isRefresh])
   const updateViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)

@@ -1,4 +1,6 @@
 {
+  "project_handover": "Project handover",
+  "to_be_released": " To be released",
   "send": " send",
   "from": "from",
 
@@ -453,7 +455,7 @@
     "personCheckbox": "Person Checkbox",
     "chooseRange": "Choose Range",
     "link": "Link",
-    "checked": "Checked ({{count}})",
+    "checked": "check({{count}})",
     "batchEdit": "Batch Edit",
     "batchDelete": "Batch delete",
     "batchCopyLink": "Batch Copy Link",
@@ -1783,6 +1785,7 @@
     "allPeople": "All employees selected",
     "statisticalPeriod": "Statistical period",
     "daysBefore": "{{day}} days before",
+    "days": "Day{{day}}",
     "ringRatio": "Ring ratio",
     "fromHighToLow": "From high to low",
     "lowToHigh": "Low to high",

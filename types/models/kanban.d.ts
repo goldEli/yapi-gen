@@ -71,6 +71,7 @@ declare namespace Model.KanBan {
     story_config_priority: StoryConfigPriority
     iterate_info: string
     handlers: Handler[]
+    is_bug: number
     // 1 不能操作 2 可以操作
     verify_lock: 1 | 2
     // 1是迭代，2是冲刺

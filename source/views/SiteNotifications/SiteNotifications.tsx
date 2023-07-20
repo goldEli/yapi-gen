@@ -32,10 +32,11 @@ import { TextChange } from '@/components/TextChange/TextChange'
 import NoteModal from '@/components/NoteModal'
 
 const SiteNotifications = (props: any, ref: any) => {
+  const { loginInfo } = useSelector(store => store.user)
   const [first, setFirst] = useState(false)
   const [first2, setFirst2] = useState({})
   const [t] = useTranslation()
-  const { wsData } = useWebsocket()
+  const { wsData, creatWebSocket } = useWebsocket()
   const dispatch = useDispatch()
   const { isVisible, all } = useSelector(store => store.siteNotifications)
   const isRefresh = useSelector(store => store.user.isRefresh)
@@ -50,13 +51,21 @@ const SiteNotifications = (props: any, ref: any) => {
   }
   const sendMsg = () => {
     if (wsData.data.customData.noticeStyle === '2') {
+      const element: any = document.getElementsByClassName('ant-message')
+
       message.success({
         icon: <span></span>,
         duration: 0,
+
         content: <TextChange text={wsData.data.msgBody.title} />,
         className: 'custom-class',
         onClick: () => {
-          message.destroy()
+          // message.destroy('infoKey')
+          for (let i = 0; i < element.length; i++) {
+            const childNode = element[i]
+            childNode.remove()
+          }
+
           // dispatch(changeVisible(!isVisible))
         },
       })
@@ -310,6 +319,11 @@ const SiteNotifications = (props: any, ref: any) => {
       ),
     )
   }
+  useEffect(() => {
+    if (loginInfo) {
+      creatWebSocket(loginInfo?.comAuth?.token, loginInfo?.id)
+    }
+  }, [loginInfo])
 
   useEffect(() => {
     init()
