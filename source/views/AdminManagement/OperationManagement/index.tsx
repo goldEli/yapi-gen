@@ -153,7 +153,7 @@ const OperationManagement = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('common.nickname')}
+          {t('name')}
         </NewSort>
       ),
       dataIndex: 'name',

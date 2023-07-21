@@ -331,7 +331,7 @@ const ProjectManagementOptimization = () => {
           }}
         >
           <LeftTitle
-            title={t(typeId === 0 ? 'project.mineJoin' : 'all_enterprises')}
+            title={t(typeId === 0 ? 'project.mineJoin' : 'project.companyAll')}
           />
           <div>
             <InputSearch

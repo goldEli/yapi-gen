@@ -54,12 +54,20 @@ export const Col = styled.div`
     width: 24px;
     border-radius: 50%;
   }
+  /* &:hover {
+    cursor: pointer;
+    background-color: var(--neutral-white-d4);
+    box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
+  } */
+`
+const Cols = styled(Col)`
   &:hover {
-    /* cursor: pointer; */
-    /* background-color: var(--neutral-white-d4); */
-    /* box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09); */
+    cursor: pointer;
+    background-color: var(--neutral-white-d4);
+    box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
   }
 `
+
 export const NameText = styled.div`
   flex: 1;
   padding: 0 10px;
@@ -335,7 +343,7 @@ const Addperson = (props: Props) => {
       </AddPersonText>
       <PersonContainer>
         {personData?.map((el: any) => (
-          <Col key={el.id}>
+          <Cols key={el.id}>
             {getImg(el)}
             <NameText>{el?.target_value?.name}</NameText>
             <CommonIconFont
@@ -344,7 +352,7 @@ const Addperson = (props: Props) => {
               size={14}
               color="var(--neutral-n3)"
             />
-          </Col>
+          </Cols>
         ))}
       </PersonContainer>
       {/* 添加成员弹窗 */}

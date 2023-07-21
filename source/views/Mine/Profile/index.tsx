@@ -40,6 +40,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import FullScreenContainer from '@/views/KanBanBoard/FullScreenContainer'
 import { useFullScreenHandle } from 'react-full-screen'
 import { setFullScreen } from '@store/kanBan'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -522,7 +523,14 @@ const Profile = () => {
                 }}
               >
                 <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
-                <BBQdiv
+                <ScreenMinHover
+                  label={fullScreen ? t('exit_full_screen') : t('full_screen')}
+                  icon={fullScreen ? 'fewer-screen' : 'full-screen'}
+                  onClick={() =>
+                    fullScreen ? handle.enter() : dispatch(setFullScreen(true))
+                  }
+                />
+                {/* <BBQdiv
                   onClick={() =>
                     fullScreen ? handle.enter() : dispatch(setFullScreen(true))
                   }
@@ -542,7 +550,7 @@ const Profile = () => {
                   <span style={{ marginLeft: '10px' }}>
                     {fullScreen ? t('exit_full_screen') : t('full_screen')}
                   </span>
-                </BBQdiv>
+                </BBQdiv> */}
               </div>
 
               <div className={titleWrap}>

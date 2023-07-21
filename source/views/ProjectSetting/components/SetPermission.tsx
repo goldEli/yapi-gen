@@ -34,7 +34,10 @@ const RightLine = styled(Line)`
   justify-content: flex-end;
 `
 
-const Right = styled.div``
+const Right = styled.div`
+  margin-top: 7px;
+`
+
 const imgCss = css`
   width: 104px;
   height: 104px;
