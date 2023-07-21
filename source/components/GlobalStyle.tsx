@@ -164,6 +164,14 @@ const GlobalStyle = () => {
     }
 
     :root {
+      .notification-my {
+        height: 109px;
+        background: rgba(250, 151, 70, 0.1);
+        backdrop-filter: blur(100px);
+        border-left: 4px solid #fa9746;
+        padding: 18px;
+        padding-left: 10px;
+      }
       --blue: linear-gradient(
         180deg,
         rgba(183, 218, 238, 0) 0%,
