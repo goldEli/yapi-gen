@@ -64,6 +64,7 @@ declare namespace Models.Efficiency {
     chartType?: string
     color?: Array<string>
     time?: string
+    color?: Array<string>
     seriesData: Array<[string, number]>
     total?: number
   }

@@ -506,7 +506,6 @@ const AddDepartmentModalForFlat = (props: ModalProps) => {
   const getHaveChildBykeys = (keys: any) => {
     // 非部门的处理方法
     const findBottomChildrens = findBottomChildren([keys])
-    // console.log(findBottomChildrens, 'sss')
 
     const newData = findBottomChildrens.reduce((acc: any, current: any) => {
       // 使用对象来检查已经存在的id值

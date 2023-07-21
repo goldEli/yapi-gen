@@ -36,6 +36,7 @@ const Email = () => {
   )
   const onChange = (checked: boolean) => {
     setActive(checked)
+    setChoose([])
   }
 
   const onChoose = (id: any) => {
@@ -83,11 +84,10 @@ const Email = () => {
           </Breadcrumb.Item>
           <Breadcrumb.Item>{t('email_notification')}</Breadcrumb.Item>
         </Breadcrumb>
-        {active ? (
-          <CommonButton onClick={onSave} type="primary">
-            <span>{t('common.save')}</span>
-          </CommonButton>
-        ) : null}
+
+        <CommonButton onClick={onSave} type="primary">
+          <span>{t('common.save')}</span>
+        </CommonButton>
       </First>
       <Content>
         <Content1 margin={16}>

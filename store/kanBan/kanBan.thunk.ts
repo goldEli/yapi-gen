@@ -507,7 +507,6 @@ export const getKanbanByGroup = createAsyncThunk(
 export const onChangeSortByView =
   (id: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
     await dispatch(setSortByView(id))
-    const views = store.getState().view
     const current = store
       .getState()
       .kanBan.sortByView?.find(item => item.id === id)
@@ -526,11 +525,24 @@ export const onChangeSortByView =
     const currentRowAndStatusId =
       current.type === 2
         ? temp1 || temp2
-        : current?.config?.currentRowAndStatusId
+        : sortByRowAndStatusOptions?.some(
+            (k: any) => k.key === current?.config?.currentRowAndStatusId,
+          )
+        ? current?.config?.currentRowAndStatusId
+        : temp1 || temp2
+
     await dispatch(setSortByRowAndStatusOptions(String(currentRowAndStatusId)))
     const params = generatorFilterParams(current.config)
     await dispatch(saveValue(params))
     await dispatch(onTapSearchChoose(params ?? { system_view: 1 }))
+    const tempParams: any = {
+      id: currentRowAndStatusId,
+      project_id: getProjectIdByUrl(),
+    }
+    // 更新kanbanConfig
+    if (currentRowAndStatusId) {
+      dispatch(getKanbanConfig(tempParams))
+    }
     dispatch(getKanbanByGroup())
   }
 // 修改分组
@@ -676,20 +688,19 @@ export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
 }
 
 export const openSaveAsViewModel =
-  (id?: Model.KanBan.ViewItem['id'], type?: boolean) =>
+  (id?: Model.KanBan.ViewItem['id'], type?: boolean, isCreate?: boolean) =>
   async (dispatch: AppDispatch) => {
     const { sortByView } = store.getState()?.kanBan
     const viewItem = sortByView?.find(item => item?.id === id)
     if (type && viewItem) {
       dispatch(setSaveAsViewModelInfo({ visible: false, viewItem }))
-      // onSaveAsViewModel(viewItem)
       dispatch(
         onSaveAsViewModel({
           ...viewItem,
         }),
       )
     } else {
-      dispatch(setSaveAsViewModelInfo({ visible: true, viewItem }))
+      dispatch(setSaveAsViewModelInfo({ visible: true, viewItem, isCreate }))
     }
   }
 

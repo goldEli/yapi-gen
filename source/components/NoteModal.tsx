@@ -18,7 +18,7 @@ const Footer = styled.div`
 const Header = styled.div`
   height: 148px;
   background-size: contain;
-  background-image: url('/note.png');
+  background-image: url('/note.jpg');
 
   border-radius: 4px 4px 0px 0px;
   padding: 38px 0px;

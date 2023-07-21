@@ -477,6 +477,7 @@ const Home = () => {
           : 'one_month',
       dimension: str,
     })
+    // 状态的颜色不同，ui换的
     setCharts6({
       color:
         str === 'status'

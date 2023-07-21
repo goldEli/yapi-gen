@@ -206,7 +206,6 @@ const Operation = (props: Props) => {
       const newArr = filterFelid?.filter((i: any) => {
         return keys.includes(i.content)
       })
-      console.log('yangyangyangyangynag', searchChoose)
       setSearchList(newArr)
       dispatch(saveScreen(newArr))
       setDefaultValue(targetSubjects)
@@ -274,7 +273,8 @@ const Operation = (props: Props) => {
               dispatch(openSaveAsViewModel(key))
             }}
             onCreateView={() => {
-              dispatch(openSaveAsViewModel())
+              // eslint-disable-next-line no-undefined
+              dispatch(openSaveAsViewModel(undefined, false, true))
             }}
           />
           <Btn

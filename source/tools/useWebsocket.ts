@@ -3,10 +3,12 @@
 /* eslint-disable max-len */
 import { onlySysNotice } from '@/services/sysNotice'
 import { getLoginDetail, getTicket, loginOut } from '@/services/user'
+import { useSelector } from '@store/index'
 import { debounce, throttle } from 'lodash'
 import { useState, useRef, useEffect } from 'react'
 
 const useWebsocket = () => {
+  const { loginInfo } = useSelector(store => store.user.loginInfo)
   const NoData = ['AH000', 'M9999']
   const ws = useRef<WebSocket | null>(null)
   // socket 数据
@@ -26,7 +28,7 @@ const useWebsocket = () => {
   }
 
   const heartCheck: TypeHeartCheck = {
-    timeout: 1 * 40 * 1000,
+    timeout: 1 * 10 * 1000,
     timeoutObj: null,
     reset() {
       clearInterval(this.timeoutObj)
@@ -48,6 +50,9 @@ const useWebsocket = () => {
     },
   }
   const creatWebSocket = async (token: string, id: any) => {
+    if (!token) {
+      return
+    }
     const stateArr = [
       { key: 0, value: '正在连接中' },
       { key: 1, value: '已经连接并且可以通讯' },
@@ -104,12 +109,6 @@ const useWebsocket = () => {
     )
   }
 
-  const webSocketInit = async () => {
-    const res = await getLoginDetail()
-
-    creatWebSocket(res?.data?.comAuth?.token, res?.data?.id)
-  }
-
   //  关闭 WebSocket
   const closeWebSocket = () => {
     ws.current?.close()
@@ -129,13 +128,8 @@ const useWebsocket = () => {
   }
 
   useEffect(() => {
-    webSocketInit()
-    return () => {
-      ws.current?.close()
-    }
-  }, [ws])
+    console.log(loginInfo)
 
-  useEffect(() => {
     if (readyState.key === 3) {
       reconnect()
     }
@@ -149,6 +143,7 @@ const useWebsocket = () => {
     closeWebSocket,
     reconnect,
     sendMessage,
+    creatWebSocket,
   }
 }
 

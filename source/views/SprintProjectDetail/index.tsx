@@ -118,6 +118,9 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     'b/transaction/update',
   )
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   // 复制标题
   const onCopy = () => {
     copyLink(affairsInfo.name, t('copysuccess'), t('copyfailed'))
@@ -354,6 +357,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
       {
         type: 'divider',
+        key: '10',
       },
       {
         label: (
@@ -400,6 +404,9 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     }
     if (hasDel) {
       items = items.filter((i: any) => i.key !== '0')
+    }
+    if (isEnd) {
+      items = items.filter((i: any) => !['6', '0', '10'].includes(i.key))
     }
     // 子任务不存在子事务模块
     return affairsInfo.work_type === 6

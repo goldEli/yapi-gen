@@ -75,6 +75,10 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
+
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   //根据搜索框的值来放的数据
   const [options, setOptions] = useState<any>([])
   const [resultData, setResultData] = useState<
@@ -442,9 +446,12 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       </CommonModal>
       <Label>{t('linkAffairs')}</Label>
       <InfoItemWrap>
-        <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
-          {t('createLinkAffairs')}
-        </CommonButton>
+        {!isEnd && (
+          <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
+            {t('createLinkAffairs')}
+          </CommonButton>
+        )}
+
         {resultData.map((i: any) => (
           <>
             {i.list.length > 0 && (

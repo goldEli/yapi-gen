@@ -1,10 +1,12 @@
 import PermissionWrap from '@/components/PermissionWrap'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { t } from 'i18next'
 import { Outlet, useLocation } from 'react-router-dom'
 import MineSide from './MineSide'
 import HasSideCommonLayout from '@/components/HasSideCommonLayout'
+import { useEffect } from 'react'
+import { setFilterParamsModal } from '@store/project'
 
 const Title = styled.div`
   height: 32px;
@@ -18,6 +20,7 @@ const Title = styled.div`
 `
 
 const Mine = () => {
+  const dispatch = useDispatch()
   const location = useLocation()
   const { menuPermission } = useSelector(store => store.user)
   const setTitle = () => {
@@ -51,6 +54,10 @@ const Mine = () => {
     const newName = titles.find((i: any) => nowPath.includes(i.path))
     return newName
   }
+
+  useEffect(() => {
+    // dispatch(setFilterParamsModal({}))
+  }, [])
 
   return (
     <PermissionWrap

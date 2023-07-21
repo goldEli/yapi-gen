@@ -169,6 +169,9 @@ const Profile = () => {
   const [t, i18n] = useTranslation()
   asyncSetTtile(t('title.a9'))
   const { fullScreen } = useSelector(store => store.kanBan)
+  const fullScreenvisible = useSelector(
+    store => store.project.addWorkItemModal.visible,
+  )
   const dispatch = useDispatch()
 
   const { isUpdateCreate } = useSelector(store => store.mine)
@@ -310,7 +313,7 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-  }, [monthIndex, pageObj, fullScreen])
+  }, [monthIndex, pageObj, fullScreen, fullScreenvisible])
 
   const forMateMonth = useMemo(() => {
     const newDate = moment()

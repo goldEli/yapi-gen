@@ -414,7 +414,7 @@ const CommonMember = (props: Props) => {
         )}
       </DrawerWrap>
       <HandOverModal
-        title={t('yc')}
+        title={t('project_handover')}
         visible={handOvervisible}
         close={() => {
           setHandOvervisible(false)

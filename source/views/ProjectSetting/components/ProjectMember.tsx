@@ -739,7 +739,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           onConfirm={onConfirmBatchEdit}
         />
         <ProjectOverModal
-          title={t('yc')}
+          title={t('project_handover')}
           id={operationItem}
           visible={isDelete}
           close={() => setIsDelete(!isDelete)}

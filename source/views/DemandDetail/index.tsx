@@ -98,6 +98,9 @@ const DemandDetail = () => {
 
   const [tabActive, setTabActive] = useState(type ?? '1')
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -531,6 +534,14 @@ const DemandDetail = () => {
       </Form>
     )
   }
+
+  const onGetMenu = () => {
+    if (isEnd) {
+      return items.splice(3, 4)
+    }
+    return items
+  }
+
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     setTabActive(value)
@@ -681,6 +692,7 @@ const DemandDetail = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
+
   return (
     <Wrap>
       <DeleteConfirmModal />
@@ -805,7 +817,9 @@ const DemandDetail = () => {
             <DropdownMenu
               placement="bottomRight"
               trigger={['click']}
-              menu={{ items }}
+              menu={{
+                items: onGetMenu(),
+              }}
               getPopupContainer={n => n}
             >
               <div>
