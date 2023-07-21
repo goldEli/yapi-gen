@@ -16,7 +16,7 @@ import { setIsRefresh } from '@store/user'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
-import { getAffairsChangeLog } from '@/services/affairs'
+import { getFlawChangeLog } from '@/services/flaw'
 import { setIsUpdateChangeLog } from '@store/project'
 
 const SpaceWrap = styled(Space)({
@@ -79,12 +79,12 @@ const ChangeRecord = (props: Props) => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateChangeLog } = useSelector(store => store.project)
-  const { affairsInfo } = useSelector(store => store.affairs)
+  const { flawInfo } = useSelector(store => store.flaw)
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
-    const result = await getAffairsChangeLog({
-      sprintId: affairsInfo.id || 0,
+    const result = await getFlawChangeLog({
+      id: flawInfo.id || 0,
       projectId: id,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
@@ -98,7 +98,7 @@ const ChangeRecord = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.activeKey === '2') {
+    if (props.activeKey === '3') {
       getList(pageObj, order)
     }
   }, [props.activeKey])
@@ -383,7 +383,7 @@ const ChangeRecord = (props: Props) => {
   }
 
   return (
-    <div>
+    <div style={{ height: '100%', paddingLeft: 24 }}>
       <CommonModal
         isVisible={isVisible}
         title={t('project.changeInfo')}
@@ -424,7 +424,7 @@ const ChangeRecord = (props: Props) => {
       </CommonModal>
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="400px"
+        dataWrapNormalHeight="calc(100% - 64px)"
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}
@@ -434,6 +434,7 @@ const ChangeRecord = (props: Props) => {
         pageSize={pageObj?.size}
         total={dataList?.total}
         onChange={onChangePage}
+        hasPadding
       />
     </div>
   )

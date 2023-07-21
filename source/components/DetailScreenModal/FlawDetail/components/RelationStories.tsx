@@ -1,14 +1,25 @@
 /* eslint-disable no-undefined */
+import {
+  addFlawRelation,
+  deleteFlawRelation,
+  flawRelationDragSort,
+  getFlawRelationStories,
+  getFlawSelectRelationRecent,
+  getFlawSelectRelationSearch,
+  updateFlawPriority,
+  updateFlawStatus,
+} from '@/services/flaw'
 import { getParamsData } from '@/tools'
+import MoreOptions from '@/components/MoreOptions'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { FormWrap, PriorityWrap, RelationWrap } from '../style'
 import CommonButton from '@/components/CommonButton'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
 import PaginationBox from '@/components/TablePagination'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
-import MoreOptions from '@/components/MoreOptions'
 import { Form, Tooltip, Select } from 'antd'
 import { useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
@@ -17,33 +28,16 @@ import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
-import { HiddenText, LinkWrap } from '@/components/StyleCommon'
+import { HiddenText } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import { OmitText } from '@star-yun/ui'
-import styled from '@emotion/styled'
-import {
-  addStoryRelation,
-  deleteStoryRelation,
-  getStoryRelationStories,
-  getStorySelectRelationRecent,
-  getStorySelectRelationSearch,
-  storyRelationDragSort,
-  updateDemandStatus,
-  updatePriority,
-} from '@/services/demand'
 import MoreDropdown from '@/components/MoreDropdown'
 import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import DragTable from '@/components/DragTable'
-import { encryptPhp } from '@/tools/cryptoPhp'
-
-const FormWrap = styled(Form)({
-  '.ant-form-item': {
-    margin: '22px 0 0 0',
-  },
-})
+import styled from '@emotion/styled'
 
 export const SubLabel = styled.div`
   margin: 8px 0;
@@ -51,44 +45,11 @@ export const SubLabel = styled.div`
   color: var(--neutral-n3);
 `
 
-const RelationWrap = styled.div`
-  height: 100%;
-`
-
-const PriorityWrap = styled.div<{ isShow?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    div: {
-      color: 'var(--neutral-n1-d2)',
-      fontSize: 14,
-      marginLeft: 8,
-    },
-    '.icon': {
-      marginLeft: 8,
-      visibility: 'hidden',
-      fontSize: 14,
-      color: 'var(--neutral-n4)',
-    },
-    '.priorityIcon': {
-      fontSize: 14,
-    },
-  },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
-    '&: hover': {
-      '.icon': {
-        visibility: isShow ? 'visible' : 'hidden',
-      },
-    },
-  }),
-)
-
 interface RelationStoriesProps {
   activeKey?: string
   detail: Model.Flaw.FlawInfo
   isOpen?: boolean
-  onUpdate?(): void
+  onUpdate(value?: boolean): void
   isDrawer?: boolean
 }
 
@@ -97,15 +58,14 @@ interface SelectItem {
   value: number
 }
 
-const StoryRelation = (props: RelationStoriesProps) => {
+const RelationStories = (props: RelationStoriesProps) => {
   const [t] = useTranslation()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
-
   const paramsData = getParamsData(searchParams)
+  const { id } = paramsData
   const { projectInfo } = useSelector(store => store.project)
-  const { id } = paramsData || { id: projectInfo.id }
   const [searchValue, setSearchValue] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
@@ -133,7 +93,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) => i.identity === 'b/story/update',
+      (i: any) => i.identity === 'b/flaw/update',
     )?.length > 0
 
   // 类型列表
@@ -148,7 +108,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
   //   获取关联项列表
   const getList = async (pageParams: any, orderParams: any) => {
     setIsSpinning(true)
-    const response = await getStoryRelationStories({
+    const response = await getFlawRelationStories({
       projectId: id,
       id: props.detail.id,
       order: orderParams.value,
@@ -172,17 +132,15 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   // 获取关联事务下拉列表
   const getSelectRelationSearch = async (value: string) => {
-    const response = await getStorySelectRelationSearch({
+    const response = await getFlawSelectRelationSearch({
       projectId: projectInfo.id,
       id: props.detail.id,
       searchValue: value,
     })
-
     setOptions(
       response.map((i: any) => ({
         label: i.story_prefix_key,
         labelName: i.name,
-        name: i.story_prefix_key,
         value: i.id,
         id: i.id,
         cover: i?.project_category?.attachment_path,
@@ -192,7 +150,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   // 获取最近关联事务下拉列表
   const getSelectRelationRecent = async () => {
-    const response = await getStorySelectRelationRecent({
+    const response = await getFlawSelectRelationRecent({
       projectId: projectInfo.id,
       id: props.detail.id,
     })
@@ -200,7 +158,6 @@ const StoryRelation = (props: RelationStoriesProps) => {
       response.map((i: Model.Flaw.FlawInfo) => ({
         label: i.story_prefix_key,
         labelName: i.name,
-        name: i.story_prefix_key,
         value: i.id,
         id: i.id,
         cover: i.project_category.attachment_path,
@@ -231,7 +188,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
   const onConfirm = async () => {
     await form.validateFields()
     const values = form.getFieldsValue()
-    await addStoryRelation({
+    await addFlawRelation({
       ...values,
       projectId: projectInfo.id,
       id: props.detail.id,
@@ -239,7 +196,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
     getMessage({ type: 'success', msg: t('addedSuccessfully') })
     getList(pageObj, order)
     onClose()
-    props.onUpdate?.()
+    props.onUpdate(true)
   }
 
   // 点击切换页码
@@ -255,8 +212,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   //   修改优先级
   const onChangeState = async (item: any) => {
-    // console.log(item, '121212')
-    await updatePriority({
+    await updateFlawPriority({
       id: item.id,
       priorityId: item.priorityId,
       projectId: id,
@@ -267,7 +223,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   //   修改状态
   const onChangeStatus = async (value: any) => {
-    await updateDemandStatus(value)
+    await updateFlawStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     getList(pageObj, order)
   }
@@ -296,7 +252,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
 
   // 删除关联确认事件
   const onDeleteConfirm = async (item: any) => {
-    await deleteStoryRelation({
+    await deleteFlawRelation({
       project_id: id,
       id: props.detail.id,
       relation_id: item.id,
@@ -318,22 +274,9 @@ const StoryRelation = (props: RelationStoriesProps) => {
       },
     })
   }
-  // 跳转详情页面
-  const onToDetail = (record: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        id: projectInfo?.id,
-        demandId: record?.id,
-        newOpen: true,
-      }),
-    )
-    const url = `ProjectManagement/DemandDetail?data=${params}`
-    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
-  }
 
   const columns = [
     {
-      width: 40,
       render: (text: any, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -361,7 +304,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
         <NewSort fixedKey="relation_type">{t('connectionRelation')}</NewSort>
       ),
       dataIndex: 'relation_type',
-      render: (text: number) => (
+      render: (text: string) => (
         <div>{typeList.filter((i: any) => i.value === text)[0]?.label}</div>
       ),
     },
@@ -397,7 +340,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
     },
     {
       title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
-      dataIndex: 'iterate_name',
+      dataIndex: 'iteration',
       key: 'iterate_name',
       width: 120,
       render: (text: string, record: any) => {
@@ -408,6 +351,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
             keyText="iterate_id"
             item={record}
             onUpdate={onUpdate}
+            isBug
           >
             <HiddenText>
               <OmitText
@@ -503,6 +447,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
             keyText="users"
             item={record}
             onUpdate={onUpdate}
+            isBug
           >
             {record?.usersInfo.length > 0 && (
               <MultipleAvatar
@@ -528,13 +473,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
       title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
       dataIndex: 'story_prefix_key',
       width: 140,
-      render: (text: string, record: any) => (
-        <LinkWrap>
-          <span className="content" onClick={() => onToDetail(record)}>
-            {text}
-          </span>
-        </LinkWrap>
-      ),
+      render: (text: string) => <div>{text}</div>,
     },
     {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
@@ -562,11 +501,8 @@ const StoryRelation = (props: RelationStoriesProps) => {
               alt=""
             />
           </Tooltip>
-          <LinkWrap>
-            <span className="content" onClick={() => onToDetail(record)}>
-              {record.name}
-            </span>
-          </LinkWrap>
+
+          {record.name}
         </div>
       ),
     },
@@ -659,7 +595,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
         list: item.value === i.value ? data.list : i.list,
       })),
     )
-    await storyRelationDragSort({
+    await flawRelationDragSort({
       projectId: projectInfo.id,
       id: props.detail.id,
       relationIds: data.list.map((i: Model.Flaw.FlawInfo) => i.id),
@@ -691,7 +627,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
   ]
 
   useEffect(() => {
-    if (props.activeKey === '3' || props.isOpen) {
+    if (props.activeKey === '2' || props.isOpen) {
       getList(pageObj, order)
     }
   }, [props.activeKey, props.isOpen])
@@ -708,6 +644,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
   return (
     <RelationWrap
       style={{
+        paddingLeft: props.isDrawer ? 0 : 24,
         height: props.isDrawer
           ? '100%'
           : isEnd
@@ -756,12 +693,12 @@ const StoryRelation = (props: RelationStoriesProps) => {
             >
               {options?.map((i: any) => {
                 return (
-                  <Select.Option value={i.id} key={i.id} label={i.name}>
+                  <Select.Option value={i.value} key={i.value} label={i.label}>
                     <MoreOptions
                       type="project"
+                      name={i.label}
                       labelName={i.labelName}
-                      name={i.name}
-                      img={i?.cover}
+                      img={i.cover}
                     />
                   </Select.Option>
                 )
@@ -775,12 +712,13 @@ const StoryRelation = (props: RelationStoriesProps) => {
           {t('linkWorkItem')}
         </CommonButton>
       )}
+      {/* 缺陷详情 */}
       {!props.isDrawer && (
         <>
           <ResizeTable
             isSpinning={isSpinning}
             dataWrapNormalHeight="calc(100% - 94px)"
-            col={columns}
+            col={props.isDrawer ? drawerColumns : columns}
             dataSource={dataSource?.list}
             noData={<NoData />}
           />
@@ -827,4 +765,4 @@ const StoryRelation = (props: RelationStoriesProps) => {
   )
 }
 
-export default StoryRelation
+export default RelationStories
