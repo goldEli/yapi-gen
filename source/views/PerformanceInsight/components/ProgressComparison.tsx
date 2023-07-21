@@ -113,7 +113,7 @@ const ProgressComparison = (props: Props) => {
   )
   const [total, setTotal] = useState(0)
   const [pageNum, setPageNum] = useState(1)
-  const [pageSize, setPageSize] = useState(15)
+  const [pageSize, setPageSize] = useState(50)
   const [selectProjectIds, setSelectProjectIds] = useState<any>(
     props.headerParmas?.projectIds,
   )
@@ -696,6 +696,7 @@ const ProgressComparison = (props: Props) => {
     const parmas = {
       user_id: row.id,
       type: str,
+      iterate_ids: props.headerParmas.iterate_ids?.join(','),
       project_ids:
         selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
@@ -768,6 +769,11 @@ const ProgressComparison = (props: Props) => {
   const plugSelection = (val: API.Sprint.EfficiencyMemberWorkList.Params) => {
     const parmas = {
       ...val,
+      project_ids:
+        selectProjectIds?.length >= 1
+          ? selectProjectIds.join(',')
+          : props.projectId + '',
+      iterate_ids: props.headerParmas.iterate_ids?.join(','),
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
         : '',

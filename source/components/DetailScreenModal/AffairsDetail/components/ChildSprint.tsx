@@ -75,6 +75,9 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   // 获取子事务列表
   const getList = async (page: { page: number; pagesize: number }) => {
     const response = await getAffairsChildList({
@@ -379,9 +382,11 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       </LabelWrap>
 
       <div>
-        <CommonButton type="primaryText" icon="plus" onClick={onCreateChild}>
-          {t('createSubtransaction')}
-        </CommonButton>
+        {!isEnd && (
+          <CommonButton type="primaryText" icon="plus" onClick={onCreateChild}>
+            {t('createSubtransaction')}
+          </CommonButton>
+        )}
         {dataSource.total > 0 && (
           <>
             <Tooltip

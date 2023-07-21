@@ -133,12 +133,14 @@ export const TitleGroup = styled.div({
   marginTop: 14,
   color: 'var(--neutral-n4)',
   fontSize: 12,
+  minWidth: '1400px',
 })
 
 export const MainWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
+  minWidth: '1400px',
 })
 
 const MainWrapItem = styled.div({

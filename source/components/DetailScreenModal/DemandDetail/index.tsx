@@ -97,15 +97,13 @@ const DemandDetail = () => {
     list: undefined,
   })
 
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/delete',
-  )
-
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
   )
+
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
 
   // 关闭类别弹窗
   const onCloseCategory = () => {
@@ -624,6 +622,13 @@ const DemandDetail = () => {
     },
   ]
 
+  const onGetMenu = () => {
+    if (isEnd) {
+      return items.splice(3, 4)
+    }
+    return items
+  }
+
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     setTabActive(value)
@@ -633,7 +638,7 @@ const DemandDetail = () => {
   }
 
   useEffect(() => {
-    if (visible) {
+    if (visible || params.demandId) {
       dispatch(getDemandInfo({ projectId: params.id, id: params.demandId }))
       dispatch(
         getDemandCommentList({
@@ -644,7 +649,7 @@ const DemandDetail = () => {
         }),
       )
     }
-  }, [visible])
+  }, [visible, params])
 
   useEffect(() => {
     // 获取项目信息中的需求类别
@@ -793,7 +798,7 @@ const DemandDetail = () => {
             <DropdownMenu
               placement="bottomRight"
               trigger={['click']}
-              menu={{ items }}
+              menu={{ items: onGetMenu() }}
               getPopupContainer={n => n}
             >
               <div>

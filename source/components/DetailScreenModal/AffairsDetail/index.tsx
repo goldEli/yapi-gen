@@ -109,6 +109,9 @@ const AffairsDetail = () => {
     'b/transaction/update',
   )
 
+  // 项目是否已经结束
+  const isEnd = projectInfo?.status === 2
+
   // 关闭类别弹窗
   const onCloseCategory = () => {
     setIsShowCategory(false)
@@ -279,6 +282,7 @@ const AffairsDetail = () => {
 
       {
         type: 'divider',
+        key: '10',
       },
       {
         label: (
@@ -325,6 +329,9 @@ const AffairsDetail = () => {
     }
     if (hasDel) {
       items = items.filter((i: any) => i.key !== '0')
+    }
+    if (isEnd) {
+      items = items.filter((i: any) => !['6', '0', '10'].includes(i.key))
     }
     // 子任务不存在子事务模块
     return affairsInfo.work_type === 6

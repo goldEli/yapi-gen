@@ -55,11 +55,9 @@ interface ChildDemandProps {
 
 const ChildDemand = (props: ChildDemandProps) => {
   const [t] = useTranslation()
-  const [isVisible, setIsVisible] = useState(false)
   const [deleteId, setDeleteId] = useState(0)
   const [isDelete, setIsDelete] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
-  const [operationItem, setOperationItem] = useState<any>({})
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { projectInfo, isUpdateAddWorkItem } = useSelector(
@@ -145,6 +143,12 @@ const ChildDemand = (props: ChildDemandProps) => {
     getShowkey()
   }, [projectInfo])
 
+  useEffect(() => {
+    if (demandInfo?.id) {
+      getList(pageObj, order, orderKey)
+    }
+  }, [demandInfo])
+
   const getCheckList = (
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
@@ -170,7 +174,7 @@ const ChildDemand = (props: ChildDemandProps) => {
 
   const onClickItem = (item: any) => {
     const demandIds = dataList?.list?.map((i: any) => i.id)
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id, 3)
   }
 
   const onChangePage = (page: number, size: number) => {

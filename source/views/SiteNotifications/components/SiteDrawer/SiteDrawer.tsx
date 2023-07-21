@@ -297,7 +297,7 @@ const SiteDrawer = () => {
             padding: '10px 0px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px',
+            gap: '2px',
           }}
           hasMore={hasMore}
           height={document.body.clientHeight - 230}
