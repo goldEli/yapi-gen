@@ -24,7 +24,6 @@ import {
 import ThreeDot from '../ThreeDot'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getProjectIdByUrl } from '@/tools'
-import useStoryIds from '../hooks/useStoryIds'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useSelector } from '@store/index'
 import { PopoverTargetText } from '@/components/StyleCommon'
@@ -47,6 +46,7 @@ const IssueCard = (props: IssueCardProps) => {
   const childRef = useRef<any>(null)
   const [openDemandDetail] = useOpenDemandDetail()
   const { projectInfo } = useSelector(store => store.project)
+  const { fullScreen } = useSelector(store => store.kanBan)
 
   const getElementsAroundIndex = (arr: any, index: number) => {
     const startIndex = Math.max(0, index - 200)
@@ -115,6 +115,12 @@ const IssueCard = (props: IssueCardProps) => {
               }
               placement="bottom"
               trigger="click"
+              getPopupContainer={
+                fullScreen
+                  ? () => document.getElementById('kanBanFullScreenBox') as any
+                  : // eslint-disable-next-line no-undefined
+                    undefined
+              }
             >
               <Tooltip
                 title={t('sprint.sprintTarget')}

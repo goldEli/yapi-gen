@@ -8,6 +8,7 @@ import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap, ModalFooter } from './StyleCommon'
 import CommonButton from './CommonButton'
+import { useSelector } from '@store/index'
 
 const ModalHeader = styled.div`
   display: flex;
@@ -64,6 +65,7 @@ interface CommonModalProps {
 const CommonModal = (props: CommonModalProps) => {
   const [t] = useTranslation()
   const { isDisable = false } = props
+  const { fullScreen } = useSelector(store => store.kanBan)
   return (
     <ModalStyle
       footer={false}
@@ -79,6 +81,13 @@ const CommonModal = (props: CommonModalProps) => {
       focusTriggerAfterClose={false}
       mask={props.isShowMask}
       zIndex={props.dex}
+      // 界面全屏时需要挂载到全屏的那个dom元素身上才能显示出来
+      getContainer={() =>
+        fullScreen
+          ? (document.getElementById('kanBanFullScreenBox') as any)
+          : // eslint-disable-next-line no-undefined
+            undefined
+      }
     >
       {!props.isHeader && (
         <ModalHeader>

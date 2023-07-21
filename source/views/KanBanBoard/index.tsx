@@ -4,7 +4,6 @@ import Board from './Borad'
 import UserGroupingModal from './UserGroupingModal'
 import ModifyStatusModal from './ModifyStatusModal'
 import useGuideModal from './hooks/useGuideModal'
-import FullScreenContainer from './FullScreenContainer'
 import ToolBar from './ToolBar'
 import TopArea from './TopArea'
 import useInit from './useInit'
@@ -36,9 +35,7 @@ const KanBanBoard: React.FC<IProps> = props => {
       sortByRowAndStatusOptions?.length
         ? guildModalEl
         : null}
-      <FullScreenContainer>
-        <Board />
-      </FullScreenContainer>
+      <Board />
       <UserGroupingModal />
       <ModifyStatusModal />
     </KanBanBoardBox>

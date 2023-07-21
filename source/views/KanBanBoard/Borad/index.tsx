@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import styled from '@emotion/styled'
 import { useSelector, useDispatch } from '@store/index'
 import KanBanSortByPerson from '../KanBanSortByPerson'
@@ -7,6 +7,7 @@ import { Spin } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { getKanbanByGroup, getKanbanConfig } from '@store/kanBan/kanBan.thunk'
 import { getProjectIdByUrl } from '@/tools'
+import CustomScreenFull from '../CustomScreenFull'
 
 const Container = styled.div<{ padding: number }>`
   display: flex;
@@ -46,14 +47,16 @@ const Board = () => {
 
   return (
     <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
-      <Container
-        padding={fullScreen ? 24 : 0}
-        id="kanbanContainer"
-        ref={containerRef}
-      >
-        <KanBanSortByPerson />
-        <ControlScrollPlane />
-      </Container>
+      <CustomScreenFull>
+        <Container
+          padding={fullScreen ? 24 : 0}
+          id="kanbanContainer"
+          ref={containerRef}
+        >
+          <KanBanSortByPerson />
+          <ControlScrollPlane />
+        </Container>
+      </CustomScreenFull>
     </Spin>
   )
 }

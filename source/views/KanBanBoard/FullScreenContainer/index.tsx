@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from '@emotion/styled'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
-import Board from '../Borad'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode } from '@store/kanBan/kanBan.thunk'
 

@@ -72,6 +72,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [openDemandDetail] = useOpenDemandDetail()
   const { projectInfo } = useSelector(store => store.project)
+  const { fullScreen } = useSelector(store => store.kanBan)
   let isCanEdit: any
 
   const getList = async (item: any) => {
@@ -340,7 +341,64 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
     setIsVisible(visible)
   }
 
-  return (
+  return fullScreen ? (
+    <Popover
+      key={isVisible.toString()}
+      visible={isVisible}
+      placement="bottom"
+      trigger="click"
+      onVisibleChange={onVisibleChange}
+      content={
+        <div
+          style={{
+            maxHeight: 310,
+            overflow: 'auto',
+            width: 950,
+          }}
+        >
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
+              <Table
+                rowKey="id"
+                pagination={false}
+                columns={
+                  props.row.project_type === 2
+                    ? columnsChild?.filter((i: any) => i.key !== 'schedule')
+                    : columnsChild
+                }
+                dataSource={dataList?.list}
+                scroll={{ x: 'max-content', y: 259 }}
+                tableLayout="auto"
+                style={{ borderRadius: 4, overflow: 'hidden' }}
+              />
+            ) : (
+              <NoData />
+            ))}
+        </div>
+      }
+      getPopupContainer={() =>
+        document.querySelector('#kanBanFullScreenBox') as any
+      }
+    >
+      <ClickWrap
+        ref={ref}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+        }}
+        onClick={onChildClick}
+      >
+        {props?.hasIcon && (
+          <IconFont
+            type="apartment02"
+            style={{ color: 'var(--neutral-n3)', fontSize: 16, marginRight: 8 }}
+          />
+        )}
+        {props.value}
+      </ClickWrap>
+    </Popover>
+  ) : (
     <Popover
       key={isVisible.toString()}
       visible={isVisible}
