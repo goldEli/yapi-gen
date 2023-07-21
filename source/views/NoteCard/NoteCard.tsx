@@ -400,6 +400,7 @@ const NoteCard = (props: any) => {
           marginTop: '8px',
           boxSizing: 'border-box',
           padding: '16px',
+          paddingTop: '0px',
         }}
       >
         <div
@@ -423,7 +424,7 @@ const NoteCard = (props: any) => {
           style={{
             borderRadius: '0px 0px 0px 0px',
             borderTop: '1px solid #ECEDEF',
-            marginTop: '16px',
+            // marginTop: '16px',
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
