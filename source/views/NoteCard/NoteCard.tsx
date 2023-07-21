@@ -299,6 +299,7 @@ const NoteCard = (props: any) => {
               fontSize: '16px',
               color: '#323233',
               lineHeight: '24px',
+              fontFamily: 'SiYuanMedium',
             }}
           >
             {values.title}

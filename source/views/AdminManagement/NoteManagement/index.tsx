@@ -376,7 +376,7 @@ const StaffManagement = () => {
 
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px',
+            gap: '32px',
           }}
           hasMore={hasMore}
           height={document.body.clientHeight - 220}
