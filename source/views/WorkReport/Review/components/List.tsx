@@ -638,6 +638,7 @@ const List = () => {
             isReport
           />
           <ScreenMinHover
+            style={{ marginLeft: 0 }}
             label={t('common.refresh')}
             icon="sync"
             onClick={getList}

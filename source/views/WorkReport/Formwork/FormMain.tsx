@@ -382,7 +382,7 @@ const FormMain = (props: FormType) => {
             label=""
             name="day"
             style={{
-              marginBottom: '32px',
+              marginBottom: '26px',
             }}
           >
             <CheckBoxGroup />

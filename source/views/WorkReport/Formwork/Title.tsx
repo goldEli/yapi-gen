@@ -7,6 +7,7 @@ const Text = styled.div`
   font-size: 14px;
   font-family: SiYuanMedium;
   margin-left: 8px;
+
   span:nth-child(2) {
     font-size: 12px;
     font-family: PingFang SC-Regular, PingFang SC;
@@ -19,6 +20,7 @@ const TitleStyle = styled.div`
   align-items: center;
   padding-right: 16px;
   padding-bottom: 20px;
+  margin-top: 36px;
   &:hover {
     cursor: pointer;
   }
