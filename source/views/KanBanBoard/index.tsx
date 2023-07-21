@@ -9,6 +9,8 @@ import ToolBar from './ToolBar'
 import TopArea from './TopArea'
 import useInit from './useInit'
 import { useSelector } from '@store/index'
+import { onComputedPermission } from '@/tools'
+import PermissionWrap from '@/components/PermissionWrap'
 
 interface IProps {}
 const KanBanBoardBox = styled.div`
@@ -23,25 +25,49 @@ const KanBanBoardBox = styled.div`
 `
 
 const KanBanBoard: React.FC<IProps> = props => {
-  const { userPreferenceConfig } = useSelector(store => store.user)
+  const { userPreferenceConfig, currentMenu } = useSelector(store => store.user)
   const { guildModalEl } = useGuideModal()
-
+  const { projectInfo } = useSelector(store => store.project)
   useInit()
   const { sortByRowAndStatusOptions } = useSelector(store => store.kanBan)
+  const resultAuth = onComputedPermission(
+    currentMenu,
+    '/ProjectManagement/Project',
+  )
+
+  const isLength =
+    projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
   return (
-    <KanBanBoardBox>
-      <TopArea />
-      <ToolBar />
-      {userPreferenceConfig?.guidePageConfig?.kanban === 1 &&
-      sortByRowAndStatusOptions?.length
-        ? guildModalEl
-        : null}
-      <FullScreenContainer>
-        <Board />
-      </FullScreenContainer>
-      <UserGroupingModal />
-      <ModifyStatusModal />
-    </KanBanBoardBox>
+    <PermissionWrap
+      auth={
+        resultAuth
+          ? projectInfo.projectType === 2
+            ? 'b/transaction/'
+            : 'b/story/'
+          : '/ProjectManagement/Project'
+      }
+      permission={
+        resultAuth
+          ? isLength
+            ? ['0']
+            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
+    >
+      <KanBanBoardBox>
+        <TopArea />
+        <ToolBar />
+        {userPreferenceConfig?.guidePageConfig?.kanban === 1 &&
+        sortByRowAndStatusOptions?.length
+          ? guildModalEl
+          : null}
+        <FullScreenContainer>
+          <Board />
+        </FullScreenContainer>
+        <UserGroupingModal />
+        <ModifyStatusModal />
+      </KanBanBoardBox>
+    </PermissionWrap>
   )
 }
 export default KanBanBoard

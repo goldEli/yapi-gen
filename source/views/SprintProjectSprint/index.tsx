@@ -26,13 +26,19 @@ import {
 } from '@store/sprint/sprint.thunk'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { useSearchParams } from 'react-router-dom'
-import { getIsPermission, getParamsData, removeNull } from '@/tools'
+import {
+  getIsPermission,
+  getParamsData,
+  onComputedPermission,
+  removeNull,
+} from '@/tools'
 import CategoryDropdown from '@/components/CategoryDropdown'
 import useKeyPress from '@/hooks/useKeyPress'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
 import { setAddWorkItemModal } from '@store/project'
 import { setCheckList } from '@store/sprint'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const SearchBox = styled.div`
   display: flex;
@@ -351,9 +357,10 @@ const SprintProjectSprint: React.FC = () => {
     is_long_story: 0,
   })
   const [checkCommission, setCheckCommission] = useState([false, false])
-  const { userPreferenceConfig } = useSelector(store => store.user)
-  const { isUpdateAddWorkItem } = useSelector(store => store.project)
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { userPreferenceConfig, currentMenu } = useSelector(store => store.user)
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const isCanEditSprint = !getIsPermission(
     projectInfo?.projectPermissions,
     'b/sprint',
@@ -533,282 +540,306 @@ const SprintProjectSprint: React.FC = () => {
     setIsFilter(visible)
   }
 
-  return (
-    <div>
-      <SearchBox>
-        <MyBreadcrumb />
-        <div>
-          <InputSearch
-            onChangeSearch={(val: any) => {
-              setSearchObject({
-                ...searchObject,
-                search: {
-                  ...searchObject.search,
-                  story_name: val,
-                },
-              })
-            }}
-            placeholder={t('sprint.searchTips')}
-            leftIcon
-          />
-        </div>
-      </SearchBox>
-      <ContentWrap>
-        {isExpand ? (
-          <Left ref={leftRef} active={focus}>
-            <MouseDom
-              active={focus}
-              onMouseDown={onDragLine}
-              style={{ left: endWidth ? endWidth : 312 }}
-            >
-              <DragLine active={focus} className="line" />
-            </MouseDom>
-            <div className="header">
-              <TabsWrap>
-                <div className={`move ${activeKey === 1 ? 'left' : ''}`}></div>
-                <div
-                  className={`tab1 ${activeKey === 0 ? 'active' : ''}`}
-                  onClick={changeSprintTab}
-                >
-                  {t('sprint.sprint')}
-                </div>
-                <div
-                  className={`tab2 ${activeKey === 1 ? 'active' : ''}`}
-                  onClick={changeStoryTab}
-                >
-                  {t('sprint.longStory')}
-                </div>
-              </TabsWrap>
-              <RightIcon>
-                {!isEnd && (
-                  <Tooltip
-                    title={
-                      activeKey === 0
-                        ? t('sprint.createSprint')
-                        : t('sprint.createStory')
-                    }
-                  >
-                    <CustomCloseWrap
-                      style={isCanEditSprint ? {} : { visibility: 'hidden' }}
-                      width={32}
-                      height={32}
-                      onClick={() => {
-                        if (activeKey === 0) {
-                          setSprintModal({
-                            visible: true,
-                            type: 'create',
-                          })
-                        } else {
-                          dispatch(
-                            setAddWorkItemModal({
-                              visible: true,
-                              params: {
-                                type: 3,
-                                title: t('sprint.createTransaction'),
-                                noDataCreate: true,
-                                projectId,
-                              },
-                            }),
-                          )
-                        }
-                      }}
-                    >
-                      <IconFont
-                        style={{
-                          fontSize: 20,
-                          color: 'var(--neutral-n3) !important',
-                        }}
-                        type="plus"
-                      />
-                    </CustomCloseWrap>
-                  </Tooltip>
-                )}
-                {isEnd && <div style={{ width: 32 }} />}
-                <div
-                  className="line"
-                  style={
-                    isCanEditSprint && !isEnd ? {} : { visibility: 'hidden' }
-                  }
-                />
-                <Popover
-                  trigger="click"
-                  placement="bottomRight"
-                  content={filterContent}
-                  getPopupContainer={node => node}
-                  visible={isFilter}
-                  onVisibleChange={onVisibleChange}
-                >
-                  <Tooltip title={t('common.search')}>
-                    <IconBox isActive={isFilter}>
-                      <IconFont type="filter" />
-                    </IconBox>
-                  </Tooltip>
-                </Popover>
-              </RightIcon>
-            </div>
-            <TabItemWrap>
-              <Spin spinning={leftLoading} indicator={<NewLoadingTransition />}>
-                <TabItem
-                  data={leftSprintList}
-                  checkCommission={checkCommission}
-                  setCheckCommission={setCheckCommission}
-                  activeKey={activeKey}
-                  currentFilter={currentFilter}
-                  checkNoCreateLongStory={checkNoCreateLongStory}
-                />
-              </Spin>
-            </TabItemWrap>
-          </Left>
-        ) : null}
+  const resultAuth = onComputedPermission(
+    currentMenu,
+    '/ProjectManagement/Project',
+  )
 
-        <Right>
-          <div className="header">
-            {isExpand ? (
-              <Tooltip
-                style={{ display: isExpand ? 'block' : 'none' }}
-                onVisibleChange={() => {}}
-                getTooltipContainer={node => node}
-                title={isExpand ? t('common.collapseMenu') : ''}
-              >
-                <IconBox
-                  onClick={() => {
-                    setIsExpand(false)
-                  }}
-                >
-                  <IconFont type="outdent" color="black" />
-                </IconBox>
-              </Tooltip>
-            ) : (
-              <Tooltip
-                style={{ display: isExpand ? 'none' : 'block' }}
-                onVisibleChange={() => {}}
-                getTooltipContainer={node => node}
-                title={isExpand ? '' : t('common.openMenu')}
-              >
-                <IconBox
-                  onClick={() => {
-                    setIsExpand(true)
-                  }}
-                >
-                  <IconFont type="indent" color="black" />
-                </IconBox>
-              </Tooltip>
-            )}
-            <SelectWrapForList>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                {t('sprint.agent')}
-              </span>
-              <CustomSelect
-                style={{ width: 148 }}
-                getPopupContainer={(node: any) => node}
-                allowClear
-                optionFilterProp="label"
-                showArrow
-                showSearch
-                value={searchObject.search?.user_ids}
-                options={removeNull(projectInfoValues, 'user_name')?.map(
-                  (k: any) => ({
-                    label: k.content,
-                    id: k.id,
-                    value: k.id,
-                  }),
-                )}
-                onChange={(users: any) => {
-                  setSearchObject({
-                    ...searchObject,
-                    search: {
-                      ...searchObject.search,
-                      user_ids: users,
-                    },
-                  })
-                }}
-                onConfirm={() => null}
-              />
-            </SelectWrapForList>
-            <CategorySelectWrap>
-              <span className="title">{t('sprint.transactionType')}</span>
-              <CategoryDropdown
-                type
-                projectId={projectId}
-                value={searchObject.search?.category_id}
-                onChangeCallBack={(val: number[]) => {
-                  setSearchObject({
-                    ...searchObject,
-                    search: {
-                      ...searchObject.search,
-                      category_id: val,
-                    },
-                  })
-                }}
-                onClearCallback={() => {
-                  setSearchObject({
-                    ...searchObject,
-                    search: {
-                      ...searchObject.search,
-                      category_id: [],
-                    },
-                  })
-                }}
-                mode="multiple"
-              />
-            </CategorySelectWrap>
-            <ClearButton
-              onClick={() => {
+  const isLength =
+    projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
+
+  return (
+    <PermissionWrap
+      auth={resultAuth ? 'b/transaction/' : '/ProjectManagement/Project'}
+      permission={
+        resultAuth
+          ? isLength
+            ? ['0']
+            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
+    >
+      <div>
+        <SearchBox>
+          <MyBreadcrumb />
+          <div>
+            <InputSearch
+              onChangeSearch={(val: any) => {
                 setSearchObject({
                   ...searchObject,
                   search: {
                     ...searchObject.search,
-                    user_ids: [],
-                    category_id: [],
+                    story_name: val,
                   },
                 })
-                dispatch(setCheckList(checkList.map(() => true)))
-                setCheckCommission([false, false])
               }}
-            >
-              {t('common.clearForm')}
-            </ClearButton>
+              placeholder={t('sprint.searchTips')}
+              leftIcon
+            />
           </div>
-          <Spin spinning={rightLoading} indicator={<NewLoadingTransition />}>
-            <DragContent>
-              <DndKitTable
-                activeKey={activeKey}
-                checkCommission={checkCommission}
-              />
-            </DragContent>
-          </Spin>
-        </Right>
-      </ContentWrap>
-      {userPreferenceConfig?.guidePageConfig?.sprint === 1 ? (
-        <GuideModal
-          width={784}
-          height={670}
-          inform={inform}
-          close={async () => {
-            await updateCompanyUserPreferenceConfig({
-              id: userPreferenceConfig?.id,
-              previewModel: userPreferenceConfig.previewModel,
-              guidePageConfig: {
-                sprint: 2,
-              },
-            })
-            dispatch(getLoginDetail())
-          }}
-        />
-      ) : null}
+        </SearchBox>
+        <ContentWrap>
+          {isExpand ? (
+            <Left ref={leftRef} active={focus}>
+              <MouseDom
+                active={focus}
+                onMouseDown={onDragLine}
+                style={{ left: endWidth ? endWidth : 312 }}
+              >
+                <DragLine active={focus} className="line" />
+              </MouseDom>
+              <div className="header">
+                <TabsWrap>
+                  <div
+                    className={`move ${activeKey === 1 ? 'left' : ''}`}
+                  ></div>
+                  <div
+                    className={`tab1 ${activeKey === 0 ? 'active' : ''}`}
+                    onClick={changeSprintTab}
+                  >
+                    {t('sprint.sprint')}
+                  </div>
+                  <div
+                    className={`tab2 ${activeKey === 1 ? 'active' : ''}`}
+                    onClick={changeStoryTab}
+                  >
+                    {t('sprint.longStory')}
+                  </div>
+                </TabsWrap>
+                <RightIcon>
+                  {!isEnd && (
+                    <Tooltip
+                      title={
+                        activeKey === 0
+                          ? t('sprint.createSprint')
+                          : t('sprint.createStory')
+                      }
+                    >
+                      <CustomCloseWrap
+                        style={isCanEditSprint ? {} : { visibility: 'hidden' }}
+                        width={32}
+                        height={32}
+                        onClick={() => {
+                          if (activeKey === 0) {
+                            setSprintModal({
+                              visible: true,
+                              type: 'create',
+                            })
+                          } else {
+                            dispatch(
+                              setAddWorkItemModal({
+                                visible: true,
+                                params: {
+                                  type: 3,
+                                  title: t('sprint.createTransaction'),
+                                  noDataCreate: true,
+                                  projectId,
+                                },
+                              }),
+                            )
+                          }
+                        }}
+                      >
+                        <IconFont
+                          style={{
+                            fontSize: 20,
+                            color: 'var(--neutral-n3) !important',
+                          }}
+                          type="plus"
+                        />
+                      </CustomCloseWrap>
+                    </Tooltip>
+                  )}
+                  {isEnd && <div style={{ width: 32 }} />}
+                  <div
+                    className="line"
+                    style={
+                      isCanEditSprint && !isEnd ? {} : { visibility: 'hidden' }
+                    }
+                  />
+                  <Popover
+                    trigger="click"
+                    placement="bottomRight"
+                    content={filterContent}
+                    getPopupContainer={node => node}
+                    visible={isFilter}
+                    onVisibleChange={onVisibleChange}
+                  >
+                    <Tooltip title={t('common.search')}>
+                      <IconBox isActive={isFilter}>
+                        <IconFont type="filter" />
+                      </IconBox>
+                    </Tooltip>
+                  </Popover>
+                </RightIcon>
+              </div>
+              <TabItemWrap>
+                <Spin
+                  spinning={leftLoading}
+                  indicator={<NewLoadingTransition />}
+                >
+                  <TabItem
+                    data={leftSprintList}
+                    checkCommission={checkCommission}
+                    setCheckCommission={setCheckCommission}
+                    activeKey={activeKey}
+                    currentFilter={currentFilter}
+                    checkNoCreateLongStory={checkNoCreateLongStory}
+                  />
+                </Spin>
+              </TabItemWrap>
+            </Left>
+          ) : null}
 
-      <CreateSprintModal
-        projectId={projectId}
-        type={sprintModal.type}
-        visible={sprintModal.visible}
-        onClose={() =>
-          setSprintModal({
-            visible: false,
-            type: 'create',
-          })
-        }
-      />
-    </div>
+          <Right>
+            <div className="header">
+              {isExpand ? (
+                <Tooltip
+                  style={{ display: isExpand ? 'block' : 'none' }}
+                  onVisibleChange={() => {}}
+                  getTooltipContainer={node => node}
+                  title={isExpand ? t('common.collapseMenu') : ''}
+                >
+                  <IconBox
+                    onClick={() => {
+                      setIsExpand(false)
+                    }}
+                  >
+                    <IconFont type="outdent" color="black" />
+                  </IconBox>
+                </Tooltip>
+              ) : (
+                <Tooltip
+                  style={{ display: isExpand ? 'none' : 'block' }}
+                  onVisibleChange={() => {}}
+                  getTooltipContainer={node => node}
+                  title={isExpand ? '' : t('common.openMenu')}
+                >
+                  <IconBox
+                    onClick={() => {
+                      setIsExpand(true)
+                    }}
+                  >
+                    <IconFont type="indent" color="black" />
+                  </IconBox>
+                </Tooltip>
+              )}
+              <SelectWrapForList>
+                <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                  {t('sprint.agent')}
+                </span>
+                <CustomSelect
+                  style={{ width: 148 }}
+                  getPopupContainer={(node: any) => node}
+                  allowClear
+                  optionFilterProp="label"
+                  showArrow
+                  showSearch
+                  value={searchObject.search?.user_ids}
+                  options={removeNull(projectInfoValues, 'user_name')?.map(
+                    (k: any) => ({
+                      label: k.content,
+                      id: k.id,
+                      value: k.id,
+                    }),
+                  )}
+                  onChange={(users: any) => {
+                    setSearchObject({
+                      ...searchObject,
+                      search: {
+                        ...searchObject.search,
+                        user_ids: users,
+                      },
+                    })
+                  }}
+                  onConfirm={() => null}
+                />
+              </SelectWrapForList>
+              <CategorySelectWrap>
+                <span className="title">{t('sprint.transactionType')}</span>
+                <CategoryDropdown
+                  type
+                  projectId={projectId}
+                  value={searchObject.search?.category_id}
+                  onChangeCallBack={(val: number[]) => {
+                    setSearchObject({
+                      ...searchObject,
+                      search: {
+                        ...searchObject.search,
+                        category_id: val,
+                      },
+                    })
+                  }}
+                  onClearCallback={() => {
+                    setSearchObject({
+                      ...searchObject,
+                      search: {
+                        ...searchObject.search,
+                        category_id: [],
+                      },
+                    })
+                  }}
+                  mode="multiple"
+                />
+              </CategorySelectWrap>
+              <ClearButton
+                onClick={() => {
+                  setSearchObject({
+                    ...searchObject,
+                    search: {
+                      ...searchObject.search,
+                      user_ids: [],
+                      category_id: [],
+                    },
+                  })
+                  dispatch(setCheckList(checkList.map(() => true)))
+                  setCheckCommission([false, false])
+                }}
+              >
+                {t('common.clearForm')}
+              </ClearButton>
+            </div>
+            <Spin spinning={rightLoading} indicator={<NewLoadingTransition />}>
+              <DragContent>
+                <DndKitTable
+                  activeKey={activeKey}
+                  checkCommission={checkCommission}
+                />
+              </DragContent>
+            </Spin>
+          </Right>
+        </ContentWrap>
+        {userPreferenceConfig?.guidePageConfig?.sprint === 1 ? (
+          <GuideModal
+            width={784}
+            height={670}
+            inform={inform}
+            close={async () => {
+              await updateCompanyUserPreferenceConfig({
+                id: userPreferenceConfig?.id,
+                previewModel: userPreferenceConfig.previewModel,
+                guidePageConfig: {
+                  sprint: 2,
+                },
+              })
+              dispatch(getLoginDetail())
+            }}
+          />
+        ) : null}
+
+        <CreateSprintModal
+          projectId={projectId}
+          type={sprintModal.type}
+          visible={sprintModal.visible}
+          onClose={() =>
+            setSprintModal({
+              visible: false,
+              type: 'create',
+            })
+          }
+        />
+      </div>
+    </PermissionWrap>
   )
 }
 export default SprintProjectSprint

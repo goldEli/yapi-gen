@@ -5,12 +5,13 @@
 // 大设置
 
 import * as http from '@/tools/http'
+import normalCompany from '/normalCompany.jpg'
 
 export const getCompanyInfo: any = async () => {
   const response: any = await http.get<any>('getCompanyInfo')
   return {
     name: response.data.name,
-    logo: response.data.logo,
+    logo: response.data.logo?.length ? response.data.logo : normalCompany,
     id: response.data.id,
     info: response.data.info,
     projectCount: response.data.project_count,
