@@ -209,4 +209,8 @@ export const IconWrapInfo = styled(IconFont)({
     color: 'var(--neutral-n1-d1)',
     background: 'var(--hover-d3)',
   },
+  '&: active': {
+    color: 'var(--neutral-n1-d1)',
+    background: 'var(--neutral-n6-d1)',
+  },
 })

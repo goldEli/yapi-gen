@@ -242,7 +242,13 @@ const ProjectInfo = () => {
               <span>{projectInfo.createTime || '--'}</span>
             </InfoItem>
             <InfoItem>
-              <div>{t('project_belong')}：</div>
+              <div
+                style={{
+                  alignSelf: 'start',
+                }}
+              >
+                {t('project_belong')}：
+              </div>
               <span>{projectInfo.affiliation || '--'}</span>
             </InfoItem>
           </Line>

@@ -41,6 +41,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import FullScreenContainer from '@/views/KanBanBoard/FullScreenContainer'
 import { setFullScreen } from '@store/kanBan'
 import { useFullScreenHandle } from 'react-full-screen'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -537,7 +538,18 @@ const Profile = () => {
                   }}
                 >
                   <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
-                  <BBQdiv
+                  <ScreenMinHover
+                    label={
+                      fullScreen ? t('exit_full_screen') : t('full_screen')
+                    }
+                    icon={fullScreen ? 'fewer-screen' : 'full-screen'}
+                    onClick={() =>
+                      fullScreen
+                        ? handle.enter()
+                        : dispatch(setFullScreen(true))
+                    }
+                  />
+                  {/* <BBQdiv
                     onClick={() =>
                       fullScreen
                         ? handle.enter()
@@ -559,7 +571,7 @@ const Profile = () => {
                     <span style={{ marginLeft: '10px' }}>
                       {fullScreen ? t('exit_full_screen') : t('full_screen')}
                     </span>
-                  </BBQdiv>
+                  </BBQdiv> */}
                 </div>
                 <div className={titleWrap}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
