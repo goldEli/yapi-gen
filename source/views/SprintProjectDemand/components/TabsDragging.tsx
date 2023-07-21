@@ -9,7 +9,7 @@ import { Checkbox, Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 const Box = styled.div`
-  transition: 0.3s;
+  /* transition: 0.3s; */
   display: flex;
   align-items: center;
 `
@@ -252,14 +252,14 @@ const Sortable = (props: any) => {
             <Container
               ref={container}
               id="container"
-              style={{
-                transition:
-                  dragItem?.storyId === child?.storyId ? 'all .1s' : '',
-                transform:
-                  dragItem?.storyId === child?.storyId
-                    ? 'translateY(20px)'
-                    : 'translateY(0)',
-              }}
+              // style={{
+              //   transition:
+              //     dragItem?.storyId === child?.storyId ? 'all .1s' : '',
+              //   transform:
+              //     dragItem?.storyId === child?.storyId
+              //       ? 'translateY(20px)'
+              //       : 'translateY(0)',
+              // }}
               key={child?.storyId}
               draggable="true"
               onDragStart={(ev: any) => onDragStart(ev, i, child)}
@@ -439,6 +439,8 @@ const Sortable = (props: any) => {
                 </ItemList>
               )}
             </Container>
+            {/* {dragItem?.storyId}---
+            {child?.storyId} */}
             <Box
               style={{
                 display: dragItem?.storyId === child?.storyId ? 'flex' : 'none',
