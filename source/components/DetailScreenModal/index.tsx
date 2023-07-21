@@ -23,6 +23,8 @@ const DetailScreenModal = () => {
     dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
   }
 
+  console.log(params, '=121212')
+
   return (
     <ModalWrap
       footer={false}

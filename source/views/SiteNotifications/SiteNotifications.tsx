@@ -30,6 +30,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { TextChange } from '@/components/TextChange/TextChange'
 import NoteModal from '@/components/NoteModal'
+import { CloseWrap } from '@/components/StyleCommon'
 
 const SiteNotifications = (props: any, ref: any) => {
   const { loginInfo } = useSelector(store => store.user)
@@ -91,9 +92,15 @@ const SiteNotifications = (props: any, ref: any) => {
         }
       } else {
         notification.open({
+          icon: <CommonIconFont color="#fa9746" size={20} type="bell" />,
+          className: 'notification-my',
           maxCount: 1,
           placement: 'bottomLeft',
-          message: wsData.data.msgBody.title,
+          message: (
+            <span style={{ fontFamily: 'SiYuanMedium' }}>
+              {wsData.data.msgBody.title}
+            </span>
+          ),
           description: wsData.data.msgBody.content,
           onClick: () => {
             if (wsData.data.customData.linkWebUrl) {

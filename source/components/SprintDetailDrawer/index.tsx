@@ -42,8 +42,6 @@ import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { getMessage } from '../Message'
 import DetailsSkeleton from '../DetailsSkeleton'
-import ChildSprint from '@/views/SprintProjectDetail/components/ChildSprint'
-import LinkSprint from '@/views/SprintProjectDetail/components/LinkSprint'
 import {
   addAffairsComment,
   deleteAffairs,
@@ -76,7 +74,6 @@ import {
   getIsPermission,
   getProjectIdByUrl,
 } from '@/tools'
-import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
 import CommentFooter from '../CommonComment/CommentFooter'
 import LongStroyBread from '../LongStroyBread'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -85,6 +82,9 @@ import CopyIcon from '../CopyIcon'
 import DeleteConfirm from '../DeleteConfirm'
 import StatusExamine from '../StatusExamine'
 import { cancelVerify } from '@/services/mine'
+import AffairsDetail from '../DetailScreenModal/AffairsDetail/components/AffairsDetail'
+import ChildSprint from '../DetailScreenModal/AffairsDetail/components/ChildSprint'
+import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint'
 const SprintDetailDrawer = () => {
   const normalState = {
     detailInfo: {

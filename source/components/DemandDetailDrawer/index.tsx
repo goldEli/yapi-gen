@@ -68,13 +68,13 @@ import {
   removeNull,
 } from '@/tools'
 import CopyIcon from '../CopyIcon'
-import StoryRelation from '@/views/DemandDetail/components/StoryRelation'
 import StatusExamine from '../StatusExamine'
 import { cancelVerify } from '@/services/mine'
 import CommentFooter from '../CommonComment/CommentFooter'
 import CommonComment from '../CommonComment'
 import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
+import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRelation'
 
 const DemandDetailDrawer = () => {
   const normalState = {

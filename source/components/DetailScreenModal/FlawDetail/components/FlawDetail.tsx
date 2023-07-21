@@ -1,40 +1,35 @@
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import {
-  FlawInfoInfoItem,
-  FlawInfoLabel,
-  FlawInfoLeft,
-  FlawInfoTextWrap,
-  FlawInfoWrap,
-} from '../style'
 import { Editor, EditorRef } from '@xyfe/uikit'
-import FlawTag from '@/components/TagComponent/FlawTag'
-import { useTranslation } from 'react-i18next'
-import { AddWrap, TextWrapEdit } from '@/components/StyleCommon'
-import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
-import UploadAttach from '@/components/UploadAttach'
-import CommonButton from '@/components/CommonButton'
+import { useTranslation } from 'react-i18next'
+import { getFlawInfo } from '@store/flaw/flaw.thunk'
 import { addInfoFlaw, deleteInfoFlaw, updateFlawEditor } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
-import { getFlawInfo } from '@store/flaw/flaw.thunk'
+import { FlawInfoInfoItem, FlawInfoLabel } from '../style'
+import { AddWrap, TextWrapEdit } from '@/components/StyleCommon'
+import FlawTag from '@/components/TagComponent/FlawTag'
+import IconFont from '@/components/IconFont'
+import UploadAttach from '@/components/UploadAttach'
+import CommonButton from '@/components/CommonButton'
 
 interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
   isInfoPage?: boolean
   onUpdate?(value?: boolean): void
 }
+
 const FlawDetail = (props: FlawDetailProps) => {
-  const dispatch = useDispatch()
   const [t] = useTranslation()
+  const dispatch = useDispatch()
+  const editorRef = useRef<EditorRef>(null)
+  const editorRef2 = useRef<any>()
+  const dId = useRef<any>()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { projectInfo } = useSelector(store => store.project)
   const [tagList, setTagList] = useState<any>([])
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
-  const editorRef = useRef<EditorRef>(null)
-  const editorRef2 = useRef<any>()
-  const dId = useRef<any>()
 
   const onUpdate = (value?: boolean) => {
     if (props.isInfoPage) {

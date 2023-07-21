@@ -199,7 +199,7 @@ const ChangeRecord = (props: Props) => {
       dataIndex: 'type',
       width: 160,
       render: (text: any) => {
-        return <div>{text.content_txt}</div>
+        return <div>{text?.content_txt}</div>
       },
     },
     {

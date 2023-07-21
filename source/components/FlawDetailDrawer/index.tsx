@@ -26,9 +26,6 @@ import ChangeStatusPopover from '../ChangeStatusPopover'
 import StateTag from '../StateTag'
 import CommonButton from '../CommonButton'
 import DetailsSkeleton from '../DetailsSkeleton'
-import FlawDetail from '@/views/IterationDefectDetail/components/FlawDetail'
-import RelationStories from '@/views/IterationDefectDetail/components/RelationStories'
-import BasicFlaw from '@/views/IterationDefectDetail/components/BasicFlaw'
 import {
   addFlawComment,
   deleteFlaw,
@@ -72,6 +69,9 @@ import { setActiveCategory } from '@store/category'
 import CopyIcon from '../CopyIcon'
 import StatusExamine from '../StatusExamine'
 import { cancelVerify } from '@/services/mine'
+import FlawDetail from '../DetailScreenModal/FlawDetail/components/FlawDetail'
+import RelationStories from '../DetailScreenModal/FlawDetail/components/RelationStories'
+import FlawBasic from '../DetailScreenModal/FlawDetail/components/FlawBasic'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -773,7 +773,7 @@ const FlawDetailDrawer = () => {
                       />
                     )}
                     {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                      <BasicFlaw
+                      <FlawBasic
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
                         onUpdate={onOperationUpdate}

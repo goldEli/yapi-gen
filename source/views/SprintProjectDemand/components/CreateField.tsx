@@ -1,9 +1,10 @@
 /* eslint-disable complexity */
 /* eslint-disable no-constant-binary-expression */
 import CommonIconFont from '@/components/CommonIconFont'
+import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Input, Select } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreateDragging from './CreateDragging'
 import * as services from '@/services'
@@ -17,6 +18,12 @@ const SelectStyle = styled(Select)<{ isActive?: any }>({}, ({ isActive }) => ({
       ? 'var(--primary-d2) !important'
       : 'var(--auxiliary-text-t2-d1)',
   },
+  '&:hover': {
+    '.ant-select-selection-placeholder,.ant-select-selection-item': {
+      color: 'var(--primary-d2) !important',
+    },
+  },
+  minWidth: '140px',
 }))
 const CreateFieldWrap = styled.div`
   margin: 20px 0 0 0px;
@@ -25,6 +32,7 @@ const CreateFieldWrap = styled.div`
   overflow-y: auto;
   height: calc(100vh - 240px);
   margin-bottom: 24px;
+  color: var(--hover-d1);
 `
 const TitleStyle = styled.div`
   width: 352px;
@@ -90,10 +98,34 @@ const InputStyle = styled(Input)`
     background: 'var(--neutral-white-d4)';
   }
 `
-
+const activity = css`
+  color: var(--primary-d1) !important;
+`
+const DropdownRenderDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  div {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    width: 100%;
+    cursor: pointer;
+    justify-content: space-between;
+    padding-right: 12px;
+    box-sizing: border-box;
+    color: var(--neutral-n1-d2);
+    &:hover {
+      background: var(--hover-d3);
+      color: var(--neutral-n1-d1);
+    }
+  }
+`
 const CreateField = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+
   const [searchIcon, setSearchIcon] = useState(true)
   const [search, setSearch] = useState(true)
   const [createIcon, setCreateIcon] = useState(true)
@@ -109,7 +141,17 @@ const CreateField = () => {
   const [typeIsOpen, setTypeIsOpen] = useState(false)
   const [fieldIsOpen, setFieldIsOpen] = useState(false)
   const [cacheSearchlist, setCacheSearchlist] = useState<any>()
+  const fieldRef = useRef<any>(null)
+  const sysFieldRef = useRef<any>(null)
+  const [fieldValue, setFieldValue] = useState('0')
+  const [sysFieldValue, setSysFieldValue] = useState(0)
   const option = [
+    {
+      label: t('sprintProject.allTypes'),
+      value: '0',
+      type: '',
+      icon: 'text-alone',
+    },
     {
       label: t('newlyAdd.lineText'),
       value: '1',
@@ -285,7 +327,6 @@ const CreateField = () => {
         </BottomTitleStyle>
         <FieldWrap>
           <SelectStyle
-            style={{ width: 100 }}
             bordered={false}
             isActive={fieldIsOpen}
             onDropdownVisibleChange={e => setFieldIsOpen(e)}
@@ -293,8 +334,11 @@ const CreateField = () => {
               <CommonIconFont type={fieldIsOpen ? 'up' : 'down'} size={16} />
             }
             placeholder={t('sprintProject.allFields')}
-            allowClear
             options={[
+              {
+                value: 0,
+                label: t('sprintProject.allFields'),
+              },
               {
                 value: 2,
                 label: t('sprintProject.systemField'),
@@ -304,6 +348,57 @@ const CreateField = () => {
                 label: t('sprintProject.customField'),
               },
             ]}
+            dropdownRender={() => (
+              <DropdownRenderDiv>
+                {[
+                  {
+                    value: 0,
+                    label: t('sprintProject.allFields'),
+                  },
+                  {
+                    value: 2,
+                    label: t('sprintProject.systemField'),
+                  },
+                  {
+                    value: 1,
+                    label: t('sprintProject.customField'),
+                  },
+                ].map(item => (
+                  <div
+                    key={item.value}
+                    onClick={() => {
+                      setFieldType((p: any) => {
+                        return { ...p, is_customize: item.value }
+                      })
+                      setSysFieldValue(item.value)
+                      if (!sysFieldRef.current) {
+                        return
+                      }
+                      sysFieldRef?.current?.blur()
+                    }}
+                  >
+                    <span
+                      className={sysFieldValue === item.value ? activity : ''}
+                    >
+                      {item.label}
+                    </span>
+                    {sysFieldValue === item.value && (
+                      <CommonIconFont
+                        type="check"
+                        size={16}
+                        color={
+                          sysFieldValue === item.value
+                            ? 'var(--primary-d1)'
+                            : ''
+                        }
+                      />
+                    )}
+                  </div>
+                ))}
+              </DropdownRenderDiv>
+            )}
+            value={sysFieldValue}
+            ref={sysFieldRef}
             onChange={e => {
               setFieldType((p: any) => {
                 return { ...p, is_customize: e }
@@ -312,23 +407,62 @@ const CreateField = () => {
           />
           <DivideWrap></DivideWrap>
           <SelectStyle
-            style={{ width: 100 }}
             bordered={false}
             isActive={typeIsOpen}
             placeholder={t('sprintProject.allTypes')}
-            allowClear
-            onDropdownVisibleChange={e => setTypeIsOpen(e)}
             suffixIcon={
               <CommonIconFont type={typeIsOpen ? 'up' : 'down'} size={16} />
             }
             options={option}
             onChange={e => {
+              console.log(e)
               setFieldType((p: any) => {
                 return {
                   ...p,
                   content: option.find(item => item.value === e)?.type,
                 }
               })
+            }}
+            ref={fieldRef}
+            dropdownRender={() => (
+              <DropdownRenderDiv>
+                {option.map(item => (
+                  <div
+                    key={item.value}
+                    onClick={() => {
+                      setFieldType((p: any) => {
+                        return {
+                          ...p,
+                          content: option.find(e => e.value === item.value)
+                            ?.type,
+                        }
+                      })
+                      setFieldValue(item.value)
+                      if (!fieldRef.current) {
+                        return
+                      }
+                      fieldRef?.current?.blur()
+                    }}
+                  >
+                    <span className={fieldValue === item.value ? activity : ''}>
+                      {item.label}
+                    </span>
+                    {fieldValue === item.value && (
+                      <CommonIconFont
+                        type="check"
+                        size={16}
+                        color={
+                          fieldValue === item.value ? 'var(--primary-d1)' : ''
+                        }
+                      />
+                    )}
+                  </div>
+                ))}
+              </DropdownRenderDiv>
+            )}
+            value={fieldValue}
+            onDropdownVisibleChange={e => {
+              setTypeIsOpen(e)
             }}
           />
         </FieldWrap>

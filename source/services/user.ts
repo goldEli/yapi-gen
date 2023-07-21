@@ -69,8 +69,12 @@ export const getTicket = () => {
 // 获取登录者信息
 export const getUserDetail: any = async () => {
   const response = await http.get('getUserDetail')
-
-  return response.data
+  return {
+    ...response.data,
+    company_logo: response.data.company_logo?.length
+      ? response.data.company_logo
+      : normalCompany,
+  }
 }
 
 // 登录

@@ -76,8 +76,9 @@ const timeChoose = css`
   margin: 0 8px;
 `
 const titleNumberCss = css`
-  color: rgba(67, 186, 154, 1);
+  color: var(--neutral-n1-d1);
   font-size: 24px;
+  font-family: SiYuanMedium;
 `
 const titleNumberCss2 = css`
   color: rgba(250, 151, 70, 1);
@@ -86,6 +87,7 @@ const titleNumberCss2 = css`
 const titleNumberCss3 = css`
   color: var(--primary-d1);
   font-size: 24px;
+  font-family: SiYuanMedium;
 `
 const titleTextCss = css`
   color: rgba(100, 101, 102, 1);
@@ -402,14 +404,14 @@ const Profile = () => {
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
-    <div style={{ overflow: 'auto', height: 'calc(100vh - 103px)' }}>
+    <div style={{ overflow: 'auto', height: 'calc(100vh - 133px)' }}>
       <Wrap>
         <div>
           <Head>
             <div>
               <InnerWrap>
                 <ChartsItem>
-                  <span className={titleNumberCss3}>{data?.project_count}</span>
+                  <span className={titleNumberCss}>{data?.project_count}</span>
                   <span className={titleTextCss}>{t('mine.totalProject')}</span>
                 </ChartsItem>
                 <ChartsItem>
@@ -418,6 +420,12 @@ const Profile = () => {
                     {t('accumulated_work_items')}
                   </span>
                 </ChartsItem>
+                <div
+                  style={{
+                    width: '0px',
+                    borderLeft: '1px solid var(--neutral-n6-d1)',
+                  }}
+                ></div>
                 <ChartsItem>
                   <span className={titleNumberCss3}>
                     {data?.abeyance_count}
@@ -443,7 +451,7 @@ const Profile = () => {
                   </span>
                 </ChartsItem>
                 <ChartsItem>
-                  <span className={titleNumberCss2}>
+                  <span className={titleNumberCss3}>
                     {data?.approving_count}
                   </span>
                   <span className={titleTextCss}>

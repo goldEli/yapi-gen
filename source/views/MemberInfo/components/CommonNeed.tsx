@@ -702,7 +702,7 @@ const CommonNeed = (props: any) => {
 
             {props.id !== 0 && (
               <>
-                <DividerWrap type="vertical" />
+                {/* <DividerWrap type="vertical" /> */}
                 <ScreenMinHover
                   label={t('common.search')}
                   icon="filter"

@@ -50,7 +50,7 @@ const LimitLabel = (props: { label: string; width: number }) => {
   )
 }
 
-const BasicFlaw = (props: Props) => {
+const FlawBasic = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   // 折叠字段
@@ -485,4 +485,4 @@ const BasicFlaw = (props: Props) => {
   )
 }
 
-export default BasicFlaw
+export default FlawBasic

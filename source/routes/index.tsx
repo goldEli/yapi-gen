@@ -130,10 +130,6 @@ const routes = [
             element: lazy(() => import('@/views/Demand')),
           },
           {
-            path: 'DemandDetail',
-            element: lazy(() => import('@/views/DemandDetail')),
-          },
-          {
             path: 'Iteration',
             element: lazy(() => import('@/views/Iteration')),
           },
@@ -148,10 +144,6 @@ const routes = [
           {
             path: 'Defect',
             element: lazy(() => import('@/views/IterationDefect')),
-          },
-          {
-            path: 'DefectDetail',
-            element: lazy(() => import('@/views/IterationDefectDetail')),
           },
           {
             path: 'ProjectSetting',
@@ -198,10 +190,6 @@ const routes = [
           {
             path: 'WorkFlow',
             element: lazy(() => import('@/views/SprintWorkflow')),
-          },
-          {
-            path: 'SprintProjectDetail',
-            element: lazy(() => import('@/views/SprintProjectDetail')),
           },
         ],
       },

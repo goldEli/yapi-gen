@@ -1,13 +1,7 @@
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Dropdown, Form, Progress, Space } from 'antd'
-
-export const haveAuto = css`
-  height: calc(100% - 40px);
-  overflow-y: auto;
-  overflow-x: hidden;
-`
+import { Dropdown, Form, Space } from 'antd'
 
 export const Wrap = styled.div`
   height: 100%;
@@ -40,6 +34,78 @@ export const Wrap = styled.div`
   .ant-tabs-top > div > .ant-tabs-nav::before {
     left: 24px;
   }
+`
+
+export const FormWrap = styled(Form)({
+  '.ant-form-item': {
+    margin: '22px 0 0 0',
+  },
+})
+
+export const RelationWrap = styled.div`
+  height: 100%;
+  padding-left: 24px;
+`
+
+export const PriorityWrap = styled.div<{ isShow?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      color: 'var(--neutral-n1-d2)',
+      fontSize: 14,
+      marginLeft: 8,
+    },
+    '.icon': {
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 14,
+      color: 'var(--neutral-n4)',
+    },
+    '.priorityIcon': {
+      fontSize: 14,
+    },
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+    '&: hover': {
+      '.icon': {
+        visibility: isShow ? 'visible' : 'hidden',
+      },
+    },
+  }),
+)
+
+export const LiWrap = styled.div({
+  cursor: 'pointer',
+  padding: '0 16px',
+  width: '100%',
+  height: 32,
+  display: 'flex',
+  alignItems: 'center',
+  background: 'var(--neutral-white-d3)',
+  '&: hover': {
+    background: 'var(--hover-d3)',
+  },
+})
+
+export const ActivityTabItem = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const ItemNumber = styled.div<{ isActive?: boolean }>`
+  margin-left: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props =>
+    props.isActive ? 'var(--primary-d1)' : 'var(--function-tag5)'};
+  color: ${props =>
+    props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
 `
 
 export const DetailTop = styled.div`
@@ -98,14 +164,6 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
   border-top-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
 `
 
-export const DetailTitle = styled.div`
-  display: flex;
-  /* border-bottom: 1px solid var(--neutral-n6-d1); */
-  padding: 20px 0px 20px;
-  width: calc(100% - 48px);
-  margin-left: 24px;
-`
-
 export const Img = styled.img`
   width: 20px;
   height: 20px;
@@ -123,177 +181,6 @@ export const DetailText = styled.div`
   }
 `
 
-export const DetailMain = styled.div`
-  display: flex;
-  margin-top: 20px;
-  padding-right: 24px;
-  position: relative;
-`
-
-export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
-  width: 100%;
-  height: ${props =>
-    props.isScroll ? 'calc(100% - 100px)' : 'calc(100% - 40px)'};
-  overflow: auto;
-`
-
-export const InfoItem = styled.div`
-  display: flex;
-  margin-top: 20px;
-  position: relative;
-  flex-direction: column;
-  /* width: max-content; */
-  padding: 0 24px;
-`
-
-export const Label = styled.div`
-  color: var(--neutral-n1-d1);
-  font-size: 14px;
-  min-width: 120px;
-  font-family: SiYuanMedium;
-  margin-bottom: 8px;
-  height: 32px;
-  line-height: 32px;
-`
-export const TextWrap = styled.div({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  marginLeft: 12,
-  '.textTop': {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    position: 'relative',
-    '.name': {
-      color: 'black',
-      fontSize: 14,
-      marginRight: 12,
-    },
-    '.anticon': {
-      color: 'var(--neutral-n3)',
-      fontSize: 16,
-      position: 'absolute',
-      right: 0,
-      top: 3,
-      display: 'none',
-    },
-  },
-  '.common': {
-    fontSize: 12,
-    color: 'var(--neutral-n3)',
-    whiteSpace: 'nowrap',
-  },
-  '.statusText': {
-    width: 'calc(100% - 120px)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  '.content': {
-    color: 'var(--neutral-n2)',
-    fontSize: 12,
-    fontWeight: 400,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-
-    WebkitLineClamp: 4,
-    WebkitBoxOrient: 'vertical',
-    paddingRight: 30,
-    flexWrap: 'wrap',
-    wordBreak: 'break-all',
-    img: {
-      display: 'block',
-      height: 100,
-      objectFit: 'contain',
-    },
-    table: {
-      'td,th': {
-        height: '20px',
-        border: '1px solid black',
-      },
-    },
-  },
-})
-
-export const InfoItemWrap = styled.div`
-  /* width: max-content; */
-`
-
-export const LabelWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
-export const SubLabel = styled.div`
-  margin: 8px 0;
-  font-size: 12px;
-  color: var(--neutral-n3);
-`
-
-export const AddText = styled.div`
-  font-size: 14px;
-  color: var(--auxiliary-text-t2-d2);
-  cursor: pointer;
-`
-
-export const CancelText = styled.div`
-  font-size: 14px;
-  color: var(--auxiliary-text-t2-d1);
-  cursor: pointer;
-`
-
-export const ProgressWrap = styled(Progress)`
-  width: 100%;
-  margin: 4px 0;
-  .ant-progress-outer {
-    margin-right: calc(-4em - 16px);
-    padding-right: calc(4em + 24px);
-  }
-  .ant-progress-text {
-    font-size: 12px;
-    color: var(--neutral-n2);
-  }
-`
-
-export const ActivityTabItem = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-export const ItemNumber = styled.div<{ isActive?: boolean }>`
-  margin-left: 4px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${props =>
-    props.isActive ? 'var(--primary-d1)' : 'var(--function-tag5)'};
-  color: ${props =>
-    props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
-`
-
-export const LiWrap = styled.div({
-  cursor: 'pointer',
-  padding: '0 16px',
-  width: '100%',
-  height: 32,
-  display: 'flex',
-  alignItems: 'center',
-  background: 'var(--neutral-white-d3)',
-  '&: hover': {
-    background: 'var(--hover-d3)',
-  },
-})
-
-export const FormWrap = styled(Form)({
-  '.ant-form-item': {
-    margin: '22px 0 0 0',
-  },
-})
-
 export const DropdownMenu = styled(Dropdown)`
   .ant-dropdown-menu-item {
     padding: 4px 16px;
@@ -303,46 +190,12 @@ export const DropdownMenu = styled(Dropdown)`
   }
 `
 
-export const SprintDetailDragLine = styled(DragLine)`
-  background: ${props =>
-    props.active ? 'var(--primary-d2)' : 'var(--neutral-n6-d1)'}!important;
-`
-
-export const SprintDetailMouseDom = styled(MouseDom)`
-  background: transparent;
-`
-
-export const BasicWrap = styled.div`
-  position: relative;
-  height: 100%;
-`
-
-export const BasicContent = styled.div`
-  height: calc(100% - 60px);
-`
-
-export const BasicFooter = styled.div`
+export const DetailTitle = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 24px;
-  background: var(--neutral-white-d5);
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  .textBox {
-    display: flex;
-    flex-direction: column;
-    div {
-      font-size: 12px;
-      color: var(--neutral-n3);
-      margin-bottom: 4px;
-    }
-    span {
-      font-size: 12px;
-      color: var(--neutral-n3);
-    }
-  }
+  /* border-bottom: 1px solid var(--neutral-n6-d1); */
+  padding: 20px 0px 20px;
+  width: calc(100% - 48px);
+  margin-left: 24px;
 `
 
 export const FlawInfoWrap = styled.div({
@@ -383,64 +236,21 @@ export const FlawInfoLabel = styled.div({
   fontFamily: 'SiYuanMedium',
 })
 
-export const FlawInfoTextWrap = styled.div({
-  color: 'var(--neutral-n1-d1)',
-  fontSize: 14,
-  display: 'flex',
-
-  flexDirection: 'column',
-  img: {
-    maxWidth: '20%',
-  },
-})
-
-export const ShowLabel = styled.div({
-  cursor: 'pointer',
-  fontSize: 14,
-  fontWeight: 400,
-  color: 'var(--primary-d2)',
-})
-
-export const MaxLabel = styled.div<{ width: number }>`
-  width: ${props => props.width}px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`
-
-export const InfoItemBasic = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  marginTop: 14,
-  position: 'relative',
-})
-
-export const ContentWrap = styled.div<{ notHover?: any }>(
-  {
-    color: 'var(--neutral-n1-d1)',
-    fontSize: 14,
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: '98%',
-    wordBreak: 'break-all',
-    width: '100%',
-  },
-  ({ notHover }) => ({
-    paddingLeft: notHover ? 8 : 0,
-  }),
-)
-
-export const LabelItem = styled.div`
-  font-size: var(--font14);
-  color: var(--neutral-n3);
-`
-
 export const WrapRight = styled.div({
   width: 400,
   height: '100%',
   padding: '0px 10px 0px 24px',
   position: 'relative',
 })
+
+export const SprintDetailDragLine = styled(DragLine)`
+  background: ${props =>
+    props.active ? 'var(--primary-d2)' : 'var(--neutral-n6-d1)'}!important;
+`
+
+export const SprintDetailMouseDom = styled(MouseDom)`
+  background: transparent;
+`
 
 export const TitleWrap = styled.div<{ activeTabs?: any }>(
   {
@@ -483,31 +293,31 @@ export const TitleWrap = styled.div<{ activeTabs?: any }>(
   }),
 )
 
-export const ButtonWrap = styled.div({
-  width: '92%',
-  background: 'white',
-  paddingBottom: 7,
-})
+export const BasicFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 24px;
+  background: var(--neutral-white-d5);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  .textBox {
+    display: flex;
+    flex-direction: column;
+    div {
+      font-size: 12px;
+      color: var(--neutral-n3);
+      margin-bottom: 4px;
+    }
+    span {
+      font-size: 12px;
+      color: var(--neutral-n3);
+    }
+  }
+`
 
-export const TextareaWrap = styled.div({
-  marginTop: 67,
-  textAlign: 'right',
-  marginBottom: 20,
-  position: 'relative',
-  paddingRight: 20,
-  overflow: 'hidden',
-  '.ant-input': {
-    padding: '8px 8px 40px 8px',
-  },
-  '.ant-input:focus,.ant-input:active': {
-    boxShadow: 'none',
-  },
-  [ButtonWrap.toString()]: {
-    position: 'absolute',
-    right: 28,
-    bottom: 1,
-  },
-})
+// 评论样式
 
 export const Second = styled.div`
   visibility: hidden;
@@ -623,36 +433,118 @@ export const RedCss = styled(BlueCss)`
   margin-left: 12px;
 `
 
-export const RelationWrap = styled.div`
-  height: 100%;
-  padding-left: 24px;
+export const Label = styled.div`
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
+  min-width: 120px;
+  font-family: SiYuanMedium;
+  margin-bottom: 8px;
+  height: 32px;
+  line-height: 32px;
 `
-
-export const PriorityWrap = styled.div<{ isShow?: boolean }>(
-  {
+export const TextWrap = styled.div({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  marginLeft: 12,
+  '.textTop': {
     display: 'flex',
     alignItems: 'center',
-    div: {
-      color: 'var(--neutral-n1-d2)',
+    justifyContent: 'space-between',
+    position: 'relative',
+    '.name': {
+      color: 'black',
       fontSize: 14,
-      marginLeft: 8,
+      marginRight: 12,
     },
-    '.icon': {
-      marginLeft: 8,
-      visibility: 'hidden',
-      fontSize: 14,
-      color: 'var(--neutral-n4)',
-    },
-    '.priorityIcon': {
-      fontSize: 14,
+    '.anticon': {
+      color: 'var(--neutral-n3)',
+      fontSize: 16,
+      position: 'absolute',
+      right: 0,
+      top: 3,
+      display: 'none',
     },
   },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
-    '&: hover': {
-      '.icon': {
-        visibility: isShow ? 'visible' : 'hidden',
+  '.common': {
+    fontSize: 12,
+    color: 'var(--neutral-n3)',
+    whiteSpace: 'nowrap',
+  },
+  '.statusText': {
+    width: 'calc(100% - 120px)',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+  '.content': {
+    color: 'var(--neutral-n2)',
+    fontSize: 12,
+    fontWeight: 400,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+
+    WebkitLineClamp: 4,
+    WebkitBoxOrient: 'vertical',
+    paddingRight: 30,
+    flexWrap: 'wrap',
+    wordBreak: 'break-all',
+    img: {
+      display: 'block',
+      height: 100,
+      objectFit: 'contain',
+    },
+    table: {
+      'td,th': {
+        height: '20px',
+        border: '1px solid black',
       },
     },
+  },
+})
+
+export const haveAuto = css`
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  overflow-x: hidden;
+`
+
+export const ContentWrap = styled.div<{ notHover?: any }>(
+  {
+    color: 'var(--neutral-n1-d1)',
+    fontSize: 14,
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '98%',
+    wordBreak: 'break-all',
+    width: '100%',
+  },
+  ({ notHover }) => ({
+    paddingLeft: notHover ? 8 : 0,
   }),
 )
+
+export const LabelItem = styled.div`
+  font-size: var(--font14);
+  color: var(--neutral-n3);
+`
+
+export const ShowLabel = styled.div({
+  cursor: 'pointer',
+  fontSize: 14,
+  fontWeight: 400,
+  color: 'var(--primary-d2)',
+})
+
+export const MaxLabel = styled.div<{ width: number }>`
+  width: ${props => props.width}px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+export const InfoItemBasic = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  marginTop: 14,
+  position: 'relative',
+})
