@@ -44,6 +44,7 @@ const SliderList = (props: any) => {
     ev.dataTransfer.setDragImage(imgDom, 0, 0)
   }
   const onDrag = (e: any) => {
+    console.log(111)
     localStorage.className = ''
     const el: any = ref.current
     const rect = el.getBoundingClientRect()
@@ -66,6 +67,7 @@ const SliderList = (props: any) => {
     }
   }
   const onDragEnd = () => {
+    console.log('end')
     setTop(0)
     setLeft(0)
   }

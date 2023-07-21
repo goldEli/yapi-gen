@@ -9,9 +9,13 @@ import { Checkbox, Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 const Box = styled.div`
-  transition: 0.3s;
+  /* transition: 0.3s; */
   display: flex;
   align-items: center;
+  /* border: 1px solid red; */
+  position: absolute;
+  width: 100%;
+  z-index: 999;
 `
 const Circle = styled.div`
   width: 10px;
@@ -54,6 +58,7 @@ const ItemList = styled.div`
   z-index: 5;
   transition: all 0.3s;
   position: relative;
+
   &:hover {
     background: var(--neutral-white-d6);
     box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.03);
@@ -248,6 +253,7 @@ const Sortable = (props: any) => {
             className={props.positionType + '_' + props.positionType}
             onDragOver={allowDrop}
             onDrop={event => onDrop(event, i)}
+            style={{ position: 'relative' }}
           >
             <Container
               ref={container}

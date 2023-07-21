@@ -346,7 +346,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CommonUserAvatar avatar={record.avatar} size="large" />
+            <CommonUserAvatar avatar={record.avatar} />
             <div
               style={{
                 marginLeft: 12,

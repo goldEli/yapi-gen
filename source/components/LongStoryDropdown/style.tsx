@@ -67,6 +67,7 @@ export const activity = css`
   span {
     color: var(--primary-d1) !important;
   }
+  color: var(--primary-d1) !important;
 `
 export const LoadMore = styled.div`
   color: var(--primary-d2);

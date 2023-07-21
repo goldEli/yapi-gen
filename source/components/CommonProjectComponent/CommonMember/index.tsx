@@ -70,6 +70,7 @@ const RemoveBox = styled.div`
 const MoreDropdown = (props: DropDownProps) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
+  const [currentMember, setCurrentMember] = useState()
   const onClickItem = (item: any) => {
     setIsVisible(false)
     props.onClickMenu(item, props.row)
@@ -100,6 +101,7 @@ const MoreDropdown = (props: DropDownProps) => {
       label: (
         <RemoveBox
           onClick={() => {
+            setCurrentMember(props.row.id)
             props.openRemoveModal(props.row)
           }}
         >
@@ -420,6 +422,7 @@ const CommonMember = (props: Props) => {
           setHandOvervisible(false)
         }}
         confirm={() => {
+          getList()
           setHandOvervisible(false)
         }}
         id={editItem}
