@@ -638,7 +638,7 @@ const DemandDetail = () => {
   }
 
   useEffect(() => {
-    if (visible) {
+    if (visible || params.demandId) {
       dispatch(getDemandInfo({ projectId: params.id, id: params.demandId }))
       dispatch(
         getDemandCommentList({
@@ -649,7 +649,7 @@ const DemandDetail = () => {
         }),
       )
     }
-  }, [visible])
+  }, [visible, params])
 
   useEffect(() => {
     // 获取项目信息中的需求类别
