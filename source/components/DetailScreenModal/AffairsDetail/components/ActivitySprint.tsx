@@ -113,22 +113,19 @@ const ActivitySprint = () => {
   return (
     <InfoItem id="sprint-activity" className="info_item_tab">
       <Label>{t('activity')}</Label>
-      <div
-        style={{
-          display: activeKey === '2' ? 'flex' : 'inline',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Tabs defaultActiveKey={activeKey} items={items} onChange={onChange} />
-        {activeKey === '2' && (
+      <Tabs
+        defaultActiveKey={activeKey}
+        items={items}
+        onChange={onChange}
+        tabBarExtraContent={
           <ScreenMinHover
             label={t('common.search')}
             icon="filter"
             isActive
             onClick={() => setFilter(!filter)}
           />
-        )}
-      </div>
+        }
+      />
     </InfoItem>
   )
 }

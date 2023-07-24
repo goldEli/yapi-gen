@@ -683,33 +683,20 @@ const FlawDetail = () => {
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
-      {/* <Tabs
+      <Tabs
         className="tabs"
         activeKey={tabActive}
         items={tabItems}
         onChange={onChangeTabs}
-      /> */}
-      <div
-        style={{
-          display: tabActive === '3' ? 'flex' : 'inline',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Tabs
-          className="tabs"
-          activeKey={tabActive}
-          items={tabItems}
-          onChange={onChangeTabs}
-        />
-        {tabActive === '3' && (
+        tabBarExtraContent={
           <ScreenMinHover
             label={t('common.search')}
             icon="filter"
             isActive
             onClick={() => setFilter(!filter)}
           />
-        )}
-      </div>
+        }
+      />
     </Wrap>
   )
 }
