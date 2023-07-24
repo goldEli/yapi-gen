@@ -546,7 +546,7 @@ const FlawDetailDrawer = () => {
 
   // 取消审核
   const onCancelExamine = async () => {
-    await cancelVerify(drawerInfo.id)
+    await cancelVerify(drawerInfo.verify_data?.id)
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
     onOperationUpdate(true)
   }
@@ -728,7 +728,11 @@ const FlawDetailDrawer = () => {
               </ParentBox>
               {drawerInfo?.isExamine && (
                 <div style={{ marginBottom: 16 }}>
-                  <StatusExamine type={3} onCancel={onCancelExamine} />
+                  <StatusExamine
+                    type={3}
+                    onCancel={onCancelExamine}
+                    isVerify={drawerInfo?.has_verify === 1}
+                  />
                 </div>
               )}
               <DemandName>

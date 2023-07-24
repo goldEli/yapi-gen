@@ -9,6 +9,7 @@ interface StatusExamineProps {
   type: number
   //   审核过程
   verifyInfo?: any
+  isVerify?: boolean
 }
 
 const StatusExamine = (props: StatusExamineProps) => {
@@ -54,9 +55,11 @@ const StatusExamine = (props: StatusExamineProps) => {
               {list.filter((i: any) => i.type === props.type)[0]?.sub}
             </div>
           </div>
-          <div className="cancel" onClick={onClose}>
-            {t('newlyAdd.cancelExamine')}
-          </div>
+          {props.isVerify && (
+            <div className="cancel" onClick={onClose}>
+              {t('newlyAdd.cancelExamine')}
+            </div>
+          )}
         </TopWrap>
       </ExamineWrap>
     </>
