@@ -405,6 +405,8 @@ export const getAffairsInfo = async (
     discovery_version_name: response.data.discovery_version_name,
     discovery_version: response.data.discovery_version,
     iterate_info: response.data.iterate_info,
+    has_verify: response.data.has_verify,
+    verify_data: response.data.verify_data,
   }
 }
 

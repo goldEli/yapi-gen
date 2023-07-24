@@ -341,7 +341,7 @@ const AffairsDetail = () => {
 
   // 取消审核
   const onCancelExamine = async () => {
-    await cancelVerify(affairsInfo.id)
+    await cancelVerify(affairsInfo.verify_data?.id)
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
     dispatch(getAffairsInfo({ projectId: params.id, sprintId: affairsInfo.id }))
   }
@@ -658,7 +658,11 @@ const AffairsDetail = () => {
       </DetailTop>
       {affairsInfo?.isExamine && (
         <div style={{ padding: '0 24px' }}>
-          <StatusExamine type={2} onCancel={onCancelExamine} />
+          <StatusExamine
+            type={2}
+            onCancel={onCancelExamine}
+            isVerify={affairsInfo?.has_verify === 1}
+          />
         </div>
       )}
       <DetailTitle>

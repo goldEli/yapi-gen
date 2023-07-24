@@ -561,6 +561,8 @@ export const getDemandInfo: any = async (params: any) => {
     update_at: response.data.update_at,
     category_status: response.category_status,
     work_type: response.data.work_type,
+    has_verify: response.data.has_verify,
+    verify_data: response.data.verify_data,
   }
 }
 

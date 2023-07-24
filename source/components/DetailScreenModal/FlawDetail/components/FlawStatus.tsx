@@ -89,7 +89,7 @@ const FlawStatus = (props: any) => {
 
   // 取消审核
   const onCancelExamine = async () => {
-    await cancelVerify(flawInfo.id)
+    await cancelVerify(flawInfo.verify_data?.id)
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
     dispatch(getFlawInfo({ projectId: props.pid, id: props.sid }))
   }
@@ -149,7 +149,11 @@ const FlawStatus = (props: any) => {
 
       <div>
         {flawInfo?.isExamine && (
-          <StatusExamine type={3} onCancel={onCancelExamine} />
+          <StatusExamine
+            type={3}
+            onCancel={onCancelExamine}
+            isVerify={flawInfo?.has_verify === 1}
+          />
         )}
         {rows && !flawInfo?.isExamine && (
           <ShapeContentForDetail
