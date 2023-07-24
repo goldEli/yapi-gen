@@ -48,12 +48,26 @@ export const offFullScreenMode = () => async (dispatch: AppDispatch) => {
 
 // 删除story
 export const deleteStory =
-  (params: Pick<API.Kanban.DeleteStory.Params, 'id'>) =>
+  (params: Pick<API.Kanban.DeleteStory.Params, 'id'>, type: number) =>
   async (dispatch: AppDispatch) => {
-    await services.kanban.deleteStory({
-      ...params,
-      project_id: getProjectIdByUrl(),
-    })
+    // 根据类型判断是删除哪种
+    if (type === 2) {
+      await services.affairs.deleteAffairs({
+        ...params,
+        projectId: getProjectIdByUrl(),
+      })
+    } else if (type === 1) {
+      await services.kanban.deleteStory({
+        ...params,
+        project_id: getProjectIdByUrl(),
+      })
+    } else if (type === 3) {
+      await services.flaw.deleteFlaw({
+        ...params,
+        projectId: getProjectIdByUrl(),
+      })
+    }
+    getMessage({ msg: i18n.t('common.deleteSuccess'), type: 'success' })
     dispatch(getKanbanByGroup())
   }
 
