@@ -21,7 +21,7 @@ const ActivitySprint = () => {
   const [filter, setFilter] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id } = paramsData
+  const { id } = paramsData ?? {}
   const { affairsCommentList, affairsInfo } = useSelector(
     store => store.affairs,
   )
