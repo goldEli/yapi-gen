@@ -82,9 +82,9 @@ const CommonModal = (props: CommonModalProps) => {
       mask={props.isShowMask}
       zIndex={props.dex}
       // 界面全屏时需要挂载到全屏的那个dom元素身上才能显示出来
-      getContainer={() =>
+      getContainer={
         fullScreen
-          ? (document.getElementById('kanBanFullScreenBox') as any)
+          ? () => document.getElementById('kanBanFullScreenBox') as any
           : // eslint-disable-next-line no-undefined
             undefined
       }
