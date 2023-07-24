@@ -5,9 +5,8 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Input, message, Space, Timeline, Tooltip } from 'antd'
-import { ViewWrap, NameWrap, DelWrap } from '@/components/StyleCommon'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { Input, Space, Tooltip } from 'antd'
+import { ViewWrap } from '@/components/StyleCommon'
 import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
@@ -19,25 +18,7 @@ import { updateVerifyOperation } from '@/services/mine'
 import CommonButton from '@/components/CommonButton'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
-import StateTag from '@/components/StateTag'
-
-const TimelineWrap = styled(Timeline)({
-  '.ant-timeline-item-last > .ant-timeline-item-content': {
-    minHeight: 'auto',
-  },
-  '.ant-timeline-item:last-child > .ant-timeline-item-tail': {
-    display: 'none',
-  },
-  '.ant-timeline-item-last': {
-    paddingBottom: '0!important',
-  },
-  '.ant-timeline-item-head-blue': {
-    borderColor: 'var(--neutral-n5) !important',
-  },
-  '& :first-child .ant-timeline-item-head-blue': {
-    borderColor: 'var(--primary-d1) !important',
-  },
-})
+import VerifyProcess from '@/components/VerifyProcess'
 
 const FooterWrap = styled(Space)({
   display: 'flex',
@@ -59,20 +40,6 @@ const LabelWrap = styled.div({
   fontWeight: 400,
   width: 100,
 })
-
-const WrapBox = styled.div<{
-  color?: any
-  size?: any
-  right?: any
-  left?: any
-  top?: any
-}>({}, ({ color, size, right, left, top }) => ({
-  color: color || 'var(--neutral-n3)',
-  fontSize: size || 12,
-  marginRight: right || 0,
-  marginLeft: left || 0,
-  marginTop: top || 0,
-}))
 
 const ContentWrap = styled.div({
   width: '70%',
@@ -141,47 +108,6 @@ const EditExamine = (props: Props) => {
 
   const onRefuse = async () => {
     await updateMethod(3)
-  }
-
-  // status: 审核状态(待审核、已通过、未通过)，type: 审核类型(依次、与、或), list: 所有人列表
-  const getStatusText = (status: any, type: any, list: any) => {
-    let statusValue: any
-    const hasPass = list?.filter((i: any) => i.status === 2)
-    const hasNotPass = list?.filter((i: any) => i.status === 3)
-    if (
-      type === 1 ||
-      status === hasNotPass[0]?.status ||
-      status === hasPass[0]?.status ||
-      (type === 2 && (hasPass.length <= 0 || hasNotPass.length <= 0)) ||
-      (hasPass.length <= 0 && hasNotPass.length <= 0)
-    ) {
-      statusValue =
-        status === 1
-          ? t('newlyAdd.waitExamine')
-          : status === 2
-          ? t('newlyAdd.passed')
-          : t('newlyAdd.notPass')
-    } else if (type === 2) {
-      if (hasNotPass.length > 0 && status !== hasNotPass[0]?.status) {
-        statusValue = '--'
-      }
-    } else {
-      if (status !== hasPass[0]?.status) {
-        statusValue = '--'
-      }
-    }
-    return statusValue === '--' ? (
-      <span>{statusValue}</span>
-    ) : (
-      <span
-        style={{
-          color:
-            status === 1 ? '#FA9746' : status === 2 ? '#43BA9A' : '#FF5C5E',
-        }}
-      >
-        {statusValue}
-      </span>
-    )
   }
 
   // 返回自定义值
@@ -342,251 +268,8 @@ const EditExamine = (props: Props) => {
             />
           </ItemWrap>
         )}
-        <div
-          style={{
-            color: 'var(--neutral-n1-d1)',
-            fontSize: 14,
-            marginBottom: 16,
-            fontFamily: 'SiYuanMedium',
-          }}
-        >
-          {t('newlyAdd.reviewProcess')}
-        </div>
         {/* 审核部分 */}
-        {verifyInfo?.verify && (
-          <TimelineWrap reverse>
-            {/* verifyType 依次审核? */}
-            {verifyInfo?.verify?.verifyType === 1 && (
-              <>
-                {verifyInfo?.verify?.process?.map((k: any, index: any) => (
-                  <Timeline.Item key={index}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <WrapBox
-                        size={16}
-                        color="var(--neutral-n1-d1)"
-                        right={16}
-                      >
-                        {t('newlyAdd.reviewPerson')}
-                      </WrapBox>
-                      <WrapBox>
-                        {k.operator === 1
-                          ? t('newlyAdd.sequence')
-                          : k.operator === 2
-                          ? t('newlyAdd.andExamine')
-                          : t('newlyAdd.orExamine')}
-                      </WrapBox>
-                    </div>
-                    {k.verifyUsers?.map((i: any) => (
-                      <div key={i.id}>
-                        <div
-                          style={{
-                            marginTop: 8,
-                            display: 'flex',
-                            alignItems: 'start',
-                          }}
-                        >
-                          <CommonUserAvatar />
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              marginLeft: 8,
-                            }}
-                          >
-                            <WrapBox size={14} color="var(--neutral-n1-d1)">
-                              {i.userName}
-                            </WrapBox>
-                            <div
-                              style={{
-                                fontSize: 12,
-                                display: 'flex',
-                                alignItems: 'center',
-                              }}
-                            >
-                              {getStatusText(
-                                i.status,
-                                k.operator,
-                                k.verifyUsers,
-                              )}
-                              {i.status !== 1 && (
-                                <WrapBox left={16}>{i.time}</WrapBox>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <WrapBox top={4} color="var(--neutral-n2)">
-                          {i.remark}
-                        </WrapBox>
-                      </div>
-                    ))}
-                  </Timeline.Item>
-                ))}
-              </>
-            )}
-            {verifyInfo?.verify?.verifyType !== 1 && (
-              <Timeline.Item>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <WrapBox size={16} color="var(--neutral-n1-d1)" right={16}>
-                    {t('newlyAdd.reviewPerson')}
-                  </WrapBox>
-                </div>
-                {verifyInfo?.fixedUser?.map((k: any) => (
-                  <div key={k.id}>
-                    <div
-                      style={{
-                        marginTop: 8,
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <CommonUserAvatar />
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          marginLeft: 8,
-                        }}
-                      >
-                        <WrapBox size={14} color="var(--neutral-n1-d1)">
-                          {k.userName}
-                        </WrapBox>
-                        <div
-                          style={{
-                            fontSize: 12,
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <span
-                            style={{
-                              color:
-                                k.status === 1
-                                  ? '#FA9746'
-                                  : k.status === 2
-                                  ? '#43BA9A'
-                                  : '#FF5C5E',
-                            }}
-                          >
-                            {k.status === 1
-                              ? t('newlyAdd.waitExamine')
-                              : k.status === 2
-                              ? t('newlyAdd.passed')
-                              : t('newlyAdd.notPass')}
-                          </span>
-                          {k.status !== 1 && (
-                            <WrapBox left={16}>{k.time}</WrapBox>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <WrapBox top={4}>{k.remark}</WrapBox>
-                  </div>
-                ))}
-              </Timeline.Item>
-            )}
-            {/* TODO: 取消审核 */}
-            {verifyInfo.verifyStatus === 4 && (
-              <Timeline.Item style={{ marginBottom: 16 }}>
-                <WrapBox size={16} color="var(--neutral-n1-d1)" right={16}>
-                  {t('newlyAdd.reviewPerson')}
-                </WrapBox>
-                <div
-                  style={{
-                    marginTop: 8,
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <CommonUserAvatar />
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      marginLeft: 8,
-                    }}
-                  >
-                    <WrapBox size={14} color="var(--neutral-n1-d1)">
-                      {verifyInfo.cancel_verify.user_name}
-                    </WrapBox>
-                    <div
-                      style={{
-                        fontSize: 12,
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <span
-                        style={{
-                          color: 'var(--neutral-n4)',
-                        }}
-                      >
-                        {t('newlyAdd.cancelExamine')}
-                      </span>
-                      <WrapBox left={16}>
-                        {verifyInfo.cancel_verify.created_at}
-                      </WrapBox>
-                    </div>
-                  </div>
-                </div>
-              </Timeline.Item>
-            )}
-            {/* TODO: 需求流回至 */}
-            <Timeline.Item>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                {/*  优化：取消审核label  */}
-                {verifyInfo.verifyStatus === 4 ? (
-                  <WrapBox size={16} color="var(--neutral-n1-d1)" right={8}>
-                    {t('newlyAdd.demandBackflowTo')}
-                  </WrapBox>
-                ) : (
-                  <WrapBox size={16} color="var(--neutral-n1-d1)" right={8}>
-                    {t('newlyAdd.circulationTo')}
-                  </WrapBox>
-                )}
-                {/*  优化：取消审核tag  */}
-                {verifyInfo.verifyStatus === 4 ? (
-                  <StateTag
-                    name={verifyInfo?.from?.content}
-                    state={
-                      verifyInfo?.from?.is_start === 1 &&
-                      verifyInfo?.from?.is_end === 2
-                        ? 1
-                        : verifyInfo?.from?.is_end === 1 &&
-                          verifyInfo?.from?.is_start === 2
-                        ? 2
-                        : verifyInfo?.from?.is_start === 2 &&
-                          verifyInfo?.from?.is_end === 2
-                        ? 3
-                        : 0
-                    }
-                  />
-                ) : (
-                  <>
-                    {verifyInfo?.to ? (
-                      <StateTag
-                        name={verifyInfo?.to?.content}
-                        state={
-                          verifyInfo?.to?.is_start === 1 &&
-                          verifyInfo?.to?.is_end === 2
-                            ? 1
-                            : verifyInfo?.to?.is_end === 1 &&
-                              verifyInfo?.to?.is_start === 2
-                            ? 2
-                            : verifyInfo?.to?.is_start === 2 &&
-                              verifyInfo?.to?.is_end === 2
-                            ? 3
-                            : 0
-                        }
-                      />
-                    ) : (
-                      <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
-                    )}
-                  </>
-                )}
-              </div>
-            </Timeline.Item>
-          </TimelineWrap>
-        )}
+        <VerifyProcess info={verifyInfo} />
       </div>
     </CommonModal>
   )

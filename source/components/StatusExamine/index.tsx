@@ -2,12 +2,13 @@ import { useTranslation } from 'react-i18next'
 import IconFont from '../IconFont'
 import { ExamineWrap, TopWrap } from './style'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import VerifyProcess from '../VerifyProcess'
 
 interface StatusExamineProps {
   onCancel(): void
   //   1是需求，2是事务，3是缺陷
   type: number
-  //   审核过程
+  //   是否包含审核流程
   verifyInfo?: any
   isVerify?: boolean
 }
@@ -61,6 +62,11 @@ const StatusExamine = (props: StatusExamineProps) => {
             </div>
           )}
         </TopWrap>
+        {props.verifyInfo && (
+          <div style={{ marginTop: 24 }}>
+            <VerifyProcess info={props.verifyInfo} />
+          </div>
+        )}
       </ExamineWrap>
     </>
   )

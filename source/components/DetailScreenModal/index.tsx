@@ -16,7 +16,6 @@ const DetailScreenModal = () => {
   const { visible, params } = isDetailScreenModal
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  // const { isOpenScreenDetail, id, specialType, type, detailId } = paramsData
 
   const detailContent = [
     { specialType: 1, content: <AffairsDetail /> },

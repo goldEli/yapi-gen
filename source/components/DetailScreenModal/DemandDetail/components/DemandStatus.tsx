@@ -159,6 +159,7 @@ const DemandStatusBox = (props: any) => {
             type={1}
             onCancel={onCancelExamine}
             isVerify={demandInfo?.has_verify === 1}
+            verifyInfo={demandInfo.verify_data}
           />
         )}
         {rows && !demandInfo?.isExamine && (
