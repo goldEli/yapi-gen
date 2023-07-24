@@ -6,11 +6,17 @@ import { Content, ModalWrap } from './style'
 import DemandDetail from './DemandDetail'
 import FlawDetail from './FlawDetail'
 import AffairsDetail from './AffairsDetail'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
+import { useEffect } from 'react'
 
 const DetailScreenModal = () => {
   const dispatch = useDispatch()
   const { isDetailScreenModal } = useSelector(store => store.project)
   const { visible, params } = isDetailScreenModal
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { isOpenScreenDetail, id, specialType, type, detailId } = paramsData
 
   const detailContent = [
     { specialType: 1, content: <AffairsDetail /> },
@@ -23,7 +29,29 @@ const DetailScreenModal = () => {
     dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
   }
 
-  console.log(params, '=121212')
+  useEffect(() => {
+    // 如果地址栏上带有此参数，默认打开全屏弹层
+    if (isOpenScreenDetail) {
+      const resultParams: any = { id, specialType, type }
+      switch (specialType) {
+        case 1:
+          resultParams.sprintId = detailId
+          break
+        case 2:
+          resultParams.flawId = detailId
+          break
+        default:
+          resultParams.demandId = detailId
+          break
+      }
+      dispatch(
+        setIsDetailScreenModal({
+          visible: true,
+          params: resultParams,
+        }),
+      )
+    }
+  }, [])
 
   return (
     <ModalWrap
