@@ -391,15 +391,17 @@ export const DataWrap = styled.div`
   margin: 16px 0px 0 24px;
   display: flex;
   flex-wrap: wrap;
+  /* justify-content: space-between; */
 `
 export const LotBox = styled.div`
-  width: 220px;
+  /* width: 220px; */
   height: 84px;
   background: var(--neutral-n10);
   border-radius: 6px;
   margin-right: 24px;
   margin-bottom: 24px;
   padding: 16px;
+  flex: 1;
   &:hover {
     background: var(--neutral--white-d6);
     box-shadow: 0px 0px 19px -2px rgba(0, 0, 0, 0.12);

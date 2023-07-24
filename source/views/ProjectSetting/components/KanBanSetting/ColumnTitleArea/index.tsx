@@ -1,18 +1,26 @@
+/* eslint-disable no-case-declarations */
 /**
  * kanban 列title区域
  */
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import MoveIcon from '../MoveIcon'
 import IconFont from '@/components/IconFont'
 import { Draggable } from 'react-beautiful-dnd'
 import IssuesGroupList from '../IssuesGroupList'
 import useKanBanData from '../hooks/useKanBanData'
-import { useDispatch } from '@store/index'
-import { openEditColumnModel } from '@store/kanbanConfig/kanbanConfig.thunk'
-import { Tooltip } from 'antd'
+import { useDispatch, useSelector } from '@store/index'
+import {
+  closeEditColumnModel,
+  openEditColumnModel,
+} from '@store/kanbanConfig/kanbanConfig.thunk'
+import { Popover, Space, Tooltip } from 'antd'
 import useIsTextOverflowed from '../hooks/useIsTextOverflowed'
 import useI18n from '@/hooks/useI18n'
+import { ChangeItem, ChangeItems } from '@/views/Container/style'
+import CommonIconFont from '@/components/CommonIconFont'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { deleteColumn, setUnassignStatusList } from '@store/kanbanConfig'
 
 interface ColumnTitleAreaProps {
   index: number
@@ -69,6 +77,7 @@ const Left = styled.div`
   box-sizing: border-box;
 `
 const IconWrap = styled(IconFont)`
+  cursor: pointer;
   font-size: 20px;
   color: var(--neutral-n1-d1);
   &:hover svg {
@@ -82,8 +91,76 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const draggableId = item.id + '1'
   const dispatch = useDispatch()
   const { t } = useI18n()
-
+  const [isCreateVisible2, setIsCreateVisible2] = useState(false)
   const { textRef, isTextOverflowed } = useIsTextOverflowed(item.name)
+  const { editColumnModelInfo } = useSelector(store => store.KanbanConfig)
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
+  const onClose = () => {}
+
+  const createList2 = [
+    {
+      name: '编辑列',
+      key: 'keyboard',
+      // icon: 'keyboard',
+      isPermission: true,
+    },
+    {
+      name: '删除列',
+      key: 'question',
+      // icon: 'question',
+      isPermission: true,
+    },
+  ]
+  const onCreate = (key: string) => {
+    switch (key) {
+      case 'keyboard':
+        dispatch(openEditColumnModel(item))
+        return
+      case 'question':
+        console.log('几次')
+
+        open({
+          title: t('confirm_deletion'),
+          text: t(
+            'confirm_to_delete_the_column_and_status,_after_deletion,_the_column_and_status_will_not_be_available_in_the_Kanban',
+          ),
+          onConfirm: () => {
+            console.log(item?.id)
+
+            if (!item.id) {
+              return Promise.reject()
+            }
+            dispatch(deleteColumn(item?.id))
+            // dispatch(setUnassignStatusList(status))
+            onClose()
+            return Promise.resolve()
+          },
+        })
+    }
+  }
+  const content = (list: any) => {
+    return (
+      <ChangeItems>
+        {list.map((i: any) => (
+          <ChangeItem
+            key={i.key}
+            height={40}
+            onClick={(e: any) => {
+              e.stopPropagation()
+              onCreate(i.key)
+            }}
+            hidden={!i.isPermission}
+          >
+            <Space size={8}>
+              <CommonIconFont type={i.icon} color="var(--neutral-n3)" />
+              {i.name}
+            </Space>
+          </ChangeItem>
+        ))}
+      </ChangeItems>
+    )
+  }
+
   return (
     <Draggable draggableId={draggableId} index={props.index}>
       {(provided, snapshot) => {
@@ -103,14 +180,22 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
                 </TextBox>
                 <Count>{`${t('maximum')}：${item.max_num}`}</Count>
               </Left>
-              <IconWrap
-                onClick={e => {
-                  e.stopPropagation()
-                  dispatch(openEditColumnModel(item))
+              <Popover
+                content={content(createList2)}
+                open={isCreateVisible2}
+                onOpenChange={(open: boolean) => {
+                  console.log(open)
+                  if (!open) {
+                    setIsCreateVisible2(false)
+                    return
+                  }
+                  setIsCreateVisible2(true)
+                  dispatch(closeEditColumnModel())
                 }}
-                type="edit"
-                style={{ color: 'var(--neutral-n2)' }}
-              />
+                placement="bottomRight"
+              >
+                <IconWrap type="more" style={{ color: 'var(--neutral-n2)' }} />
+              </Popover>
             </ColumnTitle>
 
             <IssuesGroupList
@@ -118,6 +203,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
               key={item.id + '_'}
               index={props.index}
             />
+            <DeleteConfirmModal key={13} />
           </ColumnTitleAreaBox>
         )
       }}
