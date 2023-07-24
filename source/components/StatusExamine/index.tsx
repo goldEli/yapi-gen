@@ -1,8 +1,10 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import { useTranslation } from 'react-i18next'
 import IconFont from '../IconFont'
 import { ExamineWrap, TopWrap } from './style'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import VerifyProcess from '../VerifyProcess'
+import { Space } from 'antd'
 
 interface StatusExamineProps {
   onCancel(): void
@@ -10,7 +12,9 @@ interface StatusExamineProps {
   type: number
   //   是否包含审核流程
   verifyInfo?: any
+  // 是否有权限取消审核
   isVerify?: boolean
+  onCheck?(): void
 }
 
 const StatusExamine = (props: StatusExamineProps) => {
@@ -56,11 +60,18 @@ const StatusExamine = (props: StatusExamineProps) => {
               {list.filter((i: any) => i.type === props.type)[0]?.sub}
             </div>
           </div>
-          {props.isVerify && (
-            <div className="cancel" onClick={onClose}>
-              {t('newlyAdd.cancelExamine')}
-            </div>
-          )}
+          <Space size={16}>
+            {!props.verifyInfo && (
+              <div className="cancel" onClick={props.onCheck}>
+                {t('circulationRecords')}
+              </div>
+            )}
+            {props.isVerify && (
+              <div className="cancel" onClick={onClose}>
+                {t('newlyAdd.cancelExamine')}
+              </div>
+            )}
+          </Space>
         </TopWrap>
         {props.verifyInfo && (
           <div style={{ marginTop: 24 }}>

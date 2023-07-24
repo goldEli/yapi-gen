@@ -36,6 +36,7 @@ import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
 import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 import DetailScreenModal from '@/components/DetailScreenModal'
 import { setIsDetailScreenModal } from '@store/project'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -182,7 +183,7 @@ export const Container = () => {
           <HeaderWrap
             onClick={() => {
               dispatch(changeCreateVisible(false))
-              dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+              dispatch(saveScreenDetailModal({ visible: false, params: {} }))
               dispatch(changeFreedVisibleVisible(false))
             }}
           >

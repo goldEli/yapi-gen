@@ -32,7 +32,6 @@ import { copyLink, getIsPermission } from '@/tools'
 import { getMessage } from '@/components/Message'
 import {
   setAddWorkItemModal,
-  setIsDetailScreenModal,
   setIsUpdateAddWorkItem,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
@@ -62,6 +61,7 @@ import StoryRelation from './components/StoryRelation'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import DemandInfo from './components/DemandInfo'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 const DemandDetail = () => {
   const [t] = useTranslation()
@@ -148,7 +148,7 @@ const DemandDetail = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex - 1] : 0
     if (!currentIndex) return
     const resultParams = { ...params, ...{ sprintId: newIndex } }
-    dispatch(setIsDetailScreenModal({ visible, params: resultParams }))
+    dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
   // 向下查找需求
@@ -156,7 +156,7 @@ const DemandDetail = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex + 1] : 0
     if (currentIndex === (params?.changeIds?.length || 0) - 1) return
     const resultParams = { ...params, ...{ sprintId: newIndex } }
-    dispatch(setIsDetailScreenModal({ visible, params: resultParams }))
+    dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
   const getKeyDown = (e: any) => {
@@ -202,7 +202,7 @@ const DemandDetail = () => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     const resultParams = encryptPhp(
       JSON.stringify({
         type: 4,
@@ -224,7 +224,7 @@ const DemandDetail = () => {
       id: demandInfo.id,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }, 0)
@@ -396,7 +396,7 @@ const DemandDetail = () => {
 
   // 关闭弹窗
   const onClose = () => {
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
   }
 
   // 是否审核

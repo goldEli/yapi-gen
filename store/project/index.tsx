@@ -3,6 +3,7 @@
 // 项目
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { getParentList, getProjectInfoValuesStore } from './project.thunk'
+import { setAffairsActivity } from '@store/affairs'
 
 export interface CounterState {
   projectInfo: any
@@ -99,7 +100,7 @@ export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    // 关闭详情弹层
+    // 详情弹层
     setIsDetailScreenModal: (state: any, action) => {
       state.isDetailScreenModal = {
         ...state.isDetailScreenModal,

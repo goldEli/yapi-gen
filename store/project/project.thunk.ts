@@ -1,5 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
+import { setIsDetailScreenModal } from '.'
+import { AppDispatch } from '@store/index'
+import { setAffairsActivity } from '@store/affairs'
 
 const name = 'project'
 
@@ -20,3 +23,10 @@ export const getProjectInfoValuesStore = createAsyncThunk(
     return res
   },
 )
+
+// 保存详情全屏弹层
+export const saveScreenDetailModal =
+  (params: any) => async (dispatch: AppDispatch) => {
+    dispatch(setIsDetailScreenModal(params))
+    dispatch(setAffairsActivity('1'))
+  }

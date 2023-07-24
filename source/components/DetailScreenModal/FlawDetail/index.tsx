@@ -35,7 +35,6 @@ import {
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import {
   setAddWorkItemModal,
-  setIsDetailScreenModal,
   setIsUpdateAddWorkItem,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
@@ -55,6 +54,7 @@ import RelationStories from './components/RelationStories'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import FlawInfo from './components/FlawInfo'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 const FlawDetail = () => {
   const [t] = useTranslation()
@@ -143,7 +143,7 @@ const FlawDetail = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex - 1] : 0
     if (!currentIndex) return
     const resultParams = { ...params, ...{ sprintId: newIndex } }
-    dispatch(setIsDetailScreenModal({ visible, params: resultParams }))
+    dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
   // 向下查找需求
@@ -151,7 +151,7 @@ const FlawDetail = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex + 1] : 0
     if (currentIndex === (params?.changeIds?.length || 0) - 1) return
     const resultParams = { ...params, ...{ sprintId: newIndex } }
-    dispatch(setIsDetailScreenModal({ visible, params: resultParams }))
+    dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
   const getKeyDown = (e: any) => {
@@ -219,7 +219,7 @@ const FlawDetail = () => {
       id: flawInfo.id || 0,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }, 0)
@@ -394,7 +394,7 @@ const FlawDetail = () => {
 
   // 关闭弹窗
   const onClose = () => {
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
   }
 
   // 是否审核

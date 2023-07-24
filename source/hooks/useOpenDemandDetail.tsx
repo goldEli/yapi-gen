@@ -13,6 +13,7 @@ import {
 } from '@store/project'
 import { setDemandInfo } from '@store/demand'
 import { setListActiveId } from '@store/global'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 const useOpenDemandDetail = () => {
   const { userPreferenceConfig } = useSelector(store => store.user)
@@ -71,41 +72,15 @@ const useOpenDemandDetail = () => {
         id: projectId,
         specialType: type ?? 3,
       }
-      // let url = ''
 
       if (type === 1) {
         params.sprintId = id
-        // const params = encryptPhp(
-        //   JSON.stringify({
-        //     id: projectId,
-        //     sprintId: id,
-        //     changeIds: item.demandIds,
-        //   }),
-        // )
-        // url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
       } else if (type === 2) {
         params.flawId = id
-        // const params = encryptPhp(
-        //   JSON.stringify({
-        //     id: projectId,
-        //     flawId: id,
-        //     changeIds: item.demandIds,
-        //   }),
-        // )
-        // url = `/ProjectManagement/DefectDetail?data=${params}`
       } else {
         params.demandId = id
-        // const params = encryptPhp(
-        //   JSON.stringify({
-        //     id: projectId,
-        //     demandId: id,
-        //     changeIds: item.demandIds,
-        //   }),
-        // )
-        // url = `/ProjectManagement/DemandDetail?data=${params}`
       }
-      // navigate(url)
-      dispatch(setIsDetailScreenModal({ visible: true, params }))
+      dispatch(saveScreenDetailModal({ visible: true, params }))
     }
   }
 
