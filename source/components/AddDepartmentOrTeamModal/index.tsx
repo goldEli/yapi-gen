@@ -47,6 +47,8 @@ interface AddDepartmentModalProps {
   type: ChooseAddType
   projectId?: number
   users?: number[]
+  // 汇报相关查团队的时候需要传参is_report
+  is_report?: boolean
 }
 
 const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
@@ -162,6 +164,8 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
         project_id: '0',
         type: 'team',
       },
+      // eslint-disable-next-line no-undefined
+      is_report: props.is_report ? 1 : undefined,
     })
     // console.log(res, '团队列表')
 
