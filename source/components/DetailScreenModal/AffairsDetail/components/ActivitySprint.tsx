@@ -12,17 +12,18 @@ import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
 import { deleteAffairsComment, updateAffairsComment } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
+import { setAffairsActivity } from '@store/affairs'
 
 const ActivitySprint = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const [activeKey, setActiveKey] = useState('1')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id } = paramsData
-  const { affairsCommentList, affairsInfo } = useSelector(
+  const { affairsCommentList, affairsInfo, affairsActivity } = useSelector(
     store => store.affairs,
   )
+  const [activeKey, setActiveKey] = useState<any>()
 
   // 获取评论列表
   const getList = () => {
@@ -102,16 +103,20 @@ const ActivitySprint = () => {
   ]
 
   const onChange = (key: string) => {
-    setActiveKey(key)
+    dispatch(setAffairsActivity(key))
     if (key === '1') {
       getList()
     }
   }
 
+  useEffect(() => {
+    setActiveKey(affairsActivity)
+  }, [affairsActivity])
+
   return (
     <InfoItem id="sprint-activity" className="info_item_tab">
       <Label>{t('activity')}</Label>
-      <Tabs defaultActiveKey={activeKey} items={items} onChange={onChange} />
+      <Tabs activeKey={activeKey} items={items} onChange={onChange} />
     </InfoItem>
   )
 }

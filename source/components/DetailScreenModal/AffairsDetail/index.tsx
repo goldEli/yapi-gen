@@ -57,9 +57,10 @@ import { cancelVerify } from '@/services/mine'
 import CopyIcon from '@/components/CopyIcon'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
-import { setAffairsInfo } from '@store/affairs'
+import { setAffairsActivity, setAffairsInfo } from '@store/affairs'
 import AffairsBasic from './components/AffairsBasic'
 import AffairsInfo from './components/AffairsInfo'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 const AffairsDetail = () => {
   const [t] = useTranslation()
@@ -157,7 +158,7 @@ const AffairsDetail = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex - 1] : 0
     if (!currentIndex) return
     const resultParams = { ...params, ...{ sprintId: newIndex } }
-    dispatch(setIsDetailScreenModal({ visible, params: resultParams }))
+    dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
   // 向下查找需求
@@ -165,7 +166,7 @@ const AffairsDetail = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex + 1] : 0
     if (currentIndex === (params?.changeIds?.length || 0) - 1) return
     const resultParams = { ...params, ...{ sprintId: newIndex } }
-    dispatch(setIsDetailScreenModal({ visible, params: resultParams }))
+    dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
   const getKeyDown = (e: any) => {
@@ -211,7 +212,7 @@ const AffairsDetail = () => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     const resultParams = encryptPhp(
       JSON.stringify({
         type: 'sprint',
@@ -238,7 +239,7 @@ const AffairsDetail = () => {
       isDeleteChild: isDeleteCheck ? 1 : 2,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }, 0)
@@ -452,12 +453,20 @@ const AffairsDetail = () => {
 
   // 关闭弹窗
   const onClose = () => {
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
   }
 
   // 是否审核
   const onExamine = () => {
     getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
+  }
+
+  // 点击查看流转记录
+  const onCheckRecord = () => {
+    sprintDetailInfoDom.current.changeTabs('sprint-activity')
+    setTimeout(() => {
+      dispatch(setAffairsActivity('3'))
+    }, 100)
   }
 
   useEffect(() => {
@@ -662,6 +671,7 @@ const AffairsDetail = () => {
             type={2}
             onCancel={onCancelExamine}
             isVerify={affairsInfo?.has_verify === 1}
+            onCheck={onCheckRecord}
           />
         </div>
       )}
