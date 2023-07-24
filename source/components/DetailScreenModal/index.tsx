@@ -16,7 +16,7 @@ const DetailScreenModal = () => {
   const { visible, params } = isDetailScreenModal
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { isOpenScreenDetail, id, specialType, type, detailId } = paramsData
+  // const { isOpenScreenDetail, id, specialType, type, detailId } = paramsData
 
   const detailContent = [
     { specialType: 1, content: <AffairsDetail /> },
@@ -31,17 +31,21 @@ const DetailScreenModal = () => {
 
   useEffect(() => {
     // 如果地址栏上带有此参数，默认打开全屏弹层
-    if (isOpenScreenDetail) {
-      const resultParams: any = { id, specialType, type }
-      switch (specialType) {
+    if (paramsData?.isOpenScreenDetail) {
+      const resultParams: any = {
+        id: paramsData?.id,
+        specialType: paramsData?.specialType,
+        type: paramsData?.type,
+      }
+      switch (paramsData?.specialType) {
         case 1:
-          resultParams.sprintId = detailId
+          resultParams.sprintId = paramsData?.detailId
           break
         case 2:
-          resultParams.flawId = detailId
+          resultParams.flawId = paramsData?.detailId
           break
         default:
-          resultParams.demandId = detailId
+          resultParams.demandId = paramsData?.detailId
           break
       }
       dispatch(
