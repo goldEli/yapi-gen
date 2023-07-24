@@ -232,6 +232,7 @@ const Addperson = (props: Props) => {
         break
     }
   }, [props.state])
+
   // 添加成员弹窗
   const onConfirm = (data: any) => {
     const setData = data.map((el: any) => ({
@@ -373,6 +374,7 @@ const Addperson = (props: Props) => {
         onClose={() => setIsAddVisible(false)}
         type={targetType === 2 ? 4 : 3}
         onConfirm={onAddConfirm}
+        is_report
       />
     </>
   )
