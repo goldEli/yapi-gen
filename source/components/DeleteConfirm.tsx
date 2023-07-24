@@ -7,6 +7,7 @@ import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from './StyleCommon'
 import CommonButton from './CommonButton'
+import { useSelector } from '@store/index'
 
 export interface DeleteConfirmProps {
   isVisible: boolean
@@ -69,6 +70,7 @@ const ModalStyle = styled(Modal)`
 `
 const DeleteConfirm = (props: DeleteConfirmProps) => {
   const [t] = useTranslation()
+  const { fullScreen } = useSelector(store => store.kanBan)
   return (
     <ModalStyle
       visible={props.isVisible}
@@ -84,6 +86,12 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
       focusTriggerAfterClose={false}
       okText={props?.okText}
       cancelText={props?.cancelText}
+      getContainer={
+        fullScreen
+          ? () => document.getElementById('kanBanFullScreenBox') as any
+          : // eslint-disable-next-line no-undefined
+            undefined
+      }
     >
       <ModalHeader>
         <Title>

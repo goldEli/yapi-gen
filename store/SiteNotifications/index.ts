@@ -5,6 +5,7 @@ type SliceState = {
   now: number
   friendUsername: string
   isVisible: boolean
+  isVisible2: boolean
   isVisibleFilter: boolean
   configuration: any
   myConfiguration: any
@@ -32,6 +33,9 @@ const slice = createSlice({
     },
     changeVisible: (state, action) => {
       state.isVisible = action.payload
+    },
+    changeKeyBoardVisible: (state, action) => {
+      state.isVisible2 = action.payload
     },
     changeVisibleFilter: (state, action) => {
       state.isVisibleFilter = action.payload
@@ -61,6 +65,7 @@ export const {
   setMyConfiguration,
   setEmailConfiguration,
   setMyEmailConfiguration,
+  changeKeyBoardVisible,
 } = slice.actions
 
 export default slice.reducer

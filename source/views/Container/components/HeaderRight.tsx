@@ -48,6 +48,8 @@ import { setAddWorkItemModal } from '@store/project'
 import SystemFeedback from '@/components/SystemFeedback/SystemFeedback'
 import { changeFreedVisibleVisible } from '@store/feedback'
 import { useNavigate } from 'react-router-dom'
+import KeyBoardDrawer from '@/views/SiteNotifications/components/KeyBoardDrawer/KeyBoardDrawer'
+import { changeKeyBoardVisible } from '@store/SiteNotifications'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
@@ -162,6 +164,7 @@ const HeaderRight = () => {
   const [isModalVisible, setIsModalVisible] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
   const [isCreateVisible, setIsCreateVisible] = useState(false)
+  const [isCreateVisible2, setIsCreateVisible2] = useState(false)
   const [isInfoVisible, setIsInfoVisible] = useState(false)
   const [isConfirmLogout, setIsConfirmLogout] = useState(false)
   const navigate = useNavigate()
@@ -184,6 +187,22 @@ const HeaderRight = () => {
       name: t('common.createProject'),
       key: 'project',
       icon: 'folder-open-nor',
+      isPermission: (
+        userInfo.company_permissions?.map((i: any) => i.identity) || []
+      ).includes('b/project/save'),
+    },
+  ]
+  const createList2 = [
+    {
+      name: '快捷键',
+      key: 'keyboard',
+      icon: 'keyboard',
+      isPermission: true,
+    },
+    {
+      name: t('container.help'),
+      key: 'question',
+      icon: 'question',
       isPermission: (
         userInfo.company_permissions?.map((i: any) => i.identity) || []
       ).includes('b/project/save'),
@@ -280,10 +299,13 @@ const HeaderRight = () => {
 
     //
   }
-
+  const onHelp = () => {
+    window.open(helpPdf)
+  }
   // 创建需求
   const onCreate = (key: string) => {
     setIsCreateVisible(false)
+    setIsCreateVisible2(false)
     switch (key) {
       case 'project':
         dispatch({ type: 'createProject/changeCreateVisible', payload: true })
@@ -305,12 +327,15 @@ const HeaderRight = () => {
         return
       case 'subscribe':
         dispatch(setSubscribeModal(true))
+        return
+      case 'keyboard':
+        dispatch(changeKeyBoardVisible(true))
+        return
+      case 'question':
+        onHelp()
     }
   }
 
-  const onHelp = () => {
-    window.open(helpPdf)
-  }
   const handleTooltipVisibleChange = (visible: any) => {
     console.log(visible, 'visible')
     console.log(childStateRef.current, 'visible2')
@@ -392,6 +417,7 @@ const HeaderRight = () => {
   }
   return (
     <>
+      <KeyBoardDrawer />
       <SystemFeedback />
       {/* 退出登录 */}
       <DeleteConfirm
@@ -477,11 +503,21 @@ const HeaderRight = () => {
             <SiteNotifications ref={childStateRef} />
           </CloseWrap>
         </Tooltip>
-        <Tooltip title={t('container.help') as string}>
+        <Popover
+          content={content(createList2)}
+          open={isCreateVisible2}
+          onOpenChange={setIsCreateVisible2}
+          placement="bottomRight"
+        >
+          <CloseWrap width={32} height={32}>
+            <CommonIconFont type="question" size={24} />
+          </CloseWrap>
+        </Popover>
+        {/* <Tooltip title={t('container.help') as string}>
           <CloseWrap width={32} height={32} onClick={onHelp}>
             <CommonIconFont type="question" size={24} />
           </CloseWrap>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip title={t('feedback') as string}>
           <CloseWrap width={32} height={32} onClick={onFeedback}>
             <CommonIconFont type="draft" size={24} />
