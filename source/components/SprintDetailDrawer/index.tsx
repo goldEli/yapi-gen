@@ -133,6 +133,7 @@ const SprintDetailDrawer = () => {
     store => store.project,
   )
   const { userInfo } = useSelector(store => store.user)
+  const { fullScreen } = useSelector(store => store.kanBan)
 
   const modeList = [
     { name: t('details'), key: 'detailInfo', content: '' },
@@ -721,7 +722,11 @@ const SprintDetailDrawer = () => {
         destroyOnClose
         maskClosable={false}
         mask={false}
-        getContainer={false}
+        getContainer={
+          fullScreen
+            ? () => document.querySelector('#kanBanFullScreenBox') as any
+            : false
+        }
         className="drawerRoot"
       >
         <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>

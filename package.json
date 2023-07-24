@@ -36,7 +36,7 @@
     "dayjs": "^1.11.0",
     "dhtmlx-gantt": "^7.1.12",
     "highcharts": "^10.2.0",
-    "highcharts-react-official": "^3.1.0",
+    "highcharts-react-official": "^3.2.0",
     "i18next": "^21.9.0",
     "immer": "^10.0.2",
     "js-base64": "^3.7.2",
