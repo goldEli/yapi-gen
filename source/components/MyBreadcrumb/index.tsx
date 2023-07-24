@@ -24,7 +24,7 @@ const MyBreadcrumb = (props: any) => {
   const projectInfo = useSelector(state => state.project.projectInfo)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { type } = paramsData
+  const { type } = paramsData ?? {}
   const dispatch = useDispatch()
   return (
     <Breadcrumb
@@ -34,7 +34,11 @@ const MyBreadcrumb = (props: any) => {
     >
       <Breadcrumb.Item>
         <a
-          onClick={() => navigate('/ProjectManagement/Project')}
+          onClick={() => {
+            dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+
+            navigate('/ProjectManagement/Project')
+          }}
           style={{ color: 'var(--neutral-n1-d1)' }}
           className={breadStyle}
         >

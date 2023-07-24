@@ -167,7 +167,7 @@ const FlawTag = (props: Props) => {
   if (props?.id) {
     projectId = props?.id
   } else {
-    const paramsData = getParamsData(searchParams)
+    const paramsData = getParamsData(searchParams) ?? {}
     projectId = paramsData.id
   }
   const checkedTags = props.defaultList?.map((i: any) => ({
