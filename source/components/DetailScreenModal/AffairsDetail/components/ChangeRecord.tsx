@@ -1,6 +1,6 @@
 /* eslint-disable no-undefined */
 // 需求详情-变更记录
-import { Space } from 'antd'
+import { Space, Form } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { HiddenText } from '@/components/StyleCommon'
@@ -18,7 +18,7 @@ import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
 import { getAffairsChangeLog } from '@/services/affairs'
 import { setIsUpdateChangeLog } from '@store/project'
-
+import CommonFilter from '../../CommonFilter'
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
     width: '48.5%',
@@ -61,8 +61,12 @@ const NewSort = (sortProps: any) => {
 
 interface Props {
   activeKey: string
+  filter?: boolean
 }
-
+interface MemberListProps {
+  name: string
+  id: number
+}
 const ChangeRecord = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -80,7 +84,7 @@ const ChangeRecord = (props: Props) => {
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateChangeLog } = useSelector(store => store.project)
   const { affairsInfo } = useSelector(store => store.affairs)
-
+  const [form] = Form.useForm()
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
     const result = await getAffairsChangeLog({
@@ -96,13 +100,11 @@ const ChangeRecord = (props: Props) => {
     dispatch(setIsRefresh(false))
     dispatch(setIsUpdateChangeLog(false))
   }
-
   useEffect(() => {
     if (props.activeKey === '2') {
       getList(pageObj, order)
     }
   }, [props.activeKey])
-
   useEffect(() => {
     if (isRefresh) {
       getList({ page: 1, size: pageObj.size }, order)
@@ -422,6 +424,7 @@ const ChangeRecord = (props: Props) => {
           </div>
         </SpaceWrap>
       </CommonModal>
+      {props.filter ? <CommonFilter></CommonFilter> : null}
       <ResizeTable
         isSpinning={isSpinning}
         dataWrapNormalHeight="400px"

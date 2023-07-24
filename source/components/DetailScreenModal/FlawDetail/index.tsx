@@ -55,6 +55,7 @@ import RelationStories from './components/RelationStories'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import FlawInfo from './components/FlawInfo'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const FlawDetail = () => {
   const [t] = useTranslation()
@@ -74,6 +75,7 @@ const FlawDetail = () => {
   const { visible, params } = isDetailScreenModal
   const [form] = Form.useForm()
   const [tabActive, setTabActive] = useState(params?.type ?? '1')
+  const [filter, setFilter] = useState(false)
   // 是否可改变类别弹窗
   const [isShowChange, setIsShowChange] = useState(false)
   // 当前需求的下标
@@ -437,7 +439,7 @@ const FlawDetail = () => {
           </ItemNumber>
         </ActivityTabItem>
       ),
-      children: <ChangeRecord activeKey={tabActive} />,
+      children: <ChangeRecord activeKey={tabActive} filter={filter} />,
     },
     {
       key: '4',
@@ -681,12 +683,33 @@ const FlawDetail = () => {
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
-      <Tabs
+      {/* <Tabs
         className="tabs"
         activeKey={tabActive}
         items={tabItems}
         onChange={onChangeTabs}
-      />
+      /> */}
+      <div
+        style={{
+          display: tabActive === '3' ? 'flex' : 'inline',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Tabs
+          className="tabs"
+          activeKey={tabActive}
+          items={tabItems}
+          onChange={onChangeTabs}
+        />
+        {tabActive === '3' && (
+          <ScreenMinHover
+            label={t('common.search')}
+            icon="filter"
+            isActive
+            onClick={() => setFilter(!filter)}
+          />
+        )}
+      </div>
     </Wrap>
   )
 }

@@ -1,12 +1,13 @@
 /* eslint-disable complexity */
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useSelector } from '@store/index'
+import { useSelector, useDispatch } from '@store/index'
 import { Breadcrumb } from 'antd'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
+import { setIsDetailScreenModal } from '@store/project'
 const breadStyle = css`
   span {
     &:hover {
@@ -24,6 +25,7 @@ const MyBreadcrumb = (props: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { type } = paramsData
+  const dispatch = useDispatch()
   return (
     <Breadcrumb
       separator={
@@ -45,6 +47,7 @@ const MyBreadcrumb = (props: any) => {
             className={breadStyle}
             onClick={() => {
               const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
+              dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
               if (projectInfo.projectType === 1) {
                 // 之前需求迭代跳转统一跳到了需求，需要区分迭代是迭代的，需求是需求的
                 location.pathname.includes('/ProjectManagement/Iteration')
