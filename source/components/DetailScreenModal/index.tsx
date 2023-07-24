@@ -9,6 +9,7 @@ import AffairsDetail from './AffairsDetail'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useEffect } from 'react'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 const DetailScreenModal = () => {
   const dispatch = useDispatch()
@@ -16,7 +17,6 @@ const DetailScreenModal = () => {
   const { visible, params } = isDetailScreenModal
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  // const { isOpenScreenDetail, id, specialType, type, detailId } = paramsData
 
   const detailContent = [
     { specialType: 1, content: <AffairsDetail /> },
@@ -26,7 +26,7 @@ const DetailScreenModal = () => {
 
   //   关闭弹窗
   const onClose = () => {
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
   }
 
   useEffect(() => {

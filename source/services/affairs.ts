@@ -405,6 +405,41 @@ export const getAffairsInfo = async (
     discovery_version_name: response.data.discovery_version_name,
     discovery_version: response.data.discovery_version,
     iterate_info: response.data.iterate_info,
+    has_verify: response.data.has_verify,
+    verify_data: {
+      cancel_verify: response.data.verify_data.cancel_verify,
+      category_attachment: response.data.verify_data.category_attachment,
+      categoryColor: response.data.verify_data.category_color,
+      categoryName: response.data.verify_data?.category_name,
+      statusFromTo: response.data.verify_data?.status_from_to,
+      usersName: response.data.verify_data.users_name,
+      userName: response.data.verify_data.user_name,
+      time: response.data.verify_data.created_at,
+      from: response.data.verify_data.category_status_from,
+      to: response.data.verify_data.category_status_to,
+      verifyStatus: response.data.verify_data.verify_status,
+      verify: {
+        verifyType: response.data.verify_data.verify.verify_type,
+        process: response.data.verify_data.verify.process?.map((i: any) => ({
+          operator: i.operator,
+          verifyUsers: i.verify_users?.map((k: any) => ({
+            id: k.user_id,
+            status: k.verify_status,
+            time: k.verify_at,
+            remark: k.verify_opinion,
+            userName: k.user_name,
+          })),
+        })),
+      },
+      fixedUser: response.data.verify_data.verify_users?.map((k: any) => ({
+        userName: k.user_name,
+        time: k.verify_at,
+        status: k.verify_status,
+        remark: k.verify_opinion,
+        id: k.user_id,
+      })),
+      fields: response.data.verify_data.fields,
+    },
   }
 }
 

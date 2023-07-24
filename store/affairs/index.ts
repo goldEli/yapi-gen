@@ -11,6 +11,7 @@ type SliceState = {
   affairsCommentList: {
     list: Model.Affairs.CommentListInfo[]
   }
+  affairsActivity: string
 }
 
 const initialState: SliceState = {
@@ -24,6 +25,8 @@ const initialState: SliceState = {
   affairsCommentList: {
     list: [],
   },
+  // 事务详情-活动tab
+  affairsActivity: '1',
 }
 
 const slice = createSlice({
@@ -48,6 +51,12 @@ const slice = createSlice({
     ) {
       state.affairsCommentList = action.payload
     },
+    setAffairsActivity(
+      state,
+      action: PayloadAction<SliceState['affairsActivity']>,
+    ) {
+      state.affairsActivity = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getAffairsInfo.fulfilled, (state, action) => {
@@ -61,7 +70,11 @@ const slice = createSlice({
 
 const sprint = slice.reducer
 
-export const { setAffairsDetailDrawer, setAffairsInfo, setAffairsCommentList } =
-  slice.actions
+export const {
+  setAffairsDetailDrawer,
+  setAffairsInfo,
+  setAffairsCommentList,
+  setAffairsActivity,
+} = slice.actions
 
 export default sprint

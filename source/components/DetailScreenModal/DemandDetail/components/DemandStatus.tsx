@@ -91,7 +91,7 @@ const DemandStatusBox = (props: any) => {
 
   // 取消审核
   const onCancelExamine = async () => {
-    await cancelVerify(demandInfo.id)
+    await cancelVerify(demandInfo.verify_data?.id)
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
     const result = await getDemandInfo({
       projectId: props.pid,
@@ -155,7 +155,12 @@ const DemandStatusBox = (props: any) => {
 
       <div>
         {demandInfo?.isExamine && (
-          <StatusExamine type={1} onCancel={onCancelExamine} />
+          <StatusExamine
+            type={1}
+            onCancel={onCancelExamine}
+            isVerify={demandInfo?.has_verify === 1}
+            verifyInfo={demandInfo.verify_data}
+          />
         )}
         {rows && !demandInfo?.isExamine && (
           <ShapeContentForDetail

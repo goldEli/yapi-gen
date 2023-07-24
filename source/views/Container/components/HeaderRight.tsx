@@ -49,7 +49,7 @@ import SystemFeedback from '@/components/SystemFeedback/SystemFeedback'
 import { changeFreedVisibleVisible } from '@store/feedback'
 import { useNavigate } from 'react-router-dom'
 import KeyBoardDrawer from '@/views/SiteNotifications/components/KeyBoardDrawer/KeyBoardDrawer'
-import { changeKeyBoardVisible } from '@store/SiteNotifications'
+import { changeKeyBoardVisible, changeVisible } from '@store/SiteNotifications'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
@@ -329,6 +329,7 @@ const HeaderRight = () => {
         dispatch(setSubscribeModal(true))
         return
       case 'keyboard':
+        dispatch(changeVisible(false))
         dispatch(changeKeyBoardVisible(true))
         return
       case 'question':
