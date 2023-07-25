@@ -9,7 +9,7 @@ interface FullScreenContainerProps {
 }
 
 const Box = styled.div`
-  height: 100%;
+  height: calc(100% - 100px);
 `
 const CustomScreenFull: React.FC<FullScreenContainerProps> = props => {
   const elementRef = useRef(null)
