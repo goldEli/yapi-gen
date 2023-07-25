@@ -171,11 +171,12 @@ const GlobalStyle = () => {
       }
       .notification-my {
         height: 109px;
-        background: rgba(250, 151, 70, 0.1);
+        background: rgba(102, 136, 255, 0.1);
         backdrop-filter: blur(100px);
-        border-left: 4px solid #fa9746;
+        border-left: 4px solid #6688ff;
         padding: 18px;
         padding-left: 10px;
+        box-shadow: 'none';
       }
       --blue: linear-gradient(
         180deg,
@@ -412,7 +413,9 @@ const GlobalStyle = () => {
         color: var(--primary-d2) !important;
       }
     }
-    .ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
+    .ant-select-item-option-selected:not(
+        .ant-select-item-option-disabled
+      ):hover {
       /* background-color: var(--neutral-white-d4); */
     }
 
@@ -482,7 +485,9 @@ const GlobalStyle = () => {
       -webkit-appearance: none;
     }
     .ant-form-item-label
-      > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
+      > label.ant-form-item-required:not(
+        .ant-form-item-required-mark-optional
+      )::after {
       display: inline-block;
       margin-right: 4px;
       color: #ff4d4f;
@@ -492,7 +497,9 @@ const GlobalStyle = () => {
       content: '*';
     }
     .ant-form-item-label
-      > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+      > label.ant-form-item-required:not(
+        .ant-form-item-required-mark-optional
+      )::before {
       display: none;
       margin-right: 4px;
       color: #ff4d4f;
@@ -874,7 +881,7 @@ const GlobalStyle = () => {
       box-shadow: none !important;
       outline: 0;
     }
-    ..ant-carousel .slick-slider {
+    .ant-carousel .slick-slider {
       height: 100%;
     }
     .ant-carousel,

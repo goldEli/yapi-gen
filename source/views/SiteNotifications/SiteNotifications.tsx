@@ -92,16 +92,21 @@ const SiteNotifications = (props: any, ref: any) => {
         }
       } else {
         notification.open({
-          icon: <CommonIconFont color="#fa9746" size={20} type="bell" />,
+          duration: null,
+          icon: <CommonIconFont color="#6688FF" size={20} type="bell" />,
           className: 'notification-my',
           maxCount: 1,
           placement: 'bottomLeft',
           message: (
-            <span style={{ fontFamily: 'SiYuanMedium' }}>
+            <div style={{ fontFamily: 'SiYuanMedium', marginLeft: '-17px' }}>
               {wsData.data.msgBody.title}
-            </span>
+            </div>
           ),
-          description: wsData.data.msgBody.content,
+          description: (
+            <div style={{ marginLeft: '-12px' }}>
+              {wsData.data.msgBody.content}
+            </div>
+          ),
           onClick: () => {
             if (wsData.data.customData.linkWebUrl) {
               // 当点击事件触发，打开指定的url
