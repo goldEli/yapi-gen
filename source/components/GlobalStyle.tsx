@@ -57,7 +57,7 @@ const GlobalStyle = () => {
       --neutral-n6-d1: #ecedef;
       --neutral-n6-d2: #ecedef;
       --neutral-n7: #f2f2f4;
-      --neutral-n8: #f8f8fa;
+      --neutral-n8: #f5f5f7;
       --neutral-n9: #f9f9fa;
       --neutral-white-d1: #ffffff;
       --neutral-white-d2: #ffffff;
@@ -412,7 +412,9 @@ const GlobalStyle = () => {
         color: var(--primary-d2) !important;
       }
     }
-    .ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
+    .ant-select-item-option-selected:not(
+        .ant-select-item-option-disabled
+      ):hover {
       /* background-color: var(--neutral-white-d4); */
     }
 
@@ -482,7 +484,9 @@ const GlobalStyle = () => {
       -webkit-appearance: none;
     }
     .ant-form-item-label
-      > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
+      > label.ant-form-item-required:not(
+        .ant-form-item-required-mark-optional
+      )::after {
       display: inline-block;
       margin-right: 4px;
       color: #ff4d4f;
@@ -492,7 +496,9 @@ const GlobalStyle = () => {
       content: '*';
     }
     .ant-form-item-label
-      > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+      > label.ant-form-item-required:not(
+        .ant-form-item-required-mark-optional
+      )::before {
       display: none;
       margin-right: 4px;
       color: #ff4d4f;
@@ -874,7 +880,7 @@ const GlobalStyle = () => {
       box-shadow: none !important;
       outline: 0;
     }
-    ..ant-carousel .slick-slider {
+    .ant-carousel .slick-slider {
       height: 100%;
     }
     .ant-carousel,
