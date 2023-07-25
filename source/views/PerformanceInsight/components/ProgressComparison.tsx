@@ -111,6 +111,7 @@ const ProgressComparison = (props: Props) => {
   const { visiblePerson, visibleWork } = useSelector(
     store => store.performanceInsight,
   )
+  const isRefresh = useSelector(store => store.user.isRefresh)
   const [total, setTotal] = useState(0)
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(50)
@@ -512,10 +513,10 @@ const ProgressComparison = (props: Props) => {
         setColumns(columns3)
         break
     }
-  }, [props.type, selectProjectIds])
+  }, [props.type, selectProjectIds, isRefresh])
   useEffect(() => {
     onSearchData(props.headerParmas?.projectIds || [])
-  }, [])
+  }, [isRefresh])
   // 数据明细和进展对比查询数据的
   const onSearchData = (value: number[]) => {
     setSelectProjectIds(value)
