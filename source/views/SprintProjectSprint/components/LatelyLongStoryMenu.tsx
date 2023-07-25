@@ -94,6 +94,7 @@ interface Props {
   setIsVisible(v: any): any
   setPopoverVisible(val: boolean): void
   clearLongStory(val: number): void
+  activeKey: number
 }
 
 export const LatelyLongStoryMenu = (props: Props) => {
@@ -122,6 +123,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
           msg: t('sprint.longStoryUpdateSuccess'),
           type: 'success',
         })
+        sessionStorage.setItem('noRefresh', 'true')
         dispatch(setSprintRefresh(1))
       } else {
         getMessage({
@@ -175,6 +177,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
                 <IconFont
                   className="svg1"
                   onClick={() => {
+                    sessionStorage.setItem('noRefresh', 'true')
                     setPopoverVisible(false)
                     dispatch(
                       setAddWorkItemModal({
@@ -199,6 +202,7 @@ export const LatelyLongStoryMenu = (props: Props) => {
                   <IconFont
                     className="svg2"
                     onClick={() => {
+                      sessionStorage.removeItem('noRefresh')
                       setPopoverVisible(false)
                       props?.setIsVisible?.(k)
                     }}
@@ -222,6 +226,11 @@ export const LatelyLongStoryMenu = (props: Props) => {
         label: (
           <NewItemWrap
             onClick={() => {
+              if (props?.activeKey === 1) {
+                sessionStorage.removeItem('noRefresh')
+              } else {
+                sessionStorage.setItem('noRefresh', 'true')
+              }
               setPopoverVisible(false)
               dispatch(
                 setAddWorkItemModal({
