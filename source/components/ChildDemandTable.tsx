@@ -377,7 +377,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
         </div>
       }
       getPopupContainer={() =>
-        document.querySelector('#kanBanFullScreenBox') as any
+        document.querySelector('.kanBanFullScreenBox') as any
       }
     >
       <ClickWrap
