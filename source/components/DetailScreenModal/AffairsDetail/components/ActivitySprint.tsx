@@ -118,12 +118,14 @@ const ActivitySprint = () => {
         items={items}
         onChange={onChange}
         tabBarExtraContent={
-          <ScreenMinHover
-            label={t('common.search')}
-            icon="filter"
-            isActive
-            onClick={() => setFilter(!filter)}
-          />
+          activeKey === '2' ? (
+            <ScreenMinHover
+              label={t('common.search')}
+              icon="filter"
+              isActive
+              onClick={() => setFilter(!filter)}
+            />
+          ) : null
         }
       />
     </InfoItem>

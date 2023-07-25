@@ -689,12 +689,14 @@ const FlawDetail = () => {
         items={tabItems}
         onChange={onChangeTabs}
         tabBarExtraContent={
-          <ScreenMinHover
-            label={t('common.search')}
-            icon="filter"
-            isActive
-            onClick={() => setFilter(!filter)}
-          />
+          tabActive === '3' ? (
+            <ScreenMinHover
+              label={t('common.search')}
+              icon="filter"
+              isActive
+              onClick={() => setFilter(!filter)}
+            />
+          ) : null
         }
       />
     </Wrap>

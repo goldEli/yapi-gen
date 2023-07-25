@@ -182,16 +182,17 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
               </Left>
               <Popover
                 content={content(createList2)}
-                open={isCreateVisible2}
-                onOpenChange={(open: boolean) => {
-                  console.log(open)
-                  if (!open) {
-                    setIsCreateVisible2(false)
-                    return
-                  }
-                  setIsCreateVisible2(true)
-                  dispatch(closeEditColumnModel())
-                }}
+                // open={isCreateVisible2}
+                // onOpenChange={(open: boolean) => {
+                //   console.log(open)
+                //   if (!open) {
+                //     setIsCreateVisible2(false)
+                //     return
+                //   }
+                //   setIsCreateVisible2(true)
+                //   dispatch(closeEditColumnModel())
+                // }}
+                getPopupContainer={node => node}
                 placement="bottomRight"
               >
                 <IconWrap type="more" style={{ color: 'var(--neutral-n2)' }} />
