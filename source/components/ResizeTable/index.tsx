@@ -113,7 +113,7 @@ const ResizeTitle = (props: any) => {
       height={0}
       onResize={onResize}
       draggableOpts={{ enableUserSelectHack: false }}
-      minConstraints={[200, 200]}
+      minConstraints={[160, 160]}
       handle={
         <span
           className="react-resizable-handle"
