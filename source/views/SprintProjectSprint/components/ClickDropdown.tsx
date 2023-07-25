@@ -10,6 +10,7 @@ interface Props {
   record: any
   longStoryList: any
   clearLongStory(val: number): void
+  activeKey: number
 }
 
 const ClickDropdown = (props: Props) => {
@@ -26,6 +27,7 @@ const ClickDropdown = (props: Props) => {
       getPopupContainer={n => (props.isShow ? n : document.body)}
       content={
         <LatelyLongStoryMenu
+          activeKey={props?.activeKey}
           setIsVisible={(item: any) => {
             setIsVisible(true)
             setDeleteItem({ ...item, isLong: true })

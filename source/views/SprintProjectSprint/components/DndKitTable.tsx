@@ -190,6 +190,7 @@ const DndKitTable = (props: any) => {
   const onChangeStatus = async (value: any) => {
     await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    sessionStorage.setItem('noRefresh', 'true')
     dispatch(setSprintRefresh(1))
   }
 
@@ -213,6 +214,7 @@ const DndKitTable = (props: any) => {
       projectId,
     })
     getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
+    sessionStorage.setItem('noRefresh', 'true')
     dispatch(setSprintRefresh(1))
   }
 
@@ -222,6 +224,7 @@ const DndKitTable = (props: any) => {
 
   // 更新列表
   const onUpdate = () => {
+    sessionStorage.setItem('noRefresh', 'true')
     dispatch(setSprintRefresh(1))
   }
 
@@ -232,7 +235,7 @@ const DndKitTable = (props: any) => {
     const demandIds: any[] = rightSprintList
       .find(k => k.id === group_id)
       ?.stories?.map((k: any) => k.id)
-
+    sessionStorage.setItem('noRefresh', 'true')
     dispatch(
       setAffairsDetailDrawer({
         visible: true,
@@ -250,6 +253,7 @@ const DndKitTable = (props: any) => {
   // 编辑事物
   const onEditItem = (record: any) => {
     const editId = Number(record?.id?.split('_')?.[1])
+    sessionStorage.setItem('noRefresh', 'true')
     dispatch(
       setAddWorkItemModal({
         visible: true,
@@ -283,6 +287,7 @@ const DndKitTable = (props: any) => {
           type: 'success',
         })
         if (needFresh) {
+          sessionStorage.setItem('noRefresh', 'true')
           dispatch(setSprintRefresh(1))
         }
         return true
@@ -310,7 +315,14 @@ const DndKitTable = (props: any) => {
     setIsVisible(false)
     setDeleteItem({})
     if (deleteItem?.isLong) {
+      if (props?.activeKey === 1) {
+        sessionStorage.removeItem('noRefresh')
+      } else {
+        sessionStorage.setItem('noRefresh', 'true')
+      }
       getLongStoryData()
+    } else {
+      sessionStorage.setItem('noRefresh', 'true')
     }
     dispatch(setSprintRefresh(1))
   }
@@ -480,6 +492,7 @@ const DndKitTable = (props: any) => {
           <div>{text ? text : '--'}</div>
         ) : (
           <ClickDropdown
+            activeKey={props?.activeKey}
             setIsVisible={setIsVisible}
             setDeleteItem={setDeleteItem}
             record={record}
@@ -629,10 +642,12 @@ const DndKitTable = (props: any) => {
           msg: result?.message,
           type: 'error',
         })
+        sessionStorage.setItem('noRefresh', 'true')
         dispatch(setSprintRefresh(1))
       }
     } catch (error) {
       // console.log(error)
+      sessionStorage.setItem('noRefresh', 'true')
       dispatch(setSprintRefresh(1))
     }
   }
@@ -758,6 +773,7 @@ const DndKitTable = (props: any) => {
         )?.map((item: any) => {
           return (
             <XTable
+              activeKey={props?.activeKey}
               key={item.id}
               data={item}
               list={item?.stories?.map((i: any) => ({

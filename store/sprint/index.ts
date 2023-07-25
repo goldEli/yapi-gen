@@ -1,7 +1,6 @@
 /* eslint-disable no-undefined */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
-  getSprintKanBanList,
   getProjectRoleList,
   getRightSprintList,
   getLeftSprintList,
@@ -96,7 +95,13 @@ const slice = createSlice({
     })
     builder.addCase(getLeftSprintList.fulfilled, (state, action) => {
       state.leftSprintList = action.payload
-      state.checkList = new Array(action.payload?.list?.length).fill(true)
+      const noRefresh = sessionStorage.getItem('noRefresh')
+      // eslint-disable-next-line no-negated-condition
+      if (!noRefresh) {
+        state.checkList = new Array(action.payload?.list?.length).fill(true)
+      } else {
+        state.checkList = [...state.checkList]
+      }
       state.leftLoading = false
     })
     builder.addCase(getLeftSprintList.pending, state => {
