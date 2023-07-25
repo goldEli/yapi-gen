@@ -240,7 +240,7 @@ const MainTable = (props: Props) => {
     {
       title: t('other.category'),
       dataIndex: 'project_type',
-      width: 160,
+      width: 100,
       render: (text: number) => {
         return (
           <div>
@@ -267,7 +267,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'memberCount',
-      width: 160,
+      width: 100,
     },
     // {
     //   title: (
@@ -309,13 +309,12 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'progress',
-      width: 160,
+      width: 120,
       render: (text: string) => {
         return (
           <Progress
             strokeColor="var(--function-success)"
-            style={{ color: 'var(--function-success)' }}
-            width={38}
+            style={{ color: 'var(--function-success)', width: '100px' }}
             type="line"
             percent={Math.trunc(Number(text) * 100)}
             format={percent =>
@@ -338,7 +337,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'leader_name',
-      width: 160,
+      width: 100,
     },
     {
       title: (
@@ -352,7 +351,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'createName',
-      width: 160,
+      width: 100,
     },
     {
       title: (
@@ -366,7 +365,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'status',
-      width: 160,
+      width: 100,
       render: (text: number) => {
         return (
           <StatusWrap>
@@ -395,7 +394,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'team_id',
-      width: 160,
+      width: 100,
       render: (text: number, record: any) => {
         return (
           <span>
