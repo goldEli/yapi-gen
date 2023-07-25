@@ -50,9 +50,7 @@ const Project = () => {
     '/ProjectManagement/IterationReport',
     '/ProjectManagement/Defect',
     '/ProjectManagement/WorkFlow',
-    '/ProjectManagement/DemandDetail',
     '/ProjectManagement/IterationDetail',
-    '/ProjectManagement/DefectDetail',
   ]
 
   useEffect(() => {

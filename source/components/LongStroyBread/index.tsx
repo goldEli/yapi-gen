@@ -6,6 +6,7 @@ import { Tooltip } from 'antd'
 import { copyLink } from '@/tools'
 import IconFont from '../IconFont'
 import { useTranslation } from 'react-i18next'
+import { encryptPhp } from '@/tools/cryptoPhp'
 const BreadBox = styled.div`
   display: flex;
   align-items: center;
@@ -61,12 +62,36 @@ const LongStroyBread = (props: IProps) => {
   const { longStroy = {}, layer = false, onClick } = props
   const [t] = useTranslation()
   const ref = useRef<HTMLDivElement>(null)
+
+  // 复制链接
+  const onCopyLink = () => {
+    let text: any = ''
+    let beforeUrl: any = ''
+    beforeUrl = window.origin
+    const params = encryptPhp(
+      JSON.stringify({
+        id: longStroy.projectId,
+        detailId: longStroy.id,
+        isOpenScreenDetail: true,
+        specialType: 1,
+      }),
+    )
+    const url = `/SprintProjectManagement/Affair?data=${params}`
+    text += `${beforeUrl}${url} \n`
+    copyLink(
+      `【${longStroy?.projectPrefix}-${longStroy?.prefixKey}】${text}`,
+      t('common.copySuccess'),
+      t('common.copyFail'),
+    )
+  }
+
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [])
+
   const handleClickOutside = (event: { target: any }) => {
     if (
       ref.current &&
@@ -76,6 +101,7 @@ const LongStroyBread = (props: IProps) => {
       setVisible(false)
     }
   }
+
   useEffect(() => {
     if (
       longStroy?.level_tree?.some(
@@ -185,13 +211,7 @@ const LongStroyBread = (props: IProps) => {
               <CommonIconFont
                 type="link"
                 color="var(--primary-d2)"
-                onClick={() => {
-                  copyLink(
-                    `【${longStroy?.projectPrefix}-${longStroy?.prefixKey}】${window.location.href}`,
-                    t('common.copySuccess'),
-                    t('common.copyFail'),
-                  )
-                }}
+                onClick={onCopyLink}
                 size={18}
               ></CommonIconFont>
             </SpanWrap>

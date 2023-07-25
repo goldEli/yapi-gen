@@ -259,10 +259,12 @@ const DemandDetail = () => {
     const params = encryptPhp(
       JSON.stringify({
         id: demandInfo.project_id,
-        demandId: demandInfo.id,
+        detailId: demandInfo.id,
+        specialType: 3,
+        isOpenScreenDetail: true,
       }),
     )
-    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    const url = `/ProjectManagement/Demand?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${demandInfo.projectPrefix}-${demandInfo.prefixKey}】${text}`,

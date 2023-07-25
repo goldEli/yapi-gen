@@ -67,11 +67,12 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     const params = encryptPhp(
       JSON.stringify({
         id: projectInfo?.id,
-        sprintId: record?.id,
-        newOpen: true,
+        detailId: record?.id,
+        specialType: 1,
+        isOpenScreenDetail: true,
       }),
     )
-    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    const url = `SprintProjectManagement/Affair?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
@@ -280,6 +281,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
                 <RelationDropdownMenu
                   onDeleteChange={onDeleteChange}
                   record={record}
+                  type={1}
                 />
               }
               onChangeVisible={setIsShowMore}

@@ -86,11 +86,12 @@ export const SprintDropdownMenu = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({
         id: props.record.project_id,
-        sprintId: id,
-        newOpen: true,
+        detailId: id,
+        isOpenScreenDetail: true,
+        specialType: 1,
       }),
     )
-    const url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
+    const url = `/SprintProjectManagement/Affair?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${props.record.story_prefix_key}】${text}`,

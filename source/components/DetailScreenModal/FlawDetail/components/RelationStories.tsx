@@ -286,6 +286,7 @@ const RelationStories = (props: RelationStoriesProps) => {
                 <RelationDropdownMenu
                   onDeleteChange={onDeleteChange}
                   record={record}
+                  type={2}
                 />
               }
               onChangeVisible={setIsShowMore}
@@ -616,6 +617,7 @@ const RelationStories = (props: RelationStoriesProps) => {
                 <RelationDropdownMenu
                   onDeleteChange={onDeleteChange}
                   record={record}
+                  type={2}
                 />
               }
               onChangeVisible={setIsShowMore}

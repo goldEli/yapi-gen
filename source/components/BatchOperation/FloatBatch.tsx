@@ -91,35 +91,24 @@ const FloatBatch = (props: Props) => {
     let beforeUrl: any
     beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
     props.selectRows?.forEach((element: any) => {
-      let params = null
+      let params: any = {
+        id: projectId,
+        detailId: element.id,
+        isOpenScreenDetail: true,
+      }
       let url = ''
       if (props.type === 3) {
-        params = encryptPhp(
-          JSON.stringify({
-            id: projectId,
-            sprintId: element.id,
-            newOpen: true,
-          }),
-        )
-        url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+        params.specialType = 1
+        const resultParams = encryptPhp(JSON.stringify(params))
+        url = `SprintProjectManagement/Affair?data=${resultParams}`
       } else if (props.type === 2) {
-        params = encryptPhp(
-          JSON.stringify({
-            id: projectId,
-            flawId: element.id,
-            newOpen: true,
-          }),
-        )
-        url = `ProjectManagement/DefectDetail?data=${params}`
+        params.specialType = 2
+        const resultParams = encryptPhp(JSON.stringify(params))
+        url = `ProjectManagement/Defect?data=${resultParams}`
       } else if (props.type === 1) {
-        params = encryptPhp(
-          JSON.stringify({
-            id: projectId,
-            demandId: element.id,
-            newOpen: true,
-          }),
-        )
-        url = `ProjectManagement/DemandDetail?data=${params}`
+        params.specialType = 3
+        const resultParams = encryptPhp(JSON.stringify(params))
+        url = `ProjectManagement/Demand?data=${resultParams}`
       }
 
       text += `【${element.storyPrefixKey}-${element.name}】 ${beforeUrl}${url} \n`

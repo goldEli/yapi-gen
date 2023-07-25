@@ -139,36 +139,39 @@ const Main = (props: UserInfo) => {
       const params = encryptPhp(
         JSON.stringify({
           id: row.project_id,
-          sprintId: row.id,
-          newOpen: true,
+          detailId: row.id,
+          isOpenScreenDetail: true,
           changeIds: [],
+          specialType: 1,
         }),
       )
-      const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+      const url = `SprintProjectManagement/Affair?data=${params}`
       window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     } else if (row.project_type === 1 && row.story_type === 2) {
       // 缺陷
       const params = encryptPhp(
         JSON.stringify({
           id: row.project_id,
-          flawId: row.id,
-          newOpen: true,
+          detailId: row.id,
+          isOpenScreenDetail: true,
           changeIds: [],
+          specialType: 2,
         }),
       )
-      const url = `ProjectManagement/DefectDetail?data=${params}`
+      const url = `ProjectManagement/Defect?data=${params}`
       window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     } else {
       // 需求
       const params = encryptPhp(
         JSON.stringify({
           id: row.project_id,
-          demandId: row.id,
-          newOpen: true,
+          detailId: row.id,
+          isOpenScreenDetail: true,
           changeIds: [],
+          specialType: 3,
         }),
       )
-      const url = `ProjectManagement/DemandDetail?data=${params}`
+      const url = `ProjectManagement/Demand?data=${params}`
       window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     }
   }

@@ -197,12 +197,13 @@ const FlawDetailDrawer = () => {
     const params = encryptPhp(
       JSON.stringify({
         id: drawerInfo.projectId,
-        flawId: drawerInfo.id,
-        newOpen: true,
+        detailId: drawerInfo.id,
+        specialType: 2,
+        isOpenScreenDetail: true,
         changeIds: demandIds,
       }),
     )
-    const url = `ProjectManagement/DefectDetail?data=${params}`
+    const url = `ProjectManagement/Defect?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(0))
@@ -416,10 +417,12 @@ const FlawDetailDrawer = () => {
     const params = encryptPhp(
       JSON.stringify({
         id: drawerInfo.projectId,
-        demandId: drawerInfo.id,
+        detailId: drawerInfo.id,
+        specialType: 2,
+        isOpenScreenDetail: true,
       }),
     )
-    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    const url = `/ProjectManagement/Defect?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${drawerInfo.projectPrefix}-${drawerInfo.prefixKey}】${text}`,
@@ -580,14 +583,13 @@ const FlawDetailDrawer = () => {
   return (
     <>
       <ShareModal
-        url={`${
-          location.origin
-        }/ProjectManagement/DefectDetail?data=${encryptPhp(
+        url={`${location.origin}/ProjectManagement/Defect?data=${encryptPhp(
           JSON.stringify({
             ...paramsData,
-            flawId: drawerInfo?.id,
+            detailId: drawerInfo?.id,
             id: getProjectIdByUrl(),
-            newOpen: true,
+            specialType: 2,
+            isOpenScreenDetail: true,
           }),
         )}`}
         title={

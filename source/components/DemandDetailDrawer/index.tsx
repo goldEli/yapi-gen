@@ -219,12 +219,13 @@ const DemandDetailDrawer = () => {
     const params = encryptPhp(
       JSON.stringify({
         id: drawerInfo.projectId,
-        demandId: drawerInfo.id,
-        newOpen: true,
+        detailId: drawerInfo.id,
         changeIds: demandIds,
+        specialType: 3,
+        isOpenScreenDetail: true,
       }),
     )
-    const url = `ProjectManagement/DemandDetail?data=${params}`
+    const url = `ProjectManagement/Demand?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(false))
