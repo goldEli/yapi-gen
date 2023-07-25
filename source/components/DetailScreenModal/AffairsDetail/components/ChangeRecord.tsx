@@ -157,7 +157,7 @@ const ChangeRecord = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'id',
-      width: 160,
+      width: 110,
     },
     {
       title: (
@@ -171,7 +171,7 @@ const ChangeRecord = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'updateTime',
-      width: 200,
+      width: 180,
     },
     {
       title: (
@@ -185,7 +185,7 @@ const ChangeRecord = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'userName',
-      width: 160,
+      width: 140,
     },
     {
       title: (

@@ -913,7 +913,7 @@ const SprintDetailDrawer = () => {
                     {i.key === 'childSprint' && showState[i.key].isOpen && (
                       <ChildSprint detail={drawerInfo} />
                     )}
-                    {i.key === 'linkSprint' && (
+                    {i.key === 'linkSprint' && showState[i.key].isOpen && (
                       <LinkSprint detail={drawerInfo} />
                     )}
                     {i.key === 'basicInfo' && showState[i.key].isOpen && (

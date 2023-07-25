@@ -208,12 +208,12 @@ const ProjectDetailSide = () => {
       key: 'Sprint',
     },
     {
-      name: 'Kanban',
+      name: t('panel'),
       icon: 'layout',
       path: '/SprintProjectManagement/KanBan',
       isPermission:
         projectInfo?.projectPermissions?.filter((i: any) =>
-          String(i.identity).includes('b/project/kanban'),
+          String(i.group_name).includes('面板'),
         ).length > 0,
       key: 'KanBan',
     },

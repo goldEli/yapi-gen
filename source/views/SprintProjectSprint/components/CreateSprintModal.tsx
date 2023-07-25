@@ -73,6 +73,9 @@ const CreateSprintModal = (props: sprintProps) => {
     initNumber.current = 0
     onClose()
     if (isFresh) {
+      if (type !== 'create') {
+        sessionStorage.setItem('noRefresh', 'true')
+      }
       dispatch(setSprintRefresh(1))
     }
     setTimeout(() => {

@@ -27,6 +27,7 @@ interface XTableProps {
   data: any
   columns: any
   list: any
+  activeKey: number
 }
 
 const XTableWrap = styled.div`
@@ -178,6 +179,11 @@ const XTable: React.FC<XTableProps> = props => {
           msg: t('common.deleteSuccess'),
           type: 'success',
         })
+        if (props.activeKey === 0) {
+          sessionStorage.removeItem('noRefresh')
+        } else {
+          sessionStorage.setItem('noRefresh', 'true')
+        }
         dispatch(setSprintRefresh(1))
         updateSprintList()
       } else {
@@ -221,6 +227,11 @@ const XTable: React.FC<XTableProps> = props => {
           <CommonButton
             type="light"
             onClick={() => {
+              if (props.activeKey === 0) {
+                sessionStorage.removeItem('noRefresh')
+              } else {
+                sessionStorage.setItem('noRefresh', 'true')
+              }
               setCompleteVisible(true)
             }}
           >
@@ -378,6 +389,11 @@ const XTable: React.FC<XTableProps> = props => {
                   <CommonButton
                     type="light"
                     onClick={() => {
+                      if (props.activeKey === 0) {
+                        sessionStorage.removeItem('noRefresh')
+                      } else {
+                        sessionStorage.setItem('noRefresh', 'true')
+                      }
                       setSprintModal({
                         visible: true,
                         type: 'create',
@@ -400,6 +416,7 @@ const XTable: React.FC<XTableProps> = props => {
             icon="plus"
             iconPlacement="left"
             onClick={() => {
+              sessionStorage.setItem('noRefresh', 'true')
               dispatch(
                 setAddWorkItemModal({
                   visible: true,

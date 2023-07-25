@@ -139,7 +139,11 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             />
           </Tooltip>
           <LinkWrap>
-            <span className="content" onClick={() => onToDetail(record)}>
+            <span
+              className="content"
+              style={{ maxWidth: '400px' }}
+              onClick={() => onToDetail(record)}
+            >
               {record.name}
             </span>
           </LinkWrap>
