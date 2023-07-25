@@ -227,11 +227,68 @@ const MyDropdown = (props: any) => {
    * @param el
    * @param type story 待办和已办
    * @param feedable_type project -项目  iterate-冲刺、迭代   story-需求、事务（缺陷
+   *  // 1：迭代-需求类型，2：迭代-缺陷类型，3：冲刺-长故事事务类型，4：冲刺-标准事务类型，5：冲刺-故障事务类型，6：冲刺-子任务类型
    */
   // 接口上下接口不同，取值不同，需要加判断取
+  /**
+   *
+   * @param el
+   * @param type
+   */
   const onRoute = (el: any, type: string) => {
-    let iterParmas = null
+    let resultType = el?.feedable_type
+    let project_type = el?.feedable?.project?.project_type
+    console.log('el', resultType, project_type, el)
+    // 迭代详情 需求详情  事务详情  缺陷详情
+    // const url = {
+    //   iterate: '/ProjectManagement/IterationDetail',
+    //   story: '/ProjectManagement/Demand',
+    //   Affair: '/SprintProjectManagement/Affair',
+    //   Defect: '/ProjectManagement/Defect',
+    // }
+    let url = null
+    let params: any = {
+      id: project_type ? el?.feedable?.project_id : el.project_id,
+      detailId: project_type ? el?.feedable?.id : el.id,
+      iterateId: project_type ? el?.feedable?.id : el.id,
+    }
+    // 从待办和已办入口
+    if (!project_type) {
+      project_type = el.project_type
+    }
+    if (!resultType) {
+      if (el.work_type === 1) {
+        resultType = 'Demand'
+      }
+      if (el.work_type === 2 && el.is_bug === 1) {
+        resultType = 'Defect'
+      }
+    }
+    if (project_type === 2) {
+      url = `/SprintProjectManagement/Affair`
+      params = { ...params, specialType: 1, isOpenScreenDetail: true }
+    }
 
+    if (project_type === 1) {
+      if (resultType === 'story' || resultType === 'project') {
+        url = '/ProjectManagement/Demand'
+        params = { ...params, specialType: 3, isOpenScreenDetail: true }
+      }
+      // TODO 还差一种情况 从最近的入口无法判断是缺陷还是需求
+      if (resultType === 'iterate') {
+        url = `/ProjectManagement/IterationDetail`
+      }
+      if (resultType === 'Defect') {
+        url = '/ProjectManagement/Defect'
+        params = { ...params, specialType: 2, isOpenScreenDetail: true }
+      }
+    }
+    // return
+
+    navigate(`${url}?data=${encryptPhp(JSON.stringify(params))}`)
+    setIsOpen(false)
+    let iterParmas = null
+    return
     const paramsKey: { [key: string]: string } = {
       1: 'demandId',
       2: 'sprintId',
