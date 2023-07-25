@@ -247,11 +247,9 @@ const MyDropdown = (props: any) => {
     //   Defect: '/ProjectManagement/Defect',
     // }
     let url = null
-    let params = {
+    let params: any = {
       id: project_type ? el?.feedable?.project_id : el.project_id,
       detailId: project_type ? el?.feedable?.id : el.id,
-      specialType: 1,
-      isOpenScreenDetail: true,
       iterateId: project_type ? el?.feedable?.id : el.id,
     }
     // 从待办和已办入口
@@ -260,7 +258,7 @@ const MyDropdown = (props: any) => {
     }
     if (!resultType) {
       if (el.work_type === 1) {
-        resultType = 'iterate'
+        resultType = 'Demand'
       }
       if (el.work_type === 2 && el.is_bug === 1) {
         resultType = 'Defect'
@@ -268,11 +266,13 @@ const MyDropdown = (props: any) => {
     }
     if (project_type === 2) {
       url = `/SprintProjectManagement/Affair`
+      params = { ...params, specialType: 1, isOpenScreenDetail: true }
     }
 
     if (project_type === 1) {
       if (resultType === 'story' || resultType === 'project') {
         url = '/ProjectManagement/Demand'
+        params = { ...params, specialType: 3, isOpenScreenDetail: true }
       }
       // TODO 还差一种情况 从最近的入口无法判断是缺陷还是需求
       if (resultType === 'iterate') {
@@ -280,6 +280,7 @@ const MyDropdown = (props: any) => {
       }
       if (resultType === 'Defect') {
         url = '/ProjectManagement/Defect'
+        params = { ...params, specialType: 2, isOpenScreenDetail: true }
       }
     }
     // return
