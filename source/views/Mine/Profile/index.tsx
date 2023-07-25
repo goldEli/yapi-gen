@@ -334,14 +334,37 @@ const Profile = () => {
       return
     }
 
-    const params = encryptPhp(
-      JSON.stringify({
-        id: item.feedable.project_id,
-        demandId: item.feedable_id,
-      }),
-    )
+    let params: any = {
+      id: item.feedable.project_id,
+      detailId: item.feedable_id,
+      isOpenScreenDetail: true,
+    }
+    let url
 
-    navigate(`/ProjectManagement/DemandDetail?data=${params}`)
+    switch (item.resource_type) {
+      case 1:
+        params.specialType = 3
+        url = 'ProjectManagement/Demand'
+        break
+      case 2:
+        params.specialType = 2
+        url = 'ProjectManagement/Defect'
+        break
+      case 10:
+        params.specialType = 1
+        url = 'SprintProjectManagement/Affair'
+        break
+      default:
+        break
+    }
+    if (params.specialType) {
+      const resultParams = encryptPhp(JSON.stringify(params))
+      window.open(
+        `${window.origin}${
+          import.meta.env.__URL_HASH__
+        }${url}?data=${resultParams}}`,
+      )
+    }
   }
   const nextMonth = async () => {
     setMonthIndex(monthIndex - 1)

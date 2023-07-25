@@ -209,9 +209,7 @@ const Right = styled.div`
 `
 const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-left: 16px;
-  .ant-select-focused:not(.ant-select-disabled).ant-select:not(
-      .ant-select-customize-input
-    )
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
     .ant-select-selector {
     box-shadow: 0 0 0 0px;
   }
@@ -412,6 +410,7 @@ const SprintProjectSprint: React.FC = () => {
   }
 
   const changeSprintTab = () => {
+    sessionStorage.removeItem('noRefresh')
     setActiveKey(0)
     setSearchObject({
       ...searchObject,
@@ -429,6 +428,7 @@ const SprintProjectSprint: React.FC = () => {
   }
 
   const changeStoryTab = () => {
+    sessionStorage.removeItem('noRefresh')
     setActiveKey(1)
     setSearchObject({
       ...searchObject,
@@ -446,6 +446,7 @@ const SprintProjectSprint: React.FC = () => {
   }
 
   const onChangeFilter = (item: any) => {
+    sessionStorage.removeItem('noRefresh')
     setCurrentFilter(item)
     setIsFilter(false)
     setLeftSearchObject({
@@ -457,6 +458,10 @@ const SprintProjectSprint: React.FC = () => {
       },
     })
   }
+
+  useEffect(() => {
+    sessionStorage.removeItem('noRefresh')
+  }, [])
 
   useEffect(() => {
     dispatch(
@@ -618,6 +623,7 @@ const SprintProjectSprint: React.FC = () => {
                         width={32}
                         height={32}
                         onClick={() => {
+                          sessionStorage.removeItem('noRefresh')
                           if (activeKey === 0) {
                             setSprintModal({
                               visible: true,
@@ -782,6 +788,7 @@ const SprintProjectSprint: React.FC = () => {
               </CategorySelectWrap>
               <ClearButton
                 onClick={() => {
+                  sessionStorage.removeItem('noRefresh')
                   setSearchObject({
                     ...searchObject,
                     search: {
