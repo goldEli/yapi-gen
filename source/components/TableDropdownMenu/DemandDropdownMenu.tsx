@@ -67,19 +67,19 @@ export const DemandOperationDropdownMenu = (props: Props) => {
 
   // 复制需求链接
   const onCopyLink = () => {
-    console.log(props.record)
-
     let text: any = ''
     let beforeUrl: any
     beforeUrl = window.origin
-    const params = encryptPhp(
+    let params = encryptPhp(
       JSON.stringify({
         id: props.record.project_id,
-        demandId: props.record.id,
+        detailId: props.record.id,
+        isOpenScreenDetail: true,
+        specialType: props.record.project_type === 2 ? 1 : 3,
       }),
     )
     if (props.record.project_type === 2) {
-      const url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
+      const url = `/SprintProjectManagement/Affair?data=${params}`
       text += ` ${beforeUrl}${url} \n`
       copyLink(
         `【${props?.record.storyPrefixKey}】${text}`,
@@ -88,7 +88,7 @@ export const DemandOperationDropdownMenu = (props: Props) => {
       )
       return
     }
-    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    const url = `/ProjectManagement/Demand?data=${params}`
     text += ` ${beforeUrl}${url} \n`
     copyLink(
       `【${props?.record.storyPrefixKey}】${text}`,

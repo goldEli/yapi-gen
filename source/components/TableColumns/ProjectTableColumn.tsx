@@ -14,12 +14,10 @@ import {
   HiddenText,
   ListNameWrap,
   PriorityWrapTable,
-  SeverityWrap,
-  ShowWrap,
 } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
-import { message, Progress, Tooltip } from 'antd'
+import { Progress, Tooltip } from 'antd'
 import { useSelector } from '@store/index'
 import { getMessage } from '../Message'
 import TableQuickEdit from '../TableQuickEdit'
@@ -33,21 +31,10 @@ import MultipleAvatar from '../MultipleAvatar'
 import CommonIconFont from '../CommonIconFont'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 
-const Wrap = styled.div<{ isEdit?: any }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  ({ isEdit }) => ({
-    cursor: isEdit ? 'inherit' : 'pointer',
-  }),
-)
-
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
-  const hight = useSelector(store => store.colorText.text)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -160,7 +147,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
-      width: 190,
+      width: 170,
       render: (text: any, record: any) => {
         return (
           <ChangeStatusPopover
@@ -192,7 +179,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
-      width: 180,
+      width: 100,
       render: (text: any, record: Record<string, string | number>) => {
         return (
           <ChangePriorityPopover
@@ -257,7 +244,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'iteration',
       key: 'iterate_name',
-      width: 120,
+      width: 100,
       render: (text: string, record: any) => {
         return (
           <>
@@ -370,7 +357,7 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
-      width: 180,
+      width: 140,
       render: (text: any, record: any) => {
         return (
           <TableQuickEdit
@@ -444,7 +431,7 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.copySend'),
       dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
-      width: 200,
+      width: 120,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -482,7 +469,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'expectedStart',
       key: 'expected_start_at',
-      width: 200,
+      width: 170,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -505,7 +492,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'expectedEnd',
       key: 'expected_end_at',
-      width: 200,
+      width: 170,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -565,7 +552,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="severity">{t('other.severity')}</NewSort>,
       dataIndex: 'severity',
       key: 'severity',
-      width: 200,
+      width: 110,
       render: (text: any, record: any) => {
         return (
           <ChangeSeverityPopover
@@ -588,7 +575,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'discovery_version',
       key: 'discovery_version',
-      width: 120,
+      width: 160,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -601,7 +588,7 @@ export const useDynamicColumns = (state: any) => {
           >
             <HiddenText>
               <OmitText
-                width={120}
+                width={160}
                 tipProps={{
                   getPopupContainer: node => node,
                 }}
@@ -622,7 +609,7 @@ export const useDynamicColumns = (state: any) => {
         (i: any) => i.content === element.value,
       )?.[0]
       result.push({
-        width: 200,
+        width: 180,
         title: (
           <div>
             {!['user_select_checkbox', 'select_checkbox', 'checkbox'].includes(

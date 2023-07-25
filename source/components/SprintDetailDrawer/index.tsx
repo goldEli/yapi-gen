@@ -262,12 +262,13 @@ const SprintDetailDrawer = () => {
     const params = encryptPhp(
       JSON.stringify({
         id: drawerInfo.projectId,
-        sprintId: drawerInfo.id,
-        newOpen: true,
+        detailId: drawerInfo.id,
+        specialType: 1,
+        isOpenScreenDetail: true,
         changeIds: demandIds,
       }),
     )
-    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    const url = `SprintProjectManagement/Affair?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(0))
@@ -677,12 +678,13 @@ const SprintDetailDrawer = () => {
       <ShareModal
         url={`${
           location.origin
-        }/SprintProjectManagement/SprintProjectDetail?data=${encryptPhp(
+        }/SprintProjectManagement/Affair?data=${encryptPhp(
           JSON.stringify({
             ...paramsData,
-            sprintId: drawerInfo?.id,
             id: getProjectIdByUrl(),
-            newOpen: true,
+            detailId: drawerInfo.id,
+            specialType: 1,
+            isOpenScreenDetail: true,
           }),
         )}`}
         title={

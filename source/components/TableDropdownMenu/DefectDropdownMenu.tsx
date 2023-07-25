@@ -67,10 +67,12 @@ export const DefectDropdownMenu = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({
         id: props.record.project_id,
-        demandId: props.record.id,
+        detailId: props.record.id,
+        specialType: 2,
+        isOpenScreenDetail: true,
       }),
     )
-    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    const url = `/ProjectManagement/Defect?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${props?.record.storyPrefixKey}】${text}`,

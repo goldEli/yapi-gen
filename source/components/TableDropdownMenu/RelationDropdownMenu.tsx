@@ -25,6 +25,8 @@ const MenuWrap = styled(Menu)`
 interface Props {
   record: any
   onDeleteChange(row: any): void
+  // 1是事务，2是缺陷，3是需求
+  type: 1 | 2 | 3
 }
 
 const RelationDropdownMenu = (props: Props) => {
@@ -49,15 +51,22 @@ const RelationDropdownMenu = (props: Props) => {
     let text: any = ''
     let beforeUrl: any
     beforeUrl = window.origin
-    console.log(props)
-
     const params = encryptPhp(
       JSON.stringify({
         id: pid,
-        sprintId: props.record.id,
+        detailId: props.record.id,
+        specialType: props.type,
+        isOpenScreenDetail: true,
       }),
     )
-    const url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
+    let url
+    if (props.type === 1) {
+      url = `/SprintProjectManagement/Affair?data=${params}`
+    } else if (props.type === 2) {
+      url = `/ProjectManagement/Defect?data=${params}`
+    } else {
+      url = `/ProjectManagement/Demand?data=${params}`
+    }
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${props?.record.story_prefix_key}】${text}`,

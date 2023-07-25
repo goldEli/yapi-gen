@@ -29,6 +29,7 @@ import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/Dema
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import CommonButton from '@/components/CommonButton'
 import { getIterateInfo } from '@store/iterate/iterate.thunk'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -172,11 +173,17 @@ const Demand = (props: DemandProps) => {
 
   const onClickItem = (item: any) => {
     const demandIds = dataList?.list?.map((i: any) => i.id)
-    openDemandDetail(
-      { ...item, ...{ demandIds } },
-      getProjectIdByUrl(),
-      item.id,
+    const params = encryptPhp(
+      JSON.stringify({
+        id: projectInfo?.id,
+        detailId: item.id,
+        specialType: 3,
+        isOpenScreenDetail: true,
+        changeIds: demandIds,
+      }),
     )
+    const url = `ProjectManagement/Demand?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
   // 点击创建子需求

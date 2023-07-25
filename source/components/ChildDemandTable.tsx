@@ -120,35 +120,24 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
 
   // 跳转详情页面
   const onToDetail = (record: any) => {
-    let params = null
+    let params: any = {
+      id: projectId,
+      detailId: record?.id,
+      isOpenScreenDetail: true,
+    }
     let url = ''
     if (projectInfo?.projectType === 2) {
-      params = encryptPhp(
-        JSON.stringify({
-          id: projectId,
-          sprintId: record?.id,
-          newOpen: true,
-        }),
-      )
-      url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+      params.specialType = 1
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `SprintProjectManagement/Affair?data=${resultParams}`
     } else if (projectInfo?.projectType === 1 && record.is_bug === 1) {
-      params = encryptPhp(
-        JSON.stringify({
-          id: projectId,
-          flawId: record?.id,
-          newOpen: true,
-        }),
-      )
-      url = `ProjectManagement/DefectDetail?data=${params}`
+      params.specialType = 2
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Defect?data=${resultParams}`
     } else if (projectInfo?.projectType === 1 && record.is_bug !== 1) {
-      params = encryptPhp(
-        JSON.stringify({
-          id: projectId,
-          demandId: record?.id,
-          newOpen: true,
-        }),
-      )
-      url = `ProjectManagement/DemandDetail?data=${params}`
+      params.specialType = 3
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Demand?data=${resultParams}`
     }
 
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)

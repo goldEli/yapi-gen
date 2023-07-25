@@ -33,11 +33,12 @@ const ChildrenDemand = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({
         id: projectInfo?.id,
-        demandId: record?.id,
-        newOpen: true,
+        detailId: record?.id,
+        specialType: 3,
+        isOpenScreenDetail: true,
       }),
     )
-    const url = `ProjectManagement/DemandDetail?data=${params}`
+    const url = `ProjectManagement/Demand?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 

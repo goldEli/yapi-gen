@@ -323,15 +323,16 @@ const StoryRelation = (props: RelationStoriesProps) => {
     const params = encryptPhp(
       JSON.stringify({
         id: projectInfo?.id,
-        demandId: record?.id,
-        newOpen: true,
+        detailId: record?.id,
+        specialType: 3,
+        isOpenScreenDetail: true,
       }),
     )
-    const url = `ProjectManagement/DemandDetail?data=${params}`
+    const url = `ProjectManagement/Demand?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
-  const columns = [
+  const columns: any = [
     {
       width: 40,
       render: (text: any, record: any) => {
@@ -343,6 +344,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
                 <RelationDropdownMenu
                   onDeleteChange={onDeleteChange}
                   record={record}
+                  type={3}
                 />
               }
               onChangeVisible={setIsShowMore}
@@ -355,8 +357,10 @@ const StoryRelation = (props: RelationStoriesProps) => {
       title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
       dataIndex: 'story_prefix_key',
       render: (text: string) => <div>{text}</div>,
+      width: 140,
     },
     {
+      width: 140,
       title: (
         <NewSort fixedKey="relation_type">{t('connectionRelation')}</NewSort>
       ),
@@ -368,6 +372,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
     {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
+      width: 400,
       render: (text: any, record: Model.Flaw.FlawInfo) => (
         <div
           style={{
@@ -399,7 +404,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
       title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
       dataIndex: 'iterate_name',
       key: 'iterate_name',
-      width: 120,
+      width: 100,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -427,7 +432,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
       title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
-      width: 180,
+      width: 100,
       render: (text: any, record: Record<string, string | number>) => {
         return (
           <ChangePriorityPopover
@@ -462,7 +467,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
       title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
-      width: 190,
+      width: 170,
       render: (text: any, record: any) => {
         return (
           <ChangeStatusPopover
@@ -494,7 +499,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
       title: t('common.dealName'),
       dataIndex: 'handlers',
       key: 'handlers',
-      width: 180,
+      width: 140,
       render: (text: any, record: any) => {
         return (
           <TableQuickEdit
@@ -680,6 +685,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
                 <RelationDropdownMenu
                   onDeleteChange={onDeleteChange}
                   record={record}
+                  type={3}
                 />
               }
               onChangeVisible={setIsShowMore}

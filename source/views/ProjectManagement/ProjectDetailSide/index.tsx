@@ -118,12 +118,12 @@ const ProjectDetailSide = () => {
         ).length,
     },
     {
-      name: 'Kanban',
+      name: t('panel'),
       icon: 'layout',
       path: '/ProjectManagement/KanBan',
       isPermission:
         projectInfo?.projectPermissions?.filter((i: any) =>
-          String(i.identity).includes('b/project/kanban'),
+          String(i.group_name).includes('面板'),
         ).length > 0,
     },
     {

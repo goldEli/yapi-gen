@@ -256,10 +256,12 @@ const FlawDetail = () => {
     const params = encryptPhp(
       JSON.stringify({
         id: flawInfo.projectId,
-        demandId: flawInfo.id,
+        detailId: flawInfo.id,
+        specialType: 2,
+        isOpenScreenDetail: true,
       }),
     )
-    const url = `/ProjectManagement/DemandDetail?data=${params}`
+    const url = `/ProjectManagement/Defect?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${flawInfo.projectPrefix}-${flawInfo.prefixKey}】${text}`,

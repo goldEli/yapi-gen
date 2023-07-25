@@ -246,11 +246,9 @@ const MyDropdown = (props: any) => {
       iterParmas = encryptPhp(
         JSON.stringify({
           id: el.project_id,
-          // demandId: el.id,
           [paramsKey[el.project_type]]: el.id,
         }),
       )
-      // router = `/ProjectManagement/DemandDetail?data=${iterParmas}`
       router = `${urlMaps[el.project_type]}?data=${iterParmas}`
     } else {
       const resultType = el?.feedable_type ?? el?.actionable_type
@@ -273,8 +271,6 @@ const MyDropdown = (props: any) => {
           params.iterateId = el?.feedable_id ?? el.id
         }
         if (resultType === 'story') {
-          // sprintId
-          // params.demandId = el?.feedable_id ?? el.id
           params[paramsKey[el.feedable.project.project_type]] =
             el?.feedable_id ?? el.id
         }
