@@ -12,7 +12,7 @@ const getMsgType = (type: string, msg: string, num?: number) => {
   // 全屏时需要绑定在全屏元素上
   message.config({
     getContainer: () =>
-      (document.querySelector('#kanBanFullScreenBox') as any) || document.body,
+      (document.querySelector('.kanBanFullScreenBox') as any) || document.body,
   })
   switch (type) {
     case 'success':

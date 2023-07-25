@@ -117,7 +117,7 @@ const IssueCard = (props: IssueCardProps) => {
               trigger="click"
               getPopupContainer={
                 fullScreen
-                  ? () => document.getElementById('kanBanFullScreenBox') as any
+                  ? () => document.querySelector('.kanBanFullScreenBox') as any
                   : // eslint-disable-next-line no-undefined
                     undefined
               }

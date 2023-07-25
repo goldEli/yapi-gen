@@ -107,7 +107,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
                 <CommonIconFont
                   type={el.icon}
                   size={16}
-                  color="var(--auxiliary-text-t2-d2)"
+                  color={el.icon_color}
                 />
               </LotIcon>
               <div>

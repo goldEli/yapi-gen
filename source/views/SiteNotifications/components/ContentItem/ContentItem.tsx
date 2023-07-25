@@ -76,6 +76,7 @@ const ContentItem = (props: any) => {
 
   return (
     <Wrap
+      bor={props.bor}
       greps={choose}
       onClick={() => (read === 1 || choose ? null : change())}
     >

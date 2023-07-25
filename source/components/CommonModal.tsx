@@ -84,7 +84,7 @@ const CommonModal = (props: CommonModalProps) => {
       // 界面全屏时需要挂载到全屏的那个dom元素身上才能显示出来
       getContainer={
         fullScreen
-          ? () => document.querySelector('#kanBanFullScreenBox') as any
+          ? () => document.querySelector('.kanBanFullScreenBox') as any
           : // eslint-disable-next-line no-undefined
             undefined
       }

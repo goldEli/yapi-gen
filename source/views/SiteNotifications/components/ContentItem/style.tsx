@@ -27,7 +27,9 @@ export const Time = styled.div`
   margin-left: auto;
 `
 
-export const Wrap = styled.div<{ greps?: boolean }>`
+export const Wrap = styled.div<{ greps?: boolean; bor?: boolean }>`
+  border: ${props =>
+    props.bor ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
   cursor: pointer;
   margin: 0 12px;
   padding: 12px;
@@ -40,7 +42,9 @@ export const Wrap = styled.div<{ greps?: boolean }>`
   /* filter: drop-shadow(5px 5px 5px black);
   filter: saturate(50%);  */
   :hover {
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.12);
+    border: 1px solid transparent;
+    background-color: var(--neutral-n8);
+    /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.12); */
     ${Time2} {
       display: block;
     }
@@ -86,7 +90,7 @@ export const About = styled.div`
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
   line-height: 20px;
-  margin-left: 4px;
+
   color: var(--neutral-n3) !important;
 `
 
@@ -96,11 +100,12 @@ export const GrepContent = styled.div<{ status?: boolean }>`
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
   line-height: 20px;
-  padding: 8px;
-  background-color: var(--neutral-n8);
+  margin-left: -9px;
+  margin-top: -9px;
+  /* background-color: var(--neutral-n8); */
   border-radius: 6px 6px 6px 6px;
   color: ${(props: any) =>
-    props.status ? 'var(--neutral-n4)' : 'var(--neutral-n2)'};
+    props.status ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
   a {
     color: var(--auxiliary-text-t1-d2);
   }
@@ -111,10 +116,10 @@ export const HoverWrap = styled.div`
   .msgTitle {
     display: flex;
     align-items: center;
-    margin: 5px 0px;
+    margin: 5px 0px 0px 0px;
   }
   .read {
-    color: var(--neutral-n4);
+    color: var(--neutral-n4) !important;
   }
   .unread {
     color: var(--neutral-n2);

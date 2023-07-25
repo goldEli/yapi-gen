@@ -726,7 +726,7 @@ const SprintDetailDrawer = () => {
         mask={false}
         getContainer={
           fullScreen
-            ? () => document.querySelector('#kanBanFullScreenBox') as any
+            ? () => document.querySelector('.kanBanFullScreenBox') as any
             : false
         }
         className="drawerRoot"

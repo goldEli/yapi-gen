@@ -7,7 +7,6 @@ import { Spin } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { getKanbanByGroup, getKanbanConfig } from '@store/kanBan/kanBan.thunk'
 import { getProjectIdByUrl } from '@/tools'
-import CustomScreenFull from '../CustomScreenFull'
 
 const Container = styled.div<{ padding: number }>`
   display: flex;
@@ -27,6 +26,7 @@ const Board = () => {
   const { kanbanConfig, fullScreen } = useSelector(store => store.kanBan)
   const { spinning } = useSelector(state => state.kanBan)
   const { sortByRowAndStatusOptions } = useSelector(state => state.kanBan)
+  // debugger
   const { ControlScrollPlane, containerRef } = useControlScrollPlane(
     kanbanConfig?.columns?.length ?? 0,
   )
@@ -47,16 +47,16 @@ const Board = () => {
 
   return (
     <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
-      <CustomScreenFull>
-        <Container
-          padding={fullScreen ? 24 : 0}
-          id="kanbanContainer"
-          ref={containerRef}
-        >
-          <KanBanSortByPerson />
-          <ControlScrollPlane />
-        </Container>
-      </CustomScreenFull>
+      {/* <CustomScreenFull> */}
+      <Container
+        padding={fullScreen ? 24 : 0}
+        id="kanbanContainer"
+        ref={containerRef}
+      >
+        <KanBanSortByPerson />
+        <ControlScrollPlane />
+      </Container>
+      {/* </CustomScreenFull> */}
     </Spin>
   )
 }

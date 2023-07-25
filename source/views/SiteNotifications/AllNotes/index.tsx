@@ -190,7 +190,7 @@ const Index = () => {
           }
         >
           {list.map((i: any) => {
-            return <ContentItem setReads={setReads} item={i} key={i.id} />
+            return <ContentItem bor setReads={setReads} item={i} key={i.id} />
           })}
         </InfiniteScroll>
       </div>
