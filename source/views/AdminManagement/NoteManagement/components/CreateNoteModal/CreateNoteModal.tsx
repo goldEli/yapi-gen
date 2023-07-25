@@ -293,6 +293,7 @@ const CreateNoteModal = (props: any) => {
   }
   return (
     <CommonModal
+      confirmText={t('send')}
       onSaveDraft={onSaveDraft}
       draft
       isVisible={props.isVisible}

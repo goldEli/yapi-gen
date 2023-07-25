@@ -190,7 +190,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
-      width: 180,
+      width: 100,
       render: (text: any, record: any) => {
         return (
           <ChangePriorityPopover
@@ -254,7 +254,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'iteration',
       key: 'iterate_name',
-      width: 120,
+      width: 100,
       render: (text: string, record: any) => {
         return (
           <>
@@ -341,7 +341,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
-      width: 190,
+      width: 170,
       // eslint-disable-next-line complexity
       render: (text: any, record: any) => {
         return (
