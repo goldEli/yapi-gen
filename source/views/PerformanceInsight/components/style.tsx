@@ -394,7 +394,7 @@ export const DialogHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  fontfamily: SiYuanMedium;
+  font-family: SiYuanMedium;
   &:hover {
     cursor: pointer;
   }

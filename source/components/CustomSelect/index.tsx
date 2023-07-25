@@ -13,7 +13,7 @@ const CustomSelect = ({ children, ...props }: any) => {
       suffixIcon={<CommonIconFont type="down" />}
       ref={props.onRef}
       getPopupContainer={() =>
-        document.getElementById('kanBanFullScreenBox') as any
+        document.querySelector('.kanBanFullScreenBox') as any
       }
     >
       {children}

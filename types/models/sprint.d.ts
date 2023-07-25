@@ -43,12 +43,14 @@ declare namespace Model.Sprint {
     value: number
     unit: string
     icon?: string
+    icon_color: string
   }
   interface DefectListItem {
     name: string
     value: number
     unit: string
     icon?: string
+    icon_color: string
   }
 
   interface BugDataListItem {

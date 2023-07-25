@@ -84,10 +84,22 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
       title: t('confirm_deletion'),
       text: t('are_you_sure_to_delete_this_requirement?'),
       onConfirm: () => {
+        // 判断当前删除的是那种类型
+        let typeNum = 0
+        if (projectInfo.projectType === 2) {
+          typeNum = 2
+        } else if (projectInfo.projectType === 1 && props.story.is_bug === 1) {
+          typeNum = 3
+        } else if (projectInfo.projectType === 1 && props.story.is_bug !== 1) {
+          typeNum = 1
+        }
         dispatch(
-          deleteStory({
-            id: props.story.id,
-          }),
+          deleteStory(
+            {
+              id: props.story.id,
+            },
+            typeNum,
+          ),
         )
         return Promise.resolve()
       },

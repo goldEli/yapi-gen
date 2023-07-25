@@ -96,7 +96,7 @@ const DemandDetail = () => {
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
-
+  const [filter, setFilter] = useState(false)
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -404,164 +404,6 @@ const DemandDetail = () => {
     getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
   }
 
-  const SearchWrap = () => {
-    const onChangeTime = (d: any) => {
-      if (d) {
-        form.setFieldsValue({
-          ['date']: [
-            moment(d[0]).unix()
-              ? moment(d[0]).format('YYYY-MM-DD')
-              : '1970-01-01',
-            moment(d[1]).unix() === 1893427200
-              ? '2030-01-01'
-              : moment(d[1]).format('YYYY-MM-DD'),
-          ],
-        })
-      } else {
-        form.setFieldsValue({
-          ['date']: null,
-        })
-      }
-      const a = form.getFieldsValue()
-      console.log(a, '9')
-    }
-    const confirm = (e: any) => {
-      const a = form.getFieldsValue()
-    }
-    return (
-      <Form form={form}>
-        <Space
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            padding: '12px 0px 20px 0px',
-            borderBottom: '1px solid var(--neutral-n6-d1)',
-          }}
-          size={16}
-        >
-          <SelectWrapBedeck style={{ marginRight: '4px' }}>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>变更人</span>
-            <Form.Item name="person" noStyle>
-              <SelectWrap
-                mode="multiple"
-                onChange={confirm}
-                style={{ width: '100%' }}
-                placeholder={'请选择'}
-                showSearch
-                optionFilterProp="label"
-                showArrow
-                allowClear
-                options={[
-                  {
-                    label: t('other.affairs_public'),
-                    value: 1,
-                  },
-                  {
-                    label: t('other.affairs_team'),
-                    value: 2,
-                  },
-                  {
-                    label: t('other.iteration_public'),
-                    value: 3,
-                  },
-                  {
-                    label: t('other.iteration_team'),
-                    value: 4,
-                  },
-                ]}
-              />
-            </Form.Item>
-          </SelectWrapBedeck>
-          <SelectWrapBedeck style={{ marginRight: '4px' }}>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>变更类型</span>
-            <Form.Item name="type" noStyle>
-              <SelectWrap
-                mode="multiple"
-                onChange={confirm}
-                style={{ width: '100%' }}
-                placeholder={'请选择'}
-                showSearch
-                optionFilterProp="label"
-                showArrow
-                allowClear
-                options={[
-                  {
-                    label: t('other.affairs_public'),
-                    value: 1,
-                  },
-                  {
-                    label: t('other.affairs_team'),
-                    value: 2,
-                  },
-                  {
-                    label: t('other.iteration_public'),
-                    value: 3,
-                  },
-                  {
-                    label: t('other.iteration_team'),
-                    value: 4,
-                  },
-                ]}
-              />
-            </Form.Item>
-          </SelectWrapBedeck>
-          <SelectWrapBedeck style={{ marginRight: '4px' }}>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>变更前后</span>
-            <Form.Item name="before" noStyle>
-              <SelectWrap
-                mode="multiple"
-                onChange={confirm}
-                style={{ width: '100%' }}
-                placeholder={'请选择'}
-                showSearch
-                optionFilterProp="label"
-                showArrow
-                allowClear
-                options={[
-                  {
-                    label: t('other.affairs_public'),
-                    value: 1,
-                  },
-                  {
-                    label: t('other.affairs_team'),
-                    value: 2,
-                  },
-                  {
-                    label: t('other.iteration_public'),
-                    value: 3,
-                  },
-                  {
-                    label: t('other.iteration_team'),
-                    value: 4,
-                  },
-                ]}
-              />
-            </Form.Item>
-          </SelectWrapBedeck>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>变更时间</span>
-            <Form.Item name="date" noStyle>
-              <RangePicker
-                isShowQuick
-                onChange={dates => onChangeTime(dates)}
-              />
-            </Form.Item>
-          </SelectWrapBedeck>
-          <span
-            style={{
-              margin: '0 8px',
-              color: 'var(--primary-d2)',
-              cursor: 'pointer',
-            }}
-            onClick={() => form.resetFields()}
-          >
-            清除条件
-          </span>
-        </Space>
-      </Form>
-    )
-  }
-
   // tab切换
   const tabItems: TabsProps['items'] = [
     {
@@ -604,12 +446,7 @@ const DemandDetail = () => {
           </ItemNumber>
         </DetailTabItem>
       ),
-      children: (
-        <div>
-          {isOpen && <SearchWrap />}
-          <ChangeRecord activeKey={tabActive} />
-        </div>
-      ),
+      children: <ChangeRecord activeKey={tabActive} filter={filter} />,
     },
     {
       key: '5',
@@ -872,7 +709,7 @@ const DemandDetail = () => {
               label={t('common.search')}
               icon="filter"
               isActive={true}
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => setFilter(!filter)}
             />
           )
         }

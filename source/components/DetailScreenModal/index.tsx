@@ -17,6 +17,8 @@ const DetailScreenModal = () => {
   const { visible, params } = isDetailScreenModal
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const { fullScreen } = useSelector(store => store.kanBan)
+  // const { isOpenScreenDetail, id, specialType, type, detailId } = paramsData
 
   const detailContent = [
     { specialType: 1, content: <AffairsDetail /> },
@@ -70,13 +72,20 @@ const DetailScreenModal = () => {
       focusTriggerAfterClose={false}
       mask={false}
       bodyStyle={{
-        height: 'calc(100vh - 56px)',
+        height: fullScreen ? '100vh' : 'calc(100vh - 56px)',
         minWidth: '1400px',
-        marginTop: 56,
+        marginTop: fullScreen ? 0 : 56,
       }}
       width="100vw"
       onCancel={onClose}
       zIndex={50}
+      // 界面全屏时需要挂载到全屏的那个dom元素身上才能显示出来
+      getContainer={
+        fullScreen
+          ? () => document.querySelector('.kanBanFullScreenBox') as any
+          : // eslint-disable-next-line no-undefined
+            undefined
+      }
     >
       {/* 渲染相应的模块 */}
       <Content>

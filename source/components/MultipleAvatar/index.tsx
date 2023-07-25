@@ -89,7 +89,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
                 placement="leftTop"
                 zIndex={99999}
                 getPopupContainer={() =>
-                  document.querySelector('#kanBanFullScreenBox') as any
+                  document.querySelector('.kanBanFullScreenBox') as any
                 }
                 content={
                   active === idx + 1 && (
@@ -299,7 +299,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
         }}
         visible={visible}
         getPopupContainer={() =>
-          document.querySelector('#kanBanFullScreenBox') as any
+          document.querySelector('.kanBanFullScreenBox') as any
         }
       >
         <div onClick={e => e.preventDefault()}>
@@ -338,7 +338,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
         setVisible(e), e && getUserIntroListApi()
       }}
       getPopupContainer={() =>
-        document.querySelector('#kanBanFullScreenBox') as any
+        document.querySelector('.kanBanFullScreenBox') as any
       }
     >
       <MultipleAvatarBox width={width}>

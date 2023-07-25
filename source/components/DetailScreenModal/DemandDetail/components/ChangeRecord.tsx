@@ -19,7 +19,7 @@ import { Editor } from '@xyfe/uikit'
 import { setIsUpdateChangeLog } from '@store/project'
 import { getDemandChangeLog } from '@/services/demand'
 import { ComputedWrap } from '../style'
-
+import CommonFilter from '../../CommonFilter'
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
     width: '48.5%',
@@ -62,6 +62,7 @@ const NewSort = (sortProps: any) => {
 
 interface Props {
   activeKey: string
+  filter?: boolean
 }
 
 const ChangeRecord = (props: Props) => {
@@ -423,6 +424,7 @@ const ChangeRecord = (props: Props) => {
           </div>
         </SpaceWrap>
       </CommonModal>
+      {props.filter ? <CommonFilter></CommonFilter> : null}
       <ResizeTable
         isSpinning={isSpinning}
         dataWrapNormalHeight="calc(100% - 60px)"

@@ -10,7 +10,7 @@ import useInit from './useInit'
 import { useSelector } from '@store/index'
 import { onComputedPermission } from '@/tools'
 import PermissionWrap from '@/components/PermissionWrap'
-
+import FullScreenContainer from './FullScreenContainer'
 interface IProps {}
 const KanBanBoardBox = styled.div`
   width: 100%;
@@ -60,7 +60,11 @@ const KanBanBoard: React.FC<IProps> = props => {
         sortByRowAndStatusOptions?.length
           ? guildModalEl
           : null}
-        <Board />
+
+        <FullScreenContainer>
+          <Board />
+        </FullScreenContainer>
+
         <UserGroupingModal />
         <ModifyStatusModal />
       </KanBanBoardBox>
