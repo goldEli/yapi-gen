@@ -171,11 +171,12 @@ const GlobalStyle = () => {
       }
       .notification-my {
         height: 109px;
-        background: rgba(250, 151, 70, 0.1);
+        background: rgba(102, 136, 255, 0.1);
         backdrop-filter: blur(100px);
-        border-left: 4px solid #fa9746;
+        border-left: 4px solid #6688ff;
         padding: 18px;
         padding-left: 10px;
+        box-shadow: 'none';
       }
       --blue: linear-gradient(
         180deg,

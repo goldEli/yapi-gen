@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams, useSearchParams } from 'react-router-dom'
 import { SelectWrapBedeck } from '@/components/StyleCommon'
 import moment from 'moment'
 import RangePicker from '@/components/RangePicker'
@@ -31,6 +31,7 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { css } from '@emotion/css'
 import { templateList } from '@/services/formwork'
+import { getParamsData } from '@/tools'
 
 const listContainer = css`
   margin: 0 24px;
@@ -101,8 +102,11 @@ const List = () => {
   const [visibleEdit, setVisibleEdit] = useState(false)
   const initialRef = useRef(0)
   const params = useParams()
+  const [searchParams] = useSearchParams()
+  const reportId = searchParams.get('reportId')
   const id = Number(params?.id)
   const { isFresh } = useSelector(state => state.workReport.listUpdate)
+  console.log(reportId)
 
   const statusOptions = [
     { label: t('p2.noRead'), value: 1, id: 1 },
@@ -624,7 +628,17 @@ const List = () => {
   useEffect(() => {
     getUserList()
   }, [])
-
+  useEffect(() => {
+    if (reportId) {
+      dispatch(
+        saveViewReportDetailDrawer({
+          visible: true,
+          id: reportId,
+          ids: listData?.map((i: any) => i.id),
+        }),
+      )
+    }
+  }, [reportId])
   return (
     <div className={listContainer}>
       <ListTitle>
