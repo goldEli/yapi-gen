@@ -33,6 +33,7 @@ import { getMessage } from '@/components/Message'
 import { setAddWorkItemModal } from '@store/project'
 import { getDemandInfo } from '@store/demand/demand.thunk'
 import { ComputedWrap } from '../style'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Operation = styled.div({
   display: 'flex',
@@ -174,7 +175,17 @@ const ChildDemand = (props: ChildDemandProps) => {
 
   const onClickItem = (item: any) => {
     const demandIds = dataList?.list?.map((i: any) => i.id)
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id, 3)
+    const params = encryptPhp(
+      JSON.stringify({
+        id: projectInfo?.id,
+        detailId: item.id,
+        specialType: 3,
+        isOpenScreenDetail: true,
+        changeIds: demandIds,
+      }),
+    )
+    const url = `ProjectManagement/Demand?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
   const onChangePage = (page: number, size: number) => {
