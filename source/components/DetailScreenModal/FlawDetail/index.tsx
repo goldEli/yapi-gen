@@ -35,7 +35,6 @@ import {
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import {
   setAddWorkItemModal,
-  setIsDetailScreenModal,
   setIsUpdateAddWorkItem,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
@@ -55,6 +54,8 @@ import RelationStories from './components/RelationStories'
 import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import FlawInfo from './components/FlawInfo'
+import ScreenMinHover from '@/components/ScreenMinHover'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 const FlawDetail = () => {
   const [t] = useTranslation()
@@ -74,6 +75,7 @@ const FlawDetail = () => {
   const { visible, params } = isDetailScreenModal
   const [form] = Form.useForm()
   const [tabActive, setTabActive] = useState(params?.type ?? '1')
+  const [filter, setFilter] = useState(false)
   // 是否可改变类别弹窗
   const [isShowChange, setIsShowChange] = useState(false)
   // 当前需求的下标
@@ -143,7 +145,7 @@ const FlawDetail = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex - 1] : 0
     if (!currentIndex) return
     const resultParams = { ...params, ...{ sprintId: newIndex } }
-    dispatch(setIsDetailScreenModal({ visible, params: resultParams }))
+    dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
   // 向下查找需求
@@ -151,7 +153,7 @@ const FlawDetail = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex + 1] : 0
     if (currentIndex === (params?.changeIds?.length || 0) - 1) return
     const resultParams = { ...params, ...{ sprintId: newIndex } }
-    dispatch(setIsDetailScreenModal({ visible, params: resultParams }))
+    dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
   const getKeyDown = (e: any) => {
@@ -219,7 +221,7 @@ const FlawDetail = () => {
       id: flawInfo.id || 0,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }, 0)
@@ -394,7 +396,7 @@ const FlawDetail = () => {
 
   // 关闭弹窗
   const onClose = () => {
-    dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
   }
 
   // 是否审核
@@ -437,7 +439,7 @@ const FlawDetail = () => {
           </ItemNumber>
         </ActivityTabItem>
       ),
-      children: <ChangeRecord activeKey={tabActive} />,
+      children: <ChangeRecord activeKey={tabActive} filter={filter} />,
     },
     {
       key: '4',
@@ -686,6 +688,14 @@ const FlawDetail = () => {
         activeKey={tabActive}
         items={tabItems}
         onChange={onChangeTabs}
+        tabBarExtraContent={
+          <ScreenMinHover
+            label={t('common.search')}
+            icon="filter"
+            isActive
+            onClick={() => setFilter(!filter)}
+          />
+        }
       />
     </Wrap>
   )

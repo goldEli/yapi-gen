@@ -12,14 +12,16 @@ import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
 import { deleteAffairsComment, updateAffairsComment } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const ActivitySprint = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [activeKey, setActiveKey] = useState('1')
+  const [filter, setFilter] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id } = paramsData
+  const { id } = paramsData ?? {}
   const { affairsCommentList, affairsInfo } = useSelector(
     store => store.affairs,
   )
@@ -88,7 +90,7 @@ const ActivitySprint = () => {
           </ItemNumber>
         </ActivityTabItem>
       ),
-      children: <ChangeRecord activeKey={activeKey} />,
+      children: <ChangeRecord activeKey={activeKey} filter={filter} />,
     },
     {
       key: '3',
@@ -111,7 +113,19 @@ const ActivitySprint = () => {
   return (
     <InfoItem id="sprint-activity" className="info_item_tab">
       <Label>{t('activity')}</Label>
-      <Tabs defaultActiveKey={activeKey} items={items} onChange={onChange} />
+      <Tabs
+        defaultActiveKey={activeKey}
+        items={items}
+        onChange={onChange}
+        tabBarExtraContent={
+          <ScreenMinHover
+            label={t('common.search')}
+            icon="filter"
+            isActive
+            onClick={() => setFilter(!filter)}
+          />
+        }
+      />
     </InfoItem>
   )
 }

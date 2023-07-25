@@ -18,6 +18,7 @@ import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
 import { getFlawChangeLog } from '@/services/flaw'
 import { setIsUpdateChangeLog } from '@store/project'
+import CommonFilter from '../../CommonFilter'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -61,6 +62,7 @@ const NewSort = (sortProps: any) => {
 
 interface Props {
   activeKey: string
+  filter: boolean
 }
 
 const ChangeRecord = (props: Props) => {
@@ -422,6 +424,7 @@ const ChangeRecord = (props: Props) => {
           </div>
         </SpaceWrap>
       </CommonModal>
+      {props.filter ? <CommonFilter></CommonFilter> : null}
       <ResizeTable
         isSpinning={isSpinning}
         dataWrapNormalHeight="calc(100% - 64px)"

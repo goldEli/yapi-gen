@@ -153,6 +153,7 @@ const FlawStatus = (props: any) => {
             type={3}
             onCancel={onCancelExamine}
             isVerify={flawInfo?.has_verify === 1}
+            verifyInfo={flawInfo.verify_data}
           />
         )}
         {rows && !flawInfo?.isExamine && (

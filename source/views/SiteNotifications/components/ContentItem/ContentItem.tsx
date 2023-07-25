@@ -66,8 +66,8 @@ const ContentItem = (props: any) => {
     if (url) {
       return str.concat(
         '',
-        `<a  
-        href="${url}" target="_target">${t('other.checkTo')}</a>`,
+        `<a  class="dsds-my"
+              href="${url}" target="_target">${t('other.checkTo')}</a>`,
       )
     }
 
