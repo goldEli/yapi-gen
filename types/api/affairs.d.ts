@@ -220,6 +220,10 @@ declare namespace API.Affairs {
       page: number
       orderKey: string
       order: string
+      change_user?: number
+      change_keywords?: string
+      created_at?: []
+      change_type?: number
     }
     type Result = {
       pager?: {
