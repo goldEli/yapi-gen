@@ -57,7 +57,7 @@ const DetailScreenModal = () => {
         }),
       )
     }
-  }, [])
+  }, [paramsData?.isOpenScreenDetail])
 
   return (
     <ModalWrap

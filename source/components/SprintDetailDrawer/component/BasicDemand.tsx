@@ -260,11 +260,6 @@ const BasicDemand = (props: Props) => {
     if (
       !['schedule', 'parent_id', 'priority', 'severity'].includes(item.content)
     ) {
-      console.log(
-        item.content,
-        '=item.contentitem.contentitem.content',
-        props.detail,
-      )
       const filterContent = basicFieldList?.filter(
         (i: any) => i.content === item.content,
       )[0]
