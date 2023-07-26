@@ -95,7 +95,7 @@ const Email = () => {
             'ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout',
           )}
           <span style={{ marginLeft: '250px' }}>
-            <Switch checked={active} onChange={onChange} />
+            {/* <Switch checked={active} onChange={onChange} /> */}
           </span>
         </Content1>
         {active ? (
