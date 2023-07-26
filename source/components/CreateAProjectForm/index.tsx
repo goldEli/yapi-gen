@@ -531,13 +531,18 @@ const CreateAProjectForm = () => {
                   ))}
 
                   {myCover ? (
-                    <CoverAreaImageWrap onClick={() => setActiveCover(myCover)}>
+                    <CoverAreaImageWrap>
                       <CoverAreaImage src={myCover} />
                       {myCover === activeCover && (
                         <IconFont className={coverAreaIcon} type="anglemark" />
                       )}
                       {myCover === activeCover && (
-                        <CoverAreaImageShade onClick={() => setMyCover('')}>
+                        <CoverAreaImageShade
+                          onClick={() => {
+                            setMyCover('')
+                            setActiveCover(covers[0]?.path)
+                          }}
+                        >
                           <IconFont
                             className={coverAreadelIcon}
                             type="delete"

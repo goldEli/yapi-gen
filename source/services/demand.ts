@@ -804,6 +804,10 @@ export const getDemandChangeLog: any = async (params: any) => {
     search: {
       story_id: params.demandId,
       project_id: params.projectId,
+      change_user: params.change_user,
+      change_keywords: params.change_keywords,
+      created_at: params.created_at,
+      change_type: params.change_type,
     },
     pagesize: params.pageSize,
     page: params.page,

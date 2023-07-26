@@ -14,7 +14,16 @@ export const getUserIntroList = async (params: { ids: string }) => {
       name: i.name,
       avatar: i.avatar,
       department: i.department?.name,
-      position: i.position?.name,
+      position: i.position?.name ?? '--',
+      email: i.email ? i.email : '--',
+      phone: i.phone,
+      departments: i.departments
+        ?.map((l: any) => l.name)
+        ?.reverse()
+        ?.join('-'),
+      company: i.company?.name,
+      completed_rate: i.completed_rate ?? 0,
+      undone_num: i.undone_num ?? 0,
     })),
   }
 }

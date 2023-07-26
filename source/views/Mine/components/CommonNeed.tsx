@@ -315,6 +315,8 @@ const CommonNeed = (props: any) => {
     setPageObj({ page: 1, size: pageObj.size })
   }
   const init = async (updateState?: boolean) => {
+    console.log('init')
+
     if (!updateState) {
       setIsSpin(true)
     }
@@ -530,12 +532,6 @@ const CommonNeed = (props: any) => {
   }
 
   useEffect(() => {
-    init(false)
-  }, [keyword, orderKey, order, searchGroups, isMany, pageObj])
-
-  // 监听项目id变化，更新项目信息
-  useEffect(() => {
-    // 如果分页为1则调用接口
     if (pageObj.page === 1) {
       init(false)
     } else {
@@ -543,7 +539,19 @@ const CommonNeed = (props: any) => {
       setPageObj({ page: 1, size: pageObj.size })
     }
     getShowkey()
-  }, [props.id])
+  }, [keyword, orderKey, order, searchGroups, isMany, pageObj, props.id])
+
+  // 监听项目id变化，更新项目信息
+  // useEffect(() => {
+  //   // 如果分页为1则调用接口
+  //   if (pageObj.page === 1) {
+  //     init(false)
+  //   } else {
+  //     // 如果分页改变则，重置分页
+  //     setPageObj({ page: 1, size: pageObj.size })
+  //   }
+  //   getShowkey()
+  // }, [props.id])
 
   useEffect(() => {
     if (projectInfo?.id) {

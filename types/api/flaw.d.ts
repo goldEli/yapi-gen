@@ -262,6 +262,10 @@ declare namespace API.Flaw {
       page: number
       orderKey: string
       order: string
+      change_user?: number
+      change_keywords?: string
+      created_at?: []
+      change_type?: number
     }
     type Result = {
       pager?: {

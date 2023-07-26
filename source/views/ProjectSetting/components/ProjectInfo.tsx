@@ -180,20 +180,39 @@ const ProjectInfo = () => {
               {projectInfo.name}
             </span>
           </OmitText>
-          <ClickIcon
-            hidden={getIsPermission(
-              userInfo?.company_permissions,
-              'b/project/update',
-            )}
-            onClick={() => {
-              dispatch(editProject({ visible: true, id: projectInfo.id }))
-            }}
-            style={{
-              marginLeft: 24,
-              cursor: 'pointer',
-            }}
-            type="edit-square"
-          />
+          {projectInfo.permissionType === 1 ? (
+            <ClickIcon
+              hidden={getIsPermission(
+                userInfo?.company_permissions,
+                'b/project/update',
+              )}
+              onClick={() => {
+                dispatch(editProject({ visible: true, id: projectInfo.id }))
+              }}
+              style={{
+                marginLeft: 24,
+                cursor: 'pointer',
+              }}
+              type="edit-square"
+            />
+          ) : (
+            projectInfo.isTeam && (
+              <ClickIcon
+                hidden={getIsPermission(
+                  userInfo?.company_permissions,
+                  'b/project/update',
+                )}
+                onClick={() => {
+                  dispatch(editProject({ visible: true, id: projectInfo.id }))
+                }}
+                style={{
+                  marginLeft: 24,
+                  cursor: 'pointer',
+                }}
+                type="edit-square"
+              />
+            )
+          )}
         </div>
         <SubText>{projectInfo.info || '--'}</SubText>
         <div

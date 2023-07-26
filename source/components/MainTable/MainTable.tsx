@@ -66,6 +66,8 @@ const ImgWrap = styled.div<{ url?: string }>(
 )
 
 const MoreContent = (props: any) => {
+  console.log(props.record.team_id, 'ffdfdw')
+
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
@@ -111,7 +113,7 @@ const MoreContent = (props: any) => {
     ).includes('b/project/update')
     let menuItems = [
       {
-        isHave: isEdit,
+        isHave: props.record.team_id === 0 ? isEdit : props.isTeam,
         key: '1',
         label: (
           <div onClick={e => onClickMore?.('edit', record, e)}>
@@ -171,6 +173,8 @@ const NewSort = (sortProps: any) => {
 }
 
 const MainTable = (props: Props) => {
+  console.log(props.projectList.list, 'ffffffffff')
+
   const [t] = useTranslation()
   const navigate = useNavigate()
   const { userInfo } = useSelector(store => store.user)
@@ -445,13 +449,15 @@ const MainTable = (props: Props) => {
       {
         width: 1,
         render: (text: any, record: any) => {
+          console.log(record, 'record')
+
           return (
             <div
-              id={'ddd'}
               style={{ display: 'flex', alignItems: 'center', width: '15px' }}
             >
               {hasEdit && hasDelete && hasStop && hasStart ? null : (
                 <MoreContent
+                  isTeam={record.isTeam}
                   onChange={props?.onChangeOperation}
                   text={text}
                   record={record}

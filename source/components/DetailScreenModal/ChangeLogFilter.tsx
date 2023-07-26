@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { SelectWrap, SelectWrapBedeck } from '@/components/StyleCommon'
+import { getPriOrStu } from '@/services/mine'
 import RangePicker from '@/components/RangePicker'
-import { Space, Form } from 'antd'
+import { Space, Form, Input } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { getProjectMember } from '@/services/project'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { css } from '@emotion/css'
+import dayjs from 'dayjs'
 const ClearForm = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -21,12 +24,24 @@ const FormWrap = styled(Form)({
     margin: 0,
   },
 })
+const customInput = css`
+  border: none !important;
+`
 interface MemberListProps {
   name: string
   id: number
+  content_txt: string
 }
-const CommonFilter = () => {
+interface IProps {
+  onChange?(data: any): void
+}
+interface SearchProps {
+  [key: string]: number | string
+}
+const ChangeLogFilter = (prop: IProps) => {
   const [memberList, setMemberList] = useState<MemberListProps[]>([])
+  const [changeType, setChangeType] = useState<MemberListProps[]>([])
+  const [search, setSearch] = useState({})
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
@@ -34,22 +49,44 @@ const CommonFilter = () => {
   const { id } = paramsData
   useEffect(() => {
     const init = async () => {
-      let res = await getProjectMember({
+      const res = await getProjectMember({
         projectId: id,
         all: 1,
       })
-      setMemberList(res)
+      setMemberList(res ?? [])
+    }
+    const getChangeType = async () => {
+      const res = await getPriOrStu({
+        projectId: id,
+        type: 'change_log_type',
+      })
+      setChangeType(res?.data ?? [])
     }
     init()
+    getChangeType()
   }, [])
+  useEffect(() => {
+    console.log('search', search)
+    for (const key in search) {
+      if (
+        !search[key as keyof typeof search] ||
+        (key === 'created_at' && !Object.values(search).join(''))
+      ) {
+        delete search[key as keyof typeof search]
+      }
+    }
+    prop?.onChange && prop?.onChange(search)
+  }, [search])
   return (
     <FormWrap form={form}>
       <SelectWrapBedeck>
         <span style={{ margin: '0 16px', fontSize: '14px' }}>变更人</span>
-        <Form.Item name="send_user_ids">
+        <Form.Item name="change_user">
           <SelectWrap
             showArrow
-            onChange={() => {}}
+            onChange={(value: any) => {
+              setSearch({ ...search, change_user: value })
+            }}
             style={{ width: '100%' }}
             placeholder={t('common.pleaseSelect')}
             showSearch
@@ -64,41 +101,61 @@ const CommonFilter = () => {
       </SelectWrapBedeck>
       <SelectWrapBedeck>
         <span style={{ margin: '0 16px', fontSize: '14px' }}>变更类型</span>
-        <Form.Item name="receive_user_ids">
+        <Form.Item name="change_type">
           <SelectWrap
-            onChange={() => {}}
-            mode="multiple"
+            onChange={(value: any) => {
+              setSearch({ ...search, change_type: value })
+            }}
             style={{ width: '100%' }}
             placeholder={t('common.pleaseSelect')}
             showSearch
             optionFilterProp="label"
             showArrow
             allowClear
+            options={changeType.map(item => ({
+              label: item.content_txt,
+              value: item.id,
+            }))}
           />
         </Form.Item>
       </SelectWrapBedeck>
       <SelectWrapBedeck>
         <span style={{ margin: '0 16px', fontSize: '14px' }}>变更前后</span>
-        <Form.Item name="receive_user_ids">
-          <SelectWrap
-            onChange={() => {}}
-            mode="multiple"
-            style={{ width: '100%' }}
+        <Form.Item name="change_keywords">
+          <Input
+            bordered={false}
+            className={customInput}
             placeholder={t('common.pleaseSelect')}
-            showSearch
-            optionFilterProp="label"
-            showArrow
+            onChange={e => {
+              setSearch({ ...search, change_keywords: e.target.value })
+            }}
             allowClear
-          />
+          ></Input>
         </Form.Item>
       </SelectWrapBedeck>
       <SelectWrapBedeck>
         <span style={{ margin: '0 16px', fontSize: '14px' }}>变更时间</span>
-        <Form.Item name="receive_user_ids">
+        <Form.Item name="created_at">
           <RangePicker
             isShowQuick
-            dateValue={form.getFieldValue('times')}
-            onChange={() => {}}
+            dateValue={form.getFieldValue('created_at')}
+            onChange={value => {
+              if (!value) {
+                setSearch({
+                  ...search,
+                  created_at: [],
+                })
+                return
+              }
+              const [startTime, endTime] = value
+              setSearch({
+                ...search,
+                created_at: [
+                  dayjs(startTime).format('YYYY-MM-DD'),
+                  dayjs(endTime).format('YYYY-MM-DD'),
+                ],
+              })
+            }}
           />
         </Form.Item>
       </SelectWrapBedeck>
@@ -109,6 +166,10 @@ const CommonFilter = () => {
             fontSize: 15,
             cursor: 'pointer',
           }}
+          onClick={() => {
+            setSearch({})
+            form.resetFields()
+          }}
         >
           {t('common.clearForm')}
         </span>
@@ -116,4 +177,4 @@ const CommonFilter = () => {
     </FormWrap>
   )
 }
-export default CommonFilter
+export default ChangeLogFilter
