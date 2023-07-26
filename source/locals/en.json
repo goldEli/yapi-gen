@@ -924,7 +924,10 @@
     "copyFail": "Failed to copy the link",
     "chooseCategory": "Please Select",
     "clearAll": "Clear all options",
-    "giveUp": "Give up saving"
+    "giveUp": "Give up saving",
+    "completionRate": "Job completion rate",
+    "waitCompleted": "To be completed",
+    "pieces": " pieces"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",

@@ -38,7 +38,7 @@ export const AvatarBox = styled.div<{ left: number }>`
 export const ItemRow = styled.div`
   width: 240px;
   display: flex;
-  alignitems: center;
+  align-items: center;
   cursor: pointer;
 `
 export const Text = styled.span`
@@ -77,8 +77,11 @@ export const BottomWrap = styled.div`
   padding-bottom: 12px;
 `
 export const Email = styled.div`
+  display: flex;
   color: var(--neutral-white-d7);
   align-items: center;
+  font-size: 12px;
+  height: 20px;
 `
 export const ItemWrap = styled.div`
   display: flex;

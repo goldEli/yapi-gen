@@ -238,7 +238,9 @@ const MyDropdown = (props: any) => {
   const onRoute = (el: any, type: string) => {
     let resultType = el?.feedable_type
     let project_type = el?.feedable?.project?.project_type
+    let isDefect = el?.feedable?.project?.is_bug
     console.log('el', resultType, project_type, el)
+    // debugger
     // 迭代详情 需求详情  事务详情  缺陷详情
     // const url = {
     //   iterate: '/ProjectManagement/IterationDetail',
@@ -270,7 +272,10 @@ const MyDropdown = (props: any) => {
     }
 
     if (project_type === 1) {
-      if (resultType === 'story' || resultType === 'project') {
+      if (
+        (resultType === 'story' && isDefect === 2) ||
+        resultType === 'project'
+      ) {
         url = '/ProjectManagement/Demand'
         params = { ...params, specialType: 3, isOpenScreenDetail: true }
       }
@@ -278,7 +283,10 @@ const MyDropdown = (props: any) => {
       if (resultType === 'iterate') {
         url = `/ProjectManagement/IterationDetail`
       }
-      if (resultType === 'Defect') {
+      if (
+        resultType === 'Defect' ||
+        (resultType === 'story' && isDefect === 1)
+      ) {
         url = '/ProjectManagement/Defect'
         params = { ...params, specialType: 2, isOpenScreenDetail: true }
       }
