@@ -56,6 +56,7 @@ import Circulation from './components/Circulation'
 import FlawInfo from './components/FlawInfo'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const FlawDetail = () => {
   const [t] = useTranslation()
@@ -64,6 +65,8 @@ const FlawDetail = () => {
   const spanDom = useRef<HTMLSpanElement>(null)
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
+  // 不能删除open方法
+  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
   const { userInfo } = useSelector(store => store.user)
   const { flawInfo } = useSelector(store => store.flaw)
   const {
@@ -100,6 +103,12 @@ const FlawDetail = () => {
   //   刷新缺陷详情
   const onUpdate = () => {
     dispatch(getFlawInfo({ projectId: params.id, id: flawInfo.id }))
+  }
+
+  // 关闭弹窗
+  const onClose = () => {
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    closeScreenModal()
   }
 
   // 关闭类别弹窗
@@ -199,6 +208,7 @@ const FlawDetail = () => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
+    onClose()
     const resultParams = encryptPhp(
       JSON.stringify({
         type: 4,
@@ -221,7 +231,7 @@ const FlawDetail = () => {
       id: flawInfo.id || 0,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    onClose()
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }, 0)
@@ -394,11 +404,6 @@ const FlawDetail = () => {
       }),
     )
     dispatch(setIsUpdateChangeLog(true))
-  }
-
-  // 关闭弹窗
-  const onClose = () => {
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
   }
 
   // 是否审核

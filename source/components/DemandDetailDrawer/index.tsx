@@ -91,7 +91,7 @@ const DemandDetailDrawer = () => {
       dom: useRef<any>(null),
     },
     basicInfo: {
-      isOpen: false,
+      isOpen: true,
       dom: useRef<any>(null),
     },
     demandComment: {
@@ -199,6 +199,37 @@ const DemandDetailDrawer = () => {
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
+
+    const arr = [
+      { key: 'detailDemands', count: info.childCount },
+      { key: 'relation', count: info.relation_stories },
+      { key: 'demandComment', count: info.comment_total },
+    ]
+
+    if (info.comment_total) {
+      // 获取评论列表
+      dispatch(
+        getDemandCommentList({
+          projectId: paramsProjectId,
+          demandId: info.id,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
+    }
+
+    const newState = Object.assign({}, showState)
+    let resState: any
+
+    // 如果有数据的话，则默认展开
+    arr.forEach(element => {
+      resState = {
+        isOpen: element.count,
+        dom: newState[element.key].dom,
+      }
+      newState[element.key] = resState
+    })
+    setShowState(newState)
   }
 
   // 关闭弹窗
@@ -493,7 +524,6 @@ const DemandDetailDrawer = () => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
       getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
-      setShowState(normalState)
     }
   }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
 

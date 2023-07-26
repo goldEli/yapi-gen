@@ -373,6 +373,8 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
           fields: response.data.verify_data.fields,
         }
       : null,
+    comment_total: response.data.comment_total,
+    relation_stories: response.data.relation_stories,
   }
 }
 
