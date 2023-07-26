@@ -24,7 +24,6 @@ import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import AddWorkItem from '@/components/AddWorkItem'
-import NoteModal from '@/components/NoteModal'
 import SprintDetailDrawer from '@/components/SprintDetailDrawer'
 import FlawDetailDrawer from '@/components/FlawDetailDrawer'
 import DeleteConfirmGlobalModal from '@/components/DeleteConfirmGlobal'
@@ -35,8 +34,8 @@ import { setFlawDetailDrawer } from '@store/flaw'
 import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
 import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 import DetailScreenModal from '@/components/DetailScreenModal'
-import { setIsDetailScreenModal } from '@store/project'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -70,6 +69,8 @@ export const Container = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
+  // 不能删除open方法
+  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
   const { loginInfo, menuPermission } = useSelector(store => store.user)
   const {
     i18n: { language },
@@ -136,7 +137,6 @@ export const Container = () => {
     changeLanguage(languageParams)
     init()
     dispatch(getStatus())
-    console.log('第一次获取')
     dispatch(getProjectCover())
     dispatch(getLoginDetail())
     dispatch(getAsyncCompanyInfo())
@@ -184,6 +184,7 @@ export const Container = () => {
             onClick={() => {
               dispatch(changeCreateVisible(false))
               dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+              closeScreenModal()
               dispatch(changeFreedVisibleVisible(false))
             }}
           >

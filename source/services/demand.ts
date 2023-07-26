@@ -600,6 +600,8 @@ export const getDemandInfo: any = async (params: any) => {
           fields: response.data.verify_data.fields,
         }
       : null,
+    comment_total: response.data.comment_total,
+    relation_stories: response.data.relation_stories,
   }
 }
 

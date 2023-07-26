@@ -6,6 +6,7 @@ import * as http from '@/tools/http'
 
 export const getAllNoteSet: any = async () => {
   const response: any = await http.get<any>('/b/msgConf/sysList')
+  console.log(response.data, 'ddddddddddddddddd')
 
   return response.data
 }

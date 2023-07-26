@@ -3,20 +3,22 @@ import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { setAffairsInfo } from '@store/affairs'
 import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { setFlawInfo } from '@store/flaw'
 import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 import {
   setIsChangeDetailAffairs,
-  setIsDetailScreenModal,
   setIsUpdateAddWorkItem,
 } from '@store/project'
 import { setDemandInfo } from '@store/demand'
 import { setListActiveId } from '@store/global'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
+import { getParamsData } from '@/tools'
 
 const useOpenDemandDetail = () => {
   const { userPreferenceConfig } = useSelector(store => store.user)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -84,7 +86,20 @@ const useOpenDemandDetail = () => {
     }
   }
 
-  return [openDemandDetail] as const
+  const closeScreenModal = () => {
+    if (paramsData?.isOpenScreenDetail) {
+      const params1 = encryptPhp(
+        JSON.stringify({
+          ...paramsData,
+          ...{ isOpenScreenDetail: null },
+        }),
+      )
+
+      setSearchParams(`data=${params1}`)
+    }
+  }
+
+  return [openDemandDetail, closeScreenModal] as const
 }
 
 export default useOpenDemandDetail

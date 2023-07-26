@@ -38,7 +38,6 @@ import {
 } from '@store/affairs/affairs.thunk'
 import {
   setAddWorkItemModal,
-  setIsDetailScreenModal,
   setIsUpdateAddWorkItem,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
@@ -61,6 +60,7 @@ import { setAffairsActivity, setAffairsInfo } from '@store/affairs'
 import AffairsBasic from './components/AffairsBasic'
 import AffairsInfo from './components/AffairsInfo'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const AffairsDetail = () => {
   const [t] = useTranslation()
@@ -70,6 +70,8 @@ const AffairsDetail = () => {
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const sprintDetailInfoDom: any = createRef()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
+  // 不能删除open方法
+  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
   const { open, ShareModal } = useShareModal()
   const { affairsInfo } = useSelector(store => store.affairs)
   const { userInfo } = useSelector(store => store.user)
@@ -112,6 +114,12 @@ const AffairsDetail = () => {
 
   // 项目是否已经结束
   const isEnd = projectInfo?.status === 2
+
+  // 关闭弹窗
+  const onClose = () => {
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    closeScreenModal()
+  }
 
   // 关闭类别弹窗
   const onCloseCategory = () => {
@@ -212,7 +220,7 @@ const AffairsDetail = () => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    onClose()
     const resultParams = encryptPhp(
       JSON.stringify({
         type: 'sprint',
@@ -239,7 +247,7 @@ const AffairsDetail = () => {
       isDeleteChild: isDeleteCheck ? 1 : 2,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    onClose()
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }, 0)
@@ -449,11 +457,6 @@ const AffairsDetail = () => {
       document.onmouseup = null
       setFocus(false)
     }
-  }
-
-  // 关闭弹窗
-  const onClose = () => {
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
   }
 
   // 是否审核

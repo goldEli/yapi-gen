@@ -9,7 +9,6 @@ import AffairsDetail from './AffairsDetail'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useEffect } from 'react'
-import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 const DetailScreenModal = () => {
   const dispatch = useDispatch()
@@ -25,11 +24,6 @@ const DetailScreenModal = () => {
     { specialType: 2, content: <FlawDetail /> },
     { specialType: 3, content: <DemandDetail /> },
   ]
-
-  //   关闭弹窗
-  const onClose = () => {
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
-  }
 
   useEffect(() => {
     // 如果地址栏上带有此参数，默认打开全屏弹层
@@ -57,7 +51,7 @@ const DetailScreenModal = () => {
         }),
       )
     }
-  }, [])
+  }, [paramsData?.isOpenScreenDetail])
 
   return (
     <ModalWrap
@@ -77,7 +71,6 @@ const DetailScreenModal = () => {
         marginTop: fullScreen ? 0 : 56,
       }}
       width="100vw"
-      onCancel={onClose}
       zIndex={50}
       // 界面全屏时需要挂载到全屏的那个dom元素身上才能显示出来
       getContainer={

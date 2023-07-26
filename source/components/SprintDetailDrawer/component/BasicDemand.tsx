@@ -36,6 +36,7 @@ import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import ChangeSeverityPopover from '@/components/ChangeSeverityPopover'
 import DetailParent from '@/components/DetailParent'
 import MultipleAvatar from '@/components/MultipleAvatar'
+import { setIsRefresh } from '@store/user'
 
 interface Props {
   detail?: any
@@ -70,7 +71,7 @@ const BasicDemand = (props: Props) => {
   const [isShowFields, setIsShowFields] = useState(false)
   const [schedule, setSchedule] = useState(props.detail?.schedule || 0)
   const { basicFieldList } = useSelector(store => store.global)
-  const { userInfo } = useSelector(store => store.user)
+  const { userInfo, isRefresh } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
   const { affairsDetailDrawer } = useSelector(store => store.affairs)
@@ -180,6 +181,7 @@ const BasicDemand = (props: Props) => {
           !['finish_at', 'created_at', 'user_name'].includes(i.content),
       ),
     )
+    dispatch(setIsRefresh(false))
   }
 
   // 获取基本字段的默认值
@@ -260,11 +262,6 @@ const BasicDemand = (props: Props) => {
     if (
       !['schedule', 'parent_id', 'priority', 'severity'].includes(item.content)
     ) {
-      console.log(
-        item.content,
-        '=item.contentitem.contentitem.content',
-        props.detail,
-      )
       const filterContent = basicFieldList?.filter(
         (i: any) => i.content === item.content,
       )[0]
@@ -461,6 +458,12 @@ const BasicDemand = (props: Props) => {
       getFieldData()
     }
   }, [props.isOpen, props.detail])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getFieldData()
+    }
+  }, [isRefresh])
 
   return (
     <div
