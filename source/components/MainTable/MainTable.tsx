@@ -111,7 +111,7 @@ const MoreContent = (props: any) => {
     ).includes('b/project/update')
     let menuItems = [
       {
-        isHave: isEdit,
+        isHave: isEdit && props.isTeam,
         key: '1',
         label: (
           <div onClick={e => onClickMore?.('edit', record, e)}>
@@ -171,6 +171,8 @@ const NewSort = (sortProps: any) => {
 }
 
 const MainTable = (props: Props) => {
+  console.log(props.projectList.list, 'ffffffffff')
+
   const [t] = useTranslation()
   const navigate = useNavigate()
   const { userInfo } = useSelector(store => store.user)
@@ -445,6 +447,8 @@ const MainTable = (props: Props) => {
       {
         width: 1,
         render: (text: any, record: any) => {
+          console.log(record, 'record')
+
           return (
             <div
               id={'ddd'}
@@ -452,6 +456,7 @@ const MainTable = (props: Props) => {
             >
               {hasEdit && hasDelete && hasStop && hasStart ? null : (
                 <MoreContent
+                  isTeam={record.isTeam}
                   onChange={props?.onChangeOperation}
                   text={text}
                   record={record}

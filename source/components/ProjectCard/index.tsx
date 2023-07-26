@@ -102,7 +102,7 @@ const Index = (props: any) => {
       {
         key: 'edit',
         label: <span>{t('common.edit')}</span>,
-        isHave: isEdit,
+        isHave: isEdit && props.item.isTeam,
       },
       {
         key: 'over',
