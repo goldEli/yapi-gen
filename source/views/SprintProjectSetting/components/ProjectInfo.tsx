@@ -175,7 +175,7 @@ const ProjectInfo = () => {
             </span>
           </OmitText>
           {/* //加是否是团队管理 */}
-          {projectInfo.isTeam && (
+          {projectInfo.permissionType === 1 ? (
             <ClickIcon
               hidden={getIsPermission(
                 userInfo?.company_permissions,
@@ -190,6 +190,23 @@ const ProjectInfo = () => {
               }}
               type="edit"
             />
+          ) : (
+            projectInfo.isTeam && (
+              <ClickIcon
+                hidden={getIsPermission(
+                  userInfo?.company_permissions,
+                  'b/project/update',
+                )}
+                onClick={() => {
+                  dispatch(editProject({ id: projectInfo.id, visible: true }))
+                }}
+                style={{
+                  marginLeft: 24,
+                  cursor: 'pointer',
+                }}
+                type="edit"
+              />
+            )
           )}
         </div>
         <SubText>{projectInfo.info || '--'}</SubText>

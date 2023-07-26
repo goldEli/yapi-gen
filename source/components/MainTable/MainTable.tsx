@@ -66,6 +66,8 @@ const ImgWrap = styled.div<{ url?: string }>(
 )
 
 const MoreContent = (props: any) => {
+  console.log(props.record.team_id, 'ffdfdw')
+
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
@@ -111,7 +113,7 @@ const MoreContent = (props: any) => {
     ).includes('b/project/update')
     let menuItems = [
       {
-        isHave: isEdit && props.isTeam,
+        isHave: props.record.team_id === 0 ? isEdit : props.isTeam,
         key: '1',
         label: (
           <div onClick={e => onClickMore?.('edit', record, e)}>
@@ -451,7 +453,6 @@ const MainTable = (props: Props) => {
 
           return (
             <div
-              id={'ddd'}
               style={{ display: 'flex', alignItems: 'center', width: '15px' }}
             >
               {hasEdit && hasDelete && hasStop && hasStart ? null : (

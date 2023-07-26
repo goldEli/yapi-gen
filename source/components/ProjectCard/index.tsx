@@ -89,6 +89,7 @@ const Index = (props: any) => {
           : t('other.affairsNumber'),
     },
   ]
+  console.log(props.item.team_id, 'team_id')
 
   const getItems = () => {
     const isDel = (
@@ -102,7 +103,7 @@ const Index = (props: any) => {
       {
         key: 'edit',
         label: <span>{t('common.edit')}</span>,
-        isHave: isEdit && props.item.isTeam,
+        isHave: props.item.team_id === 0 ? isEdit : props.item.isTeam,
       },
       {
         key: 'over',
