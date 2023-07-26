@@ -48,6 +48,7 @@ export const CoverAreaImageShade = styled.div`
   width: 80px;
   height: 80px;
   background: rgba(0, 0, 0, 0.3);
+  /* background: red; */
   border-radius: 6px 6px 6px 6px;
   position: absolute;
   left: 0;
@@ -56,6 +57,7 @@ export const CoverAreaImageShade = styled.div`
   align-items: center;
   justify-content: center;
   visibility: hidden;
+  z-index: 555;
 `
 
 export const CoverAreaImageWrap = styled.div<{ color?: string }>`

@@ -8,7 +8,7 @@ import {
   updateTableParams,
 } from '@/services/demand'
 import { getCustomNormalValue } from '@/tools'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { message, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -33,6 +33,7 @@ import {
 } from './style'
 import DetailParent from '../DetailParent'
 import MultipleAvatar from '../MultipleAvatar'
+import { setIsRefresh } from '@store/user'
 
 interface Props {
   detail?: any
@@ -56,6 +57,7 @@ const LimitLabel = (props: { label: string; width: number }) => {
 }
 
 const BasicDemand = (props: Props) => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   // 折叠字段
   const [foldList, setFoldList] = useState<any>([])
@@ -64,7 +66,7 @@ const BasicDemand = (props: Props) => {
   const [isShowFields, setIsShowFields] = useState(false)
   const [schedule, setSchedule] = useState(props.detail?.schedule || 0)
   const { basicFieldList } = useSelector(store => store.global)
-  const { userInfo } = useSelector(store => store.user)
+  const { userInfo, isRefresh } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
   const { demandDetailDrawerProps } = useSelector(store => store.demand)
@@ -147,6 +149,7 @@ const BasicDemand = (props: Props) => {
           !['finish_at', 'created_at', 'user_name'].includes(i.content),
       ),
     )
+    dispatch(setIsRefresh(false))
   }
 
   // 获取基本字段的默认值
@@ -376,6 +379,12 @@ const BasicDemand = (props: Props) => {
       getFieldData()
     }
   }, [props.isOpen, props.detail])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getFieldData()
+    }
+  }, [isRefresh])
 
   return (
     <div className={props.isInfoPage ? haveAuto : ''}>

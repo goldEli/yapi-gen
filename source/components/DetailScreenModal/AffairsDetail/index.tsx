@@ -38,7 +38,6 @@ import {
 } from '@store/affairs/affairs.thunk'
 import {
   setAddWorkItemModal,
-  setIsDetailScreenModal,
   setIsUpdateAddWorkItem,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
@@ -48,10 +47,10 @@ import MyBreadcrumb from '@/components/MyBreadcrumb'
 import LongStroyBread from '@/components/LongStroyBread'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
-import { copyLink, getIsPermission, getParamsData } from '@/tools'
+import { copyLink, getIsPermission } from '@/tools'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import StatusExamine from '@/components/StatusExamine'
 import { cancelVerify } from '@/services/mine'
 import CopyIcon from '@/components/CopyIcon'
@@ -61,6 +60,7 @@ import { setAffairsActivity, setAffairsInfo } from '@store/affairs'
 import AffairsBasic from './components/AffairsBasic'
 import AffairsInfo from './components/AffairsInfo'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const AffairsDetail = () => {
   const [t] = useTranslation()
@@ -70,6 +70,8 @@ const AffairsDetail = () => {
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const sprintDetailInfoDom: any = createRef()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
+  // 不能删除open方法
+  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
   const { open, ShareModal } = useShareModal()
   const { affairsInfo } = useSelector(store => store.affairs)
   const { userInfo } = useSelector(store => store.user)
@@ -100,9 +102,6 @@ const AffairsDetail = () => {
     list: undefined,
   })
 
-  const [searchParams, setSearchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
     'b/transaction/delete',
@@ -115,6 +114,12 @@ const AffairsDetail = () => {
 
   // 项目是否已经结束
   const isEnd = projectInfo?.status === 2
+
+  // 关闭弹窗
+  const onClose = () => {
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    closeScreenModal()
+  }
 
   // 关闭类别弹窗
   const onCloseCategory = () => {
@@ -215,7 +220,7 @@ const AffairsDetail = () => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    onClose()
     const resultParams = encryptPhp(
       JSON.stringify({
         type: 'sprint',
@@ -242,7 +247,7 @@ const AffairsDetail = () => {
       isDeleteChild: isDeleteCheck ? 1 : 2,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    onClose()
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }, 0)
@@ -452,20 +457,6 @@ const AffairsDetail = () => {
       document.onmouseup = null
       setFocus(false)
     }
-  }
-
-  // 关闭弹窗
-  const onClose = () => {
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
-    console.log(paramsData, '=paramsDataparamsDataparamsData')
-    const params1 = encryptPhp(
-      JSON.stringify({
-        ...paramsData,
-        ...{ isOpenScreenDetail: null },
-      }),
-    )
-
-    setSearchParams(`data=${params1}`)
   }
 
   // 是否审核

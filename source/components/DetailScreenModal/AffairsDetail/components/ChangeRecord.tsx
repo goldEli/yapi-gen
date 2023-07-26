@@ -18,7 +18,7 @@ import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
 import { getAffairsChangeLog } from '@/services/affairs'
 import { setIsUpdateChangeLog } from '@store/project'
-import CommonFilter from '../../CommonFilter'
+import ChangeLogFilter from '../../ChangeLogFilter'
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
     width: '48.5%',
@@ -90,10 +90,14 @@ const ChangeRecord = (props: Props) => {
     const result = await getAffairsChangeLog({
       sprintId: affairsInfo.id || 0,
       projectId: id,
-      page: item ? item.page : 1,
-      pageSize: item ? item.size : 10,
-      order: orderVal.value,
-      orderKey: orderVal.key,
+      page: item ? item.page ?? 1 : 1,
+      pageSize: item ? item.size ?? 10 : 10,
+      order: orderVal?.value,
+      orderKey: orderVal?.key,
+      change_user: item.change_user,
+      change_keywords: item.change_keywords,
+      created_at: item.created_at,
+      change_type: item.change_type,
     })
     setDataList(result)
     setIsSpinning(false)
@@ -424,7 +428,13 @@ const ChangeRecord = (props: Props) => {
           </div>
         </SpaceWrap>
       </CommonModal>
-      {props.filter ? <CommonFilter></CommonFilter> : null}
+      {props.filter ? (
+        <ChangeLogFilter
+          onChange={data => {
+            getList(data)
+          }}
+        ></ChangeLogFilter>
+      ) : null}
       <ResizeTable
         isSpinning={isSpinning}
         dataWrapNormalHeight="400px"

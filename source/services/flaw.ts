@@ -373,6 +373,8 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
           fields: response.data.verify_data.fields,
         }
       : null,
+    comment_total: response.data.comment_total,
+    relation_stories: response.data.relation_stories,
   }
 }
 
@@ -536,6 +538,10 @@ export const getFlawChangeLog = async (
       search: {
         story_id: params.id,
         project_id: params.projectId,
+        change_user: params.change_user,
+        change_keywords: params.change_keywords,
+        created_at: params.created_at,
+        change_type: params.change_type,
       },
       pagesize: params.pageSize,
       page: params.page,

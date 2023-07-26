@@ -83,7 +83,7 @@ const FlawDetailDrawer = () => {
       dom: useRef<any>(null),
     },
     basicInfo: {
-      isOpen: false,
+      isOpen: true,
       dom: useRef<any>(null),
     },
     flawComment: {
@@ -166,6 +166,36 @@ const FlawDetailDrawer = () => {
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
+
+    const arr = [
+      { key: 'relation', count: info.relation_stories },
+      { key: 'flawComment', count: info.comment_total },
+    ]
+
+    if (info.comment_total) {
+      // 获取评论列表
+      dispatch(
+        getFlawCommentList({
+          projectId: paramsProjectId,
+          id: info.id,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
+    }
+
+    const newState = Object.assign({}, showState)
+    let resState: any
+
+    // 如果有数据的话，则默认展开
+    arr.forEach(element => {
+      resState = {
+        isOpen: element.count,
+        dom: newState[element.key].dom,
+      }
+      newState[element.key] = resState
+    })
+    setShowState(newState)
   }
 
   // 改变模块显示
@@ -559,7 +589,6 @@ const FlawDetailDrawer = () => {
       dispatch(setFlawCommentList({ list: [] }))
       setDemandIds(params?.demandIds || [])
       getFlawDetail('', params?.demandIds || [])
-      setShowState(normalState)
     }
   }, [flawDetailDrawer])
 

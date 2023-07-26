@@ -12,6 +12,7 @@ import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import BasicDemand from '@/components/SprintDetailDrawer/component/BasicDemand'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 interface Props {
   onRef: any
@@ -22,6 +23,8 @@ const AffairsBasic = (props: Props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { affairsInfo } = useSelector(store => store.affairs)
+  // 不能删除open方法
+  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
 
   // 更新详情
   const onUpdate = () => {
@@ -38,6 +41,7 @@ const AffairsBasic = (props: Props) => {
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
     dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    closeScreenModal()
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',
