@@ -305,7 +305,7 @@ const ProjectDetailSide = () => {
     setSelectedKeys([paramsData.type])
   }, [paramsData.type])
   useEffect(() => {}, [pathname])
-  console.log(projectSettingsList)
+
   return (
     <AllWrap>
       {pathname !== '/SprintProjectManagement/DemandSetting' &&

@@ -7,7 +7,8 @@ import CommonIconFont from '../CommonIconFont'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
-import { setIsDetailScreenModal } from '@store/project'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 const breadStyle = css`
   span {
     &:hover {
@@ -22,10 +23,19 @@ const MyBreadcrumb = (props: any) => {
   const location = useLocation()
   const [t] = useTranslation()
   const projectInfo = useSelector(state => state.project.projectInfo)
+  // 不能删除open方法
+  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { type } = paramsData ?? {}
   const dispatch = useDispatch()
+
+  // 关闭全屏详情弹层
+  const onCloseModal = () => {
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    closeScreenModal()
+  }
+
   return (
     <Breadcrumb
       separator={
@@ -35,8 +45,7 @@ const MyBreadcrumb = (props: any) => {
       <Breadcrumb.Item>
         <a
           onClick={() => {
-            dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
-
+            onCloseModal()
             navigate('/ProjectManagement/Project')
           }}
           style={{ color: 'var(--neutral-n1-d1)' }}
@@ -51,7 +60,7 @@ const MyBreadcrumb = (props: any) => {
             className={breadStyle}
             onClick={() => {
               const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
-              dispatch(setIsDetailScreenModal({ visible: false, params: {} }))
+              onCloseModal()
               if (projectInfo.projectType === 1) {
                 // 之前需求迭代跳转统一跳到了需求，需要区分迭代是迭代的，需求是需求的
                 location.pathname.includes('/ProjectManagement/Iteration')

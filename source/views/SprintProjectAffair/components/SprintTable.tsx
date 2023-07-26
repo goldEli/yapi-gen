@@ -341,7 +341,7 @@ const SprintTable = (props: Props) => {
     columns,
     selectedRowKeys,
   ])
-  console.log(selectedRowKeys, 'selectedRowKeys')
+
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
     const resultKeys = selected

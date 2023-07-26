@@ -62,6 +62,7 @@ import ChangeRecord from './components/ChangeRecord'
 import Circulation from './components/Circulation'
 import DemandInfo from './components/DemandInfo'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const DemandDetail = () => {
   const [t] = useTranslation()
@@ -70,6 +71,8 @@ const DemandDetail = () => {
   const spanDom = useRef<HTMLSpanElement>(null)
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
+  // 不能删除open方法
+  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
   const { demandInfo } = useSelector(store => store.demand)
   const { userInfo } = useSelector(store => store.user)
   const {
@@ -104,6 +107,12 @@ const DemandDetail = () => {
 
   // 项目是否已经结束
   const isEnd = projectInfo?.status === 2
+
+  // 关闭弹窗
+  const onClose = () => {
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    closeScreenModal()
+  }
 
   // 关闭类别弹窗
   const onCloseCategory = () => {
@@ -202,7 +211,7 @@ const DemandDetail = () => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    onClose()
     const resultParams = encryptPhp(
       JSON.stringify({
         type: 4,
@@ -224,7 +233,7 @@ const DemandDetail = () => {
       id: demandInfo.id,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    onClose()
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }, 0)
@@ -394,11 +403,6 @@ const DemandDetail = () => {
       }),
     )
     dispatch(setIsUpdateChangeLog(true))
-  }
-
-  // 关闭弹窗
-  const onClose = () => {
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
   }
 
   // 是否审核
