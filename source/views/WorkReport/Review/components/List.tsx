@@ -31,7 +31,6 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { css } from '@emotion/css'
 import { templateList } from '@/services/formwork'
-import { getParamsData } from '@/tools'
 
 const listContainer = css`
   margin: 0 24px;
@@ -106,7 +105,6 @@ const List = () => {
   const reportId = searchParams.get('reportId')
   const id = Number(params?.id)
   const { isFresh } = useSelector(state => state.workReport.listUpdate)
-  console.log(reportId)
 
   const statusOptions = [
     { label: t('p2.noRead'), value: 1, id: 1 },
@@ -226,7 +224,7 @@ const List = () => {
   }
   const columns: any[] = [
     {
-      width: 200,
+      width: 400,
       title: (
         <NewSort
           fixedKey="user_id"
@@ -311,7 +309,7 @@ const List = () => {
       },
     },
     {
-      width: 450,
+      width: 400,
       title: (
         <NewSort
           fixedKey="user_id"
@@ -349,7 +347,7 @@ const List = () => {
       },
     },
     {
-      width: 252,
+      width: 200,
       title: (
         <NewSort
           fixedKey="start_time"
@@ -372,7 +370,7 @@ const List = () => {
       },
     },
     {
-      width: 240,
+      width: 150,
       title: (
         <NewSort
           fixedKey="updated_at"
@@ -386,7 +384,7 @@ const List = () => {
       dataIndex: 'updated_at',
     },
     {
-      width: 160,
+      width: 140,
       title: t('report.list.readState'),
       align: 'center',
       dataIndex: 'type',
@@ -401,7 +399,7 @@ const List = () => {
       },
     },
     {
-      width: 92,
+      width: 100,
       title: t('report.list.operation'),
       align: 'center',
       fixed: 'right',

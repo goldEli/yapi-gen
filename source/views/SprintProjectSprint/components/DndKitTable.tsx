@@ -348,7 +348,7 @@ const DndKitTable = (props: any) => {
 
   const columns: TableColumnProps<any>[] = [
     {
-      width: 48,
+      width: 50,
       align: 'center',
       render: (text: any, record: any) => {
         return (
@@ -376,14 +376,14 @@ const DndKitTable = (props: any) => {
     },
     {
       dataIndex: 'sort',
-      width: 48,
+      width: 50,
       render: () => <MoveFont type="move" style={{ fontSize: 16 }} />,
     },
     {
       title: t('sprint.Number'),
       dataIndex: 'story_prefix_key',
       key: 'story_prefix_key',
-      width: 150,
+      width: 140,
       render(value, temp) {
         const id = temp.id?.split('_')?.[1]
         const record = { ...temp, id, isExamine: temp.verify_lock === 1 }
@@ -511,12 +511,12 @@ const DndKitTable = (props: any) => {
         )
       },
     },
-    { title: t('sprint.sub'), dataIndex: 'child_story_count' },
+    { title: t('sprint.sub'), dataIndex: 'child_story_count', width: 120 },
     {
       title: t('sprint.agent'),
       dataIndex: 'handlers',
       key: 'handlers',
-      width: 180,
+      width: 140,
       render: (text: any, temp: any) => {
         const id = temp.id?.split('_')?.[1]
         const record = {
@@ -551,7 +551,7 @@ const DndKitTable = (props: any) => {
       title: t('common.priority'),
       dataIndex: 'priority',
       key: 'priority',
-      width: 180,
+      width: 100,
       render: (text: any, temp: any) => {
         const id = temp.id?.split('_')?.[1]
         const record = { ...temp, id }
@@ -592,7 +592,7 @@ const DndKitTable = (props: any) => {
       title: t('common.status'),
       dataIndex: 'status',
       key: 'status',
-      width: 190,
+      width: 170,
       render: (text: any, temp: any) => {
         const id = temp.id?.split('_')?.[1]
         const record = { ...temp, id, isExamine: temp.verify_lock === 1 }

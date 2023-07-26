@@ -48,10 +48,10 @@ import MyBreadcrumb from '@/components/MyBreadcrumb'
 import LongStroyBread from '@/components/LongStroyBread'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
-import { copyLink, getIsPermission } from '@/tools'
+import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import StatusExamine from '@/components/StatusExamine'
 import { cancelVerify } from '@/services/mine'
 import CopyIcon from '@/components/CopyIcon'
@@ -99,6 +99,9 @@ const AffairsDetail = () => {
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
 
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
@@ -454,6 +457,15 @@ const AffairsDetail = () => {
   // 关闭弹窗
   const onClose = () => {
     dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    console.log(paramsData, '=paramsDataparamsDataparamsData')
+    const params1 = encryptPhp(
+      JSON.stringify({
+        ...paramsData,
+        ...{ isOpenScreenDetail: null },
+      }),
+    )
+
+    setSearchParams(`data=${params1}`)
   }
 
   // 是否审核

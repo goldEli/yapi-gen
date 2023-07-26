@@ -116,7 +116,7 @@ const Statistics = () => {
     {
       title: <> {t('common.name')} </>,
       dataIndex: 'user',
-      width: 264,
+      width: 260,
       render: (value: any) => {
         return (
           <NameColumn>
