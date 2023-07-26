@@ -106,6 +106,7 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
   border-left: ${props =>
     props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
   border-top-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border-bottom-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
 `
 
 export const DropdownMenu = styled(Dropdown)`

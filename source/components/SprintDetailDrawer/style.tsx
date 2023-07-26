@@ -32,6 +32,9 @@ export const ContentWrap = styled.div<{ notHover?: any }>(
 export const LabelItem = styled.div`
   font-size: var(--font14);
   color: var(--neutral-n3);
+  display: flex;
+  align-items: center;
+  height: 32px;
 `
 
 export const ShowLabel = styled.div({
@@ -50,9 +53,10 @@ export const MaxLabel = styled.div<{ width: number }>`
 
 export const InfoItem = styled.div({
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'flex-start',
   marginTop: 14,
   position: 'relative',
+  minHeight: 32,
 })
 
 export const Label = styled.div`

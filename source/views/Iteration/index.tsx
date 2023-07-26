@@ -414,7 +414,7 @@ const Iteration = () => {
             onUpdate={refresh}
             onCompleteIteration={onCompleteIteration}
           />
-          <IterationMain>
+          <IterationMain isShowLeft={isShowLeft}>
             <IterationMainOperation>
               <IterationInfo>
                 {isShowLeft ? (

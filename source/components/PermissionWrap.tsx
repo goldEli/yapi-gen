@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import IconFont from './IconFont'
+import privatePermission from '/privatePermission.png'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -18,8 +18,8 @@ const Wrap = styled.div({
     marginBottom: 35,
   },
   div: {
-    color: 'var(--neutral-n1-d1)',
-    fontSize: 18,
+    color: 'var(--neutral-n3)',
+    fontSize: 14,
   },
 })
 
@@ -47,7 +47,11 @@ const PermissionWrap = ({
 
   return (
     <Wrap style={{ height: '100%' }}>
-      <IconFont type="noData" style={{ fontSize: 200 }} />
+      <img
+        src={privatePermission}
+        style={{ width: 240, marginBottom: 24 }}
+        alt=""
+      />
       <div>{t('components.noPermission')}</div>
     </Wrap>
   )
