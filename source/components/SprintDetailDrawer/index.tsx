@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import {
@@ -100,7 +101,7 @@ const SprintDetailDrawer = () => {
       dom: useRef<any>(null),
     },
     basicInfo: {
-      isOpen: false,
+      isOpen: true,
       dom: useRef<any>(null),
     },
     demandComment: {
@@ -228,21 +229,41 @@ const SprintDetailDrawer = () => {
       projectId: paramsProjectId,
       sprintId: id ? id : affairsDetailDrawer.params?.id,
     })
-    // info.level_tree?.push({
-    //   id: info.id,
-    //   category_id: info.category,
-    //   prefix_key: info.prefixKey || 0,
-    //   project_prefix: info.projectPrefix || '',
-    //   category_attachment: info.category_attachment,
-    //   parent_id: info.parentId || 0,
-    //   name: info.name,
-    //   work_type: 5,
-    //   attachment_id: 0,
-    // })
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
+
+    const arr = [
+      { key: 'childSprint', count: info.childCount },
+      { key: 'linkSprint', count: info.relation_stories },
+      { key: 'demandComment', count: info.comment_total },
+    ]
+
+    if (info.comment_total) {
+      // 获取评论列表
+      dispatch(
+        getAffairsCommentList({
+          projectId: paramsProjectId,
+          sprintId: info.id,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
+    }
+
+    const newState = Object.assign({}, showState)
+    let resState: any
+
+    // 如果有数据的话，则默认展开
+    arr.forEach(element => {
+      resState = {
+        isOpen: element.count,
+        dom: newState[element.key].dom,
+      }
+      newState[element.key] = resState
+    })
+    setShowState(newState)
   }
 
   // 关闭弹窗
@@ -652,7 +673,6 @@ const SprintDetailDrawer = () => {
       dispatch(setAffairsCommentList({ list: [] }))
       setDemandIds(affairsDetailDrawer.params?.demandIds || [])
       getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
-      setShowState(normalState)
     }
   }, [affairsDetailDrawer])
 
