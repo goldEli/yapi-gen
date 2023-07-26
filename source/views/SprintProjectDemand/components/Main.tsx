@@ -383,7 +383,7 @@ const Main = (props: any) => {
             color="var(--neutral-n3)"
           />
         )}
-        <span style={{ marginLeft: '8px' }}>
+        <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
           {t('newlyAdd.basicInfo') as string}
         </span>
       </TitleStyle>
@@ -421,7 +421,9 @@ const Main = (props: any) => {
           size={14}
           color="var(--neutral-n3)"
         />
-        <span style={{ marginLeft: '8px' }}>{t('more_folding') as string}</span>
+        <span style={{ marginLeft: '8px', fontFamily: 'SiYuanMedium' }}>
+          {t('more_folding') as string}
+        </span>
       </TitleStyle>
       <div
         style={{ minHeight: 300 }}

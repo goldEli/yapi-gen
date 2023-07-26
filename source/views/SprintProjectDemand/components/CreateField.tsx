@@ -255,7 +255,9 @@ const CreateField = () => {
           size={14}
           color="var(--neutral-n3)"
         />
-        <span style={{ marginLeft: '4px' }}>{t('creating_fields')}</span>
+        <span style={{ marginLeft: '4px', fontFamily: 'SiYuanMedium' }}>
+          {t('creating_fields')}
+        </span>
         <span
           style={{
             fontSize: '12px',
@@ -288,6 +290,7 @@ const CreateField = () => {
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
+                fontFamily: 'SiYuanMedium',
               }}
             >
               {t('project_existing_fields')}
