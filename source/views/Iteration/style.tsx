@@ -168,14 +168,13 @@ export const DetailWrap = styled.div`
   color: var(--neutral-n4);
   cursor: pointer;
 `
-
 // 迭代列表页
-export const IterationMain = styled.div({
-  width: '100%',
-  height: '100%',
-  overflowY: 'auto',
-  paddingLeft: '24px',
-})
+export const IterationMain = styled.div<{ isShowLeft?: boolean }>`
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding-left: ${props => (props.isShowLeft ? '24px' : '0')};
+`
 
 export const IterationMainOperation = styled.div`
   display: flex;

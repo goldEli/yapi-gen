@@ -909,7 +909,10 @@
     "copyFail": "复制链接失败",
     "chooseCategory": "请选择",
     "clearAll": "清空所有选项",
-    "giveUp": "放弃保存"
+    "giveUp": "放弃保存",
+    "completionRate": "工作完成率",
+    "waitCompleted": "待完成",
+    "pieces": "个"
   },
   "components": {
     "noALlPermission": "你当前无任何权限，请联系企业管理员分配权限",

@@ -162,6 +162,7 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
   border-left: ${props =>
     props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
   border-top-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border-bottom-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
 `
 
 export const Img = styled.img`
@@ -526,6 +527,9 @@ export const ContentWrap = styled.div<{ notHover?: any }>(
 export const LabelItem = styled.div`
   font-size: var(--font14);
   color: var(--neutral-n3);
+  display: flex;
+  align-items: center;
+  height: 32px;
 `
 
 export const ShowLabel = styled.div({
@@ -544,7 +548,8 @@ export const MaxLabel = styled.div<{ width: number }>`
 
 export const InfoItemBasic = styled.div({
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'flex-start',
   marginTop: 14,
   position: 'relative',
+  minHeight: 32,
 })
