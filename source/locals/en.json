@@ -1,4 +1,7 @@
 {
+  "the_message_content_cannot_be_empty": " Message content cannot be empty",
+
+  "characters_over": " Characters_over 200",
   "Transaction_sprint": "Transaction Sprint",
 
   "Requirement_iteration": "Requirements Iteration",
