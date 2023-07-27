@@ -36,7 +36,29 @@ const MyBreadcrumb = (props: any) => {
     closeScreenModal()
   }
 
-  return (
+  return type === 'AdminManagement' ? (
+    <Breadcrumb
+      separator={
+        <CommonIconFont type="right" size={14} color="var(--neutral-n1-d1)" />
+      }
+    >
+      <Breadcrumb.Item>
+        <a
+          style={{ color: 'var(--neutral-n1-d1)' }}
+          onClick={() => navigate(-1)}
+          className={breadStyle}
+        >
+          <span> {t('staff.companyStaff')}</span>
+        </a>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>
+        <span>
+          {props.user.name}
+          {t('details_of')}
+        </span>
+      </Breadcrumb.Item>
+    </Breadcrumb>
+  ) : (
     <Breadcrumb
       separator={
         <CommonIconFont type="right" size={14} color="var(--neutral-n1-d1)" />
@@ -90,29 +112,32 @@ const MyBreadcrumb = (props: any) => {
         </Breadcrumb.Item>
       ) : null}
 
-      {type === 4 && (
-        <Breadcrumb.Item>
-          <a
-            onClick={() => {
-              const params = encryptPhp(
-                JSON.stringify({
-                  id: projectInfo.id,
-                  pageIdx: 'main',
-                  type: 0,
-                }),
-              )
-              navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
-            }}
-            style={{ color: 'var(--neutral-n1-d1)' }}
-          >
-            {t('project.projectSet') as string}
-          </a>
-        </Breadcrumb.Item>
-      )}
+      {type === 4 ||
+        (type === 'isMember' && (
+          <Breadcrumb.Item>
+            <a
+              onClick={() => {
+                const params = encryptPhp(
+                  JSON.stringify({
+                    id: projectInfo.id,
+                    pageIdx: 'main',
+                    type: 0,
+                  }),
+                )
+
+                navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+              }}
+              className={breadStyle}
+              style={{ color: 'var(--neutral-n1-d1)' }}
+            >
+              <span>{t('project.projectSet') as string}</span>
+            </a>
+          </Breadcrumb.Item>
+        ))}
       {location.pathname.includes('ProjectManagement/MemberInfo') && (
         <Breadcrumb.Item>
-          <a style={{ color: 'var(--neutral-n1-d1)' }}>
-            {t('project.projectSet') as string}
+          <a style={{ color: 'var(--neutral-n1-d1)' }} className={breadStyle}>
+            <span>{t('project.projectSet') as string}</span>
           </a>
         </Breadcrumb.Item>
       )}

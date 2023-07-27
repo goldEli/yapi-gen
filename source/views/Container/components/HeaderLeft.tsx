@@ -311,8 +311,11 @@ const HeaderLeft = () => {
           if (routerPath.pathname.includes('Sprint')) {
             return routerPath.pathname.replace('Sprint', '').includes(i.url)
           }
-          if (type) {
+          if (type && type !== 'AdminManagement') {
             return '/ProjectManagement'.includes(i.url)
+          }
+          if (type === 'AdminManagement') {
+            return '/AdminManagement'.includes(i.url)
           }
           return routerPath.pathname.includes(i.url)
         })?.[0]
