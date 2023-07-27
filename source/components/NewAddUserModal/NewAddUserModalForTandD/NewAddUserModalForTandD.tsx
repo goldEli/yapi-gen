@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable max-lines */
 /* eslint-disable array-callback-return */
@@ -30,6 +31,7 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
 import NewAddShowList from './NewAddShowList'
 import { getAffiliationUser } from '@/services/project'
+import { css } from '@emotion/css'
 
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -141,6 +143,7 @@ const Header = styled.div`
   }
 `
 export const ListItem = styled.div`
+  width: 276px;
   height: 36px;
   line-height: 36px;
   border-radius: 6px;
@@ -209,6 +212,12 @@ const TreeStyle = styled(DirectoryTree)`
 `
 const SelectStyle = styled(CustomSelect)``
 
+const textcss = css`
+  &:hover {
+    color: var(--primary-d1);
+  }
+`
+
 interface ModalProps {
   width?: number
   isVisible: boolean
@@ -234,7 +243,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组
   const [selectDataList, setSelectDataList] = useState<any>()
-  const [searchVal, setSearchVal] = useState<any>('')
+  const [searchVal, setSearchVal] = useState<any>(undefined)
   const [checkedKeys, setCheckedKeys] = useState<any>()
   const [personData, setPersonData] = useState<any>([])
   const [tabsTreeDataList, setTabsTreeDataList] = useState<any>([])
@@ -258,7 +267,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   const [form] = Form.useForm()
   const onInit = () => {
     setPersonData([])
-    setSearchVal('')
+    setSearchVal(undefined)
     setCheckedKeys([])
   }
 
@@ -406,13 +415,13 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       )
       setPersonData(personData.filter((item: any) => el.id !== item.id))
     }
-    key?.length < 1 && setSearchVal('')
+    key?.length < 1 && setSearchVal(undefined)
   }
   // 清空成员
   const clearPerson = () => {
     setPersonData([])
     setCheckedKeys([])
-    setSearchVal('')
+    setSearchVal(undefined)
   }
   // 勾选去获取成员数据
   const getStaffs = (res: any) => {
@@ -457,7 +466,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   // 下拉框选中
   const handleChange = async (value: any) => {
-    setSearchVal(value)
+    setSearchVal('')
     const hasVal = personData.filter((el: any) => el.id === value)
     if (hasVal.length >= 1) {
       getMessage({ msg: t('commonModal.warnningMsg1'), type: 'warning' })
@@ -927,9 +936,10 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
             notFoundContent={null}
             showSearch
             allowClear
+            autoClearSearchValue
             style={{ width: 270 }}
             // eslint-disable-next-line no-undefined
-            value={searchVal || undefined}
+            value={searchVal}
             onChange={(e: any) => handleChange(e)}
             optionFilterProp="label"
             options={selectDataList}
@@ -946,7 +956,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                     setCheckedKeys([])
                     setSelectDataList([])
                     // setPersonData([])
-                    setSearchVal('')
+                    setSearchVal(undefined)
                     setTabsActive(index)
                     setShowTreeData({
                       children: tabsActive === 1 ? treeData2 : treeData,
@@ -992,6 +1002,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                 {active.current.map((i: any) => (
                   <Breadcrumb.Item key={i.id}>
                     <span
+                      className={textcss}
                       style={{
                         cursor: 'pointer',
                       }}
@@ -1055,6 +1066,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
             style={{
               overflow: 'scroll',
               height: '425px',
+              width: '295px',
             }}
           >
             {personData.length >= 1
