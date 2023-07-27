@@ -461,9 +461,9 @@ const XTable: React.FC<XTableProps> = props => {
                         'sprint.pieces',
                       )}`
                     },
-                    defaultPageSize: 10,
+                    defaultPageSize: 30,
                     defaultCurrent: 1,
-                    pageSizeOptions: ['10', '20', '50'],
+                    pageSizeOptions: ['10', '20', '30', '50'],
                     showSizeChanger: true,
                     showQuickJumper: true,
                   }}

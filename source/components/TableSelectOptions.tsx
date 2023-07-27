@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useSelector } from '@store/index'
+import { Popover } from 'antd'
 const SelectOptions = styled.div`
-  position: absolute;
+  /* position: absolute;
   top: 40px;
-  left: 0px;
-  width: 120px;
+  left: 0px; */
+  min-width: 120px;
   background: #ffffff;
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px 6px 6px 6px;
@@ -22,12 +23,22 @@ const SelectItem = styled.div`
   font-size: var(--font14);
   display: flex;
   align-items: center;
-  padding-left: 16px;
+  /* padding-left: 16px; */
+  padding: 0 8px 0 16px;
   &:hover {
     background: var(--hover-d3);
   }
   .activity {
     color: var(--primary-d2);
+  }
+`
+
+const TextWrap = styled.span`
+  /* display: flex;
+  align-items: center; */
+  cursor: pointer;
+  .dropdownIcon {
+    visibility: hidden;
   }
 `
 interface IProps {
@@ -36,28 +47,47 @@ interface IProps {
 }
 const TableSelectOptions = (props: IProps) => {
   const { projectRoleList } = useSelector(state => state.sprint)
+  const [isVisible, setIsVisible] = useState(false)
+
+  const onClick = (item: any) => {
+    setIsVisible(false)
+    props.callBack(item)
+  }
+
   return (
-    <SelectOptions>
-      {projectRoleList?.map((item, index) => (
-        <SelectItem
-          key={index}
-          onClick={() => {
-            props.callBack(item)
-          }}
-        >
-          <span className={props.roleName === item.name ? 'activity' : ''}>
-            {item.name}
-          </span>
-          {props.roleName === item.name && (
-            <IconFont
-              type="check"
-              style={{ marginLeft: '30px' }}
-              className={props.roleName === item.name ? 'activity' : ''}
-            ></IconFont>
-          )}
-        </SelectItem>
-      ))}
-    </SelectOptions>
+    <Popover
+      getPopupContainer={n => n}
+      open={isVisible}
+      onOpenChange={visible => setIsVisible(visible)}
+      trigger={['hover']}
+      content={
+        <SelectOptions>
+          {projectRoleList?.map((item: any, index: any) => (
+            <SelectItem key={index} onClick={() => onClick(item)}>
+              <span className={props.roleName === item.name ? 'activity' : ''}>
+                {item.name}
+              </span>
+              {props.roleName === item.name && (
+                <IconFont
+                  type="check"
+                  style={{ marginLeft: '30px' }}
+                  className={props.roleName === item.name ? 'activity' : ''}
+                ></IconFont>
+              )}
+            </SelectItem>
+          ))}
+        </SelectOptions>
+      }
+    >
+      <TextWrap>
+        {props.roleName}
+        <IconFont
+          className="dropdownIcon"
+          style={{ color: 'var(--neutral-n4)', marginLeft: 12 }}
+          type="down-icon"
+        />
+      </TextWrap>
+    </Popover>
   )
 }
 export default TableSelectOptions
