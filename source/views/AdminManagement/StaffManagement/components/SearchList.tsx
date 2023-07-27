@@ -20,8 +20,10 @@ import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   display: 'flex',
-  minHeight: 64,
+  // minHeight: 40,
   alignItems: 'center',
+  paddingBottom: '20px',
+  // border: '1px solid red',
 })
 
 const ClearForm = styled.div({
@@ -38,7 +40,20 @@ const FormWrap = styled(Form)({
     margin: 0,
   },
 })
-
+const SearchBox = styled.div`
+  /* border: 1px solid;s */
+  position: relative;
+  &::after {
+    position: absolute;
+    left: 24px;
+    bottom: 0px;
+    width: calc(100% - 48px);
+    height: 1px;
+    background: var(--neutral-n6-d1);
+    content: '';
+  }
+  margin-bottom: 20px;
+`
 interface Props {
   onChangeForm?(value: any): void
   showForm?: boolean
@@ -85,7 +100,7 @@ const SearchList = (props: Props) => {
     props.onSearch(value)
   }
   return (
-    <SearchLine style={{ padding: '0 0 0 24px' }}>
+    <SearchBox style={{ padding: '0 0 0 24px' }}>
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
           <SelectWrapBedeck>
@@ -223,7 +238,7 @@ const SearchList = (props: Props) => {
           </ClearForm>
         </FormWrap>
       </Wrap>
-    </SearchLine>
+    </SearchBox>
   )
 }
 

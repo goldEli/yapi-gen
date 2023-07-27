@@ -162,7 +162,7 @@ const MenuItemsTitle = styled.div`
   padding: 0px 16px;
   color: var(--neutral-n3);
   font-size: var(--font12);
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 `
 const MainWrapItem = styled.div({
   borderBottom: '1px solid var(--neutral-n6-d1)',

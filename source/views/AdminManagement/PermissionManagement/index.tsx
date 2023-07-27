@@ -194,7 +194,14 @@ const RowBox = styled.div`
 
 const CheckboxWrap = styled.div({ width: 100, height: 32 })
 const OperationWrap = styled.div({ width: 100 })
-
+const MenuItemsTitle = styled.div`
+  height: 44px;
+  line-height: 44px;
+  padding: 0px 16px;
+  color: var(--neutral-n3);
+  font-size: var(--font12);
+  margin-bottom: 8px;
+`
 interface ItemProps {
   item: any
   onChange?(value: CheckboxValueType[]): void
@@ -489,7 +496,7 @@ const PermissionManagement = () => {
               <SetLeft>
                 <RowBox>
                   <Title style={{ marginBottom: 0 }}>
-                    {t('setting.userGroup')}
+                    {t('sprintProject.role')}
                   </Title>
                   <Tooltip placement="top" title={t('adding_a_user_group')}>
                     <CloseWrap width={24} height={24}>
@@ -502,26 +509,59 @@ const PermissionManagement = () => {
                   </Tooltip>
                 </RowBox>
                 <MenuItems>
-                  {dataList?.map((item: any) => (
-                    <MenuItem
-                      key={item.id}
-                      onClick={() => onChangeTabs(item)}
-                      isActive={item.id === activeDetail.id}
-                    >
-                      <div className="name">{item.name}</div>
-                      <span className="subName">
-                        {item.type === 1
-                          ? t('setting.systemGroup')
-                          : t('setting.customGroup')}
-                      </span>
-                      <MoreDropdown
-                        isHidden={item.type === 1}
-                        isMoreVisible={isMoreVisible}
-                        onChangeVisible={setIsMoreVisible}
-                        menu={menu(item)}
-                      />
-                    </MenuItem>
-                  ))}
+                  <MenuItemsTitle>
+                    {t('sprintProject.systemGrouping')}
+                  </MenuItemsTitle>
+                  {dataList
+                    ?.filter((item: { type: number }) => item.type === 1)
+                    .map((item: any) => (
+                      <MenuItem
+                        key={item.id}
+                        onClick={() => onChangeTabs(item)}
+                        isActive={item.id === activeDetail.id}
+                      >
+                        <div className="name">{item.name}</div>
+                        <span className="subName">
+                          {item.type === 1
+                            ? t('setting.systemGroup')
+                            : t('setting.customGroup')}
+                        </span>
+                        <MoreDropdown
+                          isHidden={item.type === 1}
+                          isMoreVisible={isMoreVisible}
+                          onChangeVisible={setIsMoreVisible}
+                          menu={menu(item)}
+                        />
+                      </MenuItem>
+                    ))}
+                </MenuItems>
+
+                <MenuItems>
+                  <MenuItemsTitle>
+                    {t('sprintProject.customRole')}
+                  </MenuItemsTitle>
+                  {dataList
+                    ?.filter((item: { type: number }) => item.type === 2)
+                    .map((item: any) => (
+                      <MenuItem
+                        key={item.id}
+                        onClick={() => onChangeTabs(item)}
+                        isActive={item.id === activeDetail.id}
+                      >
+                        <div className="name">{item.name}</div>
+                        <span className="subName">
+                          {item.type === 1
+                            ? t('setting.systemGroup')
+                            : t('setting.customGroup')}
+                        </span>
+                        <MoreDropdown
+                          isHidden={item.type === 1}
+                          isMoreVisible={isMoreVisible}
+                          onChangeVisible={setIsMoreVisible}
+                          menu={menu(item)}
+                        />
+                      </MenuItem>
+                    ))}
                 </MenuItems>
               </SetLeft>
               <SetRight>
