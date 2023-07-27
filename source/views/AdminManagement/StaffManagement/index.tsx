@@ -271,7 +271,12 @@ const StaffManagement = () => {
       navigate('/ProjectManagement/Mine/Profile')
     } else {
       const params = encryptPhp(
-        JSON.stringify({ id: '', isMember: false, userId: row.id }),
+        JSON.stringify({
+          id: '',
+          isMember: false,
+          userId: row.id,
+          type: 'AdminManagement',
+        }),
       )
       navigate(`/MemberInfo/Profile?data=${params}`)
     }

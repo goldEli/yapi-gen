@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-empty */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SideDragging from '../components/SideDragging'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -95,7 +96,7 @@ const InputStyle = styled(Input)`
   width: 480px;
   height: 32px;
   background: var(--neutral-white-d4);
-  border: 1px solid var(--neutral-n6-d1);
+  /* border: 1px solid var(--neutral-n6-d1); */
   color: var(--neutral-n1-d1);
   input {
     background: var(--neutral-white-d4);
@@ -132,12 +133,8 @@ const FormStyle = styled(Form)`
   & .ant-form-item-control-input-content {
     background-color: var(--neutral-white-d5) !important;
   }
-  .ant-input-affix-wrapper-status-error:not(
-      .ant-input-affix-wrapper-disabled
-    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
-  .ant-input-affix-wrapper-status-error:not(
-      .ant-input-affix-wrapper-disabled
-    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
     background-color: var(--neutral-white-d5) !important;
   }
 `
@@ -263,6 +260,7 @@ const LeftSide = (props: any) => {
   const { teamsList, activeTeam } = useSelector(s => s.teams)
   const [formType, setFormType] = useState('')
   const [uploadImgs, setUploadImgs] = useState<any>()
+
   // 创建和修改弹窗
   const [teamIsVisible, setTeamIsVisible] = useState(false)
   //  创建和修改弹窗的表单
@@ -320,13 +318,28 @@ const LeftSide = (props: any) => {
       payload: list,
     })
   }
+  const inputRef2 = useRef<any>(null)
+  useEffect(() => {
+    setTimeout(() => {
+      console.log(inputRef2)
 
+      inputRef2.current?.focus()
+    }, 400)
+    // inputRef.current.focus()
+  }, [teamIsVisible])
   const teamGetForm = (row?: any) => {
+    // const inputRef = useRef<any>()
     const pic = {
       uid: '001',
       name: '',
       url: row?.logo_info?.path,
     }
+
+    // useEffect(() => {
+    //   setTimeout(() => {
+    //     inputRef.current?.focus()
+    //   }, 100)
+    // }, [])
     return (
       <div style={{ padding: '0 24px' }}>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
@@ -336,6 +349,7 @@ const LeftSide = (props: any) => {
             rules={[{ required: true, message: '' }]}
           >
             <InputStyle
+              ref={inputRef2}
               placeholder={t('please_enter_a_team_name')}
               maxLength={20}
               allowClear
