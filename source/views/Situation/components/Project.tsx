@@ -4,6 +4,7 @@ import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
   ChartsItem2,
+  ChartsItem333,
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
@@ -73,32 +74,32 @@ const Project = (props: any) => {
 
   return (
     <ChartsWrap>
-      <div className={titleCss}>{t('situation.projectSurvey')}</div>
+      {/* <div className={titleCss}>{t('situation.projectSurvey')}</div> */}
       <TextWrap>
         {/* <TextBlueWrap> */}
-        <ChartsItem>
+        <ChartsItem333>
           <span className={title1Css1}>{data?.total ?? 0}</span>
           <span className={title2Css}>{t('situation.companyProject')}</span>
-        </ChartsItem>
+        </ChartsItem333>
         {/* </TextBlueWrap> */}
         {/* <HomeWrap> */}
         <ChartsItem2 />
-        <ChartsItem>
+        <ChartsItem333>
           <span className={title1Css}>{data?.sprint_team_count ?? 0}</span>
           <span className={title2Css}>{t('other.affairs_team')}</span>
-        </ChartsItem>
-        <ChartsItem>
+        </ChartsItem333>
+        <ChartsItem333>
           <span className={title1Css}>{data?.sprint_company_count ?? 0}</span>
           <span className={title2Css}>{t('other.affairs_public')}</span>
-        </ChartsItem>
-        <ChartsItem>
+        </ChartsItem333>
+        <ChartsItem333>
           <span className={title1Css}>{data?.iterate_team_count ?? 0}</span>
           <span className={title2Css}>{t('other.iteration_team')}</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>{data?.iterate_company_count ?? 0}</span>
-          <span className={title2Css}>{t('other.iteration_public')}</span>
-        </ChartsItem>
+        </ChartsItem333>
+        <ChartsItem333>
+          {/* <span className={title1Css}>{data?.iterate_company_count ?? 0}</span> */}
+          {/* <span className={title2Css}>{t('other.iteration_public')}</span> */}
+        </ChartsItem333>
         {/* </HomeWrap> */}
       </TextWrap>
       <div className={chartsTitle}>{t('situation.companyProgress')}</div>

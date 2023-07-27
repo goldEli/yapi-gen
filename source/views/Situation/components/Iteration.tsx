@@ -4,6 +4,7 @@ import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
   ChartsItem2,
+  ChartsItem333,
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
@@ -73,25 +74,25 @@ const Iteration = (props: any) => {
       <div className={titleCss}>{t('common.iterateSurvey')}</div>
       <TextWrap>
         {/* <TextBlueWrap> */}
-        <ChartsItem>
+        <ChartsItem333>
           <span className={title1Css1}>{data?.total ?? 0}</span>
           <span className={title2Css}>{t('common.createIterate')}</span>
-        </ChartsItem>
+        </ChartsItem333>
         {/* </TextBlueWrap> */}
         {/* <HomeWrap> */}
         <ChartsItem2 />
-        <ChartsItem>
+        <ChartsItem333>
           <span className={title1Css}>{data?.open_count ?? 0}</span>
           <span className={title2Css}>{t('situation.openIterate')}</span>
-        </ChartsItem>
-        {/* <ChartsItem>
+        </ChartsItem333>
+        {/* <ChartsItem333>
           <span className={title1Css}>{data?.finish_count ?? 0}</span>
           <span className={title2Css}>{t('version2.finishIteration')}</span>
-        </ChartsItem> */}
-        <ChartsItem>
+        </ChartsItem333> */}
+        <ChartsItem333>
           <span className={title1Css}>{data?.end_count ?? 0}</span>
           <span className={title2Css}>{t('situation.stopIterate')}</span>
-        </ChartsItem>
+        </ChartsItem333>
         {/* </HomeWrap> */}
       </TextWrap>
 
