@@ -3,13 +3,19 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Dropdown, Spin } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as services from '@/services'
 import { isArray } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { t } from 'i18next'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import {
+  ActiveTab,
+  TabsWrap,
+  TabsWrapItem,
+} from '@/views/SiteNotifications/components/SiteDrawer/style'
+import { useSelector } from '@store/index'
 
 const Container = styled.div`
   width: 320px;
@@ -408,22 +414,57 @@ const MyDropdown = (props: any) => {
       ))
     )
   }
+  const tabBox = useRef<HTMLDivElement>(null)
+  const { isRefresh } = useSelector(store => store.user)
+  const tabActive2 = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!isOpen) {
+      return
+    }
+    for (let i = 0; i < 3; i++) {
+      tabBox.current?.children[i].addEventListener('click', e => {
+        if (tabActive2.current) {
+          tabActive2.current.style.left = `${
+            (tabBox.current?.children[i] as HTMLDivElement).offsetLeft
+          }px`
+          tabActive2.current.style.width = `${tabBox.current?.children[i].clientWidth}px`
+        }
+      })
+    }
+  }, [isOpen])
+  useEffect(() => {
+    if (!isOpen) {
+      return
+    }
+    const index = tabs.findIndex((i: any, index) => index === tabActive)
+    tabActive2.current!.style.left = `${
+      (tabBox.current?.children[index] as HTMLDivElement).offsetLeft === 0
+        ? 2
+        : (tabBox.current?.children[index] as HTMLDivElement).offsetLeft
+    }px`
 
+    tabActive2.current!.style.width = `${
+      tabBox.current?.children[index].clientWidth === 0
+        ? 80
+        : tabBox.current?.children[index].clientWidth
+    }px`
+  }, [tabActive, isRefresh, isOpen])
   const dropdownRender = () => {
     return (
       <Container>
         <HeraderTabs>
-          <Tabs>
-            {tabs.map((el, index) => (
-              <span
+          <TabsWrap style={{ width: '288px' }} ref={tabBox}>
+            {tabs.map((i: any, index) => (
+              <TabsWrapItem
                 onClick={() => setTabActive(index)}
-                key={el.label}
-                className={tabActive === index ? 'tabsActive' : 'hoverItem'}
+                active={tabActive === index}
+                key={i.label}
               >
-                {el.label}
-              </span>
+                {i.label}
+              </TabsWrapItem>
             ))}
-          </Tabs>
+            <ActiveTab ref={tabActive2} />
+          </TabsWrap>
         </HeraderTabs>
         <ScrollWrap>
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
