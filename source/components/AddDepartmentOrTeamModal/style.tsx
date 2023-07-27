@@ -78,6 +78,9 @@ export const LeftItem = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
   }
+  :hover {
+    background-color: var(--hover-d2);
+  }
 `
 
 export const ContentRight = styled.div`

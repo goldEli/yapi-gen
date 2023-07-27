@@ -1,6 +1,7 @@
 /* eslint-disable array-callback-return */
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd'
 import { t } from 'i18next'
@@ -16,12 +17,15 @@ const TreeLine = styled.div`
   :hover {
     background-color: var(--hover-d2);
   }
-  :hover svg {
-    color: var(--primary-d1);
-  }
+
   & .ant-checkbox-wrapper {
     display: flex;
     align-items: unset;
+  }
+`
+const blue_my = css`
+  &:hover svg {
+    color: var(--primary-d1);
   }
 `
 
@@ -82,12 +86,14 @@ const NewAddShowList = (props: any) => {
                 </div>
 
                 {i.children && i.children.length >= 1 ? (
-                  <CommonIconFont
-                    onClick={() =>
-                      i.children && i.children.length >= 1 ? tap(i.id) : null
-                    }
-                    type="right"
-                  />
+                  <span className={blue_my}>
+                    <CommonIconFont
+                      onClick={() =>
+                        i.children && i.children.length >= 1 ? tap(i.id) : null
+                      }
+                      type="right"
+                    />
+                  </span>
                 ) : null}
               </TreeLine>
             )
@@ -188,12 +194,14 @@ const NewAddShowList = (props: any) => {
             </div>
 
             {i.children && i.children.length >= 1 ? (
-              <CommonIconFont
-                onClick={() =>
-                  i.children && i.children.length >= 1 ? tap(i.id) : null
-                }
-                type="right"
-              />
+              <span className={blue_my}>
+                <CommonIconFont
+                  onClick={() =>
+                    i.children && i.children.length >= 1 ? tap(i.id) : null
+                  }
+                  type="right"
+                />
+              </span>
             ) : null}
           </TreeLine>
         )
