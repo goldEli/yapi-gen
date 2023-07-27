@@ -30,9 +30,7 @@ import styled from '@emotion/styled'
 const RedDiv = styled.div`
   &
     .ant-form-item-label
-    > label.ant-form-item-required:not(
-      .ant-form-item-required-mark-optional
-    )::after {
+    > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
     content: '';
   }
 `
@@ -366,6 +364,7 @@ const CreateNoteModal = (props: any) => {
             ]}
           >
             <Editor
+              limit={200}
               upload={uploadFile}
               getSuggestions={() => []}
               placeholder={t('enter_content_max_length')}
