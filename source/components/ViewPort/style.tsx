@@ -39,7 +39,17 @@ export const Name = styled.span`
   color: var(--neutral-n3);
   line-height: 23px;
 `
-
+export const TextSpan = styled.span`
+  height: 22px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: var(--neutral-n2);
+  line-height: 22px;
+  :hover {
+    /* color: red; */
+  }
+`
 export const dropdowncontent = css`
   border-radius: 6px;
   padding: 5px 0;
@@ -54,16 +64,11 @@ export const dropdowncontent = css`
     margin: 0;
   }
   .ant-dropdown-menu-item-group-list li {
+    :hover ${TextSpan} {
+      color: var(--neutral-n1-d1);
+    }
     /* border-radius: 6px; */
   }
-`
-export const TextSpan = styled.span`
-  height: 22px;
-  font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
-  color: var(--neutral-n2);
-  line-height: 22px;
 `
 
 export const SetLine = styled.div`
@@ -72,7 +77,10 @@ export const SetLine = styled.div`
   cursor: pointer;
   :hover {
     background: var(--hover-d3) !important;
-    color: var();
+    /* color: var(--neutral-n1-d1); */
     /* border-radius: 6px; */
+  }
+  :hover ${TextSpan} {
+    color: var(--neutral-n1-d1);
   }
 `
