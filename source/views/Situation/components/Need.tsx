@@ -7,6 +7,7 @@ import HighchartsReact from 'highcharts-react-official'
 import {
   ChartsItem,
   ChartsItem2,
+  ChartsItem333,
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
@@ -78,25 +79,25 @@ const Need = (props: any) => {
       <div className={titleCss}>{t('work_item_summary')}</div>
       <TextWrap>
         {/* <TextBlueWrap> */}
-        <ChartsItem>
+        <ChartsItem333>
           <span className={title1Css1}>{data?.total ?? 0}</span>
           <span className={title2Css}>{t('create_work_item')}</span>
-        </ChartsItem>
+        </ChartsItem333>
         {/* </TextBlueWrap> */}
         {/* <HomeWrap> */}
         <ChartsItem2 />
-        <ChartsItem>
+        <ChartsItem333>
           <span className={title1Css}>{data?.planningTotal ?? 0}</span>
           <span className={title2Css}>{t('situation.notStarted')}</span>
-        </ChartsItem>
-        <ChartsItem>
+        </ChartsItem333>
+        <ChartsItem333>
           <span className={title1Css}>{data?.ongoingTotal ?? 0}</span>
           <span className={title2Css}>{t('situation.ongoing')}</span>
-        </ChartsItem>
-        <ChartsItem>
+        </ChartsItem333>
+        <ChartsItem333>
           <span className={title1Css}>{data?.endTotal ?? 0}</span>
           <span className={title2Css}>{t('situation.end')}</span>
-        </ChartsItem>
+        </ChartsItem333>
         {/* </HomeWrap> */}
       </TextWrap>
       <div className={chartsTitle}>{t('work_item_accumulated_chart')}</div>

@@ -1,4 +1,6 @@
 {
+  "the_message_content_cannot_be_empty": "消息内容不能为空",
+  "characters_over": "字符超出200",
   "Transaction_sprint": "事务冲刺",
   "Requirement_iteration": "需求迭代",
   "project_handover": "项目交接",

@@ -89,6 +89,13 @@ const ChartsItem = styled.span`
   flex-direction: column;
   justify-content: space-between;
 `
+const ChartsItem333 = styled.span`
+  /* cursor: pointer; */
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
 const ChartsItem1 = styled.span`
   align-items: center;
   display: flex;
@@ -1076,4 +1083,5 @@ export {
   TextWrapEdit,
   PopoverTargetText,
   LinkWrap,
+  ChartsItem333,
 }

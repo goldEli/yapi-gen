@@ -4,6 +4,7 @@ import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
   ChartsItem2,
+  ChartsItem333,
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
@@ -69,21 +70,21 @@ const Staff = (props: any) => {
       <div className={titleCss}>{t('situation.staffSurvey')}</div>
       <TextWrap>
         {/* <TextBlueWrap> */}
-        <ChartsItem>
+        <ChartsItem333>
           <span className={title1Css1}>{data?.total ?? 0}</span>
           <span className={title2Css}>{t('situation.companyStaff')}</span>
-        </ChartsItem>
+        </ChartsItem333>
         {/* </TextBlueWrap> */}
         {/* <HomeWrap> */}
         <ChartsItem2 />
-        <ChartsItem>
+        <ChartsItem333>
           <span className={title1Css}>{data?.boyCount ?? 0}</span>
           <span className={title2Css}>{t('common.male')}</span>
-        </ChartsItem>
-        <ChartsItem>
+        </ChartsItem333>
+        <ChartsItem333>
           <span className={title1Css}>{data?.girlCount ?? 0}</span>
           <span className={title2Css}>{t('common.female')}</span>
-        </ChartsItem>
+        </ChartsItem333>
         {/* </HomeWrap> */}
       </TextWrap>
       <div className={chartsTitle}>{t('situation.jobProgress')}</div>

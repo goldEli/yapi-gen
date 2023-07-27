@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable no-undefined */
 /* eslint-disable consistent-return */
 /* eslint-disable no-case-declarations */
@@ -43,18 +44,24 @@ const CreateNoteModal = (props: any) => {
   const [taskTime, setTaskTime] = useState(false)
 
   const onValidator = (rule: any, value: any) => {
+    console.log(value, 'value')
+
+    const plainText = value.replace(/<[^>]+>/g, '')
+
+    console.log(plainText, plainText.length, 'plainText')
+    if (plainText.length > 200) {
+      return Promise.reject(new Error(t('characters_over')))
+    }
     if (
       (value === '<p><br></p>' ||
-        value === '<p></p>' ||
+        value === '<p> </p>' ||
         value?.trim() === '' ||
         !value) &&
       rule?.required
     ) {
-      return Promise.reject(
-        new Error('The two passwords that you entered do not match!'),
-      )
+      return Promise.reject(new Error(t('the_message_content_cannot_be_empty')))
     }
-    return Promise.resolve()
+    // return Promise.resolve()
   }
 
   // 验证定时发送时间
@@ -346,25 +353,24 @@ const CreateNoteModal = (props: any) => {
               {
                 validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
                 required: true,
-                message: (
-                  <div
-                    style={{
-                      margin: '5px 0',
-                      fontSize: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {t('enter_content')}
-                  </div>
-                ),
+                // message: (
+                //   <div
+                //     style={{
+                //       margin: '5px 0',
+                //       fontSize: '12px',
+                //       display: 'flex',
+                //       alignItems: 'center',
+                //     }}
+                //   >
+                //     {t('enter_content')}
+                //   </div>
+                // ),
                 whitespace: true,
                 validator: onValidator,
               },
             ]}
           >
             <Editor
-              limit={200}
               upload={uploadFile}
               getSuggestions={() => []}
               placeholder={t('enter_content_max_length')}
