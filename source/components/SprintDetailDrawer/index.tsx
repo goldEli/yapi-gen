@@ -554,8 +554,7 @@ const SprintDetailDrawer = () => {
   }
 
   // 操作后更新列表
-  const onOperationUpdate = (value?: boolean) => {
-    getSprintDetail('', demandIds)
+  const onOperationUpdate = async (value?: boolean) => {
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }

@@ -102,7 +102,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
             navigate(`/ProjectManagement/WorkFlow?data=${params}`)
           }}
         >
-          <CommonButton type="secondary">{t('edit_workflow')}</CommonButton>
+          <CommonButton type="light">{t('edit_workflow')}</CommonButton>
         </div>
       </TitleArea>
       {children}

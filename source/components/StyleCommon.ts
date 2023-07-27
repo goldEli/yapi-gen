@@ -627,7 +627,7 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
   {
     height: 22,
     borderRadius: 6,
-    fontSize: '12px',
+    fontSize: '14px',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',

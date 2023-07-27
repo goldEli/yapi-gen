@@ -43,16 +43,26 @@ const TableWrap = styled.div({
     maxHeight: '40vh',
   },
 })
-
-const TableWrapBox = styled(Table)({
-  padding: '0 24px',
-  '.ant-checkbox-wrapper': {
-    marginLeft: 8,
-  },
-  '.ant-table-cell': {
-    position: 'relative',
-  },
-})
+const TableWrapBox = styled(Table)`
+  padding: 0 24px;
+  .ant-checkbox-wrapper {
+    margin-left: 8px;
+  }
+  .ant-table-cell {
+    position: relative;
+  }
+  .ant-table-tbody
+    > tr.ant-table-row-selected
+    > td:not(.ant-table-cell-fix-right) {
+    background: transparent;
+  }
+  .ant-table-row-selected {
+    background: var(--hover-d2);
+    &:hover {
+      background: var(--selected);
+    }
+  }
+`
 
 const TableTitle = styled.div({
   marginTop: 8,

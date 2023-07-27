@@ -238,7 +238,7 @@ const MyDropdown = (props: any) => {
   const onRoute = (el: any, type: string) => {
     let resultType = el?.feedable_type
     let project_type = el?.feedable?.project?.project_type
-    let isDefect = el?.feedable?.project?.is_bug
+    let isDefect = el?.feedable?.is_bug
     console.log('el', resultType, project_type, el)
     // debugger
     // 迭代详情 需求详情  事务详情  缺陷详情

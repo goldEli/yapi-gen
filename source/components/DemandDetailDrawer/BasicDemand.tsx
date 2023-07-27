@@ -59,6 +59,7 @@ const LimitLabel = (props: { label: string; width: number }) => {
 const BasicDemand = (props: Props) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   // 折叠字段
   const [foldList, setFoldList] = useState<any>([])
   // 不折叠字段

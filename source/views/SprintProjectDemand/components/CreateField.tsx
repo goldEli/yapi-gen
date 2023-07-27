@@ -61,6 +61,9 @@ const FieldWrap = styled.div`
   .ant-select-selection-placeholder {
     color: var(--auxiliary-text-t2-d1);
   }
+  .ant-select-single.ant-select-open .ant-select-selection-item {
+    color: var(--primary-d1);
+  }
 `
 const DivideWrap = styled.div`
   width: 1px;
@@ -255,7 +258,9 @@ const CreateField = () => {
           size={14}
           color="var(--neutral-n3)"
         />
-        <span style={{ marginLeft: '4px' }}>{t('creating_fields')}</span>
+        <span style={{ marginLeft: '4px', fontFamily: 'SiYuanMedium' }}>
+          {t('creating_fields')}
+        </span>
         <span
           style={{
             fontSize: '12px',
@@ -288,6 +293,7 @@ const CreateField = () => {
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
+                fontFamily: 'SiYuanMedium',
               }}
             >
               {t('project_existing_fields')}
@@ -348,6 +354,7 @@ const CreateField = () => {
                 label: t('sprintProject.customField'),
               },
             ]}
+            // open
             dropdownRender={() => (
               <DropdownRenderDiv>
                 {[

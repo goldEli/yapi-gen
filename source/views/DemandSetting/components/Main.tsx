@@ -22,6 +22,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { getMessage } from '@/components/Message'
 import * as services from '@/services'
+import { setIsRefresh } from '@store/user'
 export const TitleStyle = styled.div`
   display: flex;
   align-items: center;
@@ -39,6 +40,7 @@ const Main = (props: any) => {
   const { getCategoryConfigDataList, activeCategory, getProjectFieIdsData } =
     useSelector(store => store.category)
   const { projectInfo } = useSelector(store => store.project)
+  const { isRefresh } = useSelector(store => store.user)
   const [getCategoryConfigT, setGetCategoryConfigT] = useState<any>([])
   const [getCategoryConfigF, setGetCategoryConfigF] = useState<any>([])
   const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -284,6 +286,23 @@ const Main = (props: any) => {
       save()
     }
   }, [props.isSave])
+
+  const onRefresh = async () => {
+    await dispatch(
+      getCategoryConfigList({
+        projectId: projectInfo.id,
+        categoryId: activeCategory.id,
+      }),
+    )
+    dispatch(setIsRefresh(false))
+  }
+
+  useEffect(() => {
+    if (isRefresh) {
+      onRefresh()
+    }
+  }, [isRefresh])
+
   const onUpDate = async (res: any) => {
     const newItem = {
       title: res.name,
