@@ -445,7 +445,7 @@ const MyDropdown = (props: any) => {
 
     tabActive2.current!.style.width = `${
       tabBox.current?.children[index].clientWidth === 0
-        ? 80
+        ? 60
         : tabBox.current?.children[index].clientWidth
     }px`
   }, [tabActive, isRefresh, isOpen])
