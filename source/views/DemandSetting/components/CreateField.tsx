@@ -60,6 +60,9 @@ const FieldWrap = styled.div`
   .ant-select-selection-placeholder {
     color: var(--auxiliary-text-t2-d1);
   }
+  .ant-select-single.ant-select-open .ant-select-selection-item {
+    color: var(--primary-d1);
+  }
 `
 const DivideWrap = styled.div`
   width: 1px;
