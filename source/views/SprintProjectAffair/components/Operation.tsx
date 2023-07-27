@@ -400,7 +400,11 @@ const Operation = (props: Props) => {
         }}
       />
 
-      <OperationWrap>
+      <OperationWrap
+        style={{
+          marginBottom: filterState ? '20px' : '0px',
+        }}
+      >
         <Space size={16} style={{ position: 'relative' }}>
           {props.isShowLeft ? (
             <Tooltip
