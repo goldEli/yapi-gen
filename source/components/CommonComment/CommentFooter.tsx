@@ -9,7 +9,7 @@ import { useSelector } from '@store/index'
 import CommonUserAvatar from '../CommonUserAvatar'
 import useMkeyDown from '@/hooks/useMkeyDown'
 import useShortcutCtrlEnter from '@/hooks/useShortcutCtrlEnter/useShortcutCtrlEnter'
-
+import { useHotkeys } from 'react-hotkeys-hook'
 interface CommentFooterProps {
   placeholder: string
   onConfirm(value: any): void
@@ -42,7 +42,7 @@ const CommentFooter = (props: CommentFooterProps) => {
     setIsReview(true)
   }
 
-  useMkeyDown(handleShortcutEvent1)
+  // useMkeyDown(handleShortcutEvent1)
   //   提交评论
   const onComment = async () => {
     const value = await form.validateFields()
@@ -57,6 +57,21 @@ const CommentFooter = (props: CommentFooterProps) => {
     }
   }
   useShortcutCtrlEnter(handleShortcutEvent)
+  useHotkeys(
+    'Enter',
+    () => {
+      handleShortcutEvent()
+    },
+    [],
+  )
+  useHotkeys(
+    'm',
+    () => {
+      handleShortcutEvent1()
+    },
+    [],
+  )
+
   // 富文本上传
   const uploadFile = (file: File, dom: any, key2?: any) => {
     const key = uploadFileToKey(
