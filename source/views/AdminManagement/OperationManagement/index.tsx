@@ -174,7 +174,7 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'time',
-      width: 100,
+      width: 200,
     },
     {
       title: (

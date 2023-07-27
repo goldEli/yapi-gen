@@ -45,6 +45,7 @@ const ColumnTitleAreaBox = styled.div<{ showBorder: boolean }>`
   box-sizing: border-box;
   border: 1px solid
     ${props => (props.showBorder ? 'var(--primary-d1)' : 'transparent')};
+  background: ${props => (props.showBorder ? '#fff' : 'transparent')};
 `
 const TextBox = styled.div`
   display: flex;
