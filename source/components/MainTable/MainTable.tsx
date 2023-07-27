@@ -66,8 +66,6 @@ const ImgWrap = styled.div<{ url?: string }>(
 )
 
 const MoreContent = (props: any) => {
-  console.log(props.record.team_id, 'ffdfdw')
-
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
@@ -173,8 +171,6 @@ const NewSort = (sortProps: any) => {
 }
 
 const MainTable = (props: Props) => {
-  console.log(props.projectList.list, 'ffffffffff')
-
   const [t] = useTranslation()
   const navigate = useNavigate()
   const { userInfo } = useSelector(store => store.user)
@@ -449,8 +445,6 @@ const MainTable = (props: Props) => {
       {
         width: 1,
         render: (text: any, record: any) => {
-          console.log(record, 'record')
-
           return (
             <div
               style={{ display: 'flex', alignItems: 'center', width: '15px' }}
@@ -478,7 +472,6 @@ const MainTable = (props: Props) => {
   const onTableRow = useCallback((row: any) => {
     return {
       onClick: () => {
-        // console.log('row---', row)
         const params = encryptPhp(
           JSON.stringify({
             id: row.id,
