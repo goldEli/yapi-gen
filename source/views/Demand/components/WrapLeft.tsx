@@ -454,7 +454,9 @@ const WrapLeft = (props: any, ref: any) => {
   const onDragLine = () => {
     document.onmousemove = e => {
       setFocus(true)
-
+      if (e.clientX < 400) {
+        return
+      }
       setLeftWidth(e.clientX - 200)
     }
     document.onmouseup = () => {
