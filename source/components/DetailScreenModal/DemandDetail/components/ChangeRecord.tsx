@@ -406,7 +406,13 @@ const ChangeRecord = (props: Props) => {
             paddingRight: 16,
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginLeft: '24px',
+            }}
+          >
             <TitleWrap>{t('project.changeBefore')}</TitleWrap>
             <ContentWrap>
               <Editor
@@ -416,7 +422,13 @@ const ChangeRecord = (props: Props) => {
               />
             </ContentWrap>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginRight: '8px',
+            }}
+          >
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
             <ContentWrap>
               <Editor
