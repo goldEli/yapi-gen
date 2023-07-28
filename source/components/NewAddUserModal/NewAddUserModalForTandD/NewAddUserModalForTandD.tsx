@@ -892,7 +892,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     props.isVisible,
     // props.defaultPeople, tabsActive, selectDataList
   ])
-  console.log(personData, '233')
 
   return (
     <ModalStyle

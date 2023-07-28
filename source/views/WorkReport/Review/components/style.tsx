@@ -714,3 +714,61 @@ export const DrawerHeader = styled.div`
     margin-right: 8px;
   }
 `
+export const MsgRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  .titleText {
+    width: 50%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 24px;
+    font-size: 16px;
+    font-family: SiYuanMedium;
+    font-weight: 500;
+    color: #323233;
+    line-height: 24px;
+    margin-left: 12px;
+    .dateText {
+      font-size: 12px;
+    }
+  }
+`
+export const Title = styled.div`
+  font-size: 14px;
+  font-family: SiYuanMedium;
+  font-weight: 500;
+  color: var(--neutral-n1-d1);
+`
+export const Msg = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--neutral-n2);
+`
+export const RowLine = styled.div`
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+`
+export const Line = styled.div`
+  width: 1px;
+  height: 16px;
+  background: var(--neutral-n6-d1);
+  margin: 0 16px;
+`
+export const RowRadius = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+`
+export const Radius = styled.div`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--neutral-n2);
+  margin-right: 8px;
+`
+export const Col = styled.div`
+  margin-bottom: 32px;
+`
