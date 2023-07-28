@@ -674,7 +674,7 @@ const SprintDetailDrawer = () => {
         )}`}
         title={
           drawerInfo?.name
-            ? `【${drawerInfo?.projectPrefix}-${drawerInfo?.name}-${userInfo?.name}】`
+            ? `【${drawerInfo?.projectPrefix}-${drawerInfo?.prefixKey}-${drawerInfo?.name}-${userInfo?.name}】`
             : ''
         }
       />

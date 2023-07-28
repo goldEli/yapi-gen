@@ -144,11 +144,14 @@ const CreateDemandLeft = (props: Props) => {
   const onConfirm = async () => {
     await form.validateFields()
     const values = form.getFieldsValue()
+
+    values.name = values.name.trim()
     values.category_id = categoryObj.id
     values.tagIds = tagCheckedList?.map((i: any) => ({
       name: i.name,
       color: i.color,
     }))
+
     // 获取当前类别对应的work_type
     const work_type = props.allCategoryList.filter(
       (i: any) => i.id === values.category_id,
@@ -727,9 +730,6 @@ const CreateDemandLeft = (props: Props) => {
           </Form.Item>
         </div>
         <Form.Item
-          getValueFromEvent={event => {
-            return event.target.value.replace(/(^\s*)|(\s*$)/g, '')
-          }}
           label={t('common.title')}
           name="name"
           rules={[
