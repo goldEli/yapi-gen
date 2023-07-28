@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 import React, { useState } from 'react'
 import { SortableItem } from './SortableItem'
 import { Droppable } from 'react-beautiful-dnd'

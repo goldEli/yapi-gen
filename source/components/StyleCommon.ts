@@ -990,6 +990,7 @@ const PopoverTargetText = styled.div`
   background: var(--neutral-white-d6);
   font-size: 14px;
   color: var(--neutral-n1-d1);
+  white-space: pre;
 `
 
 export {
