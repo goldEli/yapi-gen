@@ -17,6 +17,10 @@ import { addTeams, dismissTeams, editTeams } from '@/services/setting'
 import { setActiveTeam } from '@store/teams/index'
 import { CloseWrap } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
+import {
+  SprintDetailDragLine,
+  SprintDetailMouseDom,
+} from '@/components/DetailScreenModal/DemandDetail/style'
 
 const LeftSideContainer = styled.div`
   position: relative;
@@ -68,6 +72,7 @@ const TeamAdd = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 16px;
   &:hover {
     cursor: pointer;
   }
@@ -260,7 +265,7 @@ const LeftSide = (props: any) => {
   const { teamsList, activeTeam } = useSelector(s => s.teams)
   const [formType, setFormType] = useState('')
   const [uploadImgs, setUploadImgs] = useState<any>()
-
+  const [leftWidth, setLeftWidth] = useState(200)
   // 创建和修改弹窗
   const [teamIsVisible, setTeamIsVisible] = useState(false)
   //  创建和修改弹窗的表单
@@ -426,12 +431,40 @@ const LeftSide = (props: any) => {
       payload: child,
     })
   }
+  const [focus, setFocus] = useState(false)
+  const onDragLine = () => {
+    document.onmousemove = e => {
+      console.log(e.clientX)
+      if (e.clientX < 400) {
+        return
+      }
+      setFocus(true)
+
+      setLeftWidth(e.clientX - 200)
+    }
+    document.onmouseup = () => {
+      document.onmousemove = null
+      document.onmouseup = null
+      setFocus(false)
+    }
+  }
 
   return (
-    <LeftSideContainer>
-      <div className="resizable" />
-      <div className="resize_line" />
-      <Content className="resize_save">
+    <LeftSideContainer
+      style={{
+        position: 'relative',
+
+        width: leftWidth,
+      }}
+    >
+      <SprintDetailMouseDom
+        active={focus}
+        onMouseDown={onDragLine}
+        style={{ right: 0 }}
+      >
+        <SprintDetailDragLine active={focus} className="line" />
+      </SprintDetailMouseDom>
+      <Content>
         <TeamAdd>
           <TiamTitleText>{t('team_management') as string}</TiamTitleText>
           <CloseWrap width={24} height={24}>
