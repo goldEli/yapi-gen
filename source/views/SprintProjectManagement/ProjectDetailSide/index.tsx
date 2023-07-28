@@ -179,7 +179,20 @@ const ProjectDetailSide = () => {
         ).length > 0,
       key: 'ProjectHome',
     },
+    {
+      label: '日程',
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="settings" size={18} />
+      ),
+      path: '/SprintProjectManagement/Setting',
+      isPermission: true,
+      key: 'ProjectSchedule',
+    },
   ]
+  console.log(
+    projectInfo?.projectPermissions,
+    'projectInfo?.projectPermissions',
+  )
   const menuList = [
     {
       name: t('sprintProject.affairs'),

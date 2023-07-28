@@ -22,6 +22,7 @@ import CreateIteration from '@/components/CreateIteration'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
+import System from '../WorkReport/Review/components/System'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import AddWorkItem from '@/components/AddWorkItem'
 import NoteModal from '@/components/NoteModal'
@@ -198,7 +199,8 @@ export const Container = () => {
         <CreateAProjectForm />
         <CreateIteration />
         <DemandDetailDrawer />
-        <ReportDetailDrawer />
+        {/* <ReportDetailDrawer /> */}
+        <System />
         <SiteDrawer />
         <AddWorkItem />
         <SprintDetailDrawer />
