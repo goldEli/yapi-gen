@@ -193,9 +193,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         style={{
           width: 196,
           margin: props?.hasMargin ? '0 24px' : '0 16px 0 0',
-          border: errorState
-            ? '1px solid var(--function-error)'
-            : '1px solid var(--neutral-n6-d1)',
+          border: errorState ? '1px solid var(--function-error)' : '',
         }}
         placeholder={t('newlyAdd.pleaseStatusName')}
         allowClear
