@@ -115,7 +115,7 @@ const Email = () => {
                 flexWrap: 'wrap',
               }}
             >
-              {emailConfigurations.map((i: any) => (
+              {emailConfigurations?.map((i: any) => (
                 <ContentEmail2
                   active={choose.includes(i.id)}
                   onClick={() => onChoose(i.id)}
