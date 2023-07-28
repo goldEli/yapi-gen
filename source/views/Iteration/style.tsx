@@ -19,15 +19,18 @@ export const IterationListBox = styled.div<{ isShowLeft: boolean }>(
   {
     width: 324,
     borderRight: '1px solid var(--neutral-n6-d1)',
-    padding: '0px 24px 0px 0',
+
     background: 'white',
+    transition: 'all .8s',
     height: '100%',
     '.ant-space-item': {
       display: 'flex',
     },
   },
   ({ isShowLeft }) => ({
-    display: isShowLeft ? 'block' : 'none',
+    width: isShowLeft ? 324 : 0,
+    opacity: isShowLeft ? 1 : 0,
+    padding: isShowLeft ? '0px 24px 0px 0' : '0px',
   }),
 )
 
