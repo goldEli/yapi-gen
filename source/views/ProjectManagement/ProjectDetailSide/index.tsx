@@ -154,6 +154,7 @@ const ProjectDetailSide = () => {
     'note',
     'ProjectKanBan',
     'ProjectHome',
+    'ProjectSchedule',
   ]
   const sideList = [
     {
@@ -233,6 +234,15 @@ const ProjectDetailSide = () => {
           String(i.identity).includes('b/project/home'),
         ).length > 0,
       key: 'ProjectHome',
+    },
+    {
+      label: '日报规则配置',
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
+      ),
+      path: '/ProjectManagement/ProjectSetting',
+      isPermission: true,
+      key: 'ProjectSchedule',
     },
   ]
 
@@ -353,6 +363,7 @@ const ProjectDetailSide = () => {
       ProjectAffair: 4,
       ProjectKanBan: 5,
       ProjectHome: 6,
+      ProjectSchedule: 7,
     }
     const params = encryptPhp(
       JSON.stringify({

@@ -180,19 +180,16 @@ const ProjectDetailSide = () => {
       key: 'ProjectHome',
     },
     {
-      label: '日程',
+      label: '日报规则配置',
       icon: (
-        <CommonIconFont color="var(--neutral-n3)" type="settings" size={18} />
+        <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
       ),
       path: '/SprintProjectManagement/Setting',
       isPermission: true,
       key: 'ProjectSchedule',
     },
   ]
-  console.log(
-    projectInfo?.projectPermissions,
-    'projectInfo?.projectPermissions',
-  )
+
   const menuList = [
     {
       name: t('sprintProject.affairs'),

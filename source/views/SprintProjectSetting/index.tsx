@@ -107,7 +107,7 @@ const Setting = () => {
     [
       'ProjectSchedule',
       {
-        name: '日程',
+        name: '日报规则配置',
         icon: 'settings',
         content: <DailyReportRules />,
         isPermission: true,

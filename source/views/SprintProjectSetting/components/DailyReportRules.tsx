@@ -8,6 +8,7 @@ import CommonButton from '@/components/CommonButton'
 import { throttle } from 'lodash'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
+import DeleteConfirm from '@/components/DeleteConfirm'
 const DailyReportRulesWrap = styled(Form)`
   width: 100%;
   & .ant-form-item {
@@ -191,6 +192,8 @@ const DailyReportRules = () => {
   const [autoDisabled, setAutoDisabled] = useState(true)
   const [open1, setOpen1] = useState(true)
   const [open2, setOpen2] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
+  const [type, setType] = useState(0)
   const content = () => {
     return (
       <PopoverWrap>
@@ -233,10 +236,16 @@ const DailyReportRules = () => {
     )
   }
 
-  const save = async () => {
-    const values: any = await form1.validateFields().catch(e => e)
-    console.log(values)
-    // if (!values.errorFields) {}
+  const save = async (num: number) => {
+    const values1: any = await form1.validateFields().catch(e => e)
+    const values2: any = await form2.validateFields().catch(e => e)
+    setType(num)
+    console.log(values1)
+    if (!values1.errorFields && num === 1) {
+      setIsOpen(true)
+    } else if (num === 2) {
+      setIsOpen(true)
+    }
   }
 
   const onValuesChange = async () => {
@@ -308,10 +317,9 @@ const DailyReportRules = () => {
         {props.text}
       </Checkbox>
     )
-    return <Switch />
   }
   return (
-    <>
+    <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
       <ReportWrap>
         <HeaderWrap onClick={() => setOpen1(!open1)}>
           <span>日报生成配置</span>
@@ -353,7 +361,6 @@ const DailyReportRules = () => {
             >
               <InputStyle placeholder="请输入" allowClear />
             </Form.Item>
-            {form1.getFieldsValue().adv}
             <Form.Item label="是否自动生成" name="adv" className="check-form">
               <SwitchWrap />
             </Form.Item>
@@ -385,11 +392,7 @@ const DailyReportRules = () => {
               <CommonButton type="light" style={{ marginRight: '16px' }}>
                 取消
               </CommonButton>
-              <CommonButton
-                isDisable={autoDisabled}
-                type="primary"
-                onClick={save}
-              >
+              <CommonButton type="primary" onClick={() => save(1)}>
                 保存
               </CommonButton>
             </FooterWrap>
@@ -397,7 +400,7 @@ const DailyReportRules = () => {
         )}
       </ReportWrap>
 
-      <ReportWrap>
+      <ReportWrap style={{ marginBottom: 48 }}>
         <HeaderWrap onClick={() => setOpen2(!open2)}>
           <span>自动发送配置</span>
           <IconFont
@@ -448,18 +451,23 @@ const DailyReportRules = () => {
                 取消
               </CommonButton>
 
-              <CommonButton
-                type="primary"
-                onClick={save}
-                isDisable={sendDisabled}
-              >
+              <CommonButton type="primary" onClick={() => save(2)}>
                 保存
               </CommonButton>
             </FooterWrap>
           </DailyReportRulesWrap>
         )}
       </ReportWrap>
-    </>
+      <DeleteConfirm
+        title={'保存提示'}
+        text={'是否保存本次修改内容'}
+        isVisible={isOpen}
+        onConfirm={() => {
+          setIsOpen(false)
+        }}
+        onChangeVisible={() => setIsOpen(false)}
+      />
+    </div>
   )
 }
 
