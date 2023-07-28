@@ -94,9 +94,9 @@ const Email = () => {
           {t(
             'ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout',
           )}
-          <span style={{ marginLeft: '250px' }}>
+          {/* <span style={{ marginLeft: '250px' }}>
             <Switch checked={active} onChange={onChange} />
-          </span>
+          </span> */}
         </Content1>
         {active ? (
           <ActiveContentEmail2 active={active}>

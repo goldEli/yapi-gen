@@ -57,13 +57,13 @@ const CommentFooter = (props: CommentFooterProps) => {
     }
   }
   useShortcutCtrlEnter(handleShortcutEvent)
-  useHotkeys(
-    'Enter',
-    () => {
-      handleShortcutEvent()
-    },
-    [],
-  )
+  // useHotkeys(
+  //   'Enter',
+  //   () => {
+  //     handleShortcutEvent()
+  //   },
+  //   [],
+  // )
   useHotkeys(
     'm',
     () => {
