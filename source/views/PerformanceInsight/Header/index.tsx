@@ -32,7 +32,7 @@ interface Props {
   onCreateView(value: string, type: string, key?: string): void
   onDelView(key: string): void
   onSetDefaulut(id: number): void
-  onChange(title: string, value: number): void
+  onChange(title: string, value: number, type?: string): void
   defalutConfig: Models.Efficiency.ConfigItem | undefined
   onEdit(): void
   value: number
@@ -412,7 +412,7 @@ const Iteration = (props: Props) => {
       <HeaderRow>
         <Space size={16}>
           <View
-            onChange={props.onChange}
+            onChange={(name, id, type) => props.onChange(name, id, type)}
             value={props.value}
             viewDataList={props.viewDataList}
             onCreateView={props.onCreateView}

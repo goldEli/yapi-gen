@@ -116,6 +116,7 @@ const CreateDemandLeft = (props: Props) => {
   const [categoryObj, setCategoryObj] = useState<any>({})
   const { filterParamsModal, projectInfoValues, addWorkItemModal } =
     useSelector(store => store.project)
+  // debugger
   const { params } = addWorkItemModal
   const { createCategory } = useSelector(store => store.project)
   const [resultCategoryData, setResultCategoryData] = useState([])
@@ -716,7 +717,7 @@ const CreateDemandLeft = (props: Props) => {
                 attachmentPath: i.category_attachment,
               }))}
               projectId={props.projectId as number}
-              value={categoryObj?.id}
+              value={categoryObj?.id ?? 1138}
               onChangeCallBack={(val: number) => {
                 //
                 onSelectCategory(val)

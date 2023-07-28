@@ -88,7 +88,6 @@ const AddWorkItem = () => {
     const [projectInfoData] = await Promise.all([
       getProjectInfoValues({ projectId: value }),
     ])
-
     dispatch(setProjectInfoValues(projectInfoData))
     const allCategory = removeNull(projectInfoData, 'category')
 

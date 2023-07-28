@@ -18,7 +18,7 @@ interface View {
   onCreateView(value: string, type: string, key?: string): void
   onDelView(key: string): void
   onSetDefaulut(id: number): void
-  onChange(title: string, value: number): void
+  onChange(title: string, value: number, type?: string): void
   defalutConfig: Models.Efficiency.ConfigItem | undefined
   value: number
 }
@@ -181,7 +181,11 @@ const View = (props: View) => {
       setValue({
         ...optionsDefault,
       })
-      props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
+      props.onChange(
+        optionsDefault?.name || '',
+        optionsDefault?.id || 0,
+        'click',
+      )
       dispatch(setViewType(optionsDefault.type))
       dispatch(setSave(false))
       dispatch(
@@ -234,7 +238,7 @@ const View = (props: View) => {
           user_ids: [],
         },
       }
-      props.onChange(item.name, item.id)
+      props.onChange(item.name, item.id, 'click')
       dispatch(setViewType(item?.type))
       dispatch(setSave(false))
       setValue({
