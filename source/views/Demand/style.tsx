@@ -55,6 +55,7 @@ export const TitleWrap = styled.div({
 
 export const TreeBox = styled.div`
   width: 100% !important;
+  padding-right: 16px;
   height: 40px;
   border-radius: 0px 0px 0px 0px;
   display: flex;
@@ -64,9 +65,11 @@ export const FormBox = styled.div`
   padding: 0 20px 0 24px;
 `
 export const ButtonsItemBox = styled.div`
+  padding-right: 10px;
   cursor: pointer;
   min-width: 102px;
   padding: 0px 10px;
+
   height: 32px;
   display: flex;
   align-items: center;

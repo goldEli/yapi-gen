@@ -315,7 +315,7 @@ const WrapLeft = (props: any, ref: any) => {
   const [show, setShow] = useState<any>(false)
   const { projectInfoValues } = useSelector(store => store.project)
   const [focus, setFocus] = useState(false)
-  const [leftWidth, setLeftWidth] = useState(200)
+  const [leftWidth, setLeftWidth] = useState(400)
   // 重组为下拉筛选格式
   const computedChildren = (array: any) => {
     const resultData = array?.map((k: any) => ({
@@ -454,7 +454,10 @@ const WrapLeft = (props: any, ref: any) => {
   const onDragLine = () => {
     document.onmousemove = e => {
       setFocus(true)
-      if (e.clientX < 400) {
+      if (e.clientX < 600) {
+        return
+      }
+      if (e.clientX > 800) {
         return
       }
       setLeftWidth(e.clientX - 200)
@@ -469,6 +472,7 @@ const WrapLeft = (props: any, ref: any) => {
   return (
     <div
       style={{
+        overflow: 'hidden',
         width: props.isShowLeft ? leftWidth : '0px',
         height: '100%',
         position: 'relative',
