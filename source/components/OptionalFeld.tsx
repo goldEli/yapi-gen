@@ -36,7 +36,7 @@ const CheckedItem = styled.div({
   alignItems: 'center',
   height: 40,
   borderRadius: 4,
-  padding: '0 16px',
+  padding: '0 8px',
   cursor: 'pointer',
   'div: first-child': {
     width: '100%',
@@ -407,16 +407,21 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                             marginRight: 12,
                           }}
                         />
-                        <span
-                          style={{
-                            color:
-                              item?.value === 'name'
-                                ? 'var(--neutral-n4)'
-                                : 'var(--neutral-n1-d2)',
-                          }}
-                        >
-                          {item?.labelTxt}
-                        </span>
+                        <Tooltip title={item?.labelTxt}>
+                          <span
+                            style={{
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              color:
+                                item?.value === 'name'
+                                  ? 'var(--neutral-n4)'
+                                  : 'var(--neutral-n1-d2)',
+                            }}
+                          >
+                            {item?.labelTxt}
+                          </span>
+                        </Tooltip>
                       </div>
                       {item?.value !== 'name' && (
                         <ShowWrap style={{ marginLeft: 'auto' }}>
