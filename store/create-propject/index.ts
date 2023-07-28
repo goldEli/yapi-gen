@@ -7,6 +7,7 @@ type SliceState = {
   isRest: boolean
   isEditId: string
   groupId: any
+  groupIdName: any
   typeId: any
   projectType: string
   projectRoleList?: any
@@ -34,6 +35,9 @@ const slice = createSlice({
     },
     changeGroupId: (state, action) => {
       state.groupId = action.payload
+    },
+    changeGroupIdName: (state, action) => {
+      state.groupIdName = action.payload
     },
     changeTypeId: (state, action) => {
       state.typeId = action.payload
@@ -69,6 +73,7 @@ export const {
   changeGroupId,
   changeTypeId,
   setProjectType,
+  changeGroupIdName,
 } = slice.actions
 
 export default slice.reducer

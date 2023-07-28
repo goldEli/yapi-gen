@@ -82,11 +82,13 @@ const ProjectManagementOptimization = () => {
     list: undefined,
   })
   const isRest = useSelector(state => state.createProject.isRest)
-  const { groupId: storeGid, typeId } = useSelector(
-    state => state.createProject,
-  )
+  const {
+    groupId: storeGid,
+    typeId,
+    groupIdName,
+  } = useSelector(state => state.createProject)
 
-  // console.log('isGrid', isGrid)
+  console.log('isGrid', storeGid, typeId)
 
   const inform = [
     {
@@ -331,7 +333,13 @@ const ProjectManagementOptimization = () => {
           }}
         >
           <LeftTitle
-            title={t(typeId === 0 ? 'project.mineJoin' : 'project.companyAll')}
+            title={
+              typeId === 0
+                ? t('project.mineJoin')
+                : typeId === 1
+                ? t('project.companyAll')
+                : groupIdName
+            }
           />
           <div>
             <InputSearch

@@ -119,6 +119,7 @@ const EditFiled = (props: Props) => {
   const ChooseDom = useRef<HTMLInputElement>(null)
   const { projectInfo } = useSelector(store => store.project)
   const [form] = Form.useForm()
+  const inputRef = useRef<any>()
   const [value, setValue] = useState('')
   const [row, setRow] = useState([
     { value: '', key: new Date().getTime() },
@@ -304,6 +305,13 @@ const EditFiled = (props: Props) => {
       dom.scrollTop = dom.scrollHeight
     }, 1)
   }
+  useEffect(() => {
+    if (props?.isVisible) {
+      setTimeout(() => {
+        inputRef.current.focus()
+      }, 200)
+    }
+  }, [props?.isVisible])
 
   return (
     <CommonModal
@@ -355,6 +363,7 @@ const EditFiled = (props: Props) => {
               }}
             >
               <Input
+                ref={inputRef}
                 placeholder={t('newlyAdd.pleaseFieldsName')}
                 autoComplete="off"
                 maxLength={12}
@@ -493,7 +502,7 @@ const EditFiled = (props: Props) => {
                               <DragHandle />
                               <Input
                                 defaultValue={row[idx].value}
-                                style={{ width: 276 }}
+                                style={{ width: 396 }}
                                 placeholder={t('newlyAdd.pleaseParams')}
                                 onChange={e => onChangeValue(e, idx)}
                               />

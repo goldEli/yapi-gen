@@ -13,7 +13,11 @@ import {
   getGroupList,
   updateProjectGroup,
 } from '@/services/project'
-import { changeGroupId, changeTypeId } from '@store/create-propject'
+import {
+  changeGroupId,
+  changeGroupIdName,
+  changeTypeId,
+} from '@store/create-propject'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefreshGroup } from '@store/project'
 import { Form, Input, Menu } from 'antd'
@@ -302,6 +306,7 @@ const MoreProjectSide = (props: Props) => {
                   <TitleBox
                     isSpace
                     onClick={() => {
+                      dispatch(changeGroupIdName(item.name))
                       dispatch(changeGroupId(item.id))
                       dispatch(changeTypeId(null))
                     }}
