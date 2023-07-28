@@ -728,7 +728,7 @@ const CreateDemandLeft = (props: Props) => {
         </div>
         <Form.Item
           getValueFromEvent={event => {
-            return event.target.value.replace(/(^\s*)|(\s*$)/g, '')
+            return event.target.value.trim()
           }}
           label={t('common.title')}
           name="name"
