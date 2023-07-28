@@ -96,11 +96,11 @@ const FooterWrap = styled.div`
   justify-content: flex-end;
 `
 const PopoverWrap = styled.div`
-  width: 310px;
+  min-width: 310px;
   height: 326px;
   background: var(--auxiliary-b5);
   border-radius: 6px;
-  padding: 12px;
+  padding: 12px 0 12px 12px;
 `
 const Title = styled.div`
   font-size: 14px;
@@ -111,6 +111,7 @@ const Msg = styled.div`
   font-size: 12px;
   font-family: SiYuanRegular;
   color: var(--neutral-n1-d1);
+  margin-top: 8px;
 `
 const Msg1 = styled.div`
   color: var(--neutral-n3);
@@ -121,7 +122,6 @@ const Msg1 = styled.div`
 const Row = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
   & span:nth-child(1) {
     display: inline-block;
     width: 4px;
@@ -194,15 +194,37 @@ const DailyReportRules = () => {
   const content = () => {
     return (
       <PopoverWrap>
-        <Title>杨春平 07月25日 项目汇报【IFUN Agile】</Title>
+        <Title>XXX 07月25日 项目汇报【IFUN Agile】</Title>
         <Msg>总体进度：20%</Msg>
         <Row>
           <span />
-          <span>1111111</span>
+          <span>任务完成度：10/50</span>
         </Row>
         <Row>
           <span />
-          <span>1111111</span>
+          <span>昨日任务：新增6个，完成3个</span>
+        </Row>
+        <Msg>今日截止：3个</Msg>
+        <Row>
+          <span />
+          <span>梳理敏捷测试方案及流程（50%）</span>
+        </Row>
+        <Row>
+          <span />
+          <span>对已完成的设计，优化交互流程和视觉方案（10%）</span>
+        </Row>
+        <Row>
+          <span />
+          <span>试用版功能回归（20%）</span>
+        </Row>
+        <Msg>逾期任务：2个</Msg>
+        <Row>
+          <span />
+          <span>[逾1天]敏捷需求列表排序</span>
+        </Row>
+        <Row>
+          <span />
+          <span>[逾3天]项目列表缩略图优化</span>
         </Row>
         <Line />
         <Text>【进入项目】</Text>
