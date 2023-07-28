@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
+import Draggable from 'react-draggable'
 import { useLocation, useParams } from 'react-router-dom'
 import { SelectWrapBedeck } from '@/components/StyleCommon'
 import moment from 'moment'
@@ -31,6 +32,8 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { css } from '@emotion/css'
 import { templateList } from '@/services/formwork'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import ReportAssistantModal from './ReportAssistantModal'
 
 const listContainer = css`
   margin: 0 24px;
@@ -79,6 +82,14 @@ const ClearButton = styled.div`
   white-space: nowrap;
   cursor: pointer;
 `
+const RobotButton = styled.img`
+  position: fixed;
+  z-index: 999999;
+  bottom: 200px;
+  right: 40px;
+  cursor: pointer;
+`
+
 const defaultPageParam = { page: 1, pagesize: 20 }
 
 const List = () => {
@@ -98,6 +109,10 @@ const List = () => {
   const params = useParams()
   const id = Number(params?.id)
   const { isFresh } = useSelector(state => state.workReport.listUpdate)
+  const { language } = useSelector(store => store.global)
+  const canClick = useRef(true)
+  const [reportAssistantModalVisible, setReportAssistantModalVisible] =
+    useState(false)
 
   const statusOptions = [
     { label: t('p2.noRead'), value: 1, id: 1 },
@@ -707,6 +722,29 @@ const List = () => {
         visibleEdit={visibleEdit}
         editClose={() => setVisibleEdit(false)}
         visibleEditText={t('report.list.modifyReport')}
+      />
+      <Draggable
+        onDrag={() => {
+          canClick.current = false
+        }}
+        onStop={() => {
+          if (!canClick.current) {
+            canClick.current = true
+            return
+          }
+          setReportAssistantModalVisible(true)
+        }}
+      >
+        <RobotButton
+          width={language === 'zh' ? 128 : 145}
+          src={language === 'zh' ? '/RobotButton.png' : '/RobotButtonEn.png'}
+        />
+      </Draggable>
+      <ReportAssistantModal
+        close={() => {
+          setReportAssistantModalVisible(false)
+        }}
+        visible={reportAssistantModalVisible}
       />
     </div>
   )

@@ -78,6 +78,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const { startUsing, categoryList, activeCategory } = useSelector(
     store => store.category,
   )
+  const language = window.localStorage.getItem('language')
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -278,7 +279,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       props.onBack()
     }
   }, [projectInfo])
-
+  useEffect(() => {
+    watchDataList()
+  }, [language])
   const updateNode = (child: { name: any }) => {
     setAffairType((prevData: any) => {
       const newData = [...prevData]
