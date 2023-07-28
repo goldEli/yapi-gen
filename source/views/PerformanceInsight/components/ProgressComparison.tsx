@@ -32,6 +32,7 @@ import { getParamsData } from '@/tools'
 import { copyView } from '@/services/kanban'
 import { setListActiveId } from '@store/global'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import NoData from '@/components/NoData'
 
 // 进展对比tips
 const getTitleTips = (text: string, tips: string, position?: string) => {
@@ -825,6 +826,8 @@ const ProgressComparison = (props: Props) => {
       }
     }
   }
+  console.log(tableList, tableList1)
+
   useEffect(() => {
     dispatch(setVisiblePerson(false))
     dispatch(setVisibleWork(false))
@@ -877,7 +880,13 @@ const ProgressComparison = (props: Props) => {
             </>
           ))}
         </div>
+
+        {/* {tableList1.length <= 0 && <NoData />} */}
         <TableStyle>
+          <div style={{ height: 'inherit' }}>
+            {tableList.length <= 0 && <NoData />}
+          </div>
+
           <Table
             paginationShow={true}
             columns={columns}
