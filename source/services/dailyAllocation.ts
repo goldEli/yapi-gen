@@ -42,7 +42,7 @@ export const set_auto_send_config: any = async (params: any) => {
 
     reminder_time: moment(params.reminder_time).format('YYYY-MM-DD HH:mm:ss'),
     send_cycle: {
-      day: params.day,
+      day: params.day ?? [],
       is_holiday: params.is_holiday,
     },
   }
