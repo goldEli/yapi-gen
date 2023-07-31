@@ -88,3 +88,38 @@ export const delReportComment: any = async (params: any) => {
   const response = await http.delete('delReportComment', params)
   return response.data
 }
+
+// 日报助手：工作日报—获取项目列表
+// export const getProjectList: any = async () => {
+//   const response: any = await http.get<any>('getListOfDaily')
+//   return response?.data
+// }
+
+export const getProjectList: any = async () => {
+  const response: any = await http.get<any>('getProjectList', {
+    search: {
+      self: 1,
+      all: 1,
+    },
+    orderkey: 'name',
+    order: 'asc',
+  })
+
+  const data = response?.data?.list
+  return data
+}
+
+// 日报助手：工作汇报初始化数据
+export const initDaily: any = async (params: any) => {
+  const response = await http.get('getInitDaily', params)
+  return response.data
+}
+
+// 日报助手：工作日报—模板详情
+export const getDailyInfo: any = async (params: any) => {
+  const response = await http.get('getDailyInfo', { project_id: params })
+  return {
+    configs: response.data?.template_content_configs,
+    reportUserList: response.data?.report_user_list,
+  }
+}

@@ -444,6 +444,7 @@ const FormMain = (props: FormType) => {
         <Form.Item style={{ marginRight: 48 }} label="" name="is_supply">
           <CheckBox title={t('formWork.msg6')} />
         </Form.Item>
+
         {props.type === 'doNot' || !fillingRequirements?.is_supply ? null : (
           <Form.Item label="" name="hand_scope">
             <SupScope type={props.type} />

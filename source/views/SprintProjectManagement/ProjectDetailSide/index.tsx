@@ -179,7 +179,17 @@ const ProjectDetailSide = () => {
         ).length > 0,
       key: 'ProjectHome',
     },
+    {
+      label: '日报规则配置',
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
+      ),
+      path: '/SprintProjectManagement/Setting',
+      isPermission: true,
+      key: 'ProjectSchedule',
+    },
   ]
+
   const menuList = [
     {
       name: t('sprintProject.affairs'),

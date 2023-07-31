@@ -29,7 +29,6 @@ export const getDemandList: any = async (params: any) => {
   const response: any = await http.get<any>('getDemandList', {
     search: {
       project_id: params,
-
       all: 1,
     },
   })

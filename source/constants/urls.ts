@@ -188,7 +188,9 @@ const urls = {
   getScheduleListDaysOfMonth: '/b/calendar/schedule/daysOfMonth',
   getScheduleListDaysOfDate: '/b/calendar/schedule/daysOfDate',
   getScheduleSearch: '/b/calendar/schedule/search',
-
+  getInitDaily: '/b/companyuser/initDaily',
+  getDailyInfo: '/b/work_report/template/dailyInfo',
+  getListOfDaily: '/b/project/listOfDaily',
   getSprintKanBanList: '/b/list',
   /**
    * 冲刺项目-事务
