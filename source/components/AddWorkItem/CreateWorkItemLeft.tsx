@@ -444,6 +444,7 @@ const CreateDemandLeft = (props: Props) => {
   }, [categoryObj])
 
   useEffect(() => {
+    // debugger
     if (props.projectId && props.allCategoryList?.length > 0) {
       const resultCategoryList = computedCategory()
       setResultCategoryData(resultCategoryList)
@@ -525,7 +526,12 @@ const CreateDemandLeft = (props: Props) => {
         //   如果有修改
         if (resultCategory?.id) {
           setCategoryObj(resultCategory)
+          return
         }
+        setCategoryObj(
+          props.allCategoryList.find(item => item.is_previous_category === 1) ??
+            {},
+        )
       }
     }
   }, [props.projectId, props.allCategoryList])
