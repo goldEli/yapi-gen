@@ -97,7 +97,9 @@ const NewRelatedNeed = (props: any) => {
 
     props.onChange(historyData.concat(result).map((item: any) => item.value))
     setChooseList(historyData.concat(result))
-
+    setTimeout(() => {
+      props?.onFilter?.()
+    }, 200)
     setShow(false)
     lessForm.resetFields()
     getMessage({ msg: t('p2.need3') as string, type: 'success' })
@@ -109,6 +111,9 @@ const NewRelatedNeed = (props: any) => {
     newData.splice(index, 1)
     setChooseList(newData)
     props.onChange(newData.map((k: any) => k.value))
+    setTimeout(() => {
+      props?.onFilter?.()
+    }, 200)
   }
 
   useEffect(() => {

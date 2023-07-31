@@ -65,6 +65,7 @@ export const Content = styled.div`
 
 export const Container = () => {
   const language1 = useSelector(store => store.global.language)
+  const { viewReportModal } = useSelector(store => store.workReport)
   const location = useLocation()
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
@@ -199,8 +200,7 @@ export const Container = () => {
         <CreateAProjectForm />
         <CreateIteration />
         <DemandDetailDrawer />
-        {/* <ReportDetailDrawer /> */}
-        <System />
+        {viewReportModal.system ? <System /> : <ReportDetailDrawer />}
         <SiteDrawer />
         <AddWorkItem />
         <SprintDetailDrawer />

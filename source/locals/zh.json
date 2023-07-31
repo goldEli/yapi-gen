@@ -1447,7 +1447,9 @@
       "prevDateSubmit": "上次提交时间",
       "add": "请添加",
       "reportDeleted": "模板已被删除",
-      "noPermissions": "你无权限使用该模板"
+      "noPermissions": "你无权限使用该模板",
+      "notifiedToAdministrator": "已通知管理员开启该功能",
+      "reportAssistant": "日报助手"
     },
     "statistics": {
       "title": "汇报我的统计",

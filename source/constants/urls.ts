@@ -191,6 +191,8 @@ const urls = {
   getInitDaily: '/b/companyuser/initDaily',
   getDailyInfo: '/b/work_report/template/dailyInfo',
   getListOfDaily: '/b/project/listOfDaily',
+  getStoryListOfDaily: '/b/story/listOfDaily',
+  sendNotice: '/b/project/daily_config/send_notice',
   getSprintKanBanList: '/b/list',
   /**
    * 冲刺项目-事务

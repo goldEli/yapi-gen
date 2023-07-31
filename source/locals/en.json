@@ -1463,7 +1463,8 @@
       "prevDateSubmit": "Last submission time",
       "add": "Please add",
       "reportDeleted": "The template has been deleted. Procedure",
-      "noPermissions": "You do not have permission to use this template"
+      "noPermissions": "You do not have permission to use this template",
+      "notifiedToAdministrator": "The administrator has been notified to enable the function"
     },
     "statistics": {
       "title": "Reporting Statistics",
