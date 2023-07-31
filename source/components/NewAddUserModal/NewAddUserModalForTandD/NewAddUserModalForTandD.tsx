@@ -233,6 +233,7 @@ interface ModalProps {
   userGroupId?: number
   projectPermission?: any
   isCalendar?: boolean
+  onlyTeam?: boolean
   // 展示某一个
   state?: number
   defaultPeople?: any
@@ -278,6 +279,11 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
         form.setFieldsValue({
           userGroupId: props?.userGroupId,
         })
+    }
+    if (props?.onlyTeam) {
+      setTabs(tabs.filter(el => el.key === '1'))
+      setTabsActive(0)
+      return
     }
     if (projectInfo?.teamId && props.isPermisGroup) {
       setTabs(tabs.filter(el => el.key === '1'))

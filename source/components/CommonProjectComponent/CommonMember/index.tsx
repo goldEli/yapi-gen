@@ -294,6 +294,7 @@ const CommonMember = (props: Props) => {
         <NewAddUserModalForTandD
           title={t('project.addMember')}
           state={2}
+          onlyTeam={projectInfo?.isTeam}
           isPermisGroup
           isVisible={isVisible}
           onConfirm={handleOk}
