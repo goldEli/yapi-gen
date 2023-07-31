@@ -293,9 +293,9 @@ const DailyReportRules = () => {
   }
 
   const onValuesChange = async () => {
-    const a = form2.getFieldsValue().is_auto_send
+    const a = form2.getFieldsValue().is_auto_send === 1
     const values: any = await form1.validateFields().catch(e => e)
-    console.log(values)
+
     if (values.errorFields.length) {
       form1.setFieldsValue({ is_auto_generate: false })
       setAutoDisabled(true)
@@ -346,7 +346,20 @@ const DailyReportRules = () => {
     form1.setFieldsValue({ group_name, webhook, is_auto_generate })
     form2.setFieldsValue({ is_auto_send, is_hand_send })
   }
+  const getValueFromEvent = (e: any) => {
+    console.log(e)
 
+    return e.target.checked ? 1 : 2
+  }
+  const getValueFromEvent2 = (checked: any) => {
+    console.log(checked)
+
+    return checked ? 1 : 2
+  }
+
+  const getValueProps = (value: any) => {
+    return { checked: value === 1 }
+  }
   useEffect(() => {
     init()
   }, [])
@@ -397,9 +410,12 @@ const DailyReportRules = () => {
             <Form.Item
               label="是否自动生成"
               name="is_auto_generate"
+              valuePropName="checked"
               className="check-form"
+              getValueFromEvent={getValueFromEvent2}
+              getValueProps={getValueProps}
             >
-              <SwitchWrap />
+              <Switch />
             </Form.Item>
             <Text1>生成条件</Text1>
             <Text1> 条件一：在预计开始日期之后的任务（含当日）</Text1>
@@ -460,6 +476,9 @@ const DailyReportRules = () => {
               label="自动发送配置"
               name="is_auto_send"
               className="check-form"
+              valuePropName="checked"
+              getValueFromEvent={getValueFromEvent2}
+              getValueProps={getValueProps}
             >
               <Switch />
             </Form.Item>
@@ -468,6 +487,8 @@ const DailyReportRules = () => {
               name="is_holiday"
               className="checkBox-form"
               valuePropName="checked"
+              getValueFromEvent={getValueFromEvent}
+              getValueProps={getValueProps}
             >
               <Checkbox disabled={sendDisabled}>
                 跟随中国法定节假日自动调整
@@ -496,6 +517,8 @@ const DailyReportRules = () => {
               name="is_hand_send"
               className="checkBox-form"
               valuePropName="checked"
+              getValueFromEvent={getValueFromEvent}
+              getValueProps={getValueProps}
             >
               <Checkbox disabled={sendDisabled}>是否允许成员手动发送</Checkbox>
             </Form.Item>

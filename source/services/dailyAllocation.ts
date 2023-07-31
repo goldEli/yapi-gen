@@ -29,10 +29,7 @@ export const setDaily_config: any = async (params: any) => {
 export const set_create_config: any = async (params: any) => {
   const response: any = await http.put<any>(
     '/b/project/daily_config/set_create_config',
-    {
-      ...params,
-      is_auto_generate: params.is_auto_generate ? 1 : 2,
-    },
+    params,
   )
   return response
 }
@@ -42,12 +39,11 @@ export const set_auto_send_config: any = async (params: any) => {
 
   const p = {
     ...params,
-    is_auto_send: params.is_auto_send ? 1 : 2,
-    is_hand_send: params.is_hand_send ? 1 : 2,
+
     reminder_time: moment(params.reminder_time).format('YYYY-MM-DD HH:mm:ss'),
     send_cycle: {
       day: params.day,
-      is_holiday: params.is_holiday ? 1 : 2,
+      is_holiday: params.is_holiday,
     },
   }
   const response: any = await http.post<any>(
