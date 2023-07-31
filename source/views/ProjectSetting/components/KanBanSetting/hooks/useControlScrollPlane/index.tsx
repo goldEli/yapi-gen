@@ -102,7 +102,7 @@ const useControlScrollPlane = (columnNum: number) => {
             <WindowArea
               size={{
                 width: windowWidth,
-                height: windowHeight < 16 ? 16 : windowHeight,
+                height: windowHeight,
               }}
               bounds=".controlScrollPlaneBox"
               enableResizing={false}
