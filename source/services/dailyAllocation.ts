@@ -27,7 +27,7 @@ export const setDaily_config: any = async (params: any) => {
 }
 //设置生成配置
 export const set_create_config: any = async (params: any) => {
-  const response: any = await http.put<any>(
+  const response: any = await http.post<any>(
     '/b/project/daily_config/set_create_config',
     params,
   )

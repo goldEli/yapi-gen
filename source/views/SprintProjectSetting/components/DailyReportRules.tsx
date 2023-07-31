@@ -292,26 +292,9 @@ const DailyReportRules = () => {
 
   const onValuesChange = async () => {
     const a = form2.getFieldsValue().is_auto_send === 1
-    const values: any = await form1.validateFields().catch(e => e)
 
-    if (values.errorFields.length) {
-      form1.setFieldsValue({ is_auto_generate: false })
-      setAutoDisabled(true)
-    } else {
-      form1.setFieldsValue({ is_auto_generate: true })
-      setAutoDisabled(false)
-    }
     setSendDisabled(!a)
   }
-
-  useEffect(() => {
-    form1.setFieldsValue({ is_auto_generate: false })
-    form2.setFieldsValue({
-      is_holiday: true,
-
-      reminder_time: moment('18:28:00', 'HH:mm'),
-    })
-  }, [])
 
   const init = async () => {
     const {
@@ -355,11 +338,7 @@ const DailyReportRules = () => {
           />
         </HeaderWrap>
         {open1 ? (
-          <DailyReportRulesWrap
-            layout="vertical"
-            form={form1}
-            onValuesChange={onValuesChange}
-          >
+          <DailyReportRulesWrap layout="vertical" form={form1}>
             <Form.Item
               label="群名称"
               name="group_name"
