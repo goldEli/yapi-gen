@@ -46,7 +46,7 @@ const StepWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  margin: '8px 0 40px 0',
+  margin: '8px 0 40px 6px',
 })
 
 const TabsWrap = styled.div({

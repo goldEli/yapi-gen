@@ -414,12 +414,12 @@ export const TextNum = styled.div`
   align-items: center;
   height: 24px;
   margin: 0px 0px 8px 0px;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   span:nth-child(1) {
     font-family: SiYuanMedium;
     color: var(--neutral-n1-d1);
     font-size: 24px;
-    margin-right: 16px;
+    margin-right: 8px;
   }
   span:nth-child(2) {
     color: var(--neutral-n1-d1);

@@ -742,15 +742,17 @@ const ProjectMember = (props: { searchValue?: string }) => {
         />
 
         <NewAddUserModalForTandD
+          title={t('project.addMember')}
+          state={2}
+          onlyTeam={projectInfo?.isTeam}
           isPermisGroup
+          isVisible={isAddVisible}
+          onClose={onClickCancel}
+          onConfirm={handleOk}
           userGroupId={
             projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
               ?.value
           }
-          title={t('project.addMember')}
-          isVisible={isAddVisible}
-          onClose={onClickCancel}
-          onConfirm={handleOk}
           projectPermission={projectPermission}
         />
 

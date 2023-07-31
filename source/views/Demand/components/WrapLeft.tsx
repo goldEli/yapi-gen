@@ -38,6 +38,10 @@ import {
   TitleWrap,
   TreeBox,
 } from '../style'
+import {
+  SprintDetailDragLine,
+  SprintDetailMouseDom,
+} from '@/components/DetailScreenModal/DemandDetail/style'
 
 const TreeItem = (props: any) => {
   const context: any = useContext(TreeContext)
@@ -310,7 +314,8 @@ const WrapLeft = (props: any, ref: any) => {
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
   const { projectInfoValues } = useSelector(store => store.project)
-
+  const [focus, setFocus] = useState(false)
+  const [leftWidth, setLeftWidth] = useState(400)
   // 重组为下拉筛选格式
   const computedChildren = (array: any) => {
     const resultData = array?.map((k: any) => ({
@@ -446,50 +451,75 @@ const WrapLeft = (props: any, ref: any) => {
       init,
     }
   })
-
-  if (props.isShowLeft) {
-    return (
-      <DragMoveContainer
-        height="calc(100vh - 150px)"
-        max="700px"
-        min="240px"
-        width="240px"
-      >
-        <TitleWrap style={{ paddingBottom: '10px' }}>
-          {t('newlyAdd.demandClass')}
-        </TitleWrap>
-        {treeData.length > 0 && show ? (
-          <Tree
-            selectedKeys={[valueId]}
-            allowDrop={(dropNode: any) => {
-              if (dropNode.dropNode.title.props.grade === 4) {
-                return false
-              }
-              return true
-            }}
-            defaultExpandAll
-            autoExpandParent
-            onDrop={onDrop}
-            onSelect={onSelect}
-            draggable={(node: any) => {
-              const {
-                title: {
-                  props: { id },
-                },
-              } = node
-              if (id === -1 || id === 0) {
-                return false
-              }
-
-              return true
-            }}
-            treeData={treeData}
-          />
-        ) : null}
-      </DragMoveContainer>
-    )
+  const onDragLine = () => {
+    document.onmousemove = e => {
+      setFocus(true)
+      if (e.clientX < 600) {
+        return
+      }
+      if (e.clientX > 800) {
+        return
+      }
+      setLeftWidth(e.clientX - 200)
+    }
+    document.onmouseup = () => {
+      document.onmousemove = null
+      document.onmouseup = null
+      setFocus(false)
+    }
   }
-  return null
+
+  return (
+    <div
+      style={{
+        overflow: 'hidden',
+        width: props.isShowLeft ? leftWidth : '0px',
+        height: '100%',
+        position: 'relative',
+        transition: focus ? '' : 'all .8s',
+        opacity: props.isShowLeft ? 1 : 0,
+      }}
+    >
+      <SprintDetailMouseDom
+        active={focus}
+        onMouseDown={onDragLine}
+        style={{ right: 0 }}
+      >
+        <SprintDetailDragLine active={focus} className="line" />
+      </SprintDetailMouseDom>
+      <TitleWrap style={{ paddingBottom: '10px' }}>
+        {t('newlyAdd.demandClass')}
+      </TitleWrap>
+      {treeData.length > 0 && show ? (
+        <Tree
+          selectedKeys={[valueId]}
+          allowDrop={(dropNode: any) => {
+            if (dropNode.dropNode.title.props.grade === 4) {
+              return false
+            }
+            return true
+          }}
+          defaultExpandAll
+          autoExpandParent
+          onDrop={onDrop}
+          onSelect={onSelect}
+          draggable={(node: any) => {
+            const {
+              title: {
+                props: { id },
+              },
+            } = node
+            if (id === -1 || id === 0) {
+              return false
+            }
+
+            return true
+          }}
+          treeData={treeData}
+        />
+      ) : null}
+    </div>
+  )
 }
 
 export default forwardRef(WrapLeft)

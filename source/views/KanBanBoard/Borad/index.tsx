@@ -7,6 +7,8 @@ import { Spin } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { getKanbanByGroup, getKanbanConfig } from '@store/kanBan/kanBan.thunk'
 import { getProjectIdByUrl } from '@/tools'
+import useKanBanData from '../hooks/useKanBanData'
+import NoData from '@/components/NoData'
 
 const Container = styled.div<{ padding: number }>`
   display: flex;
@@ -23,6 +25,7 @@ const Container = styled.div<{ padding: number }>`
 `
 
 const Board = () => {
+  const { data } = useKanBanData()
   const { kanbanConfig, fullScreen } = useSelector(store => store.kanBan)
   const { spinning } = useSelector(state => state.kanBan)
   const { sortByRowAndStatusOptions } = useSelector(state => state.kanBan)
@@ -44,6 +47,7 @@ const Board = () => {
     dispatch(getKanbanByGroup())
     dispatch(getKanbanConfig(params))
   }, [isUpdateAddWorkItem])
+  console.log(data, 'data')
 
   return (
     <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
@@ -53,6 +57,7 @@ const Board = () => {
         id="kanbanContainer"
         ref={containerRef}
       >
+        {data[0].columns.length < 1 && <NoData />}
         <KanBanSortByPerson />
         <ControlScrollPlane />
       </Container>

@@ -104,7 +104,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
-    height: 52,
+    height: 44,
     justifyContent: 'center',
     cursor: 'pointer',
     boxSizing: 'border-box',
@@ -185,11 +185,11 @@ const IconFontStyle = styled(IconFont)`
 `
 
 const RowBox = styled.div`
-  padding-right: 16px;
+  /* padding-right: 16px; */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  /* margin-bottom: 10px; */
 `
 
 const CheckboxWrap = styled.div({ width: 100, height: 32 })
@@ -197,10 +197,10 @@ const OperationWrap = styled.div({ width: 100 })
 const MenuItemsTitle = styled.div`
   height: 44px;
   line-height: 44px;
-  padding: 0px 16px;
+  /* padding: 0px 16px; */
   color: var(--neutral-n3);
   font-size: var(--font12);
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
 `
 interface ItemProps {
   item: any
@@ -479,7 +479,9 @@ const PermissionManagement = () => {
           </div>
         </CommonModal>
         <Header>
-          <span>{t('setting.permissionManagement')}</span>
+          <span style={{ fontFamily: 'SiYuanMedium' }}>
+            {t('setting.permissionManagement')}
+          </span>
           {activeDetail.type !== 1 && (
             <CommonButton
               style={{ width: 'fit-content' }}
@@ -521,11 +523,11 @@ const PermissionManagement = () => {
                         isActive={item.id === activeDetail.id}
                       >
                         <div className="name">{item.name}</div>
-                        <span className="subName">
+                        {/* <span className="subName">
                           {item.type === 1
                             ? t('setting.systemGroup')
                             : t('setting.customGroup')}
-                        </span>
+                        </span> */}
                         <MoreDropdown
                           isHidden={item.type === 1}
                           isMoreVisible={isMoreVisible}
@@ -549,11 +551,11 @@ const PermissionManagement = () => {
                         isActive={item.id === activeDetail.id}
                       >
                         <div className="name">{item.name}</div>
-                        <span className="subName">
+                        {/* <span className="subName">
                           {item.type === 1
                             ? t('setting.systemGroup')
                             : t('setting.customGroup')}
-                        </span>
+                        </span> */}
                         <MoreDropdown
                           isHidden={item.type === 1}
                           isMoreVisible={isMoreVisible}
