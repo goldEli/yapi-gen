@@ -991,12 +991,14 @@ const PriorityWrapTable = styled.div<{ isShow?: boolean }>(
 const PopoverTargetText = styled.div`
   max-width: 560px;
   padding: 8px 16px;
-  max-height: 172px;
+  max-height: 300px;
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px;
   background: var(--neutral-white-d6);
   font-size: 14px;
   color: var(--neutral-n1-d1);
+  white-space: pre;
+  overflow-y: auto;
 `
 
 const LinkWrap = styled.div`

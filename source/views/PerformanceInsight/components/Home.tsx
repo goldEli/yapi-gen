@@ -187,6 +187,8 @@ const Home = () => {
   const { isRefresh } = useSelector(store => store.user)
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ViewItem>()
+  const [valueId, setValueId] = useState(paramsData?.valueId || 0)
+  const [viewValue, setViewValue] = useState(paramsData?.view?.value || 0)
   useEffect(() => {
     if (paramsData?.type && paramsData?.projectId) {
       setHomeType(paramsData.type)
@@ -226,8 +228,18 @@ const Home = () => {
     const res = await viewsList(parmas)
     setViewDataList(res)
     let filterVal: any = {}
-    if (paramsData?.view?.value) {
-      filterVal = res.find(el => el.id === Number(paramsData.view.value))
+    if (viewValue && valueId) {
+      filterVal = res.find(el => el.id === Number(viewValue))
+    } else if (viewValue && !valueId) {
+      filterVal = res.find(el => el.id === Number(viewValue))
+      filterVal.config = {
+        end_time: paramsData.headerParmas.time.time[1],
+        start_time: paramsData.headerParmas.time.time[0],
+        user_ids: paramsData.headerParmas.users,
+        period_time: paramsData.headerParmas.period_time,
+        project_id: paramsData.headerParmas.projectIds,
+        iterate_ids: paramsData.headerParmas.iterate_ids,
+      }
     } else {
       filterVal = res.find(el => el.is_default === 1)
     }
@@ -362,15 +374,19 @@ const Home = () => {
     }
   }
   // 获取下拉框的值视图的
-  const onGetOptionValue = (title: string, value: number) => {
+  const onGetOptionValue = (title: string, value: number, type: string) => {
     setViewTitle(title)
     setOptionVal(value)
     const filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
       el => el.id === value,
     )
-    setProjectViewIds(filterVal?.config.project_id || [])
-    setIterateViewIds(filterVal?.config.iterate_ids || [])
-    setDefalutConfig(filterVal)
+    if (type) {
+      setValueId(0)
+      setViewValue(0)
+      setProjectViewIds(filterVal?.config.project_id || [])
+      setIterateViewIds(filterVal?.config.iterate_ids || [])
+      setDefalutConfig(filterVal)
+    }
   }
   // 缺陷现状和工作项现状
   //  '周期时间：two_week,four_week,one_month,three_month,six_month',
@@ -605,6 +621,19 @@ const Home = () => {
 
     valueHeaderStr !== JSON.stringify(headerParmas) && init()
   }, [headerParmas])
+  useEffect(() => {
+    setValueId(paramsData?.valueId)
+    setViewValue(paramsData?.view?.value)
+    if (paramsData?.type && paramsData?.projectId) {
+      setHomeType(paramsData.type)
+      setProjectId(paramsData.projectId)
+      getViewList({ project_id: paramsData.projectId, use_type: 3 })
+    } else {
+      setHomeType('all')
+      setProjectId('')
+      getViewList({ project_id: '', use_type: 3 })
+    }
+  }, [])
   return (
     <div
       style={{

@@ -36,8 +36,12 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { closeMap, onChange } = useCloseMap()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()
-  const hidden = !!closeMap?.get(issuesGroup.id)
+
   const { showUserRelatedInformation, groupType, isNoGroup } = useGroupType()
+  const hidden =
+    groupType === 'none'
+      ? !!closeMap?.get(issuesGroup.id)
+      : !closeMap?.get(issuesGroup.id)
 
   const { t } = useI18n()
 

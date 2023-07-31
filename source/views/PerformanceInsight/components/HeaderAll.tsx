@@ -98,6 +98,8 @@ const HeaderAll = (props: HaderProps) => {
       const params = encryptPhp(
         JSON.stringify({
           view: props.headerParmas.view,
+          valueId: paramsData.valueId,
+          headerParmas: paramsData.headerParmas,
         }),
       )
       navigate(`/Performance?data=${params}`)
@@ -108,6 +110,8 @@ const HeaderAll = (props: HaderProps) => {
           type: props.homeType,
           id: props.projectId,
           view: props.headerParmas.view,
+          valueId: paramsData.valueId,
+          headerParmas: paramsData.headerParmas,
         }),
       )
       navigate(`/Report/PerformanceInsight?data=${params}`)

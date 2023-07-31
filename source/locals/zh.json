@@ -2136,7 +2136,7 @@
     "send1": "【{{name}}】发送于{{time}}",
     "pleaseNameOrKey": "输入项目名称或键",
     "homeConfig": "首页配置",
-    "kanbanConfig": "Kanban配置",
+    "kanbanConfig": "面板配置",
     "cardMax": "卡片已超过该列最大数",
     "maxEd": "已超过最大数",
     "systemNot": "系统视图不能编辑",

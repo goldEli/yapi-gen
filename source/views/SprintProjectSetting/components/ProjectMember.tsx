@@ -465,35 +465,39 @@ const ProjectMember = (props: { searchValue?: string }) => {
       width: 200,
       render: (text: string, record: any, index: number) => {
         return (
-          <OptionDropTd
-            style={{ position: 'relative' }}
-            onMouseEnter={() => {
-              setSelectRowKey(record.id)
-            }}
-            onMouseLeave={() => {
-              setSelectRowKey('')
-              setOptionsDrop(false)
-            }}
-            onClick={() => {
-              setOptionsDrop(!optionsDrop)
-            }}
-          >
-            <span>
-              {text}
-              {record.id === selectRowKey && (
-                <label className={selectOptionsIcon}>
-                  {' '}
-                  <IconFont type="down-icon" />
-                </label>
-              )}
-            </span>
-            {optionsDrop && record.id === selectRowKey ? (
-              <TableSelectOptions
-                roleName={text}
-                callBack={data => setProjectClick(data, record, index)}
-              ></TableSelectOptions>
-            ) : null}
-          </OptionDropTd>
+          <TableSelectOptions
+            roleName={text}
+            callBack={data => setProjectClick(data, record, index)}
+          />
+          // <OptionDropTd
+          //   style={{ position: 'relative' }}
+          //   onMouseEnter={() => {
+          //     setSelectRowKey(record.id)
+          //   }}
+          //   onMouseLeave={() => {
+          //     setSelectRowKey('')
+          //     setOptionsDrop(false)
+          //   }}
+          //   onClick={() => {
+          //     setOptionsDrop(!optionsDrop)
+          //   }}
+          // >
+          //   <span>
+          //     {text}
+          //     {record.id === selectRowKey && (
+          //       <label className={selectOptionsIcon}>
+          //         {' '}
+          //         <IconFont type="down-icon" />
+          //       </label>
+          //     )}
+          //   </span>
+          //   {optionsDrop && record.id === selectRowKey ? (
+          //     <TableSelectOptions
+          //       roleName={text}
+          //       callBack={data => setProjectClick(data, record, index)}
+          //     ></TableSelectOptions>
+          //   ) : null}
+          // </OptionDropTd>
         )
       },
     },
@@ -547,7 +551,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
     record: any,
     index: number,
   ) => {
-    // console.log(data, record, index)
     try {
       await updateProjectRole({
         user_group_id: data.id,
@@ -555,14 +558,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         user_id: record.id,
       })
       getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
-      setMemberList((prevData: any) => {
-        let obj = { ...prevData }
-        let cloneList = [...obj.list]
-        cloneList[index] = { ...record, roleName: data.name }
-        obj.list = cloneList
-        return obj
-      })
-      setOptionsDrop(false)
+      getList(order, { page: 1, size: pageObj.size })
     } catch (error) {
       // getMessage({ msg: error as string, type: 'error' })
     }
