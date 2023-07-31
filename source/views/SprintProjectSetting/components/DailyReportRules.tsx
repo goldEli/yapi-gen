@@ -11,9 +11,11 @@ import moment from 'moment'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import {
   getAily_config,
-  get_auto_send_config,
+  set_auto_send_config,
+  set_create_config,
 } from '@/services/dailyAllocation'
 import { useSelector } from '@store/index'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 const DailyReportRulesWrap = styled(Form)`
   width: 100%;
   & .ant-form-item {
@@ -157,37 +159,6 @@ interface CheckBoxGroupType {
   value?: any
   disabled: boolean
 }
-const CheckBoxGroup = (props: CheckBoxGroupType) => {
-  const [t]: any = useTranslation()
-  const onChange = throttle(
-    (value: boolean, el1: { value: boolean; key: number }) => {
-      const filterVal = props?.value.map(
-        (item: { value: boolean; key: number }) => ({
-          ...item,
-          value: el1.key === item.key ? value : item.value,
-        }),
-      )
-      props.onChange?.(filterVal)
-    },
-    500,
-  )
-  return (
-    <>
-      {props.value?.map(
-        (el: { value: boolean; key: number; label: string }) => (
-          <Checkbox
-            disabled={props.disabled}
-            key={el.key}
-            onChange={e => onChange(e.target.checked, el)}
-            checked={el.value}
-          >
-            {t(`formWork.${el.label}`)}
-          </Checkbox>
-        ),
-      )}
-    </>
-  )
-}
 
 const DailyReportRules = () => {
   const [form1] = Form.useForm()
@@ -195,11 +166,52 @@ const DailyReportRules = () => {
   const [t] = useTranslation()
   const projectId = useSelector(store => store.project.projectInfo.id)
   const [sendDisabled, setSendDisabled] = useState(true)
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [autoDisabled, setAutoDisabled] = useState(true)
   const [open1, setOpen1] = useState(true)
   const [open2, setOpen2] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
   const [type, setType] = useState(0)
+  const [typeId, setTypeId] = useState(0)
+  const plainOptions = () => {
+    const arr: any = [
+      {
+        label: t('formWork.monday'),
+        value: 0,
+      },
+      {
+        label: t('formWork.monday'),
+        value: 1,
+      },
+      {
+        label: t('formWork.wednesday'),
+        value: 2,
+      },
+      {
+        label: t('formWork.thursday'),
+        value: 3,
+      },
+      {
+        label: t('formWork.friday'),
+        value: 4,
+      },
+      {
+        label: t('formWork.saturday'),
+        value: 5,
+      },
+      {
+        label: t('formWork.monday'),
+        value: 6,
+      },
+    ]
+    return arr
+    // .map((i: any) => {
+    //   return {
+    //     label: t(`formWork.${i.label??'sunday'}`),
+    //     value: i.value,
+    //   }
+    // })
+  }
   const content = () => {
     return (
       <PopoverWrap>
@@ -246,63 +258,60 @@ const DailyReportRules = () => {
     const values1: any = await form1.validateFields().catch(e => e)
     const values2: any = await form2.validateFields().catch(e => e)
     setType(num)
+
     console.log(values1)
+    console.log(values2)
     if (!values1.errorFields && num === 1) {
-      setIsOpen(true)
+      open({
+        title: '保存提示',
+        text: '是否保存本次修改内容',
+        onConfirm: async () => {
+          const res1 = await set_create_config({
+            ...values1,
+            id: typeId,
+            project_id: projectId,
+          })
+
+          console.log(res1)
+        },
+      })
     } else if (num === 2) {
-      setIsOpen(true)
+      open({
+        title: '保存提示',
+        text: '是否保存本次修改内容',
+        onConfirm: async () => {
+          const res2 = await set_auto_send_config({
+            ...values2,
+            id: typeId,
+            project_id: projectId,
+          })
+
+          console.log(res2)
+        },
+      })
     }
   }
 
   const onValuesChange = async () => {
-    const a = form2.getFieldsValue().s
+    const a = form2.getFieldsValue().is_auto_send
     const values: any = await form1.validateFields().catch(e => e)
     console.log(values)
     if (values.errorFields.length) {
-      form1.setFieldsValue({ adv: false })
+      form1.setFieldsValue({ is_auto_generate: false })
       setAutoDisabled(true)
     } else {
-      form1.setFieldsValue({ adv: true })
+      form1.setFieldsValue({ is_auto_generate: true })
       setAutoDisabled(false)
     }
     setSendDisabled(!a)
   }
 
   useEffect(() => {
-    form1.setFieldsValue({ adv: false })
+    form1.setFieldsValue({ is_auto_generate: false })
     form2.setFieldsValue({
-      '5': true,
-      '6': [
-        {
-          label: 'monday',
-          value: true,
-        },
-        {
-          label: 'monday',
-          value: true,
-        },
-        {
-          label: 'wednesday',
-          value: true,
-        },
-        {
-          label: 'thursday',
-          value: true,
-        },
-        {
-          label: 'friday',
-          value: true,
-        },
-        {
-          label: 'saturday',
-          value: false,
-        },
-        {
-          label: 'sunday',
-          value: false,
-        },
-      ],
-      q: moment('18:28:00', 'HH:mm'),
+      is_holiday: true,
+
+      reminder_time: moment('18:28:00', 'HH:mm'),
     })
   }, [])
   const SwitchWrap = (props: any) => {
@@ -325,9 +334,17 @@ const DailyReportRules = () => {
     )
   }
   const init = async () => {
-    const res2 = await get_auto_send_config(projectId)
-    const res1 = await getAily_config(projectId)
-    console.log(res1, res2, 'res1')
+    const {
+      is_auto_generate,
+      id,
+      is_auto_send,
+      is_hand_send,
+      config: { group_name, webhook },
+    } = await getAily_config(projectId)
+
+    setTypeId(id)
+    form1.setFieldsValue({ group_name, webhook, is_auto_generate })
+    form2.setFieldsValue({ is_auto_send, is_hand_send })
   }
 
   useEffect(() => {
@@ -348,7 +365,7 @@ const DailyReportRules = () => {
             }}
           />
         </HeaderWrap>
-        {open1 && (
+        {open1 ? (
           <DailyReportRulesWrap
             layout="vertical"
             form={form1}
@@ -392,7 +409,7 @@ const DailyReportRules = () => {
               <span>生成示例</span>
               <Popover
                 placement="rightTop"
-                title={''}
+                title=""
                 content={content}
                 trigger="click"
               >
@@ -417,7 +434,7 @@ const DailyReportRules = () => {
               </CommonButton>
             </FooterWrap>
           </DailyReportRulesWrap>
-        )}
+        ) : null}
       </ReportWrap>
 
       <ReportWrap style={{ marginBottom: 48 }}>
@@ -433,37 +450,53 @@ const DailyReportRules = () => {
           />
         </HeaderWrap>
 
-        {open2 && (
+        {open2 ? (
           <DailyReportRulesWrap
             layout="vertical"
             form={form2}
             onValuesChange={onValuesChange}
           >
-            <Form.Item label="自动发送配置" name="s" className="check-form">
+            <Form.Item
+              label="自动发送配置"
+              name="is_auto_send"
+              className="check-form"
+            >
               <Switch />
             </Form.Item>
-            <Form.Item label="发送周期" name="5" className="checkBox-form">
-              <CheckboxWrap
-                disabled={sendDisabled}
-                text={'跟随中国法定节假日自动调整'}
-              />
+            <Form.Item
+              label="发送周期"
+              name="is_holiday"
+              className="checkBox-form"
+              valuePropName="checked"
+            >
+              <Checkbox disabled={sendDisabled}>
+                跟随中国法定节假日自动调整
+              </Checkbox>
             </Form.Item>
             <Form.Item
-              name="6"
+              name="day"
               style={{
                 marginBottom: '32px',
               }}
             >
-              <CheckBoxGroup disabled={sendDisabled} />
-            </Form.Item>
-            <Form.Item label={'发送时间'} name="q">
-              <TimePicker
-                style={{ width: 320 }}
-                format={'HH:mm'}
+              <Checkbox.Group
+                options={plainOptions()}
                 disabled={sendDisabled}
               />
             </Form.Item>
-            <Form.Item label="手动发送配置" name="8" className="checkBox-form">
+            <Form.Item label="发送时间" name="reminder_time">
+              <TimePicker
+                style={{ width: 320 }}
+                format="HH:mm"
+                disabled={sendDisabled}
+              />
+            </Form.Item>
+            <Form.Item
+              label="手动发送配置"
+              name="is_hand_send"
+              className="checkBox-form"
+              valuePropName="checked"
+            >
               <Checkbox disabled={sendDisabled}>是否允许成员手动发送</Checkbox>
             </Form.Item>
             <FooterWrap>
@@ -476,17 +509,9 @@ const DailyReportRules = () => {
               </CommonButton>
             </FooterWrap>
           </DailyReportRulesWrap>
-        )}
+        ) : null}
       </ReportWrap>
-      <DeleteConfirm
-        title={'保存提示'}
-        text={'是否保存本次修改内容'}
-        isVisible={isOpen}
-        onConfirm={() => {
-          setIsOpen(false)
-        }}
-        onChangeVisible={() => setIsOpen(false)}
-      />
+      <DeleteConfirmModal />
     </div>
   )
 }

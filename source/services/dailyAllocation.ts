@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import * as http from '@/tools/http'
+import moment from 'moment'
 
 //获取日报规则配置
 
@@ -28,15 +29,30 @@ export const setDaily_config: any = async (params: any) => {
 export const set_create_config: any = async (params: any) => {
   const response: any = await http.put<any>(
     '/b/project/daily_config/set_create_config',
-    params,
+    {
+      ...params,
+      is_auto_generate: params.is_auto_generate ? 1 : 2,
+    },
   )
   return response
 }
 //设置自动发送配置
 export const set_auto_send_config: any = async (params: any) => {
+  console.log(params)
+
+  const p = {
+    ...params,
+    is_auto_send: params.is_auto_send ? 1 : 2,
+    is_hand_send: params.is_hand_send ? 1 : 2,
+    reminder_time: moment(params.reminder_time).format('YYYY-MM-DD HH:mm:ss'),
+    send_cycle: {
+      day: params.day,
+      is_holiday: params.is_holiday ? 1 : 2,
+    },
+  }
   const response: any = await http.post<any>(
     '/b/project/daily_config/set_auto_send_config',
-    params,
+    p,
   )
   return response
 }
