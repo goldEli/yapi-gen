@@ -161,7 +161,11 @@ const SliderList = (props: any) => {
                 size={19}
                 color="var(--neutral-n1-d1)"
               />
-              <span style={{ marginLeft: '8px' }}>{dragItem.title}</span>
+              <span
+                style={{ marginLeft: '8px', color: 'var(--neutral-n1-d1)' }}
+              >
+                {dragItem.title}
+              </span>
             </div>
             <div className="delIcon">
               {dragItem?.is_customize === 1 && <IconFontStyle type="delete" />}
@@ -190,7 +194,9 @@ const SliderList = (props: any) => {
               size={19}
               color="var(--neutral-n1-d1)"
             />
-            <span style={{ marginLeft: '8px' }}>{children.title}</span>
+            <span style={{ marginLeft: '8px', color: 'var(--neutral-n1-d1)' }}>
+              {children.title}
+            </span>
           </div>
           <div
             className="delIcon"
