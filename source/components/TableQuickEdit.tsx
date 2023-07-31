@@ -71,7 +71,7 @@ interface Props {
 
   // 当前需求数据
   item?: any
-  onUpdate?(): void
+  onUpdate?(obj?: any, type?: string): void
 
   // 是否是从我的模块或者他的模块使用
   isMineOrHis?: any
@@ -435,33 +435,29 @@ const TableQuickEdit = (props: Props) => {
         [props?.keyText]: newValue || newValue === 0 ? newValue : '',
       }
     }
-    if (projectInfo.projectType === 1) {
-      // 缺陷
-      if (props.item.is_bug === 1) {
+
+    // 详情页面模式
+    if (props.isInfoPage) {
+      if (props.item.is_bug === 1 && projectInfo.projectType === 1) {
+        // 缺陷
         await updateFlawTableParams(obj)
-        if (props.isInfoPage) {
-          dispatch(getFlawInfo({ projectId, id: props.item?.id }))
-        } else {
-          props.onUpdate?.()
-        }
-      } else {
+        dispatch(getFlawInfo({ projectId, id: props.item?.id }))
+      } else if (projectInfo.projectType === 1 && props.item.is_bug === 2) {
         // 需求
         await updateTableParams(obj)
-        if (props.isInfoPage) {
-          const result = await getDemandInfo({ projectId, id: props.item?.id })
-          dispatch(setDemandInfo(result))
-        } else {
-          props.onUpdate?.()
-        }
-      }
-    } else {
-      // 事务
-      await updateAffairsTableParams(obj)
-      if (props.isInfoPage) {
-        dispatch(getAffairsInfo({ projectId, sprintId: props.item?.id }))
+        const result = await getDemandInfo({ projectId, id: props.item?.id })
+        dispatch(setDemandInfo(result))
       } else {
-        props.onUpdate?.()
+        // 事务
+        await updateAffairsTableParams(obj)
+        dispatch(getAffairsInfo({ projectId, sprintId: props.item?.id }))
       }
+    } else if (props.isInfo) {
+      // 浮层模式
+      props.onUpdate?.(obj, props.type)
+    } else {
+      // 表格模式
+      props.onUpdate?.()
     }
     getMessage({ msg: t('common.editSuccess'), type: 'success' })
     if (type === 1) {

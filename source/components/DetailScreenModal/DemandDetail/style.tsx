@@ -376,7 +376,4 @@ export const SelectWrapBedeck = styled.div`
   .ant-select-selection-placeholder {
     color: black;
   }
-  .ant-select-clear {
-    right: 12px;
-  }
 `
