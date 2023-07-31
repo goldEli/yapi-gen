@@ -57,7 +57,7 @@ const Board = () => {
         id="kanbanContainer"
         ref={containerRef}
       >
-        {data[0].columns.length < 1 && <NoData />}
+        {data[0]?.columns.length < 1 && <NoData />}
         <KanBanSortByPerson />
         <ControlScrollPlane />
       </Container>
