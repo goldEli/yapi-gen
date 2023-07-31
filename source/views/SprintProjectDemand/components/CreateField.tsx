@@ -25,12 +25,13 @@ const SelectStyle = styled(Select)<{ isActive?: any }>({}, ({ isActive }) => ({
   },
   minWidth: '140px',
 }))
-const CreateFieldWrap = styled.div`
+const CreateFieldWrap = styled.div<{ isOperate?: boolean }>`
   margin: 20px 0 0 0px;
   border-left: 1px solid var(--neutral-n6-d1);
   padding: 0 24px;
   overflow-y: auto;
-  height: calc(100vh - 240px);
+  height: ${props =>
+    props.isOperate ? 'calc(100vh - 288px)' : 'calc(100vh - 240px)'};
   margin-bottom: 24px;
   color: var(--hover-d1);
 `
@@ -125,7 +126,7 @@ const DropdownRenderDiv = styled.div`
     }
   }
 `
-const CreateField = () => {
+const CreateField = (props: { isOperate?: boolean }) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
 
@@ -251,7 +252,7 @@ const CreateField = () => {
     )
   }, [fieldType])
   return (
-    <CreateFieldWrap draggable="false">
+    <CreateFieldWrap draggable="false" isOperate={props.isOperate}>
       <TitleStyle draggable="false" onClick={() => setCreateIcon(!createIcon)}>
         <CommonIconFont
           type={createIcon ? 'down-icon' : 'right-icon'}

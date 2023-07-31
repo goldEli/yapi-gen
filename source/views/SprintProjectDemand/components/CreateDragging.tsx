@@ -101,7 +101,9 @@ const SliderList = (props: any) => {
               size={18}
               color="var(--neutral-n1-d1)"
             />
-            <span style={{ marginLeft: '8px' }}>{dragItem.label}</span>
+            <span style={{ marginLeft: '8px', color: 'var(--neutral-n1-d1)' }}>
+              {dragItem.label}
+            </span>
           </ItemList>
         </Container>
       ) : null}
@@ -119,7 +121,9 @@ const SliderList = (props: any) => {
             size={18}
             color="var(--neutral-n1-d1)"
           />
-          <span style={{ marginLeft: '8px' }}>{children.label}</span>
+          <span style={{ marginLeft: '8px', color: 'var(--neutral-n1-d1)' }}>
+            {children.label}
+          </span>
         </ItemList>
       </Container>
     </div>

@@ -366,7 +366,7 @@ const Main = (props: any) => {
       draggable="false"
       style={{
         flex: 1,
-        height: 'calc(100vh - 220px)',
+        height: props.isOperate ? 'calc(100vh - 268px)' : 'calc(100vh - 220px)',
         overflowY: 'auto',
         padding: '0 24px',
       }}

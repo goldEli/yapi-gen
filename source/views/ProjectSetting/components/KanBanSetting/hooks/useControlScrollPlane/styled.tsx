@@ -16,7 +16,7 @@ export const ControlScrollPlaneBox = styled.div`
 `
 
 export const WindowArea = styled(Rnd)`
-  border: 2px solid var(--primary-d1);
+  border: 1px solid var(--primary-d1);
   box-sizing: border-box;
   position: absolute;
   cursor: pointer;
