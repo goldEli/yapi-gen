@@ -11,6 +11,7 @@ import {
   saveUserGroupingModel,
 } from '@store/kanBan/kanBan.thunk'
 import MultipleAvatar from '@/components/MultipleAvatar'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 interface UserGroupingModalProps {}
 
 const LabelTitle = (props: any) => {
@@ -65,7 +66,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
   const [t] = useTranslation()
   const { userGroupingModelInfo } = useSelector(store => store.kanBan)
   const [userList, setUserList] = useState<Model.User.User[]>([])
-
+  const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   React.useEffect(() => {
     form.setFieldsValue({
       name: userGroupingModelInfo.groupName,
@@ -117,6 +118,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
       confirmText={t('confirm')}
       isDisable={userList.length === 0}
     >
+      <DeleteConfirmModal />
       <Box>
         <Form
           form={form}
@@ -153,8 +155,15 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
                 </Row>
                 <div
                   onClick={e => {
+                    openDelete({
+                      title: '移除确认',
+                      text: '移除后该员工无法参与此项目事务',
+                      onConfirm() {
+                        onDel(item.id)
+                        return Promise.resolve()
+                      },
+                    })
                     e.stopPropagation()
-                    onDel(item.id)
                   }}
                 >
                   <span style={{ color: 'var(--primary-d2)' }}>
