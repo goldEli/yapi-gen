@@ -209,7 +209,9 @@ const Right = styled.div`
 `
 const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-left: 16px;
-  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(
+      .ant-select-customize-input
+    )
     .ant-select-selector {
     box-shadow: 0 0 0 0px;
   }
@@ -730,7 +732,7 @@ const SprintProjectSprint: React.FC = () => {
               )}
               <SelectWrapForList>
                 <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                  {t('sprint.agent')}
+                  {t('common.dealName')}
                 </span>
                 <CustomSelect
                   style={{ width: 148 }}

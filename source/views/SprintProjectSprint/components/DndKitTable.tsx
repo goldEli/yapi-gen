@@ -513,7 +513,7 @@ const DndKitTable = (props: any) => {
     },
     { title: t('sprint.sub'), dataIndex: 'child_story_count', width: 120 },
     {
-      title: t('sprint.agent'),
+      title: t('common.dealName'),
       dataIndex: 'handlers',
       key: 'handlers',
       width: 140,
