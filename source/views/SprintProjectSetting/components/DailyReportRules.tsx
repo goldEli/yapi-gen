@@ -9,6 +9,11 @@ import { throttle } from 'lodash'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import {
+  getAily_config,
+  get_auto_send_config,
+} from '@/services/dailyAllocation'
+import { useSelector } from '@store/index'
 const DailyReportRulesWrap = styled(Form)`
   width: 100%;
   & .ant-form-item {
@@ -188,6 +193,7 @@ const DailyReportRules = () => {
   const [form1] = Form.useForm()
   const [form2] = Form.useForm()
   const [t] = useTranslation()
+  const projectId = useSelector(store => store.project.projectInfo.id)
   const [sendDisabled, setSendDisabled] = useState(true)
   const [autoDisabled, setAutoDisabled] = useState(true)
   const [open1, setOpen1] = useState(true)
@@ -318,6 +324,16 @@ const DailyReportRules = () => {
       </Checkbox>
     )
   }
+  const init = async () => {
+    const res2 = await get_auto_send_config(projectId)
+    const res1 = await getAily_config(projectId)
+    console.log(res1, res2, 'res1')
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
+
   return (
     <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
       <ReportWrap>
@@ -340,7 +356,7 @@ const DailyReportRules = () => {
           >
             <Form.Item
               label="群名称"
-              name="a"
+              name="group_name"
               required
               rules={[{ required: true, message: '请输入' }]}
             >
@@ -348,20 +364,24 @@ const DailyReportRules = () => {
             </Form.Item>
             <Form.Item
               label="钉钉webhook地址"
-              name="b"
+              name="webhook"
               required
               rules={[
                 {
                   required: true,
                   message: '请输入',
                   // eslint-disable-next-line
-                  pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
+                  // pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
                 },
               ]}
             >
               <InputStyle placeholder="请输入" allowClear />
             </Form.Item>
-            <Form.Item label="是否自动生成" name="adv" className="check-form">
+            <Form.Item
+              label="是否自动生成"
+              name="is_auto_generate"
+              className="check-form"
+            >
               <SwitchWrap />
             </Form.Item>
             <Text1>生成条件</Text1>
