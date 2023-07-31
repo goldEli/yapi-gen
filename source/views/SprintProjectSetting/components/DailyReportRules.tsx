@@ -259,8 +259,6 @@ const DailyReportRules = () => {
     const values2: any = await form2.validateFields().catch(e => e)
     setType(num)
 
-    console.log(values1)
-    console.log(values2)
     if (!values1.errorFields && num === 1) {
       open({
         title: '保存提示',
@@ -314,25 +312,7 @@ const DailyReportRules = () => {
       reminder_time: moment('18:28:00', 'HH:mm'),
     })
   }, [])
-  const SwitchWrap = (props: any) => {
-    return (
-      <Switch
-        checked={props.value}
-        onChange={(val: boolean) => props.onChange(val)}
-      />
-    )
-  }
-  const CheckboxWrap = (props: any) => {
-    return (
-      <Checkbox
-        checked={props.value}
-        onChange={val => props.onChange(val.target.checked)}
-        disabled={props.disabled}
-      >
-        {props.text}
-      </Checkbox>
-    )
-  }
+
   const init = async () => {
     const {
       is_auto_generate,
@@ -347,13 +327,9 @@ const DailyReportRules = () => {
     form2.setFieldsValue({ is_auto_send, is_hand_send })
   }
   const getValueFromEvent = (e: any) => {
-    console.log(e)
-
     return e.target.checked ? 1 : 2
   }
   const getValueFromEvent2 = (checked: any) => {
-    console.log(checked)
-
     return checked ? 1 : 2
   }
 
@@ -401,7 +377,7 @@ const DailyReportRules = () => {
                   required: true,
                   message: '请输入',
                   // eslint-disable-next-line
-                  // pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
+                  pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
                 },
               ]}
             >
