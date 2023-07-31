@@ -2,7 +2,15 @@
 /* eslint-disable require-unicode-regexp */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Form, Input, Switch, Popover, Checkbox, TimePicker } from 'antd'
+import {
+  Form,
+  Input,
+  Switch,
+  Popover,
+  Checkbox,
+  TimePicker,
+  message,
+} from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '@/components/CommonButton'
 import { throttle } from 'lodash'
@@ -269,7 +277,9 @@ const DailyReportRules = () => {
             id: typeId,
             project_id: projectId,
           })
-
+          if (res1.code === 0) {
+            message.success('成功')
+          }
           console.log(res1)
         },
       })
@@ -283,7 +293,9 @@ const DailyReportRules = () => {
             id: typeId,
             project_id: projectId,
           })
-
+          if (res2.code === 0) {
+            message.success('成功')
+          }
           console.log(res2)
         },
       })
