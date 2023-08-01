@@ -271,7 +271,7 @@ const DailyReportRules = () => {
 
       form1.setFieldsValue({ group_name, webhook, is_auto_generate })
     } else {
-      is_auto_send === 2 && setSendDisabled(true)
+      is_auto_send === 2 ? setSendDisabled(true) : setSendDisabled(false)
       form2.setFieldsValue({
         is_auto_send,
         is_hand_send,
@@ -297,7 +297,6 @@ const DailyReportRules = () => {
           if (res1.code === 0) {
             getMessage({ msg: t('common.saveSuccess'), type: 'success' })
           }
-          console.log(res1)
         },
       })
     } else if (num === 2) {
