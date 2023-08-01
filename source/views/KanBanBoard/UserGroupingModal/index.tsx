@@ -156,8 +156,8 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
                 <div
                   onClick={e => {
                     openDelete({
-                      title: '移除确认',
-                      text: '移除后该员工无法参与此项目事务',
+                      title: t('removal_confirmation'),
+                      text: t('removal_person_confirmation'),
                       onConfirm() {
                         onDel(item.id)
                         return Promise.resolve()
