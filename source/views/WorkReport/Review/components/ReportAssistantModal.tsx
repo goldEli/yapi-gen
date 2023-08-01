@@ -18,8 +18,10 @@ import {
   getProjectList,
   getStoryListOfDaily,
   initDaily,
-  writeReport,
+  writeAssistantReport,
 } from '@/services/report'
+import { useDispatch } from '@store/index'
+import { setUpdateList } from '@store/workReport'
 
 const HandleSpin = styled(Spin)`
   img {
@@ -152,13 +154,44 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const [demandList, setDemandList] = useState<any>([])
   const [modalInfo, setModalInfo] = useState<any>(null)
   const [loading, setLoading] = useState<any>(false)
-  const [peopleValue, setPeopleValue] = useState<any>([])
+  const dispatch = useDispatch()
   const { close, visible } = props
+
+  const onClose = () => {
+    close()
+    setCurrentProject(null)
+    setModalInfo(null)
+  }
 
   // 发送日报
   const confirm = async () => {
     const params = form.getFieldsValue()
-    console.log(params, 'resresresresres')
+    if (Object.keys(params)?.length === 0) {
+      getMessage({
+        type: 'warning',
+        msg: t('report.list.message1'),
+      })
+      return
+    }
+    let canSubmit = false
+    Object.keys(params)?.forEach((k: string) => {
+      const tempArr = k.split('_')
+      if (tempArr[0] === '4' && params[k]?.length) {
+        canSubmit = true
+      }
+      if (tempArr[0] === '1' && params[k]?.length <= 0) {
+        canSubmit = false
+      }
+    })
+
+    if (!canSubmit) {
+      getMessage({
+        type: 'warning',
+        msg: t('report.list.message2'),
+      })
+      return
+    }
+
     let users: any[] = []
     const data: any[] = []
     Object.keys(params).forEach((key: string) => {
@@ -178,6 +211,19 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           conf_id: Number(tempArr[1]),
           content: JSON.stringify(obj),
         })
+      } else if (tempArr[0] === '4') {
+        data.push({
+          conf_id: Number(tempArr[1]),
+          content: (params[key] || [])?.map((i: any) => {
+            const tempObj: any = demandListAll.current.find(
+              (t: any) => t.id === i,
+            )
+            return {
+              id: tempObj?.id,
+              name: tempObj?.name,
+            }
+          }),
+        })
       } else {
         data.push({
           conf_id: Number(tempArr[1]),
@@ -185,17 +231,21 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         })
       }
     })
-    const result = await writeReport({
+    const result = await writeAssistantReport({
       report_template_id: modalInfo?.id,
+      template_name: modalInfo?.name,
       data,
-      target_users: [689],
+      target_users: users,
     })
-  }
-
-  const onClose = () => {
-    close()
-    setCurrentProject(null)
-    setModalInfo(null)
+    if (result) {
+      getMessage({
+        type: 'success',
+        msg: t('report.list.sendOk'),
+      })
+      onClose()
+      // 更新List页面
+      dispatch(setUpdateList({ isFresh: 1 }))
+    }
   }
 
   // 获取项目列表
@@ -260,6 +310,13 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
 
   // 重新生成
   const generatorDataByProject = async () => {
+    if (!currentProject) {
+      getMessage({
+        msg: t('report.list.message3'),
+        type: 'warning',
+      })
+      return
+    }
     if (currentProject?.enable_hand_send === 2) {
       setHavePermission(true)
       close()
@@ -318,7 +375,16 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             label={<LabelTitle>{content.name}</LabelTitle>}
             name={`${content.type}_${content.id}`}
           >
-            <ChoosePeople initValue={peopleValue} />
+            <ChoosePeople
+              initValue={modalInfo?.reportUserList?.map((item: any) => {
+                return {
+                  avatar: item?.avatar,
+                  id: item.id || item.user_id,
+                  name: item?.name,
+                  noDel: true,
+                }
+              })}
+            />
           </Form.Item>
         )
       case 2:
@@ -375,14 +441,20 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             initialValue={JSON.parse(content?.content ?? null)?.yesterday_add}
           >
             <div className="rateText">
-              昨日新增：{JSON.parse(content?.content ?? null)?.yesterday_add}个
+              {t('report.list.addedYesterday')}：
+              {JSON.parse(content?.content ?? null)?.yesterday_add}
+              {t('report.list.pieces')}
             </div>
             <div className="rateText">
               <span>
-                任务完成度：{getScheduleData().done}/{getScheduleData().total}
+                {t('report.list.taskProgress')}：{getScheduleData().done}/
+                {getScheduleData().total}
               </span>
               <span className="line" />
-              <span>已完成 {getScheduleData().done}个</span>
+              <span>
+                {t('completed')}： {getScheduleData().done}
+                {t('report.list.pieces')}
+              </span>
             </div>
           </Form.Item>
         )
@@ -415,11 +487,11 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     <>
       <CommonModal
         width={784}
-        title="日报助手"
+        title={t('report.list.reportAssistant')}
         isVisible={visible}
         onClose={onClose}
         onConfirm={confirm}
-        confirmText="发送"
+        confirmText={t('send')}
       >
         <div
           style={{
@@ -431,7 +503,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           <ContentWrap>
             <div className="head">
               {currentProject?.is_setting_config === 1 ? (
-                <div className="tips">项目管理员已配置自动生成并发送规则</div>
+                <div className="tips">{t('report.list.tips1')}</div>
               ) : null}
               <div className="userBox">
                 {initData?.avatar ? (
@@ -462,7 +534,9 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             </div>
             <div className="content">
               <Form form={form} layout="vertical">
-                <Form.Item label={<LabelTitle>请选择项目</LabelTitle>}>
+                <Form.Item
+                  label={<LabelTitle>{t('report.list.message3')}</LabelTitle>}
+                >
                   <div className="project">
                     <CustomSelect
                       optionFilterProp="label"
@@ -482,11 +556,11 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                     {loading ? (
                       <LoadingButton>
                         <img width={16} src="/shareLoading.gif" />
-                        <span>生成中...</span>
+                        <span>{t('report.list.generate')}</span>
                       </LoadingButton>
                     ) : (
                       <AgainButton onClick={generatorDataByProject}>
-                        重新生成
+                        {t('report.list.generateReport')}
                       </AgainButton>
                     )}
                   </div>

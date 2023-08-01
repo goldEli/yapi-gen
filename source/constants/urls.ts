@@ -193,6 +193,8 @@ const urls = {
   getListOfDaily: '/b/project/listOfDaily',
   getStoryListOfDaily: '/b/story/listOfDaily',
   sendNotice: '/b/project/daily_config/send_notice',
+  // 日报助手发送日报
+  writeAssistantReport: '/b/work_report/user/helperCreate',
   getSprintKanBanList: '/b/list',
   /**
    * 冲刺项目-事务

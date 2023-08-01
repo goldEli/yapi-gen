@@ -1449,7 +1449,20 @@
       "reportDeleted": "模板已被删除",
       "noPermissions": "你无权限使用该模板",
       "notifiedToAdministrator": "已通知管理员开启该功能",
-      "reportAssistant": "日报助手"
+      "reportAssistant": "日报助手",
+      "sendOk": "发送成功",
+      "openFunc": "开通该功能",
+      "contactAdministrator": "请联系管理员开通该功能",
+      "message1": "请点击 “生成日报” 再发送",
+      "message2": "请完善日报内容",
+      "message3": "请先选择项目",
+      "tips1": "项目管理员已配置自动生成并发送规则",
+      "generate": "生成中...",
+      "generateReport": "生成日报",
+      "addedYesterday": "昨日新增",
+      "taskProgress": "任务完成度",
+      "reportProject": "汇报项目",
+      "pieces": "个"
     },
     "statistics": {
       "title": "汇报我的统计",

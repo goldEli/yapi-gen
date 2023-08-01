@@ -116,11 +116,18 @@ export const getDailyInfo: any = async (params: any) => {
     configs: response.data?.template_content_configs,
     reportUserList: response.data?.report_user_list,
     id: response.data?.id,
+    name: response.data?.name,
   }
 }
 
 // 日报助手：日报生成规则未配置通知
 export const sendNotice: any = async (params: any) => {
   const response = await http.post('sendNotice', { project_id: params })
+  return response.data
+}
+
+// 日报助手：日报生成规则未配置通知
+export const writeAssistantReport: any = async (params: any) => {
+  const response = await http.post('writeAssistantReport', params)
   return response.data
 }
