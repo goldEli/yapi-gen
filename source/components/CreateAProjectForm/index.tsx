@@ -23,6 +23,7 @@ import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
 import MoreOptions from '../MoreOptions'
 import ProjectCardShow from '../ProjectCardShow'
+import normalCompany from '/normalCompany.jpg'
 import {
   CoverArea,
   CoverAreaAdd,
@@ -636,7 +637,7 @@ const CreateAProjectForm = () => {
                               type="project"
                               name={i.name}
                               dec={i.dec}
-                              img={i.img}
+                              img={i.img?.length > 0 ? i.img : normalCompany}
                             />
                           </Select.Option>
                         )
