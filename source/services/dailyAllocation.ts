@@ -10,7 +10,6 @@ export const getAily_config: any = async (params: any) => {
   const response: any = await http.get<any>('/b/project/daily_config/info', {
     project_id: params,
   })
-  console.log(response.data, 'params')
   return {
     group_name: response.data.config.group_name,
     webhook: response.data.config.webhook,
