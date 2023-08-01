@@ -13,6 +13,7 @@ import { changeKeyBoardVisible } from '@store/SiteNotifications'
 import { Drawer } from 'antd'
 import { CloseWrap, Wrap, messageDrawer, TabsWrap } from './style'
 import { css } from '@emotion/css'
+import { useTranslation } from 'react-i18next'
 
 const myCss = css`
   :hover {
@@ -21,45 +22,46 @@ const myCss = css`
 `
 
 const KeyBoardDrawer = () => {
+  const [t] = useTranslation()
   const textList = [
     {
-      text: '创建事务/需求/缺陷',
+      text: t('create_transaction_or_requirement_or_defect'),
       board: ['C'],
     },
     {
-      text: '发送评论',
-      board: ['Ctrl+回车'],
+      text: t('send_comment'),
+      board: [t('ctrl_enter')],
     },
     {
-      text: '评论输入',
+      text: t('comment_input'),
       board: ['M'],
     },
     {
-      text: '页面搜索',
+      text: t('page_search'),
       board: ['F'],
     },
     {
-      text: '详情预览切换',
+      text: t('toggle_details_preview'),
       board: ['↑', '↓'],
     },
     {
-      text: '左侧菜单显示/隐藏',
+      text: t('toggle_left_menu'),
       board: ['['],
     },
     {
-      text: '项目菜单切换至冲刺/迭代',
+      text: t('switch_project_menu_to_sprint_or_iteration'),
       board: ['1'],
     },
     {
-      text: '项目菜单切换至Kanban',
+      text: t('switch_project_menu_to_kanban'),
       board: ['2'],
     },
     {
-      text: '项目菜单切换至报表',
+      text: t('switch_project_menu_to_reports'),
       board: ['3'],
     },
     {
-      text: '项目菜单切换至需求',
+      text: t('switch_project_menu_to_requirements'),
       board: ['5'],
     },
   ]
@@ -94,7 +96,7 @@ const KeyBoardDrawer = () => {
             padding: '0px 16px',
           }}
         >
-          <TabsWrap>快捷键</TabsWrap>
+          <TabsWrap>{t('shortcut_key')}</TabsWrap>
           <CloseWrap onClick={onClose} width={32} height={32}>
             <IconFont
               style={{ fontSize: 20, color: 'var(--neutral-n2)' }}

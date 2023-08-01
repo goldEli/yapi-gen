@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { Space } from 'antd'
+import CommonButton from '@/components/CommonButton'
 
 const HeaderWrap = styled.div`
   width: 100%;
@@ -79,11 +80,10 @@ const HeaderSearch = (props: {
             onChangeSearch={(value: string) => props.onSetSearchVal(value)}
             leftIcon
           />
+          <CommonButton type="primary" onClick={props.onShowAddMemberModal}>
+            {t('add_a_member') as string}
+          </CommonButton>
         </Space>
-
-        <ButtonStyle onClick={props.onShowAddMemberModal}>
-          {t('add_a_member') as string}
-        </ButtonStyle>
 
         <ScreenMinHover
           label={t('common.refresh')}

@@ -232,6 +232,7 @@ const Sortable = (props: any) => {
       localStorage.className = ''
     }
   }, [])
+
   return (
     <div
       draggable="false"
@@ -348,7 +349,8 @@ const Sortable = (props: any) => {
                         child?.content === 'user_name' ||
                         child?.content === 'finish_at' ||
                         child?.content === 'created_at' ||
-                        child?.content === 'priority' ? (
+                        child?.content === 'priority' ||
+                        child?.content === 'parent_id' ? (
                           <DelBtnText> {t('p2.delete')}</DelBtnText>
                         ) : (
                           <DelBtn

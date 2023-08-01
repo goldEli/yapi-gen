@@ -1,4 +1,26 @@
 {
+  "shortcut_key": "shortcut key",
+  "create_transaction_or_requirement_or_defect": "Create transaction requirement defect",
+
+  "send_comment": "Send comment",
+
+  "ctrl_enter": "Ctrl+ Enter ",
+
+  "comment_input": "Comment input",
+
+  "page_search": "Page search",
+
+  "toggle_details_preview": "Detail preview switch ",
+
+  "toggle_left_menu": "Left menu show/hide ",
+
+  "switch_project_menu_to_sprint_or_iteration": "Switch the item menu to Sprint/Iteration ",
+
+  "switch_project_menu_to_kanban": "Project menu switch to Kanban",
+
+  "switch_project_menu_to_reports": "Project menu Switch to Reports ",
+
+  "switch_project_menu_to_requirements": "Project menu switch to Requirements",
   "the_message_content_cannot_be_empty": " Message content cannot be empty",
 
   "characters_over": " Characters_over 200",

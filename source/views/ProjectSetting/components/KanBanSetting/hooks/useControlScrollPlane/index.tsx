@@ -59,6 +59,10 @@ const useControlScrollPlane = (columnNum: number) => {
   const widthRatio = planeWidth / childWidth
   const heightRatio = planeHeight / childHeight
 
+  // 缩略的可视宽高
+  const windowHeight = planeHeight * (height / childHeight)
+  const windowWidth = planeWidth * (width / childWidth)
+
   useEffect(() => {
     if (!containerRef.current) {
       return
@@ -79,9 +83,6 @@ const useControlScrollPlane = (columnNum: number) => {
       containerRef.current?.removeEventListener('scroll', onScroll)
     }
   }, [widthRatio, heightRatio, columnNum])
-  // 缩略的可视宽高
-  const windowHeight = planeHeight * (height / childHeight)
-  const windowWidth = planeWidth * (width / childWidth)
 
   const ControlScrollPlane: React.FC<ControlScrollPlaneProps> = props => {
     // 缩略内容展示

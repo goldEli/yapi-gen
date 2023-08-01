@@ -92,7 +92,6 @@ const SiteNotifications = (props: any, ref: any) => {
         }
       } else {
         notification.open({
-          duration: null,
           icon: <CommonIconFont color="#6688FF" size={20} type="bell" />,
           className: 'notification-my',
           maxCount: 1,

@@ -194,7 +194,7 @@ const HeaderRight = () => {
   ]
   const createList2 = [
     {
-      name: '快捷键',
+      name: t('shortcut_key'),
       key: 'keyboard',
       icon: 'keyboard',
       isPermission: true,

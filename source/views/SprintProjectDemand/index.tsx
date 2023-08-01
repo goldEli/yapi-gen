@@ -120,8 +120,9 @@ const DemandSetting = () => {
               onBack={() => {
                 setIsSave(false), setIsOperate(false)
               }}
+              isOperate={isOperate}
             />
-            <CreateField />
+            <CreateField isOperate={isOperate} />
           </Wrap>
         </>
       ) : (
