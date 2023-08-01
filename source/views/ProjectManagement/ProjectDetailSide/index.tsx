@@ -248,8 +248,6 @@ const ProjectDetailSide = () => {
       key: 'ProjectSchedule',
     },
   ]
-  // b/project/daily_config
-  console.log(projectInfo?.projectPermissions, 'projectInfo')
   const getProjectInfoValuesData = async () => {
     const result = await getProjectInfoValues({ projectId })
     dispatch(setProjectInfoValues(result))

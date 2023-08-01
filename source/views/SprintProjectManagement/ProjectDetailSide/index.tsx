@@ -191,7 +191,6 @@ const ProjectDetailSide = () => {
       key: 'ProjectSchedule',
     },
   ]
-
   const menuList = [
     {
       name: t('sprintProject.affairs'),
@@ -317,7 +316,6 @@ const ProjectDetailSide = () => {
     setSelectedKeys([paramsData.type])
   }, [paramsData.type])
   useEffect(() => {}, [pathname])
-  console.log(projectSettingsList)
   return (
     <AllWrap>
       {pathname !== '/SprintProjectManagement/DemandSetting' &&
