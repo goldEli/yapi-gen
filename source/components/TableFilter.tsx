@@ -217,6 +217,8 @@ export const NumericInput2 = (props: any) => {
 }
 
 const TableFilter = (props: any) => {
+  console.log(props, 'props')
+
   const [t] = useTranslation()
   const location = useLocation()
   const info = useGetloginInfo()
@@ -334,12 +336,7 @@ const TableFilter = (props: any) => {
       confirm()
     }
   }, [searchChoose])
-  useEffect(() => {
-    console.log('飞机')
 
-    form.resetFields()
-    confirm()
-  }, [location])
   // 折叠图标
   const expandIcon = (e: any) => {
     return (
@@ -437,7 +434,12 @@ const TableFilter = (props: any) => {
       }))
       .concat(newB)
   }
+  useEffect(() => {
+    console.log('飞机')
 
+    form.resetFields()
+    confirm()
+  }, [location])
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
