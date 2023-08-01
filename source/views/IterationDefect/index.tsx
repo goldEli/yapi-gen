@@ -165,7 +165,6 @@ const Index = (props: any) => {
       discovery_version: searchParamsObj?.discovery_version,
       severity: searchParamsObj?.severity,
       solution: searchParamsObj?.solution,
-      // system_view: searchChoose ? searchChoose['system_view'] : undefined,
     }
     dispatch(setFilterParams(params))
     const result = await getFlawList(params)
