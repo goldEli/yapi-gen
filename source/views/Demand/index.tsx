@@ -126,7 +126,6 @@ const DemandIndex = () => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     } else {
       params = {
@@ -154,7 +153,6 @@ const DemandIndex = () => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     }
     if (state === 2) {

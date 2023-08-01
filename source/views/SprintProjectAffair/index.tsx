@@ -142,7 +142,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        system_view: searchChoose ? searchChoose['system_view'] : undefined,
+
         discovery_version: searchParamsObj?.discovery_version,
         severity: searchParamsObj?.severity,
         solution: searchParamsObj?.solution,
@@ -173,7 +173,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        system_view: searchChoose ? searchChoose['system_view'] : undefined,
+
         discovery_version: searchParamsObj?.discovery_version,
         severity: searchParamsObj?.severity,
         solution: searchParamsObj?.solution,
@@ -347,7 +347,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   useEffect(() => {
     console.log('useEffect', pageObj)
     getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, projectId, order, pageObj, searchChoose])
+  }, [key, isGrid, projectId, order, pageObj])
 
   // useEffect(() => {
   //   setPageObj({ page: 1, size: 20 })
