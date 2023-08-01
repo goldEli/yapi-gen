@@ -91,6 +91,7 @@ export const getFlawSelectList = async (
     priority: i.priority,
     storyPrefixKey: i.story_prefix_key,
     categoryId: i.category_id,
+    copy_send_users: i.copy_send_users,
   }))
 }
 
@@ -184,6 +185,7 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
       severity: i.severity,
       solution: i.solution,
       userAvatar: i.user_avatar,
+      copy_send_users: i.copy_send_users,
     })),
   }
 }
@@ -276,6 +278,7 @@ export const getChildFlawList = async (params: any) => {
       severity: i.severity,
       solution: i.solution,
       userAvatar: i.user_avatar,
+      copy_send_users: i.copy_send_users,
     })),
   }
 }

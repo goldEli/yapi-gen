@@ -351,6 +351,7 @@ declare namespace Model.Flaw {
     discovery_version_name: string
     discovery_version: null | number
     solution: string
+    copy_send_users: any[]
   }
 
   interface ChildStoryStatistics {
@@ -471,6 +472,7 @@ declare namespace Model.Flaw {
     verify_data: any
     relation_stories: number
     comment_total: number
+    copy_send_users: any[]
   }
 
   // 1：迭代-需求类型，2：迭代-缺陷类型，3：冲刺-长故事事务类型，4：冲刺-标准事务类型，5：冲刺-故障事务类型 6-子任务

@@ -75,6 +75,7 @@ const getListItem = (array: any, params: API.Affairs.GetAffairsList.Params) => {
     discovery_version_id: i.discovery_version,
     severity: i.severity,
     solution: i.solution,
+    copy_send_users: i.copy_send_users,
   }))
 }
 
@@ -137,6 +138,7 @@ export const getAffairsSelectList = async (
     priority: i.priority,
     storyPrefixKey: i.story_prefix_key,
     categoryId: i.category_id,
+    copy_send_users: i.copy_send_users,
   }))
 }
 
@@ -243,6 +245,7 @@ export const getAffairsList = async (
       discovery_version_id: i.discovery_version,
       severity: i.severity,
       solution: i.solution,
+      copy_send_users: i.copy_send_users,
     })),
   }
 }
@@ -345,6 +348,7 @@ export const getChildAffairsList = async (params: any) => {
       discovery_version_id: i.discovery_version,
       severity: i.severity,
       solution: i.solution,
+      copy_send_users: i.copy_send_users,
     })),
   }
 }
