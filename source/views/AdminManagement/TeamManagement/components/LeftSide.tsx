@@ -138,8 +138,12 @@ const FormStyle = styled(Form)`
   & .ant-form-item-control-input-content {
     background-color: var(--neutral-white-d5) !important;
   }
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
     background-color: var(--neutral-white-d5) !important;
   }
 `
@@ -326,8 +330,6 @@ const LeftSide = (props: any) => {
   const inputRef2 = useRef<any>(null)
   useEffect(() => {
     setTimeout(() => {
-      console.log(inputRef2)
-
       inputRef2.current?.focus()
     }, 400)
     // inputRef.current.focus()
@@ -434,7 +436,6 @@ const LeftSide = (props: any) => {
   const [focus, setFocus] = useState(false)
   const onDragLine = () => {
     document.onmousemove = e => {
-      console.log(e.clientX)
       if (e.clientX < 400) {
         return
       }

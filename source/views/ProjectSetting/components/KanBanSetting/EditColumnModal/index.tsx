@@ -162,8 +162,6 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
       </div>
       <DelBtn
         onClick={() => {
-          console.log(editColumnModelInfo)
-
           const status = (editColumnModelInfo?.columnInfo?.categories || [])
             .filter(item => item.status?.length)
             .reduce((pre: any, current: any) => {

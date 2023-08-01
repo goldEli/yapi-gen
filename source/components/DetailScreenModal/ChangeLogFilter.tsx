@@ -68,7 +68,6 @@ const ChangeLogFilter = (prop: IProps) => {
     getChangeType()
   }, [])
   useEffect(() => {
-    console.log('search', search)
     for (const key in search) {
       if (
         !search[key as keyof typeof search] ||

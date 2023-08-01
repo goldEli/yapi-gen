@@ -78,7 +78,7 @@ const CompleteSprintModal = (props: sprintProps) => {
         })
       }
     } catch (error) {
-      // console.log(error)
+      //
     }
   }
 

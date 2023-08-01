@@ -45,7 +45,6 @@ const Resizer: React.FC<ResizerProps> = props => {
   //     item: { id: props.data.id },
   //     collect: monitor => {
   //       // const delta = monitor.getDifferenceFromInitialOffset()
-  //       // // console.log('delta', delta)
   //       return {
   //         isDragging: !!monitor.isDragging(),
   //       }

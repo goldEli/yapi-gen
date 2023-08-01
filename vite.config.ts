@@ -8,8 +8,6 @@ import profile from './package.json'
 export default defineConfig(config => {
   const env = loadEnv(config.mode, './environments/', '__')
 
-  // console.log(env)
-
   return {
     plugins: [
       react({

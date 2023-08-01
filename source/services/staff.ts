@@ -14,7 +14,6 @@ export const getStaffListApi: any = async (params: any) => {
   return response.data
 }
 export const getStaffList: any = async (params: any) => {
-  console.log(params, 'params')
   const response = await http.get('getStaffList', {
     search: {
       id: params?.id,

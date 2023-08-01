@@ -1149,8 +1149,6 @@ export const getShapeAffairsRight = async (params: any) => {
 
   const filterMemberList = selectData.project_member
 
-  // // console.log(filterMemberList, '处理人、抄送人')
-
   // 分类
 
   const treeData = [
@@ -1191,16 +1189,12 @@ export const getShapeAffairsRight = async (params: any) => {
     name: i.content,
   }))
 
-  // // console.log(filterGetTagList, '标签')
-
   // 优先级
 
   const filterGetPriOrStu = selectData.priority?.map((i: any) => ({
     id: i.id,
     name: i.content,
   }))
-
-  // // console.log(filterGetPriOrStu, '优先级')
 
   const filterFieldsList = res.data.fields.map((item: any, index: number) => {
     if (item.title.includes('时间') && !item.attr) {

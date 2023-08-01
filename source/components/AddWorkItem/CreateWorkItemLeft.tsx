@@ -116,7 +116,7 @@ const CreateDemandLeft = (props: Props) => {
   const [categoryObj, setCategoryObj] = useState<any>({})
   const { filterParamsModal, projectInfoValues, addWorkItemModal } =
     useSelector(store => store.project)
-  // debugger
+
   const { params } = addWorkItemModal
   const { createCategory } = useSelector(store => store.project)
   const [resultCategoryData, setResultCategoryData] = useState([])
@@ -444,7 +444,6 @@ const CreateDemandLeft = (props: Props) => {
   }, [categoryObj])
 
   useEffect(() => {
-    // debugger
     if (props.projectId && props.allCategoryList?.length > 0) {
       const resultCategoryList = computedCategory()
       setResultCategoryData(resultCategoryList)

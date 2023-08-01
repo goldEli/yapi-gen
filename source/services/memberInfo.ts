@@ -637,7 +637,6 @@ export const getMemberInfoOverviewStatistics: any = async (params: any) => {
     target_id: params.targetId,
     project_id: params.projectId,
   })
-  console.log(response, '----------')
 
   return response.data
 }

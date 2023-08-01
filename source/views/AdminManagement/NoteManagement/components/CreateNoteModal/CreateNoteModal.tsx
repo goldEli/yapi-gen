@@ -31,7 +31,9 @@ import styled from '@emotion/styled'
 const RedDiv = styled.div`
   &
     .ant-form-item-label
-    > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
+    > label.ant-form-item-required:not(
+      .ant-form-item-required-mark-optional
+    )::after {
     content: '';
   }
 `
@@ -44,11 +46,8 @@ const CreateNoteModal = (props: any) => {
   const [taskTime, setTaskTime] = useState(false)
 
   const onValidator = (rule: any, value: any) => {
-    console.log(value, 'value')
-
     const plainText = value.replace(/<[^>]+>/g, '')
 
-    console.log(plainText, plainText.length, 'plainText')
     if (plainText.length > 200) {
       return Promise.reject(new Error(t('characters_over')))
     }

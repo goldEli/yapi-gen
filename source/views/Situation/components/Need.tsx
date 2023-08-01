@@ -73,7 +73,7 @@ const Need = (props: any) => {
     },
     series: data?.chartsData,
   }
-  // console.log(data?.chartsData, 'data11?.chartsData')
+
   return (
     <ChartsWrap>
       <div className={titleCss}>{t('work_item_summary')}</div>

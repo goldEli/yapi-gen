@@ -72,10 +72,9 @@ const DropCard: React.FC<DropCardProps> = props => {
   return (
     <DropCardBox
       onDrop={e => {
-        // console.log(e)
+        //
       }}
       onMouseUp={e => {
-        // console.log(props.source, props.target)
         if (!movingStory || !props.source || !props.target) {
           console.error('movingStory is null')
           return

@@ -90,7 +90,7 @@ const DXCalendar: React.FC = () => {
         dispatch(setCalenderTypeValue(value.format(formatYYYYMMDD)))
       }}
       onPanelChange={(value, mode) => {
-        // console.log(value.format('YYYY-MM-DD'), mode)
+        //
       }}
       dateFullCellRender={date => {
         const today =

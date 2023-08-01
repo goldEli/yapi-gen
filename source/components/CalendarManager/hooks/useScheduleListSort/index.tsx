@@ -43,9 +43,6 @@ const useScheduleListSort = (
           res[index] = item
         }
       }
-      // if (key === '2023-04-18') {
-      //   debugger
-      // }
 
       //  将其他的日程补到res
       if (res.every(r => r === void 0)) {

@@ -315,8 +315,6 @@ const CommonNeed = (props: any) => {
     setPageObj({ page: 1, size: pageObj.size })
   }
   const init = async (updateState?: boolean) => {
-    console.log('init')
-
     if (!updateState) {
       setIsSpin(true)
     }
@@ -510,7 +508,6 @@ const CommonNeed = (props: any) => {
       dispatch(setProjectInfoValues(result))
     }
     const res2 = await getProjectInfo({ projectId: props.id })
-    console.log(res2)
 
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
@@ -581,8 +578,6 @@ const CommonNeed = (props: any) => {
     list3: CheckboxValueType[],
     all: CheckboxValueType[],
   ) => {
-    console.log(list)
-
     setTitleList(list)
     setTitleList2(list2)
     setTitleList3(list3)

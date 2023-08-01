@@ -58,7 +58,6 @@ const HomeSetting: React.FC<IProps> = props => {
     }
   }
   useEffect(() => {
-    // console.log(111, projectInfo)
     if (!projectInfo.defaultHomeMenu) {
       setValue('/SprintProjectManagement/Affair')
       return

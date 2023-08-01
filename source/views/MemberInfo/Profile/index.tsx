@@ -400,7 +400,6 @@ const Profile = () => {
   if (!loadingState) {
     return <Loading />
   }
-  console.log(data)
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment

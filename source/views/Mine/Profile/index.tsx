@@ -298,8 +298,6 @@ const Profile = () => {
 
     setNowYearOptions(res.data.years)
 
-    // // console.log(trans(res.data.list), '---')
-
     setChartData(trans(res.data.list))
   }
 
@@ -376,7 +374,6 @@ const Profile = () => {
     setPageObj({ page, size })
   }
   const handleChange = (value: string) => {
-    // console.log(`selected ${value}`)
     setNowYear(value)
   }
   const changeActive = (value: any) => {
@@ -385,7 +382,6 @@ const Profile = () => {
   if (!loadingState) {
     return <Loading />
   }
-  // console.log(data)
 
   return (
     <div style={{ overflow: 'auto', height: 'calc(100vh - 103px)' }}>

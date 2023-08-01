@@ -118,16 +118,12 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
         dispatch(openEditColumnModel(item))
         return
       case 'question':
-        console.log('几次')
-
         open({
           title: t('confirm_deletion'),
           text: t(
             'confirm_to_delete_the_column_and_status,_after_deletion,_the_column_and_status_will_not_be_available_in_the_Kanban',
           ),
           onConfirm: () => {
-            console.log(item?.id)
-
             if (!item.id) {
               return Promise.reject()
             }

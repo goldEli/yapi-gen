@@ -190,7 +190,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       ...values,
       searchValue: props?.searchValue,
     })
-    // console.log('resulue', result)
+
     setMemberList(result)
     setIsSpinning(false)
     dispatch(setIsUpdateMember(false))

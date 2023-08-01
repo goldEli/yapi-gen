@@ -626,7 +626,7 @@ const ProgressComparison = (props: Props) => {
       setLoading(false)
     } catch (error) {
       setLoading(false)
-      // console.log(error)
+
       getMessage({
         msg: t('other.exportFailed'),
         type: 'error',
@@ -826,7 +826,6 @@ const ProgressComparison = (props: Props) => {
       }
     }
   }
-  console.log(tableList, tableList1)
 
   useEffect(() => {
     dispatch(setVisiblePerson(false))

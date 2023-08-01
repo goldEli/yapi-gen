@@ -39,7 +39,7 @@ const HomeSetting: React.FC<IProps> = props => {
     { url: '/Report/PerformanceInsight', name: t('sprintProject.report') },
     { url: '/ProjectManagement/Defect', name: t('sprintProject.defect') },
   ]
-  // console.log(projectInfo)
+
   const onChange = async (e: any) => {
     setValue(e.target.value)
     try {
@@ -56,7 +56,6 @@ const HomeSetting: React.FC<IProps> = props => {
     }
   }
   useEffect(() => {
-    // console.log(projectInfo.defaultHomeMenu)
     if (!projectInfo.defaultHomeMenu) {
       setValue('/ProjectManagement/Demand')
       return

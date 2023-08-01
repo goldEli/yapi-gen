@@ -194,7 +194,7 @@ const XTable: React.FC<XTableProps> = props => {
         })
       }
     } catch (error) {
-      // console.log(error)
+      //
     }
   }
 

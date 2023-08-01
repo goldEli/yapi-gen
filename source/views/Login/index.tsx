@@ -28,7 +28,7 @@ const Page = () => {
   }, [])
   const redirect = async () => {
     const ticketResponse = await getTicket()
-    console.log(ticketResponse, 'ticket内容')
+
     // return
     const { ticket } = ticketResponse.data
 
@@ -55,8 +55,6 @@ const Page = () => {
   }
 
   useEffect(() => {
-    console.log('clear')
-
     localStorage.clear()
     // check()
   }, [])

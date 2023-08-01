@@ -394,7 +394,7 @@ const Iteration = (props: Props) => {
     }, data[0].end_at)
     return maxt
   }
-  console.log(props, 'props')
+
   return (
     <div>
       {(props.homeType === 'iteration' || props.homeType === 'sprint') && (
@@ -595,7 +595,7 @@ const Iteration = (props: Props) => {
               await props.onCreateView(val, 'add')
               setIsVisibleView(false)
             } catch (error) {
-              // console.log(error)
+              //
             }
           }}
           onClose={() => setIsVisibleView(false)}
