@@ -347,7 +347,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   useEffect(() => {
     console.log('useEffect', pageObj)
     getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, projectId, order, pageObj, searchChoose])
+  }, [key, isGrid, projectId, order, pageObj])
 
   // useEffect(() => {
   //   setPageObj({ page: 1, size: 20 })
