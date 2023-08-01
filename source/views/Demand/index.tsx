@@ -25,7 +25,12 @@ import { deleteDemand, getDemandList } from '@/services/demand'
 import { getMessage } from '@/components/Message'
 import { setIsRefresh } from '@store/user'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { onTapTitles, saveTitles } from '@store/view'
+import {
+  clearValue,
+  onTapSearchChoose,
+  onTapTitles,
+  saveTitles,
+} from '@store/view'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import useKeyPress from '@/hooks/useKeyPress'
 export const TreeContext: any = React.createContext('')
@@ -335,28 +340,15 @@ const DemandIndex = () => {
   }, [isUpdateAddWorkItem])
 
   useEffect(() => {
-    // 进入主页清除已存储的筛选计数
-    setFilterKeys([])
+    dispatch(clearValue())
+    dispatch(onTapSearchChoose({}))
     return () => {
-      // dispatch(
-      //   onTapTitles([
-      //     'prefix_key',
-      //     'name',
-      //     'status',
-      //     'priority',
-      //     'child_story_count',
-      //     'iterate_name',
-      //     'category',
-      //     'schedule',
-      //     'users_name',
-      //     'created_at',
-      //     'expected_start_at',
-      //     'expected_end_at',
-      //   ]),
-      // )
+      dispatch(clearValue())
+      // 进入主页清除已存储的筛选计数
+      dispatch(setFilterKeys([]))
+      dispatch(onTapSearchChoose({}))
     }
   }, [])
-
   const resultAuth = onComputedPermission(
     currentMenu,
     '/ProjectManagement/Project',

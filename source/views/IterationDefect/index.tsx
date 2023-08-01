@@ -20,7 +20,7 @@ import DefectTable from './components/DefectTable'
 import Operation from './components/Operation'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { saveTitles } from '@store/view'
+import { clearValue, saveTitles } from '@store/view'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { deleteFlaw, getFlawList } from '@/services/flaw'
 import useKeyPress from '@/hooks/useKeyPress'
@@ -264,6 +264,9 @@ const Index = (props: any) => {
   useEffect(() => {
     // 进入主页清除已存储的筛选计数
     setFilterKeys([])
+    return () => {
+      dispatch(clearValue())
+    }
   }, [])
 
   const resultAuth = onComputedPermission(
