@@ -10,8 +10,18 @@ export const getAily_config: any = async (params: any) => {
   const response: any = await http.get<any>('/b/project/daily_config/info', {
     project_id: params,
   })
-  console.log(params, 'params')
-  return response.data
+  console.log(response.data, 'params')
+  return {
+    group_name: response.data.config.group_name,
+    webhook: response.data.config.webhook,
+    is_auto_generate: response.data.is_auto_generate,
+    is_auto_send: response.data.is_auto_send,
+    is_hand_send: response.data.is_hand_send,
+    reminder_time: response.data.reminder_time,
+    day: response.data.requirement.day,
+    is_holiday: response.data.requirement.is_holiday,
+    id: response.data.id,
+  }
 }
 //日报生成规则未配置通知
 
@@ -35,12 +45,9 @@ export const set_create_config: any = async (params: any) => {
 }
 //设置自动发送配置
 export const set_auto_send_config: any = async (params: any) => {
-  console.log(params)
-
   const p = {
     ...params,
-
-    reminder_time: moment(params.reminder_time).format('YYYY-MM-DD HH:mm:ss'),
+    reminder_time: moment(params.reminder_time).format('HH:mm'),
     send_cycle: {
       day: params.day ?? [],
       is_holiday: params.is_holiday,

@@ -114,10 +114,8 @@ const Setting = () => {
       },
     ],
   ])
-  console.log(maps, 'maps')
   useEffect(() => {
     setSearchValue('')
-    console.log('activeTabs------', activeTabs)
   }, [activeTabs])
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))
