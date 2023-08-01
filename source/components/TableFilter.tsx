@@ -21,6 +21,7 @@ import { saveValue } from '@store/view'
 import MoreSelect from './MoreSelect'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import CategoryDropdown from './CategoryDropdown'
+import { useLocation } from 'react-router-dom'
 
 const MySpan = styled.div`
   cursor: pointer;
@@ -226,6 +227,7 @@ export const NumericInput2 = (props: any) => {
 
 const TableFilter = (props: any) => {
   const [t] = useTranslation()
+  const location = useLocation()
   const info = useGetloginInfo()
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
@@ -361,7 +363,12 @@ const TableFilter = (props: any) => {
       console.log(searchChoose.system_view)
     }
   }, [searchChoose])
+  useEffect(() => {
+    console.log('飞机')
 
+    form.resetFields()
+    confirm()
+  }, [location])
   // 折叠图标
   const expandIcon = (e: any) => {
     return (

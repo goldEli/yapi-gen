@@ -164,11 +164,6 @@ const GlobalStyle = () => {
     }
 
     :root {
-      .dsds-my {
-        :hover {
-          text-decoration: underline;
-        }
-      }
       .notification-my {
         height: 109px;
         background: rgba(102, 136, 255, 0.1);

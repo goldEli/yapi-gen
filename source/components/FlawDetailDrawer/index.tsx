@@ -763,6 +763,7 @@ const FlawDetailDrawer = () => {
                     type={3}
                     onCancel={onCancelExamine}
                     isVerify={drawerInfo?.has_verify === 1}
+                    isDrawer
                   />
                 </div>
               )}

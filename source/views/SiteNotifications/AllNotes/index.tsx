@@ -102,6 +102,9 @@ const Index = () => {
       dispatch(changeNumber(num))
     }
   }
+  const setReads2 = async (values: any) => {
+    await setReadApi(values)
+  }
   const setAllRead = () => {
     // const arr = list.map((i: any) => i.id)
     setReads(undefined)
@@ -190,7 +193,7 @@ const Index = () => {
           }
         >
           {list.map((i: any) => {
-            return <ContentItem bor setReads={setReads} item={i} key={i.id} />
+            return <ContentItem bor setReads={setReads2} item={i} key={i.id} />
           })}
         </InfiniteScroll>
       </div>

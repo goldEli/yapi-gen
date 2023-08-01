@@ -15,6 +15,8 @@ interface StatusExamineProps {
   // 是否有权限取消审核
   isVerify?: boolean
   onCheck?(): void
+  // 是否是浮层
+  isDrawer?: boolean
 }
 
 const StatusExamine = (props: StatusExamineProps) => {
@@ -61,7 +63,7 @@ const StatusExamine = (props: StatusExamineProps) => {
             </div>
           </div>
           <Space size={16}>
-            {!props.verifyInfo && (
+            {!props.isDrawer && (
               <div className="cancel" onClick={props.onCheck}>
                 {t('circulationRecords')}
               </div>

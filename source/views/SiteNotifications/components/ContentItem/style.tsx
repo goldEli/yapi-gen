@@ -37,11 +37,14 @@ export const Wrap = styled.div<{ greps?: boolean; bor?: boolean }>`
   border-radius: 6px 6px 6px 6px;
   transition: all 0.3s;
   filter: ${props => (props.greps ? 'grayscale(250%)' : '')};
-  box-shadow: ${props =>
-    props.greps ? '0px 0px 10px 1px rgba(0, 0, 0, 0.12)' : ''};
+  /* box-shadow: ${props =>
+    props.greps ? '0px 0px 10px 1px rgba(0, 0, 0, 0.12)' : ''}; */
   /* filter: drop-shadow(5px 5px 5px black);
   filter: saturate(50%);  */
   :hover {
+    .dsds-my {
+      text-decoration: underline;
+    }
     border: 1px solid transparent;
     background-color: var(--neutral-n8);
     /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.12); */
