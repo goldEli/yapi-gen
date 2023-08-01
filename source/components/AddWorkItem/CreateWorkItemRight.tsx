@@ -733,7 +733,7 @@ const CreateDemandRight = (props: Props) => {
   return (
     <RightWrap>
       <Form layout="vertical" form={form} disabled={!props.isCreateDemand}>
-        {props?.projectId && (
+        {props?.projectId && props.workStatusList?.list?.length > 0 && (
           <Form.Item
             label={t('state')}
             name="status"
