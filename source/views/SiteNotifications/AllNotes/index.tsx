@@ -85,9 +85,13 @@ const Index = () => {
     }
   }
   const setReads = async (values: any) => {
-    setList([])
     const res = await setReadApi(values)
+    setList([])
+    setHasMore(true)
+    lastId.current = 1
     await new Promise(resolve => setTimeout(resolve, 2000))
+    fetchMoreData(1)
+
     if (res.code === 0) {
       const res2 = await getContactStatistics()
       let num = 0
@@ -96,10 +100,6 @@ const Index = () => {
       })
 
       dispatch(changeNumber(num))
-      setList([])
-      setHasMore(true)
-      lastId.current = 1
-      fetchMoreData(1)
     }
   }
   const setAllRead = () => {
