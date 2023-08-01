@@ -22,7 +22,7 @@ import {
   setCreateCategory,
   setFilterParamsModal,
 } from '@store/project'
-import { saveScreen } from '@store/view'
+import { clearValue, saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
 import {
   getImportDownloadModel,
@@ -173,6 +173,8 @@ const Operation = (props: Props) => {
   }
 
   useEffect(() => {
+    console.log(searchChoose, 'searchChoose')
+
     if (searchChoose && searchChoose.system_view) {
       return
     }
@@ -324,7 +326,11 @@ const Operation = (props: Props) => {
     }
     props?.onChangeIsShowLeft?.()
   }
+  useEffect(() => {
+    console.log('飞机')
 
+    dispatch(clearValue())
+  }, [location])
   return (
     <StickyWrap ref={stickyWrapDom}>
       <DeleteConfirm

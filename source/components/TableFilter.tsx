@@ -20,6 +20,8 @@ import { setFilterKeys } from '@store/project'
 import { saveValue } from '@store/view'
 import MoreSelect from './MoreSelect'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import { useLocation } from 'react-router-dom'
+import CategoryDropdown from './CategoryDropdown'
 
 const MySpan = styled.div`
   cursor: pointer;
@@ -215,7 +217,10 @@ export const NumericInput2 = (props: any) => {
 }
 
 const TableFilter = (props: any) => {
+  console.log(props, 'props')
+
   const [t] = useTranslation()
+  const location = useLocation()
   const info = useGetloginInfo()
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
@@ -429,7 +434,12 @@ const TableFilter = (props: any) => {
       }))
       .concat(newB)
   }
+  useEffect(() => {
+    console.log('飞机')
 
+    form.resetFields()
+    confirm()
+  }, [location])
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
