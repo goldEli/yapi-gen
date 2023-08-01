@@ -131,6 +131,8 @@ export const getDailyInfo: any = async (params: any) => {
     reportUserList: response.data?.report_user_list,
     id: response.data?.id,
     name: response.data?.name,
+    send_time: response.data?.send_time,
+    group_name: response.data?.group_name,
   }
 }
 

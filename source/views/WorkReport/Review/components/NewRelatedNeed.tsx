@@ -3,7 +3,6 @@ import CustomSelect from '@/components/CustomSelect'
 import IconFont from '@/components/IconFont'
 import { getMessage } from '@/components/Message'
 import { AddWrap } from '@/components/StyleCommon'
-import { getDemandList, getProjectList } from '@/services/daily'
 import styled from '@emotion/styled'
 import { Form } from 'antd'
 import { useEffect, useState } from 'react'
@@ -92,9 +91,9 @@ const NewRelatedNeed = (props: any) => {
     const newData = JSON.parse(JSON.stringify(data))
     const result = newData.needs.map((i: any) => ({
       ...i,
+      expected_day: props?.data?.find((s: any) => s.id === i.id)?.expected_day,
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
-
     props.onChange(historyData.concat(result).map((item: any) => item.value))
     setChooseList(historyData.concat(result))
     setTimeout(() => {
@@ -122,6 +121,7 @@ const NewRelatedNeed = (props: any) => {
         label: k.name,
         key: k.id,
         value: k.id,
+        expected_day: k.expected_day,
       })) ?? [],
     )
     props.onChange(props?.initValue?.map((item: any) => item.id))
@@ -143,7 +143,10 @@ const NewRelatedNeed = (props: any) => {
           <div key={item.key} className="li">
             <div className="left">
               <span className="dot" />
-              <span>{item.label}</span>
+              {props?.isShowOverdue && item.expected_day > 0 ? (
+                <span>[逾期{item.expected_day}天]</span>
+              ) : null}
+              <span style={{ marginLeft: 2 }}>{item.label}</span>
             </div>
             <IconFont
               className="closeIcon"

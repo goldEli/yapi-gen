@@ -411,6 +411,11 @@ const System = () => {
                   item.pivot.params?.map((el: any) => (
                     <RowRadius key={el.id}>
                       <Radius />
+                      {item?.key === 'timeout_task' && el.expected_day > 0 ? (
+                        <span style={{ marginRight: 3 }}>
+                          [逾期{el.expected_day}天]
+                        </span>
+                      ) : null}
                       <Msg>{el.name}</Msg>
                     </RowRadius>
                   ))}
