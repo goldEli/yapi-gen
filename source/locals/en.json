@@ -350,6 +350,7 @@
   "personal_data": " Personal data",
   "editor_member": " Edit member",
   "removal_confirmation": " Remove confirmation",
+  "removal_person_confirmation": "After removal, the employee cannot participate in this project affairs",
   "are_you_sure_to_remove_this_member": " Confirm to remove this member?",
   "confirmation_prompt": " Confirm prompt",
   "are_you_sure_you_want_to_log_out": " Are you sure you want to log out?",
