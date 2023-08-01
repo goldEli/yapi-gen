@@ -1447,7 +1447,9 @@
       "prevDateSubmit": "上次提交时间",
       "add": "请添加",
       "reportDeleted": "模板已被删除",
-      "noPermissions": "你无权限使用该模板"
+      "noPermissions": "你无权限使用该模板",
+      "notifiedToAdministrator": "已通知管理员开启该功能",
+      "reportAssistant": "日报助手"
     },
     "statistics": {
       "title": "汇报我的统计",
@@ -2131,7 +2133,7 @@
     "send1": "【{{name}}】发送于{{time}}",
     "pleaseNameOrKey": "输入项目名称或键",
     "homeConfig": "首页配置",
-    "kanbanConfig": "Kanban配置",
+    "kanbanConfig": "面板配置",
     "cardMax": "卡片已超过该列最大数",
     "maxEd": "已超过最大数",
     "systemNot": "系统视图不能编辑",

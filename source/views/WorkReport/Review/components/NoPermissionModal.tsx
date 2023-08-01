@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
-import React from 'react'
 import imgSrc from '../image/assistantExampleImage.png'
 import CommonModal from '@/components/CommonModal'
 import { getMessage } from '@/components/Message'
+import { sendNotice } from '@/services/report'
+import { useTranslation } from 'react-i18next'
 
 const NoPermissionWrap = styled.div`
   display: flex;
@@ -18,17 +19,23 @@ const NoPermissionText = styled.div`
 `
 
 interface NoPermissionProps {
+  id: number
   visible: boolean
   close(): void
 }
 
 const NoPermissionModal = (props: NoPermissionProps) => {
-  const { close, visible } = props
-  const confirm = () => {
-    getMessage({
-      type: 'success',
-      msg: '已通知管理员开启该功能',
-    })
+  const [t]: any = useTranslation()
+  const { close, visible, id } = props
+  const confirm = async () => {
+    const result = await sendNotice(id)
+    if (result) {
+      getMessage({
+        type: 'success',
+        msg: t('report.list.notifiedToAdministrator'),
+      })
+      close()
+    }
   }
 
   return (

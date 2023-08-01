@@ -2,7 +2,7 @@ import CommonModal from '@/components/CommonModal'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import styled from '@emotion/styled'
 import { Form, Spin } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { getMessage } from '@/components/Message'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import NoPermissionModal from './NoPermissionModal'
@@ -12,6 +12,14 @@ import UploadAttach from '@/components/UploadAttach'
 import { AddWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import CustomSelect from '@/components/CustomSelect'
+import NewRelatedNeed from './NewRelatedNeed'
+import {
+  getDailyInfo,
+  getProjectList,
+  getStoryListOfDaily,
+  initDaily,
+  writeReport,
+} from '@/services/report'
 
 const HandleSpin = styled(Spin)`
   img {
@@ -63,7 +71,7 @@ const ContentWrap = styled.div`
     .ant-form-vertical .ant-form-item-label,
     .ant-col-24.ant-form-item-label,
     .ant-col-xl-24.ant-form-item-label {
-      padding: 0px;
+      padding: 0px 0px 8px 0px !important;
     }
     .project {
       display: flex;
@@ -113,6 +121,20 @@ const AgainButton = styled.span`
     background: var(--auxiliary-b6);
   }
 `
+const LoadingButton = styled.span`
+  width: 72px;
+  height: 32px;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 6px 6px 6px 6px;
+  font-family: SiYuanRegular;
+  color: var(--primary-d1);
+  white-space: nowrap;
+  margin-left: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`
 
 interface ReportAssistantProps {
   visible: boolean
@@ -123,14 +145,130 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const [havePermission, setHavePermission] = useState(false)
   const [form] = Form.useForm()
   const [t]: any = useTranslation()
+  const [initData, setInitData] = useState<any>(null)
+  const [currentProject, setCurrentProject] = useState<any>(null)
+  const [projectList, setProjectList] = useState<any>([])
+  const demandListAll = useRef([])
+  const [demandList, setDemandList] = useState<any>([])
+  const [modalInfo, setModalInfo] = useState<any>(null)
+  const [loading, setLoading] = useState<any>(false)
   const [peopleValue, setPeopleValue] = useState<any>([])
-  const [uploadAttachList, setUploadAttachList] = useState<any>({})
   const { close, visible } = props
-  const confirm = () => {
-    getMessage({
-      type: 'success',
-      msg: '已通知管理员开启该功能',
+
+  // 发送日报
+  const confirm = async () => {
+    const params = form.getFieldsValue()
+    console.log(params, 'resresresresres')
+    let users: any[] = []
+    const data: any[] = []
+    Object.keys(params).forEach((key: string) => {
+      const tempArr = key.split('_')
+      if (tempArr[0] === '1') {
+        users = params[key]
+      } else if (tempArr[0] === '3') {
+        const obj = {
+          total_schedule: getScheduleData().rate,
+          yesterday_add: params[key],
+          task_completion: `${getScheduleData().done}/${
+            getScheduleData().total
+          }`,
+          complete: getScheduleData().done,
+        }
+        data.push({
+          conf_id: Number(tempArr[1]),
+          content: JSON.stringify(obj),
+        })
+      } else {
+        data.push({
+          conf_id: Number(tempArr[1]),
+          content: params[key] || [],
+        })
+      }
     })
+    const result = await writeReport({
+      report_template_id: modalInfo?.id,
+      data,
+      target_users: [689],
+    })
+  }
+
+  const onClose = () => {
+    close()
+    setCurrentProject(null)
+    setModalInfo(null)
+  }
+
+  // 获取项目列表
+  const getProjectDataList = async () => {
+    const result = await getProjectList()
+    if (result) {
+      setProjectList(result)
+    }
+  }
+
+  // 获取当前项目的需求list
+  const getDemandDataList = async (id: number) => {
+    const result = await getStoryListOfDaily(id)
+    demandListAll.current = result?.data ?? []
+    setDemandList(result?.data ?? [])
+  }
+
+  // 获取头部初始数据
+  const getInitDaily = async () => {
+    const result = await initDaily()
+    setInitData(result)
+  }
+
+  // 实时过滤当前可选需求
+  const setFilterDemand = () => {
+    const result = form.getFieldsValue()
+    let tempArr: any = []
+    Object.keys(result).forEach((key: string) => {
+      if (key?.split('_')?.[0] === '4') {
+        tempArr = tempArr.concat(result[key])
+      }
+    })
+    const configs = modalInfo?.configs?.map((item: any) => {
+      if (item.type === 4) {
+        return {
+          ...item,
+          content: result[`${item.type}_${item.id}`]?.map((k: any) =>
+            demandListAll.current.find((i: any) => i.id === k),
+          ),
+        }
+      }
+      return item
+    })
+    setDemandList(
+      demandListAll.current?.filter((k: any) => !tempArr?.includes(k.id)),
+    )
+    setModalInfo({ ...(modalInfo || {}), configs })
+  }
+
+  useEffect(() => {
+    if (visible) {
+      getInitDaily()
+      getProjectDataList()
+    }
+  }, [visible])
+
+  useEffect(() => {
+    if (currentProject) {
+      getDemandDataList(currentProject.id)
+    }
+  }, [currentProject])
+
+  // 重新生成
+  const generatorDataByProject = async () => {
+    if (currentProject?.enable_hand_send === 2) {
+      setHavePermission(true)
+      close()
+      return
+    }
+    setLoading(true)
+    const result = await getDailyInfo(currentProject?.id)
+    setLoading(false)
+    setModalInfo(result)
   }
 
   // 选择附件逻辑处理
@@ -150,6 +288,28 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     })
   }
 
+  // 计算进度相关数据
+  const getScheduleData = () => {
+    let tempArr: any = []
+    modalInfo?.configs?.forEach((item: any) => {
+      if (item.type === 4) {
+        tempArr = tempArr.concat(item.content)
+      }
+    })
+    return {
+      rate:
+        tempArr?.length > 0
+          ? (
+              tempArr?.filter((k: any) => k.is_end === 1)?.length ??
+              0 / tempArr?.length
+            )?.toFixed(2) * 100
+          : 0,
+      done: tempArr?.filter((k: any) => k.is_end === 1)?.length ?? 0,
+      total: tempArr?.length ?? 0,
+    }
+  }
+
+  // 根据数据type生成对应的日报模板
   const generatorHtmlByData = (content: any): React.ReactElement => {
     switch (content.type) {
       case 1:
@@ -157,23 +317,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           <Form.Item
             label={<LabelTitle>{content.name}</LabelTitle>}
             name={`${content.type}_${content.id}`}
-            rules={[
-              {
-                required: content.is_required === 1,
-                message: (
-                  <div
-                    style={{
-                      margin: '5px 0',
-                      fontSize: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {t('common.pleaseSelect')}
-                  </div>
-                ),
-              },
-            ]}
           >
             <ChoosePeople initValue={peopleValue} />
           </Form.Item>
@@ -185,7 +328,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             name={`${content.type}_${content.id}`}
             rules={[
               {
-                required: content.is_required === 1,
                 message: (
                   <div
                     style={{
@@ -203,7 +345,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           >
             <UploadAttach
               power
-              defaultList={uploadAttachList[`${content.type}_${content.id}`]}
+              defaultList={content?.content ?? []}
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res, `${content.type}_${content.id}`)
               }}
@@ -223,15 +365,46 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         )
       case 3:
         return (
-          <div>
-            <LabelTitle>{content.name}：20%</LabelTitle>
-            <div className="rateText">昨日新增：10个</div>
+          <Form.Item
+            label={
+              <LabelTitle>
+                {content.name}：{getScheduleData().rate}%
+              </LabelTitle>
+            }
+            name={`${content.type}_${content.id}`}
+            initialValue={JSON.parse(content?.content ?? null)?.yesterday_add}
+          >
             <div className="rateText">
-              <span>任务完成度：10/50</span>
-              <span className="line" />
-              <span>已完成 10个</span>
+              昨日新增：{JSON.parse(content?.content ?? null)?.yesterday_add}个
             </div>
-          </div>
+            <div className="rateText">
+              <span>
+                任务完成度：{getScheduleData().done}/{getScheduleData().total}
+              </span>
+              <span className="line" />
+              <span>已完成 {getScheduleData().done}个</span>
+            </div>
+          </Form.Item>
+        )
+      case 4:
+        return (
+          <Form.Item
+            label={
+              <LabelTitle>
+                {content.name}：{content?.content?.length}个
+              </LabelTitle>
+            }
+            name={`${content.type}_${content.id}`}
+            key={content.id}
+          >
+            <NewRelatedNeed
+              initValue={content?.content}
+              data={demandList}
+              onFilter={() => {
+                setFilterDemand()
+              }}
+            />
+          </Form.Item>
         )
       default:
         return <div></div>
@@ -244,7 +417,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         width={784}
         title="日报助手"
         isVisible={visible}
-        onClose={close}
+        onClose={onClose}
         onConfirm={confirm}
         confirmText="发送"
       >
@@ -255,44 +428,86 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             padding: ' 0 24px',
           }}
         >
-          <HandleSpin spinning={false} indicator={<NewLoadingTransition />} />
           <ContentWrap>
             <div className="head">
-              <div className="tips">项目管理员已配置自动生成并发送规则</div>
+              {currentProject?.is_setting_config === 1 ? (
+                <div className="tips">项目管理员已配置自动生成并发送规则</div>
+              ) : null}
               <div className="userBox">
-                {false ? (
-                  <img className="avatar" src="" />
+                {initData?.avatar ? (
+                  <img className="avatar" src={initData?.avatar} />
                 ) : (
                   <CommonUserAvatar size="large" />
                 )}
                 <div className="desc">
                   <div className="title">
-                    李钟硕的工作日报
-                    <span className="date">（2022-08-21）</span>
+                    {initData?.report_title}
+                    <span className="date">
+                      {initData?.daily_date
+                        ? `（${initData?.daily_date}）`
+                        : ''}
+                    </span>
                   </div>
                   <div className="department">
-                    IFUN Games - 研发部 - 前端开发
+                    {[
+                      initData?.company_name,
+                      initData?.department_name,
+                      initData?.job_name,
+                    ]
+                      ?.filter((k: any) => k)
+                      ?.join('-')}
                   </div>
                 </div>
               </div>
             </div>
             <div className="content">
               <Form form={form} layout="vertical">
-                <Form.Item
-                  label={<LabelTitle>请选择项目</LabelTitle>}
-                  name="project"
-                >
+                <Form.Item label={<LabelTitle>请选择项目</LabelTitle>}>
                   <div className="project">
-                    <CustomSelect /> <AgainButton>重新生成</AgainButton>
+                    <CustomSelect
+                      optionFilterProp="label"
+                      showSearch
+                      onChange={(val: any) => {
+                        setModalInfo(null)
+                        setCurrentProject(
+                          projectList?.find((item: any) => item.id === val),
+                        )
+                      }}
+                      options={projectList?.map((item: any) => ({
+                        label: item.name,
+                        value: item.id,
+                        key: item.id,
+                      }))}
+                    />
+                    {loading ? (
+                      <LoadingButton>
+                        <img width={16} src="/shareLoading.gif" />
+                        <span>生成中...</span>
+                      </LoadingButton>
+                    ) : (
+                      <AgainButton onClick={generatorDataByProject}>
+                        重新生成
+                      </AgainButton>
+                    )}
                   </div>
                 </Form.Item>
-                <div>{generatorHtmlByData({ type: 3, name: '总体进度' })}</div>
+                <HandleSpin
+                  spinning={loading}
+                  indicator={<NewLoadingTransition />}
+                />
+                {!loading &&
+                  modalInfo?.configs?.map((item: any) => (
+                    <div style={{ marginBottom: 18 }} key={item.id}>
+                      {generatorHtmlByData(item)}
+                    </div>
+                  ))}
               </Form>
             </div>
           </ContentWrap>
         </div>
       </CommonModal>
       <NoPermissionModal
+        id={currentProject?.id}
         visible={havePermission}
         close={() => {
           setHavePermission(false)

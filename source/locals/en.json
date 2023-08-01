@@ -1463,7 +1463,8 @@
       "prevDateSubmit": "Last submission time",
       "add": "Please add",
       "reportDeleted": "The template has been deleted. Procedure",
-      "noPermissions": "You do not have permission to use this template"
+      "noPermissions": "You do not have permission to use this template",
+      "notifiedToAdministrator": "The administrator has been notified to enable the function"
     },
     "statistics": {
       "title": "Reporting Statistics",
@@ -2146,7 +2147,7 @@
     "send1": "{{name}} sent at {{time}}",
     "pleaseNameOrKey": "Enter project name or key",
     "homeConfig": "Home configuration",
-    "kanbanConfig": "Kanban configuration",
+    "kanbanConfig": "Panel configuration",
     "cardMax": "The maximum number of cards in this column has been exceeded",
     "maxEd": "Exceeded maximum limit",
     "systemNot": "System views cannot be edited",

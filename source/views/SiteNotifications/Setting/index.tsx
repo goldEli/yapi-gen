@@ -35,8 +35,8 @@ const Setting = () => {
 
   const onSave = async () => {
     const res = await editMyAllNoteSet(
-      selectKeys,
-      // Array.from(new Set([...myEmailConfiguration, ...selectKeys])),
+      // selectKeys,
+      Array.from(new Set([...myEmailConfiguration, ...selectKeys])),
     )
 
     if (res.code === 0) {

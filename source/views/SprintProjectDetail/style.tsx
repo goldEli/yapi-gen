@@ -6,6 +6,7 @@ export const TargetWrap = styled.div`
   flex-wrap: wrap;
   margin-bottom: 16px;
   font-size: 14px;
+  white-space: pre;
   .icon {
     margin-right: 8px;
     display: inline;

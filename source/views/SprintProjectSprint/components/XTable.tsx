@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 import React, { useState } from 'react'
 import { SortableItem } from './SortableItem'
 import { Droppable } from 'react-beautiful-dnd'
@@ -461,9 +462,9 @@ const XTable: React.FC<XTableProps> = props => {
                         'sprint.pieces',
                       )}`
                     },
-                    defaultPageSize: 10,
+                    defaultPageSize: 30,
                     defaultCurrent: 1,
-                    pageSizeOptions: ['10', '20', '50'],
+                    pageSizeOptions: ['10', '20', '30', '50'],
                     showSizeChanger: true,
                     showQuickJumper: true,
                   }}

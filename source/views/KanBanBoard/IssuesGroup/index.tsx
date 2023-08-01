@@ -29,8 +29,13 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { AddUserModalElement, open } = useAddUserModal()
   const { closeMap, onChange } = useCloseMap()
   const dispatch = useDispatch()
-  const hidden = !!closeMap?.get(issuesGroup.id)
+
   const { showUserRelatedInformation, groupType, isNoGroup } = useGroupType()
+  const hidden =
+    groupType === 'none'
+      ? !!closeMap?.get(issuesGroup.id)
+      : !closeMap?.get(issuesGroup.id)
+
   const { t } = useI18n()
 
   const text = useMemo(() => {

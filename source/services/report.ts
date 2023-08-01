@@ -102,3 +102,39 @@ const setDailyConfigSetCreateConfig = async (params: {
 }
 // 自动发送配置
 const dailyConfigSetAutoSendConfig = () => {}
+
+// 日报助手：工作日报—获取项目列表
+export const getProjectList: any = async () => {
+  const response: any = await http.get<any>('getListOfDaily')
+  return response?.data
+}
+
+// 日报助手：工作日报—获取需求列表
+export const getStoryListOfDaily: any = async (params: any) => {
+  const response: any = await http.get<any>('getStoryListOfDaily', {
+    project_id: params,
+  })
+  return response
+}
+
+// 日报助手：工作汇报初始化数据
+export const initDaily: any = async (params: any) => {
+  const response = await http.get('getInitDaily', params)
+  return response.data
+}
+
+// 日报助手：工作日报—模板详情
+export const getDailyInfo: any = async (params: any) => {
+  const response = await http.get('getDailyInfo', { project_id: params })
+  return {
+    configs: response.data?.template_content_configs,
+    reportUserList: response.data?.report_user_list,
+    id: response.data?.id,
+  }
+}
+
+// 日报助手：日报生成规则未配置通知
+export const sendNotice: any = async (params: any) => {
+  const response = await http.post('sendNotice', { project_id: params })
+  return response.data
+}
