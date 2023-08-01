@@ -2,13 +2,27 @@
 /* eslint-disable require-unicode-regexp */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Form, Input, Switch, Popover, Checkbox, TimePicker } from 'antd'
+import {
+  Form,
+  Input,
+  Switch,
+  Popover,
+  Checkbox,
+  TimePicker,
+  message,
+} from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '@/components/CommonButton'
-import { throttle } from 'lodash'
 import { useEffect, useState } from 'react'
+import {
+  getAily_config,
+  set_auto_send_config,
+  set_create_config,
+} from '@/services/dailyAllocation'
 import moment from 'moment'
-import DeleteConfirm from '@/components/DeleteConfirm'
+import { useSelector } from '@store/index'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { getMessage } from '@/components/Message'
 const DailyReportRulesWrap = styled(Form)`
   width: 100%;
   & .ant-form-item {
@@ -143,186 +157,246 @@ const Line = styled.div`
 `
 const Text = styled.div`
   color: var(--primary-d1);
-  &:hover {
-    cursor: pointer;
-  }
 `
 interface CheckBoxGroupType {
   onChange?(val: any): void
   value?: any
   disabled: boolean
 }
-const CheckBoxGroup = (props: CheckBoxGroupType) => {
-  const [t]: any = useTranslation()
-  const onChange = throttle(
-    (value: boolean, el1: { value: boolean; key: number }) => {
-      const filterVal = props?.value.map(
-        (item: { value: boolean; key: number }) => ({
-          ...item,
-          value: el1.key === item.key ? value : item.value,
-        }),
-      )
-      props.onChange?.(filterVal)
-    },
-    500,
-  )
-  return (
-    <>
-      {props.value?.map(
-        (el: { value: boolean; key: number; label: string }) => (
-          <Checkbox
-            disabled={props.disabled}
-            key={el.key}
-            onChange={e => onChange(e.target.checked, el)}
-            checked={el.value}
-          >
-            {t(`formWork.${el.label}`)}
-          </Checkbox>
-        ),
-      )}
-    </>
-  )
-}
 
 const DailyReportRules = () => {
   const [form1] = Form.useForm()
   const [form2] = Form.useForm()
   const [t] = useTranslation()
+  const projectId = useSelector(store => store.project.projectInfo.id)
   const [sendDisabled, setSendDisabled] = useState(true)
-  const [autoDisabled, setAutoDisabled] = useState(true)
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [open1, setOpen1] = useState(true)
   const [open2, setOpen2] = useState(true)
-  const [isOpen, setIsOpen] = useState(false)
-  const [type, setType] = useState(0)
+  const [typeId, setTypeId] = useState(0)
+  const [formAll, setFormAll] = useState<any>({})
+  const plainOptions = () => {
+    const arr: any = [
+      {
+        label: t('formWork.monday'),
+        value: 0,
+      },
+      {
+        label: t('formWork.monday'),
+        value: 1,
+      },
+      {
+        label: t('formWork.wednesday'),
+        value: 2,
+      },
+      {
+        label: t('formWork.thursday'),
+        value: 3,
+      },
+      {
+        label: t('formWork.friday'),
+        value: 4,
+      },
+      {
+        label: t('formWork.saturday'),
+        value: 5,
+      },
+      {
+        label: t('formWork.monday'),
+        value: 6,
+      },
+    ]
+    return arr
+    // .map((i: any) => {
+    //   return {
+    //     label: t(`formWork.${i.label??'sunday'}`),
+    //     value: i.value,
+    //   }
+    // })
+  }
   const content = () => {
     return (
       <PopoverWrap>
-        <Title>XXX 07月25日 项目汇报【IFUN Agile】</Title>
-        <Msg>总体进度：20%</Msg>
+        <Title>{t('msg21')}</Title>
+        <Msg>{t('msg22')}</Msg>
         <Row>
           <span />
-          <span>任务完成度：10/50</span>
+          <span>{t('msg23')}</span>
         </Row>
         <Row>
           <span />
-          <span>昨日任务：新增6个，完成3个</span>
+          <span>{t('msg24')}</span>
         </Row>
-        <Msg>今日截止：3个</Msg>
+        <Msg>{t('msg25')}</Msg>
         <Row>
           <span />
-          <span>梳理敏捷测试方案及流程（50%）</span>
-        </Row>
-        <Row>
-          <span />
-          <span>对已完成的设计，优化交互流程和视觉方案（10%）</span>
+          <span>{t('msg26')}</span>
         </Row>
         <Row>
           <span />
-          <span>试用版功能回归（20%）</span>
-        </Row>
-        <Msg>逾期任务：2个</Msg>
-        <Row>
-          <span />
-          <span>[逾1天]敏捷需求列表排序</span>
+          <span>{t('msg27')}</span>
         </Row>
         <Row>
           <span />
-          <span>[逾3天]项目列表缩略图优化</span>
+          <span>{t('msg28')}</span>
+        </Row>
+        <Msg>{t('msg29')}</Msg>
+        <Row>
+          <span />
+          <span>{t('msg30')}</span>
+        </Row>
+        <Row>
+          <span />
+          <span>{t('msg31')}</span>
         </Row>
         <Line />
-        <Text>【进入项目】</Text>
-        <Msg1>数据源自IFUN敏捷系统 Powered By IFUN Agile</Msg1>
+        <Text>{t('msg32')}</Text>
+        <Msg1>{t('msg33')}</Msg1>
       </PopoverWrap>
     )
   }
+  const cancel = (num: number) => {
+    const {
+      group_name,
+      webhook,
+      is_auto_generate,
+      is_auto_send,
+      is_hand_send,
+      reminder_time,
+      day,
+      is_holiday,
+    } = formAll
+    if (num === 1) {
+      form1.setFieldsValue({ group_name, webhook, is_auto_generate })
 
+      form1.setFieldsValue({ group_name, webhook, is_auto_generate })
+    } else {
+      is_auto_send === 2 ? setSendDisabled(true) : setSendDisabled(false)
+      form2.setFieldsValue({
+        is_auto_send,
+        is_hand_send,
+        day,
+        is_holiday,
+        reminder_time: moment(reminder_time, 'HH:mm'),
+      })
+    }
+  }
   const save = async (num: number) => {
     const values1: any = await form1.validateFields().catch(e => e)
-    const values2: any = await form2.validateFields().catch(e => e)
-    setType(num)
-    console.log(values1)
+    const values2: any = await form2.getFieldsValue()
     if (!values1.errorFields && num === 1) {
-      setIsOpen(true)
+      open({
+        title: t('msg19'),
+        text: t('msg20'),
+        onConfirm: async () => {
+          const res1 = await set_create_config({
+            ...values1,
+            id: typeId,
+            project_id: projectId,
+          })
+          if (res1.code === 0) {
+            getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+          }
+        },
+      })
     } else if (num === 2) {
-      setIsOpen(true)
+      const state = form2.getFieldsValue().is_auto_send === 1
+      if (state) {
+        open({
+          title: t('msg19'),
+          text: t('msg20'),
+          onConfirm: async () => {
+            const res2 = await set_auto_send_config({
+              ...values2,
+              id: typeId,
+              project_id: projectId,
+            })
+            if (res2.code === 0) {
+              getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+            }
+          },
+        })
+      } else {
+        open({
+          title: t('msg17'),
+          text: t('msg18'),
+          onConfirm: async () => {
+            values2.is_auto_send = 1
+            const res2 = await set_auto_send_config({
+              ...values2,
+              id: typeId,
+              project_id: projectId,
+            })
+            if (res2.code === 0) {
+              getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+              setSendDisabled(false)
+              form2.setFieldValue('is_auto_send', 1)
+            }
+          },
+        })
+      }
     }
   }
 
   const onValuesChange = async () => {
-    const a = form2.getFieldsValue().s
     const values: any = await form1.validateFields().catch(e => e)
-    console.log(values)
-    if (values.errorFields.length) {
-      form1.setFieldsValue({ adv: false })
-      setAutoDisabled(true)
-    } else {
-      form1.setFieldsValue({ adv: true })
-      setAutoDisabled(false)
-    }
+    values.errorFields?.length === 0 &&
+      form1.setFieldValue('is_auto_generate', 1)
+    const a = form2.getFieldsValue().is_auto_send === 1
     setSendDisabled(!a)
   }
-
-  useEffect(() => {
-    form1.setFieldsValue({ adv: false })
-    form2.setFieldsValue({
-      '5': true,
-      '6': [
-        {
-          label: 'monday',
-          value: true,
-        },
-        {
-          label: 'monday',
-          value: true,
-        },
-        {
-          label: 'wednesday',
-          value: true,
-        },
-        {
-          label: 'thursday',
-          value: true,
-        },
-        {
-          label: 'friday',
-          value: true,
-        },
-        {
-          label: 'saturday',
-          value: false,
-        },
-        {
-          label: 'sunday',
-          value: false,
-        },
-      ],
-      q: moment('18:28:00', 'HH:mm'),
+  const init = async () => {
+    const {
+      group_name,
+      webhook,
+      is_auto_generate,
+      is_auto_send,
+      is_hand_send,
+      reminder_time,
+      day,
+      is_holiday,
+      id,
+    } = await getAily_config(projectId)
+    setFormAll({
+      group_name,
+      webhook,
+      is_auto_generate,
+      is_auto_send,
+      is_hand_send,
+      reminder_time,
+      day,
+      is_holiday,
     })
+    setTypeId(id)
+    form1.setFieldsValue({ group_name, webhook, is_auto_generate })
+    is_auto_send === 2 ? setSendDisabled(true) : setSendDisabled(false)
+    form2.setFieldsValue({
+      is_auto_send,
+      is_hand_send,
+      day,
+      is_holiday,
+      reminder_time: moment(reminder_time, 'HH:mm'),
+    })
+  }
+  const getValueFromEvent = (e: any) => {
+    return e.target.checked ? 1 : 2
+  }
+  const getValueFromEvent2 = (checked: any) => {
+    return checked ? 1 : 2
+  }
+
+  const getValueProps = (value: any) => {
+    return { checked: value === 1 }
+  }
+  useEffect(() => {
+    init()
   }, [])
-  const SwitchWrap = (props: any) => {
-    return (
-      <Switch
-        checked={props.value}
-        onChange={(val: boolean) => props.onChange(val)}
-      />
-    )
-  }
-  const CheckboxWrap = (props: any) => {
-    return (
-      <Checkbox
-        checked={props.value}
-        onChange={val => props.onChange(val.target.checked)}
-        disabled={props.disabled}
-      >
-        {props.text}
-      </Checkbox>
-    )
-  }
+
   return (
     <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
       <ReportWrap>
         <HeaderWrap onClick={() => setOpen1(!open1)}>
-          <span>日报生成配置</span>
+          <span>{t('rb')}</span>
           <IconFont
             type={open1 ? 'up' : 'down'}
             style={{
@@ -332,77 +406,83 @@ const DailyReportRules = () => {
             }}
           />
         </HeaderWrap>
-        {open1 && (
+        {open1 ? (
           <DailyReportRulesWrap
             layout="vertical"
             form={form1}
             onValuesChange={onValuesChange}
           >
             <Form.Item
-              label="群名称"
-              name="a"
+              label={t('qm')}
+              name="group_name"
               required
-              rules={[{ required: true, message: '请输入' }]}
+              rules={[{ required: true, message: t('q') }]}
             >
-              <InputStyle placeholder="请输入" maxLength={100} allowClear />
+              <InputStyle placeholder={t('q')} maxLength={100} allowClear />
             </Form.Item>
             <Form.Item
-              label="钉钉webhook地址"
-              name="b"
+              label={t('dd')}
+              name="webhook"
               required
               rules={[
                 {
                   required: true,
-                  message: '请输入',
+                  message: t('q'),
                   // eslint-disable-next-line
                   pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
                 },
               ]}
             >
-              <InputStyle placeholder="请输入" allowClear />
+              <InputStyle placeholder={t('q')} allowClear />
             </Form.Item>
-            <Form.Item label="是否自动生成" name="adv" className="check-form">
-              <SwitchWrap />
+            <Form.Item
+              label={t('sc')}
+              name="is_auto_generate"
+              valuePropName="checked"
+              className="check-form"
+              getValueFromEvent={getValueFromEvent2}
+              getValueProps={getValueProps}
+            >
+              <Switch />
             </Form.Item>
-            <Text1>生成条件</Text1>
-            <Text1> 条件一：在预计开始日期之后的任务（含当日）</Text1>
-            <Text1> 条件二 ：该任务处于进行中或当日已完成 </Text1>
-            <Text1>条件三 ：该任务指派了处理人，且任务标题大于4个字符</Text1>
+            <Text1>{t('msg1')}</Text1>
+            <Text1> {t('msg2')}</Text1>
+            <Text1> {t('msg3')} </Text1>
+            <Text1>{t('msg4')}</Text1>
             <Text2>
-              <span>生成示例</span>
+              <span>{t('msg5')}</span>
               <Popover
                 placement="rightTop"
-                title={''}
+                title=""
                 content={content}
                 trigger="click"
               >
-                <span>查看示例图</span>
+                <span>{t('msg6')}</span>
               </Popover>
             </Text2>
-            <Text1>生成规则：</Text1>
-            <Text1>
-              总体进度：根据每事务的完成状态自动统计完成度（例如50个任务完成了10个，就是20%){' '}
-            </Text1>
-            <Text1>
-              {' '}
-              今日截至：根据当日任务状态统计 进行中或当日已完成的任务标题{' '}
-            </Text1>
-            <Text1>逾期任务：根据当日与预计结束日期进行冲减</Text1>
+            <Text1>{t('msg7')}</Text1>
+            <Text1>{t('msg8')}</Text1>
+            <Text1>{t('msg9')}</Text1>
+            <Text1>{t('msg10')}</Text1>
             <FooterWrap>
-              <CommonButton type="light" style={{ marginRight: '16px' }}>
-                取消
+              <CommonButton
+                type="light"
+                style={{ marginRight: '16px' }}
+                onClick={() => cancel(1)}
+              >
+                {t('common.cancel')}
               </CommonButton>
               <CommonButton type="primary" onClick={() => save(1)}>
-                保存
+                {t('formWork.save2')}
               </CommonButton>
             </FooterWrap>
           </DailyReportRulesWrap>
-        )}
+        ) : null}
       </ReportWrap>
 
       <ReportWrap style={{ marginBottom: 48 }}>
         <HeaderWrap onClick={() => setOpen2(!open2)}>
-          <span>自动发送配置</span>
+          <span>{t('msg11')}</span>
           <IconFont
             type={open2 ? 'up' : 'down'}
             style={{
@@ -413,60 +493,77 @@ const DailyReportRules = () => {
           />
         </HeaderWrap>
 
-        {open2 && (
+        {open2 ? (
           <DailyReportRulesWrap
             layout="vertical"
             form={form2}
             onValuesChange={onValuesChange}
           >
-            <Form.Item label="自动发送配置" name="s" className="check-form">
+            <Form.Item
+              label={t('msg11')}
+              name="is_auto_send"
+              className="check-form"
+              valuePropName="checked"
+              getValueFromEvent={getValueFromEvent2}
+              getValueProps={getValueProps}
+            >
               <Switch />
             </Form.Item>
-            <Form.Item label="发送周期" name="5" className="checkBox-form">
-              <CheckboxWrap
-                disabled={sendDisabled}
-                text={'跟随中国法定节假日自动调整'}
-              />
+            <Form.Item
+              label={t('msg12')}
+              name="is_holiday"
+              className="checkBox-form"
+              valuePropName="checked"
+              getValueFromEvent={getValueFromEvent}
+              getValueProps={getValueProps}
+            >
+              <Checkbox disabled={sendDisabled}>{t('msg13')}</Checkbox>
             </Form.Item>
             <Form.Item
-              name="6"
+              name="day"
               style={{
                 marginBottom: '32px',
               }}
             >
-              <CheckBoxGroup disabled={sendDisabled} />
-            </Form.Item>
-            <Form.Item label={'发送时间'} name="q">
-              <TimePicker
-                style={{ width: 320 }}
-                format={'HH:mm'}
+              <Checkbox.Group
+                options={plainOptions()}
                 disabled={sendDisabled}
               />
             </Form.Item>
-            <Form.Item label="手动发送配置" name="8" className="checkBox-form">
-              <Checkbox disabled={sendDisabled}>是否允许成员手动发送</Checkbox>
+            <Form.Item label={t('msg14')} name="reminder_time">
+              <TimePicker
+                style={{ width: 320 }}
+                format="HH:mm"
+                disabled={sendDisabled}
+              />
+            </Form.Item>
+            <Form.Item
+              label={t('msg15')}
+              name="is_hand_send"
+              className="checkBox-form"
+              valuePropName="checked"
+              getValueFromEvent={getValueFromEvent}
+              getValueProps={getValueProps}
+            >
+              <Checkbox disabled={sendDisabled}>{t('msg16')}</Checkbox>
             </Form.Item>
             <FooterWrap>
-              <CommonButton type="light" style={{ marginRight: '16px' }}>
-                取消
+              <CommonButton
+                type="light"
+                style={{ marginRight: '16px' }}
+                onClick={() => cancel(2)}
+              >
+                {t('common.cancel')}
               </CommonButton>
 
               <CommonButton type="primary" onClick={() => save(2)}>
-                保存
+                {t('formWork.save2')}
               </CommonButton>
             </FooterWrap>
           </DailyReportRulesWrap>
-        )}
+        ) : null}
       </ReportWrap>
-      <DeleteConfirm
-        title={'保存提示'}
-        text={'是否保存本次修改内容'}
-        isVisible={isOpen}
-        onConfirm={() => {
-          setIsOpen(false)
-        }}
-        onChangeVisible={() => setIsOpen(false)}
-      />
+      <DeleteConfirmModal />
     </div>
   )
 }

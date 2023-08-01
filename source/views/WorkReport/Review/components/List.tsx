@@ -32,7 +32,6 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { css } from '@emotion/css'
 import { templateList } from '@/services/formwork'
-import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import ReportAssistantModal from './ReportAssistantModal'
 
 const listContainer = css`
@@ -199,6 +198,7 @@ const List = () => {
         visible: true,
         id: row.id,
         ids: listData?.map((i: any) => i.id),
+        system: row?.type === 2,
       }),
     )
   }
@@ -284,6 +284,7 @@ const List = () => {
                 }}
                 className="controlMaxWidth"
               >
+                {record.is_auto === 1 ? '（自动）' : '（手动）'}
                 {String(record.user.name)}
                 {t('report.list.of')}
                 {record.name}
@@ -388,7 +389,7 @@ const List = () => {
       width: 160,
       title: t('report.list.readState'),
       align: 'center',
-      dataIndex: 'type',
+      dataIndex: 'user_copysend_type',
       render: (text: number, record: any) => {
         return id === 1 ? (
           <ReadStatusTag status={record.is_read === 1 ? 'read' : 'no'} />

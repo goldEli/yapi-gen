@@ -7,7 +7,6 @@
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { Drawer, Form, Space } from 'antd'
-import type { EditorRef } from '@xyfe/uikit'
 import { Editor } from '@xyfe/uikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -23,8 +22,6 @@ import {
   DetailItem,
   TargetUserItem,
   TargetUserContent,
-  ContactDemandBox,
-  ContactDemandItem,
   CommentBox,
   Title,
   Msg,
@@ -92,21 +89,6 @@ const TargetTabs = (props: TargetTabsProps) => {
   )
 }
 
-const ContactDemand = (props: { list: any }) => {
-  const list = props.list?.length ? props.list : []
-  return (
-    <ContactDemandBox>
-      {list?.length
-        ? list?.map((i: any) => (
-            <ContactDemandItem key={i.id}>
-              【{i.story_prefix_key}】<span className="name">{i.name}</span>
-            </ContactDemandItem>
-          ))
-        : '--'}
-    </ContactDemandBox>
-  )
-}
-
 const System = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
@@ -114,8 +96,6 @@ const System = () => {
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const [focus, setFocus] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [reportIds, setReportIds] = useState<any>([])
   const [isReview, setIsReview] = useState(false)
   const [commentList, setCommentList] = useState([])
   const [form] = Form.useForm()
@@ -203,7 +183,7 @@ const System = () => {
   }
 
   // 获取汇报详情
-  const getReportDetail = async (ids?: any) => {
+  const getReportDetail = async () => {
     setDrawerInfo({})
     setSkeletonLoading(true)
     const info = await getReportInfo({
@@ -212,8 +192,6 @@ const System = () => {
     setUserList(info?.target_users)
     setDrawerInfo(info)
     setSkeletonLoading(false)
-    // 获取当前需求的下标， 用作上一下一切换
-    setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
     getReportCommentData(viewReportModal?.id)
   }
 
@@ -289,8 +267,7 @@ const System = () => {
 
   useEffect(() => {
     if (viewReportModal.visible && viewReportModal?.id) {
-      setReportIds(viewReportModal?.ids || [])
-      getReportDetail(viewReportModal?.ids || [])
+      getReportDetail()
     }
   }, [viewReportModal])
 
@@ -324,189 +301,7 @@ const System = () => {
       //
     }
   }
-  const detail: any = {
-    id: 22,
-    user_id: 689,
-    report_template_id: 26,
-    report_precis: '昨日新增：3个任务完成度：10/50已完成10个',
-    start_time: '2023-07-27',
-    end_time: '2023-07-27 00:00:00',
-    is_supply: 2,
-    is_read: 1,
-    type: 2,
-    is_auto: 2,
-    created_at: '2023-07-27 17:23:12',
-    updated_at: '2023-07-27 17:23:43',
-    deleted_at: null,
-    project_id: 321,
-    report_template_name: '工作汇报',
-    submit_cycle: 1,
-    target_user_config_id: 114,
-    target_users: [
-      {
-        user_id: 39,
-        report_template_id: 26,
-        report_user_id: 22,
-        type: 1,
-        user: {
-          id: 39,
-          name: ' 汪志君',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
-        },
-      },
-      {
-        user_id: 6,
-        report_template_id: 26,
-        report_user_id: 22,
-        type: 1,
-        user: {
-          id: 6,
-          name: '马成龙',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-04-24/68e19872-c04e-44d4-b4c7-9b86bcd0cfd8.png',
-        },
-      },
-      {
-        user_id: 91,
-        report_template_id: 26,
-        report_user_id: 22,
-        type: 1,
-        user: {
-          id: 91,
-          name: '赵日天',
-          avatar: '',
-        },
-      },
-      {
-        user_id: 42,
-        report_template_id: 26,
-        report_user_id: 22,
-        type: 1,
-        user: {
-          id: 42,
-          name: 'gravel',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551751383370940418/2023-06-05/79a18410-5c26-46ba-91d9-0f0c158a18a1.jpeg',
-        },
-      },
-      {
-        user_id: 689,
-        report_template_id: 26,
-        report_user_id: 22,
-        type: 2,
-        user: {
-          id: 689,
-          name: '蒋晓龙',
-          avatar: '',
-        },
-      },
-      {
-        user_id: 705,
-        report_template_id: 26,
-        report_user_id: 22,
-        type: 1,
-        user: {
-          id: 705,
-          name: '薛万云',
-          avatar: '',
-        },
-      },
-    ],
-    report_content: [
-      {
-        id: 118,
-        name: '总进度',
-        report_template_id: 26,
-        type: 3,
-        tips: '',
-        sort: 0,
-        is_required: 2,
-        created_at: '2023-07-26 10:23:03',
-        updated_at: '2023-07-27 11:50:57',
-        deleted_at: null,
-        pivot: {
-          report_user_id: 22,
-          report_template_config_id: 118,
-          content:
-            '<p><span style="color: rgb(51, 51, 51); font-family: Arial Normal, Arial, sans-serif; font-size: 14px">昨日新增： 3个</span></p><p>任务完成度： 10/ 50      已完成 10 个</p>',
-          params: [],
-        },
-      },
-      {
-        id: 115,
-        name: '今日截止',
-        report_template_id: 26,
-        type: 4,
-        tips: '',
-        sort: 1,
-        is_required: 1,
-        created_at: '2023-07-25 16:48:14',
-        updated_at: '2023-07-27 11:50:57',
-        deleted_at: null,
-        pivot: {
-          report_user_id: 22,
-          report_template_config_id: 115,
-          content: '',
-          params: [
-            {
-              id: 1002929,
-              name: '个人中心（jxl）',
-              story_prefix_key: 'CSXM（JXL-1',
-            },
-            {
-              id: 1003010,
-              name: '需求测试12（jxl）',
-              story_prefix_key: 'CSXM（JXL-2',
-            },
-          ],
-        },
-      },
-      {
-        id: 116,
-        name: '预期任务',
-        report_template_id: 26,
-        type: 4,
-        tips: '',
-        sort: 2,
-        is_required: 1,
-        created_at: '2023-07-25 16:48:14',
-        updated_at: '2023-07-27 11:50:57',
-        deleted_at: null,
-        pivot: {
-          report_user_id: 22,
-          report_template_config_id: 116,
-          content: '',
-          params: [
-            {
-              id: 1003154,
-              name: '需求层级测试1',
-              story_prefix_key: 'CSXM（JXL-4',
-            },
-            {
-              id: 1003156,
-              name: '需求层级测试3',
-              story_prefix_key: 'CSXM（JXL-6',
-            },
-          ],
-        },
-      },
-    ],
-    user: {
-      id: 689,
-      name: '蒋晓龙',
-      avatar: '',
-      company_name: '成都定星科技',
-      department_name: 'php',
-      job_name: 'php工程师',
-    },
-    project: {
-      id: 321,
-      name: '张四146',
-      avatar: '',
-    },
-    title: '蒋晓龙生成的07月27日工作汇报',
-  }
+
   return (
     <Drawer
       closable={false}
@@ -554,38 +349,61 @@ const System = () => {
                 />
                 <div className="reportTitleWrap">
                   <MsgRow>
-                    <div className="titleText">{detail?.title}</div>
+                    <div className="titleText">{drawerInfo?.title}</div>
                     <div className="submitTimeText">
-                      {t('report.list.dateSubmit')}：{detail?.created_at}
+                      {t('report.list.dateSubmit')}：{drawerInfo?.created_at}
                     </div>
                   </MsgRow>
                   <div className="submitTimeText">
-                    {detail?.user.company_name} - {detail?.user.department_name}{' '}
-                    - {detail?.user.job_name}
+                    {drawerInfo?.user?.company_name} -{' '}
+                    {drawerInfo?.user?.department_name} -{' '}
+                    {drawerInfo?.user?.job_name}
                   </div>
                 </div>
               </div>
             </ContentHeadWrap>
             {/* 新加的ui */}
-            <Title>汇报项目</Title>
-            <Msg style={{ margin: '8px 0 32px 0' }}>{detail.project.name}</Msg>
-            {detail.report_content?.map((item: any) => (
+            <Title>{t('report.list.reportProject')}</Title>
+            <Msg style={{ margin: '8px 0 32px 0' }}>
+              {drawerInfo?.project?.name}
+            </Msg>
+            {drawerInfo.report_content?.map((item: any) => (
               <Col key={item.id}>
                 {item.type === 4 && (
                   <Title style={{ marginBottom: 8 }}>
-                    {item.name}: {item.pivot.params?.length}个
+                    {item.name}: {item.pivot.params?.length}{' '}
+                    {t('report.list.pieces')}
                   </Title>
                 )}
                 {item.type === 3 && (
-                  <Title style={{ marginBottom: 8 }}>{item.name}: 80%</Title>
+                  <Title style={{ marginBottom: 8 }}>
+                    {item.name}:{' '}
+                    {JSON.parse(item?.pivot?.content ?? null)?.total_schedule}%
+                  </Title>
                 )}
                 {item.type === 3 && (
                   <>
-                    <Msg style={{ marginTop: '8px' }}>昨日新增：10个</Msg>
+                    <Msg style={{ marginTop: '8px' }}>
+                      {' '}
+                      {t('report.list.addedYesterday')}：
+                      {JSON.parse(item?.pivot?.content ?? null)?.yesterday_add}
+                      {t('report.list.pieces')}
+                    </Msg>
                     <RowLine>
-                      <Msg>昨日新增：10个</Msg>
+                      <Msg>
+                        {' '}
+                        {t('report.list.taskProgress')}：
+                        {
+                          JSON.parse(item?.pivot?.content ?? null)
+                            ?.task_completion
+                        }
+                      </Msg>
                       <Line></Line>
-                      <Msg>昨日新增：10个</Msg>
+                      <Msg>
+                        {t('completed')}：{' '}
+                        {JSON.parse(item?.pivot?.content ?? null)?.complete}
+                        {t('report.list.pieces')}{' '}
+                      </Msg>
                     </RowLine>
                   </>
                 )}
@@ -596,6 +414,12 @@ const System = () => {
                       <Msg>{el.name}</Msg>
                     </RowRadius>
                   ))}
+                {item.type === 2 && (
+                  <>
+                    <Title>{item?.name}</Title>
+                    <AttachmentBox list={item?.pivot?.params} />
+                  </>
+                )}
               </Col>
             ))}
             {drawerInfo?.target_users?.length > 0 && (

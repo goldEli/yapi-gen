@@ -44,7 +44,6 @@ const Setting = () => {
   const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const activeTabs = paramsData.type || 'ProjectInfo'
-  console.log(activeTabs, 'activeTabs')
   const { currentMenu } = useSelector(store => store.user)
   const dispatch = useDispatch()
   const [searchValue, setSearchValue] = useState('')
@@ -107,17 +106,15 @@ const Setting = () => {
     [
       'ProjectSchedule',
       {
-        name: '日报规则配置',
+        name: t('rbgz'),
         icon: 'settings',
         content: <DailyReportRules />,
         isPermission: true,
       },
     ],
   ])
-  console.log(maps, 'maps')
   useEffect(() => {
     setSearchValue('')
-    console.log('activeTabs------', activeTabs)
   }, [activeTabs])
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))

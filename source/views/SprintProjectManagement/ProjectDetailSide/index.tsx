@@ -180,16 +180,17 @@ const ProjectDetailSide = () => {
       key: 'ProjectHome',
     },
     {
-      label: '日报规则配置',
+      label: t('rbgz'),
       icon: (
         <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
       ),
       path: '/SprintProjectManagement/Setting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/daily_config'),
+      ).length,
       key: 'ProjectSchedule',
     },
   ]
-
   const menuList = [
     {
       name: t('sprintProject.affairs'),
@@ -315,7 +316,6 @@ const ProjectDetailSide = () => {
     setSelectedKeys([paramsData.type])
   }, [paramsData.type])
   useEffect(() => {}, [pathname])
-  console.log(projectSettingsList)
   return (
     <AllWrap>
       {pathname !== '/SprintProjectManagement/DemandSetting' &&
