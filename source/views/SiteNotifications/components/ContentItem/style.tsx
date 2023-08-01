@@ -42,6 +42,9 @@ export const Wrap = styled.div<{ greps?: boolean; bor?: boolean }>`
   /* filter: drop-shadow(5px 5px 5px black);
   filter: saturate(50%);  */
   :hover {
+    .dsds-my {
+      text-decoration: underline;
+    }
     border: 1px solid transparent;
     background-color: var(--neutral-n8);
     /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.12); */
