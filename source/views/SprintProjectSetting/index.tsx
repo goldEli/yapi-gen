@@ -107,7 +107,7 @@ const Setting = () => {
     [
       'ProjectSchedule',
       {
-        name: '日报规则配置',
+        name: t('rbgz'),
         icon: 'settings',
         content: <DailyReportRules />,
         isPermission: true,

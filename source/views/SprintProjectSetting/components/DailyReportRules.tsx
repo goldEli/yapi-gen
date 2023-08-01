@@ -13,17 +13,16 @@ import {
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '@/components/CommonButton'
-import { throttle } from 'lodash'
 import { useEffect, useState } from 'react'
-import moment from 'moment'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import {
   getAily_config,
   set_auto_send_config,
   set_create_config,
 } from '@/services/dailyAllocation'
+import moment from 'moment'
 import { useSelector } from '@store/index'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { getMessage } from '@/components/Message'
 const DailyReportRulesWrap = styled(Form)`
   width: 100%;
   & .ant-form-item {
@@ -175,11 +174,8 @@ const DailyReportRules = () => {
   const projectId = useSelector(store => store.project.projectInfo.id)
   const [sendDisabled, setSendDisabled] = useState(true)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
-  const [autoDisabled, setAutoDisabled] = useState(true)
   const [open1, setOpen1] = useState(true)
   const [open2, setOpen2] = useState(true)
-  const [isOpen, setIsOpen] = useState(false)
-  const [type, setType] = useState(0)
   const [typeId, setTypeId] = useState(0)
   const plainOptions = () => {
     const arr: any = [
@@ -223,41 +219,41 @@ const DailyReportRules = () => {
   const content = () => {
     return (
       <PopoverWrap>
-        <Title>XXX 07月25日 项目汇报【IFUN Agile】</Title>
-        <Msg>总体进度：20%</Msg>
+        <Title>{t('msg21')}</Title>
+        <Msg>{t('msg22')}</Msg>
         <Row>
           <span />
-          <span>任务完成度：10/50</span>
+          <span>{t('msg23')}</span>
         </Row>
         <Row>
           <span />
-          <span>昨日任务：新增6个，完成3个</span>
+          <span>{t('msg24')}</span>
         </Row>
-        <Msg>今日截止：3个</Msg>
+        <Msg>{t('msg25')}</Msg>
         <Row>
           <span />
-          <span>梳理敏捷测试方案及流程（50%）</span>
-        </Row>
-        <Row>
-          <span />
-          <span>对已完成的设计，优化交互流程和视觉方案（10%）</span>
+          <span>{t('msg26')}</span>
         </Row>
         <Row>
           <span />
-          <span>试用版功能回归（20%）</span>
-        </Row>
-        <Msg>逾期任务：2个</Msg>
-        <Row>
-          <span />
-          <span>[逾1天]敏捷需求列表排序</span>
+          <span>{t('msg27')}</span>
         </Row>
         <Row>
           <span />
-          <span>[逾3天]项目列表缩略图优化</span>
+          <span>{t('msg28')}</span>
+        </Row>
+        <Msg>{t('msg29')}</Msg>
+        <Row>
+          <span />
+          <span>{t('msg30')}</span>
+        </Row>
+        <Row>
+          <span />
+          <span>{t('msg31')}</span>
         </Row>
         <Line />
-        <Text>【进入项目】</Text>
-        <Msg1>数据源自IFUN敏捷系统 Powered By IFUN Agile</Msg1>
+        <Text>{t('msg32')}</Text>
+        <Msg1>{t('msg33')}</Msg1>
       </PopoverWrap>
     )
   }
@@ -265,12 +261,10 @@ const DailyReportRules = () => {
   const save = async (num: number) => {
     const values1: any = await form1.validateFields().catch(e => e)
     const values2: any = await form2.validateFields().catch(e => e)
-    setType(num)
-
     if (!values1.errorFields && num === 1) {
       open({
-        title: '保存提示',
-        text: '是否保存本次修改内容',
+        title: t('msg19'),
+        text: t('msg20'),
         onConfirm: async () => {
           const res1 = await set_create_config({
             ...values1,
@@ -278,33 +272,52 @@ const DailyReportRules = () => {
             project_id: projectId,
           })
           if (res1.code === 0) {
-            message.success('成功')
+            getMessage({ msg: t('common.saveSuccess'), type: 'success' })
           }
           console.log(res1)
         },
       })
     } else if (num === 2) {
-      open({
-        title: '保存提示',
-        text: '是否保存本次修改内容',
-        onConfirm: async () => {
-          const res2 = await set_auto_send_config({
-            ...values2,
-            id: typeId,
-            project_id: projectId,
-          })
-          if (res2.code === 0) {
-            message.success('成功')
-          }
-          console.log(res2)
-        },
-      })
+      const a = form2.getFieldsValue().is_auto_send === 1
+      if (a) {
+        open({
+          title: t('msg19'),
+          text: t('msg20'),
+          onConfirm: async () => {
+            const res2 = await set_auto_send_config({
+              ...values2,
+              id: typeId,
+              project_id: projectId,
+            })
+            if (res2.code === 0) {
+              getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+            }
+          },
+        })
+      } else {
+        open({
+          title: t('msg17'),
+          text: t('msg18'),
+          onConfirm: async () => {
+            const res2 = await set_auto_send_config({
+              ...values2,
+              id: typeId,
+              project_id: projectId,
+            })
+            if (res2.code === 0) {
+              getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+            }
+          },
+        })
+      }
     }
   }
 
   const onValuesChange = async () => {
+    const values: any = await form1.validateFields().catch(e => e)
+    values.errorFields.length === 0 &&
+      form1.setFieldValue('is_auto_generate', 1)
     const a = form2.getFieldsValue().is_auto_send === 1
-
     setSendDisabled(!a)
   }
 
@@ -339,7 +352,7 @@ const DailyReportRules = () => {
     <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
       <ReportWrap>
         <HeaderWrap onClick={() => setOpen1(!open1)}>
-          <span>日报生成配置</span>
+          <span>{t('rb')}</span>
           <IconFont
             type={open1 ? 'up' : 'down'}
             style={{
@@ -350,32 +363,36 @@ const DailyReportRules = () => {
           />
         </HeaderWrap>
         {open1 ? (
-          <DailyReportRulesWrap layout="vertical" form={form1}>
+          <DailyReportRulesWrap
+            layout="vertical"
+            form={form1}
+            onValuesChange={onValuesChange}
+          >
             <Form.Item
-              label="群名称"
+              label={t('qm')}
               name="group_name"
               required
-              rules={[{ required: true, message: '请输入' }]}
+              rules={[{ required: true, message: t('q') }]}
             >
-              <InputStyle placeholder="请输入" maxLength={100} allowClear />
+              <InputStyle placeholder={t('q')} maxLength={100} allowClear />
             </Form.Item>
             <Form.Item
-              label="钉钉webhook地址"
+              label={t('dd')}
               name="webhook"
               required
               rules={[
                 {
                   required: true,
-                  message: '请输入',
+                  message: t('q'),
                   // eslint-disable-next-line
                   pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
                 },
               ]}
             >
-              <InputStyle placeholder="请输入" allowClear />
+              <InputStyle placeholder={t('q')} allowClear />
             </Form.Item>
             <Form.Item
-              label="是否自动生成"
+              label={t('sc')}
               name="is_auto_generate"
               valuePropName="checked"
               className="check-form"
@@ -384,36 +401,31 @@ const DailyReportRules = () => {
             >
               <Switch />
             </Form.Item>
-            <Text1>生成条件</Text1>
-            <Text1> 条件一：在预计开始日期之后的任务（含当日）</Text1>
-            <Text1> 条件二 ：该任务处于进行中或当日已完成 </Text1>
-            <Text1>条件三 ：该任务指派了处理人，且任务标题大于4个字符</Text1>
+            <Text1>{t('msg1')}</Text1>
+            <Text1> {t('msg2')}</Text1>
+            <Text1> {t('msg3')} </Text1>
+            <Text1>{t('msg4')}</Text1>
             <Text2>
-              <span>生成示例</span>
+              <span>{t('msg5')}</span>
               <Popover
                 placement="rightTop"
                 title=""
                 content={content}
                 trigger="click"
               >
-                <span>查看示例图</span>
+                <span>{t('msg6')}</span>
               </Popover>
             </Text2>
-            <Text1>生成规则：</Text1>
-            <Text1>
-              总体进度：根据每事务的完成状态自动统计完成度（例如50个任务完成了10个，就是20%){' '}
-            </Text1>
-            <Text1>
-              {' '}
-              今日截至：根据当日任务状态统计 进行中或当日已完成的任务标题{' '}
-            </Text1>
-            <Text1>逾期任务：根据当日与预计结束日期进行冲减</Text1>
+            <Text1>{t('msg7')}</Text1>
+            <Text1>{t('msg8')}</Text1>
+            <Text1>{t('msg9')}</Text1>
+            <Text1>{t('msg10')}</Text1>
             <FooterWrap>
               <CommonButton type="light" style={{ marginRight: '16px' }}>
-                取消
+                {t('common.cancel')}
               </CommonButton>
               <CommonButton type="primary" onClick={() => save(1)}>
-                保存
+                {t('formWork.save2')}
               </CommonButton>
             </FooterWrap>
           </DailyReportRulesWrap>
@@ -422,7 +434,7 @@ const DailyReportRules = () => {
 
       <ReportWrap style={{ marginBottom: 48 }}>
         <HeaderWrap onClick={() => setOpen2(!open2)}>
-          <span>自动发送配置</span>
+          <span>{t('msg11')}</span>
           <IconFont
             type={open2 ? 'up' : 'down'}
             style={{
@@ -440,7 +452,7 @@ const DailyReportRules = () => {
             onValuesChange={onValuesChange}
           >
             <Form.Item
-              label="自动发送配置"
+              label={t('msg11')}
               name="is_auto_send"
               className="check-form"
               valuePropName="checked"
@@ -450,16 +462,14 @@ const DailyReportRules = () => {
               <Switch />
             </Form.Item>
             <Form.Item
-              label="发送周期"
+              label={t('msg12')}
               name="is_holiday"
               className="checkBox-form"
               valuePropName="checked"
               getValueFromEvent={getValueFromEvent}
               getValueProps={getValueProps}
             >
-              <Checkbox disabled={sendDisabled}>
-                跟随中国法定节假日自动调整
-              </Checkbox>
+              <Checkbox disabled={sendDisabled}>{t('msg13')}</Checkbox>
             </Form.Item>
             <Form.Item
               name="day"
@@ -472,7 +482,7 @@ const DailyReportRules = () => {
                 disabled={sendDisabled}
               />
             </Form.Item>
-            <Form.Item label="发送时间" name="reminder_time">
+            <Form.Item label={t('msg14')} name="reminder_time">
               <TimePicker
                 style={{ width: 320 }}
                 format="HH:mm"
@@ -480,22 +490,22 @@ const DailyReportRules = () => {
               />
             </Form.Item>
             <Form.Item
-              label="手动发送配置"
+              label={t('msg15')}
               name="is_hand_send"
               className="checkBox-form"
               valuePropName="checked"
               getValueFromEvent={getValueFromEvent}
               getValueProps={getValueProps}
             >
-              <Checkbox disabled={sendDisabled}>是否允许成员手动发送</Checkbox>
+              <Checkbox disabled={sendDisabled}>{t('msg16')}</Checkbox>
             </Form.Item>
             <FooterWrap>
               <CommonButton type="light" style={{ marginRight: '16px' }}>
-                取消
+                {t('common.cancel')}
               </CommonButton>
 
               <CommonButton type="primary" onClick={() => save(2)}>
-                保存
+                {t('formWork.save2')}
               </CommonButton>
             </FooterWrap>
           </DailyReportRulesWrap>

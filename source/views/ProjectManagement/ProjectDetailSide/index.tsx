@@ -236,7 +236,7 @@ const ProjectDetailSide = () => {
       key: 'ProjectHome',
     },
     {
-      label: '日报规则配置',
+      label: t('rbgz'),
       icon: (
         <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
       ),
