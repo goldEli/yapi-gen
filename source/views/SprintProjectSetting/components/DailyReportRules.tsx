@@ -157,9 +157,6 @@ const Line = styled.div`
 `
 const Text = styled.div`
   color: var(--primary-d1);
-  &:hover {
-    cursor: pointer;
-  }
 `
 interface CheckBoxGroupType {
   onChange?(val: any): void
@@ -177,6 +174,7 @@ const DailyReportRules = () => {
   const [open1, setOpen1] = useState(true)
   const [open2, setOpen2] = useState(true)
   const [typeId, setTypeId] = useState(0)
+  const [formAll, setFormAll] = useState<any>({})
   const plainOptions = () => {
     const arr: any = [
       {
@@ -257,10 +255,35 @@ const DailyReportRules = () => {
       </PopoverWrap>
     )
   }
+  const cancel = (num: number) => {
+    const {
+      group_name,
+      webhook,
+      is_auto_generate,
+      is_auto_send,
+      is_hand_send,
+      reminder_time,
+      day,
+      is_holiday,
+    } = formAll
+    if (num === 1) {
+      form1.setFieldsValue({ group_name, webhook, is_auto_generate })
 
+      form1.setFieldsValue({ group_name, webhook, is_auto_generate })
+    } else {
+      is_auto_send === 2 ? setSendDisabled(true) : setSendDisabled(false)
+      form2.setFieldsValue({
+        is_auto_send,
+        is_hand_send,
+        day,
+        is_holiday,
+        reminder_time: moment(reminder_time, 'HH:mm'),
+      })
+    }
+  }
   const save = async (num: number) => {
     const values1: any = await form1.validateFields().catch(e => e)
-    const values2: any = await form2.validateFields().catch(e => e)
+    const values2: any = await form2.getFieldsValue()
     if (!values1.errorFields && num === 1) {
       open({
         title: t('msg19'),
@@ -274,12 +297,11 @@ const DailyReportRules = () => {
           if (res1.code === 0) {
             getMessage({ msg: t('common.saveSuccess'), type: 'success' })
           }
-          console.log(res1)
         },
       })
     } else if (num === 2) {
-      const a = form2.getFieldsValue().is_auto_send === 1
-      if (a) {
+      const state = form2.getFieldsValue().is_auto_send === 1
+      if (state) {
         open({
           title: t('msg19'),
           text: t('msg20'),
@@ -299,6 +321,7 @@ const DailyReportRules = () => {
           title: t('msg17'),
           text: t('msg18'),
           onConfirm: async () => {
+            values2.is_auto_send = 1
             const res2 = await set_auto_send_config({
               ...values2,
               id: typeId,
@@ -306,6 +329,8 @@ const DailyReportRules = () => {
             })
             if (res2.code === 0) {
               getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+              setSendDisabled(false)
+              form2.setFieldValue('is_auto_send', 1)
             }
           },
         })
@@ -315,24 +340,43 @@ const DailyReportRules = () => {
 
   const onValuesChange = async () => {
     const values: any = await form1.validateFields().catch(e => e)
-    values.errorFields.length === 0 &&
+    values.errorFields?.length === 0 &&
       form1.setFieldValue('is_auto_generate', 1)
     const a = form2.getFieldsValue().is_auto_send === 1
     setSendDisabled(!a)
   }
-
   const init = async () => {
     const {
+      group_name,
+      webhook,
       is_auto_generate,
-      id,
       is_auto_send,
       is_hand_send,
-      config: { group_name, webhook },
+      reminder_time,
+      day,
+      is_holiday,
+      id,
     } = await getAily_config(projectId)
-
+    setFormAll({
+      group_name,
+      webhook,
+      is_auto_generate,
+      is_auto_send,
+      is_hand_send,
+      reminder_time,
+      day,
+      is_holiday,
+    })
     setTypeId(id)
     form1.setFieldsValue({ group_name, webhook, is_auto_generate })
-    form2.setFieldsValue({ is_auto_send, is_hand_send })
+    is_auto_send === 2 ? setSendDisabled(true) : setSendDisabled(false)
+    form2.setFieldsValue({
+      is_auto_send,
+      is_hand_send,
+      day,
+      is_holiday,
+      reminder_time: moment(reminder_time, 'HH:mm'),
+    })
   }
   const getValueFromEvent = (e: any) => {
     return e.target.checked ? 1 : 2
@@ -421,7 +465,11 @@ const DailyReportRules = () => {
             <Text1>{t('msg9')}</Text1>
             <Text1>{t('msg10')}</Text1>
             <FooterWrap>
-              <CommonButton type="light" style={{ marginRight: '16px' }}>
+              <CommonButton
+                type="light"
+                style={{ marginRight: '16px' }}
+                onClick={() => cancel(1)}
+              >
                 {t('common.cancel')}
               </CommonButton>
               <CommonButton type="primary" onClick={() => save(1)}>
@@ -500,7 +548,11 @@ const DailyReportRules = () => {
               <Checkbox disabled={sendDisabled}>{t('msg16')}</Checkbox>
             </Form.Item>
             <FooterWrap>
-              <CommonButton type="light" style={{ marginRight: '16px' }}>
+              <CommonButton
+                type="light"
+                style={{ marginRight: '16px' }}
+                onClick={() => cancel(2)}
+              >
                 {t('common.cancel')}
               </CommonButton>
 

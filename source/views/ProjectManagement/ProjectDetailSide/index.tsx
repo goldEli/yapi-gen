@@ -241,11 +241,13 @@ const ProjectDetailSide = () => {
         <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
       ),
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: true,
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/daily_config'),
+        ).length > 0,
       key: 'ProjectSchedule',
     },
   ]
-
   const getProjectInfoValuesData = async () => {
     const result = await getProjectInfoValues({ projectId })
     dispatch(setProjectInfoValues(result))

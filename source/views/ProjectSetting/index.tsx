@@ -106,12 +106,13 @@ const Setting = () => {
       name: t('rbgz'),
       icon: 'settings',
       content: <DailyReportRules />,
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/daily_config'),
+      ).length,
     },
   ]
   useEffect(() => {
     setSearchValue('')
-    console.log('activeTabs----', activeTabs, currentMenu?.children)
   }, [activeTabs])
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))

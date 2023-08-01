@@ -44,7 +44,6 @@ const Setting = () => {
   const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const activeTabs = paramsData.type || 'ProjectInfo'
-  console.log(activeTabs, 'activeTabs')
   const { currentMenu } = useSelector(store => store.user)
   const dispatch = useDispatch()
   const [searchValue, setSearchValue] = useState('')
@@ -114,10 +113,8 @@ const Setting = () => {
       },
     ],
   ])
-  console.log(maps, 'maps')
   useEffect(() => {
     setSearchValue('')
-    console.log('activeTabs------', activeTabs)
   }, [activeTabs])
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))
