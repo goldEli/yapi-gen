@@ -27,8 +27,6 @@ export const useDynamicColumns = (state: any) => {
       key: 'name',
       width: 260,
       render: (text: any, record: any) => {
-        console.log(record, 'record')
-        console.log(record.handover_status)
         return (
           <div style={{ width: '100%', display: 'flex' }}>
             <CommonUserAvatar

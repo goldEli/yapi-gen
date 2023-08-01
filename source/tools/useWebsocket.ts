@@ -75,7 +75,6 @@ const useWebsocket = () => {
     ws.current.onerror = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
-    console.log(ws.current?.readyState, 'socket2')
     ws.current.onmessage = throttle(
       (e: any) => {
         const data = JSON.parse(e.data)
@@ -128,8 +127,6 @@ const useWebsocket = () => {
   }
 
   useEffect(() => {
-    console.log(loginInfo)
-
     if (readyState.key === 3) {
       reconnect()
     }

@@ -611,7 +611,7 @@ const Iteration = (props: Props) => {
               await props.onCreateView(val, 'add')
               setIsVisibleView(false)
             } catch (error) {
-              // console.log(error)
+              //
             }
           }}
           onClose={() => setIsVisibleView(false)}

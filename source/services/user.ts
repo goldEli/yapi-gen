@@ -102,8 +102,6 @@ export const login = async () => {
 
     setTimeout(() => {
       if (localStorage.getItem('isYes') === '1') {
-        console.log('socket1')
-
         onlySysNotice()
       }
     }, 10000)

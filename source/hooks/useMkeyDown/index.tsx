@@ -6,8 +6,6 @@ const useMkeyDown = (callback: any) => {
   useEffect(() => {
     const handleKeyDown = (event: any) => {
       if (event.key === 'm') {
-        // console.log(isInputFocused, '聚焦状态')
-
         callback()
       }
     }

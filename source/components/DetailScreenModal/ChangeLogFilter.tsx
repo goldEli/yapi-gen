@@ -10,6 +10,8 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { css } from '@emotion/css'
 import dayjs from 'dayjs'
+import { endWeekData } from '@/views/WorkReport/Formwork/DataList'
+import moment from 'moment'
 const ClearForm = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -66,7 +68,6 @@ const ChangeLogFilter = (prop: IProps) => {
     getChangeType()
   }, [])
   useEffect(() => {
-    console.log('search', search)
     for (const key in search) {
       if (
         !search[key as keyof typeof search] ||
@@ -148,6 +149,14 @@ const ChangeLogFilter = (prop: IProps) => {
                 return
               }
               const [startTime, endTime] = value
+              if (dayjs(startTime).unix() === 0) {
+                form.setFieldsValue({
+                  created_at: [
+                    moment('1970-01-01'),
+                    dayjs(dayjs(endTime).format('YYYY-MM-DD')),
+                  ],
+                })
+              }
               setSearch({
                 ...search,
                 created_at: [

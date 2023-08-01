@@ -116,7 +116,6 @@ const DetailDemand = (props: DetailDemand) => {
               }, 10)
             }}
             onChange={(value: string) => {
-              console.log(value)
               setEditInfo(value)
               editorRef2.current = value
             }}

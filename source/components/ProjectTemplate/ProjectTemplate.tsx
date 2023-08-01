@@ -14,7 +14,6 @@ import { TabsItem } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
 
 const ProjectTemplate = (props: any) => {
-  // console.log(props.searchId)
   const [t] = useTranslation()
   const arr = [
     {
@@ -130,7 +129,6 @@ const ProjectTemplate = (props: any) => {
     setVisibleEdit(false)
   }
   const onsubmit = () => {
-    console.log(111)
     if (!ids.current) {
       return
     }

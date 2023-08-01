@@ -299,7 +299,6 @@ const slice = createSlice({
         ...state.unassignStatusList,
         ...action.payload,
       ]
-      console.log(state.unassignStatusList)
     },
   },
   extraReducers(builder) {
@@ -313,7 +312,6 @@ const slice = createSlice({
       },
     )
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
-      console.log('columnList--', action.payload)
       state.columnList = action.payload ?? []
       state.columnListBackup = action.payload ?? []
     })

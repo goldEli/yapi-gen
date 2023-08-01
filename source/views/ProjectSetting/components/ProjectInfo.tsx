@@ -124,7 +124,7 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-  console.log('projectInfo', projectInfo)
+
   return (
     <Wrap>
       <InfoLeft>

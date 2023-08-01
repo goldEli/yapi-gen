@@ -338,9 +338,6 @@ const HeaderRight = () => {
   }
 
   const handleTooltipVisibleChange = (visible: any) => {
-    console.log(visible, 'visible')
-    console.log(childStateRef.current, 'visible2')
-
     if (childStateRef.current.first) {
       return
     }

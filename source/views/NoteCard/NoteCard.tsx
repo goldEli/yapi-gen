@@ -109,8 +109,6 @@ const ReadCard = (props: any) => {
             {value?.list
               ?.filter((i: any) => i.read === 0)
               .map((el: any) => {
-                console.log(el)
-
                 return (
                   <div
                     style={{
@@ -166,8 +164,6 @@ const ReadCard = (props: any) => {
             {value?.list
               ?.filter((i: any) => i.read === 1)
               .map((el: any) => {
-                console.log(el)
-
                 return (
                   <div
                     style={{
@@ -191,8 +187,6 @@ const ReadCard = (props: any) => {
 }
 
 const NoteCard = (props: any) => {
-  console.log(props, 'dddd')
-
   const [popoverVisible, setPopoverVisible] = useState(false)
 
   const [t] = useTranslation()

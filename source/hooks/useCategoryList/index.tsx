@@ -38,7 +38,6 @@ type affairProps = {
 //         obj[key] = [item]
 //       }
 //     }
-//     // console.log('obj----', obj)
 //     const resArr: Model.Project.CategoryList[] = []
 //     Object.keys(obj).forEach(key => {
 //       resArr.push({
@@ -48,7 +47,6 @@ type affairProps = {
 //         workType: key,
 //       })
 //     })
-//     // console.log('resArr-----', resArr)
 //     return resArr
 //   }
 //   return { getTypeCategory }

@@ -169,7 +169,7 @@ const List = () => {
         setTotal(res.pager.total)
       }
     } catch (error) {
-      // console.log('error', error)
+      //
     }
   }
 

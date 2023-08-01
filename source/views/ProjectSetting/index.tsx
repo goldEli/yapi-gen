@@ -104,7 +104,6 @@ const Setting = () => {
   ]
   useEffect(() => {
     setSearchValue('')
-    // console.log('activeTabs----', activeTabs, currentMenu?.children)
   }, [activeTabs])
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))

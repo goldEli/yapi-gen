@@ -442,12 +442,17 @@ export const useDynamicColumns = (state: any) => {
             onUpdate={() => onUpdate(record)}
             isBug={state.type === 2}
           >
-            <MultipleAvatar
-              max={3}
-              list={text.split(';')?.map((i: any) => ({
-                name: i,
-              }))}
-            />
+            {record?.copy_send_users?.length > 0 && (
+              <MultipleAvatar
+                max={3}
+                list={record?.copy_send_users?.map((i: any) => ({
+                  id: i.id,
+                  name: i.name,
+                  avatar: i.avatar,
+                }))}
+              />
+            )}
+            {!record?.copy_send_users?.length && '--'}
           </TableQuickEdit>
         )
       },

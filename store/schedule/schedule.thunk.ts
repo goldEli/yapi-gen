@@ -117,7 +117,6 @@ export const refreshCalendarPanelScheduleList =
 // export const getScheduleListDaysOf = createAsyncThunk(
 //   `${name}/getScheduleList`,
 //   async (params: API.Schedule.GetScheduleList.Params) => {
-//     // console.log('getScheduleList', params)
 //     const res = await services.schedule.getScheduleList(params)
 //     return res.data
 //   },
@@ -125,7 +124,6 @@ export const refreshCalendarPanelScheduleList =
 // export const getScheduleList = createAsyncThunk(
 //   `${name}/getScheduleList`,
 //   async (params: API.Schedule.GetScheduleList.Params) => {
-//     // console.log('getScheduleList', params)
 //     const res = await services.schedule.getScheduleList(params)
 //     return res.data
 //   },

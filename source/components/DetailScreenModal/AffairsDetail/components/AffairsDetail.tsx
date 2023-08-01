@@ -165,7 +165,6 @@ const AffairsDetail = (props: AffairsDetailProps) => {
               }, 10)
             }}
             onChange={(value: string) => {
-              console.log(value)
               // setEditInfo(value)
               editorRef2.current = value
             }}

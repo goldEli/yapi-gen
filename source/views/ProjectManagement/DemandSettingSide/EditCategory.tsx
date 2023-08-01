@@ -137,7 +137,7 @@ const EditorCategory = (props: EditorProps) => {
             }
           },
         )
-        console.log('res', res, projectInfoValues)
+
         dispatch(setProjectInfoValues(projectInfoValuesData))
         getMessage({ msg: t('common.createSuccess'), type: 'success' })
         dispatch(setActiveCategory(res.data[0]))

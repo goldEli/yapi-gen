@@ -387,8 +387,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     }
   }, [searchValue, isVisible])
 
-  console.log(options, '=121212')
-
   return (
     <InfoItem id="sprint-linkSprint" className="info_item_tab">
       <DeleteConfirmModal />

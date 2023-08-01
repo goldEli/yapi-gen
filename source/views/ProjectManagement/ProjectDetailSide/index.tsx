@@ -407,7 +407,7 @@ const ProjectDetailSide = () => {
 
     //   // 配置工作流或者是没有type的，跳转需求/迭代侧边栏
     //   if (!paramsData?.type && paramsData.pageIdx !== 'work') {
-    //     debugger
+
     //     projectSide.current.style.width = '0px'
     //     projectSetCategory.current.style.width = '0px'
     //     projectSetSide.current.style.width = '100%'

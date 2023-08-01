@@ -136,7 +136,6 @@ const LongStoryDropdown = (props: IProps) => {
     }
   }
   useEffect(() => {
-    console.log('detail', detail)
     const hasLongStroy =
       detail.level_tree?.length === 0 ||
       (detail.level_tree?.length &&
@@ -161,7 +160,6 @@ const LongStoryDropdown = (props: IProps) => {
           leftIcon
           placeholder={t('other.pleaseLongStoryOrNumber')}
           onChangeSearch={e => {
-            // console.log(e)
             setParams((p: API.Sprint.getLongStoryList.Params) => {
               let { search } = { ...p }
               search = { ...search, keyword: e }

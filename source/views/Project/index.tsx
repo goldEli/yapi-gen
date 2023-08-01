@@ -88,8 +88,6 @@ const ProjectManagementOptimization = () => {
     groupIdName,
   } = useSelector(state => state.createProject)
 
-  console.log('isGrid', storeGid, typeId)
-
   const inform = [
     {
       key: 0,
@@ -281,7 +279,6 @@ const ProjectManagementOptimization = () => {
     })
   }
   const onChangeProjectType = (data: any) => {
-    // console.log(data, '数据')
     setProjectTypes(data)
   }
   // 切换分组查询列表
@@ -306,7 +303,6 @@ const ProjectManagementOptimization = () => {
   const onExit = () => {
     setStepsEnabled(false)
   }
-  console.log(operationDetail, 'operationDetail')
 
   return (
     <PermissionWrap

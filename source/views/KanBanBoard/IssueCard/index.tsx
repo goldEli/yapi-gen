@@ -71,7 +71,7 @@ const IssueCard = (props: IssueCardProps) => {
         <StoryText
           onClick={e => {
             e.stopPropagation()
-            // debugger
+
             let type = 0
             if (props.item.project_type === 2) {
               type = 1

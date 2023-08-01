@@ -29,7 +29,6 @@ const Board = () => {
   const { kanbanConfig, fullScreen } = useSelector(store => store.kanBan)
   const { spinning } = useSelector(state => state.kanBan)
   const { sortByRowAndStatusOptions } = useSelector(state => state.kanBan)
-  // debugger
   const { ControlScrollPlane, containerRef } = useControlScrollPlane(
     kanbanConfig?.columns?.length ?? 0,
   )
@@ -47,7 +46,6 @@ const Board = () => {
     dispatch(getKanbanByGroup())
     dispatch(getKanbanConfig(params))
   }, [isUpdateAddWorkItem])
-  console.log(data, 'data')
 
   return (
     <Spin indicator={<NewLoadingTransition />} spinning={spinning}>

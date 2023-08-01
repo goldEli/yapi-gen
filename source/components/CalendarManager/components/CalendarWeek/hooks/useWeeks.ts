@@ -26,13 +26,6 @@ const useWeeks = () => {
       const lessThanLeft = Math.floor(maxWidth * index) <= l
       const biggerThanLeft = Math.floor(maxWidth * (index + 1)) > l
       if (lessThanLeft && biggerThanLeft) {
-        // // console.log(
-        //   '123',
-        //   index,
-        //   Math.floor(maxWidth * index),
-        //   l,
-        //   Math.floor(maxWidth * (index + 1)),
-        // )
         return dayjs(selectedWeek[index].date).format('YYYY-MM-DD')
       }
       ++index
@@ -43,7 +36,6 @@ const useWeeks = () => {
     const index = selectedWeek.findIndex(item =>
       dayjs(item.date).isSame(dayjs(time), 'day'),
     )
-    // // console.log(dayjs(time).format(formatYYYYMMDDhhmmss), index)
     return index * maxWidth
   }
 

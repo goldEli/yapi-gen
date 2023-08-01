@@ -424,12 +424,10 @@ const WrapLeft = (props: any, ref: any) => {
     const isDropToGap = info.dropToGap
 
     if (start.pid === 0 || end.id === -1) {
-      // // console.log(1);
+      // //
       // return
     }
     if (end.grade === 4 && !isDropToGap) {
-      // // console.log(2);
-
       return
     }
 

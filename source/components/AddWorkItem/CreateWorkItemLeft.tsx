@@ -116,7 +116,7 @@ const CreateDemandLeft = (props: Props) => {
   const [categoryObj, setCategoryObj] = useState<any>({})
   const { filterParamsModal, projectInfoValues, addWorkItemModal } =
     useSelector(store => store.project)
-  // debugger
+
   const { params } = addWorkItemModal
   const { createCategory } = useSelector(store => store.project)
   const [resultCategoryData, setResultCategoryData] = useState([])
@@ -444,7 +444,6 @@ const CreateDemandLeft = (props: Props) => {
   }, [categoryObj])
 
   useEffect(() => {
-    // debugger
     if (props.projectId && props.allCategoryList?.length > 0) {
       const resultCategoryList = computedCategory()
       setResultCategoryData(resultCategoryList)
@@ -486,8 +485,9 @@ const CreateDemandLeft = (props: Props) => {
         }
         // 如果是创建子事务的话
         if (params?.isCreateAffairsChild) {
-          resultCategory =
-            resultCategoryList?.length === 1 ? resultCategoryList[0] : undefined
+          resultCategory = resultCategoryList?.length
+            ? resultCategoryList[0]
+            : undefined
         }
         // 如果是快速创建并且有缓存数据
         if (params?.isQuickCreate && hisCategoryData?.categoryId) {

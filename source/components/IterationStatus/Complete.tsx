@@ -116,7 +116,7 @@ const Complete = (props: Props) => {
         setData(temp)
       }
     } catch (error) {
-      // console.log(error)
+      //
     }
   }
 
@@ -133,7 +133,7 @@ const Complete = (props: Props) => {
         )
       }
     } catch (error) {
-      // console.log(error)
+      //
     }
   }
 
@@ -194,7 +194,7 @@ const Complete = (props: Props) => {
         })
       }
     } catch (error) {
-      // console.log(error)
+      //
     }
   }
   return (
