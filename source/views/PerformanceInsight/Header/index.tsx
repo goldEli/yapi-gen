@@ -119,7 +119,6 @@ const Iteration = (props: Props) => {
   }, [props.homeType])
   // 这两个是监听传过来的数组id，一开始展示10条，包含的id没在里面的情况
   useEffect(() => {
-    console.log(props.defalutConfig, 'props.defalutConfig')
     // 展示的tabs不同
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)

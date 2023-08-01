@@ -206,14 +206,6 @@ const Home = () => {
   const init = () => {
     // 缺陷现状和工作项现状
     getWorkList()
-    // 新增工作top10对比
-    getContrastNewWork('desc')
-    // 完成率top10对比
-    getCompletionRateChart('desc')
-    // 阶段缺陷占比
-    getDefectRatioChart('severity')
-    // 集合图表
-    getStatisticsOther()
   }
   useEffect(() => {
     isRefresh && init()
@@ -411,6 +403,14 @@ const Home = () => {
           ? ''
           : 'one_month',
     })
+    // 新增工作top10对比
+    getContrastNewWork('desc')
+    // 完成率top10对比
+    getCompletionRateChart('desc')
+    // 阶段缺陷占比
+    getDefectRatioChart('severity')
+    // 集合图表
+    getStatisticsOther()
     setWorkDataList(res)
     setLoading(false)
   }
