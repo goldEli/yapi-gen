@@ -467,6 +467,12 @@ const urls = {
   copyView: '/b/story/views/copy',
   // 获取人员信息
   getUserIntroList: '/b/user/intro',
+  // 日报配置
+  dailyConfigInfo: '/b/project/daily_config/info',
+  // 生成配置
+  dailyConfigSetCreateConfig: '/b/project/daily_config/set_create_config',
+  // 自动发送配置
+  dailyConfigSetAutoSendConfig: '/b/project/daily_config/set_auto_send_config',
 }
 export default urls
 

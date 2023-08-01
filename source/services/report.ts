@@ -88,6 +88,20 @@ export const delReportComment: any = async (params: any) => {
   const response = await http.delete('delReportComment', params)
   return response.data
 }
+// 日报配置
+const getDailyConfigInfo = async (params: { project_id: number }) => {
+  const response = await http.post('dailyConfigInfo', params)
+  return response.data
+}
+// 生成配置
+const setDailyConfigSetCreateConfig = async (params: {
+  project_id: number
+}) => {
+  const response = await http.post('dailyConfigSetCreateConfig', params)
+  return response.data
+}
+// 自动发送配置
+const dailyConfigSetAutoSendConfig = () => {}
 
 // 日报助手：工作日报—获取项目列表
 export const getProjectList: any = async () => {

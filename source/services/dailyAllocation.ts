@@ -10,7 +10,7 @@ export const getAily_config: any = async (params: any) => {
   const response: any = await http.get<any>('/b/project/daily_config/info', {
     project_id: params,
   })
-
+  console.log(params, 'params')
   return response.data
 }
 //日报生成规则未配置通知
