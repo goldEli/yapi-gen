@@ -48,10 +48,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const [searchValue, setSearchValue] = useState('')
   const { projectInfo } = useSelector(store => store.project)
   const [pageParams, setPageParams] = useState({ page: 1, pagesize: 20 })
-  // 下拉数据
-  const [selectList, setSelectList] = useState<SelectItem[]>([])
-  // 最近事务数据
-  const [recentList, setRecentList] = useState<SelectItem[]>([])
   const [allDataSource, setAllDataSource] = useState<any>({
     list: undefined,
   })
@@ -286,8 +282,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const onClose = () => {
     setSearchValue('')
     setIsVisible(false)
-    setSelectList([])
-    setRecentList([])
     form.resetFields()
   }
 
@@ -346,6 +340,9 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
       getSelectRelationRecent()
     }
   }, [searchValue, isVisible])
+
+  console.log(options, '=121212')
+
   return (
     <InfoItem id="sprint-linkSprint" className="info_item_tab">
       <DeleteConfirmModal />
@@ -367,7 +364,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
               getPopupContainer={(node: any) => node}
               options={typeList}
               showArrow
-              optionFilterProp="label"
               allowClear
             />
           </Form.Item>
@@ -388,7 +384,7 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             >
               {options?.map((i: any) => {
                 return (
-                  <Select.Option value={i.id} key={i.id} label={i.label}>
+                  <Select.Option value={i.id} key={i.id} label={i.labelName}>
                     <MoreOptions
                       type="project"
                       labelName={i.labelName}
