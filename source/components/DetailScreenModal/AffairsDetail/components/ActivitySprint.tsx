@@ -22,7 +22,7 @@ const ActivitySprint = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id } = paramsData ?? {}
-  const { affairsCommentList, affairsInfo } = useSelector(
+  const { affairsCommentList, affairsInfo, affairsActivity } = useSelector(
     store => store.affairs,
   )
 
@@ -110,11 +110,15 @@ const ActivitySprint = () => {
     }
   }
 
+  useEffect(() => {
+    setActiveKey(affairsActivity)
+  }, [affairsActivity])
+
   return (
     <InfoItem id="sprint-activity" className="info_item_tab">
       <Label>{t('activity')}</Label>
       <Tabs
-        defaultActiveKey={activeKey}
+        activeKey={activeKey}
         items={items}
         onChange={onChange}
         tabBarExtraContent={

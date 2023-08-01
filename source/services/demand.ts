@@ -598,6 +598,7 @@ export const getDemandInfo: any = async (params: any) => {
             id: k.user_id,
           })),
           fields: response.data.verify_data.fields,
+          id: response.data.verify_data.id,
         }
       : null,
     comment_total: response.data.comment_total,
