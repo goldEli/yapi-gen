@@ -102,6 +102,7 @@ const Main = (props: any) => {
   // 必填
   function onChangeChecked(state: any, val: boolean, child: any) {
     const checked = val ? 1 : 2
+    // debugger
     if (state === 1) {
       setGetCategoryConfigF(
         getCategoryConfigF?.map((el: any) => ({
@@ -125,7 +126,7 @@ const Main = (props: any) => {
   // 插入
   const onInsert = async (item: any) => {
     const newItem = {
-      id: 0,
+      id: Math.floor(Math.random() * 1000),
       title: item.title,
       remarks: item.remarks,
       fieldContent: item.field_content,
@@ -184,7 +185,7 @@ const Main = (props: any) => {
       content: item.content,
       attr: item.attr,
       fieldContent: item?.field_content || item?.fieldContent,
-      id: item.dragtype === 'move' ? item.id : 0,
+      id: item.dragtype === 'move' ? item.id : Math.floor(Math.random() * 1000),
       storyId: item.storyId,
       isCustomize: item?.is_customize || item?.isCustomize,
       is_required: item.dragtype !== 'move' ? 2 : item?.isRequired,

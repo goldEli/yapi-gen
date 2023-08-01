@@ -138,8 +138,15 @@ const Header = () => {
     setIsVisible(true)
   }
   // 删除逻辑
-  const onDelete = () => {
-    if (activeCategory?.hasDemand) {
+  const onDelete = async () => {
+    const res = await dispatch(
+      storyConfigCategoryList({ projectId: projectInfo.id }),
+    )
+    const data = res.payload.list
+    const currentItem = data.find(
+      (item: { id: any }) => item.id === activeCategory.id,
+    )
+    if (currentItem?.hasDemand) {
       setHasDeleteVisible(true)
     } else {
       setIsDelete(true)

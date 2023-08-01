@@ -97,7 +97,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const { editColumnModelInfo } = useSelector(store => store.KanbanConfig)
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const onClose = () => {}
-
+  const [popoverVisible, setPopoverVisible] = useState(false)
   const createList2 = [
     {
       name: '编辑列',
@@ -147,6 +147,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
             key={i.key}
             height={40}
             onClick={(e: any) => {
+              setPopoverVisible(false)
               e.stopPropagation()
               onCreate(i.key)
             }}
@@ -183,18 +184,12 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
               </Left>
               <Popover
                 content={content(createList2)}
-                // open={isCreateVisible2}
-                // onOpenChange={(open: boolean) => {
-                //   console.log(open)
-                //   if (!open) {
-                //     setIsCreateVisible2(false)
-                //     return
-                //   }
-                //   setIsCreateVisible2(true)
-                //   dispatch(closeEditColumnModel())
-                // }}
                 getPopupContainer={node => node}
                 placement="bottomRight"
+                open={popoverVisible}
+                onOpenChange={open => {
+                  setPopoverVisible(open)
+                }}
               >
                 <IconWrap type="more" style={{ color: 'var(--neutral-n2)' }} />
               </Popover>
