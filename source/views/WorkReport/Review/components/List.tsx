@@ -83,7 +83,7 @@ const ClearButton = styled.div`
 `
 const RobotButton = styled.img`
   position: fixed;
-  z-index: 999999;
+  z-index: 999;
   bottom: 200px;
   right: 40px;
   cursor: pointer;
@@ -284,7 +284,11 @@ const List = () => {
                 }}
                 className="controlMaxWidth"
               >
-                {record.is_auto === 1 ? '（自动）' : '（手动）'}
+                {record.type === 2
+                  ? record.is_auto === 1
+                    ? t('report.list.auto')
+                    : t('report.list.manual')
+                  : null}
                 {String(record.user.name)}
                 {t('report.list.of')}
                 {record.name}
@@ -737,7 +741,7 @@ const List = () => {
         }}
       >
         <RobotButton
-          width={language === 'zh' ? 128 : 145}
+          height={108}
           src={language === 'zh' ? '/RobotButton.png' : '/RobotButtonEn.png'}
         />
       </Draggable>

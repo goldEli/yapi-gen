@@ -1457,12 +1457,14 @@
       "message2": "请完善日报内容",
       "message3": "请先选择项目",
       "tips1": "项目管理员已配置自动生成并发送规则",
-      "generate": "生成中...",
+      "generate": "生成中",
       "generateReport": "生成日报",
       "addedYesterday": "昨日新增",
       "taskProgress": "任务完成度",
       "reportProject": "汇报项目",
-      "pieces": "个"
+      "pieces": "个",
+      "auto": "（自动）",
+      "manual": "（手动）"
     },
     "statistics": {
       "title": "汇报我的统计",

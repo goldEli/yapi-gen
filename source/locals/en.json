@@ -1473,12 +1473,14 @@
       "message2": "Please improve the daily paper",
       "message3": "Please select the project first",
       "tips1": "The project administrator has configured automatically generating and sending rules",
-      "generate": "Generating...",
+      "generate": "Generating",
       "generateReport": "Generate",
       "addedYesterday": "Added yesterday",
       "taskProgress": "Task completion degree",
       "reportProject": "Report Project",
-      "pieces": " pieces"
+      "pieces": " pieces",
+      "auto": "（Auto）",
+      "manual": "（Manual）"
     },
     "statistics": {
       "title": "Reporting Statistics",

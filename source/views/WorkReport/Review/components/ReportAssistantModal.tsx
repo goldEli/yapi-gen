@@ -1,6 +1,7 @@
 import CommonModal from '@/components/CommonModal'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import styled from '@emotion/styled'
+import { keyframes } from '@emotion/react'
 import { Form, Spin } from 'antd'
 import React, { useEffect, useState, useRef } from 'react'
 import { getMessage } from '@/components/Message'
@@ -22,6 +23,7 @@ import {
 } from '@/services/report'
 import { useDispatch } from '@store/index'
 import { setUpdateList } from '@store/workReport'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const HandleSpin = styled(Spin)`
   img {
@@ -78,7 +80,6 @@ const ContentWrap = styled.div`
     .project {
       display: flex;
       align-items: center;
-      margin-top: 8px;
     }
     .rateText {
       font-size: 14px;
@@ -105,7 +106,7 @@ const LabelTitle = styled.span`
   line-height: 22px;
 `
 const AgainButton = styled.span`
-  width: 72px;
+  width: 80px;
   height: 32px;
   text-align: center;
   font-size: 14px;
@@ -114,7 +115,7 @@ const AgainButton = styled.span`
   color: var(--primary-d1);
   line-height: 32px;
   white-space: nowrap;
-  margin-left: 8px;
+  margin-left: 16px;
   cursor: pointer;
   &:hover {
     background: var(--hover-d2);
@@ -123,8 +124,28 @@ const AgainButton = styled.span`
     background: var(--auxiliary-b6);
   }
 `
+
+// 创建一个动画
+const fadeInAnimation = keyframes`
+  0% {
+    width:0px;
+  }
+  50%{
+    width:5px;
+  }
+  100%{
+    width:16px;
+  }
+`
+
+const Ellipsis = styled.span`
+  display: inline-block;
+  overflow: hidden;
+  animation: ${fadeInAnimation} 1s infinite;
+`
+
 const LoadingButton = styled.span`
-  width: 72px;
+  width: 80px;
   height: 32px;
   text-align: center;
   font-size: 14px;
@@ -132,7 +153,7 @@ const LoadingButton = styled.span`
   font-family: SiYuanRegular;
   color: var(--primary-d1);
   white-space: nowrap;
-  margin-left: 8px;
+  margin-left: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -154,7 +175,9 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const [demandList, setDemandList] = useState<any>([])
   const [modalInfo, setModalInfo] = useState<any>(null)
   const [loading, setLoading] = useState<any>(false)
+  const [uploadAttachList, setUploadAttachList] = useState<any>({})
   const dispatch = useDispatch()
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const { close, visible } = props
 
   const onClose = () => {
@@ -164,34 +187,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   }
 
   // 发送日报
-  const confirm = async () => {
-    const params = form.getFieldsValue()
-    if (Object.keys(params)?.length === 0) {
-      getMessage({
-        type: 'warning',
-        msg: t('report.list.message1'),
-      })
-      return
-    }
-    let canSubmit = false
-    Object.keys(params)?.forEach((k: string) => {
-      const tempArr = k.split('_')
-      if (tempArr[0] === '4' && params[k]?.length) {
-        canSubmit = true
-      }
-      if (tempArr[0] === '1' && params[k]?.length <= 0) {
-        canSubmit = false
-      }
-    })
-
-    if (!canSubmit) {
-      getMessage({
-        type: 'warning',
-        msg: t('report.list.message2'),
-      })
-      return
-    }
-
+  const sendReport = async (params: any) => {
     let users: any[] = []
     const data: any[] = []
     Object.keys(params).forEach((key: string) => {
@@ -248,6 +244,43 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     }
   }
 
+  // 提交
+  const confirm = async () => {
+    const params = form.getFieldsValue()
+    if (Object.keys(params)?.length === 0) {
+      getMessage({
+        type: 'warning',
+        msg: t('report.list.message1'),
+      })
+      return
+    }
+    let canSubmit = false
+    Object.keys(params)?.forEach((k: string) => {
+      const tempArr = k.split('_')
+      if (tempArr[0] === '4' && params[k]?.length) {
+        canSubmit = true
+      }
+      if (tempArr[0] === '1' && params[k]?.length <= 0) {
+        canSubmit = false
+      }
+    })
+
+    if (!canSubmit) {
+      getMessage({
+        type: 'warning',
+        msg: t('report.list.message2'),
+      })
+      return
+    }
+    open({
+      title: '提示',
+      okText: '发送',
+      cancelText: '再想想',
+      children: <div>312321321321321312</div>,
+      onConfirm: () => sendReport(params),
+    })
+  }
+
   // 获取项目列表
   const getProjectDataList = async () => {
     const result = await getProjectList()
@@ -260,7 +293,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const getDemandDataList = async (id: number) => {
     const result = await getStoryListOfDaily(id)
     demandListAll.current = result?.data ?? []
-    setDemandList(result?.data ?? [])
   }
 
   // 获取头部初始数据
@@ -326,6 +358,24 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     const result = await getDailyInfo(currentProject?.id)
     setLoading(false)
     setModalInfo(result)
+    // 先过滤掉已经默认选择的需求
+    let tempArr: any = []
+    const attach: any = {}
+    result?.configs?.forEach((item: any) => {
+      if (item.type === 4) {
+        tempArr = tempArr.concat(item.content ?? [])
+      }
+      if (item.type === 2) {
+        attach[`${item.type}_${item.id}`] = item?.content ?? []
+      }
+    })
+    setUploadAttachList({
+      ...attach,
+    })
+    tempArr = tempArr.map((i: any) => i.id)
+    setDemandList(
+      demandListAll.current?.filter((k: any) => !tempArr.includes(k.id)) ?? [],
+    )
   }
 
   // 选择附件逻辑处理
@@ -350,7 +400,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     let tempArr: any = []
     modalInfo?.configs?.forEach((item: any) => {
       if (item.type === 4) {
-        tempArr = tempArr.concat(item.content)
+        tempArr = tempArr.concat(item.content ?? [])
       }
     })
     return {
@@ -411,7 +461,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           >
             <UploadAttach
               power
-              defaultList={content?.content ?? []}
+              defaultList={uploadAttachList[`${content.type}_${content.id}`]}
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res, `${content.type}_${content.id}`)
               }}
@@ -555,8 +605,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                     />
                     {loading ? (
                       <LoadingButton>
-                        <img width={16} src="/shareLoading.gif" />
                         <span>{t('report.list.generate')}</span>
+                        <Ellipsis>......</Ellipsis>
                       </LoadingButton>
                     ) : (
                       <AgainButton onClick={generatorDataByProject}>
@@ -587,6 +637,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           setHavePermission(false)
         }}
       />
+      <DeleteConfirmModal />
     </>
   )
 }
