@@ -162,10 +162,13 @@ const SiteDrawer = () => {
   }
 
   const setReads = async (values: any) => {
-    setList([])
     const res = await setReadApi(values)
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    setHasMore(true)
+    setList([])
+    lastId.current = 1
 
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    fetchMoreData(1)
     if (res.code === 0) {
       const res2 = await getContactStatistics()
       let num = 0
@@ -175,10 +178,6 @@ const SiteDrawer = () => {
       })
 
       dispatch(changeNumber(num))
-      setHasMore(true)
-      setList([])
-      lastId.current = 1
-      fetchMoreData(1)
     }
   }
   const setAllRead = () => {

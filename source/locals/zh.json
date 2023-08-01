@@ -345,6 +345,7 @@
   "personal_data": "个人资料",
   "editor_member": "编辑成员",
   "removal_confirmation": "移除确认",
+  "removal_person_confirmation": "移除后该员工无法参与此项目事务",
   "are_you_sure_to_remove_this_member": "确认移除该成员?",
   "confirmation_prompt": "确认提示",
   "are_you_sure_you_want_to_log_out": "确定要退出登录吗？",
