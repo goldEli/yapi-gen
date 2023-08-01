@@ -41,15 +41,17 @@ const NoPermissionModal = (props: NoPermissionProps) => {
   return (
     <CommonModal
       width={640}
-      title="日报助手"
+      title={t('report.list.reportAssistant')}
       isVisible={visible}
       onClose={close}
       onConfirm={confirm}
-      confirmText="开通该功能"
+      confirmText={t('report.list.openFunc')}
     >
       <NoPermissionWrap>
         <img width={466} src={imgSrc} />
-        <NoPermissionText>请联系管理员开通该功能</NoPermissionText>
+        <NoPermissionText>
+          {t('report.list.contactAdministrator')}
+        </NoPermissionText>
       </NoPermissionWrap>
     </CommonModal>
   )

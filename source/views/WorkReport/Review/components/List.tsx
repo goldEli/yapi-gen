@@ -32,7 +32,6 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { css } from '@emotion/css'
 import { templateList } from '@/services/formwork'
-import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import ReportAssistantModal from './ReportAssistantModal'
 
 const listContainer = css`

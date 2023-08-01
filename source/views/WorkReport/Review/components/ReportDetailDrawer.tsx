@@ -379,7 +379,7 @@ const ReportDetailDrawer = () => {
             />
           </BackIcon>
         </Space>
-        <Space size={16}>
+        {/* <Space size={16}>
           <ChangeIconGroup>
             {currentIndex > 0 && (
               <UpWrap
@@ -414,7 +414,7 @@ const ReportDetailDrawer = () => {
               </DownWrap>
             )}
           </ChangeIconGroup>
-        </Space>
+        </Space> */}
       </Header>
       <Content isReview={isReview} ref={reviewRef}>
         {skeletonLoading && <ReportDetailSkeleton />}

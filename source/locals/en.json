@@ -1464,7 +1464,21 @@
       "add": "Please add",
       "reportDeleted": "The template has been deleted. Procedure",
       "noPermissions": "You do not have permission to use this template",
-      "notifiedToAdministrator": "The administrator has been notified to enable the function"
+      "notifiedToAdministrator": "The administrator has been notified to enable the function",
+      "reportAssistant": "Daily assistant",
+      "sendOk": "Send successfully",
+      "openFunc": "Enable the function",
+      "contactAdministrator": "Contact the administrator to enable the function",
+      "message1": "Please click “Generate Daily Newspaper” and send",
+      "message2": "Please improve the daily paper",
+      "message3": "Please select the project first",
+      "tips1": "The project administrator has configured automatically generating and sending rules",
+      "generate": "Generating...",
+      "generateReport": "Generate",
+      "addedYesterday": "Added yesterday",
+      "taskProgress": "Task completion degree",
+      "reportProject": "Report Project",
+      "pieces": " pieces"
     },
     "statistics": {
       "title": "Reporting Statistics",
