@@ -180,6 +180,10 @@ const SiteDrawer = () => {
       dispatch(changeNumber(num))
     }
   }
+  const setReads2 = async (values: any) => {
+    const res = await setReadApi(values)
+  }
+
   const setAllRead = () => {
     setReads(undefined)
   }
@@ -317,7 +321,7 @@ const SiteDrawer = () => {
           }
         >
           {list.map((i: any) => (
-            <ContentItem setReads={setReads} item={i} key={i.id} />
+            <ContentItem setReads={setReads2} item={i} key={i.id} />
           ))}
         </InfiniteScroll>
 
