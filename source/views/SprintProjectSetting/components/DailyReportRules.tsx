@@ -19,6 +19,7 @@ import {
   set_auto_send_config,
   set_create_config,
 } from '@/services/dailyAllocation'
+import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import { useSelector } from '@store/index'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
@@ -168,6 +169,7 @@ const DailyReportRules = () => {
   const [form1] = Form.useForm()
   const [form2] = Form.useForm()
   const [t] = useTranslation()
+  const { projectInfo } = useSelector(store => store.project)
   const projectId = useSelector(store => store.project.projectInfo.id)
   const [sendDisabled, setSendDisabled] = useState(true)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -394,176 +396,183 @@ const DailyReportRules = () => {
 
   return (
     <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
-      <ReportWrap>
-        <HeaderWrap onClick={() => setOpen1(!open1)}>
-          <span>{t('rb')}</span>
-          <IconFont
-            type={open1 ? 'up' : 'down'}
-            style={{
-              color: ' var(--auxiliary-text-t2-d1)',
-              fontSize: '8',
-              cursor: 'pointer',
-            }}
-          />
-        </HeaderWrap>
-        {open1 ? (
-          <DailyReportRulesWrap
-            layout="vertical"
-            form={form1}
-            onValuesChange={onValuesChange}
-          >
-            <Form.Item
-              label={t('qm')}
-              name="group_name"
-              required
-              rules={[{ required: true, message: t('q') }]}
-            >
-              <InputStyle placeholder={t('q')} maxLength={100} allowClear />
-            </Form.Item>
-            <Form.Item
-              label={t('dd')}
-              name="webhook"
-              required
-              rules={[
-                {
-                  required: true,
-                  message: t('q'),
-                  // eslint-disable-next-line
-                  pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
-                },
-              ]}
-            >
-              <InputStyle placeholder={t('q')} allowClear />
-            </Form.Item>
-            <Form.Item
-              label={t('sc')}
-              name="is_auto_generate"
-              valuePropName="checked"
-              className="check-form"
-              getValueFromEvent={getValueFromEvent2}
-              getValueProps={getValueProps}
-            >
-              <Switch />
-            </Form.Item>
-            <Text1>{t('msg1')}</Text1>
-            <Text1> {t('msg2')}</Text1>
-            <Text1> {t('msg3')} </Text1>
-            <Text1>{t('msg4')}</Text1>
-            <Text2>
-              <span>{t('msg5')}</span>
-              <Popover
-                placement="rightTop"
-                title=""
-                content={content}
-                trigger="click"
-              >
-                <span>{t('msg6')}</span>
-              </Popover>
-            </Text2>
-            <Text1>{t('msg7')}</Text1>
-            <Text1>{t('msg8')}</Text1>
-            <Text1>{t('msg9')}</Text1>
-            <Text1>{t('msg10')}</Text1>
-            <FooterWrap>
-              <CommonButton
-                type="light"
-                style={{ marginRight: '16px' }}
-                onClick={() => cancel(1)}
-              >
-                {t('common.cancel')}
-              </CommonButton>
-              <CommonButton type="primary" onClick={() => save(1)}>
-                {t('formWork.save2')}
-              </CommonButton>
-            </FooterWrap>
-          </DailyReportRulesWrap>
-        ) : null}
-      </ReportWrap>
-
-      <ReportWrap style={{ marginBottom: 48 }}>
-        <HeaderWrap onClick={() => setOpen2(!open2)}>
-          <span>{t('msg11')}</span>
-          <IconFont
-            type={open2 ? 'up' : 'down'}
-            style={{
-              color: ' var(--auxiliary-text-t2-d1)',
-              fontSize: '8',
-              cursor: 'pointer',
-            }}
-          />
-        </HeaderWrap>
-
-        {open2 ? (
-          <DailyReportRulesWrap
-            layout="vertical"
-            form={form2}
-            onValuesChange={onValuesChange}
-          >
-            <Form.Item
-              label={t('msg11')}
-              name="is_auto_send"
-              className="check-form"
-              valuePropName="checked"
-              getValueFromEvent={getValueFromEvent2}
-              getValueProps={getValueProps}
-            >
-              <Switch />
-            </Form.Item>
-            <Form.Item
-              label={t('msg12')}
-              name="is_holiday"
-              className="checkBox-form"
-              valuePropName="checked"
-              getValueFromEvent={getValueFromEvent}
-              getValueProps={getValueProps}
-            >
-              <Checkbox disabled={sendDisabled}>{t('msg13')}</Checkbox>
-            </Form.Item>
-            <Form.Item
-              name="day"
+      <PermissionWrap
+        auth="b/project/daily_config"
+        permission={projectInfo?.projectPermissions?.map(
+          (i: any) => i.identity,
+        )}
+      >
+        <ReportWrap>
+          <HeaderWrap onClick={() => setOpen1(!open1)}>
+            <span>{t('rb')}</span>
+            <IconFont
+              type={open1 ? 'up' : 'down'}
               style={{
-                marginBottom: '32px',
+                color: ' var(--auxiliary-text-t2-d1)',
+                fontSize: '8',
+                cursor: 'pointer',
               }}
+            />
+          </HeaderWrap>
+          {open1 ? (
+            <DailyReportRulesWrap
+              layout="vertical"
+              form={form1}
+              onValuesChange={onValuesChange}
             >
-              <Checkbox.Group
-                options={plainOptions()}
-                disabled={sendDisabled}
-              />
-            </Form.Item>
-            <Form.Item label={t('msg14')} name="reminder_time">
-              <TimePicker
-                style={{ width: 320 }}
-                format="HH:mm"
-                disabled={sendDisabled}
-              />
-            </Form.Item>
-            <Form.Item
-              label={t('msg15')}
-              name="is_hand_send"
-              className="checkBox-form"
-              valuePropName="checked"
-              getValueFromEvent={getValueFromEvent}
-              getValueProps={getValueProps}
-            >
-              <Checkbox disabled={sendDisabled}>{t('msg16')}</Checkbox>
-            </Form.Item>
-            <FooterWrap>
-              <CommonButton
-                type="light"
-                style={{ marginRight: '16px' }}
-                onClick={() => cancel(2)}
+              <Form.Item
+                label={t('qm')}
+                name="group_name"
+                required
+                rules={[{ required: true, message: t('q') }]}
               >
-                {t('common.cancel')}
-              </CommonButton>
+                <InputStyle placeholder={t('q')} maxLength={100} allowClear />
+              </Form.Item>
+              <Form.Item
+                label={t('dd')}
+                name="webhook"
+                required
+                rules={[
+                  {
+                    required: true,
+                    message: t('q'),
+                    // eslint-disable-next-line
+                    pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
+                  },
+                ]}
+              >
+                <InputStyle placeholder={t('q')} allowClear />
+              </Form.Item>
+              <Form.Item
+                label={t('sc')}
+                name="is_auto_generate"
+                valuePropName="checked"
+                className="check-form"
+                getValueFromEvent={getValueFromEvent2}
+                getValueProps={getValueProps}
+              >
+                <Switch />
+              </Form.Item>
+              <Text1>{t('msg1')}</Text1>
+              <Text1> {t('msg2')}</Text1>
+              <Text1> {t('msg3')} </Text1>
+              <Text1>{t('msg4')}</Text1>
+              <Text2>
+                <span>{t('msg5')}</span>
+                <Popover
+                  placement="rightTop"
+                  title=""
+                  content={content}
+                  trigger="click"
+                >
+                  <span>{t('msg6')}</span>
+                </Popover>
+              </Text2>
+              <Text1>{t('msg7')}</Text1>
+              <Text1>{t('msg8')}</Text1>
+              <Text1>{t('msg9')}</Text1>
+              <Text1>{t('msg10')}</Text1>
+              <FooterWrap>
+                <CommonButton
+                  type="light"
+                  style={{ marginRight: '16px' }}
+                  onClick={() => cancel(1)}
+                >
+                  {t('common.cancel')}
+                </CommonButton>
+                <CommonButton type="primary" onClick={() => save(1)}>
+                  {t('formWork.save2')}
+                </CommonButton>
+              </FooterWrap>
+            </DailyReportRulesWrap>
+          ) : null}
+        </ReportWrap>
 
-              <CommonButton type="primary" onClick={() => save(2)}>
-                {t('formWork.save2')}
-              </CommonButton>
-            </FooterWrap>
-          </DailyReportRulesWrap>
-        ) : null}
-      </ReportWrap>
-      <DeleteConfirmModal />
+        <ReportWrap style={{ marginBottom: 48 }}>
+          <HeaderWrap onClick={() => setOpen2(!open2)}>
+            <span>{t('msg11')}</span>
+            <IconFont
+              type={open2 ? 'up' : 'down'}
+              style={{
+                color: ' var(--auxiliary-text-t2-d1)',
+                fontSize: '8',
+                cursor: 'pointer',
+              }}
+            />
+          </HeaderWrap>
+
+          {open2 ? (
+            <DailyReportRulesWrap
+              layout="vertical"
+              form={form2}
+              onValuesChange={onValuesChange}
+            >
+              <Form.Item
+                label={t('msg11')}
+                name="is_auto_send"
+                className="check-form"
+                valuePropName="checked"
+                getValueFromEvent={getValueFromEvent2}
+                getValueProps={getValueProps}
+              >
+                <Switch />
+              </Form.Item>
+              <Form.Item
+                label={t('msg12')}
+                name="is_holiday"
+                className="checkBox-form"
+                valuePropName="checked"
+                getValueFromEvent={getValueFromEvent}
+                getValueProps={getValueProps}
+              >
+                <Checkbox disabled={sendDisabled}>{t('msg13')}</Checkbox>
+              </Form.Item>
+              <Form.Item
+                name="day"
+                style={{
+                  marginBottom: '32px',
+                }}
+              >
+                <Checkbox.Group
+                  options={plainOptions()}
+                  disabled={sendDisabled}
+                />
+              </Form.Item>
+              <Form.Item label={t('msg14')} name="reminder_time">
+                <TimePicker
+                  style={{ width: 320 }}
+                  format="HH:mm"
+                  disabled={sendDisabled}
+                />
+              </Form.Item>
+              <Form.Item
+                label={t('msg15')}
+                name="is_hand_send"
+                className="checkBox-form"
+                valuePropName="checked"
+                getValueFromEvent={getValueFromEvent}
+                getValueProps={getValueProps}
+              >
+                <Checkbox disabled={sendDisabled}>{t('msg16')}</Checkbox>
+              </Form.Item>
+              <FooterWrap>
+                <CommonButton
+                  type="light"
+                  style={{ marginRight: '16px' }}
+                  onClick={() => cancel(2)}
+                >
+                  {t('common.cancel')}
+                </CommonButton>
+
+                <CommonButton type="primary" onClick={() => save(2)}>
+                  {t('formWork.save2')}
+                </CommonButton>
+              </FooterWrap>
+            </DailyReportRulesWrap>
+          ) : null}
+        </ReportWrap>
+        <DeleteConfirmModal />
+      </PermissionWrap>
     </div>
   )
 }
