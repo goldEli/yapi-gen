@@ -133,6 +133,8 @@ export const getDailyInfo: any = async (params: any) => {
     name: response.data?.name,
     send_time: response.data?.send_time,
     group_name: response.data?.group_name,
+    enable_hand_send: response.data?.enable_hand_send,
+    is_setting_config: response.data?.is_setting_config,
   }
 }
 
