@@ -1464,7 +1464,15 @@
       "reportProject": "汇报项目",
       "pieces": "个",
       "auto": "（自动）",
-      "manual": "（手动）"
+      "manual": "（手动）",
+      "overdue": "逾期",
+      "day": "天",
+      "relevance": "关联",
+      "thinkAgain": "再想想",
+      "sendAgain": "是否再次发送",
+      "sendToStud": "是否发送到钉钉",
+      "currentDaily": "当前日报已于",
+      "sendTo": "发送到"
     },
     "statistics": {
       "title": "汇报我的统计",

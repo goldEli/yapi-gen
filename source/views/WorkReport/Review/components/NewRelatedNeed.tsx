@@ -144,7 +144,11 @@ const NewRelatedNeed = (props: any) => {
             <div className="left">
               <span className="dot" />
               {props?.isShowOverdue && item.expected_day > 0 ? (
-                <span>[逾期{item.expected_day}天]</span>
+                <span>
+                  [{t('report.list.overdue')}
+                  {item.expected_day}
+                  {t('report.list.day')}]
+                </span>
               ) : null}
               <span style={{ marginLeft: 2 }}>{item.label}</span>
             </div>
@@ -193,7 +197,7 @@ const NewRelatedNeed = (props: any) => {
                   }))}
                 />
                 <span className="relative" onClick={confirm}>
-                  关联
+                  {t('report.list.relevance')}
                 </span>
                 <span
                   className="cancel"

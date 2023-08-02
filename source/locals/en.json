@@ -1480,7 +1480,15 @@
       "reportProject": "Report Project",
       "pieces": " pieces",
       "auto": "（Auto）",
-      "manual": "（Manual）"
+      "manual": "（Manual）",
+      "overdue": "overdue",
+      "day": "day",
+      "relevance": "relevancy",
+      "thinkAgain": "Think again",
+      "sendAgain": "Whether to send again",
+      "sendToStud": "Whether to send to Dingtalk",
+      "currentDaily": "The current daily newspaper is available",
+      "sendTo": "Send to"
     },
     "statistics": {
       "title": "Reporting Statistics",

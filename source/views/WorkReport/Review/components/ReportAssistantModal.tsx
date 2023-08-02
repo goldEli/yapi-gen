@@ -106,7 +106,7 @@ const LabelTitle = styled.span`
   line-height: 22px;
 `
 const AgainButton = styled.span`
-  width: 80px;
+  width: 100px;
   height: 32px;
   text-align: center;
   font-size: 14px;
@@ -134,7 +134,7 @@ const fadeInAnimation = keyframes`
     width:5px;
   }
   100%{
-    width:16px;
+    width:14px;
   }
 `
 
@@ -145,7 +145,7 @@ const Ellipsis = styled.span`
 `
 
 const LoadingButton = styled.span`
-  width: 80px;
+  width: 100px;
   height: 32px;
   text-align: center;
   font-size: 14px;
@@ -273,16 +273,18 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       return
     }
     open({
-      title: '提示',
-      okText: '发送',
-      cancelText: '再想想',
-      children: modalInfo?.send_time ? (
+      title: t('p2.toast'),
+      okText: t('send'),
+      cancelText: t('report.list.thinkAgain'),
+      children: true ? (
         <div>
-          {`当前日报已于${modalInfo?.send_time}发送到-[${modalInfo?.group_name}]`}
-          <div>是否再次发送</div>
+          {`${t('report.list.currentDaily')}${modalInfo?.send_time}${t(
+            'report.list.sendTo',
+          )}-[${modalInfo?.group_name}]`}
+          <div>{t('report.list.sendAgain')}</div>
         </div>
       ) : (
-        <div>{`是否发送到钉钉-[${modalInfo?.group_name}]`}</div>
+        <div>{`${t('report.list.sendToStud')}-[${modalInfo?.group_name}]`}</div>
       ),
       onConfirm: () => sendReport(params),
     })

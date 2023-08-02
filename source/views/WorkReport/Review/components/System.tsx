@@ -391,7 +391,6 @@ const System = () => {
                     </Msg>
                     <RowLine>
                       <Msg>
-                        {' '}
                         {t('report.list.taskProgress')}：
                         {
                           JSON.parse(item?.pivot?.content ?? null)
@@ -413,7 +412,9 @@ const System = () => {
                       <Radius />
                       {item?.key === 'timeout_task' && el.expected_day > 0 ? (
                         <span style={{ marginRight: 3 }}>
-                          [逾期{el.expected_day}天]
+                          [{t('report.list.overdue')}
+                          {el.expected_day}
+                          {t('report.list.day')}]
                         </span>
                       ) : null}
                       <Msg>{el.name}</Msg>
