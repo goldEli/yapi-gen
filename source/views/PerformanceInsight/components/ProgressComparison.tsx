@@ -477,9 +477,9 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        dataIndex: 'stock_count',
+        dataIndex: 'risk_stock_count',
         title: getTitleTips(
-          t('performance.stockRisk'),
+          t('performance.riskStockRisk'),
           t('performance.defectsNotFixedInTheCurrentPeriod'),
           'right',
         ),

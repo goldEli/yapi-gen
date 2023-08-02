@@ -1820,6 +1820,7 @@
     "workRepetitionRate": "工作重复率",
     "totalJobRepetitionRate": "总工作重复率",
     "stockRisk": "存量风险",
+    "riskStockRisk": "缺陷存量",
     "workItemsNotCompletedForMoreThanDays": "（当期）超过14天未完成的工作项",
     "numberOfFailedApprovalsTotalNumberOfApprovals": "审批不通过次数/全部 审批次数*100%",
     "workRecord": "工作记录",

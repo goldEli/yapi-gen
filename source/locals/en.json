@@ -1849,6 +1849,7 @@
     "workRepetitionRate": "Work repetition rate",
     "totalJobRepetitionRate": "Total job repetition rate",
     "stockRisk": "Stock risk",
+    "riskStockRisk": "Defect Inventory",
     "workItemsNotCompletedForMoreThanDays": "(Current) Work items not completed for more than 14 days",
     "numberOfFailedApprovalsTotalNumberOfApprovals": "Number of failed approvals / total number of approvals * 100%",
     "workRecord": "WorkRecord",
