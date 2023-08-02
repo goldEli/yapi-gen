@@ -351,7 +351,7 @@ const DemandTable = (props: Props) => {
     <TableContent>
       <ResizeTable
         isSpinning={props.isSpinning}
-        dataWrapNormalHeight="calc(100% - 64px)"
+        dataWrapNormalHeight="calc(100% - 48px)"
         col={selectColum}
         dataSource={props.data?.list}
         rowSelection={

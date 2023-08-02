@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch } from '@store/index'
 import { setWriteReportModal } from '@store/workReport'
+import CommonButton from '@/components/CommonButton'
 
 const Menu = styled.div`
   width: 100%;
@@ -84,11 +85,8 @@ const ReviewSide = () => {
       <div
         style={{
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          height: '24px',
-          padding: '24px',
-          margin: '10px 0',
+          flexDirection: 'column',
+          padding: '24px 24px 16px 24px',
         }}
       >
         <span
@@ -98,19 +96,19 @@ const ReviewSide = () => {
             fontFamily: 'SiYuanMedium',
             color: 'var(--neutral-n1-d1)',
             lineHeight: '22px',
+            marginBottom: '16px',
           }}
         >
           {t('report.list.workReport')}
         </span>
-
-        <CloseWrap onClick={handleReport} width={24} height={24}>
-          <IconFont
-            style={{
-              fontSize: 18,
-            }}
-            type="plus"
-          />
-        </CloseWrap>
+        <CommonButton
+          type="primary"
+          icon="plus"
+          iconPlacement="left"
+          onClick={handleReport}
+        >
+          {t('report.list.writeReport')}
+        </CommonButton>
       </div>
 
       <Menu>

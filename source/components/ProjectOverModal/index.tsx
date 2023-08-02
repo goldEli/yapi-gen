@@ -46,7 +46,7 @@ const HandOverModal = (props: any) => {
       })
 
       if (res1.code === 0) {
-        getMessage({ msg: t('succeed') as string, type: 'success' })
+        getMessage({ msg: t('remove_success') as string, type: 'success' })
         form.resetFields()
         props.close()
         props.confirm()

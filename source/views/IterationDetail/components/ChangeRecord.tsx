@@ -424,7 +424,7 @@ const ChangeRecord = (props: Props) => {
       </CommonModal>
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 60px)"
+        dataWrapNormalHeight="calc(100% - 48px)"
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}

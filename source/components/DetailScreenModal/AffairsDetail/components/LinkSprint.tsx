@@ -345,12 +345,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     onClose()
   }
 
-  // // 点击切换页码
-  // const onChangePage = (page: number, size: number) => {
-  //   setPageParams({ page, pagesize: size })
-  //   getRelationStoriesList({ page, pagesize: size })
-  // }
-
   // 改变顺序
   const onChangeData = async (
     item: any,
@@ -466,14 +460,6 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
           </>
         ))}
         {allDataSource.list?.length <= 0 && <NoData />}
-        {/* {allDataSource.list?.length > 20 && (
-          <PaginationBox
-            total={allDataSource?.total}
-            currentPage={allDataSource?.currentPage}
-            pageSize={allDataSource?.pageSize}
-            onChange={onChangePage}
-          />
-        )} */}
       </div>
     </InfoItem>
   )
