@@ -21,6 +21,7 @@ import {
   SprintDetailDragLine,
   SprintDetailMouseDom,
 } from '@/components/DetailScreenModal/DemandDetail/style'
+import CommonButton from '@/components/CommonButton'
 
 const LeftSideContainer = styled.div`
   position: relative;
@@ -68,11 +69,10 @@ const LeftSideContainer = styled.div`
 `
 const TeamAdd = styled.div`
   width: 100%;
-  height: 72px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
+  flex-direction: column;
+  padding: 16px 16px 0;
+  margin-bottom: 16px;
   &:hover {
     cursor: pointer;
   }
@@ -81,6 +81,7 @@ const TiamTitleText = styled.span`
   font-size: var(--font14);
   font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
+  margin-bottom: 16px;
 `
 const IconFontStyle = styled(IconFont)`
   font-size: 18px;
@@ -468,13 +469,14 @@ const LeftSide = (props: any) => {
       <Content>
         <TeamAdd>
           <TiamTitleText>{t('team_management') as string}</TiamTitleText>
-          <CloseWrap width={24} height={24}>
-            <IconFont
-              style={{ fontSize: 18 }}
-              type="plus"
-              onClick={() => createTeam()}
-            />
-          </CloseWrap>
+          <CommonButton
+            type="primary"
+            icon="plus"
+            iconPlacement="left"
+            onClick={() => createTeam()}
+          >
+            {t('AddDepartmentOrTeamModal.add_team')}
+          </CommonButton>
         </TeamAdd>
         {/* 拖拽组件 */}
         <SideDragging

@@ -166,6 +166,7 @@ const CommonButton = (props: Props) => {
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     span:first-child {
       display: flex;
       align-items: center;
