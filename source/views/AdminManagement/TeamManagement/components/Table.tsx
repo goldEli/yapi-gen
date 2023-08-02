@@ -67,6 +67,38 @@ const Table = (props: any) => {
     {
       title: (
         <NewSort
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+          fixedKey="department_name"
+        >
+          {' '}
+          {t('department')}
+        </NewSort>
+      ),
+      width: 160,
+      dataIndex: 'department_name',
+      key: 'department_name',
+    },
+    {
+      title: (
+        <NewSort
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+          fixedKey="position_name"
+        >
+          {' '}
+          {t('position')}
+        </NewSort>
+      ),
+      width: 160,
+      dataIndex: 'position_name',
+      key: 'position_name',
+    },
+    {
+      title: (
+        <NewSort
           onUpdateOrderKey={onUpdateOrderKey}
           nowKey={order.key}
           order={order.value}
@@ -112,38 +144,7 @@ const Table = (props: any) => {
       dataIndex: 'phone',
       key: 'phone',
     },
-    {
-      title: (
-        <NewSort
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-          fixedKey="department_name"
-        >
-          {' '}
-          {t('department')}
-        </NewSort>
-      ),
-      width: 160,
-      dataIndex: 'department_name',
-      key: 'department_name',
-    },
-    {
-      title: (
-        <NewSort
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-          fixedKey="position_name"
-        >
-          {' '}
-          {t('position')}
-        </NewSort>
-      ),
-      width: 160,
-      dataIndex: 'position_name',
-      key: 'position_name',
-    },
+
     {
       title: (
         <NewSort

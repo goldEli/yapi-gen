@@ -17,6 +17,7 @@ import { addTeams, dismissTeams, editTeams } from '@/services/setting'
 import { setActiveTeam } from '@store/teams/index'
 import { CloseWrap } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
+import CommonButton from '@/components/CommonButton'
 import {
   SprintDetailDragLine,
   SprintDetailMouseDom,
@@ -138,12 +139,8 @@ const FormStyle = styled(Form)`
   & .ant-form-item-control-input-content {
     background-color: var(--neutral-white-d5) !important;
   }
-  .ant-input-affix-wrapper-status-error:not(
-      .ant-input-affix-wrapper-disabled
-    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
-  .ant-input-affix-wrapper-status-error:not(
-      .ant-input-affix-wrapper-disabled
-    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
     background-color: var(--neutral-white-d5) !important;
   }
 `
@@ -197,7 +194,10 @@ const UploadTitle = styled.div`
 `
 
 const Content = styled.div``
-
+const ButtonBox = styled.div`
+  margin: 0px 20px;
+  margin-bottom: 16px;
+`
 const Upload = (props: any) => {
   const [t] = useTranslation()
   const [defaultIcon, setDefaultIcon] = useState(true)
@@ -468,14 +468,27 @@ const LeftSide = (props: any) => {
       <Content>
         <TeamAdd>
           <TiamTitleText>{t('team_management') as string}</TiamTitleText>
-          <CloseWrap width={24} height={24}>
+          {/* <CloseWrap width={24} height={24}>
             <IconFont
               style={{ fontSize: 18 }}
               type="plus"
               onClick={() => createTeam()}
             />
-          </CloseWrap>
+          </CloseWrap> */}
         </TeamAdd>
+        <ButtonBox>
+          <CommonButton
+            onClick={() => createTeam()}
+            type="primary"
+            size="small"
+            iconPlacement="left"
+            icon="plus"
+            style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+          >
+            创建团队
+          </CommonButton>
+        </ButtonBox>
+
         {/* 拖拽组件 */}
         <SideDragging
           onChange={(item: any) => onChangeDragging(item)}
