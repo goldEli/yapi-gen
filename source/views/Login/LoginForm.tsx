@@ -108,7 +108,6 @@ export default React.memo(
       if (res.code === 0) {
         localStorage.token = res.data.token
         // localStorage.agileToken = res.data.token
-        console.log(res, '自己登录的token')
 
         // return
         props.redirect()

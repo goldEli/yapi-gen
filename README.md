@@ -448,7 +448,6 @@ useShortcutC(handleShortcutEvent1)
 import useShortcutCtrlEnter from '@/hooks/useShortcutCtrlEnter/useShortcutCtrlEnter'
 const handleShortcutEvent = () => {
   // 在此处理按下 Ctrl + 回车 触发的事件
-  // console.log('Ctrl + 回车 被按下')
 }
 useShortcutCtrlEnter(handleShortcutEvent)
 ```

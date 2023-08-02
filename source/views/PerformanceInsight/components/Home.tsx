@@ -206,18 +206,11 @@ const Home = () => {
   const init = () => {
     // 缺陷现状和工作项现状
     getWorkList()
-    // 新增工作top10对比
-    getContrastNewWork('desc')
-    // 完成率top10对比
-    getCompletionRateChart('desc')
-    // 阶段缺陷占比
-    getDefectRatioChart('severity')
-    // 集合图表
-    getStatisticsOther()
   }
   useEffect(() => {
     isRefresh && init()
   }, [isRefresh])
+
   const updateViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)
@@ -410,6 +403,14 @@ const Home = () => {
           ? ''
           : 'one_month',
     })
+    // 新增工作top10对比
+    getContrastNewWork('desc')
+    // 完成率top10对比
+    getCompletionRateChart('desc')
+    // 阶段缺陷占比
+    getDefectRatioChart('severity')
+    // 集合图表
+    getStatisticsOther()
     setWorkDataList(res)
     setLoading(false)
   }
@@ -605,6 +606,9 @@ const Home = () => {
     }
     // 监听对象第一次会走两次接口 转成字符窜判断
     setValueHeaderStr(JSON.stringify(headerParmas))
+    if (headerParmas.time.type === 0 && !headerParmas.time.time) {
+      return
+    }
     if (
       !headerParmas.period_time &&
       headerParmas.time.type === 0 &&
@@ -621,6 +625,7 @@ const Home = () => {
 
     valueHeaderStr !== JSON.stringify(headerParmas) && init()
   }, [headerParmas])
+
   useEffect(() => {
     setValueId(paramsData?.valueId)
     setViewValue(paramsData?.view?.value)
@@ -847,7 +852,7 @@ const Home = () => {
               await onCreateView(value, type, '')
               setIsVisible(false)
             } catch (error) {
-              // console.log(error)
+              //
             }
           }}
           onClose={() => setIsVisible(false)}

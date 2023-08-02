@@ -300,8 +300,6 @@ const SiteNotifications = (props: any, ref: any) => {
     return arr
   }
   const initEmailSet = (values: any) => {
-    console.log(values, 'values')
-
     return values?.map((i: any) => ({
       id: i.rule,
       text: setNewName('email', i.rule),

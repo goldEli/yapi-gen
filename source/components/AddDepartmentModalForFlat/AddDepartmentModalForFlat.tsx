@@ -345,7 +345,6 @@ const AddDepartmentModalForFlat = (props: ModalProps) => {
     setShowTreeData({ children: data1, staffs: [] })
     // 拍平数组
     const data = flattenTreeData(data1)
-    // console.log(data)
 
     setTabsTreeDataList(
       data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
@@ -449,8 +448,6 @@ const AddDepartmentModalForFlat = (props: ModalProps) => {
   }
   // 获取最底层的children数组
   function findBottomChildren(treeData: any) {
-    // console.log(treeData, '树数据')
-
     const result: any = []
 
     function traverse(node: any) {
@@ -638,8 +635,6 @@ const AddDepartmentModalForFlat = (props: ModalProps) => {
       return isAll
     }
   }
-  // console.log(personData, '选中数据')
-  // console.log(showTreeData, '列数据')
 
   return (
     <ModalStyle

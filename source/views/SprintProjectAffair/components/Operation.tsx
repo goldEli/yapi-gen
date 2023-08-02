@@ -163,9 +163,9 @@ const Operation = (props: Props) => {
 
   const onFilterSearch = (e: any, customField: any) => {
     // 如果筛选未打开
-    if (filterState) {
-      return
-    }
+    // if (filterState) {
+    //   return
+    // }
     const params = {
       discovery_version: e.discovery_version,
       severity: e.severity,
@@ -229,7 +229,6 @@ const Operation = (props: Props) => {
       }, {})
   }
   const handleShortcutEvent = () => {
-    // console.log('C键被按下')
     dispatch(
       setAddWorkItemModal({
         visible: true,
@@ -300,7 +299,6 @@ const Operation = (props: Props) => {
     }
     props?.onChangeIsShowLeft?.()
   }
-  // console.log(searchList)
   useEffect(() => {
     if (searchChoose && searchChoose.system_view) {
       return

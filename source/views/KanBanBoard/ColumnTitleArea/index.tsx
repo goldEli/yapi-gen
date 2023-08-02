@@ -66,7 +66,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
           max_num: Number(item.getAttribute('data-max_num')),
         }
       })
-      console.log('eleAttr--', eleAttr)
+
       if (
         eleAttr.some(item => {
           if (!item.number || !item.max_num) {

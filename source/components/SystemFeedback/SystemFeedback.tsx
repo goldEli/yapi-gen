@@ -96,7 +96,6 @@ const SystemFeedback = () => {
 
   const onChange = (e: any) => {
     setFirst(e.target.checked)
-    // console.log(`checked = ${e.target.checked}`)
   }
   useEffect(() => {
     if (freedVisible) {

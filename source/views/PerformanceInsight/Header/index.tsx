@@ -100,14 +100,17 @@ const Iteration = (props: Props) => {
   const getTabsActive = (index: number) => {
     setTabsActive(index)
     setTimekey(index)
-    dispatch(
-      setHeaderParmas({
-        period_time: 'one_month',
-        time: {
-          type: 1,
-        },
-      }),
-    )
+    if (index === 0) {
+      dispatch(
+        setHeaderParmas({
+          period_time: 'one_month',
+          time: {
+            type: 1,
+          },
+          iterate_ids: [],
+        }),
+      )
+    }
   }
   useEffect(() => {
     props.homeType === 'iteration' || props.homeType === 'sprint'
@@ -394,7 +397,6 @@ const Iteration = (props: Props) => {
     }, data[0].end_at)
     return maxt
   }
-  console.log(props, 'props')
   return (
     <div>
       {(props.homeType === 'iteration' || props.homeType === 'sprint') && (
@@ -497,17 +499,30 @@ const Iteration = (props: Props) => {
                 setTimeVal([])
                 viewType === 1 && e !== 0 && dispatch(setSave(true))
                 e === 0 && dispatch(setSave(false))
-                e !== 0 &&
+                if (e === 0) {
+                  dispatch(
+                    setHeaderParmas({
+                      time: {
+                        type: 0,
+                        time: '',
+                      },
+                      iterate_ids: [],
+                      period_time: '',
+                    }),
+                  )
+                } else {
                   dispatch(
                     setHeaderParmas({
                       time: {
                         type: e,
                         time: '',
                       },
+                      iterate_ids: [],
                       period_time: periodTimes.find(item => item.value === e)
                         ?.label,
                     }),
                   )
+                }
               }}
               value={timekey}
               placeholder={t('common.pleaseSelect')}
@@ -557,7 +572,7 @@ const Iteration = (props: Props) => {
               }}
             />
           )}
-          {timekey === 0 && (
+          {timekey === 0 && tabsActive === 0 && (
             <RangePicker
               value={timeVal}
               onChange={onChangeDate}
@@ -595,7 +610,7 @@ const Iteration = (props: Props) => {
               await props.onCreateView(val, 'add')
               setIsVisibleView(false)
             } catch (error) {
-              // console.log(error)
+              //
             }
           }}
           onClose={() => setIsVisibleView(false)}

@@ -23,6 +23,7 @@ import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
 import MoreOptions from '../MoreOptions'
 import ProjectCardShow from '../ProjectCardShow'
+import normalCompany from '/normalCompany.jpg'
 import {
   CoverArea,
   CoverAreaAdd,
@@ -252,7 +253,6 @@ const CreateAProjectForm = () => {
   const getProjectInfo = async () => {
     const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
     const res2 = await getAffiliationUser(res.team_id)
-    // console.log(res2, 'rererer')
 
     setSelectLeaders(
       res2.map((i: any) => ({
@@ -279,8 +279,6 @@ const CreateAProjectForm = () => {
   const getProjectInfo2 = async () => {
     const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
     const res2 = await getAffiliationUser(res.team_id)
-    // console.log(res2, 'rererer')
-
     setSelectLeaders(
       res2.map((i: any) => ({
         name: i.name,
@@ -329,11 +327,8 @@ const CreateAProjectForm = () => {
   ]
   useEffect(() => {
     if (leaderId === 0) {
-      console.log(pro)
-
       setPros(pro.slice(0, 2))
     } else {
-      console.log(pro)
       setPros(pro)
     }
     if (leaderId || leaderId === 0) {
@@ -641,7 +636,7 @@ const CreateAProjectForm = () => {
                               type="project"
                               name={i.name}
                               dec={i.dec}
-                              img={i.img}
+                              img={i.img?.length > 0 ? i.img : normalCompany}
                             />
                           </Select.Option>
                         )

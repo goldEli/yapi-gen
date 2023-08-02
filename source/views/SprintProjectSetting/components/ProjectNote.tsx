@@ -387,8 +387,6 @@ const ProjectSet = () => {
     init2()
   }, [isRefresh, activeDetail])
 
-  // console.log(activeDetail)
-
   const onSavePermission = async () => {
     const res = await editSaveConfig({
       projectId,
@@ -407,7 +405,6 @@ const ProjectSet = () => {
 
   const onChange = (ty: any, less: any, ins: any, check: any) => {
     const newA: any = JSON.parse(JSON.stringify(permissionList))
-    // console.log(ty, less, ins, check)
     let c: any = ''
     if (check === 1) {
       c = 2

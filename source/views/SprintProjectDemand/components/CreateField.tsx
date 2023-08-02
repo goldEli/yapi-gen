@@ -423,7 +423,6 @@ const CreateField = (props: { isOperate?: boolean }) => {
             }
             options={option}
             onChange={e => {
-              console.log(e)
               setFieldType((p: any) => {
                 return {
                   ...p,

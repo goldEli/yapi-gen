@@ -916,7 +916,6 @@ export const getProjectInfoValues: any = async (params: any) => {
 export const getAffiliation = async () => {
   const response = await http.get<any>('/b/project/affiliation')
 
-  // // console.log(response)
   return response.data
 }
 
@@ -926,7 +925,6 @@ export const getAffiliationUser = async (id: any) => {
     limit: 1000,
   })
 
-  // // console.log(response)
   return response.data
 }
 

@@ -43,7 +43,6 @@ const StatusPopover = (props: Props) => {
       id: props.projectId,
       nId: props.id,
     })
-    // console.log(res2)
     setStatusList(
       res2.map((i: any) => ({
         id: i.id,

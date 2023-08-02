@@ -72,7 +72,6 @@ interface IProps {
   isClear?: boolean
 }
 const CategoryDropdown = (props: IProps) => {
-  // debugger
   const {
     onClearCallback,
     onChangeCallBack,

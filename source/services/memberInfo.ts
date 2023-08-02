@@ -70,6 +70,7 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
             usersCopySendIds: i.users_copysend_name_ids,
+            copy_send_users: i.copy_send_users,
             category: i.category,
             categoryColor: i.category_color,
             class: i.class,
@@ -116,6 +117,7 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
             usersCopySendIds: i.users_copysend_name_ids,
+            copy_send_users: i.copy_send_users,
             category: i.category,
             categoryColor: i.category_color,
             class: i.class,
@@ -194,6 +196,7 @@ export const getUserInfoCreateStory: any = async (params: any) => {
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
           usersCopySendIds: i.users_copysend_name_ids,
+          copy_send_users: i.copy_send_users,
           category: i.category,
           categoryColor: i.category_color,
           class: i.class,
@@ -271,6 +274,7 @@ export const getUserInfoFinishStory: any = async (params: any) => {
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
           usersCopySendIds: i.users_copysend_name_ids,
+          copy_send_users: i.copy_send_users,
           category: i.category,
           categoryColor: i.category_color,
           class: i.class,
@@ -395,6 +399,7 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
             usersCopySendIds: i.users_copysend_name_ids,
+            copy_send_users: i.copy_send_users,
             category: i.category,
             categoryColor: i.category_color,
             class: i.class,
@@ -441,6 +446,7 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
             usersCopySendIds: i.users_copysend_name_ids,
+            copy_send_users: i.copy_send_users,
             category: i.category,
             categoryColor: i.category_color,
             class: i.class,
@@ -519,6 +525,7 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
           usersCopySendIds: i.users_copysend_name_ids,
+          copy_send_users: i.copy_send_users,
           category: i.category,
           categoryColor: i.category_color,
           class: i.class,
@@ -596,6 +603,7 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
           usersCopySendIds: i.users_copysend_name_ids,
+          copy_send_users: i.copy_send_users,
           category: i.category,
           categoryColor: i.category_color,
           class: i.class,
@@ -629,7 +637,6 @@ export const getMemberInfoOverviewStatistics: any = async (params: any) => {
     target_id: params.targetId,
     project_id: params.projectId,
   })
-  console.log(response, '----------')
 
   return response.data
 }

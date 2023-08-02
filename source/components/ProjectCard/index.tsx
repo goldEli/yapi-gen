@@ -89,7 +89,6 @@ const Index = (props: any) => {
           : t('other.affairsNumber'),
     },
   ]
-  console.log(props.item.team_id, 'team_id')
 
   const getItems = () => {
     const isDel = (
@@ -142,7 +141,6 @@ const Index = (props: any) => {
     }
   }
   const onChangeRouter = (type: string) => {
-    // console.log(type)
     if (type === 'user-alone') {
       const params = encryptPhp(
         JSON.stringify({
@@ -202,7 +200,6 @@ const Index = (props: any) => {
       }
     }
   }
-  // console.log(props.item)
 
   return (
     <ProjectCard>

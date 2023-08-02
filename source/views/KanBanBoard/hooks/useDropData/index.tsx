@@ -33,7 +33,7 @@ const useDropData = (
 
     return data
   }, [kanbanConfig, movingStory, columnId])
-  // console.log(movingStory, { groupId, columnId, groupType })
+
   // 展示状态转换释放区域
   // const showStateTransitionList = React.useMemo(() => {
   //   // 人员分组和类别分组，只有同组才能转换状态

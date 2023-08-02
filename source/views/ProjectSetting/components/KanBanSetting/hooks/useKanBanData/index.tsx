@@ -19,7 +19,6 @@ const useKanBanData = () => {
 
   // refactor with immerjs
   const onDragEnd = (result: DropResult) => {
-    // console.log(result)
     dispatch(clearMovingStatus())
     if (!result.destination) return
     const { source, destination, type } = result
@@ -108,7 +107,6 @@ const useKanBanData = () => {
     return categoryId === movingStatus?.story_type_id
   }
   const onDragStart = (result: DragStart) => {
-    // console.log({ result })
     const id = parseInt(result.draggableId, 10)
     if (result.type === STATUS) {
       if (result.source.droppableId === UNASSIGNED_STATUS) {

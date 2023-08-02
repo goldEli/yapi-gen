@@ -377,7 +377,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                           categoryId: child.id || 695,
                         }),
                       )
-                      console.log(99999, child)
                       dispatch(setActiveCategory(child))
                       updateNode(child)
                     }}

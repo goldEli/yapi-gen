@@ -255,7 +255,6 @@ const StaffManagement = () => {
   }
   useEffect(() => {
     setLheight(heightV?.current?.offsetHeight)
-    console.log(heightV?.current?.offsetHeight)
   }, [isShow])
 
   return (

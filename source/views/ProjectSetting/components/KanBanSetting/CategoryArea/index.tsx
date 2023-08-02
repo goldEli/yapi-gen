@@ -70,9 +70,6 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
         <Text>{props.data.name}</Text>
         <div
           onClick={e => {
-            // console.log({ e })
-            // debugger
-            console.log('getProjectType', getProjectType())
             const type = getProjectType()
             e.stopPropagation()
             const params = encryptPhp(

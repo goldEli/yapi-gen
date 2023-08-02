@@ -267,8 +267,6 @@ const TableFilter = (props: any) => {
 
   // 查询筛选值，operationKey： 记录当前查询的key,delKey: 删除的key, type: 类型值1位字符串，2是时间
   const confirm = async (operationKey?: any, delKey?: any, type?: any) => {
-    console.log(operationKey, delKey, type)
-
     // 当前查询的存入计数
     if (operationKey) {
       const keys = [...filterKeys, ...[operationKey]]
@@ -308,7 +306,6 @@ const TableFilter = (props: any) => {
       const keys = filterKeys?.filter((i: any) => i !== operationKey)
       dispatch(setFilterKeys([...new Set(keys)]))
     }
-    console.log(res, customField)
 
     props.onSearch(res, customField)
 
@@ -343,8 +340,6 @@ const TableFilter = (props: any) => {
   }, [props.defaultValue])
 
   useEffect(() => {
-    console.log(searchChoose)
-
     if (Object.hasOwn(searchChoose || {}, 'system_view')) {
       if (searchChoose.system_view === 1) {
         form.resetFields()
@@ -360,12 +355,9 @@ const TableFilter = (props: any) => {
         form.setFieldValue('user_name', [myId])
         confirm('user_name')
       }
-      console.log(searchChoose.system_view)
     }
   }, [searchChoose])
   useEffect(() => {
-    console.log('飞机')
-
     form.resetFields()
     confirm()
   }, [location])
@@ -466,7 +458,10 @@ const TableFilter = (props: any) => {
       }))
       .concat(newB)
   }
-
+  useEffect(() => {
+    form.resetFields()
+    confirm()
+  }, [location])
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>

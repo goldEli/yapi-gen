@@ -146,7 +146,6 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
         type: 'company',
       },
     })
-    // console.log(res, '部门列表')
 
     setTreeData(res)
     // 拍平数组
@@ -167,7 +166,6 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
       // eslint-disable-next-line no-undefined
       is_report: props.is_report ? 1 : undefined,
     })
-    // console.log(res, '团队列表')
 
     setSelectDataList(res)
     setDataList(res)

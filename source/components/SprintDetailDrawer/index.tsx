@@ -552,21 +552,6 @@ const SprintDetailDrawer = () => {
       }),
     )
   }
-
-  // // 基本信息更新
-  // const onUpdate = (params?: any, type?: string) => {
-  //   console.log(params, '=paramsparams', type, drawerInfo)
-  //   let resultInfo = Object.assign({}, drawerInfo)
-  //   if (type === 'fixed_select') {
-  //     console.log(resultInfo.copySend)
-  //     console.log({ ...resultInfo, ...{ copySend: [resultInfo.copySend[0]] } })
-  //     setDrawerInfo({
-  //       ...resultInfo,
-  //       ...{ copySend: [resultInfo.copySend[0]] },
-  //     })
-  //   }
-  // }
-
   // 操作后更新列表
   const onOperationUpdate = async (value?: boolean) => {
     if (!value) {

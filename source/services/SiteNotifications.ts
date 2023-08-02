@@ -6,7 +6,6 @@ import * as http from '@/tools/http'
 
 export const getAllNoteSet: any = async () => {
   const response: any = await http.get<any>('/b/msgConf/sysList')
-  console.log(response.data, 'ddddddddddddddddd')
 
   return response.data
 }
@@ -70,7 +69,6 @@ export const getConfig: any = async (projectId: any) => {
   const response: any = await http.get<any>(
     `/b/project/tip/${projectId}/config`,
   )
-  // console.log(response.data)
 
   return response.data.list
 }

@@ -393,15 +393,12 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'userName',
       key: 'user_name',
       width: 120,
-      render: (
-        text: string,
-        row: { userName: string; user_avatar: string; user_id: number },
-      ) => {
+      render: (text: string, row: any) => {
         return (
           <MultipleAvatar
             max={1}
             list={[
-              { name: row.userName, avatar: row.user_avatar, id: row.user_id },
+              { name: row.userName, avatar: row.userAvatar, id: row.userIds },
             ]}
           />
         )
@@ -496,12 +493,17 @@ export const useDynamicColumns = (state: any) => {
             isMineOrHis
             projectId={state.projectId}
           >
-            <MultipleAvatar
-              max={3}
-              list={text.split(';')?.map((i: any) => ({
-                name: i,
-              }))}
-            />
+            {record?.copy_send_users?.length > 0 && (
+              <MultipleAvatar
+                max={3}
+                list={record?.copy_send_users?.map((i: any) => ({
+                  id: i.id,
+                  name: i.name,
+                  avatar: i.avatar,
+                }))}
+              />
+            )}
+            {!record?.copy_send_users?.length && '--'}
           </TableQuickEdit>
         )
       },

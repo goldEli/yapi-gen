@@ -97,7 +97,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const { editColumnModelInfo } = useSelector(store => store.KanbanConfig)
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const onClose = () => {}
-
+  const [popoverVisible, setPopoverVisible] = useState(false)
   const createList2 = [
     {
       name: '编辑列',
@@ -118,16 +118,12 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
         dispatch(openEditColumnModel(item))
         return
       case 'question':
-        console.log('几次')
-
         open({
           title: t('confirm_deletion'),
           text: t(
             'confirm_to_delete_the_column_and_status,_after_deletion,_the_column_and_status_will_not_be_available_in_the_Kanban',
           ),
           onConfirm: () => {
-            console.log(item?.id)
-
             if (!item.id) {
               return Promise.reject()
             }
@@ -147,6 +143,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
             key={i.key}
             height={40}
             onClick={(e: any) => {
+              setPopoverVisible(false)
               e.stopPropagation()
               onCreate(i.key)
             }}
@@ -183,18 +180,12 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
               </Left>
               <Popover
                 content={content(createList2)}
-                // open={isCreateVisible2}
-                // onOpenChange={(open: boolean) => {
-                //   console.log(open)
-                //   if (!open) {
-                //     setIsCreateVisible2(false)
-                //     return
-                //   }
-                //   setIsCreateVisible2(true)
-                //   dispatch(closeEditColumnModel())
-                // }}
                 getPopupContainer={node => node}
                 placement="bottomRight"
+                open={popoverVisible}
+                onOpenChange={open => {
+                  setPopoverVisible(open)
+                }}
               >
                 <IconWrap type="more" style={{ color: 'var(--neutral-n2)' }} />
               </Popover>

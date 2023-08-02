@@ -492,7 +492,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                 }
               })
       // const filterVal: any = selectDataList.filter((el: any) => el.id === value)
-      console.log(filterVal)
 
       setCheckedKeys([...checkedKeys, filterVal.find((item: any) => item).id])
 
@@ -521,15 +520,11 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
 
   const getTapData = (datas: any) => {
-    console.log(datas, 'f飞机')
-
     active.current.push(datas)
     setShowTreeData({ children: datas.children, staffs: datas.staffs })
   }
   // 选中节点
   const setKeys = (keys: any) => {
-    console.log(keys, 'fff放松放松')
-
     if (keys.children && keys.children.length >= 1) {
       getHaveChildBykeys(keys)
     } else {
@@ -745,7 +740,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     const isSomeHave = personData.some((item: any) =>
       newData.map((i: { id: any }) => i.id).includes(item.id),
     )
-    console.log(newData)
     if (!newData.some((obj: any) => obj.hasOwnProperty('team_id'))) {
       return
     }
@@ -890,7 +884,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       // if (tabsActive === 0) {
       //   if (selectDataList?.length > 0) {
       //     const data = getFilterArr(selectDataList, props.defaultPeople)
-      //     // console.log(data)
       //     setPersonData(data)
       //   }
       // }
@@ -907,7 +900,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     props.isVisible,
     // props.defaultPeople, tabsActive, selectDataList
   ])
-  console.log(personData, '233')
 
   return (
     <ModalStyle
