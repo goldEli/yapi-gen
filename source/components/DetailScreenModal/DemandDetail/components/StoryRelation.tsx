@@ -716,8 +716,8 @@ const StoryRelation = (props: RelationStoriesProps) => {
         height: props.isDrawer
           ? '100%'
           : isEnd
-          ? 'calc(100vh - 188px)'
-          : 'calc(100vh - 227px)',
+          ? 'calc(100vh - 192px)'
+          : 'calc(100vh - 224px)',
       }}
     >
       <DeleteConfirmModal />
@@ -784,7 +784,7 @@ const StoryRelation = (props: RelationStoriesProps) => {
         <>
           <ResizeTable
             isSpinning={isSpinning}
-            dataWrapNormalHeight="calc(100% - 94px)"
+            dataWrapNormalHeight="calc(100% - 78px)"
             col={columns}
             dataSource={dataSource?.list}
             noData={<NoData />}
@@ -818,14 +818,6 @@ const StoryRelation = (props: RelationStoriesProps) => {
             </>
           ))}
           {allDataSource.list?.length <= 0 && <NoData />}
-          {/* {allDataSource.list?.length > 20 && (
-            <PaginationBox
-              total={allDataSource.pager?.total}
-              currentPage={allDataSource.pager?.page}
-              pageSize={allDataSource.pager?.pagesize}
-              onChange={onChangePage}
-            />
-          )} */}
         </>
       )}
     </RelationWrap>

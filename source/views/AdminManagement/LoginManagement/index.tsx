@@ -56,7 +56,7 @@ const SearchWrap = styled(Space)({
 
 const Content = styled.div({
   padding: '0px 24px 0px',
-  height: 'calc(100vh - 262px)',
+  height: 'calc(100vh - 254px)',
 })
 
 const StatusWrap = styled.div({

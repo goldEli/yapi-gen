@@ -629,7 +629,7 @@ const DemandTree = (props: Props) => {
           isSpinning={props?.isSpinning}
           col={selectColum}
           dataSource={data?.list}
-          dataWrapNormalHeight="calc(100% - 64px)"
+          dataWrapNormalHeight="calc(100% - 48px)"
           expandable={{
             showExpandColumn: false,
             expandedRowKeys,

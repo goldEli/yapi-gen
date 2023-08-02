@@ -166,7 +166,7 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
 `
 
 export const ComputedWrap = styled.div`
-  height: calc(100vh - 229px);
+  height: calc(100vh - 210px);
 `
 
 //  需求详情-详细信息

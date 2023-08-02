@@ -346,8 +346,8 @@ const Flaw = (props: FlawProps) => {
         isSpinning={isSpinning}
         dataWrapNormalHeight={
           hasCreate || iterateInfo?.status !== 1 || projectInfo?.status !== 1
-            ? 'calc(100% - 55px)'
-            : 'calc(100% - 97px)'
+            ? 'calc(100% - 48px)'
+            : 'calc(100% - 90px)'
         }
         col={selectColum}
         dataSource={dataList?.list}

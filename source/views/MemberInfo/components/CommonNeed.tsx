@@ -750,7 +750,7 @@ const CommonNeed = (props: any) => {
         >
           <ResizeTable
             isSpinning={isSpin}
-            dataWrapNormalHeight="calc(100vh - 280px)"
+            dataWrapNormalHeight="calc(100vh - 263px)"
             col={selectColum}
             dataSource={listData?.list}
             noData={<NoData />}

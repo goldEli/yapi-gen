@@ -310,7 +310,7 @@ const Need = (props: any) => {
             {listData?.list && listData?.list?.length > 0 && (
               <ResizeTable
                 isSpinning={false}
-                dataWrapNormalHeight="calc(100vh - 330px)"
+                dataWrapNormalHeight="calc(100vh - 309px)"
                 col={selectColum}
                 dataSource={listData?.list}
                 noData={<NoData />}

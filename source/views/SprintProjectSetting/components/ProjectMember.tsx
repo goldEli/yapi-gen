@@ -857,7 +857,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         <Content>
           <ResizeTable
             isSpinning={isSpinning}
-            dataWrapNormalHeight="calc(100% - 64px)"
+            dataWrapNormalHeight="calc(100% - 48px)"
             col={selectColumns}
             dataSource={memberList?.list}
             rowSelection={rowSelection}
