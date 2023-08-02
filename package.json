@@ -26,7 +26,7 @@
     "@star-yun/ui": "^0.0.3",
     "@staryuntech/ant-pro": "0.0.22",
     "@types/react-router-dom": "^5.3.3",
-    "@xyfe/uikit": "^0.1.0-alpha.50",
+    "@xyfe/uikit": "^0.1.0-alpha.54",
     "antd": "^4.24.0",
     "array-move": "^4.0.0",
     "caret-pos": "^2.0.0",
