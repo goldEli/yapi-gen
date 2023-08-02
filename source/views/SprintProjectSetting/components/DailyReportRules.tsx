@@ -325,10 +325,9 @@ const DailyReportRules = () => {
         })
       } else {
         open({
-          title: t('msg17'),
+          title: t('msg19'),
           text: t('msg18'),
           onConfirm: async () => {
-            values2.is_auto_send = 1
             const res2 = await set_auto_send_config({
               ...values2,
               id: typeId,
@@ -337,7 +336,6 @@ const DailyReportRules = () => {
             if (res2.code === 0) {
               getMessage({ msg: t('common.saveSuccess'), type: 'success' })
               setSendDisabled(false)
-              form2.setFieldValue('is_auto_send', 1)
             }
           },
         })
@@ -567,7 +565,7 @@ const DailyReportRules = () => {
                 getValueFromEvent={getValueFromEvent}
                 getValueProps={getValueProps}
               >
-                <Checkbox disabled={sendDisabled}>{t('msg16')}</Checkbox>
+                <Checkbox>{t('msg16')}</Checkbox>
               </Form.Item>
               <FooterWrap>
                 <CommonButton
