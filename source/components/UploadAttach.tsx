@@ -10,6 +10,7 @@
 
 import { message, Progress, Upload } from 'antd'
 import {
+  forwardRef,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -166,7 +167,8 @@ const progressStatusMap: { [key: string]: 'success' | 'exception' | 'active' } =
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
-const UploadAttach = (props: any) => {
+const UploadAttach = (props: any, ref: any) => {
+  const uploadRef = useRef<any>(null)
   const scopeRef = useRef(String(Math.random()))
   const { userInfo } = useSelector(store => store.user)
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
@@ -432,7 +434,18 @@ const UploadAttach = (props: any) => {
       getAttachState: onGetAttachState,
     }
   })
+  const handleUpload = () => {
+    console.log(uploadRef.current)
 
+    // 调用 Upload 组件的上传事件
+    uploadRef.current.click()
+  }
+
+  useImperativeHandle(ref, () => {
+    return {
+      handleUpload,
+    }
+  })
   return (
     <div>
       {previewOpen ? (
@@ -444,13 +457,18 @@ const UploadAttach = (props: any) => {
           onClose={() => setPreviewOpen(false)}
         />
       ) : null}
+
       <Warp
         multiple
         fileList={[]}
         beforeUpload={onUploadBefore}
         customRequest={onUploadFileClick}
       >
-        {props.addWrap}
+        {props.addWrap ? (
+          props.addWrap
+        ) : (
+          <div ref={uploadRef} style={{ display: 'none' }} />
+        )}
       </Warp>
       <div
         style={{
@@ -673,4 +691,4 @@ const UploadAttach = (props: any) => {
   )
 }
 
-export default UploadAttach
+export default forwardRef(UploadAttach)
