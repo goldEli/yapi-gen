@@ -81,7 +81,9 @@ const ChangeLogFilter = (prop: IProps) => {
   return (
     <FormWrap form={form}>
       <SelectWrapBedeck>
-        <span style={{ margin: '0 16px', fontSize: '14px' }}>变更人</span>
+        <span style={{ margin: '0 16px', fontSize: '14px' }}>
+          {t('project.changeName')}
+        </span>
         <Form.Item name="change_user">
           <SelectWrap
             showArrow
@@ -101,7 +103,10 @@ const ChangeLogFilter = (prop: IProps) => {
         </Form.Item>
       </SelectWrapBedeck>
       <SelectWrapBedeck>
-        <span style={{ margin: '0 16px', fontSize: '14px' }}>变更类型</span>
+        <span style={{ margin: '0 16px', fontSize: '14px' }}>
+          {' '}
+          {t('project.changeType')}
+        </span>
         <Form.Item name="change_type">
           <SelectWrap
             onChange={(value: any) => {
@@ -121,7 +126,10 @@ const ChangeLogFilter = (prop: IProps) => {
         </Form.Item>
       </SelectWrapBedeck>
       <SelectWrapBedeck>
-        <span style={{ margin: '0 16px', fontSize: '14px' }}>变更前后</span>
+        <span style={{ margin: '0 16px', fontSize: '14px' }}>
+          {' '}
+          {t('project.changeBefore')}
+        </span>
         <Form.Item name="change_keywords">
           <Input
             bordered={false}
@@ -135,7 +143,10 @@ const ChangeLogFilter = (prop: IProps) => {
         </Form.Item>
       </SelectWrapBedeck>
       <SelectWrapBedeck>
-        <span style={{ margin: '0 16px', fontSize: '14px' }}>变更时间</span>
+        <span style={{ margin: '0 16px', fontSize: '14px' }}>
+          {' '}
+          {t('project.changeTime')}
+        </span>
         <Form.Item name="created_at">
           <RangePicker
             isShowQuick
