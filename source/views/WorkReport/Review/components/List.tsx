@@ -225,7 +225,7 @@ const List = () => {
   }
   const columns: any[] = [
     {
-      width: 200,
+      width: 400,
       title: (
         <NewSort
           fixedKey="user_id"
@@ -267,9 +267,7 @@ const List = () => {
             )}
             <Tooltip
               placement="topLeft"
-              title={`${String(record.user.name)}${t('report.list.of')}${
-                record.name
-              }`}
+              title={record.title}
               getPopupContainer={node => node}
             >
               <span
@@ -284,14 +282,7 @@ const List = () => {
                 }}
                 className="controlMaxWidth"
               >
-                {record.type === 2
-                  ? record.is_auto === 1
-                    ? t('report.list.auto')
-                    : t('report.list.manual')
-                  : null}
-                {String(record.user.name)}
-                {t('report.list.of')}
-                {record.name}
+                {record.title}
               </span>
               {(id === 1 || id === 3) && record.is_supply === 1 && (
                 <LabelTag options={reportState} state={2} />

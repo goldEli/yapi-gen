@@ -177,6 +177,7 @@ const DailyReportRules = () => {
   const [open2, setOpen2] = useState(true)
   const [typeId, setTypeId] = useState(0)
   const [formAll, setFormAll] = useState<any>({})
+
   const plainOptions = () => {
     const arr: any = [
       {
@@ -184,7 +185,7 @@ const DailyReportRules = () => {
         value: 0,
       },
       {
-        label: t('formWork.monday'),
+        label: t('formWork.tuesday'),
         value: 1,
       },
       {
@@ -204,7 +205,7 @@ const DailyReportRules = () => {
         value: 5,
       },
       {
-        label: t('formWork.monday'),
+        label: t('formWork.sunday'),
         value: 6,
       },
     ]

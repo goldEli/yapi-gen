@@ -276,7 +276,14 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       title: '提示',
       okText: '发送',
       cancelText: '再想想',
-      children: <div>312321321321321312</div>,
+      children: modalInfo?.send_time ? (
+        <div>
+          {`当前日报已于${modalInfo?.send_time}发送到-[${modalInfo?.group_name}]`}
+          <div>是否再次发送</div>
+        </div>
+      ) : (
+        <div>{`是否发送到钉钉-[${modalInfo?.group_name}]`}</div>
+      ),
       onConfirm: () => sendReport(params),
     })
   }
@@ -397,22 +404,26 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
 
   // 计算进度相关数据
   const getScheduleData = () => {
-    let tempArr: any = []
+    let tempArr: any[] = []
     modalInfo?.configs?.forEach((item: any) => {
       if (item.type === 4) {
         tempArr = tempArr.concat(item.content ?? [])
       }
     })
+
+    let total = 0
+    let done = 0
+    if (tempArr.length) {
+      total = Number(tempArr.length)
+      done = Number(tempArr.filter((k: any) => k.is_end === 1).length)
+    } else {
+      total = 0
+      done = 0
+    }
     return {
-      rate:
-        tempArr?.length > 0
-          ? (
-              tempArr?.filter((k: any) => k.is_end === 1)?.length ??
-              0 / tempArr?.length
-            )?.toFixed(2) * 100
-          : 0,
-      done: tempArr?.filter((k: any) => k.is_end === 1)?.length ?? 0,
-      total: tempArr?.length ?? 0,
+      rate: total > 0 ? Number((done / total).toFixed(2)) * 100 : 0,
+      done: done,
+      total: total,
     }
   }
 
@@ -525,6 +536,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
               onFilter={() => {
                 setFilterDemand()
               }}
+              // 是否显示逾期
+              isShowOverdue={content?.key === 'timeout_task'}
             />
           </Form.Item>
         )
