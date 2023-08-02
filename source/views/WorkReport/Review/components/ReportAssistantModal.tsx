@@ -329,8 +329,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       if (item.type === 4) {
         return {
           ...item,
-          content: result[`${item.type}_${item.id}`]?.map((k: any) =>
-            demandListAll.current.find((i: any) => i.id === k),
+          content: result[`${item.type}_${item.id}_${item.name}`]?.map(
+            (k: any) => demandListAll.current.find((i: any) => i.id === k),
           ),
         }
       }
@@ -364,15 +364,19 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       })
       return
     }
-    if (currentProject?.enable_hand_send === 2) {
-      setHavePermission(true)
-      close()
-      return
-    }
     setLoading(true)
     try {
       const result = await getDailyInfo(currentProject?.id)
       setLoading(false)
+      if (result.enable_hand_send === 2 || result.is_setting_config === 2) {
+        setHavePermission(true)
+        close()
+        return
+      }
+      setCurrentProject({
+        ...currentProject,
+        is_setting_config: result.is_setting_config,
+      })
       setModalInfo(result)
       // 先过滤掉已经默认选择的需求
       let tempArr: any = []
@@ -382,7 +386,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           tempArr = tempArr.concat(item.content ?? [])
         }
         if (item.type === 2) {
-          attach[`${item.type}_${item.id}`] = item?.content ?? []
+          attach[`${item.type}_${item.id}_${item.name}`] = item?.content ?? []
         }
       })
       setUploadAttachList({

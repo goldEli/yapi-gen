@@ -83,7 +83,7 @@ const ClearButton = styled.div`
 `
 const RobotButton = styled.img`
   position: fixed;
-  z-index: 999;
+  z-index: 99;
   bottom: 200px;
   right: 40px;
   cursor: pointer;
