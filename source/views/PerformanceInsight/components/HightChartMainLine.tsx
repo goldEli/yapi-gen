@@ -85,6 +85,7 @@ const HightChartMainLine = (props: {
         flex: 1,
         backgroundColor: 'var(--neutral-white-d2)',
         padding: '12px 16px',
+        paddingBottom: '0px',
         borderRadius: '6px',
       }}
     >

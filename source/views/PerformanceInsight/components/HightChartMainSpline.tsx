@@ -106,6 +106,7 @@ const HightChartMainSpline = (props: {
         backgroundColor: 'var(--neutral-white-d2)',
         padding: '12px 16px',
         borderRadius: '6px',
+        paddingBottom: '0px',
       }}
     >
       <Col1>
