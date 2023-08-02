@@ -525,7 +525,7 @@ const StaffManagement = () => {
       {isShow ? <SearchList onSearch={onSearch} /> : null}
       <div
         style={{
-          height: 'calc(100vh - 192px)',
+          height: 'calc(100vh - 176px)',
           overflow: 'auto',
           padding: '0 24px',
         }}

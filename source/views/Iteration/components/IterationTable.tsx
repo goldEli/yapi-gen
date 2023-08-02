@@ -419,8 +419,8 @@ const IterationTable = (props: Props) => {
         isSpinning={props?.isSpinning}
         dataWrapNormalHeight={
           hasCreate || props.hasId?.status !== 1 || projectInfo?.status !== 1
-            ? 'calc(100% - 44px)'
-            : 'calc(100% - 96px)'
+            ? 'calc(100% - 28px)'
+            : 'calc(100% - 80px)'
         }
         col={selectColum}
         dataSource={props.data?.list}

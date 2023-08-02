@@ -85,7 +85,7 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
 `
 
 export const ComputedWrap = styled.div`
-  height: calc(100vh - 229px);
+  height: calc(100vh - 220px);
 `
 
 export const OperationWrap = styled(Space)({

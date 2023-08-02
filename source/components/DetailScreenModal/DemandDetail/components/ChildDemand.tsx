@@ -372,7 +372,7 @@ const ChildDemand = (props: ChildDemandProps) => {
       </Operation>
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 116px)"
+        dataWrapNormalHeight="calc(100% - 112px)"
         col={selectColum}
         dataSource={dataList?.list}
         noData={<NoData />}

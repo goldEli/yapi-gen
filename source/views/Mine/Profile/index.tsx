@@ -384,7 +384,7 @@ const Profile = () => {
   }
 
   return (
-    <div style={{ overflow: 'auto', height: 'calc(100vh - 103px)' }}>
+    <div style={{ overflow: 'auto', height: 'calc(100vh - 109px)' }}>
       <div>
         <Head>
           <div>

@@ -69,11 +69,10 @@ const LeftSideContainer = styled.div`
 `
 const TeamAdd = styled.div`
   width: 100%;
-  height: 72px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
+  flex-direction: column;
+  padding: 16px 16px 0;
+  margin-bottom: 16px;
   &:hover {
     cursor: pointer;
   }
@@ -82,6 +81,7 @@ const TiamTitleText = styled.span`
   font-size: var(--font14);
   font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
+  margin-bottom: 16px;
 `
 const IconFontStyle = styled(IconFont)`
   font-size: 18px;
@@ -139,8 +139,12 @@ const FormStyle = styled(Form)`
   & .ant-form-item-control-input-content {
     background-color: var(--neutral-white-d5) !important;
   }
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
     background-color: var(--neutral-white-d5) !important;
   }
 `
@@ -468,26 +472,15 @@ const LeftSide = (props: any) => {
       <Content>
         <TeamAdd>
           <TiamTitleText>{t('team_management') as string}</TiamTitleText>
-          {/* <CloseWrap width={24} height={24}>
-            <IconFont
-              style={{ fontSize: 18 }}
-              type="plus"
-              onClick={() => createTeam()}
-            />
-          </CloseWrap> */}
-        </TeamAdd>
-        <ButtonBox>
           <CommonButton
-            onClick={() => createTeam()}
             type="primary"
-            size="small"
-            iconPlacement="left"
             icon="plus"
-            style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+            iconPlacement="left"
+            onClick={() => createTeam()}
           >
-            创建团队
+            {t('set_up_a_team')}
           </CommonButton>
-        </ButtonBox>
+        </TeamAdd>
 
         {/* 拖拽组件 */}
         <SideDragging
