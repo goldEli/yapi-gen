@@ -17,11 +17,11 @@ import { addTeams, dismissTeams, editTeams } from '@/services/setting'
 import { setActiveTeam } from '@store/teams/index'
 import { CloseWrap } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
+import CommonButton from '@/components/CommonButton'
 import {
   SprintDetailDragLine,
   SprintDetailMouseDom,
 } from '@/components/DetailScreenModal/DemandDetail/style'
-import CommonButton from '@/components/CommonButton'
 
 const LeftSideContainer = styled.div`
   position: relative;
@@ -198,7 +198,10 @@ const UploadTitle = styled.div`
 `
 
 const Content = styled.div``
-
+const ButtonBox = styled.div`
+  margin: 0px 20px;
+  margin-bottom: 16px;
+`
 const Upload = (props: any) => {
   const [t] = useTranslation()
   const [defaultIcon, setDefaultIcon] = useState(true)
@@ -475,9 +478,10 @@ const LeftSide = (props: any) => {
             iconPlacement="left"
             onClick={() => createTeam()}
           >
-            {t('AddDepartmentOrTeamModal.add_team')}
+            {t('set_up_a_team')}
           </CommonButton>
         </TeamAdd>
+
         {/* 拖拽组件 */}
         <SideDragging
           onChange={(item: any) => onChangeDragging(item)}

@@ -117,7 +117,6 @@ const HeaderAll = (props: HaderProps) => {
       navigate(`/Report/PerformanceInsight?data=${params}`)
     }
   }
-
   return (
     <>
       <HeaderRowBox>

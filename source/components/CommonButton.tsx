@@ -184,6 +184,7 @@ const CommonButton = (props: Props) => {
   if (props.icon && props.type !== 'icon') {
     return (
       <ButtonWrap
+        style={props?.style}
         className={commonCss}
         onClick={props.onClick as any}
         disabled={props.isDisable}
@@ -213,6 +214,7 @@ const CommonButton = (props: Props) => {
         onClick={props.onClick as any}
         disabled={props.isDisable}
         size={props.size}
+        style={props?.style}
       >
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
       </ButtonWrap>
