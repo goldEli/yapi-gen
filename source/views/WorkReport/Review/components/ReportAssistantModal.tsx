@@ -206,9 +206,13 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         data.push({
           conf_id: Number(tempArr[1]),
           content: JSON.stringify(obj),
+          type: Number(tempArr[0]),
+          name: tempArr[2],
         })
       } else if (tempArr[0] === '4') {
         data.push({
+          type: Number(tempArr[0]),
+          name: tempArr[2],
           conf_id: Number(tempArr[1]),
           content: (params[key] || [])?.map((i: any) => {
             const tempObj: any = demandListAll.current.find(
@@ -224,6 +228,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         data.push({
           conf_id: Number(tempArr[1]),
           content: params[key] || [],
+          type: Number(tempArr[0]),
+          name: tempArr[2],
         })
       }
     })
@@ -364,27 +370,32 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       return
     }
     setLoading(true)
-    const result = await getDailyInfo(currentProject?.id)
-    setLoading(false)
-    setModalInfo(result)
-    // 先过滤掉已经默认选择的需求
-    let tempArr: any = []
-    const attach: any = {}
-    result?.configs?.forEach((item: any) => {
-      if (item.type === 4) {
-        tempArr = tempArr.concat(item.content ?? [])
-      }
-      if (item.type === 2) {
-        attach[`${item.type}_${item.id}`] = item?.content ?? []
-      }
-    })
-    setUploadAttachList({
-      ...attach,
-    })
-    tempArr = tempArr.map((i: any) => i.id)
-    setDemandList(
-      demandListAll.current?.filter((k: any) => !tempArr.includes(k.id)) ?? [],
-    )
+    try {
+      const result = await getDailyInfo(currentProject?.id)
+      setLoading(false)
+      setModalInfo(result)
+      // 先过滤掉已经默认选择的需求
+      let tempArr: any = []
+      const attach: any = {}
+      result?.configs?.forEach((item: any) => {
+        if (item.type === 4) {
+          tempArr = tempArr.concat(item.content ?? [])
+        }
+        if (item.type === 2) {
+          attach[`${item.type}_${item.id}`] = item?.content ?? []
+        }
+      })
+      setUploadAttachList({
+        ...attach,
+      })
+      tempArr = tempArr.map((i: any) => i.id)
+      setDemandList(
+        demandListAll.current?.filter((k: any) => !tempArr.includes(k.id)) ??
+          [],
+      )
+    } catch (error) {
+      setLoading(false)
+    }
   }
 
   // 选择附件逻辑处理
@@ -436,7 +447,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         return (
           <Form.Item
             label={<LabelTitle>{content.name}</LabelTitle>}
-            name={`${content.type}_${content.id}`}
+            name={`${content.type}_${content.id}_${content.name}`}
           >
             <ChoosePeople
               initValue={modalInfo?.reportUserList?.map((item: any) => {
@@ -454,7 +465,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         return (
           <Form.Item
             label={<LabelTitle>{content.name}</LabelTitle>}
-            name={`${content.type}_${content.id}`}
+            name={`${content.type}_${content.id}_${content.name}`}
             rules={[
               {
                 message: (
@@ -474,9 +485,16 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           >
             <UploadAttach
               power
-              defaultList={uploadAttachList[`${content.type}_${content.id}`]}
+              defaultList={
+                uploadAttachList[
+                  `${content.type}_${content.id}_${content.name}`
+                ]
+              }
               onChangeAttachment={(res: any) => {
-                onChangeAttachment(res, `${content.type}_${content.id}`)
+                onChangeAttachment(
+                  res,
+                  `${content.type}_${content.id}_${content.name}`,
+                )
               }}
               addWrap={
                 <AddWrap
@@ -500,7 +518,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                 {content.name}：{getScheduleData().rate}%
               </LabelTitle>
             }
-            name={`${content.type}_${content.id}`}
+            name={`${content.type}_${content.id}_${content.name}`}
             initialValue={JSON.parse(content?.content ?? null)?.yesterday_add}
           >
             <div className="rateText">
@@ -529,8 +547,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                 {content.name}：{content?.content?.length}个
               </LabelTitle>
             }
-            name={`${content.type}_${content.id}`}
-            key={content.id}
+            name={`${content.type}_${content.id}_${content.name}`}
           >
             <NewRelatedNeed
               initValue={content?.content}

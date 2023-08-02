@@ -429,7 +429,16 @@ const DailyReportRules = () => {
                 label={t('qm')}
                 name="group_name"
                 required
-                rules={[{ required: true, message: t('q') }]}
+                validateFirst
+                rules={[
+                  { required: true, message: t('q') },
+                  {
+                    validator: (_, value: string) =>
+                      value?.trim()
+                        ? Promise.resolve()
+                        : Promise.reject(new Error(t('groupError'))),
+                  },
+                ]}
               >
                 <InputStyle placeholder={t('q')} maxLength={100} allowClear />
               </Form.Item>

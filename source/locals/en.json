@@ -2208,6 +2208,7 @@
   "q": "Enter",
   "dd": "Nail webhook address",
   "sc": "Automatically generated or not",
+  "groupError": "The group name cannot be empty",
   "msg1": "Generation conditions",
   "msg2": "Condition 1: Tasks after the expected start date (including the current day)",
   "msg3": "Condition 2: The task is in progress or completed on the same day",
