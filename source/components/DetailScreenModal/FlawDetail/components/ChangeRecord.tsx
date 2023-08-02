@@ -69,7 +69,7 @@ const ChangeRecord = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id } = paramsData
+  const { id } = paramsData ?? {}
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
