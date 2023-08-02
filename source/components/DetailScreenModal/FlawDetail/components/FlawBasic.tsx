@@ -65,7 +65,9 @@ const FlawBasic = (props: Props) => {
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
   const { affairsDetailDrawer } = useSelector(store => store.affairs)
-
+  useEffect(() => {
+    setSchedule(props.detail?.schedule)
+  }, [props.detail?.schedule])
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(

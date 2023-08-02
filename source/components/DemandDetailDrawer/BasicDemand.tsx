@@ -62,6 +62,7 @@ const BasicDemand = (props: Props) => {
   // 折叠字段
   const [foldList, setFoldList] = useState<any>([])
   // 不折叠字段
+  console.log('props.detail?.schedule', props.detail?.schedule)
   const [notFoldList, setNotFoldList] = useState<any>([])
   const [isShowFields, setIsShowFields] = useState(false)
   const [schedule, setSchedule] = useState(props.detail?.schedule || 0)
@@ -76,7 +77,9 @@ const BasicDemand = (props: Props) => {
     projectInfo.projectPermissions?.filter(
       (i: any) => i.identity === 'b/story/update',
     )?.length > 0
-
+  useEffect(() => {
+    setSchedule(props.detail?.schedule)
+  }, [props.detail?.schedule])
   // 修改进度
   const onChangeSchedule = async () => {
     if (
@@ -212,7 +215,6 @@ const BasicDemand = (props: Props) => {
   // 返回基本字段
   const getBasicTypeComponent = (item: any) => {
     let nodeComponent
-
     // 如果不属于下列字段的则渲染
     if (!['schedule', 'parent_id', 'priority'].includes(item.content)) {
       const filterContent = basicFieldList?.filter(

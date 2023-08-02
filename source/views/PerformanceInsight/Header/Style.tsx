@@ -334,7 +334,7 @@ export const PersonText = styled.div`
 `
 export const Col = styled.div`
   border-radius: 6px 6px 0 0;
-  padding: 16px 16px 0px 16px;
+  padding: 24px 16px 16px 48px;
   display: flex;
   height: 32px;
   align-items: center;
