@@ -101,7 +101,7 @@ export const FormWrap = styled(Form)`
   }
 `
 export const HeaderRow = styled.div`
-  margin: 24px 24px 10px 24px;
+  margin: 20px 24px;
   height: 32px;
   display: flex;
   justify-content: space-between;
@@ -110,6 +110,7 @@ export const HeaderRow = styled.div`
 
 export const Text = styled.span<{ size?: string; color?: string }>(
   {
+    whiteSpace: 'nowrap',
     display: 'flex',
     alignItems: 'center',
     '&:hover': {
@@ -315,7 +316,7 @@ export const LotIcon = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  background: var(--function-tag5);
+  /* background: var(--function-tag5); */
   margin-right: 12px;
   display: flex;
   align-items: center;
@@ -332,11 +333,13 @@ export const PersonText = styled.div`
   color: var(--neutral-n3);
 `
 export const Col = styled.div`
-  margin: 24px 48px 12px 48px;
+  border-radius: 6px 6px 0 0;
+  padding: 16px 16px 0px 16px;
   display: flex;
   height: 32px;
   align-items: center;
   justify-content: space-between;
+  background-color: var(--neutral-white-d2);
 `
 export const Col1 = styled.div`
   margin: 0px 0px 12px 0px;
@@ -388,18 +391,21 @@ export const Time = styled.span`
   color: var(--neutral-n3);
 `
 export const DataWrap = styled.div`
-  margin: 16px 0px 0 24px;
+  background-color: var(--neutral-white-d2);
+  padding: 16px;
   display: flex;
   flex-wrap: wrap;
+  border-radius: 0 0 6px 6px;
   /* justify-content: space-between; */
 `
 export const LotBox = styled.div`
   /* width: 220px; */
   height: 84px;
-  background: var(--neutral-n10);
+  background: var(--neutral-white-d2);
   border-radius: 6px;
   margin-right: 24px;
-  margin-bottom: 24px;
+  transition: all 0.5s;
+  /* margin-bottom: 24px; */
   padding: 16px;
   flex: 1;
   &:hover {
@@ -437,8 +443,8 @@ export const HightChartsWrap = styled.div<{ height: number }>(
     width: '100%',
     borderRadius: '6px',
     background: 'var(--neutral--white-d4)',
-    border: '1px solid var(--neutral-n6-d1)',
-    padding: '24px',
+    // border: '1px solid var(--neutral-n6-d1)',
+    paddingTop: '12px',
     '.highcharts-container,.highcharts-root ': {
       width: '100%',
     },

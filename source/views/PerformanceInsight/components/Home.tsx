@@ -666,183 +666,197 @@ const Home = () => {
           onEdit={editViews}
           value={optionVal}
         />
-        <WorkingStatus
-          projectId={projectId}
-          viewType={viewType}
-          homeType={homeType}
-          data={workDataList?.work || []}
-          title={
-            homeType === 'all'
-              ? t('performance.presentSituation')
-              : t('performance.presentSituation1')
-          }
-          time={workDataList?.start_time + ' ~ ' + workDataList.end_time}
-          num={1}
-        />
-        <div style={{ margin: '32px 0' }}>
+        <div
+          style={{
+            padding: '12px 16px',
+            backgroundColor: '#F8F8FA',
+          }}
+        >
           <WorkingStatus
-            viewType={viewType}
-            num={2}
             projectId={projectId}
+            viewType={viewType}
             homeType={homeType}
-            data={workDataList?.defect || []}
-            title={t('performance.qPresentSituation')}
-            time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
+            data={workDataList?.work || []}
+            title={
+              homeType === 'all'
+                ? t('performance.presentSituation')
+                : t('performance.presentSituation1')
+            }
+            time={workDataList?.start_time + ' ~ ' + workDataList.end_time}
+            num={1}
           />
-        </div>
-        <div style={{ width: '100%', display: 'flex' }}>
-          <div style={{ width: '100%', paddingBottom: '24px' }}>
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '0 24px ',
-              }}
-            >
-              <HightChartMainBar
-                title={
-                  homeType === 'all'
-                    ? t('performance.title1')
-                    : t('performance.title01')
-                }
-                titleType={true}
-                height={396}
-                chart={charts1}
-                onChange={(val: any) => getContrastNewWork(val)}
-              />
-              <HightChartMainLine
-                projectId={projectId}
-                chart={charts2}
-                title={
-                  homeType === 'all'
-                    ? t('performance.title2')
-                    : t('performance.title02')
-                }
-                height={396}
-              />
-            </div>
-            <div
-              style={{
-                width: '100%',
-                marginTop: '32px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '0 24px',
-              }}
-            >
-              <HightChartMainPie
-                height={352}
-                chart={charts3}
-                titleType={false}
-                title={
-                  homeType === 'all'
-                    ? t('performance.title3')
-                    : t('performance.title03')
-                }
-              />
-              {/* 柱状图 */}
-              <HightChartMainBar
-                titleType={false}
-                chart={charts4}
-                height={352}
-                title={
-                  homeType === 'all'
-                    ? t('performance.title4')
-                    : t('performance.title04')
-                }
-                onChange={(val: string) => {
-                  getCompletionRateChart(val)
+          <div style={{ margin: '12px 0' }}>
+            <WorkingStatus
+              viewType={viewType}
+              num={2}
+              projectId={projectId}
+              homeType={homeType}
+              data={workDataList?.defect || []}
+              title={t('performance.qPresentSituation')}
+              time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
+            />
+          </div>
+          <div style={{ width: '100%', display: 'flex' }}>
+            <div style={{ width: '100%', paddingBottom: '24px' }}>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  backgroundColor: '#F8F8FA',
+                  borderRadius: '6px',
                 }}
-              />
-            </div>
-            <div
-              style={{
-                width: '100%',
-                marginTop: '32px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '0 24px',
-              }}
-            >
-              <HightChartMainSpline
-                title={t('performance.title5')}
-                chart={charts5}
-                height={396}
-              />
-              <HightChartMainPie
-                height={396}
-                chart={charts6}
-                titleType
-                title={t('performance.home9')}
-                onChange={item => getDefectRatioChart(item.key)}
-              />
+              >
+                <HightChartMainBar
+                  title={
+                    homeType === 'all'
+                      ? t('performance.title1')
+                      : t('performance.title01')
+                  }
+                  titleType={true}
+                  height={396}
+                  chart={charts1}
+                  onChange={(val: any) => getContrastNewWork(val)}
+                />
+                <HightChartMainLine
+                  projectId={projectId}
+                  chart={charts2}
+                  title={
+                    homeType === 'all'
+                      ? t('performance.title2')
+                      : t('performance.title02')
+                  }
+                  height={396}
+                />
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  marginTop: '12px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  backgroundColor: '#F8F8FA',
+                  borderRadius: '6px',
+                }}
+              >
+                <HightChartMainPie
+                  height={352}
+                  chart={charts3}
+                  titleType={false}
+                  title={
+                    homeType === 'all'
+                      ? t('performance.title3')
+                      : t('performance.title03')
+                  }
+                />
+                {/* 柱状图 */}
+                <HightChartMainBar
+                  titleType={false}
+                  chart={charts4}
+                  height={352}
+                  title={
+                    homeType === 'all'
+                      ? t('performance.title4')
+                      : t('performance.title04')
+                  }
+                  onChange={(val: string) => {
+                    getCompletionRateChart(val)
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  marginTop: '12px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  backgroundColor: '#F8F8FA',
+                  borderRadius: '6px',
+                }}
+              >
+                <HightChartMainSpline
+                  title={t('performance.title5')}
+                  chart={charts5}
+                  height={396}
+                />
+                <HightChartMainPie
+                  height={396}
+                  chart={charts6}
+                  titleType
+                  title={t('performance.home9')}
+                  onChange={item => getDefectRatioChart(item.key)}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        {/* 保存提示操作 */}
-        {save && viewType !== 2 ? (
-          <DialogMain>
-            <DialogHeader>
-              <Space size={14}>
+          {/* 保存提示操作 */}
+          {save && viewType !== 2 ? (
+            <DialogMain>
+              <DialogHeader>
+                <Space size={14}>
+                  <CommonIconFont
+                    type="Warning"
+                    size={20}
+                    color="var(--function-warning)"
+                  />
+                  <span>{t('performance.save1Msg')}</span>
+                </Space>
                 <CommonIconFont
-                  type="Warning"
-                  size={20}
-                  color="var(--function-warning)"
-                />
-                <span>{t('performance.save1Msg')}</span>
-              </Space>
-              <CommonIconFont
-                onClick={() => dispatch(setSave(false))}
-                type="close"
-                size={16}
-                color="var(--neutral-n2)"
-              />
-            </DialogHeader>
-            <TextColor>{t('performance.save2Msg')}</TextColor>
-            <div style={{ margin: '8px 0 0 32px' }}>
-              <SelectMain
-                onChange={e => {
-                  setOptionVal(e)
-                }}
-                placeholder={t('common.pleaseSelect')}
-                allowClear={false}
-                value={optionVal}
-                list={viewDataList?.map(el => ({
-                  name: el.name,
-                  key: Number(el.key),
-                }))}
-              />
-            </div>
-            <Footer>
-              <Space size={6}>
-                <span
-                  style={{
-                    color: 'var(--auxiliary-text-t2-d1)',
-                    cursor: 'pointer',
-                  }}
                   onClick={() => dispatch(setSave(false))}
-                >
-                  {t('performance.nosave')}
-                </span>
-              </Space>
-              <Space size={16}>
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    setIsVisible(true)
-                    dispatch(setSave(false))
+                  type="close"
+                  size={16}
+                  color="var(--neutral-n2)"
+                />
+              </DialogHeader>
+              <TextColor>{t('performance.save2Msg')}</TextColor>
+              <div style={{ margin: '8px 0 0 32px' }}>
+                <SelectMain
+                  onChange={e => {
+                    setOptionVal(e)
                   }}
-                >
-                  {t('performance.save1')}
-                </CommonButton>
-                <CommonButton type="primary" onClick={() => editViews()}>
-                  {t('performance.save')}
-                </CommonButton>
-              </Space>
-            </Footer>
-          </DialogMain>
-        ) : null}
+                  placeholder={t('common.pleaseSelect')}
+                  allowClear={false}
+                  value={optionVal}
+                  list={viewDataList?.map(el => ({
+                    name: el.name,
+                    key: Number(el.key),
+                  }))}
+                />
+              </div>
+              <Footer>
+                <Space size={6}>
+                  <span
+                    style={{
+                      color: 'var(--auxiliary-text-t2-d1)',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => dispatch(setSave(false))}
+                  >
+                    {t('performance.nosave')}
+                  </span>
+                </Space>
+                <Space size={16}>
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      setIsVisible(true)
+                      dispatch(setSave(false))
+                    }}
+                  >
+                    {t('performance.save1')}
+                  </CommonButton>
+                  <CommonButton type="primary" onClick={() => editViews()}>
+                    {t('performance.save')}
+                  </CommonButton>
+                </Space>
+              </Footer>
+            </DialogMain>
+          ) : null}
+        </div>
+
         {/* 新建和编辑视图 1*/}
         <ViewDialog
           name=""

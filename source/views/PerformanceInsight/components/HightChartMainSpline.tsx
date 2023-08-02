@@ -100,7 +100,14 @@ const HightChartMainSpline = (props: {
   }
   const [t] = useTranslation()
   return (
-    <div style={{ width: '49%' }}>
+    <div
+      style={{
+        flex: 1,
+        backgroundColor: 'var(--neutral-white-d2)',
+        padding: '12px 16px',
+        borderRadius: '6px',
+      }}
+    >
       <Col1>
         <RightRow>
           <Space size={12}>
