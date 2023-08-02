@@ -60,7 +60,7 @@ const CreateNoteModal = (props: any) => {
     ) {
       return Promise.reject(new Error(t('the_message_content_cannot_be_empty')))
     }
-    // return Promise.resolve()
+    return Promise.resolve()
   }
 
   // 验证定时发送时间
