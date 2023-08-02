@@ -303,6 +303,10 @@ const DailyReportRules = () => {
       })
     } else if (num === 2) {
       const state = form2.getFieldsValue().is_auto_send === 1
+      const days = form2.getFieldsValue().day
+      if (days.length < 1) {
+        return getMessage({ msg: '发送周期必选', type: 'error' })
+      }
       if (state) {
         open({
           title: t('msg19'),
