@@ -24,21 +24,44 @@ const WrapDiv = styled.div`
     display: flex;
     align-items: center;
     .relative {
-      display: inline-block;
+      width: 44px;
+      height: 32px;
       white-space: nowrap;
       color: var(--primary-d2);
       font-size: 14px;
       font-family: SiYuanRegular;
-      margin: 0px 24px;
+      margin: 0px 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
+      border-radius: 6px 6px 6px 6px;
+      &:hover {
+        background: var(--hover-d2);
+      }
+      &:active {
+        background: var(--auxiliary-b6);
+      }
     }
     .cancel {
-      display: inline-block;
+      width: 44px;
+      height: 32px;
       white-space: nowrap;
       font-size: 14px;
       font-family: SiYuanRegular;
       color: var(--neutral-n2);
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px 6px 6px 6px;
+      &:hover {
+        color: var(--auxiliary-text-t2-d2);
+        background: var(--auxiliary-b4);
+      }
+      &:active {
+        background: var(--auxiliary-b5);
+      }
     }
   }
 `

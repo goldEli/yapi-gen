@@ -87,7 +87,6 @@ const ContentWrap = styled.div`
       color: var(--neutral-n2);
       display: flex;
       align-items: center;
-      margin-top: 8px;
     }
     .line {
       display: inline-block;
@@ -105,18 +104,20 @@ const LabelTitle = styled.span`
   color: var(--neutral-n1-d1);
   line-height: 22px;
 `
-const AgainButton = styled.span`
-  width: 100px;
+const AgainButton = styled.div`
+  width: 80px;
   height: 32px;
-  text-align: center;
   font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 6px 6px 6px 6px;
   font-family: SiYuanRegular;
   color: var(--primary-d1);
-  line-height: 32px;
   white-space: nowrap;
   margin-left: 16px;
   cursor: pointer;
+  flex-shrink: 0;
   &:hover {
     background: var(--hover-d2);
   }
@@ -131,10 +132,10 @@ const fadeInAnimation = keyframes`
     width:0px;
   }
   50%{
-    width:5px;
+    width:8px;
   }
   100%{
-    width:14px;
+    width:16px;
   }
 `
 
@@ -145,9 +146,7 @@ const Ellipsis = styled.span`
 `
 
 const LoadingButton = styled.span`
-  width: 100px;
   height: 32px;
-  text-align: center;
   font-size: 14px;
   border-radius: 6px 6px 6px 6px;
   font-family: SiYuanRegular;
@@ -157,6 +156,11 @@ const LoadingButton = styled.span`
   cursor: pointer;
   display: flex;
   align-items: center;
+  span {
+    display: inline-block;
+    width: 60px;
+    text-align: right;
+  }
 `
 
 interface ReportAssistantProps {
@@ -282,15 +286,17 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       title: t('p2.toast'),
       okText: t('send'),
       cancelText: t('report.list.thinkAgain'),
-      children: true ? (
+      children: modalInfo?.send_time ? (
         <div>
           {`${t('report.list.currentDaily')}${modalInfo?.send_time}${t(
             'report.list.sendTo',
-          )}-[${modalInfo?.group_name}]`}
+          )}-[${modalInfo?.group_name ?? '--'}]`}
           <div>{t('report.list.sendAgain')}</div>
         </div>
       ) : (
-        <div>{`${t('report.list.sendToStud')}-[${modalInfo?.group_name}]`}</div>
+        <div>{`${t('report.list.sendToStud')}-[${
+          modalInfo?.group_name ?? '--'
+        }]`}</div>
       ),
       onConfirm: () => sendReport(params),
     })
@@ -364,6 +370,11 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       })
       return
     }
+    if (!currentProject?.report_template_id) {
+      setHavePermission(true)
+      close()
+      return
+    }
     setLoading(true)
     try {
       const result = await getDailyInfo(currentProject?.id)
@@ -376,6 +387,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       setCurrentProject({
         ...currentProject,
         is_setting_config: result.is_setting_config,
+        enable_hand_send: result.enable_hand_send,
       })
       setModalInfo(result)
       // 先过滤掉已经默认选择的需求
@@ -501,12 +513,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                 )
               }}
               addWrap={
-                <AddWrap
-                  style={{
-                    marginBottom: '20px',
-                  }}
-                  hasColor
-                >
+                <AddWrap hasColor>
                   <IconFont type="plus" />
                   <div>{t('p2.addAdjunct') as unknown as string}</div>
                 </AddWrap>
@@ -642,7 +649,9 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                     {loading ? (
                       <LoadingButton>
                         <span>{t('report.list.generate')}</span>
-                        <Ellipsis>......</Ellipsis>
+                        <div style={{ width: 20 }}>
+                          <Ellipsis>......</Ellipsis>
+                        </div>
                       </LoadingButton>
                     ) : (
                       <AgainButton onClick={generatorDataByProject}>
