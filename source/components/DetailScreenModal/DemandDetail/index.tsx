@@ -714,7 +714,7 @@ const DemandDetail = () => {
             <ScreenMinHover
               label={t('common.search')}
               icon="filter"
-              isActive={true}
+              isActive={filter}
               onClick={() => setFilter(!filter)}
             />
           )

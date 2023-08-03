@@ -554,6 +554,7 @@ const SprintDetailDrawer = () => {
   }
   // 操作后更新列表
   const onOperationUpdate = async (value?: boolean) => {
+    getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -563,7 +564,7 @@ const SprintDetailDrawer = () => {
   const onCancelExamine = async () => {
     await cancelVerify(drawerInfo.verify_data?.id)
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
-    onOperationUpdate(true)
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 菜单
@@ -930,7 +931,10 @@ const SprintDetailDrawer = () => {
                       />
                     )}
                     {i.key === 'childSprint' && showState[i.key].isOpen && (
-                      <ChildSprint detail={drawerInfo} />
+                      <ChildSprint
+                        detail={drawerInfo}
+                        onUpdate={onOperationUpdate}
+                      />
                     )}
                     {i.key === 'linkSprint' && showState[i.key].isOpen && (
                       <LinkSprint detail={drawerInfo} />

@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
 import { getShapeFlawLeft, updateFlawStatus } from '@/services/flaw'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
-import { setIsUpdateStatus } from '@store/project'
+import { setIsUpdateAddWorkItem, setIsUpdateStatus } from '@store/project'
 import StatusExamine from '@/components/StatusExamine'
 import { cancelVerify } from '@/services/mine'
 
@@ -40,7 +40,9 @@ const FlawStatus = (props: any) => {
   const [t] = useTranslation()
   const [active, setActive] = useState<any>(0)
   const [rows, setRows] = useState(null)
-  const { projectInfo, isUpdateStatus } = useSelector(store => store.project)
+  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const { flawInfo } = useSelector(store => store.flaw)
   const [leftList, setLeftList] = useState([])
   const dispatch = useDispatch()
@@ -92,6 +94,7 @@ const FlawStatus = (props: any) => {
     await cancelVerify(flawInfo.verify_data?.id)
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
     dispatch(getFlawInfo({ projectId: props.pid, id: props.sid }))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   useEffect(() => {
