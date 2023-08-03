@@ -353,6 +353,7 @@ const AffairsDetail = () => {
     await cancelVerify(affairsInfo.verify_data?.id)
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
     dispatch(getAffairsInfo({ projectId: params.id, sprintId: affairsInfo.id }))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 点击切换类别

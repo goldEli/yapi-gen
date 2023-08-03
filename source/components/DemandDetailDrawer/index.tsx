@@ -460,7 +460,7 @@ const DemandDetailDrawer = () => {
   const onCancelExamine = async () => {
     await cancelVerify(drawerInfo.verify_data?.id)
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
-    onOperationUpdate(true)
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 提交评论

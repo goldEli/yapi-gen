@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getDemandInfo, getShapeLeft } from '@/services/demand'
 import { setDemandInfo } from '@store/demand'
 import { getMessage } from '@/components/Message'
-import { setIsUpdateStatus } from '@store/project'
+import { setIsUpdateAddWorkItem, setIsUpdateStatus } from '@store/project'
 import { getDemandCommentList } from '@store/demand/demand.thunk'
 import StatusExamine from '@/components/StatusExamine'
 
@@ -38,7 +38,9 @@ const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
   const [active, setActive] = useState(0)
   const [rows, setRows] = useState(null)
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const { demandInfo } = useSelector(store => store.demand)
   const [leftList, setLeftList] = useState([])
   const dispatch = useDispatch()
@@ -98,6 +100,7 @@ const DemandStatusBox = (props: any) => {
       id: props.sid,
     })
     dispatch(setDemandInfo(result))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   useEffect(() => {
