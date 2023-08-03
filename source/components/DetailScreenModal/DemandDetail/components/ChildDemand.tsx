@@ -30,7 +30,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
-import { setAddWorkItemModal } from '@store/project'
+import { setAddWorkItemModal, setIsUpdateAddWorkItem } from '@store/project'
 import { getDemandInfo } from '@store/demand/demand.thunk'
 import { ComputedWrap } from '../style'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -163,8 +163,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   }
 
   const onUpdate = async (updateState?: boolean) => {
-    dispatch(getDemandInfo({ projectId, id: demandInfo.id }))
-    getList(pageObj, order, orderKey, updateState)
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   const updateOrderkey = (key: any, val: any) => {

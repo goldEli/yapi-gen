@@ -9,18 +9,13 @@ import {
 } from '@/services/demand'
 import { getCustomNormalValue } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { message, Tooltip } from 'antd'
+import { Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import IconFont from '../IconFont'
 import { getMessage } from '../Message'
-import {
-  AddWrap,
-  CanOperation,
-  IconFontWrapEdit,
-  SliderWrap,
-} from '../StyleCommon'
+import { CanOperation, IconFontWrapEdit, SliderWrap } from '../StyleCommon'
 import TableQuickEdit from '../TableQuickEdit'
 import {
   ContentWrap,
@@ -62,7 +57,6 @@ const BasicDemand = (props: Props) => {
   // 折叠字段
   const [foldList, setFoldList] = useState<any>([])
   // 不折叠字段
-  console.log('props.detail?.schedule', props.detail?.schedule)
   const [notFoldList, setNotFoldList] = useState<any>([])
   const [isShowFields, setIsShowFields] = useState(false)
   const [schedule, setSchedule] = useState(props.detail?.schedule || 0)
