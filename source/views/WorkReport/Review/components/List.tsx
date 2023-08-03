@@ -683,7 +683,8 @@ const List = () => {
             ? columns
             : id === 3
             ? columns?.filter(
-                (item: any) => item.dataIndex && item.dataIndex !== 'type',
+                (item: any) =>
+                  item.dataIndex && item.dataIndex !== 'user_copysend_type',
               )
             : columns?.filter((item: any) => item.dataIndex)
         }

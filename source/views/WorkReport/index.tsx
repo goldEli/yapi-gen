@@ -61,6 +61,7 @@ const WorkReport = () => {
           y = rect?.height - 108
         }
         setPosition({ x, y })
+        document.body.removeChild(robotButton)
         document.body.appendChild(robotButton)
       }}
       onDragOver={(event: any) => {
@@ -88,10 +89,10 @@ const WorkReport = () => {
       <RobotButton
         id="robotButton"
         draggable="true"
-        onClick={() => setReportAssistantModalVisible(true)}
         onDragStart={(event: any) => {
-          event.dataTransfer.setData('text/plain', event.target.id)
+          event.dataTransfer.effectAllowed = 'move'
         }}
+        onClick={() => setReportAssistantModalVisible(true)}
         style={{
           left: position.x,
           top: position.y,
