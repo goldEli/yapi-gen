@@ -75,7 +75,6 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   border-radius: 12px;
-  margin-bottom: 16px;
   font-size: 16px;
   font-family: SiYuanMedium;
   color: var(--neutral-n1-d1);
@@ -425,6 +424,7 @@ const DailyReportRules = () => {
               onValuesChange={onValuesChange}
             >
               <Form.Item
+                style={{ marginTop: 16 }}
                 label={t('qm')}
                 name="group_name"
                 required
@@ -521,7 +521,7 @@ const DailyReportRules = () => {
               onValuesChange={onValuesChange}
             >
               <Form.Item
-                style={{ marginBottom: 24 }}
+                style={{ marginBottom: 24, marginTop: 16 }}
                 label={t('msg11')}
                 name="is_auto_send"
                 className="check-form"
