@@ -42,7 +42,7 @@ const DailyReportRulesWrap = styled(Form)`
   }
   & .check-form,
   & .checkBox-form {
-    margin-bottom: 8px;
+    margin-bottom: 0px;
   }
   & .check-form .ant-row {
     min-width: 100%;
@@ -135,6 +135,7 @@ const Msg = styled.div`
   font-family: SiYuanRegular;
   color: var(--neutral-n1-d1);
   margin-top: 8px;
+  font-family: SiYuanMedium;
 `
 const Msg1 = styled.div`
   color: var(--neutral-n3);
@@ -520,6 +521,7 @@ const DailyReportRules = () => {
               onValuesChange={onValuesChange}
             >
               <Form.Item
+                style={{ marginBottom: 24 }}
                 label={t('msg11')}
                 name="is_auto_send"
                 className="check-form"
