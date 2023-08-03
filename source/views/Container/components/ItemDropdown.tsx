@@ -87,7 +87,7 @@ const ItemTag = styled.div<{ isSprint: boolean }>`
   font-size: 12px;
   background: ${props =>
     props.isSprint
-      ? 'linear-gradient(225deg, #8db1f6 0%, #7266ff 100%)'
+      ? 'linear-gradient(225deg, #FFA29C 0%, #F6856C 100%);'
       : 'linear-gradient(225deg, #8DD2F6 0%, #6688FF 100%)'};
   border-radius: 4px 4px 4px 4px;
   color: var(--neutral-white-d7);
