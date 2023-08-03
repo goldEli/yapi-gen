@@ -220,14 +220,17 @@ export const useDynamicColumns = (state: any) => {
                 }
               >
                 {text?.icon && (
-                  <IconFont
-                    className="priorityIcon"
-                    type={text?.icon}
-                    style={{
-                      fontSize: 20,
-                      color: text?.color,
-                    }}
-                  />
+                  <>
+                    <IconFont
+                      className="priorityIcon"
+                      type={text?.icon}
+                      style={{
+                        fontSize: 20,
+                        color: text?.color,
+                      }}
+                    />
+                    <span>{text.content_txt}</span>
+                  </>
                 )}
                 {!text?.icon && <span style={{ marginLeft: '5px' }}>--</span>}
               </Wrap>
