@@ -180,6 +180,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const [modalInfo, setModalInfo] = useState<any>(null)
   const [loading, setLoading] = useState<any>(false)
   const [uploadAttachList, setUploadAttachList] = useState<any>({})
+  const [peopleValue, setPeopleValue] = useState<any>([])
   const dispatch = useDispatch()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const { close, visible } = props
@@ -409,6 +410,16 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         demandListAll.current?.filter((k: any) => !tempArr.includes(k.id)) ??
           [],
       )
+      setPeopleValue(
+        result?.reportUserList?.map((item: any) => {
+          return {
+            avatar: item?.avatar,
+            id: item.id || item.user_id,
+            name: item?.name,
+            noDel: true,
+          }
+        }) ?? [],
+      )
     } catch (error) {
       setLoading(false)
     }
@@ -465,16 +476,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             label={<LabelTitle>{content.name}</LabelTitle>}
             name={`${content.type}_${content.id}_${content.name}`}
           >
-            <ChoosePeople
-              initValue={modalInfo?.reportUserList?.map((item: any) => {
-                return {
-                  avatar: item?.avatar,
-                  id: item.id || item.user_id,
-                  name: item?.name,
-                  noDel: true,
-                }
-              })}
-            />
+            <ChoosePeople initValue={peopleValue} />
           </Form.Item>
         )
       case 2:

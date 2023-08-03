@@ -24,7 +24,7 @@ const WrapDiv = styled.div`
     display: flex;
     align-items: center;
     .relative {
-      width: 44px;
+      padding: 0px 8px;
       height: 32px;
       white-space: nowrap;
       color: var(--primary-d2);
@@ -44,7 +44,7 @@ const WrapDiv = styled.div`
       }
     }
     .cancel {
-      width: 44px;
+      padding: 0px 8px;
       height: 32px;
       white-space: nowrap;
       font-size: 14px;
@@ -56,11 +56,11 @@ const WrapDiv = styled.div`
       align-items: center;
       border-radius: 6px 6px 6px 6px;
       &:hover {
-        color: var(--auxiliary-text-t2-d2);
         background: var(--auxiliary-b4);
       }
       &:active {
         background: var(--auxiliary-b5);
+        color: var(--auxiliary-text-t2-d2);
       }
     }
   }
