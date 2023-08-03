@@ -29,9 +29,12 @@ const DailyReportRulesWrap = styled(Form)`
   & .ant-form-item {
     padding: 0 32px !important;
   }
+  & .ant-form-item-control-input {
+    min-height: 18px;
+  }
   & .ant-form-item .ant-form-item-label {
     font-size: 14px;
-    font-family: SiYuanRegular;
+    font-family: SiYuanMedium;
     color: var(--neutral-n1-d1);
     height: 32px;
     line-height: 32px;
@@ -39,7 +42,7 @@ const DailyReportRulesWrap = styled(Form)`
   }
   & .check-form,
   & .checkBox-form {
-    margin-bottom: 8px;
+    margin-bottom: 0px;
   }
   & .check-form .ant-row {
     min-width: 100%;
@@ -52,9 +55,11 @@ const DailyReportRulesWrap = styled(Form)`
   & .ant-form-item-label {
     min-width: 100px;
   }
+  .ant-form-item-label > label {
+  }
 `
 const ReportWrap = styled.div`
-  margin: 0 124px;
+  margin: 0 auto;
   width: 992px;
   height: auto;
   background: var(--neutral-white-d4);
@@ -71,7 +76,7 @@ const HeaderWrap = styled.div`
   justify-content: space-between;
   border-radius: 12px;
   font-size: 16px;
-  font-family: SiYuanRegular;
+  font-family: SiYuanMedium;
   color: var(--neutral-n1-d1);
   &:hover {
     background: var(--hover-d2);
@@ -94,12 +99,13 @@ const Text2 = styled.div`
   & span {
     font-size: 14px;
     color: var(--neutral-n1-d1);
-    font-family: SiYuanRegular;
+    font-family: SiYuanMedium;
   }
   & span:nth-child(2) {
     margin-left: 16px;
     font-size: 14px;
     font-weight: 400;
+    font-family: SiYuanRegular;
     color: var(--auxiliary-text-t2-d2);
   }
   & span:nth-child(2):hover {
@@ -114,13 +120,13 @@ const FooterWrap = styled.div`
 const PopoverWrap = styled.div`
   min-width: 310px;
   height: 326px;
-  background: var(--auxiliary-b5);
+  // background: var(--auxiliary-b5);
   border-radius: 6px;
   padding: 12px 0 12px 12px;
 `
 const Title = styled.div`
   font-size: 14px;
-  font-family: SiYuanRegular;
+  font-family: SiYuanMedium;
   color: var(--neutral-n1-d1);
 `
 const Msg = styled.div`
@@ -128,6 +134,7 @@ const Msg = styled.div`
   font-family: SiYuanRegular;
   color: var(--neutral-n1-d1);
   margin-top: 8px;
+  font-family: SiYuanMedium;
 `
 const Msg1 = styled.div`
   color: var(--neutral-n3);
@@ -210,12 +217,6 @@ const DailyReportRules = () => {
       },
     ]
     return arr
-    // .map((i: any) => {
-    //   return {
-    //     label: t(`formWork.${i.label??'sunday'}`),
-    //     value: i.value,
-    //   }
-    // })
   }
   const content = () => {
     return (
@@ -335,7 +336,6 @@ const DailyReportRules = () => {
             })
             if (res2.code === 0) {
               getMessage({ msg: t('common.saveSuccess'), type: 'success' })
-              setSendDisabled(false)
             }
           },
         })
@@ -424,6 +424,7 @@ const DailyReportRules = () => {
               onValuesChange={onValuesChange}
             >
               <Form.Item
+                style={{ marginTop: 16 }}
                 label={t('qm')}
                 name="group_name"
                 required
@@ -447,7 +448,7 @@ const DailyReportRules = () => {
                 rules={[
                   {
                     required: true,
-                    message: t('q'),
+                    message: t('p1'),
                     // eslint-disable-next-line
                     pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
                   },
@@ -520,6 +521,7 @@ const DailyReportRules = () => {
               onValuesChange={onValuesChange}
             >
               <Form.Item
+                style={{ marginBottom: 24, marginTop: 16 }}
                 label={t('msg11')}
                 name="is_auto_send"
                 className="check-form"
