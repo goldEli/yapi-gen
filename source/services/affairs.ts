@@ -156,7 +156,7 @@ export const getAffairsList = async (
         iterate_id: params?.iterateIds,
         status: params?.statusIds,
         priority: params?.priorityIds,
-        user_name: params?.userId,
+        user_id: params?.userId,
         tag: params?.tagIds,
         created_at: params?.startTime,
         expected_start_at: params?.expectedStart,
