@@ -447,7 +447,7 @@ const DailyReportRules = () => {
                 rules={[
                   {
                     required: true,
-                    message: t('q'),
+                    message: t('p1'),
                     // eslint-disable-next-line
                     pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
                   },
