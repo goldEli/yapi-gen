@@ -182,6 +182,17 @@ const SiteDrawer = () => {
   }
   const setReads2 = async (values: any) => {
     const res = await setReadApi(values)
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    if (res.code === 0) {
+      const res2 = await getContactStatistics()
+      let num = 0
+
+      res2.list.slice(1, 6).forEach((i: any) => {
+        num += Number(i.nread)
+      })
+
+      dispatch(changeNumber(num))
+    }
   }
 
   const setAllRead = () => {
