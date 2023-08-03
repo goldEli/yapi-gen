@@ -2243,5 +2243,6 @@
   "msg32": "【Enter the project】",
   "msg33": "Data sourced from the IFUN Agile system Powered By IFUN Agile",
   "rbgz": "Daily report configuration rules",
-  "fszq": "Sending cycle required"
+  "fszq": "Sending cycle required",
+  "p1": "Please enter the correct address"
 }
