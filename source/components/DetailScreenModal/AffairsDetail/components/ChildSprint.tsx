@@ -37,13 +37,18 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 
 interface SelectItem {
   label: string
   value: number
 }
 
-const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
+const ChildSprint = (props: {
+  detail: Model.Affairs.AffairsInfo
+  onUpdate?(value?: boolean): void
+  isInfoPage?: boolean
+}) => {
   const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
   const dispatch = useDispatch()
@@ -134,6 +139,19 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     getSelectList(value)
   }
 
+  const onUpdate = () => {
+    if (props.isInfoPage) {
+      dispatch(
+        getAffairsInfo({
+          projectId: projectInfo.id,
+          sprintId: props.detail.id,
+        }),
+      )
+    } else {
+      props.onUpdate?.(true)
+    }
+  }
+
   // 点击下拉的事务 -- 添加
   const onChangeSelect = async (value: any) => {
     await addAffairsChild({
@@ -143,14 +161,14 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     })
     getMessage({ type: 'success', msg: t('addedSuccessfully') })
     onCancelSearch()
-    getList(pageParams)
+    onUpdate()
   }
 
   // 删除子事务确认事件
   const onDeleteConfirm = async (item: any) => {
     await deleteAffairs({ projectId: projectInfo.id, id: item.id })
     getMessage({ type: 'success', msg: t('successfullyDeleted') })
-    getList(pageParams)
+    onUpdate()
   }
 
   // 删除关联工作项

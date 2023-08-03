@@ -20,6 +20,14 @@ export const WindowArea = styled(Rnd)`
   box-sizing: border-box;
   position: absolute;
   cursor: pointer;
+  &::after {
+    width: 100%;
+    height: 32px;
+    content: '';
+    top: -16px;
+    left: 0px;
+    position: absolute;
+  }
 `
 
 export const Content = styled.div<{ gap: number }>`

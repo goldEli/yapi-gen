@@ -155,7 +155,10 @@ const AffairsInfo = (props: Props) => {
           isInfoPage
         />
         {affairsInfo.work_type !== 6 && (
-          <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+          <ChildSprint
+            detail={affairsInfo as Model.Affairs.AffairsInfo}
+            isInfoPage
+          />
         )}
         <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
         <ActivitySprint />

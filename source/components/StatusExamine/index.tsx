@@ -63,7 +63,7 @@ const StatusExamine = (props: StatusExamineProps) => {
             </div>
           </div>
           <Space size={16}>
-            {!props.isDrawer && (
+            {!props.isDrawer && !props.verifyInfo && (
               <div className="cancel" onClick={props.onCheck}>
                 {t('circulationRecords')}
               </div>
