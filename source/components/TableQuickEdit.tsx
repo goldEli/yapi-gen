@@ -10,24 +10,19 @@ import {
   storyConfigField,
 } from '@/services/project'
 import { getStaffList } from '@/services/staff'
-import { Checkbox, message, Tooltip } from 'antd'
+import { Checkbox, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
-import { setDemandInfo } from '@store/demand'
+
 import styled from '@emotion/styled'
 import { getIterateList } from '@/services/iterate'
-import {
-  getDemandInfo,
-  getTreeList,
-  updateTableParams,
-} from '@/services/demand'
+import { getTreeList, updateTableParams } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import { getMessage } from './Message'
 import { updateAffairsTableParams } from '@/services/affairs'
-import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import { updateFlawTableParams } from '@/services/flaw'
-import { getFlawInfo } from '@store/flaw/flaw.thunk'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 const LimitText = styled.div`
   width: 192px;
@@ -103,7 +98,9 @@ const TableQuickEdit = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>()
   const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
   let projectId: any
@@ -439,29 +436,18 @@ const TableQuickEdit = (props: Props) => {
       // 缺陷
       if (props.item.is_bug === 1) {
         await updateFlawTableParams(obj)
-        if (props.isInfoPage) {
-          dispatch(getFlawInfo({ projectId, id: props.item?.id }))
-        } else {
-          props.onUpdate?.()
-        }
       } else {
         // 需求
         await updateTableParams(obj)
-        if (props.isInfoPage) {
-          const result = await getDemandInfo({ projectId, id: props.item?.id })
-          dispatch(setDemandInfo(result))
-        } else {
-          props.onUpdate?.()
-        }
       }
     } else {
       // 事务
       await updateAffairsTableParams(obj)
-      if (props.isInfoPage) {
-        dispatch(getAffairsInfo({ projectId, sprintId: props.item?.id }))
-      } else {
-        props.onUpdate?.()
-      }
+    }
+    if (props.isInfoPage) {
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    } else {
+      props.onUpdate?.()
     }
     getMessage({ msg: t('common.editSuccess'), type: 'success' })
     if (type === 1) {
