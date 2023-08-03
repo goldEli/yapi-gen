@@ -336,9 +336,6 @@ export const DelButton = styled.div`
   }
 `
 export const SelectWrap = styled(CustomSelect)`
-  .ant-select-selection-placeholder {
-    color: var(--neutral-black);
-  }
   .ant-select-selector {
     min-width: 140px;
     border: none !important;
@@ -374,6 +371,6 @@ export const SelectWrapBedeck = styled.div`
     background-color: transparent !important;
   }
   .ant-select-selection-placeholder {
-    color: black;
+    color: var(--neutral-n4);
   }
 `

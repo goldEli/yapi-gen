@@ -25,7 +25,6 @@ const Container = styled.div<{ padding: number }>`
 `
 
 const Board = () => {
-  const { data } = useKanBanData()
   const { kanbanConfig, fullScreen } = useSelector(store => store.kanBan)
   const { spinning } = useSelector(state => state.kanBan)
   const { sortByRowAndStatusOptions } = useSelector(state => state.kanBan)
@@ -49,17 +48,15 @@ const Board = () => {
 
   return (
     <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
-      {/* <CustomScreenFull> */}
       <Container
         padding={fullScreen ? 24 : 0}
         id="kanbanContainer"
         ref={containerRef}
       >
-        {data[0]?.columns.length < 1 && <NoData />}
-        <KanBanSortByPerson />
+        {kanbanConfig?.columns?.length ? <KanBanSortByPerson /> : <NoData />}
+        {/* <KanBanSortByPerson /> */}
         <ControlScrollPlane />
       </Container>
-      {/* </CustomScreenFull> */}
     </Spin>
   )
 }
