@@ -347,8 +347,8 @@ const DailyReportRules = () => {
     const values: any = await form1.validateFields().catch(e => e)
     values.errorFields?.length === 0 &&
       form1.setFieldValue('is_auto_generate', 1)
-    const a = form2.getFieldsValue().is_auto_send === 1
-    setSendDisabled(!a)
+    const state = form2.getFieldsValue().is_auto_send === 1
+    setSendDisabled(!state)
   }
   const init = async () => {
     const {
