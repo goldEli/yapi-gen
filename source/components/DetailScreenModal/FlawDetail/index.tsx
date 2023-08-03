@@ -700,7 +700,7 @@ const FlawDetail = () => {
             <ScreenMinHover
               label={t('common.search')}
               icon="filter"
-              isActive
+              isActive={filter}
               onClick={() => setFilter(!filter)}
             />
           ) : null

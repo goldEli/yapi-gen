@@ -61,6 +61,7 @@ const useControlScrollPlane = (columnNum: number) => {
 
   // 缩略的可视宽高
   const windowHeight = planeHeight * (height / childHeight)
+  // const windowHeight
   const windowWidth = planeWidth * (width / childWidth)
 
   useEffect(() => {
