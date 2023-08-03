@@ -228,6 +228,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             return {
               id: tempObj?.id,
               name: tempObj?.name,
+              expected_day: tempObj?.expected_day,
             }
           }),
         })
