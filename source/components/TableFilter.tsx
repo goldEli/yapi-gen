@@ -217,8 +217,6 @@ export const NumericInput2 = (props: any) => {
 }
 
 const TableFilter = (props: any) => {
-  console.log(props, 'props')
-
   const [t] = useTranslation()
   const location = useLocation()
   const info = useGetloginInfo()
