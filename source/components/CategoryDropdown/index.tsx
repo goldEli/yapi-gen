@@ -72,6 +72,7 @@ interface IProps {
   isClear?: boolean
 }
 const CategoryDropdown = (props: IProps) => {
+  console.log('props-----', props.value)
   const {
     onClearCallback,
     onChangeCallBack,

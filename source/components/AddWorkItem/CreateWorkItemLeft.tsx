@@ -528,10 +528,20 @@ const CreateDemandLeft = (props: Props) => {
           setCategoryObj(resultCategory)
           return
         }
-        setCategoryObj(
-          props.allCategoryList.find(item => item.is_previous_category === 1) ??
-            {},
+        const _item = props.allCategoryList.find(
+          item => item.is_previous_category === 1,
         )
+        if (
+          resultCategoryList.find(
+            (item: { id: number }) => item.id === _item.id,
+          )
+        ) {
+          setCategoryObj(
+            props.allCategoryList.find(
+              item => item.is_previous_category === 1,
+            ) ?? {},
+          )
+        }
       }
     }
   }, [props.projectId, props.allCategoryList])
@@ -723,7 +733,7 @@ const CreateDemandLeft = (props: Props) => {
                 attachmentPath: i.category_attachment,
               }))}
               projectId={props.projectId as number}
-              value={categoryObj?.id ?? 1138}
+              value={categoryObj?.id ?? null}
               onChangeCallBack={(val: number) => {
                 //
                 onSelectCategory(val)
