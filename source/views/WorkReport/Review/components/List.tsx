@@ -680,7 +680,9 @@ const List = () => {
         dataWrapNormalHeight="calc(100vh - 264px)"
         col={
           id === 1
-            ? columns
+            ? columns?.filter(
+                (item: any) => item.dataIndex !== 'user_copysend_type',
+              )
             : id === 3
             ? columns?.filter(
                 (item: any) =>
