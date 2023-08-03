@@ -189,6 +189,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     close()
     setCurrentProject(null)
     setModalInfo(null)
+    setUploadAttachList({})
+    setPeopleValue([])
   }
 
   // 发送日报
@@ -597,7 +599,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         >
           <ContentWrap>
             <div className="head">
-              {currentProject?.is_setting_config === 1 ? (
+              {currentProject?.is_setting_config === 1 &&
+              currentProject?.enable_hand_send === 1 ? (
                 <div className="tips">{t('report.list.tips1')}</div>
               ) : null}
               <div className="userBox">
