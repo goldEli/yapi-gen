@@ -2,7 +2,7 @@ import { InfoItem, Label, TargetWrap } from '../style'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import CommonButton from '@/components/CommonButton'
-import { AddWrap, TextWrapEdit } from '@/components/StyleCommon'
+import { AddWrap, CloseWrap, TextWrapEdit } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import { useEffect, useRef, useState } from 'react'
@@ -18,6 +18,7 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import { CommonIconFont } from '@/components/CommonIconFont'
+import { BetweenBox } from '@/components/SprintDetailDrawer/style'
 
 interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
@@ -129,7 +130,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       <DeleteConfirmModal />
       {/* 只有标准事务类型和故障事务类型才有 */}
       {[4, 5].includes(props.affairsInfo?.work_type) && props.isInfoPage && (
-        <InfoItem>
+        <InfoItem isInfoPage={props?.isInfoPage}>
           <TargetWrap>
             <span className="icon">
               <CommonIconFont
@@ -151,6 +152,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         style={{
           marginTop: '0px',
         }}
+        isInfoPage={props?.isInfoPage}
       >
         <Label>{t('describe')}</Label>
         {(isEditInfo || editInfo) && (
@@ -167,7 +169,6 @@ const AffairsDetail = (props: AffairsDetailProps) => {
               }, 10)
             }}
             onChange={(value: string) => {
-              // setEditInfo(value)
               editorRef2.current = value
             }}
             onBlur={() => onBlurEditor()}
@@ -186,40 +187,11 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           </TextWrapEdit>
         )}
       </InfoItem>
-      <InfoItem id="sprint-attachment" className="info_item_tab">
-        <Label>{t('common.attachment')}</Label>
-        <div>
-          {projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length > 0 && (
-            <UploadAttach
-              onBottom={onBottom}
-              defaultList={props.affairsInfo?.attachment?.map((i: any) => ({
-                url: i.attachment.path,
-                id: i.id,
-                size: i.attachment.size,
-                time: i.created_at,
-                name: i.attachment.name,
-                suffix: i.attachment.ext,
-                username: i.user_name ?? '--',
-              }))}
-              canUpdate
-              onC
-              del={onDeleteInfoAttach}
-              add={onAddInfoAttach}
-              addWrap={
-                <CommonButton type="primaryText" icon="plus">
-                  {t('addAttachments')}
-                </CommonButton>
-              }
-            />
-          )}
-          {projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length <= 0 && <span>--</span>}
-        </div>
-      </InfoItem>
-      <InfoItem id="sprint-tag" className="info_item_tab">
+      <InfoItem
+        id="sprint-tag"
+        className="info_item_tab"
+        isInfoPage={props?.isInfoPage}
+      >
         <Label>{t('common.tag')}</Label>
         <SprintTag
           defaultList={tagList}
@@ -232,6 +204,49 @@ const AffairsDetail = (props: AffairsDetailProps) => {
             </AddWrap>
           }
         />
+      </InfoItem>
+      <InfoItem
+        id="sprint-attachment"
+        className="info_item_tab"
+        isInfoPage={props?.isInfoPage}
+      >
+        <BetweenBox>
+          <Label>{t('common.attachment')}</Label>
+          <div>
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length > 0 && (
+              <UploadAttach
+                onBottom={onBottom}
+                defaultList={props.affairsInfo?.attachment?.map((i: any) => ({
+                  url: i.attachment.path,
+                  id: i.id,
+                  size: i.attachment.size,
+                  time: i.created_at,
+                  name: i.attachment.name,
+                  suffix: i.attachment.ext,
+                  username: i.user_name ?? '--',
+                }))}
+                canUpdate
+                onC
+                del={onDeleteInfoAttach}
+                add={onAddInfoAttach}
+                addWrap={
+                  <CloseWrap width={24} height={24}>
+                    <CommonIconFont
+                      type="plus"
+                      size={18}
+                      color="var(--neutral-n2)"
+                    />
+                  </CloseWrap>
+                }
+              />
+            )}
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length <= 0 && <span>--</span>}
+          </div>
+        </BetweenBox>
       </InfoItem>
     </>
   )

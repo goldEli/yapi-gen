@@ -101,7 +101,7 @@ const DetailDemand = (props: DetailDemand) => {
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <ContentItem>
+      <ContentItem id="tab_desc" className="info_item_tab">
         <Label>{t('requirement_description')}</Label>
         {(isEditInfo || editInfo) && (
           <Editor
@@ -135,14 +135,18 @@ const DetailDemand = (props: DetailDemand) => {
           </TextWrapEdit>
         )}
       </ContentItem>
-      <ContentItem>
+      <ContentItem id="tab_tag" className="info_item_tab">
         <Label>{t('label')}</Label>
         <DrawerTagComponent
           demandDetail={props.detail}
           onUpdate={props.onUpdate}
         />
       </ContentItem>
-      <ContentItem style={{ marginBottom: 0 }}>
+      <ContentItem
+        style={{ marginBottom: 0 }}
+        id="tab_attachment"
+        className="info_item_tab"
+      >
         <Label>{t('common.attachment')}</Label>
         <div>
           {projectInfo?.projectPermissions?.filter(

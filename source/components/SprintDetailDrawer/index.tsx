@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable max-lines */
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
@@ -10,9 +11,9 @@ import {
   Checkbox,
   Drawer,
   MenuProps,
-  Popover,
   Skeleton,
   Space,
+  Tabs,
   Tooltip,
 } from 'antd'
 import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
@@ -21,19 +22,15 @@ import {
   BackIcon,
   ChangeIconGroup,
   Content,
-  ParentBox,
   DemandName,
-  CollapseItem,
-  CollapseItemTitle,
-  CollapseItemContent,
-  DrawerHeader,
-  NextWrap,
   SkeletonStatus,
   UpWrap,
   DownWrap,
   DropdownMenu,
   DetailFooter,
   TargetWrap,
+  StatusAndLongWrap,
+  Label,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
@@ -86,35 +83,15 @@ import { cancelVerify } from '@/services/mine'
 import AffairsDetail from '../DetailScreenModal/AffairsDetail/components/AffairsDetail'
 import ChildSprint from '../DetailScreenModal/AffairsDetail/components/ChildSprint'
 import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint'
+import DrawerTopInfo from '../DrawerTopInfo'
+
 const SprintDetailDrawer = () => {
-  const normalState = {
-    detailInfo: {
-      isOpen: true,
-      dom: useRef<any>(null),
-    },
-    childSprint: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    linkSprint: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    basicInfo: {
-      isOpen: true,
-      dom: useRef<any>(null),
-    },
-    demandComment: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-  }
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams) || {}
   const { id } = paramsData
   const [t] = useTranslation()
-  const leftWidth = 640
+  const leftWidth = 960
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
   const [skeletonLoading, setSkeletonLoading] = useState(false)
@@ -124,9 +101,10 @@ const SprintDetailDrawer = () => {
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
-  const [showState, setShowState] = useState<any>(normalState)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteCheck, setIsDeleteCheck] = useState(false)
+  // 锚点初始化选中
+  const [tabActive, setTabActive] = useState('sprint-info')
   const { affairsDetailDrawer, affairsCommentList } = useSelector(
     store => store.affairs,
   )
@@ -136,23 +114,52 @@ const SprintDetailDrawer = () => {
   const { userInfo } = useSelector(store => store.user)
   const { fullScreen } = useSelector(store => store.kanBan)
 
-  const modeList = [
-    { name: t('details'), key: 'detailInfo', content: '' },
-    { name: t('subtransaction'), key: 'childSprint', content: '' },
-    { name: t('linkAffairs'), key: 'linkSprint', content: '' },
-    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
-    { name: t('businessReview'), key: 'demandComment', content: '' },
-  ]
-
+  // 快捷按钮列表
   const anchorList = [
-    { name: t('attachment'), key: 'sprint-attachment', domKey: 'detailInfo' },
-    { name: t('addTag'), key: 'sprint-tag', domKey: 'detailInfo' },
+    { name: t('attachment'), key: 'sprint-attachment' },
+    { name: t('addTag'), key: 'sprint-tag' },
     {
       name: t('addChildAffairs'),
       key: 'sprint-childSprint',
-      domKey: 'childSprint',
     },
-    { name: t('linkAffairs'), key: 'sprint-linkSprint', domKey: 'linkSprint' },
+    { name: t('linkAffairs'), key: 'sprint-linkSprint' },
+  ]
+
+  // tab标签栏
+  const items: any = [
+    {
+      key: 'sprint-info',
+      label: t('describe'),
+    },
+    {
+      key: 'sprint-tag',
+      label: t('tag'),
+    },
+    {
+      key: 'sprint-attachment',
+      label: t('attachment'),
+    },
+
+    {
+      key: 'sprint-childSprint',
+      label: t('subtransaction'),
+    },
+    {
+      key: 'sprint-linkSprint',
+      label: t('linkAffairs'),
+    },
+    {
+      key: 'sprint-activity',
+      label: '基本信息',
+    },
+    {
+      key: 'sprint-activity',
+      label: '进度日志',
+    },
+    {
+      key: 'sprint-activity',
+      label: '评论',
+    },
   ]
 
   const isCanEdit =
@@ -251,19 +258,6 @@ const SprintDetailDrawer = () => {
         }),
       )
     }
-
-    const newState = Object.assign({}, showState)
-    let resState: any
-
-    // 如果有数据的话，则默认展开
-    arr.forEach(element => {
-      resState = {
-        isOpen: element.count,
-        dom: newState[element.key].dom,
-      }
-      newState[element.key] = resState
-    })
-    setShowState(newState)
   }
 
   // 关闭弹窗
@@ -275,7 +269,6 @@ const SprintDetailDrawer = () => {
       }),
     )
     dispatch(saveAffairsDetailDrawer({}))
-    setShowState(normalState)
   }
 
   // 跳转详情页面
@@ -343,32 +336,6 @@ const SprintDetailDrawer = () => {
     )
   }
 
-  // 改变模块显示
-  const onChangeShowState = (item: any) => {
-    const paramsProjectId =
-      affairsDetailDrawer.params.project_id ??
-      affairsDetailDrawer.params.projectId
-    const newState = Object.assign({}, showState)
-    const resState = {
-      isOpen: !newState[item.key].isOpen,
-      dom: newState[item.key].dom,
-    }
-    newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
-    newState[item.key] = resState
-    setShowState(newState)
-    if (item.key === 'demandComment') {
-      // 获取评论列表
-      dispatch(
-        getAffairsCommentList({
-          projectId: paramsProjectId,
-          sprintId: affairsDetailDrawer.params.id,
-          page: 1,
-          pageSize: 999,
-        }),
-      )
-    }
-  }
-
   const getKeyDown = (e: any) => {
     if (storeAll.getState().affairs.affairsDetailDrawer.visible) {
       if (e.keyCode === 38) {
@@ -433,22 +400,9 @@ const SprintDetailDrawer = () => {
     copyLink(drawerInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
-  // 点击锚点跳转
-  const onClickAnchorList = (item: {
-    key: string
-    domKey: string
-    name?: string
-  }) => {
-    const newState = Object.assign({}, showState)
-    newState[item.domKey].isOpen = true
-    newState[item.domKey].dom.current.style.height = 'auto'
-    setShowState(newState)
-    setTimeout(() => {
-      const dom = document.getElementById(item.key)
-      dom?.scrollIntoView({
-        behavior: 'smooth',
-      })
-    }, 100)
+  // 点击进行快捷操作
+  const onClickAnchorList = (item: { key: string; name?: string }) => {
+    console.log('快捷操作')
   }
 
   // 确认删除
@@ -585,69 +539,6 @@ const SprintDetailDrawer = () => {
         key: '10',
       },
       {
-        label: (
-          <div
-            onClick={() =>
-              onClickAnchorList({
-                key: 'sprint-attachment',
-                domKey: 'detailInfo',
-              })
-            }
-          >
-            {t('addAttachments')}
-          </div>
-        ),
-        key: '1',
-      },
-      {
-        label: (
-          <div
-            onClick={() =>
-              onClickAnchorList({
-                key: 'sprint-childSprint',
-                domKey: 'childSprint',
-              })
-            }
-          >
-            {t('addChildAffairs')}
-          </div>
-        ),
-        key: '2',
-      },
-      {
-        label: (
-          <div
-            onClick={() =>
-              onClickAnchorList({
-                key: 'sprint-tag',
-                domKey: 'detailInfo',
-              })
-            }
-          >
-            {t('addTag')}
-          </div>
-        ),
-        key: '3',
-      },
-      {
-        label: (
-          <div
-            onClick={() =>
-              onClickAnchorList({
-                key: 'sprint-linkSprint',
-                domKey: 'linkSprint',
-              })
-            }
-          >
-            {t('linkAffairs')}
-          </div>
-        ),
-        key: '4',
-      },
-      {
-        type: 'divider',
-      },
-      {
         label: <div onClick={onToConfig}>{t('configuration')}</div>,
         key: '5',
       },
@@ -665,6 +556,15 @@ const SprintDetailDrawer = () => {
     return drawerInfo.work_type === 6
       ? items.filter((i: any) => i.key !== '2')
       : items
+  }
+
+  // 监听左侧信息滚动
+  const onChangeTabs = (value: string) => {
+    setTabActive(value)
+    const dom = document.getElementById(value)
+    dom?.scrollIntoView({
+      behavior: 'smooth',
+    })
   }
 
   useEffect(() => {
@@ -767,33 +667,6 @@ const SprintDetailDrawer = () => {
                 <Skeleton.Input active />
               </SkeletonStatus>
             )}
-            {!skeletonLoading && (
-              <ChangeStatusPopover
-                isCanOperation={isCanEdit && !drawerInfo.isExamine}
-                projectId={drawerInfo.projectId}
-                record={drawerInfo}
-                onChangeStatus={onChangeStatus}
-                type={2}
-              >
-                <StateTag
-                  name={drawerInfo?.status?.status?.content}
-                  onClick={drawerInfo.isExamine ? onExamine : void 0}
-                  isShow={isCanEdit || drawerInfo.isExamine}
-                  state={
-                    drawerInfo?.status?.is_start === 1 &&
-                    drawerInfo?.status?.is_end === 2
-                      ? 1
-                      : drawerInfo?.status?.is_end === 1 &&
-                        drawerInfo?.status?.is_start === 2
-                      ? 2
-                      : drawerInfo?.status?.is_start === 2 &&
-                        drawerInfo?.status?.is_end === 2
-                      ? 3
-                      : 0
-                  }
-                />
-              </ChangeStatusPopover>
-            )}
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
@@ -850,13 +723,40 @@ const SprintDetailDrawer = () => {
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
-              <LongStroyBread
-                longStroy={drawerInfo}
-                layer
-                onClick={() => {
-                  onOperationUpdate()
-                }}
-              ></LongStroyBread>
+              <StatusAndLongWrap>
+                <LongStroyBread
+                  longStroy={drawerInfo}
+                  layer
+                  onClick={() => {
+                    onOperationUpdate()
+                  }}
+                ></LongStroyBread>
+                <ChangeStatusPopover
+                  isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                  projectId={drawerInfo.projectId}
+                  record={drawerInfo}
+                  onChangeStatus={onChangeStatus}
+                  type={2}
+                >
+                  <StateTag
+                    name={drawerInfo?.status?.status?.content}
+                    onClick={drawerInfo.isExamine ? onExamine : void 0}
+                    isShow={isCanEdit || drawerInfo.isExamine}
+                    state={
+                      drawerInfo?.status?.is_start === 1 &&
+                      drawerInfo?.status?.is_end === 2
+                        ? 1
+                        : drawerInfo?.status?.is_end === 1 &&
+                          drawerInfo?.status?.is_start === 2
+                        ? 2
+                        : drawerInfo?.status?.is_start === 2 &&
+                          drawerInfo?.status?.is_end === 2
+                        ? 3
+                        : 0
+                    }
+                  />
+                </ChangeStatusPopover>
+              </StatusAndLongWrap>
               {drawerInfo?.isExamine && (
                 <div style={{ marginBottom: 16 }}>
                   <StatusExamine
@@ -878,11 +778,12 @@ const SprintDetailDrawer = () => {
                 </span>
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <Space size={8} style={{ marginTop: 16 }}>
+              <div style={{ height: 32, marginTop: 16 }}>进度显示。。。。</div>
+              <Space size={12} style={{ marginTop: 16 }}>
                 {(drawerInfo.work_type === 6
                   ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
                   : anchorList
-                ).map((i: { key: string; domKey: string; name: string }) => (
+                ).map((i: { key: string; name: string }) => (
                   <CommonButton
                     key={i.key}
                     type="light"
@@ -908,54 +809,34 @@ const SprintDetailDrawer = () => {
                   </span>
                 </TargetWrap>
               )}
-              {(drawerInfo.work_type === 6
-                ? modeList.filter((i: any) => i.key !== 'childSprint')
-                : modeList
-              ).map((i: any) => (
-                <CollapseItem key={i.key}>
-                  <CollapseItemTitle onClick={() => onChangeShowState(i)}>
-                    <span>{i.name}</span>
-                    <CommonIconFont
-                      type={showState[i.key].isOpen ? 'up' : 'down'}
-                      color="var(--neutral-n2)"
-                    />
-                  </CollapseItemTitle>
-                  <CollapseItemContent
-                    ref={showState[i.key].dom}
-                    isOpen={showState[i.key].isOpen}
-                  >
-                    {i.key === 'detailInfo' && (
-                      <AffairsDetail
-                        affairsInfo={drawerInfo}
-                        onUpdate={onOperationUpdate}
-                      />
-                    )}
-                    {i.key === 'childSprint' && showState[i.key].isOpen && (
-                      <ChildSprint
-                        detail={drawerInfo}
-                        onUpdate={onOperationUpdate}
-                      />
-                    )}
-                    {i.key === 'linkSprint' && showState[i.key].isOpen && (
-                      <LinkSprint detail={drawerInfo} />
-                    )}
-                    {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                      <BasicDemand
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                        onUpdate={onOperationUpdate}
-                      />
-                    )}
-                    {i.key === 'demandComment' && (
-                      <CommonComment
-                        data={affairsCommentList}
-                        onDeleteConfirm={onDeleteCommentConfirm}
-                        onEditComment={onEditComment}
-                      />
-                    )}
-                  </CollapseItemContent>
-                </CollapseItem>
-              ))}
+              {/* 周期、处理人 */}
+              <DrawerTopInfo details={drawerInfo} />
+              <Tabs
+                className="tabs"
+                activeKey={tabActive}
+                items={
+                  // 子任务不存在子事务模块
+                  drawerInfo.work_type === 6
+                    ? items.filter((i: any) => i.key !== 'sprint-childSprint')
+                    : items
+                }
+                onChange={onChangeTabs}
+              />
+              <AffairsDetail
+                affairsInfo={drawerInfo}
+                onUpdate={onOperationUpdate}
+              />
+              {drawerInfo.work_type !== 6 && (
+                <ChildSprint detail={drawerInfo} onUpdate={onOperationUpdate} />
+              )}
+              <LinkSprint detail={drawerInfo} />
+              <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
+              <Label style={{ marginTop: 16 }}>{t('businessReview')}</Label>
+              <CommonComment
+                data={affairsCommentList}
+                onDeleteConfirm={onDeleteCommentConfirm}
+                onEditComment={onEditComment}
+              />
             </>
           )}
           <DetailFooter>
