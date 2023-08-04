@@ -140,10 +140,20 @@ export const Content = styled.div`
   overflow: auto;
   padding: 16px 24px;
   position: relative;
-  /* border: 1px solid red; */
   background: #fff;
+  /* border: 1px solid; */
+  padding-top: 0px;
 `
-
+export const LabelWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+export const CancelText = styled.div`
+  font-size: 14px;
+  color: var(--auxiliary-text-t2-d1);
+  cursor: pointer;
+`
 export const ParentBox = styled(Space)`
   display: flex;
   align-items: center;
@@ -151,8 +161,18 @@ export const ParentBox = styled(Space)`
   min-height: 22px;
   margin-bottom: 16px;
   justify-content: space-between;
+  padding-top: 16px;
 `
-
+export const FixedBox = styled.div`
+  position: fixed;
+  width: 100%;
+  z-index: 9;
+  background: #fff;
+`
+export const EmptyBox = styled.div`
+  margin-top: 100px;
+  background: #fff;
+`
 export const DemandName = styled.div`
   .name {
     font-size: 16px;

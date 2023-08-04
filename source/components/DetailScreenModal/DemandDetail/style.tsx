@@ -32,7 +32,16 @@ export const DemandWrap = styled.div`
     border-bottom: 1px solid transparent;
   }
 `
-
+export const LabelWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+// export const Label = styled.div`
+//   font-size: var(--font14);
+//   color: var(--neutral-n1-d1);
+//   font-family: SiYuanMedium;
+// `
 export const FormWrap = styled(Form)({
   '.ant-form-item': {
     margin: '22px 0 0 0',

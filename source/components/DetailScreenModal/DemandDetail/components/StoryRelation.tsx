@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
-import { HiddenText, LinkWrap } from '@/components/StyleCommon'
+import { CloseWrap, HiddenText, LinkWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import MultipleAvatar from '@/components/MultipleAvatar'
@@ -38,6 +38,8 @@ import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdow
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import DragTable from '@/components/DragTable'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { Label, LabelWrap } from '../style'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -780,11 +782,22 @@ const StoryRelation = (props: RelationStoriesProps) => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      {!isEnd && (
+      {/* {!isEnd && (
         <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
           {t('linkWorkItem')}
         </CommonButton>
-      )}
+      )} */}
+      <LabelWrap>
+        <Label>{t('linkWorkItem')}</Label>
+        <CloseWrap width={24} height={24}>
+          <CommonIconFont
+            type="plus"
+            size={18}
+            color="var(--neutral-n2)"
+            onClick={onClickOpen}
+          />
+        </CloseWrap>
+      </LabelWrap>
       {!props.isDrawer && (
         <>
           <ResizeTable

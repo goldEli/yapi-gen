@@ -65,6 +65,8 @@ import {
   BtnWrap,
   CycleBox,
   HandlerBox,
+  FixedBox,
+  EmptyBox,
 } from './style'
 import CommonButton from '../CommonButton'
 import {
@@ -736,72 +738,77 @@ const DemandDetailDrawer = () => {
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
-              <ParentBox size={8}>
-                {drawerInfo.level_tree?.map((i: any, index: number) => (
-                  <DrawerHeader key={i.prefix_key}>
-                    <img src={i.category_attachment} alt="" />
-                    <div>
-                      {i.project_prefix}-{i.prefix_key}
-                    </div>
-                    <span
-                      hidden={
-                        drawerInfo.level_tree?.length <= 1 ||
-                        index === drawerInfo.level_tree?.length - 1
-                      }
-                    >
-                      /
-                    </span>
-                  </DrawerHeader>
-                ))}
-                <StateTag
-                  name={drawerInfo?.status?.status?.content}
-                  onClick={drawerInfo.isExamine ? onExamine : void 0}
-                  isShow={isCanEdit || drawerInfo.isExamine}
-                  state={
-                    drawerInfo?.status?.is_start === 1 &&
-                    drawerInfo?.status?.is_end === 2
-                      ? 1
-                      : drawerInfo?.status?.is_end === 1 &&
-                        drawerInfo?.status?.is_start === 2
-                      ? 2
-                      : drawerInfo?.status?.is_start === 2 &&
-                        drawerInfo?.status?.is_end === 2
-                      ? 3
-                      : 0
-                  }
-                />
-              </ParentBox>
-              {drawerInfo?.isExamine && (
-                <div style={{ marginBottom: 16 }}>
-                  <StatusExamine
-                    type={1}
-                    onCancel={onCancelExamine}
-                    isVerify={drawerInfo?.has_verify === 1}
-                    isDrawer
+              <FixedBox>
+                <ParentBox size={8}>
+                  {drawerInfo.level_tree?.map((i: any, index: number) => (
+                    <DrawerHeader key={i.prefix_key}>
+                      <img src={i.category_attachment} alt="" />
+                      <div>
+                        {i.project_prefix}-{i.prefix_key}
+                      </div>
+                      <span
+                        hidden={
+                          drawerInfo.level_tree?.length <= 1 ||
+                          index === drawerInfo.level_tree?.length - 1
+                        }
+                      >
+                        /
+                      </span>
+                    </DrawerHeader>
+                  ))}
+                  <StateTag
+                    name={drawerInfo?.status?.status?.content}
+                    onClick={drawerInfo.isExamine ? onExamine : void 0}
+                    isShow={isCanEdit || drawerInfo.isExamine}
+                    state={
+                      drawerInfo?.status?.is_start === 1 &&
+                      drawerInfo?.status?.is_end === 2
+                        ? 1
+                        : drawerInfo?.status?.is_end === 1 &&
+                          drawerInfo?.status?.is_start === 2
+                        ? 2
+                        : drawerInfo?.status?.is_start === 2 &&
+                          drawerInfo?.status?.is_end === 2
+                        ? 3
+                        : 0
+                    }
                   />
-                </div>
-              )}
-              <DemandName>
-                {isCanEdit && (
-                  <span
-                    className="name"
-                    ref={spanDom}
-                    contentEditable
-                    onBlur={onNameConfirm}
-                  >
-                    {drawerInfo.name}
-                  </span>
+                </ParentBox>
+                {drawerInfo?.isExamine && (
+                  <div style={{ marginBottom: 16 }}>
+                    <StatusExamine
+                      type={1}
+                      onCancel={onCancelExamine}
+                      isVerify={drawerInfo?.has_verify === 1}
+                      isDrawer
+                    />
+                  </div>
                 )}
-                {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
+                <DemandName>
+                  {isCanEdit && (
+                    <span
+                      className="name"
+                      ref={spanDom}
+                      contentEditable
+                      onBlur={onNameConfirm}
+                    >
+                      {drawerInfo.name}
+                    </span>
+                  )}
+                  {!isCanEdit && (
+                    <span className="name">{drawerInfo.name}</span>
+                  )}
 
-                <CopyIcon onCopy={onCopy} />
-              </DemandName>
-              <Space size={16} style={{ marginTop: 16 }}>
+                  <CopyIcon onCopy={onCopy} />
+                </DemandName>
+              </FixedBox>
+              <EmptyBox></EmptyBox>
+              <BtnWrap>
                 <CommonButton type="light">附件</CommonButton>
                 <CommonButton type="light">添加标签</CommonButton>
                 <CommonButton type="light">添加子需求</CommonButton>
                 <CommonButton type="light">链接工作项</CommonButton>
-              </Space>
+              </BtnWrap>
               <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
               <Tabs
                 className={customTabs}
@@ -819,11 +826,9 @@ const DemandDetailDrawer = () => {
                   onUpdate={onOperationUpdate}
                 />
                 <ChildrenDemand detail={drawerInfo} />
-                <CommentTitle>链接工作项</CommentTitle>
                 <StoryRelation
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
-                  // isDrawer
                 />
                 <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
                 <CommentTitle>进度日志</CommentTitle>

@@ -1,18 +1,20 @@
 /* eslint-disable no-undefined */
 import { getDemandList } from '@/services/demand'
 import { useDispatch, useSelector } from '@store/index'
-import { Table } from 'antd'
+import { Space, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
 import NoData from '../NoData'
 import StateTag from '../StateTag'
-import { LinkWrap, PriorityWrap } from '../StyleCommon'
-import { Label } from './style'
+import { CloseWrap, LinkWrap, PriorityWrap } from '../StyleCommon'
+import { CancelText, Label, LabelWrap } from './style'
 import { setAddWorkItemModal } from '@store/project'
 import MultipleAvatar from '../MultipleAvatar'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import CommonIconFont from '../CommonIconFont'
+import CustomSelect from '../CustomSelect'
 
 interface Props {
   detail?: any
@@ -28,6 +30,7 @@ const ChildrenDemand = (props: Props) => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
+  const [isSearch, setIsSearch] = useState(false)
   // 跳转详情页面
   const onToDetail = (record: any) => {
     const params = encryptPhp(
@@ -163,8 +166,50 @@ const ChildrenDemand = (props: Props) => {
 
   return (
     <div id="tab_demand">
-      <Label>{t('subrequirements')}</Label>
-      {!isEnd && (
+      {/* <Label>{t('subrequirements')}</Label> */}
+      <LabelWrap>
+        <Label>{t('subrequirements')}</Label>
+        <Space size={12}>
+          {!isSearch && (
+            <CloseWrap width={24} height={24}>
+              <CommonIconFont
+                size={18}
+                type="search"
+                color="var(--neutral-n2)"
+              />
+            </CloseWrap>
+          )}
+          {isSearch ? (
+            <Space size={16}>
+              <CustomSelect
+                placeholder={t('search_for_transaction_name_or_number')}
+                getPopupContainer={(node: any) => node}
+                style={{ width: 184 }}
+                onSearch={() => {}}
+                options={[]}
+                showSearch
+                showArrow
+                optionFilterProp="label"
+                onChange={() => {}}
+                allowClear
+                autoFocus
+              />
+              <CancelText onClick={() => {}}>{t('common.cancel')}</CancelText>
+            </Space>
+          ) : null}
+          {!isEnd && (
+            <CloseWrap width={24} height={24}>
+              <CommonIconFont
+                type="plus"
+                size={18}
+                color="var(--neutral-n2)"
+                onClick={onCreateChild}
+              />
+            </CloseWrap>
+          )}
+        </Space>
+      </LabelWrap>
+      {/* {!isEnd && (
         <CommonButton
           onClick={onCreateChild}
           type="primaryText"
@@ -173,7 +218,7 @@ const ChildrenDemand = (props: Props) => {
         >
           {t('create_sub_requirements')}
         </CommonButton>
-      )}
+      )} */}
       {!!dataList?.list &&
         (dataList?.list?.length > 0 ? (
           <Table
