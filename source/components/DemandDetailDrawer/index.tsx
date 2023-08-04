@@ -90,6 +90,7 @@ import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
 import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRelation'
 import IconFont from '../IconFont'
+import DrawerTopInfo from '../DrawerTopInfo'
 interface ItemIprops {
   label: string
   key: string
@@ -795,51 +796,13 @@ const DemandDetailDrawer = () => {
 
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <BtnWrap>
-                <CommonButton type="light" size="small">
-                  附件
-                </CommonButton>
-                <CommonButton type="light" size="small">
-                  添加标签
-                </CommonButton>
-                <CommonButton type="light" size="small">
-                  添加子需求
-                </CommonButton>
-                <CommonButton type="light" size="small">
-                  链接工作项
-                </CommonButton>
-              </BtnWrap>
-              {/* <CycleBox>
-                <div>
-                  <span className="tip">
-                    <IconFont
-                      type="clock-check"
-                      color="var(--neutral-n3)"
-                      style={{ marginRight: '10px' }}
-                    ></IconFont>
-                    周期
-                  </span>
-                  <span className="label">预计开始</span>
-                  <span className="date">2022-09-09</span>
-                </div>
-                <div>
-                  <span className="label">预计结束</span>
-                </div>
-              </CycleBox>
-              <HandlerBox>
-                <span>
-                  {' '}
-                  <IconFont
-                    type="user-alone"
-                    color="var(--neutral-n3)"
-                    style={{ marginRight: '10px' }}
-                  ></IconFont>
-                  处理人
-                </span>
-                <span></span>
-                <span></span>
-              </HandlerBox> */}
-
+              <Space size={16} style={{ marginTop: 16 }}>
+                <CommonButton type="light">附件</CommonButton>
+                <CommonButton type="light">添加标签</CommonButton>
+                <CommonButton type="light">添加子需求</CommonButton>
+                <CommonButton type="light">链接工作项</CommonButton>
+              </Space>
+              <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
               <Tabs
                 className={customTabs}
                 activeKey={tabActive}
