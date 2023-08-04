@@ -160,7 +160,10 @@ const AffairsInfo = (props: Props) => {
             isInfoPage
           />
         )}
-        <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+        <LinkSprint
+          detail={affairsInfo as Model.Affairs.AffairsInfo}
+          isInfoPage
+        />
         <ActivitySprint />
         {affairsInfo?.isExamine && (
           <div className="review">

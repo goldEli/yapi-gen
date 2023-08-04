@@ -9,6 +9,12 @@ import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
+const TableBorder = styled.div`
+  border-radius: 6px;
+  border: 1px solid var(--neutral-n6-d2);
+  overflow: hidden;
+`
+
 const TextWrapEdit = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
@@ -1080,4 +1086,5 @@ export {
   PopoverTargetText,
   LinkWrap,
   ChartsItem333,
+  TableBorder,
 }

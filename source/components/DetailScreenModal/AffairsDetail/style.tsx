@@ -219,12 +219,12 @@ export const ActivityTabItem = styled.div`
   align-items: center;
 `
 
-export const InfoItem = styled.div`
+export const InfoItem = styled.div<{ isInfoPage?: boolean }>`
   display: flex;
   margin-top: 20px;
   position: relative;
   flex-direction: column;
-  padding: 0 24px;
+  padding: ${props => (props.isInfoPage ? '0 24px' : 0)};
 `
 
 export const ItemNumber = styled.div<{ isActive?: boolean }>`
@@ -304,45 +304,8 @@ export const LabelWrap = styled.div`
   justify-content: space-between;
 `
 
-export const ProgressWrapBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  .finish {
-    font-size: 12px;
-    color: var(--neutral-n2);
-  }
-`
-
 export const SubLabel = styled.div`
   margin: 8px 0;
   font-size: 12px;
   color: var(--neutral-n3);
-`
-
-export const ProgressWrapLine = styled.div<{
-  one: number
-  tow: number
-  three: number
-}>`
-  width: 100%;
-  flex: 1;
-  display: flex;
-  div {
-    border-radius: 8px;
-    height: 8px;
-  }
-  .one {
-    width: ${props => props.one}%;
-    background: var(--primary-d1);
-  }
-  .two {
-    width: ${props => props.tow}%;
-    background: var(--primary-d1);
-    opacity: 0.4;
-  }
-  .three {
-    width: ${props => props.three}%;
-    background: var(--function-tag5);
-  }
 `

@@ -17,12 +17,13 @@ import { useTranslation } from 'react-i18next'
 interface HaderProps {
   type: string
   headerParmas: Models.Efficiency.HeaderParmas
-  onSearchData(value: number[]): void
-  onGetExportApi(value: number[]): void
+  onSearchData?(value: number[]): void
+  onGetExportApi?(value: number[]): void
   projectId: number | string
   homeType: string
   viewType: number
-  tableList: Array<{ id: number }>
+  tableList?: Array<{ id: number }>
+  state?: string
 }
 const HeaderAll = (props: HaderProps) => {
   const [t] = useTranslation()
@@ -124,64 +125,66 @@ const HeaderAll = (props: HaderProps) => {
           <CommonIconFont type="left-md" size={16} />
           <span className="text">{t('performance.back')}</span>
         </Back>
-        <RightRow>
-          {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
-          {/* // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
+        {props.state === 'hidden' ? null : (
+          <RightRow>
+            {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
+            {/* // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
         //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
-          {(props.type === 'Progress_all' || props.type === 'Defect_all') &&
-            projectList?.length >= 1 && (
-              <div style={{ marginRight: '16px' }}>
-                <Select
-                  type=""
-                  options={projectList}
-                  more
-                  value={options}
-                  placeholder={t('common.pleaseProject')}
-                  onChange={(value: number[]) => {
-                    setOptions(value), props.onSearchData(value)
-                  }}
-                />
-              </div>
-            )}
-          <PersonText>
-            {props.headerParmas.users?.length ? (
-              <span>
-                {t('performance.select')}： {props.headerParmas.users?.length}
-                {t('performance.people')}
-              </span>
-            ) : (
-              <span>{t('performance.allPeople')}</span>
-            )}
-          </PersonText>
-          <Line />
-          {time?.startTime && time?.endTime ? (
+            {(props.type === 'Progress_all' || props.type === 'Defect_all') &&
+              projectList?.length >= 1 && (
+                <div style={{ marginRight: '16px' }}>
+                  <Select
+                    type=""
+                    options={projectList}
+                    more
+                    value={options}
+                    placeholder={t('common.pleaseProject')}
+                    onChange={(value: number[]) => {
+                      setOptions(value), props?.onSearchData?.(value)
+                    }}
+                  />
+                </div>
+              )}
             <PersonText>
-              {t('performance.statistics')}
-              {time?.startTime} ~ {time?.endTime}
+              {props.headerParmas.users?.length ? (
+                <span>
+                  {t('performance.select')}： {props.headerParmas.users?.length}
+                  {t('performance.people')}
+                </span>
+              ) : (
+                <span>{t('performance.allPeople')}</span>
+              )}
             </PersonText>
-          ) : null}
-          <Back
-            onClick={() =>
-              open({
-                onOk: () => {
-                  return Promise.resolve()
-                },
-              })
-            }
-            style={{ margin: '0 16px 0 24px' }}
-          >
-            <CommonIconFont type="share" size={16} />
-            <span className="text">{t('performance.share')}</span>
-          </Back>
-          <CommonButton
-            isDisable={props.tableList?.length < 1}
-            type="primary"
-            onClick={() => setIsOpen(true)}
-          >
-            <CommonIconFont type="export" size={16} />
-            {t('performance.export')}
-          </CommonButton>
-        </RightRow>
+            <Line />
+            {time?.startTime && time?.endTime ? (
+              <PersonText>
+                {t('performance.statistics')}
+                {time?.startTime} ~ {time?.endTime}
+              </PersonText>
+            ) : null}
+            <Back
+              onClick={() =>
+                open({
+                  onOk: () => {
+                    return Promise.resolve()
+                  },
+                })
+              }
+              style={{ margin: '0 16px 0 24px' }}
+            >
+              <CommonIconFont type="share" size={16} />
+              <span className="text">{t('performance.share')}</span>
+            </Back>
+            <CommonButton
+              isDisable={props?.tableList && props?.tableList?.length < 1}
+              type="primary"
+              onClick={() => setIsOpen(true)}
+            >
+              <CommonIconFont type="export" size={16} />
+              {t('performance.export')}
+            </CommonButton>
+          </RightRow>
+        )}
       </HeaderRowBox>
       {/* 分享  save代表是否保存的值*/}
       <ShareModal
@@ -229,7 +232,7 @@ const HeaderAll = (props: HaderProps) => {
         isVisible={isOpen}
         onClose={() => setIsOpen(false)}
         onConfirm={() => {
-          setIsOpen(false), props.onGetExportApi(options)
+          setIsOpen(false), props?.onGetExportApi?.(options)
         }}
         personData={props.headerParmas.users}
       />

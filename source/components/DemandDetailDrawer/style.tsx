@@ -136,10 +136,12 @@ export const ChangeIconBox = styled.div`
 `
 
 export const Content = styled.div`
-  height: calc(100% - 53px);
+  height: calc(100% - 120px);
   overflow: auto;
   padding: 16px 24px;
   position: relative;
+  /* border: 1px solid red; */
+  background: #fff;
 `
 
 export const ParentBox = styled(Space)`
@@ -148,6 +150,7 @@ export const ParentBox = styled(Space)`
   flex-wrap: wrap;
   min-height: 22px;
   margin-bottom: 16px;
+  justify-content: space-between;
 `
 
 export const DemandName = styled.div`
@@ -537,6 +540,10 @@ export const CommentTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 20px;
+  font-size: var(--font14);
+  color: var(--neutral-n1-d1);
+  font-family: SiYuanMedium;
 `
 
 export const DrawerHeader = styled.div`
@@ -554,4 +561,43 @@ export const DrawerHeader = styled.div`
     color: var(--neutral-n3);
     margin-right: 8px;
   }
+`
+export const LayerBox = styled.div``
+export const customTabs = css`
+  /* position: sticky !important;
+  top: 0 !important; */
+`
+export const BtnWrap = styled.div`
+  display: flex;
+  margin: 12px 0px;
+  button {
+    margin-right: 12px;
+  }
+`
+export const CycleBox = styled.div`
+  display: flex;
+  margin-bottom: 14px;
+  > div {
+    flex: 1;
+    .tip {
+      color: var(--neutral-n1-d1);
+      font-size: var(--font14);
+      font-family: SiYuanMedium;
+    }
+    .label {
+      color: var(--neutral-n3);
+      font-size: var(--font14);
+      margin-right: 16px;
+      margin-left: 16px;
+      font-family: SiYuanRegular;
+    }
+    .date {
+      color: var(--neutral-n1-d1);
+      font-size: var(--font14);
+    }
+  }
+`
+
+export const HandlerBox = styled.div`
+  margin-bottom: 14px;
 `

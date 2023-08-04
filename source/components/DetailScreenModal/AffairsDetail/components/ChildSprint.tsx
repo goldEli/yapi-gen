@@ -1,17 +1,13 @@
 /* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonButton from '@/components/CommonButton'
-import {
-  CancelText,
-  InfoItem,
-  Label,
-  LabelWrap,
-  ProgressWrapBox,
-  ProgressWrapLine,
-  LinkWrap,
-} from '../style'
+import { CancelText, InfoItem, Label, LabelWrap, LinkWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
-import { CloseWrap, PriorityWrapTable } from '@/components/StyleCommon'
+import {
+  CloseWrap,
+  PriorityWrapTable,
+  TableBorder,
+} from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
@@ -42,6 +38,7 @@ import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
+import DetailsChildProgress from '@/components/DetailsChildProgress'
 
 interface SelectItem {
   label: string
@@ -364,78 +361,71 @@ const ChildSprint = (props: {
   }, [isChangeDetailAffairs])
 
   return (
-    <InfoItem id="sprint-childSprint" className="info_item_tab">
+    <InfoItem
+      id="sprint-childSprint"
+      className="info_item_tab"
+      isInfoPage={props?.isInfoPage}
+    >
       <DeleteConfirmModal />
       <LabelWrap>
         <Label>{t('subtransaction')}</Label>
-        {!isSearch && (
-          <CloseWrap width={24} height={24} onClick={onClickSearch}>
-            <CommonIconFont type="search" />
-          </CloseWrap>
-        )}
-        {isSearch && (
-          <Space size={16}>
-            <CustomSelect
-              placeholder={t('search_for_transaction_name_or_number')}
-              getPopupContainer={(node: any) => node}
-              style={{ width: 184 }}
-              onSearch={onSearch}
-              options={searchValue ? selectList : recentList}
-              showSearch
-              showArrow
-              optionFilterProp="label"
-              onChange={onChangeSelect}
-              allowClear
-              autoFocus
-            />
-            <CancelText onClick={onCancelSearch}>
-              {t('common.cancel')}
-            </CancelText>
-          </Space>
-        )}
+        <Space size={12}>
+          {!isSearch && (
+            <CloseWrap width={24} height={24} onClick={onClickSearch}>
+              <CommonIconFont
+                size={18}
+                type="search"
+                color="var(--neutral-n2)"
+              />
+            </CloseWrap>
+          )}
+          {isSearch && (
+            <Space size={16}>
+              <CustomSelect
+                placeholder={t('search_for_transaction_name_or_number')}
+                getPopupContainer={(node: any) => node}
+                style={{ width: 184 }}
+                onSearch={onSearch}
+                options={searchValue ? selectList : recentList}
+                showSearch
+                showArrow
+                optionFilterProp="label"
+                onChange={onChangeSelect}
+                allowClear
+                autoFocus
+              />
+              <CancelText onClick={onCancelSearch}>
+                {t('common.cancel')}
+              </CancelText>
+            </Space>
+          )}
+          {!isEnd && (
+            <CloseWrap width={24} height={24}>
+              <CommonIconFont
+                type="plus"
+                size={18}
+                color="var(--neutral-n2)"
+                onClick={onCreateChild}
+              />
+            </CloseWrap>
+          )}
+        </Space>
       </LabelWrap>
 
       <div>
-        {!isEnd && (
-          <CommonButton type="primaryText" icon="plus" onClick={onCreateChild}>
-            {t('createSubtransaction')}
-          </CommonButton>
-        )}
         {dataSource.total > 0 && (
           <>
-            <Tooltip
-              title={`${t('completed1')} ${
-                props.detail.child_story_statistics?.finish_percent
-              }%; ${t('inProgress')} ${
-                props.detail.child_story_statistics?.processing_percent
-              }%; ${t('incomplete')} ${
-                props.detail.child_story_statistics?.start_percent
-              }%`}
-            >
-              <ProgressWrapBox>
-                <ProgressWrapLine
-                  one={props.detail.child_story_statistics?.finish_percent}
-                  tow={props.detail.child_story_statistics?.processing_percent}
-                  three={props.detail.child_story_statistics?.start_percent}
-                >
-                  <div className="one" />
-                  <div className="two" />
-                  <div className="three" />
-                </ProgressWrapLine>
-                <div className="finish">
-                  {t('completed1')}
-                  {props.detail.child_story_statistics?.finish_percent}%
-                </div>
-              </ProgressWrapBox>
-            </Tooltip>
+            <DetailsChildProgress details={props.detail} />
 
-            <DragTable
-              columns={columns}
-              dataSource={dataSource}
-              onChangeData={arr => onChangeData(arr)}
-              showHeader={false}
-              hasOperation={operationList}
-            />
+            <TableBorder style={{ marginTop: 8 }}>
+              <DragTable
+                columns={columns}
+                dataSource={dataSource}
+                onChangeData={arr => onChangeData(arr)}
+                showHeader={false}
+                hasOperation={operationList}
+              />
+            </TableBorder>
           </>
         )}
         {dataSource.total <= 0 && <NoData />}

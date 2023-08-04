@@ -158,10 +158,11 @@ const ChildrenDemand = (props: Props) => {
     if (props.isOpen || isUpdateAddWorkItem) {
       getList()
     }
+    getList()
   }, [props.isOpen, isUpdateAddWorkItem])
 
   return (
-    <div>
+    <div id="tab_demand">
       <Label>{t('subrequirements')}</Label>
       {!isEnd && (
         <CommonButton
