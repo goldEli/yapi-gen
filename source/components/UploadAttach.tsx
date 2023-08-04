@@ -27,6 +27,7 @@ import myImg from '/er.png'
 import { cos, uploadFile } from '@/services/cos'
 import { useSelector } from '@store/index'
 import { getMessage } from './Message'
+import { relative } from 'path'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -161,6 +162,18 @@ const Wdiv = styled.div`
   font-size: 12px;
   color: #ffffff;
   line-height: 22px;
+`
+const San = styled.div`
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid rgba(0, 0, 0, 0.6);
+  border-bottom: 10px solid transparent;
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translate(0, -50%);
 `
 export const fileIconMap: Record<string, string> = {
   xlsx: 'colorXLS-76p4mekd',
@@ -479,6 +492,7 @@ const UploadAttach = (props: any, ref: any) => {
         background: 'rgba(0,0,0,0.6)',
         borderRadius: '6px 6px 6px 6px',
         padding: '5px 8px',
+        position: 'relative',
       }}
     >
       <Wdiv>
@@ -497,6 +511,7 @@ const UploadAttach = (props: any, ref: any) => {
         <Bdiv />
         {pe}上传
       </Wdiv>
+      {/* <San /> */}
     </div>
   )
   return (
