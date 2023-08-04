@@ -134,7 +134,7 @@ const DemandDetailDrawer = () => {
     { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
     { name: t('requirements_review'), key: 'demandComment', content: '' },
   ]
-  const leftWidth = 640
+  const leftWidth = 960
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {

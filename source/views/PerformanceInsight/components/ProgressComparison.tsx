@@ -879,13 +879,8 @@ const ProgressComparison = (props: Props) => {
             </>
           ))}
         </div>
-
-        {/* {tableList1.length <= 0 && <NoData />} */}
         <TableStyle>
-          {/* <div style={{ height: 'inherit' }}> */}
           {tableList.length <= 0 && tableList1.length <= 0 && <NoData />}
-          {/* </div> */}
-
           <Table
             paginationShow={true}
             columns={columns}
