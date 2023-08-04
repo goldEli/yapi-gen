@@ -8,7 +8,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { message, Progress, Upload } from 'antd'
+import { message, Popover, Progress, Upload } from 'antd'
 import {
   forwardRef,
   useCallback,
@@ -138,7 +138,30 @@ const StyledProgress = styled(Progress)`
     height: 4px !important;
   }
 `
+const Bdiv = styled.div`
+  margin-right: 5px;
+  display: inline-block;
+  line-height: 22px;
+  width: 4px;
+  height: 4px;
+  background: #ffffff;
+  border-radius: 50%;
+  flex-shrink: 0;
+  align-self: center;
+`
+const Cdiv = styled(Bdiv)`
+  align-self: self-start;
+  margin-top: 10px;
+`
+const Wdiv = styled.div`
+  word-break: break-all;
+  white-space: wrap;
+  display: flex;
 
+  font-size: 12px;
+  color: #ffffff;
+  line-height: 22px;
+`
 export const fileIconMap: Record<string, string> = {
   xlsx: 'colorXLS-76p4mekd',
   xls: 'colorXLS-76p4mekd',
@@ -448,6 +471,34 @@ const UploadAttach = (props: any, ref: any) => {
       handleUpload,
     }
   })
+
+  const content = (name: any, time: any, size: any, pe: any) => (
+    <div
+      style={{
+        width: '189px',
+        background: 'rgba(0,0,0,0.6)',
+        borderRadius: '6px 6px 6px 6px',
+        padding: '5px 8px',
+      }}
+    >
+      <Wdiv>
+        <Cdiv />
+        {name}
+      </Wdiv>
+      <Wdiv>
+        <Bdiv />
+        {time}
+      </Wdiv>
+      <Wdiv>
+        <Bdiv />
+        {size}
+      </Wdiv>
+      <Wdiv>
+        <Bdiv />
+        {pe}上传
+      </Wdiv>
+    </div>
+  )
   return (
     <div>
       {previewOpen ? (
@@ -481,283 +532,295 @@ const UploadAttach = (props: any, ref: any) => {
       >
         {fileList.map((i: any) => {
           return (
-            <Card key={i.id}>
-              <BigWrap>
-                <GredParent>
-                  {imgs.includes(i.file.suffix) && (
-                    <img
-                      style={{
-                        width: i.file.url ? '100%' : '64px',
-                        height: i.file.url ? '100%' : '64px',
-                        marginTop: i.file.url ? '' : '10px',
-                        borderRadius: '6px 6px 0 0',
-                        objectFit: 'contain',
-                      }}
-                      alt=""
-                      src={i.file.url ? i.file.url : myImg}
-                    />
-                  )}
-                  {!imgs.includes(i.file.suffix) && (
-                    <IconFont
-                      style={{
-                        lineHeight: '96px',
+            <Popover
+              key={i.id}
+              placement="right"
+              content={content(
+                i.file.name,
+                i.file.time,
+                bytesToSize(i.file?.size) ?? '',
+                i.file.username ?? userInfo?.name,
+              )}
+              trigger="hover"
+            >
+              <Card>
+                <BigWrap>
+                  <GredParent>
+                    {imgs.includes(i.file.suffix) && (
+                      <img
+                        style={{
+                          width: i.file.url ? '100%' : '64px',
+                          height: i.file.url ? '100%' : '64px',
+                          marginTop: i.file.url ? '' : '10px',
+                          borderRadius: '6px 6px 0 0',
+                          objectFit: 'contain',
+                        }}
+                        alt=""
+                        src={i.file.url ? i.file.url : myImg}
+                      />
+                    )}
+                    {!imgs.includes(i.file.suffix) && (
+                      <IconFont
+                        style={{
+                          lineHeight: '96px',
 
-                        fontSize: 48,
-                        color: 'white',
-                      }}
-                      type={fileIconMap[i.file.suffix] || 'colorunknown'}
-                    />
-                  )}
+                          fontSize: 48,
+                          color: 'white',
+                        }}
+                        type={fileIconMap[i.file.suffix] || 'colorunknown'}
+                      />
+                    )}
 
-                  <Gred onClick={() => onPreview(i.file)}></Gred>
-                </GredParent>
+                    <Gred onClick={() => onPreview(i.file)}></Gred>
+                  </GredParent>
 
-                <Second>
-                  {i.state === 'uploading' && (
-                    <>
-                      <BlueCss onClick={() => onTapPause(i.id)}>
-                        {/* {t('p2.pause')} */}
-                        <IconFont
-                          style={{
-                            fontSize: 18,
-                            color: 'white',
-                          }}
-                          type="move"
-                        />
-                      </BlueCss>
-                      <RedCss onClick={() => onTapClose(i.id)}>
-                        <IconFont
-                          style={{
-                            fontSize: 18,
-                            color: 'white',
-                          }}
-                          type="close"
-                        />
-                      </RedCss>
-                    </>
-                  )}
-                  {i.state === 'waiting' && (
-                    <>
-                      <BlueCss onClick={() => onTapPause(i.id)}>
-                        <IconFont
-                          style={{
-                            fontSize: 18,
-                            color: 'white',
-                          }}
-                          type="move"
-                        />
-                      </BlueCss>
-                      <RedCss onClick={() => onTapClose(i.id)}>
-                        <IconFont
-                          style={{
-                            fontSize: 18,
-                            color: 'white',
-                          }}
-                          type="close"
-                        />
-                      </RedCss>
-                    </>
-                  )}
-                  {i.state === 'paused' && (
-                    <>
-                      <BlueCss onClick={() => onTapRestart(i.id)}>
-                        <IconFont
-                          style={{
-                            fontSize: 18,
-                            color: 'white',
-                          }}
-                          type="right-icon"
-                        />
-                      </BlueCss>
-                      <BlueCss onClick={() => onTapClose(i.id)}>
-                        <IconFont
-                          style={{
-                            fontSize: 18,
-                            color: 'white',
-                          }}
-                          type="close"
-                        />
-                      </BlueCss>
-                    </>
-                  )}
-
-                  {i.state === 'error' && (
-                    <>
-                      <BlueCss onClick={() => onTapRestart(i.id)}>
-                        {/* {t('p2.retransmission')} */}
-                        <IconFont
-                          style={{
-                            fontSize: 18,
-                            color: 'white',
-                          }}
-                          type="sync"
-                        />
-                      </BlueCss>
-                      <RedCss onClick={() => onTapRemove(i.id)}>
-                        {/* {' '}
-                        {t('p2.cancel')} */}
-                        <IconFont
-                          style={{
-                            fontSize: 18,
-                            color: 'white',
-                          }}
-                          type="close"
-                        />
-                      </RedCss>
-                    </>
-                  )}
-                  {i.state === 'success' && (
-                    <span>
-                      {!!isDownload && (
-                        <BlueCss
-                          onClick={() => onDownload(i.file.url, i.file.name)}
-                        >
-                          {/* {t('p2.download')} */}
-                          <IconFont
-                            style={{
-                              fontSize: 18,
-                              color: 'white',
-                            }}
-                            type="download"
-                          />
-                        </BlueCss>
-                      )}
-
-                      {!!isShowDel && (
-                        <BlueCss onClick={() => onTapRemove(i.id)}>
-                          {/* {t('p2.delete')}{' '} */}
-                          <IconFont
-                            style={{
-                              fontSize: 18,
-                              color: 'white',
-                            }}
-                            type="delete"
-                          />
-                        </BlueCss>
-                      )}
-                    </span>
-                  )}
-                </Second>
-
-                <div
-                  style={{
-                    boxSizing: 'border-box',
-                    padding: '4px 8px',
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: '14px',
-                      fontFamily: 'SiYuanMedium',
-                      color: 'var(--neutral-n1-d1)',
-                      lineHeight: '22px',
-                      wordBreak: 'break-all',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {i.file.name}
-                  </div>
-                  <First
-                    style={{
-                      fontSize: '12px',
-                      fontWeight: 400,
-                      color: 'var(--neutral-n3)',
-                      lineHeight: '20px',
-                    }}
-                  >
+                  <Second>
                     {i.state === 'uploading' && (
                       <>
-                        <span>{bytesToSize(i.loaded)}</span>
-                        <span
-                          style={{
-                            margin: '0 6px 0 6px',
-                          }}
-                        >
-                          /
-                        </span>
-                        <span>{bytesToSize(i.file?.size)}</span>
+                        <BlueCss onClick={() => onTapPause(i.id)}>
+                          {/* {t('p2.pause')} */}
+                          <IconFont
+                            style={{
+                              fontSize: 18,
+                              color: 'white',
+                            }}
+                            type="move"
+                          />
+                        </BlueCss>
+                        <RedCss onClick={() => onTapClose(i.id)}>
+                          <IconFont
+                            style={{
+                              fontSize: 18,
+                              color: 'white',
+                            }}
+                            type="close"
+                          />
+                        </RedCss>
                       </>
                     )}
                     {i.state === 'waiting' && (
                       <>
-                        <span>{bytesToSize(i.loaded)}</span>
-                        <span
-                          style={{
-                            margin: '0 6px 0 6px',
-                          }}
-                        >
-                          /
-                        </span>
-                        <span>{bytesToSize(i.file?.size)}</span>
+                        <BlueCss onClick={() => onTapPause(i.id)}>
+                          <IconFont
+                            style={{
+                              fontSize: 18,
+                              color: 'white',
+                            }}
+                            type="move"
+                          />
+                        </BlueCss>
+                        <RedCss onClick={() => onTapClose(i.id)}>
+                          <IconFont
+                            style={{
+                              fontSize: 18,
+                              color: 'white',
+                            }}
+                            type="close"
+                          />
+                        </RedCss>
                       </>
                     )}
-                    {i.state === 'paused' && <span> {t('p2.paused')}</span>}
+                    {i.state === 'paused' && (
+                      <>
+                        <BlueCss onClick={() => onTapRestart(i.id)}>
+                          <IconFont
+                            style={{
+                              fontSize: 18,
+                              color: 'white',
+                            }}
+                            type="right-icon"
+                          />
+                        </BlueCss>
+                        <BlueCss onClick={() => onTapClose(i.id)}>
+                          <IconFont
+                            style={{
+                              fontSize: 18,
+                              color: 'white',
+                            }}
+                            type="close"
+                          />
+                        </BlueCss>
+                      </>
+                    )}
 
                     {i.state === 'error' && (
-                      <span
-                        style={{
-                          margin: 0,
-                          color: ' var(--function-error)',
-                        }}
-                      >
-                        {t('p2.fail')}
-                      </span>
+                      <>
+                        <BlueCss onClick={() => onTapRestart(i.id)}>
+                          {/* {t('p2.retransmission')} */}
+                          <IconFont
+                            style={{
+                              fontSize: 18,
+                              color: 'white',
+                            }}
+                            type="sync"
+                          />
+                        </BlueCss>
+                        <RedCss onClick={() => onTapRemove(i.id)}>
+                          {/* {' '}
+                        {t('p2.cancel')} */}
+                          <IconFont
+                            style={{
+                              fontSize: 18,
+                              color: 'white',
+                            }}
+                            type="close"
+                          />
+                        </RedCss>
+                      </>
                     )}
                     {i.state === 'success' && (
-                      <>
-                        <span>{i.file.time}</span>
-                        {/* {i.file?.size === 0 ? (
+                      <span>
+                        {!!isDownload && (
+                          <BlueCss
+                            onClick={() => onDownload(i.file.url, i.file.name)}
+                          >
+                            {/* {t('p2.download')} */}
+                            <IconFont
+                              style={{
+                                fontSize: 18,
+                                color: 'white',
+                              }}
+                              type="download"
+                            />
+                          </BlueCss>
+                        )}
+
+                        {!!isShowDel && (
+                          <BlueCss onClick={() => onTapRemove(i.id)}>
+                            {/* {t('p2.delete')}{' '} */}
+                            <IconFont
+                              style={{
+                                fontSize: 18,
+                                color: 'white',
+                              }}
+                              type="delete"
+                            />
+                          </BlueCss>
+                        )}
+                      </span>
+                    )}
+                  </Second>
+
+                  <div
+                    style={{
+                      boxSizing: 'border-box',
+                      padding: '4px 8px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: '14px',
+                        fontFamily: 'SiYuanMedium',
+                        color: 'var(--neutral-n1-d1)',
+                        lineHeight: '22px',
+                        wordBreak: 'break-all',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {i.file.name}
+                    </div>
+                    <First
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: 400,
+                        color: 'var(--neutral-n3)',
+                        lineHeight: '20px',
+                      }}
+                    >
+                      {i.state === 'uploading' && (
+                        <>
+                          <span>{bytesToSize(i.loaded)}</span>
+                          <span
+                            style={{
+                              margin: '0 6px 0 6px',
+                            }}
+                          >
+                            /
+                          </span>
+                          <span>{bytesToSize(i.file?.size)}</span>
+                        </>
+                      )}
+                      {i.state === 'waiting' && (
+                        <>
+                          <span>{bytesToSize(i.loaded)}</span>
+                          <span
+                            style={{
+                              margin: '0 6px 0 6px',
+                            }}
+                          >
+                            /
+                          </span>
+                          <span>{bytesToSize(i.file?.size)}</span>
+                        </>
+                      )}
+                      {i.state === 'paused' && <span> {t('p2.paused')}</span>}
+
+                      {i.state === 'error' && (
+                        <span
+                          style={{
+                            margin: 0,
+                            color: ' var(--function-error)',
+                          }}
+                        >
+                          {t('p2.fail')}
+                        </span>
+                      )}
+                      {i.state === 'success' && (
+                        <>
+                          <span>{i.file.time}</span>
+                          {/* {i.file?.size === 0 ? (
                           '--'
                         ) : (
                           <span>{bytesToSize(i.file?.size) ?? ''}</span>
                         )} */}
 
-                        {/* <span style={{ marginRight: '6px' }}>
+                          {/* <span style={{ marginRight: '6px' }}>
                           {i.file.username ?? userInfo?.name}上传
                         </span> */}
-                      </>
-                    )}
-                  </First>
-                  {i.state !== 'success' && (
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <StyledProgress
-                        status={progressStatusMap[i.state] || ''}
-                        percent={i.percent * 100}
-                        showInfo={false}
-                      />
-                      <Third>
-                        {i.state === 'uploading' && (
-                          <NumStyle>
-                            {Number((i.percent * 100).toFixed(2))}%
-                          </NumStyle>
-                        )}
-                        {i.state === 'waiting' && (
-                          <NumStyle>
-                            {Number((i.percent * 100).toFixed(2))}%
-                          </NumStyle>
-                        )}
-                        {i.state === 'paused' && (
-                          <NumStyle>
-                            {Number((i.percent * 100).toFixed(2))}%
-                          </NumStyle>
-                        )}
+                        </>
+                      )}
+                    </First>
+                    {i.state !== 'success' && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <StyledProgress
+                          status={progressStatusMap[i.state] || ''}
+                          percent={i.percent * 100}
+                          showInfo={false}
+                        />
+                        <Third>
+                          {i.state === 'uploading' && (
+                            <NumStyle>
+                              {Number((i.percent * 100).toFixed(2))}%
+                            </NumStyle>
+                          )}
+                          {i.state === 'waiting' && (
+                            <NumStyle>
+                              {Number((i.percent * 100).toFixed(2))}%
+                            </NumStyle>
+                          )}
+                          {i.state === 'paused' && (
+                            <NumStyle>
+                              {Number((i.percent * 100).toFixed(2))}%
+                            </NumStyle>
+                          )}
 
-                        {i.state === 'error' && (
-                          <NumStyle>
-                            {Number((i.percent * 100).toFixed(2))}%
-                          </NumStyle>
-                        )}
-                      </Third>
-                    </div>
-                  )}
-                </div>
-              </BigWrap>
-            </Card>
+                          {i.state === 'error' && (
+                            <NumStyle>
+                              {Number((i.percent * 100).toFixed(2))}%
+                            </NumStyle>
+                          )}
+                        </Third>
+                      </div>
+                    )}
+                  </div>
+                </BigWrap>
+              </Card>
+            </Popover>
           )
         })}
       </div>
