@@ -128,6 +128,7 @@ const TabItem = (props: any) => {
                 }
                 size="small"
                 trailColor="var(--neutral-n6-d2)"
+                format={percent => (percent === 100 ? '100%' : `${percent}%`)}
               />
             </div>
           </div>
