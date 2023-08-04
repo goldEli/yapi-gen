@@ -23,7 +23,16 @@ import {
   setIsUpdateAddWorkItem,
   setProjectInfo,
 } from '@store/project'
-import { Drawer, message, Popover, Skeleton, Space, Tooltip } from 'antd'
+import {
+  Drawer,
+  message,
+  Popover,
+  Skeleton,
+  Space,
+  Tooltip,
+  Tabs,
+  Affix,
+} from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
@@ -51,6 +60,12 @@ import {
   UpWrap,
   DownWrap,
   DetailFooter,
+  CommentTitle,
+  LayerBox,
+  customTabs,
+  BtnWrap,
+  CycleBox,
+  HandlerBox,
 } from './style'
 import CommonButton from '../CommonButton'
 import {
@@ -75,7 +90,11 @@ import CommonComment from '../CommonComment'
 import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
 import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRelation'
-
+import IconFont from '../IconFont'
+interface ItemIprops {
+  label: string
+  key: string
+}
 const DemandDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -135,6 +154,41 @@ const DemandDetailDrawer = () => {
     { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
     { name: t('requirements_review'), key: 'demandComment', content: '' },
   ]
+  const items: ItemIprops[] = [
+    {
+      key: 'tab_desc',
+      label: t('describe'),
+    },
+    {
+      key: 'tab_tag',
+      label: t('tag'),
+    },
+    {
+      key: 'tab_attachment',
+      label: t('attachment'),
+    },
+    {
+      key: 'tab_demand',
+      label: '子需求',
+    },
+    {
+      key: 'tab_link',
+      label: '链接工作项',
+    },
+    {
+      key: 'tab_info',
+      label: '基本信息',
+    },
+    {
+      key: 'tab_log',
+      label: '进度日志',
+    },
+    {
+      key: 'tab_comment',
+      label: '评论',
+    },
+  ]
+  const [tabActive, setTabActive] = useState('tab_desc')
   const leftWidth = 640
 
   // 拖动线条
@@ -543,7 +597,14 @@ const DemandDetailDrawer = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
-
+  // 监听左侧信息滚动
+  const onChangeTabs = (value: string) => {
+    const dom = document.getElementById(value)
+    console.log('value', value, dom)
+    dom?.scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
   return (
     <>
       <DeleteConfirm
@@ -590,7 +651,7 @@ const DemandDetailDrawer = () => {
                 onChangeStatus={onChangeStatus}
                 type={1}
               >
-                <StateTag
+                {/* <StateTag
                   name={drawerInfo?.status?.status?.content}
                   onClick={drawerInfo.isExamine ? onExamine : void 0}
                   isShow={isCanEdit || drawerInfo.isExamine}
@@ -606,7 +667,7 @@ const DemandDetailDrawer = () => {
                       ? 3
                       : 0
                   }
-                />
+                /> */}
               </ChangeStatusPopover>
             )}
           </Space>
@@ -692,6 +753,23 @@ const DemandDetailDrawer = () => {
                     </span>
                   </DrawerHeader>
                 ))}
+                <StateTag
+                  name={drawerInfo?.status?.status?.content}
+                  onClick={drawerInfo.isExamine ? onExamine : void 0}
+                  isShow={isCanEdit || drawerInfo.isExamine}
+                  state={
+                    drawerInfo?.status?.is_start === 1 &&
+                    drawerInfo?.status?.is_end === 2
+                      ? 1
+                      : drawerInfo?.status?.is_end === 1 &&
+                        drawerInfo?.status?.is_start === 2
+                      ? 2
+                      : drawerInfo?.status?.is_start === 2 &&
+                        drawerInfo?.status?.is_end === 2
+                      ? 3
+                      : 0
+                  }
+                />
               </ParentBox>
               {drawerInfo?.isExamine && (
                 <div style={{ marginBottom: 16 }}>
@@ -718,56 +796,84 @@ const DemandDetailDrawer = () => {
 
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              {modeList.map((i: any) => (
-                <CollapseItem key={i.key}>
-                  <CollapseItemTitle onClick={() => onChangeShowState(i)}>
-                    <span>{i.name}</span>
-                    <CommonIconFont
-                      type={showState[i.key].isOpen ? 'up' : 'down'}
-                      color="var(--neutral-n2)"
-                    />
-                  </CollapseItemTitle>
-                  <CollapseItemContent
-                    ref={showState[i.key].dom}
-                    isOpen={showState[i.key].isOpen}
-                  >
-                    {i.key === 'detailInfo' && (
-                      <DetailDemand
-                        detail={drawerInfo}
-                        onUpdate={onOperationUpdate}
-                      />
-                    )}
-                    {i.key === 'detailDemands' && showState[i.key].isOpen && (
-                      <ChildrenDemand
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                      />
-                    )}
-                    {i.key === 'relation' && showState[i.key].isOpen && (
-                      <StoryRelation
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                        onUpdate={onOperationUpdate}
-                        isDrawer
-                      />
-                    )}
-                    {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                      <BasicDemand
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                        onUpdate={onOperationUpdate}
-                      />
-                    )}
-                    {i.key === 'demandComment' && (
-                      <CommonComment
-                        data={demandCommentList}
-                        onDeleteConfirm={onDeleteCommentConfirm}
-                        onEditComment={onEditComment}
-                      />
-                    )}
-                  </CollapseItemContent>
-                </CollapseItem>
-              ))}
+              <BtnWrap>
+                <CommonButton type="light" size="small">
+                  附件
+                </CommonButton>
+                <CommonButton type="light" size="small">
+                  添加标签
+                </CommonButton>
+                <CommonButton type="light" size="small">
+                  添加子需求
+                </CommonButton>
+                <CommonButton type="light" size="small">
+                  链接工作项
+                </CommonButton>
+              </BtnWrap>
+              {/* <CycleBox>
+                <div>
+                  <span className="tip">
+                    <IconFont
+                      type="clock-check"
+                      color="var(--neutral-n3)"
+                      style={{ marginRight: '10px' }}
+                    ></IconFont>
+                    周期
+                  </span>
+                  <span className="label">预计开始</span>
+                  <span className="date">2022-09-09</span>
+                </div>
+                <div>
+                  <span className="label">预计结束</span>
+                </div>
+              </CycleBox>
+              <HandlerBox>
+                <span>
+                  {' '}
+                  <IconFont
+                    type="user-alone"
+                    color="var(--neutral-n3)"
+                    style={{ marginRight: '10px' }}
+                  ></IconFont>
+                  处理人
+                </span>
+                <span></span>
+                <span></span>
+              </HandlerBox> */}
+
+              <Tabs
+                className={customTabs}
+                activeKey={tabActive}
+                items={
+                  // 子任务不存在子事务模块
+                  items
+                }
+                onChange={onChangeTabs}
+                // tabBarStyle={{ position: 'fixed', top: 30 }}
+              />
+              <LayerBox>
+                <DetailDemand
+                  detail={drawerInfo}
+                  onUpdate={onOperationUpdate}
+                />
+                <ChildrenDemand detail={drawerInfo} />
+                <CommentTitle>链接工作项</CommentTitle>
+                <StoryRelation
+                  detail={drawerInfo}
+                  onUpdate={onOperationUpdate}
+                  // isDrawer
+                />
+                <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
+                <CommentTitle>进度日志</CommentTitle>
+                <div id="tab_comment">
+                  <CommentTitle>需求评论</CommentTitle>
+                  <CommonComment
+                    data={demandCommentList}
+                    onDeleteConfirm={onDeleteCommentConfirm}
+                    onEditComment={onEditComment}
+                  />
+                </div>
+              </LayerBox>
             </>
           )}
           <DetailFooter>
