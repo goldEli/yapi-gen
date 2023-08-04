@@ -1,27 +1,31 @@
 /* eslint-disable no-constant-binary-expression */
-import { copyLink } from '@/tools'
+/* eslint-disable no-negated-condition */
+import { copyLink, getIsPermission } from '@/tools'
 import { useSelector } from '@store/index'
 import MoreDropdown from '@/components/MoreDropdown'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
-import { Menu, Tooltip, Progress } from 'antd'
+import { Menu, Tooltip } from 'antd'
+import CommonIconFont from '@/components/CommonIconFont'
 import { useTranslation } from 'react-i18next'
+import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { createRef, useEffect, useMemo, useState } from 'react'
 import TableColorText from '@/components/TableColorText'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
-import ChangeSeverityPopover from '@/components/ChangeSeverityPopover'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import NoData from '@/components/NoData'
 import PaginationBox from '@/components/TablePagination'
+import { getDemandList } from '@/services/demand'
+import HeaderAll from './HeaderAll'
 import {
   HiddenText,
+  ClickWrap,
   ListNameWrap,
   PriorityWrapTable,
 } from '@/components/StyleCommon'
 import { updateFlawTableParams } from '@/services/flaw'
-import DemandProgress from '@/components/DemandProgress'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import { OmitText } from '@star-yun/ui'
 import TableQuickEdit from '@/components/TableQuickEdit'
@@ -103,7 +107,7 @@ const NewSort = (sortProps: any) => {
     </Sort>
   )
 }
-const Undistributed = () => {
+const Undistributed = (props: any) => {
   const { userInfo } = useSelector(store => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
   const { projectInfo, filterKeys, filterParams } = useSelector(
@@ -115,20 +119,58 @@ const Undistributed = () => {
       (i: any) =>
         i.name === (projectInfo.projectType === 1 ? '编辑需求' : '编辑事务'),
     )?.length > 0
+  console.log(isCanEdit, 'isCanEdit')
   const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
 
   const [data, setData] = useState({
-    list: [],
+    list: [
+      {
+        name: '123',
+      },
+    ],
     currentPage: 10,
     pageSize: 1,
     total: 1,
   })
+  useEffect(() => {
+    onUpdate()
+  }, [])
   const onUpdateOrderKey = () => {}
-  const onUpdate = (record?: any, type?: boolean) => {}
+  const onUpdate = async (record?: any, type?: boolean) => {
+    // 需求列表
+    const result = await getDemandList({
+      category_id: '',
+      class_id: '',
+      class_ids: '',
+      copySendId: '',
+      custom_field: '',
+      endTime: '',
+      expectedEnd: '',
+      expectedStart: '',
+      iterateIds: '',
+      order: '',
+      orderKey: '',
+      page: 1,
+      pageSize: 20,
+      priorityIds: '',
+      projectId: 314,
+      schedule_end: '',
+      schedule_start: '',
+      searchValue: '',
+      startTime: '',
+      statusIds: '',
+      tagIds: '',
+      updatedTime: '',
+      userId: '',
+      usersNameId: '',
+    })
+    console.log(result)
+    setData(result)
+  }
   // 修改优先级
-  const onChangeState = async (item: any) => {
+  const onChangeState = async (type: any, item: any) => {
     try {
       // await updateFlawPriority({
       // id: props.detail.id,
@@ -184,15 +226,20 @@ const Undistributed = () => {
         )
       },
     },
+  ]
+  const onExamine = () => {
+    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
+  }
+  const arr2 = [
     {
       title: (
         <NewSort fixedKey="child_story_count">
-          999
+          {t('subtransaction')}
           {/* {projectInfo.projectType === 2
-                ? t('subtransaction')
-                : state?.type === 2
-                ? t('other.children')
-                : t('common.childDemand')} */}
+          ? t('subtransaction')
+          : state?.type === 2
+          ? t('other.children')
+          : t('common.childDemand')} */}
         </NewSort>
       ),
       dataIndex: 'demand',
@@ -214,8 +261,8 @@ const Undistributed = () => {
     {
       title: (
         <NewSort fixedKey="iterate_name">
-          888
-          {/* {projectInfo.projectType === 2 ? t('sprint2') : t('common.iterate')} */}
+          {t('sprint2')} + {t('common.iterate')}
+          {projectInfo.projectType === 2 ? t('sprint2') : t('common.iterate')}
         </NewSort>
       ),
       dataIndex: 'iteration',
@@ -251,35 +298,167 @@ const Undistributed = () => {
         )
       },
     },
+  ]
+  const colum = [
+    ...arr,
     {
-      title: <NewSort fixedKey="class">{t('other.class')}</NewSort>,
-      dataIndex: 'class',
-      key: 'class',
-      width: 120,
-      render: (text: any, record: any) => {
+      width: 140,
+      title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
+      dataIndex: 'storyPrefixKey',
+      key: 'prefix_key',
+      render: (text: string, record: any) => {
         return (
-          <TableQuickEdit
-            type="treeSelect"
-            defaultText={text}
-            keyText="class_id"
-            item={record}
-            onUpdate={() => onUpdate(record, true)}
-            // isBug={state.type === 2}
-          >
-            <HiddenText>
-              <OmitText
-                width={120}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
-              >
-                {text || t('newlyAdd.unclassified')}
-              </OmitText>
-            </HiddenText>
-          </TableQuickEdit>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              className="canClickDetail"
+              // onClick={() => state.onClickItem(record)}
+              isClose={record.status?.is_end === 1}
+              style={{ marginRight: 16 }}
+            >
+              {record.storyPrefixKey}
+            </ClickWrap>
+            {record.isExamine && <CommonIconFont type="review" size={40} />}
+          </div>
         )
       },
     },
+    {
+      title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
+      dataIndex: 'name',
+      key: 'name',
+      width: 400,
+      render: (text: string | number, record: any) => {
+        return (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+              paddingLeft: record.level ? (Number(record.level) - 1) * 24 : 0,
+            }}
+          >
+            {/* {state.isTree && state.onChangeTree(record)} */}
+            <Tooltip placement="top" title={record.category}>
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+            </Tooltip>
+            <TableQuickEdit
+              type="text"
+              defaultText={text}
+              keyText="name"
+              item={record}
+              onUpdate={() => onUpdate(record)}
+              isDemandName
+              isBug={true}
+            >
+              <Tooltip title={text} getPopupContainer={node => node}>
+                <ListNameWrap
+                  className="canClickDetail"
+                  isName
+                  isClose={record.status?.is_end === 1}
+                  // onClick={() => state.onClickItem(record)}
+                >
+                  <TableColorText
+                    text={text}
+                    level={Number(record.level) - 1}
+                  />
+                </ListNameWrap>
+              </Tooltip>
+            </TableQuickEdit>
+          </div>
+        )
+      },
+    },
+    {
+      title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
+      dataIndex: 'status',
+      key: 'status',
+      width: 170,
+      render: (text: any, record: any) => {
+        return (
+          <ChangeStatusPopover
+            isCanOperation={isCanEdit && !record.isExamine}
+            projectId={record.project_id}
+            record={record}
+            onChangeStatus={() => 123}
+            // onChangeStatus={item => state.onChangeStatus(item, record)}
+            type={record.project_type === 1 ? (record.is_bug === 1 ? 3 : 1) : 2}
+          >
+            <StateTag
+              onClick={record.isExamine ? onExamine : void 0}
+              isShow={isCanEdit || record.isExamine}
+              name={record.status?.status?.content}
+              state={
+                text?.is_start === 1 && text?.is_end === 2
+                  ? 1
+                  : text?.is_end === 1 && text?.is_start === 2
+                  ? 2
+                  : text?.is_start === 2 && text?.is_end === 2
+                  ? 3
+                  : 0
+              }
+            />
+          </ChangeStatusPopover>
+        )
+      },
+    },
+    {
+      title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
+      dataIndex: 'priority',
+      key: 'priority',
+      width: 100,
+      render: (text: any, record: Record<string, string | number>) => {
+        console.log(
+          record.categoryConfigList,
+
+          'un',
+        )
+        return (
+          <ChangePriorityPopover
+            isCanOperation={
+              isCanEdit &&
+              (record.categoryConfigList
+                ? Object.keys(record.categoryConfigList).includes('priority')
+                : false)
+            }
+            onChangePriority={item => onChangeState(item, record)}
+            record={{ project_id: record.project_id, id: record.id }}
+          >
+            <PriorityWrapTable isShow={isCanEdit}>
+              {text?.icon && (
+                <>
+                  <IconFont
+                    className="priorityIcon"
+                    type={text?.icon}
+                    style={{
+                      fontSize: 20,
+                      color: text?.color,
+                    }}
+                  />
+                  <span>{text.content_txt}</span>
+                </>
+              )}
+              <span style={{ marginLeft: '5px' }}>
+                {!text?.icon && <span>--</span>}
+                <IconFont className="icon" type="down-icon" />
+              </span>
+            </PriorityWrapTable>
+          </ChangePriorityPopover>
+        )
+      },
+    },
+    ...(props.homeType !== 'all' ? arr2 : []),
     {
       title: <NewSort fixedKey="tag">{t('common.tag')}</NewSort>,
       dataIndex: 'tag',
@@ -344,7 +523,7 @@ const Undistributed = () => {
             onUpdate={() => onUpdate(record)}
             // isBug={state.type === 2}
           >
-            {record?.usersInfo.length > 0 && (
+            {record?.usersInfo?.length > 0 && (
               <MultipleAvatar
                 max={3}
                 list={record?.usersInfo?.map((i: any) => ({
@@ -355,80 +534,6 @@ const Undistributed = () => {
               />
             )}
             {!record?.usersInfo?.length && '--'}
-          </TableQuickEdit>
-        )
-      },
-    },
-    {
-      title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
-      dataIndex: 'schedule',
-      key: 'schedule',
-      width: 120,
-      render: (text: string, record: any, index: any) => {
-        return (
-          <div>
-            {isCanEdit &&
-              record?.usersNameIds?.includes(userInfo?.id) &&
-              record.status.is_start !== 1 &&
-              record.status.is_end !== 1 && (
-                <div style={{ cursor: 'pointer' }}>
-                  <DemandProgress
-                    value={record.schedule}
-                    row={record}
-                    onUpdate={() => onUpdate(record)}
-                    index={index}
-                  />
-                </div>
-              )}
-            {!(
-              isCanEdit &&
-              record?.usersNameIds?.includes(userInfo?.id) &&
-              record.status.is_start !== 1 &&
-              record.status.is_end !== 1
-            ) && (
-              <Progress
-                strokeColor="var(--function-success)"
-                style={{
-                  color: 'var(--function-success)',
-                  cursor: 'not-allowed',
-                }}
-                width={38}
-                type="line"
-                percent={record.schedule}
-                format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-                strokeWidth={4}
-              />
-            )}
-          </div>
-        )
-      },
-    },
-    {
-      title: t('common.copySend'),
-      dataIndex: 'usersCopySendName',
-      key: 'users_copysend_name',
-      width: 120,
-      render: (text: string, record: any) => {
-        return (
-          <TableQuickEdit
-            type="fixed_select"
-            defaultText={record?.usersCopySendIds || []}
-            keyText="copysend"
-            item={record}
-            onUpdate={() => onUpdate(record)}
-            // isBug={state.type === 2}
-          >
-            {record?.copy_send_users?.length > 0 && (
-              <MultipleAvatar
-                max={3}
-                list={record?.copy_send_users?.map((i: any) => ({
-                  id: i.id,
-                  name: i.name,
-                  avatar: i.avatar,
-                }))}
-              />
-            )}
-            {!record?.copy_send_users?.length && '--'}
           </TableQuickEdit>
         )
       },
@@ -490,235 +595,22 @@ const Undistributed = () => {
         )
       },
     },
-    {
-      title: <NewSort fixedKey="updated_at">{t('common.lastTime')}</NewSort>,
-      dataIndex: 'updatedTime',
-      key: 'updated_at',
-      width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: <NewSort fixedKey="finish_at">{t('common.finishTime')}</NewSort>,
-      dataIndex: 'finishTime',
-      key: 'finish_at',
-      width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: <NewSort fixedKey="solution">{t('other.resolvent')}</NewSort>,
-      dataIndex: 'solution',
-      key: 'solution',
-      width: 200,
-      render: (text: string | number, record: any) => {
-        return (
-          <TableQuickEdit
-            type="text"
-            defaultText={text}
-            keyText="solution"
-            item={record}
-            onUpdate={() => onUpdate(record)}
-            // projectId={state.projectId}
-            // isBug={state.type === 2}
-          >
-            <span className="controlMaxWidth">{text ? text : '--'}</span>
-          </TableQuickEdit>
-        )
-      },
-    },
-    {
-      title: <NewSort fixedKey="severity">{t('other.severity')}</NewSort>,
-      dataIndex: 'severity',
-      key: 'severity',
-      width: 110,
-      render: (text: any, record: any) => {
-        return (
-          <ChangeSeverityPopover
-            isCanOperation={
-              isCanEdit &&
-              Object.keys(record.categoryConfigList).includes('severity')
-            }
-            onChangeSeverity={item => onChangeSeverity(item, record)}
-            record={record}
-            // projectId={state.projectId}
-          />
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort fixedKey="discovery_version">
-          {t('other.discovery_version')}
-        </NewSort>
-      ),
-      dataIndex: 'discovery_version',
-      key: 'discovery_version',
-      width: 160,
-      render: (text: string, record: any) => {
-        // projectType === 2 在isBug
-        return (
-          <TableQuickEdit
-            type="fixed_radio"
-            defaultText={text}
-            keyText="discovery_version"
-            item={record}
-            onUpdate={() => onUpdate(record)}
-            // isBug={state.type === 2}
-          >
-            <HiddenText>
-              <OmitText
-                width={160}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
-              >
-                {record.discovery_version || '--'}
-              </OmitText>
-            </HiddenText>
-          </TableQuickEdit>
-        )
-      },
-    },
   ]
-  const onExamine = () => {
-    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
-  }
-  const colum = [
-    ...arr,
-    {
-      title: (
-        <NewSort
-          fixedKey="name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.demandName')}
-        </NewSort>
-      ),
-      dataIndex: 'name',
-      render: (text: string, record: any) => {
-        return (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Tooltip title={record.categoryRemark}>
-              <img
-                src={
-                  record.category_attachment
-                    ? record.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  marginRight: '8px',
-                }}
-                alt=""
-              />
-            </Tooltip>
 
-            <Tooltip title={text}>
-              <ListNameWrap
-                className="canClickDetail"
-                isName
-                isClose={record.status?.is_end === 1}
-              >
-                <TableColorText text={text} />
-              </ListNameWrap>
-            </Tooltip>
-          </div>
-        )
-      },
-    },
-    {
-      title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
-      dataIndex: 'status',
-      key: 'status',
-      width: 170,
-      render: (text: any, record: any) => {
-        return (
-          <ChangeStatusPopover
-            isCanOperation={true && !record.isExamine}
-            projectId={1}
-            record={record}
-            onChangeStatus={item => 123}
-            type={record.project_type === 1 ? (record.is_bug === 1 ? 3 : 1) : 2}
-          >
-            <StateTag
-              onClick={record.isExamine ? onExamine : void 0}
-              isShow={true || record.isExamine}
-              name={record.status.status.content}
-              state={
-                text?.is_start === 1 && text?.is_end === 2
-                  ? 1
-                  : text?.is_end === 1 && text?.is_start === 2
-                  ? 2
-                  : text?.is_start === 2 && text?.is_end === 2
-                  ? 3
-                  : 0
-              }
-            />
-          </ChangeStatusPopover>
-        )
-      },
-    },
-    {
-      title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
-      dataIndex: 'priority',
-      key: 'priority',
-      width: 100,
-      render: (text: any, record: Record<string, string | number>) => {
-        return (
-          <ChangePriorityPopover
-            isCanOperation={
-              true &&
-              Object.keys(record.categoryConfigList).includes('priority')
-            }
-            onChangePriority={item => 123}
-            record={{ project_id: record.projectId, id: record.id }}
-          >
-            <PriorityWrapTable isShow={true}>
-              {text?.icon && (
-                <>
-                  <IconFont
-                    className="priorityIcon"
-                    type={text?.icon}
-                    style={{
-                      fontSize: 20,
-                      color: text?.color,
-                    }}
-                  />
-                  <span>{text.content_txt}</span>
-                </>
-              )}
-              <span style={{ marginLeft: '5px' }}>
-                {!text?.icon && <span>--</span>}
-                <IconFont className="icon" type="down-icon" />
-              </span>
-            </PriorityWrapTable>
-          </ChangePriorityPopover>
-        )
-      },
-    },
-  ]
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
 
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
+    console.log(record, 'record')
     const resultKeys = selected
       ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
       : selectedRowKeys?.filter((i: any) => i.id !== record.id)
+    console.log(resultKeys, 'resultKeys')
     setSelectedRowKeys([...new Set(resultKeys)])
     onOperationCheckbox('add', [...new Set(resultKeys)])
   }
+  console.log(selectedRowKeys)
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
   const onOperationCheckbox = (type: any, keys?: any) => {
     const redClassElements = document.getElementsByClassName(
@@ -754,45 +646,81 @@ const Undistributed = () => {
     setSelectedRowKeys([])
     onOperationCheckbox('remove')
   }
+  const batchDom: any = createRef()
+  const hasBatch = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/batch',
+  )
+  console.log(props.homeType, 'props.homeType')
   return (
-    <>
-      <ResizeTable
-        isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 48px)"
-        col={colum}
-        dataSource={data.list}
-        rowSelection={
-          {
-            selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-            onSelect: (record: any, selected: any) =>
-              onSelectChange(record, selected),
-            onSelectAll,
-          } as any
-        }
-        noData={
-          <NoData
-            subText={t('theCurrentProjectHasNotCreatedATransactionCreate')}
-            haveFilter={filterKeys?.length > 0}
-          >
-            {/* {!hasCreate && ( */}
-            <CommonButton
-              type="light"
-              onClick={() => 123}
-              style={{ marginTop: 24 }}
+    <div
+      style={{
+        width: '100%',
+      }}
+    >
+      <HeaderAll
+        state={'hidden'}
+        homeType={props.homeType}
+        projectId={props.projectId}
+        type={props.type}
+        viewType={props.viewType}
+        headerParmas={props.headerParmas}
+      />
+      <div
+        style={{
+          width: '100%',
+          height: 'calc(100% - 100px)',
+          padding: '24px 48px 0 48px',
+        }}
+      >
+        <ResizeTable
+          isSpinning={isSpinning}
+          dataWrapNormalHeight="calc(100% - 48px)"
+          col={colum}
+          dataSource={data.list}
+          rowSelection={
+            {
+              selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+              onSelect: (record: any, selected: any) =>
+                onSelectChange(record, selected),
+              onSelectAll,
+            } as any
+          }
+          noData={
+            <NoData
+              subText={t('theCurrentProjectHasNotCreatedATransactionCreate')}
+              haveFilter={filterKeys?.length > 0}
             >
-              {t('createTransaction')}
-            </CommonButton>
-          </NoData>
-        }
-      />
-      <PaginationBox
-        currentPage={data?.currentPage}
-        pageSize={data?.pageSize}
-        total={data?.total}
-        onChange={onChangePage}
-        hasPadding
-      />
-    </>
+              <CommonButton
+                type="light"
+                onClick={() => 123}
+                style={{ marginTop: 24 }}
+              >
+                {t('createTransaction')}
+              </CommonButton>
+            </NoData>
+          }
+        />
+        {/* !hasBatch */}
+        {hasBatch && (
+          <FloatBatch
+            isVisible={selectedRowKeys.length > 0}
+            onClose={() => onSelectAll(false)}
+            selectRows={selectedRowKeys}
+            onUpdate={onUpdate}
+            onRef={batchDom}
+            type={1}
+          />
+        )}
+        <PaginationBox
+          currentPage={data?.currentPage}
+          pageSize={data?.pageSize}
+          total={data?.total}
+          onChange={onChangePage}
+          hasPadding
+        />
+      </div>
+    </div>
   )
 }
 export default Undistributed

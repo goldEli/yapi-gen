@@ -114,7 +114,6 @@ const TableQuickEdit = (props: Props) => {
   const isShowIcon =
     !props.isInfo &&
     ['text', 'textarea', 'number', 'integer'].includes(String(props.type))
-
   if (props.isMineOrHis) {
     isCanEdit = props?.item?.project?.isEdit
     projectId = props?.item?.project_id
@@ -457,7 +456,7 @@ const TableQuickEdit = (props: Props) => {
 
   // 操作框失焦
   const onBlur = (val: any) => {
-    if (props.item.categoryConfigList[props.keyText] === 1 && !val) {
+    if (props.item?.categoryConfigList[props.keyText] === 1 && !val) {
       getMessage({
         msg: `${props.keyText}${t('is_required')}`,
         type: 'warning',
@@ -487,7 +486,7 @@ const TableQuickEdit = (props: Props) => {
       onChange(resultVal, 1)
     }
   }
-
+  console.log(props.item.categoryConfigList, 'props.item.categoryConfigList')
   return (
     <div style={{ width: '100%' }}>
       {isShowControl &&
@@ -501,71 +500,73 @@ const TableQuickEdit = (props: Props) => {
         )}
 
       {/* 如果是详情或者是表格上可编辑字段 */}
-      {(Object.keys(props.item.categoryConfigList).includes(props.keyText) ||
-        props.isInfo ||
-        ['name', 'tag'].includes(props.keyText)) && (
-        <>
-          {!isShowControl && (
-            <>
-              {/* 快捷修改确认勾选框显示 */}
-              {props.type === 'single_checkbox' && (
-                <CheckboxWrap
-                  checked={props?.defaultText === '1'}
-                  onChange={e => onChange(e.target.checked ? 1 : 0)}
-                />
-              )}
-              {props.type !== 'single_checkbox' && (
-                <CanOperation
-                  onClick={() =>
-                    // 详情和列表上不是文本的可点击整个元素
-                    canClick ? setIsShowControl(true) : void 0
-                  }
-                  isTable={!props.isInfo}
-                  isCanEdit={isCanEdit}
-                >
-                  {(!['text', 'textarea'].includes(props.type as any) ||
-                    props.isDemandName) && <div>{props.children}</div>}
+      {props.item.categoryConfigList &&
+        (Object.keys(props.item.categoryConfigList).includes(props.keyText) ||
+          props.isInfo ||
+          ['name', 'tag'].includes(props.keyText)) && (
+          <>
+            {!isShowControl && (
+              <>
+                {/* 快捷修改确认勾选框显示 */}
+                {props.type === 'single_checkbox' && (
+                  <CheckboxWrap
+                    checked={props?.defaultText === '1'}
+                    onChange={e => onChange(e.target.checked ? 1 : 0)}
+                  />
+                )}
+                {props.type !== 'single_checkbox' && (
+                  <CanOperation
+                    onClick={() =>
+                      // 详情和列表上不是文本的可点击整个元素
+                      canClick ? setIsShowControl(true) : void 0
+                    }
+                    isTable={!props.isInfo}
+                    isCanEdit={isCanEdit}
+                  >
+                    {(!['text', 'textarea'].includes(props.type as any) ||
+                      props.isDemandName) && <div>{props.children}</div>}
 
-                  {['text', 'textarea'].includes(props.type as any) &&
-                    !props.isDemandName && (
-                      <>
-                        {props.isInfo && <div>{props.children}</div>}
-                        {!props.isInfo && (
-                          <Tooltip
-                            title={props.children}
-                            placement="topLeft"
-                            getPopupContainer={node => node}
-                          >
-                            <LimitText>{props.children}</LimitText>
-                          </Tooltip>
-                        )}
-                      </>
+                    {['text', 'textarea'].includes(props.type as any) &&
+                      !props.isDemandName && (
+                        <>
+                          {props.isInfo && <div>{props.children}</div>}
+                          {!props.isInfo && (
+                            <Tooltip
+                              title={props.children}
+                              placement="topLeft"
+                              getPopupContainer={node => node}
+                            >
+                              <LimitText>{props.children}</LimitText>
+                            </Tooltip>
+                          )}
+                        </>
+                      )}
+
+                    {isCanEdit && (
+                      <IconFontWrapEdit
+                        onClick={() => setIsShowControl(true)}
+                        isTable={isShowIcon}
+                        style={{ color: 'var(--neutral-n4)' }}
+                        type={
+                          props?.isInfo ||
+                          !['text', 'textarea', 'number', 'integer'].includes(
+                            String(props.type),
+                          )
+                            ? 'down-icon'
+                            : 'edit-square'
+                        }
+                      />
                     )}
-
-                  {isCanEdit && (
-                    <IconFontWrapEdit
-                      onClick={() => setIsShowControl(true)}
-                      isTable={isShowIcon}
-                      style={{ color: 'var(--neutral-n4)' }}
-                      type={
-                        props?.isInfo ||
-                        !['text', 'textarea', 'number', 'integer'].includes(
-                          String(props.type),
-                        )
-                          ? 'down-icon'
-                          : 'edit-square'
-                      }
-                    />
-                  )}
-                </CanOperation>
-              )}
-            </>
-          )}
-        </>
-      )}
+                  </CanOperation>
+                )}
+              </>
+            )}
+          </>
+        )}
 
       {/* 不能操作的并且不是详情快捷操作，只展示 */}
-      {!Object.keys(props.item.categoryConfigList).includes(props.keyText) &&
+      {props.item.categoryConfigList &&
+        !Object.keys(props.item.categoryConfigList).includes(props.keyText) &&
         !props.isInfo &&
         !['name', 'tag'].includes(props.keyText) && (
           <DisableWrap>
