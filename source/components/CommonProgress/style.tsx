@@ -36,3 +36,22 @@ export const ShowProgress = styled.div`
     font-family: SiYuanRegular;
   }
 `
+
+export const CommonProgressWrap = styled.div`
+  display: flex;
+  align-items: center;
+`
+export const UpdateButton = styled.div`
+  color: var(--auxiliary-text-t2-d2);
+  padding: 5px 8px;
+  border-radius: 6px 6px 6px 6px;
+  font-family: SiYuanRegular;
+  white-space: nowrap;
+  cursor: pointer;
+  &:hover {
+    background: var(--hover-d2);
+  }
+  &:active {
+    background: var(--auxiliary-b6);
+  }
+`
