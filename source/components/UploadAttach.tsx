@@ -28,6 +28,7 @@ import { cos, uploadFile } from '@/services/cos'
 import { useSelector } from '@store/index'
 import { getMessage } from './Message'
 import { relative } from 'path'
+import TruncateTextWithEllipsis from './TruncateTextWithEllipsis'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -732,7 +733,11 @@ const UploadAttach = (props: any, ref: any) => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {i.file.name}
+                      <TruncateTextWithEllipsis
+                        text={i.file.name}
+                        maxWidth={156}
+                      />
+                      {/* {i.file.name} */}
                     </div>
                     <First
                       style={{
