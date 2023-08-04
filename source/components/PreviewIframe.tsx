@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom'
 
 const StyleIframe = styled.iframe`
   width: 100%;
-  height: calc(100% - 50px);
+  height: 100%;
   border: none;
 `
 const IframeContainer = styled.div`
