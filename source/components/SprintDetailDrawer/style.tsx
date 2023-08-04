@@ -66,6 +66,12 @@ export const Label = styled.div`
   font-family: SiYuanMedium;
 `
 
+export const BetweenBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
 export const Header = styled.div`
   height: 52px;
   background: var(--neutral-white-d5);
@@ -141,6 +147,19 @@ export const Content = styled.div`
   overflow: auto;
   padding: 16px 24px 60px;
   position: relative;
+  .tabs {
+    margin-top: 32px;
+  }
+  .ant-tabs-tab {
+    padding: 0 0 16px;
+  }
+  .ant-tabs-tab-btn {
+    font-size: 14px;
+    color: var(--neutral-n2);
+  }
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: var(--primary-d1);
+  }
 `
 
 export const ParentBox = styled(Space)`
@@ -158,6 +177,11 @@ export const DemandName = styled.div`
     margin-right: 16px;
     font-family: SiYuanMedium;
     outline: none;
+    padding: 0 4px;
+    cursor: pointer;
+    &:hover {
+      background: var(--hover-d2);
+    }
   }
   .icon {
     margin-right: 16px;
@@ -261,4 +285,10 @@ export const DetailFooter = styled.div`
       color: var(--neutral-n3);
     }
   }
+`
+
+export const StatusAndLongWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `

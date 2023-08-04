@@ -1,6 +1,6 @@
 /* eslint-disable no-undefined */
 import CommonButton from '@/components/CommonButton'
-import { InfoItem, Label, SubLabel } from '../style'
+import { InfoItem, Label, LabelWrap, SubLabel } from '../style'
 import { useEffect, useState } from 'react'
 import StateTag from '@/components/StateTag'
 import DragTable from '@/components/DragTable'
@@ -23,13 +23,18 @@ import { getMessage } from '@/components/Message'
 import MoreDropdown from '@/components/MoreDropdown'
 import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdownMenu'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { PriorityWrapTable } from '@/components/StyleCommon'
+import {
+  CloseWrap,
+  PriorityWrapTable,
+  TableBorder,
+} from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const FormWrap = styled(Form)`
   padding: 0 24px;
@@ -55,7 +60,10 @@ interface SelectItem {
   value: number
 }
 
-const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
+const LinkSprint = (props: {
+  detail: Model.Affairs.AffairsInfo
+  isInfoPage?: boolean
+}) => {
   const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -382,7 +390,11 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   }, [searchValue, isVisible])
 
   return (
-    <InfoItem id="sprint-linkSprint" className="info_item_tab">
+    <InfoItem
+      id="sprint-linkSprint"
+      className="info_item_tab"
+      isInfoPage={props?.isInfoPage}
+    >
       <DeleteConfirmModal />
       <CommonModal
         isVisible={isVisible}
@@ -436,25 +448,35 @@ const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      <Label>{t('linkAffairs')}</Label>
-      <div>
+      <LabelWrap>
+        <Label>{t('linkAffairs')}</Label>
         {!isEnd && (
-          <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
-            {t('createLinkAffairs')}
-          </CommonButton>
+          <CloseWrap width={24} height={24}>
+            <CommonIconFont
+              type="plus"
+              size={18}
+              color="var(--neutral-n2)"
+              onClick={onClickOpen}
+            />
+          </CloseWrap>
         )}
+      </LabelWrap>
+
+      <div>
         {resultData.map((i: any) => (
           <>
             {i.list.length > 0 && (
               <div key={i.value}>
                 <SubLabel>{i.label}</SubLabel>
-                <DragTable
-                  columns={columns}
-                  dataSource={{ list: i.list }}
-                  onChangeData={arr => onChangeData(i, arr)}
-                  showHeader={false}
-                  hasOperation={operationList}
-                />
+                <TableBorder>
+                  <DragTable
+                    columns={columns}
+                    dataSource={{ list: i.list }}
+                    onChangeData={arr => onChangeData(i, arr)}
+                    showHeader={false}
+                    hasOperation={operationList}
+                  />
+                </TableBorder>
               </div>
             )}
           </>
