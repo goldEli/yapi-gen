@@ -29,6 +29,7 @@ import { useSelector } from '@store/index'
 import { getMessage } from './Message'
 import { relative } from 'path'
 import TruncateTextWithEllipsis from './TruncateTextWithEllipsis'
+import PreviewIframe from './PreviewIframe'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -207,6 +208,9 @@ const progressStatusMap: { [key: string]: 'success' | 'exception' | 'active' } =
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
 const UploadAttach = (props: any, ref: any) => {
+  const [previewUrl, setPreviewUrl] = useState('')
+  const [flag, setFlag] = useState<boolean>(false)
+
   const uploadRef = useRef<any>(null)
   const scopeRef = useRef(String(Math.random()))
   const { userInfo } = useSelector(store => store.user)
@@ -332,17 +336,23 @@ const UploadAttach = (props: any, ref: any) => {
   }
 
   const onPreview = (file: any) => {
-    const arrList = fileList?.filter((i: any) => imgs.includes(i.file.suffix))
+    console.log(file)
 
-    // return
-    setPictureList({
-      imageArray: arrList?.map((k: any, index: any) => ({
-        src: k.file.url,
-        index,
-      })),
-      index: arrList?.findIndex((i: any) => i.file.url === file.url),
-    })
-    setPreviewOpen(true)
+    if (imgs.includes(file.suffix)) {
+      const arrList = fileList?.filter((i: any) => imgs.includes(i.file.suffix))
+
+      setPictureList({
+        imageArray: arrList?.map((k: any, index: any) => ({
+          src: k.file.url,
+          index,
+        })),
+        index: arrList?.findIndex((i: any) => i.file.url === file.url),
+      })
+      setPreviewOpen(true)
+    } else {
+      setFlag(true)
+      setPreviewUrl(file.url)
+    }
   }
 
   const onTapPause = (id: string) => cos.pauseTask(id)
@@ -517,6 +527,17 @@ const UploadAttach = (props: any, ref: any) => {
   )
   return (
     <div>
+      {flag ? (
+        <PreviewIframe
+          url={previewUrl}
+          flag={flag}
+          onClose={() => {
+            setFlag(false)
+            setPreviewUrl('')
+          }}
+        />
+      ) : null}
+
       {previewOpen ? (
         <Viewer
           zIndex={99999}
