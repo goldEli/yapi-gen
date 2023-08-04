@@ -625,6 +625,79 @@ const DndKitTable = (props: any) => {
         )
       },
     },
+    {
+      title: t('common.createName'),
+      dataIndex: 'userName',
+      key: 'user_name',
+      width: 120,
+      render: (text: string, record: any) => {
+        return (
+          <div>创建人</div>
+          // <MultipleAvatar
+          //   max={1}
+          //   list={[
+          //     {
+          //       avatar: record.userAvatar,
+          //       id: record.userIds,
+          //       name: record.userName,
+          //     },
+          //   ]}
+          // />
+        )
+      },
+    },
+    {
+      title: t('common.expectedStart'),
+      dataIndex: 'expected_start_at',
+      key: 'expected_start_at',
+      width: 170,
+      render: (text: string, temp: any) => {
+        const id = temp.id?.split('_')?.[1]
+        const record = {
+          ...temp,
+          id,
+          categoryConfigList: temp.category_config_list,
+        }
+        return (
+          <TableQuickEdit
+            type="date"
+            defaultText={text}
+            keyText="expected_start_at"
+            item={record}
+            onUpdate={() => onUpdate()}
+            value={['datetime']}
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
+      },
+    },
+    {
+      title: t('common.expectedEnd'),
+      dataIndex: 'expected_end_at',
+      key: 'expected_end_at',
+      width: 170,
+      render: (text: string, temp: any) => {
+        const id = temp.id?.split('_')?.[1]
+        const record = {
+          ...temp,
+          id,
+          categoryConfigList: temp.category_config_list,
+        }
+        return (
+          <TableQuickEdit
+            type="date"
+            defaultText={text}
+            keyText="expected_end_at"
+            item={record}
+            onUpdate={() => onUpdate()}
+            value={['datetime']}
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
+      },
+    },
   ]
 
   // 拖动排序接口

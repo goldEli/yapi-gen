@@ -13,6 +13,7 @@ import { getDemandInfo } from '@store/demand/demand.thunk'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { changeRestScroll } from '@store/scroll'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 interface Props {
   onRef: any
@@ -22,14 +23,13 @@ const DemandBasic = (props: Props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { demandInfo, demandCommentList } = useSelector(store => store.demand)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
   const isRest = useSelector(store => store.scroll.isRest)
   const [activeTabs, setActiveTabs] = useState(1)
 
   // 更新详情
   const onUpdate = () => {
-    dispatch(
-      getDemandInfo({ projectId: getProjectIdByUrl(), id: demandInfo.id }),
-    )
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 跳转配置

@@ -42,7 +42,6 @@ import StateTag from '../StateTag'
 import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
 import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
-import DemandComment from './DemandComment'
 import DetailDemand from './DetailDemand'
 import {
   Header,

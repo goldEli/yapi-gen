@@ -115,7 +115,7 @@ const ActivitySprint = () => {
   }, [affairsActivity])
 
   return (
-    <InfoItem id="sprint-activity" className="info_item_tab">
+    <InfoItem id="sprint-activity" className="info_item_tab" isInfoPage>
       <Label>{t('activity')}</Label>
       <Tabs
         activeKey={activeKey}
