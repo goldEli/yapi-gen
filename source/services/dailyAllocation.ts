@@ -45,7 +45,10 @@ export const set_create_config: any = async (params: any) => {
 //设置自动发送配置
 export const set_auto_send_config: any = async (params: any) => {
   const p = {
-    ...params,
+    id: params.id,
+    is_auto_send: params.is_auto_send,
+    is_hand_send: params.is_hand_send,
+    project_id: params.project_id,
     reminder_time: moment(params.reminder_time).format('HH:mm'),
     send_cycle: {
       day: params.day ?? [],

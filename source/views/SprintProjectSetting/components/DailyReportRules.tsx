@@ -554,6 +554,7 @@ const DailyReportRules = () => {
               </Form.Item>
               <Form.Item label={t('msg14')} name="reminder_time">
                 <TimePicker
+                  allowClear={false}
                   style={{ width: 320 }}
                   format="HH:mm"
                   disabled={sendDisabled}
