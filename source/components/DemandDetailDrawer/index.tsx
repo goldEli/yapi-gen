@@ -811,7 +811,7 @@ const DemandDetailDrawer = () => {
               </BtnWrap>
               <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
               <Tabs
-                className={customTabs}
+                className="tabs"
                 activeKey={tabActive}
                 items={
                   // 子任务不存在子事务模块
