@@ -487,8 +487,9 @@ const UploadAttach = (props: any, ref: any) => {
                   {imgs.includes(i.file.suffix) && (
                     <img
                       style={{
-                        width: '100%',
-                        height: '100%',
+                        width: i.file.url ? '100%' : '64px',
+                        height: i.file.url ? '100%' : '64px',
+                        marginTop: i.file.url ? '' : '10px',
                         borderRadius: '6px 6px 0 0',
                         objectFit: 'contain',
                       }}
