@@ -287,7 +287,6 @@ const SprintTable = (props: Props) => {
     ]
     return <Menu style={{ minWidth: 56 }} items={batchItems} />
   }
-
   const selectColum: any = useMemo(() => {
     const arr = props.allTitleList
     const newList = []
@@ -378,6 +377,7 @@ const SprintTable = (props: Props) => {
   useEffect(() => {
     setSelectedRowKeys([])
   }, [props.data.list])
+  console.log(selectColum, 'selectColum')
   return (
     <Content>
       <ResizeTable
