@@ -13,12 +13,13 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '../DeleteConfirm'
 import IconFont from '../IconFont'
-import { AddWrap, TextWrapEdit } from '../StyleCommon'
+import { AddWrap, CloseWrap, TextWrapEdit } from '../StyleCommon'
 import UploadAttach from '../UploadAttach'
-import { ContentItem, Label } from './style'
+import { ContentItem, Label, LabelWrap } from './style'
 import DrawerTagComponent from './DrawerTagComponent'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { getMessage } from '../Message'
+import CommonIconFont from '../CommonIconFont'
 
 interface DetailDemand {
   detail: any
@@ -147,7 +148,18 @@ const DetailDemand = (props: DetailDemand) => {
         id="tab_attachment"
         className="info_item_tab"
       >
-        <Label>{t('common.attachment')}</Label>
+        {/* <Label>{t('common.attachment')}</Label> */}
+        <LabelWrap>
+          <Label>{t('common.attachment')}</Label>
+          <CloseWrap width={24} height={24}>
+            <CommonIconFont
+              type="plus"
+              size={18}
+              color="var(--neutral-n2)"
+              onClick={() => {}}
+            />
+          </CloseWrap>
+        </LabelWrap>
         <div>
           {projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',
@@ -166,23 +178,6 @@ const DetailDemand = (props: DetailDemand) => {
               onC
               del={onDeleteInfoAttach}
               add={onAddInfoAttach}
-              addWrap={
-                <AddWrap
-                  hasColor
-                  style={{
-                    marginBottom: '10px',
-                    color: 'var(--primary-d1)',
-                  }}
-                >
-                  <IconFont
-                    style={{
-                      color: 'var(--primary-d1)',
-                    }}
-                    type="plus"
-                  />
-                  <div>{t('p2.addAdjunct')}</div>
-                </AddWrap>
-              }
             />
           )}
           {projectInfo?.projectPermissions?.filter(
