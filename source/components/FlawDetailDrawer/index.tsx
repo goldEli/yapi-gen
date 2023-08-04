@@ -111,7 +111,7 @@ const FlawDetailDrawer = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const [showState, setShowState] = useState<any>(normalState)
-  const leftWidth = 640
+  const leftWidth = 960
   const spanDom = useRef<HTMLSpanElement>(null)
   const { userInfo } = useSelector(store => store.user)
 

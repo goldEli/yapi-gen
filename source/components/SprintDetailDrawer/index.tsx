@@ -114,7 +114,7 @@ const SprintDetailDrawer = () => {
   const paramsData = getParamsData(searchParams) || {}
   const { id } = paramsData
   const [t] = useTranslation()
-  const leftWidth = 640
+  const leftWidth = 960
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
   const [skeletonLoading, setSkeletonLoading] = useState(false)
@@ -145,14 +145,13 @@ const SprintDetailDrawer = () => {
   ]
 
   const anchorList = [
-    { name: t('attachment'), key: 'sprint-attachment', domKey: 'detailInfo' },
-    { name: t('addTag'), key: 'sprint-tag', domKey: 'detailInfo' },
+    { name: t('attachment'), key: 'sprint-attachment' },
+    { name: t('addTag'), key: 'sprint-tag' },
     {
       name: t('addChildAffairs'),
       key: 'sprint-childSprint',
-      domKey: 'childSprint',
     },
-    { name: t('linkAffairs'), key: 'sprint-linkSprint', domKey: 'linkSprint' },
+    { name: t('linkAffairs'), key: 'sprint-linkSprint' },
   ]
 
   const isCanEdit =
@@ -433,22 +432,9 @@ const SprintDetailDrawer = () => {
     copyLink(drawerInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
-  // 点击锚点跳转
-  const onClickAnchorList = (item: {
-    key: string
-    domKey: string
-    name?: string
-  }) => {
-    const newState = Object.assign({}, showState)
-    newState[item.domKey].isOpen = true
-    newState[item.domKey].dom.current.style.height = 'auto'
-    setShowState(newState)
-    setTimeout(() => {
-      const dom = document.getElementById(item.key)
-      dom?.scrollIntoView({
-        behavior: 'smooth',
-      })
-    }, 100)
+  // 点击进行快捷操作
+  const onClickAnchorList = (item: { key: string; name?: string }) => {
+    console.log('快捷操作')
   }
 
   // 确认删除
@@ -583,69 +569,6 @@ const SprintDetailDrawer = () => {
       {
         type: 'divider',
         key: '10',
-      },
-      {
-        label: (
-          <div
-            onClick={() =>
-              onClickAnchorList({
-                key: 'sprint-attachment',
-                domKey: 'detailInfo',
-              })
-            }
-          >
-            {t('addAttachments')}
-          </div>
-        ),
-        key: '1',
-      },
-      {
-        label: (
-          <div
-            onClick={() =>
-              onClickAnchorList({
-                key: 'sprint-childSprint',
-                domKey: 'childSprint',
-              })
-            }
-          >
-            {t('addChildAffairs')}
-          </div>
-        ),
-        key: '2',
-      },
-      {
-        label: (
-          <div
-            onClick={() =>
-              onClickAnchorList({
-                key: 'sprint-tag',
-                domKey: 'detailInfo',
-              })
-            }
-          >
-            {t('addTag')}
-          </div>
-        ),
-        key: '3',
-      },
-      {
-        label: (
-          <div
-            onClick={() =>
-              onClickAnchorList({
-                key: 'sprint-linkSprint',
-                domKey: 'linkSprint',
-              })
-            }
-          >
-            {t('linkAffairs')}
-          </div>
-        ),
-        key: '4',
-      },
-      {
-        type: 'divider',
       },
       {
         label: <div onClick={onToConfig}>{t('configuration')}</div>,
@@ -882,7 +805,7 @@ const SprintDetailDrawer = () => {
                 {(drawerInfo.work_type === 6
                   ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
                   : anchorList
-                ).map((i: { key: string; domKey: string; name: string }) => (
+                ).map((i: { key: string; name: string }) => (
                   <CommonButton
                     key={i.key}
                     type="light"
