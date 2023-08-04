@@ -191,7 +191,7 @@ const DemandDetailDrawer = () => {
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
-  const leftWidth = 640
+  const leftWidth = 650
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {

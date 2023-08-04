@@ -5,7 +5,7 @@ import CommonButton from '@/components/CommonButton'
 import { AddWrap, CloseWrap, TextWrapEdit } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
-import { useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import {
@@ -32,13 +32,12 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   const LeftDom = useRef<HTMLDivElement>(null)
   const editorRef = useRef<EditorRef>(null)
   const editorRef2 = useRef<any>()
+  const uploadRef: any = createRef()
   //   当前删除的附件数据
   const [tagList, setTagList] = useState<any>([])
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
-  const { projectInfo, isUpdateAddWorkItem } = useSelector(
-    store => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dId = useRef<any>()
 
@@ -111,6 +110,10 @@ const AffairsDetail = (props: AffairsDetailProps) => {
     }
     await updateEditor(params)
     onUpdate(true)
+  }
+
+  const onUpload = () => {
+    uploadRef?.current.handleUpload()
   }
 
   useEffect(() => {
@@ -212,41 +215,36 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       >
         <BetweenBox>
           <Label>{t('common.attachment')}</Label>
-          <div>
-            {projectInfo?.projectPermissions?.filter(
-              (i: any) => i.name === '附件上传',
-            ).length > 0 && (
-              <UploadAttach
-                onBottom={onBottom}
-                defaultList={props.affairsInfo?.attachment?.map((i: any) => ({
-                  url: i.attachment.path,
-                  id: i.id,
-                  size: i.attachment.size,
-                  time: i.created_at,
-                  name: i.attachment.name,
-                  suffix: i.attachment.ext,
-                  username: i.user_name ?? '--',
-                }))}
-                canUpdate
-                onC
-                del={onDeleteInfoAttach}
-                add={onAddInfoAttach}
-                addWrap={
-                  <CloseWrap width={24} height={24}>
-                    <CommonIconFont
-                      type="plus"
-                      size={18}
-                      color="var(--neutral-n2)"
-                    />
-                  </CloseWrap>
-                }
-              />
-            )}
-            {projectInfo?.projectPermissions?.filter(
-              (i: any) => i.name === '附件上传',
-            ).length <= 0 && <span>--</span>}
-          </div>
+          <CloseWrap width={24} height={24} onClick={onUpload}>
+            <CommonIconFont type="plus" size={18} color="var(--neutral-n2)" />
+          </CloseWrap>
         </BetweenBox>
+        <div>
+          {projectInfo?.projectPermissions?.filter(
+            (i: any) => i.name === '附件上传',
+          ).length > 0 && (
+            <UploadAttach
+              ref={uploadRef}
+              onBottom={onBottom}
+              defaultList={props.affairsInfo?.attachment?.map((i: any) => ({
+                url: i.attachment.path,
+                id: i.id,
+                size: i.attachment.size,
+                time: i.created_at,
+                name: i.attachment.name,
+                suffix: i.attachment.ext,
+                username: i.user_name ?? '--',
+              }))}
+              canUpdate
+              onC
+              del={onDeleteInfoAttach}
+              add={onAddInfoAttach}
+            />
+          )}
+          {projectInfo?.projectPermissions?.filter(
+            (i: any) => i.name === '附件上传',
+          ).length <= 0 && <span>--</span>}
+        </div>
       </InfoItem>
     </>
   )

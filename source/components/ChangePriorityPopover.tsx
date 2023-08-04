@@ -19,7 +19,6 @@ interface Props {
 
 const ChangePriorityPopover = (props: Props) => {
   const [popoverVisible, setPopoverVisible] = useState(false)
-
   const onChangePriority = (item: any) => {
     props.onChangePriority?.(item)
     setPopoverVisible(false)
