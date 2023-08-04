@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import ReactDOM from 'react-dom'
 
 const StyleIframe = styled.iframe`
   width: 100%;
@@ -13,20 +14,20 @@ const IframeContainer = styled.div`
   position: fixed;
   top: 0px;
   left: 0px;
-  z-index: 9999;
+  z-index: 99999;
   width: 100%;
   height: 100%;
   border: none;
   background: #ffffffb3;
 `
 const CloseBtn = styled.div`
-  text-align: right;
-  line-height: 50px;
-  height: 50px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  border: none;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 0 0 0 40px;
+  background-color: rgba(0, 0, 0, 1);
 `
 const ErrorRender = styled.div`
   text-align: center;
@@ -132,7 +133,7 @@ const PreviewIframe = (props: any) => {
       }
     }
   }, [])
-  return (
+  return ReactDOM.createPortal(
     <IframeContainer>
       {isLoading ? (
         <LoadingOverlay className="loading-overlay">
@@ -150,10 +151,10 @@ const PreviewIframe = (props: any) => {
           }}
           type="close"
           style={{
-            fontSize: '30px',
-            color: '#646566',
+            fontSize: '25px',
+            color: '#F9FAFC',
             cursor: 'pointer',
-            margin: '10px 10px 0 0',
+            margin: '5px 0px 0 10px',
           }}
         />
       </CloseBtn>
@@ -173,7 +174,8 @@ const PreviewIframe = (props: any) => {
           {/* <Text>{t('file.erro3')}</Text> */}
         </ErrorRender>
       )}
-    </IframeContainer>
+    </IframeContainer>,
+    document.body,
   )
 }
 

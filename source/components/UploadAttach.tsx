@@ -608,7 +608,11 @@ const UploadAttach = (props: any, ref: any) => {
                       />
                     )}
 
-                    <Gred onClick={() => onPreview(i.file)}></Gred>
+                    <Gred
+                      onClick={() =>
+                        i.state === 'success' ? onPreview(i.file) : null
+                      }
+                    />
                   </GredParent>
 
                   <Second>
