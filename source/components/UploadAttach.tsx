@@ -58,7 +58,7 @@ export const BigWrap = styled.div`
 
 export const Gred = styled.div`
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px 6px 0 0;
   position: absolute;
   left: 0;
   right: 0;
@@ -68,8 +68,9 @@ export const Gred = styled.div`
   justify-content: center;
   align-items: center;
   height: 96px;
-  opacity: 0;
-  transition: all 1s;
+
+  transition: all 0.5s;
+  backdrop-filter: blur(0px);
 `
 
 export const GredParent = styled.div`
@@ -78,13 +79,6 @@ export const GredParent = styled.div`
   background: #f5f5f7;
   width: 100%;
   height: 96px;
-  &:hover {
-    ${Gred} {
-      opacity: 0.6;
-      background-color: rgba(0, 0, 0, 1);
-      transition: all 0.1s;
-    }
-  }
 `
 
 export const BlueCss = styled.span`
@@ -93,11 +87,11 @@ export const BlueCss = styled.span`
   justify-content: center;
   width: 24px;
   height: 24px;
-
+  backdrop-filter: blur(3px);
   cursor: pointer;
-  margin-left: 15px;
+  margin-left: 12px;
 
-  background: rgb(124, 143, 144, 0.7);
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 4px;
 `
 
@@ -114,9 +108,9 @@ const NumStyle = styled.div`
 export const Card = styled.div`
   position: relative;
   width: 172px;
-  height: 166px;
+  /* height: 166px; */
   background: var(--neutral-white-d6);
-  border: 1px solid black;
+  border: 1px solid var(--neutral-n6-d2);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
   margin: 0 16px 16px 10px;
@@ -124,16 +118,22 @@ export const Card = styled.div`
 
   transition: all 0.3s;
   &:hover {
-    border: 1px solid blue;
+    border: 1px solid var(--primary-d1);
     ${Second} {
       visibility: visible;
       opacity: 1;
+    }
+    ${Gred} {
+      backdrop-filter: blur(2px);
+      background-color: rgba(0, 0, 0, 0.4);
+      /* transition: all 0.1s; */
     }
   }
 `
 
 const StyledProgress = styled(Progress)`
   width: 120px;
+
   .ant-progress-bg {
     height: 4px !important;
   }
@@ -490,6 +490,7 @@ const UploadAttach = (props: any, ref: any) => {
                         width: '100%',
                         height: '100%',
                         borderRadius: '6px 6px 0 0',
+                        objectFit: 'contain',
                       }}
                       alt=""
                       src={i.file.url ? i.file.url : myImg}
@@ -507,9 +508,7 @@ const UploadAttach = (props: any, ref: any) => {
                     />
                   )}
 
-                  {imgs.includes(i.file.suffix) && (
-                    <Gred onClick={() => onPreview(i.file)}></Gred>
-                  )}
+                  <Gred onClick={() => onPreview(i.file)}></Gred>
                 </GredParent>
 
                 <Second>
