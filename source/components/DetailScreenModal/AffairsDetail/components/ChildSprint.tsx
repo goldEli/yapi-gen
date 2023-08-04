@@ -17,7 +17,11 @@ import { Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import StateTag from '@/components/StateTag'
 import DragTable from '@/components/DragTable'
-import { setAddWorkItemModal, setIsChangeDetailAffairs } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setIsChangeDetailAffairs,
+  setIsUpdateAddWorkItem,
+} from '@store/project'
 import { useDispatch, useSelector } from '@store/index'
 import {
   addAffairsChild,
@@ -55,9 +59,8 @@ const ChildSprint = (props: {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [isSearch, setIsSearch] = useState(false)
   const [searchValue, setSearchValue] = useState('')
-  const { projectInfo, isChangeDetailAffairs } = useSelector(
-    store => store.project,
-  )
+  const { projectInfo, isChangeDetailAffairs, isUpdateAddWorkItem } =
+    useSelector(store => store.project)
   const [pageParams, setPageParams] = useState({ page: 1, pagesize: 20 })
   // 下拉数据
   const [selectList, setSelectList] = useState<SelectItem[]>([])
@@ -139,19 +142,6 @@ const ChildSprint = (props: {
     getSelectList(value)
   }
 
-  const onUpdate = () => {
-    if (props.isInfoPage) {
-      dispatch(
-        getAffairsInfo({
-          projectId: projectInfo.id,
-          sprintId: props.detail.id,
-        }),
-      )
-    } else {
-      props.onUpdate?.(true)
-    }
-  }
-
   // 点击下拉的事务 -- 添加
   const onChangeSelect = async (value: any) => {
     await addAffairsChild({
@@ -161,14 +151,14 @@ const ChildSprint = (props: {
     })
     getMessage({ type: 'success', msg: t('addedSuccessfully') })
     onCancelSearch()
-    onUpdate()
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 删除子事务确认事件
   const onDeleteConfirm = async (item: any) => {
     await deleteAffairs({ projectId: projectInfo.id, id: item.id })
     getMessage({ type: 'success', msg: t('successfullyDeleted') })
-    onUpdate()
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 删除关联工作项

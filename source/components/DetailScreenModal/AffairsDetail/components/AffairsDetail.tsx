@@ -35,7 +35,9 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   const [tagList, setTagList] = useState<any>([])
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dId = useRef<any>()
 
