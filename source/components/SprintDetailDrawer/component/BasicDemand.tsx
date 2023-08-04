@@ -472,6 +472,8 @@ const BasicDemand = (props: Props) => {
         paddingLeft: props.hasPadding ? '24px' : 0,
         height: props.isInfoPage ? '100%' : 'auto',
       }}
+      id="sprint-basicInfo"
+      className="info_item_tab"
     >
       <Label style={{ marginTop: props.isInfoPage ? '0' : '16px' }}>
         {t('newlyAdd.basicInfo')}
