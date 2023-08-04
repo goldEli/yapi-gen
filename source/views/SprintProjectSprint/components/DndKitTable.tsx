@@ -35,6 +35,7 @@ import { getLongStory, moveStory, sortStory } from '@/services/sprint'
 import moment from 'moment'
 import ClickDropdown from './ClickDropdown'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
+import CommonProgress from '@/components/CommonProgress'
 
 const MoveFont = styled(IconFont)`
   fontsize: 16;
@@ -879,6 +880,7 @@ const DndKitTable = (props: any) => {
         </Checkbox>
       </DeleteConfirm>
       <DeleteConfirmModal />
+      <CommonProgress isTable={false} />
     </DragDropContext>
   )
 }

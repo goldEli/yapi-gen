@@ -13,12 +13,12 @@ interface ProgressPropsType {
   onClose(): void
 }
 
-const CommonProgressModal = (props: ProgressPropsType) => {
+const UpdateProgressModal = (props: ProgressPropsType) => {
   const [t]: any = useTranslation()
   const [form] = Form.useForm()
   const [inputValue, setInputValue] = useState(0)
 
-  const { type, visible } = props
+  const { type, visible, onClose } = props
 
   const onChange = (newValue: number) => {
     setInputValue(newValue)
@@ -45,7 +45,7 @@ const CommonProgressModal = (props: ProgressPropsType) => {
       width={640}
       title="更新进度"
       isVisible={visible}
-      onClose={close}
+      onClose={onClose}
       onConfirm={confirm}
       confirmText="更新"
     >
@@ -117,4 +117,4 @@ const CommonProgressModal = (props: ProgressPropsType) => {
   )
 }
 
-export default CommonProgressModal
+export default UpdateProgressModal
