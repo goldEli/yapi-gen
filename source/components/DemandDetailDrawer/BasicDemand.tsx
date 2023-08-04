@@ -371,9 +371,10 @@ const BasicDemand = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.isOpen && props.detail?.id) {
-      getFieldData()
-    }
+    // if (props.isOpen && props.detail?.id) {
+    //   getFieldData()
+    // }
+    getFieldData()
   }, [props.isOpen, props.detail])
 
   useEffect(() => {
@@ -383,7 +384,7 @@ const BasicDemand = (props: Props) => {
   }, [isRefresh])
 
   return (
-    <div className={props.isInfoPage ? haveAuto : ''}>
+    <div style={{ marginTop: '20px' }} id="tab_info">
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {
         return (

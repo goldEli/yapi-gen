@@ -52,7 +52,7 @@ export const SubLabel = styled.div`
 `
 
 const RelationWrap = styled.div`
-  height: 100%;
+  /* height: 100%; */
 `
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
@@ -699,9 +699,10 @@ const StoryRelation = (props: RelationStoriesProps) => {
   ]
 
   useEffect(() => {
-    if (props.activeKey === '3' || props.isOpen) {
-      getList(pageObj, order)
-    }
+    // if (props.activeKey === '3' || props.isOpen) {
+    //   getList(pageObj, order)
+    // }
+    getList(pageObj, order)
   }, [props.activeKey, props.isOpen])
   useEffect(() => {
     if (isVisible && !searchValue) {
@@ -715,13 +716,14 @@ const StoryRelation = (props: RelationStoriesProps) => {
   }
   return (
     <RelationWrap
-      style={{
-        height: props.isDrawer
-          ? '100%'
-          : isEnd
-          ? 'calc(100vh - 192px)'
-          : 'calc(100vh - 224px)',
-      }}
+      // style={{
+      //   height: props.isDrawer
+      //     ? '100%'
+      //     : isEnd
+      //     ? 'calc(100vh - 192px)'
+      //     : 'calc(100vh - 224px)',
+      // }}
+      id="tab_link"
     >
       <DeleteConfirmModal />
       <CommonModal

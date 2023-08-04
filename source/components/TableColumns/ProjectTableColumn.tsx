@@ -181,6 +181,7 @@ export const useDynamicColumns = (state: any) => {
       key: 'priority',
       width: 100,
       render: (text: any, record: Record<string, string | number>) => {
+        console.log(record.categoryConfigList, 'pro')
         return (
           <ChangePriorityPopover
             isCanOperation={
@@ -609,7 +610,6 @@ export const useDynamicColumns = (state: any) => {
       },
     },
   ]
-
   const getArr = () => {
     const result: any = []
     projectInfo?.plainOptions3?.forEach((element: any) => {

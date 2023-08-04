@@ -160,6 +160,7 @@ const ResizeTable = (props: ResizeTableProps) => {
   useEffect(() => {
     setColumns(props.col)
   }, [props.col])
+  console.log(columns, 'col')
 
   const handleResize =
     (index: number) =>
