@@ -67,7 +67,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   const { demandInfo } = useSelector(store => store.demand)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
+  const projectId = paramsData?.id
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
