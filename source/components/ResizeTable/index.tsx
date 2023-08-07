@@ -131,7 +131,7 @@ const ResizeTitle = (props: any) => {
 interface ResizeTableProps {
   col: any
   dataSource: any
-  dataWrapNormalHeight: any
+  dataWrapNormalHeight?: any
   noData?: any
   isSpinning?: boolean
   rowSelection?: any
@@ -147,6 +147,8 @@ interface ResizeTableProps {
   expandable?: any
   isTree?: boolean
   rowClassName?: any
+  // 为真则是不做高度限制
+  isNotHeight?: boolean
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -224,7 +226,7 @@ const ResizeTable = (props: ResizeTableProps) => {
   })
 
   return (
-    <DataWrap height={props.dataWrapNormalHeight} ref={dataWrapRef}>
+    <DataWrap height={props.dataWrapNormalHeight || 'auto'} ref={dataWrapRef}>
       <div
         style={{ height: '100%' }}
         className="components-table-resizable-column"
