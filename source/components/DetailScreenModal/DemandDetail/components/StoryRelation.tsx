@@ -1,6 +1,6 @@
 /* eslint-disable no-undefined */
 import { getParamsData } from '@/tools'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CommonButton from '@/components/CommonButton'
 import ResizeTable from '@/components/ResizeTable'
@@ -104,7 +104,7 @@ interface SelectItem {
   value: number
 }
 
-const StoryRelation = (props: RelationStoriesProps) => {
+const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   const [t] = useTranslation()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
@@ -219,7 +219,11 @@ const StoryRelation = (props: RelationStoriesProps) => {
   const onClickOpen = () => {
     setIsVisible(true)
   }
-
+  useImperativeHandle(ref, () => {
+    return {
+      onClickOpen,
+    }
+  })
   const onSearch = (value: string) => {
     setSearchValue(value)
     if (value) {
@@ -849,4 +853,4 @@ const StoryRelation = (props: RelationStoriesProps) => {
   )
 }
 
-export default StoryRelation
+export default forwardRef(StoryRelation)

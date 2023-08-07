@@ -1,6 +1,12 @@
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { Editor, EditorRef } from '@xyfe/uikit'
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { getFlawInfo } from '@store/flaw/flaw.thunk'
@@ -20,7 +26,7 @@ interface FlawDetailProps {
   onUpdate?(value?: boolean): void
 }
 
-const FlawDetail = (props: FlawDetailProps) => {
+const FlawDetail = (props: FlawDetailProps, ref: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const editorRef = useRef<EditorRef>(null)
@@ -108,7 +114,14 @@ const FlawDetail = (props: FlawDetailProps) => {
     setEditInfo(props.flawInfo.info)
     dId.current = props.flawInfo.id
   }, [props.flawInfo])
-
+  const handleUpload = () => {
+    uploadRef.current?.handleUpload()
+  }
+  useImperativeHandle(ref, () => {
+    return {
+      handleUpload,
+    }
+  })
   return (
     <>
       <DeleteConfirmModal />
@@ -173,7 +186,7 @@ const FlawDetail = (props: FlawDetailProps) => {
               size={18}
               color="var(--neutral-n2)"
               onClick={() => {
-                uploadRef.current?.handleUpload()
+                handleUpload()
               }}
             />
           </CloseWrap>
@@ -209,4 +222,4 @@ const FlawDetail = (props: FlawDetailProps) => {
   )
 }
 
-export default FlawDetail
+export default forwardRef(FlawDetail)

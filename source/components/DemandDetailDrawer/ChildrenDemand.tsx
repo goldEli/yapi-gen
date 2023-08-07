@@ -2,7 +2,7 @@
 import { getDemandList } from '@/services/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { Space, Table } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
@@ -21,7 +21,7 @@ interface Props {
   isOpen?: boolean
 }
 
-const ChildrenDemand = (props: Props) => {
+const ChildrenDemand = (props: Props, ref: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { isUpdateAddWorkItem, projectInfo } = useSelector(
@@ -156,7 +156,11 @@ const ChildrenDemand = (props: Props) => {
       }),
     )
   }
-
+  useImperativeHandle(ref, () => {
+    return {
+      onCreateChild,
+    }
+  })
   useEffect(() => {
     if (props.isOpen || isUpdateAddWorkItem) {
       getList()
@@ -240,4 +244,4 @@ const ChildrenDemand = (props: Props) => {
   )
 }
 
-export default ChildrenDemand
+export default forwardRef(ChildrenDemand)
