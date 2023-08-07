@@ -602,7 +602,7 @@ export const getDemandList: any = async (params: any) => {
       project_id: params?.projectId,
       keyword: params?.searchValue,
       iterate_id: params?.iterateIds,
-      status: params?.statusIds,
+      category_status_ids: params?.statusIds,
       priority: params?.priorityIds,
       user_id: params?.userId,
       tag: params?.tagIds,

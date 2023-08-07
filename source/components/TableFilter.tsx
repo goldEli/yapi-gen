@@ -483,7 +483,9 @@ const TableFilter = (props: any) => {
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
-                    <Form.Item name={i.key}>
+                    <Form.Item
+                      name={i.key === 'status' ? 'category_status_ids' : i.key}
+                    >
                       {i.key === 'category' ? (
                         <SelectWrap>
                           <CategoryDropdown
