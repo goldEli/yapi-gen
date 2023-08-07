@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 可拖拽列宽的表格
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -245,7 +246,7 @@ const ResizeTable = (props: ResizeTableProps) => {
               }}
               scroll={{
                 x: 'max-content',
-                y: tableY,
+                y: props.isNotHeight ? undefined : tableY,
               }}
               tableLayout="auto"
               showSorterTooltip={false}
