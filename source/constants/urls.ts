@@ -189,7 +189,13 @@ const urls = {
   getScheduleListDaysOfMonth: '/b/calendar/schedule/daysOfMonth',
   getScheduleListDaysOfDate: '/b/calendar/schedule/daysOfDate',
   getScheduleSearch: '/b/calendar/schedule/search',
-
+  getInitDaily: '/b/companyuser/initDaily',
+  getDailyInfo: '/b/work_report/template/dailyInfo',
+  getListOfDaily: '/b/project/listOfDaily',
+  getStoryListOfDaily: '/b/story/listOfDaily',
+  sendNotice: '/b/project/daily_config/send_notice',
+  // 日报助手发送日报
+  writeAssistantReport: '/b/work_report/user/helperCreate',
   getSprintKanBanList: '/b/list',
   /**
    * 冲刺项目-事务
@@ -463,6 +469,12 @@ const urls = {
   copyView: '/b/story/views/copy',
   // 获取人员信息
   getUserIntroList: '/b/user/intro',
+  // 日报配置
+  dailyConfigInfo: '/b/project/daily_config/info',
+  // 生成配置
+  dailyConfigSetCreateConfig: '/b/project/daily_config/set_create_config',
+  // 自动发送配置
+  dailyConfigSetAutoSendConfig: '/b/project/daily_config/set_auto_send_config',
 }
 export default urls
 

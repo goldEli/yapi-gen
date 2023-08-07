@@ -158,7 +158,7 @@ const ProgressComparison = (props: Props) => {
     const columns1 = [
       {
         dataIndex: 'userName',
-        title: t('performance.user') + '999',
+        title: t('performance.user'),
         render: (text: string, record: any) => {
           return (
             <RowText

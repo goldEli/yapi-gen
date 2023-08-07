@@ -34,7 +34,6 @@ export const useDynamicColumns = (state: any) => {
               size="small"
               name={record.name}
             />
-            {record.handover_status}
             {record.nickname && `(${record.nickname}) `}
             {record.handover_status === 2 && <Tag>{t('quitAndHandover')}</Tag>}
           </div>

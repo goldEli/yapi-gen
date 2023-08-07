@@ -132,7 +132,7 @@ const CommentFooter = (props: CommentFooterProps) => {
                   at
                   ref={editorRef}
                   upload={uploadFile}
-                  getSuggestions={() => props.personList}
+                  getSuggestions={() => props.personList ?? []}
                   maxHeight={props.maxHeight}
                 />
               </Form.Item>
