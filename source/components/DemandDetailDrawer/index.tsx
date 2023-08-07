@@ -602,7 +602,6 @@ const DemandDetailDrawer = () => {
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     const dom = document.getElementById(value)
-    console.log('value', value, dom)
     dom?.scrollIntoView({
       behavior: 'smooth',
     })

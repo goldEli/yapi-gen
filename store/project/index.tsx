@@ -44,6 +44,7 @@ export interface CounterState {
     visible: boolean
     params: Model.Project.DetailScreenModalParams
   }
+  drawerCanOperation: any
 }
 
 const initialState: CounterState = {
@@ -94,6 +95,7 @@ const initialState: CounterState = {
     visible: false,
     params: { id: 0 },
   },
+  drawerCanOperation: {},
 }
 
 export const projectSlice = createSlice({
@@ -184,6 +186,10 @@ export const projectSlice = createSlice({
     setIsChangeDetailAffairs: (state: any, action) => {
       state.isChangeDetailAffairs = action.payload
     },
+    //存储浮层可操作的字段数据
+    setDrawerCanOperation: (state: any, action) => {
+      state.drawerCanOperation = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
@@ -214,6 +220,7 @@ export const {
   setFilterParams,
   setIsUpdateAddWorkItem,
   setIsChangeDetailAffairs,
+  setDrawerCanOperation,
 } = projectSlice.actions
 
 export default projectSlice.reducer

@@ -293,41 +293,41 @@ const AffairsDetail = () => {
         type: 'divider',
         key: '10',
       },
-      {
-        label: (
-          <div onClick={() => onChangeTabsScroll('sprint-attachment')}>
-            {t('addAttachments')}
-          </div>
-        ),
-        key: '1',
-      },
-      {
-        label: (
-          <div onClick={() => onChangeTabsScroll('sprint-childSprint')}>
-            {t('addChildAffairs')}
-          </div>
-        ),
-        key: '2',
-      },
-      {
-        label: (
-          <div onClick={() => onChangeTabsScroll('sprint-tag')}>
-            {t('addTag')}
-          </div>
-        ),
-        key: '3',
-      },
-      {
-        label: (
-          <div onClick={() => onChangeTabsScroll('sprint-linkSprint')}>
-            {t('linkAffairs')}
-          </div>
-        ),
-        key: '4',
-      },
-      {
-        type: 'divider',
-      },
+      // {
+      //   label: (
+      //     <div onClick={() => onChangeTabsScroll('sprint-attachment')}>
+      //       {t('addAttachments')}
+      //     </div>
+      //   ),
+      //   key: '1',
+      // },
+      // {
+      //   label: (
+      //     <div onClick={() => onChangeTabsScroll('sprint-childSprint')}>
+      //       {t('addChildAffairs')}
+      //     </div>
+      //   ),
+      //   key: '2',
+      // },
+      // {
+      //   label: (
+      //     <div onClick={() => onChangeTabsScroll('sprint-tag')}>
+      //       {t('addTag')}
+      //     </div>
+      //   ),
+      //   key: '3',
+      // },
+      // {
+      //   label: (
+      //     <div onClick={() => onChangeTabsScroll('sprint-linkSprint')}>
+      //       {t('linkAffairs')}
+      //     </div>
+      //   ),
+      //   key: '4',
+      // },
+      // {
+      //   type: 'divider',
+      // },
       {
         label: <div onClick={onToConfig}>{t('configuration')}</div>,
         key: '5',
@@ -679,71 +679,75 @@ const AffairsDetail = () => {
           />
         </div>
       )}
-      <DetailTitle>
-        <Tooltip title={affairsInfo?.categoryName}>
-          <Popover
-            trigger={['hover']}
-            visible={isShowChange}
-            placement="bottomLeft"
-            content={changeStatus}
-            getPopupContainer={node => node}
-            onVisibleChange={visible => setIsShowChange(visible)}
-          >
-            <div>
-              <Img src={affairsInfo.category_attachment} alt="" />
-            </div>
-          </Popover>
-        </Tooltip>
-        <DetailText id="DetailText">
-          {!hasEdit && (
-            <span
-              className="name"
-              ref={spanDom}
-              contentEditable
-              onBlur={onNameConfirm}
-            >
-              {affairsInfo.name}
-            </span>
-          )}
-          {hasEdit && <span className="name">{affairsInfo.name}</span>}
-          <CopyIcon onCopy={onCopy} />
-          <ChangeStatusPopover
-            projectId={affairsInfo.projectId}
-            record={affairsInfo}
-            onChangeStatus={onChangeStatus}
-            type={2}
-            isCanOperation={!hasEdit && !affairsInfo.isExamine}
-          >
-            <StateTag
-              onClick={affairsInfo.isExamine ? onExamine : void 0}
-              isShow={!hasEdit}
-              name={affairsInfo.status?.status.content}
-              state={
-                affairsInfo.status?.is_start === 1 &&
-                affairsInfo.status?.is_end === 2
-                  ? 1
-                  : affairsInfo.status?.is_end === 1 &&
-                    affairsInfo.status?.is_start === 2
-                  ? 2
-                  : affairsInfo.status?.is_start === 2 &&
-                    affairsInfo.status?.is_end === 2
-                  ? 3
-                  : 0
-              }
-            />
-          </ChangeStatusPopover>
-        </DetailText>
-      </DetailTitle>
+
       <DetailMain>
         <div
           style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
         >
+          <DetailTitle>
+            <Tooltip title={affairsInfo?.categoryName}>
+              <Popover
+                trigger={['hover']}
+                visible={isShowChange}
+                placement="bottomLeft"
+                content={changeStatus}
+                getPopupContainer={node => node}
+                onVisibleChange={visible => setIsShowChange(visible)}
+              >
+                <div>
+                  <Img src={affairsInfo.category_attachment} alt="" />
+                </div>
+              </Popover>
+            </Tooltip>
+            <DetailText id="DetailText">
+              {!hasEdit && (
+                <span
+                  className="name"
+                  ref={spanDom}
+                  contentEditable
+                  onBlur={onNameConfirm}
+                >
+                  {affairsInfo.name}
+                </span>
+              )}
+              {hasEdit && <span className="name">{affairsInfo.name}</span>}
+              <CopyIcon onCopy={onCopy} />
+            </DetailText>
+          </DetailTitle>
           <AffairsInfo onRef={sprintDetailInfoDom} />
         </div>
         <div
           ref={basicInfoDom}
           style={{ position: 'relative', width: leftWidth }}
         >
+          <div style={{ margin: '0 0 30px 24px' }}>
+            <ChangeStatusPopover
+              projectId={affairsInfo.projectId}
+              record={affairsInfo}
+              onChangeStatus={onChangeStatus}
+              type={2}
+              isCanOperation={!hasEdit && !affairsInfo.isExamine}
+            >
+              <StateTag
+                onClick={affairsInfo.isExamine ? onExamine : void 0}
+                isShow={!hasEdit}
+                name={affairsInfo.status?.status.content}
+                state={
+                  affairsInfo.status?.is_start === 1 &&
+                  affairsInfo.status?.is_end === 2
+                    ? 1
+                    : affairsInfo.status?.is_end === 1 &&
+                      affairsInfo.status?.is_start === 2
+                    ? 2
+                    : affairsInfo.status?.is_start === 2 &&
+                      affairsInfo.status?.is_end === 2
+                    ? 3
+                    : 0
+                }
+              />
+            </ChangeStatusPopover>
+          </div>
+          <div style={{ margin: '0 0 30px 24px' }}>进度条</div>
           <SprintDetailMouseDom
             active={focus}
             onMouseDown={onDragLine}

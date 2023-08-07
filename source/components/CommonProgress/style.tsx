@@ -55,3 +55,9 @@ export const UpdateButton = styled.div`
     background: var(--auxiliary-b6);
   }
 `
+export const ItemRow = styled.div`
+  width: 240px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`
