@@ -192,7 +192,6 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         <DrawerHeader>
           <LogoBox>
             <img src={sideLogo} alt="" />
-            <span>IFUN Agile</span>
           </LogoBox>
           <CloseWrap
             width={32}
