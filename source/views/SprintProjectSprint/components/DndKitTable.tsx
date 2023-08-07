@@ -38,7 +38,7 @@ import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 import CommonProgress from '@/components/CommonProgress'
 
 const MoveFont = styled(IconFont)`
-  fontsize: 16;
+  font-size: 16;
   color: var(--neutral-n3);
   &:hover {
     color: var(--primary-d2);

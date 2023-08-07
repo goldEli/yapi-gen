@@ -179,6 +179,17 @@ const ProjectDetailSide = () => {
         ).length > 0,
       key: 'ProjectHome',
     },
+    {
+      label: t('rbgz'),
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
+      ),
+      path: '/SprintProjectManagement/Setting',
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/daily_config'),
+      ).length,
+      key: 'ProjectSchedule',
+    },
   ]
   const menuList = [
     {

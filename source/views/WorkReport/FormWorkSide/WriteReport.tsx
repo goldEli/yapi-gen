@@ -21,7 +21,6 @@ import { getMessage } from '@/components/Message'
 interface Props {
   isVisible: boolean
   onClose(): void
-  onConfirm(): void
   title: string
 }
 const HeaderWrap = styled.div`
