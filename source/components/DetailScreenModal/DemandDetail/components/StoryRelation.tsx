@@ -17,7 +17,12 @@ import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
-import { CloseWrap, HiddenText, LinkWrap } from '@/components/StyleCommon'
+import {
+  CloseWrap,
+  HiddenText,
+  LinkWrap,
+  TableBorder,
+} from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import MultipleAvatar from '@/components/MultipleAvatar'
@@ -824,13 +829,15 @@ const StoryRelation = (props: RelationStoriesProps) => {
               {i.list.length > 0 && (
                 <div key={i.value}>
                   <SubLabel>{i.label}</SubLabel>
-                  <DragTable
-                    columns={drawerColumns}
-                    dataSource={{ list: i.list }}
-                    onChangeData={arr => onChangeData(i, arr)}
-                    showHeader={false}
-                    hasOperation={operationList}
-                  />
+                  <TableBorder>
+                    <DragTable
+                      columns={drawerColumns}
+                      dataSource={{ list: i.list }}
+                      onChangeData={arr => onChangeData(i, arr)}
+                      showHeader={false}
+                      hasOperation={operationList}
+                    />
+                  </TableBorder>
                 </div>
               )}
             </>

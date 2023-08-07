@@ -191,7 +191,7 @@ const DemandDetailDrawer = () => {
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
-  const leftWidth = 650
+  const leftWidth = 800
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -645,7 +645,7 @@ const DemandDetailDrawer = () => {
                 <Skeleton.Input active />
               </SkeletonStatus>
             )}
-            {!skeletonLoading && (
+            {/* {!skeletonLoading && (
               <ChangeStatusPopover
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
@@ -653,7 +653,7 @@ const DemandDetailDrawer = () => {
                 onChangeStatus={onChangeStatus}
                 type={1}
               >
-                {/* <StateTag
+                <StateTag
                   name={drawerInfo?.status?.status?.content}
                   onClick={drawerInfo.isExamine ? onExamine : void 0}
                   isShow={isCanEdit || drawerInfo.isExamine}
@@ -669,9 +669,9 @@ const DemandDetailDrawer = () => {
                       ? 3
                       : 0
                   }
-                /> */}
+                />
               </ChangeStatusPopover>
-            )}
+            )} */}
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
@@ -755,23 +755,33 @@ const DemandDetailDrawer = () => {
                     </span>
                   </DrawerHeader>
                 ))}
-                <StateTag
-                  name={drawerInfo?.status?.status?.content}
-                  onClick={drawerInfo.isExamine ? onExamine : void 0}
-                  isShow={isCanEdit || drawerInfo.isExamine}
-                  state={
-                    drawerInfo?.status?.is_start === 1 &&
-                    drawerInfo?.status?.is_end === 2
-                      ? 1
-                      : drawerInfo?.status?.is_end === 1 &&
-                        drawerInfo?.status?.is_start === 2
-                      ? 2
-                      : drawerInfo?.status?.is_start === 2 &&
+                {!skeletonLoading && (
+                  <ChangeStatusPopover
+                    isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                    projectId={drawerInfo.projectId}
+                    record={drawerInfo}
+                    onChangeStatus={onChangeStatus}
+                    type={1}
+                  >
+                    <StateTag
+                      name={drawerInfo?.status?.status?.content}
+                      onClick={drawerInfo.isExamine ? onExamine : void 0}
+                      isShow={isCanEdit || drawerInfo.isExamine}
+                      state={
+                        drawerInfo?.status?.is_start === 1 &&
                         drawerInfo?.status?.is_end === 2
-                      ? 3
-                      : 0
-                  }
-                />
+                          ? 1
+                          : drawerInfo?.status?.is_end === 1 &&
+                            drawerInfo?.status?.is_start === 2
+                          ? 2
+                          : drawerInfo?.status?.is_start === 2 &&
+                            drawerInfo?.status?.is_end === 2
+                          ? 3
+                          : 0
+                      }
+                    />
+                  </ChangeStatusPopover>
+                )}
               </ParentBox>
               {drawerInfo?.isExamine && (
                 <div style={{ marginBottom: 16 }}>
@@ -824,6 +834,7 @@ const DemandDetailDrawer = () => {
                 <StoryRelation
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
+                  isDrawer
                 />
                 <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
                 <CommentTitle>进度日志</CommentTitle>
