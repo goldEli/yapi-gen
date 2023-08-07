@@ -82,7 +82,7 @@ export const DropdownMenu = styled(Dropdown)`
 
 export const DetailTitle = styled.div`
   display: flex;
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  // border-bottom: 1px solid var(--neutral-n6-d1);
   padding: 20px 0px 20px;
   width: calc(100% - 48px);
   margin-left: 24px;
@@ -91,11 +91,12 @@ export const DetailTitle = styled.div`
 export const Img = styled.img`
   width: 20px;
   height: 20px;
-  margin-right: 8px;
+  margin-right: 4px;
 `
 
 export const DetailText = styled.div`
   flex-wrap: wrap;
+  padding-left: 4px;
   .name {
     font-size: 16px;
     color: var(--neutral-n1-d1);
@@ -105,6 +106,10 @@ export const DetailText = styled.div`
   }
   .icon {
     margin-right: 16px;
+    cursor: pointer;
+  }
+  &:hover {
+    background-color: var(--hover-d2);
     cursor: pointer;
   }
 `
@@ -308,4 +313,9 @@ export const SubLabel = styled.div`
   margin: 8px 0;
   font-size: 12px;
   color: var(--neutral-n3);
+`
+export const ButtonGroupWrap = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 16px 0 24px 16px;
 `

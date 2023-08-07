@@ -435,8 +435,6 @@ const UploadAttach = (props: any, ref: any) => {
     }
   })
   const handleUpload = () => {
-    console.log(uploadRef.current)
-
     // 调用 Upload 组件的上传事件
     uploadRef.current.click()
   }

@@ -7,63 +7,91 @@ import {
   useRef,
   useState,
 } from 'react'
-import { DetailInfoWrap, InfoWrap } from '../style'
-import { Tabs } from 'antd'
+import { DetailInfoWrap, InfoWrap, ButtonGroupWrap } from '../style'
 import { useTranslation } from 'react-i18next'
+import IconFont from '@/components/IconFont'
+import SprintTag from '@/components/TagComponent/SprintTag'
 import { getIdsForAt, getProjectIdByUrl, removeNull } from '@/tools'
 import { addAffairsComment } from '@/services/affairs'
 import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
 import { getMessage } from '@/components/Message'
 import LinkSprint from './LinkSprint'
+import { AddWrap, CloseWrap, TextWrapEdit } from '@/components/StyleCommon'
 import ActivitySprint from './ActivitySprint'
 import AffairsDetail from './AffairsDetail'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
 import CommonIconFont from '@/components/CommonIconFont'
 import ChildSprint from './ChildSprint'
-
+import CommonButton from '@/components/CommonButton'
 interface Props {
   onRef: any
 }
+const ButtonGroup = (props: {
+  state: boolean
+  onClickItem: (el: any) => void
+  affairsInfo: any
+  isInfoPage: any
+}) => {
+  const [t] = useTranslation()
+  const dispatch = useDispatch()
+  const dId = useRef<any>()
+  const [items, setItems] = useState<Array<{ label: string; key: string }>>([])
+  const [tagList, setTagList] = useState<any>()
+  const data = [
+    { key: 'sprint-attachment', label: t('attachment') },
+    { key: 'sprint-tag', label: t('addTag') },
+    { key: 'sprint-childSprint', label: t('sprint.sub') },
+    { key: 'sprint-linkSprint', label: t('linkAffairs') },
+  ]
+  useEffect(() => {
+    if (props.state) {
+      setItems(data.filter(el => el.key !== 'sprint-childSprint'))
+    } else {
+      setItems(data)
+    }
+  }, [props.state])
 
+  const onUpdate = (value?: boolean) => {}
+  return (
+    <ButtonGroupWrap>
+      {items.map((el: { label: string; key: string }) => (
+        <div key={el.key}>
+          <CommonButton
+            type="light"
+            style={{ marginRight: '12px' }}
+            onClick={() => props.onClickItem(el)}
+          >
+            {el.label}
+          </CommonButton>
+        </div>
+      ))}
+      <SprintTag
+        defaultList={tagList}
+        canAdd
+        onUpdate={() => onUpdate()}
+        detail={props.affairsInfo}
+        addWrap={
+          <AddWrap hasDash>
+            <IconFont type="plus" />
+          </AddWrap>
+        }
+      />
+    </ButtonGroupWrap>
+  )
+}
 const AffairsInfo = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const LeftDomDetailInfo = useRef<HTMLDivElement>(null)
   const commentDom: any = createRef()
+  const childRef: any = createRef()
+  const linkSprint: any = createRef()
+  const uploadFile: any = createRef()
   const LeftDomC = LeftDomDetailInfo.current
   const { affairsInfo } = useSelector(store => store.affairs)
   const { projectInfoValues } = useSelector(store => store.project)
   const [tabActive, setTabActive] = useState('sprint-info')
   const [isScroll, setIsScroll] = useState(false)
-
-  // tab标签栏
-  const items: any = [
-    {
-      key: 'sprint-info',
-      label: t('describe'),
-    },
-    {
-      key: 'sprint-attachment',
-      label: t('attachment'),
-    },
-    {
-      key: 'sprint-tag',
-      label: t('tag'),
-    },
-    {
-      key: 'sprint-childSprint',
-      label: t('subtransaction'),
-    },
-    {
-      key: 'sprint-linkSprint',
-      label: t('linkAffairs'),
-    },
-    {
-      key: 'sprint-activity',
-      label: t('activity'),
-    },
-  ]
-
   // 提交评论
   const onConfirmComment = async (value: { info: string }) => {
     await addAffairsComment({
@@ -124,7 +152,16 @@ const AffairsInfo = (props: Props) => {
       LeftDomC?.removeEventListener('scroll', handleScroll, false)
     }
   }, [LeftDomC])
-
+  const onClickItem = (el: any) => {
+    console.log(el, 'ooo', linkSprint.current)
+    // if (el.key === 'sprint-childSprint') {
+    //   childRef && childRef.current.onCreateChild()
+    // } else if (el.key === 'sprint-linkSprint') {
+    //   linkSprint.current.onClickOpen()
+    // } else {
+    //   uploadFile.current.handleUpload()
+    // }
+  }
   return (
     <InfoWrap
       height={`calc(100vh - ${
@@ -132,35 +169,32 @@ const AffairsInfo = (props: Props) => {
         (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
-      {isScroll && (
-        <Tabs
-          className="tabs"
-          activeKey={tabActive}
-          items={
-            // 子任务不存在子事务模块
-            affairsInfo.work_type === 6
-              ? items.filter((i: any) => i.key !== 'sprint-childSprint')
-              : items
-          }
-          onChange={onChangeTabs}
-        />
-      )}
+      {/* 子任务不存在子事务模块 */}
+      <ButtonGroup
+        state={affairsInfo.work_type === 6}
+        onClickItem={onClickItem}
+        affairsInfo={affairsInfo}
+        isInfoPage
+      />
       <DetailInfoWrap
         ref={LeftDomDetailInfo}
         className="sprintDetail_dom"
         isScroll={isScroll}
       >
         <AffairsDetail
+          onRef={uploadFile}
           affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
           isInfoPage
         />
         {affairsInfo.work_type !== 6 && (
           <ChildSprint
+            onRef={childRef}
             detail={affairsInfo as Model.Affairs.AffairsInfo}
             isInfoPage
           />
         )}
         <LinkSprint
+          onRef={linkSprint}
           detail={affairsInfo as Model.Affairs.AffairsInfo}
           isInfoPage
         />
