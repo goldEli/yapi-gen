@@ -9,7 +9,13 @@ import {
 } from '@/services/demand'
 import { useSelector } from '@store/index'
 import { message } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '../DeleteConfirm'
 import IconFont from '../IconFont'
@@ -26,7 +32,7 @@ interface DetailDemand {
   onUpdate(value?: boolean): void
 }
 
-const DetailDemand = (props: DetailDemand) => {
+const DetailDemand = (props: DetailDemand, ref: any) => {
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -90,11 +96,17 @@ const DetailDemand = (props: DetailDemand) => {
     await updateDemandEditor(params)
     props.onUpdate()
   }
-
+  const handleUpload = () => {
+    uploadRef.current?.handleUpload()
+  }
   useEffect(() => {
     setEditInfo(props.detail.info)
   }, [props.detail])
-
+  useImperativeHandle(ref, () => {
+    return {
+      handleUpload,
+    }
+  })
   return (
     <>
       <DeleteConfirm
@@ -193,4 +205,4 @@ const DetailDemand = (props: DetailDemand) => {
   )
 }
 
-export default DetailDemand
+export default forwardRef(DetailDemand)
