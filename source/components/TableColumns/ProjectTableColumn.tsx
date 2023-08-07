@@ -6,7 +6,6 @@
 // 公用需求列表表格
 
 import IconFont from '@/components/IconFont'
-import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
 import {
@@ -26,11 +25,10 @@ import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import DemandProgress from '../DemandProgress'
-import { getCustomNormalValue } from '@/tools'
+import { getCustomNormalValue, copyLink } from '@/tools'
 import MultipleAvatar from '../MultipleAvatar'
 import CommonIconFont from '../CommonIconFont'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
-
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
@@ -62,7 +60,10 @@ export const useDynamicColumns = (state: any) => {
   const onUpdate = (row: any, isClass?: any) => {
     state.onUpdate(true, row.topId, isClass)
   }
-
+  // 复制编号
+  const onCopyNumber = (id: string) => {
+    copyLink(id, t('copysuccess'), t('copyfailed'))
+  }
   const arr = [
     {
       width: 140,
@@ -74,11 +75,18 @@ export const useDynamicColumns = (state: any) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
               className="canClickDetail"
-              onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
               style={{ marginRight: 16 }}
             >
-              {record.storyPrefixKey}
+              <div className="text" onClick={() => state.onClickItem(record)}>
+                {record.storyPrefixKey}
+              </div>
+              <CommonIconFont
+                type="share"
+                size={20}
+                color={'var(--neutral-n3)'}
+                onClick={() => onCopyNumber(text)}
+              />
             </ClickWrap>
             {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
