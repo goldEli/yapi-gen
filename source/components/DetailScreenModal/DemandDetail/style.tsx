@@ -227,7 +227,7 @@ export const TextWrap = styled.div`
 `
 
 export const InfoWrap = styled.div`
-  height: calc(100vh - 212px);
+  height: calc(100vh - 252px);
   flex: 1;
   position: relative;
 `

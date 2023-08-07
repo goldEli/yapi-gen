@@ -82,7 +82,7 @@ export const DropdownMenu = styled(Dropdown)`
 
 export const DetailTitle = styled.div`
   display: flex;
-  // border-bottom: 1px solid var(--neutral-n6-d1);
+  border-bottom: 1px solid var(--neutral-n6-d1);
   padding: 20px 0px 20px;
   width: calc(100% - 48px);
   margin-left: 24px;
@@ -149,7 +149,7 @@ export const BasicWrap = styled.div`
 `
 
 export const BasicContent = styled.div`
-  height: calc(100vh - 265px);
+  height: calc(100vh - 320px);
   overflow: auto;
 `
 
@@ -226,7 +226,7 @@ export const ActivityTabItem = styled.div`
 
 export const InfoItem = styled.div<{ isInfoPage?: boolean }>`
   display: flex;
-  margin-top: 20px;
+  margin-bottom: 20px;
   position: relative;
   flex-direction: column;
   padding: ${props => (props.isInfoPage ? '0 24px' : 0)};
@@ -317,5 +317,5 @@ export const SubLabel = styled.div`
 export const ButtonGroupWrap = styled.div`
   display: flex;
   align-items: center;
-  margin: 16px 0 24px 16px;
+  padding: 16px 0 24px 16px;
 `
