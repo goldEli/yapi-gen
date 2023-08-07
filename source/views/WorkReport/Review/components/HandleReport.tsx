@@ -37,7 +37,7 @@ const LabelTitle = styled.span`
   font-size: 14px;
   font-family: SiYuanMedium;
   font-weight: 500;
-  color: #323233;
+  color: var(--neutral-n1-d1);
   line-height: 22px;
 `
 const HandleWrap = styled.div`

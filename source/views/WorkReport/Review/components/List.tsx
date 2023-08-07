@@ -84,6 +84,7 @@ const ClearButton = styled.div`
   white-space: nowrap;
   cursor: pointer;
 `
+
 const defaultPageParam = { page: 1, pagesize: 20 }
 
 const List = () => {
@@ -198,6 +199,7 @@ const List = () => {
         visible: true,
         id: row.id,
         ids: listData?.map((i: any) => i.id),
+        system: row?.type === 2,
       }),
     )
   }
@@ -266,9 +268,7 @@ const List = () => {
             )}
             <Tooltip
               placement="topLeft"
-              title={`${String(record.user.name)}${t('report.list.of')}${
-                record.name
-              }`}
+              title={record.title}
               getPopupContainer={node => node}
             >
               <span
@@ -283,9 +283,7 @@ const List = () => {
                 }}
                 className="controlMaxWidth"
               >
-                {String(record.user.name)}
-                {t('report.list.of')}
-                {record.name}
+                {record.title}
               </span>
               {(id === 1 || id === 3) && record.is_supply === 1 && (
                 <LabelTag options={reportState} state={2} />
@@ -387,7 +385,7 @@ const List = () => {
       width: 140,
       title: t('report.list.readState'),
       align: 'center',
-      dataIndex: 'type',
+      dataIndex: 'user_copysend_type',
       render: (text: number, record: any) => {
         return id === 1 ? (
           <ReadStatusTag status={record.is_read === 1 ? 'read' : 'no'} />
@@ -707,10 +705,13 @@ const List = () => {
         dataWrapNormalHeight="calc(100vh - 249px)"
         col={
           id === 1
-            ? columns
+            ? columns?.filter(
+                (item: any) => item.dataIndex !== 'user_copysend_type',
+              )
             : id === 3
             ? columns?.filter(
-                (item: any) => item.dataIndex && item.dataIndex !== 'type',
+                (item: any) =>
+                  item.dataIndex && item.dataIndex !== 'user_copysend_type',
               )
             : columns?.filter((item: any) => item.dataIndex)
         }

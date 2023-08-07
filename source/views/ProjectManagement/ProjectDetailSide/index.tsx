@@ -154,6 +154,7 @@ const ProjectDetailSide = () => {
     'note',
     'ProjectKanBan',
     'ProjectHome',
+    'ProjectSchedule',
   ]
   const sideList = [
     {
@@ -234,8 +235,19 @@ const ProjectDetailSide = () => {
         ).length > 0,
       key: 'ProjectHome',
     },
+    {
+      label: t('rbgz'),
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
+      ),
+      path: '/ProjectManagement/ProjectSetting',
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/daily_config'),
+        ).length > 0,
+      key: 'ProjectSchedule',
+    },
   ]
-
   const getProjectInfoValuesData = async () => {
     const result = await getProjectInfoValues({ projectId })
     dispatch(setProjectInfoValues(result))
@@ -353,6 +365,7 @@ const ProjectDetailSide = () => {
       ProjectAffair: 4,
       ProjectKanBan: 5,
       ProjectHome: 6,
+      ProjectSchedule: 7,
     }
     const params = encryptPhp(
       JSON.stringify({
