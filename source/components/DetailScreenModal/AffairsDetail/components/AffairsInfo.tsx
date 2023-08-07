@@ -125,6 +125,16 @@ const AffairsInfo = (props: Props) => {
     setTabActive(arr[arr.length - 1])
   }
 
+  const onClickItem = (el: any) => {
+    if (el.key === 'sprint-childSprint') {
+      childRef && childRef.current.onCreateChild()
+    } else if (el.key === 'sprint-linkSprint') {
+      linkSprint.current.onClickOpen()
+    } else if (el.key === 'sprint-attachment') {
+      uploadFile.current.handleUpload()
+    }
+  }
+
   useImperativeHandle(props.onRef, () => {
     return {
       changeTabs: onChangeTabs,
@@ -137,16 +147,7 @@ const AffairsInfo = (props: Props) => {
       LeftDomC?.removeEventListener('scroll', handleScroll, false)
     }
   }, [LeftDomC])
-  const onClickItem = (el: any) => {
-    console.log(el, 'ooo', linkSprint.current)
-    if (el.key === 'sprint-childSprint') {
-      childRef && childRef.current.onCreateChild()
-    } else if (el.key === 'sprint-linkSprint') {
-      linkSprint.current.onClickOpen()
-    } else if (el.key === 'sprint-attachment') {
-      uploadFile.current.handleUpload()
-    }
-  }
+
   return (
     <InfoWrap
       height={`calc(100vh - ${

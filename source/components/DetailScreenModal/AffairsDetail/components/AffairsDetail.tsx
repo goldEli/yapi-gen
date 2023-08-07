@@ -119,8 +119,14 @@ const AffairsDetail = (props: AffairsDetailProps) => {
     onUpdate(true)
   }
 
-  const onUpload = () => {
-    uploadRef?.current.handleUpload()
+  useImperativeHandle(props.onRef, () => {
+    return {
+      handleUpload,
+    }
+  })
+
+  const handleUpload = () => {
+    uploadRefs.current.handleUpload()
   }
 
   useEffect(() => {
@@ -134,14 +140,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
     setEditInfo(props.affairsInfo.info || '')
     dId.current = props.affairsInfo.id
   }, [props.affairsInfo])
-  useImperativeHandle(props.onRef, () => {
-    return {
-      handleUpload,
-    }
-  })
-  const handleUpload = () => {
-    uploadRefs.current.handleUpload()
-  }
+
   return (
     <>
       <DeleteConfirmModal />
@@ -229,32 +228,14 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       >
         <BetweenBox>
           <Label>{t('common.attachment')}</Label>
-          <div>
-            {projectInfo?.projectPermissions?.filter(
-              (i: any) => i.name === '附件上传',
-            ).length > 0 && (
-              <UploadAttach
-                ref={uploadRefs}
-                onBottom={onBottom}
-                defaultList={props.affairsInfo?.attachment?.map((i: any) => ({
-                  url: i.attachment.path,
-                  id: i.id,
-                  size: i.attachment.size,
-                  time: i.created_at,
-                  name: i.attachment.name,
-                  suffix: i.attachment.ext,
-                  username: i.user_name ?? '--',
-                }))}
-                canUpdate
-                onC
-                del={onDeleteInfoAttach}
-                add={onAddInfoAttach}
-              />
-            )}
-            {projectInfo?.projectPermissions?.filter(
-              (i: any) => i.name === '附件上传',
-            ).length <= 0 && <span>--</span>}
-          </div>
+          <CloseWrap width={24} height={24}>
+            <CommonIconFont
+              type="plus"
+              size={18}
+              color="var(--neutral-n2)"
+              onClick={handleUpload}
+            />
+          </CloseWrap>
         </BetweenBox>
         <div>
           {projectInfo?.projectPermissions?.filter(
