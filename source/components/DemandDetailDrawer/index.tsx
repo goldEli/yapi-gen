@@ -144,7 +144,9 @@ const DemandDetailDrawer = () => {
   const [demandIds, setDemandIds] = useState([])
   const commentDom: any = createRef()
   const spanDom = useRef<HTMLSpanElement>(null)
-
+  const detailDemandRef = useRef<any>()
+  const childrenDemandRef = useRef<any>()
+  const storyRelationRef = useRef<any>()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -193,7 +195,7 @@ const DemandDetailDrawer = () => {
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
-  const leftWidth = 650
+  const leftWidth = 800
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -604,11 +606,38 @@ const DemandDetailDrawer = () => {
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     const dom = document.getElementById(value)
-    console.log('value', value, dom)
     dom?.scrollIntoView({
       behavior: 'smooth',
     })
+    setTabActive(value)
   }
+  // 计算滚动选中tab
+  const handleScroll = (e: any) => {
+    const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
+    // 所有标题节点
+    const titleItems = document.querySelectorAll('.info_item_tab')
+
+    let arr: any = []
+    titleItems.forEach(element => {
+      const { offsetTop, id } = element as HTMLElement
+      console.log('element', offsetTop, id, scrollTop)
+      if (offsetTop - 140 <= scrollTop) {
+        const keys = [...arr, ...[id]]
+        arr = [...new Set(keys)]
+      }
+    })
+    setTabActive(arr[arr.length - 1])
+  }
+  useEffect(() => {
+    document
+      .getElementById('contentDom')
+      ?.addEventListener('scroll', handleScroll, true)
+    return () => {
+      document
+        .getElementById('contentDom')
+        ?.removeEventListener('scroll', handleScroll, false)
+    }
+  }, [document.getElementById('contentDom')])
   return (
     <>
       <DeleteConfirm
@@ -647,7 +676,7 @@ const DemandDetailDrawer = () => {
                 <Skeleton.Input active />
               </SkeletonStatus>
             )}
-            {!skeletonLoading && (
+            {/* {!skeletonLoading && (
               <ChangeStatusPopover
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
@@ -655,7 +684,7 @@ const DemandDetailDrawer = () => {
                 onChangeStatus={onChangeStatus}
                 type={1}
               >
-                {/* <StateTag
+                <StateTag
                   name={drawerInfo?.status?.status?.content}
                   onClick={drawerInfo.isExamine ? onExamine : void 0}
                   isShow={isCanEdit || drawerInfo.isExamine}
@@ -671,9 +700,9 @@ const DemandDetailDrawer = () => {
                       ? 3
                       : 0
                   }
-                /> */}
+                />
               </ChangeStatusPopover>
-            )}
+            )} */}
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
@@ -736,7 +765,7 @@ const DemandDetailDrawer = () => {
             </Popover>
           </Space>
         </Header>
-        <Content>
+        <Content id="contentDom">
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
@@ -757,23 +786,33 @@ const DemandDetailDrawer = () => {
                     </span>
                   </DrawerHeader>
                 ))}
-                <StateTag
-                  name={drawerInfo?.status?.status?.content}
-                  onClick={drawerInfo.isExamine ? onExamine : void 0}
-                  isShow={isCanEdit || drawerInfo.isExamine}
-                  state={
-                    drawerInfo?.status?.is_start === 1 &&
-                    drawerInfo?.status?.is_end === 2
-                      ? 1
-                      : drawerInfo?.status?.is_end === 1 &&
-                        drawerInfo?.status?.is_start === 2
-                      ? 2
-                      : drawerInfo?.status?.is_start === 2 &&
+                {!skeletonLoading && (
+                  <ChangeStatusPopover
+                    isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                    projectId={drawerInfo.projectId}
+                    record={drawerInfo}
+                    onChangeStatus={onChangeStatus}
+                    type={1}
+                  >
+                    <StateTag
+                      name={drawerInfo?.status?.status?.content}
+                      onClick={drawerInfo.isExamine ? onExamine : void 0}
+                      isShow={isCanEdit || drawerInfo.isExamine}
+                      state={
+                        drawerInfo?.status?.is_start === 1 &&
                         drawerInfo?.status?.is_end === 2
-                      ? 3
-                      : 0
-                  }
-                />
+                          ? 1
+                          : drawerInfo?.status?.is_end === 1 &&
+                            drawerInfo?.status?.is_start === 2
+                          ? 2
+                          : drawerInfo?.status?.is_start === 2 &&
+                            drawerInfo?.status?.is_end === 2
+                          ? 3
+                          : 0
+                      }
+                    />
+                  </ChangeStatusPopover>
+                )}
               </ParentBox>
               {drawerInfo?.isExamine && (
                 <div style={{ marginBottom: 16 }}>
@@ -804,10 +843,31 @@ const DemandDetailDrawer = () => {
                 <CommonProgress percent={50} isTable={false} />
               </ProgressBox>
               <BtnWrap>
-                <CommonButton type="light">附件</CommonButton>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    detailDemandRef?.current.handleUpload()
+                  }}
+                >
+                  附件
+                </CommonButton>
                 <CommonButton type="light">添加标签</CommonButton>
-                <CommonButton type="light">添加子需求</CommonButton>
-                <CommonButton type="light">链接工作项</CommonButton>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    childrenDemandRef?.current?.onCreateChild()
+                  }}
+                >
+                  添加子需求
+                </CommonButton>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    storyRelationRef?.current.onClickOpen()
+                  }}
+                >
+                  链接工作项
+                </CommonButton>
               </BtnWrap>
               <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
               <Tabs
@@ -824,15 +884,18 @@ const DemandDetailDrawer = () => {
                 <DetailDemand
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
+                  ref={detailDemandRef}
                 />
-                <ChildrenDemand detail={drawerInfo} />
+                <ChildrenDemand detail={drawerInfo} ref={childrenDemandRef} />
                 <StoryRelation
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
+                  isDrawer
+                  ref={storyRelationRef}
                 />
                 <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
                 <CommentTitle>进度日志</CommentTitle>
-                <div id="tab_comment">
+                <div id="tab_comment" className="info_item_tab">
                   <CommentTitle>需求评论</CommentTitle>
                   <CommonComment
                     data={demandCommentList}

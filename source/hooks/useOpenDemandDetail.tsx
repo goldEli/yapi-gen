@@ -7,6 +7,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { setFlawInfo } from '@store/flaw'
 import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 import {
+  setDrawerCanOperation,
   setIsChangeDetailAffairs,
   setIsUpdateAddWorkItem,
 } from '@store/project'
@@ -31,7 +32,7 @@ const useOpenDemandDetail = () => {
   ) => {
     dispatch(setIsUpdateAddWorkItem(0))
     dispatch(setIsChangeDetailAffairs(false))
-    // dispatch(setListActiveId(id ?? 0))
+    dispatch(setListActiveId(id ?? 0))
     // 弹窗预览
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
@@ -87,6 +88,7 @@ const useOpenDemandDetail = () => {
   }
 
   const closeScreenModal = () => {
+    dispatch(setDrawerCanOperation({}))
     if (paramsData?.isOpenScreenDetail) {
       const params1 = encryptPhp(
         JSON.stringify({

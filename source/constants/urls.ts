@@ -115,6 +115,7 @@ const urls = {
   userInfoCreateStory: '/b/companyuser/info/create_story',
   userInfoOverviewStatistics: '/b/companyuser/info/overview_statistics',
   userInfoOverviewFeed: '/b/companyuser/info/overview_feed',
+  userInfoOverviewFeed2: '/b/project/member/info/overview_feed',
   userInfoProject: '/b/companyuser/info/project',
   memberInfoAbeyanceStory: '/b/project/member/info/abeyance_story',
   memberInfoFinishStory: '/b/project/member/info/finish_story',

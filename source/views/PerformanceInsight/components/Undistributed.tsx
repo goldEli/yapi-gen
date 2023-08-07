@@ -166,7 +166,6 @@ const Undistributed = (props: any) => {
       userId: '',
       usersNameId: '',
     })
-    console.log(result)
     setData(result)
   }
   // 修改优先级
@@ -419,11 +418,6 @@ const Undistributed = (props: any) => {
       key: 'priority',
       width: 100,
       render: (text: any, record: Record<string, string | number>) => {
-        console.log(
-          record.categoryConfigList,
-
-          'un',
-        )
         return (
           <ChangePriorityPopover
             isCanOperation={
@@ -602,15 +596,14 @@ const Undistributed = (props: any) => {
 
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
-    console.log(record, 'record')
     const resultKeys = selected
       ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
       : selectedRowKeys?.filter((i: any) => i.id !== record.id)
-    console.log(resultKeys, 'resultKeys')
+
     setSelectedRowKeys([...new Set(resultKeys)])
     onOperationCheckbox('add', [...new Set(resultKeys)])
   }
-  console.log(selectedRowKeys)
+
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
   const onOperationCheckbox = (type: any, keys?: any) => {
     const redClassElements = document.getElementsByClassName(
@@ -651,7 +644,7 @@ const Undistributed = (props: any) => {
     projectInfo?.projectPermissions,
     'b/story/batch',
   )
-  console.log(props.homeType, 'props.homeType')
+
   return (
     <div
       style={{

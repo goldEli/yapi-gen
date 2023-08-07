@@ -1,15 +1,25 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { Drawer, MenuProps, Popover, Skeleton, Space, Tooltip } from 'antd'
+import {
+  Drawer,
+  MenuProps,
+  Popover,
+  Skeleton,
+  Space,
+  Tabs,
+  Tooltip,
+} from 'antd'
 import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import {
   BackIcon,
+  BtnWrap,
   ChangeIconGroup,
   CollapseItem,
   CollapseItemContent,
   CollapseItemTitle,
+  CommentTitle,
   Content,
   DemandName,
   DetailFooter,
@@ -73,6 +83,7 @@ import FlawDetail from '../DetailScreenModal/FlawDetail/components/FlawDetail'
 import RelationStories from '../DetailScreenModal/FlawDetail/components/RelationStories'
 import FlawBasic from '../DetailScreenModal/FlawDetail/components/FlawBasic'
 import CommonProgress from '../CommonProgress'
+import DrawerTopInfo from '../DrawerTopInfo'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -115,14 +126,45 @@ const FlawDetailDrawer = () => {
   const leftWidth = 960
   const spanDom = useRef<HTMLSpanElement>(null)
   const { userInfo } = useSelector(store => store.user)
-
+  const [tabActive, setTabActive] = useState('tab_desc')
+  const flawDetailRef = useRef<any>()
+  const relationStoriesRef = useRef<any>()
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
     { name: t('associatedWorkItems'), key: 'relation', content: '' },
     { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
     { name: t('defectComment'), key: 'flawComment', content: '' },
   ]
-
+  const tabItems: any = [
+    {
+      key: 'tab_desc',
+      label: t('describe'),
+    },
+    {
+      key: 'tab_tag',
+      label: t('tag'),
+    },
+    {
+      key: 'tab_attachment',
+      label: t('attachment'),
+    },
+    {
+      key: 'tab_associatedWorkItems',
+      label: t('associatedWorkItems'),
+    },
+    {
+      key: 'tab_info',
+      label: t('newlyAdd.basicInfo'),
+    },
+    {
+      key: 'tab_log',
+      label: '进度日志',
+    },
+    {
+      key: 'tab_defectComment',
+      label: t('defectComment'),
+    },
+  ]
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -609,7 +651,13 @@ const FlawDetailDrawer = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
-
+  const onChangeTabs = (value: string) => {
+    const dom = document.getElementById(value)
+    console.log('value', value, dom)
+    dom?.scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
   return (
     <>
       <ShareModal
@@ -659,7 +707,7 @@ const FlawDetailDrawer = () => {
                 <Skeleton.Input active />
               </SkeletonStatus>
             )}
-            {!skeletonLoading && (
+            {/* {!skeletonLoading && (
               <ChangeStatusPopover
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
@@ -685,7 +733,7 @@ const FlawDetailDrawer = () => {
                   }
                 />
               </ChangeStatusPopover>
-            )}
+            )} */}
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
@@ -757,6 +805,33 @@ const FlawDetailDrawer = () => {
                     </span>
                   </DrawerHeader>
                 ))}
+                {!skeletonLoading && (
+                  <ChangeStatusPopover
+                    isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                    projectId={drawerInfo.projectId}
+                    record={drawerInfo}
+                    onChangeStatus={onChangeStatus}
+                    type={1}
+                  >
+                    <StateTag
+                      name={drawerInfo?.status?.status?.content}
+                      onClick={drawerInfo.isExamine ? onExamine : void 0}
+                      isShow={isCanEdit || drawerInfo.isExamine}
+                      state={
+                        drawerInfo?.status?.is_start === 1 &&
+                        drawerInfo?.status?.is_end === 2
+                          ? 1
+                          : drawerInfo?.status?.is_end === 1 &&
+                            drawerInfo?.status?.is_start === 2
+                          ? 2
+                          : drawerInfo?.status?.is_start === 2 &&
+                            drawerInfo?.status?.is_end === 2
+                          ? 3
+                          : 0
+                      }
+                    />
+                  </ChangeStatusPopover>
+                )}
               </ParentBox>
               {drawerInfo?.isExamine && (
                 <div style={{ marginBottom: 16 }}>
@@ -783,7 +858,36 @@ const FlawDetailDrawer = () => {
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
               <CommonProgress percent={50} isTable={false} />
-              {modeList.map((i: any) => (
+              <BtnWrap>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    flawDetailRef?.current?.handleUpload()
+                  }}
+                >
+                  附件
+                </CommonButton>
+                <CommonButton type="light" onClick={() => {}}>
+                  添加标签
+                </CommonButton>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    relationStoriesRef?.current?.onClickOpen()
+                  }}
+                >
+                  链接工作项
+                </CommonButton>
+              </BtnWrap>
+              <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
+              <Tabs
+                className="tabs"
+                activeKey={tabActive}
+                items={tabItems}
+                onChange={onChangeTabs}
+                // tabBarStyle={{ position: 'fixed', top: 30 }}
+              />
+              {/* {modeList.map((i: any) => (
                 <CollapseItem key={i.key}>
                   <CollapseItemTitle onClick={() => onChangeShowState(i)}>
                     <span>{i.name}</span>
@@ -826,7 +930,28 @@ const FlawDetailDrawer = () => {
                     )}
                   </CollapseItemContent>
                 </CollapseItem>
-              ))}
+              ))} */}
+              <FlawDetail
+                flawInfo={drawerInfo}
+                onUpdate={onOperationUpdate}
+                ref={flawDetailRef}
+              />
+              <RelationStories
+                detail={drawerInfo}
+                onUpdate={onOperationUpdate}
+                isDrawer
+                ref={relationStoriesRef}
+              />
+              <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
+              <CommentTitle>进度日志</CommentTitle>
+              <div id="tab_defectComment">
+                <CommentTitle>缺陷评论</CommentTitle>
+                <CommonComment
+                  data={flawCommentList}
+                  onDeleteConfirm={onDeleteCommentConfirm}
+                  onEditComment={onEditComment}
+                />
+              </div>
             </>
           )}
           <DetailFooter>

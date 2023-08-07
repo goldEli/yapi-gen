@@ -135,7 +135,7 @@ const Operation = (props: Props) => {
 
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
-      statusId: e.status,
+      statusId: e.category_status_ids,
       priorityId: e.priority,
       iterateId: e.iterate_name,
       tagId: e.tag,

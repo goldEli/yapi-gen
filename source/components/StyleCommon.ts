@@ -539,8 +539,15 @@ const HiddenText = styled.div({
 })
 const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
+    display: 'flex',
     cursor: 'pointer',
-    '&: hover': {
+    '.text': {
+      width: '56px',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+    },
+    '.text:hover': {
       color: 'var(--primary-d2)',
     },
   },
@@ -637,7 +644,7 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
   {
     height: 22,
     borderRadius: 6,
-    fontSize: '14px',
+    fontSize: '12px',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',

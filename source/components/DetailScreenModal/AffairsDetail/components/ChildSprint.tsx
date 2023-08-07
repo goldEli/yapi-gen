@@ -8,7 +8,7 @@ import {
   PriorityWrapTable,
   TableBorder,
 } from '@/components/StyleCommon'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useImperativeHandle } from 'react'
 import { Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import StateTag from '@/components/StateTag'
@@ -45,11 +45,15 @@ interface SelectItem {
   value: number
 }
 
-const ChildSprint = (props: {
-  detail: Model.Affairs.AffairsInfo
-  onUpdate?(value?: boolean): void
-  isInfoPage?: boolean
-}) => {
+const ChildSprint = (
+  props: {
+    detail: Model.Affairs.AffairsInfo
+    onUpdate?(value?: boolean): void
+    isInfoPage?: boolean
+    onRef?: any
+  },
+  ref: any,
+) => {
   const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
   const dispatch = useDispatch()
@@ -359,7 +363,11 @@ const ChildSprint = (props: {
       getList(pageParams)
     }
   }, [isChangeDetailAffairs])
-
+  useImperativeHandle(props.onRef, () => {
+    return {
+      onCreateChild: onCreateChild,
+    }
+  })
   return (
     <InfoItem
       id="sprint-childSprint"

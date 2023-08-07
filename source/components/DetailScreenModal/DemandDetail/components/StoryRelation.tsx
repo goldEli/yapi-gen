@@ -1,6 +1,6 @@
 /* eslint-disable no-undefined */
 import { getParamsData } from '@/tools'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CommonButton from '@/components/CommonButton'
 import ResizeTable from '@/components/ResizeTable'
@@ -17,7 +17,12 @@ import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
-import { CloseWrap, HiddenText, LinkWrap } from '@/components/StyleCommon'
+import {
+  CloseWrap,
+  HiddenText,
+  LinkWrap,
+  TableBorder,
+} from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import MultipleAvatar from '@/components/MultipleAvatar'
@@ -99,7 +104,7 @@ interface SelectItem {
   value: number
 }
 
-const StoryRelation = (props: RelationStoriesProps) => {
+const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   const [t] = useTranslation()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
@@ -214,7 +219,11 @@ const StoryRelation = (props: RelationStoriesProps) => {
   const onClickOpen = () => {
     setIsVisible(true)
   }
-
+  useImperativeHandle(ref, () => {
+    return {
+      onClickOpen,
+    }
+  })
   const onSearch = (value: string) => {
     setSearchValue(value)
     if (value) {
@@ -824,13 +833,15 @@ const StoryRelation = (props: RelationStoriesProps) => {
               {i.list.length > 0 && (
                 <div key={i.value}>
                   <SubLabel>{i.label}</SubLabel>
-                  <DragTable
-                    columns={drawerColumns}
-                    dataSource={{ list: i.list }}
-                    onChangeData={arr => onChangeData(i, arr)}
-                    showHeader={false}
-                    hasOperation={operationList}
-                  />
+                  <TableBorder>
+                    <DragTable
+                      columns={drawerColumns}
+                      dataSource={{ list: i.list }}
+                      onChangeData={arr => onChangeData(i, arr)}
+                      showHeader={false}
+                      hasOperation={operationList}
+                    />
+                  </TableBorder>
                 </div>
               )}
             </>
@@ -842,4 +853,4 @@ const StoryRelation = (props: RelationStoriesProps) => {
   )
 }
 
-export default StoryRelation
+export default forwardRef(StoryRelation)

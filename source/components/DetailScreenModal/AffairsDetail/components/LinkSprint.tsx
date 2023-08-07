@@ -1,7 +1,6 @@
 /* eslint-disable no-undefined */
-import CommonButton from '@/components/CommonButton'
 import { InfoItem, Label, LabelWrap, SubLabel } from '../style'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useImperativeHandle } from 'react'
 import StateTag from '@/components/StateTag'
 import DragTable from '@/components/DragTable'
 import CommonModal from '@/components/CommonModal'
@@ -54,15 +53,10 @@ const LinkWrap = styled.div`
     }
   }
 `
-
-interface SelectItem {
-  label: string
-  value: number
-}
-
 const LinkSprint = (props: {
   detail: Model.Affairs.AffairsInfo
   isInfoPage?: boolean
+  onRef?: any
 }) => {
   const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
@@ -388,6 +382,11 @@ const LinkSprint = (props: {
       getSelectRelationRecent()
     }
   }, [searchValue, isVisible])
+  useImperativeHandle(props.onRef, () => {
+    return {
+      onClickOpen: onClickOpen,
+    }
+  })
 
   return (
     <InfoItem
@@ -456,7 +455,7 @@ const LinkSprint = (props: {
               type="plus"
               size={18}
               color="var(--neutral-n2)"
-              onClick={onClickOpen}
+              onClick={() => onClickOpen()}
             />
           </CloseWrap>
         )}

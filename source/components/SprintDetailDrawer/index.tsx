@@ -31,6 +31,7 @@ import {
   TargetWrap,
   StatusAndLongWrap,
   Label,
+  ConfigWrap,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
@@ -84,6 +85,7 @@ import AffairsDetail from '../DetailScreenModal/AffairsDetail/components/Affairs
 import ChildSprint from '../DetailScreenModal/AffairsDetail/components/ChildSprint'
 import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint'
 import DrawerTopInfo from '../DrawerTopInfo'
+import ScheduleRecord from '../ScheduleRecord'
 
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
@@ -154,7 +156,7 @@ const SprintDetailDrawer = () => {
       label: t('newlyAdd.basicInfo'),
     },
     {
-      key: 'progressBox',
+      key: 'schedule',
       label: '进度日志',
     },
     {
@@ -564,7 +566,6 @@ const SprintDetailDrawer = () => {
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    console.log('isTabClick.current', isTabClick.current)
     if (isTabClick.current) {
       isTabClick.current = false
       return
@@ -837,7 +838,10 @@ const SprintDetailDrawer = () => {
                 </TargetWrap>
               )}
               {/* 周期、处理人 */}
-              <DrawerTopInfo details={drawerInfo} />
+              <DrawerTopInfo
+                details={drawerInfo}
+                onUpdate={onOperationUpdate}
+              />
               <Tabs
                 className="tabs"
                 activeKey={tabActive}
@@ -858,6 +862,19 @@ const SprintDetailDrawer = () => {
               )}
               <LinkSprint detail={drawerInfo} />
               <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
+              <Label
+                id="schedule"
+                className="info_item_tab"
+                style={{ margin: '16px 0' }}
+              >
+                进度日志
+              </Label>
+              <ScheduleRecord
+                type={3}
+                detailId={drawerInfo.id}
+                projectId={drawerInfo.projectId}
+                isDrawer
+              />
               <Label
                 id="sprint-comment"
                 className="info_item_tab"
@@ -883,11 +900,10 @@ const SprintDetailDrawer = () => {
                 {detailTimeFormat(drawerInfo.update_at as string)}
               </span>
             </div>
-            <Tooltip title={t('configurationFields')}>
-              <CloseWrap width={32} height={32} onClick={onToConfig}>
-                <CommonIconFont type="settings" />
-              </CloseWrap>
-            </Tooltip>
+            <ConfigWrap onClick={onToConfig}>
+              <CommonIconFont type="settings" />
+              <div>{t('configurationFields')}</div>
+            </ConfigWrap>
           </DetailFooter>
         </Content>
         <CommentFooter

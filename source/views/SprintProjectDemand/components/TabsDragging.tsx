@@ -6,7 +6,13 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { Checkbox, Tooltip } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 const Box = styled.div`
   /* transition: 0.3s; */
@@ -98,7 +104,7 @@ const DelBtnText = styled.span`
   margin: 0;
   padding: 0;
 `
-const Sortable = (props: any) => {
+const Sortable = (props: any, refs: any) => {
   const [t] = useTranslation()
   const { list } = props
   const { option } = useSelector(store => store.category)
@@ -194,10 +200,18 @@ const Sortable = (props: any) => {
   const onDragEnter = (e: any, index: number, child: any) => {
     setEndIndex(index)
     setDragItem(child)
-    setTimeout(() => {
-      setDragItem(null)
-    }, 500)
+    // setTimeout(() => {
+    //   setDragItem(null)
+    // }, 500)
   }
+  const clear = () => {
+    setDragItem(null)
+  }
+  useImperativeHandle(refs, () => {
+    return {
+      clear,
+    }
+  })
   // 它是350毫秒就会触发
   const onDragOver = (e: any) => {
     if (e.pageY >= window.screen?.availHeight - 300) {
@@ -445,7 +459,8 @@ const Sortable = (props: any) => {
             {child?.storyId} */}
             <Box
               style={{
-                display: dragItem?.storyId === child?.storyId ? 'flex' : 'none',
+                display:
+                  dragItem?.storyId === list[i]?.storyId ? 'flex' : 'none',
               }}
             >
               <Circle />
@@ -457,4 +472,4 @@ const Sortable = (props: any) => {
   )
 }
 
-export default Sortable
+export default forwardRef(Sortable)

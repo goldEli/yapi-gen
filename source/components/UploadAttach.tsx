@@ -336,8 +336,6 @@ const UploadAttach = (props: any, ref: any) => {
   }
 
   const onPreview = (file: any) => {
-    console.log(file)
-
     if (imgs.includes(file.suffix)) {
       const arrList = fileList?.filter((i: any) => imgs.includes(i.file.suffix))
 
@@ -484,8 +482,6 @@ const UploadAttach = (props: any, ref: any) => {
     }
   })
   const handleUpload = () => {
-    console.log(uploadRef.current)
-
     // 调用 Upload 组件的上传事件
     uploadRef.current.click()
   }
@@ -520,7 +516,8 @@ const UploadAttach = (props: any, ref: any) => {
       </Wdiv>
       <Wdiv>
         <Bdiv />
-        {pe}上传
+        {pe}
+        {t('uploading')}
       </Wdiv>
       {/* <San /> */}
     </div>
@@ -625,7 +622,7 @@ const UploadAttach = (props: any, ref: any) => {
                               fontSize: 18,
                               color: 'white',
                             }}
-                            type="move"
+                            type="pause-03"
                           />
                         </BlueCss>
                         <RedCss onClick={() => onTapClose(i.id)}>
@@ -647,7 +644,7 @@ const UploadAttach = (props: any, ref: any) => {
                               fontSize: 18,
                               color: 'white',
                             }}
-                            type="move"
+                            type="pause-03"
                           />
                         </BlueCss>
                         <RedCss onClick={() => onTapClose(i.id)}>
@@ -669,7 +666,7 @@ const UploadAttach = (props: any, ref: any) => {
                               fontSize: 18,
                               color: 'white',
                             }}
-                            type="right-icon"
+                            type="pause-02"
                           />
                         </BlueCss>
                         <BlueCss onClick={() => onTapClose(i.id)}>
@@ -693,7 +690,7 @@ const UploadAttach = (props: any, ref: any) => {
                               fontSize: 18,
                               color: 'white',
                             }}
-                            type="sync"
+                            type="redo"
                           />
                         </BlueCss>
                         <RedCss onClick={() => onTapRemove(i.id)}>

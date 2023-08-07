@@ -2,26 +2,26 @@
 import { getDemandList } from '@/services/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { Space, Table } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
 import NoData from '../NoData'
 import StateTag from '../StateTag'
-import { CloseWrap, LinkWrap, PriorityWrap } from '../StyleCommon'
+import { CloseWrap, LinkWrap, PriorityWrap, TableBorder } from '../StyleCommon'
 import { CancelText, Label, LabelWrap } from './style'
 import { setAddWorkItemModal } from '@store/project'
 import MultipleAvatar from '../MultipleAvatar'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import CommonIconFont from '../CommonIconFont'
 import CustomSelect from '../CustomSelect'
-
+import DetailsChildProgress from '../DetailsChildProgress'
 interface Props {
   detail?: any
   isOpen?: boolean
 }
 
-const ChildrenDemand = (props: Props) => {
+const ChildrenDemand = (props: Props, ref: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { isUpdateAddWorkItem, projectInfo } = useSelector(
@@ -156,7 +156,11 @@ const ChildrenDemand = (props: Props) => {
       }),
     )
   }
-
+  useImperativeHandle(ref, () => {
+    return {
+      onCreateChild,
+    }
+  })
   useEffect(() => {
     if (props.isOpen || isUpdateAddWorkItem) {
       getList()
@@ -219,17 +223,20 @@ const ChildrenDemand = (props: Props) => {
           {t('create_sub_requirements')}
         </CommonButton>
       )} */}
+      <DetailsChildProgress details={props.detail}></DetailsChildProgress>
       {!!dataList?.list &&
         (dataList?.list?.length > 0 ? (
-          <Table
-            rowKey="id"
-            showHeader={false}
-            pagination={false}
-            columns={columnsChild}
-            dataSource={dataList?.list}
-            tableLayout="auto"
-            style={{ borderRadius: 4, overflow: 'hidden' }}
-          />
+          <TableBorder style={{ marginTop: '8px' }}>
+            <Table
+              rowKey="id"
+              showHeader={false}
+              pagination={false}
+              columns={columnsChild}
+              dataSource={dataList?.list}
+              tableLayout="auto"
+              style={{ borderRadius: 4, overflow: 'hidden' }}
+            />
+          </TableBorder>
         ) : (
           <NoData />
         ))}
@@ -237,4 +244,4 @@ const ChildrenDemand = (props: Props) => {
   )
 }
 
-export default ChildrenDemand
+export default forwardRef(ChildrenDemand)

@@ -347,18 +347,26 @@ const FlawBasic = (props: Props) => {
               cursor: isCanEdit ? 'pointer' : 'inherit',
               display: 'flex',
               alignItems: 'center',
+              width: '100%',
             }}
           >
             <CanOperation isCanEdit={isCanEdit}>
-              <IconFont
+              <div
                 style={{
-                  fontSize: 20,
-                  color: props.detail?.priority?.color,
-                  marginRight: 4,
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
-                type={props.detail?.priority?.icon}
-              />
-              <span>{props.detail?.priority?.content_txt || '--'}</span>
+              >
+                <IconFont
+                  style={{
+                    fontSize: 20,
+                    color: props.detail?.priority?.color,
+                    marginRight: 4,
+                  }}
+                  type={props.detail?.priority?.icon}
+                />
+                <span>{props.detail?.priority?.content_txt || '--'}</span>
+              </div>
               {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
             </CanOperation>
           </div>
@@ -379,6 +387,7 @@ const FlawBasic = (props: Props) => {
               cursor: isCanEdit ? 'pointer' : 'inherit',
               display: 'flex',
               alignItems: 'center',
+              width: '100%',
             }}
           >
             <CanOperation isCanEdit={isCanEdit}>
@@ -389,7 +398,7 @@ const FlawBasic = (props: Props) => {
                   cursor: isCanEdit ? 'pointer' : 'initial',
                 }}
               >
-                {props.detail.severity?.content}
+                {props.detail.severity?.content ?? '--'}
               </SeverityWrap>
               {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
             </CanOperation>
@@ -432,7 +441,7 @@ const FlawBasic = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.isOpen && props.detail?.id) {
+    if (props.detail?.id) {
       getFieldData()
     }
   }, [props.isOpen, props.detail])
@@ -448,10 +457,11 @@ const FlawBasic = (props: Props) => {
       style={{
         width: '100%',
         paddingLeft: props.hasPadding ? '24px' : 0,
-        height: 'calc(100% - 112px)',
+        // height: 'calc(100% - 112px)',
         overflowY: 'auto',
         overflowX: 'hidden',
       }}
+      id="tab_info"
     >
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {

@@ -43,7 +43,7 @@ export const FormWrap = styled(Form)({
 })
 
 export const RelationWrap = styled.div`
-  height: 100%;
+  /* height: 100%; */
   padding-left: 24px;
 `
 
@@ -518,6 +518,7 @@ export const ContentWrap = styled.div<{ notHover?: any }>(
     maxWidth: '98%',
     wordBreak: 'break-all',
     width: '100%',
+    flex: 1,
   },
   ({ notHover }) => ({
     paddingLeft: notHover ? 8 : 0,
@@ -553,3 +554,8 @@ export const InfoItemBasic = styled.div({
   position: 'relative',
   minHeight: 32,
 })
+export const LabelWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`

@@ -1,6 +1,12 @@
 /* eslint-disable no-undefined */
 import { Tabs, TabsProps } from 'antd'
-import { ActivityTabItem, InfoItem, ItemNumber, Label } from '../style'
+import {
+  ActivityTabItem,
+  InfoItem,
+  ItemNumber,
+  Label,
+  TabsWrap,
+} from '../style'
 import { useEffect, useState } from 'react'
 import ChangeRecord from './ChangeRecord'
 import Circulation from './Circulation'
@@ -65,11 +71,9 @@ const ActivitySprint = () => {
     {
       key: '1',
       label: (
-        <ActivityTabItem>
-          <span>{t('comment1')}</span>
-          <ItemNumber isActive={activeKey === '1'}>
-            {affairsCommentList?.list.length || 0}
-          </ItemNumber>
+        <ActivityTabItem isActive={activeKey === '1'}>
+          <span style={{ marginRight: '4px' }}>{t('comment1')}</span>(
+          {affairsCommentList?.list.length || 0})
         </ActivityTabItem>
       ),
       children: (
@@ -83,11 +87,9 @@ const ActivitySprint = () => {
     {
       key: '2',
       label: (
-        <ActivityTabItem>
-          <span>{t('changeLog')}</span>
-          <ItemNumber isActive={activeKey === '2'}>
-            {affairsInfo.changeCount}
-          </ItemNumber>
+        <ActivityTabItem isActive={activeKey === '2'}>
+          <span style={{ marginRight: '4px' }}>{t('changeLog')}</span>(
+          {affairsInfo.changeCount})
         </ActivityTabItem>
       ),
       children: <ChangeRecord activeKey={activeKey} filter={filter} />,
@@ -95,8 +97,17 @@ const ActivitySprint = () => {
     {
       key: '3',
       label: (
-        <ActivityTabItem>
-          <span>{t('circulationRecords')}</span>
+        <ActivityTabItem isActive={activeKey === '3'}>
+          <span style={{ marginRight: '4px' }}>{t('circulationRecords')}</span>
+        </ActivityTabItem>
+      ),
+      children: <Circulation activeKey={activeKey} />,
+    },
+    {
+      key: '4',
+      label: (
+        <ActivityTabItem isActive={activeKey === '4'}>
+          <span style={{ marginRight: '4px' }}>进度日志</span>
         </ActivityTabItem>
       ),
       children: <Circulation activeKey={activeKey} />,
@@ -117,7 +128,7 @@ const ActivitySprint = () => {
   return (
     <InfoItem id="sprint-activity" className="info_item_tab" isInfoPage>
       <Label>{t('activity')}</Label>
-      <Tabs
+      <TabsWrap
         activeKey={activeKey}
         items={items}
         onChange={onChange}
