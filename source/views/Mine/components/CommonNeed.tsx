@@ -290,7 +290,7 @@ const CommonNeed = (props: any) => {
   const onSearch = (e: any, customField: any) => {
     setPageObj({ page: 1, size: pageObj.size })
     setSearchGroups({
-      statusId: e.status,
+      statusId: e.category_status_ids,
       priorityId: e.priority,
       iterateId: e.iterate_name,
       tagId: e.tag,
