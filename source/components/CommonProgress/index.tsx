@@ -1,16 +1,16 @@
 import { Dropdown, Progress } from 'antd'
 import { useState } from 'react'
-import { CommonProgressWrap, UpdateButton } from './style'
+import { CommonProgressWrap, UpdateButton, ItemRow } from './style'
 import UpdateProgressModal from './UpdateProgressModal'
-import { ItemRow } from '../MultipleAvatar/styled'
 import CommonUserAvatar from '../CommonUserAvatar'
 
 interface ProgressProps {
   isTable: boolean
+  percent: number
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable } = props
+  const { isTable, percent } = props
   const [visible, setVisible] = useState(false)
   const items = [
     {
@@ -43,6 +43,17 @@ const CommonProgress = (props: ProgressProps) => {
       <CommonProgressWrap>
         <Dropdown menu={{ items }} placement="bottom">
           {isTable ? (
+            <div style={{ width: 124 }}>
+              <Progress
+                percent={percent}
+                strokeColor="var(--function-success)"
+                style={{ color: 'var(--function-success)', fontSize: 12 }}
+                format={percent => `${percent}%`}
+                type="line"
+                strokeWidth={4}
+              />
+            </div>
+          ) : (
             <div style={{ width: 196, marginRight: 40 }}>
               <Progress
                 showInfo={false}
@@ -51,17 +62,6 @@ const CommonProgress = (props: ProgressProps) => {
                 style={{ color: 'var(--function-success)' }}
                 format={percent => `总进度 ${percent}%`}
                 type="line"
-              />
-            </div>
-          ) : (
-            <div style={{ width: 124 }}>
-              <Progress
-                percent={20}
-                strokeColor="var(--function-success)"
-                style={{ color: 'var(--function-success)' }}
-                format={percent => `${percent}%`}
-                type="line"
-                strokeWidth={4}
               />
             </div>
           )}
