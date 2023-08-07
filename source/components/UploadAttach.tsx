@@ -625,7 +625,7 @@ const UploadAttach = (props: any, ref: any) => {
                               fontSize: 18,
                               color: 'white',
                             }}
-                            type="move"
+                            type="pause-03"
                           />
                         </BlueCss>
                         <RedCss onClick={() => onTapClose(i.id)}>
@@ -647,7 +647,7 @@ const UploadAttach = (props: any, ref: any) => {
                               fontSize: 18,
                               color: 'white',
                             }}
-                            type="move"
+                            type="pause-03"
                           />
                         </BlueCss>
                         <RedCss onClick={() => onTapClose(i.id)}>
@@ -669,7 +669,7 @@ const UploadAttach = (props: any, ref: any) => {
                               fontSize: 18,
                               color: 'white',
                             }}
-                            type="right-icon"
+                            type="pause-02"
                           />
                         </BlueCss>
                         <BlueCss onClick={() => onTapClose(i.id)}>
@@ -693,7 +693,7 @@ const UploadAttach = (props: any, ref: any) => {
                               fontSize: 18,
                               color: 'white',
                             }}
-                            type="sync"
+                            type="redo"
                           />
                         </BlueCss>
                         <RedCss onClick={() => onTapRemove(i.id)}>
