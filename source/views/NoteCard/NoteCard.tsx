@@ -349,16 +349,12 @@ const NoteCard = (props: any) => {
               <CommonIconFont type="file-text" /> <span>{t('p2.delete')}</span>
             </ColorBtn>
           )}
-          {values.is_send === 1 && values.is_drew_back === 2 && (
+          {values.is_send === 1 && (
             <ColorBtn onClick={() => props.onRevocation(values.id)}>
               <CommonIconFont type="return" /> <span>{t('revoke')}</span>
             </ColorBtn>
           )}
-          {values.send_time ? (
-            <ColorBtn onClick={() => props.onRevocation(values.id)}>
-              <CommonIconFont type="return" /> <span>{t('revoke')}</span>
-            </ColorBtn>
-          ) : null}
+
           {values.is_draft === 1 ? (
             <ColorBtn onClick={() => props.onEditDetail(values)}>
               <CommonIconFont type="file-text" /> <span>{t('edit_draft')}</span>
