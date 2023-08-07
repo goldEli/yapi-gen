@@ -336,8 +336,6 @@ const UploadAttach = (props: any, ref: any) => {
   }
 
   const onPreview = (file: any) => {
-    console.log(file)
-
     if (imgs.includes(file.suffix)) {
       const arrList = fileList?.filter((i: any) => imgs.includes(i.file.suffix))
 
@@ -484,8 +482,6 @@ const UploadAttach = (props: any, ref: any) => {
     }
   })
   const handleUpload = () => {
-    console.log(uploadRef.current)
-
     // 调用 Upload 组件的上传事件
     uploadRef.current.click()
   }

@@ -377,7 +377,7 @@ const SprintTable = (props: Props) => {
   useEffect(() => {
     setSelectedRowKeys([])
   }, [props.data.list])
-  console.log(selectColum, 'selectColum')
+
   return (
     <Content>
       <ResizeTable
