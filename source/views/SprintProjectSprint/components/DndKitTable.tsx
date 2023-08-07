@@ -37,7 +37,7 @@ import ClickDropdown from './ClickDropdown'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 
 const MoveFont = styled(IconFont)`
-  fontsize: 16;
+  font-size: 16;
   color: var(--neutral-n3);
   &:hover {
     color: var(--primary-d2);

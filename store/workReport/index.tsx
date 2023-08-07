@@ -8,6 +8,7 @@ export interface CounterState {
     visible: boolean
     id: number
     ids: number[]
+    system?: boolean
   }
   writeReportModal: {
     visible: boolean
@@ -22,6 +23,7 @@ const initialState: CounterState = {
     visible: false,
     id: 0,
     ids: [],
+    system: false,
   },
   writeReportModal: {
     visible: false,
