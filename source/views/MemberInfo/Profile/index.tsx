@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   getMemberGantt,
   getMemberInfoOverviewStatistics,
+  getPUserInfoOverviewFeed,
   getUserGantt,
   getUserInfoOverviewFeed,
   getUserInfoOverviewStatistics,
@@ -298,9 +299,18 @@ const Profile = () => {
       : await getUserInfoOverviewStatistics({ targetId: userId })
 
     setData(res)
-    if (!isMember) {
-      getFeedList()
-    }
+
+    const res2 = isMember
+      ? await getPUserInfoOverviewFeed({
+          targetId: userId,
+          projectId: id,
+        })
+      : await getUserInfoOverviewFeed({
+          limit: '',
+          targetId: userId,
+        })
+
+    setLineData(res2)
   }
 
   useEffect(() => {
