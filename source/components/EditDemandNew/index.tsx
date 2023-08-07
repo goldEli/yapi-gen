@@ -321,6 +321,7 @@ const EditDemand = (props: Props) => {
       getProjectInfoValues({ projectId: value || projectId }),
       getList(value || projectId),
     ])
+    dispatch(setProjectInfoValues(projectInfoData))
     // 更新自定义字段列表
     setFieldsList(fieldsData?.list)
     const allCategory = removeNull(projectInfoData, 'category')

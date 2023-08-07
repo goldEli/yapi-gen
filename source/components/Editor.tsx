@@ -370,6 +370,7 @@ const EditorBox = (props: Props) => {
       red={props.color}
       id="editorWrap"
       minHeight={props?.height}
+      ref={textWrapEditor}
     >
       {!props.show && (
         <Toolbar
@@ -442,17 +443,15 @@ const EditorBox = (props: Props) => {
         />
       ) : null}
 
-      <div ref={textWrapEditor}>
-        <Editor
-          defaultConfig={editorConfig}
-          value={props.value}
-          onCreated={(e: IDomEditor) => setEditor(e)}
-          onChange={onChange}
-          mode="simple"
-          key={key}
-          style={{ flex: 1 }}
-        />
-      </div>
+      <Editor
+        defaultConfig={editorConfig}
+        value={props.value}
+        onCreated={(e: IDomEditor) => setEditor(e)}
+        onChange={onChange}
+        mode="simple"
+        key={key}
+        style={{ flex: 1 }}
+      />
     </Wrap>
   )
 }
