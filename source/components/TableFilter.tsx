@@ -534,8 +534,8 @@ const TableFilter = (props: any) => {
                                     label: v.name,
                                     children: v?.statuss?.map((val: any) => ({
                                       label: val.content_txt || val.content,
-                                      value: val.id,
-                                      id: val.id,
+                                      value: val?.pivot?.id,
+                                      id: val?.pivot?.id,
                                     })),
                                   }))
                               : format(

@@ -226,15 +226,7 @@ export const LogoBox = styled.div`
   display: flex;
   align-items: center;
   img {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-  }
-  span {
-    color: var(--neutral-n1-d1);
-    font-family: SiYuanMedium;
-    font-size: 16px;
-    font-family: siyuanmedium;
+    width: 120px;
   }
 `
 
