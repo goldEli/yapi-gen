@@ -143,6 +143,13 @@ export const Content = styled.div`
   background: #fff;
   /* border: 1px solid; */
   padding-top: 0px;
+  .tabs {
+    padding-top: 32px;
+    position: sticky;
+    top: -18px;
+    z-index: 2;
+    background: var(--neutral-white-d1);
+  }
 `
 export const LabelWrap = styled.div`
   display: flex;
