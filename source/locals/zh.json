@@ -781,6 +781,7 @@
     "saveAndNext": "保存&下一步"
   },
   "common": {
+    "cycle": "周期",
     "notCheckInfo": "没有权限查看当前需求详情！",
     "limitToast": "最多只能上传20个",
     "openMenu": "展开菜单",

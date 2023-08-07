@@ -51,10 +51,10 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
         </span>
         <span className="box">
           <span className="label" style={{ marginRight: 16 }}>
-            周期
+            {t('common.cycle')}
           </span>
           <div className="box" style={{ marginRight: 80 }}>
-            <span className="title">预计开始</span>
+            <span className="title">{t('common.start')}</span>
             <span>
               <TableQuickEdit
                 item={{
@@ -73,7 +73,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
             </span>
           </div>
           <div className="box">
-            <span className="title">预计结束</span>
+            <span className="title">{t('common.end')}</span>
             <span>
               <TableQuickEdit
                 item={{
