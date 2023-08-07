@@ -408,7 +408,7 @@ const SiteDrawer = () => {
               >
                 <span>{t('notificationCenter')}</span>
                 <IconFont
-                  style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+                  style={{ fontSize: 16, color: 'var(--neutral-n2)' }}
                   type="right"
                 />
               </BlueDiv>

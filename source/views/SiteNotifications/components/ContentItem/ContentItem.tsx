@@ -11,6 +11,7 @@ import { useSelector } from '@store/index'
 import { css } from '@emotion/css'
 import { Editor } from '@xyfe/uikit'
 import { useTranslation } from 'react-i18next'
+import styled from '@emotion/styled'
 
 const tmgCss = css`
   img {
@@ -18,7 +19,12 @@ const tmgCss = css`
     object-fit: contain;
   }
 `
+const CommonUserAvatar2 = styled.img<{ size?: string }>`
+  border-radius: 50%;
 
+  width: ${props => (props.size === 'large' ? 32 : 24)}px;
+  height: ${props => (props.size === 'large' ? 32 : 24)}px;
+`
 const ContentItem = (props: any) => {
   const [t] = useTranslation()
   const { send_user, msg_body, create_time, read, id, custom_data } = props.item
@@ -84,7 +90,7 @@ const ContentItem = (props: any) => {
         }}
       >
         <Badge offset={[-1, 4]} dot={read === 0}>
-          <CommonUserAvatar isBorder avatar={send_user.head} />
+          <CommonUserAvatar2 src={send_user.head} />
         </Badge>
       </div>
       <HoverWrap style={{ flex: '1' }}>
