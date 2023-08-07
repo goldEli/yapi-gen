@@ -2,6 +2,7 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import CommonUserAvatar from '../CommonUserAvatar'
 
 const Wrap = styled.div`
   display: flex;
@@ -13,9 +14,6 @@ const RecordItem = styled.div<{ isDrawer?: boolean }>`
   margin-bottom: ${props => (props.isDrawer ? 24 : 0)}px;
   border-bottom: ${props =>
     props.isDrawer ? 'none' : '1px solid var(--neutral-n6-d1)'};
-`
-
-const ItemContent = styled.div`
   display: flex;
   align-items: flex-start;
 `
@@ -25,7 +23,7 @@ const ItemAvatar = styled.div`
   margin-right: 12px;
 `
 
-const ItemInfo = styled.div`
+const ItemContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -94,7 +92,30 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
   const [listData, setListData] = useState({
     list: undefined,
   })
-  return <div>12</div>
+  return (
+    <Wrap>
+      {mock.map((i: any) => (
+        <RecordItem key={i.id} isDrawer={props.isDrawer}>
+          <ItemAvatar>
+            <CommonUserAvatar avatar={i.avatar} />
+          </ItemAvatar>
+          <ItemContent>
+            <div className="title">
+              <div>
+                {i.name}（{i.position}）
+              </div>
+              <span>
+                更新了进度{i.processStart}% - {i.processEnd}%
+              </span>
+            </div>
+            <InfoRow>达成日期：{i.date}</InfoRow>
+            <InfoRow>工时花费：本次{i.time}h</InfoRow>
+            <InfoRow>更新说明：{i.info}</InfoRow>
+          </ItemContent>
+        </RecordItem>
+      ))}
+    </Wrap>
+  )
 }
 
 export default ScheduleRecord

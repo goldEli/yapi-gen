@@ -84,6 +84,7 @@ import AffairsDetail from '../DetailScreenModal/AffairsDetail/components/Affairs
 import ChildSprint from '../DetailScreenModal/AffairsDetail/components/ChildSprint'
 import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint'
 import DrawerTopInfo from '../DrawerTopInfo'
+import ScheduleRecord from '../ScheduleRecord'
 
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
@@ -154,7 +155,7 @@ const SprintDetailDrawer = () => {
       label: t('newlyAdd.basicInfo'),
     },
     {
-      key: 'progressBox',
+      key: 'schedule',
       label: '进度日志',
     },
     {
@@ -861,6 +862,19 @@ const SprintDetailDrawer = () => {
               )}
               <LinkSprint detail={drawerInfo} />
               <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
+              <Label
+                id="schedule"
+                className="info_item_tab"
+                style={{ margin: '16px 0' }}
+              >
+                进度日志
+              </Label>
+              <ScheduleRecord
+                type={3}
+                detailId={drawerInfo.id}
+                projectId={drawerInfo.projectId}
+                isDrawer
+              />
               <Label
                 id="sprint-comment"
                 className="info_item_tab"
