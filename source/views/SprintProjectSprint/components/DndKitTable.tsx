@@ -640,22 +640,21 @@ const DndKitTable = (props: any) => {
     },
     {
       title: t('common.createName'),
-      dataIndex: 'userName',
-      key: 'user_name',
+      dataIndex: 'creator',
+      key: 'creator',
       width: 120,
       render: (text: string, record: any) => {
         return (
-          <div>创建人</div>
-          // <MultipleAvatar
-          //   max={1}
-          //   list={[
-          //     {
-          //       avatar: record.userAvatar,
-          //       id: record.userIds,
-          //       name: record.userName,
-          //     },
-          //   ]}
-          // />
+          <MultipleAvatar
+            max={1}
+            list={[
+              {
+                avatar: record.creator.avatar,
+                id: record.creator.id,
+                name: record.creator.name,
+              },
+            ]}
+          />
         )
       },
     },
