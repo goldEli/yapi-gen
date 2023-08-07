@@ -448,6 +448,7 @@ const Main = (props: any) => {
               onChangeChecked(2, val, child)
             }
             setList={setGetCategoryConfigT}
+            ref={tableDragRef}
           />
         )}
         <DeleteConfirm

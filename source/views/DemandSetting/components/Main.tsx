@@ -426,6 +426,7 @@ const Main = (props: any) => {
             }
             onDelete={(child: any) => onDelete(1, child)}
             setList={setGetCategoryConfigF}
+            ref={tableDragRef}
           />
         )}
       </div>
