@@ -114,7 +114,9 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
               isInfo
               keyText="users"
               type="fixed_select"
-              defaultText={props.details?.user.map((i: any) => i.user_id) || []}
+              defaultText={
+                props.details?.user?.map((i: any) => i.user_id) || []
+              }
               onUpdate={props.onUpdate}
             >
               <MultipleAvatar
