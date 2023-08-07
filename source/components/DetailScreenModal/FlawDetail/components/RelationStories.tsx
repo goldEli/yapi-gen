@@ -13,7 +13,13 @@ import { getParamsData } from '@/tools'
 import MoreOptions from '@/components/MoreOptions'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { FormWrap, PriorityWrap, RelationWrap } from '../style'
+import {
+  FormWrap,
+  Label,
+  LabelWrap,
+  PriorityWrap,
+  RelationWrap,
+} from '../style'
 import CommonButton from '@/components/CommonButton'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
@@ -28,7 +34,7 @@ import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
-import { HiddenText } from '@/components/StyleCommon'
+import { CloseWrap, HiddenText, TableBorder } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import MultipleAvatar from '@/components/MultipleAvatar'
@@ -38,7 +44,7 @@ import RelationDropdownMenu from '@/components/TableDropdownMenu/RelationDropdow
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import DragTable from '@/components/DragTable'
 import styled from '@emotion/styled'
-
+import CommonIconFont from '@/components/CommonIconFont'
 export const SubLabel = styled.div`
   margin: 8px 0;
   font-size: 12px;
@@ -636,9 +642,10 @@ const RelationStories = (props: RelationStoriesProps) => {
   ]
 
   useEffect(() => {
-    if (props.activeKey === '2' || props.isOpen) {
-      getList(pageObj, order)
-    }
+    // if (props.activeKey === '2' || props.isOpen) {
+    //   getList(pageObj, order)
+    // }
+    getList(pageObj, order)
   }, [props.activeKey, props.isOpen])
   useEffect(() => {
     if (isVisible && !searchValue) {
@@ -654,12 +661,13 @@ const RelationStories = (props: RelationStoriesProps) => {
     <RelationWrap
       style={{
         paddingLeft: props.isDrawer ? 0 : 24,
-        height: props.isDrawer
-          ? '100%'
-          : isEnd
-          ? 'calc(100vh - 192px)'
-          : 'calc(100vh - 224px)',
+        // height: props.isDrawer
+        //   ? '100%'
+        //   : isEnd
+        //   ? 'calc(100vh - 192px)'
+        //   : 'calc(100vh - 224px)',
       }}
+      id="tab_associatedWorkItems"
     >
       <DeleteConfirmModal />
       <CommonModal
@@ -716,11 +724,22 @@ const RelationStories = (props: RelationStoriesProps) => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      {!isEnd && (
+      {/* {!isEnd && (
         <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
           {t('linkWorkItem')}
         </CommonButton>
-      )}
+      )} */}
+      <LabelWrap>
+        <Label>{t('linkWorkItem')}</Label>
+        <CloseWrap width={24} height={24}>
+          <CommonIconFont
+            type="plus"
+            size={18}
+            color="var(--neutral-n2)"
+            onClick={onClickOpen}
+          />
+        </CloseWrap>
+      </LabelWrap>
       {/* 缺陷详情 */}
       {!props.isDrawer && (
         <>
@@ -748,13 +767,15 @@ const RelationStories = (props: RelationStoriesProps) => {
               {i.list.length > 0 && (
                 <div key={i.value}>
                   <SubLabel>{i.label}</SubLabel>
-                  <DragTable
-                    columns={drawerColumns}
-                    dataSource={{ list: i.list }}
-                    onChangeData={arr => onChangeData(i, arr)}
-                    showHeader={false}
-                    hasOperation={operationList}
-                  />
+                  <TableBorder>
+                    <DragTable
+                      columns={drawerColumns}
+                      dataSource={{ list: i.list }}
+                      onChangeData={arr => onChangeData(i, arr)}
+                      showHeader={false}
+                      hasOperation={operationList}
+                    />
+                  </TableBorder>
                 </div>
               )}
             </>

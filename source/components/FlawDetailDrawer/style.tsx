@@ -120,6 +120,13 @@ export const Content = styled.div`
   overflow: auto;
   padding: 16px 24px;
   position: relative;
+  .tabs {
+    padding-top: 32px;
+    position: sticky;
+    top: -18px;
+    z-index: 2;
+    background: var(--neutral-white-d1);
+  }
 `
 
 export const ParentBox = styled(Space)`
@@ -128,6 +135,7 @@ export const ParentBox = styled(Space)`
   flex-wrap: wrap;
   min-height: 22px;
   margin-bottom: 16px;
+  justify-content: space-between;
 `
 
 export const DemandName = styled.div`
@@ -506,12 +514,6 @@ export const AddTagIcon = styled.div`
   }
 `
 
-export const CommentTitle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
 export const DrawerHeader = styled.div`
   display: flex;
   align-items: center;
@@ -549,4 +551,20 @@ export const DetailFooter = styled.div`
       color: var(--neutral-n3);
     }
   }
+`
+export const BtnWrap = styled.div`
+  display: flex;
+  margin: 12px 0px;
+  button {
+    margin-right: 12px;
+  }
+`
+export const CommentTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: var(--font14);
+  color: var(--neutral-n1-d1);
+  font-family: SiYuanMedium;
 `

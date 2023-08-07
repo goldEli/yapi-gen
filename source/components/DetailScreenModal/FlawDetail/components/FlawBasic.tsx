@@ -432,7 +432,7 @@ const FlawBasic = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.isOpen && props.detail?.id) {
+    if (props.detail?.id) {
       getFieldData()
     }
   }, [props.isOpen, props.detail])
@@ -448,10 +448,11 @@ const FlawBasic = (props: Props) => {
       style={{
         width: '100%',
         paddingLeft: props.hasPadding ? '24px' : 0,
-        height: 'calc(100% - 112px)',
+        // height: 'calc(100% - 112px)',
         overflowY: 'auto',
         overflowX: 'hidden',
       }}
+      id="tab_info"
     >
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {

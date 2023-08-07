@@ -16,8 +16,6 @@ import {
   Img,
   ItemNumber,
   LiWrap,
-  SelectWrap,
-  SelectWrapBedeck,
   UpWrap,
 } from './style'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
