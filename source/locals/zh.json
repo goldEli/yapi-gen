@@ -1050,6 +1050,7 @@
     "changeType": "变更类型",
     "changeFields": "变更字段",
     "changeBefore": "变更前",
+    "changeBeforeAndAfter": "变更前后",
     "changeAfter": "变更后",
     "checkInfo": "查看详情",
     "pleaseComment": "请输入评论处理意见",

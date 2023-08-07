@@ -128,7 +128,7 @@ const ChangeLogFilter = (prop: IProps) => {
       <SelectWrapBedeck>
         <span style={{ margin: '0 16px', fontSize: '14px' }}>
           {' '}
-          {t('project.changeBefore')}
+          {t('project.changeBeforeAndAfter')}
         </span>
         <Form.Item name="change_keywords">
           <Input
