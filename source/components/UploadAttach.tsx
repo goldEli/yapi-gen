@@ -336,8 +336,6 @@ const UploadAttach = (props: any, ref: any) => {
   }
 
   const onPreview = (file: any) => {
-    console.log(file)
-
     if (imgs.includes(file.suffix)) {
       const arrList = fileList?.filter((i: any) => imgs.includes(i.file.suffix))
 

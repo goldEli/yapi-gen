@@ -45,7 +45,6 @@ export const LevelContent = (props: LevelProps) => {
   const [showData, setShowData] = useState<any>([])
 
   const init = async () => {
-    console.log(props.projectId, '0')
     if (props.projectId === 0) {
       const res = await getPriOrStu({
         projectId: pid,
