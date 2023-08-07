@@ -6,7 +6,6 @@ import styled from '@emotion/styled'
 import ProjectInfo from './components/ProjectInfo'
 import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
-import DemandSetting from '../DemandSetting'
 // import KanBanSettings from './components/KanBanSetting'
 import KanBanSettings from '@/views/ProjectSetting/components/KanBanSetting'
 import HomeSettings from './components/HomeSetting'
@@ -14,14 +13,13 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import { useSelector, useDispatch } from '@store/index'
-import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
 import InputSearch from '@/components/InputSearch'
 import { useState, useEffect } from 'react'
 import ProjectNote from './components/ProjectNote'
 import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 import { getProjectRoleList } from '@store/sprint/sprint.thunk'
-import KanBanBoard from '../KanBanBoard'
+import DailyReportRules from './components/DailyReportRules'
 const Wrap = styled.div({
   display: 'flex',
   height: 'calc(100vh - 130px)',
@@ -102,6 +100,15 @@ const Setting = () => {
         name: t('other.homeConfig'),
         icon: 'settings',
         content: <HomeSettings />,
+        isPermission: true,
+      },
+    ],
+    [
+      'ProjectSchedule',
+      {
+        name: t('rbgz'),
+        icon: 'settings',
+        content: <DailyReportRules />,
         isPermission: true,
       },
     ],

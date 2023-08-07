@@ -564,6 +564,7 @@ const SprintDetailDrawer = () => {
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
+    console.log('isTabClick.current', isTabClick.current)
     if (isTabClick.current) {
       isTabClick.current = false
       return
