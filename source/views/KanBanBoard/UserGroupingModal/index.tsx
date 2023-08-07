@@ -150,7 +150,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
                     ]}
                   />
                   <span>
-                    ({item?.position_name ? item?.position_name : '--'})
+                    ({item?.positionName ? item?.positionName : '--'})
                   </span>
                 </Row>
                 <div
