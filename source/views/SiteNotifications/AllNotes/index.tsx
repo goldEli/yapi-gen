@@ -187,7 +187,7 @@ const Index = () => {
           next={() => fetchMoreData(2)}
           style={{
             overflow: 'auto',
-            height: 'calc(100vh - 230px)',
+            height: 'calc(100vh - 140px)',
             padding: '10px 16px',
             paddingRight: '80px',
             display: 'flex',

@@ -113,6 +113,7 @@ const SprintDetailDrawer = () => {
   )
   const { userInfo } = useSelector(store => store.user)
   const { fullScreen } = useSelector(store => store.kanBan)
+  const isTabClick = useRef(false)
 
   // 快捷按钮列表
   const anchorList = [
@@ -149,16 +150,16 @@ const SprintDetailDrawer = () => {
       label: t('linkAffairs'),
     },
     {
-      key: 'sprint-activity',
-      label: '基本信息',
+      key: 'sprint-basicInfo',
+      label: t('newlyAdd.basicInfo'),
     },
     {
-      key: 'sprint-activity',
+      key: 'progressBox',
       label: '进度日志',
     },
     {
-      key: 'sprint-activity',
-      label: '评论',
+      key: 'sprint-comment',
+      label: t('businessReview'),
     },
   ]
 
@@ -240,24 +241,15 @@ const SprintDetailDrawer = () => {
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
-
-    const arr = [
-      { key: 'childSprint', count: info.childCount },
-      { key: 'linkSprint', count: info.relation_stories },
-      { key: 'demandComment', count: info.comment_total },
-    ]
-
-    if (info.comment_total) {
-      // 获取评论列表
-      dispatch(
-        getAffairsCommentList({
-          projectId: paramsProjectId,
-          sprintId: info.id,
-          page: 1,
-          pageSize: 999,
-        }),
-      )
-    }
+    // 获取评论列表
+    dispatch(
+      getAffairsCommentList({
+        projectId: paramsProjectId,
+        sprintId: info.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   // 关闭弹窗
@@ -269,6 +261,7 @@ const SprintDetailDrawer = () => {
       }),
     )
     dispatch(saveAffairsDetailDrawer({}))
+    setTabActive('sprint-info')
   }
 
   // 跳转详情页面
@@ -558,13 +551,36 @@ const SprintDetailDrawer = () => {
       : items
   }
 
-  // 监听左侧信息滚动
+  // 监听tab切换滚动
   const onChangeTabs = (value: string) => {
     setTabActive(value)
+    isTabClick.current = true
     const dom = document.getElementById(value)
-    dom?.scrollIntoView({
+    document.getElementById('contentDom')?.scrollTo({
+      top: (dom?.offsetTop ?? 0) - 86,
       behavior: 'smooth',
     })
+  }
+
+  // 计算滚动选中tab
+  const handleScroll = (e: any) => {
+    if (isTabClick.current) {
+      isTabClick.current = false
+      return
+    }
+    // 滚动容器
+    const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
+    // 所有标题节点
+    const titleItems = document.querySelectorAll('.info_item_tab')
+    let arr: any = []
+    titleItems.forEach(element => {
+      const { offsetTop, id } = element as HTMLElement
+      if (offsetTop - 140 <= scrollTop) {
+        const keys = [...arr, ...[id]]
+        arr = [...new Set(keys)]
+      }
+    })
+    setTabActive(arr[arr.length - 1])
   }
 
   useEffect(() => {
@@ -591,6 +607,17 @@ const SprintDetailDrawer = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
+
+  useEffect(() => {
+    document
+      .getElementById('contentDom')
+      ?.addEventListener('scroll', handleScroll, true)
+    return () => {
+      document
+        .getElementById('contentDom')
+        ?.removeEventListener('scroll', handleScroll, false)
+    }
+  }, [document.getElementById('contentDom')])
 
   return (
     <>
@@ -719,7 +746,7 @@ const SprintDetailDrawer = () => {
             </DropdownMenu>
           </Space>
         </Header>
-        <Content>
+        <Content id="contentDom">
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
@@ -810,7 +837,10 @@ const SprintDetailDrawer = () => {
                 </TargetWrap>
               )}
               {/* 周期、处理人 */}
-              <DrawerTopInfo details={drawerInfo} />
+              <DrawerTopInfo
+                details={drawerInfo}
+                onUpdate={onOperationUpdate}
+              />
               <Tabs
                 className="tabs"
                 activeKey={tabActive}
@@ -831,7 +861,13 @@ const SprintDetailDrawer = () => {
               )}
               <LinkSprint detail={drawerInfo} />
               <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
-              <Label style={{ marginTop: 16 }}>{t('businessReview')}</Label>
+              <Label
+                id="sprint-comment"
+                className="info_item_tab"
+                style={{ marginTop: 16 }}
+              >
+                {t('businessReview')}
+              </Label>
               <CommonComment
                 data={affairsCommentList}
                 onDeleteConfirm={onDeleteCommentConfirm}

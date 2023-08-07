@@ -9,14 +9,11 @@ import {
 } from 'react'
 import { DetailInfoWrap, InfoWrap, ButtonGroupWrap } from '../style'
 import { useTranslation } from 'react-i18next'
-import IconFont from '@/components/IconFont'
-import SprintTag from '@/components/TagComponent/SprintTag'
 import { getIdsForAt, getProjectIdByUrl, removeNull } from '@/tools'
 import { addAffairsComment } from '@/services/affairs'
 import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
 import { getMessage } from '@/components/Message'
 import LinkSprint from './LinkSprint'
-import { AddWrap, CloseWrap, TextWrapEdit } from '@/components/StyleCommon'
 import ActivitySprint from './ActivitySprint'
 import AffairsDetail from './AffairsDetail'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
@@ -51,7 +48,6 @@ const ButtonGroup = (props: {
     }
   }, [props.state])
 
-  const onUpdate = (value?: boolean) => {}
   return (
     <ButtonGroupWrap>
       {items.map((el: { label: string; key: string }) => (
@@ -65,17 +61,6 @@ const ButtonGroup = (props: {
           </CommonButton>
         </div>
       ))}
-      <SprintTag
-        defaultList={tagList}
-        canAdd
-        onUpdate={() => onUpdate()}
-        detail={props.affairsInfo}
-        addWrap={
-          <AddWrap hasDash>
-            <IconFont type="plus" />
-          </AddWrap>
-        }
-      />
     </ButtonGroupWrap>
   )
 }
@@ -154,13 +139,13 @@ const AffairsInfo = (props: Props) => {
   }, [LeftDomC])
   const onClickItem = (el: any) => {
     console.log(el, 'ooo', linkSprint.current)
-    // if (el.key === 'sprint-childSprint') {
-    //   childRef && childRef.current.onCreateChild()
-    // } else if (el.key === 'sprint-linkSprint') {
-    //   linkSprint.current.onClickOpen()
-    // } else {
-    //   uploadFile.current.handleUpload()
-    // }
+    if (el.key === 'sprint-childSprint') {
+      childRef && childRef.current.onCreateChild()
+    } else if (el.key === 'sprint-linkSprint') {
+      linkSprint.current.onClickOpen()
+    } else if (el.key === 'sprint-attachment') {
+      uploadFile.current.handleUpload()
+    }
   }
   return (
     <InfoWrap

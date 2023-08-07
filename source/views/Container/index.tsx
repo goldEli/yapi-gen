@@ -22,6 +22,7 @@ import CreateIteration from '@/components/CreateIteration'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
+import System from '../WorkReport/Review/components/System'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import AddWorkItem from '@/components/AddWorkItem'
 import SprintDetailDrawer from '@/components/SprintDetailDrawer'
@@ -66,6 +67,7 @@ export const Content = styled.div`
 
 export const Container = () => {
   const language1 = useSelector(store => store.global.language)
+  const { viewReportModal } = useSelector(store => store.workReport)
   const location = useLocation()
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
@@ -203,7 +205,7 @@ export const Container = () => {
         <CreateAProjectForm />
         <CreateIteration />
         <DemandDetailDrawer />
-        <ReportDetailDrawer />
+        {viewReportModal.system ? <System /> : <ReportDetailDrawer />}
         <SiteDrawer />
         <AddWorkItem />
         <SprintDetailDrawer />

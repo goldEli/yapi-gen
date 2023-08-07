@@ -7,7 +7,6 @@
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { Drawer, Form, Space } from 'antd'
-import type { EditorRef } from '@xyfe/uikit'
 import { Editor } from '@xyfe/uikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -17,17 +16,20 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import {
   Header,
   BackIcon,
-  ChangeIconGroup,
+  MsgRow,
   Content,
-  UpWrap,
-  DownWrap,
   ContentHeadWrap,
   DetailItem,
   TargetUserItem,
   TargetUserContent,
-  ContactDemandBox,
-  ContactDemandItem,
   CommentBox,
+  Title,
+  Msg,
+  RowRadius,
+  Radius,
+  Line,
+  RowLine,
+  Col,
 } from './style'
 import {
   addReportComment,
@@ -87,37 +89,19 @@ const TargetTabs = (props: TargetTabsProps) => {
   )
 }
 
-const ContactDemand = (props: { list: any }) => {
-  const list = props.list?.length ? props.list : []
-  return (
-    <ContactDemandBox>
-      {list?.length
-        ? list?.map((i: any) => (
-            <ContactDemandItem key={i.id}>
-              【{i.story_prefix_key}】<span className="name">{i.name}</span>
-            </ContactDemandItem>
-          ))
-        : '--'}
-    </ContactDemandBox>
-  )
-}
-
-const ReportDetailDrawer = () => {
+const System = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { viewReportModal } = useSelector(store => store.workReport)
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const [focus, setFocus] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [reportIds, setReportIds] = useState<any>([])
   const [isReview, setIsReview] = useState(false)
   const [commentList, setCommentList] = useState([])
   const [form] = Form.useForm()
   const [arr, setArr] = useState<any>(null)
   const reviewRef = useRef<any>()
   const leftWidth = 640
-  const editorRef = useRef<EditorRef>(null)
   const [userList, setUserList] = useState<any>([])
   const { userInfo } = useSelector(store => store.user)
   const [isVisible, setIsVisible] = useState(false)
@@ -199,7 +183,7 @@ const ReportDetailDrawer = () => {
   }
 
   // 获取汇报详情
-  const getReportDetail = async (ids?: any) => {
+  const getReportDetail = async () => {
     setDrawerInfo({})
     setSkeletonLoading(true)
     const info = await getReportInfo({
@@ -208,8 +192,6 @@ const ReportDetailDrawer = () => {
     setUserList(info?.target_users)
     setDrawerInfo(info)
     setSkeletonLoading(false)
-    // 获取当前需求的下标， 用作上一下一切换
-    setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
     getReportCommentData(viewReportModal?.id)
   }
 
@@ -220,37 +202,6 @@ const ReportDetailDrawer = () => {
     setFocus(false)
     setIsReview(false)
     dispatch(saveViewReportDetailDrawer({ visible: false, id: 0, ids: [] }))
-  }
-  // 向上查找需求
-  const onUpDemand = () => {
-    const newIndex = reportIds[currentIndex - 1]
-    if (!currentIndex) {
-      return
-    }
-    dispatch(
-      saveViewReportDetailDrawer({
-        ...viewReportModal,
-        ...{ id: newIndex },
-      }),
-    )
-    // 更新List页面
-    dispatch(setUpdateList({ isFresh: 1 }))
-  }
-
-  // 向下查找需求
-  const onDownDemand = () => {
-    const newIndex = reportIds[currentIndex + 1]
-    if (currentIndex === reportIds?.length - 1) {
-      return
-    }
-    dispatch(
-      saveViewReportDetailDrawer({
-        ...viewReportModal,
-        ...{ id: newIndex },
-      }),
-    )
-    // 更新List页面
-    dispatch(setUpdateList({ isFresh: 1 }))
   }
 
   // 键盘上下键事件监听
@@ -316,8 +267,7 @@ const ReportDetailDrawer = () => {
 
   useEffect(() => {
     if (viewReportModal.visible && viewReportModal?.id) {
-      setReportIds(viewReportModal?.ids || [])
-      getReportDetail(viewReportModal?.ids || [])
+      getReportDetail()
     }
   }, [viewReportModal])
 
@@ -379,44 +329,9 @@ const ReportDetailDrawer = () => {
             />
           </BackIcon>
         </Space>
-        {/* <Space size={16}>
-          <ChangeIconGroup>
-            {currentIndex > 0 && (
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={
-                  reportIds?.length === 0 ||
-                  currentIndex === reportIds?.length - 1
-                }
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
-            )}
-
-            {!(
-              reportIds?.length === 0 || currentIndex === reportIds?.length - 1
-            ) && (
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </DownWrap>
-            )}
-          </ChangeIconGroup>
-        </Space> */}
       </Header>
       <Content isReview={isReview} ref={reviewRef}>
+        {/* 判断显示的无数据 */}
         {skeletonLoading && <ReportDetailSkeleton />}
         {!skeletonLoading && (
           <>
@@ -433,40 +348,85 @@ const ReportDetailDrawer = () => {
                   avatar={drawerInfo?.user?.avatar}
                 />
                 <div className="reportTitleWrap">
-                  <div className="titleText">
-                    {drawerInfo?.user?.name}
-                    {t('report.list.of')}
-                    {drawerInfo?.report_template_name}
-                    <span className="dateText">
-                      {drawerInfo?.submit_cycle === 4
-                        ? null
-                        : `（${drawerInfo?.start_time} ${t(
-                            'report.list.to',
-                          )} ${drawerInfo?.end_time?.substring(
-                            0,
-                            drawerInfo?.end_time?.indexOf(' '),
-                          )}）`}
-                    </span>
-                  </div>
+                  <MsgRow>
+                    <div className="titleText">{drawerInfo?.title}</div>
+                    <div className="submitTimeText">
+                      {t('report.list.dateSubmit')}：{drawerInfo?.created_at}
+                    </div>
+                  </MsgRow>
                   <div className="submitTimeText">
-                    {t('report.list.dateSubmit')}：{drawerInfo?.created_at}
+                    {drawerInfo?.user?.company_name} -{' '}
+                    {drawerInfo?.user?.department_name} -{' '}
+                    {drawerInfo?.user?.job_name}
                   </div>
                 </div>
               </div>
             </ContentHeadWrap>
-            {drawerInfo?.report_content?.map((i: any) => (
-              <DetailItem key={i.id}>
-                <div className="title">{i.name}</div>
-                {i.type === 2 && <AttachmentBox list={i?.pivot?.params} />}
-                {i.type === 3 && (
-                  <Editor
-                    readonly
-                    disableUpdateValue
-                    value={i?.pivot?.content}
-                  />
+            {/* 新加的ui */}
+            <Title>{t('report.list.reportProject')}</Title>
+            <Msg style={{ margin: '8px 0 32px 0' }}>
+              {drawerInfo?.project?.name}
+            </Msg>
+            {drawerInfo.report_content?.map((item: any) => (
+              <Col key={item.id}>
+                {item.type === 4 && (
+                  <Title style={{ marginBottom: 8 }}>
+                    {item.name}: {item.pivot.params?.length}{' '}
+                    {t('report.list.pieces')}
+                  </Title>
                 )}
-                {i.type === 4 && <ContactDemand list={i?.pivot?.params} />}
-              </DetailItem>
+                {item.type === 3 && (
+                  <Title style={{ marginBottom: 8 }}>
+                    {item.name}:{' '}
+                    {JSON.parse(item?.pivot?.content ?? null)?.total_schedule}%
+                  </Title>
+                )}
+                {item.type === 3 && (
+                  <>
+                    <Msg style={{ marginTop: '8px' }}>
+                      {' '}
+                      {t('report.list.addedYesterday')}：
+                      {JSON.parse(item?.pivot?.content ?? null)?.yesterday_add}
+                      {t('report.list.pieces')}
+                    </Msg>
+                    <RowLine>
+                      <Msg>
+                        {t('report.list.taskProgress')}：
+                        {
+                          JSON.parse(item?.pivot?.content ?? null)
+                            ?.task_completion
+                        }
+                      </Msg>
+                      <Line></Line>
+                      <Msg>
+                        {t('completed')}：{' '}
+                        {JSON.parse(item?.pivot?.content ?? null)?.complete}
+                        {t('report.list.pieces')}{' '}
+                      </Msg>
+                    </RowLine>
+                  </>
+                )}
+                {item.type === 4 &&
+                  item.pivot.params?.map((el: any) => (
+                    <RowRadius key={el.id}>
+                      <Radius />
+                      {item?.key === 'timeout_task' && el.expected_day > 0 ? (
+                        <span style={{ marginRight: 3 }}>
+                          [{t('report.list.overdue')}
+                          {el.expected_day}
+                          {t('report.list.day')}]
+                        </span>
+                      ) : null}
+                      <Msg>{el.name}</Msg>
+                    </RowRadius>
+                  ))}
+                {item.type === 2 && (
+                  <>
+                    <Title>{item?.name}</Title>
+                    <AttachmentBox list={item?.pivot?.params} />
+                  </>
+                )}
+              </Col>
             ))}
             {drawerInfo?.target_users?.length > 0 && (
               <TargetTabs list={userList} />
@@ -504,18 +464,15 @@ const ReportDetailDrawer = () => {
           </>
         )}
       </Content>
-
-      {!skeletonLoading && (
-        <CommentFooter
-          placeholder={`${t('common.comment')}${
-            drawerInfo?.user?.name || '--'
-          }${t('report.list.log')}`}
-          personList={arr}
-          onConfirm={onComment}
-          style={{ padding: 24 }}
-          maxHeight="72vh"
-        />
-      )}
+      <CommentFooter
+        placeholder={`${t('common.comment')}${
+          drawerInfo?.user?.name || '--'
+        }${t('report.list.log')}`}
+        personList={arr}
+        onConfirm={onComment}
+        style={{ padding: 24 }}
+        maxHeight="72vh"
+      />
       <DeleteConfirm
         text={t('mark.cd')}
         isVisible={isVisible}
@@ -526,4 +483,4 @@ const ReportDetailDrawer = () => {
   )
 }
 
-export default ReportDetailDrawer
+export default System

@@ -65,6 +65,8 @@ import {
   BtnWrap,
   CycleBox,
   HandlerBox,
+  FixedBox,
+  EmptyBox,
 } from './style'
 import CommonButton from '../CommonButton'
 import {
@@ -189,7 +191,7 @@ const DemandDetailDrawer = () => {
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
-  const leftWidth = 640
+  const leftWidth = 650
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -796,15 +798,15 @@ const DemandDetailDrawer = () => {
 
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <Space size={16} style={{ marginTop: 16 }}>
+              <BtnWrap>
                 <CommonButton type="light">附件</CommonButton>
                 <CommonButton type="light">添加标签</CommonButton>
                 <CommonButton type="light">添加子需求</CommonButton>
                 <CommonButton type="light">链接工作项</CommonButton>
-              </Space>
+              </BtnWrap>
               <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
               <Tabs
-                className={customTabs}
+                className="tabs"
                 activeKey={tabActive}
                 items={
                   // 子任务不存在子事务模块
@@ -819,11 +821,9 @@ const DemandDetailDrawer = () => {
                   onUpdate={onOperationUpdate}
                 />
                 <ChildrenDemand detail={drawerInfo} />
-                <CommentTitle>链接工作项</CommentTitle>
                 <StoryRelation
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
-                  // isDrawer
                 />
                 <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
                 <CommentTitle>进度日志</CommentTitle>

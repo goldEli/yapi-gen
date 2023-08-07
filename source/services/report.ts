@@ -88,3 +88,64 @@ export const delReportComment: any = async (params: any) => {
   const response = await http.delete('delReportComment', params)
   return response.data
 }
+// 日报配置
+const getDailyConfigInfo = async (params: { project_id: number }) => {
+  const response = await http.post('dailyConfigInfo', params)
+  return response.data
+}
+// 生成配置
+const setDailyConfigSetCreateConfig = async (params: {
+  project_id: number
+}) => {
+  const response = await http.post('dailyConfigSetCreateConfig', params)
+  return response.data
+}
+// 自动发送配置
+const dailyConfigSetAutoSendConfig = () => {}
+
+// 日报助手：工作日报—获取项目列表
+export const getProjectList: any = async () => {
+  const response: any = await http.get<any>('getListOfDaily')
+  return response?.data
+}
+
+// 日报助手：工作日报—获取需求列表
+export const getStoryListOfDaily: any = async (params: any) => {
+  const response: any = await http.get<any>('getStoryListOfDaily', {
+    project_id: params,
+  })
+  return response
+}
+
+// 日报助手：工作汇报初始化数据
+export const initDaily: any = async (params: any) => {
+  const response = await http.get('getInitDaily', params)
+  return response.data
+}
+
+// 日报助手：工作日报—模板详情
+export const getDailyInfo: any = async (params: any) => {
+  const response = await http.get('getDailyInfo', { project_id: params })
+  return {
+    configs: response.data?.template_content_configs,
+    reportUserList: response.data?.report_user_list,
+    id: response.data?.id,
+    name: response.data?.name,
+    send_time: response.data?.send_time,
+    group_name: response.data?.group_name,
+    enable_hand_send: response.data?.enable_hand_send,
+    is_setting_config: response.data?.is_setting_config,
+  }
+}
+
+// 日报助手：日报生成规则未配置通知
+export const sendNotice: any = async (params: any) => {
+  const response = await http.post('sendNotice', { project_id: params })
+  return response.data
+}
+
+// 日报助手：日报生成规则未配置通知
+export const writeAssistantReport: any = async (params: any) => {
+  const response = await http.post('writeAssistantReport', params)
+  return response.data
+}

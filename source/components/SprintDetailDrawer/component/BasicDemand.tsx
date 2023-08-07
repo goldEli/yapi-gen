@@ -37,6 +37,7 @@ import ChangeSeverityPopover from '@/components/ChangeSeverityPopover'
 import DetailParent from '@/components/DetailParent'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import { setIsRefresh } from '@store/user'
+import { setDrawerCanOperation } from '@store/project'
 
 interface Props {
   detail?: any
@@ -165,6 +166,8 @@ const BasicDemand = (props: Props) => {
       keys.push([onChangeBasicKey(element.content), element.isRequired])
     }),
       setCanOperationKeys(Object.fromEntries(keys))
+    // 存储可操作的字段数据
+    dispatch(setDrawerCanOperation(Object.fromEntries(keys)))
     setFoldList(
       result?.filter(
         (i: any) =>
@@ -472,6 +475,8 @@ const BasicDemand = (props: Props) => {
         paddingLeft: props.hasPadding ? '24px' : 0,
         height: props.isInfoPage ? '100%' : 'auto',
       }}
+      id="sprint-basicInfo"
+      className="info_item_tab"
     >
       <Label style={{ marginTop: props.isInfoPage ? '0' : '16px' }}>
         {t('newlyAdd.basicInfo')}

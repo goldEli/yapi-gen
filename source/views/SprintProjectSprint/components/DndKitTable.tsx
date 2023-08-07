@@ -35,9 +35,10 @@ import { getLongStory, moveStory, sortStory } from '@/services/sprint'
 import moment from 'moment'
 import ClickDropdown from './ClickDropdown'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
+import CommonProgress from '@/components/CommonProgress'
 
 const MoveFont = styled(IconFont)`
-  fontsize: 16;
+  font-size: 16;
   color: var(--neutral-n3);
   &:hover {
     color: var(--primary-d2);
@@ -512,6 +513,18 @@ const DndKitTable = (props: any) => {
       },
     },
     { title: t('sprint.sub'), dataIndex: 'child_story_count', width: 120 },
+    {
+      title: '进度',
+      dataIndex: 'child_story_count',
+      width: 120,
+      render: () => {
+        return (
+          <div>
+            <CommonProgress percent={50} isTable={true} />
+          </div>
+        )
+      },
+    },
     {
       title: t('common.dealName'),
       dataIndex: 'handlers',

@@ -39,13 +39,12 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   const LeftDom = useRef<HTMLDivElement>(null)
   const editorRef = useRef<EditorRef>(null)
   const editorRef2 = useRef<any>()
+  const uploadRef: any = createRef()
   //   当前删除的附件数据
   const [tagList, setTagList] = useState<any>([])
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
-  const { projectInfo, isUpdateAddWorkItem } = useSelector(
-    store => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dId = useRef<any>()
   const uploadRefs: any = createRef()
@@ -118,6 +117,10 @@ const AffairsDetail = (props: AffairsDetailProps) => {
     }
     await updateEditor(params)
     onUpdate(true)
+  }
+
+  const onUpload = () => {
+    uploadRef?.current.handleUpload()
   }
 
   useEffect(() => {
@@ -253,6 +256,32 @@ const AffairsDetail = (props: AffairsDetailProps) => {
             ).length <= 0 && <span>--</span>}
           </div>
         </BetweenBox>
+        <div>
+          {projectInfo?.projectPermissions?.filter(
+            (i: any) => i.name === '附件上传',
+          ).length > 0 && (
+            <UploadAttach
+              ref={uploadRef}
+              onBottom={onBottom}
+              defaultList={props.affairsInfo?.attachment?.map((i: any) => ({
+                url: i.attachment.path,
+                id: i.id,
+                size: i.attachment.size,
+                time: i.created_at,
+                name: i.attachment.name,
+                suffix: i.attachment.ext,
+                username: i.user_name ?? '--',
+              }))}
+              canUpdate
+              onC
+              del={onDeleteInfoAttach}
+              add={onAddInfoAttach}
+            />
+          )}
+          {projectInfo?.projectPermissions?.filter(
+            (i: any) => i.name === '附件上传',
+          ).length <= 0 && <span>--</span>}
+        </div>
       </InfoItem>
     </>
   )

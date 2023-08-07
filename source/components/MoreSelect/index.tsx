@@ -30,6 +30,7 @@ const index = (props: any) => {
 
   const onClear = () => {
     props.onChange(undefined)
+    props.onConfirm(props.id)
   }
   const handleChange = (values: any) => {
     props.onChange(values)

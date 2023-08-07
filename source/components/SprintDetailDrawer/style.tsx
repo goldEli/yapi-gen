@@ -148,7 +148,11 @@ export const Content = styled.div`
   padding: 16px 24px 60px;
   position: relative;
   .tabs {
-    margin-top: 32px;
+    padding-top: 32px;
+    position: sticky;
+    top: -18px;
+    z-index: 2;
+    background: var(--neutral-white-d1);
   }
   .ant-tabs-tab {
     padding: 0 0 16px;
