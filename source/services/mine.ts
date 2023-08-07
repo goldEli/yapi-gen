@@ -486,7 +486,7 @@ export const getMineNoFinishList: any = async (params: any) => {
     search: {
       project_id: params?.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -624,7 +624,7 @@ export const getMineCreacteList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -704,7 +704,7 @@ export const getMineFinishList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -785,7 +785,7 @@ export const getMineNeedList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,

@@ -10,7 +10,7 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
     search: {
       project_id: params?.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -142,7 +142,7 @@ export const getUserInfoCreateStory: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -220,7 +220,7 @@ export const getUserInfoFinishStory: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -339,7 +339,7 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
     search: {
       project_id: params?.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -471,7 +471,7 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -549,7 +549,7 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -639,6 +639,26 @@ export const getMemberInfoOverviewStatistics: any = async (params: any) => {
   })
 
   return response.data
+}
+export const getPUserInfoOverviewFeed: any = async (params: any) => {
+  const response = await http.get('userInfoOverviewFeed2', {
+    target_id: params.targetId,
+    project_id: params.projectId,
+  })
+
+  return response.data?.map((i: any) => ({
+    id: i.id,
+    createTime: i.created_at,
+    content: i.content,
+    projectName: i.feedable?.project?.name,
+    name: i.feedable?.name,
+    isPublic: i.feedable?.project?.is_public,
+    isUserMember: i.feedable?.project?.user_ismember,
+    deletedTime: i.feedable?.deleted_at,
+    projectDeletedTime: i.feedable?.project?.deleted_at,
+    feedableId: i.feedable_id,
+    projectId: i.feedable?.project_id,
+  }))
 }
 
 export const getMainInfo: any = async (params: any) => {
