@@ -483,7 +483,9 @@ const TableFilter = (props: any) => {
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
-                    <Form.Item name={i.key}>
+                    <Form.Item
+                      name={i.key === 'status' ? 'category_status_ids' : i.key}
+                    >
                       {i.key === 'category' ? (
                         <SelectWrap>
                           <CategoryDropdown
@@ -534,8 +536,8 @@ const TableFilter = (props: any) => {
                                     label: v.name,
                                     children: v?.statuss?.map((val: any) => ({
                                       label: val.content_txt || val.content,
-                                      value: val.id,
-                                      id: val.id,
+                                      value: val?.pivot?.id,
+                                      id: val?.pivot?.id,
                                     })),
                                   }))
                               : format(

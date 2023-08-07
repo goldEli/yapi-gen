@@ -180,15 +180,15 @@ const Operation = (props: Props) => {
   )
 
   const onFilterSearch = (e: any, customField: any) => {
-    // 如果筛选未打开
-    if (filterState) {
-      return
-    }
+    // // 如果筛选未打开
+    // if (filterState) {
+    //   return
+    // }
     const params = {
       discovery_version: e.discovery_version,
       severity: e.severity,
       solution: e.solution,
-      statusId: e.status,
+      statusId: e.category_status_ids,
       priorityId: e.priority,
       iterateId: e.iterate_name,
       tagId: e.tag,

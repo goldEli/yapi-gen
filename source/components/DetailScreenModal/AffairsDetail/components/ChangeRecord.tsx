@@ -434,10 +434,11 @@ const ChangeRecord = (props: Props) => {
       ) : null}
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="400px"
+        // dataWrapNormalHeight="400px"
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}
+        isNotHeight
       />
       <PaginationBox
         currentPage={dataList?.currentPage}

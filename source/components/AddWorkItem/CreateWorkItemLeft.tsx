@@ -528,9 +528,9 @@ const CreateDemandLeft = (props: Props) => {
           setCategoryObj(resultCategory)
           return
         }
-        const _item = props.allCategoryList.find(
-          item => item.is_previous_category === 1,
-        )
+        const _item =
+          props.allCategoryList.find(item => item.is_previous_category === 1) ??
+          {}
         if (
           resultCategoryList.find(
             (item: { id: number }) => item.id === _item.id,
