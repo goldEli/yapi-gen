@@ -31,6 +31,7 @@ import {
   TargetWrap,
   StatusAndLongWrap,
   Label,
+  ConfigWrap,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
@@ -900,11 +901,10 @@ const SprintDetailDrawer = () => {
                 {detailTimeFormat(drawerInfo.update_at as string)}
               </span>
             </div>
-            <Tooltip title={t('configurationFields')}>
-              <CloseWrap width={32} height={32} onClick={onToConfig}>
-                <CommonIconFont type="settings" />
-              </CloseWrap>
-            </Tooltip>
+            <ConfigWrap onClick={onToConfig}>
+              <CommonIconFont type="settings" />
+              <div>{t('configurationFields')}</div>
+            </ConfigWrap>
           </DetailFooter>
         </Content>
         <CommentFooter

@@ -319,18 +319,26 @@ const BasicDemand = (props: Props) => {
               cursor: isCanEdit ? 'pointer' : 'inherit',
               display: 'flex',
               alignItems: 'center',
+              width: '100%',
             }}
           >
             <CanOperation isCanEdit={isCanEdit}>
-              <IconFont
+              <div
                 style={{
-                  fontSize: 20,
-                  color: props.detail?.priority?.color,
-                  marginRight: 4,
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
-                type={props.detail?.priority?.icon}
-              />
-              <span>{props.detail?.priority?.content_txt || '--'}</span>
+              >
+                <IconFont
+                  style={{
+                    fontSize: 20,
+                    color: props.detail?.priority?.color,
+                    marginRight: 4,
+                  }}
+                  type={props.detail?.priority?.icon}
+                />
+                <span>{props.detail?.priority?.content_txt || '--'}</span>
+              </div>
               {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
             </CanOperation>
           </div>

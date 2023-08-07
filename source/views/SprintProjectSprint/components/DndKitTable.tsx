@@ -649,9 +649,9 @@ const DndKitTable = (props: any) => {
             max={1}
             list={[
               {
-                avatar: record.creator.avatar,
-                id: record.creator.id,
-                name: record.creator.name,
+                avatar: record.creator?.avatar,
+                id: record.creator?.id,
+                name: record.creator?.name,
               },
             ]}
           />
