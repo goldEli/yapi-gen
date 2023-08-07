@@ -35,6 +35,7 @@ const DetailDemand = (props: DetailDemand) => {
   const [editInfo, setEditInfo] = useState('')
   const editorRef = useRef<EditorRef>(null)
   const editorRef2 = useRef<any>()
+  const uploadRef = useRef<any>()
   const onDeleteInfoAttach = async (file: any) => {
     setIsDelVisible(true)
     setFiles(file)
@@ -156,7 +157,9 @@ const DetailDemand = (props: DetailDemand) => {
               type="plus"
               size={18}
               color="var(--neutral-n2)"
-              onClick={() => {}}
+              onClick={() => {
+                uploadRef.current?.handleUpload()
+              }}
             />
           </CloseWrap>
         </LabelWrap>
@@ -178,6 +181,7 @@ const DetailDemand = (props: DetailDemand) => {
               onC
               del={onDeleteInfoAttach}
               add={onAddInfoAttach}
+              ref={uploadRef}
             />
           )}
           {projectInfo?.projectPermissions?.filter(

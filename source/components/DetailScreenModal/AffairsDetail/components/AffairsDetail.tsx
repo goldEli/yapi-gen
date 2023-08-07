@@ -5,7 +5,13 @@ import CommonButton from '@/components/CommonButton'
 import { AddWrap, CloseWrap, TextWrapEdit } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
-import { createRef, useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  useImperativeHandle,
+  createRef,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import {
@@ -24,6 +30,7 @@ interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
   onUpdate?(value?: boolean): void
   isInfoPage?: boolean
+  onRef?: any
 }
 
 const AffairsDetail = (props: AffairsDetailProps) => {
@@ -40,7 +47,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   const { projectInfo } = useSelector(store => store.project)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dId = useRef<any>()
-
+  const uploadRefs: any = createRef()
   const onBottom = () => {
     const dom: any = LeftDom?.current
     dom.scrollTop = dom.scrollHeight
@@ -127,7 +134,14 @@ const AffairsDetail = (props: AffairsDetailProps) => {
     setEditInfo(props.affairsInfo.info || '')
     dId.current = props.affairsInfo.id
   }, [props.affairsInfo])
-
+  useImperativeHandle(props.onRef, () => {
+    return {
+      handleUpload,
+    }
+  })
+  const handleUpload = () => {
+    uploadRefs.current.handleUpload()
+  }
   return (
     <>
       <DeleteConfirmModal />
@@ -215,9 +229,32 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       >
         <BetweenBox>
           <Label>{t('common.attachment')}</Label>
-          <CloseWrap width={24} height={24} onClick={onUpload}>
-            <CommonIconFont type="plus" size={18} color="var(--neutral-n2)" />
-          </CloseWrap>
+          <div>
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length > 0 && (
+              <UploadAttach
+                ref={uploadRefs}
+                onBottom={onBottom}
+                defaultList={props.affairsInfo?.attachment?.map((i: any) => ({
+                  url: i.attachment.path,
+                  id: i.id,
+                  size: i.attachment.size,
+                  time: i.created_at,
+                  name: i.attachment.name,
+                  suffix: i.attachment.ext,
+                  username: i.user_name ?? '--',
+                }))}
+                canUpdate
+                onC
+                del={onDeleteInfoAttach}
+                add={onAddInfoAttach}
+              />
+            )}
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length <= 0 && <span>--</span>}
+          </div>
         </BetweenBox>
         <div>
           {projectInfo?.projectPermissions?.filter(

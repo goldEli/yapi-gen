@@ -808,6 +808,7 @@
     "saveAndNext": "Save&Next"
   },
   "common": {
+    "cycle": "Cycle",
     "notCheckInfo": "You do not have permission to view the current demand details!",
     "limitToast": "Up to 20 can be uploaded",
     "openMenu": "Expand menu",

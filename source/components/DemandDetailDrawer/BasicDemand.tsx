@@ -371,10 +371,9 @@ const BasicDemand = (props: Props) => {
   }
 
   useEffect(() => {
-    // if (props.isOpen && props.detail?.id) {
-    //   getFieldData()
-    // }
-    getFieldData()
+    if (props.detail?.id) {
+      getFieldData()
+    }
   }, [props.isOpen, props.detail])
 
   useEffect(() => {

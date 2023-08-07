@@ -486,7 +486,7 @@ const TableQuickEdit = (props: Props) => {
       onChange(resultVal, 1)
     }
   }
-  console.log(props.item.categoryConfigList, 'props.item.categoryConfigList')
+
   return (
     <div style={{ width: '100%' }}>
       {isShowControl &&

@@ -6,12 +6,13 @@ import { useTranslation } from 'react-i18next'
 import { getFlawInfo } from '@store/flaw/flaw.thunk'
 import { addInfoFlaw, deleteInfoFlaw, updateFlawEditor } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
-import { FlawInfoInfoItem, FlawInfoLabel } from '../style'
-import { AddWrap, TextWrapEdit } from '@/components/StyleCommon'
+import { FlawInfoInfoItem, FlawInfoLabel, Label, LabelWrap } from '../style'
+import { AddWrap, CloseWrap, TextWrapEdit } from '@/components/StyleCommon'
 import FlawTag from '@/components/TagComponent/FlawTag'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
+import CommonIconFont from '@/components/CommonIconFont'
 
 interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
@@ -30,7 +31,7 @@ const FlawDetail = (props: FlawDetailProps) => {
   const [tagList, setTagList] = useState<any>([])
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
-
+  const uploadRef = useRef<any>()
   const onUpdate = (value?: boolean) => {
     if (props.isInfoPage) {
       dispatch(getFlawInfo({ projectId: projectInfo.id, id: dId.current }))
@@ -116,6 +117,7 @@ const FlawDetail = (props: FlawDetailProps) => {
           marginTop: '0px',
         }}
         activeState
+        id="tab_desc"
       >
         <FlawInfoLabel>{t('describe')}</FlawInfoLabel>
         {isEditInfo || editInfo ? (
@@ -147,7 +149,7 @@ const FlawDetail = (props: FlawDetailProps) => {
           </TextWrapEdit>
         )}
       </FlawInfoInfoItem>
-      <FlawInfoInfoItem>
+      <FlawInfoInfoItem id="tab_tag">
         <FlawInfoLabel>{t('common.tag')}</FlawInfoLabel>
         <FlawTag
           defaultList={tagList}
@@ -161,8 +163,21 @@ const FlawDetail = (props: FlawDetailProps) => {
           }
         />
       </FlawInfoInfoItem>
-      <FlawInfoInfoItem activeState>
-        <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel>
+      <FlawInfoInfoItem activeState id="tab_attachment">
+        {/* <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel> */}
+        <LabelWrap>
+          <Label>{t('common.attachment')}</Label>
+          <CloseWrap width={24} height={24}>
+            <CommonIconFont
+              type="plus"
+              size={18}
+              color="var(--neutral-n2)"
+              onClick={() => {
+                uploadRef.current?.handleUpload()
+              }}
+            />
+          </CloseWrap>
+        </LabelWrap>
         <div>
           {projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',
@@ -182,11 +197,7 @@ const FlawDetail = (props: FlawDetailProps) => {
               del={onDeleteInfoAttach}
               add={onAddInfoAttach}
               isBug
-              addWrap={
-                <CommonButton type="primaryText" icon="plus">
-                  {t('addAttachments')}
-                </CommonButton>
-              }
+              ref={uploadRef}
             />
           )}
           {projectInfo?.projectPermissions?.filter(

@@ -8,7 +8,7 @@
   "toggle_details_preview": "详情预览切换",
   "toggle_left_menu": "左侧菜单显示/隐藏",
   "switch_project_menu_to_sprint_or_iteration": "项目菜单切换至冲刺/迭代",
-  "switch_project_menu_to_kanban": "项目菜单切换至Kanban",
+  "switch_project_menu_to_kanban": "项目菜单切换至面板",
   "switch_project_menu_to_reports": "项目菜单切换至报表",
   "switch_project_menu_to_requirements": "项目菜单切换至需求",
   "the_message_content_cannot_be_empty": "消息内容不能为空",
@@ -781,6 +781,7 @@
     "saveAndNext": "保存&下一步"
   },
   "common": {
+    "cycle": "周期",
     "notCheckInfo": "没有权限查看当前需求详情！",
     "limitToast": "最多只能上传20个",
     "openMenu": "展开菜单",
