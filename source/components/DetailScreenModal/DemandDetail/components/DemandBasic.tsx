@@ -14,6 +14,7 @@ import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { changeRestScroll } from '@store/scroll'
 import { setIsUpdateAddWorkItem } from '@store/project'
+import CommonProgress from '@/components/CommonProgress'
 
 interface Props {
   onRef: any
@@ -72,12 +73,15 @@ const DemandBasic = (props: Props) => {
           </div>
         </TitleWrap>
         {activeTabs === 1 && (
-          <BasicDemand
-            detail={demandInfo}
-            onUpdate={onUpdate}
-            isOpen
-            isInfoPage
-          />
+          <>
+            <CommonProgress percent={50} isTable={false} />
+            <BasicDemand
+              detail={demandInfo}
+              onUpdate={onUpdate}
+              isOpen
+              isInfoPage
+            />
+          </>
         )}
         {activeTabs === 2 && (
           <DemandComment

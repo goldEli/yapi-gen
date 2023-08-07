@@ -194,6 +194,7 @@ export const DemandName = styled.div`
   }
   flex-wrap: wrap;
 `
+export const ProgressBox = styled.div``
 
 export const CollapseItem = styled.div`
   margin-top: 16px;

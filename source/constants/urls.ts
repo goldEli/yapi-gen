@@ -50,6 +50,10 @@ const urls = {
   deleteInfoDemand: '/b/story/update_operate/del',
   addInfoDemand: '/b/story/update_operate/add',
   updatePriority: '/b/story/update_priority',
+  // 获取任务进度
+  getStroySchedule: '/b/story/schedule',
+  // 更新需求进度
+  updateSchedule: '/b/story/update_schedule',
   // 获取需求关联工作项
   getStoryRelationStories: '/b/story/relationStories',
   // 添加需求关联工作项

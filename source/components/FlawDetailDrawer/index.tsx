@@ -72,6 +72,7 @@ import { cancelVerify } from '@/services/mine'
 import FlawDetail from '../DetailScreenModal/FlawDetail/components/FlawDetail'
 import RelationStories from '../DetailScreenModal/FlawDetail/components/RelationStories'
 import FlawBasic from '../DetailScreenModal/FlawDetail/components/FlawBasic'
+import CommonProgress from '../CommonProgress'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -781,6 +782,7 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
+              <CommonProgress percent={50} isTable={false} />
               {modeList.map((i: any) => (
                 <CollapseItem key={i.key}>
                   <CollapseItemTitle onClick={() => onChangeShowState(i)}>

@@ -806,7 +806,6 @@ const SprintDetailDrawer = () => {
                 </span>
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <div style={{ height: 32, marginTop: 16 }}>进度显示。。。。</div>
               <Space size={12} style={{ marginTop: 16 }}>
                 {(drawerInfo.work_type === 6
                   ? anchorList.filter((i: any) => i.domKey !== 'childSprint')

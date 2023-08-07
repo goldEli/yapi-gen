@@ -67,6 +67,7 @@ import {
   HandlerBox,
   FixedBox,
   EmptyBox,
+  ProgressBox,
 } from './style'
 import CommonButton from '../CommonButton'
 import {
@@ -93,6 +94,7 @@ import { useNavigate } from 'react-router-dom'
 import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRelation'
 import IconFont from '../IconFont'
 import DrawerTopInfo from '../DrawerTopInfo'
+import CommonProgress from '../CommonProgress'
 interface ItemIprops {
   label: string
   key: string
@@ -798,6 +800,9 @@ const DemandDetailDrawer = () => {
 
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
+              <ProgressBox>
+                <CommonProgress percent={50} isTable={false} />
+              </ProgressBox>
               <BtnWrap>
                 <CommonButton type="light">附件</CommonButton>
                 <CommonButton type="light">添加标签</CommonButton>

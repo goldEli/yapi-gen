@@ -24,6 +24,7 @@ import FlawComment from './FlawComment'
 import FlawStatus from './FlawStatus'
 import FlawBasic from './FlawBasic'
 import FlawDetail from './FlawDetail'
+import CommonProgress from '@/components/CommonProgress'
 
 const FlawInfo = () => {
   const [t] = useTranslation()
@@ -124,7 +125,17 @@ const FlawInfo = () => {
           </div>
         </TitleWrap>
         {activeTabs === 1 && (
-          <FlawBasic detail={flawInfo} onUpdate={onUpdate} isOpen isInfoPage />
+          <>
+            <div style={{ marginBottom: 20 }}>
+              <CommonProgress percent={50} isTable={false} />
+            </div>
+            <FlawBasic
+              detail={flawInfo}
+              onUpdate={onUpdate}
+              isOpen
+              isInfoPage
+            />
+          </>
         )}
         {activeTabs === 2 && (
           <FlawComment isOpen={activeTabs === 2} detail={flawInfo} isOpenInfo />

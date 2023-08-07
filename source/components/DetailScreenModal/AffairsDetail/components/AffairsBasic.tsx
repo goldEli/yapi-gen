@@ -13,6 +13,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import BasicDemand from '@/components/SprintDetailDrawer/component/BasicDemand'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import CommonProgress from '@/components/CommonProgress'
 
 interface Props {
   onRef: any
@@ -58,6 +59,9 @@ const AffairsBasic = (props: Props) => {
   return (
     <BasicWrap ref={props.onRef}>
       <BasicContent>
+        <div style={{ marginLeft: 24, marginBottom: 24 }}>
+          <CommonProgress percent={50} isTable={false} />
+        </div>
         <BasicDemand
           onUpdate={onUpdate}
           detail={affairsInfo}
