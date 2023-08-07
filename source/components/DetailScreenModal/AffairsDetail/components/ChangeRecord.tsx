@@ -63,10 +63,7 @@ interface Props {
   activeKey: string
   filter?: boolean
 }
-interface MemberListProps {
-  name: string
-  id: number
-}
+
 const ChangeRecord = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -84,7 +81,7 @@ const ChangeRecord = (props: Props) => {
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateChangeLog } = useSelector(store => store.project)
   const { affairsInfo } = useSelector(store => store.affairs)
-  const [form] = Form.useForm()
+
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
     const result = await getAffairsChangeLog({

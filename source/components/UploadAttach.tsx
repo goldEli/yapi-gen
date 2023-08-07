@@ -516,7 +516,8 @@ const UploadAttach = (props: any, ref: any) => {
       </Wdiv>
       <Wdiv>
         <Bdiv />
-        {pe}上传
+        {pe}
+        {t('uploading')}
       </Wdiv>
       {/* <San /> */}
     </div>
