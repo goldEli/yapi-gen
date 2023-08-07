@@ -1,6 +1,9 @@
 import styled from '@emotion/styled'
 import CommonIconFont from '../CommonIconFont'
 import MultipleAvatar from '../MultipleAvatar'
+import { useDispatch, useSelector } from '@store/index'
+import TableQuickEdit from '../TableQuickEdit'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div`
   display: flex;
@@ -23,18 +26,23 @@ const TopInfoWrap = styled.div`
   .box {
     display: flex;
     align-items: center;
+    min-height: 32px;
     .title {
       color: var(--neutral-n3);
-      margin-right: 16px;
+      margin-right: 8px;
     }
   }
 `
 
 interface DrawerTopInfoProps {
   details: any
+  onUpdate?(): void
 }
 
 const DrawerTopInfo = (props: DrawerTopInfoProps) => {
+  const [t] = useTranslation()
+  const { drawerCanOperation } = useSelector(store => store.project)
+
   return (
     <Wrap>
       <TopInfoWrap>
@@ -45,11 +53,43 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
           <span className="label" style={{ marginRight: 16 }}>
             周期
           </span>
-          <div className="box">
-            <span className="title">预计开始 时间----</span>
+          <div className="box" style={{ marginRight: 80 }}>
+            <span className="title">预计开始</span>
+            <span>
+              <TableQuickEdit
+                item={{
+                  ...props.details,
+                  ...{ categoryConfigList: drawerCanOperation },
+                }}
+                isInfo
+                keyText="expected_start_at"
+                type="date"
+                value={['datetime']}
+                defaultText={props.details?.expectedStart || null}
+                onUpdate={props.onUpdate}
+              >
+                <span>{props.details?.expectedStart || '--'}</span>
+              </TableQuickEdit>
+            </span>
           </div>
           <div className="box">
-            <span className="title">预计结束 时间----</span>
+            <span className="title">预计结束</span>
+            <span>
+              <TableQuickEdit
+                item={{
+                  ...props.details,
+                  ...{ categoryConfigList: drawerCanOperation },
+                }}
+                isInfo
+                keyText="expected_end_at"
+                type="date"
+                value={['datetime']}
+                defaultText={props.details?.expectedEnd || null}
+                onUpdate={props.onUpdate}
+              >
+                <span>{props.details?.expectedEnd || '--'}</span>
+              </TableQuickEdit>
+            </span>
           </div>
         </span>
       </TopInfoWrap>
@@ -63,16 +103,30 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
         </span>
         <span className="box">
           <span className="label" style={{ marginRight: 16 }}>
-            处理人
+            {t('common.dealName')}
           </span>
-          <MultipleAvatar
-            max={3}
-            list={props.details?.user?.map((i: any) => ({
-              id: i.user.id,
-              name: i.user.name,
-              avatar: i.user.avatar,
-            }))}
-          />
+          <span>
+            <TableQuickEdit
+              item={{
+                ...props.details,
+                ...{ categoryConfigList: drawerCanOperation },
+              }}
+              isInfo
+              keyText="users"
+              type="fixed_select"
+              defaultText={props.details?.user.map((i: any) => i.user_id) || []}
+              onUpdate={props.onUpdate}
+            >
+              <MultipleAvatar
+                max={3}
+                list={props.details?.user?.map((i: any) => ({
+                  id: i.user.id,
+                  name: i.user.name,
+                  avatar: i.user.avatar,
+                }))}
+              />
+            </TableQuickEdit>
+          </span>
         </span>
       </TopInfoWrap>
     </Wrap>
