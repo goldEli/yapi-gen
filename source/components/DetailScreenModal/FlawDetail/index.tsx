@@ -57,6 +57,7 @@ import FlawInfo from './components/FlawInfo'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import ScheduleRecord from '@/components/ScheduleRecord'
 
 const FlawDetail = () => {
   const [t] = useTranslation()
@@ -464,7 +465,12 @@ const FlawDetail = () => {
           <span>{t('progressLog')}</span>
         </ActivityTabItem>
       ),
-      children: <Circulation activeKey={tabActive} />,
+      children: (
+        <ScheduleRecord
+          detailId={flawInfo.id ?? 0}
+          projectId={flawInfo.projectId ?? 0}
+        />
+      ),
     },
   ]
 

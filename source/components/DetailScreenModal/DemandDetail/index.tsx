@@ -61,6 +61,7 @@ import Circulation from './components/Circulation'
 import DemandInfo from './components/DemandInfo'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import ScheduleRecord from '@/components/ScheduleRecord'
 
 const DemandDetail = () => {
   const [t] = useTranslation()
@@ -468,7 +469,13 @@ const DemandDetail = () => {
           <span>{t('progressLog')}</span>
         </DetailTabItem>
       ),
-      children: <Circulation activeKey={tabActive} />,
+      children: (
+        <ScheduleRecord
+          detailId={demandInfo.id}
+          projectId={demandInfo.projectId}
+          // activeKey={tabActive}
+        />
+      ),
     },
   ]
 

@@ -759,17 +759,24 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
           {t('linkWorkItem')}
         </CommonButton>
       )} */}
-      <LabelWrap>
-        <Label>{t('linkWorkItem')}</Label>
-        <CloseWrap width={24} height={24}>
-          <CommonIconFont
-            type="plus"
-            size={18}
-            color="var(--neutral-n2)"
-            onClick={onClickOpen}
-          />
-        </CloseWrap>
-      </LabelWrap>
+      {props.isDrawer ? (
+        <LabelWrap>
+          <Label>{t('linkWorkItem')}</Label>
+          <CloseWrap width={24} height={24}>
+            <CommonIconFont
+              type="plus"
+              size={18}
+              color="var(--neutral-n2)"
+              onClick={onClickOpen}
+            />
+          </CloseWrap>
+        </LabelWrap>
+      ) : (
+        <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
+          {t('linkWorkItem')}
+        </CommonButton>
+      )}
+
       {/* 缺陷详情 */}
       {!props.isDrawer && (
         <>
