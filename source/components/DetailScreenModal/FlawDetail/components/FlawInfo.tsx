@@ -127,7 +127,7 @@ const FlawInfo = () => {
         {activeTabs === 1 && (
           <>
             <div style={{ marginBottom: 20 }}>
-              <CommonProgress isTable={false} />
+              <CommonProgress isTable={false} type="flaw" id={flawInfo.id} />
             </div>
             <FlawBasic
               detail={flawInfo}

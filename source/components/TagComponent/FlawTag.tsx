@@ -153,6 +153,8 @@ interface Props {
   isQuick?: boolean
   detail: Model.Flaw.FlawInfo
   onUpdate(): void
+  // 是否是详情的快捷操作
+  isDetailQuick?: boolean
 }
 
 const FlawTag = (props: Props) => {
@@ -185,9 +187,25 @@ const FlawTag = (props: Props) => {
 
   const colorList = ['#FF5C5E', '#43BA9A', 'var(--primary-d2)', '#969799']
 
-  const onAddDemandTags = (value: any) => {
-    setNewTag(value)
-    setIsChooseColor(true)
+  const onAddDemandTags = async (value: any) => {
+    // 如果是快捷添加标签，则默认灰色
+    if (props.isDetailQuick) {
+      await addInfoFlaw({
+        projectId,
+        id: props.detail?.id,
+        type: 'tag',
+        targetId: [{ name: value, color: '#969799' }],
+      })
+      getMessage({ msg: t('common.addSuccess'), type: 'success' })
+      dispatch(getProjectInfoValuesStore({ projectId }))
+      props.onUpdate()
+      setNewTag('')
+      setIsChooseColor(false)
+      setIsClear(false)
+    } else {
+      setNewTag(value)
+      setIsChooseColor(true)
+    }
     setIsOpen(false)
   }
 
@@ -281,42 +299,46 @@ const FlawTag = (props: Props) => {
         flexWrap: 'wrap',
       }}
     >
-      <Popover
-        visible={isChooseColor}
-        placement="bottom"
-        trigger="click"
-        content={colorStatus}
-        onVisibleChange={onVisibleChange}
-      >
-        <TagCheckedItem hidden={!newTag}>{newTag}</TagCheckedItem>
-      </Popover>
-      {checkedTags?.reverse()?.map((i: any) => (
-        <TagCheckedItem
-          key={i.id}
-          style={{
-            cursor: isCanEdit || props?.isQuick ? 'pointer' : 'inherit',
-            alignItems: 'center',
-            color: i.color,
-            border: `1px solid ${i.color}`,
-          }}
-        >
-          <div>{i.content}</div>
-          {isCanEdit || props?.isQuick ? (
-            <IconFont
-              className="icon"
+      {!props.isDetailQuick && (
+        <>
+          <Popover
+            visible={isChooseColor}
+            placement="bottom"
+            trigger="click"
+            content={colorStatus}
+            onVisibleChange={onVisibleChange}
+          >
+            <TagCheckedItem hidden={!newTag}>{newTag}</TagCheckedItem>
+          </Popover>
+          {checkedTags?.reverse()?.map((i: any) => (
+            <TagCheckedItem
+              key={i.id}
               style={{
-                position: 'absolute',
-                right: -6,
-                top: -6,
-                color: 'var(--neutral-n3)',
-                fontSize: 14,
+                cursor: isCanEdit || props?.isQuick ? 'pointer' : 'inherit',
+                alignItems: 'center',
+                color: i.color,
+                border: `1px solid ${i.color}`,
               }}
-              type="close-solid"
-              onClick={() => onDeleteInfoDemand(i)}
-            />
-          ) : null}
-        </TagCheckedItem>
-      ))}
+            >
+              <div>{i.content}</div>
+              {isCanEdit || props?.isQuick ? (
+                <IconFont
+                  className="icon"
+                  style={{
+                    position: 'absolute',
+                    right: -6,
+                    top: -6,
+                    color: 'var(--neutral-n3)',
+                    fontSize: 14,
+                  }}
+                  type="close-solid"
+                  onClick={() => onDeleteInfoDemand(i)}
+                />
+              ) : null}
+            </TagCheckedItem>
+          ))}
+        </>
+      )}
       {props?.isQuick || isCanEdit ? (
         <Popover
           visible={isOpen}

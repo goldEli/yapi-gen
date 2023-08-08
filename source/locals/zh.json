@@ -33,14 +33,12 @@
   "top": "顶部",
   "window": "窗口",
   "send_type": "发送类型",
-
   "unsent_scheduled": "定时未发送",
   "time_of_departure": "时间",
   "content": "内容",
   "author": "作者",
   "sent_at": "发送于",
   "receiver": "接收人",
-
   "exit_full_screen": "退出全屏",
   "feedback": "反馈",
   "work_item_summary": "工作项概括",
@@ -2027,7 +2025,6 @@
     "editTemplate": "编辑模板",
     "rightsProfile": "权限配置",
     "confirmDeletionOfThisField": "确认删除该字段？",
-    "columnsAndStatus": "列与状态",
     "typeConfiguration": "类型配置",
     "confirmCancel": "确认取消"
   },
@@ -2266,5 +2263,7 @@
   "date_of_achievement": "达成日期：",
   "labor_cost_this_time": "工时花费：本次",
   "update_instructions": "更新说明：",
-  "open_more": "展开更多"
+  "open_more": "展开更多",
+  "progressLog": "进度日志",
+  "appendix": "附件"
 }

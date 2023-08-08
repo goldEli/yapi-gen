@@ -85,6 +85,8 @@ import RelationStories from '../DetailScreenModal/FlawDetail/components/Relation
 import FlawBasic from '../DetailScreenModal/FlawDetail/components/FlawBasic'
 import CommonProgress from '../CommonProgress'
 import DrawerTopInfo from '../DrawerTopInfo'
+import FlawTag from '../TagComponent/FlawTag'
+import ScheduleRecord from '../ScheduleRecord'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -859,7 +861,7 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <CommonProgress isTable={false} />
+              <CommonProgress isTable={false} type="flaw" id={drawerInfo.id} />
               <BtnWrap>
                 <CommonButton
                   type="light"
@@ -867,18 +869,32 @@ const FlawDetailDrawer = () => {
                     flawDetailRef?.current?.handleUpload()
                   }}
                 >
-                  附件
+                  {t('appendix')}
                 </CommonButton>
-                <CommonButton type="light" onClick={() => {}}>
-                  添加标签
-                </CommonButton>
+
+                <FlawTag
+                  defaultList={drawerInfo?.tag?.map((i: any) => ({
+                    id: i.id,
+                    color: i.tag?.color,
+                    name: i.tag?.content,
+                  }))}
+                  canAdd
+                  onUpdate={onOperationUpdate}
+                  detail={drawerInfo}
+                  isDetailQuick
+                  addWrap={
+                    <CommonButton type="light" onClick={() => {}}>
+                      {t('addTag')}
+                    </CommonButton>
+                  }
+                />
                 <CommonButton
                   type="light"
                   onClick={() => {
                     relationStoriesRef?.current?.onClickOpen()
                   }}
                 >
-                  链接工作项
+                  {t('linkWorkItem')}
                 </CommonButton>
               </BtnWrap>
               <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
@@ -901,9 +917,15 @@ const FlawDetailDrawer = () => {
                   ref={relationStoriesRef}
                 />
                 <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
-                <CommentTitle>进度日志</CommentTitle>
+                <div id="tab_log" className="info_item_tab">
+                  <CommentTitle>{t('scheduleRecord')}</CommentTitle>
+                  <ScheduleRecord
+                    detailId={drawerInfo.id}
+                    projectId={drawerInfo.projectId}
+                  />
+                </div>
                 <div id="tab_defectComment">
-                  <CommentTitle>缺陷评论</CommentTitle>
+                  <CommentTitle>{t('defectComment')}</CommentTitle>
                   <CommonComment
                     data={flawCommentList}
                     onDeleteConfirm={onDeleteCommentConfirm}

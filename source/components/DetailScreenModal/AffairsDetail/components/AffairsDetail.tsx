@@ -47,7 +47,6 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   const { projectInfo } = useSelector(store => store.project)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dId = useRef<any>()
-  const uploadRefs: any = createRef()
   const onBottom = () => {
     const dom: any = LeftDom?.current
     dom.scrollTop = dom.scrollHeight

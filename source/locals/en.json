@@ -2,74 +2,46 @@
   "uploading": " uploading",
   "shortcut_key": "shortcut key",
   "create_transaction_or_requirement_or_defect": "Create transaction requirement defect",
-
   "send_comment": "Send comment",
-
   "ctrl_enter": "Ctrl+ Enter ",
-
   "comment_input": "Comment input",
-
   "page_search": "Page search",
-
   "toggle_details_preview": "Detail preview switch ",
-
   "toggle_left_menu": "Left menu show/hide ",
-
   "switch_project_menu_to_sprint_or_iteration": "Switch the item menu to Sprint/Iteration ",
-
   "switch_project_menu_to_kanban": "Project menu switch to Kanban",
-
   "switch_project_menu_to_reports": "Project menu Switch to Reports ",
-
   "switch_project_menu_to_requirements": "Project menu switch to Requirements",
   "the_message_content_cannot_be_empty": " Message content cannot be empty",
-
   "characters_over": " Characters_over 200",
   "Transaction_sprint": "Transaction Sprint",
-
   "Requirement_iteration": "Requirements Iteration",
   "project_handover": "Project handover",
   "to_be_released": " To be released",
   "send": " send",
   "from": "from",
-
   "import_workflow": "Import workflow",
-
   "workflow": "Workflow ",
-
   "project_members": "Project members",
-
   "reselect": "reselect",
   "submit successfully": " Submit successfully",
   "message_receiver_list": "List of message recipients ",
-
   "person_unread": "person not read",
-
   "person_read": "Person read",
-
   "enterprise_project2": "Enterprise Project ",
-
   "sprint2": "Sprint ",
   "top": "top",
-
   "window": "window",
-
   "send_type": "Send type",
-
   "unsent_scheduled": "Scheduled not sent ",
   "time_of_departure": " Time of departure",
   "content": "Content ",
-
   "author": "Author ",
-
   "sent_at": "send to ",
-
   "receiver": "receiver",
-
   "exit_full_screen": "ExitFullScreen",
   "feedback": "Feedback ",
   "work_item_summary": "work item summary",
-
   "work_item_accumulated_chart": "Work item accumulation chart",
   "unread": "unread",
   "create_work_item": "Create work item",
@@ -1848,7 +1820,6 @@
     "allPeople": "All employees selected",
     "statisticalPeriod": "Statistical period",
     "daysBefore": "{{day}} days before",
-    "days": "Day{{day}}",
     "ringRatio": "Ring ratio",
     "fromHighToLow": "From high to low",
     "lowToHigh": "Low to high",
@@ -2054,7 +2025,6 @@
     "editTemplate": "Edit template",
     "rightsProfile": "Rights Profile",
     "confirmDeletionOfThisField": "Confirm deletion of this field?",
-    "columnsAndStatus": "Columns and status",
     "typeConfiguration": "Type configuration",
     "confirmCancel": "Confirm Cancel"
   },
@@ -2293,5 +2263,7 @@
   "date_of_achievement": "Date of achievement：",
   "labor_cost_this_time": "Labor cost: This time",
   "update_instructions": "Update instructions：",
-  "open_more": "Expand More"
+  "open_more": "Expand More",
+  "progressLog": "Progress log",
+  "appendix": "Appendix"
 }

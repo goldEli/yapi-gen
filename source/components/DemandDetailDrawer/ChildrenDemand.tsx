@@ -16,6 +16,9 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import CommonIconFont from '../CommonIconFont'
 import CustomSelect from '../CustomSelect'
 import DetailsChildProgress from '../DetailsChildProgress'
+import DragTable from '../DragTable'
+import MoreDropdown from '../MoreDropdown'
+import RelationDropdownMenu from '../TableDropdownMenu/RelationDropdownMenu'
 import CommonProgress from '../CommonProgress'
 interface Props {
   detail?: any
@@ -32,6 +35,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
     list: undefined,
   })
   const [isSearch, setIsSearch] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
   // 跳转详情页面
   const onToDetail = (record: any) => {
     const params = encryptPhp(
@@ -51,7 +55,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
 
   const columnsChild = [
     {
-      title: t('common.demandName'),
+      title: '',
       dataIndex: 'storyPrefixKey',
       render: (text: string, record: any) => {
         return (
@@ -64,7 +68,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
       },
     },
     {
-      title: t('common.demandName'),
+      title: '',
       dataIndex: 'name',
       render: (text: string, record: any) => {
         return (
@@ -77,7 +81,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
       },
     },
     {
-      title: t('common.priority'),
+      title: '',
       dataIndex: 'priority',
       render: (text: any) => {
         return (
@@ -95,8 +99,25 @@ const ChildrenDemand = (props: Props, ref: any) => {
         )
       },
     },
+
     {
-      title: t('common.status'),
+      title: '',
+      dataIndex: 'dealName',
+      render: (text: any, record: any) => {
+        return (
+          <MultipleAvatar
+            max={3}
+            list={record.usersInfo?.map((i: any) => ({
+              id: i.id,
+              name: i.name,
+              avatar: i.avatar,
+            }))}
+          />
+        )
+      },
+    },
+    {
+      title: '',
       dataIndex: 'status',
       render: (text: any, record: any) => {
         return (
@@ -152,9 +173,33 @@ const ChildrenDemand = (props: Props, ref: any) => {
       all: true,
       parentId: props.detail.id,
     })
-    setDataList({ list: result })
+    setDataList({
+      list: result.map((item: { id: any }) => ({ ...item, index: item.id })),
+    })
   }
-
+  const operationList = [
+    {
+      width: 40,
+      render: (text: any, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreDropdown
+              isMoreVisible={true}
+              hasChild
+              menu={
+                <RelationDropdownMenu
+                  onDeleteChange={() => {}}
+                  record={record}
+                  type={1}
+                />
+              }
+              onChangeVisible={() => {}}
+            />
+          </div>
+        )
+      },
+    },
+  ]
   const onCreateChild = () => {
     dispatch(
       setAddWorkItemModal({
@@ -170,6 +215,29 @@ const ChildrenDemand = (props: Props, ref: any) => {
       }),
     )
   }
+  // 点击搜素获取下拉数据列表
+  const onClickSearch = () => {
+    setIsSearch(true)
+    // getSelectRecentList()
+  }
+  //   取消搜索
+  const onCancelSearch = () => {
+    setSearchValue('')
+    setIsSearch(false)
+  }
+  // 表格拖拽排序
+  const onChangeData = async (data: any) => {
+    console.log('data--', data)
+    setDataList({
+      ...dataList,
+      list: data.list,
+    })
+    // await affairsChildDragSort({
+    //   projectId: projectInfo.id,
+    //   id: props.detail.id,
+    //   childrenIds: data.list.map((i: Model.Affairs.AffairsInfo) => i.id),
+    // })
+  }
   useImperativeHandle(ref, () => {
     return {
       onCreateChild,
@@ -183,13 +251,17 @@ const ChildrenDemand = (props: Props, ref: any) => {
   }, [props.detail, isUpdateAddWorkItem])
 
   return (
-    <div id="tab_demand" className="info_item_tab">
+    <div
+      id="tab_demand"
+      className="info_item_tab"
+      style={{ marginTop: '28px' }}
+    >
       {/* <Label>{t('subrequirements')}</Label> */}
       <LabelWrap>
         <Label>{t('subrequirements')}</Label>
         <Space size={12}>
           {!isSearch && (
-            <CloseWrap width={24} height={24}>
+            <CloseWrap width={24} height={24} onClick={onClickSearch}>
               <CommonIconFont
                 size={18}
                 type="search"
@@ -212,7 +284,9 @@ const ChildrenDemand = (props: Props, ref: any) => {
                 allowClear
                 autoFocus
               />
-              <CancelText onClick={() => {}}>{t('common.cancel')}</CancelText>
+              <CancelText onClick={onCancelSearch}>
+                {t('common.cancel')}
+              </CancelText>
             </Space>
           ) : null}
           {!isEnd && (
@@ -238,22 +312,19 @@ const ChildrenDemand = (props: Props, ref: any) => {
         </CommonButton>
       )} */}
       <DetailsChildProgress details={props.detail}></DetailsChildProgress>
-      {!!dataList?.list &&
-        (dataList?.list?.length > 0 ? (
-          <TableBorder style={{ marginTop: '8px' }}>
-            <Table
-              rowKey="id"
-              showHeader={false}
-              pagination={false}
-              columns={columnsChild}
-              dataSource={dataList?.list}
-              tableLayout="auto"
-              style={{ borderRadius: 4, overflow: 'hidden' }}
-            />
-          </TableBorder>
-        ) : (
-          <NoData />
-        ))}
+      {dataList?.list?.length > 0 ? (
+        <TableBorder style={{ marginTop: '8px' }}>
+          <DragTable
+            showHeader={false}
+            columns={columnsChild}
+            dataSource={dataList}
+            onChangeData={onChangeData}
+            hasOperation={operationList}
+          />
+        </TableBorder>
+      ) : (
+        <NoData />
+      )}
     </div>
   )
 }

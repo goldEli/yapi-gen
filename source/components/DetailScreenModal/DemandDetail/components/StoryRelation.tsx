@@ -756,15 +756,17 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   }
   return (
     <RelationWrap
-      // style={{
-      //   height: props.isDrawer
-      //     ? '100%'
-      //     : isEnd
-      //     ? 'calc(100vh - 192px)'
-      //     : 'calc(100vh - 224px)',
-      // }}
+      style={{
+        height: props.isDrawer
+          ? '100%'
+          : isEnd
+          ? 'calc(100vh - 192px)'
+          : 'calc(100vh - 224px)',
+        marginTop: props.isDrawer ? '24px' : '0px',
+      }}
       id="tab_link"
       className="info_item_tab"
+      // style={{ marginTop: '24px' }}
     >
       <DeleteConfirmModal />
       <CommonModal
@@ -821,22 +823,29 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      {/* {!isEnd && (
+      {/* {!isEnd ? (
         <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
           {t('linkWorkItem')}
         </CommonButton>
+      
       )} */}
-      <LabelWrap>
-        <Label>{t('linkWorkItem')}</Label>
-        <CloseWrap width={24} height={24}>
-          <CommonIconFont
-            type="plus"
-            size={18}
-            color="var(--neutral-n2)"
-            onClick={onClickOpen}
-          />
-        </CloseWrap>
-      </LabelWrap>
+      {props.isDrawer ? (
+        <LabelWrap>
+          <Label>{t('linkWorkItem')}</Label>
+          <CloseWrap width={24} height={24}>
+            <CommonIconFont
+              type="plus"
+              size={18}
+              color="var(--neutral-n2)"
+              onClick={onClickOpen}
+            />
+          </CloseWrap>
+        </LabelWrap>
+      ) : (
+        <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
+          {t('linkWorkItem')}
+        </CommonButton>
+      )}
       {!props.isDrawer && (
         <>
           <ResizeTable
