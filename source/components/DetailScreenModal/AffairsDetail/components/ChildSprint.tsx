@@ -37,7 +37,7 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { getAffairsInfo } from '@store/affairs/affairs.thunk'
+
 import DetailsChildProgress from '@/components/DetailsChildProgress'
 import CommonProgress from '@/components/CommonProgress'
 
@@ -360,6 +360,7 @@ const ChildSprint = (
   // 点击切换页码
   const onChangePage = (page: number, size: number) => {
     setPageParams({ page, pagesize: size })
+    getList({ page, pagesize: size })
   }
 
   useEffect(() => {
