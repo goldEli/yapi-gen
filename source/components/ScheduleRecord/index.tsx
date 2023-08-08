@@ -6,6 +6,7 @@ import CommonUserAvatar from '../CommonUserAvatar'
 import { getScheduleLogList } from '@/services/project'
 import NoData from '../NoData'
 import UploadAttach from '../UploadAttach'
+import CommonIconFont from '../CommonIconFont'
 
 const Wrap = styled.div`
   display: flex;
@@ -54,6 +55,12 @@ const InfoRow = styled.div`
   color: var(--neutral-n3);
 `
 
+export const ShowLabel = styled.div`
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--primary-d2);
+`
+
 interface ScheduleRecordProps {
   // 详情id
   detailId: number
@@ -65,19 +72,24 @@ interface ScheduleRecordProps {
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
   const [t] = useTranslation()
+  const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(0)
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
 
   // 获取进度日志列表数据
-  const getScheduleLogData = async () => {
+  const getScheduleLogData = async (pageNumber?: number) => {
     const response = await getScheduleLogList({
       story_id: props.detailId,
       project_id: props.projectId,
+      pagesize: 10,
+      page: pageNumber ?? page,
     })
     setTotal(response.pager.total)
-    setListData({ list: response.list || [] })
+    setListData({
+      list: pageNumber ? [...listData.list, ...response.list] : response.list,
+    })
   }
 
   useEffect(() => {
@@ -102,7 +114,8 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                       {i.userInfo?.name}（{i.userInfo?.position?.name}）
                     </div>
                     <span>
-                      更新了进度{i.before_schedule}% - {i.after_schedule}%
+                      更新了进度{i.before_schedule}%{' '}
+                      <CommonIconFont type="swap-right" /> {i.after_schedule}%
                     </span>
                   </div>
                   <InfoRow>达成日期：{i.created_at}</InfoRow>
@@ -128,6 +141,16 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                 </ItemContent>
               </RecordItem>
             ))}
+            {total > listData?.list?.length && (
+              <ShowLabel
+                onClick={() => {
+                  setPage(page + 1)
+                  getScheduleLogData(page + 1)
+                }}
+              >
+                展开更多
+              </ShowLabel>
+            )}
           </div>
         ) : (
           <NoData />
