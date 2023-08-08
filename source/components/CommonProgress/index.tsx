@@ -95,6 +95,8 @@ const CommonProgress = (props: ProgressProps) => {
           type={type}
           visible={visible}
           onClose={() => setVisible(false)}
+          id={id}
+          project_id={projectInfo?.id}
         />
       )}
     </>

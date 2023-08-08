@@ -58,6 +58,8 @@ const urls = {
   updateTransactionSchedule: '/b/transaction/update_schedule',
   // 更新缺陷进度
   updateFlawSchedule: '/b/flaw/update_schedule',
+  // 进度信息详情
+  getScheduleDetails: '/b/story/schedule_details',
   // 获取需求关联工作项
   getStoryRelationStories: '/b/story/relationStories',
   // 添加需求关联工作项
