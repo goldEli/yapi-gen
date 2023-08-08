@@ -461,6 +461,15 @@ const DemandDetail = () => {
       ),
       children: <Circulation activeKey={tabActive} />,
     },
+    {
+      key: '6',
+      label: (
+        <DetailTabItem>
+          <span>{t('progressLog')}</span>
+        </DetailTabItem>
+      ),
+      children: <Circulation activeKey={tabActive} />,
+    },
   ]
 
   const onGetMenu = () => {

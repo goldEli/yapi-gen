@@ -457,6 +457,15 @@ const FlawDetail = () => {
       ),
       children: <Circulation activeKey={tabActive} />,
     },
+    {
+      key: '5',
+      label: (
+        <ActivityTabItem>
+          <span>{t('progressLog')}</span>
+        </ActivityTabItem>
+      ),
+      children: <Circulation activeKey={tabActive} />,
+    },
   ]
 
   // 监听左侧信息滚动
