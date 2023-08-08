@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector } from '@store/index'
 import {
@@ -11,7 +12,10 @@ import { DetailInfoWrap, InfoWrap, ButtonGroupWrap, TabsWrap1 } from '../style'
 import { useTranslation } from 'react-i18next'
 import { getIdsForAt, getProjectIdByUrl, removeNull } from '@/tools'
 import { addAffairsComment } from '@/services/affairs'
-import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
+import {
+  getAffairsCommentList,
+  getAffairsInfo,
+} from '@store/affairs/affairs.thunk'
 import { getMessage } from '@/components/Message'
 import LinkSprint from './LinkSprint'
 import ActivitySprint from './ActivitySprint'
@@ -20,6 +24,7 @@ import CommentFooter from '@/components/CommonComment/CommentFooter'
 import CommonIconFont from '@/components/CommonIconFont'
 import ChildSprint from './ChildSprint'
 import CommonButton from '@/components/CommonButton'
+import SprintTag from '@/components/TagComponent/SprintTag'
 import { Tabs } from 'antd'
 interface Props {
   onRef: any
@@ -30,17 +35,26 @@ const ButtonGroup = (props: {
   affairsInfo: any
   isInfoPage: any
 }) => {
-  const [t] = useTranslation()
   const dispatch = useDispatch()
-  const dId = useRef<any>()
+  const [t] = useTranslation()
   const [items, setItems] = useState<Array<{ label: string; key: string }>>([])
-  const [tagList, setTagList] = useState<any>()
   const data = [
     { key: 'sprint-attachment', label: t('attachment') },
     { key: 'sprint-tag', label: t('addTag') },
     { key: 'sprint-childSprint', label: t('sprint.sub') },
     { key: 'sprint-linkSprint', label: t('linkAffairs') },
   ]
+
+  // 更新详情
+  const onOperationUpdate = () => {
+    dispatch(
+      getAffairsInfo({
+        projectId: getProjectIdByUrl(),
+        sprintId: props.affairsInfo.id || 0,
+      }),
+    )
+  }
+
   useEffect(() => {
     if (props.state) {
       setItems(data.filter(el => el.key !== 'sprint-childSprint'))
@@ -53,13 +67,40 @@ const ButtonGroup = (props: {
     <ButtonGroupWrap>
       {items.map((el: { label: string; key: string }) => (
         <div key={el.key}>
-          <CommonButton
-            type="light"
-            style={{ marginRight: '12px' }}
-            onClick={() => props.onClickItem(el)}
-          >
-            {el.label}
-          </CommonButton>
+          <>
+            {el.key === 'sprint-tag' && (
+              <SprintTag
+                defaultList={props.affairsInfo?.tag?.map((i: any) => ({
+                  id: i.id,
+                  color: i.tag?.color,
+                  name: i.tag?.content,
+                }))}
+                canAdd
+                onUpdate={onOperationUpdate}
+                detail={props.affairsInfo}
+                isDetailQuick
+                addWrap={
+                  <CommonButton
+                    style={{ marginRight: '12px' }}
+                    key={el.key}
+                    type="light"
+                  >
+                    {el.label}
+                  </CommonButton>
+                }
+              />
+            )}
+
+            {el.key !== 'sprint-tag' && (
+              <CommonButton
+                type="light"
+                style={{ marginRight: '12px' }}
+                onClick={() => props.onClickItem(el)}
+              >
+                {el.label}
+              </CommonButton>
+            )}
+          </>
         </div>
       ))}
     </ButtonGroupWrap>

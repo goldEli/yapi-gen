@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-undefined */
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
@@ -104,73 +105,71 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
 
   return (
     <Wrap>
-      {!!listData?.list &&
-        (listData?.list?.length > 0 ? (
-          <div>
-            {listData?.list?.map((i: any) => (
-              <RecordItem
-                key={i.id}
-                isDrawer={props.isDrawer}
-                notPadding={props.notPadding}
-              >
-                <ItemAvatar>
-                  <CommonUserAvatar avatar={i.userInfo?.avatar} />
-                </ItemAvatar>
-                <ItemContent>
-                  <div className="title">
-                    <div>
-                      {i.userInfo?.name}（{i.userInfo?.position?.name}）
-                    </div>
-                    <span>
-                      {t('updated_progress')}
-                      {i.before_schedule}%
-                      <CommonIconFont type="swap-right" /> {i.after_schedule}%
-                    </span>
+      {listData?.list && listData?.list?.length > 0 && (
+        <div>
+          {listData?.list?.map((i: any) => (
+            <RecordItem
+              key={i.id}
+              isDrawer={props.isDrawer}
+              notPadding={props.notPadding}
+            >
+              <ItemAvatar>
+                <CommonUserAvatar avatar={i.userInfo?.avatar} />
+              </ItemAvatar>
+              <ItemContent>
+                <div className="title">
+                  <div>
+                    {i.userInfo?.name}（{i.userInfo?.position?.name}）
                   </div>
-                  <InfoRow>
-                    {t('date_of_achievement')}
-                    {i.created_at}
-                  </InfoRow>
-                  <InfoRow>
-                    {t('labor_cost_this_time')}
-                    {Math.floor((i.task_time / 60) * 100) / 100}h
-                  </InfoRow>
-                  <InfoRow>
-                    {t('update_instructions')}
-                    {i.remark}
-                  </InfoRow>
-                  {i.attachment?.length > 0 && (
-                    <UploadAttach
-                      defaultList={i.attachment?.map((k: any) => ({
-                        url: k.url,
-                        id: i.id,
-                        size: k.size,
-                        time: k.ctime,
-                        name: k.name,
-                        suffix: k.ext,
-                        username: i.userInfo.name ?? '--',
-                      }))}
-                      canUpdate
-                      onC
-                    />
-                  )}
-                </ItemContent>
-              </RecordItem>
-            ))}
-            {total > listData?.list?.length && (
-              <ShowLabel
-                onClick={() => {
-                  setPage(page + 1)
-                  getScheduleLogData(page + 1)
-                }}
-              >
-                {t('open_more')}
-              </ShowLabel>
-            )}
-          </div>
-        ) : (
-          <NoData />
-        ))}
+                  <span>
+                    {t('updated_progress')}
+                    {i.before_schedule}%
+                    <CommonIconFont type="swap-right" /> {i.after_schedule}%
+                  </span>
+                </div>
+                <InfoRow>
+                  {t('date_of_achievement')}
+                  {i.created_at}
+                </InfoRow>
+                <InfoRow>
+                  {t('labor_cost_this_time')}
+                  {Math.floor((i.task_time / 60) * 100) / 100}h
+                </InfoRow>
+                <InfoRow>
+                  {t('update_instructions')}
+                  {i.remark}
+                </InfoRow>
+                {i.attachment?.length > 0 && (
+                  <UploadAttach
+                    defaultList={i.attachment?.map((k: any) => ({
+                      url: k.url,
+                      id: i.id,
+                      size: k.size,
+                      time: k.ctime,
+                      name: k.name,
+                      suffix: k.ext,
+                      username: i.userInfo.name ?? '--',
+                    }))}
+                    canUpdate
+                    onC
+                  />
+                )}
+              </ItemContent>
+            </RecordItem>
+          ))}
+          {total > listData?.list?.length && (
+            <ShowLabel
+              onClick={() => {
+                setPage(page + 1)
+                getScheduleLogData(page + 1)
+              }}
+            >
+              {t('open_more')}
+            </ShowLabel>
+          )}
+        </div>
+      )}
+      {!listData.list && <NoData />}
     </Wrap>
   )
 }

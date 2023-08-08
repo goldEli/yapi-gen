@@ -22,11 +22,11 @@ import IconFont from '../IconFont'
 import { AddWrap, CloseWrap, TextWrapEdit } from '../StyleCommon'
 import UploadAttach from '../UploadAttach'
 import { ContentItem, Label, LabelWrap } from './style'
-import DrawerTagComponent from './DrawerTagComponent'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { getMessage } from '../Message'
 import CommonIconFont from '../CommonIconFont'
 import { uploadFile } from '../AddWorkItem/CreateWorkItemLeft'
+import DemandTag from '../TagComponent/DemandTag'
 
 interface DetailDemand {
   detail: any
@@ -153,9 +153,20 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       </ContentItem>
       <ContentItem id="tab_tag" className="info_item_tab">
         <Label>{t('label')}</Label>
-        <DrawerTagComponent
-          demandDetail={props.detail}
+        <DemandTag
+          defaultList={props.detail?.tag?.map((i: any) => ({
+            id: i.id,
+            color: i.tag?.color,
+            name: i.tag?.content,
+          }))}
+          canAdd
+          detail={props.detail}
           onUpdate={props.onUpdate}
+          addWrap={
+            <AddWrap hasDash>
+              <IconFont type="plus" />
+            </AddWrap>
+          }
         />
       </ContentItem>
       <ContentItem
@@ -163,7 +174,6 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         id="tab_attachment"
         className="info_item_tab"
       >
-        {/* <Label>{t('common.attachment')}</Label> */}
         <LabelWrap>
           <Label>{t('common.attachment')}</Label>
           <CloseWrap width={24} height={24}>

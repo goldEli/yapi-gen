@@ -56,10 +56,10 @@ export const DetailWrap = styled.div`
   /* position: absolute;
   top: 0;
   left: -294px; */
-  width: 283px;
+  min-width: 283px;
 `
 export const HeaderWrap = styled.div`
-  height: 70px;
+  min-height: 70px;
   background: linear-gradient(225deg, #8dd2f6 0%, #6688ff 100%);
   border-radius: 6px 6px 0px 0px;
   padding: 12px;
@@ -68,7 +68,7 @@ export const Name = styled.div`
   color: var(--neutral-white-d7);
   font-size: 14px;
   display: flex;
-  height: 22px;
+  min-height: 22px;
 `
 export const BottomWrap = styled.div`
   border-radius: 0px 0px 6px 6px;

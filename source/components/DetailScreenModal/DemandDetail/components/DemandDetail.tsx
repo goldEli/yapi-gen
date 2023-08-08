@@ -60,6 +60,14 @@ const DemandDetail = () => {
     onBottom?.()
   }
 
+  const onUpdate = async () => {
+    const result = await getDemandInfo({
+      projectId: params.id,
+      id: demandInfo.id,
+    })
+    dispatch(setDemandInfo(result))
+  }
+
   const onDeleteInfoAttach = async (file: any) => {
     setIsDelVisible(true)
     setFiles(file)
@@ -74,11 +82,7 @@ const DemandDetail = () => {
         targetId: files,
       })
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-      const result = await getDemandInfo({
-        projectId: params.id,
-        id: demandInfo.id,
-      })
-      dispatch(setDemandInfo(result))
+      onUpdate()
       onBottom?.()
     } catch (error) {
       //
@@ -117,6 +121,8 @@ const DemandDetail = () => {
         <DemandTag
           defaultList={tagList}
           canAdd
+          detail={demandInfo}
+          isInfoPage
           addWrap={
             <AddWrap hasDash>
               <IconFont type="plus" />

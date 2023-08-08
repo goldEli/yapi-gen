@@ -74,7 +74,7 @@ const DemandBasic = (props: Props) => {
         </TitleWrap>
         {activeTabs === 1 && (
           <>
-            <CommonProgress isTable={false} />
+            <CommonProgress isTable={false} type="demand" id={demandInfo.id} />
             <BasicDemand
               detail={demandInfo}
               onUpdate={onUpdate}
