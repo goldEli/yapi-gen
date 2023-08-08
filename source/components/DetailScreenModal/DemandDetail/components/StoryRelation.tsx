@@ -45,6 +45,7 @@ import DragTable from '@/components/DragTable'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { Label, LabelWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
+import CommonProgress from '@/components/CommonProgress'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -539,6 +540,19 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
         )
       },
     },
+    {
+      title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
+      render: (text: string, record: any, index: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
+        )
+      },
+    },
   ]
 
   const drawerColumns = [
@@ -664,6 +678,19 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
         )
       },
     },
+    {
+      title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
+      render: (text: string, record: any, index: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
+        )
+      },
+    },
   ]
 
   // 改变顺序
@@ -729,15 +756,17 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   }
   return (
     <RelationWrap
-      // style={{
-      //   height: props.isDrawer
-      //     ? '100%'
-      //     : isEnd
-      //     ? 'calc(100vh - 192px)'
-      //     : 'calc(100vh - 224px)',
-      // }}
+      style={{
+        height: props.isDrawer
+          ? '100%'
+          : isEnd
+          ? 'calc(100vh - 192px)'
+          : 'calc(100vh - 224px)',
+        marginTop: props.isDrawer ? '24px' : '0px',
+      }}
       id="tab_link"
       className="info_item_tab"
+      // style={{ marginTop: '24px' }}
     >
       <DeleteConfirmModal />
       <CommonModal

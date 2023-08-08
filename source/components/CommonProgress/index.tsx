@@ -12,10 +12,11 @@ interface ProgressProps {
   type?: 'transaction' | 'demand' | 'flaw'
   // 当前事务|缺陷|需求id
   id?: number
+  percent?: number
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable, isKanBan, id, type } = props
+  const { isTable, isKanBan, id, type, percent } = props
   const [visible, setVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const [data, setData] = useState<any>(null)
@@ -27,7 +28,9 @@ const CommonProgress = (props: ProgressProps) => {
     setData(result)
   }
   useEffect(() => {
-    getList()
+    if (id) {
+      getList()
+    }
   }, [id])
 
   return (
@@ -60,7 +63,7 @@ const CommonProgress = (props: ProgressProps) => {
           ) : isTable ? (
             <div style={{ width: 124, cursor: 'pointer' }}>
               <Progress
-                percent={data?.total_schedule ?? 0}
+                percent={percent}
                 strokeColor="var(--function-success)"
                 style={{ color: 'var(--function-success)', fontSize: 12 }}
                 format={percent => `${percent}%`}

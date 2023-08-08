@@ -87,6 +87,7 @@ import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint
 import DrawerTopInfo from '../DrawerTopInfo'
 import ScheduleRecord from '../ScheduleRecord'
 import CommonProgress from '../CommonProgress'
+import SprintTag from '../TagComponent/SprintTag'
 
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
@@ -96,6 +97,9 @@ const SprintDetailDrawer = () => {
   const [t] = useTranslation()
   const leftWidth = 960
   const dispatch = useDispatch()
+  const childRef: any = createRef()
+  const linkSprint: any = createRef()
+  const uploadFile: any = createRef()
   const { open, ShareModal } = useShareModal()
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const spanDom = useRef<HTMLSpanElement>(null)
@@ -398,7 +402,15 @@ const SprintDetailDrawer = () => {
 
   // 点击进行快捷操作
   const onClickAnchorList = (item: { key: string; name?: string }) => {
-    console.log('快捷操作')
+    if (item.key === 'sprint-attachment') {
+      uploadFile.current.handleUpload()
+    } else if (item.key === 'sprint-childSprint') {
+      childRef.current.onCreateChild()
+    } else if (item.key === 'sprint-linkSprint') {
+      linkSprint.current.onClickOpen()
+    } else {
+      //
+    }
   }
 
   // 确认删除
@@ -818,15 +830,39 @@ const SprintDetailDrawer = () => {
                   ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
                   : anchorList
                 ).map((i: { key: string; name: string }) => (
-                  <CommonButton
-                    key={i.key}
-                    type="light"
-                    onClick={() => onClickAnchorList(i)}
-                  >
-                    {i.name}
-                  </CommonButton>
+                  <>
+                    {i.key === 'sprint-tag' && (
+                      <SprintTag
+                        defaultList={drawerInfo?.tag?.map((i: any) => ({
+                          id: i.id,
+                          color: i.tag?.color,
+                          name: i.tag?.content,
+                        }))}
+                        canAdd
+                        onUpdate={onOperationUpdate}
+                        detail={drawerInfo}
+                        isDetailQuick
+                        addWrap={
+                          <CommonButton key={i.key} type="light">
+                            {i.name}
+                          </CommonButton>
+                        }
+                      />
+                    )}
+
+                    {i.key !== 'sprint-tag' && (
+                      <CommonButton
+                        key={i.key}
+                        type="light"
+                        onClick={() => onClickAnchorList(i)}
+                      >
+                        {i.name}
+                      </CommonButton>
+                    )}
+                  </>
                 ))}
               </Space>
+
               {/* 只有标准事务类型和故障事务类型才有 */}
               {[4, 5].includes(drawerInfo.work_type) && (
                 <TargetWrap>
@@ -860,13 +896,18 @@ const SprintDetailDrawer = () => {
                 onChange={onChangeTabs}
               />
               <AffairsDetail
+                onRef={uploadFile}
                 affairsInfo={drawerInfo}
                 onUpdate={onOperationUpdate}
               />
               {drawerInfo.work_type !== 6 && (
-                <ChildSprint detail={drawerInfo} onUpdate={onOperationUpdate} />
+                <ChildSprint
+                  onRef={childRef}
+                  detail={drawerInfo}
+                  onUpdate={onOperationUpdate}
+                />
               )}
-              <LinkSprint detail={drawerInfo} />
+              <LinkSprint onRef={linkSprint} detail={drawerInfo} />
               <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
               <Label
                 id="schedule"
