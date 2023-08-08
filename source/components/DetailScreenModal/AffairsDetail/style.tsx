@@ -145,11 +145,11 @@ export const SprintDetailMouseDom = styled(MouseDom)`
 
 export const BasicWrap = styled.div`
   position: relative;
-  height: calc(100% - 100px);
+  height: calc(100% - 52px);
 `
 
 export const BasicContent = styled.div`
-  height: calc(100vh - 320px);
+  height: calc(100% - 42px);
   overflow: auto;
 `
 
@@ -181,6 +181,7 @@ export const InfoWrap = styled.div<{ height: any }>`
   height: ${props => props.height};
   flex: 1;
   position: relative;
+  // overflow: hidden;
   .tabs {
     padding-left: 24px;
   }
@@ -190,9 +191,9 @@ export const InfoWrap = styled.div<{ height: any }>`
   .ant-tabs-bottom > div > .ant-tabs-nav::before {
     border-bottom: none;
   }
-  .ant-tabs-tab {
-    padding: 0 0 16px;
-  }
+  // .ant-tabs-tab {
+  //   padding: 0 0 16px;
+  // }
   .ant-tabs-tab-btn {
     font-size: 14px;
     color: var(--neutral-n2);
@@ -223,19 +224,18 @@ export const ActivityTabItem = styled.div<{ isActive?: boolean }>`
   display: flex;
   align-items: center;
   width: auto;
-  padding:0 8px;
+  padding: 0 8px;
   height: 24px;
   border-radius: 6px 6px 6px 6px;
-  background:${props =>
+  background: ${props =>
     props.isActive ? 'var(--function-tag5)' : 'var(--neutral-n7)'};
   color: ${props =>
-    props.isActive ? 'var(--neutral-n2)' : 'var(--primary-d1)'}
-  color:var(--neutral-n2);
-  &:hover{
-    color:var(--neutral-n1);
+    props.isActive ? 'var(--neutral-n2)' : 'var(--primary-d1)'};
+  color: var(--neutral-n2);
+  &:hover {
+    color: var(--neutral-n1);
     background: var(--active);
   }
-
 `
 
 export const InfoItem = styled.div<{ isInfoPage?: boolean }>`
@@ -327,8 +327,22 @@ export const SubLabel = styled.div`
 `
 export const ButtonGroupWrap = styled.div`
   display: flex;
+  height: 70px;
   align-items: center;
   padding: 16px 0 24px 16px;
+`
+export const TabsWrap1 = styled.div`
+  width: 100%;
+  display: flex;
+  // height:120px;
+  align-items: center;
+  padding: 0px 24px 24px 0px;
+  & .ant-tabs-nav-wrap {
+    border-bottom: 1px solid var(--neutral-n6-d2);
+  }
+  & .tabs {
+    width: 100%;
+  }
 `
 export const TabsWrap = styled(Tabs)`
   .ant-tabs-ink-bar {

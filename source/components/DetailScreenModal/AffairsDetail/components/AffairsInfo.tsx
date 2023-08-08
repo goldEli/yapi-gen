@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { DetailInfoWrap, InfoWrap, ButtonGroupWrap } from '../style'
+import { DetailInfoWrap, InfoWrap, ButtonGroupWrap, TabsWrap1 } from '../style'
 import { useTranslation } from 'react-i18next'
 import { getIdsForAt, getProjectIdByUrl, removeNull } from '@/tools'
 import { addAffairsComment } from '@/services/affairs'
@@ -20,6 +20,7 @@ import CommentFooter from '@/components/CommonComment/CommentFooter'
 import CommonIconFont from '@/components/CommonIconFont'
 import ChildSprint from './ChildSprint'
 import CommonButton from '@/components/CommonButton'
+import { Tabs } from 'antd'
 interface Props {
   onRef: any
 }
@@ -77,6 +78,32 @@ const AffairsInfo = (props: Props) => {
   const { projectInfoValues } = useSelector(store => store.project)
   const [tabActive, setTabActive] = useState('sprint-info')
   const [isScroll, setIsScroll] = useState(false)
+  const items: any = [
+    {
+      key: 'sprint-info',
+      label: t('describe'),
+    },
+    {
+      key: 'sprint-attachment',
+      label: t('attachment'),
+    },
+    {
+      key: 'sprint-tag',
+      label: t('tag'),
+    },
+    {
+      key: 'sprint-childSprint',
+      label: t('subtransaction'),
+    },
+    {
+      key: 'sprint-linkSprint',
+      label: t('linkAffairs'),
+    },
+    {
+      key: 'sprint-activity',
+      label: t('activity'),
+    },
+  ]
   // 提交评论
   const onConfirmComment = async (value: { info: string }) => {
     await addAffairsComment({
@@ -97,14 +124,6 @@ const AffairsInfo = (props: Props) => {
     commentDom.current.cancel()
   }
 
-  // 监听左侧信息滚动
-  const onChangeTabs = (value: string) => {
-    const dom = document.getElementById(value)
-    dom?.scrollIntoView({
-      behavior: 'smooth',
-    })
-  }
-
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
     setIsScroll(!(e.target.scrollTop < 60))
@@ -113,16 +132,26 @@ const AffairsInfo = (props: Props) => {
       '.sprintDetail_dom',
     ) as HTMLElement
     // 所有标题节点
-    const titleItems = document.querySelectorAll('.info_item_tab')
-    let arr: any = []
-    titleItems.forEach(element => {
-      const { offsetTop, id } = element as HTMLElement
-      if (offsetTop <= scrollTop + 120) {
-        const keys = [...arr, ...[id]]
-        arr = [...new Set(keys)]
-      }
-    })
-    setTabActive(arr[arr.length - 1])
+    // const titleItems = document.querySelectorAll('.info_item_tab')
+    let sprintInfo = document.getElementById('sprint-info')
+    let sprintTag = document.getElementById('sprint-tag')
+    let sprintAttachment = document.getElementById('sprint-attachment')
+    let sprintLinkSprint = document.getElementById('sprint-linkSprint')
+    let sprintActivity = document.getElementById('sprint-activity')
+    console.log(sprintInfo?.offsetTop, 'top1')
+    console.log(sprintTag?.offsetTop, 'top2')
+    console.log(sprintAttachment?.offsetTop, 'top3')
+    // let arr: any = []
+    // titleItems.forEach(element => {
+
+    //   const { offsetTop, id } = element as HTMLElement
+    //   if (offsetTop <= scrollTop + 120) {
+    //   console.log(offsetTop,scrollTop+120,id)
+    //     const keys = [...arr, ...[id]]
+    //     // arr = [...new Set(keys)]
+    //     // console.log(id,'id')
+    //   }
+    // })
   }
 
   const onClickItem = (el: any) => {
@@ -134,7 +163,14 @@ const AffairsInfo = (props: Props) => {
       uploadFile.current.handleUpload()
     }
   }
-
+  // 监听左侧信息滚动
+  const onChangeTabs = (value: string) => {
+    setTabActive(value)
+    const dom = document.getElementById(value)
+    dom?.scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
   useImperativeHandle(props.onRef, () => {
     return {
       changeTabs: onChangeTabs,
@@ -156,12 +192,30 @@ const AffairsInfo = (props: Props) => {
       }px)`}
     >
       {/* 子任务不存在子事务模块 */}
-      <ButtonGroup
-        state={affairsInfo.work_type === 6}
-        onClickItem={onClickItem}
-        affairsInfo={affairsInfo}
-        isInfoPage
-      />
+      {!isScroll && (
+        <ButtonGroup
+          state={affairsInfo.work_type === 6}
+          onClickItem={onClickItem}
+          affairsInfo={affairsInfo}
+          isInfoPage
+        />
+      )}
+      {isScroll && (
+        <TabsWrap1>
+          <Tabs
+            className="tabs"
+            activeKey={tabActive}
+            items={
+              // 子任务不存在子事务模块
+              affairsInfo.work_type === 6
+                ? items.filter((i: any) => i.key !== 'sprint-childSprint')
+                : items
+            }
+            onChange={onChangeTabs}
+          />
+        </TabsWrap1>
+      )}
+      {tabActive}
       <DetailInfoWrap
         ref={LeftDomDetailInfo}
         className="sprintDetail_dom"

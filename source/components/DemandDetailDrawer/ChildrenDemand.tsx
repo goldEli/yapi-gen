@@ -19,6 +19,7 @@ import DetailsChildProgress from '../DetailsChildProgress'
 import DragTable from '../DragTable'
 import MoreDropdown from '../MoreDropdown'
 import RelationDropdownMenu from '../TableDropdownMenu/RelationDropdownMenu'
+import CommonProgress from '../CommonProgress'
 interface Props {
   detail?: any
   isOpen?: boolean
@@ -132,6 +133,35 @@ const ChildrenDemand = (props: Props, ref: any) => {
                 : 0
             }
           />
+        )
+      },
+    },
+    {
+      title: t('common.dealName'),
+      dataIndex: 'dealName',
+      render: (text: any, record: any) => {
+        return (
+          <MultipleAvatar
+            max={3}
+            list={record.usersInfo?.map((i: any) => ({
+              id: i.id,
+              name: i.name,
+              avatar: i.avatar,
+            }))}
+          />
+        )
+      },
+    },
+    {
+      title: '',
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
+      render: (text: string, record: any, index: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
         )
       },
     },

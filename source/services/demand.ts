@@ -1244,3 +1244,15 @@ export const getStroySchedule = async (params: any) => {
   const response = await http.get('getStroySchedule', params)
   return response.data
 }
+
+// 更新需求进度统计信息
+export const updateStorySchedule = async (params: any) => {
+  const response = await http.put('updateStorySchedule', params)
+  return response.data
+}
+
+// 需求进度详信息
+export const getScheduleDetails = async (params: any) => {
+  const response = await http.get('getScheduleDetails', params)
+  return response.data
+}

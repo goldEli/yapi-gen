@@ -28,6 +28,7 @@ import ChildDemandTable from '@/components/ChildDemandTable'
 import { useSelector } from '@store/index'
 import { PopoverTargetText } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
+import CommonProgress from '@/components/CommonProgress'
 
 interface IssueCardProps {
   item: Model.KanBan.Story
@@ -104,6 +105,7 @@ const IssueCard = (props: IssueCardProps) => {
             <MultipleAvatar max={3} list={item.handlers} />
           </BottomLeft>
           <BottomRight>
+            <CommonProgress isKanBan id={item.id} />
             {projectInfo.projectType === 1 && (
               <PercentageBox>{`${item.schedule}%`}</PercentageBox>
             )}

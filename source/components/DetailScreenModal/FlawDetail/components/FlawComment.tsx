@@ -30,7 +30,7 @@ import CommonButton from '@/components/CommonButton'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import IconFont from '@/components/IconFont'
 import { CloseWrap, HiddenText } from '@/components/StyleCommon'
-import { fileIconMap } from '@/components/UploadAttach'
+import UploadAttach, { fileIconMap } from '@/components/UploadAttach'
 import NoData from '@/components/NoData'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import {
@@ -300,161 +300,20 @@ const FlawComment = (props: Props) => {
                       onEditComment={value => onEditComment(value, item.id)}
                     />
                     {item.attachment?.length > 0 && (
-                      <div
-                        style={{
-                          minWidth: '300px',
-                          marginTop: '8px',
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: '10px',
-                        }}
-                      >
-                        {item.attachment.map((i: any) => {
-                          return (
-                            <Card
-                              style={{
-                                margin: 0,
-                              }}
-                              key={i.id}
-                            >
-                              <div
-                                style={{
-                                  display: 'flex',
-                                }}
-                              >
-                                <GredParent
-                                  style={{
-                                    marginRight: '8px',
-                                    position: 'relative',
-                                  }}
-                                >
-                                  {imgs.includes(i.attachment.ext) && (
-                                    <img
-                                      style={{
-                                        width: '40px',
-                                        height: '40px',
-                                        borderRadius: '4px',
-                                      }}
-                                      src={i.attachment.path}
-                                      alt=""
-                                    />
-                                  )}
-                                  {!imgs.includes(i.attachment.ext) && (
-                                    <IconFont
-                                      style={{
-                                        fontSize: 40,
-                                        color: 'white',
-                                        borderRadius: '8px',
-                                      }}
-                                      type={
-                                        fileIconMap[i.attachment.ext] ||
-                                        'colorunknown'
-                                      }
-                                    />
-                                  )}
-                                  {imgs.includes(i.attachment.ext) && (
-                                    <Gred
-                                      onClick={() => {
-                                        onReview(i.attachment, item.attachment)
-                                      }}
-                                    >
-                                      <IconFont
-                                        style={{
-                                          fontSize: 18,
-                                          color: 'white',
-                                        }}
-                                        type="zoomin"
-                                      />
-                                    </Gred>
-                                  )}
-                                  {previewOpen ? (
-                                    <Viewer
-                                      zIndex={99999}
-                                      visible={previewOpen}
-                                      images={pictureList?.imageArray}
-                                      activeIndex={pictureList?.index}
-                                      onClose={() => setPreviewOpen(false)}
-                                    />
-                                  ) : null}
-                                </GredParent>
-                                <div>
-                                  <div
-                                    style={{
-                                      width: '100%',
-                                      fontSize: '14px',
-                                      fontWeight: 400,
-                                      color: 'var(--neutral-n2)',
-                                      lineHeight: '22px',
-                                      wordBreak: 'break-all',
-                                    }}
-                                  >
-                                    {i.attachment.name}
-                                  </div>
-                                  <div
-                                    style={{
-                                      height: '20px',
-                                      fontSize: '12px',
-                                      fontWeight: 400,
-                                      color: 'var(--neutral-n3)',
-                                      lineHeight: '20px',
-                                    }}
-                                  >
-                                    <span>
-                                      {bytesToSize(i?.attachment.size) ?? ''}
-                                    </span>
-                                    <span
-                                      style={{
-                                        margin: '0 6px 0 6px',
-                                      }}
-                                    >
-                                      ·
-                                    </span>
-                                    <span
-                                      style={{
-                                        marginRight: '12px',
-                                      }}
-                                    >
-                                      {i.user_name}
-                                    </span>
-                                    <span>{i.created_at}</span>
-                                  </div>
-                                  <Second
-                                    style={{
-                                      height: '20px',
-                                    }}
-                                  >
-                                    <BlueCss
-                                      onClick={() =>
-                                        onDownload(
-                                          i.attachment.path,
-                                          i.attachment.name,
-                                        )
-                                      }
-                                      style={{
-                                        cursor: 'pointer',
-                                        fontSize: '12px',
-                                        color: 'var(--primary-d1)',
-                                      }}
-                                    >
-                                      {t('p2.download') as unknown as string}
-                                    </BlueCss>
-                                    {isComment &&
-                                    userInfo?.id === item.userId ? (
-                                      <RedCss
-                                        onClick={() =>
-                                          onTapRemove(item.id, i.id)
-                                        }
-                                      >
-                                        {t('p2.delete')}
-                                      </RedCss>
-                                    ) : null}
-                                  </Second>
-                                </div>
-                              </div>
-                            </Card>
-                          )
-                        })}
-                      </div>
+                      <UploadAttach
+                        canUpdate
+                        defaultList={item.attachment.map((i: any) => ({
+                          url: i.attachment.path,
+                          id: i.id,
+                          size: i.attachment.size,
+                          time: i.created_at,
+                          name: i.attachment.name,
+                          suffix: i.attachment.ext,
+                          username: i.user_name ?? '--',
+                        }))}
+                        del={(id: any) => onTapRemove(item.id, id)}
+                        onChangeAttachment={() => {}}
+                      />
                     )}
                   </TextWrap>
                 </CommentItem>

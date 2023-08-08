@@ -12,10 +12,11 @@ interface ProgressProps {
   type?: 'transaction' | 'demand' | 'flaw'
   // 当前事务|缺陷|需求id
   id?: number
+  percent?: number
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable, isKanBan, id } = props
+  const { isTable, isKanBan, id, type, percent } = props
   const [visible, setVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const [data, setData] = useState<any>(null)
@@ -27,7 +28,9 @@ const CommonProgress = (props: ProgressProps) => {
     setData(result)
   }
   useEffect(() => {
-    getList()
+    if (id) {
+      getList()
+    }
   }, [id])
 
   return (
@@ -35,22 +38,23 @@ const CommonProgress = (props: ProgressProps) => {
       <CommonProgressWrap>
         <Dropdown
           menu={{
-            items: data?.user_list?.map((k: any) => ({
-              key: k?.user_name,
-              label: (
-                <ItemRow>
-                  <CommonUserAvatar
-                    isBorder
-                    name={`${k?.user_name}${
-                      k?.position_name ? `（${k?.position_name}）` : ''
-                    }- ${k?.schedule ?? 0}% ${
-                      Number(((k?.task_time ?? 0) / 3600).toFixed(1)) * 100
-                    }h`}
-                    avatar={k?.avatar}
-                  />
-                </ItemRow>
-              ),
-            })),
+            items:
+              data?.user_list?.map((k: any) => ({
+                key: k?.user_name,
+                label: (
+                  <ItemRow>
+                    <CommonUserAvatar
+                      isBorder
+                      name={`${k?.user_name}${
+                        k?.position_name ? `（${k?.position_name}）` : ''
+                      }- ${k?.schedule ?? 0}% ${
+                        Number(((k?.task_time ?? 0) / 3600).toFixed(1)) * 100
+                      }h`}
+                      avatar={k?.avatar}
+                    />
+                  </ItemRow>
+                ),
+              })) ?? [],
           }}
           placement="bottom"
         >
@@ -59,7 +63,7 @@ const CommonProgress = (props: ProgressProps) => {
           ) : isTable ? (
             <div style={{ width: 124, cursor: 'pointer' }}>
               <Progress
-                percent={data?.total_schedule ?? 0}
+                percent={percent}
                 strokeColor="var(--function-success)"
                 style={{ color: 'var(--function-success)', fontSize: 12 }}
                 format={percent => `${percent}%`}
@@ -91,8 +95,11 @@ const CommonProgress = (props: ProgressProps) => {
       </CommonProgressWrap>
       {isTable || isKanBan ? null : (
         <UpdateProgressModal
+          type={type}
           visible={visible}
           onClose={() => setVisible(false)}
+          id={id}
+          project_id={projectInfo?.id}
         />
       )}
     </>

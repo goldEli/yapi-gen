@@ -45,6 +45,7 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import DragTable from '@/components/DragTable'
 import styled from '@emotion/styled'
 import CommonIconFont from '@/components/CommonIconFont'
+import CommonProgress from '@/components/CommonProgress'
 export const SubLabel = styled.div`
   margin: 8px 0;
   font-size: 12px;
@@ -484,6 +485,19 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
         )
       },
     },
+    {
+      title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
+      render: (text: string, record: any, index: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
+        )
+      },
+    },
   ]
 
   const drawerColumns = [
@@ -597,6 +611,19 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
                 : 0
             }
           />
+        )
+      },
+    },
+    {
+      title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
+      render: (text: string, record: any, index: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
         )
       },
     },

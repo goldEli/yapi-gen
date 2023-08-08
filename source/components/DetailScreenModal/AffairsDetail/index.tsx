@@ -747,7 +747,6 @@ const AffairsDetail = () => {
               />
             </ChangeStatusPopover>
           </div>
-          <div style={{ margin: '0 0 30px 24px' }}>进度条</div>
           <SprintDetailMouseDom
             active={focus}
             onMouseDown={onDragLine}

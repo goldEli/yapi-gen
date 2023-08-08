@@ -159,7 +159,7 @@ const FlawDetailDrawer = () => {
     },
     {
       key: 'tab_log',
-      label: '进度日志',
+      label: t('scheduleRecord'),
     },
     {
       key: 'tab_defectComment',

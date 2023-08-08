@@ -45,6 +45,7 @@ import DragTable from '@/components/DragTable'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { Label, LabelWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
+import CommonProgress from '@/components/CommonProgress'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -539,6 +540,19 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
         )
       },
     },
+    {
+      title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
+      render: (text: string, record: any, index: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
+        )
+      },
+    },
   ]
 
   const drawerColumns = [
@@ -661,6 +675,19 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
                 : 0
             }
           />
+        )
+      },
+    },
+    {
+      title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
+      render: (text: string, record: any, index: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
         )
       },
     },
