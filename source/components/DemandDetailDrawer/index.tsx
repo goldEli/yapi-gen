@@ -842,7 +842,11 @@ const DemandDetailDrawer = () => {
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
               <ProgressBox>
-                <CommonProgress isTable={false} />
+                <CommonProgress
+                  isTable={false}
+                  type="demand"
+                  id={drawerInfo.id}
+                />
               </ProgressBox>
               <BtnWrap>
                 <CommonButton
