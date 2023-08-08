@@ -484,6 +484,8 @@ const urls = {
   dailyConfigSetCreateConfig: '/b/project/daily_config/set_create_config',
   // 自动发送配置
   dailyConfigSetAutoSendConfig: '/b/project/daily_config/set_auto_send_config',
+  // 三个进度日志通用
+  getScheduleLogList: '/b/story/getScheduleLog',
 }
 export default urls
 
