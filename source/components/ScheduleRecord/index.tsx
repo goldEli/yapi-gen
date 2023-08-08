@@ -13,11 +13,13 @@ const Wrap = styled.div`
   flex-direction: column;
 `
 
-const RecordItem = styled.div<{ isDrawer?: boolean }>`
-  padding: ${props => (props.isDrawer ? 0 : 16)}px;
-  margin-bottom: ${props => (props.isDrawer ? 24 : 0)}px;
+const RecordItem = styled.div<{ isDrawer?: boolean; notPadding?: boolean }>`
+  padding: ${props => (props.isDrawer || props.notPadding ? 0 : 16)}px;
+  margin-bottom: ${props => (props.isDrawer || props.notPadding ? 24 : 0)}px;
   border-bottom: ${props =>
-    props.isDrawer ? 'none' : '1px solid var(--neutral-n6-d1)'};
+    props.isDrawer || props.notPadding
+      ? 'none'
+      : '1px solid var(--neutral-n6-d1)'};
   display: flex;
   align-items: flex-start;
 `
@@ -68,6 +70,8 @@ interface ScheduleRecordProps {
   projectId: number
   //  是否是浮层
   isDrawer?: boolean
+  // 不需要padding
+  notPadding?: boolean
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
@@ -104,7 +108,11 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
         (listData?.list?.length > 0 ? (
           <div>
             {listData?.list?.map((i: any) => (
-              <RecordItem key={i.id} isDrawer={props.isDrawer}>
+              <RecordItem
+                key={i.id}
+                isDrawer={props.isDrawer}
+                notPadding={props.notPadding}
+              >
                 <ItemAvatar>
                   <CommonUserAvatar avatar={i.userInfo?.avatar} />
                 </ItemAvatar>
@@ -114,15 +122,23 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                       {i.userInfo?.name}（{i.userInfo?.position?.name}）
                     </div>
                     <span>
-                      更新了进度{i.before_schedule}%{' '}
+                      {t('updated_progress')}
+                      {i.before_schedule}%
                       <CommonIconFont type="swap-right" /> {i.after_schedule}%
                     </span>
                   </div>
-                  <InfoRow>达成日期：{i.created_at}</InfoRow>
                   <InfoRow>
-                    工时花费：本次{Math.floor((i.task_time / 60) * 100) / 100}h
+                    {t('date_of_achievement')}
+                    {i.created_at}
                   </InfoRow>
-                  <InfoRow>更新说明：{i.remark}</InfoRow>
+                  <InfoRow>
+                    {t('labor_cost_this_time')}
+                    {Math.floor((i.task_time / 60) * 100) / 100}h
+                  </InfoRow>
+                  <InfoRow>
+                    {t('update_instructions')}
+                    {i.remark}
+                  </InfoRow>
                   {i.attachment?.length > 0 && (
                     <UploadAttach
                       defaultList={i.attachment?.map((k: any) => ({
@@ -148,7 +164,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                   getScheduleLogData(page + 1)
                 }}
               >
-                展开更多
+                {t('open_more')}
               </ShowLabel>
             )}
           </div>

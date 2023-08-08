@@ -158,7 +158,7 @@ const FlawDetailDrawer = () => {
     },
     {
       key: 'tab_log',
-      label: '进度日志',
+      label: t('scheduleRecord'),
     },
     {
       key: 'tab_defectComment',
@@ -943,7 +943,7 @@ const FlawDetailDrawer = () => {
                 ref={relationStoriesRef}
               />
               <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
-              <CommentTitle>进度日志</CommentTitle>
+              <CommentTitle>{t('scheduleRecord')}</CommentTitle>
               <div id="tab_defectComment">
                 <CommentTitle>缺陷评论</CommentTitle>
                 <CommonComment

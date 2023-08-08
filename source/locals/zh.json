@@ -2260,5 +2260,11 @@
   "msg33": "数据源自IFUN敏捷系统 Powered By IFUN Agile",
   "rbgz": "日报规则配置",
   "fszq": "发送周期必选",
-  "p1": "请输入正确的地址"
+  "p1": "请输入正确的地址",
+  "scheduleRecord": "进度日志",
+  "updated_progress": "更新了进度",
+  "date_of_achievement": "达成日期：",
+  "labor_cost_this_time": "工时花费：本次",
+  "update_instructions": "更新说明：",
+  "open_more": "展开更多"
 }

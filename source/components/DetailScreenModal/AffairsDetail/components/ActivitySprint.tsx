@@ -19,6 +19,7 @@ import { deleteAffairsComment, updateAffairsComment } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import ScheduleRecord from '@/components/ScheduleRecord'
 
 const ActivitySprint = () => {
   const [t] = useTranslation()
@@ -107,10 +108,16 @@ const ActivitySprint = () => {
       key: '4',
       label: (
         <ActivityTabItem isActive={activeKey === '4'}>
-          <span style={{ marginRight: '4px' }}>进度日志</span>
+          <span style={{ marginRight: '4px' }}>{t('scheduleRecord')}</span>
         </ActivityTabItem>
       ),
-      children: <Circulation activeKey={activeKey} />,
+      children: (
+        <ScheduleRecord
+          detailId={affairsInfo.id ?? 0}
+          projectId={id}
+          notPadding
+        />
+      ),
     },
   ]
 

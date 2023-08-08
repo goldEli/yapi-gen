@@ -2287,5 +2287,11 @@
   "msg33": "Data sourced from the IFUN Agile system Powered By IFUN Agile",
   "rbgz": "Daily report configuration rules",
   "fszq": "Sending cycle required",
-  "p1": "Please enter the correct address"
+  "p1": "Please enter the correct address",
+  "scheduleRecord": "Progress Log",
+  "updated_progress": "Updated progress",
+  "date_of_achievement": "Date of achievement：",
+  "labor_cost_this_time": "Labor cost: This time",
+  "update_instructions": "Update instructions：",
+  "open_more": "Expand More"
 }
