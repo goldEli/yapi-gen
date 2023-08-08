@@ -1,8 +1,11 @@
 /* eslint-disable no-undefined */
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonUserAvatar from '../CommonUserAvatar'
+import { getScheduleLogList } from '@/services/project'
+import NoData from '../NoData'
+import UploadAttach from '../UploadAttach'
 
 const Wrap = styled.div`
   display: flex;
@@ -52,8 +55,6 @@ const InfoRow = styled.div`
 `
 
 interface ScheduleRecordProps {
-  // 1是需求，2是缺陷，3是事务
-  type: 1 | 2 | 3
   // 详情id
   detailId: number
   // 项目id
@@ -62,58 +63,75 @@ interface ScheduleRecordProps {
   isDrawer?: boolean
 }
 
-const mock = [
-  {
-    avatar: '',
-    name: '漳卅',
-    position: 'UI设计',
-    processStart: '18',
-    processEnd: '50',
-    date: '2022-06-20 15：30',
-    time: '5',
-    info: '哈就撒娇好噶计划的嘎时间',
-    id: 0,
-  },
-  {
-    avatar: '',
-    name: '漳卅',
-    position: 'UI设计',
-    processStart: '18',
-    processEnd: '50',
-    date: '2022-06-20 15：30',
-    time: '5',
-    info: '哈就撒娇好噶计划的嘎时间',
-    id: 1,
-  },
-]
-
 const ScheduleRecord = (props: ScheduleRecordProps) => {
   const [t] = useTranslation()
-  const [listData, setListData] = useState({
+  const [total, setTotal] = useState<number>(0)
+  const [listData, setListData] = useState<any>({
     list: undefined,
   })
+
+  // 获取进度日志列表数据
+  const getScheduleLogData = async () => {
+    const response = await getScheduleLogList({
+      story_id: props.detailId,
+      project_id: props.projectId,
+    })
+    setTotal(response.pager.total)
+    setListData({ list: response.list || [] })
+  }
+
+  useEffect(() => {
+    if (props.detailId && props.projectId) {
+      getScheduleLogData()
+    }
+  }, [props.detailId, props.projectId])
+
   return (
     <Wrap>
-      {mock.map((i: any) => (
-        <RecordItem key={i.id} isDrawer={props.isDrawer}>
-          <ItemAvatar>
-            <CommonUserAvatar avatar={i.avatar} />
-          </ItemAvatar>
-          <ItemContent>
-            <div className="title">
-              <div>
-                {i.name}（{i.position}）
-              </div>
-              <span>
-                更新了进度{i.processStart}% - {i.processEnd}%
-              </span>
-            </div>
-            <InfoRow>达成日期：{i.date}</InfoRow>
-            <InfoRow>工时花费：本次{i.time}h</InfoRow>
-            <InfoRow>更新说明：{i.info}</InfoRow>
-          </ItemContent>
-        </RecordItem>
-      ))}
+      {!!listData?.list &&
+        (listData?.list?.length > 0 ? (
+          <div>
+            {listData?.list?.map((i: any) => (
+              <RecordItem key={i.id} isDrawer={props.isDrawer}>
+                <ItemAvatar>
+                  <CommonUserAvatar avatar={i.userInfo?.avatar} />
+                </ItemAvatar>
+                <ItemContent>
+                  <div className="title">
+                    <div>
+                      {i.userInfo?.name}（{i.userInfo?.position?.name}）
+                    </div>
+                    <span>
+                      更新了进度{i.before_schedule}% - {i.after_schedule}%
+                    </span>
+                  </div>
+                  <InfoRow>达成日期：{i.created_at}</InfoRow>
+                  <InfoRow>
+                    工时花费：本次{Math.floor((i.task_time / 60) * 100) / 100}h
+                  </InfoRow>
+                  <InfoRow>更新说明：{i.remark}</InfoRow>
+                  {i.attachment?.length > 0 && (
+                    <UploadAttach
+                      defaultList={i.attachment?.map((k: any) => ({
+                        url: k.url,
+                        id: i.id,
+                        size: k.size,
+                        time: k.ctime,
+                        name: k.name,
+                        suffix: k.ext,
+                        username: i.userInfo.name ?? '--',
+                      }))}
+                      canUpdate
+                      onC
+                    />
+                  )}
+                </ItemContent>
+              </RecordItem>
+            ))}
+          </div>
+        ) : (
+          <NoData />
+        ))}
     </Wrap>
   )
 }

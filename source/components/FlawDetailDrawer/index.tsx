@@ -82,6 +82,7 @@ import { cancelVerify } from '@/services/mine'
 import FlawDetail from '../DetailScreenModal/FlawDetail/components/FlawDetail'
 import RelationStories from '../DetailScreenModal/FlawDetail/components/RelationStories'
 import FlawBasic from '../DetailScreenModal/FlawDetail/components/FlawBasic'
+import CommonProgress from '../CommonProgress'
 import DrawerTopInfo from '../DrawerTopInfo'
 const FlawDetailDrawer = () => {
   const normalState = {
@@ -126,6 +127,8 @@ const FlawDetailDrawer = () => {
   const spanDom = useRef<HTMLSpanElement>(null)
   const { userInfo } = useSelector(store => store.user)
   const [tabActive, setTabActive] = useState('tab_desc')
+  const flawDetailRef = useRef<any>()
+  const relationStoriesRef = useRef<any>()
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
     { name: t('associatedWorkItems'), key: 'relation', content: '' },
@@ -854,10 +857,27 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
+              <CommonProgress percent={50} isTable={false} />
               <BtnWrap>
-                <CommonButton type="light">附件</CommonButton>
-                <CommonButton type="light">添加标签</CommonButton>
-                <CommonButton type="light">链接工作项</CommonButton>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    flawDetailRef?.current?.handleUpload()
+                  }}
+                >
+                  附件
+                </CommonButton>
+                <CommonButton type="light" onClick={() => {}}>
+                  添加标签
+                </CommonButton>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    relationStoriesRef?.current?.onClickOpen()
+                  }}
+                >
+                  链接工作项
+                </CommonButton>
               </BtnWrap>
               <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
               <Tabs
@@ -911,11 +931,16 @@ const FlawDetailDrawer = () => {
                   </CollapseItemContent>
                 </CollapseItem>
               ))} */}
-              <FlawDetail flawInfo={drawerInfo} onUpdate={onOperationUpdate} />
+              <FlawDetail
+                flawInfo={drawerInfo}
+                onUpdate={onOperationUpdate}
+                ref={flawDetailRef}
+              />
               <RelationStories
                 detail={drawerInfo}
                 onUpdate={onOperationUpdate}
                 isDrawer
+                ref={relationStoriesRef}
               />
               <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
               <CommentTitle>进度日志</CommentTitle>

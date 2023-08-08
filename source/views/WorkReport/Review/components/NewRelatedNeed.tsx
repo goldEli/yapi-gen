@@ -115,6 +115,8 @@ const NewRelatedNeed = (props: any) => {
     const result = newData.needs.map((i: any) => ({
       ...i,
       expected_day: props?.data?.find((s: any) => s.id === i.id)?.expected_day,
+      user_schedule_percent: props?.data?.find((s: any) => s.id === i.id)
+        ?.user_schedule_percent,
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
     props.onChange(historyData.concat(result).map((item: any) => item.value))
@@ -145,6 +147,7 @@ const NewRelatedNeed = (props: any) => {
         key: k.id,
         value: k.id,
         expected_day: k.expected_day,
+        user_schedule_percent: k.user_schedule_percent,
       })) ?? [],
     )
     props.onChange(props?.initValue?.map((item: any) => item.id))

@@ -11,7 +11,7 @@ import {
 } from '@/services/flaw'
 import { getParamsData } from '@/tools'
 import MoreOptions from '@/components/MoreOptions'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useImperativeHandle, forwardRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   FormWrap,
@@ -64,7 +64,7 @@ interface SelectItem {
   value: number
 }
 
-const RelationStories = (props: RelationStoriesProps) => {
+const RelationStories = (props: RelationStoriesProps, ref: any) => {
   const [t] = useTranslation()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
@@ -175,7 +175,11 @@ const RelationStories = (props: RelationStoriesProps) => {
   const onClickOpen = () => {
     setIsVisible(true)
   }
-
+  useImperativeHandle(ref, () => {
+    return {
+      onClickOpen,
+    }
+  })
   const onSearch = (value: string) => {
     setSearchValue(value)
     if (value) {
@@ -787,4 +791,4 @@ const RelationStories = (props: RelationStoriesProps) => {
   )
 }
 
-export default RelationStories
+export default forwardRef(RelationStories)

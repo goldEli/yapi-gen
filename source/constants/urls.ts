@@ -50,6 +50,10 @@ const urls = {
   deleteInfoDemand: '/b/story/update_operate/del',
   addInfoDemand: '/b/story/update_operate/add',
   updatePriority: '/b/story/update_priority',
+  // 获取任务进度
+  getStroySchedule: '/b/story/schedule',
+  // 更新需求进度
+  updateSchedule: '/b/story/update_schedule',
   // 获取需求关联工作项
   getStoryRelationStories: '/b/story/relationStories',
   // 添加需求关联工作项
@@ -111,6 +115,7 @@ const urls = {
   userInfoCreateStory: '/b/companyuser/info/create_story',
   userInfoOverviewStatistics: '/b/companyuser/info/overview_statistics',
   userInfoOverviewFeed: '/b/companyuser/info/overview_feed',
+  userInfoOverviewFeed2: '/b/project/member/info/overview_feed',
   userInfoProject: '/b/companyuser/info/project',
   memberInfoAbeyanceStory: '/b/project/member/info/abeyance_story',
   memberInfoFinishStory: '/b/project/member/info/finish_story',
@@ -475,6 +480,8 @@ const urls = {
   dailyConfigSetCreateConfig: '/b/project/daily_config/set_create_config',
   // 自动发送配置
   dailyConfigSetAutoSendConfig: '/b/project/daily_config/set_auto_send_config',
+  // 三个进度日志通用
+  getScheduleLogList: '/b/story/getScheduleLog',
 }
 export default urls
 

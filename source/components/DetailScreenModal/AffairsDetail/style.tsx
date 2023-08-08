@@ -1,6 +1,6 @@
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
-import { Dropdown, Form, Progress, Space } from 'antd'
+import { Dropdown, Form, Progress, Space, Tabs } from 'antd'
 
 export const Wrap = styled.div`
   height: 100%;
@@ -82,7 +82,7 @@ export const DropdownMenu = styled(Dropdown)`
 
 export const DetailTitle = styled.div`
   display: flex;
-  // border-bottom: 1px solid var(--neutral-n6-d1);
+  border-bottom: 1px solid var(--neutral-n6-d1);
   padding: 20px 0px 20px;
   width: calc(100% - 48px);
   margin-left: 24px;
@@ -145,11 +145,11 @@ export const SprintDetailMouseDom = styled(MouseDom)`
 
 export const BasicWrap = styled.div`
   position: relative;
-  height: 100%;
+  height: calc(100% - 100px);
 `
 
 export const BasicContent = styled.div`
-  height: calc(100vh - 265px);
+  height: calc(100vh - 320px);
   overflow: auto;
 `
 
@@ -219,14 +219,28 @@ export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
 
 // 详情里组件
 
-export const ActivityTabItem = styled.div`
+export const ActivityTabItem = styled.div<{ isActive?: boolean }>`
   display: flex;
   align-items: center;
+  width: auto;
+  padding:0 8px;
+  height: 24px;
+  border-radius: 6px 6px 6px 6px;
+  background:${props =>
+    props.isActive ? 'var(--function-tag5)' : 'var(--neutral-n7)'};
+  color: ${props =>
+    props.isActive ? 'var(--neutral-n2)' : 'var(--primary-d1)'}
+  color:var(--neutral-n2);
+  &:hover{
+    color:var(--neutral-n1);
+    background: var(--active);
+  }
+
 `
 
 export const InfoItem = styled.div<{ isInfoPage?: boolean }>`
   display: flex;
-  margin-top: 20px;
+  margin-bottom: 20px;
   position: relative;
   flex-direction: column;
   padding: ${props => (props.isInfoPage ? '0 24px' : 0)};
@@ -236,12 +250,9 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
   margin-left: 4px;
   width: 20px;
   height: 20px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props =>
-    props.isActive ? 'var(--primary-d1)' : 'var(--function-tag5)'};
   color: ${props =>
     props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
 `
@@ -317,5 +328,22 @@ export const SubLabel = styled.div`
 export const ButtonGroupWrap = styled.div`
   display: flex;
   align-items: center;
-  margin: 16px 0 24px 16px;
+  padding: 16px 0 24px 16px;
+`
+export const TabsWrap = styled(Tabs)`
+  .ant-tabs-ink-bar {
+    background: transparent;
+  }
+  .ant-tabs-tab {
+    padding: 0 0 0 12px;
+  }
+  .ant-tabs-nav {
+    margin: 0;
+  }
+  .ant-tabs-tab + .ant-tabs-tab {
+    margin: 0;
+  }
+  .ant-tabs-nav {
+    margin-bottom: 12px;
+  }
 `

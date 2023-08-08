@@ -194,6 +194,7 @@ export const DemandName = styled.div`
   }
   flex-wrap: wrap;
 `
+export const ProgressBox = styled.div``
 
 export const CollapseItem = styled.div`
   margin-top: 16px;
@@ -273,6 +274,7 @@ export const ContentWrap = styled.div<{ notHover?: any }>(
     maxWidth: '98%',
     wordBreak: 'break-all',
     width: '100%',
+    flex: 1,
   },
   ({ notHover }) => ({
     paddingLeft: notHover ? 8 : 0,

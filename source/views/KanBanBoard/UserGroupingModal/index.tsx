@@ -71,6 +71,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
     form.setFieldsValue({
       name: userGroupingModelInfo.groupName,
     })
+
     setUserList(userGroupingModelInfo.userList)
   }, [userGroupingModelInfo])
   const dispatch = useDispatch()
@@ -108,6 +109,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
   //     }
   //     return '另存为视图'
   //   }, [saveAsViewModelInfo])
+  console.log(userList, userList)
   return (
     <CommonModal
       width={528}
@@ -150,7 +152,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
                     ]}
                   />
                   <span>
-                    ({item?.position_name ? item?.position_name : '--'})
+                    ({item?.positionName ? item?.positionName : '--'})
                   </span>
                 </Row>
                 <div

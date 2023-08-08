@@ -51,6 +51,7 @@ const Main = (props: any) => {
   const topTitleRef: any = useRef()
   const bottomTitleRef: any = useRef()
   const [dragState, setDragState] = useState(true)
+  const tableDragRef = useRef<any>()
   useEffect(() => {
     setGetCategoryConfigT(getCategoryConfigDataList?.isFoldT)
     setGetCategoryConfigF(getCategoryConfigDataList?.isFoldF)
@@ -242,6 +243,7 @@ const Main = (props: any) => {
       dragItem?.dragtype === 'move' &&
         editCategoryConfig(dragItem, state, index)
       props.onIsOperate(true)
+      tableDragRef?.current?.clear()
     }
   }
   // 每一行的点击事件
@@ -407,6 +409,7 @@ const Main = (props: any) => {
             }
             onDelete={(child: any) => onDelete(1, child)}
             setList={setGetCategoryConfigF}
+            ref={tableDragRef}
           />
         )}
       </div>
@@ -445,6 +448,7 @@ const Main = (props: any) => {
               onChangeChecked(2, val, child)
             }
             setList={setGetCategoryConfigT}
+            ref={tableDragRef}
           />
         )}
         <DeleteConfirm

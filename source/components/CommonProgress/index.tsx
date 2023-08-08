@@ -5,12 +5,13 @@ import UpdateProgressModal from './UpdateProgressModal'
 import CommonUserAvatar from '../CommonUserAvatar'
 
 interface ProgressProps {
-  isTable: boolean
+  isTable?: boolean
   percent: number
+  isKanban?: boolean
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable, percent } = props
+  const { isTable, percent, isKanban } = props
   const [visible, setVisible] = useState(false)
   const items = [
     {
@@ -42,8 +43,10 @@ const CommonProgress = (props: ProgressProps) => {
     <>
       <CommonProgressWrap>
         <Dropdown menu={{ items }} placement="bottom">
-          {isTable ? (
-            <div style={{ width: 124 }}>
+          {isKanban ? (
+            <div>70%</div>
+          ) : isTable ? (
+            <div style={{ width: 124, cursor: 'pointer' }}>
               <Progress
                 percent={percent}
                 strokeColor="var(--function-success)"
@@ -54,19 +57,19 @@ const CommonProgress = (props: ProgressProps) => {
               />
             </div>
           ) : (
-            <div style={{ width: 196, marginRight: 40 }}>
+            <div style={{ width: 222, marginRight: 40, cursor: 'pointer' }}>
               <Progress
-                showInfo={false}
                 percent={20}
                 strokeColor="var(--function-success)"
                 style={{ color: 'var(--function-success)' }}
                 format={percent => `总进度 ${percent}%`}
                 type="line"
+                strokeWidth={8}
               />
             </div>
           )}
         </Dropdown>
-        {isTable ? null : (
+        {isTable || isKanban ? null : (
           <UpdateButton
             style={{ marginLeft: 16 }}
             onClick={() => setVisible(true)}
@@ -75,7 +78,7 @@ const CommonProgress = (props: ProgressProps) => {
           </UpdateButton>
         )}
       </CommonProgressWrap>
-      {isTable ? null : (
+      {isTable || isKanban ? null : (
         <UpdateProgressModal
           visible={visible}
           onClose={() => setVisible(false)}

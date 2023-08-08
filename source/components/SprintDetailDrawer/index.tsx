@@ -31,6 +31,7 @@ import {
   TargetWrap,
   StatusAndLongWrap,
   Label,
+  ConfigWrap,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
@@ -806,7 +807,6 @@ const SprintDetailDrawer = () => {
                 </span>
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <div style={{ height: 32, marginTop: 16 }}>进度显示。。。。</div>
               <Space size={12} style={{ marginTop: 16 }}>
                 {(drawerInfo.work_type === 6
                   ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
@@ -870,7 +870,6 @@ const SprintDetailDrawer = () => {
                 进度日志
               </Label>
               <ScheduleRecord
-                type={3}
                 detailId={drawerInfo.id}
                 projectId={drawerInfo.projectId}
                 isDrawer
@@ -900,11 +899,10 @@ const SprintDetailDrawer = () => {
                 {detailTimeFormat(drawerInfo.update_at as string)}
               </span>
             </div>
-            <Tooltip title={t('configurationFields')}>
-              <CloseWrap width={32} height={32} onClick={onToConfig}>
-                <CommonIconFont type="settings" />
-              </CloseWrap>
-            </Tooltip>
+            <ConfigWrap onClick={onToConfig}>
+              <CommonIconFont type="settings" />
+              <div>{t('configurationFields')}</div>
+            </ConfigWrap>
           </DetailFooter>
         </Content>
         <CommentFooter

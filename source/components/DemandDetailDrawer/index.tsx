@@ -67,6 +67,7 @@ import {
   HandlerBox,
   FixedBox,
   EmptyBox,
+  ProgressBox,
 } from './style'
 import CommonButton from '../CommonButton'
 import {
@@ -93,6 +94,7 @@ import { useNavigate } from 'react-router-dom'
 import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRelation'
 import IconFont from '../IconFont'
 import DrawerTopInfo from '../DrawerTopInfo'
+import CommonProgress from '../CommonProgress'
 interface ItemIprops {
   label: string
   key: string
@@ -142,7 +144,9 @@ const DemandDetailDrawer = () => {
   const [demandIds, setDemandIds] = useState([])
   const commentDom: any = createRef()
   const spanDom = useRef<HTMLSpanElement>(null)
-
+  const detailDemandRef = useRef<any>()
+  const childrenDemandRef = useRef<any>()
+  const storyRelationRef = useRef<any>()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -605,7 +609,35 @@ const DemandDetailDrawer = () => {
     dom?.scrollIntoView({
       behavior: 'smooth',
     })
+    setTabActive(value)
   }
+  // 计算滚动选中tab
+  const handleScroll = (e: any) => {
+    const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
+    // 所有标题节点
+    const titleItems = document.querySelectorAll('.info_item_tab')
+
+    let arr: any = []
+    titleItems.forEach(element => {
+      const { offsetTop, id } = element as HTMLElement
+      console.log('element', offsetTop, id, scrollTop)
+      if (offsetTop - 140 <= scrollTop) {
+        const keys = [...arr, ...[id]]
+        arr = [...new Set(keys)]
+      }
+    })
+    setTabActive(arr[arr.length - 1])
+  }
+  useEffect(() => {
+    document
+      .getElementById('contentDom')
+      ?.addEventListener('scroll', handleScroll, true)
+    return () => {
+      document
+        .getElementById('contentDom')
+        ?.removeEventListener('scroll', handleScroll, false)
+    }
+  }, [document.getElementById('contentDom')])
   return (
     <>
       <DeleteConfirm
@@ -733,7 +765,7 @@ const DemandDetailDrawer = () => {
             </Popover>
           </Space>
         </Header>
-        <Content>
+        <Content id="contentDom">
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
@@ -807,11 +839,35 @@ const DemandDetailDrawer = () => {
 
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
+              <ProgressBox>
+                <CommonProgress percent={50} isTable={false} />
+              </ProgressBox>
               <BtnWrap>
-                <CommonButton type="light">附件</CommonButton>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    detailDemandRef?.current.handleUpload()
+                  }}
+                >
+                  附件
+                </CommonButton>
                 <CommonButton type="light">添加标签</CommonButton>
-                <CommonButton type="light">添加子需求</CommonButton>
-                <CommonButton type="light">链接工作项</CommonButton>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    childrenDemandRef?.current?.onCreateChild()
+                  }}
+                >
+                  添加子需求
+                </CommonButton>
+                <CommonButton
+                  type="light"
+                  onClick={() => {
+                    storyRelationRef?.current.onClickOpen()
+                  }}
+                >
+                  链接工作项
+                </CommonButton>
               </BtnWrap>
               <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
               <Tabs
@@ -828,16 +884,18 @@ const DemandDetailDrawer = () => {
                 <DetailDemand
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
+                  ref={detailDemandRef}
                 />
-                <ChildrenDemand detail={drawerInfo} />
+                <ChildrenDemand detail={drawerInfo} ref={childrenDemandRef} />
                 <StoryRelation
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
                   isDrawer
+                  ref={storyRelationRef}
                 />
                 <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
                 <CommentTitle>进度日志</CommentTitle>
-                <div id="tab_comment">
+                <div id="tab_comment" className="info_item_tab">
                   <CommentTitle>需求评论</CommentTitle>
                   <CommonComment
                     data={demandCommentList}

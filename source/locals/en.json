@@ -1078,6 +1078,7 @@
     "changeType": "Change Type",
     "changeFields": "Change Fields",
     "changeBefore": "Before Change",
+    "changeBeforeAndAfter": "Before and after change",
     "changeAfter": "After change",
     "checkInfo": "Check Details",
     "pleaseComment": "Please enter comment processing comments",
