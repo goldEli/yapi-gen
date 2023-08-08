@@ -347,14 +347,12 @@ export const TabsWrap = styled(Tabs)`
   .ant-tabs-ink-bar {
     background: transparent;
   }
-  .ant-tabs-tab {
-    padding: 0 0 0 12px;
-  }
-  .ant-tabs-nav {
+  // .ant-tabs-tab {
+  //   padding: 0 0 0 12px;
+  // }
+  .ant-tabs-nav .ant-tabs-tab {
     margin: 0;
-  }
-  .ant-tabs-tab + .ant-tabs-tab {
-    margin: 0;
+    margin-right: 12px;
   }
   .ant-tabs-nav {
     margin-bottom: 12px;
