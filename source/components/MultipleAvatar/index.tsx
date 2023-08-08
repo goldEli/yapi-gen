@@ -183,7 +183,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
                   <DetailWrap>
                     <HeaderWrap>
                       <Name>
-                        {item.name}（{item.position}）
+                        {item.name}（{item.position}
                       </Name>
                       <Email>
                         <IconFont
