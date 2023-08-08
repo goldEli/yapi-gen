@@ -26,7 +26,7 @@ import IconFont from '../IconFont'
 import { getMessage } from '../Message'
 import NoData from '../NoData'
 import { CloseWrap, HiddenText } from '../StyleCommon'
-import { fileIconMap } from '../UploadAttach'
+import UploadAttach, { fileIconMap } from '../UploadAttach'
 import {
   BlueCss,
   Card,
@@ -340,7 +340,21 @@ const DemandComment = (props: Props) => {
                           gap: '10px',
                         }}
                       >
-                        {item.attachment.map((i: any) => {
+                        <UploadAttach
+                          canUpdate
+                          defaultList={item.attachment.map((i: any) => ({
+                            url: i.attachment.path,
+                            id: i.id,
+                            size: i.attachment.size,
+                            time: i.created_at,
+                            name: i.attachment.name,
+                            suffix: i.attachment.ext,
+                            username: i.user_name ?? '--',
+                          }))}
+                          del={(id: any) => onTapRemove(item.id, id)}
+                          onChangeAttachment={() => {}}
+                        />
+                        {/* {item.attachment.map((i: any) => {
                           return (
                             <Card
                               style={{
@@ -484,7 +498,7 @@ const DemandComment = (props: Props) => {
                               </div>
                             </Card>
                           )
-                        })}
+                        })} */}
                       </div>
                     )}
                   </TextWrap>
