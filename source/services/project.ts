@@ -954,3 +954,12 @@ export const getParentList = async (params: any) => {
     value: i.id,
   }))
 }
+
+// 获取进度日志列表
+export const getScheduleLogList = async (params: {
+  story_id: number
+  project_id: number
+}) => {
+  const response = await http.get<any>('getScheduleLogList', params)
+  return response.data
+}

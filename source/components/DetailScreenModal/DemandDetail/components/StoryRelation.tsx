@@ -713,8 +713,10 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
     // if (props.activeKey === '3' || props.isOpen) {
     //   getList(pageObj, order)
     // }
-    getList(pageObj, order)
-  }, [props.activeKey, props.isOpen])
+    if (props.detail?.id) {
+      getList(pageObj, order)
+    }
+  }, [props.detail])
   useEffect(() => {
     if (isVisible && !searchValue) {
       getSelectRelationRecent()
@@ -735,6 +737,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
       //     : 'calc(100vh - 224px)',
       // }}
       id="tab_link"
+      className="info_item_tab"
     >
       <DeleteConfirmModal />
       <CommonModal

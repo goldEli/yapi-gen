@@ -53,7 +53,11 @@ const urls = {
   // 获取任务进度
   getStroySchedule: '/b/story/schedule',
   // 更新需求进度
-  updateSchedule: '/b/story/update_schedule',
+  updateStorySchedule: '/b/story/update_schedule',
+  // 更新事务进度
+  updateTransactionSchedule: '/b/transaction/update_schedule',
+  // 更新缺陷进度
+  updateFlawSchedule: '/b/flaw/update_schedule',
   // 获取需求关联工作项
   getStoryRelationStories: '/b/story/relationStories',
   // 添加需求关联工作项
@@ -480,6 +484,8 @@ const urls = {
   dailyConfigSetCreateConfig: '/b/project/daily_config/set_create_config',
   // 自动发送配置
   dailyConfigSetAutoSendConfig: '/b/project/daily_config/set_auto_send_config',
+  // 三个进度日志通用
+  getScheduleLogList: '/b/story/getScheduleLog',
 }
 export default urls
 

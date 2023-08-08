@@ -1238,3 +1238,9 @@ export const configSave = async (params: any) => {
   )
   return response.data
 }
+
+// 需求进度统计信息
+export const getStroySchedule = async (params: any) => {
+  const response = await http.get('getStroySchedule', params)
+  return response.data
+}

@@ -27,6 +27,7 @@ import {
   DrawerHeader,
   DropdownMenu,
   Header,
+  LayerBox,
   ParentBox,
   SkeletonStatus,
   UpWrap,
@@ -653,10 +654,11 @@ const FlawDetailDrawer = () => {
   }, [])
   const onChangeTabs = (value: string) => {
     const dom = document.getElementById(value)
-    console.log('value', value, dom)
-    dom?.scrollIntoView({
+    document.getElementById('contentDom')?.scrollTo({
+      top: (dom?.offsetTop ?? 0) - 86,
       behavior: 'smooth',
     })
+    setTabActive(value)
   }
   return (
     <>
@@ -784,7 +786,7 @@ const FlawDetailDrawer = () => {
             </DropdownMenu>
           </Space>
         </Header>
-        <Content>
+        <Content id="contentDom">
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
@@ -857,7 +859,7 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <CommonProgress percent={50} isTable={false} />
+              <CommonProgress isTable={false} />
               <BtnWrap>
                 <CommonButton
                   type="light"
@@ -885,73 +887,30 @@ const FlawDetailDrawer = () => {
                 activeKey={tabActive}
                 items={tabItems}
                 onChange={onChangeTabs}
-                // tabBarStyle={{ position: 'fixed', top: 30 }}
               />
-              {/* {modeList.map((i: any) => (
-                <CollapseItem key={i.key}>
-                  <CollapseItemTitle onClick={() => onChangeShowState(i)}>
-                    <span>{i.name}</span>
-                    <CommonIconFont
-                      type={showState[i.key].isOpen ? 'up' : 'down'}
-                      color="var(--neutral-n2)"
-                    />
-                  </CollapseItemTitle>
-                  <CollapseItemContent
-                    ref={showState[i.key].dom}
-                    isOpen={showState[i.key].isOpen}
-                  >
-                    {i.key === 'detailInfo' && (
-                      <FlawDetail
-                        flawInfo={drawerInfo}
-                        onUpdate={onOperationUpdate}
-                      />
-                    )}
-                    {i.key === 'relation' && showState[i.key].isOpen && (
-                      <RelationStories
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                        onUpdate={onOperationUpdate}
-                        isDrawer
-                      />
-                    )}
-                    {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                      <FlawBasic
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                        onUpdate={onOperationUpdate}
-                      />
-                    )}
-                    {i.key === 'flawComment' && (
-                      <CommonComment
-                        data={flawCommentList}
-                        onDeleteConfirm={onDeleteCommentConfirm}
-                        onEditComment={onEditComment}
-                      />
-                    )}
-                  </CollapseItemContent>
-                </CollapseItem>
-              ))} */}
-              <FlawDetail
-                flawInfo={drawerInfo}
-                onUpdate={onOperationUpdate}
-                ref={flawDetailRef}
-              />
-              <RelationStories
-                detail={drawerInfo}
-                onUpdate={onOperationUpdate}
-                isDrawer
-                ref={relationStoriesRef}
-              />
-              <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
-              <CommentTitle>进度日志</CommentTitle>
-              <div id="tab_defectComment">
-                <CommentTitle>缺陷评论</CommentTitle>
-                <CommonComment
-                  data={flawCommentList}
-                  onDeleteConfirm={onDeleteCommentConfirm}
-                  onEditComment={onEditComment}
+              <LayerBox>
+                <FlawDetail
+                  flawInfo={drawerInfo}
+                  onUpdate={onOperationUpdate}
+                  ref={flawDetailRef}
                 />
-              </div>
+                <RelationStories
+                  detail={drawerInfo}
+                  onUpdate={onOperationUpdate}
+                  isDrawer
+                  ref={relationStoriesRef}
+                />
+                <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
+                <CommentTitle>进度日志</CommentTitle>
+                <div id="tab_defectComment">
+                  <CommentTitle>缺陷评论</CommentTitle>
+                  <CommonComment
+                    data={flawCommentList}
+                    onDeleteConfirm={onDeleteCommentConfirm}
+                    onEditComment={onEditComment}
+                  />
+                </div>
+              </LayerBox>
             </>
           )}
           <DetailFooter>

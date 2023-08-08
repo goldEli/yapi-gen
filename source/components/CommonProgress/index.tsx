@@ -1,54 +1,65 @@
 import { Dropdown, Progress } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CommonProgressWrap, UpdateButton, ItemRow } from './style'
 import UpdateProgressModal from './UpdateProgressModal'
 import CommonUserAvatar from '../CommonUserAvatar'
+import { getStroySchedule } from '@/services/demand'
+import { useSelector } from '@store/index'
 
 interface ProgressProps {
   isTable?: boolean
-  percent: number
-  isKanban?: boolean
+  isKanBan?: boolean
+  type?: 'transaction' | 'demand' | 'flaw'
+  // 当前事务|缺陷|需求id
+  id?: number
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable, percent, isKanban } = props
+  const { isTable, isKanBan, id } = props
   const [visible, setVisible] = useState(false)
-  const items = [
-    {
-      key: '1',
-      label: (
-        <ItemRow>
-          <CommonUserAvatar
-            isBorder
-            name="李钟硕 (前端开发) - 50% 3h"
-            avatar={''}
-          />
-        </ItemRow>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <ItemRow>
-          <CommonUserAvatar
-            isBorder
-            name="杨一 (前端开发) - 50% 3h"
-            avatar={''}
-          />
-        </ItemRow>
-      ),
-    },
-  ]
+  const { projectInfo } = useSelector(store => store.project)
+  const [data, setData] = useState<any>(null)
+  const getList = async () => {
+    const result = await getStroySchedule({
+      id,
+      project_id: projectInfo?.id,
+    })
+    setData(result)
+  }
+  useEffect(() => {
+    getList()
+  }, [id])
+
   return (
     <>
       <CommonProgressWrap>
-        <Dropdown menu={{ items }} placement="bottom">
-          {isKanban ? (
-            <div>70%</div>
+        <Dropdown
+          menu={{
+            items: data?.user_list?.map((k: any) => ({
+              key: k?.user_name,
+              label: (
+                <ItemRow>
+                  <CommonUserAvatar
+                    isBorder
+                    name={`${k?.user_name}${
+                      k?.position_name ? `（${k?.position_name}）` : ''
+                    }- ${k?.schedule ?? 0}% ${
+                      Number(((k?.task_time ?? 0) / 3600).toFixed(1)) * 100
+                    }h`}
+                    avatar={k?.avatar}
+                  />
+                </ItemRow>
+              ),
+            })),
+          }}
+          placement="bottom"
+        >
+          {isKanBan ? (
+            <div>{`${data?.total_schedule ?? 0}%`}</div>
           ) : isTable ? (
             <div style={{ width: 124, cursor: 'pointer' }}>
               <Progress
-                percent={percent}
+                percent={data?.total_schedule ?? 0}
                 strokeColor="var(--function-success)"
                 style={{ color: 'var(--function-success)', fontSize: 12 }}
                 format={percent => `${percent}%`}
@@ -59,7 +70,7 @@ const CommonProgress = (props: ProgressProps) => {
           ) : (
             <div style={{ width: 222, marginRight: 40, cursor: 'pointer' }}>
               <Progress
-                percent={20}
+                percent={data?.total_schedule ?? 0}
                 strokeColor="var(--function-success)"
                 style={{ color: 'var(--function-success)' }}
                 format={percent => `总进度 ${percent}%`}
@@ -69,7 +80,7 @@ const CommonProgress = (props: ProgressProps) => {
             </div>
           )}
         </Dropdown>
-        {isTable || isKanban ? null : (
+        {isTable || isKanBan ? null : (
           <UpdateButton
             style={{ marginLeft: 16 }}
             onClick={() => setVisible(true)}
@@ -78,7 +89,7 @@ const CommonProgress = (props: ProgressProps) => {
           </UpdateButton>
         )}
       </CommonProgressWrap>
-      {isTable || isKanban ? null : (
+      {isTable || isKanBan ? null : (
         <UpdateProgressModal
           visible={visible}
           onClose={() => setVisible(false)}
