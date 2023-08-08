@@ -39,6 +39,7 @@ import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import DetailsChildProgress from '@/components/DetailsChildProgress'
+import CommonProgress from '@/components/CommonProgress'
 
 interface SelectItem {
   label: string
@@ -278,6 +279,17 @@ const ChildSprint = (
           }
         />
       ),
+    },
+    {
+      title: '',
+      dataIndex: 'schedule',
+      render: (text: any, record: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
+        )
+      },
     },
   ]
 

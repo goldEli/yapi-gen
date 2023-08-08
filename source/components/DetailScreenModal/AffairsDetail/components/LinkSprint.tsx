@@ -34,6 +34,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import CommonIconFont from '@/components/CommonIconFont'
+import CommonProgress from '@/components/CommonProgress'
 
 const FormWrap = styled(Form)`
   padding: 0 24px;
@@ -197,6 +198,17 @@ const LinkSprint = (props: {
           }
         />
       ),
+    },
+    {
+      title: '',
+      dataIndex: 'schedule',
+      render: (text: any, record: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
+        )
+      },
     },
   ]
 

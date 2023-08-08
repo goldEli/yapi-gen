@@ -16,6 +16,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import CommonIconFont from '../CommonIconFont'
 import CustomSelect from '../CustomSelect'
 import DetailsChildProgress from '../DetailsChildProgress'
+import CommonProgress from '../CommonProgress'
 interface Props {
   detail?: any
   isOpen?: boolean
@@ -127,6 +128,19 @@ const ChildrenDemand = (props: Props, ref: any) => {
               avatar: i.avatar,
             }))}
           />
+        )
+      },
+    },
+    {
+      title: '',
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
+      render: (text: string, record: any, index: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
         )
       },
     },

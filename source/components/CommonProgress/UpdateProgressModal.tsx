@@ -101,10 +101,12 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
         <ShowProgress>
           <span>当前进度 {data?.schedule ?? 0}%</span>
           <span className="processor">处理人</span>
-          <span className="username">{data?.user_name ?? '--'}</span>
+          <span className="username">
+            {data?.user_name ? data?.user_name : '--'}
+          </span>
         </ShowProgress>
         <div className="progressBox">
-          <div>当日进度（{data?.last_at ?? '--'}）</div>
+          <div>当日进度（{data?.last_at ? data?.last_at : '--'}）</div>
           <div className="progress">
             <SliderWrap
               value={inputValue}
