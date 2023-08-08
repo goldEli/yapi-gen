@@ -92,10 +92,10 @@ import CommonComment from '../CommonComment'
 import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
 import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRelation'
-import IconFont from '../IconFont'
 import DrawerTopInfo from '../DrawerTopInfo'
 import CommonProgress from '../CommonProgress'
-import TabPane from 'antd/lib/tabs/TabPane'
+import ScheduleRecord from '../ScheduleRecord'
+import DemandTag from '../TagComponent/DemandTag'
 interface ItemIprops {
   label: string
   key: string
@@ -853,7 +853,18 @@ const DemandDetailDrawer = () => {
                 >
                   附件
                 </CommonButton>
-                <CommonButton type="light">添加标签</CommonButton>
+                <DemandTag
+                  defaultList={drawerInfo?.tag?.map((i: any) => ({
+                    id: i.id,
+                    color: i.tag?.color,
+                    name: i.tag?.content,
+                  }))}
+                  canAdd
+                  onUpdate={onOperationUpdate}
+                  detail={drawerInfo}
+                  isDetailQuick
+                  addWrap={<CommonButton type="light">添加标签</CommonButton>}
+                />
                 <CommonButton
                   type="light"
                   onClick={() => {
@@ -892,7 +903,14 @@ const DemandDetailDrawer = () => {
                   ref={storyRelationRef}
                 />
                 <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
-                <CommentTitle>{t('scheduleRecord')}</CommentTitle>
+                <div id="tab_log" className="info_item_tab">
+                  <CommentTitle>{t('scheduleRecord')}</CommentTitle>
+                  <ScheduleRecord
+                    detailId={drawerInfo.id}
+                    projectId={drawerInfo.projectId}
+                  />
+                </div>
+
                 <div id="tab_comment" className="info_item_tab">
                   <CommentTitle>{t('requirements_review')}</CommentTitle>
                   <CommonComment

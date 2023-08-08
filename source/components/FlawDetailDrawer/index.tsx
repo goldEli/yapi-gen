@@ -85,6 +85,7 @@ import RelationStories from '../DetailScreenModal/FlawDetail/components/Relation
 import FlawBasic from '../DetailScreenModal/FlawDetail/components/FlawBasic'
 import CommonProgress from '../CommonProgress'
 import DrawerTopInfo from '../DrawerTopInfo'
+import FlawTag from '../TagComponent/FlawTag'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -869,9 +870,23 @@ const FlawDetailDrawer = () => {
                 >
                   附件
                 </CommonButton>
-                <CommonButton type="light" onClick={() => {}}>
-                  添加标签
-                </CommonButton>
+
+                <FlawTag
+                  defaultList={drawerInfo?.tag?.map((i: any) => ({
+                    id: i.id,
+                    color: i.tag?.color,
+                    name: i.tag?.content,
+                  }))}
+                  canAdd
+                  onUpdate={onOperationUpdate}
+                  detail={drawerInfo}
+                  isDetailQuick
+                  addWrap={
+                    <CommonButton type="light" onClick={() => {}}>
+                      添加标签
+                    </CommonButton>
+                  }
+                />
                 <CommonButton
                   type="light"
                   onClick={() => {

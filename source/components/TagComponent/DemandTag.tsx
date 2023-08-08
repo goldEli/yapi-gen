@@ -33,13 +33,13 @@ interface TagProps {
   onChangeTag?(arr: any, type: string): void
   checkedTags: any
   id?: any
+  detail: any
 }
 
 const TagBox = (props: TagProps) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { projectInfoValues } = useSelector(store => store.project)
-  const { demandInfo } = useSelector(store => store.demand)
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
@@ -98,16 +98,11 @@ const TagBox = (props: TagProps) => {
       try {
         await addInfoDemand({
           projectId,
-          demandId: demandInfo?.id,
+          demandId: props.detail?.id,
           type: 'tag',
           targetId: [{ name: item.content, color: item.color }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
-        const result = await getDemandInfo({
-          projectId,
-          id: demandInfo?.id,
-        })
-        dispatch(setDemandInfo(result))
         props.onChangeIsOpen(false)
       } catch (error) {
         //
@@ -161,11 +156,15 @@ interface Props {
   defaultList?: any
   id?: any
   isQuick?: boolean
+  // 是否是详情快捷添加标签
+  isDetailQuick?: boolean
+  isInfoPage?: boolean
+  onUpdate?(): void
+  detail?: any
 }
 
 const DemandTag = (props: Props) => {
   const [t] = useTranslation()
-  const { demandInfo } = useSelector(store => store.demand)
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -194,9 +193,38 @@ const DemandTag = (props: Props) => {
 
   const colorList = ['#FF5C5E', '#43BA9A', 'var(--primary-d2)', '#969799']
 
-  const onAddDemandTags = (value: any) => {
-    setNewTag(value)
-    setIsChooseColor(true)
+  const onUpdate = async () => {
+    if (props.isInfoPage) {
+      const result = await getDemandInfo({
+        projectId,
+        id: props.detail?.id,
+      })
+      dispatch(setDemandInfo(result))
+    } else {
+      props.onUpdate?.()
+    }
+  }
+
+  const onAddDemandTags = async (value: any) => {
+    // 如果是快捷添加标签，则默认灰色
+    if (props.isDetailQuick) {
+      await addInfoDemand({
+        projectId,
+        demandId: props.detail?.id,
+        type: 'tag',
+        targetId: [{ name: value, color: '#969799' }],
+      })
+      getMessage({ msg: t('common.addSuccess'), type: 'success' })
+      dispatch(getProjectInfoValuesStore({ projectId }))
+      onUpdate()
+      setNewTag('')
+      setIsChooseColor(false)
+      setIsClear(false)
+    } else {
+      setNewTag(value)
+      setIsChooseColor(true)
+    }
+
     setIsOpen(false)
   }
 
@@ -205,17 +233,13 @@ const DemandTag = (props: Props) => {
       try {
         await addInfoDemand({
           projectId,
-          demandId: demandInfo?.id,
+          demandId: props.detail?.id,
           type: 'tag',
           targetId: [{ name: newTag, color: value }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
         dispatch(getProjectInfoValuesStore({ projectId }))
-        const result = await getDemandInfo({
-          projectId,
-          id: demandInfo?.id,
-        })
-        dispatch(setDemandInfo(result))
+        onUpdate()
         setNewTag('')
         setIsChooseColor(false)
         setIsClear(false)
@@ -241,16 +265,13 @@ const DemandTag = (props: Props) => {
       try {
         await deleteInfoDemand({
           projectId,
-          demandId: demandInfo?.id,
+          demandId: props.detail?.id,
           type: 'tag',
           targetId: item.id,
         })
         getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-        const result = await getDemandInfo({
-          projectId,
-          id: demandInfo?.id,
-        })
-        dispatch(setDemandInfo(result))
+        dispatch(getProjectInfoValuesStore({ projectId }))
+        onUpdate()
       } catch (error) {
         //
       }
@@ -298,42 +319,46 @@ const DemandTag = (props: Props) => {
         flexWrap: 'wrap',
       }}
     >
-      <Popover
-        visible={isChooseColor}
-        placement="bottom"
-        trigger="click"
-        content={colorStatus}
-        onVisibleChange={onVisibleChange}
-      >
-        <TagCheckedItem hidden={!newTag}>{newTag}</TagCheckedItem>
-      </Popover>
-      {checkedTags?.reverse()?.map((i: any) => (
-        <TagCheckedItem
-          key={i.id}
-          style={{
-            cursor: isCanEdit || props?.isQuick ? 'pointer' : 'inherit',
-            alignItems: 'center',
-            color: i.color,
-            border: `1px solid ${i.color}`,
-          }}
-        >
-          <div>{i.content}</div>
-          {isCanEdit || props?.isQuick ? (
-            <IconFont
-              className="icon"
+      {!props.isDetailQuick && (
+        <>
+          <Popover
+            visible={isChooseColor}
+            placement="bottom"
+            trigger="click"
+            content={colorStatus}
+            onVisibleChange={onVisibleChange}
+          >
+            <TagCheckedItem hidden={!newTag}>{newTag}</TagCheckedItem>
+          </Popover>
+          {checkedTags?.reverse()?.map((i: any) => (
+            <TagCheckedItem
+              key={i.id}
               style={{
-                position: 'absolute',
-                right: -6,
-                top: -6,
-                color: 'var(--neutral-n3)',
-                fontSize: 14,
+                cursor: isCanEdit || props?.isQuick ? 'pointer' : 'inherit',
+                alignItems: 'center',
+                color: i.color,
+                border: `1px solid ${i.color}`,
               }}
-              type="close-solid"
-              onClick={() => onDeleteInfoDemand(i)}
-            />
-          ) : null}
-        </TagCheckedItem>
-      ))}
+            >
+              <div>{i.content}</div>
+              {isCanEdit || props?.isQuick ? (
+                <IconFont
+                  className="icon"
+                  style={{
+                    position: 'absolute',
+                    right: -6,
+                    top: -6,
+                    color: 'var(--neutral-n3)',
+                    fontSize: 14,
+                  }}
+                  type="close-solid"
+                  onClick={() => onDeleteInfoDemand(i)}
+                />
+              ) : null}
+            </TagCheckedItem>
+          ))}
+        </>
+      )}
       {props?.isQuick || isCanEdit ? (
         <Popover
           visible={isOpen}
@@ -347,10 +372,14 @@ const DemandTag = (props: Props) => {
                 tap={onAddDemandTags}
                 canAdd={props.canAdd}
                 onChangeIsClear={setIsClear}
-                onChangeIsOpen={setIsOpen}
+                onChangeIsOpen={value => {
+                  setIsOpen(value)
+                  onUpdate()
+                }}
                 onChangeTag={props.onChangeTag}
                 checkedTags={checkedTags}
                 id={props?.id}
+                detail={props.detail}
               />
             ) : null
           }
