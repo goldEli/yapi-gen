@@ -282,6 +282,11 @@ const CreateNoteModal = (props: any) => {
   }
 
   useEffect(() => {
+    if (props.isVisible) {
+      form.setFieldsValue({
+        content: '<p></p>',
+      })
+    }
     if (props.editId && props.isVisible) {
       getEditData()
     }
