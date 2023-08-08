@@ -133,6 +133,7 @@ const TableQuickEdit = (props: Props) => {
     const paramsData = getParamsData(searchParams)
     projectId = paramsData?.id
     canClick = isCan && isCanEdit
+    console.log(paramsData, '999')
   }
 
   // 我的模块及他的模块并且是自定义字段 --- 接口获取

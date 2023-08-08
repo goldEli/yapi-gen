@@ -58,6 +58,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
     const params = encryptPhp(
       JSON.stringify({
         data: props.data,
+        id: props.projectId || 314,
         projectId: props.projectId,
         type:
           props.num === 1

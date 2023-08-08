@@ -5,6 +5,8 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
+import { ClickWrap } from '@/components/StyleCommon'
+import CommonIconFont from '@/components/CommonIconFont'
 import { useSelector, useDispatch } from '@store/index'
 import {
   setRightSprintList,
@@ -13,7 +15,7 @@ import {
 } from '@store/sprint'
 import { useTranslation } from 'react-i18next'
 import StateTag from '@/components/StateTag'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getIsPermission, getParamsData, copyLink } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import { setAffairsDetailDrawer } from '@store/affairs'
@@ -346,7 +348,10 @@ const DndKitTable = (props: any) => {
     }
     return true
   }
-
+  // 复制编号
+  const onCopyNumber = (id: string) => {
+    copyLink(id, t('copysuccess'), t('copyfailed'))
+  }
   const columns: TableColumnProps<any>[] = [
     {
       width: 50,
@@ -415,11 +420,18 @@ const DndKitTable = (props: any) => {
               style={{
                 color: temp.status?.is_end === 1 ? 'var(--neutral-n3)' : '',
               }}
-              onClick={() => {
-                onClickItem(temp)
-              }}
             >
-              <span className="content">{value}</span>
+              <ClickWrap>
+                <div className="text" onClick={() => onClickItem(temp)}>
+                  {value}
+                </div>
+                <CommonIconFont
+                  type="share"
+                  size={20}
+                  color={'var(--neutral-n3)'}
+                  onClick={() => onCopyNumber(value)}
+                />
+              </ClickWrap>
             </TitleWrap>
           </div>
         )
