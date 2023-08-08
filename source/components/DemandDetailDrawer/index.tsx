@@ -190,7 +190,7 @@ const DemandDetailDrawer = () => {
     },
     {
       key: 'tab_log',
-      label: '进度日志',
+      label: t('scheduleRecord'),
     },
     {
       key: 'tab_comment',
@@ -892,9 +892,9 @@ const DemandDetailDrawer = () => {
                   ref={storyRelationRef}
                 />
                 <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
-                <CommentTitle>进度日志</CommentTitle>
+                <CommentTitle>{t('scheduleRecord')}</CommentTitle>
                 <div id="tab_comment" className="info_item_tab">
-                  <CommentTitle>需求评论</CommentTitle>
+                  <CommentTitle>{t('requirements_review')}</CommentTitle>
                   <CommonComment
                     data={demandCommentList}
                     onDeleteConfirm={onDeleteCommentConfirm}

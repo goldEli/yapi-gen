@@ -86,6 +86,7 @@ import ChildSprint from '../DetailScreenModal/AffairsDetail/components/ChildSpri
 import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint'
 import DrawerTopInfo from '../DrawerTopInfo'
 import ScheduleRecord from '../ScheduleRecord'
+import CommonProgress from '../CommonProgress'
 
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
@@ -157,7 +158,7 @@ const SprintDetailDrawer = () => {
     },
     {
       key: 'schedule',
-      label: '进度日志',
+      label: t('scheduleRecord'),
     },
     {
       key: 'sprint-comment',
@@ -807,6 +808,11 @@ const SprintDetailDrawer = () => {
                 </span>
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
+              <CommonProgress
+                isTable={false}
+                type="transaction"
+                id={drawerInfo.id}
+              />
               <Space size={12} style={{ marginTop: 16 }}>
                 {(drawerInfo.work_type === 6
                   ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
@@ -867,7 +873,7 @@ const SprintDetailDrawer = () => {
                 className="info_item_tab"
                 style={{ margin: '16px 0' }}
               >
-                进度日志
+                {t('scheduleRecord')}
               </Label>
               <ScheduleRecord
                 detailId={drawerInfo.id}

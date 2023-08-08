@@ -959,6 +959,8 @@ export const getParentList = async (params: any) => {
 export const getScheduleLogList = async (params: {
   story_id: number
   project_id: number
+  pagesize: number
+  page: number
 }) => {
   const response = await http.get<any>('getScheduleLogList', params)
   return response.data
