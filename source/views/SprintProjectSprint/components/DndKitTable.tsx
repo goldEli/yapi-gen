@@ -520,7 +520,7 @@ const DndKitTable = (props: any) => {
       render: () => {
         return (
           <div>
-            <CommonProgress percent={50} isTable={true} />
+            <CommonProgress isTable={true} />
           </div>
         )
       },
