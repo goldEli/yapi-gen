@@ -126,7 +126,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   })
 
   const handleUpload = () => {
-    uploadRefs.current.handleUpload()
+    uploadRef.current.handleUpload()
   }
 
   useEffect(() => {
