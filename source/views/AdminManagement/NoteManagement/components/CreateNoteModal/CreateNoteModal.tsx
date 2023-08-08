@@ -46,6 +46,8 @@ const CreateNoteModal = (props: any) => {
   const [taskTime, setTaskTime] = useState(false)
 
   const onValidator = (rule: any, value: any) => {
+    console.log(value, '222')
+
     const plainText = value.replace(/<[^>]+>/g, '')
 
     if (plainText.length > 200) {
@@ -54,6 +56,7 @@ const CreateNoteModal = (props: any) => {
     if (
       (value === '<p><br></p>' ||
         value === '<p> </p>' ||
+        value === '<p></p>' ||
         value?.trim() === '' ||
         !value) &&
       rule?.required
@@ -282,6 +285,11 @@ const CreateNoteModal = (props: any) => {
   }
 
   useEffect(() => {
+    if (props.isVisible) {
+      form.setFieldsValue({
+        content: '<p></p>',
+      })
+    }
     if (props.editId && props.isVisible) {
       getEditData()
     }

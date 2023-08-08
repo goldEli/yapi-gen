@@ -60,7 +60,7 @@ const AffairsBasic = (props: Props) => {
     <BasicWrap ref={props.onRef}>
       <BasicContent>
         <div style={{ marginLeft: 24, marginBottom: 24 }}>
-          <CommonProgress percent={50} isTable={false} />
+          <CommonProgress isTable={false} />
         </div>
         <BasicDemand
           onUpdate={onUpdate}

@@ -116,7 +116,7 @@ export const Card = styled.div`
   border: 1px solid var(--neutral-n6-d2);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
-  margin: 0 16px 16px 10px;
+
   box-sizing: border-box;
 
   transition: all 0.3s;
@@ -562,6 +562,7 @@ const UploadAttach = (props: any, ref: any) => {
           display: 'flex',
           flexWrap: 'wrap',
           marginTop: 8,
+          gap: '8px',
         }}
       >
         {fileList.map((i: any) => {
