@@ -1242,3 +1242,9 @@ export const getFlawSelectRelationRecent = async (
   )
   return response.data
 }
+
+// 缺陷进度信息更新
+export const updateFlawSchedule = async (params: any) => {
+  const response = await http.put('updateFlawSchedule', params)
+  return response.data
+}

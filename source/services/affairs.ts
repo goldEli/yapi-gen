@@ -1406,3 +1406,9 @@ export const getShapeAffairsRight = async (params: any) => {
   }
   return obj
 }
+
+// 事务进度信息更新
+export const updateTransactionSchedule = async (params: any) => {
+  const response = await http.put('updateTransactionSchedule', params)
+  return response.data
+}
