@@ -162,14 +162,14 @@ const ChildrenDemand = (props: Props, ref: any) => {
     }
   })
   useEffect(() => {
-    if (props.isOpen || isUpdateAddWorkItem) {
+    if (props.detail?.id || isUpdateAddWorkItem) {
+      console.log(111, props.detail)
       getList()
     }
-    getList()
-  }, [props.isOpen, isUpdateAddWorkItem])
+  }, [props.detail, isUpdateAddWorkItem])
 
   return (
-    <div id="tab_demand">
+    <div id="tab_demand" className="info_item_tab">
       {/* <Label>{t('subrequirements')}</Label> */}
       <LabelWrap>
         <Label>{t('subrequirements')}</Label>

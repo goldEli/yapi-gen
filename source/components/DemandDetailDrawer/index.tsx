@@ -95,6 +95,7 @@ import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRel
 import IconFont from '../IconFont'
 import DrawerTopInfo from '../DrawerTopInfo'
 import CommonProgress from '../CommonProgress'
+import TabPane from 'antd/lib/tabs/TabPane'
 interface ItemIprops {
   label: string
   key: string
@@ -147,6 +148,8 @@ const DemandDetailDrawer = () => {
   const detailDemandRef = useRef<any>()
   const childrenDemandRef = useRef<any>()
   const storyRelationRef = useRef<any>()
+  const tabsRef = useRef<any>()
+  const contentRef = useRef<any>()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -606,13 +609,15 @@ const DemandDetailDrawer = () => {
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     const dom = document.getElementById(value)
-    dom?.scrollIntoView({
+    document.getElementById('contentDom')?.scrollTo({
+      top: (dom?.offsetTop ?? 0) - 86,
       behavior: 'smooth',
     })
     setTabActive(value)
   }
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
+    return
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
     const titleItems = document.querySelectorAll('.info_item_tab')
@@ -620,7 +625,6 @@ const DemandDetailDrawer = () => {
     let arr: any = []
     titleItems.forEach(element => {
       const { offsetTop, id } = element as HTMLElement
-      console.log('element', offsetTop, id, scrollTop)
       if (offsetTop - 140 <= scrollTop) {
         const keys = [...arr, ...[id]]
         arr = [...new Set(keys)]
@@ -629,13 +633,9 @@ const DemandDetailDrawer = () => {
     setTabActive(arr[arr.length - 1])
   }
   useEffect(() => {
-    document
-      .getElementById('contentDom')
-      ?.addEventListener('scroll', handleScroll, true)
+    window?.addEventListener('scroll', handleScroll, true)
     return () => {
-      document
-        .getElementById('contentDom')
-        ?.removeEventListener('scroll', handleScroll, false)
+      window.removeEventListener('scroll', handleScroll, false)
     }
   }, [document.getElementById('contentDom')])
   return (
@@ -765,27 +765,29 @@ const DemandDetailDrawer = () => {
             </Popover>
           </Space>
         </Header>
-        <Content id="contentDom">
+        <Content id="contentDom" ref={contentRef}>
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
               <ParentBox size={8}>
-                {drawerInfo.level_tree?.map((i: any, index: number) => (
-                  <DrawerHeader key={i.prefix_key}>
-                    <img src={i.category_attachment} alt="" />
-                    <div>
-                      {i.project_prefix}-{i.prefix_key}
-                    </div>
-                    <span
-                      hidden={
-                        drawerInfo.level_tree?.length <= 1 ||
-                        index === drawerInfo.level_tree?.length - 1
-                      }
-                    >
-                      /
-                    </span>
-                  </DrawerHeader>
-                ))}
+                <div style={{ display: 'flex' }}>
+                  {drawerInfo.level_tree?.map((i: any, index: number) => (
+                    <DrawerHeader key={i.prefix_key}>
+                      <img src={i.category_attachment} alt="" />
+                      <div>
+                        {i.project_prefix}-{i.prefix_key}
+                      </div>
+                      <span
+                        hidden={
+                          drawerInfo.level_tree?.length <= 1 ||
+                          index === drawerInfo.level_tree?.length - 1
+                        }
+                      >
+                        /
+                      </span>
+                    </DrawerHeader>
+                  ))}
+                </div>
                 {!skeletonLoading && (
                   <ChangeStatusPopover
                     isCanOperation={isCanEdit && !drawerInfo.isExamine}
@@ -873,13 +875,9 @@ const DemandDetailDrawer = () => {
               <Tabs
                 className="tabs"
                 activeKey={tabActive}
-                items={
-                  // 子任务不存在子事务模块
-                  items
-                }
+                items={items}
                 onChange={onChangeTabs}
-                // tabBarStyle={{ position: 'fixed', top: 30 }}
-              />
+              ></Tabs>
               <LayerBox>
                 <DetailDemand
                   detail={drawerInfo}
