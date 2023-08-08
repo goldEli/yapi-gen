@@ -301,6 +301,7 @@ const FlawComment = (props: Props) => {
                     />
                     {item.attachment?.length > 0 && (
                       <UploadAttach
+                        canUpdate
                         defaultList={item.attachment.map((i: any) => ({
                           url: i.attachment.path,
                           id: i.id,
@@ -310,6 +311,7 @@ const FlawComment = (props: Props) => {
                           suffix: i.attachment.ext,
                           username: i.user_name ?? '--',
                         }))}
+                        del={(id: any) => onTapRemove(item.id, id)}
                         onChangeAttachment={() => {}}
                       />
                     )}
