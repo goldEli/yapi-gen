@@ -15,7 +15,7 @@ interface ProgressProps {
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable, isKanBan, id } = props
+  const { isTable, isKanBan, id, type } = props
   const [visible, setVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const [data, setData] = useState<any>(null)
@@ -35,22 +35,23 @@ const CommonProgress = (props: ProgressProps) => {
       <CommonProgressWrap>
         <Dropdown
           menu={{
-            items: data?.user_list?.map((k: any) => ({
-              key: k?.user_name,
-              label: (
-                <ItemRow>
-                  <CommonUserAvatar
-                    isBorder
-                    name={`${k?.user_name}${
-                      k?.position_name ? `（${k?.position_name}）` : ''
-                    }- ${k?.schedule ?? 0}% ${
-                      Number(((k?.task_time ?? 0) / 3600).toFixed(1)) * 100
-                    }h`}
-                    avatar={k?.avatar}
-                  />
-                </ItemRow>
-              ),
-            })),
+            items:
+              data?.user_list?.map((k: any) => ({
+                key: k?.user_name,
+                label: (
+                  <ItemRow>
+                    <CommonUserAvatar
+                      isBorder
+                      name={`${k?.user_name}${
+                        k?.position_name ? `（${k?.position_name}）` : ''
+                      }- ${k?.schedule ?? 0}% ${
+                        Number(((k?.task_time ?? 0) / 3600).toFixed(1)) * 100
+                      }h`}
+                      avatar={k?.avatar}
+                    />
+                  </ItemRow>
+                ),
+              })) ?? [],
           }}
           placement="bottom"
         >
@@ -91,6 +92,7 @@ const CommonProgress = (props: ProgressProps) => {
       </CommonProgressWrap>
       {isTable || isKanBan ? null : (
         <UpdateProgressModal
+          type={type}
           visible={visible}
           onClose={() => setVisible(false)}
         />

@@ -9,7 +9,7 @@ import { Menu, Tooltip } from 'antd'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useTranslation } from 'react-i18next'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
-import { createRef, useEffect, useMemo, useState } from 'react'
+import { createRef, useEffect, useState } from 'react'
 import TableColorText from '@/components/TableColorText'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
@@ -17,7 +17,7 @@ import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import NoData from '@/components/NoData'
 import PaginationBox from '@/components/TablePagination'
-import { getDemandList } from '@/services/demand'
+import { getDemandList, updatePriority } from '@/services/demand'
 import HeaderAll from './HeaderAll'
 import {
   HiddenText,
@@ -25,7 +25,8 @@ import {
   ListNameWrap,
   PriorityWrapTable,
 } from '@/components/StyleCommon'
-import { updateFlawTableParams } from '@/services/flaw'
+import { updateFlawTableParams, updateFlawPriority } from '@/services/flaw'
+import { updateAffairsPriority } from '@/services/affairs'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import { OmitText } from '@star-yun/ui'
 import TableQuickEdit from '@/components/TableQuickEdit'
@@ -108,22 +109,23 @@ const NewSort = (sortProps: any) => {
   )
 }
 const Undistributed = (props: any) => {
-  const { userInfo } = useSelector(store => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
   const { projectInfo, filterKeys, filterParams } = useSelector(
     store => store.project,
   )
+  // project_type === 1 迭代  project_type === 2 cc  project_type === 1 && isBug=== 1 就是缺陷
+  // permissions
+  // 编辑权限 project_type === 1 && isBug=== 1 && key_value  b/flaw/update
+  // 编辑权限 project_type === 2 && key_value  b/transaction/update
+  // 编辑权限 project_type === 1 && isBug!== 1 && 需求：b/story/update
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
       (i: any) =>
         i.name === (projectInfo.projectType === 1 ? '编辑需求' : '编辑事务'),
     )?.length > 0
-  console.log(isCanEdit, 'isCanEdit')
   const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
-
   const [data, setData] = useState({
     list: [
       {
@@ -170,12 +172,25 @@ const Undistributed = (props: any) => {
   }
   // 修改优先级
   const onChangeState = async (type: any, item: any) => {
+    // 修改缺陷优先级
     try {
-      // await updateFlawPriority({
-      // id: props.detail.id,
-      // priorityId: item.priorityId,
-      // projectId: props.detail.projectId,
-      // })
+      await updateFlawPriority({
+        id: item.id,
+        priorityId: item.priorityId,
+        projectId: item.projectId,
+      })
+      // 修改事务优先级
+      await updateAffairsPriority({
+        id: item.id,
+        priorityId: item.priorityId,
+        projectId: item.projectId,
+      })
+      // 需求
+      await updatePriority({
+        id: item.id,
+        priorityId: item.priorityId,
+        projectId: item.projectId,
+      })
       getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
       onUpdate()
     } catch (error) {
@@ -247,12 +262,7 @@ const Undistributed = (props: any) => {
       render: (text: string, record: any) => {
         return (
           <>
-            {/* {state.showChildCOntent && !state.isTree && ( */}
             <ChildDemandTable value={text} row={record} />
-            {/* )} */}
-            {/* {(!state.showChildCOntent || state.isTree) && ( */}
-            <span>{text || 0}</span>
-            {/* )} */}
           </>
         )
       },
@@ -356,6 +366,7 @@ const Undistributed = (props: any) => {
               type="text"
               defaultText={text}
               keyText="name"
+              projectId={314}
               item={record}
               onUpdate={() => onUpdate(record)}
               isDemandName
@@ -466,7 +477,7 @@ const Undistributed = (props: any) => {
             defaultText={text?.split(';') || []}
             item={record}
             onUpdate={() => onUpdate(record)}
-            // isBug={state.type === 2}
+            isBug={record.is_bug === 1}
           >
             <HiddenText>
               <OmitText
@@ -515,7 +526,7 @@ const Undistributed = (props: any) => {
             keyText="users"
             item={record}
             onUpdate={() => onUpdate(record)}
-            // isBug={state.type === 2}
+            isBug={record.is_bug === 1}
           >
             {record?.usersInfo?.length > 0 && (
               <MultipleAvatar
@@ -559,7 +570,7 @@ const Undistributed = (props: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
             value={['datetime']}
-            // isBug={state.type === 2}
+            isBug={record.is_bug === 1}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -582,7 +593,7 @@ const Undistributed = (props: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
             value={['datetime']}
-            // isBug={state.type === 2}
+            isBug={record.is_bug === 1}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>

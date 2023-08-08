@@ -97,14 +97,6 @@ const AffairsInfo = (props: Props) => {
     commentDom.current.cancel()
   }
 
-  // 监听左侧信息滚动
-  const onChangeTabs = (value: string) => {
-    const dom = document.getElementById(value)
-    dom?.scrollIntoView({
-      behavior: 'smooth',
-    })
-  }
-
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
     setIsScroll(!(e.target.scrollTop < 60))
@@ -133,11 +125,16 @@ const AffairsInfo = (props: Props) => {
     } else if (el.key === 'sprint-attachment') {
       uploadFile.current.handleUpload()
     }
+    // 监听左侧信息滚动
+    const dom = document.getElementById(el.key)
+    dom?.scrollIntoView({
+      behavior: 'smooth',
+    })
   }
 
   useImperativeHandle(props.onRef, () => {
     return {
-      changeTabs: onChangeTabs,
+      changeTabs: onClickItem,
     }
   })
 

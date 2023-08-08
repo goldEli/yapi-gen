@@ -116,7 +116,7 @@ export const ChangeIconBox = styled.div`
 `
 
 export const Content = styled.div`
-  height: calc(100% - 53px);
+  height: calc(100% - 120px);
   overflow: auto;
   padding: 16px 24px;
   position: relative;
@@ -531,7 +531,7 @@ export const DrawerHeader = styled.div`
     margin-right: 8px;
   }
 `
-
+export const LayerBox = styled.div``
 export const DetailFooter = styled.div`
   display: flex;
   align-items: center;

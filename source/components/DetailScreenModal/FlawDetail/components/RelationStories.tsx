@@ -646,11 +646,10 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
   ]
 
   useEffect(() => {
-    // if (props.activeKey === '2' || props.isOpen) {
-    //   getList(pageObj, order)
-    // }
-    getList(pageObj, order)
-  }, [props.activeKey, props.isOpen])
+    if (props.activeKey === '2' || props.detail?.id) {
+      getList(pageObj, order)
+    }
+  }, [props.detail])
   useEffect(() => {
     if (isVisible && !searchValue) {
       getSelectRelationRecent()
