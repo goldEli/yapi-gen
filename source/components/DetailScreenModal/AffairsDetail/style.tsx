@@ -181,7 +181,7 @@ export const InfoWrap = styled.div<{ height: any }>`
   height: ${props => props.height};
   flex: 1;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
   .tabs {
     padding-left: 24px;
   }
@@ -191,9 +191,9 @@ export const InfoWrap = styled.div<{ height: any }>`
   .ant-tabs-bottom > div > .ant-tabs-nav::before {
     border-bottom: none;
   }
-  .ant-tabs-tab {
-    padding: 0 0 16px;
-  }
+  // .ant-tabs-tab {
+  //   padding: 0 0 16px;
+  // }
   .ant-tabs-tab-btn {
     font-size: 14px;
     color: var(--neutral-n2);
@@ -327,8 +327,22 @@ export const SubLabel = styled.div`
 `
 export const ButtonGroupWrap = styled.div`
   display: flex;
+  height: 70px;
   align-items: center;
   padding: 16px 0 24px 16px;
+`
+export const TabsWrap1 = styled.div`
+  width: 100%;
+  display: flex;
+  // height:120px;
+  align-items: center;
+  padding: 0px 24px 24px 0px;
+  & .ant-tabs-nav-wrap {
+    border-bottom: 1px solid var(--neutral-n6-d2);
+  }
+  & .tabs {
+    width: 100%;
+  }
 `
 export const TabsWrap = styled(Tabs)`
   .ant-tabs-ink-bar {
