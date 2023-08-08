@@ -140,16 +140,16 @@ const AffairsInfo = (props: Props) => {
       document.getElementById('sprint-activity')?.offsetTop
     let sprintChildSprint: any =
       document.getElementById('sprint-activity')?.offsetTop
-    if (sprintTag >= Math.floor(scrollTop)) {
+    if (sprintTag >= Math.floor(scrollTop) + 30) {
       setTabActive('sprint-tag')
-    } else if (sprintAttachment >= Math.floor(scrollTop)) {
+    } else if (sprintAttachment >= Math.floor(scrollTop) + 30) {
       setTabActive('sprint-attachment')
+    } else if (sprintChildSprint >= Math.floor(scrollTop) + 30) {
+      setTabActive('sprint-childSprint')
     } else if (sprintLinkSprint >= Math.floor(scrollTop)) {
       setTabActive('sprint-linkSprint')
     } else if (sprintActivity >= Math.floor(scrollTop)) {
       setTabActive('sprint-activity')
-    } else if (sprintChildSprint >= Math.floor(scrollTop)) {
-      setTabActive('sprint-childSprint')
     } else {
       setTabActive('sprint-info')
     }
