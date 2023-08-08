@@ -481,7 +481,6 @@ const BasicDemand = (props: Props) => {
       style={{
         width: '100%',
         paddingLeft: props.hasPadding ? '24px' : 0,
-        height: props.isInfoPage ? '100%' : 'auto',
       }}
       id="sprint-basicInfo"
       className="info_item_tab"

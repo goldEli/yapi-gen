@@ -60,7 +60,11 @@ const AffairsBasic = (props: Props) => {
     <BasicWrap ref={props.onRef}>
       <BasicContent>
         <div style={{ marginLeft: 24, marginBottom: 24 }}>
-          <CommonProgress isTable={false} />
+          <CommonProgress
+            isTable={false}
+            id={affairsInfo.id}
+            type="transaction"
+          />
         </div>
         <BasicDemand
           onUpdate={onUpdate}

@@ -6,17 +6,20 @@ import CommonUserAvatar from '../CommonUserAvatar'
 import { getScheduleLogList } from '@/services/project'
 import NoData from '../NoData'
 import UploadAttach from '../UploadAttach'
+import CommonIconFont from '../CommonIconFont'
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
 `
 
-const RecordItem = styled.div<{ isDrawer?: boolean }>`
-  padding: ${props => (props.isDrawer ? 0 : 16)}px;
-  margin-bottom: ${props => (props.isDrawer ? 24 : 0)}px;
+const RecordItem = styled.div<{ isDrawer?: boolean; notPadding?: boolean }>`
+  padding: ${props => (props.isDrawer || props.notPadding ? 0 : 16)}px;
+  margin-bottom: ${props => (props.isDrawer || props.notPadding ? 24 : 0)}px;
   border-bottom: ${props =>
-    props.isDrawer ? 'none' : '1px solid var(--neutral-n6-d1)'};
+    props.isDrawer || props.notPadding
+      ? 'none'
+      : '1px solid var(--neutral-n6-d1)'};
   display: flex;
   align-items: flex-start;
 `
@@ -54,6 +57,12 @@ const InfoRow = styled.div`
   color: var(--neutral-n3);
 `
 
+export const ShowLabel = styled.div`
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--primary-d2);
+`
+
 interface ScheduleRecordProps {
   // 详情id
   detailId: number
@@ -61,23 +70,30 @@ interface ScheduleRecordProps {
   projectId: number
   //  是否是浮层
   isDrawer?: boolean
+  // 不需要padding
+  notPadding?: boolean
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
   const [t] = useTranslation()
+  const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(0)
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
 
   // 获取进度日志列表数据
-  const getScheduleLogData = async () => {
+  const getScheduleLogData = async (pageNumber?: number) => {
     const response = await getScheduleLogList({
       story_id: props.detailId,
       project_id: props.projectId,
+      pagesize: 10,
+      page: pageNumber ?? page,
     })
     setTotal(response.pager.total)
-    setListData({ list: response.list || [] })
+    setListData({
+      list: pageNumber ? [...listData.list, ...response.list] : response.list,
+    })
   }
 
   useEffect(() => {
@@ -92,7 +108,11 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
         (listData?.list?.length > 0 ? (
           <div>
             {listData?.list?.map((i: any) => (
-              <RecordItem key={i.id} isDrawer={props.isDrawer}>
+              <RecordItem
+                key={i.id}
+                isDrawer={props.isDrawer}
+                notPadding={props.notPadding}
+              >
                 <ItemAvatar>
                   <CommonUserAvatar avatar={i.userInfo?.avatar} />
                 </ItemAvatar>
@@ -102,14 +122,23 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                       {i.userInfo?.name}（{i.userInfo?.position?.name}）
                     </div>
                     <span>
-                      更新了进度{i.before_schedule}% - {i.after_schedule}%
+                      {t('updated_progress')}
+                      {i.before_schedule}%
+                      <CommonIconFont type="swap-right" /> {i.after_schedule}%
                     </span>
                   </div>
-                  <InfoRow>达成日期：{i.created_at}</InfoRow>
                   <InfoRow>
-                    工时花费：本次{Math.floor((i.task_time / 60) * 100) / 100}h
+                    {t('date_of_achievement')}
+                    {i.created_at}
                   </InfoRow>
-                  <InfoRow>更新说明：{i.remark}</InfoRow>
+                  <InfoRow>
+                    {t('labor_cost_this_time')}
+                    {Math.floor((i.task_time / 60) * 100) / 100}h
+                  </InfoRow>
+                  <InfoRow>
+                    {t('update_instructions')}
+                    {i.remark}
+                  </InfoRow>
                   {i.attachment?.length > 0 && (
                     <UploadAttach
                       defaultList={i.attachment?.map((k: any) => ({
@@ -128,6 +157,16 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                 </ItemContent>
               </RecordItem>
             ))}
+            {total > listData?.list?.length && (
+              <ShowLabel
+                onClick={() => {
+                  setPage(page + 1)
+                  getScheduleLogData(page + 1)
+                }}
+              >
+                {t('open_more')}
+              </ShowLabel>
+            )}
           </div>
         ) : (
           <NoData />
