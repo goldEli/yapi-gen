@@ -180,19 +180,17 @@ const AffairsInfo = (props: Props) => {
     let sprintActivity: any =
       document.getElementById('sprint-activity')?.offsetTop
     let sprintChildSprint: any =
-      document.getElementById('sprint-activity')?.offsetTop
-    if (sprintTag >= Math.floor(scrollTop) + 30) {
+      document.getElementById('sprint-childSprint')?.offsetTop
+    if (sprintTag + 80 >= Math.floor(scrollTop)) {
       setTabActive('sprint-tag')
-    } else if (sprintAttachment >= Math.floor(scrollTop) + 30) {
+    } else if (sprintAttachment + 80 >= Math.floor(scrollTop)) {
       setTabActive('sprint-attachment')
-    } else if (sprintChildSprint >= Math.floor(scrollTop) + 30) {
+    } else if (sprintChildSprint + 80 >= Math.floor(scrollTop)) {
       setTabActive('sprint-childSprint')
-    } else if (sprintLinkSprint >= Math.floor(scrollTop)) {
+    } else if (sprintLinkSprint + 80 >= Math.floor(scrollTop)) {
       setTabActive('sprint-linkSprint')
-    } else if (sprintActivity >= Math.floor(scrollTop)) {
+    } else if (sprintActivity + 80 >= Math.floor(scrollTop)) {
       setTabActive('sprint-activity')
-    } else {
-      setTabActive('sprint-info')
     }
   }
   const onClickItem = (el: any) => {
