@@ -39,7 +39,12 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
       attach: arr,
     })
   }
-  const confirm = async () => {}
+  const confirm = async () => {
+    const value = await form.validateFields()
+    // if(type==='demand'){
+
+    // }
+  }
   return (
     <CommonModal
       width={640}
@@ -81,7 +86,16 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
           </div>
         </div>
         <Form form={form} layout="vertical" autoComplete="off">
-          <Form.Item label="实际工时花费（h）" name="time">
+          <Form.Item
+            label="实际工时花费（h）"
+            name="time"
+            rules={[
+              {
+                required: true,
+                message: '请输入实际工时',
+              },
+            ]}
+          >
             <InputNumber
               min={0.0}
               style={{ width: '100%' }}
