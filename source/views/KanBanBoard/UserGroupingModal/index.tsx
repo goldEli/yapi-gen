@@ -136,6 +136,7 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
         </Form>
         <UserList>
           {userList.map(item => {
+            console.log(item, 'item')
             return (
               <UserListItem key={item.id}>
                 <Row>
@@ -150,7 +151,11 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
                     ]}
                   />
                   <span>
-                    ({item?.positionName ? item?.positionName : '--'})
+                    (
+                    {item?.positionName || item?.position_name
+                      ? item?.positionName || item?.position_name
+                      : '--'}
+                    )
                   </span>
                 </Row>
                 <div
