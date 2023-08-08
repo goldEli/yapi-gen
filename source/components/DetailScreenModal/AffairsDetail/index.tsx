@@ -61,6 +61,7 @@ import AffairsBasic from './components/AffairsBasic'
 import AffairsInfo from './components/AffairsInfo'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import CommonProgress from '@/components/CommonProgress'
 
 const AffairsDetail = () => {
   const [t] = useTranslation()
@@ -754,6 +755,14 @@ const AffairsDetail = () => {
           >
             <SprintDetailDragLine active={focus} className="line" />
           </SprintDetailMouseDom>
+          <div style={{ marginLeft: 24, marginBottom: 24 }}>
+            <CommonProgress
+              isTable={false}
+              id={affairsInfo.id}
+              type="transaction"
+              hasEdit={!hasEdit}
+            />
+          </div>
           <AffairsBasic onRef={basicInfoDom} />
         </div>
       </DetailMain>

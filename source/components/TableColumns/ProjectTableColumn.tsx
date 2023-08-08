@@ -400,7 +400,7 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
-      render: (text: string, record: any, index: any) => {
+      render: (text: string, record: any) => {
         return (
           <div>
             <CommonProgress isTable percent={Number(text)} id={record.id} />

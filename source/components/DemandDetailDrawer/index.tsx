@@ -907,7 +907,7 @@ const DemandDetailDrawer = () => {
           <DetailFooter>
             <div className="textBox">
               <div>
-                {t('created')}{' '}
+                {t('created')}
                 {detailTimeFormat(drawerInfo.createdTime as string)}
               </div>
               <span>
