@@ -230,8 +230,7 @@ export const ActivityTabItem = styled.div<{ isActive?: boolean }>`
   background: ${props =>
     props.isActive ? 'var(--function-tag5)' : 'var(--neutral-n7)'};
   color: ${props =>
-    props.isActive ? 'var(--neutral-n2)' : 'var(--primary-d1)'};
-  color: var(--neutral-n2);
+    props.isActive ? 'var(--primary-d1)' : 'var(--neutral-n2)'};
   &:hover {
     color: var(--neutral-n1);
     background: var(--active);

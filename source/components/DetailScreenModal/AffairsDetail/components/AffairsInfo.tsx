@@ -125,12 +125,12 @@ const AffairsInfo = (props: Props) => {
       label: t('describe'),
     },
     {
-      key: 'sprint-attachment',
-      label: t('attachment'),
-    },
-    {
       key: 'sprint-tag',
       label: t('tag'),
+    },
+    {
+      key: 'sprint-attachment',
+      label: t('attachment'),
     },
     {
       key: 'sprint-childSprint',
@@ -164,7 +164,6 @@ const AffairsInfo = (props: Props) => {
     )
     commentDom.current.cancel()
   }
-
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
     setIsScroll(!(e.target.scrollTop < 60))
@@ -173,28 +172,27 @@ const AffairsInfo = (props: Props) => {
       '.sprintDetail_dom',
     ) as HTMLElement
     // 所有标题节点
-    // const titleItems = document.querySelectorAll('.info_item_tab')
-    let sprintInfo = document.getElementById('sprint-info')
-    let sprintTag = document.getElementById('sprint-tag')
-    let sprintAttachment = document.getElementById('sprint-attachment')
-    let sprintLinkSprint = document.getElementById('sprint-linkSprint')
-    let sprintActivity = document.getElementById('sprint-activity')
-    console.log(sprintInfo?.offsetTop, 'top1')
-    console.log(sprintTag?.offsetTop, 'top2')
-    console.log(sprintAttachment?.offsetTop, 'top3')
-    // let arr: any = []
-    // titleItems.forEach(element => {
-
-    //   const { offsetTop, id } = element as HTMLElement
-    //   if (offsetTop <= scrollTop + 120) {
-    //   console.log(offsetTop,scrollTop+120,id)
-    //     const keys = [...arr, ...[id]]
-    //     // arr = [...new Set(keys)]
-    //     // console.log(id,'id')
-    //   }
-    // })
+    let sprintAttachment: any =
+      document.getElementById('sprint-attachment')?.offsetTop
+    let sprintTag: any = document.getElementById('sprint-tag')?.offsetTop
+    let sprintLinkSprint: any =
+      document.getElementById('sprint-linkSprint')?.offsetTop
+    let sprintActivity: any =
+      document.getElementById('sprint-activity')?.offsetTop
+    let sprintChildSprint: any =
+      document.getElementById('sprint-childSprint')?.offsetTop
+    if (sprintTag + 80 >= Math.floor(scrollTop)) {
+      setTabActive('sprint-tag')
+    } else if (sprintAttachment + 80 >= Math.floor(scrollTop)) {
+      setTabActive('sprint-attachment')
+    } else if (sprintChildSprint + 80 >= Math.floor(scrollTop)) {
+      setTabActive('sprint-childSprint')
+    } else if (sprintLinkSprint + 80 >= Math.floor(scrollTop)) {
+      setTabActive('sprint-linkSprint')
+    } else if (sprintActivity + 80 >= Math.floor(scrollTop)) {
+      setTabActive('sprint-activity')
+    }
   }
-
   const onClickItem = (el: any) => {
     if (el.key === 'sprint-childSprint') {
       childRef && childRef.current.onCreateChild()
@@ -256,7 +254,6 @@ const AffairsInfo = (props: Props) => {
           />
         </TabsWrap1>
       )}
-      {tabActive}
       <DetailInfoWrap
         ref={LeftDomDetailInfo}
         className="sprintDetail_dom"
