@@ -870,7 +870,6 @@ const SprintDetailDrawer = () => {
                 进度日志
               </Label>
               <ScheduleRecord
-                type={3}
                 detailId={drawerInfo.id}
                 projectId={drawerInfo.projectId}
                 isDrawer

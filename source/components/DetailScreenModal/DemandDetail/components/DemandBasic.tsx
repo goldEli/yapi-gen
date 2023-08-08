@@ -74,7 +74,7 @@ const DemandBasic = (props: Props) => {
         </TitleWrap>
         {activeTabs === 1 && (
           <>
-            <CommonProgress percent={50} isTable={false} />
+            <CommonProgress isTable={false} />
             <BasicDemand
               detail={demandInfo}
               onUpdate={onUpdate}
