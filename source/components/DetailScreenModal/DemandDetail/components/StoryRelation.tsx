@@ -729,15 +729,17 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   }
   return (
     <RelationWrap
-      // style={{
-      //   height: props.isDrawer
-      //     ? '100%'
-      //     : isEnd
-      //     ? 'calc(100vh - 192px)'
-      //     : 'calc(100vh - 224px)',
-      // }}
+      style={{
+        height: props.isDrawer
+          ? '100%'
+          : isEnd
+          ? 'calc(100vh - 192px)'
+          : 'calc(100vh - 224px)',
+        marginTop: props.isDrawer ? '24px' : '0px',
+      }}
       id="tab_link"
       className="info_item_tab"
+      // style={{ marginTop: '24px' }}
     >
       <DeleteConfirmModal />
       <CommonModal
