@@ -41,7 +41,6 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 
 interface SelectItem {
   label: string
@@ -347,6 +346,7 @@ const ChildSprint = (props: {
   // 点击切换页码
   const onChangePage = (page: number, size: number) => {
     setPageParams({ page, pagesize: size })
+    getList({ page, pagesize: size })
   }
 
   useEffect(() => {
