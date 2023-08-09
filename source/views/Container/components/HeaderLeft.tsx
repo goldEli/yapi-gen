@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
 import { getParamsData } from '@/tools'
-import sideLogo from '/newLogo.svg'
+import sideLogo from '/newLogo-ifun.svg'
 import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import {
   ChildrenMenu,
