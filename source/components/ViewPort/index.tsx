@@ -111,7 +111,13 @@ const ViewPort = (props: any) => {
       dropdownRender={menu => (
         <div className={dropdowncontent}>
           {menu}
-          <Divider style={{ margin: '14px 0' }} />
+          <div
+            style={{
+              margin: '0 10px',
+              borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+              width: '105px',
+            }}
+          />
           <SetLine onClick={onChangeCreate}>
             <TextSpan>{t('creating_a_view') as string}</TextSpan>
           </SetLine>
