@@ -294,7 +294,9 @@ const ChildrenDemand = (props: Props, ref: any) => {
                 placeholder={t('search_for_transaction_name_or_number')}
                 getPopupContainer={(node: any) => node}
                 style={{ width: 184 }}
-                onSearch={() => {}}
+                onSearch={() => {
+                  getSelectSearchList()
+                }}
                 options={[]}
                 showSearch
                 showArrow
