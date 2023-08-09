@@ -475,6 +475,10 @@ const urls = {
   getFlowConfigForSprint: '/b/transaction/flowConfig',
   // 获取下拉父需求列表
   getParentList: '/b/project/getEffectiveParentStory',
+  // 子需求最近查询
+  getChildrenRecent: '/b/story/selectChildrenRecent',
+  // 子需求查询
+  getChildrenSearch: '/b/story/selectChildrenSearch',
 
   // 复制视图
   copyView: '/b/story/views/copy',

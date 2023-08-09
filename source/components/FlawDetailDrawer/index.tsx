@@ -861,7 +861,14 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <CommonProgress isTable={false} type="flaw" id={drawerInfo.id} />
+              <div style={{ marginBottom: 20 }}>
+                <CommonProgress
+                  isTable={false}
+                  type="flaw"
+                  id={drawerInfo.id}
+                  hasEdit={isCanEdit}
+                />
+              </div>
               <BtnWrap>
                 <CommonButton
                   type="light"
@@ -897,7 +904,13 @@ const FlawDetailDrawer = () => {
                   {t('linkWorkItem')}
                 </CommonButton>
               </BtnWrap>
-              <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
+              <DrawerTopInfo
+                details={drawerInfo}
+                onUpdate={() => {
+                  console.log(11)
+                  getFlawDetail()
+                }}
+              ></DrawerTopInfo>
               <Tabs
                 className="tabs"
                 activeKey={tabActive}

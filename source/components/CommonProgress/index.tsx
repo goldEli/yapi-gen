@@ -1,4 +1,4 @@
-import { Dropdown, Progress } from 'antd'
+import { Progress, Dropdown } from 'antd'
 import { useEffect, useState } from 'react'
 import { CommonProgressWrap, UpdateButton, ItemRow } from './style'
 import UpdateProgressModal from './UpdateProgressModal'
@@ -13,10 +13,13 @@ interface ProgressProps {
   // 当前事务|缺陷|需求id
   id?: number
   percent?: number
+  // 非表格时判断有无更新权限
+  hasEdit?: boolean
+  update?: any
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable, isKanBan, id, type, percent } = props
+  const { isTable, isKanBan, id, type, percent, hasEdit, update } = props
   const [visible, setVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const [data, setData] = useState<any>(null)
@@ -31,12 +34,14 @@ const CommonProgress = (props: ProgressProps) => {
     if (id) {
       getList()
     }
-  }, [id])
+  }, [id, update])
 
   return (
     <>
       <CommonProgressWrap>
         <Dropdown
+          overlayClassName="progressDropdownBox"
+          getPopupContainer={(x: any) => x.parentNode}
           menu={{
             items:
               data?.user_list?.map((k: any) => ({
@@ -57,6 +62,10 @@ const CommonProgress = (props: ProgressProps) => {
               })) ?? [],
           }}
           placement="bottom"
+          dropdownRender={
+            // eslint-disable-next-line no-undefined
+            data?.user_list?.length <= 0 ? () => <span /> : undefined
+          }
         >
           {isKanBan ? (
             <div>{`${data?.total_schedule ?? 0}%`}</div>
@@ -84,14 +93,16 @@ const CommonProgress = (props: ProgressProps) => {
             </div>
           )}
         </Dropdown>
-        {isTable || isKanBan ? null : (
-          <UpdateButton
-            style={{ marginLeft: 16 }}
-            onClick={() => setVisible(true)}
-          >
-            更新进度
-          </UpdateButton>
-        )}
+        {isTable || isKanBan
+          ? null
+          : hasEdit && (
+              <UpdateButton
+                style={{ marginLeft: 16 }}
+                onClick={() => setVisible(true)}
+              >
+                更新进度
+              </UpdateButton>
+            )}
       </CommonProgressWrap>
       {isTable || isKanBan ? null : (
         <UpdateProgressModal

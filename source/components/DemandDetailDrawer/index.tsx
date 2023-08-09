@@ -846,6 +846,7 @@ const DemandDetailDrawer = () => {
                   isTable={false}
                   type="demand"
                   id={drawerInfo.id}
+                  hasEdit={isCanEdit}
                 />
               </ProgressBox>
               <BtnWrap>
@@ -886,7 +887,13 @@ const DemandDetailDrawer = () => {
                   链接工作项
                 </CommonButton>
               </BtnWrap>
-              <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
+              <DrawerTopInfo
+                details={drawerInfo}
+                onUpdate={() => {
+                  console.log(11)
+                  getDemandDetail()
+                }}
+              ></DrawerTopInfo>
               <Tabs
                 className="tabs"
                 activeKey={tabActive}
@@ -929,7 +936,7 @@ const DemandDetailDrawer = () => {
           <DetailFooter>
             <div className="textBox">
               <div>
-                {t('created')}{' '}
+                {t('created')}
                 {detailTimeFormat(drawerInfo.createdTime as string)}
               </div>
               <span>

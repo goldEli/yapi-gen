@@ -1256,3 +1256,15 @@ export const getScheduleDetails = async (params: any) => {
   const response = await http.get('getScheduleDetails', params)
   return response.data
 }
+
+// 选择子需求-最近查询
+export const getChildrenRecent = async (params: any) => {
+  const response = await http.get('getChildrenRecent', params)
+  return response.data
+}
+
+// 选择子需求-需求查询
+export const getChildrenSearch = async (params: any) => {
+  const response = await http.get('getChildrenSearch', params)
+  return response.data
+}

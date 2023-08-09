@@ -1,5 +1,9 @@
 /* eslint-disable no-undefined */
-import { getDemandList } from '@/services/demand'
+import {
+  getDemandList,
+  getChildrenRecent,
+  getChildrenSearch,
+} from '@/services/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { Space, Table } from 'antd'
 import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
@@ -215,10 +219,25 @@ const ChildrenDemand = (props: Props, ref: any) => {
       }),
     )
   }
+  const getSelectRecentList = async () => {
+    const params = {
+      projectId: props.detail.projectId,
+      id: props.detail.id,
+    }
+    let res = await getChildrenRecent(params)
+  }
+  const getSelectSearchList = async () => {
+    const params = {
+      projectId: props.detail.projectId,
+      id: props.detail.id,
+      keywords: '',
+    }
+    let res = await getChildrenSearch(params)
+  }
   // 点击搜素获取下拉数据列表
   const onClickSearch = () => {
     setIsSearch(true)
-    // getSelectRecentList()
+    getSelectRecentList()
   }
   //   取消搜索
   const onCancelSearch = () => {
@@ -275,12 +294,16 @@ const ChildrenDemand = (props: Props, ref: any) => {
                 placeholder={t('search_for_transaction_name_or_number')}
                 getPopupContainer={(node: any) => node}
                 style={{ width: 184 }}
-                onSearch={() => {}}
+                onSearch={() => {
+                  getSelectSearchList()
+                }}
                 options={[]}
                 showSearch
                 showArrow
                 optionFilterProp="label"
-                onChange={() => {}}
+                onChange={() => {
+                  getSelectSearchList()
+                }}
                 allowClear
                 autoFocus
               />
