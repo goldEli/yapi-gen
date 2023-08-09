@@ -347,7 +347,10 @@ const EditFiled = (props: Props) => {
                       style={{
                         color: 'var( --neutral-n4)',
                         position: 'absolute',
-                        left: '68px',
+                        left:
+                          localStorage.getItem('language') === 'en'
+                            ? '88px'
+                            : '68px',
                         top: '4px',
                       }}
                       type="question"
@@ -403,7 +406,10 @@ const EditFiled = (props: Props) => {
                       style={{
                         color: 'var( --neutral-n4)',
                         position: 'absolute',
-                        left: '68px',
+                        left:
+                          localStorage.getItem('language') === 'en'
+                            ? '88px'
+                            : '68px',
                         top: '4px',
                       }}
                       type="question"
