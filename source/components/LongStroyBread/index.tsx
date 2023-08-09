@@ -7,6 +7,7 @@ import { copyLink } from '@/tools'
 import IconFont from '../IconFont'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 const BreadBox = styled.div`
   display: flex;
   align-items: center;
@@ -62,7 +63,7 @@ const LongStroyBread = (props: IProps) => {
   const { longStroy = {}, layer = false, onClick } = props
   const [t] = useTranslation()
   const ref = useRef<HTMLDivElement>(null)
-
+  const [openDemandDetail] = useOpenDemandDetail()
   // 复制链接
   const onCopyLink = () => {
     let text: any = ''
@@ -151,7 +152,19 @@ const LongStroyBread = (props: IProps) => {
               zIndex={999999}
               key={item.id}
             >
-              <LabelBox>
+              <LabelBox
+                onClick={() => {
+                  const demandIds = [
+                    1004513, 1004899, 1004925, 1004924, 1004911, 1004900,
+                    1004898, 1004897, 1004896, 1004895, 1004894, 1004876,
+                    1004866, 1004842, 1004840, 1004839, 1004838, 1004837,
+                    1004836, 1004835,
+                  ]
+                  const projectId = longStroy?.projectId
+                  openDemandDetail({ ...item }, projectId, item.id, 1)
+                  console.log('item----', item)
+                }}
+              >
                 {showEditIcon && item.work_type === 3 ? (
                   <CommonIconFont
                     type="edit"

@@ -275,13 +275,17 @@ const Operation = (props: Props) => {
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>{t('importTransaction')}</span>
+          <span style={{ marginLeft: 8, whiteSpace: 'nowrap' }}>
+            {t('importTransaction')}
+          </span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem onClick={onExportClick}>
           <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>{t('exportTransaction')}</span>
+          <span style={{ marginLeft: 8, whiteSpace: 'nowrap' }}>
+            {t('exportTransaction')}
+          </span>
         </MoreItem>
       )}
     </div>

@@ -86,24 +86,26 @@ const WorkReport = () => {
         onClose={() => dispatch(setWriteReportModal({ visible: false }))}
         title={t('report.list.writeReport')}
       />
-      <RobotButton
-        id="robotButton"
-        draggable="true"
-        onDragStart={(event: any) => {
-          event.dataTransfer.effectAllowed = 'move'
-        }}
-        onClick={() => setReportAssistantModalVisible(true)}
-        style={{
-          left: position.x,
-          top: position.y,
-          // eslint-disable-next-line no-undefined
-          bottom: position.x ? undefined : 200,
-          // eslint-disable-next-line no-undefined
-          right: position.x ? undefined : 50,
-        }}
-        height={108}
-        src={language === 'zh' ? '/RobotButton.png' : '/RobotButtonEn.png'}
-      />
+      {location.href.includes('/Report/Review/List') ? (
+        <RobotButton
+          id="robotButton"
+          draggable="true"
+          onDragStart={(event: any) => {
+            event.dataTransfer.effectAllowed = 'move'
+          }}
+          onClick={() => setReportAssistantModalVisible(true)}
+          style={{
+            left: position.x,
+            top: position.y,
+            // eslint-disable-next-line no-undefined
+            bottom: position.x ? undefined : 200,
+            // eslint-disable-next-line no-undefined
+            right: position.x ? undefined : 50,
+          }}
+          height={108}
+          src={language === 'zh' ? '/RobotButton.png' : '/RobotButtonEn.png'}
+        />
+      ) : null}
       <ReportAssistantModal
         close={() => {
           setReportAssistantModalVisible(false)
