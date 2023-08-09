@@ -112,6 +112,7 @@ const SortItemLi = sortableElement<any>((props: any) => (
 ))
 
 const EditFiled = (props: Props) => {
+  const inputRef = useRef<any>(null)
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [checked, setChecked] = useState(false)
@@ -304,7 +305,13 @@ const EditFiled = (props: Props) => {
       dom.scrollTop = dom.scrollHeight
     }, 1)
   }
-
+  useEffect(() => {
+    if (props?.isVisible) {
+      setTimeout(() => {
+        inputRef.current.focus()
+      }, 100)
+    }
+  }, [props?.isVisible])
   return (
     <CommonModal
       isVisible={props?.isVisible}
@@ -355,6 +362,7 @@ const EditFiled = (props: Props) => {
               }}
             >
               <Input
+                ref={inputRef as any}
                 placeholder={t('newlyAdd.pleaseFieldsName')}
                 autoComplete="off"
                 maxLength={12}
@@ -493,7 +501,7 @@ const EditFiled = (props: Props) => {
                               <DragHandle />
                               <Input
                                 defaultValue={row[idx].value}
-                                style={{ width: 276 }}
+                                style={{ width: 396 }}
                                 placeholder={t('newlyAdd.pleaseParams')}
                                 onChange={e => onChangeValue(e, idx)}
                               />
