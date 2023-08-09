@@ -763,8 +763,8 @@ const CreateDemandLeft = (props: Props) => {
         </Form.Item>
         <Form.Item label={t('mine.demandInfo')} name="info">
           <Editor
-            height="calc(100vh - 800px)"
-            maxHeight="400px"
+            maxHeight="550px"
+            minHeight="250px"
             ref={editorRef}
             upload={uploadFile}
             getSuggestions={() => []}

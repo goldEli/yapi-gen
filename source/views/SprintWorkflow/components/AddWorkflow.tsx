@@ -490,7 +490,7 @@ const AddWorkflow = (props: Props) => {
         title={t('newlyAdd.newStatus')}
         onConfirm={onConfirmHasDelete}
       >
-        <div style={{ paddingRight: 16 }}>
+        <div style={{ padding: '0 16px' }}>
           <HasDemandText>
             {t('newlyAdd.changeNewStatus', {
               count: operationDelObj?.deleteData?.story_count,

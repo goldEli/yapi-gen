@@ -50,14 +50,26 @@ const HisSide = () => {
   ]
 
   const changeActive = (value: any) => {
+    console.log('paramsData', paramsData)
+
     if (isMember) {
       const params = encryptPhp(
-        JSON.stringify({ id: projectId, isMember, userId }),
+        JSON.stringify({
+          id: projectId,
+          isMember,
+          userId,
+          type: paramsData?.type,
+        }),
       )
       navigate(`/MemberInfo/${value.path}?data=${params}`)
     } else {
       const params = encryptPhp(
-        JSON.stringify({ userId, isMember: false, id: '' }),
+        JSON.stringify({
+          userId,
+          isMember: false,
+          id: '',
+          type: paramsData?.type,
+        }),
       )
       navigate(`/MemberInfo/${value.path}?data=${params}`)
     }

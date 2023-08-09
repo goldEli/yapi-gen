@@ -730,17 +730,20 @@ const ProgressComparison = (props: Props) => {
   }
   // 进展对比的前半截api
   const getHistoryWorkList = async (id: number) => {
+    dispatch(setListActiveId(id ?? 0))
     const res = await historyWorkList({ userId: id })
     setHistoryWorkObj(res)
   }
   // 缺陷分析的前半截
   const getHistoryDefectList = async (id: number) => {
+    dispatch(setListActiveId(id ?? 0))
     const res = await historyDefectList({ userId: id })
     setHistoryWorkObj(res)
   }
 
   // 后半截的详情弹窗上半截的获取用户信息
   const getUserInfo = async (id: number) => {
+    dispatch(setListActiveId(id ?? 0))
     const res = await plugSelectionUserInfo({
       user_id: id,
       project_ids:

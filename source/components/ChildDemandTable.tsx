@@ -73,12 +73,12 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
   const [openDemandDetail] = useOpenDemandDetail()
   const { projectInfo } = useSelector(store => store.project)
   const { fullScreen } = useSelector(store => store.kanBan)
-  let isCanEdit: any
 
   const getList = async (item: any) => {
+    console.log(props.row, 'itemitemitem')
     // 需要区分是那种类型的子需求
     let result = null
-    if (projectInfo.projectType === 2) {
+    if (props.row.project_type === 2) {
       const temp = await getChildAffairsList({
         projectId,
         all: true,
@@ -87,7 +87,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
         orderKey: item.key,
       })
       result = temp?.list
-    } else if (location.href?.includes('Demand')) {
+    } else if (props.row.project_type === 1 && props.row.is_bug !== 1) {
       result = await getDemandList({
         projectId,
         all: true,
@@ -95,7 +95,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
         order: item.value,
         orderKey: item.key,
       })
-    } else if (location.href?.includes('Defect')) {
+    } else if (props.row.project_type === 1 && props.row.is_bug === 1) {
       const temp = await getChildFlawList({
         projectId,
         all: true,
@@ -126,15 +126,15 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
       isOpenScreenDetail: true,
     }
     let url = ''
-    if (projectInfo?.projectType === 2) {
+    if (props.row.projectType === 2) {
       params.specialType = 1
       const resultParams = encryptPhp(JSON.stringify(params))
       url = `SprintProjectManagement/Affair?data=${resultParams}`
-    } else if (projectInfo?.projectType === 1 && record.is_bug === 1) {
+    } else if (props.row.projectType === 1 && props.row.is_bug === 1) {
       params.specialType = 2
       const resultParams = encryptPhp(JSON.stringify(params))
       url = `ProjectManagement/Defect?data=${resultParams}`
-    } else if (projectInfo?.projectType === 1 && record.is_bug !== 1) {
+    } else if (props.row.projectType === 1 && props.row.is_bug !== 1) {
       params.specialType = 3
       const resultParams = encryptPhp(JSON.stringify(params))
       url = `ProjectManagement/Demand?data=${resultParams}`
@@ -187,7 +187,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('common.demandName')}
+          {t('name1')}
         </NewSort>
       ),
       dataIndex: 'name',
@@ -198,6 +198,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
               display: 'flex',
               alignItems: 'center',
             }}
+            onClick={() => onToDetail(record)}
           >
             <Tooltip title={record.categoryRemark}>
               <img
@@ -287,7 +288,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('newlyAdd.demandProgress')}
+          {t('situation.progress')}
         </NewSort>
       ),
       dataIndex: 'schedule',

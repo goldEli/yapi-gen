@@ -28,6 +28,7 @@ const MyBreadcrumb = (props: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { type } = paramsData ?? {}
+  console.log('yyyyyy----', type)
   const dispatch = useDispatch()
 
   // 关闭全屏详情弹层
@@ -45,7 +46,7 @@ const MyBreadcrumb = (props: any) => {
       <Breadcrumb.Item>
         <a
           style={{ color: 'var(--neutral-n1-d1)' }}
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/AdminManagement/StaffManagement')}
           className={breadStyle}
         >
           <span> {t('staff.companyStaff')}</span>
