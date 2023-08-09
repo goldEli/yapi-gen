@@ -140,7 +140,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     sessionStorage.removeItem('saveRouter')
     setIsChangeCompany(false)
     // 切换公司自动跳转到公司概况
-    navigate('/Situation', { replace: true })
+    navigate(menuPermission?.priorityUrl, { replace: true })
     location.reload()
   }
 
