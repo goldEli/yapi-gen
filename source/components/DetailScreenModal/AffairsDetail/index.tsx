@@ -759,6 +759,7 @@ const AffairsDetail = () => {
             <CommonProgress
               isTable={false}
               id={affairsInfo.id}
+              update={affairsInfo}
               type="transaction"
               hasEdit={!hasEdit}
             />
