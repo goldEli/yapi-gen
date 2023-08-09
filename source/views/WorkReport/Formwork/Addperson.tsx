@@ -317,10 +317,10 @@ const Addperson = (props: Props) => {
   return (
     <>
       <AddPersonText>
-        <AddPersonTitleText>
+        {/* <AddPersonTitleText>
           <span>{props.title}</span>
           {props.isShow ? <span>*</span> : null}
-        </AddPersonTitleText>
+        </AddPersonTitleText> */}
         <Dropdown
           placement="bottomLeft"
           visible={isOpen}
