@@ -472,7 +472,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   // 下拉框选中
   const handleChange = async (value: any) => {
-    setSearchVal('')
+    console.log(value, 'multiple ')
+
     const hasVal = personData.filter((el: any) => el.id === value)
     if (hasVal.length >= 1) {
       getMessage({ msg: t('commonModal.warnningMsg1'), type: 'warning' })
@@ -497,6 +498,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
       setPersonData([...personData, ...filterVal])
     }
+    // setSearchVal('')
   }
   const onConfirm = async () => {
     const setData =
@@ -931,14 +933,16 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       <CreatePerson>
         <LeftWrap>
           <SelectStyle
+            mode="multiple"
+            maxTagCount={0}
             notFoundContent={null}
             showSearch
             allowClear
             autoClearSearchValue
             style={{ width: 270 }}
             // eslint-disable-next-line no-undefined
-            value={searchVal}
-            onChange={(e: any) => handleChange(e)}
+            value={checkedKeys}
+            onSelect={(e: any) => handleChange(e)}
             optionFilterProp="label"
             options={selectDataList}
             placeholder={t('commonModal.placeMsg')}
