@@ -10,8 +10,8 @@ const TreeLine = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 15px 0 15px;
-  height: 40px;
+  padding: 10px 15px;
+  /* min-height: 40px; */
   border-radius: 6px;
   transition: all 0.3s;
   :hover {
