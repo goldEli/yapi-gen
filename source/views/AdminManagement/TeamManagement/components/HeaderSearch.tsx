@@ -80,7 +80,7 @@ const HeaderSearch = (props: {
             onChangeSearch={(value: string) => props.onSetSearchVal(value)}
             leftIcon
           />
-          <CommonButton type="primary" onClick={props.onShowAddMemberModal}>
+          <CommonButton type="secondary" onClick={props.onShowAddMemberModal}>
             {t('add_a_member') as string}
           </CommonButton>
         </Space>
