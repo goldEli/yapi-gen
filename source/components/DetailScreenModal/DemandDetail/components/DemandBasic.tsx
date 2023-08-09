@@ -82,7 +82,8 @@ const DemandBasic = (props: Props) => {
             <CommonProgress
               isTable={false}
               id={demandInfo?.id}
-              hasEdit={!isCanEdit}
+              hasEdit={isCanEdit}
+              type="demand"
             />
             <BasicDemand
               detail={demandInfo}

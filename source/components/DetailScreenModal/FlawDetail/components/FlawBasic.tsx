@@ -27,6 +27,7 @@ import ChangeSeverityPopover from '@/components/ChangeSeverityPopover'
 import DetailParent from '@/components/DetailParent'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import { setIsRefresh } from '@store/user'
+import CommonProgress from '@/components/CommonProgress'
 
 interface Props {
   detail?: any
@@ -136,7 +137,7 @@ const FlawBasic = (props: Props) => {
       categoryId: props.detail?.category,
     })
     // 重组数据
-    let keys: any = []
+    const keys: any = []
     result?.forEach((element: any) => {
       keys.push([onChangeBasicKey(element.content), element.isRequired])
     }),
@@ -463,6 +464,15 @@ const FlawBasic = (props: Props) => {
       }}
       id="tab_info"
     >
+      <div style={{ marginBottom: 20 }}>
+        <CommonProgress
+          update={props?.detail}
+          isTable={false}
+          type="flaw"
+          hasEdit={isCanEdit}
+          id={props?.detail?.id}
+        />
+      </div>
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {
         return (
@@ -483,24 +493,25 @@ const FlawBasic = (props: Props) => {
           {t('newlyAdd.open')}
         </ShowLabel>
       )}
-      {isShowFields &&
-        foldList?.map((i: any) => (
-          <InfoItemBasic key={i.content}>
-            <LimitLabel label={i.title} width={90} />
-            <ContentWrap
-              style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
-            >
-              {i.isCustomize === 1
-                ? getCustomComponent(i)
-                : getBasicTypeComponent(i)}
-            </ContentWrap>
-          </InfoItemBasic>
-        ))}
-      {isShowFields && foldList?.length > 0 && (
+      {isShowFields
+        ? foldList?.map((i: any) => (
+            <InfoItemBasic key={i.content}>
+              <LimitLabel label={i.title} width={90} />
+              <ContentWrap
+                style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
+              >
+                {i.isCustomize === 1
+                  ? getCustomComponent(i)
+                  : getBasicTypeComponent(i)}
+              </ContentWrap>
+            </InfoItemBasic>
+          ))
+        : null}
+      {isShowFields && foldList?.length > 0 ? (
         <ShowLabel onClick={() => setIsShowFields(false)}>
           {t('newlyAdd.close')}
         </ShowLabel>
-      )}
+      ) : null}
     </div>
   )
 }

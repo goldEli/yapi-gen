@@ -846,6 +846,7 @@ const DemandDetailDrawer = () => {
                   isTable={false}
                   type="demand"
                   id={drawerInfo.id}
+                  hasEdit={isCanEdit}
                 />
               </ProgressBox>
               <BtnWrap>

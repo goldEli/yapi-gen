@@ -15,10 +15,11 @@ interface ProgressProps {
   percent?: number
   // 非表格时判断有无更新权限
   hasEdit?: boolean
+  update?: any
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable, isKanBan, id, type, percent, hasEdit } = props
+  const { isTable, isKanBan, id, type, percent, hasEdit, update } = props
   const [visible, setVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const [data, setData] = useState<any>(null)
@@ -33,7 +34,7 @@ const CommonProgress = (props: ProgressProps) => {
     if (id) {
       getList()
     }
-  }, [id])
+  }, [id, update])
 
   return (
     <>
