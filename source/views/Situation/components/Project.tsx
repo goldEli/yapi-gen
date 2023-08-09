@@ -74,7 +74,7 @@ const Project = (props: any) => {
 
   return (
     <ChartsWrap>
-      {/* <div className={titleCss}>{t('situation.projectSurvey')}</div> */}
+      <div className={titleCss}>{t('situation.projectSurvey')}</div>
       <TextWrap>
         {/* <TextBlueWrap> */}
         <ChartsItem333>
