@@ -41,23 +41,29 @@ export const TopWrap = styled.div({
   background: 'white',
 })
 
-export const IconWrap = styled(IconFont)<{ isActive: any }>(
-  {
-    fontSize: 20,
-    color: 'var(--neutral-n3)',
-    cursor: 'pointer',
-    padding: 6,
-    borderRadius: 6,
-    '&: hover': {
-      color: 'var(--neutral-n1-d1)',
-      background: 'var(--hover-d3)',
-    },
-  },
-  ({ isActive }) => ({
-    color: isActive ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)',
-    background: isActive ? 'var(--hover-d3)' : 'white',
-  }),
-)
+export const IconWrap = styled(IconFont)<{ isActive?: boolean }>`
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 6px;
+  svg {
+    color: ${props =>
+      props.isActive ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
+  }
+  background: ${props => (props.isActive ? 'var(--hover-d1)' : 'white')};
+  &:hover {
+    background: var(--hover-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+  &:active {
+    background: var(--neutral-n6-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+`
 
 export const SortItem = styled.div<{ isActive: boolean }>(
   {
@@ -209,7 +215,7 @@ export const IconWrapInfo = styled(IconFont)({
   borderRadius: 6,
   '&: hover': {
     color: 'var(--neutral-n1-d1)',
-    background: 'var(--hover-d3)',
+    background: 'var(--hover-d1)',
   },
   '&: active': {
     color: 'var(--neutral-n1-d1)',
