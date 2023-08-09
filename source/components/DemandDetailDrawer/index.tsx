@@ -887,7 +887,13 @@ const DemandDetailDrawer = () => {
                   链接工作项
                 </CommonButton>
               </BtnWrap>
-              <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
+              <DrawerTopInfo
+                details={drawerInfo}
+                onUpdate={() => {
+                  console.log(11)
+                  getDemandDetail()
+                }}
+              ></DrawerTopInfo>
               <Tabs
                 className="tabs"
                 activeKey={tabActive}

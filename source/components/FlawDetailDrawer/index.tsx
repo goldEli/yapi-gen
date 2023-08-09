@@ -904,7 +904,13 @@ const FlawDetailDrawer = () => {
                   {t('linkWorkItem')}
                 </CommonButton>
               </BtnWrap>
-              <DrawerTopInfo details={drawerInfo}></DrawerTopInfo>
+              <DrawerTopInfo
+                details={drawerInfo}
+                onUpdate={() => {
+                  console.log(11)
+                  getFlawDetail()
+                }}
+              ></DrawerTopInfo>
               <Tabs
                 className="tabs"
                 activeKey={tabActive}
