@@ -522,6 +522,8 @@ const DemandDetail = () => {
     }
   }, [])
 
+  console.log(resultCategory, '=resultCategoryresultCategory')
+
   return (
     <DemandWrap>
       <DeleteConfirmModal />
@@ -682,7 +684,7 @@ const DemandDetail = () => {
           <CopyIcon onCopy={onCopy} />
           <ChangeStatusPopover
             projectId={demandInfo.projectId}
-            isCanOperation={!hasEdit && demandInfo.isExamine}
+            isCanOperation={!hasEdit && !demandInfo.isExamine}
             record={demandInfo}
             onChangeStatus={onChangeStatus}
             type={1}
