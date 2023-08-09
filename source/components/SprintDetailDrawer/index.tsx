@@ -824,6 +824,7 @@ const SprintDetailDrawer = () => {
                 isTable={false}
                 type="transaction"
                 id={drawerInfo.id}
+                hasEdit={!hasEdit}
               />
               <Space size={12} style={{ marginTop: 16 }}>
                 {(drawerInfo.work_type === 6
