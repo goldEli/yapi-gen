@@ -210,7 +210,11 @@ const TreeStyle = styled(DirectoryTree)`
     background-color: none;
   }
 `
-const SelectStyle = styled(CustomSelect)``
+const SelectStyle = styled(CustomSelect)`
+  & .ant-select-selection-item-remove {
+    display: none;
+  }
+`
 
 const textcss = css`
   &:hover {
@@ -268,7 +272,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   const [form] = Form.useForm()
   const onInit = () => {
     setPersonData([])
-    setSearchVal(undefined)
+
     setCheckedKeys([])
   }
 
@@ -427,7 +431,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   const clearPerson = () => {
     setPersonData([])
     setCheckedKeys([])
-    setSearchVal(undefined)
   }
   // 勾选去获取成员数据
   const getStaffs = (res: any) => {
@@ -472,7 +475,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   // 下拉框选中
   const handleChange = async (value: any) => {
-    setSearchVal('')
+    console.log(value, 'multiple ')
+
     const hasVal = personData.filter((el: any) => el.id === value)
     if (hasVal.length >= 1) {
       getMessage({ msg: t('commonModal.warnningMsg1'), type: 'warning' })
@@ -497,6 +501,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
       setPersonData([...personData, ...filterVal])
     }
+    // setSearchVal('')
   }
   const onConfirm = async () => {
     const setData =
@@ -525,6 +530,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
   // 选中节点
   const setKeys = (keys: any) => {
+    console.log(keys, 'keys')
+
     if (keys.children && keys.children.length >= 1) {
       getHaveChildBykeys(keys)
     } else {
@@ -900,6 +907,11 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     props.isVisible,
     // props.defaultPeople, tabsActive, selectDataList
   ])
+  useEffect(() => {
+    console.log(personData, 'personData')
+
+    setCheckedKeys(personData.map((i: any) => i.id))
+  }, [personData])
 
   return (
     <ModalStyle
@@ -931,14 +943,15 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       <CreatePerson>
         <LeftWrap>
           <SelectStyle
+            mode="multiple"
+            maxTagCount={1}
             notFoundContent={null}
             showSearch
-            allowClear
             autoClearSearchValue
             style={{ width: 270 }}
             // eslint-disable-next-line no-undefined
-            value={searchVal}
-            onChange={(e: any) => handleChange(e)}
+            value={checkedKeys}
+            onSelect={(e: any) => handleChange(e)}
             optionFilterProp="label"
             options={selectDataList}
             placeholder={t('commonModal.placeMsg')}
@@ -951,10 +964,9 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                 <span
                   className={tabsActive === index ? 'tabsActive' : ''}
                   onClick={() => {
-                    setCheckedKeys([])
                     setSelectDataList([])
                     // setPersonData([])
-                    setSearchVal(undefined)
+
                     setTabsActive(index)
                     setShowTreeData({
                       children: tabsActive === 1 ? treeData2 : treeData,
