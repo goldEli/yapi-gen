@@ -219,7 +219,8 @@ const SprintDetailDrawer = () => {
   const getSprintDetail = async (id?: any, ids?: any) => {
     const paramsProjectId =
       affairsDetailDrawer.params.project_id ??
-      affairsDetailDrawer.params.projectId
+      affairsDetailDrawer.params.projectId ??
+      paramsData?.id
     if (affairsDetailDrawer.params?.isAllProject) {
       getProjectData()
     }

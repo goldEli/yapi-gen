@@ -63,6 +63,7 @@ import {
   copyLink,
   detailTimeFormat,
   getIdsForAt,
+  getParamsData,
   getProjectIdByUrl,
   removeNull,
 } from '@/tools'
@@ -72,8 +73,9 @@ import { cancelVerify } from '@/services/mine'
 import CommentFooter from '../CommonComment/CommentFooter'
 import CommonComment from '../CommonComment'
 import { setActiveCategory } from '@store/category'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRelation'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -109,6 +111,8 @@ const DemandDetailDrawer = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams) || {}
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [skeletonLoading, setSkeletonLoading] = useState(false)
@@ -120,7 +124,7 @@ const DemandDetailDrawer = () => {
   const [demandIds, setDemandIds] = useState([])
   const commentDom: any = createRef()
   const spanDom = useRef<HTMLSpanElement>(null)
-
+  const [openDemandDetail] = useOpenDemandDetail()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -175,7 +179,9 @@ const DemandDetailDrawer = () => {
   // 获取需求详情
   const getDemandDetail = async (id?: any, ids?: any) => {
     const paramsProjectId =
-      demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId
+      demandDetailDrawerProps.project_id ??
+      demandDetailDrawerProps.projectId ??
+      paramsData?.id
     if (demandDetailDrawerProps?.isAllProject) {
       getProjectData()
     }
@@ -676,7 +682,15 @@ const DemandDetailDrawer = () => {
             <>
               <ParentBox size={8}>
                 {drawerInfo.level_tree?.map((i: any, index: number) => (
-                  <DrawerHeader key={i.prefix_key}>
+                  <DrawerHeader
+                    key={i.prefix_key}
+                    onClick={() => {
+                      const projectId = drawerInfo?.projectId
+                      if (index !== drawerInfo?.level_tree?.length - 1) {
+                        openDemandDetail({ ...i }, projectId, i.id)
+                      }
+                    }}
+                  >
                     <img src={i.category_attachment} alt="" />
                     <div>
                       {i.project_prefix}-{i.prefix_key}
