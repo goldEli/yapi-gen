@@ -465,14 +465,17 @@ const FlawBasic = (props: Props) => {
       id="tab_info"
     >
       <div style={{ marginBottom: 20 }}>
-        <CommonProgress
-          update={props?.detail}
-          isTable={false}
-          type="flaw"
-          hasEdit={isCanEdit}
-          id={props?.detail?.id}
-        />
+        {props.isInfoPage ? (
+          <CommonProgress
+            update={props?.detail}
+            isTable={false}
+            type="flaw"
+            hasEdit={isCanEdit}
+            id={props?.detail?.id}
+          />
+        ) : null}
       </div>
+
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {
         return (

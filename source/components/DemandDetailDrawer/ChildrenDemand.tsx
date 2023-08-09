@@ -3,6 +3,8 @@ import {
   getDemandList,
   getChildrenRecent,
   getChildrenSearch,
+  addChild,
+  sortChild,
 } from '@/services/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { Space, Table } from 'antd'
@@ -14,7 +16,7 @@ import NoData from '../NoData'
 import StateTag from '../StateTag'
 import { CloseWrap, LinkWrap, PriorityWrap, TableBorder } from '../StyleCommon'
 import { CancelText, Label, LabelWrap } from './style'
-import { setAddWorkItemModal } from '@store/project'
+import { setAddWorkItemModal, setIsUpdateAddWorkItem } from '@store/project'
 import MultipleAvatar from '../MultipleAvatar'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import CommonIconFont from '../CommonIconFont'
@@ -24,9 +26,15 @@ import DragTable from '../DragTable'
 import MoreDropdown from '../MoreDropdown'
 import RelationDropdownMenu from '../TableDropdownMenu/RelationDropdownMenu'
 import CommonProgress from '../CommonProgress'
+import { getMessage } from '../Message'
+import PaginationBox from '../TablePagination'
 interface Props {
   detail?: any
   isOpen?: boolean
+}
+interface SelectItem {
+  label: string
+  value: number
 }
 
 const ChildrenDemand = (props: Props, ref: any) => {
@@ -37,9 +45,15 @@ const ChildrenDemand = (props: Props, ref: any) => {
   )
   const [dataList, setDataList] = useState<any>({
     list: undefined,
+    page: {},
   })
   const [isSearch, setIsSearch] = useState(false)
+  // 下拉数据
+  const [selectList, setSelectList] = useState<SelectItem[]>([])
+  // 最近事务数据
+  const [recentList, setRecentList] = useState<SelectItem[]>([])
   const [searchValue, setSearchValue] = useState('')
+  const [pageObj, setPageObj] = useState({ page: 1, pageSize: 10 })
   // 跳转详情页面
   const onToDetail = (record: any) => {
     const params = encryptPhp(
@@ -174,11 +188,22 @@ const ChildrenDemand = (props: Props, ref: any) => {
   const getList = async () => {
     const result = await getDemandList({
       projectId: props.detail.projectId,
-      all: true,
+      all: false,
       parentId: props.detail.id,
+      page: pageObj.page,
+      pageSize: pageObj.pageSize,
     })
+    console.log('res-----', result)
     setDataList({
-      list: result.map((item: { id: any }) => ({ ...item, index: item.id })),
+      list: result?.list?.map((item: { id: any }) => ({
+        ...item,
+        index: item.id,
+      })),
+      page: {
+        total: result.total,
+        currentPage: result.currentPage,
+        pageSize: result.pageSize,
+      },
     })
   }
   const operationList = [
@@ -219,20 +244,55 @@ const ChildrenDemand = (props: Props, ref: any) => {
       }),
     )
   }
+  // 点击切换页码
+  const onChangePage = (page: number, size: number) => {
+    setPageObj({ page, pageSize: size })
+    getList()
+  }
+  // 下拉搜索
+  const onSearch = (value: string) => {
+    setSearchValue(value)
+    getSelectSearchList(value)
+  }
+  // 点击下拉的事务 -- 添加
+  const onChangeSelect = async (value: any) => {
+    await addChild({
+      project_id: props.detail.projectId,
+      id: props.detail.id,
+      child_id: value,
+    })
+    getMessage({ type: 'success', msg: t('addedSuccessfully') })
+    onCancelSearch()
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+  }
+  // 获取最近下拉需求列表
   const getSelectRecentList = async () => {
     const params = {
-      projectId: props.detail.projectId,
+      project_id: props.detail.projectId,
       id: props.detail.id,
     }
-    let res = await getChildrenRecent(params)
+    const res = await getChildrenRecent(params)
+    setRecentList(
+      res.map((i: Model.Affairs.AffairsInfo) => ({
+        label: i.name,
+        value: i.id,
+      })),
+    )
   }
-  const getSelectSearchList = async () => {
+  // 获取最近搜索需求列表
+  const getSelectSearchList = async (keywords = '') => {
     const params = {
-      projectId: props.detail.projectId,
+      project_id: props.detail.projectId,
       id: props.detail.id,
-      keywords: '',
+      keywords,
     }
-    let res = await getChildrenSearch(params)
+    const res = await getChildrenSearch(params)
+    setSelectList(
+      res.map((i: Model.Affairs.AffairsInfo) => ({
+        label: i.name,
+        value: i.id,
+      })),
+    )
   }
   // 点击搜素获取下拉数据列表
   const onClickSearch = () => {
@@ -246,16 +306,19 @@ const ChildrenDemand = (props: Props, ref: any) => {
   }
   // 表格拖拽排序
   const onChangeData = async (data: any) => {
-    console.log('data--', data)
+    console.log('data--', data, props)
     setDataList({
       ...dataList,
       list: data.list,
     })
-    // await affairsChildDragSort({
-    //   projectId: projectInfo.id,
-    //   id: props.detail.id,
-    //   childrenIds: data.list.map((i: Model.Affairs.AffairsInfo) => i.id),
-    // })
+    await sortChild({
+      project_id: projectInfo.id,
+      parent_id: props.detail.id,
+      children_ids: data.list.map((i: Model.Affairs.AffairsInfo) => i.id),
+      page: pageObj.page,
+      pagesize: pageObj.pageSize,
+    })
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
   useImperativeHandle(ref, () => {
     return {
@@ -294,16 +357,12 @@ const ChildrenDemand = (props: Props, ref: any) => {
                 placeholder={t('search_for_transaction_name_or_number')}
                 getPopupContainer={(node: any) => node}
                 style={{ width: 184 }}
-                onSearch={() => {
-                  getSelectSearchList()
-                }}
-                options={[]}
+                onSearch={onSearch}
+                options={searchValue ? selectList : recentList}
                 showSearch
                 showArrow
                 optionFilterProp="label"
-                onChange={() => {
-                  getSelectSearchList()
-                }}
+                onChange={onChangeSelect}
                 allowClear
                 autoFocus
               />
@@ -345,8 +404,15 @@ const ChildrenDemand = (props: Props, ref: any) => {
             hasOperation={operationList}
           />
         </TableBorder>
-      ) : (
-        <NoData />
+      ) : null}
+      {dataList?.page?.total <= 0 && <NoData />}
+      {dataList?.page?.total > 10 && (
+        <PaginationBox
+          total={dataList?.page?.total}
+          currentPage={dataList?.page?.currentPage}
+          pageSize={dataList?.page?.pageSize}
+          onChange={onChangePage}
+        />
       )}
     </div>
   )

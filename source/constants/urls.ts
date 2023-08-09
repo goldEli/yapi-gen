@@ -479,6 +479,10 @@ const urls = {
   getChildrenRecent: '/b/story/selectChildrenRecent',
   // 子需求查询
   getChildrenSearch: '/b/story/selectChildrenSearch',
+  // 添加子需求
+  addChild: '/b/story/update/addChild',
+  // 排序子需求
+  sortChild: '/b/story/update/dragChildSort',
 
   // 复制视图
   copyView: '/b/story/views/copy',
