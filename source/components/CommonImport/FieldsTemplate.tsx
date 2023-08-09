@@ -80,7 +80,7 @@ const CheckedItem = styled.div<{ state?: any }>(
     alignItems: 'center',
     height: 40,
     borderRadius: 4,
-    padding: '  0 16px',
+    padding: '0 8px',
     cursor: 'pointer',
     'div: first-child': {
       width: '100%',
@@ -492,7 +492,7 @@ const FieldsTemplate = (props: Props) => {
                       }}
                       type="move"
                     />
-                    <span>{item.name}</span>
+                    <span style={{ marginLeft: 5 }}>{item.name}</span>
                     {!getItemState(item.field) && (
                       <ShowWrap style={{ marginLeft: 'auto' }}>
                         <IconFont

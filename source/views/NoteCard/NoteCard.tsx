@@ -11,6 +11,7 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import IconFont from '@/components/IconFont'
 import { ListItem } from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import styled from '@emotion/styled'
+import { CloseWrap } from '@/components/StyleCommon'
 
 const MyDiv = styled.div`
   width: 480px;
@@ -56,15 +57,12 @@ const ReadCard = (props: any) => {
         }}
       >
         <span>{t('message_receiver_list')}</span>
-        <IconFont
-          onClick={() => props.onClose()}
-          style={{
-            fontSize: 20,
-            color: 'var(--neutral-n2)',
-            cursor: 'pointer',
-          }}
-          type="close"
-        />{' '}
+        <CloseWrap onClick={() => props.onClose()} width={32} height={32}>
+          <IconFont
+            style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+            type="close"
+          />
+        </CloseWrap>
       </div>
       <div
         style={{
@@ -73,7 +71,7 @@ const ReadCard = (props: any) => {
       >
         <div
           style={{
-            height: '240px',
+            height: '255px',
             flex: 1,
             padding: ' 0px 4px 0px 24px',
             borderRight: '1px solid #ebeced',
@@ -94,6 +92,7 @@ const ReadCard = (props: any) => {
             </span>
             <span
               style={{
+                fontFamily: 'SiYuanMedium',
                 fontSize: '12px',
               }}
             >
@@ -103,7 +102,7 @@ const ReadCard = (props: any) => {
           <div
             style={{
               overflow: 'scroll',
-              height: '215px',
+              height: '235px',
             }}
           >
             {value?.list
@@ -128,7 +127,7 @@ const ReadCard = (props: any) => {
         </div>
         <div
           style={{
-            height: '240px',
+            height: '255px',
             flex: 1,
             padding: ' 0px 4px 0px 24px',
           }}
@@ -158,7 +157,7 @@ const ReadCard = (props: any) => {
           <div
             style={{
               overflow: 'scroll',
-              height: '215px',
+              height: '235px',
             }}
           >
             {value?.list

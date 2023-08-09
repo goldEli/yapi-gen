@@ -7,7 +7,7 @@
 import { Checkbox, Input, Space, message, Menu, Spin, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -430,6 +430,14 @@ const PermissionManagement = () => {
       ]}
     />
   )
+  const bIn = useRef<any>(null)
+  useEffect(() => {
+    if (isVisible) {
+      setTimeout(() => {
+        bIn.current.focus()
+      }, 200)
+    }
+  }, [isVisible])
 
   return (
     <PermissionWrap
@@ -471,6 +479,7 @@ const PermissionManagement = () => {
         >
           <div style={{ margin: '0 16px 24px 24px' }}>
             <Input
+              ref={bIn}
               autoComplete="off"
               value={addValue}
               onChange={e => setAddValue(e.target.value)}

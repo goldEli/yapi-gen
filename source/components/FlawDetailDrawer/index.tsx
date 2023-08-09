@@ -72,6 +72,7 @@ import { cancelVerify } from '@/services/mine'
 import FlawDetail from '../DetailScreenModal/FlawDetail/components/FlawDetail'
 import RelationStories from '../DetailScreenModal/FlawDetail/components/RelationStories'
 import FlawBasic from '../DetailScreenModal/FlawDetail/components/FlawBasic'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -114,7 +115,7 @@ const FlawDetailDrawer = () => {
   const leftWidth = 640
   const spanDom = useRef<HTMLSpanElement>(null)
   const { userInfo } = useSelector(store => store.user)
-
+  const [openDemandDetail] = useOpenDemandDetail()
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
     { name: t('associatedWorkItems'), key: 'relation', content: '' },
@@ -141,7 +142,8 @@ const FlawDetailDrawer = () => {
 
   // 获取事务详情
   const getFlawDetail = async (id?: any, ids?: any) => {
-    const paramsProjectId = params.project_id ?? params.projectId
+    const paramsProjectId =
+      params.project_id ?? params.projectId ?? paramsData.id
     if (params?.isAllProject) {
       getProjectData()
     }
@@ -741,7 +743,16 @@ const FlawDetailDrawer = () => {
             <>
               <ParentBox size={8}>
                 {drawerInfo.level_tree?.map((i: any, index: number) => (
-                  <DrawerHeader key={i.prefix_key}>
+                  <DrawerHeader
+                    key={i.prefix_key}
+                    onClick={() => {
+                      console.log('---', i, drawerInfo)
+                      const projectId = drawerInfo?.projectId
+                      if (index !== drawerInfo?.level_tree?.length - 1) {
+                        openDemandDetail({ ...i }, projectId, i.id, 2)
+                      }
+                    }}
+                  >
                     <img src={i.category_attachment} alt="" />
                     <div>
                       {i.project_prefix}-{i.prefix_key}
