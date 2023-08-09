@@ -7,6 +7,13 @@ declare namespace API.Sprint {
       list: Model.SprintKanBan.Task[]
     }
   }
+  namespace UnassignedList {
+    type Params = {
+      page: number
+      pagesize: number
+      type: number
+    }
+  }
   namespace RecentCreateData {
     type Result = Array<Model.Sprint.RecentCreateDataItem>
   }
