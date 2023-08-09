@@ -19,7 +19,7 @@ const TableWrap = styled(Table)`
 
 interface DragTableProps {
   dataSource: any
-  onChangeData(arr: any): void
+  onChangeData(arr: any, idx: number): void
   columns: any
   hasOperation?: any
   showHeader?: boolean
@@ -45,7 +45,7 @@ const DragTable = (props: DragTableProps) => {
         oldIndex,
         newIndex,
       ).filter((el: any) => !!el)
-      props.onChangeData({ list: newData })
+      props.onChangeData({ list: newData }, newIndex)
     }
   }
 
