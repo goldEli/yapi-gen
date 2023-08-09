@@ -210,7 +210,11 @@ const TreeStyle = styled(DirectoryTree)`
     background-color: none;
   }
 `
-const SelectStyle = styled(CustomSelect)``
+const SelectStyle = styled(CustomSelect)`
+  & .ant-select-selection-item-remove {
+    display: none;
+  }
+`
 
 const textcss = css`
   &:hover {
@@ -940,7 +944,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
         <LeftWrap>
           <SelectStyle
             mode="multiple"
-            maxTagCount={0}
+            maxTagCount={1}
             notFoundContent={null}
             showSearch
             autoClearSearchValue
