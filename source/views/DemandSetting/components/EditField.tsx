@@ -309,7 +309,7 @@ const EditFiled = (props: Props) => {
     if (props?.isVisible) {
       setTimeout(() => {
         inputRef.current.focus()
-      }, 200)
+      }, 100)
     }
   }, [props?.isVisible])
 

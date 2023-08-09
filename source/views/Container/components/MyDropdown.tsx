@@ -94,7 +94,7 @@ const Title = styled.div`
 `
 const Row = styled.div`
   width: 100%;
-  padding: 0 24px;
+  padding: 0 16px;
   height: 52px;
   display: flex;
   align-items: center;

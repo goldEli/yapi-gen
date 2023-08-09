@@ -63,6 +63,18 @@ const FieldWrap = styled.div`
   .ant-select-single.ant-select-open .ant-select-selection-item {
     color: var(--primary-d1);
   }
+  .hoverStyle {
+    &:hover {
+      .ant-select-arrow {
+        color: var(--primary-d1);
+      }
+    }
+  }
+  /* &:hover {
+    .ant-select-arrow {
+      color: var(--primary-d1);
+    }
+  } */
 `
 const DivideWrap = styled.div`
   width: 1px;
@@ -117,7 +129,7 @@ const DropdownRenderDiv = styled.div`
     justify-content: space-between;
     padding-right: 12px;
     box-sizing: border-box;
-    color: var(--neutral-n1-d2);
+    color: var(--neutral-n2);
     &:hover {
       background: var(--hover-d3);
       color: var(--neutral-n1-d1);
@@ -257,7 +269,9 @@ const CreateField = () => {
           size={14}
           color="var(--neutral-n3)"
         />
-        <span style={{ marginLeft: '4px' }}>{t('creating_fields')}</span>
+        <span style={{ marginLeft: '4px', fontFamily: 'SiYuanMedium' }}>
+          {t('creating_fields')}
+        </span>
         <span
           style={{
             fontSize: '12px',
@@ -291,6 +305,7 @@ const CreateField = () => {
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
+                fontFamily: 'SiYuanMedium',
               }}
             >
               {t('project_existing_fields')}
@@ -338,6 +353,7 @@ const CreateField = () => {
             suffixIcon={
               <CommonIconFont type={fieldIsOpen ? 'up' : 'down'} size={16} />
             }
+            className="hoverStyle"
             placeholder={t('sprintProject.allFields')}
             options={[
               {
@@ -414,6 +430,7 @@ const CreateField = () => {
           <SelectStyle
             style={{ width: 100 }}
             bordered={false}
+            className="hoverStyle"
             isActive={typeIsOpen}
             placeholder={t('sprintProject.allTypes')}
             onDropdownVisibleChange={e => setTypeIsOpen(e)}

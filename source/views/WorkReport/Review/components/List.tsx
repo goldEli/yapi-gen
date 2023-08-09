@@ -104,6 +104,7 @@ const List = () => {
   const params = useParams()
   const [searchParams] = useSearchParams()
   const reportId = searchParams.get('reportId')
+  const reportType = searchParams.get('reportType')
   const id = Number(params?.id)
   const { isFresh } = useSelector(state => state.workReport.listUpdate)
 
@@ -629,6 +630,7 @@ const List = () => {
       dispatch(
         saveViewReportDetailDrawer({
           visible: true,
+          system: !!reportType,
           id: reportId,
           ids: listData?.map((i: any) => i.id),
         }),
