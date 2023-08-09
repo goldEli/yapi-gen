@@ -146,7 +146,7 @@ const TabItem = (props: any) => {
         }}
       >{`${t('sprint.noCreate')}${
         activeKey === 0 ? t('sprint.sprint') : t('sprint.longStory')
-      }${t('sprint.thingsOf')}（${data.unassigned_count}）`}</NoSprintButton>
+      }${t('sprint.thingsOf')}（${data?.unassigned_count}）`}</NoSprintButton>
     </div>
   )
 }

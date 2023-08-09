@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import CommonModal from '../CommonModal'
 import { useTranslation } from 'react-i18next'
 import { ProgressContentWrap, ShowProgress } from './style'
-import { AddWrap, SliderWrap } from '../StyleCommon'
+import { CloseWrap, SliderWrap } from '../StyleCommon'
 import { Form, Input, InputNumber } from 'antd'
 import UploadAttach from '../UploadAttach'
-import IconFont from '../IconFont'
 import { getScheduleDetails, updateStorySchedule } from '@/services/demand'
 import { updateTransactionSchedule } from '@/services/affairs'
 import { updateFlawSchedule } from '@/services/flaw'
 import { getMessage } from '../Message'
+import CommonIconFont from '../CommonIconFont'
+import { Label, LabelWrap } from '../DemandDetailDrawer/style'
 
 interface ProgressPropsType {
   type?: 'transaction' | 'demand' | 'flaw'
@@ -17,6 +18,7 @@ interface ProgressPropsType {
   onClose(): void
   id?: number
   project_id: number
+  onConfirm?(): void
 }
 
 const UpdateProgressModal = (props: ProgressPropsType) => {
@@ -25,7 +27,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
   const [inputValue, setInputValue] = useState(0)
   const [data, setData] = useState<any>(null)
 
-  const { type, visible, onClose, id, project_id } = props
+  const { type, visible, onClose, id, project_id, onConfirm } = props
 
   const getData = async () => {
     const result = await getScheduleDetails({
@@ -36,6 +38,10 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
     if (result) {
       setInputValue(result?.schedule ?? 0)
     }
+  }
+  const close = () => {
+    onClose()
+    form.resetFields()
   }
 
   useEffect(() => {
@@ -76,7 +82,9 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
       user_id: data?.user_id,
       project_id,
       story_id: id,
+      schedule: inputValue,
       ...value,
+      total_task_time: value.total_task_time * 3600,
     }
     let res = null
     if (type === 'demand') {
@@ -86,13 +94,23 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
     } else if (type === 'flaw') {
       res = await updateFlawSchedule(params)
     }
+    if (res) {
+      getMessage({
+        type: 'success',
+        msg: '更新成功',
+      })
+      close()
+      onConfirm?.()
+    }
   }
+  const myRef = useRef<any>(null)
+
   return (
     <CommonModal
       width={640}
       title="更新进度"
       isVisible={visible}
-      onClose={onClose}
+      onClose={close}
       onConfirm={confirm}
       confirmText="更新"
     >
@@ -116,16 +134,11 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
             />
             <InputNumber
               className="inputNumber"
+              value={inputValue}
               min={0}
               max={100}
               style={{ margin: '0 16px' }}
-              value={inputValue}
-              onBlur={(event: any) => {
-                onChange(Number(event?.target?.value))
-              }}
-              onPressEnter={(event: any) => {
-                onChange(Number(event?.target?.value))
-              }}
+              onChange={(val: any) => onChange(val)}
             />
           </div>
         </div>
@@ -154,19 +167,42 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
               placeholder={t('common.pleaseEnter')}
             />
           </Form.Item>
-          <Form.Item label="附件" name="attachment">
+          <Form.Item
+            className="info_item_tab_label"
+            label={
+              <LabelWrap
+                style={{
+                  justifyContent: 'space-between',
+                  display: 'flex',
+                  width: '100%',
+                }}
+              >
+                <Label>{t('common.attachment')}</Label>
+                <CloseWrap
+                  style={{ marginLeft: 'auto' }}
+                  width={24}
+                  height={24}
+                >
+                  <CommonIconFont
+                    type="plus"
+                    size={18}
+                    color="var(--neutral-n2)"
+                    onClick={() => {
+                      myRef.current?.handleUpload()
+                    }}
+                  />
+                </CloseWrap>
+              </LabelWrap>
+            }
+            name="attachment"
+          >
             <UploadAttach
+              ref={myRef}
               power
               defaultList={[]}
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res)
               }}
-              addWrap={
-                <AddWrap hasColor>
-                  <IconFont type="plus" />
-                  <div>{t('p2.addAdjunct') as unknown as string}</div>
-                </AddWrap>
-              }
             />
           </Form.Item>
         </Form>

@@ -417,7 +417,14 @@ const System = () => {
                           {t('report.list.day')}]
                         </span>
                       ) : null}
-                      <Msg>{el.name}</Msg>
+                      <Msg>
+                        {el.name}
+                        {`（${
+                          el.user_schedule_percent
+                            ? el.user_schedule_percent
+                            : 0
+                        }%）`}
+                      </Msg>
                     </RowRadius>
                   ))}
                 {item.type === 2 && (
