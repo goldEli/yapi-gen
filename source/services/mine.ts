@@ -557,6 +557,20 @@ export const getMineNoFinishList: any = async (params: any) => {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
               permissions: i.project.permissions,
+              isEdit: Object.values(i.project.permissions).includes(
+                i.project_type === 2
+                  ? 'b/transaction/update'
+                  : i.project_type === 1 && i.is_bug === 1
+                  ? 'b/flaw/update'
+                  : 'b/story/update',
+              ),
+              isDelete: Object.values(i.project.permissions).includes(
+                i.project_type === 2
+                  ? 'b/transaction/delete'
+                  : i.project_type === 1 && i.is_bug === 1
+                  ? 'b/flaw/delete'
+                  : 'b/story/delete',
+              ),
             },
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
@@ -605,6 +619,20 @@ export const getMineNoFinishList: any = async (params: any) => {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
               permissions: i.project.permissions,
+              isEdit: Object.values(i.project.permissions).includes(
+                i.project_type === 2
+                  ? 'b/transaction/update'
+                  : i.project_type === 1 && i.is_bug === 1
+                  ? 'b/flaw/update'
+                  : 'b/story/update',
+              ),
+              isDelete: Object.values(i.project.permissions).includes(
+                i.project_type === 2
+                  ? 'b/transaction/delete'
+                  : i.project_type === 1 && i.is_bug === 1
+                  ? 'b/flaw/delete'
+                  : 'b/story/delete',
+              ),
             },
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
@@ -688,6 +716,20 @@ export const getMineCreacteList: any = async (params: any) => {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
             permissions: i.project.permissions,
+            isEdit: Object.values(i.project.permissions).includes(
+              i.project_type === 2
+                ? 'b/transaction/update'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/update'
+                : 'b/story/update',
+            ),
+            isDelete: Object.values(i.project.permissions).includes(
+              i.project_type === 2
+                ? 'b/transaction/delete'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/delete'
+                : 'b/story/delete',
+            ),
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
@@ -768,6 +810,20 @@ export const getMineFinishList: any = async (params: any) => {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
             permissions: i.project.permissions,
+            isEdit: Object.values(i.project.permissions).includes(
+              i.project_type === 2
+                ? 'b/transaction/update'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/update'
+                : 'b/story/update',
+            ),
+            isDelete: Object.values(i.project.permissions).includes(
+              i.project_type === 2
+                ? 'b/transaction/delete'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/delete'
+                : 'b/story/delete',
+            ),
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
@@ -847,6 +903,20 @@ export const getMineNeedList: any = async (params: any) => {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
             permissions: i.project.permissions,
+            isEdit: Object.values(i.project.permissions).includes(
+              i.project_type === 2
+                ? 'b/transaction/update'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/update'
+                : 'b/story/update',
+            ),
+            isDelete: Object.values(i.project.permissions).includes(
+              i.project_type === 2
+                ? 'b/transaction/delete'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/delete'
+                : 'b/story/delete',
+            ),
           },
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,

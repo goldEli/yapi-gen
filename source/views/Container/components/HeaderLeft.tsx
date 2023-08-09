@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
 import { getParamsData } from '@/tools'
-import sideLogo from '/newLogo.svg'
+import sideLogo from '/newLogo-ifun.svg'
 import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import {
   ChildrenMenu,
@@ -140,7 +140,12 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     sessionStorage.removeItem('saveRouter')
     setIsChangeCompany(false)
     // 切换公司自动跳转到公司概况
-    navigate('/Situation', { replace: true })
+    navigate(
+      menuPermission?.menus?.find(
+        (i: any) => i.url === menuPermission.priorityUrl,
+      )?.children?.[0]?.url ?? '',
+      { replace: true },
+    )
     location.reload()
   }
 

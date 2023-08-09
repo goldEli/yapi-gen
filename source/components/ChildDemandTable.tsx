@@ -75,7 +75,6 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
   const { fullScreen } = useSelector(store => store.kanBan)
 
   const getList = async (item: any) => {
-    console.log(props.row, 'itemitemitem')
     // 需要区分是那种类型的子需求
     let result = null
     if (props.row.project_type === 2) {
@@ -126,20 +125,19 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
       isOpenScreenDetail: true,
     }
     let url = ''
-    if (props.row.projectType === 2) {
+    if (record.project_type === 2) {
       params.specialType = 1
       const resultParams = encryptPhp(JSON.stringify(params))
       url = `SprintProjectManagement/Affair?data=${resultParams}`
-    } else if (props.row.projectType === 1 && props.row.is_bug === 1) {
+    } else if (record.project_type === 1 && record.is_bug === 1) {
       params.specialType = 2
       const resultParams = encryptPhp(JSON.stringify(params))
       url = `ProjectManagement/Defect?data=${resultParams}`
-    } else if (props.row.projectType === 1 && props.row.is_bug !== 1) {
+    } else if (record.project_type === 1 && record.is_bug !== 1) {
       params.specialType = 3
       const resultParams = encryptPhp(JSON.stringify(params))
       url = `ProjectManagement/Demand?data=${resultParams}`
     }
-
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
