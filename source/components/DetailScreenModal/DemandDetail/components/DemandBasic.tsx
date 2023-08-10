@@ -24,10 +24,11 @@ const DemandBasic = (props: Props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { demandInfo, demandCommentList } = useSelector(store => store.demand)
-  const { isUpdateAddWorkItem } = useSelector(store => store.project)
+  const { isUpdateAddWorkItem, projectInfo } = useSelector(
+    store => store.project,
+  )
   const isRest = useSelector(store => store.scroll.isRest)
   const [activeTabs, setActiveTabs] = useState(1)
-  const { projectInfo } = useSelector(store => store.project)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -86,6 +87,7 @@ const DemandBasic = (props: Props) => {
               hasEdit={isCanEdit}
               type="demand"
               project_id={demandInfo?.projectId}
+              onConfirm={onUpdate}
             />
             <BasicDemand
               detail={demandInfo}

@@ -342,7 +342,7 @@ const FlawTag = (props: Props) => {
       {props?.isQuick || isCanEdit ? (
         <Popover
           visible={isOpen}
-          placement="bottomRight"
+          placement="bottomLeft"
           trigger="click"
           onVisibleChange={onVisibleOpenChange}
           content={

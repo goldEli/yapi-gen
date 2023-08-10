@@ -197,6 +197,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
       parentId: props.detail.id,
       page: pageObj.page,
       pageSize: pageObj.pageSize,
+      orderKey: 'sort',
     })
     console.log('res-----', result)
     setDataList({

@@ -826,6 +826,7 @@ const SprintDetailDrawer = () => {
                 id={drawerInfo?.id}
                 hasEdit={!hasEdit}
                 project_id={drawerInfo?.projectId}
+                onConfirm={onOperationUpdate}
               />
               <Space size={12} style={{ marginTop: 16 }}>
                 {(drawerInfo.work_type === 6
