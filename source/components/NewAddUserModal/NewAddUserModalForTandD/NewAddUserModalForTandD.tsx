@@ -475,8 +475,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   // 下拉框选中
   const handleChange = async (value: any) => {
-    console.log(value, 'multiple ')
-
     const hasVal = personData.filter((el: any) => el.id === value)
     if (hasVal.length >= 1) {
       getMessage({ msg: t('commonModal.warnningMsg1'), type: 'warning' })
@@ -530,8 +528,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
   // 选中节点
   const setKeys = (keys: any) => {
-    console.log(keys, 'keys')
-
     if (keys.children && keys.children.length >= 1) {
       getHaveChildBykeys(keys)
     } else {
@@ -902,14 +898,13 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       //   }
       // }
     }
+    active.current = []
   }, [
     props.defaultPeople,
     props.isVisible,
     // props.defaultPeople, tabsActive, selectDataList
   ])
   useEffect(() => {
-    console.log(personData, 'personData')
-
     setCheckedKeys(personData.map((i: any) => i.id))
   }, [personData])
 

@@ -125,6 +125,7 @@ const DemandDetailDrawer = () => {
   const commentDom: any = createRef()
   const spanDom = useRef<HTMLSpanElement>(null)
   const [openDemandDetail] = useOpenDemandDetail()
+  const projectIdRef = useRef()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -178,10 +179,12 @@ const DemandDetailDrawer = () => {
 
   // 获取需求详情
   const getDemandDetail = async (id?: any, ids?: any) => {
+    console.log('demandDetailDrawerProps', demandDetailDrawerProps)
     const paramsProjectId =
       demandDetailDrawerProps.project_id ??
       demandDetailDrawerProps.projectId ??
-      paramsData?.id
+      paramsData?.id ??
+      projectIdRef.current
     if (demandDetailDrawerProps?.isAllProject) {
       getProjectData()
     }
@@ -685,6 +688,8 @@ const DemandDetailDrawer = () => {
                   <DrawerHeader
                     key={i.prefix_key}
                     onClick={() => {
+                      // TODO
+                      projectIdRef.current = demandDetailDrawerProps?.project_id
                       const projectId = drawerInfo?.projectId
                       if (index !== drawerInfo?.level_tree?.length - 1) {
                         openDemandDetail({ ...i }, projectId, i.id)

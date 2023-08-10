@@ -149,14 +149,27 @@ const Need = (props: any) => {
   }
 
   const onClickItem = (item: any) => {
+    console.log('1111111', item)
     const demandIds = listData?.list?.map((i: any) => i.demandId)
     item.id = item.demandId
     item.isMineOrHis = true
     item.isAllProject = props.projectId === 0
+    let type = 0
+    if (item.project_type === 2) {
+      type = 1
+    }
+    if (item.project_type === 1 && item.is_bug === 2) {
+      type = 3
+    }
+    if (item.project_type === 1 && item.is_bug === 1) {
+      type = 2
+    }
+    // type 1事务 2 缺陷 3 需求
     openDemandDetail(
       { ...item, ...{ demandIds } },
       item.projectId,
       item.demandId,
+      type,
     )
   }
 
