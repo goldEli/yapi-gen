@@ -770,6 +770,7 @@ const AffairsDetail = () => {
               update={affairsInfo}
               type="transaction"
               hasEdit={!hasEdit}
+              project_id={affairsInfo?.projectId as any}
               onConfirm={onUpdate}
             />
           </div>

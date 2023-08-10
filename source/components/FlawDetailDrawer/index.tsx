@@ -892,6 +892,7 @@ const FlawDetailDrawer = () => {
                   type="flaw"
                   id={drawerInfo.id}
                   hasEdit={isCanEdit}
+                  project_id={drawerInfo.projectId}
                   onConfirm={onOperationUpdate}
                 />
               </div>

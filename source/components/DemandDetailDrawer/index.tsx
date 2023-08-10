@@ -636,6 +636,7 @@ const DemandDetailDrawer = () => {
       window.removeEventListener('scroll', handleScroll, false)
     }
   }, [document.getElementById('contentDom')])
+
   return (
     <>
       <DeleteConfirm
@@ -845,6 +846,7 @@ const DemandDetailDrawer = () => {
                   type="demand"
                   id={drawerInfo.id}
                   hasEdit={isCanEdit}
+                  project_id={drawerInfo.projectId}
                   onConfirm={onOperationUpdate}
                 />
               </ProgressBox>

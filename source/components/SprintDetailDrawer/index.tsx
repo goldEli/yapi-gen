@@ -823,8 +823,9 @@ const SprintDetailDrawer = () => {
               <CommonProgress
                 isTable={false}
                 type="transaction"
-                id={drawerInfo.id}
+                id={drawerInfo?.id}
                 hasEdit={!hasEdit}
+                project_id={drawerInfo?.projectId}
                 onConfirm={onOperationUpdate}
               />
               <Space size={12} style={{ marginTop: 16 }}>

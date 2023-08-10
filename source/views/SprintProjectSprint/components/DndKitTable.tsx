@@ -526,14 +526,19 @@ const DndKitTable = (props: any) => {
     },
     { title: t('sprint.sub'), dataIndex: 'child_story_count', width: 120 },
     {
-      title: '进度',
+      title: t('situation.progress'),
       dataIndex: 'child_story_count',
       width: 120,
       render: (text: number, record: any) => {
         const id = record.id?.split('_')?.[1]
         return (
           <div>
-            <CommonProgress percent={text} isTable id={id} />
+            <CommonProgress
+              project_id={record.project_id}
+              percent={text}
+              isTable
+              id={id}
+            />
           </div>
         )
       },
