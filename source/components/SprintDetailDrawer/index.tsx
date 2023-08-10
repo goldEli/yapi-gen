@@ -825,7 +825,12 @@ const SprintDetailDrawer = () => {
                 type="transaction"
                 id={drawerInfo?.id}
                 percent={drawerInfo?.schedule}
-                hasEdit={!hasEdit}
+                hasEdit={
+                  !hasEdit &&
+                  drawerInfo?.user
+                    ?.map((i: any) => i?.user?.id)
+                    ?.includes(userInfo?.id)
+                }
                 project_id={drawerInfo?.projectId}
                 onConfirm={onOperationUpdate}
               />

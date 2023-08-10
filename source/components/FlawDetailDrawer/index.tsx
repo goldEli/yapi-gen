@@ -892,7 +892,12 @@ const FlawDetailDrawer = () => {
                   type="flaw"
                   id={drawerInfo.id}
                   percent={drawerInfo?.schedule}
-                  hasEdit={isCanEdit}
+                  hasEdit={
+                    !!isCanEdit &&
+                    drawerInfo?.user
+                      ?.map((i: any) => i?.user?.id)
+                      ?.includes(userInfo?.id)
+                  }
                   project_id={drawerInfo.projectId}
                   onConfirm={onOperationUpdate}
                 />

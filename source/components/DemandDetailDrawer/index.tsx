@@ -131,6 +131,7 @@ const DemandDetailDrawer = () => {
   const { projectInfo, isUpdateAddWorkItem, projectInfoValues } = useSelector(
     store => store.project,
   )
+  const { userInfo } = useSelector(store => store.user)
   const [t] = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -846,7 +847,12 @@ const DemandDetailDrawer = () => {
                   type="demand"
                   id={drawerInfo.id}
                   percent={drawerInfo?.schedule}
-                  hasEdit={isCanEdit}
+                  hasEdit={
+                    isCanEdit &&
+                    drawerInfo?.user
+                      ?.map((i: any) => i?.user?.id)
+                      ?.includes(userInfo?.id)
+                  }
                   project_id={drawerInfo.projectId}
                   onConfirm={onOperationUpdate}
                 />

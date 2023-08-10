@@ -429,7 +429,12 @@ const FlawBasic = (props: Props) => {
             isTable={false}
             percent={props?.detail?.schedule}
             type="flaw"
-            hasEdit={isCanEdit}
+            hasEdit={
+              !!isCanEdit &&
+              props?.detail?.user
+                ?.map((i: any) => i?.user?.id)
+                ?.includes(userInfo?.id)
+            }
             id={props?.detail?.id}
             project_id={props?.detail?.projectId}
             onConfirm={props.onUpdate}
