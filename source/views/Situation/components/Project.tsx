@@ -97,8 +97,8 @@ const Project = (props: any) => {
           <span className={title2Css}>{t('other.iteration_team')}</span>
         </ChartsItem333>
         <ChartsItem333>
-          {/* <span className={title1Css}>{data?.iterate_company_count ?? 0}</span> */}
-          {/* <span className={title2Css}>{t('other.iteration_public')}</span> */}
+          <span className={title1Css}>{data?.iterate_company_count ?? 0}</span>
+          <span className={title2Css}>{t('other.iteration_public')}</span>
         </ChartsItem333>
         {/* </HomeWrap> */}
       </TextWrap>

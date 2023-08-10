@@ -746,7 +746,6 @@ const FlawDetailDrawer = () => {
                   <DrawerHeader
                     key={i.prefix_key}
                     onClick={() => {
-                      console.log('---', i, drawerInfo)
                       const projectId = drawerInfo?.projectId
                       if (index !== drawerInfo?.level_tree?.length - 1) {
                         openDemandDetail({ ...i }, projectId, i.id, 2)

@@ -109,7 +109,6 @@ export const projectSlice = createSlice({
     },
     // 全局使用项目信息
     setProjectInfo: (state: any, action) => {
-      console.log(action.payload, 'action.payload')
       state.projectInfo = action.payload
     },
     // 关于项目的下拉数据
