@@ -85,6 +85,7 @@ const DemandBasic = (props: Props) => {
               id={demandInfo?.id}
               hasEdit={isCanEdit}
               type="demand"
+              project_id={demandInfo?.projectId}
             />
             <BasicDemand
               detail={demandInfo}

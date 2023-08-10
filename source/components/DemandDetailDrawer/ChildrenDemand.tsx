@@ -178,7 +178,12 @@ const ChildrenDemand = (props: Props, ref: any) => {
       render: (text: string, record: any, index: any) => {
         return (
           <div>
-            <CommonProgress isTable percent={Number(text)} id={record.id} />
+            <CommonProgress
+              project_id={record.project_id}
+              isTable
+              percent={Number(text)}
+              id={record.id}
+            />
           </div>
         )
       },

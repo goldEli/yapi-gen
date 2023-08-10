@@ -472,6 +472,7 @@ const FlawBasic = (props: Props) => {
             type="flaw"
             hasEdit={isCanEdit}
             id={props?.detail?.id}
+            project_id={props?.detail?.projectId}
           />
         ) : null}
       </div>

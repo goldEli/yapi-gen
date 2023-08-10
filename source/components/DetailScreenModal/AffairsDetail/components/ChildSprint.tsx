@@ -286,7 +286,13 @@ const ChildSprint = (
       render: (text: any, record: any) => {
         return (
           <div>
-            <CommonProgress isTable percent={Number(text)} id={record.id} />
+            <CommonProgress
+              isTable
+              percent={Number(text)}
+              id={record.id}
+              // todo加projectId
+              project_id={record?.projectId}
+            />
           </div>
         )
       },
