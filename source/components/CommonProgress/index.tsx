@@ -99,7 +99,7 @@ const CommonProgress = (props: ProgressProps) => {
           ) : (
             <div style={{ width: 222, marginRight: 40, cursor: 'pointer' }}>
               <Progress
-                percent={data?.total_schedule ?? 0}
+                percent={percent}
                 strokeColor="var(--function-success)"
                 style={{ color: 'var(--function-success)' }}
                 format={percent => `${t('totalProgress')} ${percent}%`}

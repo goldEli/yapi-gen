@@ -824,6 +824,7 @@ const SprintDetailDrawer = () => {
                 isTable={false}
                 type="transaction"
                 id={drawerInfo?.id}
+                percent={drawerInfo?.schedule}
                 hasEdit={!hasEdit}
                 project_id={drawerInfo?.projectId}
                 onConfirm={onOperationUpdate}
