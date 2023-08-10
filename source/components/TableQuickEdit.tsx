@@ -359,7 +359,7 @@ const TableQuickEdit = (props: Props) => {
 
   // 操作框改变
   const onChange = async (newValue: any, type?: any) => {
-    if (props.item.categoryConfigList[props.keyText] === 1 && !newValue) {
+    if (props.item?.categoryConfigList[props.keyText] === 1 && !newValue) {
       getMessage({
         msg: `${props.keyText}${t('is_required')}`,
         type: 'warning',
@@ -500,8 +500,8 @@ const TableQuickEdit = (props: Props) => {
         )}
 
       {/* 如果是详情或者是表格上可编辑字段 */}
-      {props.item.categoryConfigList &&
-        (Object.keys(props.item.categoryConfigList).includes(props.keyText) ||
+      {props.item?.categoryConfigList &&
+        (Object.keys(props.item?.categoryConfigList).includes(props.keyText) ||
           props.isInfo ||
           ['name', 'tag'].includes(props.keyText)) && (
           <>
@@ -565,8 +565,8 @@ const TableQuickEdit = (props: Props) => {
         )}
 
       {/* 不能操作的并且不是详情快捷操作，只展示 */}
-      {props.item.categoryConfigList &&
-        !Object.keys(props.item.categoryConfigList).includes(props.keyText) &&
+      {props.item?.categoryConfigList &&
+        !Object.keys(props.item?.categoryConfigList).includes(props.keyText) &&
         !props.isInfo &&
         !['name', 'tag'].includes(props.keyText) && (
           <DisableWrap>

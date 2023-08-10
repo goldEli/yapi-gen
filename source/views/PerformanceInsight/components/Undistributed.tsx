@@ -26,6 +26,7 @@ import {
   PriorityWrapTable,
 } from '@/components/StyleCommon'
 import { updateFlawTableParams, updateFlawPriority } from '@/services/flaw'
+import { unassignedList } from '@/services/efficiency'
 import { updateAffairsPriority } from '@/services/affairs'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import { OmitText } from '@star-yun/ui'
@@ -126,7 +127,9 @@ const Undistributed = (props: any) => {
     )?.length > 0
   const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
-  const [data, setData] = useState({
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(50)
+  const [data, setData] = useState<any>({
     list: [
       {
         name: '123',
@@ -141,6 +144,12 @@ const Undistributed = (props: any) => {
   }, [])
   const onUpdateOrderKey = () => {}
   const onUpdate = async (record?: any, type?: boolean) => {
+    const result1 = await unassignedList({
+      page: page,
+      pagesize: pageSize,
+      type: 1,
+    })
+    console.log(result1, 'result1')
     // 需求列表
     const result = await getDemandList({
       category_id: '',
@@ -168,7 +177,21 @@ const Undistributed = (props: any) => {
       userId: '',
       usersNameId: '',
     })
-    setData(result)
+    console.log(result, 'result-----------------')
+    const a = result1.list.map((el: any) => ({
+      ...el,
+      categoryConfigList: {
+        class_id: 2,
+        copysend: 2,
+        created_at: 2,
+        expected_end_at: 2,
+        expected_start_at: 2,
+        finish_at: 2,
+      },
+    }))
+    setData({
+      list: a,
+    })
   }
   // 修改优先级
   const onChangeState = async (item: any) => {
@@ -341,10 +364,10 @@ const Undistributed = (props: any) => {
             <ClickWrap
               className="canClickDetail"
               // onClick={() => state.onClickItem(record)}
-              isClose={record.status?.is_end === 1}
+              isClose={record.category_status?.is_end === 1}
               style={{ marginRight: 16 }}
             >
-              {record.storyPrefixKey}
+              {record.story_prefix_key}
             </ClickWrap>
             {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
@@ -366,7 +389,6 @@ const Undistributed = (props: any) => {
               paddingLeft: record.level ? (Number(record.level) - 1) * 24 : 0,
             }}
           >
-            {/* {state.isTree && state.onChangeTree(record)} */}
             <Tooltip placement="top" title={record.category}>
               <img
                 src={
@@ -428,13 +450,16 @@ const Undistributed = (props: any) => {
             <StateTag
               onClick={record.isExamine ? onExamine : void 0}
               isShow={isCanEdit || record.isExamine}
-              name={record.status?.status?.content}
+              name={record.category_status?.status?.content}
               state={
-                text?.is_start === 1 && text?.is_end === 2
+                record.category_status?.is_start === 1 &&
+                record.category_status?.is_end === 2
                   ? 1
-                  : text?.is_end === 1 && text?.is_start === 2
+                  : record.category_status?.is_end === 1 &&
+                    record.category_status?.is_start === 2
                   ? 2
-                  : text?.is_start === 2 && text?.is_end === 2
+                  : record.category_status?.is_start === 2 &&
+                    record.category_status?.is_end === 2
                   ? 3
                   : 0
               }
@@ -484,35 +509,6 @@ const Undistributed = (props: any) => {
       },
     },
     ...(props.homeType !== 'all' ? arr2 : []),
-    {
-      title: <NewSort fixedKey="tag">{t('common.tag')}</NewSort>,
-      dataIndex: 'tag',
-      key: 'tag',
-      width: 120,
-      render: (text: string, record: any) => {
-        return (
-          <TableQuickEdit
-            keyText="tag"
-            type="fixed_select"
-            defaultText={text?.split(';') || []}
-            item={record}
-            onUpdate={() => onUpdate(record)}
-            isBug={record.is_bug === 1}
-          >
-            <HiddenText>
-              <OmitText
-                width={120}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
-              >
-                {text || '--'}
-              </OmitText>
-            </HiddenText>
-          </TableQuickEdit>
-        )
-      },
-    },
     {
       title: <NewSort fixedKey="user_name">{t('common.createName')}</NewSort>,
       dataIndex: 'userName',
@@ -568,8 +564,9 @@ const Undistributed = (props: any) => {
       dataIndex: 'time',
       key: 'created_at',
       width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, row: any) => {
+        console.log(text)
+        return <span>{row.created_at || '--'}</span>
       },
     },
     {
@@ -578,21 +575,22 @@ const Undistributed = (props: any) => {
           {t('common.expectedStart')}
         </NewSort>
       ),
-      dataIndex: 'expectedStart',
+      dataIndex: 'expected_start_at',
       key: 'expected_start_at',
       width: 170,
-      render: (text: string, record: any) => {
+      render: (text: string, row: any) => {
+        console.log(row, text, 'record.expected_start_at')
         return (
           <TableQuickEdit
             type="date"
-            defaultText={text}
+            defaultText={row?.expected_start_at || '--'}
             keyText="expected_start_at"
-            item={record}
-            onUpdate={() => onUpdate(record)}
+            item={row}
+            onUpdate={() => onUpdate(row)}
             value={['datetime']}
-            isBug={record.is_bug === 1}
+            isBug={row.is_bug === 1}
           >
-            <span>{text || '--'}</span>
+            <span>{row?.expected_start_at || '--'}</span>
           </TableQuickEdit>
         )
       },
@@ -601,14 +599,14 @@ const Undistributed = (props: any) => {
       title: (
         <NewSort fixedKey="expected_end_at">{t('common.expectedEnd')}</NewSort>
       ),
-      dataIndex: 'expectedEnd',
+      dataIndex: 'expected_end_at',
       key: 'expected_end_at',
       width: 170,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
             type="date"
-            defaultText={text}
+            defaultText={record.expected_end_at || '--'}
             keyText="expected_end_at"
             item={record}
             onUpdate={() => onUpdate(record)}
@@ -736,13 +734,13 @@ const Undistributed = (props: any) => {
             type={1}
           />
         )}
-        <PaginationBox
+        {/* <PaginationBox
           currentPage={data?.currentPage}
           pageSize={data?.pageSize}
           total={data?.total}
           onChange={onChangePage}
           hasPadding
-        />
+        /> */}
       </div>
     </div>
   )
