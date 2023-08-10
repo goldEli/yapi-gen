@@ -319,5 +319,37 @@ export const unassignedList = async (
 ) => {
   const response = await http.get<any>('unassignedList', parmas)
   console.log(response)
-  return response.data
+  const list = response.data.list.map((el: any) => ({
+    ...el,
+    storyPrefixKey: el.story_prefix_key,
+    projectId: el.project_id,
+    category: el.project_category.name,
+    categoryAttachment: el.category_attachment,
+    isExamine: el?.verify_lock === 1,
+    categoryConfigList: el.category_config_list,
+    projectType: el.project_type,
+    status: el.category_status,
+    projectCategory: el.project_category,
+    categoryStatus: el.category_status,
+    usersNameIds: el.users_name_ids,
+    workType: el.work_type,
+    userName: el.user_name,
+    userId: el.user_id,
+    storyCount: el.story_count,
+    isCanEdit:
+      (el.project_type === 1 &&
+        el.isBug === 1 &&
+        Object.values(el.project.permissions).includes('b/flaw/update')) ||
+      (el.project_type === 2 &&
+        Object.values(el.project.permissions).includes(
+          'b/transaction/update',
+        )) ||
+      (el.project_type === 1 &&
+        el.isBug !== 1 &&
+        Object.values(el.project.permissions).includes('b/story/update')),
+  }))
+  return {
+    list,
+    pager: response.data.pager,
+  }
 }
