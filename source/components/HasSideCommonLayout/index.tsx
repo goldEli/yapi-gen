@@ -143,6 +143,7 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
     <HasSideWrap>
       {!props.hasSide && (
         <SideWrap
+          id="sidebar_yang"
           isOpen={firstMenuCollapse}
           ref={sliderRef}
           style={{

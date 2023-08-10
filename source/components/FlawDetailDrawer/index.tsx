@@ -116,6 +116,7 @@ const FlawDetailDrawer = () => {
   const spanDom = useRef<HTMLSpanElement>(null)
   const { userInfo } = useSelector(store => store.user)
   const [openDemandDetail] = useOpenDemandDetail()
+  const projectRef = useRef('')
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
     { name: t('associatedWorkItems'), key: 'relation', content: '' },
@@ -143,7 +144,13 @@ const FlawDetailDrawer = () => {
   // 获取事务详情
   const getFlawDetail = async (id?: any, ids?: any) => {
     const paramsProjectId =
-      params.project_id ?? params.projectId ?? paramsData.id
+      params.project_id ??
+      params.projectId ??
+      paramsData.id ??
+      projectRef.current
+    if (paramsProjectId) {
+      projectRef.current = paramsProjectId
+    }
     if (params?.isAllProject) {
       getProjectData()
     }
