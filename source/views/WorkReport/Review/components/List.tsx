@@ -630,7 +630,7 @@ const List = () => {
       dispatch(
         saveViewReportDetailDrawer({
           visible: true,
-          system: !!reportType,
+          system: reportType === '1',
           id: reportId,
           ids: listData?.map((i: any) => i.id),
         }),
