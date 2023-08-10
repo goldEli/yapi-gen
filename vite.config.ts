@@ -56,6 +56,15 @@ export default defineConfig(config => {
     build: {
       modulePreload: true,
       minify: 'esbuild',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
+    },
+    esbuild: {
+      drop: config.mode === 'production' ? ['console', 'debugger'] : [],
     },
     envDir: './environments/',
     envPrefix: '__',
