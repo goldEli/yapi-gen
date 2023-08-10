@@ -966,7 +966,7 @@ const DragTableIcon = styled(IconFont)`
   cursor: pointer;
 `
 
-const PriorityWrapTable = styled.div<{ isShow?: boolean }>(
+const PriorityWrapTable = styled.div<{ isShow?: any }>(
   {
     display: 'flex',
     alignItems: 'center',

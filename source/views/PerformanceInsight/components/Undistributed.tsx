@@ -119,12 +119,6 @@ const Undistributed = (props: any) => {
   // 编辑权限 project_type === 1 && isBug=== 1 && key_value  b/flaw/update
   // 编辑权限 project_type === 2 && key_value  b/transaction/update
   // 编辑权限 project_type === 1 && isBug!== 1 && 需求：b/story/update
-  const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter(
-      (i: any) =>
-        i.name === (projectInfo.projectType === 1 ? '编辑需求' : '编辑事务'),
-    )?.length > 0
   const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
   const [page, setPage] = useState(1)
@@ -144,13 +138,13 @@ const Undistributed = (props: any) => {
   }, [])
   const onUpdateOrderKey = () => {}
   const onUpdate = async (record?: any, type?: boolean) => {
-    setIsSpinning(true)
+    // setIsSpinning(true)
     const result1 = await unassignedList({
       page: page,
       pagesize: pageSize,
       type: 1,
     })
-    console.log(result1, 'result1')
+    console.log(result1, 'result1---------')
     // 需求列表
     const result = await getDemandList({
       category_id: '',
@@ -179,21 +173,11 @@ const Undistributed = (props: any) => {
       usersNameId: '',
     })
     console.log(result, 'result-----------------')
-    const a = result1.list.map((el: any) => ({
-      ...el,
-      categoryConfigList: {
-        class_id: 2,
-        copysend: 2,
-        created_at: 2,
-        expected_end_at: 2,
-        expected_start_at: 2,
-        finish_at: 2,
-      },
-    }))
+
     setData({
-      list: a,
+      list: result1.list,
     })
-    setIsSpinning(false)
+    // setIsSpinning(false)
   }
   // 修改优先级
   const onChangeState = async (item: any) => {
@@ -294,9 +278,9 @@ const Undistributed = (props: any) => {
       title: (
         <NewSort fixedKey="child_story_count">
           {t('subtransaction')}
-          {/* {projectInfo.projectType === 2
+          {/* {record.projectType === 2
           ? t('subtransaction')
-          : state?.type === 2
+          : record?.type === 2
           ? t('other.children')
           : t('common.childDemand')} */}
         </NewSort>
@@ -420,7 +404,7 @@ const Undistributed = (props: any) => {
                 <ListNameWrap
                   className="canClickDetail"
                   isName
-                  isClose={record.status?.is_end === 1}
+                  isClose={record.category_status?.is_end === 1}
                   // onClick={() => state.onClickItem(record)}
                 >
                   <TableColorText
@@ -442,7 +426,7 @@ const Undistributed = (props: any) => {
       render: (text: any, record: any) => {
         return (
           <ChangeStatusPopover
-            isCanOperation={isCanEdit && !record.isExamine}
+            isCanOperation={record.isCanEdit && !record.isExamine}
             projectId={record.project_id}
             record={record}
             onChangeStatus={() => 123}
@@ -451,7 +435,7 @@ const Undistributed = (props: any) => {
           >
             <StateTag
               onClick={record.isExamine ? onExamine : void 0}
-              isShow={isCanEdit || record.isExamine}
+              isShow={record.isCanEdit || record.isExamine}
               name={record.category_status?.status?.content}
               state={
                 record.category_status?.is_start === 1 &&
@@ -479,7 +463,7 @@ const Undistributed = (props: any) => {
         return (
           <ChangePriorityPopover
             isCanOperation={
-              isCanEdit &&
+              record.isCanEdit &&
               (record.categoryConfigList
                 ? Object.keys(record.categoryConfigList).includes('priority')
                 : false)
@@ -487,7 +471,7 @@ const Undistributed = (props: any) => {
             onChangePriority={() => onChangeState(record)}
             record={{ project_id: record.project_id, id: record.id }}
           >
-            <PriorityWrapTable isShow={isCanEdit}>
+            <PriorityWrapTable isShow={record.isCanEdit}>
               {text?.icon && (
                 <>
                   <IconFont
@@ -523,7 +507,7 @@ const Undistributed = (props: any) => {
             list={[
               {
                 avatar: record.userAvatar,
-                id: record.userIds,
+                id: record.userId,
                 name: record.userName,
               },
             ]}
