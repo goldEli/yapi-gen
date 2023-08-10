@@ -898,6 +898,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       //   }
       // }
     }
+    active.current = []
   }, [
     props.defaultPeople,
     props.isVisible,
