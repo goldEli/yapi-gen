@@ -44,7 +44,7 @@ const StatusPopover = (props: Props) => {
       nId: props.id,
     })
     setStatusList(
-      res2.map((i: any) => ({
+      res2?.map((i: any) => ({
         id: i.id,
         is_end: i.is_end,
         is_start: i.is_start,
@@ -64,7 +64,7 @@ const StatusPopover = (props: Props) => {
 
   return (
     <Items>
-      {statusList.map((i: any) => (
+      {statusList?.map((i: any) => (
         <Item key={i.id} onClick={() => onOpenModal(i)}>
           <div className="name">{i.statusName}</div>
           <div className="provider">

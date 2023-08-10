@@ -225,7 +225,6 @@ const ResizeTable = (props: ResizeTableProps) => {
       },
     }
   })
-
   return (
     <DataWrap height={props.dataWrapNormalHeight || 'auto'} ref={dataWrapRef}>
       <div
