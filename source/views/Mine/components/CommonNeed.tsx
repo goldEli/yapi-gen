@@ -430,11 +430,21 @@ const CommonNeed = (props: any) => {
         const result = await getProjectInfo({ projectId: item.project_id })
         dispatch(setProjectInfo(result))
       }
+      let type = 0
+      if (item.project_type === 2) {
+        type = 1
+      }
+      if (item.project_type === 1 && item.is_bug === 2) {
+        type = 3
+      }
+      if (item.project_type === 1 && item.is_bug === 1) {
+        type = 2
+      }
       openDemandDetail(
         { ...item, ...{ demandIds } },
         item.project_id,
         item.id,
-        item.project_type === 2 ? 1 : undefined,
+        type,
       )
     }
   }

@@ -7,12 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import styled from '@emotion/styled'
 import InputSearch from '@/components/InputSearch'
-import {
-  CloseWrap,
-  DragLine,
-  MouseDom,
-  SelectWrapBedeck,
-} from '@/components/StyleCommon'
+import { CloseWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import TabItem from './components/TabItem'
 import IconFont from '@/components/IconFont'
 import { Popover, Spin, Tooltip } from 'antd'
@@ -392,34 +387,19 @@ const SprintProjectSprint: React.FC = () => {
     },
   ]
 
-  // 拖动线条
-  // const onDragLine = () => {
-  //   const startX = leftRef.current?.getBoundingClientRect()?.x
-  //   let width: any
-  //   document.onmousemove = e => {
-  //     setFocus(true)
-  //     width = e.clientX - startX
-  //     setEndWidth(width - 4 < 316 ? 312 : width - 4)
-  //     if (leftRef && leftRef.current) {
-  //       leftRef.current.style.width = `${
-  //         Number(width) < 316 ? 316 : Number(width)
-  //       }px`
-  //     }
-  //   }
-  //   document.onmouseup = () => {
-  //     document.onmousemove = null
-  //     document.onmouseup = null
-  //     setFocus(false)
-  //   }
-  // }
   const onDragLine = () => {
     document.onmousemove = e => {
+      const sideDom = document.querySelector('#sidebar_yang')
       setFocus(true)
-      if (e.clientX < 600) {
+      if (
+        e.clientX + 69 - (sideDom?.getBoundingClientRect().width ?? 0) <
+        316
+      ) {
         return
       }
-
-      setEndWidth(e.clientX - 200)
+      setEndWidth(
+        e.clientX + 69 - (sideDom?.getBoundingClientRect().width ?? 0),
+      )
     }
     document.onmouseup = () => {
       document.onmousemove = null

@@ -63,7 +63,7 @@ const RelationStories = (props: RelationStoriesProps) => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
+  const paramsData = getParamsData(searchParams) ?? {}
   const { id } = paramsData
   const { projectInfo } = useSelector(store => store.project)
   const [searchValue, setSearchValue] = useState('')
@@ -109,7 +109,7 @@ const RelationStories = (props: RelationStoriesProps) => {
   const getList = async (pageParams: any, orderParams: any) => {
     setIsSpinning(true)
     const response = await getFlawRelationStories({
-      projectId: id,
+      projectId: id ?? props.detail.projectId,
       id: props.detail.id,
       order: orderParams.value,
       orderKey: orderParams.key,
