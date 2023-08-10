@@ -16,6 +16,7 @@ interface ProgressProps {
   // 非表格时判断有无更新权限
   hasEdit?: boolean
   update?: any
+  // 更新进度后回调
   onConfirm?(): void
 }
 
