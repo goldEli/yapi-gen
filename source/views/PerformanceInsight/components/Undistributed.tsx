@@ -144,6 +144,7 @@ const Undistributed = (props: any) => {
   }, [])
   const onUpdateOrderKey = () => {}
   const onUpdate = async (record?: any, type?: boolean) => {
+    setIsSpinning(true)
     const result1 = await unassignedList({
       page: page,
       pagesize: pageSize,
@@ -192,6 +193,7 @@ const Undistributed = (props: any) => {
     setData({
       list: a,
     })
+    setIsSpinning(false)
   }
   // 修改优先级
   const onChangeState = async (item: any) => {
@@ -565,7 +567,6 @@ const Undistributed = (props: any) => {
       key: 'created_at',
       width: 200,
       render: (text: string, row: any) => {
-        console.log(text)
         return <span>{row.created_at || '--'}</span>
       },
     },
@@ -579,7 +580,6 @@ const Undistributed = (props: any) => {
       key: 'expected_start_at',
       width: 170,
       render: (text: string, row: any) => {
-        console.log(row, text, 'record.expected_start_at')
         return (
           <TableQuickEdit
             type="date"
