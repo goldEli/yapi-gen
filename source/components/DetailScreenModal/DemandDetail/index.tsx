@@ -342,11 +342,7 @@ const DemandDetail = () => {
           return (
             <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
               <img
-                src={
-                  k.category_attachment
-                    ? k.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
+                src={k.category_attachment ? k.category_attachment : ' '}
                 style={{
                   width: '18px',
                   height: '18px',

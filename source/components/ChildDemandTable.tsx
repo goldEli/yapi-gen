@@ -201,9 +201,7 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
             <Tooltip title={record.categoryRemark}>
               <img
                 src={
-                  record.category_attachment
-                    ? record.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                  record.category_attachment ? record.category_attachment : ' '
                 }
                 style={{
                   width: '18px',
