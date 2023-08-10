@@ -64,7 +64,7 @@ export default defineConfig(config => {
       },
     },
     esbuild: {
-      drop: config.mode === 'development' ? ['console', 'debugger'] : [],
+      drop: config.mode === 'production' ? ['console', 'debugger'] : [],
     },
     envDir: './environments/',
     envPrefix: '__',
