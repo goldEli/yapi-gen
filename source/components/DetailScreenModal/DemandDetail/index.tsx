@@ -521,9 +521,6 @@ const DemandDetail = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
-
-  console.log(resultCategory, '=resultCategoryresultCategory')
-
   return (
     <DemandWrap>
       <DeleteConfirmModal />

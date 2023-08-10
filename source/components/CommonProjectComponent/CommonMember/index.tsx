@@ -264,20 +264,14 @@ const CommonMember = (props: Props) => {
     }
   }, [search, props.visible])
   const handleOk = async (list?: any, id?: any) => {
-    let userGroupId = id
     if (list.length <= 0) {
       getMessage({ msg: t('project.memberNull'), type: 'warning' })
       return
     }
-    if (!form.getFieldValue('userGroupId')) {
-      userGroupId = projectPermission?.filter(
-        (i: any) => i.tagLabel === '参与者',
-      )[0]?.value
-    }
 
     const params: any = {
       projectId: props.projectId,
-      userGroupId,
+      userGroupId: id,
       userIds: list?.map((i: any) => i.id),
     }
     await addMember(params)

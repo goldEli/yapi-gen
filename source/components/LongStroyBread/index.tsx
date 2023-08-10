@@ -162,7 +162,6 @@ const LongStroyBread = (props: IProps) => {
                   ]
                   const projectId = longStroy?.projectId
                   openDemandDetail({ ...item }, projectId, item.id, 1)
-                  console.log('item----', item)
                 }}
               >
                 {showEditIcon && item.work_type === 3 ? (

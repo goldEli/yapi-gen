@@ -360,7 +360,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
               }}
             >
               <span>{text}</span>
-              {record.is_admin ? (
+              {record.is_leader ? (
                 <Tooltip
                   placement="top"
                   title={t('project_leader')}
