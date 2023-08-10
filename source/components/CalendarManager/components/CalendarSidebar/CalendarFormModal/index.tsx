@@ -567,9 +567,7 @@ const CalendarFormModal = () => {
               </Popover>
             </PermissionBox>
           </Form.Item>
-          <Form.Item
-            label={t('calendarManager.shared_calendar_members') + '111'}
-          >
+          <Form.Item label={t('calendarManager.shared_calendar_members')}>
             <CommonButton
               icon="plus"
               type="primaryText"
