@@ -26,6 +26,7 @@ import { getCustomNormalValue } from '@/tools'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import MultipleAvatar from '../MultipleAvatar'
 import { CommonIconFont } from '../CommonIconFont'
+import CommonProgress from '../CommonProgress'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -477,6 +478,19 @@ export const useDynamicColumns = (state: any) => {
               />
             )}
           </>
+        )
+      },
+    },
+    {
+      title: <NewSort fixedKey="schedule">{t('situation.progress')}</NewSort>,
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
+      render: (text: string, record: any, index: any) => {
+        return (
+          <div>
+            <CommonProgress isTable percent={Number(text)} id={record.id} />
+          </div>
         )
       },
     },

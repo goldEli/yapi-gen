@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import {
@@ -662,6 +663,30 @@ const FlawDetailDrawer = () => {
     })
     setTabActive(value)
   }
+
+  // 计算滚动选中tab
+  const handleScroll = (e: any) => {
+    const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
+    // 所有标题节点
+    const titleItems = document.querySelectorAll('.info_item_tab')
+
+    let arr: any = []
+    titleItems.forEach(element => {
+      const { offsetTop, id } = element as HTMLElement
+      if (offsetTop - 140 <= scrollTop) {
+        const keys = [...arr, ...[id]]
+        arr = [...new Set(keys)]
+      }
+    })
+    setTabActive(arr[arr.length - 1])
+  }
+
+  useEffect(() => {
+    window?.addEventListener('scroll', handleScroll, true)
+    return () => {
+      window.removeEventListener('scroll', handleScroll, false)
+    }
+  }, [document.getElementById('contentDom')])
   return (
     <>
       <ShareModal
@@ -867,6 +892,7 @@ const FlawDetailDrawer = () => {
                   type="flaw"
                   id={drawerInfo.id}
                   hasEdit={isCanEdit}
+                  onConfirm={onOperationUpdate}
                 />
               </div>
               <BtnWrap>
@@ -937,7 +963,7 @@ const FlawDetailDrawer = () => {
                     projectId={drawerInfo.projectId}
                   />
                 </div>
-                <div id="tab_defectComment">
+                <div id="tab_defectComment" className="info_item_tab">
                   <CommentTitle>{t('defectComment')}</CommentTitle>
                   <CommonComment
                     data={flawCommentList}

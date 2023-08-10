@@ -131,6 +131,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         }}
         activeState
         id="tab_desc"
+        className="info_item_tab"
       >
         <FlawInfoLabel>{t('describe')}</FlawInfoLabel>
         {isEditInfo || editInfo ? (
@@ -162,7 +163,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           </TextWrapEdit>
         )}
       </FlawInfoInfoItem>
-      <FlawInfoInfoItem id="tab_tag">
+      <FlawInfoInfoItem id="tab_tag" className="info_item_tab">
         <FlawInfoLabel>{t('common.tag')}</FlawInfoLabel>
         <FlawTag
           defaultList={tagList}
@@ -176,7 +177,11 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           }
         />
       </FlawInfoInfoItem>
-      <FlawInfoInfoItem activeState id="tab_attachment">
+      <FlawInfoInfoItem
+        activeState
+        id="tab_attachment"
+        className="info_item_tab"
+      >
         {/* <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel> */}
         <LabelWrap>
           <Label>{t('common.attachment')}</Label>

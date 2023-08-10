@@ -698,6 +698,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
         //   : 'calc(100vh - 224px)',
       }}
       id="tab_associatedWorkItems"
+      className="info_item_tab"
     >
       <DeleteConfirmModal />
       <CommonModal
