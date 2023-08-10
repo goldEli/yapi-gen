@@ -13,7 +13,7 @@ import {
 import CommonIconFont from '@/components/CommonIconFont'
 import { CloseWrap, PriorityWrapTable } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
-import { Space, Tooltip } from 'antd'
+import { Checkbox, Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import StateTag from '@/components/StateTag'
 import DragTable from '@/components/DragTable'
@@ -61,6 +61,7 @@ const ChildSprint = (props: {
   const { projectInfo, isChangeDetailAffairs, isUpdateAddWorkItem } =
     useSelector(store => store.project)
   const [pageParams, setPageParams] = useState({ page: 1, pagesize: 20 })
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   // 下拉数据
   const [selectList, setSelectList] = useState<SelectItem[]>([])
   // 最近事务数据
@@ -162,13 +163,32 @@ const ChildSprint = (props: {
 
   // 删除关联工作项
   const onDeleteChange = (item: any) => {
+    const checked = [4, 5].includes(item.work_type)
+      ? [4, 5].includes(item.work_type)
+      : isDeleteCheck
     setIsShowMore(false)
     open({
       title: t('deleteConfirmation'),
-      text: t(
-        'youWillPermanentlyDeleteAndItsWhichCannotBeRecoveredAfterPleaseOperateWith',
-        { key: item.story_prefix_key },
+      text: (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ marginBottom: 8 }}>
+            {t(
+              'youWillPermanentlyDeleteAndItsWhichCannotBeRecoveredAfterPleaseOperateWith',
+              { key: item.story_prefix_key },
+            )}
+          </span>
+          {item.work_type !== 6 && (
+            <Checkbox
+              disabled={[4, 5].includes(item.work_type)}
+              checked={checked}
+              onChange={e => setIsDeleteCheck(e.target.checked)}
+            >
+              {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
+            </Checkbox>
+          )}
+        </div>
       ),
+
       onConfirm() {
         onDeleteConfirm(item)
         return Promise.resolve()
@@ -331,15 +351,22 @@ const ChildSprint = (props: {
   }
 
   // 表格拖拽排序
-  const onChangeData = async (data: { list: Model.Affairs.AffairsInfo[] }) => {
+  const onChangeData = async (
+    data: { list: Model.Affairs.AffairsInfo[] },
+    idx: number,
+  ) => {
     setDataSource({
       ...dataSource,
       list: data.list,
     })
+
     await affairsChildDragSort({
-      projectId: projectInfo.id,
+      project_id: projectInfo.id,
       id: props.detail.id,
-      childrenIds: data.list.map((i: Model.Affairs.AffairsInfo) => i.id),
+      page_size: pageParams.pagesize,
+      page: pageParams.page,
+      position: idx,
+      child_id: data.list[idx].id,
     })
   }
 
@@ -432,7 +459,7 @@ const ChildSprint = (props: {
             <DragTable
               columns={columns}
               dataSource={dataSource}
-              onChangeData={arr => onChangeData(arr)}
+              onChangeData={onChangeData}
               showHeader={false}
               hasOperation={operationList}
             />

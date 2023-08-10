@@ -361,7 +361,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
               }}
             >
               <span>{text}</span>
-              {record.is_admin === 1 && (
+              {record.is_leader ? (
                 <Tooltip
                   placement="top"
                   title={t('project_leader')}
@@ -377,7 +377,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
                     ></CommonIconFont>
                   </div>
                 </Tooltip>
-              )}
+              ) : null}
             </div>
           </div>
         )
@@ -742,7 +742,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           onClose={() => {
             setBatchEditVisible(false)
           }}
-          projectState={true}
+          projectState
           projectId={projectId}
           onConfirm={onConfirmBatchEdit}
         />

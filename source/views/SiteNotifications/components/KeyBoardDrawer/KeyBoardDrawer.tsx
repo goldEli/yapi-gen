@@ -143,7 +143,6 @@ const KeyBoardDrawer = () => {
                   <span
                     key={k}
                     style={{
-                      fontFamily: 'SiYuanMedium',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',

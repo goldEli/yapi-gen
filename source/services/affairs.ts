@@ -995,11 +995,7 @@ export const addAffairsChild = async (
 export const affairsChildDragSort = async (
   params: API.Affairs.AffairsChildDragSort.Params,
 ) => {
-  await http.post<any>('affairsChildDragSort', {
-    project_id: params.projectId,
-    id: params.id,
-    children_ids: params.childrenIds,
-  })
+  await http.post<any>('affairsChildDragSort', params)
 }
 
 // 搜索查询下拉子事务

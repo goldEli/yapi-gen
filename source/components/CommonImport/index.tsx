@@ -42,12 +42,17 @@ const Wrap = styled.div<{ language: any }>`
   }
 `
 
-const StepWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '8px 0 40px 6px',
-})
+const StepWrap = styled.div<{ isEn?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '8px 0 40px 6px',
+  },
+  ({ isEn }) => ({
+    margin: isEn ? '8px 24 40px 24px' : '8px 0 40px 6px',
+  }),
+)
 
 const TabsWrap = styled.div({
   display: 'flex',
@@ -314,16 +319,16 @@ const CommonImport = (props: CommonImportProps) => {
         interfaces={templateInterfaces}
       />
 
-      <StepWrap>
+      <StepWrap isEn={i18n.language !== 'zh'}>
         <StepBoxWrap active={step === 1}>
           <div className="border">
             <div className="circle">1</div>
           </div>
-          <span>{stepText}</span>
+          <span style={{ whiteSpace: 'nowrap' }}>{stepText}</span>
         </StepBoxWrap>
         <div
           style={{
-            width: i18n.language === 'zh' ? 160 : 148,
+            width: i18n.language === 'zh' ? 160 : 125,
             height: 1,
             background: 'var(--neutral-n6-d1)',
             margin: '0 8px',
@@ -333,11 +338,13 @@ const CommonImport = (props: CommonImportProps) => {
           <div className="border">
             <div className="circle">2</div>
           </div>
-          <span>{t('newlyAdd.systemImport')}</span>
+          <span style={{ whiteSpace: 'nowrap' }}>
+            {t('newlyAdd.systemImport')}
+          </span>
         </StepBoxWrap>
         <div
           style={{
-            width: i18n.language === 'zh' ? 160 : 148,
+            width: i18n.language === 'zh' ? 160 : 125,
             height: 1,
             background: 'var(--neutral-n6-d1)',
             margin: '0 8px',
@@ -347,7 +354,9 @@ const CommonImport = (props: CommonImportProps) => {
           <div className="border">
             <div className="circle">3</div>
           </div>
-          <span>{t('newlyAdd.importSuccess')}</span>
+          <span style={{ whiteSpace: 'nowrap' }}>
+            {t('newlyAdd.importSuccess')}
+          </span>
         </StepBoxWrap>
       </StepWrap>
       {step === 1 && (

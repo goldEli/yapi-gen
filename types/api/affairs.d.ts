@@ -66,9 +66,12 @@ declare namespace API.Affairs {
 
   namespace AffairsChildDragSort {
     type Params = {
-      projectId: number
+      project_id: number
       id?: number
-      childrenIds: number[]
+      page_size: number
+      page: number
+      position: number
+      child_id: number
     }
   }
   namespace AddAffairsChild {
