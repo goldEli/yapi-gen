@@ -209,8 +209,7 @@ const LinkSprint = (props: {
               isTable
               percent={Number(text)}
               id={record.id}
-              // todo加projectId
-              project_id={0}
+              project_id={record?.project_id}
             />
           </div>
         )

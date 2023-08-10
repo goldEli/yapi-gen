@@ -22,6 +22,7 @@ const FormWrap = styled(Form)({
   gap: '16px',
   display: 'flex',
   flexWrap: 'wrap',
+  margin: '16px 0',
   '.ant-form-item': {
     margin: 0,
   },

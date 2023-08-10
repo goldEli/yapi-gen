@@ -891,6 +891,7 @@ const FlawDetailDrawer = () => {
                   isTable={false}
                   type="flaw"
                   id={drawerInfo.id}
+                  percent={drawerInfo?.schedule}
                   hasEdit={isCanEdit}
                   project_id={drawerInfo.projectId}
                   onConfirm={onOperationUpdate}

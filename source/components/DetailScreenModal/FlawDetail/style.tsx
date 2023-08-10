@@ -13,9 +13,10 @@ export const Wrap = styled.div`
   }
   .ant-tabs-nav {
     padding-left: 24px;
+    margin-bottom: 0px;
   }
   .ant-tabs-tab {
-    padding: 0 0 16px;
+    padding: 16px 0;
   }
   .ant-tabs-tab-btn {
     font-size: 14px;
