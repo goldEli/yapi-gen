@@ -157,7 +157,7 @@ const Undistributed = (props: any) => {
       page: 1,
       pageSize: 20,
       priorityIds: '',
-      projectId: 314,
+      projectId: 513,
       schedule_end: '',
       schedule_start: '',
       searchValue: '',
@@ -171,7 +171,7 @@ const Undistributed = (props: any) => {
     setData(result)
   }
   // 修改优先级
-  const onChangeState = async (type: any, item: any) => {
+  const onChangeState = async (item: any) => {
     // 修改缺陷优先级
     try {
       await updateFlawPriority({
@@ -197,7 +197,27 @@ const Undistributed = (props: any) => {
       //
     }
   }
-
+  // 修改状态
+  const onChangeStatus = async (value: any) => {
+    // await updateFlawStatus(value)
+    //  await updateAffairsStatus(value)
+    // try {
+    //   await updateDemandStatus(value)
+    //   getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    //   getDemandDetail()
+    //   dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    //   dispatch(
+    //     getDemandCommentList({
+    //       projectId: drawerInfo.projectId,
+    //       demandId: drawerInfo.id,
+    //       page: 1,
+    //       pageSize: 999,
+    //     }),
+    //   )
+    // } catch (error) {
+    //   //
+    // }
+  }
   // 修改严重程度
   const onChangeSeverity = async (item: any, type?: any) => {
     await updateFlawTableParams({
@@ -437,7 +457,7 @@ const Undistributed = (props: any) => {
                 ? Object.keys(record.categoryConfigList).includes('priority')
                 : false)
             }
-            onChangePriority={item => onChangeState(item, record)}
+            onChangePriority={() => onChangeState(record)}
             record={{ project_id: record.project_id, id: record.id }}
           >
             <PriorityWrapTable isShow={isCanEdit}>

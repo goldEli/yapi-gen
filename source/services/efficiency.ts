@@ -313,3 +313,11 @@ export const defectExport = async (parmas: API.Sprint.GetExport.Params) => {
   })
   return response
 }
+// 未分配
+export const unassignedList = async (
+  parmas: API.Sprint.UnassignedList.Params,
+) => {
+  const response = await http.get<any>('unassignedList', parmas)
+  console.log(response)
+  return response.data
+}

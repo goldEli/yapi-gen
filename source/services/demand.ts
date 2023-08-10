@@ -593,6 +593,7 @@ export const getDemandInfo: any = async (params: any) => {
       : null,
     comment_total: response.data.comment_total,
     relation_stories: response.data.relation_stories,
+    child_story_statistics: response.data.child_story_statistics,
   }
 }
 
@@ -1266,5 +1267,15 @@ export const getChildrenRecent = async (params: any) => {
 // 选择子需求-需求查询
 export const getChildrenSearch = async (params: any) => {
   const response = await http.get('getChildrenSearch', params)
+  return response.data
+}
+
+export const addChild = async (params: any) => {
+  const response = await http.post('addChild', params)
+  return response.data
+}
+// 子需求排序
+export const sortChild = async (params: any) => {
+  const response = await http.post('sortChild', params)
   return response.data
 }
