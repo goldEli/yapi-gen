@@ -222,7 +222,9 @@ const SprintDetailDrawer = () => {
       affairsDetailDrawer.params.projectId ??
       paramsData?.id ??
       projectIdRef.current
-    projectIdRef.current = paramsProjectId
+    if (paramsProjectId) {
+      projectIdRef.current = paramsProjectId
+    }
     if (affairsDetailDrawer.params?.isAllProject) {
       getProjectData()
     }

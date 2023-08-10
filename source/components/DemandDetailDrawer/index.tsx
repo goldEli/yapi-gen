@@ -689,7 +689,10 @@ const DemandDetailDrawer = () => {
                     key={i.prefix_key}
                     onClick={() => {
                       // TODO
-                      projectIdRef.current = demandDetailDrawerProps?.project_id
+                      if (demandDetailDrawerProps?.project_id) {
+                        projectIdRef.current =
+                          demandDetailDrawerProps?.project_id
+                      }
                       const projectId = drawerInfo?.projectId
                       if (index !== drawerInfo?.level_tree?.length - 1) {
                         openDemandDetail({ ...i }, projectId, i.id)
