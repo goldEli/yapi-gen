@@ -28,7 +28,6 @@ const MyBreadcrumb = (props: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { type } = paramsData ?? {}
-  console.log('yyyyyy----', type)
   const dispatch = useDispatch()
 
   // 关闭全屏详情弹层

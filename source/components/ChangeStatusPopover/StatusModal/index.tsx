@@ -223,6 +223,15 @@ const StatusModal = (props: StatusModalProps) => {
         form1Obj[res?.fields[key].content] = res?.fields[key].true_value
           ? res?.fields[key].true_value
           : []
+      } else if (res?.fields[key].type === 'tree') {
+        form1Obj[res?.fields[key].content] = res?.fields[
+          key
+        ].children[0].children
+          .map((f: any) => f.value)
+          .includes(res?.fields[key].true_value.content)
+          ? res?.fields[key].true_value
+          : // eslint-disable-next-line no-undefined
+            undefined
       } else {
         form1Obj[res?.fields[key].content] = res?.fields[key].true_value
       }
@@ -367,6 +376,7 @@ const StatusModal = (props: StatusModalProps) => {
       getConfig()
     }
   }, [props.isVisible, props.checkStatusItem])
+  console.log(configData?.fields, '111')
 
   return (
     <CommonModal
@@ -607,7 +617,6 @@ const StatusModal = (props: StatusModalProps) => {
                 )}
                 {i.type === 'tree' && (
                   <Form.Item
-                    initialValue={i.true_value ?? []}
                     label={<LabelComponent title={i.title} />}
                     name={i.content}
                     rules={[
