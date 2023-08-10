@@ -50,8 +50,6 @@ const HisSide = () => {
   ]
 
   const changeActive = (value: any) => {
-    console.log('paramsData', paramsData)
-
     if (isMember) {
       const params = encryptPhp(
         JSON.stringify({

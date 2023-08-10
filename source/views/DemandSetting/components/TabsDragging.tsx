@@ -203,16 +203,10 @@ const Sortable = (props: any, refs: any) => {
   }
   // 接触到就触发
   const onDragEnter = (e: any, index: number, child: any) => {
-    console.log('child', child)
     setEndIndex(index)
     setDragItem(() => {
       return { ...child }
     })
-    console.log(
-      'drag---',
-      dragItem.storyId,
-      list.map((item: { storyId: any }) => item.storyId),
-    )
     // setTimeout(() => {
     //   setDragItem(null)
     // }, 500)
