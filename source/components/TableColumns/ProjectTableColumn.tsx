@@ -405,7 +405,12 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string, record: any) => {
         return (
           <div>
-            <CommonProgress isTable percent={Number(text)} id={record.id} />
+            <CommonProgress
+              isTable
+              percent={Number(text)}
+              id={record.id}
+              project_id={record.project_id}
+            />
           </div>
         )
       },

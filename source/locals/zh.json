@@ -2265,5 +2265,18 @@
   "update_instructions": "更新说明：",
   "open_more": "展开更多",
   "progressLog": "进度日志",
-  "appendix": "附件"
+  "appendix": "附件",
+  "updateProgress": "更新进度",
+  "totalProgress": "总进度",
+  "theProgressThisTimeNeedsToBeGreaterThanTheLastPleaseFillInAgain": "本次进度需大于上次，请重新填写",
+  "updateCompleted": "更新成功",
+  "renew": "更新",
+  "itIsRecommendedNotToGoBelowTheCurrentProgress": "建议不要低于当前进度",
+  "currentProgress": "当前进度",
+  "handler": "处理人",
+  "progressOfTheDay": "当日进度",
+  "actualWorkingHours": "实际工时花费（h）",
+  "pleaseEnterActualWorkingHours": "请输入实际工时",
+  "enterTheActualWorkingHours": " '请输入实际工时",
+  "releaseNotes": "更新说明"
 }

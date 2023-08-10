@@ -364,6 +364,7 @@ const Sortable = (props: any, refs: any) => {
                         child?.content === 'finish_at' ||
                         child?.content === 'created_at' ||
                         child?.content === 'priority' ||
+                        child?.content === 'schedule' ||
                         child?.content === 'parent_id' ? (
                           <DelBtnText> {t('p2.delete')}</DelBtnText>
                         ) : (

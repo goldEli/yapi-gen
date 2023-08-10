@@ -236,9 +236,7 @@ const FlawBasic = (props: Props) => {
     let nodeComponent
 
     // 如果不属于下列字段的则渲染
-    if (
-      !['schedule', 'parent_id', 'priority', 'severity'].includes(item.content)
-    ) {
+    if (!['parent_id', 'priority', 'severity'].includes(item.content)) {
       const filterContent = basicFieldList?.filter(
         (i: any) => i.content === item.content,
       )[0]
@@ -281,47 +279,6 @@ const FlawBasic = (props: Props) => {
             <>{defaultValues?.defaultHtml}</>
           )}
         </TableQuickEdit>
-      )
-    } else if (item.content === 'schedule') {
-      nodeComponent = (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginLeft: '15px',
-            width: '100%',
-          }}
-          onMouseUp={onChangeSchedule}
-        >
-          <SliderWrap
-            isDisabled={
-              props.detail?.user
-                ?.map((i: any) => i.user.id)
-                ?.includes(userInfo?.id) && props.detail.status.is_start !== 1
-                ? props.detail.status.is_end !== 1
-                : null
-            }
-            style={{ width: '70%', maxWidth: 200 }}
-            value={schedule}
-            tipFormatter={(value: any) => `${value}%`}
-            onChange={value => setSchedule(value)}
-            tooltipVisible={false}
-            disabled={
-              !(
-                props.detail?.user
-                  ?.map((i: any) => i.user.id)
-                  ?.includes(userInfo?.id) &&
-                props.detail.status.is_start !== 1 &&
-                props.detail.status.is_end !== 1
-              )
-            }
-          />
-          <span
-            style={{ color: 'var(--neutral-n2)', marginLeft: 16, fontSize: 14 }}
-          >
-            {schedule}%
-          </span>
-        </div>
       )
     } else if (item.content === 'parent_id') {
       nodeComponent = (
@@ -463,6 +420,7 @@ const FlawBasic = (props: Props) => {
         overflowX: 'hidden',
       }}
       id="tab_info"
+      className="info_item_tab"
     >
       <div style={{ marginBottom: 20 }}>
         {props.isInfoPage ? (
@@ -472,32 +430,17 @@ const FlawBasic = (props: Props) => {
             type="flaw"
             hasEdit={isCanEdit}
             id={props?.detail?.id}
+            project_id={props?.detail?.projectId}
+            onConfirm={props.onUpdate}
           />
         ) : null}
       </div>
 
       <Label>{t('newlyAdd.basicInfo')}</Label>
-      {notFoldList?.map((i: any) => {
-        return (
-          <InfoItemBasic key={i.content}>
-            <LimitLabel label={i.title} width={90} />
-            <ContentWrap
-              style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
-            >
-              {i.isCustomize === 1
-                ? getCustomComponent(i)
-                : getBasicTypeComponent(i)}
-            </ContentWrap>
-          </InfoItemBasic>
-        )
-      })}
-      {!isShowFields && foldList?.length > 0 && (
-        <ShowLabel onClick={() => setIsShowFields(true)}>
-          {t('newlyAdd.open')}
-        </ShowLabel>
-      )}
-      {isShowFields
-        ? foldList?.map((i: any) => (
+      {notFoldList
+        ?.filter((i: any) => i.content !== 'schedule')
+        ?.map((i: any) => {
+          return (
             <InfoItemBasic key={i.content}>
               <LimitLabel label={i.title} width={90} />
               <ContentWrap
@@ -508,7 +451,30 @@ const FlawBasic = (props: Props) => {
                   : getBasicTypeComponent(i)}
               </ContentWrap>
             </InfoItemBasic>
-          ))
+          )
+        })}
+      {!isShowFields && foldList?.length > 0 && (
+        <ShowLabel onClick={() => setIsShowFields(true)}>
+          {t('newlyAdd.open')}
+        </ShowLabel>
+      )}
+      {isShowFields
+        ? foldList
+            ?.filter((i: any) => i.content !== 'schedule')
+            ?.map((i: any) => (
+              <InfoItemBasic key={i.content}>
+                <LimitLabel label={i.title} width={90} />
+                <ContentWrap
+                  style={{
+                    width: i.content === 'schedule' ? '100%' : 'inherit',
+                  }}
+                >
+                  {i.isCustomize === 1
+                    ? getCustomComponent(i)
+                    : getBasicTypeComponent(i)}
+                </ContentWrap>
+              </InfoItemBasic>
+            ))
         : null}
       {isShowFields && foldList?.length > 0 ? (
         <ShowLabel onClick={() => setIsShowFields(false)}>

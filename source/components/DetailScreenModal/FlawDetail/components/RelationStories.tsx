@@ -490,10 +490,15 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
-      render: (text: string, record: any, index: any) => {
+      render: (text: string, record: any) => {
         return (
           <div>
-            <CommonProgress isTable percent={Number(text)} id={record.id} />
+            <CommonProgress
+              isTable
+              percent={Number(text)}
+              id={record.id}
+              project_id={record.project_id}
+            />
           </div>
         )
       },
@@ -622,7 +627,12 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
       render: (text: string, record: any, index: any) => {
         return (
           <div>
-            <CommonProgress isTable percent={Number(text)} id={record.id} />
+            <CommonProgress
+              project_id={record.project_id}
+              isTable
+              percent={Number(text)}
+              id={record.id}
+            />
           </div>
         )
       },
@@ -698,6 +708,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
         //   : 'calc(100vh - 224px)',
       }}
       id="tab_associatedWorkItems"
+      className="info_item_tab"
     >
       <DeleteConfirmModal />
       <CommonModal

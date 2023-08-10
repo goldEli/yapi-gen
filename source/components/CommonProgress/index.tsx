@@ -4,7 +4,7 @@ import { CommonProgressWrap, UpdateButton, ItemRow } from './style'
 import UpdateProgressModal from './UpdateProgressModal'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { getStroySchedule } from '@/services/demand'
-import { useSelector } from '@store/index'
+import { useTranslation } from 'react-i18next'
 
 interface ProgressProps {
   isTable?: boolean
@@ -12,6 +12,8 @@ interface ProgressProps {
   type?: 'transaction' | 'demand' | 'flaw'
   // 当前事务|缺陷|需求id
   id?: number
+  // 项目id
+  project_id: number
   percent?: number
   // 非表格时判断有无更新权限
   hasEdit?: boolean
@@ -21,16 +23,25 @@ interface ProgressProps {
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable, isKanBan, id, type, percent, hasEdit, update, onConfirm } =
-    props
+  const {
+    isTable,
+    isKanBan,
+    id,
+    type,
+    percent,
+    hasEdit,
+    update,
+    onConfirm,
+    project_id,
+  } = props
   const [visible, setVisible] = useState(false)
   const [commonProgressVisible, setCommonProgressVisible] = useState(false)
-  const { projectInfo } = useSelector(store => store.project)
   const [data, setData] = useState<any>(null)
+  const [t]: any = useTranslation()
   const getList = async () => {
     const result = await getStroySchedule({
       id,
-      project_id: projectInfo?.id,
+      project_id,
     })
     setData(result)
   }
@@ -92,7 +103,7 @@ const CommonProgress = (props: ProgressProps) => {
                 percent={data?.total_schedule ?? 0}
                 strokeColor="var(--function-success)"
                 style={{ color: 'var(--function-success)' }}
-                format={percent => `总进度 ${percent}%`}
+                format={percent => `${t('totalProgress')} ${percent}%`}
                 type="line"
                 strokeWidth={8}
               />
@@ -106,7 +117,7 @@ const CommonProgress = (props: ProgressProps) => {
                 style={{ marginLeft: 16 }}
                 onClick={() => setVisible(true)}
               >
-                更新进度
+                {t('updateProgress')}
               </UpdateButton>
             )}
       </CommonProgressWrap>
@@ -116,7 +127,7 @@ const CommonProgress = (props: ProgressProps) => {
           visible={visible}
           onClose={() => setVisible(false)}
           id={id}
-          project_id={projectInfo?.id}
+          project_id={project_id}
           onConfirm={onConfirm}
         />
       )}

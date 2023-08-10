@@ -26,6 +26,7 @@ import { getCustomNormalValue } from '@/tools'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import MultipleAvatar from '../MultipleAvatar'
 import { CommonIconFont } from '../CommonIconFont'
+import CommonProgress from '../CommonProgress'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -443,40 +444,16 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
-      render: (text: string, record: any, index: any) => {
+      render: (text: string, record: any) => {
         return (
-          <>
-            {record?.usersNameIds?.includes(userInfo?.id) &&
-              record.status.is_start !== 1 &&
-              record.status.is_end !== 1 && (
-                <div style={{ cursor: 'pointer' }}>
-                  <DemandProgress
-                    value={record.schedule}
-                    row={record}
-                    onUpdate={onUpdate}
-                    index={index}
-                  />
-                </div>
-              )}
-            {!(
-              record?.usersNameIds?.includes(userInfo?.id) &&
-              record.status.is_start !== 1 &&
-              record.status.is_end !== 1
-            ) && (
-              <Progress
-                strokeColor="var(--function-success)"
-                style={{
-                  color: 'var(--function-success)',
-                  cursor: 'not-allowed',
-                }}
-                width={38}
-                type="line"
-                percent={record.schedule}
-                format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-                strokeWidth={4}
-              />
-            )}
-          </>
+          <div>
+            <CommonProgress
+              project_id={record.project_id}
+              isTable
+              percent={Number(text)}
+              id={record.id}
+            />
+          </div>
         )
       },
     },

@@ -149,7 +149,6 @@ const DemandDetailDrawer = () => {
   const childrenDemandRef = useRef<any>()
   const storyRelationRef = useRef<any>()
   const tabsRef = useRef<any>()
-  const contentRef = useRef<any>()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -617,7 +616,6 @@ const DemandDetailDrawer = () => {
   }
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    return
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
     const titleItems = document.querySelectorAll('.info_item_tab')
@@ -638,6 +636,7 @@ const DemandDetailDrawer = () => {
       window.removeEventListener('scroll', handleScroll, false)
     }
   }, [document.getElementById('contentDom')])
+
   return (
     <>
       <DeleteConfirm
@@ -765,7 +764,7 @@ const DemandDetailDrawer = () => {
             </Popover>
           </Space>
         </Header>
-        <Content id="contentDom" ref={contentRef}>
+        <Content id="contentDom">
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
@@ -847,6 +846,8 @@ const DemandDetailDrawer = () => {
                   type="demand"
                   id={drawerInfo.id}
                   hasEdit={isCanEdit}
+                  project_id={drawerInfo.projectId}
+                  onConfirm={onOperationUpdate}
                 />
               </ProgressBox>
               <BtnWrap>

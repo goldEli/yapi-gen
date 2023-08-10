@@ -2265,5 +2265,18 @@
   "update_instructions": "Update instructions：",
   "open_more": "Expand More",
   "progressLog": "Progress log",
-  "appendix": "Appendix"
+  "appendix": "Appendix",
+  "updateProgress": "Update progress",
+  "totalProgress": "Total progress",
+  "theProgressThisTimeNeedsToBeGreaterThanTheLastPleaseFillInAgain": "The progress this time needs to be greater than the last time, please fill in again",
+  "updateCompleted": "Update completed",
+  "renew": "Renew",
+  "itIsRecommendedNotToGoBelowTheCurrentProgress": "It is recommended not to go below the current progress",
+  "currentProgress": "Current progress",
+  "handler": "Handler",
+  "progressOfTheDay": "Progress of the day",
+  "actualWorkingHours": "Actual working hours (h)",
+  "pleaseEnterActualWorkingHours": "Please enter actual working hours",
+  "enterTheActualWorkingHours": "&#39;Please enter the actual working hours",
+  "releaseNotes": "Release Notes"
 }

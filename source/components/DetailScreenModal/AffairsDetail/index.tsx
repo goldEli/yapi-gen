@@ -474,6 +474,14 @@ const AffairsDetail = () => {
     }, 100)
   }
 
+  // 更新方法
+  const onUpdate = () => {
+    dispatch(
+      getAffairsInfo({ projectId: params.id, sprintId: affairsInfo.id || 0 }),
+    )
+    dispatch(setIsUpdateChangeLog(true))
+  }
+
   useEffect(() => {
     if (visible) {
       dispatch(
@@ -762,6 +770,8 @@ const AffairsDetail = () => {
               update={affairsInfo}
               type="transaction"
               hasEdit={!hasEdit}
+              project_id={affairsInfo?.projectId as any}
+              onConfirm={onUpdate}
             />
           </div>
           <AffairsBasic onRef={basicInfoDom} />
