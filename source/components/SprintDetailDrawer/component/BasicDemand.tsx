@@ -82,29 +82,6 @@ const BasicDemand = (props: Props) => {
       (i: any) => i.identity === 'b/transaction/update',
     )?.length > 0
 
-  // 修改进度
-  const onChangeSchedule = async () => {
-    if (
-      props.detail?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id) &&
-      props.detail.status.is_start !== 1 &&
-      props.detail.status.is_end !== 1
-    ) {
-      const obj = {
-        projectId: props.detail.projectId,
-        id: props.detail?.id,
-        otherParams: { schedule },
-      }
-      await updateAffairsTableParams(obj)
-      props.onUpdate?.()
-      dispatch(
-        getAffairsInfo({
-          projectId: props.detail.projectId,
-          sprintId: props.detail?.id,
-        }),
-      )
-    }
-  }
-
   const onChangeState = async (item: any) => {
     try {
       await updateAffairsPriority({
