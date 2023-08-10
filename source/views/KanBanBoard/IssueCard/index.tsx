@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import PriorityIcon from '@/components/PriorityIcon'
-import IconFont from '@/components/IconFont'
 import { Popover, Tooltip } from 'antd'
 import {
   Bottom,
@@ -11,7 +10,6 @@ import {
   IssueCardBox,
   IssueCardBoxContainer,
   Middle,
-  PercentageBox,
   StoryText,
   Sub,
   Top,
@@ -46,7 +44,6 @@ const IssueCard = (props: IssueCardProps) => {
   const isDragDisabled = props.item.verify_lock === 1
   const childRef = useRef<any>(null)
   const [openDemandDetail] = useOpenDemandDetail()
-  const { projectInfo } = useSelector(store => store.project)
   const { fullScreen } = useSelector(store => store.kanBan)
 
   const getElementsAroundIndex = (arr: any, index: number) => {
@@ -109,8 +106,7 @@ const IssueCard = (props: IssueCardProps) => {
               isKanBan
               id={item.id}
               percent={item.schedule}
-              // todo加projectId
-              project_id={item.id}
+              project_id={item.project_id}
             />
             <Popover
               content={

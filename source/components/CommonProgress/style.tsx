@@ -40,12 +40,6 @@ export const ShowProgress = styled.div`
 export const CommonProgressWrap = styled.div`
   display: flex;
   align-items: center;
-  .progressDropdownBox {
-    .ant-dropdown-menu {
-      max-height: 250px;
-      overflow: auto;
-    }
-  }
 `
 export const UpdateButton = styled.div`
   color: var(--auxiliary-text-t2-d2);

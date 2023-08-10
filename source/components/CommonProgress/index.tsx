@@ -56,9 +56,8 @@ const CommonProgress = (props: ProgressProps) => {
       <CommonProgressWrap>
         <Dropdown
           onOpenChange={(open: boolean) => setCommonProgressVisible(open)}
-          overlayClassName="progressDropdownBox"
+          overlayClassName="progressDropdownBox_yang"
           overlayStyle={data?.user_list?.length <= 0 ? { height: 0 } : {}}
-          getPopupContainer={(x: any) => x.parentNode}
           menu={{
             items:
               data?.user_list?.map((k: any) => ({
