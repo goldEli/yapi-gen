@@ -355,6 +355,6 @@ export const TabsWrap = styled(Tabs)`
     margin-right: 12px;
   }
   .ant-tabs-nav {
-    margin-bottom: 12px;
+    margin-bottom: 0px;
   }
 `

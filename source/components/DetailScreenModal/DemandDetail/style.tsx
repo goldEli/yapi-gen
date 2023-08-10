@@ -12,7 +12,7 @@ export const DemandWrap = styled.div`
     padding: 0 24px;
   }
   .ant-tabs-nav {
-    margin-bottom: 8px;
+    margin-bottom: 0px;
     border-bottom: 1px solid transparent;
   }
   .ant-tabs-tab {
@@ -29,7 +29,7 @@ export const DemandWrap = styled.div`
   .ant-tabs-bottom > .ant-tabs-nav::before,
   .ant-tabs-top > div > .ant-tabs-nav::before,
   .ant-tabs-bottom > div > .ant-tabs-nav::before {
-    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid var(--neutral-n6-d2);
   }
 `
 export const LabelWrap = styled.div`
