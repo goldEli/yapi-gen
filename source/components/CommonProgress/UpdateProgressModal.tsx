@@ -54,7 +54,9 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
     if (newValue < data?.schedule) {
       getMessage({
         type: 'warning',
-        msg: '本次进度需大于上次，请重新填写',
+        msg: t(
+          'theProgressThisTimeNeedsToBeGreaterThanTheLastPleaseFillInAgain',
+        ),
       })
       return
     }
@@ -97,7 +99,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
     if (res) {
       getMessage({
         type: 'success',
-        msg: '更新成功',
+        msg: t('updateCompleted'),
       })
       close()
       onConfirm?.()
@@ -108,23 +110,29 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
   return (
     <CommonModal
       width={640}
-      title="更新进度"
+      title={t('updateProgress')}
       isVisible={visible}
       onClose={close}
       onConfirm={confirm}
-      confirmText="更新"
+      confirmText={t('renew')}
     >
       <ProgressContentWrap>
-        <div className="tips">建议不要低于当前进度</div>
+        <div className="tips">
+          {t('itIsRecommendedNotToGoBelowTheCurrentProgress')}
+        </div>
         <ShowProgress>
-          <span>当前进度 {data?.schedule ?? 0}%</span>
-          <span className="processor">处理人</span>
+          <span>
+            {t('currentProgress')} {data?.schedule ?? 0}%
+          </span>
+          <span className="processor">{t('handler')}</span>
           <span className="username">
             {data?.user_name ? data?.user_name : '--'}
           </span>
         </ShowProgress>
         <div className="progressBox">
-          <div>当日进度（{data?.last_at ? data?.last_at : '--'}）</div>
+          <div>
+            {t('progressOfTheDay')}（{data?.last_at ? data?.last_at : '--'}）
+          </div>
           <div className="progress">
             <SliderWrap
               value={inputValue}
@@ -144,23 +152,23 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
         </div>
         <Form form={form} layout="vertical" autoComplete="off">
           <Form.Item
-            label="实际工时花费（h）"
+            label={t('actualWorkingHours')}
             name="total_task_time"
             rules={[
               {
                 required: true,
-                message: '请输入实际工时',
+                message: t('pleaseEnterActualWorkingHours'),
               },
             ]}
           >
             <InputNumber
               min={0.0}
               style={{ width: '100%' }}
-              placeholder="实际工时"
+              placeholder={t('actualWorkingHours')}
               step={0.01}
             />
           </Form.Item>
-          <Form.Item label="更新说明" name="remark">
+          <Form.Item label={t('releaseNotes')} name="remark">
             <Input.TextArea
               maxLength={600}
               autoSize={{ minRows: 5, maxRows: 5 }}

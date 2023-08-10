@@ -5,6 +5,7 @@ import UpdateProgressModal from './UpdateProgressModal'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { getStroySchedule } from '@/services/demand'
 import { useSelector } from '@store/index'
+import { useTranslation } from 'react-i18next'
 
 interface ProgressProps {
   isTable?: boolean
@@ -27,6 +28,7 @@ const CommonProgress = (props: ProgressProps) => {
   const [commonProgressVisible, setCommonProgressVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const [data, setData] = useState<any>(null)
+  const [t]: any = useTranslation()
   const getList = async () => {
     const result = await getStroySchedule({
       id,
@@ -92,7 +94,7 @@ const CommonProgress = (props: ProgressProps) => {
                 percent={data?.total_schedule ?? 0}
                 strokeColor="var(--function-success)"
                 style={{ color: 'var(--function-success)' }}
-                format={percent => `总进度 ${percent}%`}
+                format={percent => `${t('totalProgress')} ${percent}%`}
                 type="line"
                 strokeWidth={8}
               />
@@ -106,7 +108,7 @@ const CommonProgress = (props: ProgressProps) => {
                 style={{ marginLeft: 16 }}
                 onClick={() => setVisible(true)}
               >
-                更新进度
+                {t('updateProgress')}
               </UpdateButton>
             )}
       </CommonProgressWrap>
