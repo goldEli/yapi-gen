@@ -105,10 +105,7 @@ const IssueCard = (props: IssueCardProps) => {
             <MultipleAvatar max={3} list={item.handlers} />
           </BottomLeft>
           <BottomRight>
-            <CommonProgress isKanBan id={item.id} />
-            {projectInfo.projectType === 1 && (
-              <PercentageBox>{`${item.schedule}%`}</PercentageBox>
-            )}
+            <CommonProgress isKanBan id={item.id} percent={item.schedule} />
             <Popover
               content={
                 <PopoverTargetText>

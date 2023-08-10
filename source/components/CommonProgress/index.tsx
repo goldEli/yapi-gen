@@ -16,11 +16,15 @@ interface ProgressProps {
   // 非表格时判断有无更新权限
   hasEdit?: boolean
   update?: any
+  // 更新进度后回调
+  onConfirm?(): void
 }
 
 const CommonProgress = (props: ProgressProps) => {
-  const { isTable, isKanBan, id, type, percent, hasEdit, update } = props
+  const { isTable, isKanBan, id, type, percent, hasEdit, update, onConfirm } =
+    props
   const [visible, setVisible] = useState(false)
+  const [commonProgressVisible, setCommonProgressVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const [data, setData] = useState<any>(null)
   const getList = async () => {
@@ -31,16 +35,18 @@ const CommonProgress = (props: ProgressProps) => {
     setData(result)
   }
   useEffect(() => {
-    if (id) {
+    if (id && commonProgressVisible) {
       getList()
     }
-  }, [id, update])
+  }, [id, update, commonProgressVisible])
 
   return (
     <>
       <CommonProgressWrap>
         <Dropdown
+          onOpenChange={(open: boolean) => setCommonProgressVisible(open)}
           overlayClassName="progressDropdownBox"
+          overlayStyle={data?.user_list?.length <= 0 ? { height: 0 } : {}}
           getPopupContainer={(x: any) => x.parentNode}
           menu={{
             items:
@@ -64,7 +70,7 @@ const CommonProgress = (props: ProgressProps) => {
           placement="bottom"
           dropdownRender={
             // eslint-disable-next-line no-undefined
-            data?.user_list?.length <= 0 ? () => <span /> : undefined
+            data?.user_list?.length ? undefined : () => <span />
           }
         >
           {isKanBan ? (
@@ -111,6 +117,7 @@ const CommonProgress = (props: ProgressProps) => {
           onClose={() => setVisible(false)}
           id={id}
           project_id={projectInfo?.id}
+          onConfirm={onConfirm}
         />
       )}
     </>

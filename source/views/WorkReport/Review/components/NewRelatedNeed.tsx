@@ -176,7 +176,14 @@ const NewRelatedNeed = (props: any) => {
                   {t('report.list.day')}]
                 </span>
               ) : null}
-              <span style={{ marginLeft: 2 }}>{item.label}</span>
+              <span style={{ marginLeft: 2 }}>
+                {item.label ? item.label : '--'}
+              </span>
+              <span>
+                {`（${
+                  item.user_schedule_percent ? item.user_schedule_percent : 0
+                }%）`}
+              </span>
             </div>
             <IconFont
               className="closeIcon"

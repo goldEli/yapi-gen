@@ -164,6 +164,11 @@ const GlobalStyle = () => {
     }
 
     :root {
+      .info_item_tab_label {
+        label {
+          width: 100%;
+        }
+      }
       .notification-my {
         height: 109px;
         background: rgba(102, 136, 255, 0.1);

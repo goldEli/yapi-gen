@@ -428,7 +428,7 @@ const DndKitTable = (props: any) => {
                 <CommonIconFont
                   type="share"
                   size={20}
-                  color={'var(--neutral-n3)'}
+                  color="var(--neutral-n3)"
                   onClick={() => onCopyNumber(value)}
                 />
               </ClickWrap>
@@ -529,10 +529,11 @@ const DndKitTable = (props: any) => {
       title: '进度',
       dataIndex: 'child_story_count',
       width: 120,
-      render: () => {
+      render: (text: number, record: any) => {
+        const id = record.id?.split('_')?.[1]
         return (
           <div>
-            <CommonProgress isTable={true} />
+            <CommonProgress percent={text} isTable id={id} />
           </div>
         )
       },
