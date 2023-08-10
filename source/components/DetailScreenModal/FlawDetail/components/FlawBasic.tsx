@@ -427,6 +427,7 @@ const FlawBasic = (props: Props) => {
           <CommonProgress
             update={props?.detail}
             isTable={false}
+            percent={props?.detail?.schedule}
             type="flaw"
             hasEdit={isCanEdit}
             id={props?.detail?.id}

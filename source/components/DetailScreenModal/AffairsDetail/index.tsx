@@ -769,6 +769,7 @@ const AffairsDetail = () => {
               id={affairsInfo.id}
               update={affairsInfo}
               type="transaction"
+              percent={affairsInfo?.schedule}
               hasEdit={!hasEdit}
               project_id={affairsInfo?.projectId as any}
               onConfirm={onUpdate}

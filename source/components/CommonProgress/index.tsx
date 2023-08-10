@@ -56,9 +56,8 @@ const CommonProgress = (props: ProgressProps) => {
       <CommonProgressWrap>
         <Dropdown
           onOpenChange={(open: boolean) => setCommonProgressVisible(open)}
-          overlayClassName="progressDropdownBox"
+          overlayClassName="progressDropdownBox_yang"
           overlayStyle={data?.user_list?.length <= 0 ? { height: 0 } : {}}
-          getPopupContainer={(x: any) => x.parentNode}
           menu={{
             items:
               data?.user_list?.map((k: any) => ({
@@ -100,7 +99,7 @@ const CommonProgress = (props: ProgressProps) => {
           ) : (
             <div style={{ width: 222, marginRight: 40, cursor: 'pointer' }}>
               <Progress
-                percent={data?.total_schedule ?? 0}
+                percent={percent}
                 strokeColor="var(--function-success)"
                 style={{ color: 'var(--function-success)' }}
                 format={percent => `${t('totalProgress')} ${percent}%`}

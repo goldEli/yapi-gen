@@ -845,6 +845,7 @@ const DemandDetailDrawer = () => {
                   isTable={false}
                   type="demand"
                   id={drawerInfo.id}
+                  percent={drawerInfo?.schedule}
                   hasEdit={isCanEdit}
                   project_id={drawerInfo.projectId}
                   onConfirm={onOperationUpdate}

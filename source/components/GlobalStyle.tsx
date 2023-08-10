@@ -169,6 +169,12 @@ const GlobalStyle = () => {
           width: 100%;
         }
       }
+      .progressDropdownBox_yang {
+        .ant-dropdown-menu {
+          max-height: 250px;
+          overflow: auto;
+        }
+      }
       .notification-my {
         height: 109px;
         background: rgba(102, 136, 255, 0.1);

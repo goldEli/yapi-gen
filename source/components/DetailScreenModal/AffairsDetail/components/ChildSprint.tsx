@@ -290,8 +290,7 @@ const ChildSprint = (
               isTable
               percent={Number(text)}
               id={record.id}
-              // todo加projectId
-              project_id={record?.projectId}
+              project_id={record?.project_id}
             />
           </div>
         )
