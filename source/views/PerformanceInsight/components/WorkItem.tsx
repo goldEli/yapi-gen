@@ -258,9 +258,7 @@ const Main = (props: UserInfo) => {
             total: 80,
             pageSize: 20,
           }}
-          onChangePage={(pageNum, pageSize) =>
-            console.log(pageNum, pageSize, 9898)
-          }
+          onChangePage={(pageNum, pageSize) => 123}
         />
       </TableStyle>
     </MainStyle>
