@@ -368,7 +368,6 @@ const MyDropdown = (props: any) => {
       item?.map((el: any) => (
         <ItemBox key={el.id}>
           <Row onClick={() => onRoute(el, type)}>
-            9999
             <div>
               {(el?.category_attachment || el?.feedable?.attachment) && (
                 <Img
