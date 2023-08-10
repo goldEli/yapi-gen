@@ -440,9 +440,7 @@ const DndKitTable = (props: any) => {
             <Tooltip placement="top" title={record?.category_name}>
               <img
                 src={
-                  record.category_attachment
-                    ? record.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                  record.category_attachment ? record.category_attachment : ' '
                 }
                 style={{
                   width: '18px',

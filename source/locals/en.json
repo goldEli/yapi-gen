@@ -2256,5 +2256,6 @@
   "rbgz": "Daily report configuration rules",
   "fszq": "Sending cycle required",
   "p1": "Please enter the correct address",
-  "confirmToDeleteThisGroup": "Confirm to delete this group"
+  "confirmToDeleteThisGroup": "Confirm to delete this group",
+  "selectItem": "Select item"
 }

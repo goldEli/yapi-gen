@@ -135,7 +135,7 @@ const SprintDetailDrawer = () => {
   )
   const { userInfo } = useSelector(store => store.user)
   const { fullScreen } = useSelector(store => store.kanBan)
-
+  const projectIdRef = useRef('')
   const modeList = [
     { name: t('details'), key: 'detailInfo', content: '' },
     { name: t('subtransaction'), key: 'childSprint', content: '' },
@@ -220,7 +220,11 @@ const SprintDetailDrawer = () => {
     const paramsProjectId =
       affairsDetailDrawer.params.project_id ??
       affairsDetailDrawer.params.projectId ??
-      paramsData?.id
+      paramsData?.id ??
+      projectIdRef.current
+    if (paramsProjectId) {
+      projectIdRef.current = paramsProjectId
+    }
     if (affairsDetailDrawer.params?.isAllProject) {
       getProjectData()
     }
