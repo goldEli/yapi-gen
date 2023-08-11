@@ -2,10 +2,6 @@
 /* eslint-disable no-negated-condition */
 import React from 'react'
 import { MyBtn, Wrap } from './style'
-import type1 from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/project_type1.png'
-import type2 from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/project_type2.png'
-import type1_en from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/en_project_type1.png'
-import type2_en from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/en_project_type2.png'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '../IconFont'
@@ -16,8 +12,22 @@ const ProjectType = (props: any) => {
   const [t, { language: isRefresh }] = useTranslation()
 
   const arr = [
-    { id: 2, img: type1, en_img: type1_en, type: 2, hov: 0 },
-    { id: 1, img: type2, en_img: type2_en, type: 1, hov: 1 },
+    {
+      id: 2,
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/project_type1.png',
+      en_img:
+        'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/en_project_type1.png',
+      type: 2,
+      hov: 0,
+    },
+    {
+      id: 1,
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/project_type2.png',
+      en_img:
+        'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/en_project_type2.png',
+      type: 1,
+      hov: 1,
+    },
   ]
   return (
     <div>
