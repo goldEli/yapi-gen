@@ -89,6 +89,10 @@ interface Props {
   // // 人员下拉框是否绑定在body上面
   // isBindBody?: string
   isBug?: boolean
+  // 效能洞察的参数
+  isCanEdit?: boolean
+  // 效能洞察的参数
+  xnProjectId?: number
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -118,6 +122,9 @@ const TableQuickEdit = (props: Props) => {
     isCanEdit = props?.item?.project?.isEdit
     projectId = props?.item?.project_id
     canClick = isCan && isCanEdit
+  } else if (props.isCanEdit) {
+    isCanEdit = props.isCanEdit
+    projectId = props.xnProjectId
   } else {
     isCanEdit =
       projectInfo.projectPermissions?.length > 0 &&
@@ -131,7 +138,7 @@ const TableQuickEdit = (props: Props) => {
             : 'b/transaction/update'),
       )?.length > 0
     const paramsData = getParamsData(searchParams)
-    projectId = paramsData?.id
+    projectId = paramsData?.id ?? props?.item?.project_id
     canClick = isCan && isCanEdit
   }
 
@@ -252,6 +259,7 @@ const TableQuickEdit = (props: Props) => {
 
   //  迭代、处理人、抄送人、需求分类、标签--- 项目信息获取
   const getDefaultSelectValuesInfo = () => {
+    // debugger
     const resultValue: any = {
       attr: props?.type,
       value: [],
@@ -264,7 +272,9 @@ const TableQuickEdit = (props: Props) => {
       const response = projectInfoValues
         ?.filter((i: any) => i.key === 'iterate_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
-
+      // if (!response) {
+      //   return
+      // }
       resultValue.value = response
         ?.filter((k: any) => k.status === 1 || k.status === 4)
         ?.map((i: any) => ({
@@ -289,7 +299,7 @@ const TableQuickEdit = (props: Props) => {
           value: i.id,
         }))
         .filter((i: any) => i.value !== info)
-      resultValue.value = arr1.concat(arr12)
+      resultValue.value = arr1?.concat(arr12)
     } else if (props.keyText === 'copysend') {
       // 获取抄送人的下拉数据
       const response = projectInfoValues
@@ -407,7 +417,7 @@ const TableQuickEdit = (props: Props) => {
     }
 
     const obj: any = {
-      projectId,
+      projectId: projectId ?? props?.item?.projectId ?? props?.item?.project_id,
       id: props.item?.id,
     }
     if (props?.isCustom) {

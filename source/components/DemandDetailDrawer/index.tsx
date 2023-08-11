@@ -206,7 +206,7 @@ const DemandDetailDrawer = () => {
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
-  const leftWidth = 800
+  const leftWidth = 960
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -629,6 +629,7 @@ const DemandDetailDrawer = () => {
   }
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
+    return
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
     const titleItems = document.querySelectorAll('.info_item_tab')
@@ -807,7 +808,9 @@ const DemandDetailDrawer = () => {
                           drawerInfo.level_tree?.length <= 1 ||
                           index === drawerInfo.level_tree?.length - 1
                         }
-                      />
+                      >
+                        /
+                      </span>
                     </DrawerHeader>
                   ))}
                 </div>
