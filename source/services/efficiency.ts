@@ -318,7 +318,14 @@ export const unassignedList = async (
   parmas: API.Sprint.UnassignedList.Params,
 ) => {
   const response = await http.get<any>('unassignedList', parmas)
-  console.log(response)
+  // console.log(response)
+  // response.data.list[0].project_type = 1
+  // response.data.list[0].projectType = 1
+  // response.data.list[0].isBug = 1
+  // response.data.list[0].isExamine = true
+  // response.data.list[0].project.permissions = {
+  //   key: 'b/flaw/update',
+  // }
   const list = response.data.list.map((el: any) => ({
     ...el,
     storyPrefixKey: el.story_prefix_key,
@@ -336,17 +343,18 @@ export const unassignedList = async (
     userName: el.user_name,
     userId: el.user_id,
     storyCount: el.story_count,
-    isCanEdit:
-      (el.project_type === 1 &&
-        el.isBug === 1 &&
-        Object.values(el.project.permissions).includes('b/flaw/update')) ||
-      (el.project_type === 2 &&
-        Object.values(el.project.permissions).includes(
-          'b/transaction/update',
-        )) ||
-      (el.project_type === 1 &&
-        el.isBug !== 1 &&
-        Object.values(el.project.permissions).includes('b/story/update')),
+    isCanEdit: el.project?.permissions
+      ? (el.project_type === 1 &&
+          el.isBug === 1 &&
+          Object.values(el.project?.permissions).includes('b/flaw/update')) ||
+        (el.project_type === 2 &&
+          Object.values(el.project?.permissions).includes(
+            'b/transaction/update',
+          )) ||
+        (el.project_type === 1 &&
+          el.isBug !== 1 &&
+          Object.values(el.project?.permissions).includes('b/story/update'))
+      : false,
   }))
   return {
     list,
