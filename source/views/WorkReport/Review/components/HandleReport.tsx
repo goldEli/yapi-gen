@@ -9,7 +9,7 @@ import { Form, Modal, Spin } from 'antd'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import CommonModal from '@/components/CommonModal'
 import IconFont from '@/components/IconFont'
-import { AddWrap } from '@/components/StyleCommon'
+import { AddWrap, CloseWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -32,6 +32,8 @@ import ChoosePeople from './ChoosePeople'
 import RelatedNeed from './RelatedNeed'
 import moment from 'moment'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
+import { Label, LabelWrap } from '@/components/DemandDetailDrawer/style'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const LabelTitle = styled.span`
   font-size: 14px;
@@ -111,7 +113,7 @@ const HandleReport = (props: any) => {
   const [relatedNeedList, setRelatedNeedList] = useState<any>([])
   const [uploadAttachList, setUploadAttachList] = useState<any>({})
   const dispatch = useDispatch()
-
+  const myRef = useRef<any>(null)
   // 关闭弹窗时重置
   const close = () => {
     form.resetFields()
@@ -444,7 +446,32 @@ const HandleReport = (props: any) => {
       case 2:
         return (
           <Form.Item
-            label={<LabelTitle>{content.name}</LabelTitle>}
+            className="info_item_tab_label"
+            label={
+              <LabelWrap
+                style={{
+                  justifyContent: 'space-between',
+                  display: 'flex',
+                  width: '100%',
+                }}
+              >
+                <Label>{t('common.attachment')}</Label>
+                <CloseWrap
+                  style={{ marginLeft: 'auto' }}
+                  width={24}
+                  height={24}
+                >
+                  <CommonIconFont
+                    type="plus"
+                    size={18}
+                    color="var(--neutral-n2)"
+                    onClick={() => {
+                      myRef.current?.handleUpload()
+                    }}
+                  />
+                </CloseWrap>
+              </LabelWrap>
+            }
             name={`${content.type}_${content.id}`}
             rules={[
               {
@@ -465,22 +492,12 @@ const HandleReport = (props: any) => {
             ]}
           >
             <UploadAttach
+              ref={myRef}
               power
               defaultList={uploadAttachList[`${content.type}_${content.id}`]}
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res, `${content.type}_${content.id}`)
               }}
-              addWrap={
-                <AddWrap
-                  style={{
-                    marginBottom: '20px',
-                  }}
-                  hasColor
-                >
-                  <IconFont type="plus" />
-                  <div>{t('p2.addAdjunct') as unknown as string}</div>
-                </AddWrap>
-              }
             />
           </Form.Item>
         )
