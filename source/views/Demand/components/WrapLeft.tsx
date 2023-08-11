@@ -473,7 +473,7 @@ const WrapLeft = (props: any, ref: any) => {
         width: props.isShowLeft ? leftWidth : '0px',
         height: '100%',
         position: 'relative',
-        transition: focus ? '' : 'all .8s',
+        transition: focus ? '' : 'all .5s',
         opacity: props.isShowLeft ? 1 : 0,
       }}
     >
