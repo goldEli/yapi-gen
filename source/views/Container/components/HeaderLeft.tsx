@@ -246,16 +246,13 @@ const DrawerComponent = (props: DrawerComponentProps) => {
                 </div>
               </DrawerMenuItem>
             ))}
-          <WaitingMenu>
-            <img
-              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/menuTag.svg"
-              className="menuTag"
-            />
+          {/* <WaitingMenu>
+            <img src={menuTag} className="menuTag" />
             <div className="menuIcon">
               <CommonIconFont type="draft" size={24} />
             </div>
             <div className="label">{t('menu_word')}</div>
-          </WaitingMenu>
+          </WaitingMenu> */}
         </DrawerMenu>
         {/* 后台管理 */}
         {menuPermission?.menus?.filter((i: any) => i.url === '/AdminManagement')
