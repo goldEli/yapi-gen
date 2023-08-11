@@ -184,12 +184,9 @@ const Undistributed = (props: any) => {
     {
       title: (
         <div>
-          {t('subtransaction')}
-          {/* {record.projectType === 2
-          ? t('subtransaction')
-          : record?.type === 2
-          ? t('other.children')
-          : t('common.childDemand')} */}
+          {props.homeType === 'sprint'
+            ? t('subtransaction')
+            : t('common.childDemand')}
         </div>
       ),
       dataIndex: 'demand',
@@ -207,7 +204,7 @@ const Undistributed = (props: any) => {
       title: (
         <div>
           {t('sprint2')} + {t('common.iterate')}
-          {projectInfo.projectType === 2 ? t('sprint2') : t('common.iterate')}
+          {/* {projectInfo.projectType === 2 ? t('sprint2') : t('common.iterate')} */}
         </div>
       ),
       dataIndex: 'iteration',
@@ -224,6 +221,8 @@ const Undistributed = (props: any) => {
                 defaultText={text}
                 keyText="iterate_id"
                 item={record}
+                isCanEdit={record.isCanEdit}
+                xnProjectId={record.projectId}
                 onUpdate={() => onUpdate()}
                 isBug={record.project_type === 2}
               >
@@ -580,6 +579,7 @@ const Undistributed = (props: any) => {
     projectInfo?.projectPermissions,
     'b/story/batch',
   )
+  console.log(props, '999')
   return (
     <div
       style={{
