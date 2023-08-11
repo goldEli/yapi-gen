@@ -327,8 +327,11 @@ const Sortable = (props: any, refs: any) => {
                         style={{ flex: 1, height: '40px', lineHeight: '40px' }}
                       >
                         {
-                          optionFields.find(ele => ele.type === child.attr)
-                            ?.label
+                          optionFields.find(
+                            ele =>
+                              ele.type === child.attr ||
+                              ele.type === child?.fieldContent?.attr,
+                          )?.label
                         }
                       </div>
                       <div
@@ -417,7 +420,7 @@ const Sortable = (props: any, refs: any) => {
                         optionFields.find(
                           ele =>
                             ele.type === child.attr ||
-                            child?.fieldContent?.attr,
+                            ele.type === child?.fieldContent?.attr,
                         )?.label
                       }
                     </div>
