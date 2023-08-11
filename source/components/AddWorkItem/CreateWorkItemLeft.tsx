@@ -687,7 +687,7 @@ const CreateDemandLeft = (props: Props) => {
       <Form layout="vertical" form={form} disabled={!isCreateDemand}>
         <div style={{ display: 'flex' }}>
           <Form.Item
-            label={t('common.createProject')}
+            label={t('selectItem')}
             name="projectId"
             style={{ marginRight: 24, width: '50%' }}
             rules={[{ required: true, message: '' }]}
