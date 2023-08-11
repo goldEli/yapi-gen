@@ -21,7 +21,7 @@ export const IterationListBox = styled.div<{ isShowLeft: boolean }>(
     borderRight: '1px solid var(--neutral-n6-d1)',
 
     background: 'white',
-    transition: 'all .5s',
+    transition: 'all .3s',
     height: '100%',
     '.ant-space-item': {
       display: 'flex',
