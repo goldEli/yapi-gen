@@ -155,22 +155,6 @@ const ChildrenDemand = (props: Props, ref: any) => {
       },
     },
     {
-      title: t('common.dealName'),
-      dataIndex: 'dealName',
-      render: (text: any, record: any) => {
-        return (
-          <MultipleAvatar
-            max={3}
-            list={record.usersInfo?.map((i: any) => ({
-              id: i.id,
-              name: i.name,
-              avatar: i.avatar,
-            }))}
-          />
-        )
-      },
-    },
-    {
       title: '',
       dataIndex: 'schedule',
       key: 'schedule',
