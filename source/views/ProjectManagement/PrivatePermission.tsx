@@ -1,6 +1,5 @@
 // 私有项目无权限页面
 
-import privatePermission from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/privatePermission.png'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
@@ -33,7 +32,11 @@ const PrivatePermission = () => {
   }
   return (
     <Wrap>
-      <img src={privatePermission} style={{ width: 240 }} alt="" />
+      <img
+        src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/privatePermission.png"
+        style={{ width: 240 }}
+        alt=""
+      />
       <div>{t('new_p1.kongT')}</div>
       <CommonButton
         style={{ marginTop: 24 }}

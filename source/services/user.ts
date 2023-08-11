@@ -3,7 +3,6 @@
 import { store } from '../../store'
 import * as http from '../tools/http'
 import { onlySysNotice } from './sysNotice'
-import normalCompany from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg'
 
 // 获取人员信息
 export const getUserIntroList = async (params: { ids: string }) => {
@@ -82,7 +81,7 @@ export const getUserDetail: any = async () => {
     ...response.data,
     company_logo: response.data.company_logo?.length
       ? response.data.company_logo
-      : normalCompany,
+      : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg',
   }
 }
 
@@ -124,7 +123,10 @@ export const getCompanyList: any = async () => {
   const response = await http.get('getCompanyList')
   return response.data.map((i: any) => ({
     ...i,
-    logo: i.logo?.length > 0 ? i.logo : normalCompany,
+    logo:
+      i.logo?.length > 0
+        ? i.logo
+        : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg',
   }))
 }
 

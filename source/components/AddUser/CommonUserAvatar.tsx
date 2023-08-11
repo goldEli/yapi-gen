@@ -1,8 +1,6 @@
 // 公用头像组件
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
-import avatarBlack from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarBlack.png'
-import avatarWhite from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarWhite.png'
 
 const UserAvatarWrap = styled.div`
   display: flex;
@@ -48,8 +46,12 @@ const CommonUserAvatar = (props: UserAvatarProps) => {
     <UserAvatarWrap>
       <AvatarBox size={props.size} isBorder={props.isBorder}>
         {props.avatar && <img src={props.avatar} />}
-        {!props.avatar && theme === 1 && <img src={avatarBlack} />}
-        {!props.avatar && theme === 0 && <img src={avatarWhite} />}
+        {!props.avatar && theme === 1 && (
+          <img src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarBlack.png" />
+        )}
+        {!props.avatar && theme === 0 && (
+          <img src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarWhite.png" />
+        )}
       </AvatarBox>
       {props.name && <NameWrap>{props?.name}</NameWrap>}
     </UserAvatarWrap>

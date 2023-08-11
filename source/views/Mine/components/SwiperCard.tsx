@@ -3,7 +3,6 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import projectImg from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/projectImg.png'
 import { Dropdown } from 'antd'
 import { t } from 'i18next'
 
@@ -143,7 +142,11 @@ export const SwiperCard = (props: {
     >
       <ImgWrap
         show={props.show}
-        address={props.avtar ? props.avtar : projectImg}
+        address={
+          props.avtar
+            ? props.avtar
+            : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/projectImg.png'
+        }
       />
       <TextWarp>
         <NameWrap show={props.show}>{props.name}</NameWrap>

@@ -23,7 +23,6 @@ import type { Task } from 'cos-js-sdk-v5'
 import { bytesToSize } from '@/tools'
 import IconFont from '@/components/IconFont'
 import Viewer from 'react-viewer'
-import myImg from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/er.png'
 import { cos, uploadFile } from '@/services/cos'
 import { useSelector } from '@store/index'
 import { getMessage } from './Message'
@@ -488,7 +487,11 @@ const UploadAttach = (props: any, ref: any) => {
                         borderRadius: '4px',
                       }}
                       alt=""
-                      src={i.file.url ? i.file.url : myImg}
+                      src={
+                        i.file.url
+                          ? i.file.url
+                          : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/er.png'
+                      }
                     />
                   )}
                   {!imgs.includes(i.file.suffix) && (

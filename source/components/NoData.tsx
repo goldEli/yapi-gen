@@ -3,7 +3,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import noData from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/noData.png'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -36,7 +35,11 @@ const NoData = (props: Props) => {
   const [t] = useTranslation()
   return (
     <Wrap style={{ ...props.style }}>
-      <img src={noData} style={{ width: props?.size ? 120 : 240 }} alt="" />
+      <img
+        src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/noData.png"
+        style={{ width: props?.size ? 120 : 240 }}
+        alt=""
+      />
       {!props?.subText && !props?.children && !props?.haveFilter && (
         <div>{t('components.noData')}</div>
       )}

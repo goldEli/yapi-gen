@@ -2,7 +2,6 @@
 
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import privatePermission from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/privatePermission.png'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -48,7 +47,7 @@ const PermissionWrap = ({
   return (
     <Wrap style={{ height: '100%' }}>
       <img
-        src={privatePermission}
+        src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/privatePermission.png"
         style={{ width: 240, marginBottom: 24 }}
         alt=""
       />

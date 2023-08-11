@@ -14,8 +14,6 @@ import { Editor } from '@xyfe/uikit'
 import { Checkbox, DatePicker, Form, Input, Radio } from 'antd'
 
 import { useEffect, useRef, useState } from 'react'
-import type1 from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/type1.png'
-import type2 from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/type2.png'
 import { useTranslation } from 'react-i18next'
 
 import CommonModal from '@/components/CommonModal'
@@ -431,7 +429,7 @@ const CreateNoteModal = (props: any) => {
                     style={{
                       width: '104px',
                     }}
-                    src={type1}
+                    src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/type1.png"
                     alt=""
                   />
                 </div>
@@ -449,7 +447,7 @@ const CreateNoteModal = (props: any) => {
                     style={{
                       width: '240px',
                     }}
-                    src={type2}
+                    src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/type2.png"
                     alt=""
                   />
                 </div>

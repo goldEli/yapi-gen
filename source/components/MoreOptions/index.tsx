@@ -1,6 +1,5 @@
 import CommonUserAvatar from '../CommonUserAvatar'
 import { Wrap, WrapFirst, WrapSecond, WrapText, WrapTextImg } from './style'
-import erp from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/er.png'
 
 type OptionsProps = {
   type: 'user' | 'project' | 'promise'
@@ -21,7 +20,13 @@ const MoreOptions = (props: OptionsProps) => {
             alignItems: 'center',
           }}
         >
-          <CommonUserAvatar avatar={props.img ?? erp} size="small" />
+          <CommonUserAvatar
+            avatar={
+              props.img ??
+              'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/er.png'
+            }
+            size="small"
+          />
           <WrapText className="selectText">
             <span>{props.name}</span>
           </WrapText>
@@ -35,7 +40,12 @@ const MoreOptions = (props: OptionsProps) => {
             alignItems: 'center',
           }}
         >
-          <WrapTextImg src={props.img ?? erp} />
+          <WrapTextImg
+            src={
+              props.img ??
+              'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/er.png'
+            }
+          />
           <WrapText className="selectText">
             <span>{props.name} </span>
             <span style={{ marginLeft: '2px' }}>{props.labelName}</span>

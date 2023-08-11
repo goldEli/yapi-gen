@@ -23,7 +23,6 @@ import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
 import MoreOptions from '../MoreOptions'
 import ProjectCardShow from '../ProjectCardShow'
-import normalCompany from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg'
 import {
   CoverArea,
   CoverAreaAdd,
@@ -636,7 +635,11 @@ const CreateAProjectForm = () => {
                               type="project"
                               name={i.name}
                               dec={i.dec}
-                              img={i.img?.length > 0 ? i.img : normalCompany}
+                              img={
+                                i.img?.length > 0
+                                  ? i.img
+                                  : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg'
+                              }
                             />
                           </Select.Option>
                         )

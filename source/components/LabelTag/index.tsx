@@ -1,6 +1,4 @@
 import styled from '@emotion/styled'
-import yellowTag from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/yellow_tag.png'
-import blueTag from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/blue_tag.png'
 
 type ItemType = {
   label: string
@@ -19,9 +17,9 @@ const LabelWrap = styled.span<{ zh: boolean }>`
   box-sizing: border-box;
   background-image: ${(props: any) =>
     props.theme === 1
-      ? `url(${yellowTag})`
+      ? 'url(https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/yellow_tag.png)'
       : props.theme === 2
-      ? `url(${blueTag})`
+      ? 'url(https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/blue_tag.png)'
       : ''};
   background-size: cover;
   font-size: 12px;
