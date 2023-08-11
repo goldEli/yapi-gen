@@ -2256,5 +2256,6 @@
   "rbgz": "日报规则配置",
   "fszq": "发送周期必选",
   "p1": "请输入正确的地址",
-  "confirmToDeleteThisGroup": "确认删除该分组"
+  "confirmToDeleteThisGroup": "确认删除该分组",
+  "selectItem": "选择项目"
 }

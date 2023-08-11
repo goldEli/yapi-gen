@@ -242,9 +242,9 @@ const MyDropdown = (props: any) => {
    * @param type
    */
   const onRoute = (el: any, type: string) => {
-    let resultType = el?.feedable_type
-    let project_type = el?.feedable?.project?.project_type
-    let isDefect = el?.feedable?.is_bug
+    let resultType: any = el?.feedable_type
+    let project_type: any = el?.feedable?.project?.project_type
+    let isDefect: any = el?.feedable?.is_bug
     // 迭代详情 需求详情  事务详情  缺陷详情
     // const url = {
     //   iterate: '/ProjectManagement/IterationDetail',
@@ -294,9 +294,12 @@ const MyDropdown = (props: any) => {
         url = '/ProjectManagement/Defect'
         params = { ...params, specialType: 2, isOpenScreenDetail: true }
       }
+      if (resultType === 'Demand') {
+        url = '/ProjectManagement/Demand'
+        params = { ...params, specialType: 3, isOpenScreenDetail: true }
+      }
     }
     // return
-
     navigate(`${url}?data=${encryptPhp(JSON.stringify(params))}`)
     setIsOpen(false)
     let iterParmas = null
