@@ -214,7 +214,7 @@ const SiteDrawer = () => {
   }, [isVisible, read])
   useEffect(() => {
     isVisible ? reset() : null
-  }, [all])
+  }, [isVisible, all])
 
   const readStatue = () => {
     let state: boolean
