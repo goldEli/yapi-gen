@@ -65,6 +65,13 @@ const FieldWrap = styled.div`
   .ant-select-single.ant-select-open .ant-select-selection-item {
     color: var(--primary-d1);
   }
+  .hoverStyle {
+    &:hover {
+      .ant-select-arrow {
+        color: var(--primary-d1);
+      }
+    }
+  }
 `
 const DivideWrap = styled.div`
   width: 1px;
@@ -119,7 +126,7 @@ const DropdownRenderDiv = styled.div`
     justify-content: space-between;
     padding-right: 12px;
     box-sizing: border-box;
-    color: var(--neutral-n1-d2);
+    color: var(--neutral-n2);
     &:hover {
       background: var(--hover-d3);
       color: var(--neutral-n1-d1);
@@ -336,6 +343,7 @@ const CreateField = (props: { isOperate?: boolean }) => {
           <SelectStyle
             bordered={false}
             isActive={fieldIsOpen}
+            className="hoverStyle"
             onDropdownVisibleChange={e => setFieldIsOpen(e)}
             suffixIcon={
               <CommonIconFont type={fieldIsOpen ? 'up' : 'down'} size={16} />
@@ -417,6 +425,7 @@ const CreateField = (props: { isOperate?: boolean }) => {
           <SelectStyle
             bordered={false}
             isActive={typeIsOpen}
+            className="hoverStyle"
             placeholder={t('sprintProject.allTypes')}
             suffixIcon={
               <CommonIconFont type={typeIsOpen ? 'up' : 'down'} size={16} />

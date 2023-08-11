@@ -2278,5 +2278,7 @@
   "actualWorkingHours": "实际工时花费（h）",
   "pleaseEnterActualWorkingHours": "请输入实际工时",
   "enterTheActualWorkingHours": " '请输入实际工时",
-  "releaseNotes": "更新说明"
+  "releaseNotes": "更新说明",
+  "confirmToDeleteThisGroup": "确认删除该分组",
+  "selectItem": "选择项目"
 }

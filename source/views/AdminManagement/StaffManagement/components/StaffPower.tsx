@@ -19,8 +19,8 @@ const PersonalHead = styled.div`
 `
 const PersonalFooter = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding: 0 20px;
+  flex-direction: column;
+  padding: 0px 24px;
 `
 const Left = styled.div``
 const Line = styled.div`
@@ -37,7 +37,11 @@ const RightLine = styled(Line)`
   justify-content: flex-end;
 `
 
-const Right = styled.div``
+const Right = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 const imgCss = css`
   width: 32px;
   height: 32px;
@@ -93,22 +97,33 @@ export const StaffPersonal = (props: {
       onConfirm={onConfirm}
     >
       <PersonalFooter>
-        <Left>
-          <Line>{t('head_portrait')}</Line>
-          <Line>{t('common.phone')}</Line>
-          <Line>{t('common.email')}</Line>
-          <Line>{t('common.name')}</Line>
-          <Line>{t('common.nickname')}</Line>
-          <Line>{t('common.permissionGroup')}</Line>
-        </Left>
         <Right>
+          <Line>{t('head_portrait')}</Line>
           <PersonalHead>
             <CommonUserAvatar avatar={data?.avatar} size="large" />
           </PersonalHead>
-          <RightLine>{data.phone ? data.phone : '-'}</RightLine>
-          <RightLine>{data.email ? data.email : '-'}</RightLine>
-          <RightLine>{data.name ? data.name : '-'}</RightLine>
-          <RightLine>{data.nickname ? data.nickname : '-'}</RightLine>
+        </Right>
+        <Right>
+          <Line>{t('common.phone')}</Line>
+          <RightLine>{data.phone ? data.phone : '--'}</RightLine>
+        </Right>
+        <Right>
+          <Line>{t('common.email')}</Line>
+          <RightLine>{data.email ? data.email : '--'}</RightLine>
+        </Right>
+
+        <Right>
+          <Line>{t('common.name')}</Line>
+          <RightLine>{data.name ? data.name : '--'}</RightLine>
+        </Right>
+
+        <Right>
+          <Line>{t('common.nickname')}</Line>
+          <RightLine>{data.nickname ? data.nickname : '--'}</RightLine>
+        </Right>
+        <Right>
+          <Line>{t('common.permissionGroup')}</Line>
+
           <RightLine>
             <CustomSelect
               value={infoId}

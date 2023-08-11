@@ -22,6 +22,7 @@ type SliceState = {
 const slice = createSlice({
   name: 'view',
   initialState: {
+    searchChoose: {},
     searchKey: [],
     valueKey: {},
     titles: [],

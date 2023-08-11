@@ -666,7 +666,7 @@ const CommonNeed = (props: any) => {
           borderBottom: isShowSearch ? '' : '1px solid var(--neutral-n6-d1)',
         }}
       >
-        <SearchWrap>
+        <SearchWrap style={{ margin: 0 }}>
           <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
             <InputSearch
               placeholder={t('common.pleaseSearchDemand')}

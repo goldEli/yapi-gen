@@ -7,12 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import styled from '@emotion/styled'
 import InputSearch from '@/components/InputSearch'
-import {
-  CloseWrap,
-  DragLine,
-  MouseDom,
-  SelectWrapBedeck,
-} from '@/components/StyleCommon'
+import { CloseWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import TabItem from './components/TabItem'
 import IconFont from '@/components/IconFont'
 import { Popover, Spin, Tooltip } from 'antd'
@@ -39,6 +34,10 @@ import { getLoginDetail } from '@store/user/user.thunk'
 import { setAddWorkItemModal } from '@store/project'
 import { setCheckList } from '@store/sprint'
 import PermissionWrap from '@/components/PermissionWrap'
+import {
+  SprintDetailDragLine,
+  SprintDetailMouseDom,
+} from '@/components/DetailScreenModal/DemandDetail/style'
 
 const SearchBox = styled.div`
   display: flex;
@@ -54,6 +53,7 @@ const ContentWrap = styled.div`
 `
 
 const Left = styled.div<{ active: boolean }>`
+  position: relative;
   width: 316px;
   box-sizing: border-box;
   height: 100%;
@@ -387,19 +387,19 @@ const SprintProjectSprint: React.FC = () => {
     },
   ]
 
-  // 拖动线条
   const onDragLine = () => {
-    const startX = leftRef.current?.getBoundingClientRect()?.x
-    let width: any
     document.onmousemove = e => {
+      const sideDom = document.querySelector('#sidebar_yang')
       setFocus(true)
-      width = e.clientX - startX
-      setEndWidth(width - 4 < 316 ? 312 : width - 4)
-      if (leftRef && leftRef.current) {
-        leftRef.current.style.width = `${
-          Number(width) < 316 ? 316 : Number(width)
-        }px`
+      if (
+        e.clientX + 69 - (sideDom?.getBoundingClientRect().width ?? 0) <
+        316
+      ) {
+        return
       }
+      setEndWidth(
+        e.clientX + 69 - (sideDom?.getBoundingClientRect().width ?? 0),
+      )
     }
     document.onmouseup = () => {
       document.onmousemove = null
@@ -407,7 +407,6 @@ const SprintProjectSprint: React.FC = () => {
       setFocus(false)
     }
   }
-
   const changeSprintTab = () => {
     sessionStorage.removeItem('noRefresh')
     setActiveKey(0)
@@ -582,14 +581,20 @@ const SprintProjectSprint: React.FC = () => {
         </SearchBox>
         <ContentWrap>
           {isExpand ? (
-            <Left ref={leftRef} active={focus}>
-              <MouseDom
+            <Left
+              style={{
+                width: endWidth,
+              }}
+              ref={leftRef}
+              active={focus}
+            >
+              <SprintDetailMouseDom
                 active={focus}
                 onMouseDown={onDragLine}
-                style={{ left: endWidth ? endWidth : 312 }}
+                style={{ right: 0 }}
               >
-                <DragLine active={focus} className="line" />
-              </MouseDom>
+                <SprintDetailDragLine active={focus} className="line" />
+              </SprintDetailMouseDom>
               <div className="header">
                 <TabsWrap>
                   <div

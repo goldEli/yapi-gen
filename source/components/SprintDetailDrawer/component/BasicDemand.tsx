@@ -399,13 +399,13 @@ const BasicDemand = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.detail?.id) {
+    if (props.detail?.category) {
       getFieldData()
     }
   }, [props.detail])
 
   useEffect(() => {
-    if (isRefresh) {
+    if (isRefresh && props.detail?.category) {
       getFieldData()
     }
   }, [isRefresh])

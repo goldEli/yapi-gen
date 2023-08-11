@@ -88,6 +88,7 @@ import CommonProgress from '../CommonProgress'
 import DrawerTopInfo from '../DrawerTopInfo'
 import FlawTag from '../TagComponent/FlawTag'
 import ScheduleRecord from '../ScheduleRecord'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -133,12 +134,9 @@ const FlawDetailDrawer = () => {
   const [tabActive, setTabActive] = useState('tab_desc')
   const flawDetailRef = useRef<any>()
   const relationStoriesRef = useRef<any>()
-  const modeList = [
-    { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
-    { name: t('associatedWorkItems'), key: 'relation', content: '' },
-    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
-    { name: t('defectComment'), key: 'flawComment', content: '' },
-  ]
+  const [openDemandDetail] = useOpenDemandDetail()
+  const projectRef = useRef('')
+
   const tabItems: any = [
     {
       key: 'tab_desc',
@@ -188,7 +186,14 @@ const FlawDetailDrawer = () => {
 
   // 获取事务详情
   const getFlawDetail = async (id?: any, ids?: any) => {
-    const paramsProjectId = params.project_id ?? params.projectId
+    const paramsProjectId =
+      params.project_id ??
+      params.projectId ??
+      paramsData.id ??
+      projectRef.current
+    if (paramsProjectId) {
+      projectRef.current = paramsProjectId
+    }
     if (params?.isAllProject) {
       getProjectData()
     }
@@ -819,7 +824,15 @@ const FlawDetailDrawer = () => {
             <>
               <ParentBox size={8}>
                 {drawerInfo.level_tree?.map((i: any, index: number) => (
-                  <DrawerHeader key={i.prefix_key}>
+                  <DrawerHeader
+                    key={i.prefix_key}
+                    onClick={() => {
+                      const projectId = drawerInfo?.projectId
+                      if (index !== drawerInfo?.level_tree?.length - 1) {
+                        openDemandDetail({ ...i }, projectId, i.id, 2)
+                      }
+                    }}
+                  >
                     <img src={i.category_attachment} alt="" />
                     <div>
                       {i.project_prefix}-{i.prefix_key}

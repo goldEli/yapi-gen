@@ -88,7 +88,7 @@ const RightOperate = styled.div`
   font-size: 14px;
 `
 const Text = styled.span`
-  color: var(--neutral-n4);
+  color: var(--neutral-n3);
   margin-left: 8px;
   margin-right: 24px;
 `
@@ -105,7 +105,7 @@ const DelBtn = styled.span`
 const DelBtnText = styled.span`
   display: inline-block;
   min-width: 20px;
-  color: var(--neutral-n3);
+  color: var(--neutral-n4);
   margin: 0;
   padding: 0;
 `
@@ -203,16 +203,10 @@ const Sortable = (props: any, refs: any) => {
   }
   // 接触到就触发
   const onDragEnter = (e: any, index: number, child: any) => {
-    console.log('child', child)
     setEndIndex(index)
     setDragItem(() => {
       return { ...child }
     })
-    console.log(
-      'drag---',
-      dragItem.storyId,
-      list.map((item: { storyId: any }) => item.storyId),
-    )
     // setTimeout(() => {
     //   setDragItem(null)
     // }, 500)

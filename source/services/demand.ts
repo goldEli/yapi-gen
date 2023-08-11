@@ -789,6 +789,7 @@ export const getDemandList: any = async (params: any) => {
         storyPrefixKey: i.story_prefix_key,
         usersInfo: i.usersInfo,
         is_bug: i.is_bug,
+        project_type: i.project_type,
         copy_send_users: i.copy_send_users,
       })),
     }
