@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import projectImg from '/projectImg.png'
+import projectImg from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/projectImg.png'
 import { Dropdown } from 'antd'
 import { useTranslation } from 'react-i18next'
 

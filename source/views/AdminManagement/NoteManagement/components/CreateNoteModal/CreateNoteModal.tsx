@@ -14,8 +14,8 @@ import { Editor } from '@xyfe/uikit'
 import { Checkbox, DatePicker, Form, Input, Radio } from 'antd'
 
 import { useEffect, useRef, useState } from 'react'
-import type1 from '/type1.png'
-import type2 from '/type2.png'
+import type1 from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/type1.png'
+import type2 from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/type2.png'
 import { useTranslation } from 'react-i18next'
 
 import CommonModal from '@/components/CommonModal'

@@ -1,4 +1,4 @@
-import spingImg from '/newLoading.gif'
+import spingImg from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/newLoading.gif'
 
 const NewLoadingTransition = (props: any) => {
   return (

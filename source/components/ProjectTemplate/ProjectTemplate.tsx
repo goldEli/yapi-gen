@@ -2,9 +2,9 @@
 /* eslint-disable react/jsx-handler-names */
 import React, { useEffect, useRef, useState } from 'react'
 import { Small, Title, Title2 } from './style'
-import pt1 from '/pt1.png'
-import pt2 from '/pt2.png'
-import pt3 from '/pt3.png'
+import pt1 from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/pt1.png'
+import pt2 from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/pt2.png'
+import pt3 from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/pt3.png'
 import { t } from 'i18next'
 import CommonModal from '../CommonModal'
 import MainTable from '../MainTable/MainTable'

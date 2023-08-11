@@ -23,7 +23,7 @@ import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
 import MoreOptions from '../MoreOptions'
 import ProjectCardShow from '../ProjectCardShow'
-import normalCompany from '/normalCompany.jpg'
+import normalCompany from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg'
 import {
   CoverArea,
   CoverAreaAdd,

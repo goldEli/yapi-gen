@@ -18,7 +18,7 @@ const Footer = styled.div`
 const Header = styled.div`
   height: 148px;
   background-size: contain;
-  background-image: url('/note.jpg');
+  background-image: url('https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/note.jpg');
 
   border-radius: 4px 4px 0px 0px;
   padding: 38px 0px;

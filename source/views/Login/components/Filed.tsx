@@ -79,7 +79,11 @@ export default (props: any) => {
             width: '20px',
             height: '20px',
           }}
-          src={props.type == 'text' ? '/open.svg' : '/close.svg'}
+          src={
+            props.type == 'text'
+              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/open.svg'
+              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/close.svg'
+          }
           alt=""
         />
       ) : props.mode === 2 ? (

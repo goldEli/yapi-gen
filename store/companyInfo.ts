@@ -2,7 +2,7 @@
 // 公司信息
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getCompanyInfo } from '@/services/setting'
-import normalCompany from '/normalCompany.jpg'
+import normalCompany from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg'
 
 export interface CounterState {
   value: any

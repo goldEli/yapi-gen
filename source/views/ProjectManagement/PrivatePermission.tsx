@@ -1,6 +1,6 @@
 // 私有项目无权限页面
 
-import privatePermission from '/privatePermission.png'
+import privatePermission from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/privatePermission.png'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'

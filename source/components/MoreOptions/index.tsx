@@ -1,6 +1,6 @@
 import CommonUserAvatar from '../CommonUserAvatar'
 import { Wrap, WrapFirst, WrapSecond, WrapText, WrapTextImg } from './style'
-import erp from '/er.png'
+import erp from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/er.png'
 
 type OptionsProps = {
   type: 'user' | 'project' | 'promise'

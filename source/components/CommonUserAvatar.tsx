@@ -1,8 +1,8 @@
 // 公用头像组件
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
-import avatarBlack from '/avatarBlack.png'
-import avatarWhite from '/avatarWhite.png'
+import avatarBlack from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarBlack.png'
+import avatarWhite from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarWhite.png'
 
 const UserAvatarWrap = styled.div`
   display: flex;

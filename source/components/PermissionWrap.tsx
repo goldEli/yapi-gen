@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import privatePermission from '/privatePermission.png'
+import privatePermission from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/privatePermission.png'
 
 const Wrap = styled.div({
   display: 'flex',

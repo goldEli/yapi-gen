@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import yellowTag from '/yellow_tag.png'
-import blueTag from '/blue_tag.png'
+import yellowTag from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/yellow_tag.png'
+import blueTag from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/blue_tag.png'
 
 type ItemType = {
   label: string

@@ -3,7 +3,7 @@
 import { store } from '../../store'
 import * as http from '../tools/http'
 import { onlySysNotice } from './sysNotice'
-import normalCompany from '/normalCompany.jpg'
+import normalCompany from 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg'
 
 // 获取人员信息
 export const getUserIntroList = async (params: { ids: string }) => {
