@@ -4,7 +4,7 @@
 /* eslint-disable require-unicode-regexp */
 import { Form, Input, Select } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { AddWrap } from '../StyleCommon'
+import { AddWrap, CloseWrap } from '../StyleCommon'
 import IconFont from '../IconFont'
 import UploadAttach from '../UploadAttach'
 import { Editor, EditorRef } from '@xyfe/uikit'
@@ -24,6 +24,8 @@ import { getParentList } from '@store/project/project.thunk'
 import CategoryDropdown from '../CategoryDropdown'
 import { updateFlawCategory } from '@/services/flaw'
 import { updateAffairsCategory } from '@/services/affairs'
+import { Label, LabelWrap } from '../DemandDetailDrawer/style'
+import CommonIconFont from '../CommonIconFont'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -101,6 +103,7 @@ const CreateDemandLeft = (props: Props) => {
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
   const [projectInfo, setProjectInfo] = useState<any>({})
+  const myRef = useRef<any>(null)
   // 存储点击修改需求类别弹出确认按钮时提交的参数
   const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
   // 需求类别切换提交表单
@@ -804,23 +807,41 @@ const CreateDemandLeft = (props: Props) => {
           projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',
           )?.length > 0 && (
-            <Form.Item label={t('common.attachment')} name="attachments">
+            <Form.Item
+              className="info_item_tab_label"
+              label={
+                <LabelWrap
+                  style={{
+                    justifyContent: 'space-between',
+                    display: 'flex',
+                    width: '100%',
+                  }}
+                >
+                  <Label>{t('common.attachment')}</Label>
+                  <CloseWrap
+                    style={{ marginLeft: 'auto' }}
+                    width={24}
+                    height={24}
+                  >
+                    <CommonIconFont
+                      type="plus"
+                      size={18}
+                      color="var(--neutral-n2)"
+                      onClick={() => {
+                        myRef.current?.handleUpload()
+                      }}
+                    />
+                  </CloseWrap>
+                </LabelWrap>
+              }
+              name="attachments"
+            >
               <UploadAttach
+                ref={myRef}
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 onBottom={onBottom}
                 isBug={[2, 5].includes(categoryObj?.work_type)}
-                addWrap={
-                  <AddWrap
-                    style={{
-                      marginBottom: '20px',
-                    }}
-                    hasColor
-                  >
-                    <IconFont type="plus" />
-                    <div>{t('common.add23')}</div>
-                  </AddWrap>
-                }
               />
             </Form.Item>
           )}
