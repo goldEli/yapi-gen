@@ -581,6 +581,7 @@ export const DrawerHeader = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  cursor: pointer;
   img {
     width: 20px;
     height: 20px;
