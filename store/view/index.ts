@@ -11,7 +11,7 @@ type SliceState = {
   titles: any
   createVisible: boolean
   viewVisible: boolean
-  viewList: any[]
+  viewList: any
   sort: any
   tapSort: any
   createViewPort: {
@@ -22,9 +22,11 @@ type SliceState = {
 const slice = createSlice({
   name: 'view',
   initialState: {
+    viewList: [],
     searchChoose: {},
     searchKey: [],
     valueKey: {},
+
     titles: [],
     createVisible: false,
     viewVisible: false,

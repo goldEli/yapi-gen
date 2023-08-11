@@ -560,7 +560,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           <Form.Item
             label={
               <LabelTitle>
-                {content.name}：{content?.content?.length}个
+                {content.name}：{content?.content?.length}{' '}
+                {t('report.list.pieces')}
               </LabelTitle>
             }
             name={`${content.type}_${content.id}_${content.name}`}
