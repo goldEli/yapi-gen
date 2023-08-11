@@ -48,7 +48,7 @@ const CreateNoteModal = (props: any) => {
   const onValidator = (rule: any, value: any) => {
     const plainText = value.replace(/<[^>]+>/g, '')
 
-    if (plainText.length > 200) {
+    if (plainText.length > 800) {
       return Promise.reject(new Error(t('characters_over')))
     }
     if (
