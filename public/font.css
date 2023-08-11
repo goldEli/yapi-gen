@@ -1,9 +1,9 @@
 @font-face {
   font-family: SiYuanMedium;
-  src: url(./font/MiSans-Medium.ttf);
+  src: url("https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/MiSans-Medium.ttf/file/1691719475164/MiSans-Medium.ttf");
 }
 
 @font-face {
   font-family: SiYuanRegular;
-  src: url(./font/MiSans-Normal.ttf);
+  src: url("https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/MiSans-Normal.ttf/file/1691719481382/MiSans-Normal.ttf");
 }
