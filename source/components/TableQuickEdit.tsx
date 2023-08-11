@@ -89,6 +89,10 @@ interface Props {
   // // 人员下拉框是否绑定在body上面
   // isBindBody?: string
   isBug?: boolean
+  // 效能洞察的参数
+  isCanEdit?: boolean
+  // 效能洞察的参数
+  xnProjectId?: number
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -118,6 +122,9 @@ const TableQuickEdit = (props: Props) => {
     isCanEdit = props?.item?.project?.isEdit
     projectId = props?.item?.project_id
     canClick = isCan && isCanEdit
+  } else if (props.isCanEdit) {
+    isCanEdit = props.isCanEdit
+    projectId = props.xnProjectId
   } else {
     isCanEdit =
       projectInfo.projectPermissions?.length > 0 &&

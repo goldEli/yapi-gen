@@ -346,9 +346,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: (
-        <NewSort fixedKey="user_name">{t('common.createName')}123</NewSort>
-      ),
+      title: <NewSort fixedKey="user_name">{t('common.createName')}</NewSort>,
       dataIndex: 'userName',
       key: 'user_name',
       width: 120,
@@ -368,7 +366,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: t('common.dealName') + 99,
+      title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
       width: 140,
