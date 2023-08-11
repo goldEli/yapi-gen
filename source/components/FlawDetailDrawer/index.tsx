@@ -823,30 +823,32 @@ const FlawDetailDrawer = () => {
           {!skeletonLoading && (
             <>
               <ParentBox size={8}>
-                {drawerInfo.level_tree?.map((i: any, index: number) => (
-                  <DrawerHeader
-                    key={i.prefix_key}
-                    onClick={() => {
-                      const projectId = drawerInfo?.projectId
-                      if (index !== drawerInfo?.level_tree?.length - 1) {
-                        openDemandDetail({ ...i }, projectId, i.id, 2)
-                      }
-                    }}
-                  >
-                    <img src={i.category_attachment} alt="" />
-                    <div>
-                      {i.project_prefix}-{i.prefix_key}
-                    </div>
-                    <span
-                      hidden={
-                        drawerInfo.level_tree?.length <= 1 ||
-                        index === drawerInfo.level_tree?.length - 1
-                      }
+                <div style={{ display: 'flex' }}>
+                  {drawerInfo.level_tree?.map((i: any, index: number) => (
+                    <DrawerHeader
+                      key={i.prefix_key}
+                      onClick={() => {
+                        const projectId = drawerInfo?.projectId
+                        if (index !== drawerInfo?.level_tree?.length - 1) {
+                          openDemandDetail({ ...i }, projectId, i.id, 2)
+                        }
+                      }}
                     >
-                      /
-                    </span>
-                  </DrawerHeader>
-                ))}
+                      <img src={i.category_attachment} alt="" />
+                      <div>
+                        {i.project_prefix}-{i.prefix_key}
+                      </div>
+                      <span
+                        hidden={
+                          drawerInfo.level_tree?.length <= 1 ||
+                          index === drawerInfo.level_tree?.length - 1
+                        }
+                      >
+                        /
+                      </span>
+                    </DrawerHeader>
+                  ))}
+                </div>
                 {!skeletonLoading && (
                   <ChangeStatusPopover
                     isCanOperation={isCanEdit && !drawerInfo.isExamine}
