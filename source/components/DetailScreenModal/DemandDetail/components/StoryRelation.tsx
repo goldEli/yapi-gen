@@ -1,6 +1,12 @@
 /* eslint-disable no-undefined */
 import { getParamsData } from '@/tools'
-import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
+import {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CommonButton from '@/components/CommonButton'
 import ResizeTable from '@/components/ResizeTable'
@@ -125,6 +131,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   const [allDataSource, setAllDataSource] = useState<any>({
     list: undefined,
   })
+  const projectIdRef = useRef('')
   const [resultData, setResultData] = useState<
     {
       label: string
@@ -156,8 +163,11 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   //   获取关联项列表
   const getList = async (pageParams: any, orderParams: any) => {
     setIsSpinning(true)
+    if (id) {
+      projectIdRef.current = id
+    }
     const response = await getStoryRelationStories({
-      projectId: id,
+      projectId: id ?? projectIdRef.current,
       id: props.detail.id,
       order: orderParams.value,
       orderKey: orderParams.key,
