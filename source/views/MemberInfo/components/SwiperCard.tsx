@@ -53,7 +53,7 @@ const Warp = styled.div<{ show?: boolean }>(
 
 const ImgWrap = styled.div<{ show?: boolean; address?: any }>(
   ({ show, address }) => ({
-    filter: String(show ? 'brightness(70%)' : ''),
+    // filter: String(show ? 'brightness(70%)' : ''),
     backgroundImage: `url(${address})`,
   }),
   {
@@ -86,6 +86,7 @@ const NameWrap = styled.div<{ show?: boolean }>(
 const TextWarp = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'center',
   paddingLeft: '8px',
   height: 40,
   background: 'white',
@@ -147,13 +148,15 @@ const SwiperCard = (props: {
         {!props.all && (
           <div
             style={{
-              width: '48px',
+              width: '130px',
               height: '20px',
               fontSize: '12px',
               fontWeight: 400,
               color: 'var(--neutral-n2)',
               lineHeight: '20px',
               whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
             }}
           >
             {changeNames1()} - {changeNames2()}

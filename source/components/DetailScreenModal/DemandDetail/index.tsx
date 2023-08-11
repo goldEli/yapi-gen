@@ -341,11 +341,7 @@ const DemandDetail = () => {
           return (
             <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
               <img
-                src={
-                  k.category_attachment
-                    ? k.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
+                src={k.category_attachment ? k.category_attachment : ' '}
                 style={{
                   width: '18px',
                   height: '18px',
@@ -535,7 +531,6 @@ const DemandDetail = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
-
   return (
     <DemandWrap>
       <DeleteConfirmModal />
@@ -696,7 +691,7 @@ const DemandDetail = () => {
           <CopyIcon onCopy={onCopy} />
           <ChangeStatusPopover
             projectId={demandInfo.projectId}
-            isCanOperation={!hasEdit && demandInfo.isExamine}
+            isCanOperation={!hasEdit && !demandInfo.isExamine}
             record={demandInfo}
             onChangeStatus={onChangeStatus}
             type={1}

@@ -115,7 +115,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
               keyText="users"
               type="fixed_select"
               defaultText={
-                props.details?.user?.map((i: any) => i.user_id) || []
+                props.details?.user?.map((i: any) => i.user.id) || []
               }
               onUpdate={props.onUpdate}
             >

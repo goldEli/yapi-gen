@@ -138,7 +138,6 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
         </Form>
         <UserList>
           {userList.map(item => {
-            console.log(item, 'item')
             return (
               <UserListItem key={item.id}>
                 <Row>

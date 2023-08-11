@@ -687,7 +687,7 @@ const CreateDemandLeft = (props: Props) => {
       <Form layout="vertical" form={form} disabled={!isCreateDemand}>
         <div style={{ display: 'flex' }}>
           <Form.Item
-            label={t('common.createProject')}
+            label={t('selectItem')}
             name="projectId"
             style={{ marginRight: 24, width: '50%' }}
             rules={[{ required: true, message: '' }]}
@@ -763,8 +763,8 @@ const CreateDemandLeft = (props: Props) => {
         </Form.Item>
         <Form.Item label={t('mine.demandInfo')} name="info">
           <Editor
-            height="calc(100vh - 800px)"
-            maxHeight="400px"
+            maxHeight="550px"
+            minHeight="250px"
             ref={editorRef}
             upload={uploadFile}
             getSuggestions={() => []}

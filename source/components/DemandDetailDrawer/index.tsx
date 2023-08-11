@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
@@ -81,6 +82,7 @@ import {
   copyLink,
   detailTimeFormat,
   getIdsForAt,
+  getParamsData,
   getProjectIdByUrl,
   removeNull,
 } from '@/tools'
@@ -90,16 +92,18 @@ import { cancelVerify } from '@/services/mine'
 import CommentFooter from '../CommonComment/CommentFooter'
 import CommonComment from '../CommonComment'
 import { setActiveCategory } from '@store/category'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRelation'
 import DrawerTopInfo from '../DrawerTopInfo'
 import CommonProgress from '../CommonProgress'
 import ScheduleRecord from '../ScheduleRecord'
 import DemandTag from '../TagComponent/DemandTag'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 interface ItemIprops {
   label: string
   key: string
 }
+
 const DemandDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -131,9 +135,12 @@ const DemandDetailDrawer = () => {
   const { projectInfo, isUpdateAddWorkItem, projectInfoValues } = useSelector(
     store => store.project,
   )
+  const { userInfo } = useSelector(store => store.user)
   const [t] = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams) || {}
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [skeletonLoading, setSkeletonLoading] = useState(false)
@@ -149,6 +156,8 @@ const DemandDetailDrawer = () => {
   const childrenDemandRef = useRef<any>()
   const storyRelationRef = useRef<any>()
   const tabsRef = useRef<any>()
+  const [openDemandDetail] = useOpenDemandDetail()
+  const projectIdRef = useRef()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -237,8 +246,12 @@ const DemandDetailDrawer = () => {
 
   // 获取需求详情
   const getDemandDetail = async (id?: any, ids?: any) => {
+    console.log('demandDetailDrawerProps', demandDetailDrawerProps)
     const paramsProjectId =
-      demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId
+      demandDetailDrawerProps.project_id ??
+      demandDetailDrawerProps.projectId ??
+      paramsData?.id ??
+      projectIdRef.current
     if (demandDetailDrawerProps?.isAllProject) {
       getProjectData()
     }
@@ -771,7 +784,20 @@ const DemandDetailDrawer = () => {
               <ParentBox size={8}>
                 <div style={{ display: 'flex' }}>
                   {drawerInfo.level_tree?.map((i: any, index: number) => (
-                    <DrawerHeader key={i.prefix_key}>
+                    <DrawerHeader
+                      key={i.prefix_key}
+                      onClick={() => {
+                        // TODO
+                        if (demandDetailDrawerProps?.project_id) {
+                          projectIdRef.current =
+                            demandDetailDrawerProps?.project_id
+                        }
+                        const projectId = drawerInfo?.projectId
+                        if (index !== drawerInfo?.level_tree?.length - 1) {
+                          openDemandDetail({ ...i }, projectId, i.id)
+                        }
+                      }}
+                    >
                       <img src={i.category_attachment} alt="" />
                       <div>
                         {i.project_prefix}-{i.prefix_key}
@@ -781,9 +807,7 @@ const DemandDetailDrawer = () => {
                           drawerInfo.level_tree?.length <= 1 ||
                           index === drawerInfo.level_tree?.length - 1
                         }
-                      >
-                        /
-                      </span>
+                      />
                     </DrawerHeader>
                   ))}
                 </div>
@@ -846,7 +870,12 @@ const DemandDetailDrawer = () => {
                   type="demand"
                   id={drawerInfo.id}
                   percent={drawerInfo?.schedule}
-                  hasEdit={isCanEdit}
+                  hasEdit={
+                    isCanEdit &&
+                    drawerInfo?.user
+                      ?.map((i: any) => i?.user?.id)
+                      ?.includes(userInfo?.id)
+                  }
                   project_id={drawerInfo.projectId}
                   onConfirm={onOperationUpdate}
                 />

@@ -389,6 +389,7 @@ const LinkSprint = (props: {
       getRelationStoriesList(pageParams)
     }
   }, [props.detail, projectInfo])
+
   const onSelect = (value: any) => {
     form.setFieldsValue({
       relationId: value,

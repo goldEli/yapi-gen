@@ -123,6 +123,7 @@ const SprintDetailDrawer = () => {
   const isTabClick = useRef(false)
 
   // 快捷按钮列表
+  const projectIdRef = useRef('')
   const anchorList = [
     { name: t('attachment'), key: 'sprint-attachment' },
     { name: t('addTag'), key: 'sprint-tag' },
@@ -234,7 +235,12 @@ const SprintDetailDrawer = () => {
   const getSprintDetail = async (id?: any, ids?: any) => {
     const paramsProjectId =
       affairsDetailDrawer.params.project_id ??
-      affairsDetailDrawer.params.projectId
+      affairsDetailDrawer.params.projectId ??
+      paramsData?.id ??
+      projectIdRef.current
+    if (paramsProjectId) {
+      projectIdRef.current = paramsProjectId
+    }
     if (affairsDetailDrawer.params?.isAllProject) {
       getProjectData()
     }
@@ -825,7 +831,12 @@ const SprintDetailDrawer = () => {
                 type="transaction"
                 id={drawerInfo?.id}
                 percent={drawerInfo?.schedule}
-                hasEdit={!hasEdit}
+                hasEdit={
+                  !hasEdit &&
+                  drawerInfo?.user
+                    ?.map((i: any) => i?.user?.id)
+                    ?.includes(userInfo?.id)
+                }
                 project_id={drawerInfo?.projectId}
                 onConfirm={onOperationUpdate}
               />

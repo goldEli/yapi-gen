@@ -41,7 +41,7 @@ const light = css`
 `
 const secondary = css`
   background: var(--auxiliary-b4) !important;
-  color: var(--neutral-n2) !important ;
+  color: var(--auxiliary-b1) !important ;
   border: 1px solid transparent !important;
   &:hover {
     background: var(--auxiliary-b5) !important;

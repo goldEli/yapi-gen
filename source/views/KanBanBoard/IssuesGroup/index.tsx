@@ -139,7 +139,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         onClick={() => {
           openDelete({
             title: t('confirm_deletion'),
-            text: '确认删除该分组',
+            text: t('confirmToDeleteThisGroup'),
             onConfirm() {
               const params = {
                 id: issuesGroup.id,
@@ -180,9 +180,10 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       {addPeopleBtn}
       {AddUserModalElement}
       <Text>{text}</Text>
-      {delBtn}
+      {<>{groupType === 'users' && delBtn}</>}
     </GroupTitleArea>
   )
+
   return (
     <IssuesGroupBox>
       {titleArea}

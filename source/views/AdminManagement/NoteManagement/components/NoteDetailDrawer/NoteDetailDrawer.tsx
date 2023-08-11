@@ -112,126 +112,123 @@ const NoteDetailDrawer = (props: any) => {
     )
   }, [reportIds])
 
-  if (props.isVisible) {
-    return (
-      <Drawer
-        closable={false}
-        placement="right"
-        bodyStyle={{ padding: 0, position: 'relative' }}
-        width={leftWidth}
-        open={props.isVisible}
-        onClose={onCancel}
-        destroyOnClose
-        getContainer={false}
-        className={messageDrawer}
-      >
-        <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
-          <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
-        </MouseDom>
-        <Header>
-          <Space size={16}>
-            <BackIcon onClick={onCancel}>
-              <CommonIconFont
-                type="right-02"
-                size={20}
-                color="var(--neutral-n2)"
-              />
-            </BackIcon>
-          </Space>
-          <Space size={16}>
-            <ChangeIconGroup>
-              {currentIndex === 0 ? null : (
-                <UpWrap
-                  onClick={onUpDemand}
-                  id="upIcon"
-                  isOnly={currentIndex === 0}
-                >
-                  <CommonIconFont
-                    type="up"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </UpWrap>
-              )}
-              {reportIds.length - 1 === currentIndex ? null : (
-                <DownWrap
-                  onClick={onDownDemand}
-                  id="downIcon"
-                  isOnly={currentIndex <= 0}
-                >
-                  <CommonIconFont
-                    type="down"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </DownWrap>
-              )}
-            </ChangeIconGroup>
-          </Space>
-        </Header>
-        <Content>
-          <div
-            style={{
-              height: '24px',
-              fontSize: '16px',
-              color: 'var(--neutral-n1-d1)',
-              lineHeight: '24px',
-              fontFamily: 'SiYuanMedium',
-            }}
-          >
-            {arr?.title}
-          </div>
-          <Title> {t('content')}</Title>
-          <Editor
-            value={arr?.content ?? '--'}
-            getSuggestions={() => []}
-            readonly
-          />
-          <Title>{t('author')}</Title>
-          {/* <Text> {arr.user.name}</Text> */}
-          <Title>{t('sent_at')}</Title>
-          <Text>{arr?.send_time ? arr?.send_time : arr?.created_at}</Text>
-          <Title>{t('receiver')}</Title>
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-            }}
-          >
-            {arr?.recipient.all ? (
+  return (
+    <Drawer
+      closable={false}
+      placement="right"
+      bodyStyle={{ padding: 0, position: 'relative' }}
+      width={leftWidth}
+      open={props.isVisible}
+      onClose={onCancel}
+      destroyOnClose
+      getContainer={false}
+      className={messageDrawer}
+    >
+      <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
+        <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
+      </MouseDom>
+      <Header>
+        <Space size={16}>
+          <BackIcon onClick={onCancel}>
+            <CommonIconFont
+              type="right-02"
+              size={20}
+              color="var(--neutral-n2)"
+            />
+          </BackIcon>
+        </Space>
+        <Space size={16}>
+          <ChangeIconGroup>
+            {currentIndex === 0 ? null : (
+              <UpWrap
+                onClick={onUpDemand}
+                id="upIcon"
+                isOnly={currentIndex === 0}
+              >
+                <CommonIconFont
+                  type="up"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </UpWrap>
+            )}
+            {reportIds.length - 1 === currentIndex ? null : (
+              <DownWrap
+                onClick={onDownDemand}
+                id="downIcon"
+                isOnly={currentIndex <= 0}
+              >
+                <CommonIconFont
+                  type="down"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </DownWrap>
+            )}
+          </ChangeIconGroup>
+        </Space>
+      </Header>
+      <Content>
+        <div
+          style={{
+            height: '24px',
+            fontSize: '16px',
+            color: 'var(--neutral-n1-d1)',
+            lineHeight: '24px',
+            fontFamily: 'SiYuanMedium',
+          }}
+        >
+          {arr?.title}
+        </div>
+        <Title> {t('content')}</Title>
+        <Editor
+          value={arr?.content ?? '--'}
+          getSuggestions={() => []}
+          readonly
+        />
+        <Title>{t('author')}</Title>
+        {/* <Text> {arr.user.name}</Text> */}
+        <Title>{t('sent_at')}</Title>
+        <Text>{arr?.send_time ? arr?.send_time : arr?.created_at}</Text>
+        <Title>{t('receiver')}</Title>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+          }}
+        >
+          {arr?.recipient.all ? (
+            <Col
+              style={{
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <DefalutIcon bgc="rgba(125, 189, 225, 1)">
+                <CommonIconFont
+                  type="userAll"
+                  size={16}
+                  color="var(--neutral-white-d7)"
+                />
+              </DefalutIcon>
+              <NameText>{t('all')}</NameText>
+            </Col>
+          ) : (
+            arr?.recipient_users.map((i: any) => (
               <Col
                 style={{
                   whiteSpace: 'nowrap',
                 }}
+                key={i.id}
               >
-                <DefalutIcon bgc="rgba(125, 189, 225, 1)">
-                  <CommonIconFont
-                    type="userAll"
-                    size={16}
-                    color="var(--neutral-white-d7)"
-                  />
-                </DefalutIcon>
-                <NameText>{t('all')}</NameText>
+                <CommonUserAvatar avatar={i.avatar} />
+                <NameText>{i.name}</NameText>
               </Col>
-            ) : (
-              arr?.recipient_users.map((i: any) => (
-                <Col
-                  style={{
-                    whiteSpace: 'nowrap',
-                  }}
-                  key={i.id}
-                >
-                  <CommonUserAvatar avatar={i.avatar} />
-                  <NameText>{i.name}</NameText>
-                </Col>
-              ))
-            )}
-          </div>
-        </Content>
-      </Drawer>
-    )
-  }
-  return null
+            ))
+          )}
+        </div>
+      </Content>
+    </Drawer>
+  )
 }
 
 export default NoteDetailDrawer

@@ -9,7 +9,6 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { CloseWrap } from '@/components/StyleCommon'
 import BasicDemand from '@/components/DemandDetailDrawer/BasicDemand'
 import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
-import { getDemandInfo } from '@store/demand/demand.thunk'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { changeRestScroll } from '@store/scroll'
@@ -27,6 +26,7 @@ const DemandBasic = (props: Props) => {
   const { isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
   )
+  const { userInfo } = useSelector(store => store.user)
   const isRest = useSelector(store => store.scroll.isRest)
   const [activeTabs, setActiveTabs] = useState(1)
   const isCanEdit =
@@ -85,7 +85,12 @@ const DemandBasic = (props: Props) => {
               update={demandInfo}
               percent={demandInfo?.schedule}
               id={demandInfo?.id}
-              hasEdit={isCanEdit}
+              hasEdit={
+                !!isCanEdit &&
+                demandInfo?.user
+                  ?.map((i: any) => i?.user?.id)
+                  ?.includes(userInfo?.id)
+              }
               type="demand"
               project_id={demandInfo?.projectId}
               onConfirm={onUpdate}

@@ -445,16 +445,15 @@ const CalendarFormModal = () => {
 
   return (
     <>
-      {isChooseVisible && (
-        <NewAddUserModalForTandD
-          title={t('calendarManager.add_a_member')}
-          state={2}
-          isVisible={isChooseVisible}
-          onConfirm={onAddConfirm}
-          onClose={() => setIsVisible(false)}
-          {...addMemberProps}
-        />
-      )}
+      <NewAddUserModalForTandD
+        title={t('calendarManager.add_a_member')}
+        state={2}
+        isVisible={isChooseVisible}
+        onConfirm={onAddConfirm}
+        onClose={() => setIsChooseVisible(false)}
+        {...addMemberProps}
+      />
+
       <AddDepartmentOrTeamModal
         isVisible={isChooseOtherVisible}
         onClose={() => setIsChooseOtherVisible(false)}

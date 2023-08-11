@@ -411,7 +411,7 @@ const CommonNeed = (props: any) => {
   }
 
   // 点击打开详情并组装当前平级的需求id列表
-  const onClickItem = (item: any) => {
+  const onClickItem = async (item: any) => {
     if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
       getMessage({ msg: t('common.notCheckInfo'), type: 'warning' })
     } else {
@@ -426,11 +426,29 @@ const CommonNeed = (props: any) => {
       }
       item.isMineOrHis = true
       item.isAllProject = props.id === 0
+      if (props.id === 0) {
+        const result = await getProjectInfo({ projectId: item.project_id })
+        dispatch(setProjectInfo(result))
+        const result1 = await getProjectInfoValues({
+          projectId: item.project_id,
+        })
+        dispatch(setProjectInfoValues(result1))
+      }
+      let type = 0
+      if (item.project_type === 2) {
+        type = 1
+      }
+      if (item.project_type === 1 && item.is_bug === 2) {
+        type = 3
+      }
+      if (item.project_type === 1 && item.is_bug === 1) {
+        type = 2
+      }
       openDemandDetail(
         { ...item, ...{ demandIds } },
         item.project_id,
         item.id,
-        item.project_type === 2 ? 1 : undefined,
+        type,
       )
     }
   }

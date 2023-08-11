@@ -235,6 +235,9 @@ export const InfoWrap = styled.div`
 export const SprintDetailDragLine = styled(DragLine)`
   background: ${props =>
     props.active ? 'var(--primary-d2)' : 'var(--neutral-n6-d1)'}!important;
+  &:hover {
+    background: var(--primary-d2) !important;
+  }
 `
 
 export const SprintDetailMouseDom = styled(MouseDom)`

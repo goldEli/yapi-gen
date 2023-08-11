@@ -339,6 +339,7 @@ export const getProjectMember: any = async (params: any) => {
       positionName: i.position_name,
       roleName: i.role_name,
       is_admin: i.is_admin,
+      is_leader: i.is_leader,
     }))
   } else {
     return {
@@ -360,6 +361,7 @@ export const getProjectMember: any = async (params: any) => {
         phone: i.phone,
         email: i.email,
         is_admin: i.is_admin,
+        is_leader: i.is_leader,
       })),
     }
   }

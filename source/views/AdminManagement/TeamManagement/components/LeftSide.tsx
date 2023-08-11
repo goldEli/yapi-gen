@@ -26,7 +26,7 @@ import {
 const LeftSideContainer = styled.div`
   position: relative;
   height: 100%;
-  border-right: 1px solid var(--neutral-n6-d2);
+
   padding: 0;
   background-color: var(--neutral-white-d1);
   .resize_save {

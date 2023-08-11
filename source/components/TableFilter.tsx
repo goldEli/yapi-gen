@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-delete-var */
 // 公用列表筛选组件
 
@@ -340,7 +341,7 @@ const TableFilter = (props: any) => {
   }, [props.defaultValue])
 
   useEffect(() => {
-    if (Object.hasOwn(searchChoose || {}, 'system_view')) {
+    if (searchChoose?.hasOwnProperty('system_view')) {
       if (searchChoose.system_view === 1) {
         form.resetFields()
         confirm()
