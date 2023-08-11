@@ -770,7 +770,13 @@ const AffairsDetail = () => {
               update={affairsInfo}
               type="transaction"
               percent={affairsInfo?.schedule}
-              hasEdit={!hasEdit}
+              hasEdit={
+                !hasEdit &&
+                Array.isArray(affairsInfo?.user) &&
+                affairsInfo?.user
+                  ?.map((i: any) => i?.user?.id)
+                  ?.includes(userInfo?.id)
+              }
               project_id={affairsInfo?.projectId as any}
               onConfirm={onUpdate}
             />
