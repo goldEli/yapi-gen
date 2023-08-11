@@ -376,8 +376,6 @@ const StatusModal = (props: StatusModalProps) => {
       getConfig()
     }
   }, [props.isVisible, props.checkStatusItem])
-  console.log(configData?.fields, '111')
-
   return (
     <CommonModal
       width={582}

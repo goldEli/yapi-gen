@@ -117,13 +117,12 @@ const Undistributed = (props: any) => {
   useEffect(() => {
     onUpdate()
   }, [])
-
   const onUpdate = async (pageVal?: any, sizeVal?: any) => {
     setIsSpinning(true)
     const result = await unassignedList({
       page: pageVal || page,
       pagesize: sizeVal || pageSize,
-      type: 1,
+      type: props.type.includes('Defect') ? 2 : 1,
     })
     setData({
       list: result.list,
