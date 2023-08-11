@@ -438,7 +438,7 @@ const Undistributed = (props: any) => {
       },
     },
     {
-      title: t('common.dealName'),
+      title: t('common.dealName') + '99',
       dataIndex: 'dealName',
       key: 'users_name',
       width: 140,
@@ -449,6 +449,8 @@ const Undistributed = (props: any) => {
             defaultText={record?.usersNameIds || []}
             keyText="users"
             item={record}
+            isCanEdit={record.isCanEdit}
+            xnProjectId={record.projectId}
             onUpdate={() => onUpdate()}
             isBug={record.is_bug === 1}
           >

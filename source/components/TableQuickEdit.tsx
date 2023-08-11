@@ -141,7 +141,6 @@ const TableQuickEdit = (props: Props) => {
     projectId = paramsData?.id ?? props?.item?.project_id
     canClick = isCan && isCanEdit
   }
-
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {
     const response = await storyConfigField({ projectId, key: props.keyText })
@@ -259,7 +258,6 @@ const TableQuickEdit = (props: Props) => {
 
   //  迭代、处理人、抄送人、需求分类、标签--- 项目信息获取
   const getDefaultSelectValuesInfo = () => {
-    // debugger
     const resultValue: any = {
       attr: props?.type,
       value: [],
@@ -415,7 +413,6 @@ const TableQuickEdit = (props: Props) => {
         return
       }
     }
-
     const obj: any = {
       projectId: projectId ?? props?.item?.projectId ?? props?.item?.project_id,
       id: props.item?.id,
