@@ -87,7 +87,7 @@ const Setting = () => {
       ).length,
     },
     {
-      name: t('other.kanbanConfig'),
+      name: '',
       icon: 'settings',
       content: <KanBanSettings />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>

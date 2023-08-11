@@ -429,6 +429,10 @@ const CommonNeed = (props: any) => {
       if (props.id === 0) {
         const result = await getProjectInfo({ projectId: item.project_id })
         dispatch(setProjectInfo(result))
+        const result1 = await getProjectInfoValues({
+          projectId: item.project_id,
+        })
+        dispatch(setProjectInfoValues(result1))
       }
       let type = 0
       if (item.project_type === 2) {
