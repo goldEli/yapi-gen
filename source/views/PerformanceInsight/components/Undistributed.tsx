@@ -245,7 +245,12 @@ const Undistributed = (props: any) => {
       render: (text: string, record: any) => {
         return (
           <>
-            <ChildDemandTable value={text} row={record} />
+            {/* {record.showChildCOntent && !record.isTree && (
+              <ChildDemandTable value={text} row={record} />
+            )}
+            {(!record.showChildCOntent || record.isTree) && ( */}
+            <span>{text || 0}</span>
+            {/* )} */}
           </>
         )
       },
@@ -546,7 +551,7 @@ const Undistributed = (props: any) => {
         return (
           <TableQuickEdit
             type="date"
-            defaultText={row?.expected_start_at || '--'}
+            defaultText={row?.expected_start_at}
             keyText="expected_start_at"
             item={row}
             isCanEdit={row.isCanEdit}
