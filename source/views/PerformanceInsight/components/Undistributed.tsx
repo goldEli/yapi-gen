@@ -592,7 +592,6 @@ const Undistributed = (props: any) => {
     projectInfo?.projectPermissions,
     'b/story/batch',
   )
-  console.log(props, '999')
   return (
     <div
       style={{
