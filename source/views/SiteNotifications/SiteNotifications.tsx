@@ -42,6 +42,9 @@ const SiteNotifications = (props: any, ref: any) => {
   const { isVisible, all } = useSelector(store => store.siteNotifications)
   const isRefresh = useSelector(store => store.user.isRefresh)
   const init2 = async () => {
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise(resolve => setTimeout(resolve, 2000))
+
     const res = await getContactStatistics()
     let num = 0
     res.list.slice(1, 6).forEach((i: any) => {
