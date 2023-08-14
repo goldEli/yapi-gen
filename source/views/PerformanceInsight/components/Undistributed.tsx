@@ -260,6 +260,10 @@ const Undistributed = (props: any) => {
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     onUpdate()
   }
+  // 复制编号
+  const onCopyNumber = (id: string) => {
+    copyLink(id, t('copysuccess'), t('copyfailed'))
+  }
   const colum = [
     ...arr,
     {
@@ -275,7 +279,14 @@ const Undistributed = (props: any) => {
               isClose={record.category_status?.is_end === 1}
               style={{ marginRight: 16 }}
             >
-              {record.story_prefix_key}
+              <div className="text">{record.storyPrefixKey}</div>
+              <div className="icon">
+                <CommonIconFont
+                  type="share"
+                  size={20}
+                  onClick={() => onCopyNumber(text)}
+                />
+              </div>
             </ClickWrap>
             {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
@@ -438,7 +449,7 @@ const Undistributed = (props: any) => {
       },
     },
     {
-      title: t('common.dealName') + '99',
+      title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
       width: 140,
