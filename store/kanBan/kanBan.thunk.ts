@@ -494,6 +494,7 @@ export const getKanbanByGroup = createAsyncThunk(
     }
 
     if (type === 'none') {
+      console.log(111)
       const res = await services.kanban.getKanban(params)
       store.dispatch(setSpinning(false))
       return [

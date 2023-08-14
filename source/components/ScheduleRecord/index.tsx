@@ -133,7 +133,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                 </InfoRow>
                 <InfoRow>
                   {t('labor_cost_this_time')}
-                  {Math.floor((i.task_time / 60) * 100) / 100}h
+                  {Math.floor((i.task_time / 3600) * 100) / 100}h
                 </InfoRow>
                 <InfoRow>
                   {t('update_instructions')}

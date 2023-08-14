@@ -336,7 +336,10 @@ const useShareModal = () => {
             </CopyButton>
           ) : loading ? (
             <LoadingButton>
-              <img width={16} src="/shareLoading.gif" />
+              <img
+                width={16}
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/shareLoading.gif"
+              />
               <span>{t('sprint.acquiring')}</span>
             </LoadingButton>
           ) : (

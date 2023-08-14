@@ -671,6 +671,7 @@ const FlawDetailDrawer = () => {
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
+    return
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
     const titleItems = document.querySelectorAll('.info_item_tab')
