@@ -97,7 +97,7 @@ const useWebsocket = () => {
         }
 
         setWsData({
-          key: Math.random(),
+          key: Math.random() * 10000,
           data,
         })
       },

@@ -525,19 +525,31 @@ const StaffManagement = () => {
       {isShow ? <SearchList onSearch={onSearch} /> : null}
       <div
         style={{
-          height: 'calc(100vh - 176px)',
+          height: isShow ? 'calc(100vh - 250px)' : 'calc(100vh - 176px)',
           overflow: 'auto',
           padding: '0 24px',
         }}
       >
-        <ResizeTable
-          isSpinning={isSpinning}
-          dataWrapNormalHeight="100%"
-          col={selectColum}
-          rowSelection={rowSelection}
-          dataSource={listData}
-          noData={<NoData />}
-        />
+        {isShow && (
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="calc(100vh - 250px)"
+            col={selectColum}
+            rowSelection={rowSelection}
+            dataSource={listData}
+            noData={<NoData />}
+          />
+        )}
+        {!isShow && (
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="calc(100vh - 176px)"
+            col={selectColum}
+            rowSelection={rowSelection}
+            dataSource={listData}
+            noData={<NoData />}
+          />
+        )}
       </div>
       <PaginationBox
         total={total}

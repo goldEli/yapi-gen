@@ -37,7 +37,7 @@ const CommonProgress = (props: ProgressProps) => {
   const [visible, setVisible] = useState(false)
   const [commonProgressVisible, setCommonProgressVisible] = useState(false)
   const [data, setData] = useState<any>(null)
-  const [t]: any = useTranslation()
+  const [t, i18n]: any = useTranslation()
   const getList = async () => {
     const result = await getStroySchedule({
       id,
@@ -113,7 +113,7 @@ const CommonProgress = (props: ProgressProps) => {
           ? null
           : hasEdit && (
               <UpdateButton
-                style={{ marginLeft: 16 }}
+                style={{ marginLeft: i18n.language === 'zh' ? 16 : 65 }}
                 onClick={() => setVisible(true)}
               >
                 {t('updateProgress')}

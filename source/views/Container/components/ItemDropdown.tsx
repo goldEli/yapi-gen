@@ -112,7 +112,9 @@ const ItemDropdown = (props: PropsType) => {
   }
 
   useEffect(() => {
-    onFectProjectList()
+    if (isOpen) {
+      onFectProjectList()
+    }
   }, [isOpen])
 
   const onRoute = (el: any) => {

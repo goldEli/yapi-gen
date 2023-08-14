@@ -2280,5 +2280,7 @@
   "enterTheActualWorkingHours": "&#39;Please enter the actual working hours",
   "releaseNotes": "Release Notes",
   "confirmToDeleteThisGroup": "Confirm to delete this group",
-  "selectItem": "Select item"
+  "selectItem": "Select item",
+  "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation": "There are duplicate tasks in [Due today], please cancel the duplicate association",
+  "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2": "Duplicate tasks exist in Overdue tasks. Cancel the duplicate association"
 }
