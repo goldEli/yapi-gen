@@ -54,9 +54,10 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const [t] = useTranslation()
   const { headerParmas } = useSelector(store => store.performanceInsight)
   const navigate = useNavigate()
-  const onClick = () => {
+  const onClick = (el?: any) => {
     const params = encryptPhp(
       JSON.stringify({
+        homePage: el?.icon === 'chart-06' ? 2 : 1,
         data: props.data,
         id: props.projectId || 314,
         projectId: props.projectId,
@@ -102,7 +103,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
       </Col>
       <DataWrap>
         {props.data?.map(el => (
-          <LotBox key={el.name} onClick={() => onClick()}>
+          <LotBox key={el.name} onClick={() => onClick(el)}>
             <LotBoxRow>
               <LotIcon>
                 <CommonIconFont

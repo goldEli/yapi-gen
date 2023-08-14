@@ -541,13 +541,22 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
     display: 'flex',
     cursor: 'pointer',
+    '.icon': {
+      display: 'none',
+      color: 'var(--neutral-n3)',
+    },
     '.text': {
       width: '56px',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
     },
-    '.text:hover': {
+    '&:hover': {
+      '.icon': {
+        display: 'flex',
+      },
+    },
+    '.text:hover ,.icon:hover': {
       color: 'var(--primary-d2)',
     },
   },

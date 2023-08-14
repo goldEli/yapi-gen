@@ -117,13 +117,12 @@ const Undistributed = (props: any) => {
   useEffect(() => {
     onUpdate()
   }, [])
-
   const onUpdate = async (pageVal?: any, sizeVal?: any) => {
     setIsSpinning(true)
     const result = await unassignedList({
       page: pageVal || page,
       pagesize: sizeVal || pageSize,
-      type: 1,
+      type: props.type.includes('Defect') ? 2 : 1,
     })
     setData({
       list: result.list,
@@ -185,12 +184,9 @@ const Undistributed = (props: any) => {
     {
       title: (
         <div>
-          {t('subtransaction')}
-          {/* {record.projectType === 2
-          ? t('subtransaction')
-          : record?.type === 2
-          ? t('other.children')
-          : t('common.childDemand')} */}
+          {props.homeType === 'sprint'
+            ? t('subtransaction')
+            : t('common.childDemand')}
         </div>
       ),
       dataIndex: 'demand',
@@ -208,7 +204,7 @@ const Undistributed = (props: any) => {
       title: (
         <div>
           {t('sprint2')} + {t('common.iterate')}
-          {projectInfo.projectType === 2 ? t('sprint2') : t('common.iterate')}
+          {/* {projectInfo.projectType === 2 ? t('sprint2') : t('common.iterate')} */}
         </div>
       ),
       dataIndex: 'iteration',
@@ -225,6 +221,8 @@ const Undistributed = (props: any) => {
                 defaultText={text}
                 keyText="iterate_id"
                 item={record}
+                isCanEdit={record.isCanEdit}
+                xnProjectId={record.projectId}
                 onUpdate={() => onUpdate()}
                 isBug={record.project_type === 2}
               >
@@ -262,6 +260,10 @@ const Undistributed = (props: any) => {
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     onUpdate()
   }
+  // 复制编号
+  const onCopyNumber = (id: string) => {
+    copyLink(id, t('copysuccess'), t('copyfailed'))
+  }
   const colum = [
     ...arr,
     {
@@ -277,7 +279,14 @@ const Undistributed = (props: any) => {
               isClose={record.category_status?.is_end === 1}
               style={{ marginRight: 16 }}
             >
-              {record.story_prefix_key}
+              <div className="text">{record.storyPrefixKey}</div>
+              <div className="icon">
+                <CommonIconFont
+                  type="share"
+                  size={20}
+                  onClick={() => onCopyNumber(text)}
+                />
+              </div>
             </ClickWrap>
             {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
@@ -451,6 +460,8 @@ const Undistributed = (props: any) => {
             defaultText={record?.usersNameIds || []}
             keyText="users"
             item={record}
+            isCanEdit={record.isCanEdit}
+            xnProjectId={record.projectId}
             onUpdate={() => onUpdate()}
             isBug={record.is_bug === 1}
           >
@@ -581,6 +592,7 @@ const Undistributed = (props: any) => {
     projectInfo?.projectPermissions,
     'b/story/batch',
   )
+  console.log(props, '999')
   return (
     <div
       style={{
