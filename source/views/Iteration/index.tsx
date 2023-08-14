@@ -204,7 +204,6 @@ const Iteration = () => {
       getList(val, { page: 1, size: pageObj.size }, searchItems)
     }
   }
-
   const onClickIcon = (value: any) => {
     if (value === 1) {
       setIsShow2(false)
@@ -412,6 +411,12 @@ const Iteration = () => {
           <IterationList
             isShowLeft={isShowLeft}
             onUpdate={refresh}
+            onClickItem={() =>
+              setPageObj({
+                page: 1,
+                size: 20,
+              })
+            }
             onCompleteIteration={onCompleteIteration}
           />
           <IterationMain isShowLeft={isShowLeft}>

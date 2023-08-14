@@ -538,6 +538,15 @@ const GlobalStyle = () => {
         color: var(--neutral-n3);
       }
     }
+    .row-dragging2 {
+      display: flex;
+      align-items: center;
+      background: var(--auxiliary-text-t1-d1);
+      box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+      border-radius: 6px 6px 6px 6px;
+
+      z-index: 10000 !important;
+    }
     .row-dragging {
       display: flex;
       align-items: center;
@@ -557,6 +566,10 @@ const GlobalStyle = () => {
     }
     .row-dragging li {
       padding: 6px;
+    }
+
+    .row-dragging2 input {
+      width: 386px;
     }
 
     .row-dragging .drag-visible {

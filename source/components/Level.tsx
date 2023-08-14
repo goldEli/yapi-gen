@@ -50,7 +50,7 @@ export const LevelContent = (props: LevelProps) => {
         projectId: pid,
         type: 'priority',
       })
-      setShowData(res.data)
+      setShowData(res.data ?? [])
     } else {
       setShowData(
         projectInfoValues
@@ -71,13 +71,13 @@ export const LevelContent = (props: LevelProps) => {
       id: storyID,
     }
     onTap?.(data)
-    props.onCurrentDetail?.(showData.filter((i: any) => i.id === value)[0])
+    props.onCurrentDetail?.(showData?.filter((i: any) => i.id === value)[0])
     onHide()
   }
 
   return (
     <Contain>
-      {showData.map((item: any) => (
+      {showData?.map((item: any) => (
         <div
           onClick={() => changeState(item.id)}
           className={flexCss}

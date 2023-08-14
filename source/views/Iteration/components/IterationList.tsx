@@ -62,6 +62,7 @@ interface IterationListProps {
   isShowLeft: boolean
   onUpdate(): void
   onCompleteIteration(id: number): void
+  onClickItem(): void
 }
 
 const IterationList = (props: IterationListProps) => {
@@ -416,6 +417,7 @@ const IterationList = (props: IterationListProps) => {
   //   点击获取迭代详情
   const onClickItem = (item: any) => {
     dispatch(getIterateInfo({ projectId: getProjectIdByUrl(), id: item.id }))
+    props.onClickItem()
   }
 
   useEffect(() => {

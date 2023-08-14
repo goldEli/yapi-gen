@@ -310,13 +310,15 @@ const NoteCard = (props: any) => {
         </Wrap1>
         <Wrap2>
           {values.send_time && values.is_send !== 1 ? (
-            <span
+            <div
               style={{
-                color: '#646566',
+                color: '#bbbdbf',
+                borderRight: '1px solid #ecedef',
+                paddingRight: '16px',
               }}
             >
               {t('to_be_released')}
-            </span>
+            </div>
           ) : (
             <Popover
               open={popoverVisible}
@@ -345,7 +347,7 @@ const NoteCard = (props: any) => {
 
           {(values.is_drew_back === 1 || values.is_draft === 1) && (
             <ColorBtn onClick={() => props.onDel(values.id)}>
-              <CommonIconFont type="file-text" /> <span>{t('p2.delete')}</span>
+              <CommonIconFont type="delete" /> <span>{t('p2.delete')}</span>
             </ColorBtn>
           )}
           {values.is_send === 1 && (
@@ -356,7 +358,7 @@ const NoteCard = (props: any) => {
 
           {values.is_draft === 1 ? (
             <ColorBtn onClick={() => props.onEditDetail(values)}>
-              <CommonIconFont type="file-text" /> <span>{t('edit_draft')}</span>
+              <CommonIconFont type="edit" /> <span>{t('edit_draft')}</span>
             </ColorBtn>
           ) : (
             <ColorBtn onClick={() => props.onShowDetail(values)}>
