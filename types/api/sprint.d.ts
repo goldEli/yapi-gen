@@ -9,6 +9,12 @@ declare namespace API.Sprint {
   }
   namespace UnassignedList {
     type Params = {
+      project_ids: string
+      iterate_ids: string
+      user_ids: string
+      period_time: string
+      start_time: string
+      end_time: string
       page: number
       pagesize: number
       type: number

@@ -122,24 +122,29 @@ const TableQuickEdit = (props: Props) => {
     isCanEdit = props?.item?.project?.isEdit
     projectId = props?.item?.project_id
     canClick = isCan && isCanEdit
-  } else if (props.isCanEdit) {
-    isCanEdit = props.isCanEdit
-    projectId = props.xnProjectId
+  } else if (props?.isCanEdit) {
+    isCanEdit = props?.isCanEdit
+    projectId = props?.xnProjectId
   } else {
-    isCanEdit =
-      projectInfo.projectPermissions?.length > 0 &&
-      projectInfo.projectPermissions?.filter(
-        (i: any) =>
-          i.identity ===
-          (projectInfo.projectType === 1
-            ? props.isBug
-              ? 'b/flaw/update'
-              : 'b/story/update'
-            : 'b/transaction/update'),
-      )?.length > 0
-    const paramsData = getParamsData(searchParams)
-    projectId = paramsData?.id ?? props?.item?.project_id
-    canClick = isCan && isCanEdit
+    if (props?.xnProjectId) {
+      isCanEdit = props?.isCanEdit
+      projectId = props?.xnProjectId
+    } else {
+      isCanEdit =
+        projectInfo.projectPermissions?.length > 0 &&
+        projectInfo.projectPermissions?.filter(
+          (i: any) =>
+            i.identity ===
+            (projectInfo.projectType === 1
+              ? props.isBug
+                ? 'b/flaw/update'
+                : 'b/story/update'
+              : 'b/transaction/update'),
+        )?.length > 0
+      const paramsData = getParamsData(searchParams)
+      projectId = paramsData?.id ?? props?.item?.project_id
+      canClick = isCan && isCanEdit
+    }
   }
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {
