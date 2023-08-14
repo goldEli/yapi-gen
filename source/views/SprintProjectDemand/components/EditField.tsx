@@ -50,7 +50,7 @@ const ChooseWrap = styled.div({
   marginTop: 8,
   borderRadius: 6,
   background: 'var(--neutral-n8)',
-  padding: 16,
+  padding: '16px 6px',
 })
 
 const OptionsWrap = styled.div({
@@ -70,7 +70,7 @@ const OptionsItemWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '4px 0',
+  padding: '4px 12px',
 })
 
 const AddWrap = styled.div({
@@ -488,26 +488,24 @@ const EditFiled = (props: Props) => {
                     'user_select_checkbox',
                   ].includes(value) && (
                     <OptionsWrap>
-                      <AddWrap onClick={onAddChoose}>
+                      <AddWrap
+                        style={{ paddingLeft: '6px' }}
+                        onClick={onAddChoose}
+                      >
                         <IconFont type="plus" />
                         <span>{t('newlyAdd.addChoose')}</span>
                       </AddWrap>
                       <SortContainer
-                        helperClass="row-dragging"
+                        helperClass="row-dragging2"
                         useDragHandle
                         onSortEnd={(values: any) => onSortEnd(values)}
                       >
                         {row?.map((_i: any, idx: number) => (
-                          <SortItemLi
-                            helperClass="row-dragging"
-                            key={_i.key}
-                            index={idx}
-                          >
+                          <SortItemLi key={_i.key} index={idx}>
                             <OptionsItemWrap key={_i.key}>
                               <DragHandle />
                               <Input
                                 defaultValue={row[idx].value}
-                                style={{ width: 396 }}
                                 placeholder={t('newlyAdd.pleaseParams')}
                                 onChange={e => onChangeValue(e, idx)}
                               />

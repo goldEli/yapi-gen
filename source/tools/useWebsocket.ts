@@ -101,7 +101,7 @@ const useWebsocket = () => {
           data,
         })
       },
-      5000,
+      2000,
       {
         trailing: false,
       },

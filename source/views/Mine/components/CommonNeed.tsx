@@ -658,7 +658,7 @@ const CommonNeed = (props: any) => {
     <>
       <div
         style={{
-          margin: '0 24px 16px 24px',
+          margin: `0 24px ${isShowSearch ? 0 : 16}px 24px`,
           justifyContent: 'space-between',
           display: 'flex',
           borderBottom: '1px solid var(--neutral-n6-d1)',
@@ -705,7 +705,7 @@ const CommonNeed = (props: any) => {
 
             {props.id !== 0 && (
               <>
-                <DividerWrap type="vertical" />
+                {/* <DividerWrap type="vertical" /> */}
                 <ScreenMinHover
                   label={t('common.search')}
                   icon="filter"
