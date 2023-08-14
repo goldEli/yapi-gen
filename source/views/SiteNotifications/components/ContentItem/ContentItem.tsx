@@ -89,8 +89,8 @@ const ContentItem = (props: any) => {
           marginRight: '8px',
         }}
       >
-        <Badge offset={[-1, 4]} dot={read === 0}>
-          <CommonUserAvatar2 src={send_user.head} />
+        <Badge offset={[-1, 4]} dot={read === 0 && !choose}>
+          <CommonUserAvatar isBorder avatar={send_user.head} />
         </Badge>
       </div>
       <HoverWrap style={{ flex: '1' }}>

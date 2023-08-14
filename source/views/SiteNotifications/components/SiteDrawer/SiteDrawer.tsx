@@ -211,8 +211,10 @@ const SiteDrawer = () => {
   useEffect(() => {
     lastId.current = 1
     isVisible ? fetchMoreData(1) : n2()
+  }, [isVisible, read])
+  useEffect(() => {
     isVisible ? reset() : null
-  }, [isVisible, read, all])
+  }, [isVisible, all])
 
   const readStatue = () => {
     let state: boolean
