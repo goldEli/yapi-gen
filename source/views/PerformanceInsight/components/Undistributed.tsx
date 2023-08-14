@@ -161,6 +161,7 @@ const Undistributed = (props: any) => {
       //
     }
   }
+  console.log(props, 'pp')
   const arr = [
     {
       width: 48,
@@ -203,8 +204,7 @@ const Undistributed = (props: any) => {
     {
       title: (
         <div>
-          {t('sprint2')} + {t('common.iterate')}
-          {/* {projectInfo.projectType === 2 ? t('sprint2') : t('common.iterate')} */}
+          {props.homeType === 'sprint' ? t('sprint2') : t('common.iterate')}
         </div>
       ),
       dataIndex: 'iteration',
