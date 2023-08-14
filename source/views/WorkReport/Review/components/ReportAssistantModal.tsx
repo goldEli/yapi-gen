@@ -561,7 +561,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           <Form.Item
             label={
               <LabelTitle>
-                {content.name}：{content?.content?.length}个
+                {content.name}：{content?.content?.length}{' '}
+                {t('report.list.pieces')}
               </LabelTitle>
             }
             name={`${content.type}_${content.id}_${content.name}`}
@@ -569,6 +570,29 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             <NewRelatedNeed
               initValue={content?.content}
               data={demandList}
+              canSubmit={(arr: any) => {
+                const isCan = arr?.every((i: any) =>
+                  demandList?.map((o: any) => o?.id)?.includes(i?.value),
+                )
+                if (!isCan) {
+                  if (content.key === 'timeout_task') {
+                    getMessage({
+                      msg: t(
+                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
+                      ),
+                      type: 'warning',
+                    })
+                  } else {
+                    getMessage({
+                      msg: t(
+                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2',
+                      ),
+                      type: 'warning',
+                    })
+                  }
+                }
+                return isCan
+              }}
               onFilter={() => {
                 setFilterDemand()
               }}

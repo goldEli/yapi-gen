@@ -119,6 +119,9 @@ const NewRelatedNeed = (props: any) => {
         ?.user_schedule_percent,
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
+    if (!props.canSubmit(result)) {
+      return
+    }
     props.onChange(historyData.concat(result).map((item: any) => item.value))
     setChooseList(historyData.concat(result))
     setTimeout(() => {

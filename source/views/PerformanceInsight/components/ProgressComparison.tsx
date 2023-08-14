@@ -758,6 +758,7 @@ const ProgressComparison = (props: Props) => {
   const getEfficiencyMemberWorkList = async (
     parmas: API.Sprint.EfficiencyMemberWorkList.Params,
   ) => {
+    setSpinning(true)
     const res = await efficiencyMemberWorkList(parmas)
     setMemberWorkList(res)
     setSpinning(false)
@@ -766,6 +767,7 @@ const ProgressComparison = (props: Props) => {
   const getEfficiencyMemberDefectList = async (
     parmas: API.Sprint.EfficiencyMemberWorkList.Params,
   ) => {
+    setSpinning(true)
     const res = await efficiencyMemberDefectList(parmas)
     setMemberWorkList(res)
     setSpinning(false)

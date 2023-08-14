@@ -19,6 +19,7 @@ import CommonButton from '@/components/CommonButton'
 import NoData from '@/components/NoData'
 import PaginationBox from '@/components/TablePagination'
 import HeaderAll from './HeaderAll'
+import { getDays, getMonthBefor } from './Date'
 import {
   HiddenText,
   ClickWrap,
@@ -117,9 +118,58 @@ const Undistributed = (props: any) => {
   useEffect(() => {
     onUpdate()
   }, [])
+  const getTimeStr = (time: { type: number; time: any }) => {
+    switch (time.type) {
+      case 1:
+        return 'one_month'
+      case 3:
+        return 'three_month'
+      case 6:
+        return 'six_month'
+      case 14:
+        return 'two_week'
+      case 28:
+        return 'four_week'
+      default:
+        return ''
+    }
+  }
+  // 获取时间
+  const getTime = (time: { type: number; time: any }) => {
+    switch (time.type) {
+      case 1:
+        return getMonthBefor(1)
+      case 3:
+        return getMonthBefor(3)
+      case 6:
+        return getMonthBefor(6)
+      case 14:
+        return getDays(14)
+      case 28:
+        return getDays(28)
+      default:
+        return {
+          startTime: time?.time?.[0],
+          endTime: time?.time?.[1],
+        }
+    }
+  }
   const onUpdate = async (pageVal?: any, sizeVal?: any) => {
     setIsSpinning(true)
+    const time = props.headerParmas?.time && getTime(props.headerParmas?.time)
     const result = await unassignedList({
+      project_ids: props.headerParmas?.projectIds?.length
+        ? props.headerParmas?.projectIds?.join?.(',')
+        : props.projectId + '',
+      iterate_ids: props.headerParmas.iterate_ids?.length
+        ? props.headerParmas.iterate_ids?.join(',')
+        : '',
+      user_ids: props.headerParmas.users?.length
+        ? props.headerParmas.users?.join(',')
+        : '',
+      period_time: getTimeStr(props.headerParmas?.time),
+      start_time: getTimeStr(props.headerParmas?.time) ? '' : time.startTime,
+      end_time: getTimeStr(props.headerParmas?.time) ? '' : time.endTime,
       page: pageVal || page,
       pagesize: sizeVal || pageSize,
       type: props.type.includes('Defect') ? 2 : 1,
@@ -203,8 +253,7 @@ const Undistributed = (props: any) => {
     {
       title: (
         <div>
-          {t('sprint2')} + {t('common.iterate')}
-          {/* {projectInfo.projectType === 2 ? t('sprint2') : t('common.iterate')} */}
+          {props.homeType === 'sprint' ? t('sprint2') : t('common.iterate')}
         </div>
       ),
       dataIndex: 'iteration',
@@ -260,6 +309,10 @@ const Undistributed = (props: any) => {
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     onUpdate()
   }
+  // 复制编号
+  const onCopyNumber = (id: string) => {
+    copyLink(id, t('copysuccess'), t('copyfailed'))
+  }
   const colum = [
     ...arr,
     {
@@ -275,7 +328,14 @@ const Undistributed = (props: any) => {
               isClose={record.category_status?.is_end === 1}
               style={{ marginRight: 16 }}
             >
-              {record.story_prefix_key}
+              <div className="text">{record.storyPrefixKey}</div>
+              <div className="icon">
+                <CommonIconFont
+                  type="share"
+                  size={20}
+                  onClick={() => onCopyNumber(text)}
+                />
+              </div>
             </ClickWrap>
             {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
@@ -294,7 +354,6 @@ const Undistributed = (props: any) => {
               display: 'flex',
               alignItems: 'center',
               position: 'relative',
-              paddingLeft: record.level ? (Number(record.level) - 1) * 24 : 0,
             }}
           >
             <Tooltip placement="top" title={record.category}>
@@ -438,7 +497,7 @@ const Undistributed = (props: any) => {
       },
     },
     {
-      title: t('common.dealName') + '99',
+      title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
       width: 140,
@@ -581,7 +640,6 @@ const Undistributed = (props: any) => {
     projectInfo?.projectPermissions,
     'b/story/batch',
   )
-  console.log(props, '999')
   return (
     <div
       style={{
@@ -618,16 +676,16 @@ const Undistributed = (props: any) => {
           }
           noData={
             <NoData
-              subText={t('theCurrentProjectHasNotCreatedATransactionCreate')}
+              subText={'无未分配数据'}
               haveFilter={filterKeys?.length > 0}
             >
-              <CommonButton
+              {/* <CommonButton
                 type="light"
                 onClick={() => 123}
                 style={{ marginTop: 24 }}
               >
                 {t('createTransaction')}
-              </CommonButton>
+              </CommonButton> */}
             </NoData>
           }
         />

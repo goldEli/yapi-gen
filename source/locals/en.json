@@ -13,7 +13,7 @@
   "switch_project_menu_to_reports": "Project menu Switch to Reports ",
   "switch_project_menu_to_requirements": "Project menu switch to Requirements",
   "the_message_content_cannot_be_empty": " Message content cannot be empty",
-  "characters_over": " Characters_over 200",
+  "characters_over": " Characters_over 800",
   "Transaction_sprint": "Transaction Sprint",
   "Requirement_iteration": "Requirements Iteration",
   "project_handover": "Project handover",
@@ -105,7 +105,7 @@
   "enter_title_max_length": "Please enter a notification title of up to 20 words ",
   "notification_content": "notification content",
   "enter_content": "Please enter notification content",
-  "enter_content_max_length": "Please enter notification content of up to 200 words ",
+  "enter_content_max_length": "Please enter notification content of up to 800 words ",
   "notification_type": "notification type",
   "daily_notification": "daily notification",
   "system_notification": "System notification",
@@ -2282,5 +2282,7 @@
   "confirmToDeleteThisGroup": "Confirm to delete this group",
   "selectItem": "Select item",
   "addChildRequirement": "Add child requirement",
-  "basicInformation": "Basic Information"
+  "basicInformation": "Basic Information",
+  "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation": "There are duplicate tasks in [Due today], please cancel the duplicate association",
+  "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2": "Duplicate tasks exist in Overdue tasks. Cancel the duplicate association"
 }
