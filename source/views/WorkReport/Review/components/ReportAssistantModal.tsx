@@ -569,6 +569,29 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             <NewRelatedNeed
               initValue={content?.content}
               data={demandList}
+              canSubmit={(arr: any) => {
+                const isCan = arr?.every((i: any) =>
+                  demandList?.map((o: any) => o?.id)?.includes(i?.value),
+                )
+                if (!isCan) {
+                  if (content.key === 'timeout_task') {
+                    getMessage({
+                      msg: t(
+                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
+                      ),
+                      type: 'warning',
+                    })
+                  } else {
+                    getMessage({
+                      msg: t(
+                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2',
+                      ),
+                      type: 'warning',
+                    })
+                  }
+                }
+                return isCan
+              }}
               onFilter={() => {
                 setFilterDemand()
               }}
