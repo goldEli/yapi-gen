@@ -82,12 +82,13 @@ export const useDynamicColumns = (state: any) => {
               <div className="text" onClick={() => state.onClickItem(record)}>
                 {record.storyPrefixKey}
               </div>
-              <CommonIconFont
-                type="share"
-                size={20}
-                color={'var(--neutral-n3)'}
-                onClick={() => onCopyNumber(text)}
-              />
+              <div className="icon">
+                <CommonIconFont
+                  type="share"
+                  size={20}
+                  onClick={() => onCopyNumber(text)}
+                />
+              </div>
             </ClickWrap>
             {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
@@ -344,9 +345,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: (
-        <NewSort fixedKey="user_name">{t('common.createName')}123</NewSort>
-      ),
+      title: <NewSort fixedKey="user_name">{t('common.createName')}</NewSort>,
       dataIndex: 'userName',
       key: 'user_name',
       width: 120,
@@ -366,7 +365,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: t('common.dealName') + 99,
+      title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
       width: 140,

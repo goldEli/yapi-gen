@@ -883,7 +883,7 @@ export const getExportAffairsExcel = async (params: any) => {
         project_id: params?.projectId,
         keyword: params?.searchValue,
         iterate_id: params?.iterateId,
-        status: params?.statusId,
+        category_status_ids: params?.statusId,
         priority: params?.priorityId,
         user_id: params?.userId,
         tag: params?.tagId,
