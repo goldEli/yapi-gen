@@ -675,10 +675,7 @@ const Undistributed = (props: any) => {
             } as any
           }
           noData={
-            <NoData
-              subText={'无未分配数据'}
-              haveFilter={filterKeys?.length > 0}
-            >
+            <NoData subText={t('noUN')} haveFilter={filterKeys?.length > 0}>
               {/* <CommonButton
                 type="light"
                 onClick={() => 123}
