@@ -186,15 +186,15 @@ const DemandDetailDrawer = () => {
     },
     {
       key: 'tab_demand',
-      label: '子需求',
+      label: t('subRequirement'),
     },
     {
       key: 'tab_link',
-      label: '链接工作项',
+      label: t('linkWorkItem'),
     },
     {
       key: 'tab_info',
-      label: '基本信息',
+      label: t('basicInformation'),
     },
     {
       key: 'tab_log',
@@ -202,7 +202,7 @@ const DemandDetailDrawer = () => {
     },
     {
       key: 'tab_comment',
-      label: '评论',
+      label: t('comment'),
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
@@ -890,7 +890,7 @@ const DemandDetailDrawer = () => {
                     detailDemandRef?.current.handleUpload()
                   }}
                 >
-                  附件
+                  {t('appendix')}
                 </CommonButton>
                 <DemandTag
                   defaultList={drawerInfo?.tag?.map((i: any) => ({
@@ -902,7 +902,9 @@ const DemandDetailDrawer = () => {
                   onUpdate={onOperationUpdate}
                   detail={drawerInfo}
                   isDetailQuick
-                  addWrap={<CommonButton type="light">添加标签</CommonButton>}
+                  addWrap={
+                    <CommonButton type="light">{t('addTag')}</CommonButton>
+                  }
                 />
                 <CommonButton
                   type="light"
@@ -910,7 +912,7 @@ const DemandDetailDrawer = () => {
                     childrenDemandRef?.current?.onCreateChild()
                   }}
                 >
-                  添加子需求
+                  {t('addChildRequirement')}
                 </CommonButton>
                 <CommonButton
                   type="light"
@@ -918,7 +920,7 @@ const DemandDetailDrawer = () => {
                     storyRelationRef?.current.onClickOpen()
                   }}
                 >
-                  链接工作项
+                  {t('linkWorkItem')}
                 </CommonButton>
               </BtnWrap>
               <DrawerTopInfo

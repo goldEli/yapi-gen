@@ -307,7 +307,6 @@ const TableFilter = (props: any) => {
       const keys = filterKeys?.filter((i: any) => i !== operationKey)
       dispatch(setFilterKeys([...new Set(keys)]))
     }
-
     props.onSearch(res, customField)
 
     dispatch(saveValue(res))
@@ -329,6 +328,7 @@ const TableFilter = (props: any) => {
   }
 
   useEffect(() => {
+    console.log('props.defaultValue---', props.defaultValue)
     form.resetFields()
     form.setFieldsValue(props.defaultValue)
     // 页面报错加的这条
@@ -358,10 +358,6 @@ const TableFilter = (props: any) => {
       }
     }
   }, [searchChoose])
-  useEffect(() => {
-    form.resetFields()
-    confirm()
-  }, [location])
   // 折叠图标
   const expandIcon = (e: any) => {
     return (
@@ -459,10 +455,6 @@ const TableFilter = (props: any) => {
       }))
       .concat(newB)
   }
-  useEffect(() => {
-    form.resetFields()
-    confirm()
-  }, [location])
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
