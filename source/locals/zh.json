@@ -2280,5 +2280,9 @@
   "enterTheActualWorkingHours": " '请输入实际工时",
   "releaseNotes": "更新说明",
   "confirmToDeleteThisGroup": "确认删除该分组",
-  "selectItem": "选择项目"
+  "selectItem": "选择项目",
+  "addChildRequirement": "添加子需求",
+  "basicInformation": "基本信息",
+  "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation": "[今日截止]中存在重复的任务，请取消重复关联",
+  "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2": "[逾期任务]中存在重复的任务，请取消重复关联"
 }
