@@ -425,12 +425,13 @@ const DndKitTable = (props: any) => {
                 <div className="text" onClick={() => onClickItem(temp)}>
                   {value}
                 </div>
-                <CommonIconFont
-                  type="share"
-                  size={20}
-                  color="var(--neutral-n3)"
-                  onClick={() => onCopyNumber(value)}
-                />
+                <div className="icon">
+                  <CommonIconFont
+                    type="share"
+                    size={20}
+                    onClick={() => onCopyNumber(value)}
+                  />
+                </div>
               </ClickWrap>
             </TitleWrap>
           </div>

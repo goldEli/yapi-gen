@@ -82,12 +82,13 @@ export const useDynamicColumns = (state: any) => {
               <div className="text" onClick={() => state.onClickItem(record)}>
                 {record.storyPrefixKey}
               </div>
-              <CommonIconFont
-                type="share"
-                size={20}
-                color={'var(--neutral-n3)'}
-                onClick={() => onCopyNumber(text)}
-              />
+              <div className="icon">
+                <CommonIconFont
+                  type="share"
+                  size={20}
+                  onClick={() => onCopyNumber(text)}
+                />
+              </div>
             </ClickWrap>
             {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
