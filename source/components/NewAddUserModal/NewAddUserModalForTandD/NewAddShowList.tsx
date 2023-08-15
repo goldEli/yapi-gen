@@ -50,7 +50,7 @@ const NewAddShowList = (props: any) => {
   if (props.isDe) {
     return (
       <div>
-        {props.treeData?.children.map((i: any) => {
+        {props.treeData?.children?.map((i: any) => {
           if (i.children && i.children.length >= 1) {
             return (
               <TreeLine key={i.id}>
@@ -60,13 +60,13 @@ const NewAddShowList = (props: any) => {
                     indeterminate={getT(
                       i.children.every((item: any) => {
                         return selectKeys
-                          .map((i: { id: any }) => i.id)
+                          ?.map((i: { id: any }) => i.id)
                           .includes(item.id)
                       }),
                       i.children.length > 0 &&
                         i.children.some((item: any) =>
                           selectKeys
-                            .map((i: { id: any }) => i.id)
+                            ?.map((i: { id: any }) => i.id)
                             .includes(item.id),
                         ),
                     )}
@@ -74,7 +74,7 @@ const NewAddShowList = (props: any) => {
                       i.children.length > 0 &&
                       i.children.every((item: any) => {
                         return selectKeys
-                          .map((i: { id: any }) => i.id)
+                          ?.map((i: { id: any }) => i.id)
                           .includes(item.id)
                       })
                     }
@@ -100,14 +100,14 @@ const NewAddShowList = (props: any) => {
           }
         })}
         {/* 成员渲染 */}
-        {props.treeData?.staffs.map((i: any) => {
+        {props.treeData?.staffs?.map((i: any) => {
           return (
             <TreeLine key={i.id}>
               <div>
                 <Checkbox
                   onChange={() => choose(i)}
                   checked={selectKeys
-                    .map((i: { id: any }) => i.id)
+                    ?.map((i: { id: any }) => i.id)
                     .includes(i.id)}
                 >
                   <div
@@ -132,7 +132,7 @@ const NewAddShowList = (props: any) => {
   }
   return (
     <div>
-      {props.treeData?.children.map((i: any) => {
+      {props.treeData?.children?.map((i: any) => {
         if (i.team_id) {
           return (
             <TreeLine key={i.id}>
@@ -140,7 +140,7 @@ const NewAddShowList = (props: any) => {
                 <Checkbox
                   onChange={() => choose(i)}
                   checked={selectKeys
-                    .map((i: { id: any }) => i.id)
+                    ?.map((i: { id: any }) => i.id)
                     .includes(i.id)}
                 >
                   <div
@@ -169,20 +169,20 @@ const NewAddShowList = (props: any) => {
                   i.children.length > 0 &&
                   i.children.every((item: any) => {
                     return selectKeys
-                      .map((i: { id: any }) => i.id)
+                      ?.map((i: { id: any }) => i.id)
                       .includes(item.id)
                   })
                 }
                 indeterminate={getT(
                   i.children.every((item: any) => {
                     return selectKeys
-                      .map((i: { id: any }) => i.id)
+                      ?.map((i: { id: any }) => i.id)
                       .includes(item.id)
                   }),
                   i.children.length > 0 &&
                     i.children.some((item: any) =>
                       selectKeys
-                        .map((i: { id: any }) => i.id)
+                        ?.map((i: { id: any }) => i.id)
                         .includes(item.id),
                     ),
                 )}
