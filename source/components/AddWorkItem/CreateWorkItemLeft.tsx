@@ -620,6 +620,7 @@ const CreateDemandLeft = (props: Props) => {
       }, 100)
     }
   }, [params?.editId, props?.detail])
+  console.log(document.getElementById('myEditor'))
 
   return (
     <LeftWrap ref={leftDom}>
