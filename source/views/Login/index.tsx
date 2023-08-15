@@ -72,7 +72,7 @@ const Page = () => {
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding: 0px 10px;
+    padding: 0px 40px;
     .dot {
       position: absolute;
       left: 0px;
@@ -90,19 +90,22 @@ const Page = () => {
       font-size: 32px;
       font-family: SiYuanMedium;
       margin-top: 160px;
+      line-height: 38px;
     }
     .title2 {
       font-size: 18px;
       color: var(--neutral-n2);
       font-family: SiYuanRegular;
-      margin-top: 6px;
+      margin-top: 20px;
+      line-height: 23px;
     }
   `
 
   const GuideBg = styled.img`
     position: absolute;
-    right: -40px;
-    top: 310px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 40vh;
     z-index: 2;
   `
 
@@ -132,7 +135,7 @@ const Page = () => {
       <div className={style.left}>
         <GuideBg
           src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/loginBg_2.png"
-          height={434}
+          width="80%"
         />
         <LeftWrap>
           <img

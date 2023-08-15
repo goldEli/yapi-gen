@@ -140,6 +140,7 @@
 }
 .disable_button {
   background: rgba(97, 126, 242, 0.3);
+  cursor: not-allowed;
 }
 
 .remark {
