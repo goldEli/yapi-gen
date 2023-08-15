@@ -1,19 +1,15 @@
 // 登陆页面
-import React, { useState, useEffect, useRef, useReducer } from 'react'
+import { useState, useEffect, useReducer } from 'react'
 import LoginForm from './LoginForm'
 import style from './index.module.css'
 import { reducer, installState } from './login'
-import AuthorizedLogin from './AuthorizedLogin'
 import { getTicket } from './services'
 import { getQueryParam } from './utils'
 import dayjs from 'dayjs'
 import GlobalStyle from '@/components/GlobalStyle'
 import styled from '@emotion/styled'
-import { Carousel } from 'antd'
 
 const Page = () => {
-  const [isAuthorized, setIsAuthorized] = useState(true)
-  const target = getQueryParam('target')
   const [languageMode, dispatch]: [any, any] = useReducer(reducer, installState)
   const chooseLanguageMode = (index: number) => {
     dispatch({
@@ -118,6 +114,19 @@ const Page = () => {
     bottom: 44px;
   `
 
+  const FormWrap = styled.div`
+    min-width: 488px;
+    min-height: 532px;
+    background: var(--neutral-white-d7);
+    box-shadow: 0px 1px 29px 0px rgba(20, 37, 98, 0.11);
+    border-radius: 12px 12px 12px 12px;
+    border: 1px solid var(--neutral-n6-d1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 104px;
+  `
+
   return (
     <div className={style.page}>
       <GlobalStyle />
@@ -134,11 +143,13 @@ const Page = () => {
       </div>
 
       <div className={style.right}>
-        <LoginForm
-          redirect={redirect}
-          dispatch={dispatch}
-          languageMode={languageMode}
-        />
+        <FormWrap>
+          <LoginForm
+            redirect={redirect}
+            dispatch={dispatch}
+            languageMode={languageMode}
+          />
+        </FormWrap>
         <FooterText>
           © {dayjs().format('YYYY')} IFUN All Rights Reserved.
         </FooterText>

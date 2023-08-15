@@ -37,6 +37,7 @@ const language = [
     AgileLogin: '欢迎使用 IFUN Agile',
     title1: '新一代AI研发敏捷协同神器',
     title2: '让您的研发工作更轻松，更高效，更有价值！',
+    error1: '请输入正确的企业邮箱或关联手机号',
   },
   {
     id: 1,
@@ -77,6 +78,7 @@ const language = [
     title1: 'A new generation of AI develops agile synergies',
     title2:
       'Make your research and development work easier, more efficient and more valuable!',
+    error1: ' Email address or mobile phone number is error',
   },
 ]
 const reducer = (prevState: LanguageMode, action: { type: number }) => {

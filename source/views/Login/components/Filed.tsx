@@ -48,6 +48,7 @@ export default (props: any) => {
       />
 
       <input
+        ref={props.inputRef}
         onKeyUp={onKeyChange}
         onBlur={() => {
           setBorder(false)
@@ -102,6 +103,9 @@ export default (props: any) => {
       {isFocus && props.mode === 1 && (
         <span className={style.hint}>{bigChar && <i>{props.bigChar}</i>}</span>
       )}
+      {props.name === 'username' && props?.errorCheck?.username ? (
+        <span className={style.hint}>{props?.errorCheck?.username}</span>
+      ) : null}
     </div>
   )
 }
