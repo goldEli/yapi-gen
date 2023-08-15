@@ -19,7 +19,6 @@ const DetailScreenModal = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { fullScreen } = useSelector(store => store.kanBan)
-  console.log(paramsData, '=paramsDataparamsDataparamsData')
   // const { isOpenScreenDetail, id, specialType, type, detailId } = paramsData
 
   const detailContent = [
