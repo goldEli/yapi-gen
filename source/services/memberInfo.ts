@@ -770,6 +770,7 @@ export const getPUserInfoOverviewFeed: any = async (params: any) => {
     projectDeletedTime: i.feedable?.project?.deleted_at,
     feedableId: i.feedable_id,
     projectId: i.feedable?.project_id,
+    resource_type: i.resource_type,
   }))
 }
 

@@ -149,7 +149,6 @@ const Need = (props: any) => {
   }
 
   const onClickItem = (item: any) => {
-    console.log('1111111', item)
     const demandIds = listData?.list?.map((i: any) => i.demandId)
     item.id = item.demandId
     item.isMineOrHis = true
