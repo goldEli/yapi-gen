@@ -82,8 +82,8 @@ export default (props: any) => {
           }}
           src={
             props.type == 'text'
-              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/open.svg'
-              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/close.svg'
+              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/open.svg'
+              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/close.svg'
           }
           alt=""
         />

@@ -29,8 +29,6 @@ import { Content, Wrap } from './style'
 import ProjectSide from './ProjectSide'
 import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import GuideModal from '@/components/GuideModal'
-import guide_1 from './img/guide_1.jpg'
-import guide_2 from './img/guide_2.jpg'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
 
@@ -93,14 +91,14 @@ const ProjectManagementOptimization = () => {
       key: 0,
       title: t('project.stepTitle1'),
       desc: t('project.stepDesc1'),
-      img: guide_1,
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/iteration/guide_1.jpg',
     },
     {
       key: 1,
       title: t('project.stepTitle2'),
       desc: t('project.stepDesc2'),
       extra: t('project.stepExtra'),
-      img: guide_2,
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/iteration/guide_2.jpg',
     },
   ]
 

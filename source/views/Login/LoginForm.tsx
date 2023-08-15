@@ -244,8 +244,16 @@ export default React.memo(
         {target && systemData[target] ? (
           <div className={style.headLogo}>
             <div className={style.logoWrap}>
-              <img className={style.logo_img} src="/sso/logo.svg" alt="" />
-              <img className={style.switch_img} src="/sso/switch.svg" alt="" />
+              <img
+                className={style.logo_img}
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/logo.png"
+                alt=""
+              />
+              <img
+                className={style.switch_img}
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/switch.svg"
+                alt=""
+              />
               <img
                 className={style.logo_img}
                 src={systemData[target]?.logo}
@@ -262,7 +270,7 @@ export default React.memo(
             inputRef={inputRef}
             mode={InputMode.NORMAL}
             name="username"
-            icon="/user.svg"
+            icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
             value={form.username}
             label={languageMode.user}
             type="text"
@@ -279,7 +287,7 @@ export default React.memo(
           <Filed
             name="password"
             mode={InputMode.LOCK}
-            icon="/lock.svg"
+            icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
             value={form.password}
             label={languageMode.password}
             type={show}
@@ -298,7 +306,7 @@ export default React.memo(
             <Filed
               name="code"
               img={captchaImage}
-              icon="/pen.svg"
+              icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
               mode={InputMode.CODE}
               value={form.code}
               label={languageMode.code}
@@ -316,7 +324,7 @@ export default React.memo(
             <Filed
               name="code"
               mode={InputMode.NORMAL}
-              icon="/pen.svg"
+              icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
               value={form.code}
               label={languageMode.code}
               type="text"
@@ -378,7 +386,11 @@ export default React.memo(
           <div>{/* <img src="/sso/logo.png" width={207} /> */}</div>
           <div onClick={controlPopups} className={style.language}>
             <div className={style.langBox}>
-              <img src="/sso/LineIcon.svg" alt="" className={style.LineIcon} />
+              <img
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/LineIcon.svg"
+                alt=""
+                className={style.LineIcon}
+              />
               <Lang className={style.lang}>
                 {language[languageMode.id].name}
               </Lang>
