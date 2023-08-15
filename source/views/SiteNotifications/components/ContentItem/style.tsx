@@ -88,7 +88,6 @@ export const Tip = styled.div`
 `
 
 export const About = styled.div`
-  height: 20px;
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;

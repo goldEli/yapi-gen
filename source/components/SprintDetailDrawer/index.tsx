@@ -133,6 +133,7 @@ const SprintDetailDrawer = () => {
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
+
   const { userInfo } = useSelector(store => store.user)
   const { fullScreen } = useSelector(store => store.kanBan)
   const projectIdRef = useRef('')
@@ -705,7 +706,7 @@ const SprintDetailDrawer = () => {
         }/SprintProjectManagement/Affair?data=${encryptPhp(
           JSON.stringify({
             ...paramsData,
-            id: getProjectIdByUrl(),
+            id: projectInfo.id,
             detailId: drawerInfo.id,
             specialType: 1,
             isOpenScreenDetail: true,

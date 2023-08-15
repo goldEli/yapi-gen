@@ -364,7 +364,13 @@ const Operation = (props: Props) => {
                 }}
                 alt=""
               />
-              <span>{k.content}</span>
+              <span
+                style={{
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {k.content}
+              </span>
             </LiWrap>
           )
         })}

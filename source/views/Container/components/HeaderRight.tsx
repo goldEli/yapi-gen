@@ -32,7 +32,6 @@ import {
   LineBox,
 } from './../style'
 import { getLoginDetail } from '@store/user/user.thunk'
-import helpPdf from '/Agile.pdf'
 import { t } from 'i18next'
 import SiteNotifications from '@/views/SiteNotifications/SiteNotifications'
 import {
@@ -300,7 +299,9 @@ const HeaderRight = () => {
     //
   }
   const onHelp = () => {
-    window.open(helpPdf)
+    window.open(
+      'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/Agile.pdf',
+    )
   }
   // 创建需求
   const onCreate = (key: string) => {

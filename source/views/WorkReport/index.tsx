@@ -103,7 +103,11 @@ const WorkReport = () => {
             right: position.x ? undefined : 50,
           }}
           height={108}
-          src={language === 'zh' ? '/RobotButton.png' : '/RobotButtonEn.png'}
+          src={
+            language === 'zh'
+              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/RobotButton.png'
+              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/RobotButtonEn.png'
+          }
         />
       ) : null}
       <ReportAssistantModal
