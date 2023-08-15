@@ -14,7 +14,7 @@ import {
 import CommonIconFont from '@/components/CommonIconFont'
 import { Tooltip } from 'antd'
 import { CloseWrap } from '@/components/StyleCommon'
-import { detailTimeFormat, getProjectIdByUrl } from '@/tools'
+import { detailTimeFormat } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -35,10 +35,11 @@ const FlawInfo = () => {
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(400)
   const [activeTabs, setActiveTabs] = useState(1)
+  const { projectInfo } = useSelector(store => store.project)
 
   //   刷新缺陷详情
   const onUpdate = () => {
-    dispatch(getFlawInfo({ projectId: getProjectIdByUrl(), id: flawInfo.id }))
+    dispatch(getFlawInfo({ projectId: projectInfo?.id, id: flawInfo.id }))
   }
 
   // 跳转配置
@@ -47,7 +48,7 @@ const FlawInfo = () => {
     const params = encryptPhp(
       JSON.stringify({
         type: 4,
-        id: getProjectIdByUrl(),
+        id: projectInfo?.id,
         pageIdx: 'DemandDetail',
         categoryItem: {
           id: flawInfo.category,
@@ -61,7 +62,7 @@ const FlawInfo = () => {
     if (flawInfo?.id) {
       dispatch(
         getFlawCommentList({
-          projectId: getProjectIdByUrl(),
+          projectId: projectInfo?.id,
           id: flawInfo.id || 0,
           page: 1,
           pageSize: 999,
@@ -92,7 +93,7 @@ const FlawInfo = () => {
         {flawInfo.id && (
           <FlawInfoInfoItem>
             <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
-            <FlawStatus pid={getProjectIdByUrl()} sid={flawInfo.id} />
+            <FlawStatus pid={projectInfo.id} sid={flawInfo.id} />
           </FlawInfoInfoItem>
         )}
         {flawInfo?.isExamine && (

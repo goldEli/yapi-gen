@@ -521,7 +521,14 @@ const DemandDetail = () => {
     <DemandWrap>
       <DeleteConfirmModal />
       <ShareModal
-        url={location.href}
+        url={`${location.origin}/ProjectManagement/Demand?data=${encryptPhp(
+          JSON.stringify({
+            detailId: demandInfo?.id,
+            id: projectInfo.id,
+            specialType: 3,
+            isOpenScreenDetail: true,
+          }),
+        )}`}
         title={
           demandInfo?.name
             ? `【${demandInfo?.projectPrefix}${

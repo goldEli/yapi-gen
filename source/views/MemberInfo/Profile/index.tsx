@@ -331,24 +331,42 @@ const Profile = () => {
   }, [monthIndex])
 
   const onToDetail = (item: any) => {
-    if (item?.isPublic !== 1 && !item.isUserMember) {
-      getMessage({ msg: t('common.notCheckInfo'), type: 'warning' })
-      return
-    }
-
     if (item.deletedTime || item.projectDeletedTime) {
       getMessage({ msg: t('common.demandDeleteEd'), type: 'warning' })
       return
     }
 
-    const params = encryptPhp(
-      JSON.stringify({
-        id: item.projectId,
-        demandId: item.feedableId,
-      }),
-    )
+    let params: any = {
+      id: item.projectId,
+      detailId: item.feedableId,
+      isOpenScreenDetail: true,
+    }
+    let url
 
-    navigate(`/ProjectManagement/DemandDetail?data=${params}`)
+    switch (item.resource_type) {
+      case 1:
+        params.specialType = 3
+        url = 'ProjectManagement/Demand'
+        break
+      case 2:
+        params.specialType = 2
+        url = 'ProjectManagement/Defect'
+        break
+      case 10:
+        params.specialType = 1
+        url = 'SprintProjectManagement/Affair'
+        break
+      default:
+        break
+    }
+    if (params.specialType) {
+      const resultParams = encryptPhp(JSON.stringify(params))
+      window.open(
+        `${window.origin}${
+          import.meta.env.__URL_HASH__
+        }${url}?data=${resultParams}}`,
+      )
+    }
   }
   const nextMonth = async () => {
     setMonthIndex(monthIndex - 1)

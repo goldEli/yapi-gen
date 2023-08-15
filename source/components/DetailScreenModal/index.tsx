@@ -12,7 +12,9 @@ import { useEffect } from 'react'
 
 const DetailScreenModal = () => {
   const dispatch = useDispatch()
-  const { isDetailScreenModal } = useSelector(store => store.project)
+  const { isDetailScreenModal, projectInfo } = useSelector(
+    store => store.project,
+  )
   const { visible, params } = isDetailScreenModal
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -27,9 +29,9 @@ const DetailScreenModal = () => {
 
   useEffect(() => {
     // 如果地址栏上带有此参数，默认打开全屏弹层
-    if (paramsData?.isOpenScreenDetail) {
+    if (paramsData?.isOpenScreenDetail && projectInfo.id) {
       const resultParams: any = {
-        id: paramsData?.id,
+        id: projectInfo?.id,
         specialType: paramsData?.specialType,
         type: paramsData?.type,
       }
@@ -51,7 +53,7 @@ const DetailScreenModal = () => {
         }),
       )
     }
-  }, [paramsData?.isOpenScreenDetail])
+  }, [paramsData?.isOpenScreenDetail, projectInfo])
 
   return (
     <ModalWrap

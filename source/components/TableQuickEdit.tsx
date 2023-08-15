@@ -96,15 +96,12 @@ const TableQuickEdit = (props: Props) => {
   const [t] = useTranslation()
   const [isShowControl, setIsShowControl] = useState(false)
   const inputRef = useRef<HTMLInputElement>()
-  const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
   const [params, setParams] = useState<any>({})
-  let isCanEdit: any
-  let projectId: any
-  let canClick: any
+
   const dispatch = useDispatch()
 
   const isCan =
@@ -115,9 +112,11 @@ const TableQuickEdit = (props: Props) => {
     !props.isInfo &&
     ['text', 'textarea', 'number', 'integer'].includes(String(props.type))
 
-  if (props.isMineOrHis) {
-    isCanEdit = props?.item?.project?.isEdit
-    projectId = props?.item?.project_id
+  let isCanEdit: any
+  let canClick: any
+
+  if (props.projectId === 0) {
+    isCanEdit = props.item?.project.isEdit
     canClick = isCan && isCanEdit
   } else {
     isCanEdit =
@@ -131,14 +130,16 @@ const TableQuickEdit = (props: Props) => {
               : 'b/story/update'
             : 'b/transaction/update'),
       )?.length > 0
-    const paramsData = getParamsData(searchParams)
-    projectId = paramsData?.id
     canClick = isCan && isCanEdit
   }
 
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {
-    const response = await storyConfigField({ projectId, key: props.keyText })
+    const response = await storyConfigField({
+      projectId:
+        props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+      key: props.keyText,
+    })
     const currentObj = response.list?.filter(
       (i: any) => i.content === props.keyText,
     )[0]
@@ -203,7 +204,10 @@ const TableQuickEdit = (props: Props) => {
       props.keyText === 'discovery_version'
     ) {
       // 获取迭代下拉数据
-      const response = await getIterateList({ projectId })
+      const response = await getIterateList({
+        projectId:
+          props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+      })
       resultValue.value = response?.list
         ?.filter((k: any) => k.status === 1 || k.status === 4)
         ?.map((i: any) => ({
@@ -212,7 +216,11 @@ const TableQuickEdit = (props: Props) => {
         }))
     } else if (props.keyText === 'users') {
       // 获取处理人的下拉数据
-      const response = await getProjectMember({ all: true, projectId })
+      const response = await getProjectMember({
+        all: true,
+        projectId:
+          props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+      })
       resultValue.value = response?.map((i: any) => ({
         label: i.name,
         value: i.id,
@@ -223,7 +231,10 @@ const TableQuickEdit = (props: Props) => {
       resultValue.value = response
     } else if (props.keyText === 'class_id') {
       // 获取需求分类的下拉数据
-      const response = await getTreeList({ id: projectId, isTree: 1 })
+      const response = await getTreeList({
+        id: props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+        isTree: 1,
+      })
       resultValue.value = [
         ...[
           {
@@ -237,7 +248,10 @@ const TableQuickEdit = (props: Props) => {
       ]
     } else if (props.keyText === 'tag') {
       // 获取标签下拉数据
-      const response: any = await getTagList({ projectId })
+      const response: any = await getTagList({
+        projectId:
+          props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+      })
       setSelectTagList(response)
       resultValue.value = response?.map((i: any) => ({
         label: i.content,
@@ -408,7 +422,8 @@ const TableQuickEdit = (props: Props) => {
     }
 
     const obj: any = {
-      projectId,
+      projectId:
+        props.projectId === 0 ? props.item?.project_id : projectInfo.id,
       id: props.item?.id,
     }
     if (props?.isCustom) {

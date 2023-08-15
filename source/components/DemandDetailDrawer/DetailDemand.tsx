@@ -19,6 +19,7 @@ import { ContentItem, Label } from './style'
 import DrawerTagComponent from './DrawerTagComponent'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { getMessage } from '../Message'
+import { uploadFile } from '../AddWorkItem/CreateWorkItemLeft'
 
 interface DetailDemand {
   detail: any
@@ -105,6 +106,7 @@ const DetailDemand = (props: DetailDemand) => {
         <Label>{t('requirement_description')}</Label>
         {(isEditInfo || editInfo) && (
           <Editor
+            upload={uploadFile}
             value={editInfo}
             getSuggestions={() => []}
             readonly={!isEditInfo}

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { BasicContent, BasicFooter, BasicWrap, TitleWrap } from '../style'
 import { Tooltip } from 'antd'
-import { detailTimeFormat, getProjectIdByUrl } from '@/tools'
+import { detailTimeFormat } from '@/tools'
 import CommonIconFont from '@/components/CommonIconFont'
 import { CloseWrap } from '@/components/StyleCommon'
 import BasicDemand from '@/components/DemandDetailDrawer/BasicDemand'
@@ -22,7 +22,9 @@ const DemandBasic = (props: Props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { demandInfo, demandCommentList } = useSelector(store => store.demand)
-  const { isUpdateAddWorkItem } = useSelector(store => store.project)
+  const { isUpdateAddWorkItem, projectInfo } = useSelector(
+    store => store.project,
+  )
   const isRest = useSelector(store => store.scroll.isRest)
   const [activeTabs, setActiveTabs] = useState(1)
 
@@ -37,7 +39,7 @@ const DemandBasic = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({
         type: 4,
-        id: getProjectIdByUrl(),
+        id: projectInfo.id,
         pageIdx: 'DemandDetail',
         categoryItem: {
           id: demandInfo.category,

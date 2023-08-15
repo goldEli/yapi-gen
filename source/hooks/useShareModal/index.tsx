@@ -23,7 +23,7 @@ import { copyLink, getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { getStoryViewList } from '@store/kanBan/kanBan.thunk'
 
 interface ShareModalProps {
@@ -73,13 +73,14 @@ const useShareModal = () => {
 
   const ShareModal: React.FC<ShareModalProps> = props => {
     const { id, url, title, config, name, type, viewType } = props
+    const { projectInfo } = useSelector(store => store.project)
     const [needSave, setNeedSave] = useState(false)
     const [form] = Form.useForm()
     const [t] = useTranslation()
     const [fail, setFail] = useState(false)
     const [searchParams] = useSearchParams()
     const paramsData = getParamsData(searchParams)
-    const projectId = paramsData?.id
+    const projectId = paramsData?.id ?? projectInfo?.id
     const [copyId, setCopyId] = useState(0)
     const [loading, setLoading] = useState(false)
 
@@ -91,6 +92,8 @@ const useShareModal = () => {
             ...paramsData,
             valueId: id,
             otherConfig: props.otherConfig,
+            id: projectId,
+            isOpenScreenDetail: true,
           }),
         )}`
       }
@@ -105,6 +108,8 @@ const useShareModal = () => {
             ...paramsData,
             valueId: copyId,
             otherConfig: props.otherConfig,
+            id: projectId,
+            isOpenScreenDetail: true,
           }),
         )}`
       }
@@ -155,6 +160,8 @@ const useShareModal = () => {
                 ...paramsData,
                 valueId: tempId,
                 otherConfig: props.otherConfig,
+                id: projectId,
+                isOpenScreenDetail: true,
               }),
             )}`
           }

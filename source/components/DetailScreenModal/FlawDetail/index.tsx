@@ -513,7 +513,14 @@ const FlawDetail = () => {
     <Wrap>
       <DeleteConfirmModal />
       <ShareModal
-        url={location.href}
+        url={`${location.origin}/ProjectManagement/Defect?data=${encryptPhp(
+          JSON.stringify({
+            detailId: flawInfo?.id,
+            id: projectInfo.id,
+            specialType: 2,
+            isOpenScreenDetail: true,
+          }),
+        )}`}
         title={
           flawInfo?.name
             ? `【${flawInfo?.projectPrefix}-${flawInfo?.name}-${userInfo?.name}】`

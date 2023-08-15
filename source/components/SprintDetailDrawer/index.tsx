@@ -110,9 +110,7 @@ const SprintDetailDrawer = () => {
     },
   }
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams) || {}
-  const { id } = paramsData
+
   const [t] = useTranslation()
   const leftWidth = 640
   const dispatch = useDispatch()
@@ -221,7 +219,7 @@ const SprintDetailDrawer = () => {
     const paramsProjectId =
       affairsDetailDrawer.params.project_id ??
       affairsDetailDrawer.params.projectId ??
-      paramsData?.id ??
+      projectInfo?.id ??
       projectIdRef.current
     if (paramsProjectId) {
       projectIdRef.current = paramsProjectId
@@ -506,7 +504,7 @@ const SprintDetailDrawer = () => {
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',
-        id: id,
+        id: projectInfo.id,
         categoryItem: {
           id: drawerInfo.category,
           status: drawerInfo.category_status,
@@ -705,7 +703,6 @@ const SprintDetailDrawer = () => {
           location.origin
         }/SprintProjectManagement/Affair?data=${encryptPhp(
           JSON.stringify({
-            ...paramsData,
             id: projectInfo.id,
             detailId: drawerInfo.id,
             specialType: 1,

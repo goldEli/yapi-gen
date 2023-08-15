@@ -92,18 +92,15 @@ const FlawDetailDrawer = () => {
       dom: useRef<any>(null),
     },
   }
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams) || {}
-  const { id } = paramsData
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const navigate = useNavigate()
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const commentDom: any = createRef()
   const { flawDetailDrawer, flawCommentList } = useSelector(store => store.flaw)
   const { visible, params } = flawDetailDrawer
-  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
-    store => store.project,
-  )
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [focus, setFocus] = useState(false)
@@ -146,7 +143,7 @@ const FlawDetailDrawer = () => {
     const paramsProjectId =
       params.project_id ??
       params.projectId ??
-      paramsData.id ??
+      projectInfo.id ??
       projectRef.current
     if (paramsProjectId) {
       projectRef.current = paramsProjectId
@@ -396,7 +393,7 @@ const FlawDetailDrawer = () => {
     const params = encryptPhp(
       JSON.stringify({
         type: 4,
-        id: id,
+        id: projectInfo.id,
         pageIdx: 'DemandDetail',
         categoryItem: {
           id: drawerInfo.category,
@@ -623,9 +620,8 @@ const FlawDetailDrawer = () => {
       <ShareModal
         url={`${location.origin}/ProjectManagement/Defect?data=${encryptPhp(
           JSON.stringify({
-            ...paramsData,
             detailId: drawerInfo?.id,
-            id: getProjectIdByUrl(),
+            id: projectInfo.id,
             specialType: 2,
             isOpenScreenDetail: true,
           }),
