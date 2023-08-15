@@ -18,6 +18,7 @@ import {
   useState,
 } from 'react'
 import styled from '@emotion/styled'
+import myImg from '/er.png'
 import { useTranslation } from 'react-i18next'
 import type { Task } from 'cos-js-sdk-v5'
 import { bytesToSize } from '@/tools'
@@ -590,19 +591,16 @@ const UploadAttach = (props: any, ref: any) => {
                           objectFit: 'contain',
                         }}
                         alt=""
-                        src={
-                          i.file.url
-                            ? i.file.url
-                            : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/er.png'
-                        }
+                        src={i.file.url ? i.file.url : myImg}
                       />
                     )}
                     {!imgs.includes(i.file.suffix) && (
                       <IconFont
                         style={{
-                          fontSize: 40,
+                          lineHeight: '108px',
+
+                          fontSize: 48,
                           color: 'white',
-                          borderRadius: '8px',
                         }}
                         type={fileIconMap[i.file.suffix] || 'colorunknown'}
                       />
