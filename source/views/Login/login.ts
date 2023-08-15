@@ -7,7 +7,7 @@ const language = [
     remark: '提示：忘记密码、动态口令请联系管理员',
     title: '登录',
     user: '请输入手机号或邮箱',
-    password: '请输入密码',
+    password: '请输入登录密码',
     code: '请输入动态口令',
     login: '登录',
     mode1: '验证码',
@@ -34,16 +34,9 @@ const language = [
     passwordError: '密码不正确',
     codeError: '动态口令不正确',
     authorizedLogin: '授权登录将获取以下权限',
-    AgileLogin: '登录IFUN Agile',
-    CarouselTitle1: '专业的项目协作工具',
-    CarouselTitle2: '标准化管理和沉淀工具',
-    CarouselTitle3: '效能洞察',
-    CarouselDesc1:
-      '提供项目管理、需求管理、缺陷管理、任务管理、Kanban管理、版本管理等丰富的项目管理功能及效能数据统计。',
-    CarouselDesc2:
-      '引入敏捷开发方法，采用迭代式、Scrum等多种开发模式，拆分任务、制定计划，定期进行项目评审和进度跟踪，及时应对问题和风险。',
-    CarouselDesc3:
-      '交付过程观测和研发效能度量分析工具，提供丰富的度量图表覆盖软件交付全生命周期，在交付过程中提前暴露交付风险，保障交付效率和质量，多维度可视化分析团队效能状态、及时发现问题。',
+    AgileLogin: '欢迎使用 IFUN Agile',
+    title1: '新一代AI研发敏捷协同神器',
+    title2: '让您的研发工作更轻松，更高效，更有价值！',
   },
   {
     id: 1,
@@ -80,20 +73,14 @@ const language = [
     passwordError: 'Incorrect password',
     codeError: 'Incorrect dynamic password',
     authorizedLogin: 'Authorizing login will obtain the following permissions',
-    AgileLogin: 'Login as the IFUN Agile account',
-    CarouselTitle1: 'Professional project collaboration tools',
-    CarouselTitle2: 'Standardized management and precipitation tools',
-    CarouselTitle3: 'Performance insight',
-    CarouselDesc1:
-      'Provide project management, requirements management, defect management, task management, Kanban management, version management and other rich project management functions and performance data statistics.',
-    CarouselDesc2:
-      'Agile development methods are introduced, iteration, Scrum and other development modes are adopted, tasks are divided, plans are made, project review and progress tracking are conducted regularly, and problems and risks are timely addressed',
-    CarouselDesc3:
-      'Delivery process observation and development of performance measurement analysis tools, providing a wealth of measurement charts covering the entire life cycle of software delivery, in the delivery process to expose delivery risks in advance, ensure delivery efficiency and quality, multi-dimensional visual analysis of team performance status, timely detection of problems.',
+    AgileLogin: 'Welcome to IFUN Agile',
+    title1: 'A new generation of AI develops agile synergies',
+    title2:
+      'Make your research and development work easier, more efficient and more valuable!',
   },
 ]
 const reducer = (prevState: LanguageMode, action: { type: number }) => {
-  let newCount = { ...prevState }
+  let newCount: any = { ...prevState }
 
   switch (action.type) {
     case 0:

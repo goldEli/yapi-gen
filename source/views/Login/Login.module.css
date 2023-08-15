@@ -11,7 +11,6 @@
   box-sizing: border-box;
   /* padding: 0px 72px; */
   width: 336px;
-  height: 100%;
 }
 
 .main p {
@@ -24,7 +23,7 @@
 }
 
 .title {
-  margin: 170px 0 48px 0;
+  margin: 0px 0 48px 0px;
 }
 .title > p {
   font-size: 24px;
@@ -124,7 +123,7 @@
 }
 
 .button {
-  margin-top: 40px;
+  margin-top: 24px;
   padding: 10px 0;
   display: flex;
   align-items: center;
@@ -152,12 +151,13 @@
 }
 
 .headWrap {
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  left: 0px;
+  top: 40px;
+  right: 0px;
   height: 40px;
   padding: 0px 40px;
 }

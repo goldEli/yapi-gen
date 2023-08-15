@@ -131,6 +131,7 @@ const SprintDetailDrawer = () => {
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
+
   const { userInfo } = useSelector(store => store.user)
   const { fullScreen } = useSelector(store => store.kanBan)
   const projectIdRef = useRef('')
