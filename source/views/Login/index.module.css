@@ -12,6 +12,8 @@
 .left {
   width: 38%;
   padding-right: 0px;
+  min-width: 552px;
+  min-height: 434px;
   position: relative;
 }
 
