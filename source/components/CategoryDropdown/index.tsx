@@ -6,7 +6,7 @@ import { storyConfigCategoryList } from '@/services/project'
 import useCategoryList from '@/hooks/useCategoryList'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
-import CustomSelect from '../CustomSelect'
+import CommonIconFont from '@/components/CommonIconFont'
 const Wrap = styled(Select)`
   overflow-y: auto;
   .ant-select-selection-overflow-item {
@@ -186,6 +186,7 @@ const CategoryDropdown = (props: IProps) => {
           onChangeCallBack && onChangeCallBack(data)
         }
       }}
+      suffixIcon={<CommonIconFont type="down" />}
       showSearch
       allowClear={props.isClear}
       showArrow

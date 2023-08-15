@@ -122,7 +122,7 @@ const Circulation = (props: Props) => {
   const [isSpin, setIsSpin] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id } = paramsData
+  const id = paramsData?.id
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
