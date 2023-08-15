@@ -122,11 +122,12 @@ const Circulation = (props: Props) => {
   const [isSpin, setIsSpin] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id } = paramsData
+  const { isUpdateChangeLog, projectInfo } = useSelector(store => store.project)
+  const { id } = paramsData ?? { id: projectInfo.id }
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
-  const { isUpdateChangeLog } = useSelector(store => store.project)
+
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { flawInfo } = useSelector(store => store.flaw)

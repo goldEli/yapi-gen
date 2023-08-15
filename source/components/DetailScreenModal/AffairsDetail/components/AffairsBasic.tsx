@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { BasicContent, BasicFooter, BasicWrap } from '../style'
-import { detailTimeFormat, getProjectIdByUrl } from '@/tools'
+import { detailTimeFormat } from '@/tools'
 import { Tooltip } from 'antd'
 import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -23,6 +23,7 @@ const AffairsBasic = (props: Props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { affairsInfo } = useSelector(store => store.affairs)
+  const { projectInfo } = useSelector(store => store.project)
   // 不能删除open方法
   const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
 
@@ -30,7 +31,7 @@ const AffairsBasic = (props: Props) => {
   const onUpdate = () => {
     dispatch(
       getAffairsInfo({
-        projectId: getProjectIdByUrl(),
+        projectId: projectInfo.id,
         sprintId: affairsInfo.id || 0,
       }),
     )
@@ -45,7 +46,7 @@ const AffairsBasic = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({
         type: 'sprint',
-        id: getProjectIdByUrl(),
+        id: projectInfo.id,
         categoryItem: {
           id: affairsInfo.category,
           status: affairsInfo.category_status,

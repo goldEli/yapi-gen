@@ -71,7 +71,8 @@ const ChangeRecord = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id } = paramsData || {}
+  const { projectInfo, isUpdateChangeLog } = useSelector(store => store.project)
+  const { id } = paramsData || { id: projectInfo.id }
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -82,7 +83,6 @@ const ChangeRecord = (props: Props) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const { isUpdateChangeLog } = useSelector(store => store.project)
   const { affairsInfo } = useSelector(store => store.affairs)
   const [form] = Form.useForm()
   const getList = async (item?: any, orderVal?: any) => {
