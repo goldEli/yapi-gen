@@ -206,192 +206,217 @@ export default React.memo(
       line-height: 22px;
       margin: 0 4px;
     `
+    const FormWrap = styled.div`
+      min-width: 488px;
+      min-height: 532px;
+      background: var(--neutral-white-d7);
+      box-shadow: 0px 1px 29px 0px rgba(20, 37, 98, 0.11);
+      border-radius: 12px 12px 12px 12px;
+      border: 1px solid var(--neutral-n6-d1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 104px;
+    `
 
     return (
-      <div className={`${style.main} ${secretVisible ? style.filter : ''}`}>
-        {(!target || target === 'oa' || !systemData[target]) && (
-          <div className={style.title}>
-            <p>{languageMode[systemData.agile.loginFormTitle]}</p>
-          </div>
-        )}
-        {target && systemData[target] ? (
-          <div className={style.headLogo}>
-            <div className={style.logoWrap}>
-              <img className={style.logo_img} src="/sso/logo.svg" alt="" />
-              <img className={style.switch_img} src="/sso/switch.svg" alt="" />
-              <img
-                className={style.logo_img}
-                src={systemData[target]?.logo}
-                alt=""
-              />
+      <FormWrap>
+        <div className={`${style.main} ${secretVisible ? style.filter : ''}`}>
+          {(!target || target === 'oa' || !systemData[target]) && (
+            <div className={style.title}>
+              <p>{languageMode[systemData.agile.loginFormTitle]}</p>
             </div>
-            <p className={style.title_text}>
-              {languageMode.useOALogin} <span>{systemData[target]?.name}</span>
-            </p>
-          </div>
-        ) : null}
-        <div className={style.form}>
-          <Filed
-            mode={InputMode.NORMAL}
-            name="username"
-            icon="/user.svg"
-            value={form.username}
-            label={languageMode.user}
-            type="text"
-            onChangeEvent={handleInputChange}
-            onCheckSecret={onCheckSecret}
-            isHighlight={focusNumber === 1 || focusNumber === 4}
-            isErrorHighlight={
-              (focusNumber === 1 || focusNumber === 4) && errorState
-            }
-            onChangeFocus={changeFocus}
-            // onCheckValue={() => onCheckValue(1)}
-          />
-          <Filed
-            name="password"
-            mode={InputMode.LOCK}
-            icon="/lock.svg"
-            value={form.password}
-            label={languageMode.password}
-            type={show}
-            onChangeEvent={handleInputChange}
-            onChangeShow={onChangeShow}
-            onCheckSecret={onCheckSecret}
-            isHighlight={focusNumber === 2 || focusNumber === 5}
-            isErrorHighlight={
-              (focusNumber === 2 || focusNumber === 5) && errorState
-            }
-            onChangeFocus={changeFocus}
-            bigChar={languageMode.bigChar}
-            // onCheckValue={() => onCheckValue(2)}
-          />
-          {mode === '1' ? (
-            <Filed
-              name="code"
-              img={captchaImage}
-              icon="/pen.svg"
-              mode={InputMode.CODE}
-              value={form.code}
-              label={languageMode.code}
-              type="text"
-              onChangeEvent={handleInputChange}
-              onChangeCaptchaImag={getCaptchaCode}
-              isHighlight={focusNumber === 3 || focusNumber === 6}
-              isErrorHighlight={
-                (focusNumber === 3 || focusNumber === 6) && errorState
-              }
-              onChangeFocus={changeFocus}
-              // onCheckValue={() => onCheckValue(3)}
-            />
-          ) : (
-            <Filed
-              name="code"
-              mode={InputMode.NORMAL}
-              icon="/pen.svg"
-              value={form.code}
-              label={languageMode.code}
-              type="text"
-              onChangeEvent={handleInputChange}
-              isHighlight={focusNumber === 3 || focusNumber === 6}
-              isErrorHighlight={
-                (focusNumber === 3 || focusNumber === 6) && errorState
-              }
-              onChangeFocus={changeFocus}
-              // onCheckValue={() => onCheckValue(3)}
-            />
           )}
-          <div
-            style={{
-              visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
-            }}
-            className={`${style.toast} ${
-              !errorState ? style.toast_warning : style.toast_error
-            }`}
-          >
-            {/* <img
+          {target && systemData[target] ? (
+            <div className={style.headLogo}>
+              <div className={style.logoWrap}>
+                <img className={style.logo_img} src="/sso/logo.svg" alt="" />
+                <img
+                  className={style.switch_img}
+                  src="/sso/switch.svg"
+                  alt=""
+                />
+                <img
+                  className={style.logo_img}
+                  src={systemData[target]?.logo}
+                  alt=""
+                />
+              </div>
+              <p className={style.title_text}>
+                {languageMode.useOALogin}{' '}
+                <span>{systemData[target]?.name}</span>
+              </p>
+            </div>
+          ) : null}
+          <div className={style.form}>
+            <Filed
+              mode={InputMode.NORMAL}
+              name="username"
+              icon="/user.svg"
+              value={form.username}
+              label={languageMode.user}
+              type="text"
+              onChangeEvent={handleInputChange}
+              onCheckSecret={onCheckSecret}
+              isHighlight={focusNumber === 1 || focusNumber === 4}
+              isErrorHighlight={
+                (focusNumber === 1 || focusNumber === 4) && errorState
+              }
+              onChangeFocus={changeFocus}
+              // onCheckValue={() => onCheckValue(1)}
+            />
+            <Filed
+              name="password"
+              mode={InputMode.LOCK}
+              icon="/lock.svg"
+              value={form.password}
+              label={languageMode.password}
+              type={show}
+              onChangeEvent={handleInputChange}
+              onChangeShow={onChangeShow}
+              onCheckSecret={onCheckSecret}
+              isHighlight={focusNumber === 2 || focusNumber === 5}
+              isErrorHighlight={
+                (focusNumber === 2 || focusNumber === 5) && errorState
+              }
+              onChangeFocus={changeFocus}
+              bigChar={languageMode.bigChar}
+              // onCheckValue={() => onCheckValue(2)}
+            />
+            {mode === '1' ? (
+              <Filed
+                name="code"
+                img={captchaImage}
+                icon="/pen.svg"
+                mode={InputMode.CODE}
+                value={form.code}
+                label={languageMode.code}
+                type="text"
+                onChangeEvent={handleInputChange}
+                onChangeCaptchaImag={getCaptchaCode}
+                isHighlight={focusNumber === 3 || focusNumber === 6}
+                isErrorHighlight={
+                  (focusNumber === 3 || focusNumber === 6) && errorState
+                }
+                onChangeFocus={changeFocus}
+                // onCheckValue={() => onCheckValue(3)}
+              />
+            ) : (
+              <Filed
+                name="code"
+                mode={InputMode.NORMAL}
+                icon="/pen.svg"
+                value={form.code}
+                label={languageMode.code}
+                type="text"
+                onChangeEvent={handleInputChange}
+                isHighlight={focusNumber === 3 || focusNumber === 6}
+                isErrorHighlight={
+                  (focusNumber === 3 || focusNumber === 6) && errorState
+                }
+                onChangeFocus={changeFocus}
+                // onCheckValue={() => onCheckValue(3)}
+              />
+            )}
+            <div
+              style={{
+                visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
+              }}
+              className={`${style.toast} ${
+                !errorState ? style.toast_warning : style.toast_error
+              }`}
+            >
+              {/* <img
             className={style.toast_icon}
             src={!errorState ? "/warning.svg" : "error.svg"}
             alt=""
           /> */}
-            <span>{errorMessage}</span>
+              <span>{errorMessage}</span>
+            </div>
           </div>
-        </div>
-        <button
-          {...(isDisable ? {} : { onClick: login })}
-          className={`${style.button} ${isDisable ? style.disable_button : ''}`}
-        >
-          {languageMode.login}
-        </button>
-        <div className={style.agree} hidden={!target}>
-          <div className={style.checkboxWrap}>
-            <div
-              className={`${style.checkbodStyle} ${agree ? style.checked : ''}`}
-            />
-            <input
-              checked={agree}
-              name="agree"
-              type="checkbox"
-              className={style.input}
-              onChange={onChange}
-            />
-          </div>
-
-          <div>
-            <p>{languageMode.authorizedLogin}</p>
-            <ul className={style.agree_ul}>
-              <li> {languageMode.publicInformation}</li>
-              <li> {languageMode.book}</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className={style.headWrap}>
-          <div>
-            <img src="/sso/logo.png" width={207} />
-          </div>
-          <div onClick={controlPopups} className={style.language}>
-            <div className={style.langBox}>
-              <img src="/sso/LineIcon.svg" alt="" className={style.LineIcon} />
-              <Lang className={style.lang}>
-                {language[languageMode.id].name}
-              </Lang>
-              <IconFont
-                style={{
-                  fontSize: 16,
-                  color: 'var(--neutral-n2)',
-                  cursor: 'pointer',
-                }}
-                type={popupsState ? 'up-icon' : 'down-icon'}
+          <button
+            {...(isDisable ? {} : { onClick: login })}
+            className={`${style.button} ${
+              isDisable ? style.disable_button : ''
+            }`}
+          >
+            {languageMode.login}
+          </button>
+          <div className={style.agree} hidden={!target}>
+            <div className={style.checkboxWrap}>
+              <div
+                className={`${style.checkbodStyle} ${
+                  agree ? style.checked : ''
+                }`}
+              />
+              <input
+                checked={agree}
+                name="agree"
+                type="checkbox"
+                className={style.input}
+                onChange={onChange}
               />
             </div>
-            {popupsState ? (
-              <div className={style.popups}>
-                {language.map((value, index) => (
-                  <div
-                    onClick={() => chooseLanguageMode(index)}
-                    className={`${style.popups_item} ${
-                      languageMode.id == index ? style.popups_item_active : ''
-                    }`}
-                    key={index}
-                  >
-                    {value.name}
-                  </div>
-                ))}
-              </div>
-            ) : null}
-          </div>
-        </div>
 
-        <SecretImage
-          operationNotes={languageMode.operationNotes}
-          operationManual={languageMode.operationManual}
-          secretVisible={secretVisible}
-          secretImage={secretImage}
-          close={() => {
-            setSecretVisible(false)
-          }}
-        ></SecretImage>
-      </div>
+            <div>
+              <p>{languageMode.authorizedLogin}</p>
+              <ul className={style.agree_ul}>
+                <li> {languageMode.publicInformation}</li>
+                <li> {languageMode.book}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={style.headWrap}>
+            <div>{/* <img src="/sso/logo.png" width={207} /> */}</div>
+            <div onClick={controlPopups} className={style.language}>
+              <div className={style.langBox}>
+                <img
+                  src="/sso/LineIcon.svg"
+                  alt=""
+                  className={style.LineIcon}
+                />
+                <Lang className={style.lang}>
+                  {language[languageMode.id].name}
+                </Lang>
+                <IconFont
+                  style={{
+                    fontSize: 16,
+                    color: 'var(--neutral-n2)',
+                    cursor: 'pointer',
+                  }}
+                  type={popupsState ? 'up-icon' : 'down-icon'}
+                />
+              </div>
+              {popupsState ? (
+                <div className={style.popups}>
+                  {language.map((value, index) => (
+                    <div
+                      onClick={() => chooseLanguageMode(index)}
+                      className={`${style.popups_item} ${
+                        languageMode.id == index ? style.popups_item_active : ''
+                      }`}
+                      key={index}
+                    >
+                      {value.name}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <SecretImage
+            operationNotes={languageMode.operationNotes}
+            operationManual={languageMode.operationManual}
+            secretVisible={secretVisible}
+            secretImage={secretImage}
+            close={() => {
+              setSecretVisible(false)
+            }}
+          ></SecretImage>
+        </div>
+      </FormWrap>
     )
   },
 )

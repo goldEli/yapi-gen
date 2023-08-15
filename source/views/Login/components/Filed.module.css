@@ -3,7 +3,7 @@
   width: 100%;
   height: 48px;
   border: 1px solid #eaeaea;
-  background-color: #ffffff;
+  background-color: var(--hover-d2);
   box-sizing: border-box;
   padding: 0px 15px;
   display: flex;
@@ -15,6 +15,15 @@
 .field:hover {
   border: 1px solid #617ef2;
   cursor: pointer;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector,
+input {
+  background-color: var(--hover-d2) !important;
+}
+
+.input:-webkit-autofill {
+  box-shadow: 0 0 0 1000px var(--hover-d2) inset !important;
 }
 
 .active {
