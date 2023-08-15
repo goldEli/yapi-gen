@@ -47,6 +47,6 @@ export default ({
         </span>
       </div>
     </div>,
-    document.getElementById('box') as Element,
+    document.body,
   )
 }

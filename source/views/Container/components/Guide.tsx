@@ -6,10 +6,6 @@ import { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { createPortal } from 'react-dom'
 import { css } from '@emotion/css'
-import guide_1 from '/guide_1.svg'
-import guide_2 from '/guide_2.svg'
-import guide_3 from '/guide_3.svg'
-import guide_4 from '/guide_4.svg'
 import { useTranslation } from 'react-i18next'
 
 const imgBoxCss = css`
@@ -78,19 +74,19 @@ const Guide = (props: { visible: boolean; close(): void }) => {
   const inform = [
     {
       text: t('container.text1'),
-      img: guide_1,
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/guide_1.svg',
     },
     {
       text: t('container.text2'),
-      img: guide_2,
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/guide_2.svg',
     },
     {
       text: t('container.text3'),
-      img: guide_3,
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/guide_3.svg',
     },
     {
       text: t('container.text4'),
-      img: guide_4,
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/guide_4.svg',
     },
   ]
   const filterData = useMemo(() => {

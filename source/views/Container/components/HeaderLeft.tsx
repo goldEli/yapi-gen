@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
 import { getParamsData } from '@/tools'
-import sideLogo from '/newLogo-ifun.svg'
 import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import {
   ChildrenMenu,
@@ -31,7 +30,6 @@ import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
 import ItemDropdown from './ItemDropdown'
 import { setCurrentMenu } from '@store/user'
-import menuTag from '/menuTag.svg'
 import usePressKyey from '@/hooks/usePressKyey/usePressKyey'
 import { useHotkeys } from 'react-hotkeys-hook'
 
@@ -196,7 +194,10 @@ const DrawerComponent = (props: DrawerComponentProps) => {
       >
         <DrawerHeader>
           <LogoBox>
-            <img src={sideLogo} alt="" />
+            <img
+              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/newLogo-ifun.svg"
+              alt=""
+            />
           </LogoBox>
           <CloseWrap
             width={32}

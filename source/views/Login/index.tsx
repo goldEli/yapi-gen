@@ -167,23 +167,23 @@ const Page = () => {
       <GlobalStyle />
       <div className={style.left}>
         <LeftWrap>
-          <TopBgImage src="/topBg.png" />
-          <BottomBgImage src="/bottomBg.png" />
+          <TopBgImage src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/topBg.png" />
+          <BottomBgImage src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/bottomBg.png" />
           <CarouselWrap effect="fade" autoplay>
             <CarouselItem>
               <ItemTitle>{languageMode.CarouselTitle1}</ItemTitle>
               <ItemIntroduce>{languageMode.CarouselDesc1}</ItemIntroduce>
-              <ItemImage src="/loginBg1.png" />
+              <ItemImage src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/loginBg1.png" />
             </CarouselItem>
             <CarouselItem>
               <ItemTitle>{languageMode.CarouselTitle2}</ItemTitle>
               <ItemIntroduce>{languageMode.CarouselDesc2}</ItemIntroduce>
-              <ItemImage src="/loginBg2.png" />
+              <ItemImage src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/loginBg2.png" />
             </CarouselItem>
             <CarouselItem>
               <ItemTitle>{languageMode.CarouselTitle3}</ItemTitle>
               <ItemIntroduce>{languageMode.CarouselDesc3}</ItemIntroduce>
-              <ItemImage src="/loginBg3.png" />
+              <ItemImage src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/loginBg3.png" />
             </CarouselItem>
           </CarouselWrap>
         </LeftWrap>

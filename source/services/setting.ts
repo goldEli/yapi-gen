@@ -5,13 +5,14 @@
 // 大设置
 
 import * as http from '@/tools/http'
-import normalCompany from '/normalCompany.jpg'
 
 export const getCompanyInfo: any = async () => {
   const response: any = await http.get<any>('getCompanyInfo')
   return {
     name: response.data.name,
-    logo: response.data.logo?.length ? response.data.logo : normalCompany,
+    logo: response.data.logo?.length
+      ? response.data.logo
+      : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg',
     id: response.data.id,
     info: response.data.info,
     projectCount: response.data.project_count,
