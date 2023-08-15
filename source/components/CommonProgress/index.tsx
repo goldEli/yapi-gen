@@ -69,7 +69,7 @@ const CommonProgress = (props: ProgressProps) => {
                       name={`${k?.user_name}${
                         k?.position_name ? `（${k?.position_name}）` : ''
                       }- ${k?.schedule ?? 0}% ${
-                        Number(((k?.task_time ?? 0) / 3600).toFixed(1)) * 100
+                        Math.floor((k.task_time / 3600) * 100) / 100
                       }h`}
                       avatar={k?.avatar}
                     />
