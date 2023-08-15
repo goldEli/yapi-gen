@@ -222,7 +222,9 @@ const DailyReportRules = () => {
     return (
       <PopoverWrap>
         <Title>{t('msg21')}</Title>
-        <Msg>{t('msg22')}</Msg>
+        <Msg>
+          {t('msg22')} <span style={{ marginLeft: 8 }}>工时花费：30h</span>
+        </Msg>
         <Row>
           <span />
           <span>{t('msg23')}</span>

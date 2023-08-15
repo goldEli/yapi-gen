@@ -644,6 +644,37 @@ const Home = () => {
       getViewList({ project_id: '', use_type: 3 })
     }
   }, [])
+  const saveOnchange = (e: any) => {
+    setOptionVal(e)
+    const filterVal: Models.Efficiency.ViewItem | undefined = viewDataList.find(
+      el => el.id === e,
+    )
+    setDefalutConfig(filterVal)
+    dispatch(
+      setHeaderParmas({
+        view: {
+          title: filterVal?.name,
+          value: e,
+        },
+        users: filterVal?.config.user_ids,
+        projectIds: filterVal?.config.project_id,
+        iterate_ids: filterVal?.config.iterate_ids,
+        period_time: filterVal?.config.period_time,
+        time: {
+          type:
+            filterVal?.config.period_time === ''
+              ? 0
+              : getDate(filterVal?.config?.period_time || ''),
+          time:
+            filterVal?.config.period_time === ''
+              ? // eslint-disable-next-line no-undefined
+                [filterVal?.config?.start_time, filterVal?.config?.end_time]
+              : // eslint-disable-next-line no-undefined
+                '',
+        },
+      }),
+    )
+  }
   return (
     <div
       style={{
@@ -820,7 +851,7 @@ const Home = () => {
               <div style={{ margin: '8px 0 0 32px' }}>
                 <SelectMain
                   onChange={e => {
-                    setOptionVal(e)
+                    saveOnchange(e)
                   }}
                   placeholder={t('common.pleaseSelect')}
                   allowClear={false}
