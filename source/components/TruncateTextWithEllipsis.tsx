@@ -17,7 +17,7 @@ const TruncateTextWithEllipsis = (props: any) => {
         let front = ''
         let back = ''
         let frontWidth = 0
-        let backWidth = 0
+        let backWidth = 1
         let i = 0
 
         while (i < text.length) {
