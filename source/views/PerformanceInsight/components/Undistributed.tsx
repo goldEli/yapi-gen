@@ -359,7 +359,13 @@ const Undistributed = (props: any) => {
       key: 'prefix_key',
       render: (text: string, record: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
             <ClickWrap
               className="canClickDetail"
               isClose={record.category_status?.is_end === 1}

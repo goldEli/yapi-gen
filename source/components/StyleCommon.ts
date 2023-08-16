@@ -543,7 +543,7 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
     display: 'flex',
     cursor: 'pointer',
     '.icon': {
-      display: 'none',
+      opacity: 0,
       color: 'var(--neutral-n3)',
     },
     '.text': {
@@ -554,7 +554,7 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
     },
     '&:hover': {
       '.icon': {
-        display: 'flex',
+        opacity: 1,
       },
     },
     '.text:hover ,.icon:hover': {
