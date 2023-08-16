@@ -110,6 +110,7 @@ export const useDynamicColumns = (state: any) => {
               </div>
               <div className="icon">
                 <CommonIconFont
+                  color="var(--neutral-n4)"
                   type="share"
                   size={20}
                   onClick={() => onCopy(record)}
