@@ -30,6 +30,7 @@ import MultipleAvatar from '../MultipleAvatar'
 import CommonIconFont from '../CommonIconFont'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import CommonProgress from '../CommonProgress'
+import { encryptPhp } from '@/tools/cryptoPhp'
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
@@ -61,10 +62,35 @@ export const useDynamicColumns = (state: any) => {
   const onUpdate = (row: any, isClass?: any) => {
     state.onUpdate(true, row.topId, isClass)
   }
-  // 复制编号
-  const onCopyNumber = (id: string) => {
-    copyLink(id, t('copysuccess'), t('copyfailed'))
+  //  点击复制链接
+  const onCopy = (row: any) => {
+    let text: any = ''
+    let beforeUrl: any
+    beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
+    let params: any = {
+      id: row.projectId || row.project_id,
+      detailId: row.id,
+      isOpenScreenDetail: true,
+    }
+    let url = ''
+    if (state.type === 3) {
+      params.specialType = 1
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `SprintProjectManagement/Affair?data=${resultParams}`
+    } else if (state.type === 2) {
+      params.specialType = 2
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Defect?data=${resultParams}`
+    } else if (state.type === 1) {
+      params.specialType = 3
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Demand?data=${resultParams}`
+    }
+
+    text += `【${row.storyPrefixKey}-${row.name}】 ${beforeUrl}${url} \n`
+    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
   }
+
   const arr = [
     {
       width: 140,
@@ -86,7 +112,7 @@ export const useDynamicColumns = (state: any) => {
                 <CommonIconFont
                   type="share"
                   size={20}
-                  onClick={() => onCopyNumber(text)}
+                  onClick={() => onCopy(record)}
                 />
               </div>
             </ClickWrap>

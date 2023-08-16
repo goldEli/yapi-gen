@@ -64,27 +64,6 @@ const DropdownMenu = (props: any) => {
     )
   }
 
-  // 复制需求链接
-  const onCopyLink = () => {
-    let text: any = ''
-    let beforeUrl: any
-    beforeUrl = window.origin
-    const params = encryptPhp(
-      JSON.stringify({
-        id: props.record.project_id,
-        detailId: props.record.id,
-        specialType: 1,
-        isOpenScreenDetail: true,
-      }),
-    )
-    const url = `/SprintProjectManagement/Affair?data=${params}`
-    text += `${beforeUrl}${url} \n`
-    copyLink(
-      `【${props?.record.storyPrefixKey}】${text}`,
-      t('common.copySuccess'),
-      t('common.copyFail'),
-    )
-  }
   let menuItems = [
     {
       key: '5',
@@ -92,7 +71,7 @@ const DropdownMenu = (props: any) => {
     },
     {
       key: '6',
-      label: <div onClick={onCopyLink}>{t('copy_title_link')}</div>,
+      label: <div onClick={props.onCopyLink}>{t('copy_title_link')}</div>,
     },
   ]
   return <MenuWrap style={{ minWidth: 56 }} items={menuItems} />
@@ -211,6 +190,36 @@ const Undistributed = (props: any) => {
       //
     }
   }
+
+  // 复制链接
+  const onCopyLink = (row: any) => {
+    let text: any = ''
+    let beforeUrl: any
+    beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
+    let params: any = {
+      id: row.projectId,
+      detailId: row.id,
+      isOpenScreenDetail: true,
+    }
+    let url = ''
+    if (row.project_type === 2) {
+      params.specialType = 1
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `SprintProjectManagement/Affair?data=${resultParams}`
+    } else if (row.project_type === 1 && row.is_bug === 1) {
+      params.specialType = 2
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Defect?data=${resultParams}`
+    } else if (row.project_type === 1 && row.is_bug !== 1) {
+      params.specialType = 3
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Demand?data=${resultParams}`
+    }
+
+    text += `【${row.storyPrefixKey}-${row.name}】 ${beforeUrl}${url} \n`
+    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
+  }
+
   const arr = [
     {
       width: 48,
@@ -219,7 +228,12 @@ const Undistributed = (props: any) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <MoreDropdown
               isMoreVisible={isShowMore}
-              menu={<DropdownMenu record={record} />}
+              menu={
+                <DropdownMenu
+                  record={record}
+                  onCopyLink={() => onCopyLink(record)}
+                />
+              }
               onChangeVisible={setIsShowMore}
             />
           </div>
@@ -315,10 +329,7 @@ const Undistributed = (props: any) => {
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     onUpdate()
   }
-  // 复制编号
-  const onCopyNumber = (id: string) => {
-    copyLink(id, t('copysuccess'), t('copyfailed'))
-  }
+
   const colum = [
     ...arr,
     {
@@ -339,7 +350,7 @@ const Undistributed = (props: any) => {
                 <CommonIconFont
                   type="share"
                   size={20}
-                  onClick={() => onCopyNumber(text)}
+                  onClick={() => onCopyLink(record)}
                 />
               </div>
             </ClickWrap>

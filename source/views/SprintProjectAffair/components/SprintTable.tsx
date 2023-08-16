@@ -215,6 +215,7 @@ const SprintTable = (props: Props) => {
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
     onChangeSeverity,
+    type: 3,
   })
 
   const hasCreate = getIsPermission(

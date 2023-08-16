@@ -347,6 +347,7 @@ const DemandTree = (props: Props) => {
     onUpdate: props?.onUpdate,
     isTree: true,
     onChangeTree: getTreeIcon,
+    type: 1,
   })
 
   const hasCreate = getIsPermission(
