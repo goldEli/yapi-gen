@@ -145,6 +145,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
               value={inputValue}
               min={0}
               max={100}
+              step={1}
               style={{ margin: '0 16px' }}
               onChange={(val: any) => onChange(val)}
             />
