@@ -51,6 +51,9 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
   }, [id, project_id, visible])
 
   const onChange = (newValue: number) => {
+    if (String(newValue).includes('.')) {
+      return
+    }
     if (newValue < data?.schedule) {
       getMessage({
         type: 'warning',
