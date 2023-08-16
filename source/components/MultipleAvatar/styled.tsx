@@ -8,7 +8,7 @@ export const MultipleAvatarBox = styled.div<{ width: number }>`
   cursor: pointer;
 `
 export const MoreIcon = styled.div<{ left: number; show: boolean }>`
-  width: 24px;
+  min-width: 24px;
   height: 24px;
   background: var(--neutral-n7);
   border-radius: 50px 50px 50px 50px;
