@@ -66,14 +66,12 @@ const DropdownMenu = (props: any) => {
 
   // 复制需求链接
   const onCopyLink = () => {
-    console.log(props.record)
     let params: any = {
       id: props.record.project_id,
       detailId: props.record?.id,
       isOpenScreenDetail: true,
       iterateId: props.record.id,
     }
-    console.log(params)
     let url = ''
     if (props.record.project_type === 2) {
       params.specialType = 1
@@ -324,8 +322,33 @@ const Undistributed = (props: any) => {
     onUpdate()
   }
   // 复制编号
-  const onCopyNumber = (id: string) => {
-    copyLink(id, t('copysuccess'), t('copyfailed'))
+  const onCopy = (record: any) => {
+    let params: any = {
+      id: record.project_id,
+      detailId: record?.id,
+      isOpenScreenDetail: true,
+      iterateId: record.id,
+    }
+    let url = ''
+    if (record.project_type === 2) {
+      params.specialType = 1
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `SprintProjectManagement/Affair?data=${resultParams}`
+    } else if (record.project_type === 1 && record.is_bug === 1) {
+      params.specialType = 2
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Defect?data=${resultParams}`
+    } else if (record.project_type === 1 && record.is_bug !== 1) {
+      params.specialType = 3
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Demand?data=${resultParams}`
+    }
+    const newUrl = `${window.origin}${import.meta.env.__URL_HASH__}${url}`
+    copyLink(
+      `【${record.storyPrefixKey}】${newUrl}`,
+      t('common.copySuccess'),
+      t('common.copyFail'),
+    )
   }
   const colum = [
     ...arr,
@@ -347,7 +370,7 @@ const Undistributed = (props: any) => {
                 <CommonIconFont
                   type="share"
                   size={20}
-                  onClick={() => onCopyNumber(text)}
+                  onClick={() => onCopy(record)}
                 />
               </div>
             </ClickWrap>

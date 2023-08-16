@@ -328,7 +328,6 @@ const TableFilter = (props: any) => {
   }
 
   useEffect(() => {
-    console.log('props.defaultValue---', props.defaultValue)
     form.resetFields()
     form.setFieldsValue(props.defaultValue)
     // 页面报错加的这条

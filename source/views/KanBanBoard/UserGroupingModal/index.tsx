@@ -109,7 +109,6 @@ const UserGroupingModal: React.FC<UserGroupingModalProps> = props => {
   //     }
   //     return '另存为视图'
   //   }, [saveAsViewModelInfo])
-  console.log(userList, userList)
   return (
     <CommonModal
       width={528}

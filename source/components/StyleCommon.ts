@@ -539,6 +539,7 @@ const HiddenText = styled.div({
 })
 const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
+    // width: '100%',
     display: 'flex',
     cursor: 'pointer',
     '.icon': {
@@ -546,7 +547,7 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
       color: 'var(--neutral-n3)',
     },
     '.text': {
-      width: '56px',
+      width: '30%',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',

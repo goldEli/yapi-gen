@@ -75,7 +75,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
     })
 
     form.setFieldsValue({
-      attach: arr,
+      attachment: arr,
     })
   }
   const confirm = async () => {

@@ -6,14 +6,14 @@ import {
   ClickWrap,
   HiddenText,
   ListNameWrap,
-  SeverityWrap,
   ShowWrap,
 } from '@/components/StyleCommon'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
-import { message, Progress, Tooltip } from 'antd'
+import { Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { getMessage } from '../Message'
@@ -21,8 +21,7 @@ import TableQuickEdit from '../TableQuickEdit'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import ChangePriorityPopover from '../ChangePriorityPopover'
-import DemandProgress from '../DemandProgress'
-import { getCustomNormalValue } from '@/tools'
+import { getCustomNormalValue, copyLink } from '@/tools'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import MultipleAvatar from '../MultipleAvatar'
 import { CommonIconFont } from '../CommonIconFont'
@@ -62,7 +61,34 @@ export const useDynamicColumns = (state: any) => {
   const onUpdate = () => {
     state.init(true)
   }
-
+  const onCopy = (record: any) => {
+    let params: any = {
+      id: record.project_id,
+      detailId: record?.id,
+      isOpenScreenDetail: true,
+      iterateId: record.id,
+    }
+    let url = ''
+    if (record.project_type === 2) {
+      params.specialType = 1
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `SprintProjectManagement/Affair?data=${resultParams}`
+    } else if (record.project_type === 1 && record.is_bug === 1) {
+      params.specialType = 2
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Defect?data=${resultParams}`
+    } else if (record.project_type === 1 && record.is_bug !== 1) {
+      params.specialType = 3
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Demand?data=${resultParams}`
+    }
+    const newUrl = `${window.origin}${import.meta.env.__URL_HASH__}${url}`
+    copyLink(
+      `【${record.storyPrefixKey}】${newUrl}`,
+      t('common.copySuccess'),
+      t('common.copyFail'),
+    )
+  }
   const arr = [
     {
       width: 140,
@@ -78,7 +104,14 @@ export const useDynamicColumns = (state: any) => {
               isClose={record.status?.is_end === 1}
               style={{ marginRight: 16 }}
             >
-              {record.storyPrefixKey}
+              <div className="text">{record.storyPrefixKey}</div>
+              <div className="icon">
+                <CommonIconFont
+                  type="share"
+                  size={20}
+                  onClick={() => onCopy(record)}
+                />
+              </div>
             </ClickWrap>
             {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
