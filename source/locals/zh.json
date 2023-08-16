@@ -2285,5 +2285,6 @@
   "basicInformation": "基本信息",
   "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation": "[今日截止]中存在重复的任务，请取消重复关联",
   "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2": "[逾期任务]中存在重复的任务，请取消重复关联",
-  "noUN": "无未指派数据"
+  "noUN": "无未指派数据",
+  "spent": "工时花费"
 }

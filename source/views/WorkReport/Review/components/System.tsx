@@ -371,7 +371,7 @@ const System = () => {
               <Col key={item.id}>
                 {item.type === 4 && (
                   <Title style={{ marginBottom: 8 }}>
-                    {item.name}: {item.pivot.params?.length}{' '}
+                    {item.name}: {item.pivot.params?.length}
                     {t('report.list.pieces')}
                   </Title>
                 )}
@@ -379,12 +379,19 @@ const System = () => {
                   <Title style={{ marginBottom: 8 }}>
                     {item.name}:{' '}
                     {JSON.parse(item?.pivot?.content ?? null)?.total_schedule}%
+                    <span style={{ marginLeft: 16 }}>
+                      {t('spent')}：
+                      {
+                        JSON.parse(item?.pivot?.content ?? null)
+                          ?.user_today_total_task_time
+                      }
+                      h
+                    </span>
                   </Title>
                 )}
                 {item.type === 3 && (
                   <>
                     <Msg style={{ marginTop: '8px' }}>
-                      {' '}
                       {t('report.list.addedYesterday')}：
                       {JSON.parse(item?.pivot?.content ?? null)?.yesterday_add}
                       {t('report.list.pieces')}
@@ -423,7 +430,7 @@ const System = () => {
                           el.user_schedule_percent
                             ? el.user_schedule_percent
                             : 0
-                        }%）`}
+                        }%  ${el.user_today_task_time}h）`}
                       </Msg>
                     </RowRadius>
                   ))}

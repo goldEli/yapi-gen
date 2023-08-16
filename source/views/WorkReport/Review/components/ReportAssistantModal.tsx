@@ -209,6 +209,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             getScheduleData().total
           }`,
           complete: getScheduleData().done,
+          user_today_total_task_time: getScheduleData().totalHour,
         }
         data.push({
           conf_id: Number(tempArr[1]),
@@ -230,6 +231,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
               name: tempObj?.name,
               expected_day: tempObj?.expected_day,
               user_schedule_percent: tempObj?.user_schedule_percent,
+              user_today_task_time: tempObj?.user_today_task_time,
+              user_total_task_time: tempObj?.user_total_task_time,
             }
           }),
         })
@@ -464,10 +467,15 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       total = 0
       done = 0
     }
+    const totalHour = tempArr.reduce(
+      (pre, next) => pre + next.user_today_task_time,
+      0,
+    )
     return {
       rate: total > 0 ? Number((done / total).toFixed(2)) * 100 : 0,
       done: done,
       total: total,
+      totalHour,
     }
   }
 
@@ -533,6 +541,9 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             label={
               <LabelTitle>
                 {content.name}：{getScheduleData().rate}%
+                <span style={{ marginLeft: 16 }}>
+                  {t('spent')}：{getScheduleData().totalHour}h
+                </span>
               </LabelTitle>
             }
             name={`${content.type}_${content.id}_${content.name}`}

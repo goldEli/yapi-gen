@@ -117,6 +117,10 @@ const NewRelatedNeed = (props: any) => {
       expected_day: props?.data?.find((s: any) => s.id === i.id)?.expected_day,
       user_schedule_percent: props?.data?.find((s: any) => s.id === i.id)
         ?.user_schedule_percent,
+      user_today_task_time: props?.data?.find((s: any) => s.id === i.id)
+        ?.user_today_task_time,
+      user_total_task_time: props?.data?.find((s: any) => s.id === i.id)
+        ?.user_total_task_time,
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
     if (!props.canSubmit(result)) {
@@ -151,6 +155,8 @@ const NewRelatedNeed = (props: any) => {
         value: k.id,
         expected_day: k.expected_day,
         user_schedule_percent: k.user_schedule_percent,
+        user_today_task_time: k.user_today_task_time,
+        user_total_task_time: k.user_total_task_time,
       })) ?? [],
     )
     props.onChange(props?.initValue?.map((item: any) => item.id))
@@ -185,7 +191,7 @@ const NewRelatedNeed = (props: any) => {
               <span>
                 {`（${
                   item.user_schedule_percent ? item.user_schedule_percent : 0
-                }%）`}
+                }%  ${item.user_today_task_time ?? 0}h）`}
               </span>
             </div>
             <IconFont
