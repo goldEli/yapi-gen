@@ -952,7 +952,6 @@ const FlawDetailDrawer = () => {
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={() => {
-                  console.log(11)
                   getFlawDetail()
                 }}
               ></DrawerTopInfo>

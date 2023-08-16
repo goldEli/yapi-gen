@@ -42,7 +42,6 @@ const Board = () => {
       id: parseInt(currentColumn?.key, 10) ?? 0,
       project_id: getProjectIdByUrl(),
     }
-    console.log('isUpdateAddWorkItem---', isUpdateAddWorkItem)
     // dispatch(getKanbanByGroup())
     dispatch(getKanbanConfig(params))
   }, [isUpdateAddWorkItem])

@@ -66,14 +66,12 @@ const DropdownMenu = (props: any) => {
 
   // 复制需求链接
   const onCopyLink = () => {
-    console.log(props.record)
     let params: any = {
       id: props.record.project_id,
       detailId: props.record?.id,
       isOpenScreenDetail: true,
       iterateId: props.record.id,
     }
-    console.log(params)
     let url = ''
     if (props.record.project_type === 2) {
       params.specialType = 1
@@ -331,7 +329,6 @@ const Undistributed = (props: any) => {
       isOpenScreenDetail: true,
       iterateId: record.id,
     }
-    console.log(params)
     let url = ''
     if (record.project_type === 2) {
       params.specialType = 1
