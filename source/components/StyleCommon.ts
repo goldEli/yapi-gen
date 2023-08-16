@@ -539,7 +539,7 @@ const HiddenText = styled.div({
 })
 const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
-    // width: '100%',
+    width: '100%',
     display: 'flex',
     cursor: 'pointer',
     '.icon': {

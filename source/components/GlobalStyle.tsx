@@ -591,7 +591,7 @@ const GlobalStyle = () => {
     }
     .ant-table-row {
       &:hover .icon {
-        display: block;
+        opacity: 1;
       }
     }
     .ant-tooltip-inner {

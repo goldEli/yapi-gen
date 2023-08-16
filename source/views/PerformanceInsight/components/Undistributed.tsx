@@ -1,7 +1,7 @@
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable no-negated-condition */
 /* eslint-disable no-empty */
-import { copyLink, getIsPermission } from '@/tools'
+import { copyLink } from '@/tools'
 import { useSelector } from '@store/index'
 import MoreDropdown from '@/components/MoreDropdown'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -9,13 +9,11 @@ import styled from '@emotion/styled'
 import { Menu, Tooltip } from 'antd'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useTranslation } from 'react-i18next'
-import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { createRef, useEffect, useState } from 'react'
 import TableColorText from '@/components/TableColorText'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import ResizeTable from '@/components/ResizeTable'
-import CommonButton from '@/components/CommonButton'
 import NoData from '@/components/NoData'
 import PaginationBox from '@/components/TablePagination'
 import HeaderAll from './HeaderAll'
@@ -64,6 +62,39 @@ const DropdownMenu = (props: any) => {
     )
   }
 
+  // 复制需求链接
+  const onCopyLink = () => {
+    if (!props.record.isCanEdit) {
+      getMessage({ msg: '该项目无权限', type: 'warning' })
+      return
+    }
+    let params: any = {
+      id: props.record.project_id,
+      detailId: props.record?.id,
+      isOpenScreenDetail: true,
+      iterateId: props.record.id,
+    }
+    let url = ''
+    if (props.record.project_type === 2) {
+      params.specialType = 1
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `SprintProjectManagement/Affair?data=${resultParams}`
+    } else if (props.record.project_type === 1 && props.record.is_bug === 1) {
+      params.specialType = 2
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Defect?data=${resultParams}`
+    } else if (props.record.project_type === 1 && props.record.is_bug !== 1) {
+      params.specialType = 3
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Demand?data=${resultParams}`
+    }
+    const newUrl = `${window.origin}${import.meta.env.__URL_HASH__}${url}`
+    copyLink(
+      `【${props?.record.storyPrefixKey}】${newUrl}`,
+      t('common.copySuccess'),
+      t('common.copyFail'),
+    )
+  }
   let menuItems = [
     {
       key: '5',
@@ -71,7 +102,7 @@ const DropdownMenu = (props: any) => {
     },
     {
       key: '6',
-      label: <div onClick={props.onCopyLink}>{t('copy_title_link')}</div>,
+      label: <div onClick={onCopyLink}>{t('copy_title_link')}</div>,
     },
   ]
   return <MenuWrap style={{ minWidth: 56 }} items={menuItems} />
@@ -79,7 +110,7 @@ const DropdownMenu = (props: any) => {
 
 const Undistributed = (props: any) => {
   const [isSpinning, setIsSpinning] = useState(false)
-  const { filterParams, filterKeys } = useSelector(store => store.project)
+  const { filterKeys } = useSelector(store => store.project)
   // project_type === 1 迭代  project_type === 2 cc  project_type === 1 && isBug=== 1 就是缺陷
   // permissions
   // 编辑权限 project_type === 1 && isBug=== 1 && key_value  b/flaw/update
@@ -188,36 +219,6 @@ const Undistributed = (props: any) => {
       //
     }
   }
-
-  // 复制链接
-  const onCopyLink = (row: any) => {
-    let text: any = ''
-    let beforeUrl: any
-    beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
-    let params: any = {
-      id: row.projectId,
-      detailId: row.id,
-      isOpenScreenDetail: true,
-    }
-    let url = ''
-    if (row.project_type === 2) {
-      params.specialType = 1
-      const resultParams = encryptPhp(JSON.stringify(params))
-      url = `SprintProjectManagement/Affair?data=${resultParams}`
-    } else if (row.project_type === 1 && row.is_bug === 1) {
-      params.specialType = 2
-      const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Defect?data=${resultParams}`
-    } else if (row.project_type === 1 && row.is_bug !== 1) {
-      params.specialType = 3
-      const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Demand?data=${resultParams}`
-    }
-
-    text += `【${row.storyPrefixKey}-${row.name}】 ${beforeUrl}${url} \n`
-    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
-  }
-
   const arr = [
     {
       width: 48,
@@ -226,12 +227,7 @@ const Undistributed = (props: any) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <MoreDropdown
               isMoreVisible={isShowMore}
-              menu={
-                <DropdownMenu
-                  record={record}
-                  onCopyLink={() => onCopyLink(record)}
-                />
-              }
+              menu={<DropdownMenu record={record} />}
               onChangeVisible={setIsShowMore}
             />
           </div>
@@ -327,6 +323,39 @@ const Undistributed = (props: any) => {
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     onUpdate()
   }
+  // 复制编号
+  const onCopy = (record: any) => {
+    let params: any = {
+      id: record.project_id,
+      detailId: record?.id,
+      isOpenScreenDetail: true,
+      iterateId: record.id,
+    }
+    if (!record.isCanEdit) {
+      getMessage({ msg: '该项目无权限', type: 'warning' })
+      return
+    }
+    let url = ''
+    if (record.project_type === 2) {
+      params.specialType = 1
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `SprintProjectManagement/Affair?data=${resultParams}`
+    } else if (record.project_type === 1 && record.is_bug === 1) {
+      params.specialType = 2
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Defect?data=${resultParams}`
+    } else if (record.project_type === 1 && record.is_bug !== 1) {
+      params.specialType = 3
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Demand?data=${resultParams}`
+    }
+    const newUrl = `${window.origin}${import.meta.env.__URL_HASH__}${url}`
+    copyLink(
+      `【${record.storyPrefixKey}】${newUrl}`,
+      t('common.copySuccess'),
+      t('common.copyFail'),
+    )
+  }
   const colum = [
     ...arr,
     {
@@ -349,13 +378,15 @@ const Undistributed = (props: any) => {
               style={{ marginRight: 16 }}
             >
               <div className="text">{record.storyPrefixKey}</div>
-              <div className="icon">
-                <CommonIconFont
-                  type="share"
-                  size={20}
-                  onClick={() => onCopyLink(record)}
-                />
-              </div>
+              {
+                <div className="icon">
+                  <CommonIconFont
+                    type="share"
+                    size={20}
+                    onClick={() => onCopy(record)}
+                  />
+                </div>
+              }
             </ClickWrap>
             {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
