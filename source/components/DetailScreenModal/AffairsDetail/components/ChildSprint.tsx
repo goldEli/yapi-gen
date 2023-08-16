@@ -424,9 +424,9 @@ const ChildSprint = (
         <Label>{t('subtransaction')}</Label>
         <Space size={12}>
           {!isSearch && (
-            <CloseWrap width={24} height={24} onClick={onClickSearch}>
+            <CloseWrap width={32} height={32} onClick={onClickSearch}>
               <CommonIconFont
-                size={18}
+                size={20}
                 type="search"
                 color="var(--neutral-n2)"
               />
@@ -453,10 +453,10 @@ const ChildSprint = (
             </Space>
           )}
           {!isEnd && (
-            <CloseWrap width={24} height={24}>
+            <CloseWrap width={32} height={32}>
               <CommonIconFont
                 type="plus"
-                size={18}
+                size={20}
                 color="var(--neutral-n2)"
                 onClick={onCreateChild}
               />
