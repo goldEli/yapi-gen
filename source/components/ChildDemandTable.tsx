@@ -127,17 +127,21 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
     let url = ''
     if (record.project_type === 2) {
       params.specialType = 1
-      const resultParams = encryptPhp(JSON.stringify(params))
+      // const resultParams = encryptPhp(JSON.stringify(params))
+      const resultParams = params
       url = `SprintProjectManagement/Affair?data=${resultParams}`
     } else if (record.project_type === 1 && record.is_bug === 1) {
       params.specialType = 2
-      const resultParams = encryptPhp(JSON.stringify(params))
+      // const resultParams = encryptPhp(JSON.stringify(params))
+      const resultParams = params
       url = `ProjectManagement/Defect?data=${resultParams}`
     } else if (record.project_type === 1 && record.is_bug !== 1) {
       params.specialType = 3
-      const resultParams = encryptPhp(JSON.stringify(params))
+      // const resultParams = encryptPhp(JSON.stringify(params))
+      const resultParams = params
       url = `ProjectManagement/Demand?data=${resultParams}`
     }
+    console.log(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
