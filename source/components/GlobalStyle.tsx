@@ -589,7 +589,11 @@ const GlobalStyle = () => {
     .ant-table table {
       padding-bottom: 0 !important;
     }
-
+    .ant-table-row {
+      &:hover .icon {
+        display: block;
+      }
+    }
     .ant-tooltip-inner {
       white-space: pre-wrap;
     }
