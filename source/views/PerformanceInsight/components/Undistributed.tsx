@@ -66,21 +66,31 @@ const DropdownMenu = (props: any) => {
 
   // 复制需求链接
   const onCopyLink = () => {
-    let text: any = ''
-    let beforeUrl: any
-    beforeUrl = window.origin
-    const params = encryptPhp(
-      JSON.stringify({
-        id: props.record.project_id,
-        detailId: props.record.id,
-        specialType: 1,
-        isOpenScreenDetail: true,
-      }),
-    )
-    const url = `/SprintProjectManagement/Affair?data=${params}`
-    text += `${beforeUrl}${url} \n`
+    console.log(props.record)
+    let params: any = {
+      id: props.record.project_id,
+      detailId: props.record?.id,
+      isOpenScreenDetail: true,
+      iterateId: props.record.id,
+    }
+    console.log(params)
+    let url = ''
+    if (props.record.project_type === 2) {
+      params.specialType = 1
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `SprintProjectManagement/Affair?data=${resultParams}`
+    } else if (props.record.project_type === 1 && props.record.is_bug === 1) {
+      params.specialType = 2
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Defect?data=${resultParams}`
+    } else if (props.record.project_type === 1 && props.record.is_bug !== 1) {
+      params.specialType = 3
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Demand?data=${resultParams}`
+    }
+    const newUrl = `${window.origin}${import.meta.env.__URL_HASH__}${url}`
     copyLink(
-      `【${props?.record.storyPrefixKey}】${text}`,
+      `【${props?.record.storyPrefixKey}】${newUrl}`,
       t('common.copySuccess'),
       t('common.copyFail'),
     )
@@ -100,9 +110,7 @@ const DropdownMenu = (props: any) => {
 
 const Undistributed = (props: any) => {
   const [isSpinning, setIsSpinning] = useState(false)
-  const { projectInfo, filterKeys, filterParams } = useSelector(
-    store => store.project,
-  )
+  const { filterParams, filterKeys } = useSelector(store => store.project)
   // project_type === 1 迭代  project_type === 2 cc  project_type === 1 && isBug=== 1 就是缺陷
   // permissions
   // 编辑权限 project_type === 1 && isBug=== 1 && key_value  b/flaw/update
@@ -646,10 +654,11 @@ const Undistributed = (props: any) => {
     onOperationCheckbox('remove')
     onUpdate(page, size)
   }
-  const hasBatch = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/batch',
-  )
+  // const hasBatch = getIsPermission(
+  //   projectInfo?.projectPermissions,
+  //   'b/story/batch',
+  // )
+  const hasBatch = true
   return (
     <div
       style={{
@@ -676,14 +685,14 @@ const Undistributed = (props: any) => {
           dataWrapNormalHeight="calc(100% - 48px)"
           col={colum}
           dataSource={data?.list}
-          rowSelection={
-            {
-              selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-              onSelect: (record: any, selected: any) =>
-                onSelectChange(record, selected),
-              onSelectAll,
-            } as any
-          }
+          // rowSelection={
+          //   {
+          //     selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+          //     onSelect: (record: any, selected: any) =>
+          //       onSelectChange(record, selected),
+          //     onSelectAll,
+          //   } as any
+          // }
           noData={
             <NoData subText={t('noUN')} haveFilter={filterKeys?.length > 0}>
               {/* <CommonButton
@@ -696,7 +705,7 @@ const Undistributed = (props: any) => {
             </NoData>
           }
         />
-        {hasBatch && (
+        {/* {hasBatch && (
           <FloatBatch
             isVisible={selectedRowKeys.length > 0}
             onClose={() => onSelectAll(false)}
@@ -705,7 +714,7 @@ const Undistributed = (props: any) => {
             onRef={batchDom}
             type={1}
           />
-        )}
+        )} */}
         <PaginationBox
           currentPage={data?.pager?.page}
           pageSize={data?.pager?.pagesize}
