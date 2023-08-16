@@ -592,6 +592,10 @@ const SprintDetailDrawer = () => {
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
     const titleItems = document.querySelectorAll('.info_item_tab')
+    console.log(
+      'setDrawerCurrentAnchorsetDrawerCurrentAnchorsetDrawerCurrentAnchorsetDrawerCurrentAnchor',
+      scrollTop,
+    )
     let arr: any = []
     titleItems.forEach(element => {
       const { offsetTop, id } = element as HTMLElement

@@ -44,8 +44,6 @@ const CreateNoteModal = (props: any) => {
   const [taskTime, setTaskTime] = useState(false)
 
   const onValidator = (rule: any, value: any) => {
-    console.log(value, '222')
-
     const plainText = value.replace(/<[^>]+>/g, '')
 
     if (plainText.length > 800) {

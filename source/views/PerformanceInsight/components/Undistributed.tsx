@@ -79,9 +79,7 @@ const DropdownMenu = (props: any) => {
 
 const Undistributed = (props: any) => {
   const [isSpinning, setIsSpinning] = useState(false)
-  const { projectInfo, filterKeys, filterParams } = useSelector(
-    store => store.project,
-  )
+  const { filterParams, filterKeys } = useSelector(store => store.project)
   // project_type === 1 迭代  project_type === 2 cc  project_type === 1 && isBug=== 1 就是缺陷
   // permissions
   // 编辑权限 project_type === 1 && isBug=== 1 && key_value  b/flaw/update
@@ -329,7 +327,6 @@ const Undistributed = (props: any) => {
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     onUpdate()
   }
-
   const colum = [
     ...arr,
     {
@@ -657,10 +654,11 @@ const Undistributed = (props: any) => {
     onOperationCheckbox('remove')
     onUpdate(page, size)
   }
-  const hasBatch = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/batch',
-  )
+  // const hasBatch = getIsPermission(
+  //   projectInfo?.projectPermissions,
+  //   'b/story/batch',
+  // )
+  const hasBatch = true
   return (
     <div
       style={{
@@ -687,14 +685,14 @@ const Undistributed = (props: any) => {
           dataWrapNormalHeight="calc(100% - 48px)"
           col={colum}
           dataSource={data?.list}
-          rowSelection={
-            {
-              selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-              onSelect: (record: any, selected: any) =>
-                onSelectChange(record, selected),
-              onSelectAll,
-            } as any
-          }
+          // rowSelection={
+          //   {
+          //     selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+          //     onSelect: (record: any, selected: any) =>
+          //       onSelectChange(record, selected),
+          //     onSelectAll,
+          //   } as any
+          // }
           noData={
             <NoData subText={t('noUN')} haveFilter={filterKeys?.length > 0}>
               {/* <CommonButton
@@ -707,7 +705,7 @@ const Undistributed = (props: any) => {
             </NoData>
           }
         />
-        {hasBatch && (
+        {/* {hasBatch && (
           <FloatBatch
             isVisible={selectedRowKeys.length > 0}
             onClose={() => onSelectAll(false)}
@@ -716,7 +714,7 @@ const Undistributed = (props: any) => {
             onRef={batchDom}
             type={1}
           />
-        )}
+        )} */}
         <PaginationBox
           currentPage={data?.pager?.page}
           pageSize={data?.pager?.pagesize}

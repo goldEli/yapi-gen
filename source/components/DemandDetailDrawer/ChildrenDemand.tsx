@@ -187,7 +187,6 @@ const ChildrenDemand = (props: Props, ref: any) => {
       pageSize: pageObj.pageSize,
       orderKey: 'sort',
     })
-    console.log('res-----', result)
     setDataList({
       list: result?.list?.map((item: { id: any }) => ({
         ...item,
@@ -300,7 +299,6 @@ const ChildrenDemand = (props: Props, ref: any) => {
   }
   // 表格拖拽排序
   const onChangeData = async (data: any) => {
-    console.log('data--', data, props)
     setDataList({
       ...dataList,
       list: data.list,
@@ -321,7 +319,6 @@ const ChildrenDemand = (props: Props, ref: any) => {
   })
   useEffect(() => {
     if (props.detail?.id || isUpdateAddWorkItem) {
-      console.log(111, props.detail)
       getList()
     }
   }, [props.detail, isUpdateAddWorkItem])

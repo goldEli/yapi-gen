@@ -925,7 +925,6 @@ const DemandDetailDrawer = () => {
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={() => {
-                  console.log(11)
                   getDemandDetail()
                 }}
               ></DrawerTopInfo>
