@@ -44,7 +44,10 @@ export interface CounterState {
     visible: boolean
     params: Model.Project.DetailScreenModalParams
   }
+  // 浮层是否可编辑
   drawerCanOperation: any
+  // 浮层触发编辑时，当前所在的锚点位置
+  drawerCurrentAnchor: ''
 }
 
 const initialState: CounterState = {
@@ -96,6 +99,7 @@ const initialState: CounterState = {
     params: { id: 0 },
   },
   drawerCanOperation: {},
+  drawerCurrentAnchor: '',
 }
 
 export const projectSlice = createSlice({
@@ -190,6 +194,10 @@ export const projectSlice = createSlice({
     setDrawerCanOperation: (state: any, action) => {
       state.drawerCanOperation = action.payload
     },
+    //存储浮层当前处于那个锚点
+    setDrawerCurrentAnchor: (state: any, action) => {
+      state.drawerCurrentAnchor = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
@@ -221,6 +229,7 @@ export const {
   setIsUpdateAddWorkItem,
   setIsChangeDetailAffairs,
   setDrawerCanOperation,
+  setDrawerCurrentAnchor,
 } = projectSlice.actions
 
 export default projectSlice.reducer

@@ -180,6 +180,7 @@ const DemandTable = (props: Props) => {
     onClickItem,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
+    type: 1,
   })
 
   const hasCreate = getIsPermission(

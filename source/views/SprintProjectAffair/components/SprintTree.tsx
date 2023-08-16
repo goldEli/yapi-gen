@@ -362,6 +362,7 @@ const SprintTree = (props: Props) => {
     isTree: true,
     onChangeTree: getTreeIcon,
     onChangeSeverity,
+    type: 3,
   })
 
   const hasCreate = getIsPermission(

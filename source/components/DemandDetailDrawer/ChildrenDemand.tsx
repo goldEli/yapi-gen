@@ -91,7 +91,11 @@ const ChildrenDemand = (props: Props, ref: any) => {
       render: (text: string, record: any) => {
         return (
           <LinkWrap>
-            <span className="content" onClick={() => onToDetail(record)}>
+            <span
+              className="content"
+              style={{ maxWidth: '400px' }}
+              onClick={() => onToDetail(record)}
+            >
               {text}
             </span>
           </LinkWrap>

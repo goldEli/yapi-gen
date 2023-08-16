@@ -38,6 +38,7 @@ import moment from 'moment'
 import ClickDropdown from './ClickDropdown'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 import CommonProgress from '@/components/CommonProgress'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const MoveFont = styled(IconFont)`
   font-size: 16;
@@ -349,8 +350,21 @@ const DndKitTable = (props: any) => {
     return true
   }
   // 复制编号
-  const onCopyNumber = (id: string) => {
-    copyLink(id, t('copysuccess'), t('copyfailed'))
+  const onCopyLink = (row: any) => {
+    let text: any = ''
+    let beforeUrl: any
+    beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
+    let params: any = {
+      id: row.projectId || row.project_id,
+      detailId: String(row.id).split('_')[1],
+      isOpenScreenDetail: true,
+      specialType: 1,
+    }
+    const resultParams = encryptPhp(JSON.stringify(params))
+    let url = `SprintProjectManagement/Affair?data=${resultParams}`
+
+    text += `【${row.story_prefix_key}-${row.name}】 ${beforeUrl}${url} \n`
+    copyLink(text, t('common.copySuccess'), t('common.copyFail'))
   }
   const columns: TableColumnProps<any>[] = [
     {
@@ -429,7 +443,7 @@ const DndKitTable = (props: any) => {
                   <CommonIconFont
                     type="share"
                     size={20}
-                    onClick={() => onCopyNumber(value)}
+                    onClick={() => onCopyLink(temp)}
                   />
                 </div>
               </ClickWrap>
