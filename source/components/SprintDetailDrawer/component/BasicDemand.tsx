@@ -90,13 +90,16 @@ const BasicDemand = (props: Props) => {
         projectId: props.detail.projectId,
       })
       getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
-      props.onUpdate?.()
-      dispatch(
-        getAffairsInfo({
-          projectId: props.detail.projectId,
-          sprintId: props.detail?.id,
-        }),
-      )
+      if (props.isInfoPage) {
+        dispatch(
+          getAffairsInfo({
+            projectId: props.detail.projectId,
+            sprintId: props.detail?.id,
+          }),
+        )
+      } else {
+        props.onUpdate?.()
+      }
     } catch (error) {
       //
     }
@@ -122,13 +125,16 @@ const BasicDemand = (props: Props) => {
       },
     })
     getMessage({ msg: t('successfullyModified'), type: 'success' })
-    props.onUpdate?.()
-    dispatch(
-      getAffairsInfo({
-        projectId: props.detail.projectId,
-        sprintId: props.detail?.id,
-      }),
-    )
+    if (props.isInfoPage) {
+      dispatch(
+        getAffairsInfo({
+          projectId: props.detail.projectId,
+          sprintId: props.detail?.id,
+        }),
+      )
+    } else {
+      props.onUpdate?.()
+    }
   }
 
   const getFieldData = async () => {

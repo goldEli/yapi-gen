@@ -33,19 +33,11 @@ interface TagProps {
 
 const TagBox = (props: TagProps) => {
   const [t] = useTranslation()
-  const dispatch = useDispatch()
-  const { projectInfoValues } = useSelector(store => store.project)
+  const { projectInfoValues, projectInfo } = useSelector(store => store.project)
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
-  const [searchParams] = useSearchParams()
   const inputRefDom = useRef<HTMLInputElement>(null)
-  let projectId: any
-  if (props?.id) {
-    projectId = props?.id
-  } else {
-    const paramsData = getParamsData(searchParams)
-    projectId = paramsData.id
-  }
+  const projectId = projectInfo.id
 
   useEffect(() => {
     setArr(
@@ -164,21 +156,14 @@ const FlawTag = (props: Props) => {
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [isClear, setIsClear] = useState(false)
-  const [searchParams] = useSearchParams()
-  let projectId: any
-  if (props?.id) {
-    projectId = props?.id
-  } else {
-    const paramsData = getParamsData(searchParams) ?? {}
-    projectId = paramsData.id
-  }
+  const { projectInfo } = useSelector(store => store.project)
+  const projectId = projectInfo.id
   const checkedTags = props.defaultList?.map((i: any) => ({
     color: i?.color,
     content: i?.name,
     id: i.id,
   }))
 
-  const { projectInfo } = useSelector(store => store.project)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(

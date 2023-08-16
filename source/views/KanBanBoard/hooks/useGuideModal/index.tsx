@@ -1,8 +1,5 @@
 import GuideModal from '@/components/GuideModal'
 import { useDispatch, useSelector } from '@store/index'
-import guide_1 from './img/guide_1.jpg'
-import guide_2 from './img/guide_2.png'
-import guide_3 from './img/guide_3.jpg'
 import useI18n from '@/hooks/useI18n'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
@@ -18,13 +15,13 @@ const useGuideModal = () => {
       desc: t(
         'the_card_state_changes_the_final_state_of_ta_according_to_the_draggable_destination',
       ),
-      img: guide_1,
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mianban/guide_1.jpg',
     },
     {
       key: 1,
       title: t('grouped_view'),
       desc: t('at_the_same_time'),
-      img: guide_2,
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mianban/guide_2.png',
     },
     {
       key: 2,
@@ -32,7 +29,7 @@ const useGuideModal = () => {
       desc: t(
         'vertical_filtering_can_be_performed_according_to_different_workflows',
       ),
-      img: guide_3,
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mianban/guide_3.jpg',
     },
   ]
   const guildModalEl = (

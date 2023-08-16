@@ -48,6 +48,7 @@ export default (props: any) => {
       />
 
       <input
+        ref={props.inputRef}
         onKeyUp={onKeyChange}
         onBlur={() => {
           setBorder(false)
@@ -81,8 +82,8 @@ export default (props: any) => {
           }}
           src={
             props.type == 'text'
-              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/open.svg'
-              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/close.svg'
+              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/open.svg'
+              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/close.svg'
           }
           alt=""
         />
@@ -102,6 +103,9 @@ export default (props: any) => {
       {isFocus && props.mode === 1 && (
         <span className={style.hint}>{bigChar && <i>{props.bigChar}</i>}</span>
       )}
+      {props.name === 'username' && props?.errorCheck?.username ? (
+        <span className={style.hint}>{props?.errorCheck?.username}</span>
+      ) : null}
     </div>
   )
 }

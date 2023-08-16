@@ -279,6 +279,7 @@ const Undistributed = (props: any) => {
                 xnProjectId={record.projectId}
                 onUpdate={() => onUpdate()}
                 isBug={record.project_type === 2}
+                projectId={0}
               >
                 <HiddenText>
                   <OmitText
@@ -386,6 +387,7 @@ const Undistributed = (props: any) => {
               isCanEdit={record.isCanEdit}
               xnProjectId={record.projectId}
               isBug={record.isBug === 1}
+              projectId={0}
             >
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
@@ -517,6 +519,7 @@ const Undistributed = (props: any) => {
             xnProjectId={record.projectId}
             onUpdate={() => onUpdate()}
             isBug={record.is_bug === 1}
+            projectId={0}
           >
             {record?.usersInfo?.length > 0 && (
               <MultipleAvatar
@@ -559,6 +562,7 @@ const Undistributed = (props: any) => {
             onUpdate={() => onUpdate()}
             value={['datetime']}
             isBug={row.is_bug === 1}
+            projectId={0}
           >
             <span>{row?.expected_start_at || '--'}</span>
           </TableQuickEdit>
@@ -582,6 +586,7 @@ const Undistributed = (props: any) => {
             onUpdate={() => onUpdate()}
             value={['datetime']}
             isBug={record.is_bug === 1}
+            projectId={0}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>

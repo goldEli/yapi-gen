@@ -10,3 +10,5 @@ export const EMAIL_REGEXP =
 export const FAULT_MAPS = ['发现版本', '严重程度', '解决方法']
 
 export const AFFAIRS_CHILD_TYPE: any = { 3: [4, 5], 4: [6], 5: [6] }
+
+export const PHONE_NUMBER_REGEXP = /^[1][3,4,5,6,7,8,9][0-9]{9}$/u

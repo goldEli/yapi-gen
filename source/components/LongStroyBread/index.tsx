@@ -152,18 +152,7 @@ const LongStroyBread = (props: IProps) => {
               zIndex={999999}
               key={item.id}
             >
-              <LabelBox
-                onClick={() => {
-                  const demandIds = [
-                    1004513, 1004899, 1004925, 1004924, 1004911, 1004900,
-                    1004898, 1004897, 1004896, 1004895, 1004894, 1004876,
-                    1004866, 1004842, 1004840, 1004839, 1004838, 1004837,
-                    1004836, 1004835,
-                  ]
-                  const projectId = longStroy?.projectId
-                  openDemandDetail({ ...item }, projectId, item.id, 1)
-                }}
-              >
+              <LabelBox>
                 {showEditIcon && item.work_type === 3 ? (
                   <CommonIconFont
                     type="edit"
@@ -185,10 +174,21 @@ const LongStroyBread = (props: IProps) => {
                     onMouseLeave={() => {
                       setShowEditIcon(false)
                     }}
+                    onClick={() => {
+                      const projectId = longStroy?.projectId
+                      openDemandDetail({ ...item }, projectId, item.id, 1)
+                    }}
                     style={{ width: 20, marginRight: '6px' }}
                   />
                 )}
-                {`${item.project_prefix}-${item.prefix_key}`}{' '}
+                <span
+                  onClick={() => {
+                    const projectId = longStroy?.projectId
+                    openDemandDetail({ ...item }, projectId, item.id, 1)
+                  }}
+                >
+                  {item.project_prefix}-{item.prefix_key}
+                </span>
                 {index !== longStroy.level_tree?.length - 1 && (
                   <CommonIconFont
                     type="right"

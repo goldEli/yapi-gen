@@ -57,8 +57,8 @@ const initialState: GlobalState = {
       keyText: 'discovery_version',
       attr: 'fixed_radio',
     },
-    { content: 'severity', attr: 'severity' },
-    { content: 'solution', attr: 'text' },
+    { content: 'severity', keyText: 'severity', attr: 'severity' },
+    { content: 'solution', keyText: 'solution', attr: 'text' },
     { content: 'create_at', attr: 'date' },
     { content: 'finish_at', attr: 'date' },
     {

@@ -535,7 +535,16 @@ const AffairsDetail = () => {
     <Wrap>
       <DeleteConfirmModal />
       <ShareModal
-        url={location.href}
+        url={`${
+          location.origin
+        }/SprintProjectManagement/Affair?data=${encryptPhp(
+          JSON.stringify({
+            id: projectInfo.id,
+            detailId: affairsInfo.id,
+            specialType: 1,
+            isOpenScreenDetail: true,
+          }),
+        )}`}
         title={
           affairsInfo?.name
             ? `【${affairsInfo?.projectPrefix}${

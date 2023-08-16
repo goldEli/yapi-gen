@@ -39,18 +39,12 @@ interface TagProps {
 const TagBox = (props: TagProps) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { projectInfoValues } = useSelector(store => store.project)
+  const { projectInfoValues, projectInfo } = useSelector(store => store.project)
+  const { demandInfo } = useSelector(store => store.demand)
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
-  const [searchParams] = useSearchParams()
   const inputRefDom = useRef<HTMLInputElement>(null)
-  let projectId: any
-  if (props?.id) {
-    projectId = props?.id
-  } else {
-    const paramsData = getParamsData(searchParams)
-    projectId = paramsData.id
-  }
+  const projectId = projectInfo.id
 
   useEffect(() => {
     setArr(
@@ -165,26 +159,20 @@ interface Props {
 
 const DemandTag = (props: Props) => {
   const [t] = useTranslation()
+  const { demandInfo } = useSelector(store => store.demand)
+  const { projectInfo } = useSelector(store => store.project)
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [isClear, setIsClear] = useState(false)
-  const [searchParams] = useSearchParams()
   const dispatch = useDispatch()
-  let projectId: any
-  if (props?.id) {
-    projectId = props?.id
-  } else {
-    const paramsData = getParamsData(searchParams) ?? {}
-    projectId = paramsData.id
-  }
+  const projectId = projectInfo.id
   const checkedTags = props.defaultList?.map((i: any) => ({
     color: i?.color,
     content: i?.name,
     id: i.id,
   }))
 
-  const { projectInfo } = useSelector(store => store.project)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(

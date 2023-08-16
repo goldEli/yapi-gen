@@ -6,18 +6,11 @@ import style from './Login.module.css'
 import Filed from './components/Filed'
 import { useNavigate } from 'react-router-dom'
 import SecretImage from './components/SecretImage'
-import { useState, useEffect, useReducer } from 'react'
-import {
-  language,
-  TForm,
-  InputMode,
-  reducer,
-  installState,
-  systemData,
-} from './login'
+import { useState, useEffect, useRef } from 'react'
+import { language, TForm, InputMode, systemData } from './login'
 import React from 'react'
 import { getCaptcha, toLogin, checkToken, checkSecret } from './services'
-import { getQueryParam } from './utils'
+import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants/index'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 
@@ -48,6 +41,14 @@ export default React.memo(
     const [focusNumber, setFocusNumber] = useState(0)
     const target = ''
     const [agree, setAgree] = useState(true)
+    const [errorCheck, setErrorCheck] = useState({})
+    const inputRef = useRef(null)
+
+    useEffect(() => {
+      setTimeout(() => {
+        inputRef.current.focus()
+      }, 200)
+    }, [])
 
     useEffect(() => {
       window.addEventListener('keydown', onkeydown)
@@ -82,6 +83,13 @@ export default React.memo(
     }, [props?.languageMode])
 
     const login = async () => {
+      if (
+        form.username &&
+        !EMAIL_REGEXP.test(form.username) &&
+        !PHONE_NUMBER_REGEXP.test(form.username)
+      ) {
+        return
+      }
       if (!(form.username && form.password && form.code)) {
         if (form.username == '') {
           setFocusNumber(1)
@@ -162,6 +170,12 @@ export default React.memo(
       const { target } = event
       const value = target.type === 'checkbox' ? target.checked : target.value
       const { name } = target
+      if (name === 'username') {
+        setErrorState(false)
+        setErrorCheck({
+          username: '',
+        })
+      }
       setForm({
         ...form,
         [name]: value,
@@ -169,6 +183,19 @@ export default React.memo(
     }
 
     const onCheckSecret = async () => {
+      if (
+        form.username &&
+        !EMAIL_REGEXP.test(form.username) &&
+        !PHONE_NUMBER_REGEXP.test(form.username)
+      ) {
+        setFocusNumber(1)
+        setErrorState(true)
+        setErrorCheck({
+          username: languageMode.error1,
+        })
+        return
+      }
+
       if (
         form.username &&
         form.password &&
@@ -219,12 +246,12 @@ export default React.memo(
             <div className={style.logoWrap}>
               <img
                 className={style.logo_img}
-                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/sso/logo.svg"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/logo.png"
                 alt=""
               />
               <img
                 className={style.switch_img}
-                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/sso/switch.svg"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/switch.svg"
                 alt=""
               />
               <img
@@ -240,9 +267,10 @@ export default React.memo(
         ) : null}
         <div className={style.form}>
           <Filed
+            inputRef={inputRef}
             mode={InputMode.NORMAL}
             name="username"
-            icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/user.svg"
+            icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
             value={form.username}
             label={languageMode.user}
             type="text"
@@ -253,12 +281,13 @@ export default React.memo(
               (focusNumber === 1 || focusNumber === 4) && errorState
             }
             onChangeFocus={changeFocus}
+            errorCheck={errorCheck}
             // onCheckValue={() => onCheckValue(1)}
           />
           <Filed
             name="password"
             mode={InputMode.LOCK}
-            icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/lock.svg"
+            icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
             value={form.password}
             label={languageMode.password}
             type={show}
@@ -277,7 +306,7 @@ export default React.memo(
             <Filed
               name="code"
               img={captchaImage}
-              icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/pen.svg"
+              icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
               mode={InputMode.CODE}
               value={form.code}
               label={languageMode.code}
@@ -295,7 +324,7 @@ export default React.memo(
             <Filed
               name="code"
               mode={InputMode.NORMAL}
-              icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/pen.svg"
+              icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
               value={form.code}
               label={languageMode.code}
               type="text"
@@ -354,16 +383,11 @@ export default React.memo(
         </div>
 
         <div className={style.headWrap}>
-          <div>
-            <img
-              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/sso/logo.png"
-              width={207}
-            />
-          </div>
+          <div>{/* <img src="/sso/logo.png" width={207} /> */}</div>
           <div onClick={controlPopups} className={style.language}>
             <div className={style.langBox}>
               <img
-                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/sso/LineIcon.svg"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/LineIcon.svg"
                 alt=""
                 className={style.LineIcon}
               />

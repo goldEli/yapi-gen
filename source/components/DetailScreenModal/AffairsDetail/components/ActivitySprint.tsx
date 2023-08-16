@@ -28,7 +28,8 @@ const ActivitySprint = () => {
   const [filter, setFilter] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { id } = paramsData ?? {}
+  const { projectInfo } = useSelector(store => store.project)
+  const { id } = paramsData || { id: projectInfo.id }
   const { affairsCommentList, affairsInfo, affairsActivity } = useSelector(
     store => store.affairs,
   )

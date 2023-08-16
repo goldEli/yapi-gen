@@ -2,16 +2,19 @@
   display: flex;
   width: 100%;
   height: 100vh;
-  /* min-height: 800px;
-  max-height: 1000px; */
 }
-.left,
+
 .right {
-  width: 50%;
+  width: 62%;
   padding: 40px;
 }
+
 .left {
+  width: 35%;
   padding-right: 0px;
+  min-width: 552px;
+  min-height: 434px;
+  position: relative;
 }
 
 .right {

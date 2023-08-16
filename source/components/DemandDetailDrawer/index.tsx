@@ -246,7 +246,6 @@ const DemandDetailDrawer = () => {
 
   // 获取需求详情
   const getDemandDetail = async (id?: any, ids?: any) => {
-    console.log('demandDetailDrawerProps', demandDetailDrawerProps)
     const paramsProjectId =
       demandDetailDrawerProps.project_id ??
       demandDetailDrawerProps.projectId ??

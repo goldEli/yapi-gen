@@ -23,7 +23,7 @@ import styled from '@emotion/styled'
 import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { useDynamicColumns } from './TableColum'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { getVerifyList, getVerifyUserList, cancelVerify } from '@/services/mine'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
@@ -31,6 +31,8 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -65,6 +67,7 @@ const SearchWrap = styled.div({
 
 const Need = (props: any) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
   const [filterState, setFilterState] = useState(true)
   const [activeTab, setActiveTab] = useState(0)
@@ -115,8 +118,19 @@ const Need = (props: any) => {
     setIsSpin(false)
   }
 
+  // 获取项目配置
+  const getConfig = async (id: number) => {
+    const result = await getProjectInfo({ projectId: id })
+    dispatch(setProjectInfo(result))
+    const result1 = await getProjectInfoValues({ projectId: id })
+    dispatch(setProjectInfoValues(result1))
+  }
+
   useEffect(() => {
     getList(pageObj, order, keyword, searchParams)
+    if (props?.projectId !== 0) {
+      getConfig(props?.projectId)
+    }
   }, [props?.projectId])
 
   const onChangePage = (page: number, size: number) => {
@@ -148,8 +162,10 @@ const Need = (props: any) => {
     getList(pageObj, { value, key }, keyword, searchParams)
   }
 
-  const onClickItem = (item: any) => {
-    console.log('1111111', item)
+  const onClickItem = async (item: any) => {
+    if (props.id === 0 || !props.id) {
+      getConfig(item.project_id)
+    }
     const demandIds = listData?.list?.map((i: any) => i.demandId)
     item.id = item.demandId
     item.isMineOrHis = true

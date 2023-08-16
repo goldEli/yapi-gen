@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import GuideModal from '@/components/GuideModal'
-import guide_1 from './img/guide_1.jpg'
-import guide_2 from './img/guide_2.jpg'
-import guide_3 from './img/guide_3.jpg'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import styled from '@emotion/styled'
@@ -371,19 +368,19 @@ const SprintProjectSprint: React.FC = () => {
       key: 0,
       title: t('sprint.stepTitle1'),
       desc: t('sprint.stepDesc1'),
-      img: guide_1,
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sprint/guide_1.jpg',
     },
     {
       key: 1,
       title: t('sprint.stepTitle2'),
       desc: t('sprint.stepDesc2'),
-      img: guide_2,
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sprint/guide_2.jpg',
     },
     {
       key: 2,
       title: t('sprint.stepTitle3'),
       desc: t('sprint.stepDesc3'),
-      img: guide_3,
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sprint/guide_3.jpg',
     },
   ]
 

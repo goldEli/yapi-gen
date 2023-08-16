@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { DetailInfoWrap, InfoWrap, ButtonGroupWrap, TabsWrap1 } from '../style'
 import { useTranslation } from 'react-i18next'
-import { getIdsForAt, getProjectIdByUrl, removeNull } from '@/tools'
+import { getIdsForAt, removeNull } from '@/tools'
 import { addAffairsComment } from '@/services/affairs'
 import {
   getAffairsCommentList,
@@ -37,6 +37,7 @@ const ButtonGroup = (props: {
 }) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
+  const { projectInfo } = useSelector(store => store.project)
   const [items, setItems] = useState<Array<{ label: string; key: string }>>([])
   const data = [
     { key: 'sprint-attachment', label: t('attachment') },
@@ -49,7 +50,7 @@ const ButtonGroup = (props: {
   const onOperationUpdate = () => {
     dispatch(
       getAffairsInfo({
-        projectId: getProjectIdByUrl(),
+        projectId: projectInfo.id,
         sprintId: props.affairsInfo.id || 0,
       }),
     )
@@ -116,7 +117,7 @@ const AffairsInfo = (props: Props) => {
   const uploadFile: any = createRef()
   const LeftDomC = LeftDomDetailInfo.current
   const { affairsInfo } = useSelector(store => store.affairs)
-  const { projectInfoValues } = useSelector(store => store.project)
+  const { projectInfoValues, projectInfo } = useSelector(store => store.project)
   const [tabActive, setTabActive] = useState('sprint-info')
   const [isScroll, setIsScroll] = useState(false)
   const items: any = [
@@ -148,7 +149,7 @@ const AffairsInfo = (props: Props) => {
   // 提交评论
   const onConfirmComment = async (value: { info: string }) => {
     await addAffairsComment({
-      projectId: getProjectIdByUrl(),
+      projectId: projectInfo.id,
       sprintId: affairsInfo.id,
       content: value.info,
       a_user_ids: getIdsForAt(value.info),
@@ -156,7 +157,7 @@ const AffairsInfo = (props: Props) => {
     getMessage({ type: 'success', msg: t('p2.conSuccess') })
     dispatch(
       getAffairsCommentList({
-        projectId: getProjectIdByUrl(),
+        projectId: projectInfo.id,
         sprintId: affairsInfo.id || 0,
         page: 1,
         pageSize: 9999,

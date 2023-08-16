@@ -72,7 +72,7 @@ const LinkSprint = (props: {
   })
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData?.id
+  const projectId = paramsData?.id ?? projectInfo.id
   // 项目是否已经结束
   const isEnd = projectInfo?.status === 2
 
