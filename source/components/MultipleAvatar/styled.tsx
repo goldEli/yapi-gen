@@ -56,6 +56,7 @@ export const DetailWrap = styled.div`
   /* position: absolute;
   top: 0;
   left: -294px; */
+  max-width: 400px;
   min-width: 283px;
 `
 export const HeaderWrap = styled.div`
