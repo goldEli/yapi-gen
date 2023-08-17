@@ -519,7 +519,11 @@ const Undistributed = (props: any) => {
               )}
               <span style={{ marginLeft: '5px' }}>
                 {!text?.icon && <span>--</span>}
-                <IconFont className="icon" type="down-icon" />
+                <IconFont
+                  style={{ color: 'var(--neutral-n4)' }}
+                  className="icon"
+                  type="down-icon"
+                />
               </span>
             </PriorityWrapTable>
           </ChangePriorityPopover>

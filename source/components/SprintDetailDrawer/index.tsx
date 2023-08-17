@@ -16,7 +16,7 @@ import {
   Tabs,
   Tooltip,
 } from 'antd'
-import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
+import { CloseWrap, DragLine, MouseDom, ConfigWrap } from '../StyleCommon'
 import {
   Header,
   BackIcon,
@@ -31,7 +31,6 @@ import {
   TargetWrap,
   StatusAndLongWrap,
   Label,
-  ConfigWrap,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'

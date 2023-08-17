@@ -271,7 +271,7 @@ export const useDynamicColumns = (state: any) => {
               ) && (
                 <ShowWrap>
                   <IconFont
-                    style={{ color: 'var(--primary-d2)' }}
+                    style={{ color: 'var(--neutral-n4)' }}
                     type="down-icon"
                   />
                 </ShowWrap>

@@ -184,6 +184,7 @@ export const DetailMain = styled.div`
   position: relative;
   height: calc(100vh - 249px);
   width: 100%;
+  margin-top: 16px;
 `
 
 export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
@@ -261,7 +262,7 @@ export const BasicFooter = styled.div`
   padding-left: 24px;
   background: var(--neutral-white-d5);
   position: absolute;
-  bottom: 0;
+  bottom: 6px;
   width: 100%;
   .textBox {
     display: flex;
