@@ -9,6 +9,14 @@ import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
+const canEditHover = css`
+  padding: 0 4px;
+  &:hover {
+    background-color: var(--hover-d2);
+    cursor: pointer;
+  }
+`
+
 const TableBorder = styled.div`
   border-radius: 6px;
   border: 1px solid var(--neutral-n6-d2);
@@ -1105,4 +1113,5 @@ export {
   LinkWrap,
   ChartsItem333,
   TableBorder,
+  canEditHover,
 }

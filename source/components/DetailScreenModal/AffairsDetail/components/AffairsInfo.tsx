@@ -227,7 +227,7 @@ const AffairsInfo = (props: Props) => {
   return (
     <InfoWrap
       height={`calc(100vh - ${
-        (affairsInfo?.isExamine ? 236 : 187) +
+        (affairsInfo?.isExamine ? 216 : 167) +
         (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
