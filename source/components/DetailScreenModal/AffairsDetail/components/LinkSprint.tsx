@@ -468,10 +468,10 @@ const LinkSprint = (props: {
       <LabelWrap>
         <Label>{t('linkAffairs')}</Label>
         {!isEnd && (
-          <CloseWrap width={24} height={24}>
+          <CloseWrap width={32} height={32}>
             <CommonIconFont
               type="plus"
-              size={18}
+              size={20}
               color="var(--neutral-n2)"
               onClick={() => onClickOpen()}
             />
