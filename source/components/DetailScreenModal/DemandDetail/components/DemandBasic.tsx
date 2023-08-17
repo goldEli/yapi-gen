@@ -6,7 +6,7 @@ import { BasicContent, BasicFooter, BasicWrap, TitleWrap } from '../style'
 import { Tooltip } from 'antd'
 import { detailTimeFormat } from '@/tools'
 import CommonIconFont from '@/components/CommonIconFont'
-import { CloseWrap } from '@/components/StyleCommon'
+import { CloseWrap, ConfigWrap } from '@/components/StyleCommon'
 import BasicDemand from '@/components/DemandDetailDrawer/BasicDemand'
 import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
 import { setActiveCategory } from '@store/category'
@@ -123,11 +123,10 @@ const DemandBasic = (props: Props) => {
             {detailTimeFormat(demandInfo.update_at)}
           </span>
         </div>
-        <Tooltip title={t('configurationFields')}>
-          <CloseWrap width={32} height={32} onClick={onToConfig}>
-            <CommonIconFont type="settings" />
-          </CloseWrap>
-        </Tooltip>
+        <ConfigWrap onClick={onToConfig}>
+          <CommonIconFont type="settings" />
+          <div>{t('configurationFields')}</div>
+        </ConfigWrap>
       </BasicFooter>
     </BasicWrap>
   )

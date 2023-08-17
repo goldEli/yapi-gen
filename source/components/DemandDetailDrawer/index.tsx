@@ -40,7 +40,7 @@ import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import CommonIconFont from '../CommonIconFont'
 import DeleteConfirm from '../DeleteConfirm'
 import StateTag from '../StateTag'
-import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
+import { CloseWrap, ConfigWrap, DragLine, MouseDom } from '../StyleCommon'
 import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
 import DetailDemand from './DetailDemand'
@@ -103,7 +103,7 @@ interface ItemIprops {
   label: string
   key: string
 }
-
+let timer: NodeJS.Timeout
 const DemandDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -163,14 +163,8 @@ const DemandDetailDrawer = () => {
     projectInfo.projectPermissions?.filter(
       (i: any) => i.identity === 'b/story/update',
     )?.length > 0
+  const isTabClick = useRef<string>('')
 
-  const modeList = [
-    { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
-    { name: t('common.childDemand'), key: 'detailDemands', content: '' },
-    { name: t('associatedWorkItems'), key: 'relation', content: '' },
-    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
-    { name: t('requirements_review'), key: 'demandComment', content: '' },
-  ]
   const items: ItemIprops[] = [
     {
       key: 'tab_desc',
@@ -507,6 +501,7 @@ const DemandDetailDrawer = () => {
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
     getDemandDetail('', demandIds)
+    isTabClick.current = tabActive
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -607,6 +602,13 @@ const DemandDetailDrawer = () => {
       setDemandIds([])
       if (isDemandDetailDrawerVisible) {
         getDemandDetail()
+        if (isTabClick.current) {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            onChangeTabs(isTabClick.current)
+            isTabClick.current = ''
+          }, 3000)
+        }
       }
     }
   }, [isUpdateAddWorkItem])
@@ -617,18 +619,21 @@ const DemandDetailDrawer = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
+
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
+    setTabActive(value)
     const dom = document.getElementById(value)
     document.getElementById('contentDom')?.scrollTo({
       top: (dom?.offsetTop ?? 0) - 86,
       behavior: 'smooth',
     })
-    setTabActive(value)
   }
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    return
+    if (isTabClick.current) {
+      return
+    }
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
     const titleItems = document.querySelectorAll('.info_item_tab')
@@ -959,11 +964,10 @@ const DemandDetailDrawer = () => {
                 {detailTimeFormat(drawerInfo.update_at as string)}
               </span>
             </div>
-            <Tooltip title={t('configurationFields')}>
-              <CloseWrap width={32} height={32} onClick={onToConfig}>
-                <CommonIconFont type="settings" />
-              </CloseWrap>
-            </Tooltip>
+            <ConfigWrap onClick={onToConfig}>
+              <CommonIconFont type="settings" />
+              <div>{t('configurationFields')}</div>
+            </ConfigWrap>
           </DetailFooter>
         </Content>
         <CommentFooter

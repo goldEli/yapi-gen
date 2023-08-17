@@ -590,7 +590,7 @@ const DailyReportRules = () => {
             </DailyReportRulesWrap>
           ) : null}
         </ReportWrap>
-        <ReportWrap>
+        {/* <ReportWrap>
           <HeaderWrap onClick={() => setOpen3(!open3)}>
             <span>{t('xmsc')}</span>
             <IconFont
@@ -655,7 +655,7 @@ const DailyReportRules = () => {
               </FooterWrap>
             </DailyReportRulesWrap>
           ) : null}
-        </ReportWrap>
+        </ReportWrap> */}
         <DeleteConfirmModal />
       </PermissionWrap>
     </div>

@@ -292,20 +292,6 @@ export const DetailFooter = styled.div`
   }
 `
 
-export const ConfigWrap = styled.div`
-  color: var(--neutral-n1-d1);
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  div {
-    margin-left: 10px;
-  }
-  &:hover {
-    color: var(--primary-d1);
-  }
-`
-
 export const StatusAndLongWrap = styled.div`
   display: flex;
   align-items: center;

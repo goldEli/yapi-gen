@@ -151,7 +151,7 @@ const WorkRecords = (props: WorkRecordsTyle) => {
     </ItemMain>
   )
 }
-const Main = (props: UserInfo) => {
+const Main = (props: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
@@ -164,7 +164,10 @@ const Main = (props: UserInfo) => {
     <>
       <MainStyle1>
         <UserMsg>
-          <CommonUserAvatar size="large" avatar={props.user.avatar} />
+          <CommonUserAvatar
+            size="large"
+            avatar={props?.historyWorkObj?.avatar}
+          />
           <UserInfo>
             <div>
               {props.historyWorkObj?.name}（
@@ -245,11 +248,7 @@ const SelectPersonnel = (props: Props) => {
             infoId={props.historyWorkObj?.id || 0}
             onPageNum={props.onPageNum}
           />
-          <Main
-            type={props.type}
-            historyWorkObj={props.historyWorkObj}
-            user={{ avatar: '123', name: ['1'] }}
-          />
+          <Main type={props.type} historyWorkObj={props.historyWorkObj} />
         </div>
       }
       visible={props.visible}

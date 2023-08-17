@@ -10,7 +10,7 @@ import {
   Tabs,
   Tooltip,
 } from 'antd'
-import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
+import { CloseWrap, ConfigWrap, DragLine, MouseDom } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import {
@@ -89,6 +89,7 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import FlawTag from '../TagComponent/FlawTag'
 import ScheduleRecord from '../ScheduleRecord'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+let timer: NodeJS.Timeout
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -133,6 +134,7 @@ const FlawDetailDrawer = () => {
   const relationStoriesRef = useRef<any>()
   const [openDemandDetail] = useOpenDemandDetail()
   const projectRef = useRef('')
+  const isTabClick = useRef<string>('')
 
   const tabItems: any = [
     {
@@ -621,6 +623,7 @@ const FlawDetailDrawer = () => {
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
     getFlawDetail('', demandIds)
+    isTabClick.current = tabActive
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -647,6 +650,13 @@ const FlawDetailDrawer = () => {
       setDemandIds([])
       if (visible) {
         getFlawDetail()
+        if (isTabClick.current) {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            onChangeTabs(isTabClick.current)
+            isTabClick.current = ''
+          }, 3000)
+        }
       }
     }
   }, [isUpdateAddWorkItem])
@@ -668,7 +678,9 @@ const FlawDetailDrawer = () => {
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    return
+    if (isTabClick.current) {
+      return
+    }
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
     const titleItems = document.querySelectorAll('.info_item_tab')
@@ -994,11 +1006,10 @@ const FlawDetailDrawer = () => {
                 {detailTimeFormat(drawerInfo.update_at as string)}
               </span>
             </div>
-            <Tooltip title={t('configurationFields')}>
-              <CloseWrap width={32} height={32} onClick={onToConfig}>
-                <CommonIconFont type="settings" />
-              </CloseWrap>
-            </Tooltip>
+            <ConfigWrap onClick={onToConfig}>
+              <CommonIconFont type="settings" />
+              <div>{t('configurationFields')}</div>
+            </ConfigWrap>
           </DetailFooter>
         </Content>
         <CommentFooter

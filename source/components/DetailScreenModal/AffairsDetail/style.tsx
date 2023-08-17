@@ -145,11 +145,11 @@ export const SprintDetailMouseDom = styled(MouseDom)`
 
 export const BasicWrap = styled.div`
   position: relative;
-  height: calc(100% - 52px);
+  height: calc(100% - 108px);
 `
 
 export const BasicContent = styled.div`
-  height: calc(100% - 108px);
+  height: calc(100% - 48px);
   overflow: auto;
 `
 
