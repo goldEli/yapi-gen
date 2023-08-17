@@ -201,6 +201,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
                       <ItemWrap>
                         <IconFont
                           style={{
+                            alignSelf: 'flex-start',
                             fontSize: 16,
                             marginRight: '8px',
                             color: 'var(--neutral-n3)',
@@ -344,6 +345,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
     </Dropdown>
   ) : (
     <Dropdown
+      overlayClassName="custom-menu"
       visible={visible}
       menu={{ items }}
       disabled={props.disableDropDown}
