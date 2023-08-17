@@ -469,6 +469,7 @@ const FlawDetail = () => {
         <ScheduleRecord
           detailId={flawInfo.id ?? 0}
           projectId={flawInfo.projectId ?? 0}
+          isOpen={tabActive === '5'}
         />
       ),
     },

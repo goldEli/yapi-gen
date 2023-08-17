@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
 const breadStyle = css`
   span {
     &:hover {
@@ -35,7 +37,18 @@ const MyBreadcrumb = (props: any) => {
     dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     closeScreenModal()
   }
-
+  const getProjectInfoValuesData = async () => {
+    const result = await getProjectInfoValues({ projectId: projectInfo.id })
+    dispatch(setProjectInfoValues(result))
+  }
+  const getInfo = async () => {
+    getProjectInfoValuesData()
+    const result = await getProjectInfo({
+      projectId: projectInfo.id,
+      isBug: location.pathname.includes('/Defect') ? 1 : 2,
+    })
+    dispatch(setProjectInfo(result))
+  }
   return type === 'AdminManagement' ? (
     <Breadcrumb
       separator={
@@ -81,6 +94,7 @@ const MyBreadcrumb = (props: any) => {
           <a
             className={breadStyle}
             onClick={() => {
+              getInfo()
               const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
               onCloseModal()
               if (projectInfo.projectType === 1) {

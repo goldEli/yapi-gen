@@ -8,7 +8,7 @@ import useDropData from '../hooks/useDropData'
 import DropCard from '../DropCard'
 import { useSelector } from '@store/index'
 import useGroupType from '../hooks/useGroupType'
-
+import { FixedSizeList } from 'react-window'
 interface IssuesProps {
   issues: Model.KanBan.Column
   groupId: Model.KanbanConfig.Column['id']
@@ -46,7 +46,6 @@ const Issues: React.FC<IssuesProps> = props => {
   const columnId = issues.id
 
   const { data } = useDropData(issues.id)
-
   const showStateTransitionList = React.useMemo(() => {
     // 人员分组和类别分组，只有同组才能转换状态
     // if (groupType === 'users' || groupType === 'category') {
@@ -110,6 +109,37 @@ const Issues: React.FC<IssuesProps> = props => {
           >
             {dropCardListContent}
             {issueCardListContent}
+            {/* <FixedSizeList
+              height={600}
+              width={300}
+              itemSize={140}
+              itemCount={issues.stories?.length}
+            >
+              {({ index, style }: any) => {
+                const newStyle = { ...style, zIndex: 1000 }
+                console.log('style------', newStyle)
+                const story = issues.stories[index]
+                const hidden1 =
+                  !!movingStory &&
+                  (groupType === 'users' || groupType === 'category') &&
+                  movingStory?.groupId !== groupId
+                // 如果当前展示状态转换释放区域，需要隐藏卡片
+                const hidden2 = showStateTransitionList
+                const uuid = `${groupId}-${issues.id}-${story.id}`
+                return (
+                  <div style={newStyle}>
+                    <IssueCard
+                      hidden={hidden1 || hidden2}
+                      uuid={uuid}
+                      key={uuid}
+                      item={story}
+                      index={index}
+                      stories={issues.stories}
+                    />
+                  </div>
+                )
+              }}
+            </FixedSizeList> */}
             {/* {snapshot.isDraggingOver ? (
               // 用空div占位来触发滚动条刷新页面
               <div style={{ height: '100vh' }}></div>

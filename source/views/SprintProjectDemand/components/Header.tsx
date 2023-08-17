@@ -16,6 +16,8 @@ import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setStartUsing } from '@store/category/index'
 import { storyConfigCategoryList } from '@store/category/thunk'
+// eslint-disable-next-line no-duplicate-imports
+import { storyConfigCategoryList as storyConfigCategoryListApi } from '@/services/project'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import CommonButton from '@/components/CommonButton'
@@ -138,10 +140,11 @@ const Header = () => {
   }
   // 删除逻辑
   const onDelete = async () => {
-    const res = await dispatch(
-      storyConfigCategoryList({ projectId: projectInfo.id }),
-    )
-    const data = res.payload.list
+    // const res = await dispatch(
+    //   storyConfigCategoryList({ projectId: projectInfo.id }),
+    // )
+    const res = await storyConfigCategoryListApi({ projectId: projectInfo.id })
+    const data = res.list
     const currentItem = data.find(
       (item: { id: any }) => item.id === activeCategory.id,
     )

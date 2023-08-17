@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-undefined */
 /* eslint-disable require-unicode-regexp */
-import { Form, Input, Select } from 'antd'
+import { Form, Input, Select, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { AddWrap, CloseWrap } from '../StyleCommon'
 import IconFont from '../IconFont'
@@ -818,20 +818,22 @@ const CreateDemandLeft = (props: Props) => {
                   }}
                 >
                   <Label>{t('common.attachment')}</Label>
-                  <CloseWrap
-                    style={{ marginLeft: 'auto' }}
-                    width={24}
-                    height={24}
-                  >
-                    <CommonIconFont
-                      type="plus"
-                      size={18}
-                      color="var(--neutral-n2)"
-                      onClick={() => {
-                        myRef.current?.handleUpload()
-                      }}
-                    />
-                  </CloseWrap>
+                  <Tooltip placement="top" title={t('p2.addAdjunct')}>
+                    <CloseWrap
+                      style={{ marginLeft: 'auto' }}
+                      width={24}
+                      height={24}
+                    >
+                      <CommonIconFont
+                        type="plus"
+                        size={18}
+                        color="var(--neutral-n2)"
+                        onClick={() => {
+                          myRef.current?.handleUpload()
+                        }}
+                      />
+                    </CloseWrap>
+                  </Tooltip>
                 </LabelWrap>
               }
               name="attachments"

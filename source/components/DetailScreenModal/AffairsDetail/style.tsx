@@ -145,11 +145,11 @@ export const SprintDetailMouseDom = styled(MouseDom)`
 
 export const BasicWrap = styled.div`
   position: relative;
-  height: calc(100% - 52px);
+  height: calc(100% - 108px);
 `
 
 export const BasicContent = styled.div`
-  height: calc(100% - 108px);
+  height: calc(100% - 48px);
   overflow: auto;
 `
 
@@ -261,7 +261,7 @@ export const Label = styled.div`
   font-size: 14px;
   min-width: 120px;
   font-family: SiYuanMedium;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
   height: 32px;
   line-height: 32px;
 `

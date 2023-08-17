@@ -253,6 +253,7 @@ export const BasicWrap = styled.div`
 export const BasicContent = styled.div`
   height: calc(100% - 60px);
   padding-left: 24px;
+  overflow-y: auto;
 `
 
 export const BasicFooter = styled.div`
