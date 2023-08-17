@@ -9,6 +9,14 @@ import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
+const canEditHover = css`
+  padding: 0 4px;
+  &:hover {
+    background-color: var(--hover-d2);
+    cursor: pointer;
+  }
+`
+
 const TableBorder = styled.div`
   border-radius: 6px;
   border: 1px solid var(--neutral-n6-d2);
@@ -539,7 +547,7 @@ const HiddenText = styled.div({
 })
 const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
-    width: '100%',
+    width: '80%',
     display: 'flex',
     cursor: 'pointer',
     '.icon': {
@@ -547,7 +555,8 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
       color: 'var(--neutral-n3)',
     },
     '.text': {
-      width: '30%',
+      maxWidth: 'calc(100% - 30px)',
+      minWidth: '100px',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
@@ -557,8 +566,13 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
         opacity: 1,
       },
     },
-    '.text:hover ,.icon:hover': {
+    '.text:hover ': {
       color: 'var(--primary-d2)',
+    },
+    '.icon:hover ': {
+      svg: {
+        color: 'var(--primary-d2)',
+      },
     },
   },
   ({ isClose, isName }) => ({
@@ -685,7 +699,7 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
 const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
   {
     marginLeft: 16,
-    color: 'var(--primary-d2)',
+    color: 'var(--neutral-n4)',
     visibility: 'hidden',
   },
   ({ isTable }) => ({
@@ -1045,6 +1059,21 @@ const Tag = styled.div`
   margin-left: 8px;
   font-size: 12px;
 `
+
+const ConfigWrap = styled.div`
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  div {
+    margin-left: 10px;
+  }
+  &:hover {
+    color: var(--primary-d1);
+  }
+`
+
 export {
   Tag,
   ChartsItem1,
@@ -1105,4 +1134,6 @@ export {
   LinkWrap,
   ChartsItem333,
   TableBorder,
+  canEditHover,
+  ConfigWrap,
 }

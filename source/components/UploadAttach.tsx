@@ -57,11 +57,12 @@ export const Third = styled.div`
 
 export const BigWrap = styled.div`
   /* display: flex; */
+  border-radius: 6px 6px 0 0;
 `
 
 export const Gred = styled.div`
   cursor: pointer;
-  border-radius: 6px 6px 0 0;
+  border-radius: 5px 5px 0 0;
   position: absolute;
   left: 0;
   right: 0;
@@ -206,6 +207,7 @@ const progressStatusMap: { [key: string]: 'success' | 'exception' | 'active' } =
   }
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
+const disabledFile = ['exe', 'bat', 'com', 'vbs', 'reg', 'sh']
 
 const UploadAttach = (props: any, ref: any) => {
   const [previewUrl, setPreviewUrl] = useState('')
@@ -263,10 +265,10 @@ const UploadAttach = (props: any, ref: any) => {
   }
 
   function isFormatType(str: string) {
-    return (
-      ['exe', 'bat', 'com', 'vbs', 'reg', 'sh'].indexOf(str.toLowerCase()) !==
-      -1
-    )
+    if (props?.special?.length >= 1) {
+      return props.special.indexOf(str.toLowerCase()) === -1
+    }
+    return disabledFile.indexOf(str.toLowerCase()) !== -1
   }
 
   const isFormat = (value: string) => {
@@ -278,7 +280,10 @@ const UploadAttach = (props: any, ref: any) => {
   const onUploadBefore = (file: any) => {
     if (isFormat(file.name)) {
       getMessage({
-        msg: `${t('p2.text')}['exe', 'bat', 'com', 'vbs', 'reg', 'sh']`,
+        msg:
+          props?.special?.length >= 1
+            ? `${t('p2.text')}${props?.special}`
+            : `${t('p2.text')}${disabledFile}`,
         type: 'warning',
         num: 3,
       })
@@ -523,7 +528,7 @@ const UploadAttach = (props: any, ref: any) => {
     </div>
   )
   return (
-    <div>
+    <div style={{ marginTop: '-30px' }}>
       {flag ? (
         <PreviewIframe
           url={previewUrl}
@@ -552,7 +557,7 @@ const UploadAttach = (props: any, ref: any) => {
         customRequest={onUploadFileClick}
       >
         {props.addWrap ? (
-          props.addWrap
+          <div style={{ marginTop: '28px' }}>{props.addWrap}</div>
         ) : (
           <div ref={uploadRef} style={{ display: 'none' }} />
         )}
@@ -568,6 +573,7 @@ const UploadAttach = (props: any, ref: any) => {
         {fileList.map((i: any) => {
           return (
             <Popover
+              overlayStyle={{ paddingLeft: '0px' }}
               key={i.id}
               placement="right"
               content={content(

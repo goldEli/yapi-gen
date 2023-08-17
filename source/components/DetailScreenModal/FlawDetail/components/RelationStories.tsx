@@ -415,7 +415,11 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
               )}
               <span style={{ marginLeft: '5px' }}>
                 {!text?.icon && <span>--</span>}
-                <IconFont className="icon" type="down-icon" />
+                <IconFont
+                  style={{ color: 'var(--neutral-n4)' }}
+                  className="icon"
+                  type="down-icon"
+                />
               </span>
             </PriorityWrap>
           </ChangePriorityPopover>
@@ -766,22 +770,19 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      {/* {!isEnd && (
-        <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
-          {t('linkWorkItem')}
-        </CommonButton>
-      )} */}
       {props.isDrawer ? (
         <LabelWrap>
           <Label>{t('linkWorkItem')}</Label>
-          <CloseWrap width={24} height={24}>
-            <CommonIconFont
-              type="plus"
-              size={18}
-              color="var(--neutral-n2)"
-              onClick={onClickOpen}
-            />
-          </CloseWrap>
+          <Tooltip title={t('linkTask')}>
+            <CloseWrap width={32} height={32}>
+              <CommonIconFont
+                type="plus"
+                size={20}
+                color="var(--neutral-n2)"
+                onClick={onClickOpen}
+              />
+            </CloseWrap>
+          </Tooltip>
         </LabelWrap>
       ) : (
         <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>

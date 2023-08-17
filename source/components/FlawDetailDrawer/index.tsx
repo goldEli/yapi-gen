@@ -10,7 +10,7 @@ import {
   Tabs,
   Tooltip,
 } from 'antd'
-import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
+import { CloseWrap, ConfigWrap, DragLine, MouseDom } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import {
@@ -89,6 +89,7 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import FlawTag from '../TagComponent/FlawTag'
 import ScheduleRecord from '../ScheduleRecord'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+let timer: NodeJS.Timeout
 const FlawDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -133,6 +134,7 @@ const FlawDetailDrawer = () => {
   const relationStoriesRef = useRef<any>()
   const [openDemandDetail] = useOpenDemandDetail()
   const projectRef = useRef('')
+  const isTabClick = useRef<string>('')
 
   const tabItems: any = [
     {
@@ -621,6 +623,7 @@ const FlawDetailDrawer = () => {
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
     getFlawDetail('', demandIds)
+    isTabClick.current = tabActive
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -647,6 +650,13 @@ const FlawDetailDrawer = () => {
       setDemandIds([])
       if (visible) {
         getFlawDetail()
+        if (isTabClick.current) {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            onChangeTabs(isTabClick.current)
+            isTabClick.current = ''
+          }, 3000)
+        }
       }
     }
   }, [isUpdateAddWorkItem])
@@ -668,7 +678,9 @@ const FlawDetailDrawer = () => {
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    return
+    if (isTabClick.current) {
+      return
+    }
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
     const titleItems = document.querySelectorAll('.info_item_tab')
@@ -738,81 +750,72 @@ const FlawDetailDrawer = () => {
                 <Skeleton.Input active />
               </SkeletonStatus>
             )}
-            {/* {!skeletonLoading && (
-              <ChangeStatusPopover
-                isCanOperation={isCanEdit && !drawerInfo.isExamine}
-                projectId={drawerInfo.projectId}
-                record={drawerInfo}
-                onChangeStatus={onChangeStatus}
-                type={1}
-              >
-                <StateTag
-                  name={drawerInfo?.status?.status?.content}
-                  onClick={drawerInfo.isExamine ? onExamine : void 0}
-                  isShow={isCanEdit || drawerInfo.isExamine}
-                  state={
-                    drawerInfo?.status?.is_start === 1 &&
-                    drawerInfo?.status?.is_end === 2
-                      ? 1
-                      : drawerInfo?.status?.is_end === 1 &&
-                        drawerInfo?.status?.is_start === 2
-                      ? 2
-                      : drawerInfo?.status?.is_start === 2 &&
-                        drawerInfo?.status?.is_end === 2
-                      ? 3
-                      : 0
-                  }
-                />
-              </ChangeStatusPopover>
-            )} */}
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
               {currentIndex > 0 && (
-                <UpWrap
-                  onClick={onUpDemand}
-                  id="upIcon"
-                  isOnly={
-                    demandIds?.length === 0 ||
-                    currentIndex === demandIds?.length - 1
-                  }
-                >
-                  <CommonIconFont
-                    type="up"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </UpWrap>
+                <Tooltip title={t('previous')}>
+                  <UpWrap
+                    onClick={onUpDemand}
+                    id="upIcon"
+                    isOnly={
+                      demandIds?.length === 0 ||
+                      currentIndex === demandIds?.length - 1
+                    }
+                  >
+                    <CommonIconFont
+                      type="up"
+                      size={20}
+                      color="var(--neutral-n1-d1)"
+                    />
+                  </UpWrap>
+                </Tooltip>
               )}
               {!(
                 demandIds?.length === 0 ||
                 currentIndex === demandIds?.length - 1
               ) && (
-                <DownWrap
-                  onClick={onDownDemand}
-                  id="downIcon"
-                  isOnly={currentIndex <= 0}
-                >
-                  <CommonIconFont
-                    type="down"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </DownWrap>
+                <Tooltip title={t('next')}>
+                  <DownWrap
+                    onClick={onDownDemand}
+                    id="downIcon"
+                    isOnly={currentIndex <= 0}
+                  >
+                    <CommonIconFont
+                      type="down"
+                      size={20}
+                      color="var(--neutral-n1-d1)"
+                    />
+                  </DownWrap>
+                </Tooltip>
               )}
             </ChangeIconGroup>
-            <CommonButton type="icon" icon="share" onClick={onShare} />
-            <CommonButton type="icon" icon="full-screen" onClick={onToDetail} />
-            <DropdownMenu
-              placement="bottomRight"
-              trigger={['click']}
-              menu={{ items: onGetMenu() }}
-              getPopupContainer={n => n}
-            >
+            <Tooltip title={t('share')}>
               <div>
-                <CommonButton type="icon" icon="more" />
+                <CommonButton type="icon" icon="share" onClick={onShare} />
               </div>
-            </DropdownMenu>
+            </Tooltip>
+            <Tooltip title={t('openDetails')}>
+              <div>
+                <CommonButton
+                  type="icon"
+                  icon="full-screen"
+                  onClick={onToDetail}
+                />
+              </div>
+            </Tooltip>
+            <Tooltip title={t('more')}>
+              <DropdownMenu
+                placement="bottomRight"
+                trigger={['click']}
+                menu={{ items: onGetMenu() }}
+                getPopupContainer={n => n}
+              >
+                <div>
+                  <CommonButton type="icon" icon="more" />
+                </div>
+              </DropdownMenu>
+            </Tooltip>
           </Space>
         </Header>
         <Content id="contentDom">
@@ -1003,11 +1006,10 @@ const FlawDetailDrawer = () => {
                 {detailTimeFormat(drawerInfo.update_at as string)}
               </span>
             </div>
-            <Tooltip title={t('configurationFields')}>
-              <CloseWrap width={32} height={32} onClick={onToConfig}>
-                <CommonIconFont type="settings" />
-              </CloseWrap>
-            </Tooltip>
+            <ConfigWrap onClick={onToConfig}>
+              <CommonIconFont type="settings" />
+              <div>{t('configurationFields')}</div>
+            </ConfigWrap>
           </DetailFooter>
         </Content>
         <CommentFooter

@@ -263,7 +263,7 @@ export const BasicFooter = styled.div`
   padding-left: 24px;
   background: var(--neutral-white-d5);
   position: absolute;
-  bottom: 0;
+  bottom: 6px;
   width: 100%;
   .textBox {
     display: flex;

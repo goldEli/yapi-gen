@@ -16,7 +16,7 @@ import {
   Tabs,
   Tooltip,
 } from 'antd'
-import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
+import { CloseWrap, DragLine, MouseDom, ConfigWrap } from '../StyleCommon'
 import {
   Header,
   BackIcon,
@@ -31,7 +31,6 @@ import {
   TargetWrap,
   StatusAndLongWrap,
   Label,
-  ConfigWrap,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
@@ -88,7 +87,7 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import ScheduleRecord from '../ScheduleRecord'
 import CommonProgress from '../CommonProgress'
 import SprintTag from '../TagComponent/SprintTag'
-
+let timer: NodeJS.Timeout
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
 
@@ -119,7 +118,7 @@ const SprintDetailDrawer = () => {
 
   const { userInfo } = useSelector(store => store.user)
   const { fullScreen } = useSelector(store => store.kanBan)
-  const isTabClick = useRef(false)
+  const isTabClick = useRef<string>('')
 
   // 快捷按钮列表
   const projectIdRef = useRef('')
@@ -522,6 +521,7 @@ const SprintDetailDrawer = () => {
   // 操作后更新列表
   const onOperationUpdate = async (value?: boolean) => {
     getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
+    isTabClick.current = tabActive
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -574,7 +574,6 @@ const SprintDetailDrawer = () => {
   // 监听tab切换滚动
   const onChangeTabs = (value: string) => {
     setTabActive(value)
-    isTabClick.current = true
     const dom = document.getElementById(value)
     document.getElementById('contentDom')?.scrollTo({
       top: (dom?.offsetTop ?? 0) - 86,
@@ -585,7 +584,6 @@ const SprintDetailDrawer = () => {
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
     if (isTabClick.current) {
-      isTabClick.current = false
       return
     }
     // 滚动容器
@@ -617,6 +615,13 @@ const SprintDetailDrawer = () => {
       setDemandIds([])
       if (affairsDetailDrawer.visible) {
         getSprintDetail('', [])
+        if (isTabClick.current) {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            onChangeTabs(isTabClick.current)
+            isTabClick.current = ''
+          }, 3000)
+        }
       }
     }
   }, [isUpdateAddWorkItem])
@@ -629,15 +634,17 @@ const SprintDetailDrawer = () => {
   }, [])
 
   useEffect(() => {
-    document
-      .getElementById('contentDom')
-      ?.addEventListener('scroll', handleScroll, true)
+    setTimeout(() => {
+      document
+        .getElementById('contentDom')
+        ?.addEventListener('scroll', handleScroll, true)
+    })
     return () => {
       document
         .getElementById('contentDom')
         ?.removeEventListener('scroll', handleScroll, false)
     }
-  }, [document.getElementById('contentDom')])
+  }, [drawerInfo])
 
   return (
     <>
@@ -717,52 +724,71 @@ const SprintDetailDrawer = () => {
           <Space size={16}>
             <ChangeIconGroup>
               {currentIndex > 0 && (
-                <UpWrap
-                  onClick={onUpDemand}
-                  id="upIcon"
-                  isOnly={
-                    demandIds?.length === 0 ||
-                    currentIndex === demandIds?.length - 1
-                  }
-                >
-                  <CommonIconFont
-                    type="up"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </UpWrap>
+                <Tooltip title={t('previous')}>
+                  <UpWrap
+                    onClick={onUpDemand}
+                    id="upIcon"
+                    isOnly={
+                      demandIds?.length === 0 ||
+                      currentIndex === demandIds?.length - 1
+                    }
+                  >
+                    <CommonIconFont
+                      type="up"
+                      size={20}
+                      color="var(--neutral-n1-d1)"
+                    />
+                  </UpWrap>
+                </Tooltip>
               )}
               {!(
                 demandIds?.length === 0 ||
                 currentIndex === demandIds?.length - 1
               ) && (
-                <DownWrap
-                  onClick={onDownDemand}
-                  id="downIcon"
-                  isOnly={currentIndex <= 0}
-                >
-                  <CommonIconFont
-                    type="down"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </DownWrap>
+                <Tooltip title={t('next')}>
+                  <DownWrap
+                    onClick={onDownDemand}
+                    id="downIcon"
+                    isOnly={currentIndex <= 0}
+                  >
+                    <CommonIconFont
+                      type="down"
+                      size={20}
+                      color="var(--neutral-n1-d1)"
+                    />
+                  </DownWrap>
+                </Tooltip>
               )}
             </ChangeIconGroup>
-            <CommonButton type="icon" icon="share" onClick={onShare} />
-            <CommonButton type="icon" icon="full-screen" onClick={onToDetail} />
-            <DropdownMenu
-              placement="bottomRight"
-              trigger={['click']}
-              menu={{
-                items: onGetMenu(),
-              }}
-              getPopupContainer={n => n}
-            >
+            <Tooltip title={t('share')}>
               <div>
-                <CommonButton type="icon" icon="more" />
+                <CommonButton type="icon" icon="share" onClick={onShare} />
               </div>
-            </DropdownMenu>
+            </Tooltip>
+            <Tooltip title={t('openDetails')}>
+              <div>
+                <CommonButton
+                  type="icon"
+                  icon="full-screen"
+                  onClick={onToDetail}
+                />
+              </div>
+            </Tooltip>
+
+            <Tooltip title={t('more')}>
+              <DropdownMenu
+                placement="bottomRight"
+                trigger={['click']}
+                menu={{
+                  items: onGetMenu(),
+                }}
+                getPopupContainer={n => n}
+              >
+                <div>
+                  <CommonButton type="icon" icon="more" />
+                </div>
+              </DropdownMenu>
+            </Tooltip>
           </Space>
         </Header>
         <Content id="contentDom">

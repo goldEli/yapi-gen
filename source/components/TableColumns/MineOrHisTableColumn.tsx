@@ -102,7 +102,7 @@ export const useDynamicColumns = (state: any) => {
               className="canClickDetail"
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
-              style={{ marginRight: 16 }}
+              // style={{ marginRight: 16 }}
             >
               <div className="text">{record.storyPrefixKey}</div>
               <div className="icon">
@@ -271,7 +271,7 @@ export const useDynamicColumns = (state: any) => {
               ) && (
                 <ShowWrap>
                   <IconFont
-                    style={{ color: 'var(--primary-d2)' }}
+                    style={{ color: 'var(--neutral-n4)' }}
                     type="down-icon"
                   />
                 </ShowWrap>

@@ -8,7 +8,7 @@ import {
   deleteDemand,
 } from '@/services/demand'
 import { useDispatch, useSelector } from '@store/index'
-import { Space, Table } from 'antd'
+import { Space, Table, Tooltip } from 'antd'
 import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '../CommonButton'
@@ -359,13 +359,15 @@ const ChildrenDemand = (props: Props, ref: any) => {
         <Label>{t('subrequirements')}</Label>
         <Space size={12}>
           {!isSearch && (
-            <CloseWrap width={24} height={24} onClick={onClickSearch}>
-              <CommonIconFont
-                size={18}
-                type="search"
-                color="var(--neutral-n2)"
-              />
-            </CloseWrap>
+            <Tooltip title={t('searchForSubrequirements')}>
+              <CloseWrap width={32} height={32} onClick={onClickSearch}>
+                <CommonIconFont
+                  size={20}
+                  type="search"
+                  color="var(--neutral-n2)"
+                />
+              </CloseWrap>
+            </Tooltip>
           )}
           {isSearch ? (
             <Space size={16}>
@@ -388,27 +390,19 @@ const ChildrenDemand = (props: Props, ref: any) => {
             </Space>
           ) : null}
           {!isEnd && (
-            <CloseWrap width={24} height={24}>
-              <CommonIconFont
-                type="plus"
-                size={18}
-                color="var(--neutral-n2)"
-                onClick={onCreateChild}
-              />
-            </CloseWrap>
+            <Tooltip title={t('addChildRequirement')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={onCreateChild}
+                />
+              </CloseWrap>
+            </Tooltip>
           )}
         </Space>
       </LabelWrap>
-      {/* {!isEnd && (
-        <CommonButton
-          onClick={onCreateChild}
-          type="primaryText"
-          iconPlacement="left"
-          icon="plus"
-        >
-          {t('create_sub_requirements')}
-        </CommonButton>
-      )} */}
       <DetailsChildProgress details={props.detail}></DetailsChildProgress>
       {dataList?.list?.length > 0 ? (
         <TableBorder style={{ marginTop: '8px' }}>

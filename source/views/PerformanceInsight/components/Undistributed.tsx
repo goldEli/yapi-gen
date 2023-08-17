@@ -375,7 +375,6 @@ const Undistributed = (props: any) => {
             <ClickWrap
               className="canClickDetail"
               isClose={record.category_status?.is_end === 1}
-              style={{ marginRight: 16 }}
             >
               <div className="text">{record.storyPrefixKey}</div>
               {
@@ -520,7 +519,11 @@ const Undistributed = (props: any) => {
               )}
               <span style={{ marginLeft: '5px' }}>
                 {!text?.icon && <span>--</span>}
-                <IconFont className="icon" type="down-icon" />
+                <IconFont
+                  style={{ color: 'var(--neutral-n4)' }}
+                  className="icon"
+                  type="down-icon"
+                />
               </span>
             </PriorityWrapTable>
           </ChangePriorityPopover>

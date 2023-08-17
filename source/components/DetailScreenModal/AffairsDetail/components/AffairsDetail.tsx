@@ -2,7 +2,12 @@ import { InfoItem, Label, TargetWrap } from '../style'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import CommonButton from '@/components/CommonButton'
-import { AddWrap, CloseWrap, TextWrapEdit } from '@/components/StyleCommon'
+import {
+  AddWrap,
+  CloseWrap,
+  TextWrapEdit,
+  canEditHover,
+} from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import {
@@ -25,6 +30,7 @@ import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import { CommonIconFont } from '@/components/CommonIconFont'
 import { BetweenBox } from '@/components/SprintDetailDrawer/style'
+import { Tooltip } from 'antd'
 
 interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
@@ -198,7 +204,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
               }, 10)
             }}
           >
-            --
+            <span className={canEditHover}>--</span>
           </TextWrapEdit>
         )}
       </InfoItem>
@@ -227,14 +233,16 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       >
         <BetweenBox>
           <Label>{t('common.attachment')}</Label>
-          <CloseWrap width={24} height={24}>
-            <CommonIconFont
-              type="plus"
-              size={18}
-              color="var(--neutral-n2)"
-              onClick={handleUpload}
-            />
-          </CloseWrap>
+          <Tooltip title={t('addAttachments')}>
+            <CloseWrap width={32} height={32}>
+              <CommonIconFont
+                type="plus"
+                size={20}
+                color="var(--neutral-n2)"
+                onClick={handleUpload}
+              />
+            </CloseWrap>
+          </Tooltip>
         </BetweenBox>
         <div>
           {projectInfo?.projectPermissions?.filter(
