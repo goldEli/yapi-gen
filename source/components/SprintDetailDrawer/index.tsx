@@ -88,7 +88,7 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import ScheduleRecord from '../ScheduleRecord'
 import CommonProgress from '../CommonProgress'
 import SprintTag from '../TagComponent/SprintTag'
-
+let timer: NodeJS.Timeout
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
 
@@ -119,7 +119,7 @@ const SprintDetailDrawer = () => {
 
   const { userInfo } = useSelector(store => store.user)
   const { fullScreen } = useSelector(store => store.kanBan)
-  const isTabClick = useRef(false)
+  const isTabClick = useRef<string>('')
 
   // 快捷按钮列表
   const projectIdRef = useRef('')
@@ -522,6 +522,7 @@ const SprintDetailDrawer = () => {
   // 操作后更新列表
   const onOperationUpdate = async (value?: boolean) => {
     getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
+    isTabClick.current = tabActive
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -574,18 +575,18 @@ const SprintDetailDrawer = () => {
   // 监听tab切换滚动
   const onChangeTabs = (value: string) => {
     setTabActive(value)
-    isTabClick.current = true
+    // setTimeout(() => {
     const dom = document.getElementById(value)
     document.getElementById('contentDom')?.scrollTo({
       top: (dom?.offsetTop ?? 0) - 86,
       behavior: 'smooth',
     })
+    // }, 3000)
   }
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
     if (isTabClick.current) {
-      isTabClick.current = false
       return
     }
     // 滚动容器
@@ -617,6 +618,13 @@ const SprintDetailDrawer = () => {
       setDemandIds([])
       if (affairsDetailDrawer.visible) {
         getSprintDetail('', [])
+        if (isTabClick.current) {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            onChangeTabs(isTabClick.current)
+            isTabClick.current = ''
+          }, 3000)
+        }
       }
     }
   }, [isUpdateAddWorkItem])
@@ -629,15 +637,17 @@ const SprintDetailDrawer = () => {
   }, [])
 
   useEffect(() => {
-    document
-      .getElementById('contentDom')
-      ?.addEventListener('scroll', handleScroll, true)
+    setTimeout(() => {
+      document
+        .getElementById('contentDom')
+        ?.addEventListener('scroll', handleScroll, true)
+    })
     return () => {
       document
         .getElementById('contentDom')
         ?.removeEventListener('scroll', handleScroll, false)
     }
-  }, [document.getElementById('contentDom')])
+  }, [drawerInfo])
 
   return (
     <>
