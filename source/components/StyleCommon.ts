@@ -9,6 +9,14 @@ import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
+const canEditHover = css`
+  padding: 0 4px;
+  &:hover {
+    background-color: var(--hover-d2);
+    cursor: pointer;
+  }
+`
+
 const TableBorder = styled.div`
   border-radius: 6px;
   border: 1px solid var(--neutral-n6-d2);
@@ -539,7 +547,7 @@ const HiddenText = styled.div({
 })
 const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
-    width: '100%',
+    width: '80%',
     display: 'flex',
     cursor: 'pointer',
     '.icon': {
@@ -548,6 +556,7 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
     },
     '.text': {
       width: '30%',
+      minWidth: '100px',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
@@ -1105,4 +1114,5 @@ export {
   LinkWrap,
   ChartsItem333,
   TableBorder,
+  canEditHover,
 }

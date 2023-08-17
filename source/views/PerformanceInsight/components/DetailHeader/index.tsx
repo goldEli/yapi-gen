@@ -1,5 +1,5 @@
 import CommonIconFont from '@/components/CommonIconFont'
-import { Space } from 'antd'
+import { Space, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import {
   HeaderStyle,
@@ -8,6 +8,7 @@ import {
   UpWrap,
   DownWrap,
 } from '../style'
+import { useTranslation } from 'react-i18next'
 interface Header {
   ids: number[]
   infoId: number
@@ -15,6 +16,7 @@ interface Header {
   onPageNum: (id: number) => void
 }
 const DetailHeader = (props: Header) => {
+  const [t] = useTranslation()
   const [currentIndex, setCurrentIndex] = useState(4)
   // 向上查找需求
   const onUpDemand = () => {
@@ -42,34 +44,38 @@ const DetailHeader = (props: Header) => {
       <Space size={16}>
         <ChangeIconGroup>
           {currentIndex > 0 && (
-            <UpWrap
-              onClick={onUpDemand}
-              id="upIcon"
-              isOnly={
-                props.ids?.length === 0 || currentIndex === props.ids?.length
-              }
-            >
-              <CommonIconFont
-                type="up"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </UpWrap>
+            <Tooltip title={t('previous')}>
+              <UpWrap
+                onClick={onUpDemand}
+                id="upIcon"
+                isOnly={
+                  props.ids?.length === 0 || currentIndex === props.ids?.length
+                }
+              >
+                <CommonIconFont
+                  type="up"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </UpWrap>
+            </Tooltip>
           )}
           {!(
             props.ids?.length === 0 || currentIndex === props.ids?.length - 1
           ) && (
-            <DownWrap
-              onClick={onDownDemand}
-              id="downIcon"
-              isOnly={currentIndex <= 0}
-            >
-              <CommonIconFont
-                type="down"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </DownWrap>
+            <Tooltip title={t('next')}>
+              <DownWrap
+                onClick={onDownDemand}
+                id="downIcon"
+                isOnly={currentIndex <= 0}
+              >
+                <CommonIconFont
+                  type="down"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </DownWrap>
+            </Tooltip>
           )}
         </ChangeIconGroup>
       </Space>

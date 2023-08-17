@@ -5,7 +5,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
-import { Drawer, Space } from 'antd'
+import { Drawer, Space, Tooltip } from 'antd'
 import { Editor } from '@xyfe/uikit'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -140,30 +140,34 @@ const NoteDetailDrawer = (props: any) => {
         <Space size={16}>
           <ChangeIconGroup>
             {currentIndex === 0 ? null : (
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={currentIndex === 0}
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
+              <Tooltip title={t('previous')}>
+                <UpWrap
+                  onClick={onUpDemand}
+                  id="upIcon"
+                  isOnly={currentIndex === 0}
+                >
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </UpWrap>
+              </Tooltip>
             )}
             {reportIds.length - 1 === currentIndex ? null : (
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </DownWrap>
+              <Tooltip title={t('next')}>
+                <DownWrap
+                  onClick={onDownDemand}
+                  id="downIcon"
+                  isOnly={currentIndex <= 0}
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </DownWrap>
+              </Tooltip>
             )}
           </ChangeIconGroup>
         </Space>

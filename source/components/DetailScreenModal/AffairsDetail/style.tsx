@@ -83,7 +83,7 @@ export const DropdownMenu = styled(Dropdown)`
 export const DetailTitle = styled.div`
   display: flex;
   border-bottom: 1px solid var(--neutral-n6-d1);
-  padding: 20px 0px 20px;
+  padding: 0px 0px 20px;
   width: calc(100% - 48px);
   margin-left: 24px;
 `
@@ -149,7 +149,7 @@ export const BasicWrap = styled.div`
 `
 
 export const BasicContent = styled.div`
-  height: calc(100% - 42px);
+  height: calc(100% - 108px);
   overflow: auto;
 `
 
@@ -206,7 +206,7 @@ export const InfoWrap = styled.div<{ height: any }>`
 export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
   width: 100%;
   height: ${props =>
-    props.isScroll ? 'calc(100% - 100px)' : 'calc(100% - 40px)'};
+    props.isScroll ? 'calc(100% - 120px)' : 'calc(100% - 100px)'};
   overflow: auto;
   .review {
     position: absolute;

@@ -99,11 +99,17 @@ export const useDynamicColumns = (state: any) => {
       key: 'prefix_key',
       render: (text: string, record: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
             <ClickWrap
               className="canClickDetail"
               isClose={record.status?.is_end === 1}
-              style={{ marginRight: 16 }}
             >
               <div className="text" onClick={() => state.onClickItem(record)}>
                 {record.storyPrefixKey}

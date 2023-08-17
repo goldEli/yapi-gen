@@ -8,7 +8,7 @@ import {
   updateDemandEditor,
 } from '@/services/demand'
 import { useSelector } from '@store/index'
-import { message } from 'antd'
+import { Tooltip, message } from 'antd'
 import {
   useEffect,
   useRef,
@@ -176,16 +176,18 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       >
         <LabelWrap>
           <Label>{t('common.attachment')}</Label>
-          <CloseWrap width={24} height={24}>
-            <CommonIconFont
-              type="plus"
-              size={18}
-              color="var(--neutral-n2)"
-              onClick={() => {
-                uploadRef.current?.handleUpload()
-              }}
-            />
-          </CloseWrap>
+          <Tooltip title={t('addAttachments')}>
+            <CloseWrap width={32} height={32}>
+              <CommonIconFont
+                type="plus"
+                size={20}
+                color="var(--neutral-n2)"
+                onClick={() => {
+                  uploadRef.current?.handleUpload()
+                }}
+              />
+            </CloseWrap>
+          </Tooltip>
         </LabelWrap>
         <div>
           {projectInfo?.projectPermissions?.filter(
