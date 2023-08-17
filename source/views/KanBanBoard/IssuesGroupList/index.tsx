@@ -1,7 +1,6 @@
 import React from 'react'
 import IssuesGroup from '../IssuesGroup'
 import styled from '@emotion/styled'
-
 interface IssuesGroupListProps {
   data: Model.KanBan.Group[]
 }
@@ -14,6 +13,7 @@ const IssuesGroupListBox = styled.div`
 `
 
 const IssuesGroupList: React.FC<IssuesGroupListProps> = props => {
+  console.log('issuesGroup', props)
   return (
     <IssuesGroupListBox>
       {props.data.map(issuesGroup => {

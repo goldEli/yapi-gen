@@ -184,6 +184,7 @@ export const DetailMain = styled.div`
   position: relative;
   height: calc(100vh - 249px);
   width: 100%;
+  margin-top: 16px;
 `
 
 export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
@@ -252,6 +253,7 @@ export const BasicWrap = styled.div`
 export const BasicContent = styled.div`
   height: calc(100% - 60px);
   padding-left: 24px;
+  overflow-y: auto;
 `
 
 export const BasicFooter = styled.div`

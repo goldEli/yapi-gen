@@ -40,7 +40,7 @@ const RelationDropdownMenu = (props: Props) => {
   // 复制需求id
   const onCopyId = () => {
     copyLink(
-      `${props?.record.story_prefix_key}`,
+      `${props?.record.story_prefix_key ?? props?.record.storyPrefixKey} `,
       t('copysuccess'),
       t('copyfailed'),
     )
@@ -51,6 +51,12 @@ const RelationDropdownMenu = (props: Props) => {
     let text: any = ''
     let beforeUrl: any
     beforeUrl = window.origin
+    console.log({
+      id: pid,
+      detailId: props.record.id,
+      specialType: props.type,
+      isOpenScreenDetail: true,
+    })
     const params = encryptPhp(
       JSON.stringify({
         id: pid,
@@ -69,7 +75,9 @@ const RelationDropdownMenu = (props: Props) => {
     }
     text += `${beforeUrl}${url} \n`
     copyLink(
-      `【${props?.record.story_prefix_key}】${text}`,
+      `【${
+        props?.record.story_prefix_key ?? props?.record.storyPrefixKey
+      }】${text}`,
       t('common.copySuccess'),
       t('common.copyFail'),
     )
