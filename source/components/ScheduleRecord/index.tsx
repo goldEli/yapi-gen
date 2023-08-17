@@ -73,6 +73,8 @@ interface ScheduleRecordProps {
   isDrawer?: boolean
   // 不需要padding
   notPadding?: boolean
+  // 是否打开
+  isOpen?: boolean
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
@@ -98,10 +100,10 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
   }
 
   useEffect(() => {
-    if (props.detailId && props.projectId) {
+    if ((props.detailId && props.projectId) || props.isOpen) {
       getScheduleLogData()
     }
-  }, [props.detailId, props.projectId])
+  }, [props.detailId, props.projectId, props.isOpen])
 
   return (
     <Wrap>
