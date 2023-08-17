@@ -540,7 +540,7 @@ const DndKitTable = (props: any) => {
     { title: t('sprint.sub'), dataIndex: 'child_story_count', width: 120 },
     {
       title: t('situation.progress'),
-      dataIndex: 'child_story_count',
+      dataIndex: 'schedule',
       width: 120,
       render: (text: number, record: any) => {
         const id = record.id?.split('_')?.[1]
