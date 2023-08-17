@@ -113,6 +113,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
                             fontSize: 16,
                             marginRight: '8px',
                             color: 'var(--neutral-n3)',
+                            marginTop: '2px',
                           }}
                           type="tree-list-2"
                         />
@@ -206,6 +207,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
                             fontSize: 16,
                             marginRight: '8px',
                             color: 'var(--neutral-n3)',
+                            marginTop: '2px',
                           }}
                           type="tree-list-2"
                         />
