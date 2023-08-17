@@ -82,7 +82,6 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
           <LabelContentWrap>
             {fullScreen ? (
               <Popover
-                open
                 placement="leftTop"
                 zIndex={99999}
                 getPopupContainer={() =>
@@ -181,7 +180,6 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
               <Popover
                 placement="leftTop"
                 zIndex={99999}
-                open
                 content={
                   <DetailWrap>
                     <HeaderWrap>
