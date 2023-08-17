@@ -117,6 +117,7 @@ const ActivitySprint = () => {
           detailId={affairsInfo.id ?? 0}
           projectId={id}
           notPadding
+          isOpen={activeKey === '4'}
         />
       ),
     },

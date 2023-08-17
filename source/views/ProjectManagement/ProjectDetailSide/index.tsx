@@ -123,7 +123,7 @@ const ProjectDetailSide = () => {
       path: '/ProjectManagement/KanBan',
       isPermission:
         projectInfo?.projectPermissions?.filter((i: any) =>
-          String(i.group_name).includes('面板'),
+          String(i.group_name).includes('Kanban'),
         ).length > 0,
     },
     {
