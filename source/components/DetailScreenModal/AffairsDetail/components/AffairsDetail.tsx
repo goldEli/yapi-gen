@@ -30,6 +30,7 @@ import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import { CommonIconFont } from '@/components/CommonIconFont'
 import { BetweenBox } from '@/components/SprintDetailDrawer/style'
+import { Tooltip } from 'antd'
 
 interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
@@ -232,14 +233,16 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       >
         <BetweenBox>
           <Label>{t('common.attachment')}</Label>
-          <CloseWrap width={32} height={32}>
-            <CommonIconFont
-              type="plus"
-              size={20}
-              color="var(--neutral-n2)"
-              onClick={handleUpload}
-            />
-          </CloseWrap>
+          <Tooltip title={t('addAttachments')}>
+            <CloseWrap width={32} height={32}>
+              <CommonIconFont
+                type="plus"
+                size={20}
+                color="var(--neutral-n2)"
+                onClick={handleUpload}
+              />
+            </CloseWrap>
+          </Tooltip>
         </BetweenBox>
         <div>
           {projectInfo?.projectPermissions?.filter(

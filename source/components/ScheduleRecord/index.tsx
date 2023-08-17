@@ -152,6 +152,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                     }))}
                     canUpdate
                     onC
+                    isIteration
                   />
                 )}
               </ItemContent>

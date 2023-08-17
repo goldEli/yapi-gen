@@ -2286,5 +2286,15 @@
   "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation": "There are duplicate tasks in [Due today], please cancel the duplicate association",
   "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2": "Duplicate tasks exist in Overdue tasks. Cancel the duplicate association",
   "noUN": "No unassigned data",
-  "spent": "Man-hours spent"
+  "spent": "Man-hours spent",
+  "searchForSubtransactions": "Search for subtransactions",
+  "addSubtransaction": "Add subtransaction",
+  "addLinkTransaction": "Add link transaction",
+  "previous": "Previous",
+  "next": "Next",
+  "openDetails": "Open details",
+  "more": "More",
+  "closure": "Closure",
+  "searchForSubrequirements": "Search for subrequirements",
+  "linkTask": "Link task"
 }
