@@ -528,7 +528,7 @@ const UploadAttach = (props: any, ref: any) => {
     </div>
   )
   return (
-    <div style={{ marginTop: '-20px' }}>
+    <div style={{ marginTop: '-30px' }}>
       {flag ? (
         <PreviewIframe
           url={previewUrl}
@@ -557,7 +557,7 @@ const UploadAttach = (props: any, ref: any) => {
         customRequest={onUploadFileClick}
       >
         {props.addWrap ? (
-          <div style={{ marginTop: '10px' }}>{props.addWrap}</div>
+          <div style={{ marginTop: '28px' }}>{props.addWrap}</div>
         ) : (
           <div ref={uploadRef} style={{ display: 'none' }} />
         )}
