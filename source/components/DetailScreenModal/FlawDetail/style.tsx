@@ -195,7 +195,7 @@ export const DropdownMenu = styled(Dropdown)`
 export const DetailTitle = styled.div`
   display: flex;
   /* border-bottom: 1px solid var(--neutral-n6-d1); */
-  padding: 20px 0px 20px;
+  padding: 20px 0px 6px;
   width: calc(100% - 48px);
   margin-left: 24px;
 `
@@ -203,7 +203,7 @@ export const DetailTitle = styled.div`
 export const FlawInfoWrap = styled.div({
   display: 'flex',
   height: '100%',
-  paddingBottom: 24,
+  padding: '16px 0 0px',
 })
 
 export const FlawInfoLeft = styled.div`

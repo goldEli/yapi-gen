@@ -24,6 +24,7 @@ import FlawComment from './FlawComment'
 import FlawStatus from './FlawStatus'
 import FlawBasic from './FlawBasic'
 import FlawDetail from './FlawDetail'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 const FlawInfo = () => {
   const [t] = useTranslation()
@@ -45,6 +46,7 @@ const FlawInfo = () => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     const params = encryptPhp(
       JSON.stringify({
         type: 4,

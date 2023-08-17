@@ -14,6 +14,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { changeRestScroll } from '@store/scroll'
 import { setIsUpdateAddWorkItem } from '@store/project'
 import CommonProgress from '@/components/CommonProgress'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
 
 interface Props {
   onRef: any
@@ -42,6 +43,7 @@ const DemandBasic = (props: Props) => {
   // 跳转配置
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     const params = encryptPhp(
       JSON.stringify({
         type: 4,
