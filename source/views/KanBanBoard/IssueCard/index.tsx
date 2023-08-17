@@ -35,6 +35,7 @@ interface IssueCardProps {
   uuid: string
   hidden?: boolean
   stories?: any
+  style?: any
 }
 
 const IssueCard = (props: IssueCardProps) => {

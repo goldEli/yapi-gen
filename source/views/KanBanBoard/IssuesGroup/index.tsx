@@ -28,6 +28,7 @@ import IconFont from '@/components/IconFont'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
+  style?: any
 }
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
@@ -74,6 +75,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
           }),
         )
       }}
+      style={props.style}
     >
       <MultipleAvatar
         list={

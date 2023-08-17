@@ -261,7 +261,7 @@ export const Label = styled.div`
   font-size: 14px;
   min-width: 120px;
   font-family: SiYuanMedium;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
   height: 32px;
   line-height: 32px;
 `

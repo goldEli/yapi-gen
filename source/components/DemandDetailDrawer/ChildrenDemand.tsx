@@ -5,6 +5,7 @@ import {
   getChildrenSearch,
   addChild,
   sortChild,
+  deleteDemand,
 } from '@/services/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { Space, Table, Tooltip } from 'antd'
@@ -28,6 +29,7 @@ import RelationDropdownMenu from '../TableDropdownMenu/RelationDropdownMenu'
 import CommonProgress from '../CommonProgress'
 import { getMessage } from '../Message'
 import PaginationBox from '../TablePagination'
+import DeleteConfirm from '../DeleteConfirm'
 interface Props {
   detail?: any
   isOpen?: boolean
@@ -54,6 +56,8 @@ const ChildrenDemand = (props: Props, ref: any) => {
   const [recentList, setRecentList] = useState<SelectItem[]>([])
   const [searchValue, setSearchValue] = useState('')
   const [pageObj, setPageObj] = useState({ page: 1, pageSize: 10 })
+  const [deleteId, setDeleteId] = useState(0)
+  const [isDelete, setIsDelete] = useState(false)
   // 跳转详情页面
   const onToDetail = (record: any) => {
     const params = encryptPhp(
@@ -210,9 +214,13 @@ const ChildrenDemand = (props: Props, ref: any) => {
               hasChild
               menu={
                 <RelationDropdownMenu
-                  onDeleteChange={() => {}}
+                  onDeleteChange={() => {
+                    console.log(111, record)
+                    setDeleteId(record.id)
+                    setIsDelete(true)
+                  }}
                   record={record}
-                  type={1}
+                  type={3}
                 />
               }
               onChangeVisible={() => {}}
@@ -297,6 +305,17 @@ const ChildrenDemand = (props: Props, ref: any) => {
     setSearchValue('')
     setIsSearch(false)
   }
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteDemand({ projectId: props.detail.projectId, id: deleteId })
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+      setIsDelete(false)
+      setDeleteId(0)
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    } catch (error) {
+      //
+    }
+  }
   // 表格拖拽排序
   const onChangeData = async (data: any) => {
     setDataList({
@@ -330,6 +349,12 @@ const ChildrenDemand = (props: Props, ref: any) => {
       style={{ marginTop: '28px' }}
     >
       {/* <Label>{t('subrequirements')}</Label> */}
+      <DeleteConfirm
+        text={t('common.confirmDelChildDemand')}
+        isVisible={isDelete}
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
       <LabelWrap>
         <Label>{t('subrequirements')}</Label>
         <Space size={12}>

@@ -12,6 +12,7 @@ export const HoverIcon = styled.div`
 export const IssueCardBox = styled.div`
   width: 270px;
   border-radius: 6px 6px 6px 6px;
+  /* border: 1px solid red; */
   &:hover ${HoverIcon} {
     visibility: visible;
   }

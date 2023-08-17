@@ -233,7 +233,7 @@ export const Label = styled.div`
   font-size: var(--font14);
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
   height: 32px;
   line-height: 32px;
 `
