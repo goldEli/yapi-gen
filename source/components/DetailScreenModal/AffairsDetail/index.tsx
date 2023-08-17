@@ -637,53 +637,67 @@ const AffairsDetail = () => {
             {(params?.changeIds?.length || 0) > 1 && (
               <ChangeIconGroup>
                 {currentIndex > 0 && (
-                  <UpWrap
-                    onClick={onUpDemand}
-                    id="upIcon"
-                    isOnly={
-                      params?.changeIds?.length === 0 ||
-                      currentIndex === (params?.changeIds?.length || 0) - 1
-                    }
-                  >
-                    <CommonIconFont
-                      type="up"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
-                    />
-                  </UpWrap>
+                  <Tooltip title={t('previous')}>
+                    <UpWrap
+                      onClick={onUpDemand}
+                      id="upIcon"
+                      isOnly={
+                        params?.changeIds?.length === 0 ||
+                        currentIndex === (params?.changeIds?.length || 0) - 1
+                      }
+                    >
+                      <CommonIconFont
+                        type="up"
+                        size={20}
+                        color="var(--neutral-n1-d1)"
+                      />
+                    </UpWrap>
+                  </Tooltip>
                 )}
                 {!(
                   params?.changeIds?.length === 0 ||
                   currentIndex === (params?.changeIds?.length || 0) - 1
                 ) && (
-                  <DownWrap
-                    onClick={onDownDemand}
-                    id="downIcon"
-                    isOnly={currentIndex <= 0}
-                  >
-                    <CommonIconFont
-                      type="down"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
-                    />
-                  </DownWrap>
+                  <Tooltip title={t('next')}>
+                    <DownWrap
+                      onClick={onDownDemand}
+                      id="downIcon"
+                      isOnly={currentIndex <= 0}
+                    >
+                      <CommonIconFont
+                        type="down"
+                        size={20}
+                        color="var(--neutral-n1-d1)"
+                      />
+                    </DownWrap>
+                  </Tooltip>
                 )}
               </ChangeIconGroup>
             )}
-            <CommonButton type="icon" icon="share" onClick={onShare} />
-            <DropdownMenu
-              placement="bottomRight"
-              trigger={['click']}
-              menu={{
-                items: onGetMenu(),
-              }}
-              getPopupContainer={n => n}
-            >
+            <Tooltip title={t('share')}>
               <div>
-                <CommonButton type="icon" icon="more" />
+                <CommonButton type="icon" icon="share" onClick={onShare} />
               </div>
-            </DropdownMenu>
-            <CommonButton onClick={onClose} type="icon" icon="close" />
+            </Tooltip>
+            <Tooltip title={t('more')}>
+              <DropdownMenu
+                placement="bottomRight"
+                trigger={['click']}
+                menu={{
+                  items: onGetMenu(),
+                }}
+                getPopupContainer={n => n}
+              >
+                <div>
+                  <CommonButton type="icon" icon="more" />
+                </div>
+              </DropdownMenu>
+            </Tooltip>
+            <Tooltip title={t('closure')}>
+              <div>
+                <CommonButton onClick={onClose} type="icon" icon="close" />
+              </div>
+            </Tooltip>
           </ButtonGroup>
         )}
       </DetailTop>

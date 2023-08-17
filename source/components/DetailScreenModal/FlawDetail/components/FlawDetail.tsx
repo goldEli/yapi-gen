@@ -19,6 +19,7 @@ import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
+import { Tooltip } from 'antd'
 
 interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
@@ -185,16 +186,18 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         {/* <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel> */}
         <LabelWrap>
           <Label>{t('common.attachment')}</Label>
-          <CloseWrap width={24} height={24}>
-            <CommonIconFont
-              type="plus"
-              size={18}
-              color="var(--neutral-n2)"
-              onClick={() => {
-                handleUpload()
-              }}
-            />
-          </CloseWrap>
+          <Tooltip title={t('addAttachments')}>
+            <CloseWrap width={32} height={32}>
+              <CommonIconFont
+                type="plus"
+                size={20}
+                color="var(--neutral-n2)"
+                onClick={() => {
+                  handleUpload()
+                }}
+              />
+            </CloseWrap>
+          </Tooltip>
         </LabelWrap>
         <div>
           {projectInfo?.projectPermissions?.filter(

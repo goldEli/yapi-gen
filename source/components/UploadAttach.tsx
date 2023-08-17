@@ -57,11 +57,12 @@ export const Third = styled.div`
 
 export const BigWrap = styled.div`
   /* display: flex; */
+  border-radius: 6px 6px 0 0;
 `
 
 export const Gred = styled.div`
   cursor: pointer;
-  border-radius: 6px 6px 0 0;
+  border-radius: 5px 5px 0 0;
   position: absolute;
   left: 0;
   right: 0;
@@ -523,7 +524,7 @@ const UploadAttach = (props: any, ref: any) => {
     </div>
   )
   return (
-    <div>
+    <div style={{ marginTop: '-20px' }}>
       {flag ? (
         <PreviewIframe
           url={previewUrl}
@@ -552,7 +553,7 @@ const UploadAttach = (props: any, ref: any) => {
         customRequest={onUploadFileClick}
       >
         {props.addWrap ? (
-          props.addWrap
+          <div style={{ marginTop: '10px' }}>{props.addWrap}</div>
         ) : (
           <div ref={uploadRef} style={{ display: 'none' }} />
         )}
@@ -568,6 +569,7 @@ const UploadAttach = (props: any, ref: any) => {
         {fileList.map((i: any) => {
           return (
             <Popover
+              overlayStyle={{ paddingLeft: '0px' }}
               key={i.id}
               placement="right"
               content={content(

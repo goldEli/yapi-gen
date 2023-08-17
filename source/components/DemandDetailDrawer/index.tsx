@@ -688,93 +688,74 @@ const DemandDetailDrawer = () => {
                 <Skeleton.Input active />
               </SkeletonStatus>
             )}
-            {/* {!skeletonLoading && (
-              <ChangeStatusPopover
-                isCanOperation={isCanEdit && !drawerInfo.isExamine}
-                projectId={drawerInfo.projectId}
-                record={drawerInfo}
-                onChangeStatus={onChangeStatus}
-                type={1}
-              >
-                <StateTag
-                  name={drawerInfo?.status?.status?.content}
-                  onClick={drawerInfo.isExamine ? onExamine : void 0}
-                  isShow={isCanEdit || drawerInfo.isExamine}
-                  state={
-                    drawerInfo?.status?.is_start === 1 &&
-                    drawerInfo?.status?.is_end === 2
-                      ? 1
-                      : drawerInfo?.status?.is_end === 1 &&
-                        drawerInfo?.status?.is_start === 2
-                      ? 2
-                      : drawerInfo?.status?.is_start === 2 &&
-                        drawerInfo?.status?.is_end === 2
-                      ? 3
-                      : 0
-                  }
-                />
-              </ChangeStatusPopover>
-            )} */}
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
               {currentIndex > 0 && (
-                <UpWrap
-                  onClick={onUpDemand}
-                  id="upIcon"
-                  isOnly={
-                    demandIds?.length === 0 ||
-                    currentIndex === demandIds?.length - 1
-                  }
-                >
-                  <CommonIconFont
-                    type="up"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </UpWrap>
+                <Tooltip title={t('previous')}>
+                  <UpWrap
+                    onClick={onUpDemand}
+                    id="upIcon"
+                    isOnly={
+                      demandIds?.length === 0 ||
+                      currentIndex === demandIds?.length - 1
+                    }
+                  >
+                    <CommonIconFont
+                      type="up"
+                      size={20}
+                      color="var(--neutral-n1-d1)"
+                    />
+                  </UpWrap>
+                </Tooltip>
               )}
               {!(
                 demandIds?.length === 0 ||
                 currentIndex === demandIds?.length - 1
               ) && (
-                <DownWrap
-                  onClick={onDownDemand}
-                  id="downIcon"
-                  isOnly={currentIndex <= 0}
-                >
-                  <CommonIconFont
-                    type="down"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </DownWrap>
+                <Tooltip title={t('next')}>
+                  <DownWrap
+                    onClick={onDownDemand}
+                    id="downIcon"
+                    isOnly={currentIndex <= 0}
+                  >
+                    <CommonIconFont
+                      type="down"
+                      size={20}
+                      color="var(--neutral-n1-d1)"
+                    />
+                  </DownWrap>
+                </Tooltip>
               )}
             </ChangeIconGroup>
-            <div onClick={onToDetail}>
-              <CommonButton type="icon" icon="full-screen" />
-            </div>
-            <Popover
-              open={isMoreVisible}
-              onOpenChange={setIsMoreVisible}
-              placement="bottomRight"
-              trigger={['click']}
-              getPopupContainer={n => n}
-              content={
-                <DemandOperationDropdownMenu
-                  haveComment
-                  onEditChange={onEditChange}
-                  onDeleteChange={onDeleteChange}
-                  onCreateChild={onCreateChild}
-                  onAddComment={() => commentDom.current?.addComment()}
-                  record={demandDetailDrawerProps}
-                />
-              }
-            >
-              <div>
-                <CommonButton type="icon" icon="more" />
+            <Tooltip title={t('openDetails')}>
+              <div onClick={onToDetail}>
+                <CommonButton type="icon" icon="full-screen" />
               </div>
-            </Popover>
+            </Tooltip>
+            <Tooltip title={t('more')}>
+              <Popover
+                open={isMoreVisible}
+                onOpenChange={setIsMoreVisible}
+                placement="bottomRight"
+                trigger={['click']}
+                getPopupContainer={n => n}
+                content={
+                  <DemandOperationDropdownMenu
+                    haveComment
+                    onEditChange={onEditChange}
+                    onDeleteChange={onDeleteChange}
+                    onCreateChild={onCreateChild}
+                    onAddComment={() => commentDom.current?.addComment()}
+                    record={demandDetailDrawerProps}
+                  />
+                }
+              >
+                <div>
+                  <CommonButton type="icon" icon="more" />
+                </div>
+              </Popover>
+            </Tooltip>
           </Space>
         </Header>
         <Content id="contentDom">
