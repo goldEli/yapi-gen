@@ -196,7 +196,7 @@ const DemandDetailDrawer = () => {
     },
     {
       key: 'tab_comment',
-      label: t('comment'),
+      label: t('demandComment'),
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
