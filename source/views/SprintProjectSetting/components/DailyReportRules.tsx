@@ -290,8 +290,11 @@ const DailyReportRules = () => {
     }
   }
   const save = async (num: number) => {
-    const values1: any = await form1.validateFields().catch(e => e)
-    const values2: any = await form2.getFieldsValue()
+    const values1: any =
+      num === 1 && (await form1.validateFields().catch(e => e))
+    const values2: any = num === 2 && (await form2.getFieldsValue())
+    const values3: any =
+      num === 3 && (await form3.validateFields().catch(e => e))
     if (!values1.errorFields && num === 1) {
       open({
         title: t('msg19'),
@@ -344,6 +347,22 @@ const DailyReportRules = () => {
           },
         })
       }
+    } else if (!values3.errorFields && num === 1) {
+      // 差接口
+      // open({
+      //   title: t('msg19'),
+      //   text: t('msg20'),
+      //   onConfirm: async () => {
+      //     const res1 = await set_create_config({
+      //       ...values1,
+      //       id: typeId,
+      //       project_id: projectId,
+      //     })
+      //     if (res1.code === 0) {
+      //       getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+      //     }
+      //   },
+      // })
     }
   }
 
@@ -365,6 +384,8 @@ const DailyReportRules = () => {
       day,
       is_holiday,
       id,
+      projectConfigWebhook,
+      projectConfigGroupName,
     } = await getAily_config(projectId)
     setFormAll({
       group_name,
@@ -385,6 +406,10 @@ const DailyReportRules = () => {
       day,
       is_holiday,
       reminder_time: moment(reminder_time, 'HH:mm'),
+    })
+    form3.setFieldsValue({
+      projectConfigWebhook,
+      projectConfigGroupName,
     })
   }
   const getValueFromEvent = (e: any) => {
@@ -590,7 +615,7 @@ const DailyReportRules = () => {
             </DailyReportRulesWrap>
           ) : null}
         </ReportWrap>
-        {/* <ReportWrap>
+        <ReportWrap>
           <HeaderWrap onClick={() => setOpen3(!open3)}>
             <span>{t('xmsc')}</span>
             <IconFont
@@ -611,7 +636,7 @@ const DailyReportRules = () => {
               <Form.Item
                 style={{ marginTop: 16 }}
                 label={t('qm')}
-                name="group_name"
+                name="projectConfigGroupName"
                 required
                 validateFirst
                 rules={[
@@ -628,7 +653,7 @@ const DailyReportRules = () => {
               </Form.Item>
               <Form.Item
                 label={t('dd')}
-                name="webhook"
+                name="projectConfigWebhook"
                 required
                 rules={[
                   {
@@ -655,7 +680,7 @@ const DailyReportRules = () => {
               </FooterWrap>
             </DailyReportRulesWrap>
           ) : null}
-        </ReportWrap> */}
+        </ReportWrap>
         <DeleteConfirmModal />
       </PermissionWrap>
     </div>

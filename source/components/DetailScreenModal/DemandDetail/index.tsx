@@ -469,7 +469,7 @@ const DemandDetail = () => {
         <ScheduleRecord
           detailId={demandInfo.id}
           projectId={demandInfo.projectId}
-          // activeKey={tabActive}
+          isOpen={tabActive === '6'}
         />
       ),
     },
