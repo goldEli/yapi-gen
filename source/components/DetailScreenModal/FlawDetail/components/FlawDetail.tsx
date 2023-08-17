@@ -182,6 +182,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         activeState
         id="tab_attachment"
         className="info_item_tab"
+        style={{ marginBottom: 16 }}
       >
         {/* <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel> */}
         <LabelWrap>

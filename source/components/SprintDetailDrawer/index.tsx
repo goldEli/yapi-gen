@@ -583,6 +583,7 @@ const SprintDetailDrawer = () => {
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
+    console.log(isTabClick.current, '=eeeeee')
     if (isTabClick.current) {
       return
     }
@@ -634,11 +635,9 @@ const SprintDetailDrawer = () => {
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      document
-        .getElementById('contentDom')
-        ?.addEventListener('scroll', handleScroll, true)
-    })
+    document
+      .getElementById('contentDom')
+      ?.addEventListener('scroll', handleScroll, true)
     return () => {
       document
         .getElementById('contentDom')
