@@ -555,7 +555,7 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
       color: 'var(--neutral-n3)',
     },
     '.text': {
-      width: '30%',
+      maxWidth: 'calc(100% - 30px)',
       minWidth: '100px',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
@@ -566,8 +566,13 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
         opacity: 1,
       },
     },
-    '.text:hover ,.icon:hover': {
+    '.text:hover ': {
       color: 'var(--primary-d2)',
+    },
+    '.icon:hover ': {
+      svg: {
+        color: 'var(--primary-d2)',
+      },
     },
   },
   ({ isClose, isName }) => ({
