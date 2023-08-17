@@ -48,6 +48,7 @@ export interface CounterState {
   drawerCanOperation: any
   // 浮层触发编辑时，当前所在的锚点位置
   drawerCurrentAnchor: ''
+  tableFilter?: any
 }
 
 const initialState: CounterState = {
@@ -198,6 +199,9 @@ export const projectSlice = createSlice({
     setDrawerCurrentAnchor: (state: any, action) => {
       state.drawerCurrentAnchor = action.payload
     },
+    setTableFilter: (state: any, action) => {
+      state.tableFilter = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
@@ -230,6 +234,7 @@ export const {
   setIsChangeDetailAffairs,
   setDrawerCanOperation,
   setDrawerCurrentAnchor,
+  setTableFilter,
 } = projectSlice.actions
 
 export default projectSlice.reducer
