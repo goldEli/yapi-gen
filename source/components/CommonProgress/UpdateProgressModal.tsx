@@ -143,15 +143,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
               onChange={onChange}
               tooltip={{ formatter: (val: any) => `${val}%` }}
             />
-            <InputNumber
-              className="inputNumber"
-              value={inputValue}
-              min={0}
-              max={100}
-              step={1}
-              style={{ margin: '0 16px' }}
-              onChange={(val: any) => onChange(val)}
-            />
+            <span style={{ marginLeft: 8 }}>{inputValue}%</span>
           </div>
         </div>
         <Form form={form} layout="vertical" autoComplete="off">
