@@ -175,6 +175,7 @@ interface CheckBoxGroupType {
 const DailyReportRules = () => {
   const [form1] = Form.useForm()
   const [form2] = Form.useForm()
+  const [form3] = Form.useForm()
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
   const projectId = useSelector(store => store.project.projectInfo.id)
@@ -182,6 +183,7 @@ const DailyReportRules = () => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [open1, setOpen1] = useState(true)
   const [open2, setOpen2] = useState(true)
+  const [open3, setOpen3] = useState(true)
   const [typeId, setTypeId] = useState(0)
   const [formAll, setFormAll] = useState<any>({})
 
@@ -582,6 +584,72 @@ const DailyReportRules = () => {
                 </CommonButton>
 
                 <CommonButton type="primary" onClick={() => save(2)}>
+                  {t('formWork.save2')}
+                </CommonButton>
+              </FooterWrap>
+            </DailyReportRulesWrap>
+          ) : null}
+        </ReportWrap>
+        <ReportWrap>
+          <HeaderWrap onClick={() => setOpen3(!open3)}>
+            <span>{t('xmsc')}</span>
+            <IconFont
+              type={open1 ? 'up' : 'down'}
+              style={{
+                color: ' var(--auxiliary-text-t2-d1)',
+                fontSize: '8',
+                cursor: 'pointer',
+              }}
+            />
+          </HeaderWrap>
+          {open3 ? (
+            <DailyReportRulesWrap
+              layout="vertical"
+              form={form3}
+              onValuesChange={onValuesChange}
+            >
+              <Form.Item
+                style={{ marginTop: 16 }}
+                label={t('qm')}
+                name="group_name"
+                required
+                validateFirst
+                rules={[
+                  { required: true, message: t('q') },
+                  {
+                    validator: (_, value: string) =>
+                      value?.trim()
+                        ? Promise.resolve()
+                        : Promise.reject(new Error(t('groupError'))),
+                  },
+                ]}
+              >
+                <InputStyle placeholder={t('q')} maxLength={100} allowClear />
+              </Form.Item>
+              <Form.Item
+                label={t('dd')}
+                name="webhook"
+                required
+                rules={[
+                  {
+                    required: true,
+                    message: t('p1'),
+                    // eslint-disable-next-line
+                    pattern: /https:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/,
+                  },
+                ]}
+              >
+                <InputStyle placeholder={t('q')} allowClear />
+              </Form.Item>
+              <FooterWrap>
+                <CommonButton
+                  type="light"
+                  style={{ marginRight: '16px' }}
+                  onClick={() => cancel(1)}
+                >
+                  {t('common.cancel')}
+                </CommonButton>
+                <CommonButton type="primary" onClick={() => save(3)}>
                   {t('formWork.save2')}
                 </CommonButton>
               </FooterWrap>

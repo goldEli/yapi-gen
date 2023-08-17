@@ -375,7 +375,6 @@ const Undistributed = (props: any) => {
             <ClickWrap
               className="canClickDetail"
               isClose={record.category_status?.is_end === 1}
-              style={{ marginRight: 16 }}
             >
               <div className="text">{record.storyPrefixKey}</div>
               {
