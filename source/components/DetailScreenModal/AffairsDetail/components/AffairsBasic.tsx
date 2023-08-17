@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { BasicContent, BasicFooter, BasicWrap } from '../style'
 import { detailTimeFormat } from '@/tools'
 import { Tooltip } from 'antd'
-import { CloseWrap } from '@/components/StyleCommon'
+import { CloseWrap, ConfigWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useNavigate } from 'react-router-dom'
 import { getAffairsInfo } from '@store/affairs/affairs.thunk'
@@ -78,11 +78,10 @@ const AffairsBasic = (props: Props) => {
             {detailTimeFormat(affairsInfo.update_at as string)}
           </span>
         </div>
-        <Tooltip title={t('configurationFields')}>
-          <CloseWrap width={32} height={32} onClick={onToConfig}>
-            <CommonIconFont type="settings" />
-          </CloseWrap>
-        </Tooltip>
+        <ConfigWrap onClick={onToConfig}>
+          <CommonIconFont type="settings" />
+          <div>{t('configurationFields')}</div>
+        </ConfigWrap>
       </BasicFooter>
     </BasicWrap>
   )
