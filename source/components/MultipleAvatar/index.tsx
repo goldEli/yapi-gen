@@ -109,6 +109,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
                       <ItemWrap>
                         <IconFont
                           style={{
+                            alignSelf: 'flex-start',
                             fontSize: 16,
                             marginRight: '8px',
                             color: 'var(--neutral-n3)',
