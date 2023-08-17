@@ -379,42 +379,6 @@ const ReportDetailDrawer = () => {
             />
           </BackIcon>
         </Space>
-        {/* <Space size={16}>
-          <ChangeIconGroup>
-            {currentIndex > 0 && (
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={
-                  reportIds?.length === 0 ||
-                  currentIndex === reportIds?.length - 1
-                }
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
-            )}
-
-            {!(
-              reportIds?.length === 0 || currentIndex === reportIds?.length - 1
-            ) && (
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </DownWrap>
-            )}
-          </ChangeIconGroup>
-        </Space> */}
       </Header>
       <Content isReview={isReview} ref={reviewRef}>
         {skeletonLoading && <ReportDetailSkeleton />}

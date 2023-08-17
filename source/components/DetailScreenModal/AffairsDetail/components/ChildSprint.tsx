@@ -424,13 +424,15 @@ const ChildSprint = (
         <Label>{t('subtransaction')}</Label>
         <Space size={12}>
           {!isSearch && (
-            <CloseWrap width={32} height={32} onClick={onClickSearch}>
-              <CommonIconFont
-                size={20}
-                type="search"
-                color="var(--neutral-n2)"
-              />
-            </CloseWrap>
+            <Tooltip title={t('searchForSubtransactions')}>
+              <CloseWrap width={32} height={32} onClick={onClickSearch}>
+                <CommonIconFont
+                  size={20}
+                  type="search"
+                  color="var(--neutral-n2)"
+                />
+              </CloseWrap>
+            </Tooltip>
           )}
           {isSearch && (
             <Space size={16}>
@@ -453,14 +455,16 @@ const ChildSprint = (
             </Space>
           )}
           {!isEnd && (
-            <CloseWrap width={32} height={32}>
-              <CommonIconFont
-                type="plus"
-                size={20}
-                color="var(--neutral-n2)"
-                onClick={onCreateChild}
-              />
-            </CloseWrap>
+            <Tooltip title={t('addSubtransaction')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={onCreateChild}
+                />
+              </CloseWrap>
+            </Tooltip>
           )}
         </Space>
       </LabelWrap>

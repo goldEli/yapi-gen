@@ -2216,7 +2216,8 @@
     "cancelExamineSuccess": "取消审核成功"
   },
   "yc": "移出项目成员",
-  "rb": "日报生成配置",
+  "rb": "单人日报生成配置",
+  "xmsc": "项目日报生成配置",
   "qm": "群名称",
   "q": "请输入",
   "dd": "钉钉webhook地址",
@@ -2286,5 +2287,15 @@
   "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation": "[今日截止]中存在重复的任务，请取消重复关联",
   "thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2": "[逾期任务]中存在重复的任务，请取消重复关联",
   "noUN": "无未指派数据",
-  "spent": "工时花费"
+  "spent": "工时花费",
+  "searchForSubtransactions": "搜索子事务",
+  "addSubtransaction": "添加子事务",
+  "addLinkTransaction": "添加链接事务",
+  "previous": "上一个",
+  "next": "下一个",
+  "openDetails": "打开详情",
+  "more": "更多",
+  "closure": "关闭",
+  "searchForSubrequirements": "搜索子需求",
+  "linkTask": "链接任务"
 }

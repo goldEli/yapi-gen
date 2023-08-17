@@ -738,81 +738,72 @@ const FlawDetailDrawer = () => {
                 <Skeleton.Input active />
               </SkeletonStatus>
             )}
-            {/* {!skeletonLoading && (
-              <ChangeStatusPopover
-                isCanOperation={isCanEdit && !drawerInfo.isExamine}
-                projectId={drawerInfo.projectId}
-                record={drawerInfo}
-                onChangeStatus={onChangeStatus}
-                type={1}
-              >
-                <StateTag
-                  name={drawerInfo?.status?.status?.content}
-                  onClick={drawerInfo.isExamine ? onExamine : void 0}
-                  isShow={isCanEdit || drawerInfo.isExamine}
-                  state={
-                    drawerInfo?.status?.is_start === 1 &&
-                    drawerInfo?.status?.is_end === 2
-                      ? 1
-                      : drawerInfo?.status?.is_end === 1 &&
-                        drawerInfo?.status?.is_start === 2
-                      ? 2
-                      : drawerInfo?.status?.is_start === 2 &&
-                        drawerInfo?.status?.is_end === 2
-                      ? 3
-                      : 0
-                  }
-                />
-              </ChangeStatusPopover>
-            )} */}
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
               {currentIndex > 0 && (
-                <UpWrap
-                  onClick={onUpDemand}
-                  id="upIcon"
-                  isOnly={
-                    demandIds?.length === 0 ||
-                    currentIndex === demandIds?.length - 1
-                  }
-                >
-                  <CommonIconFont
-                    type="up"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </UpWrap>
+                <Tooltip title={t('previous')}>
+                  <UpWrap
+                    onClick={onUpDemand}
+                    id="upIcon"
+                    isOnly={
+                      demandIds?.length === 0 ||
+                      currentIndex === demandIds?.length - 1
+                    }
+                  >
+                    <CommonIconFont
+                      type="up"
+                      size={20}
+                      color="var(--neutral-n1-d1)"
+                    />
+                  </UpWrap>
+                </Tooltip>
               )}
               {!(
                 demandIds?.length === 0 ||
                 currentIndex === demandIds?.length - 1
               ) && (
-                <DownWrap
-                  onClick={onDownDemand}
-                  id="downIcon"
-                  isOnly={currentIndex <= 0}
-                >
-                  <CommonIconFont
-                    type="down"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </DownWrap>
+                <Tooltip title={t('next')}>
+                  <DownWrap
+                    onClick={onDownDemand}
+                    id="downIcon"
+                    isOnly={currentIndex <= 0}
+                  >
+                    <CommonIconFont
+                      type="down"
+                      size={20}
+                      color="var(--neutral-n1-d1)"
+                    />
+                  </DownWrap>
+                </Tooltip>
               )}
             </ChangeIconGroup>
-            <CommonButton type="icon" icon="share" onClick={onShare} />
-            <CommonButton type="icon" icon="full-screen" onClick={onToDetail} />
-            <DropdownMenu
-              placement="bottomRight"
-              trigger={['click']}
-              menu={{ items: onGetMenu() }}
-              getPopupContainer={n => n}
-            >
+            <Tooltip title={t('share')}>
               <div>
-                <CommonButton type="icon" icon="more" />
+                <CommonButton type="icon" icon="share" onClick={onShare} />
               </div>
-            </DropdownMenu>
+            </Tooltip>
+            <Tooltip title={t('openDetails')}>
+              <div>
+                <CommonButton
+                  type="icon"
+                  icon="full-screen"
+                  onClick={onToDetail}
+                />
+              </div>
+            </Tooltip>
+            <Tooltip title={t('more')}>
+              <DropdownMenu
+                placement="bottomRight"
+                trigger={['click']}
+                menu={{ items: onGetMenu() }}
+                getPopupContainer={n => n}
+              >
+                <div>
+                  <CommonButton type="icon" icon="more" />
+                </div>
+              </DropdownMenu>
+            </Tooltip>
           </Space>
         </Header>
         <Content id="contentDom">
