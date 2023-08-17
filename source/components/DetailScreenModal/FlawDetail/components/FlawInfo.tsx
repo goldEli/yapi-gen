@@ -13,7 +13,7 @@ import {
 } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Tooltip } from 'antd'
-import { CloseWrap } from '@/components/StyleCommon'
+import { CloseWrap, ConfigWrap } from '@/components/StyleCommon'
 import { detailTimeFormat } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
@@ -140,11 +140,10 @@ const FlawInfo = () => {
               {t('updated')} {detailTimeFormat(flawInfo.update_at as string)}
             </span>
           </div>
-          <Tooltip title={t('configurationFields')}>
-            <CloseWrap width={32} height={32} onClick={onToConfig}>
-              <CommonIconFont type="settings" />
-            </CloseWrap>
-          </Tooltip>
+          <ConfigWrap onClick={onToConfig}>
+            <CommonIconFont type="settings" />
+            <div>{t('configurationFields')}</div>
+          </ConfigWrap>
         </BasicFooter>
       </WrapRight>
     </FlawInfoWrap>

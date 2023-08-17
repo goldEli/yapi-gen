@@ -694,7 +694,7 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
 const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
   {
     marginLeft: 16,
-    color: 'var(--primary-d2)',
+    color: 'var(--neutral-n4)',
     visibility: 'hidden',
   },
   ({ isTable }) => ({
@@ -1054,6 +1054,21 @@ const Tag = styled.div`
   margin-left: 8px;
   font-size: 12px;
 `
+
+const ConfigWrap = styled.div`
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  div {
+    margin-left: 10px;
+  }
+  &:hover {
+    color: var(--primary-d1);
+  }
+`
+
 export {
   Tag,
   ChartsItem1,
@@ -1115,4 +1130,5 @@ export {
   ChartsItem333,
   TableBorder,
   canEditHover,
+  ConfigWrap,
 }

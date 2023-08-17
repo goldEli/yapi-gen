@@ -207,6 +207,7 @@ const progressStatusMap: { [key: string]: 'success' | 'exception' | 'active' } =
   }
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
+const disabledFile = ['exe', 'bat', 'com', 'vbs', 'reg', 'sh']
 
 const UploadAttach = (props: any, ref: any) => {
   const [previewUrl, setPreviewUrl] = useState('')
@@ -264,10 +265,10 @@ const UploadAttach = (props: any, ref: any) => {
   }
 
   function isFormatType(str: string) {
-    return (
-      ['exe', 'bat', 'com', 'vbs', 'reg', 'sh'].indexOf(str.toLowerCase()) !==
-      -1
-    )
+    if (props?.special?.length >= 1) {
+      return props.special.indexOf(str.toLowerCase()) === -1
+    }
+    return disabledFile.indexOf(str.toLowerCase()) !== -1
   }
 
   const isFormat = (value: string) => {
@@ -279,7 +280,10 @@ const UploadAttach = (props: any, ref: any) => {
   const onUploadBefore = (file: any) => {
     if (isFormat(file.name)) {
       getMessage({
-        msg: `${t('p2.text')}['exe', 'bat', 'com', 'vbs', 'reg', 'sh']`,
+        msg:
+          props?.special?.length >= 1
+            ? `${t('p2.text')}${props?.special}`
+            : `${t('p2.text')}${disabledFile}`,
         type: 'warning',
         num: 3,
       })

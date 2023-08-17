@@ -10,7 +10,7 @@ import {
   Tabs,
   Tooltip,
 } from 'antd'
-import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
+import { CloseWrap, ConfigWrap, DragLine, MouseDom } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import {
@@ -994,11 +994,10 @@ const FlawDetailDrawer = () => {
                 {detailTimeFormat(drawerInfo.update_at as string)}
               </span>
             </div>
-            <Tooltip title={t('configurationFields')}>
-              <CloseWrap width={32} height={32} onClick={onToConfig}>
-                <CommonIconFont type="settings" />
-              </CloseWrap>
-            </Tooltip>
+            <ConfigWrap onClick={onToConfig}>
+              <CommonIconFont type="settings" />
+              <div>{t('configurationFields')}</div>
+            </ConfigWrap>
           </DetailFooter>
         </Content>
         <CommentFooter
