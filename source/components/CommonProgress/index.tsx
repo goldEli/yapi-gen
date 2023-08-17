@@ -84,7 +84,7 @@ const CommonProgress = (props: ProgressProps) => {
           }
         >
           {isKanBan ? (
-            <div>{`${data?.total_schedule ?? 0}%`}</div>
+            <div>{`${percent ?? 0}%`}</div>
           ) : isTable ? (
             <div style={{ width: 124, cursor: 'pointer' }}>
               <Progress
