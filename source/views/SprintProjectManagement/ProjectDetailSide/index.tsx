@@ -88,7 +88,6 @@ const ProjectDetailSide = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
-
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
@@ -224,7 +223,7 @@ const ProjectDetailSide = () => {
       path: '/SprintProjectManagement/KanBan',
       isPermission:
         projectInfo?.projectPermissions?.filter((i: any) =>
-          String(i.group_name).includes('面板'),
+          String(i.group_name).includes('Kanban'),
         ).length > 0,
       key: 'KanBan',
     },
