@@ -44,6 +44,13 @@ export const set_create_config: any = async (params: any) => {
   )
   return response
 }
+export const dailyConfigsetProjectConfig = async (params: any) => {
+  const response: any = await http.post<any>(
+    '/b/project/daily_config/set_project_config',
+    params,
+  )
+  return response
+}
 //设置自动发送配置
 export const set_auto_send_config: any = async (params: any) => {
   const p = {
