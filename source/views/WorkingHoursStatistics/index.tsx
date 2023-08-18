@@ -1,11 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
-import { WorkHoursWrap } from './style'
+import { WorkHoursWrap, MianWrap } from './style'
 import WorkHoursHeader from './components/WorkHoursHeader'
+import TableLeft from './components/TableLeft'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const onInputSearch = () => {}
   return (
     <WorkHoursWrap>
@@ -14,6 +15,9 @@ const WorkHours: React.FC<IProps> = props => {
         title={t('search_for_transaction_name_or_number')}
       />
       <WorkHoursHeader />
+      <MianWrap>
+        <TableLeft />
+      </MianWrap>
     </WorkHoursWrap>
   )
 }
