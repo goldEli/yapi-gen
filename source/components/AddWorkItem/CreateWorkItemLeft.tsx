@@ -274,17 +274,6 @@ const CreateDemandLeft = (props: Props) => {
     props.onSaveProjectInfo(result)
     if (result?.projectPermissions?.length <= 0) {
       onClearProjectId()
-    } else {
-      const update =
-        result.projectType === 1 ? 'b/story/update' : 'b/transaction/update'
-      const save =
-        result.projectType === 1 ? 'b/story/save' : 'b/transaction/save'
-      // 是否有创建需求权限
-      isCreateDemand =
-        result?.projectPermissions?.filter(
-          (i: any) => i.identity === (params?.editId ? update : save),
-        )?.length > 0
-      props.onGetCreateWorkItem(isCreateDemand)
     }
   }
 
@@ -439,6 +428,24 @@ const CreateDemandLeft = (props: Props) => {
       getCategoryField(categoryObj?.id)
       getStatusList(categoryObj?.id)
       props.onChangeCategoryType(categoryObj?.work_type)
+      const update =
+        projectInfo.projectType === 1
+          ? categoryObj?.work_type === 2
+            ? 'b/flaw/update'
+            : 'b/story/update'
+          : 'b/transaction/update'
+      const save =
+        projectInfo.projectType === 1
+          ? categoryObj?.work_type === 2
+            ? 'b/flaw/save'
+            : 'b/story/save'
+          : 'b/transaction/save'
+      // 是否有创建需求权限
+      isCreateDemand =
+        projectInfo?.projectPermissions?.filter(
+          (i: any) => i.identity === (params?.editId ? update : save),
+        )?.length > 0
+      props.onGetCreateWorkItem(isCreateDemand)
       return
     }
     form.setFieldsValue({
