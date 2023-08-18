@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import { WorkHoursWrap } from './style'
+import WorkHoursPanel from './components/WorkHoursPanel'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
   const [t, i18n] = useTranslation()
@@ -12,6 +13,7 @@ const WorkHours: React.FC<IProps> = props => {
         onInputSearch={onInputSearch}
         title={t('search_for_transaction_name_or_number')}
       />
+      <WorkHoursPanel></WorkHoursPanel>
     </WorkHoursWrap>
   )
 }
