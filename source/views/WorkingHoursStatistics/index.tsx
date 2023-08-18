@@ -5,6 +5,7 @@ import WorkHoursPanel from './components/WorkHoursPanel'
 import { WorkHoursWrap, MianWrap } from './style'
 import WorkHoursHeader from './components/WorkHoursHeader'
 import TableLeft from './components/TableLeft'
+
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
   const [t] = useTranslation()
@@ -19,7 +20,7 @@ const WorkHours: React.FC<IProps> = props => {
       <WorkHoursHeader />
       <MianWrap>
         <TableLeft />
-        <WorkHoursPanel></WorkHoursPanel>
+        <WorkHoursPanel />
       </MianWrap>
     </WorkHoursWrap>
   )

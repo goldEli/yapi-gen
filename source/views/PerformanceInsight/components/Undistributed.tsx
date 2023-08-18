@@ -694,11 +694,7 @@ const Undistributed = (props: any) => {
     onOperationCheckbox('remove')
     onUpdate(page, size)
   }
-  // const hasBatch = getIsPermission(
-  //   projectInfo?.projectPermissions,
-  //   'b/story/batch',
-  // )
-  const hasBatch = true
+
   return (
     <div
       style={{
@@ -725,36 +721,13 @@ const Undistributed = (props: any) => {
           dataWrapNormalHeight="calc(100% - 48px)"
           col={colum}
           dataSource={data?.list}
-          // rowSelection={
-          //   {
-          //     selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-          //     onSelect: (record: any, selected: any) =>
-          //       onSelectChange(record, selected),
-          //     onSelectAll,
-          //   } as any
-          // }
           noData={
-            <NoData subText={t('noUN')} haveFilter={filterKeys?.length > 0}>
-              {/* <CommonButton
-                type="light"
-                onClick={() => 123}
-                style={{ marginTop: 24 }}
-              >
-                {t('createTransaction')}
-              </CommonButton> */}
-            </NoData>
+            <NoData
+              subText={t('noUN')}
+              haveFilter={filterKeys?.length > 0}
+            ></NoData>
           }
         />
-        {/* {hasBatch && (
-          <FloatBatch
-            isVisible={selectedRowKeys.length > 0}
-            onClose={() => onSelectAll(false)}
-            selectRows={selectedRowKeys}
-            onUpdate={onUpdate}
-            onRef={batchDom}
-            type={1}
-          />
-        )} */}
         <PaginationBox
           currentPage={data?.pager?.page}
           pageSize={data?.pager?.pagesize}
