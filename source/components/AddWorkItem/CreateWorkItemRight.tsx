@@ -4,7 +4,7 @@ import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import { getTypeComponent, removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { Checkbox, DatePicker, Form, Input, Select, TreeSelect } from 'antd'
 import moment from 'moment'
 import { useState, useEffect, useImperativeHandle } from 'react'
@@ -15,6 +15,7 @@ import IconFont from '../IconFont'
 import StateTag from '../StateTag'
 import { PriorityWrap, SeverityWrap, SliderWrap } from '../StyleCommon'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
+import { setAddWorkItemParentList } from '@store/project'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -50,9 +51,11 @@ interface Props {
   isCreateDemand?: boolean
   newCategory?: any
   categoryType?: number
+  onGetParentList(val?: string): void
 }
 
 const CreateDemandRight = (props: Props) => {
+  const dispatch = useDispatch()
   const info = useGetloginInfo()
   const [t] = useTranslation()
   const [form] = Form.useForm()
@@ -64,6 +67,7 @@ const CreateDemandRight = (props: Props) => {
   const [severity, setSeverity] = useState<any>(0)
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
+  const [searchVal, setSearchVal] = useState<any>('')
   const {
     projectInfoValues,
     filterParamsModal,
@@ -141,6 +145,7 @@ const CreateDemandRight = (props: Props) => {
       props?.detail?.id &&
       params?.editId === props?.detail?.id
     ) {
+      // 编辑弹窗
       // 需求进度
       setSchedule(props?.detail?.schedule)
 
@@ -187,13 +192,7 @@ const CreateDemandRight = (props: Props) => {
           : null
       }
 
-      // 如果是子需求创建或编辑，默认父需求填入当前需求id
-      if (params.isChild) {
-        hasChild = addWorkItemParentList?.filter(
-          (i: any) => i.value === Number(params?.parentId),
-        )[0]?.value
-      }
-
+      console.log(props.detail, '=params.isChildparams.isChild')
       form.setFieldsValue({
         status: props.newCategory?.statusId ?? props.detail?.status.status_id,
 
@@ -231,13 +230,7 @@ const CreateDemandRight = (props: Props) => {
           : undefined,
 
         // 父需求
-        parent_id: params.isChild
-          ? hasChild
-          : addWorkItemParentList?.filter(
-              (i: any) => i.value === props?.detail?.parentId,
-            ).length
-          ? props?.detail?.parentId
-          : null,
+        parent_id: props.detail.parent ? props.detail.parent?.[0].value : null,
 
         // 需求分类
         class: props?.detail.class || null,
@@ -251,12 +244,10 @@ const CreateDemandRight = (props: Props) => {
           (i: any) => i.is_start === 1,
         )?.[0]?.statusId,
       })
-      // 子需求默认回填父需求
+      // 子需求默认回填父需求 - 取传入的父需求
       if (params?.isChild || params?.isCreateAffairsChild) {
         form.setFieldsValue({
-          parent_id: addWorkItemParentList?.filter(
-            (i: any) => i.value === Number(params?.parentId),
-          )[0]?.value,
+          parent_id: params?.parentList ? params?.parentList?.[0]?.value : null,
         })
       }
 
@@ -408,7 +399,6 @@ const CreateDemandRight = (props: Props) => {
   }, [
     params?.editId,
     props?.detail,
-    addWorkItemParentList,
     props.fieldsList,
     props.workStatusList,
     props.newCategory,
@@ -444,6 +434,8 @@ const CreateDemandRight = (props: Props) => {
     setPriorityDetail({})
     setSeverity(0)
     setIsShowFields(false)
+    setSearchVal('')
+    dispatch(setAddWorkItemParentList([]))
   }
 
   // 提交右侧参数
@@ -539,6 +531,12 @@ const CreateDemandRight = (props: Props) => {
     })
 
     return newA.concat(newB)
+  }
+
+  // 获取父需求列表
+  const onGetParent = (value?: string) => {
+    props.onGetParentList(value)
+    setSearchVal(value)
   }
 
   // 返回基本字段
@@ -668,16 +666,15 @@ const CreateDemandRight = (props: Props) => {
           style={{ width: '100%' }}
           showArrow
           showSearch
+          onFocus={() => onGetParent()}
+          onSearch={(value: string) => onGetParent(value)}
           placeholder={t('common.pleaseParentDemand')}
           options={
-            params?.editId
-              ? addWorkItemParentList?.filter(
-                  (k: any) =>
-                    k.value !== params?.editId &&
-                    k.parentId !== params?.editId &&
-                    k.parentId !== props?.detail?.parentId,
-                )
-              : addWorkItemParentList
+            addWorkItemParentList?.length > 0
+              ? addWorkItemParentList
+              : params?.editId
+              ? props.detail?.parent
+              : params?.parentList
           }
           getPopupContainer={(node: any) => node}
           optionFilterProp="label"

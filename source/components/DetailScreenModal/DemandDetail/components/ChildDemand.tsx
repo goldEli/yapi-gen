@@ -283,6 +283,7 @@ const ChildDemand = (props: ChildDemandProps) => {
           projectId: item.project_id ?? item.projectId,
           isChild: true,
           parentId: item.id,
+          parentList: item.parent,
           categoryId: item.categoryId ?? item.category,
           type: 1,
           title: t('createSubrequirements'),

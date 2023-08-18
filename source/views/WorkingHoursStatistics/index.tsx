@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
+import WorkHoursPanel from './components/WorkHoursPanel'
 import { WorkHoursWrap, MianWrap } from './style'
 import WorkHoursHeader from './components/WorkHoursHeader'
 import TableLeft from './components/TableLeft'
@@ -15,9 +16,11 @@ const WorkHours: React.FC<IProps> = props => {
         onInputSearch={onInputSearch}
         title={t('search_for_transaction_name_or_number')}
       />
+
       <WorkHoursHeader />
       <MianWrap>
         <TableLeft />
+        <WorkHoursPanel></WorkHoursPanel>
       </MianWrap>
     </WorkHoursWrap>
   )
