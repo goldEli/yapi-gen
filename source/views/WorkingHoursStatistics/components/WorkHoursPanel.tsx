@@ -8,9 +8,10 @@ import {
   Working,
   Leave,
   NotWorking,
+  DateLabel,
+  TimeLabel,
 } from '../style'
 import classNames from 'classnames'
-import ResizeTable from '@/components/ResizeTable'
 interface IProps {}
 const WorkHoursPanel: React.FC<IProps> = props => {
   const a = [
@@ -21,6 +22,9 @@ const WorkHoursPanel: React.FC<IProps> = props => {
         { date: '29', time: '6小时' },
         { date: '30', time: -2 },
         { date: '31', time: -1 },
+        { date: '1', time: '6小时' },
+        { date: '2', time: -2 },
+        { date: '3', time: -1 },
       ],
     },
     {
@@ -30,6 +34,9 @@ const WorkHoursPanel: React.FC<IProps> = props => {
         { date: '29', time: '12小时' },
         { date: '30', time: -1 },
         { date: '31', time: -2 },
+        { date: '1', time: '6小时' },
+        { date: '2', time: -2 },
+        { date: '3', time: -1 },
       ],
     },
     {
@@ -39,6 +46,9 @@ const WorkHoursPanel: React.FC<IProps> = props => {
         { date: '29', time: -1 },
         { date: '30', time: '20小时' },
         { date: '31', time: '16小时' },
+        { date: '1', time: '6小时' },
+        { date: '2', time: -2 },
+        { date: '3', time: -1 },
       ],
     },
   ]
@@ -77,13 +87,16 @@ const WorkHoursPanel: React.FC<IProps> = props => {
   return (
     <PanelWrap>
       <Header>
-        {columns.map((item, idx) => {
-          return (
-            <div key={idx} className="header-td">
-              {item}
-            </div>
-          )
-        })}
+        <DateLabel>2023-09-09</DateLabel>
+        <TimeLabel>
+          {columns.map((item, idx) => {
+            return (
+              <div key={idx} className="header-td">
+                {item}
+              </div>
+            )
+          })}
+        </TimeLabel>
       </Header>
       {rows.map((row: any, rowIndex: any) => {
         return (

@@ -31,9 +31,20 @@ export const Cols = styled.div`
 `
 export const Header = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+`
+export const DateLabel = styled.div`
+  font-size: 12px;
+  color: var(--neutral-n3);
+  padding-left: 16px;
+  margin-bottom: 4px;
+`
+export const TimeLabel = styled.div`
+  display: flex;
   .header-td {
     width: 72px;
-    height: 44px;
+    height: 28px;
     display: flex;
     align-items: center;
     color: var(--neutral-n3);
