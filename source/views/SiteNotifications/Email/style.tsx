@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export const Content = styled.div`
-  padding: 48px 56px;
+  padding: 48px 0px;
 `
 
 export const Content1 = styled.div<{ margin?: number }>`
