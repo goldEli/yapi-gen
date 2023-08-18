@@ -365,6 +365,7 @@ const DemandDetailDrawer = () => {
           projectId: drawerInfo.projectId,
           isChild: true,
           parentId: item.id,
+          parentList: item.parent,
           categoryId: item.categoryId,
           type: 1,
           title: t('createSubrequirements'),

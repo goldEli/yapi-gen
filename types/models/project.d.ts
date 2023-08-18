@@ -69,6 +69,9 @@ declare namespace Model.Project {
     title?: string
     // 是否创建子事务
     isCreateAffairsChild?: boolean
+
+    // 传入的父需求列表-回显
+    parentList?: { value: number; label: string }[]
   }
   interface Category {
     active?: boolean

@@ -186,6 +186,8 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
       solution: i.solution,
       userAvatar: i.user_avatar,
       copy_send_users: i.copy_send_users,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     })),
   }
 }
@@ -279,6 +281,8 @@ export const getChildFlawList = async (params: any) => {
       solution: i.solution,
       userAvatar: i.user_avatar,
       copy_send_users: i.copy_send_users,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     })),
   }
 }
@@ -379,6 +383,10 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
       : null,
     comment_total: response.data.comment_total,
     relation_stories: response.data.relation_stories,
+    // 父需求列表
+    parent: [
+      { value: response.data.parent?.id, label: response.data.parent?.name },
+    ],
   }
 }
 

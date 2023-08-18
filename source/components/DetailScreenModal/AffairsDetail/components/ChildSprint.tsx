@@ -366,6 +366,7 @@ const ChildSprint = (
           title: t('createSubtransaction'),
           isCreateAffairsChild: true,
           parentId: props.detail.id,
+          parentList: props.detail.parent,
         },
       }),
     )
