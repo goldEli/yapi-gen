@@ -20,7 +20,7 @@ const WorkHours: React.FC<IProps> = props => {
       <WorkHoursHeader />
       <MianWrap>
         <TableLeft />
-        <WorkHoursPanel></WorkHoursPanel>
+        <WorkHoursPanel />
       </MianWrap>
     </WorkHoursWrap>
   )
