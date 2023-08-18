@@ -25,7 +25,7 @@ import {
 } from '@/services/efficiency'
 import { RowText } from './style'
 import { getDays, getMonthBefor } from './Date'
-import ExportSuccess from '../Header/components/ExportSuccess'
+import ExportSuccess from '@/components/ExportSuccess'
 import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
