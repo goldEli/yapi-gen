@@ -169,6 +169,9 @@ const AffairsInfo = (props: Props) => {
   const handleScroll = (e: any) => {
     setIsScroll(!(e.target.scrollTop < 60))
     // 滚动容器
+    if (!document.querySelector('.sprintDetail_dom')) {
+      return
+    }
     const { scrollTop } = document.querySelector(
       '.sprintDetail_dom',
     ) as HTMLElement

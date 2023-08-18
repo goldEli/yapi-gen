@@ -634,6 +634,9 @@ const DemandDetailDrawer = () => {
     if (isTabClick.current) {
       return
     }
+    if (!document.querySelector('#contentDom')) {
+      return
+    }
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
     const titleItems = document.querySelectorAll('.info_item_tab')

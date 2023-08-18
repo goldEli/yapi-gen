@@ -586,6 +586,9 @@ const SprintDetailDrawer = () => {
     if (isTabClick.current) {
       return
     }
+    if (!document.querySelector('#contentDom')) {
+      return
+    }
     // 滚动容器
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
     // 所有标题节点
