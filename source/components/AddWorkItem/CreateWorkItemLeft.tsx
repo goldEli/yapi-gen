@@ -206,13 +206,14 @@ const CreateDemandLeft = (props: Props) => {
     setTagCheckedList([])
   }
 
-  // 获取父需求列表
-  const getParentData = (id?: number) => {
+  // 获取父需求列表 searchVal:父需求搜索值
+  const getParentData = (searchVal?: string) => {
     dispatch(
       getParentList({
         projectId: props.projectId,
         id: params?.editId,
-        categoryId: id ?? categoryObj.id,
+        categoryId: categoryObj.id,
+        keyword: searchVal,
       }),
     )
   }
@@ -437,7 +438,6 @@ const CreateDemandLeft = (props: Props) => {
       })
       getCategoryField(categoryObj?.id)
       getStatusList(categoryObj?.id)
-      // getParentData(categoryObj.id)
       props.onChangeCategoryType(categoryObj?.work_type)
       return
     }
