@@ -202,6 +202,9 @@ export const projectSlice = createSlice({
     setTableFilter: (state: any, action) => {
       state.tableFilter = action.payload
     },
+    setAddWorkItemParentList: (state: any, action) => {
+      state.addWorkItemParentList = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
@@ -235,6 +238,7 @@ export const {
   setDrawerCanOperation,
   setDrawerCurrentAnchor,
   setTableFilter,
+  setAddWorkItemParentList,
 } = projectSlice.actions
 
 export default projectSlice.reducer
