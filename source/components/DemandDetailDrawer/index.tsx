@@ -196,7 +196,7 @@ const DemandDetailDrawer = () => {
     },
     {
       key: 'tab_comment',
-      label: t('comment'),
+      label: t('demandComment'),
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
@@ -632,6 +632,9 @@ const DemandDetailDrawer = () => {
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
     if (isTabClick.current) {
+      return
+    }
+    if (!document.querySelector('#contentDom')) {
       return
     }
     const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
