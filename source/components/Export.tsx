@@ -1,9 +1,51 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonModal from '@/components/CommonModal'
 import { useState } from 'react'
-import { MsgText, Row, Text, TextColor } from '../Style'
 import WacthExportPerson from './WacthExportPerson'
 import { useTranslation } from 'react-i18next'
+import styled from '@emotion/styled'
+const MsgText = styled.div`
+  padding: 0 16px;
+  margin: 0 24px;
+  // width: 384px;
+  height: 40px;
+  border-radius: 6px;
+  background: rgba(250, 151, 70, 0.1);
+  font-size: 14px;
+  color: var(--function-warning);
+  display: flex;
+  align-items: center;
+  .text {
+    margin-left: 8px;
+  }
+  .msg {
+    color: var(--neutral-n2);
+    font-size: 12px;
+  }
+`
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 24px;
+  margin-top: 29px;
+  color: var(--neutral-n2);
+`
+const TextColor = styled.span`
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
+`
+const Text = styled.span`
+  font-size: 14px;
+  color: var(--auxiliary-text-t2-d2);
+  .text {
+    margin-right: 8px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`
 interface PropsType {
   title: string
   isVisible: boolean

@@ -17,6 +17,7 @@ import { editMyAllNoteSet } from '@/services/SiteNotifications'
 import { setMyEmailConfiguration } from '@store/SiteNotifications'
 import { getMessage } from '@/components/Message'
 import { useNavigate } from 'react-router-dom'
+import EmailBox from '../components/EmailBox/EmailBox'
 
 const Email = () => {
   const [t] = useTranslation()
@@ -90,43 +91,70 @@ const Email = () => {
         </CommonButton>
       </First>
       <Content>
-        <Content1 margin={16}>
-          {t(
-            'ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout',
+        <EmailBox
+          style={{ marginBottom: '48px' }}
+          t1={t('notificationReceivingMethod')}
+          t2={t(
+            'setEmailToReceiveTimelyUpdatesOnTheAffairsAndCommentsOfTheParticipatingProjects',
           )}
-          {/* <span style={{ marginLeft: '250px' }}>
-            <Switch checked={active} onChange={onChange} />
-          </span> */}
-        </Content1>
-        {active ? (
-          <ActiveContentEmail2 active={active}>
-            <Content1 margin={48}>
-              {t('use_this_email_to_receive')}
-              {email ? <ContentEmail>{email}</ContentEmail> : '--'}
-            </Content1>
-
-            <Content1 margin={8}>
-              {t('what_situations_require_email_notification')}
-            </Content1>
-            <div
+        >
+          <div
+            style={{
+              padding: '24px 32px',
+            }}
+          >
+            <span
               style={{
-                display: 'flex',
-                gap: '12px',
-                flexWrap: 'wrap',
+                color: 'var(--neutral-n1-d1)',
               }}
             >
-              {emailConfigurations?.map((i: any) => (
-                <ContentEmail2
-                  active={choose.includes(i.id)}
-                  onClick={() => onChoose(i.id)}
-                  key={i.id}
-                >
-                  {i.text}
-                </ContentEmail2>
-              ))}
-            </div>
-          </ActiveContentEmail2>
-        ) : null}
+              {t('theCurrentEmailAddressIs')}：
+            </span>
+            {email ? (
+              <span
+                style={{
+                  fontFamily: 'SiYuanMedium',
+                  color: 'var(--neutral-n1-d1)',
+                }}
+              >
+                {email}
+              </span>
+            ) : (
+              '--'
+            )}
+          </div>
+        </EmailBox>
+        <EmailBox
+          t1={t('notificationPushCategory')}
+          t2={t('selectTheDynamicCategoryOfTheProjectThatNeedsToBeReceived')}
+        >
+          <div
+            style={{
+              padding: '24px 32px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '16px',
+            }}
+          >
+            {emailConfigurations?.map((i: any) => (
+              <div
+                style={{
+                  width: '300px',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+                key={i.id}
+              >
+                <Switch
+                  size="small"
+                  checked={choose.includes(i.id)}
+                  onChange={() => onChoose(i.id)}
+                />
+                <span style={{ marginLeft: '6px' }}>{i.text}</span>
+              </div>
+            ))}
+          </div>
+        </EmailBox>
       </Content>
     </Wrap>
   )

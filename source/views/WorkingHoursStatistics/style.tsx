@@ -2,8 +2,19 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 export const WorkHoursWrap = styled.div`
   padding: 20px 16px 0 0px;
+  height: 100%;
 `
-export const PanelWrap = styled.div``
+
+export const MianWrap = styled.div`
+  display: flex;
+  height: calc(100% - 200px);
+  padding-left: 16px;
+  justify-content: space-between;
+`
+export const PanelWrap = styled.div`
+  /* border: 1px solid red; */
+  border-left: 1px solid var(--neutral-n6-d1);
+`
 export const Rows = styled.div`
   display: flex;
   &.highBackground {
@@ -22,7 +33,7 @@ export const Header = styled.div`
   display: flex;
   .header-td {
     width: 72px;
-    height: 28px;
+    height: 44px;
     display: flex;
     align-items: center;
     color: var(--neutral-n3);

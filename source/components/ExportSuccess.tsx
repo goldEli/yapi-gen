@@ -2,13 +2,52 @@ import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
-import {
-  ModalStyle,
-  ModalHeader,
-  Title,
-  ModalContent,
-  ModalFooter,
-} from '../Style'
+import styled from '@emotion/styled'
+import { Modal, Space } from 'antd'
+const ModalStyle = styled(Modal)`
+  .ant-modal-body {
+    background-color: var(--neutral-white-d5);
+    border-radius: 6px;
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  }
+  .ant-form-item {
+    margin: 0;
+  }
+`
+const ModalHeader = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  height: 32,
+  paddingLeft: 24,
+  paddingRight: 18,
+  fontFamily: 'SiYuanMedium',
+})
+const Title = styled.div`
+  display: flex;
+  align-items: center;
+  color: var(--neutral-n1-d1);
+  font-size: 16px;
+  div {
+    margin-left: 12px;
+    font-family: siyuanmedium;
+  }
+`
+const ModalContent = styled.div({
+  color: 'var(--neutral-n2)',
+  fontSize: 14,
+  marginTop: 9,
+  paddingLeft: 60,
+  paddingRight: 27,
+})
+const ModalFooter = styled(Space)({
+  marginTop: 0,
+  display: 'flex',
+  justifyContent: 'flex-end',
+  height: 80,
+  padding: 24,
+})
+
 interface Props {
   isVisible: boolean
   title?: string

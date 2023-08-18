@@ -1,10 +1,22 @@
 import CommonModal from '@/components/CommonModal'
 import { Table } from 'antd'
-import { TableRow, TextTable } from '../Style'
 import { getStaffListApi } from '@/services/staff'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
+import styled from '@emotion/styled'
+const TextTable = styled.div`
+  width: 60px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+export const TableRow = styled.div`
+  width: 100%;
+  padding: 0 24px;
+  .ant-table-thead > tr > th {
+    border: none;
+  }
+`
 interface PropsType {
   title: string
   isVisible: boolean
