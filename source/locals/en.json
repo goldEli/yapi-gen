@@ -949,8 +949,8 @@
     "text2": "Please go to Settings - Permission Management to configure permission groups. The system provides three system permission groups for administrators, editors, and participants. You can also customize more permission groups",
     "text3": "Please configure user permissions in employee management",
     "text4": "Create project, start project management",
-    "next": "Previous step",
-    "prev": "Next step",
+    "next": "Previous step[↑]",
+    "prev": "Next step[↓]",
     "finish": "Finish",
     "chinese": "Chinese",
     "changeCompany": "Switch Company",
@@ -2304,5 +2304,6 @@
   "notificationPushCategory": "Notification push category",
   "selectTheDynamicCategoryOfTheProjectThatNeedsToBeReceived": "Select the dynamic category of the project that needs to be received",
   "theCurrentEmailAddressIs": "The current email address is",
-  "workingHoursStatistics": "Working hours statistics"
+  "workingHoursStatistics": "Working hours statistics",
+  "pressShortcutKeyToSendComments": "Press [Ctrl+Enter] shortcut key to send comments"
 }

@@ -40,6 +40,7 @@ interface UserAvatarProps {
   name?: string
   size?: 'large' | 'small'
   fontSize?: number
+  positionName?: string
 }
 
 const CommonUserAvatar = (props: UserAvatarProps) => {
@@ -57,6 +58,7 @@ const CommonUserAvatar = (props: UserAvatarProps) => {
         )}
       </AvatarBox>
       {props.name && <NameWrap>{props?.name}</NameWrap>}
+      {props.positionName && <NameWrap>({props?.positionName})</NameWrap>}
     </UserAvatarWrap>
   )
 }

@@ -2291,8 +2291,8 @@
   "searchForSubtransactions": "搜索子事务",
   "addSubtransaction": "添加子事务",
   "addLinkTransaction": "添加链接事务",
-  "previous": "上一个",
-  "next": "下一个",
+  "previous": "上一条 [↑]",
+  "next": "下一条 [↓]",
   "openDetails": "打开详情",
   "more": "更多",
   "closure": "关闭",
@@ -2304,5 +2304,6 @@
   "notificationPushCategory": "通知推送类别",
   "selectTheDynamicCategoryOfTheProjectThatNeedsToBeReceived": "选择所需要接收的项目动态类别",
   "theCurrentEmailAddressIs": "当前电子邮件接收地址为",
-  "workingHoursStatistics": "工时统计"
+  "workingHoursStatistics": "工时统计",
+  "pressShortcutKeyToSendComments": "按[Ctrl+回车]快捷键发送评论"
 }
