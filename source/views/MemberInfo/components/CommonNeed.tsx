@@ -17,7 +17,7 @@ import {
   HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Menu, message, Space, Spin, Table } from 'antd'
+import { Checkbox, Menu, message, Space, Spin, Table } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import TableFilter from '@/components/TableFilter'
@@ -56,10 +56,19 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
-import { updateAffairsPriority, updateAffairsStatus } from '@/services/affairs'
-import { updateFlawPriority, updateFlawStatus } from '@/services/flaw'
+import {
+  deleteAffairs,
+  updateAffairsPriority,
+  updateAffairsStatus,
+} from '@/services/affairs'
+import {
+  deleteFlaw,
+  updateFlawPriority,
+  updateFlawStatus,
+} from '@/services/flaw'
 import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
 import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -250,6 +259,7 @@ const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const [openDemandDetail] = useOpenDemandDetail()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId } = paramsData
   const { projectInfo, isUpdateAddWorkItem } = useSelector(
@@ -433,7 +443,43 @@ const CommonNeed = (props: any) => {
   const showDel = (record: any) => {
     setProjectId(record.project_id)
     setOperationItem(record)
-    setIsDelVisible(true)
+    let checked = [4, 5].includes(record.work_type)
+      ? [4, 5].includes(record.work_type)
+      : false
+    // 是否是事务
+    const isAffairs = record.project_type === 2
+
+    open({
+      title: t('deleteConfirmation'),
+      text: isAffairs ? (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ marginBottom: 8 }}>
+            {t(
+              'youWillPermanentlyDeleteAndItsWhichCannotBeRecoveredAfterPleaseOperateWith',
+              { key: record.story_prefix_key },
+            )}
+          </span>
+          {record.work_type !== 6 && (
+            <Checkbox
+              disabled={[4, 5].includes(record.work_type)}
+              defaultChecked={checked}
+              onChange={e => (checked = e.target.checked)}
+            >
+              {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
+            </Checkbox>
+          )}
+        </div>
+      ) : record.project_type === 1 && record.is_bug === 1 ? (
+        t('areYouSureToDeleteThisFlaw')
+      ) : (
+        t('mark.del')
+      ),
+
+      onConfirm() {
+        onDeleteConfirm(record, checked)
+        return Promise.resolve()
+      },
+    })
   }
 
   // 点击打开详情并组装当前平级的需求id列表
@@ -606,15 +652,32 @@ const CommonNeed = (props: any) => {
     setAllTitleList(all)
   }
 
-  const onDeleteConfirm = async () => {
-    try {
-      await deleteDemand({ projectId, id: operationItem?.id })
-      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
-      setIsDelVisible(false)
-      init()
-    } catch (error) {
-      //
+  const onDeleteConfirm = async (row: any, checked: boolean) => {
+    let type: number
+    let params: any = {
+      projectId: row.project_id,
+      id: row?.id,
     }
+    // 1是需求，2是事务，3是缺陷
+    if (row.project_type === 1 && row.is_bug === 1) {
+      type = 3
+    } else if (row.project_type === 1 && row.is_bug !== 1) {
+      type = 1
+    } else {
+      type = 2
+      params.isDeleteChild = checked ? 1 : 2
+    }
+    const methodsList = [
+      { type: 1, url: deleteDemand },
+      { type: 2, url: deleteAffairs },
+      { type: 3, url: deleteFlaw },
+    ]
+    const currentType = methodsList.filter((i: any) => i.type === type)[0]
+
+    await currentType.url(params)
+    getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
+    setIsDelVisible(false)
+    init()
   }
 
   const onChangeMany = (state: boolean) => {
@@ -660,6 +723,7 @@ const CommonNeed = (props: any) => {
 
   return (
     <MainWrap>
+      <DeleteConfirmModal />
       <div
         style={{
           justifyContent: 'space-between',
@@ -835,13 +899,6 @@ const CommonNeed = (props: any) => {
           getCheckList={getCheckList}
         />
       )}
-
-      <DeleteConfirm
-        text={t('common.confirmDelDemand')}
-        isVisible={isDelVisible}
-        onChangeVisible={() => setIsDelVisible(!isDelVisible)}
-        onConfirm={onDeleteConfirm}
-      />
     </MainWrap>
   )
 }
