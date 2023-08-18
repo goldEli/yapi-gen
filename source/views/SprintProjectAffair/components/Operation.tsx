@@ -448,7 +448,9 @@ const Operation = (props: Props) => {
               }
               type="primary"
             >
-              {t('createTransaction')}
+              <Tooltip placement="top" title={`${t('create')} [C]`}>
+                {t('createTransaction')}
+              </Tooltip>
             </CommonButton>
           )}
           {hasExport && hasImport ? null : (

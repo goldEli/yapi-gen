@@ -138,6 +138,9 @@ const CommentFooter = (props: CommentFooterProps) => {
               </Form.Item>
             </Form>
           </div>
+          <div style={{ color: '#BBBDBF' }}>
+            {t('pressShortcutKeyToSendComments')}
+          </div>
           <div className="buttonBox">
             <Space>
               <CommonButton
@@ -164,11 +167,11 @@ const CommentFooter = (props: CommentFooterProps) => {
         </>
       ) : (
         <div style={{ gap: 12, display: 'flex', alignItems: 'center' }}>
-          {props.hasAvatar && (
+          {props.hasAvatar ? (
             <CommonUserAvatar size="large" avatar={userInfo.avatar} />
-          )}
+          ) : null}
           <Input
-            placeholder={props.placeholder}
+            placeholder={String(t('postComment'))}
             style={{ width: '100%' }}
             onFocus={() => {
               setIsReview(true)

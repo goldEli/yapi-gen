@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 // import { menuList } from '../config'
 import DemandSettingSide from '../DemandSettingSide'
-import { Button, Menu } from 'antd'
+import { Button, Menu, Tooltip } from 'antd'
 import {
   AllWrap,
   MenuBox,
@@ -195,6 +195,7 @@ const ProjectDetailSide = () => {
       name: t('sprintProject.affairs'),
       icon: 'book-open',
       path: '/SprintProjectManagement/Affair',
+      tool: '切换至冲刺 [1]',
       isPermission:
         // projectInfo?.isPublic === 1
         //   ? true
@@ -390,24 +391,30 @@ const ProjectDetailSide = () => {
                 ></MenuStyle>
               ) : (
                 menuList.map((i: any) => (
-                  <MenuItem
+                  <Tooltip
+                    arrowPointAtCenter
                     key={i.path}
-                    isActive={
-                      (pathname ===
-                        '/SprintProjectManagement/SprintProjectDetail' &&
-                        i.path === '/SprintProjectManagement/Affair') ||
-                      pathname === i.path
-                    }
-                    onClick={() => onChangeRouter(i)}
-                    hidden={!i.isPermission}
+                    placement="right"
+                    title={i.tool}
                   >
-                    <CommonIconFont
-                      color="var(--neutral-n3)"
-                      type={i.icon}
-                      size={18}
-                    />
-                    <div>{i.name}</div>
-                  </MenuItem>
+                    <MenuItem
+                      isActive={
+                        (pathname ===
+                          '/SprintProjectManagement/SprintProjectDetail' &&
+                          i.path === '/SprintProjectManagement/Affair') ||
+                        pathname === i.path
+                      }
+                      onClick={() => onChangeRouter(i)}
+                      hidden={!i.isPermission}
+                    >
+                      <CommonIconFont
+                        color="var(--neutral-n3)"
+                        type={i.icon}
+                        size={18}
+                      />
+                      <div>{i.name}</div>
+                    </MenuItem>
+                  </Tooltip>
                 ))
               )}
             </MenuBox>
