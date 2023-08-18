@@ -170,6 +170,7 @@ const SprintTable = (props: Props) => {
           title: t('createSubtransaction'),
           isCreateAffairsChild: true,
           parentId: item.id,
+          parentList: item.parent,
         },
       }),
     )

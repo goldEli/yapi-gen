@@ -162,6 +162,7 @@ const DemandTable = (props: Props) => {
           projectId: item.project_id,
           isChild: true,
           parentId: item.id,
+          parentList: item.parent,
           categoryId: item.categoryId,
           type: 1,
           title: t('createSubrequirements'),

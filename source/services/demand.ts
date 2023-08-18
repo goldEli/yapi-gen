@@ -594,6 +594,10 @@ export const getDemandInfo: any = async (params: any) => {
     comment_total: response.data.comment_total,
     relation_stories: response.data.relation_stories,
     child_story_statistics: response.data.child_story_statistics,
+    // 父需求列表
+    parent: [
+      { value: response.data.parent?.id, label: response.data.parent?.name },
+    ],
   }
 }
 
@@ -679,6 +683,8 @@ export const getDemandList: any = async (params: any) => {
       is_bug: i.is_bug,
       project_type: i.project_type,
       copy_send_users: i.copy_send_users,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     }))
   }
 
@@ -706,6 +712,8 @@ export const getDemandList: any = async (params: any) => {
           is_bug: i.is_bug,
           project_type: i.project_type,
           copy_send_users: i.copy_send_users,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -736,6 +744,8 @@ export const getDemandList: any = async (params: any) => {
       is_bug: i.is_bug,
       project_type: i.project_type,
       copy_send_users: i.copy_send_users,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     }))
   } else if (params?.isChildren) {
     return {
@@ -791,6 +801,8 @@ export const getDemandList: any = async (params: any) => {
         is_bug: i.is_bug,
         project_type: i.project_type,
         copy_send_users: i.copy_send_users,
+        // 父需求列表
+        parent: [{ value: i.id, label: i.name }],
       })),
     }
   }

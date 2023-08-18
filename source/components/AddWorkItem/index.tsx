@@ -212,7 +212,7 @@ const AddWorkItem = () => {
     // 是否是完成并创建下一个
     if (hasNext) {
       leftDom.current.update()
-      leftDom.current.updateParentData()
+      // leftDom.current.updateParentData()
       setIsSaveParams(true)
     } else {
       dispatch(setCreateCategory({}))
