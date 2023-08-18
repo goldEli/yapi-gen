@@ -2298,5 +2298,6 @@
   "closure": "Closure",
   "searchForSubrequirements": "Search for subrequirements",
   "linkTask": "Link task",
-  "demandComment": "Demand comment"
+  "demandComment": "Demand comment",
+  "workingHoursStatistics": "Working hours statistics"
 }
