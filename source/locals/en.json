@@ -2298,5 +2298,10 @@
   "closure": "Closure",
   "searchForSubrequirements": "Search for subrequirements",
   "linkTask": "Link task",
-  "demandComment": "Demand comment"
+  "demandComment": "Demand comment",
+  "notificationReceivingMethod": "Notification receiving method",
+  "setEmailToReceiveTimelyUpdatesOnTheAffairsAndCommentsOfTheParticipatingProjects": "Set email to receive timely updates on the affairs and comments of the participating projects",
+  "notificationPushCategory": "Notification push category",
+  "selectTheDynamicCategoryOfTheProjectThatNeedsToBeReceived": "Select the dynamic category of the project that needs to be received",
+  "theCurrentEmailAddressIs": "The current email address is"
 }
