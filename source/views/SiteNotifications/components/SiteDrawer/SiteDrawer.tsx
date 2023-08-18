@@ -253,7 +253,7 @@ const SiteDrawer = () => {
         : tabBox.current?.children[index].clientWidth
     }px`
   }, [active, isRefresh])
-
+  console.log(tabsValue, 'tabsValue')
   return (
     <Drawer
       className={messageDrawer}

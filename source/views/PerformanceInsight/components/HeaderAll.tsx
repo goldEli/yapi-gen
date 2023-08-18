@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-handler-names */
 // 全局的头部
-import Export from '../Header/components/Export'
+import Export from '@/components/Export'
 import { HeaderRowBox, Back, RightRow, PersonText, Line } from '../Header/Style'
 import { useEffect, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
