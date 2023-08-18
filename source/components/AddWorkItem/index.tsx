@@ -252,6 +252,11 @@ const AddWorkItem = () => {
     rightDom?.current?.reset()
   }
 
+  // 右侧父需求调用接口，获取父需求列表
+  const onGetParentList = (val?: string) => {
+    leftDom.current.updateParentData(val)
+  }
+
   useEffect(() => {
     if (visible) {
       getProjectData()
@@ -327,6 +332,7 @@ const AddWorkItem = () => {
           isCreateDemand={isCreateWorkItem}
           newCategory={newCategory}
           categoryType={categoryType}
+          onGetParentList={onGetParentList}
         />
       </div>
     </CommonModal>
