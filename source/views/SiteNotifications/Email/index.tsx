@@ -137,7 +137,7 @@ const Email = () => {
             }}
           >
             {emailConfigurations?.map((i: any) => (
-              <div style={{ width: '180px', marginRight: '72px' }} key={i.id}>
+              <div style={{ width: '300px' }} key={i.id}>
                 <Switch
                   size="small"
                   checked={choose.includes(i.id)}
