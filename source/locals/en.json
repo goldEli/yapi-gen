@@ -2304,5 +2304,6 @@
   "notificationPushCategory": "Notification push category",
   "selectTheDynamicCategoryOfTheProjectThatNeedsToBeReceived": "Select the dynamic category of the project that needs to be received",
   "theCurrentEmailAddressIs": "The current email address is",
-  "workingHoursStatistics": "Working hours statistics"
+  "workingHoursStatistics": "Working hours statistics",
+  "pressShortcutKeyToSendComments": "Press [Ctrl+Enter] shortcut key to send comments"
 }

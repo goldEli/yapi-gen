@@ -2304,5 +2304,6 @@
   "notificationPushCategory": "通知推送类别",
   "selectTheDynamicCategoryOfTheProjectThatNeedsToBeReceived": "选择所需要接收的项目动态类别",
   "theCurrentEmailAddressIs": "当前电子邮件接收地址为",
-  "workingHoursStatistics": "工时统计"
+  "workingHoursStatistics": "工时统计",
+  "pressShortcutKeyToSendComments": "按[Ctrl+回车]快捷键发送评论"
 }
