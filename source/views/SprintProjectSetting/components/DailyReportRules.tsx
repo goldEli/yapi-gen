@@ -18,6 +18,7 @@ import {
   getAily_config,
   set_auto_send_config,
   set_create_config,
+  dailyConfigsetProjectConfig,
 } from '@/services/dailyAllocation'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
@@ -347,22 +348,21 @@ const DailyReportRules = () => {
           },
         })
       }
-    } else if (!values3.errorFields && num === 1) {
-      // 差接口
-      // open({
-      //   title: t('msg19'),
-      //   text: t('msg20'),
-      //   onConfirm: async () => {
-      //     const res1 = await set_create_config({
-      //       ...values1,
-      //       id: typeId,
-      //       project_id: projectId,
-      //     })
-      //     if (res1.code === 0) {
-      //       getMessage({ msg: t('common.saveSuccess'), type: 'success' })
-      //     }
-      //   },
-      // })
+    } else if (!values3.errorFields && num === 3) {
+      open({
+        title: t('msg19'),
+        text: t('msg20'),
+        onConfirm: async () => {
+          const res1 = await dailyConfigsetProjectConfig({
+            ...values3,
+            id: typeId,
+            project_id: projectId,
+          })
+          if (res1.code === 0) {
+            getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+          }
+        },
+      })
     }
   }
 
