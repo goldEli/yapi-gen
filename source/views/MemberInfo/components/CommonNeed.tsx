@@ -628,7 +628,10 @@ const CommonNeed = (props: any) => {
   useEffect(() => {
     if (isRefresh || isUpdateAddWorkItem) {
       init()
-      getShowkey()
+      // 作用于-所有项目中打开弹窗后，编辑更新，projectInfo不正确问题
+      if (props.id !== 0) {
+        getShowkey()
+      }
     }
   }, [isRefresh, isUpdateAddWorkItem])
 
