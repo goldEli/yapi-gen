@@ -4,6 +4,7 @@ import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHe
 import { WorkHoursWrap, MianWrap } from './style'
 import WorkHoursHeader from './components/WorkHoursHeader'
 import TableLeft from './components/TableLeft'
+
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
   const [t] = useTranslation()
