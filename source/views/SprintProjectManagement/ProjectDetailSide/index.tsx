@@ -235,6 +235,13 @@ const ProjectDetailSide = () => {
       isPermission: true,
       key: 'SprintReport',
     },
+    {
+      name: t('workingHoursStatistics'),
+      icon: 'pie-chart-02',
+      path: '/SprintProjectManagement/WorkHours',
+      isPermission: true,
+      key: 'SprintWorkHours',
+    },
   ]
   // 获取项目信息
   const getInfo = async () => {

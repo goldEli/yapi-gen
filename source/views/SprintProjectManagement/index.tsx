@@ -24,6 +24,7 @@ const Project: React.FC<IProps> = props => {
     '/SprintProjectManagement/DemandSetting',
     '/SprintProjectManagement/WorkFlow',
     '/SprintProjectManagement/SprintProjectDetail',
+    '/SprintProjectManagement/WorkHours',
   ]
   const location = useLocation()
   const dispatch = useDispatch()
