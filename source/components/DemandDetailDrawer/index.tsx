@@ -500,6 +500,7 @@ const DemandDetailDrawer = () => {
 
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
+    console.log(value, '=valuevalue', tabActive)
     getDemandDetail('', demandIds)
     isTabClick.current = tabActive
     if (!value) {
@@ -926,7 +927,11 @@ const DemandDetailDrawer = () => {
                   onUpdate={onOperationUpdate}
                   ref={detailDemandRef}
                 />
-                <ChildrenDemand detail={drawerInfo} ref={childrenDemandRef} />
+                <ChildrenDemand
+                  onUpdate={onOperationUpdate}
+                  detail={drawerInfo}
+                  ref={childrenDemandRef}
+                />
                 <StoryRelation
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}

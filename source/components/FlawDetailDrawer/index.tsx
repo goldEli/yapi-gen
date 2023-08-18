@@ -938,9 +938,7 @@ const FlawDetailDrawer = () => {
                   detail={drawerInfo}
                   isDetailQuick
                   addWrap={
-                    <CommonButton type="light" onClick={() => {}}>
-                      {t('addTag')}
-                    </CommonButton>
+                    <CommonButton type="light">{t('addTag')}</CommonButton>
                   }
                 />
                 <CommonButton

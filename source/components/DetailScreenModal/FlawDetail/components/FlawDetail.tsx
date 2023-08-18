@@ -62,7 +62,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
       type: 'attachment',
       targetId: [obj],
     })
-    onUpdate(true)
+    onUpdate()
   }
 
   //   确认删除附件事件
@@ -73,7 +73,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
       type: 'attachment',
       targetId,
     })
-    onUpdate(true)
+    onUpdate()
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
   }
 
@@ -101,7 +101,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
       name: props.flawInfo.name,
     }
     await updateFlawEditor(params)
-    onUpdate(true)
+    onUpdate()
   }
 
   useEffect(() => {
