@@ -8,37 +8,47 @@ import {
   Working,
   Leave,
   NotWorking,
+  DateLabel,
+  TimeLabel,
 } from '../style'
 import classNames from 'classnames'
-import ResizeTable from '@/components/ResizeTable'
 interface IProps {}
 const WorkHoursPanel: React.FC<IProps> = props => {
   const a = [
     {
       name: '李四',
-      workhour: [
+      work_times: [
         { date: '28', time: '8小时' },
         { date: '29', time: '6小时' },
         { date: '30', time: -2 },
         { date: '31', time: -1 },
+        { date: '1', time: '6小时' },
+        { date: '2', time: -2 },
+        { date: '3', time: -1 },
       ],
     },
     {
       name: '张三',
-      workhour: [
+      work_times: [
         { date: '28', time: -1 },
         { date: '29', time: '12小时' },
         { date: '30', time: -1 },
         { date: '31', time: -2 },
+        { date: '1', time: '6小时' },
+        { date: '2', time: -2 },
+        { date: '3', time: -1 },
       ],
     },
     {
       name: '王五',
-      workhour: [
+      work_times: [
         { date: '28', time: -2 },
         { date: '29', time: -1 },
         { date: '30', time: '20小时' },
         { date: '31', time: '16小时' },
+        { date: '1', time: '6小时' },
+        { date: '2', time: -2 },
+        { date: '3', time: -1 },
       ],
     },
   ]
@@ -49,9 +59,9 @@ const WorkHoursPanel: React.FC<IProps> = props => {
       map.set(item, [])
     })
     array.forEach((ele: any) => {
-      ele.workhour.forEach((item: any) => {
+      ele.work_times.forEach((item: any) => {
         if (map.has(item.date)) {
-          let child = map.get(item.date)
+          const child = map.get(item.date)
           child.push({ name: ele.name, hour: item.hour, time: item.time })
           map.set(item.date, child)
         }
@@ -62,7 +72,7 @@ const WorkHoursPanel: React.FC<IProps> = props => {
       map,
     }
   }
-  const { columns, map } = init(a[0].workhour, a)
+  const { columns, map } = init(a[0].work_times, a)
   const rows = map.get(columns[0])
   const label = ({ time }: any) => {
     if (time === -2) {
@@ -77,13 +87,16 @@ const WorkHoursPanel: React.FC<IProps> = props => {
   return (
     <PanelWrap>
       <Header>
-        {columns.map((item, idx) => {
-          return (
-            <div key={idx} className="header-td">
-              {item}
-            </div>
-          )
-        })}
+        <DateLabel>2023-09-09</DateLabel>
+        <TimeLabel>
+          {columns.map((item, idx) => {
+            return (
+              <div key={idx} className="header-td">
+                {item}
+              </div>
+            )
+          })}
+        </TimeLabel>
       </Header>
       {rows.map((row: any, rowIndex: any) => {
         return (
