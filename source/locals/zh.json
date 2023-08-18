@@ -2297,5 +2297,6 @@
   "more": "更多",
   "closure": "关闭",
   "searchForSubrequirements": "搜索子需求",
-  "linkTask": "链接任务"
+  "linkTask": "链接任务",
+  "demandComment": "需求评论"
 }

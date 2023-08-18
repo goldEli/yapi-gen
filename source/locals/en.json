@@ -2297,5 +2297,6 @@
   "more": "More",
   "closure": "Closure",
   "searchForSubrequirements": "Search for subrequirements",
-  "linkTask": "Link task"
+  "linkTask": "Link task",
+  "demandComment": "Demand comment"
 }
