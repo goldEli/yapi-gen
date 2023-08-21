@@ -20,8 +20,8 @@ const TabsWrapItem = styled.div<{ active: boolean }>`
   padding: 4px 16px;
   border-radius: 4px;
   cursor: pointer;
-  /* background: ${props =>
-    props.active ? 'var(--neutral-white-d6);' : ''}; */
+  background: ${props =>
+    props.active ? 'var(--neutral-white-d6);' : 'var(--hover-d2)'};
   color: ${props => (props.active ? 'var(--primary-d2);' : '')};
   transition: all 0.5s;
 `
@@ -44,8 +44,12 @@ const ActiveTab = styled.div`
   background: var(--neutral-white-d6);
   transition: left 0.4s;
 `
-const Tabs = (props: { tabsValue: any; onChange: (id: any) => void }) => {
-  const [active, setActive] = useState(0)
+const Tabs = (props: {
+  tabsValue: any
+  onChange: (id: any) => void
+  active: number
+}) => {
+  const [active, setActive] = useState(props.active)
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive = useRef<HTMLDivElement>(null)
   const changeActive = (id: string, index: number) => {
@@ -65,6 +69,9 @@ const Tabs = (props: { tabsValue: any; onChange: (id: any) => void }) => {
       })
     }
   }, [])
+  useEffect(() => {
+    setActive(props.active)
+  }, [props.active])
   useEffect(() => {
     const index = props.tabsValue.findIndex(
       (i: any, index: number) => index === active,
