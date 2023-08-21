@@ -237,6 +237,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
         params: {
           isChild: true,
           parentId: props.detail.id,
+          parentList: [{ value: props.detail.id, label: props.detail.name }],
           projectId: props.detail.projectId,
           categoryId: props.detail.categoryId ?? props.detail.category,
           type: props.detail.work_type,

@@ -97,6 +97,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
             project_type: i.project_type,
+            // 父需求列表
+            parent: [{ value: i.id, label: i.name }],
           }))
         : [],
     }))
@@ -158,6 +160,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
             project_type: i.project_type,
+            // 父需求列表
+            parent: [{ value: i.id, label: i.name }],
           }))
         : [],
       pager: response.data.pager,
@@ -251,6 +255,8 @@ export const getUserInfoCreateStory: any = async (params: any) => {
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
           project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         }))
       : [],
     pager: response.data.pager,
@@ -343,6 +349,8 @@ export const getUserInfoFinishStory: any = async (params: any) => {
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
           project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         }))
       : [],
     pager: response.data.pager,
@@ -483,6 +491,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
             project_type: i.project_type,
+            // 父需求列表
+            parent: [{ value: i.id, label: i.name }],
           }))
         : [],
     }))
@@ -544,6 +554,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
             project_type: i.project_type,
+            // 父需求列表
+            parent: [{ value: i.id, label: i.name }],
           }))
         : [],
       pager: response.data.pager,
@@ -637,6 +649,8 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
           project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         }))
       : [],
     pager: response.data.pager,
@@ -729,6 +743,8 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
           project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         }))
       : [],
     pager: response.data.pager,

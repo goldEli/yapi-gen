@@ -60,7 +60,12 @@ export const getSprintGroupList = async (
   params: API.Sprint.SprintGroupList.Params,
 ) => {
   const response = await http.get('getSprintGroupList', params)
-  return response.data
+  return {
+    ...response.data,
+    parent: [
+      { value: response.data.parent.id, label: response.data.parent.name },
+    ],
+  }
 }
 // 冲刺左边列表
 export const getLeftSprintList = async (

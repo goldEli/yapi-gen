@@ -81,7 +81,6 @@ const Tabs = (props: { tabsValue: any; onChange: (id: any) => void }) => {
         : tabBox.current?.children[index]?.clientWidth
     }px`
   }, [active])
-  console.log(props.tabsValue, 'tabsValue')
   return (
     <Wrap>
       <TabsWrap ref={tabBox}>
