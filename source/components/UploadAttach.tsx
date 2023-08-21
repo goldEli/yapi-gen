@@ -265,9 +265,9 @@ const UploadAttach = (props: any, ref: any) => {
   }
 
   function isFormatType(str: string) {
-    if (props?.special?.length >= 1) {
-      return props.special.indexOf(str.toLowerCase()) === -1
-    }
+    // if (props?.special?.length >= 1) {
+    //   return props.special.indexOf(str.toLowerCase()) === -1
+    // }
     return disabledFile.indexOf(str.toLowerCase()) !== -1
   }
 
@@ -280,16 +280,13 @@ const UploadAttach = (props: any, ref: any) => {
   const onUploadBefore = (file: any) => {
     if (isFormat(file.name)) {
       getMessage({
-        msg:
-          props?.special?.length >= 1
-            ? `${t('p2.text')}${props?.special}`
-            : `${t('p2.text')}${disabledFile}`,
+        msg: `${t('p2.text')}${disabledFile}`,
         type: 'warning',
         num: 3,
       })
       return Upload.LIST_IGNORE
     }
-    if (file.size / 1024 > 5242880) {
+    if (file.size / 1024 > props.maxSize ? props.maxSize : 5242880) {
       return Upload.LIST_IGNORE
     }
 

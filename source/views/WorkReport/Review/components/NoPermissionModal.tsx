@@ -22,11 +22,12 @@ interface NoPermissionProps {
   id: number
   visible: boolean
   close(): void
+  type: 'user' | 'project'
 }
 
 const NoPermissionModal = (props: NoPermissionProps) => {
   const [t]: any = useTranslation()
-  const { close, visible, id } = props
+  const { close, visible, id, type } = props
   const confirm = async () => {
     const result = await sendNotice(id)
     if (result) {
@@ -50,7 +51,9 @@ const NoPermissionModal = (props: NoPermissionProps) => {
       <NoPermissionWrap>
         <img width={466} src={imgSrc} />
         <NoPermissionText>
-          {t('report.list.contactAdministrator')}
+          {type === 'user'
+            ? t('report.list.contactAdministrator')
+            : '请联系管理员进行[项目日报生成配置]'}
         </NoPermissionText>
       </NoPermissionWrap>
     </CommonModal>
