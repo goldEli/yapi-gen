@@ -491,7 +491,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
               power
               defaultList={
                 uploadAttachList[
-                  `${content.type}_${content.id}_${content.name}`
+                  `${content.type}+${content.id}+${content.name}`
                 ]
               }
               onChangeAttachment={(res: any) => {
@@ -629,13 +629,13 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
               power
               defaultList={
                 uploadAttachList[
-                  `${content.type}_${content.id}_${content.name}`
+                  `${content.type}+${content.id}+${content.name}`
                 ]
               }
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(
                   res,
-                  `${content.type}_${content.id}_${content.name}`,
+                  `${content.type}+${content.id}+${content.name}`,
                 )
               }}
               addWrap={
