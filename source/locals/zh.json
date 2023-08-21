@@ -2305,5 +2305,10 @@
   "selectTheDynamicCategoryOfTheProjectThatNeedsToBeReceived": "选择所需要接收的项目动态类别",
   "theCurrentEmailAddressIs": "当前电子邮件接收地址为",
   "workingHoursStatistics": "工时统计",
-  "pressShortcutKeyToSendComments": "按[Ctrl+回车]快捷键发送评论"
+  "pressShortcutKeyToSendComments": "按[Ctrl+回车]快捷键发送评论",
+  "thisDefectHasNotYetCreatedACreateItQuickly": "该缺陷还未创建类别，快去创建吧",
+  "toCreate": "去创建",
+  "theFileExceeds": "文件超出300M",
+  "onlySupport": "仅支持",
+  "pleaseContactTheAdministratorForDailyReportGeneration": "请联系管理员进行[项目日报生成配置]"
 }

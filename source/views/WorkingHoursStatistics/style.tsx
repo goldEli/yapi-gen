@@ -157,6 +157,14 @@ export const CanOperation = styled.div({
 export const StateWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
+  '.icon': {
+    opacity: 0,
+  },
+  '&:hover': {
+    '.icon': {
+      opacity: 1,
+    },
+  },
 })
 
 export const State = styled.div<{ state: number }>(

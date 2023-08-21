@@ -89,6 +89,7 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import FlawTag from '../TagComponent/FlawTag'
 import ScheduleRecord from '../ScheduleRecord'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 let timer: NodeJS.Timeout
 const FlawDetailDrawer = () => {
   const normalState = {
@@ -829,6 +830,12 @@ const FlawDetailDrawer = () => {
                 <div style={{ display: 'flex' }}>
                   {drawerInfo.level_tree?.map((i: any, index: number) => (
                     <DrawerHeader
+                      style={{
+                        cursor:
+                          index === drawerInfo?.level_tree?.length - 1
+                            ? 'auto'
+                            : 'pointer',
+                      }}
                       key={i.prefix_key}
                       onClick={() => {
                         const projectId = drawerInfo?.projectId
@@ -838,7 +845,20 @@ const FlawDetailDrawer = () => {
                       }}
                     >
                       <img src={i.category_attachment} alt="" />
-                      <div>
+                      <div
+                        className={
+                          index === drawerInfo?.level_tree?.length - 1
+                            ? ''
+                            : myTreeCss
+                        }
+                        style={{
+                          fontSize: '12px',
+                          color:
+                            index === drawerInfo?.level_tree?.length - 1
+                              ? ''
+                              : 'var(--neutral-n1-d1)',
+                        }}
+                      >
                         {i.project_prefix}-{i.prefix_key}
                       </div>
                       <span
@@ -847,7 +867,10 @@ const FlawDetailDrawer = () => {
                           index === drawerInfo.level_tree?.length - 1
                         }
                       >
-                        /
+                        <CommonIconFont
+                          type="right"
+                          color="var(--neutral-n1-d1)"
+                        ></CommonIconFont>
                       </span>
                     </DrawerHeader>
                   ))}
@@ -941,9 +964,7 @@ const FlawDetailDrawer = () => {
                   detail={drawerInfo}
                   isDetailQuick
                   addWrap={
-                    <CommonButton type="light" onClick={() => {}}>
-                      {t('addTag')}
-                    </CommonButton>
+                    <CommonButton type="light">{t('addTag')}</CommonButton>
                   }
                 />
                 <CommonButton

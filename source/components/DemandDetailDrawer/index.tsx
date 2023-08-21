@@ -99,6 +99,7 @@ import CommonProgress from '../CommonProgress'
 import ScheduleRecord from '../ScheduleRecord'
 import DemandTag from '../TagComponent/DemandTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 interface ItemIprops {
   label: string
   key: string
@@ -501,6 +502,7 @@ const DemandDetailDrawer = () => {
 
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
+    console.log(value, '=valuevalue', tabActive)
     getDemandDetail('', demandIds)
     isTabClick.current = tabActive
     if (!value) {
@@ -775,6 +777,12 @@ const DemandDetailDrawer = () => {
                 <div style={{ display: 'flex' }}>
                   {drawerInfo.level_tree?.map((i: any, index: number) => (
                     <DrawerHeader
+                      style={{
+                        cursor:
+                          index === drawerInfo?.level_tree?.length - 1
+                            ? 'auto'
+                            : 'pointer',
+                      }}
                       key={i.prefix_key}
                       onClick={() => {
                         // TODO
@@ -788,18 +796,28 @@ const DemandDetailDrawer = () => {
                         }
                       }}
                     >
+                      <span style={{ display: index === 0 ? 'none' : 'block' }}>
+                        <CommonIconFont
+                          color="var(--neutral-n1-d1)"
+                          type="right"
+                        ></CommonIconFont>
+                      </span>
                       <img src={i.category_attachment} alt="" />
-                      <div>
+                      <div
+                        className={
+                          index === drawerInfo?.level_tree?.length - 1
+                            ? ''
+                            : myTreeCss
+                        }
+                        style={{
+                          color:
+                            index === drawerInfo?.level_tree?.length - 1
+                              ? ''
+                              : 'var(--neutral-n1-d1)',
+                        }}
+                      >
                         {i.project_prefix}-{i.prefix_key}
                       </div>
-                      <span
-                        hidden={
-                          drawerInfo.level_tree?.length <= 1 ||
-                          index === drawerInfo.level_tree?.length - 1
-                        }
-                      >
-                        /
-                      </span>
                     </DrawerHeader>
                   ))}
                 </div>
@@ -930,7 +948,11 @@ const DemandDetailDrawer = () => {
                   onUpdate={onOperationUpdate}
                   ref={detailDemandRef}
                 />
-                <ChildrenDemand detail={drawerInfo} ref={childrenDemandRef} />
+                <ChildrenDemand
+                  onUpdate={onOperationUpdate}
+                  detail={drawerInfo}
+                  ref={childrenDemandRef}
+                />
                 <StoryRelation
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}

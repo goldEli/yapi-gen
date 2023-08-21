@@ -33,6 +33,7 @@ import DeleteConfirm from '../DeleteConfirm'
 interface Props {
   detail?: any
   isOpen?: boolean
+  onUpdate(): void
 }
 interface SelectItem {
   label: string
@@ -237,7 +238,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
         params: {
           isChild: true,
           parentId: props.detail.id,
-          parentList: props.detail.parent,
+          parentList: [{ value: props.detail.id, label: props.detail.name }],
           projectId: props.detail.projectId,
           categoryId: props.detail.categoryId ?? props.detail.category,
           type: props.detail.work_type,
@@ -265,7 +266,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
     })
     getMessage({ type: 'success', msg: t('addedSuccessfully') })
     onCancelSearch()
-    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    props.onUpdate()
   }
   // 获取最近下拉需求列表
   const getSelectRecentList = async () => {
@@ -312,7 +313,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsDelete(false)
       setDeleteId(0)
-      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+      props.onUpdate()
     } catch (error) {
       //
     }
@@ -330,7 +331,6 @@ const ChildrenDemand = (props: Props, ref: any) => {
       page: pageObj.page,
       pagesize: pageObj.pageSize,
     })
-    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
   useImperativeHandle(ref, () => {
     return {

@@ -63,7 +63,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       type: 'attachment',
       targetId: [obj],
     })
-    props.onUpdate(true)
+    props.onUpdate()
   }
 
   const onDeleteConfirm = async () => {
@@ -75,7 +75,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         targetId: files,
       })
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-      props.onUpdate(true)
+      props.onUpdate()
     } catch (error) {
       //
     }

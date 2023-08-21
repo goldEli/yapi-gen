@@ -1,5 +1,6 @@
 import ResizeTable from '@/components/ResizeTable'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { Popover } from 'antd'
 import {
   StatusWrap,
@@ -16,6 +17,7 @@ import CommonModal from '@/components/CommonModal'
 const TableLeft = (props: any) => {
   const [state, setState] = useState(false)
   const [value, setValue] = useState('')
+  const [openDemandDetail] = useOpenDemandDetail()
   const content = () => {
     return (
       <PopoverWrap>
@@ -57,8 +59,14 @@ const TableLeft = (props: any) => {
       dataIndex: 'name',
       width: 180,
       render: (text: any, record: any) => {
+        console.log(record, 'record')
         return (
-          <CanOperation>
+          <CanOperation
+            onClick={() => {
+              // type 不传是需求，1是事务，2是缺陷
+              openDemandDetail({ ...record }, record.projectId, record.id, 1)
+            }}
+          >
             <IconFont
               style={{
                 fontSize: 20,
@@ -116,11 +124,13 @@ const TableLeft = (props: any) => {
                 trigger="click"
               >
                 <IconFont
+                  className="icon"
                   style={{
                     fontSize: 14,
                     marginLeft: 8,
+                    color: 'var(--neutral-n4)',
                   }}
-                  type={'down'}
+                  type={'down-icon'}
                 />
               </Popover>
             )}

@@ -381,10 +381,8 @@ const System = () => {
                     {JSON.parse(item?.pivot?.content ?? null)?.total_schedule}%
                     <span style={{ marginLeft: 16 }}>
                       {t('spent')}：
-                      {
-                        JSON.parse(item?.pivot?.content ?? null)
-                          ?.user_today_total_task_time
-                      }
+                      {JSON.parse(item?.pivot?.content ?? null)
+                        ?.user_today_total_task_time ?? 0}
                       h
                     </span>
                   </Title>
@@ -430,7 +428,7 @@ const System = () => {
                           el.user_schedule_percent
                             ? el.user_schedule_percent
                             : 0
-                        }%  ${el.user_today_task_time}h）`}
+                        }%  ${el.user_today_task_time ?? 0}h）`}
                       </Msg>
                     </RowRadius>
                   ))}

@@ -73,6 +73,14 @@ const ChildSprint = (
     list: undefined,
   })
 
+  const onUpdate = () => {
+    if (props.isInfoPage) {
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    } else {
+      props.onUpdate?.()
+    }
+  }
+
   // 跳转详情页面
   const onToDetail = (record: any) => {
     const params = encryptPhp(
@@ -154,14 +162,14 @@ const ChildSprint = (
     })
     getMessage({ type: 'success', msg: t('addedSuccessfully') })
     onCancelSearch()
-    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    onUpdate()
   }
 
   // 删除子事务确认事件
   const onDeleteConfirm = async (item: any) => {
     await deleteAffairs({ projectId: projectInfo.id, id: item.id })
     getMessage({ type: 'success', msg: t('successfullyDeleted') })
-    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    onUpdate()
   }
 
   // 删除关联工作项
@@ -358,7 +366,7 @@ const ChildSprint = (
           title: t('createSubtransaction'),
           isCreateAffairsChild: true,
           parentId: props.detail.id,
-          parentList: props.detail.parent,
+          parentList: [{ value: props.detail.id, label: props.detail.name }],
         },
       }),
     )
