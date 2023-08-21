@@ -62,7 +62,6 @@ const CreateDemandRight = (props: Props) => {
   const [notFoldList, setNotFoldList] = useState<any>([])
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const [severity, setSeverity] = useState<any>(0)
-  const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
   const {
     projectInfoValues,
@@ -141,9 +140,6 @@ const CreateDemandRight = (props: Props) => {
       props?.detail?.id &&
       params?.editId === props?.detail?.id
     ) {
-      // 需求进度
-      setSchedule(props?.detail?.schedule)
-
       // 获取自定义字段回显值
       const form1Obj: any = {}
       for (const key in props?.detail?.customField) {
@@ -211,7 +207,7 @@ const CreateDemandRight = (props: Props) => {
         // 处理人
         users_name: getCommonUser(
           props?.detail?.user?.map((i: any) => i.user),
-          removeNull(projectInfoValues, 'user_name'),
+          removeNull(projectInfoValues, 'users_name'),
         ),
 
         // 迭代
@@ -453,6 +449,7 @@ const CreateDemandRight = (props: Props) => {
     // form.validateFields().then(() => {
     const customValues: any = {}
     const values = form.getFieldsValue()
+    values.schedule = props.detail.schedule || 0
     values.priority =
       JSON.stringify(priorityDetail) === '{}' ? null : priorityDetail
     values.severity = severity
@@ -498,14 +495,6 @@ const CreateDemandRight = (props: Props) => {
       reset: onReset,
     }
   })
-
-  // 修改需求进度
-  const onChangeSetSchedule = (val: any) => {
-    setSchedule(val)
-    form.setFieldsValue({
-      schedule: val,
-    })
-  }
 
   const onChangeCheckBox = (e: any, key: any) => {
     form.setFieldsValue({
@@ -712,7 +701,7 @@ const CreateDemandRight = (props: Props) => {
     if (['user_select_checkbox', 'user_select'].includes(currentItem.attr)) {
       options =
         currentItem.value?.[0] === 'projectMember'
-          ? removeNull(projectInfoValues, 'user_name')?.map((i: any) => ({
+          ? removeNull(projectInfoValues, 'users_name')?.map((i: any) => ({
               label: i.content,
               value: i.id,
             }))
@@ -796,42 +785,6 @@ const CreateDemandRight = (props: Props) => {
                     : getBasicTypeComponent(i)}
                 </Form.Item>
               )}
-            {/* 需求进度 */}
-            {i.content === 'schedule' && params?.editId && (
-              <Form.Item
-                key={i.content}
-                label={i.title}
-                name={i.content}
-                rules={[{ required: i.isRequired === 1, message: '' }]}
-              >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <SliderWrap
-                    style={{ width: 330 }}
-                    value={schedule}
-                    tipFormatter={(value: any) => `${value}%`}
-                    onChange={value => onChangeSetSchedule(value)}
-                    disabled={
-                      !(
-                        props?.detail?.user
-                          ?.map((k: any) => k.user.id)
-                          ?.includes(userInfo?.id) &&
-                        props?.detail.status.is_start !== 1 &&
-                        props?.detail.status.is_end !== 1
-                      )
-                    }
-                  />
-                  <span
-                    style={{
-                      color: 'var(--neutral-n2)',
-                      marginLeft: 8,
-                      fontSize: 14,
-                    }}
-                  >
-                    {schedule}%
-                  </span>
-                </div>
-              </Form.Item>
-            )}
           </>
         ))}
         {!isShowFields && foldList?.length > 0 && (
@@ -863,42 +816,6 @@ const CreateDemandRight = (props: Props) => {
                       : getBasicTypeComponent(i)}
                   </Form.Item>
                 )}
-              {/* 需求进度 */}
-              {i.content === 'schedule' && params?.editId && (
-                <Form.Item
-                  key={i.content}
-                  label={i.title}
-                  name={i.content}
-                  rules={[{ required: i.isRequired === 1, message: '' }]}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <SliderWrap
-                      style={{ width: 330 }}
-                      value={schedule}
-                      tipFormatter={(value: any) => `${value}%`}
-                      onChange={value => onChangeSetSchedule(value)}
-                      disabled={
-                        !(
-                          props?.detail?.user
-                            ?.map((k: any) => k.user.id)
-                            ?.includes(userInfo?.id) &&
-                          props?.detail.status.is_start !== 1 &&
-                          props?.detail.status.is_end !== 1
-                        )
-                      }
-                    />
-                    <span
-                      style={{
-                        color: 'var(--neutral-n2)',
-                        marginLeft: 8,
-                        fontSize: 14,
-                      }}
-                    >
-                      {schedule}%
-                    </span>
-                  </div>
-                </Form.Item>
-              )}
             </>
           ))}
         </div>
