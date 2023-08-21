@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import PermissionWrap from '@/components/PermissionWrap'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { getParamsData, onComputedPermission } from '@/tools'
 import {
   ContentLeft,
@@ -26,6 +26,8 @@ import { deleteFlaw, getFlawList } from '@/services/flaw'
 import useKeyPress from '@/hooks/useKeyPress'
 import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
+import { setActiveCategory } from '@store/category'
+import { encryptPhp } from '@/tools/cryptoPhp'
 export const TreeContext: any = React.createContext('')
 
 const Index = (props: any) => {
@@ -37,7 +39,10 @@ const Index = (props: any) => {
   useKeys('5', '/ProjectManagement/Demand')
   const keyRef = useRef()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
+  const { open: openToast, DeleteConfirmModal: DeleteConfirmModalToast } =
+    useDeleteConfirmModal()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const myTreeComponent: any = useRef(null)
   const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
     store => store.project,
@@ -274,6 +279,30 @@ const Index = (props: any) => {
     '/ProjectManagement/Project',
   )
 
+  const onToastConfirm = () => {
+    dispatch(setActiveCategory({}))
+    const resultParams = encryptPhp(
+      JSON.stringify({
+        type: 4,
+        id: projectInfo?.id,
+        pageIdx: 'DemandDetail',
+      }),
+    )
+    navigate(`/ProjectManagement/ProjectSetting?data=${resultParams}`)
+  }
+
+  // 点击创建缺陷
+  const onCreateDefect = () => {
+    openToast({
+      title: t('p2.toast'),
+      text: t('thisDefectHasNotYetCreatedACreateItQuickly'),
+      onConfirm: () => {
+        onToastConfirm()
+        return Promise.resolve()
+      },
+    })
+  }
+
   // 判断是否详情回来，并且权限是不是有
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
@@ -289,6 +318,7 @@ const Index = (props: any) => {
           : currentMenu?.children?.map((i: any) => i.url)
       }
     >
+      <DeleteConfirmModalToast />
       <DeleteConfirmModal />
       <CreateViewPort pid={projectId} />
       <ManageView projectId={projectId} />
@@ -337,6 +367,7 @@ const Index = (props: any) => {
                   classId: key,
                 }}
                 dataLength={dataList?.total}
+                onCreateDefect={onCreateDefect}
               />
               <ContentMain>
                 <DefectTable

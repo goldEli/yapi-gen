@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, removeNull } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { Popover, Space, Tooltip } from 'antd'
@@ -123,6 +123,7 @@ interface Props {
   otherParams: any
   dataLength: any
   pid: any
+  onCreateDefect(): void
 }
 
 const Operation = (props: Props) => {
@@ -497,21 +498,31 @@ const Operation = (props: Props) => {
               ? 'b/story/save'
               : 'b/transaction/save',
           ) || projectInfo?.status !== 1 ? null : (
-            <Popover
-              content={changeStatus}
-              placement="bottomLeft"
-              getPopupContainer={node => node}
-              visible={isVisible}
-              onVisibleChange={visible => setIsVisible(visible)}
-            >
-              <MoreWrap type="create">
-                <span>{t('createDefect')}</span>
-                <IconFont
-                  style={{ fontSize: 16, marginLeft: 8 }}
-                  type={isVisible ? 'up' : 'down'}
-                />
-              </MoreWrap>
-            </Popover>
+            <>
+              {(removeNull(projectInfoValues, 'category') || []).filter(
+                (i: any) => i.work_type === 2,
+              )?.length <= 0 ? (
+                <CommonButton type="primary" onClick={props.onCreateDefect}>
+                  {t('createDefect')}
+                </CommonButton>
+              ) : (
+                <Popover
+                  content={changeStatus}
+                  placement="bottomLeft"
+                  getPopupContainer={node => node}
+                  visible={isVisible}
+                  onVisibleChange={visible => setIsVisible(visible)}
+                >
+                  <MoreWrap type="create">
+                    <span>{t('createDefect')}</span>
+                    <IconFont
+                      style={{ fontSize: 16, marginLeft: 8 }}
+                      type={isVisible ? 'up' : 'down'}
+                    />
+                  </MoreWrap>
+                </Popover>
+              )}
+            </>
           )}
           {hasExport && hasImport ? null : (
             <Popover

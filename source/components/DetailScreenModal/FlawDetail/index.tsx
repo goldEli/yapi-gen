@@ -33,6 +33,8 @@ import {
   updateFlawTableParams,
 } from '@/services/flaw'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
+// eslint-disable-next-line no-duplicate-imports
+import { getFlawInfo as getFlawInfo2 } from '@/services/flaw'
 import {
   setAddWorkItemModal,
   setIsUpdateAddWorkItem,
@@ -58,6 +60,8 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ScheduleRecord from '@/components/ScheduleRecord'
+import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
+import { myTreeCss } from '../DemandDetail'
 
 const FlawDetail = () => {
   const [t] = useTranslation()
@@ -78,6 +82,7 @@ const FlawDetail = () => {
   } = useSelector(store => store.project)
   const { visible, params } = isDetailScreenModal
   const [form] = Form.useForm()
+  const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [tabActive, setTabActive] = useState(params?.type ?? '1')
   const [filter, setFilter] = useState(false)
   // 是否可改变类别弹窗
@@ -524,6 +529,29 @@ const FlawDetail = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
+  const getTree = async () => {
+    const info = await getFlawInfo2({
+      projectId: params.id,
+      id: flawInfo.id,
+    })
+    info.level_tree?.push({
+      id: info.id,
+      category_id: info.category,
+      prefix_key: info.prefixKey || 0,
+      project_prefix: info.projectPrefix || '',
+      category_attachment: info.category_attachment,
+      parent_id: info.parentId || 0,
+      name: info.name,
+      work_type: 5,
+      attachment_id: 0,
+    })
+    setDrawerInfo(info)
+  }
+  useEffect(() => {
+    if (flawInfo.id) {
+      getTree()
+    }
+  }, [flawInfo])
 
   return (
     <Wrap>
@@ -606,7 +634,61 @@ const FlawDetail = () => {
         </FormWrap>
       </CommonModal>
       <DetailTop>
-        <MyBreadcrumb />
+        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <MyBreadcrumb />
+          <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
+            {drawerInfo.level_tree?.map((i: any, index: number) => (
+              <DrawerHeader
+                style={{
+                  cursor:
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? 'auto'
+                      : 'pointer',
+                }}
+                key={i.prefix_key}
+                onClick={() => {
+                  const projectId = drawerInfo?.projectId
+                  if (index !== drawerInfo?.level_tree?.length - 1) {
+                    openDemandDetail({ ...i }, projectId, i.id, 2)
+                  }
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: '12px',
+                  }}
+                >
+                  <CommonIconFont
+                    type="right"
+                    color="var(--neutral-n1-d1)"
+                  ></CommonIconFont>
+                </span>
+                <img
+                  style={{ fontSize: '12px' }}
+                  src={i.category_attachment}
+                  alt=""
+                />
+                <div
+                  className={
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? ''
+                      : myTreeCss
+                  }
+                  style={{
+                    fontSize: '12px',
+                    color:
+                      index === drawerInfo?.level_tree?.length - 1
+                        ? ''
+                        : 'var(--neutral-n1-d1)',
+                  }}
+                >
+                  {i.project_prefix}-{i.prefix_key}
+                </div>
+              </DrawerHeader>
+            ))}
+          </div>
+        </div>
+
         {flawInfo.id && (
           <ButtonGroup size={16}>
             {(params?.changeIds?.length || 0) > 1 && (

@@ -2305,5 +2305,7 @@
   "selectTheDynamicCategoryOfTheProjectThatNeedsToBeReceived": "Select the dynamic category of the project that needs to be received",
   "theCurrentEmailAddressIs": "The current email address is",
   "workingHoursStatistics": "Working hours statistics",
-  "pressShortcutKeyToSendComments": "Press [Ctrl+Enter] shortcut key to send comments"
+  "pressShortcutKeyToSendComments": "Press [Ctrl+Enter] shortcut key to send comments",
+  "thisDefectHasNotYetCreatedACreateItQuickly": "This defect has not yet created a category, create it quickly",
+  "toCreate": "To create"
 }

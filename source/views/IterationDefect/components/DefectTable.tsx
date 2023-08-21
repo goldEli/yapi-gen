@@ -1,19 +1,20 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 // 缺陷主页-缺陷表格模式
 
 import { createRef, useEffect, useMemo, useState } from 'react'
 import { Menu, Table } from 'antd'
 import styled from '@emotion/styled'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getIsPermission, getParamsData, removeNull } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import PaginationBox from '@/components/TablePagination'
-import { saveSort, saveTitles } from '@store/view'
+import { saveSort } from '@store/view'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getMessage } from '@/components/Message'
 import ResizeTable from '@/components/ResizeTable'
@@ -25,6 +26,8 @@ import {
   updateFlawStatus,
   updateFlawTableParams,
 } from '@/services/flaw'
+import { setActiveCategory } from '@store/category'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -51,19 +54,21 @@ const DefectTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, filterKeys, filterParams } = useSelector(
-    store => store.project,
-  )
+  const { projectInfo, filterKeys, filterParams, projectInfoValues } =
+    useSelector(store => store.project)
   const tapSort = useSelector(store => store.view.tapSort)
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
+  // 该项目是否存在缺陷类别
+  const [hasCategory, setHasCategory] = useState(false)
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   asyncSetTtile(`${t('defect1')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(
@@ -87,7 +92,7 @@ const DefectTable = (props: Props) => {
 
   useEffect(() => {
     setSelectedRowKeys([])
-  }, [projectId])
+  }, [projectId, props.data.list])
 
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
   const onOperationCheckbox = (type: any, keys?: any) => {
@@ -194,6 +199,7 @@ const DefectTable = (props: Props) => {
     type: 2,
   })
 
+  //  是否可创建
   const hasCreate = getIsPermission(
     projectInfo?.projectPermissions,
     'b/flaw/save',
@@ -351,9 +357,28 @@ const DefectTable = (props: Props) => {
     )
     dispatch(setFilterParamsModal(filterParams))
   }
+
+  // 点击去创建-缺陷类别
+  const onNotCategoryClick = () => {
+    dispatch(setActiveCategory({}))
+    const resultParams = encryptPhp(
+      JSON.stringify({
+        type: 4,
+        id: projectId,
+        pageIdx: 'DemandDetail',
+      }),
+    )
+    navigate(`/ProjectManagement/ProjectSetting?data=${resultParams}`)
+  }
+
   useEffect(() => {
-    setSelectedRowKeys([])
-  }, [props.data.list])
+    setHasCategory(
+      (removeNull(projectInfoValues, 'category') || []).filter(
+        (i: any) => i.work_type === 2,
+      )?.length <= 0,
+    )
+  }, [projectInfoValues])
+
   return (
     <Content>
       <ResizeTable
@@ -371,22 +396,43 @@ const DefectTable = (props: Props) => {
           } as any)
         }
         noData={
-          <NoData
-            subText={
-              hasCreate ? '' : t('theCurrentProjectHasNotCreatedADefectCreate')
-            }
-            haveFilter={filterKeys?.length > 0}
-          >
-            {!hasCreate && (
-              <CommonButton
-                type="light"
-                onClick={onClick}
-                style={{ marginTop: 24 }}
+          <>
+            {hasCategory ? (
+              <NoData
+                subText={t('thisDefectHasNotYetCreatedACreateItQuickly')}
+                haveFilter={filterKeys?.length > 0}
               >
-                {t('createDefect')}
-              </CommonButton>
+                {!hasCreate && (
+                  <CommonButton
+                    type="light"
+                    onClick={onNotCategoryClick}
+                    style={{ marginTop: 24 }}
+                  >
+                    {t('toCreate')}
+                  </CommonButton>
+                )}
+              </NoData>
+            ) : (
+              <NoData
+                subText={
+                  hasCreate
+                    ? ''
+                    : t('theCurrentProjectHasNotCreatedADefectCreate')
+                }
+                haveFilter={filterKeys?.length > 0}
+              >
+                {!hasCreate && (
+                  <CommonButton
+                    type="light"
+                    onClick={onClick}
+                    style={{ marginTop: 24 }}
+                  >
+                    {t('createDefect')}
+                  </CommonButton>
+                )}
+              </NoData>
             )}
-          </NoData>
+          </>
         }
       />
 

@@ -591,7 +591,7 @@ export const DrawerHeader = styled.div`
   span {
     font-size: var(--font14);
     color: var(--neutral-n3);
-    margin-right: 8px;
+    margin-right: 4px;
   }
 `
 export const LayerBox = styled.div``

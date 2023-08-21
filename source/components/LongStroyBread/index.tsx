@@ -8,6 +8,7 @@ import IconFont from '../IconFont'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 const BreadBox = styled.div`
   display: flex;
   align-items: center;
@@ -28,7 +29,7 @@ const LabelBox = styled.div`
   align-items: center;
 `
 const AffairTypeBox = styled.div`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n3);
   font-size: var(--font12);
 `
 const HasStroyWrap = styled.div`
@@ -126,7 +127,6 @@ const LongStroyBread = (props: IProps) => {
               ></CommonIconFont>
             </span>
           )}
-          {/* 显示添加长故事按钮还是显示编辑按钮 */}
         </div>
         {/* 事务显示层级关系 */}
         {(longStroy.level_tree?.length === 0 ||
@@ -182,6 +182,8 @@ const LongStroyBread = (props: IProps) => {
                   />
                 )}
                 <span
+                  className={myTreeCss}
+                  style={{ color: 'var(--neutral-n1-d1)' }}
                   onClick={() => {
                     const projectId = longStroy?.projectId
                     openDemandDetail({ ...item }, projectId, item.id, 1)
