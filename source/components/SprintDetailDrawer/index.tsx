@@ -637,11 +637,9 @@ const SprintDetailDrawer = () => {
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      document
-        .getElementById('contentDom')
-        ?.addEventListener('scroll', handleScroll, true)
-    })
+    document
+      .getElementById('contentDom')
+      ?.addEventListener('scroll', handleScroll, true)
     return () => {
       document
         .getElementById('contentDom')

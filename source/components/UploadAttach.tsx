@@ -32,6 +32,7 @@ import TruncateTextWithEllipsis from './TruncateTextWithEllipsis'
 import PreviewIframe from './PreviewIframe'
 
 const Warp = styled(Upload)({
+  display: 'none',
   '.ant-upload-list-item-name': {
     color: 'var(--neutral-n1-d1)',
   },
@@ -280,13 +281,21 @@ const UploadAttach = (props: any, ref: any) => {
   const onUploadBefore = (file: any) => {
     if (isFormat(file.name)) {
       getMessage({
-        msg: `${t('p2.text')}${disabledFile}`,
+        msg:
+          props?.special?.length >= 1
+            ? `${t('onlySupport')}${props?.special}`
+            : `${t('p2.text')}${disabledFile}`,
         type: 'warning',
         num: 3,
       })
       return Upload.LIST_IGNORE
     }
-    if (file.size / 1024 > props.maxSize ? props.maxSize : 5242880) {
+    if (file.size / 1024 > 5242880) {
+      getMessage({
+        msg: t('theFileExceeds'),
+        type: 'warning',
+        num: 3,
+      })
       return Upload.LIST_IGNORE
     }
 
@@ -524,6 +533,7 @@ const UploadAttach = (props: any, ref: any) => {
       {/* <San /> */}
     </div>
   )
+
   return (
     <div>
       {flag ? (
@@ -563,7 +573,6 @@ const UploadAttach = (props: any, ref: any) => {
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-
           gap: '8px',
         }}
       >

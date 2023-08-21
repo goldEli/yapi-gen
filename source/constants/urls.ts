@@ -497,6 +497,8 @@ const urls = {
   dailyConfigSetCreateConfig: '/b/project/daily_config/set_create_config',
   // 自动发送配置
   dailyConfigSetAutoSendConfig: '/b/project/daily_config/set_auto_send_config',
+  // 项目日报
+  dailyConfigsetProject_config: 'b/project/daily_config/set_project_config',
   // 三个进度日志通用
   getScheduleLogList: '/b/story/getScheduleLog',
   unassignedList: '/b/efficiency/unassigned/list',

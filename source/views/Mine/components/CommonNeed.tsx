@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/jsx-no-useless-fragment */
 // 我的模块-所有页面公用列表及查询
@@ -18,7 +19,7 @@ import {
   HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Menu, message, Space, Spin, Table } from 'antd'
+import { Checkbox, Menu, message, Space, Spin, Table } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/TableColumns/MineOrHisTableColumn'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -55,10 +56,19 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
-import { updateAffairsPriority, updateAffairsStatus } from '@/services/affairs'
-import { updateFlawPriority, updateFlawStatus } from '@/services/flaw'
+import {
+  deleteAffairs,
+  updateAffairsPriority,
+  updateAffairsStatus,
+} from '@/services/affairs'
+import {
+  deleteFlaw,
+  updateFlawPriority,
+  updateFlawStatus,
+} from '@/services/flaw'
 import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
 import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -90,7 +100,7 @@ const SearchWrap = styled.div({
 
 interface MoreWrapProps {
   record: any
-  onShowDel(): void
+  onShowDel(record: any): void
   isAllProject?: boolean
 }
 
@@ -123,7 +133,7 @@ const MoreWrap = (props: MoreWrapProps) => {
   // 点击删除
   const onDeleteChange = (item: any) => {
     setIsMoreVisible(false)
-    props.onShowDel()
+    props.onShowDel(props.record)
   }
 
   // 点击创建子需求
@@ -237,6 +247,7 @@ const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateCreate } = useSelector(store => store.mine)
   const { projectInfo, isUpdateAddWorkItem } = useSelector(
@@ -252,6 +263,7 @@ const CommonNeed = (props: any) => {
   const [manyListData, setManyListData] = useState<any>({
     list: undefined,
   })
+
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
@@ -404,10 +416,74 @@ const CommonNeed = (props: any) => {
     }
   }
 
+  const onDeleteConfirm = async (row: any, checked: boolean) => {
+    let type: number
+    let params: any = {
+      projectId: row.project_id,
+      id: row?.id,
+    }
+    // 1是需求，2是事务，3是缺陷
+    if (row.project_type === 1 && row.is_bug === 1) {
+      type = 3
+    } else if (row.project_type === 1 && row.is_bug !== 1) {
+      type = 1
+    } else {
+      type = 2
+      params.isDeleteChild = checked ? 1 : 2
+    }
+    const methodsList = [
+      { type: 1, url: deleteDemand },
+      { type: 2, url: deleteAffairs },
+      { type: 3, url: deleteFlaw },
+    ]
+    const currentType = methodsList.filter((i: any) => i.type === type)[0]
+
+    await currentType.url(params)
+    getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
+    setIsDelVisible(false)
+    init()
+  }
+
   const showDel = (record: any) => {
     setProjectId(record.project_id)
     setOperationItem(record)
-    setIsDelVisible(true)
+    let checked = [4, 5].includes(record.work_type)
+      ? [4, 5].includes(record.work_type)
+      : false
+    // 是否是事务
+    const isAffairs = record.project_type === 2
+
+    open({
+      title: t('deleteConfirmation'),
+      text: isAffairs ? (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ marginBottom: 8 }}>
+            {t(
+              'youWillPermanentlyDeleteAndItsWhichCannotBeRecoveredAfterPleaseOperateWith',
+              { key: record.story_prefix_key },
+            )}
+          </span>
+          {record.work_type !== 6 && (
+            <Checkbox
+              disabled={[4, 5].includes(record.work_type)}
+              defaultChecked={checked}
+              onChange={e => (checked = e.target.checked)}
+            >
+              {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
+            </Checkbox>
+          )}
+        </div>
+      ) : record.project_type === 1 && record.is_bug === 1 ? (
+        t('areYouSureToDeleteThisFlaw')
+      ) : (
+        t('mark.del')
+      ),
+
+      onConfirm() {
+        onDeleteConfirm(record, checked)
+        return Promise.resolve()
+      },
+    })
   }
 
   // 点击打开详情并组装当前平级的需求id列表
@@ -483,7 +559,7 @@ const CommonNeed = (props: any) => {
           return (
             <MoreWrap
               record={record}
-              onShowDel={() => showDel(record)}
+              onShowDel={showDel}
               isAllProject={!props.id}
             />
           )
@@ -572,7 +648,10 @@ const CommonNeed = (props: any) => {
   useEffect(() => {
     if (isRefresh || isUpdateCreate || isUpdateAddWorkItem) {
       init()
-      getShowkey()
+      // 作用于-所有项目中打开弹窗后，编辑更新，projectInfo不正确问题
+      if (props.id !== 0) {
+        getShowkey()
+      }
     }
   }, [isRefresh, isUpdateCreate, isUpdateAddWorkItem])
 
@@ -594,17 +673,6 @@ const CommonNeed = (props: any) => {
     setTitleList2(list2)
     setTitleList3(list3)
     setAllTitleList(all)
-  }
-
-  const onDeleteConfirm = async () => {
-    try {
-      await deleteDemand({ projectId, id: operationItem?.id })
-      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
-      setIsDelVisible(false)
-      init()
-    } catch (error) {
-      //
-    }
   }
 
   const onChangeMany = (state: boolean) => {
@@ -650,6 +718,7 @@ const CommonNeed = (props: any) => {
 
   return (
     <>
+      <DeleteConfirmModal />
       <div
         style={{
           margin: `0 24px ${isShowSearch ? 0 : 16}px 24px`,
@@ -822,13 +891,6 @@ const CommonNeed = (props: any) => {
           getCheckList={getCheckList}
         />
       )}
-
-      <DeleteConfirm
-        text={t('common.confirmDelDemand')}
-        isVisible={isDelVisible}
-        onChangeVisible={() => setIsDelVisible(!isDelVisible)}
-        onConfirm={onDeleteConfirm}
-      />
     </>
   )
 }
