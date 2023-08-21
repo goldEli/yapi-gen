@@ -242,7 +242,7 @@ const DemandDetail = () => {
   const onDelete = () => {
     openDelete({
       title: t('deleteConfirmation'),
-      text: t('areYouSureToDeleteThisTransaction'),
+      text: t('mark.del'),
       onConfirm() {
         onDeleteConfirm()
         return Promise.resolve()

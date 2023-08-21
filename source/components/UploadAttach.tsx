@@ -32,6 +32,7 @@ import TruncateTextWithEllipsis from './TruncateTextWithEllipsis'
 import PreviewIframe from './PreviewIframe'
 
 const Warp = styled(Upload)({
+  display: 'none',
   '.ant-upload-list-item-name': {
     color: 'var(--neutral-n1-d1)',
   },
