@@ -59,7 +59,6 @@ const TableLeft = (props: any) => {
       dataIndex: 'name',
       width: 180,
       render: (text: any, record: any) => {
-        console.log(record, 'record')
         return (
           <CanOperation
             onClick={() => {

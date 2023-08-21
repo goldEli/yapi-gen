@@ -12,7 +12,10 @@ const WorkHours: React.FC<IProps> = props => {
   const [leftWidth, setLeftWidth] = useState(400)
   const [focus, setFocus] = useState(false)
   const [t] = useTranslation()
-  const onInputSearch = () => {}
+  const [formVal, setFormVal] = useState<any>()
+  const onInputSearch = (val: any) => {
+    console.log(val)
+  }
   // 拖动线条
   const onDragLine = () => {
     document.onmousemove = e => {
@@ -32,7 +35,11 @@ const WorkHours: React.FC<IProps> = props => {
         title={t('search_for_transaction_name_or_number')}
       />
 
-      <WorkHoursHeader />
+      <WorkHoursHeader
+        onSearch={(val: any) => {
+          setFormVal(val), console.log(val)
+        }}
+      />
       <MianWrap>
         <div
           style={{
