@@ -147,6 +147,7 @@ const TableLeft = (props: any) => {
   return (
     <>
       <ResizeTable
+        styleSate={true}
         isSpinning={false}
         dataWrapNormalHeight="calc(100% - 48px)"
         col={colum}
