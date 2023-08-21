@@ -2298,5 +2298,7 @@
   "closure": "关闭",
   "searchForSubrequirements": "搜索子需求",
   "linkTask": "链接任务",
-  "demandComment": "需求评论"
+  "demandComment": "需求评论",
+  "theFileExceeds": "文件超出300M",
+  "onlySupport": "仅支持"
 }

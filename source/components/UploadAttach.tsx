@@ -282,14 +282,19 @@ const UploadAttach = (props: any, ref: any) => {
       getMessage({
         msg:
           props?.special?.length >= 1
-            ? `${t('p2.text')}${props?.special}`
+            ? `${t('onlySupport')}${props?.special}`
             : `${t('p2.text')}${disabledFile}`,
         type: 'warning',
         num: 3,
       })
       return Upload.LIST_IGNORE
     }
-    if (file.size / 1024 > 5242880) {
+    if (file.size / 1024 > props.maxSize ? props.maxSize : 5242880) {
+      getMessage({
+        msg: t('theFileExceeds'),
+        type: 'warning',
+        num: 3,
+      })
       return Upload.LIST_IGNORE
     }
 

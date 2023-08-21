@@ -2298,5 +2298,7 @@
   "closure": "Closure",
   "searchForSubrequirements": "Search for subrequirements",
   "linkTask": "Link task",
-  "demandComment": "Demand comment"
+  "demandComment": "Demand comment",
+  "theFileExceeds": "The file exceeds 300M",
+  "onlySupport": "Only support"
 }
