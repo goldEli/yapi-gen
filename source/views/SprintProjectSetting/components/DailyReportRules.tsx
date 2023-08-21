@@ -264,6 +264,7 @@ const DailyReportRules = () => {
       </PopoverWrap>
     )
   }
+  // 还原代码
   const cancel = (num: number) => {
     const {
       group_name,
@@ -274,11 +275,13 @@ const DailyReportRules = () => {
       reminder_time,
       day,
       is_holiday,
+      projectConfigWebhook,
+      projectConfigGroupName,
     } = formAll
     if (num === 1) {
       form1.setFieldsValue({ group_name, webhook, is_auto_generate })
-
-      form1.setFieldsValue({ group_name, webhook, is_auto_generate })
+    } else if (num === 3) {
+      form3.setFieldsValue({ projectConfigWebhook, projectConfigGroupName })
     } else {
       is_auto_send === 2 ? setSendDisabled(true) : setSendDisabled(false)
       form2.setFieldsValue({
@@ -349,12 +352,15 @@ const DailyReportRules = () => {
         })
       }
     } else if (!values3.errorFields && num === 3) {
+      const group_name = form3.getFieldsValue().projectConfigGroupName
+      const webhook = form3.getFieldsValue().projectConfigWebhook
       open({
         title: t('msg19'),
         text: t('msg20'),
         onConfirm: async () => {
           const res1 = await dailyConfigsetProjectConfig({
-            ...values3,
+            group_name,
+            webhook,
             id: typeId,
             project_id: projectId,
           })
@@ -396,6 +402,8 @@ const DailyReportRules = () => {
       reminder_time,
       day,
       is_holiday,
+      projectConfigWebhook,
+      projectConfigGroupName,
     })
     setTypeId(id)
     form1.setFieldsValue({ group_name, webhook, is_auto_generate })
@@ -670,7 +678,7 @@ const DailyReportRules = () => {
                 <CommonButton
                   type="light"
                   style={{ marginRight: '16px' }}
-                  onClick={() => cancel(1)}
+                  onClick={() => cancel(3)}
                 >
                   {t('common.cancel')}
                 </CommonButton>
