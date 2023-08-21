@@ -1,3 +1,4 @@
+/* eslint-disable no-duplicate-imports */
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-undefined */
@@ -41,6 +42,7 @@ import {
   updateTableParams,
 } from '@/services/demand'
 import { getDemandCommentList, getDemandInfo } from '@store/demand/demand.thunk'
+import { getDemandInfo as getDemandInfo2 } from '@/services/demand'
 import { getWorkflowList } from '@/services/project'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -62,6 +64,7 @@ import DemandInfo from './components/DemandInfo'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ScheduleRecord from '@/components/ScheduleRecord'
+import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
 
 const DemandDetail = () => {
   const [t] = useTranslation()
@@ -98,12 +101,13 @@ const DemandDetail = () => {
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+  const projectIdRef = useRef()
   const [filter, setFilter] = useState(false)
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
   )
-
+  const [drawerInfo, setDrawerInfo] = useState<any>({})
   // 项目是否已经结束
   const isEnd = projectInfo?.status === 2
 
@@ -489,7 +493,23 @@ const DemandDetail = () => {
       dispatch(getDemandInfo({ projectId: params.id, id: demandInfo.id }))
     }
   }
-
+  const getTree = async () => {
+    console.log(params.id, demandInfo?.id, '详情基础数据')
+    const info = await getDemandInfo2({
+      projectId: params.id,
+      id: demandInfo.id,
+    })
+    info.level_tree.push({
+      id: info.id,
+      category_id: info.category,
+      prefix_key: info.prefixKey,
+      project_prefix: info.projectPrefix,
+      category_attachment: info.category_attachment,
+      parent_id: info.parentId,
+      name: info.name,
+    })
+    setDrawerInfo(info)
+  }
   useEffect(() => {
     if (visible || params.demandId) {
       dispatch(getDemandInfo({ projectId: params.id, id: params.demandId }))
@@ -503,6 +523,11 @@ const DemandDetail = () => {
       )
     }
   }, [visible, params])
+  useEffect(() => {
+    if (demandInfo.id) {
+      getTree()
+    }
+  }, [demandInfo])
 
   useEffect(() => {
     // 获取项目信息中的需求类别
@@ -531,6 +556,8 @@ const DemandDetail = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
+  console.log(demandInfo, 'demandInfo')
+
   return (
     <DemandWrap>
       <DeleteConfirmModal />
@@ -614,7 +641,48 @@ const DemandDetail = () => {
         </FormWrap>
       </CommonModal>
       <DetailTop>
-        <MyBreadcrumb />
+        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <MyBreadcrumb />
+          <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
+            {drawerInfo.level_tree?.map((i: any, index: number) => (
+              <DrawerHeader
+                key={i.prefix_key}
+                onClick={() => {
+                  // TODO
+                  if (demandInfo.project_id) {
+                    projectIdRef.current = demandInfo.project_id
+                  }
+                  const projectId = drawerInfo?.projectId
+                  if (index !== drawerInfo?.level_tree?.length - 1) {
+                    openDemandDetail({ ...i }, projectId, i.id)
+                  }
+                }}
+              >
+                <span style={{ fontSize: '12px' }} hidden={index === 1}>
+                  /
+                </span>
+                <img
+                  style={{ width: '16px', height: '16px' }}
+                  src={i.category_attachment}
+                  alt=""
+                />
+                <div style={{ fontSize: '12px' }}>
+                  {i.project_prefix}-{i.prefix_key}
+                </div>
+                <span
+                  style={{ fontSize: '12px' }}
+                  hidden={
+                    drawerInfo.level_tree?.length <= 1 ||
+                    index === drawerInfo.level_tree?.length - 1
+                  }
+                >
+                  /
+                </span>
+              </DrawerHeader>
+            ))}
+          </div>
+        </div>
+
         {demandInfo.id && (
           <ButtonGroup size={16}>
             {(params?.changeIds?.length || 0) > 1 && (
