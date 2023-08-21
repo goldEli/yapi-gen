@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect, useState, forwardRef } from 'react'
 import {
   PanelWrap,
   Rows,
@@ -10,49 +10,54 @@ import {
   NotWorking,
   DateLabel,
   TimeLabel,
+  lastDay,
 } from '../style'
 import classNames from 'classnames'
-interface IProps {}
-const WorkHoursPanel: React.FC<IProps> = props => {
-  const a = [
+import dayjs from 'dayjs'
+interface IProps {
+  ref: any
+}
+const WorkHoursPanel = (props: any, ref: any) => {
+  const tdRef = useRef<any>()
+  const dataSource = [
     {
       name: '李四',
       work_times: [
-        { date: '28', time: '8小时' },
-        { date: '29', time: '6小时' },
-        { date: '30', time: -2 },
-        { date: '31', time: -1 },
-        { date: '1', time: '6小时' },
-        { date: '2', time: -2 },
-        { date: '3', time: -1 },
+        { date: '2023-08-28', time: '8小时' },
+        { date: '2023-08-29', time: '6小时' },
+        { date: '2023-08-30', time: -2 },
+        { date: '2023-08-31', time: -1 },
+        { date: '2023-09-01', time: '6小时' },
+        { date: '2023-09-30', time: -2 },
+        { date: '2023-09-04', time: -1 },
       ],
     },
     {
       name: '张三',
       work_times: [
-        { date: '28', time: -1 },
-        { date: '29', time: '12小时' },
-        { date: '30', time: -1 },
-        { date: '31', time: -2 },
-        { date: '1', time: '6小时' },
-        { date: '2', time: -2 },
-        { date: '3', time: -1 },
+        { date: '2023-08-28', time: -1 },
+        { date: '2023-08-29', time: '12小时' },
+        { date: '2023-08-30', time: -1 },
+        { date: '2023-08-31', time: -2 },
+        { date: '2023-09-01', time: '6小时' },
+        { date: '2023-09-30', time: -2 },
+        { date: '2023-09-04', time: -1 },
       ],
     },
     {
       name: '王五',
       work_times: [
-        { date: '28', time: -2 },
-        { date: '29', time: -1 },
-        { date: '30', time: '20小时' },
-        { date: '31', time: '16小时' },
-        { date: '1', time: '6小时' },
-        { date: '2', time: -2 },
-        { date: '3', time: -1 },
+        { date: '2023-08-28', time: -2 },
+        { date: '2023-08-29', time: -1 },
+        { date: '2023-08-30', time: '20小时' },
+        { date: '2023-08-31', time: '16小时' },
+        { date: '2023-09-01', time: '6小时' },
+        { date: '2023-09-30', time: -2 },
+        { date: '2023-09-04', time: -1 },
       ],
     },
   ]
-  const init = (data: any[], array: any[]) => {
+  const getPanelData = (data: any[], array: any[]) => {
     const columns = data.map(item => item.date)
     const map = new Map()
     columns.forEach(item => {
@@ -72,8 +77,9 @@ const WorkHoursPanel: React.FC<IProps> = props => {
       map,
     }
   }
-  const { columns, map } = init(a[0].work_times, a)
+  const { columns, map } = getPanelData(dataSource[0].work_times, dataSource)
   const rows = map.get(columns[0])
+
   const label = ({ time }: any) => {
     if (time === -2) {
       return '未上报'
@@ -83,16 +89,33 @@ const WorkHoursPanel: React.FC<IProps> = props => {
     }
     return time
   }
-
   return (
-    <PanelWrap>
+    <PanelWrap ref={ref}>
       <Header>
-        <DateLabel>2023-09-09</DateLabel>
+        <DateLabel>
+          {columns.map((item, idx) => {
+            const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
+            const width =
+              tdRef.current?.getBoundingClientRect().width * (idx + 1)
+            return isLastDay === item ? (
+              <div
+                className={classNames('month-td', {
+                  [lastDay]: isLastDay === item,
+                })}
+                style={{ width }}
+              >
+                {item}
+              </div>
+            ) : null
+          })}
+        </DateLabel>
+      </Header>
+      <Header>
         <TimeLabel>
           {columns.map((item, idx) => {
             return (
               <div key={idx} className="header-td">
-                {item}
+                {dayjs(item).format('DD')}
               </div>
             )
           })}
@@ -104,7 +127,7 @@ const WorkHoursPanel: React.FC<IProps> = props => {
             {columns.map((item: any, index: any) => {
               const col = map.get(item)[rowIndex]
               return (
-                <Cols key={index}>
+                <Cols key={index} ref={tdRef}>
                   <WorkHourLabel
                     className={classNames({
                       [Working]: col.time !== 1 && col.time !== -2,
@@ -123,4 +146,4 @@ const WorkHoursPanel: React.FC<IProps> = props => {
     </PanelWrap>
   )
 }
-export default WorkHoursPanel
+export default forwardRef(WorkHoursPanel)
