@@ -68,6 +68,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     setModalInfo(null)
     setUploadAttachList({})
     setPeopleValue([])
+    form.resetFields()
   }
 
   // 发送日报
@@ -240,7 +241,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
 
   // 获取头部初始数据
   const getInitDaily = async () => {
-    const result = await initDaily()
+    const result = await initDaily({ type: type === 'project' ? 3 : 2 })
     setInitData(result)
   }
 
@@ -305,6 +306,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       return
     }
     setLoading(true)
+    form.resetFields()
     try {
       let result = null
       if (type === 'user') {
@@ -627,6 +629,13 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           >
             <UploadAttach
               power
+              special={
+                content.name === 'picture'
+                  ? ['png', 'jpg', 'jpeg', 'gif']
+                  : content.name === 'video'
+                  ? ['avi', 'wmv', 'mp4']
+                  : []
+              }
               defaultList={
                 uploadAttachList[
                   `${content.type}+${content.id}+${content.name}`

@@ -32,7 +32,7 @@ import TruncateTextWithEllipsis from './TruncateTextWithEllipsis'
 import PreviewIframe from './PreviewIframe'
 
 const Warp = styled(Upload)({
-  display: 'none',
+  // display: 'none',
   '.ant-upload-list-item-name': {
     color: 'var(--neutral-n1-d1)',
   },
@@ -266,9 +266,9 @@ const UploadAttach = (props: any, ref: any) => {
   }
 
   function isFormatType(str: string) {
-    // if (props?.special?.length >= 1) {
-    //   return props.special.indexOf(str.toLowerCase()) === -1
-    // }
+    if (props?.special?.length >= 1) {
+      return props.special.indexOf(str.toLowerCase()) === -1
+    }
     return disabledFile.indexOf(str.toLowerCase()) !== -1
   }
 
@@ -290,7 +290,7 @@ const UploadAttach = (props: any, ref: any) => {
       })
       return Upload.LIST_IGNORE
     }
-    if (file.size / 1024 > 5242880) {
+    if (file.size > 300 * 1024 * 1024) {
       getMessage({
         msg: t('theFileExceeds'),
         type: 'warning',

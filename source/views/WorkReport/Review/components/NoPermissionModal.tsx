@@ -29,7 +29,10 @@ const NoPermissionModal = (props: NoPermissionProps) => {
   const [t]: any = useTranslation()
   const { close, visible, id, type } = props
   const confirm = async () => {
-    const result = await sendNotice(id)
+    const result = await sendNotice({
+      project_id: id,
+      type: type === 'user' ? 1 : 2,
+    })
     if (result) {
       getMessage({
         type: 'success',
@@ -53,7 +56,7 @@ const NoPermissionModal = (props: NoPermissionProps) => {
         <NoPermissionText>
           {type === 'user'
             ? t('report.list.contactAdministrator')
-            : '请联系管理员进行[项目日报生成配置]'}
+            : t('pleaseContactTheAdministratorForDailyReportGeneration')}
         </NoPermissionText>
       </NoPermissionWrap>
     </CommonModal>

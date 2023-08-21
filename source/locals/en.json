@@ -2300,5 +2300,6 @@
   "linkTask": "Link task",
   "demandComment": "Demand comment",
   "theFileExceeds": "The file exceeds 300M",
-  "onlySupport": "Only support"
+  "onlySupport": "Only support",
+  "pleaseContactTheAdministratorForDailyReportGeneration": "Please contact the administrator for [Project daily report generation configuration]"
 }

@@ -140,7 +140,7 @@ export const getDailyInfo: any = async (params: any) => {
 
 // 日报助手：日报生成规则未配置通知
 export const sendNotice: any = async (params: any) => {
-  const response = await http.post('sendNotice', { project_id: params })
+  const response = await http.post('sendNotice', params)
   return response.data
 }
 
