@@ -775,6 +775,12 @@ const DemandDetailDrawer = () => {
                 <div style={{ display: 'flex' }}>
                   {drawerInfo.level_tree?.map((i: any, index: number) => (
                     <DrawerHeader
+                      style={{
+                        cursor:
+                          index === drawerInfo?.level_tree?.length - 1
+                            ? 'auto'
+                            : 'pointer',
+                      }}
                       key={i.prefix_key}
                       onClick={() => {
                         // TODO
@@ -788,18 +794,13 @@ const DemandDetailDrawer = () => {
                         }
                       }}
                     >
+                      <span style={{ display: index === 0 ? 'none' : 'block' }}>
+                        <CommonIconFont type="right"></CommonIconFont>
+                      </span>
                       <img src={i.category_attachment} alt="" />
                       <div>
                         {i.project_prefix}-{i.prefix_key}
                       </div>
-                      <span
-                        hidden={
-                          drawerInfo.level_tree?.length <= 1 ||
-                          index === drawerInfo.level_tree?.length - 1
-                        }
-                      >
-                        /
-                      </span>
                     </DrawerHeader>
                   ))}
                 </div>

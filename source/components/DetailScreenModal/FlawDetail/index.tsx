@@ -638,6 +638,12 @@ const FlawDetail = () => {
           <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
             {drawerInfo.level_tree?.map((i: any, index: number) => (
               <DrawerHeader
+                style={{
+                  cursor:
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? 'auto'
+                      : 'pointer',
+                }}
                 key={i.prefix_key}
                 onClick={() => {
                   const projectId = drawerInfo?.projectId
@@ -649,10 +655,9 @@ const FlawDetail = () => {
                 <span
                   style={{
                     fontSize: '12px',
-                    display: index === 0 ? 'block' : 'none',
                   }}
                 >
-                  /
+                  <CommonIconFont type="right"></CommonIconFont>
                 </span>
                 <img
                   style={{ fontSize: '12px' }}
@@ -662,18 +667,6 @@ const FlawDetail = () => {
                 <div style={{ fontSize: '12px' }}>
                   {i.project_prefix}-{i.prefix_key}
                 </div>
-                <span
-                  style={{
-                    fontSize: '12px',
-                    display:
-                      drawerInfo.level_tree?.length <= 1 ||
-                      index === drawerInfo.level_tree?.length - 1
-                        ? 'none'
-                        : 'block',
-                  }}
-                >
-                  /
-                </span>
               </DrawerHeader>
             ))}
           </div>

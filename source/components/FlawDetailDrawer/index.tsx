@@ -829,6 +829,12 @@ const FlawDetailDrawer = () => {
                 <div style={{ display: 'flex' }}>
                   {drawerInfo.level_tree?.map((i: any, index: number) => (
                     <DrawerHeader
+                      style={{
+                        cursor:
+                          index === drawerInfo?.level_tree?.length - 1
+                            ? 'auto'
+                            : 'pointer',
+                      }}
                       key={i.prefix_key}
                       onClick={() => {
                         const projectId = drawerInfo?.projectId
@@ -847,7 +853,7 @@ const FlawDetailDrawer = () => {
                           index === drawerInfo.level_tree?.length - 1
                         }
                       >
-                        /
+                        <CommonIconFont type="right"></CommonIconFont>
                       </span>
                     </DrawerHeader>
                   ))}
