@@ -12,18 +12,43 @@ import ProjectDetailSideIteration from '../ProjectManagement/ProjectDetailSide'
 import { getParamsData } from '@/tools'
 import { useState } from 'react'
 import ReportAssistantModal from './Review/components/ReportAssistantModal'
+import { Popover } from 'antd'
+import IconFont from '@/components/IconFont'
 const WorkReportWrap = styled.div`
   position: relative;
   height: 100%;
   background: var(--neutral-white-d1);
   width: 100%;
 `
-const RobotButton = styled.img`
+const RobotButton = styled.div`
   position: fixed;
   z-index: 99;
   bottom: 100px;
   right: 40px;
   cursor: pointer;
+  user-select: none;
+  .popover_yang {
+    left: -115px !important;
+  }
+`
+
+const MenuItem = styled.div`
+  width: 126px;
+  height: 40px;
+  font-size: 14px;
+  color: var(--neutral-n2);
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    background: var(--hover-d3);
+    color: var(--neutral-n1-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
 `
 
 const WorkReport = () => {
@@ -36,11 +61,58 @@ const WorkReport = () => {
   const { language } = useSelector(store => store.global)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams) || {}
-  const [reportAssistantModalVisible, setReportAssistantModalVisible] =
-    useState(false)
+  const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
+    visible: boolean
+    type: 'user' | 'project'
+  }>({
+    visible: false,
+    type: 'user',
+  })
 
   const [position, setPosition] = useState<any>({ x: null, y: null })
   const { type } = paramsData
+
+  const content = (
+    <div style={{ padding: '4px 0px' }}>
+      <MenuItem
+        onClick={() =>
+          setReportAssistantModalObj({
+            visible: true,
+            type: 'project',
+          })
+        }
+      >
+        <IconFont
+          style={{
+            fontSize: 16,
+            color: 'var(--neutral-n3) !important',
+            marginRight: 8,
+          }}
+          type="folder-open-nor"
+        />
+        <span>项目日报</span>
+      </MenuItem>
+      <MenuItem
+        onClick={() =>
+          setReportAssistantModalObj({
+            visible: true,
+            type: 'user',
+          })
+        }
+      >
+        <IconFont
+          style={{
+            fontSize: 16,
+            marginRight: 8,
+            color: 'var(--neutral-n3) !important',
+          }}
+          type="user"
+        />
+        <span>单人日报</span>
+      </MenuItem>
+    </div>
+  )
+
   return (
     <WorkReportWrap
       id="dropArea"
@@ -93,7 +165,6 @@ const WorkReport = () => {
           onDragStart={(event: any) => {
             event.dataTransfer.effectAllowed = 'move'
           }}
-          onClick={() => setReportAssistantModalVisible(true)}
           style={{
             left: position.x,
             top: position.y,
@@ -102,19 +173,34 @@ const WorkReport = () => {
             // eslint-disable-next-line no-undefined
             right: position.x ? undefined : 50,
           }}
-          height={108}
-          src={
-            language === 'zh'
-              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/RobotButton.png'
-              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/RobotButtonEn.png'
-          }
-        />
+        >
+          <Popover
+            placement="left"
+            content={content}
+            trigger="click"
+            getPopupContainer={(node: any) => node.parentNode}
+            overlayClassName="popover_yang"
+          >
+            <img
+              height={108}
+              src={
+                language === 'zh'
+                  ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/RobotButton.png'
+                  : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/RobotButtonEn.png'
+              }
+            />
+          </Popover>
+        </RobotButton>
       ) : null}
       <ReportAssistantModal
         close={() => {
-          setReportAssistantModalVisible(false)
+          setReportAssistantModalObj({
+            ...reportAssistantModalObj,
+            visible: false,
+          })
         }}
-        visible={reportAssistantModalVisible}
+        visible={reportAssistantModalObj.visible}
+        type={reportAssistantModalObj.type}
       />
     </WorkReportWrap>
   )

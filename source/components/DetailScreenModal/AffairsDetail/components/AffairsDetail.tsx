@@ -83,7 +83,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       type: 'attachment',
       targetId: [obj],
     })
-    onUpdate(true)
+    onUpdate()
   }
 
   //   确认删除附件事件
@@ -94,7 +94,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       type: 'attachment',
       targetId,
     })
-    onUpdate(true)
+    onUpdate()
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
   }
 
@@ -121,7 +121,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       name: props.affairsInfo.name,
     }
     await updateEditor(params)
-    onUpdate(true)
+    onUpdate()
   }
 
   useImperativeHandle(props.onRef, () => {
