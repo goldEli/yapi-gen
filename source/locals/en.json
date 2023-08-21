@@ -2301,5 +2301,7 @@
   "demandComment": "Demand comment",
   "theFileExceeds": "The file exceeds 300M",
   "onlySupport": "Only support",
-  "pleaseContactTheAdministratorForDailyReportGeneration": "Please contact the administrator for [Project daily report generation configuration]"
+  "pleaseContactTheAdministratorForDailyReportGeneration": "Please contact the administrator for [Project daily report generation configuration]",
+  "theSizeOfThePictureShouldNotExceed": "The size of the picture should not exceed 300M",
+  "theSizeOfTheVideoShouldNotExceed": "The size of the video should not exceed 300M"
 }

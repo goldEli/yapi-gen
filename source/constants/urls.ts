@@ -211,6 +211,7 @@ const urls = {
   writeAssistantReport: '/b/work_report/user/helperCreate',
   writeProjectAssistantReport: '/b/work_report/user/helperCreateOfProject',
   getSprintKanBanList: '/b/list',
+  getProjectReportInfo: '/b/work_report/user/infoOfProject',
   /**
    * 冲刺项目-事务
    */

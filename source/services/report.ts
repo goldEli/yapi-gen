@@ -181,3 +181,9 @@ export const writeProjectAssistantReport: any = async (params: any) => {
   const response = await http.post('writeProjectAssistantReport', params)
   return response.data
 }
+
+// (项目日报)获取汇报详情
+export const getProjectReportInfo = async (params: any) => {
+  const response = await http.get('getProjectReportInfo', params)
+  return response.data
+}

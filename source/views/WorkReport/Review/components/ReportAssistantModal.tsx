@@ -36,6 +36,7 @@ import {
   HandleSpin,
   LabelTitles,
   LoadingButton,
+  TitleTips,
 } from './style'
 
 interface ReportAssistantProps {
@@ -608,7 +609,19 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       case 2:
         return (
           <Form.Item
-            label={<LabelTitles>{content.name_text}</LabelTitles>}
+            label={
+              <div>
+                <LabelTitles>{content.name_text}</LabelTitles>
+                {content.name === 'picture' && (
+                  <TitleTips>
+                    {t('theSizeOfThePictureShouldNotExceed')}
+                  </TitleTips>
+                )}
+                {content.name === 'video' && (
+                  <TitleTips>{t('theSizeOfTheVideoShouldNotExceed')}</TitleTips>
+                )}
+              </div>
+            }
             name={`${content.type}+${content.id}+${content.name}`}
             rules={[
               {

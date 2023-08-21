@@ -34,7 +34,7 @@ import {
 import {
   addReportComment,
   getReportComment,
-  getReportInfo,
+  getProjectReportInfo,
   delReportComment,
 } from '@/services/report'
 import UploadAttach from '@/components/UploadAttach'
@@ -89,7 +89,7 @@ const TargetTabs = (props: TargetTabsProps) => {
   )
 }
 
-const System = () => {
+const ProjectSystemReport = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { viewReportModal } = useSelector(store => store.workReport)
@@ -186,7 +186,7 @@ const System = () => {
   const getReportDetail = async () => {
     setDrawerInfo({})
     setSkeletonLoading(true)
-    const info = await getReportInfo({
+    const info = await getProjectReportInfo({
       id: viewReportModal?.id,
     })
     setUserList(info?.target_users)
@@ -229,7 +229,7 @@ const System = () => {
     scrollToBottom()
     setIsReview(false)
     getReportCommentData(drawerInfo.id)
-    const info = await getReportInfo({
+    const info = await getProjectReportInfo({
       id: viewReportModal?.id,
     })
     setUserList(info?.target_users)
@@ -273,10 +273,10 @@ const System = () => {
 
   useEffect(() => {
     init()
-    document.addEventListener('keydown', getKeyDown)
-    return () => {
-      document.removeEventListener('keydown', getKeyDown)
-    }
+    // document.addEventListener('keydown', getKeyDown)
+    // return () => {
+    //   document.removeEventListener('keydown', getKeyDown)
+    // }
   }, [])
 
   // 删除评论
@@ -371,24 +371,23 @@ const System = () => {
               <Col key={item.id}>
                 {item.type === 4 && (
                   <Title style={{ marginBottom: 8 }}>
-                    {item.name}: {item.pivot.params?.length}
+                    {item.name_text}: {item.pivot.params?.length}
                     {t('report.list.pieces')}
                   </Title>
                 )}
-                {item.type === 3 && (
-                  <Title style={{ marginBottom: 8 }}>
-                    {item.name}:{' '}
-                    {JSON.parse(item?.pivot?.content ?? null)?.total_schedule}%
-                    <span style={{ marginLeft: 16 }}>
-                      {t('spent')}：
-                      {JSON.parse(item?.pivot?.content ?? null)
-                        ?.user_today_total_task_time ?? 0}
-                      h
-                    </span>
-                  </Title>
-                )}
-                {item.type === 3 && (
+                {item.type === 3 && item.name === 'total_schedule' && (
                   <>
+                    <Title style={{ marginBottom: 8 }}>
+                      {item.name_text}:{' '}
+                      {JSON.parse(item?.pivot?.content ?? null)?.total_schedule}
+                      %
+                      <span style={{ marginLeft: 16 }}>
+                        {t('spent')}：
+                        {JSON.parse(item?.pivot?.content ?? null)
+                          ?.today_total_task_time ?? 0}
+                        h
+                      </span>
+                    </Title>
                     <Msg style={{ marginTop: '8px' }}>
                       {t('report.list.addedYesterday')}：
                       {JSON.parse(item?.pivot?.content ?? null)?.yesterday_add}
@@ -411,6 +410,16 @@ const System = () => {
                     </RowLine>
                   </>
                 )}
+                {item.type === 3 && item.name === 'description' && (
+                  <>
+                    <Title>{item.name_text}</Title>
+                    <Editor
+                      readonly
+                      disableUpdateValue
+                      value={item?.pivot?.content}
+                    />
+                  </>
+                )}
                 {item.type === 4 &&
                   item.pivot.params?.map((el: any) => (
                     <RowRadius key={el.id}>
@@ -425,16 +434,14 @@ const System = () => {
                       <Msg>
                         {el.name}
                         {`（${
-                          el.user_schedule_percent
-                            ? el.user_schedule_percent
-                            : 0
-                        }%  ${el.user_today_task_time ?? 0}h）`}
+                          el.schedule_percent ? el.schedule_percent : 0
+                        }%  ${el.today_task_time ?? 0}h）`}
                       </Msg>
                     </RowRadius>
                   ))}
                 {item.type === 2 && (
                   <>
-                    <Title>{item?.name}</Title>
+                    <Title>{item?.name_text}</Title>
                     <AttachmentBox list={item?.pivot?.params} />
                   </>
                 )}
@@ -495,4 +502,4 @@ const System = () => {
   )
 }
 
-export default System
+export default ProjectSystemReport
