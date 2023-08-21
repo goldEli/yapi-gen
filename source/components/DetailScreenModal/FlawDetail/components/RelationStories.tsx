@@ -208,7 +208,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
     getMessage({ type: 'success', msg: t('addedSuccessfully') })
     getList(pageObj, order)
     onClose()
-    props.onUpdate(true)
+    props.onUpdate()
   }
 
   // 点击切换页码
