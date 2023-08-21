@@ -65,6 +65,15 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ScheduleRecord from '@/components/ScheduleRecord'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
+import { css } from '@emotion/css'
+
+export const myTreeCss = css`
+  &:hover {
+    text-decoration: underline !important;
+    text-decoration-color: var(--neutral-n1-d1) !important;
+    /* padding-bottom: 4px !important; */
+  }
+`
 
 const DemandDetail = () => {
   const [t] = useTranslation()
@@ -646,6 +655,12 @@ const DemandDetail = () => {
           <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
             {drawerInfo.level_tree?.map((i: any, index: number) => (
               <DrawerHeader
+                style={{
+                  cursor:
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? 'auto'
+                      : 'pointer',
+                }}
                 key={i.prefix_key}
                 onClick={() => {
                   // TODO
@@ -658,26 +673,33 @@ const DemandDetail = () => {
                   }
                 }}
               >
-                <span style={{ fontSize: '12px' }} hidden={index === 1}>
-                  /
+                <span style={{ fontSize: '12px' }}>
+                  <CommonIconFont
+                    type="right"
+                    color="var(--neutral-n1-d1)"
+                  ></CommonIconFont>
                 </span>
                 <img
                   style={{ width: '16px', height: '16px' }}
                   src={i.category_attachment}
                   alt=""
                 />
-                <div style={{ fontSize: '12px' }}>
+                <div
+                  className={
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? ''
+                      : myTreeCss
+                  }
+                  style={{
+                    fontSize: '12px',
+                    color:
+                      index === drawerInfo?.level_tree?.length - 1
+                        ? ''
+                        : 'var(--neutral-n1-d1)',
+                  }}
+                >
                   {i.project_prefix}-{i.prefix_key}
                 </div>
-                <span
-                  style={{ fontSize: '12px' }}
-                  hidden={
-                    drawerInfo.level_tree?.length <= 1 ||
-                    index === drawerInfo.level_tree?.length - 1
-                  }
-                >
-                  /
-                </span>
               </DrawerHeader>
             ))}
           </div>

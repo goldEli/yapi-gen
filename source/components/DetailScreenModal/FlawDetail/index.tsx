@@ -61,6 +61,7 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ScheduleRecord from '@/components/ScheduleRecord'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
+import { myTreeCss } from '../DemandDetail'
 
 const FlawDetail = () => {
   const [t] = useTranslation()
@@ -638,6 +639,12 @@ const FlawDetail = () => {
           <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
             {drawerInfo.level_tree?.map((i: any, index: number) => (
               <DrawerHeader
+                style={{
+                  cursor:
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? 'auto'
+                      : 'pointer',
+                }}
                 key={i.prefix_key}
                 onClick={() => {
                   const projectId = drawerInfo?.projectId
@@ -649,31 +656,34 @@ const FlawDetail = () => {
                 <span
                   style={{
                     fontSize: '12px',
-                    display: index === 0 ? 'block' : 'none',
                   }}
                 >
-                  /
+                  <CommonIconFont
+                    type="right"
+                    color="var(--neutral-n1-d1)"
+                  ></CommonIconFont>
                 </span>
                 <img
                   style={{ fontSize: '12px' }}
                   src={i.category_attachment}
                   alt=""
                 />
-                <div style={{ fontSize: '12px' }}>
-                  {i.project_prefix}-{i.prefix_key}
-                </div>
-                <span
+                <div
+                  className={
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? ''
+                      : myTreeCss
+                  }
                   style={{
                     fontSize: '12px',
-                    display:
-                      drawerInfo.level_tree?.length <= 1 ||
-                      index === drawerInfo.level_tree?.length - 1
-                        ? 'none'
-                        : 'block',
+                    color:
+                      index === drawerInfo?.level_tree?.length - 1
+                        ? ''
+                        : 'var(--neutral-n1-d1)',
                   }}
                 >
-                  /
-                </span>
+                  {i.project_prefix}-{i.prefix_key}
+                </div>
               </DrawerHeader>
             ))}
           </div>

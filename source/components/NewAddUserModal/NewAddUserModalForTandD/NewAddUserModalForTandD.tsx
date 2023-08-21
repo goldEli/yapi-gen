@@ -255,12 +255,12 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   const [tabs, setTabs] = useState([
     {
-      label: t('commonModal.labelTitle'),
-      key: '1',
-    },
-    {
       label: t('commonModal.labelTitle1'),
       key: '2',
+    },
+    {
+      label: t('commonModal.labelTitle'),
+      key: '1',
     },
   ])
 
@@ -286,12 +286,12 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     }
     if (props?.onlyTeam) {
       setTabs(tabs.filter(el => el.key === '1'))
-      setTabsActive(0)
+      setTabsActive(1)
       return
     }
     if (projectInfo?.teamId && props.isPermisGroup) {
       setTabs(tabs.filter(el => el.key === '1'))
-      setTabsActive(1)
+      setTabsActive(0)
     }
   }, [props.isVisible])
   // 勾选后获取到成员
@@ -377,10 +377,10 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
 
   useEffect(() => {
-    if (tabsActive === 0 && props.isVisible) {
+    if (tabsActive === 1 && props.isVisible) {
       // getCompany()
       getTeam()
-    } else if (tabsActive === 1 && props.isVisible) {
+    } else if (tabsActive === 0 && props.isVisible) {
       getCompany()
       // getTeam()
     }
@@ -391,12 +391,12 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
         setTabsActive(0)
         setTabs([
           {
-            label: t('commonModal.labelTitle'),
-            key: '1',
-          },
-          {
             label: t('commonModal.labelTitle1'),
             key: '2',
+          },
+          {
+            label: t('commonModal.labelTitle'),
+            key: '1',
           },
         ])
         break
@@ -406,7 +406,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   // 删除成员
   const delPersonDataList = (el: any) => {
     let key: any = []
-    if (tabsActive === 1) {
+    if (tabsActive === 0) {
       key = personData
         .filter((item: any) => el.id !== item.id)
         ?.map((item: any) => item.department_id)
@@ -480,7 +480,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       getMessage({ msg: t('commonModal.warnningMsg1'), type: 'warning' })
     } else {
       const filterVal: any =
-        tabsActive === 0
+        tabsActive === 1
           ? selectDataList.filter((el: any) => el.id === value)
           : selectDataList
               .filter((el: any) => el.id === value)
@@ -616,7 +616,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   const getHaveChildBykeys = (keys: any) => {
     // 部门的处理方法
-    if (tabsActive === 1) {
+    if (tabsActive === 0) {
       const flattenedStaffs = [
         ...new Set(
           flattenStaffs([keys]).map((item: any) => {
@@ -695,7 +695,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
   // 新的全选逻辑
   const checkAllChangeNew = () => {
-    if (tabsActive === 1) {
+    if (tabsActive === 0) {
       const allStaffs = flattenStaffs([showTreeData])
 
       // 去重
@@ -755,7 +755,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
 
   const isSomeChoose = () => {
-    if (showTreeData && tabsActive === 0) {
+    if (showTreeData && tabsActive === 1) {
       const findBottomChildrens = findBottomChildren([showTreeData])
       // 去重
       const newData = findBottomChildrens.reduce((acc: any, current: any) => {
@@ -784,7 +784,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       }
       return isAll
     }
-    if (showTreeData && tabsActive === 1) {
+    if (showTreeData && tabsActive === 0) {
       const findBottomChildrens = flattenStaffs([showTreeData])
       // 去重
       const newData = findBottomChildrens.reduce((acc: any, current: any) => {
@@ -816,7 +816,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
 
   const isAllChoose = () => {
-    if (showTreeData && tabsActive === 0) {
+    if (showTreeData && tabsActive === 1) {
       const findBottomChildrens = findBottomChildren([showTreeData])
       // 去重
       const newData = findBottomChildrens.reduce((acc: any, current: any) => {
@@ -838,7 +838,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       )
       return isAll
     }
-    if (showTreeData && tabsActive === 1) {
+    if (showTreeData && tabsActive === 0) {
       const findBottomChildrens = findBottomChildren([showTreeData])
       // 去重
       const newData = findBottomChildrens.reduce((acc: any, current: any) => {
@@ -884,19 +884,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   useEffect(() => {
     if (props.defaultPeople && props.defaultPeople.length > 0) {
       setDefaultPeople()
-      // if (tabsActive === 0) {
-      //   if (selectDataList?.length > 0) {
-      //     const data = getFilterArr(selectDataList, props.defaultPeople)
-      //     setPersonData(data)
-      //   }
-      // }
-      // if (tabsActive === 1) {
-      //   if (selectDataList?.length > 0) {
-      //     const data = getFilterArr(selectDataList, props.defaultPeople)
-
-      //     setPersonData(data)
-      //   }
-      // }
     }
     active.current = []
   }, [
@@ -964,7 +951,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
                     setTabsActive(index)
                     setShowTreeData({
-                      children: tabsActive === 1 ? treeData2 : treeData,
+                      children: tabsActive === 0 ? treeData2 : treeData,
                       staffs: [],
                     })
                     active.current = []
@@ -987,7 +974,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                 <Breadcrumb.Item
                   onClick={() => {
                     setShowTreeData({
-                      children: tabsActive === 1 ? treeData2 : treeData,
+                      children: tabsActive === 0 ? treeData2 : treeData,
                       staffs: [],
                     })
                     active.current = []
@@ -1051,7 +1038,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
             }}
           >
             <NewAddShowList
-              isDe={tabsActive === 1}
+              isDe={tabsActive === 0}
               selectKeys={personData}
               setKeys={setKeys}
               getTapData={getTapData}
