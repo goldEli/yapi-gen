@@ -61,6 +61,7 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ScheduleRecord from '@/components/ScheduleRecord'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
+import { myTreeCss } from '../DemandDetail'
 
 const FlawDetail = () => {
   const [t] = useTranslation()
@@ -657,14 +658,30 @@ const FlawDetail = () => {
                     fontSize: '12px',
                   }}
                 >
-                  <CommonIconFont type="right"></CommonIconFont>
+                  <CommonIconFont
+                    type="right"
+                    color="var(--neutral-n1-d1)"
+                  ></CommonIconFont>
                 </span>
                 <img
                   style={{ fontSize: '12px' }}
                   src={i.category_attachment}
                   alt=""
                 />
-                <div style={{ fontSize: '12px' }}>
+                <div
+                  className={
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? ''
+                      : myTreeCss
+                  }
+                  style={{
+                    fontSize: '12px',
+                    color:
+                      index === drawerInfo?.level_tree?.length - 1
+                        ? ''
+                        : 'var(--neutral-n1-d1)',
+                  }}
+                >
                   {i.project_prefix}-{i.prefix_key}
                 </div>
               </DrawerHeader>

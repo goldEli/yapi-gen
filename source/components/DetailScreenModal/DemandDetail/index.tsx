@@ -65,6 +65,15 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ScheduleRecord from '@/components/ScheduleRecord'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
+import { css } from '@emotion/css'
+
+export const myTreeCss = css`
+  &:hover {
+    text-decoration: underline !important;
+    text-decoration-color: var(--neutral-n1-d1) !important;
+    /* padding-bottom: 4px !important; */
+  }
+`
 
 const DemandDetail = () => {
   const [t] = useTranslation()
@@ -676,6 +685,11 @@ const DemandDetail = () => {
                   alt=""
                 />
                 <div
+                  className={
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? ''
+                      : myTreeCss
+                  }
                   style={{
                     fontSize: '12px',
                     color:

@@ -89,6 +89,7 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import FlawTag from '../TagComponent/FlawTag'
 import ScheduleRecord from '../ScheduleRecord'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 let timer: NodeJS.Timeout
 const FlawDetailDrawer = () => {
   const normalState = {
@@ -844,7 +845,20 @@ const FlawDetailDrawer = () => {
                       }}
                     >
                       <img src={i.category_attachment} alt="" />
-                      <div>
+                      <div
+                        className={
+                          index === drawerInfo?.level_tree?.length - 1
+                            ? ''
+                            : myTreeCss
+                        }
+                        style={{
+                          fontSize: '12px',
+                          color:
+                            index === drawerInfo?.level_tree?.length - 1
+                              ? ''
+                              : 'var(--neutral-n1-d1)',
+                        }}
+                      >
                         {i.project_prefix}-{i.prefix_key}
                       </div>
                       <span
@@ -853,7 +867,10 @@ const FlawDetailDrawer = () => {
                           index === drawerInfo.level_tree?.length - 1
                         }
                       >
-                        <CommonIconFont type="right"></CommonIconFont>
+                        <CommonIconFont
+                          type="right"
+                          color="var(--neutral-n1-d1)"
+                        ></CommonIconFont>
                       </span>
                     </DrawerHeader>
                   ))}

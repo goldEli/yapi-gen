@@ -99,6 +99,7 @@ import CommonProgress from '../CommonProgress'
 import ScheduleRecord from '../ScheduleRecord'
 import DemandTag from '../TagComponent/DemandTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 interface ItemIprops {
   label: string
   key: string
@@ -802,6 +803,11 @@ const DemandDetailDrawer = () => {
                       </span>
                       <img src={i.category_attachment} alt="" />
                       <div
+                        className={
+                          index === drawerInfo?.level_tree?.length - 1
+                            ? ''
+                            : myTreeCss
+                        }
                         style={{
                           color:
                             index === drawerInfo?.level_tree?.length - 1

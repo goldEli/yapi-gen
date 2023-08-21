@@ -8,6 +8,7 @@ import IconFont from '../IconFont'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 const BreadBox = styled.div`
   display: flex;
   align-items: center;
@@ -181,6 +182,7 @@ const LongStroyBread = (props: IProps) => {
                   />
                 )}
                 <span
+                  className={myTreeCss}
                   style={{ color: 'var(--neutral-n1-d1)' }}
                   onClick={() => {
                     const projectId = longStroy?.projectId
