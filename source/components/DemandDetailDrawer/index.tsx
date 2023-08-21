@@ -795,10 +795,20 @@ const DemandDetailDrawer = () => {
                       }}
                     >
                       <span style={{ display: index === 0 ? 'none' : 'block' }}>
-                        <CommonIconFont type="right"></CommonIconFont>
+                        <CommonIconFont
+                          color="var(--neutral-n1-d1)"
+                          type="right"
+                        ></CommonIconFont>
                       </span>
                       <img src={i.category_attachment} alt="" />
-                      <div>
+                      <div
+                        style={{
+                          color:
+                            index === drawerInfo?.level_tree?.length - 1
+                              ? ''
+                              : 'var(--neutral-n1-d1)',
+                        }}
+                      >
                         {i.project_prefix}-{i.prefix_key}
                       </div>
                     </DrawerHeader>
