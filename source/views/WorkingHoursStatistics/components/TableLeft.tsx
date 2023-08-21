@@ -63,6 +63,7 @@ const TableLeft = (props: any) => {
         return (
           <CanOperation
             onClick={() => {
+              // type 不传是需求，1是事务，2是缺陷
               openDemandDetail({ ...record }, record.projectId, record.id, 1)
             }}
           >
@@ -123,11 +124,13 @@ const TableLeft = (props: any) => {
                 trigger="click"
               >
                 <IconFont
+                  className="icon"
                   style={{
                     fontSize: 14,
                     marginLeft: 8,
+                    color: 'var(--neutral-n4)',
                   }}
-                  type={'down'}
+                  type={'down-icon'}
                 />
               </Popover>
             )}
