@@ -665,14 +665,25 @@ const DemandDetail = () => {
                 }}
               >
                 <span style={{ fontSize: '12px' }}>
-                  <CommonIconFont type="right"></CommonIconFont>
+                  <CommonIconFont
+                    type="right"
+                    color="var(--neutral-n1-d1)"
+                  ></CommonIconFont>
                 </span>
                 <img
                   style={{ width: '16px', height: '16px' }}
                   src={i.category_attachment}
                   alt=""
                 />
-                <div style={{ fontSize: '12px' }}>
+                <div
+                  style={{
+                    fontSize: '12px',
+                    color:
+                      index === drawerInfo?.level_tree?.length - 1
+                        ? ''
+                        : 'var(--neutral-n1-d1)',
+                  }}
+                >
                   {i.project_prefix}-{i.prefix_key}
                 </div>
               </DrawerHeader>
