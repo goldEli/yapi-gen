@@ -53,7 +53,7 @@ export const DateLabel = styled.div`
 
     box-sizing: border-box;
     /* flex: 1; */
-    justify-content: center;
+    /* justify-content: center; */
     padding-left: 16px;
   }
 `

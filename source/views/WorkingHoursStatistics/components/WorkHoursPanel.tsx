@@ -28,8 +28,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
         { date: '2023-08-30', time: -2 },
         { date: '2023-08-31', time: -1 },
         { date: '2023-09-01', time: '6小时' },
-        { date: '2023-09-30', time: -2 },
-        { date: '2023-09-04', time: -1 },
+        { date: '2023-09-02', time: -2 },
+        { date: '2023-09-03', time: -1 },
       ],
     },
     {
@@ -40,8 +40,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
         { date: '2023-08-30', time: -1 },
         { date: '2023-08-31', time: -2 },
         { date: '2023-09-01', time: '6小时' },
-        { date: '2023-09-30', time: -2 },
-        { date: '2023-09-04', time: -1 },
+        { date: '2023-09-02', time: -2 },
+        { date: '2023-09-03', time: -1 },
       ],
     },
     {
@@ -52,8 +52,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
         { date: '2023-08-30', time: '20小时' },
         { date: '2023-08-31', time: '16小时' },
         { date: '2023-09-01', time: '6小时' },
-        { date: '2023-09-30', time: -2 },
-        { date: '2023-09-04', time: -1 },
+        { date: '2023-09-02', time: -2 },
+        { date: '2023-09-03', time: -1 },
       ],
     },
   ]
@@ -79,7 +79,17 @@ const WorkHoursPanel = (props: any, ref: any) => {
   }
   const { columns, map } = getPanelData(dataSource[0].work_times, dataSource)
   const rows = map.get(columns[0])
-
+  const reduceMonth = (dates: any[]) => {
+    const result = dates.reduce((obj, date) => {
+      const key = dayjs(date).endOf('month').format('YYYY-MM-DD')
+      obj[key] = obj[key] || []
+      obj[key].push(date)
+      return obj
+    }, {})
+    return result
+  }
+  const monthData = reduceMonth(columns)
+  console.log('monthDatas', monthData)
   const label = ({ time }: any) => {
     if (time === -2) {
       return '未上报'
@@ -95,9 +105,17 @@ const WorkHoursPanel = (props: any, ref: any) => {
         <DateLabel>
           {columns.map((item, idx) => {
             const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
+            const isFirstDay = dayjs(item).startOf('month').format('YYYY-MM-DD')
+            console.log('isLastDay', isLastDay, isFirstDay)
             const width =
               tdRef.current?.getBoundingClientRect().width * (idx + 1)
-            return isLastDay === item ? (
+            console.log(Object.values(monthData), columns)
+            // let text = ''
+            // Object.values(monthData).forEach(ele => {
+            //   text = `${ele[0]}至${ele[ele.length - 1]}`
+            // })
+
+            return isLastDay === item || isFirstDay === item ? (
               <div
                 className={classNames('month-td', {
                   [lastDay]: isLastDay === item,
