@@ -37,7 +37,7 @@ const WorkHours: React.FC<IProps> = props => {
 
       <WorkHoursHeader
         onSearch={(val: any) => {
-          setFormVal(val), console.log(val)
+          console.log(val)
         }}
       />
       <MianWrap>

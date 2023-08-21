@@ -65,10 +65,13 @@ const WorkHoursHeader = (props: { onSearch: (val: any) => void }) => {
   }, [])
   const onChangeTime = (dates: any) => {
     if (dates) {
-      form.setFieldValue('time', [
-        moment(dates[0]).format('YYYY-MM-DD'),
-        moment(dates[1]).format('YYYY-MM-DD'),
-      ])
+      form.setFieldsValue({
+        time: [
+          moment(dates[0]).format('YYYY-MM-DD'),
+          moment(dates[1]).format('YYYY-MM-DD'),
+        ],
+        date: [],
+      })
       setTime([
         moment(dates[0]).unix()
           ? moment(dates[0]).format('YYYY-MM-DD')
@@ -81,8 +84,7 @@ const WorkHoursHeader = (props: { onSearch: (val: any) => void }) => {
     } else {
       setDateType(1)
       setTime(getWeekDates())
-      form.setFieldValue('time', '')
-      form.setFieldValue('date', getWeekDates())
+      form.setFieldsValue({ date: getWeekDates(), time: '' })
     }
     props.onSearch(form.getFieldsValue())
   }
