@@ -646,6 +646,12 @@ const DemandDetail = () => {
           <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
             {drawerInfo.level_tree?.map((i: any, index: number) => (
               <DrawerHeader
+                style={{
+                  cursor:
+                    index === drawerInfo?.level_tree?.length - 1
+                      ? 'auto'
+                      : 'pointer',
+                }}
                 key={i.prefix_key}
                 onClick={() => {
                   // TODO
@@ -658,8 +664,8 @@ const DemandDetail = () => {
                   }
                 }}
               >
-                <span style={{ fontSize: '12px' }} hidden={index === 1}>
-                  /
+                <span style={{ fontSize: '12px' }}>
+                  <CommonIconFont type="right"></CommonIconFont>
                 </span>
                 <img
                   style={{ width: '16px', height: '16px' }}
@@ -669,15 +675,6 @@ const DemandDetail = () => {
                 <div style={{ fontSize: '12px' }}>
                   {i.project_prefix}-{i.prefix_key}
                 </div>
-                <span
-                  style={{ fontSize: '12px' }}
-                  hidden={
-                    drawerInfo.level_tree?.length <= 1 ||
-                    index === drawerInfo.level_tree?.length - 1
-                  }
-                >
-                  /
-                </span>
               </DrawerHeader>
             ))}
           </div>
