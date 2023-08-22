@@ -282,7 +282,7 @@ const WorkHoursHeader = (props: {
         isVisible={open}
         onClose={() => setOpen(false)}
         onConfirm={() => {
-          alert(123), setOpen(false), onGetExportApi()
+          setOpen(false), onGetExportApi()
         }}
         personData={[]}
       />

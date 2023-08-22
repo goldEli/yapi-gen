@@ -9,6 +9,7 @@ import { getParamsData } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import { workTimeList, updateOverdue, workTimeExport } from '@/services/project'
 import PaginationBox from '@/components/TablePagination'
+import { getMessage } from '@/components/Message'
 import { Spin } from 'antd'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
@@ -86,6 +87,7 @@ const WorkHours: React.FC<IProps> = props => {
     normal_reason: number
   }) => {
     const res = await updateOverdue({ ...row, project_id: paramsData.id })
+    getMessage({ msg: '调整成功', type: 'success' })
     onSearch(formVal, type)
   }
   const onGetExport = async (val: any) => {
@@ -98,6 +100,7 @@ const WorkHours: React.FC<IProps> = props => {
       project_id: paramsData.id,
       user_ids: val.user_ids?.length >= 1 ? val.user_ids.split(',') : '',
     }
+    getMessage({ msg: '导出成功', type: 'success' })
     const result = await workTimeExport(parmas)
     // const blob = new Blob([result.body], {
     //   type: result?.headers['content-type'],
@@ -159,6 +162,7 @@ const WorkHours: React.FC<IProps> = props => {
           </div>
         </MianWrap>
         <PaginationBox
+        hasPadding={true}
           currentPage={pageObj?.currentPage}
           pageSize={pageObj?.size}
           total={pageObj?.total}
