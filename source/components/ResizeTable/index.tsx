@@ -130,6 +130,7 @@ const ResizeTitle = (props: any) => {
 }
 
 interface ResizeTableProps {
+  styleSate?: boolean
   col: any
   dataSource: any
   dataWrapNormalHeight?: any
@@ -234,6 +235,7 @@ const ResizeTable = (props: ResizeTableProps) => {
         <Spin indicator={<NewLoadingTransition />} spinning={props.isSpinning}>
           {!!props.dataSource && props.dataSource?.length > 0 && (
             <TableWrap
+              className={props.styleSate ? 'rowBgc' : ''}
               rowKey="id"
               columns={mergeColumns}
               dataSource={props.dataSource}

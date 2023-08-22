@@ -59,7 +59,6 @@ const TableLeft = (props: any) => {
       dataIndex: 'name',
       width: 180,
       render: (text: any, record: any) => {
-        console.log(record, 'record')
         return (
           <CanOperation
             onClick={() => {
@@ -148,6 +147,7 @@ const TableLeft = (props: any) => {
   return (
     <>
       <ResizeTable
+        styleSate={true}
         isSpinning={false}
         dataWrapNormalHeight="calc(100% - 48px)"
         col={colum}

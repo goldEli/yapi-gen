@@ -40,7 +40,7 @@ const PersonWrap = styled.div`
   font-size: 14px;
   color: var(--neutral-n2);
 `
-const WorkHoursHeader = () => {
+const WorkHoursHeader = (props: { onSearch: (val: any) => void }) => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
   const [open, setOpen] = useState(false)
@@ -52,28 +52,25 @@ const WorkHoursHeader = () => {
   }
   useEffect(() => {
     setTime(getWeekDates())
+    form.setFieldsValue({
+      time: '',
+      person: [],
+      date: getWeekDates(),
+      qj: 3,
+    })
     setDateType(1)
     setState(3)
+    console.log(form.getFieldsValue(), form.getFieldsValue())
+    props.onSearch(form.getFieldsValue())
   }, [])
   const onChangeTime = (dates: any) => {
     if (dates) {
-      const a = [
-        moment(dates[0]).unix()
-          ? moment(dates[0]).format('YYYY-MM-DD')
-          : '1970-01-01',
-        moment(dates[1]).unix() === 1893427200
-          ? '2030-01-01'
-          : moment(dates[1]).format('YYYY-MM-DD'),
-      ]
       form.setFieldsValue({
         time: [
-          moment(dates[0]).unix()
-            ? moment(dates[0]).format('YYYY-MM-DD')
-            : '1970-01-01',
-          moment(dates[1]).unix() === 1893427200
-            ? '2030-01-01'
-            : moment(dates[1]).format('YYYY-MM-DD'),
+          moment(dates[0]).format('YYYY-MM-DD'),
+          moment(dates[1]).format('YYYY-MM-DD'),
         ],
+        date: [],
       })
       setTime([
         moment(dates[0]).unix()
@@ -87,10 +84,9 @@ const WorkHoursHeader = () => {
     } else {
       setDateType(1)
       setTime(getWeekDates())
-      form.setFieldsValue({
-        time: null,
-      })
+      form.setFieldsValue({ date: getWeekDates(), time: '' })
     }
+    props.onSearch(form.getFieldsValue())
   }
   const tabsValue = [
     {
@@ -181,26 +177,30 @@ const WorkHoursHeader = () => {
         setTime([moment(new Date()).format('YYYY-MM-DD')])
         setDateType(0)
         form.setFieldsValue({
-          time: '',
           date: [moment(new Date()).format('YYYY-MM-DD')],
+          time: '',
         })
         break
       case 1:
         setDateType(1)
         form.setFieldValue('time', '')
         setTime(getWeekDates())
+        form.setFieldsValue({ date: getWeekDates(), time: '' })
         break
       case 2:
         setDateType(2)
         form.setFieldValue('time', '')
         setTime(getLastDay())
+        form.setFieldsValue({ date: getLastDay(), time: '' })
         break
     }
+    props.onSearch(form.getFieldsValue())
   }
   const onChangeType = (val: number) => {
     setState(val)
     form.setFieldValue('qj', val)
   }
+
   return (
     <>
       <WorkHoursHeaderWrap>
@@ -231,6 +231,14 @@ const WorkHoursHeader = () => {
               <Form.Item name={'time'}>
                 <RangePicker
                   isShowQuick
+                  dateValue={
+                    form.getFieldValue('time')
+                      ? [
+                          moment(form.getFieldValue('time')[0]),
+                          moment(form.getFieldValue('time')[1]),
+                        ]
+                      : null
+                  }
                   onChange={dates => onChangeTime(dates)}
                 />
               </Form.Item>
