@@ -60,9 +60,9 @@ const urls = {
   updateFlawSchedule: '/b/flaw/update_schedule',
   // 进度信息详情
   getScheduleDetails: '/b/story/schedule_details',
-  // 获取需求关联工作项
+  // 获取需求关联任务
   getStoryRelationStories: '/b/story/relationStories',
-  // 添加需求关联工作项
+  // 添加需求关联任务
   addStoryRelation: '/b/story/save/addRelation',
   // 关联事务拖拽排序
   storyRelationDragSort: '/b/story/save/dragRelationSort',
@@ -319,7 +319,7 @@ const urls = {
   contrastNewWork: '/b/efficiency/contrast/new_work',
   // 阶段缺陷占比图标最后一个
   getDefectRatio: '/b/efficiency/defect_ratio',
-  // 工作项和缺陷
+  // 任务和缺陷
   getStatisticsTotal: '/b/efficiency/statistics/total',
   // 对比列表
   workContrastList: '/b/efficiency/member/work_contrast/list',
@@ -460,7 +460,7 @@ const urls = {
   getBatchEditFlawConfig: '/b/flaw/batch_fields',
   // 删除缺陷评论附件
   deleteFlawCommentAttach: '/b/flaw/comment/delete_att',
-  // 获取缺陷关联工作项
+  // 获取缺陷关联任务
   getFlawRelationStories: '/b/flaw/relationStories',
   // 添加关联缺陷
   addFlawRelation: '/b/flaw/save/addRelation',
@@ -502,6 +502,7 @@ const urls = {
   // 三个进度日志通用
   getScheduleLogList: '/b/story/getScheduleLog',
   unassignedList: '/b/efficiency/unassigned/list',
+  workTimeList: '/b/story/work_time/list',
 }
 export default urls
 

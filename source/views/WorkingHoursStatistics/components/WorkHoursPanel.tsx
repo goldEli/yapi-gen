@@ -89,7 +89,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
     return result
   }
   const monthData = reduceMonth(columns)
-  console.log('monthDatas', monthData)
   const label = ({ time }: any) => {
     if (time === -2) {
       return '未上报'
@@ -106,10 +105,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
           {columns.map((item, idx) => {
             const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
             const isFirstDay = dayjs(item).startOf('month').format('YYYY-MM-DD')
-            console.log('isLastDay', isLastDay, isFirstDay)
             const width =
               tdRef.current?.getBoundingClientRect().width * (idx + 1)
-            console.log(Object.values(monthData), columns)
             // let text = ''
             // Object.values(monthData).forEach(ele => {
             //   text = `${ele[0]}至${ele[ele.length - 1]}`

@@ -10,6 +10,8 @@ import Tabs from '@/components/Tabs'
 import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Export from '@/components/Export'
+import { getProjectMember } from '@/services/project'
+
 const WorkHoursHeaderWrap = styled.div`
   padding: 20px 0px 20px 0;
   margin-left: 24px;
@@ -40,15 +42,20 @@ const PersonWrap = styled.div`
   font-size: 14px;
   color: var(--neutral-n2);
 `
-const WorkHoursHeader = (props: { onSearch: (val: any) => void }) => {
+const WorkHoursHeader = (props: {
+  onSearch: (val: any) => void
+  id: number
+}) => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
   const [open, setOpen] = useState(false)
   const [time, setTime] = useState<any>([])
   const [dateType, setDateType] = useState<any>(1)
   const [state, setState] = useState<any>(0)
+
+  const [memberList, setMemberList] = useState<any>([])
   const confirm = () => {
-    console.log(123)
+    props.onSearch(form.getFieldsValue())
   }
   useEffect(() => {
     setTime(getWeekDates())
@@ -56,13 +63,23 @@ const WorkHoursHeader = (props: { onSearch: (val: any) => void }) => {
       time: '',
       person: [],
       date: getWeekDates(),
-      qj: 3,
+      type: 3,
     })
     setDateType(1)
     setState(3)
-    console.log(form.getFieldsValue(), form.getFieldsValue())
     props.onSearch(form.getFieldsValue())
+    getList()
   }, [])
+  // 人员接口
+  const getList = async () => {
+    const result = await getProjectMember({
+      projectId: props.id,
+      all: 1,
+    })
+    setMemberList(
+      result.map((el: any) => ({ ...el, label: el.name, value: el.id })),
+    )
+  }
   const onChangeTime = (dates: any) => {
     if (dates) {
       form.setFieldsValue({
@@ -199,6 +216,7 @@ const WorkHoursHeader = (props: { onSearch: (val: any) => void }) => {
   const onChangeType = (val: number) => {
     setState(val)
     form.setFieldValue('qj', val)
+    props.onSearch(form.getFieldsValue())
   }
 
   return (
@@ -206,24 +224,10 @@ const WorkHoursHeader = (props: { onSearch: (val: any) => void }) => {
       <WorkHoursHeaderWrap>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <LeftWrap>
-            <SelectWrapBedeck key="1">
+            <SelectWrapBedeck>
               <span style={{ margin: '0 16px', fontSize: '14px' }}>人员</span>
-              <Form.Item name={'ad'}>
-                <MoreSelect
-                  onConfirm={confirm}
-                  options={[
-                    {
-                      label: t('notChecked'),
-                      value: 0,
-                      id: 0,
-                    },
-                    {
-                      label: t('itIsChecked'),
-                      value: 1,
-                      id: 1,
-                    },
-                  ]}
-                />
+              <Form.Item name={'user_ids'}>
+                <MoreSelect onConfirm={confirm} options={memberList} />
               </Form.Item>
             </SelectWrapBedeck>
             <SelectWrapBedeck style={{ marginLeft: 16 }}>
@@ -250,7 +254,7 @@ const WorkHoursHeader = (props: { onSearch: (val: any) => void }) => {
                 onChange={onChange}
               />
             </Form.Item>
-            <Form.Item name={'qj'}>
+            <Form.Item name={'type'}>
               <Tabs
                 tabsValue={tabsValue1}
                 active={state}

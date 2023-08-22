@@ -27,7 +27,7 @@ export const deleteStoryRelation = async (
   await http.delete<any>('deleteStoryRelation', params)
 }
 
-// 获取缺陷关联工作项列表
+// 获取缺陷关联任务列表
 export const getStoryRelationStories = async (
   params: API.Flaw.GetFlawRelationStories.Params,
 ) => {

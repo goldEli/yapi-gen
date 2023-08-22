@@ -82,6 +82,7 @@ const index = (props: any) => {
       showArrow
       value={props.value}
       style={{ width: '100%' }}
+      maxTagCount={1}
       mode={props.more ? undefined : 'multiple'}
       allowClear
       optionFilterProp="label"

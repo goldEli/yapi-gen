@@ -155,7 +155,7 @@ export const efficiencyMemberDefectList = async (
     ),
   }
 }
-// 工作项和缺陷的卡片
+// 任务和缺陷的卡片
 export const getStatisticsTotal = async (
   params: API.Sprint.GetStatisticsTotal.Params,
 ) => {
