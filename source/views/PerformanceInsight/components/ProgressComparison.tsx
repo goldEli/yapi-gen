@@ -572,7 +572,7 @@ const ProgressComparison = (props: Props) => {
     setLoading(true)
     try {
       let result: any = null
-      // 1.工作项导出
+      // 1.任务导出
       if (
         ['Progress_iteration', 'Progress_sprint', 'Progress_all'].includes(
           props?.type,

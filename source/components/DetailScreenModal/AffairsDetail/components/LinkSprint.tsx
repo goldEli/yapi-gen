@@ -229,7 +229,7 @@ const LinkSprint = (props: {
     getRelationStoriesList(pageParams)
   }
 
-  // 删除关联工作项
+  // 删除关联任务
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     open({

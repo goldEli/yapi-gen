@@ -12,7 +12,7 @@ import { getTreeList } from '@/services/demand'
 import { storyConfigCategoryList } from '@/services/project'
 import { getStaffListAll } from './staff'
 
-//获取工作项接收处理概况
+//获取任务接收处理概况
 
 export const getHisProjectCharts: any = async (params: any) => {
   const response = await http.get(
@@ -21,7 +21,7 @@ export const getHisProjectCharts: any = async (params: any) => {
   )
   return response
 }
-//获取工作项接收处理概况
+//获取任务接收处理概况
 
 export const getProjectCharts: any = async (params: any) => {
   const response = await http.get(

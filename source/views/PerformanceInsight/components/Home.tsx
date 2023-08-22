@@ -108,7 +108,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
               <LotIcon>
                 <CommonIconFont
                   type={el.icon}
-                  size={16}
+                  size={20}
                   color={el.icon_color}
                 />
               </LotIcon>
@@ -206,7 +206,7 @@ const Home = () => {
     isRefresh && init()
   }, [isRefresh])
   const init = () => {
-    // 缺陷现状和工作项现状
+    // 缺陷现状和任务现状
     getWorkList()
   }
   const getTimeOut = () => {
@@ -393,7 +393,7 @@ const Home = () => {
       setDefalutConfig(filterVal)
     }
   }
-  // 缺陷现状和工作项现状
+  // 缺陷现状和任务现状
   //  '周期时间：two_week,four_week,one_month,three_month,six_month',
   const getWorkList = async () => {
     setLoading(true)
@@ -843,7 +843,7 @@ const Home = () => {
                 <CommonIconFont
                   onClick={() => dispatch(setSave(false))}
                   type="close"
-                  size={16}
+                  size={20}
                   color="var(--neutral-n2)"
                 />
               </DialogHeader>
@@ -874,7 +874,7 @@ const Home = () => {
                     {t('performance.nosave')}
                   </span>
                 </Space>
-                <Space size={16}>
+                <Space size={20}>
                   <CommonButton
                     type="light"
                     onClick={() => {
