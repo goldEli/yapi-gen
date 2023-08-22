@@ -202,13 +202,13 @@ export const StateWrap = styled.div({
   },
 })
 
-export const State = styled.div<{ state: number }>(
+export const State = styled.div<{ state: boolean }>(
   {
     fontSize: '14px',
   },
   ({ state }) => ({
-    cursor: state === 3 || state === 2 ? 'pointer' : 'inherit',
-    color: state === 3 ? 'var(--function-error)' : 'var(--neutral-n1-d1)',
+    cursor: state ? 'pointer' : 'inherit',
+    color: state ? 'var(--function-error)' : 'var(--neutral-n1-d1)',
   }),
 )
 export const PopoverWrap = styled.div({

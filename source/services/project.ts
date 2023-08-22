@@ -1005,6 +1005,8 @@ export const workTimeList: any = async (params: {
       },
       list: [
         {
+          exceed_day_num: 1,
+          is_normal: 2,
           user: {
             id: 1,
             name: 'zcm',
@@ -1019,7 +1021,6 @@ export const workTimeList: any = async (params: {
             name: '我是来摸鱼的',
           },
           status: '3',
-          exceed_day_num: 1,
           start_at: '2023-02-02',
           end_at: '2023-02-03',
         },
@@ -1038,6 +1039,27 @@ export const workTimeList: any = async (params: {
             name: '我是来摸鱼的1',
           },
           status: '1',
+          is_normal: 1,
+          exceed_day_num: 0,
+          start_at: '2023-02-02',
+          end_at: '2023-02-03',
+        },
+        {
+          user: {
+            id: 1,
+            name: 'zcm1',
+            avatar: '',
+            position: {
+              id: 2,
+              name: '前端开发1',
+            },
+          },
+          story: {
+            id: 2,
+            name: '我是来摸鱼的1',
+          },
+          status: '1',
+          is_normal: 2,
           exceed_day_num: 0,
           start_at: '2023-02-02',
           end_at: '2023-02-03',
