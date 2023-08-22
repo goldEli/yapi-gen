@@ -2310,5 +2310,8 @@
   "toCreate": "To create",
   "theFileExceeds": "The file exceeds 300M",
   "onlySupport": "Only support",
-  "pleaseContactTheAdministratorForDailyReportGeneration": "Please contact the administrator for [Project daily report generation configuration]"
+  "pleaseContactTheAdministratorForDailyReportGeneration": "Please contact the administrator for [Project daily report generation configuration]",
+  "reportingTime": "Reporting time",
+  "reportingDate": "Reporting date",
+  "adjustDate": "Adjust date"
 }
