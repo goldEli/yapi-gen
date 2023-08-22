@@ -90,7 +90,7 @@ const WorkReport = () => {
           }}
           type="folder-open-nor"
         />
-        <span>项目日报</span>
+        <span>{t('projectDaily')}</span>
       </MenuItem>
       <MenuItem
         onClick={() =>
@@ -108,7 +108,7 @@ const WorkReport = () => {
           }}
           type="user"
         />
-        <span>单人日报</span>
+        <span>{t('singleDaily')}</span>
       </MenuItem>
     </div>
   )
@@ -133,8 +133,10 @@ const WorkReport = () => {
           y = rect?.height - 108
         }
         setPosition({ x, y })
-        document.body.removeChild(robotButton)
-        document.body.appendChild(robotButton)
+        if (robotButton) {
+          document.body.removeChild(robotButton)
+          document.body.appendChild(robotButton)
+        }
       }}
       onDragOver={(event: any) => {
         event.preventDefault()

@@ -790,7 +790,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     <>
       <CommonModal
         width={784}
-        title={type === 'user' ? '单人日报' : '项目日报'}
+        title={type === 'user' ? t('singleDaily') : t('projectDaily')}
         isVisible={visible}
         onClose={onClose}
         onConfirm={confirm}
