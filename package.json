@@ -4,7 +4,9 @@
   "scripts": {
     "start": "vite",
     "build:development": "npm run lint && vite build --mode development",
+    "build:development-b": "npm run lint && vite build --mode development-b",
     "build:test": "npm run lint && vite build --mode test",
+    "build:test-b": "npm run lint && vite build --mode test-b",
     "build:production": "npm run lint && vite build",
     "lint": "tsc && eslint --ext .ts,.tsx,.vue source",
     "checkType": "tsc --noEmit",
