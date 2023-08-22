@@ -21,6 +21,8 @@ const WorkHours: React.FC<IProps> = props => {
   const [data, setData] = useState<any>([])
   const [pageObj, setPageObj] = useState<any>({})
   const [spinning, setSpinning] = useState<boolean>(false)
+  const [key, setKey] = useState<any>('')
+  const [type, setType] = useState<any>(1)
   const [stat, setStat] = useState<any>({
     report: 0,
     total: 0,
@@ -28,7 +30,8 @@ const WorkHours: React.FC<IProps> = props => {
     leave: 0,
   })
   const onInputSearch = (val: any) => {
-    console.log(val)
+    setKey(val)
+    onSearch(formVal, type, val)
   }
 
   // 拖动线条
@@ -43,8 +46,15 @@ const WorkHours: React.FC<IProps> = props => {
       setFocus(false)
     }
   }
-  const onSearch = async (val: any, type: number) => {
+  const onSearch = async (
+    val: any,
+    type: number,
+    keyVal?: string,
+    page?: number,
+    pageSize?: number,
+  ) => {
     setFormVal(val)
+    setType(type)
     setSpinning(true)
     const start_at = val.time ? val.time[0] : val.date[0]
     const end_at = val.time ? val.time[1] : val.date[1]
@@ -54,6 +64,9 @@ const WorkHours: React.FC<IProps> = props => {
       type: val.type,
       project_id: paramsData.id,
       user_ids: val.user_ids?.length >= 1 ? val.user_ids?.split(',') : '',
+      page: page ? page : pageObj.currentPage,
+      pagesize: pageSize ? pageSize : pageObj.pageSize,
+      keyword: keyVal ? keyVal : key,
     }
     const res = await workTimeList(parmas)
     setPageObj({
@@ -71,7 +84,7 @@ const WorkHours: React.FC<IProps> = props => {
     normal_reason: number
   }) => {
     const res = await updateOverdue({ ...row, project_id: paramsData.id })
-    // onSearch(formVal)
+    onSearch(formVal, type)
   }
   const onGetExport = async (val: any) => {
     const start_at = val.time ? val.time[0] : val.date[0]
@@ -99,6 +112,7 @@ const WorkHours: React.FC<IProps> = props => {
       size: pageSize,
       total: pageObj.total,
     })
+    onSearch(formVal, type, key, page, pageSize)
   }
   return (
     <WorkHoursWrap>
