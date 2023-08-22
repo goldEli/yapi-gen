@@ -2313,5 +2313,7 @@
   "pleaseContactTheAdministratorForDailyReportGeneration": "请联系管理员进行[项目日报生成配置]",
   "reportingTime": "上报时间",
   "reportingDate": "上报日期",
-  "adjustDate": "调整日期"
+  "adjustDate": "调整日期",
+  "reduce": "减少",
+  "increase": "增加"
 }
