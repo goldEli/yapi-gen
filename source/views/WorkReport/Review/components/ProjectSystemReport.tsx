@@ -410,7 +410,7 @@ const ProjectSystemReport = () => {
                     </RowLine>
                   </>
                 )}
-                {item.type === 3 && item.name === 'description' && (
+                {item.type === 3 && item.name !== 'total_schedule' && (
                   <>
                     <Title>{item.name_text}</Title>
                     <Editor
@@ -424,7 +424,7 @@ const ProjectSystemReport = () => {
                   item.pivot.params?.map((el: any) => (
                     <RowRadius key={el.id}>
                       <Radius />
-                      {item?.key === 'timeout_task' && el.expected_day > 0 ? (
+                      {item?.key === 'overdue_tasks' && el.expected_day > 0 ? (
                         <span style={{ marginRight: 3 }}>
                           [{t('report.list.overdue')}
                           {el.expected_day}
