@@ -43,7 +43,7 @@ const PersonWrap = styled.div`
   color: var(--neutral-n2);
 `
 const WorkHoursHeader = (props: {
-  onSearch: (val: any) => void
+  onSearch: (val: any, type: number) => void
   onGetExport: (val: any) => void
   id: number
 }) => {
@@ -56,7 +56,7 @@ const WorkHoursHeader = (props: {
 
   const [memberList, setMemberList] = useState<any>([])
   const confirm = () => {
-    props.onSearch(form.getFieldsValue())
+    props.onSearch(form.getFieldsValue(), dateType)
   }
   useEffect(() => {
     setTime(getWeekDates())
@@ -68,7 +68,7 @@ const WorkHoursHeader = (props: {
     })
     setDateType(1)
     setState(3)
-    props.onSearch(form.getFieldsValue())
+    props.onSearch(form.getFieldsValue(), 1)
     getList()
   }, [])
   // 人员接口
@@ -104,7 +104,7 @@ const WorkHoursHeader = (props: {
       setTime(getWeekDates())
       form.setFieldsValue({ date: getWeekDates(), time: '' })
     }
-    props.onSearch(form.getFieldsValue())
+    props.onSearch(form.getFieldsValue(), dates ? -1 : 1)
   }
   const tabsValue = [
     {
@@ -212,12 +212,12 @@ const WorkHoursHeader = (props: {
         form.setFieldsValue({ date: getLastDay(), time: '' })
         break
     }
-    props.onSearch(form.getFieldsValue())
+    props.onSearch(form.getFieldsValue(), val)
   }
   const onChangeType = (val: number) => {
     setState(val)
-    form.setFieldValue('qj', val)
-    props.onSearch(form.getFieldsValue())
+    form.setFieldValue('type', val)
+    props.onSearch(form.getFieldsValue(), dateType)
   }
 
   return (

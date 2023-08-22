@@ -33,8 +33,9 @@ const WorkHours: React.FC<IProps> = props => {
       setFocus(false)
     }
   }
-  const onSearch = async (val: any) => {
+  const onSearch = async (val: any, type: number) => {
     setFormVal(val)
+    console.log(type, 'type')
     const start_at = val.time ? val.time[0] : val.date[0]
     const end_at = val.time ? val.time[1] : val.date[1]
     const parmas = {
@@ -42,7 +43,7 @@ const WorkHours: React.FC<IProps> = props => {
       end_at,
       type: val.type,
       project_id: paramsData.id,
-      user_ids: val.user_ids?.length >= 1 ? val.user_ids.split(',') : '',
+      user_ids: val.user_ids?.length >= 1 ? val.user_ids?.split(',') : '',
     }
     const res = await workTimeList(parmas)
     setData(res.data.list)
@@ -53,7 +54,7 @@ const WorkHours: React.FC<IProps> = props => {
     normal_reason: number
   }) => {
     const res = await updateOverdue({ ...row, project_id: paramsData.id })
-    onSearch(formVal)
+    // onSearch(formVal)
   }
   const onGetExport = async (val: any) => {
     const start_at = val.time ? val.time[0] : val.date[0]
