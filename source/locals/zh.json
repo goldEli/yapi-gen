@@ -2300,5 +2300,10 @@
   "linkTask": "链接任务",
   "demandComment": "需求评论",
   "theFileExceeds": "文件超出300M",
-  "onlySupport": "仅支持"
+  "onlySupport": "仅支持",
+  "pleaseContactTheAdministratorForDailyReportGeneration": "请联系管理员进行[项目日报生成配置]",
+  "theSizeOfThePictureShouldNotExceed": "图片大小不超过300M",
+  "theSizeOfTheVideoShouldNotExceed": "视频大小不超过300M",
+  "singleDaily": "单人日报",
+  "projectDaily": "项目日报"
 }

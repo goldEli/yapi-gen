@@ -22,7 +22,7 @@ import CreateIteration from '@/components/CreateIteration'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
-import System from '../WorkReport/Review/components/System'
+import UserSystemReport from '../WorkReport/Review/components/UserSystemReport'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import AddWorkItem from '@/components/AddWorkItem'
 import SprintDetailDrawer from '@/components/SprintDetailDrawer'
@@ -37,6 +37,7 @@ import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 import DetailScreenModal from '@/components/DetailScreenModal'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import ProjectSystemReport from '../WorkReport/Review/components/ProjectSystemReport'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -205,7 +206,9 @@ export const Container = () => {
         <CreateAProjectForm />
         <CreateIteration />
         <DemandDetailDrawer />
-        {viewReportModal.system ? <System /> : <ReportDetailDrawer />}
+        {viewReportModal.type === 1 ? <ReportDetailDrawer /> : null}
+        {viewReportModal.type === 2 ? <UserSystemReport /> : null}
+        {viewReportModal.type === 3 ? <ProjectSystemReport /> : null}
         <SiteDrawer />
         <AddWorkItem />
         <SprintDetailDrawer />

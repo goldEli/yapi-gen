@@ -104,12 +104,12 @@ const setDailyConfigSetCreateConfig = async (params: {
 const dailyConfigSetAutoSendConfig = () => {}
 
 // 日报助手：工作日报—获取项目列表
-export const getProjectList: any = async () => {
-  const response: any = await http.get<any>('getListOfDaily')
+export const getProjectList: any = async (params: any) => {
+  const response: any = await http.get<any>('getListOfDaily', params)
   return response?.data
 }
 
-// 日报助手：工作日报—获取需求列表
+// 日报助手：工作日报—获取需求列表(个人日报)
 export const getStoryListOfDaily: any = async (params: any) => {
   const response: any = await http.get<any>('getStoryListOfDaily', {
     project_id: params,
@@ -123,7 +123,7 @@ export const initDaily: any = async (params: any) => {
   return response.data
 }
 
-// 日报助手：工作日报—模板详情
+// 日报助手：工作日报—模板详情 (个人日报)
 export const getDailyInfo: any = async (params: any) => {
   const response = await http.get('getDailyInfo', { project_id: params })
   return {
@@ -140,12 +140,49 @@ export const getDailyInfo: any = async (params: any) => {
 
 // 日报助手：日报生成规则未配置通知
 export const sendNotice: any = async (params: any) => {
-  const response = await http.post('sendNotice', { project_id: params })
+  const response = await http.post('sendNotice', params)
   return response.data
 }
 
-// 日报助手：日报生成规则未配置通知
+// 日报助手：日报生成规则未配置通知 (个人日报)
 export const writeAssistantReport: any = async (params: any) => {
   const response = await http.post('writeAssistantReport', params)
+  return response.data
+}
+
+// 日报助手：工作日报—模板详情 (项目日报)
+export const getProjectTemplateInfo: any = async (params: any) => {
+  const response = await http.get('getProjectTemplateInfo', {
+    project_id: params,
+  })
+  return {
+    configs: response.data?.template_content_configs,
+    reportUserList: response.data?.report_user_list,
+    id: response.data?.id,
+    name: response.data?.name,
+    send_time: response.data?.send_time,
+    group_name: response.data?.group_name,
+    is_setting_project_config: response.data?.is_setting_project_config,
+  }
+}
+
+// /b/story/
+// 日报助手：工作日报—获取需求列表(项目日报)
+export const getListOfProjectDaily: any = async (params: any) => {
+  const response: any = await http.get<any>('getListOfProjectDaily', {
+    project_id: params,
+  })
+  return response
+}
+
+// 日报助手：日报生成规则未配置通知 (个人日报)
+export const writeProjectAssistantReport: any = async (params: any) => {
+  const response = await http.post('writeProjectAssistantReport', params)
+  return response.data
+}
+
+// (项目日报)获取汇报详情
+export const getProjectReportInfo = async (params: any) => {
+  const response = await http.get('getProjectReportInfo', params)
   return response.data
 }

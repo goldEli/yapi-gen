@@ -204,10 +204,14 @@ const urls = {
   getDailyInfo: '/b/work_report/template/dailyInfo',
   getListOfDaily: '/b/project/listOfDaily',
   getStoryListOfDaily: '/b/story/listOfDaily',
+  getProjectTemplateInfo: '/b/work_report/template/projectTemplateInfo',
   sendNotice: '/b/project/daily_config/send_notice',
+  getListOfProjectDaily: '/b/story/listOfProjectDaily',
   // 日报助手发送日报
   writeAssistantReport: '/b/work_report/user/helperCreate',
+  writeProjectAssistantReport: '/b/work_report/user/helperCreateOfProject',
   getSprintKanBanList: '/b/list',
+  getProjectReportInfo: '/b/work_report/user/infoOfProject',
   /**
    * 冲刺项目-事务
    */

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Input, Space } from 'antd'
+import { Input, Space, Spin } from 'antd'
 import { css } from '@emotion/css'
+import { keyframes } from '@emotion/react'
 
 export const DetailItem = styled.div`
   display: flex;
@@ -772,4 +773,148 @@ export const Radius = styled.div`
 `
 export const Col = styled.div`
   margin-bottom: 32px;
+`
+
+export const HandleSpin = styled(Spin)`
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+  }
+`
+
+export const ContentWraps = styled.div`
+  .head {
+    .tips {
+      font-size: 12px;
+      font-family: SiYuanRegular;
+      color: var(--neutral-n3);
+    }
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    .userBox {
+      display: flex;
+      align-items: center;
+      margin-top: 12px;
+      .desc {
+        display: flex;
+        flex-direction: column;
+        margin-left: 6px;
+        .title {
+          font-size: 16px;
+          font-family: SiYuanMedium;
+          color: var(--neutral-n1-d1);
+          .date {
+            font-size: 12px;
+          }
+        }
+        .department {
+          font-family: SiYuanRegular;
+          font-size: 12px;
+          color: var(--neutral-n3);
+        }
+      }
+    }
+  }
+  .content {
+    margin-top: 32px;
+    .ant-form-vertical .ant-form-item-label,
+    .ant-col-24.ant-form-item-label,
+    .ant-col-xl-24.ant-form-item-label {
+      padding: 0px 0px 8px 0px !important;
+    }
+    .project {
+      display: flex;
+      align-items: center;
+    }
+    .rateText {
+      font-size: 14px;
+      font-family: SiYuanRegular;
+      color: var(--neutral-n2);
+      display: flex;
+      align-items: center;
+    }
+    .line {
+      display: inline-block;
+      width: 1px;
+      height: 16px;
+      margin: 0px 16px;
+      background: var(--neutral-n6-d1);
+    }
+  }
+`
+export const LabelTitles = styled.span`
+  font-size: 14px;
+  font-family: SiYuanMedium;
+  font-weight: 500;
+  color: var(--neutral-n1-d1);
+  line-height: 22px;
+`
+export const AgainButton = styled.div`
+  width: 80px;
+  height: 32px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px 6px 6px 6px;
+  font-family: SiYuanRegular;
+  color: var(--primary-d1);
+  white-space: nowrap;
+  margin-left: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  &:hover {
+    background: var(--hover-d2);
+  }
+  &:active {
+    background: var(--auxiliary-b6);
+  }
+`
+
+// 创建一个动画
+const fadeInAnimation = keyframes`
+  0% {
+    width:0px;
+  }
+  50%{
+    width:8px;
+  }
+  100%{
+    width:16px;
+  }
+`
+export const Ellipsis = styled.span`
+  display: inline-block;
+  overflow: hidden;
+  animation: ${fadeInAnimation} 1s infinite;
+`
+
+export const LoadingButton = styled.span`
+  height: 32px;
+  font-size: 14px;
+  border-radius: 6px 6px 6px 6px;
+  font-family: SiYuanRegular;
+  color: var(--primary-d1);
+  white-space: nowrap;
+  margin-left: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  span {
+    display: inline-block;
+    width: 60px;
+    text-align: right;
+  }
+`
+
+export const TitleTips = styled.span`
+  font-size: 12px;
+  color: var(--neutral-n3);
+  font-family: SiYuanRegular;
+  margin-left: 8px;
 `
