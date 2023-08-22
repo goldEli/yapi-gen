@@ -101,6 +101,7 @@ const useOpenDemandDetail = () => {
       )
 
       setSearchParams(`data=${params1}`)
+      dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     }
   }
 

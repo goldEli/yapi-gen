@@ -104,12 +104,16 @@ const DemandStatusBox = (props: any) => {
   }
 
   useEffect(() => {
-    init()
+    if (props.visible) {
+      init()
+    }
   }, [])
 
   useEffect(() => {
-    init()
-  }, [demandInfo])
+    if (props.visible && demandInfo.id) {
+      init()
+    }
+  }, [demandInfo, props.visible])
 
   return (
     <div>
