@@ -512,6 +512,17 @@ export const getDemandInfo: any = async (params: any) => {
     id: params.id,
   })
 
+  const level_tree = JSON.parse(JSON.stringify(response.data.level_tree))
+  level_tree.push({
+    id: response.data.id,
+    category_id: response.data.category,
+    prefix_key: response.data.prefixKey,
+    project_prefix: response.data.projectPrefix,
+    category_attachment: response.data.category_attachment,
+    parent_id: response.data.parentId,
+    name: response.data.name,
+  })
+
   return {
     category_attachment: response.data.category_attachment,
     categoryName: response.data.category,
@@ -546,7 +557,7 @@ export const getDemandInfo: any = async (params: any) => {
     prefixKey: response.data.prefix_key,
     projectPrefix: response.data.project_prefix,
     hierarchy: response.data.hierarchy,
-    level_tree: response.data.level_tree,
+    level_tree: level_tree,
     project_type: response.data.project_type,
     update_at: response.data.update_at,
     category_status: response.category_status,
@@ -594,6 +605,7 @@ export const getDemandInfo: any = async (params: any) => {
     comment_total: response.data.comment_total,
     relation_stories: response.data.relation_stories,
     child_story_statistics: response.data.child_story_statistics,
+
     // 父需求列表
     parent: [
       { value: response.data.parent?.id, label: response.data.parent?.name },
