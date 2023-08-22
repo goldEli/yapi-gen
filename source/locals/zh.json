@@ -2310,5 +2310,8 @@
   "toCreate": "去创建",
   "theFileExceeds": "文件超出300M",
   "onlySupport": "仅支持",
-  "pleaseContactTheAdministratorForDailyReportGeneration": "请联系管理员进行[项目日报生成配置]"
+  "pleaseContactTheAdministratorForDailyReportGeneration": "请联系管理员进行[项目日报生成配置]",
+  "reportingTime": "上报时间",
+  "reportingDate": "上报日期",
+  "adjustDate": "调整日期"
 }
