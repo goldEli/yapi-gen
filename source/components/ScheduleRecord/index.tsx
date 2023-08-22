@@ -130,7 +130,11 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                   </span>
                 </div>
                 <InfoRow>
-                  {t('date_of_achievement')}
+                  {t('reportingDate')}
+                  {i.created_at}
+                </InfoRow>
+                <InfoRow>
+                  {t('adjustDate')}
                   {i.created_at}
                 </InfoRow>
                 <InfoRow>

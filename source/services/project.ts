@@ -962,3 +962,76 @@ export const getScheduleLogList = async (params: {
   const response = await http.get<any>('getScheduleLogList', params)
   return response.data
 }
+export const workTimeExport = async (params: {
+  user_ids: string
+  start_at: string
+  end_at: string
+  type: number
+  project_id: number
+}) => {
+  const response = await http.get<any>('getScheduleLogList', params)
+  return response.data
+}
+// 调整逾期
+export const updateOverdue = async (params: {
+  project_id: any
+  story_id: any
+  user_id: any
+  normal_reason: any
+}) => {
+  const response = await http.put<any>('updateOverdue', params)
+  return response
+}
+export const workTimeList: any = async (params: {
+  user_ids: string
+  start_at: string
+  end_at: string
+  type: number
+  project_id: number
+}) => {
+  // const response: any = await http.get<any>('workTimeList', params)
+  return {
+    data: {
+      list: [
+        {
+          user: {
+            id: 1,
+            name: 'zcm',
+            avatar: '',
+            position: {
+              id: 2,
+              name: '前端开发',
+            },
+          },
+          story: {
+            id: 2,
+            name: '我是来摸鱼的',
+          },
+          status: '3',
+          exceed_day_num: 1,
+          start_at: '2023-02-02',
+          end_at: '2023-02-03',
+        },
+        {
+          user: {
+            id: 1,
+            name: 'zcm1',
+            avatar: '',
+            position: {
+              id: 2,
+              name: '前端开发1',
+            },
+          },
+          story: {
+            id: 2,
+            name: '我是来摸鱼的1',
+          },
+          status: '1',
+          exceed_day_num: 0,
+          start_at: '2023-02-02',
+          end_at: '2023-02-03',
+        },
+      ],
+    },
+  }
+}

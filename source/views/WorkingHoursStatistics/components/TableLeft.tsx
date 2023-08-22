@@ -14,10 +14,11 @@ import {
 import IconFont from '@/components/IconFont'
 import { useState } from 'react'
 import CommonModal from '@/components/CommonModal'
-const TableLeft = (props: any) => {
+const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [state, setState] = useState(false)
   const [value, setValue] = useState('')
   const [openDemandDetail] = useOpenDemandDetail()
+  const [row, setRow] = useState<any>({})
   const content = () => {
     return (
       <PopoverWrap>
@@ -38,18 +39,19 @@ const TableLeft = (props: any) => {
       </PopoverWrap>
     )
   }
+  console.log(props.data)
   const colum = [
     {
       title: '姓名',
-      dataIndex: 'name',
+      dataIndex: 'user',
       width: 250,
       render: (text: any, record: any) => {
         return (
           <CommonUserAvatar
             size="large"
-            avatar={''}
-            name={text}
-            positionName={'前端开发工程师'}
+            avatar={record.user.avatar}
+            name={record.user.name}
+            positionName={record.user.position.name}
           />
         )
       },
@@ -74,7 +76,7 @@ const TableLeft = (props: any) => {
               }}
               type={''}
             />
-            <span className="text">{text || '--'}</span>
+            <span className="text">{record.story.name || '--'}</span>
           </CanOperation>
         )
       },
@@ -100,20 +102,29 @@ const TableLeft = (props: any) => {
                   : 0
               }
             />
-            {record.category_status?.status?.content || 999}
+            {record.category_status?.status?.content}
           </>
         )
       },
     },
     {
       title: '是否逾期',
-      dataIndex: 'state',
+      dataIndex: 'status',
       width: 250,
       render: (text: any, record: any) => {
         return (
           <StateWrap>
-            <State state={text} onClick={() => text === 3 && setState(true)}>
-              123
+            <State
+              state={Number(text)}
+              onClick={() => {
+                if (text === '3') {
+                  setState(true)
+                  setRow(record)
+                  setValue('')
+                }
+              }}
+            >
+              {text}
             </State>
             {text === 2 && (
               <Popover
@@ -137,54 +148,43 @@ const TableLeft = (props: any) => {
         )
       },
     },
+    {
+      title: '开始时间',
+      dataIndex: 'start_at',
+      width: 120,
+      render: (text: any) => {
+        return <>{text}</>
+      },
+    },
+    {
+      title: '结束时间',
+      dataIndex: 'end_at',
+      width: 120,
+      render: (text: any) => {
+        return <>{text}</>
+      },
+    },
   ]
 
   const onConfirm = () => {
     if (value) {
+      console.log(row)
       setState(false)
+      props.updateOverdue({
+        story_id: row.story?.id,
+        user_id: row.user.id,
+        normal_reason: value,
+      })
     }
   }
   return (
     <>
       <ResizeTable
+        styleSate={true}
         isSpinning={false}
         dataWrapNormalHeight="calc(100% - 48px)"
         col={colum}
-        dataSource={[
-          {
-            name: 'zcm12',
-            state: 1,
-            category_status: {
-              is_start: 1,
-              is_end: 2,
-              status: {
-                content: '1233',
-              },
-            },
-          },
-          {
-            name: 'zcm22',
-            state: 2,
-            category_status: {
-              is_start: 2,
-              is_end: 1,
-              status: {
-                content: '1233',
-              },
-            },
-          },
-          {
-            name: 'zcm32',
-            state: 3,
-            category_status: {
-              is_start: 2,
-              is_end: 2,
-              status: {
-                content: '1233',
-              },
-            },
-          },
-        ]}
+        dataSource={props.data}
       />
       <CommonModal
         isVisible={state}

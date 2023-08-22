@@ -19,7 +19,7 @@ export const DropArea = styled.div<{ active?: boolean; minHeight?: number }>`
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  background: ${props => (props.active ? 'red' : 'var(--neutral-n9)')};
+  background: ${props => (props.active ? 'red' : 'var(--neutral-n8)')};
   width: 302px;
   box-sizing: border-box;
   padding: 16px;
