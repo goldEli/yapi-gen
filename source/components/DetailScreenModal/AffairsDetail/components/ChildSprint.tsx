@@ -172,7 +172,7 @@ const ChildSprint = (
     onUpdate()
   }
 
-  // 删除关联工作项
+  // 删除关联任务
   const onDeleteChange = (item: any) => {
     const checked = [4, 5].includes(item.work_type)
       ? [4, 5].includes(item.work_type)
