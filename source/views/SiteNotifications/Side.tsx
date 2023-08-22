@@ -25,8 +25,10 @@ const SideWrap = styled.div<{
 
 const FoldIcon = styled.div`
   position: absolute;
-  top: 24px;
   width: 24px;
+  top: 50%;
+  width: 24px;
+  transform: translateY(-50%);
   height: 24px;
   background: var(--neutral-white-d3);
   border-radius: 50%;
