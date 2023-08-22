@@ -29,8 +29,8 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
               fontSize: 14,
               margin: '0 4px',
             }}
-            type={'down'}
-          />{' '}
+            type={'right-md'}
+          />
           正常
         </div>
         <div>调整原因</div>
@@ -39,7 +39,6 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       </PopoverWrap>
     )
   }
-  console.log(props.data)
   const colum = [
     {
       title: '姓名',
@@ -68,13 +67,9 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
               openDemandDetail({ ...record }, record.projectId, record.id, 1)
             }}
           >
-            <IconFont
-              style={{
-                fontSize: 20,
-                //   color: props.detail?.priority?.color,
-                marginRight: 4,
-              }}
-              type={''}
+            <img
+              src={record.story.category_attachment}
+              style={{ marginRight: 4, width: 20, height: 20 }}
             />
             <span className="text">{record.story.name || '--'}</span>
           </CanOperation>
@@ -115,18 +110,22 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         return (
           <StateWrap>
             <State
-              state={Number(text)}
+              state={record.exceed_day_num > 0}
               onClick={() => {
-                if (text === '3') {
+                if (record.exceed_day_num > 0) {
                   setState(true)
                   setRow(record)
                   setValue('')
                 }
               }}
             >
-              {text}
+              {record.is_normal === 1
+                ? '正常 (调整)'
+                : record.is_normal === 2 && record.exceed_day_num > 0
+                ? `逾期${record.exceed_day_num}天`
+                : '正常'}
             </State>
-            {text === 2 && (
+            {record.is_normal === 1 ? (
               <Popover
                 placement="bottomRight"
                 getPopupContainer={node => node}
@@ -143,7 +142,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                   type={'down-icon'}
                 />
               </Popover>
-            )}
+            ) : null}
           </StateWrap>
         )
       },

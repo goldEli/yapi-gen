@@ -45,6 +45,7 @@ const PersonWrap = styled.div`
 const WorkHoursHeader = (props: {
   onSearch: (val: any, type: number) => void
   onGetExport: (val: any) => void
+  stat: { total: number; report: number; absence: number; leave: number }
   id: number
 }) => {
   const [form] = Form.useForm()
@@ -188,7 +189,6 @@ const WorkHoursHeader = (props: {
     const end = [y, m, d].join('-')
     return [start, end]
   }
-
   const onChange = (val: number) => {
     switch (val) {
       case 0:
@@ -269,9 +269,11 @@ const WorkHoursHeader = (props: {
         </FormStyle>
       </WorkHoursHeaderWrap>
       <PersonWrap>
-        <span>上报人次:12</span>
-        <span>请假人次:12</span>
-        <span>缺报人次:12</span>
+        <span>
+          上报人次: {props.stat?.report}/{props.stat?.total}
+        </span>
+        <span>请假人次: {props.stat?.leave}</span>
+        <span>缺报人次: {props.stat?.absence}</span>
       </PersonWrap>
       {/* 导出 */}
       <Export
