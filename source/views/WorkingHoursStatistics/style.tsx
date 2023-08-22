@@ -9,7 +9,7 @@ export const WorkHoursWrap = styled.div`
 
 export const MianWrap = styled.div`
   display: flex;
-  height: calc(100% - 200px);
+  height: calc(100% - 240px);
   padding-left: 16px;
   justify-content: space-between;
   position: relative;

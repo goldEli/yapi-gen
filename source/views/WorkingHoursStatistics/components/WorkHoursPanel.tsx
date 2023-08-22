@@ -19,6 +19,7 @@ import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 dayjs.extend(isoWeek)
 import CommonButton from '@/components/CommonButton'
+import usePanelData from '../hooks/usePanelData'
 interface IProps {
   ref: any
 }
@@ -31,83 +32,23 @@ const weekdayString: any = {
   6: '周六',
   7: '周日',
 }
-const WorkHoursPanel = (props: any, ref: any) => {
+const WorkHoursPanel = (props: any) => {
   const tdRef = useRef<any>()
   const [value, setValue] = useState(1)
   const popoverRef = useRef<any>()
-  const dataSource = [
-    {
-      name: '李四',
-      work_times: [
-        { date: '2023-08-28', time: '8小时' },
-        { date: '2023-08-29', time: '6小时' },
-        { date: '2023-08-30', time: -2 },
-        { date: '2023-08-31', time: -1 },
-        { date: '2023-09-01', time: '6小时' },
-        { date: '2023-09-02', time: -2 },
-        { date: '2023-09-03', time: -1 },
-      ],
-    },
-    {
-      name: '张三',
-      work_times: [
-        { date: '2023-08-28', time: -1 },
-        { date: '2023-08-29', time: '12小时' },
-        { date: '2023-08-30', time: -1 },
-        { date: '2023-08-31', time: -2 },
-        { date: '2023-09-01', time: '6小时' },
-        { date: '2023-09-02', time: -2 },
-        { date: '2023-09-03', time: -1 },
-      ],
-    },
-    {
-      name: '王五',
-      work_times: [
-        { date: '2023-08-28', time: -2 },
-        { date: '2023-08-29', time: -1 },
-        { date: '2023-08-30', time: '20小时' },
-        { date: '2023-08-31', time: '16小时' },
-        { date: '2023-09-01', time: '6小时' },
-        { date: '2023-09-02', time: -2 },
-        { date: '2023-09-03', time: -1 },
-      ],
-    },
-  ]
+  const { dataSource } = props
+  console.log(props)
+  const { columns, map, reduceMonth } = usePanelData(
+    dataSource[0]?.work_times,
+    dataSource,
+  )
   const date = dayjs('2023-08-22')
   const weekday = date.isoWeekday()
   console.log('weekday---', weekday, weekdayString[weekday])
-  // 面板数据处理 获取有多少列
-  const getPanelData = (data: any[], array: any[]) => {
-    const columns = data.map(item => item.date)
-    const map = new Map()
-    columns.forEach(item => {
-      map.set(item, [])
-    })
-    array.forEach((ele: any) => {
-      ele.work_times.forEach((item: any) => {
-        if (map.has(item.date)) {
-          const child = map.get(item.date)
-          child.push({ name: ele.name, hour: item.hour, time: item.time })
-          map.set(item.date, child)
-        }
-      })
-    })
-    return {
-      columns,
-      map,
-    }
+  if (!columns) {
+    return null
   }
-  const { columns, map } = getPanelData(dataSource[0].work_times, dataSource)
   const rows = map.get(columns[0])
-  const reduceMonth = (dates: any[]) => {
-    const result = dates.reduce((obj, date) => {
-      const key = dayjs(date).endOf('month').format('YYYY-MM-DD')
-      obj[key] = obj[key] || []
-      obj[key].push(date)
-      return obj
-    }, {})
-    return result
-  }
   const monthData = reduceMonth(columns)
   const label = ({ time }: any) => {
     if (time === -2) {
@@ -163,7 +104,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
     )
   }
   return (
-    <PanelWrap ref={ref}>
+    <PanelWrap>
       <Header>
         <DateLabel>
           {columns.map((item, idx) => {
@@ -233,4 +174,4 @@ const WorkHoursPanel = (props: any, ref: any) => {
     </PanelWrap>
   )
 }
-export default forwardRef(WorkHoursPanel)
+export default WorkHoursPanel

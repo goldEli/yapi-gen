@@ -992,6 +992,17 @@ export const workTimeList: any = async (params: {
   // const response: any = await http.get<any>('workTimeList', params)
   return {
     data: {
+      stat: {
+        total: 12,
+        report: 1,
+        absence: 1,
+        leave: 1,
+      },
+      pager: {
+        total: 3,
+        page: 30,
+        pagesize: 10,
+      },
       list: [
         {
           user: {
@@ -1011,6 +1022,15 @@ export const workTimeList: any = async (params: {
           exceed_day_num: 1,
           start_at: '2023-02-02',
           end_at: '2023-02-03',
+          work_times: [
+            { date: '2023-08-28', time: '8小时' },
+            { date: '2023-08-29', time: '6小时' },
+            { date: '2023-08-30', time: -2 },
+            { date: '2023-08-31', time: -1 },
+            { date: '2023-09-01', time: '6小时' },
+            { date: '2023-09-02', time: -2 },
+            { date: '2023-09-03', time: -1 },
+          ],
         },
         {
           user: {
@@ -1030,6 +1050,15 @@ export const workTimeList: any = async (params: {
           exceed_day_num: 0,
           start_at: '2023-02-02',
           end_at: '2023-02-03',
+          work_times: [
+            { date: '2023-08-28', time: -1 },
+            { date: '2023-08-29', time: '12小时' },
+            { date: '2023-08-30', time: -1 },
+            { date: '2023-08-31', time: -2 },
+            { date: '2023-09-01', time: '6小时' },
+            { date: '2023-09-02', time: -2 },
+            { date: '2023-09-03', time: -1 },
+          ],
         },
       ],
     },
