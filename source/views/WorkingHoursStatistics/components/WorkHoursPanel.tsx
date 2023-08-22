@@ -37,14 +37,12 @@ const WorkHoursPanel = (props: any) => {
   const [value, setValue] = useState(1)
   const popoverRef = useRef<any>()
   const { dataSource } = props
-  console.log(props)
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
   )
   const date = dayjs('2023-08-22')
   const weekday = date.isoWeekday()
-  console.log('weekday---', weekday, weekdayString[weekday])
   if (!columns) {
     return null
   }
