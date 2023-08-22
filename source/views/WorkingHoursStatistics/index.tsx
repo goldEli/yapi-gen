@@ -12,8 +12,7 @@ import PaginationBox from '@/components/TablePagination'
 import { Spin } from 'antd'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
-  const basicInfoDom = useRef<HTMLDivElement>(null)
-  const [leftWidth, setLeftWidth] = useState(400)
+  const [leftWidth, setLeftWidth] = useState(600)
   const [focus, setFocus] = useState(false)
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -31,6 +30,7 @@ const WorkHours: React.FC<IProps> = props => {
   const onInputSearch = (val: any) => {
     console.log(val)
   }
+
   // 拖动线条
   const onDragLine = () => {
     document.onmousemove = e => {

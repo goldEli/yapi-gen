@@ -2262,7 +2262,7 @@
   "scheduleRecord": "Progress Log",
   "updated_progress": "Updated progress",
   "date_of_achievement": "Date of achievement：",
-  "labor_cost_this_time": "Labor cost: This time",
+  "labor_cost_this_time": "Labor cost: This time ",
   "update_instructions": "Update instructions：",
   "open_more": "Expand More",
   "progressLog": "Progress log",
@@ -2313,5 +2313,7 @@
   "pleaseContactTheAdministratorForDailyReportGeneration": "Please contact the administrator for [Project daily report generation configuration]",
   "reportingTime": "Reporting time",
   "reportingDate": "Reporting date",
-  "adjustDate": "Adjust date"
+  "adjustDate": "Adjust date",
+  "reduce": "reduce ",
+  "increase": "increase "
 }

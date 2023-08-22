@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, forwardRef } from 'react'
+import { Form, Popover, Input, Radio, Space, InputNumber } from 'antd'
 import {
   PanelWrap,
   Rows,
@@ -11,14 +12,29 @@ import {
   DateLabel,
   TimeLabel,
   lastDay,
+  UpdateTask,
 } from '../style'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
+import isoWeek from 'dayjs/plugin/isoWeek'
+dayjs.extend(isoWeek)
+import CommonButton from '@/components/CommonButton'
 interface IProps {
   ref: any
 }
+const weekdayString: any = {
+  1: '周一',
+  2: '周二',
+  3: '周三',
+  4: '周四',
+  5: '周五',
+  6: '周六',
+  7: '周日',
+}
 const WorkHoursPanel = (props: any, ref: any) => {
   const tdRef = useRef<any>()
+  const [value, setValue] = useState(1)
+  const popoverRef = useRef<any>()
   const dataSource = [
     {
       name: '李四',
@@ -57,6 +73,10 @@ const WorkHoursPanel = (props: any, ref: any) => {
       ],
     },
   ]
+  const date = dayjs('2023-08-22')
+  const weekday = date.isoWeekday()
+  console.log('weekday---', weekday, weekdayString[weekday])
+  // 面板数据处理 获取有多少列
   const getPanelData = (data: any[], array: any[]) => {
     const columns = data.map(item => item.date)
     const map = new Map()
@@ -98,6 +118,50 @@ const WorkHoursPanel = (props: any, ref: any) => {
     }
     return time
   }
+  const Content = () => {
+    return (
+      <UpdateTask>
+        <div className="title">修改任务记录</div>
+        <div className="form-box">
+          <Radio.Group
+            onChange={e => {
+              setValue(e.target.value)
+            }}
+            value={value}
+          >
+            <Space direction="vertical">
+              <Radio value={1}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ marginBottom: '8px' }}>调整工时</span>
+                  <InputNumber
+                    size="middle"
+                    placeholder="请输入"
+                    style={{ width: 160 }}
+                  ></InputNumber>
+                </div>
+              </Radio>
+              <Radio value={2}>请假</Radio>
+              <Radio value={3}>未上报</Radio>
+            </Space>
+          </Radio.Group>
+        </div>
+        <div className="btn-box">
+          <CommonButton type="light" size="small">
+            取消
+          </CommonButton>
+          <CommonButton
+            type="primary"
+            size="small"
+            onClick={() => {
+              popoverRef?.current?.props.onPopupVisibleChange(false)
+            }}
+          >
+            确认
+          </CommonButton>
+        </div>
+      </UpdateTask>
+    )
+  }
   return (
     <PanelWrap ref={ref}>
       <Header>
@@ -107,11 +171,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
             const isFirstDay = dayjs(item).startOf('month').format('YYYY-MM-DD')
             const width =
               tdRef.current?.getBoundingClientRect().width * (idx + 1)
-            // let text = ''
-            // Object.values(monthData).forEach(ele => {
-            //   text = `${ele[0]}至${ele[ele.length - 1]}`
-            // })
-
             return isLastDay === item || isFirstDay === item ? (
               <div
                 className={classNames('month-td', {
@@ -119,7 +178,13 @@ const WorkHoursPanel = (props: any, ref: any) => {
                 })}
                 style={{ width }}
               >
-                {item}
+                {Object.values(monthData).map((ele: any) => {
+                  if (ele.includes(item)) {
+                    return (
+                      <div key={ele}>{`${ele[0]}至${ele[ele.length - 1]}`}</div>
+                    )
+                  }
+                })}
               </div>
             ) : null
           })}
@@ -143,15 +208,22 @@ const WorkHoursPanel = (props: any, ref: any) => {
               const col = map.get(item)[rowIndex]
               return (
                 <Cols key={index} ref={tdRef}>
-                  <WorkHourLabel
-                    className={classNames({
-                      [Working]: col.time !== 1 && col.time !== -2,
-                      [Leave]: col.time === -1,
-                      [NotWorking]: col.time === -2,
-                    })}
+                  <Popover
+                    title=""
+                    content={Content}
+                    trigger="click"
+                    ref={popoverRef}
                   >
-                    {label(col)}
-                  </WorkHourLabel>
+                    <WorkHourLabel
+                      className={classNames({
+                        [Working]: col.time !== 1 && col.time !== -2,
+                        [Leave]: col.time === -1,
+                        [NotWorking]: col.time === -2,
+                      })}
+                    >
+                      {label(col)}
+                    </WorkHourLabel>
+                  </Popover>
                 </Cols>
               )
             })}

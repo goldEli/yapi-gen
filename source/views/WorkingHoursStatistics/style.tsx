@@ -111,6 +111,41 @@ export const Line = styled(DragLine)<{ active: boolean }>`
 export const SprintDetailMouseDom = styled(MouseDom)`
   background: transparent;
 `
+export const UpdateTask = styled.div`
+  width: 240px;
+  height: 235px;
+  background: #ffffff;
+  border-radius: 6px 6px 6px 6px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  box-sizing: border-box;
+  .title {
+    height: 22px;
+    font-size: 14px;
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
+    margin-bottom: 8px;
+  }
+  .form-box {
+    flex: 1;
+    .ant-radio-wrapper {
+      font-size: 14px;
+      color: var(--neutral-n1-d1);
+      font-family: SiYuanMedium;
+    }
+  }
+  .btn-box {
+    height: 24px;
+    /* border: 1px solid red; */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    button {
+      margin-left: 8px;
+    }
+  }
+`
 export const StatusWrap = styled.div<{ state: number }>(
   {
     width: 8,
