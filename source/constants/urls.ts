@@ -503,6 +503,8 @@ const urls = {
   getScheduleLogList: '/b/story/getScheduleLog',
   unassignedList: '/b/efficiency/unassigned/list',
   workTimeList: '/b/story/work_time/list',
+  updateOverdue: '/b/story/work_time/update_overdue',
+  workTimeExport: '/b/story/work_time/export',
 }
 export default urls
 
