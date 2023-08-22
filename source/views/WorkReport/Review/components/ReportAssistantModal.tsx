@@ -81,14 +81,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       if (tempArr[0] === '1') {
         users = params[key]
       } else if (tempArr[0] === '3') {
-        if (tempArr[2] === 'description') {
-          data.push({
-            conf_id: Number(tempArr[1]),
-            content: params[key] || '',
-            type: Number(tempArr[0]),
-            name: tempArr[2],
-          })
-        } else {
+        if (tempArr[2] === 'total_schedule') {
           const obj = {
             total_schedule: getScheduleData().rate,
             yesterday_add: params[key],
@@ -103,6 +96,13 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           data.push({
             conf_id: Number(tempArr[1]),
             content: JSON.stringify(obj),
+            type: Number(tempArr[0]),
+            name: tempArr[2],
+          })
+        } else {
+          data.push({
+            conf_id: Number(tempArr[1]),
+            content: params[key] || '',
             type: Number(tempArr[0]),
             name: tempArr[2],
           })
@@ -407,15 +407,20 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       total = 0
       done = 0
     }
+
     const totalHour = tempArr.reduce(
       (pre, next) =>
-        pre + type === 'user'
-          ? next.user_today_task_time
-          : next.today_task_time,
+        (type === 'user' ? next.user_today_task_time : next.today_task_time) +
+        pre,
+      0,
+    )
+    const totalSchedule = tempArr.reduce(
+      (pre, next) =>
+        type === 'user' ? next.user_schedule_percent : next.schedule_percent,
       0,
     )
     return {
-      rate: total > 0 ? Number((done / total).toFixed(2)) * 100 : 0,
+      rate: total > 0 ? Number((totalSchedule / total).toFixed(2)) : 0,
       done: done,
       total: total,
       totalHour,
@@ -462,7 +467,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       case 1:
         return (
           <Form.Item
-            label={<LabelTitles>{content.name}</LabelTitles>}
+            label={<LabelTitles>{content.name_text}</LabelTitles>}
             name={`${content.type}+${content.id}+${content.name}`}
           >
             <ChoosePeople initValue={peopleValue} />
@@ -471,7 +476,19 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       case 2:
         return (
           <Form.Item
-            label={<LabelTitles>{content.name}</LabelTitles>}
+            label={
+              <div>
+                <LabelTitles>{content.name_text}</LabelTitles>
+                {content.name === 'picture' && (
+                  <TitleTips>
+                    {t('theSizeOfThePictureShouldNotExceed')}
+                  </TitleTips>
+                )}
+                {content.name === 'video' && (
+                  <TitleTips>{t('theSizeOfTheVideoShouldNotExceed')}</TitleTips>
+                )}
+              </div>
+            }
             name={`${content.type}+${content.id}+${content.name}`}
             rules={[
               {
@@ -492,6 +509,13 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           >
             <UploadAttach
               power
+              special={
+                content.name === 'picture'
+                  ? ['png', 'jpg', 'jpeg', 'gif']
+                  : content.name === 'video'
+                  ? ['avi', 'wmv', 'mp4']
+                  : []
+              }
               defaultList={
                 uploadAttachList[
                   `${content.type}+${content.id}+${content.name}`
@@ -513,11 +537,46 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           </Form.Item>
         )
       case 3:
-        return (
+        return content.name === 'perception' ? (
+          <Form.Item
+            style={{
+              marginBottom: '30px',
+            }}
+            label={<LabelTitles>{content.name_text}</LabelTitles>}
+            name={`${content.type}+${content.id}+${content.name}`}
+            rules={[
+              {
+                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                required: content.is_required === 1,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('p2.only1')}
+                  </div>
+                ),
+                whitespace: true,
+                validator: onValidator,
+              },
+            ]}
+          >
+            <Editor
+              upload={uploadFile}
+              getSuggestions={() => options}
+              placeholder={content.tips}
+              height="240px"
+            />
+          </Form.Item>
+        ) : (
           <Form.Item
             label={
               <LabelTitles>
-                {content.name}：{getScheduleData().rate}%
+                {content.name_text}：{getScheduleData().rate}%
                 <span style={{ marginLeft: 16 }}>
                   {t('spent')}：{getScheduleData().totalHour}h
                 </span>
@@ -549,7 +608,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           <Form.Item
             label={
               <LabelTitles>
-                {content.name}：{content?.content?.length}{' '}
+                {content.name_text}：{content?.content?.length}{' '}
                 {t('report.list.pieces')}
               </LabelTitles>
             }
@@ -563,7 +622,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                   demandList?.map((o: any) => o?.id)?.includes(i?.value),
                 )
                 if (!isCan) {
-                  if (content.key === 'timeout_task') {
+                  if (content.name === 'overdue_tasks') {
                     getMessage({
                       msg: t(
                         'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
@@ -585,7 +644,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                 setFilterDemand()
               }}
               // 是否显示逾期
-              isShowOverdue={content?.key === 'timeout_task'}
+              isShowOverdue={content?.name === 'overdue_tasks'}
             />
           </Form.Item>
         )
@@ -790,7 +849,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     <>
       <CommonModal
         width={784}
-        title={type === 'user' ? '单人日报' : '项目日报'}
+        title={type === 'user' ? t('singleDaily') : t('projectDaily')}
         isVisible={visible}
         onClose={onClose}
         onConfirm={confirm}
