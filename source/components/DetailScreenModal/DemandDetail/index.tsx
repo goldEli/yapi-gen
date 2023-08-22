@@ -54,8 +54,6 @@ import CopyIcon from '@/components/CopyIcon'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import StateTag from '@/components/StateTag'
 import ScreenMinHover from '@/components/ScreenMinHover'
-import RangePicker from '@/components/RangePicker'
-import moment from 'moment'
 import ChildDemand from './components/ChildDemand'
 import StoryRelation from './components/StoryRelation'
 import ChangeRecord from './components/ChangeRecord'
@@ -94,8 +92,6 @@ const DemandDetail = () => {
   } = useSelector(store => store.project)
   const { visible, params } = isDetailScreenModal
   const [form] = Form.useForm()
-  // 是否打开变更记录的筛选
-  const [isOpen, setIsOpen] = useState(false)
   // 当前选中那一个
   const [tabActive, setTabActive] = useState(params.type ?? '1')
   // 是否可改变类别弹窗
@@ -116,7 +112,7 @@ const DemandDetail = () => {
     projectInfo?.projectPermissions,
     'b/story/update',
   )
-  const [drawerInfo, setDrawerInfo] = useState<any>({})
+  // const [drawerInfo, setDrawerInfo] = useState<any>({})
   // 项目是否已经结束
   const isEnd = projectInfo?.status === 2
 
@@ -255,7 +251,7 @@ const DemandDetail = () => {
   const onDelete = () => {
     openDelete({
       title: t('deleteConfirmation'),
-      text: t('areYouSureToDeleteThisTransaction'),
+      text: t('mark.del'),
       onConfirm() {
         onDeleteConfirm()
         return Promise.resolve()
@@ -502,23 +498,7 @@ const DemandDetail = () => {
       dispatch(getDemandInfo({ projectId: params.id, id: demandInfo.id }))
     }
   }
-  const getTree = async () => {
-    console.log(params.id, demandInfo?.id, '详情基础数据')
-    const info = await getDemandInfo2({
-      projectId: params.id,
-      id: demandInfo.id,
-    })
-    info.level_tree.push({
-      id: info.id,
-      category_id: info.category,
-      prefix_key: info.prefixKey,
-      project_prefix: info.projectPrefix,
-      category_attachment: info.category_attachment,
-      parent_id: info.parentId,
-      name: info.name,
-    })
-    setDrawerInfo(info)
-  }
+
   useEffect(() => {
     if (visible || params.demandId) {
       dispatch(getDemandInfo({ projectId: params.id, id: params.demandId }))
@@ -532,11 +512,6 @@ const DemandDetail = () => {
       )
     }
   }, [visible, params])
-  useEffect(() => {
-    if (demandInfo.id) {
-      getTree()
-    }
-  }, [demandInfo])
 
   useEffect(() => {
     // 获取项目信息中的需求类别
@@ -565,7 +540,6 @@ const DemandDetail = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
-  console.log(demandInfo, 'demandInfo')
 
   return (
     <DemandWrap>
@@ -653,11 +627,11 @@ const DemandDetail = () => {
         <div style={{ display: 'inline-flex', alignItems: 'center' }}>
           <MyBreadcrumb />
           <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
-            {drawerInfo.level_tree?.map((i: any, index: number) => (
+            {demandInfo.level_tree?.map((i: any, index: number) => (
               <DrawerHeader
                 style={{
                   cursor:
-                    index === drawerInfo?.level_tree?.length - 1
+                    index === demandInfo?.level_tree?.length - 1
                       ? 'auto'
                       : 'pointer',
                 }}
@@ -667,8 +641,8 @@ const DemandDetail = () => {
                   if (demandInfo.project_id) {
                     projectIdRef.current = demandInfo.project_id
                   }
-                  const projectId = drawerInfo?.projectId
-                  if (index !== drawerInfo?.level_tree?.length - 1) {
+                  const projectId = demandInfo?.projectId
+                  if (index !== demandInfo?.level_tree?.length - 1) {
                     openDemandDetail({ ...i }, projectId, i.id)
                   }
                 }}
@@ -686,14 +660,14 @@ const DemandDetail = () => {
                 />
                 <div
                   className={
-                    index === drawerInfo?.level_tree?.length - 1
+                    index === demandInfo?.level_tree?.length - 1
                       ? ''
                       : myTreeCss
                   }
                   style={{
                     fontSize: '12px',
                     color:
-                      index === drawerInfo?.level_tree?.length - 1
+                      index === demandInfo?.level_tree?.length - 1
                         ? ''
                         : 'var(--neutral-n1-d1)',
                   }}

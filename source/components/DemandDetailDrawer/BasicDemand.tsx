@@ -74,26 +74,6 @@ const BasicDemand = (props: Props) => {
   useEffect(() => {
     setSchedule(props.detail?.schedule)
   }, [props.detail?.schedule])
-  // 修改进度
-  const onChangeSchedule = async () => {
-    if (
-      props.detail?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id) &&
-      props.detail.status.is_start !== 1 &&
-      props.detail.status.is_end !== 1
-    ) {
-      const obj = {
-        projectId: props.detail.projectId,
-        id: props.detail?.id,
-        otherParams: { schedule },
-      }
-      try {
-        await updateTableParams(obj)
-        props.onUpdate?.()
-      } catch (error) {
-        //
-      }
-    }
-  }
 
   const onChangeState = async (item: any) => {
     try {

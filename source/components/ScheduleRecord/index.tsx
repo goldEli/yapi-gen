@@ -130,12 +130,15 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                   </span>
                 </div>
                 <InfoRow>
-                  {t('date_of_achievement')}
-                  {i.created_at}
+                  {t('reportingDate')}：{i.report_date}
+                </InfoRow>
+                <InfoRow>
+                  {t('adjustDate')}：{i.created_at}
                 </InfoRow>
                 <InfoRow>
                   {t('labor_cost_this_time')}
-                  {Math.floor((i.task_time / 3600) * 100) / 100}h
+                  {i.task_time < 0 ? t('reduce') : t('increase')}
+                  {Math.abs(Math.floor((i.task_time / 3600) * 100) / 100)}h
                 </InfoRow>
                 <InfoRow>
                   {t('update_instructions')}

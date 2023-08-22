@@ -18,7 +18,7 @@ const ColumnTitle = styled.span`
   align-items: center;
   flex-shrink: 0;
   padding: 0 24px;
-  background: var(--neutral-n9);
+  background: var(--neutral-n8);
   margin-bottom: 16px;
   .name {
     max-width: 52%;

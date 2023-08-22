@@ -15,7 +15,10 @@ import {
   TabsWrap,
   TabsWrapItem,
 } from '@/views/SiteNotifications/components/SiteDrawer/style'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setDemandInfo } from '@store/demand'
+import { setFlawInfo } from '@store/flaw'
+import { setAffairsInfo } from '@store/affairs'
 
 const Container = styled.div`
   width: 320px;
@@ -153,6 +156,7 @@ const Img = styled.img`
   height: 20px;
 `
 const MyDropdown = (props: any) => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [tabActive, setTabActive] = useState(0)
   const tabs = [
@@ -299,68 +303,11 @@ const MyDropdown = (props: any) => {
         params = { ...params, specialType: 3, isOpenScreenDetail: true }
       }
     }
-    // return
+    dispatch(setDemandInfo({}))
+    dispatch(setFlawInfo({}))
+    dispatch(setAffairsInfo({}))
     navigate(`${url}?data=${encryptPhp(JSON.stringify(params))}`)
     setIsOpen(false)
-    let iterParmas = null
-    return
-    const paramsKey: { [key: string]: string } = {
-      1: 'demandId',
-      2: 'sprintId',
-    }
-    const urlMaps: { [key: number]: string } = {
-      1: '/ProjectManagement/DemandDetail',
-      2: '/SprintProjectManagement/SprintProjectDetail',
-    }
-    let router = ''
-
-    if (type === 'story') {
-      iterParmas = encryptPhp(
-        JSON.stringify({
-          id: el.project_id,
-          [paramsKey[el.project_type]]: el.id,
-        }),
-      )
-      router = `${urlMaps[el.project_type]}?data=${iterParmas}`
-    } else {
-      const resultType = el?.feedable_type ?? el?.actionable_type
-      if (resultType === 'project') {
-        iterParmas = encryptPhp(
-          JSON.stringify({
-            id: el.feedable_id,
-          }),
-        )
-        const url =
-          el.feedable.project_type === 2
-            ? '/SprintProjectManagement/Affair'
-            : '/ProjectManagement/Demand'
-        router = `${url}?data=${iterParmas}`
-      } else {
-        const params: any = {
-          id: el?.feedable?.project_id ?? el.project_id,
-        }
-        if (resultType === 'iterate') {
-          params.iterateId = el?.feedable_id ?? el.id
-        }
-        if (resultType === 'story') {
-          params[paramsKey[el.feedable.project.project_type]] =
-            el?.feedable_id ?? el.id
-        }
-        iterParmas = encryptPhp(JSON.stringify(params))
-        if (el.feedable.project.project_type === 1) {
-          router = `/ProjectManagement/${
-            resultType === 'iterate' ? 'Iteration' : 'DemandDetail'
-          }?data=${iterParmas}`
-        }
-        if (el.feedable.project.project_type === 2) {
-          router = `/SprintProjectManagement/${
-            resultType === 'iterate' ? 'Affair' : 'SprintProjectDetail'
-          }?data=${iterParmas}`
-        }
-      }
-    }
-    setIsOpen(false)
-    navigate(router)
   }
   const itmeMain = (item: any, type: any) => {
     return (

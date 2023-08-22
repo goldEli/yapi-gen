@@ -14,10 +14,11 @@ import {
 import IconFont from '@/components/IconFont'
 import { useState } from 'react'
 import CommonModal from '@/components/CommonModal'
-const TableLeft = (props: any) => {
+const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [state, setState] = useState(false)
   const [value, setValue] = useState('')
   const [openDemandDetail] = useOpenDemandDetail()
+  const [row, setRow] = useState<any>({})
   const content = () => {
     return (
       <PopoverWrap>
@@ -28,8 +29,8 @@ const TableLeft = (props: any) => {
               fontSize: 14,
               margin: '0 4px',
             }}
-            type={'down'}
-          />{' '}
+            type={'right-md'}
+          />
           正常
         </div>
         <div>调整原因</div>
@@ -41,15 +42,15 @@ const TableLeft = (props: any) => {
   const colum = [
     {
       title: '姓名',
-      dataIndex: 'name',
+      dataIndex: 'user',
       width: 250,
       render: (text: any, record: any) => {
         return (
           <CommonUserAvatar
             size="large"
-            avatar={''}
-            name={text}
-            positionName={'前端开发工程师'}
+            avatar={record.user.avatar}
+            name={record.user.name}
+            positionName={record.user.position.name}
           />
         )
       },
@@ -59,22 +60,18 @@ const TableLeft = (props: any) => {
       dataIndex: 'name',
       width: 180,
       render: (text: any, record: any) => {
-        console.log(record, 'record')
         return (
           <CanOperation
             onClick={() => {
+              // type 不传是需求，1是事务，2是缺陷
               openDemandDetail({ ...record }, record.projectId, record.id, 1)
             }}
           >
-            <IconFont
-              style={{
-                fontSize: 20,
-                //   color: props.detail?.priority?.color,
-                marginRight: 4,
-              }}
-              type={''}
+            <img
+              src={record.story.category_attachment}
+              style={{ marginRight: 4, width: 20, height: 20 }}
             />
-            <span className="text">{text || '--'}</span>
+            <span className="text">{record.story.name || '--'}</span>
           </CanOperation>
         )
       },
@@ -100,22 +97,35 @@ const TableLeft = (props: any) => {
                   : 0
               }
             />
-            {record.category_status?.status?.content || 999}
+            {record.category_status?.status?.content}
           </>
         )
       },
     },
     {
       title: '是否逾期',
-      dataIndex: 'state',
+      dataIndex: 'status',
       width: 250,
       render: (text: any, record: any) => {
         return (
           <StateWrap>
-            <State state={text} onClick={() => text === 3 && setState(true)}>
-              123
+            <State
+              state={record.exceed_day_num > 0}
+              onClick={() => {
+                if (record.exceed_day_num > 0) {
+                  setState(true)
+                  setRow(record)
+                  setValue('')
+                }
+              }}
+            >
+              {record.is_normal === 1
+                ? '正常 (调整)'
+                : record.is_normal === 2 && record.exceed_day_num > 0
+                ? `逾期${record.exceed_day_num}天`
+                : '正常'}
             </State>
-            {text === 2 && (
+            {record.is_normal === 1 ? (
               <Popover
                 placement="bottomRight"
                 getPopupContainer={node => node}
@@ -123,66 +133,57 @@ const TableLeft = (props: any) => {
                 trigger="click"
               >
                 <IconFont
+                  className="icon"
                   style={{
                     fontSize: 14,
                     marginLeft: 8,
+                    color: 'var(--neutral-n4)',
                   }}
-                  type={'down'}
+                  type={'down-icon'}
                 />
               </Popover>
-            )}
+            ) : null}
           </StateWrap>
         )
+      },
+    },
+    {
+      title: '开始时间',
+      dataIndex: 'start_at',
+      width: 120,
+      render: (text: any) => {
+        return <>{text}</>
+      },
+    },
+    {
+      title: '结束时间',
+      dataIndex: 'end_at',
+      width: 120,
+      render: (text: any) => {
+        return <>{text}</>
       },
     },
   ]
 
   const onConfirm = () => {
     if (value) {
+      console.log(row)
       setState(false)
+      props.updateOverdue({
+        story_id: row.story?.id,
+        user_id: row.user.id,
+        normal_reason: value,
+      })
     }
   }
   return (
     <>
       <ResizeTable
+        styleSate={true}
         isSpinning={false}
         dataWrapNormalHeight="calc(100% - 48px)"
         col={colum}
-        dataSource={[
-          {
-            name: 'zcm12',
-            state: 1,
-            category_status: {
-              is_start: 1,
-              is_end: 2,
-              status: {
-                content: '1233',
-              },
-            },
-          },
-          {
-            name: 'zcm22',
-            state: 2,
-            category_status: {
-              is_start: 2,
-              is_end: 1,
-              status: {
-                content: '1233',
-              },
-            },
-          },
-          {
-            name: 'zcm32',
-            state: 3,
-            category_status: {
-              is_start: 2,
-              is_end: 2,
-              status: {
-                content: '1233',
-              },
-            },
-          },
-        ]}
+        dataSource={props.data}
       />
       <CommonModal
         isVisible={state}

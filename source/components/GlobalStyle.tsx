@@ -919,6 +919,13 @@ const GlobalStyle = () => {
       width: 100%;
       height: 100%;
     }
+    // 添加斑马纹
+    .rowBgc table .ant-table-tbody tr:nth-child(odd) {
+      background: var(--neutral-white-d1);
+    }
+    .rowBgc table .ant-table-tbody tr:nth-child(even) {
+      background: var(--neutral-n10);
+    }
   `
   return <Global styles={globalCss} />
 }

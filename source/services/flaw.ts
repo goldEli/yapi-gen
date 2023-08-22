@@ -297,6 +297,17 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
     },
   )
 
+  const level_tree = JSON.parse(JSON.stringify(response.data.level_tree))
+  level_tree.push({
+    id: response.data.id,
+    category_id: response.data.category,
+    prefix_key: response.data.prefix_key,
+    project_prefix: response.data.project_prefix,
+    category_attachment: response.data.category_attachment,
+    parent_id: response.data.parent_id,
+    name: response.data.name,
+  })
+
   return {
     category_attachment: response.data.category_attachment,
     id: response.data.id,
@@ -330,7 +341,7 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
     prefixKey: response.data.prefix_key,
     projectPrefix: response.data.project_prefix,
     hierarchy: response.data.hierarchy,
-    level_tree: response.data.level_tree,
+    level_tree: level_tree,
     categoryName: response.data.category,
     child_story_statistics: response.data.child_story_statistics,
     project_type: response.data.project_type,
@@ -1174,7 +1185,7 @@ export const getShapeFlawRight = async (params: any) => {
   return obj
 }
 
-// 获取缺陷关联工作项列表
+// 获取缺陷关联任务列表
 export const getFlawRelationStories = async (
   params: API.Flaw.GetFlawRelationStories.Params,
 ) => {

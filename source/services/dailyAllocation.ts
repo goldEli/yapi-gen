@@ -20,7 +20,7 @@ export const getAily_config: any = async (params: any) => {
     day: response.data.requirement.day,
     is_holiday: response.data.requirement.is_holiday,
     id: response.data.id,
-    projectConfigWebhook: response.data?.project_config?.webhook,
+    projectConfigWebhook: response.data?.project_config?.web_hook,
     projectConfigGroupName: response.data?.project_config?.group_name,
   }
 }
@@ -40,6 +40,13 @@ export const setDaily_config: any = async (params: any) => {
 export const set_create_config: any = async (params: any) => {
   const response: any = await http.post<any>(
     '/b/project/daily_config/set_create_config',
+    params,
+  )
+  return response
+}
+export const dailyConfigsetProjectConfig = async (params: any) => {
+  const response: any = await http.post<any>(
+    '/b/project/daily_config/set_project_config',
     params,
   )
   return response

@@ -208,7 +208,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
     getMessage({ type: 'success', msg: t('addedSuccessfully') })
     getList(pageObj, order)
     onClose()
-    props.onUpdate(true)
+    props.onUpdate()
   }
 
   // 点击切换页码
@@ -274,7 +274,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
     onUpdate()
   }
 
-  // 删除关联工作项
+  // 删除关联任务
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     open({

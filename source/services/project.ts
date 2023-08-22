@@ -962,3 +962,136 @@ export const getScheduleLogList = async (params: {
   const response = await http.get<any>('getScheduleLogList', params)
   return response.data
 }
+export const workTimeExport = async (params: {
+  user_ids: string
+  start_at: string
+  end_at: string
+  type: number
+  project_id: number
+}) => {
+  const response = await http.get<any>('getScheduleLogList', params)
+  return response.data
+}
+// 调整逾期
+export const updateOverdue = async (params: {
+  project_id: any
+  story_id: any
+  user_id: any
+  normal_reason: any
+}) => {
+  const response = await http.put<any>('updateOverdue', params)
+  return response
+}
+export const workTimeList: any = async (params: {
+  user_ids: string
+  start_at: string
+  end_at: string
+  type: number
+  project_id: number
+}) => {
+  // const response: any = await http.get<any>('workTimeList', params)
+  return {
+    data: {
+      stat: {
+        total: 12,
+        report: 1,
+        absence: 1,
+        leave: 1,
+      },
+      pager: {
+        total: 3,
+        page: 30,
+        pagesize: 10,
+      },
+      list: [
+        {
+          exceed_day_num: 1,
+          is_normal: 2,
+          user: {
+            id: 1,
+            name: 'zcm',
+            avatar: '',
+            position: {
+              id: 2,
+              name: '前端开发',
+            },
+          },
+          story: {
+            id: 2,
+            name: '我是来摸鱼的',
+          },
+          status: '3',
+          start_at: '2023-02-02',
+          end_at: '2023-02-03',
+          work_times: [
+            { date: '2023-08-28', time: '8小时' },
+            { date: '2023-08-29', time: '6小时' },
+            { date: '2023-08-30', time: -2 },
+            { date: '2023-08-31', time: -1 },
+            { date: '2023-09-01', time: '6小时' },
+            { date: '2023-09-02', time: -2 },
+            { date: '2023-09-03', time: -1 },
+          ],
+        },
+        {
+          user: {
+            id: 1,
+            name: 'zcm1',
+            avatar: '',
+            position: {
+              id: 2,
+              name: '前端开发1',
+            },
+          },
+          story: {
+            id: 2,
+            name: '我是来摸鱼的1',
+          },
+          status: '1',
+          is_normal: 1,
+          exceed_day_num: 0,
+          start_at: '2023-02-02',
+          end_at: '2023-02-03',
+          work_times: [
+            { date: '2023-08-28', time: -1 },
+            { date: '2023-08-29', time: '12小时' },
+            { date: '2023-08-30', time: -1 },
+            { date: '2023-08-31', time: -2 },
+            { date: '2023-09-01', time: '6小时' },
+            { date: '2023-09-02', time: -2 },
+            { date: '2023-09-03', time: -1 },
+          ],
+        },
+        {
+          user: {
+            id: 1,
+            name: 'zcm1',
+            avatar: '',
+            position: {
+              id: 2,
+              name: '前端开发1',
+            },
+          },
+          story: {
+            id: 2,
+            name: '我是来摸鱼的1',
+          },
+          status: '1',
+          is_normal: 2,
+          exceed_day_num: 0,
+          start_at: '2023-02-02',
+          end_at: '2023-02-03',
+          work_times: [
+            { date: '2023-08-28', time: -1 },
+            { date: '2023-08-29', time: '12小时' },
+            { date: '2023-08-30', time: -1 },
+            { date: '2023-08-31', time: -2 },
+            { date: '2023-09-01', time: '6小时' },
+            { date: '2023-09-02', time: -2 },
+            { date: '2023-09-03', time: -1 },
+          ],
+        },
+      ],
+    },
+  }
+}
