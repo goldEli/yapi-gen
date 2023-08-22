@@ -27,7 +27,7 @@ export const Rows = styled.div`
 `
 export const Cols = styled.div`
   min-width: 72px;
-  height: 48px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
