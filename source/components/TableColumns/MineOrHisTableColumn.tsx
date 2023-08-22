@@ -222,7 +222,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
-      width: 100,
+      width: 160,
       render: (text: any, record: any) => {
         return (
           <ChangePriorityPopover

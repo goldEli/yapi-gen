@@ -189,7 +189,6 @@ const WorkHoursHeader = (props: {
     const end = [y, m, d].join('-')
     return [start, end]
   }
-
   const onChange = (val: number) => {
     switch (val) {
       case 0:

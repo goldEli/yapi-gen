@@ -26,7 +26,7 @@ const DemandDetail = () => {
   const { projectInfo, isDetailScreenModal } = useSelector(
     store => store.project,
   )
-  const { params } = isDetailScreenModal
+  const { params, visible } = isDetailScreenModal
   const { demandInfo } = useSelector(store => store.demand)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
@@ -172,7 +172,7 @@ const DemandDetail = () => {
       {demandInfo.id && (
         <InfoItem>
           <Label>{t('new_p1.a3')}</Label>
-          <DemandStatus pid={params.id} sid={demandInfo.id} />
+          <DemandStatus pid={params.id} sid={demandInfo.id} visible={visible} />
         </InfoItem>
       )}
     </WrapLeft>

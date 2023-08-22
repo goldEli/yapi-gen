@@ -53,11 +53,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const date = dayjs('2023-08-22')
   const weekday = date.isoWeekday()
   console.log('weekday---', weekday, weekdayString[weekday])
-  useImperativeHandle(ref, () => {
-    return {
-      a: 1,
-    }
-  })
+
   if (!columns) {
     return null
   }
