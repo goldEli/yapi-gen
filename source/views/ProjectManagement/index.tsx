@@ -51,6 +51,7 @@ const Project = () => {
     '/ProjectManagement/Defect',
     '/ProjectManagement/WorkFlow',
     '/ProjectManagement/IterationDetail',
+    '/ProjectManagement/WorkHours',
   ]
 
   useEffect(() => {

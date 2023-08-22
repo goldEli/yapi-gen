@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, forwardRef } from 'react'
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import { Form, Popover, Input, Radio, Space, InputNumber } from 'antd'
 import {
   PanelWrap,
@@ -20,8 +26,10 @@ import isoWeek from 'dayjs/plugin/isoWeek'
 dayjs.extend(isoWeek)
 import CommonButton from '@/components/CommonButton'
 import usePanelData from '../hooks/usePanelData'
+import CommonIconFont from '@/components/CommonIconFont'
 interface IProps {
   ref: any
+  onClick: any
 }
 const weekdayString: any = {
   1: '周一',
@@ -32,11 +40,11 @@ const weekdayString: any = {
   6: '周六',
   7: '周日',
 }
-const WorkHoursPanel = (props: any) => {
+const WorkHoursPanel = (props: any, ref: any) => {
   const tdRef = useRef<any>()
   const [value, setValue] = useState(1)
   const popoverRef = useRef<any>()
-  const { dataSource } = props
+  const { dataSource, onClick, direction } = props
   console.log(props)
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
@@ -45,6 +53,11 @@ const WorkHoursPanel = (props: any) => {
   const date = dayjs('2023-08-22')
   const weekday = date.isoWeekday()
   console.log('weekday---', weekday, weekdayString[weekday])
+  useImperativeHandle(ref, () => {
+    return {
+      a: 1,
+    }
+  })
   if (!columns) {
     return null
   }
@@ -103,8 +116,19 @@ const WorkHoursPanel = (props: any) => {
       </UpdateTask>
     )
   }
+
   return (
     <PanelWrap>
+      <div className="openIconBox">
+        <CommonIconFont
+          type={direction ? 'indent' : 'outdent'}
+          size={20}
+          onClick={() => {
+            onClick()
+          }}
+          color="var(--neutral-n3)"
+        />
+      </div>
       <Header>
         <DateLabel>
           {columns.map((item, idx) => {
@@ -174,4 +198,4 @@ const WorkHoursPanel = (props: any) => {
     </PanelWrap>
   )
 }
-export default WorkHoursPanel
+export default forwardRef(WorkHoursPanel)

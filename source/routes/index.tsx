@@ -157,6 +157,10 @@ const routes = [
             path: 'WorkFlow',
             element: lazy(() => import('@/views/Workflow')),
           },
+          {
+            path: 'WorkHours',
+            element: lazy(() => import('@/views/WorkingHoursStatistics')),
+          },
         ],
       },
       {

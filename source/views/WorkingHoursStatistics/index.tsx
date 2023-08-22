@@ -12,7 +12,9 @@ import PaginationBox from '@/components/TablePagination'
 import { Spin } from 'antd'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
-  const [leftWidth, setLeftWidth] = useState(600)
+  const panelRef = useRef<any>()
+  const [leftWidth, setLeftWidth] = useState(504)
+  const [direction, setDirection] = useState(false)
   const [focus, setFocus] = useState(false)
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -145,7 +147,15 @@ const WorkHours: React.FC<IProps> = props => {
             >
               <Line active={focus} className="line"></Line>
             </SprintDetailMouseDom>
-            <WorkHoursPanel dataSource={data} />
+            <WorkHoursPanel
+              dataSource={data}
+              ref={panelRef}
+              onClick={() => {
+                setLeftWidth(direction ? 504 : 1550)
+                setDirection(!direction)
+              }}
+              direction={direction}
+            />
           </div>
         </MianWrap>
         <PaginationBox

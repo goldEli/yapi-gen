@@ -18,6 +18,12 @@ export const PanelWrap = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   width: 100%;
   position: relative;
+  .openIconBox {
+    display: flex;
+    position: absolute;
+    left: -24px;
+    top: 2px;
+  }
 `
 export const Rows = styled.div`
   display: flex;

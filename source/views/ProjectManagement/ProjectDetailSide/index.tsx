@@ -145,6 +145,18 @@ const ProjectDetailSide = () => {
           String(i.group_name).includes('缺陷'),
         ).length,
     },
+    {
+      name: '工时统计',
+      icon: 'man-hour',
+      path: '/ProjectManagement/WorkHours',
+      isPermission:
+        // projectInfo?.isPublic === 1
+        //   ? true
+        //   :
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.group_name).includes('缺陷'),
+        ).length,
+    },
   ]
   const menuKeys = [
     'main',
