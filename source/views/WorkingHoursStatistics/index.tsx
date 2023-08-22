@@ -8,14 +8,14 @@ import TableLeft from './components/TableLeft'
 
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
-  const basicInfoDom = useRef<HTMLDivElement>(null)
-  const [leftWidth, setLeftWidth] = useState(400)
+  const [leftWidth, setLeftWidth] = useState(600)
   const [focus, setFocus] = useState(false)
   const [t] = useTranslation()
   const [formVal, setFormVal] = useState<any>()
   const onInputSearch = (val: any) => {
     console.log(val)
   }
+
   // 拖动线条
   const onDragLine = () => {
     document.onmousemove = e => {
