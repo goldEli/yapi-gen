@@ -5,6 +5,8 @@ import { DragLine, MouseDom } from '@/components/StyleCommon'
 export const WorkHoursWrap = styled.div`
   padding: 20px 16px 0 0px;
   height: 100%;
+  width: 100%;
+  overflow: hidden;
 `
 
 export const MianWrap = styled.div`
