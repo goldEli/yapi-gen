@@ -44,6 +44,7 @@ const PersonWrap = styled.div`
 `
 const WorkHoursHeader = (props: {
   onSearch: (val: any) => void
+  onGetExport: (val: any) => void
   id: number
 }) => {
   const [form] = Form.useForm()
@@ -139,7 +140,7 @@ const WorkHoursHeader = (props: {
     },
   ]
   const onGetExportApi = () => {
-    alert(123)
+    props.onGetExport(form.getFieldsValue())
   }
   // 获取每周
   const getWeekDates = () => {
