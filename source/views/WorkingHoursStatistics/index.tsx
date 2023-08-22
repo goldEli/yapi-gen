@@ -98,7 +98,7 @@ const WorkHours: React.FC<IProps> = props => {
         >
           <TableLeft data={data} updateOverdue={updateOverdueApi} />
         </div>
-        <div style={{ position: 'relative', width: leftWidth }}>
+        <div style={{ position: 'relative', width: leftWidth, top: '-12px' }}>
           <SprintDetailMouseDom
             active={focus}
             onMouseDown={onDragLine}
