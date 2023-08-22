@@ -125,7 +125,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                 ? `逾期${record.exceed_day_num}天`
                 : '正常'}
             </State>
-            {record.exceed_day_num === 0 && record.is_normal === 1 ? (
+            {record.is_normal === 1 ? (
               <Popover
                 placement="bottomRight"
                 getPopupContainer={node => node}
