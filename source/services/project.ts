@@ -992,6 +992,17 @@ export const workTimeList: any = async (params: {
   // const response: any = await http.get<any>('workTimeList', params)
   return {
     data: {
+      stat: {
+        total: 12,
+        report: 1,
+        absence: 1,
+        leave: 1,
+      },
+      pager: {
+        total: 3,
+        page: 30,
+        pagesize: 10,
+      },
       list: [
         {
           user: {
