@@ -962,3 +962,13 @@ export const getScheduleLogList = async (params: {
   const response = await http.get<any>('getScheduleLogList', params)
   return response.data
 }
+export const workTimeList: any = async (params: {
+  user_ids: string
+  start_at: string
+  end_at: string
+  type: number
+  project_id: number
+}) => {
+  const response: any = await http.get<any>('workTimeList', params)
+  return response
+}

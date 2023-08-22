@@ -502,6 +502,7 @@ const urls = {
   // 三个进度日志通用
   getScheduleLogList: '/b/story/getScheduleLog',
   unassignedList: '/b/efficiency/unassigned/list',
+  workTimeList: '/b/story/work_time/list',
 }
 export default urls
 

@@ -5,13 +5,17 @@ import WorkHoursPanel from './components/WorkHoursPanel'
 import { WorkHoursWrap, MianWrap, Line, SprintDetailMouseDom } from './style'
 import WorkHoursHeader from './components/WorkHoursHeader'
 import TableLeft from './components/TableLeft'
-
+import { getParamsData } from '@/tools'
+import { useSearchParams } from 'react-router-dom'
+import { workTimeList } from '@/services/project'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const [leftWidth, setLeftWidth] = useState(400)
   const [focus, setFocus] = useState(false)
   const [t] = useTranslation()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
   const [formVal, setFormVal] = useState<any>()
   const onInputSearch = (val: any) => {
     console.log(val)
@@ -28,6 +32,19 @@ const WorkHours: React.FC<IProps> = props => {
       setFocus(false)
     }
   }
+  const onSearch = async (val: any) => {
+    setFormVal(val)
+    const start_at = val.time ? val.time[0] : val.date[0]
+    const end_at = val.time ? val.time[1] : val.date[1]
+    const parmas = {
+      start_at,
+      end_at,
+      type: val.type,
+      project_id: paramsData.id,
+      user_ids: val.user_ids,
+    }
+    const res = await workTimeList(parmas)
+  }
   return (
     <WorkHoursWrap>
       <ProjectCommonOperation
@@ -35,11 +52,7 @@ const WorkHours: React.FC<IProps> = props => {
         title={t('search_for_transaction_name_or_number')}
       />
 
-      <WorkHoursHeader
-        onSearch={(val: any) => {
-          console.log(val)
-        }}
-      />
+      <WorkHoursHeader id={paramsData.id} onSearch={onSearch} />
       <MianWrap>
         <div
           style={{
