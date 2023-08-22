@@ -200,7 +200,7 @@ const List = () => {
         visible: true,
         id: row.id,
         ids: listData?.map((i: any) => i.id),
-        system: row?.type === 2,
+        type: row?.type,
       }),
     )
   }
@@ -630,7 +630,7 @@ const List = () => {
       dispatch(
         saveViewReportDetailDrawer({
           visible: true,
-          system: reportType === '1',
+          type: Number(reportType),
           id: reportId,
           ids: listData?.map((i: any) => i.id),
         }),

@@ -7,7 +7,8 @@ import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from 'antd'
 import MultipleAvatar from '@/components/MultipleAvatar'
-
+import CommonIconFont from '@/components/CommonIconFont'
+import { copyLink } from '@/tools'
 const CircleWrap = styled.div({
   width: 8,
   height: 8,
@@ -49,7 +50,9 @@ export const useDynamicColumns = (state: any) => {
       </Sort>
     )
   }
-
+  const onCopy = (text: string) => {
+    copyLink(text, t('copysuccess'), t('copyfailed'))
+  }
   const arr = [
     {
       width: 140,
@@ -59,11 +62,18 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <ClickWrap
-              className="canClickDetail"
-              onClick={() => state.onClickItem(record)}
-            >
-              {record.storyPrefixKey}
+            <ClickWrap className="canClickDetail">
+              <div className="text" onClick={() => state.onClickItem(record)}>
+                {record.storyPrefixKey}
+              </div>
+              <div className="icon">
+                <CommonIconFont
+                  color="var(--neutral-n4)"
+                  type="copy"
+                  size={20}
+                  onClick={() => onCopy(text)}
+                />
+              </div>
             </ClickWrap>
           </div>
         )

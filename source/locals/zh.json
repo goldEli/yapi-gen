@@ -2315,5 +2315,9 @@
   "reportingDate": "上报日期",
   "adjustDate": "调整日期",
   "reduce": "减少",
-  "increase": "增加"
+  "increase": "增加",
+  "theSizeOfThePictureShouldNotExceed": "图片大小不超过300M",
+  "theSizeOfTheVideoShouldNotExceed": "视频大小不超过300M",
+  "singleDaily": "单人日报",
+  "projectDaily": "项目日报"
 }

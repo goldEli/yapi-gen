@@ -162,8 +162,7 @@ export const getProjectTemplateInfo: any = async (params: any) => {
     name: response.data?.name,
     send_time: response.data?.send_time,
     group_name: response.data?.group_name,
-    enable_hand_send: response.data?.enable_hand_send,
-    is_setting_config: response.data?.is_setting_config,
+    is_setting_project_config: response.data?.is_setting_project_config,
   }
 }
 
@@ -179,5 +178,11 @@ export const getListOfProjectDaily: any = async (params: any) => {
 // 日报助手：日报生成规则未配置通知 (个人日报)
 export const writeProjectAssistantReport: any = async (params: any) => {
   const response = await http.post('writeProjectAssistantReport', params)
+  return response.data
+}
+
+// (项目日报)获取汇报详情
+export const getProjectReportInfo = async (params: any) => {
+  const response = await http.get('getProjectReportInfo', params)
   return response.data
 }
