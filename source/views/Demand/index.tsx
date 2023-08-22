@@ -71,6 +71,7 @@ const DemandIndex = () => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
+  const bian = useRef<any>(null)
   const { filterKeys, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
   )
@@ -323,14 +324,18 @@ const DemandIndex = () => {
   }, [key, isGrid, order, pageObj])
 
   useEffect(() => {
-    setPageObj({ page: 1, size: 20 })
-    setOrder({ value: '', key: '' })
-    setKey('')
-    setIsGrid(0)
-    setSearchVal('')
-    setSearchItems({})
-    keyValueTree.changeKey('')
-    getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
+    if (bian.current) {
+      setPageObj({ page: 1, size: 20 })
+      setOrder({ value: '', key: '' })
+      setKey('')
+      setIsGrid(0)
+      setSearchVal('')
+      setSearchItems({})
+      keyValueTree.changeKey('')
+      // getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
+    }
+    bian.current = projectId
+    console.log(projectId, 'projectId')
   }, [projectId])
 
   useEffect(() => {

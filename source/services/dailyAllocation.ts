@@ -20,7 +20,7 @@ export const getAily_config: any = async (params: any) => {
     day: response.data.requirement.day,
     is_holiday: response.data.requirement.is_holiday,
     id: response.data.id,
-    projectConfigWebhook: response.data?.project_config?.web_hook,
+    projectConfigWebhook: response.data?.project_config?.webhook,
     projectConfigGroupName: response.data?.project_config?.group_name,
   }
 }
