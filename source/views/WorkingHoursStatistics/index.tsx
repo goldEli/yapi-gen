@@ -162,7 +162,7 @@ const WorkHours: React.FC<IProps> = props => {
           </div>
         </MianWrap>
         <PaginationBox
-        hasPadding={true}
+          hasPadding={true}
           currentPage={pageObj?.currentPage}
           pageSize={pageObj?.size}
           total={pageObj?.total}
