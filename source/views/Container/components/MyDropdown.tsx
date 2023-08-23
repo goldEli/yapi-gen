@@ -110,7 +110,7 @@ const Row = styled.div`
 const ItemCenter = styled.div`
   width: 166px;
   overflow: hidden;
-  margin-left: 8px;
+  /* margin-left: 8px; */
 `
 const ItemTitle = styled.div`
   width: 100%;
@@ -388,6 +388,7 @@ const MyDropdown = (props: any) => {
       return
     }
     const index = tabs.findIndex((i: any, index) => index === tabActive)
+
     tabActive2.current!.style.left = `${
       (tabBox.current?.children[index] as HTMLDivElement).offsetLeft === 0
         ? 2
@@ -399,7 +400,7 @@ const MyDropdown = (props: any) => {
         ? 60
         : tabBox.current?.children[index].clientWidth
     }px`
-  }, [tabActive, isRefresh, isOpen])
+  }, [tabActive, isRefresh])
   const dropdownRender = () => {
     return (
       <Container>
@@ -421,11 +422,19 @@ const MyDropdown = (props: any) => {
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             {tabActive === 2 &&
               box.map(el => (
-                <div style={{ marginBottom: '16px' }} key={el.title}>
+                <div key={el.title}>
                   {recentList?.[el.name].length >= 1 && (
                     <Title>{el.title}</Title>
                   )}
-                  {itmeMain(recentList?.[el.name], el.name)}
+                  <div
+                    style={{
+                      marginTop:
+                        recentList?.[el.name].length >= 1 ? '16px' : '0px',
+                    }}
+                  >
+                    {' '}
+                    {itmeMain(recentList?.[el.name], el.name)}
+                  </div>
                 </div>
               ))}
             {tabActive === 0 && itmeMain(noFinishList, 'story')}
