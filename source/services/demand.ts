@@ -512,17 +512,6 @@ export const getDemandInfo: any = async (params: any) => {
     id: params.id,
   })
 
-  const level_tree = JSON.parse(JSON.stringify(response.data.level_tree))
-  level_tree.push({
-    id: response.data.id,
-    category_id: response.data.category,
-    prefix_key: response.data.prefixKey,
-    project_prefix: response.data.projectPrefix,
-    category_attachment: response.data.category_attachment,
-    parent_id: response.data.parentId,
-    name: response.data.name,
-  })
-
   return {
     category_attachment: response.data.category_attachment,
     categoryName: response.data.category,
@@ -557,7 +546,18 @@ export const getDemandInfo: any = async (params: any) => {
     prefixKey: response.data.prefix_key,
     projectPrefix: response.data.project_prefix,
     hierarchy: response.data.hierarchy,
-    level_tree: level_tree,
+    level_tree: [
+      ...response.data.level_tree,
+      {
+        id: response.data.id,
+        category_id: response.data.category_id,
+        prefix_key: response.data.prefix_key,
+        project_prefix: response.data.project_prefix,
+        category_attachment: response.data.category_attachment,
+        parent_id: response.data.parent_id,
+        name: response.data.name,
+      },
+    ],
     project_type: response.data.project_type,
     update_at: response.data.update_at,
     category_status: response.category_status,

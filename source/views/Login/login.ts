@@ -46,9 +46,9 @@ const language = [
     remark:
       'Tip: Forget the password, dynamic password please contact the administrator',
     title: 'Login Form',
-    user: 'Username',
-    password: 'Password',
-    code: 'CaptchaCode',
+    user: 'Enter IFUN email or phone',
+    password: 'Enter the accout password',
+    code: 'Enter the dynamic password',
     login: ' Login ',
     mode1: 'verification code',
     mode2: 'Google Captcha',

@@ -488,32 +488,39 @@ const WrapLeft = (props: any, ref: any) => {
         {t('newlyAdd.demandClass')}
       </TitleWrap>
       {treeData.length > 0 && show ? (
-        <Tree
-          selectedKeys={[valueId]}
-          allowDrop={(dropNode: any) => {
-            if (dropNode.dropNode.title.props.grade === 4) {
-              return false
-            }
-            return true
+        <div
+          style={{
+            height: 'calc(100% - 32px)',
+            overflowY: 'scroll',
           }}
-          defaultExpandAll
-          autoExpandParent
-          onDrop={onDrop}
-          onSelect={onSelect}
-          draggable={(node: any) => {
-            const {
-              title: {
-                props: { id },
-              },
-            } = node
-            if (id === -1 || id === 0) {
-              return false
-            }
+        >
+          <Tree
+            selectedKeys={[valueId]}
+            allowDrop={(dropNode: any) => {
+              if (dropNode.dropNode.title.props.grade === 4) {
+                return false
+              }
+              return true
+            }}
+            defaultExpandAll
+            autoExpandParent
+            onDrop={onDrop}
+            onSelect={onSelect}
+            draggable={(node: any) => {
+              const {
+                title: {
+                  props: { id },
+                },
+              } = node
+              if (id === -1 || id === 0) {
+                return false
+              }
 
-            return true
-          }}
-          treeData={treeData}
-        />
+              return true
+            }}
+            treeData={treeData}
+          />
+        </div>
       ) : null}
     </div>
   )
