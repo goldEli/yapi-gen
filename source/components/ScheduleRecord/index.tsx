@@ -56,6 +56,9 @@ const InfoRow = styled.div`
   margin-bottom: 2px;
   font-size: 12px;
   color: var(--neutral-n3);
+  span {
+    color: var(--neutral-n2);
+  }
 `
 
 export const ShowLabel = styled.div`
@@ -121,7 +124,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
               <ItemContent>
                 <div className="title">
                   <div>
-                    {i.userInfo?.name}（{i.userInfo?.position?.name}）
+                    {i.userInfo?.name}（{i.userInfo?.position?.name || '--'}）
                   </div>
                   <span>
                     {t('updated_progress')}
@@ -131,15 +134,16 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                 </div>
                 <InfoRow>
                   {t('date_of_achievement')}
-                  {i.created_at}
+                  <span>{i.created_at}</span>
                 </InfoRow>
                 <InfoRow>
                   {t('labor_cost_this_time')}
-                  {Math.floor((i.task_time / 3600) * 100) / 100}h
+                  {t('thisTime')}
+                  <span>{Math.floor((i.task_time / 3600) * 100) / 100}h</span>
                 </InfoRow>
                 <InfoRow>
                   {t('update_instructions')}
-                  {i.remark}
+                  <span>{i.remark || '--'}</span>
                 </InfoRow>
                 {i.attachment?.length > 0 && (
                   <UploadAttach

@@ -1485,8 +1485,8 @@
       "pieces": "个",
       "auto": "（自动）",
       "manual": "（手动）",
-      "overdue": "逾期",
-      "day": "天",
+      "overdue": "逾期 ",
+      "day": " 天",
       "relevance": "关联",
       "thinkAgain": "再想想",
       "sendAgain": "是否再次发送",
@@ -2262,7 +2262,7 @@
   "scheduleRecord": "进度日志",
   "updated_progress": "更新了进度",
   "date_of_achievement": "达成日期：",
-  "labor_cost_this_time": "工时花费：本次",
+  "labor_cost_this_time": "工时花费：",
   "update_instructions": "更新说明：",
   "open_more": "展开更多",
   "progressLog": "进度日志",
@@ -2305,5 +2305,6 @@
   "theSizeOfThePictureShouldNotExceed": "图片大小不超过300M",
   "theSizeOfTheVideoShouldNotExceed": "视频大小不超过300M",
   "singleDaily": "单人日报",
-  "projectDaily": "项目日报"
+  "projectDaily": "项目日报",
+  "thisTime": "本次"
 }
