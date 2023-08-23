@@ -384,7 +384,7 @@ const MyDropdown = (props: any) => {
     }
   }, [isOpen])
   useEffect(() => {
-    if (!isOpen) {
+    if (!tabBox.current) {
       return
     }
     const index = tabs.findIndex((i: any, index) => index === tabActive)
@@ -394,13 +394,14 @@ const MyDropdown = (props: any) => {
         ? 2
         : (tabBox.current?.children[index] as HTMLDivElement).offsetLeft
     }px`
+    console.log(tabBox.current?.children[index].clientWidth)
 
     tabActive2.current!.style.width = `${
       tabBox.current?.children[index].clientWidth === 0
         ? 60
         : tabBox.current?.children[index].clientWidth
     }px`
-  }, [tabActive, isRefresh])
+  }, [tabActive, isRefresh, tabBox])
   const dropdownRender = () => {
     return (
       <Container>
@@ -415,7 +416,7 @@ const MyDropdown = (props: any) => {
                 {i.label}
               </TabsWrapItem>
             ))}
-            <ActiveTab ref={tabActive2} />
+            <ActiveTab style={{ width: '60px' }} ref={tabActive2} />
           </TabsWrap>
         </HeraderTabs>
         <ScrollWrap>
