@@ -110,34 +110,34 @@ const WorkHoursHeader = (props: {
   const tabsValue = [
     {
       id: 0,
-      text: '今日',
+      text: t('today'),
     },
     {
       id: 1,
-      text: '本周',
+      text: t('thisWeek'),
     },
 
     {
       id: 2,
-      text: '本月',
+      text: t('thisMonth'),
     },
   ]
   const tabsValue1 = [
     {
       id: 3,
-      text: '请假',
+      text: t('askForLeave'),
     },
     {
       id: 2,
-      text: '正常上报',
+      text: t('reportNormally'),
     },
     {
       id: 1,
-      text: '未上报',
+      text: t('notReported'),
     },
     {
       id: 0,
-      text: '全部',
+      text: t('all'),
     },
   ]
   const onGetExportApi = () => {
@@ -264,16 +264,21 @@ const WorkHoursHeader = (props: {
             </Form.Item>
           </LeftWrap>
           <CommonButton type="primary" onClick={() => setOpen(true)}>
-            导出记录
+            {t('exportRecords')}
           </CommonButton>
         </FormStyle>
       </WorkHoursHeaderWrap>
       <PersonWrap>
         <span>
-          上报人次: {props.stat?.report}/{props.stat?.total}
+          {t('numberOfPeopleReported')}: {props.stat?.report}/
+          {props.stat?.total}
         </span>
-        <span>请假人次: {props.stat?.leave}</span>
-        <span>缺报人次: {props.stat?.absence}</span>
+        <span>
+          {t('numberOfPeopleAskingForLeave')}: {props.stat?.leave}
+        </span>
+        <span>
+          {t('underreporting')}: {props.stat?.absence}
+        </span>
       </PersonWrap>
       {/* 导出 */}
       <Export

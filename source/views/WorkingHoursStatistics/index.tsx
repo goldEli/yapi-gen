@@ -95,7 +95,7 @@ const WorkHours: React.FC<IProps> = props => {
     normal_reason: number
   }) => {
     const res = await updateOverdue({ ...row, project_id: paramsData.id })
-    getMessage({ msg: '调整成功', type: 'success' })
+    getMessage({ msg: t('adjustedSuccessfully'), type: 'success' })
     onSearch(formVal, type)
   }
   const onGetExport = async (val: any) => {
@@ -116,7 +116,7 @@ const WorkHours: React.FC<IProps> = props => {
       pagesize: pageObj.pageSize,
       keyword: key,
     }
-    getMessage({ msg: '导出成功', type: 'success' })
+    getMessage({ msg: t('exportSucceeded'), type: 'success' })
     const result: any = await workTimeExport(parmas)
     const blob = new Blob([result.body], {
       type: result?.headers['content-type'],
