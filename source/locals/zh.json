@@ -1475,7 +1475,7 @@
       "contactAdministrator": "请联系管理员开通该功能",
       "message1": "请点击 “生成日报” 再发送",
       "message2": "请完善日报内容",
-      "message3": "请先选择项目",
+      "message3": "请选择项目",
       "tips1": "项目管理员已配置自动生成并发送规则",
       "generate": "生成中",
       "generateReport": "生成日报",

@@ -833,7 +833,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
             >
               {options?.map((i: any) => {
                 return (
-                  <Select.Option value={i.id} key={i.id} label={i.name}>
+                  <Select.Option value={i.id} key={i.id} label={i.labelName}>
                     <MoreOptions
                       type="project"
                       labelName={i.labelName}
