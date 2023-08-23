@@ -2262,7 +2262,7 @@
   "scheduleRecord": "Progress Log",
   "updated_progress": "Updated progress",
   "date_of_achievement": "Date of achievement：",
-  "labor_cost_this_time": "Labor cost: This time",
+  "labor_cost_this_time": "Labor cost：",
   "update_instructions": "Update instructions：",
   "open_more": "Expand More",
   "progressLog": "Progress log",
@@ -2305,5 +2305,6 @@
   "theSizeOfThePictureShouldNotExceed": "The size of the picture should not exceed 300M",
   "theSizeOfTheVideoShouldNotExceed": "The size of the video should not exceed 300M",
   "singleDaily": "Single daily",
-  "projectDaily": "Project Daily"
+  "projectDaily": "Project Daily",
+  "thisTime": "This time"
 }
