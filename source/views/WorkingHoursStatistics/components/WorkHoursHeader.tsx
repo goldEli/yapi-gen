@@ -92,12 +92,8 @@ const WorkHoursHeader = (props: {
         date: [],
       })
       setTime([
-        moment(dates[0]).unix()
-          ? moment(dates[0]).format('YYYY-MM-DD')
-          : '1970-01-01',
-        moment(dates[1]).unix() === 1893427200
-          ? '2030-01-01'
-          : moment(dates[1]).format('YYYY-MM-DD'),
+        moment(dates[0]).format('YYYY-MM-DD'),
+        moment(dates[1]).format('YYYY-MM-DD'),
       ])
       setDateType(-1)
     } else {
@@ -235,7 +231,7 @@ const WorkHoursHeader = (props: {
               <span style={{ margin: '0 16px', fontSize: '14px' }}>时间</span>
               <Form.Item name={'time'}>
                 <RangePicker
-                  isShowQuick
+                  isShowQuick={false}
                   dateValue={
                     form.getFieldValue('time')
                       ? [

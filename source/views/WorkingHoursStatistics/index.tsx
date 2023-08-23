@@ -68,7 +68,7 @@ const WorkHours: React.FC<IProps> = props => {
   ) => {
     setFormVal(val)
     setType(type)
-    setSpinning(true)
+    // setSpinning(true)
     const start_at = val.time ? val.time[0] : val.date[0]
     const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
