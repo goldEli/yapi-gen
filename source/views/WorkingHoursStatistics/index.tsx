@@ -174,6 +174,10 @@ const WorkHours: React.FC<IProps> = props => {
                 setDirection(!direction)
               }}
               direction={direction}
+              onConfirm={() => {
+                onSearch(formVal, type, key)
+              }}
+              type={type}
             />
           </div>
         </MianWrap>
