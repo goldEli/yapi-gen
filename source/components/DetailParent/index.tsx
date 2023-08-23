@@ -37,11 +37,12 @@ const DetailParent = (props: DetailParentProps) => {
   ]
 
   //   获取父需求列表
-  const getParentData = async () => {
+  const getParentData = async (searchVal?: string) => {
     const response = await getParentList({
       projectId: props.detail.projectId,
       id: props.detail.id,
       categoryId: props.detail.categoryId ?? props.detail.category,
+      keyword: searchVal,
     })
     setSelectList(response)
   }
@@ -114,6 +115,11 @@ const DetailParent = (props: DetailParentProps) => {
     }, 0)
   }
 
+  // 获取父需求列表
+  const onGetParent = (value?: string) => {
+    getParentData(value)
+  }
+
   useEffect(() => {
     if (props.detail.id) {
       getParentData()
@@ -138,6 +144,8 @@ const DetailParent = (props: DetailParentProps) => {
           onRef={inputRef}
           onBlur={() => onBlur?.(defaultValue)}
           onChange={(value: any) => onChange?.(value, 1)}
+          onFocus={() => onGetParent()}
+          onSearch={(value: string) => onGetParent(value)}
           options={selectList}
           defaultOpen={true}
         />
