@@ -315,26 +315,29 @@ const MyDropdown = (props: any) => {
       item?.map((el: any) => (
         <ItemBox key={el.id}>
           <Row onClick={() => onRoute(el, type)}>
-            <div>
-              {(el?.category_attachment || el?.feedable?.attachment) && (
-                <Img
-                  src={el?.category_attachment || el?.feedable?.attachment}
-                />
-              )}
-              {!(el?.category_attachment || el?.feedable?.attachment) && (
-                <CommonIconFont
-                  type="interation-2"
-                  color="var(--neutral-n2)"
-                  size={20}
-                />
-              )}
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <div>
+                {(el?.category_attachment || el?.feedable?.attachment) && (
+                  <Img
+                    src={el?.category_attachment || el?.feedable?.attachment}
+                  />
+                )}
+                {!(el?.category_attachment || el?.feedable?.attachment) && (
+                  <CommonIconFont
+                    type="interation-2"
+                    color="var(--neutral-n2)"
+                    size={20}
+                  />
+                )}
+              </div>
+              <ItemCenter>
+                <ItemTitle>{el.feedable?.name || el?.name}</ItemTitle>
+                <ItemMsg>
+                  {el.feedable?.project?.name || el.project?.name}
+                </ItemMsg>
+              </ItemCenter>
             </div>
-            <ItemCenter>
-              <ItemTitle>{el.feedable?.name || el?.name}</ItemTitle>
-              <ItemMsg>
-                {el.feedable?.project?.name || el.project?.name}
-              </ItemMsg>
-            </ItemCenter>
+
             <BtnBox
               style={{
                 background:
@@ -419,7 +422,9 @@ const MyDropdown = (props: any) => {
             {tabActive === 2 &&
               box.map(el => (
                 <div style={{ marginBottom: '16px' }} key={el.title}>
-                  <Title>{el.title}</Title>
+                  {recentList?.[el.name].length >= 1 && (
+                    <Title>{el.title}</Title>
+                  )}
                   {itmeMain(recentList?.[el.name], el.name)}
                 </div>
               ))}
