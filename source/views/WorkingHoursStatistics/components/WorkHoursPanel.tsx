@@ -152,7 +152,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
               >
                 <div>
                   {type === 0
-                    ? `${data[0]}}`
+                    ? String(data[0])
                     : `${data[0]}至${data[data.length - 1]}`}
                 </div>
               </div>
