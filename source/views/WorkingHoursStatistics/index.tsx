@@ -165,7 +165,7 @@ const WorkHours: React.FC<IProps> = props => {
             <div className="openIconBox">
               <CommonIconFont
                 type={direction ? 'indent' : 'outdent'}
-                size={24}
+                size={20}
                 onClick={() => {
                   setLeftWidth(direction ? 504 : 1550)
                   setDirection(!direction)

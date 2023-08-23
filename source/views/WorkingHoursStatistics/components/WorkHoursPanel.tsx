@@ -135,55 +135,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
     <PanelWrap>
       <Header>
         <DateLabel>
-          {/* {columns.map((item, idx) => {
-            const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
-            const isFirstDay = dayjs(item).startOf('month').format('YYYY-MM-DD')
-            const width =
-              tdRef.current?.getBoundingClientRect().width * (idx + 1)
-            console.log('item------', item, isLastDay, Object.keys(monthData))
-            return Object.keys(monthData).map(item => {
-              return (
-                <div
-                  key={item}
-                  className={classNames('month-td', {
-                    [lastDay]: isLastDay === item,
-                  })}
-                  style={{ width }}
-                >
-                  {Object.values(monthData).map((ele: any) => {
-                    console.log('ele', ele)
-                    if (ele.includes(item)) {
-                      return (
-                        <div key={ele}>{`${ele[0]}至${
-                          ele[ele.length - 1]
-                        }`}</div>
-                      )
-                    }
-                  })}
-                </div>
-              )
-            })
-            return isLastDay === item || isFirstDay === item ? (
-              <div
-                className={classNames('month-td', {
-                  [lastDay]: isLastDay === item,
-                })}
-                style={{ width }}
-              >
-                {Object.values(monthData).map((ele: any) => {
-                  console.log('ele', ele)
-                  if (ele.includes(item)) {
-                    return (
-                      <div key={ele}>{`${ele[0]}至${ele[ele.length - 1]}`}</div>
-                    )
-                  }
-                })}
-              </div>
-            ) : null
-          })} */}
           {Object.keys(monthData).map(item => {
             const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
-            const isFirstDay = dayjs(item).startOf('month').format('YYYY-MM-DD')
             const data = monthData[item]
             const index = data.length - 1
             const width = type
@@ -197,20 +150,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
                 })}
                 style={{ width }}
               >
-                {Object.values(monthData).map((ele: any) => {
-                  if (ele.includes(isLastDay) || ele.includes(isFirstDay)) {
-                    return (
-                      <div key={ele}>{`${ele[0]}至${ele[ele.length - 1]}`}</div>
-                    )
-                  }
-                  return (
-                    <div key={ele}>
-                      {type === 0
-                        ? String(ele[0])
-                        : `${ele[0]}至${ele[ele.length - 1]}`}
-                    </div>
-                  )
-                })}
+                <div>
+                  {type === 0
+                    ? `${data[0]}}`
+                    : `${data[0]}至${data[data.length - 1]}`}
+                </div>
               </div>
             )
           })}
