@@ -42,7 +42,7 @@ import {
   updateTableParams,
 } from '@/services/demand'
 import { getDemandCommentList, getDemandInfo } from '@store/demand/demand.thunk'
-import { getDemandInfo as getDemandInfo2 } from '@/services/demand'
+
 import { getWorkflowList } from '@/services/project'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -107,7 +107,7 @@ const DemandDetail = () => {
     projectInfo?.projectPermissions,
     'b/story/update',
   )
-  const [drawerInfo, setDrawerInfo] = useState<any>({})
+
   // 项目是否已经结束
   const isEnd = projectInfo?.status === 2
 
@@ -493,23 +493,7 @@ const DemandDetail = () => {
       dispatch(getDemandInfo({ projectId: params.id, id: demandInfo.id }))
     }
   }
-  const getTree = async () => {
-    console.log(params.id, demandInfo?.id, '详情基础数据')
-    const info = await getDemandInfo2({
-      projectId: params.id,
-      id: demandInfo.id,
-    })
-    info.level_tree.push({
-      id: info.id,
-      category_id: info.category,
-      prefix_key: info.prefixKey,
-      project_prefix: info.projectPrefix,
-      category_attachment: info.category_attachment,
-      parent_id: info.parentId,
-      name: info.name,
-    })
-    setDrawerInfo(info)
-  }
+
   useEffect(() => {
     if (visible || params.demandId) {
       dispatch(getDemandInfo({ projectId: params.id, id: params.demandId }))
@@ -523,11 +507,8 @@ const DemandDetail = () => {
       )
     }
   }, [visible, params])
-  useEffect(() => {
-    if (demandInfo.id) {
-      getTree()
-    }
-  }, [demandInfo])
+
+  console.log(demandInfo)
 
   useEffect(() => {
     // 获取项目信息中的需求类别
@@ -644,40 +625,48 @@ const DemandDetail = () => {
         <div style={{ display: 'inline-flex', alignItems: 'center' }}>
           <MyBreadcrumb />
           <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
-            {drawerInfo.level_tree?.map((i: any, index: number) => (
+            {demandInfo.level_tree?.map((i: any, index: number) => (
               <DrawerHeader
+                style={{
+                  cursor:
+                    index === demandInfo?.level_tree?.length - 1
+                      ? 'auto'
+                      : 'pointer',
+                }}
                 key={i.prefix_key}
                 onClick={() => {
                   // TODO
                   if (demandInfo.project_id) {
                     projectIdRef.current = demandInfo.project_id
                   }
-                  const projectId = drawerInfo?.projectId
-                  if (index !== drawerInfo?.level_tree?.length - 1) {
+                  const projectId = demandInfo?.projectId
+                  if (index !== demandInfo?.level_tree?.length - 1) {
                     openDemandDetail({ ...i }, projectId, i.id)
                   }
                 }}
               >
-                <span style={{ fontSize: '12px' }} hidden={index === 1}>
-                  /
+                <span style={{ fontSize: '12px' }}>
+                  <CommonIconFont
+                    type="right"
+                    color="var(--neutral-n1-d1)"
+                  ></CommonIconFont>
                 </span>
                 <img
                   style={{ width: '16px', height: '16px' }}
                   src={i.category_attachment}
                   alt=""
                 />
-                <div style={{ fontSize: '12px' }}>
+                <div
+                  style={{
+                    fontSize: '12px',
+                    color:
+                      index === demandInfo?.level_tree?.length - 1
+                        ? ''
+                        : 'var(--neutral-n1-d1)',
+                  }}
+                >
                   {i.project_prefix}-{i.prefix_key}
                 </div>
-                <span
-                  style={{ fontSize: '12px' }}
-                  hidden={
-                    drawerInfo.level_tree?.length <= 1 ||
-                    index === drawerInfo.level_tree?.length - 1
-                  }
-                >
-                  /
-                </span>
               </DrawerHeader>
             ))}
           </div>
