@@ -22,7 +22,10 @@ const WorkHours: React.FC<IProps> = props => {
   const paramsData = getParamsData(searchParams)
   const [formVal, setFormVal] = useState<any>()
   const [data, setData] = useState<any>([])
-  const [pageObj, setPageObj] = useState<any>({})
+  const [pageObj, setPageObj] = useState<any>({
+    currentPage: 1,
+    pageSize: 15,
+  })
   const [spinning, setSpinning] = useState<boolean>(false)
   const [key, setKey] = useState<any>('')
   const [type, setType] = useState<any>(1)
@@ -72,6 +75,7 @@ const WorkHours: React.FC<IProps> = props => {
       keyword: keyVal ? keyVal : key,
     }
     const res = await workTimeList(parmas)
+    console.log(res.data.pager, ' res.data.pager')
     setPageObj({
       currentPage: res.data.pager.page,
       size: res.data.pager.pageSize,
@@ -98,18 +102,21 @@ const WorkHours: React.FC<IProps> = props => {
       end_at,
       type: val.type,
       project_id: paramsData.id,
-      user_ids: val.user_ids?.length >= 1 ? val.user_ids.split(',') : '',
+      user_ids: val.user_ids?.length >= 1 ? val.user_ids?.split(',') : '',
+      page: pageObj.currentPage,
+      pagesize: pageObj.pageSize,
+      keyword: key,
     }
     getMessage({ msg: '导出成功', type: 'success' })
-    const result = await workTimeExport(parmas)
-    // const blob = new Blob([result.body], {
-    //   type: result?.headers['content-type'],
-    // })
-    // const blobUrl = window.URL.createObjectURL(blob)
-    // const a = document.createElement('a')
-    // a.download = `${props?.title}.xlsx`
-    // a.href = blobUrl
-    // a.click()
+    const result: any = await workTimeExport(parmas)
+    const blob = new Blob([result.body], {
+      type: result?.headers['content-type'],
+    })
+    const blobUrl = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.download = `工时统计.xlsx`
+    a.href = blobUrl
+    a.click()
   }
   const onChangePage = (page: number, pageSize: number) => {
     setPageObj({

@@ -968,9 +968,14 @@ export const workTimeExport = async (params: {
   end_at: string
   type: number
   project_id: number
+  page: number
+  pagesize: number
+  keyword: number
 }) => {
-  const response = await http.get<any>('getScheduleLogList', params)
-  return response.data
+  const response = await http.get<any>('workTimeExport', params, {
+    responseType: 'blob',
+  })
+  return response
 }
 // 调整逾期
 export const updateOverdue = async (params: {
@@ -988,6 +993,9 @@ export const workTimeList: any = async (params: {
   end_at: string
   type: number
   project_id: number
+  page: number
+  pagesize: number
+  keyword: number
 }) => {
   const response: any = await http.get<any>('workTimeList', params)
   return response
