@@ -4,7 +4,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import { CloseWrap } from '@/components/StyleCommon'
+import { CloseWrap, HeaderCreate } from '@/components/StyleCommon'
 import { loginOut } from '@/services/user'
 import { useDispatch, useSelector } from '@store/index'
 import { changeLanguage, type LocaleKeys } from '@/locals'
@@ -32,7 +32,6 @@ import {
   LineBox,
 } from './../style'
 import { getLoginDetail } from '@store/user/user.thunk'
-import { t } from 'i18next'
 import SiteNotifications from '@/views/SiteNotifications/SiteNotifications'
 import {
   setCalendarModal,
@@ -49,8 +48,15 @@ import { changeFreedVisibleVisible } from '@store/feedback'
 import { useNavigate } from 'react-router-dom'
 import KeyBoardDrawer from '@/views/SiteNotifications/components/KeyBoardDrawer/KeyBoardDrawer'
 import { changeKeyBoardVisible, changeVisible } from '@store/SiteNotifications'
+import {
+  setCreateIterationParams,
+  setIsCreateIterationVisible,
+} from '@store/iterate'
+import { getIsPermission } from '@/tools'
+import { useTranslation } from 'react-i18next'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
+  const [t] = useTranslation()
   const { language, theme } = useSelector(store => store.global)
   const { isRefresh } = useSelector(store => store.user)
   const dispatch = useDispatch()
@@ -158,7 +164,9 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
 
 const HeaderRight = () => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const { language } = useSelector(store => store.global)
+  const { projectInfo } = useSelector(store => store.project)
   const { userInfo } = useSelector(store => store.user)
   const [isModalVisible, setIsModalVisible] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
@@ -175,13 +183,14 @@ const HeaderRight = () => {
     { name: t('container.logout'), isRight: false, icon: 'login', key: 3 },
   ]
 
+  // 项目管理
   const createList = [
-    {
-      name: t('addWorkItem'),
-      key: 'all',
-      icon: 'demand',
-      isPermission: true,
-    },
+    // {
+    //   name: t('addWorkItem'),
+    //   key: 'all',
+    //   icon: 'demand',
+    //   isPermission: true,
+    // },
     {
       name: t('common.createProject'),
       key: 'project',
@@ -191,6 +200,51 @@ const HeaderRight = () => {
       ).includes('b/project/save'),
     },
   ]
+  // 需求模块
+  const demandCreateList = [
+    {
+      name: '创建需求',
+      key: 'project',
+      icon: 'demand',
+      isPermission: (
+        userInfo.company_permissions?.map((i: any) => i.identity) || []
+      ).includes('b/project/save'),
+    },
+  ]
+  // 缺陷模块
+  const defectCreateList = [
+    {
+      name: '创建缺陷',
+      key: 'project',
+      icon: 'demand',
+      isPermission: (
+        userInfo.company_permissions?.map((i: any) => i.identity) || []
+      ).includes('b/project/save'),
+    },
+  ]
+  // 事务模块
+  const affairsCreateList = [
+    {
+      name: '创建事务',
+      key: 'project',
+      icon: 'demand',
+      isPermission: (
+        userInfo.company_permissions?.map((i: any) => i.identity) || []
+      ).includes('b/project/save'),
+    },
+  ]
+  // 迭代模块
+  const iterationCreateList = [
+    {
+      name: '创建迭代',
+      key: 'project',
+      icon: 'demand',
+      isPermission: (
+        userInfo.company_permissions?.map((i: any) => i.identity) || []
+      ).includes('b/project/save'),
+    },
+  ]
+  // 问号下拉
   const createList2 = [
     {
       name: t('shortcut_key'),
@@ -208,6 +262,7 @@ const HeaderRight = () => {
     },
   ]
 
+  // 日程模块
   const createCalendarList = [
     {
       name: t('calendarManager.create_schedule'),
@@ -303,21 +358,13 @@ const HeaderRight = () => {
       'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/Agile.pdf',
     )
   }
-  // 创建需求
+  // 创建
   const onCreate = (key: string) => {
     setIsCreateVisible(false)
     setIsCreateVisible2(false)
     switch (key) {
       case 'project':
         dispatch({ type: 'createProject/changeCreateVisible', payload: true })
-        return
-      case 'all':
-        dispatch(
-          setAddWorkItemModal({
-            visible: true,
-            params: { overallCreate: true },
-          }),
-        )
         return
       case 'schedule':
         dispatch(setScheduleModal({ visible: true, params: { isAll: true } }))
@@ -459,19 +506,107 @@ const HeaderRight = () => {
       </CommonModal>
 
       <Space size={16}>
-        {(String(location.pathname).includes('/ProjectManagement') ||
-          String(location.pathname).includes('/SprintProjectManagement')) && (
-          <Popover
-            content={content(createList)}
-            open={isCreateVisible}
-            onOpenChange={setIsCreateVisible}
-            placement="bottomRight"
-          >
-            <CreateWrap>
-              <CommonIconFont type="plus" size={20} />
-            </CreateWrap>
-          </Popover>
-        )}
+        {/* 项目 */}
+        {(
+          userInfo.company_permissions?.map((i: any) => i.identity) || []
+        ).includes('b/project/save') &&
+          String(location.pathname).includes('/ProjectManagement/Project') && (
+            <HeaderCreate
+              onClick={(e: any) => {
+                e.stopPropagation()
+                onCreate('project')
+              }}
+            >
+              {t('create')}
+            </HeaderCreate>
+          )}
+        {/* 需求 */}
+        {!getIsPermission(projectInfo?.projectPermissions, 'b/story/save') &&
+          String(location.pathname).includes('/ProjectManagement/Demand') && (
+            <HeaderCreate
+              onClick={(e: any) => {
+                e.stopPropagation()
+                dispatch(
+                  setAddWorkItemModal({
+                    visible: true,
+                    params: {
+                      projectId: projectInfo?.id,
+                      type: 1,
+                      title: t('createRequirements'),
+                    },
+                  }),
+                )
+              }}
+            >
+              {t('create')}
+            </HeaderCreate>
+          )}
+        {/* 缺陷 */}
+        {!getIsPermission(projectInfo?.projectPermissions, 'b/flaw/save') &&
+          String(location.pathname).includes('/ProjectManagement/Defect') && (
+            <HeaderCreate
+              onClick={(e: any) => {
+                e.stopPropagation()
+                dispatch(
+                  setAddWorkItemModal({
+                    visible: true,
+                    params: {
+                      projectId: projectInfo?.id,
+                      type: 2,
+                      title: t('createDefect'),
+                    },
+                  }),
+                )
+              }}
+            >
+              {t('create')}
+            </HeaderCreate>
+          )}
+        {/* 迭代 */}
+        {!getIsPermission(projectInfo?.projectPermissions, 'b/iterate/store') &&
+          String(location.pathname).includes(
+            '/ProjectManagement/Iteration',
+          ) && (
+            <HeaderCreate
+              onClick={(e: any) => {
+                e.stopPropagation()
+                dispatch(setIsCreateIterationVisible(true))
+                dispatch(
+                  setCreateIterationParams({ projectId: projectInfo.id }),
+                )
+              }}
+            >
+              {t('create')}
+            </HeaderCreate>
+          )}
+        {/* 事务 */}
+        {!getIsPermission(
+          projectInfo?.projectPermissions,
+          'b/transaction/save',
+        ) &&
+          String(location.pathname).includes(
+            '/SprintProjectManagement/Affair',
+          ) && (
+            <HeaderCreate
+              onClick={(e: any) => {
+                e.stopPropagation()
+                dispatch(
+                  setAddWorkItemModal({
+                    visible: true,
+                    params: {
+                      type: 7,
+                      title: t('createTransaction'),
+                      projectId: projectInfo?.id,
+                    },
+                  }),
+                )
+              }}
+            >
+              {t('create')}
+            </HeaderCreate>
+          )}
+
+        {/* 日历 */}
         {String(location.pathname).includes('/CalendarManager') && (
           <Popover
             content={content(createCalendarList)}
@@ -479,18 +614,17 @@ const HeaderRight = () => {
             onOpenChange={setIsCreateVisible}
             placement="bottomRight"
           >
-            <CreateIcon>
-              <CommonIconFont type="plus" size={20} />
-            </CreateIcon>
+            <HeaderCreate>{t('create')}</HeaderCreate>
           </Popover>
         )}
 
+        {/* 汇报 */}
         {String(location.pathname).includes('/Report') && (
-          <CreateIcon
+          <HeaderCreate
             onClick={() => dispatch(setWriteReportModal({ visible: true }))}
           >
-            <CommonIconFont type="plus" size={20} />
-          </CreateIcon>
+            {t('create')}
+          </HeaderCreate>
         )}
 
         <Tooltip
@@ -502,6 +636,7 @@ const HeaderRight = () => {
             <SiteNotifications ref={childStateRef} />
           </CloseWrap>
         </Tooltip>
+
         <Popover
           content={content(createList2)}
           open={isCreateVisible2}

@@ -22,7 +22,10 @@ const WorkHours: React.FC<IProps> = props => {
   const paramsData = getParamsData(searchParams)
   const [formVal, setFormVal] = useState<any>()
   const [data, setData] = useState<any>([])
-  const [pageObj, setPageObj] = useState<any>({})
+  const [pageObj, setPageObj] = useState<any>({
+    currentPage: 1,
+    pageSize: 15,
+  })
   const [spinning, setSpinning] = useState<boolean>(false)
   const [key, setKey] = useState<any>('')
   const [type, setType] = useState<any>(1)
@@ -58,15 +61,20 @@ const WorkHours: React.FC<IProps> = props => {
   ) => {
     setFormVal(val)
     setType(type)
-    // setSpinning(true)
+    setSpinning(true)
     const start_at = val.time ? val.time[0] : val.date[0]
-    const end_at = val.time ? val.time[1] : val.date[1]
+    const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
       start_at,
       end_at,
-      // type: val.type,
+      type: val.type,
       project_id: paramsData.id,
-      user_ids: val.user_ids?.length >= 1 ? val.user_ids?.split(',') : '',
+      user_ids:
+        val.user_ids?.length > 1
+          ? val.user_ids?.split(',')
+          : val.user_ids
+          ? String(val.user_ids)
+          : '',
       page: page ? page : pageObj.currentPage,
       pagesize: pageSize ? pageSize : pageObj.pageSize,
       keyword: keyVal ? keyVal : key,
@@ -74,7 +82,7 @@ const WorkHours: React.FC<IProps> = props => {
     const res = await workTimeList(parmas)
     setPageObj({
       currentPage: res.data.pager.page,
-      size: res.data.pager.pageSize,
+      size: res.data.pager.pagesize,
       total: res.data.pager.total,
     })
     setData(res.data.list)
@@ -92,24 +100,32 @@ const WorkHours: React.FC<IProps> = props => {
   }
   const onGetExport = async (val: any) => {
     const start_at = val.time ? val.time[0] : val.date[0]
-    const end_at = val.time ? val.time[1] : val.date[1]
+    const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
       start_at,
       end_at,
       type: val.type,
       project_id: paramsData.id,
-      user_ids: val.user_ids?.length >= 1 ? val.user_ids.split(',') : '',
+      user_ids:
+        val.user_ids?.length > 1
+          ? val.user_ids?.split(',')
+          : val.user_ids
+          ? String(val.user_ids)
+          : '',
+      page: pageObj.currentPage,
+      pagesize: pageObj.pageSize,
+      keyword: key,
     }
     getMessage({ msg: '导出成功', type: 'success' })
-    const result = await workTimeExport(parmas)
-    // const blob = new Blob([result.body], {
-    //   type: result?.headers['content-type'],
-    // })
-    // const blobUrl = window.URL.createObjectURL(blob)
-    // const a = document.createElement('a')
-    // a.download = `${props?.title}.xlsx`
-    // a.href = blobUrl
-    // a.click()
+    const result: any = await workTimeExport(parmas)
+    const blob = new Blob([result.body], {
+      type: result?.headers['content-type'],
+    })
+    const blobUrl = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.download = `工时统计.xlsx`
+    a.href = blobUrl
+    a.click()
   }
   const onChangePage = (page: number, pageSize: number) => {
     setPageObj({

@@ -9,6 +9,17 @@ import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
+const HeaderCreate = styled.div`
+  height: 28px;
+  border-radius: 22px;
+  padding: 12px;
+  background: var(--primary-d1);
+  color: var(--auxiliary-text-t1-d1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`
+
 const canEditHover = css`
   padding: 0 4px;
   &:hover {
@@ -1136,4 +1147,5 @@ export {
   TableBorder,
   canEditHover,
   ConfigWrap,
+  HeaderCreate,
 }

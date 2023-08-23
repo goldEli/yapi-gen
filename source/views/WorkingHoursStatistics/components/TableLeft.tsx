@@ -1,6 +1,7 @@
 import ResizeTable from '@/components/ResizeTable'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import NoData from '@/components/NoData'
 import { Popover } from 'antd'
 import {
   StatusWrap,
@@ -19,11 +20,11 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [value, setValue] = useState('')
   const [openDemandDetail] = useOpenDemandDetail()
   const [row, setRow] = useState<any>({})
-  const content = () => {
+  const content = (row: any) => {
     return (
       <PopoverWrap>
         <div style={{ marginBottom: 12 }}>
-          逾期3天{' '}
+          逾期{row.exceed_day_num}天
           <IconFont
             style={{
               fontSize: 14,
@@ -34,8 +35,10 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
           正常
         </div>
         <div>调整原因</div>
-        <Text state={1}>任务调整，暂缓3天，所以修改为正常</Text>
-        <Text state={2}>李钟硕 于2023-08-14</Text>
+        <Text state={1}>{row.normal_reason.reason}</Text>
+        <Text state={2}>
+          {row.normal_reason.operator_name} 于{row.normal_reason.operator_time}{' '}
+        </Text>
       </PopoverWrap>
     )
   }
@@ -64,7 +67,27 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
           <CanOperation
             onClick={() => {
               // type 不传是需求，1是事务，2是缺陷
-              openDemandDetail({ ...record }, record.projectId, record.id, 1)
+              // project_type === 1 迭代  project_type === 2 cc  project_type === 1 && isBug=== 1 就是缺陷
+              record.story.project_type === 1 &&
+              record.story.project_category.isBug === 1
+                ? openDemandDetail(
+                    { ...record },
+                    record.project_id,
+                    record.story_id,
+                    2,
+                  )
+                : record.story.project_type === 2
+                ? openDemandDetail(
+                    { ...record },
+                    record.project_id,
+                    record.story_id,
+                    1,
+                  )
+                : openDemandDetail(
+                    { ...record },
+                    record.project_id,
+                    record.story_id,
+                  )
             }}
           >
             <img
@@ -85,19 +108,19 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
           <>
             <StatusWrap
               state={
-                record.category_status?.is_start === 1 &&
-                record.category_status?.is_end === 2
+                record.story.category_status?.is_start === 1 &&
+                record.story.category_status?.is_end === 2
                   ? 1
-                  : record.category_status?.is_end === 1 &&
-                    record.category_status?.is_start === 2
+                  : record.story.category_status?.is_end === 1 &&
+                    record.story.category_status?.is_start === 2
                   ? 2
-                  : record.category_status?.is_start === 2 &&
-                    record.category_status?.is_end === 2
+                  : record.story.category_status?.is_start === 2 &&
+                    record.story.category_status?.is_end === 2
                   ? 3
                   : 0
               }
             />
-            {record.category_status?.status?.content}
+            {record.story.category_status?.status?.content}
           </>
         )
       },
@@ -110,7 +133,13 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         return (
           <StateWrap>
             <State
-              state={record.exceed_day_num > 0}
+              state={
+                record.is_normal === 1
+                  ? false
+                  : record.is_normal === 2 && record.exceed_day_num > 0
+                  ? true
+                  : false
+              }
               onClick={() => {
                 if (record.exceed_day_num > 0) {
                   setState(true)
@@ -129,7 +158,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
               <Popover
                 placement="bottomRight"
                 getPopupContainer={node => node}
-                content={content}
+                content={() => content(record)}
                 trigger="click"
               >
                 <IconFont
@@ -152,7 +181,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       dataIndex: 'start_at',
       width: 120,
       render: (text: any) => {
-        return <>{text}</>
+        return <>{text || '--'}</>
       },
     },
     {
@@ -160,7 +189,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       dataIndex: 'end_at',
       width: 120,
       render: (text: any) => {
-        return <>{text}</>
+        return <>{text || '--'}</>
       },
     },
   ]
@@ -183,6 +212,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         isSpinning={false}
         dataWrapNormalHeight="calc(100% - 48px)"
         col={colum}
+        noData={<NoData />}
         dataSource={props.data}
       />
       <CommonModal

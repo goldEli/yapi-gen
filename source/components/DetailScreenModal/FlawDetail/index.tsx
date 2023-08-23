@@ -82,6 +82,7 @@ const FlawDetail = () => {
   } = useSelector(store => store.project)
   const { visible, params } = isDetailScreenModal
   const [form] = Form.useForm()
+
   const [tabActive, setTabActive] = useState(params?.type ?? '1')
   const [filter, setFilter] = useState(false)
   // 是否可改变类别弹窗
