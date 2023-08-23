@@ -16,7 +16,12 @@ const usePanelData = (data: any[], array: any[]) => {
     ele.work_times?.forEach((item: any) => {
       if (map.has(item.date)) {
         const child = map.get(item.date)
-        child.push({ name: ele.name, hour: item.hour, time: item.time })
+        child.push({
+          time: item.time,
+          user_id: ele.user_id,
+          story_id: ele.story.id,
+          project_id: ele.project_id,
+        })
         map.set(item.date, child)
       }
     })

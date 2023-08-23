@@ -992,3 +992,8 @@ export const workTimeList: any = async (params: {
   const response: any = await http.get<any>('workTimeList', params)
   return response
 }
+
+export const updateWorkTime: any = async (params: any) => {
+  const response: any = await http.post<any>('updateWorkTime', params)
+  return response
+}
