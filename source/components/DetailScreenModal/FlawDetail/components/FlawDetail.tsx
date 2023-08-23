@@ -194,18 +194,20 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         {/* <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel> */}
         <LabelWrap>
           <Label>{t('common.attachment')}</Label>
-          <Tooltip title={t('addAttachments')}>
-            <CloseWrap width={32} height={32}>
-              <CommonIconFont
-                type="plus"
-                size={20}
-                color="var(--neutral-n2)"
-                onClick={() => {
-                  handleUpload()
-                }}
-              />
-            </CloseWrap>
-          </Tooltip>
+          {props.isInfoPage ? null : (
+            <Tooltip title={t('addAttachments')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={() => {
+                    handleUpload()
+                  }}
+                />
+              </CloseWrap>
+            </Tooltip>
+          )}
         </LabelWrap>
         <div>
           {projectInfo?.projectPermissions?.filter(
@@ -227,6 +229,13 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
               add={onAddInfoAttach}
               isBug
               ref={uploadRef}
+              addWrap={
+                props.isInfoPage ? (
+                  <CommonButton type="primaryText" icon="plus">
+                    {t('addAttachments')}
+                  </CommonButton>
+                ) : null
+              }
             />
           )}
           {projectInfo?.projectPermissions?.filter(
