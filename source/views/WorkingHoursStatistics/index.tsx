@@ -64,7 +64,7 @@ const WorkHours: React.FC<IProps> = props => {
     const parmas = {
       start_at,
       end_at,
-      type: val.type,
+      // type: val.type,
       project_id: paramsData.id,
       user_ids: val.user_ids?.length >= 1 ? val.user_ids?.split(',') : '',
       page: page ? page : pageObj.currentPage,

@@ -50,8 +50,11 @@ const FoldIcon = styled.div`
   z-index: 12;
   right: -12px;
   cursor: pointer;
-  :hover svg {
-    color: var(--primary-d1);
+  &:hover {
+    background: var(--primary-d1);
+    svg {
+      color: var(--neutral-white-d7);
+    }
   }
 `
 

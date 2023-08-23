@@ -989,7 +989,7 @@ export const workTimeList: any = async (params: {
   type: number
   project_id: number
 }) => {
-  // const response: any = await http.get<any>('workTimeList', params)
+  const response: any = await http.get<any>('workTimeList', params)
   return {
     data: {
       stat: {
