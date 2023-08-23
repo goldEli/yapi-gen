@@ -101,7 +101,7 @@ const WorkHours: React.FC<IProps> = props => {
     user_id: number
     normal_reason: number
   }) => {
-    const res = await updateOverdue({ ...row, project_id: paramsData.id })
+    await updateOverdue({ ...row, project_id: paramsData.id })
     getMessage({ msg: t('adjustedSuccessfully'), type: 'success' })
     onSearch(formVal, type)
   }
