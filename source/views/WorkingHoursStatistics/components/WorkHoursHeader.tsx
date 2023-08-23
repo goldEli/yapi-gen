@@ -166,17 +166,17 @@ const WorkHoursHeader = (props: {
   }
   // 获取当前星期一的日期对象
   const getMonDate = () => {
-    let d = new Date()
+    const d = new Date()
     const day = d.getDay()
     const date = d.getDate()
-    if (day == 1) return d
-    if (day == 0) d.setDate(date - 6)
+    if (day === 1) return d
+    if (day === 0) d.setDate(date - 6)
     else d.setDate(date - day + 1)
     return d
   }
   // 本月第一天和最后一天
   function getLastDay() {
-    let y: any = new Date().getFullYear()
+    const y: any = new Date().getFullYear()
     let m: any = new Date().getMonth() + 1
     let d: any = new Date(y, m, 0).getDate()
     m = m < 10 ? '0' + m : m
