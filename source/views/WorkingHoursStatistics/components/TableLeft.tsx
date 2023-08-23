@@ -1,6 +1,7 @@
 import ResizeTable from '@/components/ResizeTable'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import NoData from '@/components/NoData'
 import { Popover } from 'antd'
 import {
   StatusWrap,
@@ -198,6 +199,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         isSpinning={false}
         dataWrapNormalHeight="calc(100% - 48px)"
         col={colum}
+        noData={<NoData />}
         dataSource={props.data}
       />
       <CommonModal

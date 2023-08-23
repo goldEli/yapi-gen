@@ -69,7 +69,10 @@ const WorkHours: React.FC<IProps> = props => {
       end_at,
       type: val.type,
       project_id: paramsData.id,
-      user_ids: val.user_ids?.length >= 1 ? val.user_ids?.split(',') : '',
+      user_ids:
+        val.user_ids?.length > 1
+          ? val.user_ids?.split(',')
+          : String(val.user_ids),
       page: page ? page : pageObj.currentPage,
       pagesize: pageSize ? pageSize : pageObj.pageSize,
       keyword: keyVal ? keyVal : key,
@@ -101,7 +104,10 @@ const WorkHours: React.FC<IProps> = props => {
       end_at,
       type: val.type,
       project_id: paramsData.id,
-      user_ids: val.user_ids?.length >= 1 ? val.user_ids?.split(',') : '',
+      user_ids:
+        val.user_ids?.length > 1
+          ? val.user_ids?.split(',')
+          : String(val.user_ids),
       page: pageObj.currentPage,
       pagesize: pageObj.pageSize,
       keyword: key,
