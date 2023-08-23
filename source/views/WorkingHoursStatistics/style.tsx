@@ -8,25 +8,27 @@ export const WorkHoursWrap = styled.div`
   width: 100%;
   overflow: hidden;
 `
-
+export const LeftWrap = styled.div`
+  position: relative;
+  height: 100%;
+  .openIconBox {
+    display: flex;
+    position: absolute;
+    right: 8px;
+    top: -10px;
+  }
+`
 export const MianWrap = styled.div`
   display: flex;
   height: calc(100% - 240px);
   padding-left: 16px;
   justify-content: space-between;
-  position: relative;
 `
 export const PanelWrap = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   width: 100%;
   position: relative;
   overflow-x: auto;
-  .openIconBox {
-    display: flex;
-    position: absolute;
-    left: -24px;
-    top: 2px;
-  }
 `
 export const Rows = styled.div`
   display: flex;

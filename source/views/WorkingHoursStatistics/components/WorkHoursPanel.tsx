@@ -133,16 +133,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
 
   return (
     <PanelWrap>
-      <div className="openIconBox">
-        <CommonIconFont
-          type={direction ? 'indent' : 'outdent'}
-          size={20}
-          onClick={() => {
-            onClick()
-          }}
-          color="var(--neutral-n3)"
-        />
-      </div>
       <Header>
         <DateLabel>
           {/* {columns.map((item, idx) => {
