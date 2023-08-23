@@ -24,7 +24,7 @@ interface DetailParentProps {
 const DetailParent = (props: DetailParentProps) => {
   const [t] = useTranslation()
   // 下拉数据
-  const [selectList, setSelectList] = useState([])
+  const [selectList, setSelectList] = useState<any>([])
   // 是否在编辑状态
   const [isShowControl, setIsShowControl] = useState(false)
   const inputRef = useRef<HTMLInputElement>()
@@ -122,8 +122,8 @@ const DetailParent = (props: DetailParentProps) => {
 
   useEffect(() => {
     if (props.detail.id) {
-      getParentData()
-      setDefaultValue(props.detail.parentName)
+      setSelectList(props.detail.parent || [])
+      setDefaultValue(props.detail.parentId)
     }
   }, [props.detail])
 
