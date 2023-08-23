@@ -78,7 +78,7 @@ const ItemTitle = styled.div`
   white-space: nowrap;
   font-size: 14px;
   font-weight: 400;
-  margin-left: 12px;
+
   color: var(--neutral-n1-d1);
 `
 const ItemTag = styled.div<{ isSprint: boolean }>`
@@ -151,6 +151,7 @@ const ItemDropdown = (props: PropsType) => {
           <ItemRow onClick={() => onRoute(el)}>
             <img src={el.cover} />
             <ItemTitle>{el.name}</ItemTitle>
+
             <ItemTag isSprint={el.projectType === 2}>
               {el.projectType === 1 ? t('iteration') : t('sprint2')}
             </ItemTag>
