@@ -186,6 +186,8 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
       solution: i.solution,
       userAvatar: i.user_avatar,
       copy_send_users: i.copy_send_users,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     })),
   }
 }
@@ -279,6 +281,8 @@ export const getChildFlawList = async (params: any) => {
       solution: i.solution,
       userAvatar: i.user_avatar,
       copy_send_users: i.copy_send_users,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     })),
   }
 }
@@ -326,7 +330,20 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
     prefixKey: response.data.prefix_key,
     projectPrefix: response.data.project_prefix,
     hierarchy: response.data.hierarchy,
-    level_tree: response.data.level_tree,
+    level_tree: [
+      ...(response.data.level_tree || []),
+      {
+        id: response.data.id,
+        category_id: response.data.category_id,
+        prefix_key: response.data.prefix_key || 0,
+        project_prefix: response.data.project_prefix || '',
+        category_attachment: response.data.category_attachment,
+        parent_id: response.data.parent_id || 0,
+        name: response.data.name,
+        work_type: 5,
+        attachment_id: 0,
+      },
+    ],
     categoryName: response.data.category,
     child_story_statistics: response.data.child_story_statistics,
     project_type: response.data.project_type,
@@ -379,6 +396,10 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
       : null,
     comment_total: response.data.comment_total,
     relation_stories: response.data.relation_stories,
+    // 父需求列表
+    parent: [
+      { value: response.data.parent?.id, label: response.data.parent?.name },
+    ],
   }
 }
 

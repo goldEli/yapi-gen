@@ -62,7 +62,7 @@ const Page = () => {
   //   )
   // }
 
-  const LeftWrap = styled.div`
+  const LeftWrap = styled.div<{ isEn: boolean }>`
     width: 100%;
     height: 100%;
     background: url('https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/loginBg.jpg');
@@ -70,7 +70,7 @@ const Page = () => {
     background-size: 100% 100%;
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: ${(prop: any) => (prop?.isEn ? 'flex-start' : 'center')};
     flex-direction: column;
     padding: 0px 40px;
     .dot {
@@ -137,7 +137,7 @@ const Page = () => {
           src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/loginBg_2.png"
           width="80%"
         />
-        <LeftWrap>
+        <LeftWrap isEn={languageMode.id === 1}>
           <img
             className="dot"
             src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/loginBg_1.png"

@@ -1,3 +1,4 @@
+/* eslint-disable no-duplicate-imports */
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-undefined */
@@ -41,6 +42,7 @@ import {
   updateTableParams,
 } from '@/services/demand'
 import { getDemandCommentList, getDemandInfo } from '@store/demand/demand.thunk'
+
 import { getWorkflowList } from '@/services/project'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -62,6 +64,7 @@ import DemandInfo from './components/DemandInfo'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ScheduleRecord from '@/components/ScheduleRecord'
+import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
 
 const DemandDetail = () => {
   const [t] = useTranslation()
@@ -98,6 +101,7 @@ const DemandDetail = () => {
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+  const projectIdRef = useRef()
   const [filter, setFilter] = useState(false)
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -504,6 +508,8 @@ const DemandDetail = () => {
     }
   }, [visible, params])
 
+  console.log(demandInfo)
+
   useEffect(() => {
     // 获取项目信息中的需求类别
     const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
@@ -531,6 +537,8 @@ const DemandDetail = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
+  console.log(demandInfo, 'demandInfo')
+
   return (
     <DemandWrap>
       <DeleteConfirmModal />
@@ -614,7 +622,56 @@ const DemandDetail = () => {
         </FormWrap>
       </CommonModal>
       <DetailTop>
-        <MyBreadcrumb />
+        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <MyBreadcrumb />
+          <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
+            {demandInfo.level_tree?.map((i: any, index: number) => (
+              <DrawerHeader
+                style={{
+                  cursor:
+                    index === demandInfo?.level_tree?.length - 1
+                      ? 'auto'
+                      : 'pointer',
+                }}
+                key={i.prefix_key}
+                onClick={() => {
+                  // TODO
+                  if (demandInfo.project_id) {
+                    projectIdRef.current = demandInfo.project_id
+                  }
+                  const projectId = demandInfo?.projectId
+                  if (index !== demandInfo?.level_tree?.length - 1) {
+                    openDemandDetail({ ...i }, projectId, i.id)
+                  }
+                }}
+              >
+                <span style={{ fontSize: '12px' }}>
+                  <CommonIconFont
+                    type="right"
+                    color="var(--neutral-n1-d1)"
+                  ></CommonIconFont>
+                </span>
+                <img
+                  style={{ width: '16px', height: '16px' }}
+                  src={i.category_attachment}
+                  alt=""
+                />
+                <div
+                  style={{
+                    fontSize: '12px',
+                    color:
+                      index === demandInfo?.level_tree?.length - 1
+                        ? ''
+                        : 'var(--neutral-n1-d1)',
+                  }}
+                >
+                  {i.project_prefix}-{i.prefix_key}
+                </div>
+              </DrawerHeader>
+            ))}
+          </div>
+        </div>
+
         {demandInfo.id && (
           <ButtonGroup size={16}>
             {(params?.changeIds?.length || 0) > 1 && (

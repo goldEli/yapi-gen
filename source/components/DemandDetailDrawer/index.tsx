@@ -254,15 +254,15 @@ const DemandDetailDrawer = () => {
       projectId: paramsProjectId,
       id: id ? id : demandDetailDrawerProps?.id,
     })
-    info.level_tree.push({
-      id: info.id,
-      category_id: info.category,
-      prefix_key: info.prefixKey,
-      project_prefix: info.projectPrefix,
-      category_attachment: info.category_attachment,
-      parent_id: info.parentId,
-      name: info.name,
-    })
+    // info.level_tree.push({
+    //   id: info.id,
+    //   category_id: info.category,
+    //   prefix_key: info.prefixKey,
+    //   project_prefix: info.projectPrefix,
+    //   category_attachment: info.category_attachment,
+    //   parent_id: info.parentId,
+    //   name: info.name,
+    // })
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
@@ -365,6 +365,7 @@ const DemandDetailDrawer = () => {
           projectId: drawerInfo.projectId,
           isChild: true,
           parentId: item.id,
+          parentList: item.parent,
           categoryId: item.categoryId,
           type: 1,
           title: t('createSubrequirements'),
@@ -591,6 +592,7 @@ const DemandDetailDrawer = () => {
   }
 
   useEffect(() => {
+    console.log('drawerInfo.level_tree', drawerInfo.level_tree)
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
       getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
@@ -775,6 +777,12 @@ const DemandDetailDrawer = () => {
                 <div style={{ display: 'flex' }}>
                   {drawerInfo.level_tree?.map((i: any, index: number) => (
                     <DrawerHeader
+                      style={{
+                        cursor:
+                          index === drawerInfo?.level_tree?.length - 1
+                            ? 'auto'
+                            : 'pointer',
+                      }}
                       key={i.prefix_key}
                       onClick={() => {
                         // TODO
@@ -788,18 +796,23 @@ const DemandDetailDrawer = () => {
                         }
                       }}
                     >
+                      <span style={{ display: index === 0 ? 'none' : 'block' }}>
+                        <CommonIconFont
+                          color="var(--neutral-n1-d1)"
+                          type="right"
+                        ></CommonIconFont>
+                      </span>
                       <img src={i.category_attachment} alt="" />
-                      <div>
+                      <div
+                        style={{
+                          color:
+                            index === drawerInfo?.level_tree?.length - 1
+                              ? ''
+                              : 'var(--neutral-n1-d1)',
+                        }}
+                      >
                         {i.project_prefix}-{i.prefix_key}
                       </div>
-                      <span
-                        hidden={
-                          drawerInfo.level_tree?.length <= 1 ||
-                          index === drawerInfo.level_tree?.length - 1
-                        }
-                      >
-                        /
-                      </span>
                     </DrawerHeader>
                   ))}
                 </div>

@@ -250,6 +250,7 @@ const DemandTree = (props: Props) => {
           projectId,
           isChild: true,
           parentId: item.id,
+          parentList: item.parent,
           categoryId: item.categoryId,
           iterateId: item.iterateId,
           type: 1,

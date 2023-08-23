@@ -575,6 +575,8 @@ export const getMineNoFinishList: any = async (params: any) => {
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
             project_type: i.project_type,
+            // 父需求列表
+            parent: [{ value: i.id, label: i.name }],
           }))
         : [],
     }))
@@ -637,6 +639,8 @@ export const getMineNoFinishList: any = async (params: any) => {
             usersInfo: i.usersInfo,
             is_bug: i.is_bug,
             project_type: i.project_type,
+            // 父需求列表
+            parent: [{ value: i.id, label: i.name }],
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
           }))
@@ -734,6 +738,8 @@ export const getMineCreacteList: any = async (params: any) => {
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
           project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         }))
       : [],
     pager: response.data.pager,
@@ -828,6 +834,8 @@ export const getMineFinishList: any = async (params: any) => {
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
           project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         }))
       : [],
     pager: response.data.pager,
@@ -921,6 +929,8 @@ export const getMineNeedList: any = async (params: any) => {
           usersInfo: i.usersInfo,
           is_bug: i.is_bug,
           project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
         }))
@@ -1067,6 +1077,8 @@ export const getVerifyUserList: any = async (params: any) => {
       usersInfo: i.usersInfo,
       is_bug: i.is_bug,
       project_type: i.project_type,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     })),
   }
 }
@@ -1108,6 +1120,8 @@ export const getVerifyList: any = async (params: any) => {
       usersInfo: i.usersInfo,
       is_bug: i.is_bug,
       project_type: i.project_type,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     })),
   }
 }

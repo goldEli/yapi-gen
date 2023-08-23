@@ -212,7 +212,7 @@ const AddWorkItem = () => {
     // 是否是完成并创建下一个
     if (hasNext) {
       leftDom.current.update()
-      leftDom.current.updateParentData()
+      // leftDom.current.updateParentData()
       setIsSaveParams(true)
     } else {
       dispatch(setCreateCategory({}))
@@ -250,6 +250,11 @@ const AddWorkItem = () => {
   // 左侧项目切换清除右侧form表单
   const onResetForm = () => {
     rightDom?.current?.reset()
+  }
+
+  // 右侧父需求调用接口，获取父需求列表
+  const onGetParentList = (val?: string) => {
+    leftDom.current.updateParentData(val)
   }
 
   useEffect(() => {
@@ -327,6 +332,7 @@ const AddWorkItem = () => {
           isCreateDemand={isCreateWorkItem}
           newCategory={newCategory}
           categoryType={categoryType}
+          onGetParentList={onGetParentList}
         />
       </div>
     </CommonModal>

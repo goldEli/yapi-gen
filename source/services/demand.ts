@@ -546,7 +546,18 @@ export const getDemandInfo: any = async (params: any) => {
     prefixKey: response.data.prefix_key,
     projectPrefix: response.data.project_prefix,
     hierarchy: response.data.hierarchy,
-    level_tree: response.data.level_tree,
+    level_tree: [
+      ...response.data.level_tree,
+      {
+        id: response.data.id,
+        category_id: response.data.category_id,
+        prefix_key: response.data.prefix_key,
+        project_prefix: response.data.project_prefix,
+        category_attachment: response.data.category_attachment,
+        parent_id: response.data.parent_id,
+        name: response.data.name,
+      },
+    ],
     project_type: response.data.project_type,
     update_at: response.data.update_at,
     category_status: response.category_status,
@@ -594,6 +605,10 @@ export const getDemandInfo: any = async (params: any) => {
     comment_total: response.data.comment_total,
     relation_stories: response.data.relation_stories,
     child_story_statistics: response.data.child_story_statistics,
+    // 父需求列表
+    parent: [
+      { value: response.data.parent?.id, label: response.data.parent?.name },
+    ],
   }
 }
 
@@ -679,6 +694,8 @@ export const getDemandList: any = async (params: any) => {
       is_bug: i.is_bug,
       project_type: i.project_type,
       copy_send_users: i.copy_send_users,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     }))
   }
 
@@ -706,6 +723,8 @@ export const getDemandList: any = async (params: any) => {
           is_bug: i.is_bug,
           project_type: i.project_type,
           copy_send_users: i.copy_send_users,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -736,6 +755,8 @@ export const getDemandList: any = async (params: any) => {
       is_bug: i.is_bug,
       project_type: i.project_type,
       copy_send_users: i.copy_send_users,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     }))
   } else if (params?.isChildren) {
     return {
@@ -791,6 +812,8 @@ export const getDemandList: any = async (params: any) => {
         is_bug: i.is_bug,
         project_type: i.project_type,
         copy_send_users: i.copy_send_users,
+        // 父需求列表
+        parent: [{ value: i.id, label: i.name }],
       })),
     }
   }
