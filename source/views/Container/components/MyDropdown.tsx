@@ -387,7 +387,7 @@ const MyDropdown = (props: any) => {
     if (!tabBox.current) {
       return
     }
-    const index = tabs.findIndex((i: any, index) => index === tabActive)
+    const index = tabs.findIndex((i: any, index2) => index2 === tabActive)
 
     tabActive2.current!.style.left = `${
       (tabBox.current?.children[index] as HTMLDivElement).offsetLeft === 0
@@ -401,7 +401,7 @@ const MyDropdown = (props: any) => {
         ? 60
         : tabBox.current?.children[index].clientWidth
     }px`
-  }, [tabActive, isRefresh, tabBox])
+  }, [tabActive, isRefresh])
   const dropdownRender = () => {
     return (
       <Container>
