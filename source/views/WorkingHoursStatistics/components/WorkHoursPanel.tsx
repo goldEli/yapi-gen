@@ -196,8 +196,9 @@ const WorkHoursPanel = (props: any, ref: any) => {
             const isFirstDay = dayjs(item).startOf('month').format('YYYY-MM-DD')
             const data = monthData[item]
             const index = data.length - 1
-            const width =
-              tdRef.current?.getBoundingClientRect().width * (index + 1)
+            const width = type
+              ? tdRef.current?.getBoundingClientRect().width * (index + 1)
+              : '100%'
             return (
               <div
                 key={item}
@@ -213,7 +214,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
                     )
                   }
                   return (
-                    <div key={ele}>{`${ele[0]}至${ele[ele.length - 1]}`}</div>
+                    <div key={ele}>
+                      {type === 0
+                        ? String(ele[0])
+                        : `${ele[0]}至${ele[ele.length - 1]}`}
+                    </div>
                   )
                 })}
               </div>
@@ -228,7 +233,9 @@ const WorkHoursPanel = (props: any, ref: any) => {
             const weekday = date.isoWeekday()
             return (
               <div key={idx} className="header-td">
-                {type === 1 ? weekdayString[weekday] : dayjs(item).format('DD')}
+                {type === 1 || type === 0
+                  ? weekdayString[weekday]
+                  : dayjs(item).format('DD')}
               </div>
             )
           })}
