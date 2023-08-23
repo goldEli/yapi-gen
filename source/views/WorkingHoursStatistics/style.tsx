@@ -20,6 +20,7 @@ export const PanelWrap = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   width: 100%;
   position: relative;
+  overflow-x: auto;
   .openIconBox {
     display: flex;
     position: absolute;
