@@ -354,7 +354,7 @@
   "pleaseEnterASearchPhrase": "请输入关键字",
   "system_fields_are_not_editable": "系统字段不可编辑",
   "iteration": "迭代",
-  "panel": "看板",
+  "panel": "Kanban",
   "all_enterprises": "企业全部",
   "log_management": "日志管理",
   "saves_the_current_filter_criteria_display_fields_and_sort_as_a_new_view": "将当前筛选条件、显示字段、排序方式、保存为新的视图",
