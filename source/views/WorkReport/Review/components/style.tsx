@@ -911,3 +911,10 @@ export const LoadingButton = styled.span`
     text-align: right;
   }
 `
+
+export const TitleTips = styled.span`
+  font-size: 12px;
+  color: var(--neutral-n3);
+  font-family: SiYuanRegular;
+  margin-left: 8px;
+`

@@ -605,7 +605,6 @@ export const getDemandInfo: any = async (params: any) => {
     comment_total: response.data.comment_total,
     relation_stories: response.data.relation_stories,
     child_story_statistics: response.data.child_story_statistics,
-
     // 父需求列表
     parent: [
       { value: response.data.parent?.id, label: response.data.parent?.name },

@@ -2315,5 +2315,9 @@
   "reportingDate": "Reporting date",
   "adjustDate": "Adjust date",
   "reduce": "reduce ",
-  "increase": "increase "
+  "increase": "increase ",
+  "theSizeOfThePictureShouldNotExceed": "The size of the picture should not exceed 300M",
+  "theSizeOfTheVideoShouldNotExceed": "The size of the video should not exceed 300M",
+  "singleDaily": "Single daily",
+  "projectDaily": "Project Daily"
 }

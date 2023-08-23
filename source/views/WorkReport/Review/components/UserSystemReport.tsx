@@ -89,7 +89,7 @@ const TargetTabs = (props: TargetTabsProps) => {
   )
 }
 
-const System = () => {
+const UserSystemReport = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { viewReportModal } = useSelector(store => store.workReport)
@@ -273,10 +273,10 @@ const System = () => {
 
   useEffect(() => {
     init()
-    document.addEventListener('keydown', getKeyDown)
-    return () => {
-      document.removeEventListener('keydown', getKeyDown)
-    }
+    // document.addEventListener('keydown', getKeyDown)
+    // return () => {
+    //   document.removeEventListener('keydown', getKeyDown)
+    // }
   }, [])
 
   // 删除评论
@@ -371,24 +371,23 @@ const System = () => {
               <Col key={item.id}>
                 {item.type === 4 && (
                   <Title style={{ marginBottom: 8 }}>
-                    {item.name}: {item.pivot.params?.length}
+                    {item.name_text}: {item.pivot.params?.length}
                     {t('report.list.pieces')}
                   </Title>
                 )}
-                {item.type === 3 && (
-                  <Title style={{ marginBottom: 8 }}>
-                    {item.name}:{' '}
-                    {JSON.parse(item?.pivot?.content ?? null)?.total_schedule}%
-                    <span style={{ marginLeft: 16 }}>
-                      {t('spent')}：
-                      {JSON.parse(item?.pivot?.content ?? null)
-                        ?.user_today_total_task_time ?? 0}
-                      h
-                    </span>
-                  </Title>
-                )}
-                {item.type === 3 && (
+                {item.type === 3 && item.name === 'total_schedule' && (
                   <>
+                    <Title style={{ marginBottom: 8 }}>
+                      {item.name_text}:{' '}
+                      {JSON.parse(item?.pivot?.content ?? null)?.total_schedule}
+                      %
+                      <span style={{ marginLeft: 16 }}>
+                        {t('spent')}：
+                        {JSON.parse(item?.pivot?.content ?? null)
+                          ?.user_today_total_task_time ?? 0}
+                        h
+                      </span>
+                    </Title>
                     <Msg style={{ marginTop: '8px' }}>
                       {t('report.list.addedYesterday')}：
                       {JSON.parse(item?.pivot?.content ?? null)?.yesterday_add}
@@ -411,11 +410,21 @@ const System = () => {
                     </RowLine>
                   </>
                 )}
+                {item.type === 3 && item.name !== 'total_schedule' && (
+                  <>
+                    <Title>{item.name_text}</Title>
+                    <Editor
+                      readonly
+                      disableUpdateValue
+                      value={item?.pivot?.content}
+                    />
+                  </>
+                )}
                 {item.type === 4 &&
                   item.pivot.params?.map((el: any) => (
                     <RowRadius key={el.id}>
                       <Radius />
-                      {item?.key === 'timeout_task' && el.expected_day > 0 ? (
+                      {item?.key === 'overdue_tasks' && el.expected_day > 0 ? (
                         <span style={{ marginRight: 3 }}>
                           [{t('report.list.overdue')}
                           {el.expected_day}
@@ -434,7 +443,7 @@ const System = () => {
                   ))}
                 {item.type === 2 && (
                   <>
-                    <Title>{item?.name}</Title>
+                    <Title>{item?.name_text}</Title>
                     <AttachmentBox list={item?.pivot?.params} />
                   </>
                 )}
@@ -495,4 +504,4 @@ const System = () => {
   )
 }
 
-export default System
+export default UserSystemReport
