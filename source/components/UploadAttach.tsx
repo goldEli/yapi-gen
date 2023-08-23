@@ -31,12 +31,12 @@ import { relative } from 'path'
 import TruncateTextWithEllipsis from './TruncateTextWithEllipsis'
 import PreviewIframe from './PreviewIframe'
 
-const Warp = styled(Upload)({
-  // display: 'none',
-  '.ant-upload-list-item-name': {
-    color: 'var(--neutral-n1-d1)',
-  },
-})
+const Warp = styled(Upload)<{ show?: any }>`
+  display: ${props => (props.show ? 'block' : 'none')};
+  .ant-upload-list-item-name {
+    color: var(--neutral-n1-d1);
+  }
+`
 
 export const First = styled.div``
 
@@ -558,6 +558,7 @@ const UploadAttach = (props: any, ref: any) => {
       ) : null}
 
       <Warp
+        show={props.addWrap}
         multiple
         fileList={[]}
         beforeUpload={onUploadBefore}
