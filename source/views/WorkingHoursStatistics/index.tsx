@@ -72,7 +72,9 @@ const WorkHours: React.FC<IProps> = props => {
       user_ids:
         val.user_ids?.length > 1
           ? val.user_ids?.split(',')
-          : String(val.user_ids),
+          : val.user_ids
+          ? String(val.user_ids)
+          : '',
       page: page ? page : pageObj.currentPage,
       pagesize: pageSize ? pageSize : pageObj.pageSize,
       keyword: keyVal ? keyVal : key,
@@ -107,7 +109,9 @@ const WorkHours: React.FC<IProps> = props => {
       user_ids:
         val.user_ids?.length > 1
           ? val.user_ids?.split(',')
-          : String(val.user_ids),
+          : val.user_ids
+          ? String(val.user_ids)
+          : '',
       page: pageObj.currentPage,
       pagesize: pageObj.pageSize,
       keyword: key,

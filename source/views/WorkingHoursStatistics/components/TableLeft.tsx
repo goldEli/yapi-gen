@@ -69,11 +69,18 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
             onClick={() => {
               // type 不传是需求，1是事务，2是缺陷
               // project_type === 1 迭代  project_type === 2 cc  project_type === 1 && isBug=== 1 就是缺陷
-              const type = record.story.project_category.openDemandDetail(
+              const type =
+                record.story.project_type === 1 &&
+                record.story.project_category.isBug === 1
+                  ? 2
+                  : record.story.project_type === 2
+                  ? 1
+                  : 0
+              openDemandDetail(
                 { ...record },
                 record.project_id,
-                record.id,
-                1,
+                record.story_id,
+                type,
               )
             }}
           >
