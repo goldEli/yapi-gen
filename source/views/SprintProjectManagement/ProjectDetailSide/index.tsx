@@ -238,7 +238,7 @@ const ProjectDetailSide = () => {
     },
     {
       name: t('workingHoursStatistics'),
-      icon: 'pie-chart-02',
+      icon: 'man-hour',
       path: '/SprintProjectManagement/WorkHours',
       isPermission: true,
       key: 'SprintWorkHours',

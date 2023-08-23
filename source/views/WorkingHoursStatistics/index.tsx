@@ -9,10 +9,13 @@ import { getParamsData } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import { workTimeList, updateOverdue, workTimeExport } from '@/services/project'
 import PaginationBox from '@/components/TablePagination'
+import { getMessage } from '@/components/Message'
 import { Spin } from 'antd'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
-  const [leftWidth, setLeftWidth] = useState(600)
+  const panelRef = useRef<any>()
+  const [leftWidth, setLeftWidth] = useState(504)
+  const [direction, setDirection] = useState(false)
   const [focus, setFocus] = useState(false)
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -61,7 +64,7 @@ const WorkHours: React.FC<IProps> = props => {
     const parmas = {
       start_at,
       end_at,
-      type: val.type,
+      // type: val.type,
       project_id: paramsData.id,
       user_ids: val.user_ids?.length >= 1 ? val.user_ids?.split(',') : '',
       page: page ? page : pageObj.currentPage,
@@ -84,6 +87,7 @@ const WorkHours: React.FC<IProps> = props => {
     normal_reason: number
   }) => {
     const res = await updateOverdue({ ...row, project_id: paramsData.id })
+    getMessage({ msg: '调整成功', type: 'success' })
     onSearch(formVal, type)
   }
   const onGetExport = async (val: any) => {
@@ -96,6 +100,7 @@ const WorkHours: React.FC<IProps> = props => {
       project_id: paramsData.id,
       user_ids: val.user_ids?.length >= 1 ? val.user_ids.split(',') : '',
     }
+    getMessage({ msg: '导出成功', type: 'success' })
     const result = await workTimeExport(parmas)
     // const blob = new Blob([result.body], {
     //   type: result?.headers['content-type'],
@@ -145,10 +150,19 @@ const WorkHours: React.FC<IProps> = props => {
             >
               <Line active={focus} className="line"></Line>
             </SprintDetailMouseDom>
-            <WorkHoursPanel dataSource={data} />
+            <WorkHoursPanel
+              dataSource={data}
+              ref={panelRef}
+              onClick={() => {
+                setLeftWidth(direction ? 504 : 1550)
+                setDirection(!direction)
+              }}
+              direction={direction}
+            />
           </div>
         </MianWrap>
         <PaginationBox
+          hasPadding={true}
           currentPage={pageObj?.currentPage}
           pageSize={pageObj?.size}
           total={pageObj?.total}

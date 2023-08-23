@@ -65,10 +65,10 @@ const WorkHoursHeader = (props: {
       time: '',
       person: [],
       date: getWeekDates(),
-      type: 3,
+      type: 0,
     })
     setDateType(1)
-    setState(3)
+    setState(0)
     props.onSearch(form.getFieldsValue(), 1)
     getList()
   }, [])
@@ -124,19 +124,19 @@ const WorkHoursHeader = (props: {
   ]
   const tabsValue1 = [
     {
-      id: 0,
+      id: 3,
       text: '请假',
     },
     {
-      id: 1,
+      id: 2,
       text: '正常上报',
     },
     {
-      id: 2,
+      id: 1,
       text: '未上报',
     },
     {
-      id: 3,
+      id: 0,
       text: '全部',
     },
   ]
@@ -282,7 +282,7 @@ const WorkHoursHeader = (props: {
         isVisible={open}
         onClose={() => setOpen(false)}
         onConfirm={() => {
-          alert(123), setOpen(false), onGetExportApi()
+          setOpen(false), onGetExportApi()
         }}
         personData={[]}
       />

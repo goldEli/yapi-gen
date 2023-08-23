@@ -36,11 +36,13 @@ const SideWrap = styled.div<{ isOpen: boolean; permission?: boolean }>`
 
 const FoldIcon = styled.div`
   position: absolute;
-  top: 24px;
   width: 24px;
   height: 24px;
   background: var(--neutral-white-d3);
   border-radius: 50%;
+  top: 50%;
+  width: 24px;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,8 +50,11 @@ const FoldIcon = styled.div`
   z-index: 12;
   right: -12px;
   cursor: pointer;
-  :hover svg {
-    color: var(--primary-d1);
+  &:hover {
+    background: var(--primary-d1);
+    svg {
+      color: var(--neutral-white-d7);
+    }
   }
 `
 

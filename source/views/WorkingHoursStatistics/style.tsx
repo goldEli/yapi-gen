@@ -5,6 +5,8 @@ import { DragLine, MouseDom } from '@/components/StyleCommon'
 export const WorkHoursWrap = styled.div`
   padding: 20px 16px 0 0px;
   height: 100%;
+  width: 100%;
+  overflow: hidden;
 `
 
 export const MianWrap = styled.div`
@@ -18,6 +20,12 @@ export const PanelWrap = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   width: 100%;
   position: relative;
+  .openIconBox {
+    display: flex;
+    position: absolute;
+    left: -24px;
+    top: 2px;
+  }
 `
 export const Rows = styled.div`
   display: flex;

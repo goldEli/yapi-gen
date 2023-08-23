@@ -108,8 +108,9 @@ export const CalendarSidebarBox = styled.div<{ collapse?: boolean }>`
 
 export const FoldIcon = styled.div`
   position: absolute;
-  top: 24px;
+  top: 50%;
   width: 24px;
+  transform: translateY(-50%);
   height: 24px;
   background: var(--neutral-white-d3);
   border-radius: 50%;
@@ -120,8 +121,11 @@ export const FoldIcon = styled.div`
   z-index: 2;
   right: -12px;
   cursor: pointer;
-  :hover svg {
-    color: var(--primary-d1);
+  &:hover {
+    background: var(--primary-d1);
+    svg {
+      color: var(--neutral-white-d7);
+    }
   }
 `
 

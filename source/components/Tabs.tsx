@@ -52,8 +52,8 @@ const Tabs = (props: {
   const [active, setActive] = useState(props.active)
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive = useRef<HTMLDivElement>(null)
-  const changeActive = (id: string, index: number) => {
-    setActive(index)
+  const changeActive = (id: number) => {
+    setActive(id)
     props.onChange(id)
   }
 
@@ -93,8 +93,8 @@ const Tabs = (props: {
       <TabsWrap ref={tabBox}>
         {props.tabsValue.map((i: any, index: number) => (
           <TabsWrapItem
-            onClick={() => changeActive(i.id, index)}
-            active={active === index}
+            onClick={() => changeActive(i.id)}
+            active={active === i.id}
             key={i.id}
           >
             {i.text}
