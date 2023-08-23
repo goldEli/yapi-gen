@@ -21,7 +21,6 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [openDemandDetail] = useOpenDemandDetail()
   const [row, setRow] = useState<any>({})
   const content = (row: any) => {
-    console.log(row, '888')
     return (
       <PopoverWrap>
         <div style={{ marginBottom: 12 }}>
