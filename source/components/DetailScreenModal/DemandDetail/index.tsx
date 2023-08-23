@@ -42,7 +42,6 @@ import {
   updateTableParams,
 } from '@/services/demand'
 import { getDemandCommentList, getDemandInfo } from '@store/demand/demand.thunk'
-import { getDemandInfo as getDemandInfo2 } from '@/services/demand'
 import { getWorkflowList } from '@/services/project'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -512,6 +511,8 @@ const DemandDetail = () => {
       )
     }
   }, [visible, params])
+
+  console.log(demandInfo)
 
   useEffect(() => {
     // 获取项目信息中的需求类别

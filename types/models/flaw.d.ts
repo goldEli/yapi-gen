@@ -460,7 +460,7 @@ declare namespace Model.Flaw {
     copysend?: ListItemUserOrAttach[] | string
     attachment?: ListItemUserOrAttach[]
     hierarchy?: Hierarchy[]
-    level_tree?: Hierarchy[]
+    level_tree?: any[]
     child_story_statistics: ChildStoryStatistics
     project_type: 1 | 2
     severity: Severity
