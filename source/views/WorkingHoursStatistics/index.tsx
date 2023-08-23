@@ -63,7 +63,7 @@ const WorkHours: React.FC<IProps> = props => {
     setType(type)
     setSpinning(true)
     const start_at = val.time ? val.time[0] : val.date[0]
-    const end_at = val.time ? val.time[1] : val.date[1]
+    const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
       start_at,
       end_at,
@@ -100,7 +100,7 @@ const WorkHours: React.FC<IProps> = props => {
   }
   const onGetExport = async (val: any) => {
     const start_at = val.time ? val.time[0] : val.date[0]
-    const end_at = val.time ? val.time[1] : val.date[1]
+    const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
       start_at,
       end_at,
