@@ -167,6 +167,7 @@ const MoreWrap = (props: MoreWrapProps) => {
           isChild: true,
           isCreateAffairsChild: item.project_type === 2,
           parentId: item.id,
+          parentList: item.parent,
           categoryId: item.categoryId,
           type,
           title:

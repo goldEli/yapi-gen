@@ -416,7 +416,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     )
     const totalSchedule = tempArr.reduce(
       (pre, next) =>
-        type === 'user' ? next.user_schedule_percent : next.schedule_percent,
+        (type === 'user' ? next.user_schedule_percent : next.schedule_percent) +
+        pre,
       0,
     )
     return {

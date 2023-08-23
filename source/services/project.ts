@@ -827,13 +827,7 @@ export const getProjectInfoValues: any = async (params: any) => {
       content_txt: item.name,
     }))
 
-    const memberList = await http.get('getProjectMember', {
-      search: {
-        project_id: params.projectId,
-        all: 1,
-      },
-    })
-    filterMemberList = memberList.data.map((item: any) => {
+    filterMemberList = response.data.users_name?.map((item: any) => {
       return {
         id: item.id,
         content: item.name,
@@ -950,6 +944,7 @@ export const getParentList = async (params: any) => {
     project_id: params?.projectId,
     story_id: params?.id,
     category_id: params?.categoryId,
+    keyword: params.keyword,
   })
   return response.data.map((i: any) => ({
     label: i.name,

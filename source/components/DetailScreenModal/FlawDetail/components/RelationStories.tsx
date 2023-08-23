@@ -756,7 +756,11 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
             >
               {options?.map((i: any) => {
                 return (
-                  <Select.Option value={i.value} key={i.value} label={i.label}>
+                  <Select.Option
+                    value={i.value}
+                    key={i.value}
+                    label={i.labelName}
+                  >
                     <MoreOptions
                       type="project"
                       name={i.label}
