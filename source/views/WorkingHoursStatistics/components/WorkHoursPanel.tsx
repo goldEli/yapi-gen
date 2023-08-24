@@ -39,15 +39,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [storyId, setStoryId] = useState('')
   const [record, setRecord] = useState<any>()
   const language = window.localStorage.getItem('language')
-  const [weekdayString, setWeekdayString] = useState<any>({
-    1: t('onMonday'),
-    2: t('tuesday'),
-    3: t('wednesday'),
-    4: t('thursday'),
-    5: t('friday'),
-    6: t('saturday'),
-    7: t('sunday'),
-  })
+  const [weekdayString, setWeekdayString] = useState<any>({})
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
@@ -63,6 +55,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
       7: t('sunday'),
     })
   }, [language])
+
   if (!columns) {
     return null
   }
