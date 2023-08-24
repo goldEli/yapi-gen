@@ -215,7 +215,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       <ResizeTable
         styleSate={true}
         isSpinning={false}
-        dataWrapNormalHeight="calc(100% - 48px)"
+        dataWrapNormalHeight="calc(100% - 0px)"
         col={colum}
         noData={<NoData />}
         dataSource={props.data}

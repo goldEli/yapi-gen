@@ -1,12 +1,7 @@
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-} from 'react'
-import { Form, Popover, Input, Radio, Space, InputNumber } from 'antd'
+import React, { useRef, useEffect, useState, forwardRef } from 'react'
+import { Popover, Input, Radio, Space, InputNumber } from 'antd'
 import { updateWorkTime } from '@/services/project'
+import { useTranslation } from 'react-i18next'
 import {
   PanelWrap,
   Rows,
@@ -27,29 +22,40 @@ import isoWeek from 'dayjs/plugin/isoWeek'
 dayjs.extend(isoWeek)
 import CommonButton from '@/components/CommonButton'
 import usePanelData from '../hooks/usePanelData'
-import CommonIconFont from '@/components/CommonIconFont'
 import { getMessage } from '@/components/Message'
+import { t } from 'i18next'
 interface IProps {
   ref: any
   onClick: any
 }
-const weekdayString: any = {
-  1: '周一',
-  2: '周二',
-  3: '周三',
-  4: '周四',
-  5: '周五',
-  6: '周六',
-  7: '周日',
-}
+// const weekdayString: any = {
+//   1: t('onMonday'),
+//   2: t('tuesday'),
+//   3: t('wednesday'),
+//   4: t('thursday'),
+//   5: t('friday'),
+//   6: t('saturday'),
+//   7: t('sunday'),
+// }
 const WorkHoursPanel = (props: any, ref: any) => {
+  const [t] = useTranslation()
   const tdRef = useRef<any>()
+  const timeRef = useRef<any>()
   const [value, setValue] = useState(1)
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
   const { dataSource, onClick, direction, type, onConfirm } = props
   const [storyId, setStoryId] = useState('')
   const [record, setRecord] = useState<any>()
+  const [weekdayString, setWeekdayString] = useState<any>({
+    1: t('onMonday'),
+    2: t('tuesday'),
+    3: t('wednesday'),
+    4: t('thursday'),
+    5: t('friday'),
+    6: t('saturday'),
+    7: t('sunday'),
+  })
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
@@ -61,12 +67,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const monthData = reduceMonth(columns)
   const label = ({ time }: any) => {
     if (time === -2) {
-      return '未上报'
+      return t('notReported')
     }
     if (time === -1) {
-      return '请假'
+      return t('askForLeave')
     }
-    return `${time / 3600}工时`
+    return `${time / 3600}${t('workingHours')}`
   }
   const confirm = async () => {
     const params = {
@@ -80,7 +86,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
     }
     console.log('params', params)
     const data = await updateWorkTime(params)
-    getMessage({ type: 'success', msg: '修改成功' })
+    getMessage({ type: 'success', msg: t('successfullyModified') })
     popoverRef?.current?.props.onPopupVisibleChange(false)
     setStoryId('')
     onConfirm()
@@ -88,7 +94,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const Content = () => {
     return (
       <UpdateTask>
-        <div className="title">修改任务记录</div>
+        <div className="title">{t('modifyTaskRecord')}</div>
         <div className="form-box">
           <Radio.Group
             onChange={e => {
@@ -99,10 +105,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
             <Space direction="vertical">
               <Radio value={2}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ marginBottom: '8px' }}>调整工时</span>
+                  <span style={{ marginBottom: '8px' }}>
+                    {t('adjustWorkingHours')}
+                  </span>
                   <InputNumber
                     size="middle"
-                    placeholder="请输入"
+                    placeholder={t('pleaseEnter')}
                     style={{ width: 160 }}
                     value={dayTaskTime}
                     onChange={e => {
@@ -112,8 +120,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
                   ></InputNumber>
                 </div>
               </Radio>
-              <Radio value={3}>请假</Radio>
-              <Radio value={1}>未上报</Radio>
+              <Radio value={3}>{t('askForLeave')}</Radio>
+              <Radio value={1}>{t('notReported')}</Radio>
             </Space>
           </Radio.Group>
         </div>
@@ -126,10 +134,10 @@ const WorkHoursPanel = (props: any, ref: any) => {
               popoverRef?.current?.props.onPopupVisibleChange(false)
             }}
           >
-            取消
+            {t('cancel')}
           </CommonButton>
           <CommonButton type="primary" size="small" onClick={confirm}>
-            确认
+            {t('confirm')}
           </CommonButton>
         </div>
       </UpdateTask>
@@ -143,10 +151,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
           {Object.keys(monthData).map(item => {
             const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
             const data = monthData[item]
-            const index = data.length - 1
-            const width = type
-              ? tdRef.current?.getBoundingClientRect().width * (index + 1)
-              : '100%'
+            const { length } = data
+            const w =
+              timeRef?.current?.getBoundingClientRect().width /
+              Object.values(monthData).flat().length
+            const width = type ? w * length : '100%'
             return (
               <div
                 key={item}
@@ -158,7 +167,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                 <div>
                   {type === 0
                     ? String(data[0])
-                    : `${data[0]}至${data[data.length - 1]}`}
+                    : `${data[0]}${t('to')}${data[data.length - 1]}`}
                 </div>
               </div>
             )
@@ -166,7 +175,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
         </DateLabel>
       </Header>
       <Header>
-        <TimeLabel>
+        <TimeLabel ref={timeRef}>
           {columns.map((item, idx) => {
             const date = dayjs(item)
             const weekday = date.isoWeekday()

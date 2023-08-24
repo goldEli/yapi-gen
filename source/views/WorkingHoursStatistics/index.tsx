@@ -174,11 +174,11 @@ const WorkHours: React.FC<IProps> = props => {
               />
             </div>
           </LeftWrap>
-
           <div
             style={{
               position: 'relative',
               width: leftWidth,
+              height: '100%',
               top: '-12px',
               transition: 'all 0.3s ease 0s',
             }}
