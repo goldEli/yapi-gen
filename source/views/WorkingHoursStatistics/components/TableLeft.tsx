@@ -42,7 +42,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         <Text state={1}>{row.normal_reason.reason}</Text>
         <Text state={2}>
           {row.normal_reason.operator_name} {t('at')}
-          {row.normal_reason.operator_time}{' '}
+          {''} {row.normal_reason.operator_time}{' '}
         </Text>
       </PopoverWrap>
     )
@@ -146,7 +146,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                   : false
               }
               onClick={() => {
-                if (record.exceed_day_num > 0) {
+                if (record.is_normal === 2 && record.exceed_day_num > 0) {
                   setState(true)
                   setRow(record)
                   setValue('')

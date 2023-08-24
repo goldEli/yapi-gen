@@ -13,13 +13,18 @@ import { getFlawInfo } from '@store/flaw/flaw.thunk'
 import { addInfoFlaw, deleteInfoFlaw, updateFlawEditor } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
 import { FlawInfoInfoItem, FlawInfoLabel, Label, LabelWrap } from '../style'
-import { AddWrap, CloseWrap, TextWrapEdit } from '@/components/StyleCommon'
+import {
+  AddWrap,
+  CloseWrap,
+  TextWrapEdit,
+  canEditHover,
+} from '@/components/StyleCommon'
 import FlawTag from '@/components/TagComponent/FlawTag'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
-import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Tooltip } from 'antd'
+import CommonButton from '@/components/CommonButton'
 
 interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
@@ -136,20 +141,23 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
       >
         <FlawInfoLabel>{t('describe')}</FlawInfoLabel>
         {isEditInfo || editInfo ? (
-          <Editor
-            value={editInfo}
-            getSuggestions={() => []}
-            readonly={!isEditInfo}
-            ref={editorRef}
-            onReadonlyClick={() => {
-              setIsEditInfo(true)
-              setTimeout(() => {
-                editorRef.current?.focus()
-              }, 10)
-            }}
-            onChange={(value: string) => (editorRef2.current = value)}
-            onBlur={() => onBlurEditor()}
-          />
+          <div className={canEditHover}>
+            <Editor
+              value={editInfo}
+              color="transparent"
+              getSuggestions={() => []}
+              readonly={!isEditInfo}
+              ref={editorRef}
+              onReadonlyClick={() => {
+                setIsEditInfo(true)
+                setTimeout(() => {
+                  editorRef.current?.focus()
+                }, 10)
+              }}
+              onChange={(value: string) => (editorRef2.current = value)}
+              onBlur={() => onBlurEditor()}
+            />
+          </div>
         ) : null}
         {!isEditInfo && !editInfo && (
           <TextWrapEdit
@@ -160,7 +168,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
               }, 10)
             }}
           >
-            --
+            <span className={canEditHover}>--</span>
           </TextWrapEdit>
         )}
       </FlawInfoInfoItem>
@@ -187,18 +195,20 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         {/* <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel> */}
         <LabelWrap>
           <Label>{t('common.attachment')}</Label>
-          <Tooltip title={t('addAttachments')}>
-            <CloseWrap width={32} height={32}>
-              <CommonIconFont
-                type="plus"
-                size={20}
-                color="var(--neutral-n2)"
-                onClick={() => {
-                  handleUpload()
-                }}
-              />
-            </CloseWrap>
-          </Tooltip>
+          {props.isInfoPage ? null : (
+            <Tooltip title={t('addAttachments')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={() => {
+                    handleUpload()
+                  }}
+                />
+              </CloseWrap>
+            </Tooltip>
+          )}
         </LabelWrap>
         <div>
           {projectInfo?.projectPermissions?.filter(
@@ -220,6 +230,13 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
               add={onAddInfoAttach}
               isBug
               ref={uploadRef}
+              addWrap={
+                props.isInfoPage ? (
+                  <CommonButton type="primaryText" icon="plus">
+                    {t('addAttachments')}
+                  </CommonButton>
+                ) : null
+              }
             />
           )}
           {projectInfo?.projectPermissions?.filter(

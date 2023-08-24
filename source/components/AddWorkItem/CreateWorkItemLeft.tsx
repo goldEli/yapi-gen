@@ -428,6 +428,16 @@ const CreateDemandLeft = (props: Props) => {
       getCategoryField(categoryObj?.id)
       getStatusList(categoryObj?.id)
       props.onChangeCategoryType(categoryObj?.work_type)
+      return
+    }
+    form.setFieldsValue({
+      requiredCategory: '',
+    })
+  }, [categoryObj])
+
+  // 判断创建或者是编辑权限
+  useEffect(() => {
+    if (categoryObj?.id && projectInfo?.id) {
       const update =
         projectInfo.projectType === 1
           ? categoryObj?.work_type === 2
@@ -440,121 +450,121 @@ const CreateDemandLeft = (props: Props) => {
             ? 'b/flaw/save'
             : 'b/story/save'
           : 'b/transaction/save'
+
+      console.log(projectInfo, '====', categoryObj, '=121212', save)
       // 是否有创建需求权限
       isCreateDemand =
         projectInfo?.projectPermissions?.filter(
           (i: any) => i.identity === (params?.editId ? update : save),
         )?.length > 0
       props.onGetCreateWorkItem(isCreateDemand)
-      return
     }
-    form.setFieldsValue({
-      requiredCategory: '',
-    })
-  }, [categoryObj])
+  }, [categoryObj, projectInfo])
 
   useEffect(() => {
-    if (props.projectId && props.allCategoryList?.length > 0) {
+    if (
+      props.projectId &&
+      props.allCategoryList?.length > 0 &&
+      params?.editId &&
+      props.detail?.id
+    ) {
       const resultCategoryList = computedCategory()
       setResultCategoryData(resultCategoryList)
       // 如果有需求id
-      if (params?.editId) {
-        //    如果可使用的能查到详情中的需求类别，则使用详情的， 反之使用列表的第一个
-        if (
-          resultCategoryList?.filter((j: any) => j.id === props.detail.category)
-            ?.length
-        ) {
-          const resultObj = resultCategoryList?.filter(
-            (j: any) => j.id === props.detail.category,
-          )[0]
-          setCategoryObj(resultObj)
-        } else {
-          const resultObj = props.allCategoryList?.filter(
-            (j: any) => j.id === props.detail.category,
-          )[0]
-          // 反之查所有中的需求类别，做展示用
-          setCategoryObj(resultObj)
-        }
+      //    如果可使用的能查到详情中的需求类别，则使用详情的， 反之使用列表的第一个
+      if (
+        resultCategoryList?.filter((j: any) => j.id === props.detail.category)
+          ?.length
+      ) {
+        const resultObj = resultCategoryList?.filter(
+          (j: any) => j.id === props.detail.category,
+        )[0]
+        setCategoryObj(resultObj)
       } else {
-        let hisCategoryData: any
-        // 如果是快速创建并且有缓存
-        if (params?.isQuickCreate && localStorage.getItem('quickCreateData')) {
-          hisCategoryData = JSON.parse(
-            decryptPhp(localStorage.getItem('quickCreateData') as any),
-          )
-        }
-        let resultCategory: any = {}
-        // 如果是创建子需求的话
-        if (params?.isChild) {
-          // 判断父需求类别是否被关闭，是则取列表第一条
-          const isExistence = resultCategoryList?.filter(
-            (i: any) => i.id === params?.categoryId,
-          )
-          resultCategory =
-            isExistence?.length > 0 ? isExistence[0] : resultCategoryList[0]
-        }
-        // 如果是创建子事务的话
-        if (params?.isCreateAffairsChild) {
-          resultCategory = resultCategoryList?.length
-            ? resultCategoryList[0]
-            : undefined
-        }
-        // 如果是快速创建并且有缓存数据
-        if (params?.isQuickCreate && hisCategoryData?.categoryId) {
-          // 判断需求类别是否被关闭，是则取列表第一条
-          const isExistence = resultCategoryList?.filter(
-            (i: any) => i.id === hisCategoryData?.categoryId,
-          )
-          resultCategory =
-            isExistence?.length > 0 ? isExistence[0] : resultCategoryList[0]
-        }
-        // 如果是快速创建没有缓存数据，取列表第一个
-        if (params?.isQuickCreate && !hisCategoryData?.categoryId) {
+        const resultObj = props.allCategoryList?.filter(
+          (j: any) => j.id === props.detail.category,
+        )[0]
+        // 反之查所有中的需求类别，做展示用
+        setCategoryObj(resultObj)
+      }
+    } else {
+      const resultCategoryList = computedCategory()
+      setResultCategoryData(resultCategoryList)
+      let hisCategoryData: any
+      // 如果是快速创建并且有缓存
+      if (params?.isQuickCreate && localStorage.getItem('quickCreateData')) {
+        hisCategoryData = JSON.parse(
+          decryptPhp(localStorage.getItem('quickCreateData') as any),
+        )
+      }
+      let resultCategory: any = {}
+      // 如果是创建子需求的话
+      if (params?.isChild) {
+        // 判断父需求类别是否被关闭，是则取列表第一条
+        const isExistence = resultCategoryList?.filter(
+          (i: any) => i.id === params?.categoryId,
+        )
+        resultCategory =
+          isExistence?.length > 0 ? isExistence[0] : resultCategoryList[0]
+      }
+      // 如果是创建子事务的话
+      if (params?.isCreateAffairsChild) {
+        resultCategory = resultCategoryList?.length
+          ? resultCategoryList[0]
+          : undefined
+      }
+      // 如果是快速创建并且有缓存数据
+      if (params?.isQuickCreate && hisCategoryData?.categoryId) {
+        // 判断需求类别是否被关闭，是则取列表第一条
+        const isExistence = resultCategoryList?.filter(
+          (i: any) => i.id === hisCategoryData?.categoryId,
+        )
+        resultCategory =
+          isExistence?.length > 0 ? isExistence[0] : resultCategoryList[0]
+      }
+      // 如果是快速创建没有缓存数据，取列表第一个
+      if (params?.isQuickCreate && !hisCategoryData?.categoryId) {
+        resultCategory = resultCategoryList[0]
+      }
+      // 迭代创建 ,当前只有迭代是需要做筛选类别回填、如果是列表无数据创建
+      if (params?.iterateId || params?.noDataCreate) {
+        // 如果是有筛选条件的，回填筛选条件第一个
+        if (filterParamsModal?.category_id?.length > 0) {
+          const resultId = filterParamsModal?.category_id?.filter(
+            (i: any) => i !== -1,
+          )?.[0]
+          // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
+          const resultObj = resultCategoryList?.filter(
+            (i: any) => i.id === resultId,
+          )[0]
+          resultCategory = resultObj
+        } else {
+          // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
           resultCategory = resultCategoryList[0]
         }
-        // 迭代创建 ,当前只有迭代是需要做筛选类别回填、如果是列表无数据创建
-        if (params?.iterateId || params?.noDataCreate) {
-          // 如果是有筛选条件的，回填筛选条件第一个
-          if (filterParamsModal?.category_id?.length > 0) {
-            const resultId = filterParamsModal?.category_id?.filter(
-              (i: any) => i !== -1,
-            )?.[0]
-            // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
-            const resultObj = resultCategoryList?.filter(
-              (i: any) => i.id === resultId,
-            )[0]
-            resultCategory = resultObj
-          } else {
-            // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
-            resultCategory = resultCategoryList[0]
-          }
-        }
-        // 如果是需求下的选择创建
-        if (createCategory.id) {
-          resultCategory = createCategory
-        }
-        //   如果有修改
-        if (resultCategory?.id) {
-          setCategoryObj(resultCategory)
-          return
-        }
-        const _item =
+      }
+      // 如果是需求下的选择创建
+      if (createCategory.id) {
+        resultCategory = createCategory
+      }
+      //   如果有修改
+      if (resultCategory?.id) {
+        setCategoryObj(resultCategory)
+        return
+      }
+      const _item =
+        props.allCategoryList.find(item => item.is_previous_category === 1) ??
+        {}
+      if (
+        resultCategoryList.find((item: { id: number }) => item.id === _item.id)
+      ) {
+        setCategoryObj(
           props.allCategoryList.find(item => item.is_previous_category === 1) ??
-          {}
-        if (
-          resultCategoryList.find(
-            (item: { id: number }) => item.id === _item.id,
-          )
-        ) {
-          setCategoryObj(
-            props.allCategoryList.find(
-              item => item.is_previous_category === 1,
-            ) ?? {},
-          )
-        }
+            {},
+        )
       }
     }
-  }, [props.projectId, props.allCategoryList])
+  }, [props.projectId, props.allCategoryList, props.detail])
 
   useEffect(() => {
     if (props.projectId) {

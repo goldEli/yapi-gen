@@ -30,6 +30,7 @@ interface Props {
   dateValue?: any
   isShowQuick?: boolean
   placement?: any
+  width?: string
 }
 
 const RangePicker = (props: Props) => {
@@ -122,13 +123,12 @@ const RangePicker = (props: Props) => {
       </div>
     )
   }
-
   return (
     <DatePicker.RangePicker
       placement={props?.placement}
       value={props.dateValue}
       allowClear
-      style={{ width: props.isWidth ? '' : '100%' }}
+      style={{ width: props.isWidth ? '' : props.width ? props.width : '100%' }}
       onChange={onChangeDate}
       className={rangPicker}
       getPopupContainer={node => node}
