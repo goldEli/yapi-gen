@@ -66,7 +66,11 @@ const TruncateTextWithEllipsis = (props: any) => {
     return width
   }
 
-  return <div ref={ref}>{truncatedText}</div>
+  return (
+    <div style={{ overflow: 'hidden' }} ref={ref}>
+      {truncatedText}
+    </div>
+  )
 }
 
 export default TruncateTextWithEllipsis
