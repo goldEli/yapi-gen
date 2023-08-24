@@ -2344,6 +2344,18 @@
   "underreporting": "Underreporting",
   "adjustedSuccessfully": "Adjusted successfully",
   "exportSucceeded": "Export succeeded",
+  "modifyTaskRecord": "Modify task record",
+  "workingHours": "Working hours",
+  "onMonday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday",
+  "adjustWorkingHours": "Adjust working hours",
+  "pleaseEnter": "Please enter",
+  "to": "To",
   "personnel": "Personnel",
   "time": "Time"
 }
