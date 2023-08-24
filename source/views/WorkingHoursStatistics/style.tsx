@@ -37,13 +37,14 @@ export const Rows = styled.div`
   }
 `
 export const Cols = styled.div`
-  min-width: 72px;
+  min-width: 125px;
   height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-right: 1px solid var(--neutral-n6-d1);
   flex: 1;
+  padding: 0px 8px;
 `
 export const Header = styled.div`
   display: flex;
@@ -55,7 +56,7 @@ export const DateLabel = styled.div`
   color: var(--neutral-n3);
   display: flex;
   .month-td {
-    min-width: 72px;
+    min-width: 125px;
     height: 28px;
     display: flex;
     align-items: center;
@@ -71,7 +72,7 @@ export const DateLabel = styled.div`
 export const TimeLabel = styled.div`
   display: flex;
   .header-td {
-    min-width: 72px;
+    min-width: 125px;
     height: 28px;
     display: flex;
     align-items: center;
@@ -94,6 +95,7 @@ export const WorkHourLabel = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 4px 8px;
 `
 export const Working = css`
   background: var(--function-tag2);
