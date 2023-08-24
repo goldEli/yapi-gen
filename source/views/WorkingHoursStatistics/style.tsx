@@ -57,7 +57,7 @@ export const DateLabel = styled.div`
   display: flex;
   .month-td {
     min-width: 72px;
-    height: 28px;
+    height: 22px;
     display: flex;
     align-items: center;
     color: var(--neutral-n3);
@@ -73,7 +73,7 @@ export const TimeLabel = styled.div`
   display: flex;
   .header-td {
     min-width: 72px;
-    height: 28px;
+    height: 22px;
     display: flex;
     align-items: center;
     color: var(--neutral-n3);
