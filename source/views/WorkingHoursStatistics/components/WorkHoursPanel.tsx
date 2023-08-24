@@ -216,7 +216,10 @@ const WorkHoursPanel = (props: any, ref: any) => {
                             ?.map((item: { identity: any }) => item.identity)
                             ?.includes('b/story/work_time')
                         ) {
-                          getMessage({ type: 'error', msg: '你暂无编辑权限' })
+                          getMessage({
+                            type: 'warning',
+                            msg: t('youDoNotHavePermissionToEdit'),
+                          })
                           return
                         }
                         // time -1请假 -2 未上报

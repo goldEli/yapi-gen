@@ -154,7 +154,10 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                     ?.map((item: { identity: any }) => item.identity)
                     ?.includes('b/story/work_time')
                 ) {
-                  getMessage({ type: 'error', msg: '你暂无编辑权限' })
+                  getMessage({
+                    type: 'warning',
+                    msg: t('youDoNotHavePermissionToEdit'),
+                  })
                   return
                 }
                 if (record.is_normal === 2 && record.exceed_day_num > 0) {
