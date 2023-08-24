@@ -37,8 +37,8 @@ export const Rows = styled.div`
     background: var(--neutral-n10);
   }
 `
-export const Cols = styled.div`
-  min-width: 125px;
+export const Cols = styled.div<{ language?: string | null }>`
+  min-width: ${props => (props.language === 'en' ? '125px' : '72px')};
   height: 52px;
   display: flex;
   align-items: center;
@@ -63,17 +63,16 @@ export const DateLabel = styled.div`
     align-items: center;
     color: var(--neutral-n3);
     font-size: 12px;
-
     box-sizing: border-box;
     /* flex: 1; */
     /* justify-content: center; */
     padding-left: 16px;
   }
 `
-export const TimeLabel = styled.div`
+export const TimeLabel = styled.div<{ language?: string | null }>`
   display: flex;
   .header-td {
-    min-width: 125px;
+    min-width: ${props => (props.language === 'en' ? '125px' : '72px')};
     height: 28px;
     display: flex;
     align-items: center;

@@ -28,15 +28,6 @@ interface IProps {
   ref: any
   onClick: any
 }
-// const weekdayString: any = {
-//   1: t('onMonday'),
-//   2: t('tuesday'),
-//   3: t('wednesday'),
-//   4: t('thursday'),
-//   5: t('friday'),
-//   6: t('saturday'),
-//   7: t('sunday'),
-// }
 const WorkHoursPanel = (props: any, ref: any) => {
   const [t] = useTranslation()
   const tdRef = useRef<any>()
@@ -47,6 +38,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const { dataSource, onClick, direction, type, onConfirm } = props
   const [storyId, setStoryId] = useState('')
   const [record, setRecord] = useState<any>()
+  const language = window.localStorage.getItem('language')
   const [weekdayString, setWeekdayString] = useState<any>({
     1: t('onMonday'),
     2: t('tuesday'),
@@ -60,6 +52,17 @@ const WorkHoursPanel = (props: any, ref: any) => {
     dataSource[0]?.work_times,
     dataSource,
   )
+  useEffect(() => {
+    setWeekdayString({
+      1: t('onMonday'),
+      2: t('tuesday'),
+      3: t('wednesday'),
+      4: t('thursday'),
+      5: t('friday'),
+      6: t('saturday'),
+      7: t('sunday'),
+    })
+  }, [language])
   if (!columns) {
     return null
   }
@@ -175,7 +178,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
         </DateLabel>
       </Header>
       <Header>
-        <TimeLabel ref={timeRef}>
+        <TimeLabel ref={timeRef} language={language}>
           {columns.map((item, idx) => {
             const date = dayjs(item)
             const weekday = date.isoWeekday()
@@ -195,7 +198,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
             {columns.map((item: any, index: any) => {
               const col = map.get(item)[rowIndex]
               return (
-                <Cols key={index} ref={tdRef}>
+                <Cols key={index} ref={tdRef} language={language}>
                   <Popover
                     title=""
                     content={Content}
