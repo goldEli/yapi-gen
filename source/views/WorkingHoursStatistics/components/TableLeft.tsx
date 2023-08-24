@@ -16,12 +16,15 @@ import IconFont from '@/components/IconFont'
 import { useState } from 'react'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
+import { getMessage } from '@/components/Message'
 const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [state, setState] = useState(false)
   const [value, setValue] = useState('')
   const [openDemandDetail] = useOpenDemandDetail()
   const [row, setRow] = useState<any>({})
   const [t] = useTranslation()
+  const { projectInfo } = useSelector(store => store.project)
   const content = (row: any) => {
     return (
       <PopoverWrap>
@@ -146,6 +149,14 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                   : false
               }
               onClick={() => {
+                if (
+                  !projectInfo.projectPermissions
+                    ?.map((item: { identity: any }) => item.identity)
+                    ?.includes('b/story/work_time')
+                ) {
+                  getMessage({ type: 'error', msg: '你暂无编辑权限' })
+                  return
+                }
                 if (record.is_normal === 2 && record.exceed_day_num > 0) {
                   setState(true)
                   setRow(record)
@@ -201,7 +212,6 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
 
   const onConfirm = () => {
     if (value) {
-      console.log(row)
       setState(false)
       props.updateOverdue({
         story_id: row.story?.id,
