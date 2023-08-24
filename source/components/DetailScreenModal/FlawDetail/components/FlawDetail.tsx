@@ -24,6 +24,7 @@ import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Tooltip } from 'antd'
+import CommonButton from '@/components/CommonButton'
 
 interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
