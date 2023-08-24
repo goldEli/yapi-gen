@@ -231,6 +231,7 @@ const WorkHoursHeader = (props: {
               <span style={{ margin: '0 16px', fontSize: '14px' }}>时间</span>
               <Form.Item name={'time'}>
                 <RangePicker
+                  width={'220px'}
                   isShowQuick={false}
                   dateValue={
                     form.getFieldValue('time')
