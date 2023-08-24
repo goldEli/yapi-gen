@@ -148,68 +148,67 @@ const WorkHours: React.FC<IProps> = props => {
         onInputSearch={onInputSearch}
         title={t('search_for_transaction_name_or_number')}
       />
-      <Spin spinning={spinning}>
-        <WorkHoursHeader
-          id={paramsData.id}
-          onSearch={onSearch}
-          stat={stat}
-          onGetExport={onGetExport}
-        />
-        <MianWrap>
-          <LeftWrap
-            style={{
-              width: `calc(100% - ${leftWidth}px)`,
-            }}
-          >
-            <TableLeft data={data} updateOverdue={updateOverdueApi} />
-            <div className="openIconBox">
-              <CommonIconFont
-                type={direction ? 'indent' : 'outdent'}
-                size={20}
-                onClick={() => {
-                  setLeftWidth(direction ? 504 : 1550)
-                  setDirection(!direction)
-                }}
-                color="var(--neutral-n3)"
-              />
-            </div>
-          </LeftWrap>
-
-          <div
-            style={{
-              position: 'relative',
-              width: leftWidth,
-              top: '-12px',
-              transition: 'all 0.3s ease 0s',
-            }}
-          >
-            <SprintDetailMouseDom
-              active={focus}
-              onMouseDown={onDragLine}
-              style={{ left: 0 }}
-            >
-              <Line active={focus} className="line"></Line>
-            </SprintDetailMouseDom>
-            <WorkHoursPanel
-              dataSource={data}
-              ref={panelRef}
-              onClick={() => {}}
-              direction={direction}
-              onConfirm={() => {
-                onSearch(formVal, type, key)
+      {/* <Spin spinning={spinning}> */}
+      <WorkHoursHeader
+        id={paramsData.id}
+        onSearch={onSearch}
+        stat={stat}
+        onGetExport={onGetExport}
+      />
+      <MianWrap>
+        <LeftWrap
+          style={{
+            width: `calc(100% - ${leftWidth}px)`,
+          }}
+        >
+          <TableLeft data={data} updateOverdue={updateOverdueApi} />
+          <div className="openIconBox">
+            <CommonIconFont
+              type={direction ? 'indent' : 'outdent'}
+              size={20}
+              onClick={() => {
+                setLeftWidth(direction ? 504 : 1550)
+                setDirection(!direction)
               }}
-              type={type}
+              color="var(--neutral-n3)"
             />
           </div>
-        </MianWrap>
-        <PaginationBox
-          hasPadding={true}
-          currentPage={pageObj?.currentPage}
-          pageSize={pageObj?.size}
-          total={pageObj?.total}
-          onChange={onChangePage}
-        />
-      </Spin>
+        </LeftWrap>
+        <div
+          style={{
+            position: 'relative',
+            width: leftWidth,
+            height: '100%',
+            transition: 'all 0.3s ease 0s',
+          }}
+        >
+          <SprintDetailMouseDom
+            active={focus}
+            onMouseDown={onDragLine}
+            style={{ left: 0 }}
+          >
+            <Line active={focus} className="line"></Line>
+          </SprintDetailMouseDom>
+          <WorkHoursPanel
+            dataSource={data}
+            ref={panelRef}
+            onClick={() => {}}
+            direction={direction}
+            onConfirm={() => {
+              onSearch(formVal, type, key)
+            }}
+            type={type}
+          />
+        </div>
+      </MianWrap>
+      <PaginationBox
+        hasPadding={true}
+        currentPage={pageObj?.currentPage}
+        pageSize={pageObj?.size}
+        total={pageObj?.total}
+        onChange={onChangePage}
+      />
+      {/* </Spin> */}
     </WorkHoursWrap>
   )
 }

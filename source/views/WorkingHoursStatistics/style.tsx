@@ -15,7 +15,7 @@ export const LeftWrap = styled.div`
     display: flex;
     position: absolute;
     right: 8px;
-    top: -10px;
+    top: 5px;
   }
 `
 export const MianWrap = styled.div`
@@ -27,6 +27,7 @@ export const MianWrap = styled.div`
 export const PanelWrap = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   width: 100%;
+  height: 100%;
   position: relative;
   overflow-x: auto;
 `
