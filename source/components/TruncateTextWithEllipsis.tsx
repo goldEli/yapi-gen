@@ -16,8 +16,8 @@ const TruncateTextWithEllipsis = (props: any) => {
 
         let front = ''
         let back = ''
-        let frontWidth = 0
-        let backWidth = 1
+        let frontWidth = 10
+        let backWidth = 0
         let i = 0
 
         while (i < text.length) {
@@ -66,7 +66,11 @@ const TruncateTextWithEllipsis = (props: any) => {
     return width
   }
 
-  return <div ref={ref}>{truncatedText}</div>
+  return (
+    <div style={{ overflow: 'hidden' }} ref={ref}>
+      {truncatedText}
+    </div>
+  )
 }
 
 export default TruncateTextWithEllipsis
