@@ -22,6 +22,8 @@ const HeaderCreate = styled.div`
 
 const canEditHover = css`
   padding: 0 4px;
+  display: inline-block;
+  width: 100%;
   &:hover {
     background-color: var(--hover-d2);
     cursor: pointer;

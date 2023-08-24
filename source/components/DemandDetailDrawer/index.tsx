@@ -255,15 +255,15 @@ const DemandDetailDrawer = () => {
       projectId: paramsProjectId,
       id: id ? id : demandDetailDrawerProps?.id,
     })
-    info.level_tree.push({
-      id: info.id,
-      category_id: info.category,
-      prefix_key: info.prefixKey,
-      project_prefix: info.projectPrefix,
-      category_attachment: info.category_attachment,
-      parent_id: info.parentId,
-      name: info.name,
-    })
+    // info.level_tree.push({
+    //   id: info.id,
+    //   category_id: info.category,
+    //   prefix_key: info.prefixKey,
+    //   project_prefix: info.projectPrefix,
+    //   category_attachment: info.category_attachment,
+    //   parent_id: info.parentId,
+    //   name: info.name,
+    // })
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
@@ -593,6 +593,7 @@ const DemandDetailDrawer = () => {
   }
 
   useEffect(() => {
+    console.log('drawerInfo.level_tree', drawerInfo.level_tree)
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
       getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
