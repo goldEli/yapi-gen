@@ -34,8 +34,6 @@ const PersonWrap = styled.div`
   background: var(--auxiliary-b5);
   border-radius: 6px;
   height: 32px;
-  min-width: 339px;
-  max-width: 670px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -270,7 +268,9 @@ const WorkHoursHeader = (props: {
           </CommonButton>
         </FormStyle>
       </WorkHoursHeaderWrap>
-      <PersonWrap>
+      <PersonWrap
+        style={{ width: localStorage.language === 'zh' ? '339px' : '667px' }}
+      >
         <span>
           {t('numberOfPeopleReported')}: {props.stat?.report}/
           {props.stat?.total}
