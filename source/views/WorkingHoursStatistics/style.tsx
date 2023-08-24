@@ -15,7 +15,7 @@ export const LeftWrap = styled.div`
     display: flex;
     position: absolute;
     right: 8px;
-    top: 5px;
+    top: -10px;
   }
 `
 export const MianWrap = styled.div`
@@ -27,7 +27,7 @@ export const MianWrap = styled.div`
 export const PanelWrap = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   width: 100%;
-  height: 100%;
+  height: calc(100% + 12px);
   position: relative;
   overflow-x: auto;
 `
@@ -57,7 +57,7 @@ export const DateLabel = styled.div`
   display: flex;
   .month-td {
     min-width: 72px;
-    height: 22px;
+    height: 28px;
     display: flex;
     align-items: center;
     color: var(--neutral-n3);
@@ -73,7 +73,7 @@ export const TimeLabel = styled.div`
   display: flex;
   .header-td {
     min-width: 72px;
-    height: 22px;
+    height: 28px;
     display: flex;
     align-items: center;
     color: var(--neutral-n3);
