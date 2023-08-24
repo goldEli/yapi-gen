@@ -21,6 +21,9 @@ interface DetailParentProps {
   canOperationKeys: any
 }
 
+let timer: any
+let controller = new AbortController()
+
 const DetailParent = (props: DetailParentProps) => {
   const [t] = useTranslation()
   // 下拉数据
@@ -117,7 +120,14 @@ const DetailParent = (props: DetailParentProps) => {
 
   // 获取父需求列表
   const onGetParent = (value?: string) => {
-    getParentData(value)
+    if (value) {
+      controller.abort()
+    }
+    controller = new AbortController()
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      getParentData(value)
+    }, 500)
   }
 
   useEffect(() => {
