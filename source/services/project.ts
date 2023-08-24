@@ -810,7 +810,7 @@ export const deleteProjectGroup: any = async (params: any) => {
 
 // 获取项目下拉数据
 export const getProjectInfoValues: any = async (params: any) => {
-  const response = await http.get<any>('/b/project/getfilter_values', {
+  const response: any = await http.get<any>('/b/project/getfilter_values', {
     id: params.projectId,
   })
 
@@ -835,6 +835,8 @@ export const getProjectInfoValues: any = async (params: any) => {
       }
     })
   }
+
+  response.data.user_name = filterMemberList
 
   const getChildren = (key: any, values: any) => {
     let allValues: any = []
