@@ -43,7 +43,7 @@ const Board = () => {
       project_id: getProjectIdByUrl(),
     }
     // dispatch(getKanbanByGroup())
-    dispatch(getKanbanConfig(params))
+    isUpdateAddWorkItem && dispatch(getKanbanConfig(params))
   }, [isUpdateAddWorkItem])
 
   return (
