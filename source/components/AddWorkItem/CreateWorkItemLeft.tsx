@@ -391,7 +391,6 @@ const CreateDemandLeft = (props: Props) => {
 
   // 计算类别
   const computedCategory = () => {
-    console.log(params?.type, '=typetypetypetype')
     let result: any = []
     if (params?.type) {
       switch (params?.type) {
@@ -409,7 +408,6 @@ const CreateDemandLeft = (props: Props) => {
           result = props.allCategoryList?.filter(
             (i: any) => i.work_type === params.type && i.status === 1,
           )
-          console.log(result, '=121212', props.allCategoryList)
           break
       }
     } else {
@@ -430,6 +428,16 @@ const CreateDemandLeft = (props: Props) => {
       getCategoryField(categoryObj?.id)
       getStatusList(categoryObj?.id)
       props.onChangeCategoryType(categoryObj?.work_type)
+      return
+    }
+    form.setFieldsValue({
+      requiredCategory: '',
+    })
+  }, [categoryObj])
+
+  // 判断创建或者是编辑权限
+  useEffect(() => {
+    if (categoryObj?.id && projectInfo?.id) {
       const update =
         projectInfo.projectType === 1
           ? categoryObj?.work_type === 2
@@ -442,18 +450,16 @@ const CreateDemandLeft = (props: Props) => {
             ? 'b/flaw/save'
             : 'b/story/save'
           : 'b/transaction/save'
+
+      console.log(projectInfo, '====', categoryObj, '=121212', save)
       // 是否有创建需求权限
       isCreateDemand =
         projectInfo?.projectPermissions?.filter(
           (i: any) => i.identity === (params?.editId ? update : save),
         )?.length > 0
       props.onGetCreateWorkItem(isCreateDemand)
-      return
     }
-    form.setFieldsValue({
-      requiredCategory: '',
-    })
-  }, [categoryObj])
+  }, [categoryObj, projectInfo])
 
   useEffect(() => {
     if (
