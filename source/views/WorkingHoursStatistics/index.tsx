@@ -2,7 +2,13 @@ import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import WorkHoursPanel from './components/WorkHoursPanel'
-import { WorkHoursWrap, MianWrap, Line, SprintDetailMouseDom } from './style'
+import {
+  WorkHoursWrap,
+  MianWrap,
+  Line,
+  SprintDetailMouseDom,
+  LeftWrap,
+} from './style'
 import WorkHoursHeader from './components/WorkHoursHeader'
 import TableLeft from './components/TableLeft'
 import { getParamsData } from '@/tools'
@@ -11,6 +17,7 @@ import { workTimeList, updateOverdue, workTimeExport } from '@/services/project'
 import PaginationBox from '@/components/TablePagination'
 import { getMessage } from '@/components/Message'
 import { Spin } from 'antd'
+import CommonIconFont from '@/components/CommonIconFont'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
   const panelRef = useRef<any>()
@@ -61,9 +68,9 @@ const WorkHours: React.FC<IProps> = props => {
   ) => {
     setFormVal(val)
     setType(type)
-    setSpinning(true)
+    // setSpinning(true)
     const start_at = val.time ? val.time[0] : val.date[0]
-    const end_at = val.time ? val.time[1] : val.date[1]
+    const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
       start_at,
       end_at,
@@ -94,13 +101,13 @@ const WorkHours: React.FC<IProps> = props => {
     user_id: number
     normal_reason: number
   }) => {
-    const res = await updateOverdue({ ...row, project_id: paramsData.id })
-    getMessage({ msg: '调整成功', type: 'success' })
+    await updateOverdue({ ...row, project_id: paramsData.id })
+    getMessage({ msg: t('adjustedSuccessfully'), type: 'success' })
     onSearch(formVal, type)
   }
   const onGetExport = async (val: any) => {
     const start_at = val.time ? val.time[0] : val.date[0]
-    const end_at = val.time ? val.time[1] : val.date[1]
+    const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
       start_at,
       end_at,
@@ -116,7 +123,7 @@ const WorkHours: React.FC<IProps> = props => {
       pagesize: pageObj.pageSize,
       keyword: key,
     }
-    getMessage({ msg: '导出成功', type: 'success' })
+    getMessage({ msg: t('exportSucceeded'), type: 'success' })
     const result: any = await workTimeExport(parmas)
     const blob = new Blob([result.body], {
       type: result?.headers['content-type'],
@@ -149,15 +156,25 @@ const WorkHours: React.FC<IProps> = props => {
           onGetExport={onGetExport}
         />
         <MianWrap>
-          <div
+          <LeftWrap
             style={{
-              position: 'relative',
-              height: '100%',
               width: `calc(100% - ${leftWidth}px)`,
             }}
           >
             <TableLeft data={data} updateOverdue={updateOverdueApi} />
-          </div>
+            <div className="openIconBox">
+              <CommonIconFont
+                type={direction ? 'indent' : 'outdent'}
+                size={20}
+                onClick={() => {
+                  setLeftWidth(direction ? 504 : 1550)
+                  setDirection(!direction)
+                }}
+                color="var(--neutral-n3)"
+              />
+            </div>
+          </LeftWrap>
+
           <div style={{ position: 'relative', width: leftWidth, top: '-12px' }}>
             <SprintDetailMouseDom
               active={focus}
@@ -169,11 +186,12 @@ const WorkHours: React.FC<IProps> = props => {
             <WorkHoursPanel
               dataSource={data}
               ref={panelRef}
-              onClick={() => {
-                setLeftWidth(direction ? 504 : 1550)
-                setDirection(!direction)
-              }}
+              onClick={() => {}}
               direction={direction}
+              onConfirm={() => {
+                onSearch(formVal, type, key)
+              }}
+              type={type}
             />
           </div>
         </MianWrap>

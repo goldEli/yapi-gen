@@ -49,7 +49,8 @@ const DetailHeader = (props: Header) => {
                 onClick={onUpDemand}
                 id="upIcon"
                 isOnly={
-                  props.ids?.length === 0 || currentIndex === props.ids?.length
+                  props.ids?.length === 0 ||
+                  currentIndex === props.ids?.length - 1
                 }
               >
                 <CommonIconFont

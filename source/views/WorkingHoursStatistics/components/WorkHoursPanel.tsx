@@ -6,6 +6,7 @@ import React, {
   useImperativeHandle,
 } from 'react'
 import { Form, Popover, Input, Radio, Space, InputNumber } from 'antd'
+import { updateWorkTime } from '@/services/project'
 import {
   PanelWrap,
   Rows,
@@ -27,6 +28,7 @@ dayjs.extend(isoWeek)
 import CommonButton from '@/components/CommonButton'
 import usePanelData from '../hooks/usePanelData'
 import CommonIconFont from '@/components/CommonIconFont'
+import { getMessage } from '@/components/Message'
 interface IProps {
   ref: any
   onClick: any
@@ -43,17 +45,15 @@ const weekdayString: any = {
 const WorkHoursPanel = (props: any, ref: any) => {
   const tdRef = useRef<any>()
   const [value, setValue] = useState(1)
+  const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
-  const { dataSource, onClick, direction } = props
-  console.log(props)
+  const { dataSource, onClick, direction, type, onConfirm } = props
+  const [storyId, setStoryId] = useState('')
+  const [record, setRecord] = useState<any>()
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
   )
-  const date = dayjs('2023-08-22')
-  const weekday = date.isoWeekday()
-  console.log('weekday---', weekday, weekdayString[weekday])
-
   if (!columns) {
     return null
   }
@@ -66,7 +66,24 @@ const WorkHoursPanel = (props: any, ref: any) => {
     if (time === -1) {
       return '请假'
     }
-    return time
+    return `${time / 3600}工时`
+  }
+  const confirm = async () => {
+    const params = {
+      ...record,
+      day_task_time: parseInt(dayTaskTime, 10) * 3600,
+      status: value,
+    }
+    delete params.time
+    if (value !== 2) {
+      delete params.day_task_time
+    }
+    console.log('params', params)
+    const data = await updateWorkTime(params)
+    getMessage({ type: 'success', msg: '修改成功' })
+    popoverRef?.current?.props.onPopupVisibleChange(false)
+    setStoryId('')
+    onConfirm()
   }
   const Content = () => {
     return (
@@ -80,32 +97,38 @@ const WorkHoursPanel = (props: any, ref: any) => {
             value={value}
           >
             <Space direction="vertical">
-              <Radio value={1}>
+              <Radio value={2}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <span style={{ marginBottom: '8px' }}>调整工时</span>
                   <InputNumber
                     size="middle"
                     placeholder="请输入"
                     style={{ width: 160 }}
+                    value={dayTaskTime}
+                    onChange={e => {
+                      console.log(e)
+                      setDayTaskTime(e)
+                    }}
                   ></InputNumber>
                 </div>
               </Radio>
-              <Radio value={2}>请假</Radio>
-              <Radio value={3}>未上报</Radio>
+              <Radio value={3}>请假</Radio>
+              <Radio value={1}>未上报</Radio>
             </Space>
           </Radio.Group>
         </div>
         <div className="btn-box">
-          <CommonButton type="light" size="small">
-            取消
-          </CommonButton>
           <CommonButton
-            type="primary"
+            type="light"
             size="small"
             onClick={() => {
+              setStoryId('')
               popoverRef?.current?.props.onPopupVisibleChange(false)
             }}
           >
+            取消
+          </CommonButton>
+          <CommonButton type="primary" size="small" onClick={confirm}>
             确认
           </CommonButton>
         </div>
@@ -115,48 +138,43 @@ const WorkHoursPanel = (props: any, ref: any) => {
 
   return (
     <PanelWrap>
-      <div className="openIconBox">
-        <CommonIconFont
-          type={direction ? 'indent' : 'outdent'}
-          size={20}
-          onClick={() => {
-            onClick()
-          }}
-          color="var(--neutral-n3)"
-        />
-      </div>
       <Header>
         <DateLabel>
-          {columns.map((item, idx) => {
+          {Object.keys(monthData).map(item => {
             const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
-            const isFirstDay = dayjs(item).startOf('month').format('YYYY-MM-DD')
-            const width =
-              tdRef.current?.getBoundingClientRect().width * (idx + 1)
-            return isLastDay === item || isFirstDay === item ? (
+            const data = monthData[item]
+            const index = data.length - 1
+            const width = type
+              ? tdRef.current?.getBoundingClientRect().width * (index + 1)
+              : '100%'
+            return (
               <div
+                key={item}
                 className={classNames('month-td', {
                   [lastDay]: isLastDay === item,
                 })}
                 style={{ width }}
               >
-                {Object.values(monthData).map((ele: any) => {
-                  if (ele.includes(item)) {
-                    return (
-                      <div key={ele}>{`${ele[0]}至${ele[ele.length - 1]}`}</div>
-                    )
-                  }
-                })}
+                <div>
+                  {type === 0
+                    ? String(data[0])
+                    : `${data[0]}至${data[data.length - 1]}`}
+                </div>
               </div>
-            ) : null
+            )
           })}
         </DateLabel>
       </Header>
       <Header>
         <TimeLabel>
           {columns.map((item, idx) => {
+            const date = dayjs(item)
+            const weekday = date.isoWeekday()
             return (
               <div key={idx} className="header-td">
-                {dayjs(item).format('DD')}
+                {type === 1 || type === 0
+                  ? weekdayString[weekday]
+                  : dayjs(item).format('DD')}
               </div>
             )
           })}
@@ -174,6 +192,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                     content={Content}
                     trigger="click"
                     ref={popoverRef}
+                    open={col.story_id === storyId && item === record.date}
                   >
                     <WorkHourLabel
                       className={classNames({
@@ -181,6 +200,22 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         [Leave]: col.time === -1,
                         [NotWorking]: col.time === -2,
                       })}
+                      onClick={() => {
+                        console.log(rowIndex, index, item)
+                        // time -1请假 -2 未上报
+                        let value = 2
+                        const { time, story_id } = col
+                        if (time === -1) {
+                          value = 3
+                        }
+                        if (time === -2) {
+                          value = 1
+                        }
+                        setValue(value)
+                        setDayTaskTime(time > 0 ? time / 3600 : '')
+                        setRecord({ ...row, date: item })
+                        setStoryId(story_id)
+                      }}
                     >
                       {label(col)}
                     </WorkHourLabel>

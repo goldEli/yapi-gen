@@ -110,7 +110,7 @@ const Row = styled.div`
 const ItemCenter = styled.div`
   width: 166px;
   overflow: hidden;
-  margin-left: 8px;
+  /* margin-left: 8px; */
 `
 const ItemTitle = styled.div`
   width: 100%;
@@ -315,26 +315,29 @@ const MyDropdown = (props: any) => {
       item?.map((el: any) => (
         <ItemBox key={el.id}>
           <Row onClick={() => onRoute(el, type)}>
-            <div>
-              {(el?.category_attachment || el?.feedable?.attachment) && (
-                <Img
-                  src={el?.category_attachment || el?.feedable?.attachment}
-                />
-              )}
-              {!(el?.category_attachment || el?.feedable?.attachment) && (
-                <CommonIconFont
-                  type="interation-2"
-                  color="var(--neutral-n2)"
-                  size={20}
-                />
-              )}
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <div>
+                {(el?.category_attachment || el?.feedable?.attachment) && (
+                  <Img
+                    src={el?.category_attachment || el?.feedable?.attachment}
+                  />
+                )}
+                {!(el?.category_attachment || el?.feedable?.attachment) && (
+                  <CommonIconFont
+                    type="interation-2"
+                    color="var(--neutral-n2)"
+                    size={20}
+                  />
+                )}
+              </div>
+              <ItemCenter>
+                <ItemTitle>{el.feedable?.name || el?.name}</ItemTitle>
+                <ItemMsg>
+                  {el.feedable?.project?.name || el.project?.name}
+                </ItemMsg>
+              </ItemCenter>
             </div>
-            <ItemCenter>
-              <ItemTitle>{el.feedable?.name || el?.name}</ItemTitle>
-              <ItemMsg>
-                {el.feedable?.project?.name || el.project?.name}
-              </ItemMsg>
-            </ItemCenter>
+
             <BtnBox
               style={{
                 background:
@@ -381,22 +384,24 @@ const MyDropdown = (props: any) => {
     }
   }, [isOpen])
   useEffect(() => {
-    if (!isOpen) {
+    if (!tabBox.current) {
       return
     }
-    const index = tabs.findIndex((i: any, index) => index === tabActive)
+    const index = tabs.findIndex((i: any, index2) => index2 === tabActive)
+
     tabActive2.current!.style.left = `${
       (tabBox.current?.children[index] as HTMLDivElement).offsetLeft === 0
         ? 2
         : (tabBox.current?.children[index] as HTMLDivElement).offsetLeft
     }px`
+    console.log(tabBox.current?.children[index].clientWidth)
 
     tabActive2.current!.style.width = `${
       tabBox.current?.children[index].clientWidth === 0
         ? 60
         : tabBox.current?.children[index].clientWidth
     }px`
-  }, [tabActive, isRefresh, isOpen])
+  }, [tabActive, isRefresh])
   const dropdownRender = () => {
     return (
       <Container>
@@ -411,16 +416,26 @@ const MyDropdown = (props: any) => {
                 {i.label}
               </TabsWrapItem>
             ))}
-            <ActiveTab ref={tabActive2} />
+            <ActiveTab style={{ width: '60px' }} ref={tabActive2} />
           </TabsWrap>
         </HeraderTabs>
         <ScrollWrap>
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             {tabActive === 2 &&
               box.map(el => (
-                <div style={{ marginBottom: '16px' }} key={el.title}>
-                  <Title>{el.title}</Title>
-                  {itmeMain(recentList?.[el.name], el.name)}
+                <div key={el.title}>
+                  {recentList?.[el.name].length >= 1 && (
+                    <Title>{el.title}</Title>
+                  )}
+                  <div
+                    style={{
+                      marginTop:
+                        recentList?.[el.name].length >= 1 ? '16px' : '0px',
+                    }}
+                  >
+                    {' '}
+                    {itmeMain(recentList?.[el.name], el.name)}
+                  </div>
                 </div>
               ))}
             {tabActive === 0 && itmeMain(noFinishList, 'story')}

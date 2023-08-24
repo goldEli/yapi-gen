@@ -92,12 +92,8 @@ const WorkHoursHeader = (props: {
         date: [],
       })
       setTime([
-        moment(dates[0]).unix()
-          ? moment(dates[0]).format('YYYY-MM-DD')
-          : '1970-01-01',
-        moment(dates[1]).unix() === 1893427200
-          ? '2030-01-01'
-          : moment(dates[1]).format('YYYY-MM-DD'),
+        moment(dates[0]).format('YYYY-MM-DD'),
+        moment(dates[1]).format('YYYY-MM-DD'),
       ])
       setDateType(-1)
     } else {
@@ -110,34 +106,34 @@ const WorkHoursHeader = (props: {
   const tabsValue = [
     {
       id: 0,
-      text: '今日',
+      text: t('today'),
     },
     {
       id: 1,
-      text: '本周',
+      text: t('thisWeek'),
     },
 
     {
       id: 2,
-      text: '本月',
+      text: t('thisMonth'),
     },
   ]
   const tabsValue1 = [
     {
       id: 3,
-      text: '请假',
+      text: t('askForLeave'),
     },
     {
       id: 2,
-      text: '正常上报',
+      text: t('reportNormally'),
     },
     {
       id: 1,
-      text: '未上报',
+      text: t('notReported'),
     },
     {
       id: 0,
-      text: '全部',
+      text: t('all'),
     },
   ]
   const onGetExportApi = () => {
@@ -170,17 +166,17 @@ const WorkHoursHeader = (props: {
   }
   // 获取当前星期一的日期对象
   const getMonDate = () => {
-    let d = new Date()
+    const d = new Date()
     const day = d.getDay()
     const date = d.getDate()
-    if (day == 1) return d
-    if (day == 0) d.setDate(date - 6)
+    if (day === 1) return d
+    if (day === 0) d.setDate(date - 6)
     else d.setDate(date - day + 1)
     return d
   }
   // 本月第一天和最后一天
   function getLastDay() {
-    let y: any = new Date().getFullYear()
+    const y: any = new Date().getFullYear()
     let m: any = new Date().getMonth() + 1
     let d: any = new Date(y, m, 0).getDate()
     m = m < 10 ? '0' + m : m
@@ -235,7 +231,7 @@ const WorkHoursHeader = (props: {
               <span style={{ margin: '0 16px', fontSize: '14px' }}>时间</span>
               <Form.Item name={'time'}>
                 <RangePicker
-                  isShowQuick
+                  isShowQuick={false}
                   dateValue={
                     form.getFieldValue('time')
                       ? [
@@ -264,16 +260,21 @@ const WorkHoursHeader = (props: {
             </Form.Item>
           </LeftWrap>
           <CommonButton type="primary" onClick={() => setOpen(true)}>
-            导出记录
+            {t('exportRecords')}
           </CommonButton>
         </FormStyle>
       </WorkHoursHeaderWrap>
       <PersonWrap>
         <span>
-          上报人次: {props.stat?.report}/{props.stat?.total}
+          {t('numberOfPeopleReported')}: {props.stat?.report}/
+          {props.stat?.total}
         </span>
-        <span>请假人次: {props.stat?.leave}</span>
-        <span>缺报人次: {props.stat?.absence}</span>
+        <span>
+          {t('numberOfPeopleAskingForLeave')}: {props.stat?.leave}
+        </span>
+        <span>
+          {t('underreporting')}: {props.stat?.absence}
+        </span>
       </PersonWrap>
       {/* 导出 */}
       <Export

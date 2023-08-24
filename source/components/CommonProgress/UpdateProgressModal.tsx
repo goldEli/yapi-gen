@@ -3,7 +3,7 @@ import CommonModal from '../CommonModal'
 import { useTranslation } from 'react-i18next'
 import { ProgressContentWrap, ShowProgress } from './style'
 import { CloseWrap, SliderWrap } from '../StyleCommon'
-import { Form, Input, InputNumber } from 'antd'
+import { Form, Input, InputNumber, Tooltip } from 'antd'
 import UploadAttach from '../UploadAttach'
 import { getScheduleDetails, updateStorySchedule } from '@/services/demand'
 import { updateTransactionSchedule } from '@/services/affairs'
@@ -182,20 +182,22 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
                 }}
               >
                 <Label>{t('common.attachment')}</Label>
-                <CloseWrap
-                  style={{ marginLeft: 'auto' }}
-                  width={24}
-                  height={24}
-                >
-                  <CommonIconFont
-                    type="plus"
-                    size={18}
-                    color="var(--neutral-n2)"
-                    onClick={() => {
-                      myRef.current?.handleUpload()
-                    }}
-                  />
-                </CloseWrap>
+                <Tooltip title={t('addAttachments')}>
+                  <CloseWrap
+                    style={{ marginLeft: 'auto' }}
+                    width={32}
+                    height={32}
+                  >
+                    <CommonIconFont
+                      type="plus"
+                      size={20}
+                      color="var(--neutral-n2)"
+                      onClick={() => {
+                        myRef.current?.handleUpload()
+                      }}
+                    />
+                  </CloseWrap>
+                </Tooltip>
               </LabelWrap>
             }
             name="attachment"

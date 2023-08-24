@@ -15,17 +15,20 @@ import {
 import IconFont from '@/components/IconFont'
 import { useState } from 'react'
 import CommonModal from '@/components/CommonModal'
+import { useTranslation } from 'react-i18next'
 const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [state, setState] = useState(false)
   const [value, setValue] = useState('')
   const [openDemandDetail] = useOpenDemandDetail()
   const [row, setRow] = useState<any>({})
+  const [t] = useTranslation()
   const content = (row: any) => {
-    console.log(row, '888')
     return (
       <PopoverWrap>
         <div style={{ marginBottom: 12 }}>
-          逾期{row.exceed_day_num}天
+          {t('overdue')}
+          {row.exceed_day_num}
+          {t('sky')}
           <IconFont
             style={{
               fontSize: 14,
@@ -33,19 +36,20 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
             }}
             type={'right-md'}
           />
-          正常
+          {t('normal')}
         </div>
-        <div>调整原因</div>
+        <div>{t('reasonForAdjustment')}</div>
         <Text state={1}>{row.normal_reason.reason}</Text>
         <Text state={2}>
-          {row.normal_reason.operator_name} 于{row.normal_reason.operator_time}{' '}
+          {row.normal_reason.operator_name} {t('at')}
+          {row.normal_reason.operator_time}{' '}
         </Text>
       </PopoverWrap>
     )
   }
   const colum = [
     {
-      title: '姓名',
+      title: t('name'),
       dataIndex: 'user',
       width: 250,
       render: (text: any, record: any) => {
@@ -60,7 +64,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       },
     },
     {
-      title: '任务名称',
+      title: t('missionName'),
       dataIndex: 'name',
       width: 180,
       render: (text: any, record: any) => {
@@ -101,7 +105,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       },
     },
     {
-      title: '状态',
+      title: t('state'),
       dataIndex: 'state',
       width: 150,
       render: (text: any, record: any) => {
@@ -127,7 +131,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       },
     },
     {
-      title: '是否逾期',
+      title: t('isItOverdue'),
       dataIndex: 'status',
       width: 250,
       render: (text: any, record: any) => {
@@ -150,10 +154,10 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
               }}
             >
               {record.is_normal === 1
-                ? '正常 (调整)'
+                ? t('normal') + '(' + t('adjustment') + ')'
                 : record.is_normal === 2 && record.exceed_day_num > 0
-                ? `逾期${record.exceed_day_num}天`
-                : '正常'}
+                ? `${t('overdue')}${record.exceed_day_num}${t('sky')}`
+                : t('normal')}
             </State>
             {record.is_normal === 1 ? (
               <Popover
@@ -178,7 +182,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       },
     },
     {
-      title: '开始时间',
+      title: t('startingTime'),
       dataIndex: 'start_at',
       width: 120,
       render: (text: any) => {
@@ -186,7 +190,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       },
     },
     {
-      title: '结束时间',
+      title: t('endTime'),
       dataIndex: 'end_at',
       width: 120,
       render: (text: any) => {
@@ -218,16 +222,16 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       />
       <CommonModal
         isVisible={state}
-        title={'调整逾期'}
-        confirmText={'改为正常'}
+        title={t('adjustOverdue')}
+        confirmText={t('changeToNormal')}
         onClose={() => setState(false)}
         onConfirm={() => onConfirm()}
       >
-        <Text state={3}>调整原因</Text>
+        <Text state={3}>{t('reasonForAdjustment')}</Text>
         <InputStyle
           value={value}
           rows={6}
-          placeholder="请输入调整原因"
+          placeholder={t('pleaseEnterTheReasonForTheAdjustment')}
           onChange={(e: any) => setValue(e.target.value)}
         />
       </CommonModal>
