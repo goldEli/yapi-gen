@@ -2230,7 +2230,7 @@
   "msg5": "Generate Example",
   "msg6": "View sample image",
   "msg7": "Generate Rules:",
-  "msg8": "Overall progress: Perform statistics based on the progress/total task book filled out in each transaction and the sum of all task hours accumulated",
+  "msg8": "Overall progress: Perform statistics based on the sum of progress accumulation/total number of tasks filled in each transaction, as well as the sum of all task hours accumulated",
   "msg9": "As of today: Count the titles of tasks in progress or completed on that day based on the task status of that day",
   "msg10": "Overdue tasks: offset based on the current day and expected end date",
   "msg11": "Automatic sending configuration",
