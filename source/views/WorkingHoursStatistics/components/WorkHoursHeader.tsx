@@ -234,7 +234,7 @@ const WorkHoursHeader = (props: {
               </span>
               <Form.Item name={'time'}>
                 <RangePicker
-                  width={'220px'}
+                  width={'235px'}
                   isShowQuick={false}
                   dateValue={
                     form.getFieldValue('time')
