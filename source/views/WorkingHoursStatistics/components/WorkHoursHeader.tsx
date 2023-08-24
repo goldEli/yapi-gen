@@ -34,7 +34,8 @@ const PersonWrap = styled.div`
   background: var(--auxiliary-b5);
   border-radius: 6px;
   height: 32px;
-  width: 339px;
+  min-width: 339px;
+  max-width: 670px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -222,15 +223,20 @@ const WorkHoursHeader = (props: {
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <LeftWrap>
             <SelectWrapBedeck>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>人员</span>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('personnel')}
+              </span>
               <Form.Item name={'user_ids'}>
                 <MoreSelect onConfirm={confirm} options={memberList} />
               </Form.Item>
             </SelectWrapBedeck>
             <SelectWrapBedeck style={{ marginLeft: 16 }}>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>时间</span>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('time')}
+              </span>
               <Form.Item name={'time'}>
                 <RangePicker
+                  width={'220px'}
                   isShowQuick={false}
                   dateValue={
                     form.getFieldValue('time')
