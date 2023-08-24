@@ -869,7 +869,7 @@ const ProgressComparison = (props: Props) => {
           headerParmas={props.headerParmas}
         />
         {/* 表格 */}
-        <Col>
+        <Col style={{ marginLeft: 32 }}>
           <TitleCss>{props.title}</TitleCss>
         </Col>
         <div
