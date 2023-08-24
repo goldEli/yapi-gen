@@ -512,7 +512,13 @@ const TableFilter = (props: any) => {
                               ? format(
                                   deWeight(
                                     projectInfoValues
-                                      ?.filter((k: any) => k.key === i.key)[0]
+                                      ?.filter(
+                                        (k: any) =>
+                                          k.key ===
+                                          (i.key === 'user_name'
+                                            ? 'users_name'
+                                            : i.key),
+                                      )[0]
                                       ?.children?.map((v: any) => ({
                                         label: v.content_txt || v.content,
                                         value: v.id,

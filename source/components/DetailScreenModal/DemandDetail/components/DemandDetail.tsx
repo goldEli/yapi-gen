@@ -1,10 +1,11 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector } from '@store/index'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InfoItem, Label, TextWrap, WrapLeft } from '../style'
-import { Editor } from '@xyfe/uikit'
+import { Editor, EditorRef } from '@xyfe/uikit'
 import DemandTag from '@/components/TagComponent/DemandTag'
-import { AddWrap } from '@/components/StyleCommon'
+import { AddWrap, TextWrapEdit, canEditHover } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
@@ -14,15 +15,19 @@ import {
   addInfoDemand,
   deleteInfoDemand,
   getDemandInfo,
+  updateDemandEditor,
 } from '@/services/demand'
 import { setDemandInfo } from '@store/demand'
 import { getMessage } from '@/components/Message'
+import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 
 const DemandDetail = () => {
   const dId = useRef<any>()
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const LeftDom = useRef<HTMLInputElement>(null)
+  const editorRef = useRef<EditorRef>(null)
+  const editorRef2 = useRef<any>()
   const { projectInfo, isDetailScreenModal } = useSelector(
     store => store.project,
   )
@@ -31,6 +36,8 @@ const DemandDetail = () => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
   const [tagList, setTagList] = useState<any>([])
+  const [isEditInfo, setIsEditInfo] = useState(false)
+  const [editInfo, setEditInfo] = useState('')
 
   const onBottom = () => {
     const dom: any = LeftDom?.current
@@ -91,6 +98,20 @@ const DemandDetail = () => {
     setIsDelVisible(false)
   }
 
+  // 富文本失焦
+  const onBlurEditor = async () => {
+    setIsEditInfo(false)
+    if (editorRef2.current === demandInfo.info) return
+    const params = {
+      info: editorRef2.current,
+      projectId: projectInfo.id,
+      id: demandInfo.id,
+      name: demandInfo.name,
+    }
+    await updateDemandEditor(params)
+    onUpdate()
+  }
+
   useEffect(() => {
     setTagList(
       demandInfo?.tag?.map((i: any) => ({
@@ -99,6 +120,7 @@ const DemandDetail = () => {
         name: i.tag?.content,
       })),
     )
+    setEditInfo(demandInfo.info || '')
     dId.current = demandInfo?.id
   }, [demandInfo])
 
@@ -110,10 +132,40 @@ const DemandDetail = () => {
         }}
       >
         <Label>{t('mine.demandInfo')}</Label>
-        {demandInfo?.info ? (
-          <Editor value={demandInfo?.info} getSuggestions={() => []} readonly />
-        ) : (
-          <TextWrap>--</TextWrap>
+        {(isEditInfo || editInfo) && (
+          <div className={canEditHover}>
+            <Editor
+              upload={uploadFile}
+              color="transparent"
+              value={editInfo}
+              getSuggestions={() => []}
+              readonly={!isEditInfo}
+              ref={editorRef}
+              onReadonlyClick={() => {
+                setIsEditInfo(true)
+                setTimeout(() => {
+                  editorRef.current?.focus()
+                }, 10)
+              }}
+              onChange={(value: string) => {
+                editorRef2.current = value
+              }}
+              onBlur={() => onBlurEditor()}
+            />
+          </div>
+        )}
+        {!isEditInfo && !editInfo && (
+          <TextWrapEdit
+            style={{ width: '100%' }}
+            onClick={() => {
+              setIsEditInfo(true)
+              setTimeout(() => {
+                editorRef.current?.focus()
+              }, 10)
+            }}
+          >
+            <span className={canEditHover}>--</span>
+          </TextWrapEdit>
         )}
       </InfoItem>
       <InfoItem>
