@@ -177,26 +177,30 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       >
         <Label>{t('describe')}</Label>
         {(isEditInfo || editInfo) && (
-          <Editor
-            upload={uploadFile}
-            value={editInfo}
-            getSuggestions={() => []}
-            readonly={!isEditInfo}
-            ref={editorRef}
-            onReadonlyClick={() => {
-              setIsEditInfo(true)
-              setTimeout(() => {
-                editorRef.current?.focus()
-              }, 10)
-            }}
-            onChange={(value: string) => {
-              editorRef2.current = value
-            }}
-            onBlur={() => onBlurEditor()}
-          />
+          <div className={canEditHover}>
+            <Editor
+              upload={uploadFile}
+              color="transparent"
+              value={editInfo}
+              getSuggestions={() => []}
+              readonly={!isEditInfo}
+              ref={editorRef}
+              onReadonlyClick={() => {
+                setIsEditInfo(true)
+                setTimeout(() => {
+                  editorRef.current?.focus()
+                }, 10)
+              }}
+              onChange={(value: string) => {
+                editorRef2.current = value
+              }}
+              onBlur={() => onBlurEditor()}
+            />
+          </div>
         )}
         {!isEditInfo && !editInfo && (
           <TextWrapEdit
+            style={{ width: '100%' }}
             onClick={() => {
               setIsEditInfo(true)
               setTimeout(() => {

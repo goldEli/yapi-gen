@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 // 需求详情右侧弹窗-详细信息
 
 /* eslint-disable react/no-danger */
@@ -19,7 +20,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '../DeleteConfirm'
 import IconFont from '../IconFont'
-import { AddWrap, CloseWrap, TextWrapEdit } from '../StyleCommon'
+import { AddWrap, CloseWrap, TextWrapEdit, canEditHover } from '../StyleCommon'
 import UploadAttach from '../UploadAttach'
 import { ContentItem, Label, LabelWrap } from './style'
 import { Editor, EditorRef } from '@xyfe/uikit'
@@ -119,24 +120,27 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       <ContentItem id="tab_desc" className="info_item_tab">
         <Label>{t('requirement_description')}</Label>
         {(isEditInfo || editInfo) && (
-          <Editor
-            upload={uploadFile}
-            value={editInfo}
-            getSuggestions={() => []}
-            readonly={!isEditInfo}
-            ref={editorRef}
-            onReadonlyClick={() => {
-              setIsEditInfo(true)
-              setTimeout(() => {
-                editorRef.current?.focus()
-              }, 10)
-            }}
-            onChange={(value: string) => {
-              setEditInfo(value)
-              editorRef2.current = value
-            }}
-            onBlur={() => onBlurEditor()}
-          />
+          <div className={canEditHover}>
+            <Editor
+              upload={uploadFile}
+              color="transparent"
+              value={editInfo}
+              getSuggestions={() => []}
+              readonly={!isEditInfo}
+              ref={editorRef}
+              onReadonlyClick={() => {
+                setIsEditInfo(true)
+                setTimeout(() => {
+                  editorRef.current?.focus()
+                }, 10)
+              }}
+              onChange={(value: string) => {
+                setEditInfo(value)
+                editorRef2.current = value
+              }}
+              onBlur={() => onBlurEditor()}
+            />
+          </div>
         )}
         {!isEditInfo && !editInfo && (
           <TextWrapEdit
@@ -147,7 +151,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
               }, 10)
             }}
           >
-            --
+            <span className={canEditHover}>--</span>
           </TextWrapEdit>
         )}
       </ContentItem>

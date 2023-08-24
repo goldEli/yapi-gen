@@ -532,7 +532,7 @@ const Profile = () => {
                                 getPopupContainer: node => node,
                               }}
                             >
-                              {item.projectName}
+                              {item?.projectName ?? '--'}
                             </OmitText>
                           </HiddenText>
                           <HiddenText>
@@ -549,7 +549,7 @@ const Profile = () => {
                                   cursor: 'pointer',
                                 }}
                               >
-                                {item.name}
+                                {item?.name ?? '--'}
                               </span>
                             </OmitText>
                           </HiddenText>
