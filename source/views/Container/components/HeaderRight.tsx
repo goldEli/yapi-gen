@@ -183,67 +183,6 @@ const HeaderRight = () => {
     { name: t('container.logout'), isRight: false, icon: 'login', key: 3 },
   ]
 
-  // 项目管理
-  const createList = [
-    // {
-    //   name: t('addWorkItem'),
-    //   key: 'all',
-    //   icon: 'demand',
-    //   isPermission: true,
-    // },
-    {
-      name: t('common.createProject'),
-      key: 'project',
-      icon: 'folder-open-nor',
-      isPermission: (
-        userInfo.company_permissions?.map((i: any) => i.identity) || []
-      ).includes('b/project/save'),
-    },
-  ]
-  // 需求模块
-  const demandCreateList = [
-    {
-      name: '创建需求',
-      key: 'project',
-      icon: 'demand',
-      isPermission: (
-        userInfo.company_permissions?.map((i: any) => i.identity) || []
-      ).includes('b/project/save'),
-    },
-  ]
-  // 缺陷模块
-  const defectCreateList = [
-    {
-      name: '创建缺陷',
-      key: 'project',
-      icon: 'demand',
-      isPermission: (
-        userInfo.company_permissions?.map((i: any) => i.identity) || []
-      ).includes('b/project/save'),
-    },
-  ]
-  // 事务模块
-  const affairsCreateList = [
-    {
-      name: '创建事务',
-      key: 'project',
-      icon: 'demand',
-      isPermission: (
-        userInfo.company_permissions?.map((i: any) => i.identity) || []
-      ).includes('b/project/save'),
-    },
-  ]
-  // 迭代模块
-  const iterationCreateList = [
-    {
-      name: '创建迭代',
-      key: 'project',
-      icon: 'demand',
-      isPermission: (
-        userInfo.company_permissions?.map((i: any) => i.identity) || []
-      ).includes('b/project/save'),
-    },
-  ]
   // 问号下拉
   const createList2 = [
     {
@@ -353,11 +292,13 @@ const HeaderRight = () => {
 
     //
   }
+
   const onHelp = () => {
     window.open(
       'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/Agile.pdf',
     )
   }
+
   // 创建
   const onCreate = (key: string) => {
     setIsCreateVisible(false)
@@ -393,6 +334,7 @@ const HeaderRight = () => {
     // 否则，根据 visible 属性来改变 Tooltip 的显示状态
     // 可以在这里添加其他逻辑
   }
+
   const userContent = (
     <UserInfoWrap>
       <UserInfoTop>
@@ -457,6 +399,7 @@ const HeaderRight = () => {
       </ChangeItems>
     )
   }
+
   const onFeedback = (e: any) => {
     e.stopPropagation()
     dispatch(changeFreedVisibleVisible(true))
@@ -619,7 +562,9 @@ const HeaderRight = () => {
         )}
 
         {/* 汇报 */}
-        {String(location.pathname).includes('/Report') && (
+        {(String(location.pathname).includes('/Report/Review') ||
+          String(location.pathname).includes('/Report/Statistics') ||
+          String(location.pathname).includes('/Report/Formwork')) && (
           <HeaderCreate
             onClick={() => dispatch(setWriteReportModal({ visible: true }))}
           >
