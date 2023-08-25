@@ -33,8 +33,6 @@ import {
   updateFlawTableParams,
 } from '@/services/flaw'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
-// eslint-disable-next-line no-duplicate-imports
-import { getFlawInfo as getFlawInfo2 } from '@/services/flaw'
 import {
   setAddWorkItemModal,
   setIsUpdateAddWorkItem,
@@ -400,16 +398,7 @@ const FlawDetail = () => {
   const onChangeStatus = async (value: any) => {
     await updateFlawStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getFlawInfo({ projectId: params.id, id: flawInfo.id }))
-    dispatch(
-      getFlawCommentList({
-        projectId: params.id,
-        id: flawInfo.id || 0,
-        page: 1,
-        pageSize: 999,
-      }),
-    )
-    dispatch(setIsUpdateChangeLog(true))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 是否审核
@@ -491,14 +480,6 @@ const FlawDetail = () => {
   useEffect(() => {
     if (visible) {
       dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
-      // dispatch(
-      //   getDemandCommentList({
-      //     projectId: params.id,
-      //     demandId: params.demandId,
-      //     page: 1,
-      //     pageSize: 999,
-      //   }),
-      // )
     }
   }, [visible])
 

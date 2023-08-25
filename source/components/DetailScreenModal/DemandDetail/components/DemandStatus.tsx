@@ -73,19 +73,7 @@ const DemandStatusBox = (props: any) => {
     try {
       await updateDemandStatus(res1)
       getMessage({ msg: t('common.circulationSuccess'), type: 'success' })
-      const result = await getDemandInfo({
-        projectId: props.pid,
-        id: props.sid,
-      })
-      dispatch(setDemandInfo(result))
-      dispatch(
-        getDemandCommentList({
-          projectId: props.pid,
-          demandId: props.sid,
-          page: 1,
-          pageSize: 999,
-        }),
-      )
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     } catch (error) {
       //
     }
