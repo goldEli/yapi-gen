@@ -50,6 +50,7 @@ const WorkHours: React.FC<IProps> = props => {
 
   // 拖动线条
   const onDragLine = () => {
+    console.log(window.innerWidth, 'window.innerWidth')
     setHoverStyle(false)
     document.onmousemove = e => {
       setFocus(true)

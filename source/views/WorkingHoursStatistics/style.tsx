@@ -123,6 +123,7 @@ export const Line = styled(DragLine)<{ active: boolean }>`
 `
 export const SprintDetailMouseDom = styled(MouseDom)`
   background: transparent;
+  height: calc(100% + 12px);
 `
 export const UpdateTask = styled.div`
   width: 240px;
