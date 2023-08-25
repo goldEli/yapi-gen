@@ -185,7 +185,7 @@ const NewRelatedNeedForProject = (props: any) => {
               <span style={{ marginLeft: 2 }}>
                 {item.label ? item.label : '--'}
               </span>
-              <span>
+              <span style={{ whiteSpace: 'nowrap' }}>
                 {`（${item.schedule_percent ? item.schedule_percent : 0}%  ${
                   item.today_task_time ?? 0
                 }h）`}

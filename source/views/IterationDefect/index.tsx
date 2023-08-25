@@ -148,7 +148,7 @@ const Index = (props: any) => {
       pageSize: item.size,
       order: orderItem.value,
       orderKey: orderItem.key,
-      searchValue: searchParamsObj.searchValue,
+      searchValue: searchVal,
       statusIds: searchParamsObj.statusId,
       iterateIds: searchParamsObj.iterateId,
       priorityIds: searchParamsObj.priorityId,
