@@ -79,20 +79,29 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
               record.story.project_type === 1 &&
               record.story.project_category.isBug === 1
                 ? openDemandDetail(
-                    { ...record },
+                    {
+                      ...record,
+                      id: record.story_id,
+                    },
                     record.project_id,
                     record.story_id,
                     2,
                   )
                 : record.story.project_type === 2
                 ? openDemandDetail(
-                    { ...record },
+                    {
+                      ...record,
+                      id: record.story_id,
+                    },
                     record.project_id,
                     record.story_id,
                     1,
                   )
                 : openDemandDetail(
-                    { ...record },
+                    {
+                      ...record,
+                      id: record.story_id,
+                    },
                     record.project_id,
                     record.story_id,
                   )
