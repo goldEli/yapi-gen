@@ -2358,5 +2358,6 @@
   "to": "至",
   "personnel": "人员",
   "time": "时间",
-  "youDoNotHavePermissionToEdit": "你暂无编辑权限"
+  "youDoNotHavePermissionToEdit": "你暂无编辑权限",
+  "hoursStatistics": "\n      name: '工时统计"
 }

@@ -174,7 +174,6 @@ const WorkHours: React.FC<IProps> = props => {
                   setLeftWidth(direction ? 504 : 1550)
                   setDirection(!direction)
                 }}
-                color="var(--neutral-n3)"
               />
             </div>
           </LeftWrap>

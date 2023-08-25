@@ -2358,5 +2358,6 @@
   "to": "To",
   "personnel": "Personnel",
   "time": "Time",
-  "youDoNotHavePermissionToEdit": "You do not have permission to edit"
+  "youDoNotHavePermissionToEdit": "You do not have permission to edit",
+  "hoursStatistics": "Name: &#39;Working hours statistics"
 }

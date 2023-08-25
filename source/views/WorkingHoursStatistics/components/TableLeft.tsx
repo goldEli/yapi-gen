@@ -13,13 +13,14 @@ import {
   InputStyle,
 } from '../style'
 import IconFont from '@/components/IconFont'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
 const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [state, setState] = useState(false)
+  const inputRef = useRef<any>(null)
   const [value, setValue] = useState('')
   const [openDemandDetail] = useOpenDemandDetail()
   const [row, setRow] = useState<any>({})
@@ -171,6 +172,9 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                 }
                 if (record.is_normal === 2 && record.exceed_day_num > 0) {
                   setState(true)
+                  setTimeout(() => {
+                    inputRef.current?.focus()
+                  }, 100)
                   setRow(record)
                   setValue('')
                 }
@@ -251,6 +255,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       >
         <Text state={3}>{t('reasonForAdjustment')}</Text>
         <InputStyle
+          ref={inputRef}
           value={value}
           rows={6}
           placeholder={t('pleaseEnterTheReasonForTheAdjustment')}
