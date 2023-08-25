@@ -421,7 +421,10 @@ const Operation = (props: Props) => {
               onVisibleChange={visible => setIsVisible(visible)}
             >
               <MoreWrap type="create">
-                <span>{t('common.createDemand')}</span>
+                <Tooltip placement="top" title={`${t('create')} [C]`}>
+                  {t('common.createDemand')}
+                </Tooltip>
+                {/* <span>{t('common.createDemand')}</span> */}
                 <IconFont
                   style={{ fontSize: 16, marginLeft: 8 }}
                   type={isVisible ? 'up' : 'down'}
