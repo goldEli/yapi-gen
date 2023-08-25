@@ -44,8 +44,8 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         <div>{t('reasonForAdjustment')}</div>
         <Text state={1}>{row.normal_reason.reason}</Text>
         <Text state={2}>
-          {row.normal_reason.operator_name} {t('at')}
-          {''} {row.normal_reason.operator_time}{' '}
+          {row.normal_reason?.operator_name} {t('at')}
+          {''} {row.normal_reason?.operator_time}{' '}
         </Text>
       </PopoverWrap>
     )
@@ -59,9 +59,9 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         return (
           <CommonUserAvatar
             size="large"
-            avatar={record.user.avatar}
-            name={record.user.name}
-            positionName={record.user.position.name}
+            avatar={record.user?.avatar}
+            name={record.user?.name}
+            positionName={record.user.position?.name}
           />
         )
       },
@@ -102,7 +102,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
               src={record.story.category_attachment}
               style={{ marginRight: 4, width: 20, height: 20 }}
             />
-            <span className="text">{record.story.name || '--'}</span>
+            <span className="text">{record.story?.name || '--'}</span>
           </CanOperation>
         )
       },
