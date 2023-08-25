@@ -391,30 +391,24 @@ const ProjectDetailSide = () => {
                 ></MenuStyle>
               ) : (
                 menuList.map((i: any) => (
-                  <Tooltip
-                    arrowPointAtCenter
+                  <MenuItem
                     key={i.path}
-                    placement="right"
-                    title={i.tool}
+                    isActive={
+                      (pathname ===
+                        '/SprintProjectManagement/SprintProjectDetail' &&
+                        i.path === '/SprintProjectManagement/Affair') ||
+                      pathname === i.path
+                    }
+                    onClick={() => onChangeRouter(i)}
+                    hidden={!i.isPermission}
                   >
-                    <MenuItem
-                      isActive={
-                        (pathname ===
-                          '/SprintProjectManagement/SprintProjectDetail' &&
-                          i.path === '/SprintProjectManagement/Affair') ||
-                        pathname === i.path
-                      }
-                      onClick={() => onChangeRouter(i)}
-                      hidden={!i.isPermission}
-                    >
-                      <CommonIconFont
-                        color="var(--neutral-n3)"
-                        type={i.icon}
-                        size={18}
-                      />
-                      <div>{i.name}</div>
-                    </MenuItem>
-                  </Tooltip>
+                    <CommonIconFont
+                      color="var(--neutral-n3)"
+                      type={i.icon}
+                      size={18}
+                    />
+                    <div>{i.name}</div>
+                  </MenuItem>
                 ))
               )}
             </MenuBox>
