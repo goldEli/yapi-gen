@@ -2357,5 +2357,6 @@
   "pleaseEnter": "Please enter",
   "to": "To",
   "personnel": "Personnel",
-  "time": "Time"
+  "time": "Time",
+  "youDoNotHavePermissionToEdit": "You do not have permission to edit"
 }

@@ -36,6 +36,7 @@ const WorkHours: React.FC<IProps> = props => {
   const [spinning, setSpinning] = useState<boolean>(false)
   const [key, setKey] = useState<any>('')
   const [type, setType] = useState<any>(1)
+  const [hoverStyle, setHoverStyle] = useState<boolean>(false)
   const [stat, setStat] = useState<any>({
     report: 0,
     total: 0,
@@ -49,6 +50,7 @@ const WorkHours: React.FC<IProps> = props => {
 
   // 拖动线条
   const onDragLine = () => {
+    setHoverStyle(false)
     document.onmousemove = e => {
       setFocus(true)
       setLeftWidth(window.innerWidth - e.clientX)
@@ -167,6 +169,7 @@ const WorkHours: React.FC<IProps> = props => {
                 type={direction ? 'indent' : 'outdent'}
                 size={20}
                 onClick={() => {
+                  setHoverStyle(true)
                   setLeftWidth(direction ? 504 : 1550)
                   setDirection(!direction)
                 }}
@@ -180,12 +183,13 @@ const WorkHours: React.FC<IProps> = props => {
               width: leftWidth,
               height: '100%',
               top: '-12px',
-              transition: 'all 0.3s ease 0s',
+              transition: hoverStyle ? 'all 0.2s ease 0s' : 'none',
             }}
           >
             <SprintDetailMouseDom
               active={focus}
               onMouseDown={onDragLine}
+              onMouseLeave={() => setHoverStyle(false)}
               style={{ left: 0 }}
             >
               <Line active={focus} className="line"></Line>

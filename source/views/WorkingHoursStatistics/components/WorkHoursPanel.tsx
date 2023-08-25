@@ -24,19 +24,11 @@ import CommonButton from '@/components/CommonButton'
 import usePanelData from '../hooks/usePanelData'
 import { getMessage } from '@/components/Message'
 import { t } from 'i18next'
+import { useSelector } from '@store/index'
 interface IProps {
   ref: any
   onClick: any
 }
-// const weekdayString: any = {
-//   1: t('onMonday'),
-//   2: t('tuesday'),
-//   3: t('wednesday'),
-//   4: t('thursday'),
-//   5: t('friday'),
-//   6: t('saturday'),
-//   7: t('sunday'),
-// }
 const WorkHoursPanel = (props: any, ref: any) => {
   const [t] = useTranslation()
   const tdRef = useRef<any>()
@@ -47,19 +39,27 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const { dataSource, onClick, direction, type, onConfirm } = props
   const [storyId, setStoryId] = useState('')
   const [record, setRecord] = useState<any>()
-  const [weekdayString, setWeekdayString] = useState<any>({
-    1: t('onMonday'),
-    2: t('tuesday'),
-    3: t('wednesday'),
-    4: t('thursday'),
-    5: t('friday'),
-    6: t('saturday'),
-    7: t('sunday'),
-  })
+  const language = window.localStorage.getItem('language')
+  const [weekdayString, setWeekdayString] = useState<any>({})
+  const { projectInfo } = useSelector(state => state.project)
+  const { projectPermissions } = projectInfo
+  console.log('projectInfo', projectPermissions)
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
   )
+  useEffect(() => {
+    setWeekdayString({
+      1: t('onMonday'),
+      2: t('tuesday'),
+      3: t('wednesday'),
+      4: t('thursday'),
+      5: t('friday'),
+      6: t('saturday'),
+      7: t('sunday'),
+    })
+  }, [language])
+
   if (!columns) {
     return null
   }
@@ -175,7 +175,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
         </DateLabel>
       </Header>
       <Header>
-        <TimeLabel ref={timeRef}>
+        <TimeLabel ref={timeRef} language={language}>
           {columns.map((item, idx) => {
             const date = dayjs(item)
             const weekday = date.isoWeekday()
@@ -195,7 +195,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
             {columns.map((item: any, index: any) => {
               const col = map.get(item)[rowIndex]
               return (
-                <Cols key={index} ref={tdRef}>
+                <Cols key={index} ref={tdRef} language={language}>
                   <Popover
                     title=""
                     content={Content}
@@ -211,6 +211,17 @@ const WorkHoursPanel = (props: any, ref: any) => {
                       })}
                       onClick={() => {
                         console.log(rowIndex, index, item)
+                        if (
+                          !projectPermissions
+                            ?.map((item: { identity: any }) => item.identity)
+                            ?.includes('b/story/work_time')
+                        ) {
+                          getMessage({
+                            type: 'warning',
+                            msg: t('youDoNotHavePermissionToEdit'),
+                          })
+                          return
+                        }
                         // time -1请假 -2 未上报
                         let value = 2
                         const { time, story_id } = col
