@@ -15,6 +15,7 @@ import {
   TimeLabel,
   lastDay,
   UpdateTask,
+  HeaderWrap,
 } from '../style'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
@@ -155,49 +156,51 @@ const WorkHoursPanel = (props: any, ref: any) => {
 
   return (
     <PanelWrap>
-      <Header>
-        <DateLabel>
-          {Object.keys(monthData).map(item => {
-            const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
-            const data = monthData[item]
-            const { length } = data
-            const w =
-              timeRef?.current?.getBoundingClientRect().width /
-              Object.values(monthData).flat().length
-            const width = type ? w * length : '100%'
-            return (
-              <div
-                key={item}
-                className={classNames('month-td', {
-                  [lastDay]: isLastDay === item,
-                })}
-                style={{ width }}
-              >
-                <div>
-                  {type === 0
-                    ? String(data[0])
-                    : `${data[0]}${t('to')}${data[data.length - 1]}`}
+      <HeaderWrap>
+        <Header>
+          <DateLabel>
+            {Object.keys(monthData).map(item => {
+              const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
+              const data = monthData[item]
+              const { length } = data
+              const w =
+                timeRef?.current?.getBoundingClientRect().width /
+                Object.values(monthData).flat().length
+              const width = type ? w * length : '100%'
+              return (
+                <div
+                  key={item}
+                  className={classNames('month-td', {
+                    [lastDay]: isLastDay === item,
+                  })}
+                  style={{ width }}
+                >
+                  <div>
+                    {type === 0
+                      ? String(data[0])
+                      : `${data[0]}${t('to')}${data[data.length - 1]}`}
+                  </div>
                 </div>
-              </div>
-            )
-          })}
-        </DateLabel>
-      </Header>
-      <Header>
-        <TimeLabel ref={timeRef} language={language}>
-          {columns.map((item, idx) => {
-            const date = dayjs(item)
-            const weekday = date.isoWeekday()
-            return (
-              <div key={idx} className="header-td">
-                {type === 1 || type === 0
-                  ? weekdayString[weekday]
-                  : dayjs(item).format('DD')}
-              </div>
-            )
-          })}
-        </TimeLabel>
-      </Header>
+              )
+            })}
+          </DateLabel>
+        </Header>
+        <Header>
+          <TimeLabel ref={timeRef} language={language}>
+            {columns.map((item, idx) => {
+              const date = dayjs(item)
+              const weekday = date.isoWeekday()
+              return (
+                <div key={idx} className="header-td">
+                  {type === 1 || type === 0
+                    ? weekdayString[weekday]
+                    : dayjs(item).format('DD')}
+                </div>
+              )
+            })}
+          </TimeLabel>
+        </Header>
+      </HeaderWrap>
       {rows.map((row: any, rowIndex: any) => {
         return (
           <Rows key={rowIndex} className={rowIndex % 2 ? '' : 'highBackground'}>

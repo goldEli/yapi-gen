@@ -65,11 +65,17 @@ export const Cols = styled.div<{ language?: string | null }>`
   flex: 1;
   padding: 0px 8px;
 `
+export const HeaderWrap = styled.div`
+  position: sticky;
+  top: 0px;
+  background: #fff;
+`
 export const Header = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
 `
+
 export const DateLabel = styled.div`
   font-size: 12px;
   color: var(--neutral-n3);
