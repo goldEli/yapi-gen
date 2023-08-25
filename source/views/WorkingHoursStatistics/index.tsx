@@ -50,6 +50,7 @@ const WorkHours: React.FC<IProps> = props => {
 
   // 拖动线条
   const onDragLine = () => {
+    console.log(window.innerWidth, 'window.innerWidth')
     setHoverStyle(false)
     document.onmousemove = e => {
       setFocus(true)
@@ -79,8 +80,8 @@ const WorkHours: React.FC<IProps> = props => {
       type: val.type,
       project_id: paramsData.id,
       user_ids:
-        val.user_ids?.length > 1
-          ? val.user_ids?.split(',')
+        val.user_ids?.length >= 1
+          ? val.user_ids.join(',')
           : val.user_ids
           ? String(val.user_ids)
           : '',
@@ -116,8 +117,8 @@ const WorkHours: React.FC<IProps> = props => {
       type: val.type,
       project_id: paramsData.id,
       user_ids:
-        val.user_ids?.length > 1
-          ? val.user_ids?.split(',')
+        val.user_ids?.length >= 1
+          ? val.user_ids.join(',')
           : val.user_ids
           ? String(val.user_ids)
           : '',
@@ -173,7 +174,6 @@ const WorkHours: React.FC<IProps> = props => {
                   setLeftWidth(direction ? 504 : 1550)
                   setDirection(!direction)
                 }}
-                color="var(--neutral-n3)"
               />
             </div>
           </LeftWrap>

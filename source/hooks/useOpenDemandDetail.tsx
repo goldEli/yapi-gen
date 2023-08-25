@@ -36,7 +36,7 @@ const useOpenDemandDetail = () => {
     dispatch(setListActiveId(id ?? 0))
     // 重置锚点位置
     dispatch(setDrawerCurrentAnchor(''))
-    // 弹窗预览
+    // 浮层预览
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
         case 1:
@@ -78,7 +78,6 @@ const useOpenDemandDetail = () => {
         id: projectId,
         specialType: type ?? 3,
       }
-
       if (type === 1) {
         params.sprintId = id
       } else if (type === 2) {

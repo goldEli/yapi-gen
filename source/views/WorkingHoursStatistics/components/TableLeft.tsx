@@ -13,13 +13,14 @@ import {
   InputStyle,
 } from '../style'
 import IconFont from '@/components/IconFont'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
 const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [state, setState] = useState(false)
+  const inputRef = useRef<any>(null)
   const [value, setValue] = useState('')
   const [openDemandDetail] = useOpenDemandDetail()
   const [row, setRow] = useState<any>({})
@@ -79,20 +80,29 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
               record.story.project_type === 1 &&
               record.story.project_category.isBug === 1
                 ? openDemandDetail(
-                    { ...record },
+                    {
+                      ...record,
+                      id: record.story_id,
+                    },
                     record.project_id,
                     record.story_id,
                     2,
                   )
                 : record.story.project_type === 2
                 ? openDemandDetail(
-                    { ...record },
+                    {
+                      ...record,
+                      id: record.story_id,
+                    },
                     record.project_id,
                     record.story_id,
                     1,
                   )
                 : openDemandDetail(
-                    { ...record },
+                    {
+                      ...record,
+                      id: record.story_id,
+                    },
                     record.project_id,
                     record.story_id,
                   )
@@ -136,7 +146,6 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
     {
       title: t('isItOverdue'),
       dataIndex: 'status',
-      width: 250,
       render: (text: any, record: any) => {
         return (
           <StateWrap>
@@ -162,6 +171,9 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                 }
                 if (record.is_normal === 2 && record.exceed_day_num > 0) {
                   setState(true)
+                  setTimeout(() => {
+                    inputRef.current?.focus()
+                  }, 100)
                   setRow(record)
                   setValue('')
                 }
@@ -242,6 +254,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       >
         <Text state={3}>{t('reasonForAdjustment')}</Text>
         <InputStyle
+          ref={inputRef}
           value={value}
           rows={6}
           placeholder={t('pleaseEnterTheReasonForTheAdjustment')}

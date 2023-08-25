@@ -13,7 +13,7 @@ import Export from '@/components/Export'
 import { getProjectMember } from '@/services/project'
 
 const WorkHoursHeaderWrap = styled.div`
-  padding: 20px 0px 20px 0;
+  padding: 20px 0px 0px 0;
   margin-left: 24px;
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
@@ -27,7 +27,8 @@ const FormStyle = styled(Form)`
 const LeftWrap = styled.div`
   display: flex;
   align-items: center;
-  height: 32px;
+  min-height: 32px;
+  flex-wrap: wrap;
 `
 const PersonWrap = styled.div`
   margin: 16px 0 28px 24px;
@@ -220,7 +221,7 @@ const WorkHoursHeader = (props: {
       <WorkHoursHeaderWrap>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <LeftWrap>
-            <SelectWrapBedeck>
+            <SelectWrapBedeck style={{ marginBottom: 20 }}>
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('personnel')}
               </span>
@@ -228,7 +229,7 @@ const WorkHoursHeader = (props: {
                 <MoreSelect onConfirm={confirm} options={memberList} />
               </Form.Item>
             </SelectWrapBedeck>
-            <SelectWrapBedeck style={{ marginLeft: 16 }}>
+            <SelectWrapBedeck style={{ marginLeft: 16, marginBottom: 20 }}>
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('time')}
               </span>
@@ -248,20 +249,24 @@ const WorkHoursHeader = (props: {
                 />
               </Form.Item>
             </SelectWrapBedeck>
-            <Form.Item name={'date'} style={{ margin: '0 16px' }}>
-              <Tabs
-                tabsValue={tabsValue}
-                active={dateType}
-                onChange={onChange}
-              />
-            </Form.Item>
-            <Form.Item name={'type'}>
-              <Tabs
-                tabsValue={tabsValue1}
-                active={state}
-                onChange={onChangeType}
-              />
-            </Form.Item>
+            <SelectWrapBedeck style={{ margin: '0 16px 20px 16px' }}>
+              <Form.Item name={'date'}>
+                <Tabs
+                  tabsValue={tabsValue}
+                  active={dateType}
+                  onChange={onChange}
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+            <SelectWrapBedeck style={{ marginBottom: 20 }}>
+              <Form.Item name={'type'}>
+                <Tabs
+                  tabsValue={tabsValue1}
+                  active={state}
+                  onChange={onChangeType}
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
           </LeftWrap>
           <CommonButton type="primary" onClick={() => setOpen(true)}>
             {t('exportRecords')}

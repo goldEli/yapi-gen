@@ -23,6 +23,24 @@ export const MianWrap = styled.div`
   height: calc(100% - 240px);
   padding-left: 16px;
   justify-content: space-between;
+  .openIconBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background-color: transparent;
+    .anticon {
+      color: var(--neutral-n3);
+    }
+  }
+  .openIconBox:hover {
+    background-color: var(--hover-d1);
+    .anticon {
+      color: var(--neutral-n1-d1);
+    }
+  }
 `
 export const PanelWrap = styled.div`
   border: 1px solid var(--neutral-n6-d1);
@@ -123,6 +141,7 @@ export const Line = styled(DragLine)<{ active: boolean }>`
 `
 export const SprintDetailMouseDom = styled(MouseDom)`
   background: transparent;
+  height: calc(100% + 12px);
 `
 export const UpdateTask = styled.div`
   width: 240px;

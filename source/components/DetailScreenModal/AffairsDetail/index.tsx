@@ -433,18 +433,8 @@ const AffairsDetail = () => {
   const onChangeStatus = async (value: any) => {
     await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(
-      getAffairsInfo({ projectId: params.id, sprintId: affairsInfo.id || 0 }),
-    )
-    dispatch(
-      getAffairsCommentList({
-        projectId: params.id,
-        sprintId: affairsInfo.id || 0,
-        page: 1,
-        pageSize: 999,
-      }),
-    )
     dispatch(setIsUpdateChangeLog(true))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 拖动线条
@@ -520,6 +510,14 @@ const AffairsDetail = () => {
     if (isUpdateAddWorkItem && visible) {
       dispatch(
         getAffairsInfo({ projectId: params.id, sprintId: affairsInfo.id }),
+      )
+      dispatch(
+        getAffairsCommentList({
+          projectId: params.id,
+          sprintId: params?.sprintId || 0,
+          page: 1,
+          pageSize: 999,
+        }),
       )
     }
   }, [isUpdateAddWorkItem])

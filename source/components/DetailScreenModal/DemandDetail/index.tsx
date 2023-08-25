@@ -396,16 +396,8 @@ const DemandDetail = () => {
   const onChangeStatus = async (value: any) => {
     await updateDemandStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getDemandInfo({ projectId: params.id, id: demandInfo.id }))
-    dispatch(
-      getDemandCommentList({
-        projectId: params.id,
-        demandId: demandInfo.id,
-        page: 1,
-        pageSize: 999,
-      }),
-    )
     dispatch(setIsUpdateChangeLog(true))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 是否审核
@@ -512,8 +504,6 @@ const DemandDetail = () => {
     }
   }, [visible, params])
 
-  console.log(demandInfo)
-
   useEffect(() => {
     // 获取项目信息中的需求类别
     const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
@@ -532,6 +522,14 @@ const DemandDetail = () => {
   useEffect(() => {
     if (isUpdateAddWorkItem && visible) {
       dispatch(getDemandInfo({ projectId: params.id, id: demandInfo.id }))
+      dispatch(
+        getDemandCommentList({
+          projectId: params.id,
+          demandId: params.demandId,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
     }
   }, [isUpdateAddWorkItem])
 
