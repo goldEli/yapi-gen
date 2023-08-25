@@ -146,7 +146,6 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
     {
       title: t('isItOverdue'),
       dataIndex: 'status',
-      width: 250,
       render: (text: any, record: any) => {
         return (
           <StateWrap>
