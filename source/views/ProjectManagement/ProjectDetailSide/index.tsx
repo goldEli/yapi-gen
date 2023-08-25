@@ -146,7 +146,7 @@ const ProjectDetailSide = () => {
         ).length,
     },
     {
-      name: '工时统计',
+      name: t('workingHoursStatistics'),
       icon: 'man-hour',
       path: '/ProjectManagement/WorkHours',
       isPermission:
