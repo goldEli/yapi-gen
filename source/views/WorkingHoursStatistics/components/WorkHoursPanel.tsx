@@ -24,6 +24,7 @@ import CommonButton from '@/components/CommonButton'
 import usePanelData from '../hooks/usePanelData'
 import { getMessage } from '@/components/Message'
 import { t } from 'i18next'
+import { useSelector } from '@store/index'
 interface IProps {
   ref: any
   onClick: any
@@ -40,6 +41,9 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [record, setRecord] = useState<any>()
   const language = window.localStorage.getItem('language')
   const [weekdayString, setWeekdayString] = useState<any>({})
+  const { projectInfo } = useSelector(state => state.project)
+  const { projectPermissions } = projectInfo
+  console.log('projectInfo', projectPermissions)
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
@@ -207,6 +211,17 @@ const WorkHoursPanel = (props: any, ref: any) => {
                       })}
                       onClick={() => {
                         console.log(rowIndex, index, item)
+                        if (
+                          !projectPermissions
+                            ?.map((item: { identity: any }) => item.identity)
+                            ?.includes('b/story/work_time')
+                        ) {
+                          getMessage({
+                            type: 'warning',
+                            msg: t('youDoNotHavePermissionToEdit'),
+                          })
+                          return
+                        }
                         // time -1请假 -2 未上报
                         let value = 2
                         const { time, story_id } = col
