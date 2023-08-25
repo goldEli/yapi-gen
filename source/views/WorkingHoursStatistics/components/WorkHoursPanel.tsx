@@ -37,7 +37,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
   const { dataSource, onClick, direction, type, onConfirm } = props
-  const [storyId, setStoryId] = useState('')
+  const [id, setId] = useState('')
   const [record, setRecord] = useState<any>()
   const language = window.localStorage.getItem('language')
   const [weekdayString, setWeekdayString] = useState<any>({})
@@ -87,13 +87,13 @@ const WorkHoursPanel = (props: any, ref: any) => {
     }
     console.log('params', params, value)
     if (value === cacheValue && value !== 2) {
-      setStoryId('')
+      setId('')
       return
     }
     await updateWorkTime(params)
     getMessage({ type: 'success', msg: t('successfullyModified') })
     popoverRef?.current?.props.onPopupVisibleChange(false)
-    setStoryId('')
+    setId('')
     onConfirm()
   }
   const Content = () => {
@@ -122,6 +122,10 @@ const WorkHoursPanel = (props: any, ref: any) => {
                       console.log(e)
                       setDayTaskTime(e)
                     }}
+                    onFocus={() => {
+                      setValue(2)
+                    }}
+                    precision={2}
                   ></InputNumber>
                 </div>
               </Radio>
@@ -135,7 +139,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
             type="light"
             size="small"
             onClick={() => {
-              setStoryId('')
+              setId('')
               popoverRef?.current?.props.onPopupVisibleChange(false)
             }}
           >
@@ -206,7 +210,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                     content={Content}
                     trigger="click"
                     ref={popoverRef}
-                    open={col.story_id === storyId && item === record.date}
+                    open={col.id === id && item === record.date}
                   >
                     <WorkHourLabel
                       className={classNames({
@@ -230,7 +234,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
 
                         // time -1请假 -2 未上报
                         let value = 2
-                        const { time, story_id } = col
+                        const { time, id } = col
                         if (time === -1) {
                           value = 3
                         }
@@ -241,7 +245,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         setValue(value)
                         setDayTaskTime(time > 0 ? time / 3600 : '')
                         setRecord({ ...row, date: item })
-                        setStoryId(story_id)
+                        setId(id)
                       }}
                     >
                       {label(col)}

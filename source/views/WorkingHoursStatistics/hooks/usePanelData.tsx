@@ -21,6 +21,7 @@ const usePanelData = (data: any[], array: any[]) => {
           user_id: ele.user_id,
           story_id: ele.story.id,
           project_id: ele.project_id,
+          id: ele.id,
         })
         map.set(item.date, child)
       }
