@@ -34,7 +34,6 @@ const PersonWrap = styled.div`
   background: var(--auxiliary-b5);
   border-radius: 6px;
   height: 32px;
-  width: 339px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -92,12 +91,8 @@ const WorkHoursHeader = (props: {
         date: [],
       })
       setTime([
-        moment(dates[0]).unix()
-          ? moment(dates[0]).format('YYYY-MM-DD')
-          : '1970-01-01',
-        moment(dates[1]).unix() === 1893427200
-          ? '2030-01-01'
-          : moment(dates[1]).format('YYYY-MM-DD'),
+        moment(dates[0]).format('YYYY-MM-DD'),
+        moment(dates[1]).format('YYYY-MM-DD'),
       ])
       setDateType(-1)
     } else {
@@ -170,17 +165,17 @@ const WorkHoursHeader = (props: {
   }
   // 获取当前星期一的日期对象
   const getMonDate = () => {
-    let d = new Date()
+    const d = new Date()
     const day = d.getDay()
     const date = d.getDate()
-    if (day == 1) return d
-    if (day == 0) d.setDate(date - 6)
+    if (day === 1) return d
+    if (day === 0) d.setDate(date - 6)
     else d.setDate(date - day + 1)
     return d
   }
   // 本月第一天和最后一天
   function getLastDay() {
-    let y: any = new Date().getFullYear()
+    const y: any = new Date().getFullYear()
     let m: any = new Date().getMonth() + 1
     let d: any = new Date(y, m, 0).getDate()
     m = m < 10 ? '0' + m : m
@@ -226,16 +221,21 @@ const WorkHoursHeader = (props: {
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <LeftWrap>
             <SelectWrapBedeck>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>人员</span>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('personnel')}
+              </span>
               <Form.Item name={'user_ids'}>
                 <MoreSelect onConfirm={confirm} options={memberList} />
               </Form.Item>
             </SelectWrapBedeck>
             <SelectWrapBedeck style={{ marginLeft: 16 }}>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>时间</span>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('time')}
+              </span>
               <Form.Item name={'time'}>
                 <RangePicker
-                  isShowQuick
+                  width={'235px'}
+                  isShowQuick={false}
                   dateValue={
                     form.getFieldValue('time')
                       ? [
@@ -268,7 +268,9 @@ const WorkHoursHeader = (props: {
           </CommonButton>
         </FormStyle>
       </WorkHoursHeaderWrap>
-      <PersonWrap>
+      <PersonWrap
+        style={{ width: localStorage.language === 'zh' ? '339px' : '667px' }}
+      >
         <span>
           {t('numberOfPeopleReported')}: {props.stat?.report}/
           {props.stat?.total}

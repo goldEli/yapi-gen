@@ -36,6 +36,7 @@ const WorkHours: React.FC<IProps> = props => {
   const [spinning, setSpinning] = useState<boolean>(false)
   const [key, setKey] = useState<any>('')
   const [type, setType] = useState<any>(1)
+  const [hoverStyle, setHoverStyle] = useState<boolean>(false)
   const [stat, setStat] = useState<any>({
     report: 0,
     total: 0,
@@ -49,6 +50,8 @@ const WorkHours: React.FC<IProps> = props => {
 
   // 拖动线条
   const onDragLine = () => {
+    console.log(window.innerWidth, 'window.innerWidth')
+    setHoverStyle(false)
     document.onmousemove = e => {
       setFocus(true)
       setLeftWidth(window.innerWidth - e.clientX)
@@ -101,7 +104,7 @@ const WorkHours: React.FC<IProps> = props => {
     user_id: number
     normal_reason: number
   }) => {
-    const res = await updateOverdue({ ...row, project_id: paramsData.id })
+    await updateOverdue({ ...row, project_id: paramsData.id })
     getMessage({ msg: t('adjustedSuccessfully'), type: 'success' })
     onSearch(formVal, type)
   }
@@ -165,8 +168,9 @@ const WorkHours: React.FC<IProps> = props => {
             <div className="openIconBox">
               <CommonIconFont
                 type={direction ? 'indent' : 'outdent'}
-                size={24}
+                size={20}
                 onClick={() => {
+                  setHoverStyle(true)
                   setLeftWidth(direction ? 504 : 1550)
                   setDirection(!direction)
                 }}
@@ -174,11 +178,19 @@ const WorkHours: React.FC<IProps> = props => {
               />
             </div>
           </LeftWrap>
-
-          <div style={{ position: 'relative', width: leftWidth, top: '-12px' }}>
+          <div
+            style={{
+              position: 'relative',
+              width: leftWidth,
+              height: '100%',
+              top: '-12px',
+              transition: hoverStyle ? 'all 0.2s ease 0s' : 'none',
+            }}
+          >
             <SprintDetailMouseDom
               active={focus}
               onMouseDown={onDragLine}
+              onMouseLeave={() => setHoverStyle(false)}
               style={{ left: 0 }}
             >
               <Line active={focus} className="line"></Line>

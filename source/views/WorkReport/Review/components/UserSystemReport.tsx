@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { Drawer, Form, Space } from 'antd'
+import { Drawer, Form, Space, Tooltip } from 'antd'
 import { Editor } from '@xyfe/uikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -349,7 +349,13 @@ const UserSystemReport = () => {
                 />
                 <div className="reportTitleWrap">
                   <MsgRow>
-                    <div className="titleText">{drawerInfo?.title}</div>
+                    {drawerInfo?.title?.length > 20 ? (
+                      <Tooltip title={drawerInfo?.title}>
+                        <div className="titleText">{drawerInfo?.title}</div>
+                      </Tooltip>
+                    ) : (
+                      <div className="titleText">{drawerInfo?.title}</div>
+                    )}
                     <div className="submitTimeText">
                       {t('report.list.dateSubmit')}：{drawerInfo?.created_at}
                     </div>

@@ -39,6 +39,7 @@ const InputSearch = (props: Props) => {
   // 用于控制输入框的删除图标
   const inputRef = useRef<any>(null)
   const [value, setValue] = useState('')
+  const [value2, setValue2] = useState('')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -76,10 +77,15 @@ const InputSearch = (props: Props) => {
       }}
       placeholder={props.placeholder}
       maxLength={props.length}
-      onBlur={(e: any) => props.onChangeSearch?.(e.target.value)}
+      onBlur={(e: any) =>
+        value2 === value ? null : props.onChangeSearch?.(e.target.value)
+      }
       onChange={(e: any) => {
         dispatch(saveInputKey(e.target.value))
-        setValue(e.target.value)
+        setValue(k => {
+          setValue2(k)
+          return e.target.value
+        })
         dispatch(changeColorText(e.target.value))
       }}
       onFocus={() => props.onFocus?.()}

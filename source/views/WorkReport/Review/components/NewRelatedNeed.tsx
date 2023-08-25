@@ -163,7 +163,7 @@ const NewRelatedNeed = (props: any) => {
   }, [props.initValue])
 
   return (
-    <div>
+    <div style={{ maxWidth: 626 }}>
       <AddWrap
         onClick={() => {
           setShow(true)
@@ -188,7 +188,7 @@ const NewRelatedNeed = (props: any) => {
               <span style={{ marginLeft: 2 }}>
                 {item.label ? item.label : '--'}
               </span>
-              <span>
+              <span style={{ whiteSpace: 'nowrap' }}>
                 {`（${
                   item.user_schedule_percent ? item.user_schedule_percent : 0
                 }%  ${item.user_today_task_time ?? 0}h）`}

@@ -1,12 +1,7 @@
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-} from 'react'
-import { Form, Popover, Input, Radio, Space, InputNumber } from 'antd'
+import React, { useRef, useEffect, useState, forwardRef } from 'react'
+import { Popover, Input, Radio, Space, InputNumber } from 'antd'
 import { updateWorkTime } from '@/services/project'
+import { useTranslation } from 'react-i18next'
 import {
   PanelWrap,
   Rows,
@@ -27,31 +22,45 @@ import isoWeek from 'dayjs/plugin/isoWeek'
 dayjs.extend(isoWeek)
 import CommonButton from '@/components/CommonButton'
 import usePanelData from '../hooks/usePanelData'
-import CommonIconFont from '@/components/CommonIconFont'
+import { getMessage } from '@/components/Message'
+import { t } from 'i18next'
+import { useSelector } from '@store/index'
 interface IProps {
   ref: any
   onClick: any
 }
-const weekdayString: any = {
-  1: '周一',
-  2: '周二',
-  3: '周三',
-  4: '周四',
-  5: '周五',
-  6: '周六',
-  7: '周日',
-}
 const WorkHoursPanel = (props: any, ref: any) => {
+  const [t] = useTranslation()
   const tdRef = useRef<any>()
+  const timeRef = useRef<any>()
   const [value, setValue] = useState(1)
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
   const { dataSource, onClick, direction, type, onConfirm } = props
+  const [storyId, setStoryId] = useState('')
   const [record, setRecord] = useState<any>()
+  const language = window.localStorage.getItem('language')
+  const [weekdayString, setWeekdayString] = useState<any>({})
+  const [cacheValue, setCacheValue] = useState<number>()
+  const { projectInfo } = useSelector(state => state.project)
+  const { projectPermissions } = projectInfo
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
   )
+
+  useEffect(() => {
+    setWeekdayString({
+      1: t('onMonday'),
+      2: t('tuesday'),
+      3: t('wednesday'),
+      4: t('thursday'),
+      5: t('friday'),
+      6: t('saturday'),
+      7: t('sunday'),
+    })
+  }, [language])
+
   if (!columns) {
     return null
   }
@@ -59,12 +68,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const monthData = reduceMonth(columns)
   const label = ({ time }: any) => {
     if (time === -2) {
-      return '未上报'
+      return t('notReported')
     }
     if (time === -1) {
-      return '请假'
+      return t('askForLeave')
     }
-    return `${time / 3600}工时`
+    return `${time / 3600}${t('workingHours')}`
   }
   const confirm = async () => {
     const params = {
@@ -76,15 +85,21 @@ const WorkHoursPanel = (props: any, ref: any) => {
     if (value !== 2) {
       delete params.day_task_time
     }
-    console.log('params', params)
-    const data = await updateWorkTime(params)
+    console.log('params', params, value)
+    if (value === cacheValue && value !== 2) {
+      setStoryId('')
+      return
+    }
+    await updateWorkTime(params)
+    getMessage({ type: 'success', msg: t('successfullyModified') })
     popoverRef?.current?.props.onPopupVisibleChange(false)
+    setStoryId('')
     onConfirm()
   }
   const Content = () => {
     return (
       <UpdateTask>
-        <div className="title">修改任务记录</div>
+        <div className="title">{t('modifyTaskRecord')}</div>
         <div className="form-box">
           <Radio.Group
             onChange={e => {
@@ -95,10 +110,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
             <Space direction="vertical">
               <Radio value={2}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ marginBottom: '8px' }}>调整工时</span>
+                  <span style={{ marginBottom: '8px' }}>
+                    {t('adjustWorkingHours')}
+                  </span>
                   <InputNumber
                     size="middle"
-                    placeholder="请输入"
+                    placeholder={t('pleaseEnter')}
                     style={{ width: 160 }}
                     value={dayTaskTime}
                     onChange={e => {
@@ -108,8 +125,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
                   ></InputNumber>
                 </div>
               </Radio>
-              <Radio value={3}>请假</Radio>
-              <Radio value={1}>未上报</Radio>
+              <Radio value={3}>{t('askForLeave')}</Radio>
+              <Radio value={1}>{t('notReported')}</Radio>
             </Space>
           </Radio.Group>
         </div>
@@ -118,13 +135,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
             type="light"
             size="small"
             onClick={() => {
+              setStoryId('')
               popoverRef?.current?.props.onPopupVisibleChange(false)
             }}
           >
-            取消
+            {t('cancel')}
           </CommonButton>
           <CommonButton type="primary" size="small" onClick={confirm}>
-            确认
+            {t('confirm')}
           </CommonButton>
         </div>
       </UpdateTask>
@@ -135,60 +153,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
     <PanelWrap>
       <Header>
         <DateLabel>
-          {/* {columns.map((item, idx) => {
-            const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
-            const isFirstDay = dayjs(item).startOf('month').format('YYYY-MM-DD')
-            const width =
-              tdRef.current?.getBoundingClientRect().width * (idx + 1)
-            console.log('item------', item, isLastDay, Object.keys(monthData))
-            return Object.keys(monthData).map(item => {
-              return (
-                <div
-                  key={item}
-                  className={classNames('month-td', {
-                    [lastDay]: isLastDay === item,
-                  })}
-                  style={{ width }}
-                >
-                  {Object.values(monthData).map((ele: any) => {
-                    console.log('ele', ele)
-                    if (ele.includes(item)) {
-                      return (
-                        <div key={ele}>{`${ele[0]}至${
-                          ele[ele.length - 1]
-                        }`}</div>
-                      )
-                    }
-                  })}
-                </div>
-              )
-            })
-            return isLastDay === item || isFirstDay === item ? (
-              <div
-                className={classNames('month-td', {
-                  [lastDay]: isLastDay === item,
-                })}
-                style={{ width }}
-              >
-                {Object.values(monthData).map((ele: any) => {
-                  console.log('ele', ele)
-                  if (ele.includes(item)) {
-                    return (
-                      <div key={ele}>{`${ele[0]}至${ele[ele.length - 1]}`}</div>
-                    )
-                  }
-                })}
-              </div>
-            ) : null
-          })} */}
           {Object.keys(monthData).map(item => {
             const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
-            const isFirstDay = dayjs(item).startOf('month').format('YYYY-MM-DD')
             const data = monthData[item]
-            const index = data.length - 1
-            const width = type
-              ? tdRef.current?.getBoundingClientRect().width * (index + 1)
-              : '100%'
+            const { length } = data
+            const w =
+              timeRef?.current?.getBoundingClientRect().width /
+              Object.values(monthData).flat().length
+            const width = type ? w * length : '100%'
             return (
               <div
                 key={item}
@@ -197,27 +169,18 @@ const WorkHoursPanel = (props: any, ref: any) => {
                 })}
                 style={{ width }}
               >
-                {Object.values(monthData).map((ele: any) => {
-                  if (ele.includes(isLastDay) || ele.includes(isFirstDay)) {
-                    return (
-                      <div key={ele}>{`${ele[0]}至${ele[ele.length - 1]}`}</div>
-                    )
-                  }
-                  return (
-                    <div key={ele}>
-                      {type === 0
-                        ? String(ele[0])
-                        : `${ele[0]}至${ele[ele.length - 1]}`}
-                    </div>
-                  )
-                })}
+                <div>
+                  {type === 0
+                    ? String(data[0])
+                    : `${data[0]}${t('to')}${data[data.length - 1]}`}
+                </div>
               </div>
             )
           })}
         </DateLabel>
       </Header>
       <Header>
-        <TimeLabel>
+        <TimeLabel ref={timeRef} language={language}>
           {columns.map((item, idx) => {
             const date = dayjs(item)
             const weekday = date.isoWeekday()
@@ -237,12 +200,13 @@ const WorkHoursPanel = (props: any, ref: any) => {
             {columns.map((item: any, index: any) => {
               const col = map.get(item)[rowIndex]
               return (
-                <Cols key={index} ref={tdRef}>
+                <Cols key={index} ref={tdRef} language={language}>
                   <Popover
                     title=""
                     content={Content}
                     trigger="click"
                     ref={popoverRef}
+                    open={col.story_id === storyId && item === record.date}
                   >
                     <WorkHourLabel
                       className={classNames({
@@ -251,18 +215,33 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         [NotWorking]: col.time === -2,
                       })}
                       onClick={() => {
+                        console.log(rowIndex, index, item)
+                        if (
+                          !projectPermissions
+                            ?.map((item: { identity: any }) => item.identity)
+                            ?.includes('b/story/work_time')
+                        ) {
+                          getMessage({
+                            type: 'warning',
+                            msg: t('youDoNotHavePermissionToEdit'),
+                          })
+                          return
+                        }
+
                         // time -1请假 -2 未上报
                         let value = 2
-                        const { time } = col
+                        const { time, story_id } = col
                         if (time === -1) {
                           value = 3
                         }
                         if (time === -2) {
                           value = 1
                         }
+                        setCacheValue(value)
                         setValue(value)
                         setDayTaskTime(time > 0 ? time / 3600 : '')
                         setRecord({ ...row, date: item })
+                        setStoryId(story_id)
                       }}
                     >
                       {label(col)}

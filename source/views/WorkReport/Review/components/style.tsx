@@ -770,6 +770,8 @@ export const Radius = styled.div`
   border-radius: 50%;
   background: var(--neutral-n2);
   margin-right: 8px;
+  flex-shrink: 0;
+  flex-grow: 0;
 `
 export const Col = styled.div`
   margin-bottom: 32px;

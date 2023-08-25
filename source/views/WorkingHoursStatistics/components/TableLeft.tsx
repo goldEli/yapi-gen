@@ -16,12 +16,15 @@ import IconFont from '@/components/IconFont'
 import { useState } from 'react'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
+import { getMessage } from '@/components/Message'
 const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [state, setState] = useState(false)
   const [value, setValue] = useState('')
   const [openDemandDetail] = useOpenDemandDetail()
   const [row, setRow] = useState<any>({})
   const [t] = useTranslation()
+  const { projectInfo } = useSelector(store => store.project)
   const content = (row: any) => {
     return (
       <PopoverWrap>
@@ -41,8 +44,8 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         <div>{t('reasonForAdjustment')}</div>
         <Text state={1}>{row.normal_reason.reason}</Text>
         <Text state={2}>
-          {row.normal_reason.operator_name} {t('at')}
-          {row.normal_reason.operator_time}{' '}
+          {row.normal_reason?.operator_name} {t('at')}
+          {''} {row.normal_reason?.operator_time}{' '}
         </Text>
       </PopoverWrap>
     )
@@ -56,9 +59,9 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         return (
           <CommonUserAvatar
             size="large"
-            avatar={record.user.avatar}
-            name={record.user.name}
-            positionName={record.user.position.name}
+            avatar={record.user?.avatar}
+            name={record.user?.name}
+            positionName={record.user.position?.name}
           />
         )
       },
@@ -99,7 +102,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
               src={record.story.category_attachment}
               style={{ marginRight: 4, width: 20, height: 20 }}
             />
-            <span className="text">{record.story.name || '--'}</span>
+            <span className="text">{record.story?.name || '--'}</span>
           </CanOperation>
         )
       },
@@ -146,7 +149,18 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                   : false
               }
               onClick={() => {
-                if (record.exceed_day_num > 0) {
+                if (
+                  !projectInfo.projectPermissions
+                    ?.map((item: { identity: any }) => item.identity)
+                    ?.includes('b/story/work_time')
+                ) {
+                  getMessage({
+                    type: 'warning',
+                    msg: t('youDoNotHavePermissionToEdit'),
+                  })
+                  return
+                }
+                if (record.is_normal === 2 && record.exceed_day_num > 0) {
                   setState(true)
                   setRow(record)
                   setValue('')
@@ -201,7 +215,6 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
 
   const onConfirm = () => {
     if (value) {
-      console.log(row)
       setState(false)
       props.updateOverdue({
         story_id: row.story?.id,
@@ -215,7 +228,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       <ResizeTable
         styleSate={true}
         isSpinning={false}
-        dataWrapNormalHeight="calc(100% - 48px)"
+        dataWrapNormalHeight="calc(100% - 0px)"
         col={colum}
         noData={<NoData />}
         dataSource={props.data}

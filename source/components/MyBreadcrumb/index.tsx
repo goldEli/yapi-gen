@@ -30,6 +30,7 @@ const MyBreadcrumb = (props: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { type } = paramsData ?? {}
+  console.log(type)
   const dispatch = useDispatch()
 
   // 关闭全屏详情弹层
@@ -126,28 +127,27 @@ const MyBreadcrumb = (props: any) => {
         </Breadcrumb.Item>
       ) : null}
 
-      {type === 4 ||
-        (type === 'isMember' && (
-          <Breadcrumb.Item>
-            <a
-              onClick={() => {
-                const params = encryptPhp(
-                  JSON.stringify({
-                    id: projectInfo.id,
-                    pageIdx: 'main',
-                    type: 0,
-                  }),
-                )
+      {type === 4 || type === 'isMember' ? (
+        <Breadcrumb.Item>
+          <a
+            onClick={() => {
+              const params = encryptPhp(
+                JSON.stringify({
+                  id: projectInfo.id,
+                  pageIdx: 'main',
+                  type: 0,
+                }),
+              )
 
-                navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
-              }}
-              className={breadStyle}
-              style={{ color: 'var(--neutral-n1-d1)' }}
-            >
-              <span>{t('project.projectSet') as string}</span>
-            </a>
-          </Breadcrumb.Item>
-        ))}
+              navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+            }}
+            className={breadStyle}
+            style={{ color: 'var(--neutral-n1-d1)' }}
+          >
+            <span>{t('project.projectSet') as string}</span>
+          </a>
+        </Breadcrumb.Item>
+      ) : null}
       {location.pathname.includes('ProjectManagement/MemberInfo') && (
         <Breadcrumb.Item>
           <a style={{ color: 'var(--neutral-n1-d1)' }} className={breadStyle}>

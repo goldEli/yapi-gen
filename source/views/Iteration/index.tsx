@@ -54,6 +54,8 @@ import useKeyPress from '@/hooks/useKeyPress'
 const Iteration = () => {
   const { useKeys } = useKeyPress()
   useKeys('5', '/ProjectManagement/Demand')
+  useKeys('2', '/ProjectManagement/KanBan')
+  useKeys('3', '/Report/PerformanceInsight')
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { currentMenu } = useSelector(store => store.user)

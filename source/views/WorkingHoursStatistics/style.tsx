@@ -27,6 +27,7 @@ export const MianWrap = styled.div`
 export const PanelWrap = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   width: 100%;
+  height: calc(100% + 12px);
   position: relative;
   overflow-x: auto;
 `
@@ -36,14 +37,15 @@ export const Rows = styled.div`
     background: var(--neutral-n10);
   }
 `
-export const Cols = styled.div`
-  min-width: 72px;
+export const Cols = styled.div<{ language?: string | null }>`
+  min-width: ${props => (props.language === 'en' ? '125px' : '72px')};
   height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-right: 1px solid var(--neutral-n6-d1);
   flex: 1;
+  padding: 0px 8px;
 `
 export const Header = styled.div`
   display: flex;
@@ -55,23 +57,22 @@ export const DateLabel = styled.div`
   color: var(--neutral-n3);
   display: flex;
   .month-td {
-    min-width: 72px;
+    min-width: 125px;
     height: 28px;
     display: flex;
     align-items: center;
     color: var(--neutral-n3);
     font-size: 12px;
-
     box-sizing: border-box;
     /* flex: 1; */
     /* justify-content: center; */
     padding-left: 16px;
   }
 `
-export const TimeLabel = styled.div`
+export const TimeLabel = styled.div<{ language?: string | null }>`
   display: flex;
   .header-td {
-    min-width: 72px;
+    min-width: ${props => (props.language === 'en' ? '125px' : '72px')};
     height: 28px;
     display: flex;
     align-items: center;
@@ -94,6 +95,7 @@ export const WorkHourLabel = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 4px 8px;
 `
 export const Working = css`
   background: var(--function-tag2);
@@ -121,6 +123,7 @@ export const Line = styled(DragLine)<{ active: boolean }>`
 `
 export const SprintDetailMouseDom = styled(MouseDom)`
   background: transparent;
+  height: calc(100% + 12px);
 `
 export const UpdateTask = styled.div`
   width: 240px;

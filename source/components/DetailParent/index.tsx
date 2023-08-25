@@ -21,10 +21,13 @@ interface DetailParentProps {
   canOperationKeys: any
 }
 
+let timer: any
+let controller = new AbortController()
+
 const DetailParent = (props: DetailParentProps) => {
   const [t] = useTranslation()
   // 下拉数据
-  const [selectList, setSelectList] = useState([])
+  const [selectList, setSelectList] = useState<any>([])
   // 是否在编辑状态
   const [isShowControl, setIsShowControl] = useState(false)
   const inputRef = useRef<HTMLInputElement>()
@@ -37,11 +40,12 @@ const DetailParent = (props: DetailParentProps) => {
   ]
 
   //   获取父需求列表
-  const getParentData = async () => {
+  const getParentData = async (searchVal?: string) => {
     const response = await getParentList({
       projectId: props.detail.projectId,
       id: props.detail.id,
       categoryId: props.detail.categoryId ?? props.detail.category,
+      keyword: searchVal,
     })
     setSelectList(response)
   }
@@ -114,10 +118,22 @@ const DetailParent = (props: DetailParentProps) => {
     }, 0)
   }
 
+  // 获取父需求列表
+  const onGetParent = (value?: string) => {
+    if (value) {
+      controller.abort()
+    }
+    controller = new AbortController()
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      getParentData(value)
+    }, 500)
+  }
+
   useEffect(() => {
     if (props.detail.id) {
-      getParentData()
-      setDefaultValue(props.detail.parentName)
+      setSelectList(props.detail.parent || [])
+      setDefaultValue(props.detail.parentId)
     }
   }, [props.detail])
 
@@ -138,6 +154,8 @@ const DetailParent = (props: DetailParentProps) => {
           onRef={inputRef}
           onBlur={() => onBlur?.(defaultValue)}
           onChange={(value: any) => onChange?.(value, 1)}
+          onFocus={() => onGetParent()}
+          onSearch={(value: string) => onGetParent(value)}
           options={selectList}
           defaultOpen={true}
         />

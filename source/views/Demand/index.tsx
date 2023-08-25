@@ -105,6 +105,7 @@ const DemandIndex = () => {
     if (!updateState) {
       setIsSpinning(true)
     }
+    console.log(searchParamsObj, 'searchParamsObj')
 
     let params: any = {}
 
@@ -113,7 +114,7 @@ const DemandIndex = () => {
         projectId,
         all: true,
         panel: true,
-        searchValue: searchParamsObj.searchValue,
+        searchValue: searchVal,
         statusIds: searchParamsObj.statusId,
         iterateIds: searchParamsObj.iterateId,
         priorityIds: searchParamsObj.priorityId,
@@ -140,7 +141,7 @@ const DemandIndex = () => {
         pageSize: item.size,
         order: orderItem.value,
         orderKey: orderItem.key,
-        searchValue: searchParamsObj.searchValue,
+        searchValue: searchVal,
         statusIds: searchParamsObj.statusId,
         iterateIds: searchParamsObj.iterateId,
         priorityIds: searchParamsObj.priorityId,

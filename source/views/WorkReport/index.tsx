@@ -33,13 +33,12 @@ const RobotButton = styled.div`
 `
 
 const MenuItem = styled.div`
-  width: 126px;
   height: 40px;
   font-size: 14px;
   color: var(--neutral-n2);
   display: flex;
   align-items: center;
-  padding-left: 16px;
+  padding: 0px 16px;
   cursor: pointer;
   user-select: none;
   &:hover {

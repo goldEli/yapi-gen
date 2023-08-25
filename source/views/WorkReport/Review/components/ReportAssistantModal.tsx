@@ -199,6 +199,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       })
       return
     }
+
     open({
       title: t('p2.toast'),
       okText: t('send'),

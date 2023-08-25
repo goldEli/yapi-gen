@@ -501,7 +501,7 @@ const Profile = () => {
                               getPopupContainer: node => node,
                             }}
                           >
-                            {item.feedable?.project.name}
+                            {item.feedable?.project?.name ?? '--'}
                           </OmitText>
                         </HiddenText>
                         <HiddenText>
@@ -518,7 +518,7 @@ const Profile = () => {
                                 cursor: 'pointer',
                               }}
                             >
-                              {item.feedable?.name}
+                              {item.feedable?.name ?? '--'}
                             </span>
                           </OmitText>
                         </HiddenText>

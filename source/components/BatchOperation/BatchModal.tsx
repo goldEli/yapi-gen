@@ -134,12 +134,13 @@ const BatchModal = (props: Props) => {
           filterItem.selectList[0] === 'projectMember')
       ) {
         // 单独处理项目人员下拉
-        filterItem.selectList = removeNull(projectInfoValues, 'user_name')?.map(
-          (k: any) => ({
-            label: k.content,
-            value: k.id,
-          }),
-        )
+        filterItem.selectList = removeNull(
+          projectInfoValues,
+          'users_name',
+        )?.map((k: any) => ({
+          label: k.content,
+          value: k.id,
+        }))
       } else if (
         chooseType === 'copysend' ||
         (['user_select_checkbox', 'user_select'].includes(filterItem.attr) &&
@@ -405,7 +406,7 @@ const BatchModal = (props: Props) => {
             {!String(chooseType).includes('expected_') &&
               chooseType !== 'class_id' &&
               chooseType !== 'solution' &&
-              chooseType !== 'category_id' &&
+              // chooseType !== 'category_id' &&
               !String(chooseType).includes('custom_') && (
                 <Form.Item
                   label={t('version2.updateAfter')}
@@ -432,6 +433,7 @@ const BatchModal = (props: Props) => {
                         'parent_id',
                         'severity',
                         'discovery_version',
+                        'category_id',
                       ].includes(chooseType)
                         ? ('' as any)
                         : 'multiple'

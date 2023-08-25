@@ -381,7 +381,7 @@ export const getAffairsInfo = async (
     iterateName: response.data.iterate_name || '--',
     userName: response.data.user_name,
     childCount: response.data.child_story_count,
-    parentName: response.data.parent_name,
+    parentName: response.data.parent?.name ?? '',
     attachment: response.data.attachment,
     tag: response.data.tag,
     copySend: response.data.copysend,

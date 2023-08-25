@@ -411,8 +411,8 @@ const Picker = (props: PropsType) => {
     <PopoverWrap
       placement="bottomRight"
       title={''}
-      visible={popoverVisible}
-      onVisibleChange={setPopoverVisible}
+      open={popoverVisible}
+      onOpenChange={setPopoverVisible}
       content={content}
       trigger="[click]"
     >
