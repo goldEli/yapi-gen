@@ -146,7 +146,7 @@ export const UpdateTask = styled.div`
     .ant-radio-wrapper {
       font-size: 14px;
       color: var(--neutral-n1-d1);
-      font-family: SiYuanMedium;
+      /* font-family: SiYuanMedium; */
     }
   }
   .btn-box {

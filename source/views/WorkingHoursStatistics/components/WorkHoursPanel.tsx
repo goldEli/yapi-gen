@@ -119,7 +119,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
                     style={{ width: 160 }}
                     value={dayTaskTime}
                     onChange={e => {
-                      console.log(e)
                       setDayTaskTime(e)
                     }}
                   ></InputNumber>
