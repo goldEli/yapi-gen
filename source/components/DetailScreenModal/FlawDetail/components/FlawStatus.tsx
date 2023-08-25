@@ -72,15 +72,7 @@ const FlawStatus = (props: any) => {
     try {
       await updateFlawStatus(res1)
       getMessage({ msg: t('common.circulationSuccess'), type: 'success' })
-      dispatch(getFlawInfo({ projectId: props.pid, id: props.sid }))
-      dispatch(
-        getFlawCommentList({
-          projectId: props.pid,
-          id: props.sid,
-          page: 1,
-          pageSize: 20,
-        }),
-      )
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     } catch (error) {
       //
     }
