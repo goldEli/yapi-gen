@@ -41,13 +41,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [record, setRecord] = useState<any>()
   const language = window.localStorage.getItem('language')
   const [weekdayString, setWeekdayString] = useState<any>({})
+  const [cacheValue, setCacheValue] = useState<number>()
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
-  console.log('projectInfo', projectPermissions)
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
   )
+
   useEffect(() => {
     setWeekdayString({
       1: t('onMonday'),
@@ -84,8 +85,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
     if (value !== 2) {
       delete params.day_task_time
     }
-    console.log('params', params)
-    const data = await updateWorkTime(params)
+    console.log('params', params, value)
+    if (value === cacheValue && value !== 2) {
+      setStoryId('')
+      return
+    }
+    await updateWorkTime(params)
     getMessage({ type: 'success', msg: t('successfullyModified') })
     popoverRef?.current?.props.onPopupVisibleChange(false)
     setStoryId('')
@@ -222,6 +227,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                           })
                           return
                         }
+
                         // time -1请假 -2 未上报
                         let value = 2
                         const { time, story_id } = col
@@ -231,6 +237,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         if (time === -2) {
                           value = 1
                         }
+                        setCacheValue(value)
                         setValue(value)
                         setDayTaskTime(time > 0 ? time / 3600 : '')
                         setRecord({ ...row, date: item })
