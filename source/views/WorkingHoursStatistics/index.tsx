@@ -88,7 +88,7 @@ const WorkHours: React.FC<IProps> = props => {
           : '',
       page: page ? page : pageObj.currentPage,
       pagesize: pageSize ? pageSize : pageObj.pageSize,
-      keyword: keyVal ? keyVal : key,
+      keyword: keyVal,
     }
     const res = await workTimeList(parmas)
     setPageObj({
@@ -107,7 +107,7 @@ const WorkHours: React.FC<IProps> = props => {
   }) => {
     await updateOverdue({ ...row, project_id: paramsData.id })
     getMessage({ msg: t('adjustedSuccessfully'), type: 'success' })
-    onSearch(formVal, type)
+    onSearch(formVal, type, key)
   }
   const onGetExport = async (val: any) => {
     const start_at = val.time ? val.time[0] : val.date[0]
