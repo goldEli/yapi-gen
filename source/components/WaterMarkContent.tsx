@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import { useSelector } from '../../store'
 
 const SvgTextBg = (props: any) => {
+  console.log(789)
   const { userInfo } = useSelector(store => store.user)
   const { theme } = useSelector(store => store.global)
   const {
@@ -64,6 +65,7 @@ const WaterMarkContent = (props: any) => {
     }),
     [text, fontSize, fillOpacity, fillColor],
   )
+  console.log(456)
   return (
     <div style={{ position: 'relative', width: '100%', height: ' 100%' }}>
       {props.children}

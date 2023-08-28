@@ -2359,5 +2359,6 @@
   "personnel": "Personnel",
   "time": "Time",
   "youDoNotHavePermissionToEdit": "You do not have permission to edit",
-  "theFileIsBeingPleaseWait": "The file is being uploaded, please wait"
+  "theFileIsBeingPleaseWait": "The file is being uploaded, please wait",
+  "pleaseEnterTheCorrectWorkingHoursFormat": "Please enter the correct working hours format"
 }

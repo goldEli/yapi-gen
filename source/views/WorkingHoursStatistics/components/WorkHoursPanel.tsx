@@ -1,11 +1,6 @@
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  forwardRef,
-  useLayoutEffect,
-} from 'react'
-import { Popover, Input, Radio, Space, InputNumber } from 'antd'
+import { useRef, useEffect, useState, forwardRef, useLayoutEffect } from 'react'
+import { Popover, Radio, Space, InputNumber } from 'antd'
+import { setRightScrollTop } from '@store/global'
 import { updateWorkTime } from '@/services/project'
 import { useTranslation } from 'react-i18next'
 import {
@@ -24,6 +19,7 @@ import {
   HeaderWrap,
 } from '../style'
 import classNames from 'classnames'
+import { debounce } from 'lodash'
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 dayjs.extend(isoWeek)
@@ -31,7 +27,7 @@ import CommonButton from '@/components/CommonButton'
 import usePanelData from '../hooks/usePanelData'
 import { getMessage } from '@/components/Message'
 import { t } from 'i18next'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 interface IProps {
   ref: any
   onClick: any
@@ -42,17 +38,20 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const timeRef = useRef<any>()
   const modalRef = useRef<any>()
   const [value, setValue] = useState(1)
-  const [w, setW] = useState(0)
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
   const { dataSource, onClick, direction, type, onConfirm } = props
+  const dispatch = useDispatch()
   const [id, setId] = useState('')
   const [record, setRecord] = useState<any>()
   const language = window.localStorage.getItem('language')
   const [weekdayString, setWeekdayString] = useState<any>({})
   const [cacheValue, setCacheValue] = useState<number>()
+  const [w, setW] = useState(0)
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
+  const rightTableWrap = useRef<HTMLTableElement>(null)
+  const dom = rightTableWrap.current
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
@@ -69,6 +68,18 @@ const WorkHoursPanel = (props: any, ref: any) => {
       7: t('sunday'),
     })
   }, [language])
+
+  const handleClickOutside = (e: { target: any }) => {
+    const { className } = e.target
+    if (
+      className &&
+      className.indexOf('custom-col') < 0 &&
+      className !== 'ant-radio-input' &&
+      className !== 'ant-input-number-input'
+    ) {
+      setId('')
+    }
+  }
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
     return () => {
@@ -80,14 +91,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
       .getElementsByClassName('header-td')[0]
       ?.getBoundingClientRect().width
     setW(w)
-  }, [dataSource])
-  const handleClickOutside = () => {
-    console.log(popoverRef.current.props.open)
-    const { open } = popoverRef.current.props
-    if (open) {
-      setId('')
-    }
-  }
+  }, [props])
+
   if (!columns) {
     return null
   }
@@ -112,7 +117,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
     if (value !== 2) {
       delete params.day_task_time
     }
-    console.log('params', params, value)
+    console.log('params', params, dayTaskTime)
+    if (!dayTaskTime) {
+      getMessage({
+        type: 'error',
+        msg: t('pleaseEnterTheCorrectWorkingHoursFormat'),
+      })
+      return
+    }
     if (value === cacheValue && value !== 2) {
       setId('')
       return
@@ -130,6 +142,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
         <div className="form-box">
           <Radio.Group
             onChange={e => {
+              e.stopPropagation()
               setValue(e.target.value)
             }}
             value={value}
@@ -178,9 +191,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
       </UpdateTask>
     )
   }
-
+  const onScrollCapture = (event: any) => {
+    if (document.getElementsByClassName('ant-table-body')[0]) {
+      document.getElementsByClassName('ant-table-body')[0].scrollTop =
+        event.target.scrollTop
+    }
+  }
   return (
-    <PanelWrap>
+    <PanelWrap onScrollCapture={onScrollCapture}>
       <HeaderWrap>
         <Header>
           <DateLabel>
@@ -188,6 +206,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
               const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
               const data = monthData[item]
               const { length } = data
+
               const width = type ? w * length : '100%'
               return (
                 <div
@@ -229,7 +248,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
             {columns.map((item: any, index: any) => {
               const col = map.get(item)[rowIndex]
               return (
-                <Cols key={index} ref={tdRef} language={language}>
+                <Cols
+                  key={index}
+                  ref={tdRef}
+                  language={language}
+                  className="custom-col"
+                >
                   <Popover
                     title=""
                     content={Content}
@@ -243,6 +267,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         [Working]: col.time !== 1 && col.time !== -2,
                         [Leave]: col.time === -1,
                         [NotWorking]: col.time === -2,
+                        'custom-col': true,
                       })}
                       onClick={() => {
                         console.log(rowIndex, index, item)
