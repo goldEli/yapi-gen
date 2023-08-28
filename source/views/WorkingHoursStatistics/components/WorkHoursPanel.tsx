@@ -73,14 +73,16 @@ const WorkHoursPanel = (props: any, ref: any) => {
       document.removeEventListener('scroll', handlescroll)
     }
   }, [])
+  useEffect(() => {
+    if (document.getElementsByClassName('rightTableWrap')) {
+      document
+        .getElementsByClassName('rightTableWrap')[0]
+        ?.addEventListener('scroll', handlescroll)
+    }
+  }, [])
   const handlescroll = debounce((event: any) => {
     dispatch(setRightScrollTop(event.target.scrollTop))
   }, 1)
-  if (document.getElementsByClassName('rightTableWrap')) {
-    document
-      .getElementsByClassName('rightTableWrap')[0]
-      ?.addEventListener('scroll', handlescroll)
-  }
 
   useEffect(() => {
     if (document.getElementsByClassName('rightTableWrap')[0]) {
