@@ -487,11 +487,6 @@ const UploadAttach = (props: any, ref: any) => {
     return fileList?.filter((i: any) => i.state !== 'success')?.length
   }
 
-  useImperativeHandle(props.onRef, () => {
-    return {
-      getAttachState: onGetAttachState,
-    }
-  })
   const handleUpload = () => {
     // 调用 Upload 组件的上传事件
     uploadRef.current.click()
@@ -500,6 +495,7 @@ const UploadAttach = (props: any, ref: any) => {
   useImperativeHandle(ref, () => {
     return {
       handleUpload,
+      getAttachState: onGetAttachState,
     }
   })
 
