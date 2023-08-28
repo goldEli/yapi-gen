@@ -146,6 +146,9 @@ const CreateDemandLeft = (props: Props) => {
 
   // 提交参数
   const onConfirm = async () => {
+    // console.log(myRef.current.getAttachState())
+    // return
+
     await form.validateFields()
     const values = form.getFieldsValue()
 

@@ -141,7 +141,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                 <InfoRow>
                   {t('labor_cost_this_time')}
                   <span>{t('thisTime')}</span>
-                  {i.task_time < 0 ? t('reduce') : t('increase')}
+                  <span>{i.task_time < 0 ? t('reduce') : t('increase')}</span>
                   <span>
                     {Math.abs(Math.floor((i.task_time / 3600) * 100) / 100)}h
                   </span>
