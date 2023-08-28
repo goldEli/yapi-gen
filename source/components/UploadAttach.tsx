@@ -555,7 +555,6 @@ const UploadAttach = (props: any, ref: any) => {
 
       <Warp
         show={props.addWrap}
-        multiple
         fileList={[]}
         beforeUpload={onUploadBefore}
         customRequest={onUploadFileClick}
