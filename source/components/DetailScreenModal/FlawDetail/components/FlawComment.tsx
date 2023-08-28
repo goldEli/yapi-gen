@@ -6,7 +6,7 @@ import { bytesToSize, getIdsForAt } from '@/tools'
 import { OmitText } from '@star-yun/ui'
 import { useSelector } from '@store/index'
 import { Editor } from '@xyfe/uikit'
-import { useEffect, useImperativeHandle, useState } from 'react'
+import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Viewer from 'react-viewer'
 import {
@@ -51,6 +51,7 @@ interface Props {
 }
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 const FlawComment = (props: Props) => {
+  const attachRef = useRef<any>(null)
   const [t]: any = useTranslation()
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
@@ -184,6 +185,13 @@ const FlawComment = (props: Props) => {
 
   // 添加评论
   const onAddConfirm = async (params: any) => {
+    if (attachRef.current.getAttachState() > 0) {
+      getMessage({
+        type: 'warning',
+        msg: t('theFileIsBeingPleaseWait'),
+      })
+      return
+    }
     try {
       await addFlawComment({
         projectId: props.detail.projectId,

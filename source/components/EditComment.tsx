@@ -97,7 +97,10 @@ const EditComment = (props: any) => {
     // 未上传成功的个数
     const stateLength = attachDom.current?.getAttachState()
     if (stateLength) {
-      getMessage({ msg: t('version2.haveNoSuccessAttach'), type: 'warning' })
+      getMessage({
+        type: 'warning',
+        msg: t('theFileIsBeingPleaseWait'),
+      })
       return
     }
 

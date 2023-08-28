@@ -20,6 +20,7 @@ import { setAchieveInfo } from '@store/iterate'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import { Form } from 'antd'
+import { getMessage } from '@/components/Message'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
@@ -55,8 +56,8 @@ interface Props {
 }
 
 const Achievements = (props: Props) => {
-  const editorRef = useRef<EditorRef>(null)
   const [form] = Form.useForm()
+  const attachRef = useRef<any>(null)
   const WrapDom = useRef<HTMLInputElement>(null)
   const [attachList, setAttachList] = useState<any>([])
   const [newAttachList, setNewAttachList] = useState<any>([])
@@ -131,6 +132,13 @@ const Achievements = (props: Props) => {
 
   // 向父级提交附件及描述
   const onConfirm = () => {
+    if (attachRef.current.getAttachState() > 0) {
+      getMessage({
+        type: 'warning',
+        msg: t('theFileIsBeingPleaseWait'),
+      })
+      return
+    }
     const params = {
       attachList: newAttachList,
       ...form.getFieldsValue(),
@@ -191,6 +199,7 @@ const Achievements = (props: Props) => {
         <div className={labelWrap}>
           <span className={label}>{t('common.attachment') as string}</span>
           <UploadAttach
+            ref={attachRef}
             power
             defaultList={attachList}
             onChangeAttachment={onChangeAttachment}

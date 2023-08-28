@@ -24,7 +24,6 @@ const CommentFooter = (props: CommentFooterProps) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [isReview, setIsReview] = useState(false)
-  const [isCtrlPressed, setIsCtrlPressed] = useState(false)
   const editorRef = useRef<EditorRef>(null)
   const { userInfo } = useSelector(store => store.user)
 
@@ -93,9 +92,17 @@ const CommentFooter = (props: CommentFooterProps) => {
     form.resetFields()
   }
 
+  const onFocus = () => {
+    setIsReview(true)
+    setTimeout(() => {
+      editorRef.current?.focus()
+    }, 50)
+  }
+
   useImperativeHandle(props.onRef, () => {
     return {
       cancel: onCancel,
+      focus: onFocus,
     }
   })
 
@@ -173,12 +180,7 @@ const CommentFooter = (props: CommentFooterProps) => {
           <Input
             placeholder={String(t('postComment'))}
             style={{ width: '100%' }}
-            onFocus={() => {
-              setIsReview(true)
-              setTimeout(() => {
-                editorRef.current?.focus()
-              }, 50)
-            }}
+            onFocus={onFocus}
           />
         </div>
       )}
