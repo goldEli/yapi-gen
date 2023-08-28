@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import WorkHoursPanel from './components/WorkHoursPanel'
@@ -37,6 +37,7 @@ const WorkHours: React.FC<IProps> = props => {
   const [key, setKey] = useState<any>('')
   const [type, setType] = useState<any>(1)
   const [hoverStyle, setHoverStyle] = useState<boolean>(false)
+  // eslint-disable-next-line react/hook-use-state
   const [stat, setStat] = useState<any>({
     report: 0,
     total: 0,

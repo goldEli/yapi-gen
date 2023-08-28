@@ -69,9 +69,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
     }
   }, [])
 
-  const handleClickOutside = (e: { target: any }) => {
-    if (e.target.contains(modalRef.current)) {
-      // setId('')
+  const handleClickOutside = () => {
+    console.log(popoverRef.current.props.open)
+    const { open } = popoverRef.current.props
+    if (open) {
+      setId('')
     }
   }
   if (!columns) {
