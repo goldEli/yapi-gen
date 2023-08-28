@@ -223,7 +223,7 @@ const EditComment = (props: any) => {
             name="attachments"
           >
             <UploadAttach
-              onRef={attachDom}
+              ref={attachDom}
               key={1}
               power
               canUpdate={false}
