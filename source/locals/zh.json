@@ -2359,5 +2359,6 @@
   "personnel": "人员",
   "time": "时间",
   "youDoNotHavePermissionToEdit": "你暂无编辑权限",
-  "theFileIsBeingPleaseWait": "文件正在上传中，请稍等"
+  "theFileIsBeingPleaseWait": "文件正在上传中，请稍等",
+  "pleaseEnterTheCorrectWorkingHoursFormat": "请输入正确的工时格式"
 }

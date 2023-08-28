@@ -18,9 +18,6 @@ export interface GlobalState {
   tagOrPriority: any[]
   // 列表选中id
   listActiveId: number
-  // 工时统计的滚动top值
-  leftScrollTop: number
-  rightScrollTop: number
 }
 
 const initialState: GlobalState = {
@@ -88,8 +85,6 @@ const initialState: GlobalState = {
     { key: 'closeEd', backgroundColor: '--function-tag6' },
   ],
   listActiveId: 0,
-  leftScrollTop: 0,
-  rightScrollTop: 0,
 }
 
 export const globalSlice = createSlice({
@@ -110,19 +105,12 @@ export const globalSlice = createSlice({
     setListActiveId(preState: GlobalState, action) {
       preState.listActiveId = action.payload
     },
-    setLeftScrollTop(preState: GlobalState, action) {
-      preState.leftScrollTop = action.payload
-    },
-    setRightScrollTop(preState: GlobalState, action) {
-      preState.rightScrollTop = action.payload
-    },
   },
   extraReducers: builder => {
     //
   },
 })
 
-export const { setListActiveId, setLeftScrollTop, setRightScrollTop } =
-  globalSlice.actions
+export const { setListActiveId } = globalSlice.actions
 
 export default globalSlice.reducer

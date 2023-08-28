@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState, forwardRef, useLayoutEffect } from 'react'
 import { Popover, Radio, Space, InputNumber } from 'antd'
-import { setRightScrollTop } from '@store/global'
 import { updateWorkTime } from '@/services/project'
 import { useTranslation } from 'react-i18next'
 import {
@@ -19,7 +18,6 @@ import {
   HeaderWrap,
 } from '../style'
 import classNames from 'classnames'
-import { debounce } from 'lodash'
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 dayjs.extend(isoWeek)
@@ -40,8 +38,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [value, setValue] = useState(1)
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
-  const { dataSource, onClick, direction, type, onConfirm } = props
-  const dispatch = useDispatch()
+  const { dataSource, type, onConfirm } = props
   const [id, setId] = useState('')
   const [record, setRecord] = useState<any>()
   const language = window.localStorage.getItem('language')
@@ -50,8 +47,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [w, setW] = useState(0)
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
-  const rightTableWrap = useRef<HTMLTableElement>(null)
-  const dom = rightTableWrap.current
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
@@ -68,9 +63,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
       7: t('sunday'),
     })
   }, [language])
-  const handlescroll = debounce((event: any) => {
-    dispatch(setRightScrollTop(event.target.scrollTop))
-  }, 1)
+
   const handleClickOutside = (e: { target: any }) => {
     const { className } = e.target
     if (
@@ -86,7 +79,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
-      dom?.removeEventListener('scroll', handlescroll)
     }
   }, [])
   useLayoutEffect(() => {
@@ -95,10 +87,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
       ?.getBoundingClientRect().width
     setW(w)
   }, [props])
-
-  useEffect(() => {
-    dom?.addEventListener('scroll', handlescroll)
-  }, [dom])
 
   if (!columns) {
     return null
@@ -124,7 +112,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
     if (value !== 2) {
       delete params.day_task_time
     }
-    console.log('params', params, value)
+    console.log('params', params, dayTaskTime, value)
+    if (!dayTaskTime && value === 2) {
+      getMessage({
+        type: 'error',
+        msg: t('pleaseEnterTheCorrectWorkingHoursFormat'),
+      })
+      return
+    }
     if (value === cacheValue && value !== 2) {
       setId('')
       return
@@ -191,9 +186,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
       </UpdateTask>
     )
   }
-
+  const onScrollCapture = (event: any) => {
+    if (document.getElementsByClassName('ant-table-body')[0]) {
+      document.getElementsByClassName('ant-table-body')[0].scrollTop =
+        event.target.scrollTop
+    }
+  }
   return (
-    <PanelWrap ref={rightTableWrap}>
+    <PanelWrap onScrollCapture={onScrollCapture}>
       <HeaderWrap>
         <Header>
           <DateLabel>
