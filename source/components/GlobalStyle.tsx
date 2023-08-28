@@ -926,6 +926,9 @@ const GlobalStyle = () => {
     .rowBgc table .ant-table-tbody tr:nth-child(even) {
       background: var(--neutral-n10);
     }
+    .rowBgc .ant-table-body::-webkit-scrollbar {
+      width: 0;
+    }
   `
   return <Global styles={globalCss} />
 }

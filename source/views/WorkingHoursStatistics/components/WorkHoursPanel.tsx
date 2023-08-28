@@ -1,11 +1,6 @@
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  forwardRef,
-  useLayoutEffect,
-} from 'react'
-import { Popover, Input, Radio, Space, InputNumber } from 'antd'
+import { useRef, useEffect, useState, forwardRef, useLayoutEffect } from 'react'
+import { Popover, Radio, Space, InputNumber } from 'antd'
+import { setRightScrollTop } from '@store/global'
 import { updateWorkTime } from '@/services/project'
 import { useTranslation } from 'react-i18next'
 import {
@@ -24,6 +19,7 @@ import {
   HeaderWrap,
 } from '../style'
 import classNames from 'classnames'
+import { debounce } from 'lodash'
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 dayjs.extend(isoWeek)
@@ -31,7 +27,7 @@ import CommonButton from '@/components/CommonButton'
 import usePanelData from '../hooks/usePanelData'
 import { getMessage } from '@/components/Message'
 import { t } from 'i18next'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 interface IProps {
   ref: any
   onClick: any
@@ -42,17 +38,19 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const timeRef = useRef<any>()
   const modalRef = useRef<any>()
   const [value, setValue] = useState(1)
-  const [w, setW] = useState(0)
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
   const { dataSource, onClick, direction, type, onConfirm } = props
+  const dispatch = useDispatch()
   const [id, setId] = useState('')
   const [record, setRecord] = useState<any>()
   const language = window.localStorage.getItem('language')
   const [weekdayString, setWeekdayString] = useState<any>({})
   const [cacheValue, setCacheValue] = useState<number>()
+  const [w, setW] = useState(0)
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
+  const { leftScrollTop } = useSelector(state => state.global)
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
@@ -69,18 +67,9 @@ const WorkHoursPanel = (props: any, ref: any) => {
       7: t('sunday'),
     })
   }, [language])
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside)
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [])
-  useLayoutEffect(() => {
-    const w = document
-      .getElementsByClassName('header-td')[0]
-      ?.getBoundingClientRect().width
-    setW(w)
-  }, [props])
+  const handlescroll = debounce((event: any) => {
+    dispatch(setRightScrollTop(event.target.scrollTop))
+  }, 1)
   const handleClickOutside = (e: { target: any }) => {
     const { className } = e.target
     if (
@@ -92,6 +81,28 @@ const WorkHoursPanel = (props: any, ref: any) => {
       setId('')
     }
   }
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+      document.removeEventListener('scroll', handlescroll)
+    }
+  }, [])
+  useLayoutEffect(() => {
+    const w = document
+      .getElementsByClassName('header-td')[0]
+      ?.getBoundingClientRect().width
+    setW(w)
+  }, [props])
+
+  useEffect(() => {
+    if (document.getElementsByClassName('rightTableWrap')) {
+      document
+        .getElementsByClassName('rightTableWrap')[0]
+        ?.addEventListener('scroll', handlescroll)
+    }
+  }, [])
+
   if (!columns) {
     return null
   }
@@ -185,7 +196,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   }
 
   return (
-    <PanelWrap>
+    <PanelWrap className="rightTableWrap">
       <HeaderWrap>
         <Header>
           <DateLabel>
@@ -193,6 +204,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
               const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
               const data = monthData[item]
               const { length } = data
+
               const width = type ? w * length : '100%'
               return (
                 <div
