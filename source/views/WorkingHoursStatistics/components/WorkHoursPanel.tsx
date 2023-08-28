@@ -71,11 +71,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
 
   const handleClickOutside = (e: { target: any }) => {
     const { className } = e.target
+    console.log('className', className, className.split(' '))
+    const split = className.split(' ')
+    console.log('split', split, id)
     if (
-      className &&
-      className.indexOf('custom-col') < 0 &&
-      className !== 'ant-radio-input' &&
-      className !== 'ant-input-number-input'
+      split.includes('ant-spin-container') ||
+      split.includes('ant-pagination')
     ) {
       setId('')
     }
@@ -91,6 +92,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
       .getElementsByClassName('header-td')[0]
       ?.getBoundingClientRect().width
     setW(w)
+    setId('')
   }, [props])
 
   if (!columns) {
@@ -263,6 +265,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                     getPopupContainer={node => node}
                   >
                     <WorkHourLabel
+                      data-type={record?.date}
                       className={classNames({
                         [Working]: col.time !== 1 && col.time !== -2,
                         [Leave]: col.time === -1,
@@ -299,7 +302,21 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         setId(id)
                       }}
                     >
-                      {label(col)}
+                      {/* {label(col)} */}
+                      {/* if (time === -2) {
+      return t('notReported')
+    }
+    if (time === -1) {
+      return t('askForLeave')
+    }
+    return `${time / 3600}${t('workingHours')}` */}
+                      <div>
+                        {col.time === -2
+                          ? t('notReported')
+                          : col.time === -1
+                          ? t('askForLeave')
+                          : `${col.time / 3600}${t('workingHours')}`}
+                      </div>
                     </WorkHourLabel>
                   </Popover>
                 </Cols>
