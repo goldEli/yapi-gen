@@ -21,6 +21,7 @@ import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
+
 const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [state, setState] = useState(false)
   const inputRef = useRef<any>(null)
@@ -34,7 +35,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const content = (row: any) => {
     return (
       <PopoverWrap>
-        <div style={{ marginBottom: 12 }}>
+        <div className="title" style={{ marginBottom: 12 }}>
           {t('overdue')}
           {row.exceed_day_num}
           {t('sky')}
@@ -64,7 +65,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       render: (text: any, record: any) => {
         return (
           <CommonUserAvatar
-            size="large"
+            size="small"
             avatar={record.user?.avatar}
             name={record.user?.name}
             positionName={record.user.position?.name}
@@ -158,60 +159,77 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       render: (text: any, record: any) => {
         return (
           <StateWrap>
-            <State
-              state={
-                record.is_normal === 1
-                  ? false
-                  : record.is_normal === 2 && record.exceed_day_num > 0
-                  ? true
-                  : false
-              }
-              onClick={() => {
-                if (
-                  !projectInfo.projectPermissions
-                    ?.map((item: { identity: any }) => item.identity)
-                    ?.includes('b/story/work_time')
-                ) {
-                  getMessage({
-                    type: 'warning',
-                    msg: t('youDoNotHavePermissionToEdit'),
-                  })
-                  return
-                }
-                if (record.is_normal === 2 && record.exceed_day_num > 0) {
-                  setState(true)
-                  setTimeout(() => {
-                    inputRef.current?.focus()
-                  }, 100)
-                  setRow(record)
-                  setValue('')
-                }
-              }}
+            <Popover
+              placement="bottomRight"
+              getPopupContainer={node => node}
+              content={() => (record.is_normal === 1 ? content(record) : null)}
+              trigger={['click']}
             >
-              {record.is_normal === 1
-                ? t('normal') + '(' + t('adjustment') + ')'
-                : record.is_normal === 2 && record.exceed_day_num > 0
-                ? `${t('overdue')}${record.exceed_day_num}${t('sky')}`
-                : t('normal')}
-            </State>
-            {record.is_normal === 1 ? (
-              <Popover
-                placement="bottomRight"
-                getPopupContainer={node => node}
-                content={() => content(record)}
-                trigger="click"
+              <State
+                state={
+                  record.is_normal === 1
+                    ? false
+                    : record.is_normal === 2 && record.exceed_day_num > 0
+                    ? true
+                    : false
+                }
+                onClick={() => {
+                  if (
+                    !projectInfo.projectPermissions
+                      ?.map((item: { identity: any }) => item.identity)
+                      ?.includes('b/story/work_time')
+                  ) {
+                    getMessage({
+                      type: 'warning',
+                      msg: t('youDoNotHavePermissionToEdit'),
+                    })
+                    return
+                  }
+                  if (record.is_normal === 2 && record.exceed_day_num > 0) {
+                    setState(true)
+                    setTimeout(() => {
+                      inputRef.current?.focus()
+                    }, 100)
+                    setRow(record)
+                    setValue('')
+                  }
+                }}
               >
-                <IconFont
-                  className="icon"
-                  style={{
-                    fontSize: 14,
-                    marginLeft: 8,
-                    color: 'var(--neutral-n4)',
-                  }}
-                  type={'down-icon'}
-                />
-              </Popover>
-            ) : null}
+                {record.is_normal === 1 ? (
+                  <div style={{ cursor: 'pointer' }}>
+                    <span style={{ color: 'var(--function-success)' }}>
+                      {t('normal') + '(' + t('adjustment') + ')'}
+                    </span>
+                    <IconFont
+                      className="icon"
+                      style={{
+                        fontSize: 14,
+                        marginLeft: 8,
+                        color: 'var(--neutral-n4)',
+                      }}
+                      type={'down-icon'}
+                    />
+                  </div>
+                ) : record.is_normal === 2 && record.exceed_day_num > 0 ? (
+                  <div style={{ cursor: 'pointer' }}>
+                    {t('overdue')}
+                    {record.exceed_day_num}
+                    {t('sky')}
+                    <IconFont
+                      className="icon"
+                      style={{
+                        fontSize: 14,
+                        marginLeft: 8,
+                        color: 'var(--neutral-n4)',
+                      }}
+                      type={'down-icon'}
+                    />
+                  </div>
+                ) : (
+                  t('normal')
+                )}
+              </State>
+            </Popover>
           </StateWrap>
         )
       },

@@ -593,7 +593,6 @@ const DemandDetailDrawer = () => {
   }
 
   useEffect(() => {
-    console.log('drawerInfo.level_tree', drawerInfo.level_tree)
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
       getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
@@ -758,7 +757,10 @@ const DemandDetailDrawer = () => {
                     onEditChange={onEditChange}
                     onDeleteChange={onDeleteChange}
                     onCreateChild={onCreateChild}
-                    onAddComment={() => commentDom.current?.addComment()}
+                    onAddComment={() => {
+                      commentDom.current?.focus()
+                      setIsMoreVisible(false)
+                    }}
                     record={demandDetailDrawerProps}
                   />
                 }
