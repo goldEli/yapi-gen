@@ -66,6 +66,9 @@ const WorkHoursPanel = (props: any, ref: any) => {
       7: t('sunday'),
     })
   }, [language])
+  const handlescroll = debounce((event: any) => {
+    dispatch(setRightScrollTop(event.target.scrollTop))
+  }, 1)
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
     return () => {
@@ -80,16 +83,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
         ?.addEventListener('scroll', handlescroll)
     }
   }, [])
-  const handlescroll = debounce((event: any) => {
-    dispatch(setRightScrollTop(event.target.scrollTop))
-  }, 1)
 
-  useEffect(() => {
-    if (document.getElementsByClassName('rightTableWrap')[0]) {
-      document.getElementsByClassName('rightTableWrap')[0].scrollTop =
-        leftScrollTop
-    }
-  }, [leftScrollTop])
   const handleClickOutside = () => {
     console.log(popoverRef.current.props.open)
     const { open } = popoverRef.current.props
