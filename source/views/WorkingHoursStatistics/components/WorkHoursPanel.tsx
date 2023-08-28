@@ -80,9 +80,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
       .getElementsByClassName('header-td')[0]
       ?.getBoundingClientRect().width
     setW(w)
-  }, [dataSource])
+  }, [props])
   const handleClickOutside = () => {
-    console.log(popoverRef.current.props.open)
     const { open } = popoverRef.current.props
     if (open) {
       setId('')
