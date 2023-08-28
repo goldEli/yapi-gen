@@ -120,6 +120,7 @@ export const WorkHourLabel = styled.div`
   align-items: center;
   justify-content: center;
   padding: 4px 8px;
+  flex-shrink: 0;
 `
 export const Working = css`
   background: var(--function-tag2);

@@ -34,6 +34,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [t] = useTranslation()
   const tdRef = useRef<any>()
   const timeRef = useRef<any>()
+  const modalRef = useRef<any>()
   const [value, setValue] = useState(1)
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
@@ -61,7 +62,18 @@ const WorkHoursPanel = (props: any, ref: any) => {
       7: t('sunday'),
     })
   }, [language])
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
 
+  const handleClickOutside = (e: { target: any }) => {
+    if (e.target.contains(modalRef.current)) {
+      // setId('')
+    }
+  }
   if (!columns) {
     return null
   }
@@ -79,7 +91,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const confirm = async () => {
     const params = {
       ...record,
-      day_task_time: parseInt(dayTaskTime, 10) * 3600,
+      day_task_time: parseFloat(dayTaskTime) * 3600,
       status: value,
     }
     delete params.time
@@ -99,7 +111,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   }
   const Content = () => {
     return (
-      <UpdateTask>
+      <UpdateTask ref={modalRef} data-type="updateTask">
         <div className="title">{t('modifyTaskRecord')}</div>
         <div className="form-box">
           <Radio.Group
@@ -213,6 +225,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                     trigger="click"
                     ref={popoverRef}
                     open={col.id === id && item === record.date}
+                    getPopupContainer={node => node}
                   >
                     <WorkHourLabel
                       className={classNames({
