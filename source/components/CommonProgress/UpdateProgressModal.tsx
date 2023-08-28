@@ -83,6 +83,13 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
   }
   const confirm = async () => {
     const value = await form.validateFields()
+    if (myRef?.current?.getAttachState() > 0) {
+      getMessage({
+        type: 'warning',
+        msg: t('theFileIsBeingPleaseWait'),
+      })
+      return
+    }
     const params = {
       user_id: data?.user_id,
       project_id,
