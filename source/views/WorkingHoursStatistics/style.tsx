@@ -132,7 +132,7 @@ export const lastDay = css`
 `
 export const Leave = css`
   background: var(--function-tag3);
-  color: var(--function-error);
+  color: var(--neutral-n2);
 `
 export const NotWorking = css`
   background: var(--function-tag4);

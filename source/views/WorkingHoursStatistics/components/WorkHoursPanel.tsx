@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, forwardRef } from 'react'
+import { useRef, useEffect, useState, forwardRef, useLayoutEffect } from 'react'
 import { Popover, Radio, Space, InputNumber } from 'antd'
 import { setRightScrollTop } from '@store/global'
 import { updateWorkTime } from '@/services/project'
@@ -47,9 +47,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const language = window.localStorage.getItem('language')
   const [weekdayString, setWeekdayString] = useState<any>({})
   const [cacheValue, setCacheValue] = useState<number>()
+  const [w, setW] = useState(0)
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
-  const { leftScrollTop } = useSelector(state => state.global)
+  const rightTableWrap = useRef<HTMLTableElement>(null)
+  const dom = rightTableWrap.current
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
@@ -69,28 +71,35 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const handlescroll = debounce((event: any) => {
     dispatch(setRightScrollTop(event.target.scrollTop))
   }, 1)
+  const handleClickOutside = (e: { target: any }) => {
+    const { className } = e.target
+    if (
+      className &&
+      className.indexOf('custom-col') < 0 &&
+      className !== 'ant-radio-input' &&
+      className !== 'ant-input-number-input'
+    ) {
+      setId('')
+    }
+  }
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
-      document.removeEventListener('scroll', handlescroll)
+      dom?.removeEventListener('scroll', handlescroll)
     }
   }, [])
-  useEffect(() => {
-    if (document.getElementsByClassName('rightTableWrap')) {
-      document
-        .getElementsByClassName('rightTableWrap')[0]
-        ?.addEventListener('scroll', handlescroll)
-    }
-  }, [])
+  useLayoutEffect(() => {
+    const w = document
+      .getElementsByClassName('header-td')[0]
+      ?.getBoundingClientRect().width
+    setW(w)
+  }, [props])
 
-  const handleClickOutside = () => {
-    console.log(popoverRef.current.props.open)
-    const { open } = popoverRef.current.props
-    if (open) {
-      setId('')
-    }
-  }
+  useEffect(() => {
+    dom?.addEventListener('scroll', handlescroll)
+  }, [dom])
+
   if (!columns) {
     return null
   }
@@ -133,6 +142,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
         <div className="form-box">
           <Radio.Group
             onChange={e => {
+              e.stopPropagation()
               setValue(e.target.value)
             }}
             value={value}
@@ -183,7 +193,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   }
 
   return (
-    <PanelWrap className="rightTableWrap">
+    <PanelWrap ref={rightTableWrap}>
       <HeaderWrap>
         <Header>
           <DateLabel>
@@ -191,9 +201,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
               const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
               const data = monthData[item]
               const { length } = data
-              const w =
-                timeRef?.current?.getBoundingClientRect().width /
-                Object.values(monthData).flat().length
+
               const width = type ? w * length : '100%'
               return (
                 <div
@@ -235,7 +243,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
             {columns.map((item: any, index: any) => {
               const col = map.get(item)[rowIndex]
               return (
-                <Cols key={index} ref={tdRef} language={language}>
+                <Cols
+                  key={index}
+                  ref={tdRef}
+                  language={language}
+                  className="custom-col"
+                >
                   <Popover
                     title=""
                     content={Content}
@@ -249,6 +262,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         [Working]: col.time !== 1 && col.time !== -2,
                         [Leave]: col.time === -1,
                         [NotWorking]: col.time === -2,
+                        'custom-col': true,
                       })}
                       onClick={() => {
                         console.log(rowIndex, index, item)
