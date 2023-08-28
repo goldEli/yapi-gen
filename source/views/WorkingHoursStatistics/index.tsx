@@ -80,6 +80,7 @@ const WorkHours: React.FC<IProps> = props => {
       end_at,
       type: val.type,
       project_id: paramsData.id,
+      is_overdue: val.state,
       user_ids:
         val.user_ids?.length >= 1
           ? val.user_ids.join(',')
@@ -117,6 +118,7 @@ const WorkHours: React.FC<IProps> = props => {
       end_at,
       type: val.type,
       project_id: paramsData.id,
+      is_overdue: val.state,
       user_ids:
         val.user_ids?.length >= 1
           ? val.user_ids.join(',')
