@@ -49,7 +49,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [cacheValue, setCacheValue] = useState<number>()
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
-  const { leftScrollTop } = useSelector(state => state.global)
+  const rightTableWrap = useRef<HTMLTableElement>(null)
+  const dom = rightTableWrap.current
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
@@ -73,16 +74,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
-      document.removeEventListener('scroll', handlescroll)
+      dom?.removeEventListener('scroll', handlescroll)
     }
   }, [])
   useEffect(() => {
-    if (document.getElementsByClassName('rightTableWrap')) {
-      document
-        .getElementsByClassName('rightTableWrap')[0]
-        ?.addEventListener('scroll', handlescroll)
-    }
-  }, [])
+    dom?.addEventListener('scroll', handlescroll)
+  }, [dom])
 
   const handleClickOutside = () => {
     console.log(popoverRef.current.props.open)
@@ -183,7 +180,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   }
 
   return (
-    <PanelWrap className="rightTableWrap">
+    <PanelWrap ref={rightTableWrap}>
       <HeaderWrap>
         <Header>
           <DateLabel>
