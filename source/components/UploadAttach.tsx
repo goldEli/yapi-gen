@@ -290,7 +290,11 @@ const UploadAttach = (props: any, ref: any) => {
       })
       return Upload.LIST_IGNORE
     }
-    if (file.size > 300 * 1024 * 1024) {
+    if (
+      props.MaxSize
+        ? file.size > props.MaxSize * 1024 * 1024
+        : file.size / 1024 > 5242880
+    ) {
       getMessage({
         msg: t('theFileExceeds'),
         type: 'warning',
@@ -474,6 +478,7 @@ const UploadAttach = (props: any, ref: any) => {
               ctime: i.file.time,
             }
           }),
+          fileList?.filter((i: any) => i.state !== 'success')?.length,
         )
       }
     }
@@ -554,6 +559,7 @@ const UploadAttach = (props: any, ref: any) => {
       ) : null}
 
       <Warp
+        multiple
         show={props.addWrap}
         fileList={[]}
         beforeUpload={onUploadBefore}
