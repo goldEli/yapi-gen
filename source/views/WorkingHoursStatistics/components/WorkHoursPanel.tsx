@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState, forwardRef } from 'react'
-import { Popover, Input, Radio, Space, InputNumber } from 'antd'
+import { useRef, useEffect, useState, forwardRef } from 'react'
+import { Popover, Radio, Space, InputNumber } from 'antd'
+import { setRightScrollTop } from '@store/global'
 import { updateWorkTime } from '@/services/project'
 import { useTranslation } from 'react-i18next'
 import {
@@ -18,6 +19,7 @@ import {
   HeaderWrap,
 } from '../style'
 import classNames from 'classnames'
+import { debounce } from 'lodash'
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 dayjs.extend(isoWeek)
@@ -25,7 +27,7 @@ import CommonButton from '@/components/CommonButton'
 import usePanelData from '../hooks/usePanelData'
 import { getMessage } from '@/components/Message'
 import { t } from 'i18next'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 interface IProps {
   ref: any
   onClick: any
@@ -39,6 +41,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
   const { dataSource, onClick, direction, type, onConfirm } = props
+  const dispatch = useDispatch()
   const [id, setId] = useState('')
   const [record, setRecord] = useState<any>()
   const language = window.localStorage.getItem('language')
@@ -46,6 +49,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [cacheValue, setCacheValue] = useState<number>()
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
+  const { leftScrollTop } = useSelector(state => state.global)
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
@@ -66,9 +70,21 @@ const WorkHoursPanel = (props: any, ref: any) => {
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
+      document.removeEventListener('scroll', handlescroll)
     }
   }, [])
-
+  const handlescroll = debounce((event: any) => {
+    dispatch(setRightScrollTop(event.target.scrollTop))
+  }, 1)
+  document
+    .getElementsByClassName('rightTableWrap')[0]
+    ?.addEventListener('scroll', handlescroll)
+  useEffect(() => {
+    if (document.getElementsByClassName('rightTableWrap')[0]) {
+      document.getElementsByClassName('rightTableWrap')[0].scrollTop =
+        leftScrollTop
+    }
+  }, [leftScrollTop])
   const handleClickOutside = () => {
     console.log(popoverRef.current.props.open)
     const { open } = popoverRef.current.props
@@ -168,7 +184,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   }
 
   return (
-    <PanelWrap>
+    <PanelWrap className="rightTableWrap">
       <HeaderWrap>
         <Header>
           <DateLabel>

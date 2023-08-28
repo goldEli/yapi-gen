@@ -95,9 +95,9 @@ const TableWrap = styled(Table)`
   }
 `
 
-const DataWrap = styled.div<{ height?: any }>`
+const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
   height: ${props => props.height};
-  overflow-x: auto;
+  overflow-x: ${props => (props.srcollState ? 'hidden' : 'auto')};
 `
 
 // 调整table表头
@@ -136,7 +136,9 @@ interface ResizeTableProps {
   dataWrapNormalHeight?: any
   noData?: any
   isSpinning?: boolean
+  srcollState?: boolean
   rowSelection?: any
+  scrollTop?: number
   onRow?: (
     record: any,
     index: number,
@@ -227,7 +229,11 @@ const ResizeTable = (props: ResizeTableProps) => {
     }
   })
   return (
-    <DataWrap height={props.dataWrapNormalHeight || 'auto'} ref={dataWrapRef}>
+    <DataWrap
+      srcollState={props.srcollState || false}
+      height={props.dataWrapNormalHeight || 'auto'}
+      ref={dataWrapRef}
+    >
       <div
         style={{ height: '100%' }}
         className="components-table-resizable-column"
