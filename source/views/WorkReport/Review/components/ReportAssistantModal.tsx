@@ -57,6 +57,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const [modalInfo, setModalInfo] = useState<any>(null)
   const [loading, setLoading] = useState<any>(false)
   const [uploadAttachList, setUploadAttachList] = useState<any>({})
+  const [uploadAttachListStatus, setUploadAttachListStatus] = useState<any>({})
   const [peopleValue, setPeopleValue] = useState<any>([])
   const dispatch = useDispatch()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
@@ -69,6 +70,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     setModalInfo(null)
     setUploadAttachList({})
     setPeopleValue([])
+    setUploadAttachListStatus({})
     form.resetFields()
   }
 
@@ -200,6 +202,15 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       return
     }
 
+    // 判断有文件在uploading状态
+    if (Object.values(uploadAttachListStatus)?.some((i: any) => !!i)) {
+      getMessage({
+        type: 'warning',
+        msg: t('theFileIsBeingPleaseWait'),
+      })
+      return
+    }
+
     open({
       title: t('p2.toast'),
       okText: t('send'),
@@ -308,6 +319,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       return
     }
     setLoading(true)
+    setUploadAttachListStatus({})
     form.resetFields()
     try {
       let result = null
@@ -463,6 +475,12 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     }
   }, [props.visible])
 
+  const checkUploadStatus = (name: string, success: boolean) => {
+    setUploadAttachListStatus({
+      [name]: success,
+    })
+  }
+
   // (单人日报)根据数据type生成对应的日报模板
   const generatorHtmlByDataForUser = (content: any): React.ReactElement => {
     switch (content.type) {
@@ -510,6 +528,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             ]}
           >
             <UploadAttach
+              MaxSize={300}
               power
               special={
                 content.name === 'picture'
@@ -529,6 +548,12 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                   `${content.type}+${content.id}+${content.name}`,
                 )
               }}
+              checkUploadStatus={(success: boolean) =>
+                checkUploadStatus(
+                  `${content.type}+${content.id}+${content.name}`,
+                  success,
+                )
+              }
               addWrap={
                 <AddWrap hasColor>
                   <IconFont type="plus" />
@@ -703,6 +728,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           >
             <UploadAttach
               power
+              MaxSize={300}
               special={
                 content.name === 'picture'
                   ? ['png', 'jpg', 'jpeg', 'gif']
@@ -721,6 +747,12 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                   `${content.type}+${content.id}+${content.name}`,
                 )
               }}
+              checkUploadStatus={(success: boolean) =>
+                checkUploadStatus(
+                  `${content.type}+${content.id}+${content.name}`,
+                  success,
+                )
+              }
               addWrap={
                 <AddWrap hasColor>
                   <IconFont type="plus" />

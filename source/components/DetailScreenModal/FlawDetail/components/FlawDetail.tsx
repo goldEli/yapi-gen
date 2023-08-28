@@ -215,6 +215,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
             (i: any) => i.name === '附件上传',
           ).length > 0 && (
             <UploadAttach
+              multiple
               defaultList={props.flawInfo?.attachment?.map((i: any) => ({
                 url: i.attachment.path,
                 id: i.id,

@@ -290,7 +290,11 @@ const UploadAttach = (props: any, ref: any) => {
       })
       return Upload.LIST_IGNORE
     }
-    if (file.size > 300 * 1024 * 1024) {
+    if (
+      props.MaxSize
+        ? file.size > props.MaxSize * 1024 * 1024
+        : file.size / 1024 > 5242880
+    ) {
       getMessage({
         msg: t('theFileExceeds'),
         type: 'warning',
@@ -462,6 +466,7 @@ const UploadAttach = (props: any, ref: any) => {
 
   const checkList = () => {
     const state = fileList.every((i: any) => i.state === 'success')
+    props?.checkUploadStatus(fileList.some((i: any) => i.state === 'uploading'))
     if (state) {
       if (!props.canUpdate) {
         props.onChangeAttachment(
@@ -487,11 +492,6 @@ const UploadAttach = (props: any, ref: any) => {
     return fileList?.filter((i: any) => i.state !== 'success')?.length
   }
 
-  useImperativeHandle(props.onRef, () => {
-    return {
-      getAttachState: onGetAttachState,
-    }
-  })
   const handleUpload = () => {
     // 调用 Upload 组件的上传事件
     uploadRef.current.click()
@@ -500,6 +500,7 @@ const UploadAttach = (props: any, ref: any) => {
   useImperativeHandle(ref, () => {
     return {
       handleUpload,
+      getAttachState: onGetAttachState,
     }
   })
 
@@ -558,8 +559,8 @@ const UploadAttach = (props: any, ref: any) => {
       ) : null}
 
       <Warp
+        multiple={!props.multiple}
         show={props.addWrap}
-        multiple
         fileList={[]}
         beforeUpload={onUploadBefore}
         customRequest={onUploadFileClick}
