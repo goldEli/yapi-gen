@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState, forwardRef, useLayoutEffect } from 'react'
 import { Popover, Radio, Space, InputNumber } from 'antd'
-import { setRightScrollTop } from '@store/global'
 import { updateWorkTime } from '@/services/project'
 import { useTranslation } from 'react-i18next'
 import {
@@ -19,7 +18,6 @@ import {
   HeaderWrap,
 } from '../style'
 import classNames from 'classnames'
-import { debounce } from 'lodash'
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 dayjs.extend(isoWeek)
@@ -40,8 +38,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [value, setValue] = useState(1)
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
-  const { dataSource, onClick, direction, type, onConfirm } = props
-  const dispatch = useDispatch()
+  const { dataSource, type, onConfirm } = props
   const [id, setId] = useState('')
   const [record, setRecord] = useState<any>()
   const language = window.localStorage.getItem('language')
@@ -50,8 +47,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [w, setW] = useState(0)
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
-  const rightTableWrap = useRef<HTMLTableElement>(null)
-  const dom = rightTableWrap.current
   const { columns, map, reduceMonth } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,

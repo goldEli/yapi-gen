@@ -3,9 +3,7 @@ import ResizeTable from '@/components/ResizeTable'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import NoData from '@/components/NoData'
-import { debounce, throttle } from 'lodash'
 import { Popover } from 'antd'
-import { setLeftScrollTop } from '@store/global'
 import {
   StatusWrap,
   CanOperation,
