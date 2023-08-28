@@ -98,6 +98,7 @@ const TableWrap = styled(Table)`
 const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
   height: ${props => props.height};
   overflow-x: ${props => (props.srcollState ? 'hidden' : 'auto')};
+  overflow: ${props => (props.srcollState ? 'hidden' : 'auto')};
 `
 
 // 调整table表头
