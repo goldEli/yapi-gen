@@ -81,9 +81,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
       ?.getBoundingClientRect().width
     setW(w)
   }, [props])
-  const handleClickOutside = () => {
-    const { open } = popoverRef.current.props
-    if (open) {
+  const handleClickOutside = (e: { target: any }) => {
+    const { className } = e.target
+    if (
+      className &&
+      className.indexOf('custom-col') < 0 &&
+      className !== 'ant-radio-input' &&
+      className !== 'ant-input-number-input'
+    ) {
       setId('')
     }
   }
@@ -129,6 +134,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
         <div className="form-box">
           <Radio.Group
             onChange={e => {
+              e.stopPropagation()
               setValue(e.target.value)
             }}
             value={value}
@@ -228,7 +234,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
             {columns.map((item: any, index: any) => {
               const col = map.get(item)[rowIndex]
               return (
-                <Cols key={index} ref={tdRef} language={language}>
+                <Cols
+                  key={index}
+                  ref={tdRef}
+                  language={language}
+                  className="custom-col"
+                >
                   <Popover
                     title=""
                     content={Content}
@@ -242,6 +253,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         [Working]: col.time !== 1 && col.time !== -2,
                         [Leave]: col.time === -1,
                         [NotWorking]: col.time === -2,
+                        'custom-col': true,
                       })}
                       onClick={() => {
                         console.log(rowIndex, index, item)
