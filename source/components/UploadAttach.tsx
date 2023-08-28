@@ -466,7 +466,9 @@ const UploadAttach = (props: any, ref: any) => {
 
   const checkList = () => {
     const state = fileList.every((i: any) => i.state === 'success')
-    props?.checkUploadStatus(fileList.some((i: any) => i.state === 'uploading'))
+    props?.checkUploadStatus?.(
+      fileList.some((i: any) => i.state === 'uploading'),
+    )
     if (state) {
       if (!props.canUpdate) {
         props.onChangeAttachment(

@@ -112,6 +112,7 @@ const HandleReport = (props: any) => {
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [relatedNeedList, setRelatedNeedList] = useState<any>([])
   const [uploadAttachList, setUploadAttachList] = useState<any>({})
+  const [uploadAttachListStatus, setUploadAttachListStatus] = useState<any>({})
   const dispatch = useDispatch()
   const myRef = useRef<any>(null)
   // 关闭弹窗时重置
@@ -122,6 +123,7 @@ const HandleReport = (props: any) => {
     setPeopleValue([])
     setRelatedNeedList([])
     setUploadAttachList({})
+    setUploadAttachListStatus({})
     setReportDetail(null)
     setDetail(null)
   }
@@ -140,6 +142,14 @@ const HandleReport = (props: any) => {
         })
       }, 100)
     })
+    // 判断有文件在uploading状态
+    if (Object.values(uploadAttachListStatus)?.some((i: any) => !!i)) {
+      getMessage({
+        type: 'warning',
+        msg: t('theFileIsBeingPleaseWait'),
+      })
+      return
+    }
     let users: any[] = []
     const data: any[] = []
     Object.keys(params).forEach((key: string) => {
@@ -368,6 +378,12 @@ const HandleReport = (props: any) => {
       })),
     )
   }
+  // 检查是否有文件正在上传
+  const checkUploadStatus = (name: string, success: boolean) => {
+    setUploadAttachListStatus({
+      [name]: success,
+    })
+  }
 
   // 修改汇报 初始化
   useEffect(() => {
@@ -493,6 +509,9 @@ const HandleReport = (props: any) => {
           >
             <UploadAttach
               ref={myRef}
+              checkUploadStatus={(success: boolean) =>
+                checkUploadStatus(`${content.type}_${content.id}`, success)
+              }
               power
               defaultList={uploadAttachList[`${content.type}_${content.id}`]}
               onChangeAttachment={(res: any) => {
