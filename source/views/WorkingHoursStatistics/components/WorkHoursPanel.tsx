@@ -117,7 +117,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
     if (value !== 2) {
       delete params.day_task_time
     }
-    console.log('params', params, value)
+    console.log('params', params, dayTaskTime)
+    if (!dayTaskTime) {
+      getMessage({
+        type: 'error',
+        msg: t('pleaseEnterTheCorrectWorkingHoursFormat'),
+      })
+      return
+    }
     if (value === cacheValue && value !== 2) {
       setId('')
       return
