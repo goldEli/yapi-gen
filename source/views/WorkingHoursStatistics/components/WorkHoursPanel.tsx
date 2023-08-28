@@ -76,9 +76,12 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const handlescroll = debounce((event: any) => {
     dispatch(setRightScrollTop(event.target.scrollTop))
   }, 1)
-  document
-    .getElementsByClassName('rightTableWrap')[0]
-    ?.addEventListener('scroll', handlescroll)
+  if (document.getElementsByClassName('rightTableWrap')) {
+    document
+      .getElementsByClassName('rightTableWrap')[0]
+      ?.addEventListener('scroll', handlescroll)
+  }
+
   useEffect(() => {
     if (document.getElementsByClassName('rightTableWrap')[0]) {
       document.getElementsByClassName('rightTableWrap')[0].scrollTop =
