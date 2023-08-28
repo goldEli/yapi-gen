@@ -559,7 +559,7 @@ const UploadAttach = (props: any, ref: any) => {
       ) : null}
 
       <Warp
-        multiple
+        multiple={!props.multiple}
         show={props.addWrap}
         fileList={[]}
         beforeUpload={onUploadBefore}
