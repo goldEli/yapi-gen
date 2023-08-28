@@ -31,7 +31,7 @@ import {
   TimeWrap,
 } from '../../styles'
 import IconFont from '@/components/IconFont'
-import { useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { DatePickerProps, RangePickerProps } from 'antd/lib/date-picker'
@@ -67,6 +67,7 @@ const CreateFormItem = (props: CreateFormItemProps) => {
 
 const CreateSchedule = () => {
   const [t] = useTranslation()
+  const attachRef: any = createRef()
   const dispatch = useDispatch()
   // const leftDom = useRef<Ref<FormInstance<unknown>>>()
   const inputDom = useRef<InputRef | null>(null)
@@ -154,6 +155,13 @@ const CreateSchedule = () => {
 
   // 保存
   const onConfirm = async (next?: boolean) => {
+    if (attachRef.current.getAttachState() > 0) {
+      getMessage({
+        type: 'warning',
+        msg: t('theFileIsBeingPleaseWait'),
+      })
+      return
+    }
     await form.validateFields()
     let values = form.getFieldsValue()
     // 选择的结束重复时间不能小于选择的结束时间
@@ -858,6 +866,7 @@ const CreateSchedule = () => {
               name="files"
             >
               <UploadAttach
+                ref={attachRef}
                 power
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}

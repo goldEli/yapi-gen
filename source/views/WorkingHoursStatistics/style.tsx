@@ -124,7 +124,7 @@ export const WorkHourLabel = styled.div`
 `
 export const Working = css`
   background: var(--function-tag2);
-  color: var(--function-success);
+  color: var(--neutral-n2);
 `
 export const lastDay = css`
   border-right: 1px solid var(--neutral-n6-d1) !important;
@@ -136,7 +136,7 @@ export const Leave = css`
 `
 export const NotWorking = css`
   background: var(--function-tag4);
-  color: var(--function-warning);
+  color: var(--neutral-n2);
 `
 export const Line = styled(DragLine)<{ active: boolean }>`
   background: ${props =>
@@ -258,6 +258,10 @@ export const PopoverWrap = styled.div({
   minHeight: '134px',
   background: 'rgba(0,0,0,0.6)',
   borderRadius: '6px',
+  '.title': {
+    fontSize: 14,
+    fontFamily: 'SiYuanMedium',
+  },
 })
 export const Text = styled.div<{ state: number }>(({ state }) => ({
   fontSize: state === 3 ? '14px' : '12px',

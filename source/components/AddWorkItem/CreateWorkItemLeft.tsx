@@ -26,6 +26,7 @@ import { updateFlawCategory } from '@/services/flaw'
 import { updateAffairsCategory } from '@/services/affairs'
 import { Label, LabelWrap } from '../DemandDetailDrawer/style'
 import CommonIconFont from '../CommonIconFont'
+import { getMessage } from '../Message'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -146,6 +147,14 @@ const CreateDemandLeft = (props: Props) => {
 
   // 提交参数
   const onConfirm = async () => {
+    if (myRef.current.getAttachState() > 0) {
+      getMessage({
+        type: 'warning',
+        msg: t('theFileIsBeingPleaseWait'),
+      })
+      return
+    }
+
     await form.validateFields()
     const values = form.getFieldsValue()
 
