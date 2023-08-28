@@ -68,9 +68,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
       7: t('sunday'),
     })
   }, [language])
-  const handlescroll = debounce((event: any) => {
-    dispatch(setRightScrollTop(event.target.scrollTop))
-  }, 1)
+
   const handleClickOutside = (e: { target: any }) => {
     const { className } = e.target
     if (
@@ -86,7 +84,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
-      dom?.removeEventListener('scroll', handlescroll)
     }
   }, [])
   useLayoutEffect(() => {
@@ -95,10 +92,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
       ?.getBoundingClientRect().width
     setW(w)
   }, [props])
-
-  useEffect(() => {
-    dom?.addEventListener('scroll', handlescroll)
-  }, [dom])
 
   if (!columns) {
     return null
@@ -191,9 +184,14 @@ const WorkHoursPanel = (props: any, ref: any) => {
       </UpdateTask>
     )
   }
-
+  const onScrollCapture = (event: any) => {
+    if (document.getElementsByClassName('ant-table-body')[0]) {
+      document.getElementsByClassName('ant-table-body')[0].scrollTop =
+        event.target.scrollTop
+    }
+  }
   return (
-    <PanelWrap ref={rightTableWrap}>
+    <PanelWrap onScrollCapture={onScrollCapture}>
       <HeaderWrap>
         <Header>
           <DateLabel>

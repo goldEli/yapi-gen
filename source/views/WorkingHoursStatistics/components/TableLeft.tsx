@@ -16,10 +16,10 @@ import {
   InputStyle,
 } from '../style'
 import IconFont from '@/components/IconFont'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
 
 const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
@@ -30,8 +30,6 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
   const [row, setRow] = useState<any>({})
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
-  const { rightScrollTop } = useSelector(state => state.global)
-  const dispatch = useDispatch()
   const content = (row: any) => {
     return (
       <PopoverWrap>
@@ -262,22 +260,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       })
     }
   }
-  useEffect(() => {
-    return () => {
-      // document.removeEventListener('scroll', handlescroll)
-    }
-  }, [])
 
-  // const handlescroll =debounce( (event: any) => {
-  //   dispatch(setLeftScrollTop(event.target.scrollTop))
-  // },1)
-  // document.getElementsByClassName("ant-table-body")[0]?.addEventListener('scroll', handlescroll)
-  useEffect(() => {
-    if (document.getElementsByClassName('ant-table-body')[0]) {
-      document.getElementsByClassName('ant-table-body')[0].scrollTop =
-        rightScrollTop
-    }
-  }, [rightScrollTop])
   return (
     <>
       <ResizeTable
