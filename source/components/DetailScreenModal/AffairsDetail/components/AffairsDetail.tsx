@@ -253,6 +253,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
             (i: any) => i.name === '附件上传',
           ).length > 0 && (
             <UploadAttach
+              multiple
               ref={uploadRef}
               onBottom={onBottom}
               defaultList={props.affairsInfo?.attachment?.map((i: any) => ({

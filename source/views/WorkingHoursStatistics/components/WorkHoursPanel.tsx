@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, forwardRef } from 'react'
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  forwardRef,
+  useLayoutEffect,
+} from 'react'
 import { Popover, Input, Radio, Space, InputNumber } from 'antd'
 import { updateWorkTime } from '@/services/project'
 import { useTranslation } from 'react-i18next'
@@ -36,6 +42,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const timeRef = useRef<any>()
   const modalRef = useRef<any>()
   const [value, setValue] = useState(1)
+  const [w, setW] = useState(0)
   const [dayTaskTime, setDayTaskTime] = useState<any>(0)
   const popoverRef = useRef<any>()
   const { dataSource, onClick, direction, type, onConfirm } = props
@@ -68,9 +75,13 @@ const WorkHoursPanel = (props: any, ref: any) => {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [])
-
+  useLayoutEffect(() => {
+    const w = document
+      .getElementsByClassName('header-td')[0]
+      ?.getBoundingClientRect().width
+    setW(w)
+  }, [props])
   const handleClickOutside = () => {
-    console.log(popoverRef.current.props.open)
     const { open } = popoverRef.current.props
     if (open) {
       setId('')
@@ -176,9 +187,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
               const isLastDay = dayjs(item).endOf('month').format('YYYY-MM-DD')
               const data = monthData[item]
               const { length } = data
-              const w =
-                timeRef?.current?.getBoundingClientRect().width /
-                Object.values(monthData).flat().length
               const width = type ? w * length : '100%'
               return (
                 <div

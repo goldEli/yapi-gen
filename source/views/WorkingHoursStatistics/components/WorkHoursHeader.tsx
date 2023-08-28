@@ -54,7 +54,7 @@ const WorkHoursHeader = (props: {
   const [time, setTime] = useState<any>([])
   const [dateType, setDateType] = useState<any>(1)
   const [state, setState] = useState<any>(0)
-
+  const [state1, setState1] = useState<any>(3)
   const [memberList, setMemberList] = useState<any>([])
   const confirm = () => {
     props.onSearch(form.getFieldsValue(), dateType)
@@ -66,6 +66,7 @@ const WorkHoursHeader = (props: {
       person: [],
       date: getWeekDates(),
       type: 0,
+      state: 3,
     })
     setDateType(1)
     setState(0)
@@ -133,6 +134,20 @@ const WorkHoursHeader = (props: {
     },
     {
       id: 0,
+      text: t('all'),
+    },
+  ]
+  const tabsValue2 = [
+    {
+      id: 1,
+      text: t('normal'),
+    },
+    {
+      id: 2,
+      text: t('overdue'),
+    },
+    {
+      id: 3,
       text: t('all'),
     },
   ]
@@ -210,9 +225,10 @@ const WorkHoursHeader = (props: {
     }
     props.onSearch(form.getFieldsValue(), val)
   }
-  const onChangeType = (val: number) => {
-    setState(val)
-    form.setFieldValue('type', val)
+  const onChangeType = (val: number, num: number) => {
+    num === 1
+      ? form.setFieldValue('type', val)
+      : form.setFieldValue('state', val)
     props.onSearch(form.getFieldsValue(), dateType)
   }
 
@@ -258,12 +274,21 @@ const WorkHoursHeader = (props: {
                 />
               </Form.Item>
             </SelectWrapBedeck>
-            <SelectWrapBedeck style={{ marginBottom: 20 }}>
+            <SelectWrapBedeck style={{ margin: '0 16px 20px 0px' }}>
               <Form.Item name={'type'}>
                 <Tabs
                   tabsValue={tabsValue1}
-                  active={state}
-                  onChange={onChangeType}
+                  active={form.getFieldValue('type')}
+                  onChange={val => onChangeType(val, 1)}
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+            <SelectWrapBedeck style={{ margin: '0 16px 20px 0' }}>
+              <Form.Item name={'state'}>
+                <Tabs
+                  tabsValue={tabsValue2}
+                  active={form.getFieldValue('state')}
+                  onChange={val => onChangeType(val, 2)}
                 />
               </Form.Item>
             </SelectWrapBedeck>

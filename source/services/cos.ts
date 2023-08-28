@@ -53,8 +53,8 @@ const getCosSign = async (): Promise<any> => {
 }
 
 export const cos = new COS({
-  FileParallelLimit: 10000,
-  ChunkParallelLimit: 10000,
+  FileParallelLimit: 10,
+  ChunkParallelLimit: 10,
   getAuthorization: async (options: unknown, callback: any) => {
     const response = await getCosSign()
 
