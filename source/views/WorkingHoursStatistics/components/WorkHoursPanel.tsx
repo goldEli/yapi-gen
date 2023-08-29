@@ -45,6 +45,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [weekdayString, setWeekdayString] = useState<any>({})
   const [cacheValue, setCacheValue] = useState<number>()
   const [w, setW] = useState(0)
+  const [scrollWidth, setScrollWidth] = useState(0)
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
   const { columns, map, reduceMonth } = usePanelData(
@@ -189,6 +190,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
     )
   }
   const onScrollCapture = (event: any) => {
+    console.log(event.target.scrollLeft)
+    setScrollWidth(event?.target?.scrollLeft)
     if (document.getElementsByClassName('ant-table-body')[0]) {
       document.getElementsByClassName('ant-table-body')[0].scrollTop =
         event.target.scrollTop
@@ -196,7 +199,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   }
   return (
     <PanelWrap onScrollCapture={onScrollCapture}>
-      <HeaderWrap>
+      <HeaderWrap scrollWidth={scrollWidth}>
         <Header>
           <DateLabel>
             {Object.keys(monthData).map(item => {
@@ -241,7 +244,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
       </HeaderWrap>
       {rows.map((row: any, rowIndex: any) => {
         return (
-          <Rows key={rowIndex} className={rowIndex % 2 ? '' : 'highBackground'}>
+          <Rows
+            key={rowIndex}
+            className={rowIndex % 2 ? '' : 'highBackground'}
+            scrollWidth={scrollWidth}
+          >
             {columns.map((item: any, index: any) => {
               const col = map.get(item)[rowIndex]
               return (

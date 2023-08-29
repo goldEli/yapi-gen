@@ -49,10 +49,11 @@ export const PanelWrap = styled.div`
   position: relative;
   overflow-x: auto;
 `
-export const Rows = styled.div`
+export const Rows = styled.div<{ scrollWidth: number }>`
   display: flex;
   &.highBackground {
     background: var(--neutral-n10);
+    width: ${props => `calc(100% + ${props.scrollWidth}px)`};
   }
 `
 export const Cols = styled.div<{ language?: string | null }>`
@@ -65,10 +66,12 @@ export const Cols = styled.div<{ language?: string | null }>`
   flex: 1;
   padding: 0px 8px;
 `
-export const HeaderWrap = styled.div`
+export const HeaderWrap = styled.div<{ scrollWidth: number }>`
   position: sticky;
   top: 0px;
   background: #fff;
+  /* width: calc(100% +scrollWidth); */
+  width: ${props => `calc(100% + ${props.scrollWidth}px)`};
 `
 export const Header = styled.div`
   display: flex;
