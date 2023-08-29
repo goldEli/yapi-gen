@@ -67,9 +67,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
 
   const handleClickOutside = (e: { target: any }) => {
     const { className } = e.target
-    console.log('className', className, className.split(' '))
-    const split = className.split(' ')
-    console.log('split', split, id)
+    const split = className?.split(' ')
     if (
       split.includes('ant-spin-container') ||
       split.includes('ant-pagination')
@@ -97,15 +95,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
   }
   const rows = map.get(columns[0])
   const monthData = reduceMonth(columns)
-  const label = ({ time }: any) => {
-    if (time === -2) {
-      return t('notReported')
-    }
-    if (time === -1) {
-      return t('askForLeave')
-    }
-    return `${time / 3600}${t('workingHours')}`
-  }
   const confirm = async () => {
     const params = {
       ...record,
@@ -191,8 +180,10 @@ const WorkHoursPanel = (props: any, ref: any) => {
     )
   }
   const onScrollCapture = (event: any) => {
-    document.getElementsByClassName('ant-table-body')[0].scrollTop =
-      event.target.scrollTop
+    if (document.getElementsByClassName('ant-table-body')[0]) {
+      document.getElementsByClassName('ant-table-body')[0].scrollTop =
+        event.target.scrollTop
+    }
     setScrollWidth(event?.target?.scrollLeft)
     if (document.getElementsByClassName('ant-table-body')[0]) {
       document.getElementsByClassName('ant-table-body')[0].scrollTop =
@@ -306,14 +297,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         setId(id)
                       }}
                     >
-                      {/* {label(col)} */}
-                      {/* if (time === -2) {
-      return t('notReported')
-    }
-    if (time === -1) {
-      return t('askForLeave')
-    }
-    return `${time / 3600}${t('workingHours')}` */}
                       <div>
                         {col.time === -2
                           ? t('notReported')
