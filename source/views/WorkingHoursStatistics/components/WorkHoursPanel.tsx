@@ -105,7 +105,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
     if (value !== 2) {
       delete params.day_task_time
     }
-    console.log('params', params, dayTaskTime, value)
     if (!dayTaskTime && value === 2) {
       getMessage({
         type: 'error',
@@ -268,7 +267,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         'custom-col': true,
                       })}
                       onClick={() => {
-                        console.log(rowIndex, index, item)
                         if (
                           !projectPermissions
                             ?.map((item: { identity: any }) => item.identity)

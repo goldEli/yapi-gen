@@ -117,7 +117,6 @@ const Issues: React.FC<IssuesProps> = props => {
             >
               {({ index, style }: any) => {
                 const newStyle = { ...style, zIndex: 1000 }
-                console.log('style------', newStyle)
                 const story = issues.stories[index]
                 const hidden1 =
                   !!movingStory &&

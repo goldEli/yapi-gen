@@ -51,12 +51,6 @@ const RelationDropdownMenu = (props: Props) => {
     let text: any = ''
     let beforeUrl: any
     beforeUrl = window.origin
-    console.log({
-      id: pid,
-      detailId: props.record.id,
-      specialType: props.type,
-      isOpenScreenDetail: true,
-    })
     const params = encryptPhp(
       JSON.stringify({
         id: pid,

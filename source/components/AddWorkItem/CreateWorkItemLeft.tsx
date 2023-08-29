@@ -460,7 +460,6 @@ const CreateDemandLeft = (props: Props) => {
             : 'b/story/save'
           : 'b/transaction/save'
 
-      console.log(projectInfo, '====', categoryObj, '=121212', save)
       // 是否有创建需求权限
       isCreateDemand =
         projectInfo?.projectPermissions?.filter(
