@@ -105,8 +105,6 @@ const DemandIndex = () => {
     if (!updateState) {
       setIsSpinning(true)
     }
-    console.log(searchParamsObj, 'searchParamsObj')
-
     let params: any = {}
 
     if (state === 1) {
@@ -336,7 +334,6 @@ const DemandIndex = () => {
       // getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
     }
     bian.current = projectId
-    console.log(projectId, 'projectId')
   }, [projectId])
 
   useEffect(() => {

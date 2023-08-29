@@ -66,7 +66,7 @@ const WorkHoursHeader = (props: {
       person: [],
       date: getWeekDates(),
       type: 0,
-      state: 3,
+      state: 1,
     })
     setDateType(1)
     setState(0)
@@ -139,15 +139,15 @@ const WorkHoursHeader = (props: {
   ]
   const tabsValue2 = [
     {
-      id: 1,
+      id: 2,
       text: t('normal'),
     },
     {
-      id: 2,
+      id: 1,
       text: t('overdue'),
     },
     {
-      id: 3,
+      id: 0,
       text: t('all'),
     },
   ]

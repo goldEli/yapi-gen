@@ -502,7 +502,6 @@ const DemandDetailDrawer = () => {
 
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
-    console.log(value, '=valuevalue', tabActive)
     getDemandDetail('', demandIds)
     isTabClick.current = tabActive
     if (!value) {

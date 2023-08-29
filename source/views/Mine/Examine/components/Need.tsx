@@ -164,7 +164,7 @@ const Need = (props: any) => {
 
   const onClickItem = async (item: any) => {
     if (props.id === 0 || !props.id) {
-      getConfig(item.project_id)
+      getConfig(item.project_id ?? item.projectId)
     }
     const demandIds = listData?.list?.map((i: any) => i.demandId)
     item.id = item.demandId
@@ -183,7 +183,7 @@ const Need = (props: any) => {
     // type 1事务 2 缺陷 3 需求
     openDemandDetail(
       { ...item, ...{ demandIds } },
-      item.projectId,
+      item.project_id ?? item.projectId,
       item.demandId,
       type,
     )

@@ -77,7 +77,6 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         return (
           <CanOperation
             onClick={() => {
-              console.log(record, 'record')
               // type 不传是需求，1是事务，2是缺陷
               // project_type === 1 迭代  project_type === 2 cc  project_type === 1 && isBug=== 1 就是缺陷
               record.story.project_type === 1 &&
