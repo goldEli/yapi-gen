@@ -89,6 +89,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
       ?.getBoundingClientRect().width
     setW(w)
     setId('')
+    setScrollWidth(0)
   }, [props])
 
   if (!columns) {
