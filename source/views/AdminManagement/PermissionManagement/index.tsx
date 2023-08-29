@@ -140,12 +140,17 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   }),
 )
 
+const CheckboxWrap = styled.div({ width: 100, height: 32 })
+
 const TitleGroup = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginTop: 14,
   color: 'var(--neutral-n3)',
   fontSize: 12,
+  [CheckboxWrap.toString()]: {
+    lineHeight: '32px',
+  },
 })
 
 const MainWrap = styled.div({
@@ -192,7 +197,6 @@ const RowBox = styled.div`
   /* margin-bottom: 10px; */
 `
 
-const CheckboxWrap = styled.div({ width: 100, height: 32 })
 const OperationWrap = styled.div({ width: 100 })
 const MenuItemsTitle = styled.div`
   height: 44px;
@@ -230,7 +234,10 @@ const PermissionItem = (props: ItemProps) => {
     <MainWrapItem>
       <CheckboxWrap>
         <Checkbox
-          disabled={props.activeDetail?.type === 1}
+          disabled={
+            props.activeDetail?.type === 1 ||
+            props.item.children[0]?.groupName === '工作汇报'
+          }
           indeterminate={
             keys.length > 0 && keys.length !== props.item.children.length
           }
@@ -242,7 +249,11 @@ const PermissionItem = (props: ItemProps) => {
       </CheckboxWrap>
       <OperationWrap>{props.item.name}</OperationWrap>
       <GroupWrap>
-        <Checkbox.Group value={keys} onChange={onChange}>
+        <Checkbox.Group
+          value={keys}
+          onChange={onChange}
+          disabled={props.item.children[0]?.groupName === '工作汇报'}
+        >
           {props.item.children.map((item: any) => {
             return (
               <>
