@@ -128,18 +128,28 @@ export const WorkHourLabel = styled.div`
 export const Working = css`
   background: var(--function-tag2);
   color: var(--neutral-n2);
+  &:hover {
+    color: var(--function-success);
+  }
 `
 export const lastDay = css`
   border-right: 1px solid var(--neutral-n6-d1) !important;
   justify-content: flex-start !important;
+  color: var(--neutral-n2);
 `
 export const Leave = css`
   background: var(--function-tag3);
   color: var(--neutral-n2);
+  &:hover {
+    color: var(--function-error);
+  }
 `
 export const NotWorking = css`
   background: var(--function-tag4);
   color: var(--neutral-n2);
+  &:hover {
+    color: var(--function-warning);
+  }
 `
 export const Line = styled(DragLine)<{ active: boolean }>`
   background: ${props =>
