@@ -189,10 +189,8 @@ const WorkHoursPanel = (props: any, ref: any) => {
     )
   }
   const onScrollCapture = (event: any) => {
-    if (document.getElementsByClassName('ant-table-body')[0]) {
-      document.getElementsByClassName('ant-table-body')[0].scrollTop =
-        event.target.scrollTop
-    }
+    document.getElementsByClassName('ant-table-body')[0].scrollTop =
+      event.target.scrollTop
   }
   return (
     <PanelWrap onScrollCapture={onScrollCapture}>
