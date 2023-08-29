@@ -229,6 +229,22 @@ const ResizeTable = (props: ResizeTableProps) => {
       },
     }
   })
+  const handlescroll = (e: any) => {
+    if (props.srcollState) {
+      document.getElementsByClassName('rightScroll')[0].scrollTop =
+        e.target.scrollTop
+    }
+  }
+  if (props.srcollState) {
+    document
+      .getElementsByClassName('ant-table-body')[0]
+      ?.addEventListener('scroll', handlescroll)
+  }
+  useEffect(() => {
+    return () => {
+      document.removeEventListener('scroll', handlescroll)
+    }
+  }, [])
   return (
     <DataWrap
       srcollState={props.srcollState || false}

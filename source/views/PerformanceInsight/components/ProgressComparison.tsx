@@ -614,7 +614,6 @@ const ProgressComparison = (props: Props) => {
           iterate_ids: props?.headerParmas?.iterate_ids?.join(','),
         })
       }
-      console.log(result, 'result')
       const blob = new Blob([result.body], {
         type: result?.headers['content-type'],
       })

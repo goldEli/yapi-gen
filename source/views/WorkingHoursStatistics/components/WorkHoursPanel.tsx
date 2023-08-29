@@ -45,6 +45,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [weekdayString, setWeekdayString] = useState<any>({})
   const [cacheValue, setCacheValue] = useState<number>()
   const [w, setW] = useState(0)
+  const [scrollWidth, setScrollWidth] = useState(0)
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
   const { columns, map, reduceMonth } = usePanelData(
@@ -66,9 +67,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
 
   const handleClickOutside = (e: { target: any }) => {
     const { className } = e.target
-    console.log('className', className, className.split(' '))
-    const split = className.split(' ')
-    console.log('split', split, id)
+    const split = className?.split(' ')
     if (
       split.includes('ant-spin-container') ||
       split.includes('ant-pagination')
@@ -88,6 +87,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
       ?.getBoundingClientRect().width
     setW(w)
     setId('')
+    setScrollWidth(0)
   }, [props])
 
   if (!columns) {
@@ -95,15 +95,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
   }
   const rows = map.get(columns[0])
   const monthData = reduceMonth(columns)
-  const label = ({ time }: any) => {
-    if (time === -2) {
-      return t('notReported')
-    }
-    if (time === -1) {
-      return t('askForLeave')
-    }
-    return `${time / 3600}${t('workingHours')}`
-  }
   const confirm = async () => {
     const params = {
       ...record,
@@ -114,7 +105,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
     if (value !== 2) {
       delete params.day_task_time
     }
-    console.log('params', params, dayTaskTime, value)
     if (!dayTaskTime && value === 2) {
       getMessage({
         type: 'error',
@@ -193,10 +183,15 @@ const WorkHoursPanel = (props: any, ref: any) => {
       document.getElementsByClassName('ant-table-body')[0].scrollTop =
         event.target.scrollTop
     }
+    setScrollWidth(event?.target?.scrollLeft)
+    if (document.getElementsByClassName('ant-table-body')[0]) {
+      document.getElementsByClassName('ant-table-body')[0].scrollTop =
+        event.target.scrollTop
+    }
   }
   return (
-    <PanelWrap onScrollCapture={onScrollCapture}>
-      <HeaderWrap>
+    <PanelWrap onScrollCapture={onScrollCapture} className="rightScroll">
+      <HeaderWrap scrollWidth={scrollWidth}>
         <Header>
           <DateLabel>
             {Object.keys(monthData).map(item => {
@@ -241,7 +236,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
       </HeaderWrap>
       {rows.map((row: any, rowIndex: any) => {
         return (
-          <Rows key={rowIndex} className={rowIndex % 2 ? '' : 'highBackground'}>
+          <Rows
+            key={rowIndex}
+            className={rowIndex % 2 ? '' : 'highBackground'}
+            scrollWidth={scrollWidth}
+          >
             {columns.map((item: any, index: any) => {
               const col = map.get(item)[rowIndex]
               return (
@@ -268,7 +267,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         'custom-col': true,
                       })}
                       onClick={() => {
-                        console.log(rowIndex, index, item)
                         if (
                           !projectPermissions
                             ?.map((item: { identity: any }) => item.identity)
@@ -297,14 +295,6 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         setId(id)
                       }}
                     >
-                      {/* {label(col)} */}
-                      {/* if (time === -2) {
-      return t('notReported')
-    }
-    if (time === -1) {
-      return t('askForLeave')
-    }
-    return `${time / 3600}${t('workingHours')}` */}
                       <div>
                         {col.time === -2
                           ? t('notReported')
