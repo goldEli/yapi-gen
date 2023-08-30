@@ -235,8 +235,7 @@ export const CanOperation = styled.div({
   '.text': {
     display: 'inline-block',
     minWidth: '123px',
-    width: '80%',
-    maxWidth: '80%',
+    maxWidth: '400px',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',

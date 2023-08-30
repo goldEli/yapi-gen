@@ -464,6 +464,7 @@ const FlawDetail = () => {
           detailId={flawInfo.id ?? 0}
           projectId={flawInfo.projectId ?? 0}
           isOpen={tabActive === '5'}
+          height="calc(100vh - 230px)"
         />
       ),
     },

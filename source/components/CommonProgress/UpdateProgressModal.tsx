@@ -212,7 +212,6 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
             <UploadAttach
               ref={myRef}
               power
-              defaultList={[]}
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res)
               }}
