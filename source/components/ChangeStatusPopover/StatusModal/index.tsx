@@ -368,6 +368,7 @@ const StatusModal = (props: StatusModalProps) => {
 
   // 提交表单
   const onConfirm = async () => {
+    form.submit()
     await confirm()
   }
 
