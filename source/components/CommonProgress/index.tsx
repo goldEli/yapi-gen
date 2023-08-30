@@ -1,5 +1,5 @@
 import { Progress, Dropdown } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CommonProgressWrap, UpdateButton, ItemRow } from './style'
 import UpdateProgressModal from './UpdateProgressModal'
 import CommonUserAvatar from '../CommonUserAvatar'
@@ -51,6 +51,19 @@ const CommonProgress = (props: ProgressProps) => {
     }
   }, [id, update, commonProgressVisible])
 
+  const getRightDistance = useMemo(() => {
+    if (percent === 100) {
+      if (i18n.language === 'zh') {
+        return 70
+      }
+      return 120
+    }
+    if (i18n.language === 'zh') {
+      return 52
+    }
+    return 105
+  }, [i18n.language, percent])
+
   return (
     <>
       <CommonProgressWrap>
@@ -97,7 +110,13 @@ const CommonProgress = (props: ProgressProps) => {
               />
             </div>
           ) : (
-            <div style={{ width: 222, marginRight: 40, cursor: 'pointer' }}>
+            <div
+              style={{
+                width: 222,
+                marginRight: getRightDistance,
+                cursor: 'pointer',
+              }}
+            >
               <Progress
                 percent={percent}
                 strokeColor="var(--function-success)"
@@ -112,10 +131,7 @@ const CommonProgress = (props: ProgressProps) => {
         {isTable || isKanBan
           ? null
           : hasEdit && (
-              <UpdateButton
-                style={{ marginLeft: i18n.language === 'zh' ? 16 : 65 }}
-                onClick={() => setVisible(true)}
-              >
+              <UpdateButton onClick={() => setVisible(true)}>
                 {t('updateProgress')}
               </UpdateButton>
             )}

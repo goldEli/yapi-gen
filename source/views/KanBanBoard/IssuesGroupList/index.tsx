@@ -13,7 +13,6 @@ const IssuesGroupListBox = styled.div`
 `
 
 const IssuesGroupList: React.FC<IssuesGroupListProps> = props => {
-  console.log('issuesGroup', props)
   return (
     <IssuesGroupListBox>
       {props.data.map(issuesGroup => {

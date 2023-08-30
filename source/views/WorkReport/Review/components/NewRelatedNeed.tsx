@@ -102,6 +102,11 @@ const ShowListWrap = styled.div`
     }
   }
 `
+const RelatedWrap = styled.div`
+  .ant-select-selector {
+    max-width: 626px;
+  }
+`
 
 const NewRelatedNeed = (props: any) => {
   const [lessForm] = Form.useForm()
@@ -163,7 +168,7 @@ const NewRelatedNeed = (props: any) => {
   }, [props.initValue])
 
   return (
-    <div style={{ maxWidth: 626 }}>
+    <RelatedWrap>
       <AddWrap
         onClick={() => {
           setShow(true)
@@ -255,7 +260,7 @@ const NewRelatedNeed = (props: any) => {
           </Form>
         </WrapDiv>
       )}
-    </div>
+    </RelatedWrap>
   )
 }
 

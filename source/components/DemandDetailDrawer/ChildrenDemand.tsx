@@ -216,7 +216,6 @@ const ChildrenDemand = (props: Props, ref: any) => {
               menu={
                 <RelationDropdownMenu
                   onDeleteChange={() => {
-                    console.log(111, record)
                     setDeleteId(record.id)
                     setIsDelete(true)
                   }}

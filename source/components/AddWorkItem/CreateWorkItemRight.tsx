@@ -187,7 +187,6 @@ const CreateDemandRight = (props: Props) => {
           : null
       }
 
-      console.log(props.detail, '=params.isChildparams.isChild')
       form.setFieldsValue({
         status: props.newCategory?.statusId ?? props.detail?.status.status_id,
 

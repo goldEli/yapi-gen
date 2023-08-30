@@ -51,7 +51,6 @@ const WorkHours: React.FC<IProps> = props => {
 
   // 拖动线条
   const onDragLine = () => {
-    console.log(window.innerWidth, 'window.innerWidth')
     setHoverStyle(false)
     document.onmousemove = e => {
       setFocus(true)
@@ -76,26 +75,20 @@ const WorkHours: React.FC<IProps> = props => {
     const start_at = val.time ? val.time[0] : val.date[0]
     const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
-      // start_at,
-      // end_at,
-      // type: val.type,
-      // project_id: paramsData.id,
-      // user_ids:
-      //   val.user_ids?.length >= 1
-      //     ? val.user_ids.join(',')
-      //     : val.user_ids
-      //     ? String(val.user_ids)
-      //     : '',
-      // page: page ? page : pageObj.currentPage,
-      // pagesize: pageSize ? pageSize : pageObj.pageSize,
-      // keyword: keyVal ? keyVal : key,
-      start_at: '2023-08-01',
-      end_at: '2023-08-31',
-      type: 0,
-      project_id: 513,
-      user_ids: '',
-      page: 1,
-      keyword: '',
+      start_at,
+      end_at,
+      type: val.type,
+      project_id: paramsData.id,
+      is_overdue: val.state,
+      user_ids:
+        val.user_ids?.length >= 1
+          ? val.user_ids.join(',')
+          : val.user_ids
+          ? String(val.user_ids)
+          : '',
+      page: page ? page : pageObj.currentPage,
+      pagesize: pageSize ? pageSize : pageObj.pageSize,
+      keyword: keyVal,
     }
     const res = await workTimeList(parmas)
     setPageObj({
@@ -114,7 +107,7 @@ const WorkHours: React.FC<IProps> = props => {
   }) => {
     await updateOverdue({ ...row, project_id: paramsData.id })
     getMessage({ msg: t('adjustedSuccessfully'), type: 'success' })
-    onSearch(formVal, type)
+    onSearch(formVal, type, key)
   }
   const onGetExport = async (val: any) => {
     const start_at = val.time ? val.time[0] : val.date[0]
@@ -124,6 +117,7 @@ const WorkHours: React.FC<IProps> = props => {
       end_at,
       type: val.type,
       project_id: paramsData.id,
+      is_overdue: val.state,
       user_ids:
         val.user_ids?.length >= 1
           ? val.user_ids.join(',')

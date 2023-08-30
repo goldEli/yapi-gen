@@ -66,7 +66,7 @@ const WorkHoursHeader = (props: {
       person: [],
       date: getWeekDates(),
       type: 0,
-      state: 3,
+      state: 1,
     })
     setDateType(1)
     setState(0)
@@ -139,15 +139,15 @@ const WorkHoursHeader = (props: {
   ]
   const tabsValue2 = [
     {
-      id: 1,
+      id: 2,
       text: t('normal'),
     },
     {
-      id: 2,
+      id: 1,
       text: t('overdue'),
     },
     {
-      id: 3,
+      id: 0,
       text: t('all'),
     },
   ]
@@ -265,7 +265,9 @@ const WorkHoursHeader = (props: {
                 />
               </Form.Item>
             </SelectWrapBedeck>
-            <SelectWrapBedeck style={{ margin: '0 16px 20px 16px' }}>
+            <SelectWrapBedeck
+              style={{ margin: '0 16px 20px 16px', border: 'none' }}
+            >
               <Form.Item name={'date'}>
                 <Tabs
                   tabsValue={tabsValue}
@@ -274,7 +276,9 @@ const WorkHoursHeader = (props: {
                 />
               </Form.Item>
             </SelectWrapBedeck>
-            <SelectWrapBedeck style={{ margin: '0 16px 20px 0px' }}>
+            <SelectWrapBedeck
+              style={{ margin: '0 16px 20px 0px', border: 'none' }}
+            >
               <Form.Item name={'type'}>
                 <Tabs
                   tabsValue={tabsValue1}
@@ -283,7 +287,9 @@ const WorkHoursHeader = (props: {
                 />
               </Form.Item>
             </SelectWrapBedeck>
-            <SelectWrapBedeck style={{ margin: '0 16px 20px 0' }}>
+            <SelectWrapBedeck
+              style={{ margin: '0 16px 20px 0', border: 'none' }}
+            >
               <Form.Item name={'state'}>
                 <Tabs
                   tabsValue={tabsValue2}

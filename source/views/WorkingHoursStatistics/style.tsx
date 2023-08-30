@@ -49,10 +49,11 @@ export const PanelWrap = styled.div`
   position: relative;
   overflow-x: auto;
 `
-export const Rows = styled.div`
+export const Rows = styled.div<{ scrollWidth: number }>`
   display: flex;
   &.highBackground {
     background: var(--neutral-n10);
+    width: ${props => `calc(100% + ${props.scrollWidth}px)`};
   }
 `
 export const Cols = styled.div<{ language?: string | null }>`
@@ -65,10 +66,12 @@ export const Cols = styled.div<{ language?: string | null }>`
   flex: 1;
   padding: 0px 8px;
 `
-export const HeaderWrap = styled.div`
+export const HeaderWrap = styled.div<{ scrollWidth: number }>`
   position: sticky;
   top: 0px;
   background: #fff;
+  /* width: calc(100% +scrollWidth); */
+  width: ${props => `calc(100% + ${props.scrollWidth}px)`};
 `
 export const Header = styled.div`
   display: flex;
@@ -125,18 +128,28 @@ export const WorkHourLabel = styled.div`
 export const Working = css`
   background: var(--function-tag2);
   color: var(--neutral-n2);
+  &:hover {
+    color: var(--function-success);
+  }
 `
 export const lastDay = css`
   border-right: 1px solid var(--neutral-n6-d1) !important;
   justify-content: flex-start !important;
+  color: var(--neutral-n2);
 `
 export const Leave = css`
   background: var(--function-tag3);
-  color: var(--function-error);
+  color: var(--neutral-n2);
+  &:hover {
+    color: var(--function-error);
+  }
 `
 export const NotWorking = css`
   background: var(--function-tag4);
   color: var(--neutral-n2);
+  &:hover {
+    color: var(--function-warning);
+  }
 `
 export const Line = styled(DragLine)<{ active: boolean }>`
   background: ${props =>
@@ -223,6 +236,7 @@ export const CanOperation = styled.div({
     display: 'inline-block',
     minWidth: '123px',
     width: '80%',
+    maxWidth: '80%',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
