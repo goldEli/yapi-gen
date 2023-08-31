@@ -24,7 +24,7 @@ import {
   getDepartmentUserList,
   getDepartmentUserList1,
 } from '@/services/setting'
-import { unionBy } from 'lodash'
+import { debounce, throttle, unionBy } from 'lodash'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -501,26 +501,33 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     }
     // setSearchVal('')
   }
-  const onConfirm = async () => {
-    const setData =
-      personData
-        ?.filter((el: any) => String(el?.id)?.includes('department_id_'))
-        ?.map((el: any) => ({
-          id: Number(el.id.slice(14)),
-          name: el.name,
-          department_id: el.department_id,
-          avatar: el.avatar,
-          nickname: el.nickname,
-        })) || []
+  const onConfirm = debounce(
+    async () => {
+      const setData =
+        personData
+          ?.filter((el: any) => String(el?.id)?.includes('department_id_'))
+          ?.map((el: any) => ({
+            id: Number(el.id.slice(14)),
+            name: el.name,
+            department_id: el.department_id,
+            avatar: el.avatar,
+            nickname: el.nickname,
+          })) || []
 
-    if (props.isPermisGroup) {
-      await form.validateFields()
+      if (props.isPermisGroup) {
+        await form.validateFields()
 
-      props?.onConfirm?.(personData, form.getFieldsValue().userGroupId)
-    } else {
-      props?.onConfirm?.(personData)
-    }
-  }
+        props?.onConfirm?.(personData, form.getFieldsValue().userGroupId)
+      } else {
+        props?.onConfirm?.(personData)
+      }
+    },
+    3000,
+    {
+      leading: true,
+      trailing: false,
+    },
+  )
 
   const getTapData = (datas: any) => {
     active.current.push(datas)
