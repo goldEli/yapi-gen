@@ -470,6 +470,7 @@ const DemandDetail = () => {
           detailId={demandInfo.id}
           projectId={demandInfo.projectId}
           isOpen={tabActive === '6'}
+          height="calc(100vh - 230px)"
         />
       ),
     },

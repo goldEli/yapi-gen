@@ -78,6 +78,8 @@ interface ScheduleRecordProps {
   notPadding?: boolean
   // 是否打开
   isOpen?: boolean
+  // 全屏详情需要高度滚动
+  height?: any
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
@@ -109,7 +111,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
   }, [props.detailId, props.projectId, props.isOpen])
 
   return (
-    <Wrap>
+    <Wrap style={{ height: props.height, overflow: 'auto' }}>
       {listData?.list && listData?.list?.length > 0 && (
         <div>
           {listData?.list?.map((i: any) => (

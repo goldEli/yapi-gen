@@ -191,7 +191,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                 }}
               >
                 {record.is_normal === 1 ? (
-                  <div style={{ cursor: 'pointer' }}>
+                  <div style={{ cursor: 'pointer', width: 90 }}>
                     <span style={{ color: 'var(--function-success)' }}>
                       {t('normal') + '(' + t('adjustment') + ')'}
                     </span>
