@@ -147,7 +147,7 @@ const CreateDemandLeft = (props: Props) => {
 
   // 提交参数
   const onConfirm = async () => {
-    if (myRef.current.getAttachState() > 0) {
+    if (myRef.current && myRef.current.getAttachState() > 0) {
       getMessage({
         type: 'warning',
         msg: t('theFileIsBeingPleaseWait'),
@@ -155,6 +155,7 @@ const CreateDemandLeft = (props: Props) => {
       return
     }
 
+    console.log(3333333333)
     await form.validateFields()
     const values = form.getFieldsValue()
 

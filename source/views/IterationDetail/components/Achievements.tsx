@@ -132,7 +132,7 @@ const Achievements = (props: Props) => {
 
   // 向父级提交附件及描述
   const onConfirm = () => {
-    if (attachRef.current.getAttachState() > 0) {
+    if (attachRef.current && attachRef.current.getAttachState() > 0) {
       getMessage({
         type: 'warning',
         msg: t('theFileIsBeingPleaseWait'),
