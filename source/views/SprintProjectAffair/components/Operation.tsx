@@ -429,9 +429,7 @@ const Operation = (props: Props) => {
           )}
           {getIsPermission(
             projectInfo?.projectPermissions,
-            projectInfo.projectType === 1
-              ? 'b/story/save'
-              : 'b/transaction/save',
+            'b/transaction/save',
           ) || projectInfo?.status !== 1 ? null : (
             <CommonButton
               onClick={() =>

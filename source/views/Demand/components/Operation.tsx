@@ -407,12 +407,8 @@ const Operation = (props: Props) => {
               <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
-          {getIsPermission(
-            projectInfo?.projectPermissions,
-            projectInfo.projectType === 1
-              ? 'b/story/save'
-              : 'b/transaction/save',
-          ) || projectInfo?.status !== 1 ? null : (
+          {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ||
+          projectInfo?.status !== 1 ? null : (
             <Popover
               content={changeStatus}
               placement="bottomLeft"
