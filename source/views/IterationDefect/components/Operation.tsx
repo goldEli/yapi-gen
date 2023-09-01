@@ -394,7 +394,12 @@ const Operation = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 2, title: t('createDefect') },
+        params: {
+          noDataCreate: true,
+          projectId: projectInfo?.id,
+          type: 2,
+          title: t('createDefect'),
+        },
       }),
     )
   }
@@ -492,12 +497,8 @@ const Operation = (props: Props) => {
               <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
-          {getIsPermission(
-            projectInfo?.projectPermissions,
-            projectInfo.projectType === 1
-              ? 'b/story/save'
-              : 'b/transaction/save',
-          ) || projectInfo?.status !== 1 ? null : (
+          {getIsPermission(projectInfo?.projectPermissions, 'b/flaw/save') ||
+          projectInfo?.status !== 1 ? null : (
             <>
               {(removeNull(projectInfoValues, 'category') || []).filter(
                 (i: any) => i.work_type === 2,
