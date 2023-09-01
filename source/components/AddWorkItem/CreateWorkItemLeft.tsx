@@ -147,7 +147,7 @@ const CreateDemandLeft = (props: Props) => {
 
   // 提交参数
   const onConfirm = async () => {
-    if (myRef.current.getAttachState() > 0) {
+    if (myRef.current?.getAttachState() > 0) {
       getMessage({
         type: 'warning',
         msg: t('theFileIsBeingPleaseWait'),

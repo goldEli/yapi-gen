@@ -166,7 +166,7 @@ const DemandComment = (props: Props) => {
   }
 
   const onAddConfirm = async (params: any) => {
-    if (attachRef.current.getAttachState() > 0) {
+    if (attachRef.current?.getAttachState() > 0) {
       getMessage({
         type: 'warning',
         msg: t('theFileIsBeingPleaseWait'),

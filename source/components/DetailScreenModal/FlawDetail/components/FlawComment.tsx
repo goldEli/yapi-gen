@@ -185,7 +185,7 @@ const FlawComment = (props: Props) => {
 
   // 添加评论
   const onAddConfirm = async (params: any) => {
-    if (attachRef.current.getAttachState() > 0) {
+    if (attachRef.current?.getAttachState() > 0) {
       getMessage({
         type: 'warning',
         msg: t('theFileIsBeingPleaseWait'),
