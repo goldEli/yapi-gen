@@ -299,6 +299,10 @@ const routes = [
           },
         ],
       },
+      {
+        path: '/EmployeeProfile',
+        element: lazy(() => import('@/views/EmployeeProfile')),
+      },
     ],
   },
 ]

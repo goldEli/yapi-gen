@@ -33,6 +33,7 @@ const initialState: CounterState = {
     { key: '/Report', normal: 'log-nor', active: 'log-sel' },
     { key: '/AdminManagement', normal: 'management', active: '' },
     { key: '/Performance', normal: 'measure-nor', active: 'measure-sel' },
+    { key: '/EmployeeProfile', normal: 'employee-nor', active: 'employee-sel' },
   ],
 }
 
