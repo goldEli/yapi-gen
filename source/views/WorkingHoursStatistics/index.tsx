@@ -21,7 +21,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
   const panelRef = useRef<any>()
-  const [leftWidth, setLeftWidth] = useState(504)
+  const [leftWidth, setLeftWidth] = useState<any>(504)
   const [direction, setDirection] = useState(false)
   const [focus, setFocus] = useState(false)
   const [t] = useTranslation()
@@ -173,7 +173,7 @@ const WorkHours: React.FC<IProps> = props => {
                 size={20}
                 onClick={() => {
                   setHoverStyle(true)
-                  setLeftWidth(direction ? 504 : 1550)
+                  setLeftWidth(direction ? 504 : window.innerWidth - 300)
                   setDirection(!direction)
                 }}
               />
