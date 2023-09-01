@@ -349,6 +349,14 @@ export const Col1 = styled.div`
   align-items: center;
   justify-content: space-between;
 `
+
+export const ColRightWrap = styled.div`
+  display: flex;
+  height: 32px;
+  align-items: center;
+  justify-content: space-between;
+`
+
 export const TitleCss = styled.div`
   color: var(--neutral-n1-d1);
   padding-left: 8px;

@@ -400,7 +400,7 @@ const Home = () => {
     const res = await getStatisticsTotal({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -424,7 +424,7 @@ const Home = () => {
     const res = await contrastNewWork({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -455,7 +455,7 @@ const Home = () => {
       sort: str,
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -483,7 +483,7 @@ const Home = () => {
     const res = await getDefectRatio({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -515,7 +515,7 @@ const Home = () => {
     const res = await statisticsOther({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -718,7 +718,7 @@ const Home = () => {
                 ? t('performance.presentSituation')
                 : t('performance.presentSituation1')
             }
-            time={workDataList?.start_time + ' ~ ' + workDataList.end_time}
+            time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
             num={1}
           />
           <div style={{ margin: '12px 0' }}>
@@ -729,7 +729,7 @@ const Home = () => {
               homeType={homeType}
               data={workDataList?.defect || []}
               title={t('performance.qPresentSituation')}
-              time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
+              time={`${workDataList?.start_time} ~ ${workDataList?.end_time}`}
             />
           </div>
           <div style={{ width: '100%', display: 'flex' }}>
@@ -750,10 +750,16 @@ const Home = () => {
                       ? t('performance.title1')
                       : t('performance.title01')
                   }
-                  titleType={true}
+                  titleType
                   height={396}
                   chart={charts1}
                   onChange={(val: any) => getContrastNewWork(val)}
+                  projectId={projectId}
+                  viewType={viewType}
+                  homeType={homeType}
+                  data={workDataList?.work || []}
+                  time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
+                  num={1}
                 />
                 <HightChartMainLine
                   projectId={projectId}
@@ -800,6 +806,12 @@ const Home = () => {
                   onChange={(val: string) => {
                     getCompletionRateChart(val)
                   }}
+                  projectId={projectId}
+                  viewType={viewType}
+                  homeType={homeType}
+                  data={workDataList?.work || []}
+                  time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
+                  num={1}
                 />
               </div>
               <div
