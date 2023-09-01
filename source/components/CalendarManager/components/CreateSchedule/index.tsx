@@ -155,7 +155,7 @@ const CreateSchedule = () => {
 
   // 保存
   const onConfirm = async (next?: boolean) => {
-    if (attachRef.current.getAttachState() > 0) {
+    if (attachRef.current && attachRef.current.getAttachState() > 0) {
       getMessage({
         type: 'warning',
         msg: t('theFileIsBeingPleaseWait'),
