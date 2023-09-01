@@ -2279,7 +2279,7 @@
   "actualWorkingHours": "Actual working hours (h)",
   "pleaseEnterActualWorkingHours": "Please enter actual working hours",
   "enterTheActualWorkingHours": "&#39;Please enter the actual working hours",
-  "releaseNotes": "Release Notes",
+  "releaseNotes": "Inspiration",
   "confirmToDeleteThisGroup": "Confirm to delete this group",
   "selectItem": "Select item",
   "addChildRequirement": "Add child requirement",
@@ -2360,5 +2360,8 @@
   "time": "Time",
   "youDoNotHavePermissionToEdit": "You do not have permission to edit",
   "theFileIsBeingPleaseWait": "The file is being uploaded, please wait",
-  "pleaseEnterTheCorrectWorkingHoursFormat": "Please enter the correct working hours format"
+  "pleaseEnterTheCorrectWorkingHoursFormat": "Please enter the correct working hours format",
+  "video": "Video",
+  "areYouSureYouWantToUpdateTheCurrent": "Are you sure you want to update the current progress?",
+  "confirmUpdateProgress": "Confirm update progress"
 }

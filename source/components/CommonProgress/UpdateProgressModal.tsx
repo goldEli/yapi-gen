@@ -11,6 +11,7 @@ import { updateFlawSchedule } from '@/services/flaw'
 import { getMessage } from '../Message'
 import CommonIconFont from '../CommonIconFont'
 import { Label, LabelWrap } from '../DemandDetailDrawer/style'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 interface ProgressPropsType {
   type?: 'transaction' | 'demand' | 'flaw'
@@ -22,6 +23,7 @@ interface ProgressPropsType {
 }
 
 const UpdateProgressModal = (props: ProgressPropsType) => {
+  const { DeleteConfirmModal, open: openDelete } = useDeleteConfirmModal()
   const [t]: any = useTranslation()
   const [form] = Form.useForm()
   const [inputValue, setInputValue] = useState(0)
@@ -81,6 +83,21 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
       attachment: arr,
     })
   }
+  const onChangeAttachment2 = (result: any) => {
+    const arr = result.map((i: any) => {
+      return {
+        name: i.name,
+        url: i.url,
+        size: i.size,
+        ext: i.ext,
+        ctime: i.ctime,
+      }
+    })
+
+    form.setFieldsValue({
+      attachment_video: arr,
+    })
+  }
   const confirm = async () => {
     const value = await form.validateFields()
     if (myRef?.current?.getAttachState() > 0) {
@@ -90,32 +107,40 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
       })
       return
     }
-    const params = {
-      user_id: data?.user_id,
-      project_id,
-      story_id: id,
-      schedule: inputValue,
-      ...value,
-      total_task_time: value.total_task_time * 3600,
-    }
-    let res = null
-    if (type === 'demand') {
-      res = await updateStorySchedule(params)
-    } else if (type === 'transaction') {
-      res = await updateTransactionSchedule(params)
-    } else if (type === 'flaw') {
-      res = await updateFlawSchedule(params)
-    }
-    if (res) {
-      getMessage({
-        type: 'success',
-        msg: t('updateCompleted'),
-      })
-      close()
-      onConfirm?.()
-    }
+    openDelete({
+      title: t('confirmUpdateProgress'),
+      text: t('areYouSureYouWantToUpdateTheCurrent'),
+      onConfirm: async () => {
+        const params = {
+          user_id: data?.user_id,
+          project_id,
+          story_id: id,
+          schedule: inputValue,
+          ...value,
+          total_task_time: value.total_task_time * 3600,
+        }
+        let res = null
+        if (type === 'demand') {
+          res = await updateStorySchedule(params)
+        } else if (type === 'transaction') {
+          res = await updateTransactionSchedule(params)
+        } else if (type === 'flaw') {
+          res = await updateFlawSchedule(params)
+        }
+        if (res) {
+          getMessage({
+            type: 'success',
+            msg: t('updateCompleted'),
+          })
+          close()
+          onConfirm?.()
+        }
+        return Promise.resolve()
+      },
+    })
   }
   const myRef = useRef<any>(null)
+  const myRef2 = useRef<any>(null)
 
   return (
     <CommonModal
@@ -126,6 +151,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
       onConfirm={confirm}
       confirmText={t('renew')}
     >
+      <DeleteConfirmModal />
       <ProgressContentWrap>
         <div className="tips">
           {t('itIsRecommendedNotToGoBelowTheCurrentProgress')}
@@ -188,7 +214,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
                   width: '100%',
                 }}
               >
-                <Label>{t('common.attachment')}</Label>
+                <Label>{t('project.img')}</Label>
                 <Tooltip title={t('addAttachments')}>
                   <CloseWrap
                     style={{ marginLeft: 'auto' }}
@@ -210,10 +236,51 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
             name="attachment"
           >
             <UploadAttach
+              special={['png', 'jpg', 'jpeg', 'gif']}
               ref={myRef}
               power
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res)
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            className="info_item_tab_label"
+            label={
+              <LabelWrap
+                style={{
+                  justifyContent: 'space-between',
+                  display: 'flex',
+                  width: '100%',
+                }}
+              >
+                <Label>{t('video')}</Label>
+                <Tooltip title={t('addAttachments')}>
+                  <CloseWrap
+                    style={{ marginLeft: 'auto' }}
+                    width={32}
+                    height={32}
+                  >
+                    <CommonIconFont
+                      type="plus"
+                      size={20}
+                      color="var(--neutral-n2)"
+                      onClick={() => {
+                        myRef2.current?.handleUpload()
+                      }}
+                    />
+                  </CloseWrap>
+                </Tooltip>
+              </LabelWrap>
+            }
+            name="attachment_video"
+          >
+            <UploadAttach
+              special={['avi', 'wmv', 'mp4']}
+              ref={myRef2}
+              power
+              onChangeAttachment={(res: any) => {
+                onChangeAttachment2(res)
               }}
             />
           </Form.Item>
