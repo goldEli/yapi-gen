@@ -155,6 +155,7 @@ const CreateDemandLeft = (props: Props) => {
       return
     }
 
+    console.log(3333333333)
     await form.validateFields()
     const values = form.getFieldsValue()
 
