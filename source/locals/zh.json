@@ -2363,5 +2363,7 @@
   "pleaseEnterTheCorrectWorkingHoursFormat": "请输入正确的工时格式",
   "video": "视频",
   "areYouSureYouWantToUpdateTheCurrent": "确认更新当前进度吗",
-  "confirmUpdateProgress": "确认更新进度"
+  "confirmUpdateProgress": "确认更新进度",
+  "putAway": "收起",
+  "applicationMenu": "应用菜单 ["
 }

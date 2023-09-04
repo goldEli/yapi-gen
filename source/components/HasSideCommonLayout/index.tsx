@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState } from 'react'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
+import { Tooltip } from 'antd'
+import { t } from 'i18next'
 
 interface HasSideCommonLayoutProps {
   side?: React.ReactNode
@@ -175,14 +177,15 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
               style={{ marginLeft: 4 }}
             />
           </MouseDom>
-
-          <FoldIcon onClick={onChangeSide}>
-            <CommonIconFont
-              type={firstMenuCollapse ? 'right' : 'left'}
-              size={16}
-              color="var(--neutral-n2)"
-            />
-          </FoldIcon>
+          <Tooltip title={t('putAway') as string} placement="right">
+            <FoldIcon onClick={onChangeSide}>
+              <CommonIconFont
+                type={firstMenuCollapse ? 'right' : 'left'}
+                size={16}
+                color="var(--neutral-n2)"
+              />
+            </FoldIcon>
+          </Tooltip>
         </SideWrap>
       )}
       <OutletWrap width={leftWidth}>

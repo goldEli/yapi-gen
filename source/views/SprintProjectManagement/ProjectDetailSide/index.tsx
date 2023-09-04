@@ -332,7 +332,9 @@ const ProjectDetailSide = () => {
             <SideTop>
               <img src={projectInfo.cover} alt="" />
               <SideInfo>
-                <div>{projectInfo.name}</div>
+                <div style={{ fontFamily: 'SiYuanMedium' }}>
+                  {projectInfo.name}
+                </div>
                 <span>
                   {projectInfo.teamId
                     ? t('teamwork', {

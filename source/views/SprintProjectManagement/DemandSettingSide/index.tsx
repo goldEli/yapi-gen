@@ -303,7 +303,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
         <SideTop>
           <img src={projectInfo?.cover} alt="" />
           <SideInfo>
-            <div>{projectInfo?.name}</div>
+            <div style={{ fontFamily: 'SiYuanMedium' }}>
+              {projectInfo?.name}
+            </div>
             <span> {t('demandSettingSide.teamProject')} </span>
           </SideInfo>
         </SideTop>
