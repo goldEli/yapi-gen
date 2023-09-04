@@ -370,9 +370,16 @@ const HeaderLeft = () => {
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />
       <Space size={24}>
-        <CloseWrap width={32} height={32} onClick={() => setIsVisible(true)}>
-          <CommonIconFont type="menu-02" size={24} color="var(--neutral-n2)" />
-        </CloseWrap>
+        <Tooltip title={t('applicationMenu')} placement="right">
+          <CloseWrap width={32} height={32} onClick={() => setIsVisible(true)}>
+            <CommonIconFont
+              type="menu-02"
+              size={24}
+              color="var(--neutral-n2)"
+            />
+          </CloseWrap>
+        </Tooltip>
+
         <Space
           size={8}
           style={{
