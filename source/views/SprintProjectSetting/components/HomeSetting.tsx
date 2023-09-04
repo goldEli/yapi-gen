@@ -7,6 +7,7 @@ import { updateHomeSetting } from '@/services/sprint'
 import { getMessage } from '@/components/Message'
 import { setProjectInfo } from '@store/project/index'
 import { useTranslation } from 'react-i18next'
+import IconFont from '@/components/IconFont'
 const Wrap = styled.div`
   padding-left: 24px;
 `
@@ -36,23 +37,43 @@ const HomeSetting: React.FC<IProps> = props => {
     {
       url: '/SprintProjectManagement/Affair',
       name: t('sprintProject.transactionList'),
+      color: '#6688FF',
+
+      color2: 'rgba(102,136,255,0.1)',
+      icon: 'book-open',
     },
-    { url: '/SprintProjectManagement/Sprint', name: t('sprintProject.sprint') },
-    { url: '/SprintProjectManagement/KanBan', name: t('sprintProject.kanban') },
-    { url: '/Report/PerformanceInsight', name: t('sprintProject.report') },
+    {
+      url: '/SprintProjectManagement/Sprint',
+      name: t('sprintProject.sprint'),
+      color: '#FA9746',
+      color2: ' rgba(250,151,70,0.14)',
+      icon: 'timer',
+    },
+    {
+      url: '/SprintProjectManagement/KanBan',
+      name: t('sprintProject.kanban'),
+      color: '#43BA9A',
+      color2: 'rgba(67,186,154,0.1)',
+      icon: 'layout',
+    },
+    {
+      url: '/Report/PerformanceInsight',
+      name: t('sprintProject.report'),
+      color: '#A176FB',
+      color2: ' rgba(161,118,251,0.1)',
+      icon: 'pie-chart-02',
+    },
   ]
 
   const onChange = async (e: any) => {
-    setValue(e.target.value)
+    setValue(e)
     try {
       await updateHomeSetting({
         id: projectInfo.id,
-        default_home_menu: e.target.value,
+        default_home_menu: e,
       })
       getMessage({ msg: t('other.configSuccess'), type: 'success' })
-      dispatch(
-        setProjectInfo({ ...projectInfo, defaultHomeMenu: e.target.value }),
-      )
+      dispatch(setProjectInfo({ ...projectInfo, defaultHomeMenu: e }))
     } catch (error) {
       //
     }
@@ -68,15 +89,53 @@ const HomeSetting: React.FC<IProps> = props => {
     <Wrap>
       <Title>{t('sprintProject.projectHomeConfiguration')}</Title>
       <SubTitle>{t('sprintProject.defineProjectDefaultHomeLocation')}</SubTitle>
-      <RadioWrap>
-        <Radio.Group onChange={onChange} value={value}>
-          {urls.map(item => (
-            <Radio key={item.url} value={item.url}>
-              {item.name}
-            </Radio>
-          ))}
-        </Radio.Group>
-      </RadioWrap>
+      <RadioWrap />
+      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+        {urls.map(item => (
+          <div
+            key={item.url}
+            onClick={() => onChange(item.url)}
+            style={{
+              cursor: 'pointer',
+              width: '280px',
+              height: '84px',
+              borderRadius: 6,
+              border: '1px solid #ECEDEF',
+              padding: '24px 20px',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <div
+              style={{
+                width: '36px',
+                height: '36px',
+                background: item.color2,
+                borderRadius: 6,
+                marginRight: '12px',
+
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <IconFont
+                style={{ fontSize: '20px', color: item.color }}
+                type={item.icon}
+              />
+            </div>
+            <span style={{ color: 'var(--neutral-n1-d1)' }}>{item.name}</span>
+            <span
+              style={{
+                marginLeft: 'auto',
+                color: value === item.url ? '#969799' : '#6688FF',
+              }}
+            >
+              {value === item.url ? '已设置' : '设为首页'}
+            </span>
+          </div>
+        ))}
+      </div>
     </Wrap>
   )
 }
