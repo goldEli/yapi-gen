@@ -42,6 +42,7 @@ export const TransformWrap = styled.div`
 `
 
 export const ProgressWrap = styled.div`
+  width: 140px;
   display: block;
 `
 
