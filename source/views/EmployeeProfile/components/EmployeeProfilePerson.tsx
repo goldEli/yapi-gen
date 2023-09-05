@@ -1,4 +1,6 @@
 /* eslint-disable no-undefined */
+import { getMemberOverviewList } from '@store/employeeProfile/employeeProfile.thunk'
+import { useDispatch, useSelector } from '@store/index'
 import { useEffect, useState } from 'react'
 
 interface EmployeeProfilePersonProps {
@@ -9,14 +11,13 @@ interface EmployeeProfilePersonProps {
 }
 
 const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
-  const [dataList, setDataList] = useState({
-    list: undefined,
-  })
-  // 获取人员数据
-  const getPersonList = () => {}
+  const dispatch = useDispatch()
+  const { allMemberList, memberStatistics } = useSelector(
+    store => store.employeeProfile,
+  )
 
   useEffect(() => {
-    getPersonList()
+    dispatch(getMemberOverviewList())
   }, [])
   return <div>人员组件</div>
 }

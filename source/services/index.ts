@@ -17,6 +17,7 @@ import * as kanbanConfig from './kanbanConfig'
 import * as efficiency from './efficiency'
 import * as affairs from './affairs'
 import * as flaw from './flaw'
+import * as employeeProfile from './employeeProfile'
 
 export {
   formwork,
@@ -38,4 +39,5 @@ export {
   efficiency,
   affairs,
   flaw,
+  employeeProfile,
 }

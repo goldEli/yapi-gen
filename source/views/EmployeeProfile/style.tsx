@@ -29,11 +29,14 @@ export const HeaderCardGroup = styled.div`
   gap: 24px;
 `
 
-export const Card = styled.div`
+export const Card = styled.div<{ isActive?: boolean }>`
   height: 64px;
   border-radius: 6px;
   padding: 16px;
-  border: 1px solid var(--neutral-n6-d1);
+  border: ${props =>
+    props.isActive
+      ? '1px solid var(--primary-d2)'
+      : '1px solid var(--neutral-n6-d1)'};
   cursor: pointer;
   display: flex;
   align-items: center;

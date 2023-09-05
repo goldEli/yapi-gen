@@ -521,6 +521,14 @@ const urls = {
   removeMember: '/b/work_report/user/remove_group_user',
   // 查询分组信息
   getGroupUserList: '/b/work_report/user/group_info',
+
+  // 员工概况模块
+  // 员工列表
+  getMemberOverviewList: '/b/member_overview/member/list',
+  // 统计
+  getMemberOverviewStatistics: '/b/member_overview/statistics',
+  // 任务列表
+  getMemberOverviewStoryList: '/b/member_overview/story/list',
 }
 export default urls
 
