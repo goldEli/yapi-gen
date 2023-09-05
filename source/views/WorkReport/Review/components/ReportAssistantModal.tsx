@@ -417,18 +417,31 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const getScheduleData = () => {
     let tempArr: any[] = []
     // modalInfo?.configs?.forEach((item: any) => {
+    //   console.log(item)
     //   if (item.type === 4) {
     //     tempArr = tempArr.concat(item.content ?? [])
     //   }
     // })
-    const projectConfig = modalInfo?.configs?.filter(
-      (ele: { type: number }) => ele.type === 4,
-    )[0]?.content
-    projectConfig?.forEach((item: { stories: any }) => {
-      if (item.stories) {
-        tempArr.push([...item.stories])
-      }
-    })
+    // return
+    if (modalInfo?.type === 3) {
+      const projectConfig = modalInfo?.configs?.filter(
+        (ele: { type: number }) => ele.type === 4,
+      )[0]?.content
+      console.log('projectConfig----', projectConfig)
+      projectConfig?.forEach((item: { stories: any }) => {
+        if (item.stories) {
+          tempArr.push([...item.stories])
+        }
+      })
+    } else {
+      modalInfo?.configs?.forEach((item: any) => {
+        if (item.type === 4) {
+          console.log(item)
+          tempArr = tempArr.concat(item.content ?? [])
+        }
+      })
+    }
+
     tempArr = tempArr.flat()
     let total = 0
     let done = 0
