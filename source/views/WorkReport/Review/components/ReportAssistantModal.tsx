@@ -192,14 +192,13 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     let canSubmit = false
     Object.keys(params)?.forEach((k: string) => {
       const tempArr = k.split('+')
-      if (tempArr[0] === '4') {
+      if (tempArr[0] === '4' && params[k]?.length > 0) {
         canSubmit = true
       }
       if (tempArr[0] === '1' && params[k]?.length <= 0) {
         canSubmit = false
       }
     })
-    console.log('params', params)
     if (!canSubmit) {
       getMessage({
         type: 'warning',
@@ -846,6 +845,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           <Form.Item
             label={<LabelTitles>添加项目组</LabelTitles>}
             name={`${content.type}+${content.id}+${content.name}`}
+            initialValue={content?.content}
           >
             <ProjectGroup
               projectId={currentProject?.id}
