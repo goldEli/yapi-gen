@@ -1,12 +1,11 @@
+/* eslint-disable max-lines */
 /* eslint-disable react/jsx-handler-names */
 // 全局迭代和冲刺的工作进展对比
-import CommonIconFont from '@/components/CommonIconFont'
 import HeaderAll from './HeaderAll'
 import { PersonText, TitleCss, Col, Line, TableStyle } from '../Header/Style'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Sort from '@/components/Sort'
-import { Spin, Tooltip } from 'antd'
+import { Spin } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
 import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
@@ -23,7 +22,7 @@ import {
   workContrastList,
 } from '@/services/efficiency'
 import { RowText } from './style'
-import { getDays, getMonthBefor } from './Date'
+import { getTimeStr, getTitleTips, NewSort } from './Date'
 import ExportSuccess from '@/components/ExportSuccess'
 import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
@@ -34,42 +33,6 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from '@/components/NoData'
 import ResizeTable from '@/components/ResizeTable'
 
-// 进展对比tips
-const getTitleTips = (text: string, tips: string, position?: string) => {
-  return (
-    <div style={{ display: 'flex', cursor: 'pointer' }}>
-      {text}
-      <Tooltip
-        title={tips}
-        placement={position === 'right' ? 'topRight' : 'top'}
-        trigger="click"
-      >
-        <div
-          style={{
-            width: '45px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <CommonIconFont type="question" size={16} />
-        </div>
-      </Tooltip>
-    </div>
-  )
-}
-const NewSort = (sortProps: any) => {
-  return (
-    <Sort
-      fixedKey={sortProps.fixedKey}
-      onChangeKey={sortProps.onUpdateOrderKey}
-      nowKey={sortProps.nowKey}
-      order={sortProps.order === 'asc' ? 1 : 2}
-    >
-      {sortProps.title}
-    </Sort>
-  )
-}
 interface Props {
   // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局 //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
   type: string
@@ -89,10 +52,12 @@ const ProgressComparison = (props: Props) => {
       dataIndex: string
     }>
   >([])
-  const [order, setOrder] = useState<{ value: string; key: string }>({
-    value: '',
-    key: '',
-  })
+  const [orderObj, setOrderObj] = useState<{ orderkey: string; order: string }>(
+    {
+      order: '',
+      orderkey: '',
+    },
+  )
   const [work, setWork] = useState<Array<Model.Sprint.WorkListItem>>([])
   const [tableList, setTableList] = useState<
     Array<Model.Sprint.WorkDataListItem>
@@ -126,15 +91,29 @@ const ProgressComparison = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [loading, setLoading] = useState(false)
+  const [extra, setExtra] = useState<any>({})
   const [t] = useTranslation()
   const onUpdateOrderKey = (key: any, val: any) => {
-    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
-    // props.type === 'Progress_iteration' ||
-    //   props.type === 'Progress_sprint' ||
-    //   props.type === 'Progress_all'
-    //   ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
-    //   : getMemberBugList(selectProjectIds, { pageNum, pageSize })
+    setOrderObj({ order: val, orderkey: key })
+    props.type === 'Progress_iteration' ||
+    props.type === 'Progress_sprint' ||
+    props.type === 'Progress_all'
+      ? getWorkContrastList(
+          extra?.project_ids ? [extra?.project_ids] : [],
+          extra,
+          {
+            orderkey: key,
+            order: val === 2 ? 'desc' : 'asc',
+          },
+        )
+      : getMemberBugList(
+          extra?.project_ids ? [extra?.project_ids] : [],
+          extra,
+          {
+            orderkey: key,
+            order: val === 2 ? 'desc' : 'asc',
+          },
+        )
   }
 
   // 根据id查视图
@@ -185,9 +164,17 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: getTitleTips(
-          t('performance.completionRate'),
-          t('performance.completedWorkWork'),
+        title: (
+          <NewSort
+            fixedKey="completion_rate"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={getTitleTips(
+              t('performance.completionRate'),
+              t('performance.completedWorkWork'),
+            )}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
         ),
         render: (text: string) => {
           return <span>{text}%</span>
@@ -195,7 +182,15 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'new',
-        title: t('performance.addWorkItem'),
+        title: (
+          <NewSort
+            fixedKey="new"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.addWorkItem')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'new')}>
@@ -205,7 +200,15 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.completedWorkItem'),
+        title: (
+          <NewSort
+            fixedKey="completed"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.completedWorkItem')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
         dataIndex: 'completed',
         render: (text: string, record: any) => {
           return (
@@ -216,7 +219,15 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.workItemInventory'),
+        title: (
+          <NewSort
+            fixedKey="work_stock"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.workItemInventory')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
         dataIndex: 'work_stock',
         render: (text: string, record: any) => {
           return (
@@ -232,9 +243,17 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'repeat_rate',
-        title: getTitleTips(
-          t('performance.workRepetitionRate'),
-          t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+        title: (
+          <NewSort
+            fixedKey="repeat_rate"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={getTitleTips(
+              t('performance.workRepetitionRate'),
+              t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+            )}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -246,10 +265,18 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'risk',
-        title: getTitleTips(
-          t('performance.stockRisk'),
-          t('performance.workItemsNotCompletedForMoreThanDays'),
-          'right',
+        title: (
+          <NewSort
+            fixedKey="risk"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={getTitleTips(
+              t('performance.stockRisk'),
+              t('performance.workItemsNotCompletedForMoreThanDays'),
+              'right',
+            )}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -294,9 +321,17 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: getTitleTips(
-          t('performance.currentCompletionRate'),
-          t('performance.completedWorkWork'),
+        title: (
+          <NewSort
+            fixedKey="completion_rate"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={getTitleTips(
+              t('performance.currentCompletionRate'),
+              t('performance.completedWorkWork'),
+            )}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
         ),
         render: (text: string) => {
           return <span>{text}%</span>
@@ -304,7 +339,15 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'new',
-        title: t('performance.currentlyNewWorkItem'),
+        title: (
+          <NewSort
+            fixedKey="new"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.currentlyNewWorkItem')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'new')}>
@@ -314,7 +357,15 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.currentlyCompletedWorkItems'),
+        title: (
+          <NewSort
+            fixedKey="completed"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.currentlyCompletedWorkItems')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
         dataIndex: 'completed',
         render: (text: string, record: any) => {
           return (
@@ -325,7 +376,15 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.totalWorkItemInventory'),
+        title: (
+          <NewSort
+            fixedKey="work_stock"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.totalWorkItemInventory')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
         dataIndex: 'work_stock',
         render: (text: string, record: any) => {
           return (
@@ -341,9 +400,17 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'repeat_rate',
-        title: getTitleTips(
-          t('performance.totalJobRepetitionRate'),
-          t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+        title: (
+          <NewSort
+            fixedKey="repeat_rate"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={getTitleTips(
+              t('performance.totalJobRepetitionRate'),
+              t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+            )}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -355,10 +422,18 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'risk',
-        title: getTitleTips(
-          t('performance.stockRisk'),
-          t('performance.workItemsNotCompletedForMoreThanDays'),
-          'right',
+        title: (
+          <NewSort
+            fixedKey="risk"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={getTitleTips(
+              t('performance.stockRisk'),
+              t('performance.workItemsNotCompletedForMoreThanDays'),
+              'right',
+            )}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -395,15 +470,7 @@ const ProgressComparison = (props: Props) => {
         dataIndex: 'departmentName',
       },
       {
-        title: (
-          <NewSort
-            fixedKey="positionName"
-            nowKey={order.key}
-            order={order.value}
-            title={t('performance.position')}
-            onUpdateOrderKey={onUpdateOrderKey}
-          ></NewSort>
-        ),
+        title: t('performance.position'),
         dataIndex: 'positionName',
         render: (text: string) => {
           return <RowText>{text ? text : '--'}</RowText>
@@ -411,16 +478,32 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: getTitleTips(
-          t('performance.defectRepairRate'),
-          t('performance.defectsRepairedInTheCurrentDefectsInThe'),
+        title: (
+          <NewSort
+            fixedKey="completion_rate"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={getTitleTips(
+              t('performance.defectRepairRate'),
+              t('performance.defectsRepairedInTheCurrentDefectsInThe'),
+            )}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
         ),
-        render: (text: string, record: any) => {
+        render: (text: string) => {
           return <span>{text}%</span>
         },
       },
       {
-        title: t('performance.toBeFixed'),
+        title: (
+          <NewSort
+            fixedKey="not_fixed"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.toBeFixed')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
         dataIndex: 'not_fixed',
         render: (text: string, record: any) => {
           return (
@@ -431,7 +514,15 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.repairing'),
+        title: (
+          <NewSort
+            fixedKey="fixing"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.repairing')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
         dataIndex: 'fixing',
         render: (text: string, record: any) => {
           return (
@@ -442,7 +533,15 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.completed'),
+        title: (
+          <NewSort
+            fixedKey="fixed"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.completed')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
         dataIndex: 'fixed',
         render: (text: string, record: any) => {
           return (
@@ -454,15 +553,31 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'repeat_open',
-        title: t('performance.bugReopening'),
-        render: (text: string, record: any) => {
+        title: (
+          <NewSort
+            fixedKey="repeat_open"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={t('performance.bugReopening')}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
+        ),
+        render: (text: string) => {
           return <RowText>{text}</RowText>
         },
       },
       {
-        title: getTitleTips(
-          t('performance.defectRate'),
-          t('performance.defectsReopenedInTheCurrentDefectsInTheCurrent'),
+        title: (
+          <NewSort
+            fixedKey="repeat_open_rate"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={getTitleTips(
+              t('performance.defectRate'),
+              t('performance.defectsReopenedInTheCurrentDefectsInTheCurrent'),
+            )}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
         ),
         dataIndex: 'repeat_open_rate',
         render: (text: string, record: any) => {
@@ -475,10 +590,18 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'risk_stock_count',
-        title: getTitleTips(
-          t('performance.riskStockRisk'),
-          t('performance.defectsNotFixedInTheCurrentPeriod'),
-          'right',
+        title: (
+          <NewSort
+            fixedKey="risk_stock_count"
+            nowKey={orderObj.orderkey}
+            order={orderObj.order}
+            title={getTitleTips(
+              t('performance.riskStockRisk'),
+              t('performance.defectsNotFixedInTheCurrentPeriod'),
+              'right',
+            )}
+            onUpdateOrderKey={onUpdateOrderKey}
+          ></NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -520,59 +643,19 @@ const ProgressComparison = (props: Props) => {
     if (Array.isArray(extras)) {
       return
     }
+    setExtra(extras)
     setSelectProjectIds(extras?.project_ids ?? [])
     // 进展对比
     if (props.type.includes('Progress')) {
       setLoading(true)
       getWorkContrastList(
         extras?.project_ids ? [extras?.project_ids] : [],
-        {},
         extras,
       )
     } else {
       // 缺陷分析
       setLoading(true)
-      getMemberBugList(
-        extras?.project_ids ? [extras?.project_ids] : [],
-        {},
-        extras,
-      )
-    }
-  }
-  // 获取时间
-  const getTime = (time: { type: number; time: any }) => {
-    switch (time.type) {
-      case 1:
-        return getMonthBefor(1)
-      case 3:
-        return getMonthBefor(3)
-      case 6:
-        return getMonthBefor(6)
-      case 14:
-        return getDays(14)
-      case 28:
-        return getDays(28)
-      default:
-        return {
-          startTime: time?.time?.[0],
-          endTime: time?.time?.[1],
-        }
-    }
-  }
-  const getTimeStr = (time: { type: number; time: any }) => {
-    switch (time.type) {
-      case 1:
-        return 'one_month'
-      case 3:
-        return 'three_month'
-      case 6:
-        return 'six_month'
-      case 14:
-        return 'two_week'
-      case 28:
-        return 'four_week'
-      default:
-        return ''
+      getMemberBugList(extras?.project_ids ? [extras?.project_ids] : [], extras)
     }
   }
   // 导出
@@ -644,8 +727,8 @@ const ProgressComparison = (props: Props) => {
   // 工作进展对比大的列表
   const getWorkContrastList = async (
     value: number[],
-    page?: any,
     extras?: any,
+    sort?: any,
   ) => {
     const res = await workContrastList({
       project_ids:
@@ -666,6 +749,7 @@ const ProgressComparison = (props: Props) => {
       end_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
         ? ''
         : extras?.time?.[1],
+      ...(sort || {}),
     })
     setWork(res.work)
     setTableList(res.list)
@@ -676,8 +760,8 @@ const ProgressComparison = (props: Props) => {
   // 缺陷分析大的列表
   const getMemberBugList = async (
     value: number[],
-    page?: any,
     extras?: any,
+    sort?: any,
   ) => {
     const res = await memberBugList({
       project_ids:
@@ -700,6 +784,7 @@ const ProgressComparison = (props: Props) => {
       end_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
         ? ''
         : extras?.time?.[1],
+      ...(sort || {}),
     })
     setWork(res.defect)
     setTableList1(res.list)
