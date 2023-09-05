@@ -2276,7 +2276,7 @@
   "currentProgress": "当前进度",
   "handler": "处理人",
   "progressOfTheDay": "当日进度",
-  "actualWorkingHours": "实际工时花费（h）",
+  "actualWorkingHours": "当日实际工时花费（h）",
   "pleaseEnterActualWorkingHours": "请输入实际工时",
   "enterTheActualWorkingHours": " '请输入实际工时",
   "releaseNotes": "感悟",
@@ -2365,5 +2365,6 @@
   "areYouSureYouWantToUpdateTheCurrent": "确认更新当前进度吗",
   "confirmUpdateProgress": "确认更新进度",
   "putAway": "收起",
-  "applicationMenu": "应用菜单 ["
+  "applicationMenu": "应用菜单 [",
+  "cumulativeWorkingHours": "累计工时"
 }

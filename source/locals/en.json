@@ -2365,5 +2365,6 @@
   "areYouSureYouWantToUpdateTheCurrent": "Are you sure you want to update the current progress?",
   "confirmUpdateProgress": "Confirm update progress",
   "putAway": "Put away",
-  "applicationMenu": "Application menu ["
+  "applicationMenu": "Application menu [",
+  "cumulativeWorkingHours": "Cumulative working hours"
 }
