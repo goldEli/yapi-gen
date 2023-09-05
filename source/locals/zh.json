@@ -2276,10 +2276,10 @@
   "currentProgress": "当前进度",
   "handler": "处理人",
   "progressOfTheDay": "当日进度",
-  "actualWorkingHours": "实际工时花费（h）",
+  "actualWorkingHours": "当日实际工时花费（h）",
   "pleaseEnterActualWorkingHours": "请输入实际工时",
   "enterTheActualWorkingHours": " '请输入实际工时",
-  "releaseNotes": "更新说明",
+  "releaseNotes": "感悟",
   "confirmToDeleteThisGroup": "确认删除该分组",
   "selectItem": "选择项目",
   "addChildRequirement": "添加子需求",
@@ -2360,5 +2360,9 @@
   "time": "时间",
   "youDoNotHavePermissionToEdit": "你暂无编辑权限",
   "theFileIsBeingPleaseWait": "文件正在上传中，请稍等",
-  "pleaseEnterTheCorrectWorkingHoursFormat": "请输入正确的工时格式"
+  "pleaseEnterTheCorrectWorkingHoursFormat": "请输入正确的工时格式",
+  "video": "视频",
+  "areYouSureYouWantToUpdateTheCurrent": "确认更新当前进度吗",
+  "confirmUpdateProgress": "确认更新进度",
+  "cumulativeWorkingHours": "累计工时"
 }
