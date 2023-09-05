@@ -121,7 +121,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             const tempObj: any = demandListAll.current.find(
               (t: any) => t.id === i,
             )
-            console.log('tempObj', tempObj)
             return type === 'user'
               ? {
                   id: tempObj?.id,
