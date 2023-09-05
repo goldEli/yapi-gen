@@ -529,6 +529,8 @@ const urls = {
   getMemberOverviewStatistics: '/b/member_overview/statistics',
   // 任务列表
   getMemberOverviewStoryList: '/b/member_overview/story/list',
+  // 更多任务
+  getMemberOverviewMoreStoryList: '/b/member_overview/story/more',
 }
 export default urls
 

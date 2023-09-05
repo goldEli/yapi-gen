@@ -21,13 +21,26 @@ export const getMemberOverviewStatistics = async (params: any) => {
 // 获取任务数据
 export const getMemberOverviewStoryList = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewStoryList', {
-    is_star: params.isStart ? 1 : 0,
-    keyword: params.keyword,
+    status: params.status,
+    user_id: params.user_id,
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
+    keyword: params.keyword ?? '',
+    is_star: params.isStart ? 1 : null,
+  })
+  return response.data
+}
+
+// 获取任务数据
+export const getMemberOverviewMoreStoryList = async (params: any) => {
+  const response = await http.get<any>('getMemberOverviewStoryList', {
     status: params.status,
-    user_ids: params.user_ids,
-    size: params.size,
+    user_id: params.user_id,
+    start_time: params.time[0] ?? null,
+    end_time: params.time[1] ?? null,
+    keyword: params.keyword ?? '',
+    is_star: params.isStart ? 1 : null,
+    page: params.page,
   })
   return response.data
 }

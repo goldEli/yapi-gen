@@ -203,9 +203,10 @@ export const CheckboxLi = styled.div`
 
 // EmployeeProfileReport
 export const ReportWrap = styled.div`
-  width: 560px;
+  width: 561px;
   height: 100%;
   background: yellow;
+  border-right: 1px solid var(--neutral-n6-d1);
 `
 
 // EmployeeProfileTask

@@ -6,11 +6,7 @@ import {
 
 export interface CounterState {
   // 成员数组
-  allMemberList: {
-    id: number
-    name: string
-    avatar: string
-  }[]
+  allMemberList: any[]
   // 统计数据
   memberStatistics: any
   // 当前选中的状态 - 默认为逾期

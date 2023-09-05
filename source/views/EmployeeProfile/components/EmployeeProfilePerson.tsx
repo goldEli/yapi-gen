@@ -103,7 +103,11 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
               checked={selectKeys?.includes(i.id)}
               onClick={e => onItemChecked(e, i.id)}
             >
-              <CommonUserAvatar avatar={i.avatar} name={i.name} />
+              <CommonUserAvatar
+                avatar={i.avatar}
+                name={i.name}
+                positionName={i.position?.name}
+              />
             </Checkbox>
           </CheckboxLi>
         ))}
