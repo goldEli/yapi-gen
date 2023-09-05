@@ -16,6 +16,7 @@ export interface CounterState {
   listUpdate: {
     isFresh: number
   }
+  projectGroup: any
 }
 
 const initialState: CounterState = {
@@ -30,6 +31,7 @@ const initialState: CounterState = {
   listUpdate: {
     isFresh: 0,
   },
+  projectGroup: [],
 }
 
 export const demandSlice = createSlice({
@@ -56,12 +58,19 @@ export const demandSlice = createSlice({
         isFresh: action.payload ? state.listUpdate.isFresh + 1 : 0,
       }
     },
+    setProjectGroup: (state: any, action) => {
+      state.projectGroup = action.payload
+    },
   },
   // extraReducers(builder) {
   // },
 })
 
-export const { setViewReportModal, setWriteReportModal, setUpdateList } =
-  demandSlice.actions
+export const {
+  setViewReportModal,
+  setWriteReportModal,
+  setUpdateList,
+  setProjectGroup,
+} = demandSlice.actions
 
 export default demandSlice.reducer

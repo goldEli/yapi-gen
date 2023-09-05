@@ -30,6 +30,9 @@ import {
   Line,
   RowLine,
   Col,
+  ProjectGroupList,
+  GroupBox,
+  GroupStoryBox,
 } from './style'
 import {
   addReportComment,
@@ -47,6 +50,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { setUpdateList } from '@store/workReport'
 import { getMessage } from '@/components/Message'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
+import MultipleAvatar from '@/components/MultipleAvatar'
 
 interface TargetTabsProps {
   list: any
@@ -369,12 +373,12 @@ const ProjectSystemReport = () => {
             </Msg>
             {drawerInfo.report_content?.map((item: any) => (
               <Col key={item.id}>
-                {item.type === 4 && (
+                {/* {item.type === 4 && (
                   <Title style={{ marginBottom: 8 }}>
                     {item.name_text}: {item.pivot.params?.length}
                     {t('report.list.pieces')}
                   </Title>
-                )}
+                )} */}
                 {item.type === 3 && item.name === 'total_schedule' && (
                   <>
                     <Title style={{ marginBottom: 8 }}>
@@ -420,7 +424,7 @@ const ProjectSystemReport = () => {
                     />
                   </>
                 )}
-                {item.type === 4 &&
+                {/* {item.type === 4 &&
                   item.pivot.params?.map((el: any) => (
                     <RowRadius key={el.id}>
                       <Radius />
@@ -438,6 +442,27 @@ const ProjectSystemReport = () => {
                         }%  ${el.today_task_time ?? 0}h）`}
                       </Msg>
                     </RowRadius>
+                  ))} */}
+                {item.type === 4 &&
+                  item.pivot.params?.map((item: any) => (
+                    <ProjectGroupList key={item.id}>
+                      <GroupBox>
+                        <div className="group-name">{item.name}</div>
+                        <div className="group-user">
+                          <MultipleAvatar list={item.users} max={3} />
+                        </div>
+                      </GroupBox>
+                      <GroupStoryBox>
+                        {item.stories.map((item: any) => {
+                          return (
+                            <div className="item" key={item.id}>
+                              {item.name}（{item.schedule_percent}%{' '}
+                              {item.schedule}h）
+                            </div>
+                          )
+                        })}
+                      </GroupStoryBox>
+                    </ProjectGroupList>
                   ))}
                 {item.type === 2 && (
                   <>
