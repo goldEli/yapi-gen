@@ -141,6 +141,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
   }
   const myRef = useRef<any>(null)
   const myRef2 = useRef<any>(null)
+  console.log(data, '数据')
 
   return (
     <CommonModal
@@ -159,6 +160,10 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
         <ShowProgress>
           <span>
             {t('currentProgress')} {data?.schedule ?? 0}%
+          </span>
+          <span className="processor">{t('cumulativeWorkingHours')}</span>
+          <span className="username">
+            {data?.user_name ? data?.user_name : '--'}
           </span>
           <span className="processor">{t('handler')}</span>
           <span className="username">
