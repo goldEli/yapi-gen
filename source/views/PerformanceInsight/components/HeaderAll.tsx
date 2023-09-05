@@ -106,7 +106,6 @@ const HeaderAll = (props: HaderProps) => {
   }
   // 自定义时间
   const onChangeDate = (values: any[]) => {
-    console.log(values, 'valuesss')
     setTimeVal([moment(values[0]), moment(values[1])])
   }
   // 清除选择的成员
@@ -162,8 +161,6 @@ const HeaderAll = (props: HaderProps) => {
     }
   }, [timeVal, timeKey])
 
-  console.log(time, 'timeeeee')
-
   useEffect(() => {
     if (timeKey === 0 && !timeVal) {
       return
@@ -172,7 +169,12 @@ const HeaderAll = (props: HaderProps) => {
       project_ids: options,
       user_ids: person,
       period_time: timeKey,
-      time: timeVal,
+      time: timeVal
+        ? [
+            moment(timeVal?.[0]).format('YYYY-MM-DD'),
+            moment(timeVal?.[1]).format('YYYY-MM-DD'),
+          ]
+        : timeVal,
     })
   }, [options, timeKey, timeVal, person])
 
