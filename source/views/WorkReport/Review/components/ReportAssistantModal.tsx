@@ -45,6 +45,7 @@ interface ReportAssistantProps {
   visible: boolean
   close(): void
   type: 'user' | 'project'
+  projectId?: number | null
 }
 
 const ReportAssistantModal = (props: ReportAssistantProps) => {
@@ -64,7 +65,14 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const dispatch = useDispatch()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const [options, setOptions] = useState<any>([])
-  const { close, visible, type } = props
+  const { close, visible, type, projectId } = props
+
+  // 带入默认选中项目
+  useEffect(() => {
+    if (projectId && projectList?.length > 0) {
+      setCurrentProject(projectList?.find((item: any) => item.id === projectId))
+    }
+  }, [projectId, projectList])
 
   const onClose = () => {
     close()
@@ -117,7 +125,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           name: tempArr[2],
           conf_id: Number(tempArr[1]),
           content: (params[key] || [])?.map((i: any) => {
-            console.log('------', i)
             const tempObj: any = demandListAll.current.find(
               (t: any) => t.id === i,
             )
@@ -149,7 +156,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         })
       }
     })
-    console.log('data0000', data)
     // return
     let result = null
     if (type === 'user') {
@@ -199,7 +205,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         canSubmit = false
       }
     })
-    console.log('params', params)
     if (!canSubmit) {
       getMessage({
         type: 'warning',
@@ -968,6 +973,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                     <CustomSelect
                       optionFilterProp="label"
                       showSearch
+                      value={currentProject?.id}
                       onChange={(val: any) => {
                         setModalInfo(null)
                         setCurrentProject(
