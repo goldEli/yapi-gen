@@ -246,13 +246,6 @@ const DrawerComponent = (props: DrawerComponentProps) => {
                 </div>
               </DrawerMenuItem>
             ))}
-          {/* <WaitingMenu>
-            <img src={menuTag} className="menuTag" />
-            <div className="menuIcon">
-              <CommonIconFont type="draft" size={24} />
-            </div>
-            <div className="label">{t('menu_word')}</div>
-          </WaitingMenu> */}
         </DrawerMenu>
         {/* 后台管理 */}
         {menuPermission?.menus?.filter((i: any) => i.url === '/AdminManagement')
@@ -377,9 +370,16 @@ const HeaderLeft = () => {
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />
       <Space size={24}>
-        <CloseWrap width={32} height={32} onClick={() => setIsVisible(true)}>
-          <CommonIconFont type="menu-02" size={24} color="var(--neutral-n2)" />
-        </CloseWrap>
+        <Tooltip title={t('applicationMenu')} placement="right">
+          <CloseWrap width={32} height={32} onClick={() => setIsVisible(true)}>
+            <CommonIconFont
+              type="menu-02"
+              size={24}
+              color="var(--neutral-n2)"
+            />
+          </CloseWrap>
+        </Tooltip>
+
         <Space
           size={8}
           style={{

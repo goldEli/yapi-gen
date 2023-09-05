@@ -2363,5 +2363,7 @@
   "pleaseEnterTheCorrectWorkingHoursFormat": "Please enter the correct working hours format",
   "video": "Video",
   "areYouSureYouWantToUpdateTheCurrent": "Are you sure you want to update the current progress?",
-  "confirmUpdateProgress": "Confirm update progress"
+  "confirmUpdateProgress": "Confirm update progress",
+  "putAway": "Put away",
+  "applicationMenu": "Application menu ["
 }

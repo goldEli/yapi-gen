@@ -316,7 +316,7 @@ const MainTable = (props: Props) => {
             strokeColor="var(--function-success)"
             style={{ color: 'var(--function-success)', width: '100px' }}
             type="line"
-            percent={Math.trunc(Number(text) * 100)}
+            percent={Number(text)}
             format={percent =>
               Number(percent) === 100 ? '100%' : `${percent}%`
             }

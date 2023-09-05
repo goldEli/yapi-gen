@@ -242,7 +242,7 @@ const Index = (props: any) => {
               size="small"
               strokeColor="var(--function-success)"
               strokeWidth={4}
-              percent={Math.trunc(Number(props.item.progress) * 100)}
+              percent={Number(props.item.progress)}
             />
           </ProgressWrap>
 
