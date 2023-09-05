@@ -1,7 +1,15 @@
 /* eslint-disable react/jsx-handler-names */
 // 全局的头部
 import Export from '@/components/Export'
-import { HeaderRowBox, Back, RightRow, PersonText, Line } from '../Header/Style'
+import {
+  HeaderRowBox,
+  Back,
+  RightRow,
+  PersonText,
+  Line,
+  DivStyle,
+  Btn1,
+} from '../Header/Style'
 import { useEffect, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from './Select'
@@ -14,10 +22,37 @@ import { useSelector } from '@store/index'
 import { getParamsData } from '@/tools'
 import { getProjectList } from '@/services/project'
 import { useTranslation } from 'react-i18next'
+import styled from '@emotion/styled'
+import { SelectWrapBedeck } from '@/components/StyleCommon'
+import CustomSelect from '@/components/CustomSelect'
+import SelectMain from '../Header/components/SelectMain'
+import { Space } from 'antd'
+import RangePicker from '@/components/RangePicker'
+import moment from 'moment'
+import { Left } from './style'
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
+
+const SelectWrapForList = styled(SelectWrapBedeck)`
+  margin-left: 16px;
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(
+      .ant-select-customize-input
+    )
+    .ant-select-selector {
+    box-shadow: 0 0 0 0px;
+  }
+  .ant-select-selection-placeholder {
+    color: var(--neutral-n4);
+    padding-top: 2px !important;
+  }
+  .ant-select-selection-item {
+    padding-top: 1px !important;
+  }
+`
+
 interface HaderProps {
   type: string
   headerParmas: Models.Efficiency.HeaderParmas
-  onSearchData?(value: number[]): void
+  onSearchData?(extra: any): void
   onGetExportApi?(value: number[]): void
   projectId: number | string
   homeType: string
@@ -40,6 +75,10 @@ const HeaderAll = (props: HaderProps) => {
   const { userInfo } = useSelector(store => store.user)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const [timeKey, setTimeKey] = useState<number>(1)
+  const [timeVal, setTimeVal] = useState<any>()
+  const [isVisible, setIsVisible] = useState<boolean>(false)
+  const [person, setPerson] = useState<any>([])
   const getProjectApi = async () => {
     const res: any = await getProjectList({
       // self: 1,
@@ -65,11 +104,40 @@ const HeaderAll = (props: HaderProps) => {
         )
     setOptions(props.headerParmas?.projectIds || [])
   }
+  // 自定义时间
+  const onChangeDate = (values: any[]) => {
+    console.log(values, 'valuesss')
+    setTimeVal([moment(values[0]), moment(values[1])])
+  }
+  // 清除选择的成员
+  const onClear = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
+    setPerson([])
+  }
+  // 成员保存弹窗提示需要
+  const onConfirm = (data: Array<{ name: string; id: number }>) => {
+    setIsVisible(false)
+    setPerson(data)
+  }
+
   useEffect(() => {
-    if (props.type === 'Progress_all' || props.type === 'Defect_all') {
-      getProjectApi()
+    getProjectApi()
+    setTimeKey(props?.headerParmas?.time?.type)
+    if (props?.headerParmas?.time?.type === 0) {
+      setTimeVal([
+        moment(
+          moment(props?.headerParmas?.time?.time?.[0]).format('YYYY-MM-DD'),
+        ),
+        moment(
+          moment(props?.headerParmas?.time?.time?.[1]).format('YYYY-MM-DD'),
+        ),
+      ])
     }
-    switch (props.headerParmas.time.type) {
+    // 根据图表的header选择的项目塞选出选择出来的项目
+  }, [])
+
+  useEffect(() => {
+    switch (timeKey) {
       case 1:
         setTime(getMonthBefor(1))
         break
@@ -87,13 +155,27 @@ const HeaderAll = (props: HaderProps) => {
         break
       default:
         setTime({
-          startTime: props.headerParmas.time?.time?.[0],
-          endTime: props.headerParmas.time?.time?.[1],
+          startTime: moment(timeVal?.[0]).format('YYYY-MM-DD'),
+          endTime: moment(timeVal?.[1]).format('YYYY-MM-DD'),
         })
         break
     }
-    // 根据图表的header选择的项目塞选出选择出来的项目
-  }, [])
+  }, [timeVal, timeKey])
+
+  console.log(time, 'timeeeee')
+
+  useEffect(() => {
+    if (timeKey === 0 && !timeVal) {
+      return
+    }
+    props?.onSearchData?.({
+      project_ids: options,
+      user_ids: person,
+      period_time: timeKey,
+      time: timeVal,
+    })
+  }, [options, timeKey, timeVal, person])
+
   const onBack = () => {
     if (props.homeType === 'all') {
       const params = encryptPhp(
@@ -118,6 +200,7 @@ const HeaderAll = (props: HaderProps) => {
       navigate(`/Report/PerformanceInsight?data=${params}`)
     }
   }
+
   return (
     <>
       <HeaderRowBox>
@@ -130,38 +213,118 @@ const HeaderAll = (props: HaderProps) => {
             {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
             {/* // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
         //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
-            {(props.type === 'Progress_all' || props.type === 'Defect_all') &&
-              projectList?.length >= 1 && (
-                <div style={{ marginRight: '16px' }}>
-                  <Select
-                    type=""
-                    options={projectList}
-                    more
-                    value={options}
-                    placeholder={t('common.pleaseProject')}
-                    onChange={(value: number[]) => {
-                      setOptions(value), props?.onSearchData?.(value)
-                    }}
-                  />
-                </div>
-              )}
-            <PersonText>
-              {props.headerParmas.users?.length ? (
-                <span>
-                  {t('performance.select')}： {props.headerParmas.users?.length}
-                  {t('performance.people')}
+
+            <div style={{ marginRight: '16px' }}>
+              <SelectWrapForList>
+                <span style={{ margin: '0px 0px 0px 12px', fontSize: '14px' }}>
+                  项目
                 </span>
-              ) : (
-                <span>{t('performance.allPeople')}</span>
+                <CustomSelect
+                  style={{ width: 148 }}
+                  getPopupContainer={(node: any) => node}
+                  allowClear
+                  optionFilterProp="label"
+                  showArrow
+                  showSearch
+                  value={options}
+                  placeholder={t('common.pleaseProject')}
+                  options={projectList}
+                  onChange={(value: any) => {
+                    setOptions(value)
+                  }}
+                  onConfirm={() => null}
+                />
+              </SelectWrapForList>
+            </div>
+            <div style={{ marginRight: '16px' }}>
+              <SelectWrapForList>
+                {/* 成员选择 */}
+                <DivStyle onClick={() => setIsVisible(true)}>
+                  {person.length > 0 ? (
+                    <Left>
+                      <span>{t('project.member')}</span>
+                      <Btn1>
+                        {t('version2.checked', { count: person.length })}
+                      </Btn1>
+                    </Left>
+                  ) : (
+                    <span>{t('performance.all')}</span>
+                  )}
+                  {person.length > 0 ? (
+                    <CommonIconFont
+                      type="close-solid"
+                      size={14}
+                      color="var(--neutral-n4)"
+                      onClick={e => onClear(e)}
+                    />
+                  ) : (
+                    <CommonIconFont
+                      onClick={() => setIsVisible(true)}
+                      type={isVisible ? 'up' : 'down'}
+                      size={14}
+                      color="var(--neutral-n4)"
+                    />
+                  )}
+                </DivStyle>
+              </SelectWrapForList>
+            </div>
+
+            <Space size={16}>
+              <SelectWrapForList>
+                <span style={{ margin: '0px 0px 0px 12px', fontSize: '14px' }}>
+                  时间
+                </span>
+                <SelectMain
+                  allowClear={false}
+                  onChange={e => {
+                    setTimeKey(e)
+                  }}
+                  value={timeKey}
+                  placeholder={t('common.pleaseSelect')}
+                  list={[
+                    {
+                      name: t('performance.tWeek'),
+                      key: 14,
+                    },
+                    {
+                      name: t('performance.fWeek'),
+                      key: 28,
+                    },
+                    {
+                      name: t('performance.oMonth'),
+                      key: 1,
+                    },
+                    {
+                      name: t('performance.tMonth'),
+                      key: 3,
+                    },
+                    {
+                      name: t('performance.sMonth'),
+                      key: 6,
+                    },
+                    {
+                      name: t('performance.custom'),
+                      key: 0,
+                    },
+                  ]}
+                />
+              </SelectWrapForList>
+              {timeKey === 0 && (
+                <RangePicker
+                  dateValue={timeVal}
+                  onChange={onChangeDate}
+                  width="283px"
+                />
               )}
-            </PersonText>
-            <Line />
-            {time?.startTime && time?.endTime ? (
-              <PersonText>
-                {t('performance.statistics')}
-                {time?.startTime} ~ {time?.endTime}
-              </PersonText>
-            ) : null}
+            </Space>
+            <NewAddUserModalForTandD
+              title={t('calendarManager.add_a_member')}
+              state={2}
+              defaultPeople={props?.headerParmas?.users}
+              isVisible={isVisible}
+              onConfirm={onConfirm}
+              onClose={() => setIsVisible(false)}
+            />
             <Back
               onClick={() =>
                 open({
@@ -195,23 +358,25 @@ const HeaderAll = (props: HaderProps) => {
         name={props?.headerParmas?.view?.title}
         // 视图的配置
         config={{
-          project_ids: paramsData?.headerParmas.projectIds,
+          project_ids: options
+            ? [options]
+            : paramsData?.headerParmas.projectIds,
           iterate_ids: paramsData?.headerParmas.iterate_ids,
-          user_ids: paramsData?.headerParmas.users,
+          user_ids: person,
           start_time:
-            paramsData?.headerParmas?.time?.type === 0
-              ? paramsData?.headerParmas?.time?.time?.[0]
+            timeKey === 0
+              ? timeVal?.[0]
               : // eslint-disable-next-line no-undefined
                 undefined,
           end_time:
-            paramsData?.headerParmas?.time?.type === 0
-              ? paramsData?.headerParmas?.time?.time?.[1]
+            timeKey === 0
+              ? timeVal?.[0]
               : // eslint-disable-next-line no-undefined
                 undefined,
           period_time:
             // eslint-disable-next-line no-undefined, no-negated-condition
-            paramsData?.headerParmas?.time?.type !== 0
-              ? paramsData?.headerParmas.period_time
+            timeKey !== 0
+              ? timeKey
               : // eslint-disable-next-line no-undefined
                 undefined,
         }}
@@ -234,7 +399,7 @@ const HeaderAll = (props: HaderProps) => {
         onConfirm={() => {
           setIsOpen(false), props?.onGetExportApi?.(options)
         }}
-        personData={props.headerParmas.users}
+        personData={person}
       />
     </>
   )

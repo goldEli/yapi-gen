@@ -374,7 +374,6 @@ export const TitleCss = styled.div`
   }
 `
 export const TableStyle = styled.div`
-  height: calc(100% - 218px);
   padding: 24px 48px 0 48px;
 `
 export const Btn1 = styled.div`
