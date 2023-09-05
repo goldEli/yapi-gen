@@ -920,3 +920,95 @@ export const TitleTips = styled.span`
   font-family: SiYuanRegular;
   margin-left: 8px;
 `
+
+export const ProjectGroupTitle = styled.div`
+  cursor: pointer;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  .text {
+    color: var(--auxiliary-text-t2-d2);
+    font-size: var(--font14);
+    margin-left: 5px;
+  }
+  margin-bottom: 8px;
+`
+
+export const ProjectGroupList = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+`
+export const GroupBox = styled.div`
+  display: flex;
+  align-items: center;
+  .group-name {
+    color: var(--neutral-n1-d1);
+    font-size: var(--font14);
+    font-family: SiYuanMedium;
+  }
+  .group-user {
+    margin: 0px 12px;
+  }
+  .add-icon {
+    width: 24px;
+    height: 24px;
+    border: 1px dashed var(--neutral-n3);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 12px;
+    &:hover svg {
+      color: var(--primary-d2);
+    }
+    &:hover {
+      border: 1px dashed var(--primary-d2);
+    }
+  }
+  .user-num {
+  }
+`
+export const DelIcon = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  position: relative;
+  top: 1px;
+  margin-left: 24px;
+  &:hover {
+    background: var(--hover-d1);
+    border-radius: 4px;
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+`
+export const GroupStoryBox = styled.div`
+  margin-top: 12px;
+  .item {
+    color: var(--neutral-n2);
+    font-size: var(--font14);
+    position: relative;
+    padding-left: 14px;
+    margin-top: 8px;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      margin-top: -3px;
+      bottom: 0;
+      width: 6px;
+      height: 6px;
+      background: var(--neutral-n2);
+      border-radius: 6px;
+    }
+  }
+`

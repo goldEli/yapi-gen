@@ -13,13 +13,15 @@ import RangePicker from '@/components/RangePicker'
 import { useEffect, useState } from 'react'
 import { Checkbox } from 'antd'
 import moment from 'moment'
+import { useDispatch, useSelector } from '@store/index'
+import { setCurrentKey, setFilterParams } from '@store/employeeProfile'
+import { getMemberOverviewStatistics } from '@store/employeeProfile/employeeProfile.thunk'
 
-interface EmployeeProfileHeaderProps {
-  // 调用获取卡片及任务数据
-  onGetData(params: any): void
-}
-
-const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
+const EmployeeProfileHeader = () => {
+  const dispatch = useDispatch()
+  const { memberStatistics, currentKey, filterParams } = useSelector(
+    store => store.employeeProfile,
+  )
   const [searchParams, setSearchParams] = useState<any>({
     // 搜索值
     keyword: '',
@@ -50,28 +52,39 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       name: '已逾期',
       type: 'red',
       key: 5,
+      fieldKey: 'overdue',
     },
     {
       name: '进行中',
       type: 'blue',
       key: 4,
+      fieldKey: 'start',
     },
     {
       name: '待规划',
       type: 'org',
       key: 3,
+      fieldKey: 'un_start',
     },
     {
       name: '已完成',
       type: 'green',
       key: 2,
+      fieldKey: 'completed',
     },
     {
       name: '全部',
       type: 'purple',
       key: 1,
+      fieldKey: 'all',
     },
   ]
+
+  // 计算当前选中卡片的数据
+  const onComputedCurrent = (obj: any) => {
+    const newObj = memberStatistics[obj.fieldKey]
+    dispatch(setCurrentKey({ ...newObj, ...obj }))
+  }
 
   //   切换时间
   const onChangeTime = (dates: any) => {
@@ -88,11 +101,12 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   }
 
   //   点击切换tab
-  const onChangeTab = (key: number) => {
-    setActive(key)
+  const onChangeTab = (item: any) => {
+    setActive(item.key)
+    onComputedCurrent(cardList[0])
   }
 
-  //   点击切换星标
+  //   点击切换搜素条件
   const onClickSearch = (value: any, key: string) => {
     if (key === 'keyword' && value === searchParams.keyword) {
       return
@@ -101,6 +115,12 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       ...searchParams,
       [key]: value,
     })
+  }
+
+  // 获取卡片数据
+  const getStatistics = (params: any) => {
+    dispatch(setFilterParams(params))
+    dispatch(getMemberOverviewStatistics(params))
   }
 
   useEffect(() => {
@@ -161,8 +181,12 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   }, [active])
 
   useEffect(() => {
-    props.onGetData(searchParams)
+    getStatistics(searchParams)
   }, [searchParams])
+
+  useEffect(() => {
+    onComputedCurrent(cardList[0])
+  }, [memberStatistics])
 
   return (
     <HeaderWrap>
@@ -189,7 +213,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         <TabsGroup>
           {tabList.map((i: any) => (
             <TabItem
-              onClick={() => onChangeTab(i.key)}
+              onClick={() => onChangeTab(i)}
               key={i.key}
               isActive={active === i.key}
             >
@@ -206,9 +230,26 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       </HeaderSearch>
       <HeaderCardGroup>
         {cardList.map((i: any) => (
-          <Card key={i.key} onClick={() => onClickSearch(i.key, 'status')}>
+          <Card
+            isActive={currentKey.fieldKey === i.fieldKey}
+            key={i.key}
+            onClick={() => {
+              dispatch(
+                setFilterParams({
+                  ...filterParams,
+                  ...{
+                    status: i.key,
+                    user_ids: memberStatistics[i.fieldKey]?.user_ids,
+                  },
+                }),
+              )
+              onComputedCurrent(i)
+            }}
+          >
             <CommonIconFont type={i.type} />
-            <div className="name">{i.name}（11）</div>
+            <div className="name">
+              {i.name}（{memberStatistics[i.fieldKey]?.total}）
+            </div>
           </Card>
         ))}
       </HeaderCardGroup>

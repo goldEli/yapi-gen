@@ -154,7 +154,7 @@
       "array-callback-return": 0,
       "no-extra-semi": 2,
       "max-lines": [
-        2,
+        0,
         1000
       ],
       "@typescript-eslint/no-this-alias": [

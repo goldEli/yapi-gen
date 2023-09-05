@@ -1,24 +1,115 @@
 /* eslint-disable no-undefined */
+import { getMemberOverviewList } from '@store/employeeProfile/employeeProfile.thunk'
+import { useDispatch, useSelector } from '@store/index'
 import { useEffect, useState } from 'react'
+import {
+  CheckBoxWrap,
+  CheckboxAll,
+  CheckboxLi,
+  PersonWrap,
+  ReportButton,
+} from '../style'
+import { Checkbox } from 'antd'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { setFilterParams } from '@store/employeeProfile'
 
 interface EmployeeProfilePersonProps {
-  // 人员数组
-  ids?: string[] | number[]
   //   修改后的人员数组列表
-  onChangeCheckPerson(arr: number[]): void
+  onChangeCheckPerson?(arr: number[]): void
 }
 
 const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
-  const [dataList, setDataList] = useState({
-    list: undefined,
-  })
-  // 获取人员数据
-  const getPersonList = () => {}
+  const dispatch = useDispatch()
+  // 全选状态
+  const [checkAll, setCheckAll] = useState(false)
+  // 半选状态
+  const [indeterminate, setIndeterminate] = useState(false)
+  // 选中的key
+  const [selectKeys, setSelectKeys] = useState<any>([])
+  const { allMemberList, currentKey, filterParams } = useSelector(
+    store => store.employeeProfile,
+  )
+
+  // 点击全选
+  const onAllChecked = (e: any) => {
+    const { checked } = e.target
+    setSelectKeys(checked ? allMemberList?.map((k: any) => k.id) : [])
+    setIndeterminate(false)
+    setCheckAll(checked)
+    dispatch(
+      setFilterParams({
+        ...filterParams,
+        ...{
+          user_ids: checked ? allMemberList?.map((k: any) => k.id) : [],
+        },
+      }),
+    )
+  }
+
+  // 点击勾选或者取消人员
+  const onItemChecked = (e: any, id: number) => {
+    const { checked } = e.target
+    let resultKeys: any = []
+    // 如果勾选中不存在，则添加
+    if (selectKeys?.includes(id)) {
+      resultKeys = selectKeys?.filter((i: number) => i !== id)
+    } else {
+      resultKeys = [...selectKeys, ...[id]]
+    }
+    setSelectKeys(resultKeys)
+    setIndeterminate(
+      resultKeys?.length !== allMemberList?.length && resultKeys?.length !== 0,
+    )
+    setCheckAll(resultKeys?.length === allMemberList?.length)
+    dispatch(
+      setFilterParams({
+        ...filterParams,
+        ...{
+          user_ids: resultKeys,
+        },
+      }),
+    )
+  }
 
   useEffect(() => {
-    getPersonList()
+    dispatch(getMemberOverviewList())
   }, [])
-  return <div>人员组件</div>
+
+  useEffect(() => {
+    setSelectKeys(currentKey?.user_ids)
+    setIndeterminate(
+      currentKey?.total !== allMemberList?.length && currentKey?.total !== 0,
+    )
+    setCheckAll(currentKey?.total === allMemberList?.length)
+  }, [currentKey])
+
+  return (
+    <PersonWrap>
+      <ReportButton>对比报告</ReportButton>
+      <div className="label">
+        {currentKey?.name}（{currentKey?.total}）
+      </div>
+      <CheckboxAll
+        checked={checkAll}
+        indeterminate={indeterminate}
+        onClick={onAllChecked}
+      >
+        全选
+      </CheckboxAll>
+      <CheckBoxWrap>
+        {allMemberList?.map((i: any) => (
+          <CheckboxLi key={i.id}>
+            <Checkbox
+              checked={selectKeys?.includes(i.id)}
+              onClick={e => onItemChecked(e, i.id)}
+            >
+              <CommonUserAvatar avatar={i.avatar} name={i.name} />
+            </Checkbox>
+          </CheckboxLi>
+        ))}
+      </CheckBoxWrap>
+    </PersonWrap>
+  )
 }
 
 export default EmployeeProfilePerson

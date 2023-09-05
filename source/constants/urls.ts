@@ -507,6 +507,28 @@ const urls = {
   updateOverdue: '/b/story/work_time/update_overdue',
   workTimeExport: '/b/story/work_time/export',
   updateWorkTime: '/b/story/work_time/set_daily',
+
+  /**
+   * 项目日报
+   */
+  // 添加分组
+  addGroup: '/b/work_report/user/add_group',
+  // 编辑分组
+  editGroup: '/b/work_report/user/edit_group',
+  // 删除分组
+  removeGroup: '/b/work_report/user/remove_group',
+  // 移除成员
+  removeMember: '/b/work_report/user/remove_group_user',
+  // 查询分组信息
+  getGroupUserList: '/b/work_report/user/group_info',
+
+  // 员工概况模块
+  // 员工列表
+  getMemberOverviewList: '/b/member_overview/member/list',
+  // 统计
+  getMemberOverviewStatistics: '/b/member_overview/statistics',
+  // 任务列表
+  getMemberOverviewStoryList: '/b/member_overview/story/list',
 }
 export default urls
 

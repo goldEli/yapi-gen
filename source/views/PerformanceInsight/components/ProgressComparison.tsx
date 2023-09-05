@@ -169,10 +169,7 @@ const ProgressComparison = (props: Props) => {
             fixedKey="completion_rate"
             nowKey={orderObj.orderkey}
             order={orderObj.order}
-            title={getTitleTips(
-              t('performance.completionRate'),
-              t('performance.completedWorkWork'),
-            )}
+            title={t('performance.completionRate')}
             onUpdateOrderKey={onUpdateOrderKey}
           ></NewSort>
         ),
@@ -326,10 +323,7 @@ const ProgressComparison = (props: Props) => {
             fixedKey="completion_rate"
             nowKey={orderObj.orderkey}
             order={orderObj.order}
-            title={getTitleTips(
-              t('performance.currentCompletionRate'),
-              t('performance.completedWorkWork'),
-            )}
+            title={t('performance.currentCompletionRate')}
             onUpdateOrderKey={onUpdateOrderKey}
           ></NewSort>
         ),
