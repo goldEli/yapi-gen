@@ -6,7 +6,6 @@ import { PersonText, TitleCss, Col, Line, TableStyle } from '../Header/Style'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Sort from '@/components/Sort'
-import Table from './Table'
 import { Spin, Tooltip } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
@@ -33,6 +32,7 @@ import { copyView } from '@/services/kanban'
 import { setListActiveId } from '@store/global'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from '@/components/NoData'
+import ResizeTable from '@/components/ResizeTable'
 
 // 进展对比tips
 const getTitleTips = (text: string, tips: string, position?: string) => {
@@ -75,7 +75,7 @@ interface Props {
   type: string
   title: string
   viewType: number
-  //代表是全局还是冲刺迭代
+  // 代表是全局还是冲刺迭代
   homeType: string
   headerParmas: Models.Efficiency.HeaderParmas
   // projectDataList: Array<{ name: string; id: number }>
@@ -113,9 +113,6 @@ const ProgressComparison = (props: Props) => {
     store => store.performanceInsight,
   )
   const isRefresh = useSelector(store => store.user.isRefresh)
-  const [total, setTotal] = useState(0)
-  const [pageNum, setPageNum] = useState(1)
-  const [pageSize, setPageSize] = useState(50)
   const [selectProjectIds, setSelectProjectIds] = useState<any>(
     props.headerParmas?.projectIds,
   )
@@ -260,7 +257,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
     ]
-    //进展工作对比全局的
+    // 进展工作对比全局的
     const columns2 = [
       {
         dataIndex: 'userName',
@@ -487,7 +484,7 @@ const ProgressComparison = (props: Props) => {
       },
     ]
     // 进展对比 Progress_iteration-迭代 Progress_sprint 冲刺 Progress_all 全局
-    //缺陷 Defect_iteration-迭代 Defect_iteration 冲刺 Defect_all 全局
+    // 缺陷 Defect_iteration-迭代 Defect_iteration 冲刺 Defect_all 全局
     switch (props.type) {
       case 'Progress_iteration':
         setColumns(columns1)
@@ -513,16 +510,27 @@ const ProgressComparison = (props: Props) => {
     onSearchData(props.headerParmas?.projectIds || [])
   }, [isRefresh])
   // 数据明细和进展对比查询数据的
-  const onSearchData = (value: number[]) => {
-    setSelectProjectIds(value)
+  const onSearchData = (extras?: any) => {
+    if (Array.isArray(extras)) {
+      return
+    }
+    setSelectProjectIds(extras?.project_ids ?? [])
     // 进展对比
     if (props.type.includes('Progress')) {
       setLoading(true)
-      getWorkContrastList(value)
+      getWorkContrastList(
+        extras?.project_ids ? [extras?.project_ids] : [],
+        {},
+        extras,
+      )
     } else {
       // 缺陷分析
       setLoading(true)
-      getMemberBugList(value)
+      getMemberBugList(
+        extras?.project_ids ? [extras?.project_ids] : [],
+        {},
+        extras,
+      )
     }
   }
   // 获取时间
@@ -574,7 +582,7 @@ const ProgressComparison = (props: Props) => {
       ) {
         result = await getExport({
           project_ids:
-            option?.length >= 1 ? option?.join(',') : props.projectId + '',
+            option?.length >= 1 ? option?.join(',') : String(props.projectId),
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -594,7 +602,7 @@ const ProgressComparison = (props: Props) => {
       ) {
         result = await defectExport({
           project_ids:
-            option?.length >= 1 ? option?.join(',') : props.projectId + '',
+            option?.length >= 1 ? option?.join(',') : String(props.projectId),
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -628,55 +636,67 @@ const ProgressComparison = (props: Props) => {
     }
   }
   // 工作进展对比大的列表
-  const getWorkContrastList = async (value: number[], page?: any) => {
-    const time = props.headerParmas?.time && getTime(props.headerParmas?.time)
+  const getWorkContrastList = async (
+    value: number[],
+    page?: any,
+    extras?: any,
+  ) => {
     const res = await workContrastList({
       project_ids:
         value?.length >= 1 || props.headerParmas?.projectIds?.length
           ? value?.length >= 1
             ? value?.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
-          : props.projectId + '',
+          : String(props.projectId),
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
-      user_ids: props.headerParmas.users?.join(','),
-      period_time: getTimeStr(props.headerParmas?.time),
-      start_time: getTimeStr(props.headerParmas?.time) ? '' : time.startTime,
-      end_time: getTimeStr(props.headerParmas?.time) ? '' : time.endTime,
-      page: page?.pageNum || pageNum,
-      pagesize: page?.pageSize || pageSize,
+      user_ids: extras?.user_ids?.join(','),
+      period_time: getTimeStr({
+        type: extras?.period_time,
+        time: extras?.time,
+      }),
+      start_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
+        ? ''
+        : extras?.time?.[0],
+      end_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
+        ? ''
+        : extras?.time?.[1],
     })
     setWork(res.work)
     setTableList(res.list)
-    setTotal(res.pager.total)
     setIds(res.list.map(el => el.id))
     setLoading(false)
   }
 
   // 缺陷分析大的列表
-  const getMemberBugList = async (value: number[], page?: any) => {
-    const time = getTime(props.headerParmas.time)
+  const getMemberBugList = async (
+    value: number[],
+    page?: any,
+    extras?: any,
+  ) => {
     const res = await memberBugList({
       project_ids:
         value.length >= 1 || props.headerParmas?.projectIds?.length
           ? value.length >= 1
             ? value.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
-          : props.projectId + '',
+          : String(props.projectId),
       iterate_ids: props.headerParmas.iterate_ids?.length
         ? props.headerParmas.iterate_ids?.join(',')
         : '',
-      user_ids: props.headerParmas.users?.length
-        ? props.headerParmas.users?.join(',')
-        : '',
-      period_time: getTimeStr(props.headerParmas?.time),
-      start_time: getTimeStr(props.headerParmas?.time) ? '' : time.startTime,
-      end_time: getTimeStr(props.headerParmas?.time) ? '' : time.endTime,
-      page: page?.pageNum || pageNum,
-      pagesize: page?.pageSize || pageSize,
+      user_ids: extras?.user_ids?.join(','),
+      period_time: getTimeStr({
+        type: extras?.period_time,
+        time: extras?.time,
+      }),
+      start_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
+        ? ''
+        : extras?.time?.[0],
+      end_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
+        ? ''
+        : extras?.time?.[1],
     })
     setWork(res.defect)
     setTableList1(res.list)
-    setTotal(res.pager.total)
     setIds(res.list.map(el => el.id))
     setLoading(false)
   }
@@ -696,7 +716,7 @@ const ProgressComparison = (props: Props) => {
       project_ids:
         selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
-          : props.projectId + '',
+          : String(props.projectId),
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
         : '',
@@ -743,7 +763,7 @@ const ProgressComparison = (props: Props) => {
       project_ids:
         selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
-          : props.projectId + '',
+          : String(props.projectId),
     })
     setUserInfo(res.userInfo)
     setStatus(res.status)
@@ -773,7 +793,7 @@ const ProgressComparison = (props: Props) => {
       project_ids:
         selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
-          : props.projectId + '',
+          : String(props.projectId),
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
@@ -816,13 +836,11 @@ const ProgressComparison = (props: Props) => {
       } else {
         getDatail({ id })
       }
+    } else if (tableBeforeAndAfter === 'after') {
+      getEfficiencyMemberDefectList(parmas)
+      getUserInfo(id)
     } else {
-      if (tableBeforeAndAfter === 'after') {
-        getEfficiencyMemberDefectList(parmas)
-        getUserInfo(id)
-      } else {
-        getDatail({ id })
-      }
+      getDatail({ id })
     }
   }
 
@@ -870,7 +888,7 @@ const ProgressComparison = (props: Props) => {
         >
           {work?.map((el, index) => (
             <>
-              <PersonText>
+              <PersonText key={el.name}>
                 {el.name}: {el.value}
                 {el.unit}
               </PersonText>
@@ -880,9 +898,10 @@ const ProgressComparison = (props: Props) => {
         </div>
         <TableStyle>
           {tableList.length <= 0 && tableList1.length <= 0 && <NoData />}
-          <Table
-            paginationShow={true}
-            columns={columns}
+          <ResizeTable
+            isSpinning={false}
+            dataWrapNormalHeight="100%"
+            col={columns}
             dataSource={
               props.type === 'Progress_iteration' ||
               props.type === 'Progress_sprint' ||
@@ -890,20 +909,21 @@ const ProgressComparison = (props: Props) => {
                 ? tableList
                 : tableList1
             }
-            isSpinning={false}
-            data={{
-              currentPage: pageNum,
-              total: total,
-              pageSize: pageSize,
-            }}
-            onChangePage={(pageNum, pageSize) => {
-              setPageNum(pageNum)
-              setPageSize(pageSize)
-              props.type === 'Progress_iteration' ||
+            pagination={{
+              total: (props.type === 'Progress_iteration' ||
               props.type === 'Progress_sprint' ||
               props.type === 'Progress_all'
-                ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
-                : getMemberBugList(selectProjectIds, { pageNum, pageSize })
+                ? tableList
+                : tableList1
+              )?.length,
+              showTotal(total: any) {
+                return `${t('sprint.total')} ${total}${t('sprint.pieces')}`
+              },
+              defaultPageSize: 10,
+              defaultCurrent: 1,
+              pageSizeOptions: ['10', '20', '30', '50'],
+              showSizeChanger: true,
+              showQuickJumper: true,
             }}
           />
         </TableStyle>
@@ -938,7 +958,7 @@ const ProgressComparison = (props: Props) => {
         {/* 导出成功 */}
         <ExportSuccess
           title={t('performance.exportSuccess')}
-          notCancel={true}
+          notCancel
           text={t('performance.exportSuccessMsg')}
           isVisible={isVisibleSuccess}
           onConfirm={() => {

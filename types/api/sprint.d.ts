@@ -148,17 +148,10 @@ declare namespace API.Sprint {
       period_time?: string
       start_time?: string
       end_time?: string
-      page: number
-      pagesize: number
     }
     type Result = {
       work: Array<Model.Sprint.WorkListItem>
       list: Array<Model.Sprint.WorkDataListItem>
-      pager: {
-        total: number
-        page: number
-        pagesize: number
-      }
     }
   }
   namespace MemberBugList {
@@ -170,18 +163,10 @@ declare namespace API.Sprint {
       iterate_ids?: string
       period_time?: string
       two_week?: string
-      page: number
-
-      pagesize: number
     }
     type Result = {
       defect: Array<Model.Sprint.WorkListItem>
       list: Array<Model.Sprint.BugDataListItem>
-      pager: {
-        total: number
-        page: number
-        pagesize: number
-      }
     }
   }
   namespace PlugSelectionUserInfo {
