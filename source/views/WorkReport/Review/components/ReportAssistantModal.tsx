@@ -424,8 +424,10 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     const projectConfig = modalInfo?.configs?.filter(
       (ele: { type: number }) => ele.type === 4,
     )[0]?.content
-    projectConfig.forEach((item: { stories: any }) => {
-      tempArr.push([...item.stories])
+    projectConfig?.forEach((item: { stories: any }) => {
+      if (item.stories) {
+        tempArr.push([...item.stories])
+      }
     })
     tempArr = tempArr.flat()
     let total = 0
