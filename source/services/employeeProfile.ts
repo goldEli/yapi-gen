@@ -10,8 +10,8 @@ export const getMemberOverviewList = async () => {
 // 获取统计数据
 export const getMemberOverviewStatistics = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewStatistics', {
-    is_star: params.isStart ? 1 : 0,
-    keyword: params.keyword,
+    is_star: params.isStart ? 1 : null,
+    keyword: params.keyword ?? '',
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
   })

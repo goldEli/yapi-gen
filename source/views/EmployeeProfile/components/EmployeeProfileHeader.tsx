@@ -80,6 +80,12 @@ const EmployeeProfileHeader = () => {
     },
   ]
 
+  // 计算当前选中卡片的数据
+  const onComputedCurrent = (obj: any) => {
+    const newObj = memberStatistics[obj.fieldKey]
+    dispatch(setCurrentKey({ ...newObj, ...obj }))
+  }
+
   //   切换时间
   const onChangeTime = (dates: any) => {
     setSearchParams({
@@ -97,7 +103,7 @@ const EmployeeProfileHeader = () => {
   //   点击切换tab
   const onChangeTab = (item: any) => {
     setActive(item.key)
-    dispatch(setCurrentKey(item.fieldKey))
+    onComputedCurrent(cardList[0])
   }
 
   //   点击切换搜素条件
@@ -178,6 +184,10 @@ const EmployeeProfileHeader = () => {
     getStatistics(searchParams)
   }, [searchParams])
 
+  useEffect(() => {
+    onComputedCurrent(cardList[0])
+  }, [memberStatistics])
+
   return (
     <HeaderWrap>
       <HeaderSearch>
@@ -221,13 +231,19 @@ const EmployeeProfileHeader = () => {
       <HeaderCardGroup>
         {cardList.map((i: any) => (
           <Card
-            isActive={currentKey === i.fieldKey}
+            isActive={currentKey.fieldKey === i.fieldKey}
             key={i.key}
             onClick={() => {
               dispatch(
-                setFilterParams({ ...filterParams, ...{ status: i.key } }),
+                setFilterParams({
+                  ...filterParams,
+                  ...{
+                    status: i.key,
+                    user_ids: memberStatistics[i.fieldKey]?.user_ids,
+                  },
+                }),
               )
-              dispatch(setCurrentKey(i.fieldKey))
+              onComputedCurrent(i)
             }}
           >
             <CommonIconFont type={i.type} />

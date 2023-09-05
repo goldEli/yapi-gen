@@ -14,57 +14,15 @@ export interface CounterState {
   // 统计数据
   memberStatistics: any
   // 当前选中的状态 - 默认为逾期
-  currentKey: string
+  currentKey: any
   // 查询的搜索值
   filterParams: any
 }
 
 const initialState: CounterState = {
-  allMemberList: [
-    {
-      id: 707,
-      name: '臧三',
-      avatar: '',
-    },
-    {
-      id: 712,
-      name: '臧三1',
-      avatar: 'https://agile-api.tke.staryuntech.com/attachment/bg_cover1.png',
-    },
-    {
-      id: 1418,
-      name: '臧三2',
-      avatar: 'https://agile-api.tke.staryuntech.com/attachment/bg_cover2.png',
-    },
-    {
-      id: 4,
-      name: '臧三3',
-      avatar: 'https://agile-api.tke.staryuntech.com/attachment/bg_cover3.png',
-    },
-  ],
-  currentKey: 'overdue',
-  memberStatistics: {
-    all: {
-      total: 3,
-      user_ids: [707, 712, 1418],
-    },
-    completed: {
-      total: 2,
-      user_ids: [707, 1418],
-    },
-    un_start: {
-      total: 0,
-      user_ids: [],
-    },
-    start: {
-      total: 1,
-      user_ids: [1418],
-    },
-    overdue: {
-      total: 2,
-      user_ids: [707, 1418],
-    },
-  },
+  allMemberList: [],
+  currentKey: {},
+  memberStatistics: {},
   filterParams: {},
 }
 
