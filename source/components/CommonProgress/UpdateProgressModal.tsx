@@ -163,7 +163,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
           </span>
           <span className="processor">{t('cumulativeWorkingHours')}</span>
           <span style={{ fontFamily: 'SiYuanMedium' }} className="username">
-            {data?.tatal_hours}
+            {`${data?.total_hours}h`}
           </span>
           <span className="processor">{t('handler')}</span>
           <span className="username">

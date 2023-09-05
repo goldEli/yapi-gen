@@ -38,6 +38,8 @@ import {
   LoadingButton,
   TitleTips,
 } from './style'
+import ProjectGroup from './ProjectGroup'
+import Item from 'antd/lib/list/Item'
 
 interface ReportAssistantProps {
   visible: boolean
@@ -115,6 +117,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           name: tempArr[2],
           conf_id: Number(tempArr[1]),
           content: (params[key] || [])?.map((i: any) => {
+            console.log('------', i)
             const tempObj: any = demandListAll.current.find(
               (t: any) => t.id === i,
             )
@@ -127,13 +130,14 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                   user_today_task_time: tempObj?.user_today_task_time,
                   user_total_task_time: tempObj?.user_total_task_time,
                 }
-              : {
-                  id: tempObj?.id,
-                  name: tempObj?.name,
-                  expected_day: tempObj?.expected_day,
-                  schedule_percent: tempObj?.schedule_percent,
-                  today_task_time: tempObj?.today_task_time,
-                }
+              : i
+            // : {
+            //     id: tempObj?.id,
+            //     name: tempObj?.name,
+            //     expected_day: tempObj?.expected_day,
+            //     schedule_percent: tempObj?.schedule_percent,
+            //     today_task_time: tempObj?.today_task_time,
+            //   }
           }),
         })
       } else {
@@ -145,6 +149,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         })
       }
     })
+    console.log('data0000', data)
+    // return
     let result = null
     if (type === 'user') {
       result = await writeAssistantReport({
@@ -186,14 +192,14 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     let canSubmit = false
     Object.keys(params)?.forEach((k: string) => {
       const tempArr = k.split('+')
-      if (tempArr[0] === '4' && params[k]?.length) {
+      if (tempArr[0] === '4') {
         canSubmit = true
       }
       if (tempArr[0] === '1' && params[k]?.length <= 0) {
         canSubmit = false
       }
     })
-
+    console.log('params', params)
     if (!canSubmit) {
       getMessage({
         type: 'warning',
@@ -405,12 +411,18 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   // (日报)计算进度相关数据
   const getScheduleData = () => {
     let tempArr: any[] = []
-    modalInfo?.configs?.forEach((item: any) => {
-      if (item.type === 4) {
-        tempArr = tempArr.concat(item.content ?? [])
-      }
+    // modalInfo?.configs?.forEach((item: any) => {
+    //   if (item.type === 4) {
+    //     tempArr = tempArr.concat(item.content ?? [])
+    //   }
+    // })
+    const projectConfig = modalInfo?.configs?.filter(
+      (ele: { type: number }) => ele.type === 4,
+    )[0]?.content
+    projectConfig.forEach((item: { stories: any }) => {
+      tempArr.push([...item.stories])
     })
-
+    tempArr = tempArr.flat()
     let total = 0
     let done = 0
     if (tempArr.length) {
@@ -832,48 +844,63 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       case 4:
         return (
           <Form.Item
-            label={
-              <LabelTitles>
-                {content.name_text}：{content?.content?.length}{' '}
-                {t('report.list.pieces')}
-              </LabelTitles>
-            }
+            label={<LabelTitles>添加项目组</LabelTitles>}
             name={`${content.type}+${content.id}+${content.name}`}
           >
-            <NewRelatedNeedForProject
-              initValue={content?.content}
-              data={demandList}
-              canSubmit={(arr: any) => {
-                const isCan = arr?.every((i: any) =>
-                  demandList?.map((o: any) => o?.id)?.includes(i?.value),
-                )
-                if (!isCan) {
-                  if (content.name === 'overdue_tasks') {
-                    getMessage({
-                      msg: t(
-                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
-                      ),
-                      type: 'warning',
-                    })
-                  } else {
-                    getMessage({
-                      msg: t(
-                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2',
-                      ),
-                      type: 'warning',
-                    })
-                  }
-                }
-                return isCan
+            <ProjectGroup
+              projectId={currentProject?.id}
+              template_id={currentProject?.project_report_template_id}
+              data={content.content}
+              onOk={() => {
+                generatorDataByProject()
               }}
-              onFilter={() => {
-                setFilterDemand()
-              }}
-              // 是否显示逾期
-              isShowOverdue={content?.name === 'overdue_tasks'}
-            />
+            ></ProjectGroup>
           </Form.Item>
         )
+      // return (
+      //   <Form.Item
+      //     label={
+      //       <LabelTitles>
+      //         {content.name_text}：{content?.content?.length}{' '}
+      //         {t('report.list.pieces')}
+      //       </LabelTitles>
+      //     }
+      //     name={`${content.type}+${content.id}+${content.name}`}
+      //   >
+      //     <NewRelatedNeedForProject
+      //       initValue={content?.content}
+      //       data={demandList}
+      //       canSubmit={(arr: any) => {
+      //         const isCan = arr?.every((i: any) =>
+      //           demandList?.map((o: any) => o?.id)?.includes(i?.value),
+      //         )
+      //         if (!isCan) {
+      //           if (content.name === 'overdue_tasks') {
+      //             getMessage({
+      //               msg: t(
+      //                 'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
+      //               ),
+      //               type: 'warning',
+      //             })
+      //           } else {
+      //             getMessage({
+      //               msg: t(
+      //                 'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2',
+      //               ),
+      //               type: 'warning',
+      //             })
+      //           }
+      //         }
+      //         return isCan
+      //       }}
+      //       onFilter={() => {
+      //         setFilterDemand()
+      //       }}
+      //       // 是否显示逾期
+      //       isShowOverdue={content?.name === 'overdue_tasks'}
+      //     />
+      //   </Form.Item>
+      // )
       default:
         return <div></div>
     }
