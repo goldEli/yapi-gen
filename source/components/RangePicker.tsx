@@ -31,6 +31,8 @@ interface Props {
   isShowQuick?: boolean
   placement?: any
   width?: string
+  // 是否可以删除
+  hasClear?: boolean
 }
 
 const RangePicker = (props: Props) => {
@@ -127,7 +129,7 @@ const RangePicker = (props: Props) => {
     <DatePicker.RangePicker
       placement={props?.placement}
       value={props.dateValue}
-      allowClear
+      allowClear={props.hasClear ?? true}
       style={{ width: props.isWidth ? '' : props.width ? props.width : '100%' }}
       onChange={onChangeDate}
       className={rangPicker}

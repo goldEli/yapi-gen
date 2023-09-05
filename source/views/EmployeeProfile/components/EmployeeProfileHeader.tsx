@@ -84,13 +84,20 @@ const EmployeeProfileHeader = () => {
   const onComputedCurrent = (obj: any) => {
     const newObj = memberStatistics[obj.fieldKey]
     dispatch(setCurrentKey({ ...newObj, ...obj }))
+    dispatch(
+      setFilterParams({
+        ...searchParams,
+        ...filterParams,
+        ...{ user_ids: newObj?.user_ids, status: obj.key },
+      }),
+    )
   }
 
   //   切换时间
   const onChangeTime = (dates: any) => {
     setSearchParams({
       ...searchParams,
-      time: dates
+      time: dates[0]
         ? [
             moment(dates[0]).format('YYYY-MM-DD'),
             moment(dates[1]).format('YYYY-MM-DD'),
@@ -103,7 +110,6 @@ const EmployeeProfileHeader = () => {
   //   点击切换tab
   const onChangeTab = (item: any) => {
     setActive(item.key)
-    onComputedCurrent(cardList[0])
   }
 
   //   点击切换搜素条件
@@ -119,7 +125,6 @@ const EmployeeProfileHeader = () => {
 
   // 获取卡片数据
   const getStatistics = (params: any) => {
-    dispatch(setFilterParams(params))
     dispatch(getMemberOverviewStatistics(params))
   }
 
@@ -185,7 +190,9 @@ const EmployeeProfileHeader = () => {
   }, [searchParams])
 
   useEffect(() => {
-    onComputedCurrent(cardList[0])
+    if (JSON.stringify(memberStatistics) !== '{}') {
+      onComputedCurrent(cardList[0])
+    }
   }, [memberStatistics])
 
   return (
@@ -208,6 +215,7 @@ const EmployeeProfileHeader = () => {
                 : null
             }
             onChange={dates => onChangeTime(dates)}
+            hasClear={false}
           />
         </SelectWrapBedeck>
         <TabsGroup>

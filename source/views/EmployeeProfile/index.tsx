@@ -1,11 +1,20 @@
 import { useRef, useState } from 'react'
 import EmployeeProfileHeader from './components/EmployeeProfileHeader'
-import { ContentWrap, FoldIcon, PersonBox, SideMain, Wrap } from './style'
+import {
+  ContentWrap,
+  FoldIcon,
+  PersonBox,
+  RightBox,
+  SideMain,
+  Wrap,
+} from './style'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import EmployeeProfilePerson from './components/EmployeeProfilePerson'
 import { Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
+import EmployeeProfileReport from './components/EmployeeProfileReport'
+import EmployeeProfileTask from './components/EmployeeProfileTask'
 
 const EmployeeProfile = () => {
   const [t] = useTranslation()
@@ -104,6 +113,10 @@ const EmployeeProfile = () => {
             </FoldIcon>
           </Tooltip>
         </PersonBox>
+        <RightBox>
+          <EmployeeProfileReport />
+          <EmployeeProfileTask />
+        </RightBox>
       </ContentWrap>
     </Wrap>
   )
