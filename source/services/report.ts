@@ -186,3 +186,31 @@ export const getProjectReportInfo = async (params: any) => {
   const response = await http.get('getProjectReportInfo', params)
   return response.data
 }
+
+// 项目日报-添加分组
+export const addGroup = async (params: any) => {
+  const response = await http.post('addGroup', params)
+  return response.data
+}
+
+// 项目日报-删除分组
+export const editGroup = async (params: any) => {
+  const response = await http.post('editGroup', params)
+  return response.data
+}
+// 项目日报-删除分组
+export const removeGroup = async (params: any) => {
+  const response = await http.post('removeGroup', params)
+  return response.data
+}
+// 项目日报-移除成员
+export const removeMember = async (params: any) => {
+  const response = await http.post('removeMember', params)
+  return response.data
+}
+
+// 项目日报-查询成员
+export const getGroupUserList = async (params: any) => {
+  const response = await http.get('getGroupUserList', params)
+  return response.data
+}
