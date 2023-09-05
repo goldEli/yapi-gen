@@ -30,6 +30,12 @@ export const PersonBox = styled.div<{ isOpen: boolean; permission?: boolean }>`
   }
 `
 
+export const RightBox = styled.div`
+  flex: 1;
+  height: 100%;
+  display: flex;
+`
+
 export const SideMain = styled.div<{ isOpen: boolean }>`
   height: 100%;
   width: 100%;
@@ -193,4 +199,18 @@ export const CheckboxLi = styled.div`
   .ant-checkbox-wrapper {
     width: 100%;
   }
+`
+
+// EmployeeProfileReport
+export const ReportWrap = styled.div`
+  width: 560px;
+  height: 100%;
+  background: yellow;
+`
+
+// EmployeeProfileTask
+
+export const TaskWrap = styled.div`
+  flex: 1;
+  background: green;
 `
