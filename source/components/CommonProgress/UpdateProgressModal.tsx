@@ -181,7 +181,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
               onChange={onChange}
               tooltip={{ formatter: (val: any) => `${val}%` }}
             />
-            <span style={{ marginLeft: 8 }}>{inputValue}%</span>
+            <span style={{ marginLeft: 20 }}>{inputValue}%</span>
           </div>
         </div>
         <Form form={form} layout="vertical" autoComplete="off">
@@ -220,7 +220,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
                 }}
               >
                 <Label>{t('project.img')}</Label>
-                <Tooltip title={t('addAttachments')}>
+                <Tooltip title={t('addPictures')}>
                   <CloseWrap
                     style={{ marginLeft: 'auto' }}
                     width={32}
@@ -260,7 +260,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
                 }}
               >
                 <Label>{t('video')}</Label>
-                <Tooltip title={t('addAttachments')}>
+                <Tooltip title={t('addVideo')}>
                   <CloseWrap
                     style={{ marginLeft: 'auto' }}
                     width={32}

@@ -2364,5 +2364,7 @@
   "video": "Video",
   "areYouSureYouWantToUpdateTheCurrent": "Are you sure you want to update the current progress?",
   "confirmUpdateProgress": "Confirm update progress",
-  "cumulativeWorkingHours": "Cumulative working hours"
+  "cumulativeWorkingHours": "Cumulative working hours",
+  "addPictures": "Add pictures",
+  "addVideo": "Add video"
 }
