@@ -31,6 +31,7 @@ import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
 import { Left } from './style'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
+import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 
 const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-left: 16px;
@@ -116,12 +117,13 @@ const HeaderAll = (props: HaderProps) => {
   // 成员保存弹窗提示需要
   const onConfirm = (data: Array<{ name: string; id: number }>) => {
     setIsVisible(false)
-    setPerson(data)
+    setPerson(data?.map((k: any) => k.id) ?? [])
   }
 
   useEffect(() => {
     getProjectApi()
     setTimeKey(props?.headerParmas?.time?.type)
+    setPerson(props?.headerParmas?.users ?? [])
     if (props?.headerParmas?.time?.type === 0) {
       setTimeVal([
         moment(
@@ -242,7 +244,7 @@ const HeaderAll = (props: HaderProps) => {
               <SelectWrapForList>
                 {/* 成员选择 */}
                 <DivStyle onClick={() => setIsVisible(true)}>
-                  {person.length > 0 ? (
+                  {person?.length > 0 ? (
                     <Left>
                       <span>{t('project.member')}</span>
                       <Btn1>
@@ -252,7 +254,7 @@ const HeaderAll = (props: HaderProps) => {
                   ) : (
                     <span>{t('performance.all')}</span>
                   )}
-                  {person.length > 0 ? (
+                  {person?.length > 0 ? (
                     <CommonIconFont
                       type="close-solid"
                       size={14}
@@ -319,14 +321,26 @@ const HeaderAll = (props: HaderProps) => {
                 />
               )}
             </Space>
-            <NewAddUserModalForTandD
-              title={t('calendarManager.add_a_member')}
-              state={2}
-              defaultPeople={props?.headerParmas?.users}
-              isVisible={isVisible}
-              onConfirm={onConfirm}
-              onClose={() => setIsVisible(false)}
-            />
+            {props.homeType === 'all' ? (
+              <NewAddUserModalForTandD
+                title={t('calendarManager.add_a_member')}
+                state={2}
+                defaultPeople={person}
+                isVisible={isVisible}
+                onConfirm={onConfirm}
+                onClose={() => setIsVisible(false)}
+              />
+            ) : (
+              /* 项目走的 */
+              <AddDepartmentOrTeamModal
+                users={person}
+                projectId={paramsData?.id}
+                type={2}
+                isVisible={isVisible}
+                onConfirm={onConfirm}
+                onClose={() => setIsVisible(false)}
+              />
+            )}
             <Back
               onClick={() =>
                 open({

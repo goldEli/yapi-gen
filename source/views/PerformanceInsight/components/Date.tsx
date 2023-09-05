@@ -1,6 +1,11 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable no-param-reassign */
 /* eslint-disable prefer-named-capture-group */
+
+import CommonIconFont from '@/components/CommonIconFont'
+import Sort from '@/components/Sort'
+import { Tooltip } from 'antd'
+
 //时间格式化
 const formatterDate = (date: any, fmt: string) => {
   let nowDate: any = {
@@ -125,4 +130,58 @@ export const getDateStr = (type: number) => {
       break
   }
   return date
+}
+
+export const getTimeStr = (time: { type: number; time: any }) => {
+  switch (time.type) {
+    case 1:
+      return 'one_month'
+    case 3:
+      return 'three_month'
+    case 6:
+      return 'six_month'
+    case 14:
+      return 'two_week'
+    case 28:
+      return 'four_week'
+    default:
+      return ''
+  }
+}
+
+// 进展对比tips
+export const getTitleTips = (text: string, tips: string, position?: string) => {
+  return (
+    <div style={{ display: 'flex', cursor: 'pointer' }}>
+      {text}
+      <Tooltip
+        title={tips}
+        placement={position === 'right' ? 'topRight' : 'top'}
+        trigger="click"
+      >
+        <div
+          style={{
+            width: '45px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CommonIconFont type="question" size={16} />
+        </div>
+      </Tooltip>
+    </div>
+  )
+}
+export const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order}
+    >
+      {sortProps.title}
+    </Sort>
+  )
 }
