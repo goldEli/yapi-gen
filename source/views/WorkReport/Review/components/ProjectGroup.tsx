@@ -86,8 +86,18 @@ const ProjectGroup = (props: any) => {
           <ProjectGroupList key={item.id}>
             <GroupBox>
               <div className="group-name">{item.name}</div>
-              <div className="group-user">
-                <MultipleAvatar list={item.users} max={3} />
+              <div
+                className="group-user"
+                onClick={() => {
+                  console.log(111, item)
+                  // setUserList(item.users)
+                  setGroupName(item.name)
+                  setGroupId(item.id)
+                  dispatch(setProjectGroup(item.users))
+                  setGroupVisible(true)
+                }}
+              >
+                <MultipleAvatar list={item.users} max={3} disableDropDown />
               </div>
               <div className="add-icon">
                 <IconFont
@@ -144,6 +154,7 @@ const ProjectGroup = (props: any) => {
         onClose={() => setUserVisible(false)}
         type={2}
         onConfirm={data => {
+          console.log('data----', data)
           dispatch(setProjectGroup(data))
           setUserList(data)
           setUserVisible(false)
@@ -154,7 +165,6 @@ const ProjectGroup = (props: any) => {
       ></AddDepartmentOrTeamModal>
       <MemberGroup
         visible={groupVisible}
-        userList={userList}
         onCancel={() => setGroupVisible(!groupVisible)}
         onOk={(data: any) => {
           confirm(data)
