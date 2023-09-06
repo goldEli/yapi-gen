@@ -206,7 +206,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
               step={0.01}
             />
           </Form.Item>
-          <Form.Item label={t('releaseNotes')} name="remark">
+          <Form.Item label={t('releaseNotes')} name="perception">
             <Input.TextArea
               maxLength={600}
               autoSize={{ minRows: 5, maxRows: 5 }}

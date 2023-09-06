@@ -716,7 +716,7 @@ const CreateDemandLeft = (props: Props) => {
       <Form layout="vertical" form={form} disabled={!isCreateDemand}>
         <div style={{ display: 'flex' }}>
           <Form.Item
-            label={t('selectItem')}
+            label={<Label>{t('selectItem')}</Label>}
             name="projectId"
             style={{ marginRight: 24, width: '50%' }}
             rules={[{ required: true, message: '' }]}
@@ -748,7 +748,7 @@ const CreateDemandLeft = (props: Props) => {
             </CustomSelect>
           </Form.Item>
           <Form.Item
-            label={t('category')}
+            label={<Label>{t('category')}</Label>}
             name="requiredCategory"
             style={{ width: '50%' }}
             rules={[{ required: true, message: '' }]}
@@ -776,7 +776,7 @@ const CreateDemandLeft = (props: Props) => {
           </Form.Item>
         </div>
         <Form.Item
-          label={t('common.title')}
+          label={<Label>{t('common.title')}</Label>}
           name="name"
           rules={[
             { required: true, message: t('pleaseEnterContent') },
@@ -790,7 +790,7 @@ const CreateDemandLeft = (props: Props) => {
             autoFocus
           />
         </Form.Item>
-        <Form.Item label={t('mine.demandInfo')} name="info">
+        <Form.Item label={<Label>{t('mine.demandInfo')}</Label>} name="info">
           <Editor
             maxHeight="550px"
             minHeight="250px"
@@ -815,7 +815,7 @@ const CreateDemandLeft = (props: Props) => {
                   ? 'b/story/save'
                   : 'b/transaction/save'),
             )?.length > 0) && (
-            <Form.Item name="tagIds" label={t('common.tag')}>
+            <Form.Item name="tagIds" label={<Label>{t('common.tag')}</Label>}>
               {/* 需判断是冲刺还是迭代 */}
               <DemandTag
                 defaultList={tagCheckedList}

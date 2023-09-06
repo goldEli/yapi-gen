@@ -195,6 +195,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
             (i: any) => i.name === '附件上传',
           ).length > 0 && (
             <UploadAttach
+              // onlyView
               multiple
               defaultList={props.detail?.attachment?.map((i: any) => ({
                 url: i.attachment.path,

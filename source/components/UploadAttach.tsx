@@ -536,7 +536,90 @@ const UploadAttach = (props: any, ref: any) => {
       {/* <San /> */}
     </div>
   )
+  if (props.onlyView) {
+    return (
+      <div>
+        {flag ? (
+          <PreviewIframe
+            url={previewUrl}
+            flag={flag}
+            onClose={() => {
+              setFlag(false)
+              setPreviewUrl('')
+            }}
+          />
+        ) : null}
+        {previewOpen ? (
+          <Viewer
+            zIndex={99999}
+            visible={previewOpen}
+            images={pictureList?.imageArray}
+            activeIndex={pictureList?.index}
+            onClose={() => setPreviewOpen(false)}
+          />
+        ) : null}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px',
+          }}
+        >
+          {fileList.map((i: any) => {
+            return (
+              <Popover
+                overlayStyle={{ paddingLeft: '0px' }}
+                key={i.id}
+                placement="right"
+                content={content(
+                  i.file.name,
+                  i.file.time,
+                  bytesToSize(i.file?.size) ?? '',
+                  i.file.username ?? userInfo?.name,
+                )}
+                trigger="hover"
+              >
+                <div
+                  onClick={() =>
+                    i.state === 'success' ? onPreview(i.file) : null
+                  }
+                  style={{ width: '72px', height: '72px' }}
+                >
+                  <div>
+                    {imgs.includes(i.file.suffix) && (
+                      <img
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          borderRadius: '6px',
+                          objectFit: 'contain',
+                        }}
+                        alt=""
+                        src={i.file.url ? i.file.url : myImg}
+                      />
+                    )}
+                    {!imgs.includes(i.file.suffix) && (
+                      <IconFont
+                        style={{
+                          lineHeight: '72px',
 
+                          fontSize: 72,
+                          color: 'white',
+                        }}
+                        type={fileIconMap[i.file.suffix] || 'colorunknown'}
+                      />
+                    )}
+
+                    <Gred />
+                  </div>
+                </div>
+              </Popover>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
   return (
     <div>
       {flag ? (
