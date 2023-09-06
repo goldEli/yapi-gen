@@ -9,7 +9,7 @@ import { About, GrepContent, HoverWrap, Name, Time, Time2, Wrap } from './style'
 import dayjs from 'dayjs'
 import { useSelector } from '@store/index'
 import { css } from '@emotion/css'
-import { Editor } from '@xyfe/uikit'
+import { Editor } from 'ifunuikit'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 

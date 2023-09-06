@@ -4,10 +4,17 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonUserAvatar from '../CommonUserAvatar'
-import { getScheduleLogList } from '@/services/project'
+import {
+  getScheduleLogList,
+  updateFlawPerception,
+  updateTransactionPerception,
+  updateStoryPerception,
+} from '@/services/project'
 import NoData from '../NoData'
 import UploadAttach from '../UploadAttach'
 import CommonIconFont from '../CommonIconFont'
+import EditPerceptionModal from './EditPerceptionModal'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div`
   display: flex;
@@ -38,6 +45,26 @@ const ItemContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  .icons {
+    display: none;
+  }
+  &:hover .icons {
+    display: inline-block;
+  }
+  .edit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    svg {
+      font-size: 16px;
+      color: var(--neutral-n2);
+    }
+  }
+  .remark {
+    font-size: 14px;
+    color: var(--neutral-n2);
+    margin-right: 16px;
+  }
   .title {
     display: flex;
     align-items: center;
@@ -85,6 +112,7 @@ interface ScheduleRecordProps {
   // 全屏详情需要高度滚动
   height?: any
   noBorder?: boolean
+  isBug: boolean
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
@@ -94,6 +122,10 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
+  const [visible, setVisible] = useState(false)
+  const [editData, setEditData] = useState<any>(null)
+  const { userInfo } = useSelector(store => store.user)
+  const projectInfo = useSelector(state => state.project.projectInfo)
 
   // 获取进度日志列表数据
   const getScheduleLogData = async (pageNumber?: number) => {
@@ -115,6 +147,43 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
     }
   }, [props.detailId, props.projectId, props.isOpen])
 
+  const conform = async (value: string) => {
+    let result = null
+    try {
+      if (projectInfo.projectType === 2) {
+        result = await updateTransactionPerception({
+          project_id: props?.projectId,
+          story_id: props?.detailId,
+          log_id: editData?.id,
+          perception: value,
+        })
+      }
+
+      if (projectInfo.projectType === 1 && !props.isBug) {
+        result = await updateStoryPerception({
+          project_id: props?.projectId,
+          story_id: props?.detailId,
+          log_id: editData?.id,
+          perception: value,
+        })
+      }
+      if (projectInfo.projectType === 1 && props.isBug) {
+        result = await updateFlawPerception({
+          project_id: props?.projectId,
+          story_id: props?.detailId,
+          log_id: editData?.id,
+          perception: value,
+        })
+      }
+      if (result) {
+        setVisible(false)
+        getScheduleLogData()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Wrap style={{ height: props.height, overflow: 'auto' }}>
       {listData?.list && listData?.list?.length > 0 && (
@@ -130,15 +199,29 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                 <CommonUserAvatar avatar={i.userInfo?.avatar} />
               </ItemAvatar>
               <ItemContent>
-                <div className="title">
-                  <div>
-                    {i.userInfo?.name}（{i.userInfo?.position?.name || '--'}）
+                <div className="edit">
+                  <div className="title">
+                    <div>
+                      {i.userInfo?.name}（{i.userInfo?.position?.name || '--'}）
+                    </div>
+                    <span className="remark">{i.remark}</span>
+                    <span>
+                      {t('updated_progress')}
+                      {i.before_schedule}%
+                      <CommonIconFont type="swap-right" /> {i.after_schedule}%
+                    </span>
                   </div>
-                  <span>
-                    {t('updated_progress')}
-                    {i.before_schedule}%
-                    <CommonIconFont type="swap-right" /> {i.after_schedule}%
-                  </span>
+                  {userInfo?.id === i?.userInfo?.id && (
+                    <div className="icons">
+                      <CommonIconFont
+                        type="edit"
+                        onClick={() => {
+                          setVisible(true)
+                          setEditData(i)
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
                 <InfoRow>
                   {t('reportingDate')}：<span>{i.report_date}</span>
@@ -155,8 +238,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                   </span>
                 </InfoRow>
                 <InfoRow>
-                  {t('update_instructions')}
-                  <span>{i.remark || '--'}</span>
+                  {t('releaseNotes')}：<span>{i.perception || '--'}</span>
                 </InfoRow>
                 {i.attachment?.length > 0 && (
                   <UploadAttach
@@ -190,6 +272,15 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
         </div>
       )}
       {!listData.list && <NoData />}
+      <EditPerceptionModal
+        visible={visible}
+        onClose={() => {
+          setVisible(false)
+          setEditData(null)
+        }}
+        onConfirm={conform}
+        perception={editData?.perception}
+      />
     </Wrap>
   )
 }

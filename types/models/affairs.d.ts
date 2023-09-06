@@ -48,6 +48,7 @@ declare namespace Model.Affairs {
     verify_data: any
     relation_stories: number
     comment_total: number
+    is_bug: number
   }
   interface ListUsersInfo {
     avatar: string

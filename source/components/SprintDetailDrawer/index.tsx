@@ -84,7 +84,6 @@ import AffairsDetail from '../DetailScreenModal/AffairsDetail/components/Affairs
 import ChildSprint from '../DetailScreenModal/AffairsDetail/components/ChildSprint'
 import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint'
 import DrawerTopInfo from '../DrawerTopInfo'
-import ScheduleRecord from '../ScheduleRecord'
 import CommonProgress from '../CommonProgress'
 import SprintTag from '../TagComponent/SprintTag'
 let timer: NodeJS.Timeout

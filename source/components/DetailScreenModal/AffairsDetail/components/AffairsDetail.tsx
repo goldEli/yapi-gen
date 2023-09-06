@@ -1,5 +1,5 @@
 import { InfoItem, Label, TargetWrap } from '../style'
-import { Editor, EditorRef } from '@xyfe/uikit'
+import { Editor, EditorRef } from 'ifunuikit'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import CommonButton from '@/components/CommonButton'
 import {
@@ -223,6 +223,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           detailId={props?.affairsInfo.id ?? 0}
           projectId={projectInfo.id}
           noBorder
+          isBug={props?.affairsInfo?.is_bug === 1}
         />
       </InfoItem>
 

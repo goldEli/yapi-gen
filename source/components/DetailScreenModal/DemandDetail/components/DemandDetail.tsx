@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InfoItem, Label, TextWrap, WrapLeft } from '../style'
-import { Editor, EditorRef } from '@xyfe/uikit'
+import { Editor, EditorRef } from 'ifunuikit'
 import DemandTag from '@/components/TagComponent/DemandTag'
 import { AddWrap, TextWrapEdit, canEditHover } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
@@ -125,8 +125,6 @@ const DemandDetail = () => {
     dId.current = demandInfo?.id
   }, [demandInfo])
 
-  console.log(demandInfo, 'demandInfodemandInfodemandInfo')
-
   return (
     <WrapLeft ref={LeftDom}>
       <InfoItem
@@ -177,6 +175,7 @@ const DemandDetail = () => {
           detailId={demandInfo.id}
           projectId={demandInfo.projectId}
           noBorder
+          isBug={demandInfo?.is_bug === 1}
         />
       </InfoItem>
 

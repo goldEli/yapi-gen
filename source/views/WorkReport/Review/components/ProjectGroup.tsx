@@ -57,13 +57,15 @@ const ProjectGroup = (props: any) => {
     props.onChange(data)
   }, [data])
   const delBtn = (
-    <DelIcon>
-      <IconFont
-        type="delete"
-        style={{ color: 'var(--neutral-n3)', fontSize: 18 }}
-        onClick={() => {}}
-      ></IconFont>
-    </DelIcon>
+    <Tooltip title="删除分组">
+      <DelIcon>
+        <IconFont
+          type="delete"
+          style={{ color: 'var(--neutral-n3)', fontSize: 18 }}
+          onClick={() => {}}
+        ></IconFont>
+      </DelIcon>
+    </Tooltip>
   )
   return (
     <div>
@@ -128,17 +130,16 @@ const ProjectGroup = (props: any) => {
               <div className="user-num">
                 共计{item.users?.length}人，{item.stories?.length}个事务
               </div>
-              <Tooltip title="删除分组">
-                <div
-                  className="del-icon"
-                  onClick={() => {
-                    setGroupId(item.id)
-                    setIsDeleteVisible(true)
-                  }}
-                >
-                  {delBtn}
-                </div>
-              </Tooltip>
+
+              <div
+                className="del-icon"
+                onClick={() => {
+                  setGroupId(item.id)
+                  setIsDeleteVisible(true)
+                }}
+              >
+                {delBtn}
+              </div>
             </GroupBox>
             <GroupStoryBox>
               {item.stories.map((item: any) => {
