@@ -24,6 +24,10 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
   const [form] = Form.useForm()
   const { visible, onClose, onConfirm, perception } = props
 
+  const onConfirm1 = async () => {
+    await onConfirm(form.getFieldValue('perception'))
+  }
+
   useEffect(() => {
     form.setFieldsValue({
       perception,
@@ -39,9 +43,7 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
         form.resetFields()
         onClose()
       }}
-      onConfirm={async () => {
-        onConfirm(form.getFieldValue('perception'))
-      }}
+      onConfirm={onConfirm1}
     >
       <ContentWrap>
         <Form layout="vertical" autoComplete="off" form={form}>
