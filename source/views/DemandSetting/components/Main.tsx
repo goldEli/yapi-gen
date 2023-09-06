@@ -325,6 +325,7 @@ const Main = (props: any) => {
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
       setGetCategoryConfigT(arrData)
     }
+    props.onIsOperate(true)
   }
   const onChangeMove = (list: any, type: any) => {
     type === 1 ? setGetCategoryConfigF(list) : setGetCategoryConfigT(list)

@@ -57,6 +57,7 @@ const WorkReport = () => {
   const { visible: visibleEdit } = useSelector(
     state => state.workReport.writeReportModal,
   )
+  const { projectInfo } = useSelector(store => store.project)
   const { language } = useSelector(store => store.global)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams) || {}
@@ -159,7 +160,8 @@ const WorkReport = () => {
         onClose={() => dispatch(setWriteReportModal({ visible: false }))}
         title={t('report.list.writeReport')}
       />
-      {location.href.includes('/Report/Review/List') ? (
+      {location.href.includes('/Report/Review/List') ||
+      location.href.includes('/Report/PerformanceInsight') ? (
         <RobotButton
           id="robotButton"
           draggable="true"
@@ -200,6 +202,11 @@ const WorkReport = () => {
             visible: false,
           })
         }}
+        projectId={
+          location.href.includes('/Report/PerformanceInsight')
+            ? projectInfo?.id
+            : null
+        }
         visible={reportAssistantModalObj.visible}
         type={reportAssistantModalObj.type}
       />

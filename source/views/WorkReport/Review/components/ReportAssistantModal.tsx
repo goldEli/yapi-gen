@@ -45,6 +45,7 @@ interface ReportAssistantProps {
   visible: boolean
   close(): void
   type: 'user' | 'project'
+  projectId?: number | null
 }
 
 const ReportAssistantModal = (props: ReportAssistantProps) => {
@@ -64,7 +65,14 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const dispatch = useDispatch()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const [options, setOptions] = useState<any>([])
-  const { close, visible, type } = props
+  const { close, visible, type, projectId } = props
+
+  // 带入默认选中项目
+  useEffect(() => {
+    if (projectId && projectList?.length > 0) {
+      setCurrentProject(projectList?.find((item: any) => item.id === projectId))
+    }
+  }, [projectId, projectList])
 
   const onClose = () => {
     close()
@@ -117,7 +125,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           name: tempArr[2],
           conf_id: Number(tempArr[1]),
           content: (params[key] || [])?.map((i: any) => {
-            console.log('------', i)
             const tempObj: any = demandListAll.current.find(
               (t: any) => t.id === i,
             )
@@ -149,7 +156,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         })
       }
     })
-    console.log('data0000', data)
     // return
     let result = null
     if (type === 'user') {
@@ -192,14 +198,13 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     let canSubmit = false
     Object.keys(params)?.forEach((k: string) => {
       const tempArr = k.split('+')
-      if (tempArr[0] === '4') {
+      if (tempArr[0] === '4' && params[k]?.length > 0) {
         canSubmit = true
       }
       if (tempArr[0] === '1' && params[k]?.length <= 0) {
         canSubmit = false
       }
     })
-    console.log('params', params)
     if (!canSubmit) {
       getMessage({
         type: 'warning',
@@ -412,16 +417,31 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const getScheduleData = () => {
     let tempArr: any[] = []
     // modalInfo?.configs?.forEach((item: any) => {
+    //   console.log(item)
     //   if (item.type === 4) {
     //     tempArr = tempArr.concat(item.content ?? [])
     //   }
     // })
-    const projectConfig = modalInfo?.configs?.filter(
-      (ele: { type: number }) => ele.type === 4,
-    )[0]?.content
-    projectConfig.forEach((item: { stories: any }) => {
-      tempArr.push([...item.stories])
-    })
+    // return
+    if (modalInfo?.type === 3) {
+      const projectConfig = modalInfo?.configs?.filter(
+        (ele: { type: number }) => ele.type === 4,
+      )[0]?.content
+      console.log('projectConfig----', projectConfig)
+      projectConfig?.forEach((item: { stories: any }) => {
+        if (item.stories) {
+          tempArr.push([...item.stories])
+        }
+      })
+    } else {
+      modalInfo?.configs?.forEach((item: any) => {
+        if (item.type === 4) {
+          console.log(item)
+          tempArr = tempArr.concat(item.content ?? [])
+        }
+      })
+    }
+
     tempArr = tempArr.flat()
     let total = 0
     let done = 0
@@ -846,6 +866,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           <Form.Item
             label={<LabelTitles>添加项目组</LabelTitles>}
             name={`${content.type}+${content.id}+${content.name}`}
+            initialValue={content?.content}
           >
             <ProjectGroup
               projectId={currentProject?.id}
@@ -968,6 +989,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                     <CustomSelect
                       optionFilterProp="label"
                       showSearch
+                      value={currentProject?.id}
                       onChange={(val: any) => {
                         setModalInfo(null)
                         setCurrentProject(
