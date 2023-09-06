@@ -53,6 +53,7 @@ const ProjectGroup = (props: any) => {
   //
   useEffect(() => {
     console.log('data----', data)
+    props.onChange(data)
   }, [data])
   const delBtn = (
     <DelIcon>

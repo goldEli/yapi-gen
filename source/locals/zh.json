@@ -2364,5 +2364,7 @@
   "video": "视频",
   "areYouSureYouWantToUpdateTheCurrent": "确认更新当前进度吗",
   "confirmUpdateProgress": "确认更新进度",
-  "cumulativeWorkingHours": "累计工时"
+  "cumulativeWorkingHours": "累计工时",
+  "addPictures": "添加图片",
+  "addVideo": "添加视频"
 }
