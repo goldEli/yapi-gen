@@ -113,7 +113,7 @@ const EmployeeProfile = () => {
             </FoldIcon>
           </Tooltip>
         </PersonBox>
-        <RightBox>
+        <RightBox style={{ width: `calc(100% - ${leftWidth}px)` }}>
           <EmployeeProfileReport />
           <EmployeeProfileTask />
         </RightBox>

@@ -76,12 +76,14 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
   }, [])
 
   useEffect(() => {
-    setSelectKeys(currentKey?.user_ids)
-    setIndeterminate(
-      currentKey?.total !== allMemberList?.length && currentKey?.total !== 0,
-    )
-    setCheckAll(currentKey?.total === allMemberList?.length)
-  }, [currentKey])
+    if (currentKey.key && allMemberList?.length > 0) {
+      setSelectKeys(currentKey?.user_ids)
+      setIndeterminate(
+        currentKey?.total !== allMemberList?.length && currentKey?.total !== 0,
+      )
+      setCheckAll(currentKey?.total === allMemberList?.length)
+    }
+  }, [currentKey, allMemberList])
 
   return (
     <PersonWrap>

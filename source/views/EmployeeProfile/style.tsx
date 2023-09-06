@@ -31,7 +31,6 @@ export const PersonBox = styled.div<{ isOpen: boolean; permission?: boolean }>`
 `
 
 export const RightBox = styled.div`
-  flex: 1;
   height: 100%;
   display: flex;
 `
@@ -212,6 +211,93 @@ export const ReportWrap = styled.div`
 // EmployeeProfileTask
 
 export const TaskWrap = styled.div`
-  flex: 1;
-  background: green;
+  width: calc(100% - 561px);
+  padding: 24px;
+`
+
+export const TaskItemWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+export const TaskItemPerson = styled.div`
+  display: flex;
+  align-items: center;
+  .info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 8px;
+    .name {
+      font-size: 16px;
+      font-family: SiYuanMedium;
+      color: var(--neutral-n1-d1);
+    }
+    .sub {
+      font-size: 12px;
+      color: var(--neutral-n2);
+    }
+  }
+`
+
+export const TaskItemGroup = styled.div`
+  padding: 12px 0 16px 0;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--neutral-n6-d1);
+`
+
+export const TaskItemBox = styled.div`
+  height: 58px;
+  border-radius: 6px;
+  display: flex;
+  padding: 0 8px;
+  /* .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    .topLeft {
+      display: flex;
+      align-items: center;
+      width: 82%;
+      .tag {
+        height: 20px;
+        border-radius: 6px;
+        padding: 0 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(250, 151, 70, 0.2);
+        font-size: 12px;
+        color: var(--neutral-n1-d2);
+        margin-right: 8px;
+      }
+      .name {
+        max-width: 74%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+    .topRight {
+      font-size: 12px;
+      color: var(--function-error);
+    }
+  }
+  .bottom{
+
+  } */
+`
+
+export const TagWrap = styled.div`
+  height: 20px;
+  border-radius: 6px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250, 151, 70, 0.2);
+  font-size: 12px;
+  color: var(--neutral-n1-d2);
+  margin-right: 8px;
 `
