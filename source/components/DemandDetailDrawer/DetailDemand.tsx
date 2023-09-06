@@ -28,6 +28,7 @@ import { getMessage } from '../Message'
 import CommonIconFont from '../CommonIconFont'
 import { uploadFile } from '../AddWorkItem/CreateWorkItemLeft'
 import DemandTag from '../TagComponent/DemandTag'
+import ScheduleRecord from '../ScheduleRecord'
 
 interface DetailDemand {
   detail: any
@@ -155,23 +156,17 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
           </TextWrapEdit>
         )}
       </ContentItem>
-      <ContentItem id="tab_tag" className="info_item_tab">
-        <Label>{t('label')}</Label>
-        <DemandTag
-          defaultList={props.detail?.tag?.map((i: any) => ({
-            id: i.id,
-            color: i.tag?.color,
-            name: i.tag?.content,
-          }))}
-          canAdd
-          detail={props.detail}
-          onUpdate={props.onUpdate}
-          addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
-          }
-        />
+      <ContentItem>
+        <div id="tab_log" className="info_item_tab">
+          <LabelWrap>
+            <Label>{t('scheduleRecord')}</Label>
+          </LabelWrap>
+          <ScheduleRecord
+            detailId={props.detail.id}
+            projectId={projectInfo.id}
+            noBorder
+          />
+        </div>
       </ContentItem>
       <ContentItem
         style={{ marginBottom: 0 }}
@@ -198,6 +193,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
             (i: any) => i.name === '附件上传',
           ).length > 0 && (
             <UploadAttach
+              // onlyView
               multiple
               defaultList={props.detail?.attachment?.map((i: any) => ({
                 url: i.attachment.path,
@@ -219,6 +215,24 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
             (i: any) => i.name === '附件上传',
           ).length <= 0 && <span>--</span>}
         </div>
+      </ContentItem>
+      <ContentItem id="tab_tag" className="info_item_tab">
+        <Label>{t('label')}</Label>
+        <DemandTag
+          defaultList={props.detail?.tag?.map((i: any) => ({
+            id: i.id,
+            color: i.tag?.color,
+            name: i.tag?.content,
+          }))}
+          canAdd
+          detail={props.detail}
+          onUpdate={props.onUpdate}
+          addWrap={
+            <AddWrap hasDash>
+              <IconFont type="plus" />
+            </AddWrap>
+          }
+        />
       </ContentItem>
     </>
   )

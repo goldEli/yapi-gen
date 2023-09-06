@@ -172,13 +172,18 @@ const DemandDetailDrawer = () => {
       label: t('describe'),
     },
     {
-      key: 'tab_tag',
-      label: t('tag'),
+      key: 'tab_log',
+      label: t('scheduleRecord'),
     },
     {
       key: 'tab_attachment',
       label: t('attachment'),
     },
+    {
+      key: 'tab_tag',
+      label: t('tag'),
+    },
+
     {
       key: 'tab_demand',
       label: t('subRequirement'),
@@ -190,10 +195,6 @@ const DemandDetailDrawer = () => {
     {
       key: 'tab_info',
       label: t('basicInformation'),
-    },
-    {
-      key: 'tab_log',
-      label: t('scheduleRecord'),
     },
     {
       key: 'tab_comment',
@@ -962,13 +963,6 @@ const DemandDetailDrawer = () => {
                   ref={storyRelationRef}
                 />
                 <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
-                <div id="tab_log" className="info_item_tab">
-                  <CommentTitle>{t('scheduleRecord')}</CommentTitle>
-                  <ScheduleRecord
-                    detailId={drawerInfo.id}
-                    projectId={drawerInfo.projectId}
-                  />
-                </div>
 
                 <div id="tab_comment" className="info_item_tab">
                   <CommentTitle>{t('requirements_review')}</CommentTitle>
