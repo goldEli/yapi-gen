@@ -62,6 +62,7 @@ import AffairsInfo from './components/AffairsInfo'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import CommonProgress from '@/components/CommonProgress'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const AffairsDetail = () => {
   const [t] = useTranslation()
@@ -92,6 +93,7 @@ const AffairsDetail = () => {
   const [leftWidth, setLeftWidth] = useState(400)
   // 当前需求的下标
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
   // 是否勾选删除子级
   const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   // 是否展示切换类别的弹窗
@@ -256,25 +258,8 @@ const AffairsDetail = () => {
 
   // 删除事务弹窗
   const onDelete = () => {
-    openDelete({
-      title: t('deleteConfirmation'),
-      text: (
-        <>
-          <div style={{ marginBottom: 9 }}>
-            {t('youWillPermanentlyDeleteWhichCannotBeRecoveredAfterPleaseBe', {
-              key: `${affairsInfo.projectPrefix}-${affairsInfo.prefixKey}`,
-            })}
-          </div>
-          <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-            {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
-          </Checkbox>
-        </>
-      ),
-      onConfirm() {
-        onDeleteConfirm()
-        return Promise.resolve()
-      },
-    })
+    setIsVisible(true)
+    setIsDeleteCheck([4, 5].includes(affairsInfo.work_type || 0))
   }
 
   // 菜单
@@ -504,6 +489,7 @@ const AffairsDetail = () => {
     setCurrentIndex(
       (params?.changeIds || []).findIndex((i: any) => i === affairsInfo?.id),
     )
+    setIsDeleteCheck([4, 5].includes(affairsInfo.work_type || 0))
   }, [affairsInfo, projectInfoValues])
 
   useEffect(() => {
@@ -531,7 +517,27 @@ const AffairsDetail = () => {
 
   return (
     <Wrap>
-      <DeleteConfirmModal />
+      <DeleteConfirm
+        title={t('deleteConfirmation')}
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      >
+        <div style={{ marginBottom: 9 }}>
+          {t('youWillPermanentlyDeleteWhichCannotBeRecoveredAfterPleaseBe', {
+            key: `${affairsInfo.projectPrefix}-${affairsInfo.prefixKey}`,
+          })}
+        </div>
+        {affairsInfo.work_type !== 6 && (
+          <Checkbox
+            disabled={[4, 5].includes(affairsInfo.work_type || 0)}
+            checked={isDeleteCheck}
+            onChange={e => setIsDeleteCheck(e.target.checked)}
+          >
+            {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
+          </Checkbox>
+        )}
+      </DeleteConfirm>
       <ShareModal
         url={`${
           location.origin
