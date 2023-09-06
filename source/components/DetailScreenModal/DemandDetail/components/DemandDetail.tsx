@@ -20,6 +20,7 @@ import {
 import { setDemandInfo } from '@store/demand'
 import { getMessage } from '@/components/Message'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
+import ScheduleRecord from '@/components/ScheduleRecord'
 
 const DemandDetail = () => {
   const dId = useRef<any>()
@@ -124,6 +125,8 @@ const DemandDetail = () => {
     dId.current = demandInfo?.id
   }, [demandInfo])
 
+  console.log(demandInfo, 'demandInfodemandInfodemandInfo')
+
   return (
     <WrapLeft ref={LeftDom}>
       <InfoItem
@@ -169,19 +172,14 @@ const DemandDetail = () => {
         )}
       </InfoItem>
       <InfoItem>
-        <Label>{t('common.tag')}</Label>
-        <DemandTag
-          defaultList={tagList}
-          canAdd
-          detail={demandInfo}
-          isInfoPage
-          addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
-          }
+        <Label>{t('scheduleRecord')}</Label>
+        <ScheduleRecord
+          detailId={demandInfo.id}
+          projectId={demandInfo.projectId}
+          noBorder
         />
       </InfoItem>
+
       <InfoItem>
         <Label>{t('common.attachment')}</Label>
         <div>
@@ -214,6 +212,20 @@ const DemandDetail = () => {
             (i: any) => i.name === '附件上传',
           ).length <= 0 && <span>--</span>}
         </div>
+      </InfoItem>
+      <InfoItem>
+        <Label>{t('common.tag')}</Label>
+        <DemandTag
+          defaultList={tagList}
+          canAdd
+          detail={demandInfo}
+          isInfoPage
+          addWrap={
+            <AddWrap hasDash>
+              <IconFont type="plus" />
+            </AddWrap>
+          }
+        />
       </InfoItem>
       <DeleteConfirm
         text={t('p2.del')}

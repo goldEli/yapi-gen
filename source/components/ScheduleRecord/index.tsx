@@ -14,11 +14,15 @@ const Wrap = styled.div`
   flex-direction: column;
 `
 
-const RecordItem = styled.div<{ isDrawer?: boolean; notPadding?: boolean }>`
+const RecordItem = styled.div<{
+  isDrawer?: boolean
+  notPadding?: boolean
+  noBorder?: boolean
+}>`
   padding: ${props => (props.isDrawer || props.notPadding ? 0 : 16)}px;
   margin-bottom: ${props => (props.isDrawer || props.notPadding ? 24 : 0)}px;
   border-bottom: ${props =>
-    props.isDrawer || props.notPadding
+    props.isDrawer || props.notPadding || props.noBorder
       ? 'none'
       : '1px solid var(--neutral-n6-d1)'};
   display: flex;
@@ -80,6 +84,7 @@ interface ScheduleRecordProps {
   isOpen?: boolean
   // 全屏详情需要高度滚动
   height?: any
+  noBorder?: boolean
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
@@ -119,6 +124,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
               key={i.id}
               isDrawer={props.isDrawer}
               notPadding={props.notPadding}
+              noBorder={props.noBorder}
             >
               <ItemAvatar>
                 <CommonUserAvatar avatar={i.userInfo?.avatar} />

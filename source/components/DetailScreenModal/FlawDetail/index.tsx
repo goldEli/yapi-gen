@@ -57,7 +57,6 @@ import FlawInfo from './components/FlawInfo'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
-import ScheduleRecord from '@/components/ScheduleRecord'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
 import { myTreeCss } from '../DemandDetail'
 
@@ -451,22 +450,6 @@ const FlawDetail = () => {
         </ActivityTabItem>
       ),
       children: <Circulation activeKey={tabActive} />,
-    },
-    {
-      key: '5',
-      label: (
-        <ActivityTabItem>
-          <span>{t('progressLog')}</span>
-        </ActivityTabItem>
-      ),
-      children: (
-        <ScheduleRecord
-          detailId={flawInfo.id ?? 0}
-          projectId={flawInfo.projectId ?? 0}
-          isOpen={tabActive === '5'}
-          height="calc(100vh - 230px)"
-        />
-      ),
     },
   ]
 
