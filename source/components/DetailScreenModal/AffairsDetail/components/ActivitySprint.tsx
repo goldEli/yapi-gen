@@ -105,22 +105,6 @@ const ActivitySprint = () => {
       ),
       children: <Circulation activeKey={activeKey} />,
     },
-    {
-      key: '4',
-      label: (
-        <ActivityTabItem isActive={activeKey === '4'}>
-          <span style={{ marginRight: '4px' }}>{t('scheduleRecord')}</span>
-        </ActivityTabItem>
-      ),
-      children: (
-        <ScheduleRecord
-          detailId={affairsInfo.id ?? 0}
-          projectId={id}
-          notPadding
-          isOpen={activeKey === '4'}
-        />
-      ),
-    },
   ]
 
   const onChange = (key: string) => {

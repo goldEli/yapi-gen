@@ -126,12 +126,12 @@ const AffairsInfo = (props: Props) => {
       label: t('describe'),
     },
     {
-      key: 'sprint-tag',
-      label: t('tag'),
-    },
-    {
       key: 'sprint-attachment',
       label: t('attachment'),
+    },
+    {
+      key: 'sprint-tag',
+      label: t('tag'),
     },
     {
       key: 'sprint-childSprint',

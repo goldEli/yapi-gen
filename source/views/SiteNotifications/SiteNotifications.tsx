@@ -31,6 +31,15 @@ import { useTranslation } from 'react-i18next'
 import { TextChange } from '@/components/TextChange/TextChange'
 import NoteModal from '@/components/NoteModal'
 import { CloseWrap } from '@/components/StyleCommon'
+import { css } from '@emotion/css'
+
+const mcs = css`
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; // 显示2行
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+`
 
 const SiteNotifications = (props: any, ref: any) => {
   const { loginInfo } = useSelector(store => store.user)
@@ -105,7 +114,7 @@ const SiteNotifications = (props: any, ref: any) => {
             </div>
           ),
           description: (
-            <div style={{ marginLeft: '-12px' }}>
+            <div className={mcs} style={{ marginLeft: '-12px' }}>
               {wsData.data.msgBody.content}
             </div>
           ),

@@ -31,6 +31,7 @@ import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import { CommonIconFont } from '@/components/CommonIconFont'
 import { BetweenBox } from '@/components/SprintDetailDrawer/style'
 import { Tooltip } from 'antd'
+import ScheduleRecord from '@/components/ScheduleRecord'
 
 interface AffairsDetailProps {
   affairsInfo: Model.Affairs.AffairsInfo
@@ -213,23 +214,18 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         )}
       </InfoItem>
       <InfoItem
-        id="sprint-tag"
+        id="schedule"
         className="info_item_tab"
         isInfoPage={props?.isInfoPage}
       >
-        <Label>{t('common.tag')}</Label>
-        <SprintTag
-          defaultList={tagList}
-          canAdd
-          onUpdate={() => onUpdate()}
-          detail={props.affairsInfo}
-          addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
-          }
+        <Label>{t('scheduleRecord')}</Label>
+        <ScheduleRecord
+          detailId={props?.affairsInfo.id ?? 0}
+          projectId={projectInfo.id}
+          noBorder
         />
       </InfoItem>
+
       <InfoItem
         id="sprint-attachment"
         className="info_item_tab"
@@ -275,6 +271,24 @@ const AffairsDetail = (props: AffairsDetailProps) => {
             (i: any) => i.name === '附件上传',
           ).length <= 0 && <span>--</span>}
         </div>
+      </InfoItem>
+      <InfoItem
+        id="sprint-tag"
+        className="info_item_tab"
+        isInfoPage={props?.isInfoPage}
+      >
+        <Label>{t('common.tag')}</Label>
+        <SprintTag
+          defaultList={tagList}
+          canAdd
+          onUpdate={() => onUpdate()}
+          detail={props.affairsInfo}
+          addWrap={
+            <AddWrap hasDash>
+              <IconFont type="plus" />
+            </AddWrap>
+          }
+        />
       </InfoItem>
     </>
   )

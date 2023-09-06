@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 
 export const ProgressContentWrap = styled.div`
   padding: 0px 24px 24px 24px;
-  height: 80vh;
+  height: 70vh;
   overflow-y: scroll;
   .tips {
     font-size: 12px;
@@ -31,11 +31,8 @@ export const ShowProgress = styled.div`
   margin-bottom: 24px;
   color: var(--neutral-n1-d1);
   .processor {
-    margin-left: 104px;
+    margin-left: 38px;
     margin-right: 8px;
-  }
-  .username {
-    font-family: SiYuanRegular;
   }
 `
 

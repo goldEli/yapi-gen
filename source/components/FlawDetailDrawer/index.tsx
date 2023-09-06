@@ -143,13 +143,18 @@ const FlawDetailDrawer = () => {
       label: t('describe'),
     },
     {
-      key: 'tab_tag',
-      label: t('tag'),
+      key: 'tab_log',
+      label: t('scheduleRecord'),
     },
     {
       key: 'tab_attachment',
       label: t('attachment'),
     },
+    {
+      key: 'tab_tag',
+      label: t('tag'),
+    },
+
     {
       key: 'tab_associatedWorkItems',
       label: t('associatedWorkItems'),
@@ -158,10 +163,7 @@ const FlawDetailDrawer = () => {
       key: 'tab_info',
       label: t('newlyAdd.basicInfo'),
     },
-    {
-      key: 'tab_log',
-      label: t('scheduleRecord'),
-    },
+
     {
       key: 'tab_defectComment',
       label: t('defectComment'),
@@ -465,7 +467,7 @@ const FlawDetailDrawer = () => {
   const onDelete = () => {
     openDelete({
       title: t('deleteConfirmation'),
-      text: t('areYouSureToDeleteThisTransaction'),
+      text: t('areYouSureToDeleteThisFlaw'),
       onConfirm() {
         onDeleteConfirm()
         return Promise.resolve()
@@ -1001,13 +1003,6 @@ const FlawDetailDrawer = () => {
                   ref={relationStoriesRef}
                 />
                 <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
-                <div id="tab_log" className="info_item_tab">
-                  <CommentTitle>{t('scheduleRecord')}</CommentTitle>
-                  <ScheduleRecord
-                    detailId={drawerInfo.id}
-                    projectId={drawerInfo.projectId}
-                  />
-                </div>
                 <div id="tab_defectComment" className="info_item_tab">
                   <CommentTitle>{t('defectComment')}</CommentTitle>
                   <CommonComment
