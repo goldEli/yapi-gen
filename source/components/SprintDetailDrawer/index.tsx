@@ -139,14 +139,18 @@ const SprintDetailDrawer = () => {
       label: t('describe'),
     },
     {
-      key: 'sprint-tag',
-      label: t('tag'),
+      key: 'schedule',
+      label: t('scheduleRecord'),
     },
+
     {
       key: 'sprint-attachment',
       label: t('attachment'),
     },
-
+    {
+      key: 'sprint-tag',
+      label: t('tag'),
+    },
     {
       key: 'sprint-childSprint',
       label: t('subtransaction'),
@@ -158,10 +162,6 @@ const SprintDetailDrawer = () => {
     {
       key: 'sprint-basicInfo',
       label: t('newlyAdd.basicInfo'),
-    },
-    {
-      key: 'schedule',
-      label: t('scheduleRecord'),
     },
     {
       key: 'sprint-comment',
@@ -949,18 +949,6 @@ const SprintDetailDrawer = () => {
               )}
               <LinkSprint onRef={linkSprint} detail={drawerInfo} />
               <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
-              <Label
-                id="schedule"
-                className="info_item_tab"
-                style={{ margin: '16px 0' }}
-              >
-                {t('scheduleRecord')}
-              </Label>
-              <ScheduleRecord
-                detailId={drawerInfo.id}
-                projectId={drawerInfo.projectId}
-                isDrawer
-              />
               <Label
                 id="sprint-comment"
                 className="info_item_tab"

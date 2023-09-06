@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 
 export const ProgressContentWrap = styled.div`
   padding: 0px 24px 24px 24px;
-  height: 80vh;
+  height: 70vh;
   overflow-y: scroll;
   .tips {
     font-size: 12px;
