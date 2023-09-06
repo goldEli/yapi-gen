@@ -25,6 +25,7 @@ import UploadAttach from '@/components/UploadAttach'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Tooltip } from 'antd'
 import CommonButton from '@/components/CommonButton'
+import ScheduleRecord from '@/components/ScheduleRecord'
 
 interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
@@ -172,18 +173,12 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           </TextWrapEdit>
         )}
       </FlawInfoInfoItem>
-      <FlawInfoInfoItem id="tab_tag" className="info_item_tab">
-        <FlawInfoLabel>{t('common.tag')}</FlawInfoLabel>
-        <FlawTag
-          defaultList={tagList}
-          canAdd
-          onUpdate={onUpdate}
-          detail={props.flawInfo}
-          addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
-          }
+      <FlawInfoInfoItem id="tab_log" className="info_item_tab">
+        <FlawInfoLabel>{t('scheduleRecord')}</FlawInfoLabel>
+        <ScheduleRecord
+          detailId={props?.flawInfo.id ?? 0}
+          projectId={projectInfo.id ?? 0}
+          noBorder
         />
       </FlawInfoInfoItem>
       <FlawInfoInfoItem
@@ -244,6 +239,20 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
             (i: any) => i.name === '附件上传',
           ).length <= 0 && <span>--</span>}
         </div>
+      </FlawInfoInfoItem>
+      <FlawInfoInfoItem id="tab_tag" className="info_item_tab">
+        <FlawInfoLabel>{t('common.tag')}</FlawInfoLabel>
+        <FlawTag
+          defaultList={tagList}
+          canAdd
+          onUpdate={onUpdate}
+          detail={props.flawInfo}
+          addWrap={
+            <AddWrap hasDash>
+              <IconFont type="plus" />
+            </AddWrap>
+          }
+        />
       </FlawInfoInfoItem>
     </>
   )

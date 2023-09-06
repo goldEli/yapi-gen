@@ -282,6 +282,7 @@ const FlawTag = (props: Props) => {
         alignItems: 'center',
         height: '100%',
         flexWrap: 'wrap',
+        marginBottom: 16,
       }}
     >
       {!props.isDetailQuick && (
