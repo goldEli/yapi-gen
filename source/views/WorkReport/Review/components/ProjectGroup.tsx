@@ -20,6 +20,7 @@ import {
 } from '@/services/report'
 import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { Tooltip } from 'antd'
 const ProjectGroup = (props: any) => {
   const [userVisible, setUserVisible] = useState(false)
   const [groupVisible, setGroupVisible] = useState(false)
@@ -127,15 +128,17 @@ const ProjectGroup = (props: any) => {
               <div className="user-num">
                 共计{item.users?.length}人，{item.stories?.length}个事务
               </div>
-              <div
-                className="del-icon"
-                onClick={() => {
-                  setGroupId(item.id)
-                  setIsDeleteVisible(true)
-                }}
-              >
-                {delBtn}
-              </div>
+              <Tooltip title="删除分组">
+                <div
+                  className="del-icon"
+                  onClick={() => {
+                    setGroupId(item.id)
+                    setIsDeleteVisible(true)
+                  }}
+                >
+                  {delBtn}
+                </div>
+              </Tooltip>
             </GroupBox>
             <GroupStoryBox>
               {item.stories.map((item: any) => {
