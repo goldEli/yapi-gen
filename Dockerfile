@@ -9,6 +9,11 @@ COPY . /opt/build/
 RUN npm config set cache /tmp/cache \
     && npm ci --legacy-peer-deps --loglevel verbose \
     && export NODE_OPTIONS="--max-old-space-size=8192" \
+    && if [ "$ENV_ARG" = "development-b" ]; then \
+             mv -f .env.development-b .env.development; \
+           elif [ "$ENV_ARG" = "test-b" ]; then \
+             mv -f .env.test-b .env.test; \
+           fi \
     && npm run build:${ENV_ARG} --verbose 
 
 
