@@ -19,7 +19,6 @@ import { deleteAffairsComment, updateAffairsComment } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
 import ScreenMinHover from '@/components/ScreenMinHover'
-import ScheduleRecord from '@/components/ScheduleRecord'
 
 const ActivitySprint = () => {
   const [t] = useTranslation()

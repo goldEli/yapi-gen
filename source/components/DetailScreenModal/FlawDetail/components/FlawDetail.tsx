@@ -179,6 +179,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           detailId={props?.flawInfo.id ?? 0}
           projectId={projectInfo.id ?? 0}
           noBorder
+          isBug={props?.flawInfo?.is_bug === 1}
         />
       </FlawInfoInfoItem>
       <FlawInfoInfoItem

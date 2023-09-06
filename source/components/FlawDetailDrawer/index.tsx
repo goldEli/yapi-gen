@@ -87,7 +87,6 @@ import FlawBasic from '../DetailScreenModal/FlawDetail/components/FlawBasic'
 import CommonProgress from '../CommonProgress'
 import DrawerTopInfo from '../DrawerTopInfo'
 import FlawTag from '../TagComponent/FlawTag'
-import ScheduleRecord from '../ScheduleRecord'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 let timer: NodeJS.Timeout
