@@ -212,6 +212,9 @@ const urls = {
   writeProjectAssistantReport: '/b/work_report/user/helperCreateOfProject',
   getSprintKanBanList: '/b/list',
   getProjectReportInfo: '/b/work_report/user/infoOfProject',
+  updateStoryPerception: '/b/story/update_schedule_perception',
+  updateTransactionPerception: '/b/transaction/update_schedule_perception',
+  updateFlawPerception: '/b/flaw/update_schedule_perception',
   /**
    * 冲刺项目-事务
    */

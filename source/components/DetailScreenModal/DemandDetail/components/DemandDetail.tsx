@@ -125,8 +125,6 @@ const DemandDetail = () => {
     dId.current = demandInfo?.id
   }, [demandInfo])
 
-  console.log(demandInfo, 'demandInfodemandInfodemandInfo')
-
   return (
     <WrapLeft ref={LeftDom}>
       <InfoItem
@@ -177,6 +175,7 @@ const DemandDetail = () => {
           detailId={demandInfo.id}
           projectId={demandInfo.projectId}
           noBorder
+          isBug={demandInfo?.is_bug === 1}
         />
       </InfoItem>
 

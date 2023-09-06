@@ -1007,3 +1007,36 @@ export const updateWorkTime: any = async (params: any) => {
   const response: any = await http.post<any>('updateWorkTime', params)
   return response
 }
+
+// 更新需求感悟
+export const updateStoryPerception = async (params: {
+  project_id: number
+  story_id: number
+  log_id: number
+  perception: string
+}) => {
+  const response = await http.put<any>('updateStoryPerception', params)
+  return response
+}
+
+// 更新事务感悟
+export const updateTransactionPerception = async (params: {
+  project_id: number
+  story_id: number
+  log_id: number
+  perception: string
+}) => {
+  const response = await http.put<any>('updateTransactionPerception', params)
+  return response
+}
+
+// 更新感悟
+export const updateFlawPerception = async (params: {
+  project_id: number
+  story_id: number
+  log_id: number
+  perception: string
+}) => {
+  const response = await http.put<any>('updateFlawPerception', params)
+  return response
+}

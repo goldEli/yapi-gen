@@ -223,6 +223,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           detailId={props?.affairsInfo.id ?? 0}
           projectId={projectInfo.id}
           noBorder
+          isBug={props?.affairsInfo?.is_bug === 1}
         />
       </InfoItem>
 

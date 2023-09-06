@@ -110,6 +110,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       handleUpload,
     }
   })
+
   return (
     <>
       <DeleteConfirm
@@ -165,6 +166,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
             detailId={props.detail.id}
             projectId={projectInfo.id}
             noBorder
+            isBug={props.detail?.is_bug === 1}
           />
         </div>
       </ContentItem>
