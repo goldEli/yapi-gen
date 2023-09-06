@@ -31,7 +31,7 @@ export const getMemberOverviewStoryList = async (params: any) => {
   return response.data
 }
 
-// 获取任务数据
+// 获取更多任务数据
 export const getMemberOverviewMoreStoryList = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewMoreStoryList', {
     status: params.status,
@@ -43,4 +43,31 @@ export const getMemberOverviewMoreStoryList = async (params: any) => {
     page: params.page,
   })
   return response.data.list
+}
+
+// 添加星标
+export const followsMark = async (params: any) => {
+  await http.post<any>('followsMark', {
+    type: params.type,
+    relation_id: params.relation_id,
+  })
+}
+
+// 取消星标
+export const followsCancel = async (params: any) => {
+  await http.post<any>('followsCancel', {
+    type: params.type,
+    relation_id: params.relation_id,
+  })
+}
+
+// 获取任务数据
+export const getMemberOverviewReportList = async (params: any) => {
+  const response = await http.get<any>('getMemberOverviewReportList', {
+    user_ids: params.user_ids.join(','),
+    start_time: params.time[0] ?? null,
+    end_time: params.time[1] ?? null,
+    is_star: params.isStart ? 1 : null,
+  })
+  return response.data
 }

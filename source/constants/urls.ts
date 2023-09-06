@@ -531,6 +531,16 @@ const urls = {
   getMemberOverviewStoryList: '/b/member_overview/story/list',
   // 更多任务
   getMemberOverviewMoreStoryList: '/b/member_overview/story/more',
+  // 添加星标
+  followsMark: '/b/user/follows/mark',
+  // 取消星标
+  followsCancel: '/b/user/follows/cancel',
+  // 汇报列表
+  getMemberOverviewReportList: '/b/report/member_overview/all_list',
+  // 更多汇报
+  getMemberOverviewMoreReportList: '/b/report/member_overview/list',
+  // 对比报告
+  getMemberOverviewCompare: '/b/member_overview/compare',
 }
 export default urls
 
