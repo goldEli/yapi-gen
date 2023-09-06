@@ -60,7 +60,6 @@ import Circulation from './components/Circulation'
 import DemandInfo from './components/DemandInfo'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
-import ScheduleRecord from '@/components/ScheduleRecord'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
 import { css } from '@emotion/css'
 
