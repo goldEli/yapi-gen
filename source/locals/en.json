@@ -2366,5 +2366,7 @@
   "confirmUpdateProgress": "Confirm update progress",
   "putAway": "Put away",
   "applicationMenu": "Application menu [",
-  "cumulativeWorkingHours": "Cumulative working hours"
+  "cumulativeWorkingHours": "Cumulative working hours",
+  "addPictures": "Add pictures",
+  "addVideo": "Add video"
 }

@@ -926,12 +926,24 @@ export const ProjectGroupTitle = styled.div`
   height: 32px;
   display: flex;
   align-items: center;
+  display: inline-block;
+  text-align: center;
+  line-height: 32px;
+  padding: 0px 10px;
+  box-sizing: border-box;
+  border-radius: 4px;
   .text {
     color: var(--auxiliary-text-t2-d2);
     font-size: var(--font14);
     margin-left: 5px;
   }
   margin-bottom: 8px;
+  &:hover {
+    background: var(--hover-d2);
+  }
+  &:active {
+    background: var(--auxiliary-b6);
+  }
 `
 
 export const ProjectGroupList = styled.div`

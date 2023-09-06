@@ -465,7 +465,7 @@ const FlawDetailDrawer = () => {
   const onDelete = () => {
     openDelete({
       title: t('deleteConfirmation'),
-      text: t('areYouSureToDeleteThisTransaction'),
+      text: t('areYouSureToDeleteThisFlaw'),
       onConfirm() {
         onDeleteConfirm()
         return Promise.resolve()

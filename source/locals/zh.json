@@ -2366,5 +2366,7 @@
   "confirmUpdateProgress": "确认更新进度",
   "putAway": "收起",
   "applicationMenu": "应用菜单 [",
-  "cumulativeWorkingHours": "累计工时"
+  "cumulativeWorkingHours": "累计工时",
+  "addPictures": "添加图片",
+  "addVideo": "添加视频"
 }

@@ -163,6 +163,7 @@ export const getProjectTemplateInfo: any = async (params: any) => {
     send_time: response.data?.send_time,
     group_name: response.data?.group_name,
     is_setting_project_config: response.data?.is_setting_project_config,
+    type: response.data?.type,
   }
 }
 

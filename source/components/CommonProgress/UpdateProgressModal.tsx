@@ -181,10 +181,15 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
               onChange={onChange}
               tooltip={{ formatter: (val: any) => `${val}%` }}
             />
-            <span style={{ marginLeft: 8 }}>{inputValue}%</span>
+            <span style={{ marginLeft: 20 }}>{inputValue}%</span>
           </div>
         </div>
-        <Form form={form} layout="vertical" autoComplete="off">
+        <Form
+          form={form}
+          layout="vertical"
+          autoComplete="off"
+          className="customer-form"
+        >
           <Form.Item
             label={t('actualWorkingHours')}
             name="total_task_time"
@@ -219,8 +224,10 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
                   width: '100%',
                 }}
               >
-                <Label>{t('project.img')}</Label>
-                <Tooltip title={t('addAttachments')}>
+                <Label style={{ fontFamily: 'SiYuanRegular' }}>
+                  {t('project.img')}
+                </Label>
+                <Tooltip title={t('addPictures')}>
                   <CloseWrap
                     style={{ marginLeft: 'auto' }}
                     width={32}
@@ -259,8 +266,10 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
                   width: '100%',
                 }}
               >
-                <Label>{t('video')}</Label>
-                <Tooltip title={t('addAttachments')}>
+                <Label style={{ fontFamily: 'SiYuanRegular' }}>
+                  {t('video')}
+                </Label>
+                <Tooltip title={t('addVideo')}>
                   <CloseWrap
                     style={{ marginLeft: 'auto' }}
                     width={32}
