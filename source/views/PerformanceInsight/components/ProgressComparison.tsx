@@ -188,10 +188,7 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: getTitleTips(
-          t('performance.completionRate'),
-          t('performance.completedWorkWork'),
-        ),
+        title: t('performance.completionRate'),
         render: (text: string) => {
           return <span>{text}%</span>
         },
@@ -297,10 +294,7 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: getTitleTips(
-          t('performance.currentCompletionRate'),
-          t('performance.completedWorkWork'),
-        ),
+        title: t('performance.currentCompletionRate'),
         render: (text: string) => {
           return <span>{text}%</span>
         },
