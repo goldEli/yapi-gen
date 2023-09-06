@@ -1,7 +1,7 @@
 /* eslint-disable require-unicode-regexp */
 import { removeNull } from '@/tools'
 import { useSelector } from '@store/index'
-import { Editor, EditorRef } from '@xyfe/uikit'
+import { Editor, EditorRef } from 'ifunuikit'
 import { useEffect, useRef, useState } from 'react'
 import { uploadFile } from '../AddWorkItem/CreateWorkItemLeft'
 
