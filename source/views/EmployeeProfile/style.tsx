@@ -70,6 +70,15 @@ export const FoldIcon = styled.div`
   }
 `
 
+export const LoadingMore = styled.div`
+  margin-top: 24px;
+  text-align: center;
+  width: 100%;
+  font-size: 12px;
+  color: var(--primary-d1);
+  cursor: pointer;
+`
+
 // EmployeeProfileHeader
 
 export const HeaderWrap = styled.div`
@@ -212,12 +221,14 @@ export const ReportWrap = styled.div`
 
 export const TaskWrap = styled.div`
   width: calc(100% - 561px);
-  padding: 24px;
+  padding: 0 24px 24px;
+  overflow-y: auto;
 `
 
 export const TaskItemWrap = styled.div`
   display: flex;
   flex-direction: column;
+  padding-top: 24px;
 `
 
 export const TaskItemPerson = styled.div`
@@ -247,46 +258,19 @@ export const TaskItemGroup = styled.div`
 `
 
 export const TaskItemBox = styled.div`
-  height: 58px;
+  min-height: 58px;
   border-radius: 6px;
   display: flex;
-  padding: 0 8px;
-  /* .top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    .topLeft {
-      display: flex;
-      align-items: center;
-      width: 82%;
-      .tag {
-        height: 20px;
-        border-radius: 6px;
-        padding: 0 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(250, 151, 70, 0.2);
-        font-size: 12px;
-        color: var(--neutral-n1-d2);
-        margin-right: 8px;
-      }
-      .name {
-        max-width: 74%;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-    }
-    .topRight {
-      font-size: 12px;
-      color: var(--function-error);
-    }
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  .icon {
+    position: absolute;
+    left: -19px;
   }
-  .bottom{
-
-  } */
+  &:hover {
+    background: var(--hover-d2);
+  }
 `
 
 export const TagWrap = styled.div`
@@ -296,8 +280,38 @@ export const TagWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(250, 151, 70, 0.2);
   font-size: 12px;
   color: var(--neutral-n1-d2);
-  margin-right: 8px;
+  white-space: nowrap;
+`
+
+export const TaskContent = styled.div`
+  margin-left: 8px;
+  .nameBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    .left {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--neutral-n1-d1);
+      .name {
+        max-width: 86%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-right: 4px;
+      }
+    }
+    .right {
+      font-size: 12px;
+      color: var(--function-error);
+    }
+  }
+  .info {
+    font-size: 12px;
+    color: var(--neutral-n2);
+  }
 `

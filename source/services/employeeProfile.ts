@@ -20,7 +20,6 @@ export const getMemberOverviewStatistics = async (params: any) => {
 
 // 获取任务数据
 export const getMemberOverviewStoryList = async (params: any) => {
-  console.log(params, '=paramsparamsparams')
   const response = await http.get<any>('getMemberOverviewStoryList', {
     status: params.status,
     user_ids: params.user_ids.join(','),
@@ -43,5 +42,5 @@ export const getMemberOverviewMoreStoryList = async (params: any) => {
     is_star: params.isStart ? 1 : null,
     page: params.page,
   })
-  return response.data
+  return response.data.list
 }
