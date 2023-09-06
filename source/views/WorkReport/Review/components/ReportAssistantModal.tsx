@@ -371,7 +371,14 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           tempArr = tempArr.concat(item.content ?? [])
         }
         if (item.type === 2) {
-          attach[`${item.type}+${item.id}+${item.name}`] = item?.content ?? []
+          attach[`${item.type}+${item.id}+${item.name}`] =
+            item?.content.map((i: any) => ({
+              url: i.url,
+              size: i.size,
+              time: i.ctime,
+              name: i.name,
+              suffix: i.ext,
+            })) ?? []
         }
       })
       setUploadAttachList({
