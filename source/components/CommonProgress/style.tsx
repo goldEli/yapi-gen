@@ -31,11 +31,8 @@ export const ShowProgress = styled.div`
   margin-bottom: 24px;
   color: var(--neutral-n1-d1);
   .processor {
-    margin-left: 104px;
+    margin-left: 38px;
     margin-right: 8px;
-  }
-  .username {
-    font-family: SiYuanRegular;
   }
 `
 
