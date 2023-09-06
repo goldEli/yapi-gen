@@ -37,7 +37,7 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
   return (
     <CommonModal
       width={528}
-      title="编辑感悟"
+      title={t('opinion')}
       isVisible={visible}
       onClose={() => {
         form.resetFields()
