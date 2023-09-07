@@ -953,10 +953,19 @@ const SprintDetailDrawer = () => {
                   onRef={childRef}
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
+                  isPreview={affairsDetailDrawer.isPreview}
                 />
               )}
-              <LinkSprint onRef={linkSprint} detail={drawerInfo} />
-              <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
+              <LinkSprint
+                onRef={linkSprint}
+                detail={drawerInfo}
+                isPreview={affairsDetailDrawer.isPreview}
+              />
+              <BasicDemand
+                detail={drawerInfo}
+                onUpdate={onOperationUpdate}
+                isPreview={affairsDetailDrawer.isPreview}
+              />
               <Label
                 id="sprint-comment"
                 className="info_item_tab"

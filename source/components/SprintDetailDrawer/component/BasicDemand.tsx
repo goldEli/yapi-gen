@@ -45,6 +45,7 @@ interface Props {
   hasPadding?: boolean
   // 是否是详情页面
   isInfoPage?: boolean
+  isPreview?: boolean
 }
 
 const LimitLabel = (props: { label: string; width: number }) => {
