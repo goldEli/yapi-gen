@@ -859,6 +859,7 @@ const SprintDetailDrawer = () => {
                     onCancel={onCancelExamine}
                     isVerify={drawerInfo?.has_verify === 1}
                     isDrawer
+                    isPreview={affairsDetailDrawer.isPreview}
                   />
                 </div>
               )}

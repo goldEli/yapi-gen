@@ -111,7 +111,7 @@ const CommentFooter = (props: CommentFooterProps) => {
   return (
     <CommentFooterWrap isReview={isReview} style={{ ...props.style }}>
       {isReview ? (
-        <>
+        <div style={{ backgroundColor: 'var(--neutral-white-d5)' }}>
           <div>
             <Form form={form}>
               <Form.Item
@@ -175,7 +175,7 @@ const CommentFooter = (props: CommentFooterProps) => {
               </CommonButton>
             </Space>
           </div>
-        </>
+        </div>
       ) : (
         <div style={{ gap: 12, display: 'flex', alignItems: 'center' }}>
           {props.hasAvatar ? (
