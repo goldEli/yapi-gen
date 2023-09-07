@@ -789,6 +789,13 @@ const SprintDetailDrawer = () => {
                 </div>
               </DropdownMenu>
             </Tooltip>
+            {affairsDetailDrawer.star && (
+              <Tooltip title={t('starMark')}>
+                <div onClick={onToDetail}>
+                  <CommonButton type="icon" icon="star-adipf4l8" />
+                </div>
+              </Tooltip>
+            )}
           </Space>
         </Header>
         <Content id="contentDom">

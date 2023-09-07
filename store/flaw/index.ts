@@ -7,6 +7,7 @@ type SliceState = {
     visible: boolean
     params?: any
     isPreview?: boolean
+    star?: boolean
   }
   flawInfo: Partial<Model.Flaw.FlawInfo>
   flawCommentList: {
@@ -19,6 +20,7 @@ const initialState: SliceState = {
     visible: false,
     params: {},
     isPreview: false,
+    star: false,
   },
   // 事务详情
   flawInfo: {},

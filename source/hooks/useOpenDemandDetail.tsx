@@ -30,6 +30,7 @@ const useOpenDemandDetail = () => {
     id: any,
     type?: number,
     isPreview?: boolean,
+    star?: boolean,
   ) => {
     dispatch(setIsUpdateAddWorkItem(0))
     dispatch(setIsChangeDetailAffairs(false))
@@ -47,7 +48,12 @@ const useOpenDemandDetail = () => {
             payload: false,
           })
           dispatch(
-            saveAffairsDetailDrawer({ visible: true, params: item, isPreview }),
+            saveAffairsDetailDrawer({
+              visible: true,
+              params: item,
+              isPreview,
+              star,
+            }),
           )
           break
         case 2:
@@ -58,7 +64,12 @@ const useOpenDemandDetail = () => {
             payload: false,
           })
           dispatch(
-            saveFlawDetailDrawer({ visible: true, params: item, isPreview }),
+            saveFlawDetailDrawer({
+              visible: true,
+              params: item,
+              isPreview,
+              star,
+            }),
           )
           break
 
@@ -70,7 +81,7 @@ const useOpenDemandDetail = () => {
             type: 'demand/setIsDemandDetailDrawerVisible',
             payload: true,
           })
-          dispatch(saveDemandDetailDrawer({ ...item, isPreview }))
+          dispatch(saveDemandDetailDrawer({ ...item, isPreview, star }))
           break
       }
     } else {
