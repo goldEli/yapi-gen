@@ -793,6 +793,7 @@ const SprintDetailDrawer = () => {
             {affairsDetailDrawer.star && (
               <Tooltip title={t('starMark')}>
                 <CommonButton
+                  isStar={drawerInfo.isStar}
                   onClick={async () => {
                     const res = await toggleStar(
                       drawerInfo.id,
