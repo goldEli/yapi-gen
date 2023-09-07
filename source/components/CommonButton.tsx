@@ -217,7 +217,6 @@ const CommonButton = (props: Props) => {
         disabled={props.isDisable}
         size={props.size}
         style={props?.style}
-        loading={props.loading}
       >
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
       </ButtonWrap>
@@ -232,7 +231,6 @@ const CommonButton = (props: Props) => {
       disabled={props.isDisable}
       hidden={props.hidden}
       size={props.size}
-      loading={props.loading}
     >
       {props.children}
     </ButtonWrap>

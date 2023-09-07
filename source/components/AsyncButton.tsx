@@ -1,18 +1,31 @@
-import { Button } from 'antd'
-import React, { useState } from 'react'
+import { Button, ButtonProps } from 'antd'
+import React, { MouseEventHandler, useState } from 'react'
 
-const AsyncButton = ({ onClick, ...rest }: any) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const onClickLocal = async () => {
+interface LoadingButtonProps extends Omit<ButtonProps, 'loading'> {
+  duration?: number
+  isUseDuration?: boolean
+}
+const AsyncButton = (props: LoadingButtonProps) => {
+  const { onClick, isUseDuration, duration, ...rest } = props
+  const [loading, setLoading] = useState(false)
+  const onClickHandler: MouseEventHandler<HTMLElement> = async e => {
+    setLoading(true)
     if (onClick) {
-      setIsLoading(true)
-
-      await onClick()
-
-      setIsLoading(false)
+      if (isUseDuration) {
+        onClick(e)
+        setTimeout(() => {
+          setLoading(false)
+        }, Math.min(10000, duration || 1000))
+      } else {
+        try {
+          await onClick(e)
+        } finally {
+          setLoading(false)
+        }
+      }
     }
   }
-  return <Button {...rest} loading={isLoading} onClick={onClickLocal} />
+  return <Button {...rest} onClick={onClickHandler} loading={loading}></Button>
 }
 
 export { AsyncButton }
