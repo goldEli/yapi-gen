@@ -213,8 +213,59 @@ export const CheckboxLi = styled.div`
 export const ReportWrap = styled.div`
   width: 561px;
   height: 100%;
-  background: yellow;
   border-right: 1px solid var(--neutral-n6-d1);
+  padding: 0 24px;
+`
+
+export const ReportItemWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--neutral-n6-d1);
+`
+
+export const ReportItemHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  .icon {
+    position: absolute;
+    left: -19px;
+  }
+`
+
+export const ReportItemHeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+  .info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 8px;
+    .name {
+      font-size: 16px;
+      font-family: SiYuanMedium;
+      color: var(--neutral-n1-d1);
+    }
+    .sub {
+      font-size: 12px;
+      color: var(--neutral-n2);
+    }
+  }
+`
+
+export const ReportItemHeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  span {
+    cursor: pointer;
+    color: var(--auxiliary-text-t2-d1);
+    &:hover {
+      color: var(--auxiliary-text-t1-d2) !important;
+    }
+  }
 `
 
 // EmployeeProfileTask
