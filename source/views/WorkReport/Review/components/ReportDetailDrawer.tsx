@@ -7,8 +7,8 @@
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { Drawer, Form, Space } from 'antd'
-import type { EditorRef } from '@xyfe/uikit'
-import { Editor } from '@xyfe/uikit'
+import type { EditorRef } from 'ifunuikit'
+import { Editor } from 'ifunuikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'

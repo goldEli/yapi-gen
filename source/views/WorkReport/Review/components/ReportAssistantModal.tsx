@@ -25,7 +25,7 @@ import {
 import { useDispatch } from '@store/index'
 import { setUpdateList } from '@store/workReport'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { Editor } from '@xyfe/uikit'
+import { Editor } from 'ifunuikit'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import { getStaffListAll } from '@/services/staff'
 import NewRelatedNeedForProject from './NewRelatedNeedForProject'

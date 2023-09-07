@@ -20,7 +20,7 @@ import {
 } from '../style'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { Progress, Spin } from 'antd'
-import { Editor } from '@xyfe/uikit'
+import { Editor } from 'ifunuikit'
 import NoData from '@/components/NoData'
 import { Column, Line } from '@ant-design/plots'
 
