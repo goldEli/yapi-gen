@@ -144,7 +144,7 @@ export const TabItem = styled.div<{ isActive?: boolean }>`
 // EmployeeProfilePerson
 
 export const PersonWrap = styled.div`
-  padding: 24px 4px 24px 24px;
+  padding: 24px 4px 0px 24px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -214,7 +214,7 @@ export const ReportWrap = styled.div`
   width: 561px;
   height: 100%;
   border-right: 1px solid var(--neutral-n6-d1);
-  padding: 0 24px;
+  padding: 0 4px 0 24px;
 `
 
 export const ReportItemWrap = styled.div`
@@ -222,6 +222,12 @@ export const ReportItemWrap = styled.div`
   flex-direction: column;
   padding: 24px 0;
   border-bottom: 1px solid var(--neutral-n6-d1);
+`
+
+export const ReportItemBox = styled.div`
+  padding-right: 20px;
+  overflow-y: auto;
+  height: 100%;
 `
 
 export const ReportItemHeader = styled.div`
@@ -288,12 +294,79 @@ export const OperationButton = styled.div<{ isStar?: boolean }>`
   }
 `
 
+export const Title = styled.div`
+  font-size: 14px;
+  font-family: SiYuanMedium;
+  color: var(--neutral-n1-d1);
+  margin-top: 16px;
+`
+export const Msg = styled.div`
+  font-size: 14px;
+  color: var(--neutral-n2);
+`
+
+export const RowRadius = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+`
+export const Radius = styled.div`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--neutral-n2);
+  margin-right: 8px;
+  flex-shrink: 0;
+  flex-grow: 0;
+`
+
+export const DetailItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  .title {
+    font-size: 14px;
+    font-family: SiYuanMedium;
+    margin-bottom: 8px;
+  }
+`
+
+export const CommentBox = styled.div`
+  .deleteIcon {
+    display: none;
+  }
+  &:hover .deleteIcon {
+    display: inherit;
+  }
+  .headWrap {
+    display: flex;
+    justify-content: space-between;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    .time {
+      margin-left: 16px;
+      font-size: 12px;
+      color: var(--neutral-n3);
+    }
+  }
+  .content {
+    padding-left: 32px;
+    margin-top: 2px;
+  }
+`
+
 // EmployeeProfileTask
 
 export const TaskWrap = styled.div`
   width: calc(100% - 561px);
-  padding: 0 24px 24px;
+  padding: 0 4px 24px 24px;
+`
+
+export const TaskItemBoxs = styled.div`
+  padding-right: 20px;
   overflow-y: auto;
+  height: 100%;
 `
 
 export const TaskItemWrap = styled.div`

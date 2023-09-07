@@ -5,6 +5,7 @@ import {
   TagWrap,
   TaskContent,
   TaskItemBox,
+  TaskItemBoxs,
   TaskItemGroup,
   TaskItemPerson,
   TaskItemWrap,
@@ -219,14 +220,16 @@ const EmployeeProfileTask = () => {
         indicator={<NewLoadingTransition />}
         size="large"
       >
-        {!!dataList?.list &&
-          (dataList?.list?.length > 0 ? (
-            dataList?.list?.map((i: any) => (
-              <TaskItem item={i} key={i.id} onChangeData={onChangeData} />
-            ))
-          ) : (
-            <NoData />
-          ))}
+        <TaskItemBoxs>
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
+              dataList?.list?.map((i: any) => (
+                <TaskItem item={i} key={i.id} onChangeData={onChangeData} />
+              ))
+            ) : (
+              <NoData />
+            ))}
+        </TaskItemBoxs>
       </Spin>
     </TaskWrap>
   )
