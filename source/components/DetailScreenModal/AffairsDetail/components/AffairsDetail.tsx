@@ -38,6 +38,7 @@ interface AffairsDetailProps {
   onUpdate?(value?: boolean): void
   isInfoPage?: boolean
   onRef?: any
+  isPreview?: boolean
 }
 
 const AffairsDetail = (props: AffairsDetailProps) => {
@@ -203,6 +204,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           <TextWrapEdit
             style={{ width: '100%' }}
             onClick={() => {
+              if (props.isPreview) return
               setIsEditInfo(true)
               setTimeout(() => {
                 editorRef.current?.focus()

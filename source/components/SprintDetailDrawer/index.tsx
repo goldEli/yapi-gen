@@ -804,7 +804,11 @@ const SprintDetailDrawer = () => {
                   }}
                 ></LongStroyBread>
                 <ChangeStatusPopover
-                  isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                  isCanOperation={
+                    !affairsDetailDrawer.isPreview &&
+                    isCanEdit &&
+                    !drawerInfo.isExamine
+                  }
                   projectId={drawerInfo.projectId}
                   record={drawerInfo}
                   onChangeStatus={onChangeStatus}
@@ -843,7 +847,7 @@ const SprintDetailDrawer = () => {
                 <span
                   className="name"
                   ref={spanDom}
-                  contentEditable
+                  contentEditable={!affairsDetailDrawer.isPreview}
                   onBlur={onNameConfirm}
                 >
                   {drawerInfo.name}
@@ -856,6 +860,7 @@ const SprintDetailDrawer = () => {
                 id={drawerInfo?.id}
                 percent={drawerInfo?.schedule}
                 hasEdit={
+                  !affairsDetailDrawer.isPreview &&
                   !hasEdit &&
                   drawerInfo?.user
                     ?.map((i: any) => i?.user?.id)
@@ -864,43 +869,45 @@ const SprintDetailDrawer = () => {
                 project_id={drawerInfo?.projectId}
                 onConfirm={onOperationUpdate}
               />
-              <Space size={12} style={{ marginTop: 16 }}>
-                {(drawerInfo.work_type === 6
-                  ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
-                  : anchorList
-                ).map((i: { key: string; name: string }) => (
-                  <>
-                    {i.key === 'sprint-tag' && (
-                      <SprintTag
-                        defaultList={drawerInfo?.tag?.map((i: any) => ({
-                          id: i.id,
-                          color: i.tag?.color,
-                          name: i.tag?.content,
-                        }))}
-                        canAdd
-                        onUpdate={onOperationUpdate}
-                        detail={drawerInfo}
-                        isDetailQuick
-                        addWrap={
-                          <CommonButton key={i.key} type="light">
-                            {i.name}
-                          </CommonButton>
-                        }
-                      />
-                    )}
+              {!affairsDetailDrawer.isPreview && (
+                <Space size={12} style={{ marginTop: 16 }}>
+                  {(drawerInfo.work_type === 6
+                    ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
+                    : anchorList
+                  ).map((i: { key: string; name: string }) => (
+                    <>
+                      {i.key === 'sprint-tag' && (
+                        <SprintTag
+                          defaultList={drawerInfo?.tag?.map((i: any) => ({
+                            id: i.id,
+                            color: i.tag?.color,
+                            name: i.tag?.content,
+                          }))}
+                          canAdd
+                          onUpdate={onOperationUpdate}
+                          detail={drawerInfo}
+                          isDetailQuick
+                          addWrap={
+                            <CommonButton key={i.key} type="light">
+                              {i.name}
+                            </CommonButton>
+                          }
+                        />
+                      )}
 
-                    {i.key !== 'sprint-tag' && (
-                      <CommonButton
-                        key={i.key}
-                        type="light"
-                        onClick={() => onClickAnchorList(i)}
-                      >
-                        {i.name}
-                      </CommonButton>
-                    )}
-                  </>
-                ))}
-              </Space>
+                      {i.key !== 'sprint-tag' && (
+                        <CommonButton
+                          key={i.key}
+                          type="light"
+                          onClick={() => onClickAnchorList(i)}
+                        >
+                          {i.name}
+                        </CommonButton>
+                      )}
+                    </>
+                  ))}
+                </Space>
+              )}
 
               {/* 只有标准事务类型和故障事务类型才有 */}
               {[4, 5].includes(drawerInfo.work_type) && (
@@ -922,6 +929,7 @@ const SprintDetailDrawer = () => {
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={onOperationUpdate}
+                isPreview={affairsDetailDrawer.isPreview}
               />
               <Tabs
                 className="tabs"
@@ -938,6 +946,7 @@ const SprintDetailDrawer = () => {
                 onRef={uploadFile}
                 affairsInfo={drawerInfo}
                 onUpdate={onOperationUpdate}
+                isPreview={affairsDetailDrawer.isPreview}
               />
               {drawerInfo.work_type !== 6 && (
                 <ChildSprint
