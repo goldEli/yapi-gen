@@ -33,6 +33,7 @@ import ScheduleRecord from '../ScheduleRecord'
 interface DetailDemand {
   detail: any
   onUpdate(value?: boolean): void
+  isPreview?: boolean
 }
 
 const DetailDemand = (props: DetailDemand, ref: any) => {
@@ -131,6 +132,9 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
               readonly={!isEditInfo}
               ref={editorRef}
               onReadonlyClick={() => {
+                if (props.isPreview) {
+                  return
+                }
                 setIsEditInfo(true)
                 setTimeout(() => {
                   editorRef.current?.focus()
@@ -147,6 +151,9 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         {!isEditInfo && !editInfo && (
           <TextWrapEdit
             onClick={() => {
+              if (props.isPreview) {
+                return
+              }
               setIsEditInfo(true)
               setTimeout(() => {
                 editorRef.current?.focus()
@@ -163,6 +170,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
             <Label>{t('scheduleRecord')}</Label>
           </LabelWrap>
           <ScheduleRecord
+            isPreview={props?.isPreview}
             detailId={props.detail.id}
             projectId={projectInfo.id}
             noBorder
@@ -177,18 +185,20 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       >
         <LabelWrap>
           <Label>{t('common.attachment')}</Label>
-          <Tooltip title={t('addAttachments')}>
-            <CloseWrap width={32} height={32}>
-              <CommonIconFont
-                type="plus"
-                size={20}
-                color="var(--neutral-n2)"
-                onClick={() => {
-                  uploadRef.current?.handleUpload()
-                }}
-              />
-            </CloseWrap>
-          </Tooltip>
+          {!props?.isPreview && (
+            <Tooltip title={t('addAttachments')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={() => {
+                    uploadRef.current?.handleUpload()
+                  }}
+                />
+              </CloseWrap>
+            </Tooltip>
+          )}
         </LabelWrap>
         <div>
           {projectInfo?.projectPermissions?.filter(
@@ -207,6 +217,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
                 username: i.user_name ?? '--',
               }))}
               canUpdate
+              isIteration={props?.isPreview}
               onC
               del={onDeleteInfoAttach}
               add={onAddInfoAttach}
@@ -226,13 +237,18 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
             color: i.tag?.color,
             name: i.tag?.content,
           }))}
+          isPreview={props?.isPreview}
           canAdd
           detail={props.detail}
           onUpdate={props.onUpdate}
           addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
+            props?.isPreview ? (
+              <span />
+            ) : (
+              <AddWrap hasDash>
+                <IconFont type="plus" />
+              </AddWrap>
+            )
           }
         />
       </ContentItem>
