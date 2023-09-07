@@ -87,10 +87,11 @@ const ItemContent = styled.div`
 
 const InfoRow = styled.div`
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   margin-bottom: 2px;
   font-size: 12px;
   color: var(--neutral-n3);
+  justify-content: flex-start;
   span {
     color: var(--neutral-n2);
   }
@@ -244,7 +245,8 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                   </span>
                 </InfoRow>
                 <InfoRow>
-                  {t('releaseNotes')}：<span>{i.perception || '--'}</span>
+                  <span>{t('releaseNotes')}：</span>
+                  <span style={{ flex: 1 }}>{i.perception || '--'}</span>
                 </InfoRow>
                 {i.attachment?.length > 0 && (
                   <UploadAttach
