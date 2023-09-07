@@ -270,6 +270,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
                 username: i.user_name ?? '--',
               }))}
               canUpdate
+              onC
               isIteration={props?.isPreview}
               del={onDeleteInfoAttach}
               add={onAddInfoAttach}

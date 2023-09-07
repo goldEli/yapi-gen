@@ -117,7 +117,7 @@ const FlawDetailDrawer = () => {
   const dispatch = useDispatch()
   const commentDom: any = createRef()
   const { flawDetailDrawer, flawCommentList } = useSelector(store => store.flaw)
-  const { visible, params } = flawDetailDrawer
+  const { visible, params, isPreview } = flawDetailDrawer
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [focus, setFocus] = useState(false)
@@ -878,7 +878,9 @@ const FlawDetailDrawer = () => {
                 </div>
                 {!skeletonLoading && (
                   <ChangeStatusPopover
-                    isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                    isCanOperation={
+                      isCanEdit && !drawerInfo.isExamine && !isPreview
+                    }
                     projectId={drawerInfo.projectId}
                     record={drawerInfo}
                     onChangeStatus={onChangeStatus}
@@ -919,7 +921,7 @@ const FlawDetailDrawer = () => {
                   <span
                     className="name"
                     ref={spanDom}
-                    contentEditable
+                    contentEditable={!isPreview}
                     onBlur={onNameConfirm}
                   >
                     {drawerInfo.name}
@@ -936,6 +938,7 @@ const FlawDetailDrawer = () => {
                   percent={drawerInfo?.schedule}
                   hasEdit={
                     !!isCanEdit &&
+                    !isPreview &&
                     drawerInfo?.user
                       ?.map((i: any) => i?.user?.id)
                       ?.includes(userInfo?.id)
@@ -944,44 +947,47 @@ const FlawDetailDrawer = () => {
                   onConfirm={onOperationUpdate}
                 />
               </div>
-              <BtnWrap>
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    flawDetailRef?.current?.handleUpload()
-                  }}
-                >
-                  {t('appendix')}
-                </CommonButton>
+              {!isPreview && (
+                <BtnWrap>
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      flawDetailRef?.current?.handleUpload()
+                    }}
+                  >
+                    {t('appendix')}
+                  </CommonButton>
 
-                <FlawTag
-                  defaultList={drawerInfo?.tag?.map((i: any) => ({
-                    id: i.id,
-                    color: i.tag?.color,
-                    name: i.tag?.content,
-                  }))}
-                  canAdd
-                  onUpdate={onOperationUpdate}
-                  detail={drawerInfo}
-                  isDetailQuick
-                  addWrap={
-                    <CommonButton type="light">{t('addTag')}</CommonButton>
-                  }
-                />
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    relationStoriesRef?.current?.onClickOpen()
-                  }}
-                >
-                  {t('linkWorkItem')}
-                </CommonButton>
-              </BtnWrap>
+                  <FlawTag
+                    defaultList={drawerInfo?.tag?.map((i: any) => ({
+                      id: i.id,
+                      color: i.tag?.color,
+                      name: i.tag?.content,
+                    }))}
+                    canAdd
+                    onUpdate={onOperationUpdate}
+                    detail={drawerInfo}
+                    isDetailQuick
+                    addWrap={
+                      <CommonButton type="light">{t('addTag')}</CommonButton>
+                    }
+                  />
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      relationStoriesRef?.current?.onClickOpen()
+                    }}
+                  >
+                    {t('linkWorkItem')}
+                  </CommonButton>
+                </BtnWrap>
+              )}
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={() => {
                   getFlawDetail()
                 }}
+                isPreview={isPreview}
               ></DrawerTopInfo>
               <Tabs
                 className="tabs"
@@ -994,14 +1000,20 @@ const FlawDetailDrawer = () => {
                   flawInfo={drawerInfo}
                   onUpdate={onOperationUpdate}
                   ref={flawDetailRef}
+                  isPreview={isPreview}
                 />
                 <RelationStories
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
                   isDrawer
                   ref={relationStoriesRef}
+                  isPreview={isPreview}
                 />
-                <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
+                <FlawBasic
+                  detail={drawerInfo}
+                  onUpdate={onOperationUpdate}
+                  isPreview={isPreview}
+                />
                 <div id="tab_defectComment" className="info_item_tab">
                   <CommentTitle>{t('defectComment')}</CommentTitle>
                   <CommonComment
