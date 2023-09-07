@@ -7,7 +7,7 @@
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { Drawer, Form, Space, Tooltip } from 'antd'
-import { Editor } from '@xyfe/uikit'
+import { Editor } from 'ifunuikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -430,8 +430,8 @@ const UserSystemReport = () => {
                   item.pivot.params?.map((el: any) => (
                     <RowRadius key={el.id}>
                       <Radius />
-                      {item?.key === 'overdue_tasks' && el.expected_day > 0 ? (
-                        <span style={{ marginRight: 3 }}>
+                      {item?.name === 'overdue_tasks' && el.expected_day > 0 ? (
+                        <span style={{ marginRight: 3, whiteSpace: 'nowrap' }}>
                           [{t('report.list.overdue')}
                           {el.expected_day}
                           {t('report.list.day')}]

@@ -10,7 +10,7 @@ import CommonModal from '@/components/CommonModal'
 import ChoosePeople from './ChoosePeople'
 import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
-import { Editor, EditorRef } from '@xyfe/uikit'
+import { Editor, EditorRef } from 'ifunuikit'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import styled from '@emotion/styled'
 

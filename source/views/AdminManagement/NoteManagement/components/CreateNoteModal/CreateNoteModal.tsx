@@ -10,7 +10,7 @@
 /* eslint-disable no-constant-binary-expression */
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import { LabelTitle } from '@/views/WorkReport/Review/components/style'
-import { Editor } from '@xyfe/uikit'
+import { Editor } from 'ifunuikit'
 import { Checkbox, DatePicker, Form, Input, Radio } from 'antd'
 
 import { useEffect, useRef, useState } from 'react'

@@ -72,12 +72,35 @@ export const toggleStar = async (id: any, isStar: any) => {
 }
 
 // 获取任务数据
+// 获取汇报数据
 export const getMemberOverviewReportList = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewReportList', {
     user_ids: params.user_ids.join(','),
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
-    is_star: params.isStart ? 1 : null,
+    is_star: params.isStart ? 1 : 2,
+  })
+  return response.data
+}
+
+// 获取更多任务数据
+export const getMemberOverviewMoreReportList = async (params: any) => {
+  const response = await http.get<any>('getMemberOverviewMoreReportList', {
+    current_user_id: params.user_id,
+    start_time: params.time[0] ?? null,
+    end_time: params.time[1] ?? null,
+    is_star: params.isStart ? 1 : 2,
+    current_time: params.current_time,
+  })
+  return response.data
+}
+
+// 员工对比报告
+export const getMemberOverviewCompare = async (params: any) => {
+  const response = await http.get<any>('getMemberOverviewCompare', {
+    user_ids: params.user_ids.join(','),
+    start_time: params.time[0] ?? null,
+    end_time: params.time[1] ?? null,
   })
   return response.data
 }
