@@ -590,6 +590,7 @@ const DemandDetailDrawer = () => {
       }),
     )
   }
+  console.log(demandDetailDrawerProps)
 
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
@@ -769,6 +770,13 @@ const DemandDetailDrawer = () => {
                 </div>
               </Popover>
             </Tooltip>
+            {demandDetailDrawerProps.star && (
+              <Tooltip title={t('starMark')}>
+                <div onClick={onToDetail}>
+                  <CommonButton type="icon" icon="star-adipf4l8" />
+                </div>
+              </Tooltip>
+            )}
           </Space>
         </Header>
         <Content id="contentDom">

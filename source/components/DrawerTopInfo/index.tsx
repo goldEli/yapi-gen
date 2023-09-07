@@ -37,6 +37,7 @@ const TopInfoWrap = styled.div`
 interface DrawerTopInfoProps {
   details: any
   onUpdate?(): void
+  isPreview?: boolean
 }
 
 const DrawerTopInfo = (props: DrawerTopInfoProps) => {
@@ -55,41 +56,49 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
           </span>
           <div className="box" style={{ marginRight: 80 }}>
             <span className="title">{t('common.start')}</span>
-            <span>
-              <TableQuickEdit
-                item={{
-                  ...props.details,
-                  ...{ categoryConfigList: drawerCanOperation },
-                }}
-                isInfo
-                keyText="expected_start_at"
-                type="date"
-                value={['datetime']}
-                defaultText={props.details?.expectedStart || null}
-                onUpdate={props.onUpdate}
-              >
-                <span>{props.details?.expectedStart || '--'}</span>
-              </TableQuickEdit>
-            </span>
+            {props.isPreview ? (
+              <span>{props.details?.expectedStart || '--'}</span>
+            ) : (
+              <span>
+                <TableQuickEdit
+                  item={{
+                    ...props.details,
+                    ...{ categoryConfigList: drawerCanOperation },
+                  }}
+                  isInfo
+                  keyText="expected_start_at"
+                  type="date"
+                  value={['datetime']}
+                  defaultText={props.details?.expectedStart || null}
+                  onUpdate={props.onUpdate}
+                >
+                  <span>{props.details?.expectedStart || '--'}</span>
+                </TableQuickEdit>
+              </span>
+            )}
           </div>
           <div className="box">
             <span className="title">{t('common.end')}</span>
-            <span>
-              <TableQuickEdit
-                item={{
-                  ...props.details,
-                  ...{ categoryConfigList: drawerCanOperation },
-                }}
-                isInfo
-                keyText="expected_end_at"
-                type="date"
-                value={['datetime']}
-                defaultText={props.details?.expectedEnd || null}
-                onUpdate={props.onUpdate}
-              >
-                <span>{props.details?.expectedEnd || '--'}</span>
-              </TableQuickEdit>
-            </span>
+            {props.isPreview ? (
+              <span>{props.details?.expectedEnd || '--'}</span>
+            ) : (
+              <span>
+                <TableQuickEdit
+                  item={{
+                    ...props.details,
+                    ...{ categoryConfigList: drawerCanOperation },
+                  }}
+                  isInfo
+                  keyText="expected_end_at"
+                  type="date"
+                  value={['datetime']}
+                  defaultText={props.details?.expectedEnd || null}
+                  onUpdate={props.onUpdate}
+                >
+                  <span>{props.details?.expectedEnd || '--'}</span>
+                </TableQuickEdit>
+              </span>
+            )}
           </div>
         </span>
       </TopInfoWrap>
@@ -105,30 +114,41 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
           <span className="label" style={{ marginRight: 16 }}>
             {t('common.dealName')}
           </span>
-          <span>
-            <TableQuickEdit
-              item={{
-                ...props.details,
-                ...{ categoryConfigList: drawerCanOperation },
-              }}
-              isInfo
-              keyText="users"
-              type="fixed_select"
-              defaultText={
-                props.details?.user?.map((i: any) => i.user.id) || []
-              }
-              onUpdate={props.onUpdate}
-            >
-              <MultipleAvatar
-                max={3}
-                list={props.details?.user?.map((i: any) => ({
-                  id: i.user.id,
-                  name: i.user.name,
-                  avatar: i.user.avatar,
-                }))}
-              />
-            </TableQuickEdit>
-          </span>
+          {props.isPreview ? (
+            <MultipleAvatar
+              max={3}
+              list={props.details?.user?.map((i: any) => ({
+                id: i.user.id,
+                name: i.user.name,
+                avatar: i.user.avatar,
+              }))}
+            />
+          ) : (
+            <span>
+              <TableQuickEdit
+                item={{
+                  ...props.details,
+                  ...{ categoryConfigList: drawerCanOperation },
+                }}
+                isInfo
+                keyText="users"
+                type="fixed_select"
+                defaultText={
+                  props.details?.user?.map((i: any) => i.user.id) || []
+                }
+                onUpdate={props.onUpdate}
+              >
+                <MultipleAvatar
+                  max={3}
+                  list={props.details?.user?.map((i: any) => ({
+                    id: i.user.id,
+                    name: i.user.name,
+                    avatar: i.user.avatar,
+                  }))}
+                />
+              </TableQuickEdit>
+            </span>
+          )}
         </span>
       </TopInfoWrap>
     </Wrap>
