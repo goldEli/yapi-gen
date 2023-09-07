@@ -126,7 +126,7 @@ const SprintTable = (props: Props) => {
       item.id,
       1,
       false,
-      true,
+      false,
     )
   }
 

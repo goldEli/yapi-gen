@@ -102,7 +102,7 @@ const DemandTable = (props: Props) => {
       item.id,
       0,
       false,
-      true,
+      false,
     )
   }
 

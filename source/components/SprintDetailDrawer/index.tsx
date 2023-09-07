@@ -723,73 +723,77 @@ const SprintDetailDrawer = () => {
             )}
           </Space>
           <Space size={16}>
-            <ChangeIconGroup>
-              {currentIndex > 0 && (
-                <Tooltip title={t('previous')}>
-                  <UpWrap
-                    onClick={onUpDemand}
-                    id="upIcon"
-                    isOnly={
-                      demandIds?.length === 0 ||
-                      currentIndex === demandIds?.length - 1
-                    }
-                  >
-                    <CommonIconFont
-                      type="up"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
-                    />
-                  </UpWrap>
+            {!affairsDetailDrawer.star && (
+              <>
+                <ChangeIconGroup>
+                  {currentIndex > 0 && (
+                    <Tooltip title={t('previous')}>
+                      <UpWrap
+                        onClick={onUpDemand}
+                        id="upIcon"
+                        isOnly={
+                          demandIds?.length === 0 ||
+                          currentIndex === demandIds?.length - 1
+                        }
+                      >
+                        <CommonIconFont
+                          type="up"
+                          size={20}
+                          color="var(--neutral-n1-d1)"
+                        />
+                      </UpWrap>
+                    </Tooltip>
+                  )}
+                  {!(
+                    demandIds?.length === 0 ||
+                    currentIndex === demandIds?.length - 1
+                  ) && (
+                    <Tooltip title={t('next')}>
+                      <DownWrap
+                        onClick={onDownDemand}
+                        id="downIcon"
+                        isOnly={currentIndex <= 0}
+                      >
+                        <CommonIconFont
+                          type="down"
+                          size={20}
+                          color="var(--neutral-n1-d1)"
+                        />
+                      </DownWrap>
+                    </Tooltip>
+                  )}
+                </ChangeIconGroup>
+                <Tooltip title={t('share')}>
+                  <div>
+                    <CommonButton type="icon" icon="share" onClick={onShare} />
+                  </div>
                 </Tooltip>
-              )}
-              {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) && (
-                <Tooltip title={t('next')}>
-                  <DownWrap
-                    onClick={onDownDemand}
-                    id="downIcon"
-                    isOnly={currentIndex <= 0}
-                  >
-                    <CommonIconFont
-                      type="down"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
+                <Tooltip title={t('openDetails')}>
+                  <div>
+                    <CommonButton
+                      type="icon"
+                      icon="full-screen"
+                      onClick={onToDetail}
                     />
-                  </DownWrap>
+                  </div>
                 </Tooltip>
-              )}
-            </ChangeIconGroup>
-            <Tooltip title={t('share')}>
-              <div>
-                <CommonButton type="icon" icon="share" onClick={onShare} />
-              </div>
-            </Tooltip>
-            <Tooltip title={t('openDetails')}>
-              <div>
-                <CommonButton
-                  type="icon"
-                  icon="full-screen"
-                  onClick={onToDetail}
-                />
-              </div>
-            </Tooltip>
 
-            <Tooltip title={t('more')}>
-              <DropdownMenu
-                placement="bottomRight"
-                trigger={['click']}
-                menu={{
-                  items: onGetMenu(),
-                }}
-                getPopupContainer={n => n}
-              >
-                <div>
-                  <CommonButton type="icon" icon="more" />
-                </div>
-              </DropdownMenu>
-            </Tooltip>
+                <Tooltip title={t('more')}>
+                  <DropdownMenu
+                    placement="bottomRight"
+                    trigger={['click']}
+                    menu={{
+                      items: onGetMenu(),
+                    }}
+                    getPopupContainer={n => n}
+                  >
+                    <div>
+                      <CommonButton type="icon" icon="more" />
+                    </div>
+                  </DropdownMenu>
+                </Tooltip>
+              </>
+            )}
             {affairsDetailDrawer.star && (
               <Tooltip title={t('starMark')}>
                 <CommonButton
