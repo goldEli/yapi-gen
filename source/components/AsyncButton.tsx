@@ -6,15 +6,13 @@ const AsyncButton = ({ onClick, ...rest }: any) => {
   const onClickLocal = async () => {
     if (onClick) {
       setIsLoading(true)
-      try {
-        await onClick()
-      } catch (error) {
-        console.log(error)
-      }
+
+      await onClick()
+
       setIsLoading(false)
     }
   }
-  return <Button loading={isLoading} onClick={onClickLocal} {...rest} />
+  return <Button {...rest} loading={isLoading} onClick={onClickLocal} />
 }
 
 export { AsyncButton }
