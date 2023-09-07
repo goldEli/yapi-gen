@@ -430,8 +430,8 @@ const UserSystemReport = () => {
                   item.pivot.params?.map((el: any) => (
                     <RowRadius key={el.id}>
                       <Radius />
-                      {item?.key === 'overdue_tasks' && el.expected_day > 0 ? (
-                        <span style={{ marginRight: 3 }}>
+                      {item?.name === 'overdue_tasks' && el.expected_day > 0 ? (
+                        <span style={{ marginRight: 3, whiteSpace: 'nowrap' }}>
                           [{t('report.list.overdue')}
                           {el.expected_day}
                           {t('report.list.day')}]

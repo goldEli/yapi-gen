@@ -610,6 +610,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             }}
             label={<LabelTitles>{content.name_text}</LabelTitles>}
             name={`${content.type}+${content.id}+${content.name}`}
+            initialValue={content?.content}
             rules={[
               {
                 validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
@@ -632,6 +633,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             ]}
           >
             <Editor
+              color="transparent"
               upload={uploadFile}
               getSuggestions={() => options}
               placeholder={content.tips}

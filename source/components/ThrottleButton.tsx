@@ -2,7 +2,7 @@
 
 import { useThrottle } from '@/hooks/useThrottle'
 import styled from '@emotion/styled'
-import { AsyncButton } from '@staryuntech/ant-pro'
+import { AsyncButton } from './AsyncButton'
 
 const AddButtonWrap = styled.div({
   height: 32,
