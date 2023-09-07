@@ -126,6 +126,10 @@ const AffairsInfo = (props: Props) => {
       label: t('describe'),
     },
     {
+      key: 'schedule',
+      label: t('scheduleRecord'),
+    },
+    {
       key: 'sprint-attachment',
       label: t('attachment'),
     },

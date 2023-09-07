@@ -6,7 +6,7 @@ import { useThrottle } from '@/hooks/useThrottle'
 import { css } from '@emotion/css'
 import { Space } from 'antd'
 import IconFont from './IconFont'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { AsyncButton as Button } from './AsyncButton'
 import styled from '@emotion/styled'
 
 const primary = css`
@@ -197,6 +197,7 @@ const CommonButton = (props: Props) => {
             {props.children}
           </Space>
         )}
+
         {props.iconPlacement === 'right' && (
           <Space size={8}>
             {props.children}
@@ -216,7 +217,6 @@ const CommonButton = (props: Props) => {
         disabled={props.isDisable}
         size={props.size}
         style={props?.style}
-        loading={props.loading}
       >
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
       </ButtonWrap>
@@ -231,7 +231,6 @@ const CommonButton = (props: Props) => {
       disabled={props.isDisable}
       hidden={props.hidden}
       size={props.size}
-      loading={props.loading}
     >
       {props.children}
     </ButtonWrap>

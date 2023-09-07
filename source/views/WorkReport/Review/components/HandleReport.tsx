@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import UploadAttach from '@/components/UploadAttach'
 import { useSelector, useDispatch } from '@store/index'
-import { Editor } from '@xyfe/uikit'
+import { Editor } from 'ifunuikit'
 import { getStaffListAll } from '@/services/staff'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import {

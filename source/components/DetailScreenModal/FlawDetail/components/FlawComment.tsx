@@ -5,7 +5,7 @@
 import { bytesToSize, getIdsForAt } from '@/tools'
 import { OmitText } from '@star-yun/ui'
 import { useSelector } from '@store/index'
-import { Editor } from '@xyfe/uikit'
+import { Editor } from 'ifunuikit'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Viewer from 'react-viewer'
