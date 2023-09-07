@@ -40,6 +40,7 @@ import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { getMessage } from '../Message'
 import DetailsSkeleton from '../DetailsSkeleton'
+import { toggleStar } from '@/services/employeeProfile'
 import {
   addAffairsComment,
   deleteAffairs,
@@ -645,7 +646,7 @@ const SprintDetailDrawer = () => {
         ?.removeEventListener('scroll', handleScroll, false)
     }
   }, [drawerInfo])
-
+  console.log(drawerInfo)
   return (
     <>
       <ShareModal
@@ -789,6 +790,23 @@ const SprintDetailDrawer = () => {
                 </div>
               </DropdownMenu>
             </Tooltip>
+            {affairsDetailDrawer.star && (
+              <Tooltip title={t('starMark')}>
+                <CommonButton
+                  onClick={async () => {
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getSprintDetail()
+                    }
+                  }}
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
+              </Tooltip>
+            )}
           </Space>
         </Header>
         <Content id="contentDom">

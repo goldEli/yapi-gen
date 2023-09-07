@@ -89,6 +89,7 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import FlawTag from '../TagComponent/FlawTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
+import { toggleStar } from '@/services/employeeProfile'
 let timer: NodeJS.Timeout
 const FlawDetailDrawer = () => {
   const normalState = {
@@ -821,6 +822,23 @@ const FlawDetailDrawer = () => {
                 </div>
               </DropdownMenu>
             </Tooltip>
+            {flawDetailDrawer.star && (
+              <Tooltip title={t('starMark')}>
+                <CommonButton
+                  onClick={async () => {
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getFlawDetail()
+                    }
+                  }}
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
+              </Tooltip>
+            )}
           </Space>
         </Header>
         <Content id="contentDom">

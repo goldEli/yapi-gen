@@ -64,6 +64,10 @@ const ItemContent = styled.div`
     font-size: 14px;
     color: var(--neutral-n2);
     margin-right: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100px;
   }
   .title {
     display: flex;
@@ -205,7 +209,9 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                     <div>
                       {i.userInfo?.name}（{i.userInfo?.position?.name || '--'}）
                     </div>
-                    <span className="remark">{i.remark}</span>
+                    <span className="remark" title={i.remark}>
+                      {i.remark}
+                    </span>
                     <span>
                       {t('updated_progress')}
                       {i.before_schedule}%

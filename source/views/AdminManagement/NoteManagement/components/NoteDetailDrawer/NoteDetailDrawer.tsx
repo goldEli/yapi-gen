@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
 import { Drawer, Space, Tooltip } from 'antd'
-import { Editor } from '@xyfe/uikit'
+import { Editor } from 'ifunuikit'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'

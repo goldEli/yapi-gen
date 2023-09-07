@@ -7,6 +7,7 @@ type SliceState = {
     visible: boolean
     params?: any
     isPreview?: boolean
+    star?: boolean
   }
   affairsInfo: Partial<Model.Affairs.AffairsInfo>
   affairsCommentList: {
@@ -20,6 +21,7 @@ const initialState: SliceState = {
     visible: false,
     params: {},
     isPreview: false,
+    star: false,
   },
   // 事务详情
   affairsInfo: {},

@@ -163,11 +163,7 @@ const TaskItem = (props: TaskItemProps) => {
               <TaskItemContent row={j} />
               {j.is_star === 1 && (
                 <div className="icon">
-                  <CommonIconFont
-                    type="star-adipf4l8"
-                    color="#FA9746"
-                    size={14}
-                  />
+                  <CommonIconFont type="star" color="#FA9746" size={14} />
                 </div>
               )}
             </TaskItemBox>
@@ -188,95 +184,6 @@ const EmployeeProfileTask = () => {
   const [loading, setLoading] = useState(false)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
-    // list: [
-    //   {
-    //     id: 707,
-    //     name: '付亮123',
-    //     avatar: '',
-    //     position: [],
-    //     departments: [
-    //       {
-    //         id: 1542006488750587906,
-    //         name: 'php',
-    //         parent_id: 1622899318493040642,
-    //       },
-    //       {
-    //         id: 1622899318493040642,
-    //         name: '成都定星科技',
-    //         parent_id: 0,
-    //       },
-    //     ],
-    //     story_total: 8,
-    //     story: [
-    //       {
-    //         id: 1006069,
-    //         name: '多少度',
-    //         info: '',
-    //         expected_end_at: null,
-    //         finish_at: null,
-    //         project_type: 1,
-    //         is_bug: 2,
-    //         status: 2,
-    //         story_prefix_key: '1231232131-3',
-    //         schedules: {
-    //           schedule: 0,
-    //           total_task_time: 0,
-    //         },
-    //         attachments: [
-    //           {
-    //             id: 636,
-    //             path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20230703161627.png/file/1693981086408/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20230703161627.png',
-    //             name: '微信图片_20230703161627.png',
-    //             ext: 'png',
-    //             size: 13140,
-    //           },
-    //           {
-    //             id: 637,
-    //             path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20230703162352.png/file/1693981093478/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20230703162352.png',
-    //             name: '微信图片_20230703162352.png',
-    //             ext: 'png',
-    //             size: 12502,
-    //           },
-    //         ],
-    //         overdue_time: 0,
-    //         is_star: 0,
-    //       },
-    //       {
-    //         id: 1005998,
-    //         name: '工时007',
-    //         info: '<p>工时007</p>',
-    //         expected_end_at: '2023-08-22',
-    //         finish_at: '2023-08-31 12:59:46',
-    //         project_type: 2,
-    //         is_bug: 2,
-    //         status: 2,
-    //         story_prefix_key: 'CSGST,DZ-C-7',
-    //         schedules: {
-    //           schedule: 100,
-    //           total_task_time: 0,
-    //         },
-    //         attachments: [
-    //           {
-    //             id: 631,
-    //             path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/2023-08-24-10-06-24%20-%20%E5%89%AF%E6%9C%AC.mp4/file/1693970026342/2023-08-24-10-06-24%20-%20%E5%89%AF%E6%9C%AC.mp4',
-    //             name: '2023-08-24-10-06-24 - 副本.mp4',
-    //             ext: 'mp4',
-    //             size: 72714268,
-    //           },
-    //           {
-    //             id: 632,
-    //             path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/Agile.pdf/file/1693970029205/Agile.pdf',
-    //             name: 'Agile.pdf',
-    //             ext: 'pdf',
-    //             size: 2249822,
-    //           },
-    //         ],
-    //         overdue_time: 824386,
-    //         is_star: 0,
-    //       },
-    //     ],
-    //   },
-    // ],
   })
 
   // 获取任务列表
