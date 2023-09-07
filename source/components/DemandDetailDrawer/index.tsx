@@ -881,6 +881,7 @@ const DemandDetailDrawer = () => {
                     onCancel={onCancelExamine}
                     isVerify={drawerInfo?.has_verify === 1}
                     isDrawer
+                    isPreview={demandDetailDrawerProps?.isPreview}
                   />
                 </div>
               )}

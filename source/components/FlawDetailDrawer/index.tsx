@@ -931,6 +931,7 @@ const FlawDetailDrawer = () => {
                     onCancel={onCancelExamine}
                     isVerify={drawerInfo?.has_verify === 1}
                     isDrawer
+                    isPreview={isPreview}
                   />
                 </div>
               )}
