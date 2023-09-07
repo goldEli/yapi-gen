@@ -155,6 +155,7 @@ interface Props {
   isInfoPage?: boolean
   onUpdate?(): void
   detail?: any
+  isPreview?: boolean
 }
 
 const DemandTag = (props: Props) => {
@@ -347,7 +348,7 @@ const DemandTag = (props: Props) => {
           ))}
         </>
       )}
-      {props?.isQuick || isCanEdit ? (
+      {(props?.isQuick || isCanEdit) && !props.isPreview ? (
         <Popover
           visible={isOpen}
           placement="bottomLeft"

@@ -1,5 +1,7 @@
+/* eslint-disable no-promise-executor-return */
 import urls from '@/constants/urls'
 import * as http from '@/tools/http'
+import { resolve } from 'path'
 
 // 获取事务详情
 export const getMemberOverviewList = async () => {
@@ -61,6 +63,15 @@ export const followsCancel = async (params: any) => {
   })
 }
 
+export const toggleStar = async (id: any, isStar: any) => {
+  isStar
+    ? followsMark({ type: 1, relation_id: id })
+    : followsCancel({ type: 1, relation_id: id })
+
+  return new Promise(resolve => setTimeout(() => resolve(1), 1000))
+}
+
+// 获取任务数据
 // 获取汇报数据
 export const getMemberOverviewReportList = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewReportList', {

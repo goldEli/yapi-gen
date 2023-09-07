@@ -40,6 +40,7 @@ import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { getMessage } from '../Message'
 import DetailsSkeleton from '../DetailsSkeleton'
+import { toggleStar } from '@/services/employeeProfile'
 import {
   addAffairsComment,
   deleteAffairs,
@@ -645,7 +646,7 @@ const SprintDetailDrawer = () => {
         ?.removeEventListener('scroll', handleScroll, false)
     }
   }, [drawerInfo])
-
+  console.log(drawerInfo)
   return (
     <>
       <ShareModal
@@ -791,9 +792,20 @@ const SprintDetailDrawer = () => {
             </Tooltip>
             {affairsDetailDrawer.star && (
               <Tooltip title={t('starMark')}>
-                <div onClick={onToDetail}>
-                  <CommonButton type="icon" icon="star-adipf4l8" />
-                </div>
+                <CommonButton
+                  isStar={drawerInfo.isStar}
+                  onClick={async () => {
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getSprintDetail()
+                    }
+                  }}
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
               </Tooltip>
             )}
           </Space>
@@ -960,10 +972,19 @@ const SprintDetailDrawer = () => {
                   onRef={childRef}
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
+                  isPreview={affairsDetailDrawer.isPreview}
                 />
               )}
-              <LinkSprint onRef={linkSprint} detail={drawerInfo} />
-              <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
+              <LinkSprint
+                onRef={linkSprint}
+                detail={drawerInfo}
+                isPreview={affairsDetailDrawer.isPreview}
+              />
+              <BasicDemand
+                detail={drawerInfo}
+                onUpdate={onOperationUpdate}
+                isPreview={affairsDetailDrawer.isPreview}
+              />
               <Label
                 id="sprint-comment"
                 className="info_item_tab"

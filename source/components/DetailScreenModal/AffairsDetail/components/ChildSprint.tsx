@@ -52,6 +52,7 @@ const ChildSprint = (
     onUpdate?(value?: boolean): void
     isInfoPage?: boolean
     onRef?: any
+    isPreview?: boolean
   },
   ref: any,
 ) => {
@@ -431,51 +432,53 @@ const ChildSprint = (
       <DeleteConfirmModal />
       <LabelWrap>
         <Label>{t('subtransaction')}</Label>
-        <Space size={12}>
-          {!isSearch && (
-            <Tooltip title={t('searchForSubtransactions')}>
-              <CloseWrap width={32} height={32} onClick={onClickSearch}>
-                <CommonIconFont
-                  size={20}
-                  type="search"
-                  color="var(--neutral-n2)"
+        {props?.isPreview ? null : (
+          <Space size={12}>
+            {!isSearch && (
+              <Tooltip title={t('searchForSubtransactions')}>
+                <CloseWrap width={32} height={32} onClick={onClickSearch}>
+                  <CommonIconFont
+                    size={20}
+                    type="search"
+                    color="var(--neutral-n2)"
+                  />
+                </CloseWrap>
+              </Tooltip>
+            )}
+            {isSearch && (
+              <Space size={16}>
+                <CustomSelect
+                  placeholder={t('search_for_transaction_name_or_number')}
+                  getPopupContainer={(node: any) => node}
+                  style={{ width: 184 }}
+                  onSearch={onSearch}
+                  options={searchValue ? selectList : recentList}
+                  showSearch
+                  showArrow
+                  optionFilterProp="label"
+                  onChange={onChangeSelect}
+                  allowClear
+                  autoFocus
                 />
-              </CloseWrap>
-            </Tooltip>
-          )}
-          {isSearch && (
-            <Space size={16}>
-              <CustomSelect
-                placeholder={t('search_for_transaction_name_or_number')}
-                getPopupContainer={(node: any) => node}
-                style={{ width: 184 }}
-                onSearch={onSearch}
-                options={searchValue ? selectList : recentList}
-                showSearch
-                showArrow
-                optionFilterProp="label"
-                onChange={onChangeSelect}
-                allowClear
-                autoFocus
-              />
-              <CancelText onClick={onCancelSearch}>
-                {t('common.cancel')}
-              </CancelText>
-            </Space>
-          )}
-          {!isEnd && (
-            <Tooltip title={t('addSubtransaction')}>
-              <CloseWrap width={32} height={32}>
-                <CommonIconFont
-                  type="plus"
-                  size={20}
-                  color="var(--neutral-n2)"
-                  onClick={onCreateChild}
-                />
-              </CloseWrap>
-            </Tooltip>
-          )}
-        </Space>
+                <CancelText onClick={onCancelSearch}>
+                  {t('common.cancel')}
+                </CancelText>
+              </Space>
+            )}
+            {!isEnd && (
+              <Tooltip title={t('addSubtransaction')}>
+                <CloseWrap width={32} height={32}>
+                  <CommonIconFont
+                    type="plus"
+                    size={20}
+                    color="var(--neutral-n2)"
+                    onClick={onCreateChild}
+                  />
+                </CloseWrap>
+              </Tooltip>
+            )}
+          </Space>
+        )}
       </LabelWrap>
 
       <div>

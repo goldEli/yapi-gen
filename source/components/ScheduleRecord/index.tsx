@@ -116,7 +116,8 @@ interface ScheduleRecordProps {
   // 全屏详情需要高度滚动
   height?: any
   noBorder?: boolean
-  isBug: boolean
+  isBug?: boolean
+  isPreview?: boolean
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
@@ -163,7 +164,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
         })
       }
 
-      if (projectInfo.projectType === 1 && !props.isBug) {
+      if (projectInfo.projectType === 1 && !props?.isBug) {
         result = await updateStoryPerception({
           project_id: props?.projectId,
           story_id: props?.detailId,
@@ -171,7 +172,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
           perception: value,
         })
       }
-      if (projectInfo.projectType === 1 && props.isBug) {
+      if (projectInfo.projectType === 1 && props?.isBug) {
         result = await updateFlawPerception({
           project_id: props?.projectId,
           story_id: props?.detailId,
@@ -217,7 +218,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                       <CommonIconFont type="swap-right" /> {i.after_schedule}%
                     </span>
                   </div>
-                  {userInfo?.id === i?.userInfo?.id && (
+                  {userInfo?.id === i?.userInfo?.id && !props?.isPreview && (
                     <div className="icons">
                       <CommonIconFont
                         type="edit"
