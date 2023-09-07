@@ -99,6 +99,7 @@ import CommonProgress from '../CommonProgress'
 import DemandTag from '../TagComponent/DemandTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
+import { toggleStar } from '@/services/employeeProfile'
 interface ItemIprops {
   label: string
   key: string
@@ -772,7 +773,12 @@ const DemandDetailDrawer = () => {
             </Tooltip>
             {demandDetailDrawerProps.star && (
               <Tooltip title={t('starMark')}>
-                <div onClick={onToDetail}>
+                <div
+                  onClick={async () => {
+                    const res = await toggleStar(drawerInfo.id, true)
+                    console.log(res)
+                  }}
+                >
                   <CommonButton type="icon" icon="star-adipf4l8" />
                 </div>
               </Tooltip>

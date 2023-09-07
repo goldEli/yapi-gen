@@ -40,6 +40,7 @@ import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { getMessage } from '../Message'
 import DetailsSkeleton from '../DetailsSkeleton'
+import { toggleStar } from '@/services/employeeProfile'
 import {
   addAffairsComment,
   deleteAffairs,
@@ -791,7 +792,12 @@ const SprintDetailDrawer = () => {
             </Tooltip>
             {affairsDetailDrawer.star && (
               <Tooltip title={t('starMark')}>
-                <div onClick={onToDetail}>
+                <div
+                  onClick={async () => {
+                    const res = await toggleStar(drawerInfo.id, true)
+                    console.log(res)
+                  }}
+                >
                   <CommonButton type="icon" icon="star-adipf4l8" />
                 </div>
               </Tooltip>
