@@ -246,6 +246,10 @@ export const ReportItemHeaderLeft = styled.div`
       font-size: 16px;
       font-family: SiYuanMedium;
       color: var(--neutral-n1-d1);
+      max-width: 350px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     .sub {
       font-size: 12px;
@@ -259,11 +263,27 @@ export const ReportItemHeaderRight = styled.div`
   align-items: center;
   gap: 16px;
   font-size: 14px;
+`
+
+export const OperationButton = styled.div<{ isStar?: boolean }>`
+  height: 32px;
+  width: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid var(--neutral-n6-d1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   span {
-    cursor: pointer;
-    color: var(--auxiliary-text-t2-d1);
-    &:hover {
-      color: var(--auxiliary-text-t1-d2) !important;
+    color: ${props =>
+      props.isStar ? '#FA9746!important' : 'var(--neutral-n2)'};
+  }
+  &:hover {
+    background: var(--auxiliary-b4);
+    border: 1px solid var(--auxiliary-b4);
+    span {
+      color: var(--auxiliary-text-t2-d2);
     }
   }
 `

@@ -3,6 +3,7 @@
 import { useSelector } from '@store/index'
 import {
   LoadingMore,
+  OperationButton,
   ReportItemHeader,
   ReportItemHeaderLeft,
   ReportItemHeaderRight,
@@ -16,7 +17,7 @@ import {
   getMemberOverviewMoreReportList,
   getMemberOverviewReportList,
 } from '@/services/employeeProfile'
-import { Spin } from 'antd'
+import { Spin, Tooltip } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from '@/components/NoData'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -28,19 +29,13 @@ interface ReportItemProps {
   item: any
   // 当前操作的人员id
   user_id: number
-  // 上一页的最后一条数据
-  lastData: any
-  // 更多汇报修改数据
-  onChangMoreData(arr: any, id: any): void
   onChangData(id: any, item: any): void
 }
 
 const ReportItem = (props: ReportItemProps) => {
-  const { filterParams } = useSelector(store => store.employeeProfile)
-  const { item, user_id, lastData, onChangMoreData, onChangData } = props
-  const [page, setPage] = useState(1)
+  const { item, user_id, onChangData } = props
 
-  // 标星或者是取消标星  state: true是已经标星，取消标星，反之， item:当前数据， id:每个人员前的id
+  // 标星或者是取消标星  state: true是已经标星，取消标星，反之， item:当前数据
   const onStar = async (state: boolean, item: any) => {
     const params = {
       type: 2,
@@ -57,15 +52,12 @@ const ReportItem = (props: ReportItemProps) => {
     onChangData(user_id, item)
   }
 
-  // 点击加载更多
-  const onLoadingMore = async () => {
-    setPage(page + 1)
-    const response = await getMemberOverviewMoreReportList({
-      ...filterParams,
-      ...{ user_id, current_time: lastData.created_at },
-    })
-    onChangMoreData(response?.list || [], user_id)
+  // 打开汇报数据
+  const onOpenInfo = (item: any) => {
+    item.is_expended = item.is_expended === 1 ? 2 : 1
+    onChangData(user_id, item)
   }
+
   return (
     <>
       <ReportItemWrap>
@@ -78,7 +70,10 @@ const ReportItem = (props: ReportItemProps) => {
           <ReportItemHeaderLeft>
             <CommonUserAvatar avatar={item.user.avatar} size="large" />
             <div className="info">
-              <div className="name">{item.user.name}</div>
+              <div className="name">
+                {item.user.name}
+                {item.title}
+              </div>
               <div className="sub">
                 {item.departments
                   .reverse()
@@ -88,13 +83,75 @@ const ReportItem = (props: ReportItemProps) => {
             </div>
           </ReportItemHeaderLeft>
           <ReportItemHeaderRight>
-            <span>{item.is_expended ? '收起' : '折叠'}</span>
-            <span onClick={() => onStar(item.is_star === 1, item)}>
-              {item.is_star === 1 ? '取消标星' : '标星'}
-            </span>
+            <Tooltip
+              placement="top"
+              trigger="hover"
+              title={item.is_expended === 1 ? '展开' : '折叠'}
+            >
+              <OperationButton onClick={() => onOpenInfo(item)}>
+                <CommonIconFont
+                  type={item.is_expended === 1 ? 'up-02' : 'down-02'}
+                  size={20}
+                />
+              </OperationButton>
+            </Tooltip>
+            <Tooltip
+              placement="top"
+              trigger="hover"
+              title={item.is_star === 1 ? '取消标星' : '标星'}
+            >
+              <OperationButton
+                onClick={() => onStar(item.is_star === 1, item)}
+                isStar={item.is_star === 1}
+              >
+                <CommonIconFont
+                  type={item.is_star === 1 ? 'star' : 'star-adipf4l8'}
+                  size={20}
+                />
+              </OperationButton>
+            </Tooltip>
           </ReportItemHeaderRight>
         </ReportItemHeader>
       </ReportItemWrap>
+    </>
+  )
+}
+
+interface ReportItemGroupProps {
+  // 当前数据
+  item: any
+  // 当前操作的人员id
+  user_id: number
+  // 上一页的最后一条数据
+  lastData: any
+  // 更多汇报修改数据
+  onChangMoreData(arr: any, id: any): void
+  onChangData(id: any, item: any): void
+}
+
+const ReportItemGroup = (props: ReportItemGroupProps) => {
+  const { filterParams } = useSelector(store => store.employeeProfile)
+  const { item, user_id, lastData, onChangMoreData, onChangData } = props
+  const [page, setPage] = useState(1)
+  // 点击加载更多
+  const onLoadingMore = async () => {
+    setPage(page + 1)
+    const response = await getMemberOverviewMoreReportList({
+      ...filterParams,
+      ...{ user_id, current_time: lastData.created_at },
+    })
+    onChangMoreData(response?.list || [], user_id)
+  }
+  return (
+    <>
+      {item.list?.map((itemChild: any) => (
+        <ReportItem
+          key={itemChild.id}
+          item={itemChild}
+          user_id={user_id}
+          onChangData={onChangData}
+        />
+      ))}
       <LoadingMore onClick={() => onLoadingMore()}>
         加载该成员更多日报
       </LoadingMore>
@@ -113,8 +170,8 @@ const EmployeeProfileReport = () => {
         current_user_id: '6',
         list: [
           {
-            is_star: 2,
-            isExpended: false,
+            is_star: 1,
+            isExpended: 2,
             id: 193,
             report_template_id: 52,
             is_auto: 2,
@@ -150,7 +207,7 @@ const EmployeeProfileReport = () => {
           },
           {
             is_star: 2,
-            isExpended: false,
+            isExpended: 2,
             id: 194,
             report_template_id: 52,
             is_auto: 2,
@@ -235,18 +292,14 @@ const EmployeeProfileReport = () => {
         {!!dataList?.list &&
           (dataList?.list?.length > 0 ? (
             dataList?.list?.map((i: any) => (
-              <>
-                {i.list?.map((item: any) => (
-                  <ReportItem
-                    key={i.current_user_id}
-                    item={item}
-                    user_id={i.current_user_id}
-                    lastData={i.list[i.list?.length - 1]}
-                    onChangMoreData={onChangMoreData}
-                    onChangData={onChangData}
-                  />
-                ))}
-              </>
+              <ReportItemGroup
+                key={i.current_user_id}
+                item={i}
+                user_id={i.current_user_id}
+                lastData={i.list[i.list?.length - 1]}
+                onChangMoreData={onChangMoreData}
+                onChangData={onChangData}
+              />
             ))
           ) : (
             <NoData />
