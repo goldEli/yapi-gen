@@ -333,6 +333,7 @@ declare namespace Model.Affairs {
   }
 
   interface AffairsInfoResult {
+    is_star: number
     id: number
     name: string
     child_story_count: number

@@ -646,7 +646,7 @@ const SprintDetailDrawer = () => {
         ?.removeEventListener('scroll', handleScroll, false)
     }
   }, [drawerInfo])
-
+  console.log(drawerInfo)
   return (
     <>
       <ShareModal
@@ -792,14 +792,19 @@ const SprintDetailDrawer = () => {
             </Tooltip>
             {affairsDetailDrawer.star && (
               <Tooltip title={t('starMark')}>
-                <div
+                <CommonButton
                   onClick={async () => {
-                    const res = await toggleStar(drawerInfo.id, true)
-                    console.log(res)
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getSprintDetail()
+                    }
                   }}
-                >
-                  <CommonButton type="icon" icon="star-adipf4l8" />
-                </div>
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
               </Tooltip>
             )}
           </Space>

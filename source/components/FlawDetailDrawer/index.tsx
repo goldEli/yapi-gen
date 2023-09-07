@@ -824,14 +824,19 @@ const FlawDetailDrawer = () => {
             </Tooltip>
             {flawDetailDrawer.star && (
               <Tooltip title={t('starMark')}>
-                <div
+                <CommonButton
                   onClick={async () => {
-                    const res = await toggleStar(drawerInfo.id, true)
-                    console.log(res)
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getFlawDetail()
+                    }
                   }}
-                >
-                  <CommonButton type="icon" icon="star-adipf4l8" />
-                </div>
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
               </Tooltip>
             )}
           </Space>

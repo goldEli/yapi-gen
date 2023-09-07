@@ -513,6 +513,7 @@ export const getDemandInfo: any = async (params: any) => {
   })
 
   return {
+    isStar: response.data.is_star === 1,
     category_attachment: response.data.category_attachment,
     categoryName: response.data.category,
     id: response.data.id,
