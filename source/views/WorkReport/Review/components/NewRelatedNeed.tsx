@@ -184,7 +184,7 @@ const NewRelatedNeed = (props: any) => {
             <div className="left">
               <span className="dot" />
               {props?.isShowOverdue && item.expected_day > 0 ? (
-                <span>
+                <span style={{ whiteSpace: 'nowrap' }}>
                   [{t('report.list.overdue')}
                   {item.expected_day}
                   {t('report.list.day')}]
