@@ -9,8 +9,8 @@ const AsyncButton = (props: LoadingButtonProps) => {
   const { onClick, isUseDuration, duration, ...rest } = props
   const [loading, setLoading] = useState(false)
   const onClickHandler: MouseEventHandler<HTMLElement> = async e => {
-    setLoading(true)
     if (onClick) {
+      setLoading(true)
       if (isUseDuration) {
         onClick(e)
         setTimeout(() => {
