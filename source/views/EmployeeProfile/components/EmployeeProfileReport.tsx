@@ -191,13 +191,11 @@ const ReportItem = (props: ReportItemProps) => {
             <div className="info">
               <div className="name">
                 {item.user.name}
-                {item.title}
+                生成的{item.start_time}
+                {item.name}
               </div>
               <div className="sub">
-                {item.departments
-                  .reverse()
-                  ?.map((i: any) => i.name)
-                  ?.join(' - ')}
+                {item.departments?.map((i: any) => i.name)?.join(' - ')}
               </div>
             </div>
           </ReportItemHeaderLeft>
@@ -231,7 +229,7 @@ const ReportItem = (props: ReportItemProps) => {
             </Tooltip>
           </ReportItemHeaderRight>
         </ReportItemHeader>
-        {reportInfo?.id && (
+        {item.is_expended === 1 && (
           <>
             <Title>{t('report.list.reportProject')}</Title>
             <Msg style={{ marginTop: 8 }}>{reportInfo?.project?.name}</Msg>
@@ -314,7 +312,7 @@ const ReportItem = (props: ReportItemProps) => {
                 : '--'}
             </DetailItem>
             <CommentFooter
-              placeholder="评论XX的日志"
+              placeholder={`评论${item.user.name}的日志`}
               personList={arr}
               onConfirm={onComment}
               style={{ position: 'inherit', margin: '16px 0' }}
@@ -354,7 +352,7 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
     onChangMoreData(response?.list || [], user_id)
   }
   return (
-    <ReportItemBox>
+    <>
       {item.list?.map((itemChild: any) => (
         <ReportItem
           key={itemChild.id}
@@ -363,10 +361,12 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
           onChangData={onChangData}
         />
       ))}
-      <LoadingMore onClick={() => onLoadingMore()}>
-        加载该成员更多日报
-      </LoadingMore>
-    </ReportItemBox>
+      {item.list?.length >= 15 * page && (
+        <LoadingMore onClick={() => onLoadingMore()}>
+          加载该成员更多日报
+        </LoadingMore>
+      )}
+    </>
   )
 }
 
@@ -421,21 +421,23 @@ const EmployeeProfileReport = () => {
         indicator={<NewLoadingTransition />}
         size="large"
       >
-        {!!dataList?.list &&
-          (dataList?.list?.length > 0 ? (
-            dataList?.list?.map((i: any) => (
-              <ReportItemGroup
-                key={i.current_user_id}
-                item={i}
-                user_id={i.current_user_id}
-                lastData={i.list[i.list?.length - 1]}
-                onChangMoreData={onChangMoreData}
-                onChangData={onChangData}
-              />
-            ))
-          ) : (
-            <NoData />
-          ))}
+        <ReportItemBox>
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
+              dataList?.list?.map((i: any) => (
+                <ReportItemGroup
+                  key={i.current_user_id}
+                  item={i}
+                  user_id={i.current_user_id}
+                  lastData={i.list[i.list?.length - 1]}
+                  onChangMoreData={onChangMoreData}
+                  onChangData={onChangData}
+                />
+              ))
+            ) : (
+              <NoData />
+            ))}
+        </ReportItemBox>
       </Spin>
     </ReportWrap>
   )

@@ -71,11 +71,10 @@ export const toggleStar = async (id: any, isStar: any) => {
   return new Promise(resolve => setTimeout(() => resolve(1), 1000))
 }
 
-// 获取任务数据
 // 获取汇报数据
 export const getMemberOverviewReportList = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewReportList', {
-    user_ids: params.user_ids.join(','),
+    user_ids: params.user_ids,
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
     is_star: params.isStart ? 1 : 2,

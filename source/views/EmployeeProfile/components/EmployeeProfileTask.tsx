@@ -22,6 +22,7 @@ import UploadAttach from '@/components/UploadAttach'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Spin } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 interface TaskItemContentProps {
   row: any
@@ -129,6 +130,7 @@ const TaskItem = (props: TaskItemProps) => {
   const { item, onChangeData } = props
   const [page, setPage] = useState(1)
   const { filterParams } = useSelector(store => store.employeeProfile)
+  const [openDemandDetail] = useOpenDemandDetail()
 
   // 点击加载更多
   const onLoadingMore = async () => {
@@ -141,6 +143,18 @@ const TaskItem = (props: TaskItemProps) => {
     onChangeData(response, item.id)
   }
 
+  // 跳转详情
+  const onToDetail = (row: any) => {
+    openDemandDetail(
+      { ...row },
+      row.project_id,
+      row.id,
+      row.project_type === 2 ? 1 : row.is_bug === 1 ? 2 : 3,
+      true,
+      true,
+    )
+  }
+
   return (
     <TaskItemWrap>
       <TaskItemPerson>
@@ -150,17 +164,14 @@ const TaskItem = (props: TaskItemProps) => {
             {item.name}（{item.position.name}）
           </div>
           <div className="sub">
-            {item.departments
-              .reverse()
-              ?.map((i: any) => i.name)
-              ?.join(' - ')}
+            {item.departments?.map((i: any) => i.name)?.join(' - ')}
           </div>
         </div>
       </TaskItemPerson>
       <TaskItemGroup>
         {item.story?.length > 0 &&
           item.story?.map((j: any) => (
-            <TaskItemBox key={j.id}>
+            <TaskItemBox key={j.id} onClick={() => onToDetail(j)}>
               <TaskItemContent row={j} />
               {j.is_star === 1 && (
                 <div className="icon">

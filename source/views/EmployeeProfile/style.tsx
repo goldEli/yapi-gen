@@ -214,13 +214,13 @@ export const ReportWrap = styled.div`
   width: 561px;
   height: 100%;
   border-right: 1px solid var(--neutral-n6-d1);
-  padding: 0 4px 0 24px;
+  padding: 0 4px 0 0px;
 `
 
 export const ReportItemWrap = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 24px 0;
+  padding: 24px 0 24px 24px;
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
 
