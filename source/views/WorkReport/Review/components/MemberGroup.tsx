@@ -77,7 +77,7 @@ const MemberGroup = (props: any) => {
   return (
     <CommonModal
       width={528}
-      title="人员分组"
+      title={t('personnelGrouping')}
       isVisible={visible}
       onClose={() => {
         onCancel()

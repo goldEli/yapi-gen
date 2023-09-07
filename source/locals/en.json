@@ -2367,5 +2367,10 @@
   "cumulativeWorkingHours": "Cumulative working hours",
   "addPictures": "Add pictures",
   "addVideo": "Add video",
-  "opinion": "Editor&#39;s opinion"
+  "opinion": "Editor&#39;s opinion",
+  "deleteGroup": "Delete group",
+  "addProjectGroup": "Add project group",
+  "personnelGrouping": "Personnel grouping",
+  "total": "Total",
+  "transactions": "Transactions"
 }

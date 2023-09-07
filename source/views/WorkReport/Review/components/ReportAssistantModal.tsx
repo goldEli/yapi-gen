@@ -873,7 +873,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       case 4:
         return (
           <Form.Item
-            label={<LabelTitles>添加项目组</LabelTitles>}
+            label={<LabelTitles>{t('addProjectGroup')}</LabelTitles>}
             name={`${content.type}+${content.id}+${content.name}`}
             initialValue={content?.content}
           >
