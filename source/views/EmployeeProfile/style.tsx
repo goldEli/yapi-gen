@@ -360,7 +360,7 @@ export const CommentBox = styled.div`
 
 export const TaskWrap = styled.div`
   width: calc(100% - 561px);
-  padding: 0 4px 24px 24px;
+  padding: 0 4px 24px 0px;
 `
 
 export const TaskItemBoxs = styled.div`
@@ -372,7 +372,7 @@ export const TaskItemBoxs = styled.div`
 export const TaskItemWrap = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 24px;
+  padding: 24px 0 0 24px;
 `
 
 export const TaskItemPerson = styled.div`
