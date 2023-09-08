@@ -196,7 +196,7 @@ const FlawDetailDrawer = () => {
     if (paramsProjectId) {
       projectRef.current = paramsProjectId
     }
-    if (params?.isAllProject) {
+    if (params?.isAllProject || isPreview) {
       getProjectData()
     }
     setDrawerInfo({})
@@ -641,6 +641,9 @@ const FlawDetailDrawer = () => {
 
   useEffect(() => {
     if (visible || params?.id) {
+      if (isPreview) {
+        dispatch(setProjectInfo({}))
+      }
       dispatch(setFlawCommentList({ list: [] }))
       setDemandIds(params?.demandIds || [])
       getFlawDetail('', params?.demandIds || [])

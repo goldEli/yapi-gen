@@ -247,7 +247,10 @@ const DemandDetailDrawer = () => {
       demandDetailDrawerProps.projectId ??
       paramsData?.id ??
       projectIdRef.current
-    if (demandDetailDrawerProps?.isAllProject) {
+    if (
+      demandDetailDrawerProps?.isAllProject ||
+      demandDetailDrawerProps?.isPreview
+    ) {
       getProjectData()
     }
     setDrawerInfo({})
@@ -594,6 +597,9 @@ const DemandDetailDrawer = () => {
 
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
+      if (demandDetailDrawerProps?.isPreview) {
+        dispatch(setProjectInfo({}))
+      }
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
       getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
     }
@@ -660,7 +666,6 @@ const DemandDetailDrawer = () => {
       window.removeEventListener('scroll', handleScroll, false)
     }
   }, [document.getElementById('contentDom')])
-  console.log(drawerInfo)
 
   return (
     <>

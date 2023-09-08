@@ -146,7 +146,7 @@ const TaskItem = (props: TaskItemProps) => {
   // 跳转详情
   const onToDetail = (row: any) => {
     openDemandDetail(
-      { ...row },
+      { ...row, ...{ projectId: row.project_id } },
       row.project_id,
       row.id,
       row.project_type === 2 ? 1 : row.is_bug === 1 ? 2 : 3,
@@ -207,12 +207,12 @@ const EmployeeProfileTask = () => {
 
   // 修改数据
   const onChangeData = (arr: any, id: number) => {
-    setDataList(
-      dataList?.map((i: any) => ({
+    setDataList({
+      list: dataList?.list?.map((i: any) => ({
         ...i,
         ...{ story: i.id === id ? [...i.story, ...arr] : i.story },
       })),
-    )
+    })
   }
 
   useEffect(() => {
