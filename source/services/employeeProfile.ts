@@ -64,10 +64,10 @@ export const followsCancel = async (params: any) => {
 }
 
 export const toggleStar = async (id: any, isStar: any) => {
-  isStar
+  const promise = isStar
     ? followsMark({ type: 1, relation_id: id })
     : followsCancel({ type: 1, relation_id: id })
-
+  await promise
   return new Promise(resolve => setTimeout(() => resolve(1), 1000))
 }
 
