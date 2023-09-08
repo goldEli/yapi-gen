@@ -86,8 +86,9 @@ const EmployeeProfileHeader = () => {
     dispatch(setCurrentKey({ ...newObj, ...obj }))
     dispatch(
       setFilterParams({
-        ...searchParams,
         ...filterParams,
+        ...searchParams,
+
         ...{ user_ids: newObj?.user_ids, status: obj.key },
       }),
     )
@@ -149,26 +150,26 @@ const EmployeeProfileHeader = () => {
           time = [
             moment()
               .day(moment().day() - 13)
-              .format('YYYY/MM/DD'),
-            moment().format('YYYY/MM/DD'),
+              .format('YYYY-MM-DD'),
+            moment().format('YYYY-MM-DD'),
           ]
           break
         case 3:
           time = [
-            moment().subtract(1, 'month').format('YYYY/MM/DD'),
-            moment().format('YYYY/MM/DD'),
+            moment().subtract(1, 'month').format('YYYY-MM-DD'),
+            moment().format('YYYY-MM-DD'),
           ]
           break
         case 4:
           time = [
-            moment().subtract(3, 'months').format('YYYY/MM/DD'),
-            moment().format('YYYY/MM/DD'),
+            moment().subtract(3, 'months').format('YYYY-MM-DD'),
+            moment().format('YYYY-MM-DD'),
           ]
           break
         case 5:
           time = [
-            moment().subtract(1, 'years').format('YYYY/MM/DD'),
-            moment().format('YYYY/MM/DD'),
+            moment().subtract(1, 'years').format('YYYY-MM-DD'),
+            moment().format('YYYY-MM-DD'),
           ]
           break
       }

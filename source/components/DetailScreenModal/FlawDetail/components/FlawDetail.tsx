@@ -31,6 +31,7 @@ interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
   isInfoPage?: boolean
   onUpdate?(value?: boolean): void
+  isPreview?: boolean
 }
 
 const FlawDetail = (props: FlawDetailProps, ref: any) => {
@@ -150,6 +151,9 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
               readonly={!isEditInfo}
               ref={editorRef}
               onReadonlyClick={() => {
+                if (props.isPreview) {
+                  return
+                }
                 setIsEditInfo(true)
                 setTimeout(() => {
                   editorRef.current?.focus()
@@ -163,6 +167,9 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         {!isEditInfo && !editInfo && (
           <TextWrapEdit
             onClick={() => {
+              if (props.isPreview) {
+                return
+              }
               setIsEditInfo(true)
               setTimeout(() => {
                 editorRef.current?.focus()
@@ -180,6 +187,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           projectId={projectInfo.id ?? 0}
           noBorder
           isBug={props?.flawInfo?.is_bug === 1}
+          isPreview={props?.isPreview}
         />
       </FlawInfoInfoItem>
       <FlawInfoInfoItem
@@ -191,7 +199,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         {/* <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel> */}
         <LabelWrap>
           <Label>{t('common.attachment')}</Label>
-          {props.isInfoPage ? null : (
+          {props.isInfoPage || props?.isPreview ? null : (
             <Tooltip title={t('addAttachments')}>
               <CloseWrap width={32} height={32}>
                 <CommonIconFont
@@ -227,6 +235,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
               add={onAddInfoAttach}
               isBug
               ref={uploadRef}
+              isIteration={props?.isPreview}
               addWrap={
                 props.isInfoPage ? (
                   <CommonButton type="primaryText" icon="plus">
@@ -244,14 +253,19 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
       <FlawInfoInfoItem id="tab_tag" className="info_item_tab">
         <FlawInfoLabel>{t('common.tag')}</FlawInfoLabel>
         <FlawTag
+          isPreview={props?.isPreview}
           defaultList={tagList}
           canAdd
           onUpdate={onUpdate}
           detail={props.flawInfo}
           addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
+            props?.isPreview ? (
+              <span />
+            ) : (
+              <AddWrap hasDash>
+                <IconFont type="plus" />
+              </AddWrap>
+            )
           }
         />
       </FlawInfoInfoItem>

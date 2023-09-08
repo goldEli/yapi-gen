@@ -18,6 +18,8 @@ interface CommentFooterProps {
   maxHeight?: string
   hasAvatar?: boolean
   onRef?: any
+  // 是否是员工概况
+  isEmployee?: boolean
 }
 
 const CommentFooter = (props: CommentFooterProps) => {
@@ -49,7 +51,7 @@ const CommentFooter = (props: CommentFooterProps) => {
   }
 
   const handleShortcutEvent = () => {
-    if (isReview) {
+    if (isReview && !props.isEmployee) {
       onComment()
     }
   }
@@ -109,7 +111,7 @@ const CommentFooter = (props: CommentFooterProps) => {
   return (
     <CommentFooterWrap isReview={isReview} style={{ ...props.style }}>
       {isReview ? (
-        <>
+        <div style={{ backgroundColor: 'var(--neutral-white-d5)' }}>
           <div>
             <Form form={form}>
               <Form.Item
@@ -145,9 +147,11 @@ const CommentFooter = (props: CommentFooterProps) => {
               </Form.Item>
             </Form>
           </div>
-          <div style={{ color: '#BBBDBF' }}>
-            {t('pressShortcutKeyToSendComments')}
-          </div>
+          {!props.isEmployee && (
+            <div style={{ color: '#BBBDBF' }}>
+              {t('pressShortcutKeyToSendComments')}
+            </div>
+          )}
           <div className="buttonBox">
             <Space>
               <CommonButton
@@ -171,14 +175,14 @@ const CommentFooter = (props: CommentFooterProps) => {
               </CommonButton>
             </Space>
           </div>
-        </>
+        </div>
       ) : (
         <div style={{ gap: 12, display: 'flex', alignItems: 'center' }}>
           {props.hasAvatar ? (
             <CommonUserAvatar size="large" avatar={userInfo.avatar} />
           ) : null}
           <Input
-            placeholder={String(t('postComment'))}
+            placeholder={props?.placeholder ?? String(t('postComment'))}
             style={{ width: '100%' }}
             onFocus={onFocus}
           />

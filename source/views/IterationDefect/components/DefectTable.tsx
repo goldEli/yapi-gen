@@ -127,7 +127,7 @@ const DefectTable = (props: Props) => {
       item.id,
       2,
       false,
-      true,
+      false,
     )
   }
 

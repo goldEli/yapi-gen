@@ -93,6 +93,7 @@ interface Props {
   isCanEdit?: boolean
   // 效能洞察的参数
   xnProjectId?: number
+  isPreview?: boolean
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -136,7 +137,7 @@ const TableQuickEdit = (props: Props) => {
               : 'b/story/update'
             : 'b/transaction/update'),
       )?.length > 0
-    canClick = isCan && isCanEdit
+    canClick = isCan && isCanEdit && !props.isPreview
   }
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {

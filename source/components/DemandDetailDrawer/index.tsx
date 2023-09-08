@@ -99,6 +99,7 @@ import CommonProgress from '../CommonProgress'
 import DemandTag from '../TagComponent/DemandTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
+import { toggleStar } from '@/services/employeeProfile'
 interface ItemIprops {
   label: string
   key: string
@@ -246,7 +247,10 @@ const DemandDetailDrawer = () => {
       demandDetailDrawerProps.projectId ??
       paramsData?.id ??
       projectIdRef.current
-    if (demandDetailDrawerProps?.isAllProject) {
+    if (
+      demandDetailDrawerProps?.isAllProject ||
+      demandDetailDrawerProps?.isPreview
+    ) {
       getProjectData()
     }
     setDrawerInfo({})
@@ -590,10 +594,12 @@ const DemandDetailDrawer = () => {
       }),
     )
   }
-  console.log(demandDetailDrawerProps)
 
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
+      if (demandDetailDrawerProps?.isPreview) {
+        dispatch(setProjectInfo({}))
+      }
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
       getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
     }
@@ -701,80 +707,95 @@ const DemandDetailDrawer = () => {
             )}
           </Space>
           <Space size={16}>
-            <ChangeIconGroup>
-              {currentIndex > 0 && (
-                <Tooltip title={t('previous')}>
-                  <UpWrap
-                    onClick={onUpDemand}
-                    id="upIcon"
-                    isOnly={
-                      demandIds?.length === 0 ||
-                      currentIndex === demandIds?.length - 1
+            {!demandDetailDrawerProps.star && (
+              <>
+                <ChangeIconGroup>
+                  {currentIndex > 0 && (
+                    <Tooltip title={t('previous')}>
+                      <UpWrap
+                        onClick={onUpDemand}
+                        id="upIcon"
+                        isOnly={
+                          demandIds?.length === 0 ||
+                          currentIndex === demandIds?.length - 1
+                        }
+                      >
+                        <CommonIconFont
+                          type="up"
+                          size={20}
+                          color="var(--neutral-n1-d1)"
+                        />
+                      </UpWrap>
+                    </Tooltip>
+                  )}
+                  {!(
+                    demandIds?.length === 0 ||
+                    currentIndex === demandIds?.length - 1
+                  ) && (
+                    <Tooltip title={t('next')}>
+                      <DownWrap
+                        onClick={onDownDemand}
+                        id="downIcon"
+                        isOnly={currentIndex <= 0}
+                      >
+                        <CommonIconFont
+                          type="down"
+                          size={20}
+                          color="var(--neutral-n1-d1)"
+                        />
+                      </DownWrap>
+                    </Tooltip>
+                  )}
+                </ChangeIconGroup>
+                <Tooltip title={t('openDetails')}>
+                  <div onClick={onToDetail}>
+                    <CommonButton type="icon" icon="full-screen" />
+                  </div>
+                </Tooltip>
+                <Tooltip title={t('more')}>
+                  <Popover
+                    open={isMoreVisible}
+                    onOpenChange={setIsMoreVisible}
+                    placement="bottomRight"
+                    trigger={['click']}
+                    getPopupContainer={n => n}
+                    content={
+                      <DemandOperationDropdownMenu
+                        haveComment
+                        onEditChange={onEditChange}
+                        onDeleteChange={onDeleteChange}
+                        onCreateChild={onCreateChild}
+                        onAddComment={() => {
+                          commentDom.current?.focus()
+                          setIsMoreVisible(false)
+                        }}
+                        record={demandDetailDrawerProps}
+                      />
                     }
                   >
-                    <CommonIconFont
-                      type="up"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
-                    />
-                  </UpWrap>
+                    <div>
+                      <CommonButton type="icon" icon="more" />
+                    </div>
+                  </Popover>
                 </Tooltip>
-              )}
-              {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) && (
-                <Tooltip title={t('next')}>
-                  <DownWrap
-                    onClick={onDownDemand}
-                    id="downIcon"
-                    isOnly={currentIndex <= 0}
-                  >
-                    <CommonIconFont
-                      type="down"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
-                    />
-                  </DownWrap>
-                </Tooltip>
-              )}
-            </ChangeIconGroup>
-            <Tooltip title={t('openDetails')}>
-              <div onClick={onToDetail}>
-                <CommonButton type="icon" icon="full-screen" />
-              </div>
-            </Tooltip>
-            <Tooltip title={t('more')}>
-              <Popover
-                open={isMoreVisible}
-                onOpenChange={setIsMoreVisible}
-                placement="bottomRight"
-                trigger={['click']}
-                getPopupContainer={n => n}
-                content={
-                  <DemandOperationDropdownMenu
-                    haveComment
-                    onEditChange={onEditChange}
-                    onDeleteChange={onDeleteChange}
-                    onCreateChild={onCreateChild}
-                    onAddComment={() => {
-                      commentDom.current?.focus()
-                      setIsMoreVisible(false)
-                    }}
-                    record={demandDetailDrawerProps}
-                  />
-                }
-              >
-                <div>
-                  <CommonButton type="icon" icon="more" />
-                </div>
-              </Popover>
-            </Tooltip>
+              </>
+            )}
             {demandDetailDrawerProps.star && (
               <Tooltip title={t('starMark')}>
-                <div onClick={onToDetail}>
-                  <CommonButton type="icon" icon="star-adipf4l8" />
-                </div>
+                <CommonButton
+                  isStar={drawerInfo.isStar}
+                  onClick={async () => {
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getDemandDetail()
+                    }
+                  }}
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
               </Tooltip>
             )}
           </Space>
@@ -833,7 +854,11 @@ const DemandDetailDrawer = () => {
                 </div>
                 {!skeletonLoading && (
                   <ChangeStatusPopover
-                    isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                    isCanOperation={
+                      isCanEdit &&
+                      !drawerInfo.isExamine &&
+                      !demandDetailDrawerProps?.isPreview
+                    }
                     projectId={drawerInfo.projectId}
                     record={drawerInfo}
                     onChangeStatus={onChangeStatus}
@@ -866,6 +891,7 @@ const DemandDetailDrawer = () => {
                     onCancel={onCancelExamine}
                     isVerify={drawerInfo?.has_verify === 1}
                     isDrawer
+                    isPreview={demandDetailDrawerProps?.isPreview}
                   />
                 </div>
               )}
@@ -874,7 +900,7 @@ const DemandDetailDrawer = () => {
                   <span
                     className="name"
                     ref={spanDom}
-                    contentEditable
+                    contentEditable={!demandDetailDrawerProps?.isPreview}
                     onBlur={onNameConfirm}
                   >
                     {drawerInfo.name}
@@ -892,6 +918,7 @@ const DemandDetailDrawer = () => {
                   percent={drawerInfo?.schedule}
                   hasEdit={
                     isCanEdit &&
+                    !demandDetailDrawerProps?.isPreview &&
                     drawerInfo?.user
                       ?.map((i: any) => i?.user?.id)
                       ?.includes(userInfo?.id)
@@ -900,51 +927,54 @@ const DemandDetailDrawer = () => {
                   onConfirm={onOperationUpdate}
                 />
               </ProgressBox>
-              <BtnWrap>
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    detailDemandRef?.current.handleUpload()
-                  }}
-                >
-                  {t('appendix')}
-                </CommonButton>
-                <DemandTag
-                  defaultList={drawerInfo?.tag?.map((i: any) => ({
-                    id: i.id,
-                    color: i.tag?.color,
-                    name: i.tag?.content,
-                  }))}
-                  canAdd
-                  onUpdate={onOperationUpdate}
-                  detail={drawerInfo}
-                  isDetailQuick
-                  addWrap={
-                    <CommonButton type="light">{t('addTag')}</CommonButton>
-                  }
-                />
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    childrenDemandRef?.current?.onCreateChild()
-                  }}
-                >
-                  {t('addChildRequirement')}
-                </CommonButton>
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    storyRelationRef?.current.onClickOpen()
-                  }}
-                >
-                  {t('linkWorkItem')}
-                </CommonButton>
-              </BtnWrap>
+              {!demandDetailDrawerProps?.isPreview && (
+                <BtnWrap>
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      detailDemandRef?.current.handleUpload()
+                    }}
+                  >
+                    {t('appendix')}
+                  </CommonButton>
+                  <DemandTag
+                    defaultList={drawerInfo?.tag?.map((i: any) => ({
+                      id: i.id,
+                      color: i.tag?.color,
+                      name: i.tag?.content,
+                    }))}
+                    canAdd
+                    onUpdate={onOperationUpdate}
+                    detail={drawerInfo}
+                    isDetailQuick
+                    addWrap={
+                      <CommonButton type="light">{t('addTag')}</CommonButton>
+                    }
+                  />
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      childrenDemandRef?.current?.onCreateChild()
+                    }}
+                  >
+                    {t('addChildRequirement')}
+                  </CommonButton>
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      storyRelationRef?.current.onClickOpen()
+                    }}
+                  >
+                    {t('linkWorkItem')}
+                  </CommonButton>
+                </BtnWrap>
+              )}
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={() => {
                   getDemandDetail()
                 }}
+                isPreview={demandDetailDrawerProps?.isPreview}
               ></DrawerTopInfo>
               <Tabs
                 className="tabs"
@@ -957,19 +987,26 @@ const DemandDetailDrawer = () => {
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
                   ref={detailDemandRef}
+                  isPreview={demandDetailDrawerProps?.isPreview}
                 />
                 <ChildrenDemand
                   onUpdate={onOperationUpdate}
                   detail={drawerInfo}
                   ref={childrenDemandRef}
+                  isPreview={demandDetailDrawerProps?.isPreview}
                 />
                 <StoryRelation
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
                   isDrawer
                   ref={storyRelationRef}
+                  isPreview={demandDetailDrawerProps?.isPreview}
                 />
-                <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
+                <BasicDemand
+                  detail={drawerInfo}
+                  onUpdate={onOperationUpdate}
+                  isPreview={demandDetailDrawerProps?.isPreview}
+                />
 
                 <div id="tab_comment" className="info_item_tab">
                   <CommentTitle>{t('requirements_review')}</CommentTitle>

@@ -32,7 +32,7 @@ const NameWrap = styled.div<{ fontSize?: number }>`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  width: 90px;
+  max-width: 200px;
 `
 
 interface UserAvatarProps {

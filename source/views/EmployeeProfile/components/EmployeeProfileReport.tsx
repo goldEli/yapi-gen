@@ -1,13 +1,22 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 import { useSelector } from '@store/index'
 import {
   LoadingMore,
+  OperationButton,
   ReportItemHeader,
   ReportItemHeaderLeft,
   ReportItemHeaderRight,
   ReportItemWrap,
   ReportWrap,
+  Title,
+  Msg,
+  RowRadius,
+  Radius,
+  DetailItem,
+  CommentBox,
+  ReportItemBox,
 } from '../style'
 import { useEffect, useState } from 'react'
 import {
@@ -16,31 +25,45 @@ import {
   getMemberOverviewMoreReportList,
   getMemberOverviewReportList,
 } from '@/services/employeeProfile'
-import { Spin } from 'antd'
+import { Spin, Tooltip } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from '@/components/NoData'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
 import CommonIconFont from '@/components/CommonIconFont'
+import {
+  addReportComment,
+  delReportComment,
+  getReportComment,
+  getReportInfo,
+} from '@/services/report'
+import { useTranslation } from 'react-i18next'
+import { Editor, UploadAttach } from 'ifunuikit'
+import IconFont from '@/components/IconFont'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import CommentFooter from '@/components/CommonComment/CommentFooter'
+import { getStaffListAll } from '@/services/staff'
+import { getIdsForAt } from '@/tools'
 
 interface ReportItemProps {
   // 当前数据
   item: any
   // 当前操作的人员id
   user_id: number
-  // 上一页的最后一条数据
-  lastData: any
-  // 更多汇报修改数据
-  onChangMoreData(arr: any, id: any): void
   onChangData(id: any, item: any): void
 }
 
 const ReportItem = (props: ReportItemProps) => {
-  const { filterParams } = useSelector(store => store.employeeProfile)
-  const { item, user_id, lastData, onChangMoreData, onChangData } = props
-  const [page, setPage] = useState(1)
+  const [t] = useTranslation()
+  const { userInfo } = useSelector(store => store.user)
+  const { item, user_id, onChangData } = props
+  const [reportInfo, setReportInfo] = useState<any>({})
+  const [commentList, setCommentList] = useState([])
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDeleteId, setIsDeleteId] = useState(0)
+  const [arr, setArr] = useState<any>(null)
 
-  // 标星或者是取消标星  state: true是已经标星，取消标星，反之， item:当前数据， id:每个人员前的id
+  // 标星或者是取消标星  state: true是已经标星，取消标星，反之， item:当前数据
   const onStar = async (state: boolean, item: any) => {
     const params = {
       type: 2,
@@ -57,18 +80,106 @@ const ReportItem = (props: ReportItemProps) => {
     onChangData(user_id, item)
   }
 
-  // 点击加载更多
-  const onLoadingMore = async () => {
-    setPage(page + 1)
-    const response = await getMemberOverviewMoreReportList({
-      ...filterParams,
-      ...{ user_id, current_time: lastData.created_at },
+  // 获取汇报评论
+  const getReportCommentData = async (id: number) => {
+    const response = await getReportComment({
+      report_user_id: id,
+      page: 1,
+      pagesize: 999,
     })
-    onChangMoreData(response?.list || [], user_id)
+    setCommentList(response.list)
   }
+
+  // 获取汇报详情
+  const getReportDetail = async (id: number) => {
+    const info = await getReportInfo({ id })
+    setReportInfo(info)
+  }
+
+  // 获取人员数组
+  const getPersonList = async () => {
+    const companyList = await getStaffListAll({ all: 1 })
+    const filterCompanyList = companyList.map((item: any) => ({
+      id: item.id,
+      label: item.name,
+    }))
+    setArr(filterCompanyList)
+  }
+
+  // 打开汇报数据
+  const onOpenInfo = (item: any) => {
+    item.is_expended = item.is_expended === 1 ? 2 : 1
+    onChangData(user_id, item)
+    if (item.is_expended === 1) {
+      getReportDetail(item.id)
+      getReportCommentData(item.id)
+      getPersonList()
+    }
+  }
+
+  const AttachmentBox = (props: { list: any }) => {
+    const list = props.list?.length ? props.list : []
+    const resultList = list?.map((item: any) => {
+      return {
+        url: item.url,
+        id: new Date().getTime() + Math.random(),
+        size: item.size,
+        time: item.ctime,
+        name: item.name || '--',
+        suffix: item.ext,
+        username: item.username,
+      }
+    })
+    return list?.length ? (
+      <UploadAttach isReport canUpdate power defaultList={resultList} />
+    ) : (
+      <span>--</span>
+    )
+  }
+
+  // 删除评论
+  const onDeleteComment = (item: any) => {
+    setIsVisible(true)
+    setIsDeleteId(item.id)
+  }
+
+  // 删除确认事件
+  const onDeleteConfirm = async () => {
+    try {
+      await delReportComment({
+        report_user_id: reportInfo?.id,
+        id: isDeleteId,
+      })
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+      setIsDeleteId(0)
+      setIsVisible(false)
+      getReportCommentData(reportInfo?.id)
+    } catch (error) {
+      //
+    }
+  }
+
+  // 评论
+  const onComment = async (value: any) => {
+    const params = {
+      report_user_id: reportInfo.id,
+      content: value.info,
+      a_user_ids: getIdsForAt(value.info),
+    }
+    await addReportComment(params)
+    getMessage({ msg: t('report.list.okComment'), type: 'success' })
+    getReportCommentData(reportInfo.id)
+  }
+
   return (
     <>
       <ReportItemWrap>
+        <DeleteConfirm
+          text={t('mark.cd')}
+          isVisible={isVisible}
+          onChangeVisible={() => setIsVisible(!isVisible)}
+          onConfirm={onDeleteConfirm}
+        />
         <ReportItemHeader>
           {item.is_star === 1 && (
             <div className="icon">
@@ -78,26 +189,182 @@ const ReportItem = (props: ReportItemProps) => {
           <ReportItemHeaderLeft>
             <CommonUserAvatar avatar={item.user.avatar} size="large" />
             <div className="info">
-              <div className="name">{item.user.name}</div>
+              <div className="name">
+                {item.user.name}
+                生成的{item.start_time}
+                {item.name}
+              </div>
               <div className="sub">
-                {item.departments
-                  .reverse()
-                  ?.map((i: any) => i.name)
-                  ?.join(' - ')}
+                {item.departments?.map((i: any) => i.name)?.join(' - ')}
               </div>
             </div>
           </ReportItemHeaderLeft>
           <ReportItemHeaderRight>
-            <span>{item.is_expended ? '收起' : '折叠'}</span>
-            <span onClick={() => onStar(item.is_star === 1, item)}>
-              {item.is_star === 1 ? '取消标星' : '标星'}
-            </span>
+            <Tooltip
+              placement="top"
+              trigger="hover"
+              title={item.is_expended === 1 ? '展开' : '折叠'}
+            >
+              <OperationButton onClick={() => onOpenInfo(item)}>
+                <CommonIconFont
+                  type={item.is_expended === 1 ? 'up-02' : 'down-02'}
+                  size={20}
+                />
+              </OperationButton>
+            </Tooltip>
+            <Tooltip
+              placement="top"
+              trigger="hover"
+              title={item.is_star === 1 ? '取消标星' : '标星'}
+            >
+              <OperationButton
+                onClick={() => onStar(item.is_star === 1, item)}
+                isStar={item.is_star === 1}
+              >
+                <CommonIconFont
+                  type={item.is_star === 1 ? 'star' : 'star-adipf4l8'}
+                  size={20}
+                />
+              </OperationButton>
+            </Tooltip>
           </ReportItemHeaderRight>
         </ReportItemHeader>
+        {item.is_expended === 1 && (
+          <>
+            <Title>{t('report.list.reportProject')}</Title>
+            <Msg style={{ marginTop: 8 }}>{reportInfo?.project?.name}</Msg>
+            {reportInfo.report_content?.map((item: any) => (
+              <div key={item.id}>
+                {item.type === 4 && (
+                  <Title style={{ marginBottom: 8 }}>
+                    {item.name_text}: {item.pivot.params?.length}
+                    {t('report.list.pieces')}
+                  </Title>
+                )}
+                {item.type === 3 && item.name !== 'total_schedule' && (
+                  <>
+                    <Title>{item.name_text}</Title>
+                    <Editor
+                      readonly
+                      disableUpdateValue
+                      value={item?.pivot?.content}
+                    />
+                  </>
+                )}
+                {item.type === 4 &&
+                  item.pivot.params?.map((el: any) => (
+                    <RowRadius key={el.id}>
+                      <Radius />
+                      {item?.name === 'overdue_tasks' && el.expected_day > 0 ? (
+                        <span style={{ marginRight: 3, whiteSpace: 'nowrap' }}>
+                          [{t('report.list.overdue')}
+                          {el.expected_day}
+                          {t('report.list.day')}]
+                        </span>
+                      ) : null}
+                      <Msg>
+                        {el.name}
+                        {`（${
+                          el.user_schedule_percent
+                            ? el.user_schedule_percent
+                            : 0
+                        }%  ${el.user_today_task_time ?? 0}h）`}
+                      </Msg>
+                    </RowRadius>
+                  ))}
+
+                {item.type === 2 && (
+                  <>
+                    <Title>{item?.name_text}</Title>
+                    <AttachmentBox list={item?.pivot?.params} />
+                  </>
+                )}
+              </div>
+            ))}
+            <DetailItem>
+              <Title style={{ marginBottom: 8 }}>{t('common.comment')}</Title>
+              {commentList && commentList.length
+                ? commentList.map((i: any) => (
+                    <CommentBox key={i.id}>
+                      <div className="headWrap">
+                        <div className="header">
+                          <CommonUserAvatar name={i.comment_user.name} />
+                          <div className="time">{i.created_at || '--'}</div>
+                        </div>
+                        {userInfo?.id === i.comment_user.id ? (
+                          <IconFont
+                            className="deleteIcon"
+                            style={{ marginLeft: 20 }}
+                            type="close"
+                            onClick={() => onDeleteComment(i)}
+                          />
+                        ) : null}
+                      </div>
+                      <div className="content">
+                        <Editor
+                          readonly
+                          disableUpdateValue
+                          value={i?.content}
+                        />
+                      </div>
+                    </CommentBox>
+                  ))
+                : '--'}
+            </DetailItem>
+            <CommentFooter
+              placeholder={`评论${item.user.name}的日志`}
+              personList={arr}
+              onConfirm={onComment}
+              style={{ position: 'inherit', margin: '16px 0' }}
+              maxHeight="72vh"
+              isEmployee
+            />
+          </>
+        )}
       </ReportItemWrap>
-      <LoadingMore onClick={() => onLoadingMore()}>
-        加载该成员更多日报
-      </LoadingMore>
+    </>
+  )
+}
+
+interface ReportItemGroupProps {
+  // 当前数据
+  item: any
+  // 当前操作的人员id
+  user_id: number
+  // 上一页的最后一条数据
+  lastData: any
+  // 更多汇报修改数据
+  onChangMoreData(arr: any, id: any): void
+  onChangData(id: any, item: any): void
+}
+
+const ReportItemGroup = (props: ReportItemGroupProps) => {
+  const { filterParams } = useSelector(store => store.employeeProfile)
+  const { item, user_id, lastData, onChangMoreData, onChangData } = props
+  const [page, setPage] = useState(1)
+  // 点击加载更多
+  const onLoadingMore = async () => {
+    const response = await getMemberOverviewMoreReportList({
+      ...filterParams,
+      ...{ user_id, current_time: lastData.created_at },
+    })
+    onChangMoreData(response?.list || [], user_id)
+    setPage(page + 1)
+  }
+
+  return (
+    <>
+      {item.list?.map((itemChild: any) => (
+        <ReportItem
+          key={itemChild.id}
+          item={itemChild}
+          user_id={user_id}
+          onChangData={onChangData}
+        />
+      ))}
+      {item.list?.length >= 1 * page && (
+        <LoadingMore onClick={onLoadingMore}>加载该成员更多日报</LoadingMore>
+      )}
     </>
   )
 }
@@ -107,96 +374,17 @@ const EmployeeProfileReport = () => {
   const [loading, setLoading] = useState(false)
 
   const [dataList, setDataList] = useState<any>({
-    // list: undefined,
-    list: [
-      {
-        current_user_id: '6',
-        list: [
-          {
-            is_star: 2,
-            isExpended: false,
-            id: 193,
-            report_template_id: 52,
-            is_auto: 2,
-            start_time: '2023-09-06',
-            type: 2,
-            user_id: 6,
-            created_at: '2023-09-06 14:11:51',
-            name: '工作日报',
-            project_id: 327,
-            user: {
-              id: 6,
-              name: '马成龙',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-04-24/68e19872-c04e-44d4-b4c7-9b86bcd0cfd8.png',
-            },
-            project: {
-              id: 327,
-              name: 'mango测试项目',
-            },
-            title: '马成龙生成的2023-09-06工作日报(手动)',
-            departments: [
-              {
-                // id: 1542006488750587906,
-                name: 'php',
-                // parent_id: 1622899318493040642,
-              },
-              {
-                // id: 1622899318493040642,
-                name: '成都定星科技',
-                parent_id: 0,
-              },
-            ],
-          },
-          {
-            is_star: 2,
-            isExpended: false,
-            id: 194,
-            report_template_id: 52,
-            is_auto: 2,
-            start_time: '2023-09-06',
-            type: 2,
-            user_id: 6,
-            created_at: '2023-09-06 14:22:27',
-            name: '工作日报',
-            project_id: 327,
-            user: {
-              id: 6,
-              name: '马成龙',
-              avatar:
-                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-04-24/68e19872-c04e-44d4-b4c7-9b86bcd0cfd8.png',
-            },
-            project: {
-              id: 327,
-              name: 'mango测试项目',
-            },
-            title: '马成龙生成的2023-09-06工作日报(手动)',
-            departments: [
-              {
-                // id: 1542006488750587906,
-                name: 'php',
-                // parent_id: 1622899318493040642,
-              },
-              {
-                // id: 1622899318493040642,
-                name: '成都定星科技',
-                parent_id: 0,
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    list: undefined,
   })
 
   // 点击加载更多日报，合并数据
   const onChangMoreData = (arr: any, id: number) => {
-    setDataList(
-      dataList?.list?.map((i: any) => ({
+    setDataList({
+      list: dataList?.list?.map((i: any) => ({
         ...i,
         list: i.current_user_id === id ? [...i.list, ...arr] : i.list,
       })),
-    )
+    })
   }
 
   // 标星/取消标星，折叠/收起
@@ -220,9 +408,9 @@ const EmployeeProfileReport = () => {
 
   useEffect(() => {
     if (filterParams.status) {
-      // setDataList({ list: undefined })
-      // setLoading(true)
-      // getReportList()
+      setDataList({ list: undefined })
+      setLoading(true)
+      getReportList()
     }
   }, [filterParams.time, filterParams.isStart, filterParams.user_ids])
   return (
@@ -232,25 +420,23 @@ const EmployeeProfileReport = () => {
         indicator={<NewLoadingTransition />}
         size="large"
       >
-        {!!dataList?.list &&
-          (dataList?.list?.length > 0 ? (
-            dataList?.list?.map((i: any) => (
-              <>
-                {i.list?.map((item: any) => (
-                  <ReportItem
-                    key={i.current_user_id}
-                    item={item}
-                    user_id={i.current_user_id}
-                    lastData={i.list[i.list?.length - 1]}
-                    onChangMoreData={onChangMoreData}
-                    onChangData={onChangData}
-                  />
-                ))}
-              </>
-            ))
-          ) : (
-            <NoData />
-          ))}
+        <ReportItemBox>
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
+              dataList?.list?.map((i: any) => (
+                <ReportItemGroup
+                  key={i.current_user_id}
+                  item={i}
+                  user_id={i.current_user_id}
+                  lastData={i.list[i.list?.length - 1]}
+                  onChangMoreData={onChangMoreData}
+                  onChangData={onChangData}
+                />
+              ))
+            ) : (
+              <NoData />
+            ))}
+        </ReportItemBox>
       </Spin>
     </ReportWrap>
   )

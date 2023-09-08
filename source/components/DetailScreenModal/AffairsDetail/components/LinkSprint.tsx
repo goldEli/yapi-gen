@@ -58,6 +58,7 @@ const LinkSprint = (props: {
   detail: Model.Affairs.AffairsInfo
   isInfoPage?: boolean
   onRef?: any
+  isPreview?: boolean
 }) => {
   const [t] = useTranslation()
   const [isShowMore, setIsShowMore] = useState(false)
@@ -400,6 +401,7 @@ const LinkSprint = (props: {
       getSelectRelationRecent()
     }
   }, [searchValue, isVisible])
+
   useImperativeHandle(props.onRef, () => {
     return {
       onClickOpen: onClickOpen,
@@ -467,7 +469,7 @@ const LinkSprint = (props: {
       </CommonModal>
       <LabelWrap>
         <Label>{t('linkAffairs')}</Label>
-        {!isEnd && (
+        {!isEnd && !props?.isPreview && (
           <Tooltip title={t('addLinkTransaction')}>
             <CloseWrap width={32} height={32}>
               <CommonIconFont

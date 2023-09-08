@@ -12,6 +12,7 @@ import MemberGroup from './MemberGroup'
 import { setProjectGroup } from '@store/workReport'
 import { useDispatch } from '@store/index'
 import MultipleAvatar from '@/components/MultipleAvatar'
+import { useTranslation } from 'react-i18next'
 import {
   addGroup,
   editGroup,
@@ -22,6 +23,7 @@ import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { Tooltip } from 'antd'
 const ProjectGroup = (props: any) => {
+  const [t]: any = useTranslation()
   const [userVisible, setUserVisible] = useState(false)
   const [groupVisible, setGroupVisible] = useState(false)
   const [userList, setUserList] = useState<Model.User.User[]>()
@@ -57,7 +59,7 @@ const ProjectGroup = (props: any) => {
     props.onChange(data)
   }, [data])
   const delBtn = (
-    <Tooltip title="删除分组">
+    <Tooltip title={t('deleteGroup')}>
       <DelIcon>
         <IconFont
           type="delete"
@@ -82,7 +84,7 @@ const ProjectGroup = (props: any) => {
           type="plus"
           color="var(--auxiliary-text-t2-d2)"
         ></CommonIconFont>
-        <span className="text">添加项目组</span>
+        <span className="text">{t('addProjectGroup')}</span>
       </ProjectGroupTitle>
       {data?.map((item: any) => {
         return (
@@ -113,7 +115,7 @@ const ProjectGroup = (props: any) => {
                   onClick={() => {
                     const data = props.data
                       .find((ele: { id: any }) => ele.id === item.id)
-                      ?.users.map((item: { id: any }) => item.id)
+                      ?.users?.map((item: { id: any }) => item.id)
                     setGroupName(
                       props.data.find((ele: { id: any }) => ele.id === item.id)
                         ?.name,
@@ -128,7 +130,10 @@ const ProjectGroup = (props: any) => {
                 ></IconFont>
               </div>
               <div className="user-num">
-                共计{item.users?.length}人，{item.stories?.length}个事务
+                {t('total')}
+                {item.users?.length}
+                {t('people')}，{item.stories?.length}
+                {t('transactions')}
               </div>
 
               <div
@@ -142,7 +147,7 @@ const ProjectGroup = (props: any) => {
               </div>
             </GroupBox>
             <GroupStoryBox>
-              {item.stories.map((item: any) => {
+              {item.stories?.map((item: any) => {
                 return (
                   <div className="item" key={item.id}>
                     {item.name}（{item.schedule_percent}% {item.schedule}h）
@@ -193,8 +198,8 @@ const ProjectGroup = (props: any) => {
         onChangeVisible={() => {
           setIsDeleteVisible(false)
         }}
-        text="确认删除该分组"
-        title="删除确认"
+        text={t('confirmToDeleteThisGroup')}
+        title={t('deleteConfirmation')}
       />
     </div>
   )

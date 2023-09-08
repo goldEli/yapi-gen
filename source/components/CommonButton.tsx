@@ -140,6 +140,7 @@ interface Props {
   // 按钮大小
   size?: 'small' | 'large'
   loading?: boolean
+  isStar?: boolean
 }
 
 const CommonButton = (props: Props) => {
@@ -218,7 +219,10 @@ const CommonButton = (props: Props) => {
         size={props.size}
         style={props?.style}
       >
-        <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
+        <IconFont
+          type={props.icon || ''}
+          style={{ fontSize: 20, color: props.isStar ? '#fb9a56' : '' }}
+        />
       </ButtonWrap>
     )
   }

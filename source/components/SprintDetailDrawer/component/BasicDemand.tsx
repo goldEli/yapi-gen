@@ -45,6 +45,7 @@ interface Props {
   hasPadding?: boolean
   // 是否是详情页面
   isInfoPage?: boolean
+  isPreview?: boolean
 }
 
 const LimitLabel = (props: { label: string; width: number }) => {
@@ -263,6 +264,7 @@ const BasicDemand = (props: Props) => {
           onUpdate={props.onUpdate}
           isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
           isInfoPage={props.isInfoPage}
+          isPreview={props.isPreview}
         >
           {['users_copysend_name', 'users_name'].includes(item.content) && (
             <MultipleAvatar
@@ -290,7 +292,7 @@ const BasicDemand = (props: Props) => {
     } else if (item.content === 'parent_id') {
       nodeComponent = (
         <DetailParent
-          hasEdit={isCanEdit}
+          hasEdit={!props.isPreview && isCanEdit}
           detail={props.detail}
           onUpdate={props.onUpdate}
           type={3}
@@ -300,7 +302,7 @@ const BasicDemand = (props: Props) => {
     } else if (item.content === 'priority') {
       nodeComponent = (
         <ChangePriorityPopover
-          isCanOperation={isCanEdit}
+          isCanOperation={isCanEdit && !props.isPreview}
           record={{
             id: props.detail.id,
             project_id: props.detail.projectId,
@@ -340,7 +342,7 @@ const BasicDemand = (props: Props) => {
     } else if (item.content === 'severity') {
       nodeComponent = (
         <ChangeSeverityPopover
-          isCanOperation={isCanEdit}
+          isCanOperation={isCanEdit && !props.isPreview}
           record={{
             id: props.detail.id,
             project_id: props.detail.projectId,
@@ -393,6 +395,7 @@ const BasicDemand = (props: Props) => {
         onUpdate={props.onUpdate}
         isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
         isInfoPage={props.isInfoPage}
+        isPreview={props.isPreview}
       >
         <span>
           {getCustomNormalValue(

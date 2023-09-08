@@ -87,10 +87,11 @@ const ItemContent = styled.div`
 
 const InfoRow = styled.div`
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   margin-bottom: 2px;
   font-size: 12px;
   color: var(--neutral-n3);
+  justify-content: flex-start;
   span {
     color: var(--neutral-n2);
   }
@@ -116,7 +117,8 @@ interface ScheduleRecordProps {
   // 全屏详情需要高度滚动
   height?: any
   noBorder?: boolean
-  isBug: boolean
+  isBug?: boolean
+  isPreview?: boolean
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
@@ -163,7 +165,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
         })
       }
 
-      if (projectInfo.projectType === 1 && !props.isBug) {
+      if (projectInfo.projectType === 1 && !props?.isBug) {
         result = await updateStoryPerception({
           project_id: props?.projectId,
           story_id: props?.detailId,
@@ -171,7 +173,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
           perception: value,
         })
       }
-      if (projectInfo.projectType === 1 && props.isBug) {
+      if (projectInfo.projectType === 1 && props?.isBug) {
         result = await updateFlawPerception({
           project_id: props?.projectId,
           story_id: props?.detailId,
@@ -217,7 +219,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                       <CommonIconFont type="swap-right" /> {i.after_schedule}%
                     </span>
                   </div>
-                  {userInfo?.id === i?.userInfo?.id && (
+                  {userInfo?.id === i?.userInfo?.id && !props?.isPreview && (
                     <div className="icons">
                       <CommonIconFont
                         type="edit"
@@ -244,7 +246,8 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                   </span>
                 </InfoRow>
                 <InfoRow>
-                  {t('releaseNotes')}：<span>{i.perception || '--'}</span>
+                  <span>{t('releaseNotes')}：</span>
+                  <span style={{ flex: 1 }}>{i.perception || '--'}</span>
                 </InfoRow>
                 {i.attachment?.length > 0 && (
                   <UploadAttach

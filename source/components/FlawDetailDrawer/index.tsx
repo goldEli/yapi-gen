@@ -89,6 +89,7 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import FlawTag from '../TagComponent/FlawTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
+import { toggleStar } from '@/services/employeeProfile'
 let timer: NodeJS.Timeout
 const FlawDetailDrawer = () => {
   const normalState = {
@@ -117,7 +118,7 @@ const FlawDetailDrawer = () => {
   const dispatch = useDispatch()
   const commentDom: any = createRef()
   const { flawDetailDrawer, flawCommentList } = useSelector(store => store.flaw)
-  const { visible, params } = flawDetailDrawer
+  const { visible, params, isPreview } = flawDetailDrawer
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [focus, setFocus] = useState(false)
@@ -195,7 +196,7 @@ const FlawDetailDrawer = () => {
     if (paramsProjectId) {
       projectRef.current = paramsProjectId
     }
-    if (params?.isAllProject) {
+    if (params?.isAllProject || isPreview) {
       getProjectData()
     }
     setDrawerInfo({})
@@ -640,6 +641,9 @@ const FlawDetailDrawer = () => {
 
   useEffect(() => {
     if (visible || params?.id) {
+      if (isPreview) {
+        dispatch(setProjectInfo({}))
+      }
       dispatch(setFlawCommentList({ list: [] }))
       setDemandIds(params?.demandIds || [])
       getFlawDetail('', params?.demandIds || [])
@@ -757,75 +761,90 @@ const FlawDetailDrawer = () => {
             )}
           </Space>
           <Space size={16}>
-            <ChangeIconGroup>
-              {currentIndex > 0 && (
-                <Tooltip title={t('previous')}>
-                  <UpWrap
-                    onClick={onUpDemand}
-                    id="upIcon"
-                    isOnly={
-                      demandIds?.length === 0 ||
-                      currentIndex === demandIds?.length - 1
-                    }
-                  >
-                    <CommonIconFont
-                      type="up"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
-                    />
-                  </UpWrap>
+            {!flawDetailDrawer.star && (
+              <>
+                <ChangeIconGroup>
+                  {currentIndex > 0 && (
+                    <Tooltip title={t('previous')}>
+                      <UpWrap
+                        onClick={onUpDemand}
+                        id="upIcon"
+                        isOnly={
+                          demandIds?.length === 0 ||
+                          currentIndex === demandIds?.length - 1
+                        }
+                      >
+                        <CommonIconFont
+                          type="up"
+                          size={20}
+                          color="var(--neutral-n1-d1)"
+                        />
+                      </UpWrap>
+                    </Tooltip>
+                  )}
+                  {!(
+                    demandIds?.length === 0 ||
+                    currentIndex === demandIds?.length - 1
+                  ) && (
+                    <Tooltip title={t('next')}>
+                      <DownWrap
+                        onClick={onDownDemand}
+                        id="downIcon"
+                        isOnly={currentIndex <= 0}
+                      >
+                        <CommonIconFont
+                          type="down"
+                          size={20}
+                          color="var(--neutral-n1-d1)"
+                        />
+                      </DownWrap>
+                    </Tooltip>
+                  )}
+                </ChangeIconGroup>
+                <Tooltip title={t('share')}>
+                  <div>
+                    <CommonButton type="icon" icon="share" onClick={onShare} />
+                  </div>
                 </Tooltip>
-              )}
-              {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) && (
-                <Tooltip title={t('next')}>
-                  <DownWrap
-                    onClick={onDownDemand}
-                    id="downIcon"
-                    isOnly={currentIndex <= 0}
-                  >
-                    <CommonIconFont
-                      type="down"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
+                <Tooltip title={t('openDetails')}>
+                  <div>
+                    <CommonButton
+                      type="icon"
+                      icon="full-screen"
+                      onClick={onToDetail}
                     />
-                  </DownWrap>
+                  </div>
                 </Tooltip>
-              )}
-            </ChangeIconGroup>
-            <Tooltip title={t('share')}>
-              <div>
-                <CommonButton type="icon" icon="share" onClick={onShare} />
-              </div>
-            </Tooltip>
-            <Tooltip title={t('openDetails')}>
-              <div>
-                <CommonButton
-                  type="icon"
-                  icon="full-screen"
-                  onClick={onToDetail}
-                />
-              </div>
-            </Tooltip>
-            <Tooltip title={t('more')}>
-              <DropdownMenu
-                placement="bottomRight"
-                trigger={['click']}
-                menu={{ items: onGetMenu() }}
-                getPopupContainer={n => n}
-              >
-                <div>
-                  <CommonButton type="icon" icon="more" />
-                </div>
-              </DropdownMenu>
-            </Tooltip>
+                <Tooltip title={t('more')}>
+                  <DropdownMenu
+                    placement="bottomRight"
+                    trigger={['click']}
+                    menu={{ items: onGetMenu() }}
+                    getPopupContainer={n => n}
+                  >
+                    <div>
+                      <CommonButton type="icon" icon="more" />
+                    </div>
+                  </DropdownMenu>
+                </Tooltip>
+              </>
+            )}
             {flawDetailDrawer.star && (
               <Tooltip title={t('starMark')}>
-                <div onClick={onToDetail}>
-                  <CommonButton type="icon" icon="star-adipf4l8" />
-                </div>
+                <CommonButton
+                  isStar={drawerInfo.isStar}
+                  onClick={async () => {
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getFlawDetail()
+                    }
+                  }}
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
               </Tooltip>
             )}
           </Space>
@@ -885,7 +904,9 @@ const FlawDetailDrawer = () => {
                 </div>
                 {!skeletonLoading && (
                   <ChangeStatusPopover
-                    isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                    isCanOperation={
+                      isCanEdit && !drawerInfo.isExamine && !isPreview
+                    }
                     projectId={drawerInfo.projectId}
                     record={drawerInfo}
                     onChangeStatus={onChangeStatus}
@@ -918,6 +939,7 @@ const FlawDetailDrawer = () => {
                     onCancel={onCancelExamine}
                     isVerify={drawerInfo?.has_verify === 1}
                     isDrawer
+                    isPreview={isPreview}
                   />
                 </div>
               )}
@@ -926,7 +948,7 @@ const FlawDetailDrawer = () => {
                   <span
                     className="name"
                     ref={spanDom}
-                    contentEditable
+                    contentEditable={!isPreview}
                     onBlur={onNameConfirm}
                   >
                     {drawerInfo.name}
@@ -943,6 +965,7 @@ const FlawDetailDrawer = () => {
                   percent={drawerInfo?.schedule}
                   hasEdit={
                     !!isCanEdit &&
+                    !isPreview &&
                     drawerInfo?.user
                       ?.map((i: any) => i?.user?.id)
                       ?.includes(userInfo?.id)
@@ -951,44 +974,47 @@ const FlawDetailDrawer = () => {
                   onConfirm={onOperationUpdate}
                 />
               </div>
-              <BtnWrap>
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    flawDetailRef?.current?.handleUpload()
-                  }}
-                >
-                  {t('appendix')}
-                </CommonButton>
+              {!isPreview && (
+                <BtnWrap>
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      flawDetailRef?.current?.handleUpload()
+                    }}
+                  >
+                    {t('appendix')}
+                  </CommonButton>
 
-                <FlawTag
-                  defaultList={drawerInfo?.tag?.map((i: any) => ({
-                    id: i.id,
-                    color: i.tag?.color,
-                    name: i.tag?.content,
-                  }))}
-                  canAdd
-                  onUpdate={onOperationUpdate}
-                  detail={drawerInfo}
-                  isDetailQuick
-                  addWrap={
-                    <CommonButton type="light">{t('addTag')}</CommonButton>
-                  }
-                />
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    relationStoriesRef?.current?.onClickOpen()
-                  }}
-                >
-                  {t('linkWorkItem')}
-                </CommonButton>
-              </BtnWrap>
+                  <FlawTag
+                    defaultList={drawerInfo?.tag?.map((i: any) => ({
+                      id: i.id,
+                      color: i.tag?.color,
+                      name: i.tag?.content,
+                    }))}
+                    canAdd
+                    onUpdate={onOperationUpdate}
+                    detail={drawerInfo}
+                    isDetailQuick
+                    addWrap={
+                      <CommonButton type="light">{t('addTag')}</CommonButton>
+                    }
+                  />
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      relationStoriesRef?.current?.onClickOpen()
+                    }}
+                  >
+                    {t('linkWorkItem')}
+                  </CommonButton>
+                </BtnWrap>
+              )}
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={() => {
                   getFlawDetail()
                 }}
+                isPreview={isPreview}
               ></DrawerTopInfo>
               <Tabs
                 className="tabs"
@@ -1001,14 +1027,20 @@ const FlawDetailDrawer = () => {
                   flawInfo={drawerInfo}
                   onUpdate={onOperationUpdate}
                   ref={flawDetailRef}
+                  isPreview={isPreview}
                 />
                 <RelationStories
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
                   isDrawer
                   ref={relationStoriesRef}
+                  isPreview={isPreview}
                 />
-                <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
+                <FlawBasic
+                  detail={drawerInfo}
+                  onUpdate={onOperationUpdate}
+                  isPreview={isPreview}
+                />
                 <div id="tab_defectComment" className="info_item_tab">
                   <CommentTitle>{t('defectComment')}</CommentTitle>
                   <CommonComment

@@ -286,6 +286,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
   }, [props.isVisible])
   return (
     <CommonModal
+      width={640}
       isVisible={props.isVisible}
       title={
         props.type === 3
@@ -299,10 +300,11 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
     >
       <ContentBox>
         <ContentLeft>
-          <div style={{ paddingRight: 20 }}>
+          <div>
             {props.type !== 4 && (
               <>
                 <Input
+                  style={{ width: '274px' }}
                   value={searchValue}
                   allowClear
                   onChange={e => setSearchValue(e.target.value)}

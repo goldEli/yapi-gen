@@ -104,6 +104,7 @@ interface RelationStoriesProps {
   isOpen?: boolean
   onUpdate?(): void
   isDrawer?: boolean
+  isPreview?: boolean
 }
 
 interface SelectItem {
@@ -761,13 +762,10 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   ]
 
   useEffect(() => {
-    // if (props.activeKey === '3' || props.isOpen) {
-    //   getList(pageObj, order)
-    // }
-    if (props.detail?.id) {
+    if (props.detail?.id && projectInfo?.id) {
       getList(pageObj, order)
     }
-  }, [props.detail])
+  }, [props.detail, projectInfo])
   useEffect(() => {
     if (isVisible && !searchValue) {
       getSelectRelationRecent()
@@ -850,16 +848,18 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
       {props.isDrawer ? (
         <LabelWrap>
           <Label>{t('linkWorkItem')}</Label>
-          <Tooltip title={t('linkTask')}>
-            <CloseWrap width={32} height={32}>
-              <CommonIconFont
-                type="plus"
-                size={20}
-                color="var(--neutral-n2)"
-                onClick={onClickOpen}
-              />
-            </CloseWrap>
-          </Tooltip>
+          {!props?.isPreview && (
+            <Tooltip title={t('linkTask')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={onClickOpen}
+                />
+              </CloseWrap>
+            </Tooltip>
+          )}
         </LabelWrap>
       ) : (
         <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>

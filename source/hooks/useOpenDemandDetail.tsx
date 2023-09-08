@@ -91,7 +91,7 @@ const useOpenDemandDetail = () => {
       let params: any = {
         changeIds: item.demandIds,
         id: projectId,
-        specialType: type ?? 3,
+        specialType: type === 0 ? 3 : type,
       }
       if (type === 1) {
         params.sprintId = id
