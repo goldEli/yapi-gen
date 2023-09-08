@@ -35,6 +35,7 @@ import NewLoadingTransition from './NewLoadingTransition'
 import CommonButton from './CommonButton'
 import CustomSelect from './CustomSelect'
 import { setIsUpdateChangeLog } from '@store/project'
+import CustomSelects from '@/components/MoreSelect'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
@@ -337,7 +338,8 @@ const TagSelect = (props: any) => {
   }, [])
 
   return (
-    <CustomSelect
+    <CustomSelects
+      border
       defaultValue={props.dvalue}
       onChange={onSelect}
       mode="multiple"
@@ -713,7 +715,8 @@ export const ShapeContent = (props: any) => {
                             },
                           ]}
                         >
-                          <CustomSelect
+                          <CustomSelects
+                            border
                             mode="multiple"
                             dropdownRender={(menu: any) => {
                               return (
@@ -766,7 +769,8 @@ export const ShapeContent = (props: any) => {
                             },
                           ]}
                         >
-                          <CustomSelect
+                          <CustomSelects
+                            border
                             mode="multiple"
                             placeholder={t('common.pleaseSelect')}
                             allowClear

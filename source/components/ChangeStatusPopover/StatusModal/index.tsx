@@ -25,6 +25,7 @@ import WanderVerify from './Verify'
 import { getProjectMember } from '@/services/project'
 import { getShapeAffairsRight } from '@/services/affairs'
 import { getShapeFlawRight } from '@/services/flaw'
+import MoreSelect from '@/components/MoreSelect'
 
 interface StatusModalProps {
   // 弹窗显示状态
@@ -507,7 +508,8 @@ const StatusModal = (props: StatusModalProps) => {
                         },
                       ]}
                     >
-                      <CustomSelect
+                      <MoreSelect
+                        border
                         mode="multiple"
                         dropdownRender={(menu: any) => {
                           return (
@@ -560,7 +562,8 @@ const StatusModal = (props: StatusModalProps) => {
                         },
                       ]}
                     >
-                      <CustomSelect
+                      <MoreSelect
+                        border
                         mode="multiple"
                         placeholder={t('common.pleaseSelect')}
                         allowClear

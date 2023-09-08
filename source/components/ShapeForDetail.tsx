@@ -31,6 +31,7 @@ import { getShapeRight } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import CommonButton from './CommonButton'
 import CustomSelect from './CustomSelect'
+import MoreSelect from '@/components/MoreSelect'
 import { MyDiv } from './Shape'
 
 export function setValue(res: any) {
@@ -291,7 +292,8 @@ const TagSelect = (props: any) => {
   }, [])
 
   return (
-    <CustomSelect
+    <MoreSelect
+      border
       defaultValue={props.dvalue}
       onChange={onSelect}
       mode="multiple"
@@ -613,7 +615,8 @@ const ShapeContentForDetail = (props: any) => {
                             },
                           ]}
                         >
-                          <CustomSelect
+                          <MoreSelect
+                            border
                             mode="multiple"
                             dropdownRender={(menu: any) => {
                               return (
@@ -667,7 +670,8 @@ const ShapeContentForDetail = (props: any) => {
                             },
                           ]}
                         >
-                          <CustomSelect
+                          <MoreSelect
+                            border
                             mode="multiple"
                             placeholder={t('common.pleaseSelect')}
                             allowClear
