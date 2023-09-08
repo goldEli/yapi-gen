@@ -90,6 +90,7 @@ import FlawTag from '../TagComponent/FlawTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 import { toggleStar } from '@/services/employeeProfile'
+import { setTaskDrawerUpdate } from '@store/employeeProfile'
 let timer: NodeJS.Timeout
 const FlawDetailDrawer = () => {
   const normalState = {
@@ -840,6 +841,13 @@ const FlawDetailDrawer = () => {
                     )
                     if (res === 1) {
                       getFlawDetail()
+                      dispatch(
+                        setTaskDrawerUpdate({
+                          id: flawDetailDrawer.params.employeeCurrentId,
+                          detailId: drawerInfo.id,
+                          state: drawerInfo.isStar ? 2 : 1,
+                        }),
+                      )
                     }
                   }}
                   type="icon"

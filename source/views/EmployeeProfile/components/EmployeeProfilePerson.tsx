@@ -11,7 +11,7 @@ import {
 } from '../style'
 import { Checkbox } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import { setFilterParams } from '@store/employeeProfile'
+import { setContrastDrawer, setFilterParams } from '@store/employeeProfile'
 
 interface EmployeeProfilePersonProps {
   //   修改后的人员数组列表
@@ -71,6 +71,11 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
     )
   }
 
+  // 打开对比报告
+  const onOpenContrast = () => {
+    dispatch(setContrastDrawer({ visible: true }))
+  }
+
   useEffect(() => {
     dispatch(getMemberOverviewList())
   }, [])
@@ -87,7 +92,7 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
 
   return (
     <PersonWrap>
-      <ReportButton>对比报告</ReportButton>
+      <ReportButton onClick={onOpenContrast}>对比报告</ReportButton>
       <div className="label">
         {currentKey?.name}（{currentKey?.total}）
       </div>

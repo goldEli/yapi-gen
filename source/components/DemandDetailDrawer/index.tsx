@@ -100,6 +100,7 @@ import DemandTag from '../TagComponent/DemandTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 import { toggleStar } from '@/services/employeeProfile'
+import { setTaskDrawerUpdate } from '@store/employeeProfile'
 interface ItemIprops {
   label: string
   key: string
@@ -791,6 +792,13 @@ const DemandDetailDrawer = () => {
                     )
                     if (res === 1) {
                       getDemandDetail()
+                      dispatch(
+                        setTaskDrawerUpdate({
+                          id: demandDetailDrawerProps.employeeCurrentId,
+                          detailId: drawerInfo.id,
+                          state: drawerInfo.isStar ? 2 : 1,
+                        }),
+                      )
                     }
                   }}
                   type="icon"

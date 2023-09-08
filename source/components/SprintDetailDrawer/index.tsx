@@ -84,6 +84,7 @@ import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint
 import DrawerTopInfo from '../DrawerTopInfo'
 import CommonProgress from '../CommonProgress'
 import SprintTag from '../TagComponent/SprintTag'
+import { setTaskDrawerUpdate } from '@store/employeeProfile'
 let timer: NodeJS.Timeout
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
@@ -650,6 +651,7 @@ const SprintDetailDrawer = () => {
         ?.removeEventListener('scroll', handleScroll, false)
     }
   }, [drawerInfo])
+
   return (
     <>
       <ShareModal
@@ -808,6 +810,13 @@ const SprintDetailDrawer = () => {
                     )
                     if (res === 1) {
                       getSprintDetail()
+                      dispatch(
+                        setTaskDrawerUpdate({
+                          id: affairsDetailDrawer.params.employeeCurrentId,
+                          detailId: drawerInfo.id,
+                          state: drawerInfo.isStar ? 2 : 1,
+                        }),
+                      )
                     }
                   }}
                   type="icon"

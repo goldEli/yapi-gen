@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-leaked-render */
-import CustomSelect from '@/components/CustomSelect'
 import IconFont from '@/components/IconFont'
 import { getMessage } from '@/components/Message'
 import { AddWrap } from '@/components/StyleCommon'
@@ -7,6 +6,7 @@ import styled from '@emotion/styled'
 import { Form } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import MoreSelect from '@/components/MoreSelect'
 
 const WrapDiv = styled.div`
   .ant-form-item-row {
@@ -118,14 +118,9 @@ const NewRelatedNeed = (props: any) => {
     const data = await lessForm.validateFields()
     const newData = JSON.parse(JSON.stringify(data))
     const result = newData.needs.map((i: any) => ({
-      ...i,
-      expected_day: props?.data?.find((s: any) => s.id === i.id)?.expected_day,
-      user_schedule_percent: props?.data?.find((s: any) => s.id === i.id)
-        ?.user_schedule_percent,
-      user_today_task_time: props?.data?.find((s: any) => s.id === i.id)
-        ?.user_today_task_time,
-      user_total_task_time: props?.data?.find((s: any) => s.id === i.id)
-        ?.user_total_task_time,
+      id: i,
+      value: i,
+      ...(props?.data?.find((s: any) => s.id === i) || {}),
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
     if (!props.canSubmit(result)) {
@@ -229,7 +224,8 @@ const NewRelatedNeed = (props: any) => {
               ]}
             >
               <div className="item">
-                <CustomSelect
+                <MoreSelect
+                  border
                   optionFilterProp="label"
                   showSearch
                   labelInValue
