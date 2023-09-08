@@ -8,7 +8,7 @@ import { SelectWrapBedeck } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import Tabs from '@/components/Tabs'
 import CommonButton from '@/components/CommonButton'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useLayoutEffect } from 'react'
 import Export from '@/components/Export'
 import { getProjectMember } from '@/services/project'
 
@@ -56,6 +56,8 @@ const WorkHoursHeader = (props: {
   const [state, setState] = useState<any>(0)
   const [state1, setState1] = useState<any>(3)
   const [memberList, setMemberList] = useState<any>([])
+  const [dropdownMatchSelectWidth, setDropdownMatchSelectWidth] =
+    useState<any>(0)
   const confirm = () => {
     props.onSearch(form.getFieldsValue(), dateType)
   }
@@ -73,6 +75,12 @@ const WorkHoursHeader = (props: {
     props.onSearch(form.getFieldsValue(), 1)
     getList()
   }, [])
+  useLayoutEffect(() => {
+    const w = document
+      .querySelector('#SelectWrap')
+      ?.getBoundingClientRect().width
+    setDropdownMatchSelectWidth(w)
+  }, [window.localStorage.getItem('language')])
   // 人员接口
   const getList = async () => {
     const result = await getProjectMember({
@@ -237,12 +245,16 @@ const WorkHoursHeader = (props: {
       <WorkHoursHeaderWrap>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <LeftWrap>
-            <SelectWrapBedeck style={{ marginBottom: 20 }}>
+            <SelectWrapBedeck style={{ marginBottom: 20 }} id="SelectWrap">
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('personnel')}
               </span>
               <Form.Item name={'user_ids'}>
-                <MoreSelect onConfirm={confirm} options={memberList} />
+                <MoreSelect
+                  onConfirm={confirm}
+                  options={memberList}
+                  width={dropdownMatchSelectWidth}
+                />
               </Form.Item>
             </SelectWrapBedeck>
             <SelectWrapBedeck style={{ marginLeft: 16, marginBottom: 20 }}>
@@ -251,7 +263,7 @@ const WorkHoursHeader = (props: {
               </span>
               <Form.Item name={'time'}>
                 <RangePicker
-                  width={'235px'}
+                  width="235px"
                   isShowQuick={false}
                   dateValue={
                     form.getFieldValue('time')
@@ -262,6 +274,7 @@ const WorkHoursHeader = (props: {
                       : null
                   }
                   onChange={dates => onChangeTime(dates)}
+                  placement="bottomRight"
                 />
               </Form.Item>
             </SelectWrapBedeck>

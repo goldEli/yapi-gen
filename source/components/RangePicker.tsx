@@ -23,6 +23,18 @@ const rangPicker = css`
   .ant-tag {
     margin-right: 0;
   }
+  .customPopup {
+    left: -90px !important;
+  }
+  .customPopup1 {
+    left: -118px !important;
+  }
+  .customPopup2 {
+    left: -122px !important;
+  }
+  .customPopup3 {
+    left: -166px !important;
+  }
 `
 interface Props {
   onChange(values: any): void
@@ -33,6 +45,7 @@ interface Props {
   width?: string
   // 是否可以删除
   hasClear?: boolean
+  w?: number
 }
 
 const RangePicker = (props: Props) => {
@@ -81,7 +94,16 @@ const RangePicker = (props: Props) => {
     }
     return false
   }
-
+  const customPopup = (w: any) => {
+    console.log(w, Math.ceil(w))
+    const map: any = {
+      56: 'customPopup',
+      84: 'customPopup1',
+      88: 'customPopup2',
+      132: 'customPopup3',
+    }
+    return map[Math.ceil(w)]
+  }
   // 筛选左侧快捷操作
   const renderExtraFooter = () => {
     return (
@@ -130,7 +152,10 @@ const RangePicker = (props: Props) => {
       placement={props?.placement}
       value={props.dateValue}
       allowClear={props.hasClear ?? true}
-      style={{ width: props.isWidth ? '' : props.width ? props.width : '100%' }}
+      style={{
+        width: props.isWidth ? '' : props.width ? props.width : '100%',
+      }}
+      popupClassName={customPopup(props.w)}
       onChange={onChangeDate}
       className={rangPicker}
       getPopupContainer={node => node}

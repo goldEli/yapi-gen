@@ -79,6 +79,7 @@ const index = (props: any) => {
 
   return (
     <SelectWrap
+      border={props?.border}
       showArrow
       value={props.value}
       style={{ width: '100%' }}
@@ -88,6 +89,8 @@ const index = (props: any) => {
       optionFilterProp="label"
       onChange={handleChange}
       placeholder={t('common.pleaseSelect')}
+      placement="bottomRight"
+      dropdownMatchSelectWidth={props.width}
       suffixIcon={
         <IconFont
           type="down"
