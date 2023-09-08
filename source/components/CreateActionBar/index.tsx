@@ -1,5 +1,5 @@
 import { Checkbox, Divider, Menu, message, Select, Space } from 'antd'
-import { useState } from 'react'
+import { useState, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import DropDownMenu from '../DropDownMenu'
 import IconFont from '../IconFont'
@@ -30,13 +30,19 @@ const CreateActionBar = (props: Props) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
-
+  const [dropdownMatchSelectWidth, setDropdownMatchSelectWidth] =
+    useState<any>(0)
   // 切换显示类型
   const onClickMenu = (value: any) => {
     props.onChangeSort?.(value)
     setIsVisible(false)
   }
-
+  useLayoutEffect(() => {
+    const w = document
+      .querySelector('#SelectWrap')
+      ?.getBoundingClientRect().width
+    setDropdownMatchSelectWidth(w)
+  }, [props])
   // 切换显示类型
   const onClickMenuFormat = (type: boolean) => {
     getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
@@ -121,7 +127,7 @@ const CreateActionBar = (props: Props) => {
   return (
     <WrapRight>
       <Space size={8}>
-        <SelectWrapBedeck style={{ marginRight: '4px' }}>
+        <SelectWrapBedeck style={{ marginRight: '4px' }} id="SelectWrap">
           <span style={{ margin: '0 16px', fontSize: '14px' }}>
             {t('project_type')}
           </span>
@@ -135,6 +141,8 @@ const CreateActionBar = (props: Props) => {
             optionFilterProp="label"
             showArrow
             allowClear
+            placement="bottomRight"
+            dropdownMatchSelectWidth={dropdownMatchSelectWidth}
             options={[
               {
                 label: t('other.affairs_public'),

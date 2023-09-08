@@ -10,7 +10,7 @@ import {
   DivStyle,
   Btn1,
 } from '../Header/Style'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useLayoutEffect } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from './Select'
 import CommonButton from '@/components/CommonButton'
@@ -66,6 +66,10 @@ const HeaderAll = (props: HaderProps) => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [projectList, setProjectList] = useState<any>()
+  const [dropdownMatchSelectWidth, setDropdownMatchSelectWidth] =
+    useState<any>(0)
+  const [dropdownMatchSelectWidthTime, setDropdownMatchSelectWidthTime] =
+    useState<any>(0)
   const [options, setOptions] = useState<number[]>([])
   const [time, setTime] = useState<{
     startTime: string | undefined
@@ -179,7 +183,18 @@ const HeaderAll = (props: HaderProps) => {
         : timeVal,
     })
   }, [options, timeKey, timeVal, person])
-
+  useLayoutEffect(() => {
+    const w = document
+      .querySelector('#SelectWrap')
+      ?.getBoundingClientRect().width
+    setDropdownMatchSelectWidth(w)
+  }, [props])
+  useLayoutEffect(() => {
+    const w = document
+      .querySelector('#SelectWrapForList')
+      ?.getBoundingClientRect().width
+    setDropdownMatchSelectWidthTime(w)
+  }, [props])
   const onBack = () => {
     if (props.homeType === 'all') {
       const params = encryptPhp(
@@ -219,7 +234,7 @@ const HeaderAll = (props: HaderProps) => {
         //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
 
             <div style={{ marginRight: '16px' }}>
-              <SelectWrapForList>
+              <SelectWrapForList id="SelectWrap">
                 <span style={{ margin: '0px 0px 0px 12px', fontSize: '14px' }}>
                   项目
                 </span>
@@ -232,6 +247,8 @@ const HeaderAll = (props: HaderProps) => {
                   showSearch
                   value={options}
                   placeholder={t('common.pleaseProject')}
+                  placement="bottomRight"
+                  dropdownMatchSelectWidth={dropdownMatchSelectWidth}
                   options={projectList}
                   onChange={(value: any) => {
                     setOptions(value)
@@ -274,7 +291,7 @@ const HeaderAll = (props: HaderProps) => {
             </div>
 
             <Space size={16}>
-              <SelectWrapForList>
+              <SelectWrapForList id="SelectWrapForList">
                 <span style={{ margin: '0px 0px 0px 12px', fontSize: '14px' }}>
                   时间
                 </span>
@@ -284,6 +301,8 @@ const HeaderAll = (props: HaderProps) => {
                     setTimeKey(e)
                   }}
                   value={timeKey}
+                  placement="bottomRight"
+                  dropdownMatchSelectWidth={dropdownMatchSelectWidthTime}
                   placeholder={t('common.pleaseSelect')}
                   list={[
                     {
