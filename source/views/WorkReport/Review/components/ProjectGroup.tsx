@@ -113,7 +113,7 @@ const ProjectGroup = (props: any) => {
                   onClick={() => {
                     const data = props.data
                       .find((ele: { id: any }) => ele.id === item.id)
-                      ?.users.map((item: { id: any }) => item.id)
+                      ?.users?.map((item: { id: any }) => item.id)
                     setGroupName(
                       props.data.find((ele: { id: any }) => ele.id === item.id)
                         ?.name,
@@ -142,7 +142,7 @@ const ProjectGroup = (props: any) => {
               </div>
             </GroupBox>
             <GroupStoryBox>
-              {item.stories.map((item: any) => {
+              {item.stories?.map((item: any) => {
                 return (
                   <div className="item" key={item.id}>
                     {item.name}（{item.schedule_percent}% {item.schedule}h）

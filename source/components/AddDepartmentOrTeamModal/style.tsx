@@ -3,14 +3,14 @@ import DirectoryTree from 'antd/lib/tree/DirectoryTree'
 
 // 添加成员弹窗
 export const ContentBox = styled.div`
-  width: 528px;
+  width: 640px;
   display: flex;
   height: 448px;
   justify-content: space-between;
 `
 
 export const ContentLeft = styled.div`
-  width: 264px;
+  width: 320px;
   display: flex;
   flex-direction: column;
   padding-left: 24px;
@@ -62,10 +62,17 @@ export const LeftItems = styled.div`
   width: 100%;
   height: 356px;
   overflow: auto;
-  padding-right: 20px;
+  padding-right: 16px;
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #ecedef;
+  }
 `
 
 export const LeftItem = styled.div`
+  border-radius: 6px;
   height: 40px;
   display: flex;
   align-items: center;
@@ -73,7 +80,7 @@ export const LeftItem = styled.div`
   cursor: pointer;
   div {
     margin-left: 12px;
-    width: 80%;
+    width: 90%;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -84,7 +91,7 @@ export const LeftItem = styled.div`
 `
 
 export const ContentRight = styled.div`
-  width: 264px;
+  width: 320px;
   height: 100%;
   padding: 0 24px;
 `
@@ -126,9 +133,10 @@ export const Header = styled.div`
 `
 
 export const ListWraps = styled.div`
-  width: 216px;
+  width: 272px;
   height: calc(100% - 36px);
   overflow: auto;
+  margin-top: 16px;
 `
 
 export const IconWrap = styled.div`
