@@ -344,13 +344,14 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
   const [page, setPage] = useState(1)
   // 点击加载更多
   const onLoadingMore = async () => {
-    setPage(page + 1)
     const response = await getMemberOverviewMoreReportList({
       ...filterParams,
       ...{ user_id, current_time: lastData.created_at },
     })
     onChangMoreData(response?.list || [], user_id)
+    setPage(page + 1)
   }
+
   return (
     <>
       {item.list?.map((itemChild: any) => (
@@ -361,10 +362,8 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
           onChangData={onChangData}
         />
       ))}
-      {item.list?.length >= 15 * page && (
-        <LoadingMore onClick={() => onLoadingMore()}>
-          加载该成员更多日报
-        </LoadingMore>
+      {item.list?.length >= 1 * page && (
+        <LoadingMore onClick={onLoadingMore}>加载该成员更多日报</LoadingMore>
       )}
     </>
   )
@@ -380,12 +379,12 @@ const EmployeeProfileReport = () => {
 
   // 点击加载更多日报，合并数据
   const onChangMoreData = (arr: any, id: number) => {
-    setDataList(
-      dataList?.list?.map((i: any) => ({
+    setDataList({
+      list: dataList?.list?.map((i: any) => ({
         ...i,
         list: i.current_user_id === id ? [...i.list, ...arr] : i.list,
       })),
-    )
+    })
   }
 
   // 标星/取消标星，折叠/收起
@@ -402,7 +401,6 @@ const EmployeeProfileReport = () => {
 
   // 获取汇报列表
   const getReportList = async () => {
-    console.log(filterParams, '=filterParamsfilterParams')
     const response = await getMemberOverviewReportList(filterParams)
     setDataList({ list: response })
     setLoading(false)
