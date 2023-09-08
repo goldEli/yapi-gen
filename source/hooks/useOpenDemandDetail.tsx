@@ -38,7 +38,7 @@ const useOpenDemandDetail = () => {
     // 重置锚点位置
     dispatch(setDrawerCurrentAnchor(''))
     // 浮层预览
-    if (userPreferenceConfig.previewModel === 1) {
+    if (userPreferenceConfig.previewModel === 1 || isPreview) {
       switch (type) {
         case 1:
           // 关闭其他两个浮层

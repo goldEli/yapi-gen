@@ -342,14 +342,17 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
   const { filterParams } = useSelector(store => store.employeeProfile)
   const { item, user_id, lastData, onChangMoreData, onChangData } = props
   const [page, setPage] = useState(1)
+  const [moreLoading, setMoreLoading] = useState(false)
   // 点击加载更多
   const onLoadingMore = async () => {
+    setMoreLoading(true)
     const response = await getMemberOverviewMoreReportList({
       ...filterParams,
       ...{ user_id, current_time: lastData.created_at },
     })
     onChangMoreData(response?.list || [], user_id)
     setPage(page + 1)
+    setMoreLoading(false)
   }
 
   return (
@@ -362,8 +365,17 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
           onChangData={onChangData}
         />
       ))}
-      {item.list?.length >= 1 * page && (
-        <LoadingMore onClick={onLoadingMore}>加载该成员更多日报</LoadingMore>
+      {item.list?.length >= 15 * page && (
+        <LoadingMore onClick={onLoadingMore}>
+          {moreLoading && (
+            <img
+              width={16}
+              style={{ marginRight: 4 }}
+              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/shareLoading.gif"
+            />
+          )}
+          加载该成员更多日报
+        </LoadingMore>
       )}
     </>
   )

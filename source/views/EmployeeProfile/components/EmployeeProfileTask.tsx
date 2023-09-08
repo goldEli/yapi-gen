@@ -23,16 +23,20 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { Spin } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { getMessage } from '@/components/Message'
 
 interface TaskItemContentProps {
   row: any
+  // 当前人员的id
+  id: number
 }
 
 const TaskItemContent = (props: TaskItemContentProps) => {
-  const { row } = props
+  const { row, id } = props
   const tagRef = useRef<HTMLDivElement>(null)
   const [currentStatus, setCurrentStatus] = useState<any>({})
   const [tagWidth, setTagWidth] = useState<number>(0)
+  const [openDemandDetail] = useOpenDemandDetail()
 
   const statusList = [
     {
@@ -57,6 +61,22 @@ const TaskItemContent = (props: TaskItemContentProps) => {
     },
   ]
 
+  // 跳转详情
+  const onToDetail = (item: any) => {
+    if (item?.is_public !== 1 && item?.is_project_member !== 1) {
+      getMessage({ msg: '您不是当前项目成员，暂无权限查看', type: 'warning' })
+      return
+    }
+    openDemandDetail(
+      { ...item, ...{ projectId: item.project_id, employeeCurrentId: id } },
+      item.project_id,
+      item.id,
+      item.project_type === 2 ? 1 : item.is_bug === 1 ? 2 : 3,
+      true,
+      true,
+    )
+  }
+
   useEffect(() => {
     if (tagRef.current) {
       setTagWidth(tagRef.current.clientWidth + 11 || 0)
@@ -80,7 +100,7 @@ const TaskItemContent = (props: TaskItemContentProps) => {
           : currentStatus?.name}
       </TagWrap>
       <TaskContent style={{ width: `calc(100% - ${tagWidth}px)` }}>
-        <div className="nameBox">
+        <div className="nameBox" onClick={() => onToDetail(row)}>
           <div
             className="left"
             style={{ width: row.status === 5 ? '80%' : '100%' }}
@@ -100,8 +120,10 @@ const TaskItemContent = (props: TaskItemContentProps) => {
             <div className="right">{row.expected_end_at}逾期</div>
           )}
         </div>
-        <div className="info">{row.info || '--'}</div>
-        <UploadAttach
+        <div className="info" onClick={() => onToDetail(row)}>
+          {row.info || '--'}
+        </div>
+        {/* <UploadAttach
           onlyView
           defaultList={row?.attachments?.map((i: any) => ({
             url: i.path,
@@ -115,7 +137,7 @@ const TaskItemContent = (props: TaskItemContentProps) => {
           onChangeAttachment={() => {
             //
           }}
-        />
+        /> */}
       </TaskContent>
     </>
   )
@@ -130,10 +152,11 @@ const TaskItem = (props: TaskItemProps) => {
   const { item, onChangeData } = props
   const [page, setPage] = useState(1)
   const { filterParams } = useSelector(store => store.employeeProfile)
-  const [openDemandDetail] = useOpenDemandDetail()
+  const [moreLoading, setMoreLoading] = useState(false)
 
   // 点击加载更多
   const onLoadingMore = async () => {
+    setMoreLoading(true)
     const newPage = page + 1
     setPage(newPage)
     const response = await getMemberOverviewMoreStoryList({
@@ -141,18 +164,7 @@ const TaskItem = (props: TaskItemProps) => {
       ...{ page: newPage, user_id: item.id },
     })
     onChangeData(response, item.id)
-  }
-
-  // 跳转详情
-  const onToDetail = (row: any) => {
-    openDemandDetail(
-      { ...row, ...{ projectId: row.project_id } },
-      row.project_id,
-      row.id,
-      row.project_type === 2 ? 1 : row.is_bug === 1 ? 2 : 3,
-      true,
-      true,
-    )
+    setMoreLoading(false)
   }
 
   return (
@@ -171,8 +183,8 @@ const TaskItem = (props: TaskItemProps) => {
       <TaskItemGroup>
         {item.story?.length > 0 &&
           item.story?.map((j: any) => (
-            <TaskItemBox key={j.id} onClick={() => onToDetail(j)}>
-              <TaskItemContent row={j} />
+            <TaskItemBox key={j.id}>
+              <TaskItemContent row={j} id={item.id} />
               {j.is_star === 1 && (
                 <div className="icon">
                   <CommonIconFont type="star" color="#FA9746" size={14} />
@@ -185,14 +197,25 @@ const TaskItem = (props: TaskItemProps) => {
         )}
       </TaskItemGroup>
       {item.story_total > item.story?.length && (
-        <LoadingMore onClick={onLoadingMore}>加载该成员更多任务</LoadingMore>
+        <LoadingMore onClick={onLoadingMore}>
+          {moreLoading && (
+            <img
+              width={16}
+              style={{ marginRight: 4 }}
+              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/shareLoading.gif"
+            />
+          )}
+          加载该成员更多任务
+        </LoadingMore>
       )}
     </TaskItemWrap>
   )
 }
 
 const EmployeeProfileTask = () => {
-  const { filterParams } = useSelector(store => store.employeeProfile)
+  const { filterParams, taskDrawerUpdate } = useSelector(
+    store => store.employeeProfile,
+  )
   const [loading, setLoading] = useState(false)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
@@ -223,6 +246,27 @@ const EmployeeProfileTask = () => {
       getTaskList()
     }
   }, [filterParams])
+
+  useEffect(() => {
+    if (taskDrawerUpdate.id) {
+      //更新数据
+      setDataList({
+        list: dataList?.list?.map((i: any) => ({
+          ...i,
+          ...{
+            story:
+              i.id === taskDrawerUpdate?.id
+                ? i.story?.map((j: any) =>
+                    j.id === taskDrawerUpdate?.detailId
+                      ? { ...j, is_star: taskDrawerUpdate?.state }
+                      : j,
+                  )
+                : i.story,
+          },
+        })),
+      })
+    }
+  }, [taskDrawerUpdate])
 
   return (
     <TaskWrap>

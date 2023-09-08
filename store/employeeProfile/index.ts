@@ -18,6 +18,12 @@ export interface CounterState {
     visible: false
     params: any
   }
+  // 打开浮层后标星或取消标星，更新数据使用
+  taskDrawerUpdate: {
+    id: number
+    detailId: number
+    state: number
+  }
 }
 
 const initialState: CounterState = {
@@ -28,6 +34,11 @@ const initialState: CounterState = {
   contrastDrawer: {
     visible: false,
     params: {},
+  },
+  taskDrawerUpdate: {
+    id: 0,
+    detailId: 0,
+    state: 0,
   },
 }
 
@@ -47,6 +58,10 @@ export const employeeProfileSlice = createSlice({
     setContrastDrawer: (state: any, action) => {
       state.contrastDrawer = action.payload
     },
+    // 对比报告
+    setTaskDrawerUpdate: (state: any, action) => {
+      state.taskDrawerUpdate = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getMemberOverviewList.fulfilled, (state, action) => {
@@ -58,7 +73,11 @@ export const employeeProfileSlice = createSlice({
   },
 })
 
-export const { setCurrentKey, setFilterParams, setContrastDrawer } =
-  employeeProfileSlice.actions
+export const {
+  setCurrentKey,
+  setFilterParams,
+  setContrastDrawer,
+  setTaskDrawerUpdate,
+} = employeeProfileSlice.actions
 
 export default employeeProfileSlice.reducer
