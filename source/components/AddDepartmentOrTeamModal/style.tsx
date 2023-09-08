@@ -76,7 +76,7 @@ export const LeftItem = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
-  padding-left: 16px;
+  padding-left: 12px;
   cursor: pointer;
   div {
     margin-left: 12px;
@@ -101,7 +101,7 @@ export const CheckBoxWrap = styled.div`
   height: 44px;
   display: flex;
   align-items: center;
-  padding-left: 16px;
+  padding-left: 12px;
   margin-top: 16px;
   & .ant-checkbox-checked .ant-checkbox-inner {
     background-color: var(--primary-d1);
@@ -156,7 +156,7 @@ export const ListItem = styled.div`
   height: 40px;
   line-height: 40px;
   border-radius: 6px;
-  padding: 0 16px;
+  padding: 0 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
