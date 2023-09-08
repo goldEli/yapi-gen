@@ -50,6 +50,7 @@ import { useSelector } from '@store/index'
 import CustomSelect from '@/components/CustomSelect'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
+import MoreSelect from '@/components/MoreSelect'
 
 const TableWrapTop = styled(Table)({
   '.ant-table-cell': {
@@ -417,7 +418,8 @@ const SetConfig = (props: Props) => {
       )
     ) {
       child = (
-        <CustomSelect
+        <MoreSelect
+          border
           style={{ width: 148 }}
           showArrow
           showSearch
@@ -435,11 +437,7 @@ const SetConfig = (props: Props) => {
                 : staffList
               : defaultObj?.options
           }
-          mode={
-            ['checkbox', 'select_checkbox'].includes(defaultObj?.type)
-              ? 'multiple'
-              : ('' as any)
-          }
+          more={!['checkbox', 'select_checkbox'].includes(defaultObj?.type)}
           onChange={(value: any) => onChangeSelect(value, row, defaultObj)}
         />
       )
@@ -452,7 +450,7 @@ const SetConfig = (props: Props) => {
       const optionValues =
         optionsType === 'projectMember' ? memberList : staffList
       child = (
-        <CustomSelect
+        <MoreSelect
           style={{ width: 148 }}
           showArrow
           showSearch
@@ -465,11 +463,8 @@ const SetConfig = (props: Props) => {
               : row.default_value
           }
           options={row.default_type === 2 ? optionValues : defaultObj?.options}
-          mode={
-            defaultObj?.type === 'user_select_checkbox'
-              ? 'multiple'
-              : ('' as any)
-          }
+          border
+          more={defaultObj?.type !== 'user_select_checkbox'}
           onChange={(value: any) => onChangeSelect(value, row, defaultObj)}
         />
       )
@@ -839,10 +834,10 @@ const SetConfig = (props: Props) => {
               <ItemWrap style={{ marginTop: 16 }}>
                 <LabelWrap>{t('setting.userGroup')}</LabelWrap>
                 <Form.Item noStyle name="roles">
-                  <CustomSelect
+                  <MoreSelect
+                    border
                     style={{ minWidth: 186 }}
                     showSearch
-                    mode="multiple"
                     optionFilterProp="label"
                     getPopupContainer={(node: any) => node}
                     showArrow
@@ -856,10 +851,10 @@ const SetConfig = (props: Props) => {
               <ItemWrap style={{ marginTop: 24 }}>
                 <LabelWrap>{t('newlyAdd.userFields')}</LabelWrap>
                 <Form.Item noStyle name="user_fields">
-                  <CustomSelect
+                  <MoreSelect
+                    border
                     style={{ minWidth: 186 }}
                     showSearch
-                    mode="multiple"
                     showArrow
                     optionFilterProp="label"
                     getPopupContainer={(node: any) => node}
@@ -873,10 +868,10 @@ const SetConfig = (props: Props) => {
               <ItemWrap style={{ marginTop: 24 }}>
                 <LabelWrap>{t('newlyAdd.otherUser')}</LabelWrap>
                 <Form.Item noStyle name="other_users">
-                  <CustomSelect
+                  <MoreSelect
                     style={{ minWidth: 186 }}
                     showSearch
-                    mode="multiple"
+                    border
                     optionFilterProp="label"
                     showArrow
                     getPopupContainer={(node: any) => node}
@@ -967,7 +962,7 @@ const SetConfig = (props: Props) => {
                 marginTop: 16,
                 marginLeft: 20,
               }}
-              type={'light'}
+              type="light"
               onClick={onClickAddField}
             >
               <IconFont type="plus" /> {t('newlyAdd.addFields')}

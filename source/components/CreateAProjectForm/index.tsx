@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select, Tooltip, Upload } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import CommonModal from '../CommonModal'
+import MoreSelect from '@/components/MoreSelect'
 import CustomSelect from '../CustomSelect'
 import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
@@ -742,7 +742,8 @@ const CreateAProjectForm = () => {
                     name="groups"
                     initialValue={groupId ? [groupId] : undefined}
                   >
-                    <CustomSelect
+                    <MoreSelect
+                      border
                       placeholder={t('common.pleaseSelect')}
                       mode="multiple"
                       options={selectGroupList}

@@ -79,6 +79,7 @@ const index = (props: any) => {
 
   return (
     <SelectWrap
+      border={props?.border}
       showArrow
       value={props.value}
       style={{ width: '100%' }}
