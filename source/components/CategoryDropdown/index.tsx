@@ -59,6 +59,7 @@ const customStyle = css`
  */
 interface IProps {
   width?: number
+  w?: number
   value?: number[] | number | string
   onChangeCallBack?(data: number[] | number): void
   onClearCallback?(): void
@@ -175,6 +176,8 @@ const CategoryDropdown = (props: IProps) => {
       placeholder={t('common.chooseCategory')}
       value={value}
       style={{ width: width }}
+      placement="bottomRight"
+      dropdownMatchSelectWidth={props.w}
       onChange={(data: any) => {
         if (!data) {
           return

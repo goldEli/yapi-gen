@@ -242,7 +242,11 @@ const WorkHoursHeader = (props: {
                 {t('personnel')}
               </span>
               <Form.Item name={'user_ids'}>
-                <MoreSelect onConfirm={confirm} options={memberList} />
+                <MoreSelect
+                  onConfirm={confirm}
+                  options={memberList}
+                  width={202}
+                />
               </Form.Item>
             </SelectWrapBedeck>
             <SelectWrapBedeck style={{ marginLeft: 16, marginBottom: 20 }}>
@@ -251,7 +255,7 @@ const WorkHoursHeader = (props: {
               </span>
               <Form.Item name={'time'}>
                 <RangePicker
-                  width={'235px'}
+                  width="235px"
                   isShowQuick={false}
                   dateValue={
                     form.getFieldValue('time')
@@ -262,6 +266,7 @@ const WorkHoursHeader = (props: {
                       : null
                   }
                   onChange={dates => onChangeTime(dates)}
+                  placement="bottomRight"
                 />
               </Form.Item>
             </SelectWrapBedeck>

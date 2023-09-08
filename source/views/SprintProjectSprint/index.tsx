@@ -736,6 +736,7 @@ const SprintProjectSprint: React.FC = () => {
                 <CustomSelect
                   style={{ width: 148 }}
                   getPopupContainer={(node: any) => node}
+                  width={216}
                   allowClear
                   optionFilterProp="label"
                   showArrow
@@ -763,6 +764,7 @@ const SprintProjectSprint: React.FC = () => {
               <CategorySelectWrap>
                 <span className="title">{t('sprint.transactionType')}</span>
                 <CategoryDropdown
+                  w={296}
                   type
                   projectId={projectId}
                   value={searchObject.search?.category_id}
