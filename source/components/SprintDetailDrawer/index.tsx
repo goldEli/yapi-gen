@@ -646,7 +646,7 @@ const SprintDetailDrawer = () => {
         ?.removeEventListener('scroll', handleScroll, false)
     }
   }, [drawerInfo])
-  console.log(drawerInfo)
+
   return (
     <>
       <ShareModal

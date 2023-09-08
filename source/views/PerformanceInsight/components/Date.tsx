@@ -173,15 +173,3 @@ export const getTitleTips = (text: string, tips: string, position?: string) => {
     </div>
   )
 }
-export const NewSort = (sortProps: any) => {
-  return (
-    <Sort
-      fixedKey={sortProps.fixedKey}
-      onChangeKey={sortProps.onUpdateOrderKey}
-      nowKey={sortProps.nowKey}
-      order={sortProps.order}
-    >
-      {sortProps.title}
-    </Sort>
-  )
-}
