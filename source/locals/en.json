@@ -2370,5 +2370,10 @@
   "addPictures": "Add pictures",
   "addVideo": "Add video",
   "opinion": "Editor&#39;s opinion",
-  "starMark": "Star mark"
+  "starMark": "Star mark",
+  "deleteGroup": "Delete group",
+  "addProjectGroup": "Add project group",
+  "personnelGrouping": "Personnel grouping",
+  "total": "Total",
+  "transactions": "Transactions"
 }
