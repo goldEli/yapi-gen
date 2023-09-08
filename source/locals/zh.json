@@ -2370,5 +2370,10 @@
   "addPictures": "添加图片",
   "addVideo": "添加视频",
   "opinion": "编辑感悟",
-  "starMark": "星标"
+  "starMark": "星标",
+  "deleteGroup": "删除分组",
+  "addProjectGroup": "添加项目组",
+  "personnelGrouping": "人员分组",
+  "total": "共计",
+  "transactions": "个事务"
 }

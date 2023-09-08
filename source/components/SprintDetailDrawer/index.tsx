@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable max-lines */
-import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import {
   setAffairsCommentList,
@@ -69,9 +68,7 @@ import {
   detailTimeFormat,
   getIdsForAt,
   removeNull,
-  getParamsData,
   getIsPermission,
-  getProjectIdByUrl,
 } from '@/tools'
 import CommentFooter from '../CommonComment/CommentFooter'
 import LongStroyBread from '../LongStroyBread'
@@ -239,7 +236,11 @@ const SprintDetailDrawer = () => {
     if (paramsProjectId) {
       projectIdRef.current = paramsProjectId
     }
-    if (affairsDetailDrawer.params?.isAllProject) {
+    // 如果是从员工概况过来的或者是我的-所有项目过来，则调用项目信息接口
+    if (
+      affairsDetailDrawer.params?.isAllProject ||
+      affairsDetailDrawer?.isPreview
+    ) {
       getProjectData()
     }
     setDrawerInfo({})
@@ -606,6 +607,9 @@ const SprintDetailDrawer = () => {
 
   useEffect(() => {
     if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
+      if (affairsDetailDrawer?.isPreview) {
+        dispatch(setProjectInfo({}))
+      }
       dispatch(setAffairsCommentList({ list: [] }))
       setDemandIds(affairsDetailDrawer.params?.demandIds || [])
       getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
@@ -646,7 +650,6 @@ const SprintDetailDrawer = () => {
         ?.removeEventListener('scroll', handleScroll, false)
     }
   }, [drawerInfo])
-  console.log(drawerInfo)
   return (
     <>
       <ShareModal

@@ -401,6 +401,7 @@ const LinkSprint = (props: {
       getSelectRelationRecent()
     }
   }, [searchValue, isVisible])
+
   useImperativeHandle(props.onRef, () => {
     return {
       onClickOpen: onClickOpen,

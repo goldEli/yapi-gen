@@ -2,9 +2,12 @@ import { getParamsData } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import ProgressComparison from '../components/ProgressComparison'
 import Undistributed from '../components/Undistributed'
+import { useState } from 'react'
 const ChildLevel = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
+
   return (
     <>
       {paramsData?.homePage === 2 ? (
@@ -24,6 +27,10 @@ const ChildLevel = () => {
           homeType={paramsData.homeType}
           projectId={paramsData.projectId}
           headerParmas={paramsData.headerParmas}
+          order={order}
+          onUpdateOrderKey={(item: any) => {
+            setOrder(item)
+          }}
         />
       )}
     </>

@@ -402,6 +402,7 @@ const EmployeeProfileReport = () => {
 
   // 获取汇报列表
   const getReportList = async () => {
+    console.log(filterParams, '=filterParamsfilterParams')
     const response = await getMemberOverviewReportList(filterParams)
     setDataList({ list: response })
     setLoading(false)

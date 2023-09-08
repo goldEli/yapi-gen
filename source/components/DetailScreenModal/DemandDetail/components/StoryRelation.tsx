@@ -762,13 +762,10 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   ]
 
   useEffect(() => {
-    // if (props.activeKey === '3' || props.isOpen) {
-    //   getList(pageObj, order)
-    // }
-    if (props.detail?.id) {
+    if (props.detail?.id && projectInfo?.id) {
       getList(pageObj, order)
     }
-  }, [props.detail])
+  }, [props.detail, projectInfo])
   useEffect(() => {
     if (isVisible && !searchValue) {
       getSelectRelationRecent()
