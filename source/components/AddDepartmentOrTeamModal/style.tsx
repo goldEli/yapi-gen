@@ -115,7 +115,7 @@ export const CheckBoxWrap = styled.div`
 export const Header = styled.div`
   width: 100%;
   display: flex;
-  height: 36px;
+  height: 32px;
   background: var(--neutral-n7);
   border-radius: 4px 4px 4px 4px;
   align-items: center;
