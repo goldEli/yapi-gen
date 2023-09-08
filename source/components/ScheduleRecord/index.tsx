@@ -26,7 +26,7 @@ const RecordItem = styled.div<{
   notPadding?: boolean
   noBorder?: boolean
 }>`
-  padding: ${props => (props.isDrawer || props.notPadding ? 0 : 16)}px;
+  padding: ${props => (props.isDrawer || props.notPadding ? 0 : 12)}px;
   margin-bottom: ${props => (props.isDrawer || props.notPadding ? 24 : 0)}px;
   border-bottom: ${props =>
     props.isDrawer || props.notPadding || props.noBorder
@@ -34,6 +34,10 @@ const RecordItem = styled.div<{
       : '1px solid var(--neutral-n6-d1)'};
   display: flex;
   align-items: flex-start;
+  &:hover {
+    background-color: var(--hover-d2);
+    cursor: pointer;
+  }
 `
 
 const ItemAvatar = styled.div`
@@ -94,6 +98,9 @@ const InfoRow = styled.div`
   justify-content: flex-start;
   span {
     color: var(--neutral-n2);
+  }
+  .perception {
+    color: var(--neutral-n3);
   }
 `
 
@@ -245,7 +252,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                   </span>
                 </InfoRow>
                 <InfoRow>
-                  <span>{t('releaseNotes')}：</span>
+                  <span className="perception">{t('releaseNotes')}：</span>
                   <span style={{ flex: 1 }}>{i.perception || '--'}</span>
                 </InfoRow>
                 {i.attachment?.length > 0 && (
