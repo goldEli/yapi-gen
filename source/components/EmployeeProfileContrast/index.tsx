@@ -19,8 +19,10 @@ import CommonIconFont from '../CommonIconFont'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { getMemberOverviewCompare } from '@/services/employeeProfile'
 import NewLoadingTransition from '../NewLoadingTransition'
+import { useTranslation } from 'react-i18next'
 
 const EmployeeProfileContrast = () => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const { contrastDrawer, filterParams } = useSelector(
     store => store.employeeProfile,
@@ -117,7 +119,8 @@ const EmployeeProfileContrast = () => {
       </Header>
       <Content>
         <TimeWrap>
-          工作对比报告 {filterParams?.time?.[0]} - {filterParams?.time?.[1]}
+          {t('jobComparisonReport')} {filterParams?.time?.[0]} -{' '}
+          {filterParams?.time?.[1]}
         </TimeWrap>
         <Box>
           <Spin
@@ -128,10 +131,11 @@ const EmployeeProfileContrast = () => {
             <Wrap>
               <TitleWrap className="work">
                 <div className="label">
-                  工作完成率（{dataSource?.story?.average_completed_rate}%）
+                  {t('workCompletionRate')}（
+                  {dataSource?.story?.average_completed_rate}%）
                 </div>
                 <div className="sub" onClick={onToPerformance}>
-                  <span className="text">明细</span>
+                  <span className="text">{t('details')}</span>
                   <CommonIconFont type="right" size={12} />
                 </div>
               </TitleWrap>
@@ -153,10 +157,12 @@ const EmployeeProfileContrast = () => {
                       </div>
                       <div className="totalBox">
                         <div className="total">
-                          任务总数 {i.statistics.completed}/{i.statistics.total}
+                          {t('totalNumberOfTasks')} {i.statistics.completed}/
+                          {i.statistics.total}
                         </div>
                         <div className="sub" onClick={onToPerformanceDetail}>
-                          逾期完成 {i.statistics.overdue_completed}次
+                          {t('overdueCompletion')}{' '}
+                          {i.statistics.overdue_completed}次
                         </div>
                       </div>
                     </div>
@@ -167,9 +173,9 @@ const EmployeeProfileContrast = () => {
             <Line />
             <Wrap>
               <TitleWrap className="report">
-                <div className="label">日报人次</div>
+                <div className="label">{t('dailyVisitors')}</div>
                 <div className="sub" onClick={onToReport}>
-                  <span className="text">明细</span>
+                  <span className="text">{t('details')}</span>
                   <CommonIconFont type="right" size={12} />
                 </div>
               </TitleWrap>
@@ -188,7 +194,8 @@ const EmployeeProfileContrast = () => {
                       </div>
                       <div className="totalBox">
                         <div className="total">
-                          提交次数 {i.statistics.completed}/{i.statistics.total}
+                          {t('numberOfSubmissions')} {i.statistics.completed}/
+                          {i.statistics.total}
                         </div>
                       </div>
                     </div>

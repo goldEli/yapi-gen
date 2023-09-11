@@ -71,10 +71,10 @@ const ReportItem = (props: ReportItemProps) => {
     }
     if (state) {
       await followsCancel(params)
-      getMessage({ type: 'success', msg: '取消标星成功' })
+      getMessage({ type: 'success', msg: t('cancelStarSuccessfully') })
     } else {
       await followsMark(params)
-      getMessage({ type: 'success', msg: '标星成功' })
+      getMessage({ type: 'success', msg: t('starSuccess') })
     }
     item.is_star = item.is_star === 1 ? 2 : 1
     onChangData(user_id, item)
@@ -190,9 +190,11 @@ const ReportItem = (props: ReportItemProps) => {
             <CommonUserAvatar avatar={item.user.avatar} size="large" />
             <div className="info">
               <div className="name">
-                {item.user.name}
-                生成的{item.start_time}
-                {item.name}
+                {t('reportTitle', {
+                  name: item.user.name,
+                  time: item.start_time,
+                  reportName: item.name,
+                })}
               </div>
               <div className="sub">
                 {item.departments?.map((i: any) => i.name)?.join(' - ')}
@@ -203,7 +205,7 @@ const ReportItem = (props: ReportItemProps) => {
             <Tooltip
               placement="top"
               trigger="hover"
-              title={item.is_expended === 1 ? '展开' : '折叠'}
+              title={item.is_expended === 1 ? t('expand') : t('fold')}
             >
               <OperationButton onClick={() => onOpenInfo(item)}>
                 <CommonIconFont
@@ -215,7 +217,7 @@ const ReportItem = (props: ReportItemProps) => {
             <Tooltip
               placement="top"
               trigger="hover"
-              title={item.is_star === 1 ? '取消标星' : '标星'}
+              title={item.is_star === 1 ? t('unstar') : t('star')}
             >
               <OperationButton
                 onClick={() => onStar(item.is_star === 1, item)}
@@ -312,7 +314,7 @@ const ReportItem = (props: ReportItemProps) => {
                 : '--'}
             </DetailItem>
             <CommentFooter
-              placeholder={`评论${item.user.name}的日志`}
+              placeholder={t('commentOnLog', { name: item.user.name })}
               personList={arr}
               onConfirm={onComment}
               style={{ position: 'inherit', margin: '16px 0' }}
@@ -339,6 +341,7 @@ interface ReportItemGroupProps {
 }
 
 const ReportItemGroup = (props: ReportItemGroupProps) => {
+  const [t] = useTranslation()
   const { filterParams } = useSelector(store => store.employeeProfile)
   const { item, user_id, lastData, onChangMoreData, onChangData } = props
   const [page, setPage] = useState(1)
@@ -374,7 +377,7 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
               src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/shareLoading.gif"
             />
           )}
-          加载该成员更多日报
+          {t('loadMoreDailyReportsForThisMember')}
         </LoadingMore>
       )}
     </>
@@ -425,6 +428,7 @@ const EmployeeProfileReport = () => {
       getReportList()
     }
   }, [filterParams.time, filterParams.isStart, filterParams.user_ids])
+
   return (
     <ReportWrap>
       <Spin

@@ -24,6 +24,7 @@ import { Spin } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getMessage } from '@/components/Message'
+import { useTranslation } from 'react-i18next'
 
 interface TaskItemContentProps {
   row: any
@@ -32,6 +33,7 @@ interface TaskItemContentProps {
 }
 
 const TaskItemContent = (props: TaskItemContentProps) => {
+  const [t] = useTranslation()
   const { row, id } = props
   const tagRef = useRef<HTMLDivElement>(null)
   const [currentStatus, setCurrentStatus] = useState<any>({})
@@ -41,22 +43,22 @@ const TaskItemContent = (props: TaskItemContentProps) => {
   const statusList = [
     {
       key: 2,
-      name: '已完成',
+      name: t('completed'),
       bgColor: 'rgba(150,151,153,0.14)',
     },
     {
       key: 3,
-      name: '待规划',
+      name: t('toBePlanned'),
       bgColor: ' rgba(102,136,255,0.2)',
     },
     {
       key: 4,
-      name: '进行中',
+      name: t('inProgress'),
       bgColor: 'rgba(67,186,154,0.2)',
     },
     {
       key: 5,
-      name: '逾期',
+      name: t('overdue'),
       bgColor: 'rgba(250,151,70,0.2)',
     },
   ]
@@ -64,7 +66,12 @@ const TaskItemContent = (props: TaskItemContentProps) => {
   // 跳转详情
   const onToDetail = (item: any) => {
     if (item?.is_public !== 1 && item?.is_project_member !== 1) {
-      getMessage({ msg: '您不是当前项目成员，暂无权限查看', type: 'warning' })
+      getMessage({
+        msg: t(
+          'youAreNotAMemberOfTheCurrentProjectAndDoNotHavePermissionToView',
+        ),
+        type: 'warning',
+      })
       return
     }
     openDemandDetail(
@@ -96,7 +103,7 @@ const TaskItemContent = (props: TaskItemContentProps) => {
         }}
       >
         {row.status === 5
-          ? `逾期${Math.ceil(row.overdue_time / 86400)}天`
+          ? t('overdueTime', { day: Math.ceil(row.overdue_time / 86400) })
           : currentStatus?.name}
       </TagWrap>
       <TaskContent style={{ width: `calc(100% - ${tagWidth}px)` }}>
@@ -117,7 +124,9 @@ const TaskItemContent = (props: TaskItemContentProps) => {
             </div>
           </div>
           {row.status === 5 && (
-            <div className="right">{row.expected_end_at}逾期</div>
+            <div className="right">
+              {t('timeOverdue', { time: row.expected_end_at })}
+            </div>
           )}
         </div>
         <div className="info" onClick={() => onToDetail(row)}>
@@ -149,6 +158,7 @@ interface TaskItemProps {
 }
 
 const TaskItem = (props: TaskItemProps) => {
+  const [t] = useTranslation()
   const { item, onChangeData } = props
   const [page, setPage] = useState(1)
   const { filterParams } = useSelector(store => store.employeeProfile)
@@ -193,7 +203,7 @@ const TaskItem = (props: TaskItemProps) => {
             </TaskItemBox>
           ))}
         {item.story?.length <= 0 && (
-          <div style={{ color: 'var(--neutral-n3)' }}>暂无任务</div>
+          <div style={{ color: 'var(--neutral-n3)' }}>{t('noTasksYet')}</div>
         )}
       </TaskItemGroup>
       {item.story_total > item.story?.length && (
@@ -205,7 +215,7 @@ const TaskItem = (props: TaskItemProps) => {
               src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/shareLoading.gif"
             />
           )}
-          加载该成员更多任务
+          {t('loadMoreTasksForThisMember')}
         </LoadingMore>
       )}
     </TaskItemWrap>
