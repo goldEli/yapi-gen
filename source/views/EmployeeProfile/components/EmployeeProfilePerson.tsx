@@ -12,6 +12,7 @@ import {
 import { Checkbox } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { setContrastDrawer, setFilterParams } from '@store/employeeProfile'
+import { useTranslation } from 'react-i18next'
 
 interface EmployeeProfilePersonProps {
   //   修改后的人员数组列表
@@ -19,6 +20,7 @@ interface EmployeeProfilePersonProps {
 }
 
 const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   // 全选状态
   const [checkAll, setCheckAll] = useState(false)
@@ -92,7 +94,9 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
 
   return (
     <PersonWrap>
-      <ReportButton onClick={onOpenContrast}>对比报告</ReportButton>
+      <ReportButton onClick={onOpenContrast}>
+        {t('comparisonReport')}
+      </ReportButton>
       <div className="label">
         {currentKey?.name}（{currentKey?.total}）
       </div>
@@ -101,7 +105,7 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
         indeterminate={indeterminate}
         onClick={onAllChecked}
       >
-        全选
+        {t('selectAll')}
       </CheckboxAll>
       <CheckBoxWrap>
         {allMemberList?.map((i: any) => (

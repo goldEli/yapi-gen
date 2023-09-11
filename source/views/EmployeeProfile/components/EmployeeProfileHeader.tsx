@@ -16,8 +16,10 @@ import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
 import { setCurrentKey, setFilterParams } from '@store/employeeProfile'
 import { getMemberOverviewStatistics } from '@store/employeeProfile/employeeProfile.thunk'
+import { useTranslation } from 'react-i18next'
 
 const EmployeeProfileHeader = () => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const { memberStatistics, currentKey, filterParams } = useSelector(
     store => store.employeeProfile,
@@ -38,42 +40,42 @@ const EmployeeProfileHeader = () => {
   const [active, setActive] = useState(0)
 
   const tabList = [
-    { name: '本周', key: 0 },
-    { name: '上周', key: 1 },
-    { name: '近2周', key: 2 },
-    { name: '近1月', key: 3 },
-    { name: '近3月', key: 4 },
-    { name: '近1年', key: 5 },
+    { name: t('thisWeek'), key: 0 },
+    { name: t('lastWeek'), key: 1 },
+    { name: t('lastWeeks'), key: 2 },
+    { name: t('lastMonth'), key: 3 },
+    { name: t('nearlyMonths'), key: 4 },
+    { name: t('nearlyYear'), key: 5 },
   ]
 
   // 卡片列表
   const cardList = [
     {
-      name: '已逾期',
+      name: t('overdue'),
       type: 'red',
       key: 5,
       fieldKey: 'overdue',
     },
     {
-      name: '进行中',
+      name: t('inProgress'),
       type: 'blue',
       key: 4,
       fieldKey: 'start',
     },
     {
-      name: '待规划',
+      name: t('toBePlanned'),
       type: 'org',
       key: 3,
       fieldKey: 'un_start',
     },
     {
-      name: '已完成',
+      name: t('completed'),
       type: 'green',
       key: 2,
       fieldKey: 'completed',
     },
     {
-      name: '全部',
+      name: t('all'),
       type: 'purple',
       key: 1,
       fieldKey: 'all',
@@ -202,11 +204,13 @@ const EmployeeProfileHeader = () => {
         <InputSearch
           onChangeSearch={value => onClickSearch(value, 'keyword')}
           leftIcon
-          placeholder="搜索编号/任务"
+          placeholder={t('search')}
           width={184}
         />
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>创建时间</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {t('creationTime')}
+          </span>
           <RangePicker
             width={'308px'}
             isShowQuick={false}
@@ -234,7 +238,7 @@ const EmployeeProfileHeader = () => {
           checked={searchParams.isStart}
           onChange={e => onClickSearch(e.target.checked, 'isStart')}
         >
-          仅星标
+          {t('starsOnly')}
         </Checkbox>
       </HeaderSearch>
       <HeaderCardGroup>
