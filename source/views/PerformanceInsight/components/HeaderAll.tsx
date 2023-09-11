@@ -111,7 +111,11 @@ const HeaderAll = (props: HaderProps) => {
   }
   // 自定义时间
   const onChangeDate = (values: any[]) => {
-    setTimeVal([moment(values[0]), moment(values[1])])
+    if (values) {
+      setTimeVal([moment(values[0]), moment(values[1])])
+    } else {
+      setTimeVal([])
+    }
   }
   // 清除选择的成员
   const onClear = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -236,7 +240,7 @@ const HeaderAll = (props: HaderProps) => {
             <div style={{ marginRight: '16px' }}>
               <SelectWrapForList id="SelectWrap">
                 <span style={{ margin: '0px 0px 0px 12px', fontSize: '14px' }}>
-                  项目
+                  {t('Project')}
                 </span>
                 <CustomSelect
                   style={{ width: 148 }}
@@ -293,7 +297,7 @@ const HeaderAll = (props: HaderProps) => {
             <Space size={16}>
               <SelectWrapForList id="SelectWrapForList">
                 <span style={{ margin: '0px 0px 0px 12px', fontSize: '14px' }}>
-                  时间
+                  {t('Time')}
                 </span>
                 <SelectMain
                   allowClear={false}
@@ -337,6 +341,7 @@ const HeaderAll = (props: HaderProps) => {
                   dateValue={timeVal}
                   onChange={onChangeDate}
                   width="283px"
+                  hasClear
                 />
               )}
             </Space>

@@ -2405,5 +2405,7 @@
   "overdueTime": "逾期{{day}}天",
   "timeOverdue": "{{time}}逾期",
   "noTasksYet": "暂无任务",
-  "loadMoreTasksForThisMember": "加载该成员更多任务"
+  "loadMoreTasksForThisMember": "加载该成员更多任务",
+  "Project": "项目",
+  "Time": "时间"
 }
