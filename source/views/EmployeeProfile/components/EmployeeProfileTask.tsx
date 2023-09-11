@@ -123,7 +123,7 @@ const TaskItemContent = (props: TaskItemContentProps) => {
         <div className="info" onClick={() => onToDetail(row)}>
           {row.info || '--'}
         </div>
-        {/* <UploadAttach
+        <UploadAttach
           onlyView
           defaultList={row?.attachments?.map((i: any) => ({
             url: i.path,
@@ -137,7 +137,7 @@ const TaskItemContent = (props: TaskItemContentProps) => {
           onChangeAttachment={() => {
             //
           }}
-        /> */}
+        />
       </TaskContent>
     </>
   )
