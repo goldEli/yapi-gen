@@ -457,5 +457,9 @@ export const TaskContent = styled.div`
   .info {
     font-size: 12px;
     color: var(--neutral-n2);
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `
