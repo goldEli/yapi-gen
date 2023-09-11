@@ -519,22 +519,24 @@ const SprintProjectSprint: React.FC = () => {
   )
   const format = (arr: any) => {
     console.log(arr, 'arr')
+    if (arr) {
+      const newA = arr?.filter((j: any) => {
+        return j.value === info
+      })
 
-    const newA = arr?.filter((j: any) => {
-      return j.value === info
-    })
+      const newB = arr?.filter((j: any) => {
+        return j.value !== info
+      })
 
-    const newB = arr?.filter((j: any) => {
-      return j.value !== info
-    })
-
-    return newA
-      .map((i: any) => ({
-        id: i.id,
-        value: i.value,
-        label: `${i.label}（${t('myself')}）`,
-      }))
-      .concat(newB)
+      return newA
+        .map((i: any) => ({
+          id: i.id,
+          value: i.value,
+          label: `${i.label}（${t('myself')}）`,
+        }))
+        .concat(newB)
+    }
+    return []
   }
   const filterContent = (
     <div className="filter">
