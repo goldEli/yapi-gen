@@ -150,7 +150,8 @@ const ProjectGroup = (props: any) => {
               {item.stories?.map((item: any) => {
                 return (
                   <div className="item" key={item.id}>
-                    {item.name}（{item.schedule_percent}% {item.schedule}h）
+                    {item.name}（{item.schedule_percent}% {item.today_task_time}
+                    h）
                   </div>
                 )
               })}
