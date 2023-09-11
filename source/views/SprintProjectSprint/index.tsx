@@ -35,6 +35,7 @@ import {
   SprintDetailDragLine,
   SprintDetailMouseDom,
 } from '@/components/DetailScreenModal/DemandDetail/style'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 
 const SearchBox = styled.div`
   display: flex;
@@ -326,6 +327,7 @@ const SprintProjectSprint: React.FC = () => {
     },
     is_long_story: 0,
   })
+  const info = useGetloginInfo()
   const [focus, setFocus] = useState(false)
   const [endWidth, setEndWidth] = useState<any>()
   const leftRef = useRef<any>()
@@ -515,7 +517,25 @@ const SprintProjectSprint: React.FC = () => {
     },
     [searchObject],
   )
+  const format = (arr: any) => {
+    console.log(arr, 'arr')
 
+    const newA = arr?.filter((j: any) => {
+      return j.value === info
+    })
+
+    const newB = arr?.filter((j: any) => {
+      return j.value !== info
+    })
+
+    return newA
+      .map((i: any) => ({
+        id: i.id,
+        value: i.value,
+        label: `${i.label}（${t('myself')}）`,
+      }))
+      .concat(newB)
+  }
   const filterContent = (
     <div className="filter">
       {(activeKey === 0 ? filterList : filterList1).map((item: any) => (
@@ -742,12 +762,14 @@ const SprintProjectSprint: React.FC = () => {
                   showArrow
                   showSearch
                   value={searchObject.search?.user_ids}
-                  options={removeNull(projectInfoValues, 'user_name')?.map(
-                    (k: any) => ({
-                      label: k.content,
-                      id: k.id,
-                      value: k.id,
-                    }),
+                  options={format(
+                    removeNull(projectInfoValues, 'user_name')?.map(
+                      (k: any) => ({
+                        label: k.content,
+                        id: k.id,
+                        value: k.id,
+                      }),
+                    ),
                   )}
                   onChange={(users: any) => {
                     setSearchObject({
