@@ -347,6 +347,7 @@ const DemandTable = (props: Props) => {
           noDataCreate: true,
           type: 1,
           title: t('createRequirements'),
+          projectId,
         },
       }),
     )
