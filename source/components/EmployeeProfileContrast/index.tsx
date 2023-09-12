@@ -79,9 +79,6 @@ const EmployeeProfileContrast = () => {
   // 跳转效能洞察
   const onToPerformance = () => {}
 
-  // 跳转效能洞察-明细
-  const onToPerformanceDetail = () => {}
-
   // 获取对比数据
   const getContrast = async () => {
     setLoading(true)
@@ -160,7 +157,7 @@ const EmployeeProfileContrast = () => {
                           {t('totalNumberOfTasks')} {i.statistics.completed}/
                           {i.statistics.total}
                         </div>
-                        <div className="sub" onClick={onToPerformanceDetail}>
+                        <div className="sub">
                           {t('overdueCompletion')}{' '}
                           {i.statistics.overdue_completed}次
                         </div>

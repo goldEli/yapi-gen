@@ -119,16 +119,21 @@ const IterationDetail = () => {
     'b/iterate/achieve/info',
   )
 
+  // 更新
+  const onUpdateDetail = () => {
+    dispatch(
+      getIterateInfo({
+        projectId: getProjectIdByUrl(),
+        id: getIdByUrl('iterateId'),
+      }),
+    )
+  }
+
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     setTabActive(value)
     if (value === '1') {
-      dispatch(
-        getIterateInfo({
-          projectId: getProjectIdByUrl(),
-          id: getIdByUrl('iterateId'),
-        }),
-      )
+      onUpdateDetail()
     }
   }
 
@@ -140,16 +145,6 @@ const IterationDetail = () => {
   // 返回
   const onBack = () => {
     history.go(-1)
-  }
-
-  // 更新
-  const onUpdateDetail = () => {
-    dispatch(
-      getIterateInfo({
-        projectId: getProjectIdByUrl(),
-        id: getIdByUrl('iterateId'),
-      }),
-    )
   }
 
   // 编辑
@@ -416,12 +411,7 @@ const IterationDetail = () => {
           : i,
       )
       dispatch(setProjectInfoValues(newValues))
-      dispatch(
-        getIterateInfo({
-          projectId: getProjectIdByUrl(),
-          id: getIdByUrl('iterateId'),
-        }),
-      )
+      onUpdateDetail()
     }
   }
 
@@ -442,6 +432,7 @@ const IterationDetail = () => {
         ...projectInfo.titleList2,
         ...projectInfo.titleList3,
       ])
+      onUpdateDetail()
     }
   }, [projectInfo])
 
