@@ -220,17 +220,22 @@ export const ReportWrap = styled.div`
 export const ReportItemWrap = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 24px 0 24px 24px;
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  padding: 16px 0 24px 0px;
+  position: relative;
+`
+
+export const ProviderBox = styled.div`
+  background: var(--neutral-n6-d1);
+  height: 1px;
+  margin: 0 24px;
 `
 
 export const ReportItemBox = styled.div`
-  padding-right: 20px;
   overflow-y: auto;
   height: 100%;
 `
 
-export const ReportItemHeader = styled.div`
+export const ReportItemHeader = styled.div<{ isExpended?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -238,9 +243,12 @@ export const ReportItemHeader = styled.div`
   background-color: white;
   z-index: 99;
   top: 0px;
+  padding: ${props =>
+    props.isExpended ? '8px 20px 8px 24px' : '8px 20px 0px 24px'};
+  /* box-shadow: 0px 6px 6px -6px rgba(0,0,0,0.05); */
   .icon {
     position: absolute;
-    left: -19px;
+    left: 5px;
   }
 `
 

@@ -648,6 +648,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       //
     }
   }
+  console.log(selectedRowKeys, 'selectedRowKeys')
 
   // 更新项目信息
   const onUpdate = async () => {
@@ -762,6 +763,15 @@ const ProjectMember = (props: { searchValue?: string }) => {
               <IconFont type="lock" />
             </div>
           </Tooltip>
+          {/* <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title={t('common.permissionGroup')}
+          >
+            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+              <IconFont type="delete" />
+            </div>
+          </Tooltip> */}
         </BatchAction>
 
         <Header>

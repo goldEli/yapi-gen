@@ -95,7 +95,6 @@ const RangePicker = (props: Props) => {
     return false
   }
   const customPopup = (w: any) => {
-    console.log(w, Math.ceil(w))
     const map: any = {
       56: 'customPopup',
       84: 'customPopup1',

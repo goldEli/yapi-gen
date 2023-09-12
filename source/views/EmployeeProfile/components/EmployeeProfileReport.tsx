@@ -17,8 +17,9 @@ import {
   DetailItem,
   CommentBox,
   ReportItemBox,
+  ProviderBox,
 } from '../style'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import {
   followsCancel,
   followsMark,
@@ -38,12 +39,13 @@ import {
   getReportInfo,
 } from '@/services/report'
 import { useTranslation } from 'react-i18next'
-import { Editor, UploadAttach } from 'ifunuikit'
+import { Editor } from 'ifunuikit'
 import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
 import { getStaffListAll } from '@/services/staff'
 import { getIdsForAt } from '@/tools'
+import UploadAttach from '@/components/UploadAttach'
 
 interface ReportItemProps {
   // 当前数据
@@ -180,7 +182,7 @@ const ReportItem = (props: ReportItemProps) => {
           onChangeVisible={() => setIsVisible(!isVisible)}
           onConfirm={onDeleteConfirm}
         />
-        <ReportItemHeader>
+        <ReportItemHeader isExpended={item.is_expended === 1}>
           {item.is_star === 1 && (
             <div className="icon">
               <CommonIconFont type="star" color="#FA9746" size={14} />
@@ -233,97 +235,109 @@ const ReportItem = (props: ReportItemProps) => {
         </ReportItemHeader>
         {item.is_expended === 1 && (
           <>
-            <Title>{t('report.list.reportProject')}</Title>
-            <Msg style={{ marginTop: 8 }}>{reportInfo?.project?.name}</Msg>
-            {reportInfo.report_content?.map((item: any) => (
-              <div key={item.id}>
-                {item.type === 4 && (
-                  <Title style={{ marginBottom: 8 }}>
-                    {item.name_text}: {item.pivot.params?.length}
-                    {t('report.list.pieces')}
-                  </Title>
-                )}
-                {item.type === 3 && item.name !== 'total_schedule' && (
-                  <>
-                    <Title>{item.name_text}</Title>
-                    <Editor
-                      readonly
-                      disableUpdateValue
-                      value={item?.pivot?.content}
-                    />
-                  </>
-                )}
-                {item.type === 4 &&
-                  item.pivot.params?.map((el: any) => (
-                    <RowRadius key={el.id}>
-                      <Radius />
-                      {item?.name === 'overdue_tasks' && el.expected_day > 0 ? (
-                        <span style={{ marginRight: 3, whiteSpace: 'nowrap' }}>
-                          [{t('report.list.overdue')}
-                          {el.expected_day}
-                          {t('report.list.day')}]
-                        </span>
-                      ) : null}
-                      <Msg>
-                        {el.name}
-                        {`（${
-                          el.user_schedule_percent
-                            ? el.user_schedule_percent
-                            : 0
-                        }%  ${el.user_today_task_time ?? 0}h）`}
-                      </Msg>
-                    </RowRadius>
-                  ))}
-
-                {item.type === 2 && (
-                  <>
-                    <Title>{item?.name_text}</Title>
-                    <AttachmentBox list={item?.pivot?.params} />
-                  </>
-                )}
-              </div>
-            ))}
-            <DetailItem>
-              <Title style={{ marginBottom: 8 }}>{t('common.comment')}</Title>
-              {commentList && commentList.length
-                ? commentList.map((i: any) => (
-                    <CommentBox key={i.id}>
-                      <div className="headWrap">
-                        <div className="header">
-                          <CommonUserAvatar name={i.comment_user.name} />
-                          <div className="time">{i.created_at || '--'}</div>
-                        </div>
-                        {userInfo?.id === i.comment_user.id ? (
-                          <IconFont
-                            className="deleteIcon"
-                            style={{ marginLeft: 20 }}
-                            type="close"
-                            onClick={() => onDeleteComment(i)}
-                          />
+            <div style={{ padding: '0 24px' }}>
+              <Title style={{ marginTop: 8 }}>
+                {t('report.list.reportProject')}
+              </Title>
+              <Msg style={{ marginTop: 8 }}>{reportInfo?.project?.name}</Msg>
+              {reportInfo.report_content?.map((item: any) => (
+                <div key={item.id}>
+                  {item.type === 4 && (
+                    <Title style={{ marginBottom: 8 }}>
+                      {item.name_text}: {item.pivot.params?.length}
+                      {t('report.list.pieces')}
+                    </Title>
+                  )}
+                  {item.type === 3 && item.name !== 'total_schedule' && (
+                    <>
+                      <Title>{item.name_text}</Title>
+                      <Editor
+                        readonly
+                        disableUpdateValue
+                        value={item?.pivot?.content}
+                      />
+                    </>
+                  )}
+                  {item.type === 4 &&
+                    item.pivot.params?.map((el: any) => (
+                      <RowRadius key={el.id}>
+                        <Radius />
+                        {item?.name === 'overdue_tasks' &&
+                        el.expected_day > 0 ? (
+                          <span
+                            style={{ marginRight: 3, whiteSpace: 'nowrap' }}
+                          >
+                            [{t('report.list.overdue')}
+                            {el.expected_day}
+                            {t('report.list.day')}]
+                          </span>
                         ) : null}
-                      </div>
-                      <div className="content">
-                        <Editor
-                          readonly
-                          disableUpdateValue
-                          value={i?.content}
-                        />
-                      </div>
-                    </CommentBox>
-                  ))
-                : '--'}
-            </DetailItem>
+                        <Msg>
+                          {el.name}
+                          {`（${
+                            el.user_schedule_percent
+                              ? el.user_schedule_percent
+                              : 0
+                          }%  ${el.user_today_task_time ?? 0}h）`}
+                        </Msg>
+                      </RowRadius>
+                    ))}
+
+                  {item.type === 2 && (
+                    <>
+                      <Title>{item?.name_text}</Title>
+                      <AttachmentBox list={item?.pivot?.params} />
+                    </>
+                  )}
+                </div>
+              ))}
+              <DetailItem>
+                <Title style={{ marginBottom: 8 }}>{t('common.comment')}</Title>
+                {commentList && commentList.length
+                  ? commentList.map((i: any) => (
+                      <CommentBox key={i.id}>
+                        <div className="headWrap">
+                          <div className="header">
+                            <CommonUserAvatar name={i.comment_user.name} />
+                            <div className="time">{i.created_at || '--'}</div>
+                          </div>
+                          {userInfo?.id === i.comment_user.id ? (
+                            <IconFont
+                              className="deleteIcon"
+                              style={{ marginLeft: 20 }}
+                              type="close"
+                              onClick={() => onDeleteComment(i)}
+                            />
+                          ) : null}
+                        </div>
+                        <div className="content">
+                          <Editor
+                            readonly
+                            disableUpdateValue
+                            value={i?.content}
+                          />
+                        </div>
+                      </CommentBox>
+                    ))
+                  : '--'}
+              </DetailItem>
+            </div>
             <CommentFooter
               placeholder={t('commentOnLog', { name: item.user.name })}
               personList={arr}
               onConfirm={onComment}
-              style={{ position: 'sticky', margin: '16px 0', bottom: 0 }}
+              style={{
+                position: 'sticky',
+                bottom: 0,
+                padding: '16px 4% 16px 4%',
+              }}
               maxHeight="72vh"
               isEmployee
             />
           </>
         )}
       </ReportItemWrap>
+      <ProviderBox />
     </>
   )
 }
