@@ -98,7 +98,7 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
         {t('comparisonReport')}
       </ReportButton>
       <div className="label">
-        {currentKey?.name}（{currentKey?.total}）
+        {currentKey?.name}（{filterParams?.user_ids?.length}）
       </div>
       <CheckboxAll
         checked={checkAll}

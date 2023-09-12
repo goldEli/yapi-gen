@@ -193,7 +193,8 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
           style={{
             minWidth: `${1440 - leftWidth}px`,
             height: '100%',
-            // overflow: 'scroll',
+            // 横向滚动条没了，放开就有了
+            overflow: 'scroll',
           }}
         >
           {props.children}
