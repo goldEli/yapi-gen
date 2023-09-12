@@ -75,6 +75,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             : props.num === 1
             ? t('performance.title06')
             : t('performance.title07'),
+        newType: props.newType,
       }),
     )
     navigate(`/ChildLevel?data=${params}`)
@@ -191,6 +192,7 @@ const Home = () => {
     useState<Models.Efficiency.ViewItem>()
   const [valueId, setValueId] = useState(paramsData?.valueId || 0)
   const [viewValue, setViewValue] = useState(paramsData?.view?.value || 0)
+  console.log(paramsData, 'paramsData--home', paramsData.newType)
   useEffect(() => {
     if (paramsData?.type && paramsData?.projectId) {
       setHomeType(paramsData.type)
@@ -233,9 +235,23 @@ const Home = () => {
     const res = await viewsList(parmas)
     setViewDataList(res)
     let filterVal: any = {}
-    if (viewValue && valueId) {
+    if (paramsData?.newType === 'other') {
+      // 强制塞数据，默认视图修改它的配置
+      filterVal = res.find(el => el.is_default === 1)
+      filterVal.config = {
+        end_time: paramsData.headerParmas.time.time[1],
+        start_time: paramsData.headerParmas.time.time[0],
+        user_ids: paramsData.headerParmas.users,
+        period_time: paramsData.headerParmas.period_time,
+        project_id: paramsData.headerParmas.projectIds,
+        iterate_ids: paramsData.headerParmas.iterate_ids,
+      }
+    }
+    // 分享回显取的配置
+    else if (viewValue && valueId) {
       filterVal = res.find(el => el.id === Number(viewValue))
     } else if (viewValue && !valueId) {
+      // 跳转详情,返回回来的回显
       filterVal = res.find(el => el.id === Number(viewValue))
       filterVal.config = {
         end_time: paramsData.headerParmas.time.time[1],
@@ -245,7 +261,9 @@ const Home = () => {
         project_id: paramsData.headerParmas.projectIds,
         iterate_ids: paramsData.headerParmas.iterate_ids,
       }
-    } else {
+    }
+    // 取默认视图配置
+    else {
       filterVal = res.find(el => el.is_default === 1)
     }
     setOptionVal(filterVal?.id || 0)
@@ -709,6 +727,7 @@ const Home = () => {
           }}
         >
           <WorkingStatus
+            newType={paramsData?.newType}
             projectId={projectId}
             viewType={viewType}
             homeType={homeType}

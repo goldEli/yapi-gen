@@ -44,6 +44,7 @@ declare namespace Models.Efficiency {
     num: number
     projectId: number
     viewType: number
+    newType?: string
   }
   export interface ChartBar {
     chartType: string
