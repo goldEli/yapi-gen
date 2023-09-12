@@ -109,7 +109,7 @@ const Need = (props: any) => {
       val ?? activeTab
         ? await getVerifyList(params)
         : await getVerifyUserList(params)
-
+    console.log('set1111111111', result)
     setListData(result)
     setCount({
       verifyUser: val ?? activeTab ? result?.otherCount : result?.total,
@@ -163,28 +163,31 @@ const Need = (props: any) => {
   }
 
   const onClickItem = async (item: any) => {
+    // 阻止修改原始数据
+    const newListItem = JSON.parse(JSON.stringify(item))
     if (props.id === 0 || !props.id) {
-      getConfig(item.project_id ?? item.projectId)
+      getConfig(newListItem.project_id ?? newListItem.projectId)
     }
+
     const demandIds = listData?.list?.map((i: any) => i.demandId)
-    item.id = item.demandId
-    item.isMineOrHis = true
-    item.isAllProject = props.projectId === 0
+    newListItem.id = newListItem.demandId
+    newListItem.isMineOrHis = true
+    newListItem.isAllProject = props.projectId === 0
     let type = 0
-    if (item.project_type === 2) {
+    if (newListItem.project_type === 2) {
       type = 1
     }
-    if (item.project_type === 1 && item.is_bug === 2) {
+    if (newListItem.project_type === 1 && newListItem.is_bug === 2) {
       type = 3
     }
-    if (item.project_type === 1 && item.is_bug === 1) {
+    if (newListItem.project_type === 1 && newListItem.is_bug === 1) {
       type = 2
     }
     // type 1事务 2 缺陷 3 需求
     openDemandDetail(
-      { ...item, ...{ demandIds } },
-      item.project_id ?? item.projectId,
-      item.demandId,
+      { ...newListItem, ...{ demandIds } },
+      newListItem.project_id ?? newListItem.projectId,
+      newListItem.demandId,
       type,
     )
   }
@@ -255,6 +258,8 @@ const Need = (props: any) => {
       val,
     )
   }
+
+  console.log(listData?.list, '=listData?.listlistData?.listlistData?.list')
 
   return (
     <div
