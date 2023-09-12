@@ -2405,5 +2405,7 @@
   "overdueTime": "Overdue {{day}} days",
   "timeOverdue": "{{time}} overdue",
   "noTasksYet": "No tasks yet",
-  "loadMoreTasksForThisMember": "Load more tasks for this member"
+  "loadMoreTasksForThisMember": "Load more tasks for this member",
+  "Project": "Project",
+  "Time": "Time"
 }

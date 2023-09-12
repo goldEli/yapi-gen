@@ -177,7 +177,19 @@ const CommentFooter = (props: CommentFooterProps) => {
           </div>
         </div>
       ) : (
-        <div style={{ gap: 12, display: 'flex', alignItems: 'center' }}>
+        <div
+          style={
+            props.isEmployee
+              ? {
+                  gap: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  position: 'sticky',
+                  bottom: 10,
+                }
+              : { gap: 12, display: 'flex', alignItems: 'center' }
+          }
+        >
           {props.hasAvatar ? (
             <CommonUserAvatar size="large" avatar={userInfo.avatar} />
           ) : null}

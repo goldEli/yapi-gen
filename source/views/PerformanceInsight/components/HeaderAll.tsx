@@ -111,7 +111,11 @@ const HeaderAll = (props: HaderProps) => {
   }
   // 自定义时间
   const onChangeDate = (values: any[]) => {
-    setTimeVal([moment(values[0]), moment(values[1])])
+    if (values) {
+      setTimeVal([moment(values[0]), moment(values[1])])
+    } else {
+      setTimeVal([])
+    }
   }
   // 清除选择的成员
   const onClear = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -202,17 +206,25 @@ const HeaderAll = (props: HaderProps) => {
           view: props.headerParmas.view,
           valueId: paramsData.valueId,
           headerParmas: paramsData.headerParmas,
+          // 新加的type
+          newType: paramsData.newType,
         }),
       )
       navigate(`/Performance?data=${params}`)
     } else {
       const params = encryptPhp(
         JSON.stringify({
+          // 项目id
           projectId: props.projectId,
+          // iteration 迭代还是冲刺
           type: props.homeType,
+          // 项目id
           id: props.projectId,
+          //
           view: props.headerParmas.view,
+          // 分享的id
           valueId: paramsData.valueId,
+          // 所有的参数
           headerParmas: paramsData.headerParmas,
         }),
       )
@@ -236,7 +248,7 @@ const HeaderAll = (props: HaderProps) => {
             <div style={{ marginRight: '16px' }}>
               <SelectWrapForList id="SelectWrap">
                 <span style={{ margin: '0px 0px 0px 12px', fontSize: '14px' }}>
-                  项目
+                  {t('Project')}
                 </span>
                 <CustomSelect
                   style={{ width: 148 }}
@@ -293,7 +305,7 @@ const HeaderAll = (props: HaderProps) => {
             <Space size={16}>
               <SelectWrapForList id="SelectWrapForList">
                 <span style={{ margin: '0px 0px 0px 12px', fontSize: '14px' }}>
-                  时间
+                  {t('Time')}
                 </span>
                 <SelectMain
                   allowClear={false}
@@ -337,6 +349,7 @@ const HeaderAll = (props: HaderProps) => {
                   dateValue={timeVal}
                   onChange={onChangeDate}
                   width="283px"
+                  hasClear
                 />
               )}
             </Space>

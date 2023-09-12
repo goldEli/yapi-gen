@@ -49,8 +49,9 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
         <Form layout="vertical" autoComplete="off" form={form}>
           <Form.Item label={t('releaseNotes')} name="perception">
             <Input.TextArea
+              showCount
               maxLength={600}
-              autoSize={{ minRows: 5, maxRows: 5 }}
+              autoSize={{ minRows: 10, maxRows: 10 }}
             />
           </Form.Item>
         </Form>

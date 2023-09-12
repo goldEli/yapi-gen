@@ -159,11 +159,7 @@ export const ItemBox = styled.div<{ isWork?: boolean }>`
       }
     }
   }
-  &:hover {
+  /* &:hover {
     background: ${props => (props.isWork ? 'var(--hover-d2)' : 'none')};
-    .right .totalBox .sub {
-      color: var(--primary-d1);
-      text-decoration: underline;
-    }
-  }
+  } */
 `

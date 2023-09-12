@@ -457,7 +457,7 @@ const ProjectSystemReport = () => {
                           return (
                             <div className="item" key={item.id}>
                               {item.name}（{item.schedule_percent}%{' '}
-                              {item.schedule}h）
+                              {item.today_task_time}h）
                             </div>
                           )
                         })}

@@ -116,10 +116,13 @@ const TaskItemContent = (props: TaskItemContentProps) => {
               【{row.story_prefix_key}】{row.name}
             </div>
             <div className="schedules">
-              ({row.schedules.schedule}%{' '}
-              {Math.abs(
-                Math.floor((row.schedules.total_task_time / 3600) * 100) / 100,
-              )}
+              ({row.schedules.schedule ?? 0}%{' '}
+              {row.schedules.total_task_time
+                ? Math.abs(
+                    Math.floor((row.schedules.total_task_time / 3600) * 100) /
+                      100,
+                  )
+                : 0}
               h)
             </div>
           </div>
@@ -183,7 +186,7 @@ const TaskItem = (props: TaskItemProps) => {
         <CommonUserAvatar avatar={item.avatar} size="large" />
         <div className="info">
           <div className="name">
-            {item.name}（{item.position.name}）
+            {item.name}（{item.position.name ?? '--'}）
           </div>
           <div className="sub">
             {item.departments?.map((i: any) => i.name)?.join(' - ')}
