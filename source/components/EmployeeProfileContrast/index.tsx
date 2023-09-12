@@ -20,6 +20,7 @@ import CommonUserAvatar from '../CommonUserAvatar'
 import { getMemberOverviewCompare } from '@/services/employeeProfile'
 import NewLoadingTransition from '../NewLoadingTransition'
 import { useTranslation } from 'react-i18next'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const EmployeeProfileContrast = () => {
   const [t] = useTranslation()
@@ -77,7 +78,26 @@ const EmployeeProfileContrast = () => {
   }
 
   // 跳转效能洞察
-  const onToPerformance = () => {}
+  const onToPerformance = () => {
+    const params = encryptPhp(
+      JSON.stringify({
+        headerParmas: {
+          users: filterParams?.user_ids,
+          time: {
+            time: filterParams?.time,
+            type: 0,
+          },
+        },
+        // 新加的type
+        newType: 'other',
+      }),
+    )
+    window.open(
+      `${window.origin}${
+        import.meta.env.__URL_HASH__
+      }Performance?data=${params}`,
+    )
+  }
 
   // 获取对比数据
   const getContrast = async () => {
