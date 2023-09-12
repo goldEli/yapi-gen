@@ -62,9 +62,10 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
           <Form.Item label={t('releaseNotes')} name="perception">
             <Input.TextArea
               id="yang_input"
-              maxLength={600}
-              autoSize={{ minRows: 5, maxRows: 5 }}
               spellCheck={false}
+              showCount
+              maxLength={600}
+              autoSize={{ minRows: 10, maxRows: 10 }}
             />
           </Form.Item>
         </Form>

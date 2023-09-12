@@ -183,7 +183,8 @@ const CompleteSprintModal = (props: sprintProps) => {
               </Form.Item>
               <Form.Item label={t('sprint.result')} name="result">
                 <Input.TextArea
-                  maxLength={300}
+                  showCount
+                  maxLength={800}
                   autoSize={{ minRows: 5, maxRows: 5 }}
                   placeholder={t('common.pleaseEnter')}
                 />
