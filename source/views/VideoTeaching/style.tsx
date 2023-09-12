@@ -13,13 +13,19 @@ export const Header = styled.div`
   img {
     height: 100%;
   }
+  span {
+    position: absolute;
+    right: 40px;
+    top: 24px;
+    color: #969799;
+    font-size: 14px;
+  }
 `
 export const Content = styled.div<{ windowWidth: number }>`
   margin: ${props =>
     props.windowWidth <= 1440
       ? ' 0px calc(50% - 544px)'
       : '0px calc(50% - 682px)'};
-  padding-top: 32px;
   box-sizing: border-box;
   background: #fff;
 `
@@ -29,6 +35,7 @@ export const InputBox = styled.div`
   position: sticky;
   top: 60px;
   background: #fff;
+  padding-bottom: 32px;
   .title-box {
     text-align: center;
     display: flex;
