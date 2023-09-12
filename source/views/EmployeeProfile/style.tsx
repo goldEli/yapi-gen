@@ -234,7 +234,10 @@ export const ReportItemHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
+  position: sticky;
+  background-color: white;
+  z-index: 99;
+  top: 0px;
   .icon {
     position: absolute;
     left: -19px;

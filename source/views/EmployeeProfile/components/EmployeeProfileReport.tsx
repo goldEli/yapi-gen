@@ -317,7 +317,7 @@ const ReportItem = (props: ReportItemProps) => {
               placeholder={t('commentOnLog', { name: item.user.name })}
               personList={arr}
               onConfirm={onComment}
-              style={{ position: 'inherit', margin: '16px 0' }}
+              style={{ position: 'sticky', margin: '16px 0', bottom: 0 }}
               maxHeight="72vh"
               isEmployee
             />
