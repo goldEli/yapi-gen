@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import CommonModal from '../CommonModal'
 import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -34,6 +34,18 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
     })
   }, [perception])
 
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        const inputRef: any = document.querySelector('#yang_input')
+        inputRef?.focus()
+        setTimeout(() => {
+          inputRef?.setSelectionRange(-1, -1)
+        }, 100)
+      }, 100)
+    }
+  }, [visible])
+
   return (
     <CommonModal
       width={528}
@@ -49,6 +61,8 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
         <Form layout="vertical" autoComplete="off" form={form}>
           <Form.Item label={t('releaseNotes')} name="perception">
             <Input.TextArea
+              id="yang_input"
+              spellCheck={false}
               showCount
               maxLength={600}
               autoSize={{ minRows: 10, maxRows: 10 }}

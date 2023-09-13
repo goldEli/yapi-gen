@@ -552,7 +552,12 @@ const DemandTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 1, title: t('createRequirements') },
+        params: {
+          noDataCreate: true,
+          type: 1,
+          title: t('createRequirements'),
+          projectId,
+        },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))
