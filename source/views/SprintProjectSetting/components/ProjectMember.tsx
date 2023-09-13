@@ -337,16 +337,16 @@ const ProjectMember = (props: { searchValue?: string }) => {
     {
       title: (
         <NewSort
-          fixedKey="nickname"
+          fixedKey="name"
           nowKey={order.key}
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('common.nickname')}
+          {t('name')}
         </NewSort>
       ),
-      dataIndex: 'nickname',
-      width: 240,
+      dataIndex: 'name',
+      width: 180,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -385,40 +385,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
     {
       title: (
         <NewSort
-          fixedKey="name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('project.realName')}
-        </NewSort>
-      ),
-      dataIndex: 'name',
-      width: 180,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="gender"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.sex')}
-        </NewSort>
-      ),
-      dataIndex: 'gender',
-      width: 120,
-      render: (text: number) => {
-        return <span>{text === 1 ? t('common.male') : t('common.female')}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort
           fixedKey="department_name"
           nowKey={order.key}
           order={order.value}
@@ -450,6 +416,24 @@ const ProjectMember = (props: { searchValue?: string }) => {
         return <span>{text || '--'}</span>
       },
     },
+    {
+      title: (
+        <NewSort
+          fixedKey="gender"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('common.sex')}
+        </NewSort>
+      ),
+      dataIndex: 'gender',
+      width: 120,
+      render: (text: number) => {
+        return <span>{text === 1 ? t('common.male') : t('common.female')}</span>
+      },
+    },
+
     {
       title: (
         <NewSort

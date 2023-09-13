@@ -223,7 +223,7 @@ const Iteration = (props: Props) => {
     const hasIds = newData?.filter((el: { id: number }) =>
       props.iterateViewIds.includes(el.id),
     )
-    hasIds?.length >= 1
+    hasIds?.length < 1
       ? setProjectList([...newData])
       : setProjectList([...filterVal, ...newData])
     // 回显的项目id

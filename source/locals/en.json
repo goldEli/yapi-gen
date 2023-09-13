@@ -2409,5 +2409,6 @@
   "Project": "Project",
   "Time": "Time",
   "totalPerson": "{{total}} people",
-  "totalNumber": "{{total}} times"
+  "totalNumber": "{{total}} times",
+  "return": "Return"
 }

@@ -2409,5 +2409,6 @@
   "Project": "项目",
   "Time": "时间",
   "totalPerson": "{{total}}人",
-  "totalNumber": "{{total}}次"
+  "totalNumber": "{{total}}次",
+  "return": "返回"
 }
