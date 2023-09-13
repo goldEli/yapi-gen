@@ -12,7 +12,7 @@ export const getMemberOverviewList = async () => {
 // 获取统计数据
 export const getMemberOverviewStatistics = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewStatistics', {
-    is_star: params.isStart ? 1 : null,
+    is_star: params.isStart ? 1 : 2,
     keyword: params.keyword ?? '',
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
@@ -28,7 +28,7 @@ export const getMemberOverviewStoryList = async (params: any) => {
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
     keyword: params.keyword ?? '',
-    is_star: params.isStart ? 1 : null,
+    is_star: params.isStart ? 1 : 2,
   })
   return response.data
 }
@@ -41,7 +41,7 @@ export const getMemberOverviewMoreStoryList = async (params: any) => {
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
     keyword: params.keyword ?? '',
-    is_star: params.isStart ? 1 : null,
+    is_star: params.isStart ? 1 : 2,
     page: params.page,
   })
   return response.data.list
