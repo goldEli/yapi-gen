@@ -169,6 +169,9 @@ const GlobalStyle = () => {
           width: 100%;
         }
       }
+      .popover_yang {
+        top: 49px !important;
+      }
       .custom-menu .ant-dropdown-menu {
         max-height: 300px;
         overflow: auto;

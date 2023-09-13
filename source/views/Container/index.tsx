@@ -38,6 +38,7 @@ import DetailScreenModal from '@/components/DetailScreenModal'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ProjectSystemReport from '../WorkReport/Review/components/ProjectSystemReport'
+import ReportAssistantModal from '@/views/WorkReport/Review/components/ReportAssistantModal'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -78,6 +79,14 @@ export const Container = () => {
   const {
     i18n: { language },
   } = useTranslation()
+  const { projectInfo } = useSelector(store => store.project)
+  const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
+    visible: boolean
+    type: 'user' | 'project'
+  }>({
+    visible: false,
+    type: 'user',
+  })
   const antdLocal = loadedAntdLocals[language]
   const navigate = useNavigate()
 
@@ -182,6 +191,22 @@ export const Container = () => {
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         <GlobalStyle />
         <DeleteConfirmGlobalModal />
+        <ReportAssistantModal
+          close={() => {
+            setReportAssistantModalObj({
+              ...reportAssistantModalObj,
+              visible: false,
+            })
+          }}
+          projectId={
+            !window.location.href.includes('/Report') ||
+            window.location.href.includes('/Report/PerformanceInsight')
+              ? projectInfo?.id
+              : null
+          }
+          visible={reportAssistantModalObj.visible}
+          type={reportAssistantModalObj.type}
+        />
         <LayoutWrap id="layoutWrap">
           <HeaderWrap
             onClick={() => {
@@ -192,7 +217,9 @@ export const Container = () => {
             }}
           >
             <HeaderLeft />
-            <HeaderRight />
+            <HeaderRight
+              setReportAssistantModalObj={setReportAssistantModalObj}
+            />
           </HeaderWrap>
           <Content>
             <Outlet />
