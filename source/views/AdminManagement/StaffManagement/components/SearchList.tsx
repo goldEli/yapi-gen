@@ -8,7 +8,7 @@ import {
   SelectWrap,
   SelectWrapBedeck,
 } from '@/components/StyleCommon'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   getDepartmentSelectList,
@@ -67,6 +67,7 @@ const SearchList = (props: Props) => {
   const [departmentOptions, setDepartmentOptions] = useState([])
   const [positionOptions, setPositionOptions] = useState([])
   const [roleOptions, setRoleOptions] = useState([])
+  const [boxMaps, setBoxMaps] = useState<any>()
   const onClearForm = async () => {
     form.resetFields()
     const value = await form.validateFields()
@@ -93,7 +94,16 @@ const SearchList = (props: Props) => {
       init()
     }
   }, [isRefresh])
-
+  useLayoutEffect(() => {
+    const map: any = new Map()
+    const box = document.querySelectorAll('.SelectWrapBedeck')
+    box.forEach(item => {
+      const attr = item.getAttribute('datatype')
+      const w = item.getBoundingClientRect().width
+      map.set(attr, w)
+    })
+    setBoxMaps(map)
+  }, [props])
   const confirm = async () => {
     const value = await form.validateFields()
 
@@ -103,8 +113,8 @@ const SearchList = (props: Props) => {
     <SearchBox style={{ padding: '0 0 0 24px' }}>
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+          <SelectWrapBedeck className="SelectWrapBedeck" datatype="department">
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>
               {t('common.department')}
             </span>
             <Form.Item name="department">
@@ -116,6 +126,8 @@ const SearchList = (props: Props) => {
                 placeholder={t('common.all')}
                 showSearch
                 optionFilterProp="label"
+                placement="bottomRight"
+                dropdownMatchSelectWidth={boxMaps?.get('department')}
                 allowClear
                 options={departmentOptions.map((item: any) => ({
                   label: item.name,
@@ -124,8 +136,8 @@ const SearchList = (props: Props) => {
               />
             </Form.Item>
           </SelectWrapBedeck>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+          <SelectWrapBedeck className="SelectWrapBedeck" datatype="position">
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>
               {t('common.job')}
             </span>
             <Form.Item name="position">
@@ -137,6 +149,8 @@ const SearchList = (props: Props) => {
                 showSearch
                 optionFilterProp="label"
                 showArrow
+                placement="bottomRight"
+                dropdownMatchSelectWidth={boxMaps?.get('position')}
                 allowClear
                 options={positionOptions.map((item: any) => ({
                   label: item.name,
@@ -145,8 +159,8 @@ const SearchList = (props: Props) => {
               />
             </Form.Item>
           </SelectWrapBedeck>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+          <SelectWrapBedeck className="SelectWrapBedeck" datatype="userGroup">
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>
               {t('common.permissionGroup')}
             </span>
             <Form.Item name="userGroup">
@@ -158,6 +172,8 @@ const SearchList = (props: Props) => {
                 showSearch
                 optionFilterProp="label"
                 showArrow
+                placement="bottomRight"
+                dropdownMatchSelectWidth={boxMaps?.get('userGroup')}
                 allowClear
                 options={roleOptions.map((item: any) => ({
                   label: item.content_txt,
@@ -166,8 +182,8 @@ const SearchList = (props: Props) => {
               />
             </Form.Item>
           </SelectWrapBedeck>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+          <SelectWrapBedeck className="SelectWrapBedeck" datatype="status">
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>
               {t('common.status')}
             </span>
             <Form.Item name="status">
@@ -178,6 +194,8 @@ const SearchList = (props: Props) => {
                 placeholder={t('common.all')}
                 showSearch
                 optionFilterProp="label"
+                placement="bottomRight"
+                dropdownMatchSelectWidth={boxMaps?.get('status')}
                 showArrow
                 allowClear
                 options={[
@@ -197,8 +215,11 @@ const SearchList = (props: Props) => {
               />
             </Form.Item>
           </SelectWrapBedeck>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+          <SelectWrapBedeck
+            className="SelectWrapBedeck"
+            datatype="handover_status"
+          >
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>
               {t('handover_status')}
             </span>
             <Form.Item name="handover_status">
@@ -211,6 +232,8 @@ const SearchList = (props: Props) => {
                 optionFilterProp="label"
                 showArrow
                 allowClear
+                placement="bottomRight"
+                dropdownMatchSelectWidth={boxMaps?.get('handover_status')}
                 options={[
                   {
                     label: t('normal'),

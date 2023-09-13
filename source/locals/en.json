@@ -2408,7 +2408,9 @@
   "loadMoreTasksForThisMember": "Load more tasks for this member",
   "Project": "Project",
   "Time": "Time",
-  "return": "Return",
   "taskCompletionRate": "Task completion rate",
-  "tasksToBeCompleted": "Tasks to be completed"
+  "tasksToBeCompleted": "Tasks to be completed",
+  "totalPerson": "{{total}} people",
+  "totalNumber": "{{total}} times",
+  "return": "Return"
 }

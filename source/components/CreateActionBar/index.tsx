@@ -143,7 +143,7 @@ const CreateActionBar = (props: Props) => {
             showArrow
             allowClear
             placement="bottomRight"
-            dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+            width={dropdownMatchSelectWidth}
             options={[
               {
                 label: t('other.affairs_public'),
