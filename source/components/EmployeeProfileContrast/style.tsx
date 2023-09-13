@@ -155,7 +155,6 @@ export const ItemBox = styled.div<{ isWork?: boolean }>`
       .sub {
         font-size: 12px;
         color: var(--neutral-n1-d1);
-        cursor: pointer;
       }
     }
   }
