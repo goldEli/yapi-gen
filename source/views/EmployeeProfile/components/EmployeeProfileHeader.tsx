@@ -261,7 +261,9 @@ const EmployeeProfileHeader = () => {
           >
             <CommonIconFont type={i.type} />
             <div className="name">
-              {i.name}（{memberStatistics[i.fieldKey]?.total}）
+              {i.name}（
+              {t('totalPerson', { total: memberStatistics[i.fieldKey]?.total })}
+              ）
             </div>
           </Card>
         ))}

@@ -113,13 +113,13 @@ const TaskItemContent = (props: TaskItemContentProps) => {
             style={{ width: row.status === 5 ? '80%' : '100%' }}
           >
             <div className="name">
-              【{row.story_prefix_key}】{row.name}
+              【{row?.story_prefix_key}】{row?.name}
             </div>
             <div className="schedules">
-              ({row.schedules.schedule ?? 0}%{' '}
-              {row.schedules.total_task_time
+              ({row.schedules?.schedule ?? 0}%{' '}
+              {row.schedules?.total_task_time
                 ? Math.abs(
-                    Math.floor((row.schedules.total_task_time / 3600) * 100) /
+                    Math.floor((row.schedules?.total_task_time / 3600) * 100) /
                       100,
                   )
                 : 0}
@@ -128,7 +128,7 @@ const TaskItemContent = (props: TaskItemContentProps) => {
           </div>
           {row.status === 5 && (
             <div className="right">
-              {t('timeOverdue', { time: row.expected_end_at })}
+              {t('timeOverdue', { time: row?.expected_end_at })}
             </div>
           )}
         </div>
@@ -186,10 +186,10 @@ const TaskItem = (props: TaskItemProps) => {
         <CommonUserAvatar avatar={item.avatar} size="large" />
         <div className="info">
           <div className="name">
-            {item.name}（{item.position.name ?? '--'}）
+            {item?.name}（{item.position?.name ?? '--'}）
           </div>
           <div className="sub">
-            {item.departments?.map((i: any) => i.name)?.join(' - ')}
+            {item?.departments?.map((i: any) => i.name)?.join(' - ')}
           </div>
         </div>
       </TaskItemPerson>
@@ -205,11 +205,11 @@ const TaskItem = (props: TaskItemProps) => {
               )}
             </TaskItemBox>
           ))}
-        {item.story?.length <= 0 && (
+        {item?.story?.length <= 0 && (
           <div style={{ color: 'var(--neutral-n3)' }}>{t('noTasksYet')}</div>
         )}
       </TaskItemGroup>
-      {item.story_total > item.story?.length && (
+      {item?.story_total > item?.story?.length && (
         <LoadingMore onClick={onLoadingMore}>
           {moreLoading && (
             <img

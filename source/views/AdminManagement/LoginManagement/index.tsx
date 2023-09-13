@@ -10,7 +10,7 @@ import {
   SelectWrap,
   SelectWrapBedeck,
 } from '@/components/StyleCommon'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useLayoutEffect } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -101,7 +101,7 @@ const LoginManagement = () => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
-
+  const [boxMaps, setBoxMaps] = useState<any>()
   const getList = async (pageObjVal?: any, orderVal?: any) => {
     setIsSpinning(true)
     const values = await form.getFieldsValue()
@@ -140,7 +140,16 @@ const LoginManagement = () => {
     getList(pageObj, order)
     getStaff()
   }, [])
-
+  useLayoutEffect(() => {
+    const map: any = new Map()
+    const box = document.querySelectorAll('.SelectWrapBedeck')
+    box.forEach(item => {
+      const attr = item.getAttribute('datatype')
+      const w = item.getBoundingClientRect().width
+      map.set(attr, w)
+    })
+    setBoxMaps(map)
+  }, [])
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     getList(pageObj, { value: val === 2 ? 'desc' : 'asc', key })
@@ -340,7 +349,7 @@ const LoginManagement = () => {
             />
           </div>
           <SearchWrap size={16}>
-            <SelectWrapBedeck>
+            <SelectWrapBedeck className="SelectWrapBedeck" datatype="userIds">
               <span style={{ margin: '0 12px', fontSize: '14px' }}>
                 {t('setting.loginUser')}
               </span>
@@ -355,6 +364,8 @@ const LoginManagement = () => {
                   options={staffList}
                   optionFilterProp="label"
                   getPopupContainer={(node: any) => node}
+                  placement="bottomRight"
+                  dropdownMatchSelectWidth={boxMaps?.get('userIds')}
                   suffixIcon={
                     <IconFont
                       type="down"

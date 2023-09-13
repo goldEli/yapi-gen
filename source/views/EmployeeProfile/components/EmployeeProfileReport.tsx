@@ -19,10 +19,8 @@ import {
   ReportItemBox,
   ProviderBox,
 } from '../style'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import {
-  followsCancel,
-  followsMark,
   getMemberOverviewMoreReportList,
   getMemberOverviewReportList,
 } from '@/services/employeeProfile'
@@ -65,22 +63,22 @@ const ReportItem = (props: ReportItemProps) => {
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [arr, setArr] = useState<any>(null)
 
-  // 标星或者是取消标星  state: true是已经标星，取消标星，反之， item:当前数据
-  const onStar = async (state: boolean, item: any) => {
-    const params = {
-      type: 2,
-      relation_id: item.id,
-    }
-    if (state) {
-      await followsCancel(params)
-      getMessage({ type: 'success', msg: t('cancelStarSuccessfully') })
-    } else {
-      await followsMark(params)
-      getMessage({ type: 'success', msg: t('starSuccess') })
-    }
-    item.is_star = item.is_star === 1 ? 2 : 1
-    onChangData(user_id, item)
-  }
+  // // 标星或者是取消标星  state: true是已经标星，取消标星，反之， item:当前数据
+  // const onStar = async (state: boolean, item: any) => {
+  //   const params = {
+  //     type: 2,
+  //     relation_id: item.id,
+  //   }
+  //   if (state) {
+  //     await followsCancel(params)
+  //     getMessage({ type: 'success', msg: t('cancelStarSuccessfully') })
+  //   } else {
+  //     await followsMark(params)
+  //     getMessage({ type: 'success', msg: t('starSuccess') })
+  //   }
+  //   item.is_star = item.is_star === 1 ? 2 : 1
+  //   onChangData(user_id, item)
+  // }
 
   // 获取汇报评论
   const getReportCommentData = async (id: number) => {
@@ -183,23 +181,23 @@ const ReportItem = (props: ReportItemProps) => {
           onConfirm={onDeleteConfirm}
         />
         <ReportItemHeader isExpended={item.is_expended === 1}>
-          {item.is_star === 1 && (
+          {/* {item.is_star === 1 && (
             <div className="icon">
               <CommonIconFont type="star" color="#FA9746" size={14} />
             </div>
-          )}
+          )} */}
           <ReportItemHeaderLeft>
-            <CommonUserAvatar avatar={item.user.avatar} size="large" />
+            <CommonUserAvatar avatar={item.user?.avatar} size="large" />
             <div className="info">
               <div className="name">
                 {t('reportTitle', {
-                  name: item.user.name,
-                  time: item.start_time,
-                  reportName: item.name,
+                  name: item.user?.name,
+                  time: item?.start_time,
+                  reportName: item?.name,
                 })}
               </div>
               <div className="sub">
-                {item.departments?.map((i: any) => i.name)?.join(' - ')}
+                {item?.departments?.map((i: any) => i.name)?.join(' - ')}
               </div>
             </div>
           </ReportItemHeaderLeft>
@@ -216,7 +214,7 @@ const ReportItem = (props: ReportItemProps) => {
                 />
               </OperationButton>
             </Tooltip>
-            <Tooltip
+            {/* <Tooltip
               placement="top"
               trigger="hover"
               title={item.is_star === 1 ? t('unstar') : t('star')}
@@ -230,7 +228,7 @@ const ReportItem = (props: ReportItemProps) => {
                   size={20}
                 />
               </OperationButton>
-            </Tooltip>
+            </Tooltip> */}
           </ReportItemHeaderRight>
         </ReportItemHeader>
         {item.is_expended === 1 && (
@@ -441,7 +439,7 @@ const EmployeeProfileReport = () => {
       setLoading(true)
       getReportList()
     }
-  }, [filterParams.time, filterParams.isStart, filterParams.user_ids])
+  }, [filterParams.time, filterParams.user_ids])
 
   return (
     <ReportWrap>

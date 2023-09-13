@@ -1,12 +1,15 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
+import { t } from 'i18next'
 import React from 'react'
 
 const Box = styled.div`
   max-width: 400px;
   min-width: 283px;
   padding: 12px;
-  background: linear-gradient(47deg, #6688ff 0%, #8ca6ff 100%);
+  background-image: url('/bg_23.png');
+
+  background-size: cover;
   color: var(--neutral-white-d7);
   border-radius: 6px;
 `
@@ -43,11 +46,15 @@ const PeopleCard = (props: any) => {
       <div style={{ display: 'flex', marginTop: '12px' }}>
         <div style={{ flex: '50%' }}>
           <div style={{ fontSize: '12px' }}>{completed_rate}%</div>
-          <div style={{ fontSize: '12px' }}>任务完成率</div>
+          <div style={{ fontSize: '12px' }}>
+            {t('taskCompletionRate') as string}
+          </div>
         </div>
         <div style={{ flex: '50%' }}>
           <div style={{ fontSize: '12px' }}>{undone_num}</div>
-          <div style={{ fontSize: '12px' }}>待完成任务</div>
+          <div style={{ fontSize: '12px' }}>
+            {t('tasksToBeCompleted') as string}
+          </div>
         </div>
       </div>
       <div
@@ -68,6 +75,7 @@ const PeopleCard = (props: any) => {
               fontSize: '16px',
               marginRight: '6px',
               alignSelf: 'self-start',
+              marginTop: '2px',
             }}
             type="tree-list-2"
           />

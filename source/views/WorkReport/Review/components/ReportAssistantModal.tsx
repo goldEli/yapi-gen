@@ -72,6 +72,9 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     if (projectId && projectList?.length > 0) {
       setCurrentProject(projectList?.find((item: any) => item.id === projectId))
     }
+    if (projectId === null) {
+      setCurrentProject(null)
+    }
   }, [projectId, projectList])
 
   const onClose = () => {
