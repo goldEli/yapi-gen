@@ -2408,5 +2408,7 @@
   "loadMoreTasksForThisMember": "Load more tasks for this member",
   "Project": "Project",
   "Time": "Time",
-  "return": "Return"
+  "return": "Return",
+  "taskCompletionRate": "Task completion rate",
+  "tasksToBeCompleted": "Tasks to be completed"
 }

@@ -1,5 +1,6 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
+import { t } from 'i18next'
 import React from 'react'
 
 const Box = styled.div`
@@ -45,11 +46,15 @@ const PeopleCard = (props: any) => {
       <div style={{ display: 'flex', marginTop: '12px' }}>
         <div style={{ flex: '50%' }}>
           <div style={{ fontSize: '12px' }}>{completed_rate}%</div>
-          <div style={{ fontSize: '12px' }}>任务完成率</div>
+          <div style={{ fontSize: '12px' }}>
+            {t('taskCompletionRate') as string}
+          </div>
         </div>
         <div style={{ flex: '50%' }}>
           <div style={{ fontSize: '12px' }}>{undone_num}</div>
-          <div style={{ fontSize: '12px' }}>待完成任务</div>
+          <div style={{ fontSize: '12px' }}>
+            {t('tasksToBeCompleted') as string}
+          </div>
         </div>
       </div>
       <div
