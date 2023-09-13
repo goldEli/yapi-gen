@@ -2407,5 +2407,8 @@
   "noTasksYet": "暂无任务",
   "loadMoreTasksForThisMember": "加载该成员更多任务",
   "Project": "项目",
-  "Time": "时间"
+  "Time": "时间",
+  "totalPerson": "{{total}}人",
+  "totalNumber": "{{total}}次",
+  "return": "返回"
 }

@@ -179,7 +179,9 @@ const EmployeeProfileContrast = () => {
                         </div>
                         <div className="sub">
                           {t('overdueCompletion')}{' '}
-                          {i.statistics.overdue_completed}次
+                          {t('totalNumber', {
+                            total: i.statistics.overdue_completed,
+                          })}
                         </div>
                       </div>
                     </div>
@@ -211,8 +213,7 @@ const EmployeeProfileContrast = () => {
                       </div>
                       <div className="totalBox">
                         <div className="total">
-                          {t('numberOfSubmissions')} {i.statistics.completed}/
-                          {i.statistics.total}
+                          {t('numberOfSubmissions')} {i.statistics.total}
                         </div>
                       </div>
                     </div>
