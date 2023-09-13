@@ -6,7 +6,9 @@ const Box = styled.div`
   max-width: 400px;
   min-width: 283px;
   padding: 12px;
-  background: linear-gradient(47deg, #6688ff 0%, #8ca6ff 100%);
+  background-image: url('/bg_23.png');
+
+  background-size: cover;
   color: var(--neutral-white-d7);
   border-radius: 6px;
 `
@@ -68,6 +70,7 @@ const PeopleCard = (props: any) => {
               fontSize: '16px',
               marginRight: '6px',
               alignSelf: 'self-start',
+              marginTop: '2px',
             }}
             type="tree-list-2"
           />

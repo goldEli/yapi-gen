@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
-import { css } from '@emotion/react'
 import { Radio } from 'antd'
 import { useSelector, useDispatch } from '@store/index'
 import { updateHomeSetting } from '@/services/sprint'
@@ -8,6 +7,7 @@ import { getMessage } from '@/components/Message'
 import { setProjectInfo } from '@store/project/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
+import { css } from '@emotion/css'
 const Wrap = styled.div`
   padding-left: 24px;
 `
@@ -25,6 +25,12 @@ const RadioWrap = styled.div`
   .ant-radio-wrapper {
     color: var(--neutral-n1-d1) !important;
     font-size: var(--font14) !important;
+  }
+`
+const hov = css`
+  transition: all 0.6s;
+  &:hover {
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   }
 `
 interface IProps {}
@@ -93,6 +99,7 @@ const HomeSetting: React.FC<IProps> = props => {
       <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
         {urls.map(item => (
           <div
+            className={hov}
             key={item.url}
             onClick={() => onChange(item.url)}
             style={{
