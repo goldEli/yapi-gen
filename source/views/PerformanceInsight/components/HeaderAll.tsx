@@ -272,7 +272,7 @@ const HeaderAll = (props: HaderProps) => {
             <div style={{ marginRight: '16px' }}>
               <SelectWrapForList>
                 {/* 成员选择 */}
-                <DivStyle onClick={() => setIsVisible(true)}>
+                <DivStyle noBorder onClick={() => setIsVisible(true)}>
                   {person?.length > 0 ? (
                     <Left>
                       <span>{t('project.member')}</span>

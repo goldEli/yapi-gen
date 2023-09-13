@@ -167,7 +167,7 @@ export const getTitleTips = (text: string, tips: string, position?: string) => {
             justifyContent: 'center',
           }}
         >
-          <CommonIconFont type="question" size={16} />
+          <CommonIconFont type="question" color="#BBBDBF" size={16} />
         </div>
       </Tooltip>
     </div>

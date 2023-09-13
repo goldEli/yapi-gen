@@ -3,7 +3,7 @@
 // 全局迭代和冲刺的工作进展对比
 import HeaderAll from './HeaderAll'
 import { PersonText, TitleCss, Col, Line, TableStyle } from '../Header/Style'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Spin } from 'antd'
 import WorkItem from './WorkItem'
@@ -33,6 +33,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from '@/components/NoData'
 import ResizeTable from '@/components/ResizeTable'
 import Sort from '@/components/Sort'
+import PaginationBox from '@/components/TablePagination'
 
 interface Props {
   // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局 //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
@@ -103,6 +104,10 @@ const ProgressComparison = (props: Props) => {
   const [loading, setLoading] = useState(false)
   const [extra, setExtra] = useState<any>({})
   const [t] = useTranslation()
+  const [pageObj, setPageObj] = useState<any>({
+    size: 10,
+    page: 1,
+  })
 
   const onUpdateOrderKey = (key: any, val: any) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -964,6 +969,30 @@ const ProgressComparison = (props: Props) => {
     dispatch(setVisibleWork(false))
     dispatch(setListActiveId(0))
   }, [])
+
+  const onChangePage = (page: number, size: number) => {
+    if (size === pageObj.size) {
+      setPageObj({ page, size })
+    } else {
+      setPageObj({ page: 1, size })
+    }
+  }
+
+  const tableDataList = useMemo(() => {
+    const arr =
+      props.type === 'Progress_iteration' ||
+      props.type === 'Progress_sprint' ||
+      props.type === 'Progress_all'
+        ? tableList
+        : tableList1
+    if (arr.length < 1) {
+      return []
+    }
+    const start = (pageObj.page - 1) * pageObj.size
+    const end = start + pageObj.size
+    return arr.slice(start, end)
+  }, [pageObj, props.type, tableList, tableList1])
+
   return (
     <div
       style={{ height: '100%', width: '100%' }}
@@ -1012,35 +1041,28 @@ const ProgressComparison = (props: Props) => {
           ))}
         </div>
         <TableStyle>
-          {tableList.length <= 0 && tableList1.length <= 0 && <NoData />}
           <ResizeTable
             isSpinning={false}
             dataWrapNormalHeight="100%"
             col={columns}
-            dataSource={
-              props.type === 'Progress_iteration' ||
-              props.type === 'Progress_sprint' ||
-              props.type === 'Progress_all'
-                ? tableList
-                : tableList1
-            }
-            pagination={{
-              total: (props.type === 'Progress_iteration' ||
-              props.type === 'Progress_sprint' ||
-              props.type === 'Progress_all'
-                ? tableList
-                : tableList1
-              )?.length,
-              showTotal(total: any) {
-                return `${t('sprint.total')} ${total}${t('sprint.pieces')}`
-              },
-              defaultPageSize: 10,
-              defaultCurrent: 1,
-              pageSizeOptions: ['10', '20', '30', '50'],
-              showSizeChanger: true,
-              showQuickJumper: true,
-            }}
+            dataSource={tableDataList}
+            noData={<NoData />}
           />
+          {tableDataList.length > 0 ? (
+            <PaginationBox
+              currentPage={pageObj?.page}
+              pageSize={pageObj?.size}
+              total={
+                (props.type === 'Progress_iteration' ||
+                props.type === 'Progress_sprint' ||
+                props.type === 'Progress_all'
+                  ? tableList
+                  : tableList1
+                )?.length
+              }
+              onChange={onChangePage}
+            />
+          ) : null}
         </TableStyle>
         {/* 后半截的弹窗 */}
         <WorkItem
