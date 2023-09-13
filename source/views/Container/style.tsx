@@ -425,3 +425,29 @@ export const WaitingMenu = styled.div`
     right: -9px;
   }
 `
+
+export const RobotButton = styled.div`
+  cursor: pointer;
+  height: 56px;
+  padding-top: 10px;
+  padding-right: 24px;
+  user-select: none;
+`
+
+export const MenuItemBox = styled.div`
+  height: 40px;
+  font-size: 14px;
+  color: var(--neutral-n2);
+  display: flex;
+  align-items: center;
+  padding: 0px 16px;
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    background: var(--hover-d3);
+    color: var(--neutral-n1-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+`

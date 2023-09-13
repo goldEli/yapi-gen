@@ -30,6 +30,8 @@ import {
   UserInfoWrap,
   Line2,
   LineBox,
+  RobotButton,
+  MenuItemBox,
 } from './../style'
 import { getLoginDetail } from '@store/user/user.thunk'
 import SiteNotifications from '@/views/SiteNotifications/SiteNotifications'
@@ -54,6 +56,8 @@ import {
 } from '@store/iterate'
 import { getIsPermission } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import IconFont from '@/components/IconFont'
+import ReportAssistantModal from '@/views/WorkReport/Review/components/ReportAssistantModal'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -176,6 +180,13 @@ const HeaderRight = () => {
   const [isConfirmLogout, setIsConfirmLogout] = useState(false)
   const navigate = useNavigate()
   const childStateRef = useRef<any>()
+  const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
+    visible: boolean
+    type: 'user' | 'project'
+  }>({
+    visible: false,
+    type: 'user',
+  })
   const userList = [
     { name: t('language'), isRight: true, icon: 'earth', key: 0 },
     // { name: t('theme_switching'), isRight: true, icon: 'theme', key: 1 },
@@ -277,6 +288,48 @@ const HeaderRight = () => {
     }
     setIsVisible(false)
   }
+
+  // 日报机器人
+  const contents = (
+    <div style={{ padding: '4px 0px' }}>
+      <MenuItemBox
+        onClick={() =>
+          setReportAssistantModalObj({
+            visible: true,
+            type: 'project',
+          })
+        }
+      >
+        <IconFont
+          style={{
+            fontSize: 16,
+            color: 'var(--neutral-n3) !important',
+            marginRight: 8,
+          }}
+          type="folder-open-nor"
+        />
+        <span>{t('projectDaily')}</span>
+      </MenuItemBox>
+      <MenuItemBox
+        onClick={() =>
+          setReportAssistantModalObj({
+            visible: true,
+            type: 'user',
+          })
+        }
+      >
+        <IconFont
+          style={{
+            fontSize: 16,
+            marginRight: 8,
+            color: 'var(--neutral-n3) !important',
+          }}
+          type="user"
+        />
+        <span>{t('singleDaily')}</span>
+      </MenuItemBox>
+    </div>
+  )
 
   // 退出登录
   const toLoginOut = async () => {
@@ -404,10 +457,28 @@ const HeaderRight = () => {
     e.stopPropagation()
     dispatch(changeFreedVisibleVisible(true))
   }
+
   return (
     <>
       <KeyBoardDrawer />
       <SystemFeedback />
+      {/* 日报 */}
+      <ReportAssistantModal
+        close={() => {
+          setReportAssistantModalObj({
+            ...reportAssistantModalObj,
+            visible: false,
+          })
+        }}
+        projectId={
+          !location.href.includes('/Report') ||
+          location.href.includes('/Report/PerformanceInsight')
+            ? projectInfo?.id
+            : null
+        }
+        visible={reportAssistantModalObj.visible}
+        type={reportAssistantModalObj.type}
+      />
       {/* 退出登录 */}
       <DeleteConfirm
         title={t('confirmation_prompt') as string}
@@ -450,6 +521,32 @@ const HeaderRight = () => {
 
       <Space size={16}>
         {/* 项目 */}
+        {/* 日报机器人 */}
+        {(location.href.includes('/SprintProjectManagement') ||
+          location.href.includes('/Report') ||
+          location.href.includes('/ProjectManagement')) &&
+        !location.href.includes('/ProjectManagement/Project') &&
+        !location.href.includes('/ProjectManagement/Mine') ? (
+          <RobotButton id="robotButton">
+            <Popover
+              placement="bottomLeft"
+              content={contents}
+              trigger="hover"
+              getPopupContainer={() => document.body}
+              overlayClassName="popover_yang"
+            >
+              <img
+                height={46}
+                src={
+                  language === 'zh'
+                    ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/Robot.png'
+                    : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/RobotEn.png'
+                }
+              />
+            </Popover>
+          </RobotButton>
+        ) : null}
+
         {(
           userInfo.company_permissions?.map((i: any) => i.identity) || []
         ).includes('b/project/save') &&
