@@ -57,7 +57,6 @@ import {
 import { getIsPermission } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import ReportAssistantModal from '@/views/WorkReport/Review/components/ReportAssistantModal'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -166,7 +165,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
   )
 }
 
-const HeaderRight = () => {
+const HeaderRight = (prop: any) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { language } = useSelector(store => store.global)
@@ -180,13 +179,7 @@ const HeaderRight = () => {
   const [isConfirmLogout, setIsConfirmLogout] = useState(false)
   const navigate = useNavigate()
   const childStateRef = useRef<any>()
-  const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
-    visible: boolean
-    type: 'user' | 'project'
-  }>({
-    visible: false,
-    type: 'user',
-  })
+
   const userList = [
     { name: t('language'), isRight: true, icon: 'earth', key: 0 },
     // { name: t('theme_switching'), isRight: true, icon: 'theme', key: 1 },
@@ -294,7 +287,7 @@ const HeaderRight = () => {
     <div style={{ padding: '4px 0px' }}>
       <MenuItemBox
         onClick={() =>
-          setReportAssistantModalObj({
+          prop?.setReportAssistantModalObj?.({
             visible: true,
             type: 'project',
           })
@@ -312,7 +305,7 @@ const HeaderRight = () => {
       </MenuItemBox>
       <MenuItemBox
         onClick={() =>
-          setReportAssistantModalObj({
+          prop?.setReportAssistantModalObj?.({
             visible: true,
             type: 'user',
           })
@@ -463,22 +456,7 @@ const HeaderRight = () => {
       <KeyBoardDrawer />
       <SystemFeedback />
       {/* 日报 */}
-      <ReportAssistantModal
-        close={() => {
-          setReportAssistantModalObj({
-            ...reportAssistantModalObj,
-            visible: false,
-          })
-        }}
-        projectId={
-          !location.href.includes('/Report') ||
-          location.href.includes('/Report/PerformanceInsight')
-            ? projectInfo?.id
-            : null
-        }
-        visible={reportAssistantModalObj.visible}
-        type={reportAssistantModalObj.type}
-      />
+
       {/* 退出登录 */}
       <DeleteConfirm
         title={t('confirmation_prompt') as string}
