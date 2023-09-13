@@ -75,7 +75,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             : props.num === 1
             ? t('performance.title06')
             : t('performance.title07'),
-        newType: props.newType,
+        newType: props?.newType,
       }),
     )
     navigate(`/ChildLevel?data=${params}`)
@@ -192,7 +192,7 @@ const Home = () => {
     useState<Models.Efficiency.ViewItem>()
   const [valueId, setValueId] = useState(paramsData?.valueId || 0)
   const [viewValue, setViewValue] = useState(paramsData?.view?.value || 0)
-  console.log(paramsData, 'paramsData--home', paramsData.newType)
+
   useEffect(() => {
     if (paramsData?.type && paramsData?.projectId) {
       setHomeType(paramsData.type)
