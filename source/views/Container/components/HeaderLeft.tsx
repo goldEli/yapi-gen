@@ -32,6 +32,7 @@ import ItemDropdown from './ItemDropdown'
 import { setCurrentMenu } from '@store/user'
 import usePressKyey from '@/hooks/usePressKyey/usePressKyey'
 import { useHotkeys } from 'react-hotkeys-hook'
+import { setProjectInfo } from '@store/project'
 
 interface DrawerComponentProps {
   value: boolean
@@ -88,6 +89,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         )[0]?.normal,
       },
     }
+    dispatch(setProjectInfo({}))
     dispatch({
       type: 'user/setCurrentMenu',
       payload: resultMenu,
