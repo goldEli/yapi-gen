@@ -19,10 +19,8 @@ import {
   ReportItemBox,
   ProviderBox,
 } from '../style'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import {
-  followsCancel,
-  followsMark,
   getMemberOverviewMoreReportList,
   getMemberOverviewReportList,
 } from '@/services/employeeProfile'
@@ -189,17 +187,17 @@ const ReportItem = (props: ReportItemProps) => {
             </div>
           )} */}
           <ReportItemHeaderLeft>
-            <CommonUserAvatar avatar={item.user.avatar} size="large" />
+            <CommonUserAvatar avatar={item.user?.avatar} size="large" />
             <div className="info">
               <div className="name">
                 {t('reportTitle', {
-                  name: item.user.name,
-                  time: item.start_time,
-                  reportName: item.name,
+                  name: item.user?.name,
+                  time: item?.start_time,
+                  reportName: item?.name,
                 })}
               </div>
               <div className="sub">
-                {item.departments?.map((i: any) => i.name)?.join(' - ')}
+                {item?.departments?.map((i: any) => i.name)?.join(' - ')}
               </div>
             </div>
           </ReportItemHeaderLeft>
