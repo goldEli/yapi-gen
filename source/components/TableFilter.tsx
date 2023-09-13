@@ -498,7 +498,7 @@ const TableFilter = (props: any) => {
                     datatype={i.key}
                     className="SelectWrapBedeck"
                   >
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item
@@ -595,7 +595,7 @@ const TableFilter = (props: any) => {
                 )}
                 {['single_checkbox'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
@@ -625,7 +625,7 @@ const TableFilter = (props: any) => {
                 {['time', 'date'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
                     <span
-                      style={{ margin: '0 16px', fontSize: '14px' }}
+                      style={{ marginLeft: '16px', fontSize: '14px' }}
                       className="time-spanTag"
                       // eslint-disable-next-line react/no-unknown-property
                       datatype={i.key}
@@ -655,7 +655,7 @@ const TableFilter = (props: any) => {
                 )}
                 {i.type === 'number' && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
@@ -668,7 +668,7 @@ const TableFilter = (props: any) => {
                 )}
                 {i.type === 'integer' && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
@@ -681,7 +681,7 @@ const TableFilter = (props: any) => {
                 )}
                 {['text', 'textarea'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item
@@ -706,7 +706,7 @@ const TableFilter = (props: any) => {
                 )}
                 {i.type === 'tree' && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
