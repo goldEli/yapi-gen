@@ -4,17 +4,19 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getWater } from '@/services/setting'
 
 export interface CounterState {
-  value: number | string
+  value: boolean
 }
 
 const initialState: CounterState = {
-  value: 2,
+  value: false,
 }
 
 // 异步请求外部数据
 
 export const getStatus = createAsyncThunk('nameSpace/getStatus', async () => {
   const res = await getWater()
+
+  res.status = res.status === 1 ? true : false
   return res
 })
 
@@ -22,7 +24,7 @@ export const counterSlice = createSlice({
   name: 'water',
   initialState,
   reducers: {
-    changeWaterStatus: (state, action: any) => {
+    changeWaterStatus: (state, action) => {
       state.value = action.payload
     },
   },

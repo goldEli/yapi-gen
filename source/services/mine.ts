@@ -4,10 +4,31 @@
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// 我的
+
 import * as http from '../tools/http'
-import { getTreeList } from '@/services/project/tree'
+import { getTreeList } from '@/services/demand'
 import { storyConfigCategoryList } from '@/services/project'
-import { getStaffList2 } from './staff'
+import { getStaffListAll } from './staff'
+
+//获取任务接收处理概况
+
+export const getHisProjectCharts: any = async (params: any) => {
+  const response = await http.get(
+    `/b/efficiency/member/work_handle/statistics`,
+    params,
+  )
+  return response
+}
+//获取任务接收处理概况
+
+export const getProjectCharts: any = async (params: any) => {
+  const response = await http.get(
+    `/b/efficiency/member/work_handle/${params}/statistics`,
+  )
+  return response
+}
 
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
@@ -20,6 +41,7 @@ function filterTreeData(data: any) {
   }))
   return newData
 }
+
 const filArr = (data: any) => {
   return data?.map((item: any) => {
     return {
@@ -28,6 +50,7 @@ const filArr = (data: any) => {
     }
   })
 }
+
 const filArr2 = (data: any) => {
   return data?.map((item: any) => {
     return {
@@ -55,7 +78,7 @@ export const getSearchField: any = async (params: any) => {
 
   // 公司
 
-  const companyList = await getStaffList2({ all: 1 })
+  const companyList = await getStaffListAll({ all: 1 })
 
   const filterCompanyList = companyList.map((item: any) => ({
     id: item.id,
@@ -409,6 +432,7 @@ export const getMineGatte: any = async (params: any) => {
   return {
     pager: response.data.pager,
     list: response.data.list?.map((k: any, index: any) => ({
+      ...k,
       id: k.id || new Date().getTime() + index * 11,
       text: k.name || '',
       start_date: k.start_at,
@@ -462,7 +486,7 @@ export const getMineNoFinishList: any = async (params: any) => {
     search: {
       project_id: params?.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -488,60 +512,16 @@ export const getMineNoFinishList: any = async (params: any) => {
     pagesize: params.pagesize,
   })
   if (params?.all) {
-    return {
-      list: response.data?.list?.map((k: any) => ({
-        status_name: k.status_name,
-        count: k.count,
-        list: k.list
-          ? k.list?.map((i: any) => ({
-              new: i.is_new,
-              id: i.id,
-              name: i.name,
-              demand: i.child_story_count,
-              priority: i.priority,
-              iteration: i.iterate_name || '--',
-              status: i.status,
-              dealName: i.users_name || '--',
-              time: i.created_at,
-              expectedStart: i.expected_start_at,
-              expectedEnd: i.expected_end_at,
-              info: i.info,
-              userIds: i.user_id,
-              iterateId: i.iterate_id,
-              parentId: i.parent_id,
-              finishTime: i.finish_at,
-              updatedTime: i.updated_at,
-              usersCopySendName: i.users_copysend_name,
-              userName: i.user_name,
-              tag: i.tag,
-              project_id: i.project_id,
-              schedule: i.schedule,
-              isExamine: i.verify_lock === 1,
-              category: i.category,
-              categoryColor: i.category_color,
-              ...i.custom_field,
-              usersNameIds: i.users_name_ids,
-              usersCopySendIds: i.users_copysend_name_ids,
-              class: i.class,
-              project: {
-                isPublic: i.project.is_public,
-                isUserMember: i.project.user_ismember,
-                isEdit: Object.values(i.project.permissions).includes(
-                  'b/story/update',
-                ),
-                isDelete: Object.values(i.project.permissions).includes(
-                  'b/story/delete',
-                ),
-              },
-            }))
-          : [],
-      })),
-      total: response.data?.total,
-    }
-  } else {
-    return {
-      list: response.data?.list
-        ? response.data.list.map((i: any) => ({
+    return response.data?.list?.map((k: any) => ({
+      status_name: k.status_name,
+      count: k.count,
+      list: k.list
+        ? k.list?.map((i: any) => ({
+            ...i,
+            statusName: k.status_name,
+            category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
+            storyPrefixKey: i.story_prefix_key,
             new: i.is_new,
             id: i.id,
             name: i.name,
@@ -555,6 +535,73 @@ export const getMineNoFinishList: any = async (params: any) => {
             expectedEnd: i.expected_end_at,
             info: i.info,
             userIds: i.user_id,
+            userAvatar: i.user_avatar,
+            iterateId: i.iterate_id,
+            parentId: i.parent_id,
+            finishTime: i.finish_at,
+            updatedTime: i.updated_at,
+            usersCopySendName: i.users_copysend_name,
+            userName: i.user_name,
+            tag: i.tag,
+            project_id: i.project_id,
+            schedule: i.schedule,
+            isExamine: i.verify_lock === 1,
+            category: i.category,
+            categoryColor: i.category_color,
+            ...i.custom_field,
+            usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
+            copy_send_users: i.copy_send_users,
+            class: i.class,
+            project: {
+              isPublic: i.project.is_public,
+              isUserMember: i.project.user_ismember,
+              permissions: i.project.permissions,
+              isEdit: Object.values(i.project.permissions).includes(
+                i.project_type === 2
+                  ? 'b/transaction/update'
+                  : i.project_type === 1 && i.is_bug === 1
+                  ? 'b/flaw/update'
+                  : 'b/story/update',
+              ),
+              isDelete: Object.values(i.project.permissions).includes(
+                i.project_type === 2
+                  ? 'b/transaction/delete'
+                  : i.project_type === 1 && i.is_bug === 1
+                  ? 'b/flaw/delete'
+                  : 'b/story/delete',
+              ),
+            },
+            usersInfo: i.usersInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
+            // 父需求列表
+            parent: [{ value: i.id, label: i.name }],
+          }))
+        : [],
+    }))
+  } else {
+    return {
+      list: response.data?.list
+        ? response.data.list.map((i: any) => ({
+            ...i,
+            category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
+            storyPrefixKey: i.story_prefix_key,
+            new: i.is_new,
+            id: i.id,
+            name: i.name,
+            demand: i.child_story_count,
+            priority: i.priority,
+            iteration: i.iterate_name || '--',
+            status: i.status,
+            dealName: i.users_name || '--',
+            time: i.created_at,
+            expectedStart: i.expected_start_at,
+            expectedEnd: i.expected_end_at,
+            info: i.info,
+            userIds: i.user_id,
+            userAvatar: i.user_avatar,
             iterateId: i.iterate_id,
             parentId: i.parent_id,
             finishTime: i.finish_at,
@@ -568,17 +615,32 @@ export const getMineNoFinishList: any = async (params: any) => {
             categoryColor: i.category_color,
             usersNameIds: i.users_name_ids,
             usersCopySendIds: i.users_copysend_name_ids,
+            copy_send_users: i.copy_send_users,
             class: i.class,
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
+              permissions: i.project.permissions,
               isEdit: Object.values(i.project.permissions).includes(
-                'b/story/update',
+                i.project_type === 2
+                  ? 'b/transaction/update'
+                  : i.project_type === 1 && i.is_bug === 1
+                  ? 'b/flaw/update'
+                  : 'b/story/update',
               ),
               isDelete: Object.values(i.project.permissions).includes(
-                'b/story/delete',
+                i.project_type === 2
+                  ? 'b/transaction/delete'
+                  : i.project_type === 1 && i.is_bug === 1
+                  ? 'b/flaw/delete'
+                  : 'b/story/delete',
               ),
             },
+            usersInfo: i.usersInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
+            // 父需求列表
+            parent: [{ value: i.id, label: i.name }],
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
           }))
@@ -594,7 +656,7 @@ export const getMineCreacteList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -620,6 +682,10 @@ export const getMineCreacteList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
+          ...i,
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
+          storyPrefixKey: i.story_prefix_key,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -632,6 +698,7 @@ export const getMineCreacteList: any = async (params: any) => {
           expectedEnd: i.expected_end_at,
           info: i.info,
           userIds: i.user_id,
+          userAvatar: i.user_avatar,
           iterateId: i.iterate_id,
           parentId: i.parent_id,
           finishTime: i.finish_at,
@@ -647,17 +714,32 @@ export const getMineCreacteList: any = async (params: any) => {
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
           usersCopySendIds: i.users_copysend_name_ids,
+          copy_send_users: i.copy_send_users,
           class: i.class,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
+            permissions: i.project.permissions,
             isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
+              i.project_type === 2
+                ? 'b/transaction/update'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/update'
+                : 'b/story/update',
             ),
             isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
+              i.project_type === 2
+                ? 'b/transaction/delete'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/delete'
+                : 'b/story/delete',
             ),
           },
+          usersInfo: i.usersInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         }))
       : [],
     pager: response.data.pager,
@@ -670,7 +752,7 @@ export const getMineFinishList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -696,6 +778,10 @@ export const getMineFinishList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data?.list?.map((i: any) => ({
+          ...i,
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
+          storyPrefixKey: i.story_prefix_key,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -708,6 +794,7 @@ export const getMineFinishList: any = async (params: any) => {
           expectedEnd: i.expected_end_at,
           info: i.info,
           userIds: i.user_id,
+          userAvatar: i.user_avatar,
           iterateId: i.iterate_id,
           parentId: i.parent_id,
           finishTime: i.finish_at,
@@ -723,17 +810,32 @@ export const getMineFinishList: any = async (params: any) => {
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
           usersCopySendIds: i.users_copysend_name_ids,
+          copy_send_users: i.copy_send_users,
           class: i.class,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
+            permissions: i.project.permissions,
             isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
+              i.project_type === 2
+                ? 'b/transaction/update'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/update'
+                : 'b/story/update',
             ),
             isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
+              i.project_type === 2
+                ? 'b/transaction/delete'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/delete'
+                : 'b/story/delete',
             ),
           },
+          usersInfo: i.usersInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
         }))
       : [],
     pager: response.data.pager,
@@ -747,7 +849,7 @@ export const getMineNeedList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups?.statusId,
+      category_status_ids: params.searchGroups?.statusId,
       priority: params.searchGroups?.priorityId,
       iterate_id: params.searchGroups?.iterateId,
       tag: params.searchGroups?.tagId,
@@ -773,6 +875,10 @@ export const getMineNeedList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
+          ...i,
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
+          storyPrefixKey: i.story_prefix_key,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -785,6 +891,7 @@ export const getMineNeedList: any = async (params: any) => {
           expectedEnd: i.expected_end_at,
           info: i.info,
           userIds: i.user_id,
+          userAvatar: i.user_avatar,
           iterateId: i.iterate_id,
           parentId: i.parent_id,
           finishTime: i.finish_at,
@@ -798,17 +905,32 @@ export const getMineNeedList: any = async (params: any) => {
           categoryColor: i.category_color,
           usersNameIds: i.users_name_ids,
           usersCopySendIds: i.users_copysend_name_ids,
+          copy_send_users: i.copy_send_users,
           class: i.class,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
+            permissions: i.project.permissions,
             isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
+              i.project_type === 2
+                ? 'b/transaction/update'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/update'
+                : 'b/story/update',
             ),
             isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
+              i.project_type === 2
+                ? 'b/transaction/delete'
+                : i.project_type === 1 && i.is_bug === 1
+                ? 'b/flaw/delete'
+                : 'b/story/delete',
             ),
           },
+          usersInfo: i.usersInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
+          // 父需求列表
+          parent: [{ value: i.id, label: i.name }],
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
         }))
@@ -830,18 +952,8 @@ export const getMineProjectList: any = async (params: any) => {
 // 获取我的概况
 export const getMineChartsList: any = async () => {
   const response = await http.get('getMineChartsList')
-  const { join, abeyance } = response.data
 
-  return {
-    firstP: join.project_count,
-    firstN: join.story_count,
-    firstD: join.iterate_count,
-    secondAll: abeyance.total,
-    secondNoFinish: abeyance.abeyance_count,
-    secondTimeOut: abeyance.expired_count,
-    secondFinish: abeyance.finish_count,
-    secondOutFinish: abeyance.expired_finish_count,
-  }
+  return response.data
 }
 
 // 表单区域
@@ -943,6 +1055,8 @@ export const getVerifyUserList: any = async (params: any) => {
     total: response.data.pager.total,
     otherCount: response.data.otherCount,
     list: response.data.list.map((i: any) => ({
+      ...i,
+      category_attachment: i.category_attachment,
       id: i.id,
       storyVerifyId: i.story_verify_id,
       status: i.verify_status,
@@ -952,10 +1066,19 @@ export const getVerifyUserList: any = async (params: any) => {
       demandName: i.story_name,
       categoryName: i.category_name,
       categoryColor: i.category_color,
+      categoryAttachment: i.category_attachment,
       userName: i.user_name,
+      userId: i.user_id,
+      userAvatar: i.user_avatar,
       usersName: i.users_name,
       statusFromTo: i.status_from_to,
       projectId: i.project_id,
+      storyPrefixKey: i.story_prefix_key,
+      usersInfo: i.usersInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     })),
   }
 }
@@ -988,10 +1111,17 @@ export const getVerifyList: any = async (params: any) => {
       demandId: i.story_id,
       demandName: i.story_name,
       categoryName: i.category_name,
+      categoryAttachment: i.category_attachment,
       categoryColor: i.category_color,
       usersName: i.users_name,
       statusFromTo: i.status_from_to,
       projectId: i.project_id,
+      storyPrefixKey: i.story_prefix_key,
+      usersInfo: i.usersInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
+      // 父需求列表
+      parent: [{ value: i.id, label: i.name }],
     })),
   }
 }
@@ -1000,6 +1130,8 @@ export const getVerifyInfo: any = async (params: any) => {
   const response = await http.get(`/b/user/verify/${params?.id}`)
 
   return {
+    cancel_verify: response.data.cancel_verify,
+    category_attachment: response.data.category_attachment,
     id: response.data.id,
     demandName: response.data.story_name,
     categoryColor: response.data.category_color,
@@ -1032,6 +1164,7 @@ export const getVerifyInfo: any = async (params: any) => {
       id: k.user_id,
     })),
     fields: response.data.fields,
+    storyPrefixKey: response.data.story_prefix_key,
   }
 }
 
@@ -1041,5 +1174,13 @@ export const updateVerifyOperation: any = async (params: any) => {
     project_id: params.projectId,
     verify_status: params.status,
     verify_opinion: params.remark,
+  })
+}
+
+export const cancelVerify = async (id: any) => {
+  await http.post(`/b/user/verify/cancel/${id}`, undefined, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
   })
 }

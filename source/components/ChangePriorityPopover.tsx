@@ -12,14 +12,13 @@ interface Props {
   children: ReactNode
   onChangePriority?(item: any): void
   record: any
-  isCanOperation?: boolean
+  isCanOperation?: any
   projectId?: any
   onCurrentDetail?(item: any): void
 }
 
 const ChangePriorityPopover = (props: Props) => {
   const [popoverVisible, setPopoverVisible] = useState(false)
-
   const onChangePriority = (item: any) => {
     props.onChangePriority?.(item)
     setPopoverVisible(false)

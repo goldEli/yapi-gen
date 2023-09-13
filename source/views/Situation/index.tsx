@@ -3,11 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { css } from '@emotion/css'
 import Project from './components/Project'
-import { Tooltip } from 'antd'
-import IconFont from '@/components/IconFont'
-import CompanyModal from '@/components/CompanyModal'
 import Staff from './components/Staff'
 import Need from './components/Need'
 import Iteration from './components/Iteration'
@@ -18,38 +14,29 @@ import Loading from '@/components/Loading'
 import useSetTitle from '@/hooks/useSetTitle'
 import { getGlobalGeneral } from '@/services/user'
 
-const buttonCss = css``
-const PanelHeaderSecond = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  font-size: 14px;
-  display: flex;
-`
 const Wrap = styled.div`
   box-sizing: border-box;
-  padding: 16px;
-  background-color: #f5f7fa;
+  padding: 24px;
+  background-color: var(--neutral-white-d2);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  grid-gap: 16px;
+  grid-gap: 24px;
+  height: calc(100vh - 56px);
+  overflow: auto;
 `
-const Head = styled.div`
-  height: 64px;
-  background: rgba(255, 255, 255, 1);
-  box-sizing: border-box;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
+const Title = styled.div`
+  padding: 24px 0 0 24px;
+  color: var(--neutral-n1-d1);
+  font-size: 16px;
+  font-family: siyuanmedium;
 `
 
 const Situation = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.general'))
-  const { userInfo } = useSelector(store => store.user)
-  const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
+  const { menuPermission } = useSelector(store => store.user)
   const [generalData, setGeneralData] = useState<any>()
   const init = async () => {
     const res = await getGlobalGeneral()
@@ -77,8 +64,12 @@ const Situation = () => {
       },
       user: {
         total: res.user_statistics.user_total,
-        boyCount: res.user_statistics.user_count[1]?.count,
-        girlCount: res.user_statistics.user_count[0]?.count,
+        boyCount: res.user_statistics.user_count.find(
+          (i: any) => i.gender === 1,
+        ).count,
+        girlCount: res.user_statistics.user_count.find(
+          (i: any) => i.gender === 2,
+        ).count,
         chartsData: res.user_statistics.position_count.map(
           (item: { position_name: any; count: any }) => {
             return {
@@ -163,44 +154,28 @@ const Situation = () => {
 
   if (generalData) {
     return (
-      <div>
-        <Head>
-          <span style={{ fontSize: 16, fontWeight: 'bold' }}>
-            {t('situation.companySurvey')}
-          </span>
-          <PanelHeaderSecond>
-            <div>{userInfo?.company_name}</div>
-            <Tooltip placement="top" title={t('container.changeCompany')}>
-              <div
-                onClick={() => setCompanyModalVisible(true)}
-                className={buttonCss}
-              >
-                <IconFont
-                  type="swap"
-                  style={{ cursor: 'pointer', fontSize: 14, marginLeft: 8 }}
-                />
-              </div>
-            </Tooltip>
-          </PanelHeaderSecond>
-        </Head>
-        <PermissionWrap
-          auth="b/company/statistics"
-          hasWidth
-          permission={userInfo?.company_permissions}
+      <PermissionWrap
+        auth="/Situation"
+        permission={menuPermission?.menus?.map((i: any) => i.url)}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            paddingRight: 4,
+          }}
         >
+          {' '}
+          <Title>{t('project.companyAll')}</Title>
           <Wrap>
             <Project data={generalData?.project} />
             <Staff data={generalData?.user} />
             <Need data={generalData?.need} />
             <Iteration data={generalData?.iterate} />
           </Wrap>
-        </PermissionWrap>
-
-        <CompanyModal
-          visible={companyModalVisible}
-          onChangeState={() => setCompanyModalVisible(!companyModalVisible)}
-        />
-      </div>
+        </div>
+      </PermissionWrap>
     )
   }
   return <Loading />

@@ -2,10 +2,20 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logoBro.svg" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/logoBro-ifun.svg"
+    />
+    <link rel="stylesheet" href="/font.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IFUN 敏捷研发系统</title>
+    <meta
+      property="og:image"
+      content="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/logo.png/file/1691398239159/logo.png"
+    />
+    <title>IFUN Agile 智能研发敏捷管理系统</title>
     <style>
+      @import url('/animation.css');
       .loading {
         position: fixed;
         top: 0;
@@ -22,20 +32,43 @@
         width: 200px;
         height: 200px;
       }
+      body .ant-input::placeholder {
+        font-family: SiYuanRegular;
+      }
     </style>
   </head>
-  <body style="overflow-x: hidden">
+
+  <body style="overflow-x: hidden; font-family: SiYuanRegular">
     <div id="root">
       <div class="loading">
         <img
           style="width: 120px; height: 120px; margin-bottom: 20px"
-          src="/loading.gif"
+          src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/overallLoading.gif"
           alt=""
         />
 
-        <div>LOADING</div>
+        <!-- <svg
+          class="logo"
+          width="56"
+          height="56"
+          viewBox="0 0 56 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.3203 16.3293C11.3203 14.7747 13.0163 13.8144 14.3493 14.6143L32.2243 25.3393C32.8267 25.7007 33.1953 26.3517 33.1953 27.0543V46.452C33.1953 48.0066 31.4994 48.9668 30.1663 48.167L12.2913 37.442C11.6889 37.0805 11.3203 36.4295 11.3203 35.727V16.3293Z"
+            fill="#2877ff"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M44.6797 20.273C44.6797 19.5705 44.3111 18.9195 43.7087 18.558L25.8337 7.83302C24.5006 7.0332 22.8047 7.99342 22.8047 9.54801V15.9301C22.8047 16.6327 23.1733 17.2837 23.7757 17.6451L34.4118 24.0268C35.0142 24.3882 35.3828 25.0392 35.3828 25.7418V36.4926C35.3828 37.1951 35.7514 37.8462 36.3538 38.2076L41.6507 41.3857C42.9837 42.1856 44.6797 41.2253 44.6797 39.6707V20.273Z"
+            fill="#7EADFF"
+          />
+        </svg> -->
+        <div>Loading...</div>
       </div>
     </div>
-    <script type="module" src="/source/index.tsx"></script>
   </body>
+  <script type="module" src="/source/index.tsx"></script>
 </html>

@@ -2,12 +2,17 @@
 // 审核列表过滤
 
 /* eslint-disable @typescript-eslint/naming-convention */
-import { SearchLine, SelectWrapBedeck } from '@/components/StyleCommon'
+import {
+  SearchLine,
+  SelectWrap,
+  SelectWrapBedeck,
+} from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Form, Input, Select } from 'antd'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
+import CustomSelect from '@/components/CustomSelect'
 
 const ClearForm = styled.div({
   display: 'flex',
@@ -23,17 +28,6 @@ const FormWrap = styled(Form)({
     margin: 0,
   },
 })
-
-const SelectWrap = styled(Select)`
-  .ant-select-selection-placeholder {
-    color: black;
-  }
-  .ant-select-selector {
-    min-width: 160px;
-    border: none !important;
-    outline: none !important;
-  }
-`
 
 const InputWrap = styled(Input)`
   color: black;
@@ -71,7 +65,7 @@ const SearchList = (props: Props) => {
   }
 
   return (
-    <SearchLine>
+    <SearchLine hasLeft>
       <FormWrap form={form}>
         <SelectWrapBedeck>
           <span style={{ margin: '0 16px', fontSize: '14px' }}>
@@ -140,7 +134,13 @@ const SearchList = (props: Props) => {
         )}
 
         <ClearForm onClick={onClearForm}>
-          <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>
+          <span
+            style={{
+              color: 'var(--primary-d2)',
+              fontSize: 15,
+              cursor: 'pointer',
+            }}
+          >
             {t('common.clearForm')}
           </span>
         </ClearForm>

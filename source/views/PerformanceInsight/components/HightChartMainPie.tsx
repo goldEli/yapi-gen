@@ -1,0 +1,219 @@
+// eslint-disable @typescript-eslint/no-invalid-this
+// eslint-disable consistent-this
+import { Myd } from '@/components/CommonProjectComponent/CommonMember/style'
+import IconFont from '@/components/IconFont'
+import { Dropdown, Menu, Space } from 'antd'
+import Highcharts from 'highcharts'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Col1, HightChartsWrap, Time, TitleCss } from '../Header/Style'
+import { HighchartsReactWrap, RightRow, MoreWrap1 } from './style'
+interface PropsMoreDropdown {
+  data: Array<{ label: string; key: string }>
+  onClickMenu(value: { label: string; key: string }): void
+  defaultValue: { label: string; key: string }
+}
+const MoreDropdown = (props: PropsMoreDropdown) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const menu = () => {
+    const menuItems: any = []
+    props.data?.forEach((i: { label: string; key: string }, idx: number) => {
+      menuItems.push({
+        key: idx,
+        label: (
+          <Myd
+            active={i.key === props.defaultValue.key}
+            onClick={() => props.onClickMenu(i)}
+          >
+            {i.label}
+            {i.key === props.defaultValue.key && (
+              <IconFont
+                style={{ fontSize: 16, margin: '1px 0px 0px 15px' }}
+                type="check"
+              />
+            )}
+          </Myd>
+        ),
+      })
+    })
+    return <Menu items={menuItems} />
+  }
+
+  return (
+    <Dropdown
+      key={isVisible ? isVisible.toString() : null}
+      visible={isVisible}
+      overlay={menu}
+      trigger={['hover']}
+      placement="bottomRight"
+      getPopupContainer={node => node}
+      onVisibleChange={setIsVisible}
+    >
+      <MoreWrap1
+        style={{
+          padding: '0 8px',
+        }}
+      >
+        <div
+          style={{
+            marginRight: '4px',
+          }}
+          className="job"
+        >
+          {props.defaultValue.label}
+        </div>
+        <span className="job1">
+          <IconFont style={{ fontSize: 14 }} type="down" />
+        </span>
+      </MoreWrap1>
+    </Dropdown>
+  )
+}
+// 饼图
+const HightChartMainPie = (props: {
+  height: number
+  titleType: boolean
+  title: string
+  chart: Models.Efficiency.ChartPie | undefined
+  onChange?(item: { key: string; label: string }): void
+}) => {
+  const options: any = {
+    credits: {
+      enabled: false,
+      spacing: [40, 0, 40, 0],
+    },
+    title: {
+      floating: true,
+      align: 'center',
+      text: props.titleType ? '' : `${props.chart?.total}项`,
+      verticalAlign: 'middle',
+      y: 30,
+      style: {
+        fontSize: 20,
+      },
+    },
+    chart: {
+      height: 290,
+      labelLine: {
+        show: false,
+      },
+    },
+    legend: {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'center',
+      borderWidth: 0,
+      itemMarginTop: 8,
+      useHTML: true,
+      labelFormatter: function () {
+        // eslint-disable-next-line
+        const _this: any = this
+        return `<div style='
+        fontWeight: 400;fontFamily: SiYuanRegular; !important;fontSize: 14px;color:#646566;display:flex; width: 204px;height:26px;lineHeight:14px;paddingBottom:2px;whiteSpace: nowrap; overflow: hidden; textOverflow: ellipsis'>${_this?.name}: ${_this.y}%</div>`
+      },
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: false,
+        },
+        showInLegend: true,
+      },
+    },
+    tooltip: {
+      backgroundColor: '#fff',
+      background: '#fff',
+      shadow: true,
+      borderColor: '#fff',
+      borderRadius: 6,
+      headerFormat: props.titleType
+        ? ''
+        : '<div style="background:#fff;minWidth:108;height:76px;padding:16px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanRegular;">{point.key}</div><div>',
+      pointFormat: props.titleType
+        ? '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">{point.name}:{point.y}%</span></div>'
+        : '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">任务：{point.y}%</span></div>',
+      footerFormat: '</div>',
+      shared: true,
+      useHTML: true,
+    },
+    colors: props.titleType
+      ? props.chart?.color
+      : ['#4267ED', '#6688FF', '#9CB0F8', '#CED7F8', '#E3E9FA '],
+    series: [
+      {
+        type: 'pie',
+        size: '100%',
+        innerSize: '80%',
+        center: ['100', '55%'],
+        data: props.chart?.seriesData,
+      },
+    ],
+  }
+  let timer: any = null
+  const [t] = useTranslation()
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
+  const pieCallback = (c: any) => {
+    timer = setTimeout(() => {
+      c.setTitle({
+        x: -((c.chartWidth - 233) / 2 - 10),
+      })
+    }, 50)
+  }
+  const [defaultValue, setDefaultValue] = useState<{
+    label: string
+    key: string
+  }>({ label: t('performance.sort4'), key: 'severity' })
+  // 切换状态
+  const onClickMenu = async (item: { label: string; key: string }) => {
+    setDefaultValue(item)
+    props.onChange?.(item)
+  }
+  return (
+    <div
+      style={{
+        flex: 1,
+        backgroundColor: 'var(--neutral-white-d2)',
+        padding: '12px 16px',
+        paddingBottom: '0px',
+        borderRadius: '6px',
+      }}
+    >
+      <Col1>
+        <RightRow>
+          <Space size={12}>
+            <TitleCss>{props.title}</TitleCss>
+            <Time>{props.chart?.time}</Time>
+          </Space>
+        </RightRow>
+        {props.titleType ? (
+          <MoreDropdown
+            onClickMenu={(value: { label: string; key: string }) =>
+              onClickMenu(value)
+            }
+            data={[
+              { label: t('performance.sort4'), key: 'severity' },
+              { label: t('performance.sort3'), key: 'priority' },
+              { label: t('performance.sort5'), key: 'status' },
+            ]}
+            defaultValue={defaultValue}
+          />
+        ) : null}
+      </Col1>
+      <HightChartsWrap height={props.height}>
+        <HighchartsReactWrap
+          width={400}
+          highcharts={Highcharts}
+          options={options}
+          callback={pieCallback}
+        />
+      </HightChartsWrap>
+    </div>
+  )
+}
+export default HightChartMainPie

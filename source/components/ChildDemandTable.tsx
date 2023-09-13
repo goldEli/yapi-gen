@@ -1,3 +1,6 @@
+/* eslint-disable react/display-name */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-duplicate-imports */
 // 子需求表格
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -7,10 +10,9 @@
 /* eslint-disable no-undefined */
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData, openDetail } from '@/tools'
+import { getParamsData } from '@/tools'
 import { useState } from 'react'
-import { message, Popover, Progress, Table, Tooltip } from 'antd'
-import { encryptPhp } from '@/tools/cryptoPhp'
+import { Popover, Progress, Table, Tooltip } from 'antd'
 import Sort from '@/components/Sort'
 import {
   CategoryWrap,
@@ -23,7 +25,15 @@ import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
 import IconFont from './IconFont'
 import { useSelector } from '@store/index'
-import { getDemandList } from '@/services/project/demand'
+import { getDemandList } from '@/services/demand'
+import { getChildAffairsList } from '@/services/affairs'
+import { getChildFlawList } from '@/services/flaw'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import StateTag from './StateTag'
+import TableColorText from './TableColorText'
+import MultipleAvatar from './MultipleAvatar'
+import React from 'react'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -37,15 +47,15 @@ const NewSort = (sortProps: any) => {
     </Sort>
   )
 }
-
-const ChildDemandTable = (props: {
+interface Props {
   value: any
   row: any
   id?: any
   hasIcon?: boolean
   // 是否是从我的模块或者他的模块使用
   isMineOrHis?: boolean
-}) => {
+}
+const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   let projectId: any
@@ -60,17 +70,40 @@ const ChildDemandTable = (props: {
     list: undefined,
   })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { colorList } = useSelector(store => store.project)
-  let isCanEdit: any
+  const [openDemandDetail] = useOpenDemandDetail()
+  const { projectInfo } = useSelector(store => store.project)
+  const { fullScreen } = useSelector(store => store.kanBan)
 
   const getList = async (item: any) => {
-    const result = await getDemandList({
-      projectId,
-      all: true,
-      parentId: props.row.id,
-      order: item.value,
-      orderKey: item.key,
-    })
+    // 需要区分是那种类型的子需求
+    let result = null
+    if (props.row.project_type === 2) {
+      const temp = await getChildAffairsList({
+        projectId,
+        all: true,
+        parentId: props.row.id,
+        order: item.value,
+        orderKey: item.key,
+      })
+      result = temp?.list
+    } else if (props.row.project_type === 1 && props.row.is_bug !== 1) {
+      result = await getDemandList({
+        projectId,
+        all: true,
+        parentId: props.row.id,
+        order: item.value,
+        orderKey: item.key,
+      })
+    } else if (props.row.project_type === 1 && props.row.is_bug === 1) {
+      const temp = await getChildFlawList({
+        projectId,
+        all: true,
+        parentId: props.row.id,
+        order: item.value,
+        orderKey: item.key,
+      })
+      result = temp?.list
+    }
     setDataList({ list: result })
   }
 
@@ -84,37 +117,51 @@ const ChildDemandTable = (props: {
     getList({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  const onToDetail = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    )
-    openDetail(`/Detail/Demand?data=${params}`)
-  }
-
-  const onExamine = () => {
-    message.warning(t('newlyAdd.underReview'))
+  // 跳转详情页面
+  const onToDetail = (record: any) => {
+    let params: any = {
+      id: projectId,
+      detailId: record?.id,
+      isOpenScreenDetail: true,
+    }
+    let url = ''
+    if (record.project_type === 2) {
+      params.specialType = 1
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `SprintProjectManagement/Affair?data=${resultParams}`
+    } else if (record.project_type === 1 && record.is_bug === 1) {
+      params.specialType = 2
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Defect?data=${resultParams}`
+    } else if (record.project_type === 1 && record.is_bug !== 1) {
+      params.specialType = 3
+      const resultParams = encryptPhp(JSON.stringify(params))
+      url = `ProjectManagement/Demand?data=${resultParams}`
+    }
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
   const columnsChild = [
     {
       title: (
         <NewSort
-          fixedKey="id"
+          fixedKey="story_prefix_key"
           nowKey={order.key}
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          ID
+          {t('serialNumber')}
         </NewSort>
       ),
-      dataIndex: 'id',
-      width: 100,
+      dataIndex: 'storyPrefixKey',
+      width: 160,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
-              onClick={() => onToDetail(record)}
+              className="canClickDetail"
               isClose={record.status?.is_end === 1}
+              onClick={() => onToDetail(record)}
             >
               {text}
             </ClickWrap>
@@ -138,7 +185,7 @@ const ChildDemandTable = (props: {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('common.demandName')}
+          {t('name1')}
         </NewSort>
       ),
       dataIndex: 'name',
@@ -149,31 +196,29 @@ const ChildDemandTable = (props: {
               display: 'flex',
               alignItems: 'center',
             }}
+            onClick={() => onToDetail(record)}
           >
-            <Tooltip
-              placement="top"
-              getPopupContainer={node => node}
-              title={record.categoryRemark}
-            >
-              <CategoryWrap
-                color={record.categoryColor}
-                bgColor={
-                  colorList?.filter(
-                    (k: any) => k.key === record.categoryColor,
-                  )[0]?.bgColor
+            <Tooltip title={record.categoryRemark}>
+              <img
+                src={
+                  record.category_attachment ? record.category_attachment : ' '
                 }
-                style={{ marginLeft: 0 }}
-              >
-                {record.category}
-              </CategoryWrap>
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
             </Tooltip>
-            <Tooltip title={text} getPopupContainer={node => node}>
+
+            <Tooltip title={text}>
               <ListNameWrap
+                className="canClickDetail"
                 isName
                 isClose={record.status?.is_end === 1}
-                onClick={() => onToDetail(record)}
               >
-                {text}
+                <TableColorText text={text} />
               </ListNameWrap>
             </Tooltip>
           </div>
@@ -196,14 +241,7 @@ const ChildDemandTable = (props: {
       render: (text: string) => {
         return (
           <HiddenText>
-            <OmitText
-              width={100}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text || '--'}
-            </OmitText>
+            <OmitText width={100}>{text || '--'}</OmitText>
           </HiddenText>
         )
       },
@@ -223,16 +261,18 @@ const ChildDemandTable = (props: {
       width: 190,
       render: (text: any, record: any) => {
         return (
-          <StatusWrap
-            onClick={record.isExamine ? onExamine : void 0}
-            isShow={isCanEdit || record.isExamine}
-            style={{
-              color: text?.status.color,
-              border: `1px solid ${text?.status.color}`,
-            }}
-          >
-            {text?.status.content}
-          </StatusWrap>
+          <StateTag
+            name={text.status.content}
+            state={
+              text?.is_start === 1 && text?.is_end === 2
+                ? 1
+                : text?.is_end === 1 && text?.is_start === 2
+                ? 2
+                : text?.is_start === 2 && text?.is_end === 2
+                ? 3
+                : 0
+            }
+          />
         )
       },
     },
@@ -244,7 +284,7 @@ const ChildDemandTable = (props: {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('newlyAdd.demandProgress')}
+          {t('situation.progress')}
         </NewSort>
       ),
       dataIndex: 'schedule',
@@ -253,8 +293,8 @@ const ChildDemandTable = (props: {
       render: (text: any) => {
         return (
           <Progress
-            strokeColor="#43BA9A"
-            style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+            strokeColor="var(--function-success)"
+            style={{ color: 'var(--function-success)', cursor: 'not-allowed' }}
             width={38}
             type="line"
             percent={text}
@@ -268,8 +308,17 @@ const ChildDemandTable = (props: {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       width: 150,
-      render: (text: any) => {
-        return <span>{text?.join(';') || '--'}</span>
+      render: (text: any, record: any) => {
+        return (
+          <MultipleAvatar
+            max={3}
+            list={record.usersInfo?.map((i: any) => ({
+              id: i.id,
+              name: i.name,
+              avatar: i.avatar,
+            }))}
+          />
+        )
       },
     },
   ]
@@ -278,7 +327,7 @@ const ChildDemandTable = (props: {
     setIsVisible(visible)
   }
 
-  return (
+  return fullScreen ? (
     <Popover
       key={isVisible.toString()}
       visible={isVisible}
@@ -286,13 +335,80 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxHeight: 310, overflow: 'auto', width: 950 }}>
+        <div
+          style={{
+            maxHeight: 310,
+            overflow: 'auto',
+            width: 950,
+          }}
+        >
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
               <Table
                 rowKey="id"
                 pagination={false}
-                columns={columnsChild}
+                columns={
+                  props.row.project_type === 2
+                    ? columnsChild?.filter((i: any) => i.key !== 'schedule')
+                    : columnsChild
+                }
+                dataSource={dataList?.list}
+                scroll={{ x: 'max-content', y: 259 }}
+                tableLayout="auto"
+                style={{ borderRadius: 4, overflow: 'hidden' }}
+              />
+            ) : (
+              <NoData />
+            ))}
+        </div>
+      }
+      getPopupContainer={() =>
+        document.querySelector('.kanBanFullScreenBox') as any
+      }
+    >
+      <ClickWrap
+        ref={ref}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+        }}
+        onClick={onChildClick}
+      >
+        {props?.hasIcon && (
+          <IconFont
+            type="apartment02"
+            style={{ color: 'var(--neutral-n3)', fontSize: 16, marginRight: 8 }}
+          />
+        )}
+        {props.value}
+      </ClickWrap>
+    </Popover>
+  ) : (
+    <Popover
+      key={isVisible.toString()}
+      visible={isVisible}
+      placement="bottom"
+      trigger="click"
+      onVisibleChange={onVisibleChange}
+      content={
+        <div
+          style={{
+            maxHeight: 310,
+            overflow: 'auto',
+            width: 950,
+          }}
+        >
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
+              <Table
+                rowKey="id"
+                pagination={false}
+                columns={
+                  props.row.project_type === 2
+                    ? columnsChild?.filter((i: any) => i.key !== 'schedule')
+                    : columnsChild
+                }
                 dataSource={dataList?.list}
                 scroll={{ x: 'max-content', y: 259 }}
                 tableLayout="auto"
@@ -305,6 +421,7 @@ const ChildDemandTable = (props: {
       }
     >
       <ClickWrap
+        ref={ref}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -314,14 +431,14 @@ const ChildDemandTable = (props: {
       >
         {props?.hasIcon && (
           <IconFont
-            type="apartment"
-            style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+            type="apartment02"
+            style={{ color: 'var(--neutral-n3)', fontSize: 16, marginRight: 8 }}
           />
         )}
         {props.value}
       </ClickWrap>
     </Popover>
   )
-}
+})
 
 export default ChildDemandTable

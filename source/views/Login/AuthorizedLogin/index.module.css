@@ -1,0 +1,80 @@
+.authContent {
+  width: 460px;
+  height: 454px;
+  background: #ffffff;
+  box-shadow: 0px 2px 6px 0px rgba(31, 45, 102, 0.12);
+  border-radius: 6px 6px 6px 6px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.authContent > h4 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #323233;
+  line-height: 28px;
+  margin-bottom: 44px;
+}
+.authContent > button {
+  margin-top: 48px;
+}
+.authContent > .authTip {
+  margin-top: 24px;
+  text-align: center;
+  width: 182px;
+  height: 78px;
+}
+.authContent > .authTip > div {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: #323233;
+  line-height: 22px;
+}
+.authContent > .authTip > ul {
+  margin: 0;
+  padding: 0;
+}
+.authContent > .authTip > ul > li {
+  font-size: 12px;
+  font-weight: 400;
+  color: #969799;
+  line-height: 20px;
+  margin-top: 8px;
+  text-align: left;
+  padding-left: 14px;
+  position: relative;
+  list-style: none;
+}
+.authContent > .authTip > ul > li::before {
+  position: absolute;
+  left: 4px;
+  content: "";
+  width: 2px;
+  height: 2px;
+  background: #323233;
+  display: inline-block;
+  top: 50%;
+  margin-top: -1px;
+}
+.authContent .authName {
+  margin: 0;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #323233;
+  line-height: 22px;
+  width: 42px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+}
+.authContent .authAvatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}

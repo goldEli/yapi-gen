@@ -1,10 +1,8 @@
 // 我的审核主页
 
 import { useEffect, useState } from 'react'
-import { StaffHeader } from '@/components/StyleCommon'
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
-import PermissionWrap from '@/components/PermissionWrap'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
@@ -13,8 +11,8 @@ import { useSelector } from '@store/index'
 import { getMineProjectList } from '@/services/mine'
 
 const MainWrap = styled.div({
-  height: 'calc(100% - 64px)',
-  overflow: 'auto',
+  height: 'calc(100% - 52px)',
+  overflowY: 'scroll',
 })
 
 const Examine = () => {
@@ -23,7 +21,6 @@ const Examine = () => {
   asyncSetTtile(t('title.b4'))
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
-  const { userInfo } = useSelector(store => store.user)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [type, setType] = useState('verify')
 
@@ -43,16 +40,12 @@ const Examine = () => {
     return <Loading />
   }
   return (
-    <PermissionWrap
-      auth="b/user/copysend/story"
-      permission={userInfo?.company_permissions}
-    >
-      <StaffHeader>{t('newlyAdd.mineExamine')}</StaffHeader>
-      <MainWrap>
+    <MainWrap>
+      <div>
         <MineSwiper data={swiperData} onTap={getProjectId} />
-        <Need projectId={projectId} onChangeType={(val: any) => setType(val)} />
-      </MainWrap>
-    </PermissionWrap>
+      </div>
+      <Need projectId={projectId} onChangeType={(val: any) => setType(val)} />
+    </MainWrap>
   )
 }
 

@@ -4,7 +4,7 @@
 /* stylelint-disable selector-no-qualifying-type */
 @import "antd/dist/antd.less";
 
-@primary-color: #2877ff;
+@primary-color: #496ef2;
 @border-radius-base: 6px;
 @table-header-bg: white;
 @table-header-color: #969799;
@@ -16,3 +16,29 @@
 @table-header-cell-split-color: rgba(0, 0, 0, 0);
 @border-color-base: #d5d6d9;
 @text-color: #323233;
+
+.custom-class {
+  .ant-message-notice-content {
+    max-width: 640px;
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: rgba(250, 151, 70, 0.1);
+    box-shadow: none;
+    backdrop-filter: blur(3px);
+  }
+}
+
+.text-container_for_loop {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

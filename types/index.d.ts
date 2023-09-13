@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /// <reference types="vite/client" />
-
 declare const __VERSION__: string
 
 interface ImportMetaEnv {
@@ -15,7 +14,7 @@ interface ImportMetaEnv {
   readonly __COS_SIGN_ACCESS_TOKEN__: string
   readonly __COS_SIGN_APP_ID__: string
   readonly __COS_SIGN_BUCKET_ID__: string
-  readonly __URL_ALIAS__: string
+  readonly __URL_HASH__: string
 }
 
 interface ImportMeta {

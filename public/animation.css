@@ -1,0 +1,629 @@
+/*
+The CSS export should solely be used as a reference.
+For a more detailed animation export the JSON file should be used.
+*/
+#a2 {
+  transform: translateX(-50%) translateY(-50%) scaleX(var(--fgmtn-scale-x))
+    scaleY(var(--fgmtn-scale-y)) rotate(var(--fgmtn-rotation));
+  animation: 2__x__1 400ms 0ms linear forwards,
+    2__x__2 400ms 400ms linear forwards, 2__x__3 400ms 800ms linear forwards,
+    2__x__4 1100ms 1200ms linear forwards, 2__x__5 100ms 2300ms linear forwards,
+    2__x__6 400ms 2400ms linear forwards, 2__y__1 400ms 0ms linear forwards,
+    2__y__2 400ms 400ms linear forwards, 2__y__3 400ms 800ms linear forwards,
+    2__y__4 1100ms 1200ms linear forwards, 2__y__5 100ms 2300ms linear forwards,
+    2__y__6 400ms 2400ms linear forwards, 2__opacity__1 50ms 0ms linear forwards,
+    2__opacity__2 2250ms 50ms linear forwards,
+    2__opacity__3 100ms 2300ms linear forwards,
+    2__opacity__4 40ms 2400ms linear forwards,
+    2__opacity__5 360ms 2440ms linear forwards;
+}
+
+@keyframes 2__x__1 {
+  from {
+    left: 618px;
+  }
+
+  to {
+    left: 618px;
+  }
+}
+@keyframes 2__x__2 {
+  from {
+    left: 618px;
+  }
+
+  to {
+    left: 618px;
+  }
+}
+@keyframes 2__x__3 {
+  from {
+    left: 618px;
+  }
+
+  to {
+    left: 512px;
+  }
+}
+@keyframes 2__x__4 {
+  from {
+    left: 512px;
+  }
+
+  to {
+    left: 591.5px;
+  }
+}
+@keyframes 2__x__5 {
+  from {
+    left: 591.5px;
+  }
+
+  to {
+    left: 618px;
+  }
+}
+@keyframes 2__x__6 {
+  from {
+    left: 618px;
+  }
+
+  to {
+    left: 618px;
+  }
+}
+@keyframes 2__y__1 {
+  from {
+    top: 456px;
+  }
+
+  to {
+    top: 456px;
+  }
+}
+@keyframes 2__y__2 {
+  from {
+    top: 456px;
+  }
+
+  to {
+    top: 456px;
+  }
+}
+@keyframes 2__y__3 {
+  from {
+    top: 456px;
+  }
+
+  to {
+    top: 512px;
+  }
+}
+@keyframes 2__y__4 {
+  from {
+    top: 512px;
+  }
+
+  to {
+    top: 470px;
+  }
+}
+@keyframes 2__y__5 {
+  from {
+    top: 470px;
+  }
+
+  to {
+    top: 456px;
+  }
+}
+@keyframes 2__y__6 {
+  from {
+    top: 456px;
+  }
+
+  to {
+    top: 456px;
+  }
+}
+@keyframes 2__opacity__1 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+@keyframes 2__opacity__2 {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+@keyframes 2__opacity__3 {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes 2__opacity__4 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes 2__opacity__5 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+#4 {
+  transform: translateX(-50%) translateY(-50%) scaleX(var(--fgmtn-scale-x))
+    scaleY(var(--fgmtn-scale-y)) rotate(var(--fgmtn-rotation));
+  animation: 4__x__1 400ms 0ms linear forwards,
+    4__x__2 400ms 400ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    4__x__3 400ms 800ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    4__x__4 400ms 1200ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    4__x__5 400ms 1600ms linear forwards, 4__x__6 400ms 2000ms linear forwards,
+    4__x__7 400ms 2400ms linear forwards, 4__y__1 400ms 0ms linear forwards,
+    4__y__2 400ms 400ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    4__y__3 400ms 800ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    4__y__4 400ms 1200ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    4__y__5 400ms 1600ms linear forwards, 4__y__6 400ms 2000ms linear forwards,
+    4__y__7 400ms 2400ms linear forwards,
+    4__opacity__1 400ms 0ms linear forwards,
+    4__opacity__2 400ms 400ms linear forwards,
+    4__opacity__3 400ms 800ms linear forwards,
+    4__opacity__4 400ms 1200ms linear forwards,
+    4__opacity__5 400ms 1600ms linear forwards,
+    4__opacity__6 400ms 2000ms linear forwards;
+}
+
+@keyframes 4__x__1 {
+  from {
+    left: 406px;
+  }
+
+  to {
+    left: 512px;
+  }
+}
+@keyframes 4__x__2 {
+  from {
+    left: 512px;
+  }
+
+  to {
+    left: 618px;
+  }
+}
+@keyframes 4__x__3 {
+  from {
+    left: 618px;
+  }
+
+  to {
+    left: 509px;
+  }
+}
+@keyframes 4__x__4 {
+  from {
+    left: 509px;
+  }
+
+  to {
+    left: 618px;
+  }
+}
+@keyframes 4__x__5 {
+  from {
+    left: 618px;
+  }
+
+  to {
+    left: 512px;
+  }
+}
+@keyframes 4__x__6 {
+  from {
+    left: 512px;
+  }
+
+  to {
+    left: 406px;
+  }
+}
+@keyframes 4__x__7 {
+  from {
+    left: 406px;
+  }
+
+  to {
+    left: 406px;
+  }
+}
+@keyframes 4__y__1 {
+  from {
+    top: 568px;
+  }
+
+  to {
+    top: 512px;
+  }
+}
+@keyframes 4__y__2 {
+  from {
+    top: 512px;
+  }
+
+  to {
+    top: 456px;
+  }
+}
+@keyframes 4__y__3 {
+  from {
+    top: 456px;
+  }
+
+  to {
+    top: 512px;
+  }
+}
+@keyframes 4__y__4 {
+  from {
+    top: 512px;
+  }
+
+  to {
+    top: 456px;
+  }
+}
+@keyframes 4__y__5 {
+  from {
+    top: 456px;
+  }
+
+  to {
+    top: 512px;
+  }
+}
+@keyframes 4__y__6 {
+  from {
+    top: 512px;
+  }
+
+  to {
+    top: 568px;
+  }
+}
+@keyframes 4__y__7 {
+  from {
+    top: 568px;
+  }
+
+  to {
+    top: 568px;
+  }
+}
+@keyframes 4__opacity__1 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes 4__opacity__2 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes 4__opacity__3 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+@keyframes 4__opacity__4 {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.6;
+  }
+}
+@keyframes 4__opacity__5 {
+  from {
+    opacity: 0.6;
+  }
+
+  to {
+    opacity: 0.6000000238418579;
+  }
+}
+@keyframes 4__opacity__6 {
+  from {
+    opacity: 0.6000000238418579;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+#5 {
+  transform: translateX(-50%) translateY(-50%) scaleX(var(--fgmtn-scale-x))
+    scaleY(var(--fgmtn-scale-y)) rotate(var(--fgmtn-rotation));
+  animation: 5__x__1 400ms 0ms linear forwards,
+    5__x__2 400ms 400ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    5__x__3 400ms 800ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    5__x__4 400ms 1200ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    5__x__5 400ms 1600ms linear forwards, 5__x__6 400ms 2000ms linear forwards,
+    5__x__7 400ms 2400ms linear forwards, 5__y__1 400ms 0ms linear forwards,
+    5__y__2 400ms 400ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    5__y__3 400ms 800ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    5__y__4 400ms 1200ms cubic-bezier(0.42, 0, 0.58, 1) forwards,
+    5__y__5 400ms 1600ms linear forwards, 5__y__6 400ms 2000ms linear forwards,
+    5__y__7 400ms 2400ms linear forwards,
+    5__opacity__1 400ms 0ms linear forwards,
+    5__opacity__2 400ms 400ms linear forwards,
+    5__opacity__3 400ms 800ms linear forwards,
+    5__opacity__4 400ms 1200ms linear forwards,
+    5__opacity__5 400ms 1600ms linear forwards,
+    5__opacity__6 300ms 2000ms linear forwards,
+    5__opacity__7 100ms 2300ms linear forwards,
+    5__fillColor__1 400ms 0ms linear forwards,
+    5__fillColor__2 400ms 400ms linear forwards,
+    5__fillColor__3 800ms 800ms linear forwards,
+    5__fillColor__4 400ms 1600ms linear forwards;
+}
+
+@keyframes 5__x__1 {
+  from {
+    left: 618px;
+  }
+
+  to {
+    left: 512px;
+  }
+}
+@keyframes 5__x__2 {
+  from {
+    left: 512px;
+  }
+
+  to {
+    left: 406px;
+  }
+}
+@keyframes 5__x__3 {
+  from {
+    left: 406px;
+  }
+
+  to {
+    left: 512px;
+  }
+}
+@keyframes 5__x__4 {
+  from {
+    left: 512px;
+  }
+
+  to {
+    left: 406px;
+  }
+}
+@keyframes 5__x__5 {
+  from {
+    left: 406px;
+  }
+
+  to {
+    left: 512px;
+  }
+}
+@keyframes 5__x__6 {
+  from {
+    left: 512px;
+  }
+
+  to {
+    left: 618px;
+  }
+}
+@keyframes 5__x__7 {
+  from {
+    left: 618px;
+  }
+
+  to {
+    left: 618px;
+  }
+}
+@keyframes 5__y__1 {
+  from {
+    top: 456px;
+  }
+
+  to {
+    top: 512px;
+  }
+}
+@keyframes 5__y__2 {
+  from {
+    top: 512px;
+  }
+
+  to {
+    top: 568px;
+  }
+}
+@keyframes 5__y__3 {
+  from {
+    top: 568px;
+  }
+
+  to {
+    top: 508px;
+  }
+}
+@keyframes 5__y__4 {
+  from {
+    top: 508px;
+  }
+
+  to {
+    top: 568px;
+  }
+}
+@keyframes 5__y__5 {
+  from {
+    top: 568px;
+  }
+
+  to {
+    top: 512px;
+  }
+}
+@keyframes 5__y__6 {
+  from {
+    top: 512px;
+  }
+
+  to {
+    top: 456px;
+  }
+}
+@keyframes 5__y__7 {
+  from {
+    top: 456px;
+  }
+
+  to {
+    top: 456px;
+  }
+}
+@keyframes 5__opacity__1 {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes 5__opacity__2 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes 5__opacity__3 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes 5__opacity__4 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes 5__opacity__5 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes 5__opacity__6 {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.25;
+  }
+}
+@keyframes 5__opacity__7 {
+  from {
+    opacity: 0.25;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+@keyframes 5__fillColor__1 {
+  from {
+    background: rgba(163, 183, 255, 1);
+  }
+
+  to {
+    background: rgba(102, 136, 255, 1);
+  }
+}
+@keyframes 5__fillColor__2 {
+  from {
+    background: rgba(102, 136, 255, 1);
+  }
+
+  to {
+    background: rgba(163, 183, 255, 1);
+  }
+}
+@keyframes 5__fillColor__3 {
+  from {
+    background: rgba(163, 183, 255, 1);
+  }
+
+  to {
+    background: rgba(102, 136, 255, 1);
+  }
+}
+@keyframes 5__fillColor__4 {
+  from {
+    background: rgba(102, 136, 255, 1);
+  }
+
+  to {
+    background: rgba(163, 183, 255, 1);
+  }
+}

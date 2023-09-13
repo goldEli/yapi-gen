@@ -6,6 +6,9 @@
 /* eslint-disable @typescript-eslint/no-extra-parens */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// cos上传
+
 import * as http from '../tools/http'
 import COS, { type Task, type UploadFileItemResult } from 'cos-js-sdk-v5'
 import moment from 'moment'
@@ -50,8 +53,8 @@ const getCosSign = async (): Promise<any> => {
 }
 
 export const cos = new COS({
-  FileParallelLimit: 10000,
-  ChunkParallelLimit: 10000,
+  FileParallelLimit: 10,
+  ChunkParallelLimit: 10,
   getAuthorization: async (options: unknown, callback: any) => {
     const response = await getCosSign()
 
@@ -86,9 +89,9 @@ export const uploadFile = (
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
       Region: import.meta.env.__COS_REGION__,
-      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
-        fileName || file.name
-      }`,
+      Key: `${
+        import.meta.env.__COS_PREFIX__
+      }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`,
       onTaskReady(taskId) {
         id = taskId
       },
@@ -139,6 +142,44 @@ export const uploadFile = (
   })
 }
 
+export const uploadFileToKey = (
+  file: File,
+  username: string,
+  space: string,
+  fileName?: any,
+  onEnd?: (data: { key: string; url: string }) => void,
+) => {
+  const key = `${
+    import.meta.env.__COS_PREFIX__
+  }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`
+  cos.uploadFile({
+    Body: file,
+    Bucket: import.meta.env.__COS_BUCKET__,
+    Region: import.meta.env.__COS_REGION__,
+    Key: key,
+    onFileFinish(error: Error, data: UploadFileItemResult) {
+      if (!error) {
+        onEnd?.({
+          key,
+          url: `https://${data.Location}`,
+        })
+
+        // resolve({
+        //   space,
+        //   id: getUUID(),
+        //   name: file.name,
+        //   size: file.size,
+        //   formattedSize: formatFileSize(file.size),
+        //   suffix: getFileSuffix(file.name),
+        //   url: `https://${data.Location}`,
+        //   time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
+        // })
+      }
+    },
+  })
+  return key
+}
+
 export const uploadFileByTask = (
   file: File,
   username: string,
@@ -150,9 +191,9 @@ export const uploadFileByTask = (
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
       Region: import.meta.env.__COS_REGION__,
-      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
-        fileName || file.name
-      }`,
+      Key: `${
+        import.meta.env.__COS_PREFIX__
+      }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`,
       onFileFinish(error: Error, data: UploadFileItemResult) {
         if (error) {
           reject(error)

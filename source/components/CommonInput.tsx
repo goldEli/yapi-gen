@@ -35,7 +35,6 @@ interface Props {
 const CommonInput = (props: Props) => {
   // 用于控制输入框的删除图标
   const [value, setValue] = useState('')
-
   return (
     <MyInput
       bgColor={props.bgColor}

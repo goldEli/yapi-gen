@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import injectPrefetch from 'vite-plugin-prefetch-inject'
@@ -54,9 +55,18 @@ export default defineConfig(config => {
     },
     build: {
       modulePreload: true,
+      minify: 'esbuild',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
+    },
+    esbuild: {
+      drop: config.mode === 'production' ? ['console', 'debugger'] : [],
     },
     envDir: './environments/',
     envPrefix: '__',
-    base: env.__URL_ALIAS__,
   }
 })

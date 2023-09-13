@@ -9,33 +9,87 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { decryptPhp } from './cryptoPhp'
-import {
-  Select,
-  Input,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  message,
-} from 'antd'
+import dayjs from 'dayjs'
+import { FAULT_MAPS } from '../constants/index'
+import { Input, DatePicker, InputNumber, TreeSelect } from 'antd'
 import moment from 'moment'
+import CustomSelect from '@/components/CustomSelect'
+import { getMessage } from '@/components/Message'
+import { store } from '@store/index'
+
+// 格式化日对象
+function getNowDate() {
+  const date = new Date()
+  const year = date.getFullYear()
+  let month: string | number = date.getMonth() + 1
+  let day: string | number = date.getDate()
+  // 给一位数的数据前面加 “0”
+  if (month >= 1 && month <= 9) {
+    month = '0' + month
+  }
+  if (day >= 0 && day <= 9) {
+    day = '0' + day
+  }
+  return year + '-' + month + '-' + day
+}
 
 // 获取权限
 function getIsPermission(arr: any, value: string) {
   return !arr?.filter((i: any) => i.identity === value).length
 }
 
-// 新开页面
-function openDetail(url: string) {
-  if (import.meta.env.MODE === 'production') {
-    window.open(`${window.origin}${url}`)
-  } else {
-    window.open(`${window.origin}${import.meta.env.__URL_ALIAS__}${url}`)
-  }
-}
-
 // 解密地址栏参数
 function getParamsData(params: any) {
+  if (!params.get('data')) {
+    return
+  }
   return JSON.parse(decryptPhp(params.get('data') as string))
+}
+
+export function getIdByUrl(key: string) {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams)
+  return parseInt(params[key], 10)
+}
+
+export function getValueByUrl<T = any>(key: string): T {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams)
+
+  return params[key]
+}
+
+export function getProjectIdByUrl() {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams) || {}
+
+  return parseInt(params['id'], 10)
+}
+
+export function getProjectTypeByUrl() {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams) || {}
+
+  return parseInt(params['projectType'], 10)
+}
+export function getProjectType() {
+  /**
+   * 2 冲刺 1 迭代
+   */
+  const type = getProjectTypeByUrl()
+  if (type) {
+    return type as 1 | 2
+  }
+  const { projectType } = store.getState().project.projectInfo
+  return projectType as 1 | 2
 }
 
 // 需求分类树
@@ -49,6 +103,20 @@ function filterTreeData(data: any) {
         : null,
   }))
   return newData
+}
+
+function arrayFlagLevel(array: any, grade: any) {
+  if (!array || !array.length) {
+    return ''
+  }
+  array.forEach((item: any) => {
+    item.grade = grade
+
+    if (item.children && item.children.length) {
+      arrayFlagLevel(item.children, grade + 1)
+    }
+  })
+  return array
 }
 
 // 自定义字段返回相应组件和快捷编辑的组件
@@ -123,16 +191,23 @@ function getTypeComponent(
       />
     )
   } else if (params?.attr === 'number' && params?.value[0] === 'integer') {
+    const onSubmit = (value: any) => {
+      const result = String(value).includes('.')
+        ? Number(String(value).split('.')[0])
+        : value
+      onBlur(result)
+    }
     child = (
       <InputNumber
         placeholder={params.remarks || ''}
-        onBlur={e => (isModal ? onBlur(e.target.value || '') : void 0)}
-        onPressEnter={(e: any) => (isModal ? onBlur(e.target.value) : void 0)}
-        step={1}
+        onBlur={e => (isModal ? onSubmit(e.target.value || '') : void 0)}
+        onPressEnter={(e: any) => (isModal ? onSubmit(e.target.value) : void 0)}
+        min={0}
         style={{ width: '100%', minWidth: 192 }}
         defaultValue={defaultValue}
         ref={inputRef}
         autoComplete="off"
+        precision={0}
       />
     )
   } else if (params?.attr === 'treeSelect') {
@@ -142,7 +217,6 @@ function getTypeComponent(
         style={{ minWidth: 192 }}
         showArrow
         showSearch
-        getPopupContainer={node => node}
         allowClear
         treeData={params?.value}
         value={defaultValue}
@@ -155,18 +229,17 @@ function getTypeComponent(
   } else if (String(params?.attr)?.includes('fixed_')) {
     // 之前固定字段的修改
     child = (
-      <Select
+      <CustomSelect
         placeholder={params.remarks}
         style={{ width: '100%', minWidth: 192 }}
         showSearch
         showArrow
         optionFilterProp="label"
-        getPopupContainer={node => node}
         allowClear
         value={defaultValue}
-        ref={inputRef}
+        onRef={inputRef}
         onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
-        onChange={value =>
+        onChange={(value: any) =>
           onChange?.(value, params.attr === 'fixed_select' ? '' : 1)
         }
         options={params?.value}
@@ -185,18 +258,17 @@ function getTypeComponent(
     ].includes(String(params?.attr))
   ) {
     child = (
-      <Select
+      <CustomSelect
         placeholder={params.remarks || ''}
         style={{ width: '100%', minWidth: 192 }}
         showSearch
         showArrow
         optionFilterProp="label"
-        getPopupContainer={node => node}
         allowClear
         value={defaultValue}
-        ref={inputRef}
+        onRef={inputRef}
         onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
-        onChange={value =>
+        onChange={(value: any) =>
           onChange?.(
             value,
             ['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(
@@ -223,20 +295,6 @@ function getTypeComponent(
     )
   }
   return child
-}
-
-function arrayFlagLevel(array: any, grade: any) {
-  if (!array || !array.length) {
-    return ''
-  }
-  array.forEach((item: any) => {
-    item.grade = grade
-
-    if (item.children && item.children.length) {
-      arrayFlagLevel(item.children, grade + 1)
-    }
-  })
-  return array
 }
 
 const transData = (jsonArr: any, idStr: any, pidStr: any, childrenStr: any) => {
@@ -304,105 +362,15 @@ function bytesToSize(fileByte: any) {
   return fileSizeMsg
 }
 
-// 14.24GB
-// 定义粘贴函数
-const onPaste = (event: any) => {
-  // 剪贴板没数据，则直接返回
-  if (!event.clipboardData || !event.clipboardData.items) {
-    return
-  }
-  return new Promise((resovle, reject) => {
-    for (let i = 0, len = event.clipboardData.items.length; i < len; i++) {
-      const item = event.clipboardData.items[i]
-
-      if (item.kind === 'file') {
-        const file = item.getAsFile()
-        if (item.type.match('^image/')) {
-          // 处理图片
-          handleImage(file, (data: any) => {
-            resovle(data)
-          })
-        } else {
-          // 其他文件直接返回
-          resovle({
-            data: file,
-            type: 'file',
-          })
-        }
-      } else if (item.kind === 'string') {
-        let str = event.clipboardData.getData('text')
-        resovle({
-          data: str,
-          type: 'string',
-        })
-      } else {
-        message.error('不支持粘贴该类型')
-        reject(new Error('不支持粘贴该类型'))
-      }
-    }
-  })
-}
-
-function handleImage(file: any, callback: any, maxWidth = 200) {
-  if (!file || !/(?:png|jpg|jpeg|gif)/i.test(file.type)) {
-    return
-  }
-  const reader = new FileReader()
-  reader.onload = function () {
-    const { result } = this
-    let img: any = new Image()
-    img.onload = function () {
-      const compressedDataUrl = compress(img, file.type, maxWidth, true)
-      const url = compress(img, file.type, maxWidth, false)
-      img = null
-      callback({
-        data: file,
-        compressedDataUrl,
-        url,
-        type: 'image',
-      })
-    }
-    img.src = result
-  }
-  reader.readAsDataURL(file)
-}
-
-function compress(img: any, type: any, maxHeight: any, flag: any) {
-  let canvas: any = document.createElement('canvas')
-  let ctx2: any = canvas.getContext('2d')
-  const ratio = img.width / img.height
-  let { width } = img,
-    { height } = img
-
-  // 根据flag判断是否压缩图片
-  if (flag) {
-    // 压缩后的图片展示在输入框
-    height = maxHeight
-    width = maxHeight * ratio
-  }
-  canvas.width = width
-  canvas.height = height
-  ctx2.fillStyle = '#fff'
-  ctx2.fillRect(0, 0, canvas.width, canvas.height)
-  ctx2.drawImage(img, 0, 0, width, height)
-  let base64Data = canvas.toDataURL(type, 0.75)
-  if (type === 'image/gif') {
-    const regx = /(?<=data:image).*?(?=;base64)/
-    base64Data = base64Data.replace(regx, '/gif')
-  }
-  canvas = null
-  ctx2 = null
-  return base64Data
-}
-
 // 复制
 function copyLink(text: any, successText: string, errorText: string) {
-  navigator.clipboard.writeText(text).then(
-    function () {
-      message.success(successText)
+  const result = text?.includes('】') ? text?.split('】')?.join('】\n') : text
+  navigator.clipboard.writeText(result).then(
+    () => {
+      getMessage({ msg: successText as string, type: 'success' })
     },
-    function (err) {
-      message.error(errorText)
+    err => {
+      getMessage({ msg: errorText, type: 'error' })
     },
   )
 }
@@ -414,37 +382,158 @@ function removeNull(list: any, key: string) {
     ?.children?.filter((i: any) => i.id !== -1)
 }
 
-// 获取自定义字段默认值
+// 获取自定义字段默认值 -- 表格
 function getCustomNormalValue(attr: any, text: any) {
   let result: any
-  if (['user_select_checkbox', 'user_select'].includes(attr)) {
-    result = text?.true_value || '--'
-  }
-
-  if (Array.isArray(text?.value)) {
+  if (Array.isArray(text?.value) && !text?.true_value) {
     result = text?.value?.join(';')
-  } else if (typeof text?.value === 'object') {
+  } else if (typeof text?.value === 'object' && !text?.true_value) {
     result = text?.value.content
+  } else if (['user_select_checkbox', 'user_select'].includes(attr)) {
+    result = text?.true_value || '--'
   } else {
     result = text?.value
   }
-
   return result || '--'
 }
+// 判断日期是否重复
+function isDateIntersection(
+  start1: string,
+  end1: string,
+  start2: string,
+  end2: string,
+) {
+  const firstGroupStartDate = dayjs(start1).valueOf()
+  const firstGroupEndDate = dayjs(end1).valueOf()
 
-export default onPaste
+  const secondGroupFirstDate = dayjs(start2).valueOf()
+  const secondGroupEndDate = dayjs(end2).valueOf()
+
+  if (
+    firstGroupStartDate >= secondGroupFirstDate &&
+    firstGroupStartDate <= secondGroupEndDate
+  ) {
+    return true
+  }
+
+  if (
+    firstGroupEndDate >= secondGroupFirstDate &&
+    firstGroupEndDate <= secondGroupEndDate
+  ) {
+    return true
+  }
+
+  if (
+    firstGroupStartDate <= firstGroupStartDate &&
+    firstGroupEndDate >= secondGroupEndDate
+  ) {
+    return true
+  }
+
+  return false
+}
+type props = { [key in string]: Model.Schedule.DetailInfo[] }
+function mapToArray(res: props) {
+  const array: Model.Schedule.ScheduleListViewInfo[] = []
+  Object.keys(res)
+    .sort()
+    .forEach(key => {
+      const item = res[key]
+      array.push({ date: key, list: item })
+    })
+  return array
+}
+// 筛选故障的类别
+export const filterCategory = (
+  work_type: number | undefined,
+  data: any,
+  fieldType?: any,
+  ids?: string[],
+) => {
+  let array: any = data?.filter((item: { title: string }) => {
+    if (work_type !== 2 && work_type !== 5) {
+      return !FAULT_MAPS.includes(item.title)
+    }
+    return true
+  })
+  if (ids) {
+    const { is_customize, content } = fieldType
+    array = array?.filter((item: { is_customize: number; attr: string }) => {
+      if (is_customize && !content) {
+        return item.is_customize === is_customize
+      }
+      if (content && !is_customize) {
+        return item.attr === content
+      }
+      if (is_customize && is_customize) {
+        return item.attr === content && item.is_customize === is_customize
+      }
+      return true
+    })
+    return array
+  }
+  return array
+}
+function getIdsForAt(htmlString: string) {
+  const parser = new DOMParser()
+  // 解析HTML字符串为HTML文档对象
+  const htmlDoc = parser.parseFromString(htmlString, 'text/html')
+  // 获取具有data-id属性的元素，并获取它们的值
+  const dataIdElements = htmlDoc.querySelectorAll('[data-id]')
+  const dataIdValues = Array.from(dataIdElements).map(el =>
+    el.getAttribute('data-id'),
+  )
+
+  return Array.from(new Set(dataIdValues))
+}
+
+// 计算详情中使用的时间
+function detailTimeFormat(time: string) {
+  return moment(time).format('YYYY年MM月DD日 HH:mm')
+}
+
+// 获取树形结构下匹配的数据
+function onComputedFindChild(obj: any, parentId: number) {
+  let res = obj.id === parentId ? obj : null
+  if (res) {
+    return res
+  } else {
+    for (let index = 0; index < obj.children.length; index++) {
+      if (
+        obj.children[index].children instanceof Array &&
+        obj.children[index].children?.length > 0
+      ) {
+        res = onComputedFindChild(obj.children[index], parentId)
+        if (res) return res
+      }
+    }
+    return null
+  }
+}
+
+// 计算user_menu_list中是否有当前路由
+function onComputedPermission(currentMenu: any, url: string) {
+  return (
+    currentMenu?.children?.filter((i: any) => i.url === url)?.length > 0 || true
+  )
+}
 
 export {
+  getIdsForAt,
   getIsPermission,
-  openDetail,
   getParamsData,
   transData,
   getTypeComponent,
   getNestedChildren,
   filterTreeData,
   bytesToSize,
-  onPaste,
-  copyLink,
   removeNull,
   getCustomNormalValue,
+  copyLink,
+  getNowDate,
+  isDateIntersection,
+  mapToArray,
+  detailTimeFormat,
+  onComputedFindChild,
+  onComputedPermission,
 }

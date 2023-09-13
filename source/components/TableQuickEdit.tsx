@@ -1,28 +1,28 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 // 需求列表快捷编辑组件
-
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable camelcase */
 import { useEffect, useRef, useState } from 'react'
 import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
-import { getIterateList } from '@/services/project/iterate'
 import {
   getProjectMember,
   getTagList,
   storyConfigField,
 } from '@/services/project'
 import { getStaffList } from '@/services/staff'
-import { getTreeList } from '@/services/project/tree'
-import { message, Tooltip } from 'antd'
+import { Checkbox, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
-import { getDemandInfo, updateTableParams } from '@/services/project/demand'
-import { setDemandInfo } from '@store/demand'
+
 import styled from '@emotion/styled'
+import { getIterateList } from '@/services/iterate'
+import { getTreeList, updateTableParams } from '@/services/demand'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import { getMessage } from './Message'
+import { updateAffairsTableParams } from '@/services/affairs'
+import { updateFlawTableParams } from '@/services/flaw'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 const LimitText = styled.div`
   width: 192px;
@@ -31,23 +31,43 @@ const LimitText = styled.div`
   overflow: hidden;
 `
 
+const DisableWrap = styled.div`
+  cursor: no-drop;
+`
+
+const CheckboxWrap = styled(Checkbox)`
+  .ant-checkbox-inner {
+    border-radius: 50% !important;
+  }
+  .ant-checkbox-checked::after {
+    border: none !important;
+  }
+`
+
 interface Props {
   children: any
+
   // 修改的key
   keyText: any
+
   // 当前修改的类型
   type?: string
+
   // 1：下拉数据传入下拉数据，时间及数值类型传入例：['date'|'number']
   value?: any
+
   // 默认回填的值
   defaultText?: any
   isCustom?: boolean
   remarks?: any
+
   // 是否是详情快捷编辑 - 用于判断是否是表格
   isInfo?: any
+
   // 当前需求数据
   item?: any
   onUpdate?(): void
+
   // 是否是从我的模块或者他的模块使用
   isMineOrHis?: any
 
@@ -62,20 +82,32 @@ interface Props {
 
   // 是否需求标题 -- 是则不加tooltip并取消padding
   isDemandName?: boolean
+
+  // 是否是详情页面
+  isInfoPage?: boolean
+
+  // // 人员下拉框是否绑定在body上面
+  // isBindBody?: string
+  isBug?: boolean
+  // 效能洞察的参数
+  isCanEdit?: boolean
+  // 效能洞察的参数
+  xnProjectId?: number
 }
 
 const TableQuickEdit = (props: Props) => {
+  const info = useGetloginInfo()
   const [t] = useTranslation()
   const [isShowControl, setIsShowControl] = useState(false)
-  const inputRef = useRef<any>(null)
-  const [searchParams] = useSearchParams()
+  const inputRef = useRef<HTMLInputElement>()
   const [selectTagList, setSelectTagList] = useState<any>([])
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const [params, setParams] = useState<any>({})
-  let isCanEdit: any
-  let projectId: any
-  let canClick: any
+
   const dispatch = useDispatch()
+
   const isCan =
     props.isInfo ||
     !['text', 'textarea', 'number', 'integer'].includes(String(props.type))
@@ -84,27 +116,35 @@ const TableQuickEdit = (props: Props) => {
     !props.isInfo &&
     ['text', 'textarea', 'number', 'integer'].includes(String(props.type))
 
-  if (props.isMineOrHis) {
-    isCanEdit =
-      props?.item?.project?.isEdit ||
-      props?.projectPermissions?.filter(
-        (i: any) => i.identity === 'b/story/update',
-      )
-    projectId = props?.item?.project_id
+  let isCanEdit: any
+  let canClick: any
+
+  if (props.projectId === 0) {
+    isCanEdit = props.xnProjectId
+      ? props?.isCanEdit
+      : props.item?.project.isEdit
     canClick = isCan && isCanEdit
   } else {
     isCanEdit =
       projectInfo.projectPermissions?.length > 0 &&
-      projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-        ?.length > 0
-    const paramsData = getParamsData(searchParams)
-    projectId = paramsData.id
+      projectInfo.projectPermissions?.filter(
+        (i: any) =>
+          i.identity ===
+          (projectInfo.projectType === 1
+            ? props.isBug
+              ? 'b/flaw/update'
+              : 'b/story/update'
+            : 'b/transaction/update'),
+      )?.length > 0
     canClick = isCan && isCanEdit
   }
-
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {
-    const response = await storyConfigField({ projectId, key: props.keyText })
+    const response = await storyConfigField({
+      projectId:
+        props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+      key: props.keyText,
+    })
     const currentObj = response.list?.filter(
       (i: any) => i.content === props.keyText,
     )[0]
@@ -128,9 +168,18 @@ const TableQuickEdit = (props: Props) => {
 
   // 我的模块及他的模块并且是自定义字段 --- 项目信息获取
   const getCustomValuesInfo = () => {
-    const response = projectInfoValues
-      ?.filter((i: any) => i.key === props.keyText)[0]
-      ?.children?.filter((i: any) => i.id !== -1)
+    const response = ['user_select_checkbox', 'user_select'].includes(
+      String(props.type),
+    )
+      ? props.item.fieldContentValue[0] === 'companyMember'
+        ? projectInfoValues
+            ?.filter((i: any) => i.key === 'users_copysend_name')[0]
+            ?.children?.filter((i: any) => i.id !== -1)
+        : projectInfoValues
+            ?.filter((i: any) => i.key === 'users_name')[0]
+            ?.children?.filter((i: any) => i.id !== -1)
+      : null
+
     const resultValue = {
       value: ['user_select_checkbox', 'user_select'].includes(
         String(props.type),
@@ -139,7 +188,7 @@ const TableQuickEdit = (props: Props) => {
             label: i.content,
             value: i.id,
           }))
-        : response?.map((i: any) => i.content),
+        : props.item?.fieldContentValue,
       remarks: '',
       attr: props.type,
     }
@@ -149,24 +198,34 @@ const TableQuickEdit = (props: Props) => {
     }, 100)
   }
 
-  //  迭代、处理人、抄送人、需求分类、标签--- 接口获取
+  //  迭代、处理人、抄送人、需求分类、标签、发现版本--- 接口获取
   const getDefaultSelectValues = async () => {
-    let resultValue: any = {
+    const resultValue: any = {
       attr: props?.type,
       value: [],
     }
-    if (props.keyText === 'iterate_id') {
+    if (
+      props.keyText === 'iterate_id' ||
+      props.keyText === 'discovery_version'
+    ) {
       // 获取迭代下拉数据
-      const response = await getIterateList({ projectId })
+      const response = await getIterateList({
+        projectId:
+          props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+      })
       resultValue.value = response?.list
-        ?.filter((k: any) => k.status === 1)
+        ?.filter((k: any) => k.status === 1 || k.status === 4)
         ?.map((i: any) => ({
           label: i.name,
           value: i.id,
         }))
     } else if (props.keyText === 'users') {
       // 获取处理人的下拉数据
-      const response = await getProjectMember({ all: true, projectId })
+      const response = await getProjectMember({
+        all: true,
+        projectId:
+          props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+      })
       resultValue.value = response?.map((i: any) => ({
         label: i.name,
         value: i.id,
@@ -177,7 +236,10 @@ const TableQuickEdit = (props: Props) => {
       resultValue.value = response
     } else if (props.keyText === 'class_id') {
       // 获取需求分类的下拉数据
-      const response = await getTreeList({ id: projectId, isTree: 1 })
+      const response = await getTreeList({
+        id: props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+        isTree: 1,
+      })
       resultValue.value = [
         ...[
           {
@@ -191,7 +253,10 @@ const TableQuickEdit = (props: Props) => {
       ]
     } else if (props.keyText === 'tag') {
       // 获取标签下拉数据
-      const response: any = await getTagList({ projectId })
+      const response: any = await getTagList({
+        projectId:
+          props.projectId === 0 ? props.item?.project_id : projectInfo.id,
+      })
       setSelectTagList(response)
       resultValue.value = response?.map((i: any) => ({
         label: i.content,
@@ -207,18 +272,23 @@ const TableQuickEdit = (props: Props) => {
 
   //  迭代、处理人、抄送人、需求分类、标签--- 项目信息获取
   const getDefaultSelectValuesInfo = () => {
-    let resultValue: any = {
+    const resultValue: any = {
       attr: props?.type,
       value: [],
     }
-    if (props.keyText === 'iterate_id') {
+    if (
+      props.keyText === 'iterate_id' ||
+      props.keyText === 'discovery_version'
+    ) {
       // 获取迭代下拉数据
       const response = projectInfoValues
         ?.filter((i: any) => i.key === 'iterate_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
-
+      // if (!response) {
+      //   return
+      // }
       resultValue.value = response
-        ?.filter((k: any) => k.status === 1)
+        ?.filter((k: any) => k.status === 1 || k.status === 4)
         ?.map((i: any) => ({
           label: i.content,
           value: i.id,
@@ -229,19 +299,37 @@ const TableQuickEdit = (props: Props) => {
         ?.filter((i: any) => i.key === 'users_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
 
-      resultValue.value = response?.map((i: any) => ({
-        label: i.content,
-        value: i.id,
-      }))
+      const arr1 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? `${i.content}（${t('myself')}）` : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value === info)
+      const arr12 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? `${i.content}（${t('myself')}）` : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value !== info)
+      resultValue.value = arr1?.concat(arr12)
     } else if (props.keyText === 'copysend') {
       // 获取抄送人的下拉数据
       const response = projectInfoValues
         ?.filter((i: any) => i.key === 'users_copysend_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
-      resultValue.value = response?.map((i: any) => ({
-        label: i.content,
-        value: i.id,
-      }))
+      const arr1 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? `${i.content}（${t('myself')}）` : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value === info)
+      const arr12 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? `${i.content}（${t('myself')}）` : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value !== info)
+      resultValue.value = arr1.concat(arr12)
     } else if (props.keyText === 'class_id') {
       // 获取需求分类的下拉数据
       const response = projectInfoValues?.filter(
@@ -292,9 +380,18 @@ const TableQuickEdit = (props: Props) => {
   }, [isShowControl])
 
   // 操作框改变
-  const onChange = async (newValue: any, type: any) => {
+  const onChange = async (newValue: any, type?: any) => {
+    if (props.item?.categoryConfigList[props.keyText] === 1 && !newValue) {
+      getMessage({
+        msg: `${props.keyText}${t('is_required')}`,
+        type: 'warning',
+      })
+      setIsShowControl(false)
+      return
+    }
+
     if (props.keyText === 'name' && newValue.length <= 0) {
-      message.warning(t('p2.nameNotNull'))
+      getMessage({ msg: t('p2.nameNotNull'), type: 'warning' })
       setIsShowControl(false)
       return
     }
@@ -306,7 +403,10 @@ const TableQuickEdit = (props: Props) => {
         moment(props.item.expectedEnd || '').unix() <
           moment(newValue || '').unix()
       ) {
-        message.warning(t('version2.endTimeComputedStartTime'))
+        getMessage({
+          msg: t('version2.endTimeComputedStartTime'),
+          type: 'warning',
+        })
         setIsShowControl(false)
         return
       }
@@ -319,19 +419,23 @@ const TableQuickEdit = (props: Props) => {
         moment(props.item.expectedStart || '').unix() >
           moment(newValue || '').unix()
       ) {
-        message.warning(t('version2.startTimeComputedEndTime'))
+        getMessage({
+          msg: t('version2.startTimeComputedEndTime'),
+          type: 'warning',
+        })
         setIsShowControl(false)
         return
       }
     }
     const obj: any = {
-      projectId,
+      projectId:
+        props.projectId === 0 ? props.item?.project_id : projectInfo.id,
       id: props.item?.id,
     }
     if (props?.isCustom) {
       obj.otherParams = {
         custom_field: {
-          [props?.keyText]: newValue || '',
+          [props?.keyText]: newValue || newValue === 0 ? newValue : '',
         },
       }
     } else if (props.keyText === 'tag') {
@@ -349,26 +453,40 @@ const TableQuickEdit = (props: Props) => {
         [props?.keyText]: newValue || newValue === 0 ? newValue : '',
       }
     }
-
-    try {
-      await updateTableParams(obj)
-      if (props.isInfo) {
-        const result = await getDemandInfo({ projectId, id: props.item?.id })
-        dispatch(setDemandInfo(result))
+    if (projectInfo.projectType === 1 || props.item.projectType === 1) {
+      // 缺陷
+      if (props.item.is_bug === 1) {
+        await updateFlawTableParams(obj)
       } else {
-        props.onUpdate?.()
+        // 需求
+        await updateTableParams(obj)
       }
-      message.success(t('common.editSuccess'))
-      if (type === 1) {
-        setIsShowControl(false)
-      }
-    } catch (error) {
-      //
+    } else {
+      // 事务
+      await updateAffairsTableParams(obj)
+    }
+    if (props.isInfoPage) {
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    } else {
+      props.onUpdate?.()
+    }
+    getMessage({ msg: t('common.editSuccess'), type: 'success' })
+    if (type === 1) {
+      setIsShowControl(false)
     }
   }
 
   // 操作框失焦
   const onBlur = (val: any) => {
+    if (props.item?.categoryConfigList[props.keyText] === 1 && !val) {
+      getMessage({
+        msg: `${props.keyText}${t('is_required')}`,
+        type: 'warning',
+      })
+      setIsShowControl(false)
+      return
+    }
+
     if (val === props?.defaultText) {
       setIsShowControl(false)
     } else {
@@ -402,50 +520,98 @@ const TableQuickEdit = (props: Props) => {
           inputRef,
           onBlur,
         )}
-      {!isShowControl && (
-        <CanOperation
-          onClick={() =>
-            // 详情和列表上不是文本的可点击整个元素
-            canClick ? setIsShowControl(true) : void 0
-          }
-          isTable={!props.isInfo}
-          isCanEdit={isCanEdit}
-        >
-          {(!['text', 'textarea'].includes(props.type as any) ||
-            props.isDemandName) && <div>{props.children}</div>}
 
-          {['text', 'textarea'].includes(props.type as any) &&
-            !props.isDemandName && (
+      {/* 如果是详情或者是表格上可编辑字段 */}
+      {props.item?.categoryConfigList &&
+        (Object.keys(props.item?.categoryConfigList).includes(props.keyText) ||
+          props.isInfo ||
+          ['name', 'tag'].includes(props.keyText)) && (
+          <>
+            {!isShowControl && (
               <>
-                {props.isInfo && <div>{props.children}</div>}
-                {!props.isInfo && (
-                  <Tooltip
-                    title={props.children}
-                    placement="topLeft"
-                    getPopupContainer={node => node}
+                {/* 快捷修改确认勾选框显示 */}
+                {props.type === 'single_checkbox' && (
+                  <CheckboxWrap
+                    checked={props?.defaultText === '1'}
+                    onChange={e => onChange(e.target.checked ? 1 : 0)}
+                  />
+                )}
+                {props.type !== 'single_checkbox' && (
+                  <CanOperation
+                    onClick={() =>
+                      // 详情和列表上不是文本的可点击整个元素
+                      canClick ? setIsShowControl(true) : void 0
+                    }
+                    isTable={!props.isInfo}
+                    isCanEdit={isCanEdit}
                   >
-                    <LimitText>{props.children}</LimitText>
-                  </Tooltip>
+                    {(!['text', 'textarea'].includes(props.type as any) ||
+                      props.isDemandName) && <div>{props.children}</div>}
+
+                    {['text', 'textarea'].includes(props.type as any) &&
+                      !props.isDemandName && (
+                        <>
+                          {props.isInfo && <div>{props.children}</div>}
+                          {!props.isInfo && (
+                            <Tooltip
+                              title={props.children}
+                              placement="topLeft"
+                              getPopupContainer={node => node}
+                            >
+                              <LimitText>{props.children}</LimitText>
+                            </Tooltip>
+                          )}
+                        </>
+                      )}
+
+                    {isCanEdit && (
+                      <IconFontWrapEdit
+                        onClick={() => setIsShowControl(true)}
+                        isTable={isShowIcon}
+                        style={{ color: 'var(--neutral-n4)' }}
+                        type={
+                          props?.isInfo ||
+                          !['text', 'textarea', 'number', 'integer'].includes(
+                            String(props.type),
+                          )
+                            ? 'down-icon'
+                            : 'edit-square'
+                        }
+                      />
+                    )}
+                  </CanOperation>
                 )}
               </>
             )}
+          </>
+        )}
 
-          {isCanEdit && (
-            <IconFontWrapEdit
-              onClick={() => setIsShowControl(true)}
-              isTable={isShowIcon}
-              type={
-                props?.isInfo ||
-                !['text', 'textarea', 'number', 'integer'].includes(
-                  String(props.type),
-                )
-                  ? 'down-icon'
-                  : 'edit-square'
-              }
-            />
-          )}
-        </CanOperation>
-      )}
+      {/* 不能操作的并且不是详情快捷操作，只展示 */}
+      {props.item?.categoryConfigList &&
+        !Object.keys(props.item?.categoryConfigList).includes(props.keyText) &&
+        !props.isInfo &&
+        !['name', 'tag'].includes(props.keyText) && (
+          <DisableWrap>
+            {(!['text', 'textarea'].includes(props.type as any) ||
+              props.isDemandName) && <div>{props.children}</div>}
+
+            {['text', 'textarea'].includes(props.type as any) &&
+              !props.isDemandName && (
+                <>
+                  {props.isInfo && <div>{props.children}</div>}
+                  {!props.isInfo && (
+                    <Tooltip
+                      title={props.children}
+                      placement="topLeft"
+                      getPopupContainer={node => node}
+                    >
+                      <LimitText>{props.children}</LimitText>
+                    </Tooltip>
+                  )}
+                </>
+              )}
+          </DisableWrap>
+        )}
     </div>
   )
 }

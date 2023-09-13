@@ -1,15 +1,28 @@
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as http from '../tools/http'
 
+// 员工
+
+import * as http from '../tools/http'
+export const getStaffListApi: any = async (params: any) => {
+  const response = await http.post('getStaffList', {
+    search: {
+      id: params.id,
+    },
+  })
+  return response.data
+}
 export const getStaffList: any = async (params: any) => {
   const response = await http.get('getStaffList', {
     search: {
+      id: params?.id,
       job_id: params?.jobId,
       department_id: params?.departmentId,
       user_group_id: params?.userGroupId,
       keyword: params?.keyword,
+      handover_status: params?.handover_status,
+      status: params?.status,
       all: params.all,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
@@ -74,6 +87,11 @@ export const getStaffList: any = async (params: any) => {
           labelTxt: response.data.class_one_fields.status,
         },
         {
+          label: response.data.class_one_fields.handover_status,
+          value: 'handover_status',
+          labelTxt: response.data.class_one_fields.handover_status,
+        },
+        {
           label: response.data.class_one_fields.role_name,
           value: 'role_name',
           labelTxt: response.data.class_one_fields.role_name,
@@ -92,13 +110,15 @@ export const getStaffList: any = async (params: any) => {
   }
 }
 
-export const getStaffList2: any = async (params: any) => {
+export const getStaffListAll: any = async (params: any) => {
   const response = await http.get('getStaffList', {
     search: {
       job_id: params?.jobId,
       department_id: params?.departmentId,
       user_group_id: params?.userGroupId,
       keyword: params?.keyword,
+      handover_status: params?.handover_status,
+      status: params?.status,
       all: params.all,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
@@ -106,23 +126,28 @@ export const getStaffList2: any = async (params: any) => {
     page: params.page,
     pagesize: params.pagesize,
   })
-
-  return params.all
-    ? response.data.map((i: any) => ({
-        avatar: i.avatar,
-        id: i.id,
-        name: i.name,
-        nickname: i.nickname,
-        positionName: null,
-        roleName: i.role_name,
-      }))
-    : null
+  return response.data.map((i: any) => ({
+    avatar: i.avatar,
+    id: i.id,
+    name: i.name,
+    nickname: i.nickname,
+    positionName: null,
+    roleName: i.role_name,
+  }))
 }
 
 export const updateStaff: any = async (params: any) => {
   const response = await http.post('editStaff', {
     role_id: params.roleId,
     user_id: params.userId,
+  })
+  return response
+}
+
+export const batchUpdateStaff: any = async (params: any) => {
+  const response = await http.post('batchEditStaff', {
+    role_id: params.roleId,
+    user_ids: params.userIds,
   })
   return response
 }

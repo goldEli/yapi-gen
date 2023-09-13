@@ -1,10 +1,7 @@
 // 暂无权限页面
 
-/* eslint-disable complexity */
 import styled from '@emotion/styled'
-import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import IconFont from './IconFont'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -20,47 +17,40 @@ const Wrap = styled.div({
     marginBottom: 35,
   },
   div: {
-    color: '#323233',
-    fontSize: 18,
+    color: 'var(--neutral-n3)',
+    fontSize: 14,
   },
 })
 
 const PermissionWrap = ({
   auth,
-  hasWidth,
   permission,
-  isType,
   children,
 }: {
-  auth: any
-  hasWidth?: boolean
-  permission?: any
-  isType?: number
-  children?: any
-  isPadding?: boolean
+  auth: string
+  permission: any[]
+  children: any
 }) => {
   const [t] = useTranslation()
-  if (!permission?.length) {
+
+  if (!permission || permission?.length <= 0) {
     return ''
   }
-  if (permission?.length && !isType) {
-    if (!getIsPermission(permission, auth)) {
-      return permission ? children : ''
-    }
-  } else if (permission?.length && isType === 1) {
-    return permission?.filter((i: any) => i.group_name === auth).length
-      ? children
-      : ''
-  } else if (permission?.length && isType === 2) {
-    return permission?.filter((i: any) => String(i.identity).includes(auth))
-      .length
-      ? children
-      : ''
+
+  if (
+    permission?.includes(auth) ||
+    permission?.filter((i: any) => i?.includes(auth))?.length > 0
+  ) {
+    return children
   }
 
   return (
-    <Wrap style={{ height: hasWidth ? 'calc(100vh - 64px)' : '100%' }}>
-      <IconFont type="noData" style={{ fontSize: 200 }} />
+    <Wrap style={{ height: '100%' }}>
+      <img
+        src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/privatePermission.png"
+        style={{ width: 240, marginBottom: 24 }}
+        alt=""
+      />
       <div>{t('components.noPermission')}</div>
     </Wrap>
   )

@@ -12,6 +12,7 @@ interface StateType {
   errorInfo?: null | React.ErrorInfo
   isShowModal?: any
   languageList?: any[]
+  hasError: false
 }
 
 export class ErrorBoundary extends React.Component<PropsType, StateType> {
@@ -21,6 +22,7 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
       error: null,
       errorInfo: null,
       isShowModal: true,
+      hasError: false,
       languageList: [
         { key: 'zh', title: '版本更新提示', text: '版本更新，请刷新重试！' },
         {
@@ -32,6 +34,11 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
     }
   }
 
+  // static getDerivedStateFromError() {
+  //   // Update state so the next render will show the fallback UI.
+  //   return { hasError: true }
+  // }
+
   //捕获抛出异常
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     //传递异常信息
@@ -40,6 +47,7 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
       errorInfo,
     })
     //可以将异常信息抛出给日志系统等等
+    // logErrorToMyService(error, info.componentStack)
   }
 
   render() {
@@ -73,6 +81,15 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
           onConfirm={onConfirm}
           notCancel
         />
+      )
+    }
+    if (this.state.error) {
+      // You can render any custom fallback UI
+      return (
+        <div>
+          <h1>{this.state.error.message}</h1>
+          <div>{this.state.error.stack}</div>
+        </div>
       )
     }
     return this.props.children

@@ -5,7 +5,7 @@
 import { Progress, Popover } from 'antd'
 import { ProgressWrap, SliderWrap } from '@/components/StyleCommon'
 import { useState } from 'react'
-import { updateTableParams } from '@/services/project/demand'
+import { updateTableParams } from '@/services/demand'
 
 interface Props {
   value: number
@@ -50,8 +50,8 @@ const DemandProgress = (props: Props) => {
       getTooltipContainer={node => (props.isCard ? document.body : node)}
     >
       <Progress
-        strokeColor="#43BA9A"
-        style={{ color: '#43BA9A' }}
+        strokeColor="var(--function-success)"
+        style={{ color: 'var(--function-success)' }}
         width={props.isCard ? 38 : 42}
         type={props.isCard ? 'circle' : 'line'}
         percent={props?.value}

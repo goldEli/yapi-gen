@@ -1,16 +1,11 @@
-import React, { useEffect, useRef } from 'react'
+// 用于浏览器标题
 
 const useSetTitle = () => {
-  const asyncSetTtile = (asyncTitle: any) => {
+  const asyncSetTitle = (asyncTitle: any) => {
     document.title = `${asyncTitle} -IFUN AGILE`
   }
-  useEffect(() => {
-    return () => {
-      //   document.title = 'IFUN 敏捷研发系统'
-    }
-  }, [localStorage.getItem('language')])
 
-  return asyncSetTtile
+  return asyncSetTitle
 }
 
 export default useSetTitle

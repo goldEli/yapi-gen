@@ -4,11 +4,16 @@
   "scripts": {
     "start": "vite",
     "build:development": "npm run lint && vite build --mode development",
+    "build:development-b": "npm run lint && vite build --mode development",
     "build:test": "npm run lint && vite build --mode test",
+    "build:test-b": "npm run lint && vite build --mode test",
     "build:production": "npm run lint && vite build",
     "lint": "tsc && eslint --ext .ts,.tsx,.vue source",
+    "checkType": "tsc --noEmit",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "tran": "npx ifuntran -u http://35.84.160.169:8008/bbs/translate",
+    "findCN": "npx ifuncheckcn"
   },
   "dependencies": {
     "@ant-design/plots": "^1.2.3",
@@ -21,33 +26,45 @@
     "@jihe/use-model": "^0.0.1",
     "@reduxjs/toolkit": "^1.9.0",
     "@star-yun/ui": "^0.0.3",
-    "@staryuntech/ant-pro": "0.0.22",
     "@types/react-router-dom": "^5.3.3",
-    "@wangeditor/editor": "^5.1.11",
-    "@wangeditor/editor-for-react": "^1.0.4",
-    "@xyfe/uikit": "^0.0.1-beta.52",
     "antd": "^4.24.0",
     "array-move": "^4.0.0",
+    "caret-pos": "^2.0.0",
+    "classnames": "^2.3.2",
     "cos-js-sdk-v5": "^1.4.15",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.0",
     "dhtmlx-gantt": "^7.1.12",
     "highcharts": "^10.2.0",
-    "highcharts-react-official": "^3.1.0",
+    "highcharts-react-official": "^3.2.0",
     "i18next": "^21.9.0",
+    "ifunuikit": "^0.0.2",
+    "immer": "^10.0.2",
     "js-base64": "^3.7.2",
     "less": "^4.1.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "object-hash": "^3.0.0",
+    "rc-queue-anim": "^2.0.0",
+    "rc-tween-one": "^3.0.6",
+    "re-resizable": "^6.9.9",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
-    "react-i18next": "^12.0.0",
+    "react-full-screen": "^1.1.1",
+    "react-hotkeys-hook": "^4.4.0",
+    "react-i18next": "^11.16.2",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^8.0.5",
-    "react-router-dom": "^6.6.0",
+    "react-resizable": "^3.0.4",
+    "react-rnd": "^10.4.1",
+    "react-router-dom": "6.3.0",
     "react-sortable-hoc": "^2.0.0",
     "react-viewer": "^3.2.2",
-    "swiper": "^8.3.1"
+    "react-window": "^1.8.9",
+    "swiper": "^8.3.1",
+    "uuid": "^9.0.0",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.9.2",
@@ -55,18 +72,23 @@
     "@jihe/prettier-config": "^0.0.2",
     "@jihe/stylelint-config": "^0.0.1",
     "@types/crypto-js": "^4.1.1",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^17.0.42",
     "@types/react": "^18.0.0",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-dom": "^18.0.0",
+    "@types/react-resizable": "^3.0.4",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@vitejs/plugin-react": "^3.0.0",
+    "axios": "^1.3.6",
     "eslint": "^8.17.0",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.2",
     "typescript": "^4.9.4",
-    "vite": "^4.0.0",
+    "vite": "^4.1.4",
     "vite-plugin-prefetch-inject": "^0.1.0"
   },
   "name": "@jihe/template-react",
@@ -85,6 +107,32 @@
       ]
     },
     "rules": {
+      "consistent-return": 0,
+      "object-shorthand": 0,
+      "class-methods-use-this": 0,
+      "@typescript-eslint/no-shadow": 0,
+      "complexity": 0,
+      "@typescript-eslint/no-empty-function": 0,
+      "no-empty-function": 0,
+      "@typescript-eslint/no-use-before-define": 0,
+      "max-params": 0,
+      "camelcase": 0,
+      "@typescript-eslint/naming-convention": 0,
+      "react/self-closing-comp": 0,
+      "@typescript-eslint/consistent-type-imports": 0,
+      "@typescript-eslint/padding-line-between-statements": 0,
+      "@typescript-eslint/indent": 0,
+      "react/no-array-index-key": 0,
+      "@typescript-eslint/no-empty-interface": 0,
+      "react/no-unstable-nested-components": 0,
+      "lines-around-comment": 0,
+      "padding-line-between-statements": 0,
+      "naming-convention": 0,
+      "no-unsafe-finally": 0,
+      "no-console": 0,
+      "no-plusplus": 0,
+      "no-constant-condition": 0,
+      "no-unsafe-optional-chaining": 0,
       "object-property-newline": [
         1,
         {
@@ -95,23 +143,27 @@
         1,
         "consistent"
       ],
-      "@typescript-eslint/indent": [
-        1,
-        2,
-        {
-          "offsetTernaryExpressions": true
-        }
-      ],
+      " react/no-unstable-nested-components": 0,
+      "react/no-children-prop": 0,
+      "@typescript-eslint/no-unused-expressions": 0,
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/member-delimiter-style": 0,
-      "complexity": [
-        2,
-        10
-      ],
+      "react/jsx-no-literals": 0,
       "react-hooks/exhaustive-deps": 0,
+      "array-callback-return": 0,
+      "no-extra-semi": 2,
       "max-lines": [
-        2,
+        0,
         1000
+      ],
+      "@typescript-eslint/no-this-alias": [
+        "error",
+        {
+          "allowDestructuring": false,
+          "allowedNames": [
+            "_this"
+          ]
+        }
       ]
     }
   },

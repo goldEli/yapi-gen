@@ -1,0 +1,48 @@
+.page {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.right {
+  width: 62%;
+  padding: 40px;
+}
+
+.left {
+  width: 35%;
+  padding-right: 0px;
+  min-width: 552px;
+  min-height: 434px;
+  position: relative;
+}
+
+.right {
+  background-color: var(--neutral-white-d1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.left .title {
+  position: absolute;
+}
+
+.left .title .title_img {
+  height: 40px;
+  margin-right: 16px;
+}
+
+.left .title .title_text_img {
+  height: 30px;
+  position: relative;
+  top: -5px;
+}
+.left .content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 // 可配置的表格字段弹窗
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -35,9 +36,13 @@ const CheckedItem = styled.div({
   alignItems: 'center',
   height: 40,
   borderRadius: 4,
-  padding: '  0 16px',
+  padding: '0 8px',
+  cursor: 'pointer',
+  'div: first-child': {
+    width: '100%',
+  },
   '&: hover': {
-    background: ' #f4f5f5',
+    background: 'var(--hover-d1)',
     [ShowWrap.toString()]: {
       visibility: 'visible',
     },
@@ -45,6 +50,7 @@ const CheckedItem = styled.div({
 })
 const Wrap = styled.div`
   display: flex;
+  padding: 0 24px;
 `
 const Left = styled.div`
   width: 624px;
@@ -77,6 +83,17 @@ const Right = styled.div`
 const ItemWrap = styled.div`
   margin-bottom: 24px;
 `
+
+const DragItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  div {
+    display: flex;
+    align-items: center;
+  }
+`
+
 type OptionalFeldProps = {
   plainOptions: {
     labelTxt: string
@@ -109,17 +126,7 @@ type OptionalFeldProps = {
   onClose(): void
   isVisible: boolean
 }
-const DragHandle = sortableHandle(() => (
-  <IconFont
-    type="move"
-    style={{
-      fontSize: 16,
-      cursor: 'pointer',
-      color: '#969799',
-      marginRight: 12,
-    }}
-  />
-))
+const DragHandle = sortableHandle((props: any) => <div {...props} />)
 
 const SortContainer = sortableContainer<any>((props: any) => <div {...props} />)
 
@@ -368,7 +375,11 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
         </Left>
         <Divider
           type="vertical"
-          style={{ background: '#EBEDF0', margin: '0 16px 0 4px', height: 350 }}
+          style={{
+            background: 'var(--neutral-n6-d1)',
+            margin: '0 16px 0 4px',
+            height: 350,
+          }}
         />
         <Right>
           <div className={text}>{t('components.currentFiled')}</div>
@@ -380,21 +391,49 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
             {allList.map((item: any, idx: number) => (
               <SortItemLi
                 helperClass="row-dragging"
-                key={item.value}
+                key={item?.value}
                 index={idx}
               >
-                <CheckedItem key={item.value}>
-                  <DragHandle />
-                  <span>{item.labelTxt}</span>
-                  {item.value !== 'name' && (
-                    <ShowWrap style={{ marginLeft: 'auto' }}>
-                      <IconFont
-                        style={{ fontSize: 16, color: '#646566' }}
-                        type="close"
-                        onClick={() => del(item.value)}
-                      />
-                    </ShowWrap>
-                  )}
+                <CheckedItem key={item?.value}>
+                  <DragHandle>
+                    <DragItem>
+                      <div>
+                        <IconFont
+                          type="move"
+                          style={{
+                            fontSize: 16,
+                            cursor: 'pointer',
+                            color: 'var(--neutral-n3)',
+                            marginRight: 12,
+                          }}
+                        />
+                        <Tooltip title={item?.labelTxt}>
+                          <span
+                            style={{
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              color:
+                                item?.value === 'name'
+                                  ? 'var(--neutral-n4)'
+                                  : 'var(--neutral-n1-d2)',
+                            }}
+                          >
+                            {item?.labelTxt}
+                          </span>
+                        </Tooltip>
+                      </div>
+                      {item?.value !== 'name' && (
+                        <ShowWrap style={{ marginLeft: 'auto' }}>
+                          <IconFont
+                            style={{ fontSize: 16, color: 'var(--neutral-n2)' }}
+                            type="close"
+                            onClick={() => del(item?.value)}
+                          />
+                        </ShowWrap>
+                      )}
+                    </DragItem>
+                  </DragHandle>
                 </CheckedItem>
               </SortItemLi>
             ))}

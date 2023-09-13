@@ -1,0 +1,12 @@
+@keyframes pop {
+  0% {
+    transform: translate3d(var(--translate-x, 0), var(--translate-y, 0), 0)
+      scale(1);
+    box-shadow: var(--box-shadow-picked-up);
+  }
+  100% {
+    transform: translate3d(var(--translate-x, 0), var(--translate-y, 0), 0)
+      scale(var(--scale));
+    box-shadow: var(--box-shadow-picked-up);
+  }
+}

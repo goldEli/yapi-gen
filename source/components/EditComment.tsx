@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 //  评论的弹框
 
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -5,37 +6,49 @@
 /* eslint-disable camelcase */
 
 /* eslint-disable no-cond-assign */
-import { getStaffList2 } from '@/services/staff'
-import { LabelTitle } from '@/views/Information/components/WhiteDay'
-import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
-import { Form, message } from 'antd'
+import UploadAttach from '@/components/UploadAttach'
+import { Form } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
-import Editor from './Editor'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
+import { Editor } from 'ifunuikit'
+import { uploadFile } from './AddWorkItem/CreateWorkItemLeft'
+import { useDispatch, useSelector } from '@store/index'
+import { changeRestScroll } from '@store/scroll'
+import { getIdsForAt, removeNull } from '@/tools'
+import { getMessage } from './Message'
+
+const LabelTitle = (props: any) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'SiYuanMedium',
+          fontSize: '14px',
+        }}
+      >
+        {props.title}
+      </span>
+    </div>
+  )
+}
 
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
-  const [arr, setArr] = useState<any>(null)
   const editable = useRef<HTMLInputElement>(null)
   const attachDom: any = createRef()
   const [t] = useTranslation()
+  const [isCtrlPressed, setIsCtrlPressed] = useState(false)
+  const dispatch = useDispatch()
+  const { projectInfoValues } = useSelector(store => store.project)
 
-  const init = async () => {
-    const companyList = await getStaffList2({ all: 1 })
-
-    const filterCompanyList = companyList.map((item: any) => ({
-      id: item.id,
-      name: item.name,
-      avatar: item.avatar,
-      nickname: item.nickname,
-      positionName: null,
-      roleName: item.roleName,
-    }))
-    setArr(filterCompanyList)
-  }
   const onValidator = (rule: any, value: any) => {
     if (value === '<p><br></p>' || value.trim() === '') {
       return Promise.reject(
@@ -77,35 +90,64 @@ const EditComment = (props: any) => {
     await form.validateFields()
     const inner = document.getElementById('inner')
     if (!String(inner?.innerHTML).trim()) {
-      message.warning(t('new_p1.a9'))
+      getMessage({ msg: t('new_p1.a9'), type: 'warning' })
       return
     }
 
     // 未上传成功的个数
     const stateLength = attachDom.current?.getAttachState()
     if (stateLength) {
-      message.warning(t('version2.haveNoSuccessAttach'))
+      getMessage({
+        type: 'warning',
+        msg: t('theFileIsBeingPleaseWait'),
+      })
       return
     }
 
     await props.editConfirm({
       content: form.getFieldsValue().info,
       attachment: form.getFieldsValue().attachments,
+      a_user_ids: getIdsForAt(form.getFieldsValue().info),
     })
+    dispatch(changeRestScroll(true))
   }
 
   useEffect(() => {
     setTimeout(() => {
       editable.current?.focus()
     }, 100)
-    if (props.visibleEdit) {
-      init()
-    }
+
     form.resetFields()
   }, [props.visibleEdit])
 
   const onsubmit = () => {
     form.submit()
+  }
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if (event.ctrlKey && event.key === 'Enter') {
+        handleShortcutEvent()
+      }
+    }
+
+    const handleKeyUp = (event: any) => {
+      if (event.key === 'Control') {
+        setIsCtrlPressed(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [])
+
+  const handleShortcutEvent = () => {
+    // 在此处理按下 Ctrl + 回车 触发的事件
+    onsubmit()
   }
   return (
     <CommonModal
@@ -120,7 +162,7 @@ const EditComment = (props: any) => {
         style={{
           height: 'calc(90vh - 40vh)',
           overflow: 'scroll',
-          paddingRight: '24px',
+          padding: '0 24px',
         }}
       >
         <Form
@@ -170,10 +212,13 @@ const EditComment = (props: any) => {
           >
             <Editor
               at
-              staffList={arr}
-              height={178}
-              autoFocus
-              placeholder={t('new_p1.kongN')}
+              upload={uploadFile}
+              getSuggestions={() =>
+                removeNull(projectInfoValues, 'user_name')?.map((k: any) => ({
+                  label: k.content,
+                  id: k.id,
+                }))
+              }
             />
           </Form.Item>
           <Form.Item
@@ -181,7 +226,7 @@ const EditComment = (props: any) => {
             name="attachments"
           >
             <UploadAttach
-              onRef={attachDom}
+              ref={attachDom}
               key={1}
               power
               canUpdate={false}

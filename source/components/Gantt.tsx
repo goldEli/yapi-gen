@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 我的模块和他的模块甘特图
 
 /* eslint-disable prefer-template */
@@ -24,7 +25,7 @@ const GanttWrap = styled.div({
     textAlign: 'left',
     paddingLeft: 10,
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: 'SiYuanMedium',
   },
   '.gantt_cell': {
     padding: 0,
@@ -34,7 +35,7 @@ const GanttWrap = styled.div({
   '.gantt_layout_cell, .gantt_scale_cell': {
     border: 'none!important',
     fontSize: '14px!important',
-    fontWeight: '500!important',
+    fontFamily: 'SiYuanMedium !important',
   },
   '.gantt_task_line.gantt_selected': {
     boxShadow: 'none',
@@ -47,7 +48,7 @@ const GanttWrap = styled.div({
   },
   '.gantt_task_line': {
     border: 'none',
-    backgroundColor: ' rgba(40, 119, 255, 0.6)',
+    backgroundColor: ' var(--primary-d1)',
     borderRadius: 3,
   },
   '.gantt_row, .gantt_task_row': {
@@ -75,8 +76,8 @@ const GanttWrap = styled.div({
   '#status': {
     padding: '4px 8px',
     borderRadius: 6,
-    border: '1px solid #2877ff',
-    color: '#2877ff',
+    border: '1px solid var(--primary-d2)',
+    color: 'var(--primary-d2)',
     fontSize: 12,
   },
 })
@@ -89,6 +90,10 @@ interface Props {
 
 const Gantt = (props: Props) => {
   const [t, i18n] = useTranslation()
+
+  const getC = (str: string) => {
+    return str.replace(/[^\u4e00-\u9fa5]/g, '')
+  }
 
   const init = () => {
     gantt.config.date_scale = '%m/%j, %D'
@@ -117,8 +122,10 @@ const Gantt = (props: Props) => {
         '<br/>' +
         String(
           task.statusTitle
-            ? `<span style="color: ${task.statusColor}">${task.statusTitle}</span>`
-            : `<span style="color: #969799;text-decoration:line-through">${t(
+            ? `<span style="color: ${task.statusColor}">${getC(
+                task.statusName,
+              )}</span>`
+            : `<span style="color: var(--neutral-n3);text-decoration:line-through">${t(
                 'newlyAdd.statusDel',
               )}</span>`,
         ) +
@@ -148,6 +155,17 @@ const Gantt = (props: Props) => {
         name: 'text',
         label: t('common.title'),
         width: '280',
+      },
+
+      {
+        name: 'start_date',
+        label: t('common.startTime'),
+        width: 140,
+      },
+      {
+        name: 'end_date',
+        label: t('common.endTime'),
+        width: 140,
       },
       {
         name: 'statusName',

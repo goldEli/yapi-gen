@@ -6,6 +6,8 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import {
   ChartsItem,
+  ChartsItem2,
+  ChartsItem333,
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
@@ -13,6 +15,7 @@ import {
   TextBlueWrap,
   TextWrap,
   title1Css,
+  title1Css1,
   title2Css,
   titleCss,
 } from '@/components/StyleCommon'
@@ -23,7 +26,7 @@ const Need = (props: any) => {
   const { data } = props
 
   const options = {
-    colors: ['#2877FF', '#F6BD16', '#43BA9A'],
+    colors: ['var(--primary-d2)', '#F6BD16', '#43BA9A'],
     chart: {
       height: 350,
       type: 'line',
@@ -54,6 +57,7 @@ const Need = (props: any) => {
       ],
     },
     yAxis: {
+      gridLineDashStyle: 'Dash',
       title: {
         text: '',
       },
@@ -72,30 +76,31 @@ const Need = (props: any) => {
 
   return (
     <ChartsWrap>
-      <div className={titleCss}>{t('situation.demandSurvey')}</div>
+      <div className={titleCss}>{t('work_item_summary')}</div>
       <TextWrap>
-        <TextBlueWrap>
-          <ChartsItem>
-            <span className={title1Css}>{data?.total ?? 0}</span>
-            <span className={title2Css}>{t('common.createDemand')}</span>
-          </ChartsItem>
-        </TextBlueWrap>
-        <HomeWrap>
-          <ChartsItem>
-            <span className={title1Css}>{data?.planningTotal ?? 0}</span>
-            <span className={title2Css}>{t('situation.notStarted')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.ongoingTotal ?? 0}</span>
-            <span className={title2Css}>{t('situation.ongoing')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.endTotal ?? 0}</span>
-            <span className={title2Css}>{t('situation.end')}</span>
-          </ChartsItem>
-        </HomeWrap>
+        {/* <TextBlueWrap> */}
+        <ChartsItem333>
+          <span className={title1Css1}>{data?.total ?? 0}</span>
+          <span className={title2Css}>{t('create_work_item')}</span>
+        </ChartsItem333>
+        {/* </TextBlueWrap> */}
+        {/* <HomeWrap> */}
+        <ChartsItem2 />
+        <ChartsItem333>
+          <span className={title1Css}>{data?.planningTotal ?? 0}</span>
+          <span className={title2Css}>{t('situation.notStarted')}</span>
+        </ChartsItem333>
+        <ChartsItem333>
+          <span className={title1Css}>{data?.ongoingTotal ?? 0}</span>
+          <span className={title2Css}>{t('situation.ongoing')}</span>
+        </ChartsItem333>
+        <ChartsItem333>
+          <span className={title1Css}>{data?.endTotal ?? 0}</span>
+          <span className={title2Css}>{t('situation.end')}</span>
+        </ChartsItem333>
+        {/* </HomeWrap> */}
       </TextWrap>
-      <div className={chartsTitle}>{t('situation.demandDiagram')}</div>
+      <div className={chartsTitle}>{t('work_item_accumulated_chart')}</div>
       <HightChartsWrap style={{ height: '300px' }}>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </HightChartsWrap>

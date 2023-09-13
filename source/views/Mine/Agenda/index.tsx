@@ -10,7 +10,6 @@ const CopySend = () => {
   asyncSetTtile(t('title.b41'))
   return (
     <MainIndex
-      auth="b/user/copysend/story"
       title={t('mine.mineCopySend')}
       type="copysend"
       subTitle={t('mine.copyDemand')}

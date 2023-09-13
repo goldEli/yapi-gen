@@ -2,19 +2,29 @@
 
 /* eslint-disable react/jsx-no-useless-fragment */
 import { useEffect, useState } from 'react'
-import { StaffHeader } from '@/components/StyleCommon'
 import CommonNeed from './CommonNeed'
 import MineSwiper from '../components/MineSwiper'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-import { getUserInfoProject } from '@/services/member'
+import { getUserInfoProject } from '@/services/memberInfo'
 
 const MainWrap = styled.div({
-  height: 'calc(100% - 64px)',
+  height: 'calc(100% - 124px)',
   overflow: 'auto',
 })
+
+const Title = styled.div`
+  height: 32px;
+  font-size: 16px;
+  font-family: PingFang SC-Medium, PingFang SC;
+  font-family: siyuanmedium;
+  color: var(--neutral-n1-d1);
+  line-height: 32px;
+  margin: 20px 16px;
+  margin-bottom: 0px;
+`
 
 interface Props {
   title: any
@@ -64,7 +74,7 @@ const MainIndex = (props: Props) => {
       )}
       {!isMember && (
         <>
-          <StaffHeader>{props?.title}</StaffHeader>
+          <Title>{props?.title}</Title>
           <MainWrap>
             <MineSwiper data={swiperData} onTap={getProjectId} />
             <CommonNeed

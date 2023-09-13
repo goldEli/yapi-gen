@@ -9,36 +9,39 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
 import {
-  PaginationWrap,
-  StaffTableWrap,
-  tabCss,
-  TabsHehavior,
   TabsItem,
   LabNumber,
   ShowWrap,
-  TableWrap,
   HoverWrap,
+  DividerWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Pagination, Spin } from 'antd'
+import { Button, Spin, Table } from 'antd'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { useDynamicColumns } from './TableColum'
-import CommonInput from '@/components/CommonInput'
-import { useSelector } from '@store/index'
-import { getVerifyList, getVerifyUserList } from '@/services/mine'
+import { useDispatch, useSelector } from '@store/index'
+import { getVerifyList, getVerifyUserList, cancelVerify } from '@/services/mine'
+import InputSearch from '@/components/InputSearch'
+import PaginationBox from '@/components/TablePagination'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import ResizeTable from '@/components/ResizeTable'
+import ScreenMinHover from '@/components/ScreenMinHover'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
   fontSize: 16,
   cursor: 'pointer',
-  color: '#2877ff',
+  color: 'var(--primary-d2)',
 })
 
-const TableBox = styled(TableWrap)({
+const TableBox = styled(Table)({
   '.ant-table-row:hover': {
     [RowIconFont.toString()]: {
       visibility: 'visible',
@@ -60,11 +63,12 @@ const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  position: 'relative',
 })
 
 const Need = (props: any) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
+  const [openDemandDetail] = useOpenDemandDetail()
   const [filterState, setFilterState] = useState(true)
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
@@ -79,6 +83,8 @@ const Need = (props: any) => {
   const [keyword, setKeyword] = useState<string>('')
   const [searchParams, setSearchParams] = useState<any>({})
   const [isSpin, setIsSpin] = useState<boolean>(false)
+  const [delIsVisible, setDelIsVisible] = useState<boolean>(false)
+  const [currentItem, setCurrentItem] = useState<any>({})
 
   const getList = async (
     item?: any,
@@ -103,6 +109,7 @@ const Need = (props: any) => {
       val ?? activeTab
         ? await getVerifyList(params)
         : await getVerifyUserList(params)
+    console.log('set1111111111', result)
     setListData(result)
     setCount({
       verifyUser: val ?? activeTab ? result?.otherCount : result?.total,
@@ -111,16 +118,22 @@ const Need = (props: any) => {
     setIsSpin(false)
   }
 
+  // 获取项目配置
+  const getConfig = async (id: number) => {
+    const result = await getProjectInfo({ projectId: id })
+    dispatch(setProjectInfo(result))
+    const result1 = await getProjectInfoValues({ projectId: id })
+    dispatch(setProjectInfoValues(result1))
+  }
+
   useEffect(() => {
     getList(pageObj, order, keyword, searchParams)
+    if (props?.projectId !== 0) {
+      getConfig(props?.projectId)
+    }
   }, [props?.projectId])
 
   const onChangePage = (page: number, size: number) => {
-    setPageObj({ page, size })
-    getList({ page, size }, order, keyword, searchParams)
-  }
-
-  const onShowSizeChange = (page: number, size: number) => {
     setPageObj({ page, size })
     getList({ page, size }, order, keyword, searchParams)
   }
@@ -149,15 +162,83 @@ const Need = (props: any) => {
     getList(pageObj, { value, key }, keyword, searchParams)
   }
 
+  const onClickItem = async (item: any) => {
+    // 阻止修改原始数据
+    const newListItem = JSON.parse(JSON.stringify(item))
+    if (props.id === 0 || !props.id) {
+      getConfig(newListItem.project_id ?? newListItem.projectId)
+    }
+
+    const demandIds = listData?.list?.map((i: any) => i.demandId)
+    newListItem.id = newListItem.demandId
+    newListItem.isMineOrHis = true
+    newListItem.isAllProject = props.projectId === 0
+    let type = 0
+    if (newListItem.project_type === 2) {
+      type = 1
+    }
+    if (newListItem.project_type === 1 && newListItem.is_bug === 2) {
+      type = 3
+    }
+    if (newListItem.project_type === 1 && newListItem.is_bug === 1) {
+      type = 2
+    }
+    // type 1事务 2 缺陷 3 需求
+    openDemandDetail(
+      { ...newListItem, ...{ demandIds } },
+      newListItem.project_id ?? newListItem.projectId,
+      newListItem.demandId,
+      type,
+    )
+  }
+
   const columns = useDynamicColumns({
     orderKey: order?.key,
     order: order?.value,
     onUpdateOrderkey,
     onChangeOperation,
     activeTab,
+    onClickItem,
   })
+  const onUpdate = () => {
+    getList(pageObj, order, keyword, searchParams)
+  }
+
+  const handleCancel = async () => {
+    await cancelVerify(currentItem.id)
+    setDelIsVisible(false)
+    setCurrentItem({})
+    onUpdate()
+  }
 
   const selectColum: any = useMemo(() => {
+    if (activeTab === 1) {
+      return columns.concat([
+        {
+          title: <>{t('newlyAdd.operation')}</>,
+          dataIndex: 'action',
+          key: 'action',
+          render: (_: string, record: any) => {
+            return (
+              <>
+                {record.status === 1 && (
+                  <Button
+                    type="link"
+                    style={{ padding: 0 }}
+                    onClick={() => {
+                      setDelIsVisible(true)
+                      setCurrentItem(record)
+                    }}
+                  >
+                    {t('newlyAdd.cancelExamine')}
+                  </Button>
+                )}
+              </>
+            )
+          },
+        },
+      ])
+    }
     return columns
   }, [columns])
 
@@ -178,12 +259,14 @@ const Need = (props: any) => {
     )
   }
 
-  const onUpdate = () => {
-    getList(pageObj, order, keyword, searchParams)
-  }
+  console.log(listData?.list, '=listData?.listlistData?.listlistData?.list')
 
   return (
-    <>
+    <div
+      style={{
+        width: '100%',
+      }}
+    >
       {isVisible && (
         <EditExamine
           isVisible={isVisible}
@@ -193,10 +276,23 @@ const Need = (props: any) => {
           onUpdate={onUpdate}
         />
       )}
-      <TabsHehavior
-        style={{ padding: '0 24px', justifyContent: 'space-between' }}
+      <div
+        style={{
+          // margin: '0 24px',
+          display: 'flex',
+          width: 'calc(100% - 48px)',
+          justifyContent: 'space-between',
+          borderBottom: '1px solid var(--neutral-n6-d1)',
+          margin: '0 24px',
+        }}
       >
-        <div className={tabCss}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>{t('newlyAdd.needMineExamine')}</div>
           </TabsItem>
@@ -212,20 +308,31 @@ const Need = (props: any) => {
           <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
         </div>
         <SearchWrap>
-          <CommonInput
-            placeholder={t('common.pleaseSearchDemand')}
-            onChangeSearch={onPressEnter}
-          />
-          <HoverWrap
+          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
+            <InputSearch
+              placeholder={t('common.pleaseSearchDemand')}
+              onChangeSearch={onPressEnter}
+              leftIcon
+            />
+          </div>
+          <ScreenMinHover
+            label={t('common.search')}
+            icon="filter"
             onClick={() => setFilterState(!filterState)}
             isActive={!filterState}
-            style={{ marginLeft: 8 }}
-          >
-            <IconFont className="iconMain" type="filter" />
-            <span className="label">{t('common.search')}</span>
-          </HoverWrap>
+            style={{ marginRight: '8px' }}
+          />
+
+          <DividerWrap type="vertical" />
+
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={onUpdate}
+            style={{ marginLeft: '8px' }}
+          />
         </SearchWrap>
-      </TabsHehavior>
+      </div>
 
       {!filterState && (
         <SearchList activeTab={activeTab} onFilterChange={onFilterChange} />
@@ -233,39 +340,40 @@ const Need = (props: any) => {
 
       <div>
         <LoadingSpin spinning={isSpin}>
-          <StaffTableWrap>
-            {listData?.list ? (
-              listData?.list?.length ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={listData?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                />
-              ) : (
-                <NoData />
-              )
-            ) : null}
-          </StaffTableWrap>
+          <div style={{ padding: '0 24px' }}>
+            {listData?.list && listData?.list?.length > 0 && (
+              <ResizeTable
+                isSpinning={false}
+                dataWrapNormalHeight="calc(100vh - 309px)"
+                col={selectColum}
+                dataSource={listData?.list}
+                noData={<NoData />}
+              />
+            )}
+          </div>
         </LoadingSpin>
       </div>
 
-      <PaginationWrap style={{ paddingRight: 24 }}>
-        <Pagination
-          defaultCurrent={1}
-          current={listData?.currentPage}
-          pageSize={pageObj?.size}
-          showSizeChanger
-          showQuickJumper
+      {listData?.list?.length >= 1 && (
+        <PaginationBox
           total={listData?.total}
-          showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
-          pageSizeOptions={['10', '20', '50']}
+          pageSize={pageObj?.size}
+          currentPage={listData?.currentPage}
           onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
         />
-      </PaginationWrap>
-    </>
+      )}
+
+      <DeleteConfirm
+        title={t('newlyAdd.cancelExamine')}
+        text={t('newlyAdd.sureCancelExamine')}
+        isVisible={delIsVisible}
+        onConfirm={handleCancel}
+        onChangeVisible={() => {
+          setDelIsVisible(false)
+          setCurrentItem({})
+        }}
+      />
+    </div>
   )
 }
 

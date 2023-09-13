@@ -2,12 +2,29 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Dropdown } from 'antd'
-import IconFont from './IconFont'
-import { HoverWrap } from './StyleCommon'
+import ScreenMinHover from './ScreenMinHover'
+import styled from '@emotion/styled'
+
+const Wrap = styled.div`
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+  white-space: nowrap;
+  &:hover {
+    background: var(--hover-d1);
+    color: var(--neutral-n1-d1);
+  }
+  &:active {
+    background: var(--neutral-n6-d1);
+  }
+`
 
 interface Props {
   menu: any
-  hasIcon?: boolean
+  notIcon?: boolean
   children: any
   icon?: any
   isVisible?: boolean
@@ -25,16 +42,14 @@ const DropDownMenu = (props: Props) => {
       placement={props.icon === 'settings' ? 'bottomRight' : 'bottomLeft'}
       onOpenChange={visible => props.onChangeVisible?.(visible)}
     >
-      <HoverWrap isActive={props.isActive}>
-        <IconFont
-          style={{
-            marginRight: 8,
-            fontSize: 18,
-          }}
-          type={props?.icon}
-        />
-        {props.children}
-      </HoverWrap>
+      <div>
+        {props.notIcon && <Wrap>{props.children}</Wrap>}
+        {!props.notIcon && (
+          <ScreenMinHover isActive={props.isActive} icon={props?.icon}>
+            {props.children}
+          </ScreenMinHover>
+        )}
+      </div>
     </Dropdown>
   )
 }

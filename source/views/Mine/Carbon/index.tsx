@@ -10,7 +10,6 @@ const Carbon = () => {
   asyncSetTtile(t('title.b1'))
   return (
     <MainIndex
-      auth="b/user/abeyance/story"
       title={t('mine.mineCarbon')}
       type="abeyance"
       subTitle={t('mine.carbonDemand')}

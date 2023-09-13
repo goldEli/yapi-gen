@@ -9,35 +9,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from 'react'
 import {
-  PaginationWrap,
-  StaffTableWrap,
-  tabCss,
-  TabsHehavior,
   TabsItem,
   LabNumber,
-  StaffTableWrap2,
   ShowWrap,
-  TableWrap,
   HoverWrap,
   DividerWrap,
   HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Menu, message, Pagination, Space, Spin } from 'antd'
+import { Checkbox, Menu, message, Space, Spin, Table } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import TableFilter from '@/components/TableFilter'
-import EditDemand from '@/components/EditDemandNew/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
-import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
+import { useDynamicColumns } from '@/components/TableColumns/MineOrHisTableColumn'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
+import InputSearch from '@/components/InputSearch'
 import {
   getMemberInfoAbeyanceStory,
   getMemberInfoCreateStory,
@@ -45,27 +38,37 @@ import {
   getUserInfoAbeyanceStory,
   getUserInfoCreateStory,
   getUserInfoFinishStory,
-} from '@/services/member'
+} from '@/services/memberInfo'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { updateDemandStatus, updatePriorityStatus } from '@/services/mine'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { setProjectInfo, setProjectInfoValues } from '@store/project'
-import { deleteDemand } from '@/services/project/demand'
-
-const TableBox = styled(TableWrap)({
-  '.ant-table-content': {
-    minHeight: '460px',
-  },
-  '.ant-table-row:hover': {
-    [ShowWrap.toString()]: {
-      visibility: 'visible',
-    },
-    '.dropdownIcon': {
-      visibility: 'visible',
-    },
-  },
-})
+import {
+  setAddWorkItemModal,
+  setProjectInfo,
+  setProjectInfoValues,
+} from '@store/project'
+import { deleteDemand } from '@/services/demand'
+import PaginationBox from '@/components/TablePagination'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
+import SetShowField from '@/components/SetShowField/indedx'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import ResizeTable from '@/components/ResizeTable'
+import ScreenMinHover from '@/components/ScreenMinHover'
+import { getMessage } from '@/components/Message'
+import {
+  deleteAffairs,
+  updateAffairsPriority,
+  updateAffairsStatus,
+} from '@/services/affairs'
+import {
+  deleteFlaw,
+  updateFlawPriority,
+  updateFlawStatus,
+} from '@/services/flaw'
+import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
+import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -75,80 +78,178 @@ const LoadingSpin = styled(Spin)({
 })
 
 const TableTitle = styled.div({
-  color: '#323233',
+  color: 'var(--neutral-n1-d2)',
   fontSize: '16px',
   height: '53px',
   display: 'flex',
   alignItems: 'center',
   marginLeft: '16px',
-  fontWeight: '500',
+  fontFamily: 'SiYuanMedium',
   span: {
-    borderLeft: '3px solid #2877ff',
+    borderLeft: '3px solid var(--primary-d2)',
     paddingLeft: 6,
-    lineHeight: '20px',
+    lineHeight: '16px',
   },
 })
 
 const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
+  marginBottom: '20px',
+  // borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const MainWrap = styled.div({
+  height: 'calc(100vh - 126px)',
+  overflow: 'scroll',
+  padding: ' 0 24px',
   '.ant-spin-nested-loading': {
-    height: 'initial',
+    // height: 'initial',
   },
 })
 
 interface MoreWrapProps {
   record: any
-  onShowEdit(): void
   onShowDel(): void
+  // 是否是所有项目
+  isAllProject?: boolean
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const onClickMenu = (type?: any) => {
+  const dispatch = useDispatch()
+
+  // 点击编辑
+  const onEditChange = (item: any) => {
     setIsMoreVisible(false)
-    if (type === 'edit') {
-      props.onShowEdit()
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: item.id,
+          projectId: item.project_id,
+          type: item.work_type,
+          title:
+            item.project_type === 1
+              ? item.is_bug === 1
+                ? t('editorialDefect')
+                : t('requirementsForEditing')
+              : t('editorial_affairs'),
+        },
+      }),
+    )
+  }
+
+  // 点击删除
+  const onDeleteChange = (item: any) => {
+    setIsMoreVisible(false)
+    props.onShowDel()
+  }
+
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    let type: any =
+      item.project_type === 1
+        ? 1
+        : item.is_bug === 1
+        ? 2
+        : item.work_type === 3
+        ? 8
+        : 6
+    setIsMoreVisible(false)
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId: item.project_id,
+          isChild: true,
+          isCreateAffairsChild: item.project_type === 2,
+          parentId: item.id,
+          parentList: item.parent,
+          categoryId: item.categoryId,
+          type,
+          title:
+            item.project_type === 1
+              ? item.is_bug === 1
+                ? t('createSubtransaction')
+                : t('create_sub_requirements')
+              : t('createSubtransaction'),
+        },
+      }),
+    )
+  }
+
+  const onComputed = () => {
+    let isEdit: boolean
+    let isDelete: boolean
+    if (props?.record?.project_type === 1) {
+      isEdit = Object.values(props?.record?.project?.permissions).includes(
+        'b/story/update',
+      )
+      isDelete = Object.values(props?.record?.project?.permissions).includes(
+        'b/story/delete',
+      )
+    } else if (
+      props?.record?.project_type === 2 &&
+      props?.record?.is_bug === 1
+    ) {
+      isEdit = Object.values(props?.record?.project?.permissions).includes(
+        'b/flaw/update',
+      )
+      isDelete = Object.values(props?.record?.project?.permissions).includes(
+        'b/flaw/delete',
+      )
     } else {
-      props.onShowDel()
+      isEdit = Object.values(props?.record?.project?.permissions).includes(
+        'b/transaction/update',
+      )
+      isDelete = Object.values(props?.record?.project?.permissions).includes(
+        'b/transaction/delete',
+      )
     }
+    return isEdit || isDelete
   }
-  const menu = () => {
-    let menuItems = [
-      {
-        key: '1',
-        label: (
-          <div onClick={() => onClickMenu('edit')}>{t('common.edit')}</div>
-        ),
-      },
-      {
-        key: '2',
-        label: <div onClick={() => onClickMenu('del')}>{t('common.del')}</div>,
-      },
-    ]
 
-    if (!props?.record?.project?.isEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (!props?.record?.project?.isDelete) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu style={{ minWidth: 56 }} items={menuItems} />
-  }
   return (
     <>
-      {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
+      {onComputed() && (
         <MoreDropdown
           isMoreVisible={isMoreVisible}
           onChangeVisible={setIsMoreVisible}
-          menu={menu}
+          menu={
+            <>
+              {props?.record?.project_type === 1 && (
+                <DemandOperationDropdownMenu
+                  onEditChange={onEditChange}
+                  onDeleteChange={onDeleteChange}
+                  onCreateChild={onCreateChild}
+                  record={props?.record}
+                  isAllProject={props.isAllProject}
+                />
+              )}
+              {props?.record?.project_type === 2 &&
+                props.record?.is_bug === 1 && (
+                  <DefectDropdownMenu
+                    onEditChange={onEditChange}
+                    onDeleteChange={onDeleteChange}
+                    record={props?.record}
+                    isAllProject={props.isAllProject}
+                  />
+                )}
+              {props?.record?.project_type === 2 &&
+                props.record?.is_bug !== 1 && (
+                  <SprintDropdownMenu
+                    onEditChange={onEditChange}
+                    onDeleteChange={onDeleteChange}
+                    onCreateChild={onCreateChild}
+                    record={props?.record}
+                    isAllProject={props.isAllProject}
+                  />
+                )}
+            </>
+          }
         />
       )}
     </>
@@ -158,13 +259,16 @@ const MoreWrap = (props: MoreWrapProps) => {
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
+  const [openDemandDetail] = useOpenDemandDetail()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId } = paramsData
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const [isDelVisible, setIsDelVisible] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(
     !!props?.isMember && props?.type === 'abeyance',
   )
@@ -180,9 +284,8 @@ const CommonNeed = (props: any) => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(20)
-  const [total, setTotal] = useState<number>()
+  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
+  const [total, setTotal] = useState<number>(0)
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)
   const [keyword, setKeyword] = useState<string>('')
@@ -214,7 +317,7 @@ const CommonNeed = (props: any) => {
   })
   const onSearch = (e: any, customField: any) => {
     setSearchGroups({
-      statusId: e.status,
+      statusId: e.category_status_ids,
       priorityId: e.priority,
       iterateId: e.iterate_name,
       tagId: e.tag,
@@ -236,7 +339,7 @@ const CommonNeed = (props: any) => {
   const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
     setOrder(orderVal)
-    setPage(1)
+    setPageObj({ page: 1, size: pageObj.size })
   }
   const init = async (updateState?: boolean) => {
     if (!updateState) {
@@ -258,7 +361,7 @@ const CommonNeed = (props: any) => {
       const res = isMember
         ? await getMemberInfoAbeyanceStory(params)
         : await getUserInfoAbeyanceStory(params)
-      setManyListData({ list: res?.list })
+      setManyListData({ list: res })
       setTotal(res?.total)
       setIsSpin(false)
     }
@@ -270,8 +373,8 @@ const CommonNeed = (props: any) => {
         searchGroups,
         order,
         orderkey: orderKey,
-        page,
-        pagesize,
+        page: pageObj.page,
+        pagesize: pageObj.size,
         targetId: userId,
       }
 
@@ -299,33 +402,112 @@ const CommonNeed = (props: any) => {
     }
   }
 
-  const updateStatus = async (res1: any) => {
+  const updateStatus = async (res1: any, type?: number) => {
+    // 1是需求，2是事务，3是缺陷
+    const methodsList = [
+      { type: 1, url: updateDemandStatus },
+      { type: 2, url: updateAffairsStatus },
+      { type: 3, url: updateFlawStatus },
+    ]
+    const currentType = methodsList.filter((i: any) => i.type === type)[0]
     try {
-      await updateDemandStatus(res1)
-      message.success(t('common.circulationSuccess'))
+      await currentType.url(res1)
+      getMessage({
+        msg: t('common.circulationSuccess') as string,
+        type: 'success',
+      })
       init()
     } catch (error) {
       //
     }
   }
-  const updatePriority = async (res1: any) => {
-    const res = await updatePriorityStatus(res1)
-    if (res.code === 0) {
-      message.success(t('common.prioritySuccess'))
+  const updatePriority = async (res1: any, type?: number) => {
+    // 1是需求，2是事务，3是缺陷
+    const methodsList = [
+      { type: 1, url: updatePriorityStatus },
+      { type: 2, url: updateAffairsPriority },
+      { type: 3, url: updateFlawPriority },
+    ]
+    const currentType = methodsList.filter((i: any) => i.type === type)[0]
+    try {
+      await currentType.url(res1)
+      getMessage({
+        msg: t('common.prioritySuccess') as string,
+        type: 'success',
+      })
+      init()
+    } catch (error) {
+      //
     }
+  }
 
-    init()
-  }
-  const showEdit = async (record: any) => {
-    setProjectId(record.project_id)
-    setOperationItem(record)
-    setIsVisible(true)
-  }
   const showDel = (record: any) => {
     setProjectId(record.project_id)
     setOperationItem(record)
-    setIsDelVisible(true)
+    let checked = [4, 5].includes(record.work_type)
+      ? [4, 5].includes(record.work_type)
+      : false
+    // 是否是事务
+    const isAffairs = record.project_type === 2
+
+    open({
+      title: t('deleteConfirmation'),
+      text: isAffairs ? (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ marginBottom: 8 }}>
+            {t(
+              'youWillPermanentlyDeleteAndItsWhichCannotBeRecoveredAfterPleaseOperateWith',
+              { key: record.story_prefix_key },
+            )}
+          </span>
+          {record.work_type !== 6 && (
+            <Checkbox
+              disabled={[4, 5].includes(record.work_type)}
+              defaultChecked={checked}
+              onChange={e => (checked = e.target.checked)}
+            >
+              {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
+            </Checkbox>
+          )}
+        </div>
+      ) : record.project_type === 1 && record.is_bug === 1 ? (
+        t('areYouSureToDeleteThisFlaw')
+      ) : (
+        t('mark.del')
+      ),
+
+      onConfirm() {
+        onDeleteConfirm(record, checked)
+        return Promise.resolve()
+      },
+    })
   }
+
+  // 点击打开详情并组装当前平级的需求id列表
+  const onClickItem = (item: any) => {
+    if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
+      getMessage({ msg: t('common.notCheckInfo'), type: 'warning' })
+    } else {
+      let demandIds: any
+
+      if (isMany) {
+        demandIds = manyListData?.list
+          ?.filter((i: any) => i.status_name === item.statusName)[0]
+          ?.list?.map((i: any) => i.id)
+      } else {
+        demandIds = listData?.list?.map((i: any) => i.id)
+      }
+      item.isMineOrHis = true
+      item.isAllProject = props.id === 0
+      openDemandDetail(
+        { ...item, ...{ demandIds } },
+        item.project_id,
+        item.id,
+        item.project_type === 2 ? 1 : undefined,
+      )
+    }
+  }
+
   const columns = useDynamicColumns({
     orderKey,
     order,
@@ -335,6 +517,8 @@ const CommonNeed = (props: any) => {
     init,
     plainOptions3,
     projectId: props.id,
+    onClickItem,
+    projectType: projectInfo.projectType,
   })
 
   const selectColum: any = useMemo(() => {
@@ -357,8 +541,8 @@ const CommonNeed = (props: any) => {
               !props?.record?.project?.isDelete ? (
                 <MoreWrap
                   record={record}
-                  onShowEdit={() => showEdit(record)}
                   onShowDel={() => showDel(record)}
+                  isAllProject={!props.id}
                 />
               ) : null}
             </>
@@ -409,29 +593,27 @@ const CommonNeed = (props: any) => {
     dispatch(setIsRefresh(false))
   }
 
-  const onChangePage = (newPage: any) => {
-    setPage(newPage)
+  const onChangePage = (page: any, size: number) => {
+    setPageObj({ page, size })
   }
-  const onShowSizeChange = (current: any, size: any) => {
-    setPagesize(size)
-  }
+
   const onPressEnter = (value: any) => {
     setKeyword(value)
-    setPage(1)
+    setPageObj({ page: 1, size: pageObj.size })
   }
 
   useEffect(() => {
     init(false)
-  }, [keyword, orderKey, order, searchGroups, isMany, page, pagesize])
+  }, [keyword, orderKey, order, searchGroups, isMany, pageObj])
 
   // 监听项目id变化，更新项目信息
   useEffect(() => {
     // 如果分页为1则调用接口
-    if (page === 1) {
+    if (pageObj.page === 1) {
       init(false)
     } else {
       // 如果分页改变则，重置分页
-      setPage(1)
+      setPageObj({ page: 1, size: pageObj.size })
     }
     getShowkey()
   }, [props.id])
@@ -445,11 +627,14 @@ const CommonNeed = (props: any) => {
 
   // 监听语言变化及是否需要更新创建
   useEffect(() => {
-    if (isRefresh) {
+    if (isRefresh || isUpdateAddWorkItem) {
       init()
-      getShowkey()
+      // 作用于-所有项目中打开弹窗后，编辑更新，projectInfo不正确问题
+      if (props.id !== 0) {
+        getShowkey()
+      }
     }
-  }, [isRefresh])
+  }, [isRefresh, isUpdateAddWorkItem])
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -471,41 +656,42 @@ const CommonNeed = (props: any) => {
     setAllTitleList(all)
   }
 
-  const onChangeVisible = () => {
-    setIsVisible(false)
-  }
+  const onDeleteConfirm = async (row: any, checked: boolean) => {
+    let type: number
+    let params: any = {
+      projectId: row.project_id,
+      id: row?.id,
+    }
+    // 1是需求，2是事务，3是缺陷
+    if (row.project_type === 1 && row.is_bug === 1) {
+      type = 3
+    } else if (row.project_type === 1 && row.is_bug !== 1) {
+      type = 1
+    } else {
+      type = 2
+      params.isDeleteChild = checked ? 1 : 2
+    }
+    const methodsList = [
+      { type: 1, url: deleteDemand },
+      { type: 2, url: deleteAffairs },
+      { type: 3, url: deleteFlaw },
+    ]
+    const currentType = methodsList.filter((i: any) => i.type === type)[0]
 
-  const onUpdate = () => {
+    await currentType.url(params)
+    getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
+    setIsDelVisible(false)
     init()
   }
 
-  const onDeleteConfirm = async () => {
-    try {
-      await deleteDemand({ projectId, id: operationItem?.id })
-      message.success(t('common.deleteSuccess'))
-      setIsDelVisible(false)
-      init()
-    } catch (error) {
-      //
-    }
-  }
-
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={showModal}>{t('common.setField')}</div>,
-        },
-      ]}
-    />
-  )
-
   const onChangeMany = (state: boolean) => {
-    message.success(t('version2.reviewModeChangeSuccess'))
+    getMessage({
+      msg: t('version2.reviewModeChangeSuccess') as string,
+      type: 'success',
+    })
     setIsMany(state)
     setIsVisibleFormat(false)
-    setPage(1)
+    setPageObj({ page: 1, size: pageObj.size })
   }
 
   const menuType = (
@@ -541,21 +727,26 @@ const CommonNeed = (props: any) => {
 
   return (
     <MainWrap>
-      <TabsHehavior
-        style={{ padding: '0 24px', justifyContent: 'space-between' }}
+      <DeleteConfirmModal />
+      <div
+        style={{
+          justifyContent: 'space-between',
+          borderBottom: isShowSearch ? '' : '1px solid var(--neutral-n6-d1)',
+        }}
       >
-        <div className={tabCss}>
-          <TabsItem isActive>
-            <div>{props?.subTitle}</div>
-          </TabsItem>
-          <LabNumber isActive>{total ?? 0}</LabNumber>
-        </div>
-        <SearchWrap>
-          <div style={{ marginRight: 16 }}>
-            <CommonInput
+        <SearchWrap style={{ margin: 0 }}>
+          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
+            <InputSearch
               placeholder={t('common.pleaseSearchDemand')}
               onChangeSearch={onPressEnter}
+              leftIcon
             />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TabsItem isActive>
+              <div>{props?.subTitle}</div>
+            </TabsItem>
+            <LabNumber isActive>{total ?? 0}</LabNumber>
           </div>
           <Space style={{ display: 'flex' }} size={8}>
             {props?.isMember ? null : (
@@ -579,21 +770,20 @@ const CommonNeed = (props: any) => {
 
             {props.id !== 0 && (
               <>
-                <DividerWrap type="vertical" />
-                <HoverWrap
+                {/* <DividerWrap type="vertical" /> */}
+                <ScreenMinHover
+                  label={t('common.search')}
+                  icon="filter"
                   onClick={() => setIsShowSearch(!isShowSearch)}
                   isActive={isShowSearch}
-                >
-                  <IconFont className="iconMain" type="filter" />
-                  <span className="label">{t('common.search')}</span>
-                </HoverWrap>
+                />
               </>
             )}
             {props.id !== 0 && (
               <>
                 <DividerWrap type="vertical" />
                 <DropDownMenu
-                  menu={menu}
+                  menu={<SetShowField onChangeFieldVisible={showModal} />}
                   icon="settings"
                   isVisible={isVisibleFields}
                   onChangeVisible={setIsVisibleFields}
@@ -605,10 +795,9 @@ const CommonNeed = (props: any) => {
             )}
           </Space>
         </SearchWrap>
-      </TabsHehavior>
-
+      </div>
       {isShowSearch && props.id !== 0 && (
-        <div style={{ borderLeft: '1px solid #EBEDF0' }}>
+        <div>
           <TableFilter
             onFilter={getSearchKey}
             onSearch={onSearch}
@@ -616,27 +805,25 @@ const CommonNeed = (props: any) => {
             basicsList={filterBasicsList}
             specialList={filterSpecialList}
             customList={filterCustomList}
+            hasLeft
           />
         </div>
       )}
       {!isMany && (
-        <LoadingSpin spinning={isSpin}>
-          <StaffTableWrap>
-            {listData?.list ? (
-              listData?.list?.length > 0 ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={listData?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                />
-              ) : (
-                <NoData />
-              )
-            ) : null}
-          </StaffTableWrap>
-        </LoadingSpin>
+        <div
+          style={{
+            // boxShadow: '0px 0px 7px 6px rgba(0,0,0,0.06)',
+            borderRadius: '6px',
+          }}
+        >
+          <ResizeTable
+            isSpinning={isSpin}
+            dataWrapNormalHeight="calc(100vh - 263px)"
+            col={selectColum}
+            dataSource={listData?.list}
+            noData={<NoData />}
+          />
+        </div>
       )}
 
       {isMany && (
@@ -649,7 +836,7 @@ const CommonNeed = (props: any) => {
         >
           <LoadingSpin spinning={isSpin}>
             {manyListData?.list?.filter((i: any) => i.count)?.length > 0 && (
-              <StaffTableWrap2>
+              <div>
                 {manyListData.list?.map((item: any, index: any) => (
                   // eslint-disable-next-line react/no-array-index-key
                   <div
@@ -666,23 +853,23 @@ const CommonNeed = (props: any) => {
                         {item.status_name}（{item.list.length}）
                       </span>
                     </TableTitle>
-
-                    {item.list ? (
-                      item?.list?.length > 0 ? (
-                        <TableBox
-                          rowKey="id"
-                          columns={selectColum}
-                          dataSource={item.list}
-                          pagination={false}
-                          scroll={{ x: 'max-content' }}
-                        />
-                      ) : (
-                        <NoData />
-                      )
-                    ) : null}
+                    <div
+                      style={{
+                        boxShadow: '0px 0px 9px 3px rgba(0,0,0,0.03)',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <ResizeTable
+                        isSpinning={false}
+                        dataWrapNormalHeight="calc(100vh - 460px)"
+                        col={selectColum}
+                        dataSource={item?.list}
+                        noData={<NoData />}
+                      />
+                    </div>
                   </div>
                 ))}
-              </StaffTableWrap2>
+              </div>
             )}
             {manyListData?.list?.filter((i: any) => i.count)?.length <= 0 && (
               <div style={{ padding: 16 }}>
@@ -694,20 +881,12 @@ const CommonNeed = (props: any) => {
       )}
 
       {!isMany && listData?.list?.length > 0 && (
-        <PaginationWrap style={{ paddingRight: 24 }}>
-          <Pagination
-            defaultCurrent={1}
-            current={page}
-            pageSize={pagesize}
-            showSizeChanger
-            showQuickJumper
-            total={total}
-            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
-            pageSizeOptions={['10', '20', '50']}
-            onChange={onChangePage}
-            onShowSizeChange={onShowSizeChange}
-          />
-        </PaginationWrap>
+        <PaginationBox
+          total={total}
+          pageSize={pageObj.size}
+          currentPage={pageObj.page}
+          onChange={onChangePage}
+        />
       )}
 
       {props.id > 0 && (
@@ -724,22 +903,6 @@ const CommonNeed = (props: any) => {
           getCheckList={getCheckList}
         />
       )}
-
-      <EditDemand
-        visible={isVisible}
-        onChangeVisible={onChangeVisible}
-        demandId={operationItem?.id}
-        projectId={projectId}
-        onUpdate={onUpdate}
-        notGetPath
-        isAllProject={!props.id}
-      />
-      <DeleteConfirm
-        text={t('common.confirmDelDemand')}
-        isVisible={isDelVisible}
-        onChangeVisible={() => setIsDelVisible(!isDelVisible)}
-        onConfirm={onDeleteConfirm}
-      />
     </MainWrap>
   )
 }

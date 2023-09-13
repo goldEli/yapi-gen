@@ -14,11 +14,11 @@ const flexCss = css`
   padding: 0px 16px;
   display: flex;
   align-items: center;
-  color: #646566;
+  color: var(--neutral-n2);
   cursor: pointer;
   &:hover {
-    background-color: #f4f5f5;
-    color: #323233;
+    background-color: var(--hover-d2);
+    color: var(--neutral-n1-d1);
   }
 `
 const Contain = styled.div`
@@ -39,6 +39,7 @@ type LevelProps = {
 
 export const LevelContent = (props: LevelProps) => {
   const { projectInfoValues } = useSelector(store => store.project)
+
   const { record, onHide, onTap } = props
   const { project_id: pid, id: storyID } = record
   const [showData, setShowData] = useState<any>([])
@@ -49,7 +50,7 @@ export const LevelContent = (props: LevelProps) => {
         projectId: pid,
         type: 'priority',
       })
-      setShowData(res.data)
+      setShowData(res.data ?? [])
     } else {
       setShowData(
         projectInfoValues
@@ -70,12 +71,13 @@ export const LevelContent = (props: LevelProps) => {
       id: storyID,
     }
     onTap?.(data)
-    props.onCurrentDetail?.(showData.filter((i: any) => i.id === value)[0])
+    props.onCurrentDetail?.(showData?.filter((i: any) => i.id === value)[0])
     onHide()
   }
+
   return (
     <Contain>
-      {showData.map((item: any) => (
+      {showData?.map((item: any) => (
         <div
           onClick={() => changeState(item.id)}
           className={flexCss}
