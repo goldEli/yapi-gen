@@ -538,7 +538,7 @@ const DailyReportRules = () => {
           ) : null}
         </ReportWrap>
 
-        <ReportWrap>
+        {/* <ReportWrap>
           <HeaderWrap onClick={() => setOpen2(!open2)}>
             <span>{t('msg11')}</span>
             <IconFont
@@ -622,7 +622,7 @@ const DailyReportRules = () => {
               </FooterWrap>
             </DailyReportRulesWrap>
           ) : null}
-        </ReportWrap>
+        </ReportWrap> */}
         <ReportWrap style={{ marginBottom: 48 }}>
           <HeaderWrap onClick={() => setOpen3(!open3)}>
             <span>{t('xmsc')}</span>
