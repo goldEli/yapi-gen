@@ -9,7 +9,7 @@ import {
   SelectWrap,
   SelectWrapBedeck,
 } from '@/components/StyleCommon'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import RangePicker from '@/components/RangePicker'
@@ -47,7 +47,8 @@ const SearchList = (props: Props) => {
   const [form] = Form.useForm()
   const { isRefresh } = useSelector(store => store.user)
   const [departmentOptions, setDepartmentOptions] = useState([])
-
+  const [roleOptions, setRoleOptions] = useState([])
+  const [boxMaps, setBoxMaps] = useState<any>()
   const onClearForm = async () => {
     form.resetFields()
     const value = await form.validateFields()
@@ -68,6 +69,16 @@ const SearchList = (props: Props) => {
     if (isRefresh) {
       init()
     }
+  }, [isRefresh])
+  useLayoutEffect(() => {
+    const map: any = new Map()
+    const box = document.querySelectorAll('.SelectWrapBedeck')
+    box.forEach(item => {
+      const attr = item.getAttribute('datatype')
+      const w = item.getBoundingClientRect().width
+      map.set(attr, w)
+    })
+    setBoxMaps(map)
   }, [isRefresh])
   const onChangePicker = async (_values: any) => {
     form.setFieldsValue({
@@ -104,7 +115,10 @@ const SearchList = (props: Props) => {
     <SearchLine style={{ padding: '0 0 0px 0px', marginBottom: '24px' }}>
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
-          <SelectWrapBedeck>
+          <SelectWrapBedeck
+            className="SelectWrapBedeck"
+            datatype="send_user_ids"
+          >
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('p2.sender')}
             </span>
@@ -117,6 +131,8 @@ const SearchList = (props: Props) => {
                 placeholder={t('common.pleaseSelect')}
                 showSearch
                 optionFilterProp="label"
+                placement="bottomRight"
+                dropdownMatchSelectWidth={boxMaps?.get('send_user_ids')}
                 allowClear
                 options={departmentOptions.map((item: any) => ({
                   label: item.name,
@@ -125,7 +141,10 @@ const SearchList = (props: Props) => {
               />
             </Form.Item>
           </SelectWrapBedeck>
-          <SelectWrapBedeck>
+          <SelectWrapBedeck
+            className="SelectWrapBedeck"
+            datatype="receive_user_ids"
+          >
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('receiver')}
             </span>
@@ -139,6 +158,8 @@ const SearchList = (props: Props) => {
                 optionFilterProp="label"
                 showArrow
                 allowClear
+                placement="bottomRight"
+                dropdownMatchSelectWidth={boxMaps?.get('receive_user_ids')}
                 options={departmentOptions.map((item: any) => ({
                   label: item.name,
                   value: item.id,
@@ -158,7 +179,10 @@ const SearchList = (props: Props) => {
               />
             </Form.Item>
           </SelectWrapBedeck>
-          <SelectWrapBedeck>
+          <SelectWrapBedeck
+            className="SelectWrapBedeck"
+            datatype="notice_style"
+          >
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('notification_type')}
             </span>
@@ -171,6 +195,8 @@ const SearchList = (props: Props) => {
                 optionFilterProp="label"
                 showArrow
                 allowClear
+                placement="bottomRight"
+                dropdownMatchSelectWidth={boxMaps?.get('notice_style')}
                 options={[
                   {
                     label: t('top'),
@@ -184,7 +210,7 @@ const SearchList = (props: Props) => {
               />
             </Form.Item>
           </SelectWrapBedeck>
-          <SelectWrapBedeck>
+          <SelectWrapBedeck className="SelectWrapBedeck" datatype="send_type">
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('send_type')}
             </span>
@@ -198,6 +224,8 @@ const SearchList = (props: Props) => {
                 optionFilterProp="label"
                 showArrow
                 allowClear
+                placement="bottomRight"
+                dropdownMatchSelectWidth={boxMaps?.get('send_type')}
                 options={[
                   {
                     label: t('draft'),

@@ -2408,6 +2408,8 @@
   "loadMoreTasksForThisMember": "加载该成员更多任务",
   "Project": "项目",
   "Time": "时间",
+  "taskCompletionRate": "任务完成率",
+  "tasksToBeCompleted": "待完成任务",
   "totalPerson": "{{total}}人",
   "totalNumber": "{{total}}次",
   "return": "返回"
