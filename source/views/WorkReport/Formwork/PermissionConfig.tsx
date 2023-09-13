@@ -25,6 +25,7 @@ import moment from 'moment'
 import { debounce, throttle } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
+import { css } from '@emotion/css'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
   overflow-y: auto;
@@ -33,6 +34,13 @@ const PermissionConfigStyle = styled.div`
 const TitleText = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
+`
+const bian2 = css`
+  transition: all 0.3s;
+  background: #fafafc;
+  :hover {
+    background: #f6f7f9;
+  }
 `
 const DayFormBox = styled(Form)({
   '.ant-form-item': {
@@ -440,7 +448,6 @@ const PermissionConfig = (props: PropsType) => {
           onClick={() => setReport(!report)}
           style={{
             height: '56px',
-            background: '#FAFAFC',
             display: 'flex',
             alignItems: 'center',
             borderRadius: 6,
@@ -448,6 +455,7 @@ const PermissionConfig = (props: PropsType) => {
             paddingRight: '24px',
             cursor: 'pointer',
           }}
+          className={bian2}
         >
           <Title headerTitle={t('formWork.title1')} onChange={() => {}} />
           <IconFont type={report ? 'up' : 'down'} />
@@ -497,7 +505,7 @@ const PermissionConfig = (props: PropsType) => {
           onClick={() => setFillIn(!fillIn)}
           style={{
             height: '56px',
-            background: '#FAFAFC',
+
             display: 'flex',
             alignItems: 'center',
             borderRadius: 6,
@@ -505,6 +513,7 @@ const PermissionConfig = (props: PropsType) => {
             paddingRight: '24px',
             cursor: 'pointer',
           }}
+          className={bian2}
         >
           <Title
             headerTitle={t('formWork.title5')}
@@ -515,7 +524,9 @@ const PermissionConfig = (props: PropsType) => {
         </div>
         {fillIn ? (
           <div style={{ marginLeft: '24px' }}>
-            <TitleText>{t('formWork.title7')}</TitleText>
+            <TitleText style={{ marginTop: '20px' }}>
+              {t('formWork.title7')}
+            </TitleText>
             <Radio.Group
               style={{ margin: '8px 0 16px 0' }}
               value={type}
