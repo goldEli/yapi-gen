@@ -10,6 +10,7 @@ export const Header = styled.div`
   opacity: 1;
   position: sticky;
   top: 0;
+  z-index: 9;
   img {
     height: 100%;
   }
@@ -36,6 +37,7 @@ export const InputBox = styled.div`
   top: 60px;
   background: #fff;
   padding-bottom: 32px;
+  z-index: 9;
   .title-box {
     text-align: center;
     display: flex;
