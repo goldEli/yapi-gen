@@ -239,9 +239,12 @@ const ProjectMember = (props: { searchValue?: string }) => {
     if (type === 'del') {
       open({
         title: t('removeEmployee'),
-        text: t('areYouSureYouWantToDeleteThisAssociatedWork'),
+        text: t(
+          'doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding',
+          { name: operationItem.name, pos: operationItem.departmentName },
+        ),
         onConfirm() {
-          console.log('移除成员')
+          console.log(operationItem, '移除成员')
 
           return Promise.resolve()
         },

@@ -2413,5 +2413,6 @@
   "return": "Return",
   "removeEmployee": "Remove employee",
   "removeProjectMembersInBatches": "Remove project members in batches",
-  "areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding": "Are you sure you want to remove the selected employee? The removed employee will no longer have access to the project, but his/her history will remain. If you need to modify the task records related to an employee, please make changes under the corresponding task."
+  "areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding": "Are you sure you want to remove the selected employee? The removed employee will no longer have access to the project, but his/her history will remain. If you need to modify the task records related to an employee, please make changes under the corresponding task.",
+  "doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding": "Do you agree to remove [{{name}}]-[{{pos}}] from this project? If removed, the employee will no longer have access to the project, but his/her history will still be retained. If you need to modify the task records related to the employee, please make changes under the corresponding task."
 }
