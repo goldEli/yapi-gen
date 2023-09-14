@@ -13,7 +13,7 @@ import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
-import HandOverModal from '@/components/ProjectOverModal'
+
 import {
   addMember,
   getProjectInfo,
@@ -41,6 +41,7 @@ import {
 } from './style'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import CommonButton from '@/components/CommonButton'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 interface Props {
   visible: boolean
   onChangeVisible(): void
@@ -144,11 +145,11 @@ const CommonMember = (props: Props) => {
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
-
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [search, setSearch] = useState<any>()
-  const [handOvervisible, setHandOvervisible] = useState(false)
+
   const [editItem, setEditItem] = useState()
   const [memberList, setMemberList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
@@ -252,7 +253,15 @@ const CommonMember = (props: Props) => {
   }
   const setModalVisibleClick = (data: any) => {
     setEditItem(data)
-    setHandOvervisible(true)
+    open({
+      title: t('removeEmployee'),
+      text: t('areYouSureYouWantToDeleteThisAssociatedWork'),
+      onConfirm() {
+        console.log('移除成员')
+
+        return Promise.resolve()
+      },
+    })
   }
   const onChangeSearch = (value: string) => {
     setSearch(value)
@@ -284,6 +293,7 @@ const CommonMember = (props: Props) => {
   }
   return (
     <WaiWrap>
+      <DeleteConfirmModal />
       {props.visible && (
         <NewAddUserModalForTandD
           title={t('project.addMember')}
@@ -410,18 +420,6 @@ const CommonMember = (props: Props) => {
           </div>
         )}
       </DrawerWrap>
-      <HandOverModal
-        title={t('project_handover')}
-        visible={handOvervisible}
-        close={() => {
-          setHandOvervisible(false)
-        }}
-        confirm={() => {
-          getList()
-          setHandOvervisible(false)
-        }}
-        id={editItem}
-      ></HandOverModal>
     </WaiWrap>
   )
 }

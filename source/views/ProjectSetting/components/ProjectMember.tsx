@@ -42,7 +42,7 @@ import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
-import ProjectOverModal from '@/components/ProjectOverModal'
+
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
@@ -52,6 +52,7 @@ import { getMessage } from '@/components/Message'
 import TableSelectOptions from '@/components/TableSelectOptions'
 import { updateProjectRole } from '@/services/sprint'
 import CommonIconFont from '@/components/CommonIconFont'
+import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 const Wrap = styled.div({
   padding: '0 24px',
   display: 'flex',
@@ -144,6 +145,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [projectPermission, setProjectPermission] = useState<any>([])
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo, isUpdateMember } = useSelector(store => store.project)
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [form] = Form.useForm()
@@ -235,7 +237,15 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const onOperationMember = (item: any, type: string) => {
     setOperationItem(item)
     if (type === 'del') {
-      setIsDelete(true)
+      open({
+        title: t('removeEmployee'),
+        text: t('areYouSureYouWantToDeleteThisAssociatedWork'),
+        onConfirm() {
+          console.log('移除成员')
+
+          return Promise.resolve()
+        },
+      })
     } else {
       setIsEditVisible(true)
     }
@@ -730,13 +740,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           projectId={projectId}
           onConfirm={onConfirmBatchEdit}
         />
-        <ProjectOverModal
-          title={t('project_handover')}
-          id={operationItem}
-          visible={isDelete}
-          close={() => setIsDelete(!isDelete)}
-          confirm={() => getList(order, pageObj)}
-        />
+        <DeleteConfirmModal />
         <NewAddUserModalForTandD
           isPermisGroup
           userGroupId={
@@ -760,6 +764,15 @@ const ProjectMember = (props: { searchValue?: string }) => {
           >
             <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
               <IconFont type="lock" />
+            </div>
+          </Tooltip>
+          <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title={t('common.permissionGroup')}
+          >
+            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+              <IconFont type="delete" />
             </div>
           </Tooltip>
         </BatchAction>
