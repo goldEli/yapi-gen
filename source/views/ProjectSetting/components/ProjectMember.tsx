@@ -769,9 +769,24 @@ const ProjectMember = (props: { searchValue?: string }) => {
           <Tooltip
             placement="top"
             getPopupContainer={node => node}
-            title={t('common.permissionGroup')}
+            title={t('removeProjectMembersInBatches')}
           >
-            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+            <div
+              className={boxItem}
+              onClick={() =>
+                open({
+                  title: t('removeEmployee'),
+                  text: t(
+                    'areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding',
+                  ),
+                  onConfirm() {
+                    console.log('移除成员')
+
+                    return Promise.resolve()
+                  },
+                })
+              }
+            >
               <IconFont type="delete" />
             </div>
           </Tooltip>

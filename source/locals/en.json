@@ -2411,5 +2411,7 @@
   "totalPerson": "{{total}} people",
   "totalNumber": "{{total}} times",
   "return": "Return",
-  "removeEmployee": "Remove employee"
+  "removeEmployee": "Remove employee",
+  "removeProjectMembersInBatches": "Remove project members in batches",
+  "areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding": "Are you sure you want to remove the selected employee? The removed employee will no longer have access to the project, but his/her history will remain. If you need to modify the task records related to an employee, please make changes under the corresponding task."
 }
