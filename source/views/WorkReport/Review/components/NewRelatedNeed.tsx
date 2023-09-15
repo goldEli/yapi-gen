@@ -102,7 +102,7 @@ const ShowListWrap = styled.div`
       height: 6px;
       background: var(--neutral-n2);
       border-radius: 50%;
-      margin-right: 8px;
+      margin: 8px 8px 0 0;
     }
   }
 `
