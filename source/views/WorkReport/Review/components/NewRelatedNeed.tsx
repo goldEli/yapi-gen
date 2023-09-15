@@ -104,7 +104,7 @@ const ShowListWrap = styled.div`
 `
 const LeftBox = styled.div<{ overdue?: boolean }>`
   display: inline-flex;
-  align-items: ${(props: any) => (props.overdue ? 'flex-start' : 'center')};
+  align-items: flex-start;
 `
 
 const RelatedWrap = styled.div`
