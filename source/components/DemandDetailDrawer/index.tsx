@@ -157,7 +157,6 @@ const DemandDetailDrawer = () => {
   const detailDemandRef = useRef<any>()
   const childrenDemandRef = useRef<any>()
   const storyRelationRef = useRef<any>()
-  const tabsRef = useRef<any>()
   const [openDemandDetail] = useOpenDemandDetail()
   const projectIdRef = useRef()
   const isCanEdit =
@@ -831,7 +830,7 @@ const DemandDetailDrawer = () => {
                         }
                         const projectId = drawerInfo?.projectId
                         if (index !== drawerInfo?.level_tree?.length - 1) {
-                          openDemandDetail({ ...i }, projectId, i.id)
+                          openDemandDetail({ ...i }, projectId, i.id, 0)
                         }
                       }}
                     >

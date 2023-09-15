@@ -83,7 +83,6 @@ const ChildDemand = (props: ChildDemandProps) => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isVisibleFields, setIsVisibleFields] = useState(false)
-  const [openDemandDetail] = useOpenDemandDetail()
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])

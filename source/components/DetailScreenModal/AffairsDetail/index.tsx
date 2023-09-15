@@ -71,7 +71,6 @@ const AffairsDetail = () => {
   const spanDom = useRef<HTMLSpanElement>(null)
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const sprintDetailInfoDom: any = createRef()
-  const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   // 不能删除open方法
   const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
   const { open, ShareModal } = useShareModal()

@@ -11,15 +11,15 @@ import {
 } from '../style'
 import { Checkbox } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import { setContrastDrawer, setFilterParams } from '@store/employeeProfile'
+import { setContrastDrawer } from '@store/employeeProfile'
 import { useTranslation } from 'react-i18next'
 
 interface EmployeeProfilePersonProps {
-  //   修改后的人员数组列表
-  onChangeCheckPerson?(arr: number[]): void
+  onChangeFilter(value: any): void
+  filterParams: any
 }
 
-const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
+const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   // 全选状态
@@ -28,7 +28,7 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
   const [indeterminate, setIndeterminate] = useState(false)
   // 选中的key
   const [selectKeys, setSelectKeys] = useState<any>([])
-  const { allMemberList, currentKey, filterParams } = useSelector(
+  const { allMemberList, currentKey } = useSelector(
     store => store.employeeProfile,
   )
 
@@ -38,14 +38,12 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
     setSelectKeys(checked ? allMemberList?.map((k: any) => k.id) : [])
     setIndeterminate(false)
     setCheckAll(checked)
-    dispatch(
-      setFilterParams({
-        ...filterParams,
-        ...{
-          user_ids: checked ? allMemberList?.map((k: any) => k.id) : [],
-        },
-      }),
-    )
+    props.onChangeFilter({
+      ...props?.filterParams,
+      ...{
+        user_ids: checked ? allMemberList?.map((k: any) => k.id) : [],
+      },
+    })
   }
 
   // 点击勾选或者取消人员
@@ -63,14 +61,12 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
       resultKeys?.length !== allMemberList?.length && resultKeys?.length !== 0,
     )
     setCheckAll(resultKeys?.length === allMemberList?.length)
-    dispatch(
-      setFilterParams({
-        ...filterParams,
-        ...{
-          user_ids: resultKeys,
-        },
-      }),
-    )
+    props.onChangeFilter({
+      ...props?.filterParams,
+      ...{
+        user_ids: resultKeys,
+      },
+    })
   }
 
   // 打开对比报告
@@ -98,7 +94,7 @@ const EmployeeProfilePerson = (poprs: EmployeeProfilePersonProps) => {
         {t('comparisonReport')}
       </ReportButton>
       <div className="label">
-        {currentKey?.name}（{filterParams?.user_ids?.length}）
+        {currentKey?.name}（{props?.filterParams?.user_ids?.length}）
       </div>
       <CheckboxAll
         checked={checkAll}

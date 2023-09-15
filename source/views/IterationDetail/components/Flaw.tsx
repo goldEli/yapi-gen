@@ -179,6 +179,7 @@ const Flaw = (props: FlawProps) => {
       { ...item, ...{ demandIds } },
       getProjectIdByUrl(),
       item.id,
+      2,
     )
   }
 

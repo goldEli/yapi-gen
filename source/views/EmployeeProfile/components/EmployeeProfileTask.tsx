@@ -158,13 +158,13 @@ const TaskItemContent = (props: TaskItemContentProps) => {
 interface TaskItemProps {
   item: any
   onChangeData(arr: any, id: number): void
+  filterParams: any
 }
 
 const TaskItem = (props: TaskItemProps) => {
   const [t] = useTranslation()
-  const { item, onChangeData } = props
+  const { item, onChangeData, filterParams } = props
   const [page, setPage] = useState(1)
-  const { filterParams } = useSelector(store => store.employeeProfile)
   const [moreLoading, setMoreLoading] = useState(false)
 
   // 点击加载更多
@@ -225,10 +225,12 @@ const TaskItem = (props: TaskItemProps) => {
   )
 }
 
-const EmployeeProfileTask = () => {
-  const { filterParams, taskDrawerUpdate } = useSelector(
-    store => store.employeeProfile,
-  )
+interface EmployeeProfileTaskProps {
+  filterParams: any
+}
+
+const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
+  const { taskDrawerUpdate } = useSelector(store => store.employeeProfile)
   const [loading, setLoading] = useState(false)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
@@ -236,7 +238,7 @@ const EmployeeProfileTask = () => {
 
   // 获取任务列表
   const getTaskList = async () => {
-    const response = await getMemberOverviewStoryList(filterParams)
+    const response = await getMemberOverviewStoryList(props.filterParams)
     setDataList({ list: response })
     setLoading(false)
   }
@@ -252,13 +254,13 @@ const EmployeeProfileTask = () => {
   }
 
   useEffect(() => {
-    if (filterParams.status) {
+    if (props.filterParams?.status) {
       setDataList({ list: undefined })
       setLoading(true)
       //调用任务接口
       getTaskList()
     }
-  }, [filterParams])
+  }, [props.filterParams])
 
   useEffect(() => {
     if (taskDrawerUpdate.id) {
@@ -292,7 +294,12 @@ const EmployeeProfileTask = () => {
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
               dataList?.list?.map((i: any) => (
-                <TaskItem item={i} key={i.id} onChangeData={onChangeData} />
+                <TaskItem
+                  item={i}
+                  key={i.id}
+                  onChangeData={onChangeData}
+                  filterParams={props?.filterParams}
+                />
               ))
             ) : (
               <NoData />
