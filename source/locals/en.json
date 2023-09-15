@@ -2412,5 +2412,6 @@
   "tasksToBeCompleted": "Tasks to be completed",
   "totalPerson": "{{total}} people",
   "totalNumber": "{{total}} times",
-  "return": "Return"
+  "return": "Return",
+  "employeeSearch": "Search Number/Task"
 }

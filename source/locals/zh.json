@@ -2412,5 +2412,6 @@
   "tasksToBeCompleted": "待完成任务",
   "totalPerson": "{{total}}人",
   "totalNumber": "{{total}}次",
-  "return": "返回"
+  "return": "返回",
+  "employeeSearch": "搜索编号/任务"
 }
