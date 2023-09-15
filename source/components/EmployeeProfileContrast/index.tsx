@@ -164,23 +164,23 @@ const EmployeeProfileContrast = () => {
                     </div>
                     <div className="right">
                       <div className="name">
-                        {i.name}（{i.position.name ?? '--'}）
+                        {i.name}（{i.position?.name ?? '--'}）
                         <div className="progress">
-                          {i.statistics.completed_rate}%
+                          {i.statistics?.completed_rate}%
                         </div>
                       </div>
                       <div className="position">
-                        {i.departments?.map((i: any) => i.name)?.join(' - ')}
+                        {i?.departments?.map((i: any) => i.name)?.join(' - ')}
                       </div>
                       <div className="totalBox">
                         <div className="total">
-                          {t('totalNumberOfTasks')} {i.statistics.completed}/
-                          {i.statistics.total}
+                          {t('totalNumberOfTasks')} {i.statistics?.completed}/
+                          {i.statistics?.total}
                         </div>
                         <div className="sub">
                           {t('overdueCompletion')}{' '}
                           {t('totalNumber', {
-                            total: i.statistics.overdue_completed,
+                            total: i.statistics?.overdue_completed,
                           })}
                         </div>
                       </div>
@@ -202,18 +202,18 @@ const EmployeeProfileContrast = () => {
                 {dataSource?.report?.list?.map((i: any) => (
                   <ItemBox key={i.id}>
                     <div className="avatar">
-                      <CommonUserAvatar avatar={i.avatar} size="large" />
+                      <CommonUserAvatar avatar={i?.avatar} size="large" />
                     </div>
                     <div className="right">
                       <div className="name">
-                        {i.name}（{i.position.name ?? '--'}）
+                        {i.name}（{i.position?.name ?? '--'}）
                       </div>
                       <div className="position">
                         {i.departments?.map((i: any) => i.name)?.join(' - ')}
                       </div>
                       <div className="totalBox">
                         <div className="total">
-                          {t('numberOfSubmissions')} {i.statistics.total}
+                          {t('numberOfSubmissions')} {i.statistics?.total}
                         </div>
                       </div>
                     </div>

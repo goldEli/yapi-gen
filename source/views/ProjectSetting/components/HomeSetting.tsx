@@ -30,7 +30,9 @@ const RadioWrap = styled.div`
 `
 const hov = css`
   transition: all 0.6s;
+  border: 1px solid #ecedef;
   &:hover {
+    border: 1px solid transparent;
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   }
 `
@@ -116,7 +118,6 @@ const HomeSetting: React.FC<IProps> = props => {
               width: '280px',
               height: '84px',
               borderRadius: 6,
-              border: '1px solid #ECEDEF',
               padding: '24px 20px',
               display: 'flex',
               alignItems: 'center',

@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 const AddPersonText = styled.div`
   /* display: flex; */
-  margin-bottom: 12px;
+  margin: 12px 0;
 `
 const AddPersonTitleText = styled.div`
   display: flex;
