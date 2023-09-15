@@ -190,6 +190,12 @@ const HeaderRight = (prop: any) => {
   // 问号下拉
   const createList2 = [
     {
+      name: '视频教程',
+      key: 'video-on',
+      icon: 'video-on',
+      isPermission: true,
+    },
+    {
       name: t('shortcut_key'),
       key: 'keyboard',
       icon: 'keyboard',
@@ -367,11 +373,16 @@ const HeaderRight = (prop: any) => {
         dispatch(changeVisible(false))
         dispatch(changeKeyBoardVisible(true))
         return
+      case 'video-on':
+        videoTeach()
+        break
       case 'question':
         onHelp()
     }
   }
-
+  const videoTeach = () => {
+    window.open('/videoTeach')
+  }
   const handleTooltipVisibleChange = (visible: any) => {
     if (childStateRef.current.first) {
       return
