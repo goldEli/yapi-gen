@@ -87,10 +87,7 @@ const ShowListWrap = styled.div`
     &:hover .closeIcon {
       display: inline-block;
     }
-    .left {
-      display: inline-flex;
-      align-items: flex-start;
-    }
+
     .dotBox {
       display: inline-flex;
       align-items: center;
@@ -106,6 +103,11 @@ const ShowListWrap = styled.div`
     }
   }
 `
+const LeftBox = styled.div<{ overdue?: boolean }>`
+  display: inline-flex;
+  align-items: ${(props: any) => (props.overdue ? 'flex-start' : 'center')};
+`
+
 const RelatedWrap = styled.div`
   .ant-select-selector {
     max-width: 626px;
@@ -182,7 +184,7 @@ const NewRelatedNeedForProject = (props: any) => {
       <ShowListWrap>
         {chooseList.map((item: any) => (
           <div key={item.key} className="li">
-            <div className="left">
+            <LeftBox>
               <div className="dotBox">
                 <span className="dot" />
                 {props?.isShowOverdue && item.expected_day > 0 ? (
@@ -199,7 +201,7 @@ const NewRelatedNeedForProject = (props: any) => {
                   item.today_task_time ?? 0
                 }h）`}
               </span>
-            </div>
+            </LeftBox>
             <IconFont
               className="closeIcon"
               style={{ color: 'var(--neutral-n3)' }}
