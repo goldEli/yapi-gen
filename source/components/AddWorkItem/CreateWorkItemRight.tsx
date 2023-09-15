@@ -16,7 +16,6 @@ import StateTag from '../StateTag'
 import { PriorityWrap, SeverityWrap, SliderWrap } from '../StyleCommon'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import { setAddWorkItemParentList } from '@store/project'
-import MoreSelect from '@/components/MoreSelect'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -541,14 +540,13 @@ const CreateDemandRight = (props: Props) => {
       ].includes(item.content)
     ) {
       nodeComponent = (
-        <MoreSelect
-          border
+        <CustomSelect
           style={{ width: '100%' }}
           showArrow
-          more={
+          mode={
             ['discovery_version', 'iterate_name'].includes(item.content)
-              ? (true as any)
-              : false
+              ? (null as any)
+              : 'multiple'
           }
           showSearch
           placeholder={t('common.pleaseSelect')}

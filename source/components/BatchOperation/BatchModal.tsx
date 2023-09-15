@@ -25,7 +25,6 @@ import { getMessage } from '../Message'
 import DeleteConfirm from '../DeleteConfirm'
 import CommonModal from '../CommonModal'
 import CustomSelect from '../CustomSelect'
-import MoreSelect from '@/components/MoreSelect'
 import {
   batchAffairsDelete,
   getAffairsBatchEditConfig,
@@ -414,8 +413,7 @@ const BatchModal = (props: Props) => {
                     { required: chooseType === 'category_id', message: '' },
                   ]}
                 >
-                  <MoreSelect
-                    border
+                  <CustomSelect
                     placeholder={t('common.pleaseSelect')}
                     showSearch
                     showArrow
@@ -426,8 +424,8 @@ const BatchModal = (props: Props) => {
                     onChange={
                       chooseType === 'category_id' ? onChangeCategory : void 0
                     }
-                    more={
-                      !![
+                    mode={
+                      [
                         'priority',
                         'iterate_id',
                         'parent_id',
@@ -435,6 +433,8 @@ const BatchModal = (props: Props) => {
                         'discovery_version',
                         'category_id',
                       ].includes(chooseType)
+                        ? ('' as any)
+                        : 'multiple'
                     }
                   />
                 </Form.Item>

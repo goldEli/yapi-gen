@@ -13,9 +13,9 @@ import dayjs from 'dayjs'
 import { FAULT_MAPS } from '../constants/index'
 import { Input, DatePicker, InputNumber, TreeSelect } from 'antd'
 import moment from 'moment'
+import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
 import { store } from '@store/index'
-import MoreSelect from '@/components/MoreSelect'
 
 // 格式化日对象
 function getNowDate() {
@@ -229,8 +229,7 @@ function getTypeComponent(
   } else if (String(params?.attr)?.includes('fixed_')) {
     // 之前固定字段的修改
     child = (
-      <MoreSelect
-        border
+      <CustomSelect
         placeholder={params.remarks}
         style={{ width: '100%', minWidth: 192 }}
         showSearch
@@ -244,7 +243,7 @@ function getTypeComponent(
           onChange?.(value, params.attr === 'fixed_select' ? '' : 1)
         }
         options={params?.value}
-        more={params.attr !== 'fixed_select'}
+        mode={params.attr === 'fixed_select' ? 'multiple' : (null as any)}
         defaultOpen={isModal}
       />
     )
@@ -259,8 +258,7 @@ function getTypeComponent(
     ].includes(String(params?.attr))
   ) {
     child = (
-      <MoreSelect
-        border
+      <CustomSelect
         placeholder={params.remarks || ''}
         style={{ width: '100%', minWidth: 192 }}
         showSearch
@@ -286,10 +284,12 @@ function getTypeComponent(
             : params?.value?.map((i: any) => ({ label: i, value: i }))
         }
         defaultOpen={isModal}
-        more={
-          !['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(
+        mode={
+          ['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(
             params?.attr,
           )
+            ? 'multiple'
+            : ('' as any)
         }
       />
     )

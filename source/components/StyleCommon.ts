@@ -961,7 +961,7 @@ const ProgressWrap = styled.div({
 const SelectWrap = styled(CustomSelect)<{ border: boolean }>`
   .ant-select-selector {
     min-width: 140px;
-    border: ${(prop: any) => (prop.border ? null : 'none !important')};
+    border: none !important;
     outline: none !important;
   }
   .ant-select-selection-placeholder {
