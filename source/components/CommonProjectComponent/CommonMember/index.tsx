@@ -252,13 +252,16 @@ const CommonMember = (props: Props) => {
     }
   }
   const setModalVisibleClick = (data: any) => {
+    console.log(data)
+
     setEditItem(data)
     open({
       title: t('removeEmployee'),
-      text: t('areYouSureYouWantToDeleteThisAssociatedWork'),
+      text: t(
+        'doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding',
+        { name: data.name, pos: data.positionName },
+      ),
       onConfirm() {
-        console.log('移除成员')
-
         return Promise.resolve()
       },
     })
