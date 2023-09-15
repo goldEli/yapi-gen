@@ -374,7 +374,7 @@ const WrapLeft = (props: any, ref: any) => {
   // isUpdateProjectInfoValues：是否需要更新项目下拉数据
   const init = async (isUpdateProjectInfoValues?: boolean) => {
     setShow(false)
-    const res = await getTreeList({ id: props.projectId })
+    const res = await getTreeList({ id: props.projectId, is_bug: 1 })
     setTreeData(filterTreeData(res))
     setShow(true)
     // 更新项目成员下拉
