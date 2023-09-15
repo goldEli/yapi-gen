@@ -13,7 +13,6 @@ import {
 import { MainTitle, WrapRight } from './style'
 import ScreenMinHover from '../ScreenMinHover'
 import { getMessage } from '../Message'
-import CustomSelect from '@/components/MoreSelect'
 
 interface Props {
   sort: string
@@ -133,8 +132,7 @@ const CreateActionBar = (props: Props) => {
             {t('project_type')}
           </span>
 
-          <CustomSelect
-            border
+          <SelectWrap
             onChange={confirm}
             style={{ width: '100%' }}
             placeholder={t('common.all')}
