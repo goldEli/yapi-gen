@@ -1,18 +1,13 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import {
-  getMemberOverviewList,
-  getMemberOverviewStatistics,
-} from './employeeProfile.thunk'
+import { createSlice } from '@reduxjs/toolkit'
+import { getMemberOverviewList } from './employeeProfile.thunk'
 
 export interface CounterState {
   // 成员数组
   allMemberList: any[]
-  // 统计数据
-  memberStatistics: any
   // 当前选中的状态 - 默认为逾期
   currentKey: any
   // 查询的搜索值
-  filterParams: any
+  filterParamsOverall: any
   // 对比报告
   contrastDrawer: {
     visible: false
@@ -29,8 +24,7 @@ export interface CounterState {
 const initialState: CounterState = {
   allMemberList: [],
   currentKey: {},
-  memberStatistics: {},
-  filterParams: {},
+  filterParamsOverall: {},
   contrastDrawer: {
     visible: false,
     params: {},
@@ -51,8 +45,8 @@ export const employeeProfileSlice = createSlice({
       state.currentKey = action.payload
     },
     // 存储筛选条件
-    setFilterParams: (state: any, action) => {
-      state.filterParams = action.payload
+    setFilterParamsOverall: (state: any, action) => {
+      state.filterParamsOverall = action.payload
     },
     // 对比报告
     setContrastDrawer: (state: any, action) => {
@@ -67,15 +61,12 @@ export const employeeProfileSlice = createSlice({
     builder.addCase(getMemberOverviewList.fulfilled, (state, action) => {
       state.allMemberList = action.payload
     })
-    builder.addCase(getMemberOverviewStatistics.fulfilled, (state, action) => {
-      state.memberStatistics = action.payload
-    })
   },
 })
 
 export const {
   setCurrentKey,
-  setFilterParams,
+  setFilterParamsOverall,
   setContrastDrawer,
   setTaskDrawerUpdate,
 } = employeeProfileSlice.actions

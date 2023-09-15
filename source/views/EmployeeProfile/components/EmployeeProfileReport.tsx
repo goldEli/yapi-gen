@@ -350,12 +350,19 @@ interface ReportItemGroupProps {
   // 更多汇报修改数据
   onChangMoreData(arr: any, id: any): void
   onChangData(id: any, item: any): void
+  filterParams: any
 }
 
 const ReportItemGroup = (props: ReportItemGroupProps) => {
   const [t] = useTranslation()
-  const { filterParams } = useSelector(store => store.employeeProfile)
-  const { item, user_id, lastData, onChangMoreData, onChangData } = props
+  const {
+    item,
+    user_id,
+    lastData,
+    onChangMoreData,
+    onChangData,
+    filterParams,
+  } = props
   const [page, setPage] = useState(1)
   const [moreLoading, setMoreLoading] = useState(false)
   // 点击加载更多
@@ -396,8 +403,12 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
   )
 }
 
-const EmployeeProfileReport = () => {
-  const { filterParams } = useSelector(store => store.employeeProfile)
+interface EmployeeProfileReportProps {
+  filterParams: any
+}
+
+const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
+  const { filterParams } = props
   const [loading, setLoading] = useState(false)
 
   const [dataList, setDataList] = useState<any>({
@@ -434,7 +445,7 @@ const EmployeeProfileReport = () => {
   }
 
   useEffect(() => {
-    if (filterParams.status) {
+    if (filterParams?.status) {
       setDataList({ list: undefined })
       setLoading(true)
       getReportList()
@@ -459,6 +470,7 @@ const EmployeeProfileReport = () => {
                   lastData={i.list[i.list?.length - 1]}
                   onChangMoreData={onChangMoreData}
                   onChangData={onChangData}
+                  filterParams={filterParams}
                 />
               ))
             ) : (

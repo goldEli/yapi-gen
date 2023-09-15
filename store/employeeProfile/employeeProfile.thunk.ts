@@ -9,14 +9,3 @@ export const getMemberOverviewList = createAsyncThunk(
     return res
   },
 )
-
-// 统计数据
-export const getMemberOverviewStatistics = createAsyncThunk(
-  `${name}/getMemberOverviewStatistics`,
-  async (params: any) => {
-    const res = await services.employeeProfile.getMemberOverviewStatistics(
-      params,
-    )
-    return res
-  },
-)

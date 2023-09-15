@@ -14,13 +14,7 @@ import { getParamsData } from '@/tools'
 import { useState } from 'react'
 import { Popover, Progress, Table, Tooltip } from 'antd'
 import Sort from '@/components/Sort'
-import {
-  CategoryWrap,
-  ClickWrap,
-  HiddenText,
-  ListNameWrap,
-  StatusWrap,
-} from '@/components/StyleCommon'
+import { ClickWrap, HiddenText, ListNameWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
 import IconFont from './IconFont'
@@ -28,7 +22,6 @@ import { useSelector } from '@store/index'
 import { getDemandList } from '@/services/demand'
 import { getChildAffairsList } from '@/services/affairs'
 import { getChildFlawList } from '@/services/flaw'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import StateTag from './StateTag'
 import TableColorText from './TableColorText'
 import MultipleAvatar from './MultipleAvatar'
@@ -70,8 +63,6 @@ const ChildDemandTable = React.forwardRef((props: Props, ref: any) => {
     list: undefined,
   })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [openDemandDetail] = useOpenDemandDetail()
-  const { projectInfo } = useSelector(store => store.project)
   const { fullScreen } = useSelector(store => store.kanBan)
 
   const getList = async (item: any) => {

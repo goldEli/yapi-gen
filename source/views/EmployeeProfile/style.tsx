@@ -314,11 +314,12 @@ export const Title = styled.div`
 export const Msg = styled.div`
   font-size: 14px;
   color: var(--neutral-n2);
+  word-break: break-all;
 `
 
 export const RowRadius = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 5px;
 `
 export const Radius = styled.div`
@@ -326,7 +327,7 @@ export const Radius = styled.div`
   height: 6px;
   border-radius: 50%;
   background: var(--neutral-n2);
-  margin-right: 8px;
+  margin: 8px 8px 0 0;
   flex-shrink: 0;
   flex-grow: 0;
 `

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import EmployeeProfileHeader from './components/EmployeeProfileHeader'
 import {
   ContentWrap,
@@ -15,13 +15,17 @@ import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import EmployeeProfileReport from './components/EmployeeProfileReport'
 import EmployeeProfileTask from './components/EmployeeProfileTask'
+import { useDispatch } from '@store/index'
+import { setFilterParamsOverall } from '@store/employeeProfile'
 
 const EmployeeProfile = () => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [leftWidth, setLeftWidth] = useState(320)
   const [endWidth, setEndWidth] = useState(320)
   const [focus, setFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [filterParams, setFilterParams] = useState<any>({})
   const sideMain = useRef<any>(null)
   const sliderRef = useRef<any>(null)
   const maxWidth = 600
@@ -77,7 +81,13 @@ const EmployeeProfile = () => {
 
   return (
     <Wrap>
-      <EmployeeProfileHeader />
+      <EmployeeProfileHeader
+        onChangeFilter={value => {
+          setFilterParams(value)
+          dispatch(setFilterParamsOverall(value))
+        }}
+        filterParams={filterParams}
+      />
       <ContentWrap>
         <PersonBox
           isOpen={isOpen}
@@ -89,7 +99,13 @@ const EmployeeProfile = () => {
         >
           <SideMain ref={sideMain} style={{ width: leftWidth }} isOpen={isOpen}>
             <div className="box">
-              <EmployeeProfilePerson />
+              <EmployeeProfilePerson
+                onChangeFilter={value => {
+                  setFilterParams(value)
+                  dispatch(setFilterParamsOverall(value))
+                }}
+                filterParams={filterParams}
+              />
             </div>
           </SideMain>
           <MouseDom
@@ -114,8 +130,8 @@ const EmployeeProfile = () => {
           </Tooltip>
         </PersonBox>
         <RightBox style={{ width: `calc(100% - ${leftWidth}px)` }}>
-          <EmployeeProfileReport />
-          <EmployeeProfileTask />
+          <EmployeeProfileReport filterParams={filterParams} />
+          <EmployeeProfileTask filterParams={filterParams} />
         </RightBox>
       </ContentWrap>
     </Wrap>

@@ -25,7 +25,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 const EmployeeProfileContrast = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { contrastDrawer, filterParams } = useSelector(
+  const { contrastDrawer, filterParamsOverall } = useSelector(
     store => store.employeeProfile,
   )
   const { visible, params } = contrastDrawer
@@ -82,9 +82,9 @@ const EmployeeProfileContrast = () => {
     const params = encryptPhp(
       JSON.stringify({
         headerParmas: {
-          users: filterParams?.user_ids,
+          users: filterParamsOverall?.user_ids,
           time: {
-            time: filterParams?.time,
+            time: filterParamsOverall?.time,
             type: 0,
           },
         },
@@ -103,7 +103,7 @@ const EmployeeProfileContrast = () => {
   const getContrast = async () => {
     setLoading(true)
     setDataSource({})
-    const response = await getMemberOverviewCompare(filterParams)
+    const response = await getMemberOverviewCompare(filterParamsOverall)
     setDataSource(response)
     setLoading(false)
   }
@@ -136,8 +136,8 @@ const EmployeeProfileContrast = () => {
       </Header>
       <Content>
         <TimeWrap>
-          {t('jobComparisonReport')} {filterParams?.time?.[0]} -{' '}
-          {filterParams?.time?.[1]}
+          {t('jobComparisonReport')} {filterParamsOverall?.time?.[0]} -{' '}
+          {filterParamsOverall?.time?.[1]}
         </TimeWrap>
         <Box>
           <Spin

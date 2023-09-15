@@ -14,16 +14,19 @@ import { useEffect, useState } from 'react'
 import { Checkbox } from 'antd'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
-import { setCurrentKey, setFilterParams } from '@store/employeeProfile'
-import { getMemberOverviewStatistics } from '@store/employeeProfile/employeeProfile.thunk'
+import { setCurrentKey } from '@store/employeeProfile'
 import { useTranslation } from 'react-i18next'
+import { getMemberOverviewStatistics } from '@/services/employeeProfile'
 
-const EmployeeProfileHeader = () => {
+interface EmployeeProfileHeaderProps {
+  onChangeFilter(value: any): void
+  filterParams: any
+}
+
+const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { memberStatistics, currentKey, filterParams } = useSelector(
-    store => store.employeeProfile,
-  )
+  const { currentKey } = useSelector(store => store.employeeProfile)
   const [searchParams, setSearchParams] = useState<any>({
     // 搜索值
     keyword: '',
@@ -38,6 +41,7 @@ const EmployeeProfileHeader = () => {
     status: 5,
   })
   const [active, setActive] = useState(0)
+  const [memberStatistics, setMemberStatistics] = useState<any>({})
 
   const tabList = [
     { name: t('thisWeek'), key: 0 },
@@ -83,17 +87,15 @@ const EmployeeProfileHeader = () => {
   ]
 
   // 计算当前选中卡片的数据
-  const onComputedCurrent = (obj: any) => {
-    const newObj = memberStatistics[obj.fieldKey]
+  const onComputedCurrent = (obj: any, result: any) => {
+    const newObj = result[obj.fieldKey]
     dispatch(setCurrentKey({ ...newObj, ...obj }))
-    dispatch(
-      setFilterParams({
-        ...filterParams,
-        ...searchParams,
+    props.onChangeFilter({
+      ...props?.filterParams,
+      ...searchParams,
 
-        ...{ user_ids: newObj?.user_ids, status: obj.key },
-      }),
-    )
+      ...{ user_ids: newObj?.user_ids, status: obj.key },
+    })
   }
 
   //   切换时间
@@ -127,8 +129,10 @@ const EmployeeProfileHeader = () => {
   }
 
   // 获取卡片数据
-  const getStatistics = (params: any) => {
-    dispatch(getMemberOverviewStatistics(params))
+  const getStatistics = async (params: any) => {
+    const response = await getMemberOverviewStatistics(params)
+    setMemberStatistics(response)
+    onComputedCurrent(cardList[0], response)
   }
 
   useEffect(() => {
@@ -192,12 +196,6 @@ const EmployeeProfileHeader = () => {
     getStatistics(searchParams)
   }, [searchParams])
 
-  useEffect(() => {
-    if (JSON.stringify(memberStatistics) !== '{}') {
-      onComputedCurrent(cardList[0])
-    }
-  }, [memberStatistics])
-
   return (
     <HeaderWrap>
       <HeaderSearch>
@@ -247,19 +245,17 @@ const EmployeeProfileHeader = () => {
             isActive={currentKey.fieldKey === i.fieldKey}
             key={i.key}
             onClick={() => {
-              dispatch(
-                setFilterParams({
-                  ...filterParams,
-                  ...{
-                    status: i.key,
-                    user_ids: memberStatistics[i.fieldKey]?.user_ids,
-                  },
-                }),
-              )
-              onComputedCurrent(i)
+              props.onChangeFilter({
+                ...props?.filterParams,
+                ...{
+                  status: i.key,
+                  user_ids: memberStatistics[i.fieldKey]?.user_ids,
+                },
+              })
+              onComputedCurrent(i, memberStatistics)
             }}
           >
-            <CommonIconFont type={i.type} />
+            <CommonIconFont type={i.type} size={20} />
             <div className="name">
               {i.name}（
               {t('totalPerson', { total: memberStatistics[i.fieldKey]?.total })}

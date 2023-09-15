@@ -78,6 +78,9 @@ const IssueCard = (props: IssueCardProps) => {
             if (props.item.project_type === 1 && props.item.is_bug === 1) {
               type = 2
             }
+            if (props.item.project_type === 1 && props.item.is_bug === 2) {
+              type = 3
+            }
             // return
             const findId = stories?.findIndex((i: any) => i.id === item.id)
             const ids = stories?.map((i: any) => i.id)
