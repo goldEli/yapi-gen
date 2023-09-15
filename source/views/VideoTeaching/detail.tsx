@@ -6,10 +6,10 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { getParamsData } from '@/tools'
 const Detail = () => {
   const [searchParams] = useSearchParams()
-  const { data } = getParamsData(searchParams)
+  const { data, time } = getParamsData(searchParams)
   return (
     <DetailWrap>
-      <Header />
+      <Header time={time} />
       {/* <Bread>
         <span
           style={{ cursor: 'pointer' }}

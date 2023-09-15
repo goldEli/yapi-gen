@@ -60,11 +60,11 @@ const VideoTeaching = () => {
                 const params = encryptPhp(
                   JSON.stringify({
                     data: item,
+                    time,
                   }),
                 )
                 const url = `/videoTeachDetail?data=${params}`
                 window.open(url)
-                // navigate(`/videoTeachDetail?data=${params}`)
               }}
             >
               <img src={item.imgUrl} alt="" />
