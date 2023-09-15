@@ -2413,5 +2413,8 @@
   "totalPerson": "{{total}} people",
   "totalNumber": "{{total}} times",
   "return": "Return",
-  "employeeSearch": "Search Number/Task"
+  "employeeSearch": "Search Number/Task",
+  "systemOperationShortcutKeys": "System operation shortcut keys",
+  "agileHelpManual": "Agile Help Manual",
+  "agileVideoTutorial": "Agile video tutorial"
 }

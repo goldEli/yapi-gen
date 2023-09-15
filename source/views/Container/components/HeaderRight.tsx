@@ -190,24 +190,24 @@ const HeaderRight = (prop: any) => {
   // 问号下拉
   const createList2 = [
     {
-      name: '视频教程',
+      name: t('agileVideoTutorial'),
       key: 'video-on',
       icon: 'video-on',
       isPermission: true,
     },
     {
-      name: t('shortcut_key'),
-      key: 'keyboard',
-      icon: 'keyboard',
-      isPermission: true,
-    },
-    {
-      name: t('container.help'),
+      name: t('agileHelpManual'),
       key: 'question',
       icon: 'question',
       isPermission: (
         userInfo.company_permissions?.map((i: any) => i.identity) || []
       ).includes('b/project/save'),
+    },
+    {
+      name: t('systemOperationShortcutKeys'),
+      key: 'keyboard',
+      icon: 'keyboard',
+      isPermission: true,
     },
   ]
 

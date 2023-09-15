@@ -2413,5 +2413,8 @@
   "totalPerson": "{{total}}人",
   "totalNumber": "{{total}}次",
   "return": "返回",
-  "employeeSearch": "搜索编号/任务"
+  "employeeSearch": "搜索编号/任务",
+  "systemOperationShortcutKeys": "系统操作快捷键",
+  "agileHelpManual": "Agile帮助手册",
+  "agileVideoTutorial": "Agile视频教程"
 }
