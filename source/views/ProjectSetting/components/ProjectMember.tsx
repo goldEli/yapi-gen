@@ -241,7 +241,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         title: t('removeEmployee'),
         text: t(
           'doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding',
-          { name: operationItem.name, pos: operationItem.departmentName },
+          { name: item.name, pos: item.departmentName },
         ),
         onConfirm() {
           console.log(operationItem, '移除成员')
