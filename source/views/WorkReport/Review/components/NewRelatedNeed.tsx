@@ -98,13 +98,16 @@ const ShowListWrap = styled.div`
       height: 6px;
       background: var(--neutral-n2);
       border-radius: 50%;
-      margin: 8px 8px 0 0;
+      margin: 0px 8px 0 0;
     }
   }
 `
 const LeftBox = styled.div<{ overdue?: boolean }>`
   display: inline-flex;
   align-items: flex-start;
+  .dotBox {
+    margin-top: ${props => (props.overdue ? '0' : '8px')};
+  }
 `
 
 const RelatedWrap = styled.div`

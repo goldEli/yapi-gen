@@ -1014,8 +1014,7 @@ export const GroupStoryBox = styled.div`
       position: absolute;
       left: 0;
       right: 0;
-      top: 50%;
-      margin-top: -3px;
+      top: 8px;
       bottom: 0;
       width: 6px;
       height: 6px;
