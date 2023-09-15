@@ -132,7 +132,12 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   const getStatistics = async (params: any) => {
     const response = await getMemberOverviewStatistics(params)
     setMemberStatistics(response)
-    onComputedCurrent(cardList[0], response)
+    onComputedCurrent(
+      currentKey?.key
+        ? cardList?.filter((i: any) => i.key === currentKey?.key)[0]
+        : cardList[0],
+      response,
+    )
   }
 
   useEffect(() => {
@@ -202,7 +207,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         <InputSearch
           onChangeSearch={value => onClickSearch(value, 'keyword')}
           leftIcon
-          placeholder={t('search')}
+          placeholder={t('employeeSearch')}
           width={184}
         />
         <SelectWrapBedeck>

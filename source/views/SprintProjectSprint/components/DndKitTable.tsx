@@ -241,15 +241,10 @@ const DndKitTable = (props: any) => {
       ?.stories?.map((k: any) => k.id)
     sessionStorage.setItem('noRefresh', 'true')
     dispatch(
-      setAffairsDetailDrawer({
-        visible: true,
-        params: { ...item, ...{ demandIds }, id },
-      }),
-    )
-    dispatch(
       saveAffairsDetailDrawer({
         visible: true,
         params: { ...item, ...{ demandIds }, id },
+        star: false,
       }),
     )
   }
