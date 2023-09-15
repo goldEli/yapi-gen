@@ -62,7 +62,7 @@ const PeopleCard = (props: any) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '8px',
-          borderTop: '1px solid var(--neutral-white-d7)',
+          borderTop: '1px solid rgba(255,255,255,0.5)',
           marginTop: '12px',
           paddingTop: '12px',
         }}
