@@ -133,6 +133,7 @@ const CreateActionBar = (props: Props) => {
           </span>
 
           <SelectWrap
+            mode="multiple"
             onChange={confirm}
             style={{ width: '100%' }}
             placeholder={t('common.all')}
