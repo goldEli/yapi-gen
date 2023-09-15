@@ -89,6 +89,10 @@ const ShowListWrap = styled.div`
     }
     .left {
       display: inline-flex;
+      align-items: flex-start;
+    }
+    .dotBox {
+      display: inline-flex;
       align-items: center;
     }
     .dot {
@@ -179,18 +183,18 @@ const NewRelatedNeedForProject = (props: any) => {
         {chooseList.map((item: any) => (
           <div key={item.key} className="li">
             <div className="left">
-              <span className="dot" />
-              {props?.isShowOverdue && item.expected_day > 0 ? (
-                <span>
-                  [{t('report.list.overdue')}
-                  {item.expected_day}
-                  {t('report.list.day')}]
-                </span>
-              ) : null}
+              <div className="dotBox">
+                <span className="dot" />
+                {props?.isShowOverdue && item.expected_day > 0 ? (
+                  <span>
+                    [{t('report.list.overdue')}
+                    {item.expected_day}
+                    {t('report.list.day')}]
+                  </span>
+                ) : null}
+              </div>
               <span style={{ marginLeft: 2 }}>
                 {item.label ? item.label : '--'}
-              </span>
-              <span style={{ whiteSpace: 'nowrap' }}>
                 {`（${item.schedule_percent ? item.schedule_percent : 0}%  ${
                   item.today_task_time ?? 0
                 }h）`}
