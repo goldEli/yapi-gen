@@ -1,5 +1,6 @@
 const urls = {
-  getCosSign: import.meta.env.__COS_SIGN_URL__,
+  // getCosSign: import.meta.env.__COS_SIGN_URL__,
+  getCosSign: '/b/getCosSign',
   getCompanyInfo: '/b/company/info',
   getOperateLogs: '/b/company/operate_logs',
   getLoginLogs: '/b/company/login_logs',

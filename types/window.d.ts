@@ -15,5 +15,7 @@ declare global {
     // 是否取消视图修改
     isCloseView: boolean
     name: string
+    // cos上传需要使用的参数
+    cosInfo: any
   }
 }

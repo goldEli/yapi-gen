@@ -428,6 +428,7 @@ export const getTreeList = async (params: any) => {
   const res = await http.get('getNeedTreeList', {
     project_id: params.id,
     is_tree: params.isTree ?? 2,
+    is_bug: params.is_bug,
   })
   const newData = res.data.map((item: any) => {
     return {
