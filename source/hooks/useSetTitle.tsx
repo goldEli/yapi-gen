@@ -2,7 +2,7 @@
 
 const useSetTitle = () => {
   const asyncSetTitle = (asyncTitle: any) => {
-    document.title = `${asyncTitle} -IFUN AGILE`
+    document.title = `${asyncTitle} -iFUN AGILE`
   }
 
   return asyncSetTitle

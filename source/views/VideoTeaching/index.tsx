@@ -37,7 +37,7 @@ const VideoTeaching = () => {
       <Header time={time}></Header>
       <InputBox>
         <div className="title-box">
-          <div className="title">IFUN Agile敏</div>
+          <div className="title">iFUN Agile敏</div>
           <div className="sub-title">敏捷系统入门到精通视频教程</div>
         </div>
         <div className="input">

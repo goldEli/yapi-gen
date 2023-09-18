@@ -145,7 +145,7 @@ const Page = () => {
           />
           <div className="logo">
             <img
-              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/logo.png"
+              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/logo.png?data=20230918"
               width={207}
             />
           </div>
@@ -163,7 +163,7 @@ const Page = () => {
           />
         </FormWrap>
         <FooterText>
-          © {dayjs().format('YYYY')} IFUN All Rights Reserved.
+          © {dayjs().format('YYYY')} iFUN All Rights Reserved.
         </FooterText>
       </div>
     </div>

@@ -54,7 +54,7 @@
   "cc_to_me_work_items2": "CC my work items",
   "pending_approval_work_items": "Work item to be reviewed ",
   "work_item_receiving_processing": "work item receiving processing",
-  "agile_growth_suggestion": "Agile can't grow without your suggestions ",
+  "agile_growth_suggestion": "agile can't grow without your suggestions ",
   "suggestion_type": "Suggestion type",
   "i_want_to": "I want to...",
   "provide_improvement_suggestion": "Provide improvement suggestion",
@@ -945,7 +945,7 @@
     "noPermission": "No permission to view, please contact the administrator"
   },
   "container": {
-    "text1": "IFUN agile system will synchronize OA enterprise information employee members",
+    "text1": "iFUN agile system will synchronize OA enterprise information employee members",
     "text2": "Please go to Settings - Permission Management to configure permission groups. The system provides three system permission groups for administrators, editors, and participants. You can also customize more permission groups",
     "text3": "Please configure user permissions in employee management",
     "text4": "Create project, start project management",
@@ -2243,7 +2243,7 @@
   "msg18": "Suggest enabling the generation function to reduce member workload",
   "msg19": "Save prompt",
   "msg20": "Do you want to save this modification",
-  "msg21": "XXX July 25th Project Report 【 IFUN Agile 】",
+  "msg21": "XXX July 25th Project Report 【 iFUN agile 】",
   "msg22": "Overall progress: 20%",
   "msg23": "Task completion rate: 10/50",
   "msg24": "Yesterday's task: Add 6, complete 3",
@@ -2252,10 +2252,10 @@
   "msg27": "Optimize interaction processes and visual solutions for completed designs (10%)",
   "msg28": "Trial version feature regression (20%)",
   "msg29": "Overdue tasks: 2",
-  "msg30": "[Over 1 day] Agile requirement list sorting",
-  "msg31": "[Over 1 day] Agile Requirements List Sorting [Over 3 days] Project List Thumbnail Optimization",
+  "msg30": "[Over 1 day] agile requirement list sorting",
+  "msg31": "[Over 1 day] agile Requirements List Sorting [Over 3 days] Project List Thumbnail Optimization",
   "msg32": "【Enter the project】",
-  "msg33": "Data sourced from the IFUN Agile system Powered By IFUN Agile",
+  "msg33": "Data sourced from the iFUN agile system Powered By iFUN agile",
   "rbgz": "Daily report configuration rules",
   "fszq": "Sending cycle required",
   "p1": "Please enter the correct address",
@@ -2415,6 +2415,6 @@
   "return": "Return",
   "employeeSearch": "Search Number/Task",
   "systemOperationShortcutKeys": "System operation shortcut keys",
-  "agileHelpManual": "Agile Help Manual",
-  "agileVideoTutorial": "Agile video tutorial"
+  "agileHelpManual": "agile Help Manual",
+  "agileVideoTutorial": "agile video tutorial"
 }

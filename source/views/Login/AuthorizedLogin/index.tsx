@@ -16,7 +16,7 @@ export default React.memo((props: { redirect(): void }) => {
   }
   return (
     <div className={style.authContent}>
-      <h4>IFUN OA {languageMode.oaAuth}</h4>
+      <h4>iFUN OA {languageMode.oaAuth}</h4>
       <div className={style.authAvatar}>
         <UserAvatar avatar={userAdmin?.avatar} name={userAdmin?.name} />
         <div className={style.authName}>{userAdmin?.name}</div>

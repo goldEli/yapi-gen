@@ -246,7 +246,7 @@ export default React.memo(
             <div className={style.logoWrap}>
               <img
                 className={style.logo_img}
-                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/logo.png"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/logo.png?data=20230918"
                 alt=""
               />
               <img
