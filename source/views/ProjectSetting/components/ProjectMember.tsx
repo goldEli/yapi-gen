@@ -53,6 +53,7 @@ import TableSelectOptions from '@/components/TableSelectOptions'
 import { updateProjectRole } from '@/services/sprint'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
+import { confirmProjectHand } from '@/services/handover'
 const Wrap = styled.div({
   padding: '0 24px',
   display: 'flex',
@@ -235,6 +236,8 @@ const ProjectMember = (props: { searchValue?: string }) => {
   }
 
   const onOperationMember = (item: any, type: string) => {
+    console.log(item)
+
     setOperationItem(item)
     if (type === 'del') {
       open({
@@ -243,9 +246,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
           'doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding',
           { name: item.name, pos: item.departmentName },
         ),
-        onConfirm() {
+        async onConfirm() {
           console.log(operationItem, '移除成员')
-
+          await confirmProjectHand({ id: item.id, project_id: projectId })
           return Promise.resolve()
         },
       })
