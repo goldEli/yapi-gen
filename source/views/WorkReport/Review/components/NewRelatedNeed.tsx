@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-no-leaked-render */
+import CustomSelect from '@/components/CustomSelect'
 import IconFont from '@/components/IconFont'
 import { getMessage } from '@/components/Message'
 import { AddWrap } from '@/components/StyleCommon'
@@ -6,7 +7,6 @@ import styled from '@emotion/styled'
 import { Form } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import MoreSelect from '@/components/MoreSelect'
 
 const WrapDiv = styled.div`
   .ant-form-item-row {
@@ -126,9 +126,8 @@ const NewRelatedNeed = (props: any) => {
     const data = await lessForm.validateFields()
     const newData = JSON.parse(JSON.stringify(data))
     const result = newData.needs.map((i: any) => ({
-      id: i,
-      value: i,
-      ...(props?.data?.find((s: any) => s.id === i) || {}),
+      ...i,
+      ...(props?.data?.find((s: any) => s.id === i.value) || {}),
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
     if (!props.canSubmit(result)) {
@@ -232,8 +231,7 @@ const NewRelatedNeed = (props: any) => {
               ]}
             >
               <div className="item">
-                <MoreSelect
-                  border
+                <CustomSelect
                   optionFilterProp="label"
                   showSearch
                   labelInValue

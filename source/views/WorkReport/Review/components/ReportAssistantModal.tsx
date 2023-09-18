@@ -687,6 +687,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
               initValue={content?.content}
               data={demandList}
               canSubmit={(arr: any) => {
+                console.log(arr, 'arrarrarr', demandList)
+
                 const isCan = arr?.every((i: any) =>
                   demandList?.map((o: any) => o?.id)?.includes(i?.value),
                 )
