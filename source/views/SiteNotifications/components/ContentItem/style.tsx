@@ -94,8 +94,10 @@ export const About = styled.div`
   line-height: 20px;
 
   color: var(--neutral-n3) !important;
-  &:hover {
-    color: var(--primary-d2) !important;
+  .name {
+    &:hover {
+      color: var(--primary-d2) !important;
+    }
   }
 `
 

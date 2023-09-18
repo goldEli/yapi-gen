@@ -126,13 +126,22 @@ const ContentItem = (props: any) => {
             </Time2>
           )}
         </div>
-        <div className="msgTitle" onClick={e => onToEmployee(e, msg_body)}>
+        <div className="msgTitle">
           <div style={{ alignSelf: 'start' }}>
             <CommonUserAvatar avatar={msg_body.optHeader} />
           </div>
 
           <About className={String(read === 1 ? 'read' : 'unread')}>
-            {msg_body.title}
+            {msg_body?.username ? (
+              <>
+                <span className="name" onClick={e => onToEmployee(e, msg_body)}>
+                  {msg_body?.username}
+                </span>
+                {msg_body?.title_msg}
+              </>
+            ) : (
+              msg_body.title
+            )}
           </About>
         </div>
 
