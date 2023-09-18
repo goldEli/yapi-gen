@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from '@store/index'
 import { setCurrentKey } from '@store/employeeProfile'
 import { useTranslation } from 'react-i18next'
 import { getMemberOverviewStatistics } from '@/services/employeeProfile'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 interface EmployeeProfileHeaderProps {
   onChangeFilter(value: any): void
@@ -26,22 +28,30 @@ interface EmployeeProfileHeaderProps {
 const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
   const { currentKey } = useSelector(store => store.employeeProfile)
-  const [searchParams, setSearchParams] = useState<any>({
+  const [searchFilterParams, setSearchFilterParams] = useState<any>({
     // 搜索值
     keyword: '',
     // 创建时间
-    time: [
-      moment().week(moment().week()).startOf('week').format('YYYY-MM-DD'),
-      moment().week(moment().week()).endOf('week').format('YYYY-MM-DD'),
-    ],
+    time: paramsData?.user_id
+      ? [
+          moment().subtract(1, 'years').format('YYYY-MM-DD'),
+          moment().format('YYYY-MM-DD'),
+        ]
+      : [
+          moment().week(moment().week()).startOf('week').format('YYYY-MM-DD'),
+          moment().week(moment().week()).endOf('week').format('YYYY-MM-DD'),
+        ],
     // 是否是星标
     isStart: false,
     // 卡片状态
-    status: 5,
+    status: 0,
   })
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(paramsData?.user_id ? 5 : 0)
   const [memberStatistics, setMemberStatistics] = useState<any>({})
+  const [isChange, setIsChange] = useState(0)
 
   const tabList = [
     { name: t('thisWeek'), key: 0 },
@@ -92,7 +102,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     dispatch(setCurrentKey({ ...newObj, ...obj }))
     props.onChangeFilter({
       ...props?.filterParams,
-      ...searchParams,
+      ...searchFilterParams,
 
       ...{ user_ids: newObj?.user_ids, status: obj.key },
     })
@@ -100,8 +110,8 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
 
   //   切换时间
   const onChangeTime = (dates: any) => {
-    setSearchParams({
-      ...searchParams,
+    setSearchFilterParams({
+      ...searchFilterParams,
       time: dates[0]
         ? [
             moment(dates[0]).format('YYYY-MM-DD'),
@@ -110,6 +120,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         : null,
     })
     setActive(dates ? -1 : 0)
+    setIsChange(isChange + 1)
   }
 
   //   点击切换tab
@@ -119,30 +130,37 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
 
   //   点击切换搜素条件
   const onClickSearch = (value: any, key: string) => {
-    if (key === 'keyword' && value === searchParams.keyword) {
+    if (key === 'keyword' && value === searchFilterParams.keyword) {
       return
     }
-    setSearchParams({
-      ...searchParams,
+    setIsChange(isChange + 1)
+    setSearchFilterParams({
+      ...searchFilterParams,
       [key]: value,
     })
   }
 
   // 获取卡片数据
-  const getStatistics = async (params: any) => {
-    const response = await getMemberOverviewStatistics(params)
+  const getStatistics = async (params: any, isChange?: boolean) => {
+    // 如果是修改筛选条件则，不带user_id
+    const response = await getMemberOverviewStatistics(
+      isChange ? params : { ...params, ...{ user_id: paramsData?.user_id } },
+    )
     setMemberStatistics(response)
+    const currentResult = currentKey?.key
+      ? cardList?.filter((i: any) => i.key === currentKey?.key)[0]
+      : cardList[0]
     onComputedCurrent(
-      currentKey?.key
-        ? cardList?.filter((i: any) => i.key === currentKey?.key)[0]
-        : cardList[0],
+      !isChange && !paramsData?.user_id
+        ? currentResult
+        : cardList[cardList?.length - 1],
       response,
     )
   }
 
   useEffect(() => {
     // 计算回填时间的
-    if (active !== -1) {
+    if (active !== -1 && active !== 0) {
       let time: any = []
       switch (active) {
         case 0:
@@ -186,11 +204,12 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       }
       //   阻止相同调用
       if (
-        time[0] !== searchParams.time[0] ||
-        time[1] !== searchParams.time[1]
+        time[0] !== searchFilterParams.time[0] ||
+        time[1] !== searchFilterParams.time[1]
       ) {
-        setSearchParams({
-          ...searchParams,
+        setIsChange(isChange + 1)
+        setSearchFilterParams({
+          ...searchFilterParams,
           time,
         })
       }
@@ -198,8 +217,8 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   }, [active])
 
   useEffect(() => {
-    getStatistics(searchParams)
-  }, [searchParams])
+    getStatistics(searchFilterParams)
+  }, [searchFilterParams])
 
   return (
     <HeaderWrap>
@@ -218,8 +237,11 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             width={'308px'}
             isShowQuick={false}
             dateValue={
-              searchParams.time
-                ? [moment(searchParams.time[0]), moment(searchParams.time[1])]
+              searchFilterParams.time
+                ? [
+                    moment(searchFilterParams.time[0]),
+                    moment(searchFilterParams.time[1]),
+                  ]
                 : null
             }
             onChange={dates => onChangeTime(dates)}
@@ -238,7 +260,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
           ))}
         </TabsGroup>
         <Checkbox
-          checked={searchParams.isStart}
+          checked={searchFilterParams.isStart}
           onChange={e => onClickSearch(e.target.checked, 'isStart')}
         >
           {t('starsOnly')}

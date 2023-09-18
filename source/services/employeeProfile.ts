@@ -16,6 +16,7 @@ export const getMemberOverviewStatistics = async (params: any) => {
     keyword: params.keyword ?? '',
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
+    user_id: params.user_id,
   })
   return response.data
 }

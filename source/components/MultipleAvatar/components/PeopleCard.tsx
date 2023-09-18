@@ -1,14 +1,16 @@
 import IconFont from '@/components/IconFont'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { t } from 'i18next'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Box = styled.div`
   max-width: 400px;
   min-width: 283px;
   padding: 12px;
   background-image: url('/bg_23.png');
-
+  cursor: pointer;
   background-size: cover;
   color: var(--neutral-white-d7);
   border-radius: 6px;
@@ -26,10 +28,22 @@ const PeopleCard = (props: any) => {
     undone_num,
     completed_rate,
   } = props
-  console.log(props)
+  const navigate = useNavigate()
+
+  // 跳转到员工概况
+  const onToEmployee = (e: any) => {
+    e.stopPropagation()
+    // EmployeeProfile
+    const params = encryptPhp(
+      JSON.stringify({
+        user_id: props.id,
+      }),
+    )
+    navigate(`/EmployeeProfile?data=${params}`)
+  }
 
   return (
-    <Box>
+    <Box onClick={e => onToEmployee(e)}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
           <div style={{ fontSize: '14px' }}>

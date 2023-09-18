@@ -2032,8 +2032,8 @@
   "createSubrequirements": "创建子需求",
   "createRequirements": "创建需求",
   "deleteConfirmation": "删除确认",
-  "created": "已创建：",
-  "updated": "更新日期：",
+  "created": "创建时间：",
+  "updated": "更新时间：",
   "configurationFields": "配置字段",
   "addAttachments": "添加附件",
   "associate": "关联",
@@ -2416,5 +2416,6 @@
   "employeeSearch": "搜索编号/任务",
   "systemOperationShortcutKeys": "系统操作快捷键",
   "agileHelpManual": "Agile帮助手册",
-  "agileVideoTutorial": "Agile视频教程"
+  "agileVideoTutorial": "Agile视频教程",
+  "noPermissionToViewYet": "暂无权限查看"
 }

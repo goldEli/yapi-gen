@@ -94,6 +94,9 @@ export const About = styled.div`
   line-height: 20px;
 
   color: var(--neutral-n3) !important;
+  &:hover {
+    color: var(--primary-d2) !important;
+  }
 `
 
 export const GrepContent = styled.div<{ status?: boolean }>`

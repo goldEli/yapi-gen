@@ -636,7 +636,7 @@ const TableFilter = (props: any) => {
                       <RangePicker
                         isShowQuick
                         placement="bottomRight"
-                        w={spanMaps.get(i.key)}
+                        w={spanMaps?.get(i.key)}
                         dateValue={
                           form.getFieldValue(i.key)
                             ? [

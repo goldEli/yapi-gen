@@ -378,6 +378,7 @@ export const TaskWrap = styled.div`
 export const TaskItemBoxs = styled.div`
   padding-right: 20px;
   overflow-y: auto;
+  overflow-x: hidden;
   height: 100%;
 `
 
@@ -469,7 +470,7 @@ export const TaskContent = styled.div`
   .info {
     font-size: 12px;
     color: var(--neutral-n2);
-    width: 100%;
+    width: 98%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

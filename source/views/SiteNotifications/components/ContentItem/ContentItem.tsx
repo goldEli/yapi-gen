@@ -12,6 +12,9 @@ import { css } from '@emotion/css'
 import { Editor } from 'ifunuikit'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
+import { getMessage } from '@/components/Message'
+import { useNavigate } from 'react-router-dom'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const tmgCss = css`
   img {
@@ -27,6 +30,7 @@ const CommonUserAvatar2 = styled.img<{ size?: string }>`
 `
 const ContentItem = (props: any) => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const { send_user, msg_body, create_time, read, id, custom_data } = props.item
   const [choose, setChoose] = useState(false)
   const cha = useSelector(store => store.user.loginInfo.timeDiff)
@@ -78,6 +82,23 @@ const ContentItem = (props: any) => {
     return str
   }
 
+  // 跳转到员工概况
+  const onToEmployee = (e: any, body: any) => {
+    e.stopPropagation()
+    // 是否有权限
+    if (body?.has_permission === 2 || !body?.has_permission) {
+      getMessage({ type: 'warning', msg: t('noPermissionToViewYet') })
+    } else {
+      // EmployeeProfile
+      const params = encryptPhp(
+        JSON.stringify({
+          user_id: body.user_id,
+        }),
+      )
+      navigate(`/EmployeeProfile?data=${params}`)
+    }
+  }
+
   return (
     <Wrap
       bor={props.bor}
@@ -105,12 +126,10 @@ const ContentItem = (props: any) => {
             </Time2>
           )}
         </div>
-        <div className="msgTitle">
-          {msg_body.optHeader ? (
-            <div style={{ alignSelf: 'start' }}>
-              <CommonUserAvatar avatar={msg_body.optHeader} />
-            </div>
-          ) : null}
+        <div className="msgTitle" onClick={e => onToEmployee(e, msg_body)}>
+          <div style={{ alignSelf: 'start' }}>
+            <CommonUserAvatar avatar={msg_body.optHeader} />
+          </div>
 
           <About className={String(read === 1 ? 'read' : 'unread')}>
             {msg_body.title}

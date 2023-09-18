@@ -2032,8 +2032,8 @@
   "createSubrequirements": "Create subrequirements",
   "createRequirements": "Create requirements",
   "deleteConfirmation": "Delete confirmation",
-  "created": "Created：",
-  "updated": "Updated：",
+  "created": "Created on:",
+  "updated": "Updated on:",
   "configurationFields": "Configuration fields",
   "addAttachments": "Add attachments",
   "associate": "Associate",
@@ -2416,5 +2416,6 @@
   "employeeSearch": "Search Number/Task",
   "systemOperationShortcutKeys": "System operation shortcut keys",
   "agileHelpManual": "agile Help Manual",
-  "agileVideoTutorial": "agile video tutorial"
+  "agileVideoTutorial": "agile video tutorial",
+  "noPermissionToViewYet": "No permission to view yet"
 }
