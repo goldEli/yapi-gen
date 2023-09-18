@@ -180,7 +180,7 @@ const GlobalStyle = () => {
       .progressDropdownBox_yang {
         .ant-dropdown-menu {
           max-height: 250px;
-          overflow: auto;
+          /* overflow: auto; */
         }
       }
       .notification-my {
@@ -647,9 +647,9 @@ const GlobalStyle = () => {
       height: 32px !important;
     }
 
-    .ant-dropdown-menu-title-content div {
+    /* .ant-dropdown-menu-title-content div {
       white-space: pre;
-    }
+    } */
 
     .ant-tree-node-content-wrapper-normal,
     .ant-tree-node-content-wrapper,

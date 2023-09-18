@@ -29,10 +29,8 @@ const NameWrap = styled.div<{ fontSize?: number }>`
   font-size: ${props => props.fontSize}px;
   font-family: SiYuanRegular;
   color: var(--neutral-n2);
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 200px;
+  max-width: 304px;
+  white-space: wrap;
 `
 
 interface UserAvatarProps {
