@@ -12,6 +12,7 @@ import DemandDetail from './DemandDetail'
 
 const DemandInfo = () => {
   const dispatch = useDispatch()
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const LeftDom = useRef<HTMLDivElement>(null)
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const { demandInfo } = useSelector(store => store.demand)
@@ -33,7 +34,7 @@ const DemandInfo = () => {
   }
 
   return (
-    <DetailMain>
+    <DetailMain all={userPreferenceConfig.previewModel === 3}>
       <div
         style={{
           position: 'relative',

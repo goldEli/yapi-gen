@@ -117,7 +117,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const paramsData = getParamsData(searchParams)
   const { projectInfo } = useSelector(store => store.project)
   const { id } = paramsData || { id: projectInfo.id }
@@ -783,7 +783,9 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
           ? '100%'
           : isEnd
           ? 'calc(100vh - 192px)'
-          : 'calc(100vh - 224px)',
+          : `calc(${
+              userPreferenceConfig.previewModel === 3 ? '80vh' : '100vh'
+            } - 224px)`,
         marginTop: props.isDrawer ? '24px' : '0px',
       }}
       id="tab_link"

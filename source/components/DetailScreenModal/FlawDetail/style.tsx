@@ -3,7 +3,7 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Space } from 'antd'
 
-export const Wrap = styled.div`
+export const Wrap = styled.div<{ all?: boolean }>`
   height: 100%;
   display: flex;
   padding-top: 20px;
@@ -26,7 +26,7 @@ export const Wrap = styled.div`
     color: var(--primary-d1);
   }
   .ant-tabs-content {
-    height: calc(100vh - 227px);
+    height: calc(${props => (props.all ? '80vh' : '100vh')} - 227px);
     .ant-tabs-tabpane {
       height: 100%;
     }

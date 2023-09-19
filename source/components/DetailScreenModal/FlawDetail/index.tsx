@@ -80,7 +80,7 @@ const FlawDetail = () => {
   } = useSelector(store => store.project)
   const { visible, params } = isDetailScreenModal
   const [form] = Form.useForm()
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const [tabActive, setTabActive] = useState(params?.type ?? '1')
   const [filter, setFilter] = useState(false)
   // 是否可改变类别弹窗
@@ -497,7 +497,7 @@ const FlawDetail = () => {
   }, [])
 
   return (
-    <Wrap>
+    <Wrap all={userPreferenceConfig.previewModel === 3}>
       <DeleteConfirmModal />
       <ShareModal
         url={`${location.origin}/ProjectManagement/Defect?data=${encryptPhp(

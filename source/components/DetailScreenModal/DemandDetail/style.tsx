@@ -175,15 +175,15 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
     props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
 `
 
-export const ComputedWrap = styled.div`
-  height: calc(100vh - 210px);
+export const ComputedWrap = styled.div<{ all?: boolean }>`
+  height: calc(${props => (props.all ? '80vh' : '100vh')} - 210px);
 `
 
 //  需求详情-详细信息
-export const DetailMain = styled.div`
+export const DetailMain = styled.div<{ all?: boolean }>`
   display: flex;
   position: relative;
-  height: calc(100vh - 249px);
+  height: calc(${props => (props.all ? '80vh' : '100vh')} - 249px);
   width: 100%;
   margin-top: 16px;
 `
