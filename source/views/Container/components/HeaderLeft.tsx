@@ -197,7 +197,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         <DrawerHeader>
           <LogoBox>
             <img
-              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/newLogo-ifun.svg?data=20230918"
+              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/logo/newLogo-ifun.svg"
               alt=""
             />
           </LogoBox>

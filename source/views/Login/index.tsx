@@ -145,7 +145,7 @@ const Page = () => {
           />
           <div className="logo">
             <img
-              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/logo.png?data=20230918"
+              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/logo/logo@395x80.png"
               width={207}
             />
           </div>
