@@ -2417,5 +2417,8 @@
   "systemOperationShortcutKeys": "System operation shortcut keys",
   "agileHelpManual": "agile Help Manual",
   "agileVideoTutorial": "agile video tutorial",
-  "noPermissionToViewYet": "No permission to view yet"
+  "noPermissionToViewYet": "No permission to view yet",
+  "slideOutSide": "Slide out side",
+  "fullScreenPreview": "Full screen preview",
+  "preview": "Pop-up preview"
 }

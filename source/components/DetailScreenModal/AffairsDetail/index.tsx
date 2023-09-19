@@ -641,86 +641,54 @@ const AffairsDetail = () => {
             {(params?.changeIds?.length || 0) > 1 && (
               <ChangeIconGroup>
                 {currentIndex > 0 && (
-                  <Tooltip title={t('previous')}>
-                    <LeftIcontButton
-                      onClick={onUpDemand}
-                      icon="up-md"
-                      text={t('previous')}
-                    />
-                    {/* <UpWrap
-                      onClick={onUpDemand}
-                      id="upIcon"
-                      isOnly={
-                        params?.changeIds?.length === 0 ||
-                        currentIndex === (params?.changeIds?.length || 0) - 1
-                      }
-                    >
-                      <CommonIconFont
-                        type="up"
-                        size={20}
-                        color="var(--neutral-n1-d1)"
-                      />
-                    </UpWrap> */}
-                  </Tooltip>
+                  <LeftIcontButton
+                    onClick={onUpDemand}
+                    icon="up-md"
+                    text={t('previous')}
+                  />
                 )}
                 {!(
                   params?.changeIds?.length === 0 ||
                   currentIndex === (params?.changeIds?.length || 0) - 1
                 ) && (
-                  <Tooltip title={t('next')}>
-                    <LeftIcontButton
-                      onClick={onDownDemand}
-                      icon="down-md"
-                      text={t('next')}
-                    />
-                    {/* <DownWrap
-                      onClick={onDownDemand}
-                      id="downIcon"
-                      isOnly={currentIndex <= 0}
-                    >
-                      <CommonIconFont
-                        type="down"
-                        size={20}
-                        color="var(--neutral-n1-d1)"
-                      />
-                    </DownWrap> */}
-                  </Tooltip>
+                  <LeftIcontButton
+                    onClick={onDownDemand}
+                    icon="down-md"
+                    text={t('next')}
+                  />
                 )}
               </ChangeIconGroup>
             )}
-            <Tooltip title={t('share')}>
+
+            <div>
+              <LeftIcontButton
+                onClick={onShare}
+                icon="share"
+                text={t('share')}
+              />
+            </div>
+
+            <DropdownMenu
+              placement="bottomRight"
+              trigger={['click']}
+              menu={{
+                items: onGetMenu(),
+              }}
+              getPopupContainer={n => n}
+            >
               <div>
-                <LeftIcontButton
-                  onClick={onShare}
-                  icon="share"
-                  text={t('share')}
-                />
+                <LeftIcontButton icon="more-01" text={t('more')} />
               </div>
-            </Tooltip>
-            <Tooltip title={t('more')}>
-              <DropdownMenu
-                placement="bottomRight"
-                trigger={['click']}
-                menu={{
-                  items: onGetMenu(),
-                }}
-                getPopupContainer={n => n}
-              >
-                <div>
-                  <LeftIcontButton icon="more-01" text={t('more')} />
-                </div>
-              </DropdownMenu>
-            </Tooltip>
-            <Tooltip title={t('closure')}>
-              <div>
-                <LeftIcontButton
-                  danger
-                  onClick={onClose}
-                  icon="close"
-                  text={t('closure')}
-                />
-              </div>
-            </Tooltip>
+            </DropdownMenu>
+
+            <div>
+              <LeftIcontButton
+                danger
+                onClick={onClose}
+                icon="close"
+                text={t('closure')}
+              />
+            </div>
           </ButtonGroup>
         )}
       </DetailTop>

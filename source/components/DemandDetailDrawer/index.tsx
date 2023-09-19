@@ -625,35 +625,29 @@ const DemandDetailDrawer = () => {
               <>
                 <ChangeIconGroup>
                   {currentIndex > 0 && (
-                    <Tooltip title={t('previous')}>
-                      <LeftIcontButton
-                        onClick={onUpDemand}
-                        icon="up-md"
-                        text={t('previous')}
-                      />
-                    </Tooltip>
+                    <LeftIcontButton
+                      onClick={onUpDemand}
+                      icon="up-md"
+                      text={t('previous')}
+                    />
                   )}
                   {!(
                     demandIds?.length === 0 ||
                     currentIndex === demandIds?.length - 1
                   ) && (
-                    <Tooltip title={t('next')}>
-                      <LeftIcontButton
-                        onClick={onDownDemand}
-                        icon="down-md"
-                        text={t('next')}
-                      />
-                    </Tooltip>
+                    <LeftIcontButton
+                      onClick={onDownDemand}
+                      icon="down-md"
+                      text={t('next')}
+                    />
                   )}
                 </ChangeIconGroup>
-                <Tooltip title={t('openDetails')}>
-                  <div onClick={onToDetail}>
-                    <LeftIcontButton
-                      icon="full-screen"
-                      text={t('openDetails')}
-                    />
-                  </div>
-                </Tooltip>
+
+                <div onClick={onToDetail}>
+                  <LeftIcontButton icon="full-screen" text={t('openDetails')} />
+                  {/* <CommonButton type="icon" icon="full-screen" /> */}
+                </div>
+
                 <Tooltip title={t('more')}>
                   <Popover
                     open={isMoreVisible}
@@ -683,29 +677,27 @@ const DemandDetailDrawer = () => {
               </>
             )}
             {demandDetailDrawerProps.star && (
-              <Tooltip title={t('starMark')}>
-                <CommonButton
-                  isStar={drawerInfo.isStar}
-                  onClick={async () => {
-                    const res = await toggleStar(
-                      drawerInfo.id,
-                      !drawerInfo.isStar,
+              <CommonButton
+                isStar={drawerInfo.isStar}
+                onClick={async () => {
+                  const res = await toggleStar(
+                    drawerInfo.id,
+                    !drawerInfo.isStar,
+                  )
+                  if (res === 1) {
+                    getDemandDetail()
+                    dispatch(
+                      setTaskDrawerUpdate({
+                        id: demandDetailDrawerProps.employeeCurrentId,
+                        detailId: drawerInfo.id,
+                        state: drawerInfo.isStar ? 2 : 1,
+                      }),
                     )
-                    if (res === 1) {
-                      getDemandDetail()
-                      dispatch(
-                        setTaskDrawerUpdate({
-                          id: demandDetailDrawerProps.employeeCurrentId,
-                          detailId: drawerInfo.id,
-                          state: drawerInfo.isStar ? 2 : 1,
-                        }),
-                      )
-                    }
-                  }}
-                  type="icon"
-                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
-                />
-              </Tooltip>
+                  }
+                }}
+                type="icon"
+                icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+              />
             )}
           </Space>
         </Header>

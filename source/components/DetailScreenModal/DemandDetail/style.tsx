@@ -175,15 +175,15 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
     props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
 `
 
-export const ComputedWrap = styled.div`
-  height: calc(100vh - 210px);
+export const ComputedWrap = styled.div<{ all?: boolean }>`
+  height: calc(${props => (props.all ? '80vh' : '100vh')} - 210px);
 `
 
 //  需求详情-详细信息
-export const DetailMain = styled.div`
+export const DetailMain = styled.div<{ all?: boolean }>`
   display: flex;
   position: relative;
-  height: calc(100vh - 249px);
+  height: calc(${props => (props.all ? '80vh' : '100vh')} - 249px);
   width: 100%;
   margin-top: 16px;
 `
@@ -217,6 +217,16 @@ export const Label = styled.div`
   margin-bottom: 8px;
   height: 32px;
   line-height: 32px;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
 `
 export const TextWrap = styled.div`
   color: var(--neutral-n1-d1);

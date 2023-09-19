@@ -110,6 +110,7 @@ const ButtonGroup = (props: {
 const AffairsInfo = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const LeftDomDetailInfo = useRef<HTMLDivElement>(null)
   const commentDom: any = createRef()
   const childRef: any = createRef()
@@ -233,7 +234,7 @@ const AffairsInfo = (props: Props) => {
 
   return (
     <InfoWrap
-      height={`calc(100vh - ${
+      height={`calc(${userPreferenceConfig.previewModel === 3 ? 80 : 100}vh - ${
         (affairsInfo?.isExamine ? 216 : 167) +
         (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}

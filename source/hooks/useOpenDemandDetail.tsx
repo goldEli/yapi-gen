@@ -84,7 +84,24 @@ const useOpenDemandDetail = () => {
           dispatch(saveDemandDetailDrawer({ ...item, isPreview, star }))
           break
       }
-    } else {
+    } else if (userPreferenceConfig.previewModel === 2 || isPreview) {
+      dispatch(setAffairsInfo({}))
+      dispatch(setDemandInfo({}))
+      dispatch(setFlawInfo({}))
+      let params: any = {
+        changeIds: item.demandIds,
+        id: projectId,
+        specialType: type === 0 ? 3 : type,
+      }
+      if (type === 1) {
+        params.sprintId = id
+      } else if (type === 2) {
+        params.flawId = id
+      } else {
+        params.demandId = id
+      }
+      dispatch(saveScreenDetailModal({ visible: true, params }))
+    } else if (userPreferenceConfig.previewModel === 3 || isPreview) {
       dispatch(setAffairsInfo({}))
       dispatch(setDemandInfo({}))
       dispatch(setFlawInfo({}))

@@ -3,7 +3,7 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Space } from 'antd'
 
-export const Wrap = styled.div`
+export const Wrap = styled.div<{ all?: boolean }>`
   height: 100%;
   display: flex;
   padding-top: 20px;
@@ -26,7 +26,7 @@ export const Wrap = styled.div`
     color: var(--primary-d1);
   }
   .ant-tabs-content {
-    height: calc(100vh - 227px);
+    height: calc(${props => (props.all ? '80vh' : '100vh')} - 227px);
     .ant-tabs-tabpane {
       height: 100%;
     }
@@ -229,15 +229,24 @@ export const FlawInfoInfoItem = styled.div<{ activeState?: any }>({
   flexDirection: 'column',
 })
 
-export const FlawInfoLabel = styled.div({
-  color: 'var(--neutral-n1-d1)',
-  fontSize: 14,
-  minWidth: 120,
-  height: 32,
-  lineHeight: '32px',
-  fontFamily: 'SiYuanMedium',
-})
-
+export const FlawInfoLabel = styled.div`
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
+  min-width: 120px;
+  height: 32px;
+  line-height: 32px;
+  font-family: SiYuanMedium;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
+`
 export const WrapRight = styled.div({
   width: 400,
   height: '100%',
@@ -443,6 +452,16 @@ export const Label = styled.div`
   margin-bottom: 8px;
   height: 32px;
   line-height: 32px;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
 `
 export const TextWrap = styled.div({
   width: '100%',

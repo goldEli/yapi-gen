@@ -10,6 +10,7 @@ const Wrap = styled.div<{ danger?: boolean }>`
   background: #f6f7f9;
   padding: 5px 8px;
   cursor: pointer;
+  color: #646566;
   &:hover {
     color: var(--primary-d1);
     svg {
