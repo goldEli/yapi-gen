@@ -241,10 +241,12 @@ export const ActivityTabItem = styled.div<{ isActive?: boolean }>`
 
 export const InfoItem = styled.div<{ isInfoPage?: boolean }>`
   display: flex;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   position: relative;
   flex-direction: column;
-  padding: ${props => (props.isInfoPage ? '0 24px' : 0)};
+  border-radius: 6px;
+  padding: ${props => (props.isInfoPage ? '12px 24px' : 0)};
+  background: white;
 `
 
 export const ItemNumber = styled.div<{ isActive?: boolean }>`

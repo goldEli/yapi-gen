@@ -972,24 +972,35 @@ const SprintDetailDrawer = () => {
                 onUpdate={onOperationUpdate}
                 isPreview={affairsDetailDrawer.isPreview}
               />
-              {drawerInfo.work_type !== 6 && (
-                <ChildSprint
-                  onRef={childRef}
+              <div
+                style={{
+                  backgroundColor: '#f5f5f7',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                  padding: '0px 12px',
+                }}
+              >
+                {drawerInfo.work_type !== 6 && (
+                  <ChildSprint
+                    onRef={childRef}
+                    detail={drawerInfo}
+                    onUpdate={onOperationUpdate}
+                    isPreview={affairsDetailDrawer.isPreview}
+                  />
+                )}
+                <LinkSprint
+                  onRef={linkSprint}
+                  detail={drawerInfo}
+                  isPreview={affairsDetailDrawer.isPreview}
+                />
+                <BasicDemand
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
                   isPreview={affairsDetailDrawer.isPreview}
                 />
-              )}
-              <LinkSprint
-                onRef={linkSprint}
-                detail={drawerInfo}
-                isPreview={affairsDetailDrawer.isPreview}
-              />
-              <BasicDemand
-                detail={drawerInfo}
-                onUpdate={onOperationUpdate}
-                isPreview={affairsDetailDrawer.isPreview}
-              />
+              </div>
+
               <Label
                 id="sprint-comment"
                 className="info_item_tab"

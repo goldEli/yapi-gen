@@ -273,19 +273,30 @@ const AffairsInfo = (props: Props) => {
           affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
           isInfoPage
         />
-        {affairsInfo.work_type !== 6 && (
-          <ChildSprint
-            onRef={childRef}
+        <div
+          style={{
+            backgroundColor: '#f5f5f7',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            padding: '0px 12px',
+          }}
+        >
+          {affairsInfo.work_type !== 6 && (
+            <ChildSprint
+              onRef={childRef}
+              detail={affairsInfo as Model.Affairs.AffairsInfo}
+              isInfoPage
+            />
+          )}
+          <LinkSprint
+            onRef={linkSprint}
             detail={affairsInfo as Model.Affairs.AffairsInfo}
             isInfoPage
           />
-        )}
-        <LinkSprint
-          onRef={linkSprint}
-          detail={affairsInfo as Model.Affairs.AffairsInfo}
-          isInfoPage
-        />
-        <ActivitySprint />
+          <ActivitySprint />
+        </div>
+
         {affairsInfo?.isExamine && (
           <div className="review">
             <CommonIconFont type="review" size={64} />

@@ -169,141 +169,151 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           </TargetWrap>
         </InfoItem>
       )}
-      <InfoItem
-        className="info_item_tab"
-        id="sprint-info"
+      <div
         style={{
-          marginTop: '0px',
+          backgroundColor: '#f5f5f7',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          padding: '12px 12px',
         }}
-        isInfoPage={props?.isInfoPage}
       >
-        <Label>{t('describe')}</Label>
-        {(isEditInfo || editInfo) && (
-          <div className={canEditHover}>
-            <Editor
-              upload={uploadFile}
-              color="transparent"
-              value={editInfo}
-              getSuggestions={() => []}
-              readonly={!isEditInfo}
-              ref={editorRef}
-              onReadonlyClick={() => {
+        {' '}
+        <InfoItem
+          className="info_item_tab"
+          id="sprint-info"
+          style={{
+            marginTop: '0px',
+          }}
+          isInfoPage={props?.isInfoPage}
+        >
+          <Label>{t('describe')}</Label>
+          {(isEditInfo || editInfo) && (
+            <div className={canEditHover}>
+              <Editor
+                upload={uploadFile}
+                color="transparent"
+                value={editInfo}
+                getSuggestions={() => []}
+                readonly={!isEditInfo}
+                ref={editorRef}
+                onReadonlyClick={() => {
+                  setIsEditInfo(true)
+                  setTimeout(() => {
+                    editorRef.current?.focus()
+                  }, 10)
+                }}
+                onChange={(value: string) => {
+                  editorRef2.current = value
+                }}
+                onBlur={() => onBlurEditor()}
+              />
+            </div>
+          )}
+          {!isEditInfo && !editInfo && (
+            <TextWrapEdit
+              style={{ width: '100%' }}
+              onClick={() => {
+                if (props.isPreview) {
+                  return
+                }
                 setIsEditInfo(true)
                 setTimeout(() => {
                   editorRef.current?.focus()
                 }, 10)
               }}
-              onChange={(value: string) => {
-                editorRef2.current = value
-              }}
-              onBlur={() => onBlurEditor()}
-            />
+            >
+              <span className={canEditHover}>--</span>
+            </TextWrapEdit>
+          )}
+        </InfoItem>
+        <InfoItem
+          id="schedule"
+          className="info_item_tab"
+          isInfoPage={props?.isInfoPage}
+        >
+          <Label>{t('scheduleRecord')}</Label>
+          <ScheduleRecord
+            isPreview={props?.isPreview}
+            detailId={props?.affairsInfo.id ?? 0}
+            projectId={projectInfo.id}
+            noBorder
+            isBug={props?.affairsInfo?.is_bug === 1}
+          />
+        </InfoItem>
+        <InfoItem
+          id="sprint-attachment"
+          className="info_item_tab"
+          isInfoPage={props?.isInfoPage}
+        >
+          <BetweenBox>
+            <Label>{t('common.attachment')}</Label>
+            {!props?.isPreview && (
+              <Tooltip title={t('addAttachments')}>
+                <CloseWrap width={32} height={32}>
+                  <CommonIconFont
+                    type="plus"
+                    size={20}
+                    color="var(--neutral-n2)"
+                    onClick={handleUpload}
+                  />
+                </CloseWrap>
+              </Tooltip>
+            )}
+          </BetweenBox>
+          <div>
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length > 0 && (
+              <UploadAttach
+                multiple
+                ref={uploadRef}
+                onBottom={onBottom}
+                defaultList={props.affairsInfo?.attachment?.map((i: any) => ({
+                  url: i.attachment.path,
+                  id: i.id,
+                  size: i.attachment.size,
+                  time: i.created_at,
+                  name: i.attachment.name,
+                  suffix: i.attachment.ext,
+                  username: i.user_name ?? '--',
+                }))}
+                canUpdate
+                onC
+                isIteration={props?.isPreview}
+                del={onDeleteInfoAttach}
+                add={onAddInfoAttach}
+              />
+            )}
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length <= 0 && <span>--</span>}
           </div>
-        )}
-        {!isEditInfo && !editInfo && (
-          <TextWrapEdit
-            style={{ width: '100%' }}
-            onClick={() => {
-              if (props.isPreview) {
-                return
-              }
-              setIsEditInfo(true)
-              setTimeout(() => {
-                editorRef.current?.focus()
-              }, 10)
-            }}
-          >
-            <span className={canEditHover}>--</span>
-          </TextWrapEdit>
-        )}
-      </InfoItem>
-      <InfoItem
-        id="schedule"
-        className="info_item_tab"
-        isInfoPage={props?.isInfoPage}
-      >
-        <Label>{t('scheduleRecord')}</Label>
-        <ScheduleRecord
-          isPreview={props?.isPreview}
-          detailId={props?.affairsInfo.id ?? 0}
-          projectId={projectInfo.id}
-          noBorder
-          isBug={props?.affairsInfo?.is_bug === 1}
-        />
-      </InfoItem>
-
-      <InfoItem
-        id="sprint-attachment"
-        className="info_item_tab"
-        isInfoPage={props?.isInfoPage}
-      >
-        <BetweenBox>
-          <Label>{t('common.attachment')}</Label>
-          {!props?.isPreview && (
-            <Tooltip title={t('addAttachments')}>
-              <CloseWrap width={32} height={32}>
-                <CommonIconFont
-                  type="plus"
-                  size={20}
-                  color="var(--neutral-n2)"
-                  onClick={handleUpload}
-                />
-              </CloseWrap>
-            </Tooltip>
-          )}
-        </BetweenBox>
-        <div>
-          {projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length > 0 && (
-            <UploadAttach
-              multiple
-              ref={uploadRef}
-              onBottom={onBottom}
-              defaultList={props.affairsInfo?.attachment?.map((i: any) => ({
-                url: i.attachment.path,
-                id: i.id,
-                size: i.attachment.size,
-                time: i.created_at,
-                name: i.attachment.name,
-                suffix: i.attachment.ext,
-                username: i.user_name ?? '--',
-              }))}
-              canUpdate
-              onC
-              isIteration={props?.isPreview}
-              del={onDeleteInfoAttach}
-              add={onAddInfoAttach}
-            />
-          )}
-          {projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length <= 0 && <span>--</span>}
-        </div>
-      </InfoItem>
-      <InfoItem
-        id="sprint-tag"
-        className="info_item_tab"
-        isInfoPage={props?.isInfoPage}
-      >
-        <Label>{t('common.tag')}</Label>
-        <SprintTag
-          isPreview={props?.isPreview}
-          defaultList={tagList}
-          canAdd
-          onUpdate={() => onUpdate()}
-          detail={props.affairsInfo}
-          addWrap={
-            props?.isPreview ? (
-              <span />
-            ) : (
-              <AddWrap hasDash>
-                <IconFont type="plus" />
-              </AddWrap>
-            )
-          }
-        />
-      </InfoItem>
+        </InfoItem>
+        <InfoItem
+          id="sprint-tag"
+          className="info_item_tab"
+          isInfoPage={props?.isInfoPage}
+        >
+          <Label>{t('common.tag')}</Label>
+          <SprintTag
+            isPreview={props?.isPreview}
+            defaultList={tagList}
+            canAdd
+            onUpdate={() => onUpdate()}
+            detail={props.affairsInfo}
+            addWrap={
+              props?.isPreview ? (
+                <span />
+              ) : (
+                <AddWrap hasDash>
+                  <IconFont type="plus" />
+                </AddWrap>
+              )
+            }
+          />
+        </InfoItem>
+      </div>
     </>
   )
 }
