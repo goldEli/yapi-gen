@@ -766,7 +766,11 @@ const SprintDetailDrawer = () => {
                 </div>
 
                 <div>
-                  <LeftIcontButton icon="full-screen" text={t('openDetails')} />
+                  <LeftIcontButton
+                    onClick={onToDetail}
+                    icon="full-screen"
+                    text={t('openDetails')}
+                  />
                 </div>
 
                 <DropdownMenu

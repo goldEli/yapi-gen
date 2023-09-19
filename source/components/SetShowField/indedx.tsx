@@ -44,6 +44,8 @@ const SetShowField = (props: Props) => {
   const dispatch = useDispatch()
   const [active, setActive] = useState()
   const onChangeViewMode = async (type: number) => {
+    console.log(type, 'type')
+
     await updateCompanyUserPreferenceConfig({
       previewModel: type,
       id: userPreferenceConfig?.id,
@@ -80,7 +82,7 @@ const SetShowField = (props: Props) => {
                 active === '1' || userPreferenceConfig.previewModel === 1
               }
             >
-              <span style={{ paddingRight: 10 }}>{t('popup_preview')}</span>
+              <span style={{ paddingRight: 10 }}>{t('slideOutSide')}</span>
               {(active === '1' || userPreferenceConfig.previewModel === 1) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
@@ -97,8 +99,25 @@ const SetShowField = (props: Props) => {
                 active === '2' || userPreferenceConfig.previewModel === 2
               }
             >
-              <span style={{ paddingRight: 10 }}>{t('details_preview')}</span>
+              <span style={{ paddingRight: 10 }}>{t('fullScreenPreview')}</span>
               {(active === '2' || userPreferenceConfig.previewModel === 2) && (
+                <CommonIconFont type="check" color={'var(--primary-d2)'} />
+              )}
+            </ChangeItem>
+          ),
+        },
+        {
+          key: '3',
+          label: (
+            <ChangeItem
+              height={22}
+              onClick={() => onChangeViewMode(3)}
+              isActive={
+                active === '3' || userPreferenceConfig.previewModel === 3
+              }
+            >
+              <span style={{ paddingRight: 10 }}>{t('preview')}</span>
+              {(active === '3' || userPreferenceConfig.previewModel === 3) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </ChangeItem>
