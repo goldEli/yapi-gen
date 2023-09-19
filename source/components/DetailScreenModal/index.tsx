@@ -61,6 +61,7 @@ const DetailScreenModal = () => {
 
   return (
     <ModalWrap
+      all={userPreferenceConfig.previewModel === 3}
       footer={false}
       open={visible}
       closable={false}
@@ -70,9 +71,13 @@ const DetailScreenModal = () => {
       keyboard={false}
       wrapClassName="vertical-center-modal"
       focusTriggerAfterClose={false}
-      mask={false}
+      mask={userPreferenceConfig.previewModel === 3}
       bodyStyle={{
-        height: fullScreen ? '100vh' : 'calc(100vh - 56px)',
+        height: fullScreen
+          ? '100vh'
+          : userPreferenceConfig.previewModel === 3
+          ? '80vh'
+          : 'calc(100vh - 56px)',
         minWidth: '1400px',
         marginTop: fullScreen ? 0 : 56,
       }}
