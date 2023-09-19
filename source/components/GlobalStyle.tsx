@@ -888,7 +888,7 @@ const GlobalStyle = () => {
       top: 50%;
       transform: translateY(-50%);
     }
-    .tabs {
+    .tabs2 {
       .ant-tabs-nav-wrap {
         padding: 0 12px;
       }

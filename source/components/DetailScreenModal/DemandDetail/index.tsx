@@ -781,7 +781,7 @@ const DemandDetail = () => {
       <div>
         {' '}
         <Tabs
-          className="tabs"
+          className="tabs2"
           tabBarExtraContent={
             tabActive === '4' && (
               <ScreenMinHover
