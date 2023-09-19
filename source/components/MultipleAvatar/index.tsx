@@ -168,7 +168,6 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       visible={visible}
       menu={{ items }}
       disabled={props.disableDropDown}
-      // trigger={['click']}
       onVisibleChange={e => {
         setVisible(e), e && getUserIntroListApi()
       }}
@@ -195,7 +194,6 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       visible={visible}
       menu={{ items }}
       disabled={props.disableDropDown}
-      // trigger={['click']}
       onVisibleChange={e => {
         setVisible(e), e && getUserIntroListApi()
       }}

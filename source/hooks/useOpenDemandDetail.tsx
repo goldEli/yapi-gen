@@ -8,7 +8,7 @@ import { setFlawInfo } from '@store/flaw'
 import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 import {
   setDrawerCanOperation,
-  setDrawerCurrentAnchor,
+  setDrawerInfo,
   setIsChangeDetailAffairs,
   setIsUpdateAddWorkItem,
 } from '@store/project'
@@ -35,8 +35,8 @@ const useOpenDemandDetail = () => {
     dispatch(setIsUpdateAddWorkItem(0))
     dispatch(setIsChangeDetailAffairs(false))
     dispatch(setListActiveId(id ?? 0))
-    // 重置锚点位置
-    dispatch(setDrawerCurrentAnchor(''))
+    // 重置浮层详情数据
+    dispatch(setDrawerInfo({}))
     // 浮层预览
     if (userPreferenceConfig.previewModel === 1 || isPreview) {
       switch (type) {

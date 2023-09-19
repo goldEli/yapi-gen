@@ -766,6 +766,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
       getList(pageObj, order)
     }
   }, [props.detail, projectInfo])
+
   useEffect(() => {
     if (isVisible && !searchValue) {
       getSelectRelationRecent()

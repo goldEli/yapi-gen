@@ -15,16 +15,13 @@ import {
   Tabs,
   Tooltip,
 } from 'antd'
-import { CloseWrap, DragLine, MouseDom, ConfigWrap } from '../StyleCommon'
+import { DragLine, MouseDom, ConfigWrap } from '../StyleCommon'
 import {
   Header,
-  BackIcon,
   ChangeIconGroup,
   Content,
   DemandName,
   SkeletonStatus,
-  UpWrap,
-  DownWrap,
   DropdownMenu,
   DetailFooter,
   TargetWrap,
@@ -52,6 +49,7 @@ import {
 import { getProjectInfo } from '@/services/project'
 import {
   setAddWorkItemModal,
+  setDrawerInfo,
   setIsUpdateAddWorkItem,
   setProjectInfo,
 } from '@store/project'
@@ -72,7 +70,7 @@ import {
 } from '@/tools'
 import CommentFooter from '../CommonComment/CommentFooter'
 import LongStroyBread from '../LongStroyBread'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '../CopyIcon'
 import DeleteConfirm from '../DeleteConfirm'
@@ -86,10 +84,9 @@ import CommonProgress from '../CommonProgress'
 import SprintTag from '../TagComponent/SprintTag'
 import { setTaskDrawerUpdate } from '@store/employeeProfile'
 import LeftIcontButton from '../LeftIcontButton'
-let timer: NodeJS.Timeout
+
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
-
   const [t] = useTranslation()
   const leftWidth = 960
   const dispatch = useDispatch()
@@ -101,7 +98,6 @@ const SprintDetailDrawer = () => {
   const spanDom = useRef<HTMLSpanElement>(null)
   const commentDom: any = createRef()
   const [focus, setFocus] = useState(false)
-  const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const [isVisible, setIsVisible] = useState(false)
@@ -111,13 +107,11 @@ const SprintDetailDrawer = () => {
   const { affairsDetailDrawer, affairsCommentList } = useSelector(
     store => store.affairs,
   )
-  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
-    store => store.project,
-  )
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem, drawerInfo } =
+    useSelector(store => store.project)
 
   const { userInfo } = useSelector(store => store.user)
   const { fullScreen } = useSelector(store => store.kanBan)
-  const isTabClick = useRef<string>('')
 
   // 快捷按钮列表
   const projectIdRef = useRef('')
@@ -229,7 +223,7 @@ const SprintDetailDrawer = () => {
   }
 
   // 获取事务详情
-  const getSprintDetail = async (id?: any, ids?: any) => {
+  const getSprintDetail = async (isInit?: any, ids?: any) => {
     const paramsProjectId =
       affairsDetailDrawer.params.project_id ??
       affairsDetailDrawer.params.projectId ??
@@ -245,14 +239,17 @@ const SprintDetailDrawer = () => {
     ) {
       getProjectData()
     }
-    setDrawerInfo({})
-    setSkeletonLoading(true)
+    if (isInit) {
+      setSkeletonLoading(true)
+    }
     const info = await getAffairsInfo({
       projectId: paramsProjectId,
-      sprintId: id ? id : affairsDetailDrawer.params?.id,
+      sprintId: affairsDetailDrawer.params?.id,
     })
-    setDrawerInfo(info)
-    setSkeletonLoading(false)
+    dispatch(setDrawerInfo(info))
+    if (isInit) {
+      setSkeletonLoading(false)
+    }
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
     // 获取评论列表
@@ -394,10 +391,12 @@ const SprintDetailDrawer = () => {
       })
       getMessage({ type: 'success', msg: t('successfullyModified') })
       // 提交名称
-      setDrawerInfo({
-        ...drawerInfo,
-        name: value,
-      })
+      dispatch(
+        setDrawerInfo({
+          ...drawerInfo,
+          name: value,
+        }),
+      )
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
   }
@@ -523,8 +522,6 @@ const SprintDetailDrawer = () => {
   }
   // 操作后更新列表
   const onOperationUpdate = async (value?: boolean) => {
-    getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
-    isTabClick.current = tabActive
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -586,9 +583,6 @@ const SprintDetailDrawer = () => {
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    if (isTabClick.current) {
-      return
-    }
     if (!document.querySelector('#contentDom')) {
       return
     }
@@ -614,7 +608,7 @@ const SprintDetailDrawer = () => {
       }
       dispatch(setAffairsCommentList({ list: [] }))
       setDemandIds(affairsDetailDrawer.params?.demandIds || [])
-      getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
+      getSprintDetail(true, affairsDetailDrawer.params?.demandIds || [])
     }
   }, [affairsDetailDrawer])
 
@@ -624,13 +618,6 @@ const SprintDetailDrawer = () => {
       setDemandIds([])
       if (affairsDetailDrawer.visible) {
         getSprintDetail('', [])
-        if (isTabClick.current) {
-          clearTimeout(timer)
-          timer = setTimeout(() => {
-            onChangeTabs(isTabClick.current)
-            isTabClick.current = ''
-          }, 3000)
-        }
       }
     }
   }, [isUpdateAddWorkItem])
