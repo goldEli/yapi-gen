@@ -25,7 +25,7 @@ export const getMemberOverviewStatistics = async (params: any) => {
 export const getMemberOverviewStoryList = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewStoryList', {
     status: params.status,
-    user_ids: params.user_ids.join(','),
+    user_ids: params.user_ids?.join(','),
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
     keyword: params.keyword ?? '',
@@ -75,7 +75,7 @@ export const toggleStar = async (id: any, isStar: any) => {
 // 获取汇报数据
 export const getMemberOverviewReportList = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewReportList', {
-    user_ids: params.user_ids,
+    user_ids: params.user_ids || [],
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
     is_star: params.isStart ? 1 : 2,
@@ -98,7 +98,7 @@ export const getMemberOverviewMoreReportList = async (params: any) => {
 // 员工对比报告
 export const getMemberOverviewCompare = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewCompare', {
-    user_ids: params.user_ids.join(','),
+    user_ids: params.user_ids?.join(','),
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
   })

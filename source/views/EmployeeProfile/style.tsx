@@ -150,6 +150,15 @@ export const PersonWrap = styled.div`
   flex-direction: column;
   white-space: nowrap;
   height: 100%;
+  .input {
+    width: 92%;
+    margin-bottom: 16px;
+    border: 1px solid var(--neutral-n6-d1);
+    border-radius: 6px;
+    .ant-select {
+      width: 100%;
+    }
+  }
   .label {
     font-size: 14px;
     color: var(--neutral-n1-d1);
@@ -171,7 +180,7 @@ export const PersonWrap = styled.div`
 export const ReportButton = styled.div`
   position: absolute;
   right: 0;
-  top: 19px;
+  top: 72px;
   height: 32px;
   line-height: 32px;
   padding: 0 8px;
@@ -188,7 +197,7 @@ export const CheckboxAll = styled(Checkbox)`
 `
 
 export const CheckBoxWrap = styled.div`
-  height: calc(100% - 70px);
+  height: calc(100% - 118px);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
