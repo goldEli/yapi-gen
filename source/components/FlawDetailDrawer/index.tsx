@@ -773,86 +773,51 @@ const FlawDetailDrawer = () => {
               <>
                 <ChangeIconGroup>
                   {currentIndex > 0 && (
-                    <Tooltip title={t('previous')}>
-                      <LeftIcontButton
-                        onClick={onUpDemand}
-                        icon="up-md"
-                        text={t('previous')}
-                      />
-                      {/* <UpWrap
-                        onClick={onUpDemand}
-                        id="upIcon"
-                        isOnly={
-                          demandIds?.length === 0 ||
-                          currentIndex === demandIds?.length - 1
-                        }
-                      >
-                        <CommonIconFont
-                          type="up"
-                          size={20}
-                          color="var(--neutral-n1-d1)"
-                        />
-                      </UpWrap> */}
-                    </Tooltip>
+                    <LeftIcontButton
+                      onClick={onUpDemand}
+                      icon="up-md"
+                      text={t('previous')}
+                    />
                   )}
                   {!(
                     demandIds?.length === 0 ||
                     currentIndex === demandIds?.length - 1
                   ) && (
-                    <Tooltip title={t('next')}>
-                      <LeftIcontButton
-                        onClick={onDownDemand}
-                        icon="down-md"
-                        text={t('next')}
-                      />
-                      {/* <DownWrap
-                        onClick={onDownDemand}
-                        id="downIcon"
-                        isOnly={currentIndex <= 0}
-                      >
-                        <CommonIconFont
-                          type="down"
-                          size={20}
-                          color="var(--neutral-n1-d1)"
-                        />
-                      </DownWrap> */}
-                    </Tooltip>
+                    <LeftIcontButton
+                      onClick={onDownDemand}
+                      icon="down-md"
+                      text={t('next')}
+                    />
                   )}
                 </ChangeIconGroup>
-                <Tooltip title={t('share')}>
-                  <div>
-                    <LeftIcontButton
-                      onClick={onShare}
-                      icon="share"
-                      text={t('share')}
-                    />
-                  </div>
-                </Tooltip>
-                <Tooltip title={t('openDetails')}>
-                  <div>
-                    <LeftIcontButton
-                      icon="full-screen"
-                      text={t('openDetails')}
-                    />
-                    {/* <CommonButton
+
+                <div>
+                  <LeftIcontButton
+                    onClick={onShare}
+                    icon="share"
+                    text={t('share')}
+                  />
+                </div>
+
+                <div>
+                  <LeftIcontButton icon="full-screen" text={t('openDetails')} />
+                  {/* <CommonButton
                       type="icon"
                       icon="full-screen"
                       onClick={onToDetail}
                     /> */}
+                </div>
+
+                <DropdownMenu
+                  placement="bottomRight"
+                  trigger={['click']}
+                  menu={{ items: onGetMenu() }}
+                  getPopupContainer={n => n}
+                >
+                  <div>
+                    <LeftIcontButton icon="more-01" text={t('more')} />
                   </div>
-                </Tooltip>
-                <Tooltip title={t('more')}>
-                  <DropdownMenu
-                    placement="bottomRight"
-                    trigger={['click']}
-                    menu={{ items: onGetMenu() }}
-                    getPopupContainer={n => n}
-                  >
-                    <div>
-                      <LeftIcontButton icon="more-01" text={t('more')} />
-                    </div>
-                  </DropdownMenu>
-                </Tooltip>
+                </DropdownMenu>
               </>
             )}
             {flawDetailDrawer.star && (
