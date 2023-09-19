@@ -46,12 +46,13 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
   const editorRef = useRef<EditorRef>(null)
   const editorRef2 = useRef<any>()
   const uploadRef = useRef<any>()
+  const info = useRef<any>({})
   const onDeleteInfoAttach = async (file: any) => {
     setIsDelVisible(true)
     setFiles(file)
   }
 
-  const onAddInfoAttach = async (data: any) => {
+  const onAddInfoAttach = async (data: any, id: any) => {
     const obj = {
       url: data.data.url,
       name: data.data.files.name,
@@ -61,8 +62,8 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
     }
 
     await addInfoDemand({
-      projectId: props.detail.projectId,
-      demandId: props.detail.id,
+      projectId: projectInfo?.id,
+      demandId: info.current?.id,
       type: 'attachment',
       targetId: [obj],
     })
@@ -72,8 +73,8 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
   const onDeleteConfirm = async () => {
     try {
       await deleteInfoDemand({
-        projectId: props.detail.projectId,
-        demandId: props.detail.id,
+        projectId: projectInfo?.id,
+        demandId: info.current?.id,
         type: 'attachment',
         targetId: files,
       })
@@ -105,7 +106,9 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
   }
   useEffect(() => {
     setEditInfo(props.detail.info)
-  }, [props.detail])
+    info.current = props.detail
+  }, [JSON.stringify(props.detail)])
+
   useImperativeHandle(ref, () => {
     return {
       handleUpload,

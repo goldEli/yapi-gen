@@ -160,7 +160,6 @@ interface Props {
 
 const DemandTag = (props: Props) => {
   const [t] = useTranslation()
-  const { demandInfo } = useSelector(store => store.demand)
   const { projectInfo } = useSelector(store => store.project)
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)

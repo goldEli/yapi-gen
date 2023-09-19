@@ -338,10 +338,10 @@ const ChildrenDemand = (props: Props, ref: any) => {
     }
   })
   useEffect(() => {
-    if (props.detail?.id || isUpdateAddWorkItem) {
+    if (props.detail?.id && projectInfo?.id) {
       getList()
     }
-  }, [props.detail, isUpdateAddWorkItem])
+  }, [props.detail, projectInfo])
 
   return (
     <div

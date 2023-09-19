@@ -21,53 +21,33 @@ import { setDemandInfo, setIsDemandDetailDrawerVisible } from '@store/demand'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import {
   setAddWorkItemModal,
+  setDrawerInfo,
   setIsUpdateAddWorkItem,
   setProjectInfo,
 } from '@store/project'
-import {
-  Drawer,
-  message,
-  Popover,
-  Skeleton,
-  Space,
-  Tooltip,
-  Tabs,
-  Affix,
-} from 'antd'
+import { Drawer, Popover, Skeleton, Space, Tooltip, Tabs } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import CommonIconFont from '../CommonIconFont'
 import DeleteConfirm from '../DeleteConfirm'
 import StateTag from '../StateTag'
-import { CloseWrap, ConfigWrap, DragLine, MouseDom } from '../StyleCommon'
+import { ConfigWrap, DragLine, MouseDom } from '../StyleCommon'
 import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
 import DetailDemand from './DetailDemand'
 import {
   Header,
-  BackIcon,
   ChangeIconGroup,
   Content,
   ParentBox,
   DemandName,
-  CollapseItem,
-  CollapseItemTitle,
-  CollapseItemContent,
   DrawerHeader,
-  NextWrap,
   SkeletonStatus,
-  UpWrap,
-  DownWrap,
   DetailFooter,
   CommentTitle,
   LayerBox,
-  customTabs,
   BtnWrap,
-  CycleBox,
-  HandlerBox,
-  FixedBox,
-  EmptyBox,
   ProgressBox,
 } from './style'
 import CommonButton from '../CommonButton'
@@ -106,38 +86,14 @@ interface ItemIprops {
   label: string
   key: string
 }
-let timer: NodeJS.Timeout
 const DemandDetailDrawer = () => {
-  const normalState = {
-    detailInfo: {
-      isOpen: true,
-      dom: useRef<any>(null),
-    },
-    detailDemands: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    relation: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    basicInfo: {
-      isOpen: true,
-      dom: useRef<any>(null),
-    },
-    demandComment: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-  }
   const {
     isDemandDetailDrawerVisible,
     demandDetailDrawerProps,
     demandCommentList,
   } = useSelector(store => store.demand)
-  const { projectInfo, isUpdateAddWorkItem, projectInfoValues } = useSelector(
-    store => store.project,
-  )
+  const { projectInfo, isUpdateAddWorkItem, projectInfoValues, drawerInfo } =
+    useSelector(store => store.project)
   const { userInfo } = useSelector(store => store.user)
   const [t] = useTranslation()
   const navigate = useNavigate()
@@ -149,8 +105,6 @@ const DemandDetailDrawer = () => {
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const [focus, setFocus] = useState(false)
   const [deleteId, setDeleteId] = useState(0)
-  const [drawerInfo, setDrawerInfo] = useState<any>({})
-  const [showState, setShowState] = useState<any>(normalState)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const commentDom: any = createRef()
@@ -165,7 +119,6 @@ const DemandDetailDrawer = () => {
     projectInfo.projectPermissions?.filter(
       (i: any) => i.identity === 'b/story/update',
     )?.length > 0
-  const isTabClick = useRef<string>('')
 
   const items: ItemIprops[] = [
     {
@@ -242,7 +195,7 @@ const DemandDetailDrawer = () => {
   }
 
   // 获取需求详情
-  const getDemandDetail = async (id?: any, ids?: any) => {
+  const getDemandDetail = async (isInit?: any, ids?: any) => {
     const paramsProjectId =
       demandDetailDrawerProps.project_id ??
       demandDetailDrawerProps.projectId ??
@@ -254,11 +207,12 @@ const DemandDetailDrawer = () => {
     ) {
       getProjectData()
     }
-    setDrawerInfo({})
-    setSkeletonLoading(true)
+    if (isInit) {
+      setSkeletonLoading(true)
+    }
     const info = await getDemandInfo({
       projectId: paramsProjectId,
-      id: id ? id : demandDetailDrawerProps?.id,
+      id: demandDetailDrawerProps?.id,
     })
     // info.level_tree.push({
     //   id: info.id,
@@ -269,16 +223,12 @@ const DemandDetailDrawer = () => {
     //   parent_id: info.parentId,
     //   name: info.name,
     // })
-    setDrawerInfo(info)
-    setSkeletonLoading(false)
+    dispatch(setDrawerInfo(info))
+    if (isInit) {
+      setSkeletonLoading(false)
+    }
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
-
-    const arr = [
-      { key: 'detailDemands', count: info.childCount },
-      { key: 'relation', count: info.relation_stories },
-      { key: 'demandComment', count: info.comment_total },
-    ]
 
     if (info.comment_total) {
       // 获取评论列表
@@ -291,19 +241,6 @@ const DemandDetailDrawer = () => {
         }),
       )
     }
-
-    const newState = Object.assign({}, showState)
-    let resState: any
-
-    // 如果有数据的话，则默认展开
-    arr.forEach(element => {
-      resState = {
-        isOpen: element.count,
-        dom: newState[element.key].dom,
-      }
-      newState[element.key] = resState
-    })
-    setShowState(newState)
   }
 
   // 关闭弹窗
@@ -316,7 +253,6 @@ const DemandDetailDrawer = () => {
     )
     dispatch(setIsDemandDetailDrawerVisible(false))
     dispatch(saveDemandDetailDrawer({}))
-    setShowState(normalState)
   }
 
   // 跳转详情页面
@@ -380,18 +316,6 @@ const DemandDetailDrawer = () => {
     )
   }
 
-  // 改变模块显示
-  const onChangeShowState = (item: any) => {
-    const newState = Object.assign({}, showState)
-    const resState = {
-      isOpen: !newState[item.key].isOpen,
-      dom: newState[item.key].dom,
-    }
-    newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
-    newState[item.key] = resState
-    setShowState(newState)
-  }
-
   // 是否审核
   const onExamine = () => {
     getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
@@ -417,11 +341,13 @@ const DemandDetailDrawer = () => {
         },
       })
       getMessage({ type: 'success', msg: t('successfullyModified') })
-      // 提交名称
-      setDrawerInfo({
-        ...drawerInfo,
-        name: value,
-      })
+      dispatch(
+        setDrawerInfo({
+          ...drawerInfo,
+          name: value,
+        }),
+      )
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
   }
 
@@ -507,8 +433,6 @@ const DemandDetailDrawer = () => {
 
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
-    getDemandDetail('', demandIds)
-    isTabClick.current = tabActive
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -602,7 +526,7 @@ const DemandDetailDrawer = () => {
         dispatch(setProjectInfo({}))
       }
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
-      getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
+      getDemandDetail(true, demandDetailDrawerProps?.demandIds || [])
     }
   }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
 
@@ -612,13 +536,6 @@ const DemandDetailDrawer = () => {
       setDemandIds([])
       if (isDemandDetailDrawerVisible) {
         getDemandDetail()
-        if (isTabClick.current) {
-          clearTimeout(timer)
-          timer = setTimeout(() => {
-            onChangeTabs(isTabClick.current)
-            isTabClick.current = ''
-          }, 3000)
-        }
       }
     }
   }, [isUpdateAddWorkItem])
@@ -641,9 +558,6 @@ const DemandDetailDrawer = () => {
   }
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    if (isTabClick.current) {
-      return
-    }
     if (!document.querySelector('#contentDom')) {
       return
     }
@@ -700,13 +614,6 @@ const DemandDetailDrawer = () => {
               icon="close"
               text={t('closure')}
             />
-            {/* <BackIcon onClick={onCancel}>
-              <CommonIconFont
-                type="right-02"
-                size={20}
-                color="var(--neutral-n2)"
-              />
-            </BackIcon> */}
             {skeletonLoading && (
               <SkeletonStatus>
                 <Skeleton.Input active />
@@ -724,20 +631,6 @@ const DemandDetailDrawer = () => {
                         icon="up-md"
                         text={t('previous')}
                       />
-                      {/* <UpWrap
-                        onClick={onUpDemand}
-                        id="upIcon"
-                        isOnly={
-                          demandIds?.length === 0 ||
-                          currentIndex === demandIds?.length - 1
-                        }
-                      >
-                        <CommonIconFont
-                          type="up"
-                          size={20}
-                          color="var(--neutral-n1-d1)"
-                        />
-                      </UpWrap> */}
                     </Tooltip>
                   )}
                   {!(
@@ -750,17 +643,6 @@ const DemandDetailDrawer = () => {
                         icon="down-md"
                         text={t('next')}
                       />
-                      {/* <DownWrap
-                        onClick={onDownDemand}
-                        id="downIcon"
-                        isOnly={currentIndex <= 0}
-                      >
-                        <CommonIconFont
-                          type="down"
-                          size={20}
-                          color="var(--neutral-n1-d1)"
-                        />
-                      </DownWrap> */}
                     </Tooltip>
                   )}
                 </ChangeIconGroup>
@@ -770,7 +652,6 @@ const DemandDetailDrawer = () => {
                       icon="full-screen"
                       text={t('openDetails')}
                     />
-                    {/* <CommonButton type="icon" icon="full-screen" /> */}
                   </div>
                 </Tooltip>
                 <Tooltip title={t('more')}>
@@ -1001,9 +882,7 @@ const DemandDetailDrawer = () => {
               )}
               <DrawerTopInfo
                 details={drawerInfo}
-                onUpdate={() => {
-                  getDemandDetail()
-                }}
+                onUpdate={onOperationUpdate}
                 isPreview={demandDetailDrawerProps?.isPreview}
               ></DrawerTopInfo>
               <Tabs

@@ -113,7 +113,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
           {props.isPreview ? (
             <MultipleAvatar
               max={3}
-              list={props.details?.user?.map((i: any) => ({
+              list={(props.details?.user ?? [])?.map((i: any) => ({
                 id: i.user.id,
                 name: i.user.name,
                 avatar: i.user.avatar,
@@ -136,7 +136,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
               >
                 <MultipleAvatar
                   max={3}
-                  list={props.details?.user?.map((i: any) => ({
+                  list={(props.details?.user ?? [])?.map((i: any) => ({
                     id: i.user.id,
                     name: i.user.name,
                     avatar: i.user.avatar,
