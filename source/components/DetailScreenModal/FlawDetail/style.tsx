@@ -203,14 +203,14 @@ export const DetailTitle = styled.div`
 export const FlawInfoWrap = styled.div({
   display: 'flex',
   height: '100%',
-  padding: '16px 0 0px',
+  // padding: '16px 0 0px',
 })
 
 export const FlawInfoLeft = styled.div`
   width: 80%;
   height: 100%;
   overflow: auto;
-  padding: 0 20px 0 24px;
+  background-color: #f5f5f7;
   position: relative;
   .review {
     position: absolute;
@@ -224,9 +224,12 @@ export const FlawInfoLeft = styled.div`
 
 export const FlawInfoInfoItem = styled.div<{ activeState?: any }>({
   display: 'flex',
-  marginTop: 14,
+  // marginTop: 14,
   position: 'relative',
   flexDirection: 'column',
+  background: 'white',
+  borderRadius: '6px',
+  padding: '12px',
 })
 
 export const FlawInfoLabel = styled.div`

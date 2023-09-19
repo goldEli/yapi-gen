@@ -127,117 +127,131 @@ const DemandDetail = () => {
 
   return (
     <WrapLeft ref={LeftDom}>
-      <InfoItem
+      <div
         style={{
-          marginTop: '0px',
+          backgroundColor: '#f5f5f7',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          padding: '12px 12px',
         }}
       >
-        <Label>{t('mine.demandInfo')}</Label>
-        {(isEditInfo || editInfo) && (
-          <div className={canEditHover}>
-            <Editor
-              upload={uploadFile}
-              color="transparent"
-              value={editInfo}
-              getSuggestions={() => []}
-              readonly={!isEditInfo}
-              ref={editorRef}
-              onReadonlyClick={() => {
+        <InfoItem
+          style={{
+            marginTop: '0px',
+          }}
+        >
+          <Label>{t('mine.demandInfo')}</Label>
+          {(isEditInfo || editInfo) && (
+            <div className={canEditHover}>
+              <Editor
+                upload={uploadFile}
+                color="transparent"
+                value={editInfo}
+                getSuggestions={() => []}
+                readonly={!isEditInfo}
+                ref={editorRef}
+                onReadonlyClick={() => {
+                  setIsEditInfo(true)
+                  setTimeout(() => {
+                    editorRef.current?.focus()
+                  }, 10)
+                }}
+                onChange={(value: string) => {
+                  editorRef2.current = value
+                }}
+                onBlur={() => onBlurEditor()}
+              />
+            </div>
+          )}
+          {!isEditInfo && !editInfo && (
+            <TextWrapEdit
+              style={{ width: '100%' }}
+              onClick={() => {
                 setIsEditInfo(true)
                 setTimeout(() => {
                   editorRef.current?.focus()
                 }, 10)
               }}
-              onChange={(value: string) => {
-                editorRef2.current = value
-              }}
-              onBlur={() => onBlurEditor()}
-            />
-          </div>
-        )}
-        {!isEditInfo && !editInfo && (
-          <TextWrapEdit
-            style={{ width: '100%' }}
-            onClick={() => {
-              setIsEditInfo(true)
-              setTimeout(() => {
-                editorRef.current?.focus()
-              }, 10)
-            }}
-          >
-            <span className={canEditHover}>--</span>
-          </TextWrapEdit>
-        )}
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('scheduleRecord')}</Label>
-        <ScheduleRecord
-          detailId={demandInfo.id}
-          projectId={demandInfo.projectId}
-          noBorder
-          isBug={demandInfo?.is_bug === 1}
-        />
-      </InfoItem>
-
-      <InfoItem>
-        <Label>{t('common.attachment')}</Label>
-        <div>
-          {projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length > 0 && (
-            <UploadAttach
-              onBottom={onBottom}
-              defaultList={demandInfo?.attachment?.map((i: any) => ({
-                url: i.attachment.path,
-                id: i.id,
-                size: i.attachment.size,
-                time: i.created_at,
-                name: i.attachment.name,
-                suffix: i.attachment.ext,
-                username: i.user_name ?? '--',
-              }))}
-              canUpdate
-              onC
-              del={onDeleteInfoAttach}
-              add={onAddInfoAttach}
-              addWrap={
-                <CommonButton type="primaryText" icon="plus">
-                  {t('addAttachments')}
-                </CommonButton>
-              }
-            />
+            >
+              <span className={canEditHover}>--</span>
+            </TextWrapEdit>
           )}
-          {projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length <= 0 && <span>--</span>}
-        </div>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.tag')}</Label>
-        <DemandTag
-          defaultList={tagList}
-          canAdd
-          detail={demandInfo}
-          isInfoPage
-          addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
-          }
-        />
-      </InfoItem>
-      <DeleteConfirm
-        text={t('p2.del')}
-        isVisible={isDelVisible}
-        onChangeVisible={() => setIsDelVisible(!isDelVisible)}
-        onConfirm={onDeleteConfirm}
-      />
-      {demandInfo.id && (
-        <InfoItem>
-          <Label>{t('new_p1.a3')}</Label>
-          <DemandStatus pid={params.id} sid={demandInfo.id} visible={visible} />
         </InfoItem>
-      )}
+        <InfoItem>
+          <Label>{t('scheduleRecord')}</Label>
+          <ScheduleRecord
+            detailId={demandInfo.id}
+            projectId={demandInfo.projectId}
+            noBorder
+            isBug={demandInfo?.is_bug === 1}
+          />
+        </InfoItem>
+
+        <InfoItem>
+          <Label>{t('common.attachment')}</Label>
+          <div>
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length > 0 && (
+              <UploadAttach
+                onBottom={onBottom}
+                defaultList={demandInfo?.attachment?.map((i: any) => ({
+                  url: i.attachment.path,
+                  id: i.id,
+                  size: i.attachment.size,
+                  time: i.created_at,
+                  name: i.attachment.name,
+                  suffix: i.attachment.ext,
+                  username: i.user_name ?? '--',
+                }))}
+                canUpdate
+                onC
+                del={onDeleteInfoAttach}
+                add={onAddInfoAttach}
+                addWrap={
+                  <CommonButton type="primaryText" icon="plus">
+                    {t('addAttachments')}
+                  </CommonButton>
+                }
+              />
+            )}
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length <= 0 && <span>--</span>}
+          </div>
+        </InfoItem>
+        <InfoItem>
+          <Label>{t('common.tag')}</Label>
+          <DemandTag
+            defaultList={tagList}
+            canAdd
+            detail={demandInfo}
+            isInfoPage
+            addWrap={
+              <AddWrap hasDash>
+                <IconFont type="plus" />
+              </AddWrap>
+            }
+          />
+        </InfoItem>
+        <DeleteConfirm
+          text={t('p2.del')}
+          isVisible={isDelVisible}
+          onChangeVisible={() => setIsDelVisible(!isDelVisible)}
+          onConfirm={onDeleteConfirm}
+        />
+        {demandInfo.id && (
+          <InfoItem>
+            <Label>{t('new_p1.a3')}</Label>
+            <DemandStatus
+              pid={params.id}
+              sid={demandInfo.id}
+              visible={visible}
+            />
+          </InfoItem>
+        )}
+      </div>
     </WrapLeft>
   )
 }

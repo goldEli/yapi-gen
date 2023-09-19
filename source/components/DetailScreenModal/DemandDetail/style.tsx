@@ -9,7 +9,7 @@ export const DemandWrap = styled.div`
   padding-top: 20px;
   flex-direction: column;
   .tabs {
-    padding: 0 24px;
+    padding: 0;
   }
   .ant-tabs-nav {
     margin-bottom: 0px;
@@ -203,10 +203,13 @@ export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
 `
 
 export const InfoItem = styled.div`
+  padding: 12px;
   display: flex;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   position: relative;
   flex-direction: column;
+  background: white;
+  border-radius: 6px;
 `
 
 export const Label = styled.div`
@@ -295,7 +298,7 @@ export const WrapLeft = styled.div({
   width: '100%',
   height: '100%',
   overflow: 'auto',
-  padding: '0 20px 24px 0',
+  padding: '0 0px 0px 0',
 })
 
 // 需求详情-左侧信息及评论列表样式

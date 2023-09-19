@@ -133,24 +133,49 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
   return (
     <>
       <DeleteConfirmModal />
-      <FlawInfoInfoItem
+      <div
         style={{
-          marginTop: '0px',
+          backgroundColor: '#f5f5f7',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          padding: '12px 12px',
         }}
-        activeState
-        id="tab_desc"
-        className="info_item_tab"
       >
-        <FlawInfoLabel>{t('describe')}</FlawInfoLabel>
-        {isEditInfo || editInfo ? (
-          <div className={canEditHover}>
-            <Editor
-              value={editInfo}
-              color="transparent"
-              getSuggestions={() => []}
-              readonly={!isEditInfo}
-              ref={editorRef}
-              onReadonlyClick={() => {
+        <FlawInfoInfoItem
+          style={{
+            marginTop: '0px',
+          }}
+          activeState
+          id="tab_desc"
+          className="info_item_tab"
+        >
+          <FlawInfoLabel>{t('describe')}</FlawInfoLabel>
+          {isEditInfo || editInfo ? (
+            <div className={canEditHover}>
+              <Editor
+                value={editInfo}
+                color="transparent"
+                getSuggestions={() => []}
+                readonly={!isEditInfo}
+                ref={editorRef}
+                onReadonlyClick={() => {
+                  if (props.isPreview) {
+                    return
+                  }
+                  setIsEditInfo(true)
+                  setTimeout(() => {
+                    editorRef.current?.focus()
+                  }, 10)
+                }}
+                onChange={(value: string) => (editorRef2.current = value)}
+                onBlur={() => onBlurEditor()}
+              />
+            </div>
+          ) : null}
+          {!isEditInfo && !editInfo && (
+            <TextWrapEdit
+              onClick={() => {
                 if (props.isPreview) {
                   return
                 }
@@ -159,116 +184,100 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
                   editorRef.current?.focus()
                 }, 10)
               }}
-              onChange={(value: string) => (editorRef2.current = value)}
-              onBlur={() => onBlurEditor()}
-            />
+            >
+              <span className={canEditHover}>--</span>
+            </TextWrapEdit>
+          )}
+        </FlawInfoInfoItem>
+        <FlawInfoInfoItem id="tab_log" className="info_item_tab">
+          <FlawInfoLabel>{t('scheduleRecord')}</FlawInfoLabel>
+          <ScheduleRecord
+            detailId={props?.flawInfo.id ?? 0}
+            projectId={projectInfo.id ?? 0}
+            noBorder
+            isBug={props?.flawInfo?.is_bug === 1}
+            isPreview={props?.isPreview}
+          />
+        </FlawInfoInfoItem>
+        <FlawInfoInfoItem
+          activeState
+          id="tab_attachment"
+          className="info_item_tab"
+        >
+          {/* <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel> */}
+          <LabelWrap>
+            <Label>{t('common.attachment')}</Label>
+            {props.isInfoPage || props?.isPreview ? null : (
+              <Tooltip title={t('addAttachments')}>
+                <CloseWrap width={32} height={32}>
+                  <CommonIconFont
+                    type="plus"
+                    size={20}
+                    color="var(--neutral-n2)"
+                    onClick={() => {
+                      handleUpload()
+                    }}
+                  />
+                </CloseWrap>
+              </Tooltip>
+            )}
+          </LabelWrap>
+          <div>
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length > 0 && (
+              <UploadAttach
+                multiple
+                defaultList={props.flawInfo?.attachment?.map((i: any) => ({
+                  url: i.attachment.path,
+                  id: i.id,
+                  size: i.attachment.size,
+                  time: i.created_at,
+                  name: i.attachment.name,
+                  suffix: i.attachment.ext,
+                  username: i.user_name ?? '--',
+                }))}
+                canUpdate
+                onC
+                del={onDeleteInfoAttach}
+                add={onAddInfoAttach}
+                isBug
+                ref={uploadRef}
+                isIteration={props?.isPreview}
+                addWrap={
+                  props.isInfoPage ? (
+                    <CommonButton type="primaryText" icon="plus">
+                      {t('addAttachments')}
+                    </CommonButton>
+                  ) : null
+                }
+              />
+            )}
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length <= 0 && <span>--</span>}
           </div>
-        ) : null}
-        {!isEditInfo && !editInfo && (
-          <TextWrapEdit
-            onClick={() => {
-              if (props.isPreview) {
-                return
-              }
-              setIsEditInfo(true)
-              setTimeout(() => {
-                editorRef.current?.focus()
-              }, 10)
-            }}
-          >
-            <span className={canEditHover}>--</span>
-          </TextWrapEdit>
-        )}
-      </FlawInfoInfoItem>
-      <FlawInfoInfoItem id="tab_log" className="info_item_tab">
-        <FlawInfoLabel>{t('scheduleRecord')}</FlawInfoLabel>
-        <ScheduleRecord
-          detailId={props?.flawInfo.id ?? 0}
-          projectId={projectInfo.id ?? 0}
-          noBorder
-          isBug={props?.flawInfo?.is_bug === 1}
-          isPreview={props?.isPreview}
-        />
-      </FlawInfoInfoItem>
-      <FlawInfoInfoItem
-        activeState
-        id="tab_attachment"
-        className="info_item_tab"
-        style={{ marginBottom: 16 }}
-      >
-        {/* <FlawInfoLabel>{t('common.attachment')}</FlawInfoLabel> */}
-        <LabelWrap>
-          <Label>{t('common.attachment')}</Label>
-          {props.isInfoPage || props?.isPreview ? null : (
-            <Tooltip title={t('addAttachments')}>
-              <CloseWrap width={32} height={32}>
-                <CommonIconFont
-                  type="plus"
-                  size={20}
-                  color="var(--neutral-n2)"
-                  onClick={() => {
-                    handleUpload()
-                  }}
-                />
-              </CloseWrap>
-            </Tooltip>
-          )}
-        </LabelWrap>
-        <div>
-          {projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length > 0 && (
-            <UploadAttach
-              multiple
-              defaultList={props.flawInfo?.attachment?.map((i: any) => ({
-                url: i.attachment.path,
-                id: i.id,
-                size: i.attachment.size,
-                time: i.created_at,
-                name: i.attachment.name,
-                suffix: i.attachment.ext,
-                username: i.user_name ?? '--',
-              }))}
-              canUpdate
-              onC
-              del={onDeleteInfoAttach}
-              add={onAddInfoAttach}
-              isBug
-              ref={uploadRef}
-              isIteration={props?.isPreview}
-              addWrap={
-                props.isInfoPage ? (
-                  <CommonButton type="primaryText" icon="plus">
-                    {t('addAttachments')}
-                  </CommonButton>
-                ) : null
-              }
-            />
-          )}
-          {projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length <= 0 && <span>--</span>}
-        </div>
-      </FlawInfoInfoItem>
-      <FlawInfoInfoItem id="tab_tag" className="info_item_tab">
-        <FlawInfoLabel>{t('common.tag')}</FlawInfoLabel>
-        <FlawTag
-          isPreview={props?.isPreview}
-          defaultList={tagList}
-          canAdd
-          onUpdate={onUpdate}
-          detail={props.flawInfo}
-          addWrap={
-            props?.isPreview ? (
-              <span />
-            ) : (
-              <AddWrap hasDash>
-                <IconFont type="plus" />
-              </AddWrap>
-            )
-          }
-        />
-      </FlawInfoInfoItem>
+        </FlawInfoInfoItem>
+        <FlawInfoInfoItem id="tab_tag" className="info_item_tab">
+          <FlawInfoLabel>{t('common.tag')}</FlawInfoLabel>
+          <FlawTag
+            isPreview={props?.isPreview}
+            defaultList={tagList}
+            canAdd
+            onUpdate={onUpdate}
+            detail={props.flawInfo}
+            addWrap={
+              props?.isPreview ? (
+                <span />
+              ) : (
+                <AddWrap hasDash>
+                  <IconFont type="plus" />
+                </AddWrap>
+              )
+            }
+          />
+        </FlawInfoInfoItem>
+      </div>
     </>
   )
 }

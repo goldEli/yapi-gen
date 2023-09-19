@@ -778,22 +778,25 @@ const DemandDetail = () => {
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
-      <Tabs
-        className="tabs"
-        tabBarExtraContent={
-          tabActive === '4' && (
-            <ScreenMinHover
-              label={t('common.search')}
-              icon="filter"
-              isActive={filter}
-              onClick={() => setFilter(!filter)}
-            />
-          )
-        }
-        activeKey={tabActive}
-        items={tabItems}
-        onChange={onChangeTabs}
-      />
+      <div style={{ paddingLeft: '12px' }}>
+        {' '}
+        <Tabs
+          className="tabs"
+          tabBarExtraContent={
+            tabActive === '4' && (
+              <ScreenMinHover
+                label={t('common.search')}
+                icon="filter"
+                isActive={filter}
+                onClick={() => setFilter(!filter)}
+              />
+            )
+          }
+          activeKey={tabActive}
+          items={tabItems}
+          onChange={onChangeTabs}
+        />
+      </div>
     </DemandWrap>
   )
 }

@@ -93,10 +93,12 @@ const FlawInfo = () => {
       >
         <FlawDetail flawInfo={flawInfo as Model.Flaw.FlawInfo} isInfoPage />
         {flawInfo.id && (
-          <FlawInfoInfoItem>
-            <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
-            <FlawStatus pid={projectInfo.id} sid={flawInfo.id} />
-          </FlawInfoInfoItem>
+          <div style={{ margin: '12px', background: '#f5f5f7' }}>
+            <FlawInfoInfoItem>
+              <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
+              <FlawStatus pid={projectInfo.id} sid={flawInfo.id} />
+            </FlawInfoInfoItem>
+          </div>
         )}
         {flawInfo?.isExamine && (
           <div className="review">
