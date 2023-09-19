@@ -85,6 +85,7 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import CommonProgress from '../CommonProgress'
 import SprintTag from '../TagComponent/SprintTag'
 import { setTaskDrawerUpdate } from '@store/employeeProfile'
+import LeftIcontButton from '../LeftIcontButton'
 let timer: NodeJS.Timeout
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
@@ -714,13 +715,19 @@ const SprintDetailDrawer = () => {
         </MouseDom>
         <Header>
           <Space size={16}>
-            <BackIcon onClick={onCancel}>
+            <LeftIcontButton
+              danger
+              onClick={onCancel}
+              icon="close"
+              text={t('closure')}
+            />
+            {/* <BackIcon onClick={onCancel}>
               <CommonIconFont
                 type="right-02"
                 size={20}
                 color="var(--neutral-n2)"
               />
-            </BackIcon>
+            </BackIcon> */}
             {skeletonLoading && (
               <SkeletonStatus>
                 <Skeleton.Input active />
@@ -733,7 +740,12 @@ const SprintDetailDrawer = () => {
                 <ChangeIconGroup>
                   {currentIndex > 0 && (
                     <Tooltip title={t('previous')}>
-                      <UpWrap
+                      <LeftIcontButton
+                        onClick={onUpDemand}
+                        icon="up-md"
+                        text={t('previous')}
+                      />
+                      {/* <UpWrap
                         onClick={onUpDemand}
                         id="upIcon"
                         isOnly={
@@ -746,7 +758,7 @@ const SprintDetailDrawer = () => {
                           size={20}
                           color="var(--neutral-n1-d1)"
                         />
-                      </UpWrap>
+                      </UpWrap> */}
                     </Tooltip>
                   )}
                   {!(
@@ -754,7 +766,12 @@ const SprintDetailDrawer = () => {
                     currentIndex === demandIds?.length - 1
                   ) && (
                     <Tooltip title={t('next')}>
-                      <DownWrap
+                      <LeftIcontButton
+                        onClick={onDownDemand}
+                        icon="down-md"
+                        text={t('next')}
+                      />
+                      {/* <DownWrap
                         onClick={onDownDemand}
                         id="downIcon"
                         isOnly={currentIndex <= 0}
@@ -764,21 +781,24 @@ const SprintDetailDrawer = () => {
                           size={20}
                           color="var(--neutral-n1-d1)"
                         />
-                      </DownWrap>
+                      </DownWrap> */}
                     </Tooltip>
                   )}
                 </ChangeIconGroup>
                 <Tooltip title={t('share')}>
                   <div>
-                    <CommonButton type="icon" icon="share" onClick={onShare} />
+                    <LeftIcontButton
+                      onClick={onShare}
+                      icon="share"
+                      text={t('share')}
+                    />
                   </div>
                 </Tooltip>
                 <Tooltip title={t('openDetails')}>
                   <div>
-                    <CommonButton
-                      type="icon"
+                    <LeftIcontButton
                       icon="full-screen"
-                      onClick={onToDetail}
+                      text={t('openDetails')}
                     />
                   </div>
                 </Tooltip>
@@ -793,7 +813,7 @@ const SprintDetailDrawer = () => {
                     getPopupContainer={n => n}
                   >
                     <div>
-                      <CommonButton type="icon" icon="more" />
+                      <LeftIcontButton icon="more-01" text={t('more')} />
                     </div>
                   </DropdownMenu>
                 </Tooltip>

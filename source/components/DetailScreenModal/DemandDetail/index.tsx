@@ -62,6 +62,7 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
 import { css } from '@emotion/css'
+import LeftIcontButton from '@/components/LeftIcontButton'
 
 export const myTreeCss = css`
   &:hover {
@@ -161,7 +162,9 @@ const DemandDetail = () => {
   // 向上查找需求
   const onUpDemand = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex - 1] : 0
-    if (!currentIndex) return
+    if (!currentIndex) {
+      return
+    }
     const resultParams = { ...params, ...{ sprintId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
@@ -169,18 +172,20 @@ const DemandDetail = () => {
   // 向下查找需求
   const onDownDemand = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex + 1] : 0
-    if (currentIndex === (params?.changeIds?.length || 0) - 1) return
+    if (currentIndex === (params?.changeIds?.length || 0) - 1) {
+      return
+    }
     const resultParams = { ...params, ...{ sprintId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
   const getKeyDown = (e: any) => {
     if (e.keyCode === 38) {
-      //up
+      // up
       document.getElementById('upIcon')?.click()
     }
     if (e.keyCode === 40) {
-      //down
+      // down
       document.getElementById('downIcon')?.click()
     }
   }
@@ -667,8 +672,13 @@ const DemandDetail = () => {
             {(params?.changeIds?.length || 0) > 1 && (
               <ChangeIconGroup>
                 {currentIndex > 0 && (
-                  <Tooltip title={t('previous')}>
-                    <UpWrap
+                  <Tooltip title={`${t('previous')}[↑]`}>
+                    <LeftIcontButton
+                      onClick={onUpDemand}
+                      icon="up-md"
+                      text={t('previous')}
+                    />
+                    {/* <UpWrap
                       onClick={onUpDemand}
                       id="upIcon"
                       isOnly={
@@ -681,16 +691,21 @@ const DemandDetail = () => {
                         size={20}
                         color="var(--neutral-n1-d1)"
                       />
-                    </UpWrap>
+                    </UpWrap> */}
                   </Tooltip>
                 )}
                 {!(
                   params?.changeIds?.length === 0 ||
                   currentIndex === (params?.changeIds?.length || 0) - 1
                 ) && (
-                  <Tooltip title={t('next')}>
-                    <DownWrap
+                  <Tooltip title={`${t('next')}[↓]`}>
+                    <LeftIcontButton
                       onClick={onDownDemand}
+                      icon="down-md"
+                      text={t('next')}
+                    />
+                    {/* <DownWrap
+
                       id="downIcon"
                       isOnly={currentIndex <= 0}
                     >
@@ -699,14 +714,19 @@ const DemandDetail = () => {
                         size={20}
                         color="var(--neutral-n1-d1)"
                       />
-                    </DownWrap>
+                    </DownWrap> */}
                   </Tooltip>
                 )}
               </ChangeIconGroup>
             )}
             <Tooltip title={t('share')}>
               <div>
-                <CommonButton type="icon" icon="share" onClick={onShare} />
+                <LeftIcontButton
+                  onClick={onShare}
+                  icon="share"
+                  text={t('share')}
+                />
+                {/* <CommonButton type="icon" icon="share"  /> */}
               </div>
             </Tooltip>
             <Tooltip title={t('more')}>
@@ -717,13 +737,19 @@ const DemandDetail = () => {
                 getPopupContainer={n => n}
               >
                 <div>
-                  <CommonButton type="icon" icon="more" />
+                  <LeftIcontButton icon="more-01" text={t('more')} />
                 </div>
               </DropdownMenu>
             </Tooltip>
             <Tooltip title={t('closure')}>
               <div>
-                <CommonButton onClick={onClose} type="icon" icon="close" />
+                <LeftIcontButton
+                  danger
+                  onClick={onClose}
+                  icon="close"
+                  text={t('closure')}
+                />
+                {/* <CommonButton onClick={onClose} type="icon" icon="close" /> */}
               </div>
             </Tooltip>
           </ButtonGroup>

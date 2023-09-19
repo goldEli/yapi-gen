@@ -59,6 +59,7 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
 import { myTreeCss } from '../DemandDetail'
+import LeftIcontButton from '@/components/LeftIcontButton'
 
 const FlawDetail = () => {
   const [t] = useTranslation()
@@ -637,7 +638,12 @@ const FlawDetail = () => {
               <ChangeIconGroup>
                 {currentIndex > 0 && (
                   <Tooltip title={t('previous')}>
-                    <UpWrap
+                    <LeftIcontButton
+                      onClick={onUpDemand}
+                      icon="up-md"
+                      text={t('previous')}
+                    />
+                    {/* <UpWrap
                       onClick={onUpDemand}
                       id="upIcon"
                       isOnly={
@@ -650,7 +656,7 @@ const FlawDetail = () => {
                         size={20}
                         color="var(--neutral-n1-d1)"
                       />
-                    </UpWrap>
+                    </UpWrap> */}
                   </Tooltip>
                 )}
                 {!(
@@ -658,7 +664,12 @@ const FlawDetail = () => {
                   currentIndex === (params?.changeIds?.length || 0) - 1
                 ) && (
                   <Tooltip title={t('next')}>
-                    <DownWrap
+                    <LeftIcontButton
+                      onClick={onDownDemand}
+                      icon="down-md"
+                      text={t('next')}
+                    />
+                    {/* <DownWrap
                       onClick={onDownDemand}
                       id="downIcon"
                       isOnly={currentIndex <= 0}
@@ -668,14 +679,18 @@ const FlawDetail = () => {
                         size={20}
                         color="var(--neutral-n1-d1)"
                       />
-                    </DownWrap>
+                    </DownWrap> */}
                   </Tooltip>
                 )}
               </ChangeIconGroup>
             )}
             <Tooltip title={t('share')}>
               <div>
-                <CommonButton type="icon" icon="share" onClick={onShare} />
+                <LeftIcontButton
+                  onClick={onShare}
+                  icon="share"
+                  text={t('share')}
+                />
               </div>
             </Tooltip>
             <Tooltip title={t('more')}>
@@ -686,13 +701,18 @@ const FlawDetail = () => {
                 getPopupContainer={n => n}
               >
                 <div>
-                  <CommonButton type="icon" icon="more" />
+                  <LeftIcontButton icon="more-01" text={t('more')} />
                 </div>
               </DropdownMenu>
             </Tooltip>
             <Tooltip title={t('closure')}>
               <div>
-                <CommonButton onClick={onClose} type="icon" icon="close" />
+                <LeftIcontButton
+                  danger
+                  onClick={onClose}
+                  icon="close"
+                  text={t('closure')}
+                />
               </div>
             </Tooltip>
           </ButtonGroup>

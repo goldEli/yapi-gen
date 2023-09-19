@@ -80,6 +80,7 @@ export const ChangeIconGroup = styled.div`
   box-sizing: border-box;
   height: 32px;
   display: flex;
+  gap: 16px;
 `
 
 export const NextWrap = styled.div`
