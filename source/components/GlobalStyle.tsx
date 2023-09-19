@@ -888,7 +888,11 @@ const GlobalStyle = () => {
       top: 50%;
       transform: translateY(-50%);
     }
-
+    .tabs {
+      .ant-tabs-nav-wrap {
+        padding: 0 12px;
+      }
+    }
     .ant-tabs-ink-bar {
       background: var(--primary-d2);
     }

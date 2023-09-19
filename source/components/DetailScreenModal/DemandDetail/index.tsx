@@ -778,7 +778,7 @@ const DemandDetail = () => {
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
-      <div style={{ paddingLeft: '12px' }}>
+      <div>
         {' '}
         <Tabs
           className="tabs"
