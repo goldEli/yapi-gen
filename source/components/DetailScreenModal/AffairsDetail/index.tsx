@@ -63,6 +63,7 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import CommonProgress from '@/components/CommonProgress'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import LeftIcontButton from '@/components/LeftIcontButton'
 
 const AffairsDetail = () => {
   const [t] = useTranslation()
@@ -641,7 +642,12 @@ const AffairsDetail = () => {
               <ChangeIconGroup>
                 {currentIndex > 0 && (
                   <Tooltip title={t('previous')}>
-                    <UpWrap
+                    <LeftIcontButton
+                      onClick={onUpDemand}
+                      icon="up-md"
+                      text={t('previous')}
+                    />
+                    {/* <UpWrap
                       onClick={onUpDemand}
                       id="upIcon"
                       isOnly={
@@ -654,7 +660,7 @@ const AffairsDetail = () => {
                         size={20}
                         color="var(--neutral-n1-d1)"
                       />
-                    </UpWrap>
+                    </UpWrap> */}
                   </Tooltip>
                 )}
                 {!(
@@ -662,7 +668,12 @@ const AffairsDetail = () => {
                   currentIndex === (params?.changeIds?.length || 0) - 1
                 ) && (
                   <Tooltip title={t('next')}>
-                    <DownWrap
+                    <LeftIcontButton
+                      onClick={onDownDemand}
+                      icon="down-md"
+                      text={t('next')}
+                    />
+                    {/* <DownWrap
                       onClick={onDownDemand}
                       id="downIcon"
                       isOnly={currentIndex <= 0}
@@ -672,14 +683,18 @@ const AffairsDetail = () => {
                         size={20}
                         color="var(--neutral-n1-d1)"
                       />
-                    </DownWrap>
+                    </DownWrap> */}
                   </Tooltip>
                 )}
               </ChangeIconGroup>
             )}
             <Tooltip title={t('share')}>
               <div>
-                <CommonButton type="icon" icon="share" onClick={onShare} />
+                <LeftIcontButton
+                  onClick={onShare}
+                  icon="share"
+                  text={t('share')}
+                />
               </div>
             </Tooltip>
             <Tooltip title={t('more')}>
@@ -692,13 +707,18 @@ const AffairsDetail = () => {
                 getPopupContainer={n => n}
               >
                 <div>
-                  <CommonButton type="icon" icon="more" />
+                  <LeftIcontButton icon="more-01" text={t('more')} />
                 </div>
               </DropdownMenu>
             </Tooltip>
             <Tooltip title={t('closure')}>
               <div>
-                <CommonButton onClick={onClose} type="icon" icon="close" />
+                <LeftIcontButton
+                  danger
+                  onClick={onClose}
+                  icon="close"
+                  text={t('closure')}
+                />
               </div>
             </Tooltip>
           </ButtonGroup>
