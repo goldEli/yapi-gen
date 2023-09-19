@@ -724,7 +724,7 @@ const DemandDetail = () => {
                 <LeftIcontButton
                   onClick={onShare}
                   icon="share"
-                  text={t('more')}
+                  text={t('share')}
                 />
                 {/* <CommonButton type="icon" icon="share"  /> */}
               </div>

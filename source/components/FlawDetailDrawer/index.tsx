@@ -91,6 +91,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 import { toggleStar } from '@/services/employeeProfile'
 import { setTaskDrawerUpdate } from '@store/employeeProfile'
+import LeftIcontButton from '../LeftIcontButton'
 let timer: NodeJS.Timeout
 const FlawDetailDrawer = () => {
   const normalState = {
@@ -748,13 +749,19 @@ const FlawDetailDrawer = () => {
         </MouseDom>
         <Header>
           <Space size={16}>
-            <BackIcon onClick={onCancel}>
+            <LeftIcontButton
+              danger
+              onClick={onCancel}
+              icon="close"
+              text={t('closure')}
+            />
+            {/* <BackIcon onClick={onCancel}>
               <CommonIconFont
                 type="right-02"
                 size={20}
                 color="var(--neutral-n2)"
               />
-            </BackIcon>
+            </BackIcon> */}
             {skeletonLoading && (
               <SkeletonStatus>
                 <Skeleton.Input active />
@@ -767,7 +774,12 @@ const FlawDetailDrawer = () => {
                 <ChangeIconGroup>
                   {currentIndex > 0 && (
                     <Tooltip title={t('previous')}>
-                      <UpWrap
+                      <LeftIcontButton
+                        onClick={onUpDemand}
+                        icon="up-md"
+                        text={t('previous')}
+                      />
+                      {/* <UpWrap
                         onClick={onUpDemand}
                         id="upIcon"
                         isOnly={
@@ -780,7 +792,7 @@ const FlawDetailDrawer = () => {
                           size={20}
                           color="var(--neutral-n1-d1)"
                         />
-                      </UpWrap>
+                      </UpWrap> */}
                     </Tooltip>
                   )}
                   {!(
@@ -788,7 +800,12 @@ const FlawDetailDrawer = () => {
                     currentIndex === demandIds?.length - 1
                   ) && (
                     <Tooltip title={t('next')}>
-                      <DownWrap
+                      <LeftIcontButton
+                        onClick={onDownDemand}
+                        icon="down-md"
+                        text={t('next')}
+                      />
+                      {/* <DownWrap
                         onClick={onDownDemand}
                         id="downIcon"
                         isOnly={currentIndex <= 0}
@@ -798,22 +815,30 @@ const FlawDetailDrawer = () => {
                           size={20}
                           color="var(--neutral-n1-d1)"
                         />
-                      </DownWrap>
+                      </DownWrap> */}
                     </Tooltip>
                   )}
                 </ChangeIconGroup>
                 <Tooltip title={t('share')}>
                   <div>
-                    <CommonButton type="icon" icon="share" onClick={onShare} />
+                    <LeftIcontButton
+                      onClick={onShare}
+                      icon="share"
+                      text={t('share')}
+                    />
                   </div>
                 </Tooltip>
                 <Tooltip title={t('openDetails')}>
                   <div>
-                    <CommonButton
+                    <LeftIcontButton
+                      icon="full-screen"
+                      text={t('openDetails')}
+                    />
+                    {/* <CommonButton
                       type="icon"
                       icon="full-screen"
                       onClick={onToDetail}
-                    />
+                    /> */}
                   </div>
                 </Tooltip>
                 <Tooltip title={t('more')}>
@@ -824,7 +849,7 @@ const FlawDetailDrawer = () => {
                     getPopupContainer={n => n}
                   >
                     <div>
-                      <CommonButton type="icon" icon="more" />
+                      <LeftIcontButton icon="more-01" text={t('more')} />
                     </div>
                   </DropdownMenu>
                 </Tooltip>
