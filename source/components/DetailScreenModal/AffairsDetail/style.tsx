@@ -4,7 +4,7 @@ import { Dropdown, Form, Progress, Space, Tabs } from 'antd'
 
 export const Wrap = styled.div`
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   padding-top: 20px;
   flex-direction: column;
