@@ -924,7 +924,7 @@ const SprintDetailDrawer = () => {
                           detail={drawerInfo}
                           isDetailQuick
                           addWrap={
-                            <CommonButton key={i.key} type="light">
+                            <CommonButton key={i.key} type="secondary">
                               {i.name}
                             </CommonButton>
                           }
@@ -934,7 +934,7 @@ const SprintDetailDrawer = () => {
                       {i.key !== 'sprint-tag' && (
                         <CommonButton
                           key={i.key}
-                          type="light"
+                          type="secondary"
                           onClick={() => onClickAnchorList(i)}
                         >
                           {i.name}

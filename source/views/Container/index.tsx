@@ -55,7 +55,7 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
+  box-shadow: 0px 1px 7px 0px rgba(26, 26, 26, 0.1);
   background: var(--neutral-white-d2);
   z-index: 200;
   min-width: 800px;

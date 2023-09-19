@@ -84,7 +84,7 @@ const ButtonGroup = (props: {
                   <CommonButton
                     style={{ marginRight: '12px' }}
                     key={el.key}
-                    type="light"
+                    type="secondary"
                   >
                     {el.label}
                   </CommonButton>
@@ -94,7 +94,7 @@ const ButtonGroup = (props: {
 
             {el.key !== 'sprint-tag' && (
               <CommonButton
-                type="light"
+                type="secondary"
                 style={{ marginRight: '12px' }}
                 onClick={() => props.onClickItem(el)}
               >

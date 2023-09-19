@@ -937,7 +937,7 @@ const DemandDetailDrawer = () => {
               {!demandDetailDrawerProps?.isPreview && (
                 <BtnWrap>
                   <CommonButton
-                    type="light"
+                    type="secondary"
                     onClick={() => {
                       detailDemandRef?.current.handleUpload()
                     }}
@@ -955,11 +955,13 @@ const DemandDetailDrawer = () => {
                     detail={drawerInfo}
                     isDetailQuick
                     addWrap={
-                      <CommonButton type="light">{t('addTag')}</CommonButton>
+                      <CommonButton type="secondary">
+                        {t('addTag')}
+                      </CommonButton>
                     }
                   />
                   <CommonButton
-                    type="light"
+                    type="secondary"
                     onClick={() => {
                       childrenDemandRef?.current?.onCreateChild()
                     }}
@@ -967,7 +969,7 @@ const DemandDetailDrawer = () => {
                     {t('addChildRequirement')}
                   </CommonButton>
                   <CommonButton
-                    type="light"
+                    type="secondary"
                     onClick={() => {
                       storyRelationRef?.current.onClickOpen()
                     }}
