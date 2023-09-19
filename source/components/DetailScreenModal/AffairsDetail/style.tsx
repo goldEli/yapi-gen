@@ -266,6 +266,16 @@ export const Label = styled.div`
   /* margin-bottom: 8px; */
   height: 32px;
   line-height: 32px;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
 `
 
 export const TargetWrap = styled.div`
