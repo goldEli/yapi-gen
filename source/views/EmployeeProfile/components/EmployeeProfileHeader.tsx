@@ -234,7 +234,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             {t('creationTime')}
           </span>
           <RangePicker
-            width={'308px'}
+            width="260px"
             isShowQuick={false}
             dateValue={
               searchFilterParams.time

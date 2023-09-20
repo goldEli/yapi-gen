@@ -130,14 +130,9 @@ const NewRelatedNeed = (props: any) => {
       ...(props?.data?.find((s: any) => s.id === i.value) || {}),
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
-    if (!props.canSubmit(result)) {
-      return
-    }
     props.onChange(historyData.concat(result).map((item: any) => item.value))
+    props?.addItem?.(historyData.concat(result))
     setChooseList(historyData.concat(result))
-    setTimeout(() => {
-      props?.onFilter?.()
-    }, 200)
     setShow(false)
     lessForm.resetFields()
     getMessage({ msg: t('p2.need3') as string, type: 'success' })
@@ -148,25 +143,23 @@ const NewRelatedNeed = (props: any) => {
     const newData = JSON.parse(JSON.stringify(chooseList))
     newData.splice(index, 1)
     setChooseList(newData)
+    props?.addItem?.(newData)
     props.onChange(newData.map((k: any) => k.value))
-    setTimeout(() => {
-      props?.onFilter?.()
-    }, 200)
   }
 
   useEffect(() => {
     setChooseList(
       props?.initValue?.map((k: any) => ({
-        label: k.name,
-        key: k.id,
-        value: k.id,
-        expected_day: k.expected_day,
-        user_schedule_percent: k.user_schedule_percent,
-        user_today_task_time: k.user_today_task_time,
-        user_total_task_time: k.user_total_task_time,
+        label: k?.name,
+        key: k?.id,
+        value: k?.id,
+        expected_day: k?.expected_day,
+        user_schedule_percent: k?.user_schedule_percent,
+        user_today_task_time: k?.user_today_task_time,
+        user_total_task_time: k?.user_total_task_time,
       })) ?? [],
     )
-    props.onChange(props?.initValue?.map((item: any) => item.id))
+    props.onChange(props?.initValue?.map((item: any) => item?.id))
   }, [props.initValue])
 
   return (
@@ -239,6 +232,7 @@ const NewRelatedNeed = (props: any) => {
                   onChange={(val: any) => {
                     lessForm.setFieldValue('needs', val)
                   }}
+                  onSearch={(value: string) => props?.onSearchWord(value)}
                   placeholder={t('common.pleaseSelect')}
                   options={props?.data?.map((i: any) => ({
                     label: i.name,
