@@ -107,7 +107,11 @@ const HeaderAll = (props: HaderProps) => {
             value: el.id,
           })),
         )
-    setOptions(props.headerParmas?.projectIds || [])
+    if (props.homeType === 'all') {
+      setOptions(props.headerParmas?.projectIds || [])
+    } else {
+      setOptions(paramsData?.id ? [paramsData?.id] : [])
+    }
   }
   // 自定义时间
   const onChangeDate = (values: any[]) => {
