@@ -174,7 +174,12 @@ const DemandTree = (props: Props) => {
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
+    openDemandDetail(
+      { ...item, ...{ demandIds } },
+      projectId,
+      item.id,
+      item.is_bug === 2 ? 0 : 2,
+    )
   }
 
   // 修改优先级

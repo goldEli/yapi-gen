@@ -2,18 +2,32 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { Space } from 'antd'
 import Highcharts from 'highcharts'
 import { useTranslation } from 'react-i18next'
-import { HightChartsWrap, Time, TitleCss, Text, Col1 } from '../Header/Style'
+import {
+  HightChartsWrap,
+  Time,
+  TitleCss,
+  Text,
+  Col1,
+  ColRightWrap,
+} from '../Header/Style'
 import { CharTitle, HighchartsReactWrap, RightRow } from './style'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from '@store/index'
 
 // 图表位置柱状图
-const HightChartMainBar = (props: {
-  titleType: boolean
-  height: number
-  title: string
-  chart: Models.Efficiency.ChartBar
-  onChange: (val: string) => void
-}) => {
+const HightChartMainBar = (
+  props: {
+    titleType: boolean
+    height: number
+    title: string
+    chart: Models.Efficiency.ChartBar
+    onChange: (val: string) => void
+  } & Models.Efficiency.WorkingStatus,
+) => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
+  const { headerParmas } = useSelector(store => store.performanceInsight)
   // 图表位置柱状图
   const options = {
     credits: {
@@ -105,6 +119,33 @@ const HightChartMainBar = (props: {
       },
     ],
   }
+
+  const onClick = (el?: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        homePage: el?.icon === 'chart-06' ? 2 : 1,
+        data: props.data,
+        id: props.projectId || 314,
+        projectId: props.projectId,
+        type:
+          props.num === 1
+            ? `Progress_${props.homeType}`
+            : `Defect_${props.homeType}`,
+        homeType: props.homeType,
+        headerParmas,
+        num: props.num,
+        viewType: props.viewType,
+        title:
+          props.num === 1 && props.homeType === 'all'
+            ? t('performance.title05')
+            : props.num === 1
+            ? t('performance.title06')
+            : t('performance.title07'),
+      }),
+    )
+    navigate(`/ChildLevel?data=${params}`)
+  }
+
   return (
     <div
       style={{
@@ -122,22 +163,40 @@ const HightChartMainBar = (props: {
             <Time>{props.chart?.time}</Time>
           </Space>
         </RightRow>
-        <Text
-          size={'14px'}
-          color={'var(--neutral-n2)'}
-          onClick={() =>
-            props.onChange(props.chart?.chartType === 'asc' ? 'desc' : 'asc')
-          }
-        >
-          <Space size={4}>
-            <CommonIconFont type={'sort'} size={14} />
-            <span>
-              {props.chart?.chartType === 'desc'
-                ? t('performance.sort1')
-                : t('performance.sort2')}
-            </span>
-          </Space>
-        </Text>
+        <ColRightWrap>
+          <Text
+            size={'14px'}
+            color={'var(--neutral-n2)'}
+            onClick={() =>
+              props.onChange(props.chart?.chartType === 'asc' ? 'desc' : 'asc')
+            }
+          >
+            <Space size={4}>
+              <CommonIconFont type={'sort'} size={14} />
+              <span>
+                {props.chart?.chartType === 'desc'
+                  ? t('performance.sort1')
+                  : t('performance.sort2')}
+              </span>
+            </Space>
+          </Text>
+          <Text
+            size="12px"
+            style={{ marginLeft: 16 }}
+            onClick={() => onClick()}
+          >
+            <Space size={4}>
+              <span style={{ display: 'inline-block', height: '20px' }}>
+                {t('performance.watch')}
+              </span>
+              <CommonIconFont
+                type="right"
+                size={14}
+                color="var(--auxiliary-text-t2-d2)"
+              />
+            </Space>
+          </Text>
+        </ColRightWrap>
       </Col1>
       <div style={{ width: '100%' }}>
         <HightChartsWrap height={props.height}>

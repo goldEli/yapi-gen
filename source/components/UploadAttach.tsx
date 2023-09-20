@@ -585,14 +585,14 @@ const UploadAttach = (props: any, ref: any) => {
                   }
                   style={{ width: '72px', height: '72px' }}
                 >
-                  <div>
+                  <div style={{ width: '100%', height: '100%' }}>
                     {imgs.includes(i.file.suffix) && (
                       <img
                         style={{
                           width: '100%',
                           height: '100%',
                           borderRadius: '6px',
-                          objectFit: 'contain',
+                          objectFit: 'cover',
                         }}
                         alt=""
                         src={i.file.url ? i.file.url : myImg}
@@ -609,8 +609,6 @@ const UploadAttach = (props: any, ref: any) => {
                         type={fileIconMap[i.file.suffix] || 'colorunknown'}
                       />
                     )}
-
-                    <Gred />
                   </div>
                 </div>
               </Popover>

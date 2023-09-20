@@ -222,7 +222,7 @@ const BatchModal = (props: Props) => {
   const onConfirmEdit = async () => {
     await form.validateFields()
 
-    let params: any = {
+    const params: any = {
       projectId,
       demandIds: props.selectRows?.map((i: any) => i.id),
       type: chooseType,
@@ -311,25 +311,23 @@ const BatchModal = (props: Props) => {
         props.selectRows?.length
       ) {
         return ''
-      } else {
-        // 如果是包含了标准事务类型，则禁用并勾选，如果是长故事类型就展示勾选框
-        return (
-          <Checkbox
-            checked={haveChildren}
-            disabled={hasStandard}
-            onChange={e => setHaveChildren(e.target.checked)}
-          >
-            {currentType?.checkboxText}
-          </Checkbox>
-        )
       }
-    } else {
+      // 如果是包含了标准事务类型，则禁用并勾选，如果是长故事类型就展示勾选框
       return (
-        <Checkbox onChange={e => setHaveChildren(e.target.checked)}>
+        <Checkbox
+          checked={haveChildren}
+          disabled={hasStandard}
+          onChange={e => setHaveChildren(e.target.checked)}
+        >
           {currentType?.checkboxText}
         </Checkbox>
       )
     }
+    return (
+      <Checkbox onChange={e => setHaveChildren(e.target.checked)}>
+        {currentType?.checkboxText}
+      </Checkbox>
+    )
   }
 
   return (
@@ -443,47 +441,47 @@ const BatchModal = (props: Props) => {
               )}
             {/* 自定义字段但不是确认勾选 */}
             {chooseType &&
-              String(chooseType).includes('custom_') &&
-              chooseAfter.attr !== 'single_checkbox' && (
-                <Form.Item label={t('version2.updateAfter')} name="target">
-                  {getTypeComponent(
-                    {
-                      attr: chooseAfter.attr,
-                      remarks: [
-                        'select_checkbox',
-                        'radio',
-                        'checkbox',
-                        'select',
-                        'user_select',
-                        'user_select_checkbox',
-                        'date',
-                      ].includes(chooseAfter.attr)
-                        ? t('common.pleaseSelect')
-                        : t('common.pleaseEnter'),
-                      value: chooseAfter.selectList,
-                    },
-                    void 0,
-                  )}
-                </Form.Item>
-              )}
+            String(chooseType).includes('custom_') &&
+            chooseAfter.attr !== 'single_checkbox' ? (
+              <Form.Item label={t('version2.updateAfter')} name="target">
+                {getTypeComponent(
+                  {
+                    attr: chooseAfter.attr,
+                    remarks: [
+                      'select_checkbox',
+                      'radio',
+                      'checkbox',
+                      'select',
+                      'user_select',
+                      'user_select_checkbox',
+                      'date',
+                    ].includes(chooseAfter.attr)
+                      ? t('common.pleaseSelect')
+                      : t('common.pleaseEnter'),
+                    value: chooseAfter.selectList,
+                  },
+                  void 0,
+                )}
+              </Form.Item>
+            ) : null}
             {/* 自定义字段是确认勾选 */}
             {chooseType &&
-              String(chooseType).includes('custom_') &&
-              chooseAfter.attr === 'single_checkbox' && (
-                <Form.Item label={t('version2.updateAfter')} name="target">
-                  <CustomSelect
-                    placeholder={t('common.pleaseSelect')}
-                    showSearch
-                    showArrow
-                    optionFilterProp="label"
-                    getPopupContainer={(node: any) => node}
-                    allowClear
-                  >
-                    <Select.Option value={0}>{t('untick')}</Select.Option>
-                    <Select.Option value={1}>{t('check')}</Select.Option>
-                  </CustomSelect>
-                </Form.Item>
-              )}
+            String(chooseType).includes('custom_') &&
+            chooseAfter.attr === 'single_checkbox' ? (
+              <Form.Item label={t('version2.updateAfter')} name="target">
+                <CustomSelect
+                  placeholder={t('common.pleaseSelect')}
+                  showSearch
+                  showArrow
+                  optionFilterProp="label"
+                  getPopupContainer={(node: any) => node}
+                  allowClear
+                >
+                  <Select.Option value={0}>{t('untick')}</Select.Option>
+                  <Select.Option value={1}>{t('check')}</Select.Option>
+                </CustomSelect>
+              </Form.Item>
+            ) : null}
             {/* 类别 */}
             {chooseType === 'category_id' && (
               <Form.Item

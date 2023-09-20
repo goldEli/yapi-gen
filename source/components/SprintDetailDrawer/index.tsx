@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable max-lines */
-import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import {
   setAffairsCommentList,
@@ -40,6 +39,7 @@ import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { getMessage } from '../Message'
 import DetailsSkeleton from '../DetailsSkeleton'
+import { toggleStar } from '@/services/employeeProfile'
 import {
   addAffairsComment,
   deleteAffairs,
@@ -68,9 +68,7 @@ import {
   detailTimeFormat,
   getIdsForAt,
   removeNull,
-  getParamsData,
   getIsPermission,
-  getProjectIdByUrl,
 } from '@/tools'
 import CommentFooter from '../CommonComment/CommentFooter'
 import LongStroyBread from '../LongStroyBread'
@@ -86,6 +84,7 @@ import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint
 import DrawerTopInfo from '../DrawerTopInfo'
 import CommonProgress from '../CommonProgress'
 import SprintTag from '../TagComponent/SprintTag'
+import { setTaskDrawerUpdate } from '@store/employeeProfile'
 let timer: NodeJS.Timeout
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
@@ -238,7 +237,11 @@ const SprintDetailDrawer = () => {
     if (paramsProjectId) {
       projectIdRef.current = paramsProjectId
     }
-    if (affairsDetailDrawer.params?.isAllProject) {
+    // 如果是从员工概况过来的或者是我的-所有项目过来，则调用项目信息接口
+    if (
+      affairsDetailDrawer.params?.isAllProject ||
+      affairsDetailDrawer?.isPreview
+    ) {
       getProjectData()
     }
     setDrawerInfo({})
@@ -605,6 +608,9 @@ const SprintDetailDrawer = () => {
 
   useEffect(() => {
     if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
+      if (affairsDetailDrawer?.isPreview) {
+        dispatch(setProjectInfo({}))
+      }
       dispatch(setAffairsCommentList({ list: [] }))
       setDemandIds(affairsDetailDrawer.params?.demandIds || [])
       getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
@@ -722,73 +728,102 @@ const SprintDetailDrawer = () => {
             )}
           </Space>
           <Space size={16}>
-            <ChangeIconGroup>
-              {currentIndex > 0 && (
-                <Tooltip title={t('previous')}>
-                  <UpWrap
-                    onClick={onUpDemand}
-                    id="upIcon"
-                    isOnly={
-                      demandIds?.length === 0 ||
-                      currentIndex === demandIds?.length - 1
-                    }
-                  >
-                    <CommonIconFont
-                      type="up"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
-                    />
-                  </UpWrap>
+            {!affairsDetailDrawer.star && (
+              <>
+                <ChangeIconGroup>
+                  {currentIndex > 0 && (
+                    <Tooltip title={t('previous')}>
+                      <UpWrap
+                        onClick={onUpDemand}
+                        id="upIcon"
+                        isOnly={
+                          demandIds?.length === 0 ||
+                          currentIndex === demandIds?.length - 1
+                        }
+                      >
+                        <CommonIconFont
+                          type="up"
+                          size={20}
+                          color="var(--neutral-n1-d1)"
+                        />
+                      </UpWrap>
+                    </Tooltip>
+                  )}
+                  {!(
+                    demandIds?.length === 0 ||
+                    currentIndex === demandIds?.length - 1
+                  ) && (
+                    <Tooltip title={t('next')}>
+                      <DownWrap
+                        onClick={onDownDemand}
+                        id="downIcon"
+                        isOnly={currentIndex <= 0}
+                      >
+                        <CommonIconFont
+                          type="down"
+                          size={20}
+                          color="var(--neutral-n1-d1)"
+                        />
+                      </DownWrap>
+                    </Tooltip>
+                  )}
+                </ChangeIconGroup>
+                <Tooltip title={t('share')}>
+                  <div>
+                    <CommonButton type="icon" icon="share" onClick={onShare} />
+                  </div>
                 </Tooltip>
-              )}
-              {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) && (
-                <Tooltip title={t('next')}>
-                  <DownWrap
-                    onClick={onDownDemand}
-                    id="downIcon"
-                    isOnly={currentIndex <= 0}
-                  >
-                    <CommonIconFont
-                      type="down"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
+                <Tooltip title={t('openDetails')}>
+                  <div>
+                    <CommonButton
+                      type="icon"
+                      icon="full-screen"
+                      onClick={onToDetail}
                     />
-                  </DownWrap>
+                  </div>
                 </Tooltip>
-              )}
-            </ChangeIconGroup>
-            <Tooltip title={t('share')}>
-              <div>
-                <CommonButton type="icon" icon="share" onClick={onShare} />
-              </div>
-            </Tooltip>
-            <Tooltip title={t('openDetails')}>
-              <div>
-                <CommonButton
-                  type="icon"
-                  icon="full-screen"
-                  onClick={onToDetail}
-                />
-              </div>
-            </Tooltip>
 
-            <Tooltip title={t('more')}>
-              <DropdownMenu
-                placement="bottomRight"
-                trigger={['click']}
-                menu={{
-                  items: onGetMenu(),
-                }}
-                getPopupContainer={n => n}
-              >
-                <div>
-                  <CommonButton type="icon" icon="more" />
-                </div>
-              </DropdownMenu>
-            </Tooltip>
+                <Tooltip title={t('more')}>
+                  <DropdownMenu
+                    placement="bottomRight"
+                    trigger={['click']}
+                    menu={{
+                      items: onGetMenu(),
+                    }}
+                    getPopupContainer={n => n}
+                  >
+                    <div>
+                      <CommonButton type="icon" icon="more" />
+                    </div>
+                  </DropdownMenu>
+                </Tooltip>
+              </>
+            )}
+            {affairsDetailDrawer.star && (
+              <Tooltip title={t('starMark')}>
+                <CommonButton
+                  isStar={drawerInfo.isStar}
+                  onClick={async () => {
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getSprintDetail()
+                      dispatch(
+                        setTaskDrawerUpdate({
+                          id: affairsDetailDrawer.params.employeeCurrentId,
+                          detailId: drawerInfo.id,
+                          state: drawerInfo.isStar ? 2 : 1,
+                        }),
+                      )
+                    }
+                  }}
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
+              </Tooltip>
+            )}
           </Space>
         </Header>
         <Content id="contentDom">
@@ -804,7 +839,11 @@ const SprintDetailDrawer = () => {
                   }}
                 ></LongStroyBread>
                 <ChangeStatusPopover
-                  isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                  isCanOperation={
+                    !affairsDetailDrawer.isPreview &&
+                    isCanEdit &&
+                    !drawerInfo.isExamine
+                  }
                   projectId={drawerInfo.projectId}
                   record={drawerInfo}
                   onChangeStatus={onChangeStatus}
@@ -836,6 +875,7 @@ const SprintDetailDrawer = () => {
                     onCancel={onCancelExamine}
                     isVerify={drawerInfo?.has_verify === 1}
                     isDrawer
+                    isPreview={affairsDetailDrawer.isPreview}
                   />
                 </div>
               )}
@@ -843,7 +883,7 @@ const SprintDetailDrawer = () => {
                 <span
                   className="name"
                   ref={spanDom}
-                  contentEditable
+                  contentEditable={!affairsDetailDrawer.isPreview}
                   onBlur={onNameConfirm}
                 >
                   {drawerInfo.name}
@@ -856,6 +896,7 @@ const SprintDetailDrawer = () => {
                 id={drawerInfo?.id}
                 percent={drawerInfo?.schedule}
                 hasEdit={
+                  !affairsDetailDrawer.isPreview &&
                   !hasEdit &&
                   drawerInfo?.user
                     ?.map((i: any) => i?.user?.id)
@@ -864,43 +905,45 @@ const SprintDetailDrawer = () => {
                 project_id={drawerInfo?.projectId}
                 onConfirm={onOperationUpdate}
               />
-              <Space size={12} style={{ marginTop: 16 }}>
-                {(drawerInfo.work_type === 6
-                  ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
-                  : anchorList
-                ).map((i: { key: string; name: string }) => (
-                  <>
-                    {i.key === 'sprint-tag' && (
-                      <SprintTag
-                        defaultList={drawerInfo?.tag?.map((i: any) => ({
-                          id: i.id,
-                          color: i.tag?.color,
-                          name: i.tag?.content,
-                        }))}
-                        canAdd
-                        onUpdate={onOperationUpdate}
-                        detail={drawerInfo}
-                        isDetailQuick
-                        addWrap={
-                          <CommonButton key={i.key} type="light">
-                            {i.name}
-                          </CommonButton>
-                        }
-                      />
-                    )}
+              {!affairsDetailDrawer.isPreview && (
+                <Space size={12} style={{ marginTop: 16 }}>
+                  {(drawerInfo.work_type === 6
+                    ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
+                    : anchorList
+                  ).map((i: { key: string; name: string }) => (
+                    <>
+                      {i.key === 'sprint-tag' && (
+                        <SprintTag
+                          defaultList={drawerInfo?.tag?.map((i: any) => ({
+                            id: i.id,
+                            color: i.tag?.color,
+                            name: i.tag?.content,
+                          }))}
+                          canAdd
+                          onUpdate={onOperationUpdate}
+                          detail={drawerInfo}
+                          isDetailQuick
+                          addWrap={
+                            <CommonButton key={i.key} type="light">
+                              {i.name}
+                            </CommonButton>
+                          }
+                        />
+                      )}
 
-                    {i.key !== 'sprint-tag' && (
-                      <CommonButton
-                        key={i.key}
-                        type="light"
-                        onClick={() => onClickAnchorList(i)}
-                      >
-                        {i.name}
-                      </CommonButton>
-                    )}
-                  </>
-                ))}
-              </Space>
+                      {i.key !== 'sprint-tag' && (
+                        <CommonButton
+                          key={i.key}
+                          type="light"
+                          onClick={() => onClickAnchorList(i)}
+                        >
+                          {i.name}
+                        </CommonButton>
+                      )}
+                    </>
+                  ))}
+                </Space>
+              )}
 
               {/* 只有标准事务类型和故障事务类型才有 */}
               {[4, 5].includes(drawerInfo.work_type) && (
@@ -922,6 +965,7 @@ const SprintDetailDrawer = () => {
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={onOperationUpdate}
+                isPreview={affairsDetailDrawer.isPreview}
               />
               <Tabs
                 className="tabs"
@@ -938,16 +982,26 @@ const SprintDetailDrawer = () => {
                 onRef={uploadFile}
                 affairsInfo={drawerInfo}
                 onUpdate={onOperationUpdate}
+                isPreview={affairsDetailDrawer.isPreview}
               />
               {drawerInfo.work_type !== 6 && (
                 <ChildSprint
                   onRef={childRef}
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
+                  isPreview={affairsDetailDrawer.isPreview}
                 />
               )}
-              <LinkSprint onRef={linkSprint} detail={drawerInfo} />
-              <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
+              <LinkSprint
+                onRef={linkSprint}
+                detail={drawerInfo}
+                isPreview={affairsDetailDrawer.isPreview}
+              />
+              <BasicDemand
+                detail={drawerInfo}
+                onUpdate={onOperationUpdate}
+                isPreview={affairsDetailDrawer.isPreview}
+              />
               <Label
                 id="sprint-comment"
                 className="info_item_tab"

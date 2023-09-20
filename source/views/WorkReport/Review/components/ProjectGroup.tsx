@@ -46,16 +46,13 @@ const ProjectGroup = (props: any) => {
       delete params.group_id
     }
     const method = groupId ? editGroup : addGroup
-    console.log(data, groupId)
     await method(params)
     setGroupVisible(false)
     onOk()
     props.onChange(props.data)
-    console.log(data)
   }
   //
   useEffect(() => {
-    console.log('data----', data)
     props.onChange(data)
   }, [data])
   const delBtn = (
@@ -73,7 +70,6 @@ const ProjectGroup = (props: any) => {
     <div>
       <ProjectGroupTitle
         onClick={() => {
-          console.log(11)
           setGroupUser([])
           setGroupId('')
           setGroupName('')
@@ -94,7 +90,6 @@ const ProjectGroup = (props: any) => {
               <div
                 className="group-user"
                 onClick={() => {
-                  console.log(111, item)
                   // setUserList(item.users)
                   setGroupName(item.name)
                   setGroupId(item.id)
@@ -115,7 +110,7 @@ const ProjectGroup = (props: any) => {
                   onClick={() => {
                     const data = props.data
                       .find((ele: { id: any }) => ele.id === item.id)
-                      ?.users.map((item: { id: any }) => item.id)
+                      ?.users?.map((item: { id: any }) => item.id)
                     setGroupName(
                       props.data.find((ele: { id: any }) => ele.id === item.id)
                         ?.name,
@@ -147,7 +142,7 @@ const ProjectGroup = (props: any) => {
               </div>
             </GroupBox>
             <GroupStoryBox>
-              {item.stories.map((item: any) => {
+              {item.stories?.map((item: any) => {
                 return (
                   <div className="item" key={item.id}>
                     {item.name}（{item.schedule_percent}% {item.today_task_time}
@@ -164,7 +159,6 @@ const ProjectGroup = (props: any) => {
         onClose={() => setUserVisible(false)}
         type={2}
         onConfirm={data => {
-          console.log('data----', data)
           dispatch(setProjectGroup(data))
           setUserList(data)
           setUserVisible(false)

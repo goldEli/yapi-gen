@@ -437,7 +437,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       const projectConfig = modalInfo?.configs?.filter(
         (ele: { type: number }) => ele.type === 4,
       )[0]?.content
-      console.log('projectConfig----', projectConfig)
       projectConfig?.forEach((item: { stories: any }) => {
         if (item.stories) {
           tempArr.push([...item.stories])
@@ -446,13 +445,12 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     } else {
       modalInfo?.configs?.forEach((item: any) => {
         if (item.type === 4) {
-          console.log(item)
           tempArr = tempArr.concat(item.content ?? [])
         }
       })
     }
-
     tempArr = tempArr.flat()
+
     let total = 0
     let done = 0
     if (tempArr.length) {

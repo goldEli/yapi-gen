@@ -3,7 +3,7 @@ import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { setAffairsInfo } from '@store/affairs'
 import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { setFlawInfo } from '@store/flaw'
 import { saveFlawDetailDrawer } from '@store/flaw/flaw.thunk'
 import {
@@ -22,7 +22,6 @@ const useOpenDemandDetail = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
   // type 不传是需求，1是事务，2是缺陷
   const openDemandDetail = (
@@ -30,6 +29,8 @@ const useOpenDemandDetail = () => {
     projectId: any,
     id: any,
     type?: number,
+    isPreview?: boolean,
+    star?: boolean,
   ) => {
     dispatch(setIsUpdateAddWorkItem(0))
     dispatch(setIsChangeDetailAffairs(false))
@@ -37,7 +38,7 @@ const useOpenDemandDetail = () => {
     // 重置锚点位置
     dispatch(setDrawerCurrentAnchor(''))
     // 浮层预览
-    if (userPreferenceConfig.previewModel === 1) {
+    if (userPreferenceConfig.previewModel === 1 || isPreview) {
       switch (type) {
         case 1:
           // 关闭其他两个浮层
@@ -46,7 +47,14 @@ const useOpenDemandDetail = () => {
             type: 'demand/setIsDemandDetailDrawerVisible',
             payload: false,
           })
-          dispatch(saveAffairsDetailDrawer({ visible: true, params: item }))
+          dispatch(
+            saveAffairsDetailDrawer({
+              visible: true,
+              params: item,
+              isPreview,
+              star,
+            }),
+          )
           break
         case 2:
           // 关闭其他两个浮层
@@ -55,7 +63,14 @@ const useOpenDemandDetail = () => {
             type: 'demand/setIsDemandDetailDrawerVisible',
             payload: false,
           })
-          dispatch(saveFlawDetailDrawer({ visible: true, params: item }))
+          dispatch(
+            saveFlawDetailDrawer({
+              visible: true,
+              params: item,
+              isPreview,
+              star,
+            }),
+          )
           break
 
         default:
@@ -66,7 +81,7 @@ const useOpenDemandDetail = () => {
             type: 'demand/setIsDemandDetailDrawerVisible',
             payload: true,
           })
-          dispatch(saveDemandDetailDrawer(item))
+          dispatch(saveDemandDetailDrawer({ ...item, isPreview, star }))
           break
       }
     } else {
@@ -76,7 +91,7 @@ const useOpenDemandDetail = () => {
       let params: any = {
         changeIds: item.demandIds,
         id: projectId,
-        specialType: type ?? 3,
+        specialType: type === 0 ? 3 : type,
       }
       if (type === 1) {
         params.sprintId = id

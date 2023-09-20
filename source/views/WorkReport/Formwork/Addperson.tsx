@@ -19,8 +19,8 @@ import AddDepartmentModalForFlat from '@/components/AddDepartmentModalForFlat/Ad
 import { useTranslation } from 'react-i18next'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 const AddPersonText = styled.div`
-  display: flex;
-  margin-bottom: 12px;
+  /* display: flex; */
+  margin: 12px 0;
 `
 const AddPersonTitleText = styled.div`
   display: flex;
@@ -321,6 +321,8 @@ const Addperson = (props: Props) => {
           <span>{props.title}</span>
           {props.isShow ? <span>*</span> : null}
         </AddPersonTitleText>
+      </AddPersonText>
+      <PersonContainer>
         <Dropdown
           placement="bottomLeft"
           visible={isOpen}
@@ -332,7 +334,11 @@ const Addperson = (props: Props) => {
             background: 'var(--neutral-white-d1)',
           }}
         >
-          <CommonButton type="primaryText" onClick={() => setIsOpen(!isOpen)}>
+          <CommonButton
+            style={{ marginRight: '24px' }}
+            type="secondary"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             {t('formWork.add')}
             <CommonIconFont
               type={isOpen ? 'up' : 'down'}
@@ -341,8 +347,6 @@ const Addperson = (props: Props) => {
             />
           </CommonButton>
         </Dropdown>
-      </AddPersonText>
-      <PersonContainer>
         {personData?.map((el: any) => (
           <Cols key={el.id}>
             {getImg(el)}

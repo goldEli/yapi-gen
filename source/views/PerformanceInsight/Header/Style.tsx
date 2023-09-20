@@ -1,12 +1,13 @@
 import styled from '@emotion/styled'
 import { Form, Input, Modal, Space } from 'antd'
 const { TextArea } = Input
-export const DivStyle = styled.div`
+export const DivStyle = styled.div<{ noBorder?: boolean }>`
   width: 184px;
   height: 32px;
   background: var(--neutral-white-d4);
   border-radius: 6px;
-  border: 1px solid var(--neutral-n6-d1);
+  border: ${(props: any) =>
+    props?.noBorder ? null : '1px solid var(--neutral-n6-d1)'};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,7 +15,8 @@ export const DivStyle = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
   &:hover {
-    border: 1px solid var(--primary-d1);
+    border: ${(props: any) =>
+      props?.noBorder ? null : '1px solid var(--primary-d1)'};
   }
   .name {
     width: 100px;
@@ -349,6 +351,14 @@ export const Col1 = styled.div`
   align-items: center;
   justify-content: space-between;
 `
+
+export const ColRightWrap = styled.div`
+  display: flex;
+  height: 32px;
+  align-items: center;
+  justify-content: space-between;
+`
+
 export const TitleCss = styled.div`
   color: var(--neutral-n1-d1);
   padding-left: 8px;
@@ -366,8 +376,8 @@ export const TitleCss = styled.div`
   }
 `
 export const TableStyle = styled.div`
-  height: calc(100% - 218px);
   padding: 24px 48px 0 48px;
+  height: calc(100vh - 256px);
 `
 export const Btn1 = styled.div`
   min-width: 60px;

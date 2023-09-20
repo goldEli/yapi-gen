@@ -110,6 +110,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
                     },
                     record.project_id,
                     record.story_id,
+                    0,
                   )
             }}
           >

@@ -75,6 +75,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             : props.num === 1
             ? t('performance.title06')
             : t('performance.title07'),
+        newType: props?.newType,
       }),
     )
     navigate(`/ChildLevel?data=${params}`)
@@ -191,6 +192,7 @@ const Home = () => {
     useState<Models.Efficiency.ViewItem>()
   const [valueId, setValueId] = useState(paramsData?.valueId || 0)
   const [viewValue, setViewValue] = useState(paramsData?.view?.value || 0)
+
   useEffect(() => {
     if (paramsData?.type && paramsData?.projectId) {
       setHomeType(paramsData.type)
@@ -233,9 +235,23 @@ const Home = () => {
     const res = await viewsList(parmas)
     setViewDataList(res)
     let filterVal: any = {}
-    if (viewValue && valueId) {
+    if (paramsData?.newType === 'other') {
+      // 强制塞数据，默认视图修改它的配置
+      filterVal = res.find(el => el.is_default === 1)
+      filterVal.config = {
+        end_time: paramsData.headerParmas.time.time[1],
+        start_time: paramsData.headerParmas.time.time[0],
+        user_ids: paramsData.headerParmas.users,
+        period_time: paramsData.headerParmas.period_time,
+        project_id: paramsData.headerParmas.projectIds,
+        iterate_ids: paramsData.headerParmas.iterate_ids,
+      }
+    }
+    // 分享回显取的配置
+    else if (viewValue && valueId) {
       filterVal = res.find(el => el.id === Number(viewValue))
     } else if (viewValue && !valueId) {
+      // 跳转详情,返回回来的回显
       filterVal = res.find(el => el.id === Number(viewValue))
       filterVal.config = {
         end_time: paramsData.headerParmas.time.time[1],
@@ -245,7 +261,9 @@ const Home = () => {
         project_id: paramsData.headerParmas.projectIds,
         iterate_ids: paramsData.headerParmas.iterate_ids,
       }
-    } else {
+    }
+    // 取默认视图配置
+    else {
       filterVal = res.find(el => el.is_default === 1)
     }
     setOptionVal(filterVal?.id || 0)
@@ -400,7 +418,7 @@ const Home = () => {
     const res = await getStatisticsTotal({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -424,7 +442,7 @@ const Home = () => {
     const res = await contrastNewWork({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -455,7 +473,7 @@ const Home = () => {
       sort: str,
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -483,7 +501,7 @@ const Home = () => {
     const res = await getDefectRatio({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -515,7 +533,7 @@ const Home = () => {
     const res = await statisticsOther({
       project_ids: headerParmas.projectIds
         ? headerParmas.projectIds?.join(',')
-        : projectId + '',
+        : String(projectId),
       iterate_ids: headerParmas.iterate_ids?.join(','),
       user_ids: headerParmas.users?.join(','),
       start_time:
@@ -709,6 +727,7 @@ const Home = () => {
           }}
         >
           <WorkingStatus
+            newType={paramsData?.newType}
             projectId={projectId}
             viewType={viewType}
             homeType={homeType}
@@ -718,7 +737,7 @@ const Home = () => {
                 ? t('performance.presentSituation')
                 : t('performance.presentSituation1')
             }
-            time={workDataList?.start_time + ' ~ ' + workDataList.end_time}
+            time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
             num={1}
           />
           <div style={{ margin: '12px 0' }}>
@@ -729,7 +748,7 @@ const Home = () => {
               homeType={homeType}
               data={workDataList?.defect || []}
               title={t('performance.qPresentSituation')}
-              time={workDataList?.start_time + ' ~ ' + workDataList?.end_time}
+              time={`${workDataList?.start_time} ~ ${workDataList?.end_time}`}
             />
           </div>
           <div style={{ width: '100%', display: 'flex' }}>
@@ -750,10 +769,16 @@ const Home = () => {
                       ? t('performance.title1')
                       : t('performance.title01')
                   }
-                  titleType={true}
+                  titleType
                   height={396}
                   chart={charts1}
                   onChange={(val: any) => getContrastNewWork(val)}
+                  projectId={projectId}
+                  viewType={viewType}
+                  homeType={homeType}
+                  data={workDataList?.work || []}
+                  time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
+                  num={1}
                 />
                 <HightChartMainLine
                   projectId={projectId}
@@ -800,6 +825,12 @@ const Home = () => {
                   onChange={(val: string) => {
                     getCompletionRateChart(val)
                   }}
+                  projectId={projectId}
+                  viewType={viewType}
+                  homeType={homeType}
+                  data={workDataList?.work || []}
+                  time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
+                  num={1}
                 />
               </div>
               <div

@@ -120,7 +120,14 @@ const SprintTable = (props: Props) => {
   // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
     const demandIds = props.data?.list?.map((i: any) => i.id)
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id, 1)
+    openDemandDetail(
+      { ...item, ...{ demandIds } },
+      projectId,
+      item.id,
+      1,
+      false,
+      false,
+    )
   }
 
   const onChangeState = async (item: any) => {
@@ -371,7 +378,12 @@ const SprintTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 7, title: t('createTransaction') },
+        params: {
+          noDataCreate: true,
+          type: 7,
+          title: t('createTransaction'),
+          projectId,
+        },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))

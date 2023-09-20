@@ -147,6 +147,7 @@ interface Props {
   onUpdate(): void
   // 是否是详情的快捷操作
   isDetailQuick?: boolean
+  isPreview?: boolean
 }
 
 const FlawTag = (props: Props) => {
@@ -325,7 +326,7 @@ const FlawTag = (props: Props) => {
           ))}
         </>
       )}
-      {props?.isQuick || isCanEdit ? (
+      {(isCanEdit || props?.isQuick) && !props.isPreview ? (
         <Popover
           visible={isOpen}
           placement="bottomLeft"

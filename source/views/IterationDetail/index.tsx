@@ -10,7 +10,7 @@ import {
   Wrap,
 } from './style'
 import CommonButton from '@/components/CommonButton'
-import { Tabs, TabsProps } from 'antd'
+import { Tabs, TabsProps, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { useEffect, useState } from 'react'
@@ -119,16 +119,21 @@ const IterationDetail = () => {
     'b/iterate/achieve/info',
   )
 
+  // 更新
+  const onUpdateDetail = () => {
+    dispatch(
+      getIterateInfo({
+        projectId: getProjectIdByUrl(),
+        id: getIdByUrl('iterateId'),
+      }),
+    )
+  }
+
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     setTabActive(value)
     if (value === '1') {
-      dispatch(
-        getIterateInfo({
-          projectId: getProjectIdByUrl(),
-          id: getIdByUrl('iterateId'),
-        }),
-      )
+      onUpdateDetail()
     }
   }
 
@@ -140,16 +145,6 @@ const IterationDetail = () => {
   // 返回
   const onBack = () => {
     history.go(-1)
-  }
-
-  // 更新
-  const onUpdateDetail = () => {
-    dispatch(
-      getIterateInfo({
-        projectId: getProjectIdByUrl(),
-        id: getIdByUrl('iterateId'),
-      }),
-    )
   }
 
   // 编辑
@@ -416,12 +411,7 @@ const IterationDetail = () => {
           : i,
       )
       dispatch(setProjectInfoValues(newValues))
-      dispatch(
-        getIterateInfo({
-          projectId: getProjectIdByUrl(),
-          id: getIdByUrl('iterateId'),
-        }),
-      )
+      onUpdateDetail()
     }
   }
 
@@ -442,6 +432,7 @@ const IterationDetail = () => {
         ...projectInfo.titleList2,
         ...projectInfo.titleList3,
       ])
+      onUpdateDetail()
     }
   }, [projectInfo])
 
@@ -497,12 +488,28 @@ const IterationDetail = () => {
           />
         </DetailText>
         <ButtonGroup size={16}>
-          <CommonButton type="icon" icon="left-md" onClick={onBack} />
+          <Tooltip placement="bottom" title={t('return')}>
+            <span>
+              {' '}
+              <CommonButton type="icon" icon="left-md" onClick={onBack} />
+            </span>
+          </Tooltip>
+
           {!hasEdit && !isEnd && (
-            <CommonButton type="icon" icon="edit" onClick={onEdit} />
+            <Tooltip placement="bottom" title={t('edit')}>
+              <span>
+                {' '}
+                <CommonButton type="icon" icon="edit" onClick={onEdit} />
+              </span>
+            </Tooltip>
           )}
           {!hasDel && !isEnd && (
-            <CommonButton type="icon" icon="delete" onClick={onDelete} />
+            <Tooltip placement="bottom" title={t('delete')}>
+              <span>
+                {' '}
+                <CommonButton type="icon" icon="delete" onClick={onDelete} />
+              </span>
+            </Tooltip>
           )}
         </ButtonGroup>
       </DetailTitle>

@@ -626,7 +626,7 @@ const DemandDetail = () => {
                   }
                   const projectId = demandInfo?.projectId
                   if (index !== demandInfo?.level_tree?.length - 1) {
-                    openDemandDetail({ ...i }, projectId, i.id)
+                    openDemandDetail({ ...i }, projectId, i.id, 0)
                   }
                 }}
               >

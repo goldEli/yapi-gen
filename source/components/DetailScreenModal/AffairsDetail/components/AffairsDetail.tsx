@@ -38,6 +38,7 @@ interface AffairsDetailProps {
   onUpdate?(value?: boolean): void
   isInfoPage?: boolean
   onRef?: any
+  isPreview?: boolean
 }
 
 const AffairsDetail = (props: AffairsDetailProps) => {
@@ -203,6 +204,9 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           <TextWrapEdit
             style={{ width: '100%' }}
             onClick={() => {
+              if (props.isPreview) {
+                return
+              }
               setIsEditInfo(true)
               setTimeout(() => {
                 editorRef.current?.focus()
@@ -220,6 +224,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       >
         <Label>{t('scheduleRecord')}</Label>
         <ScheduleRecord
+          isPreview={props?.isPreview}
           detailId={props?.affairsInfo.id ?? 0}
           projectId={projectInfo.id}
           noBorder
@@ -234,16 +239,18 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       >
         <BetweenBox>
           <Label>{t('common.attachment')}</Label>
-          <Tooltip title={t('addAttachments')}>
-            <CloseWrap width={32} height={32}>
-              <CommonIconFont
-                type="plus"
-                size={20}
-                color="var(--neutral-n2)"
-                onClick={handleUpload}
-              />
-            </CloseWrap>
-          </Tooltip>
+          {!props?.isPreview && (
+            <Tooltip title={t('addAttachments')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={handleUpload}
+                />
+              </CloseWrap>
+            </Tooltip>
+          )}
         </BetweenBox>
         <div>
           {projectInfo?.projectPermissions?.filter(
@@ -264,6 +271,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
               }))}
               canUpdate
               onC
+              isIteration={props?.isPreview}
               del={onDeleteInfoAttach}
               add={onAddInfoAttach}
             />
@@ -280,14 +288,19 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       >
         <Label>{t('common.tag')}</Label>
         <SprintTag
+          isPreview={props?.isPreview}
           defaultList={tagList}
           canAdd
           onUpdate={() => onUpdate()}
           detail={props.affairsInfo}
           addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
+            props?.isPreview ? (
+              <span />
+            ) : (
+              <AddWrap hasDash>
+                <IconFont type="plus" />
+              </AddWrap>
+            )
           }
         />
       </InfoItem>

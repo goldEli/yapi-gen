@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-leaked-render */
-import CustomSelect from '@/components/CustomSelect'
 import IconFont from '@/components/IconFont'
 import { getMessage } from '@/components/Message'
 import { AddWrap } from '@/components/StyleCommon'
@@ -7,6 +6,7 @@ import styled from '@emotion/styled'
 import { Form } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import MoreSelect from '@/components/MoreSelect'
 
 const WrapDiv = styled.div`
   .ant-form-item-row {
@@ -87,7 +87,7 @@ const ShowListWrap = styled.div`
     &:hover .closeIcon {
       display: inline-block;
     }
-    .left {
+    .dotBox {
       display: inline-flex;
       align-items: center;
     }
@@ -98,10 +98,18 @@ const ShowListWrap = styled.div`
       height: 6px;
       background: var(--neutral-n2);
       border-radius: 50%;
-      margin-right: 8px;
+      margin: 0px 8px 0 0;
     }
   }
 `
+const LeftBox = styled.div<{ overdue?: boolean }>`
+  display: inline-flex;
+  align-items: flex-start;
+  .dotBox {
+    margin-top: ${props => (props.overdue ? '0' : '8px')};
+  }
+`
+
 const RelatedWrap = styled.div`
   .ant-select-selector {
     max-width: 626px;
@@ -118,14 +126,9 @@ const NewRelatedNeed = (props: any) => {
     const data = await lessForm.validateFields()
     const newData = JSON.parse(JSON.stringify(data))
     const result = newData.needs.map((i: any) => ({
-      ...i,
-      expected_day: props?.data?.find((s: any) => s.id === i.id)?.expected_day,
-      user_schedule_percent: props?.data?.find((s: any) => s.id === i.id)
-        ?.user_schedule_percent,
-      user_today_task_time: props?.data?.find((s: any) => s.id === i.id)
-        ?.user_today_task_time,
-      user_total_task_time: props?.data?.find((s: any) => s.id === i.id)
-        ?.user_total_task_time,
+      id: i,
+      value: i,
+      ...(props?.data?.find((s: any) => s.id === i) || {}),
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
     if (!props.canSubmit(result)) {
@@ -181,24 +184,24 @@ const NewRelatedNeed = (props: any) => {
       <ShowListWrap>
         {chooseList.map((item: any) => (
           <div key={item.key} className="li">
-            <div className="left">
-              <span className="dot" />
-              {props?.isShowOverdue && item.expected_day > 0 ? (
-                <span style={{ whiteSpace: 'nowrap' }}>
-                  [{t('report.list.overdue')}
-                  {item.expected_day}
-                  {t('report.list.day')}]
-                </span>
-              ) : null}
+            <LeftBox overdue={props?.isShowOverdue && item.expected_day > 0}>
+              <div className="dotBox">
+                <span className="dot" />
+                {props?.isShowOverdue && item.expected_day > 0 ? (
+                  <span style={{ whiteSpace: 'nowrap' }}>
+                    [{t('report.list.overdue')}
+                    {item.expected_day}
+                    {t('report.list.day')}]
+                  </span>
+                ) : null}
+              </div>
               <span style={{ marginLeft: 2 }}>
                 {item.label ? item.label : '--'}
-              </span>
-              <span style={{ whiteSpace: 'nowrap' }}>
                 {`（${
                   item.user_schedule_percent ? item.user_schedule_percent : 0
                 }%  ${item.user_today_task_time ?? 0}h）`}
               </span>
-            </div>
+            </LeftBox>
             <IconFont
               className="closeIcon"
               style={{ color: 'var(--neutral-n3)' }}
@@ -229,7 +232,8 @@ const NewRelatedNeed = (props: any) => {
               ]}
             >
               <div className="item">
-                <CustomSelect
+                <MoreSelect
+                  border
                   optionFilterProp="label"
                   showSearch
                   labelInValue

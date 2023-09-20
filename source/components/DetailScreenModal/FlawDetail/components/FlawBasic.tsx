@@ -36,6 +36,7 @@ interface Props {
   hasPadding?: boolean
   // 是否是详情页面
   isInfoPage?: boolean
+  isPreview?: boolean
 }
 
 const LimitLabel = (props: { label: string; width: number }) => {
@@ -256,6 +257,7 @@ const FlawBasic = (props: Props) => {
           isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
           isInfoPage={props.isInfoPage}
           isBug
+          isPreview={props.isPreview}
         >
           {['users_copysend_name', 'users_name'].includes(item.content) && (
             <MultipleAvatar
@@ -283,7 +285,7 @@ const FlawBasic = (props: Props) => {
     } else if (item.content === 'parent_id') {
       nodeComponent = (
         <DetailParent
-          hasEdit={isCanEdit}
+          hasEdit={!props.isPreview && isCanEdit}
           detail={props.detail}
           onUpdate={props.onUpdate}
           type={2}
@@ -293,7 +295,7 @@ const FlawBasic = (props: Props) => {
     } else if (item.content === 'priority') {
       nodeComponent = (
         <ChangePriorityPopover
-          isCanOperation={isCanEdit}
+          isCanOperation={isCanEdit && !props.isPreview}
           record={{
             id: props.detail.id,
             project_id: props.detail.projectId,
@@ -333,7 +335,7 @@ const FlawBasic = (props: Props) => {
     } else if (item.content === 'severity') {
       nodeComponent = (
         <ChangeSeverityPopover
-          isCanOperation={isCanEdit}
+          isCanOperation={isCanEdit && !props.isPreview}
           record={{
             id: props.detail.id,
             project_id: props.detail.projectId,
@@ -387,6 +389,7 @@ const FlawBasic = (props: Props) => {
         isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
         isInfoPage={props.isInfoPage}
         isBug
+        isPreview={props.isPreview}
       >
         <span>
           {getCustomNormalValue(
@@ -431,6 +434,7 @@ const FlawBasic = (props: Props) => {
             type="flaw"
             hasEdit={
               !!isCanEdit &&
+              !props.isPreview &&
               props?.detail?.user
                 ?.map((i: any) => i?.user?.id)
                 ?.includes(userInfo?.id)

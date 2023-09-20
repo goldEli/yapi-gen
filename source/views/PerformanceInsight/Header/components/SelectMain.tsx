@@ -8,6 +8,8 @@ interface Props {
   value: number
   allowClear: boolean
   labelInValue?: boolean
+  placement?: string
+  dropdownMatchSelectWidth?: number
 }
 const SelectMain = (props: Props) => {
   return (
@@ -24,6 +26,8 @@ const SelectMain = (props: Props) => {
       labelInValue={props.labelInValue}
       getPopupContainer={(node: any) => node}
       allowClear={props?.allowClear || false}
+      placement={props.placement}
+      dropdownMatchSelectWidth={props.dropdownMatchSelectWidth}
     >
       {props.list?.map((i: any) => {
         return (
