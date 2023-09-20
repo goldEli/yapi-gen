@@ -130,10 +130,14 @@ const NewRelatedNeed = (props: any) => {
       ...(props?.data?.find((s: any) => s.id === i.value) || {}),
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
+    if (!props.canSubmit?.(historyData.concat(result))) {
+      return
+    }
     props.onChange(historyData.concat(result).map((item: any) => item.value))
     props?.addItem?.(historyData.concat(result))
     setChooseList(historyData.concat(result))
     setShow(false)
+    props?.onSearchWord('')
     lessForm.resetFields()
     getMessage({ msg: t('p2.need3') as string, type: 'success' })
   }
