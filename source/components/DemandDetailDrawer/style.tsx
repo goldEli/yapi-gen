@@ -230,14 +230,17 @@ export const CollapseItemContent = styled.div<{ isOpen?: boolean }>`
   transition: 0.2s;
 `
 
-export const Label = styled.div`
+export const Label = styled.div<{ b?: boolean }>`
   font-size: var(--font14);
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
   /* margin-bottom: 8px; */
   height: 32px;
   line-height: 32px;
-  ::before {
+  ${props =>
+    props.b
+      ? ''
+      : `::before {
     vertical-align: middle;
     margin-right: 8px;
     margin-top: -3px;
@@ -246,7 +249,7 @@ export const Label = styled.div`
     width: 3px;
     height: 16px;
     background: #6688ff;
-  }
+  }`}
 `
 
 export const LabelItem = styled.div`

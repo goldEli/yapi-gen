@@ -711,6 +711,7 @@ const DemandDetailDrawer = () => {
                   backgroundColor: 'white',
                   margin: 0,
                   padding: '12px 24px',
+                  borderBottom: '1px solid #EBECED',
                 }}
                 size={8}
               >
@@ -805,7 +806,11 @@ const DemandDetailDrawer = () => {
                 </div>
               )}
               <DemandName
-                style={{ backgroundColor: 'white', padding: '12px 24px' }}
+                style={{
+                  backgroundColor: 'white',
+                  padding: '12px 24px',
+                  borderBottom: '1px solid #EBECED',
+                }}
               >
                 {isCanEdit && (
                   <span
