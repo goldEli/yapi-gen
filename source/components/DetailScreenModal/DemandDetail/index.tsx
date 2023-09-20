@@ -725,7 +725,7 @@ const DemandDetail = () => {
           </ButtonGroup>
         )}
       </DetailTop>
-      <DetailTitle>
+      <DetailTitle style={{ paddingTop: '16px' }}>
         <Tooltip title={demandInfo?.categoryName}>
           <Popover
             trigger={['hover']}
