@@ -68,9 +68,9 @@ const CommonProgress = (props: ProgressProps) => {
     <>
       <CommonProgressWrap
         style={{
-          padding: '0px 24px 16px 24px',
-          backgroundColor: 'white',
-          borderBottom: '1px solid #EBECED',
+          padding: '0px 24px 0px 0px',
+          // backgroundColor: 'white',
+          // borderBottom: '1px solid #EBECED',
         }}
       >
         <Dropdown

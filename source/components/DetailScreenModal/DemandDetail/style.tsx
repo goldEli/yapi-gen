@@ -274,7 +274,7 @@ export const BasicFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 24px;
+  padding: 0 24px;
   background: var(--neutral-white-d5);
   position: absolute;
   bottom: 6px;

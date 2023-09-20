@@ -586,7 +586,7 @@ export const CommentTitle = styled.div`
   font-size: var(--font14);
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
-  &::before {
+  /* &::before {
     content: '';
     height: 16px;
     position: absolute;
@@ -594,7 +594,7 @@ export const CommentTitle = styled.div`
     top: 3px;
     width: 3px;
     background-color: var(--primary-d1);
-  }
+  } */
 `
 
 export const DrawerHeader = styled.div`
