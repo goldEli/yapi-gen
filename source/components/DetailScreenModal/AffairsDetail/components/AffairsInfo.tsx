@@ -279,7 +279,7 @@ const AffairsInfo = (props: Props) => {
             display: 'flex',
             flexDirection: 'column',
             gap: '12px',
-            padding: '0',
+            padding: '16px 16px',
           }}
         >
           {affairsInfo.work_type !== 6 && (
