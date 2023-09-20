@@ -39,7 +39,6 @@ import {
   TitleTips,
 } from './style'
 import ProjectGroup from './ProjectGroup'
-import Item from 'antd/lib/list/Item'
 
 interface ReportAssistantProps {
   visible: boolean
@@ -65,6 +64,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const dispatch = useDispatch()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const [options, setOptions] = useState<any>([])
+  const [tasksConfig, setTasksConfig] = useState<any>({})
   const { close, visible, type, projectId } = props
 
   // 带入默认选中项目
@@ -139,13 +139,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                   user_total_task_time: tempObj?.user_total_task_time,
                 }
               : i
-            // : {
-            //     id: tempObj?.id,
-            //     name: tempObj?.name,
-            //     expected_day: tempObj?.expected_day,
-            //     schedule_percent: tempObj?.schedule_percent,
-            //     today_task_time: tempObj?.today_task_time,
-            //   }
           }),
         })
       } else {
@@ -318,6 +311,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     }
     setLoading(true)
     setUploadAttachListStatus({})
+    setTasksConfig(null)
     form.resetFields()
     try {
       let result = null
@@ -355,6 +349,9 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       const attach: any = {}
       result?.configs?.forEach((item: any) => {
         if (item.type === 4) {
+          setTasksConfig({
+            [`${item.type}+${item.id}+${item.name}`]: item.content,
+          })
           tempArr = tempArr.concat(item.content ?? [])
         }
         if (item.type === 2) {
@@ -496,6 +493,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   useEffect(() => {
     if (props.visible) {
       getList()
+    } else {
+      setTasksConfig({})
     }
   }, [props.visible])
 
@@ -661,7 +660,9 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           <Form.Item
             label={
               <LabelTitles>
-                {content.name_text}：{content?.content?.length}{' '}
+                {content.name_text}：
+                {tasksConfig?.[`${content.type}+${content.id}+${content.name}`]
+                  ?.length ?? 0}{' '}
                 {t('report.list.pieces')}
               </LabelTitles>
             }
@@ -673,6 +674,40 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
               }
               addItem={(arr: any) => {
                 setDemandListAll([...arr, ...demandListAll])
+                setTasksConfig({
+                  ...tasksConfig,
+                  [`${content.type}+${content.id}+${content.name}`]: arr,
+                })
+              }}
+              canSubmit={(arr: any) => {
+                let tempArray: any = []
+                Object.keys(tasksConfig).forEach((key: string) => {
+                  if (key?.split('+')?.[0] === '4') {
+                    tempArray = tempArray.concat(tasksConfig[key])
+                  }
+                })
+
+                const isCan = !arr?.some((i: any) => {
+                  return tempArray?.map((o: any) => o?.id)?.includes(i?.value)
+                })
+                if (!isCan) {
+                  if (content.name === 'overdue_tasks') {
+                    getMessage({
+                      msg: t(
+                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
+                      ),
+                      type: 'warning',
+                    })
+                  } else {
+                    getMessage({
+                      msg: t(
+                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2',
+                      ),
+                      type: 'warning',
+                    })
+                  }
+                }
+                return isCan
               }}
               initValue={content?.content}
               data={demandList}
