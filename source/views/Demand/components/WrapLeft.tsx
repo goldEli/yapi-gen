@@ -327,12 +327,15 @@ const WrapLeft = (props: any, ref: any) => {
     return resultData || []
   }
 
-  // isUpdateProjectInfoValues：是否需要更新项目下拉数据
-  const init = async (isUpdateProjectInfoValues?: boolean) => {
-    setShow(false)
+  // isUpdateProjectInfoValues：是否需要更新项目下拉数据 isInit：是否是初始化
+  const init = async (
+    isUpdateProjectInfoValues?: boolean,
+    isInit?: boolean,
+  ) => {
+    if (isInit) setShow(false)
     const res = await getTreeList({ id: props.projectId })
     setTreeData(filterTreeData(res))
-    setShow(true)
+    if (isInit) setShow(true)
     // 更新项目成员下拉
     if (isUpdateProjectInfoValues) {
       const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
@@ -439,7 +442,7 @@ const WrapLeft = (props: any, ref: any) => {
 
   useEffect(() => {
     if (props.isShowLeft) {
-      init()
+      init(false, true)
     }
   }, [props.isShowLeft, projectId])
 
