@@ -34,7 +34,10 @@ const DemandInfo = () => {
   }
 
   return (
-    <DetailMain all={userPreferenceConfig.previewModel === 3}>
+    <DetailMain
+      all={userPreferenceConfig.previewModel === 3}
+      h={userPreferenceConfig.previewModel === 3}
+    >
       <div
         style={{
           position: 'relative',
