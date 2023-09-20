@@ -964,6 +964,7 @@ const SprintDetailDrawer = () => {
                 isPreview={affairsDetailDrawer.isPreview}
               />
               <Tabs
+                style={{ paddingTop: '20px' }}
                 className="tabs"
                 activeKey={tabActive}
                 items={
