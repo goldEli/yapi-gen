@@ -130,7 +130,7 @@ const NewRelatedNeed = (props: any) => {
       ...(props?.data?.find((s: any) => s.id === i.value) || {}),
     }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
-    if (!props.canSubmit?.(historyData.concat(result))) {
+    if (!props.canSubmit?.(result)) {
       return
     }
     props.onChange(historyData.concat(result).map((item: any) => item.value))
@@ -149,6 +149,7 @@ const NewRelatedNeed = (props: any) => {
     setChooseList(newData)
     props?.addItem?.(newData)
     props.onChange(newData.map((k: any) => k.value))
+    props?.onSearchWord('')
   }
 
   useEffect(() => {

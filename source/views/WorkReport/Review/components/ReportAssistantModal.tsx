@@ -681,7 +681,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
               }}
               canSubmit={(arr: any) => {
                 let tempArray: any = []
-
                 Object.keys(tasksConfig).forEach((key: string) => {
                   if (key?.split('+')?.[0] === '4') {
                     tempArray = tempArray.concat(tasksConfig[key])
@@ -691,7 +690,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                 const isCan = !arr?.some((i: any) => {
                   return tempArray?.map((o: any) => o?.id)?.includes(i?.value)
                 })
-
                 if (!isCan) {
                   if (content.name === 'overdue_tasks') {
                     getMessage({
