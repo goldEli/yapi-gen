@@ -47,7 +47,11 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
   return (
     <Wrap>
       <TopInfoWrap
-        style={{ backgroundColor: 'white', margin: 0, padding: '12px 24px' }}
+        style={{
+          backgroundColor: 'white',
+          margin: 0,
+          padding: '12px 24px 0px 24px',
+        }}
       >
         <span className="icon">
           <CommonIconFont type="time" size={16} color="var(--neutral-n3)" />
