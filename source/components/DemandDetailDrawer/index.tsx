@@ -82,6 +82,7 @@ import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 import { toggleStar } from '@/services/employeeProfile'
 import { setTaskDrawerUpdate } from '@store/employeeProfile'
 import LeftIcontButton from '../LeftIcontButton'
+import { Label } from '../DetailScreenModal/FlawDetail/style'
 interface ItemIprops {
   label: string
   key: string
@@ -937,12 +938,15 @@ const DemandDetailDrawer = () => {
 
                 <div
                   id="tab_comment"
-                  style={{ backgroundColor: 'white', margin: 0 }}
+                  style={{
+                    backgroundColor: 'white',
+                    margin: 0,
+                    marginBottom: 12,
+                    padding: 12,
+                  }}
                   className="info_item_tab"
                 >
-                  <CommentTitle style={{ margin: 0 }}>
-                    {t('requirements_review')}
-                  </CommentTitle>
+                  <Label> {t('requirements_review')}</Label>
                   <CommonComment
                     data={demandCommentList}
                     onDeleteConfirm={onDeleteCommentConfirm}
@@ -952,7 +956,7 @@ const DemandDetailDrawer = () => {
               </LayerBox>
             </div>
           )}
-          <DetailFooter>
+          <DetailFooter style={{ padding: '0 12px' }}>
             <div className="textBox">
               <div>
                 {t('created')}

@@ -780,6 +780,8 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   return (
     <RelationWrap
       style={{
+        marginBottom: 12,
+        padding: 12,
         backgroundColor: 'white',
         height: props.isDrawer
           ? '100%'

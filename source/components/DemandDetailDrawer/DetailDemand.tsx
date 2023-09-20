@@ -124,7 +124,11 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         onConfirm={onDeleteConfirm}
       />
       <ContentItem
-        style={{ backgroundColor: 'white', margin: 0 }}
+        style={{
+          backgroundColor: 'white',
+          marginBottom: 12,
+          padding: '  12px',
+        }}
         id="tab_desc"
         className="info_item_tab"
       >
@@ -171,7 +175,9 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
           </TextWrapEdit>
         )}
       </ContentItem>
-      <ContentItem style={{ backgroundColor: 'white', margin: 0 }}>
+      <ContentItem
+        style={{ backgroundColor: 'white', marginBottom: 12, padding: 12 }}
+      >
         <div id="tab_log" className="info_item_tab">
           <LabelWrap>
             <Label>{t('scheduleRecord')}</Label>
@@ -186,7 +192,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         </div>
       </ContentItem>
       <ContentItem
-        style={{ marginBottom: 0, backgroundColor: 'white' }}
+        style={{ backgroundColor: 'white', marginBottom: 12, padding: 12 }}
         id="tab_attachment"
         className="info_item_tab"
       >
@@ -237,7 +243,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         </div>
       </ContentItem>
       <ContentItem
-        style={{ backgroundColor: 'white', margin: 0 }}
+        style={{ backgroundColor: 'white', marginBottom: 12, padding: 12 }}
         id="tab_tag"
         className="info_item_tab"
       >

@@ -347,7 +347,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
     <div
       id="tab_demand"
       className="info_item_tab"
-      style={{ backgroundColor: 'white' }}
+      style={{ backgroundColor: 'white', marginBottom: 12, padding: 12 }}
     >
       {/* <Label>{t('subrequirements')}</Label> */}
       <DeleteConfirm
