@@ -423,7 +423,8 @@ const BasicDemand = (props: Props) => {
     <div
       style={{
         width: '100%',
-        paddingLeft: props.hasPadding ? '24px' : 0,
+        paddingLeft: props.hasPadding ? '24px' : 24,
+        backgroundColor: 'white',
       }}
       id="sprint-basicInfo"
       className="info_item_tab"

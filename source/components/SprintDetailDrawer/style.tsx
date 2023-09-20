@@ -160,7 +160,8 @@ export const Content = styled.div`
   padding: 16px 24px 60px;
   position: relative;
   .tabs {
-    padding-top: 32px;
+    /* padding-top: 32px; */
+    padding: 0 24px;
     position: sticky;
     top: -18px;
     z-index: 2;

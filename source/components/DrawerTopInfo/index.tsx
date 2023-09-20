@@ -50,7 +50,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
         style={{
           backgroundColor: 'white',
           margin: 0,
-          padding: '12px 24px 0px 24px',
+          padding: '0px 24px 0px 24px',
         }}
       >
         <span className="icon">
