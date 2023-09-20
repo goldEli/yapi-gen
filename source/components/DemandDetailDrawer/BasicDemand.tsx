@@ -333,7 +333,11 @@ const BasicDemand = (props: Props) => {
   }, [isRefresh])
 
   return (
-    <div style={{ marginTop: '20px' }} id="tab_info" className="info_item_tab">
+    <div
+      style={{ backgroundColor: 'white' }}
+      id="tab_info"
+      className="info_item_tab"
+    >
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList
         ?.filter((i: any) => i.content !== 'schedule')

@@ -123,7 +123,11 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <ContentItem id="tab_desc" className="info_item_tab">
+      <ContentItem
+        style={{ backgroundColor: 'white', margin: 0 }}
+        id="tab_desc"
+        className="info_item_tab"
+      >
         <Label>{t('requirement_description')}</Label>
         {(isEditInfo || editInfo) && (
           <div className={canEditHover}>
@@ -167,7 +171,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
           </TextWrapEdit>
         )}
       </ContentItem>
-      <ContentItem>
+      <ContentItem style={{ backgroundColor: 'white', margin: 0 }}>
         <div id="tab_log" className="info_item_tab">
           <LabelWrap>
             <Label>{t('scheduleRecord')}</Label>
@@ -182,7 +186,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         </div>
       </ContentItem>
       <ContentItem
-        style={{ marginBottom: 0 }}
+        style={{ marginBottom: 0, backgroundColor: 'white' }}
         id="tab_attachment"
         className="info_item_tab"
       >
@@ -232,7 +236,11 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
           ).length <= 0 && <span>--</span>}
         </div>
       </ContentItem>
-      <ContentItem id="tab_tag" className="info_item_tab">
+      <ContentItem
+        style={{ backgroundColor: 'white', margin: 0 }}
+        id="tab_tag"
+        className="info_item_tab"
+      >
         <Label>{t('label')}</Label>
         <DemandTag
           defaultList={props.detail?.tag?.map((i: any) => ({

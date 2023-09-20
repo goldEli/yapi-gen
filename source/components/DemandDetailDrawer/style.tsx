@@ -139,9 +139,9 @@ export const ChangeIconBox = styled.div`
 export const Content = styled.div`
   height: calc(100% - 120px);
   overflow: auto;
-  padding: 16px 24px;
+  padding: 16px 0px;
   position: relative;
-  background: #fff;
+  background: #f5f5f7;
   /* border: 1px solid; */
   padding-top: 0px;
   .tabs {
