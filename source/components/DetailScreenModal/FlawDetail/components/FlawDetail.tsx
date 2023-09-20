@@ -139,12 +139,12 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          padding: '12px 12px',
         }}
       >
         <FlawInfoInfoItem
           style={{
-            marginTop: '0px',
+            marginTop: '16px',
+            borderRadius: '0px',
           }}
           activeState
           id="tab_desc"
@@ -189,7 +189,13 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
             </TextWrapEdit>
           )}
         </FlawInfoInfoItem>
-        <FlawInfoInfoItem id="tab_log" className="info_item_tab">
+        <FlawInfoInfoItem
+          style={{
+            borderRadius: '0px',
+          }}
+          id="tab_log"
+          className="info_item_tab"
+        >
           <FlawInfoLabel>{t('scheduleRecord')}</FlawInfoLabel>
           <ScheduleRecord
             detailId={props?.flawInfo.id ?? 0}
@@ -200,6 +206,9 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           />
         </FlawInfoInfoItem>
         <FlawInfoInfoItem
+          style={{
+            borderRadius: '0px',
+          }}
           activeState
           id="tab_attachment"
           className="info_item_tab"
@@ -258,7 +267,13 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
             ).length <= 0 && <span>--</span>}
           </div>
         </FlawInfoInfoItem>
-        <FlawInfoInfoItem id="tab_tag" className="info_item_tab">
+        <FlawInfoInfoItem
+          style={{
+            borderRadius: '0px',
+          }}
+          id="tab_tag"
+          className="info_item_tab"
+        >
           <FlawInfoLabel>{t('common.tag')}</FlawInfoLabel>
           <FlawTag
             isPreview={props?.isPreview}

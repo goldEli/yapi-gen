@@ -72,6 +72,7 @@ import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 import { toggleStar } from '@/services/employeeProfile'
 import { setTaskDrawerUpdate } from '@store/employeeProfile'
 import LeftIcontButton from '../LeftIcontButton'
+import { Label } from '../DetailScreenModal/FlawDetail/style'
 
 const FlawDetailDrawer = () => {
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem, drawerInfo } =
@@ -757,11 +758,22 @@ const FlawDetailDrawer = () => {
             )}
           </Space>
         </Header>
-        <Content id="contentDom">
+        <Content
+          style={{ padding: '0px 0px', backgroundColor: '#f5f5f7' }}
+          id="contentDom"
+        >
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
-              <ParentBox size={8}>
+              <ParentBox
+                style={{
+                  backgroundColor: 'white',
+                  padding: '16px 24px',
+                  margin: 0,
+                  borderBottom: '1px solid #EBECED',
+                }}
+                size={8}
+              >
                 <div style={{ display: 'flex' }}>
                   {drawerInfo.level_tree?.map((i: any, index: number) => (
                     <DrawerHeader
@@ -851,7 +863,13 @@ const FlawDetailDrawer = () => {
                   />
                 </div>
               )}
-              <DemandName>
+              <DemandName
+                style={{
+                  backgroundColor: 'white',
+                  padding: '16px 24px 8px 24px',
+                  margin: 0,
+                }}
+              >
                 {isCanEdit && (
                   <span
                     className="name"
@@ -865,7 +883,7 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <div style={{ marginBottom: 20 }}>
+              <div>
                 <CommonProgress
                   isTable={false}
                   type="flaw"
@@ -883,7 +901,13 @@ const FlawDetailDrawer = () => {
                 />
               </div>
               {!isPreview && (
-                <BtnWrap>
+                <BtnWrap
+                  style={{
+                    backgroundColor: 'white',
+                    margin: 0,
+                    padding: '16px 24px 0px 16px',
+                  }}
+                >
                   <CommonButton
                     type="light"
                     onClick={() => {
@@ -949,8 +973,16 @@ const FlawDetailDrawer = () => {
                   onUpdate={onOperationUpdate}
                   isPreview={isPreview}
                 />
-                <div id="tab_defectComment" className="info_item_tab">
-                  <CommentTitle>{t('defectComment')}</CommentTitle>
+                <div
+                  id="tab_defectComment"
+                  style={{
+                    backgroundColor: 'white',
+                    padding: '16px',
+                    marginTop: '16px',
+                  }}
+                  className="info_item_tab"
+                >
+                  <Label>{t('defectComment')}</Label>
                   <CommonComment
                     data={flawCommentList}
                     onDeleteConfirm={onDeleteCommentConfirm}
@@ -960,7 +992,7 @@ const FlawDetailDrawer = () => {
               </LayerBox>
             </>
           )}
-          <DetailFooter>
+          <DetailFooter style={{ padding: '16px', marginTop: '16px' }}>
             <div className="textBox">
               <div>
                 {t('created')}{' '}

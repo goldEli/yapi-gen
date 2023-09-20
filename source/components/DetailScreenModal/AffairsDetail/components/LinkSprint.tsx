@@ -410,6 +410,7 @@ const LinkSprint = (props: {
 
   return (
     <InfoItem
+      style={{ padding: '16px 24px' }}
       id="sprint-linkSprint"
       className="info_item_tab"
       isInfoPage={props?.isInfoPage}

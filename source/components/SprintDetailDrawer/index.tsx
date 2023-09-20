@@ -801,11 +801,20 @@ const SprintDetailDrawer = () => {
             )}
           </Space>
         </Header>
-        <Content id="contentDom">
+        <Content
+          style={{ padding: '0px', backgroundColor: '#f5f5f7' }}
+          id="contentDom"
+        >
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
-              <StatusAndLongWrap>
+              <StatusAndLongWrap
+                style={{
+                  backgroundColor: 'white',
+                  padding: '16px 24px',
+                  borderBottom: '1px solid #EBECED',
+                }}
+              >
                 <LongStroyBread
                   longStroy={drawerInfo}
                   layer
@@ -854,7 +863,9 @@ const SprintDetailDrawer = () => {
                   />
                 </div>
               )}
-              <DemandName style={{ marginTop: 16 }}>
+              <DemandName
+                style={{ backgroundColor: 'white', padding: ' 16px 24px' }}
+              >
                 <span
                   className="name"
                   ref={spanDom}
@@ -881,7 +892,14 @@ const SprintDetailDrawer = () => {
                 onConfirm={onOperationUpdate}
               />
               {!affairsDetailDrawer.isPreview && (
-                <Space size={12} style={{ marginTop: 16 }}>
+                <div
+                  style={{
+                    backgroundColor: 'white',
+                    display: 'flex',
+                    gap: 12,
+                    padding: '16px 24px',
+                  }}
+                >
                   {(drawerInfo.work_type === 6
                     ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
                     : anchorList
@@ -917,7 +935,7 @@ const SprintDetailDrawer = () => {
                       )}
                     </>
                   ))}
-                </Space>
+                </div>
               )}
 
               {/* 只有标准事务类型和故障事务类型才有 */}
@@ -965,7 +983,7 @@ const SprintDetailDrawer = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '12px',
-                  padding: '0px 12px',
+                  padding: '0px ',
                 }}
               >
                 {drawerInfo.work_type !== 6 && (
@@ -987,19 +1005,26 @@ const SprintDetailDrawer = () => {
                   isPreview={affairsDetailDrawer.isPreview}
                 />
               </div>
-
-              <Label
-                id="sprint-comment"
-                className="info_item_tab"
-                style={{ marginTop: 16 }}
+              <div
+                style={{
+                  backgroundColor: 'white',
+                  padding: '16px 24px',
+                  marginTop: '16px',
+                }}
               >
-                {t('businessReview')}
-              </Label>
-              <CommonComment
-                data={affairsCommentList}
-                onDeleteConfirm={onDeleteCommentConfirm}
-                onEditComment={onEditComment}
-              />
+                <Label
+                  id="sprint-comment"
+                  className="info_item_tab"
+                  style={{ marginTop: 16 }}
+                >
+                  {t('businessReview')}
+                </Label>
+                <CommonComment
+                  data={affairsCommentList}
+                  onDeleteConfirm={onDeleteCommentConfirm}
+                  onEditComment={onEditComment}
+                />
+              </div>
             </>
           )}
           <DetailFooter>
