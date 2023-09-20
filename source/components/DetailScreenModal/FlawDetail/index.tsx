@@ -576,7 +576,9 @@ const FlawDetail = () => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      <DetailTop>
+      <DetailTop
+        style={{ borderBottom: '1px solid #EBECED', paddingBottom: '16px' }}
+      >
         <div style={{ display: 'inline-flex', alignItems: 'center' }}>
           <MyBreadcrumb />
           <div style={{ display: 'inline-flex', marginLeft: '10px' }}>

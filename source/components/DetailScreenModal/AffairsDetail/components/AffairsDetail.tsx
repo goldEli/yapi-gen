@@ -175,7 +175,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          padding: '0px 16px',
+          padding: `0px ${props?.isInfoPage ? '16px' : '0px'}`,
         }}
       >
         {' '}

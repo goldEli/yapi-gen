@@ -82,7 +82,7 @@ const DetailScreenModal = () => {
         marginTop: fullScreen ? 0 : 56,
       }}
       width="100vw"
-      zIndex={50}
+      zIndex={userPreferenceConfig.previewModel === 3 ? 1000 : 50}
       // 界面全屏时需要挂载到全屏的那个dom元素身上才能显示出来
       getContainer={
         fullScreen

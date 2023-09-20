@@ -507,7 +507,7 @@ const AffairsDetail = () => {
       )
     }
   }, [isUpdateAddWorkItem])
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)
     return () => {
@@ -708,7 +708,10 @@ const AffairsDetail = () => {
         </div>
       )}
 
-      <DetailMain>
+      <DetailMain
+        all={userPreferenceConfig.previewModel === 3}
+        h={userPreferenceConfig.previewModel === 3}
+      >
         <div
           style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
         >

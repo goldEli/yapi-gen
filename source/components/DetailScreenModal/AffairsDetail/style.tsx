@@ -129,11 +129,16 @@ export const LiWrap = styled.div({
   },
 })
 
-export const DetailMain = styled.div`
+export const DetailMain = styled.div<{ all?: boolean; h?: boolean }>`
   display: flex;
-  margin-top: 20px;
   padding-right: 24px;
   position: relative;
+  height: calc(
+    ${props => (props.all ? '80vh' : '100vh')} -
+      ${props => (props.h ? '107px' : '249px')}
+  );
+  width: 100%;
+  margin-top: 16px;
 `
 
 export const SprintDetailDragLine = styled(DragLine)`

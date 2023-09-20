@@ -85,9 +85,12 @@ const FlawInfo = () => {
       setFocus(false)
     }
   }
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   return (
-    <FlawInfoWrap>
+    <FlawInfoWrap
+      all={userPreferenceConfig.previewModel === 3}
+      h={userPreferenceConfig.previewModel === 3}
+    >
       <FlawInfoLeft
         style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
       >
