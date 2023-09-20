@@ -112,7 +112,9 @@ export const getProjectList: any = async (params: any) => {
 // 日报助手：工作日报—获取需求列表(个人日报)
 export const getStoryListOfDaily: any = async (params: any) => {
   const response: any = await http.get<any>('getStoryListOfDaily', {
-    project_id: params,
+    project_id: params.project_id,
+    keyword: params.keyword,
+    exclude_ids: params.exclude_ids,
   })
   return response
 }

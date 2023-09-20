@@ -1,6 +1,7 @@
 import IconFont from '@/components/IconFont'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
 import { t } from 'i18next'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -29,6 +30,7 @@ const PeopleCard = (props: any) => {
     completed_rate,
   } = props
   const navigate = useNavigate()
+  const { theme } = useSelector(store => store.global)
 
   // 跳转到员工概况
   const onToEmployee = (e: any) => {
@@ -42,6 +44,8 @@ const PeopleCard = (props: any) => {
     navigate(`/EmployeeProfile?data=${params}`)
   }
 
+  console.log(avatar?.length, '=avataravatar')
+
   return (
     <Box onClick={e => onToEmployee(e)}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -53,7 +57,12 @@ const PeopleCard = (props: any) => {
         </div>
         <img
           style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-          src={avatar}
+          src={
+            avatar ||
+            (theme === 1
+              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarBlack.png'
+              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarWhite.png')
+          }
           alt=""
         />
       </div>

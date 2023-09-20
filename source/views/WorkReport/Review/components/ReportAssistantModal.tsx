@@ -55,7 +55,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const [initData, setInitData] = useState<any>(null)
   const [currentProject, setCurrentProject] = useState<any>(null)
   const [projectList, setProjectList] = useState<any>([])
-  const demandListAll = useRef([])
+  const [demandListAll, setDemandListAll] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
   const [modalInfo, setModalInfo] = useState<any>(null)
   const [loading, setLoading] = useState<any>(false)
@@ -128,9 +128,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           name: tempArr[2],
           conf_id: Number(tempArr[1]),
           content: (params[key] || [])?.map((i: any) => {
-            const tempObj: any = demandListAll.current.find(
-              (t: any) => t.id === i,
-            )
+            const tempObj: any = demandListAll?.find((t: any) => t.id === i)
             return type === 'user'
               ? {
                   id: tempObj?.id,
@@ -255,47 +253,33 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     }
   }
 
-  // 获取当前项目的需求list
-  const getDemandDataList = async (id: number) => {
+  // 获取当前项目的需求list keyword：是否带有搜索
+  const getDemandDataList = async (id: number, keyword?: string) => {
     let result = []
+    const value = form.getFieldsValue()
+    let tempArr: any = []
+    Object.keys(value).forEach((key: string) => {
+      if (key?.split('+')?.[0] === '4') {
+        tempArr = tempArr.concat(value[key])
+      }
+    })
     if (type === 'user') {
-      result = await getStoryListOfDaily(id)
+      result = await getStoryListOfDaily({
+        project_id: id,
+        keyword,
+        exclude_ids: tempArr,
+      })
     } else {
       result = await getListOfProjectDaily(id)
     }
-    demandListAll.current = result?.data ?? []
+
+    setDemandList(result?.data ?? [])
   }
 
   // 获取头部初始数据
   const getInitDaily = async () => {
     const result = await initDaily({ type: type === 'project' ? 3 : 2 })
     setInitData(result)
-  }
-
-  // 实时过滤当前可选需求
-  const setFilterDemand = () => {
-    const result = form.getFieldsValue()
-    let tempArr: any = []
-    Object.keys(result).forEach((key: string) => {
-      if (key?.split('+')?.[0] === '4') {
-        tempArr = tempArr.concat(result[key])
-      }
-    })
-    const configs = modalInfo?.configs?.map((item: any) => {
-      if (item.type === 4) {
-        return {
-          ...item,
-          content: result[`${item.type}+${item.id}+${item.name}`]?.map(
-            (k: any) => demandListAll.current.find((i: any) => i.id === k),
-          ),
-        }
-      }
-      return item
-    })
-    setDemandList(
-      demandListAll.current?.filter((k: any) => !tempArr?.includes(k.id)),
-    )
-    setModalInfo({ ...(modalInfo || {}), configs })
   }
 
   useEffect(() => {
@@ -387,11 +371,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       setUploadAttachList({
         ...attach,
       })
-      tempArr = tempArr.map((i: any) => i.id)
-      setDemandList(
-        demandListAll.current?.filter((k: any) => !tempArr.includes(k.id)) ??
-          [],
-      )
+      setDemandListAll([...tempArr, ...demandListAll])
       setPeopleValue(
         result?.reportUserList?.map((item: any) => {
           return {
@@ -443,19 +423,22 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         }
       })
     } else {
-      modalInfo?.configs?.forEach((item: any) => {
-        if (item.type === 4) {
-          tempArr = tempArr.concat(item.content ?? [])
+      const value = form.getFieldsValue()
+      Object.keys(value).forEach((key: string) => {
+        if (key?.split('+')?.[0] === '4') {
+          tempArr = tempArr.concat(value[key])
         }
       })
+      tempArr = tempArr.map((k: any) =>
+        demandListAll?.find?.((t: any) => k === t.id),
+      )
     }
     tempArr = tempArr.flat()
-
     let total = 0
     let done = 0
     if (tempArr.length) {
       total = Number(tempArr.length)
-      done = Number(tempArr.filter((k: any) => k.is_end === 1).length)
+      done = Number(tempArr.filter((k: any) => k?.is_end === 1).length)
     } else {
       total = 0
       done = 0
@@ -463,14 +446,15 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
 
     const totalHour = tempArr.reduce(
       (pre, next) =>
-        (type === 'user' ? next.user_today_task_time : next.today_task_time) +
+        (type === 'user' ? next?.user_today_task_time : next?.today_task_time) +
         pre,
       0,
     )
     const totalSchedule = tempArr.reduce(
       (pre, next) =>
-        (type === 'user' ? next.user_schedule_percent : next.schedule_percent) +
-        pre,
+        (type === 'user'
+          ? next?.user_schedule_percent
+          : next?.schedule_percent) + pre,
       0,
     )
     return {
@@ -684,36 +668,14 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             name={`${content.type}+${content.id}+${content.name}`}
           >
             <NewRelatedNeed
+              onSearchWord={(value: string) =>
+                getDemandDataList(currentProject?.id, value)
+              }
+              addItem={(arr: any) => {
+                setDemandListAll([...arr, ...demandListAll])
+              }}
               initValue={content?.content}
               data={demandList}
-              canSubmit={(arr: any) => {
-                console.log(arr, 'arrarrarr', demandList)
-
-                const isCan = arr?.every((i: any) =>
-                  demandList?.map((o: any) => o?.id)?.includes(i?.value),
-                )
-                if (!isCan) {
-                  if (content.name === 'overdue_tasks') {
-                    getMessage({
-                      msg: t(
-                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
-                      ),
-                      type: 'warning',
-                    })
-                  } else {
-                    getMessage({
-                      msg: t(
-                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2',
-                      ),
-                      type: 'warning',
-                    })
-                  }
-                }
-                return isCan
-              }}
-              onFilter={() => {
-                setFilterDemand()
-              }}
               // 是否显示逾期
               isShowOverdue={content?.name === 'overdue_tasks'}
             />
