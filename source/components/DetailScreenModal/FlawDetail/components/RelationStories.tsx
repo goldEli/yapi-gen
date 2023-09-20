@@ -706,12 +706,14 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
   return (
     <RelationWrap
       style={{
-        paddingLeft: props.isDrawer ? 0 : 24,
+        padding: props.isDrawer ? 12 : 24,
         // height: props.isDrawer
         //   ? '100%'
         //   : isEnd
         //   ? 'calc(100vh - 192px)'
         //   : 'calc(100vh - 224px)',
+        backgroundColor: 'white',
+        marginTop: '16px',
       }}
       id="tab_associatedWorkItems"
       className="info_item_tab"

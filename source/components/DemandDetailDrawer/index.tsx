@@ -82,6 +82,7 @@ import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 import { toggleStar } from '@/services/employeeProfile'
 import { setTaskDrawerUpdate } from '@store/employeeProfile'
 import LeftIcontButton from '../LeftIcontButton'
+import { Label } from '../DetailScreenModal/FlawDetail/style'
 interface ItemIprops {
   label: string
   key: string
@@ -704,9 +705,17 @@ const DemandDetailDrawer = () => {
         <Content id="contentDom">
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
-            <>
-              <ParentBox size={8}>
-                <div style={{ display: 'flex' }}>
+            <div>
+              <ParentBox
+                style={{
+                  backgroundColor: 'white',
+                  margin: 0,
+                  padding: '12px 24px',
+                  borderBottom: '1px solid #EBECED',
+                }}
+                size={8}
+              >
+                <div style={{ display: 'flex', backgroundColor: 'white' }}>
                   {drawerInfo.level_tree?.map((i: any, index: number) => (
                     <DrawerHeader
                       style={{
@@ -786,7 +795,7 @@ const DemandDetailDrawer = () => {
                 )}
               </ParentBox>
               {drawerInfo?.isExamine && (
-                <div style={{ marginBottom: 16 }}>
+                <div style={{ marginBottom: 16, backgroundColor: 'white' }}>
                   <StatusExamine
                     type={1}
                     onCancel={onCancelExamine}
@@ -796,7 +805,13 @@ const DemandDetailDrawer = () => {
                   />
                 </div>
               )}
-              <DemandName>
+              <DemandName
+                style={{
+                  backgroundColor: 'white',
+                  padding: '12px 24px',
+                  borderBottom: '1px solid #EBECED',
+                }}
+              >
                 {isCanEdit && (
                   <span
                     className="name"
@@ -811,7 +826,9 @@ const DemandDetailDrawer = () => {
 
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <ProgressBox>
+              <ProgressBox
+                style={{ backgroundColor: 'white', padding: '12px 24px' }}
+              >
                 <CommonProgress
                   isTable={false}
                   type="demand"
@@ -829,7 +846,13 @@ const DemandDetailDrawer = () => {
                 />
               </ProgressBox>
               {!demandDetailDrawerProps?.isPreview && (
-                <BtnWrap>
+                <BtnWrap
+                  style={{
+                    backgroundColor: 'white',
+                    margin: 0,
+                    padding: '12px 24px',
+                  }}
+                >
                   <CommonButton
                     type="secondary"
                     onClick={() => {
@@ -877,12 +900,21 @@ const DemandDetailDrawer = () => {
                 onUpdate={onOperationUpdate}
                 isPreview={demandDetailDrawerProps?.isPreview}
               ></DrawerTopInfo>
-              <Tabs
-                className="tabs"
-                activeKey={tabActive}
-                items={items}
-                onChange={onChangeTabs}
-              ></Tabs>
+              <div
+                style={{
+                  padding: '0 24px',
+                  backgroundColor: 'white',
+                  marginBottom: '12px',
+                }}
+              >
+                <Tabs
+                  className="tabs"
+                  activeKey={tabActive}
+                  items={items}
+                  onChange={onChangeTabs}
+                ></Tabs>
+              </div>
+
               <LayerBox>
                 <DetailDemand
                   detail={drawerInfo}
@@ -909,8 +941,17 @@ const DemandDetailDrawer = () => {
                   isPreview={demandDetailDrawerProps?.isPreview}
                 />
 
-                <div id="tab_comment" className="info_item_tab">
-                  <CommentTitle>{t('requirements_review')}</CommentTitle>
+                <div
+                  id="tab_comment"
+                  style={{
+                    backgroundColor: 'white',
+                    margin: 0,
+                    marginBottom: 12,
+                    padding: 12,
+                  }}
+                  className="info_item_tab"
+                >
+                  <Label> {t('requirements_review')}</Label>
                   <CommonComment
                     data={demandCommentList}
                     onDeleteConfirm={onDeleteCommentConfirm}
@@ -918,9 +959,9 @@ const DemandDetailDrawer = () => {
                   />
                 </div>
               </LayerBox>
-            </>
+            </div>
           )}
-          <DetailFooter>
+          <DetailFooter style={{ padding: '0 12px' }}>
             <div className="textBox">
               <div>
                 {t('created')}

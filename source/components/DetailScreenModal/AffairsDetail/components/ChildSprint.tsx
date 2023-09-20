@@ -425,6 +425,7 @@ const ChildSprint = (
   })
   return (
     <InfoItem
+      style={{ padding: '16px 24px', marginTop: '16px' }}
       id="sprint-childSprint"
       className="info_item_tab"
       isInfoPage={props?.isInfoPage}

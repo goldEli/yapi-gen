@@ -175,7 +175,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          padding: '12px 12px',
+          padding: '0px 16px',
         }}
       >
         {' '}
@@ -183,7 +183,9 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           className="info_item_tab"
           id="sprint-info"
           style={{
-            marginTop: '0px',
+            marginTop: '16px',
+            padding: '8px 24px',
+            borderRadius: 0,
           }}
           isInfoPage={props?.isInfoPage}
         >
@@ -228,6 +230,10 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           )}
         </InfoItem>
         <InfoItem
+          style={{
+            borderRadius: 0,
+            padding: '16px 24px',
+          }}
           id="schedule"
           className="info_item_tab"
           isInfoPage={props?.isInfoPage}
@@ -245,6 +251,10 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           id="sprint-attachment"
           className="info_item_tab"
           isInfoPage={props?.isInfoPage}
+          style={{
+            borderRadius: 0,
+            padding: '16px 24px',
+          }}
         >
           <BetweenBox>
             <Label>{t('common.attachment')}</Label>
@@ -294,6 +304,10 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           id="sprint-tag"
           className="info_item_tab"
           isInfoPage={props?.isInfoPage}
+          style={{
+            borderRadius: 0,
+            padding: '16px 24px',
+          }}
         >
           <Label>{t('common.tag')}</Label>
           <SprintTag

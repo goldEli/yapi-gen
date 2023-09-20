@@ -235,7 +235,7 @@ const AffairsInfo = (props: Props) => {
   return (
     <InfoWrap
       height={`calc(${userPreferenceConfig.previewModel === 3 ? 80 : 100}vh - ${
-        (affairsInfo?.isExamine ? 216 : 167) +
+        (affairsInfo?.isExamine ? 216 : 190) +
         (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
@@ -279,7 +279,7 @@ const AffairsInfo = (props: Props) => {
             display: 'flex',
             flexDirection: 'column',
             gap: '12px',
-            padding: '0px 12px',
+            padding: '16px 16px',
           }}
         >
           {affairsInfo.work_type !== 6 && (

@@ -7,6 +7,7 @@ import useCategoryList from '@/hooks/useCategoryList'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
+import _ from 'lodash'
 const Wrap = styled(Select)`
   overflow-y: auto;
   .ant-select-selection-overflow-item {
@@ -160,11 +161,13 @@ const CategoryDropdown = (props: IProps) => {
 
   useEffect(() => {
     if (categoryList) {
+      // debugger
       const data = getTypeCategory(categoryList, 'work_type', '', type)
       const options = getOptions(data)
       if (!options) {
         return
       }
+      setCacheList(_.cloneDeep(categoryList.slice(1)))
       setOptions(options)
       return
     }

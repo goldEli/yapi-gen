@@ -780,6 +780,9 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   return (
     <RelationWrap
       style={{
+        marginBottom: 12,
+        padding: 12,
+        backgroundColor: 'white',
         height: props.isDrawer
           ? '100%'
           : isEnd
@@ -787,7 +790,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
           : `calc(${
               userPreferenceConfig.previewModel === 3 ? '80vh' : '100vh'
             } - 224px)`,
-        marginTop: props.isDrawer ? '24px' : '0px',
+        marginTop: props.isDrawer ? '0px' : '0px',
       }}
       id="tab_link"
       className="info_item_tab"
