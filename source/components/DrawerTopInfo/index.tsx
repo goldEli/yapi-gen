@@ -109,7 +109,11 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
         </span>
       </TopInfoWrap>
       <TopInfoWrap
-        style={{ backgroundColor: 'white', margin: 0, padding: '12px 24px' }}
+        style={{
+          backgroundColor: 'white',
+          margin: 0,
+          padding: '12px 24px 0px 24px',
+        }}
       >
         <span className="icon">
           <CommonIconFont type="user" size={16} color="var(--neutral-n3)" />

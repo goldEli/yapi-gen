@@ -900,20 +900,19 @@ const DemandDetailDrawer = () => {
                 onUpdate={onOperationUpdate}
                 isPreview={demandDetailDrawerProps?.isPreview}
               ></DrawerTopInfo>
-              <div
+
+              <Tabs
                 style={{
-                  padding: '0 24px',
+                  paddingLeft: '24px',
+                  paddingTop: '10px',
                   backgroundColor: 'white',
-                  marginBottom: '12px',
+                  // marginBottom: '12px',
                 }}
-              >
-                <Tabs
-                  className="tabs"
-                  activeKey={tabActive}
-                  items={items}
-                  onChange={onChangeTabs}
-                ></Tabs>
-              </div>
+                className="tabs"
+                activeKey={tabActive}
+                items={items}
+                onChange={onChangeTabs}
+              ></Tabs>
 
               <LayerBox>
                 <DetailDemand
@@ -989,8 +988,8 @@ const DemandDetailDrawer = () => {
           )}
           onConfirm={onConfirmComment}
           style={{
-            padding: '24px 0 24px 24px',
-            width: 'calc(100% - 24px)',
+            padding: '24px ',
+            width: '100% ',
             height: 80,
           }}
           maxHeight="60vh"

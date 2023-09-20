@@ -73,17 +73,17 @@ const SetShowField = (props: Props) => {
       label: <CustomLabel>{t('requirement_opening_mode')}</CustomLabel>,
       children: [
         {
-          key: '1',
+          key: '3',
           label: (
             <ChangeItem
               height={22}
-              onClick={() => onChangeViewMode(1)}
+              onClick={() => onChangeViewMode(3)}
               isActive={
-                active === '1' || userPreferenceConfig.previewModel === 1
+                active === '3' || userPreferenceConfig.previewModel === 3
               }
             >
-              <span style={{ paddingRight: 10 }}>{t('slideOutSide')}</span>
-              {(active === '1' || userPreferenceConfig.previewModel === 1) && (
+              <span style={{ paddingRight: 10 }}>{t('preview')}</span>
+              {(active === '3' || userPreferenceConfig.previewModel === 3) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </ChangeItem>
@@ -106,18 +106,19 @@ const SetShowField = (props: Props) => {
             </ChangeItem>
           ),
         },
+
         {
-          key: '3',
+          key: '1',
           label: (
             <ChangeItem
               height={22}
-              onClick={() => onChangeViewMode(3)}
+              onClick={() => onChangeViewMode(1)}
               isActive={
-                active === '3' || userPreferenceConfig.previewModel === 3
+                active === '1' || userPreferenceConfig.previewModel === 1
               }
             >
-              <span style={{ paddingRight: 10 }}>{t('preview')}</span>
-              {(active === '3' || userPreferenceConfig.previewModel === 3) && (
+              <span style={{ paddingRight: 10 }}>{t('slideOutSide')}</span>
+              {(active === '1' || userPreferenceConfig.previewModel === 1) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </ChangeItem>

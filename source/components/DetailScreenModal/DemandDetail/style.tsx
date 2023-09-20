@@ -180,10 +180,13 @@ export const ComputedWrap = styled.div<{ all?: boolean }>`
 `
 
 //  需求详情-详细信息
-export const DetailMain = styled.div<{ all?: boolean }>`
+export const DetailMain = styled.div<{ all?: boolean; h?: boolean }>`
   display: flex;
   position: relative;
-  height: calc(${props => (props.all ? '80vh' : '100vh')} - 249px);
+  height: calc(
+    ${props => (props.all ? '80vh' : '100vh')} -
+      ${props => (props.h ? '180px' : '249px')}
+  );
   width: 100%;
   margin-top: 16px;
 `

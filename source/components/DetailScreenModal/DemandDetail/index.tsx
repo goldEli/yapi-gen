@@ -611,7 +611,9 @@ const DemandDetail = () => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      <DetailTop>
+      <DetailTop
+        style={{ borderBottom: '1px solid #EBECED', paddingBottom: '16px' }}
+      >
         <div style={{ display: 'inline-flex', alignItems: 'center' }}>
           <MyBreadcrumb />
           <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
@@ -723,7 +725,7 @@ const DemandDetail = () => {
           </ButtonGroup>
         )}
       </DetailTop>
-      <DetailTitle>
+      <DetailTitle style={{ paddingTop: '16px' }}>
         <Tooltip title={demandInfo?.categoryName}>
           <Popover
             trigger={['hover']}
