@@ -200,11 +200,16 @@ export const DetailTitle = styled.div`
   margin-left: 24px;
 `
 
-export const FlawInfoWrap = styled.div({
-  display: 'flex',
-  height: '100%',
-  // padding: '16px 0 0px',
-})
+export const FlawInfoWrap = styled.div<{ all?: boolean; h?: boolean }>`
+  display: flex;
+  position: relative;
+  height: calc(
+    ${props => (props.all ? '80vh' : '100vh')} -
+      ${props => (props.h ? '180px' : '249px')}
+  );
+  width: 100%;
+  margin-top: 16px;
+`
 
 export const FlawInfoLeft = styled.div`
   width: 80%;
