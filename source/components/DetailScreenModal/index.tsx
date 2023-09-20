@@ -78,7 +78,7 @@ const DetailScreenModal = () => {
           : userPreferenceConfig.previewModel === 3
           ? '80vh'
           : 'calc(100vh - 56px)',
-        minWidth: '1400px',
+        // minWidth: '1400px',
         marginTop: fullScreen ? 0 : 56,
       }}
       width="100vw"

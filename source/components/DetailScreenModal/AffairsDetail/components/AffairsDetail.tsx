@@ -175,6 +175,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
+          padding: '0px 16px',
         }}
       >
         {' '}

@@ -621,7 +621,12 @@ const AffairsDetail = () => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      <DetailTop>
+      <DetailTop
+        style={{
+          borderBottom: '1px solid #EBECED',
+          padding: '20px 20px 40px 20px',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <MyBreadcrumb />
           <LongStroyBread
