@@ -229,6 +229,7 @@ export const NumericInput2 = (props: any) => {
 const TableFilter = (props: any) => {
   const [boxMaps, setBoxMaps] = useState<any>()
   const [spanMaps, setSpanMaps] = useState<any>()
+  const [categoryValue, setCategoryValue] = useState<any>([])
   const [t] = useTranslation()
   const location = useLocation()
   const info = useGetloginInfo()
@@ -509,6 +510,7 @@ const TableFilter = (props: any) => {
                           <CategoryDropdown
                             w={boxMaps?.get(i.key)}
                             mode="multiple"
+                            value={categoryValue}
                             categoryList={
                               projectInfoValues
                                 ?.filter((k: any) => k.key === i.key)[0]
@@ -525,6 +527,12 @@ const TableFilter = (props: any) => {
                             }
                             onChangeCallBack={data => {
                               form.setFieldValue('category', data)
+                              setCategoryValue(data)
+                              confirm('category')
+                            }}
+                            onClearCallback={() => {
+                              form.setFieldValue('category', [])
+                              setCategoryValue([])
                               confirm('category')
                             }}
                           />
