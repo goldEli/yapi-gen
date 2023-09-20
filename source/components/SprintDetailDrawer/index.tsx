@@ -876,21 +876,24 @@ const SprintDetailDrawer = () => {
                 </span>
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <CommonProgress
-                isTable={false}
-                type="transaction"
-                id={drawerInfo?.id}
-                percent={drawerInfo?.schedule}
-                hasEdit={
-                  !affairsDetailDrawer.isPreview &&
-                  !hasEdit &&
-                  drawerInfo?.user
-                    ?.map((i: any) => i?.user?.id)
-                    ?.includes(userInfo?.id)
-                }
-                project_id={drawerInfo?.projectId}
-                onConfirm={onOperationUpdate}
-              />
+              <div style={{ backgroundColor: 'white', padding: '0px 24px' }}>
+                <CommonProgress
+                  isTable={false}
+                  type="transaction"
+                  id={drawerInfo?.id}
+                  percent={drawerInfo?.schedule}
+                  hasEdit={
+                    !affairsDetailDrawer.isPreview &&
+                    !hasEdit &&
+                    drawerInfo?.user
+                      ?.map((i: any) => i?.user?.id)
+                      ?.includes(userInfo?.id)
+                  }
+                  project_id={drawerInfo?.projectId}
+                  onConfirm={onOperationUpdate}
+                />
+              </div>
+
               {!affairsDetailDrawer.isPreview && (
                 <div
                   style={{
