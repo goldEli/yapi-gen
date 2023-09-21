@@ -783,6 +783,7 @@ const DemandDetail = () => {
       <div>
         {' '}
         <Tabs
+          // style={{padding:'0px 24px'}}
           className="tabs2"
           tabBarExtraContent={
             tabActive === '4' && (

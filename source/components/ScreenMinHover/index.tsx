@@ -19,7 +19,7 @@ const ScreenMinHover = (props: ScreenMinHoverProps) => {
     <HoverWrap
       onClick={props.onClick}
       isActive={props.isActive}
-      style={props.style}
+      style={{ ...props.style, marginRight: '24px' }}
     >
       {screenMin && (
         <Tooltip
