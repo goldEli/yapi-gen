@@ -943,7 +943,13 @@ const SprintDetailDrawer = () => {
 
               {/* 只有标准事务类型和故障事务类型才有 */}
               {[4, 5].includes(drawerInfo.work_type) && (
-                <TargetWrap>
+                <TargetWrap
+                  style={{
+                    backgroundColor: 'white',
+                    padding: '16px 24px',
+                    margin: 0,
+                  }}
+                >
                   <span className="icon">
                     <CommonIconFont
                       type="target"

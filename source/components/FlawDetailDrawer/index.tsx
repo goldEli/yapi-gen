@@ -883,7 +883,7 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <div>
+              <div style={{ backgroundColor: 'white', padding: '0 24px' }}>
                 <CommonProgress
                   isTable={false}
                   type="flaw"
