@@ -913,7 +913,7 @@ const FlawDetailDrawer = () => {
                   }}
                 >
                   <CommonButton
-                    type="light"
+                    type="secondary"
                     onClick={() => {
                       flawDetailRef?.current?.handleUpload()
                     }}
@@ -932,11 +932,13 @@ const FlawDetailDrawer = () => {
                     detail={drawerInfo}
                     isDetailQuick
                     addWrap={
-                      <CommonButton type="light">{t('addTag')}</CommonButton>
+                      <CommonButton type="secondary">
+                        {t('addTag')}
+                      </CommonButton>
                     }
                   />
                   <CommonButton
-                    type="light"
+                    type="secondary"
                     onClick={() => {
                       relationStoriesRef?.current?.onClickOpen()
                     }}
