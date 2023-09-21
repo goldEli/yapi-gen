@@ -178,9 +178,12 @@ const Circulation = (props: Props) => {
       </span>
     )
   }
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   return (
-    <ComputedWrap style={{ overflow: 'auto' }}>
+    <ComputedWrap
+      all={userPreferenceConfig.previewModel === 3}
+      style={{ overflow: 'auto' }}
+    >
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
         {!!statusLogs?.list && (
           <>

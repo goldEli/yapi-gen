@@ -215,7 +215,7 @@ export const InfoWrap = styled.div<{ height: any }>`
 export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
   width: 100%;
   height: ${props =>
-    props.isScroll ? 'calc(100% - 120px)' : 'calc(100% - 100px)'};
+    props.isScroll ? 'calc(100% - 120px)' : 'calc(100% - 130px)'};
   overflow: auto;
   .review {
     position: absolute;

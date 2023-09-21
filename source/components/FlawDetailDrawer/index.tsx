@@ -762,7 +762,11 @@ const FlawDetailDrawer = () => {
           style={{ padding: '0px 0px', backgroundColor: '#f5f5f7' }}
           id="contentDom"
         >
-          {skeletonLoading && <DetailsSkeleton />}
+          {skeletonLoading && (
+            <div style={{ padding: 16 }}>
+              <DetailsSkeleton />
+            </div>
+          )}
           {!skeletonLoading && (
             <>
               <ParentBox
@@ -909,7 +913,7 @@ const FlawDetailDrawer = () => {
                   }}
                 >
                   <CommonButton
-                    type="light"
+                    type="secondary"
                     onClick={() => {
                       flawDetailRef?.current?.handleUpload()
                     }}
@@ -928,11 +932,13 @@ const FlawDetailDrawer = () => {
                     detail={drawerInfo}
                     isDetailQuick
                     addWrap={
-                      <CommonButton type="light">{t('addTag')}</CommonButton>
+                      <CommonButton type="secondary">
+                        {t('addTag')}
+                      </CommonButton>
                     }
                   />
                   <CommonButton
-                    type="light"
+                    type="secondary"
                     onClick={() => {
                       relationStoriesRef?.current?.onClickOpen()
                     }}
@@ -983,7 +989,7 @@ const FlawDetailDrawer = () => {
                   id="tab_defectComment"
                   style={{
                     backgroundColor: 'white',
-                    padding: '16px',
+                    padding: '16px 24px',
                     marginTop: '12px',
                   }}
                   className="info_item_tab"

@@ -159,19 +159,17 @@ const CommentFooter = (props: CommentFooterProps) => {
             <Space>
               <CommonButton
                 type="light"
-                size="small"
                 onClick={() => {
                   setIsReview(false)
                   form.resetFields()
                 }}
-                style={{ fontSize: 12 }}
+                style={{ fontSize: 14 }}
               >
                 {t('report.list.cancel')}
               </CommonButton>
               <CommonButton
                 type="primary"
-                size="small"
-                style={{ fontSize: 12 }}
+                style={{ fontSize: 14 }}
                 onClick={onComment}
               >
                 {t('common.comment')}
@@ -206,6 +204,9 @@ const CommentFooter = (props: CommentFooterProps) => {
             style={{ width: '100%' }}
             onFocus={onFocus}
           />
+          <CommonButton type="primary" onClick={onFocus}>
+            评论
+          </CommonButton>
         </div>
       )}
     </CommentFooterWrap>

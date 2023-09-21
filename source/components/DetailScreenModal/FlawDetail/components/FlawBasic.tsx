@@ -417,7 +417,7 @@ const FlawBasic = (props: Props) => {
     <div
       style={{
         width: '100%',
-        paddingLeft: props.hasPadding ? '24px' : 12,
+        paddingLeft: props.hasPadding ? '24px' : 24,
         height: 'calc(100% - 108px)',
         overflowY: 'auto',
         overflowX: 'hidden',

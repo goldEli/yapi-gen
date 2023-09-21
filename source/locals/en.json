@@ -2365,7 +2365,7 @@
   "areYouSureYouWantToUpdateTheCurrent": "Are you sure you want to update the current progress?",
   "confirmUpdateProgress": "Confirm update progress",
   "putAway": "Put away",
-  "applicationMenu": "Application menu [",
+  "applicationMenu": "Application menu ([)",
   "cumulativeWorkingHours": "Cumulative working hours",
   "addPictures": "Add pictures",
   "addVideo": "Add video",
@@ -2420,5 +2420,6 @@
   "noPermissionToViewYet": "No permission to view yet",
   "slideOutSide": "Slide out side",
   "fullScreenPreview": "Full screen preview",
-  "preview": "Pop-up preview"
+  "preview": "Pop-up preview",
+  "howToOpenTheDetailsPage": "How to open the details page"
 }

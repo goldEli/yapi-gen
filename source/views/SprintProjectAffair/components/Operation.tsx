@@ -446,7 +446,7 @@ const Operation = (props: Props) => {
               }
               type="primary"
             >
-              <Tooltip placement="top" title={`${t('create')} [C]`}>
+              <Tooltip placement="top" title={`${t('create')} (C)`}>
                 {t('createTransaction')}
               </Tooltip>
             </CommonButton>

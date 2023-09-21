@@ -70,7 +70,7 @@ const SetShowField = (props: Props) => {
     },
     {
       key: '1-1',
-      label: <CustomLabel>{t('requirement_opening_mode')}</CustomLabel>,
+      label: <CustomLabel>{t('howToOpenTheDetailsPage')}</CustomLabel>,
       children: [
         {
           key: '3',

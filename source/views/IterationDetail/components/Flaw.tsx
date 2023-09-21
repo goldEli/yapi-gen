@@ -56,7 +56,7 @@ const Flaw = (props: FlawProps) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [openDemandDetail] = useOpenDemandDetail()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const hasCreate = getIsPermission(
     projectInfo?.projectPermissions,
     'b/flaw/save',

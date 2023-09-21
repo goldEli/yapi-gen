@@ -127,7 +127,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         style={{
           backgroundColor: 'white',
           marginBottom: 12,
-          padding: '  12px',
+          padding: '12px 24px',
         }}
         id="tab_desc"
         className="info_item_tab"
@@ -176,7 +176,11 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         )}
       </ContentItem>
       <ContentItem
-        style={{ backgroundColor: 'white', marginBottom: 12, padding: 12 }}
+        style={{
+          backgroundColor: 'white',
+          marginBottom: 12,
+          padding: '12px 24px',
+        }}
       >
         <div id="tab_log" className="info_item_tab">
           <LabelWrap>
@@ -192,7 +196,11 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         </div>
       </ContentItem>
       <ContentItem
-        style={{ backgroundColor: 'white', marginBottom: 12, padding: 12 }}
+        style={{
+          backgroundColor: 'white',
+          marginBottom: 12,
+          padding: '12px 24px',
+        }}
         id="tab_attachment"
         className="info_item_tab"
       >
@@ -243,7 +251,11 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         </div>
       </ContentItem>
       <ContentItem
-        style={{ backgroundColor: 'white', marginBottom: 12, padding: 12 }}
+        style={{
+          backgroundColor: 'white',
+          marginBottom: 12,
+          padding: '12px 24px',
+        }}
         id="tab_tag"
         className="info_item_tab"
       >

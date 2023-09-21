@@ -703,7 +703,11 @@ const DemandDetailDrawer = () => {
           </Space>
         </Header>
         <Content id="contentDom">
-          {skeletonLoading && <DetailsSkeleton />}
+          {skeletonLoading && (
+            <div style={{ padding: 16 }}>
+              <DetailsSkeleton />
+            </div>
+          )}
           {!skeletonLoading && (
             <div>
               <ParentBox
@@ -950,7 +954,7 @@ const DemandDetailDrawer = () => {
                     backgroundColor: 'white',
                     margin: 0,
                     marginBottom: 12,
-                    padding: 12,
+                    padding: '12px 24px',
                   }}
                   className="info_item_tab"
                 >

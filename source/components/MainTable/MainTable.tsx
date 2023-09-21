@@ -309,7 +309,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'progress',
-      width: 120,
+      width: 150,
       render: (text: string) => {
         return (
           <Progress
