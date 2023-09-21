@@ -504,7 +504,7 @@ const Operation = (props: Props) => {
                 (i: any) => i.work_type === 2,
               )?.length <= 0 ? (
                 <CommonButton type="primary" onClick={props.onCreateDefect}>
-                  <Tooltip placement="top" title={`${t('create')} [C]`}>
+                  <Tooltip placement="top" title={`${t('create')} (C)`}>
                     {t('createDefect')}
                   </Tooltip>
                 </CommonButton>
@@ -517,7 +517,7 @@ const Operation = (props: Props) => {
                   onVisibleChange={visible => setIsVisible(visible)}
                 >
                   <MoreWrap type="create">
-                    <Tooltip placement="top" title={`${t('create')} [C]`}>
+                    <Tooltip placement="top" title={`${t('create')} (C)`}>
                       {t('createDefect')}
                     </Tooltip>
                     <IconFont
