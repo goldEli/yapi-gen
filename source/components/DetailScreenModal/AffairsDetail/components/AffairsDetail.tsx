@@ -185,7 +185,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           style={{
             marginTop: '16px',
             padding: '8px 24px',
-            borderRadius: 6,
+            borderRadius: props?.isInfoPage ? 6 : 0,
           }}
           isInfoPage={props?.isInfoPage}
         >
@@ -231,7 +231,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         </InfoItem>
         <InfoItem
           style={{
-            borderRadius: 6,
+            borderRadius: props?.isInfoPage ? 6 : 0,
             padding: '16px 24px',
           }}
           id="schedule"
@@ -252,7 +252,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           className="info_item_tab"
           isInfoPage={props?.isInfoPage}
           style={{
-            borderRadius: 6,
+            borderRadius: props?.isInfoPage ? 6 : 0,
             padding: '16px 24px',
           }}
         >
@@ -305,7 +305,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           className="info_item_tab"
           isInfoPage={props?.isInfoPage}
           style={{
-            borderRadius: 6,
+            borderRadius: props?.isInfoPage ? 6 : 0,
             padding: '16px 24px',
           }}
         >
