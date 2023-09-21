@@ -713,7 +713,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
         //   ? 'calc(100vh - 192px)'
         //   : 'calc(100vh - 224px)',
         backgroundColor: 'white',
-        marginTop: '16px',
+        marginTop: '12px',
       }}
       id="tab_associatedWorkItems"
       className="info_item_tab"

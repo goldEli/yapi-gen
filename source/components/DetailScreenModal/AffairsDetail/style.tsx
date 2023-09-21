@@ -150,9 +150,11 @@ export const SprintDetailMouseDom = styled(MouseDom)`
   background: transparent;
 `
 
-export const BasicWrap = styled.div`
+export const BasicWrap = styled.div<{ a?: boolean; b?: boolean }>`
   position: relative;
-  height: calc(100% - 108px);
+  height: calc(
+    100% - ${props => (props.a ? (props.b ? 132 : 85) : props.b ? 42 : 0)}px
+  );
 `
 
 export const BasicContent = styled.div`

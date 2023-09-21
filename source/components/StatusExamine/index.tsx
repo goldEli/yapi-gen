@@ -53,7 +53,7 @@ const StatusExamine = (props: StatusExamineProps) => {
     })
   }
   return (
-    <>
+    <div style={{ backgroundColor: 'white' }}>
       <DeleteConfirmModal />
       <ExamineWrap>
         <TopWrap>
@@ -84,7 +84,7 @@ const StatusExamine = (props: StatusExamineProps) => {
           </div>
         )}
       </ExamineWrap>
-    </>
+    </div>
   )
 }
 

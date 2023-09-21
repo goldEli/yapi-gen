@@ -155,7 +155,7 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
 `
 
 export const Content = styled.div`
-  height: calc(100% - 53px);
+  height: calc(100% - 115px);
   overflow: auto;
   padding: 16px 24px 60px;
   position: relative;

@@ -19,7 +19,7 @@ import {
   removeNull,
 } from '@/tools'
 import moment from 'moment'
-import { useSelector } from '@store/index'
+import { useSelector, useDispatch } from '@store/index'
 import { batchDelete, batchEdit, getBatchEditConfig } from '@/services/demand'
 import { getMessage } from '../Message'
 import DeleteConfirm from '../DeleteConfirm'
@@ -35,6 +35,7 @@ import {
   batchFlawEdit,
   getFlawBatchEditConfig,
 } from '@/services/flaw'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 interface Props {
   // 弹窗状态
@@ -57,6 +58,8 @@ const BatchModal = (props: Props) => {
   const [chooseSelect, setChooseSelect] = useState<any>([])
   const [chooseType, setChooseType] = useState('')
   const [chooseAfter, setChooseAfter] = useState<any>({})
+  const dispatch = useDispatch()
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
   // 需求类别的状态下拉
   const [categoryStatusList, setCategoryStatusList] = useState<any>([])
   const [currentTypeItem, setCurrentTypeItem] = useState<any>({})
@@ -269,6 +272,7 @@ const BatchModal = (props: Props) => {
     }
     await currentType?.update(params)
     getMessage({ msg: t('common.editSuccess'), type: 'success' })
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     onEditClose()
     props.onClose()
   }

@@ -6,13 +6,14 @@ export const Wrap = styled.div`
 `
 export const Header = styled.div`
   height: 64px;
-  height: 64px;
   opacity: 1;
   position: sticky;
   top: 0;
-  z-index: 9;
+  z-index: 99;
+  width: 100%;
+
   img {
-    height: 100%;
+    height: 64px;
   }
   span {
     position: absolute;
@@ -136,6 +137,7 @@ export const ImageBox = styled.div`
     }
     &:hover {
       transform: scale(1.02) translateY(-12px);
+      position: relative;
     }
     transition: 0.3s ease;
   }

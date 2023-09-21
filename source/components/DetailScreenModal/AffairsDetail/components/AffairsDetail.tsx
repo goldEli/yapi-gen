@@ -153,8 +153,8 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       <DeleteConfirmModal />
       {/* 只有标准事务类型和故障事务类型才有 */}
       {[4, 5].includes(props.affairsInfo?.work_type) && props.isInfoPage && (
-        <InfoItem isInfoPage={props?.isInfoPage}>
-          <TargetWrap>
+        <InfoItem style={{ paddingTop: 0 }} isInfoPage={props?.isInfoPage}>
+          <TargetWrap style={{ margin: '0' }}>
             <span className="icon">
               <CommonIconFont
                 type="target"
@@ -175,7 +175,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          padding: `0px ${props?.isInfoPage ? '16px' : '0px'}`,
+          padding: `0px ${props?.isInfoPage ? '12px' : '0px'}`,
         }}
       >
         {' '}
@@ -183,9 +183,9 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           className="info_item_tab"
           id="sprint-info"
           style={{
-            marginTop: '16px',
+            marginTop: '12px',
             padding: '8px 24px',
-            borderRadius: 0,
+            borderRadius: props?.isInfoPage ? 6 : 0,
           }}
           isInfoPage={props?.isInfoPage}
         >
@@ -231,7 +231,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         </InfoItem>
         <InfoItem
           style={{
-            borderRadius: 0,
+            borderRadius: props?.isInfoPage ? 6 : 0,
             padding: '16px 24px',
           }}
           id="schedule"
@@ -252,7 +252,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           className="info_item_tab"
           isInfoPage={props?.isInfoPage}
           style={{
-            borderRadius: 0,
+            borderRadius: props?.isInfoPage ? 6 : 0,
             padding: '16px 24px',
           }}
         >
@@ -305,7 +305,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           className="info_item_tab"
           isInfoPage={props?.isInfoPage}
           style={{
-            borderRadius: 0,
+            borderRadius: props?.isInfoPage ? 6 : 0,
             padding: '16px 24px',
           }}
         >

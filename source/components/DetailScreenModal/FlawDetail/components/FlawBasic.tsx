@@ -422,7 +422,7 @@ const FlawBasic = (props: Props) => {
         overflowY: 'auto',
         overflowX: 'hidden',
         backgroundColor: 'white',
-        marginTop: '16px',
+        marginTop: '12px',
       }}
       id="tab_info"
       className="info_item_tab"

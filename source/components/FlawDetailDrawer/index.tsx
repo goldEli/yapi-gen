@@ -883,7 +883,7 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <div>
+              <div style={{ backgroundColor: 'white', padding: '0 24px' }}>
                 <CommonProgress
                   isTable={false}
                   type="flaw"
@@ -949,6 +949,12 @@ const FlawDetailDrawer = () => {
                 isPreview={isPreview}
               ></DrawerTopInfo>
               <Tabs
+                style={{
+                  paddingLeft: '24px',
+                  paddingTop: '15px',
+                  backgroundColor: 'white',
+                  // marginBottom: '12px',
+                }}
                 className="tabs"
                 activeKey={tabActive}
                 items={tabItems}
@@ -978,7 +984,7 @@ const FlawDetailDrawer = () => {
                   style={{
                     backgroundColor: 'white',
                     padding: '16px',
-                    marginTop: '16px',
+                    marginTop: '12px',
                   }}
                   className="info_item_tab"
                 >
@@ -992,7 +998,7 @@ const FlawDetailDrawer = () => {
               </LayerBox>
             </>
           )}
-          <DetailFooter style={{ padding: '16px', marginTop: '16px' }}>
+          <DetailFooter style={{ padding: '16px', marginTop: '12px' }}>
             <div className="textBox">
               <div>
                 {t('created')}{' '}
@@ -1020,8 +1026,8 @@ const FlawDetailDrawer = () => {
           )}
           onConfirm={onConfirmComment}
           style={{
-            padding: '24px 0 24px 24px',
-            width: 'calc(100% - 24px)',
+            padding: '24px 0',
+            width: '100%',
             height: 80,
           }}
           maxHeight="60vh"
