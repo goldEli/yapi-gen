@@ -334,7 +334,11 @@ const BasicDemand = (props: Props) => {
 
   return (
     <div
-      style={{ backgroundColor: 'white', marginBottom: 12, padding: 12 }}
+      style={{
+        backgroundColor: 'white',
+        marginBottom: 12,
+        padding: '12px 24px',
+      }}
       id="tab_info"
       className="info_item_tab"
     >

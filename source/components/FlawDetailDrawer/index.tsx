@@ -762,7 +762,11 @@ const FlawDetailDrawer = () => {
           style={{ padding: '0px 0px', backgroundColor: '#f5f5f7' }}
           id="contentDom"
         >
-          {skeletonLoading && <DetailsSkeleton />}
+          {skeletonLoading && (
+            <div style={{ padding: 16 }}>
+              <DetailsSkeleton />
+            </div>
+          )}
           {!skeletonLoading && (
             <>
               <ParentBox
@@ -983,7 +987,7 @@ const FlawDetailDrawer = () => {
                   id="tab_defectComment"
                   style={{
                     backgroundColor: 'white',
-                    padding: '16px',
+                    padding: '16px 24px',
                     marginTop: '12px',
                   }}
                   className="info_item_tab"

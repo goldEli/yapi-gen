@@ -805,7 +805,11 @@ const SprintDetailDrawer = () => {
           style={{ padding: '0px', backgroundColor: '#f5f5f7' }}
           id="contentDom"
         >
-          {skeletonLoading && <DetailsSkeleton />}
+          {skeletonLoading && (
+            <div style={{ padding: 16 }}>
+              <DetailsSkeleton />
+            </div>
+          )}
           {!skeletonLoading && (
             <>
               <StatusAndLongWrap

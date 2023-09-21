@@ -139,13 +139,14 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          padding: `0 ${props?.isInfoPage ? '12px' : '0'}`,
+          padding: `0 ${props?.isInfoPage ? '24px' : '0'}`,
         }}
       >
         <FlawInfoInfoItem
           style={{
             marginTop: '12px',
-            borderRadius: '6px',
+            borderRadius: props?.isInfoPage ? '6px' : '0px',
+            padding: '16px 24px',
           }}
           activeState
           id="tab_desc"
@@ -192,7 +193,8 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         </FlawInfoInfoItem>
         <FlawInfoInfoItem
           style={{
-            borderRadius: '6px',
+            borderRadius: props?.isInfoPage ? '6px' : '0px',
+            padding: '16px 24px',
           }}
           id="tab_log"
           className="info_item_tab"
@@ -208,7 +210,8 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         </FlawInfoInfoItem>
         <FlawInfoInfoItem
           style={{
-            borderRadius: '6px',
+            borderRadius: props?.isInfoPage ? '6px' : '0px',
+            padding: '16px 24px',
           }}
           activeState
           id="tab_attachment"
@@ -270,7 +273,8 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         </FlawInfoInfoItem>
         <FlawInfoInfoItem
           style={{
-            borderRadius: '6px',
+            borderRadius: props?.isInfoPage ? '6px' : '0px',
+            padding: '16px 24px',
           }}
           id="tab_tag"
           className="info_item_tab"

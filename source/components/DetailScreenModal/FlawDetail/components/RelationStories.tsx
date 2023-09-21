@@ -706,7 +706,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
   return (
     <RelationWrap
       style={{
-        padding: props.isDrawer ? 12 : 24,
+        padding: props.isDrawer ? '16px 24px' : 24,
         // height: props.isDrawer
         //   ? '100%'
         //   : isEnd
