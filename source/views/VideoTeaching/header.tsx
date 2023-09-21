@@ -5,7 +5,7 @@ export default function header(props: any) {
   return (
     <Header>
       <img
-        src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/header-bg.jpg"
+        src="http://oa-1308485183.cos.ap-chengdu.myqcloud.com/system/system-test/2023-09-21header.svg/file/1695278840884/header.svg"
         alt=""
       />
       <span>更新时间：{props.time}</span>

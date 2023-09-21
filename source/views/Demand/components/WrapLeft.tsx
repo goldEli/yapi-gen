@@ -308,6 +308,7 @@ const WrapLeft = (props: any, ref: any) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { value: valueId } = useSelector(store => store.counter)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
@@ -451,6 +452,11 @@ const WrapLeft = (props: any, ref: any) => {
       init,
     }
   })
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      init(false, true)
+    }
+  }, [isUpdateAddWorkItem])
   const onDragLine = () => {
     document.onmousemove = e => {
       setFocus(true)
