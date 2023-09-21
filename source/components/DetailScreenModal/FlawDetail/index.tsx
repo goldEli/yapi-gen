@@ -757,6 +757,7 @@ const FlawDetail = () => {
         tabBarExtraContent={
           tabActive === '3' ? (
             <ScreenMinHover
+              style={{ marginRight: '24px' }}
               label={t('common.search')}
               icon="filter"
               isActive={filter}
