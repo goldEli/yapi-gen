@@ -148,7 +148,7 @@ const DemandStatusBox = (props: any) => {
         })}
       </div>
 
-      <div>
+      <div style={{ backgroundColor: 'white' }}>
         {demandInfo?.isExamine && (
           <StatusExamine
             type={1}

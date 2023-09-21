@@ -795,7 +795,7 @@ const DemandDetailDrawer = () => {
                 )}
               </ParentBox>
               {drawerInfo?.isExamine && (
-                <div style={{ marginBottom: 16, backgroundColor: 'white' }}>
+                <div>
                   <StatusExamine
                     type={1}
                     onCancel={onCancelExamine}
