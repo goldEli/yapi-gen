@@ -24,6 +24,7 @@ export const Header = styled.div`
   }
 `
 export const Content = styled.div<{ windowWidth: number }>`
+  padding-top: 12px;
   margin: ${props =>
     props.windowWidth <= 1440
       ? ' 0px calc(50% - 544px)'
@@ -37,7 +38,7 @@ export const InputBox = styled.div`
   position: sticky;
   top: 60px;
   background: #fff;
-  padding-bottom: 32px;
+  padding-bottom: 20px;
   z-index: 9;
   .title-box {
     text-align: center;
@@ -136,7 +137,7 @@ export const ImageBox = styled.div`
       padding-left: 12px;
     }
     &:hover {
-      transform: scale(1.02) translateY(-12px);
+      transform: scale(1.02) translateY(-6px);
       position: relative;
     }
     transition: 0.3s ease;
