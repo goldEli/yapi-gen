@@ -165,7 +165,7 @@ const DemandDetail = () => {
     if (!currentIndex) {
       return
     }
-    const resultParams = { ...params, ...{ sprintId: newIndex } }
+    const resultParams = { ...params, ...{ demandId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
@@ -175,7 +175,7 @@ const DemandDetail = () => {
     if (currentIndex === (params?.changeIds?.length || 0) - 1) {
       return
     }
-    const resultParams = { ...params, ...{ sprintId: newIndex } }
+    const resultParams = { ...params, ...{ demandId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
