@@ -153,7 +153,7 @@ export const SprintDetailMouseDom = styled(MouseDom)`
 export const BasicWrap = styled.div<{ a?: boolean; b?: boolean }>`
   position: relative;
   height: calc(
-    100% - ${props => (props.a ? '108px' : props.b ? '50px' : '0px')}
+    100% - ${props => (props.a ? (props.b ? 132 : 85) : props.b ? 42 : 0)}px
   );
 `
 

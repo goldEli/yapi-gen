@@ -781,7 +781,7 @@ const AffairsDetail = () => {
           <SprintDetailMouseDom
             active={focus}
             onMouseDown={onDragLine}
-            style={{ left: 0 }}
+            style={{ left: 0, height: affairsInfo.isExamine ? '92%' : '100%' }}
           >
             <SprintDetailDragLine active={focus} className="line" />
           </SprintDetailMouseDom>
