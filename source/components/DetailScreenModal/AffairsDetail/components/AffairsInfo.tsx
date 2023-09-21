@@ -235,8 +235,13 @@ const AffairsInfo = (props: Props) => {
   return (
     <InfoWrap
       height={`calc(${userPreferenceConfig.previewModel === 3 ? 80 : 100}vh - ${
-        (affairsInfo?.isExamine ? 216 : 190) +
-        (document.getElementById('DetailText')?.clientHeight || 25)
+        (userPreferenceConfig.previewModel === 3
+          ? affairsInfo?.isExamine
+            ? 176
+            : 140
+          : affairsInfo?.isExamine
+          ? 236
+          : 190) + (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
       {/* 子任务不存在子事务模块 */}
