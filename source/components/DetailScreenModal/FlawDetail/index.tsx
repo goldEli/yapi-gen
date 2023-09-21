@@ -157,7 +157,7 @@ const FlawDetail = () => {
   const onUpDemand = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex - 1] : 0
     if (!currentIndex) return
-    const resultParams = { ...params, ...{ sprintId: newIndex } }
+    const resultParams = { ...params, ...{ flawId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
@@ -165,7 +165,7 @@ const FlawDetail = () => {
   const onDownDemand = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex + 1] : 0
     if (currentIndex === (params?.changeIds?.length || 0) - 1) return
-    const resultParams = { ...params, ...{ sprintId: newIndex } }
+    const resultParams = { ...params, ...{ flawId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
