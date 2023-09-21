@@ -1065,7 +1065,7 @@ const SprintDetailDrawer = () => {
           )}
           onConfirm={onConfirmComment}
           style={{
-            padding: '24px 0 24px 24px',
+            padding: '24px 0',
             width: '100% ',
             height: 80,
           }}

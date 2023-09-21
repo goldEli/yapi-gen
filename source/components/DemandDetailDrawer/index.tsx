@@ -809,7 +809,7 @@ const DemandDetailDrawer = () => {
                 style={{
                   backgroundColor: 'white',
                   padding: '12px 24px',
-                  borderBottom: '1px solid #EBECED',
+                  //
                 }}
               >
                 {isCanEdit && (
@@ -827,7 +827,11 @@ const DemandDetailDrawer = () => {
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
               <ProgressBox
-                style={{ backgroundColor: 'white', padding: '12px 24px' }}
+                style={{
+                  backgroundColor: 'white',
+                  padding: '12px 24px',
+                  borderBottom: '1px solid #EBECED',
+                }}
               >
                 <CommonProgress
                   isTable={false}
@@ -988,7 +992,7 @@ const DemandDetailDrawer = () => {
           )}
           onConfirm={onConfirmComment}
           style={{
-            padding: '24px ',
+            padding: '24px 0',
             width: '100% ',
             height: 80,
           }}
