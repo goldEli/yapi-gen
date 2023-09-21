@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export const ExamineWrap = styled.div`
-  /* background: var(--neutral-n8); */
+  background: var(--neutral-n8);
   width: 100%;
   padding: 8px 16px;
   border-radius: 6px;

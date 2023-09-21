@@ -698,7 +698,7 @@ const AffairsDetail = () => {
         )}
       </DetailTop>
       {affairsInfo?.isExamine && (
-        <div style={{ padding: '0 24px', backgroundColor: 'white' }}>
+        <div style={{ padding: '0px', backgroundColor: 'white' }}>
           <StatusExamine
             type={2}
             onCancel={onCancelExamine}

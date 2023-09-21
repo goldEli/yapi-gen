@@ -853,7 +853,7 @@ const SprintDetailDrawer = () => {
                 </ChangeStatusPopover>
               </StatusAndLongWrap>
               {drawerInfo?.isExamine && (
-                <div style={{ marginBottom: 16 }}>
+                <div style={{ marginBottom: 4 }}>
                   <StatusExamine
                     type={2}
                     onCancel={onCancelExamine}
