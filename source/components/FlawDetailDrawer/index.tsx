@@ -949,6 +949,12 @@ const FlawDetailDrawer = () => {
                 isPreview={isPreview}
               ></DrawerTopInfo>
               <Tabs
+                style={{
+                  paddingLeft: '24px',
+                  paddingTop: '15px',
+                  backgroundColor: 'white',
+                  // marginBottom: '12px',
+                }}
                 className="tabs"
                 activeKey={tabActive}
                 items={tabItems}

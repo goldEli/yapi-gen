@@ -904,7 +904,7 @@ const DemandDetailDrawer = () => {
               <Tabs
                 style={{
                   paddingLeft: '24px',
-                  paddingTop: '10px',
+                  paddingTop: '15px',
                   backgroundColor: 'white',
                   // marginBottom: '12px',
                 }}
