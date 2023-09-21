@@ -176,7 +176,11 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
 `
 
 export const ComputedWrap = styled.div<{ all?: boolean }>`
-  height: calc(${props => (props.all ? '80vh' : '100vh')} - 210px);
+  padding: 0px 24px;
+  height: calc(
+    ${props => (props.all ? '80vh' : '100vh')} -
+      ${props => (props.all ? '154px' : '210px')}
+  );
 `
 
 //  需求详情-详细信息

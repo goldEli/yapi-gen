@@ -388,9 +388,9 @@ const ChangeRecord = (props: Props) => {
     setPageObj({ page, size })
     getList({ page, size }, order)
   }
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   return (
-    <ComputedWrap>
+    <ComputedWrap all={userPreferenceConfig.previewModel === 3}>
       <CommonModal
         isVisible={isVisible}
         title={t('project.changeInfo')}
@@ -404,7 +404,7 @@ const ChangeRecord = (props: Props) => {
             display: 'flex',
             width: '100%',
             alignItems: 'flex-start',
-            paddingRight: 16,
+            paddingRight: 24,
           }}
         >
           <div
