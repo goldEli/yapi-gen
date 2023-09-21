@@ -463,10 +463,18 @@ const FlawDetail = () => {
   }
 
   useEffect(() => {
-    if (visible) {
+    if (visible || params.flawId) {
       dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
+      dispatch(
+        getFlawCommentList({
+          projectId: params.id,
+          id: params.flawId ?? 0,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
     }
-  }, [visible])
+  }, [visible, params])
 
   useEffect(() => {
     // 获取项目信息中的需求类别
