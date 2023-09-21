@@ -109,12 +109,11 @@ const CommentFooter = (props: CommentFooterProps) => {
   })
 
   return (
-    <CommentFooterWrap
-      isReview={isReview}
-      style={{ ...props.style, paddingTop: '16px' }}
-    >
+    <CommentFooterWrap isReview={isReview} style={{ ...props.style }}>
       {isReview ? (
-        <div style={{ backgroundColor: 'var(--neutral-white-d5)' }}>
+        <div
+          style={{ backgroundColor: 'var(--neutral-white-d5)', padding: 24 }}
+        >
           <div>
             <Form form={form}>
               <Form.Item
@@ -150,6 +149,7 @@ const CommentFooter = (props: CommentFooterProps) => {
               </Form.Item>
             </Form>
           </div>
+
           {!props.isEmployee && (
             <div style={{ color: '#BBBDBF' }}>
               {t('pressShortcutKeyToSendComments')}
@@ -190,7 +190,12 @@ const CommentFooter = (props: CommentFooterProps) => {
                   position: 'sticky',
                   bottom: 10,
                 }
-              : { gap: 12, display: 'flex', alignItems: 'center' }
+              : {
+                  gap: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '0 24px',
+                }
           }
         >
           {props.hasAvatar ? (
