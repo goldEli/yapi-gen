@@ -811,7 +811,7 @@ const SprintDetailDrawer = () => {
               <StatusAndLongWrap
                 style={{
                   backgroundColor: 'white',
-                  padding: '16px 24px',
+                  padding: '12px 24px',
                   borderBottom: '1px solid #EBECED',
                 }}
               >
@@ -864,7 +864,7 @@ const SprintDetailDrawer = () => {
                 </div>
               )}
               <DemandName
-                style={{ backgroundColor: 'white', padding: ' 16px 24px' }}
+                style={{ backgroundColor: 'white', padding: ' 12px 24px' }}
               >
                 <span
                   className="name"
@@ -900,7 +900,7 @@ const SprintDetailDrawer = () => {
                     backgroundColor: 'white',
                     display: 'flex',
                     gap: 12,
-                    padding: '16px 24px',
+                    padding: '12px 24px',
                   }}
                 >
                   {(drawerInfo.work_type === 6
@@ -1019,7 +1019,7 @@ const SprintDetailDrawer = () => {
                 style={{
                   backgroundColor: 'white',
                   padding: '16px 24px',
-                  marginTop: '16px',
+                  marginTop: '12px',
                 }}
               >
                 <Label
@@ -1037,7 +1037,7 @@ const SprintDetailDrawer = () => {
               </div>
             </>
           )}
-          <DetailFooter>
+          <DetailFooter style={{ padding: '0px 24px', marginTop: '12px' }}>
             <div className="textBox">
               <div>
                 {t('created')}

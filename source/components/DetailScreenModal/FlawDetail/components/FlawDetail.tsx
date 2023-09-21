@@ -139,12 +139,12 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          padding: `0 ${props?.isInfoPage ? '16px' : '0'}`,
+          padding: `0 ${props?.isInfoPage ? '12px' : '0'}`,
         }}
       >
         <FlawInfoInfoItem
           style={{
-            marginTop: '16px',
+            marginTop: '12px',
             borderRadius: '6px',
           }}
           activeState

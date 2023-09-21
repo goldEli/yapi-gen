@@ -175,7 +175,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          padding: `0px ${props?.isInfoPage ? '16px' : '0px'}`,
+          padding: `0px ${props?.isInfoPage ? '12px' : '0px'}`,
         }}
       >
         {' '}
@@ -183,7 +183,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           className="info_item_tab"
           id="sprint-info"
           style={{
-            marginTop: '16px',
+            marginTop: '12px',
             padding: '8px 24px',
             borderRadius: props?.isInfoPage ? 6 : 0,
           }}

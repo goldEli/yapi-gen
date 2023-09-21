@@ -984,7 +984,7 @@ const FlawDetailDrawer = () => {
                   style={{
                     backgroundColor: 'white',
                     padding: '16px',
-                    marginTop: '16px',
+                    marginTop: '12px',
                   }}
                   className="info_item_tab"
                 >
@@ -998,7 +998,7 @@ const FlawDetailDrawer = () => {
               </LayerBox>
             </>
           )}
-          <DetailFooter style={{ padding: '16px', marginTop: '16px' }}>
+          <DetailFooter style={{ padding: '16px', marginTop: '12px' }}>
             <div className="textBox">
               <div>
                 {t('created')}{' '}
