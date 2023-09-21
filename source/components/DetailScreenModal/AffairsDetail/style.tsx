@@ -84,8 +84,8 @@ export const DropdownMenu = styled(Dropdown)`
 
 export const DetailTitle = styled.div`
   display: flex;
-  border-bottom: 1px solid var(--neutral-n6-d1);
-  padding: 0px 0px 20px;
+  /* border-bottom: 1px solid var(--neutral-n6-d1); */
+  padding: 0px 0px 0px;
   width: calc(100% - 48px);
   margin-left: 24px;
 `

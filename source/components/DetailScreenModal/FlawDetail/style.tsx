@@ -9,7 +9,7 @@ export const Wrap = styled.div<{ all?: boolean }>`
   padding-top: 20px;
   flex-direction: column;
   .tabs {
-    padding: 0 24px 0 0;
+    padding: 0 0px 0 0;
   }
   .ant-tabs-nav {
     padding-left: 24px;
