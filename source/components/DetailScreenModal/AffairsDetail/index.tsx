@@ -751,7 +751,7 @@ const AffairsDetail = () => {
           ref={basicInfoDom}
           style={{ position: 'relative', width: leftWidth }}
         >
-          <div style={{ margin: '0 0 30px 24px' }}>
+          <div style={{ margin: '0 0 16px 24px' }}>
             <ChangeStatusPopover
               projectId={affairsInfo.projectId}
               record={affairsInfo}

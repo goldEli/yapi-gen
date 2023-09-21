@@ -109,7 +109,10 @@ const CommentFooter = (props: CommentFooterProps) => {
   })
 
   return (
-    <CommentFooterWrap isReview={isReview} style={{ ...props.style }}>
+    <CommentFooterWrap
+      isReview={isReview}
+      style={{ ...props.style, paddingTop: '16px' }}
+    >
       {isReview ? (
         <div style={{ backgroundColor: 'var(--neutral-white-d5)' }}>
           <div>

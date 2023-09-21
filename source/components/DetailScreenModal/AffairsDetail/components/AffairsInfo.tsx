@@ -65,7 +65,7 @@ const ButtonGroup = (props: {
   }, [props.state])
 
   return (
-    <ButtonGroupWrap>
+    <ButtonGroupWrap style={{ paddingBottom: '16px' }}>
       {items.map((el: { label: string; key: string }) => (
         <div key={el.key}>
           <>
@@ -249,7 +249,7 @@ const AffairsInfo = (props: Props) => {
         />
       )}
       {isScroll && (
-        <TabsWrap1>
+        <TabsWrap1 style={{ paddingBottom: '0px' }}>
           <Tabs
             className="tabs"
             activeKey={tabActive}
@@ -279,7 +279,7 @@ const AffairsInfo = (props: Props) => {
             display: 'flex',
             flexDirection: 'column',
             gap: '12px',
-            padding: '16px 16px',
+            padding: '0 16px 16px 16px',
           }}
         >
           {affairsInfo.work_type !== 6 && (
@@ -313,7 +313,7 @@ const AffairsInfo = (props: Props) => {
           }),
         )}
         onConfirm={onConfirmComment}
-        style={{ padding: '0 0 0 24px', width: 'calc(100% - 24px)' }}
+        style={{ padding: '0 0 0 24px', width: '100%' }}
         maxHeight="60vh"
         hasAvatar
       />

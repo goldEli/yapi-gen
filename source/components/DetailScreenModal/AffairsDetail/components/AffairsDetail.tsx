@@ -153,8 +153,8 @@ const AffairsDetail = (props: AffairsDetailProps) => {
       <DeleteConfirmModal />
       {/* 只有标准事务类型和故障事务类型才有 */}
       {[4, 5].includes(props.affairsInfo?.work_type) && props.isInfoPage && (
-        <InfoItem isInfoPage={props?.isInfoPage}>
-          <TargetWrap>
+        <InfoItem style={{ paddingTop: 0 }} isInfoPage={props?.isInfoPage}>
+          <TargetWrap style={{ margin: '0' }}>
             <span className="icon">
               <CommonIconFont
                 type="target"
@@ -185,7 +185,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           style={{
             marginTop: '16px',
             padding: '8px 24px',
-            borderRadius: 0,
+            borderRadius: 6,
           }}
           isInfoPage={props?.isInfoPage}
         >
@@ -231,7 +231,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
         </InfoItem>
         <InfoItem
           style={{
-            borderRadius: 0,
+            borderRadius: 6,
             padding: '16px 24px',
           }}
           id="schedule"
@@ -252,7 +252,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           className="info_item_tab"
           isInfoPage={props?.isInfoPage}
           style={{
-            borderRadius: 0,
+            borderRadius: 6,
             padding: '16px 24px',
           }}
         >
@@ -305,7 +305,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           className="info_item_tab"
           isInfoPage={props?.isInfoPage}
           style={{
-            borderRadius: 0,
+            borderRadius: 6,
             padding: '16px 24px',
           }}
         >
