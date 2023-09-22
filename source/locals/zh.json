@@ -2424,5 +2424,11 @@
   "howToOpenTheDetailsPage": "详情页打开方式",
   "accountLogin": "账户登录",
   "logInWithPhone": "手机登录",
-  "selectCountryOrRegion": "选择国家或地区"
+  "selectCountryOrRegion": "选择国家或地区",
+  "forgetThe": "忘记密码?",
+  "pleaseEnterPhoneNumber": "请输入手机号",
+  "pleaseEnterVerificationCode": "请输入验证码",
+  "pleaseEnterANewPassword": "请输入新密码",
+  "theUppercaseKeyboardIsTurnedOn": "大写键盘已经开启",
+  "pleaseEnterNewPasswordAgain": "请再次输入新密码"
 }

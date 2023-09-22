@@ -2424,5 +2424,11 @@
   "howToOpenTheDetailsPage": "How to open the details page",
   "accountLogin": "Account login",
   "logInWithPhone": "Log in with phone",
-  "selectCountryOrRegion": "Select country or region"
+  "selectCountryOrRegion": "Select country or region",
+  "forgetThe": "Forget the password?",
+  "pleaseEnterPhoneNumber": "Please enter phone number",
+  "pleaseEnterVerificationCode": "Please enter verification code",
+  "pleaseEnterANewPassword": "Please enter a new password",
+  "theUppercaseKeyboardIsTurnedOn": "The uppercase keyboard is turned on",
+  "pleaseEnterNewPasswordAgain": "Please enter new password again"
 }

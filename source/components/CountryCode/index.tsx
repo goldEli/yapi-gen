@@ -16,8 +16,8 @@ const StyledDropdown = styled(Dropdown)`
   font-size: 16px;
   display: flex;
   align-items: center;
-  padding-left: 14px;
-  padding-right: 8px;
+  /* padding-left: 14px;
+  padding-right: 8px; */
   .ant-dropdown {
     background: #fff;
   }

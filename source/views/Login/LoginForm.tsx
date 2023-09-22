@@ -13,6 +13,7 @@ import React from 'react'
 import { getCaptcha, toLogin, checkToken, checkSecret } from './services'
 import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants/index'
 import IconFont from '@/components/IconFont'
+import ForgetPassword from '@/components/ForgetPassword/ForgetPassword'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 
@@ -50,6 +51,7 @@ export default React.memo(
     const [errorMessage, setErrorMessage] = useState('')
     const [errorState, setErrorState] = useState(false)
     const [focusNumber, setFocusNumber] = useState(0)
+    const [changeF, setChangeF] = useState(false)
     const target = ''
     const [agree, setAgree] = useState(true)
     const [errorCheck, setErrorCheck] = useState({})
@@ -297,244 +299,256 @@ export default React.memo(
 
     return (
       <div className={`${style.main} ${secretVisible ? style.filter : ''}`}>
-        {(!target || target === 'oa' || !systemData[target]) && (
-          <div className={style.title}>
-            <p>{languageMode[systemData.agile.loginFormTitle]}</p>
-          </div>
-        )}
-        <div>
-          <Tabs defaultActiveKey="2">
-            <Tabs.TabPane tab={t('accountLogin')} key="1">
-              <div className={style.form}>
-                <Filed
-                  inputRef={inputRef}
-                  mode={InputMode.NORMAL}
-                  name="username"
-                  icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
-                  value={form.username}
-                  label={languageMode.user}
-                  type="text"
-                  onChangeEvent={handleInputChange}
-                  onCheckSecret={onCheckSecret}
-                  isHighlight={focusNumber === 1 || focusNumber === 4}
-                  isErrorHighlight={
-                    (focusNumber === 1 || focusNumber === 4) && errorState
-                  }
-                  onChangeFocus={changeFocus}
-                  errorCheck={errorCheck}
-                  // onCheckValue={() => onCheckValue(1)}
-                />
-                <Filed
-                  name="password"
-                  mode={InputMode.LOCK}
-                  icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
-                  value={form.password}
-                  label={languageMode.password}
-                  type={show}
-                  onChangeEvent={handleInputChange}
-                  onChangeShow={onChangeShow}
-                  onCheckSecret={onCheckSecret}
-                  isHighlight={focusNumber === 2 || focusNumber === 5}
-                  isErrorHighlight={
-                    (focusNumber === 2 || focusNumber === 5) && errorState
-                  }
-                  onChangeFocus={changeFocus}
-                  bigChar={languageMode.bigChar}
-                  // onCheckValue={() => onCheckValue(2)}
-                />
-                {mode === '1' ? (
-                  <Filed
-                    name="code"
-                    img={captchaImage}
-                    icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
-                    mode={InputMode.CODE}
-                    value={form.code}
-                    label={languageMode.code}
-                    type="text"
-                    onChangeEvent={handleInputChange}
-                    onChangeCaptchaImag={getCaptchaCode}
-                    isHighlight={focusNumber === 3 || focusNumber === 6}
-                    isErrorHighlight={
-                      (focusNumber === 3 || focusNumber === 6) && errorState
-                    }
-                    onChangeFocus={changeFocus}
-                    // onCheckValue={() => onCheckValue(3)}
-                  />
-                ) : (
-                  <Filed
-                    name="code"
-                    mode={InputMode.NORMAL}
-                    icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
-                    value={form.code}
-                    label={languageMode.code}
-                    type="text"
-                    onChangeEvent={handleInputChange}
-                    isHighlight={focusNumber === 3 || focusNumber === 6}
-                    isErrorHighlight={
-                      (focusNumber === 3 || focusNumber === 6) && errorState
-                    }
-                    onChangeFocus={changeFocus}
-                    // onCheckValue={() => onCheckValue(3)}
-                  />
-                )}
-                <div
-                  style={{
-                    visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
-                  }}
-                  className={`${style.toast} ${
-                    !errorState ? style.toast_warning : style.toast_error
-                  }`}
-                >
-                  {/* <img
-            className={style.toast_icon}
-            src={!errorState ? "/warning.svg" : "error.svg"}
-            alt=""
-          /> */}
-                  <span>{errorMessage}</span>
-                </div>
+        {changeF && (
+          <div>
+            {(!target || target === 'oa' || !systemData[target]) && (
+              <div className={style.title}>
+                <p>{languageMode[systemData.agile.loginFormTitle]}</p>
               </div>
-              <button
-                {...(isDisable ? {} : { onClick: login })}
-                className={`${style.button} ${
-                  isDisable ? style.disable_button : ''
-                }`}
-              >
-                {languageMode.login}
-              </button>
-            </Tabs.TabPane>
-
-            {/* -------------------------------------------------------------------------------------------------------------------------------------- */}
-            <Tabs.TabPane tab={t('logInWithPhone')} key="2">
-              <div className={style.form}>
-                <Filed
-                  inputRef={inputRef}
-                  mode={4}
-                  name="phone"
-                  icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
-                  value={form2.phone}
-                  label={languageMode.user}
-                  type="text"
-                  onChangeEvent={handleInputChange}
-                  onCheckSecret={onCheckSecret}
-                  isHighlight={focusNumber === 1 || focusNumber === 4}
-                  isErrorHighlight={
-                    (focusNumber === 1 || focusNumber === 4) && errorState
-                  }
-                  onChangeFocus={changeFocus}
-                  errorCheck={errorCheck}
-                  // onCheckValue={() => onCheckValue(1)}
-                />
-
-                <Filed
-                  name="msg"
-                  img={captchaImage}
-                  icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
-                  mode={3}
-                  value={form2.msg}
-                  label={languageMode.code}
-                  type="text"
-                  onChangeEvent={handleInputChange}
-                  onChangeCaptchaImag={getCaptchaCode}
-                  isHighlight={focusNumber === 3 || focusNumber === 6}
-                  isErrorHighlight={
-                    (focusNumber === 3 || focusNumber === 6) && errorState
-                  }
-                  onChangeFocus={changeFocus}
-                  // onCheckValue={() => onCheckValue(3)}
-                />
-
-                <Filed
-                  name="code"
-                  mode={InputMode.NORMAL}
-                  icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
-                  value={form2.code}
-                  label={languageMode.code}
-                  type="text"
-                  onChangeEvent={handleInputChange}
-                  isHighlight={focusNumber === 3 || focusNumber === 6}
-                  isErrorHighlight={
-                    (focusNumber === 3 || focusNumber === 6) && errorState
-                  }
-                  onChangeFocus={changeFocus}
-                  // onCheckValue={() => onCheckValue(3)}
-                />
-
-                <div
-                  style={{
-                    visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
-                  }}
-                  className={`${style.toast} ${
-                    !errorState ? style.toast_warning : style.toast_error
-                  }`}
-                >
-                  {/* <img
-            className={style.toast_icon}
-            src={!errorState ? "/warning.svg" : "error.svg"}
-            alt=""
-          /> */}
-                  <span>{errorMessage}</span>
-                </div>
-              </div>
-              <button
-                {...(isDisable2 ? {} : { onClick: login2 })}
-                className={`${style.button} ${
-                  isDisable2 ? style.disable_button : ''
-                }`}
-              >
-                {languageMode.login}
-              </button>
-            </Tabs.TabPane>
-          </Tabs>
-
-          <div className={style.headWrap}>
-            <div>{/* <img src="/sso/logo.png" width={207} /> */}</div>
-            <div onClick={controlPopups} className={style.language}>
-              <div className={style.langBox}>
-                <img
-                  src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/LineIcon.svg"
-                  alt=""
-                  className={style.LineIcon}
-                />
-                <Lang className={style.lang}>
-                  {language[languageMode.id].name}
-                </Lang>
-                <IconFont
-                  style={{
-                    fontSize: 16,
-                    color: 'var(--neutral-n2)',
-                    cursor: 'pointer',
-                  }}
-                  type={popupsState ? 'up-icon' : 'down-icon'}
-                />
-              </div>
-              {popupsState ? (
-                <div className={style.popups}>
-                  {language.map((value, index) => (
+            )}
+            <div>
+              <Tabs defaultActiveKey="2">
+                <Tabs.TabPane tab={t('accountLogin')} key="1">
+                  <div className={style.form}>
+                    <Filed
+                      inputRef={inputRef}
+                      mode={InputMode.NORMAL}
+                      name="username"
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
+                      value={form.username}
+                      label={languageMode.user}
+                      type="text"
+                      onChangeEvent={handleInputChange}
+                      onCheckSecret={onCheckSecret}
+                      isHighlight={focusNumber === 1 || focusNumber === 4}
+                      isErrorHighlight={
+                        (focusNumber === 1 || focusNumber === 4) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      errorCheck={errorCheck}
+                      // onCheckValue={() => onCheckValue(1)}
+                    />
+                    <Filed
+                      name="password"
+                      mode={InputMode.LOCK}
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
+                      value={form.password}
+                      label={languageMode.password}
+                      type={show}
+                      onChangeEvent={handleInputChange}
+                      onChangeShow={onChangeShow}
+                      onCheckSecret={onCheckSecret}
+                      isHighlight={focusNumber === 2 || focusNumber === 5}
+                      isErrorHighlight={
+                        (focusNumber === 2 || focusNumber === 5) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      bigChar={languageMode.bigChar}
+                      // onCheckValue={() => onCheckValue(2)}
+                    />
+                    {mode === '1' ? (
+                      <Filed
+                        name="code"
+                        img={captchaImage}
+                        icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
+                        mode={InputMode.CODE}
+                        value={form.code}
+                        label={languageMode.code}
+                        type="text"
+                        onChangeEvent={handleInputChange}
+                        onChangeCaptchaImag={getCaptchaCode}
+                        isHighlight={focusNumber === 3 || focusNumber === 6}
+                        isErrorHighlight={
+                          (focusNumber === 3 || focusNumber === 6) && errorState
+                        }
+                        onChangeFocus={changeFocus}
+                        // onCheckValue={() => onCheckValue(3)}
+                      />
+                    ) : (
+                      <Filed
+                        name="code"
+                        mode={InputMode.NORMAL}
+                        icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
+                        value={form.code}
+                        label={languageMode.code}
+                        type="text"
+                        onChangeEvent={handleInputChange}
+                        isHighlight={focusNumber === 3 || focusNumber === 6}
+                        isErrorHighlight={
+                          (focusNumber === 3 || focusNumber === 6) && errorState
+                        }
+                        onChangeFocus={changeFocus}
+                        // onCheckValue={() => onCheckValue(3)}
+                      />
+                    )}
                     <div
-                      onClick={() => chooseLanguageMode(index)}
-                      className={`${style.popups_item} ${
-                        languageMode.id == index ? style.popups_item_active : ''
+                      style={{
+                        visibility:
+                          errorMessage.length > 0 ? 'visible' : 'hidden',
+                      }}
+                      className={`${style.toast} ${
+                        !errorState ? style.toast_warning : style.toast_error
                       }`}
-                      key={index}
                     >
-                      {value.name}
+                      {/* <img
+            className={style.toast_icon}
+            src={!errorState ? "/warning.svg" : "error.svg"}
+            alt=""
+          /> */}
+                      <span>{errorMessage}</span>
                     </div>
-                  ))}
+                  </div>
+                  <button
+                    {...(isDisable ? {} : { onClick: login })}
+                    className={`${style.button} ${
+                      isDisable ? style.disable_button : ''
+                    }`}
+                  >
+                    {languageMode.login}
+                  </button>
+                  <div style={{ textAlign: 'center', color: '#6688FF' }}>
+                    {t('forgetThe')}
+                  </div>
+                </Tabs.TabPane>
+
+                {/* -------------------------------------------------------------------------------------------------------------------------------------- */}
+                <Tabs.TabPane tab={t('logInWithPhone')} key="2">
+                  <div className={style.form}>
+                    <Filed
+                      inputRef={inputRef}
+                      mode={4}
+                      name="phone"
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
+                      value={form2.phone}
+                      label={languageMode.user}
+                      type="text"
+                      onChangeEvent={handleInputChange}
+                      onCheckSecret={onCheckSecret}
+                      isHighlight={focusNumber === 1 || focusNumber === 4}
+                      isErrorHighlight={
+                        (focusNumber === 1 || focusNumber === 4) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      errorCheck={errorCheck}
+                      // onCheckValue={() => onCheckValue(1)}
+                    />
+
+                    <Filed
+                      name="msg"
+                      img={captchaImage}
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
+                      mode={3}
+                      value={form2.msg}
+                      label={languageMode.code}
+                      type="text"
+                      onChangeEvent={handleInputChange}
+                      onChangeCaptchaImag={getCaptchaCode}
+                      isHighlight={focusNumber === 3 || focusNumber === 6}
+                      isErrorHighlight={
+                        (focusNumber === 3 || focusNumber === 6) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      // onCheckValue={() => onCheckValue(3)}
+                    />
+
+                    <Filed
+                      name="code"
+                      mode={InputMode.NORMAL}
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
+                      value={form2.code}
+                      label={languageMode.code}
+                      type="text"
+                      onChangeEvent={handleInputChange}
+                      isHighlight={focusNumber === 3 || focusNumber === 6}
+                      isErrorHighlight={
+                        (focusNumber === 3 || focusNumber === 6) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      // onCheckValue={() => onCheckValue(3)}
+                    />
+
+                    <div
+                      style={{
+                        visibility:
+                          errorMessage.length > 0 ? 'visible' : 'hidden',
+                      }}
+                      className={`${style.toast} ${
+                        !errorState ? style.toast_warning : style.toast_error
+                      }`}
+                    >
+                      {/* <img
+            className={style.toast_icon}
+            src={!errorState ? "/warning.svg" : "error.svg"}
+            alt=""
+          /> */}
+                      <span>{errorMessage}</span>
+                    </div>
+                  </div>
+                  <button
+                    {...(isDisable2 ? {} : { onClick: login2 })}
+                    className={`${style.button} ${
+                      isDisable2 ? style.disable_button : ''
+                    }`}
+                  >
+                    {languageMode.login}
+                  </button>
+                </Tabs.TabPane>
+              </Tabs>
+
+              <div className={style.headWrap}>
+                <div>{/* <img src="/sso/logo.png" width={207} /> */}</div>
+                <div onClick={controlPopups} className={style.language}>
+                  <div className={style.langBox}>
+                    <img
+                      src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/LineIcon.svg"
+                      alt=""
+                      className={style.LineIcon}
+                    />
+                    <Lang className={style.lang}>
+                      {language[languageMode.id].name}
+                    </Lang>
+                    <IconFont
+                      style={{
+                        fontSize: 16,
+                        color: 'var(--neutral-n2)',
+                        cursor: 'pointer',
+                      }}
+                      type={popupsState ? 'up-icon' : 'down-icon'}
+                    />
+                  </div>
+                  {popupsState ? (
+                    <div className={style.popups}>
+                      {language.map((value, index) => (
+                        <div
+                          onClick={() => chooseLanguageMode(index)}
+                          className={`${style.popups_item} ${
+                            languageMode.id == index
+                              ? style.popups_item_active
+                              : ''
+                          }`}
+                          key={index}
+                        >
+                          {value.name}
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              </div>
+
+              <SecretImage
+                operationNotes={languageMode.operationNotes}
+                operationManual={languageMode.operationManual}
+                secretVisible={secretVisible}
+                secretImage={secretImage}
+                close={() => {
+                  setSecretVisible(false)
+                }}
+              ></SecretImage>
             </div>
           </div>
-
-          <SecretImage
-            operationNotes={languageMode.operationNotes}
-            operationManual={languageMode.operationManual}
-            secretVisible={secretVisible}
-            secretImage={secretImage}
-            close={() => {
-              setSecretVisible(false)
-            }}
-          ></SecretImage>
-        </div>
+        )}
+        {!changeF && <ForgetPassword />}
       </div>
     )
   },
