@@ -137,7 +137,7 @@ const FlawInfo = () => {
         {activeTabs === 2 && (
           <FlawComment isOpen={activeTabs === 2} detail={flawInfo} isOpenInfo />
         )}
-        <BasicFooter>
+        <BasicFooter style={{ width: '94%' }}>
           <div className="textBox">
             <div>
               {t('created')}

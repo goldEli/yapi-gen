@@ -783,10 +783,12 @@ const DemandDetail = () => {
       <div>
         {' '}
         <Tabs
+          // style={{padding:'0px 24px'}}
           className="tabs2"
           tabBarExtraContent={
             tabActive === '4' && (
               <ScreenMinHover
+                style={{ marginRight: '24px' }}
                 label={t('common.search')}
                 icon="filter"
                 isActive={filter}
