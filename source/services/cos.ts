@@ -35,32 +35,32 @@ export const formatFileSize = (val: number) => {
 }
 
 const getCosSign = async (): Promise<any> => {
-  // const response = await http.post<any, any>('getCosSign', {
-  //   accessToken: import.meta.env.__COS_SIGN_ACCESS_TOKEN__,
-  //   app_id: import.meta.env.__COS_SIGN_APP_ID__,
-  //   bucket_id: import.meta.env.__COS_SIGN_BUCKET_ID__,
-  // })
-  // const line = window.navigator.onLine
-  // if (!line) {
-  //   location.reload()
-  // }
+  const response = await http.post<any, any>('getCosSign', {
+    accessToken: import.meta.env.__COS_SIGN_ACCESS_TOKEN__,
+    app_id: import.meta.env.__COS_SIGN_APP_ID__,
+    bucket_id: import.meta.env.__COS_SIGN_BUCKET_ID__,
+  })
+  const line = window.navigator.onLine
+  if (!line) {
+    location.reload()
+  }
 
-  // if (response.code !== 1) {
-  //   location.reload()
-  //   throw new Error(response.msg)
-  // }
+  if (response.code !== 1) {
+    location.reload()
+    throw new Error(response.msg)
+  }
 
-  // return response
-  const response = await http.get<any, any>('getCosSign')
-  return response.data?.info
+  return response
+  // const response = await http.get<any, any>('getCosSign')
+  // return response.data?.info
 }
 
 export const cos = new COS({
   FileParallelLimit: 10,
   ChunkParallelLimit: 10,
   getAuthorization: async (options: any, callback: any) => {
-    // const response = await getCosSign()
-    const response = window.cosInfo
+    const response = await getCosSign()
+    // const response = window.cosInfo
 
     callback({
       TmpSecretId: response.config.credentials.tmpSecretId,
@@ -88,16 +88,17 @@ export const uploadFile = (
 ) => {
   let id = ''
   let files: any = ''
-  return new Promise<any>(async (resolve, reject) => {
-    const response: any = await getCosSign()
-    window.cosInfo = response
+  return new Promise<any>((resolve, reject) => {
+    // async
+    // const response: any = await getCosSign()
+    // window.cosInfo = response
     cos.uploadFile({
       Body: file,
-      Bucket: response.bucket,
-      Region: response.region,
-      Key: `${response.keyPrefix}${username}/${space}/${new Date().getTime()}/${
-        fileName || file.name
-      }`,
+      Bucket: import.meta.env.__COS_BUCKET__,
+      Region: import.meta.env.__COS_REGION__,
+      Key: `${
+        import.meta.env.__COS_PREFIX__
+      }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`,
       onTaskReady(taskId) {
         id = taskId
       },
@@ -148,22 +149,22 @@ export const uploadFile = (
   })
 }
 
-export const uploadFileToKey = async (
+export const uploadFileToKey = (
   file: File,
   username: string,
   space: string,
   fileName?: any,
   onEnd?: (data: { key: string; url: string }) => void,
 ) => {
-  const response: any = await getCosSign()
-  window.cosInfo = response
+  // const response: any = await getCosSign()
+  // window.cosInfo = response
   const key = `${
-    response.keyPrefix
+    import.meta.env.__COS_PREFIX__
   }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`
   cos.uploadFile({
     Body: file,
-    Bucket: response.bucket,
-    Region: response.region,
+    Bucket: import.meta.env.__COS_BUCKET__,
+    Region: import.meta.env.__COS_REGION__,
     Key: key,
     onFileFinish(error: Error, data: UploadFileItemResult) {
       if (!error) {
@@ -194,16 +195,16 @@ export const uploadFileByTask = (
   space: string,
   fileName?: any,
 ) => {
-  return new Promise<any>(async (resolve, reject) => {
-    const response: any = await getCosSign()
-    window.cosInfo = response
+  return new Promise<any>((resolve, reject) => {
+    // const response: any = await getCosSign()
+    // window.cosInfo = response
     cos.uploadFile({
       Body: file,
-      Bucket: response.bucket,
-      Region: response.region,
-      Key: `${response.keyPrefix}${username}/${space}/${new Date().getTime()}/${
-        fileName || file.name
-      }`,
+      Bucket: import.meta.env.__COS_BUCKET__,
+      Region: import.meta.env.__COS_REGION__,
+      Key: `${
+        import.meta.env.__COS_PREFIX__
+      }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`,
       onFileFinish(error: Error, data: UploadFileItemResult) {
         if (error) {
           reject(error)
