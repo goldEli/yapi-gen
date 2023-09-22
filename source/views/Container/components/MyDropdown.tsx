@@ -164,6 +164,9 @@ const MyDropdown = (props: any) => {
       label: t('mine.needDeal'),
     },
     {
+      label: t('pendingReview'),
+    },
+    {
       label: t('have_done'),
     },
     {
@@ -175,6 +178,10 @@ const MyDropdown = (props: any) => {
   const [recentList, setRecentList] = useState<any>()
   const [isOpen, setIsOpen] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
+  const tabBox = useRef<HTMLDivElement>(null)
+  const { isRefresh } = useSelector(store => store.user)
+  const tabActive2 = useRef<HTMLDivElement>(null)
+
   const box = [
     {
       title: t('last_viewed'),
@@ -210,14 +217,21 @@ const MyDropdown = (props: any) => {
     setIsSpinning(false)
   }
   const onFetchList = async () => {
-    if (tabActive === 2) {
-      onGetMyRecent()
-    }
-    if (tabActive === 1) {
-      onGetMineFinishList()
-    }
-    if (tabActive === 0) {
-      onGetMineNoFinishList()
+    switch (tabActive) {
+      case 3:
+        onGetMyRecent()
+        break
+      case 2:
+        onGetMineFinishList()
+        break
+      case 1:
+        // 待审核
+
+        break
+
+      default:
+        onGetMineNoFinishList()
+        break
     }
   }
 
@@ -309,6 +323,7 @@ const MyDropdown = (props: any) => {
     navigate(`${url}?data=${encryptPhp(JSON.stringify(params))}`)
     setIsOpen(false)
   }
+
   const itmeMain = (item: any, type: any) => {
     return (
       isArray(item) &&
@@ -365,9 +380,7 @@ const MyDropdown = (props: any) => {
       ))
     )
   }
-  const tabBox = useRef<HTMLDivElement>(null)
-  const { isRefresh } = useSelector(store => store.user)
-  const tabActive2 = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     if (!isOpen) {
       return
@@ -383,6 +396,7 @@ const MyDropdown = (props: any) => {
       })
     }
   }, [isOpen])
+
   useEffect(() => {
     if (!tabBox.current) {
       return
@@ -400,6 +414,8 @@ const MyDropdown = (props: any) => {
         : tabBox.current?.children[index].clientWidth
     }px`
   }, [tabActive, isRefresh])
+
+  // 除待审核的，下拉渲染
   const dropdownRender = () => {
     return (
       <Container>
@@ -419,7 +435,7 @@ const MyDropdown = (props: any) => {
         </HeraderTabs>
         <ScrollWrap>
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
-            {tabActive === 2 &&
+            {tabActive === 3 &&
               box.map(el => (
                 <div key={el.title}>
                   {recentList?.[el.name].length >= 1 && (
@@ -437,7 +453,38 @@ const MyDropdown = (props: any) => {
                 </div>
               ))}
             {tabActive === 0 && itmeMain(noFinishList, 'story')}
-            {tabActive === 1 && itmeMain(finishList, 'story')}
+            {tabActive === 2 && itmeMain(finishList, 'story')}
+          </Spin>
+        </ScrollWrap>
+        <Border />
+        <Footer onClick={onClick}>
+          <div>{t('Check_out_my_work') as string}</div>
+        </Footer>
+      </Container>
+    )
+  }
+
+  // 待审核
+  const dropdownRenderReview = () => {
+    return (
+      <Container>
+        <HeraderTabs>
+          <TabsWrap style={{ width: '288px' }} ref={tabBox}>
+            {tabs.map((i: any, index) => (
+              <TabsWrapItem
+                onClick={() => setTabActive(index)}
+                active={tabActive === index}
+                key={i.label}
+              >
+                {i.label}
+              </TabsWrapItem>
+            ))}
+            <ActiveTab style={{ width: '60px' }} ref={tabActive2} />
+          </TabsWrap>
+        </HeraderTabs>
+        <ScrollWrap>
+          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+            <div>待审核</div>
           </Spin>
         </ScrollWrap>
         <Border />
@@ -450,7 +497,7 @@ const MyDropdown = (props: any) => {
 
   return (
     <Dropdown
-      dropdownRender={dropdownRender}
+      dropdownRender={tabActive === 1 ? dropdownRenderReview : dropdownRender}
       placement="bottomLeft"
       trigger={['click']}
       onOpenChange={setIsOpen}
