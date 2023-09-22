@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import CommonModal from '../CommonModal'
-import { Form, Input } from 'antd'
+import { Form, Input, InputNumber } from 'antd'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 
@@ -37,7 +37,7 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
-        const inputRef: any = document.querySelector('#yang_input')
+        const inputRef: any = document.querySelector('#total_task_time')
         inputRef?.focus()
         setTimeout(() => {
           inputRef?.setSelectionRange(-1, -1)
@@ -59,9 +59,18 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
     >
       <ContentWrap>
         <Form layout="vertical" autoComplete="off" form={form}>
+          <Form.Item label={t('actualWorkingHours')} name="total_task_time">
+            <InputNumber
+              id="total_task_time"
+              min={0.0}
+              style={{ width: '100%' }}
+              placeholder={t('actualWorkingHours')}
+              step={0.01}
+              precision={2}
+            />
+          </Form.Item>
           <Form.Item label={t('releaseNotes')} name="perception">
             <Input.TextArea
-              id="yang_input"
               spellCheck={false}
               showCount
               maxLength={600}

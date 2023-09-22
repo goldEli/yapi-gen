@@ -60,15 +60,15 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
     if (String(newValue).includes('.')) {
       return
     }
-    if (newValue < data?.schedule) {
-      getMessage({
-        type: 'warning',
-        msg: t(
-          'theProgressThisTimeNeedsToBeGreaterThanTheLastPleaseFillInAgain',
-        ),
-      })
-      return
-    }
+    // if (newValue < data?.schedule) {
+    //   getMessage({
+    //     type: 'warning',
+    //     msg: t(
+    //       'theProgressThisTimeNeedsToBeGreaterThanTheLastPleaseFillInAgain',
+    //     ),
+    //   })
+    //   return
+    // }
     setInputValue(newValue)
   }
   // 选择附件逻辑处理
@@ -209,6 +209,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
               style={{ width: '100%' }}
               placeholder={t('actualWorkingHours')}
               step={0.01}
+              precision={2}
             />
           </Form.Item>
           <Form.Item label={t('releaseNotes')} name="perception">

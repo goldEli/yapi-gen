@@ -372,9 +372,11 @@ const GlobalStyle = () => {
       border: 1px solid var(--neutral-n6-d1);
     }
     .ant-input-affix-wrapper:focus,
-    .ant-input-affix-wrapper-focused {
+    .ant-input-affix-wrapper-focused,
+    .ant-input-number:focus,
+    .ant-input-number-focused {
       box-shadow: none;
-      border: 1px solid var(--primary-d2);
+      border: 1px solid var(--primary-d2) !important;
     }
     .ant-popover-inner-content {
       padding: 0;
@@ -590,6 +592,7 @@ const GlobalStyle = () => {
     .ant-input-number {
       border: 1px solid var(--neutral-n6-d1);
     }
+
     .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
       width: 0;
     }
