@@ -762,7 +762,11 @@ const FlawDetailDrawer = () => {
           style={{ padding: '0px 0px', backgroundColor: '#f5f5f7' }}
           id="contentDom"
         >
-          {skeletonLoading && <DetailsSkeleton />}
+          {skeletonLoading && (
+            <div style={{ padding: 16 }}>
+              <DetailsSkeleton />
+            </div>
+          )}
           {!skeletonLoading && (
             <>
               <ParentBox
@@ -883,7 +887,7 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <div>
+              <div style={{ backgroundColor: 'white', padding: '0 24px' }}>
                 <CommonProgress
                   isTable={false}
                   type="flaw"
@@ -909,7 +913,7 @@ const FlawDetailDrawer = () => {
                   }}
                 >
                   <CommonButton
-                    type="light"
+                    type="secondary"
                     onClick={() => {
                       flawDetailRef?.current?.handleUpload()
                     }}
@@ -928,11 +932,13 @@ const FlawDetailDrawer = () => {
                     detail={drawerInfo}
                     isDetailQuick
                     addWrap={
-                      <CommonButton type="light">{t('addTag')}</CommonButton>
+                      <CommonButton type="secondary">
+                        {t('addTag')}
+                      </CommonButton>
                     }
                   />
                   <CommonButton
-                    type="light"
+                    type="secondary"
                     onClick={() => {
                       relationStoriesRef?.current?.onClickOpen()
                     }}
@@ -949,6 +955,12 @@ const FlawDetailDrawer = () => {
                 isPreview={isPreview}
               ></DrawerTopInfo>
               <Tabs
+                style={{
+                  paddingLeft: '24px',
+                  paddingTop: '15px',
+                  backgroundColor: 'white',
+                  // marginBottom: '12px',
+                }}
                 className="tabs"
                 activeKey={tabActive}
                 items={tabItems}
@@ -977,8 +989,8 @@ const FlawDetailDrawer = () => {
                   id="tab_defectComment"
                   style={{
                     backgroundColor: 'white',
-                    padding: '16px',
-                    marginTop: '16px',
+                    padding: '16px 24px',
+                    marginTop: '12px',
                   }}
                   className="info_item_tab"
                 >
@@ -992,7 +1004,7 @@ const FlawDetailDrawer = () => {
               </LayerBox>
             </>
           )}
-          <DetailFooter style={{ padding: '16px', marginTop: '16px' }}>
+          <DetailFooter style={{ padding: '16px', marginTop: '12px' }}>
             <div className="textBox">
               <div>
                 {t('created')}{' '}
@@ -1020,8 +1032,8 @@ const FlawDetailDrawer = () => {
           )}
           onConfirm={onConfirmComment}
           style={{
-            padding: '24px 0 24px 24px',
-            width: 'calc(100% - 24px)',
+            padding: '24px 0',
+            width: '100%',
             height: 80,
           }}
           maxHeight="60vh"

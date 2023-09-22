@@ -698,7 +698,7 @@ const AffairsDetail = () => {
         )}
       </DetailTop>
       {affairsInfo?.isExamine && (
-        <div style={{ padding: '0 24px' }}>
+        <div style={{ padding: '0px', backgroundColor: 'white' }}>
           <StatusExamine
             type={2}
             onCancel={onCancelExamine}
@@ -751,7 +751,7 @@ const AffairsDetail = () => {
           ref={basicInfoDom}
           style={{ position: 'relative', width: leftWidth }}
         >
-          <div style={{ margin: '0 0 30px 24px' }}>
+          <div style={{ margin: '0 0 16px 24px' }}>
             <ChangeStatusPopover
               projectId={affairsInfo.projectId}
               record={affairsInfo}
@@ -781,7 +781,7 @@ const AffairsDetail = () => {
           <SprintDetailMouseDom
             active={focus}
             onMouseDown={onDragLine}
-            style={{ left: 0 }}
+            style={{ left: 0, height: affairsInfo.isExamine ? '92%' : '100%' }}
           >
             <SprintDetailDragLine active={focus} className="line" />
           </SprintDetailMouseDom>

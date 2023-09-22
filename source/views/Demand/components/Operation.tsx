@@ -417,7 +417,7 @@ const Operation = (props: Props) => {
               onVisibleChange={visible => setIsVisible(visible)}
             >
               <MoreWrap type="create">
-                <Tooltip placement="top" title={`${t('create')} [C]`}>
+                <Tooltip placement="top" title={`${t('create')} (C)`}>
                   {t('common.createDemand')}
                 </Tooltip>
                 {/* <span>{t('common.createDemand')}</span> */}

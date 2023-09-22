@@ -157,7 +157,7 @@ const FlawDetail = () => {
   const onUpDemand = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex - 1] : 0
     if (!currentIndex) return
-    const resultParams = { ...params, ...{ sprintId: newIndex } }
+    const resultParams = { ...params, ...{ flawId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
@@ -165,7 +165,7 @@ const FlawDetail = () => {
   const onDownDemand = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex + 1] : 0
     if (currentIndex === (params?.changeIds?.length || 0) - 1) return
-    const resultParams = { ...params, ...{ sprintId: newIndex } }
+    const resultParams = { ...params, ...{ flawId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
   }
 
@@ -463,10 +463,18 @@ const FlawDetail = () => {
   }
 
   useEffect(() => {
-    if (visible) {
+    if (visible || params.flawId) {
       dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
+      dispatch(
+        getFlawCommentList({
+          projectId: params.id,
+          id: params.flawId ?? 0,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
     }
-  }, [visible])
+  }, [visible, params])
 
   useEffect(() => {
     // 获取项目信息中的需求类别
@@ -749,6 +757,7 @@ const FlawDetail = () => {
         tabBarExtraContent={
           tabActive === '3' ? (
             <ScreenMinHover
+              style={{ marginRight: '24px' }}
               label={t('common.search')}
               icon="filter"
               isActive={filter}

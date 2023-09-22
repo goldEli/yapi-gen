@@ -417,12 +417,12 @@ const FlawBasic = (props: Props) => {
     <div
       style={{
         width: '100%',
-        paddingLeft: props.hasPadding ? '24px' : 12,
+        paddingLeft: props.hasPadding ? '24px' : 24,
         height: 'calc(100% - 108px)',
         overflowY: 'auto',
         overflowX: 'hidden',
         backgroundColor: 'white',
-        marginTop: '16px',
+        marginTop: '12px',
       }}
       id="tab_info"
       className="info_item_tab"

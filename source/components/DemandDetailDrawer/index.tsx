@@ -703,7 +703,11 @@ const DemandDetailDrawer = () => {
           </Space>
         </Header>
         <Content id="contentDom">
-          {skeletonLoading && <DetailsSkeleton />}
+          {skeletonLoading && (
+            <div style={{ padding: 16 }}>
+              <DetailsSkeleton />
+            </div>
+          )}
           {!skeletonLoading && (
             <div>
               <ParentBox
@@ -795,7 +799,7 @@ const DemandDetailDrawer = () => {
                 )}
               </ParentBox>
               {drawerInfo?.isExamine && (
-                <div style={{ marginBottom: 16, backgroundColor: 'white' }}>
+                <div>
                   <StatusExamine
                     type={1}
                     onCancel={onCancelExamine}
@@ -809,7 +813,7 @@ const DemandDetailDrawer = () => {
                 style={{
                   backgroundColor: 'white',
                   padding: '12px 24px',
-                  borderBottom: '1px solid #EBECED',
+                  //
                 }}
               >
                 {isCanEdit && (
@@ -827,7 +831,11 @@ const DemandDetailDrawer = () => {
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
               <ProgressBox
-                style={{ backgroundColor: 'white', padding: '12px 24px' }}
+                style={{
+                  backgroundColor: 'white',
+                  padding: '12px 24px',
+                  borderBottom: '1px solid #EBECED',
+                }}
               >
                 <CommonProgress
                   isTable={false}
@@ -904,7 +912,7 @@ const DemandDetailDrawer = () => {
               <Tabs
                 style={{
                   paddingLeft: '24px',
-                  paddingTop: '10px',
+                  paddingTop: '15px',
                   backgroundColor: 'white',
                   // marginBottom: '12px',
                 }}
@@ -946,7 +954,7 @@ const DemandDetailDrawer = () => {
                     backgroundColor: 'white',
                     margin: 0,
                     marginBottom: 12,
-                    padding: 12,
+                    padding: '12px 24px',
                   }}
                   className="info_item_tab"
                 >
@@ -988,7 +996,7 @@ const DemandDetailDrawer = () => {
           )}
           onConfirm={onConfirmComment}
           style={{
-            padding: '24px ',
+            padding: '24px 0',
             width: '100% ',
             height: 80,
           }}

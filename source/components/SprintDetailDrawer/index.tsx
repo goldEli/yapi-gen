@@ -805,13 +805,17 @@ const SprintDetailDrawer = () => {
           style={{ padding: '0px', backgroundColor: '#f5f5f7' }}
           id="contentDom"
         >
-          {skeletonLoading && <DetailsSkeleton />}
+          {skeletonLoading && (
+            <div style={{ padding: 16 }}>
+              <DetailsSkeleton />
+            </div>
+          )}
           {!skeletonLoading && (
             <>
               <StatusAndLongWrap
                 style={{
                   backgroundColor: 'white',
-                  padding: '16px 24px',
+                  padding: '12px 24px',
                   borderBottom: '1px solid #EBECED',
                 }}
               >
@@ -853,7 +857,7 @@ const SprintDetailDrawer = () => {
                 </ChangeStatusPopover>
               </StatusAndLongWrap>
               {drawerInfo?.isExamine && (
-                <div style={{ marginBottom: 16 }}>
+                <div style={{ marginBottom: 4 }}>
                   <StatusExamine
                     type={2}
                     onCancel={onCancelExamine}
@@ -864,7 +868,7 @@ const SprintDetailDrawer = () => {
                 </div>
               )}
               <DemandName
-                style={{ backgroundColor: 'white', padding: ' 16px 24px' }}
+                style={{ backgroundColor: 'white', padding: ' 12px 24px' }}
               >
                 <span
                   className="name"
@@ -900,7 +904,7 @@ const SprintDetailDrawer = () => {
                     backgroundColor: 'white',
                     display: 'flex',
                     gap: 12,
-                    padding: '16px 24px',
+                    padding: '12px 24px',
                   }}
                 >
                   {(drawerInfo.work_type === 6
@@ -943,7 +947,13 @@ const SprintDetailDrawer = () => {
 
               {/* 只有标准事务类型和故障事务类型才有 */}
               {[4, 5].includes(drawerInfo.work_type) && (
-                <TargetWrap>
+                <TargetWrap
+                  style={{
+                    backgroundColor: 'white',
+                    padding: '16px 24px',
+                    margin: 0,
+                  }}
+                >
                   <span className="icon">
                     <CommonIconFont
                       type="target"
@@ -964,7 +974,7 @@ const SprintDetailDrawer = () => {
                 isPreview={affairsDetailDrawer.isPreview}
               />
               <Tabs
-                style={{ paddingTop: '20px' }}
+                style={{ paddingTop: '25px' }}
                 className="tabs"
                 activeKey={tabActive}
                 items={
@@ -1013,7 +1023,7 @@ const SprintDetailDrawer = () => {
                 style={{
                   backgroundColor: 'white',
                   padding: '16px 24px',
-                  marginTop: '16px',
+                  marginTop: '12px',
                 }}
               >
                 <Label
@@ -1031,7 +1041,7 @@ const SprintDetailDrawer = () => {
               </div>
             </>
           )}
-          <DetailFooter>
+          <DetailFooter style={{ padding: '0px 24px', marginTop: '12px' }}>
             <div className="textBox">
               <div>
                 {t('created')}
@@ -1059,7 +1069,7 @@ const SprintDetailDrawer = () => {
           )}
           onConfirm={onConfirmComment}
           style={{
-            padding: '24px 0 24px 24px',
+            padding: '24px 0',
             width: '100% ',
             height: 80,
           }}

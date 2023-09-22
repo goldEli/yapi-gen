@@ -6,13 +6,14 @@ export const Wrap = styled.div`
 `
 export const Header = styled.div`
   height: 64px;
-  height: 64px;
   opacity: 1;
   position: sticky;
   top: 0;
-  z-index: 9;
+  z-index: 99;
+  width: 100%;
+
   img {
-    height: 100%;
+    height: 64px;
   }
   span {
     position: absolute;
@@ -23,6 +24,7 @@ export const Header = styled.div`
   }
 `
 export const Content = styled.div<{ windowWidth: number }>`
+  padding-top: 12px;
   margin: ${props =>
     props.windowWidth <= 1440
       ? ' 0px calc(50% - 544px)'
@@ -36,7 +38,7 @@ export const InputBox = styled.div`
   position: sticky;
   top: 60px;
   background: #fff;
-  padding-bottom: 32px;
+  padding-bottom: 20px;
   z-index: 9;
   .title-box {
     text-align: center;
@@ -135,7 +137,8 @@ export const ImageBox = styled.div`
       padding-left: 12px;
     }
     &:hover {
-      transform: scale(1.02) translateY(-12px);
+      transform: scale(1.02) translateY(-6px);
+      position: relative;
     }
     transition: 0.3s ease;
   }

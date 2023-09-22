@@ -65,7 +65,7 @@ const ButtonGroup = (props: {
   }, [props.state])
 
   return (
-    <ButtonGroupWrap>
+    <ButtonGroupWrap style={{ paddingBottom: '16px' }}>
       {items.map((el: { label: string; key: string }) => (
         <div key={el.key}>
           <>
@@ -235,8 +235,13 @@ const AffairsInfo = (props: Props) => {
   return (
     <InfoWrap
       height={`calc(${userPreferenceConfig.previewModel === 3 ? 80 : 100}vh - ${
-        (affairsInfo?.isExamine ? 216 : 190) +
-        (document.getElementById('DetailText')?.clientHeight || 25)
+        (userPreferenceConfig.previewModel === 3
+          ? affairsInfo?.isExamine
+            ? 176
+            : 140
+          : affairsInfo?.isExamine
+          ? 236
+          : 190) + (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
       {/* 子任务不存在子事务模块 */}
@@ -249,7 +254,7 @@ const AffairsInfo = (props: Props) => {
         />
       )}
       {isScroll && (
-        <TabsWrap1>
+        <TabsWrap1 style={{ paddingBottom: '0px' }}>
           <Tabs
             className="tabs"
             activeKey={tabActive}
@@ -279,7 +284,7 @@ const AffairsInfo = (props: Props) => {
             display: 'flex',
             flexDirection: 'column',
             gap: '12px',
-            padding: '16px 16px',
+            padding: '0 16px 16px 16px',
           }}
         >
           {affairsInfo.work_type !== 6 && (
@@ -313,7 +318,7 @@ const AffairsInfo = (props: Props) => {
           }),
         )}
         onConfirm={onConfirmComment}
-        style={{ padding: '0 0 0 24px', width: 'calc(100% - 24px)' }}
+        style={{ padding: '0 0 0 24px', width: '100%' }}
         maxHeight="60vh"
         hasAvatar
       />

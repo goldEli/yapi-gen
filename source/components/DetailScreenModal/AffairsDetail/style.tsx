@@ -84,8 +84,8 @@ export const DropdownMenu = styled(Dropdown)`
 
 export const DetailTitle = styled.div`
   display: flex;
-  border-bottom: 1px solid var(--neutral-n6-d1);
-  padding: 0px 0px 20px;
+  /* border-bottom: 1px solid var(--neutral-n6-d1); */
+  padding: 0px 0px 0px;
   width: calc(100% - 48px);
   margin-left: 24px;
 `
@@ -150,9 +150,11 @@ export const SprintDetailMouseDom = styled(MouseDom)`
   background: transparent;
 `
 
-export const BasicWrap = styled.div`
+export const BasicWrap = styled.div<{ a?: boolean; b?: boolean }>`
   position: relative;
-  height: calc(100% - 108px);
+  height: calc(
+    100% - ${props => (props.a ? (props.b ? 132 : 85) : props.b ? 42 : 0)}px
+  );
 `
 
 export const BasicContent = styled.div`
@@ -213,7 +215,7 @@ export const InfoWrap = styled.div<{ height: any }>`
 export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
   width: 100%;
   height: ${props =>
-    props.isScroll ? 'calc(100% - 120px)' : 'calc(100% - 100px)'};
+    props.isScroll ? 'calc(100% - 120px)' : 'calc(100% - 130px)'};
   overflow: auto;
   .review {
     position: absolute;

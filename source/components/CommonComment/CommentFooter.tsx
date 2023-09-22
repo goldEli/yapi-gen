@@ -111,7 +111,9 @@ const CommentFooter = (props: CommentFooterProps) => {
   return (
     <CommentFooterWrap isReview={isReview} style={{ ...props.style }}>
       {isReview ? (
-        <div style={{ backgroundColor: 'var(--neutral-white-d5)' }}>
+        <div
+          style={{ backgroundColor: 'var(--neutral-white-d5)', padding: 24 }}
+        >
           <div>
             <Form form={form}>
               <Form.Item
@@ -147,6 +149,7 @@ const CommentFooter = (props: CommentFooterProps) => {
               </Form.Item>
             </Form>
           </div>
+
           {!props.isEmployee && (
             <div style={{ color: '#BBBDBF' }}>
               {t('pressShortcutKeyToSendComments')}
@@ -156,19 +159,17 @@ const CommentFooter = (props: CommentFooterProps) => {
             <Space>
               <CommonButton
                 type="light"
-                size="small"
                 onClick={() => {
                   setIsReview(false)
                   form.resetFields()
                 }}
-                style={{ fontSize: 12 }}
+                style={{ fontSize: 14 }}
               >
                 {t('report.list.cancel')}
               </CommonButton>
               <CommonButton
                 type="primary"
-                size="small"
-                style={{ fontSize: 12 }}
+                style={{ fontSize: 14 }}
                 onClick={onComment}
               >
                 {t('common.comment')}
@@ -187,7 +188,12 @@ const CommentFooter = (props: CommentFooterProps) => {
                   position: 'sticky',
                   bottom: 10,
                 }
-              : { gap: 12, display: 'flex', alignItems: 'center' }
+              : {
+                  gap: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '0 24px',
+                }
           }
         >
           {props.hasAvatar ? (
@@ -198,6 +204,9 @@ const CommentFooter = (props: CommentFooterProps) => {
             style={{ width: '100%' }}
             onFocus={onFocus}
           />
+          <CommonButton type="primary" onClick={onFocus}>
+            评论
+          </CommonButton>
         </div>
       )}
     </CommentFooterWrap>

@@ -426,6 +426,7 @@ const BasicDemand = (props: Props) => {
         paddingLeft: props.hasPadding ? '24px' : 24,
         backgroundColor: 'white',
         paddingBottom: '24px',
+        borderRadius: props?.isInfoPage ? 6 : 0,
       }}
       id="sprint-basicInfo"
       className="info_item_tab"

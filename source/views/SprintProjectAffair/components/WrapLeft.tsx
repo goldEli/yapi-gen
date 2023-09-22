@@ -358,6 +358,7 @@ const TreeItem = (props: any) => {
 const WrapLeft = (props: any, ref: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
   const projectId = paramsData.id
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
@@ -502,7 +503,11 @@ const WrapLeft = (props: any, ref: any) => {
       init,
     }
   })
-
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      init(false, true)
+    }
+  }, [isUpdateAddWorkItem])
   if (props.isShowLeft) {
     return (
       <DragMoveContainer

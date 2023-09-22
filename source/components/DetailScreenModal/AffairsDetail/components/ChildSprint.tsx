@@ -425,7 +425,11 @@ const ChildSprint = (
   })
   return (
     <InfoItem
-      style={{ padding: '16px 24px', marginTop: '16px' }}
+      style={{
+        padding: '16px 24px',
+        marginTop: '12px',
+        borderRadius: props?.isInfoPage ? 6 : 0,
+      }}
       id="sprint-childSprint"
       className="info_item_tab"
       isInfoPage={props?.isInfoPage}
