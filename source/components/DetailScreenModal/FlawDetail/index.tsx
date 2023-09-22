@@ -159,6 +159,7 @@ const FlawDetail = () => {
     if (!currentIndex) return
     const resultParams = { ...params, ...{ flawId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
+    setTabActive('1')
   }
 
   // 向下查找需求
@@ -167,6 +168,7 @@ const FlawDetail = () => {
     if (currentIndex === (params?.changeIds?.length || 0) - 1) return
     const resultParams = { ...params, ...{ flawId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
+    setTabActive('1')
   }
 
   const getKeyDown = (e: any) => {

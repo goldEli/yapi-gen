@@ -167,6 +167,7 @@ const DemandDetail = () => {
     }
     const resultParams = { ...params, ...{ demandId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
+    setTabActive('1')
   }
 
   // 向下查找需求
@@ -177,6 +178,7 @@ const DemandDetail = () => {
     }
     const resultParams = { ...params, ...{ demandId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
+    setTabActive('1')
   }
 
   const getKeyDown = (e: any) => {
