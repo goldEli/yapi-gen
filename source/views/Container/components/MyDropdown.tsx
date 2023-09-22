@@ -19,6 +19,11 @@ import { useDispatch, useSelector } from '@store/index'
 import { setDemandInfo } from '@store/demand'
 import { setFlawInfo } from '@store/flaw'
 import { setAffairsInfo } from '@store/affairs'
+import { getVerifyUserList } from '@/services/mine'
+import { useTranslation } from 'react-i18next'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const Container = styled.div`
   width: 320px;
@@ -155,9 +160,24 @@ const Img = styled.img`
   width: 20px;
   height: 20px;
 `
+
+const CanClick = styled.div({
+  height: 24,
+  borderRadius: 6,
+  padding: '0 8px',
+  cursor: 'pointer',
+  color: 'white',
+  fontSize: 12,
+  background: 'var(--primary-d2)',
+  lineHeight: '24px',
+  width: 'fit-content',
+})
+
 const MyDropdown = (props: any) => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [openDemandDetail] = useOpenDemandDetail()
   const [tabActive, setTabActive] = useState(0)
   const tabs = [
     {
@@ -176,11 +196,16 @@ const MyDropdown = (props: any) => {
   const [noFinishList, setNoFinishList] = useState<any>()
   const [finishList, setFinishList] = useState<any>()
   const [recentList, setRecentList] = useState<any>()
+  const [verifyList, setVerifyList] = useState<any>({
+    list: [],
+    total: 0,
+  })
   const [isOpen, setIsOpen] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
   const tabBox = useRef<HTMLDivElement>(null)
-  const { isRefresh } = useSelector(store => store.user)
+  const { isRefresh, userInfo } = useSelector(store => store.user)
   const tabActive2 = useRef<HTMLDivElement>(null)
+  const [verifyPage, setVerifyPage] = useState(1)
 
   const box = [
     {
@@ -192,12 +217,14 @@ const MyDropdown = (props: any) => {
       name: 'recent_create',
     },
   ]
+  // 最近
   const onGetMyRecent = async () => {
     setIsSpinning(true)
     const res = await services.user.getMyRecent()
     setRecentList(res)
     setIsSpinning(false)
   }
+  // 已办
   const onGetMineFinishList = async () => {
     setIsSpinning(true)
     const res = await services.mine.getMineFinishList({
@@ -207,6 +234,7 @@ const MyDropdown = (props: any) => {
     setFinishList(res.list)
     setIsSpinning(false)
   }
+  // 待办
   const onGetMineNoFinishList = async () => {
     setIsSpinning(true)
     const res = await services.mine.getMineNoFinishList({
@@ -216,7 +244,27 @@ const MyDropdown = (props: any) => {
     setNoFinishList(res.list)
     setIsSpinning(false)
   }
+
+  // 获取待审核的列表
+  const getVerifyList = async () => {
+    setIsSpinning(true)
+    const params = {
+      userId: userInfo?.id,
+      projectId: 0,
+      verifyStatus: 1,
+      page: verifyPage,
+      pageSize: 15,
+    }
+    const result = await getVerifyUserList(params)
+    setIsSpinning(false)
+    setVerifyList({
+      list: result.list || [],
+      total: result.total || 0,
+    })
+  }
+
   const onFetchList = async () => {
+    setVerifyPage(1)
     switch (tabActive) {
       case 3:
         onGetMyRecent()
@@ -226,7 +274,7 @@ const MyDropdown = (props: any) => {
         break
       case 1:
         // 待审核
-
+        getVerifyList()
         break
 
       default:
@@ -381,6 +429,41 @@ const MyDropdown = (props: any) => {
     )
   }
 
+  // 获取项目配置
+  const getConfig = async (id: number) => {
+    const result = await getProjectInfo({ projectId: id })
+    dispatch(setProjectInfo(result))
+    const result1 = await getProjectInfoValues({ projectId: id })
+    dispatch(setProjectInfoValues(result1))
+  }
+
+  // 点击跳转详情
+  const onClickItem = async (item: any) => {
+    let url = null
+    let params: any = {
+      id: item.project_id ?? item.projectId,
+      detailId: item.demandId,
+      isOpenScreenDetail: true,
+    }
+    if (item.project_type === 2) {
+      url = '/SprintProjectManagement/Affair'
+      params.specialType = 1
+    }
+    if (item.project_type === 1 && item.is_bug === 2) {
+      url = '/ProjectManagement/Defect'
+      params.specialType = 2
+    }
+    if (item.project_type === 1 && item.is_bug === 1) {
+      url = '/ProjectManagement/Demand'
+      params.specialType = 3
+    }
+    dispatch(setDemandInfo({}))
+    dispatch(setFlawInfo({}))
+    dispatch(setAffairsInfo({}))
+    navigate(`${url}?data=${encryptPhp(JSON.stringify(params))}`)
+    setIsOpen(false)
+  }
+
   useEffect(() => {
     if (!isOpen) {
       return
@@ -484,7 +567,15 @@ const MyDropdown = (props: any) => {
         </HeraderTabs>
         <ScrollWrap>
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
-            <div>待审核</div>
+            {verifyList?.list?.map((i: any) => (
+              <div key={i.id}>
+                <div onClick={() => onClickItem(i)}>
+                  <img src={i.category_attachment} />
+                  <span>{i.demandName}</span>
+                </div>
+                <CanClick>{t('newlyAdd.waitExamine')}</CanClick>
+              </div>
+            ))}
           </Spin>
         </ScrollWrap>
         <Border />

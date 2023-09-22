@@ -50,7 +50,6 @@ const getCosSign = async (): Promise<any> => {
     location.reload()
     throw new Error(response.msg)
   }
-  console.log(response, 'responseresponseresponse')
   return response
   // const response = await http.get<any, any>('getCosSign')
   // return response.data?.info
