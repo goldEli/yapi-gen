@@ -24,11 +24,9 @@ const VideoTeaching = () => {
       })
   }, [])
   useEffect(() => {
-    console.log(value)
     const data = cacheData.filter(
       (item: { text: string | string[] }) => item.text.indexOf(value) > -1,
     )
-    console.log(data)
     setData(data)
   }, [value])
   const navigate = useNavigate()

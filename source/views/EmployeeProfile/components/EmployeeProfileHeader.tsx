@@ -220,6 +220,19 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     getStatistics(searchFilterParams)
   }, [searchFilterParams])
 
+  useEffect(() => {
+    if (paramsData?.user_id) {
+      setActive(paramsData?.user_id ? 5 : 0)
+      const resultParams = JSON.parse(JSON.stringify(searchFilterParams))
+      resultParams.status = 1
+      resultParams.time = [
+        moment().subtract(1, 'years').format('YYYY-MM-DD'),
+        moment().format('YYYY-MM-DD'),
+      ]
+      getStatistics(resultParams)
+    }
+  }, [paramsData?.user_id])
+
   return (
     <HeaderWrap>
       <HeaderSearch>
@@ -284,9 +297,10 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
           >
             <CommonIconFont type={i.type} size={20} />
             <div className="name">
-              {i.name}（
+              {i.name}
+              {/* （
               {t('totalPerson', { total: memberStatistics[i.fieldKey]?.total })}
-              ）
+              ） */}
             </div>
           </Card>
         ))}

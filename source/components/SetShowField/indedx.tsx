@@ -44,8 +44,6 @@ const SetShowField = (props: Props) => {
   const dispatch = useDispatch()
   const [active, setActive] = useState()
   const onChangeViewMode = async (type: number) => {
-    console.log(type, 'type')
-
     await updateCompanyUserPreferenceConfig({
       previewModel: type,
       id: userPreferenceConfig?.id,

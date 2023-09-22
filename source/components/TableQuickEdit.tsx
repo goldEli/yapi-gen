@@ -454,17 +454,22 @@ const TableQuickEdit = (props: Props) => {
         [props?.keyText]: newValue || newValue === 0 ? newValue : '',
       }
     }
+    // console.log(projectInfo, '=projectInfoprojectInfoprojectInfo')
     if (projectInfo.projectType === 1 || props.item.projectType === 1) {
+      // console.log(1)
       // 缺陷
       if (props.item.is_bug === 1) {
+        // console.log(2)
         await updateFlawTableParams(obj)
       } else {
         // 需求
         await updateTableParams(obj)
+        // console.log(3)
       }
     } else {
       // 事务
       await updateAffairsTableParams(obj)
+      // console.log(4)
     }
     if (props.isInfoPage) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))

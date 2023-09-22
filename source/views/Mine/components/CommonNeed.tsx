@@ -330,9 +330,10 @@ const CommonNeed = (props: any) => {
   const init = async (updateState?: boolean) => {
     if (!updateState) {
       setIsSpin(true)
+      setListData({ list: undefined })
+      setManyListData({ list: undefined })
     }
-    setListData({ list: undefined })
-    setManyListData({ list: undefined })
+
     setTotal(0)
 
     if (isMany) {

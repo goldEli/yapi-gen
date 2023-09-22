@@ -81,8 +81,6 @@ const HomeSetting: React.FC<IProps> = props => {
   ]
 
   const onChange = async (e: any) => {
-    console.log(e)
-
     setValue(e)
     try {
       await updateHomeSetting({

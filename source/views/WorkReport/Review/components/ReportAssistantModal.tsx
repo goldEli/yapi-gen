@@ -403,13 +403,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   // (日报)计算进度相关数据
   const getScheduleData = () => {
     let tempArr: any[] = []
-    // modalInfo?.configs?.forEach((item: any) => {
-    //   console.log(item)
-    //   if (item.type === 4) {
-    //     tempArr = tempArr.concat(item.content ?? [])
-    //   }
-    // })
-    // return
     if (modalInfo?.type === 3) {
       const projectConfig = modalInfo?.configs?.filter(
         (ele: { type: number }) => ele.type === 4,

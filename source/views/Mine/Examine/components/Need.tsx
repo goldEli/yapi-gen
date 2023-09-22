@@ -109,7 +109,6 @@ const Need = (props: any) => {
       val ?? activeTab
         ? await getVerifyList(params)
         : await getVerifyUserList(params)
-    console.log('set1111111111', result)
     setListData(result)
     setCount({
       verifyUser: val ?? activeTab ? result?.otherCount : result?.total,
@@ -258,8 +257,6 @@ const Need = (props: any) => {
       val,
     )
   }
-
-  console.log(listData?.list, '=listData?.listlistData?.listlistData?.list')
 
   return (
     <div
