@@ -2421,5 +2421,8 @@
   "slideOutSide": "侧边滑出",
   "fullScreenPreview": "全屏预览",
   "preview": "弹窗预览",
-  "howToOpenTheDetailsPage": "详情页打开方式"
+  "howToOpenTheDetailsPage": "详情页打开方式",
+  "accountLogin": "账户登录",
+  "logInWithPhone": "手机登录",
+  "selectCountryOrRegion": "选择国家或地区"
 }

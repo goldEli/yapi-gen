@@ -2,13 +2,18 @@
 // @ts-nocheck
 // 字段
 import styled from '@emotion/styled'
-import { useRef, useState, useReducer } from 'react'
+import { useRef, useState, useReducer, useEffect } from 'react'
 import style from './Filed.module.css'
+import { Dropdown } from 'antd'
 
+import CountryCode from '@/components/CountryCode'
 export default (props: any) => {
   const [isFocus, setIsFocus] = useState(false)
   const [bigChar, setBigChar] = useState(false)
   const [border, setBorder] = useState(false)
+  const [getMsg, setGetMsg] = useState(1)
+  const [time, setTime] = useState(60)
+  const [conutryCode, setConutryCode] = useState('+86')
   const myForm = useRef<any>()
 
   const onKeyChange = (e: any) => {
@@ -36,16 +41,49 @@ export default (props: any) => {
     }
   }
 
+  const onGetMsg = (num?: number) => {
+    setGetMsg(num)
+    setTime(60)
+    if (num === 2) {
+      console.log('调接口')
+    }
+  }
+
+  useEffect(() => {
+    if (time === 0) {
+      setGetMsg(1)
+      return
+    }
+    const intervalId = setInterval(() => {
+      setTime(time - 1)
+    }, 1000)
+    return () => clearInterval(intervalId)
+  }, [time])
+
+  const onCountryCodeChange = (val: string) => {
+    const [phoneCode, countryCode] = val.split('/')
+    setConutryCode(phoneCode)
+  }
   return (
     <div ref={myForm} className={getClass()}>
-      <img
-        style={{
-          width: '20px',
-          height: '20px',
-        }}
-        src={props.icon}
-        alt=""
-      />
+      {props.mode === 4 ? (
+        <div>
+          <CountryCode
+            icon="down-icon"
+            value={conutryCode}
+            onChange={onCountryCodeChange}
+          />
+        </div>
+      ) : (
+        <img
+          style={{
+            width: '20px',
+            height: '20px',
+          }}
+          src={props.icon}
+          alt=""
+        />
+      )}
 
       <input
         ref={props.inputRef}
@@ -97,6 +135,23 @@ export default (props: any) => {
           onClick={props.onChangeCaptchaImag}
           alt=""
         />
+      ) : props.mode === 3 ? (
+        <div>
+          {getMsg === 1 ? (
+            <span
+              onClick={() => onGetMsg(2)}
+              style={{ color: '#6688FF', fontSize: 14 }}
+            >
+              获取验证码
+            </span>
+          ) : getMsg === 2 ? (
+            <span style={{ color: '#BBBDBF', fontSize: 14 }}>
+              已发送({time})s
+            </span>
+          ) : (
+            ''
+          )}
+        </div>
       ) : (
         ''
       )}

@@ -2421,5 +2421,8 @@
   "slideOutSide": "Slide out side",
   "fullScreenPreview": "Full screen preview",
   "preview": "Pop-up preview",
-  "howToOpenTheDetailsPage": "How to open the details page"
+  "howToOpenTheDetailsPage": "How to open the details page",
+  "accountLogin": "Account login",
+  "logInWithPhone": "Log in with phone",
+  "selectCountryOrRegion": "Select country or region"
 }
