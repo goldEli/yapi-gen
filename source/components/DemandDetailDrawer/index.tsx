@@ -834,7 +834,7 @@ const DemandDetailDrawer = () => {
                 style={{
                   backgroundColor: 'white',
                   padding: '12px 24px',
-                  borderBottom: '1px solid #EBECED',
+                  // borderBottom: '1px solid #EBECED',
                 }}
               >
                 <CommonProgress
