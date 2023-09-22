@@ -35,6 +35,7 @@ export const formatFileSize = (val: number) => {
 }
 
 const getCosSign = async (): Promise<any> => {
+  console.log(11111)
   const response = await http.post<any, any>('getCosSign', {
     accessToken: import.meta.env.__COS_SIGN_ACCESS_TOKEN__,
     app_id: import.meta.env.__COS_SIGN_APP_ID__,
@@ -49,7 +50,7 @@ const getCosSign = async (): Promise<any> => {
     location.reload()
     throw new Error(response.msg)
   }
-
+  console.log(response, 'responseresponseresponse')
   return response
   // const response = await http.get<any, any>('getCosSign')
   // return response.data?.info
@@ -63,11 +64,11 @@ export const cos = new COS({
     // const response = window.cosInfo
 
     callback({
-      TmpSecretId: response.config.credentials.tmpSecretId,
-      TmpSecretKey: response.config.credentials.tmpSecretKey,
-      XCosSecurityToken: response.config.credentials.sessionToken,
-      StartTime: response.config.startTime,
-      ExpiredTime: response.config.expiredTime,
+      TmpSecretId: response.data.credentials.tmpSecretId,
+      TmpSecretKey: response.data.credentials.tmpSecretKey,
+      XCosSecurityToken: response.data.credentials.sessionToken,
+      StartTime: response.data.startTime,
+      ExpiredTime: response.data.expiredTime,
       ScopeLimit: true,
     })
   },
