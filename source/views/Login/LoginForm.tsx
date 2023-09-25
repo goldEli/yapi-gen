@@ -4,6 +4,7 @@
 // 登陆表单
 import style from './Login.module.css'
 import Filed from './components/Filed'
+import { changeLanguage, type LocaleKeys } from '@/locals'
 import { Skeleton, Tabs, Tooltip, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import SecretImage from './components/SecretImage'
@@ -51,7 +52,7 @@ export default React.memo(
     const [errorMessage, setErrorMessage] = useState('')
     const [errorState, setErrorState] = useState(false)
     const [focusNumber, setFocusNumber] = useState(0)
-    const [changeF, setChangeF] = useState(false)
+    const [changeF, setChangeF] = useState(true)
     const target = ''
     const [agree, setAgree] = useState(true)
     const [errorCheck, setErrorCheck] = useState({})
@@ -208,6 +209,9 @@ export default React.memo(
     }
 
     const chooseLanguageMode = (index: number) => {
+      console.log(index)
+
+      changeLanguage(index === 1 ? 'en' : 'zh')
       dispatch({
         type: index,
       })
@@ -307,7 +311,7 @@ export default React.memo(
               </div>
             )}
             <div>
-              <Tabs defaultActiveKey="2">
+              <Tabs defaultActiveKey="1">
                 <Tabs.TabPane tab={t('accountLogin')} key="1">
                   <div className={style.form}>
                     <Filed
@@ -406,7 +410,15 @@ export default React.memo(
                   >
                     {languageMode.login}
                   </button>
-                  <div style={{ textAlign: 'center', color: '#6688FF' }}>
+                  <div
+                    onClick={() => setChangeF(!changeF)}
+                    style={{
+                      textAlign: 'center',
+                      color: '#6688FF',
+                      marginTop: '24px',
+                      cursor: 'pointer',
+                    }}
+                  >
                     {t('forgetThe')}
                   </div>
                 </Tabs.TabPane>
@@ -492,49 +504,19 @@ export default React.memo(
                   >
                     {languageMode.login}
                   </button>
+                  <div
+                    onClick={() => setChangeF(!changeF)}
+                    style={{
+                      textAlign: 'center',
+                      color: '#6688FF',
+                      marginTop: '24px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {t('forgetThe')}
+                  </div>
                 </Tabs.TabPane>
               </Tabs>
-
-              <div className={style.headWrap}>
-                <div>{/* <img src="/sso/logo.png" width={207} /> */}</div>
-                <div onClick={controlPopups} className={style.language}>
-                  <div className={style.langBox}>
-                    <img
-                      src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/LineIcon.svg"
-                      alt=""
-                      className={style.LineIcon}
-                    />
-                    <Lang className={style.lang}>
-                      {language[languageMode.id].name}
-                    </Lang>
-                    <IconFont
-                      style={{
-                        fontSize: 16,
-                        color: 'var(--neutral-n2)',
-                        cursor: 'pointer',
-                      }}
-                      type={popupsState ? 'up-icon' : 'down-icon'}
-                    />
-                  </div>
-                  {popupsState ? (
-                    <div className={style.popups}>
-                      {language.map((value, index) => (
-                        <div
-                          onClick={() => chooseLanguageMode(index)}
-                          className={`${style.popups_item} ${
-                            languageMode.id == index
-                              ? style.popups_item_active
-                              : ''
-                          }`}
-                          key={index}
-                        >
-                          {value.name}
-                        </div>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
 
               <SecretImage
                 operationNotes={languageMode.operationNotes}
@@ -548,7 +530,45 @@ export default React.memo(
             </div>
           </div>
         )}
-        {!changeF && <ForgetPassword />}
+        {!changeF && <ForgetPassword onClose={() => setChangeF(!changeF)} />}
+        <div className={style.headWrap}>
+          <div>{/* <img src="/sso/logo.png" width={207} /> */}</div>
+          <div onClick={controlPopups} className={style.language}>
+            <div className={style.langBox}>
+              <img
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/LineIcon.svg"
+                alt=""
+                className={style.LineIcon}
+              />
+              <Lang className={style.lang}>
+                {language[languageMode.id].name}
+              </Lang>
+              <IconFont
+                style={{
+                  fontSize: 16,
+                  color: 'var(--neutral-n2)',
+                  cursor: 'pointer',
+                }}
+                type={popupsState ? 'up-icon' : 'down-icon'}
+              />
+            </div>
+            {popupsState ? (
+              <div className={style.popups}>
+                {language.map((value, index) => (
+                  <div
+                    onClick={() => chooseLanguageMode(index)}
+                    className={`${style.popups_item} ${
+                      languageMode.id == index ? style.popups_item_active : ''
+                    }`}
+                    key={index}
+                  >
+                    {value.name}
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
       </div>
     )
   },

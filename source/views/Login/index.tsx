@@ -119,7 +119,7 @@ const Page = () => {
 
   const FormWrap = styled.div`
     min-width: 488px;
-    min-height: 532px;
+    min-height: 614px;
     background: var(--neutral-white-d7);
     box-shadow: 0px 1px 29px 0px rgba(20, 37, 98, 0.11);
     border-radius: 12px 12px 12px 12px;

@@ -2430,5 +2430,10 @@
   "pleaseEnterVerificationCode": "Please enter verification code",
   "pleaseEnterANewPassword": "Please enter a new password",
   "theUppercaseKeyboardIsTurnedOn": "The uppercase keyboard is turned on",
-  "pleaseEnterNewPasswordAgain": "Please enter new password again"
+  "pleaseEnterNewPasswordAgain": "Please enter new password again",
+  "changePassword": "Change Password",
+  "backLogin": "Back login",
+  "getVerificationCode": "Get verification code",
+  "hasBeenSent": "Has been sent",
+  "thePasswordMustContainAtLeastOneUppercaseOneLowercaseOneOneSpecialAndMustBeAtLeastAndAtMostIn": "The password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and must be at least 8 and at most 16 in length."
 }

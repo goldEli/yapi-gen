@@ -5,9 +5,10 @@ import styled from '@emotion/styled'
 import { useRef, useState, useReducer, useEffect } from 'react'
 import style from './Filed.module.css'
 import { Dropdown } from 'antd'
-
+import { useTranslation } from 'react-i18next'
 import CountryCode from '@/components/CountryCode'
 export default (props: any) => {
+  const [t] = useTranslation()
   const [isFocus, setIsFocus] = useState(false)
   const [bigChar, setBigChar] = useState(false)
   const [border, setBorder] = useState(false)
@@ -65,7 +66,7 @@ export default (props: any) => {
     setConutryCode(phoneCode)
   }
   return (
-    <div ref={myForm} className={getClass()}>
+    <div ref={myForm} style={{ ...props.style }} className={getClass()}>
       {props.mode === 4 ? (
         <div>
           <CountryCode
@@ -142,11 +143,11 @@ export default (props: any) => {
               onClick={() => onGetMsg(2)}
               style={{ color: '#6688FF', fontSize: 14 }}
             >
-              获取验证码
+              {t('getVerificationCode')}
             </span>
           ) : getMsg === 2 ? (
             <span style={{ color: '#BBBDBF', fontSize: 14 }}>
-              已发送({time})s
+              {t('hasBeenSent')}({time})s
             </span>
           ) : (
             ''
