@@ -958,9 +958,9 @@ const ProgressWrap = styled.div({
   borderRadius: 6,
 })
 
-const SelectWrap = styled(CustomSelect)<{ border: boolean }>`
+const SelectWrap = styled(CustomSelect)<{ border: boolean; width?: number }>`
   .ant-select-selector {
-    min-width: 140px;
+    min-width: ${(props: any) => (props.width ? props.width : 140)}px;
     border: ${(prop: any) => (prop.border ? null : 'none !important')};
     outline: none !important;
   }
