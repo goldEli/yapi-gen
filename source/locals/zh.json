@@ -2437,5 +2437,6 @@
   "hasBeenSent": "已发送",
   "thePasswordMustContainAtLeastOneUppercaseOneLowercaseOneOneSpecialAndMustBeAtLeastAndAtMostIn": "密码至少包含一个大写字母、一个小写字母、一个数字、一个特殊字符，并且长度至少为8最多为16",
   "pleaseEnterAValidPhoneNumber": "请输入正确的手机号",
-  "passwordsDoNotMatch": "密码不一致"
+  "passwordsDoNotMatch": "密码不一致",
+  "inconsistentOrWeakPasswords": "密码不一致或密码强度弱"
 }

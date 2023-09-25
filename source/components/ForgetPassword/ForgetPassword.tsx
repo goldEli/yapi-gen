@@ -108,12 +108,12 @@ const ForgetPassword = (props: FProps) => {
     }
   }
   const onCheckSecret3 = async () => {
-    if (form2.password !== form2.password2) {
+    if (form2.password !== form2.password2 || bP !== 3) {
       console.log(errorCheck)
       setFocusNumber(2)
       setErrorState(true)
       setErrorCheck({
-        password2: t('passwordsDoNotMatch'),
+        password2: t('inconsistentOrWeakPasswords'),
       })
     }
   }
