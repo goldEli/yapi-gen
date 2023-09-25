@@ -17,6 +17,7 @@ import IconFont from '@/components/IconFont'
 import ForgetPassword from '@/components/ForgetPassword/ForgetPassword'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
+import { getMobil } from './services/index'
 
 export default React.memo(
   (props: {
@@ -39,7 +40,7 @@ export default React.memo(
       msg: '',
       code: '',
       captchaId: '',
-      captchaType: 2,
+      captchaType: 4,
       id: 0,
     })
     const [show, setShow] = useState<string>('password')
@@ -121,9 +122,10 @@ export default React.memo(
       }
 
       const data = {
-        phone: form2.phone,
-        msg: form2.msg,
-        code: form2.code,
+        account: form2.phone,
+        captchaType: 4,
+        smsCode: form2.msg,
+        captchaCode: form2.code,
       }
       console.log(data, 'data')
 
@@ -484,6 +486,11 @@ export default React.memo(
                       img={captchaImage}
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
                       mode={3}
+                      onGetMsg={() => {
+                        if (form2.phone) {
+                          getMobil(form2.phone)
+                        }
+                      }}
                       value={form2.msg}
                       label={t('pleaseEnterVerificationCode')}
                       type="text"

@@ -7,6 +7,7 @@ import style from './Filed.module.css'
 import { Dropdown } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CountryCode from '@/components/CountryCode'
+
 export default (props: any) => {
   const [t] = useTranslation()
   const [isFocus, setIsFocus] = useState(false)
@@ -43,10 +44,12 @@ export default (props: any) => {
   }
 
   const onGetMsg = (num?: number) => {
+    console.log(props.value)
+
     setGetMsg(num)
     setTime(60)
     if (num === 2) {
-      console.log('调接口')
+      props.onGetMsg()
     }
   }
 
@@ -140,7 +143,7 @@ export default (props: any) => {
         <div>
           {getMsg === 1 ? (
             <span
-              onClick={() => onGetMsg(2)}
+              onClick={() => (props?.errorCheck?.phone ? null : onGetMsg(2))}
               style={{ color: '#6688FF', fontSize: 14 }}
             >
               {t('getVerificationCode')}

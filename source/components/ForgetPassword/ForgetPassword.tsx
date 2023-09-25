@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import style from '../../views/Login/Login.module.css'
 import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants'
 import styled from '@emotion/styled'
+import { editPassword } from '@/views/Login/services'
 
 const BianSeDiv1 = styled.div<{ bg: number; tt: number }>`
   width: 108px;
@@ -152,23 +153,21 @@ const ForgetPassword = (props: FProps) => {
     }
 
     const data = {
-      phone: form2.phone,
-      msg: form2.msg,
+      mobile: form2.phone,
+      smsCode: form2.msg,
       password: form2.password,
     }
     console.log(data, 'data')
 
-    // const res = await toLogin(data)
-    // if (res.code === 0) {
-    //   localStorage.token = res.data.token
-
-    //   props.redirect()
-
-    //   // navigate(`/ProjectManagement/Project`)
-    // } else {
-    //   setErrorMessage(res.msg)
-    //   setErrorState(true)
-    // }
+    const res = await editPassword(data)
+    if (res.code === 0) {
+      console.log('成功')
+      props.onClose()
+      // navigate(`/ProjectManagement/Project`)
+    } else {
+      setErrorMessage(res.msg)
+      setErrorState(true)
+    }
   }
 
   useEffect(() => {
