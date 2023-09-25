@@ -33,6 +33,7 @@ import { setCurrentMenu } from '@store/user'
 import usePressKyey from '@/hooks/usePressKyey/usePressKyey'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { setProjectInfo } from '@store/project'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface DrawerComponentProps {
   value: boolean
@@ -73,14 +74,29 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     )
     dispatch(setSave(false))
     props.onChange(false)
-    const navigateUrl =
+    let navigateUrl =
       item.children?.length > 0
         ? item.children[0].url === '/ProjectManagement/Mine'
           ? `${item.children[0].url}/Profile`
           : item.children[0].url
         : item.url
     // 如果是工作汇报则默认跳转
-    navigate(item.url === '/Report' ? `${item.url}/Review` : navigateUrl)
+    if (item.url === '/Report') {
+      navigateUrl = `${item.url}/Review`
+    }
+    // 如果是全局效能洞察，则取children第一条
+    if (item.url === '/Performance') {
+      const firstMenu = item.children[0]
+      const params = encryptPhp(
+        JSON.stringify({
+          isOverAll: true,
+          overPageType:
+            firstMenu.permission === 'b/efficiency' ? 'report' : 'kanBan',
+        }),
+      )
+      navigateUrl = `${item.url}?data=${params}`
+    }
+    navigate(navigateUrl)
     const resultMenu = {
       ...item,
       ...{
@@ -328,7 +344,8 @@ const HeaderLeft = () => {
     return (
       currentMenu?.children &&
       currentMenu?.children.length > 0 &&
-      currentMenu?.url !== '/AdminManagement'
+      currentMenu?.url !== '/AdminManagement' &&
+      currentMenu?.url !== '/Performance'
     )
   }, [currentMenu])
 
