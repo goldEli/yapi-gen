@@ -162,6 +162,9 @@ export default (props: any) => {
       {props.name === 'username' && props?.errorCheck?.username ? (
         <span className={style.hint}>{props?.errorCheck?.username}</span>
       ) : null}
+      {props.name === 'phone' && props?.errorCheck?.phone ? (
+        <span className={style.hint}>{props?.errorCheck?.phone}</span>
+      ) : null}
     </div>
   )
 }

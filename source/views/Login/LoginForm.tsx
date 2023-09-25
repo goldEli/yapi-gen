@@ -232,10 +232,11 @@ export default React.memo(
       const { target } = event
       const value = target.type === 'checkbox' ? target.checked : target.value
       const { name } = target
-      if (name === 'username') {
+      if (name === 'username' || name === 'phone') {
         setErrorState(false)
         setErrorCheck({
           username: '',
+          phone: '',
         })
       }
       setForm({
@@ -278,29 +279,32 @@ export default React.memo(
         }
       }
     }
+
     const onCheckSecret2 = async () => {
       if (
         form2.phone &&
-        !EMAIL_REGEXP.test(form.username) &&
-        !PHONE_NUMBER_REGEXP.test(form.username)
+        !EMAIL_REGEXP.test(form2.phone) &&
+        !PHONE_NUMBER_REGEXP.test(form2.phone)
       ) {
+        console.log('f')
+
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
-          username: languageMode.error1,
+          phone: t('pleaseEnterAValidPhoneNumber'),
         })
         return
       }
 
       if (
-        form.username &&
+        form2.phone &&
         form.password &&
-        form.username.length >= 1 &&
+        form2.phone.length >= 1 &&
         form.password.length >= 1
       ) {
         const response = await checkSecret({
-          account: form.username,
-          pwd: form.password,
+          account: form2.phone,
+          pwd: form2.password,
         })
         if (response.success && response.data.secret) {
           setSecretImage(response.data.secret)
@@ -465,7 +469,7 @@ export default React.memo(
                       label={languageMode.user}
                       type="text"
                       onChangeEvent={handleInputChange}
-                      onCheckSecret={onCheckSecret}
+                      onCheckSecret={onCheckSecret2}
                       isHighlight={focusNumber === 1 || focusNumber === 4}
                       isErrorHighlight={
                         (focusNumber === 1 || focusNumber === 4) && errorState
