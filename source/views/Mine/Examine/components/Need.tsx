@@ -21,7 +21,6 @@ import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import SearchList from './Filter'
-import EditExamine from './EditExamine'
 import { useDynamicColumns } from './TableColum'
 import { useDispatch, useSelector } from '@store/index'
 import { getVerifyList, getVerifyUserList, cancelVerify } from '@/services/mine'
@@ -33,6 +32,7 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import EditExamine from '@/components/EditExamine'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',

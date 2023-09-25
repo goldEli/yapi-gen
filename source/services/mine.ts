@@ -1077,6 +1077,7 @@ export const getVerifyUserList: any = async (params: any) => {
       usersInfo: i.usersInfo,
       is_bug: i.is_bug,
       project_type: i.project_type,
+      project_name: i.project_name,
       // 父需求列表
       parent: [{ value: i.id, label: i.name }],
     })),
