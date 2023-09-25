@@ -42,6 +42,7 @@ import {
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import CommonButton from '@/components/CommonButton'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { confirmProjectHand } from '@/services/handover'
 interface Props {
   visible: boolean
   onChangeVisible(): void
@@ -259,9 +260,16 @@ const CommonMember = (props: Props) => {
       title: t('removeEmployee'),
       text: t(
         'doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding',
-        { name: data.name, pos: data.positionName },
+        { name: data.name, pos: data.roleName },
       ),
-      onConfirm() {
+      async onConfirm() {
+        await confirmProjectHand({ id: data.id, project_id: props.projectId })
+        getList()
+        getMessage({
+          msg: t('successfullyDeleted') as string,
+          type: 'success',
+        })
+
         return Promise.resolve()
       },
     })
