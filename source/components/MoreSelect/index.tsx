@@ -90,6 +90,7 @@ const index = (props: any) => {
       placeholder={props?.placeholder ?? t('common.pleaseSelect')}
       placement="bottomRight"
       dropdownMatchSelectWidth={props.width}
+      selectWidth={props.selectWidth}
       suffixIcon={
         <IconFont
           type="down"

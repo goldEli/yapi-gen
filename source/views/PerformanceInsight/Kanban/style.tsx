@@ -24,12 +24,6 @@ export const SearchWrapLeft = styled(Form)`
   }
 `
 
-// export const FormWrap = styled(Form)({
-//   gap: '16px',
-//   display: 'flex',
-//   flexWrap: 'wrap',
-// })
-
 export const SearchWrapRight = styled.div`
   display: flex;
   align-items: center;
