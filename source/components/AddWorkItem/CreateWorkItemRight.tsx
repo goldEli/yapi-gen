@@ -13,7 +13,7 @@ import ChangePriorityPopover from '../ChangePriorityPopover'
 import CustomSelect from '../CustomSelect'
 import IconFont from '../IconFont'
 import StateTag from '../StateTag'
-import { PriorityWrap, SeverityWrap, SliderWrap } from '../StyleCommon'
+import { PriorityWrap, SeverityWrap } from '../StyleCommon'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import { setAddWorkItemParentList } from '@store/project'
 
@@ -74,7 +74,6 @@ const CreateDemandRight = (props: Props) => {
     addWorkItemParentList,
   } = useSelector(store => store.project)
   const { params } = addWorkItemModal
-  const { userInfo } = useSelector(store => store.user)
 
   // 处理人相关的下拉
   const getCommonUser = (arr: any, memberArr: any) => {
@@ -245,8 +244,8 @@ const CreateDemandRight = (props: Props) => {
         })
       }
 
-      // 迭代创建需求默认回填迭代
-      if (params?.iterateId) {
+      // 迭代项目-创建需求默认回填迭代  如果是创建子事务不填入冲刺
+      if (params?.iterateId && !params?.isCreateAffairsChild) {
         form.setFieldsValue({
           iterate_name: removeNull(projectInfoValues, 'iterate_name')
             ?.filter((k: any) => k.status === 1 || k.status === 4)

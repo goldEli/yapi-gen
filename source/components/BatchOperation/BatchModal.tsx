@@ -371,7 +371,14 @@ const BatchModal = (props: Props) => {
                 getPopupContainer={(node: any) => node}
                 allowClear
                 optionFilterProp="label"
-                options={chooseSelect}
+                options={
+                  // 如果包含长故事或者是子任务时，不显示冲刺字段
+                  props.selectRows?.filter((i: any) =>
+                    [3, 6].includes(i.work_type),
+                  )?.length > 0
+                    ? chooseSelect?.filter((i: any) => i.value !== 'iterate_id')
+                    : chooseSelect
+                }
                 onChange={onChangeType}
               />
             </Form.Item>

@@ -1,6 +1,5 @@
 /* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
-import CommonButton from '@/components/CommonButton'
 import { CancelText, InfoItem, Label, LabelWrap, LinkWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import {
@@ -8,7 +7,7 @@ import {
   PriorityWrapTable,
   TableBorder,
 } from '@/components/StyleCommon'
-import { useEffect, useState, useRef, useImperativeHandle } from 'react'
+import { useEffect, useState, useImperativeHandle } from 'react'
 import { Checkbox, Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import StateTag from '@/components/StateTag'
@@ -37,7 +36,6 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
-
 import DetailsChildProgress from '@/components/DetailsChildProgress'
 import CommonProgress from '@/components/CommonProgress'
 
