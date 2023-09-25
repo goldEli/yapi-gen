@@ -79,10 +79,10 @@ const ForgetPassword = (props: FProps) => {
     const { target } = event
     const value = target.type === 'checkbox' ? target.checked : target.value
     const { name } = target
-    if (name === 'username') {
+    if (name === 'phone' || form2.passwodr === form2.passwodr2) {
       setErrorState(false)
       setErrorCheck({
-        username: '',
+        phone: '',
       })
     }
 
@@ -92,7 +92,31 @@ const ForgetPassword = (props: FProps) => {
     })
   }
 
-  const onCheckSecret = async () => {}
+  const onCheckSecret2 = async () => {
+    if (
+      form2.phone &&
+      !EMAIL_REGEXP.test(form2.phone) &&
+      !PHONE_NUMBER_REGEXP.test(form2.phone)
+    ) {
+      console.log('f')
+
+      setFocusNumber(1)
+      setErrorState(true)
+      setErrorCheck({
+        phone: t('pleaseEnterAValidPhoneNumber'),
+      })
+    }
+  }
+  const onCheckSecret3 = async () => {
+    if (form2.password !== form2.password2) {
+      console.log(errorCheck)
+      setFocusNumber(2)
+      setErrorState(true)
+      setErrorCheck({
+        password2: t('passwordsDoNotMatch'),
+      })
+    }
+  }
   const onChangeShow = () => {
     show === 'text' ? setShow('password') : setShow('text')
   }
@@ -146,8 +170,7 @@ const ForgetPassword = (props: FProps) => {
     //   setErrorState(true)
     // }
   }
-  const isDisable2 =
-    !agree || !form2.password || !form2.phone || !form2.msg || !form2.password2
+
   useEffect(() => {
     setTimeout(() => {
       inputRef.current.focus()
@@ -172,7 +195,15 @@ const ForgetPassword = (props: FProps) => {
     }
     return ''
   }, [form2])
-
+  const isDisable2 =
+    !agree ||
+    !form2.password ||
+    !form2.phone ||
+    !form2.msg ||
+    !form2.password2 ||
+    !form2.password ||
+    bP !== 3 ||
+    form2.password2 !== form2.password
   return (
     <div>
       <div
@@ -209,7 +240,7 @@ const ForgetPassword = (props: FProps) => {
           label={t('pleaseEnterPhoneNumber')}
           type="text"
           onChangeEvent={handleInputChange}
-          onCheckSecret={onCheckSecret}
+          onCheckSecret={onCheckSecret2}
           isHighlight={focusNumber === 1 || focusNumber === 4}
           isErrorHighlight={
             (focusNumber === 1 || focusNumber === 4) && errorState
@@ -235,6 +266,7 @@ const ForgetPassword = (props: FProps) => {
           // onCheckValue={() => onCheckValue(3)}
         />
         <Filed
+          errorCheck={errorCheck}
           name="password"
           mode={InputMode.LOCK}
           icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
@@ -243,7 +275,7 @@ const ForgetPassword = (props: FProps) => {
           type={show}
           onChangeEvent={handleInputChange}
           onChangeShow={onChangeShow}
-          onCheckSecret={onCheckSecret}
+          onCheckSecret={onCheckSecret3}
           isHighlight={focusNumber === 2 || focusNumber === 5}
           isErrorHighlight={
             (focusNumber === 2 || focusNumber === 5) && errorState
@@ -273,6 +305,7 @@ const ForgetPassword = (props: FProps) => {
         )}
 
         <Filed
+          errorCheck={errorCheck}
           name="password2"
           mode={InputMode.LOCK}
           icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
@@ -281,7 +314,7 @@ const ForgetPassword = (props: FProps) => {
           type={show}
           onChangeEvent={handleInputChange}
           onChangeShow={onChangeShow}
-          onCheckSecret={onCheckSecret}
+          onCheckSecret={onCheckSecret3}
           isHighlight={focusNumber === 2 || focusNumber === 5}
           isErrorHighlight={
             (focusNumber === 2 || focusNumber === 5) && errorState
