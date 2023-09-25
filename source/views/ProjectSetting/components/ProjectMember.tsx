@@ -53,7 +53,7 @@ import TableSelectOptions from '@/components/TableSelectOptions'
 import { updateProjectRole } from '@/services/sprint'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
-import { confirmProjectHand } from '@/services/handover'
+import { confirmProjectHand, confirmProjectHandAll } from '@/services/handover'
 const Wrap = styled.div({
   padding: '0 24px',
   display: 'flex',
@@ -249,6 +249,11 @@ const ProjectMember = (props: { searchValue?: string }) => {
         async onConfirm() {
           console.log(operationItem, '移除成员')
           await confirmProjectHand({ id: item.id, project_id: projectId })
+          getList(order, { ...pageObj, page: 1 })
+          getMessage({
+            msg: t('successfullyDeleted') as string,
+            type: 'success',
+          })
           return Promise.resolve()
         },
       })
@@ -713,6 +718,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   useEffect(() => {
     setSelectedRowKeys([])
   }, [memberList?.list])
+  console.log(selectedRowKeys)
 
   // 判断是否详情回来，并且权限是不是有
   const isLength =
@@ -785,7 +791,16 @@ const ProjectMember = (props: { searchValue?: string }) => {
                   text: t(
                     'areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding',
                   ),
-                  onConfirm() {
+                  async onConfirm() {
+                    await confirmProjectHandAll({
+                      id: selectedRowKeys,
+                      project_id: projectId,
+                    })
+                    getList(order, { ...pageObj, page: 1 })
+                    getMessage({
+                      msg: t('successfullyDeleted') as string,
+                      type: 'success',
+                    })
                     console.log('移除成员')
 
                     return Promise.resolve()
