@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useParams, useSearchParams } from 'react-router-dom'
@@ -100,6 +100,8 @@ const List = () => {
   const [queryParams, setQueryParams] = useState<any>({})
   const [editId, setEditId] = useState<any>()
   const [visibleEdit, setVisibleEdit] = useState(false)
+  const [dropdownMatchSelectWidth, setDropdownMatchSelectWidth] =
+    useState<any>(0)
   const initialRef = useRef(0)
   const params = useParams()
   const [searchParams] = useSearchParams()
@@ -193,7 +195,12 @@ const List = () => {
     setQueryParams({})
     setPageObj({ ...pageObj, page: 1 })
   }, [id])
-
+  useLayoutEffect(() => {
+    const w = document
+      .querySelector('#SelectWrap')
+      ?.getBoundingClientRect().width
+    setDropdownMatchSelectWidth(w)
+  }, [window.localStorage.getItem('language')])
   const onClickView = (row: any) => {
     dispatch(
       saveViewReportDetailDrawer({
@@ -658,7 +665,7 @@ const List = () => {
         </Space>
       </ListTitle>
       <ListHead>
-        <SelectWrapForList>
+        <SelectWrapForList id="SelectWrap">
           <span style={{ margin: '0 16px', fontSize: '14px' }}>
             {t('report.list.reportType')}
           </span>
@@ -673,6 +680,8 @@ const List = () => {
             options={repTypeOptions}
             onChange={onChangeRepType}
             onConfirm={() => null}
+            placement="bottomRight"
+            width={dropdownMatchSelectWidth}
           />
         </SelectWrapForList>
         {id !== 1 && (id === 2 || id === 3) ? extraSelect : null}

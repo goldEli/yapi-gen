@@ -44,11 +44,12 @@ export interface CounterState {
     visible: boolean
     params: Model.Project.DetailScreenModalParams
   }
+  // 浮层详情
+  drawerInfo: any
   // 浮层是否可编辑
   drawerCanOperation: any
-  // 浮层触发编辑时，当前所在的锚点位置
-  drawerCurrentAnchor: ''
   tableFilter?: any
+  updateProgress: number
 }
 
 const initialState: CounterState = {
@@ -99,8 +100,9 @@ const initialState: CounterState = {
     visible: false,
     params: { id: 0 },
   },
+  drawerInfo: {},
   drawerCanOperation: {},
-  drawerCurrentAnchor: '',
+  updateProgress: 0,
 }
 
 export const projectSlice = createSlice({
@@ -113,6 +115,10 @@ export const projectSlice = createSlice({
         ...state.isDetailScreenModal,
         ...action.payload,
       }
+    },
+    // 是否更新进度日志
+    setUpdateProgress: (state: any, action) => {
+      state.updateProgress = action.payload
     },
     // 全局使用项目信息
     setProjectInfo: (state: any, action) => {
@@ -195,9 +201,9 @@ export const projectSlice = createSlice({
     setDrawerCanOperation: (state: any, action) => {
       state.drawerCanOperation = action.payload
     },
-    //存储浮层当前处于那个锚点
-    setDrawerCurrentAnchor: (state: any, action) => {
-      state.drawerCurrentAnchor = action.payload
+    //存储浮层详情数据
+    setDrawerInfo: (state: any, action) => {
+      state.drawerInfo = action.payload
     },
     setTableFilter: (state: any, action) => {
       state.tableFilter = action.payload
@@ -236,9 +242,10 @@ export const {
   setIsUpdateAddWorkItem,
   setIsChangeDetailAffairs,
   setDrawerCanOperation,
-  setDrawerCurrentAnchor,
   setTableFilter,
   setAddWorkItemParentList,
+  setDrawerInfo,
+  setUpdateProgress,
 } = projectSlice.actions
 
 export default projectSlice.reducer

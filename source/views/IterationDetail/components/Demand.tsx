@@ -60,7 +60,6 @@ const Demand = (props: DemandProps) => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isSpinning, setIsSpinning] = useState(false)
-  const [openDemandDetail] = useOpenDemandDetail()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
 
   const hasCreate = getIsPermission(

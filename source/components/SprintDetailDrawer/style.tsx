@@ -65,6 +65,16 @@ export const Label = styled.div`
   font-size: var(--font14);
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
 `
 
 export const BetweenBox = styled.div`
@@ -105,6 +115,7 @@ export const ChangeIconGroup = styled.div`
   box-sizing: border-box;
   height: 32px;
   display: flex;
+  gap: 16px;
 `
 
 export const NextWrap = styled.div`
@@ -144,12 +155,13 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
 `
 
 export const Content = styled.div`
-  height: calc(100% - 53px);
+  height: calc(100% - 115px);
   overflow: auto;
   padding: 16px 24px 60px;
   position: relative;
   .tabs {
-    padding-top: 32px;
+    /* padding-top: 32px; */
+    padding: 0 24px;
     position: sticky;
     top: -18px;
     z-index: 2;

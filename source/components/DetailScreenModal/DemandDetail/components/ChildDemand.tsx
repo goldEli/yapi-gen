@@ -83,8 +83,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isVisibleFields, setIsVisibleFields] = useState(false)
-  const [openDemandDetail] = useOpenDemandDetail()
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])
@@ -329,7 +328,7 @@ const ChildDemand = (props: ChildDemandProps) => {
   }, [titleList, titleList2, titleList3, columns])
 
   return (
-    <ComputedWrap>
+    <ComputedWrap all={userPreferenceConfig.previewModel === 3}>
       <DeleteConfirm
         text={t('common.confirmDelChildDemand')}
         isVisible={isDelete}

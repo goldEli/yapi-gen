@@ -68,20 +68,20 @@ const SetShowField = (props: Props) => {
     },
     {
       key: '1-1',
-      label: <CustomLabel>{t('requirement_opening_mode')}</CustomLabel>,
+      label: <CustomLabel>{t('howToOpenTheDetailsPage')}</CustomLabel>,
       children: [
         {
-          key: '1',
+          key: '3',
           label: (
             <ChangeItem
               height={22}
-              onClick={() => onChangeViewMode(1)}
+              onClick={() => onChangeViewMode(3)}
               isActive={
-                active === '1' || userPreferenceConfig.previewModel === 1
+                active === '3' || userPreferenceConfig.previewModel === 3
               }
             >
-              <span style={{ paddingRight: 10 }}>{t('popup_preview')}</span>
-              {(active === '1' || userPreferenceConfig.previewModel === 1) && (
+              <span style={{ paddingRight: 10 }}>{t('preview')}</span>
+              {(active === '3' || userPreferenceConfig.previewModel === 3) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </ChangeItem>
@@ -97,8 +97,26 @@ const SetShowField = (props: Props) => {
                 active === '2' || userPreferenceConfig.previewModel === 2
               }
             >
-              <span style={{ paddingRight: 10 }}>{t('details_preview')}</span>
+              <span style={{ paddingRight: 10 }}>{t('fullScreenPreview')}</span>
               {(active === '2' || userPreferenceConfig.previewModel === 2) && (
+                <CommonIconFont type="check" color={'var(--primary-d2)'} />
+              )}
+            </ChangeItem>
+          ),
+        },
+
+        {
+          key: '1',
+          label: (
+            <ChangeItem
+              height={22}
+              onClick={() => onChangeViewMode(1)}
+              isActive={
+                active === '1' || userPreferenceConfig.previewModel === 1
+              }
+            >
+              <span style={{ paddingRight: 10 }}>{t('slideOutSide')}</span>
+              {(active === '1' || userPreferenceConfig.previewModel === 1) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </ChangeItem>

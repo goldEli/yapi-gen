@@ -54,6 +54,7 @@ export const ChangeIconGroup = styled.div`
   box-sizing: border-box;
   height: 32px;
   display: flex;
+  gap: 16px;
 `
 
 export const NextWrap = styled.div`
@@ -121,7 +122,8 @@ export const Content = styled.div`
   padding: 16px 24px;
   position: relative;
   .tabs {
-    padding-top: 32px;
+    /* padding-top: 32px; */
+    padding: 0 24px;
     position: sticky;
     top: -18px;
     z-index: 2;

@@ -6,7 +6,7 @@ const Text = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
   font-family: SiYuanMedium;
-  margin-left: 8px;
+  margin-left: 24px;
 
   span:nth-child(2) {
     font-size: 12px;
@@ -19,8 +19,7 @@ const TitleStyle = styled.div`
   display: flex;
   align-items: center;
   padding-right: 16px;
-  padding-bottom: 20px;
-  margin-top: 36px;
+
   &:hover {
     cursor: pointer;
   }
@@ -42,11 +41,11 @@ const Title = (props: Props) => {
         props.onChange(infoIcon)
       }}
     >
-      <CommonIconFont
+      {/* <CommonIconFont
         type={infoIcon ? 'right-icon' : 'down-icon'}
         size={14}
         color="var(--neutral-n3)"
-      />
+      /> */}
       <Text>
         <span>{props.headerTitle}</span>
         <span>{props.msg}</span>

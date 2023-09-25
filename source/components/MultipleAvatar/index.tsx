@@ -23,6 +23,7 @@ import {
 import { getUserIntroList } from '@/services/user'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
+import PeopleCard from './components/PeopleCard'
 interface MultipleAvatarProps {
   list: {
     id?: number
@@ -87,86 +88,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
                 getPopupContainer={() =>
                   document.querySelector('.kanBanFullScreenBox') as any
                 }
-                content={
-                  <DetailWrap>
-                    <HeaderWrap>
-                      <Name>
-                        {item.name}（{item.position}）
-                      </Name>
-                      <Email>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-white-d7)',
-                          }}
-                          type="envelope"
-                        />
-                        {item.email}
-                      </Email>
-                    </HeaderWrap>
-                    <BottomWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            alignSelf: 'flex-start',
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                            marginTop: '2px',
-                          }}
-                          type="tree-list-2"
-                        />
-                        {item.departments}
-                      </ItemWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="enterprise"
-                        />
-                        {item.company}
-                      </ItemWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="chart-02"
-                        />
-                        {t('common.completionRate')} {item.completed_rate}%
-                      </ItemWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="demand"
-                        />
-                        {t('common.waitCompleted')} {item.undone_num}
-                        {t('common.pieces')}
-                      </ItemWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="phone"
-                        />
-                        {item.phone}
-                      </ItemWrap>
-                    </BottomWrap>
-                  </DetailWrap>
-                }
+                content={<PeopleCard {...item}></PeopleCard>}
               >
                 <ItemRow>
                   <CommonUserAvatar
@@ -181,86 +103,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
               <Popover
                 placement="leftTop"
                 zIndex={99999}
-                content={
-                  <DetailWrap>
-                    <HeaderWrap>
-                      <Name>
-                        {item.name}（{item.position}）
-                      </Name>
-                      <Email>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-white-d7)',
-                          }}
-                          type="envelope"
-                        />
-                        {item.email}
-                      </Email>
-                    </HeaderWrap>
-                    <BottomWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            alignSelf: 'flex-start',
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                            marginTop: '2px',
-                          }}
-                          type="tree-list-2"
-                        />
-                        {item.departments}
-                      </ItemWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="enterprise"
-                        />
-                        {item.company}
-                      </ItemWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="chart-02"
-                        />
-                        {t('common.completionRate')} {item.completed_rate}%
-                      </ItemWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="demand"
-                        />
-                        {t('common.waitCompleted')} {item.undone_num}
-                        {t('common.pieces')}
-                      </ItemWrap>
-                      <ItemWrap>
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            marginRight: '8px',
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="phone"
-                        />
-                        {item.phone}
-                      </ItemWrap>
-                    </BottomWrap>
-                  </DetailWrap>
-                }
+                content={<PeopleCard {...item}></PeopleCard>}
               >
                 <ItemRow>
                   <CommonUserAvatar
@@ -325,7 +168,6 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       visible={visible}
       menu={{ items }}
       disabled={props.disableDropDown}
-      // trigger={['click']}
       onVisibleChange={e => {
         setVisible(e), e && getUserIntroListApi()
       }}
@@ -352,7 +194,6 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       visible={visible}
       menu={{ items }}
       disabled={props.disableDropDown}
-      // trigger={['click']}
       onVisibleChange={e => {
         setVisible(e), e && getUserIntroListApi()
       }}

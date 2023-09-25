@@ -121,7 +121,14 @@ const DefectTable = (props: Props) => {
   // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
     const demandIds = props.data?.list?.map((i: any) => i.id)
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id, 2)
+    openDemandDetail(
+      { ...item, ...{ demandIds } },
+      projectId,
+      item.id,
+      2,
+      false,
+      false,
+    )
   }
 
   // 修改优先级
@@ -352,7 +359,12 @@ const DefectTable = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 2, title: t('createDefect') },
+        params: {
+          noDataCreate: true,
+          type: 2,
+          title: t('createDefect'),
+          projectId,
+        },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))

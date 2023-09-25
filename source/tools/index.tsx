@@ -25,12 +25,12 @@ function getNowDate() {
   let day: string | number = date.getDate()
   // 给一位数的数据前面加 “0”
   if (month >= 1 && month <= 9) {
-    month = '0' + month
+    month = `0${month}`
   }
   if (day >= 0 && day <= 9) {
-    day = '0' + day
+    day = `0${day}`
   }
-  return year + '-' + month + '-' + day
+  return `${year}-${month}-${day}`
 }
 
 // 获取权限
@@ -48,7 +48,7 @@ function getParamsData(params: any) {
 
 export function getIdByUrl(key: string) {
   const url = new URL(window.location.href)
-  const searchParams = url.searchParams
+  const { searchParams } = url
 
   const params = getParamsData(searchParams)
   return parseInt(params[key], 10)
@@ -56,7 +56,7 @@ export function getIdByUrl(key: string) {
 
 export function getValueByUrl<T = any>(key: string): T {
   const url = new URL(window.location.href)
-  const searchParams = url.searchParams
+  const { searchParams } = url
 
   const params = getParamsData(searchParams)
 
@@ -65,20 +65,20 @@ export function getValueByUrl<T = any>(key: string): T {
 
 export function getProjectIdByUrl() {
   const url = new URL(window.location.href)
-  const searchParams = url.searchParams
+  const { searchParams } = url
 
   const params = getParamsData(searchParams) || {}
 
-  return parseInt(params['id'], 10)
+  return parseInt(params.id, 10)
 }
 
 export function getProjectTypeByUrl() {
   const url = new URL(window.location.href)
-  const searchParams = url.searchParams
+  const { searchParams } = url
 
   const params = getParamsData(searchParams) || {}
 
-  return parseInt(params['projectType'], 10)
+  return parseInt(params.projectType, 10)
 }
 export function getProjectType() {
   /**
@@ -497,18 +497,19 @@ function onComputedFindChild(obj: any, parentId: number) {
   let res = obj.id === parentId ? obj : null
   if (res) {
     return res
-  } else {
-    for (let index = 0; index < obj.children.length; index++) {
-      if (
-        obj.children[index].children instanceof Array &&
-        obj.children[index].children?.length > 0
-      ) {
-        res = onComputedFindChild(obj.children[index], parentId)
-        if (res) return res
+  }
+  for (let index = 0; index < obj.children.length; index++) {
+    if (
+      obj.children[index].children instanceof Array &&
+      obj.children[index].children?.length > 0
+    ) {
+      res = onComputedFindChild(obj.children[index], parentId)
+      if (res) {
+        return res
       }
     }
-    return null
   }
+  return null
 }
 
 // 计算user_menu_list中是否有当前路由

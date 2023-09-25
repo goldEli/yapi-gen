@@ -4,6 +4,7 @@ import { Dropdown, Form, Progress, Space, Tabs } from 'antd'
 
 export const Wrap = styled.div`
   height: 100%;
+  /* overflow: hidden; */
   display: flex;
   padding-top: 20px;
   flex-direction: column;
@@ -33,6 +34,7 @@ export const ChangeIconGroup = styled.div`
   box-sizing: border-box;
   height: 32px;
   display: flex;
+  gap: 16px;
 `
 
 export const NextWrap = styled.div`
@@ -82,8 +84,8 @@ export const DropdownMenu = styled(Dropdown)`
 
 export const DetailTitle = styled.div`
   display: flex;
-  border-bottom: 1px solid var(--neutral-n6-d1);
-  padding: 0px 0px 20px;
+  /* border-bottom: 1px solid var(--neutral-n6-d1); */
+  padding: 0px 0px 0px;
   width: calc(100% - 48px);
   margin-left: 24px;
 `
@@ -127,11 +129,16 @@ export const LiWrap = styled.div({
   },
 })
 
-export const DetailMain = styled.div`
+export const DetailMain = styled.div<{ all?: boolean; h?: boolean }>`
   display: flex;
-  margin-top: 20px;
   padding-right: 24px;
   position: relative;
+  height: calc(
+    ${props => (props.all ? '80vh' : '100vh')} -
+      ${props => (props.h ? '107px' : '249px')}
+  );
+  width: 100%;
+  margin-top: 16px;
 `
 
 export const SprintDetailDragLine = styled(DragLine)`
@@ -143,9 +150,11 @@ export const SprintDetailMouseDom = styled(MouseDom)`
   background: transparent;
 `
 
-export const BasicWrap = styled.div`
+export const BasicWrap = styled.div<{ a?: boolean; b?: boolean }>`
   position: relative;
-  height: calc(100% - 108px);
+  height: calc(
+    100% - ${props => (props.a ? (props.b ? 132 : 85) : props.b ? 42 : 0)}px
+  );
 `
 
 export const BasicContent = styled.div`
@@ -206,7 +215,7 @@ export const InfoWrap = styled.div<{ height: any }>`
 export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
   width: 100%;
   height: ${props =>
-    props.isScroll ? 'calc(100% - 120px)' : 'calc(100% - 100px)'};
+    props.isScroll ? 'calc(100% - 120px)' : 'calc(100% - 130px)'};
   overflow: auto;
   .review {
     position: absolute;
@@ -239,10 +248,12 @@ export const ActivityTabItem = styled.div<{ isActive?: boolean }>`
 
 export const InfoItem = styled.div<{ isInfoPage?: boolean }>`
   display: flex;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   position: relative;
   flex-direction: column;
-  padding: ${props => (props.isInfoPage ? '0 24px' : 0)};
+  border-radius: 6px;
+  padding: ${props => (props.isInfoPage ? '12px 24px' : 0)};
+  background: white;
 `
 
 export const ItemNumber = styled.div<{ isActive?: boolean }>`
@@ -264,6 +275,16 @@ export const Label = styled.div`
   /* margin-bottom: 8px; */
   height: 32px;
   line-height: 32px;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
 `
 
 export const TargetWrap = styled.div`

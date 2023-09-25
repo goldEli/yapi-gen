@@ -145,6 +145,7 @@ interface Props {
   onUpdate(): void
   // 是否是详情的快捷操作
   isDetailQuick?: boolean
+  isPreview?: boolean
 }
 
 const SprintTag = (props: Props) => {
@@ -305,7 +306,7 @@ const SprintTag = (props: Props) => {
               }}
             >
               <div>{i.content}</div>
-              {isCanEdit || props?.isQuick ? (
+              {(isCanEdit || props?.isQuick) && !props.isPreview ? (
                 <IconFont
                   className="icon"
                   style={{

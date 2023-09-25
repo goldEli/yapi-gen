@@ -344,9 +344,10 @@ const CommonNeed = (props: any) => {
   const init = async (updateState?: boolean) => {
     if (!updateState) {
       setIsSpin(true)
+      setListData({ list: undefined })
+      setManyListData({ list: undefined })
     }
-    setListData({ list: undefined })
-    setManyListData({ list: undefined })
+
     setTotal(0)
 
     if (isMany) {
@@ -499,11 +500,21 @@ const CommonNeed = (props: any) => {
       }
       item.isMineOrHis = true
       item.isAllProject = props.id === 0
+      let type = 0
+      if (item.project_type === 2) {
+        type = 1
+      }
+      if (item.project_type === 1 && item.is_bug === 2) {
+        type = 3
+      }
+      if (item.project_type === 1 && item.is_bug === 1) {
+        type = 2
+      }
       openDemandDetail(
         { ...item, ...{ demandIds } },
         item.project_id,
         item.id,
-        item.project_type === 2 ? 1 : undefined,
+        type,
       )
     }
   }

@@ -5,7 +5,7 @@ export const ExamineWrap = styled.div`
   width: 100%;
   padding: 8px 16px;
   border-radius: 6px;
-  margin-top: 12px;
+  padding-top: 12px;
   min-width: 500px;
   display: flex;
   flex-direction: column;

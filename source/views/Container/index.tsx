@@ -38,6 +38,7 @@ import DetailScreenModal from '@/components/DetailScreenModal'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ProjectSystemReport from '../WorkReport/Review/components/ProjectSystemReport'
+import EmployeeProfileContrast from '@/components/EmployeeProfileContrast'
 import ReportAssistantModal from '@/views/WorkReport/Review/components/ReportAssistantModal'
 
 const LayoutWrap = styled.div`
@@ -54,7 +55,7 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
+  box-shadow: 0px 1px 7px 0px rgba(26, 26, 26, 0.1);
   background: var(--neutral-white-d2);
   z-index: 200;
   min-width: 800px;
@@ -241,6 +242,7 @@ export const Container = () => {
         <SprintDetailDrawer />
         <FlawDetailDrawer />
         <DetailScreenModal />
+        <EmployeeProfileContrast />
       </ConfigProvider>
     </KitConfigProvider>
   )

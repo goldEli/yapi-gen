@@ -6,6 +6,8 @@ type SliceState = {
   affairsDetailDrawer: {
     visible: boolean
     params?: any
+    isPreview?: boolean
+    star?: boolean
   }
   affairsInfo: Partial<Model.Affairs.AffairsInfo>
   affairsCommentList: {
@@ -18,6 +20,8 @@ const initialState: SliceState = {
   affairsDetailDrawer: {
     visible: false,
     params: {},
+    isPreview: false,
+    star: false,
   },
   // 事务详情
   affairsInfo: {},

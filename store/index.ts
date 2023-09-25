@@ -36,6 +36,7 @@ import performanceInsight from './performanceInsight'
 import kanBan from './kanBan'
 import affairs from './affairs'
 import flaw from './flaw'
+import employeeProfile from './employeeProfile'
 export const store = configureStore({
   reducer: {
     flaw,
@@ -70,6 +71,7 @@ export const store = configureStore({
     KanbanConfig,
     freed,
     performanceInsight,
+    employeeProfile,
   },
 })
 
@@ -85,6 +87,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 >
 
 export const useDispatch: () => AppDispatch = useOriginDispatch
-// export const useDispatch = () => useOriginDispatch<AppDispatch>()
 
 export const useSelector: TypedUseSelectorHook<RootState> = useOriginSelector

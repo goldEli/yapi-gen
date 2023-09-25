@@ -24,6 +24,8 @@ import { dayData1, weekData, monthData, aWeekDataList } from './DataList'
 import moment from 'moment'
 import { debounce, throttle } from 'lodash'
 import { useTranslation } from 'react-i18next'
+import IconFont from '@/components/IconFont'
+import { css } from '@emotion/css'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
   overflow-y: auto;
@@ -32,6 +34,13 @@ const PermissionConfigStyle = styled.div`
 const TitleText = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
+`
+const bian2 = css`
+  transition: all 0.3s;
+  background: #fafafc;
+  :hover {
+    background: #f6f7f9;
+  }
 `
 const DayFormBox = styled(Form)({
   '.ant-form-item': {
@@ -434,67 +443,108 @@ const PermissionConfig = (props: PropsType) => {
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}
-      <Title
-        headerTitle={t('formWork.title1')}
-        onChange={(val: boolean) => setReport(val)}
-      />
-      {report ? (
-        <>
-          {/* 谁可以写 */}
-          <Addperson
-            onChangedel={val => onChangedel(val, 1)}
-            onChangeValues={val => onChangeValues(val, 1)}
-            person={person1}
-            title={t('formWork.title2')}
-            isShow={true}
-            state={1}
-          />
-          {/* 汇报对象*/}
-          <Addperson
-            onChangedel={val => onChangedel(val, 2)}
-            onChangeValues={val => onChangeValues(val, 2)}
-            person={person2}
-            title={t('formWork.title3')}
-            isShow={false}
-            state={2}
-          />
-          {/* 谁可以看 */}
-          <Addperson
-            onChangedel={val => onChangedel(val, 3)}
-            onChangeValues={val => onChangeValues(val, 3)}
-            person={person3}
-            title={t('formWork.title4')}
-            isShow={false}
-            state={3}
-          />
-        </>
-      ) : null}
-      {/* 填写要求 */}
-      <Title
-        headerTitle={t('formWork.title5')}
-        msg={t('formWork.title6')}
-        onChange={(val: boolean) => setFillIn(val)}
-      />
-      {fillIn ? (
-        <div style={{ marginLeft: '24px' }}>
-          <TitleText>{t('formWork.title7')}</TitleText>
-          <Radio.Group
-            style={{ margin: '8px 0 16px 0' }}
-            value={type}
-            onChange={e => {
-              onchange(e)
-            }}
-          >
-            <Radio value={'day'}>{t('formWork.title8')}</Radio>
-            <Radio value={'week'}>{t('formWork.title9')}</Radio>
-            <Radio value={'month'}>{t('formWork.title10')}</Radio>
-            <Radio value={'doNot'}>{t('formWork.title11')}</Radio>
-          </Radio.Group>
-          <DayFormBox form={form} onValuesChange={formOnValuesChange}>
-            <FormMain type={type} />
-          </DayFormBox>
+      <div style={{ border: '1px solid #ECEDEF', borderRadius: 6 }}>
+        <div
+          onClick={() => setReport(!report)}
+          style={{
+            height: '56px',
+            display: 'flex',
+            alignItems: 'center',
+            borderRadius: 6,
+            justifyContent: 'space-between',
+            paddingRight: '24px',
+            cursor: 'pointer',
+          }}
+          className={bian2}
+        >
+          <Title headerTitle={t('formWork.title1')} onChange={() => {}} />
+          <IconFont type={report ? 'up' : 'down'} />
         </div>
-      ) : null}
+        {report ? (
+          <div style={{ padding: ' 16px 32px ' }}>
+            {/* 谁可以写 */}
+            <Addperson
+              onChangedel={val => onChangedel(val, 1)}
+              onChangeValues={val => onChangeValues(val, 1)}
+              person={person1}
+              title={t('formWork.title2')}
+              isShow={true}
+              state={1}
+            />
+            {/* 汇报对象*/}
+            <Addperson
+              onChangedel={val => onChangedel(val, 2)}
+              onChangeValues={val => onChangeValues(val, 2)}
+              person={person2}
+              title={t('formWork.title3')}
+              isShow={false}
+              state={2}
+            />
+            {/* 谁可以看 */}
+            <Addperson
+              onChangedel={val => onChangedel(val, 3)}
+              onChangeValues={val => onChangeValues(val, 3)}
+              person={person3}
+              title={t('formWork.title4')}
+              isShow={false}
+              state={3}
+            />
+          </div>
+        ) : null}
+      </div>
+
+      {/* 填写要求 */}
+      <div
+        style={{
+          border: '1px solid #ECEDEF',
+          borderRadius: 6,
+          marginTop: '20px',
+        }}
+      >
+        <div
+          onClick={() => setFillIn(!fillIn)}
+          style={{
+            height: '56px',
+
+            display: 'flex',
+            alignItems: 'center',
+            borderRadius: 6,
+            justifyContent: 'space-between',
+            paddingRight: '24px',
+            cursor: 'pointer',
+          }}
+          className={bian2}
+        >
+          <Title
+            headerTitle={t('formWork.title5')}
+            msg={t('formWork.title6')}
+            onChange={() => {}}
+          />
+          <IconFont type={fillIn ? 'up' : 'down'} />
+        </div>
+        {fillIn ? (
+          <div style={{ marginLeft: '24px' }}>
+            <TitleText style={{ marginTop: '20px' }}>
+              {t('formWork.title7')}
+            </TitleText>
+            <Radio.Group
+              style={{ margin: '8px 0 16px 0' }}
+              value={type}
+              onChange={e => {
+                onchange(e)
+              }}
+            >
+              <Radio value={'day'}>{t('formWork.title8')}</Radio>
+              <Radio value={'week'}>{t('formWork.title9')}</Radio>
+              <Radio value={'month'}>{t('formWork.title10')}</Radio>
+              <Radio value={'doNot'}>{t('formWork.title11')}</Radio>
+            </Radio.Group>
+            <DayFormBox form={form} onValuesChange={formOnValuesChange}>
+              <FormMain type={type} />
+            </DayFormBox>
+          </div>
+        ) : null}
+      </div>
     </PermissionConfigStyle>
   )
 }

@@ -74,6 +74,7 @@ export const ChangeIconGroup = styled.div`
   box-sizing: border-box;
   height: 32px;
   display: flex;
+  gap: 16px;
 `
 
 export const NextWrap = styled.div`
@@ -138,9 +139,9 @@ export const ChangeIconBox = styled.div`
 export const Content = styled.div`
   height: calc(100% - 120px);
   overflow: auto;
-  padding: 16px 24px;
+  padding: 16px 0px;
   position: relative;
-  background: #fff;
+  background: #f5f5f7;
   /* border: 1px solid; */
   padding-top: 0px;
   .tabs {
@@ -229,13 +230,26 @@ export const CollapseItemContent = styled.div<{ isOpen?: boolean }>`
   transition: 0.2s;
 `
 
-export const Label = styled.div`
+export const Label = styled.div<{ b?: boolean }>`
   font-size: var(--font14);
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
   /* margin-bottom: 8px; */
   height: 32px;
   line-height: 32px;
+  ${props =>
+    props.b
+      ? ''
+      : `::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }`}
 `
 
 export const LabelItem = styled.div`
@@ -575,6 +589,15 @@ export const CommentTitle = styled.div`
   font-size: var(--font14);
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
+  /* &::before {
+    content: '';
+    height: 16px;
+    position: absolute;
+    left: 0px;
+    top: 3px;
+    width: 3px;
+    background-color: var(--primary-d1);
+  } */
 `
 
 export const DrawerHeader = styled.div`

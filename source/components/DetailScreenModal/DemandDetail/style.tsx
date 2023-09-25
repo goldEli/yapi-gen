@@ -9,7 +9,7 @@ export const DemandWrap = styled.div`
   padding-top: 20px;
   flex-direction: column;
   .tabs {
-    padding: 0 24px;
+    padding: 0;
   }
   .ant-tabs-nav {
     margin-bottom: 0px;
@@ -80,6 +80,7 @@ export const ChangeIconGroup = styled.div`
   box-sizing: border-box;
   height: 32px;
   display: flex;
+  gap: 16px;
 `
 
 export const NextWrap = styled.div`
@@ -174,15 +175,22 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
     props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
 `
 
-export const ComputedWrap = styled.div`
-  height: calc(100vh - 210px);
+export const ComputedWrap = styled.div<{ all?: boolean }>`
+  padding: 0px 24px;
+  height: calc(
+    ${props => (props.all ? '80vh' : '100vh')} -
+      ${props => (props.all ? '154px' : '210px')}
+  );
 `
 
 //  需求详情-详细信息
-export const DetailMain = styled.div`
+export const DetailMain = styled.div<{ all?: boolean; h?: boolean }>`
   display: flex;
   position: relative;
-  height: calc(100vh - 249px);
+  height: calc(
+    ${props => (props.all ? '80vh' : '100vh')} -
+      ${props => (props.h ? '180px' : '249px')}
+  );
   width: 100%;
   margin-top: 16px;
 `
@@ -202,10 +210,13 @@ export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
 `
 
 export const InfoItem = styled.div`
+  padding: 12px;
   display: flex;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   position: relative;
   flex-direction: column;
+  background: white;
+  border-radius: 6px;
 `
 
 export const Label = styled.div`
@@ -216,6 +227,16 @@ export const Label = styled.div`
   margin-bottom: 8px;
   height: 32px;
   line-height: 32px;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
 `
 export const TextWrap = styled.div`
   color: var(--neutral-n1-d1);
@@ -260,7 +281,7 @@ export const BasicFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 24px;
+  padding: 0 24px;
   background: var(--neutral-white-d5);
   position: absolute;
   bottom: 6px;
@@ -284,7 +305,7 @@ export const WrapLeft = styled.div({
   width: '100%',
   height: '100%',
   overflow: 'auto',
-  padding: '0 20px 24px 0',
+  padding: '0 0px 0px 0',
 })
 
 // 需求详情-左侧信息及评论列表样式

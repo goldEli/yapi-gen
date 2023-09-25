@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import CommonButton from '@/components/CommonButton'
+import { setProjectInfo } from '@store/project'
+import { useDispatch } from '@store/index'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -25,10 +27,12 @@ const Wrap = styled.div({
 const PrivatePermission = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   // 点击跳转到项目页面
   const onToProject = () => {
     navigate('/ProjectManagement/Mine/Profile')
+    dispatch(setProjectInfo({}))
   }
   return (
     <Wrap>

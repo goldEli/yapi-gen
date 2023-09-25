@@ -155,11 +155,11 @@ interface Props {
   isInfoPage?: boolean
   onUpdate?(): void
   detail?: any
+  isPreview?: boolean
 }
 
 const DemandTag = (props: Props) => {
   const [t] = useTranslation()
-  const { demandInfo } = useSelector(store => store.demand)
   const { projectInfo } = useSelector(store => store.project)
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
@@ -347,7 +347,7 @@ const DemandTag = (props: Props) => {
           ))}
         </>
       )}
-      {props?.isQuick || isCanEdit ? (
+      {(props?.isQuick || isCanEdit) && !props.isPreview ? (
         <Popover
           visible={isOpen}
           placement="bottomLeft"

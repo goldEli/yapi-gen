@@ -840,9 +840,9 @@ const SetConfig = (props: Props) => {
                 <LabelWrap>{t('setting.userGroup')}</LabelWrap>
                 <Form.Item noStyle name="roles">
                   <CustomSelect
+                    mode="multiple"
                     style={{ minWidth: 186 }}
                     showSearch
-                    mode="multiple"
                     optionFilterProp="label"
                     getPopupContainer={(node: any) => node}
                     showArrow
@@ -967,7 +967,7 @@ const SetConfig = (props: Props) => {
                 marginTop: 16,
                 marginLeft: 20,
               }}
-              type={'light'}
+              type="light"
               onClick={onClickAddField}
             >
               <IconFont type="plus" /> {t('newlyAdd.addFields')}

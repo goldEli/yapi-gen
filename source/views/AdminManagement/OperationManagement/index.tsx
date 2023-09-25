@@ -11,7 +11,7 @@ import {
   SelectWrap,
   SelectWrapBedeck,
 } from '@/components/StyleCommon'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useLayoutEffect } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -95,6 +95,7 @@ const OperationManagement = () => {
     list: undefined,
   })
   const [staffList, setStaffList] = useState<any>([])
+  const [boxMaps, setBoxMaps] = useState<any>()
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
@@ -138,7 +139,16 @@ const OperationManagement = () => {
     getList(pageObj, order)
     getStaff()
   }, [])
-
+  useLayoutEffect(() => {
+    const map: any = new Map()
+    const box = document.querySelectorAll('.SelectWrapBedeck')
+    box.forEach(item => {
+      const attr = item.getAttribute('datatype')
+      const w = item.getBoundingClientRect().width
+      map.set(attr, w)
+    })
+    setBoxMaps(map)
+  }, [])
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     getList(pageObj, { value: val === 2 ? 'desc' : 'asc', key })
@@ -251,7 +261,7 @@ const OperationManagement = () => {
           </div>
 
           <SearchWrap size={16}>
-            <SelectWrapBedeck>
+            <SelectWrapBedeck className="SelectWrapBedeck" datatype="userIds">
               <span style={{ margin: '0 12px', fontSize: '14px' }}>
                 {t('setting.operationName')}
               </span>
@@ -265,6 +275,8 @@ const OperationManagement = () => {
                   options={staffList}
                   optionFilterProp="label"
                   allowClear
+                  placement="bottomRight"
+                  dropdownMatchSelectWidth={boxMaps?.get('userIds')}
                   suffixIcon={
                     <IconFont
                       type="down"
@@ -274,7 +286,7 @@ const OperationManagement = () => {
                 />
               </Form.Item>
             </SelectWrapBedeck>
-            <SelectWrapBedeck>
+            <SelectWrapBedeck className="SelectWrapBedeck" datatype="types">
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('setting.operationType')}
               </span>
@@ -287,6 +299,8 @@ const OperationManagement = () => {
                   showSearch
                   options={typeList}
                   optionFilterProp="label"
+                  placement="bottomRight"
+                  dropdownMatchSelectWidth={boxMaps?.get('types')}
                   allowClear
                   suffixIcon={
                     <IconFont

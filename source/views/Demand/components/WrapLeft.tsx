@@ -308,6 +308,7 @@ const WrapLeft = (props: any, ref: any) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { value: valueId } = useSelector(store => store.counter)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
@@ -327,12 +328,15 @@ const WrapLeft = (props: any, ref: any) => {
     return resultData || []
   }
 
-  // isUpdateProjectInfoValues：是否需要更新项目下拉数据
-  const init = async (isUpdateProjectInfoValues?: boolean) => {
-    setShow(false)
+  // isUpdateProjectInfoValues：是否需要更新项目下拉数据 isInit：是否是初始化
+  const init = async (
+    isUpdateProjectInfoValues?: boolean,
+    isInit?: boolean,
+  ) => {
+    if (isInit) setShow(false)
     const res = await getTreeList({ id: props.projectId })
     setTreeData(filterTreeData(res))
-    setShow(true)
+    if (isInit) setShow(true)
     // 更新项目成员下拉
     if (isUpdateProjectInfoValues) {
       const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
@@ -439,7 +443,7 @@ const WrapLeft = (props: any, ref: any) => {
 
   useEffect(() => {
     if (props.isShowLeft) {
-      init()
+      init(false, true)
     }
   }, [props.isShowLeft, projectId])
 
@@ -448,6 +452,11 @@ const WrapLeft = (props: any, ref: any) => {
       init,
     }
   })
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      init(false, true)
+    }
+  }, [isUpdateAddWorkItem])
   const onDragLine = () => {
     document.onmousemove = e => {
       setFocus(true)

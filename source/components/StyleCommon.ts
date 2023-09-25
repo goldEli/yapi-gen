@@ -437,12 +437,14 @@ const DelButton = styled.div`
   position: absolute;
   right: -7px;
   top: -7px;
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   visibility: hidden;
+  z-index: 999;
   z-index: 2;
+  background: #fff;
   .icon {
-    font-size: 16px;
+    font-size: 18px;
     color: var(--neutral-n4);
     cursor: pointer;
     &:hover {
@@ -460,6 +462,9 @@ const SelectWrapBedeck = styled.div`
   border-radius: 6px;
   &:hover ${DelButton} {
     visibility: visible;
+  }
+  &:hover {
+    border: 1px solid var(--primary-d1);
   }
   span {
     white-space: nowrap;
@@ -953,13 +958,12 @@ const ProgressWrap = styled.div({
   borderRadius: 6,
 })
 
-const SelectWrap = styled(CustomSelect)`
+const SelectWrap = styled(CustomSelect)<{ border: boolean }>`
   .ant-select-selector {
     min-width: 140px;
-    border: none !important;
+    border: ${(prop: any) => (prop.border ? null : 'none !important')};
     outline: none !important;
   }
-
   .ant-select-selection-placeholder {
     color: var(--neutral-n4);
   }

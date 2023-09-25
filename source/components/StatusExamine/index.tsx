@@ -17,6 +17,7 @@ interface StatusExamineProps {
   onCheck?(): void
   // 是否是浮层
   isDrawer?: boolean
+  isPreview?: boolean
 }
 
 const StatusExamine = (props: StatusExamineProps) => {
@@ -52,7 +53,7 @@ const StatusExamine = (props: StatusExamineProps) => {
     })
   }
   return (
-    <>
+    <div style={{ backgroundColor: 'white' }}>
       <DeleteConfirmModal />
       <ExamineWrap>
         <TopWrap>
@@ -62,18 +63,20 @@ const StatusExamine = (props: StatusExamineProps) => {
               {list.filter((i: any) => i.type === props.type)[0]?.sub}
             </div>
           </div>
-          <Space size={16}>
-            {!props.isDrawer && !props.verifyInfo && (
-              <div className="cancel" onClick={props.onCheck}>
-                {t('circulationRecords')}
-              </div>
-            )}
-            {props.isVerify && (
-              <div className="cancel" onClick={onClose}>
-                {t('newlyAdd.cancelExamine')}
-              </div>
-            )}
-          </Space>
+          {!props.isPreview && (
+            <Space size={16}>
+              {!props.isDrawer && !props.verifyInfo && (
+                <div className="cancel" onClick={props.onCheck}>
+                  {t('circulationRecords')}
+                </div>
+              )}
+              {props.isVerify && (
+                <div className="cancel" onClick={onClose}>
+                  {t('newlyAdd.cancelExamine')}
+                </div>
+              )}
+            </Space>
+          )}
         </TopWrap>
         {props.verifyInfo && (
           <div style={{ marginTop: 24 }}>
@@ -81,7 +84,7 @@ const StatusExamine = (props: StatusExamineProps) => {
           </div>
         )}
       </ExamineWrap>
-    </>
+    </div>
   )
 }
 

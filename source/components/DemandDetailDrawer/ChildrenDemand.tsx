@@ -34,6 +34,7 @@ interface Props {
   detail?: any
   isOpen?: boolean
   onUpdate(): void
+  isPreview?: boolean
 }
 interface SelectItem {
   label: string
@@ -337,16 +338,20 @@ const ChildrenDemand = (props: Props, ref: any) => {
     }
   })
   useEffect(() => {
-    if (props.detail?.id || isUpdateAddWorkItem) {
+    if (props.detail?.id && projectInfo?.id) {
       getList()
     }
-  }, [props.detail, isUpdateAddWorkItem])
+  }, [props.detail, projectInfo])
 
   return (
     <div
       id="tab_demand"
       className="info_item_tab"
-      style={{ marginTop: '28px' }}
+      style={{
+        backgroundColor: 'white',
+        marginBottom: 12,
+        padding: '12px 24px',
+      }}
     >
       {/* <Label>{t('subrequirements')}</Label> */}
       <DeleteConfirm
@@ -357,51 +362,53 @@ const ChildrenDemand = (props: Props, ref: any) => {
       />
       <LabelWrap>
         <Label>{t('subrequirements')}</Label>
-        <Space size={12}>
-          {!isSearch && (
-            <Tooltip title={t('searchForSubrequirements')}>
-              <CloseWrap width={32} height={32} onClick={onClickSearch}>
-                <CommonIconFont
-                  size={20}
-                  type="search"
-                  color="var(--neutral-n2)"
+        {props?.isPreview ? null : (
+          <Space size={12}>
+            {!isSearch && (
+              <Tooltip title={t('searchForSubrequirements')}>
+                <CloseWrap width={32} height={32} onClick={onClickSearch}>
+                  <CommonIconFont
+                    size={20}
+                    type="search"
+                    color="var(--neutral-n2)"
+                  />
+                </CloseWrap>
+              </Tooltip>
+            )}
+            {isSearch ? (
+              <Space size={16}>
+                <CustomSelect
+                  placeholder={t('search_for_transaction_name_or_number')}
+                  getPopupContainer={(node: any) => node}
+                  style={{ width: 184 }}
+                  onSearch={onSearch}
+                  options={searchValue ? selectList : recentList}
+                  showSearch
+                  showArrow
+                  optionFilterProp="label"
+                  onChange={onChangeSelect}
+                  allowClear
+                  autoFocus
                 />
-              </CloseWrap>
-            </Tooltip>
-          )}
-          {isSearch ? (
-            <Space size={16}>
-              <CustomSelect
-                placeholder={t('search_for_transaction_name_or_number')}
-                getPopupContainer={(node: any) => node}
-                style={{ width: 184 }}
-                onSearch={onSearch}
-                options={searchValue ? selectList : recentList}
-                showSearch
-                showArrow
-                optionFilterProp="label"
-                onChange={onChangeSelect}
-                allowClear
-                autoFocus
-              />
-              <CancelText onClick={onCancelSearch}>
-                {t('common.cancel')}
-              </CancelText>
-            </Space>
-          ) : null}
-          {!isEnd && (
-            <Tooltip title={t('addChildRequirement')}>
-              <CloseWrap width={32} height={32}>
-                <CommonIconFont
-                  type="plus"
-                  size={20}
-                  color="var(--neutral-n2)"
-                  onClick={onCreateChild}
-                />
-              </CloseWrap>
-            </Tooltip>
-          )}
-        </Space>
+                <CancelText onClick={onCancelSearch}>
+                  {t('common.cancel')}
+                </CancelText>
+              </Space>
+            ) : null}
+            {!isEnd && (
+              <Tooltip title={t('addChildRequirement')}>
+                <CloseWrap width={32} height={32}>
+                  <CommonIconFont
+                    type="plus"
+                    size={20}
+                    color="var(--neutral-n2)"
+                    onClick={onCreateChild}
+                  />
+                </CloseWrap>
+              </Tooltip>
+            )}
+          </Space>
+        )}
       </LabelWrap>
       <DetailsChildProgress details={props.detail}></DetailsChildProgress>
       {dataList?.list?.length > 0 ? (

@@ -124,7 +124,8 @@ interface ScheduleRecordProps {
   // 全屏详情需要高度滚动
   height?: any
   noBorder?: boolean
-  isBug: boolean
+  isBug?: boolean
+  isPreview?: boolean
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
@@ -137,7 +138,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
   const [visible, setVisible] = useState(false)
   const [editData, setEditData] = useState<any>(null)
   const { userInfo } = useSelector(store => store.user)
-  const projectInfo = useSelector(state => state.project.projectInfo)
+  const { projectInfo, updateProgress } = useSelector(state => state.project)
 
   // 获取进度日志列表数据
   const getScheduleLogData = async (pageNumber?: number) => {
@@ -154,10 +155,14 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
   }
 
   useEffect(() => {
-    if ((props.detailId && props.projectId) || props.isOpen) {
+    if (
+      (props.detailId && props.projectId) ||
+      props.isOpen ||
+      (props.detailId && props.projectId && updateProgress !== 0)
+    ) {
       getScheduleLogData()
     }
-  }, [props.detailId, props.projectId, props.isOpen])
+  }, [props.detailId, props.projectId, props.isOpen, updateProgress])
 
   const conform = async (value: string) => {
     let result = null
@@ -171,7 +176,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
         })
       }
 
-      if (projectInfo.projectType === 1 && !props.isBug) {
+      if (projectInfo.projectType === 1 && !props?.isBug) {
         result = await updateStoryPerception({
           project_id: props?.projectId,
           story_id: props?.detailId,
@@ -179,7 +184,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
           perception: value,
         })
       }
-      if (projectInfo.projectType === 1 && props.isBug) {
+      if (projectInfo.projectType === 1 && props?.isBug) {
         result = await updateFlawPerception({
           project_id: props?.projectId,
           story_id: props?.detailId,
@@ -192,7 +197,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
         getScheduleLogData()
       }
     } catch (error) {
-      console.log(error)
+      //
     }
   }
 
@@ -225,7 +230,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
                       <CommonIconFont type="swap-right" /> {i.after_schedule}%
                     </span>
                   </div>
-                  {userInfo?.id === i?.userInfo?.id && (
+                  {userInfo?.id === i?.userInfo?.id && !props?.isPreview && (
                     <div className="icons">
                       <CommonIconFont
                         type="edit"

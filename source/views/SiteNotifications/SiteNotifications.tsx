@@ -36,7 +36,7 @@ import { css } from '@emotion/css'
 const mcs = css`
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3; // 显示2行
+  -webkit-line-clamp: 2; // 显示2行
   -webkit-box-orient: vertical;
   word-break: break-all;
 `

@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 /* eslint-disable max-params */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
@@ -34,6 +35,7 @@ export const formatFileSize = (val: number) => {
 }
 
 const getCosSign = async (): Promise<any> => {
+  console.log(11111)
   const response = await http.post<any, any>('getCosSign', {
     accessToken: import.meta.env.__COS_SIGN_ACCESS_TOKEN__,
     app_id: import.meta.env.__COS_SIGN_APP_ID__,
@@ -48,15 +50,18 @@ const getCosSign = async (): Promise<any> => {
     location.reload()
     throw new Error(response.msg)
   }
-
+  console.log(response, 'responseresponseresponse')
   return response
+  // const response = await http.get<any, any>('getCosSign')
+  // return response.data?.info
 }
 
 export const cos = new COS({
   FileParallelLimit: 10,
   ChunkParallelLimit: 10,
-  getAuthorization: async (options: unknown, callback: any) => {
+  getAuthorization: async (options: any, callback: any) => {
     const response = await getCosSign()
+    // const response = window.cosInfo
 
     callback({
       TmpSecretId: response.data.credentials.tmpSecretId,
@@ -85,6 +90,9 @@ export const uploadFile = (
   let id = ''
   let files: any = ''
   return new Promise<any>((resolve, reject) => {
+    // async
+    // const response: any = await getCosSign()
+    // window.cosInfo = response
     cos.uploadFile({
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
@@ -149,6 +157,8 @@ export const uploadFileToKey = (
   fileName?: any,
   onEnd?: (data: { key: string; url: string }) => void,
 ) => {
+  // const response: any = await getCosSign()
+  // window.cosInfo = response
   const key = `${
     import.meta.env.__COS_PREFIX__
   }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`
@@ -186,7 +196,9 @@ export const uploadFileByTask = (
   space: string,
   fileName?: any,
 ) => {
-  return new Promise<Models.Files.File>((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
+    // const response: any = await getCosSign()
+    // window.cosInfo = response
     cos.uploadFile({
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,

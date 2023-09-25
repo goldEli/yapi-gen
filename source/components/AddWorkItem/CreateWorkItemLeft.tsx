@@ -154,8 +154,6 @@ const CreateDemandLeft = (props: Props) => {
       })
       return
     }
-
-    console.log(3333333333)
     await form.validateFields()
     const values = form.getFieldsValue()
 
@@ -716,7 +714,7 @@ const CreateDemandLeft = (props: Props) => {
       <Form layout="vertical" form={form} disabled={!isCreateDemand}>
         <div style={{ display: 'flex' }}>
           <Form.Item
-            label={<Label>{t('selectItem')}</Label>}
+            label={<Label b>{t('selectItem')}</Label>}
             name="projectId"
             style={{ marginRight: 24, width: '50%' }}
             rules={[{ required: true, message: '' }]}
@@ -748,7 +746,7 @@ const CreateDemandLeft = (props: Props) => {
             </CustomSelect>
           </Form.Item>
           <Form.Item
-            label={<Label>{t('category')}</Label>}
+            label={<Label b>{t('category')}</Label>}
             name="requiredCategory"
             style={{ width: '50%' }}
             rules={[{ required: true, message: '' }]}
@@ -776,7 +774,7 @@ const CreateDemandLeft = (props: Props) => {
           </Form.Item>
         </div>
         <Form.Item
-          label={<Label>{t('common.title')}</Label>}
+          label={<Label b>{t('common.title')}</Label>}
           name="name"
           rules={[
             { required: true, message: t('pleaseEnterContent') },
@@ -790,7 +788,7 @@ const CreateDemandLeft = (props: Props) => {
             autoFocus
           />
         </Form.Item>
-        <Form.Item label={<Label>{t('mine.demandInfo')}</Label>} name="info">
+        <Form.Item label={<Label b>{t('mine.demandInfo')}</Label>} name="info">
           <Editor
             maxHeight="550px"
             minHeight="250px"
@@ -815,7 +813,7 @@ const CreateDemandLeft = (props: Props) => {
                   ? 'b/story/save'
                   : 'b/transaction/save'),
             )?.length > 0) && (
-            <Form.Item name="tagIds" label={<Label>{t('common.tag')}</Label>}>
+            <Form.Item name="tagIds" label={<Label b>{t('common.tag')}</Label>}>
               {/* 需判断是冲刺还是迭代 */}
               <DemandTag
                 defaultList={tagCheckedList}
@@ -843,7 +841,7 @@ const CreateDemandLeft = (props: Props) => {
                     width: '100%',
                   }}
                 >
-                  <Label>{t('common.attachment')}</Label>
+                  <Label b>{t('common.attachment')}</Label>
                   <Tooltip placement="top" title={t('p2.addAdjunct')}>
                     <CloseWrap
                       style={{ marginLeft: 'auto' }}

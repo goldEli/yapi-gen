@@ -66,7 +66,13 @@ const CommonProgress = (props: ProgressProps) => {
 
   return (
     <>
-      <CommonProgressWrap>
+      <CommonProgressWrap
+        style={{
+          padding: '0px 24px 0px 0px',
+          // backgroundColor: 'white',
+          // borderBottom: '1px solid #EBECED',
+        }}
+      >
         <Dropdown
           onOpenChange={(open: boolean) => setCommonProgressVisible(open)}
           overlayClassName="progressDropdownBox_yang"

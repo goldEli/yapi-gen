@@ -85,18 +85,23 @@ const FlawInfo = () => {
       setFocus(false)
     }
   }
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   return (
-    <FlawInfoWrap>
+    <FlawInfoWrap
+      all={userPreferenceConfig.previewModel === 3}
+      h={userPreferenceConfig.previewModel === 3}
+    >
       <FlawInfoLeft
         style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
       >
         <FlawDetail flawInfo={flawInfo as Model.Flaw.FlawInfo} isInfoPage />
         {flawInfo.id && (
-          <FlawInfoInfoItem>
-            <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
-            <FlawStatus pid={projectInfo.id} sid={flawInfo.id} />
-          </FlawInfoInfoItem>
+          <div style={{ margin: '16px', background: '#f5f5f7' }}>
+            <FlawInfoInfoItem>
+              <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
+              <FlawStatus pid={projectInfo.id} sid={flawInfo.id} />
+            </FlawInfoInfoItem>
+          </div>
         )}
         {flawInfo?.isExamine && (
           <div className="review">
@@ -132,7 +137,7 @@ const FlawInfo = () => {
         {activeTabs === 2 && (
           <FlawComment isOpen={activeTabs === 2} detail={flawInfo} isOpenInfo />
         )}
-        <BasicFooter>
+        <BasicFooter style={{ width: '94%' }}>
           <div className="textBox">
             <div>
               {t('created')}

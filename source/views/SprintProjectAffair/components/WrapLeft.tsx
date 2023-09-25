@@ -358,6 +358,7 @@ const TreeItem = (props: any) => {
 const WrapLeft = (props: any, ref: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
   const projectId = paramsData.id
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
@@ -378,12 +379,15 @@ const WrapLeft = (props: any, ref: any) => {
     return resultData || []
   }
 
-  // isUpdateProjectInfoValues：是否需要更新项目下拉数据
-  const init = async (isUpdateProjectInfoValues?: boolean) => {
-    setShow(false)
+  // isUpdateProjectInfoValues：是否需要更新项目下拉数据 isInit：是否是初始化
+  const init = async (
+    isUpdateProjectInfoValues?: boolean,
+    isInit?: boolean,
+  ) => {
+    if (isInit) setShow(false)
     const res = await getTreeList({ id: props.projectId })
     setTreeData(filterTreeData(res))
-    setShow(true)
+    if (isInit) setShow(true)
     // 更新项目成员下拉
     if (isUpdateProjectInfoValues) {
       const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
@@ -490,7 +494,7 @@ const WrapLeft = (props: any, ref: any) => {
 
   useEffect(() => {
     if (props.isShowLeft) {
-      init()
+      init(false, true)
     }
   }, [props.isShowLeft, projectId])
 
@@ -499,7 +503,11 @@ const WrapLeft = (props: any, ref: any) => {
       init,
     }
   })
-
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      init(false, true)
+    }
+  }, [isUpdateAddWorkItem])
   if (props.isShowLeft) {
     return (
       <DragMoveContainer

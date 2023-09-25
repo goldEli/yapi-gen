@@ -68,7 +68,6 @@ const MemberGroup = (props: any) => {
       name: data.name as string,
       user_ids: projectGroup.map((item: { id: any }) => item.id),
     }
-    console.log(params)
     onOk(params)
   }
   useEffect(() => {

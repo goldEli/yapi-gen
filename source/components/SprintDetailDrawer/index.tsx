@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable max-lines */
-import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import {
   setAffairsCommentList,
@@ -16,16 +15,13 @@ import {
   Tabs,
   Tooltip,
 } from 'antd'
-import { CloseWrap, DragLine, MouseDom, ConfigWrap } from '../StyleCommon'
+import { DragLine, MouseDom, ConfigWrap } from '../StyleCommon'
 import {
   Header,
-  BackIcon,
   ChangeIconGroup,
   Content,
   DemandName,
   SkeletonStatus,
-  UpWrap,
-  DownWrap,
   DropdownMenu,
   DetailFooter,
   TargetWrap,
@@ -40,6 +36,7 @@ import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { getMessage } from '../Message'
 import DetailsSkeleton from '../DetailsSkeleton'
+import { toggleStar } from '@/services/employeeProfile'
 import {
   addAffairsComment,
   deleteAffairs,
@@ -52,6 +49,7 @@ import {
 import { getProjectInfo } from '@/services/project'
 import {
   setAddWorkItemModal,
+  setDrawerInfo,
   setIsUpdateAddWorkItem,
   setProjectInfo,
 } from '@store/project'
@@ -68,13 +66,11 @@ import {
   detailTimeFormat,
   getIdsForAt,
   removeNull,
-  getParamsData,
   getIsPermission,
-  getProjectIdByUrl,
 } from '@/tools'
 import CommentFooter from '../CommonComment/CommentFooter'
 import LongStroyBread from '../LongStroyBread'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '../CopyIcon'
 import DeleteConfirm from '../DeleteConfirm'
@@ -86,10 +82,11 @@ import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint
 import DrawerTopInfo from '../DrawerTopInfo'
 import CommonProgress from '../CommonProgress'
 import SprintTag from '../TagComponent/SprintTag'
-let timer: NodeJS.Timeout
+import { setTaskDrawerUpdate } from '@store/employeeProfile'
+import LeftIcontButton from '../LeftIcontButton'
+
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
-
   const [t] = useTranslation()
   const leftWidth = 960
   const dispatch = useDispatch()
@@ -101,7 +98,6 @@ const SprintDetailDrawer = () => {
   const spanDom = useRef<HTMLSpanElement>(null)
   const commentDom: any = createRef()
   const [focus, setFocus] = useState(false)
-  const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const [isVisible, setIsVisible] = useState(false)
@@ -111,13 +107,11 @@ const SprintDetailDrawer = () => {
   const { affairsDetailDrawer, affairsCommentList } = useSelector(
     store => store.affairs,
   )
-  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
-    store => store.project,
-  )
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem, drawerInfo } =
+    useSelector(store => store.project)
 
   const { userInfo } = useSelector(store => store.user)
   const { fullScreen } = useSelector(store => store.kanBan)
-  const isTabClick = useRef<string>('')
 
   // 快捷按钮列表
   const projectIdRef = useRef('')
@@ -229,7 +223,7 @@ const SprintDetailDrawer = () => {
   }
 
   // 获取事务详情
-  const getSprintDetail = async (id?: any, ids?: any) => {
+  const getSprintDetail = async (isInit?: any, ids?: any) => {
     const paramsProjectId =
       affairsDetailDrawer.params.project_id ??
       affairsDetailDrawer.params.projectId ??
@@ -238,17 +232,24 @@ const SprintDetailDrawer = () => {
     if (paramsProjectId) {
       projectIdRef.current = paramsProjectId
     }
-    if (affairsDetailDrawer.params?.isAllProject) {
+    // 如果是从员工概况过来的或者是我的-所有项目过来，则调用项目信息接口
+    if (
+      affairsDetailDrawer.params?.isAllProject ||
+      affairsDetailDrawer?.isPreview
+    ) {
       getProjectData()
     }
-    setDrawerInfo({})
-    setSkeletonLoading(true)
+    if (isInit) {
+      setSkeletonLoading(true)
+    }
     const info = await getAffairsInfo({
       projectId: paramsProjectId,
-      sprintId: id ? id : affairsDetailDrawer.params?.id,
+      sprintId: affairsDetailDrawer.params?.id,
     })
-    setDrawerInfo(info)
-    setSkeletonLoading(false)
+    dispatch(setDrawerInfo(info))
+    if (isInit) {
+      setSkeletonLoading(false)
+    }
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
     // 获取评论列表
@@ -390,10 +391,12 @@ const SprintDetailDrawer = () => {
       })
       getMessage({ type: 'success', msg: t('successfullyModified') })
       // 提交名称
-      setDrawerInfo({
-        ...drawerInfo,
-        name: value,
-      })
+      dispatch(
+        setDrawerInfo({
+          ...drawerInfo,
+          name: value,
+        }),
+      )
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
   }
@@ -519,8 +522,6 @@ const SprintDetailDrawer = () => {
   }
   // 操作后更新列表
   const onOperationUpdate = async (value?: boolean) => {
-    getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
-    isTabClick.current = tabActive
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -582,9 +583,6 @@ const SprintDetailDrawer = () => {
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    if (isTabClick.current) {
-      return
-    }
     if (!document.querySelector('#contentDom')) {
       return
     }
@@ -605,9 +603,12 @@ const SprintDetailDrawer = () => {
 
   useEffect(() => {
     if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
+      if (affairsDetailDrawer?.isPreview) {
+        dispatch(setProjectInfo({}))
+      }
       dispatch(setAffairsCommentList({ list: [] }))
       setDemandIds(affairsDetailDrawer.params?.demandIds || [])
-      getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
+      getSprintDetail(true, affairsDetailDrawer.params?.demandIds || [])
     }
   }, [affairsDetailDrawer])
 
@@ -617,13 +618,6 @@ const SprintDetailDrawer = () => {
       setDemandIds([])
       if (affairsDetailDrawer.visible) {
         getSprintDetail('', [])
-        if (isTabClick.current) {
-          clearTimeout(timer)
-          timer = setTimeout(() => {
-            onChangeTabs(isTabClick.current)
-            isTabClick.current = ''
-          }, 3000)
-        }
       }
     }
   }, [isUpdateAddWorkItem])
@@ -708,13 +702,19 @@ const SprintDetailDrawer = () => {
         </MouseDom>
         <Header>
           <Space size={16}>
-            <BackIcon onClick={onCancel}>
+            <LeftIcontButton
+              danger
+              onClick={onCancel}
+              icon="close"
+              text={t('closure')}
+            />
+            {/* <BackIcon onClick={onCancel}>
               <CommonIconFont
                 type="right-02"
                 size={20}
                 color="var(--neutral-n2)"
               />
-            </BackIcon>
+            </BackIcon> */}
             {skeletonLoading && (
               <SkeletonStatus>
                 <Skeleton.Input active />
@@ -722,80 +722,103 @@ const SprintDetailDrawer = () => {
             )}
           </Space>
           <Space size={16}>
-            <ChangeIconGroup>
-              {currentIndex > 0 && (
-                <Tooltip title={t('previous')}>
-                  <UpWrap
-                    onClick={onUpDemand}
-                    id="upIcon"
-                    isOnly={
-                      demandIds?.length === 0 ||
-                      currentIndex === demandIds?.length - 1
-                    }
-                  >
-                    <CommonIconFont
-                      type="up"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
+            {!affairsDetailDrawer.star && (
+              <>
+                <ChangeIconGroup>
+                  {currentIndex > 0 && (
+                    <LeftIcontButton
+                      onClick={onUpDemand}
+                      icon="up-md"
+                      text={t('previous')}
                     />
-                  </UpWrap>
-                </Tooltip>
-              )}
-              {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) && (
-                <Tooltip title={t('next')}>
-                  <DownWrap
-                    onClick={onDownDemand}
-                    id="downIcon"
-                    isOnly={currentIndex <= 0}
-                  >
-                    <CommonIconFont
-                      type="down"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
+                  )}
+                  {!(
+                    demandIds?.length === 0 ||
+                    currentIndex === demandIds?.length - 1
+                  ) && (
+                    <LeftIcontButton
+                      onClick={onDownDemand}
+                      icon="down-md"
+                      text={t('next')}
                     />
-                  </DownWrap>
-                </Tooltip>
-              )}
-            </ChangeIconGroup>
-            <Tooltip title={t('share')}>
-              <div>
-                <CommonButton type="icon" icon="share" onClick={onShare} />
-              </div>
-            </Tooltip>
-            <Tooltip title={t('openDetails')}>
-              <div>
-                <CommonButton
-                  type="icon"
-                  icon="full-screen"
-                  onClick={onToDetail}
-                />
-              </div>
-            </Tooltip>
+                  )}
+                </ChangeIconGroup>
 
-            <Tooltip title={t('more')}>
-              <DropdownMenu
-                placement="bottomRight"
-                trigger={['click']}
-                menu={{
-                  items: onGetMenu(),
-                }}
-                getPopupContainer={n => n}
-              >
                 <div>
-                  <CommonButton type="icon" icon="more" />
+                  <LeftIcontButton
+                    onClick={onShare}
+                    icon="share"
+                    text={t('share')}
+                  />
                 </div>
-              </DropdownMenu>
-            </Tooltip>
+
+                <div>
+                  <LeftIcontButton
+                    onClick={onToDetail}
+                    icon="full-screen"
+                    text={t('openDetails')}
+                  />
+                </div>
+
+                <DropdownMenu
+                  placement="bottomRight"
+                  trigger={['click']}
+                  menu={{
+                    items: onGetMenu(),
+                  }}
+                  getPopupContainer={n => n}
+                >
+                  <div>
+                    <LeftIcontButton icon="more-01" text={t('more')} />
+                  </div>
+                </DropdownMenu>
+              </>
+            )}
+            {affairsDetailDrawer.star && (
+              <Tooltip title={t('starMark')}>
+                <CommonButton
+                  isStar={drawerInfo.isStar}
+                  onClick={async () => {
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getSprintDetail()
+                      dispatch(
+                        setTaskDrawerUpdate({
+                          id: affairsDetailDrawer.params.employeeCurrentId,
+                          detailId: drawerInfo.id,
+                          state: drawerInfo.isStar ? 2 : 1,
+                        }),
+                      )
+                    }
+                  }}
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
+              </Tooltip>
+            )}
           </Space>
         </Header>
-        <Content id="contentDom">
-          {skeletonLoading && <DetailsSkeleton />}
+        <Content
+          style={{ padding: '0px', backgroundColor: '#f5f5f7' }}
+          id="contentDom"
+        >
+          {skeletonLoading && (
+            <div style={{ padding: 16 }}>
+              <DetailsSkeleton />
+            </div>
+          )}
           {!skeletonLoading && (
             <>
-              <StatusAndLongWrap>
+              <StatusAndLongWrap
+                style={{
+                  backgroundColor: 'white',
+                  padding: '12px 24px',
+                  borderBottom: '1px solid #EBECED',
+                }}
+              >
                 <LongStroyBread
                   longStroy={drawerInfo}
                   layer
@@ -804,7 +827,11 @@ const SprintDetailDrawer = () => {
                   }}
                 ></LongStroyBread>
                 <ChangeStatusPopover
-                  isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                  isCanOperation={
+                    !affairsDetailDrawer.isPreview &&
+                    isCanEdit &&
+                    !drawerInfo.isExamine
+                  }
                   projectId={drawerInfo.projectId}
                   record={drawerInfo}
                   onChangeStatus={onChangeStatus}
@@ -830,81 +857,103 @@ const SprintDetailDrawer = () => {
                 </ChangeStatusPopover>
               </StatusAndLongWrap>
               {drawerInfo?.isExamine && (
-                <div style={{ marginBottom: 16 }}>
+                <div style={{ marginBottom: 4 }}>
                   <StatusExamine
                     type={2}
                     onCancel={onCancelExamine}
                     isVerify={drawerInfo?.has_verify === 1}
                     isDrawer
+                    isPreview={affairsDetailDrawer.isPreview}
                   />
                 </div>
               )}
-              <DemandName style={{ marginTop: 16 }}>
+              <DemandName
+                style={{ backgroundColor: 'white', padding: ' 12px 24px' }}
+              >
                 <span
                   className="name"
                   ref={spanDom}
-                  contentEditable
+                  contentEditable={!affairsDetailDrawer.isPreview}
                   onBlur={onNameConfirm}
                 >
                   {drawerInfo.name}
                 </span>
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <CommonProgress
-                isTable={false}
-                type="transaction"
-                id={drawerInfo?.id}
-                percent={drawerInfo?.schedule}
-                hasEdit={
-                  !hasEdit &&
-                  drawerInfo?.user
-                    ?.map((i: any) => i?.user?.id)
-                    ?.includes(userInfo?.id)
-                }
-                project_id={drawerInfo?.projectId}
-                onConfirm={onOperationUpdate}
-              />
-              <Space size={12} style={{ marginTop: 16 }}>
-                {(drawerInfo.work_type === 6
-                  ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
-                  : anchorList
-                ).map((i: { key: string; name: string }) => (
-                  <>
-                    {i.key === 'sprint-tag' && (
-                      <SprintTag
-                        defaultList={drawerInfo?.tag?.map((i: any) => ({
-                          id: i.id,
-                          color: i.tag?.color,
-                          name: i.tag?.content,
-                        }))}
-                        canAdd
-                        onUpdate={onOperationUpdate}
-                        detail={drawerInfo}
-                        isDetailQuick
-                        addWrap={
-                          <CommonButton key={i.key} type="light">
-                            {i.name}
-                          </CommonButton>
-                        }
-                      />
-                    )}
+              <div style={{ backgroundColor: 'white', padding: '0px 24px' }}>
+                <CommonProgress
+                  isTable={false}
+                  type="transaction"
+                  id={drawerInfo?.id}
+                  percent={drawerInfo?.schedule}
+                  hasEdit={
+                    !affairsDetailDrawer.isPreview &&
+                    !hasEdit &&
+                    drawerInfo?.user
+                      ?.map((i: any) => i?.user?.id)
+                      ?.includes(userInfo?.id)
+                  }
+                  project_id={drawerInfo?.projectId}
+                  onConfirm={onOperationUpdate}
+                />
+              </div>
 
-                    {i.key !== 'sprint-tag' && (
-                      <CommonButton
-                        key={i.key}
-                        type="light"
-                        onClick={() => onClickAnchorList(i)}
-                      >
-                        {i.name}
-                      </CommonButton>
-                    )}
-                  </>
-                ))}
-              </Space>
+              {!affairsDetailDrawer.isPreview && (
+                <div
+                  style={{
+                    backgroundColor: 'white',
+                    display: 'flex',
+                    gap: 12,
+                    padding: '12px 24px',
+                  }}
+                >
+                  {(drawerInfo.work_type === 6
+                    ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
+                    : anchorList
+                  ).map((i: { key: string; name: string }) => (
+                    <>
+                      {i.key === 'sprint-tag' && (
+                        <SprintTag
+                          defaultList={drawerInfo?.tag?.map((i: any) => ({
+                            id: i.id,
+                            color: i.tag?.color,
+                            name: i.tag?.content,
+                          }))}
+                          canAdd
+                          onUpdate={onOperationUpdate}
+                          detail={drawerInfo}
+                          isDetailQuick
+                          addWrap={
+                            <CommonButton key={i.key} type="secondary">
+                              {i.name}
+                            </CommonButton>
+                          }
+                        />
+                      )}
+
+                      {i.key !== 'sprint-tag' && (
+                        <CommonButton
+                          key={i.key}
+                          type="secondary"
+                          onClick={() => onClickAnchorList(i)}
+                        >
+                          {i.name}
+                        </CommonButton>
+                      )}
+                    </>
+                  ))}
+                </div>
+              )}
 
               {/* 只有标准事务类型和故障事务类型才有 */}
               {[4, 5].includes(drawerInfo.work_type) && (
-                <TargetWrap>
+                <TargetWrap
+                  style={{
+                    backgroundColor: 'white',
+                    padding: '16px 24px',
+                    margin: 0,
+                  }}
+                >
                   <span className="icon">
                     <CommonIconFont
                       type="target"
@@ -922,8 +971,10 @@ const SprintDetailDrawer = () => {
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={onOperationUpdate}
+                isPreview={affairsDetailDrawer.isPreview}
               />
               <Tabs
+                style={{ paddingTop: '25px' }}
                 className="tabs"
                 activeKey={tabActive}
                 items={
@@ -938,31 +989,59 @@ const SprintDetailDrawer = () => {
                 onRef={uploadFile}
                 affairsInfo={drawerInfo}
                 onUpdate={onOperationUpdate}
+                isPreview={affairsDetailDrawer.isPreview}
               />
-              {drawerInfo.work_type !== 6 && (
-                <ChildSprint
-                  onRef={childRef}
+              <div
+                style={{
+                  backgroundColor: '#f5f5f7',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                  padding: '0px ',
+                }}
+              >
+                {drawerInfo.work_type !== 6 && (
+                  <ChildSprint
+                    onRef={childRef}
+                    detail={drawerInfo}
+                    onUpdate={onOperationUpdate}
+                    isPreview={affairsDetailDrawer.isPreview}
+                  />
+                )}
+                <LinkSprint
+                  onRef={linkSprint}
+                  detail={drawerInfo}
+                  isPreview={affairsDetailDrawer.isPreview}
+                />
+                <BasicDemand
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
+                  isPreview={affairsDetailDrawer.isPreview}
                 />
-              )}
-              <LinkSprint onRef={linkSprint} detail={drawerInfo} />
-              <BasicDemand detail={drawerInfo} onUpdate={onOperationUpdate} />
-              <Label
-                id="sprint-comment"
-                className="info_item_tab"
-                style={{ marginTop: 16 }}
+              </div>
+              <div
+                style={{
+                  backgroundColor: 'white',
+                  padding: '16px 24px',
+                  marginTop: '12px',
+                }}
               >
-                {t('businessReview')}
-              </Label>
-              <CommonComment
-                data={affairsCommentList}
-                onDeleteConfirm={onDeleteCommentConfirm}
-                onEditComment={onEditComment}
-              />
+                <Label
+                  id="sprint-comment"
+                  className="info_item_tab"
+                  style={{ marginTop: 16 }}
+                >
+                  {t('businessReview')}
+                </Label>
+                <CommonComment
+                  data={affairsCommentList}
+                  onDeleteConfirm={onDeleteCommentConfirm}
+                  onEditComment={onEditComment}
+                />
+              </div>
             </>
           )}
-          <DetailFooter>
+          <DetailFooter style={{ padding: '0px 24px', marginTop: '12px' }}>
             <div className="textBox">
               <div>
                 {t('created')}
@@ -990,8 +1069,8 @@ const SprintDetailDrawer = () => {
           )}
           onConfirm={onConfirmComment}
           style={{
-            padding: '24px 0 24px 24px',
-            width: 'calc(100% - 24px)',
+            padding: '24px 0',
+            width: '100% ',
             height: 80,
           }}
           maxHeight="60vh"

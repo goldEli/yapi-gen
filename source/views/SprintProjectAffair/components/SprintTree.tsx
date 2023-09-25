@@ -567,7 +567,12 @@ const SprintTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 7, title: t('createTransaction') },
+        params: {
+          noDataCreate: true,
+          type: 7,
+          title: t('createTransaction'),
+          projectId,
+        },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))

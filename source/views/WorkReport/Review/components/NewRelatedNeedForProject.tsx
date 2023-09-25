@@ -87,7 +87,8 @@ const ShowListWrap = styled.div`
     &:hover .closeIcon {
       display: inline-block;
     }
-    .left {
+
+    .dotBox {
       display: inline-flex;
       align-items: center;
     }
@@ -98,10 +99,15 @@ const ShowListWrap = styled.div`
       height: 6px;
       background: var(--neutral-n2);
       border-radius: 50%;
-      margin-right: 8px;
+      margin: 8px 8px 0 0;
     }
   }
 `
+const LeftBox = styled.div<{ overdue?: boolean }>`
+  display: inline-flex;
+  align-items: flex-start;
+`
+
 const RelatedWrap = styled.div`
   .ant-select-selector {
     max-width: 626px;
@@ -178,24 +184,24 @@ const NewRelatedNeedForProject = (props: any) => {
       <ShowListWrap>
         {chooseList.map((item: any) => (
           <div key={item.key} className="li">
-            <div className="left">
-              <span className="dot" />
-              {props?.isShowOverdue && item.expected_day > 0 ? (
-                <span>
-                  [{t('report.list.overdue')}
-                  {item.expected_day}
-                  {t('report.list.day')}]
-                </span>
-              ) : null}
+            <LeftBox>
+              <div className="dotBox">
+                <span className="dot" />
+                {props?.isShowOverdue && item.expected_day > 0 ? (
+                  <span>
+                    [{t('report.list.overdue')}
+                    {item.expected_day}
+                    {t('report.list.day')}]
+                  </span>
+                ) : null}
+              </div>
               <span style={{ marginLeft: 2 }}>
                 {item.label ? item.label : '--'}
-              </span>
-              <span style={{ whiteSpace: 'nowrap' }}>
                 {`（${item.schedule_percent ? item.schedule_percent : 0}%  ${
                   item.today_task_time ?? 0
                 }h）`}
               </span>
-            </div>
+            </LeftBox>
             <IconFont
               className="closeIcon"
               style={{ color: 'var(--neutral-n3)' }}

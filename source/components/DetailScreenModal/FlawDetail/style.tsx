@@ -3,13 +3,13 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Space } from 'antd'
 
-export const Wrap = styled.div`
+export const Wrap = styled.div<{ all?: boolean }>`
   height: 100%;
   display: flex;
   padding-top: 20px;
   flex-direction: column;
   .tabs {
-    padding: 0 24px 0 0;
+    padding: 0 0px 0 0;
   }
   .ant-tabs-nav {
     padding-left: 24px;
@@ -26,7 +26,7 @@ export const Wrap = styled.div`
     color: var(--primary-d1);
   }
   .ant-tabs-content {
-    height: calc(100vh - 227px);
+    height: calc(${props => (props.all ? '80vh' : '100vh')} - 227px);
     .ant-tabs-tabpane {
       height: 100%;
     }
@@ -200,17 +200,22 @@ export const DetailTitle = styled.div`
   margin-left: 24px;
 `
 
-export const FlawInfoWrap = styled.div({
-  display: 'flex',
-  height: '100%',
-  padding: '16px 0 0px',
-})
+export const FlawInfoWrap = styled.div<{ all?: boolean; h?: boolean }>`
+  display: flex;
+  position: relative;
+  height: calc(
+    ${props => (props.all ? '80vh' : '100vh')} -
+      ${props => (props.h ? '180px' : '249px')}
+  );
+  width: 100%;
+  margin-top: 16px;
+`
 
 export const FlawInfoLeft = styled.div`
   width: 80%;
   height: 100%;
   overflow: auto;
-  padding: 0 20px 0 24px;
+  background-color: #f5f5f7;
   position: relative;
   .review {
     position: absolute;
@@ -224,20 +229,32 @@ export const FlawInfoLeft = styled.div`
 
 export const FlawInfoInfoItem = styled.div<{ activeState?: any }>({
   display: 'flex',
-  marginTop: 14,
+  // marginTop: 14,
   position: 'relative',
   flexDirection: 'column',
+  background: 'white',
+  borderRadius: '6px',
+  padding: '12px',
 })
 
-export const FlawInfoLabel = styled.div({
-  color: 'var(--neutral-n1-d1)',
-  fontSize: 14,
-  minWidth: 120,
-  height: 32,
-  lineHeight: '32px',
-  fontFamily: 'SiYuanMedium',
-})
-
+export const FlawInfoLabel = styled.div`
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
+  min-width: 120px;
+  height: 32px;
+  line-height: 32px;
+  font-family: SiYuanMedium;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
+`
 export const WrapRight = styled.div({
   width: 400,
   height: '100%',
@@ -443,6 +460,16 @@ export const Label = styled.div`
   margin-bottom: 8px;
   height: 32px;
   line-height: 32px;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
 `
 export const TextWrap = styled.div({
   width: '100%',

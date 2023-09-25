@@ -1,13 +1,11 @@
+/* eslint-disable max-lines */
 /* eslint-disable react/jsx-handler-names */
 // 全局迭代和冲刺的工作进展对比
-import CommonIconFont from '@/components/CommonIconFont'
 import HeaderAll from './HeaderAll'
 import { PersonText, TitleCss, Col, Line, TableStyle } from '../Header/Style'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Sort from '@/components/Sort'
-import Table from './Table'
-import { Spin, Tooltip } from 'antd'
+import { Spin } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
 import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
@@ -24,7 +22,7 @@ import {
   workContrastList,
 } from '@/services/efficiency'
 import { RowText } from './style'
-import { getDays, getMonthBefor } from './Date'
+import { getTimeStr, getTitleTips } from './Date'
 import ExportSuccess from '@/components/ExportSuccess'
 import { getMessage } from '@/components/Message'
 import { useSearchParams } from 'react-router-dom'
@@ -33,30 +31,22 @@ import { copyView } from '@/services/kanban'
 import { setListActiveId } from '@store/global'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from '@/components/NoData'
+import ResizeTable from '@/components/ResizeTable'
+import Sort from '@/components/Sort'
+import PaginationBox from '@/components/TablePagination'
 
-// 进展对比tips
-const getTitleTips = (text: string, tips: string, position?: string) => {
-  return (
-    <div style={{ display: 'flex', cursor: 'pointer' }}>
-      {text}
-      <Tooltip
-        title={tips}
-        placement={position === 'right' ? 'topRight' : 'top'}
-        trigger="click"
-      >
-        <div
-          style={{
-            width: '45px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <CommonIconFont type="question" size={16} />
-        </div>
-      </Tooltip>
-    </div>
-  )
+interface Props {
+  // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局 //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
+  type: string
+  title: string
+  viewType: number
+  // 代表是全局还是冲刺迭代
+  homeType: string
+  headerParmas: Models.Efficiency.HeaderParmas
+  // projectDataList: Array<{ name: string; id: number }>
+  projectId: number | string
+  onUpdateOrderKey(item: any): void
+  order: any
 }
 const NewSort = (sortProps: any) => {
   return (
@@ -66,21 +56,11 @@ const NewSort = (sortProps: any) => {
       nowKey={sortProps.nowKey}
       order={sortProps.order === 'asc' ? 1 : 2}
     >
-      {sortProps.title}
+      {sortProps.children}
     </Sort>
   )
 }
-interface Props {
-  // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局 //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
-  type: string
-  title: string
-  viewType: number
-  //代表是全局还是冲刺迭代
-  homeType: string
-  headerParmas: Models.Efficiency.HeaderParmas
-  // projectDataList: Array<{ name: string; id: number }>
-  projectId: number | string
-}
+
 const ProgressComparison = (props: Props) => {
   const dispatch = useDispatch()
   const [columns, setColumns] = useState<
@@ -89,10 +69,6 @@ const ProgressComparison = (props: Props) => {
       dataIndex: string
     }>
   >([])
-  const [order, setOrder] = useState<{ value: string; key: string }>({
-    value: '',
-    key: '',
-  })
   const [work, setWork] = useState<Array<Model.Sprint.WorkListItem>>([])
   const [tableList, setTableList] = useState<
     Array<Model.Sprint.WorkDataListItem>
@@ -113,9 +89,6 @@ const ProgressComparison = (props: Props) => {
     store => store.performanceInsight,
   )
   const isRefresh = useSelector(store => store.user.isRefresh)
-  const [total, setTotal] = useState(0)
-  const [pageNum, setPageNum] = useState(1)
-  const [pageSize, setPageSize] = useState(50)
   const [selectProjectIds, setSelectProjectIds] = useState<any>(
     props.headerParmas?.projectIds,
   )
@@ -129,15 +102,34 @@ const ProgressComparison = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [loading, setLoading] = useState(false)
+  const [extra, setExtra] = useState<any>({})
   const [t] = useTranslation()
+  const [pageObj, setPageObj] = useState<any>({
+    size: 10,
+    page: 1,
+  })
+
   const onUpdateOrderKey = (key: any, val: any) => {
-    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
-    // props.type === 'Progress_iteration' ||
-    //   props.type === 'Progress_sprint' ||
-    //   props.type === 'Progress_all'
-    //   ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
-    //   : getMemberBugList(selectProjectIds, { pageNum, pageSize })
+    props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
+    props.type === 'Progress_iteration' ||
+    props.type === 'Progress_sprint' ||
+    props.type === 'Progress_all'
+      ? getWorkContrastList(
+          extra?.project_ids ? [extra?.project_ids] : [],
+          extra,
+          {
+            orderkey: key,
+            order: val === 2 ? 'desc' : 'asc',
+          },
+        )
+      : getMemberBugList(
+          extra?.project_ids ? [extra?.project_ids] : [],
+          extra,
+          {
+            orderkey: key,
+            order: val === 2 ? 'desc' : 'asc',
+          },
+        )
   }
 
   // 根据id查视图
@@ -188,14 +180,32 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: t('performance.completionRate'),
+        title: (
+          <NewSort
+            fixedKey="completion_rate"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.completionRate')}
+          </NewSort>
+        ),
         render: (text: string) => {
           return <span>{text}%</span>
         },
       },
       {
         dataIndex: 'new',
-        title: t('performance.addWorkItem'),
+        title: (
+          <NewSort
+            fixedKey="new"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.addWorkItem')}
+          </NewSort>
+        ),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'new')}>
@@ -205,7 +215,16 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.completedWorkItem'),
+        title: (
+          <NewSort
+            fixedKey="completed"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.completedWorkItem')}
+          </NewSort>
+        ),
         dataIndex: 'completed',
         render: (text: string, record: any) => {
           return (
@@ -216,7 +235,16 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.workItemInventory'),
+        title: (
+          <NewSort
+            fixedKey="work_stock"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.workItemInventory')}
+          </NewSort>
+        ),
         dataIndex: 'work_stock',
         render: (text: string, record: any) => {
           return (
@@ -232,9 +260,18 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'repeat_rate',
-        title: getTitleTips(
-          t('performance.workRepetitionRate'),
-          t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+        title: (
+          <NewSort
+            fixedKey="repeat_rate"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {getTitleTips(
+              t('performance.workRepetitionRate'),
+              t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+            )}
+          </NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -246,10 +283,19 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'risk',
-        title: getTitleTips(
-          t('performance.stockRisk'),
-          t('performance.workItemsNotCompletedForMoreThanDays'),
-          'right',
+        title: (
+          <NewSort
+            fixedKey="risk"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {getTitleTips(
+              t('performance.stockRisk'),
+              t('performance.workItemsNotCompletedForMoreThanDays'),
+              'right',
+            )}
+          </NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -260,7 +306,7 @@ const ProgressComparison = (props: Props) => {
         },
       },
     ]
-    //进展工作对比全局的
+    // 进展工作对比全局的
     const columns2 = [
       {
         dataIndex: 'userName',
@@ -294,14 +340,32 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: t('performance.currentCompletionRate'),
+        title: (
+          <NewSort
+            fixedKey="completion_rate"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.currentCompletionRate')}
+          </NewSort>
+        ),
         render: (text: string) => {
           return <span>{text}%</span>
         },
       },
       {
         dataIndex: 'new',
-        title: t('performance.currentlyNewWorkItem'),
+        title: (
+          <NewSort
+            fixedKey="new"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.currentlyNewWorkItem')}
+          </NewSort>
+        ),
         render: (text: string, record: any) => {
           return (
             <RowText onClick={e => openDetail(e, record, 'new')}>
@@ -311,7 +375,16 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.currentlyCompletedWorkItems'),
+        title: (
+          <NewSort
+            fixedKey="completed"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.currentlyCompletedWorkItems')}
+          </NewSort>
+        ),
         dataIndex: 'completed',
         render: (text: string, record: any) => {
           return (
@@ -322,7 +395,16 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.totalWorkItemInventory'),
+        title: (
+          <NewSort
+            fixedKey="work_stock"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.totalWorkItemInventory')}
+          </NewSort>
+        ),
         dataIndex: 'work_stock',
         render: (text: string, record: any) => {
           return (
@@ -338,9 +420,18 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'repeat_rate',
-        title: getTitleTips(
-          t('performance.totalJobRepetitionRate'),
-          t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+        title: (
+          <NewSort
+            fixedKey="repeat_rate"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {getTitleTips(
+              t('performance.totalJobRepetitionRate'),
+              t('performance.numberOfFailedApprovalsTotalNumberOfApprovals'),
+            )}
+          </NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -352,10 +443,19 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'risk',
-        title: getTitleTips(
-          t('performance.stockRisk'),
-          t('performance.workItemsNotCompletedForMoreThanDays'),
-          'right',
+        title: (
+          <NewSort
+            fixedKey="risk"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {getTitleTips(
+              t('performance.stockRisk'),
+              t('performance.workItemsNotCompletedForMoreThanDays'),
+              'right',
+            )}
+          </NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -392,15 +492,7 @@ const ProgressComparison = (props: Props) => {
         dataIndex: 'departmentName',
       },
       {
-        title: (
-          <NewSort
-            fixedKey="positionName"
-            nowKey={order.key}
-            order={order.value}
-            title={t('performance.position')}
-            onUpdateOrderKey={onUpdateOrderKey}
-          ></NewSort>
-        ),
+        title: t('performance.position'),
         dataIndex: 'positionName',
         render: (text: string) => {
           return <RowText>{text ? text : '--'}</RowText>
@@ -408,16 +500,34 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'completion_rate',
-        title: getTitleTips(
-          t('performance.defectRepairRate'),
-          t('performance.defectsRepairedInTheCurrentDefectsInThe'),
+        title: (
+          <NewSort
+            fixedKey="completion_rate"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {getTitleTips(
+              t('performance.defectRepairRate'),
+              t('performance.defectsRepairedInTheCurrentDefectsInThe'),
+            )}
+          </NewSort>
         ),
-        render: (text: string, record: any) => {
+        render: (text: string) => {
           return <span>{text}%</span>
         },
       },
       {
-        title: t('performance.toBeFixed'),
+        title: (
+          <NewSort
+            fixedKey="not_fixed"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.toBeFixed')}
+          </NewSort>
+        ),
         dataIndex: 'not_fixed',
         render: (text: string, record: any) => {
           return (
@@ -428,7 +538,16 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.repairing'),
+        title: (
+          <NewSort
+            fixedKey="fixing"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.repairing')}
+          </NewSort>
+        ),
         dataIndex: 'fixing',
         render: (text: string, record: any) => {
           return (
@@ -439,7 +558,16 @@ const ProgressComparison = (props: Props) => {
         },
       },
       {
-        title: t('performance.completed'),
+        title: (
+          <NewSort
+            fixedKey="fixed"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.completed')}
+          </NewSort>
+        ),
         dataIndex: 'fixed',
         render: (text: string, record: any) => {
           return (
@@ -451,15 +579,33 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'repeat_open',
-        title: t('performance.bugReopening'),
-        render: (text: string, record: any) => {
+        title: (
+          <NewSort
+            fixedKey="repeat_open"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {t('performance.bugReopening')}
+          </NewSort>
+        ),
+        render: (text: string) => {
           return <RowText>{text}</RowText>
         },
       },
       {
-        title: getTitleTips(
-          t('performance.defectRate'),
-          t('performance.defectsReopenedInTheCurrentDefectsInTheCurrent'),
+        title: (
+          <NewSort
+            fixedKey="repeat_open_rate"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {getTitleTips(
+              t('performance.defectRate'),
+              t('performance.defectsReopenedInTheCurrentDefectsInTheCurrent'),
+            )}
+          </NewSort>
         ),
         dataIndex: 'repeat_open_rate',
         render: (text: string, record: any) => {
@@ -472,10 +618,19 @@ const ProgressComparison = (props: Props) => {
       },
       {
         dataIndex: 'risk_stock_count',
-        title: getTitleTips(
-          t('performance.riskStockRisk'),
-          t('performance.defectsNotFixedInTheCurrentPeriod'),
-          'right',
+        title: (
+          <NewSort
+            fixedKey="risk_stock_count"
+            nowKey={props.order.key}
+            order={props.order.value}
+            onUpdateOrderKey={onUpdateOrderKey}
+          >
+            {getTitleTips(
+              t('performance.riskStockRisk'),
+              t('performance.defectsNotFixedInTheCurrentPeriod'),
+              'right',
+            )}
+          </NewSort>
         ),
         render: (text: string, record: any) => {
           return (
@@ -487,7 +642,7 @@ const ProgressComparison = (props: Props) => {
       },
     ]
     // 进展对比 Progress_iteration-迭代 Progress_sprint 冲刺 Progress_all 全局
-    //缺陷 Defect_iteration-迭代 Defect_iteration 冲刺 Defect_all 全局
+    // 缺陷 Defect_iteration-迭代 Defect_iteration 冲刺 Defect_all 全局
     switch (props.type) {
       case 'Progress_iteration':
         setColumns(columns1)
@@ -508,57 +663,28 @@ const ProgressComparison = (props: Props) => {
         setColumns(columns3)
         break
     }
-  }, [props.type, selectProjectIds, isRefresh])
+  }, [props.type, selectProjectIds, isRefresh, props.order])
   useEffect(() => {
     onSearchData(props.headerParmas?.projectIds || [])
   }, [isRefresh])
   // 数据明细和进展对比查询数据的
-  const onSearchData = (value: number[]) => {
-    setSelectProjectIds(value)
+  const onSearchData = (extras?: any) => {
+    if (Array.isArray(extras)) {
+      return
+    }
+    setExtra(extras)
+    setSelectProjectIds(extras?.project_ids ?? [])
     // 进展对比
     if (props.type.includes('Progress')) {
       setLoading(true)
-      getWorkContrastList(value)
+      getWorkContrastList(
+        extras?.project_ids ? [extras?.project_ids] : [],
+        extras,
+      )
     } else {
       // 缺陷分析
       setLoading(true)
-      getMemberBugList(value)
-    }
-  }
-  // 获取时间
-  const getTime = (time: { type: number; time: any }) => {
-    switch (time.type) {
-      case 1:
-        return getMonthBefor(1)
-      case 3:
-        return getMonthBefor(3)
-      case 6:
-        return getMonthBefor(6)
-      case 14:
-        return getDays(14)
-      case 28:
-        return getDays(28)
-      default:
-        return {
-          startTime: time?.time?.[0],
-          endTime: time?.time?.[1],
-        }
-    }
-  }
-  const getTimeStr = (time: { type: number; time: any }) => {
-    switch (time.type) {
-      case 1:
-        return 'one_month'
-      case 3:
-        return 'three_month'
-      case 6:
-        return 'six_month'
-      case 14:
-        return 'two_week'
-      case 28:
-        return 'four_week'
-      default:
-        return ''
+      getMemberBugList(extras?.project_ids ? [extras?.project_ids] : [], extras)
     }
   }
   // 导出
@@ -574,7 +700,7 @@ const ProgressComparison = (props: Props) => {
       ) {
         result = await getExport({
           project_ids:
-            option?.length >= 1 ? option?.join(',') : props.projectId + '',
+            option?.length >= 1 ? option?.join(',') : String(props.projectId),
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -594,7 +720,7 @@ const ProgressComparison = (props: Props) => {
       ) {
         result = await defectExport({
           project_ids:
-            option?.length >= 1 ? option?.join(',') : props.projectId + '',
+            option?.length >= 1 ? option?.join(',') : String(props.projectId),
           user_ids: props?.headerParmas?.users?.join(','),
           period_time: getTimeStr(props.headerParmas?.time)
             ? getTimeStr(props.headerParmas?.time)
@@ -628,55 +754,69 @@ const ProgressComparison = (props: Props) => {
     }
   }
   // 工作进展对比大的列表
-  const getWorkContrastList = async (value: number[], page?: any) => {
-    const time = props.headerParmas?.time && getTime(props.headerParmas?.time)
+  const getWorkContrastList = async (
+    value: number[],
+    extras?: any,
+    sort?: any,
+  ) => {
     const res = await workContrastList({
       project_ids:
         value?.length >= 1 || props.headerParmas?.projectIds?.length
           ? value?.length >= 1
             ? value?.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
-          : props.projectId + '',
+          : String(props.projectId),
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
-      user_ids: props.headerParmas.users?.join(','),
-      period_time: getTimeStr(props.headerParmas?.time),
-      start_time: getTimeStr(props.headerParmas?.time) ? '' : time.startTime,
-      end_time: getTimeStr(props.headerParmas?.time) ? '' : time.endTime,
-      page: page?.pageNum || pageNum,
-      pagesize: page?.pageSize || pageSize,
+      user_ids: extras?.user_ids?.join(','),
+      period_time: getTimeStr({
+        type: extras?.period_time,
+        time: extras?.time,
+      }),
+      start_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
+        ? ''
+        : extras?.time?.[0],
+      end_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
+        ? ''
+        : extras?.time?.[1],
+      ...(sort || {}),
     })
     setWork(res.work)
     setTableList(res.list)
-    setTotal(res.pager.total)
     setIds(res.list.map(el => el.id))
     setLoading(false)
   }
 
   // 缺陷分析大的列表
-  const getMemberBugList = async (value: number[], page?: any) => {
-    const time = getTime(props.headerParmas.time)
+  const getMemberBugList = async (
+    value: number[],
+    extras?: any,
+    sort?: any,
+  ) => {
     const res = await memberBugList({
       project_ids:
         value.length >= 1 || props.headerParmas?.projectIds?.length
           ? value.length >= 1
             ? value.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
-          : props.projectId + '',
+          : String(props.projectId),
       iterate_ids: props.headerParmas.iterate_ids?.length
         ? props.headerParmas.iterate_ids?.join(',')
         : '',
-      user_ids: props.headerParmas.users?.length
-        ? props.headerParmas.users?.join(',')
-        : '',
-      period_time: getTimeStr(props.headerParmas?.time),
-      start_time: getTimeStr(props.headerParmas?.time) ? '' : time.startTime,
-      end_time: getTimeStr(props.headerParmas?.time) ? '' : time.endTime,
-      page: page?.pageNum || pageNum,
-      pagesize: page?.pageSize || pageSize,
+      user_ids: extras?.user_ids?.join(','),
+      period_time: getTimeStr({
+        type: extras?.period_time,
+        time: extras?.time,
+      }),
+      start_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
+        ? ''
+        : extras?.time?.[0],
+      end_time: getTimeStr({ type: extras?.period_time, time: extras?.time })
+        ? ''
+        : extras?.time?.[1],
+      ...(sort || {}),
     })
     setWork(res.defect)
     setTableList1(res.list)
-    setTotal(res.pager.total)
     setIds(res.list.map(el => el.id))
     setLoading(false)
   }
@@ -696,7 +836,7 @@ const ProgressComparison = (props: Props) => {
       project_ids:
         selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
-          : props.projectId + '',
+          : String(props.projectId),
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
         : '',
@@ -743,7 +883,7 @@ const ProgressComparison = (props: Props) => {
       project_ids:
         selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
-          : props.projectId + '',
+          : String(props.projectId),
     })
     setUserInfo(res.userInfo)
     setStatus(res.status)
@@ -773,7 +913,7 @@ const ProgressComparison = (props: Props) => {
       project_ids:
         selectProjectIds?.length >= 1
           ? selectProjectIds.join(',')
-          : props.projectId + '',
+          : String(props.projectId),
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
       period_time: getTimeStr(props.headerParmas?.time)
         ? getTimeStr(props.headerParmas?.time)
@@ -816,13 +956,11 @@ const ProgressComparison = (props: Props) => {
       } else {
         getDatail({ id })
       }
+    } else if (tableBeforeAndAfter === 'after') {
+      getEfficiencyMemberDefectList(parmas)
+      getUserInfo(id)
     } else {
-      if (tableBeforeAndAfter === 'after') {
-        getEfficiencyMemberDefectList(parmas)
-        getUserInfo(id)
-      } else {
-        getDatail({ id })
-      }
+      getDatail({ id })
     }
   }
 
@@ -831,6 +969,30 @@ const ProgressComparison = (props: Props) => {
     dispatch(setVisibleWork(false))
     dispatch(setListActiveId(0))
   }, [])
+
+  const onChangePage = (page: number, size: number) => {
+    if (size === pageObj.size) {
+      setPageObj({ page, size })
+    } else {
+      setPageObj({ page: 1, size })
+    }
+  }
+
+  const tableDataList = useMemo(() => {
+    const arr =
+      props.type === 'Progress_iteration' ||
+      props.type === 'Progress_sprint' ||
+      props.type === 'Progress_all'
+        ? tableList
+        : tableList1
+    if (arr.length < 1) {
+      return []
+    }
+    const start = (pageObj.page - 1) * pageObj.size
+    const end = start + pageObj.size
+    return arr.slice(start, end)
+  }, [pageObj, props.type, tableList, tableList1])
+
   return (
     <div
       style={{ height: '100%', width: '100%' }}
@@ -870,7 +1032,7 @@ const ProgressComparison = (props: Props) => {
         >
           {work?.map((el, index) => (
             <>
-              <PersonText>
+              <PersonText key={el.name}>
                 {el.name}: {el.value}
                 {el.unit}
               </PersonText>
@@ -879,33 +1041,28 @@ const ProgressComparison = (props: Props) => {
           ))}
         </div>
         <TableStyle>
-          {tableList.length <= 0 && tableList1.length <= 0 && <NoData />}
-          <Table
-            paginationShow={true}
-            columns={columns}
-            dataSource={
-              props.type === 'Progress_iteration' ||
-              props.type === 'Progress_sprint' ||
-              props.type === 'Progress_all'
-                ? tableList
-                : tableList1
-            }
+          <ResizeTable
             isSpinning={false}
-            data={{
-              currentPage: pageNum,
-              total: total,
-              pageSize: pageSize,
-            }}
-            onChangePage={(pageNum, pageSize) => {
-              setPageNum(pageNum)
-              setPageSize(pageSize)
-              props.type === 'Progress_iteration' ||
-              props.type === 'Progress_sprint' ||
-              props.type === 'Progress_all'
-                ? getWorkContrastList(selectProjectIds, { pageNum, pageSize })
-                : getMemberBugList(selectProjectIds, { pageNum, pageSize })
-            }}
+            dataWrapNormalHeight="100%"
+            col={columns}
+            dataSource={tableDataList}
+            noData={<NoData />}
           />
+          {tableDataList.length > 0 ? (
+            <PaginationBox
+              currentPage={pageObj?.page}
+              pageSize={pageObj?.size}
+              total={
+                (props.type === 'Progress_iteration' ||
+                props.type === 'Progress_sprint' ||
+                props.type === 'Progress_all'
+                  ? tableList
+                  : tableList1
+                )?.length
+              }
+              onChange={onChangePage}
+            />
+          ) : null}
         </TableStyle>
         {/* 后半截的弹窗 */}
         <WorkItem
@@ -938,7 +1095,7 @@ const ProgressComparison = (props: Props) => {
         {/* 导出成功 */}
         <ExportSuccess
           title={t('performance.exportSuccess')}
-          notCancel={true}
+          notCancel
           text={t('performance.exportSuccessMsg')}
           isVisible={isVisibleSuccess}
           onConfirm={() => {

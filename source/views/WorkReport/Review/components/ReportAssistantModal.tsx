@@ -39,7 +39,6 @@ import {
   TitleTips,
 } from './style'
 import ProjectGroup from './ProjectGroup'
-import Item from 'antd/lib/list/Item'
 
 interface ReportAssistantProps {
   visible: boolean
@@ -55,7 +54,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const [initData, setInitData] = useState<any>(null)
   const [currentProject, setCurrentProject] = useState<any>(null)
   const [projectList, setProjectList] = useState<any>([])
-  const demandListAll = useRef([])
+  const [demandListAll, setDemandListAll] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
   const [modalInfo, setModalInfo] = useState<any>(null)
   const [loading, setLoading] = useState<any>(false)
@@ -65,6 +64,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const dispatch = useDispatch()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const [options, setOptions] = useState<any>([])
+  const [tasksConfig, setTasksConfig] = useState<any>({})
   const { close, visible, type, projectId } = props
 
   // 带入默认选中项目
@@ -128,9 +128,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           name: tempArr[2],
           conf_id: Number(tempArr[1]),
           content: (params[key] || [])?.map((i: any) => {
-            const tempObj: any = demandListAll.current.find(
-              (t: any) => t.id === i,
-            )
+            const tempObj: any = demandListAll?.find((t: any) => t.id === i)
             return type === 'user'
               ? {
                   id: tempObj?.id,
@@ -141,13 +139,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                   user_total_task_time: tempObj?.user_total_task_time,
                 }
               : i
-            // : {
-            //     id: tempObj?.id,
-            //     name: tempObj?.name,
-            //     expected_day: tempObj?.expected_day,
-            //     schedule_percent: tempObj?.schedule_percent,
-            //     today_task_time: tempObj?.today_task_time,
-            //   }
           }),
         })
       } else {
@@ -255,47 +246,33 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     }
   }
 
-  // 获取当前项目的需求list
-  const getDemandDataList = async (id: number) => {
+  // 获取当前项目的需求list keyword：是否带有搜索
+  const getDemandDataList = async (id: number, keyword?: string) => {
     let result = []
+    const value = form.getFieldsValue()
+    let tempArr: any = []
+    Object.keys(value).forEach((key: string) => {
+      if (key?.split('+')?.[0] === '4') {
+        tempArr = tempArr.concat(value[key])
+      }
+    })
     if (type === 'user') {
-      result = await getStoryListOfDaily(id)
+      result = await getStoryListOfDaily({
+        project_id: id,
+        keyword,
+        exclude_ids: tempArr,
+      })
     } else {
       result = await getListOfProjectDaily(id)
     }
-    demandListAll.current = result?.data ?? []
+
+    setDemandList(result?.data ?? [])
   }
 
   // 获取头部初始数据
   const getInitDaily = async () => {
     const result = await initDaily({ type: type === 'project' ? 3 : 2 })
     setInitData(result)
-  }
-
-  // 实时过滤当前可选需求
-  const setFilterDemand = () => {
-    const result = form.getFieldsValue()
-    let tempArr: any = []
-    Object.keys(result).forEach((key: string) => {
-      if (key?.split('+')?.[0] === '4') {
-        tempArr = tempArr.concat(result[key])
-      }
-    })
-    const configs = modalInfo?.configs?.map((item: any) => {
-      if (item.type === 4) {
-        return {
-          ...item,
-          content: result[`${item.type}+${item.id}+${item.name}`]?.map(
-            (k: any) => demandListAll.current.find((i: any) => i.id === k),
-          ),
-        }
-      }
-      return item
-    })
-    setDemandList(
-      demandListAll.current?.filter((k: any) => !tempArr?.includes(k.id)),
-    )
-    setModalInfo({ ...(modalInfo || {}), configs })
   }
 
   useEffect(() => {
@@ -334,6 +311,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     }
     setLoading(true)
     setUploadAttachListStatus({})
+    setTasksConfig({})
     form.resetFields()
     try {
       let result = null
@@ -369,8 +347,10 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       // 先过滤掉已经默认选择的需求
       let tempArr: any = []
       const attach: any = {}
+      const taskObj: any = {}
       result?.configs?.forEach((item: any) => {
         if (item.type === 4) {
+          taskObj[`${item.type}+${item.id}+${item.name}`] = item.content
           tempArr = tempArr.concat(item.content ?? [])
         }
         if (item.type === 2) {
@@ -384,14 +364,13 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             })) ?? []
         }
       })
+      setTasksConfig({
+        ...taskObj,
+      })
       setUploadAttachList({
         ...attach,
       })
-      tempArr = tempArr.map((i: any) => i.id)
-      setDemandList(
-        demandListAll.current?.filter((k: any) => !tempArr.includes(k.id)) ??
-          [],
-      )
+      setDemandListAll([...tempArr, ...demandListAll])
       setPeopleValue(
         result?.reportUserList?.map((item: any) => {
           return {
@@ -426,38 +405,32 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   // (日报)计算进度相关数据
   const getScheduleData = () => {
     let tempArr: any[] = []
-    // modalInfo?.configs?.forEach((item: any) => {
-    //   console.log(item)
-    //   if (item.type === 4) {
-    //     tempArr = tempArr.concat(item.content ?? [])
-    //   }
-    // })
-    // return
     if (modalInfo?.type === 3) {
       const projectConfig = modalInfo?.configs?.filter(
         (ele: { type: number }) => ele.type === 4,
       )[0]?.content
-      console.log('projectConfig----', projectConfig)
       projectConfig?.forEach((item: { stories: any }) => {
         if (item.stories) {
           tempArr.push([...item.stories])
         }
       })
     } else {
-      modalInfo?.configs?.forEach((item: any) => {
-        if (item.type === 4) {
-          console.log(item)
-          tempArr = tempArr.concat(item.content ?? [])
+      const value = form.getFieldsValue()
+      Object.keys(value).forEach((key: string) => {
+        if (key?.split('+')?.[0] === '4') {
+          tempArr = tempArr.concat(value[key])
         }
       })
+      tempArr = tempArr.map((k: any) =>
+        demandListAll?.find?.((t: any) => k === t.id),
+      )
     }
-
     tempArr = tempArr.flat()
     let total = 0
     let done = 0
     if (tempArr.length) {
       total = Number(tempArr.length)
-      done = Number(tempArr.filter((k: any) => k.is_end === 1).length)
+      done = Number(tempArr.filter((k: any) => k?.is_end === 1).length)
     } else {
       total = 0
       done = 0
@@ -465,14 +438,15 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
 
     const totalHour = tempArr.reduce(
       (pre, next) =>
-        (type === 'user' ? next.user_today_task_time : next.today_task_time) +
+        (type === 'user' ? next?.user_today_task_time : next?.today_task_time) +
         pre,
       0,
     )
     const totalSchedule = tempArr.reduce(
       (pre, next) =>
-        (type === 'user' ? next.user_schedule_percent : next.schedule_percent) +
-        pre,
+        (type === 'user'
+          ? next?.user_schedule_percent
+          : next?.schedule_percent) + pre,
       0,
     )
     return {
@@ -514,6 +488,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   useEffect(() => {
     if (props.visible) {
       getList()
+    } else {
+      setTasksConfig({})
     }
   }, [props.visible])
 
@@ -679,19 +655,36 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
           <Form.Item
             label={
               <LabelTitles>
-                {content.name_text}：{content?.content?.length}{' '}
+                {content.name_text}：
+                {tasksConfig?.[`${content.type}+${content.id}+${content.name}`]
+                  ?.length ?? 0}{' '}
                 {t('report.list.pieces')}
               </LabelTitles>
             }
             name={`${content.type}+${content.id}+${content.name}`}
           >
             <NewRelatedNeed
-              initValue={content?.content}
-              data={demandList}
+              onSearchWord={(value: string) =>
+                getDemandDataList(currentProject?.id, value)
+              }
+              addItem={(arr: any) => {
+                setDemandListAll([...arr, ...demandListAll])
+                setTasksConfig({
+                  ...tasksConfig,
+                  [`${content.type}+${content.id}+${content.name}`]: arr,
+                })
+              }}
               canSubmit={(arr: any) => {
-                const isCan = arr?.every((i: any) =>
-                  demandList?.map((o: any) => o?.id)?.includes(i?.value),
-                )
+                let tempArray: any = []
+                Object.keys(tasksConfig).forEach((key: string) => {
+                  if (key?.split('+')?.[0] === '4') {
+                    tempArray = tempArray.concat(tasksConfig[key])
+                  }
+                })
+
+                const isCan = !arr?.some((i: any) => {
+                  return tempArray?.map((o: any) => o?.id)?.includes(i?.value)
+                })
                 if (!isCan) {
                   if (content.name === 'overdue_tasks') {
                     getMessage({
@@ -711,9 +704,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                 }
                 return isCan
               }}
-              onFilter={() => {
-                setFilterDemand()
-              }}
+              initValue={content?.content}
+              data={demandList}
               // 是否显示逾期
               isShowOverdue={content?.name === 'overdue_tasks'}
             />

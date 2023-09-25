@@ -35,6 +35,7 @@ interface Props {
   isOpen?: boolean
   onUpdate(): void
   isInfoPage?: boolean
+  isPreview?: boolean
 }
 
 const LimitLabel = (props: { label: string; width: number }) => {
@@ -209,6 +210,7 @@ const BasicDemand = (props: Props) => {
           onUpdate={props.onUpdate}
           isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
           isInfoPage={props.isInfoPage}
+          isPreview={props.isPreview}
         >
           {['users_copysend_name', 'users_name'].includes(item.content) && (
             <MultipleAvatar
@@ -236,7 +238,7 @@ const BasicDemand = (props: Props) => {
     } else if (item.content === 'parent_id') {
       nodeComponent = (
         <DetailParent
-          hasEdit={isCanEdit}
+          hasEdit={!props.isPreview && isCanEdit}
           detail={props.detail}
           onUpdate={props.onUpdate}
           type={1}
@@ -246,7 +248,7 @@ const BasicDemand = (props: Props) => {
     } else if (item.content === 'priority') {
       nodeComponent = (
         <ChangePriorityPopover
-          isCanOperation={isCanEdit}
+          isCanOperation={isCanEdit && !props.isPreview}
           record={{
             id: props.detail.id,
             project_id: props.detail.projectId,
@@ -306,6 +308,7 @@ const BasicDemand = (props: Props) => {
         onUpdate={props.onUpdate}
         isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
         isInfoPage={props.isInfoPage}
+        isPreview={props.isPreview}
       >
         <span>
           {getCustomNormalValue(
@@ -330,7 +333,15 @@ const BasicDemand = (props: Props) => {
   }, [isRefresh])
 
   return (
-    <div style={{ marginTop: '20px' }} id="tab_info" className="info_item_tab">
+    <div
+      style={{
+        backgroundColor: 'white',
+        marginBottom: 12,
+        padding: '12px 24px',
+      }}
+      id="tab_info"
+      className="info_item_tab"
+    >
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList
         ?.filter((i: any) => i.content !== 'schedule')

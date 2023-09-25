@@ -154,6 +154,8 @@ interface ResizeTableProps {
   rowClassName?: any
   // 为真则是不做高度限制
   isNotHeight?: boolean
+  // 自带分页
+  pagination?: any
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -262,7 +264,7 @@ const ResizeTable = (props: ResizeTableProps) => {
               rowKey="id"
               columns={mergeColumns}
               dataSource={props.dataSource}
-              pagination={false}
+              pagination={props.pagination ? props.pagination : false}
               components={{
                 header: {
                   cell: ResizeTitle,

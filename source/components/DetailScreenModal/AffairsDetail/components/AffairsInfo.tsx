@@ -65,7 +65,7 @@ const ButtonGroup = (props: {
   }, [props.state])
 
   return (
-    <ButtonGroupWrap>
+    <ButtonGroupWrap style={{ paddingBottom: '16px' }}>
       {items.map((el: { label: string; key: string }) => (
         <div key={el.key}>
           <>
@@ -84,7 +84,7 @@ const ButtonGroup = (props: {
                   <CommonButton
                     style={{ marginRight: '12px' }}
                     key={el.key}
-                    type="light"
+                    type="secondary"
                   >
                     {el.label}
                   </CommonButton>
@@ -94,7 +94,7 @@ const ButtonGroup = (props: {
 
             {el.key !== 'sprint-tag' && (
               <CommonButton
-                type="light"
+                type="secondary"
                 style={{ marginRight: '12px' }}
                 onClick={() => props.onClickItem(el)}
               >
@@ -110,6 +110,7 @@ const ButtonGroup = (props: {
 const AffairsInfo = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const LeftDomDetailInfo = useRef<HTMLDivElement>(null)
   const commentDom: any = createRef()
   const childRef: any = createRef()
@@ -233,9 +234,14 @@ const AffairsInfo = (props: Props) => {
 
   return (
     <InfoWrap
-      height={`calc(100vh - ${
-        (affairsInfo?.isExamine ? 216 : 167) +
-        (document.getElementById('DetailText')?.clientHeight || 25)
+      height={`calc(${userPreferenceConfig.previewModel === 3 ? 80 : 100}vh - ${
+        (userPreferenceConfig.previewModel === 3
+          ? affairsInfo?.isExamine
+            ? 176
+            : 140
+          : affairsInfo?.isExamine
+          ? 236
+          : 190) + (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
       {/* 子任务不存在子事务模块 */}
@@ -248,7 +254,7 @@ const AffairsInfo = (props: Props) => {
         />
       )}
       {isScroll && (
-        <TabsWrap1>
+        <TabsWrap1 style={{ paddingBottom: '0px' }}>
           <Tabs
             className="tabs"
             activeKey={tabActive}
@@ -272,19 +278,30 @@ const AffairsInfo = (props: Props) => {
           affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
           isInfoPage
         />
-        {affairsInfo.work_type !== 6 && (
-          <ChildSprint
-            onRef={childRef}
+        <div
+          style={{
+            backgroundColor: '#f5f5f7',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            padding: '0 16px 16px 16px',
+          }}
+        >
+          {affairsInfo.work_type !== 6 && (
+            <ChildSprint
+              onRef={childRef}
+              detail={affairsInfo as Model.Affairs.AffairsInfo}
+              isInfoPage
+            />
+          )}
+          <LinkSprint
+            onRef={linkSprint}
             detail={affairsInfo as Model.Affairs.AffairsInfo}
             isInfoPage
           />
-        )}
-        <LinkSprint
-          onRef={linkSprint}
-          detail={affairsInfo as Model.Affairs.AffairsInfo}
-          isInfoPage
-        />
-        <ActivitySprint />
+          <ActivitySprint />
+        </div>
+
         {affairsInfo?.isExamine && (
           <div className="review">
             <CommonIconFont type="review" size={64} />
@@ -301,7 +318,7 @@ const AffairsInfo = (props: Props) => {
           }),
         )}
         onConfirm={onConfirmComment}
-        style={{ padding: '0 0 0 24px', width: 'calc(100% - 24px)' }}
+        style={{ padding: '0 0 0 24px', width: '100%' }}
         maxHeight="60vh"
         hasAvatar
       />

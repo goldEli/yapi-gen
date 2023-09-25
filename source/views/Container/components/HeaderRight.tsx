@@ -190,18 +190,24 @@ const HeaderRight = (prop: any) => {
   // 问号下拉
   const createList2 = [
     {
-      name: t('shortcut_key'),
-      key: 'keyboard',
-      icon: 'keyboard',
+      name: t('agileVideoTutorial'),
+      key: 'video-on',
+      icon: 'video-on',
       isPermission: true,
     },
     {
-      name: t('container.help'),
+      name: t('agileHelpManual'),
       key: 'question',
       icon: 'question',
       isPermission: (
         userInfo.company_permissions?.map((i: any) => i.identity) || []
       ).includes('b/project/save'),
+    },
+    {
+      name: t('systemOperationShortcutKeys'),
+      key: 'keyboard',
+      icon: 'keyboard',
+      isPermission: true,
     },
   ]
 
@@ -367,11 +373,16 @@ const HeaderRight = (prop: any) => {
         dispatch(changeVisible(false))
         dispatch(changeKeyBoardVisible(true))
         return
+      case 'video-on':
+        videoTeach()
+        break
       case 'question':
         onHelp()
     }
   }
-
+  const videoTeach = () => {
+    window.open('/videoTeach')
+  }
   const handleTooltipVisibleChange = (visible: any) => {
     if (childStateRef.current.first) {
       return

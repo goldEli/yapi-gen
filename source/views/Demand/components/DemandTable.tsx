@@ -96,7 +96,14 @@ const DemandTable = (props: Props) => {
   // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
     const demandIds = props.data?.list?.map((i: any) => i.id)
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
+    openDemandDetail(
+      { ...item, ...{ demandIds } },
+      projectId,
+      item.id,
+      0,
+      false,
+      false,
+    )
   }
 
   const onChangeState = async (item: any) => {
@@ -340,6 +347,7 @@ const DemandTable = (props: Props) => {
           noDataCreate: true,
           type: 1,
           title: t('createRequirements'),
+          projectId,
         },
       }),
     )

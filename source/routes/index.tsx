@@ -3,7 +3,8 @@ import { Container } from '@/views/Container'
 import React from 'react'
 import Loading from '@/components/Loading'
 import Login from '@/views/Login'
-
+import VideoTeaching from '@/views/VideoTeaching'
+import VideoTeachingDetail from '@/views/VideoTeaching/detail'
 const lazy = (
   component: () => Promise<{
     default: any
@@ -21,6 +22,14 @@ const routes = [
   {
     path: 'login',
     element: <Login />,
+  },
+  {
+    path: 'videoTeach',
+    element: <VideoTeaching />,
+  },
+  {
+    path: 'videoTeachDetail',
+    element: <VideoTeachingDetail />,
   },
   {
     path: '',
@@ -298,6 +307,10 @@ const routes = [
             ),
           },
         ],
+      },
+      {
+        path: '/EmployeeProfile',
+        element: lazy(() => import('@/views/EmployeeProfile')),
       },
     ],
   },

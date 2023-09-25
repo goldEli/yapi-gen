@@ -318,14 +318,6 @@ export const unassignedList = async (
   parmas: API.Sprint.UnassignedList.Params,
 ) => {
   const response = await http.get<any>('unassignedList', parmas)
-  // console.log(response)
-  // response.data.list[0].project_type = 1
-  // response.data.list[0].projectType = 1
-  // response.data.list[0].isBug = 1
-  // response.data.list[0].isExamine = true
-  // response.data.list[0].project.permissions = {
-  //   key: 'b/flaw/update',
-  // }
   const list = response.data.list.map((el: any) => ({
     ...el,
     storyPrefixKey: el.story_prefix_key,

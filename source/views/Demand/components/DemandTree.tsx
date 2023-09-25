@@ -123,7 +123,7 @@ const DemandTree = (props: Props) => {
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id, 0)
   }
 
   // 修改优先级
@@ -552,7 +552,12 @@ const DemandTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true, type: 1, title: t('createRequirements') },
+        params: {
+          noDataCreate: true,
+          type: 1,
+          title: t('createRequirements'),
+          projectId,
+        },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))

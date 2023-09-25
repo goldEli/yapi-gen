@@ -62,6 +62,7 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
 import { css } from '@emotion/css'
+import LeftIcontButton from '@/components/LeftIcontButton'
 
 export const myTreeCss = css`
   &:hover {
@@ -161,26 +162,32 @@ const DemandDetail = () => {
   // 向上查找需求
   const onUpDemand = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex - 1] : 0
-    if (!currentIndex) return
-    const resultParams = { ...params, ...{ sprintId: newIndex } }
+    if (!currentIndex) {
+      return
+    }
+    const resultParams = { ...params, ...{ demandId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
+    setTabActive('1')
   }
 
   // 向下查找需求
   const onDownDemand = () => {
     const newIndex = params?.changeIds ? params?.changeIds[currentIndex + 1] : 0
-    if (currentIndex === (params?.changeIds?.length || 0) - 1) return
-    const resultParams = { ...params, ...{ sprintId: newIndex } }
+    if (currentIndex === (params?.changeIds?.length || 0) - 1) {
+      return
+    }
+    const resultParams = { ...params, ...{ demandId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
+    setTabActive('1')
   }
 
   const getKeyDown = (e: any) => {
     if (e.keyCode === 38) {
-      //up
+      // up
       document.getElementById('upIcon')?.click()
     }
     if (e.keyCode === 40) {
-      //down
+      // down
       document.getElementById('downIcon')?.click()
     }
   }
@@ -606,7 +613,9 @@ const DemandDetail = () => {
           </Form.Item>
         </FormWrap>
       </CommonModal>
-      <DetailTop>
+      <DetailTop
+        style={{ borderBottom: '1px solid #EBECED', paddingBottom: '16px' }}
+      >
         <div style={{ display: 'inline-flex', alignItems: 'center' }}>
           <MyBreadcrumb />
           <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
@@ -626,7 +635,7 @@ const DemandDetail = () => {
                   }
                   const projectId = demandInfo?.projectId
                   if (index !== demandInfo?.level_tree?.length - 1) {
-                    openDemandDetail({ ...i }, projectId, i.id)
+                    openDemandDetail({ ...i }, projectId, i.id, 0)
                   }
                 }}
               >
@@ -667,69 +676,58 @@ const DemandDetail = () => {
             {(params?.changeIds?.length || 0) > 1 && (
               <ChangeIconGroup>
                 {currentIndex > 0 && (
-                  <Tooltip title={t('previous')}>
-                    <UpWrap
-                      onClick={onUpDemand}
-                      id="upIcon"
-                      isOnly={
-                        params?.changeIds?.length === 0 ||
-                        currentIndex === (params?.changeIds?.length || 0) - 1
-                      }
-                    >
-                      <CommonIconFont
-                        type="up"
-                        size={20}
-                        color="var(--neutral-n1-d1)"
-                      />
-                    </UpWrap>
-                  </Tooltip>
+                  <LeftIcontButton
+                    onClick={onUpDemand}
+                    icon="up-md"
+                    text={t('previous')}
+                  />
                 )}
                 {!(
                   params?.changeIds?.length === 0 ||
                   currentIndex === (params?.changeIds?.length || 0) - 1
                 ) && (
-                  <Tooltip title={t('next')}>
-                    <DownWrap
-                      onClick={onDownDemand}
-                      id="downIcon"
-                      isOnly={currentIndex <= 0}
-                    >
-                      <CommonIconFont
-                        type="down"
-                        size={20}
-                        color="var(--neutral-n1-d1)"
-                      />
-                    </DownWrap>
-                  </Tooltip>
+                  <LeftIcontButton
+                    onClick={onDownDemand}
+                    icon="down-md"
+                    text={t('next')}
+                  />
                 )}
               </ChangeIconGroup>
             )}
-            <Tooltip title={t('share')}>
+
+            <div>
+              <LeftIcontButton
+                onClick={onShare}
+                icon="share"
+                text={t('share')}
+              />
+              {/* <CommonButton type="icon" icon="share"  /> */}
+            </div>
+
+            <DropdownMenu
+              placement="bottomRight"
+              trigger={['click']}
+              menu={{ items: onGetMenu() }}
+              getPopupContainer={n => n}
+            >
               <div>
-                <CommonButton type="icon" icon="share" onClick={onShare} />
+                <LeftIcontButton icon="more-01" text={t('more')} />
               </div>
-            </Tooltip>
-            <Tooltip title={t('more')}>
-              <DropdownMenu
-                placement="bottomRight"
-                trigger={['click']}
-                menu={{ items: onGetMenu() }}
-                getPopupContainer={n => n}
-              >
-                <div>
-                  <CommonButton type="icon" icon="more" />
-                </div>
-              </DropdownMenu>
-            </Tooltip>
-            <Tooltip title={t('closure')}>
-              <div>
-                <CommonButton onClick={onClose} type="icon" icon="close" />
-              </div>
-            </Tooltip>
+            </DropdownMenu>
+
+            <div>
+              <LeftIcontButton
+                danger
+                onClick={onClose}
+                icon="close"
+                text={t('closure')}
+              />
+              {/* <CommonButton onClick={onClose} type="icon" icon="close" /> */}
+            </div>
           </ButtonGroup>
         )}
       </DetailTop>
-      <DetailTitle>
+      <DetailTitle style={{ paddingTop: '16px' }}>
         <Tooltip title={demandInfo?.categoryName}>
           <Popover
             trigger={['hover']}
@@ -784,22 +782,27 @@ const DemandDetail = () => {
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
-      <Tabs
-        className="tabs"
-        tabBarExtraContent={
-          tabActive === '4' && (
-            <ScreenMinHover
-              label={t('common.search')}
-              icon="filter"
-              isActive={filter}
-              onClick={() => setFilter(!filter)}
-            />
-          )
-        }
-        activeKey={tabActive}
-        items={tabItems}
-        onChange={onChangeTabs}
-      />
+      <div>
+        {' '}
+        <Tabs
+          // style={{padding:'0px 24px'}}
+          className="tabs2"
+          tabBarExtraContent={
+            tabActive === '4' && (
+              <ScreenMinHover
+                style={{ marginRight: '24px' }}
+                label={t('common.search')}
+                icon="filter"
+                isActive={filter}
+                onClick={() => setFilter(!filter)}
+              />
+            )
+          }
+          activeKey={tabActive}
+          items={tabItems}
+          onChange={onChangeTabs}
+        />
+      </div>
     </DemandWrap>
   )
 }

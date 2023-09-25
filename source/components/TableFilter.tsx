@@ -12,7 +12,7 @@ import styled from '@emotion/styled'
 import { Form, Popover, Collapse, Input, TreeSelect } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState, useLayoutEffect } from 'react'
 import { DelButton, SearchLine, SelectWrapBedeck } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
@@ -227,6 +227,9 @@ export const NumericInput2 = (props: any) => {
 }
 
 const TableFilter = (props: any) => {
+  const [boxMaps, setBoxMaps] = useState<any>()
+  const [spanMaps, setSpanMaps] = useState<any>()
+  const [categoryValue, setCategoryValue] = useState<any>([])
   const [t] = useTranslation()
   const location = useLocation()
   const info = useGetloginInfo()
@@ -357,6 +360,26 @@ const TableFilter = (props: any) => {
       }
     }
   }, [searchChoose])
+  useLayoutEffect(() => {
+    const map: any = new Map()
+    const mapSpan: any = new Map()
+    // time-spanTag
+    const box = document.querySelectorAll('.SelectWrapBedeck')
+    box.forEach(item => {
+      const attr = item.getAttribute('datatype')
+      const w = item.getBoundingClientRect().width
+      map.set(attr, w)
+    })
+    setBoxMaps(map)
+
+    const boxSpan = document.querySelectorAll('.time-spanTag')
+    boxSpan.forEach(item => {
+      const attr = item.getAttribute('datatype')
+      const w = item.getBoundingClientRect().width
+      mapSpan.set(attr, w)
+    })
+    setSpanMaps(mapSpan)
+  }, [props])
   // 折叠图标
   const expandIcon = (e: any) => {
     return (
@@ -471,8 +494,12 @@ const TableFilter = (props: any) => {
                   'radio',
                   'dan',
                 ].includes(i.type) && (
-                  <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                  <SelectWrapBedeck
+                    key={i.key}
+                    datatype={i.key}
+                    className="SelectWrapBedeck"
+                  >
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item
@@ -481,7 +508,9 @@ const TableFilter = (props: any) => {
                       {i.key === 'category' ? (
                         <SelectWrap>
                           <CategoryDropdown
+                            w={boxMaps?.get(i.key)}
                             mode="multiple"
+                            value={categoryValue}
                             categoryList={
                               projectInfoValues
                                 ?.filter((k: any) => k.key === i.key)[0]
@@ -498,6 +527,12 @@ const TableFilter = (props: any) => {
                             }
                             onChangeCallBack={data => {
                               form.setFieldValue('category', data)
+                              setCategoryValue(data)
+                              confirm('category')
+                            }}
+                            onClearCallback={() => {
+                              form.setFieldValue('category', [])
+                              setCategoryValue([])
                               confirm('category')
                             }}
                           />
@@ -505,6 +540,7 @@ const TableFilter = (props: any) => {
                       ) : (
                         <MoreSelect
                           onConfirm={confirm}
+                          width={boxMaps?.get(i.key)}
                           options={
                             i.key === 'users_name' ||
                             i.key === 'users_copysend_name' ||
@@ -561,18 +597,19 @@ const TableFilter = (props: any) => {
                       )}
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
-                      <IconFont type="close-solid" className="icon" />
+                      <IconFont type="minus" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
                 {['single_checkbox'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
                       <MoreSelect
                         more
+                        width={boxMaps?.get(i.key)}
                         onConfirm={confirm}
                         options={[
                           {
@@ -589,18 +626,25 @@ const TableFilter = (props: any) => {
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
-                      <IconFont type="close-solid" className="icon" />
+                      <IconFont type="minus" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
                 {['time', 'date'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span
+                      style={{ marginLeft: '16px', fontSize: '14px' }}
+                      className="time-spanTag"
+                      // eslint-disable-next-line react/no-unknown-property
+                      datatype={i.key}
+                    >
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
                       <RangePicker
                         isShowQuick
+                        placement="bottomRight"
+                        w={spanMaps?.get(i.key)}
                         dateValue={
                           form.getFieldValue(i.key)
                             ? [
@@ -613,39 +657,39 @@ const TableFilter = (props: any) => {
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.key, 2)}>
-                      <IconFont type="close-solid" className="icon" />
+                      <IconFont type="minus" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
                 {i.type === 'number' && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
                       <NumericInput onPress={() => confirm(i.key, '', 1)} />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content, 1)}>
-                      <IconFont type="close-solid" className="icon" />
+                      <IconFont type="minus" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
                 {i.type === 'integer' && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
                       <NumericInput2 onPress={() => confirm(i.key, '', 1)} />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content, 1)}>
-                      <IconFont type="close-solid" className="icon" />
+                      <IconFont type="minus" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
                 {['text', 'textarea'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item
@@ -664,13 +708,13 @@ const TableFilter = (props: any) => {
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content, 1)}>
-                      <IconFont type="close-solid" className="icon" />
+                      <IconFont type="minus" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
                 {i.type === 'tree' && (
                   <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                    <span style={{ marginLeft: '16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
@@ -691,7 +735,7 @@ const TableFilter = (props: any) => {
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
-                      <IconFont className="icon" type="close-solid" />
+                      <IconFont className="icon" type="minus" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}

@@ -55,8 +55,10 @@ export const UpdateButton = styled.div`
   }
 `
 export const ItemRow = styled.div`
-  min-width: 240px;
+  max-width: 360px;
+  flex-wrap: wrap;
   display: flex;
   align-items: center;
   cursor: pointer;
+  min-height: 40px;
 `

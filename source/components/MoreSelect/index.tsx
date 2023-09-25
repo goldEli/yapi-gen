@@ -52,7 +52,6 @@ const index = (props: any) => {
 
   const invertSelection = () => {
     const invertSelectionArray = getArrDifference(props.options, props.value)
-
     props.onChange(invertSelectionArray)
     props.onConfirm(props.id)
   }
@@ -79,6 +78,7 @@ const index = (props: any) => {
 
   return (
     <SelectWrap
+      border={props?.border}
       showArrow
       value={props.value}
       style={{ width: '100%' }}
@@ -87,7 +87,9 @@ const index = (props: any) => {
       allowClear
       optionFilterProp="label"
       onChange={handleChange}
-      placeholder={t('common.pleaseSelect')}
+      placeholder={props?.placeholder ?? t('common.pleaseSelect')}
+      placement="bottomRight"
+      dropdownMatchSelectWidth={props.width}
       suffixIcon={
         <IconFont
           type="down"

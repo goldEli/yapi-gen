@@ -104,6 +104,7 @@ interface RelationStoriesProps {
   isOpen?: boolean
   onUpdate?(): void
   isDrawer?: boolean
+  isPreview?: boolean
 }
 
 interface SelectItem {
@@ -116,7 +117,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
-
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const paramsData = getParamsData(searchParams)
   const { projectInfo } = useSelector(store => store.project)
   const { id } = paramsData || { id: projectInfo.id }
@@ -761,13 +762,11 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   ]
 
   useEffect(() => {
-    // if (props.activeKey === '3' || props.isOpen) {
-    //   getList(pageObj, order)
-    // }
-    if (props.detail?.id) {
+    if (props.detail?.id && projectInfo?.id) {
       getList(pageObj, order)
     }
-  }, [props.detail])
+  }, [props.detail, projectInfo])
+
   useEffect(() => {
     if (isVisible && !searchValue) {
       getSelectRelationRecent()
@@ -781,12 +780,17 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   return (
     <RelationWrap
       style={{
+        marginBottom: 12,
+        padding: '12px 24px',
+        backgroundColor: 'white',
         height: props.isDrawer
           ? '100%'
           : isEnd
           ? 'calc(100vh - 192px)'
-          : 'calc(100vh - 224px)',
-        marginTop: props.isDrawer ? '24px' : '0px',
+          : `calc(${
+              userPreferenceConfig.previewModel === 3 ? '80vh' : '100vh'
+            } - 224px)`,
+        marginTop: props.isDrawer ? '0px' : '0px',
       }}
       id="tab_link"
       className="info_item_tab"
@@ -850,16 +854,18 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
       {props.isDrawer ? (
         <LabelWrap>
           <Label>{t('linkWorkItem')}</Label>
-          <Tooltip title={t('linkTask')}>
-            <CloseWrap width={32} height={32}>
-              <CommonIconFont
-                type="plus"
-                size={20}
-                color="var(--neutral-n2)"
-                onClick={onClickOpen}
-              />
-            </CloseWrap>
-          </Tooltip>
+          {!props?.isPreview && (
+            <Tooltip title={t('linkTask')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={onClickOpen}
+                />
+              </CloseWrap>
+            </Tooltip>
+          )}
         </LabelWrap>
       ) : (
         <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>

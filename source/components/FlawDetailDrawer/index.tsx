@@ -1,37 +1,23 @@
 /* eslint-disable max-lines */
 /* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import {
-  Drawer,
-  MenuProps,
-  Popover,
-  Skeleton,
-  Space,
-  Tabs,
-  Tooltip,
-} from 'antd'
-import { CloseWrap, ConfigWrap, DragLine, MouseDom } from '../StyleCommon'
+import { Drawer, MenuProps, Skeleton, Space, Tabs, Tooltip } from 'antd'
+import { ConfigWrap, DragLine, MouseDom } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import {
-  BackIcon,
   BtnWrap,
   ChangeIconGroup,
-  CollapseItem,
-  CollapseItemContent,
-  CollapseItemTitle,
   CommentTitle,
   Content,
   DemandName,
   DetailFooter,
-  DownWrap,
   DrawerHeader,
   DropdownMenu,
   Header,
   LayerBox,
   ParentBox,
   SkeletonStatus,
-  UpWrap,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover'
@@ -54,6 +40,7 @@ import {
 import { getProjectInfo } from '@/services/project'
 import {
   setAddWorkItemModal,
+  setDrawerInfo,
   setIsUpdateAddWorkItem,
   setProjectInfo,
 } from '@store/project'
@@ -64,19 +51,12 @@ import {
   setFlawDetailDrawer,
   setFlawInfo,
 } from '@store/flaw'
-import {
-  copyLink,
-  detailTimeFormat,
-  getIdsForAt,
-  removeNull,
-  getParamsData,
-  getProjectIdByUrl,
-} from '@/tools'
+import { copyLink, detailTimeFormat, getIdsForAt, removeNull } from '@/tools'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import useShareModal from '@/hooks/useShareModal'
 import CommentFooter from '../CommonComment/CommentFooter'
 import CommonComment from '../CommonComment'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { setActiveCategory } from '@store/category'
 import CopyIcon from '../CopyIcon'
 import StatusExamine from '../StatusExamine'
@@ -89,43 +69,26 @@ import DrawerTopInfo from '../DrawerTopInfo'
 import FlawTag from '../TagComponent/FlawTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
-let timer: NodeJS.Timeout
+import { toggleStar } from '@/services/employeeProfile'
+import { setTaskDrawerUpdate } from '@store/employeeProfile'
+import LeftIcontButton from '../LeftIcontButton'
+import { Label } from '../DetailScreenModal/FlawDetail/style'
+
 const FlawDetailDrawer = () => {
-  const normalState = {
-    detailInfo: {
-      isOpen: true,
-      dom: useRef<any>(null),
-    },
-    relation: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    basicInfo: {
-      isOpen: true,
-      dom: useRef<any>(null),
-    },
-    flawComment: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-  }
-  const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
-    store => store.project,
-  )
+  const { projectInfo, projectInfoValues, isUpdateAddWorkItem, drawerInfo } =
+    useSelector(store => store.project)
   const navigate = useNavigate()
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const commentDom: any = createRef()
   const { flawDetailDrawer, flawCommentList } = useSelector(store => store.flaw)
-  const { visible, params } = flawDetailDrawer
+  const { visible, params, isPreview } = flawDetailDrawer
   const { open, ShareModal } = useShareModal()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [focus, setFocus] = useState(false)
   const [skeletonLoading, setSkeletonLoading] = useState(false)
-  const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
-  const [showState, setShowState] = useState<any>(normalState)
   const leftWidth = 960
   const spanDom = useRef<HTMLSpanElement>(null)
   const { userInfo } = useSelector(store => store.user)
@@ -134,7 +97,6 @@ const FlawDetailDrawer = () => {
   const relationStoriesRef = useRef<any>()
   const [openDemandDetail] = useOpenDemandDetail()
   const projectRef = useRef('')
-  const isTabClick = useRef<string>('')
 
   const tabItems: any = [
     {
@@ -186,7 +148,7 @@ const FlawDetailDrawer = () => {
   }
 
   // 获取事务详情
-  const getFlawDetail = async (id?: any, ids?: any) => {
+  const getFlawDetail = async (isInit?: any, ids?: any) => {
     const paramsProjectId =
       params.project_id ??
       params.projectId ??
@@ -195,14 +157,15 @@ const FlawDetailDrawer = () => {
     if (paramsProjectId) {
       projectRef.current = paramsProjectId
     }
-    if (params?.isAllProject) {
+    if (params?.isAllProject || isPreview) {
       getProjectData()
     }
-    setDrawerInfo({})
-    setSkeletonLoading(true)
+    if (isInit) {
+      setSkeletonLoading(true)
+    }
     const info = await getFlawInfo({
       projectId: paramsProjectId,
-      id: id ? id : params?.id,
+      id: params?.id,
     })
     info.level_tree?.push({
       id: info.id,
@@ -215,15 +178,12 @@ const FlawDetailDrawer = () => {
       work_type: 5,
       attachment_id: 0,
     })
-    setDrawerInfo(info)
-    setSkeletonLoading(false)
+    dispatch(setDrawerInfo(info))
+    if (isInit) {
+      setSkeletonLoading(false)
+    }
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
-
-    const arr = [
-      { key: 'relation', count: info.relation_stories },
-      { key: 'flawComment', count: info.comment_total },
-    ]
 
     if (info.comment_total) {
       // 获取评论列表
@@ -231,43 +191,6 @@ const FlawDetailDrawer = () => {
         getFlawCommentList({
           projectId: paramsProjectId,
           id: info.id,
-          page: 1,
-          pageSize: 999,
-        }),
-      )
-    }
-
-    const newState = Object.assign({}, showState)
-    let resState: any
-
-    // 如果有数据的话，则默认展开
-    arr.forEach(element => {
-      resState = {
-        isOpen: element.count,
-        dom: newState[element.key].dom,
-      }
-      newState[element.key] = resState
-    })
-    setShowState(newState)
-  }
-
-  // 改变模块显示
-  const onChangeShowState = (item: any) => {
-    const paramsProjectId = params.project_id ?? params.projectId
-    const newState = Object.assign({}, showState)
-    const resState = {
-      isOpen: !newState[item.key].isOpen,
-      dom: newState[item.key].dom,
-    }
-    newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
-    newState[item.key] = resState
-    setShowState(newState)
-    if (item.key === 'flawComment') {
-      // 获取评论列表
-      dispatch(
-        getFlawCommentList({
-          projectId: paramsProjectId,
-          id: params.id,
           page: 1,
           pageSize: 999,
         }),
@@ -345,10 +268,12 @@ const FlawDetailDrawer = () => {
       })
       getMessage({ type: 'success', msg: t('successfullyModified') })
       // 提交名称
-      setDrawerInfo({
-        ...drawerInfo,
-        name: value,
-      })
+      dispatch(
+        setDrawerInfo({
+          ...drawerInfo,
+          name: value,
+        }),
+      )
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
   }
@@ -415,7 +340,6 @@ const FlawDetailDrawer = () => {
       }),
     )
     dispatch(saveFlawDetailDrawer({}))
-    setShowState(normalState)
   }
 
   //   编辑缺陷
@@ -624,8 +548,6 @@ const FlawDetailDrawer = () => {
 
   // 操作后更新列表
   const onOperationUpdate = (value?: boolean) => {
-    getFlawDetail('', demandIds)
-    isTabClick.current = tabActive
     if (!value) {
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
@@ -638,37 +560,6 @@ const FlawDetailDrawer = () => {
     dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
-  useEffect(() => {
-    if (visible || params?.id) {
-      dispatch(setFlawCommentList({ list: [] }))
-      setDemandIds(params?.demandIds || [])
-      getFlawDetail('', params?.demandIds || [])
-    }
-  }, [flawDetailDrawer])
-
-  useEffect(() => {
-    if (isUpdateAddWorkItem) {
-      setCurrentIndex(0)
-      setDemandIds([])
-      if (visible) {
-        getFlawDetail()
-        if (isTabClick.current) {
-          clearTimeout(timer)
-          timer = setTimeout(() => {
-            onChangeTabs(isTabClick.current)
-            isTabClick.current = ''
-          }, 3000)
-        }
-      }
-    }
-  }, [isUpdateAddWorkItem])
-
-  useEffect(() => {
-    document.addEventListener('keydown', getKeyDown)
-    return () => {
-      document.removeEventListener('keydown', getKeyDown)
-    }
-  }, [])
   const onChangeTabs = (value: string) => {
     const dom = document.getElementById(value)
     document.getElementById('contentDom')?.scrollTo({
@@ -680,9 +571,6 @@ const FlawDetailDrawer = () => {
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    if (isTabClick.current) {
-      return
-    }
     if (!document.querySelector('#contentDom')) {
       return
     }
@@ -702,11 +590,40 @@ const FlawDetailDrawer = () => {
   }
 
   useEffect(() => {
+    if (visible || params?.id) {
+      if (isPreview) {
+        dispatch(setProjectInfo({}))
+      }
+      dispatch(setFlawCommentList({ list: [] }))
+      setDemandIds(params?.demandIds || [])
+      getFlawDetail(true, params?.demandIds || [])
+    }
+  }, [flawDetailDrawer])
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      setCurrentIndex(0)
+      setDemandIds([])
+      if (visible) {
+        getFlawDetail()
+      }
+    }
+  }, [isUpdateAddWorkItem])
+
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
+
+  useEffect(() => {
     window?.addEventListener('scroll', handleScroll, true)
     return () => {
       window.removeEventListener('scroll', handleScroll, false)
     }
   }, [document.getElementById('contentDom')])
+
   return (
     <>
       <ShareModal
@@ -743,13 +660,19 @@ const FlawDetailDrawer = () => {
         </MouseDom>
         <Header>
           <Space size={16}>
-            <BackIcon onClick={onCancel}>
+            <LeftIcontButton
+              danger
+              onClick={onCancel}
+              icon="close"
+              text={t('closure')}
+            />
+            {/* <BackIcon onClick={onCancel}>
               <CommonIconFont
                 type="right-02"
                 size={20}
                 color="var(--neutral-n2)"
               />
-            </BackIcon>
+            </BackIcon> */}
             {skeletonLoading && (
               <SkeletonStatus>
                 <Skeleton.Input active />
@@ -757,77 +680,104 @@ const FlawDetailDrawer = () => {
             )}
           </Space>
           <Space size={16}>
-            <ChangeIconGroup>
-              {currentIndex > 0 && (
-                <Tooltip title={t('previous')}>
-                  <UpWrap
-                    onClick={onUpDemand}
-                    id="upIcon"
-                    isOnly={
-                      demandIds?.length === 0 ||
-                      currentIndex === demandIds?.length - 1
-                    }
-                  >
-                    <CommonIconFont
-                      type="up"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
+            {!flawDetailDrawer.star && (
+              <>
+                <ChangeIconGroup>
+                  {currentIndex > 0 && (
+                    <LeftIcontButton
+                      onClick={onUpDemand}
+                      icon="up-md"
+                      text={t('previous')}
                     />
-                  </UpWrap>
-                </Tooltip>
-              )}
-              {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) && (
-                <Tooltip title={t('next')}>
-                  <DownWrap
-                    onClick={onDownDemand}
-                    id="downIcon"
-                    isOnly={currentIndex <= 0}
-                  >
-                    <CommonIconFont
-                      type="down"
-                      size={20}
-                      color="var(--neutral-n1-d1)"
+                  )}
+                  {!(
+                    demandIds?.length === 0 ||
+                    currentIndex === demandIds?.length - 1
+                  ) && (
+                    <LeftIcontButton
+                      onClick={onDownDemand}
+                      icon="down-md"
+                      text={t('next')}
                     />
-                  </DownWrap>
-                </Tooltip>
-              )}
-            </ChangeIconGroup>
-            <Tooltip title={t('share')}>
-              <div>
-                <CommonButton type="icon" icon="share" onClick={onShare} />
-              </div>
-            </Tooltip>
-            <Tooltip title={t('openDetails')}>
-              <div>
-                <CommonButton
-                  type="icon"
-                  icon="full-screen"
-                  onClick={onToDetail}
-                />
-              </div>
-            </Tooltip>
-            <Tooltip title={t('more')}>
-              <DropdownMenu
-                placement="bottomRight"
-                trigger={['click']}
-                menu={{ items: onGetMenu() }}
-                getPopupContainer={n => n}
-              >
+                  )}
+                </ChangeIconGroup>
+
                 <div>
-                  <CommonButton type="icon" icon="more" />
+                  <LeftIcontButton
+                    onClick={onShare}
+                    icon="share"
+                    text={t('share')}
+                  />
                 </div>
-              </DropdownMenu>
-            </Tooltip>
+
+                <div>
+                  <LeftIcontButton icon="full-screen" text={t('openDetails')} />
+                  {/* <CommonButton
+                      type="icon"
+                      icon="full-screen"
+                      onClick={onToDetail}
+                    /> */}
+                </div>
+
+                <DropdownMenu
+                  placement="bottomRight"
+                  trigger={['click']}
+                  menu={{ items: onGetMenu() }}
+                  getPopupContainer={n => n}
+                >
+                  <div>
+                    <LeftIcontButton icon="more-01" text={t('more')} />
+                  </div>
+                </DropdownMenu>
+              </>
+            )}
+            {flawDetailDrawer.star && (
+              <Tooltip title={t('starMark')}>
+                <CommonButton
+                  isStar={drawerInfo.isStar}
+                  onClick={async () => {
+                    const res = await toggleStar(
+                      drawerInfo.id,
+                      !drawerInfo.isStar,
+                    )
+                    if (res === 1) {
+                      getFlawDetail()
+                      dispatch(
+                        setTaskDrawerUpdate({
+                          id: flawDetailDrawer.params.employeeCurrentId,
+                          detailId: drawerInfo.id,
+                          state: drawerInfo.isStar ? 2 : 1,
+                        }),
+                      )
+                    }
+                  }}
+                  type="icon"
+                  icon={drawerInfo.isStar ? 'star' : 'star-adipf4l8'}
+                />
+              </Tooltip>
+            )}
           </Space>
         </Header>
-        <Content id="contentDom">
-          {skeletonLoading && <DetailsSkeleton />}
+        <Content
+          style={{ padding: '0px 0px', backgroundColor: '#f5f5f7' }}
+          id="contentDom"
+        >
+          {skeletonLoading && (
+            <div style={{ padding: 16 }}>
+              <DetailsSkeleton />
+            </div>
+          )}
           {!skeletonLoading && (
             <>
-              <ParentBox size={8}>
+              <ParentBox
+                style={{
+                  backgroundColor: 'white',
+                  padding: '16px 24px',
+                  margin: 0,
+                  borderBottom: '1px solid #EBECED',
+                }}
+                size={8}
+              >
                 <div style={{ display: 'flex' }}>
                   {drawerInfo.level_tree?.map((i: any, index: number) => (
                     <DrawerHeader
@@ -878,7 +828,9 @@ const FlawDetailDrawer = () => {
                 </div>
                 {!skeletonLoading && (
                   <ChangeStatusPopover
-                    isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                    isCanOperation={
+                      isCanEdit && !drawerInfo.isExamine && !isPreview
+                    }
                     projectId={drawerInfo.projectId}
                     record={drawerInfo}
                     onChangeStatus={onChangeStatus}
@@ -911,15 +863,22 @@ const FlawDetailDrawer = () => {
                     onCancel={onCancelExamine}
                     isVerify={drawerInfo?.has_verify === 1}
                     isDrawer
+                    isPreview={isPreview}
                   />
                 </div>
               )}
-              <DemandName>
+              <DemandName
+                style={{
+                  backgroundColor: 'white',
+                  padding: '16px 24px 8px 24px',
+                  margin: 0,
+                }}
+              >
                 {isCanEdit && (
                   <span
                     className="name"
                     ref={spanDom}
-                    contentEditable
+                    contentEditable={!isPreview}
                     onBlur={onNameConfirm}
                   >
                     {drawerInfo.name}
@@ -928,7 +887,7 @@ const FlawDetailDrawer = () => {
                 {!isCanEdit && <span className="name">{drawerInfo.name}</span>}
                 <CopyIcon onCopy={onCopy} />
               </DemandName>
-              <div style={{ marginBottom: 20 }}>
+              <div style={{ backgroundColor: 'white', padding: '0 24px' }}>
                 <CommonProgress
                   isTable={false}
                   type="flaw"
@@ -936,6 +895,7 @@ const FlawDetailDrawer = () => {
                   percent={drawerInfo?.schedule}
                   hasEdit={
                     !!isCanEdit &&
+                    !isPreview &&
                     drawerInfo?.user
                       ?.map((i: any) => i?.user?.id)
                       ?.includes(userInfo?.id)
@@ -944,46 +904,63 @@ const FlawDetailDrawer = () => {
                   onConfirm={onOperationUpdate}
                 />
               </div>
-              <BtnWrap>
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    flawDetailRef?.current?.handleUpload()
+              {!isPreview && (
+                <BtnWrap
+                  style={{
+                    backgroundColor: 'white',
+                    margin: 0,
+                    padding: '16px 24px 0px 16px',
                   }}
                 >
-                  {t('appendix')}
-                </CommonButton>
+                  <CommonButton
+                    type="secondary"
+                    onClick={() => {
+                      flawDetailRef?.current?.handleUpload()
+                    }}
+                  >
+                    {t('appendix')}
+                  </CommonButton>
 
-                <FlawTag
-                  defaultList={drawerInfo?.tag?.map((i: any) => ({
-                    id: i.id,
-                    color: i.tag?.color,
-                    name: i.tag?.content,
-                  }))}
-                  canAdd
-                  onUpdate={onOperationUpdate}
-                  detail={drawerInfo}
-                  isDetailQuick
-                  addWrap={
-                    <CommonButton type="light">{t('addTag')}</CommonButton>
-                  }
-                />
-                <CommonButton
-                  type="light"
-                  onClick={() => {
-                    relationStoriesRef?.current?.onClickOpen()
-                  }}
-                >
-                  {t('linkWorkItem')}
-                </CommonButton>
-              </BtnWrap>
+                  <FlawTag
+                    defaultList={drawerInfo?.tag?.map((i: any) => ({
+                      id: i.id,
+                      color: i.tag?.color,
+                      name: i.tag?.content,
+                    }))}
+                    canAdd
+                    onUpdate={onOperationUpdate}
+                    detail={drawerInfo}
+                    isDetailQuick
+                    addWrap={
+                      <CommonButton type="secondary">
+                        {t('addTag')}
+                      </CommonButton>
+                    }
+                  />
+                  <CommonButton
+                    type="secondary"
+                    onClick={() => {
+                      relationStoriesRef?.current?.onClickOpen()
+                    }}
+                  >
+                    {t('linkWorkItem')}
+                  </CommonButton>
+                </BtnWrap>
+              )}
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={() => {
                   getFlawDetail()
                 }}
+                isPreview={isPreview}
               ></DrawerTopInfo>
               <Tabs
+                style={{
+                  paddingLeft: '24px',
+                  paddingTop: '15px',
+                  backgroundColor: 'white',
+                  // marginBottom: '12px',
+                }}
                 className="tabs"
                 activeKey={tabActive}
                 items={tabItems}
@@ -994,16 +971,30 @@ const FlawDetailDrawer = () => {
                   flawInfo={drawerInfo}
                   onUpdate={onOperationUpdate}
                   ref={flawDetailRef}
+                  isPreview={isPreview}
                 />
                 <RelationStories
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
                   isDrawer
                   ref={relationStoriesRef}
+                  isPreview={isPreview}
                 />
-                <FlawBasic detail={drawerInfo} onUpdate={onOperationUpdate} />
-                <div id="tab_defectComment" className="info_item_tab">
-                  <CommentTitle>{t('defectComment')}</CommentTitle>
+                <FlawBasic
+                  detail={drawerInfo}
+                  onUpdate={onOperationUpdate}
+                  isPreview={isPreview}
+                />
+                <div
+                  id="tab_defectComment"
+                  style={{
+                    backgroundColor: 'white',
+                    padding: '16px 24px',
+                    marginTop: '12px',
+                  }}
+                  className="info_item_tab"
+                >
+                  <Label>{t('defectComment')}</Label>
                   <CommonComment
                     data={flawCommentList}
                     onDeleteConfirm={onDeleteCommentConfirm}
@@ -1013,7 +1004,7 @@ const FlawDetailDrawer = () => {
               </LayerBox>
             </>
           )}
-          <DetailFooter>
+          <DetailFooter style={{ padding: '16px', marginTop: '12px' }}>
             <div className="textBox">
               <div>
                 {t('created')}{' '}
@@ -1041,8 +1032,8 @@ const FlawDetailDrawer = () => {
           )}
           onConfirm={onConfirmComment}
           style={{
-            padding: '24px 0 24px 24px',
-            width: 'calc(100% - 24px)',
+            padding: '24px 0',
+            width: '100%',
             height: 80,
           }}
           maxHeight="60vh"

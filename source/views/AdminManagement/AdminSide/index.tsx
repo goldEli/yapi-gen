@@ -97,6 +97,7 @@ const UserName = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-family: SiYuanMedium;
 `
 const AdminSide = () => {
   const navigate = useNavigate()

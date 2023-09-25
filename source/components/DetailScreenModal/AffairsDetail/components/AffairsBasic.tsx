@@ -19,11 +19,13 @@ interface Props {
 }
 
 const AffairsBasic = (props: Props) => {
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { affairsInfo } = useSelector(store => store.affairs)
   const { projectInfo } = useSelector(store => store.project)
+
   // 不能删除open方法
   const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
 
@@ -57,7 +59,11 @@ const AffairsBasic = (props: Props) => {
   }
 
   return (
-    <BasicWrap ref={props.onRef}>
+    <BasicWrap
+      a={userPreferenceConfig.previewModel === 3}
+      b={affairsInfo?.isExamine}
+      ref={props.onRef}
+    >
       <BasicContent>
         <BasicDemand
           onUpdate={onUpdate}
