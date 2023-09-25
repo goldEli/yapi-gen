@@ -278,6 +278,36 @@ export default React.memo(
         }
       }
     }
+    const onCheckSecret2 = async () => {
+      if (
+        form2.phone &&
+        !EMAIL_REGEXP.test(form.username) &&
+        !PHONE_NUMBER_REGEXP.test(form.username)
+      ) {
+        setFocusNumber(1)
+        setErrorState(true)
+        setErrorCheck({
+          username: languageMode.error1,
+        })
+        return
+      }
+
+      if (
+        form.username &&
+        form.password &&
+        form.username.length >= 1 &&
+        form.password.length >= 1
+      ) {
+        const response = await checkSecret({
+          account: form.username,
+          pwd: form.password,
+        })
+        if (response.success && response.data.secret) {
+          setSecretImage(response.data.secret)
+          setSecretVisible(true)
+        }
+      }
+    }
 
     const changeFocus = () => {
       setFocusNumber(0)
@@ -451,7 +481,7 @@ export default React.memo(
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
                       mode={3}
                       value={form2.msg}
-                      label={languageMode.code}
+                      label={t('pleaseEnterVerificationCode')}
                       type="text"
                       onChangeEvent={handleInputChange}
                       onChangeCaptchaImag={getCaptchaCode}
