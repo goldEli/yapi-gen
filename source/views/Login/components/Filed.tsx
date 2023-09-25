@@ -49,7 +49,7 @@ export default (props: any) => {
     setGetMsg(num)
     setTime(60)
     if (num === 2) {
-      props.onGetMsg()
+      props?.onGetMsg()
     }
   }
 

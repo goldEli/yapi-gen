@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import style from '../../views/Login/Login.module.css'
 import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants'
 import styled from '@emotion/styled'
-import { editPassword } from '@/views/Login/services'
+import { editPassword, getMobil } from '@/views/Login/services'
 
 const BianSeDiv1 = styled.div<{ bg: number; tt: number }>`
   width: 108px;
@@ -256,6 +256,11 @@ const ForgetPassword = (props: FProps) => {
           value={form2.msg}
           label={t('pleaseEnterVerificationCode')}
           type="text"
+          onGetMsg={() => {
+            if (form2.phone) {
+              getMobil(form2.phone)
+            }
+          }}
           onChangeEvent={handleInputChange}
           isHighlight={focusNumber === 3 || focusNumber === 6}
           isErrorHighlight={
@@ -268,7 +273,7 @@ const ForgetPassword = (props: FProps) => {
           errorCheck={errorCheck}
           name="password"
           mode={InputMode.LOCK}
-          icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
+          icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/password.svg"
           value={form2.password}
           label={t('pleaseEnterANewPassword')}
           type={show}
@@ -307,7 +312,7 @@ const ForgetPassword = (props: FProps) => {
           errorCheck={errorCheck}
           name="password2"
           mode={InputMode.LOCK}
-          icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
+          icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/password.svg"
           value={form2.password2}
           label={t('pleaseEnterNewPasswordAgain')}
           type={show}

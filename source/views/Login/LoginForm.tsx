@@ -371,7 +371,7 @@ export default React.memo(
                     <Filed
                       name="password"
                       mode={InputMode.LOCK}
-                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/password.svg"
                       value={form.password}
                       label={languageMode.password}
                       type={show}
