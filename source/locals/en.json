@@ -2438,5 +2438,6 @@
   "thePasswordMustContainAtLeastOneUppercaseOneLowercaseOneOneSpecialAndMustBeAtLeastAndAtMostIn": "The password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and must be at least 8 and at most 16 in length.",
   "pleaseEnterAValidPhoneNumber": "Please enter a valid phone number",
   "passwordsDoNotMatch": "Passwords do not match",
-  "inconsistentOrWeakPasswords": "Inconsistent or weak passwords"
+  "inconsistentOrWeakPasswords": "Inconsistent or weak passwords",
+  "verificationCodeSentSuccessfully": "Verification code sent successfully"
 }

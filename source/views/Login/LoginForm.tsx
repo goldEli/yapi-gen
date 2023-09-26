@@ -498,6 +498,7 @@ export default React.memo(
                       onGetMsg={() => {
                         if (form2.phone) {
                           getMobil(form2.phone)
+                          message.success(t('verificationCodeSentSuccessfully'))
                         }
                       }}
                       value={form2.msg}

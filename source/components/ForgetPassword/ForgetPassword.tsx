@@ -11,6 +11,7 @@ import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants'
 import styled from '@emotion/styled'
 import { editPassword, getMobil } from '@/views/Login/services'
 import { css } from '@emotion/css'
+import { message } from 'antd'
 const bv = css`
   :hover {
     text-decoration: underline;
@@ -115,13 +116,15 @@ const ForgetPassword = (props: FProps) => {
     }
   }
   const onCheckSecret3 = async () => {
-    if (form2.password !== form2.password2 || bP !== 3) {
-      console.log(errorCheck)
-      setFocusNumber(2)
-      setErrorState(true)
-      setErrorCheck({
-        password2: t('inconsistentOrWeakPasswords'),
-      })
+    if (form2.password && form2.password2) {
+      if (form2.password !== form2.password2 || bP !== 3) {
+        console.log(errorCheck)
+        setFocusNumber(2)
+        setErrorState(true)
+        setErrorCheck({
+          password2: t('inconsistentOrWeakPasswords'),
+        })
+      }
     }
   }
   const onChangeShow = () => {
@@ -266,6 +269,7 @@ const ForgetPassword = (props: FProps) => {
           onGetMsg={() => {
             if (form2.phone) {
               getMobil(form2.phone)
+              message.success(t('verificationCodeSentSuccessfully'))
             }
           }}
           onChangeEvent={handleInputChange}
