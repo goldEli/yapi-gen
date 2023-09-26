@@ -143,8 +143,6 @@ const ForgetPassword = (props: FProps) => {
       !EMAIL_REGEXP.test(form2.phone) &&
       !PHONE_NUMBER_REGEXP.test(form2.phone)
     ) {
-      console.log('22')
-
       return
     }
     if (!(form2.phone && form2.msg && form2.password)) {
@@ -166,7 +164,6 @@ const ForgetPassword = (props: FProps) => {
       smsCode: form2.msg,
       password: form2.password,
     }
-    console.log(data, 'data')
 
     const res = await editPassword(data)
     console.log(res)
@@ -215,6 +212,7 @@ const ForgetPassword = (props: FProps) => {
     !form2.password ||
     bP !== 3 ||
     form2.password2 !== form2.password
+  // const isDisable2 = false
   return (
     <div>
       <div
@@ -242,7 +240,7 @@ const ForgetPassword = (props: FProps) => {
           ← {t('backLogin')}
         </span>
       </div>
-      <div>
+      <div style={{ position: 'relative' }}>
         <Filed
           inputRef={inputRef}
           mode={4}
@@ -342,6 +340,23 @@ const ForgetPassword = (props: FProps) => {
           bigChar={t('theUppercaseKeyboardIsTurnedOn')}
           // onCheckValue={() => onCheckValue(2)}
         />
+
+        <div
+          style={{
+            visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
+          }}
+          className={`${style.toast} ${
+            // eslint-disable-next-line no-negated-condition
+            !errorState ? style.toast_warning : style.toast_error
+          }`}
+        >
+          {/* <img
+            className={style.toast_icon}
+            src={!errorState ? "/warning.svg" : "error.svg"}
+            alt=""
+          /> */}
+          <span>{errorMessage}</span>
+        </div>
         <button
           {...(isDisable2 ? {} : { onClick: login })}
           className={`${style.button} ${
