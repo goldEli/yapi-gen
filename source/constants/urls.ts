@@ -545,6 +545,12 @@ const urls = {
   getMemberOverviewMoreReportList: '/b/report/member_overview/list',
   // 对比报告
   getMemberOverviewCompare: '/b/member_overview/compare',
+
+  // 效能洞察-看板
+  // 统计
+  getPerformanceInsightStatistics: '/b/performanceInsight/statistics',
+  // 获取人员数据
+  getPerformanceInsightPersonList: '/b/performanceInsight/personList',
 }
 export default urls
 

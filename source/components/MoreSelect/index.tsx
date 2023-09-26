@@ -30,11 +30,11 @@ const index = (props: any) => {
 
   const onClear = () => {
     props.onChange(undefined)
-    props.onConfirm(props.id)
+    props.onConfirm?.(props.id)
   }
   const handleChange = (values: any) => {
     props.onChange(values)
-    props.onConfirm(props.id)
+    props.onConfirm?.(props.id)
   }
 
   function getIds(arr: List[]) {
@@ -53,7 +53,7 @@ const index = (props: any) => {
   const invertSelection = () => {
     const invertSelectionArray = getArrDifference(props.options, props.value)
     props.onChange(invertSelectionArray)
-    props.onConfirm(props.id)
+    props.onConfirm?.(props.id)
   }
 
   function mySort(arr1: List[], arr2: string[]) {

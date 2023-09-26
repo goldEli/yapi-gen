@@ -2422,5 +2422,8 @@
   "fullScreenPreview": "Full screen preview",
   "preview": "Pop-up preview",
   "howToOpenTheDetailsPage": "How to open the details page",
-  "pendingReview": "Pending review"
+  "pendingReview": "Pending review",
+  "priority": "Priority",
+  "taskStatus": "Task status",
+  "searchMembers": "Search members"
 }

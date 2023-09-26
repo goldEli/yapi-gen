@@ -2422,5 +2422,8 @@
   "fullScreenPreview": "全屏预览",
   "preview": "弹窗预览",
   "howToOpenTheDetailsPage": "详情页打开方式",
-  "pendingReview": "待审核"
+  "pendingReview": "待审核",
+  "priority": "优先级",
+  "taskStatus": "任务状态",
+  "searchMembers": "搜索成员"
 }

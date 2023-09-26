@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable no-undefined */
 import { createSlice } from '@reduxjs/toolkit'
+import { getPerformanceInsightPersonList } from './performanceInsight.thunk'
 
 type SliceState = {
   save: boolean
@@ -9,6 +10,9 @@ type SliceState = {
   visiblePerson: boolean
   visibleWork: boolean
   viewType: number
+
+  // 效能洞察看板数据
+  kanBanData: any
 }
 
 const initialState: SliceState = {
@@ -31,6 +35,12 @@ const initialState: SliceState = {
   projectDataList: [],
   visiblePerson: false,
   visibleWork: false,
+
+  // 看板人员数据
+  kanBanData: {
+    list: undefined,
+    total: 0,
+  },
 }
 
 const slice = createSlice({
@@ -55,8 +65,19 @@ const slice = createSlice({
     setVisibleWork: (state, action) => {
       state.visibleWork = action.payload
     },
+
+    setKanBanData: (state, action) => {
+      state.kanBanData = action.payload
+    },
   },
-  extraReducers(builder) {},
+  extraReducers(builder) {
+    builder.addCase(
+      getPerformanceInsightPersonList.fulfilled,
+      (state, action) => {
+        state.kanBanData = action.payload
+      },
+    )
+  },
 })
 
 const performanceInsight = slice.reducer
@@ -68,6 +89,7 @@ export const {
   setVisiblePerson,
   setVisibleWork,
   setViewType,
+  setKanBanData,
 } = slice.actions
 
 export default performanceInsight

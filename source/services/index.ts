@@ -18,6 +18,7 @@ import * as efficiency from './efficiency'
 import * as affairs from './affairs'
 import * as flaw from './flaw'
 import * as employeeProfile from './employeeProfile'
+import * as performanceInsight from './performanceInsight'
 
 export {
   formwork,
@@ -40,4 +41,5 @@ export {
   affairs,
   flaw,
   employeeProfile,
+  performanceInsight,
 }

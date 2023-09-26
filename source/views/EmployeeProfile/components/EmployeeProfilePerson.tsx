@@ -113,7 +113,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       </ReportButton>
       <div className="input">
         <MoreSelect
-          placeholder="搜索成员"
+          placeholder={t('searchMembers')}
           onConfirm={() => null}
           onChange={onSelectMember}
           value={selectKeys}
