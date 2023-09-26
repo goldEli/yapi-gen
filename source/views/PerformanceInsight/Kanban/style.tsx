@@ -64,11 +64,12 @@ export const ContentWrap = styled.div`
   display: flex;
   height: calc(100% - 159px);
   overflow: auto;
+  padding-left: 24px;
   flex: 1;
 `
 
 export const PersonBox = styled.div<{ isOpen: boolean; permission?: boolean }>`
-  width: ${props => (props.isOpen ? 0 : 320)}px;
+  width: ${props => (props.isOpen ? 0 : 280)}px;
   height: 100%;
   align-items: center;
   max-width: unset !important;
@@ -79,6 +80,11 @@ export const PersonBox = styled.div<{ isOpen: boolean; permission?: boolean }>`
   .ant-menu-inline .ant-menu-item,
   .ant-menu-inline .ant-menu-submenu-title {
     width: 100%;
+  }
+  .icon {
+    position: absolute;
+    right: 6px;
+    top: 22px;
   }
 `
 

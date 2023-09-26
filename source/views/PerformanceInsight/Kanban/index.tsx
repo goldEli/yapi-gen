@@ -6,9 +6,11 @@ import { useEffect, useRef, useState } from 'react'
 import KanBanPerson from './components/KanBanPerson'
 import { PersonBox, SideMain, ContentWrap } from './style'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const PerformanceInsightKanBan = () => {
   const { currentMenu } = useSelector(store => store.user)
+  const { hasSideCommonLayoutWidth } = useSelector(state => state.global)
   const { kanBanData } = useSelector(store => store.performanceInsight)
   // 筛选条件
   const [filterParams, setFilterParams] = useState<any>({})
@@ -18,8 +20,8 @@ const PerformanceInsightKanBan = () => {
   const [personPage, setPersonPage] = useState(1)
   const [isOpen, setIsOpen] = useState(false)
   const [focus, setFocus] = useState(false)
-  const [leftWidth, setLeftWidth] = useState(320)
-  const [endWidth, setEndWidth] = useState(320)
+  const [leftWidth, setLeftWidth] = useState(256)
+  const [endWidth, setEndWidth] = useState(256)
   const main = useRef<any>(null)
   const sideMainPerformance = useRef<any>(null)
   const sliderRefPerformance = useRef<any>(null)
@@ -47,24 +49,25 @@ const PerformanceInsightKanBan = () => {
   const onDragLine = () => {
     let width = sliderRefPerformance.current?.clientWidth
     document.onmousemove = e => {
-      setEndWidth(320)
+      setEndWidth(256)
       setFocus(true)
       if (!sideMainPerformance.current) return
       sideMainPerformance.current.style.transition = '0s'
-      width = e.clientX - 200
+      console.log(e.clientX, '=e.clientX', hasSideCommonLayoutWidth)
+      width = e.clientX - hasSideCommonLayoutWidth - 24
       if (width > maxWidth) {
         setLeftWidth(maxWidth)
       } else {
         if (isOpen) {
           setIsOpen(!isOpen)
         }
-        setLeftWidth(width < 26 ? 26 : width)
+        setLeftWidth(width < 38 ? 38 : width)
       }
     }
     document.onmouseup = () => {
-      if (width < 320) {
+      if (width < 256) {
         setEndWidth(width)
-        setLeftWidth(26)
+        setLeftWidth(38)
         setIsOpen(true)
       } else if (width > maxWidth) {
         setLeftWidth(maxWidth)
@@ -77,6 +80,13 @@ const PerformanceInsightKanBan = () => {
       document.onmouseup = null
       setFocus(false)
     }
+  }
+
+  // 点击按钮
+  const onChangeSide = () => {
+    setLeftWidth(256)
+    setEndWidth(0)
+    setIsOpen(false)
   }
 
   // 四个筛选条件更新统计数据
@@ -107,8 +117,12 @@ const PerformanceInsightKanBan = () => {
           isOpen={isOpen}
           ref={sliderRefPerformance}
           style={{
-            width: isOpen ? 26 : leftWidth,
-            transition: endWidth < 320 ? '0.2s' : 'initial',
+            width: isOpen ? 38 : leftWidth,
+            transition: endWidth < 256 ? '0.2s' : 'initial',
+            borderRight:
+              leftWidth === 38
+                ? '1px solid transparent'
+                : '1px solid var(--neutral-n6-d1)',
           }}
         >
           <SideMain
@@ -120,17 +134,24 @@ const PerformanceInsightKanBan = () => {
               <KanBanPerson />
             </div>
           </SideMain>
-          <MouseDom
-            active={focus}
-            onMouseDown={onDragLine}
-            style={{ left: leftWidth - 6 }}
-          >
-            <DragLine
+          {leftWidth !== 38 && (
+            <MouseDom
               active={focus}
-              className="line"
-              style={{ marginLeft: 4 }}
-            />
-          </MouseDom>
+              onMouseDown={onDragLine}
+              style={{ left: leftWidth - 6 }}
+            >
+              <DragLine
+                active={focus}
+                className="line"
+                style={{ marginLeft: 4 }}
+              />
+            </MouseDom>
+          )}
+          {leftWidth === 38 && (
+            <div className="icon" onClick={onChangeSide}>
+              <CommonIconFont size={20} type="plus" />
+            </div>
+          )}
         </PersonBox>
       </ContentWrap>
     </PermissionWrap>

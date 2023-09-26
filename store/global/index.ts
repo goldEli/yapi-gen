@@ -18,6 +18,7 @@ export interface GlobalState {
   tagOrPriority: any[]
   // 列表选中id
   listActiveId: number
+  hasSideCommonLayoutWidth: number
 }
 
 const initialState: GlobalState = {
@@ -85,6 +86,7 @@ const initialState: GlobalState = {
     { key: 'closeEd', backgroundColor: '--function-tag6' },
   ],
   listActiveId: 0,
+  hasSideCommonLayoutWidth: 0,
 }
 
 export const globalSlice = createSlice({
@@ -105,12 +107,16 @@ export const globalSlice = createSlice({
     setListActiveId(preState: GlobalState, action) {
       preState.listActiveId = action.payload
     },
+    setHasSideCommonLayoutWidth(preState: GlobalState, action) {
+      preState.hasSideCommonLayoutWidth = action.payload
+    },
   },
   extraReducers: builder => {
     //
   },
 })
 
-export const { setListActiveId } = globalSlice.actions
+export const { setListActiveId, setHasSideCommonLayoutWidth } =
+  globalSlice.actions
 
 export default globalSlice.reducer

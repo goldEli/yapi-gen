@@ -12,6 +12,7 @@ const PerformanceInsightOverAll = () => {
   return (
     <HasSideCommonLayout
       side={<PerformanceInsightSide overPageType={paramsData?.overPageType} />}
+      notOnly
     >
       {paramsData?.overPageType === 'report' && <Home />}
       {paramsData?.overPageType === 'kanBan' && <PerformanceInsightKanBan />}

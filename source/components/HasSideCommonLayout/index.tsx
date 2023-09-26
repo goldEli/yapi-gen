@@ -1,15 +1,18 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import { Tooltip } from 'antd'
 import { t } from 'i18next'
+import { setHasSideCommonLayoutWidth } from '@store/global'
 
 interface HasSideCommonLayoutProps {
   side?: React.ReactNode
   children: React.ReactNode
   hasSide?: boolean
+  //  是否是唯一的拖拽
+  notOnly?: boolean
 }
 
 const HasSideWrap = styled.div`
@@ -145,6 +148,12 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
       payload: !firstMenuCollapse,
     })
   }
+
+  useEffect(() => {
+    if (props.notOnly) {
+      dispatch(setHasSideCommonLayoutWidth(leftWidth))
+    }
+  }, [leftWidth])
 
   return (
     <HasSideWrap>
