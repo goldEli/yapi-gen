@@ -282,7 +282,11 @@ const ResizeTable = (props: ResizeTableProps) => {
               onRow={props.onRow as any}
               rowClassName={(row: any) => {
                 console.log(row.is_member)
-
+                if (row.is_member === undefined) {
+                  return row.id === listActiveId
+                    ? 'activeListItem'
+                    : props.rowClassName
+                }
                 return row.id === listActiveId
                   ? 'activeListItem'
                   : !row.is_member
