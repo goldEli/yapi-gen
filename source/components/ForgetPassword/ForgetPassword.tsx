@@ -10,6 +10,12 @@ import style from '../../views/Login/Login.module.css'
 import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants'
 import styled from '@emotion/styled'
 import { editPassword, getMobil } from '@/views/Login/services'
+import { css } from '@emotion/css'
+const bv = css`
+  :hover {
+    text-decoration: underline;
+  }
+`
 
 const BianSeDiv1 = styled.div<{ bg: number; tt: number }>`
   width: 108px;
@@ -223,8 +229,9 @@ const ForgetPassword = (props: FProps) => {
           {t('changePassword')}
         </span>
         <span
+          className={bv}
           onClick={() => props.onClose()}
-          style={{ color: '#6688FF', cursor: 'pointer' }}
+          style={{ color: '#6688FF', cursor: 'pointer', fontSize: '16px' }}
         >
           ← {t('backLogin')}
         </span>

@@ -348,7 +348,14 @@ export default React.memo(
             )}
             <div>
               <Tabs defaultActiveKey="1">
-                <Tabs.TabPane tab={t('accountLogin')} key="1">
+                <Tabs.TabPane
+                  tab={
+                    <span style={{ fontSize: '16px' }}>
+                      {t('accountLogin')}
+                    </span>
+                  }
+                  key="1"
+                >
                   <div className={style.form}>
                     <Filed
                       inputRef={inputRef}
@@ -447,20 +454,22 @@ export default React.memo(
                     {languageMode.login}
                   </button>
                   <div
+                    className={style.xiaxian}
                     onClick={() => setChangeF(!changeF)}
-                    style={{
-                      textAlign: 'center',
-                      color: '#6688FF',
-                      marginTop: '24px',
-                      cursor: 'pointer',
-                    }}
                   >
                     {t('forgetThe')}
                   </div>
                 </Tabs.TabPane>
 
                 {/* -------------------------------------------------------------------------------------------------------------------------------------- */}
-                <Tabs.TabPane tab={t('logInWithPhone')} key="2">
+                <Tabs.TabPane
+                  tab={
+                    <span style={{ fontSize: '16px' }}>
+                      {t('logInWithPhone')}
+                    </span>
+                  }
+                  key="2"
+                >
                   <div className={style.form}>
                     <Filed
                       inputRef={inputRef}
@@ -546,13 +555,8 @@ export default React.memo(
                     {languageMode.login}
                   </button>
                   <div
+                    className={style.xiaxian}
                     onClick={() => setChangeF(!changeF)}
-                    style={{
-                      textAlign: 'center',
-                      color: '#6688FF',
-                      marginTop: '24px',
-                      cursor: 'pointer',
-                    }}
                   >
                     {t('forgetThe')}
                   </div>

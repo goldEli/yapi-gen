@@ -14,7 +14,7 @@
   transition: all 0.3s;
 }
 .field:hover {
-  border: 1px solid #617ef2;
+  border: 1px solid #6688ff;
   cursor: pointer;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .active {
-  border: 1px solid #617ef2;
+  border: 1px solid #6688ff;
 }
 
 .warning_active {

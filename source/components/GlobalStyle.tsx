@@ -169,6 +169,12 @@ const GlobalStyle = () => {
           width: 100%;
         }
       }
+      .ant-tabs-tab {
+        color: #323233;
+      }
+      .ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: #6688ff !important;
+      }
       .popover_yang {
         top: 49px !important;
       }
