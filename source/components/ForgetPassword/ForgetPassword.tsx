@@ -169,8 +169,11 @@ const ForgetPassword = (props: FProps) => {
     console.log(data, 'data')
 
     const res = await editPassword(data)
+    console.log(res)
+
     if (res.code === 0) {
       console.log('成功')
+      message.success(t('passwordResetComplete'))
       props.onClose()
       // navigate(`/ProjectManagement/Project`)
     } else {

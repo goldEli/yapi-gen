@@ -2439,5 +2439,6 @@
   "pleaseEnterAValidPhoneNumber": "Please enter a valid phone number",
   "passwordsDoNotMatch": "Passwords do not match",
   "inconsistentOrWeakPasswords": "Inconsistent or weak passwords",
-  "verificationCodeSentSuccessfully": "Verification code sent successfully"
+  "verificationCodeSentSuccessfully": "Verification code sent successfully",
+  "passwordResetComplete": "Password reset complete"
 }

@@ -18,6 +18,8 @@ import ForgetPassword from '@/components/ForgetPassword/ForgetPassword'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { getMobil } from './services/index'
+import { debounce } from 'lodash'
+import { AsyncButton } from '../../components/AsyncButton'
 
 export default React.memo(
   (props: {
@@ -97,96 +99,111 @@ export default React.memo(
       }
     }, [props?.languageMode])
 
-    const login2 = async () => {
-      if (
-        form2.phone &&
-        !EMAIL_REGEXP.test(form2.phone) &&
-        !PHONE_NUMBER_REGEXP.test(form2.phone)
-      ) {
-        console.log('22')
+    const login2 = debounce(
+      async () => {
+        if (
+          form2.phone &&
+          !EMAIL_REGEXP.test(form2.phone) &&
+          !PHONE_NUMBER_REGEXP.test(form2.phone)
+        ) {
+          console.log('22')
 
-        return
-      }
-      if (!(form2.phone && form2.msg && form2.code)) {
-        if (form2.phone === '') {
-          setFocusNumber(1)
-          setErrorMessage(languageMode.userWarning)
-        } else if (form2.msg === '') {
-          setFocusNumber(2)
-          setErrorMessage(languageMode.passwordWarning)
-        } else if (form2.code === '') {
-          setFocusNumber(3)
-          setErrorMessage(languageMode.codeWarning)
+          return
         }
-        return
-      }
-
-      const data = {
-        account: form2.phone,
-        captchaType: 4,
-        smsCode: form2.msg,
-        captchaCode: form2.code,
-      }
-      console.log(data, 'data')
-
-      const res = await toLogin(data)
-      if (res.code === 0) {
-        localStorage.token = res.data.token
-        // localStorage.agileToken = res.data.token
-
-        // return
-        props.redirect()
-
-        // navigate(`/ProjectManagement/Project`)
-      } else {
-        setErrorMessage(res.msg)
-        setErrorState(true)
-      }
-    }
-    const login = async () => {
-      if (
-        form.username &&
-        !EMAIL_REGEXP.test(form.username) &&
-        !PHONE_NUMBER_REGEXP.test(form.username)
-      ) {
-        return
-      }
-      if (!(form.username && form.password && form.code)) {
-        if (form.username == '') {
-          setFocusNumber(1)
-          setErrorMessage(languageMode.userWarning)
-        } else if (form.password == '') {
-          setFocusNumber(2)
-          setErrorMessage(languageMode.passwordWarning)
-        } else if (form.code == '') {
-          setFocusNumber(3)
-          setErrorMessage(languageMode.codeWarning)
+        if (!(form2.phone && form2.msg && form2.code)) {
+          if (form2.phone === '') {
+            setFocusNumber(1)
+            setErrorMessage(languageMode.userWarning)
+          } else if (form2.msg === '') {
+            setFocusNumber(2)
+            setErrorMessage(languageMode.passwordWarning)
+          } else if (form2.code === '') {
+            setFocusNumber(3)
+            setErrorMessage(languageMode.codeWarning)
+          }
+          return
         }
-        return
-      }
 
-      const data = {
-        account: form.username,
-        captchaCode: form.code,
-        captchaId: form.captchaId,
-        captchaType: form.captchaType,
-        id: 0,
-        pwd: form.password,
-      }
-      const res = await toLogin(data)
-      if (res.code === 0) {
-        localStorage.token = res.data.token
-        // localStorage.agileToken = res.data.token
+        const data = {
+          account: form2.phone,
+          captchaType: 4,
+          smsCode: form2.msg,
+          captchaCode: form2.code,
+        }
+        console.log(data, 'data')
 
-        // return
-        props.redirect()
+        const res = await toLogin(data)
+        if (res.code === 0) {
+          localStorage.token = res.data.token
+          // localStorage.agileToken = res.data.token
 
-        // navigate(`/ProjectManagement/Project`)
-      } else {
-        setErrorMessage(res.msg)
-        setErrorState(true)
-      }
-    }
+          // return
+          props.redirect()
+
+          // navigate(`/ProjectManagement/Project`)
+        } else {
+          setErrorMessage(res.msg)
+          setErrorState(true)
+        }
+      },
+      3000,
+      {
+        leading: true,
+        trailing: true,
+      },
+    )
+
+    const login = debounce(
+      async () => {
+        if (
+          form.username &&
+          !EMAIL_REGEXP.test(form.username) &&
+          !PHONE_NUMBER_REGEXP.test(form.username)
+        ) {
+          return
+        }
+        if (!(form.username && form.password && form.code)) {
+          if (form.username == '') {
+            setFocusNumber(1)
+            setErrorMessage(languageMode.userWarning)
+          } else if (form.password == '') {
+            setFocusNumber(2)
+            setErrorMessage(languageMode.passwordWarning)
+          } else if (form.code == '') {
+            setFocusNumber(3)
+            setErrorMessage(languageMode.codeWarning)
+          }
+          return
+        }
+
+        const data = {
+          account: form.username,
+          captchaCode: form.code,
+          captchaId: form.captchaId,
+          captchaType: form.captchaType,
+          id: 0,
+          pwd: form.password,
+        }
+        const res = await toLogin(data)
+        if (res.code === 0) {
+          localStorage.token = res.data.token
+          // localStorage.agileToken = res.data.token
+
+          // return
+          props.redirect()
+
+          // navigate(`/ProjectManagement/Project`)
+        } else {
+          setErrorMessage(res.msg)
+          setErrorState(true)
+        }
+      },
+      3000,
+      {
+        leading: true,
+        trailing: true,
+      },
+    )
 
     const check = async () => {
       try {
@@ -324,6 +341,7 @@ export default React.memo(
     }
     const isDisable = !agree || !form.code || !form.username || !form.password
     const isDisable2 = !agree || !form2.code || !form2.phone || !form2.msg
+    // const isDisable2 = false
 
     const Lang = styled.span`
       display: inline-block;
@@ -548,6 +566,7 @@ export default React.memo(
                       <span>{errorMessage}</span>
                     </div>
                   </div>
+
                   <button
                     {...(isDisable2 ? {} : { onClick: login2 })}
                     className={`${style.button} ${

@@ -2439,5 +2439,6 @@
   "pleaseEnterAValidPhoneNumber": "请输入正确的手机号",
   "passwordsDoNotMatch": "密码不一致",
   "inconsistentOrWeakPasswords": "密码不一致或密码强度弱",
-  "verificationCodeSentSuccessfully": "验证码发送成功"
+  "verificationCodeSentSuccessfully": "验证码发送成功",
+  "passwordResetComplete": "密码修改成功"
 }
