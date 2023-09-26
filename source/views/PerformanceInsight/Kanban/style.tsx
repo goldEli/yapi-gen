@@ -1,3 +1,4 @@
+import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 
 // 筛选及统计部分
@@ -55,5 +56,44 @@ export const StatisticsItem = styled.div`
       color: var(--neutral-n1-d1);
       font-family: SiYuanMedium;
     }
+  }
+`
+
+// 人员部分
+export const ContentWrap = styled.div`
+  display: flex;
+  height: calc(100% - 159px);
+  overflow: auto;
+  flex: 1;
+`
+
+export const PersonBox = styled.div<{ isOpen: boolean; permission?: boolean }>`
+  width: ${props => (props.isOpen ? 0 : 320)}px;
+  height: 100%;
+  align-items: center;
+  max-width: unset !important;
+  min-width: unset !important;
+  flex: unset !important;
+  border-right: 1px solid var(--neutral-n6-d1);
+  position: relative;
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-inline .ant-menu-submenu-title {
+    width: 100%;
+  }
+`
+
+export const RightBox = styled.div`
+  height: 100%;
+  display: flex;
+`
+
+export const SideMain = styled.div<{ isOpen: boolean }>`
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.3s;
+  .box {
+    opacity: ${props => (props.isOpen ? 0 : 1)};
+    height: 100%;
   }
 `

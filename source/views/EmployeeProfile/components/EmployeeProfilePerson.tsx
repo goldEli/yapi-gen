@@ -13,7 +13,6 @@ import { Checkbox } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { setContrastDrawer } from '@store/employeeProfile'
 import { useTranslation } from 'react-i18next'
-import InputSearch from '@/components/InputSearch'
 import MoreSelect from '@/components/MoreSelect'
 
 interface EmployeeProfilePersonProps {
