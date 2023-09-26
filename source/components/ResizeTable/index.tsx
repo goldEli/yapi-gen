@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 // 可拖拽列宽的表格
 
@@ -280,8 +281,12 @@ const ResizeTable = (props: ResizeTableProps) => {
               expandable={props?.expandable}
               onRow={props.onRow as any}
               rowClassName={(row: any) => {
+                console.log(row.is_member)
+
                 return row.id === listActiveId
                   ? 'activeListItem'
+                  : !row.is_member
+                  ? 'dia_y'
                   : props.rowClassName
               }}
             />

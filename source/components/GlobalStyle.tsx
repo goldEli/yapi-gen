@@ -164,6 +164,9 @@ const GlobalStyle = () => {
     }
 
     :root {
+      .dia_y {
+        pointer-events: none;
+      }
       .info_item_tab_label {
         label {
           width: 100%;
