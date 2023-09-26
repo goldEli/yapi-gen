@@ -5,7 +5,7 @@ import KanBanHeader from './components/KanBanHeader'
 import { useEffect, useRef, useState } from 'react'
 import KanBanPerson from './components/KanBanPerson'
 import { PersonBox, SideMain, ContentWrap } from './style'
-import { DragLine, MouseDom } from '@/components/StyleCommon'
+import { CloseWrap, DragLine, MouseDom } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 
 const PerformanceInsightKanBan = () => {
@@ -83,9 +83,9 @@ const PerformanceInsightKanBan = () => {
   }
 
   // 点击按钮
-  const onChangeSide = () => {
-    setLeftWidth(256)
-    setEndWidth(0)
+  const onChangeSide = (state: string) => {
+    setLeftWidth(state === 'open' ? 256 : 38)
+    setEndWidth(state === 'open' ? 0 : 38)
     setIsOpen(false)
   }
 
@@ -130,9 +130,11 @@ const PerformanceInsightKanBan = () => {
             style={{ width: leftWidth }}
             isOpen={isOpen}
           >
-            <div className="box">
-              <KanBanPerson />
-            </div>
+            {leftWidth !== 38 && (
+              <div className="box">
+                <KanBanPerson onClose={() => onChangeSide('close')} />
+              </div>
+            )}
           </SideMain>
           {leftWidth !== 38 && (
             <MouseDom
@@ -148,8 +150,10 @@ const PerformanceInsightKanBan = () => {
             </MouseDom>
           )}
           {leftWidth === 38 && (
-            <div className="icon" onClick={onChangeSide}>
-              <CommonIconFont size={20} type="plus" />
+            <div className="icon" onClick={() => onChangeSide('open')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont size={20} type="indent" />
+              </CloseWrap>
             </div>
           )}
         </PersonBox>

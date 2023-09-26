@@ -59,7 +59,7 @@ export const StatisticsItem = styled.div`
   }
 `
 
-// 人员部分
+// index内容部分
 export const ContentWrap = styled.div`
   display: flex;
   height: calc(100% - 159px);
@@ -84,7 +84,7 @@ export const PersonBox = styled.div<{ isOpen: boolean; permission?: boolean }>`
   .icon {
     position: absolute;
     right: 6px;
-    top: 22px;
+    top: 16px;
   }
 `
 
@@ -101,5 +101,26 @@ export const SideMain = styled.div<{ isOpen: boolean }>`
   .box {
     opacity: ${props => (props.isOpen ? 0 : 1)};
     height: 100%;
+  }
+`
+
+// KanBanPerson 人员部分
+
+export const KanBanPersonWrap = styled.div`
+  padding: 16px 16px 0 0;
+`
+
+export const KanBanPersonHeader = styled.div`
+  gap: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .input {
+    width: 80%;
+    border: 1px solid var(--neutral-n6-d1);
+    border-radius: 6px;
+    .ant-select {
+      width: 100%;
+    }
   }
 `
