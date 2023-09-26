@@ -44,8 +44,6 @@ const PeopleCard = (props: any) => {
     navigate(`/EmployeeProfile?data=${params}`)
   }
 
-  console.log(avatar?.length, '=avataravatar')
-
   return (
     <Box onClick={e => onToEmployee(e)}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>

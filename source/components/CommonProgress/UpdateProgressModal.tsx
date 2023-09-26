@@ -12,6 +12,8 @@ import { getMessage } from '../Message'
 import CommonIconFont from '../CommonIconFont'
 import { Label, LabelWrap } from '../DemandDetailDrawer/style'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { useDispatch, useSelector } from '@store/index'
+import { setUpdateProgress } from '@store/project'
 
 interface ProgressPropsType {
   type?: 'transaction' | 'demand' | 'flaw'
@@ -23,7 +25,9 @@ interface ProgressPropsType {
 }
 
 const UpdateProgressModal = (props: ProgressPropsType) => {
+  const dispatch = useDispatch()
   const { DeleteConfirmModal, open: openDelete } = useDeleteConfirmModal()
+  const { updateProgress } = useSelector(store => store.project)
   const [t]: any = useTranslation()
   const [form] = Form.useForm()
   const [inputValue, setInputValue] = useState(0)
@@ -135,6 +139,7 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
           close()
           onConfirm?.()
         }
+        dispatch(setUpdateProgress(updateProgress + 1))
         return Promise.resolve()
       },
     })

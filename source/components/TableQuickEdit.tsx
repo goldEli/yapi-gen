@@ -454,7 +454,11 @@ const TableQuickEdit = (props: Props) => {
         [props?.keyText]: newValue || newValue === 0 ? newValue : '',
       }
     }
-    if (projectInfo.projectType === 1 || props.item.projectType === 1) {
+    if (
+      projectInfo?.projectType === 1 ||
+      props.item.projectType === 1 ||
+      props.item.project_type === 1
+    ) {
       // 缺陷
       if (props.item.is_bug === 1) {
         await updateFlawTableParams(obj)

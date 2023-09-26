@@ -7,7 +7,6 @@ const ChildLevel = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  console.log(paramsData, 'paramsDataparamsData')
 
   return (
     <>

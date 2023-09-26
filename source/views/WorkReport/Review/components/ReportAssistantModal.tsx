@@ -311,7 +311,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     }
     setLoading(true)
     setUploadAttachListStatus({})
-    setTasksConfig(null)
+    setTasksConfig({})
     form.resetFields()
     try {
       let result = null
@@ -347,11 +347,10 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       // 先过滤掉已经默认选择的需求
       let tempArr: any = []
       const attach: any = {}
+      const taskObj: any = {}
       result?.configs?.forEach((item: any) => {
         if (item.type === 4) {
-          setTasksConfig({
-            [`${item.type}+${item.id}+${item.name}`]: item.content,
-          })
+          taskObj[`${item.type}+${item.id}+${item.name}`] = item.content
           tempArr = tempArr.concat(item.content ?? [])
         }
         if (item.type === 2) {
@@ -364,6 +363,9 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
               suffix: i.ext,
             })) ?? []
         }
+      })
+      setTasksConfig({
+        ...taskObj,
       })
       setUploadAttachList({
         ...attach,
@@ -403,13 +405,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   // (日报)计算进度相关数据
   const getScheduleData = () => {
     let tempArr: any[] = []
-    // modalInfo?.configs?.forEach((item: any) => {
-    //   console.log(item)
-    //   if (item.type === 4) {
-    //     tempArr = tempArr.concat(item.content ?? [])
-    //   }
-    // })
-    // return
     if (modalInfo?.type === 3) {
       const projectConfig = modalInfo?.configs?.filter(
         (ele: { type: number }) => ele.type === 4,

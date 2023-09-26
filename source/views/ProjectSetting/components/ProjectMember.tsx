@@ -648,7 +648,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
       //
     }
   }
-  console.log(selectedRowKeys, 'selectedRowKeys')
 
   // 更新项目信息
   const onUpdate = async () => {

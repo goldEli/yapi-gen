@@ -138,7 +138,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
   const [visible, setVisible] = useState(false)
   const [editData, setEditData] = useState<any>(null)
   const { userInfo } = useSelector(store => store.user)
-  const projectInfo = useSelector(state => state.project.projectInfo)
+  const { projectInfo, updateProgress } = useSelector(state => state.project)
 
   // 获取进度日志列表数据
   const getScheduleLogData = async (pageNumber?: number) => {
@@ -155,10 +155,14 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
   }
 
   useEffect(() => {
-    if ((props.detailId && props.projectId) || props.isOpen) {
+    if (
+      (props.detailId && props.projectId) ||
+      props.isOpen ||
+      (props.detailId && props.projectId && updateProgress !== 0)
+    ) {
       getScheduleLogData()
     }
-  }, [props.detailId, props.projectId, props.isOpen])
+  }, [props.detailId, props.projectId, props.isOpen, updateProgress])
 
   const conform = async (value: string) => {
     let result = null
@@ -193,7 +197,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
         getScheduleLogData()
       }
     } catch (error) {
-      console.log(error)
+      //
     }
   }
 

@@ -518,7 +518,6 @@ const SprintProjectSprint: React.FC = () => {
     [searchObject],
   )
   const format = (arr: any) => {
-    console.log(arr, 'arr')
     if (arr) {
       const newA = arr?.filter((j: any) => {
         return j.value === info

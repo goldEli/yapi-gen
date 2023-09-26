@@ -13,10 +13,6 @@ import { useEffect } from 'react'
 const DetailScreenModal = () => {
   const dispatch = useDispatch()
   const { userPreferenceConfig } = useSelector(store => store.user)
-  console.log(
-    userPreferenceConfig.previewModel,
-    'userPreferenceConfig.previewModel',
-  )
   const { isDetailScreenModal, projectInfo } = useSelector(
     store => store.project,
   )
