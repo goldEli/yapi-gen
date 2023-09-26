@@ -310,7 +310,7 @@ const ProjectDetailSide = () => {
   }
 
   const getProjectInfoValuesData = async () => {
-    const result = await getProjectInfoValues({ projectId })
+    const result = await getProjectInfoValues({ projectId }, 1)
     dispatch(setProjectInfoValues(result))
   }
 
