@@ -266,6 +266,7 @@ const ForgetPassword = (props: FProps) => {
           value={form2.msg}
           label={t('pleaseEnterVerificationCode')}
           type="text"
+          past={!!(form2.phone && PHONE_NUMBER_REGEXP.test(form2.phone))}
           onGetMsg={() => {
             if (form2.phone) {
               getMobil(form2.phone)

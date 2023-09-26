@@ -288,8 +288,6 @@ export default React.memo(
         !EMAIL_REGEXP.test(form2.phone) &&
         !PHONE_NUMBER_REGEXP.test(form2.phone)
       ) {
-        console.log('f')
-
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
@@ -501,6 +499,9 @@ export default React.memo(
                           message.success(t('verificationCodeSentSuccessfully'))
                         }
                       }}
+                      past={
+                        !!(form2.phone && PHONE_NUMBER_REGEXP.test(form2.phone))
+                      }
                       value={form2.msg}
                       label={t('pleaseEnterVerificationCode')}
                       type="text"

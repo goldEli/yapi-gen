@@ -14,7 +14,7 @@ export default (props: any) => {
   const [bigChar, setBigChar] = useState(false)
   const [border, setBorder] = useState(false)
   const [getMsg, setGetMsg] = useState(1)
-  const [time, setTime] = useState(60)
+  const [time, setTime] = useState(0)
   const [conutryCode, setConutryCode] = useState('+86')
   const myForm = useRef<any>()
 
@@ -52,6 +52,7 @@ export default (props: any) => {
       props?.onGetMsg()
     }
   }
+  console.log(props?.past)
 
   useEffect(() => {
     if (time === 0) {
@@ -143,7 +144,7 @@ export default (props: any) => {
         <div>
           {getMsg === 1 ? (
             <span
-              onClick={() => (props?.errorCheck?.phone ? null : onGetMsg(2))}
+              onClick={() => (props?.past ? onGetMsg(2) : null)}
               style={{ color: '#6688FF', fontSize: 14 }}
             >
               {t('getVerificationCode')}
