@@ -487,7 +487,7 @@ export const moveTreeList = async (params: any) => {
   const res = await http.post('moveNeedTreeList', {
     project_id: params.projectId,
     new_class_id: params.newId,
-    sort: params.sort,
+    // sort: params.sort,
     id: params?.id,
     parent_id: params.pid,
   })
