@@ -7,6 +7,9 @@ import * as http from '../tools/http'
 export const workContrastList = async (
   params: API.Sprint.WorkContrastList.Params,
 ) => {
+  if (!params.project_ids) {
+    return
+  }
   const response = await http.get<any, API.Sprint.WorkContrastList.Result>(
     'workContrastList',
     params,
@@ -33,6 +36,7 @@ export const workContrastList = async (
 export const memberBugList = async (
   params: API.Sprint.MemberBugList.Params,
 ) => {
+  if (!params.project_ids) return
   const res = await http.get<any, API.Sprint.MemberBugList.Result>(
     'memberBugList',
     params,

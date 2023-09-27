@@ -665,6 +665,8 @@ const ProgressComparison = (props: Props) => {
     }
   }, [props.type, selectProjectIds, isRefresh, props.order])
   useEffect(() => {
+    console.log('次数')
+
     onSearchData(props.headerParmas?.projectIds || [])
   }, [isRefresh])
   // 数据明细和进展对比查询数据的
@@ -780,10 +782,12 @@ const ProgressComparison = (props: Props) => {
         : extras?.time?.[1],
       ...(sort || {}),
     })
-    setWork(res.work)
-    setTableList(res.list)
-    setIds(res.list.map(el => el.id))
-    setLoading(false)
+    if (res) {
+      setWork(res?.work)
+      setTableList(res?.list)
+      setIds(res?.list.map(el => el.id))
+      setLoading(false)
+    }
   }
 
   // 缺陷分析大的列表
@@ -815,10 +819,12 @@ const ProgressComparison = (props: Props) => {
         : extras?.time?.[1],
       ...(sort || {}),
     })
-    setWork(res.defect)
-    setTableList1(res.list)
-    setIds(res.list.map(el => el.id))
-    setLoading(false)
+    if (res) {
+      setWork(res.defect)
+      setTableList1(res.list)
+      setIds(res.list.map(el => el.id))
+      setLoading(false)
+    }
   }
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
