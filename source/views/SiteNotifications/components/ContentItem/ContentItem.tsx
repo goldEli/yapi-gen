@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable camelcase */
@@ -85,8 +86,15 @@ const ContentItem = (props: any) => {
   // 跳转到员工概况
   const onToEmployee = (e: any, body: any) => {
     e.stopPropagation()
-    // 是否有权限
-    if (body?.has_permission === 2 || !body?.has_permission) {
+
+    if (!body?.user_id) {
+      // 历史数据
+      getMessage({
+        type: 'warning',
+        msg: t('viewingHistoricalDataIsNotCurrently'),
+      })
+    } else if (body?.has_permission === 2) {
+      // 是否有权限
       getMessage({ type: 'warning', msg: t('noPermissionToViewYet') })
     } else {
       // EmployeeProfile

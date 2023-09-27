@@ -7,7 +7,7 @@ import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import UploadAttach from '@/components/UploadAttach'
 import { setShowScheduleInfoTip } from '@store/schedule'
-import defaultImage from '/public/avatarWhite.png'
+import defaultImage from '/public/light.png'
 import {
   ScheduleInfoContentBox,
   ScheduleInfoContentItem,

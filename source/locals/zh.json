@@ -2375,7 +2375,6 @@
   "addProjectGroup": "添加项目组",
   "personnelGrouping": "人员分组",
   "total": "共计",
-
   "transactions": "个事务",
   "jobComparisonReport": "工作对比报告",
   "workCompletionRate": "工作完成率",
@@ -2426,5 +2425,6 @@
   "slideOutSide": "侧边滑出",
   "fullScreenPreview": "全屏预览",
   "preview": "弹窗预览",
-  "howToOpenTheDetailsPage": "详情页打开方式"
+  "howToOpenTheDetailsPage": "详情页打开方式",
+  "viewingHistoricalDataIsNotCurrently": "历史数据暂不支持查看"
 }

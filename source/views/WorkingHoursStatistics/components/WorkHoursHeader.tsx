@@ -233,6 +233,7 @@ const WorkHoursHeader = (props: {
     }
     props.onSearch(form.getFieldsValue(), val)
   }
+
   const onChangeType = (val: number, num: number) => {
     num === 1
       ? form.setFieldValue('type', val)
