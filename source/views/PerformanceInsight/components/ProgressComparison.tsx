@@ -695,7 +695,7 @@ const ProgressComparison = (props: Props) => {
           extras,
         )
       }
-    }, 500)
+    }, 200)
   }
   // 导出
   const onGetExportApi = async (option: number[]) => {
