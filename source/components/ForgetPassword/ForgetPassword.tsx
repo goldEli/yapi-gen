@@ -7,7 +7,7 @@ import { InputMode } from '@/views/Login/login'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import style from '../../views/Login/Login.module.css'
-import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants'
+
 import styled from '@emotion/styled'
 import { editPassword, getMobil } from '@/views/Login/services'
 import { css } from '@emotion/css'
@@ -101,11 +101,7 @@ const ForgetPassword = (props: FProps) => {
   }
 
   const onCheckSecret2 = async () => {
-    if (
-      form2.phone &&
-      !EMAIL_REGEXP.test(form2.phone) &&
-      !PHONE_NUMBER_REGEXP.test(form2.phone)
-    ) {
+    if (form2.phone) {
       console.log('f')
 
       setFocusNumber(1)
@@ -138,11 +134,7 @@ const ForgetPassword = (props: FProps) => {
   const login = async () => {
     console.log('登录')
 
-    if (
-      form2.phone &&
-      !EMAIL_REGEXP.test(form2.phone) &&
-      !PHONE_NUMBER_REGEXP.test(form2.phone)
-    ) {
+    if (form2.phone) {
       return
     }
     if (!(form2.phone && form2.msg && form2.password)) {
@@ -267,7 +259,7 @@ const ForgetPassword = (props: FProps) => {
           value={form2.msg}
           label={t('pleaseEnterVerificationCode')}
           type="text"
-          past={!!(form2.phone && PHONE_NUMBER_REGEXP.test(form2.phone))}
+          past={!!form2.phone}
           onGetMsg={() => {
             if (form2.phone) {
               getMobil(form2.phone)

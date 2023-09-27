@@ -12,7 +12,7 @@ import { useState, useEffect, useRef } from 'react'
 import { language, TForm, InputMode, systemData } from './login'
 import React from 'react'
 import { getCaptcha, toLogin, checkToken, checkSecret } from './services'
-import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants/index'
+
 import IconFont from '@/components/IconFont'
 import ForgetPassword from '@/components/ForgetPassword/ForgetPassword'
 import styled from '@emotion/styled'
@@ -101,11 +101,7 @@ export default React.memo(
 
     const login2 = debounce(
       async () => {
-        if (
-          form2.phone &&
-          !EMAIL_REGEXP.test(form2.phone) &&
-          !PHONE_NUMBER_REGEXP.test(form2.phone)
-        ) {
+        if (form2.phone) {
           console.log('22')
 
           return
@@ -155,11 +151,7 @@ export default React.memo(
 
     const login = debounce(
       async () => {
-        if (
-          form.username &&
-          !EMAIL_REGEXP.test(form.username) &&
-          !PHONE_NUMBER_REGEXP.test(form.username)
-        ) {
+        if (form.username) {
           return
         }
         if (!(form.username && form.password && form.code)) {
@@ -269,11 +261,7 @@ export default React.memo(
     }
 
     const onCheckSecret = async () => {
-      if (
-        form.username &&
-        !EMAIL_REGEXP.test(form.username) &&
-        !PHONE_NUMBER_REGEXP.test(form.username)
-      ) {
+      if (form.username) {
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
@@ -300,11 +288,7 @@ export default React.memo(
     }
 
     const onCheckSecret2 = async () => {
-      if (
-        form2.phone &&
-        !EMAIL_REGEXP.test(form2.phone) &&
-        !PHONE_NUMBER_REGEXP.test(form2.phone)
-      ) {
+      if (form2.phone) {
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
@@ -517,9 +501,7 @@ export default React.memo(
                           message.success(t('verificationCodeSentSuccessfully'))
                         }
                       }}
-                      past={
-                        !!(form2.phone && PHONE_NUMBER_REGEXP.test(form2.phone))
-                      }
+                      past={!!form2.phone}
                       value={form2.msg}
                       label={t('pleaseEnterVerificationCode')}
                       type="text"
