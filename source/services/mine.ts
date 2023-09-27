@@ -1069,6 +1069,7 @@ export const getVerifyUserList: any = async (params: any) => {
       categoryAttachment: i.category_attachment,
       userName: i.user_name,
       userId: i.user_id,
+      is_member: i.is_member,
       userAvatar: i.user_avatar,
       usersName: i.users_name,
       statusFromTo: i.status_from_to,
@@ -1120,6 +1121,7 @@ export const getVerifyList: any = async (params: any) => {
       usersInfo: i.usersInfo,
       is_bug: i.is_bug,
       project_type: i.project_type,
+      is_member: i.is_member,
       // 父需求列表
       parent: [{ value: i.id, label: i.name }],
     })),

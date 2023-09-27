@@ -166,6 +166,7 @@ const GlobalStyle = () => {
     :root {
       .dia_y {
         pointer-events: none;
+        opacity: 0.5;
       }
       .info_item_tab_label {
         label {
