@@ -54,6 +54,7 @@ import { menuList } from '@/views/SprintProjectManagement/config'
 import CommonIconFont from '@/components/CommonIconFont'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { confirmProjectHand, confirmProjectHandAll } from '@/services/handover'
 const Wrap = styled.div({
   padding: '0 24px',
   display: 'flex',
@@ -237,10 +238,18 @@ const ProjectMember = (props: { searchValue?: string }) => {
     if (type === 'del') {
       open({
         title: t('removeEmployee'),
-        text: t('areYouSureYouWantToDeleteThisAssociatedWork'),
-        onConfirm() {
-          console.log('移除成员')
-
+        text: t(
+          'doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding',
+          { name: item.name, pos: item.departmentName },
+        ),
+        async onConfirm() {
+          console.log(operationItem, '移除成员')
+          await confirmProjectHand({ id: item.id, project_id: projectId })
+          getList(order, { ...pageObj, page: 1 })
+          getMessage({
+            msg: t('successfullyDeleted') as string,
+            type: 'success',
+          })
           return Promise.resolve()
         },
       })
@@ -753,6 +762,39 @@ const ProjectMember = (props: { searchValue?: string }) => {
           >
             <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
               <IconFont type="lock" />
+            </div>
+          </Tooltip>
+          <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title={t('removeProjectMembersInBatches')}
+          >
+            <div
+              className={boxItem}
+              onClick={() =>
+                open({
+                  title: t('removeEmployee'),
+                  text: t(
+                    'areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding',
+                  ),
+                  async onConfirm() {
+                    await confirmProjectHandAll({
+                      id: selectedRowKeys,
+                      project_id: projectId,
+                    })
+                    getList(order, { ...pageObj, page: 1 })
+                    getMessage({
+                      msg: t('successfullyDeleted') as string,
+                      type: 'success',
+                    })
+                    console.log('移除成员')
+
+                    return Promise.resolve()
+                  },
+                })
+              }
+            >
+              <IconFont type="delete" />
             </div>
           </Tooltip>
         </BatchAction>

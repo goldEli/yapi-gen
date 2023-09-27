@@ -43,6 +43,7 @@ import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModa
 import CommonButton from '@/components/CommonButton'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { confirmProjectHand } from '@/services/handover'
+import { setIsRefresh } from '@store/user'
 interface Props {
   visible: boolean
   onChangeVisible(): void
@@ -150,7 +151,7 @@ const CommonMember = (props: Props) => {
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [search, setSearch] = useState<any>()
-
+  const { isRefresh } = useSelector(store => store.user)
   const [editItem, setEditItem] = useState()
   const [memberList, setMemberList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
@@ -269,7 +270,7 @@ const CommonMember = (props: Props) => {
           msg: t('successfullyDeleted') as string,
           type: 'success',
         })
-
+        dispatch(setIsRefresh(!isRefresh))
         return Promise.resolve()
       },
     })
