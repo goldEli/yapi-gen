@@ -10,8 +10,52 @@ import { useTranslation } from 'react-i18next'
 import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useEffect, useState } from 'react'
-import { Collapse, type CollapseProps, Select, Checkbox } from 'antd'
+import { Collapse, type CollapseProps, Select, Checkbox, Popover } from 'antd'
 import IconFont from '@/components/IconFont'
+
+interface CollapseHeaderProps {
+  item: any
+  onChangeKeys(state: boolean, key: number): void
+  activeKey: number[]
+}
+
+// 折叠头部
+const CollapseHeader = (props: CollapseHeaderProps) => {
+  const { item, onChangeKeys, activeKey } = props
+  const [isVisible, setIsVisible] = useState(false)
+
+  // 勾选
+  const onChangeCheckbox = (e: any) => {
+    console.log(e)
+  }
+
+  // 点击名称折叠展开
+  const onClickName = () => {
+    onChangeKeys(activeKey?.includes(item.id), item.id)
+  }
+
+  return (
+    <CollapseHeaderWrap>
+      <div className="left">
+        <Checkbox onChange={onChangeCheckbox} />
+        <span className="name" onClick={onClickName}>
+          {item.name}
+        </span>
+      </div>
+      <Popover
+        placement="bottomRight"
+        open={isVisible}
+        onOpenChange={setIsVisible}
+        trigger={['click']}
+        content={<>121212</>}
+      >
+        <CloseWrap width={32} height={32}>
+          <CommonIconFont type="filter" size={20} color="var(--neutral-n3)" />
+        </CloseWrap>
+      </Popover>
+    </CollapseHeaderWrap>
+  )
+}
 
 interface KanBanPersonProps {
   onClose(): void
@@ -33,6 +77,8 @@ const KanBanPerson = (props: KanBanPersonProps) => {
   const [checkAll, setCheckAll] = useState(false)
   // 半选状态
   const [indeterminate, setIndeterminate] = useState(false)
+  // 折叠展开key
+  const [activeKey, setActiveKey] = useState<any>([])
 
   // 获取项目数据
   const getPersonList = async () => {
@@ -108,36 +154,19 @@ const KanBanPerson = (props: KanBanPersonProps) => {
     })
   }
 
+  // 点击图标展开或折叠
+  const onClickIcon = (e: any) => {
+    const key = Number(e.panelKey)
+    setActiveKey(
+      e.isActive
+        ? activeKey?.filter((i: any) => i !== key)
+        : [...new Set([...activeKey, ...[key]])],
+    )
+  }
+
   useEffect(() => {
     getPersonList()
   }, [])
-
-  // 折叠图标
-  const expandIcon = (e: any) => {
-    return (
-      <CommonIconFont
-        type={e.isActive ? 'down-icon' : 'right-icon'}
-        size={12}
-        color="var(--neutral-n3)"
-      />
-    )
-  }
-
-  // 折叠头部
-  const CollapseHeader = (props: { item: any }) => {
-    const { item } = props
-    return (
-      <CollapseHeaderWrap>
-        <div className="left">
-          <Checkbox />
-          <span className="name">{item.name}</span>
-        </div>
-        <CloseWrap width={32} height={32}>
-          <CommonIconFont type="filter" size={20} color="var(--neutral-n3)" />
-        </CloseWrap>
-      </CollapseHeaderWrap>
-    )
-  }
 
   return (
     <KanBanPersonWrap>
@@ -173,9 +202,34 @@ const KanBanPerson = (props: KanBanPersonProps) => {
         {t('selectAll')}
       </CheckboxAll>
       <CheckBoxWrap>
-        <Collapse expandIcon={e => expandIcon(e)}>
+        <Collapse
+          expandIcon={e => (
+            <CommonIconFont
+              type={e.isActive ? 'down-icon' : 'right-icon'}
+              size={12}
+              color="var(--neutral-n3)"
+              onClick={() => onClickIcon(e)}
+            />
+          )}
+          activeKey={activeKey}
+        >
           {dataList?.map((i: any) => (
-            <Collapse.Panel header={<CollapseHeader item={i} />} key={i.key}>
+            <Collapse.Panel
+              header={
+                <CollapseHeader
+                  item={i}
+                  onChangeKeys={(state: boolean, key: number) => {
+                    setActiveKey(
+                      state
+                        ? activeKey?.filter((i: any) => i !== key)
+                        : [...new Set([...activeKey, ...[key]])],
+                    )
+                  }}
+                  activeKey={activeKey}
+                />
+              }
+              key={i.id}
+            >
               <div>12</div>
             </Collapse.Panel>
           ))}

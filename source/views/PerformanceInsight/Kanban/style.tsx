@@ -150,6 +150,10 @@ export const CheckBoxWrap = styled.div`
         height: 40px;
         margin-top: 4px;
         align-items: center;
+        color: var(--neutral-n1-d1);
+        &:hover {
+          background: var(--hover-d2);
+        }
       }
     }
   }
