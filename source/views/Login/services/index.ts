@@ -20,9 +20,13 @@ export const getCaptcha = async () => {
   })
   return data.json()
 }
-export const getMobil = async (mobile: string) => {
+export const getMobil = async (
+  mobile: string,
+  type: number,
+  areaCode: string,
+) => {
   const data = await fetch(
-    `${API_BASE_URL}/auth/getVerifySMSCode?mobile=${mobile}`,
+    `${API_BASE_URL}/auth/getVerifySMSCode?mobile=${mobile}&type=${type}&areaCode=${areaCode}`,
     {
       method: 'get',
 

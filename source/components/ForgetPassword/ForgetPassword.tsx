@@ -101,7 +101,7 @@ const ForgetPassword = (props: FProps) => {
   }
 
   const onCheckSecret2 = async () => {
-    if (form2.phone) {
+    if (!form2.phone) {
       console.log('f')
 
       setFocusNumber(1)
@@ -260,9 +260,9 @@ const ForgetPassword = (props: FProps) => {
           label={t('pleaseEnterVerificationCode')}
           type="text"
           past={!!form2.phone}
-          onGetMsg={() => {
+          onGetMsg={(e: string) => {
             if (form2.phone) {
-              getMobil(form2.phone)
+              getMobil(form2.phone, 1, e)
               message.success(t('verificationCodeSentSuccessfully'))
             }
           }}

@@ -261,7 +261,7 @@ export default React.memo(
     }
 
     const onCheckSecret = async () => {
-      if (form.username) {
+      if (!form.username) {
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
@@ -288,7 +288,7 @@ export default React.memo(
     }
 
     const onCheckSecret2 = async () => {
-      if (form2.phone) {
+      if (!form2.phone) {
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
@@ -495,9 +495,9 @@ export default React.memo(
                       img={captchaImage}
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
                       mode={3}
-                      onGetMsg={() => {
+                      onGetMsg={e => {
                         if (form2.phone) {
-                          getMobil(form2.phone)
+                          getMobil(form2.phone, 0, e)
                           message.success(t('verificationCodeSentSuccessfully'))
                         }
                       }}

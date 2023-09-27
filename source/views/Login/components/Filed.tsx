@@ -15,7 +15,7 @@ export default (props: any) => {
   const [border, setBorder] = useState(false)
   const [getMsg, setGetMsg] = useState(1)
   const [time, setTime] = useState(0)
-  const [conutryCode, setConutryCode] = useState('+86')
+  const [conutryCode, setConutryCode] = useState(localStorage.areacode || '+86')
   const myForm = useRef<any>()
 
   const onKeyChange = (e: any) => {
@@ -44,15 +44,12 @@ export default (props: any) => {
   }
 
   const onGetMsg = (num?: number) => {
-    console.log(props.value)
-
     setGetMsg(num)
-    setTime(60)
     if (num === 2) {
-      props?.onGetMsg()
+      props?.onGetMsg(localStorage.areacode || '+86')
     }
+    setTime(60)
   }
-  console.log(props?.past)
 
   useEffect(() => {
     if (time === 0) {
@@ -67,8 +64,11 @@ export default (props: any) => {
 
   const onCountryCodeChange = (val: string) => {
     const [phoneCode, countryCode] = val.split('/')
+
     setConutryCode(phoneCode)
+    localStorage.areacode = phoneCode
   }
+
   return (
     <div ref={myForm} style={{ ...props.style }} className={getClass()}>
       {props.mode === 4 ? (
