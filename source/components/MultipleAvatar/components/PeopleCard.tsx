@@ -58,8 +58,8 @@ const PeopleCard = (props: any) => {
           src={
             avatar ||
             (theme === 1
-              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarBlack.png'
-              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarWhite.png')
+              ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/dark.pnp'
+              : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png')
           }
           alt=""
         />

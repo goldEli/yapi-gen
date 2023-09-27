@@ -2375,7 +2375,6 @@
   "addProjectGroup": "Add project group",
   "personnelGrouping": "Personnel grouping",
   "total": "Total",
-
   "transactions": "Transactions",
   "jobComparisonReport": "Job comparison report",
   "workCompletionRate": "Work completion rate",
@@ -2426,5 +2425,6 @@
   "slideOutSide": "Slide out side",
   "fullScreenPreview": "Full screen preview",
   "preview": "Pop-up preview",
-  "howToOpenTheDetailsPage": "How to open the details page"
+  "howToOpenTheDetailsPage": "How to open the details page",
+  "viewingHistoricalDataIsNotCurrently": "Viewing historical data is not currently supported."
 }

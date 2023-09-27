@@ -50,10 +50,10 @@ const CommonUserAvatar = (props: UserAvatarProps) => {
       <AvatarBox size={props.size} isBorder={props.isBorder}>
         {props.avatar && <img src={props.avatar} />}
         {!props.avatar && theme === 1 && (
-          <img src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarBlack.png" />
+          <img src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/dark.pnp" />
         )}
         {!props.avatar && theme === 0 && (
-          <img src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/avatarWhite.png" />
+          <img src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png" />
         )}
       </AvatarBox>
       {props.name && <NameWrap>{props?.name}</NameWrap>}
