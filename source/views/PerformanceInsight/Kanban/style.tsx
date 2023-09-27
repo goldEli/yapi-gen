@@ -145,7 +145,7 @@ export const CheckBoxWrap = styled.div`
     .ant-collapse-item {
       border-bottom: none;
       .ant-collapse-header {
-        padding: 0 8px;
+        padding: 0 0 0 8px;
         color: initial;
         height: 40px;
         margin-top: 4px;
@@ -153,6 +153,13 @@ export const CheckBoxWrap = styled.div`
         color: var(--neutral-n1-d1);
         &:hover {
           background: var(--hover-d2);
+        }
+      }
+      .ant-collapse-content {
+        border: none;
+        .ant-collapse-content-box {
+          max-height: initial;
+          padding: 0;
         }
       }
     }
@@ -168,6 +175,75 @@ export const CollapseHeaderWrap = styled.div`
     .name {
       font-family: SiYuanMedium;
       margin-left: 12px;
+    }
+  }
+`
+
+export const FilterWrap = styled.div<{ state?: boolean }>`
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg {
+    color: ${props =>
+      props.state ? 'var(--primary-d2) !important' : 'var(--neutral-n3)'};
+  }
+  &:hover {
+    svg {
+      color: var(--primary-d2) !important;
+    }
+  }
+`
+
+export const FilterContent = styled.div`
+  padding: 4px 0px;
+  border-radius: 6px;
+  background: var(--neutral-white-d6);
+`
+
+export const FilterItem = styled.div<{ isActive?: boolean }>`
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  min-width: 120px;
+  padding: 0 16px;
+  .name {
+    font-size: 14px;
+    color: ${props =>
+      props.isActive ? 'var(--primary-d2)!important' : 'var(--neutral-n2)'};
+    margin-right: 8px;
+  }
+  &:hover {
+    color: var(--neutral-n1-d1);
+    background: var(--hover-d3);
+  }
+`
+
+export const MemberItem = styled.div`
+  height: 40px;
+  padding-left: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background: var(--hover-d2);
+  }
+  .info {
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    width: calc(100% - 24px);
+    .name {
+      margin-left: 8px;
+      font-size: 14px;
+      color: var(--neutral-n1-d1);
+      width: calc(100% - 32px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 `

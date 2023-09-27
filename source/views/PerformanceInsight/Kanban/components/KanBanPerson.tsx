@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable react/jsx-curly-brace-presence */
 import MoreSelect from '@/components/MoreSelect'
 import {
   KanBanPersonHeader,
@@ -5,28 +7,60 @@ import {
   CheckboxAll,
   CheckBoxWrap,
   CollapseHeaderWrap,
+  FilterWrap,
+  FilterContent,
+  FilterItem,
+  MemberItem,
 } from '../style'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useEffect, useState } from 'react'
-import { Collapse, type CollapseProps, Select, Checkbox, Popover } from 'antd'
-import IconFont from '@/components/IconFont'
+import { Collapse, Select, Checkbox, Popover } from 'antd'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 interface CollapseHeaderProps {
   item: any
   onChangeKeys(state: boolean, key: number): void
+  // 当前面板展开的数组
   activeKey: number[]
+  // 筛选条件
+  filterParams: any
+  // 选中的人员数组
+  selectKeys: any
+  onChangeSelectKeys(value: any): void
 }
 
 // 折叠头部
 const CollapseHeader = (props: CollapseHeaderProps) => {
-  const { item, onChangeKeys, activeKey } = props
+  const { item, onChangeKeys, activeKey, onChangeSelectKeys, selectKeys } =
+    props
   const [isVisible, setIsVisible] = useState(false)
+  // 默认选择全部 - 迭代
+  const [normal, setNormal] = useState<number[]>([0])
+  // 全选状态
+  const [checkAll, setCheckAll] = useState(false)
+  // 半选状态
+  const [indeterminate, setIndeterminate] = useState(false)
 
-  // 勾选
+  // 项目权限-勾选
   const onChangeCheckbox = (e: any) => {
-    console.log(e)
+    const { checked } = e.target
+    // 全选的key
+    const resultKeysCheckEd = [
+      ...new Set([
+        ...selectKeys,
+        ...props.item?.member_list?.map((k: any) => k.id),
+      ]),
+    ]
+    // 取消全选的key
+    const resultKeysNotCheckEd = props.selectKeys.filter(
+      (object: any) =>
+        !props.item?.member_list.some(
+          (otherObject: any) => otherObject.id === object,
+        ),
+    )
+    onChangeSelectKeys(checked ? resultKeysCheckEd : resultKeysNotCheckEd)
   }
 
   // 点击名称折叠展开
@@ -34,10 +68,42 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
     onChangeKeys(activeKey?.includes(item.id), item.id)
   }
 
+  // 修改选中迭代
+  const onChangeIteration = (id: number) => {
+    if (id === 0) {
+      setNormal([0])
+    } else {
+      const result = [...new Set([...normal, ...[id]])]
+      setNormal(result?.filter((i: any) => i !== 0))
+    }
+    // 向上返回筛选条件
+  }
+
+  useEffect(() => {
+    setNormal(props.filterParams?.iteration ?? [0])
+  }, [props.filterParams])
+
+  useEffect(() => {
+    const resultList = props.selectKeys.filter((object: any) =>
+      props.item?.member_list.some(
+        (otherObject: any) => otherObject.id === object,
+      ),
+    )
+    setIndeterminate(
+      resultList?.length !== props.item?.member_list?.length &&
+        resultList?.length !== 0,
+    )
+    setCheckAll(resultList?.length === props.item?.member_list?.length)
+  }, [props.selectKeys])
+
   return (
     <CollapseHeaderWrap>
       <div className="left">
-        <Checkbox onChange={onChangeCheckbox} />
+        <Checkbox
+          onChange={onChangeCheckbox}
+          checked={checkAll}
+          indeterminate={indeterminate}
+        />
         <span className="name" onClick={onClickName}>
           {item.name}
         </span>
@@ -47,11 +113,30 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
         open={isVisible}
         onOpenChange={setIsVisible}
         trigger={['click']}
-        content={<>121212</>}
+        content={
+          <FilterContent>
+            <FilterItem onClick={() => onChangeIteration(0)}>
+              <div className="name">全部</div>
+              {normal.includes(0) && (
+                <CommonIconFont type="check" color={'var(--primary-d2)'} />
+              )}
+            </FilterItem>
+            <>
+              {item?.iterate_list?.map((i: any) => (
+                <FilterItem key={i.id} onClick={() => onChangeIteration(i.id)}>
+                  <div className="name">{i.name}</div>
+                  {normal.includes(i.id) && (
+                    <CommonIconFont type="check" color={'var(--primary-d2)'} />
+                  )}
+                </FilterItem>
+              ))}
+            </>
+          </FilterContent>
+        }
       >
-        <CloseWrap width={32} height={32}>
+        <FilterWrap state={isVisible}>
           <CommonIconFont type="filter" size={20} color="var(--neutral-n3)" />
-        </CloseWrap>
+        </FilterWrap>
       </Popover>
     </CollapseHeaderWrap>
   )
@@ -99,7 +184,7 @@ const KanBanPerson = (props: KanBanPersonProps) => {
         id: 2,
         name: 'iFUN-email',
         member_list: [
-          { id: 30, name: '赵飒' },
+          { id: 33, name: '赵飒' },
           { id: 32, name: '李思思' },
         ],
         iterate_list: [
@@ -114,7 +199,7 @@ const KanBanPerson = (props: KanBanPersonProps) => {
       if (item.member_list) {
         const memberList: any = item.member_list?.map((i: any) => ({
           name: i.name,
-          id: `${item.id}_${i.id}`,
+          id: i.id,
           project_name: item.name,
         }))
         accumulator.push(...memberList)
@@ -162,6 +247,35 @@ const KanBanPerson = (props: KanBanPersonProps) => {
         ? activeKey?.filter((i: any) => i !== key)
         : [...new Set([...activeKey, ...[key]])],
     )
+  }
+
+  // 项目下的勾选修改
+  const onProjectCheck = (users: any) => {
+    const resultUsers = users ?? []
+    setSelectKeys(resultUsers)
+    setIndeterminate(
+      resultUsers?.length !== selectList?.length && resultUsers?.length !== 0,
+    )
+    setCheckAll(resultUsers?.length === selectList?.length)
+    props.onChangeFilter({
+      ...props?.filterParams,
+      ...{
+        user_ids: resultUsers,
+      },
+    })
+  }
+
+  // 单人勾选
+  const onClickCheckboxItem = (id: number) => {
+    console.log(111111)
+    let resultKeys: any = []
+    // 如果勾选中不存在，则添加
+    if (selectKeys?.includes(id)) {
+      resultKeys = selectKeys?.filter((i: number) => i !== id)
+    } else {
+      resultKeys = [...selectKeys, ...[id]]
+    }
+    onProjectCheck(resultKeys)
   }
 
   useEffect(() => {
@@ -217,6 +331,9 @@ const KanBanPerson = (props: KanBanPersonProps) => {
             <Collapse.Panel
               header={
                 <CollapseHeader
+                  selectKeys={selectKeys}
+                  onChangeSelectKeys={onProjectCheck}
+                  filterParams={props.filterParams}
                   item={i}
                   onChangeKeys={(state: boolean, key: number) => {
                     setActiveKey(
@@ -230,7 +347,20 @@ const KanBanPerson = (props: KanBanPersonProps) => {
               }
               key={i.id}
             >
-              <div>12</div>
+              {i.member_list?.map((i: any) => (
+                <MemberItem
+                  key={i.id}
+                  onClick={() => onClickCheckboxItem(i.id)}
+                >
+                  <Checkbox checked={selectKeys?.includes(i.id)} />
+                  <div className="info">
+                    <CommonUserAvatar size="small" />
+                    <span className="name">
+                      {i.name}（Agile组-前端开发1212112安居客啥款的话）
+                    </span>
+                  </div>
+                </MemberItem>
+              ))}
             </Collapse.Panel>
           ))}
         </Collapse>
