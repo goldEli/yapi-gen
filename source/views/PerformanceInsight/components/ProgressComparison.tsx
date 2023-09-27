@@ -110,6 +110,8 @@ const ProgressComparison = (props: Props) => {
   })
 
   const onUpdateOrderKey = (key: any, val: any) => {
+    console.log(extra, 'extra?.project_ids')
+
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
     props.type === 'Progress_iteration' ||
     props.type === 'Progress_sprint' ||
@@ -671,6 +673,8 @@ const ProgressComparison = (props: Props) => {
   }, [isRefresh])
   // 数据明细和进展对比查询数据的
   const onSearchData = (extras?: any) => {
+    console.log(extras, 'extras')
+
     if (Array.isArray(extras)) {
       return
     }
@@ -782,12 +786,11 @@ const ProgressComparison = (props: Props) => {
         : extras?.time?.[1],
       ...(sort || {}),
     })
-    if (res) {
-      setWork(res?.work)
-      setTableList(res?.list)
-      setIds(res?.list.map(el => el.id))
-      setLoading(false)
-    }
+
+    setWork(res?.work)
+    setTableList(res?.list)
+    setIds(res?.list.map(el => el.id))
+    setLoading(false)
   }
 
   // 缺陷分析大的列表
@@ -1024,7 +1027,14 @@ const ProgressComparison = (props: Props) => {
           homeType={props.homeType}
           projectId={props.projectId}
           onGetExportApi={onGetExportApi}
-          onSearchData={onSearchData}
+          onSearchData={e => {
+            console.log(e.project_ids)
+            console.log(location)
+
+            // if (e.project_ids.length >= 1) {
+            onSearchData(e)
+            // }
+          }}
           type={props.type}
           viewType={props.viewType}
           headerParmas={props.headerParmas}
