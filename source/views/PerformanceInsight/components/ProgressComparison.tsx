@@ -666,9 +666,6 @@ const ProgressComparison = (props: Props) => {
     }
   }, [props.type, selectProjectIds, isRefresh, props.order])
 
-  useEffect(() => {
-    onSearchData(props.headerParmas?.projectIds || [])
-  }, [isRefresh])
   // 数据明细和进展对比查询数据的
 
   const onSearchData = (extras?: any) => {
@@ -695,7 +692,7 @@ const ProgressComparison = (props: Props) => {
           extras,
         )
       }
-    }, 500)
+    }, 300)
   }
   // 导出
   const onGetExportApi = async (option: number[]) => {

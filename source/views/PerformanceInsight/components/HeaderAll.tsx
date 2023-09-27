@@ -84,6 +84,7 @@ const HeaderAll = (props: HaderProps) => {
   const [timeVal, setTimeVal] = useState<any>()
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [person, setPerson] = useState<any>([])
+  const isRefresh = useSelector(store => store.user.isRefresh)
   const getProjectApi = async () => {
     const res: any = await getProjectList({
       // self: 1,
@@ -200,7 +201,7 @@ const HeaderAll = (props: HaderProps) => {
           ]
         : timeVal,
     })
-  }, [options, timeKey, timeVal, person])
+  }, [options, timeKey, timeVal, person, isRefresh])
   useLayoutEffect(() => {
     const w = document
       .querySelector('#SelectWrap')
