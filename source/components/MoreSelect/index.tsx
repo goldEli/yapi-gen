@@ -25,6 +25,8 @@ type List = {
   dec?: string
 }
 
+// childen 没有传option时，则是children
+
 const index = (props: any) => {
   const [t] = useTranslation()
 
@@ -76,8 +78,19 @@ const index = (props: any) => {
     return props.options
   }, [props.options, props.value])
 
+  // 判断赋予那些属性 renderChildren --- 是否需要自己渲染option
+  const selectProps = props?.renderChildren
+    ? {
+        optionLabelProp: 'label',
+      }
+    : {
+        options: prepositionItems,
+        fieldNames: { label: 'label', value: 'value', options: 'children' },
+      }
+
   return (
     <SelectWrap
+      {...selectProps}
       border={props?.border}
       showArrow
       value={props.value}
@@ -107,9 +120,9 @@ const index = (props: any) => {
           </div>
         </>
       )}
-      options={prepositionItems}
-      fieldNames={{ label: 'label', value: 'value', options: 'children' }}
-    />
+    >
+      {props?.children}
+    </SelectWrap>
   )
 }
 

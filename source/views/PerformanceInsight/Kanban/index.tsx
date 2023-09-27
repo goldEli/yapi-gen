@@ -111,6 +111,7 @@ const PerformanceInsightKanBan = () => {
         }}
         onUpdate={onUpdate}
         statistics={statistics}
+        filterParams={filterParams}
       />
       <ContentWrap ref={main}>
         <PersonBox
@@ -132,7 +133,13 @@ const PerformanceInsightKanBan = () => {
           >
             {leftWidth !== 38 && (
               <div className="box">
-                <KanBanPerson onClose={() => onChangeSide('close')} />
+                <KanBanPerson
+                  filterParams={filterParams}
+                  onClose={() => onChangeSide('close')}
+                  onChangeFilter={value => {
+                    setFilterParams(value)
+                  }}
+                />
               </div>
             )}
           </SideMain>

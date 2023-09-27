@@ -1,5 +1,6 @@
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
+import { Checkbox } from 'antd'
 
 // 筛选及统计部分
 export const KanBanHeaderWrap = styled.div`
@@ -64,7 +65,7 @@ export const ContentWrap = styled.div`
   display: flex;
   height: calc(100% - 159px);
   overflow: auto;
-  padding-left: 24px;
+  padding-left: 16px;
   flex: 1;
 `
 
@@ -108,6 +109,7 @@ export const SideMain = styled.div<{ isOpen: boolean }>`
 
 export const KanBanPersonWrap = styled.div`
   padding: 16px 16px 0 0;
+  height: 100%;
 `
 
 export const KanBanPersonHeader = styled.div`
@@ -115,12 +117,53 @@ export const KanBanPersonHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-left: 8px;
   .input {
-    width: 80%;
+    flex: 1;
     border: 1px solid var(--neutral-n6-d1);
     border-radius: 6px;
     .ant-select {
       width: 100%;
+    }
+  }
+`
+
+export const CheckboxAll = styled(Checkbox)`
+  margin-top: 16px;
+  padding-left: 8px;
+`
+
+export const CheckBoxWrap = styled.div`
+  height: calc(100% - 70px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  .ant-collapse {
+    border: none;
+    border-radius: 0px;
+    background-color: transparent;
+    .ant-collapse-item {
+      border-bottom: none;
+      .ant-collapse-header {
+        padding: 0 8px;
+        color: initial;
+        height: 40px;
+        margin-top: 4px;
+        align-items: center;
+      }
+    }
+  }
+`
+
+export const CollapseHeaderWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 8px;
+  .left {
+    .name {
+      font-family: SiYuanMedium;
+      margin-left: 12px;
     }
   }
 `

@@ -20,6 +20,7 @@ interface KanBanHeaderProps {
   onChangeFilter(value: any): void
   onUpdate(): void
   statistics: any
+  filterParams: any
 }
 
 const KanBanHeader = (props: KanBanHeaderProps) => {
@@ -117,7 +118,7 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
 
   // 向上传递参数
   useEffect(() => {
-    props.onChangeFilter(searchFilterParams)
+    props.onChangeFilter({ ...props.filterParams, ...searchFilterParams })
   }, [searchFilterParams])
 
   return (
