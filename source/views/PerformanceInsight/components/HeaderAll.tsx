@@ -107,10 +107,20 @@ const HeaderAll = (props: HaderProps) => {
             value: el.id,
           })),
         )
+
     if (props.homeType === 'all') {
       setOptions(props.headerParmas?.projectIds || [])
     } else {
       setOptions(paramsData?.id ? [paramsData?.id] : [])
+      setProjectList(
+        res.list
+          .filter((k: any) => k.id === paramsData?.id)
+          .map((el: { id: number; name: string }) => ({
+            ...el,
+            label: el.name,
+            value: el.id,
+          })),
+      )
     }
   }
   // 自定义时间
