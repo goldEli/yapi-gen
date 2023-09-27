@@ -75,9 +75,11 @@ const DemandIndex = () => {
   const { filterKeys, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
   )
+  const { isRefresh } = useSelector(store => store.user)
   const { currentMenu } = useSelector(store => store.user)
   const searchChoose = useSelector(store => store.view.searchChoose)
   const titles = useSelector(store => store.view.tapTitles)
+  console.log(isRefresh, 'isRefresh')
 
   const keyValueTree = {
     key,
@@ -206,7 +208,9 @@ const DemandIndex = () => {
   const refresh = () => {
     getList(isGrid, searchItems, pageObj, order, false, topParentId)
   }
-
+  useEffect(() => {
+    refresh()
+  }, [isRefresh])
   const onChangeRow = (topId?: any) => {
     getList(isGrid, searchItems, pageObj, order, false, topId)
   }
