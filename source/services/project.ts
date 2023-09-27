@@ -324,6 +324,7 @@ export const getProjectMember: any = async (params: any) => {
       all: params?.all ? 1 : 0,
       job_id: params?.jobIds,
       user_group_id: params?.userGroupIds,
+      all_member: params?.kk,
     },
     orderkey: params.orderKey,
     order: params.order,
