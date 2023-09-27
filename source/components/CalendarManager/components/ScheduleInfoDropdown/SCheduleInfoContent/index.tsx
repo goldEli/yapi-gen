@@ -7,7 +7,6 @@ import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import UploadAttach from '@/components/UploadAttach'
 import { setShowScheduleInfoTip } from '@store/schedule'
-import defaultImage from '/public/light.png'
 import {
   ScheduleInfoContentBox,
   ScheduleInfoContentItem,
@@ -73,7 +72,7 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
               src={
                 scheduleInfo?.user?.avatar
                   ? scheduleInfo.user?.avatar
-                  : defaultImage
+                  : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png'
               }
             />
             <span className="username">
@@ -109,7 +108,11 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
             <PersonItem key={item.user_id}>
               <span>
                 <img
-                  src={item.user?.avatar ? item.user?.avatar : defaultImage}
+                  src={
+                    item.user?.avatar
+                      ? item.user?.avatar
+                      : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png'
+                  }
                 />
                 {item.user?.name}
               </span>
