@@ -165,8 +165,21 @@ const GlobalStyle = () => {
 
     :root {
       .dia_y {
-        pointer-events: none;
+        position: relative;
+        /* pointer-events: none; */
         opacity: 0.5;
+        ::after {
+          content: '';
+          display: block;
+          position: absolute;
+          opacity: 0;
+          top: 0;
+          left: 0;
+          cursor: not-allowed;
+          background-color: #ff4d4f;
+          width: 100%;
+          height: 100%;
+        }
       }
       .info_item_tab_label {
         label {
