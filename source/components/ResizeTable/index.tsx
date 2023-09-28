@@ -172,22 +172,7 @@ const ResizeTable = (props: ResizeTableProps) => {
   useEffect(() => {
     setColumns(props.col)
   }, [props.col])
-  const RenderTableRow = (props: any) => {
-    return (
-      <Tooltip
-        arrowPointAtCenter
-        title={
-          props.className.includes('dia_y')
-            ? t(
-                'youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject',
-              )
-            : null
-        }
-      >
-        <tr {...props} key={props?.['data-row-key']} />
-      </Tooltip>
-    )
-  }
+
   const handleResize =
     (index: number) =>
     (_: React.SyntheticEvent<Element>, { size }: ResizeCallbackData) => {
@@ -286,9 +271,6 @@ const ResizeTable = (props: ResizeTableProps) => {
               components={{
                 header: {
                   cell: ResizeTitle,
-                },
-                body: {
-                  row: RenderTableRow,
                 },
               }}
               scroll={{
