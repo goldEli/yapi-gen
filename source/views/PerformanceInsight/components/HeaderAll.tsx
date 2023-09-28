@@ -84,6 +84,8 @@ const HeaderAll = (props: HaderProps) => {
   const [timeVal, setTimeVal] = useState<any>()
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [person, setPerson] = useState<any>([])
+  const isRefresh = useSelector(store => store.user.isRefresh)
+
   const getProjectApi = async () => {
     const res: any = await getProjectList({
       // self: 1,
@@ -111,6 +113,15 @@ const HeaderAll = (props: HaderProps) => {
       setOptions(props.headerParmas?.projectIds || [])
     } else {
       setOptions(paramsData?.id ? [paramsData?.id] : [])
+      setProjectList(
+        res.list
+          .filter((k: any) => k.id === paramsData?.id)
+          .map((el: { id: number; name: string }) => ({
+            ...el,
+            label: el.name,
+            value: el.id,
+          })),
+      )
     }
   }
   // 自定义时间
@@ -176,7 +187,11 @@ const HeaderAll = (props: HaderProps) => {
   }, [timeVal, timeKey])
 
   useEffect(() => {
-    if (timeKey === 0 && !timeVal) {
+    if (
+      (timeKey === 0 && !timeVal) ||
+      (props.homeType !== 'all' && options?.length === 0)
+      // 如果不是全局的并且没有项目id则拦截
+    ) {
       return
     }
     props?.onSearchData?.({
@@ -190,7 +205,7 @@ const HeaderAll = (props: HaderProps) => {
           ]
         : timeVal,
     })
-  }, [options, timeKey, timeVal, person])
+  }, [options, timeKey, timeVal, person, isRefresh])
   useLayoutEffect(() => {
     const w = document
       .querySelector('#SelectWrap')

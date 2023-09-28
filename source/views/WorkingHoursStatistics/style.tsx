@@ -84,7 +84,7 @@ export const DateLabel = styled.div`
   color: var(--neutral-n3);
   display: flex;
   .month-td {
-    min-width: 125px;
+    /* min-width: 125px; */
     height: 28px;
     display: flex;
     align-items: center;
@@ -94,6 +94,9 @@ export const DateLabel = styled.div`
     /* flex: 1; */
     /* justify-content: center; */
     padding-left: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 `
 export const TimeLabel = styled.div<{ language?: string | null }>`
