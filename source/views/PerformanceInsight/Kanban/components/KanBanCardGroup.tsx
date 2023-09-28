@@ -8,10 +8,10 @@ import {
   TaskItemBottom,
   TaskItemContent,
   TaskItemTop,
+  TaskTag,
 } from '../style'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useState } from 'react'
-import CommonIconFont from '@/components/CommonIconFont'
 import PriorityIcon from '@/components/PriorityIcon'
 import UploadAttach from '@/components/UploadAttach'
 
@@ -23,11 +23,6 @@ interface TaskListGroupProps {
 const TaskListGroup = (props: TaskListGroupProps) => {
   const { item } = props
   const [page, setPage] = useState(1)
-  const statusList = [
-    {
-      id: 1,
-    },
-  ]
 
   // 待审核数据加载更多
   const fetchMoreData = async () => {
@@ -91,8 +86,21 @@ const TaskListGroup = (props: TaskListGroupProps) => {
           </TaskItemContent>
           <TaskItemBottom>
             <div className="status">
-              <div className="tag"></div>
-              <div className="name">状态</div>
+              <TaskTag
+                state={
+                  k?.category_status?.status?.is_start === 1 &&
+                  k?.category_status?.status?.is_end === 2
+                    ? 1
+                    : k?.category_status?.status?.is_end === 1 &&
+                      k?.category_status?.status?.is_start === 2
+                    ? 2
+                    : k?.category_status?.status?.is_start === 2 &&
+                      k?.category_status?.status?.is_end === 2
+                    ? 3
+                    : 0
+                }
+              />
+              <div className="name">{k?.category_status?.status?.content}</div>
             </div>
             <div className="right">
               <div>{k?.user_schedule?.schedule ?? 0}%</div>
@@ -173,13 +181,28 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
                 created_at: '2023-09-28 11:21:47',
               },
             ],
-            story_status: 4,
             user_schedule: {
               story_id: 1006008,
               user_id: 42,
               schedule: 0,
               total_task_time: 0,
               is_normal: 2,
+            },
+            category_status: {
+              id: 2583,
+              is_start: 2,
+              is_end: 2,
+              status_id: 13325,
+              status: {
+                id: 13325,
+                project_id: 483,
+                company_id: '1504303190303051778',
+                content: '实现中',
+                color: '#2877FF',
+                sort: 30,
+                content_txt: '',
+                group_content_txt: '',
+              },
             },
             config_priority: {
               id: 13321,
@@ -222,13 +245,28 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
                 created_at: '2023-09-28 12:02:47',
               },
             ],
-            story_status: 4,
             user_schedule: {
               story_id: 1006004,
               user_id: 42,
               schedule: 17,
               total_task_time: 14400,
               is_normal: 2,
+            },
+            category_status: {
+              id: 2021,
+              is_start: 2,
+              is_end: 2,
+              status_id: 13325,
+              status: {
+                id: 13325,
+                project_id: 483,
+                company_id: '1504303190303051778',
+                content: '实现中',
+                color: '#2877FF',
+                sort: 30,
+                content_txt: '',
+                group_content_txt: '',
+              },
             },
             config_priority: {
               id: 13321,
@@ -262,13 +300,28 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
             is_public: 3,
             story_prefix_key: 'WFCCXM--KF-7',
             attachments: [],
-            story_status: 2,
             user_schedule: {
               story_id: 1006003,
               user_id: 42,
               schedule: 100,
               total_task_time: 21600,
               is_normal: 2,
+            },
+            category_status: {
+              id: 2019,
+              is_start: 2,
+              is_end: 1,
+              status_id: 13326,
+              status: {
+                id: 13326,
+                project_id: 483,
+                company_id: '1504303190303051778',
+                content: '已实现',
+                color: '#43BA9A',
+                sort: 20,
+                content_txt: '',
+                group_content_txt: '',
+              },
             },
             config_priority: {
               id: 13321,
@@ -302,13 +355,28 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
             is_public: 3,
             story_prefix_key: 'WFCCXM--KF-6',
             attachments: [],
-            story_status: 4,
             user_schedule: {
               story_id: 1005991,
               user_id: 42,
               schedule: 0,
               total_task_time: 10800,
               is_normal: 1,
+            },
+            category_status: {
+              id: 2024,
+              is_start: 2,
+              is_end: 2,
+              status_id: 13325,
+              status: {
+                id: 13325,
+                project_id: 483,
+                company_id: '1504303190303051778',
+                content: '实现中',
+                color: '#2877FF',
+                sort: 30,
+                content_txt: '',
+                group_content_txt: '',
+              },
             },
             config_priority: {
               id: 13321,
@@ -342,7 +410,6 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
             is_public: 3,
             story_prefix_key: 'WFCCXM--KF-5',
             attachments: [],
-            story_status: 4,
             user_schedule: {
               story_id: 1005989,
               user_id: 42,
@@ -350,170 +417,22 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
               total_task_time: -3600,
               is_normal: 1,
             },
-            config_priority: {
-              id: 13321,
-              content: '中',
-              sort: 30,
-              color: '#2877FF',
-              icon: 'middle',
-              identity: 'priority',
-              content_txt: '中',
-              group_content_txt: '',
+            category_status: {
+              id: 2024,
+              is_start: 2,
+              is_end: 2,
+              status_id: 13325,
+              status: {
+                id: 13325,
+                project_id: 483,
+                company_id: '1504303190303051778',
+                content: '实现中',
+                color: '#2877FF',
+                sort: 30,
+                content_txt: '',
+                group_content_txt: '',
+              },
             },
-            project_category: {
-              id: 645,
-              name: '需求',
-              is_bug: 2,
-              attachment_path:
-                'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
-            },
-          },
-          {
-            id: 1005988,
-            project_id: 509,
-            name: '1111111111',
-            info: '',
-            expected_end_at: '2023-08-24',
-            category_id: 773,
-            finish_at: '2023-08-31 17:22:07',
-            priority: 0,
-            project_type: 2,
-            is_bug: 2,
-            is_public: 1,
-            story_prefix_key: 'CCXMCSSWCS-2',
-            attachments: [],
-            story_status: 2,
-            user_schedule: {
-              story_id: 1005988,
-              user_id: 42,
-              schedule: 100,
-              total_task_time: 75600,
-              is_normal: 2,
-            },
-            config_priority: null,
-            project_category: {
-              id: 773,
-              name: '需求',
-              is_bug: 2,
-              attachment_path:
-                'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
-            },
-          },
-          {
-            id: 1003366,
-            project_id: 509,
-            name: '1111111111111111',
-            info: '',
-            expected_end_at: null,
-            category_id: 773,
-            finish_at: '2023-08-11 01:23:34',
-            priority: 0,
-            project_type: 2,
-            is_bug: 2,
-            is_public: 1,
-            story_prefix_key: 'CCXMCSSWCS-1',
-            attachments: [],
-            story_status: 2,
-            user_schedule: null,
-            config_priority: null,
-            project_category: {
-              id: 773,
-              name: '需求',
-              is_bug: 2,
-              attachment_path:
-                'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
-            },
-          },
-          {
-            id: 1003224,
-            project_id: 483,
-            name: '4444444555555',
-            info: '',
-            expected_end_at: '2023-08-31',
-            category_id: 645,
-            finish_at: null,
-            priority: 13321,
-            project_type: 2,
-            is_bug: 2,
-            is_public: 3,
-            story_prefix_key: 'WFCCXM--KF-4',
-            attachments: [],
-            story_status: 4,
-            user_schedule: {
-              story_id: 1003224,
-              user_id: 42,
-              schedule: 100,
-              total_task_time: 4424400,
-              is_normal: 1,
-            },
-            config_priority: {
-              id: 13321,
-              content: '中',
-              sort: 30,
-              color: '#2877FF',
-              icon: 'middle',
-              identity: 'priority',
-              content_txt: '中',
-              group_content_txt: '',
-            },
-            project_category: {
-              id: 645,
-              name: '需求',
-              is_bug: 2,
-              attachment_path:
-                'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
-            },
-          },
-          {
-            id: 1003222,
-            project_id: 483,
-            name: '4444444555555',
-            info: '',
-            expected_end_at: null,
-            category_id: 645,
-            finish_at: null,
-            priority: 13321,
-            project_type: 2,
-            is_bug: 2,
-            is_public: 3,
-            story_prefix_key: 'WFCCXM--KF-3',
-            attachments: [],
-            story_status: 2,
-            user_schedule: null,
-            config_priority: {
-              id: 13321,
-              content: '中',
-              sort: 30,
-              color: '#2877FF',
-              icon: 'middle',
-              identity: 'priority',
-              content_txt: '中',
-              group_content_txt: '',
-            },
-            project_category: {
-              id: 645,
-              name: '需求',
-              is_bug: 2,
-              attachment_path:
-                'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
-            },
-          },
-          {
-            id: 1003221,
-            project_id: 483,
-            name: '333333333',
-            info: '',
-            expected_end_at: '2023-09-08',
-            category_id: 645,
-            finish_at: null,
-            priority: 13321,
-            project_type: 2,
-            is_bug: 2,
-            is_public: 3,
-            story_prefix_key: 'WFCCXM--KF-2',
-            attachments: [],
-            story_status: 2,
-            user_schedule: null,
             config_priority: {
               id: 13321,
               content: '中',

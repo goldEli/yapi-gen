@@ -406,12 +406,6 @@ export const TaskItemBottom = styled.div`
   .status {
     display: flex;
     align-items: center;
-    .tag {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: red;
-    }
     .name {
       margin-left: 8px;
       font-size: 12px;
@@ -425,4 +419,16 @@ export const TaskItemBottom = styled.div`
     font-size: 12px;
     color: var(--neutral-n2);
   }
+`
+
+export const TaskTag = styled.div<{ state?: number }>`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: ${props =>
+    props.state === 1
+      ? 'var(--auxiliary-b1)'
+      : props.state === 2
+      ? 'var(--neutral-n7)'
+      : 'var(--function-success)'};
 `
