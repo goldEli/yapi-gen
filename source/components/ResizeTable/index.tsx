@@ -173,9 +173,6 @@ const ResizeTable = (props: ResizeTableProps) => {
     setColumns(props.col)
   }, [props.col])
   const RenderTableRow = (props: any) => {
-    // eslint-disable-next-line react/prop-types
-    console.log(props, 'props')
-
     return (
       <Tooltip
         arrowPointAtCenter

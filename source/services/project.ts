@@ -831,6 +831,7 @@ export const getProjectInfoValues: any = async (params: any, all?: number) => {
 
     filterMemberList = response.data.users_name?.map((item: any) => {
       return {
+        ...item,
         id: item.id,
         content: item.name,
         content_txt: item.name,

@@ -34,7 +34,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -407,10 +407,26 @@ export const useDynamicColumns = (state: any) => {
       key: 'users_name',
       width: 140,
       render: (text: any, record: any) => {
+        console.log(record?.usersNameIds)
+        console.log(
+          projectInfoValues
+            ?.filter((i: any) => i.key === 'users_name')[0]
+            ?.children?.filter((i: any) => i.id !== -1)
+            .filter((k: any) => k.status === 1)
+            .map((l: any) => l.id),
+        )
+
         return (
           <TableQuickEdit
             type="fixed_select"
-            defaultText={record?.usersNameIds || []}
+            defaultText={
+              projectInfoValues
+                ?.filter((i: any) => i.key === 'users_name')[0]
+                ?.children?.filter((i: any) => i.id !== -1)
+                .filter((k: any) => k.status === 1)
+                .map((l: any) => l.id)
+                .filter((l: any) => record?.usersNameIds.includes(l.id)) || []
+            }
             keyText="users"
             item={record}
             onUpdate={() => onUpdate(record)}
@@ -419,11 +435,15 @@ export const useDynamicColumns = (state: any) => {
             {record?.usersInfo.length > 0 && (
               <MultipleAvatar
                 max={3}
-                list={record?.usersInfo?.map((i: any) => ({
-                  id: i.id,
-                  name: i.name,
-                  avatar: i.avatar,
-                }))}
+                list={record?.usersInfo?.map((i: any) => {
+                  // console.log(i, '------------飞')
+
+                  return {
+                    id: i.id,
+                    name: i.name,
+                    avatar: i.avatar,
+                  }
+                })}
               />
             )}
             {!record?.usersInfo?.length && '--'}

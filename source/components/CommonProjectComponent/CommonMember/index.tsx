@@ -44,6 +44,7 @@ import CommonButton from '@/components/CommonButton'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { confirmProjectHand } from '@/services/handover'
 import { setIsRefresh } from '@store/user'
+import { getProjectInfoValuesStore } from '@store/project/project.thunk'
 interface Props {
   visible: boolean
   onChangeVisible(): void
@@ -271,6 +272,7 @@ const CommonMember = (props: Props) => {
           type: 'success',
         })
         dispatch(setIsRefresh(!isRefresh))
+        dispatch(getProjectInfoValuesStore({ projectId: props.projectId }))
         return Promise.resolve()
       },
     })
@@ -302,6 +304,7 @@ const CommonMember = (props: Props) => {
     const result = await getProjectInfo({ projectId: projectInfo.id })
     dispatch(setProjectInfo(result))
     dispatch(setIsUpdateMember(true))
+    dispatch(getProjectInfoValuesStore({ projectId: props.projectId }))
   }
   return (
     <WaiWrap>
