@@ -3,12 +3,13 @@
 // 可拖拽列宽的表格
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Spin, Table } from 'antd'
+import { Spin, Table, Tooltip } from 'antd'
 import { Resizable, ResizeCallbackData } from 'react-resizable'
 import './index.css'
 import styled from '@emotion/styled'
 import NewLoadingTransition from '../NewLoadingTransition'
 import { useSelector } from '@store/index'
+import { useTranslation } from 'react-i18next'
 
 const TableWrap = styled(Table)`
   user-select: none;
@@ -162,6 +163,7 @@ interface ResizeTableProps {
 const ResizeTable = (props: ResizeTableProps) => {
   const { listActiveId } = useSelector(store => store.global)
   // 表格列
+  const [t] = useTranslation()
   const [columns, setColumns] = useState<any>([])
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
@@ -170,7 +172,25 @@ const ResizeTable = (props: ResizeTableProps) => {
   useEffect(() => {
     setColumns(props.col)
   }, [props.col])
+  const RenderTableRow = (props: any) => {
+    // eslint-disable-next-line react/prop-types
+    console.log(props, 'props')
 
+    return (
+      <Tooltip
+        arrowPointAtCenter
+        title={
+          props.className.includes('dia_y')
+            ? t(
+                'youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject',
+              )
+            : null
+        }
+      >
+        <tr {...props} key={props?.['data-row-key']} />
+      </Tooltip>
+    )
+  }
   const handleResize =
     (index: number) =>
     (_: React.SyntheticEvent<Element>, { size }: ResizeCallbackData) => {
@@ -269,6 +289,9 @@ const ResizeTable = (props: ResizeTableProps) => {
               components={{
                 header: {
                   cell: ResizeTitle,
+                },
+                body: {
+                  row: RenderTableRow,
                 },
               }}
               scroll={{

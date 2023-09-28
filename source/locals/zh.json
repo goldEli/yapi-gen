@@ -2426,5 +2426,6 @@
   "fullScreenPreview": "全屏预览",
   "preview": "弹窗预览",
   "howToOpenTheDetailsPage": "详情页打开方式",
-  "viewingHistoricalDataIsNotCurrently": "历史数据暂不支持查看"
+  "viewingHistoricalDataIsNotCurrently": "历史数据暂不支持查看",
+  "youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject": "您已被该项目管理员移除团队，无法查看该数据，如有疑问请联系该项目管理员"
 }

@@ -2426,5 +2426,6 @@
   "fullScreenPreview": "Full screen preview",
   "preview": "Pop-up preview",
   "howToOpenTheDetailsPage": "How to open the details page",
-  "viewingHistoricalDataIsNotCurrently": "Viewing historical data is not currently supported."
+  "viewingHistoricalDataIsNotCurrently": "Viewing historical data is not currently supported.",
+  "youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject": "You have been removed from the team by the project administrator and cannot view this data. If you have any questions, please contact the project administrator."
 }
