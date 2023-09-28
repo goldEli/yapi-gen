@@ -353,3 +353,76 @@ export const CardItemTaskItem = styled.div`
   margin-top: 8px;
   padding: 16px;
 `
+
+export const TaskItemTop = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  .demandNumber {
+    display: flex;
+    align-items: center;
+    img {
+      width: 18px;
+      height: 18px;
+    }
+    .label {
+      font-size: 12px;
+      color: var(--neutral-n3);
+      margin-left: 8px;
+    }
+  }
+  .priorityBox {
+    display: flex;
+    align-items: center;
+    .label {
+      font-size: 12px;
+      color: var(--neutral-n1-d1);
+      margin-left: 8px;
+    }
+  }
+`
+
+export const TaskItemContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+  .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; // 自定义行数
+    -webkit-box-orient: vertical;
+    font-size: 14px;
+    color: var(--neutral-n1-d1);
+    white-space: normal;
+  }
+`
+
+export const TaskItemBottom = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .status {
+    display: flex;
+    align-items: center;
+    .tag {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: red;
+    }
+    .name {
+      margin-left: 8px;
+      font-size: 12px;
+      color: var(--neutral-n2);
+    }
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--neutral-n2);
+  }
+`

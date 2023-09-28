@@ -583,7 +583,10 @@ const UploadAttach = (props: any, ref: any) => {
                   onClick={() =>
                     i.state === 'success' ? onPreview(i.file) : null
                   }
-                  style={{ width: '72px', height: '72px' }}
+                  style={{
+                    width: props.size === 'small' ? '56px' : '72px',
+                    height: props.size === 'small' ? '56px' : '72px',
+                  }}
                 >
                   <div style={{ width: '100%', height: '100%' }}>
                     {imgs.includes(i.file.suffix) && (
