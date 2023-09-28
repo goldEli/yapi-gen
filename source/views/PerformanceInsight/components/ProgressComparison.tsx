@@ -773,6 +773,7 @@ const ProgressComparison = (props: Props) => {
             ? value?.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
           : String(props.projectId),
+
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
       user_ids: extras?.user_ids?.join(','),
       period_time: getTimeStr({

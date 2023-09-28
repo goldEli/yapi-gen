@@ -85,6 +85,7 @@ const HeaderAll = (props: HaderProps) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [person, setPerson] = useState<any>([])
   const isRefresh = useSelector(store => store.user.isRefresh)
+
   const getProjectApi = async () => {
     const res: any = await getProjectList({
       // self: 1,
@@ -108,7 +109,6 @@ const HeaderAll = (props: HaderProps) => {
             value: el.id,
           })),
         )
-
     if (props.homeType === 'all') {
       setOptions(props.headerParmas?.projectIds || [])
     } else {
@@ -187,7 +187,11 @@ const HeaderAll = (props: HaderProps) => {
   }, [timeVal, timeKey])
 
   useEffect(() => {
-    if (timeKey === 0 && !timeVal) {
+    if (
+      (timeKey === 0 && !timeVal) ||
+      (props.homeType !== 'all' && options?.length === 0)
+      // 如果不是全局的并且没有项目id则拦截
+    ) {
       return
     }
     props?.onSearchData?.({
