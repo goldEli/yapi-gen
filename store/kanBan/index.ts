@@ -87,6 +87,9 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    resetkanbanConfig(state) {
+      delete state.kanbanConfig
+    },
     changeRight(state) {
       state.containRight = !state.containRight
     },
@@ -207,6 +210,8 @@ const slice = createSlice({
       state.kanbanInfoByGroup = action.payload
     })
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
+      console.log(action.payload)
+
       state.kanbanConfig = action.payload
     })
   },
@@ -228,6 +233,7 @@ export const {
   setFullScreen,
   changeRight,
   setSpinning,
+  resetkanbanConfig,
 } = slice.actions
 
 export default kanBan

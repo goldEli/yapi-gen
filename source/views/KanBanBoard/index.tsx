@@ -1,16 +1,18 @@
 import styled from '@emotion/styled'
 import React, { useEffect } from 'react'
 import Board from './Borad'
+
 import UserGroupingModal from './UserGroupingModal'
 import ModifyStatusModal from './ModifyStatusModal'
 import useGuideModal from './hooks/useGuideModal'
 import ToolBar from './ToolBar'
 import TopArea from './TopArea'
 import useInit from './useInit'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { onComputedPermission } from '@/tools'
 import PermissionWrap from '@/components/PermissionWrap'
 import FullScreenContainer from './FullScreenContainer'
+import { resetkanbanConfig } from '@store/kanBan'
 interface IProps {}
 const KanBanBoardBox = styled.div`
   width: 100%;
@@ -24,6 +26,7 @@ const KanBanBoardBox = styled.div`
 `
 
 const KanBanBoard: React.FC<IProps> = props => {
+  const dispatch = useDispatch()
   const { userPreferenceConfig, currentMenu } = useSelector(store => store.user)
   const { guildModalEl } = useGuideModal()
   const { projectInfo } = useSelector(store => store.project)
@@ -33,6 +36,12 @@ const KanBanBoard: React.FC<IProps> = props => {
     currentMenu,
     '/ProjectManagement/Project',
   )
+  useEffect(() => {
+    return () => {
+      console.log('离开')
+      dispatch(resetkanbanConfig())
+    }
+  }, [])
 
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
