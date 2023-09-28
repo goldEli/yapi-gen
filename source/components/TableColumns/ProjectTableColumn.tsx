@@ -407,15 +407,6 @@ export const useDynamicColumns = (state: any) => {
       key: 'users_name',
       width: 140,
       render: (text: any, record: any) => {
-        console.log(record?.usersNameIds)
-        console.log(
-          projectInfoValues
-            ?.filter((i: any) => i.key === 'users_name')[0]
-            ?.children?.filter((i: any) => i.id !== -1)
-            .filter((k: any) => k.status === 1)
-            .map((l: any) => l.id),
-        )
-
         return (
           <TableQuickEdit
             type="fixed_select"
@@ -425,7 +416,7 @@ export const useDynamicColumns = (state: any) => {
                 ?.children?.filter((i: any) => i.id !== -1)
                 .filter((k: any) => k.status === 1)
                 .map((l: any) => l.id)
-                .filter((l: any) => record?.usersNameIds.includes(l.id)) || []
+                .filter((l: any) => record?.usersNameIds.includes(l)) || []
             }
             keyText="users"
             item={record}
@@ -436,8 +427,6 @@ export const useDynamicColumns = (state: any) => {
               <MultipleAvatar
                 max={3}
                 list={record?.usersInfo?.map((i: any) => {
-                  // console.log(i, '------------飞')
-
                   return {
                     id: i.id,
                     name: i.name,
