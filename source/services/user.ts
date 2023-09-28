@@ -168,5 +168,14 @@ export const getMenuPermission: any = async () => {
 // 我的最近列表
 export const getMyRecent: any = async () => {
   const response = await http.get('/b/user/recent')
-  return response.data
+  // return {...response.data,is_member:response.data.}
+  console.log(response.data)
+
+  return {
+    ...response.data,
+    recent_create: response.data.recent_create.map((i: any) => ({
+      ...i,
+      is_member: i.feedable.is_member,
+    })),
+  }
 }
