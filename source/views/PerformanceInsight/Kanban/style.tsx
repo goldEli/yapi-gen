@@ -1,6 +1,6 @@
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
-import { Checkbox } from 'antd'
+import { Checkbox, Space } from 'antd'
 
 // 筛选及统计部分
 export const KanBanHeaderWrap = styled.div`
@@ -246,4 +246,110 @@ export const MemberItem = styled.div`
       text-overflow: ellipsis;
     }
   }
+`
+
+// KanBanCardGroup 人员卡片组
+export const KanBanCardGroupWrap = styled.div`
+  padding: 16px 16px 8px 16px;
+`
+
+export const KanBanCardGroupBox = styled(Space)`
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 8px;
+  .ant-space-item {
+    height: 100%;
+  }
+`
+
+export const KanBanCardItem = styled.div`
+  width: 302px;
+  height: 100%;
+  display: inline-block;
+  background: var(--neutral-n8);
+  padding: 16px;
+  .infinite-scroll-component__outerdiv {
+    height: calc(100% - 88px);
+  }
+  .infinite-scroll-component {
+    ::-webkit-scrollbar {
+      width: 0px;
+    }
+  }
+`
+
+export const CardItemHeader = styled.div`
+  width: 100%;
+  height: 88px;
+  border-radius: 6px;
+  background: linear-gradient(47deg, #6688ff 0%, #8ca6ff 100%);
+  padding: 12px 16px;
+  display: flex;
+  .avatar {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    border: 1px solid #dde3f3;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 6px;
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: calc(100% - 40px);
+    .nameBox {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .name {
+        font-size: 14px;
+        color: var(--neutral-white-d7);
+        font-family: SiYuanMedium;
+        width: 80%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .sub {
+      font-size: 12px;
+      color: var(--neutral-n8);
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .task {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .label {
+        font-size: 12px;
+        color: var(--neutral-n8);
+      }
+    }
+  }
+  .ant-progress-text {
+    color: var(--neutral-n8);
+    font-size: 12px;
+  }
+`
+
+export const CardItemTaskItem = styled.div`
+  min-height: 114px;
+  border-radius: 6px;
+  background: var(--neutral-white-d2);
+  margin-top: 8px;
+  padding: 16px;
 `

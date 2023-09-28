@@ -193,13 +193,21 @@ const KanBanPerson = (props: KanBanPersonProps) => {
         ],
       },
     ]
-    setDataList(result)
+    // 人员数组添加项目id
+    const computedResult = result?.map((i: any) => ({
+      ...i,
+      member_list: i.member_list?.map((k: any) => ({
+        name: k.name,
+        id: `${i.id}_${k.id}`,
+      })),
+    }))
+    setDataList(computedResult)
     // 拍平数组
     const allMember: any = result.reduce((accumulator: any, item: any) => {
       if (item.member_list) {
         const memberList: any = item.member_list?.map((i: any) => ({
           name: i.name,
-          id: i.id,
+          id: `${item.id}_${i.id}`,
           project_name: item.name,
         }))
         accumulator.push(...memberList)
@@ -267,7 +275,6 @@ const KanBanPerson = (props: KanBanPersonProps) => {
 
   // 单人勾选
   const onClickCheckboxItem = (id: number) => {
-    console.log(111111)
     let resultKeys: any = []
     // 如果勾选中不存在，则添加
     if (selectKeys?.includes(id)) {

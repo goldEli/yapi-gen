@@ -7,6 +7,7 @@ import KanBanPerson from './components/KanBanPerson'
 import { PersonBox, SideMain, ContentWrap } from './style'
 import { CloseWrap, DragLine, MouseDom } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
+import KanBanCardGroup from './components/KanBanCardGroup'
 
 const PerformanceInsightKanBan = () => {
   const { currentMenu } = useSelector(store => store.user)
@@ -164,6 +165,7 @@ const PerformanceInsightKanBan = () => {
             </div>
           )}
         </PersonBox>
+        <KanBanCardGroup leftWidth={leftWidth} />
       </ContentWrap>
     </PermissionWrap>
   )
