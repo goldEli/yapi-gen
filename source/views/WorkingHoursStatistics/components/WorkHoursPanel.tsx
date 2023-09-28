@@ -208,7 +208,13 @@ const WorkHoursPanel = (props: any, ref: any) => {
                   })}
                   style={{ width }}
                 >
-                  <div>
+                  <div
+                    title={
+                      type === 0
+                        ? String(data[0])
+                        : `${data[0]}${t('to')}${data[data.length - 1]}`
+                    }
+                  >
                     {type === 0
                       ? String(data[0])
                       : `${data[0]}${t('to')}${data[data.length - 1]}`}
