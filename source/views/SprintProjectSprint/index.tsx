@@ -578,6 +578,7 @@ const SprintProjectSprint: React.FC = () => {
     currentMenu,
     '/ProjectManagement/Project',
   )
+  console.log(checkList, 'setCheckList')
 
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
