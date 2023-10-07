@@ -101,7 +101,7 @@ export default React.memo(
 
     const login2 = debounce(
       async () => {
-        if (form2.phone) {
+        if (!form2.phone) {
           console.log('22')
 
           return
@@ -151,22 +151,25 @@ export default React.memo(
 
     const login = debounce(
       async () => {
-        if (form.username) {
+        console.log(1)
+
+        if (!form.username) {
           return
         }
         if (!(form.username && form.password && form.code)) {
-          if (form.username == '') {
+          if (form.username === '') {
             setFocusNumber(1)
             setErrorMessage(languageMode.userWarning)
-          } else if (form.password == '') {
+          } else if (form.password === '') {
             setFocusNumber(2)
             setErrorMessage(languageMode.passwordWarning)
-          } else if (form.code == '') {
+          } else if (form.code === '') {
             setFocusNumber(3)
             setErrorMessage(languageMode.codeWarning)
           }
           return
         }
+        console.log(2)
 
         const data = {
           account: form.username,

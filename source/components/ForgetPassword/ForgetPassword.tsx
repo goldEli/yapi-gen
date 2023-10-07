@@ -134,7 +134,7 @@ const ForgetPassword = (props: FProps) => {
   const login = async () => {
     console.log('登录')
 
-    if (form2.phone) {
+    if (!form2.phone) {
       return
     }
     if (!(form2.phone && form2.msg && form2.password)) {
