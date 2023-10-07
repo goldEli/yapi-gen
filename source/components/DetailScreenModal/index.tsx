@@ -29,9 +29,9 @@ const DetailScreenModal = () => {
 
   useEffect(() => {
     // 如果地址栏上带有此参数，默认打开全屏弹层
-    if (paramsData?.isOpenScreenDetail && projectInfo.id) {
+    if (paramsData?.isOpenScreenDetail && (projectInfo?.id || paramsData?.id)) {
       const resultParams: any = {
-        id: projectInfo?.id,
+        id: projectInfo?.id || paramsData?.id,
         specialType: paramsData?.specialType,
         type: paramsData?.type,
       }
