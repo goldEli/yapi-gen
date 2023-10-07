@@ -317,7 +317,7 @@ const SprintProjectSprint: React.FC = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-
+  const timer = useRef<NodeJS.Timeout | null>(null)
   const [searchObject, setSearchObject] = useState<any>({
     order: 'desc',
     orderkey: 'id',
@@ -461,20 +461,35 @@ const SprintProjectSprint: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    dispatch(
-      getRightSprintList({
-        ...searchObject,
-        search: {
-          ...searchObject.search,
-          resource_ids:
-            activeKey === 1 && searchObject.is_no_creation_long_story === 1
-              ? []
-              : leftSprintList.list
-                  .filter((_, idx) => checkList[idx])
-                  .map(k => k.id),
-        },
-      }),
-    )
+    timer.current && clearTimeout(timer.current)
+    timer.current = setTimeout(() => {
+      console.log(
+        searchObject,
+        checkList,
+        activeKey === 1 && searchObject.is_no_creation_long_story === 1,
+        leftSprintList.list.filter((_, idx) => checkList[idx]).map(k => k.id),
+        'checkList',
+      )
+      // if (
+      //   leftSprintList.list.filter((_, idx) => checkList[idx]).map(k => k.id)
+      //     .length > 0
+      // ) {
+      dispatch(
+        getRightSprintList({
+          ...searchObject,
+          search: {
+            ...searchObject.search,
+            resource_ids:
+              activeKey === 1 && searchObject.is_no_creation_long_story === 1
+                ? []
+                : leftSprintList.list
+                    .filter((_, idx) => checkList[idx])
+                    .map(k => k.id),
+          },
+        }),
+      )
+      // }
+    }, 100)
   }, [searchObject, checkList])
 
   useEffect(() => {
