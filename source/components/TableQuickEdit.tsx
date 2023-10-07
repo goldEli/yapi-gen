@@ -227,6 +227,7 @@ const TableQuickEdit = (props: Props) => {
         projectId:
           props.projectId === 0 ? props.item?.project_id : projectInfo.id,
       })
+
       resultValue.value = response?.map((i: any) => ({
         label: i.name,
         value: i.id,
@@ -241,6 +242,7 @@ const TableQuickEdit = (props: Props) => {
         id: props.projectId === 0 ? props.item?.project_id : projectInfo.id,
         isTree: 1,
       })
+
       resultValue.value = [
         ...[
           {
@@ -299,6 +301,8 @@ const TableQuickEdit = (props: Props) => {
       const response = projectInfoValues
         ?.filter((i: any) => i.key === 'users_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
+        .filter((k: any) => k.status === 1)
+      console.log(response)
 
       const arr1 = response
         ?.map((i: any) => ({

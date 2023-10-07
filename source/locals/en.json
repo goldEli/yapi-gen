@@ -2413,6 +2413,10 @@
   "totalPerson": "{{total}} people",
   "totalNumber": "{{total}} times",
   "return": "Return",
+  "removeEmployee": "Remove employee",
+  "removeProjectMembersInBatches": "Remove project members in batches",
+  "areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding": "Are you sure you want to remove the selected employee? The removed employee will no longer have access to the project, but his/her history will remain. If you need to modify the task records related to an employee, please make changes under the corresponding task.",
+  "doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding": "Do you agree to remove [{{name}}]-[{{pos}}] from this project? If removed, the employee will no longer have access to the project, but his/her history will still be retained. If you need to modify the task records related to the employee, please make changes under the corresponding task.",
   "employeeSearch": "Search Number/Task",
   "systemOperationShortcutKeys": "System operation shortcut keys",
   "agileHelpManual": "agile Help Manual",
@@ -2425,5 +2429,7 @@
   "pendingReview": "Pending review",
   "priority": "Priority",
   "taskStatus": "Task status",
-  "searchMembers": "Search members"
+  "searchMembers": "Search members",
+  "viewingHistoricalDataIsNotCurrently": "Viewing historical data is not currently supported.",
+  "youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject": "You have been removed from the team by the project administrator and cannot view this data. If you have any questions, please contact the project administrator."
 }

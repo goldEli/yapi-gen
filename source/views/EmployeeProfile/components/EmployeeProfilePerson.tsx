@@ -14,6 +14,7 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { setContrastDrawer } from '@store/employeeProfile'
 import { useTranslation } from 'react-i18next'
 import MoreSelect from '@/components/MoreSelect'
+import { useSearchParams } from 'react-router-dom'
 
 interface EmployeeProfilePersonProps {
   onChangeFilter(value: any): void
@@ -29,6 +30,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [indeterminate, setIndeterminate] = useState(false)
   // 选中的key
   const [selectKeys, setSelectKeys] = useState<any>([])
+  const [searchParams, setSearchParams] = useSearchParams()
   const { allMemberList, currentKey } = useSelector(
     store => store.employeeProfile,
   )
@@ -45,6 +47,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         user_ids: checked ? allMemberList?.map((k: any) => k.id) : [],
       },
     })
+    setSearchParams({})
   }
 
   // 点击勾选或者取消人员
@@ -67,6 +70,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         user_ids: resultKeys,
       },
     })
+    setSearchParams({})
   }
 
   // 打开对比报告

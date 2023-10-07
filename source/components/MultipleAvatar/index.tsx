@@ -73,6 +73,8 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
   const getUserIntroListApi = async () => {
     const ids = props.list.map(el => el.id)
     const res = await getUserIntroList({ ids: ids.join(',') })
+    // console.log(res,'res---------');
+
     labelContent(res.list)
   }
   const labelContent = (dataList: any) => {

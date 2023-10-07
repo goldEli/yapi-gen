@@ -3,7 +3,7 @@
 // 全局迭代和冲刺的工作进展对比
 import HeaderAll from './HeaderAll'
 import { PersonText, TitleCss, Col, Line, TableStyle } from '../Header/Style'
-import { ReactElement, useEffect, useMemo, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Spin } from 'antd'
 import WorkItem from './WorkItem'
@@ -108,8 +108,11 @@ const ProgressComparison = (props: Props) => {
     size: 10,
     page: 1,
   })
+  const timer = useRef<NodeJS.Timeout | null>(null)
 
   const onUpdateOrderKey = (key: any, val: any) => {
+    console.log(extra, 'extra?.project_ids')
+
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
     props.type === 'Progress_iteration' ||
     props.type === 'Progress_sprint' ||
@@ -664,28 +667,33 @@ const ProgressComparison = (props: Props) => {
         break
     }
   }, [props.type, selectProjectIds, isRefresh, props.order])
-  useEffect(() => {
-    onSearchData(props.headerParmas?.projectIds || [])
-  }, [isRefresh])
   // 数据明细和进展对比查询数据的
+
   const onSearchData = (extras?: any) => {
     if (Array.isArray(extras)) {
       return
     }
-    setExtra(extras)
-    setSelectProjectIds(extras?.project_ids ?? [])
-    // 进展对比
-    if (props.type.includes('Progress')) {
-      setLoading(true)
-      getWorkContrastList(
-        extras?.project_ids ? [extras?.project_ids] : [],
-        extras,
-      )
-    } else {
-      // 缺陷分析
-      setLoading(true)
-      getMemberBugList(extras?.project_ids ? [extras?.project_ids] : [], extras)
-    }
+
+    timer.current && clearTimeout(timer.current)
+    timer.current = setTimeout(() => {
+      setExtra(extras)
+      setSelectProjectIds(extras?.project_ids ?? [])
+      // 进展对比
+      if (props.type.includes('Progress')) {
+        setLoading(true)
+        getWorkContrastList(
+          extras?.project_ids ? [extras?.project_ids] : [],
+          extras,
+        )
+      } else {
+        // 缺陷分析
+        setLoading(true)
+        getMemberBugList(
+          extras?.project_ids ? [extras?.project_ids] : [],
+          extras,
+        )
+      }
+    }, 300)
   }
   // 导出
   const onGetExportApi = async (option: number[]) => {
@@ -766,6 +774,7 @@ const ProgressComparison = (props: Props) => {
             ? value?.join(',')
             : props.headerParmas?.projectIds?.join?.(',')
           : String(props.projectId),
+
       iterate_ids: props.headerParmas.iterate_ids?.join(','),
       user_ids: extras?.user_ids?.join(','),
       period_time: getTimeStr({
@@ -780,9 +789,10 @@ const ProgressComparison = (props: Props) => {
         : extras?.time?.[1],
       ...(sort || {}),
     })
-    setWork(res.work)
-    setTableList(res.list)
-    setIds(res.list.map(el => el.id))
+
+    setWork(res?.work)
+    setTableList(res?.list)
+    setIds(res?.list.map(el => el.id))
     setLoading(false)
   }
 
@@ -815,10 +825,12 @@ const ProgressComparison = (props: Props) => {
         : extras?.time?.[1],
       ...(sort || {}),
     })
-    setWork(res.defect)
-    setTableList1(res.list)
-    setIds(res.list.map(el => el.id))
-    setLoading(false)
+    if (res) {
+      setWork(res.defect)
+      setTableList1(res.list)
+      setIds(res.list.map(el => el.id))
+      setLoading(false)
+    }
   }
   // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
@@ -1018,7 +1030,14 @@ const ProgressComparison = (props: Props) => {
           homeType={props.homeType}
           projectId={props.projectId}
           onGetExportApi={onGetExportApi}
-          onSearchData={onSearchData}
+          onSearchData={e => {
+            console.log(e.project_ids)
+            console.log(location)
+
+            // if (e.project_ids.length >= 1) {
+            onSearchData(e)
+            // }
+          }}
           type={props.type}
           viewType={props.viewType}
           headerParmas={props.headerParmas}

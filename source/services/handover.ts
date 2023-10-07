@@ -52,7 +52,16 @@ export const getHandProjectMember = async (user_id: any, pId: any) => {
 export const confirmProjectHand = async (params: any) => {
   const response = await http.delete('/b/project/member/delete', {
     user_id: params.id,
-    projects: params.data,
+
+    project_id: Number(params.project_id),
+  })
+
+  return response
+}
+export const confirmProjectHandAll = async (params: any) => {
+  const response = await http.post('/b/project/member/deleteAll', {
+    user_ids: params.id,
+
     project_id: Number(params.project_id),
   })
 

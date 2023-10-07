@@ -497,10 +497,13 @@ const CommonNeed = (props: any) => {
 
       if (isMany) {
         demandIds = manyListData?.list
+          .filter((k: any) => k.is_member)
           ?.filter((i: any) => i.status_name === item.statusName)[0]
           ?.list?.map((i: any) => i.id)
       } else {
-        demandIds = listData?.list?.map((i: any) => i.id)
+        demandIds = listData?.list
+          ?.filter((k: any) => k.is_member)
+          .map((i: any) => i.id)
       }
       item.isMineOrHis = true
       item.isAllProject = props.id === 0
@@ -522,6 +525,8 @@ const CommonNeed = (props: any) => {
       if (item.project_type === 1 && item.is_bug === 1) {
         type = 2
       }
+      console.log(demandIds, 'demandIds')
+
       openDemandDetail(
         { ...item, ...{ demandIds } },
         item.project_id,

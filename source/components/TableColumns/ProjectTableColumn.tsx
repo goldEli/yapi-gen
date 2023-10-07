@@ -34,7 +34,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -410,7 +410,14 @@ export const useDynamicColumns = (state: any) => {
         return (
           <TableQuickEdit
             type="fixed_select"
-            defaultText={record?.usersNameIds || []}
+            defaultText={
+              projectInfoValues
+                ?.filter((i: any) => i.key === 'users_name')[0]
+                ?.children?.filter((i: any) => i.id !== -1)
+                .filter((k: any) => k.status === 1)
+                .map((l: any) => l.id)
+                .filter((l: any) => record?.usersNameIds.includes(l)) || []
+            }
             keyText="users"
             item={record}
             onUpdate={() => onUpdate(record)}
@@ -419,11 +426,13 @@ export const useDynamicColumns = (state: any) => {
             {record?.usersInfo.length > 0 && (
               <MultipleAvatar
                 max={3}
-                list={record?.usersInfo?.map((i: any) => ({
-                  id: i.id,
-                  name: i.name,
-                  avatar: i.avatar,
-                }))}
+                list={record?.usersInfo?.map((i: any) => {
+                  return {
+                    id: i.id,
+                    name: i.name,
+                    avatar: i.avatar,
+                  }
+                })}
               />
             )}
             {!record?.usersInfo?.length && '--'}

@@ -1,13 +1,15 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 // 可拖拽列宽的表格
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Spin, Table } from 'antd'
+import { Spin, Table, Tooltip } from 'antd'
 import { Resizable, ResizeCallbackData } from 'react-resizable'
 import './index.css'
 import styled from '@emotion/styled'
 import NewLoadingTransition from '../NewLoadingTransition'
 import { useSelector } from '@store/index'
+import { useTranslation } from 'react-i18next'
 
 const TableWrap = styled(Table)`
   user-select: none;
@@ -161,6 +163,7 @@ interface ResizeTableProps {
 const ResizeTable = (props: ResizeTableProps) => {
   const { listActiveId } = useSelector(store => store.global)
   // 表格列
+  const [t] = useTranslation()
   const [columns, setColumns] = useState<any>([])
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
@@ -280,8 +283,15 @@ const ResizeTable = (props: ResizeTableProps) => {
               expandable={props?.expandable}
               onRow={props.onRow as any}
               rowClassName={(row: any) => {
+                if (row.is_member === undefined) {
+                  return row.id === listActiveId
+                    ? 'activeListItem'
+                    : props.rowClassName
+                }
                 return row.id === listActiveId
                   ? 'activeListItem'
+                  : !row.is_member
+                  ? 'dia_y'
                   : props.rowClassName
               }}
             />

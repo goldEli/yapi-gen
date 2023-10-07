@@ -263,6 +263,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
     const res = await getProjectMember({
       all: true,
       projectId: props.projectId,
+      kk: 1,
     })
     setCheckedList(
       res.filter((el: { id: number }) => props.users?.includes(el.id)),

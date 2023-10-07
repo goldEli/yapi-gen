@@ -79,6 +79,8 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
         newType: props?.newType,
       }),
     )
+    console.log(params, 'params')
+
     navigate(`/ChildLevel?data=${params}`)
   }
   return (

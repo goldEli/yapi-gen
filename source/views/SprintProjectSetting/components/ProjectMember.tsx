@@ -44,7 +44,7 @@ import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
-import ProjectOverModal from '@/components/ProjectOverModal'
+
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
@@ -53,6 +53,8 @@ import { getMessage } from '@/components/Message'
 import { menuList } from '@/views/SprintProjectManagement/config'
 import CommonIconFont from '@/components/CommonIconFont'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { confirmProjectHand, confirmProjectHandAll } from '@/services/handover'
 const Wrap = styled.div({
   padding: '0 24px',
   display: 'flex',
@@ -135,7 +137,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [searchParams] = useSearchParams()
   const [isVisible, setIsVisible] = useState(true)
   const [isAddVisible, setIsAddVisible] = useState(false)
-  const [isDelete, setIsDelete] = useState(false)
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const [operationItem, setOperationItem] = useState<any>({})
   const [memberList, setMemberList] = useState<any>({ list: undefined })
   const [jobList, setJobList] = useState<any>([])
@@ -234,7 +236,23 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const onOperationMember = (item: any, type: string) => {
     setOperationItem(item)
     if (type === 'del') {
-      setIsDelete(true)
+      open({
+        title: t('removeEmployee'),
+        text: t(
+          'doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding',
+          { name: item.name, pos: item.departmentName },
+        ),
+        async onConfirm() {
+          console.log(operationItem, '移除成员')
+          await confirmProjectHand({ id: item.id, project_id: projectId })
+          getList(order, { ...pageObj, page: 1 })
+          getMessage({
+            msg: t('successfullyDeleted') as string,
+            type: 'success',
+          })
+          return Promise.resolve()
+        },
+      })
     } else {
       setIsEditVisible(true)
     }
@@ -717,14 +735,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           projectId={projectId}
           onConfirm={onConfirmBatchEdit}
         />
-        <ProjectOverModal
-          title={t('project_handover')}
-          id={operationItem}
-          visible={isDelete}
-          close={() => setIsDelete(!isDelete)}
-          confirm={() => getList(order, pageObj)}
-        />
-
+        <DeleteConfirmModal />
         <NewAddUserModalForTandD
           title={t('project.addMember')}
           state={2}
@@ -751,6 +762,39 @@ const ProjectMember = (props: { searchValue?: string }) => {
           >
             <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
               <IconFont type="lock" />
+            </div>
+          </Tooltip>
+          <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title={t('removeProjectMembersInBatches')}
+          >
+            <div
+              className={boxItem}
+              onClick={() =>
+                open({
+                  title: t('removeEmployee'),
+                  text: t(
+                    'areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding',
+                  ),
+                  async onConfirm() {
+                    await confirmProjectHandAll({
+                      id: selectedRowKeys,
+                      project_id: projectId,
+                    })
+                    getList(order, { ...pageObj, page: 1 })
+                    getMessage({
+                      msg: t('successfullyDeleted') as string,
+                      type: 'success',
+                    })
+                    console.log('移除成员')
+
+                    return Promise.resolve()
+                  },
+                })
+              }
+            >
+              <IconFont type="delete" />
             </div>
           </Tooltip>
         </BatchAction>

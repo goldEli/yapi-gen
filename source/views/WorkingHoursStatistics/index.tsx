@@ -156,7 +156,7 @@ const WorkHours: React.FC<IProps> = props => {
       <Spin spinning={spinning}>
         <WorkHoursHeader
           id={paramsData.id}
-          onSearch={onSearch}
+          onSearch={(val, type) => onSearch(val, type, key)}
           stat={stat}
           onGetExport={onGetExport}
         />

@@ -42,7 +42,7 @@ import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
-import ProjectOverModal from '@/components/ProjectOverModal'
+
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
@@ -52,6 +52,8 @@ import { getMessage } from '@/components/Message'
 import TableSelectOptions from '@/components/TableSelectOptions'
 import { updateProjectRole } from '@/services/sprint'
 import CommonIconFont from '@/components/CommonIconFont'
+import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
+import { confirmProjectHand, confirmProjectHandAll } from '@/services/handover'
 const Wrap = styled.div({
   padding: '0 24px',
   display: 'flex',
@@ -144,6 +146,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [projectPermission, setProjectPermission] = useState<any>([])
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo, isUpdateMember } = useSelector(store => store.project)
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [form] = Form.useForm()
@@ -233,9 +236,27 @@ const ProjectMember = (props: { searchValue?: string }) => {
   }
 
   const onOperationMember = (item: any, type: string) => {
+    console.log(item)
+
     setOperationItem(item)
     if (type === 'del') {
-      setIsDelete(true)
+      open({
+        title: t('removeEmployee'),
+        text: t(
+          'doYouAgreeToRemoveFromThisIfTheEmployeeWillNoLongerHaveAccessToTheButHistoryWillStillBeIfYouNeedToModifyTheTaskRecordsRelatedToThePleaseMakeChangesUnderTheCorresponding',
+          { name: item.name, pos: item.departmentName },
+        ),
+        async onConfirm() {
+          console.log(operationItem, '移除成员')
+          await confirmProjectHand({ id: item.id, project_id: projectId })
+          getList(order, { ...pageObj, page: 1 })
+          getMessage({
+            msg: t('successfullyDeleted') as string,
+            type: 'success',
+          })
+          return Promise.resolve()
+        },
+      })
     } else {
       setIsEditVisible(true)
     }
@@ -697,6 +718,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   useEffect(() => {
     setSelectedRowKeys([])
   }, [memberList?.list])
+  console.log(selectedRowKeys)
 
   // 判断是否详情回来，并且权限是不是有
   const isLength =
@@ -730,13 +752,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           projectId={projectId}
           onConfirm={onConfirmBatchEdit}
         />
-        <ProjectOverModal
-          title={t('project_handover')}
-          id={operationItem}
-          visible={isDelete}
-          close={() => setIsDelete(!isDelete)}
-          confirm={() => getList(order, pageObj)}
-        />
+        <DeleteConfirmModal />
         <NewAddUserModalForTandD
           isPermisGroup
           userGroupId={
@@ -762,15 +778,39 @@ const ProjectMember = (props: { searchValue?: string }) => {
               <IconFont type="lock" />
             </div>
           </Tooltip>
-          {/* <Tooltip
+          <Tooltip
             placement="top"
             getPopupContainer={node => node}
-            title={t('common.permissionGroup')}
+            title={t('removeProjectMembersInBatches')}
           >
-            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+            <div
+              className={boxItem}
+              onClick={() =>
+                open({
+                  title: t('removeEmployee'),
+                  text: t(
+                    'areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding',
+                  ),
+                  async onConfirm() {
+                    await confirmProjectHandAll({
+                      id: selectedRowKeys,
+                      project_id: projectId,
+                    })
+                    getList(order, { ...pageObj, page: 1 })
+                    getMessage({
+                      msg: t('successfullyDeleted') as string,
+                      type: 'success',
+                    })
+                    console.log('移除成员')
+
+                    return Promise.resolve()
+                  },
+                })
+              }
+            >
               <IconFont type="delete" />
             </div>
-          </Tooltip> */}
+          </Tooltip>
         </BatchAction>
 
         <Header>

@@ -324,6 +324,7 @@ export const getProjectMember: any = async (params: any) => {
       all: params?.all ? 1 : 0,
       job_id: params?.jobIds,
       user_group_id: params?.userGroupIds,
+      all_member: params?.kk,
     },
     orderkey: params.orderKey,
     order: params.order,
@@ -809,9 +810,10 @@ export const deleteProjectGroup: any = async (params: any) => {
 }
 
 // 获取项目下拉数据
-export const getProjectInfoValues: any = async (params: any) => {
+export const getProjectInfoValues: any = async (params: any, all?: number) => {
   const response: any = await http.get<any>('/b/project/getfilter_values', {
     id: params.projectId,
+    all,
   })
 
   let filterCompanyList: any = []
@@ -829,6 +831,7 @@ export const getProjectInfoValues: any = async (params: any) => {
 
     filterMemberList = response.data.users_name?.map((item: any) => {
       return {
+        ...item,
         id: item.id,
         content: item.name,
         content_txt: item.name,

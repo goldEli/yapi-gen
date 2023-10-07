@@ -388,59 +388,63 @@ const MyDropdown = (props: any) => {
   }
 
   const itmeMain = (item: any, type: any) => {
+    console.log(item, '飞机')
+
     return (
       isArray(item) &&
-      item?.map((el: any) => (
-        <ItemBox key={el.id}>
-          <Row onClick={() => onRoute(el, type)}>
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <div>
-                {(el?.category_attachment || el?.feedable?.attachment) && (
-                  <Img
-                    src={el?.category_attachment || el?.feedable?.attachment}
-                  />
-                )}
-                {!(el?.category_attachment || el?.feedable?.attachment) && (
-                  <CommonIconFont
-                    type="interation-2"
-                    color="var(--neutral-n2)"
-                    size={20}
-                  />
-                )}
+      item
+        .filter(i => i.is_member)
+        ?.map((el: any) => (
+          <ItemBox key={el.id}>
+            <Row onClick={() => onRoute(el, type)}>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <div>
+                  {(el?.category_attachment || el?.feedable?.attachment) && (
+                    <Img
+                      src={el?.category_attachment || el?.feedable?.attachment}
+                    />
+                  )}
+                  {!(el?.category_attachment || el?.feedable?.attachment) && (
+                    <CommonIconFont
+                      type="interation-2"
+                      color="var(--neutral-n2)"
+                      size={20}
+                    />
+                  )}
+                </div>
+                <ItemCenter>
+                  <ItemTitle>{el.feedable?.name || el?.name}</ItemTitle>
+                  <ItemMsg>
+                    {el.feedable?.project?.name || el.project?.name}
+                  </ItemMsg>
+                </ItemCenter>
               </div>
-              <ItemCenter>
-                <ItemTitle>{el.feedable?.name || el?.name}</ItemTitle>
-                <ItemMsg>
-                  {el.feedable?.project?.name || el.project?.name}
-                </ItemMsg>
-              </ItemCenter>
-            </div>
 
-            <BtnBox
-              style={{
-                background:
-                  el.status?.is_start === 1 && el.status?.is_end === 2
-                    ? 'var(--primary-d2)'
-                    : el.status?.is_end === 1 && el.status?.is_start === 2
-                    ? 'var(--neutral-n7)'
-                    : el.status?.is_start === 2 && el.status?.is_end === 2
-                    ? 'var(--function-success)'
-                    : '',
-                color:
-                  el.status?.is_start === 1 && el.status?.is_end === 2
-                    ? 'var(--neutral-n7)'
-                    : el.status?.is_end === 1 && el.status?.is_start === 2
-                    ? 'var(--neutral-n1-d1)'
-                    : el.status?.is_start === 2 && el.status?.is_end === 2
-                    ? 'var(--neutral-n7)'
-                    : '',
-              }}
-            >
-              {el.status?.status?.content}
-            </BtnBox>
-          </Row>
-        </ItemBox>
-      ))
+              <BtnBox
+                style={{
+                  background:
+                    el.status?.is_start === 1 && el.status?.is_end === 2
+                      ? 'var(--primary-d2)'
+                      : el.status?.is_end === 1 && el.status?.is_start === 2
+                      ? 'var(--neutral-n7)'
+                      : el.status?.is_start === 2 && el.status?.is_end === 2
+                      ? 'var(--function-success)'
+                      : '',
+                  color:
+                    el.status?.is_start === 1 && el.status?.is_end === 2
+                      ? 'var(--neutral-n7)'
+                      : el.status?.is_end === 1 && el.status?.is_start === 2
+                      ? 'var(--neutral-n1-d1)'
+                      : el.status?.is_start === 2 && el.status?.is_end === 2
+                      ? 'var(--neutral-n7)'
+                      : '',
+                }}
+              >
+                {el.status?.status?.content}
+              </BtnBox>
+            </Row>
+          </ItemBox>
+        ))
     )
   }
 

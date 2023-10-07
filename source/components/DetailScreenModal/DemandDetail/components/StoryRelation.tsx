@@ -132,7 +132,6 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   const [allDataSource, setAllDataSource] = useState<any>({
     list: undefined,
   })
-  const projectIdRef = useRef('')
   const [resultData, setResultData] = useState<
     {
       label: string
@@ -164,11 +163,8 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   //   获取关联项列表
   const getList = async (pageParams: any, orderParams: any) => {
     setIsSpinning(true)
-    if (id) {
-      projectIdRef.current = id
-    }
     const response = await getStoryRelationStories({
-      projectId: id ?? projectIdRef.current,
+      projectId: id ?? props.detail.projectId,
       id: props.detail.id,
       order: orderParams.value,
       orderKey: orderParams.key,
