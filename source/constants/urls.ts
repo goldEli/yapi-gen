@@ -551,6 +551,10 @@ const urls = {
   getPerformanceInsightStatistics: '/b/performanceInsight/statistics',
   // 获取人员数据
   getPerformanceInsightPersonList: '/b/performanceInsight/personList',
+  // 看板列表
+  getPerformanceInsightKanBanList: '/b/company/kanban/list',
+  // 看板列表-加载更多
+  getPerformanceInsightKanBanListMore: '/b/company/kanban/list_more',
 }
 export default urls
 

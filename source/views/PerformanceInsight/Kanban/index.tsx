@@ -1,5 +1,5 @@
 /* eslint-disable no-undefined */
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import KanBanHeader from './components/KanBanHeader'
 import { useEffect, useRef, useState } from 'react'
@@ -8,17 +8,41 @@ import { PersonBox, SideMain, ContentWrap } from './style'
 import { CloseWrap, DragLine, MouseDom } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import KanBanCardGroup from './components/KanBanCardGroup'
+import { getPerformanceInsightKanBanList } from '@/services/performanceInsight'
+import moment from 'moment'
 
 const PerformanceInsightKanBan = () => {
+  const dispatch = useDispatch()
   const { currentMenu } = useSelector(store => store.user)
   const { hasSideCommonLayoutWidth } = useSelector(state => state.global)
-  const { kanBanData } = useSelector(store => store.performanceInsight)
   // 筛选条件
-  const [filterParams, setFilterParams] = useState<any>({})
+  const [filterParams, setFilterParams] = useState<any>({
+    user_ids: [],
+    iteration: [],
+    // 搜索值
+    keyword: '',
+    // 创建时间 - 默认近一个与
+    time: [
+      moment(new Date())
+        .startOf('months')
+        .subtract(1, 'months')
+        .format('YYYY-MM-DD'),
+      moment(new Date()).endOf('days').format('YYYY-MM-DD'),
+    ],
+    // 任务状态
+    status: [],
+    // 优先级
+    priority: [],
+  })
   // 统计数据
   const [statistics, setStatistics] = useState<any>({})
   // 人员数据分页
   const [personPage, setPersonPage] = useState(1)
+  // 看板数据
+  const [kanBanData, setKanBanData] = useState({
+    list: undefined,
+    total: 0,
+  })
   const [isOpen, setIsOpen] = useState(false)
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(256)
@@ -29,7 +53,7 @@ const PerformanceInsightKanBan = () => {
   const maxWidth = 480
 
   // 获取统计数据
-  const getStatistics = async () => {
+  const getStatistics = async (params: any) => {
     setStatistics({
       planned: 20,
       completed: 12,
@@ -39,7 +63,26 @@ const PerformanceInsightKanBan = () => {
   }
 
   // 获取人员看板数据
-  const getDataList = async (page: number) => {}
+  const getDataList = async (page: number, params: any) => {
+    setKanBanData({
+      list: undefined,
+      total: 0,
+    })
+    const result = JSON.parse(JSON.stringify(params))
+    result.page = page
+    result.user_ids = [
+      {
+        project_id: 483,
+        user_id: 42,
+      },
+      {
+        project_id: 509,
+        user_id: 42,
+      },
+    ]
+    const response = await getPerformanceInsightKanBanList(result)
+    setKanBanData(response)
+  }
 
   // 刷新功能
   const onUpdate = () => {
@@ -54,7 +97,6 @@ const PerformanceInsightKanBan = () => {
       setFocus(true)
       if (!sideMainPerformance.current) return
       sideMainPerformance.current.style.transition = '0s'
-      console.log(e.clientX, '=e.clientX', hasSideCommonLayoutWidth)
       width = e.clientX - hasSideCommonLayoutWidth - 24
       if (width > maxWidth) {
         setLeftWidth(maxWidth)
@@ -90,16 +132,30 @@ const PerformanceInsightKanBan = () => {
     setIsOpen(false)
   }
 
-  // 四个筛选条件更新统计数据
-  useEffect(() => {
+  // 更新看板数据 - 加载更多
+  const onChangeKanBanData = (item: any) => {
+    const resultData: any = (kanBanData?.list || [])?.map((i: any) => ({
+      ...i,
+      stories: item.id === i.id ? item.stories : i.stories,
+    }))
+    setKanBanData({
+      ...kanBanData,
+      list: resultData,
+    })
+  }
+
+  // 初始化、筛选条件更新
+  const onChangFilterUpdate = (value: any) => {
     // 更新统计数据
-    getStatistics()
-  }, [
-    filterParams?.keyword,
-    filterParams?.time,
-    filterParams?.user_ids,
-    filterParams?.iteration,
-  ])
+    getStatistics(value)
+    // 获取看板数据
+    getDataList(1, value)
+  }
+
+  // 初始化筛选条件更新统计数据和看板数据
+  useEffect(() => {
+    onChangFilterUpdate(filterParams)
+  }, [])
 
   return (
     <PermissionWrap
@@ -113,6 +169,7 @@ const PerformanceInsightKanBan = () => {
         onUpdate={onUpdate}
         statistics={statistics}
         filterParams={filterParams}
+        onChangFilterUpdate={onChangFilterUpdate}
       />
       <ContentWrap ref={main}>
         <PersonBox
@@ -165,7 +222,12 @@ const PerformanceInsightKanBan = () => {
             </div>
           )}
         </PersonBox>
-        <KanBanCardGroup leftWidth={leftWidth} />
+        <KanBanCardGroup
+          leftWidth={leftWidth}
+          filterParams={filterParams}
+          kanBanData={kanBanData}
+          onChangeKanBanData={onChangeKanBanData}
+        />
       </ContentWrap>
     </PermissionWrap>
   )

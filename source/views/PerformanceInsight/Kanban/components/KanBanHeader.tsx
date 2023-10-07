@@ -21,25 +21,16 @@ interface KanBanHeaderProps {
   onUpdate(): void
   statistics: any
   filterParams: any
+  onChangFilterUpdate(value: any): void
 }
 
 const KanBanHeader = (props: KanBanHeaderProps) => {
   const [t] = useTranslation()
   const [boxMaps, setBoxMaps] = useState<any>()
   const [spanMaps, setSpanMaps] = useState<any>()
-  const [searchFilterParams, setSearchFilterParams] = useState<any>({
-    // 搜索值
-    keyword: '',
-    // 创建时间 - 默认近一个与
-    time: [
-      moment(new Date()).startOf('months').subtract(1, 'months'),
-      moment(new Date()).endOf('days'),
-    ],
-    // 任务状态
-    status: [],
-    // 优先级
-    priority: [],
-  })
+  const [searchFilterParams, setSearchFilterParams] = useState<any>(
+    props.filterParams,
+  )
 
   const statusList = [
     { label: '已完成', value: 2 },
@@ -65,8 +56,9 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
 
   //   切换时间
   const onChangeTime = (dates: any) => {
+    let resultTime = null
     if (dates) {
-      const resultTime = [
+      resultTime = [
         moment(dates[0]).unix()
           ? moment(dates[0]).format('YYYY-MM-DD')
           : '1970-01-01',
@@ -84,6 +76,10 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
         time: null,
       })
     }
+    props.onChangFilterUpdate({
+      ...searchFilterParams,
+      time: resultTime,
+    })
   }
 
   //   点击切换搜素条件
@@ -92,6 +88,10 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
       return
     }
     setSearchFilterParams({
+      ...searchFilterParams,
+      [key]: value,
+    })
+    props.onChangFilterUpdate({
       ...searchFilterParams,
       [key]: value,
     })
