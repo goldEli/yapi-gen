@@ -332,7 +332,7 @@ const CommonMember = (props: Props) => {
             <span>
               {projectInfo.memberCount
                 ? t('project.projectMemberAll', {
-                    count: projectInfo.memberCount,
+                    count: memberList?.length,
                   })
                 : t('project.projectMember')}
             </span>
