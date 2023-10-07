@@ -446,8 +446,7 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
   }
 
   useEffect(() => {
-    if (filterParams?.status && JSON.stringify(memberStatistics) !== '{}') {
-      console.log(22222, memberStatistics)
+    if (JSON.stringify(memberStatistics) !== '{}') {
       setDataList({ list: undefined })
       setLoading(true)
       getReportList()

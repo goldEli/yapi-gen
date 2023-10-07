@@ -192,9 +192,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
 
   // 获取卡片数据
   const getStatistics = async (params: any, isChange?: boolean) => {
-    console.log(111)
     // 如果是修改筛选条件则，不带user_id
-    onChangeStatistics({})
     const response = await getMemberOverviewStatistics(
       isChange ? params : { ...params, ...{ user_id: paramsData?.user_id } },
     )
@@ -231,7 +229,10 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         ...resultParams,
       })
     } else {
-      if (!isInit) getStatistics({ ...searchFilterParams, user_id: [] })
+      if (!isInit) {
+        onChangeStatistics({})
+        getStatistics({ ...searchFilterParams, user_id: [] })
+      }
     }
   }, [paramsData?.user_id])
 

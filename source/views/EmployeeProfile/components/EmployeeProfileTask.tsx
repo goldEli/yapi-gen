@@ -255,11 +255,7 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
   }
 
   useEffect(() => {
-    if (
-      props.filterParams?.status &&
-      JSON.stringify(props.memberStatistics) !== '{}'
-    ) {
-      console.log(3333)
+    if (JSON.stringify(props.memberStatistics) !== '{}') {
       setDataList({ list: undefined })
       setLoading(true)
       //调用任务接口
