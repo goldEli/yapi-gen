@@ -148,164 +148,166 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
   const myRef2 = useRef<any>(null)
 
   return (
-    <CommonModal
-      width={640}
-      title={t('updateProgress')}
-      isVisible={visible}
-      onClose={close}
-      onConfirm={confirm}
-      confirmText={t('renew')}
-    >
+    <>
       <DeleteConfirmModal />
-      <ProgressContentWrap>
-        <div className="tips">
-          {t('itIsRecommendedNotToGoBelowTheCurrentProgress')}
-        </div>
-        <ShowProgress>
-          <span>
-            {t('currentProgress')} {data?.schedule ?? 0}%
-          </span>
-          <span className="processor">{t('cumulativeWorkingHours')}</span>
-          <span style={{ fontFamily: 'SiYuanMedium' }} className="username">
-            {`${data?.total_hours ?? 0}h`}
-          </span>
-          <span className="processor">{t('handler')}</span>
-          <span className="username">
-            {data?.user_name ? data?.user_name : '--'}
-          </span>
-        </ShowProgress>
-        <div className="progressBox">
-          <div>
-            {t('progressOfTheDay')}（{data?.last_at ? data?.last_at : '--'}）
+      <CommonModal
+        width={640}
+        title={t('updateProgress')}
+        isVisible={visible}
+        onClose={close}
+        onConfirm={confirm}
+        confirmText={t('renew')}
+      >
+        <ProgressContentWrap>
+          <div className="tips">
+            {t('itIsRecommendedNotToGoBelowTheCurrentProgress')}
           </div>
-          <div className="progress">
-            <SliderWrap
-              value={inputValue}
-              className="slider"
-              onChange={onChange}
-              tooltip={{ formatter: (val: any) => `${val}%` }}
-            />
-            <span style={{ marginLeft: 20 }}>{inputValue}%</span>
+          <ShowProgress>
+            <span>
+              {t('currentProgress')} {data?.schedule ?? 0}%
+            </span>
+            <span className="processor">{t('cumulativeWorkingHours')}</span>
+            <span style={{ fontFamily: 'SiYuanMedium' }} className="username">
+              {`${data?.total_hours ?? 0}h`}
+            </span>
+            <span className="processor">{t('handler')}</span>
+            <span className="username">
+              {data?.user_name ? data?.user_name : '--'}
+            </span>
+          </ShowProgress>
+          <div className="progressBox">
+            <div>
+              {t('progressOfTheDay')}（{data?.last_at ? data?.last_at : '--'}）
+            </div>
+            <div className="progress">
+              <SliderWrap
+                value={inputValue}
+                className="slider"
+                onChange={onChange}
+                tooltip={{ formatter: (val: any) => `${val}%` }}
+              />
+              <span style={{ marginLeft: 20 }}>{inputValue}%</span>
+            </div>
           </div>
-        </div>
-        <Form
-          form={form}
-          layout="vertical"
-          autoComplete="off"
-          className="customer-form"
-        >
-          <Form.Item
-            label={t('actualWorkingHours')}
-            name="total_task_time"
-            rules={[
-              {
-                required: true,
-                message: t('pleaseEnterActualWorkingHours'),
-              },
-            ]}
+          <Form
+            form={form}
+            layout="vertical"
+            autoComplete="off"
+            className="customer-form"
           >
-            <InputNumber
-              min={0.0}
-              style={{ width: '100%' }}
-              placeholder={t('actualWorkingHours')}
-              step={0.01}
-              precision={2}
-            />
-          </Form.Item>
-          <Form.Item label={t('releaseNotes')} name="perception">
-            <Input.TextArea
-              maxLength={600}
-              autoSize={{ minRows: 5, maxRows: 5 }}
-              placeholder={t('common.pleaseEnter')}
-            />
-          </Form.Item>
-          <Form.Item
-            className="info_item_tab_label"
-            label={
-              <LabelWrap
-                style={{
-                  justifyContent: 'space-between',
-                  display: 'flex',
-                  width: '100%',
+            <Form.Item
+              label={t('actualWorkingHours')}
+              name="total_task_time"
+              rules={[
+                {
+                  required: true,
+                  message: t('pleaseEnterActualWorkingHours'),
+                },
+              ]}
+            >
+              <InputNumber
+                min={0.0}
+                style={{ width: '100%' }}
+                placeholder={t('actualWorkingHours')}
+                step={0.01}
+                precision={2}
+              />
+            </Form.Item>
+            <Form.Item label={t('releaseNotes')} name="perception">
+              <Input.TextArea
+                maxLength={600}
+                autoSize={{ minRows: 5, maxRows: 5 }}
+                placeholder={t('common.pleaseEnter')}
+              />
+            </Form.Item>
+            <Form.Item
+              className="info_item_tab_label"
+              label={
+                <LabelWrap
+                  style={{
+                    justifyContent: 'space-between',
+                    display: 'flex',
+                    width: '100%',
+                  }}
+                >
+                  <Label style={{ fontFamily: 'SiYuanRegular' }}>
+                    {t('project.img')}
+                  </Label>
+                  <Tooltip title={t('addPictures')}>
+                    <CloseWrap
+                      style={{ marginLeft: 'auto' }}
+                      width={32}
+                      height={32}
+                    >
+                      <CommonIconFont
+                        type="plus"
+                        size={20}
+                        color="var(--neutral-n2)"
+                        onClick={() => {
+                          myRef.current?.handleUpload()
+                        }}
+                      />
+                    </CloseWrap>
+                  </Tooltip>
+                </LabelWrap>
+              }
+              name="attachment"
+            >
+              <UploadAttach
+                special={['png', 'jpg', 'jpeg', 'gif']}
+                ref={myRef}
+                power
+                onChangeAttachment={(res: any) => {
+                  onChangeAttachment(res)
                 }}
-              >
-                <Label style={{ fontFamily: 'SiYuanRegular' }}>
-                  {t('project.img')}
-                </Label>
-                <Tooltip title={t('addPictures')}>
-                  <CloseWrap
-                    style={{ marginLeft: 'auto' }}
-                    width={32}
-                    height={32}
-                  >
-                    <CommonIconFont
-                      type="plus"
-                      size={20}
-                      color="var(--neutral-n2)"
-                      onClick={() => {
-                        myRef.current?.handleUpload()
-                      }}
-                    />
-                  </CloseWrap>
-                </Tooltip>
-              </LabelWrap>
-            }
-            name="attachment"
-          >
-            <UploadAttach
-              special={['png', 'jpg', 'jpeg', 'gif']}
-              ref={myRef}
-              power
-              onChangeAttachment={(res: any) => {
-                onChangeAttachment(res)
-              }}
-            />
-          </Form.Item>
-          <Form.Item
-            className="info_item_tab_label"
-            label={
-              <LabelWrap
-                style={{
-                  justifyContent: 'space-between',
-                  display: 'flex',
-                  width: '100%',
+              />
+            </Form.Item>
+            <Form.Item
+              className="info_item_tab_label"
+              label={
+                <LabelWrap
+                  style={{
+                    justifyContent: 'space-between',
+                    display: 'flex',
+                    width: '100%',
+                  }}
+                >
+                  <Label style={{ fontFamily: 'SiYuanRegular' }}>
+                    {t('video')}
+                  </Label>
+                  <Tooltip title={t('addVideo')}>
+                    <CloseWrap
+                      style={{ marginLeft: 'auto' }}
+                      width={32}
+                      height={32}
+                    >
+                      <CommonIconFont
+                        type="plus"
+                        size={20}
+                        color="var(--neutral-n2)"
+                        onClick={() => {
+                          myRef2.current?.handleUpload()
+                        }}
+                      />
+                    </CloseWrap>
+                  </Tooltip>
+                </LabelWrap>
+              }
+              name="attachment_video"
+            >
+              <UploadAttach
+                special={['avi', 'wmv', 'mp4']}
+                ref={myRef2}
+                power
+                onChangeAttachment={(res: any) => {
+                  onChangeAttachment2(res)
                 }}
-              >
-                <Label style={{ fontFamily: 'SiYuanRegular' }}>
-                  {t('video')}
-                </Label>
-                <Tooltip title={t('addVideo')}>
-                  <CloseWrap
-                    style={{ marginLeft: 'auto' }}
-                    width={32}
-                    height={32}
-                  >
-                    <CommonIconFont
-                      type="plus"
-                      size={20}
-                      color="var(--neutral-n2)"
-                      onClick={() => {
-                        myRef2.current?.handleUpload()
-                      }}
-                    />
-                  </CloseWrap>
-                </Tooltip>
-              </LabelWrap>
-            }
-            name="attachment_video"
-          >
-            <UploadAttach
-              special={['avi', 'wmv', 'mp4']}
-              ref={myRef2}
-              power
-              onChangeAttachment={(res: any) => {
-                onChangeAttachment2(res)
-              }}
-            />
-          </Form.Item>
-        </Form>
-      </ProgressContentWrap>
-    </CommonModal>
+              />
+            </Form.Item>
+          </Form>
+        </ProgressContentWrap>
+      </CommonModal>
+    </>
   )
 }
 
