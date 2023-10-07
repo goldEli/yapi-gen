@@ -26,6 +26,7 @@ const EmployeeProfile = () => {
   const [focus, setFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [filterParams, setFilterParams] = useState<any>({})
+  const [memberStatistics, setMemberStatistics] = useState<any>({})
   const sideMain = useRef<any>(null)
   const sliderRef = useRef<any>(null)
   const maxWidth = 600
@@ -87,6 +88,8 @@ const EmployeeProfile = () => {
           dispatch(setFilterParamsOverall(value))
         }}
         filterParams={filterParams}
+        onChangeStatistics={setMemberStatistics}
+        memberStatistics={memberStatistics}
       />
       <ContentWrap>
         <PersonBox
@@ -130,8 +133,14 @@ const EmployeeProfile = () => {
           </Tooltip>
         </PersonBox>
         <RightBox style={{ width: `calc(100% - ${leftWidth}px)` }}>
-          <EmployeeProfileReport filterParams={filterParams} />
-          <EmployeeProfileTask filterParams={filterParams} />
+          <EmployeeProfileReport
+            filterParams={filterParams}
+            memberStatistics={memberStatistics}
+          />
+          <EmployeeProfileTask
+            filterParams={filterParams}
+            memberStatistics={memberStatistics}
+          />
         </RightBox>
       </ContentWrap>
     </Wrap>

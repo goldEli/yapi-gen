@@ -405,10 +405,11 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
 
 interface EmployeeProfileReportProps {
   filterParams: any
+  memberStatistics: any
 }
 
 const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
-  const { filterParams } = props
+  const { filterParams, memberStatistics } = props
   const [loading, setLoading] = useState(false)
 
   const [dataList, setDataList] = useState<any>({
@@ -445,12 +446,13 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
   }
 
   useEffect(() => {
-    if (filterParams?.status) {
+    if (filterParams?.status && JSON.stringify(memberStatistics) !== '{}') {
+      console.log(22222, memberStatistics)
       setDataList({ list: undefined })
       setLoading(true)
       getReportList()
     }
-  }, [filterParams.time, filterParams.user_ids])
+  }, [filterParams.time, filterParams.user_ids, memberStatistics])
 
   return (
     <ReportWrap>

@@ -23,9 +23,12 @@ import { getParamsData } from '@/tools'
 interface EmployeeProfileHeaderProps {
   onChangeFilter(value: any): void
   filterParams: any
+  memberStatistics: any
+  onChangeStatistics(value: any): void
 }
 
 const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
+  const { memberStatistics, onChangeStatistics } = props
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
@@ -50,8 +53,9 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     status: 0,
   })
   const [active, setActive] = useState(paramsData?.user_id ? 5 : 0)
-  const [memberStatistics, setMemberStatistics] = useState<any>({})
   const [isChange, setIsChange] = useState(0)
+  // 用于阻止初始化多次调用，地址栏不带参数时不更新统计接口
+  const [isInit, setIsInit] = useState(true)
 
   const tabList = [
     { name: t('thisWeek'), key: 0 },
@@ -126,6 +130,52 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   //   点击切换tab
   const onChangeTab = (item: any) => {
     setActive(item.key)
+    let time: any = []
+    switch (item.key) {
+      case 0:
+        time = [
+          moment().week(moment().week()).startOf('week').format('YYYY-MM-DD'),
+          moment().week(moment().week()).endOf('week').format('YYYY-MM-DD'),
+        ]
+        break
+      case 1:
+        time = [
+          moment().subtract(1, 'week').startOf('week').format('YYYY-MM-DD'),
+          moment().subtract(1, 'week').endOf('week').format('YYYY-MM-DD'),
+        ]
+        break
+      case 2:
+        time = [
+          moment()
+            .day(moment().day() - 13)
+            .format('YYYY-MM-DD'),
+          moment().format('YYYY-MM-DD'),
+        ]
+        break
+      case 3:
+        time = [
+          moment().subtract(1, 'month').format('YYYY-MM-DD'),
+          moment().format('YYYY-MM-DD'),
+        ]
+        break
+      case 4:
+        time = [
+          moment().subtract(3, 'months').format('YYYY-MM-DD'),
+          moment().format('YYYY-MM-DD'),
+        ]
+        break
+      case 5:
+        time = [
+          moment().subtract(1, 'years').format('YYYY-MM-DD'),
+          moment().format('YYYY-MM-DD'),
+        ]
+        break
+    }
+    setIsChange(isChange + 1)
+    setSearchFilterParams({
+      ...searchFilterParams,
+      time,
+    })
   }
 
   //   点击切换搜素条件
@@ -142,11 +192,13 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
 
   // 获取卡片数据
   const getStatistics = async (params: any, isChange?: boolean) => {
+    console.log(111)
     // 如果是修改筛选条件则，不带user_id
+    onChangeStatistics({})
     const response = await getMemberOverviewStatistics(
       isChange ? params : { ...params, ...{ user_id: paramsData?.user_id } },
     )
-    setMemberStatistics(response)
+    onChangeStatistics(response)
     const currentResult = currentKey?.key
       ? cardList?.filter((i: any) => i.key === currentKey?.key)[0]
       : cardList[0]
@@ -156,68 +208,13 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         : cardList[cardList?.length - 1],
       response,
     )
+    setTimeout(() => {
+      setIsInit(false)
+    }, 300)
   }
 
   useEffect(() => {
-    // 计算回填时间的
-    if (active !== -1 && active !== 0) {
-      let time: any = []
-      switch (active) {
-        case 0:
-          time = [
-            moment().week(moment().week()).startOf('week').format('YYYY-MM-DD'),
-            moment().week(moment().week()).endOf('week').format('YYYY-MM-DD'),
-          ]
-          break
-        case 1:
-          time = [
-            moment().subtract(1, 'week').startOf('week').format('YYYY-MM-DD'),
-            moment().subtract(1, 'week').endOf('week').format('YYYY-MM-DD'),
-          ]
-          break
-        case 2:
-          time = [
-            moment()
-              .day(moment().day() - 13)
-              .format('YYYY-MM-DD'),
-            moment().format('YYYY-MM-DD'),
-          ]
-          break
-        case 3:
-          time = [
-            moment().subtract(1, 'month').format('YYYY-MM-DD'),
-            moment().format('YYYY-MM-DD'),
-          ]
-          break
-        case 4:
-          time = [
-            moment().subtract(3, 'months').format('YYYY-MM-DD'),
-            moment().format('YYYY-MM-DD'),
-          ]
-          break
-        case 5:
-          time = [
-            moment().subtract(1, 'years').format('YYYY-MM-DD'),
-            moment().format('YYYY-MM-DD'),
-          ]
-          break
-      }
-      //   阻止相同调用
-      if (
-        time[0] !== searchFilterParams.time[0] ||
-        time[1] !== searchFilterParams.time[1]
-      ) {
-        setIsChange(isChange + 1)
-        setSearchFilterParams({
-          ...searchFilterParams,
-          time,
-        })
-      }
-    }
-  }, [active])
-
-  useEffect(() => {
-    getStatistics(searchFilterParams)
+    getStatistics({ ...searchFilterParams, user_id: paramsData?.user_id ?? [] })
   }, [searchFilterParams])
 
   useEffect(() => {
@@ -229,7 +226,12 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         moment().subtract(1, 'years').format('YYYY-MM-DD'),
         moment().format('YYYY-MM-DD'),
       ]
-      getStatistics(resultParams)
+      setSearchFilterParams({
+        ...searchFilterParams,
+        ...resultParams,
+      })
+    } else {
+      if (!isInit) getStatistics({ ...searchFilterParams, user_id: [] })
     }
   }, [paramsData?.user_id])
 
