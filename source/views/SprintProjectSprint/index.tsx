@@ -112,7 +112,7 @@ const TabsWrap = styled.div`
 `
 
 const RightIcon = styled.div`
-  width: 84px;
+  width: 90px;
   height: 32px;
   display: flex;
   align-items: center;
@@ -407,6 +407,8 @@ const SprintProjectSprint: React.FC = () => {
     }
   }
   const changeSprintTab = () => {
+    setIsExpand(true)
+
     sessionStorage.removeItem('noRefresh')
     setActiveKey(0)
     setSearchObject({
@@ -425,6 +427,7 @@ const SprintProjectSprint: React.FC = () => {
   }
 
   const changeStoryTab = () => {
+    setIsExpand(true)
     sessionStorage.removeItem('noRefresh')
     setActiveKey(1)
     setSearchObject({
@@ -597,21 +600,6 @@ const SprintProjectSprint: React.FC = () => {
       <div>
         <SearchBox>
           <MyBreadcrumb />
-          <div>
-            <InputSearch
-              onChangeSearch={(val: any) => {
-                setSearchObject({
-                  ...searchObject,
-                  search: {
-                    ...searchObject.search,
-                    story_name: val,
-                  },
-                })
-              }}
-              placeholder={t('sprint.searchTips')}
-              leftIcon
-            />
-          </div>
         </SearchBox>
         <ContentWrap>
           {isExpand ? (
@@ -648,57 +636,6 @@ const SprintProjectSprint: React.FC = () => {
                   </div>
                 </TabsWrap>
                 <RightIcon>
-                  {!isEnd && (
-                    <Tooltip
-                      title={
-                        activeKey === 0
-                          ? t('sprint.createSprint')
-                          : t('sprint.createStory')
-                      }
-                    >
-                      <CustomCloseWrap
-                        style={isCanEditSprint ? {} : { visibility: 'hidden' }}
-                        width={32}
-                        height={32}
-                        onClick={() => {
-                          sessionStorage.removeItem('noRefresh')
-                          if (activeKey === 0) {
-                            setSprintModal({
-                              visible: true,
-                              type: 'create',
-                            })
-                          } else {
-                            dispatch(
-                              setAddWorkItemModal({
-                                visible: true,
-                                params: {
-                                  type: 3,
-                                  title: t('sprint.createTransaction'),
-                                  noDataCreate: true,
-                                  projectId,
-                                },
-                              }),
-                            )
-                          }
-                        }}
-                      >
-                        <IconFont
-                          style={{
-                            fontSize: 20,
-                            color: 'var(--neutral-n3) !important',
-                          }}
-                          type="plus"
-                        />
-                      </CustomCloseWrap>
-                    </Tooltip>
-                  )}
-                  {isEnd && <div style={{ width: 32 }} />}
-                  <div
-                    className="line"
-                    style={
-                      isCanEditSprint && !isEnd ? {} : { visibility: 'hidden' }
-                    }
-                  />
                   <Popover
                     trigger="click"
                     placement="bottomRight"
@@ -713,8 +650,97 @@ const SprintProjectSprint: React.FC = () => {
                       </IconBox>
                     </Tooltip>
                   </Popover>
+                  <div
+                    className="line"
+                    style={
+                      isCanEditSprint && !isEnd ? {} : { visibility: 'hidden' }
+                    }
+                  />
+                  {isEnd ? <div style={{ width: 32 }} /> : null}
+                  {isExpand ? (
+                    <Tooltip
+                      style={{ display: isExpand ? 'block' : 'none' }}
+                      onVisibleChange={() => {}}
+                      getTooltipContainer={node => node}
+                      title={isExpand ? t('common.collapseMenu') : ''}
+                    >
+                      <IconBox
+                        onClick={() => {
+                          setIsExpand(false)
+                        }}
+                      >
+                        <IconFont type="outdent" color="black" />
+                      </IconBox>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip
+                      style={{ display: isExpand ? 'none' : 'block' }}
+                      onVisibleChange={() => {}}
+                      getTooltipContainer={node => node}
+                      title={isExpand ? '' : t('common.openMenu')}
+                    >
+                      <IconBox
+                        onClick={() => {
+                          setIsExpand(true)
+                        }}
+                      >
+                        <IconFont type="indent" color="black" />
+                      </IconBox>
+                    </Tooltip>
+                  )}
                 </RightIcon>
               </div>
+
+              {!isEnd && (
+                <div
+                  onClick={() => {
+                    sessionStorage.removeItem('noRefresh')
+                    if (activeKey === 0) {
+                      setSprintModal({
+                        visible: true,
+                        type: 'create',
+                      })
+                    } else {
+                      dispatch(
+                        setAddWorkItemModal({
+                          visible: true,
+                          params: {
+                            type: 3,
+                            title: t('sprint.createTransaction'),
+                            noDataCreate: true,
+                            projectId,
+                          },
+                        }),
+                      )
+                    }
+                  }}
+                  style={{
+                    margin: '0 24px  16px ',
+                    background: '#6688FF',
+                    borderRadius: '6px',
+                    height: '32px',
+                    cursor: 'pointer',
+                    visibility: isCanEditSprint ? 'visible' : 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    gap: '8px',
+                  }}
+                >
+                  <IconFont
+                    style={{
+                      fontSize: 16,
+                      color: 'var(--neutral-n3) !important',
+                    }}
+                    type="plus"
+                  />{' '}
+                  {activeKey === 0
+                    ? t('sprint.createSprint')
+                    : t('sprint.createStory')}
+                </div>
+              )}
+
               <TabItemWrap>
                 <Spin
                   spinning={leftLoading}
@@ -735,37 +761,41 @@ const SprintProjectSprint: React.FC = () => {
 
           <Right>
             <div className="header">
-              {isExpand ? (
-                <Tooltip
-                  style={{ display: isExpand ? 'block' : 'none' }}
-                  onVisibleChange={() => {}}
-                  getTooltipContainer={node => node}
-                  title={isExpand ? t('common.collapseMenu') : ''}
-                >
-                  <IconBox
-                    onClick={() => {
-                      setIsExpand(false)
-                    }}
+              {!isExpand && (
+                <TabsWrap style={{ margin: '0 16px 0 0' }}>
+                  <div
+                    className={`move ${activeKey === 1 ? 'left' : ''}`}
+                  ></div>
+                  <div
+                    className={`tab1 ${activeKey === 0 ? 'active' : ''}`}
+                    onClick={changeSprintTab}
                   >
-                    <IconFont type="outdent" color="black" />
-                  </IconBox>
-                </Tooltip>
-              ) : (
-                <Tooltip
-                  style={{ display: isExpand ? 'none' : 'block' }}
-                  onVisibleChange={() => {}}
-                  getTooltipContainer={node => node}
-                  title={isExpand ? '' : t('common.openMenu')}
-                >
-                  <IconBox
-                    onClick={() => {
-                      setIsExpand(true)
-                    }}
+                    {t('sprint.sprint')}
+                  </div>
+                  <div
+                    className={`tab2 ${activeKey === 1 ? 'active' : ''}`}
+                    onClick={changeStoryTab}
                   >
-                    <IconFont type="indent" color="black" />
-                  </IconBox>
-                </Tooltip>
+                    {t('sprint.longStory')}
+                  </div>
+                </TabsWrap>
               )}
+
+              <div>
+                <InputSearch
+                  onChangeSearch={(val: any) => {
+                    setSearchObject({
+                      ...searchObject,
+                      search: {
+                        ...searchObject.search,
+                        story_name: val,
+                      },
+                    })
+                  }}
+                  placeholder={t('sprint.searchTips')}
+                  leftIcon
+                />
+              </div>
               <SelectWrapForList>
                 <span style={{ margin: '0 16px', fontSize: '14px' }}>
                   {t('common.dealName')}
