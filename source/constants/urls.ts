@@ -547,14 +547,14 @@ const urls = {
   getMemberOverviewCompare: '/b/member_overview/compare',
 
   // 效能洞察-看板
-  // 统计
-  getPerformanceInsightStatistics: '/b/performanceInsight/statistics',
-  // 获取人员数据
-  getPerformanceInsightPersonList: '/b/performanceInsight/personList',
   // 看板列表
   getPerformanceInsightKanBanList: '/b/company/kanban/list',
   // 看板列表-加载更多
   getPerformanceInsightKanBanListMore: '/b/company/kanban/list_more',
+  // 看板统计数据
+  getPerformanceInsightKanBanStatistics: '/b/company/kanban/statistics',
+  // 左侧人员数据
+  getPerformanceInsightKanBanMembers: '/b/company/kanban/members',
 }
 export default urls
 

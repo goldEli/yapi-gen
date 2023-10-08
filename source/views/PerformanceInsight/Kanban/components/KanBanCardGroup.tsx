@@ -17,6 +17,7 @@ import UploadAttach from '@/components/UploadAttach'
 import { getPerformanceInsightKanBanListMore } from '@/services/performanceInsight'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import NoData from '@/components/NoData'
 
 interface TaskListGroupProps {
   item: any
@@ -31,179 +32,15 @@ const TaskListGroup = (props: TaskListGroupProps) => {
 
   // 待审核数据加载更多
   const fetchMoreData = async () => {
-    filterParams.user_ids = [
-      {
-        project_id: 62,
-        user_id: 2,
-      },
-      {
-        project_id: 62,
-        user_id: 3,
-      },
-      {
-        project_id: 62,
-        user_id: 5,
-      },
-      {
-        project_id: 62,
-        user_id: 6,
-      },
-      {
-        project_id: 62,
-        user_id: 7,
-      },
-      {
-        project_id: 62,
-        user_id: 8,
-      },
-      {
-        project_id: 62,
-        user_id: 9,
-      },
-      {
-        project_id: 62,
-        user_id: 10,
-      },
-      {
-        project_id: 62,
-        user_id: 12,
-      },
-      {
-        project_id: 62,
-        user_id: 13,
-      },
-      {
-        project_id: 62,
-        user_id: 17,
-      },
-      {
-        project_id: 62,
-        user_id: 19,
-      },
-      {
-        project_id: 62,
-        user_id: 25,
-      },
-      {
-        project_id: 62,
-        user_id: 29,
-      },
-      {
-        project_id: 62,
-        user_id: 31,
-      },
-      {
-        project_id: 62,
-        user_id: 33,
-      },
-      {
-        project_id: 62,
-        user_id: 39,
-      },
-      {
-        project_id: 62,
-        user_id: 42,
-      },
-      {
-        project_id: 62,
-        user_id: 47,
-      },
-      {
-        project_id: 62,
-        user_id: 48,
-      },
-      {
-        project_id: 62,
-        user_id: 49,
-      },
-      {
-        project_id: 62,
-        user_id: 50,
-      },
-      {
-        project_id: 62,
-        user_id: 52,
-      },
-      {
-        project_id: 62,
-        user_id: 53,
-      },
-      {
-        project_id: 62,
-        user_id: 54,
-      },
-      {
-        project_id: 62,
-        user_id: 55,
-      },
-      {
-        project_id: 62,
-        user_id: 77,
-      },
-      {
-        project_id: 62,
-        user_id: 79,
-      },
-      {
-        project_id: 62,
-        user_id: 81,
-      },
-      {
-        project_id: 62,
-        user_id: 82,
-      },
-      {
-        project_id: 62,
-        user_id: 86,
-      },
-      {
-        project_id: 62,
-        user_id: 87,
-      },
-      {
-        project_id: 62,
-        user_id: 90,
-      },
-      {
-        project_id: 62,
-        user_id: 91,
-      },
-      {
-        project_id: 62,
-        user_id: 93,
-      },
-      {
-        project_id: 62,
-        user_id: 94,
-      },
-      {
-        project_id: 62,
-        user_id: 95,
-      },
-      {
-        project_id: 62,
-        user_id: 96,
-      },
-      {
-        project_id: 62,
-        user_id: 97,
-      },
-      {
-        project_id: 62,
-        user_id: 98,
-      },
-      {
-        project_id: 62,
-        user_id: 99,
-      },
-    ]
     const newPage = page + 1
     setPage(newPage)
     const response = await getPerformanceInsightKanBanListMore({
       ...filterParams,
       user: item.id,
       project_ids: [
-        ...new Set(filterParams?.user_ids?.map((i: any) => i.project_id)),
+        ...new Set(
+          filterParams?.user_ids?.map((i: any) => String(i)?.split('_')[0]),
+        ),
       ],
       page: newPage,
     })
@@ -241,80 +78,87 @@ const TaskListGroup = (props: TaskListGroupProps) => {
       }}
       height="100%"
     >
-      {item.stories?.list?.map((k: any) => (
-        <CardItemTaskItem key={k.id}>
-          <TaskItemTop>
-            <div className="demandNumber">
-              <img className="img" src={k?.project_category?.attachment_path} />
-              <span className="label">{k?.story_prefix_key}</span>
-            </div>
-            <div className="priorityBox">
-              <PriorityIcon
-                icon={k?.config_priority?.icon}
-                color={k?.config_priority?.color}
-              />
-              <span className="label">{k?.config_priority?.content_txt}</span>
-            </div>
-          </TaskItemTop>
-          <TaskItemContent>
-            <div
-              className="name"
-              style={{ marginBottom: k?.attachments?.length > 0 ? '4px' : 0 }}
-              onClick={() => onClickItem(k)}
-            >
-              {k?.name}
-            </div>
-            <UploadAttach
-              onlyView
-              size="small"
-              defaultList={k?.attachments?.map((i: any) => ({
-                url: i.path,
-                id: i.id,
-                size: Math.abs(i.size),
-                time: '--',
-                name: i.name || '--',
-                suffix: i.ext,
-                username: '--',
-              }))}
-              onChangeAttachment={() => {
-                //
-              }}
-            />
-          </TaskItemContent>
-          <TaskItemBottom>
-            <div className="status">
-              <TaskTag
-                state={
-                  k?.category_status?.is_start === 1 &&
-                  k?.category_status?.is_end === 2
-                    ? 1
-                    : k?.category_status?.is_end === 1 &&
-                      k?.category_status?.is_start === 2
-                    ? 2
-                    : k?.category_status?.is_start === 2 &&
-                      k?.category_status?.is_end === 2
-                    ? 3
-                    : 0
-                }
-              />
-              <div className="name">{k?.category_status?.status?.content}</div>
-            </div>
-            <div className="right">
-              <div>{k?.user_schedule?.schedule ?? 0}%</div>
-              <div>
-                {k?.user_schedule?.total_task_time
-                  ? Math.abs(
-                      Math.floor(
-                        (k?.user_schedule?.total_task_time / 3600) * 100,
-                      ) / 100,
-                    )
-                  : 0}
-                h
+      {item.stories?.list?.length > 0 &&
+        item.stories?.list?.map((k: any) => (
+          <CardItemTaskItem key={k.id}>
+            <TaskItemTop>
+              <div className="demandNumber">
+                <img
+                  className="img"
+                  src={k?.project_category?.attachment_path}
+                />
+                <span className="label">{k?.story_prefix_key}</span>
               </div>
-            </div>
-          </TaskItemBottom>
-        </CardItemTaskItem>
-      ))}
+              <div className="priorityBox">
+                <PriorityIcon
+                  icon={k?.config_priority?.icon}
+                  color={k?.config_priority?.color}
+                />
+                <span className="label">{k?.config_priority?.content_txt}</span>
+              </div>
+            </TaskItemTop>
+            <TaskItemContent>
+              <div
+                className="name"
+                style={{ marginBottom: k?.attachments?.length > 0 ? '4px' : 0 }}
+                onClick={() => onClickItem(k)}
+              >
+                {k?.name}
+              </div>
+              <UploadAttach
+                onlyView
+                size="small"
+                defaultList={k?.attachments?.map((i: any) => ({
+                  url: i.path,
+                  id: i.id,
+                  size: Math.abs(i.size),
+                  time: '--',
+                  name: i.name || '--',
+                  suffix: i.ext,
+                  username: '--',
+                }))}
+                onChangeAttachment={() => {
+                  //
+                }}
+              />
+            </TaskItemContent>
+            <TaskItemBottom>
+              <div className="status">
+                <TaskTag
+                  state={
+                    k?.category_status?.is_start === 1 &&
+                    k?.category_status?.is_end === 2
+                      ? 1
+                      : k?.category_status?.is_end === 1 &&
+                        k?.category_status?.is_start === 2
+                      ? 2
+                      : k?.category_status?.is_start === 2 &&
+                        k?.category_status?.is_end === 2
+                      ? 3
+                      : 0
+                  }
+                />
+                <div className="name">
+                  {k?.category_status?.status?.content}
+                </div>
+              </div>
+              <div className="right">
+                <div>{k?.user_schedule?.schedule ?? 0}%</div>
+                <div>
+                  {k?.user_schedule?.total_task_time
+                    ? Math.abs(
+                        Math.floor(
+                          (k?.user_schedule?.total_task_time / 3600) * 100,
+                        ) / 100,
+                      )
+                    : 0}
+                  h
+                </div>
+              </div>
+            </TaskItemBottom>
+          </CardItemTaskItem>
+        ))}
+      {item.stories?.list?.length <= 0 && <NoData />}
     </InfiniteScroll>
   )
 }
@@ -330,7 +174,6 @@ interface KanBanCardGroupProps {
 
 const KanBanCardGroup = (props: KanBanCardGroupProps) => {
   const { kanBanData, onChangeKanBanData } = props
-
   return (
     <KanBanCardGroupWrap>
       <KanBanCardGroupBox size={16}>

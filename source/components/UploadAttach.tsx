@@ -604,9 +604,9 @@ const UploadAttach = (props: any, ref: any) => {
                     {!imgs.includes(i.file.suffix) && (
                       <IconFont
                         style={{
-                          lineHeight: '72px',
+                          lineHeight: props.size === 'small' ? '56px' : '72px',
 
-                          fontSize: 72,
+                          fontSize: props.size === 'small' ? '56px' : '72px',
                           color: 'white',
                         }}
                         type={fileIconMap[i.file.suffix] || 'colorunknown'}

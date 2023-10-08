@@ -154,6 +154,9 @@ export const CheckBoxWrap = styled.div`
         &:hover {
           background: var(--hover-d2);
         }
+        .ant-collapse-header-text {
+          width: calc(100% - 16px);
+        }
       }
       .ant-collapse-content {
         border: none;
@@ -171,10 +174,19 @@ export const CollapseHeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-left: 8px;
+  width: 100%;
   .left {
+    width: calc(100% - 40px);
+    display: flex;
+    align-items: center;
     .name {
       font-family: SiYuanMedium;
       margin-left: 12px;
+      display: inline-block;
+      width: calc(100% - 28px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 `
@@ -200,6 +212,20 @@ export const FilterContent = styled.div`
   padding: 4px 0px;
   border-radius: 6px;
   background: var(--neutral-white-d6);
+  width: 200px;
+  overflow-x: hidden;
+  .ant-popover-placement-left,
+  .ant-popover-placement-leftTop,
+  .ant-popover-placement-leftBottom {
+    padding-right: 0;
+  }
+`
+
+export const FilterOther = styled.div`
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
 `
 
 export const FilterItem = styled.div<{ isActive?: boolean }>`
@@ -214,12 +240,22 @@ export const FilterItem = styled.div<{ isActive?: boolean }>`
     font-size: 14px;
     color: ${props =>
       props.isActive ? 'var(--primary-d2)!important' : 'var(--neutral-n2)'};
-    margin-right: 8px;
+    width: calc(100% - 30px);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   &:hover {
     color: var(--neutral-n1-d1);
     background: var(--hover-d3);
   }
+`
+
+export const FilterProvider = styled.div`
+  height: 1px;
+  background: var(--neutral-n6-d1);
+  width: calc(100% - 32px);
+  margin: 8px 16px;
 `
 
 export const MemberItem = styled.div`

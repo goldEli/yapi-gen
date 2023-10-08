@@ -14,8 +14,12 @@ import {
 import { CloseWrap, DragLine, MouseDom } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import KanBanCardGroup from './components/KanBanCardGroup'
-import { getPerformanceInsightKanBanList } from '@/services/performanceInsight'
+import {
+  getPerformanceInsightKanBanList,
+  getPerformanceInsightKanBanStatistics,
+} from '@/services/performanceInsight'
 import moment from 'moment'
+import NoData from '@/components/NoData'
 
 const PerformanceInsightKanBan = () => {
   const { currentMenu } = useSelector(store => store.user)
@@ -23,7 +27,7 @@ const PerformanceInsightKanBan = () => {
   // 筛选条件
   const [filterParams, setFilterParams] = useState<any>({
     user_ids: [],
-    iteration: [],
+    iteration: [0],
     // 搜索值
     keyword: '',
     // 创建时间 - 默认近一个与
@@ -54,21 +58,35 @@ const PerformanceInsightKanBan = () => {
   const [isDeleteBefore, setIsDeleteBefore] = useState(false)
   // 判断是否可向前
   const [isToBefore, setIsToBefore] = useState(false)
-  const [leftWidth, setLeftWidth] = useState(256)
-  const [endWidth, setEndWidth] = useState(256)
+  // 刷新功能
+  const [isUpdate, setIsUpdate] = useState(0)
+  const [leftWidth, setLeftWidth] = useState(280)
+  const [endWidth, setEndWidth] = useState(280)
   const main = useRef<any>(null)
   const sideMainPerformance = useRef<any>(null)
   const sliderRefPerformance = useRef<any>(null)
   const maxWidth = 480
 
+  // 计算出对应格式 用户id
+  const onComputedUserIds = (arr: any) => {
+    if (arr) {
+      const resultUsers = arr?.map((i: any) => ({
+        project_id: String(i).split('_')[0],
+        user_id: String(i).split('_')[1],
+      }))
+      return resultUsers
+    } else {
+      return null
+    }
+  }
+
   // 获取统计数据
   const getStatistics = async (params: any) => {
-    setStatistics({
-      planned: 20,
-      completed: 12,
-      progress: 10,
-      overdue: 5,
+    const response = await getPerformanceInsightKanBanStatistics({
+      ...params,
+      users: onComputedUserIds(params?.user_ids),
     })
+    setStatistics(response)
   }
 
   // 获取人员看板数据 page: 分页， params： 筛选条件 direction：方向1是向前，2是向后
@@ -79,7 +97,10 @@ const PerformanceInsightKanBan = () => {
     // })
     const result = JSON.parse(JSON.stringify(params))
     result.page = page
-    const response = await getPerformanceInsightKanBanList(result)
+    const response = await getPerformanceInsightKanBanList({
+      ...result,
+      users: onComputedUserIds(result?.user_ids),
+    })
 
     if (direction) {
       const resultData: any =
@@ -107,14 +128,32 @@ const PerformanceInsightKanBan = () => {
 
   // 刷新功能
   const onUpdate = () => {
-    // 重置
+    setIsUpdate(isUpdate + 1)
+    setFilterParams({
+      user_ids: [],
+      iteration: [0],
+      // 搜索值
+      keyword: '',
+      // 创建时间 - 默认近一个与
+      time: [
+        moment(new Date())
+          .startOf('months')
+          .subtract(1, 'months')
+          .format('YYYY-MM-DD'),
+        moment(new Date()).endOf('days').format('YYYY-MM-DD'),
+      ],
+      // 任务状态
+      status: [],
+      // 优先级
+      priority: [],
+    })
   }
 
   // 拖动线条
   const onDragLine = () => {
     let width = sliderRefPerformance.current?.clientWidth
     document.onmousemove = e => {
-      setEndWidth(256)
+      setEndWidth(280)
       setFocus(true)
       if (!sideMainPerformance.current) return
       sideMainPerformance.current.style.transition = '0s'
@@ -129,7 +168,7 @@ const PerformanceInsightKanBan = () => {
       }
     }
     document.onmouseup = () => {
-      if (width < 256) {
+      if (width < 280) {
         setEndWidth(width)
         setLeftWidth(38)
         setIsOpen(true)
@@ -148,7 +187,7 @@ const PerformanceInsightKanBan = () => {
 
   // 点击按钮
   const onChangeSide = (state: string) => {
-    setLeftWidth(state === 'open' ? 256 : 38)
+    setLeftWidth(state === 'open' ? 280 : 38)
     setEndWidth(state === 'open' ? 0 : 38)
     setIsOpen(false)
   }
@@ -195,11 +234,6 @@ const PerformanceInsightKanBan = () => {
     getDataList(resultPage, filterParams, 2)
   }
 
-  // 初始化筛选条件更新统计数据和看板数据
-  useEffect(() => {
-    onChangFilterUpdate(filterParams)
-  }, [])
-
   return (
     <PermissionWrap
       auth="b/company/kanban"
@@ -213,6 +247,7 @@ const PerformanceInsightKanBan = () => {
         statistics={statistics}
         filterParams={filterParams}
         onChangFilterUpdate={onChangFilterUpdate}
+        isUpdate={isUpdate}
       />
       <ContentWrap ref={main}>
         <PersonBox
@@ -220,7 +255,7 @@ const PerformanceInsightKanBan = () => {
           ref={sliderRefPerformance}
           style={{
             width: isOpen ? 38 : leftWidth,
-            transition: endWidth < 256 ? '0.2s' : 'initial',
+            transition: endWidth < 280 ? '0.2s' : 'initial',
             borderRight:
               leftWidth === 38
                 ? '1px solid transparent'
@@ -240,6 +275,8 @@ const PerformanceInsightKanBan = () => {
                   onChangeFilter={value => {
                     setFilterParams(value)
                   }}
+                  onChangFilterUpdate={onChangFilterUpdate}
+                  isUpdate={isUpdate}
                 />
               </div>
             )}
@@ -271,12 +308,15 @@ const PerformanceInsightKanBan = () => {
               <CommonIconFont type="left" size={24} />
             </ChangeIcon>
           )}
-          <KanBanCardGroup
-            filterParams={filterParams}
-            kanBanData={kanBanData}
-            onChangeKanBanData={onChangeKanBanData}
-          />
-          {kanBanData.total > personPage * 10 && (
+          {kanBanData?.total > 0 && (
+            <KanBanCardGroup
+              filterParams={filterParams}
+              kanBanData={kanBanData}
+              onChangeKanBanData={onChangeKanBanData}
+            />
+          )}
+          {kanBanData?.total <= 0 && <NoData />}
+          {kanBanData?.total > personPage * 10 && (
             <ChangeIcon style={{ right: 24 }} onClick={onAfter}>
               <CommonIconFont type="right" size={24} />
             </ChangeIcon>

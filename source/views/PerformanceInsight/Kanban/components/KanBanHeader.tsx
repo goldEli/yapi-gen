@@ -22,6 +22,7 @@ interface KanBanHeaderProps {
   statistics: any
   filterParams: any
   onChangFilterUpdate(value: any): void
+  isUpdate: number
 }
 
 const KanBanHeader = (props: KanBanHeaderProps) => {
@@ -48,9 +49,9 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
   ]
 
   const statisticsList = [
-    { name: '待规划', key: 'planned', color: 'var(--primary-d1)' },
-    { name: '已完成', key: 'completed', color: 'var(--function-success)' },
-    { name: '进行中', key: 'progress', color: '#A176FB' },
+    { name: '待规划', key: 'planning', color: 'var(--primary-d1)' },
+    { name: '已完成', key: 'finish', color: 'var(--function-success)' },
+    { name: '进行中', key: 'ongoing', color: '#A176FB' },
     { name: '已逾期', key: 'overdue', color: 'var(--function-warning)' },
   ]
 
@@ -67,12 +68,12 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
           : moment(dates[1]).format('YYYY-MM-DD'),
       ]
       setSearchFilterParams({
-        ...searchFilterParams,
+        ...props.filterParams,
         time: resultTime,
       })
     } else {
       setSearchFilterParams({
-        ...searchFilterParams,
+        ...props.filterParams,
         time: null,
       })
     }
@@ -84,15 +85,15 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
 
   //   点击切换搜素条件
   const onClickSearch = (value: any, key: string) => {
-    if (key === 'keyword' && value === searchFilterParams.keyword) {
+    if (key === 'keyword' && value === props.filterParams?.keyword) {
       return
     }
     setSearchFilterParams({
-      ...searchFilterParams,
+      ...props.filterParams,
       [key]: value,
     })
     props.onChangFilterUpdate({
-      ...searchFilterParams,
+      ...props.filterParams,
       [key]: value,
     })
   }
@@ -121,6 +122,12 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
     props.onChangeFilter({ ...props.filterParams, ...searchFilterParams })
   }, [searchFilterParams])
 
+  useEffect(() => {
+    if (props.isUpdate) {
+      setSearchFilterParams(props.filterParams)
+    }
+  }, [props.isUpdate])
+
   return (
     <KanBanHeaderWrap>
       <SearchWrap>
@@ -130,6 +137,7 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
             leftIcon
             placeholder="搜索任务名称/编号"
             width={192}
+            defaultValue={searchFilterParams?.keyword}
           />
           <SelectWrapBedeck>
             <span
@@ -170,6 +178,7 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
               allowClear
               options={priorityList}
               onChange={(value: any) => onClickSearch(value, 'priority')}
+              value={searchFilterParams?.priority}
             />
           </SelectWrapBedeck>
           <SelectWrapBedeck className="SelectWrapBedeck" datatype="status">
@@ -188,6 +197,7 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
               width={boxMaps?.get('status')}
               options={statusList}
               onChange={(value: any) => onClickSearch(value, 'status')}
+              value={searchFilterParams?.status}
             />
           </SelectWrapBedeck>
         </SearchWrapLeft>

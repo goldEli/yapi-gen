@@ -11,6 +11,8 @@ import {
   FilterContent,
   FilterItem,
   MemberItem,
+  FilterProvider,
+  FilterOther,
 } from '../style'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from '@/components/StyleCommon'
@@ -18,6 +20,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { useEffect, useState } from 'react'
 import { Collapse, Select, Checkbox, Popover } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { getPerformanceInsightKanBanMembers } from '@/services/performanceInsight'
 
 interface CollapseHeaderProps {
   item: any
@@ -28,7 +31,10 @@ interface CollapseHeaderProps {
   filterParams: any
   // 选中的人员数组
   selectKeys: any
+  // 修改人员
   onChangeSelectKeys(value: any): void
+  // 修改迭代
+  onChangeIteration(value: any): void
 }
 
 // 折叠头部
@@ -70,13 +76,18 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
 
   // 修改选中迭代
   const onChangeIteration = (id: number) => {
+    let iterationValues
     if (id === 0) {
-      setNormal([0])
+      iterationValues = [0]
+      setNormal(iterationValues)
     } else {
-      const result = [...new Set([...normal, ...[id]])]
-      setNormal(result?.filter((i: any) => i !== 0))
+      iterationValues = normal?.includes(id)
+        ? normal?.filter((i: any) => i !== id)
+        : [...new Set([...normal, ...[id]])]?.filter((i: any) => i !== 0)
+      setNormal(iterationValues)
     }
     // 向上返回筛选条件
+    props.onChangeIteration(iterationValues)
   }
 
   useEffect(() => {
@@ -104,33 +115,42 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
           checked={checkAll}
           indeterminate={indeterminate}
         />
-        <span className="name" onClick={onClickName}>
+        <div className="name" onClick={onClickName}>
           {item.name}
-        </span>
+        </div>
       </div>
       <Popover
-        placement="bottomRight"
+        placement="leftTop"
         open={isVisible}
         onOpenChange={setIsVisible}
+        getPopupContainer={n => n}
         trigger={['click']}
         content={
           <FilterContent>
-            <FilterItem onClick={() => onChangeIteration(0)}>
+            <FilterItem
+              isActive={normal.includes(0)}
+              onClick={() => onChangeIteration(0)}
+            >
               <div className="name">全部</div>
               {normal.includes(0) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </FilterItem>
-            <>
+            {item?.iterate_list?.length > 0 && <FilterProvider />}
+            <FilterOther>
               {item?.iterate_list?.map((i: any) => (
-                <FilterItem key={i.id} onClick={() => onChangeIteration(i.id)}>
+                <FilterItem
+                  key={i.id}
+                  isActive={normal.includes(i.id)}
+                  onClick={() => onChangeIteration(i.id)}
+                >
                   <div className="name">{i.name}</div>
                   {normal.includes(i.id) && (
                     <CommonIconFont type="check" color={'var(--primary-d2)'} />
                   )}
                 </FilterItem>
               ))}
-            </>
+            </FilterOther>
           </FilterContent>
         }
       >
@@ -148,6 +168,8 @@ interface KanBanPersonProps {
   filterParams: any
   // 更新筛选条件
   onChangeFilter(value: any): void
+  onChangFilterUpdate(value: any): void
+  isUpdate: number
 }
 
 const KanBanPerson = (props: KanBanPersonProps) => {
@@ -165,40 +187,73 @@ const KanBanPerson = (props: KanBanPersonProps) => {
   // 折叠展开key
   const [activeKey, setActiveKey] = useState<any>([])
 
+  // 人员更新
+  const onUpdate = (value: any) => {
+    props.onChangeFilter({
+      ...props?.filterParams,
+      ...{
+        user_ids: value,
+      },
+    })
+    props.onChangFilterUpdate({
+      ...props?.filterParams,
+      ...{
+        user_ids: value,
+      },
+    })
+  }
+
+  // 迭代更新
+  const onChangeIteration = (ids: any) => {
+    props.onChangeFilter({
+      ...props?.filterParams,
+      ...{
+        iteration: ids,
+      },
+    })
+    props.onChangFilterUpdate({
+      ...props?.filterParams,
+      ...{
+        iteration: ids,
+      },
+    })
+  }
+
+  // 项目下的勾选修改
+  const onProjectCheck = (users: any) => {
+    const resultUsers = users ?? []
+    setSelectKeys(resultUsers)
+    setIndeterminate(
+      resultUsers?.length !== selectList?.length && resultUsers?.length !== 0,
+    )
+    setCheckAll(resultUsers?.length === selectList?.length)
+    onUpdate(resultUsers)
+  }
+
+  // 单人勾选
+  const onClickCheckboxItem = (id: number) => {
+    let resultKeys: any = []
+    // 如果勾选中不存在，则添加
+    if (selectKeys?.includes(id)) {
+      resultKeys = selectKeys?.filter((i: number) => i !== id)
+    } else {
+      resultKeys = [...selectKeys, ...[id]]
+    }
+    onProjectCheck(resultKeys)
+  }
+
   // 获取项目数据
   const getPersonList = async () => {
-    const result = [
-      {
-        id: 1,
-        name: 'iFUN-agile',
-        member_list: [
-          { id: 30, name: '赵飒' },
-          { id: 31, name: '赵四' },
-        ],
-        iterate_list: [
-          { id: 10, name: '第一个冲刺' },
-          { id: 11, name: '第二个冲刺' },
-        ],
-      },
-      {
-        id: 2,
-        name: 'iFUN-email',
-        member_list: [
-          { id: 33, name: '赵飒' },
-          { id: 32, name: '李思思' },
-        ],
-        iterate_list: [
-          { id: 12, name: '第三个冲刺' },
-          { id: 13, name: '第四个冲刺' },
-        ],
-      },
-    ]
+    const result = await getPerformanceInsightKanBanMembers()
     // 人员数组添加项目id
     const computedResult = result?.map((i: any) => ({
       ...i,
       member_list: i.member_list?.map((k: any) => ({
         name: k.name,
         id: `${i.id}_${k.id}`,
+        avatar: k.avatar,
+        position: k.position,
+        department: k.department,
       })),
     }))
     setDataList(computedResult)
@@ -215,6 +270,13 @@ const KanBanPerson = (props: KanBanPersonProps) => {
       return accumulator
     }, [])
     setSelectList(allMember)
+    const resultUsers = allMember?.map((i: any) => i.id)
+    setSelectKeys(resultUsers)
+    setIndeterminate(
+      resultUsers?.length !== allMember?.length && resultUsers?.length !== 0,
+    )
+    setCheckAll(resultUsers?.length === allMember?.length)
+    onUpdate(resultUsers)
   }
 
   // 选择人员
@@ -225,12 +287,7 @@ const KanBanPerson = (props: KanBanPersonProps) => {
       resultUsers?.length !== selectList?.length && resultUsers?.length !== 0,
     )
     setCheckAll(resultUsers?.length === selectList?.length)
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...{
-        user_ids: resultUsers,
-      },
-    })
+    onUpdate(resultUsers)
   }
 
   // 点击全选
@@ -239,12 +296,7 @@ const KanBanPerson = (props: KanBanPersonProps) => {
     setSelectKeys(checked ? selectList?.map((k: any) => k.id) : [])
     setIndeterminate(false)
     setCheckAll(checked)
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...{
-        user_ids: checked ? selectList?.map((k: any) => k.id) : [],
-      },
-    })
+    onUpdate(checked ? selectList?.map((k: any) => k.id) : [])
   }
 
   // 点击图标展开或折叠
@@ -257,37 +309,21 @@ const KanBanPerson = (props: KanBanPersonProps) => {
     )
   }
 
-  // 项目下的勾选修改
-  const onProjectCheck = (users: any) => {
-    const resultUsers = users ?? []
-    setSelectKeys(resultUsers)
-    setIndeterminate(
-      resultUsers?.length !== selectList?.length && resultUsers?.length !== 0,
-    )
-    setCheckAll(resultUsers?.length === selectList?.length)
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...{
-        user_ids: resultUsers,
-      },
-    })
-  }
-
-  // 单人勾选
-  const onClickCheckboxItem = (id: number) => {
-    let resultKeys: any = []
-    // 如果勾选中不存在，则添加
-    if (selectKeys?.includes(id)) {
-      resultKeys = selectKeys?.filter((i: number) => i !== id)
-    } else {
-      resultKeys = [...selectKeys, ...[id]]
-    }
-    onProjectCheck(resultKeys)
-  }
-
   useEffect(() => {
     getPersonList()
   }, [])
+
+  useEffect(() => {
+    if (props.isUpdate) {
+      const resultUsers = selectList?.map((i: any) => i.id)
+      setSelectKeys(resultUsers)
+      setIndeterminate(
+        resultUsers?.length !== selectList?.length && resultUsers?.length !== 0,
+      )
+      setCheckAll(resultUsers?.length === selectList?.length)
+      onUpdate(resultUsers)
+    }
+  }, [props.isUpdate])
 
   return (
     <KanBanPersonWrap>
@@ -350,6 +386,7 @@ const KanBanPerson = (props: KanBanPersonProps) => {
                     )
                   }}
                   activeKey={activeKey}
+                  onChangeIteration={onChangeIteration}
                 />
               }
               key={i.id}
@@ -361,9 +398,9 @@ const KanBanPerson = (props: KanBanPersonProps) => {
                 >
                   <Checkbox checked={selectKeys?.includes(i.id)} />
                   <div className="info">
-                    <CommonUserAvatar size="small" />
+                    <CommonUserAvatar size="small" avatar={i.avatar} />
                     <span className="name">
-                      {i.name}（Agile组-前端开发1212112安居客啥款的话）
+                      {i.name}（{i?.department?.name}-{i?.position?.name}）
                     </span>
                   </div>
                 </MemberItem>
