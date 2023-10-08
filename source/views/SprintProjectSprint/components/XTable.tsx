@@ -148,12 +148,14 @@ const XTable: React.FC<XTableProps> = props => {
   const dispatch = useDispatch()
   const [completeVisible, setCompleteVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
-
+  const [isFilter, setIsFilter] = useState(false)
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/transaction/update',
   )
-
+  const onVisibleChange = (visible: any) => {
+    setIsFilter(visible)
+  }
   // 项目是否已经结束
   const isEnd = projectInfo?.status === 2
 
@@ -197,7 +199,63 @@ const XTable: React.FC<XTableProps> = props => {
       //
     }
   }
-
+  const filterContent = (
+    <div
+      style={{
+        width: '120px',
+        height: '72px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        background: '#FFFFFF',
+        boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
+        borderRadius: '6px 6px 6px 6px',
+      }}
+    >
+      <div
+        onClick={() => {
+          setIsFilter(false)
+          setSprintModal({
+            visible: true,
+            type: data.status === 4 ? 'edit' : 'update',
+          })
+        }}
+        style={{
+          fontSize: 14,
+          height: '32px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+        }}
+      >
+        {data.status === 4 ? t('sprint.edit') : t('sprint.update')}
+      </div>
+      <div
+        onClick={() => {
+          setIsFilter(false)
+          open({
+            title: t('sprint.deleteSprint'),
+            text: `${t('sprint.confirmDelete')}【${data.name}】${t(
+              'sprint.ofSprint',
+            )}，${t('sprint.removeSprintToAgency')}`,
+            onConfirm: () => deleteSprint(data.id),
+          })
+        }}
+        style={{
+          height: '32px',
+          fontSize: 14,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+        }}
+      >
+        {t('deleteSprint')}
+      </div>
+    </div>
+  )
   const getSprintButton = (status: number) => {
     switch (status) {
       case 4:
@@ -326,7 +384,7 @@ const XTable: React.FC<XTableProps> = props => {
                 </Popover>
               )}
 
-              {data.id === 0
+              {/* {data.id === 0
                 ? null
                 : !isCanEditSprint &&
                   !isEnd && (
@@ -382,10 +440,10 @@ const XTable: React.FC<XTableProps> = props => {
                         </CloseWrap>
                       </Tooltip>
                     </>
-                  )}
+                  )} */}
             </div>
             {!isCanEditSprint && !isEnd && (
-              <div>
+              <div style={{ display: 'flex', gap: '16px' }}>
                 {data.id === 0 ? (
                   <CommonButton
                     type="light"
@@ -406,6 +464,21 @@ const XTable: React.FC<XTableProps> = props => {
                 ) : (
                   getSprintButton(data.status)
                 )}
+                {data.id === 0
+                  ? null
+                  : !isCanEditSprint &&
+                    !isEnd && (
+                      <Popover
+                        trigger="click"
+                        placement="bottomRight"
+                        content={filterContent}
+                        getPopupContainer={node => node}
+                        visible={isFilter}
+                        onVisibleChange={onVisibleChange}
+                      >
+                        <CommonButton type="light">{t('more')}</CommonButton>
+                      </Popover>
+                    )}
               </div>
             )}
           </Header>
@@ -434,6 +507,7 @@ const XTable: React.FC<XTableProps> = props => {
             <span>{t('sprint.newAffairs')}</span>
           </CommonButton>
         )}
+
         <Droppable key={data.id} droppableId={String(data.id)}>
           {(provided, snapshot) => {
             return (
