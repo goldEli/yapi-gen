@@ -17,22 +17,38 @@ interface EditPerceptionPropsType {
   onClose(): void
   onConfirm(val: any): any
   perception: string
+  // 工时
+  time: number
 }
 
 const EditPerceptionModal = (props: EditPerceptionPropsType) => {
   const [t]: any = useTranslation()
   const [form] = Form.useForm()
-  const { visible, onClose, onConfirm, perception } = props
+  const { visible, onClose, onConfirm, perception, time } = props
 
   const onConfirm1 = async () => {
-    await onConfirm(form.getFieldValue('perception'))
+    const formParams = form.getFieldsValue()
+    const resultParams = {
+      perception: formParams.perception,
+      time: String(formParams.time) ? formParams.time * 60 * 60 : '',
+    }
+    if (
+      resultParams.time !== props.time ||
+      resultParams.perception !== props.perception
+    ) {
+      await onConfirm(resultParams)
+    } else {
+      form.resetFields()
+      onClose()
+    }
   }
 
   useEffect(() => {
     form.setFieldsValue({
       perception,
+      time: Math.abs(Math.floor((time / 3600) * 100) / 100),
     })
-  }, [perception])
+  }, [perception, time])
 
   useEffect(() => {
     if (visible) {
@@ -59,7 +75,7 @@ const EditPerceptionModal = (props: EditPerceptionPropsType) => {
     >
       <ContentWrap>
         <Form layout="vertical" autoComplete="off" form={form}>
-          <Form.Item label={t('actualWorkingHours')} name="total_task_time">
+          <Form.Item label={t('actualWorkingHours')} name="time">
             <InputNumber
               id="total_task_time"
               min={0.0}

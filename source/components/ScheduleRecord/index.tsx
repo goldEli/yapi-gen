@@ -164,7 +164,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
     }
   }, [props.detailId, props.projectId, props.isOpen, updateProgress])
 
-  const conform = async (value: string) => {
+  const conform = async (obj: any) => {
     let result = null
     try {
       if (projectInfo.projectType === 2) {
@@ -172,7 +172,8 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
           project_id: props?.projectId,
           story_id: props?.detailId,
           log_id: editData?.id,
-          perception: value,
+          perception: obj.perception,
+          task_time: obj.time,
         })
       }
 
@@ -181,7 +182,8 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
           project_id: props?.projectId,
           story_id: props?.detailId,
           log_id: editData?.id,
-          perception: value,
+          perception: obj.perception,
+          task_time: obj.time,
         })
       }
       if (projectInfo.projectType === 1 && props?.isBug) {
@@ -189,7 +191,8 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
           project_id: props?.projectId,
           story_id: props?.detailId,
           log_id: editData?.id,
-          perception: value,
+          perception: obj.perception,
+          task_time: obj.time,
         })
       }
       if (result) {
@@ -300,6 +303,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
         }}
         onConfirm={conform}
         perception={editData?.perception}
+        time={editData?.task_time}
       />
     </Wrap>
   )

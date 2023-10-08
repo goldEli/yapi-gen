@@ -79,7 +79,6 @@ const DemandIndex = () => {
   const { currentMenu } = useSelector(store => store.user)
   const searchChoose = useSelector(store => store.view.searchChoose)
   const titles = useSelector(store => store.view.tapTitles)
-  console.log(isRefresh, 'isRefresh')
 
   const keyValueTree = {
     key,

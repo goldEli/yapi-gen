@@ -1017,6 +1017,7 @@ export const updateStoryPerception = async (params: {
   story_id: number
   log_id: number
   perception: string
+  task_time: number
 }) => {
   const response = await http.put<any>('updateStoryPerception', params)
   return response
@@ -1028,6 +1029,7 @@ export const updateTransactionPerception = async (params: {
   story_id: number
   log_id: number
   perception: string
+  task_time: number
 }) => {
   const response = await http.put<any>('updateTransactionPerception', params)
   return response
@@ -1039,6 +1041,7 @@ export const updateFlawPerception = async (params: {
   story_id: number
   log_id: number
   perception: string
+  task_time: number
 }) => {
   const response = await http.put<any>('updateFlawPerception', params)
   return response
