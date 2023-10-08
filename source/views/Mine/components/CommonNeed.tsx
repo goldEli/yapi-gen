@@ -525,7 +525,6 @@ const CommonNeed = (props: any) => {
       if (item.project_type === 1 && item.is_bug === 1) {
         type = 2
       }
-      console.log(demandIds, 'demandIds')
 
       openDemandDetail(
         { ...item, ...{ demandIds } },

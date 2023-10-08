@@ -59,7 +59,7 @@ const MouseDom = styled.div<{ active: boolean }>`
   width: 6px;
   cursor: col-resize;
   overflow: hidden;
-  z-index: 1;
+  z-index: 12;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

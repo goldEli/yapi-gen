@@ -53,7 +53,7 @@ const StatusExamine = (props: StatusExamineProps) => {
     })
   }
   return (
-    <div style={{ backgroundColor: 'white' }}>
+    <div style={{ backgroundColor: 'white', padding: '8px 24px 0' }}>
       <DeleteConfirmModal />
       <ExamineWrap>
         <TopWrap>

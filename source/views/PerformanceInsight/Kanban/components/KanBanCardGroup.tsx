@@ -15,6 +15,8 @@ import { useEffect, useState } from 'react'
 import PriorityIcon from '@/components/PriorityIcon'
 import UploadAttach from '@/components/UploadAttach'
 import { getPerformanceInsightKanBanListMore } from '@/services/performanceInsight'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 interface TaskListGroupProps {
   item: any
@@ -25,17 +27,174 @@ interface TaskListGroupProps {
 const TaskListGroup = (props: TaskListGroupProps) => {
   const { item, filterParams } = props
   const [page, setPage] = useState(1)
+  const [openDemandDetail] = useOpenDemandDetail()
 
   // 待审核数据加载更多
   const fetchMoreData = async () => {
     filterParams.user_ids = [
       {
-        project_id: 483,
+        project_id: 62,
+        user_id: 2,
+      },
+      {
+        project_id: 62,
+        user_id: 3,
+      },
+      {
+        project_id: 62,
+        user_id: 5,
+      },
+      {
+        project_id: 62,
+        user_id: 6,
+      },
+      {
+        project_id: 62,
+        user_id: 7,
+      },
+      {
+        project_id: 62,
+        user_id: 8,
+      },
+      {
+        project_id: 62,
+        user_id: 9,
+      },
+      {
+        project_id: 62,
+        user_id: 10,
+      },
+      {
+        project_id: 62,
+        user_id: 12,
+      },
+      {
+        project_id: 62,
+        user_id: 13,
+      },
+      {
+        project_id: 62,
+        user_id: 17,
+      },
+      {
+        project_id: 62,
+        user_id: 19,
+      },
+      {
+        project_id: 62,
+        user_id: 25,
+      },
+      {
+        project_id: 62,
+        user_id: 29,
+      },
+      {
+        project_id: 62,
+        user_id: 31,
+      },
+      {
+        project_id: 62,
+        user_id: 33,
+      },
+      {
+        project_id: 62,
+        user_id: 39,
+      },
+      {
+        project_id: 62,
         user_id: 42,
       },
       {
-        project_id: 509,
-        user_id: 42,
+        project_id: 62,
+        user_id: 47,
+      },
+      {
+        project_id: 62,
+        user_id: 48,
+      },
+      {
+        project_id: 62,
+        user_id: 49,
+      },
+      {
+        project_id: 62,
+        user_id: 50,
+      },
+      {
+        project_id: 62,
+        user_id: 52,
+      },
+      {
+        project_id: 62,
+        user_id: 53,
+      },
+      {
+        project_id: 62,
+        user_id: 54,
+      },
+      {
+        project_id: 62,
+        user_id: 55,
+      },
+      {
+        project_id: 62,
+        user_id: 77,
+      },
+      {
+        project_id: 62,
+        user_id: 79,
+      },
+      {
+        project_id: 62,
+        user_id: 81,
+      },
+      {
+        project_id: 62,
+        user_id: 82,
+      },
+      {
+        project_id: 62,
+        user_id: 86,
+      },
+      {
+        project_id: 62,
+        user_id: 87,
+      },
+      {
+        project_id: 62,
+        user_id: 90,
+      },
+      {
+        project_id: 62,
+        user_id: 91,
+      },
+      {
+        project_id: 62,
+        user_id: 93,
+      },
+      {
+        project_id: 62,
+        user_id: 94,
+      },
+      {
+        project_id: 62,
+        user_id: 95,
+      },
+      {
+        project_id: 62,
+        user_id: 96,
+      },
+      {
+        project_id: 62,
+        user_id: 97,
+      },
+      {
+        project_id: 62,
+        user_id: 98,
+      },
+      {
+        project_id: 62,
+        user_id: 99,
       },
     ]
     const newPage = page + 1
@@ -55,6 +214,17 @@ const TaskListGroup = (props: TaskListGroupProps) => {
         list: [...item.stories?.list, ...response?.list],
       },
     })
+  }
+
+  // 任务详情
+  const onClickItem = (row: any) => {
+    openDemandDetail(
+      { ...row, ...{ projectId: row.project_id } },
+      row.project_id,
+      row.id,
+      row.project_type === 2 ? 1 : row.is_bug === 1 ? 2 : 3,
+      true,
+    )
   }
 
   return (
@@ -90,6 +260,7 @@ const TaskListGroup = (props: TaskListGroupProps) => {
             <div
               className="name"
               style={{ marginBottom: k?.attachments?.length > 0 ? '4px' : 0 }}
+              onClick={() => onClickItem(k)}
             >
               {k?.name}
             </div>
@@ -114,14 +285,14 @@ const TaskListGroup = (props: TaskListGroupProps) => {
             <div className="status">
               <TaskTag
                 state={
-                  k?.category_status?.status?.is_start === 1 &&
-                  k?.category_status?.status?.is_end === 2
+                  k?.category_status?.is_start === 1 &&
+                  k?.category_status?.is_end === 2
                     ? 1
-                    : k?.category_status?.status?.is_end === 1 &&
-                      k?.category_status?.status?.is_start === 2
+                    : k?.category_status?.is_end === 1 &&
+                      k?.category_status?.is_start === 2
                     ? 2
-                    : k?.category_status?.status?.is_start === 2 &&
-                      k?.category_status?.status?.is_end === 2
+                    : k?.category_status?.is_start === 2 &&
+                      k?.category_status?.is_end === 2
                     ? 3
                     : 0
                 }
@@ -149,7 +320,6 @@ const TaskListGroup = (props: TaskListGroupProps) => {
 }
 
 interface KanBanCardGroupProps {
-  leftWidth: number
   filterParams: any
   kanBanData: {
     list: any
@@ -162,13 +332,13 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
   const { kanBanData, onChangeKanBanData } = props
 
   return (
-    <KanBanCardGroupWrap style={{ width: `calc(100% - ${props.leftWidth}px)` }}>
+    <KanBanCardGroupWrap>
       <KanBanCardGroupBox size={16}>
         {kanBanData?.list?.map((i: any) => (
           <KanBanCardItem key={i.id}>
             <CardItemHeader>
               <div className="avatar">
-                <img src={i.avatar} />
+                <CommonUserAvatar avatar={i.avatar} isBorder size="large" />
               </div>
               <div className="content">
                 <div className="nameBox">
@@ -186,7 +356,9 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
                     style={{
                       color: 'var(--function-success)',
                       width: 94,
-                      paddingRight: 8,
+                      paddingRight: String(i?.overall_schedule).split('.')[1]
+                        ? 14
+                        : 0,
                     }}
                     type="line"
                     percent={i?.overall_schedule}

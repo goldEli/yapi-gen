@@ -1,10 +1,16 @@
 /* eslint-disable no-undefined */
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import KanBanHeader from './components/KanBanHeader'
 import { useEffect, useRef, useState } from 'react'
 import KanBanPerson from './components/KanBanPerson'
-import { PersonBox, SideMain, ContentWrap } from './style'
+import {
+  PersonBox,
+  SideMain,
+  ContentWrap,
+  HaveChangeICon,
+  ChangeIcon,
+} from './style'
 import { CloseWrap, DragLine, MouseDom } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import KanBanCardGroup from './components/KanBanCardGroup'
@@ -12,7 +18,6 @@ import { getPerformanceInsightKanBanList } from '@/services/performanceInsight'
 import moment from 'moment'
 
 const PerformanceInsightKanBan = () => {
-  const dispatch = useDispatch()
   const { currentMenu } = useSelector(store => store.user)
   const { hasSideCommonLayoutWidth } = useSelector(state => state.global)
   // 筛选条件
@@ -45,6 +50,10 @@ const PerformanceInsightKanBan = () => {
   })
   const [isOpen, setIsOpen] = useState(false)
   const [focus, setFocus] = useState(false)
+  // 是否已经删除过数据
+  const [isDeleteBefore, setIsDeleteBefore] = useState(false)
+  // 判断是否可向前
+  const [isToBefore, setIsToBefore] = useState(false)
   const [leftWidth, setLeftWidth] = useState(256)
   const [endWidth, setEndWidth] = useState(256)
   const main = useRef<any>(null)
@@ -62,26 +71,38 @@ const PerformanceInsightKanBan = () => {
     })
   }
 
-  // 获取人员看板数据
-  const getDataList = async (page: number, params: any) => {
-    setKanBanData({
-      list: undefined,
-      total: 0,
-    })
+  // 获取人员看板数据 page: 分页， params： 筛选条件 direction：方向1是向前，2是向后
+  const getDataList = async (page: number, params: any, direction?: number) => {
+    // setKanBanData({
+    //   list: undefined,
+    //   total: 0,
+    // })
     const result = JSON.parse(JSON.stringify(params))
     result.page = page
-    result.user_ids = [
-      {
-        project_id: 483,
-        user_id: 42,
-      },
-      {
-        project_id: 509,
-        user_id: 42,
-      },
-    ]
     const response = await getPerformanceInsightKanBanList(result)
-    setKanBanData(response)
+
+    if (direction) {
+      const resultData: any =
+        direction === 1
+          ? {
+              total: response.total,
+              list: [...response?.list, ...(kanBanData?.list || [])]?.slice(
+                0,
+                50,
+              ),
+            }
+          : {
+              total: response.total,
+              list:
+                page >= 6
+                  ? [...(kanBanData?.list || [])?.slice(10), ...response?.list]
+                  : [...(kanBanData?.list || []), ...response?.list],
+            }
+      setKanBanData(resultData)
+    } else {
+      // 初始化直接赋值
+      setKanBanData(response)
+    }
   }
 
   // 刷新功能
@@ -150,6 +171,28 @@ const PerformanceInsightKanBan = () => {
     getStatistics(value)
     // 获取看板数据
     getDataList(1, value)
+  }
+
+  // 向前翻页
+  const onBefore = () => {
+    // 是否已经删除过数据，是则当前分页减去极限分页，反之正常返回
+    const resultPage = isDeleteBefore ? personPage - 1 : personPage - 5
+    setPersonPage(resultPage)
+    setIsDeleteBefore(true)
+    setIsToBefore(resultPage !== 1)
+    // 获取看板数据
+    getDataList(resultPage, filterParams, 1)
+  }
+
+  // 向后翻页
+  const onAfter = () => {
+    // 是否已经删除过数据，是则当前分页加去极限分页，反之正常递增
+    const resultPage = isDeleteBefore ? personPage + 5 : personPage + 1
+    setPersonPage(resultPage)
+    setIsDeleteBefore(false)
+    setIsToBefore(resultPage >= 6)
+    // 获取看板数据
+    getDataList(resultPage, filterParams, 2)
   }
 
   // 初始化筛选条件更新统计数据和看板数据
@@ -222,12 +265,23 @@ const PerformanceInsightKanBan = () => {
             </div>
           )}
         </PersonBox>
-        <KanBanCardGroup
-          leftWidth={leftWidth}
-          filterParams={filterParams}
-          kanBanData={kanBanData}
-          onChangeKanBanData={onChangeKanBanData}
-        />
+        <HaveChangeICon style={{ width: `calc(100% - ${leftWidth}px)` }}>
+          {isToBefore && (
+            <ChangeIcon style={{ left: 24 }} onClick={onBefore}>
+              <CommonIconFont type="left" size={24} />
+            </ChangeIcon>
+          )}
+          <KanBanCardGroup
+            filterParams={filterParams}
+            kanBanData={kanBanData}
+            onChangeKanBanData={onChangeKanBanData}
+          />
+          {kanBanData.total > personPage * 10 && (
+            <ChangeIcon style={{ right: 24 }} onClick={onAfter}>
+              <CommonIconFont type="right" size={24} />
+            </ChangeIcon>
+          )}
+        </HaveChangeICon>
       </ContentWrap>
     </PermissionWrap>
   )

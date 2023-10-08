@@ -24,7 +24,173 @@ export const getPerformanceInsightKanBanList = async (params: any) => {
       iterate_ids: params?.iteration,
       keyword: params?.keyword,
       created_at: params?.time,
-      users: params?.user_ids,
+      // users: params?.user_ids,
+      users: [
+        {
+          project_id: 62,
+          user_id: 2,
+        },
+        {
+          project_id: 62,
+          user_id: 3,
+        },
+        {
+          project_id: 62,
+          user_id: 5,
+        },
+        {
+          project_id: 62,
+          user_id: 6,
+        },
+        {
+          project_id: 62,
+          user_id: 7,
+        },
+        {
+          project_id: 62,
+          user_id: 8,
+        },
+        {
+          project_id: 62,
+          user_id: 9,
+        },
+        {
+          project_id: 62,
+          user_id: 10,
+        },
+        {
+          project_id: 62,
+          user_id: 12,
+        },
+        {
+          project_id: 62,
+          user_id: 13,
+        },
+        {
+          project_id: 62,
+          user_id: 17,
+        },
+        {
+          project_id: 62,
+          user_id: 19,
+        },
+        {
+          project_id: 62,
+          user_id: 25,
+        },
+        {
+          project_id: 62,
+          user_id: 29,
+        },
+        {
+          project_id: 62,
+          user_id: 31,
+        },
+        {
+          project_id: 62,
+          user_id: 33,
+        },
+        {
+          project_id: 62,
+          user_id: 39,
+        },
+        {
+          project_id: 62,
+          user_id: 42,
+        },
+        {
+          project_id: 62,
+          user_id: 47,
+        },
+        {
+          project_id: 62,
+          user_id: 48,
+        },
+        {
+          project_id: 62,
+          user_id: 49,
+        },
+        {
+          project_id: 62,
+          user_id: 50,
+        },
+        {
+          project_id: 62,
+          user_id: 52,
+        },
+        {
+          project_id: 62,
+          user_id: 53,
+        },
+        {
+          project_id: 62,
+          user_id: 54,
+        },
+        {
+          project_id: 62,
+          user_id: 55,
+        },
+        {
+          project_id: 62,
+          user_id: 77,
+        },
+        {
+          project_id: 62,
+          user_id: 79,
+        },
+        {
+          project_id: 62,
+          user_id: 81,
+        },
+        {
+          project_id: 62,
+          user_id: 82,
+        },
+        {
+          project_id: 62,
+          user_id: 86,
+        },
+        {
+          project_id: 62,
+          user_id: 87,
+        },
+        {
+          project_id: 62,
+          user_id: 90,
+        },
+        {
+          project_id: 62,
+          user_id: 91,
+        },
+        {
+          project_id: 62,
+          user_id: 93,
+        },
+        {
+          project_id: 62,
+          user_id: 94,
+        },
+        {
+          project_id: 62,
+          user_id: 95,
+        },
+        {
+          project_id: 62,
+          user_id: 96,
+        },
+        {
+          project_id: 62,
+          user_id: 97,
+        },
+        {
+          project_id: 62,
+          user_id: 98,
+        },
+        {
+          project_id: 62,
+          user_id: 99,
+        },
+      ],
     },
     page: params?.page,
   })

@@ -251,6 +251,7 @@ export const MemberItem = styled.div`
 // KanBanCardGroup 人员卡片组
 export const KanBanCardGroupWrap = styled.div`
   padding: 16px 16px 8px 16px;
+  height: 100%;
 `
 
 export const KanBanCardGroupBox = styled(Space)`
@@ -396,6 +397,7 @@ export const TaskItemContent = styled.div`
     font-size: 14px;
     color: var(--neutral-n1-d1);
     white-space: normal;
+    cursor: pointer;
   }
 `
 
@@ -431,4 +433,28 @@ export const TaskTag = styled.div<{ state?: number }>`
       : props.state === 2
       ? 'var(--neutral-n7)'
       : 'var(--function-success)'};
+`
+
+export const HaveChangeICon = styled.div`
+  position: relative;
+`
+
+export const ChangeIcon = styled.div`
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 6px 0px rgba(24, 43, 71, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  top: 46%;
+  svg {
+    color: var(--neutral-white-d7);
+  }
+  &:hover {
+    background: rgba(0, 0, 0, 0.32);
+  }
 `
