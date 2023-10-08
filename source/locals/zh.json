@@ -2430,5 +2430,6 @@
   "youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject": "您已被该项目管理员移除团队，无法查看该数据，如有疑问请联系该项目管理员",
   "editSprint": "编辑冲刺",
   "createANewSprint": "新建冲刺",
-  "deleteSprint": "删除冲刺"
+  "deleteSprint": "删除冲刺",
+  "viewGoals": "查看目标"
 }

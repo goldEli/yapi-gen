@@ -357,31 +357,28 @@ const XTable: React.FC<XTableProps> = props => {
                   : ''}
               </span>
               {data.id === 0 ? null : (
-                <Popover
-                  content={
-                    <PopoverTargetText>
-                      {data.iterate_info || '--'}
-                    </PopoverTargetText>
-                  }
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <Tooltip title={t('sprint.sprintTarget')}>
-                    <CloseWrap
-                      width={24}
-                      height={24}
-                      style={{ marginRight: 12 }}
-                    >
-                      <IconFont
-                        className="custom"
-                        style={{
-                          fontSize: 16,
-                        }}
-                        type="target"
-                      />
-                    </CloseWrap>
-                  </Tooltip>
-                </Popover>
+                // <Popover
+                //   content={
+                //     <PopoverTargetText>
+                //       {data.iterate_info || '--'}
+                //     </PopoverTargetText>
+                //   }
+                //   placement="bottom"
+                //   trigger="click"
+                // >
+
+                <CommonButton type="light">
+                  <IconFont
+                    className="custom"
+                    style={{
+                      fontSize: 16,
+                    }}
+                    type="target"
+                  />
+                  {t('viewGoals')}
+                </CommonButton>
+
+                // </Popover>
               )}
 
               {/* {data.id === 0
@@ -484,6 +481,27 @@ const XTable: React.FC<XTableProps> = props => {
           </Header>
         }
       >
+        {data.iterate_info ? (
+          <Tooltip title={data.iterate_info}>
+            <div
+              style={{
+                height: '28px',
+                background: '#F6F7F9',
+                borderRadius: '4px 4px 4px 4px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                color: '#969799',
+                fontSize: '12px',
+                lineHeight: '28px',
+                padding: '0 6px',
+              }}
+            >
+              {data.iterate_info}
+            </div>
+          </Tooltip>
+        ) : null}
+
         {!isCanEdit && !isEnd && (
           <CommonButton
             type="primaryText"

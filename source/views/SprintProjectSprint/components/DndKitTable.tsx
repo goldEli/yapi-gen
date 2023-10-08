@@ -395,7 +395,7 @@ const DndKitTable = (props: any) => {
       render: () => <MoveFont type="move" style={{ fontSize: 16 }} />,
     },
     {
-      title: t('sprint.Number'),
+      title: t('common.title'),
       dataIndex: 'story_prefix_key',
       key: 'story_prefix_key',
       width: 140,
@@ -448,10 +448,10 @@ const DndKitTable = (props: any) => {
       },
     },
     {
-      title: t('common.title'),
+      title: '',
       dataIndex: 'name',
       key: 'name',
-      width: 400,
+      width: 200,
       render(value, record) {
         return (
           <TitleWrap
