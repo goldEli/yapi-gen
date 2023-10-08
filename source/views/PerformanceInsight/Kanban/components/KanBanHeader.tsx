@@ -22,7 +22,7 @@ interface KanBanHeaderProps {
   statistics: any
   filterParams: any
   onChangFilterUpdate(value: any): void
-  isUpdate: number
+  isUpdate: boolean
 }
 
 const KanBanHeader = (props: KanBanHeaderProps) => {
@@ -119,14 +119,12 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
 
   // 向上传递参数
   useEffect(() => {
-    props.onChangeFilter({ ...props.filterParams, ...searchFilterParams })
-  }, [searchFilterParams])
-
-  useEffect(() => {
     if (props.isUpdate) {
       setSearchFilterParams(props.filterParams)
+    } else {
+      props.onChangeFilter({ ...props.filterParams, ...searchFilterParams })
     }
-  }, [props.isUpdate])
+  }, [searchFilterParams, props.isUpdate])
 
   return (
     <KanBanHeaderWrap>

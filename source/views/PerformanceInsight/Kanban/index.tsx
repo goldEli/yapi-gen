@@ -59,7 +59,7 @@ const PerformanceInsightKanBan = () => {
   // 判断是否可向前
   const [isToBefore, setIsToBefore] = useState(false)
   // 刷新功能
-  const [isUpdate, setIsUpdate] = useState(0)
+  const [isUpdate, setIsUpdate] = useState(false)
   const [leftWidth, setLeftWidth] = useState(280)
   const [endWidth, setEndWidth] = useState(280)
   const main = useRef<any>(null)
@@ -128,7 +128,7 @@ const PerformanceInsightKanBan = () => {
 
   // 刷新功能
   const onUpdate = () => {
-    setIsUpdate(isUpdate + 1)
+    setIsUpdate(true)
     setFilterParams({
       user_ids: [],
       iteration: [0],
@@ -147,6 +147,9 @@ const PerformanceInsightKanBan = () => {
       // 优先级
       priority: [],
     })
+    setTimeout(() => {
+      setIsUpdate(false)
+    }, 300)
   }
 
   // 拖动线条

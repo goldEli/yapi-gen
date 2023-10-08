@@ -169,7 +169,7 @@ interface KanBanPersonProps {
   // 更新筛选条件
   onChangeFilter(value: any): void
   onChangFilterUpdate(value: any): void
-  isUpdate: number
+  isUpdate: boolean
 }
 
 const KanBanPerson = (props: KanBanPersonProps) => {
