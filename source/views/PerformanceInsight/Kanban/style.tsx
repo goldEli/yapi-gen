@@ -65,7 +65,7 @@ export const ContentWrap = styled.div`
   display: flex;
   height: calc(100% - 159px);
   overflow: auto;
-  padding-left: 16px;
+  padding-left: 24px;
   flex: 1;
 `
 
@@ -84,7 +84,7 @@ export const PersonBox = styled.div<{ isOpen: boolean; permission?: boolean }>`
   }
   .icon {
     position: absolute;
-    right: 6px;
+    right: 0px;
     top: 16px;
   }
 `
@@ -117,7 +117,7 @@ export const KanBanPersonHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 8px;
+  /* padding-left: 8px; */
   .input {
     flex: 1;
     border: 1px solid var(--neutral-n6-d1);
@@ -130,7 +130,7 @@ export const KanBanPersonHeader = styled.div`
 
 export const CheckboxAll = styled(Checkbox)`
   margin-top: 16px;
-  padding-left: 8px;
+  /* padding-left: 8px; */
 `
 
 export const CheckBoxWrap = styled.div`

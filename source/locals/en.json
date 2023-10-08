@@ -2431,5 +2431,14 @@
   "taskStatus": "Task status",
   "searchMembers": "Search members",
   "viewingHistoricalDataIsNotCurrently": "Viewing historical data is not currently supported.",
-  "youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject": "You have been removed from the team by the project administrator and cannot view this data. If you have any questions, please contact the project administrator."
+  "youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject": "You have been removed from the team by the project administrator and cannot view this data. If you have any questions, please contact the project administrator.",
+  "hasNotStarted": "Has not started",
+  "extremelyHigh": "Extremely high",
+  "high": "High",
+  "middle": "Middle",
+  "low": "Low",
+  "extremelyLow": "Extremely low",
+  "searchTask": "Search task name/number",
+  "statisticsTotal": "{{count}} Item",
+  "taskTotal": "{{count}} Tasks"
 }

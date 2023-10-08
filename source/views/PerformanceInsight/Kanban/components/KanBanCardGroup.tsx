@@ -11,13 +11,14 @@ import {
   TaskTag,
 } from '../style'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import PriorityIcon from '@/components/PriorityIcon'
 import UploadAttach from '@/components/UploadAttach'
 import { getPerformanceInsightKanBanListMore } from '@/services/performanceInsight'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import NoData from '@/components/NoData'
+import { useTranslation } from 'react-i18next'
 
 interface TaskListGroupProps {
   item: any
@@ -174,6 +175,7 @@ interface KanBanCardGroupProps {
 
 const KanBanCardGroup = (props: KanBanCardGroupProps) => {
   const { kanBanData, onChangeKanBanData } = props
+  const [t] = useTranslation()
   return (
     <KanBanCardGroupWrap>
       <KanBanCardGroupBox size={16}>
@@ -193,7 +195,9 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
                   {i?.departments?.map((i: any) => i.name)?.join(' - ')}
                 </div>
                 <div className="task">
-                  <div className="label">{i?.stories?.pager?.total}项任务</div>
+                  <div className="label">
+                    {t('taskTotal', { count: i?.stories?.pager?.total })}
+                  </div>
                   <Progress
                     strokeColor="var(--function-success)"
                     style={{

@@ -39,6 +39,7 @@ interface CollapseHeaderProps {
 
 // 折叠头部
 const CollapseHeader = (props: CollapseHeaderProps) => {
+  const [t] = useTranslation()
   const { item, onChangeKeys, activeKey, onChangeSelectKeys, selectKeys } =
     props
   const [isVisible, setIsVisible] = useState(false)
@@ -131,7 +132,7 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
               isActive={normal.includes(0)}
               onClick={() => onChangeIteration(0)}
             >
-              <div className="name">全部</div>
+              <div className="name">{t('all')}</div>
               {normal.includes(0) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}

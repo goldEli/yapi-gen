@@ -2,7 +2,7 @@
 import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import KanBanHeader from './components/KanBanHeader'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import KanBanPerson from './components/KanBanPerson'
 import {
   PersonBox,
@@ -167,13 +167,13 @@ const PerformanceInsightKanBan = () => {
         if (isOpen) {
           setIsOpen(!isOpen)
         }
-        setLeftWidth(width < 38 ? 38 : width)
+        setLeftWidth(width < 32 ? 32 : width)
       }
     }
     document.onmouseup = () => {
       if (width < 280) {
         setEndWidth(width)
-        setLeftWidth(38)
+        setLeftWidth(32)
         setIsOpen(true)
       } else if (width > maxWidth) {
         setLeftWidth(maxWidth)
@@ -190,8 +190,8 @@ const PerformanceInsightKanBan = () => {
 
   // 点击按钮
   const onChangeSide = (state: string) => {
-    setLeftWidth(state === 'open' ? 280 : 38)
-    setEndWidth(state === 'open' ? 0 : 38)
+    setLeftWidth(state === 'open' ? 280 : 32)
+    setEndWidth(state === 'open' ? 0 : 32)
     setIsOpen(false)
   }
 
@@ -257,10 +257,10 @@ const PerformanceInsightKanBan = () => {
           isOpen={isOpen}
           ref={sliderRefPerformance}
           style={{
-            width: isOpen ? 38 : leftWidth,
+            width: isOpen ? 32 : leftWidth,
             transition: endWidth < 280 ? '0.2s' : 'initial',
             borderRight:
-              leftWidth === 38
+              leftWidth === 32
                 ? '1px solid transparent'
                 : '1px solid var(--neutral-n6-d1)',
           }}
@@ -270,21 +270,19 @@ const PerformanceInsightKanBan = () => {
             style={{ width: leftWidth }}
             isOpen={isOpen}
           >
-            {leftWidth !== 38 && (
-              <div className="box">
-                <KanBanPerson
-                  filterParams={filterParams}
-                  onClose={() => onChangeSide('close')}
-                  onChangeFilter={value => {
-                    setFilterParams(value)
-                  }}
-                  onChangFilterUpdate={onChangFilterUpdate}
-                  isUpdate={isUpdate}
-                />
-              </div>
-            )}
+            <div className="box" style={{ opacity: leftWidth === 32 ? 0 : 1 }}>
+              <KanBanPerson
+                filterParams={filterParams}
+                onClose={() => onChangeSide('close')}
+                onChangeFilter={value => {
+                  setFilterParams(value)
+                }}
+                onChangFilterUpdate={onChangFilterUpdate}
+                isUpdate={isUpdate}
+              />
+            </div>
           </SideMain>
-          {leftWidth !== 38 && (
+          {leftWidth !== 32 && (
             <MouseDom
               active={focus}
               onMouseDown={onDragLine}
@@ -297,7 +295,7 @@ const PerformanceInsightKanBan = () => {
               />
             </MouseDom>
           )}
-          {leftWidth === 38 && (
+          {leftWidth === 32 && (
             <div className="icon" onClick={() => onChangeSide('open')}>
               <CloseWrap width={32} height={32}>
                 <CommonIconFont size={20} type="indent" />

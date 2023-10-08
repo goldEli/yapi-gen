@@ -34,25 +34,25 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
   )
 
   const statusList = [
-    { label: '已完成', value: 2 },
-    { label: '未开始', value: 3 },
-    { label: '进行中', value: 4 },
-    { label: '已逾期', value: 5 },
+    { label: t('completed'), value: 2 },
+    { label: t('hasNotStarted'), value: 3 },
+    { label: t('inProgress'), value: 4 },
+    { label: t('overdue'), value: 5 },
   ]
 
   const priorityList = [
-    { label: '极高', value: 'extremely_high' },
-    { label: '高', value: 'high' },
-    { label: '中', value: 'middle' },
-    { label: '低', value: 'low' },
-    { label: '极低', value: 'extremely_low' },
+    { label: t('extremelyHigh'), value: 'extremely_high' },
+    { label: t('high'), value: 'high' },
+    { label: t('middle'), value: 'middle' },
+    { label: t('low'), value: 'low' },
+    { label: t('extremelyLow'), value: 'extremely_low' },
   ]
 
   const statisticsList = [
-    { name: '待规划', key: 'planning', color: 'var(--primary-d1)' },
-    { name: '已完成', key: 'finish', color: 'var(--function-success)' },
-    { name: '进行中', key: 'ongoing', color: '#A176FB' },
-    { name: '已逾期', key: 'overdue', color: 'var(--function-warning)' },
+    { name: t('toBePlanned'), key: 'planning', color: 'var(--primary-d1)' },
+    { name: t('completed'), key: 'finish', color: 'var(--function-success)' },
+    { name: t('inProgress'), key: 'ongoing', color: '#A176FB' },
+    { name: t('overdue'), key: 'overdue', color: 'var(--function-warning)' },
   ]
 
   //   切换时间
@@ -133,7 +133,7 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
           <InputSearch
             onChangeSearch={value => onClickSearch(value, 'keyword')}
             leftIcon
-            placeholder="搜索任务名称/编号"
+            placeholder={t('searchTask')}
             width={192}
             defaultValue={searchFilterParams?.keyword}
           />
@@ -168,7 +168,7 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
               showArrow
               mode="multiple"
               selectWidth={100}
-              placeholder="全部"
+              placeholder={t('all')}
               showSearch
               optionFilterProp="label"
               placement="bottomRight"
@@ -186,7 +186,7 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
             <MoreSelect
               mode="multiple"
               selectWidth={100}
-              placeholder="全部"
+              placeholder={t('all')}
               showSearch
               optionFilterProp="label"
               showArrow
@@ -222,7 +222,9 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
             <div className="provider" style={{ background: i.color }} />
             <div className="content">
               <div className="title">{i.name}</div>
-              <div className="number">{props?.statistics?.[i.key]}项</div>
+              <div className="number">
+                {t('statisticsTotal', { count: props?.statistics?.[i.key] })}
+              </div>
             </div>
           </StatisticsItem>
         ))}

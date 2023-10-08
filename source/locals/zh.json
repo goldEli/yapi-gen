@@ -2431,5 +2431,14 @@
   "taskStatus": "任务状态",
   "searchMembers": "搜索成员",
   "viewingHistoricalDataIsNotCurrently": "历史数据暂不支持查看",
-  "youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject": "您已被该项目管理员移除团队，无法查看该数据，如有疑问请联系该项目管理员"
+  "youHaveBeenRemovedFromTheTeamByTheProjectAdministratorAndCannotViewThisIfYouHaveAnyPleaseContactTheProject": "您已被该项目管理员移除团队，无法查看该数据，如有疑问请联系该项目管理员",
+  "hasNotStarted": "未开始",
+  "extremelyHigh": "极高",
+  "high": "高",
+  "middle": "中",
+  "low": "低",
+  "extremelyLow": "极低",
+  "searchTask": "搜索任务名称/编号",
+  "statisticsTotal": "{{count}}项",
+  "taskTotal": "{{count}}项任务"
 }
