@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ScreenFullModal, Toast } from '../style'
 import { message } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 interface KanBanFullScreenProps {
   children?: any
@@ -10,6 +11,7 @@ interface KanBanFullScreenProps {
 }
 
 const KanBanFullScreen = (props: KanBanFullScreenProps) => {
+  const [t] = useTranslation()
   const { isVisible, onClose } = props
   const [toastHeight, setToastHeight] = useState(-50)
 
@@ -51,7 +53,7 @@ const KanBanFullScreen = (props: KanBanFullScreenProps) => {
       zIndex={500}
     >
       <Toast style={{ top: toastHeight, opacity: toastHeight > 0 ? 1 : 0 }}>
-        <div>已进入看板全屏模式，请按【ESC】键退出全屏</div>
+        <div>{t('youHaveEnteredTheBoardPleasePressTheKeyToExit')}</div>
       </Toast>
       {props?.children}
     </ScreenFullModal>

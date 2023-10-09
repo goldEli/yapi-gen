@@ -2440,5 +2440,6 @@
   "extremelyLow": "极低",
   "searchTask": "搜索任务名称/编号",
   "statisticsTotal": "{{count}}项",
-  "taskTotal": "{{count}}项任务"
+  "taskTotal": "{{count}}项任务",
+  "youHaveEnteredTheBoardPleasePressTheKeyToExit": "已进入看板全屏模式，请按【ESC】键退出全屏"
 }

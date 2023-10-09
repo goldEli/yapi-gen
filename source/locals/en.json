@@ -2440,5 +2440,6 @@
   "extremelyLow": "Extremely low",
   "searchTask": "Search task name/number",
   "statisticsTotal": "{{count}} Item",
-  "taskTotal": "{{count}} Tasks"
+  "taskTotal": "{{count}} Tasks",
+  "youHaveEnteredTheBoardPleasePressTheKeyToExit": "You have entered the board full-screen mode, please press the [ESC] key to exit full-screen mode."
 }
