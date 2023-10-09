@@ -17,16 +17,19 @@ import EmployeeProfileReport from './components/EmployeeProfileReport'
 import EmployeeProfileTask from './components/EmployeeProfileTask'
 import { useDispatch } from '@store/index'
 import { setFilterParamsOverall } from '@store/employeeProfile'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const EmployeeProfile = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
   const [leftWidth, setLeftWidth] = useState(320)
   const [endWidth, setEndWidth] = useState(320)
   const [focus, setFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [filterParams, setFilterParams] = useState<any>({})
-  const [memberStatistics, setMemberStatistics] = useState<any>({})
   const sideMain = useRef<any>(null)
   const sliderRef = useRef<any>(null)
   const maxWidth = 600
@@ -88,10 +91,14 @@ const EmployeeProfile = () => {
           dispatch(setFilterParamsOverall(value))
         }}
         filterParams={filterParams}
-        onChangeStatistics={setMemberStatistics}
-        memberStatistics={memberStatistics}
       />
-      <ContentWrap>
+      <ContentWrap
+        style={{
+          height: paramsData?.user_id
+            ? 'calc(100% - 73px)'
+            : 'calc(100% - 157px)',
+        }}
+      >
         <PersonBox
           isOpen={isOpen}
           ref={sliderRef}
@@ -133,14 +140,8 @@ const EmployeeProfile = () => {
           </Tooltip>
         </PersonBox>
         <RightBox style={{ width: `calc(100% - ${leftWidth}px)` }}>
-          <EmployeeProfileReport
-            filterParams={filterParams}
-            memberStatistics={memberStatistics}
-          />
-          <EmployeeProfileTask
-            filterParams={filterParams}
-            memberStatistics={memberStatistics}
-          />
+          <EmployeeProfileReport filterParams={filterParams} />
+          <EmployeeProfileTask filterParams={filterParams} />
         </RightBox>
       </ContentWrap>
     </Wrap>

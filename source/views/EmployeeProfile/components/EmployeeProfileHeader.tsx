@@ -23,12 +23,9 @@ import { getParamsData } from '@/tools'
 interface EmployeeProfileHeaderProps {
   onChangeFilter(value: any): void
   filterParams: any
-  memberStatistics: any
-  onChangeStatistics(value: any): void
 }
 
 const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
-  const { memberStatistics, onChangeStatistics } = props
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
@@ -53,9 +50,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     status: 0,
   })
   const [active, setActive] = useState(paramsData?.user_id ? 5 : 0)
-  const [isChange, setIsChange] = useState(0)
-  // 用于阻止初始化多次调用，地址栏不带参数时不更新统计接口
-  const [isInit, setIsInit] = useState(true)
+  const [memberStatistics, setMemberStatistics] = useState<any>({})
 
   const tabList = [
     { name: t('thisWeek'), key: 0 },
@@ -101,20 +96,29 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   ]
 
   // 计算当前选中卡片的数据
-  const onComputedCurrent = (obj: any, result: any) => {
-    const newObj = result[obj.fieldKey]
+  const onComputedCurrent = (obj: any, result: any, params?: any) => {
+    const newObj = result[obj?.fieldKey]
     dispatch(setCurrentKey({ ...newObj, ...obj }))
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...searchFilterParams,
+    props.onChangeFilter(
+      params ?? {
+        ...props?.filterParams,
+        ...searchFilterParams,
 
-      ...{ user_ids: newObj?.user_ids, status: obj.key },
-    })
+        ...{ user_ids: newObj?.user_ids, status: obj.key },
+      },
+    )
+  }
+
+  // 地址上存在人员时，更新任务列表
+  const onUpdateUserId = (params: any) => {
+    if (paramsData?.user_id) {
+      props.onChangeFilter(params)
+    }
   }
 
   //   切换时间
   const onChangeTime = (dates: any) => {
-    setSearchFilterParams({
+    const resultParams = {
       ...searchFilterParams,
       time: dates[0]
         ? [
@@ -122,9 +126,10 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             moment(dates[1]).format('YYYY-MM-DD'),
           ]
         : null,
-    })
+    }
+    setSearchFilterParams(resultParams)
     setActive(dates ? -1 : 0)
-    setIsChange(isChange + 1)
+    onUpdateUserId(resultParams)
   }
 
   //   点击切换tab
@@ -171,8 +176,11 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         ]
         break
     }
-    setIsChange(isChange + 1)
     setSearchFilterParams({
+      ...searchFilterParams,
+      time,
+    })
+    onUpdateUserId({
       ...searchFilterParams,
       time,
     })
@@ -183,36 +191,31 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     if (key === 'keyword' && value === searchFilterParams.keyword) {
       return
     }
-    setIsChange(isChange + 1)
     setSearchFilterParams({
+      ...searchFilterParams,
+      [key]: value,
+    })
+    onUpdateUserId({
       ...searchFilterParams,
       [key]: value,
     })
   }
 
   // 获取卡片数据
-  const getStatistics = async (params: any, isChange?: boolean) => {
+  const getStatistics = async (params: any) => {
     // 如果是修改筛选条件则，不带user_id
-    const response = await getMemberOverviewStatistics(
-      isChange ? params : { ...params, ...{ user_id: paramsData?.user_id } },
-    )
-    onChangeStatistics(response)
+    const response = await getMemberOverviewStatistics(params)
+    setMemberStatistics(response)
     const currentResult = currentKey?.key
       ? cardList?.filter((i: any) => i.key === currentKey?.key)[0]
       : cardList[0]
-    onComputedCurrent(
-      !isChange && !paramsData?.user_id
-        ? currentResult
-        : cardList[cardList?.length - 1],
-      response,
-    )
-    setTimeout(() => {
-      setIsInit(false)
-    }, 300)
+    onComputedCurrent(currentResult, response)
   }
 
   useEffect(() => {
-    getStatistics({ ...searchFilterParams, user_id: paramsData?.user_id ?? [] })
+    if (!paramsData?.user_id) {
+      getStatistics(searchFilterParams)
+    }
   }, [searchFilterParams])
 
   useEffect(() => {
@@ -224,21 +227,32 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         moment().subtract(1, 'years').format('YYYY-MM-DD'),
         moment().format('YYYY-MM-DD'),
       ]
+      resultParams.user_ids = [Number(paramsData?.user_id)]
       setSearchFilterParams({
         ...searchFilterParams,
         ...resultParams,
       })
-    } else {
-      if (!isInit) {
-        onChangeStatistics({})
-        getStatistics({ ...searchFilterParams, user_id: [] })
+      const newObj = {
+        total: 1,
+        user_ids: [Number(paramsData?.user_id)],
+        fieldKey: 'all',
       }
+      onComputedCurrent(
+        cardList[cardList?.length - 1],
+        { all: newObj },
+        {
+          ...searchFilterParams,
+          ...resultParams,
+        },
+      )
+    } else {
+      dispatch(setCurrentKey(null))
     }
   }, [paramsData?.user_id])
 
   return (
     <HeaderWrap>
-      <HeaderSearch>
+      <HeaderSearch style={{ marginBottom: paramsData?.user_id ? 0 : 20 }}>
         <InputSearch
           onChangeSearch={value => onClickSearch(value, 'keyword')}
           leftIcon
@@ -282,32 +296,35 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
           {t('starsOnly')}
         </Checkbox>
       </HeaderSearch>
-      <HeaderCardGroup>
-        {cardList.map((i: any) => (
-          <Card
-            isActive={currentKey.fieldKey === i.fieldKey}
-            key={i.key}
-            onClick={() => {
-              props.onChangeFilter({
-                ...props?.filterParams,
-                ...{
-                  status: i.key,
-                  user_ids: memberStatistics[i.fieldKey]?.user_ids,
-                },
-              })
-              onComputedCurrent(i, memberStatistics)
-            }}
-          >
-            <CommonIconFont type={i.type} size={20} />
-            <div className="name">
-              {i.name}
-              {/* （
-              {t('totalPerson', { total: memberStatistics[i.fieldKey]?.total })}
-              ） */}
-            </div>
-          </Card>
-        ))}
-      </HeaderCardGroup>
+      {!paramsData?.user_id && (
+        <HeaderCardGroup>
+          {cardList.map((i: any) => (
+            <Card
+              isActive={currentKey?.fieldKey === i.fieldKey}
+              key={i.key}
+              onClick={() => {
+                props.onChangeFilter({
+                  ...props?.filterParams,
+                  ...{
+                    status: i.key,
+                    user_ids: memberStatistics[i.fieldKey]?.user_ids,
+                  },
+                })
+                onComputedCurrent(i, memberStatistics)
+              }}
+            >
+              <CommonIconFont type={i.type} size={20} />
+              <div className="name">
+                {i.name}（
+                {t('totalPerson', {
+                  total: memberStatistics[i.fieldKey]?.total,
+                })}
+                ）
+              </div>
+            </Card>
+          ))}
+        </HeaderCardGroup>
+      )}
     </HeaderWrap>
   )
 }

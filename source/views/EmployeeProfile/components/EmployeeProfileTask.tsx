@@ -227,7 +227,6 @@ const TaskItem = (props: TaskItemProps) => {
 
 interface EmployeeProfileTaskProps {
   filterParams: any
-  memberStatistics: any
 }
 
 const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
@@ -255,13 +254,13 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
   }
 
   useEffect(() => {
-    if (JSON.stringify(props.memberStatistics) !== '{}') {
+    if (props.filterParams?.status) {
       setDataList({ list: undefined })
       setLoading(true)
       //调用任务接口
       getTaskList()
     }
-  }, [props.filterParams, props.memberStatistics])
+  }, [props.filterParams])
 
   useEffect(() => {
     if (taskDrawerUpdate.id) {

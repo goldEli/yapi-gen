@@ -100,7 +100,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   }, [])
 
   useEffect(() => {
-    if (currentKey.key && allMemberList?.length > 0) {
+    if (currentKey?.key && allMemberList?.length > 0) {
       setSelectKeys(currentKey?.user_ids)
       setIndeterminate(
         currentKey?.total !== allMemberList?.length && currentKey?.total !== 0,
