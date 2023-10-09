@@ -174,6 +174,11 @@ export const CollapseHeaderWrap = styled.div`
   justify-content: space-between;
   padding-left: 8px;
   width: 100%;
+  .ant-popover-placement-left,
+  .ant-popover-placement-leftTop,
+  .ant-popover-placement-leftBottom {
+    padding-right: 0;
+  }
   .left {
     width: calc(100% - 40px);
     display: flex;
@@ -213,11 +218,6 @@ export const FilterContent = styled.div`
   background: var(--neutral-white-d6);
   width: 200px;
   overflow-x: hidden;
-  .ant-popover-placement-left,
-  .ant-popover-placement-leftTop,
-  .ant-popover-placement-leftBottom {
-    padding-right: 0;
-  }
 `
 
 export const FilterOther = styled.div`
