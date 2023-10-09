@@ -167,17 +167,6 @@ const FlawDetailDrawer = () => {
       projectId: paramsProjectId,
       id: params?.id,
     })
-    info.level_tree?.push({
-      id: info.id,
-      category_id: info.category,
-      prefix_key: info.prefixKey || 0,
-      project_prefix: info.projectPrefix || '',
-      category_attachment: info.category_attachment,
-      parent_id: info.parentId || 0,
-      name: info.name,
-      work_type: 5,
-      attachment_id: 0,
-    })
     dispatch(setDrawerInfo(info))
     if (isInit) {
       setSkeletonLoading(false)
@@ -794,7 +783,20 @@ const FlawDetailDrawer = () => {
                       onClick={() => {
                         const projectId = drawerInfo?.projectId
                         if (index !== drawerInfo?.level_tree?.length - 1) {
-                          openDemandDetail({ ...i }, projectId, i.id, 2)
+                          openDemandDetail(
+                            {
+                              ...i,
+                              ...{
+                                projectId,
+                                project_id: projectId,
+                                notCanOperation: isPreview,
+                              },
+                            },
+                            projectId,
+                            i.id,
+                            2,
+                            isPreview,
+                          )
                         }
                       }}
                     >

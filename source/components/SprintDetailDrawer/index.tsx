@@ -825,6 +825,7 @@ const SprintDetailDrawer = () => {
               >
                 <LongStroyBread
                   longStroy={drawerInfo}
+                  openDetail={affairsDetailDrawer}
                   layer
                   onClick={() => {
                     onOperationUpdate()

@@ -56,6 +56,8 @@ interface IProps {
   longStroy?: any
   layer?: boolean
   onClick?(): void
+  // 用于点击打开父级详情，仅查看
+  openDetail?: any
 }
 const LongStroyBread = (props: IProps) => {
   const [visible, setVisible] = useState(false)
@@ -65,6 +67,7 @@ const LongStroyBread = (props: IProps) => {
   const [t] = useTranslation()
   const ref = useRef<HTMLDivElement>(null)
   const [openDemandDetail] = useOpenDemandDetail()
+
   // 复制链接
   const onCopyLink = () => {
     let text: any = ''
@@ -176,7 +179,21 @@ const LongStroyBread = (props: IProps) => {
                     }}
                     onClick={() => {
                       const projectId = longStroy?.projectId
-                      openDemandDetail({ ...item }, projectId, item.id, 1)
+                      openDemandDetail(
+                        {
+                          ...item,
+
+                          ...{
+                            notCanOperation: props.openDetail?.isPreview,
+                            projectId,
+                            project_id: projectId,
+                          },
+                        },
+                        projectId,
+                        item.id,
+                        1,
+                        props.openDetail?.isPreview,
+                      )
                     }}
                     style={{ width: 20, marginRight: '6px' }}
                   />
@@ -186,7 +203,20 @@ const LongStroyBread = (props: IProps) => {
                   style={{ color: 'var(--neutral-n1-d1)' }}
                   onClick={() => {
                     const projectId = longStroy?.projectId
-                    openDemandDetail({ ...item }, projectId, item.id, 1)
+                    openDemandDetail(
+                      {
+                        ...item,
+                        ...{
+                          notCanOperation: props.openDetail?.isPreview,
+                          projectId,
+                          project_id: projectId,
+                        },
+                      },
+                      projectId,
+                      item.id,
+                      1,
+                      props.openDetail?.isPreview,
+                    )
                   }}
                 >
                   {item.project_prefix}-{item.prefix_key}

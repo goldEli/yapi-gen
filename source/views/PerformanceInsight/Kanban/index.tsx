@@ -21,6 +21,8 @@ import {
 import moment from 'moment'
 import NoData from '@/components/NoData'
 import KanBanFullScreen from './components/KanBanFullScreen'
+import { Spin } from 'antd'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const PerformanceInsightKanBan = () => {
   const { currentMenu } = useSelector(store => store.user)
@@ -63,6 +65,7 @@ const PerformanceInsightKanBan = () => {
   const [isUpdate, setIsUpdate] = useState(false)
   // 是否打开全屏
   const [isScreenFull, setIsScreenFull] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [leftWidth, setLeftWidth] = useState(280)
   const [endWidth, setEndWidth] = useState(280)
   const main = useRef<any>(null)
@@ -92,12 +95,16 @@ const PerformanceInsightKanBan = () => {
     setStatistics(response)
   }
 
-  // 获取人员看板数据 page: 分页， params： 筛选条件 direction：方向1是向前，2是向后
-  const getDataList = async (page: number, params: any, direction?: number) => {
-    // setKanBanData({
-    //   list: undefined,
-    //   total: 0,
-    // })
+  // 获取人员看板数据 page: 分页， params： 筛选条件 direction：方向1是向前，2是向后,isInit是否需要开启loading
+  const getDataList = async (
+    page: number,
+    params: any,
+    direction?: number,
+    isInit?: boolean,
+  ) => {
+    if (isInit) {
+      setIsLoading(true)
+    }
     const result = JSON.parse(JSON.stringify(params))
     result.page = page
     const response = await getPerformanceInsightKanBanList({
@@ -126,6 +133,9 @@ const PerformanceInsightKanBan = () => {
     } else {
       // 初始化直接赋值
       setKanBanData(response)
+    }
+    if (isInit) {
+      setIsLoading(false)
     }
   }
 
@@ -215,7 +225,7 @@ const PerformanceInsightKanBan = () => {
     // 更新统计数据
     getStatistics(value)
     // 获取看板数据
-    getDataList(1, value)
+    getDataList(1, value, 0, true)
   }
 
   // 向前翻页
@@ -339,11 +349,13 @@ const PerformanceInsightKanBan = () => {
             </ChangeIcon>
           )}
           {kanBanData?.total > 0 && (
-            <KanBanCardGroup
-              filterParams={filterParams}
-              kanBanData={kanBanData}
-              onChangeKanBanData={onChangeKanBanData}
-            />
+            <Spin indicator={<NewLoadingTransition />} spinning={isLoading}>
+              <KanBanCardGroup
+                filterParams={filterParams}
+                kanBanData={kanBanData}
+                onChangeKanBanData={onChangeKanBanData}
+              />
+            </Spin>
           )}
           {kanBanData?.total <= 0 && <NoData />}
           {kanBanData?.total > personPage * 10 && (

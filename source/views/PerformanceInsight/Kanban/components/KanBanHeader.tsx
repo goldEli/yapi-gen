@@ -86,7 +86,7 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
       })
     }
     props.onChangFilterUpdate({
-      ...searchFilterParams,
+      ...props.filterParams,
       time: resultTime,
     })
   }

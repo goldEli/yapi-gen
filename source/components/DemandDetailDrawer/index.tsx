@@ -744,7 +744,21 @@ const DemandDetailDrawer = () => {
                         }
                         const projectId = drawerInfo?.projectId
                         if (index !== drawerInfo?.level_tree?.length - 1) {
-                          openDemandDetail({ ...i }, projectId, i.id, 0)
+                          openDemandDetail(
+                            {
+                              ...i,
+                              ...{
+                                projectId,
+                                project_id: projectId,
+                                notCanOperation:
+                                  demandDetailDrawerProps?.isPreview,
+                              },
+                            },
+                            projectId,
+                            i.id,
+                            0,
+                            demandDetailDrawerProps?.isPreview,
+                          )
                         }
                       }}
                     >

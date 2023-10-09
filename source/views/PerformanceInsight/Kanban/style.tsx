@@ -472,6 +472,11 @@ export const TaskTag = styled.div<{ state?: number }>`
 
 export const HaveChangeICon = styled.div`
   position: relative;
+  .ant-spin-nested-loading > div > .ant-spin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `
 
 export const ChangeIcon = styled.div`
