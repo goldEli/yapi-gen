@@ -203,18 +203,40 @@ export const CheckBoxWrap = styled.div`
   flex-direction: column;
   padding-right: 20px;
   .ant-checkbox {
-    top: -2px;
+    top: 0px;
   }
 `
 
 export const CheckboxLi = styled.div`
   padding: 0 0px 0 12px;
   border-radius: 6px;
+  width: 100%;
   &:hover {
     background: var(--hover-d2);
   }
   .ant-checkbox-wrapper {
     width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .ant-checkbox-wrapper span:nth-child(2) {
+    display: inline-block;
+    width: 100%;
+  }
+  .ant-checkbox .ant-checkbox-inner {
+    width: 16px !important;
+    height: 16px;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    .nameInfo {
+      margin-left: 12px;
+      width: calc(100% - 44px);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 `
 

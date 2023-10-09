@@ -102,7 +102,7 @@ const PerformanceInsightKanBan = () => {
     direction?: number,
     isInit?: boolean,
   ) => {
-    if (isInit) {
+    if (isInit || direction) {
       setIsLoading(true)
     }
     const result = JSON.parse(JSON.stringify(params))
@@ -134,7 +134,7 @@ const PerformanceInsightKanBan = () => {
       // 初始化直接赋值
       setKanBanData(response)
     }
-    if (isInit) {
+    if (isInit || direction) {
       setIsLoading(false)
     }
   }

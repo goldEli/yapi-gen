@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 import { getMemberOverviewList } from '@store/employeeProfile/employeeProfile.thunk'
 import { useDispatch, useSelector } from '@store/index'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   CheckBoxWrap,
   CheckboxAll,
@@ -144,11 +144,12 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
               checked={selectKeys?.includes(i.id)}
               onClick={() => onItemChecked(i.id)}
             >
-              <CommonUserAvatar
-                avatar={i.avatar}
-                name={i.name}
-                positionName={i.position?.name}
-              />
+              <div className="content">
+                <CommonUserAvatar avatar={i.avatar} />
+                <div className="nameInfo">
+                  {i.name}（{i.position?.name}）
+                </div>
+              </div>
             </Checkbox>
           </CheckboxLi>
         ))}
