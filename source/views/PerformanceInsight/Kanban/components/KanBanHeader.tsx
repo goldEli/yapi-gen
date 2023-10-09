@@ -17,12 +17,20 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import moment from 'moment'
 
 interface KanBanHeaderProps {
+  // 改变筛选条件
   onChangeFilter(value: any): void
+  // 刷新功能
   onUpdate(): void
+  // 统计数据
   statistics: any
+  // 筛选条件
   filterParams: any
+  // 更新统计及任务接口
   onChangFilterUpdate(value: any): void
+  // 是否刷新
   isUpdate: boolean
+  // 全屏功能
+  onChangeScreen(): void
 }
 
 const KanBanHeader = (props: KanBanHeaderProps) => {
@@ -210,9 +218,7 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
           <ScreenMinHover
             label={t('full_screen')}
             icon="full-screen"
-            onClick={() => {
-              //
-            }}
+            onClick={props?.onChangeScreen}
           />
         </SearchWrapRight>
       </SearchWrap>

@@ -743,35 +743,39 @@ const SprintDetailDrawer = () => {
                     />
                   )}
                 </ChangeIconGroup>
+                {/* 如果不能操作为真，则不显示操作按钮 */}
+                {!affairsDetailDrawer.params.notCanOperation && (
+                  <>
+                    <div>
+                      <LeftIcontButton
+                        onClick={onShare}
+                        icon="share"
+                        text={t('share')}
+                      />
+                    </div>
 
-                <div>
-                  <LeftIcontButton
-                    onClick={onShare}
-                    icon="share"
-                    text={t('share')}
-                  />
-                </div>
+                    <div>
+                      <LeftIcontButton
+                        onClick={onToDetail}
+                        icon="full-screen"
+                        text={t('openDetails')}
+                      />
+                    </div>
 
-                <div>
-                  <LeftIcontButton
-                    onClick={onToDetail}
-                    icon="full-screen"
-                    text={t('openDetails')}
-                  />
-                </div>
-
-                <DropdownMenu
-                  placement="bottomRight"
-                  trigger={['click']}
-                  menu={{
-                    items: onGetMenu(),
-                  }}
-                  getPopupContainer={n => n}
-                >
-                  <div>
-                    <LeftIcontButton icon="more-01" text={t('more')} />
-                  </div>
-                </DropdownMenu>
+                    <DropdownMenu
+                      placement="bottomRight"
+                      trigger={['click']}
+                      menu={{
+                        items: onGetMenu(),
+                      }}
+                      getPopupContainer={n => n}
+                    >
+                      <div>
+                        <LeftIcontButton icon="more-01" text={t('more')} />
+                      </div>
+                    </DropdownMenu>
+                  </>
+                )}
               </>
             )}
             {affairsDetailDrawer.star && (

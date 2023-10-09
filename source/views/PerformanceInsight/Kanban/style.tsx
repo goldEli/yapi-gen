@@ -1,6 +1,5 @@
-import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
-import { Checkbox, Space } from 'antd'
+import { Checkbox, Modal, Space } from 'antd'
 
 // 筛选及统计部分
 export const KanBanHeaderWrap = styled.div`
@@ -492,5 +491,37 @@ export const ChangeIcon = styled.div`
   }
   &:hover {
     background: rgba(0, 0, 0, 0.32);
+  }
+`
+
+// 全屏样式
+export const ScreenFullModal = styled(Modal)`
+  width: 100vw;
+  max-width: 100vw;
+  .ant-modal-body {
+    background-color: var(--neutral-white-d5);
+    border-radius: 0px;
+    padding: 0px;
+    position: relative;
+  }
+`
+
+export const Toast = styled.div`
+  width: 100%;
+  transition: 1s;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 501;
+  div {
+    color: var(--neutral-white-d7);
+    width: fit-content;
+    padding: 0 16px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 6px 6px 6px 6px;
+    height: 40px;
+    line-height: 40px;
   }
 `

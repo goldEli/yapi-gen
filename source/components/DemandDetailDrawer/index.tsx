@@ -644,37 +644,44 @@ const DemandDetailDrawer = () => {
                   )}
                 </ChangeIconGroup>
 
-                <div onClick={onToDetail}>
-                  <LeftIcontButton icon="full-screen" text={t('openDetails')} />
-                  {/* <CommonButton type="icon" icon="full-screen" /> */}
-                </div>
-
-                <Tooltip title={t('more')}>
-                  <Popover
-                    open={isMoreVisible}
-                    onOpenChange={setIsMoreVisible}
-                    placement="bottomRight"
-                    trigger={['click']}
-                    getPopupContainer={n => n}
-                    content={
-                      <DemandOperationDropdownMenu
-                        haveComment
-                        onEditChange={onEditChange}
-                        onDeleteChange={onDeleteChange}
-                        onCreateChild={onCreateChild}
-                        onAddComment={() => {
-                          commentDom.current?.focus()
-                          setIsMoreVisible(false)
-                        }}
-                        record={demandDetailDrawerProps}
+                {/* 如果不能操作为真，则不显示操作按钮 */}
+                {!demandDetailDrawerProps.notCanOperation && (
+                  <>
+                    <div onClick={onToDetail}>
+                      <LeftIcontButton
+                        icon="full-screen"
+                        text={t('openDetails')}
                       />
-                    }
-                  >
-                    <div>
-                      <LeftIcontButton icon="more-01" text={t('more')} />
                     </div>
-                  </Popover>
-                </Tooltip>
+
+                    <Tooltip title={t('more')}>
+                      <Popover
+                        open={isMoreVisible}
+                        onOpenChange={setIsMoreVisible}
+                        placement="bottomRight"
+                        trigger={['click']}
+                        getPopupContainer={n => n}
+                        content={
+                          <DemandOperationDropdownMenu
+                            haveComment
+                            onEditChange={onEditChange}
+                            onDeleteChange={onDeleteChange}
+                            onCreateChild={onCreateChild}
+                            onAddComment={() => {
+                              commentDom.current?.focus()
+                              setIsMoreVisible(false)
+                            }}
+                            record={demandDetailDrawerProps}
+                          />
+                        }
+                      >
+                        <div>
+                          <LeftIcontButton icon="more-01" text={t('more')} />
+                        </div>
+                      </Popover>
+                    </Tooltip>
+                  </>
+                )}
               </>
             )}
             {demandDetailDrawerProps.star && (

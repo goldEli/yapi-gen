@@ -20,6 +20,7 @@ import {
 } from '@/services/performanceInsight'
 import moment from 'moment'
 import NoData from '@/components/NoData'
+import KanBanFullScreen from './components/KanBanFullScreen'
 
 const PerformanceInsightKanBan = () => {
   const { currentMenu } = useSelector(store => store.user)
@@ -60,6 +61,8 @@ const PerformanceInsightKanBan = () => {
   const [isToBefore, setIsToBefore] = useState(false)
   // 刷新功能
   const [isUpdate, setIsUpdate] = useState(false)
+  // 是否打开全屏
+  const [isScreenFull, setIsScreenFull] = useState(false)
   const [leftWidth, setLeftWidth] = useState(280)
   const [endWidth, setEndWidth] = useState(280)
   const main = useRef<any>(null)
@@ -242,6 +245,31 @@ const PerformanceInsightKanBan = () => {
       auth="b/company/kanban"
       permission={currentMenu?.children?.map((i: any) => i.permission)}
     >
+      <KanBanFullScreen
+        isVisible={isScreenFull}
+        onClose={() => setIsScreenFull(false)}
+      >
+        <HaveChangeICon style={{ width: '100%', height: '100%' }}>
+          {isToBefore && (
+            <ChangeIcon style={{ left: 24 }} onClick={onBefore}>
+              <CommonIconFont type="left" size={24} />
+            </ChangeIcon>
+          )}
+          {kanBanData?.total > 0 && (
+            <KanBanCardGroup
+              filterParams={filterParams}
+              kanBanData={kanBanData}
+              onChangeKanBanData={onChangeKanBanData}
+            />
+          )}
+          {kanBanData?.total <= 0 && <NoData />}
+          {kanBanData?.total > personPage * 10 && (
+            <ChangeIcon style={{ right: 24 }} onClick={onAfter}>
+              <CommonIconFont type="right" size={24} />
+            </ChangeIcon>
+          )}
+        </HaveChangeICon>
+      </KanBanFullScreen>
       <KanBanHeader
         onChangeFilter={value => {
           setFilterParams(value)
@@ -251,6 +279,7 @@ const PerformanceInsightKanBan = () => {
         filterParams={filterParams}
         onChangFilterUpdate={onChangFilterUpdate}
         isUpdate={isUpdate}
+        onChangeScreen={() => setIsScreenFull(!isScreenFull)}
       />
       <ContentWrap ref={main}>
         <PersonBox

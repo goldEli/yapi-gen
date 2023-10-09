@@ -57,7 +57,7 @@ const TaskListGroup = (props: TaskListGroupProps) => {
   // 任务详情
   const onClickItem = (row: any) => {
     openDemandDetail(
-      { ...row, ...{ projectId: row.project_id } },
+      { ...row, ...{ projectId: row.project_id, notCanOperation: true } },
       row.project_id,
       row.id,
       row.project_type === 2 ? 1 : row.is_bug === 1 ? 2 : 3,
