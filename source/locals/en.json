@@ -2431,5 +2431,8 @@
   "editSprint": "Edit sprint",
   "createANewSprint": "Create a new sprint",
   "deleteSprint": "Delete sprint",
-  "viewGoals": "View goals"
+  "viewGoals": "View goals",
+  "sprintDetails": "Sprint details",
+  "sprintName": "Sprint name",
+  "sprintGoal": "Sprint goal"
 }

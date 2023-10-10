@@ -23,6 +23,7 @@ import CollapseCustom from './CollapseCustom'
 import { CloseWrap, PopoverTargetText } from '@/components/StyleCommon'
 import { getProjectInfoValues } from '@/services/project'
 import { useHotkeys } from 'react-hotkeys-hook'
+import useShowTargetModal from '@/hooks/useShowTargetModal'
 
 interface XTableProps {
   data: any
@@ -147,6 +148,7 @@ const XTable: React.FC<XTableProps> = props => {
   const textRef = useRef<HTMLDivElement>(null)
   const textRef2 = useRef<HTMLSpanElement>(null)
   const [t]: any = useTranslation()
+  const { openTargetModal, TargetModal } = useShowTargetModal()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const [completeVisible, setCompleteVisible] = useState(false)
@@ -407,7 +409,17 @@ const XTable: React.FC<XTableProps> = props => {
                 //   trigger="click"
                 // >
 
-                <CommonButton type="light">
+                <CommonButton
+                  onClick={() => {
+                    openTargetModal({
+                      title: t('sprintDetails'),
+                      editId: data.id,
+                      projectId: projectId,
+                      onConfirm: () => {},
+                    })
+                  }}
+                  type="light"
+                >
                   <IconFont
                     className="custom"
                     style={{
@@ -647,6 +659,7 @@ const XTable: React.FC<XTableProps> = props => {
         }}
       />
       <DeleteConfirmModal />
+      <TargetModal />
     </>
   )
 }

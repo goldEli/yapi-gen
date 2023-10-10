@@ -2431,5 +2431,8 @@
   "editSprint": "编辑冲刺",
   "createANewSprint": "新建冲刺",
   "deleteSprint": "删除冲刺",
-  "viewGoals": "查看目标"
+  "viewGoals": "查看目标",
+  "sprintDetails": "冲刺详情",
+  "sprintName": "冲刺名称",
+  "sprintGoal": "冲刺目标"
 }
