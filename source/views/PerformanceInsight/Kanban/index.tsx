@@ -266,11 +266,13 @@ const PerformanceInsightKanBan = () => {
             </ChangeIcon>
           )}
           {kanBanData?.total > 0 && (
-            <KanBanCardGroup
-              filterParams={filterParams}
-              kanBanData={kanBanData}
-              onChangeKanBanData={onChangeKanBanData}
-            />
+            <Spin indicator={<NewLoadingTransition />} spinning={isLoading}>
+              <KanBanCardGroup
+                filterParams={filterParams}
+                kanBanData={kanBanData}
+                onChangeKanBanData={onChangeKanBanData}
+              />
+            </Spin>
           )}
           {kanBanData?.total <= 0 && <NoData />}
           {kanBanData?.total > personPage * 10 && (
