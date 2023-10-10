@@ -393,6 +393,7 @@ const FlawDetail = () => {
         ...flawInfo,
         name: value,
       })
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
   }
 

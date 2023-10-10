@@ -395,6 +395,7 @@ const DemandDetail = () => {
         ...demandInfo,
         name: value,
       })
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
   }
 

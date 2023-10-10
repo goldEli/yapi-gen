@@ -411,6 +411,7 @@ const AffairsDetail = () => {
         ...affairsInfo,
         name: value,
       })
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     }
   }
 
