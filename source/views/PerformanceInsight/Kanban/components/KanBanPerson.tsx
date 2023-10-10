@@ -63,7 +63,7 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
     // 取消全选的key
     const resultKeysNotCheckEd = props.selectKeys.filter(
       (object: any) =>
-        !props.item?.member_list.some(
+        !props.item?.member_list?.some(
           (otherObject: any) => otherObject.id === object,
         ),
     )
@@ -97,7 +97,7 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
 
   useEffect(() => {
     const resultList = props.selectKeys.filter((object: any) =>
-      props.item?.member_list.some(
+      props.item?.member_list?.some(
         (otherObject: any) => otherObject.id === object,
       ),
     )

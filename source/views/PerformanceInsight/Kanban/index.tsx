@@ -261,7 +261,7 @@ const PerformanceInsightKanBan = () => {
       >
         <HaveChangeICon style={{ width: '100%', height: '100%' }}>
           {isToBefore && (
-            <ChangeIcon style={{ left: 24 }} onClick={onBefore}>
+            <ChangeIcon style={{ left: 24, zIndex: 502 }} onClick={onBefore}>
               <CommonIconFont type="left" size={24} />
             </ChangeIcon>
           )}
@@ -276,7 +276,7 @@ const PerformanceInsightKanBan = () => {
           )}
           {kanBanData?.total <= 0 && <NoData />}
           {kanBanData?.total > personPage * 10 && (
-            <ChangeIcon style={{ right: 24 }} onClick={onAfter}>
+            <ChangeIcon style={{ right: 24, zIndex: 502 }} onClick={onAfter}>
               <CommonIconFont type="right" size={24} />
             </ChangeIcon>
           )}
@@ -346,7 +346,7 @@ const PerformanceInsightKanBan = () => {
         </PersonBox>
         <HaveChangeICon style={{ width: `calc(100% - ${leftWidth}px)` }}>
           {isToBefore && (
-            <ChangeIcon style={{ left: 24 }} onClick={onBefore}>
+            <ChangeIcon style={{ left: 24, zIndex: 1 }} onClick={onBefore}>
               <CommonIconFont type="left" size={24} />
             </ChangeIcon>
           )}
@@ -361,7 +361,7 @@ const PerformanceInsightKanBan = () => {
           )}
           {kanBanData?.total <= 0 && <NoData />}
           {kanBanData?.total > personPage * 10 && (
-            <ChangeIcon style={{ right: 24 }} onClick={onAfter}>
+            <ChangeIcon style={{ right: 24, zIndex: 1 }} onClick={onAfter}>
               <CommonIconFont type="right" size={24} />
             </ChangeIcon>
           )}

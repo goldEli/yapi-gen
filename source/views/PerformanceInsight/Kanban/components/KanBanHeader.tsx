@@ -42,18 +42,22 @@ const KanBanHeader = (props: KanBanHeaderProps) => {
   )
 
   const statusList = [
-    { label: t('completed'), value: 2 },
-    { label: t('hasNotStarted'), value: 3 },
-    { label: t('inProgress'), value: 4 },
-    { label: t('overdue'), value: 5 },
+    { label: t('completed'), value: 2, id: 2 },
+    { label: t('hasNotStarted'), value: 3, id: 3 },
+    { label: t('inProgress'), value: 4, id: 4 },
+    { label: t('overdue'), value: 5, id: 5 },
   ]
 
   const priorityList = [
-    { label: t('extremelyHigh'), value: 'extremely_high' },
-    { label: t('high'), value: 'high' },
-    { label: t('middle'), value: 'middle' },
-    { label: t('low'), value: 'low' },
-    { label: t('extremelyLow'), value: 'extremely_low' },
+    {
+      label: t('extremelyHigh'),
+      value: 'extremely_high',
+      id: 'extremely_high',
+    },
+    { label: t('high'), value: 'high', id: 'high' },
+    { label: t('middle'), value: 'middle', id: 'middle' },
+    { label: t('low'), value: 'low', id: 'low' },
+    { label: t('extremelyLow'), value: 'extremely_low', id: 'extremely_low' },
   ]
 
   const statisticsList = [
