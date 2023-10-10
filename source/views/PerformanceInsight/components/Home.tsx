@@ -54,6 +54,9 @@ import PermissionWrap from '@/components/PermissionWrap'
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const [t] = useTranslation()
   const { headerParmas } = useSelector(store => store.performanceInsight)
+  const [searchParams] = useSearchParams()
+  // isOverAll:true是全局效能洞察，overPageType：kanBan/report模块类型
+  const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
   const onClick = (el?: any) => {
     const params = encryptPhp(
@@ -77,9 +80,10 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             ? t('performance.title06')
             : t('performance.title07'),
         newType: props?.newType,
+        isOverAll: paramsData?.isOverAll,
+        overPageType: paramsData?.overPageType,
       }),
     )
-    console.log(params, 'params')
 
     navigate(`/ChildLevel?data=${params}`)
   }

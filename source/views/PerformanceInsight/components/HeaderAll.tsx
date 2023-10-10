@@ -227,6 +227,8 @@ const HeaderAll = (props: HaderProps) => {
           headerParmas: paramsData.headerParmas,
           // 新加的type
           newType: paramsData.newType,
+          isOverAll: paramsData?.isOverAll,
+          overPageType: paramsData?.overPageType,
         }),
       )
       navigate(`/Performance?data=${params}`)
