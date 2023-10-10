@@ -235,7 +235,7 @@ const XTable: React.FC<XTableProps> = props => {
           cursor: 'pointer',
         }}
       >
-        {data.status === 4 ? t('sprint.edit') : t('sprint.update')}
+        {data.status === 4 ? t('editSprint') : t('sprint.update')}
       </div>
       <div
         onClick={() => {
