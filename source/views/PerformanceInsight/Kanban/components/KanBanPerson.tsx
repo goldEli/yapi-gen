@@ -129,11 +129,19 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
         content={
           <FilterContent>
             <FilterItem
-              isActive={normal.includes(0)}
+              isActive={
+                normal.includes(0) ||
+                normal?.filter((i: any) =>
+                  item?.iterate_list?.map((k: any) => k.id).includes(i),
+                )?.length <= 0
+              }
               onClick={() => onChangeIteration(0)}
             >
               <div className="name">{t('all')}</div>
-              {normal.includes(0) && (
+              {(normal.includes(0) ||
+                normal?.filter((i: any) =>
+                  item?.iterate_list?.map((k: any) => k.id).includes(i),
+                )?.length <= 0) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </FilterItem>
@@ -155,8 +163,15 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
           </FilterContent>
         }
       >
-        <FilterWrap state={isVisible}>
-          <CommonIconFont type="filter" size={20} color="var(--neutral-n3)" />
+        <FilterWrap
+          state={
+            isVisible ||
+            normal?.filter((i: any) =>
+              item?.iterate_list?.map((k: any) => k.id).includes(i),
+            )?.length > 0
+          }
+        >
+          <CommonIconFont type="filter" size={20} />
         </FilterWrap>
       </Popover>
     </CollapseHeaderWrap>
