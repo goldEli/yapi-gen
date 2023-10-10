@@ -24,6 +24,14 @@ import { CloseWrap, PopoverTargetText } from '@/components/StyleCommon'
 import { getProjectInfoValues } from '@/services/project'
 import { useHotkeys } from 'react-hotkeys-hook'
 import useShowTargetModal from '@/hooks/useShowTargetModal'
+import { css } from '@emotion/css'
+
+const hoCss = css`
+  :hover {
+    background-color: #f6f7f9;
+    color: var(--primary-d1);
+  }
+`
 
 interface XTableProps {
   data: any
@@ -219,6 +227,7 @@ const XTable: React.FC<XTableProps> = props => {
       }}
     >
       <div
+        className={hoCss}
         onClick={() => {
           setIsFilter(false)
           setSprintModal({
@@ -227,11 +236,12 @@ const XTable: React.FC<XTableProps> = props => {
           })
         }}
         style={{
+          width: '100%',
           fontSize: 14,
           height: '32px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          paddingLeft: 16,
           cursor: 'pointer',
         }}
       >
@@ -248,12 +258,14 @@ const XTable: React.FC<XTableProps> = props => {
             onConfirm: () => deleteSprint(data.id),
           })
         }}
+        className={hoCss}
         style={{
+          width: '100%',
           height: '32px',
           fontSize: 14,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          paddingLeft: 16,
           cursor: 'pointer',
         }}
       >
