@@ -1,5 +1,5 @@
 /* eslint-disable require-unicode-regexp */
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SortableItem } from './SortableItem'
 import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
@@ -143,6 +143,9 @@ const XTable: React.FC<XTableProps> = props => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const [isOverflowing, setIsOverflowing] = useState(false)
+  const textRef = useRef<HTMLDivElement>(null)
+  const textRef2 = useRef<HTMLSpanElement>(null)
   const [t]: any = useTranslation()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const dispatch = useDispatch()
@@ -317,6 +320,43 @@ const XTable: React.FC<XTableProps> = props => {
     },
     [],
   )
+  // 上面代码17行中的getPadding函数
+  const getPadding = (el: HTMLElement) => {
+    const style = window.getComputedStyle(el, null)
+    const paddingLeft = Number.parseInt(style.paddingLeft, 10) || 0
+    const paddingRight = Number.parseInt(style.paddingRight, 10) || 0
+    const paddingTop = Number.parseInt(style.paddingTop, 10) || 0
+    const paddingBottom = Number.parseInt(style.paddingBottom, 10) || 0
+    return {
+      left: paddingLeft,
+      right: paddingRight,
+      top: paddingTop,
+      bottom: paddingBottom,
+    }
+  }
+
+  const handleResize = () => {
+    if (textRef.current && textRef2.current) {
+      const { left, right } = getPadding(textRef.current)
+      const horizontalPadding = left + right
+      if (
+        textRef.current.clientWidth <=
+        textRef2.current.offsetWidth + horizontalPadding
+      ) {
+        setIsOverflowing(true)
+        console.log('存在省略号')
+      } else {
+        setIsOverflowing(false)
+        console.log('容器宽度足够，没有省略号了')
+      }
+    }
+  }
+  useEffect(() => {
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [data.iterate_info])
 
   return (
     <>
@@ -482,8 +522,9 @@ const XTable: React.FC<XTableProps> = props => {
         }
       >
         {data.iterate_info ? (
-          <Tooltip title={data.iterate_info}>
+          <Tooltip title={isOverflowing ? data.iterate_info : ''}>
             <div
+              ref={textRef}
               style={{
                 height: '28px',
                 background: '#F6F7F9',
@@ -497,7 +538,7 @@ const XTable: React.FC<XTableProps> = props => {
                 padding: '0 6px',
               }}
             >
-              {data.iterate_info}
+              <span ref={textRef2}> {data.iterate_info}</span>
             </div>
           </Tooltip>
         ) : null}
