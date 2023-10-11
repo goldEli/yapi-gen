@@ -16,7 +16,9 @@ export const getPerformanceInsightKanBanStatistics = async (params: any) => {
       search: {
         priority_arr: params?.priority,
         iterate_ids:
-          JSON.stringify(params?.iteration) === '[0]' ? [] : params?.iteration,
+          params?.iteration?.[0]?.id === 0
+            ? []
+            : params?.iteration?.map((i: any) => i.id),
         keyword: params?.keyword,
         created_at: params?.time,
         users: params?.users,
@@ -33,7 +35,9 @@ export const getPerformanceInsightKanBanList = async (params: any) => {
       status_arr: params?.status,
       priority_arr: params?.priority,
       iterate_ids:
-        JSON.stringify(params?.iteration) === '[0]' ? [] : params?.iteration,
+        params?.iteration?.[0]?.id === 0
+          ? []
+          : params?.iteration?.map((i: any) => i.id),
       keyword: params?.keyword,
       created_at: params?.time,
       users: params?.users,
@@ -53,7 +57,9 @@ export const getPerformanceInsightKanBanListMore = async (params: any) => {
       status_arr: params?.status,
       priority_arr: params?.priority,
       iterate_ids:
-        JSON.stringify(params?.iteration) === '[0]' ? [] : params?.iteration,
+        params?.iteration?.[0]?.id === 0
+          ? []
+          : params?.iteration?.map((i: any) => i.id),
       keyword: params?.keyword,
       created_at: params?.time,
       user: params?.user,

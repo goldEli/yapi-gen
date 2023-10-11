@@ -34,7 +34,7 @@ interface CollapseHeaderProps {
   // 修改人员
   onChangeSelectKeys(value: any): void
   // 修改迭代
-  onChangeIteration(value: any): void
+  onChangeIteration(value: any, ids: any): void
 }
 
 // 折叠头部
@@ -44,7 +44,7 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
     props
   const [isVisible, setIsVisible] = useState(false)
   // 默认选择全部 - 迭代
-  const [normal, setNormal] = useState<number[]>([0])
+  const [normal, setNormal] = useState<any[]>([{ id: 0, projectId: 0 }])
   // 全选状态
   const [checkAll, setCheckAll] = useState(false)
   // 半选状态
@@ -76,23 +76,36 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
   }
 
   // 修改选中迭代
-  const onChangeIteration = (id: number) => {
+  const onChangeIteration = (
+    id: number,
+    memberList?: any,
+    projectId?: number,
+  ) => {
     let iterationValues
     if (id === 0) {
-      iterationValues = [0]
+      iterationValues = [{ id: 0, projectId: 0 }]
       setNormal(iterationValues)
     } else {
-      iterationValues = normal?.includes(id)
-        ? normal?.filter((i: any) => i !== id)
-        : [...new Set([...normal, ...[id]])]?.filter((i: any) => i !== 0)
+      iterationValues = normal
+        ?.map((i: any) => i.projectId)
+        ?.includes(projectId)
+        ? normal?.map((i: any) => i.id)?.includes(id)
+          ? normal?.filter((i: any) => i.id !== id)
+          : [...new Set([...normal, ...[{ id, projectId }]])]?.filter(
+              (i: any) => i.id !== 0,
+            )
+        : [{ id, projectId }]
       setNormal(iterationValues)
     }
     // 向上返回筛选条件
-    props.onChangeIteration(iterationValues)
+    props.onChangeIteration(
+      iterationValues,
+      memberList?.map((i: any) => i.id),
+    )
   }
 
   useEffect(() => {
-    setNormal(props.filterParams?.iteration ?? [0])
+    setNormal(props.filterParams?.iteration ?? [{ id: 0, projectId: 0 }])
   }, [props.filterParams])
 
   useEffect(() => {
@@ -130,18 +143,22 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
           <FilterContent>
             <FilterItem
               isActive={
-                normal.includes(0) ||
-                normal?.filter((i: any) =>
-                  item?.iterate_list?.map((k: any) => k.id).includes(i),
-                )?.length <= 0
+                normal?.map((i: any) => i.id).includes(0) ||
+                normal
+                  ?.map((i: any) => i.id)
+                  ?.filter((i: any) =>
+                    item?.iterate_list?.map((k: any) => k.id).includes(i),
+                  )?.length <= 0
               }
-              onClick={() => onChangeIteration(0)}
+              onClick={() => onChangeIteration(0, item?.member_list, 0)}
             >
               <div className="name">{t('all')}</div>
-              {(normal.includes(0) ||
-                normal?.filter((i: any) =>
-                  item?.iterate_list?.map((k: any) => k.id).includes(i),
-                )?.length <= 0) && (
+              {(normal?.map((i: any) => i.id).includes(0) ||
+                normal
+                  ?.map((i: any) => i.id)
+                  ?.filter((i: any) =>
+                    item?.iterate_list?.map((k: any) => k.id).includes(i),
+                  )?.length <= 0) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </FilterItem>
@@ -150,11 +167,13 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
               {item?.iterate_list?.map((i: any) => (
                 <FilterItem
                   key={i.id}
-                  isActive={normal.includes(i.id)}
-                  onClick={() => onChangeIteration(i.id)}
+                  isActive={normal?.map((i: any) => i.id).includes(i.id)}
+                  onClick={() =>
+                    onChangeIteration(i.id, item?.member_list, item?.id)
+                  }
                 >
                   <div className="name">{i.name}</div>
-                  {normal.includes(i.id) && (
+                  {normal?.map((i: any) => i.id).includes(i.id) && (
                     <CommonIconFont type="check" color={'var(--primary-d2)'} />
                   )}
                 </FilterItem>
@@ -166,9 +185,11 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
         <FilterWrap
           state={
             isVisible ||
-            normal?.filter((i: any) =>
-              item?.iterate_list?.map((k: any) => k.id).includes(i),
-            )?.length > 0
+            normal
+              ?.map((i: any) => i.id)
+              ?.filter((i: any) =>
+                item?.iterate_list?.map((k: any) => k.id).includes(i),
+              )?.length > 0
           }
         >
           <CommonIconFont type="filter" size={20} />
@@ -204,33 +225,47 @@ const KanBanPerson = (props: KanBanPersonProps) => {
   const [activeKey, setActiveKey] = useState<any>([])
 
   // 人员更新
-  const onUpdate = (value: any) => {
+  const onUpdate = (value: any, isAll?: boolean) => {
     props.onChangeFilter({
       ...props?.filterParams,
       ...{
         user_ids: value,
+        iteration: isAll
+          ? [{ id: 0, projectId: 0 }]
+          : props?.filterParams?.iteration,
       },
     })
     props.onChangFilterUpdate({
       ...props?.filterParams,
       ...{
         user_ids: value,
+        iteration: isAll
+          ? [{ id: 0, projectId: 0 }]
+          : props?.filterParams?.iteration,
       },
     })
   }
 
   // 迭代更新
-  const onChangeIteration = (ids: any) => {
+  const onChangeIteration = (ids: any, userIds: any) => {
     props.onChangeFilter({
       ...props?.filterParams,
       ...{
         iteration: ids,
+        user_ids: userIds,
       },
     })
+    const resultUsers = userIds ?? []
+    setSelectKeys(resultUsers)
+    setIndeterminate(
+      resultUsers?.length !== selectList?.length && resultUsers?.length !== 0,
+    )
+    setCheckAll(resultUsers?.length === selectList?.length)
     props.onChangFilterUpdate({
       ...props?.filterParams,
       ...{
         iteration: ids,
+        user_ids: userIds,
       },
     })
   }
@@ -312,7 +347,7 @@ const KanBanPerson = (props: KanBanPersonProps) => {
     setSelectKeys(checked ? selectList?.map((k: any) => k.id) : [])
     setIndeterminate(false)
     setCheckAll(checked)
-    onUpdate(checked ? selectList?.map((k: any) => k.id) : [])
+    onUpdate(checked ? selectList?.map((k: any) => k.id) : [], true)
   }
 
   // 点击图标展开或折叠

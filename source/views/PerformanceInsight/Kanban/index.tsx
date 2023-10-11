@@ -30,7 +30,7 @@ const PerformanceInsightKanBan = () => {
   // 筛选条件
   const [filterParams, setFilterParams] = useState<any>({
     user_ids: [],
-    iteration: [0],
+    iteration: [{ id: 0, projectId: 0 }],
     // 搜索值
     keyword: '',
     // 创建时间 - 默认近一个与
@@ -144,7 +144,7 @@ const PerformanceInsightKanBan = () => {
     setIsUpdate(true)
     setFilterParams({
       user_ids: [],
-      iteration: [0],
+      iteration: [{ id: 0, projectId: 0 }],
       // 搜索值
       keyword: '',
       // 创建时间 - 默认近一个与
