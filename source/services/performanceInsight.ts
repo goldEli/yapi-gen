@@ -65,7 +65,7 @@ export const getPerformanceInsightKanBanListMore = async (params: any) => {
       user: params?.user,
       project_ids: params?.project_ids,
     },
-    page: params?.page,
+    story_page: params?.page,
   })
   return response.data
 }
