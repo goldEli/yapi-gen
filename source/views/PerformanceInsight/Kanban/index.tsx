@@ -226,6 +226,9 @@ const PerformanceInsightKanBan = () => {
     getStatistics(value)
     // 获取看板数据
     getDataList(1, value, 0, true)
+    setPersonPage(1)
+    setIsDeleteBefore(false)
+    setIsToBefore(false)
   }
 
   // 向前翻页
