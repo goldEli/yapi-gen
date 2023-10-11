@@ -344,6 +344,7 @@ export const CardItemHeader = styled.div`
     flex-direction: column;
     justify-content: center;
     width: calc(100% - 40px);
+    position: relative;
     .nameBox {
       display: flex;
       align-items: center;

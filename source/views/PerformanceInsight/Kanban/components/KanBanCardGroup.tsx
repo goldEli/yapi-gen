@@ -190,16 +190,18 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
                   <Tooltip
                     trigger={['hover']}
                     placement="topLeft"
-                    title={`${i.name}（${i?.position?.name}）`}
+                    title={`${i.name}（${i?.position?.name || '--'}）`}
+                    getPopupContainer={n => n}
                   >
                     <div className="name">
-                      {i.name}（{i?.position?.name}）
+                      {i.name}（{i?.position?.name || '--'}）
                     </div>
                   </Tooltip>
                 </div>
                 <Tooltip
                   trigger={['hover']}
                   placement="topLeft"
+                  getPopupContainer={n => n}
                   title={i?.departments?.map((i: any) => i.name)?.join(' - ')}
                 >
                   <div className="sub">
