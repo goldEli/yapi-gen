@@ -1,5 +1,5 @@
 /* eslint-disable require-unicode-regexp */
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SortableItem } from './SortableItem'
 import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
@@ -23,6 +23,15 @@ import CollapseCustom from './CollapseCustom'
 import { CloseWrap, PopoverTargetText } from '@/components/StyleCommon'
 import { getProjectInfoValues } from '@/services/project'
 import { useHotkeys } from 'react-hotkeys-hook'
+import useShowTargetModal from '@/hooks/useShowTargetModal'
+import { css } from '@emotion/css'
+
+const hoCss = css`
+  :hover {
+    background-color: #f6f7f9;
+    color: var(--primary-d1);
+  }
+`
 
 interface XTableProps {
   data: any
@@ -143,17 +152,23 @@ const XTable: React.FC<XTableProps> = props => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const [isOverflowing, setIsOverflowing] = useState(false)
+  const textRef = useRef<HTMLDivElement>(null)
+  const textRef2 = useRef<HTMLSpanElement>(null)
   const [t]: any = useTranslation()
+  const { openTargetModal, TargetModal } = useShowTargetModal()
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const [completeVisible, setCompleteVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
-
+  const [isFilter, setIsFilter] = useState(false)
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/transaction/update',
   )
-
+  const onVisibleChange = (visible: any) => {
+    setIsFilter(visible)
+  }
   // 项目是否已经结束
   const isEnd = projectInfo?.status === 2
 
@@ -197,7 +212,67 @@ const XTable: React.FC<XTableProps> = props => {
       //
     }
   }
-
+  const filterContent = (
+    <div
+      style={{
+        width: '120px',
+        height: '72px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        background: '#FFFFFF',
+        boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
+        borderRadius: '6px 6px 6px 6px',
+      }}
+    >
+      <div
+        className={hoCss}
+        onClick={() => {
+          setIsFilter(false)
+          setSprintModal({
+            visible: true,
+            type: data.status === 4 ? 'edit' : 'update',
+          })
+        }}
+        style={{
+          width: '100%',
+          fontSize: 14,
+          height: '32px',
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: 16,
+          cursor: 'pointer',
+        }}
+      >
+        {data.status === 4 ? t('editSprint') : t('sprint.update')}
+      </div>
+      <div
+        onClick={() => {
+          setIsFilter(false)
+          open({
+            title: t('sprint.deleteSprint'),
+            text: `${t('sprint.confirmDelete')}【${data.name}】${t(
+              'sprint.ofSprint',
+            )}，${t('sprint.removeSprintToAgency')}`,
+            onConfirm: () => deleteSprint(data.id),
+          })
+        }}
+        className={hoCss}
+        style={{
+          width: '100%',
+          height: '32px',
+          fontSize: 14,
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: 16,
+          cursor: 'pointer',
+        }}
+      >
+        {t('deleteSprint')}
+      </div>
+    </div>
+  )
   const getSprintButton = (status: number) => {
     switch (status) {
       case 4:
@@ -259,6 +334,43 @@ const XTable: React.FC<XTableProps> = props => {
     },
     [],
   )
+  // 上面代码17行中的getPadding函数
+  const getPadding = (el: HTMLElement) => {
+    const style = window.getComputedStyle(el, null)
+    const paddingLeft = Number.parseInt(style.paddingLeft, 10) || 0
+    const paddingRight = Number.parseInt(style.paddingRight, 10) || 0
+    const paddingTop = Number.parseInt(style.paddingTop, 10) || 0
+    const paddingBottom = Number.parseInt(style.paddingBottom, 10) || 0
+    return {
+      left: paddingLeft,
+      right: paddingRight,
+      top: paddingTop,
+      bottom: paddingBottom,
+    }
+  }
+
+  const handleResize = () => {
+    if (textRef.current && textRef2.current) {
+      const { left, right } = getPadding(textRef.current)
+      const horizontalPadding = left + right
+      if (
+        textRef.current.clientWidth <=
+        textRef2.current.offsetWidth + horizontalPadding
+      ) {
+        setIsOverflowing(true)
+        console.log('存在省略号')
+      } else {
+        setIsOverflowing(false)
+        console.log('容器宽度足够，没有省略号了')
+      }
+    }
+  }
+  useEffect(() => {
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [data.iterate_info])
 
   return (
     <>
@@ -299,34 +411,41 @@ const XTable: React.FC<XTableProps> = props => {
                   : ''}
               </span>
               {data.id === 0 ? null : (
-                <Popover
-                  content={
-                    <PopoverTargetText>
-                      {data.iterate_info || '--'}
-                    </PopoverTargetText>
-                  }
-                  placement="bottom"
-                  trigger="click"
+                // <Popover
+                //   content={
+                //     <PopoverTargetText>
+                //       {data.iterate_info || '--'}
+                //     </PopoverTargetText>
+                //   }
+                //   placement="bottom"
+                //   trigger="click"
+                // >
+
+                <CommonButton
+                  onClick={() => {
+                    openTargetModal({
+                      title: t('sprintDetails'),
+                      editId: data.id,
+                      projectId: projectId,
+                      onConfirm: () => {},
+                    })
+                  }}
+                  type="light"
                 >
-                  <Tooltip title={t('sprint.sprintTarget')}>
-                    <CloseWrap
-                      width={24}
-                      height={24}
-                      style={{ marginRight: 12 }}
-                    >
-                      <IconFont
-                        className="custom"
-                        style={{
-                          fontSize: 16,
-                        }}
-                        type="target"
-                      />
-                    </CloseWrap>
-                  </Tooltip>
-                </Popover>
+                  <IconFont
+                    className="custom"
+                    style={{
+                      fontSize: 16,
+                    }}
+                    type="target"
+                  />
+                  {t('viewGoals')}
+                </CommonButton>
+
+                // </Popover>
               )}
 
-              {data.id === 0
+              {/* {data.id === 0
                 ? null
                 : !isCanEditSprint &&
                   !isEnd && (
@@ -382,10 +501,10 @@ const XTable: React.FC<XTableProps> = props => {
                         </CloseWrap>
                       </Tooltip>
                     </>
-                  )}
+                  )} */}
             </div>
             {!isCanEditSprint && !isEnd && (
-              <div>
+              <div style={{ display: 'flex', gap: '16px' }}>
                 {data.id === 0 ? (
                   <CommonButton
                     type="light"
@@ -406,11 +525,48 @@ const XTable: React.FC<XTableProps> = props => {
                 ) : (
                   getSprintButton(data.status)
                 )}
+                {data.id === 0
+                  ? null
+                  : !isCanEditSprint &&
+                    !isEnd && (
+                      <Popover
+                        trigger="click"
+                        placement="bottomRight"
+                        content={filterContent}
+                        getPopupContainer={node => node}
+                        visible={isFilter}
+                        onVisibleChange={onVisibleChange}
+                      >
+                        <CommonButton type="light">{t('more')}</CommonButton>
+                      </Popover>
+                    )}
               </div>
             )}
           </Header>
         }
       >
+        {data.iterate_info ? (
+          <Tooltip title={isOverflowing ? data.iterate_info : ''}>
+            <div
+              ref={textRef}
+              style={{
+                height: '28px',
+                background: '#F6F7F9',
+                borderRadius: '4px 4px 4px 4px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                color: '#969799',
+                fontSize: '12px',
+                lineHeight: '28px',
+                padding: '0 6px',
+              }}
+            >
+              <span ref={textRef2}> {data.iterate_info}</span>
+            </div>
+          </Tooltip>
+        ) : null}
+
         {!isCanEdit && !isEnd && (
           <CommonButton
             type="primaryText"
@@ -434,6 +590,7 @@ const XTable: React.FC<XTableProps> = props => {
             <span>{t('sprint.newAffairs')}</span>
           </CommonButton>
         )}
+
         <Droppable key={data.id} droppableId={String(data.id)}>
           {(provided, snapshot) => {
             return (
@@ -514,6 +671,7 @@ const XTable: React.FC<XTableProps> = props => {
         }}
       />
       <DeleteConfirmModal />
+      <TargetModal />
     </>
   )
 }

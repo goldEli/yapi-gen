@@ -253,6 +253,7 @@ const Profile = () => {
     const res1 = await getUserFeedList({
       limit: '',
     })
+    console.log(res1.data)
 
     setLineData(res1.data)
     dispatch(setIsUpdateCreate(false))
@@ -512,13 +513,24 @@ const Profile = () => {
                             }}
                           >
                             <span
-                              onClick={() => onToDetail(item)}
+                              onClick={() =>
+                                item.feedable?.project.user_ismember
+                                  ? onToDetail(item)
+                                  : null
+                              }
                               style={{
-                                color: 'var(--primary-d1)',
+                                color: item.feedable?.project.user_ismember
+                                  ? 'var(--primary-d1)'
+                                  : 'var(--neutral-n2)',
                                 cursor: 'pointer',
+                                textDecoration: item.feedable?.project
+                                  .user_ismember
+                                  ? 'underline'
+                                  : 'none',
                               }}
                             >
                               {item.feedable?.name ?? '--'}
+                              {/* {String(item.feedable?.project.user_ismember)} */}
                             </span>
                           </OmitText>
                         </HiddenText>

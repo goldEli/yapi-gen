@@ -2441,5 +2441,12 @@
   "searchTask": "搜索任务名称/编号",
   "statisticsTotal": "{{count}}项",
   "taskTotal": "{{count}}项任务",
-  "youHaveEnteredTheBoardPleasePressTheKeyToExit": "已进入看板全屏模式，请按【ESC】键退出全屏"
+  "youHaveEnteredTheBoardPleasePressTheKeyToExit": "已进入看板全屏模式，请按【ESC】键退出全屏",
+  "editSprint": "编辑冲刺",
+  "createANewSprint": "新建冲刺",
+  "deleteSprint": "删除冲刺",
+  "viewGoals": "查看目标",
+  "sprintDetails": "冲刺详情",
+  "sprintName": "冲刺名称",
+  "sprintGoal": "冲刺目标"
 }
