@@ -197,7 +197,6 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
                     </div>
                   </Tooltip>
                 </div>
-                <T
                 <Tooltip
                   trigger={['hover']}
                   placement="topLeft"
