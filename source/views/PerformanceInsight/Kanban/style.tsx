@@ -433,6 +433,9 @@ export const TaskItemContent = styled.div`
     color: var(--neutral-n1-d1);
     white-space: normal;
     cursor: pointer;
+    &:hover {
+      color: var(--primary-d2);
+    }
   }
 `
 

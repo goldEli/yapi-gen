@@ -1,4 +1,4 @@
-import { Progress } from 'antd'
+import { Progress, Tooltip } from 'antd'
 import {
   CardItemHeader,
   CardItemTaskItem,
@@ -183,17 +183,30 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
           <KanBanCardItem key={i.id}>
             <CardItemHeader>
               <div className="avatar">
-                <CommonUserAvatar avatar={i.avatar} isBorder size="large" />
+                <CommonUserAvatar avatar={i.avatar} size="large" />
               </div>
               <div className="content">
                 <div className="nameBox">
-                  <div className="name">
-                    {i.name}（{i?.position?.name}）
+                  <Tooltip
+                    trigger={['hover']}
+                    placement="topLeft"
+                    title={`${i.name}（${i?.position?.name}）`}
+                  >
+                    <div className="name">
+                      {i.name}（{i?.position?.name}）
+                    </div>
+                  </Tooltip>
+                </div>
+                <T
+                <Tooltip
+                  trigger={['hover']}
+                  placement="topLeft"
+                  title={i?.departments?.map((i: any) => i.name)?.join(' - ')}
+                >
+                  <div className="sub">
+                    {i?.departments?.map((i: any) => i.name)?.join(' - ')}
                   </div>
-                </div>
-                <div className="sub">
-                  {i?.departments?.map((i: any) => i.name)?.join(' - ')}
-                </div>
+                </Tooltip>
                 <div className="task">
                   <div className="label">
                     {t('taskTotal', { count: i?.stories?.pager?.total })}
