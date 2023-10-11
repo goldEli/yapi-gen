@@ -49,6 +49,7 @@ const MyBreadcrumb = (props: any) => {
     })
     dispatch(setProjectInfo(result))
   }
+
   return type === 'AdminManagement' ? (
     <Breadcrumb
       separator={
@@ -66,7 +67,7 @@ const MyBreadcrumb = (props: any) => {
       </Breadcrumb.Item>
       <Breadcrumb.Item>
         <span>
-          {props.user.name}
+          {props?.user?.name}
           {t('details_of')}
         </span>
       </Breadcrumb.Item>
@@ -191,14 +192,14 @@ const MyBreadcrumb = (props: any) => {
             src={props.demand.cover}
             alt=""
           />
-          <span>{props.demand.name}</span>
+          <span>{props?.demand?.name}</span>
         </Breadcrumb.Item>
       ) : null}
       {location.pathname.includes('/MemberInfo') ||
       (location.pathname.includes('MemberInfo/Profile') && props.user) ? (
         <Breadcrumb.Item>
           <span>
-            {props.user.name}
+            {props?.user?.name}
             {t('details_of')}
           </span>
         </Breadcrumb.Item>
