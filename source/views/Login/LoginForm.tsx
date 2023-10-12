@@ -12,7 +12,7 @@ import { useState, useEffect, useRef } from 'react'
 import { language, TForm, InputMode, systemData } from './login'
 import React from 'react'
 import { getCaptcha, toLogin, checkToken, checkSecret } from './services'
-import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants/index'
+
 import IconFont from '@/components/IconFont'
 import ForgetPassword from '@/components/ForgetPassword/ForgetPassword'
 import styled from '@emotion/styled'
@@ -101,11 +101,7 @@ export default React.memo(
 
     const login2 = debounce(
       async () => {
-        if (
-          form2.phone &&
-          !EMAIL_REGEXP.test(form2.phone) &&
-          !PHONE_NUMBER_REGEXP.test(form2.phone)
-        ) {
+        if (!form2.phone) {
           console.log('22')
 
           return
@@ -155,26 +151,25 @@ export default React.memo(
 
     const login = debounce(
       async () => {
-        if (
-          form.username &&
-          !EMAIL_REGEXP.test(form.username) &&
-          !PHONE_NUMBER_REGEXP.test(form.username)
-        ) {
+        console.log(1)
+
+        if (!form.username) {
           return
         }
         if (!(form.username && form.password && form.code)) {
-          if (form.username == '') {
+          if (form.username === '') {
             setFocusNumber(1)
             setErrorMessage(languageMode.userWarning)
-          } else if (form.password == '') {
+          } else if (form.password === '') {
             setFocusNumber(2)
             setErrorMessage(languageMode.passwordWarning)
-          } else if (form.code == '') {
+          } else if (form.code === '') {
             setFocusNumber(3)
             setErrorMessage(languageMode.codeWarning)
           }
           return
         }
+        console.log(2)
 
         const data = {
           account: form.username,
@@ -269,11 +264,7 @@ export default React.memo(
     }
 
     const onCheckSecret = async () => {
-      if (
-        form.username &&
-        !EMAIL_REGEXP.test(form.username) &&
-        !PHONE_NUMBER_REGEXP.test(form.username)
-      ) {
+      if (!form.username) {
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
@@ -300,11 +291,7 @@ export default React.memo(
     }
 
     const onCheckSecret2 = async () => {
-      if (
-        form2.phone &&
-        !EMAIL_REGEXP.test(form2.phone) &&
-        !PHONE_NUMBER_REGEXP.test(form2.phone)
-      ) {
+      if (!form2.phone) {
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
@@ -511,15 +498,19 @@ export default React.memo(
                       img={captchaImage}
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
                       mode={3}
-                      onGetMsg={() => {
+                      onGetMsg={async e => {
                         if (form2.phone) {
-                          getMobil(form2.phone)
-                          message.success(t('verificationCodeSentSuccessfully'))
+                          const res = await getMobil(form2.phone, 0, e)
+                          if (res.code === 0) {
+                            message.success(
+                              t('verificationCodeSentSuccessfully'),
+                            )
+                          } else {
+                            setErrorMessage(res.msg)
+                          }
                         }
                       }}
-                      past={
-                        !!(form2.phone && PHONE_NUMBER_REGEXP.test(form2.phone))
-                      }
+                      past={!!form2.phone}
                       value={form2.msg}
                       label={t('pleaseEnterVerificationCode')}
                       type="text"

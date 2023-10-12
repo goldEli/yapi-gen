@@ -7,7 +7,7 @@ import { InputMode } from '@/views/Login/login'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import style from '../../views/Login/Login.module.css'
-import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants'
+
 import styled from '@emotion/styled'
 import { editPassword, getMobil } from '@/views/Login/services'
 import { css } from '@emotion/css'
@@ -101,11 +101,7 @@ const ForgetPassword = (props: FProps) => {
   }
 
   const onCheckSecret2 = async () => {
-    if (
-      form2.phone &&
-      !EMAIL_REGEXP.test(form2.phone) &&
-      !PHONE_NUMBER_REGEXP.test(form2.phone)
-    ) {
+    if (!form2.phone) {
       console.log('f')
 
       setFocusNumber(1)
@@ -138,13 +134,7 @@ const ForgetPassword = (props: FProps) => {
   const login = async () => {
     console.log('登录')
 
-    if (
-      form2.phone &&
-      !EMAIL_REGEXP.test(form2.phone) &&
-      !PHONE_NUMBER_REGEXP.test(form2.phone)
-    ) {
-      console.log('22')
-
+    if (!form2.phone) {
       return
     }
     if (!(form2.phone && form2.msg && form2.password)) {
@@ -166,7 +156,6 @@ const ForgetPassword = (props: FProps) => {
       smsCode: form2.msg,
       password: form2.password,
     }
-    console.log(data, 'data')
 
     const res = await editPassword(data)
     console.log(res)
@@ -215,6 +204,7 @@ const ForgetPassword = (props: FProps) => {
     !form2.password ||
     bP !== 3 ||
     form2.password2 !== form2.password
+  // const isDisable2 = false
   return (
     <div>
       <div
@@ -242,7 +232,7 @@ const ForgetPassword = (props: FProps) => {
           ← {t('backLogin')}
         </span>
       </div>
-      <div>
+      <div style={{ position: 'relative' }}>
         <Filed
           inputRef={inputRef}
           mode={4}
@@ -269,11 +259,16 @@ const ForgetPassword = (props: FProps) => {
           value={form2.msg}
           label={t('pleaseEnterVerificationCode')}
           type="text"
-          past={!!(form2.phone && PHONE_NUMBER_REGEXP.test(form2.phone))}
-          onGetMsg={() => {
+          past={!!form2.phone}
+          onGetMsg={async (e: string) => {
             if (form2.phone) {
-              getMobil(form2.phone)
-              message.success(t('verificationCodeSentSuccessfully'))
+              const res = await getMobil(form2.phone, 1, e)
+              console.log(res, 'trs')
+              if (res.code === 0) {
+                message.success(t('verificationCodeSentSuccessfully'))
+              } else {
+                setErrorMessage(res.msg)
+              }
             }
           }}
           onChangeEvent={handleInputChange}
@@ -342,6 +337,24 @@ const ForgetPassword = (props: FProps) => {
           bigChar={t('theUppercaseKeyboardIsTurnedOn')}
           // onCheckValue={() => onCheckValue(2)}
         />
+
+        <div
+          style={{
+            visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
+            top: '296px',
+          }}
+          className={`${style.toast} ${
+            // eslint-disable-next-line no-negated-condition
+            !errorState ? style.toast_warning : style.toast_error
+          }`}
+        >
+          {/* <img
+            className={style.toast_icon}
+            src={!errorState ? "/warning.svg" : "error.svg"}
+            alt=""
+          /> */}
+          <span>{errorMessage}</span>
+        </div>
         <button
           {...(isDisable2 ? {} : { onClick: login })}
           className={`${style.button} ${
