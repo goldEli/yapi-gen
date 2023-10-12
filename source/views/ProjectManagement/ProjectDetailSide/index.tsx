@@ -541,8 +541,8 @@ const ProjectDetailSide = () => {
           </SideInfo>
         </SideTop>
         <Back onClick={onGoBack}>
-          <CommonIconFont type="left-md" />
-          <span style={{ marginLeft: '2px' }}>{t('back')}</span>
+          <CommonIconFont size={18} type="left-md" />
+          <span style={{ marginLeft: '2px', fontSize: 14 }}>{t('back')}</span>
         </Back>
         <Provider />
         <MenuBox>
