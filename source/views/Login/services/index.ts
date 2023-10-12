@@ -20,9 +20,37 @@ export const getCaptcha = async () => {
   })
   return data.json()
 }
+export const getMobil = async (mobile: string) => {
+  const data = await fetch(
+    `${API_BASE_URL}/auth/getVerifySMSCode?mobile=${mobile}`,
+    {
+      method: 'get',
+
+      headers: {
+        Language: languages[localStorage.languageMode] || 'en',
+      },
+    },
+  )
+  return data.json()
+}
 
 export const toLogin = async (data: any) => {
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: 'put',
+    body: isDevelopment ? JSON.stringify(data) : encrypt(JSON.stringify(data)),
+    headers: {
+      'Content-Type': 'application/json',
+      Language: languages[localStorage.languageMode] || 'en',
+    },
+  })
+  if (!isDevelopment) {
+    const text = await response.text()
+    return JSON.parse(decrypt(text))
+  }
+  return response.json()
+}
+export const editPassword = async (data: any) => {
+  const response = await fetch(`${API_BASE_URL}/auth/resetPassword`, {
     method: 'put',
     body: isDevelopment ? JSON.stringify(data) : encrypt(JSON.stringify(data)),
     headers: {

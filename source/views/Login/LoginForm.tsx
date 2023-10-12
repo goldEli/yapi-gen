@@ -4,6 +4,8 @@
 // 登陆表单
 import style from './Login.module.css'
 import Filed from './components/Filed'
+import { changeLanguage, type LocaleKeys } from '@/locals'
+import { Skeleton, Tabs, Tooltip, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import SecretImage from './components/SecretImage'
 import { useState, useEffect, useRef } from 'react'
@@ -12,7 +14,12 @@ import React from 'react'
 import { getCaptcha, toLogin, checkToken, checkSecret } from './services'
 import { EMAIL_REGEXP, PHONE_NUMBER_REGEXP } from '@/constants/index'
 import IconFont from '@/components/IconFont'
+import ForgetPassword from '@/components/ForgetPassword/ForgetPassword'
 import styled from '@emotion/styled'
+import { useTranslation } from 'react-i18next'
+import { getMobil } from './services/index'
+import { debounce } from 'lodash'
+import { AsyncButton } from '../../components/AsyncButton'
 
 export default React.memo(
   (props: {
@@ -30,15 +37,25 @@ export default React.memo(
       captchaType: 2,
       id: 0,
     })
+    const [form2, setForm2] = useState<TForm>({
+      phone: '',
+      msg: '',
+      code: '',
+      captchaId: '',
+      captchaType: 4,
+      id: 0,
+    })
     const [show, setShow] = useState<string>('password')
     const [captchaImage, setCaptchaImag] = useState('')
     const [popupsState, setPopupsState] = useState(false)
     const [mode] = useState('2')
+    const [t] = useTranslation()
     const [secretVisible, setSecretVisible] = useState(false)
     const [secretImage, setSecretImage] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [errorState, setErrorState] = useState(false)
     const [focusNumber, setFocusNumber] = useState(0)
+    const [changeF, setChangeF] = useState(true)
     const target = ''
     const [agree, setAgree] = useState(true)
     const [errorCheck, setErrorCheck] = useState({})
@@ -82,50 +99,111 @@ export default React.memo(
       }
     }, [props?.languageMode])
 
-    const login = async () => {
-      if (
-        form.username &&
-        !EMAIL_REGEXP.test(form.username) &&
-        !PHONE_NUMBER_REGEXP.test(form.username)
-      ) {
-        return
-      }
-      if (!(form.username && form.password && form.code)) {
-        if (form.username == '') {
-          setFocusNumber(1)
-          setErrorMessage(languageMode.userWarning)
-        } else if (form.password == '') {
-          setFocusNumber(2)
-          setErrorMessage(languageMode.passwordWarning)
-        } else if (form.code == '') {
-          setFocusNumber(3)
-          setErrorMessage(languageMode.codeWarning)
+    const login2 = debounce(
+      async () => {
+        if (
+          form2.phone &&
+          !EMAIL_REGEXP.test(form2.phone) &&
+          !PHONE_NUMBER_REGEXP.test(form2.phone)
+        ) {
+          console.log('22')
+
+          return
         }
-        return
-      }
+        if (!(form2.phone && form2.msg && form2.code)) {
+          if (form2.phone === '') {
+            setFocusNumber(1)
+            setErrorMessage(languageMode.userWarning)
+          } else if (form2.msg === '') {
+            setFocusNumber(2)
+            setErrorMessage(languageMode.passwordWarning)
+          } else if (form2.code === '') {
+            setFocusNumber(3)
+            setErrorMessage(languageMode.codeWarning)
+          }
+          return
+        }
 
-      const data = {
-        account: form.username,
-        captchaCode: form.code,
-        captchaId: form.captchaId,
-        captchaType: form.captchaType,
-        id: 0,
-        pwd: form.password,
-      }
-      const res = await toLogin(data)
-      if (res.code === 0) {
-        localStorage.token = res.data.token
-        // localStorage.agileToken = res.data.token
+        const data = {
+          account: form2.phone,
+          captchaType: 4,
+          smsCode: form2.msg,
+          captchaCode: form2.code,
+        }
+        console.log(data, 'data')
 
-        // return
-        props.redirect()
+        const res = await toLogin(data)
+        if (res.code === 0) {
+          localStorage.token = res.data.token
+          // localStorage.agileToken = res.data.token
 
-        // navigate(`/ProjectManagement/Project`)
-      } else {
-        setErrorMessage(res.msg)
-        setErrorState(true)
-      }
-    }
+          // return
+          props.redirect()
+
+          // navigate(`/ProjectManagement/Project`)
+        } else {
+          setErrorMessage(res.msg)
+          setErrorState(true)
+        }
+      },
+      3000,
+      {
+        leading: true,
+        trailing: true,
+      },
+    )
+
+    const login = debounce(
+      async () => {
+        if (
+          form.username &&
+          !EMAIL_REGEXP.test(form.username) &&
+          !PHONE_NUMBER_REGEXP.test(form.username)
+        ) {
+          return
+        }
+        if (!(form.username && form.password && form.code)) {
+          if (form.username == '') {
+            setFocusNumber(1)
+            setErrorMessage(languageMode.userWarning)
+          } else if (form.password == '') {
+            setFocusNumber(2)
+            setErrorMessage(languageMode.passwordWarning)
+          } else if (form.code == '') {
+            setFocusNumber(3)
+            setErrorMessage(languageMode.codeWarning)
+          }
+          return
+        }
+
+        const data = {
+          account: form.username,
+          captchaCode: form.code,
+          captchaId: form.captchaId,
+          captchaType: form.captchaType,
+          id: 0,
+          pwd: form.password,
+        }
+        const res = await toLogin(data)
+        if (res.code === 0) {
+          localStorage.token = res.data.token
+          // localStorage.agileToken = res.data.token
+
+          // return
+          props.redirect()
+
+          // navigate(`/ProjectManagement/Project`)
+        } else {
+          setErrorMessage(res.msg)
+          setErrorState(true)
+        }
+      },
+      3000,
+      {
+        leading: true,
+        trailing: true,
+      },
+    )
 
     const check = async () => {
       try {
@@ -150,6 +228,9 @@ export default React.memo(
     }
 
     const chooseLanguageMode = (index: number) => {
+      console.log(index)
+
+      changeLanguage(index === 1 ? 'en' : 'zh')
       dispatch({
         type: index,
       })
@@ -170,14 +251,19 @@ export default React.memo(
       const { target } = event
       const value = target.type === 'checkbox' ? target.checked : target.value
       const { name } = target
-      if (name === 'username') {
+      if (name === 'username' || name === 'phone') {
         setErrorState(false)
         setErrorCheck({
           username: '',
+          phone: '',
         })
       }
       setForm({
         ...form,
+        [name]: value,
+      })
+      setForm2({
+        ...form2,
         [name]: value,
       })
     }
@@ -213,6 +299,37 @@ export default React.memo(
       }
     }
 
+    const onCheckSecret2 = async () => {
+      if (
+        form2.phone &&
+        !EMAIL_REGEXP.test(form2.phone) &&
+        !PHONE_NUMBER_REGEXP.test(form2.phone)
+      ) {
+        setFocusNumber(1)
+        setErrorState(true)
+        setErrorCheck({
+          phone: t('pleaseEnterAValidPhoneNumber'),
+        })
+        return
+      }
+
+      if (
+        form2.phone &&
+        form.password &&
+        form2.phone.length >= 1 &&
+        form.password.length >= 1
+      ) {
+        const response = await checkSecret({
+          account: form2.phone,
+          pwd: form2.password,
+        })
+        if (response.success && response.data.secret) {
+          setSecretImage(response.data.secret)
+          setSecretVisible(true)
+        }
+      }
+    }
+
     const changeFocus = () => {
       setFocusNumber(0)
       setErrorMessage('')
@@ -223,6 +340,8 @@ export default React.memo(
       setAgree(e.target.checked)
     }
     const isDisable = !agree || !form.code || !form.username || !form.password
+    const isDisable2 = !agree || !form2.code || !form2.phone || !form2.msg
+    // const isDisable2 = false
 
     const Lang = styled.span`
       display: inline-block;
@@ -236,152 +355,248 @@ export default React.memo(
 
     return (
       <div className={`${style.main} ${secretVisible ? style.filter : ''}`}>
-        {(!target || target === 'oa' || !systemData[target]) && (
-          <div className={style.title}>
-            <p>{languageMode[systemData.agile.loginFormTitle]}</p>
-          </div>
-        )}
-        {target && systemData[target] ? (
-          <div className={style.headLogo}>
-            <div className={style.logoWrap}>
-              <img
-                className={style.logo_img}
-                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/logo/logo@395x80.png"
-                alt=""
-              />
-              <img
-                className={style.switch_img}
-                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/switch.svg"
-                alt=""
-              />
-              <img
-                className={style.logo_img}
-                src={systemData[target]?.logo}
-                alt=""
-              />
-            </div>
-            <p className={style.title_text}>
-              {languageMode.useOALogin} <span>{systemData[target]?.name}</span>
-            </p>
-          </div>
-        ) : null}
-        <div className={style.form}>
-          <Filed
-            inputRef={inputRef}
-            mode={InputMode.NORMAL}
-            name="username"
-            icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
-            value={form.username}
-            label={languageMode.user}
-            type="text"
-            onChangeEvent={handleInputChange}
-            onCheckSecret={onCheckSecret}
-            isHighlight={focusNumber === 1 || focusNumber === 4}
-            isErrorHighlight={
-              (focusNumber === 1 || focusNumber === 4) && errorState
-            }
-            onChangeFocus={changeFocus}
-            errorCheck={errorCheck}
-            // onCheckValue={() => onCheckValue(1)}
-          />
-          <Filed
-            name="password"
-            mode={InputMode.LOCK}
-            icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
-            value={form.password}
-            label={languageMode.password}
-            type={show}
-            onChangeEvent={handleInputChange}
-            onChangeShow={onChangeShow}
-            onCheckSecret={onCheckSecret}
-            isHighlight={focusNumber === 2 || focusNumber === 5}
-            isErrorHighlight={
-              (focusNumber === 2 || focusNumber === 5) && errorState
-            }
-            onChangeFocus={changeFocus}
-            bigChar={languageMode.bigChar}
-            // onCheckValue={() => onCheckValue(2)}
-          />
-          {mode === '1' ? (
-            <Filed
-              name="code"
-              img={captchaImage}
-              icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
-              mode={InputMode.CODE}
-              value={form.code}
-              label={languageMode.code}
-              type="text"
-              onChangeEvent={handleInputChange}
-              onChangeCaptchaImag={getCaptchaCode}
-              isHighlight={focusNumber === 3 || focusNumber === 6}
-              isErrorHighlight={
-                (focusNumber === 3 || focusNumber === 6) && errorState
-              }
-              onChangeFocus={changeFocus}
-              // onCheckValue={() => onCheckValue(3)}
-            />
-          ) : (
-            <Filed
-              name="code"
-              mode={InputMode.NORMAL}
-              icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
-              value={form.code}
-              label={languageMode.code}
-              type="text"
-              onChangeEvent={handleInputChange}
-              isHighlight={focusNumber === 3 || focusNumber === 6}
-              isErrorHighlight={
-                (focusNumber === 3 || focusNumber === 6) && errorState
-              }
-              onChangeFocus={changeFocus}
-              // onCheckValue={() => onCheckValue(3)}
-            />
-          )}
-          <div
-            style={{
-              visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
-            }}
-            className={`${style.toast} ${
-              !errorState ? style.toast_warning : style.toast_error
-            }`}
-          >
-            {/* <img
+        {changeF && (
+          <div>
+            {(!target || target === 'oa' || !systemData[target]) && (
+              <div className={style.title}>
+                <p>{languageMode[systemData.agile.loginFormTitle]}</p>
+              </div>
+            )}
+            <div>
+              <Tabs defaultActiveKey="1">
+                <Tabs.TabPane
+                  tab={
+                    <span style={{ fontSize: '16px' }}>
+                      {t('accountLogin')}
+                    </span>
+                  }
+                  key="1"
+                >
+                  <div className={style.form}>
+                    <Filed
+                      inputRef={inputRef}
+                      mode={InputMode.NORMAL}
+                      name="username"
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
+                      value={form.username}
+                      label={languageMode.user}
+                      type="text"
+                      onChangeEvent={handleInputChange}
+                      onCheckSecret={onCheckSecret}
+                      isHighlight={focusNumber === 1 || focusNumber === 4}
+                      isErrorHighlight={
+                        (focusNumber === 1 || focusNumber === 4) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      errorCheck={errorCheck}
+                      // onCheckValue={() => onCheckValue(1)}
+                    />
+                    <Filed
+                      name="password"
+                      mode={InputMode.LOCK}
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/password.svg"
+                      value={form.password}
+                      label={languageMode.password}
+                      type={show}
+                      onChangeEvent={handleInputChange}
+                      onChangeShow={onChangeShow}
+                      onCheckSecret={onCheckSecret}
+                      isHighlight={focusNumber === 2 || focusNumber === 5}
+                      isErrorHighlight={
+                        (focusNumber === 2 || focusNumber === 5) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      bigChar={languageMode.bigChar}
+                      // onCheckValue={() => onCheckValue(2)}
+                    />
+                    {mode === '1' ? (
+                      <Filed
+                        name="code"
+                        img={captchaImage}
+                        icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
+                        mode={InputMode.CODE}
+                        value={form.code}
+                        label={languageMode.code}
+                        type="text"
+                        onChangeEvent={handleInputChange}
+                        onChangeCaptchaImag={getCaptchaCode}
+                        isHighlight={focusNumber === 3 || focusNumber === 6}
+                        isErrorHighlight={
+                          (focusNumber === 3 || focusNumber === 6) && errorState
+                        }
+                        onChangeFocus={changeFocus}
+                        // onCheckValue={() => onCheckValue(3)}
+                      />
+                    ) : (
+                      <Filed
+                        name="code"
+                        mode={InputMode.NORMAL}
+                        icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
+                        value={form.code}
+                        label={languageMode.code}
+                        type="text"
+                        onChangeEvent={handleInputChange}
+                        isHighlight={focusNumber === 3 || focusNumber === 6}
+                        isErrorHighlight={
+                          (focusNumber === 3 || focusNumber === 6) && errorState
+                        }
+                        onChangeFocus={changeFocus}
+                        // onCheckValue={() => onCheckValue(3)}
+                      />
+                    )}
+                    <div
+                      style={{
+                        visibility:
+                          errorMessage.length > 0 ? 'visible' : 'hidden',
+                      }}
+                      className={`${style.toast} ${
+                        !errorState ? style.toast_warning : style.toast_error
+                      }`}
+                    >
+                      {/* <img
             className={style.toast_icon}
             src={!errorState ? "/warning.svg" : "error.svg"}
             alt=""
           /> */}
-            <span>{errorMessage}</span>
-          </div>
-        </div>
-        <button
-          {...(isDisable ? {} : { onClick: login })}
-          className={`${style.button} ${isDisable ? style.disable_button : ''}`}
-        >
-          {languageMode.login}
-        </button>
-        <div className={style.agree} hidden={!target}>
-          <div className={style.checkboxWrap}>
-            <div
-              className={`${style.checkbodStyle} ${agree ? style.checked : ''}`}
-            />
-            <input
-              checked={agree}
-              name="agree"
-              type="checkbox"
-              className={style.input}
-              onChange={onChange}
-            />
-          </div>
+                      <span>{errorMessage}</span>
+                    </div>
+                  </div>
+                  <button
+                    {...(isDisable ? {} : { onClick: login })}
+                    className={`${style.button} ${
+                      isDisable ? style.disable_button : ''
+                    }`}
+                  >
+                    {languageMode.login}
+                  </button>
+                  <div
+                    className={style.xiaxian}
+                    onClick={() => setChangeF(!changeF)}
+                  >
+                    {t('forgetThe')}
+                  </div>
+                </Tabs.TabPane>
 
-          <div>
-            <p>{languageMode.authorizedLogin}</p>
-            <ul className={style.agree_ul}>
-              <li> {languageMode.publicInformation}</li>
-              <li> {languageMode.book}</li>
-            </ul>
-          </div>
-        </div>
+                {/* -------------------------------------------------------------------------------------------------------------------------------------- */}
+                <Tabs.TabPane
+                  tab={
+                    <span style={{ fontSize: '16px' }}>
+                      {t('logInWithPhone')}
+                    </span>
+                  }
+                  key="2"
+                >
+                  <div className={style.form}>
+                    <Filed
+                      inputRef={inputRef}
+                      mode={4}
+                      name="phone"
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
+                      value={form2.phone}
+                      label={languageMode.user}
+                      type="text"
+                      onChangeEvent={handleInputChange}
+                      onCheckSecret={onCheckSecret2}
+                      isHighlight={focusNumber === 1 || focusNumber === 4}
+                      isErrorHighlight={
+                        (focusNumber === 1 || focusNumber === 4) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      errorCheck={errorCheck}
+                      // onCheckValue={() => onCheckValue(1)}
+                    />
 
+                    <Filed
+                      name="msg"
+                      img={captchaImage}
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
+                      mode={3}
+                      onGetMsg={() => {
+                        if (form2.phone) {
+                          getMobil(form2.phone)
+                          message.success(t('verificationCodeSentSuccessfully'))
+                        }
+                      }}
+                      past={
+                        !!(form2.phone && PHONE_NUMBER_REGEXP.test(form2.phone))
+                      }
+                      value={form2.msg}
+                      label={t('pleaseEnterVerificationCode')}
+                      type="text"
+                      onChangeEvent={handleInputChange}
+                      onChangeCaptchaImag={getCaptchaCode}
+                      isHighlight={focusNumber === 3 || focusNumber === 6}
+                      isErrorHighlight={
+                        (focusNumber === 3 || focusNumber === 6) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      // onCheckValue={() => onCheckValue(3)}
+                    />
+
+                    <Filed
+                      name="code"
+                      mode={InputMode.NORMAL}
+                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
+                      value={form2.code}
+                      label={languageMode.code}
+                      type="text"
+                      onChangeEvent={handleInputChange}
+                      isHighlight={focusNumber === 3 || focusNumber === 6}
+                      isErrorHighlight={
+                        (focusNumber === 3 || focusNumber === 6) && errorState
+                      }
+                      onChangeFocus={changeFocus}
+                      // onCheckValue={() => onCheckValue(3)}
+                    />
+
+                    <div
+                      style={{
+                        visibility:
+                          errorMessage.length > 0 ? 'visible' : 'hidden',
+                      }}
+                      className={`${style.toast} ${
+                        !errorState ? style.toast_warning : style.toast_error
+                      }`}
+                    >
+                      {/* <img
+            className={style.toast_icon}
+            src={!errorState ? "/warning.svg" : "error.svg"}
+            alt=""
+          /> */}
+                      <span>{errorMessage}</span>
+                    </div>
+                  </div>
+
+                  <button
+                    {...(isDisable2 ? {} : { onClick: login2 })}
+                    className={`${style.button} ${
+                      isDisable2 ? style.disable_button : ''
+                    }`}
+                  >
+                    {languageMode.login}
+                  </button>
+                  <div
+                    className={style.xiaxian}
+                    onClick={() => setChangeF(!changeF)}
+                  >
+                    {t('forgetThe')}
+                  </div>
+                </Tabs.TabPane>
+              </Tabs>
+
+              <SecretImage
+                operationNotes={languageMode.operationNotes}
+                operationManual={languageMode.operationManual}
+                secretVisible={secretVisible}
+                secretImage={secretImage}
+                close={() => {
+                  setSecretVisible(false)
+                }}
+              ></SecretImage>
+            </div>
+          </div>
+        )}
+        {!changeF && <ForgetPassword onClose={() => setChangeF(!changeF)} />}
         <div className={style.headWrap}>
           <div>{/* <img src="/sso/logo.png" width={207} /> */}</div>
           <div onClick={controlPopups} className={style.language}>
@@ -420,16 +635,6 @@ export default React.memo(
             ) : null}
           </div>
         </div>
-
-        <SecretImage
-          operationNotes={languageMode.operationNotes}
-          operationManual={languageMode.operationManual}
-          secretVisible={secretVisible}
-          secretImage={secretImage}
-          close={() => {
-            setSecretVisible(false)
-          }}
-        ></SecretImage>
       </div>
     )
   },

@@ -17,13 +17,22 @@
   margin: 0;
   padding: 0;
 }
-
+.xiaxian {
+  text-align: center;
+  color: #6688ff;
+  margin-top: 24px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.xiaxian:hover {
+  text-decoration: underline;
+}
 .filter {
   filter: contrast(30%) opacity(30%);
 }
 
 .title {
-  margin: 0px 0 48px 0px;
+  margin: 0px 0 32px 0px;
 }
 .title > p {
   font-size: 24px;
@@ -132,7 +141,7 @@
   color: #ffffff;
   border-radius: 4px;
   width: 100%;
-  font-size: 15px;
+  font-size: 18px;
   height: 52px;
   background: #617ef2;
   border-radius: 4px 4px 4px 4px;

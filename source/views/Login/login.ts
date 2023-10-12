@@ -35,7 +35,7 @@ const language = [
     codeError: '动态口令不正确',
     authorizedLogin: '授权登录将获取以下权限',
     AgileLogin: '欢迎使用 iFUN agile',
-    title1: '新一代AI研发敏捷协同神器',
+    title1: '新一代AI敏捷研发协同神器',
     title2: '让您的研发工作更轻松、更高效、更有价值！',
     error1: '请输入正确的企业邮箱或关联手机号',
   },
