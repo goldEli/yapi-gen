@@ -35,6 +35,10 @@ export const getMobil = async (
       },
     },
   )
+  if (!isDevelopment) {
+    const text = await data.text()
+    return JSON.parse(decrypt(text))
+  }
   return data.json()
 }
 
