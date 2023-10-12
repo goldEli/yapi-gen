@@ -60,6 +60,7 @@ export default React.memo(
     const [agree, setAgree] = useState(true)
     const [errorCheck, setErrorCheck] = useState({})
     const inputRef = useRef(null)
+    const msgRef = useRef<any>(null)
 
     useEffect(() => {
       setTimeout(() => {
@@ -494,11 +495,13 @@ export default React.memo(
                     />
 
                     <Filed
+                      ref={msgRef}
                       name="msg"
                       img={captchaImage}
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
                       mode={3}
                       onGetMsg={async e => {
+                        setErrorMessage('')
                         if (form2.phone) {
                           const res = await getMobil(form2.phone, 0, e)
                           if (res.code === 0) {
@@ -506,6 +509,7 @@ export default React.memo(
                               t('verificationCodeSentSuccessfully'),
                             )
                           } else {
+                            msgRef.current?.reset()
                             setErrorMessage(res.msg)
                           }
                         }

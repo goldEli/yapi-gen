@@ -82,7 +82,7 @@ const ForgetPassword = (props: FProps) => {
     captchaType: 2,
     id: 0,
   })
-
+  const msgRef = useRef<any>(null)
   const handleInputChange = (event: { target: any }) => {
     const { target } = event
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -253,6 +253,7 @@ const ForgetPassword = (props: FProps) => {
         />
 
         <Filed
+          ref={msgRef}
           name="msg"
           icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
           mode={3}
@@ -261,12 +262,14 @@ const ForgetPassword = (props: FProps) => {
           type="text"
           past={!!form2.phone}
           onGetMsg={async (e: string) => {
+            setErrorMessage('')
             if (form2.phone) {
               const res = await getMobil(form2.phone, 1, e)
               console.log(res, 'trs')
               if (res.code === 0) {
                 message.success(t('verificationCodeSentSuccessfully'))
               } else {
+                msgRef.current?.reset()
                 setErrorMessage(res.msg)
               }
             }
@@ -341,7 +344,7 @@ const ForgetPassword = (props: FProps) => {
         <div
           style={{
             visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
-            top: bP ? '329px' : '296px',
+            top: bP ? '350px' : '296px',
           }}
           className={`${style.toast} ${
             // eslint-disable-next-line no-negated-condition
@@ -356,6 +359,7 @@ const ForgetPassword = (props: FProps) => {
           <span>{errorMessage}</span>
         </div>
         <button
+          style={{ marginTop: '60px' }}
           {...(isDisable2 ? {} : { onClick: login })}
           className={`${style.button} ${
             isDisable2 ? style.disable_button : ''
