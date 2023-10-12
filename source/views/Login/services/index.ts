@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable no-negated-condition */
 // 请求
 import { decrypt, encrypt } from '../utils/crypto'
@@ -25,8 +26,13 @@ export const getMobil = async (
   type: number,
   areaCode: string,
 ) => {
+  console.log(areaCode)
+  const match = areaCode.match(/\d+/)
+  const number = match ? match[0] : null
+
+  console.log(number)
   const data = await fetch(
-    `${API_BASE_URL}/auth/getVerifySMSCode?mobile=${mobile}&type=${type}&areaCode=${areaCode}`,
+    `${API_BASE_URL}/auth/getVerifySMSCode?mobile=${mobile}&type=${type}&areaCode=${number}`,
     {
       method: 'get',
 
