@@ -498,10 +498,16 @@ export default React.memo(
                       img={captchaImage}
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
                       mode={3}
-                      onGetMsg={e => {
+                      onGetMsg={async e => {
                         if (form2.phone) {
-                          getMobil(form2.phone, 0, e)
-                          message.success(t('verificationCodeSentSuccessfully'))
+                          const res = await getMobil(form2.phone, 0, e)
+                          if (res.code === 0) {
+                            message.success(
+                              t('verificationCodeSentSuccessfully'),
+                            )
+                          } else {
+                            setErrorMessage(res.msg)
+                          }
                         }
                       }}
                       past={!!form2.phone}

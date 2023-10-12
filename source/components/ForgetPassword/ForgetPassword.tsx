@@ -260,10 +260,15 @@ const ForgetPassword = (props: FProps) => {
           label={t('pleaseEnterVerificationCode')}
           type="text"
           past={!!form2.phone}
-          onGetMsg={(e: string) => {
+          onGetMsg={async (e: string) => {
             if (form2.phone) {
-              getMobil(form2.phone, 1, e)
-              message.success(t('verificationCodeSentSuccessfully'))
+              const res = await getMobil(form2.phone, 1, e)
+              console.log(res, 'trs')
+              if (res.code === 0) {
+                message.success(t('verificationCodeSentSuccessfully'))
+              } else {
+                setErrorMessage(res.msg)
+              }
             }
           }}
           onChangeEvent={handleInputChange}
@@ -336,7 +341,7 @@ const ForgetPassword = (props: FProps) => {
         <div
           style={{
             visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
-            top: '326px',
+            top: '296px',
           }}
           className={`${style.toast} ${
             // eslint-disable-next-line no-negated-condition
