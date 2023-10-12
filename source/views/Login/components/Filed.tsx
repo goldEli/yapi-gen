@@ -2,13 +2,20 @@
 // @ts-nocheck
 // 字段
 import styled from '@emotion/styled'
-import { useRef, useState, useReducer, useEffect } from 'react'
+import {
+  useRef,
+  useState,
+  useReducer,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import style from './Filed.module.css'
 import { Dropdown } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CountryCode from '@/components/CountryCode'
 
-export default (props: any) => {
+export default forwardRef((props: any, ref: any) => {
   const [t] = useTranslation()
   const [isFocus, setIsFocus] = useState(false)
   const [bigChar, setBigChar] = useState(false)
@@ -68,7 +75,14 @@ export default (props: any) => {
     setConutryCode(phoneCode)
     localStorage.areacode = phoneCode
   }
-
+  const reset = () => {
+    setTime(0)
+  }
+  useImperativeHandle(ref, () => {
+    return {
+      reset,
+    }
+  })
   return (
     <div ref={myForm} style={{ ...props.style }} className={getClass()}>
       {props.mode === 4 ? (
@@ -174,4 +188,4 @@ export default (props: any) => {
       ) : null}
     </div>
   )
-}
+})
