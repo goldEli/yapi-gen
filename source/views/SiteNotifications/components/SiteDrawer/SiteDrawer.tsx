@@ -70,7 +70,8 @@ const SiteDrawer = () => {
   const tabsValue = [
     {
       id: '1',
-      text: `${t('new1')}(${now ?? 0})`,
+      // text: `${t('new1')}(${now ?? 0})`,
+      text: `${t('new1')}(2024)`,
     },
     {
       id: '4',
@@ -239,6 +240,13 @@ const SiteDrawer = () => {
       })
     }
   }, [])
+
+  useEffect(() => {
+    if (tabActive.current && isVisible) {
+      tabActive.current.style.width = `${tabBox.current?.children[0].clientWidth}px`
+    }
+  }, [now])
+
   useEffect(() => {
     const index = tabsValue.findIndex((i: any) => i.id === active)
     tabActive.current!.style.left = `${

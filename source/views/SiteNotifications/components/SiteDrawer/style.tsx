@@ -11,6 +11,7 @@ export const Wrap = styled.div`
 export const TabsWrap = styled.div`
   position: relative;
   width: 322px;
+  height: 36px;
   padding: 2px;
   display: flex;
   background-color: var(--hover-d2);
@@ -31,6 +32,7 @@ export const ActiveTab = styled.div`
 `
 
 export const TabsWrapItem = styled.div<{ active: boolean }>`
+  white-space: nowrap;
   z-index: 1;
   padding: 4px 16px;
   border-radius: 4px;
