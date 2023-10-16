@@ -173,6 +173,7 @@ const CategoryDropdown = (props: IProps) => {
     }
     init()
   }, [projectId, value, categoryList])
+  console.log(props, 'props')
 
   return (
     <Wrap

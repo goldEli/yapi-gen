@@ -2468,5 +2468,7 @@
   "inconsistentOrWeakPasswords": "密码不一致或密码强度弱",
   "verificationCodeSentSuccessfully": "验证码发送成功",
   "passwordResetComplete": "密码修改成功",
-  "numberOfTransactions": "事务数"
+  "numberOfTransactions": "事务数",
+  "resigned": "已离职",
+  "working": "在职"
 }

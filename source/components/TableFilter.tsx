@@ -471,11 +471,29 @@ const TableFilter = (props: any) => {
 
     return newA
       .map((i: any) => ({
+        ...i,
         id: i.id,
         value: i.value,
         label: `${i.label}（${t('myself')}）`,
       }))
       .concat(newB)
+  }
+
+  const splitArrayByValue = (arr: any) => {
+    let arr1 = arr.filter((x: any) => x.status === 1)
+
+    let arr2 = arr.filter((x: any) => x.status === 2)
+
+    console.log(arr1, arr2)
+    const a = {
+      label: t('working'),
+      children: arr1,
+    }
+    const b = {
+      label: t('resigned'),
+      children: arr2,
+    }
+    return [a, b]
   }
   return (
     <SearchLine hasLeft={props?.hasLeft}>
@@ -545,21 +563,24 @@ const TableFilter = (props: any) => {
                             i.key === 'users_name' ||
                             i.key === 'users_copysend_name' ||
                             i.key === 'user_name'
-                              ? format(
-                                  deWeight(
-                                    projectInfoValues
-                                      ?.filter(
-                                        (k: any) =>
-                                          k.key ===
-                                          (i.key === 'user_name'
-                                            ? 'users_name'
-                                            : i.key),
-                                      )[0]
-                                      ?.children?.map((v: any) => ({
-                                        label: v.content_txt || v.content,
-                                        value: v.id,
-                                        id: v.id,
-                                      })),
+                              ? splitArrayByValue(
+                                  format(
+                                    deWeight(
+                                      projectInfoValues
+                                        ?.filter(
+                                          (k: any) =>
+                                            k.key ===
+                                            (i.key === 'user_name'
+                                              ? 'users_name'
+                                              : i.key),
+                                        )[0]
+                                        ?.children?.map((v: any) => ({
+                                          ...v,
+                                          label: v.content_txt || v.content,
+                                          value: v.id,
+                                          id: v.id,
+                                        })),
+                                    ),
                                   ),
                                 )
                               : i.key === 'status'

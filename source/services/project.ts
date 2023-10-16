@@ -879,7 +879,10 @@ export const getProjectInfoValues: any = async (params: any, all?: number) => {
         ...i,
       }))
     }
-    allValues = [{ id: -1, content: '空', content_txt: '空' }, ...resultValues]
+    allValues = [
+      { id: -1, content: '空', content_txt: '空', status: 1 },
+      ...resultValues,
+    ]
     return allValues
   }
 
