@@ -2467,5 +2467,6 @@
   "passwordsDoNotMatch": "Passwords do not match",
   "inconsistentOrWeakPasswords": "Inconsistent or weak passwords",
   "verificationCodeSentSuccessfully": "Verification code sent successfully",
-  "passwordResetComplete": "Password reset complete"
+  "passwordResetComplete": "Password reset complete",
+  "numberOfTransactions": "Number of transactions"
 }

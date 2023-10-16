@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Checkbox, Progress } from 'antd'
+import { Checkbox, Progress, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { setCheckList } from '@store/sprint'
@@ -93,24 +93,31 @@ const TabItem = (props: any) => {
           </div>
           <div className="progress">
             <div className="iconBox">
-              <IconFont
-                type="recover"
-                style={{
-                  fontSize: 16,
-                  marginRight: 3,
-                  color: 'var(--neutral-n3)',
-                }}
-              />
+              <Tooltip title={t('numberOfTransactions')}>
+                {' '}
+                <IconFont
+                  type="recover"
+                  style={{
+                    fontSize: 16,
+                    marginRight: 3,
+                    color: 'var(--neutral-n3)',
+                  }}
+                />
+              </Tooltip>
+
               <span className="text">{`${item.story_finish_count}/${item.story_count}`}</span>
-              <IconFont
-                type="apartment02"
-                style={{
-                  fontSize: 16,
-                  marginLeft: 12,
-                  marginRight: 5,
-                  color: 'var(--neutral-n3)',
-                }}
-              />
+              <Tooltip title={t('subtransaction')}>
+                <IconFont
+                  type="apartment02"
+                  style={{
+                    fontSize: 16,
+                    marginLeft: 12,
+                    marginRight: 5,
+                    color: 'var(--neutral-n3)',
+                  }}
+                />
+              </Tooltip>
+
               <span className="text">{item.child_story_total}</span>
             </div>
             <div style={{ width: 76 }}>

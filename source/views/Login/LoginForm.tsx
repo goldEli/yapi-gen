@@ -322,6 +322,7 @@ export default React.memo(
       setFocusNumber(0)
       setErrorMessage('')
       setErrorState(false)
+      setErrorCheck({})
     }
 
     const onChange = (e: any) => {
@@ -351,7 +352,13 @@ export default React.memo(
               </div>
             )}
             <div>
-              <Tabs defaultActiveKey="1">
+              <Tabs
+                defaultActiveKey="1"
+                onTabClick={() => {
+                  console.log(1)
+                  changeFocus()
+                }}
+              >
                 <Tabs.TabPane
                   tab={
                     <span style={{ fontSize: '16px' }}>

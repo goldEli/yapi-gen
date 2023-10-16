@@ -52,7 +52,7 @@ const useShowTargetModal = () => {
       <div style={{ padding: '0 24px' }}>
         <div
           style={{
-            height: '22px',
+            minHeight: '22px',
             fontSize: '14px',
             marginBottom: 8,
             color: '#646566',
@@ -146,7 +146,7 @@ const useShowTargetModal = () => {
             lineHeight: ' 22px',
           }}
         >
-          {info?.info}
+          {info?.info ? info?.info : '--'}
         </div>
       </div>
     </CommonModal>

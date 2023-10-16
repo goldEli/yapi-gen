@@ -2467,5 +2467,6 @@
   "passwordsDoNotMatch": "密码不一致",
   "inconsistentOrWeakPasswords": "密码不一致或密码强度弱",
   "verificationCodeSentSuccessfully": "验证码发送成功",
-  "passwordResetComplete": "密码修改成功"
+  "passwordResetComplete": "密码修改成功",
+  "numberOfTransactions": "事务数"
 }
