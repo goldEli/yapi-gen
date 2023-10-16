@@ -335,13 +335,7 @@ const UploadAttach = (props: any, ref: any) => {
           .join('.')
       }
 
-      const result: any = await uploadFile(
-        file,
-        file.name,
-        'file',
-        newName,
-        scopeRef.current,
-      )
+      const result: any = await uploadFile(file, newName, scopeRef.current)
       setFileList((tasks: any) => [result].concat(...tasks))
     }
   }

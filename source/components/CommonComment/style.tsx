@@ -11,6 +11,7 @@ export const CommentFooterWrap = styled.div<{ isReview?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  z-index: 2;
   .buttonBox {
     margin-top: 12px;
     display: flex;

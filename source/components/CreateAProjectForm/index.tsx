@@ -138,7 +138,7 @@ const CreateAProjectForm = () => {
   const { projectInfo } = useSelector(state => state.project)
   const { isRefresh } = useSelector(state => state.user)
   const onCustomRequest = async (file: any) => {
-    const data = await uploadFileByTask(file.file, '2', '2')
+    const data = await uploadFileByTask(file.file, '2')
     setMyCover(data.url)
     setActiveCover(data.url)
   }

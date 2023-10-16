@@ -1,6 +1,4 @@
-import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
-import { uploadFileByTask } from '@/services/cos'
 import styled from '@emotion/styled'
 import { setRouterMenu } from '@store/calendar'
 import { updateCalendarConfig } from '@store/calendar/calendar.thunk'
@@ -177,22 +175,6 @@ const CalendarSet = () => {
     { label: t('calendarManager.monday'), value: 1 },
   ]
 
-  // 日程颜色
-  const colorList = [
-    {
-      name: t('calendarManager.modern_Colored_Text'),
-      value: 1,
-      background: 'var(--function-tag5)',
-      color: 'var(--neutral-n1-d1)',
-    },
-    {
-      name: t('calendarManager.classic_white_text'),
-      value: 2,
-      background: 'var(--primary-d1)',
-      color: 'var(--neutral-white-d7)',
-    },
-  ]
-
   // 修改配置 key： 表单对应的key, value：修改的值 outKey: 最外层的key
   const onChangeSet = (value: number, key: string, outKey: string) => {
     const params = {
@@ -204,29 +186,6 @@ const CalendarSet = () => {
       ...{ [outKey]: params },
       ...{ isUpdate: true },
     })
-  }
-
-  const onCustomRequest = async (file: any) => {
-    if (
-      !(file.file.type?.includes('iCal') || file.file.type?.includes('VCS'))
-    ) {
-      message.warning(t('calendarManager.import_calendar_text'))
-      return
-    }
-    const data = await uploadFileByTask(
-      file.file,
-      file.name,
-      `richEditorFiles_${new Date().getTime()}`,
-    )
-    setImportList([...importList, ...[{ name: data.name, id: data.id }]])
-  }
-
-  // 删除的导入的日历
-  const onDeleteImport = (id: number | string) => {
-    const resultList = importList.filter(
-      (i: { name: string; id: number | string }) => i.id !== id,
-    )
-    setImportList(resultList)
   }
 
   const onBack = () => {
@@ -429,74 +388,6 @@ const CalendarSet = () => {
             {t('calendarManager.remind_me_only_of_accepted_schedules')}
           </Checkbox>
         </div>
-        {/* <div id="calendar-import">
-          <Title>
-            <div className="name">{t('calendarManager.calendar_import')}</div>
-            <Tooltip title={t('calendarManager.can_import_text')}>
-              <TitleIcon className="icon" type="question" />
-            </Tooltip>
-            <Upload fileList={[]} customRequest={onCustomRequest}>
-              <CommonButton type="primaryText">
-                {t('calendarManager.leading_in')}
-              </CommonButton>
-            </Upload>
-          </Title>
-          <Label style={{ marginTop: 8 }}>
-            {t('calendarManager.add_to_calendar')}
-          </Label>
-          <Select
-            getPopupContainer={n => n}
-            onChange={setImportCalendar}
-            value={importCalendar}
-            options={calendarData.manager?.map((i: Model.Calendar.Info) => ({
-              label: i.name,
-              value: i.calendar_id,
-            }))}
-            style={{ width: 320 }}
-          />
-          {importList.length > 0 && (
-            <ImportBox>
-              {importList.map((i: { name: string; id: string | number }) => (
-                <ImportItem key={i.id}>
-                  <Tooltip
-                    title={i.name}
-                    placement="topLeft"
-                    getPopupContainer={n => n}
-                  >
-                    <div className="name">{i.name}</div>
-                  </Tooltip>
-                  <IconFont
-                    onClick={() => onDeleteImport(i.id)}
-                    className="icon"
-                    type="close"
-                  />
-                </ImportItem>
-              ))}
-            </ImportBox>
-          )}
-        </div>
-        <div id="calendar-export">
-          <Title>
-            <div className="name" style={{ marginRight: 16 }}>
-              {t('calendarManager.calendar_export')}
-            </div>
-            <CommonButton type="primaryText">
-              {t('calendarManager.leading_out')}
-            </CommonButton>
-          </Title>
-          <Label style={{ marginTop: 8 }}>
-            {t('calendarManager.Select_export_calendar')}
-          </Label>
-          <CheckBoxWrap
-            style={{ margin: 0 }}
-            value={exportIds}
-            options={calendarData.manager?.map((i: Model.Calendar.Info) => ({
-              label: i.name,
-              value: i.calendar_id,
-            }))}
-            onChange={setExportIds}
-          />
-        </div> */}
       </ContentWrap>
     </CalendarSetWrap>
   )
