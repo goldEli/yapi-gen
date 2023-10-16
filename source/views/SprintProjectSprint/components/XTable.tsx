@@ -106,25 +106,29 @@ const XTableWrap = styled.div`
   }
 `
 const Header = styled.div`
-  height: 32px;
+  min-height: 32px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 12px;
-  .title {
-    font-size: 14px;
-    font-family: SiYuanMedium;
-    font-weight: 500;
-    color: var(--neutral-n1-d1);
-  }
-  .date {
-    font-size: 12px;
-    font-family: SiYuanRegular;
-    font-weight: 400;
-    color: var(--neutral-n3);
-    margin-left: 16px;
-    margin-right: 16px;
-    white-space: nowrap;
+  .titleBox {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 280px);
+    .title {
+      font-size: 14px;
+      font-family: SiYuanMedium;
+      font-weight: 500;
+      color: var(--neutral-n1-d1);
+    }
+    .date {
+      font-size: 12px;
+      font-family: SiYuanRegular;
+      font-weight: 400;
+      color: var(--neutral-n3);
+      margin-right: 16px;
+      white-space: nowrap;
+    }
   }
 `
 const DisabledButton = styled.div`
@@ -396,112 +400,56 @@ const XTable: React.FC<XTableProps> = props => {
         }
         header={
           <Header>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span className="title">{data.name}</span>
-              <span className="date">
-                {`${data?.start_at ? data.start_at : ''}${
-                  data?.start_at && data?.end_at ? '~ ' : ''
-                }${data?.end_at ? data?.end_at : ''}`}
-                {data?.story_visible_count > 0 || data?.story_count > 0
-                  ? `（${t('sprint.visible')}${data?.story_visible_count}${t(
-                      'sprint.number',
-                    )}，${t('sprint.total')}${data?.story_count}${t(
-                      'sprint.number',
-                    )}${t('affairs')}）`
-                  : ''}
-              </span>
-              {data.id === 0 ? null : (
-                // <Popover
-                //   content={
-                //     <PopoverTargetText>
-                //       {data.iterate_info || '--'}
-                //     </PopoverTargetText>
-                //   }
-                //   placement="bottom"
-                //   trigger="click"
-                // >
+            <div className="titleBox">
+              <div className="title">{data.name}</div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span className="date">
+                  {`${data?.start_at ? data.start_at : ''}${
+                    data?.start_at && data?.end_at ? '~ ' : ''
+                  }${data?.end_at ? data?.end_at : ''}`}
+                  {data?.story_visible_count > 0 || data?.story_count > 0
+                    ? `（${t('sprint.visible')}${data?.story_visible_count}${t(
+                        'sprint.number',
+                      )}，${t('sprint.total')}${data?.story_count}${t(
+                        'sprint.number',
+                      )}${t('affairs')}）`
+                    : ''}
+                </span>
+                {data.id === 0 ? null : (
+                  // <Popover
+                  //   content={
+                  //     <PopoverTargetText>
+                  //       {data.iterate_info || '--'}
+                  //     </PopoverTargetText>
+                  //   }
+                  //   placement="bottom"
+                  //   trigger="click"
+                  // >
 
-                <CommonButton
-                  onClick={() => {
-                    openTargetModal({
-                      title: t('sprintDetails'),
-                      editId: data.id,
-                      projectId: projectId,
-                      onConfirm: () => {},
-                    })
-                  }}
-                  type="light"
-                >
-                  <IconFont
-                    className="custom"
-                    style={{
-                      fontSize: 16,
+                  <CommonButton
+                    onClick={() => {
+                      openTargetModal({
+                        title: t('sprintDetails'),
+                        editId: data.id,
+                        projectId: projectId,
+                        onConfirm: () => {},
+                      })
                     }}
-                    type="target"
-                  />
-                  {t('viewGoals')}
-                </CommonButton>
+                    type="secondaryText"
+                  >
+                    <IconFont
+                      className="custom"
+                      style={{
+                        fontSize: 16,
+                      }}
+                      type="target"
+                    />
+                    {t('viewGoals')}
+                  </CommonButton>
 
-                // </Popover>
-              )}
-
-              {/* {data.id === 0
-                ? null
-                : !isCanEditSprint &&
-                  !isEnd && (
-                    <>
-                      <Tooltip
-                        title={
-                          data.status === 4
-                            ? t('sprint.edit')
-                            : t('sprint.update')
-                        }
-                      >
-                        <CloseWrap
-                          width={24}
-                          height={24}
-                          style={{ marginRight: 12 }}
-                        >
-                          <IconFont
-                            onClick={() => {
-                              setSprintModal({
-                                visible: true,
-                                type: data.status === 4 ? 'edit' : 'update',
-                              })
-                            }}
-                            className="custom"
-                            style={{
-                              fontSize: 16,
-                            }}
-                            type="edit"
-                          />
-                        </CloseWrap>
-                      </Tooltip>
-
-                      <Tooltip title={t('common.del')}>
-                        <CloseWrap width={24} height={24}>
-                          <IconFont
-                            onClick={() => {
-                              open({
-                                title: t('sprint.deleteSprint'),
-                                text: `${t('sprint.confirmDelete')}【${
-                                  data.name
-                                }】${t('sprint.ofSprint')}，${t(
-                                  'sprint.removeSprintToAgency',
-                                )}`,
-                                onConfirm: () => deleteSprint(data.id),
-                              })
-                            }}
-                            className="custom"
-                            style={{
-                              fontSize: 16,
-                            }}
-                            type="delete"
-                          />
-                        </CloseWrap>
-                      </Tooltip>
-                    </>
-                  )} */}
+                  // </Popover>
+                )}
+              </div>
             </div>
             {!isCanEditSprint && !isEnd && (
               <div style={{ display: 'flex', gap: '16px' }}>
