@@ -450,6 +450,7 @@ const WrapLeft = (props: any, ref: any) => {
   useImperativeHandle(ref, () => {
     return {
       init,
+      leftWidth,
     }
   })
   useEffect(() => {
@@ -466,8 +467,10 @@ const WrapLeft = (props: any, ref: any) => {
       if (e.clientX > 800) {
         return
       }
+      props.change(e.clientX - 200)
       setLeftWidth(e.clientX - 200)
     }
+
     document.onmouseup = () => {
       document.onmousemove = null
       document.onmouseup = null

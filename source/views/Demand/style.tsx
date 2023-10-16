@@ -22,7 +22,7 @@ export const ContentLeft = styled.div`
 `
 
 export const ContentRight = styled.div`
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   padding-left: 24px;
 `

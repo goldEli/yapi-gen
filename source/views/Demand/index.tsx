@@ -67,6 +67,7 @@ const DemandIndex = () => {
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
+  const [widthRight, setWidthRight] = useState(0)
   const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
@@ -338,12 +339,20 @@ const DemandIndex = () => {
     }
     bian.current = projectId
   }, [projectId])
+  console.log(myTreeComponent.current)
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       getList(isGrid, searchItems, pageObj, order)
     }
   }, [isUpdateAddWorkItem])
+  useEffect(() => {
+    if (isShowLeft) {
+      setWidthRight(myTreeComponent.current.leftWidth)
+    } else {
+      setWidthRight(0)
+    }
+  }, [isShowLeft])
 
   useEffect(() => {
     dispatch(clearValue())
@@ -394,6 +403,9 @@ const DemandIndex = () => {
           <ContentWrap>
             <ContentLeft>
               <WrapLeft
+                change={(num: any) => {
+                  setWidthRight(num)
+                }}
                 ref={myTreeComponent}
                 projectId={projectId}
                 isShowLeft={isShowLeft}
@@ -401,7 +413,7 @@ const DemandIndex = () => {
                 iKey={key}
               />
             </ContentLeft>
-            <ContentRight>
+            <ContentRight style={{ width: `calc(100% - ${widthRight}px)` }}>
               <Operation
                 pid={projectId}
                 isGrid={isGrid}
