@@ -98,6 +98,14 @@ const index = (props: any) => {
       maxTagCount={1}
       mode={props.more ? undefined : 'multiple'}
       allowClear
+      getPopupContainer={(triggerNode: any) => {
+        console.log(
+          triggerNode.parentNode.parentNode.parentNode.parentNode.parentNode
+            .parentNode.parentNode,
+        )
+        return triggerNode.parentNode.parentNode.parentNode.parentNode
+          .parentNode.parentNode.parentNode
+      }}
       optionFilterProp="label"
       onChange={handleChange}
       placeholder={props?.placeholder ?? t('common.pleaseSelect')}

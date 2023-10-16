@@ -466,6 +466,9 @@ const SelectWrapBedeck = styled.div`
   &:hover {
     border: 1px solid var(--primary-d1);
   }
+  &:active {
+    border: 1px solid var(--primary-d1);
+  }
   span {
     white-space: nowrap;
   }
