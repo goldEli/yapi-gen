@@ -272,7 +272,7 @@ export const ReportItemHeader = styled.div<{ isExpended?: boolean }>`
   justify-content: space-between;
   position: sticky;
   background-color: white;
-  z-index: 99;
+  z-index: 10;
   top: 0px;
   padding: ${props =>
     props.isExpended ? '8px 20px 8px 24px' : '8px 20px 0px 24px'};

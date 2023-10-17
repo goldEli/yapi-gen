@@ -147,7 +147,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
               <div className="content">
                 <CommonUserAvatar avatar={i.avatar} />
                 <div className="nameInfo">
-                  {i.name}（{i.position?.name}）
+                  {i.name}（{i.position?.name || '--'}）
                 </div>
               </div>
             </Checkbox>
