@@ -7,15 +7,14 @@
 /* eslint-disable max-len */
 import {
   SelectWrapBedeck,
-  HoverWrap,
   SelectWrap,
   DividerWrap,
 } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
-import { useState, useEffect, useRef, useMemo } from 'react'
-import { Menu, message, Form, Space, Checkbox, Tooltip, Table } from 'antd'
+import { useState, useEffect, useMemo } from 'react'
+import { Menu, Form, Space, Tooltip, Table } from 'antd'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -40,17 +39,13 @@ import {
 } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateMember, setProjectInfo } from '@store/project'
-import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
-
-import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
-import { menuList } from '@/views/SprintProjectManagement/config'
 import CommonIconFont from '@/components/CommonIconFont'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
@@ -95,23 +90,6 @@ const SearchWrap = styled(Space)({
   background: 'white',
   flexWrap: 'wrap',
 })
-
-const NameWrap = styled.span({
-  width: 32,
-  height: 32,
-  borderRadius: '50%',
-  marginRight: 8,
-  textAlign: 'center',
-  lineHeight: '32px',
-  background: '#A4ACF5',
-  color: 'white',
-  // marginLeft: 32,
-})
-const selectOptionsIcon = css`
-  color: var(--neutral-n4);
-  margin-left: 10px;
-  cursor: pointer;
-`
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -124,12 +102,7 @@ const NewSort = (sortProps: any) => {
     </Sort>
   )
 }
-const OptionDropTd = styled.div`
-  height: 52px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`
+
 const ProjectMember = (props: { searchValue?: string }) => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
@@ -155,8 +128,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
-  const [selectRowKey, setSelectRowKey] = useState('')
-  const [optionsDrop, setOptionsDrop] = useState(false)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
@@ -243,7 +214,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
           { name: item.name, pos: item.departmentName },
         ),
         async onConfirm() {
-          console.log(operationItem, '移除成员')
           await confirmProjectHand({ id: item.id, project_id: projectId })
           getList(order, { ...pageObj, page: 1 })
           getMessage({
@@ -467,39 +437,17 @@ const ProjectMember = (props: { searchValue?: string }) => {
       width: 200,
       render: (text: string, record: any, index: number) => {
         return (
-          <TableSelectOptions
-            roleName={text}
-            callBack={data => setProjectClick(data, record, index)}
-          />
-          // <OptionDropTd
-          //   style={{ position: 'relative' }}
-          //   onMouseEnter={() => {
-          //     setSelectRowKey(record.id)
-          //   }}
-          //   onMouseLeave={() => {
-          //     setSelectRowKey('')
-          //     setOptionsDrop(false)
-          //   }}
-          //   onClick={() => {
-          //     setOptionsDrop(!optionsDrop)
-          //   }}
-          // >
-          //   <span>
-          //     {text}
-          //     {record.id === selectRowKey && (
-          //       <label className={selectOptionsIcon}>
-          //         {' '}
-          //         <IconFont type="down-icon" />
-          //       </label>
-          //     )}
-          //   </span>
-          //   {optionsDrop && record.id === selectRowKey ? (
-          //     <TableSelectOptions
-          //       roleName={text}
-          //       callBack={data => setProjectClick(data, record, index)}
-          //     ></TableSelectOptions>
-          //   ) : null}
-          // </OptionDropTd>
+          <>
+            {/* 超管不允许编辑权限 */}
+            {record?.is_super_admin === 1 ? (
+              text
+            ) : (
+              <TableSelectOptions
+                roleName={text}
+                callBack={data => setProjectClick(data, record, index)}
+              />
+            )}
+          </>
         )
       },
     },
@@ -570,13 +518,17 @@ const ProjectMember = (props: { searchValue?: string }) => {
       {
         width: 40,
         render: (text: string, record: any) => {
-          return hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />
+          // 超管不允许编辑权限
+          return (hasDel && hasEdit) || record.is_super_admin === 1 ? null : (
+            <MoreDropdown menu={menu(record)} />
+          )
         },
       },
     ]
     initColumns.push(Table.SELECTION_COLUMN as any)
     return [...initColumns, ...columns]
   }, [columns])
+
   const onChangeUpdate = () => {
     setOperationItem({})
     getList(order, pageObj)
@@ -701,6 +653,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+    getCheckboxProps: (record: any) => ({
+      disabled: record.is_super_admin === 1,
+    }),
   }
 
   // 判断是否详情回来，并且权限是不是有
@@ -787,8 +742,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
                       msg: t('successfullyDeleted') as string,
                       type: 'success',
                     })
-                    console.log('移除成员')
-
                     return Promise.resolve()
                   },
                 })

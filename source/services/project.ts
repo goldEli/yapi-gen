@@ -341,6 +341,7 @@ export const getProjectMember: any = async (params: any) => {
       roleName: i.role_name,
       is_admin: i.is_admin,
       is_leader: i.is_leader,
+      is_super_admin: i.is_super_admin,
     }))
   } else {
     return {
@@ -363,6 +364,7 @@ export const getProjectMember: any = async (params: any) => {
         email: i.email,
         is_admin: i.is_admin,
         is_leader: i.is_leader,
+        is_super_admin: i.is_super_admin,
       })),
     }
   }

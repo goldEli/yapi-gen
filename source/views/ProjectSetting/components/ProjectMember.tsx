@@ -471,39 +471,17 @@ const ProjectMember = (props: { searchValue?: string }) => {
       width: 200,
       render: (text: string, record: any, index: number) => {
         return (
-          <TableSelectOptions
-            roleName={text}
-            callBack={data => setProjectClick(data, record, index)}
-          />
-          // <OptionDropTd
-          //   style={{ position: 'relative' }}
-          //   onMouseEnter={() => {
-          //     setSelectRowKey(record.id)
-          //   }}
-          //   onMouseLeave={() => {
-          //     setSelectRowKey('')
-          //     setOptionsDrop(false)
-          //   }}
-          //   onClick={() => {
-          //     setOptionsDrop(!optionsDrop)
-          //   }}
-          // >
-          //   <span>
-          //     {text}
-          //     {record.id === selectRowKey && (
-          //       <label className={selectOptionsIcon}>
-          //         {' '}
-          //         <IconFont type="down-icon" />
-          //       </label>
-          //     )}
-          //   </span>
-          //   {optionsDrop && record.id === selectRowKey ? (
-          //     <TableSelectOptions
-          //       roleName={text}
-          //       callBack={data => setProjectClick(data, record, index)}
-          //     ></TableSelectOptions>
-          //   ) : null}
-          // </OptionDropTd>
+          <>
+            {/* 超管不允许编辑权限 */}
+            {record?.is_super_admin === 1 ? (
+              text
+            ) : (
+              <TableSelectOptions
+                roleName={text}
+                callBack={data => setProjectClick(data, record, index)}
+              />
+            )}
+          </>
         )
       },
     },
@@ -582,7 +560,10 @@ const ProjectMember = (props: { searchValue?: string }) => {
       {
         width: 40,
         render: (text: string, record: any) => {
-          return hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />
+          // 超管不允许编辑权限
+          return (hasDel && hasEdit) || record.is_super_admin === 1 ? null : (
+            <MoreDropdown menu={menu(record)} />
+          )
         },
       },
     ]
@@ -714,11 +695,14 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+    getCheckboxProps: (record: any) => ({
+      disabled: record.is_super_admin === 1,
+    }),
   }
+
   useEffect(() => {
     setSelectedRowKeys([])
   }, [memberList?.list])
-  console.log(selectedRowKeys)
 
   // 判断是否详情回来，并且权限是不是有
   const isLength =
