@@ -144,6 +144,7 @@ const useShowTargetModal = () => {
             fontFamily: 'SiYuanMedium',
             color: '#323233',
             lineHeight: ' 22px',
+            whiteSpace: 'break-spaces',
           }}
         >
           {info?.info ? info?.info : '--'}
