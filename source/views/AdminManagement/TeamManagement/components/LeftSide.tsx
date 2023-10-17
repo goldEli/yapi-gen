@@ -214,7 +214,6 @@ const Upload = (props: any) => {
     }
     const response = await uploadFileByTask(
       file,
-      file.name,
       `richEditorFiles_${new Date().getTime()}`,
     )
     setDefaultIcon(false)

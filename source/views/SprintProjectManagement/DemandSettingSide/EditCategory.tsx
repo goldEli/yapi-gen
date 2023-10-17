@@ -18,8 +18,6 @@ import {
   updateStoryConfigCategory,
 } from '@/services/project'
 import { useSearchParams } from 'react-router-dom'
-import { uploadFileByTask } from '@/services/cos'
-import { DelButton } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
 import { useDispatch } from '@store/index'
 import { setActiveCategory, setStartUsing } from '@store/category'

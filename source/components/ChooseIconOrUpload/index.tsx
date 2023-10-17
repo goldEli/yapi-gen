@@ -147,7 +147,7 @@ const ChooseIconOrUpload = (props: ChooseColorProps) => {
       getMessage({ msg: t('please_upload_a_picture'), type: 'warning' })
       return
     }
-    const data: any = await uploadFileByTask(file.file, '2', '2')
+    const data: any = await uploadFileByTask(file.file, '2')
     if (data) {
       setCover(data.url)
       props?.onChangeValue?.(data.url, 2)

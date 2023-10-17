@@ -35,24 +35,8 @@ export const formatFileSize = (val: number) => {
 }
 
 const getCosSign = async (): Promise<any> => {
-  console.log(11111)
-  const response = await http.post<any, any>('getCosSign', {
-    accessToken: import.meta.env.__COS_SIGN_ACCESS_TOKEN__,
-    app_id: import.meta.env.__COS_SIGN_APP_ID__,
-    bucket_id: import.meta.env.__COS_SIGN_BUCKET_ID__,
-  })
-  const line = window.navigator.onLine
-  if (!line) {
-    location.reload()
-  }
-
-  if (response.code !== 1) {
-    location.reload()
-    throw new Error(response.msg)
-  }
-  return response
-  // const response = await http.get<any, any>('getCosSign')
-  // return response.data?.info
+  const response = await http.get<any, any>('getCosSign')
+  return response.data?.info
 }
 
 export const cos = new COS({
@@ -60,14 +44,13 @@ export const cos = new COS({
   ChunkParallelLimit: 10,
   getAuthorization: async (options: any, callback: any) => {
     const response = await getCosSign()
-    // const response = window.cosInfo
 
     callback({
-      TmpSecretId: response.data.credentials.tmpSecretId,
-      TmpSecretKey: response.data.credentials.tmpSecretKey,
-      XCosSecurityToken: response.data.credentials.sessionToken,
-      StartTime: response.data.startTime,
-      ExpiredTime: response.data.expiredTime,
+      TmpSecretId: response.config.credentials.tmpSecretId,
+      TmpSecretKey: response.config.credentials.tmpSecretKey,
+      XCosSecurityToken: response.config.credentials.sessionToken,
+      StartTime: response.config.startTime,
+      ExpiredTime: response.config.expiredTime,
       ScopeLimit: true,
     })
   },
@@ -79,26 +62,17 @@ export function getFileSuffix(name: string, withDot = false) {
   return fileSuffix?.length ? `${withDot ? '.' : ''}${fileSuffix}` : ''
 }
 
-export const uploadFile = (
-  file: File,
-  username: string,
-  space: string,
-  fileName?: any,
-  scope?: string,
-) => {
+export const uploadFile = (file: File, fileName?: any, scope?: string) => {
   let id = ''
   let files: any = ''
   return new Promise<any>((resolve, reject) => {
-    // async
-    // const response: any = await getCosSign()
-    // window.cosInfo = response
     cos.uploadFile({
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
       Region: import.meta.env.__COS_REGION__,
-      Key: `${
-        import.meta.env.__COS_PREFIX__
-      }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`,
+      Key: `${import.meta.env.__COS_PREFIX__}${new Date().getTime()}/${
+        fileName || file.name
+      }`,
       onTaskReady(taskId) {
         id = taskId
       },
@@ -151,16 +125,12 @@ export const uploadFile = (
 
 export const uploadFileToKey = (
   file: File,
-  username: string,
-  space: string,
   fileName?: any,
   onEnd?: (data: { key: string; url: string }) => void,
 ) => {
-  // const response: any = await getCosSign()
-  // window.cosInfo = response
-  const key = `${
-    import.meta.env.__COS_PREFIX__
-  }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`
+  const key = `${import.meta.env.__COS_PREFIX__}${new Date().getTime()}/${
+    fileName || file.name
+  }`
   cos.uploadFile({
     Body: file,
     Bucket: import.meta.env.__COS_BUCKET__,
@@ -189,22 +159,15 @@ export const uploadFileToKey = (
   return key
 }
 
-export const uploadFileByTask = (
-  file: File,
-  username: string,
-  space: string,
-  fileName?: any,
-) => {
+export const uploadFileByTask = (file: File, space: string, fileName?: any) => {
   return new Promise<any>((resolve, reject) => {
-    // const response: any = await getCosSign()
-    // window.cosInfo = response
     cos.uploadFile({
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
       Region: import.meta.env.__COS_REGION__,
-      Key: `${
-        import.meta.env.__COS_PREFIX__
-      }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`,
+      Key: `${import.meta.env.__COS_PREFIX__}${new Date().getTime()}/${
+        fileName || file.name
+      }`,
       onFileFinish(error: Error, data: UploadFileItemResult) {
         if (error) {
           reject(error)

@@ -145,7 +145,7 @@ const ChooseColor = (props: ChooseColorProps) => {
       getMessage({ msg: t('please_upload_a_picture'), type: 'warning' })
       return
     }
-    const data: any = await uploadFileByTask(file.file, '2', '2')
+    const data: any = await uploadFileByTask(file.file, '2')
     data && setCover(data.url)
   }
   const activeChoose = (event: any, img: any) => {

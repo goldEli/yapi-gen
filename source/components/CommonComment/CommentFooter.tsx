@@ -73,18 +73,12 @@ const CommentFooter = (props: CommentFooterProps) => {
 
   // 富文本上传
   const uploadFile = (file: File, dom: any, key2?: any) => {
-    const key = uploadFileToKey(
-      file,
-      file.name,
-      `richEditorFiles_${new Date().getTime()}`,
-      false,
-      data => {
-        if (key2 === 'copy') {
-          dom.past(data.url)
-        }
-        dom?.notifyUploaded(data.key, data.url)
-      },
-    )
+    const key = uploadFileToKey(file, false, data => {
+      if (key2 === 'copy') {
+        dom.past(data.url)
+      }
+      dom?.notifyUploaded(data.key, data.url)
+    })
     return key
   }
 
