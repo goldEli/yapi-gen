@@ -407,7 +407,7 @@ const CommonMember = (props: Props) => {
                     </span>
                   </div>
                 </div>
-                {(hasEdit && i.is_admin !== 1) || i.is_super_admin === 1 ? (
+                {hasEdit && i.is_admin !== 1 && i.is_super_admin !== 1 ? (
                   <MoreDropdown
                     onClickMenu={onClickMenu}
                     roleOptions={roleOptions}
