@@ -173,20 +173,25 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
                   }, 10)
                 }}
                 onChange={(value: string) => (editorRef2.current = value)}
-                onBlur={() => onBlurEditor()}
+                onBlur={() => {
+                  console.log('onBlurEditor()')
+
+                  onBlurEditor()
+                }}
               />
             </div>
           ) : null}
           {!isEditInfo && !editInfo && (
             <TextWrapEdit
-              onClick={() => {
+              onClick={e => {
+                e.stopPropagation()
                 if (props.isPreview) {
                   return
                 }
                 setIsEditInfo(true)
                 setTimeout(() => {
                   editorRef.current?.focus()
-                }, 10)
+                }, 500)
               }}
             >
               <span className={canEditHover}>--</span>
