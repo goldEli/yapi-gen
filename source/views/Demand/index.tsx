@@ -339,7 +339,6 @@ const DemandIndex = () => {
     }
     bian.current = projectId
   }, [projectId])
-  console.log(myTreeComponent.current)
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
