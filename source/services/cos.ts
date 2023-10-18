@@ -33,24 +33,42 @@ export const formatFileSize = (val: number) => {
   const i = Math.floor(Math.log(val) / Math.log(k))
   return `${String((val / k ** i).toPrecision(3))}${sizes[i]}`
 }
-
+let cache: { credentials: any } | null = null
 const getCosSign = async (): Promise<any> => {
+  if (cache && Date.now()) {
+    // 如果缓存中存在有效的临时密钥，则直接返回
+    return cache.credentials
+  }
   const response = await http.get<any, any>('getCosSign')
-  return response.data?.info
+  const credentials = {
+    tmpSecretId: response.data.info.config.credentials.tmpSecretId,
+    tmpSecretKey: response.data.info.config.credentials.tmpSecretKey,
+    sessionToken: response.data.info.config.credentials.sessionToken,
+    startTime: response.data.info.config.startTime,
+    expiredTime: response.data.info.config.expiredTime,
+  }
+  // eslint-disable-next-line require-atomic-updates
+  cache = {
+    credentials,
+  }
+
+  return credentials
+
+  // return response.data?.info
 }
 
 export const cos = new COS({
   FileParallelLimit: 10,
   ChunkParallelLimit: 10,
   getAuthorization: async (options: any, callback: any) => {
-    const response = await getCosSign()
+    const credentials = await getCosSign()
 
     callback({
-      TmpSecretId: response.config.credentials.tmpSecretId,
-      TmpSecretKey: response.config.credentials.tmpSecretKey,
-      XCosSecurityToken: response.config.credentials.sessionToken,
-      StartTime: response.config.startTime,
-      ExpiredTime: response.config.expiredTime,
+      TmpSecretId: credentials.tmpSecretId,
+      TmpSecretKey: credentials.tmpSecretKey,
+      XCosSecurityToken: credentials.sessionToken,
+      StartTime: credentials.startTime,
+      ExpiredTime: credentials.expiredTime,
       ScopeLimit: true,
     })
   },
