@@ -27,7 +27,6 @@ import NoData from '@/components/NoData'
 
 const Container = styled.div<{ local?: string }>`
   width: ${props => (props.local === 'zh' ? '320px' : '400px')};
-  max-height: calc(100vh - 120px);
   background-color: var(--neutral-white-d5);
   box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
@@ -39,7 +38,7 @@ const HeraderTabs = styled.div`
   border-radius: 6px 6px 0 0;
 `
 const ScrollWrap = styled.div`
-  height: 560px;
+  height: calc(100vh - 350px);
   overflow-y: auto;
 `
 const Footer = styled.div`
@@ -630,9 +629,9 @@ const MyDropdown = (props: any) => {
             scrollableTarget="scrollableDiv"
             style={{
               overflow: 'auto',
-              height: '560px',
+              height: 'calc(100vh - 350px)',
             }}
-            height={560}
+            height="calc(100vh - 350px)"
           >
             {verifyList?.list?.length > 0 && (
               <>

@@ -45,12 +45,16 @@ const TaskListGroup = (props: TaskListGroupProps) => {
       ],
       page: newPage,
     })
+    // props.onChangeData({
+    //   ...item,
+    //   stories: {
+    //     ...item.stories,
+    //     list: [...item.stories?.list, ...response?.list],
+    //   },
+    // })
     props.onChangeData({
       ...item,
-      stories: {
-        ...item.stories,
-        list: [...item.stories?.list, ...response?.list],
-      },
+      stories: [...item.stories, ...response?.list],
     })
   }
 
@@ -67,9 +71,9 @@ const TaskListGroup = (props: TaskListGroupProps) => {
 
   return (
     <InfiniteScroll
-      dataLength={item.stories?.list?.length}
+      dataLength={item.stories?.length}
       next={fetchMoreData}
-      hasMore={item.stories?.list?.length < item?.stories?.pager?.total}
+      hasMore={item.stories?.length < item?.user_story_totals}
       loader={null}
       scrollableTarget="scrollableDiv"
       style={{
@@ -79,8 +83,8 @@ const TaskListGroup = (props: TaskListGroupProps) => {
       }}
       height="100%"
     >
-      {item.stories?.list?.length > 0 &&
-        item.stories?.list?.map((k: any) => (
+      {item.stories?.length > 0 &&
+        item.stories?.map((k: any) => (
           <CardItemTaskItem key={k.id}>
             <TaskItemTop>
               <div className="demandNumber">
@@ -159,7 +163,7 @@ const TaskListGroup = (props: TaskListGroupProps) => {
             </TaskItemBottom>
           </CardItemTaskItem>
         ))}
-      {item.stories?.list?.length <= 0 && <NoData />}
+      {item.stories?.length <= 0 && <NoData />}
     </InfiniteScroll>
   )
 }
@@ -210,7 +214,7 @@ const KanBanCardGroup = (props: KanBanCardGroupProps) => {
                 </Tooltip>
                 <div className="task">
                   <div className="label">
-                    {t('taskTotal', { count: i?.stories?.pager?.total })}
+                    {t('taskTotal', { count: i?.user_story_totals })}
                   </div>
                   <Progress
                     strokeColor="var(--function-success)"
