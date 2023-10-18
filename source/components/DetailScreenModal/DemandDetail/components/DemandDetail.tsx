@@ -167,7 +167,8 @@ const DemandDetail = () => {
           {!isEditInfo && !editInfo && (
             <TextWrapEdit
               style={{ width: '100%' }}
-              onClick={() => {
+              onClick={e => {
+                e.stopPropagation()
                 setIsEditInfo(true)
                 setTimeout(() => {
                   editorRef.current?.focus()

@@ -161,7 +161,8 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         )}
         {!isEditInfo && !editInfo && (
           <TextWrapEdit
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation()
               if (props.isPreview) {
                 return
               }
