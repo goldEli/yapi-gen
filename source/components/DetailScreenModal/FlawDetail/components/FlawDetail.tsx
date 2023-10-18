@@ -26,6 +26,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { Tooltip } from 'antd'
 import CommonButton from '@/components/CommonButton'
 import ScheduleRecord from '@/components/ScheduleRecord'
+import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 
 interface FlawDetailProps {
   flawInfo: Model.Flaw.FlawInfo
@@ -156,6 +157,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           {isEditInfo || editInfo ? (
             <div className={canEditHover}>
               <Editor
+                upload={uploadFile}
                 value={editInfo}
                 color="transparent"
                 getSuggestions={() => []}
