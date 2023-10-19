@@ -12,7 +12,7 @@ import {
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData, onComputedPermission } from '@/tools'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
-import WrapLeft from './components/WrapLeft'
+
 import { Checkbox, Popover, Space, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -34,6 +34,7 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { getMessage } from '@/components/Message'
 import useKeyPress from '@/hooks/useKeyPress'
+import WrapLeft from '../Demand/components/WrapLeft'
 interface IProps {}
 
 export const MoreWrap = styled.div<{ type?: any }>(
@@ -98,6 +99,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
+  const [widthRight, setWidthRight] = useState(0)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const searchChoose = useSelector(store => store.view.searchChoose)
@@ -358,7 +360,13 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   //   keyValueTree.changeKey('')
   //   getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
   // }, [projectId])
-
+  useEffect(() => {
+    if (isShowLeft) {
+      setWidthRight(myTreeComponent.current.leftWidth)
+    } else {
+      setWidthRight(0)
+    }
+  }, [isShowLeft])
   useEffect(() => {
     if (isUpdateAddWorkItem) {
       getList(isGrid, searchItems, pageObj, order)
@@ -437,6 +445,11 @@ const SprintProjectAffair: React.FC<IProps> = props => {
           <ContentWrap>
             <ContentLeft>
               <WrapLeft
+                change={(num: any) => {
+                  console.log(num)
+
+                  setWidthRight(num)
+                }}
                 ref={myTreeComponent}
                 projectId={projectId}
                 isShowLeft={isShowLeft}
@@ -444,7 +457,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                 iKey={key}
               />
             </ContentLeft>
-            <ContentRight>
+            <ContentRight style={{ width: `calc(100% - ${widthRight}px)` }}>
               <Operation
                 pid={projectId}
                 isGrid={isGrid}
