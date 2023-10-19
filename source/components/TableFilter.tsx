@@ -483,8 +483,6 @@ const TableFilter = (props: any) => {
     let arr1 = arr.filter((x: any) => x.status === 1)
 
     let arr2 = arr.filter((x: any) => x.status === 2)
-
-    console.log(arr1, arr2)
     const a = {
       label: t('working'),
       children: arr1,
