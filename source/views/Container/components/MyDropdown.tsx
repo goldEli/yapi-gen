@@ -475,7 +475,19 @@ const MyDropdown = (props: any) => {
     setVerifyList({})
     setVerifyPage(1)
   }
-
+  useEffect(() => {
+    if (isOpen) {
+      setTabActive(0)
+    }
+    setTimeout(() => {
+      if (tabActive2.current && isOpen) {
+        tabActive2.current.style.left = `${
+          (tabBox.current?.children[0] as HTMLDivElement).offsetLeft
+        }px`
+        tabActive2.current.style.width = `${tabBox.current?.children[0].clientWidth}px`
+      }
+    }, 500)
+  }, [isOpen, isRefresh])
   useEffect(() => {
     if (!isOpen) {
       return
@@ -490,7 +502,7 @@ const MyDropdown = (props: any) => {
         }
       })
     }
-  }, [isOpen])
+  }, [])
 
   useEffect(() => {
     if (!tabBox.current) {
@@ -509,15 +521,6 @@ const MyDropdown = (props: any) => {
         : tabBox.current?.children[index].clientWidth
     }px`
   }, [tabActive, isRefresh])
-
-  useEffect(() => {
-    if (tabActive2.current && isOpen) {
-      tabActive2.current.style.left = `${
-        (tabBox.current?.children[0] as HTMLDivElement).offsetLeft
-      }px`
-      tabActive2.current.style.width = `${tabBox.current?.children[0].clientWidth}px`
-    }
-  }, [isOpen])
 
   // 除待审核的，下拉渲染
   const dropdownRender = () => {
