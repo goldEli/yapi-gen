@@ -60,6 +60,7 @@ export default React.memo(
     const [agree, setAgree] = useState(true)
     const [errorCheck, setErrorCheck] = useState({})
     const inputRef = useRef(null)
+    const inputRef2 = useRef(null)
     const msgRef = useRef<any>(null)
 
     useEffect(() => {
@@ -323,6 +324,10 @@ export default React.memo(
       setErrorMessage('')
       setErrorState(false)
       setErrorCheck({})
+      setTimeout(() => {
+        inputRef.current.focus()
+        inputRef2.current.focus()
+      }, 200)
     }
 
     const onChange = (e: any) => {
@@ -483,7 +488,7 @@ export default React.memo(
                 >
                   <div className={style.form}>
                     <Filed
-                      inputRef={inputRef}
+                      inputRef={inputRef2}
                       mode={4}
                       name="phone"
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
