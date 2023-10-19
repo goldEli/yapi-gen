@@ -324,10 +324,6 @@ export default React.memo(
       setErrorMessage('')
       setErrorState(false)
       setErrorCheck({})
-      setTimeout(() => {
-        inputRef.current.focus()
-        inputRef2.current.focus()
-      }, 200)
     }
 
     const onChange = (e: any) => {
@@ -362,6 +358,10 @@ export default React.memo(
                 onTabClick={() => {
                   console.log(1)
                   changeFocus()
+                  setTimeout(() => {
+                    inputRef.current.focus()
+                    inputRef2.current.focus()
+                  }, 200)
                 }}
               >
                 <Tabs.TabPane
