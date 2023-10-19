@@ -20,7 +20,7 @@ export const TabsWrap = styled.div`
 
 export const ActiveTab = styled.div`
   position: absolute;
-  bottom: 2px;
+  bottom: 3px;
   left: 2px;
   width: 80px;
   padding: 4px 16px;
