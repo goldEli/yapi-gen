@@ -31,6 +31,7 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { css } from '@emotion/css'
 import { templateList } from '@/services/formwork'
+import { setIsRefresh } from '@store/user'
 
 const listContainer = css`
   margin: 0 24px;
@@ -109,6 +110,7 @@ const List = () => {
   const reportType = searchParams.get('reportType')
   const id = Number(params?.id)
   const { isFresh } = useSelector(state => state.workReport.listUpdate)
+  const { isRefresh } = useSelector(state => state.user)
 
   const statusOptions = [
     { label: t('p2.noRead'), value: 1, id: 1 },
@@ -171,6 +173,7 @@ const List = () => {
         setIsSpinning(false)
         setListData(res.list)
         setTotal(res.pager.total)
+        dispatch(setIsRefresh(false))
       }
     } catch (error) {
       //
@@ -178,10 +181,10 @@ const List = () => {
   }
 
   useEffect(() => {
-    if (isFresh !== 0) {
+    if (isFresh !== 0 || isRefresh) {
       getList()
     }
-  }, [isFresh])
+  }, [isFresh, isRefresh])
 
   useEffect(() => {
     if (initialRef.current) {
@@ -224,9 +227,9 @@ const List = () => {
     return (
       <Sort
         fixedKey={props.fixedKey}
-        onChangeKey={props.onUpdateOrderKey}
-        nowKey={props.nowKey}
-        order={props.order}
+        onChangeKey={onUpdateOrderKey}
+        nowKey={queryParams.orderkey}
+        order={queryParams.order === 'desc' ? 2 : 1}
       >
         {props.children}
       </Sort>
@@ -238,9 +241,9 @@ const List = () => {
       title: (
         <NewSort
           fixedKey="user_id"
-          nowKey={queryParams.orderkey}
-          order={queryParams.order}
-          onUpdateOrderKey={onUpdateOrderKey}
+          // nowKey={queryParams.orderkey}
+          // order={queryParams.order}
+          // onUpdateOrderKey={onUpdateOrderKey}
         >
           {t('common.title')}
         </NewSort>
@@ -251,13 +254,10 @@ const List = () => {
         return (
           <div
             style={{
+              width: '100%',
               display: 'flex',
               alignItems: 'center',
-              height: 52,
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
             }}
-            className="canClickDetail high-light-text"
             onClick={() => onClickView(record)}
           >
             {record.user?.avatar ? (
@@ -315,40 +315,48 @@ const List = () => {
       },
     },
     {
-      width: 400,
+      width: 540,
       title: (
         <NewSort
-          fixedKey="user_id"
-          nowKey={queryParams.orderkey}
-          order={queryParams.order}
-          onUpdateOrderKey={onUpdateOrderKey}
+          fixedKey="report_precis"
+          // nowKey={queryParams.orderkey}
+          // order={queryParams.order}
+          // onUpdateOrderKey={onUpdateOrderKey}
         >
           {t('report.list.summary')}
         </NewSort>
       ),
       dataIndex: 'report_precis',
+      key: 'report_precis',
       render: (text: string, record: any) => {
         return (
-          <Tooltip
-            placement="topLeft"
-            title={text || '--'}
-            getPopupContainer={node => node}
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+            }}
           >
-            <span
-              className="canClickDetail high-light-text"
-              style={{
-                display: 'block',
-                width: '400px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                cursor: 'pointer',
-              }}
-              onClick={() => onClickView(record)}
+            <Tooltip
+              placement="topLeft"
+              title={text || '--'}
+              getPopupContainer={node => node}
             >
-              {text?.trim()?.slice(0, 100)}
-            </span>
-          </Tooltip>
+              <span
+                className="canClickDetail high-light-text reportPrecisMaxWidth"
+                style={{
+                  display: 'block',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  cursor: 'pointer',
+                }}
+                onClick={() => onClickView(record)}
+              >
+                {text?.trim()?.slice(0, 100)}
+              </span>
+            </Tooltip>
+          </div>
         )
       },
     },
@@ -357,9 +365,9 @@ const List = () => {
       title: (
         <NewSort
           fixedKey="start_time"
-          nowKey={queryParams.orderkey}
-          order={queryParams.order}
-          onUpdateOrderKey={onUpdateOrderKey}
+          // nowKey={queryParams.orderkey}
+          // order={queryParams.order}
+          // onUpdateOrderKey={onUpdateOrderKey}
         >
           {t('report.list.reportTime')}
         </NewSort>
@@ -376,13 +384,13 @@ const List = () => {
       },
     },
     {
-      width: 150,
+      width: 200,
       title: (
         <NewSort
           fixedKey="updated_at"
-          nowKey={queryParams.orderkey}
-          order={queryParams.order}
-          onUpdateOrderKey={onUpdateOrderKey}
+          // nowKey={queryParams.orderkey}
+          // order={queryParams.order}
+          // onUpdateOrderKey={onUpdateOrderKey}
         >
           {t('report.list.submitTime')}
         </NewSort>
@@ -390,7 +398,7 @@ const List = () => {
       dataIndex: 'updated_at',
     },
     {
-      width: 140,
+      width: 120,
       title: t('report.list.readState'),
       align: 'center',
       dataIndex: 'user_copysend_type',

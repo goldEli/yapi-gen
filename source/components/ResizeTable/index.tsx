@@ -227,6 +227,20 @@ const ResizeTable = (props: ResizeTableProps) => {
             })
           }
         }
+        if (column.key === 'report_precis') {
+          const doms = document.querySelectorAll<HTMLSpanElement>(
+            '.reportPrecisMaxWidth',
+          )
+
+          if (doms) {
+            doms.forEach(dom => {
+              const level = Number(dom.className.split('level')[1])
+              dom.style.maxWidth = props.isTree
+                ? `${column.width - level * 24}px`
+                : `${column.width}px`
+            })
+          }
+        }
         return {
           width: column.width,
           onResize: handleResize(index) as React.ReactEventHandler<any>,
