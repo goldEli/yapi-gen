@@ -250,6 +250,7 @@ const CreateAProjectForm = () => {
   //编辑项目逻辑
   const getProjectInfo = async () => {
     const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
+    dispatch(setProjectInfo(res))
     const res2 = await getAffiliationUser(res.team_id)
 
     setSelectLeaders(
