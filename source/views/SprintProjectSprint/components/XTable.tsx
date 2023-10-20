@@ -494,7 +494,14 @@ const XTable: React.FC<XTableProps> = props => {
         }
       >
         {data.iterate_info ? (
-          <Tooltip title={isOverflowing ? data.iterate_info : ''}>
+          <Tooltip
+            title={isOverflowing ? data.iterate_info : ''}
+            overlayInnerStyle={{
+              width: 600,
+              maxHeight: 300,
+              overflow: 'scroll',
+            }}
+          >
             <div
               ref={textRef}
               style={{

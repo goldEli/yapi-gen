@@ -2469,6 +2469,6 @@
   "verificationCodeSentSuccessfully": "验证码发送成功",
   "passwordResetComplete": "密码修改成功",
   "numberOfTransactions": "事务数",
-  "resigned": "已离职",
-  "working": "在职"
+  "resigned": "已移除",
+  "working": ""
 }

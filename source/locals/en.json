@@ -2469,6 +2469,6 @@
   "verificationCodeSentSuccessfully": "Verification code sent successfully",
   "passwordResetComplete": "Password reset complete",
   "numberOfTransactions": "Number of transactions",
-  "resigned": "Resigned",
-  "working": "Working"
+  "resigned": "Already Removed",
+  "working": ""
 }
