@@ -326,6 +326,8 @@ const TableFilter = (props: any) => {
   }
 
   const onClearForm = async () => {
+    setCategoryValue([])
+    form.setFieldValue('category', [])
     form.resetFields()
     confirm()
   }
@@ -491,7 +493,7 @@ const TableFilter = (props: any) => {
       label: t('resigned'),
       children: arr2,
     }
-    return [a, b]
+    return [...arr1, b]
   }
   return (
     <SearchLine hasLeft={props?.hasLeft}>
