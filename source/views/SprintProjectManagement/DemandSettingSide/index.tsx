@@ -273,7 +273,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     if (
       (projectInfo?.projectPermissions?.length <= 0 ||
         projectInfo?.projectPermissions?.filter(
-          (i: any) => i.identity === 'b/project/transaction_category',
+          (i: any) => i.identity === 'b/project/story_config',
         )?.length <= 0) &&
       location.hostname === '/SprintProjectManagement/DemandSetting'
     ) {

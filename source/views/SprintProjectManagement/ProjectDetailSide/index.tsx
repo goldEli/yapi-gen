@@ -139,7 +139,7 @@ const ProjectDetailSide = () => {
       path: '/SprintProjectManagement/Setting',
       isPermission:
         projectInfo?.projectPermissions?.filter((i: any) =>
-          String(i.identity).includes('b/project/transaction_category'),
+          String(i.identity).includes('b/project/story_config'),
         ).length > 0,
       key: 'ProjectAffair',
     },

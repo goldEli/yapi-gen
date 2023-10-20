@@ -175,9 +175,7 @@ const Workflow = () => {
   return (
     <PermissionWrap
       auth={
-        resultAuth
-          ? 'b/project/transaction_category'
-          : '/ProjectManagement/Project'
+        resultAuth ? 'b/project/story_config' : '/ProjectManagement/Project'
       }
       permission={
         resultAuth
