@@ -83,7 +83,9 @@ const DemandSetting = () => {
   return (
     <PermissionWrap
       auth={
-        resultAuth ? 'b/project/story_config' : '/ProjectManagement/Project'
+        resultAuth
+          ? 'b/project/transaction_category'
+          : '/ProjectManagement/Project'
       }
       permission={
         resultAuth

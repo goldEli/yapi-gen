@@ -273,9 +273,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     if (
       (projectInfo?.projectPermissions?.length <= 0 ||
         projectInfo?.projectPermissions?.filter(
-          (i: any) => i.identity === 'b/project/story_config',
+          (i: any) => i.identity === 'b/project/transaction_category',
         )?.length <= 0) &&
-      location.hostname === '/ProjectManagement/DemandSetting'
+      location.hostname === '/SprintProjectManagement/DemandSetting'
     ) {
       props.onBack()
     }
