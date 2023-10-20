@@ -270,9 +270,9 @@ const MyDropdown = (props: any) => {
     const params = {
       userId: userInfo?.id,
       projectId: 0,
-      verifyStatus: 1,
+      // verifyStatus: 1,
       page: verifyPage,
-      pageSize: 12,
+      pageSize: 7,
     }
     const result = await getVerifyUserList(params)
     setIsSpinning(false)
@@ -387,8 +387,6 @@ const MyDropdown = (props: any) => {
   }
 
   const itmeMain = (item: any, type: any) => {
-    console.log(item, '飞机')
-
     return (
       isArray(item) &&
       item
@@ -526,83 +524,6 @@ const MyDropdown = (props: any) => {
   const dropdownRender = () => {
     return (
       <Container local={language}>
-        <HeraderTabs>
-          <TabsWrap
-            style={{ width: '100%', justifyContent: 'space-around' }}
-            ref={tabBox}
-          >
-            {tabs.map((i: any, index) => (
-              <TabsWrapItem
-                onClick={() => setTabActive(index)}
-                active={tabActive === index}
-                key={i.label}
-              >
-                {i.label}
-              </TabsWrapItem>
-            ))}
-            <ActiveTab ref={tabActive2} />
-          </TabsWrap>
-        </HeraderTabs>
-        <ScrollWrap>
-          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
-            {tabActive === 3 &&
-              box.map(el => (
-                <div key={el.title}>
-                  {recentList?.[el.name].length >= 1 && (
-                    <Title>{el.title}</Title>
-                  )}
-                  <div
-                    style={{
-                      marginTop:
-                        recentList?.[el.name].length >= 1 ? '16px' : '0px',
-                    }}
-                  >
-                    {' '}
-                    {itmeMain(recentList?.[el.name], el.name)}
-                  </div>
-                </div>
-              ))}
-            {tabActive === 0 && itmeMain(noFinishList, 'story')}
-            {tabActive === 2 && itmeMain(finishList, 'story')}
-          </Spin>
-        </ScrollWrap>
-        <Border />
-        <Footer onClick={onClick}>
-          <div>{t('Check_out_my_work') as string}</div>
-        </Footer>
-      </Container>
-    )
-  }
-
-  // 待审核数据加载更多
-  const fetchMoreData = async () => {
-    const page = verifyPage + 1
-    setVerifyPage(page)
-    const params = {
-      userId: userInfo?.id,
-      projectId: 0,
-      verifyStatus: 1,
-      page: page,
-      pageSize: 12,
-    }
-    const result = await getVerifyUserList(params)
-    setVerifyList({
-      list: [...verifyList?.list, ...result.list],
-      total: result.total || 0,
-    })
-  }
-
-  // 点击打开审核弹窗
-  const onOpenExamine = (item: any) => {
-    setIsOpen(false)
-    setVerifyInfo(item)
-    setIsVisible(true)
-  }
-
-  // 待审核
-  const dropdownRenderReview = () => {
-    return (
-      <Container local={language}>
         {isVisible && (
           <EditExamine
             isVisible={isVisible}
@@ -632,42 +553,71 @@ const MyDropdown = (props: any) => {
             <ActiveTab style={{ width: '60px' }} ref={tabActive2} />
           </TabsWrap>
         </HeraderTabs>
-        <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
-          <InfiniteScroll
-            dataLength={verifyList?.list?.length || 0}
-            next={fetchMoreData}
-            hasMore={(verifyList?.list?.length || 0) < (verifyList?.total || 0)}
-            loader={null}
-            scrollableTarget="scrollableDiv"
-            style={{
-              overflow: 'auto',
-              height: 'calc(100vh - 350px)',
-            }}
-            height="calc(100vh - 350px)"
-          >
-            {verifyList?.list?.length > 0 && (
-              <>
-                {verifyList?.list?.map((i: any) => (
-                  <VerifyItem key={i.id}>
-                    <div className="left" onClick={() => onClickItem(i)}>
-                      <img className="img" src={i.category_attachment} />
-                      <div className="name">
-                        <span className="title">{i.demandName}</span>
-                        <span className="sub">
-                          {i.storyPrefixKey}/{i.project_name}
-                        </span>
+        {tabActive === 1 && (
+          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+            <InfiniteScroll
+              dataLength={verifyList?.list?.length || 0}
+              next={fetchMoreData}
+              hasMore={
+                (verifyList?.list?.length || 0) < (verifyList?.total || 0)
+              }
+              loader={null}
+              scrollableTarget="scrollableDiv"
+              style={{
+                overflow: 'auto',
+                height: 'calc(100vh - 350px)',
+              }}
+              height="calc(100vh - 350px)"
+            >
+              {verifyList?.list?.length > 0 && (
+                <>
+                  {verifyList?.list?.map((i: any) => (
+                    <VerifyItem key={i.id}>
+                      <div className="left" onClick={() => onClickItem(i)}>
+                        <img className="img" src={i.category_attachment} />
+                        <div className="name">
+                          <span className="title">{i.demandName}</span>
+                          <span className="sub">
+                            {i.storyPrefixKey}/{i.project_name}
+                          </span>
+                        </div>
                       </div>
+                      <CanClick onClick={() => onOpenExamine(i)}>
+                        {t('newlyAdd.waitExamine')}
+                      </CanClick>
+                    </VerifyItem>
+                  ))}
+                </>
+              )}
+              {verifyList?.list?.length <= 0 && <NoData />}
+            </InfiniteScroll>
+          </Spin>
+        )}
+        {tabActive !== 1 && (
+          <ScrollWrap>
+            <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+              {tabActive === 3 &&
+                box.map(el => (
+                  <div key={el.title}>
+                    {recentList?.[el.name].length >= 1 && (
+                      <Title>{el.title}</Title>
+                    )}
+                    <div
+                      style={{
+                        marginTop:
+                          recentList?.[el.name].length >= 1 ? '16px' : '0px',
+                      }}
+                    >
+                      {' '}
+                      {itmeMain(recentList?.[el.name], el.name)}
                     </div>
-                    <CanClick onClick={() => onOpenExamine(i)}>
-                      {t('newlyAdd.waitExamine')}
-                    </CanClick>
-                  </VerifyItem>
+                  </div>
                 ))}
-              </>
-            )}
-            {verifyList?.list?.length <= 0 && <NoData />}
-          </InfiniteScroll>
-        </Spin>
+              {tabActive === 0 && itmeMain(noFinishList, 'story')}
+              {tabActive === 2 && itmeMain(finishList, 'story')}
+            </Spin>
+          </ScrollWrap>
+        )}
         <Border />
         <Footer onClick={onClick}>
           <div>{t('Check_out_my_work') as string}</div>
@@ -676,9 +626,34 @@ const MyDropdown = (props: any) => {
     )
   }
 
+  // 待审核数据加载更多
+  const fetchMoreData = async () => {
+    const page = verifyPage + 1
+    setVerifyPage(page)
+    const params = {
+      userId: userInfo?.id,
+      projectId: 0,
+      // verifyStatus: 1,
+      page: page,
+      pageSize: 7,
+    }
+    const result = await getVerifyUserList(params)
+    setVerifyList({
+      list: [...verifyList?.list, ...result.list],
+      total: result.total || 0,
+    })
+  }
+
+  // 点击打开审核弹窗
+  const onOpenExamine = (item: any) => {
+    setIsOpen(false)
+    setVerifyInfo(item)
+    setIsVisible(true)
+  }
+
   return (
     <Dropdown
-      dropdownRender={tabActive === 1 ? dropdownRenderReview : dropdownRender}
+      dropdownRender={dropdownRender}
       placement="bottomLeft"
       trigger={['click']}
       onOpenChange={setIsOpen}
