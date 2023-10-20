@@ -493,7 +493,7 @@ const TableFilter = (props: any) => {
       label: t('resigned'),
       children: arr2,
     }
-    return [...arr1, b]
+    return arr2.length >= 1 ? [...arr1, b] : [...arr1]
   }
   return (
     <SearchLine hasLeft={props?.hasLeft}>
