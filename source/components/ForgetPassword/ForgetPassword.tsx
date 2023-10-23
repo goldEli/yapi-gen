@@ -113,7 +113,15 @@ const ForgetPassword = (props: FProps) => {
   }
   const onCheckSecret3 = async () => {
     if (form2.password && form2.password2) {
-      if (form2.password !== form2.password2 || bP !== 3) {
+      if (form2.password !== form2.password2) {
+        console.log(errorCheck)
+        setFocusNumber(2)
+        setErrorState(true)
+        setErrorCheck({
+          password2: t('passwordsDoNotMatch'),
+        })
+      }
+      if (bP !== 3) {
         console.log(errorCheck)
         setFocusNumber(2)
         setErrorState(true)
@@ -301,18 +309,7 @@ const ForgetPassword = (props: FProps) => {
           bigChar={t('theUppercaseKeyboardIsTurnedOn')}
           // onCheckValue={() => onCheckValue(2)}
         />
-        {/* <div
-          style={{
-            fontSize: '12px',
-            color: '#d7d9db',
-            marginBottom: '14px',
-            marginTop: '-21px',
-          }}
-        >
-          {t(
-            'thePasswordMustContainAtLeastOneUppercaseOneLowercaseOneOneSpecialAndMustBeAtLeastAndAtMostIn',
-          )}
-        </div> */}
+
         {bP && (
           <div style={{ display: 'flex', gap: '4px', marginBottom: '24px' }}>
             <BianSeDiv1 bg={bP} tt={1} />

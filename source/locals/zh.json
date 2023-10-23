@@ -2462,10 +2462,10 @@
   "backLogin": "返回登录",
   "getVerificationCode": " 获取验证码",
   "hasBeenSent": "已发送",
-  "thePasswordMustContainAtLeastOneUppercaseOneLowercaseOneOneSpecialAndMustBeAtLeastAndAtMostIn": "密码至少包含一个大写字母、一个小写字母、一个数字、一个特殊字符，并且长度至少为8最多为16",
+
   "pleaseEnterAValidPhoneNumber": "请输入正确的手机号",
   "passwordsDoNotMatch": "密码不一致",
-  "inconsistentOrWeakPasswords": "密码不一致或密码强度弱",
+  "inconsistentOrWeakPasswords": "密码必须包含大写字母、小写字母、数字、特殊符号",
   "verificationCodeSentSuccessfully": "验证码发送成功",
   "passwordResetComplete": "密码修改成功",
   "numberOfTransactions": "事务数",

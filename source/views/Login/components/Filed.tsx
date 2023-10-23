@@ -16,7 +16,9 @@ import { useTranslation } from 'react-i18next'
 import CountryCode from '@/components/CountryCode'
 
 export default forwardRef((props: any, ref: any) => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
+  console.log(i18n.language)
+
   const [isFocus, setIsFocus] = useState(false)
   const [bigChar, setBigChar] = useState(false)
   const [border, setBorder] = useState(false)
@@ -184,7 +186,12 @@ export default forwardRef((props: any, ref: any) => {
         <span className={style.hint}>{props?.errorCheck?.phone}</span>
       ) : null}
       {props.name === 'password2' && props?.errorCheck?.password2 ? (
-        <span className={style.hint}>{props?.errorCheck?.password2}</span>
+        <span
+          style={{ bottom: i18n.language === 'zh' ? '-20px' : '-40px' }}
+          className={style.hint}
+        >
+          {props?.errorCheck?.password2}
+        </span>
       ) : null}
     </div>
   )
