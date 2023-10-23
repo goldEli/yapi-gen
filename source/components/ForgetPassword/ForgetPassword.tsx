@@ -344,7 +344,7 @@ const ForgetPassword = (props: FProps) => {
         <div
           style={{
             visibility: errorMessage.length > 0 ? 'visible' : 'hidden',
-            top: bP ? '350px' : '296px',
+            top: bP ? '330px' : '296px',
           }}
           className={`${style.toast} ${
             // eslint-disable-next-line no-negated-condition
