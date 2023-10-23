@@ -2462,7 +2462,6 @@
   "backLogin": "Back login",
   "getVerificationCode": "Get verification code",
   "hasBeenSent": "Has been sent",
-
   "pleaseEnterAValidPhoneNumber": "Please enter a valid phone number",
   "passwordsDoNotMatch": "The password is different from the confirm password",
   "inconsistentOrWeakPasswords": "The password must contain uppercase letters, lowercase letters, digits, and special symbols",
@@ -2470,5 +2469,6 @@
   "passwordResetComplete": "Password reset complete",
   "numberOfTransactions": "Number of transactions",
   "resigned": "Already Removed",
-  "working": ""
+  "working": "",
+  "removedSuccessfully": "Removed successfully"
 }

@@ -2462,7 +2462,6 @@
   "backLogin": "返回登录",
   "getVerificationCode": " 获取验证码",
   "hasBeenSent": "已发送",
-
   "pleaseEnterAValidPhoneNumber": "请输入正确的手机号",
   "passwordsDoNotMatch": "密码与确认密码输入不一致",
   "inconsistentOrWeakPasswords": "密码必须包含大写字母、小写字母、数字、特殊符号",
@@ -2470,5 +2469,6 @@
   "passwordResetComplete": "密码修改成功",
   "numberOfTransactions": "事务数",
   "resigned": "已移除",
-  "working": ""
+  "working": "",
+  "removedSuccessfully": "移除成功"
 }
