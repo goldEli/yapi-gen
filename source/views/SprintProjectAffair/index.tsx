@@ -34,7 +34,8 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { getMessage } from '@/components/Message'
 import useKeyPress from '@/hooks/useKeyPress'
-import WrapLeft from '../Demand/components/WrapLeft'
+import WrapLeft from './components/WrapLeft'
+
 interface IProps {}
 
 export const MoreWrap = styled.div<{ type?: any }>(
