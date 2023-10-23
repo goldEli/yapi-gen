@@ -582,12 +582,12 @@ export default React.memo(
                   >
                     {languageMode.login}
                   </button>
-                  <div
+                  {/* <div
                     className={style.xiaxian}
                     onClick={() => setChangeF(!changeF)}
                   >
                     {t('forgetThe')}
-                  </div>
+                  </div> */}
                 </Tabs.TabPane>
               </Tabs>
 

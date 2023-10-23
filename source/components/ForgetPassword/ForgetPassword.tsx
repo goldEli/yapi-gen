@@ -301,7 +301,7 @@ const ForgetPassword = (props: FProps) => {
           bigChar={t('theUppercaseKeyboardIsTurnedOn')}
           // onCheckValue={() => onCheckValue(2)}
         />
-        <div
+        {/* <div
           style={{
             fontSize: '12px',
             color: '#d7d9db',
@@ -312,7 +312,7 @@ const ForgetPassword = (props: FProps) => {
           {t(
             'thePasswordMustContainAtLeastOneUppercaseOneLowercaseOneOneSpecialAndMustBeAtLeastAndAtMostIn',
           )}
-        </div>
+        </div> */}
         {bP && (
           <div style={{ display: 'flex', gap: '4px', marginBottom: '24px' }}>
             <BianSeDiv1 bg={bP} tt={1} />
