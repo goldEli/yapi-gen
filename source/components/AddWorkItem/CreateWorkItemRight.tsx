@@ -524,6 +524,7 @@ const CreateDemandRight = (props: Props) => {
     props.onGetParentList(value)
     setSearchVal(value)
   }
+  console.log(projectInfoValues, 'projectInfoValues')
 
   // 返回基本字段
   const getBasicTypeComponent = (item: any) => {
@@ -631,6 +632,7 @@ const CreateDemandRight = (props: Props) => {
       // 需求分类
       nodeComponent = (
         <TreeSelect
+          treeNodeFilterProp="name"
           style={{ width: '100%' }}
           showArrow
           showSearch
