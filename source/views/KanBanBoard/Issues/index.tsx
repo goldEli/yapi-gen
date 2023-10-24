@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { Droppable } from 'react-beautiful-dnd'
 import IssueCard from '../IssueCard'
@@ -9,6 +9,7 @@ import DropCard from '../DropCard'
 import { useSelector } from '@store/index'
 import useGroupType from '../hooks/useGroupType'
 import { FixedSizeList } from 'react-window'
+import InfiniteScroll from 'react-infinite-scroll-component'
 interface IssuesProps {
   issues: Model.KanBan.Column
   groupId: Model.KanbanConfig.Column['id']
@@ -38,6 +39,8 @@ const DropStatusArea = styled.div`
 `
 const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
+  // const mockData = useRef(Array.from({ length: 10 }))
+  const [mockData, setMockData] = useState(Array.from({ length: 10 }))
   const droppableId = useMemo(() => {
     return handleId(groupId, issues.id)
   }, [groupId, issues.id])
@@ -69,26 +72,70 @@ const Issues: React.FC<IssuesProps> = props => {
       columnId={issues.id}
     />
   )
-  const issueCardListContent = issues.stories?.map((story, index) => {
-    const uuid = `${groupId}-${issues.id}-${story.id}`
-    // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
-    const hidden1 =
-      !!movingStory &&
-      (groupType === 'users' || groupType === 'category') &&
-      movingStory?.groupId !== groupId
-    // 如果当前展示状态转换释放区域，需要隐藏卡片
-    const hidden2 = showStateTransitionList
-    return (
-      <IssueCard
-        hidden={hidden1 || hidden2}
-        uuid={uuid}
-        key={uuid}
-        item={story}
-        index={index}
-        stories={issues.stories}
-      />
-    )
-  })
+  // const issueCardListContent = issues.stories?.map((story, index) => {
+  //   const uuid = `${groupId}-${issues.id}-${story.id}`
+  //   // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
+  //   const hidden1 =
+  //     !!movingStory &&
+  //     (groupType === 'users' || groupType === 'category') &&
+  //     movingStory?.groupId !== groupId
+  //   // 如果当前展示状态转换释放区域，需要隐藏卡片
+  //   const hidden2 = showStateTransitionList
+  //   return (
+  //     <IssueCard
+  //       hidden={hidden1 || hidden2}
+  //       uuid={uuid}
+  //       key={uuid}
+  //       item={story}
+  //       index={index}
+  //       stories={issues.stories}
+  //     />
+  //   )
+  // })
+  const fetchMoreData = () => {
+    console.log(1)
+
+    if (mockData.length >= 500) {
+      return
+    }
+    // a fake async api call like which sends
+    // 20 more records in .5 secs
+    setTimeout(() => {
+      setMockData(mockData.concat(Array.from({ length: 20 })))
+    }, 500)
+  }
+  const issueCardListContent = (
+    <InfiniteScroll
+      loader={null}
+      endMessage={
+        <p style={{ textAlign: 'center' }}>
+          <b>Yay! You have seen it all</b>
+        </p>
+      }
+      style={{
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        height: '500px',
+      }}
+      height="500px"
+      dataLength={mockData.length}
+      next={fetchMoreData}
+      hasMore={mockData?.length < 500}
+    >
+      {mockData?.map((story, index) => {
+        return (
+          <div
+            style={{
+              height: '122px',
+            }}
+            key={index}
+          >
+            {index}
+          </div>
+        )
+      })}
+    </InfiniteScroll>
+  )
 
   const minHeight =
     showStateTransitionList && data.length > 0 ? data.length * 156 + 20 : 100

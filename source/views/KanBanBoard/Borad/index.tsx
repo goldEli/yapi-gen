@@ -55,7 +55,7 @@ const Board = () => {
       >
         {kanbanConfig?.columns?.length ? <KanBanSortByPerson /> : <NoData />}
         {/* <KanBanSortByPerson /> */}
-        <ControlScrollPlane />
+        {/* <ControlScrollPlane /> */}
       </Container>
     </Spin>
   )
