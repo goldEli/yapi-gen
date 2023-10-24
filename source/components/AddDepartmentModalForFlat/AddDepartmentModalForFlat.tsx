@@ -16,17 +16,13 @@ import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from '@/components/StyleCommon'
 import CommonButton from '@/components/CommonButton'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useSelector } from '@store/index'
-import {
-  getDepartmentUserList,
-  getDepartmentUserList1,
-} from '@/services/setting'
+import { getDepartmentUserList1 } from '@/services/setting'
 
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
-import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
 import NewAddShowList from './DepartmentList'
 import { IconWrap } from '../AddDepartmentOrTeamModal/style'
@@ -73,34 +69,6 @@ const LeftWrap = styled.div`
   border-right: 1px solid var(--neutral-n6-d1);
 `
 
-const Tabs = styled.div`
-  width: 270px;
-  height: 24px;
-  border-radius: 4px;
-  margin-top: 16px;
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--neutral-n3);
-  background-color: var(--hover-d1);
-  span {
-    display: inline-block;
-    text-align: center;
-    height: 24px;
-    line-height: 24px;
-    width: 135px;
-    color: var(--neutral-n3);
-  }
-  &:hover {
-    cursor: pointer;
-    color: var(--neutral-n1-d1);
-  }
-  .tabsActive {
-    color: var(--neutral-n1-d1);
-    background-color: var(--neutral-white-d3);
-    border-radius: 6px;
-    border: 1px solid var(--neutral-n6-d2);
-  }
-`
 const Row = styled.div`
   width: 216px;
   height: 44px;
@@ -184,45 +152,6 @@ const ListItem = styled.div`
     display: block;
   }
 `
-const TreeStyle = styled(DirectoryTree)`
-  width: 216px;
-  overflow-y: auto;
-  overflow-x: auto;
-  height: 318px;
-  .ant-tree-checkbox-inner {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-  }
-  .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
-    background-color: var(--primary-d1);
-    border-color: var(--primary-d1);
-  }
-  .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner::after {
-    background-color: var(--auxiliary-b2);
-  }
-  & .ant-tree-iconEle {
-    display: none !important;
-  }
-  .ant-tree-treenode {
-    min-width: 216px;
-    height: 44px;
-    padding-left: 16px;
-    /* overflow: hidden; */
-  }
-
-  .ant-tree-treenode:hover {
-    border-radius: 6px;
-    background-color: var(--hover-d2);
-    .ant-tree-title div {
-      color: var(--neutral-n1-d1) !important;
-    }
-  }
-  .ant-tree.ant-tree-directory .ant-tree-treenode-selected:hover::before,
-  .ant-tree.ant-tree-directory .ant-tree-treenode-selected::before {
-    background-color: none;
-  }
-`
 const SelectStyle = styled(CustomSelect)``
 
 interface ModalProps {
@@ -246,8 +175,6 @@ interface ModalProps {
 
 const AddDepartmentModalForFlat = (props: ModalProps) => {
   const [t] = useTranslation()
-
-  const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组
   const [selectDataList, setSelectDataList] = useState<any>()
   const [searchVal, setSearchVal] = useState<any>('')
@@ -423,28 +350,6 @@ const AddDepartmentModalForFlat = (props: ModalProps) => {
     } else {
       getNotHaveChildBykeys(keys)
     }
-  }
-  // 去除每层级的 staffs 数组并遍历每层级的 children 取出 staffs 数组
-  function flattenStaffs(data: any) {
-    let result: any = []
-
-    function flatten(node: any) {
-      if (node.staffs) {
-        result = result.concat(node.staffs)
-      }
-
-      if (node.children && node.children.length > 0) {
-        node?.children.forEach((child: any) => {
-          flatten(child)
-        })
-      }
-    }
-
-    data.forEach((node: any) => {
-      flatten(node)
-    })
-
-    return result
   }
   // 获取最底层的children数组
   function findBottomChildren(treeData: any) {

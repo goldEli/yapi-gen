@@ -28,7 +28,7 @@ import {
 } from './style'
 import { unionBy } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { getProjectList, getProjectMember } from '@/services/project'
+import { getProjectMember } from '@/services/project'
 
 type ChooseAddType = 1 | 2 | 3 | undefined | 4 | null
 

@@ -6,11 +6,11 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-constant-binary-expression */
-import { Form, message, Modal, Select, Space, Tree } from 'antd'
+import { Form, Modal, Space, Tree } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
-import { CloseWrap, DelButton } from '@/components/StyleCommon'
+import { CloseWrap } from '@/components/StyleCommon'
 import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
