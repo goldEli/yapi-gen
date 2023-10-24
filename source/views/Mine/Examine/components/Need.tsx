@@ -79,7 +79,7 @@ const Need = (props: any) => {
     list: undefined,
   })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 30 })
   const [keyword, setKeyword] = useState<string>('')
   const [searchParams, setSearchParams] = useState<any>({})
   const [isSpin, setIsSpin] = useState<boolean>(false)

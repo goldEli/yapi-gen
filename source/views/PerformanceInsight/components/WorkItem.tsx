@@ -256,7 +256,7 @@ const Main = (props: UserInfo) => {
           data={{
             currentPage: 2,
             total: 80,
-            pageSize: 20,
+            pageSize: 30,
           }}
           onChangePage={(pageNum, pageSize) => 123}
         />
