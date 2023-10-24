@@ -524,6 +524,11 @@ export default React.memo(
                             msgRef.current?.reset()
                             setErrorMessage(res.msg)
                           }
+                          if (res.code === 0) {
+                            return new Promise(resolve => resolve(1))
+                          } else {
+                            return new Promise(resolve => resolve(2))
+                          }
                         }
                       }}
                       past={!!form2.phone}

@@ -11,7 +11,7 @@ import {
   useImperativeHandle,
 } from 'react'
 import style from './Filed.module.css'
-import { Dropdown } from 'antd'
+import { Dropdown, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CountryCode from '@/components/CountryCode'
 
@@ -52,25 +52,45 @@ export default forwardRef((props: any, ref: any) => {
     }
   }
 
-  const onGetMsg = (num?: number) => {
+  const onGetMsg = async (num?: number) => {
     setGetMsg(num)
     if (num === 2) {
-      props?.onGetMsg(localStorage.areacode || '+86')
+      const a = await props?.onGetMsg(localStorage.areacode || '+86')
+      console.log(a, '状态机')
+      if (a === 1) {
+        setTime(60)
+      } else {
+        setGetMsg(1)
+        message.error(t('failedToObtainVerificationCode'))
+      }
     }
-    setTime(60)
   }
 
   useEffect(() => {
+    const savedSeconds = localStorage.getItem('time')
+
     if (time === 0) {
       setGetMsg(1)
+      // localStorage.removeItem('time')
       return
     }
     const intervalId = setInterval(() => {
       setTime(time - 1)
+      localStorage.setItem('time', time)
     }, 1000)
-    return () => clearInterval(intervalId)
-  }, [time])
 
+    return () => {
+      clearInterval(intervalId)
+      // localStorage.removeItem('time')
+    }
+  }, [time])
+  useEffect(() => {
+    const savedSeconds = localStorage.getItem('time')
+    if (savedSeconds) {
+      setGetMsg(2)
+      setTime(parseInt(savedSeconds))
+    }
+  }, [])
   const onCountryCodeChange = (val: string) => {
     const [phoneCode, countryCode] = val.split('/')
 
