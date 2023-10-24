@@ -70,7 +70,7 @@ const Iteration = () => {
   const [filterState, setFilterState] = useState(true)
   const [isSettingState, setIsSettingState] = useState(false)
   const [isGrid, setIsGrid] = useState(0)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [searchItems, setSearchItems] = useState<any>({})
   // 用于控制失焦事件与展开子需求冲突

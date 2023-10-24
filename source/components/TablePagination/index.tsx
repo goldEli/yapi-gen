@@ -25,8 +25,8 @@ const PaginationBox = (props: PropType) => {
             current={props.currentPage}
             defaultCurrent={1}
             total={props.total}
-            pageSizeOptions={['10', '20', '50']}
-            pageSize={props.pageSize || 20}
+            pageSizeOptions={['10', '30', '50']}
+            pageSize={props.pageSize || 30}
             showSizeChanger
             showQuickJumper
             onChange={(page: number, pageSize: number) =>

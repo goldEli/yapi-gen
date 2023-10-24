@@ -64,7 +64,7 @@ const ProjectManagementOptimization = () => {
   const [isStop, setIsStop] = useState(false)
   const [activeType, setActiveType] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [projectTypes, setProjectTypes] = useState('')
   const [searchVal, setSearchVal] = useState('')
   const [isVisible, setIsVisible] = useState(false)

@@ -86,7 +86,7 @@ const ClearButton = styled.div`
   cursor: pointer;
 `
 
-const defaultPageParam = { page: 1, pagesize: 20 }
+const defaultPageParam = { page: 1, pagesize: 30 }
 
 const List = () => {
   const dispatch = useDispatch()

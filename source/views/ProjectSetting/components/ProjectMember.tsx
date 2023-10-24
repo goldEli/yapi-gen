@@ -151,15 +151,13 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const projectId = paramsData.id
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [batchEditVisible, setBatchEditVisible] = useState(false)
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
-  const [selectRowKey, setSelectRowKey] = useState('')
-  const [optionsDrop, setOptionsDrop] = useState(false)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
@@ -251,7 +249,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           await confirmProjectHand({ id: item.id, project_id: projectId })
           getList(order, { ...pageObj, page: 1 })
           getMessage({
-            msg: t('successfullyDeleted') as string,
+            msg: t('removedSuccessfully') as string,
             type: 'success',
           })
           return Promise.resolve()

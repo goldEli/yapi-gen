@@ -53,7 +53,7 @@ const Index = (props: any) => {
   const [key, setKey] = useState<any>()
   const [searchVal, setSearchVal] = useState('')
   const [searchItems, setSearchItems] = useState<any>({})
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isShowLeft, setIsShowLeft] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
@@ -251,13 +251,13 @@ const Index = (props: any) => {
   }, [key, order, pageObj])
 
   useEffect(() => {
-    setPageObj({ page: 1, size: 20 })
+    setPageObj({ page: 1, size: 30 })
     setOrder({ value: '', key: '' })
     setKey('')
     setSearchVal('')
     setSearchItems({})
     keyValueTree.changeKey('')
-    getList({}, { page: 1, size: 20 }, { value: '', key: '' })
+    getList({}, { page: 1, size: 30 }, { value: '', key: '' })
   }, [projectId])
 
   useEffect(() => {

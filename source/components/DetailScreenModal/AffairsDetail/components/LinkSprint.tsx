@@ -67,7 +67,7 @@ const LinkSprint = (props: {
   const [isVisible, setIsVisible] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const { projectInfo } = useSelector(store => store.project)
-  const [pageParams, setPageParams] = useState({ page: 1, pagesize: 20 })
+  const [pageParams, setPageParams] = useState({ page: 1, pagesize: 30 })
   const [allDataSource, setAllDataSource] = useState<any>({
     list: undefined,
   })
