@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { Droppable } from 'react-beautiful-dnd'
 import IssueCard from '../IssueCard'
@@ -40,10 +40,12 @@ const DropStatusArea = styled.div`
 const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
   // const mockData = useRef(Array.from({ length: 10 }))
-  const [mockData, setMockData] = useState(Array.from({ length: 10 }))
+
   const droppableId = useMemo(() => {
     return handleId(groupId, issues.id)
   }, [groupId, issues.id])
+  const mockDataCopy = useRef<any>()
+  mockDataCopy.current = issues.stories
   const { movingStory } = useSelector(store => store.kanBan)
   const { groupType } = useGroupType()
   const columnId = issues.id
@@ -63,6 +65,17 @@ const Issues: React.FC<IssuesProps> = props => {
     // return !!movingStory && movingStory?.columnId !== columnId
   }, [movingStory, columnId, data, groupId, groupType])
   // const showStateTransitionList = true
+  const [mockData, setMockData] = useState<any>([])
+  const pageSize = 5
+  const currentPage = 1
+  const startIndex = (currentPage - 1) * pageSize
+  const endIndex = currentPage * pageSize
+  const fetchData = () => {
+    setMockData(issues.stories.slice(startIndex, endIndex))
+  }
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   const dropCardListContent = (
     <DropCardList
@@ -72,70 +85,80 @@ const Issues: React.FC<IssuesProps> = props => {
       columnId={issues.id}
     />
   )
-  // const issueCardListContent = issues.stories?.map((story, index) => {
-  //   const uuid = `${groupId}-${issues.id}-${story.id}`
-  //   // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
-  //   const hidden1 =
-  //     !!movingStory &&
-  //     (groupType === 'users' || groupType === 'category') &&
-  //     movingStory?.groupId !== groupId
-  //   // 如果当前展示状态转换释放区域，需要隐藏卡片
-  //   const hidden2 = showStateTransitionList
-  //   return (
-  //     <IssueCard
-  //       hidden={hidden1 || hidden2}
-  //       uuid={uuid}
-  //       key={uuid}
-  //       item={story}
-  //       index={index}
-  //       stories={issues.stories}
-  //     />
-  //   )
-  // })
-  const fetchMoreData = () => {
-    console.log(1)
 
-    if (mockData.length >= 500) {
-      return
-    }
-    // a fake async api call like which sends
-    // 20 more records in .5 secs
+  const issueCardListContent = issues.stories?.map((story, index) => {
+    const uuid = `${groupId}-${issues.id}-${story.id}`
+    // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
+    const hidden1 =
+      !!movingStory &&
+      (groupType === 'users' || groupType === 'category') &&
+      movingStory?.groupId !== groupId
+    // 如果当前展示状态转换释放区域，需要隐藏卡片
+    const hidden2 = showStateTransitionList
+    return (
+      <IssueCard
+        hidden={hidden1 || hidden2}
+        uuid={uuid}
+        key={uuid}
+        item={story}
+        index={index}
+        stories={issues.stories}
+      />
+    )
+  })
+  const fetchMoreData = () => {
+    const newPage = currentPage + 1
+    const newStartIndex = (newPage - 1) * pageSize
+    const newEndIndex = newPage * pageSize
+    const newPaginatedData = issues.stories.slice(newStartIndex, newEndIndex)
+    console.log(newPaginatedData, 'newPaginatedData')
+
     setTimeout(() => {
-      setMockData(mockData.concat(Array.from({ length: 20 })))
+      setMockData((arr: any) => {
+        return arr.concat(newPaginatedData)
+      })
     }, 500)
   }
-  const issueCardListContent = (
-    <InfiniteScroll
-      loader={null}
-      endMessage={
-        <p style={{ textAlign: 'center' }}>
-          <b>Yay! You have seen it all</b>
-        </p>
-      }
-      style={{
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        height: '500px',
-      }}
-      height="500px"
-      dataLength={mockData.length}
-      next={fetchMoreData}
-      hasMore={mockData?.length < 500}
-    >
-      {mockData?.map((story, index) => {
-        return (
-          <div
-            style={{
-              height: '122px',
-            }}
-            key={index}
-          >
-            {index}
-          </div>
-        )
-      })}
-    </InfiniteScroll>
-  )
+  // const issueCardListContent = (
+  //   <InfiniteScroll
+  //     loader={null}
+  //     endMessage={
+  //       <p style={{ textAlign: 'center' }}>
+  //         <b>Yay! You have seen it all</b>
+  //       </p>
+  //     }
+  //     style={{
+  //       overflowY: 'auto',
+  //       overflowX: 'hidden',
+  //       height: '500px',
+  //     }}
+  //     height="500px"
+  //     dataLength={mockData.length}
+  //     next={fetchMoreData}
+  //     hasMore={mockData?.length < issues.stories?.length}
+  //   >
+  //     {mockData?.map((story: any, index: any) => {
+  //       const uuid = `${groupId}-${issues.id}-${story.id}`
+  //       // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
+  //       const hidden1 =
+  //         !!movingStory &&
+  //         (groupType === 'users' || groupType === 'category') &&
+  //         movingStory?.groupId !== groupId
+  //       // 如果当前展示状态转换释放区域，需要隐藏卡片
+  //       const hidden2 = showStateTransitionList
+  //       return (
+  //         <IssueCard
+  //           hidden={hidden1 || hidden2}
+  //           uuid={uuid}
+  //           key={uuid}
+  //           item={story}
+  //           index={index}
+  //           stories={issues.stories}
+  //         />
+  //       )
+  //     })}
+  //   </InfiniteScroll>
+  // )
 
   const minHeight =
     showStateTransitionList && data.length > 0 ? data.length * 156 + 20 : 100
