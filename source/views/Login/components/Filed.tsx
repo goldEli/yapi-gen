@@ -76,7 +76,7 @@ export default forwardRef((props: any, ref: any) => {
     }
     const intervalId = setInterval(() => {
       setTime(time - 1)
-      localStorage.setItem('time', time)
+      localStorage.setItem('time', time - 1)
     }, 1000)
 
     return () => {
@@ -86,6 +86,10 @@ export default forwardRef((props: any, ref: any) => {
   }, [time])
   useEffect(() => {
     const savedSeconds = localStorage.getItem('time')
+    console.log(savedSeconds)
+    if (parseInt(savedSeconds) === 0) {
+      localStorage.removeItem('time')
+    }
     if (savedSeconds) {
       setGetMsg(2)
       setTime(parseInt(savedSeconds))
