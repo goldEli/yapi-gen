@@ -32,6 +32,40 @@ const routes = [
     element: <VideoTeachingDetail />,
   },
   {
+    path: 'Layout',
+    element: lazy(() => import('@/views/Layout')),
+    children: [
+      {
+        path: 'Project',
+        element: lazy(() => import('@/views/Layout/Project')),
+      },
+      {
+        path: 'Report',
+        element: lazy(() => import('@/views/Layout/Report')),
+      },
+      {
+        path: 'CalendarManager',
+        element: lazy(() => import('@/views/Layout/CalendarManager')),
+      },
+      {
+        path: 'EmployeeProfile',
+        element: lazy(() => import('@/views/Layout/EmployeeProfile')),
+      },
+      {
+        path: 'Statistics',
+        element: lazy(() => import('@/views/Layout/Statistics')),
+      },
+      {
+        path: 'Trends',
+        element: lazy(() => import('@/views/Layout/Trends')),
+      },
+      {
+        path: 'Mine',
+        element: lazy(() => import('@/views/Layout/Mine')),
+      },
+    ],
+  },
+  {
     path: '',
     element: <Container />,
     children: [

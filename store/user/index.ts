@@ -22,18 +22,18 @@ const initialState: CounterState = {
   isRefresh: false,
   currentMenu: {},
   menuIconList: [
-    { key: '/Situation', normal: 'system-nor', active: 'system-sel' },
     {
-      key: '/ProjectManagement',
+      key: '/Project',
       normal: 'folder-open-nor',
       active: 'folder-open-sel',
     },
-    { key: '/SiteNotifications', normal: 'bell', active: 'bell-sel' },
-    { key: '/CalendarManager', normal: 'database', active: 'calendar-sel' },
     { key: '/Report', normal: 'log-nor', active: 'log-sel' },
-    { key: '/AdminManagement', normal: 'management', active: '' },
-    { key: '/Performance', normal: 'measure-nor', active: 'measure-sel' },
+    { key: '/CalendarManager', normal: 'database', active: 'calendar-sel' },
     { key: '/EmployeeProfile', normal: 'employee-nor', active: 'employee-sel' },
+    { key: '/Statistics', normal: 'measure-nor', active: 'measure-sel' },
+    { key: '/Trends', normal: 'bell', active: 'bell-sel' },
+    { key: '/Mine', normal: 'user', active: 'user' },
+    { key: '/AdminManagement', normal: 'management', active: 'management' },
   ],
 }
 

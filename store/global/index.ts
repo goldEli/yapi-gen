@@ -19,9 +19,14 @@ export interface GlobalState {
   // 列表选中id
   listActiveId: number
   hasSideCommonLayoutWidth: number
+
+  // 全局左侧折叠
+  layoutSideCollapse: boolean
 }
 
 const initialState: GlobalState = {
+  layoutSideCollapse: false,
+
   firstMenuCollapse: false,
   theme: Number(localStorage.getItem('theme')) || 0,
   language: localStorage.getItem('language') || 'zh',
@@ -93,6 +98,10 @@ export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
+    setLayoutSideCollapse(preState: GlobalState, action) {
+      preState.layoutSideCollapse = action.payload
+    },
+
     setFirstMenuCollapse(preState: GlobalState, action) {
       preState.firstMenuCollapse = action.payload
     },
@@ -116,7 +125,10 @@ export const globalSlice = createSlice({
   },
 })
 
-export const { setListActiveId, setHasSideCommonLayoutWidth } =
-  globalSlice.actions
+export const {
+  setListActiveId,
+  setHasSideCommonLayoutWidth,
+  setLayoutSideCollapse,
+} = globalSlice.actions
 
 export default globalSlice.reducer
