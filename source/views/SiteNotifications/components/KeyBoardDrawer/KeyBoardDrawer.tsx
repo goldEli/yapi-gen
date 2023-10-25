@@ -86,6 +86,7 @@ const KeyBoardDrawer = () => {
       placement="right"
       onClose={onClose}
       open={isVisible2}
+      // getContainer={false}
     >
       <Wrap>
         <div

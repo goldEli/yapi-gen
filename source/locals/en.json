@@ -2471,5 +2471,11 @@
   "resigned": "Already Removed",
   "working": "",
   "removedSuccessfully": "Removed successfully",
-  "failedToObtainVerificationCode": "Failed to obtain verification code"
+  "failedToObtainVerificationCode": "Failed to obtain verification code",
+  "moreApplications": "More applications",
+  "videoTutorial": "Video tutorial",
+  "helpManual": "Help manual",
+  "usageFeedback": "Usage feedback",
+  "operationShortcutKeys": "Operation shortcut keys",
+  "helpCenter": "Help Center"
 }

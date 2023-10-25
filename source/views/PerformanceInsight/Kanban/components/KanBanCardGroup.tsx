@@ -71,7 +71,7 @@ const TaskListGroup = (props: TaskListGroupProps) => {
 
   return (
     <InfiniteScroll
-      dataLength={item.stories?.length}
+      dataLength={item.stories?.length || 0}
       next={fetchMoreData}
       hasMore={item.stories?.length < item?.user_story_totals}
       loader={null}

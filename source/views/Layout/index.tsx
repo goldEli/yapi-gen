@@ -4,7 +4,7 @@ import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import GlobalStyle from '@/components/GlobalStyle'
 import { changeLanguage, loadedAntdLocals } from '@/locals'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { ConfigProvider, Popover, Tooltip, message } from 'antd'
+import { ConfigProvider, message } from 'antd'
 import { ConfigProvider as KitConfigProvider } from 'ifunuikit'
 import { useTranslation } from 'react-i18next'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
@@ -30,236 +30,17 @@ import { getStatus } from '@store/waterState'
 import { getProjectCover } from '@store/cover/thunks'
 import { getLoginDetail } from '@store/user/user.thunk'
 import { getAsyncCompanyInfo } from '@store/companyInfo'
-import {
-  CollapseWrap,
-  LayoutContent,
-  LayoutHeader,
-  LayoutSide,
-  LayoutWrap,
-  MainContent,
-  CollapseWrapItem,
-  LogoWrap,
-  notOpenSideMenu,
-  openSideMenu,
-  MorePopover,
-} from './style'
 import Guide from './components/Guide'
 import { changeCreateVisible } from '@store/create-propject'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import { changeFreedVisibleVisible } from '@store/feedback'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
-import { CloseWrap } from '@/components/StyleCommon'
-import CommonIconFont from '@/components/CommonIconFont'
-import { setLayoutSideCollapse } from '@store/global'
-
-const data = {
-  menus: [
-    {
-      id: 603,
-      name: '项目',
-      url: '/Project',
-      permission: 'b/project',
-      p_menu: '',
-      status: 1,
-      created_at: '-0001-11-30 00:00:00',
-      updated_at: '2023-08-07 23:56:41',
-    },
-
-    {
-      id: 616,
-      name: '汇报',
-      url: '/Report',
-      permission: 'b/work_report',
-      p_menu: '',
-      status: 1,
-      created_at: '-0001-11-30 00:00:00',
-      updated_at: '2023-08-07 23:56:41',
-      children: [
-        {
-          id: 617,
-          name: '汇报',
-          url: '/Report/Review',
-          permission: 'b/work_report/list',
-          p_menu: '\u5de5\u4f5c\u6c47\u62a5',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 618,
-          name: '统计',
-          url: '/Report/Statistics',
-          permission: 'b/work_report/statistics',
-          p_menu: '\u5de5\u4f5c\u6c47\u62a5',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 619,
-          name: '模板',
-          url: '/Report/Formwork',
-          permission: 'b/work_report/template',
-          p_menu: '\u5de5\u4f5c\u6c47\u62a5',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-      ],
-    },
-    {
-      id: 614,
-      name: '日程',
-      url: '/CalendarManager',
-      permission: 'b/calendar',
-      p_menu: '',
-      status: 1,
-      created_at: '-0001-11-30 00:00:00',
-      updated_at: '2023-08-07 23:56:41',
-      children: [],
-    },
-    {
-      id: 642,
-      name: '人员',
-      url: '/EmployeeProfile',
-      permission: 'b/member_overview',
-      p_menu: '',
-      status: 1,
-      created_at: '2023-09-04 10:25:46',
-      updated_at: '2023-09-04 11:15:06',
-      children: [],
-    },
-    {
-      id: 602,
-      name: '统计',
-      url: '/Statistics',
-      permission: '',
-      p_menu: '',
-      status: 1,
-      created_at: '-0001-11-30 00:00:00',
-      updated_at: '2023-08-07 23:56:41',
-      children: [
-        {
-          id: 604,
-          name: '任务',
-          url: '',
-          permission: 'b/project',
-          p_menu: '\u9879\u76ee\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 605,
-          name: '公司',
-          url: '',
-          permission: '',
-          p_menu: '\u9879\u76ee\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-      ],
-    },
-    {
-      id: 606,
-      name: '后台',
-      url: '/AdminManagement',
-      permission: '',
-      p_menu: '',
-      status: 1,
-      created_at: '-0001-11-30 00:00:00',
-      updated_at: '2023-08-07 23:56:41',
-      children: [
-        {
-          id: 607,
-          name: '公司信息',
-          url: '/AdminManagement/CompanyInfo',
-          permission: 'b/company/info',
-          p_menu: '\u540e\u53f0\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 608,
-          name: '员工管理',
-          url: '/AdminManagement/StaffManagement',
-          permission: 'b/companyuser/list',
-          p_menu: '\u540e\u53f0\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 609,
-          name: '团队管理',
-          url: '/AdminManagement/TeamManagement',
-          permission: 'b/company/teams',
-          p_menu: '\u540e\u53f0\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 610,
-          name: '权限管理',
-          url: '/AdminManagement/PermissionManagement',
-          permission: 'b/company/role',
-          p_menu: '\u540e\u53f0\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 611,
-          name: '水印管理',
-          url: '/AdminManagement/WaterMarkManagement',
-          permission: 'b/company/config',
-          p_menu: '\u540e\u53f0\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 612,
-          name: '操作管理',
-          url: '/AdminManagement/OperationManagement',
-          permission: 'b/company/operate_logs',
-          p_menu: '\u540e\u53f0\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 613,
-          name: '登录管理',
-          url: '/AdminManagement/LoginManagement',
-          permission: 'b/company/login_logs',
-          p_menu: '\u540e\u53f0\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-        {
-          id: 621,
-          name: '系统公告',
-          url: '/AdminManagement/NoteManagement',
-          permission: 'b/sys_notice',
-          p_menu: '\u540e\u53f0\u7ba1\u7406',
-          status: 1,
-          created_at: '-0001-11-30 00:00:00',
-          updated_at: '2023-08-07 23:56:41',
-        },
-      ],
-    },
-  ],
-  priority_url: '/Project',
-  help_document_path: '',
-}
+import { LayoutContent, LayoutHeader, LayoutWrap, MainContent } from './style'
+import LayoutSideIndex from './components/LayoutSide'
+import LayoutHeaderLeft from './components/LayoutHeaderLeft'
+import LayoutHeaderRight from './components/LayoutHeaderRight'
 
 const LayoutIndex = () => {
-  const [t] = useTranslation()
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -272,12 +53,11 @@ const LayoutIndex = () => {
   const language1 = useSelector(store => store.global.language)
   const { layoutSideCollapse } = useSelector(store => store.global)
   const { viewReportModal } = useSelector(store => store.workReport)
-  const { loginInfo, menuPermission, menuIconList } = useSelector(
-    store => store.user,
-  )
+  const { loginInfo, menuPermission } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
 
   const [isNextVisible, setIsNextVisible] = useState(false)
+
   const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
     visible: boolean
     type: 'user' | 'project'
@@ -295,13 +75,6 @@ const LayoutIndex = () => {
     if (!localStorage.getItem('agileToken')) {
       await login()
     }
-  }
-
-  // 切换展开折叠
-  const onChangeCollapse = () => {
-    setTimeout(() => {
-      dispatch(setLayoutSideCollapse(!layoutSideCollapse))
-    }, 100)
   }
 
   // 关闭浮层类
@@ -361,37 +134,31 @@ const LayoutIndex = () => {
   useEffect(() => {
     // 如果没带路由则跳转优先路由
     if (location.pathname === '/') {
-      // let navigateUrl = menuPermission.priorityUrl
-      // // 如果是项目管理
-      // if (menuPermission.priorityUrl === '/ProjectManagement') {
-      //   const currentObject = menuPermission?.menus?.filter(
-      //     (i: any) => i.url === '/ProjectManagement',
-      //   )?.[0]
-      //   const firstUrl = currentObject?.children?.[0]?.url
-      //   if (firstUrl === '/ProjectManagement/Mine') {
-      //     navigateUrl = '/ProjectManagement/Mine/Profile'
-      //   } else {
-      //     navigateUrl = firstUrl
-      //   }
-      // } else if (menuPermission.priorityUrl === '/AdminManagement') {
-      //   const children = menuPermission?.menus?.filter(
-      //     (i: any) => i.url === '/AdminManagement',
-      //   )
-      //   navigateUrl = children?.[0]?.url
-      // }
-      // if (!navigateUrl) {
-      //   navigate('/ProjectManagement/Project')
-      //   return
-      // }
-      // navigate(navigateUrl)
+      let navigateUrl = menuPermission.priorityUrl
+      let resultChildren: any
+      // 如果是后台管理，则跳转公司信息
+      if (menuPermission.priorityUrl === '/AdminManagement') {
+        resultChildren = menuPermission?.menus?.filter(
+          (i: any) => i.url === '/AdminManagement',
+        )
+      }
+      // 如果是统计，则跳转有权限的
+      if (menuPermission.priorityUrl === '/Statistics') {
+        resultChildren = menuPermission?.menus?.filter(
+          (i: any) => i.url === '/Statistics',
+        )
+      }
+      // 如果是汇报，则跳转有权限的
+      if (menuPermission.priorityUrl === '/Report') {
+        resultChildren = menuPermission?.menus?.filter(
+          (i: any) => i.url === '/Report',
+        )
+      }
+      navigateUrl = resultChildren?.[0]?.url ?? '/Project'
+      navigate(navigateUrl)
     }
     setIsNextVisible(loginInfo.admin_first_login)
   }, [loginInfo, menuPermission])
-
-  const otherMenu: any = [
-    { name: '动态', url: '/Trends' },
-    { name: '我的', url: '/Mine' },
-  ]
 
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
@@ -399,63 +166,7 @@ const LayoutIndex = () => {
         <GlobalStyle />
 
         <LayoutWrap id="layoutWrap">
-          <LayoutSide isOpen={layoutSideCollapse}>
-            <LogoWrap />
-            {data.menus
-              ?.filter((k: any) => k.url !== '/AdminManagement')
-              .concat(otherMenu)
-              ?.map((i: any) => (
-                <div
-                  key={i.id}
-                  className={
-                    layoutSideCollapse ? openSideMenu : notOpenSideMenu
-                  }
-                >
-                  <CommonIconFont
-                    type={
-                      menuIconList?.filter((k: any) =>
-                        String(i.url).includes(k.key),
-                      )[0]?.normal
-                    }
-                    size={24}
-                  />
-                  <div>{i.name}</div>
-                </div>
-              ))}
-            <Popover
-              placement="right"
-              destroyTooltipOnHide
-              content={<MorePopover>12</MorePopover>}
-            >
-              <div
-                className={layoutSideCollapse ? openSideMenu : notOpenSideMenu}
-              >
-                <CommonIconFont type="package-nor" size={24} />
-                <div>更多</div>
-              </div>
-            </Popover>
-            <CollapseWrap>
-              {layoutSideCollapse && (
-                <CollapseWrapItem onClick={onChangeCollapse}>
-                  <CommonIconFont
-                    type={layoutSideCollapse ? 'outdent' : 'indent'}
-                    size={20}
-                  />
-                  <div>{layoutSideCollapse ? t('fold') : t('expand')}</div>
-                </CollapseWrapItem>
-              )}
-              {!layoutSideCollapse && (
-                <Tooltip title={layoutSideCollapse ? t('fold') : t('expand')}>
-                  <CloseWrap width={32} height={32} onClick={onChangeCollapse}>
-                    <CommonIconFont
-                      type={layoutSideCollapse ? 'outdent' : 'indent'}
-                      size={20}
-                    />
-                  </CloseWrap>
-                </Tooltip>
-              )}
-            </CollapseWrap>
-          </LayoutSide>
+          <LayoutSideIndex />
           <LayoutContent isOpen={layoutSideCollapse}>
             <LayoutHeader
               onClick={() => {
@@ -464,7 +175,10 @@ const LayoutIndex = () => {
                 closeScreenModal()
                 dispatch(changeFreedVisibleVisible(false))
               }}
-            ></LayoutHeader>
+            >
+              <LayoutHeaderLeft />
+              <LayoutHeaderRight />
+            </LayoutHeader>
             <MainContent>
               <Outlet />
             </MainContent>

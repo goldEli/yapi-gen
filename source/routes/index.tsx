@@ -32,7 +32,7 @@ const routes = [
     element: <VideoTeachingDetail />,
   },
   {
-    path: 'Layout',
+    path: '',
     element: lazy(() => import('@/views/Layout')),
     children: [
       {

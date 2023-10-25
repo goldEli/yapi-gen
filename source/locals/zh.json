@@ -2471,5 +2471,11 @@
   "resigned": "已移除",
   "working": "",
   "removedSuccessfully": "移除成功",
-  "failedToObtainVerificationCode": "验证码获取失败"
+  "failedToObtainVerificationCode": "验证码获取失败",
+  "moreApplications": "更多应用",
+  "videoTutorial": "视频教程",
+  "helpManual": "帮助手册",
+  "usageFeedback": "使用反馈",
+  "operationShortcutKeys": "操作快捷键",
+  "helpCenter": "帮助中心"
 }
