@@ -23,6 +23,7 @@ import { getMessage } from './Message'
 import { updateAffairsTableParams } from '@/services/affairs'
 import { updateFlawTableParams } from '@/services/flaw'
 import { setIsUpdateAddWorkItem } from '@store/project'
+import useAddUserModal from '@/hooks/useAddUserModal'
 
 const LimitText = styled.div`
   width: 192px;
@@ -97,6 +98,7 @@ interface Props {
 }
 
 const TableQuickEdit = (props: Props) => {
+  const { AddUserModalElement, open } = useAddUserModal()
   const info = useGetloginInfo()
   const [t] = useTranslation()
   const [isShowControl, setIsShowControl] = useState(false)
@@ -335,6 +337,17 @@ const TableQuickEdit = (props: Props) => {
         }))
         .filter((i: any) => i.value !== info)
       resultValue.value = arr1.concat(arr12)
+
+      console.log(props?.defaultText)
+
+      open({
+        type: 1,
+        people: props?.defaultText,
+        onConfirm: e => {
+          console.log(e)
+          onChange(e.map(l => l.id))
+        },
+      })
     } else if (props.keyText === 'class_id') {
       // 获取需求分类的下拉数据
       const response = projectInfoValues?.filter(
@@ -354,6 +367,7 @@ const TableQuickEdit = (props: Props) => {
     }
 
     setParams(resultValue)
+
     setTimeout(() => {
       inputRef.current?.focus()
     }, 100)
@@ -386,6 +400,8 @@ const TableQuickEdit = (props: Props) => {
 
   // 操作框改变
   const onChange = async (newValue: any, type?: any) => {
+    console.log(newValue, type, 'fffffffffffffffffff')
+
     if (props.item?.categoryConfigList[props.keyText] === 1 && !newValue) {
       getMessage({
         msg: `${props.keyText}${t('is_required')}`,
@@ -594,7 +610,7 @@ const TableQuickEdit = (props: Props) => {
             )}
           </>
         )}
-
+      {AddUserModalElement}
       {/* 不能操作的并且不是详情快捷操作，只展示 */}
       {props.item?.categoryConfigList &&
         !Object.keys(props.item?.categoryConfigList).includes(props.keyText) &&
