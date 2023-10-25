@@ -2470,5 +2470,6 @@
   "numberOfTransactions": "事务数",
   "resigned": "已移除",
   "working": "",
-  "removedSuccessfully": "移除成功"
+  "removedSuccessfully": "移除成功",
+  "failedToObtainVerificationCode": "验证码获取失败"
 }
