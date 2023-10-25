@@ -476,3 +476,47 @@ export const CompanyCards = styled.div`
   padding: 0 16px;
   padding-top: 8px;
 `
+
+export const PersonalHead = styled.div`
+  margin-top: 15px;
+`
+
+export const LineBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const Line = styled.div`
+  margin-top: 24px;
+  color: var(--neutral-n2);
+  white-space: nowrap;
+`
+
+export const Line2 = styled.div`
+  margin-top: 24px;
+  color: var(--neutral-n1-d1);
+  max-width: 70%;
+  text-align: right;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`
+
+export const MenuItemBox = styled.div`
+  height: 40px;
+  font-size: 14px;
+  color: var(--neutral-n2);
+  display: flex;
+  align-items: center;
+  padding: 0px 16px;
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    background: var(--hover-d3);
+    color: var(--neutral-n1-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+`

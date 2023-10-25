@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-leaked-render */
-import { Popover, Space } from 'antd'
+import { Popover, Space, Tooltip, message } from 'antd'
 import {
   LayoutHeaderRightWrap,
   MenuItem,
@@ -17,6 +17,11 @@ import {
   CompanyCards,
   HeaderUserInfoWrap,
   HeaderItemWrap,
+  PersonalHead,
+  LineBox,
+  Line,
+  Line2,
+  MenuItemBox,
 } from '../style'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -28,12 +33,15 @@ import { getMessage } from '@/components/Message'
 import { getLoginDetail } from '@store/user/user.thunk'
 import { setIsRefresh } from '@store/user'
 import CommonModal from '@/components/CommonModal'
-import { CompanyCard } from '@/views/Container/style'
-import { getCompanyList, updateCompany } from '@/services/user'
+import { CompanyCard, RobotButton } from '@/views/Container/style'
+import { getCompanyList, loginOut, updateCompany } from '@/services/user'
 import { changeKeyBoardVisible } from '@store/SiteNotifications'
 import { changeFreedVisibleVisible } from '@store/feedback'
 import SystemFeedback from '@/components/SystemFeedback/SystemFeedback'
 import KeyBoardDrawer from '@/views/SiteNotifications/components/KeyBoardDrawer/KeyBoardDrawer'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { useNavigate } from 'react-router-dom'
+import IconFont from '@/components/IconFont'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -112,13 +120,22 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
   )
 }
 
-const LayoutHeaderRight = () => {
+interface LayoutHeaderRightProps {
+  onChangeReportAssistantModalObj(value: any): void
+}
+
+const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { userInfo } = useSelector(store => store.user)
   const { language } = useSelector(store => store.global)
   // 帮助中心展开
   const [isHelpVisible, setIsHelpVisible] = useState(false)
+  // 我的
+  const [isMineVisible, setIsMineVisible] = useState(false)
+  // 最近
+  const [isRecentlyVisible, setIsRecentlyVisible] = useState(false)
   // 头像展开
   const [isVisible, setIsVisible] = useState(false)
   // 打开个人资料
@@ -164,6 +181,51 @@ const LayoutHeaderRight = () => {
       name: t('operationShortcutKeys'),
       key: 'keyboard',
       icon: 'keyboard',
+    },
+  ]
+
+  // 个人资料字段
+  const labelList = [
+    {
+      label: t('head_portrait'),
+      key: 'avatar',
+      value: userInfo.avatar,
+    },
+    {
+      label: t('common.phone'),
+      value: userInfo.account,
+    },
+    {
+      label: t('common.email'),
+      value: userInfo.email,
+    },
+    {
+      label: t('common.nickname'),
+      value: userInfo.nickname,
+    },
+    {
+      label: t('common.name'),
+      value: userInfo.name,
+    },
+    {
+      label: t('common.sex'),
+      value: userInfo.gender === 1 ? t('common.male') : t('common.female'),
+    },
+    {
+      label: t('container.department'),
+      value: userInfo.department_name,
+    },
+    {
+      label: t('common.job'),
+      value: userInfo?.position_name,
+    },
+    {
+      label: t('team'),
+      value: userInfo?.teams?.join(';'),
+    },
+    {
+      label: t('permission_group'),
+      value: userInfo.group_name,
     },
   ]
 
@@ -238,6 +300,17 @@ const LayoutHeaderRight = () => {
     }
   }
 
+  // 退出登录
+  const onToLoginOut = async () => {
+    message.destroy()
+    sessionStorage.removeItem('saveRouter')
+    const res = await loginOut()
+    if (res.code === 0) {
+      localStorage.clear()
+      navigate('/login')
+    }
+  }
+
   const userContent = (
     <UserInfoWrap>
       <UserInfoTop>
@@ -296,6 +369,48 @@ const LayoutHeaderRight = () => {
     </ChangeItems>
   )
 
+  // 日报机器人
+  const contents = (
+    <div style={{ padding: '4px 0px' }}>
+      <MenuItemBox
+        onClick={() =>
+          props?.onChangeReportAssistantModalObj?.({
+            visible: true,
+            type: 'project',
+          })
+        }
+      >
+        <IconFont
+          style={{
+            fontSize: 16,
+            color: 'var(--neutral-n3) !important',
+            marginRight: 8,
+          }}
+          type="folder-open-nor"
+        />
+        <span>{t('projectDaily')}</span>
+      </MenuItemBox>
+      <MenuItemBox
+        onClick={() =>
+          props?.onChangeReportAssistantModalObj?.({
+            visible: true,
+            type: 'user',
+          })
+        }
+      >
+        <IconFont
+          style={{
+            fontSize: 16,
+            marginRight: 8,
+            color: 'var(--neutral-n3) !important',
+          }}
+          type="user"
+        />
+        <span>{t('singleDaily')}</span>
+      </MenuItemBox>
+    </div>
+  )
+
   return (
     <LayoutHeaderRightWrap>
       <KeyBoardDrawer />
@@ -331,6 +446,94 @@ const LayoutHeaderRight = () => {
           </div>
         </CompanyCards>
       </CommonModal>
+
+      {/* 个人资料 */}
+      <CommonModal
+        onClose={() => {
+          setIsInfoVisible(false)
+          setIsVisible(false)
+        }}
+        isVisible={isInfoVisible}
+        title={t('personal_data') as string}
+        isShowFooter
+        width={420}
+      >
+        <div style={{ padding: '0 24px 32px' }}>
+          <div>
+            {labelList?.map((i: any) => (
+              <LineBox key={i.label}>
+                <Line key={i.label}>{i.label ? i.label : '-'}</Line>
+                {i.key === 'avatar' && (
+                  <PersonalHead>
+                    <CommonUserAvatar size="large" avatar={userInfo.avatar} />
+                  </PersonalHead>
+                )}
+                {i.key !== 'avatar' && (
+                  <Tooltip title={i.value} placement="topRight">
+                    <Line2 key={i.label}>{i.value || '--'}</Line2>
+                  </Tooltip>
+                )}
+              </LineBox>
+            ))}
+          </div>
+        </div>
+      </CommonModal>
+
+      {/* 退出登录 */}
+      <DeleteConfirm
+        title={t('confirmation_prompt') as string}
+        text={t('are_you_sure_you_want_to_log_out') as string}
+        isVisible={isConfirmLogout}
+        onChangeVisible={() => setIsConfirmLogout(!isConfirmLogout)}
+        onConfirm={onToLoginOut}
+      />
+
+      {/* 日报机器人 只有项目内部和汇报才有机器人 */}
+      {location.href.includes('/Project/') ||
+      location.href.includes('/Report') ? (
+        <RobotButton id="robotButton">
+          <Popover
+            placement="bottomLeft"
+            content={contents}
+            trigger="hover"
+            getPopupContainer={() => document.body}
+            overlayClassName="popover_yang"
+          >
+            <img
+              height={46}
+              src={
+                language === 'zh'
+                  ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/Robot.png'
+                  : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/RobotEn.png'
+              }
+            />
+          </Popover>
+        </RobotButton>
+      ) : null}
+
+      <Popover
+        content={helpContent}
+        open={isRecentlyVisible}
+        onOpenChange={setIsRecentlyVisible}
+        placement="bottomLeft"
+      >
+        <HeaderItemWrap isActive={isRecentlyVisible}>
+          <div>{t('recently')}</div>
+          <CommonIconFont type="down" size={16} />
+        </HeaderItemWrap>
+      </Popover>
+
+      <Popover
+        content={helpContent}
+        open={isMineVisible}
+        onOpenChange={setIsMineVisible}
+        placement="bottomLeft"
+      >
+        <HeaderItemWrap isActive={isMineVisible}>
+          <div>{t('container.mine')}</div>
+          <CommonIconFont type="down" size={16} />
+        </HeaderItemWrap>
+      </Popover>
 
       <Popover
         content={helpContent}

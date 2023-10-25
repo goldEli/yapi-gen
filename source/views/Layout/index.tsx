@@ -177,7 +177,9 @@ const LayoutIndex = () => {
               }}
             >
               <LayoutHeaderLeft />
-              <LayoutHeaderRight />
+              <LayoutHeaderRight
+                onChangeReportAssistantModalObj={setReportAssistantModalObj}
+              />
             </LayoutHeader>
             <MainContent>
               <Outlet />
