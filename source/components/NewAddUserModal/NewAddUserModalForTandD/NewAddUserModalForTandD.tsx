@@ -120,7 +120,7 @@ const Row = styled.div`
 `
 const RightPerson = styled.div`
   /* overflow: auto; */
-  width: 300px;
+  width: 395px;
   height: 100%;
   padding-left: 24px;
 `
@@ -143,16 +143,16 @@ const Header = styled.div`
   }
 `
 export const ListItem = styled.div`
-  width: 276px;
+  /* width: 276px; */
   height: 36px;
   line-height: 36px;
   border-radius: 6px;
-  padding: 0 16px;
+  padding: 0 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   .del {
-    display: none;
+    display: block;
   }
   & span:first-child {
     width: 24px;
@@ -163,13 +163,9 @@ export const ListItem = styled.div`
   & span:last-child {
     color: var(--primary-d2);
   }
-  &:hover {
-    background: var(--hover-d2);
-    cursor: pointer;
-  }
-  &:hover .del {
-    display: block;
-  }
+
+  background: var(--hover-d2);
+  cursor: pointer;
 `
 const TreeStyle = styled(DirectoryTree)`
   width: 216px;
@@ -909,7 +905,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       title={false}
       closable={false}
       bodyStyle={{ padding: '0 4px 0 0' }}
-      width={props?.width || 640}
+      width={props?.width || 740}
       maskClosable={false}
       destroyOnClose
       keyboard={false}
@@ -1065,7 +1061,11 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
             style={{
               overflow: 'scroll',
               height: '425px',
-              width: '295px',
+              width: '395px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 8,
+              padding: '16px 0',
             }}
           >
             {personData.length >= 1
@@ -1079,7 +1079,11 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                     <IconFont
                       className="del"
                       type="close"
-                      style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
+                      style={{
+                        fontSize: 14,
+                        color: 'var(--neutral-n3)',
+                        marginLeft: '5px',
+                      }}
                       onClick={() => delPersonDataList(el)}
                     />
                   </ListItem>
