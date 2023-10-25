@@ -145,3 +145,20 @@ export const deleteKanbanGroup = async (
   const res = await http.delete('deleteKanbanGroup', params)
   return res
 }
+
+export const getNewkanbanGroups = async (params: any) => {
+  const res = await http.get('/b/project/kanban/groups', params)
+  return res.data
+}
+export const getNewkanbanConfig = async (params: any) => {
+  const res = await http.get('/b/project/kanban/config', params)
+  return res.data
+}
+export const getNewkanbanStoriesOfPaginate = async (params: any) => {
+  const res = await http.get('/b/project/kanban/storiesOfPaginate', params)
+  return res
+}
+export const getNewkanbanStoriesOfList = async (params: any) => {
+  const res = await http.get('/b/project/kanban/storiesOfList', params)
+  return res
+}

@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
@@ -25,6 +26,7 @@ import _ from 'lodash'
 import { Options } from '@/components/SelectOptionsNormal'
 import { produce } from 'immer'
 import { ViewItem } from '@/views/ProjectSetting/components/KanBanSetting/SelectOptions'
+import { getNewkanbanConfig, getNewkanbanGroups } from '@/services/kanban'
 
 const name = 'kanBan'
 
@@ -435,10 +437,21 @@ export const getKanbanConfig = createAsyncThunk(
   `${name}/getKanbanConfig`,
   async (params: API.KanbanConfig.GetKanbanConfig.Params) => {
     console.log(params)
-
     const res = await services.kanbanConfig.getKanbanConfig(params)
-    console.log(res)
     return res.data
+
+    // const res = await getNewkanbanConfig({
+    //   ...params,
+    //   id: undefined,
+    //   kanban_config_id: 12,
+    // })
+    // console.log(res)
+
+    // return res.columns.map((i: any) => {
+    //   console.log(i)
+
+    //   return { ...i, stories: [] }
+    // })
   },
 )
 
@@ -497,24 +510,39 @@ export const getKanbanByGroup = createAsyncThunk(
     }
 
     if (type === 'none') {
+      const res_config = await getNewkanbanConfig(params)
+      console.log(res_config, 'res_config新的配置')
+
       const res = await services.kanban.getKanban(params)
+      console.log(res.data, 'res.data老的配置')
       store.dispatch(setSpinning(false))
       return [
         {
           // 无分组id
           id: 0,
           name: '',
-          content_txt: '',
+          content_txt: '1',
           columns: res.data,
+          // columns: res_config.columns.map((i: any) => {
+          //   console.log(i)
+
+          //   return { ...i, stories: [] }
+          // }),
         },
       ]
     }
+    const myres = await getNewkanbanGroups({
+      ...params,
+      group_by: type,
+    })
+    console.log(myres, 'myres新的分类')
 
     const res = await services.kanban.getKanbanByGroup({
       ...params,
       group_by: type,
     })
     store.dispatch(setSpinning(false))
+    console.log(res.data, 'res.data老的分类')
 
     return res.data
   },

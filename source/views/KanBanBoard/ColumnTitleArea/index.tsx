@@ -79,6 +79,8 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
       }
     }, 500)
   }, [ColumnTitleRef.current])
+  console.log(kanbanConfig?.columns, 'kanbanConfig?.columns')
+
   return (
     <ColumnTitleAreaBox ref={refBox}>
       {kanbanConfig?.columns?.map(item => {

@@ -166,7 +166,6 @@ const ForgetPassword = (props: FProps) => {
     }
 
     const res = await editPassword(data)
-    console.log(res)
 
     if (res.code === 0) {
       console.log('成功')
