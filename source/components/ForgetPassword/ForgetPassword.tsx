@@ -111,6 +111,18 @@ const ForgetPassword = (props: FProps) => {
       })
     }
   }
+  const onCheckSecret4 = async () => {
+    if (form2.password) {
+      if (bP !== 3) {
+        console.log(errorCheck)
+        setFocusNumber(2)
+        setErrorState(true)
+        setErrorCheck({
+          password: t('inconsistentOrWeakPasswords'),
+        })
+      }
+    }
+  }
   const onCheckSecret3 = async () => {
     if (form2.password && form2.password2) {
       if (form2.password !== form2.password2) {
@@ -119,6 +131,7 @@ const ForgetPassword = (props: FProps) => {
         setErrorState(true)
         setErrorCheck({
           password2: t('passwordsDoNotMatch'),
+          password: t('passwordsDoNotMatch'),
         })
       }
       if (bP !== 3) {
@@ -127,6 +140,7 @@ const ForgetPassword = (props: FProps) => {
         setErrorState(true)
         setErrorCheck({
           password2: t('inconsistentOrWeakPasswords'),
+          password: t('inconsistentOrWeakPasswords'),
         })
       }
     }
@@ -300,7 +314,7 @@ const ForgetPassword = (props: FProps) => {
           type={show}
           onChangeEvent={handleInputChange}
           onChangeShow={onChangeShow}
-          onCheckSecret={onCheckSecret3}
+          onCheckSecret={onCheckSecret4}
           isHighlight={focusNumber === 2 || focusNumber === 5}
           isErrorHighlight={
             (focusNumber === 2 || focusNumber === 5) && errorState

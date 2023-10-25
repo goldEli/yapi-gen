@@ -209,6 +209,14 @@ export default forwardRef((props: any, ref: any) => {
       {props.name === 'phone' && props?.errorCheck?.phone ? (
         <span className={style.hint}>{props?.errorCheck?.phone}</span>
       ) : null}
+      {props.name === 'password' && props?.errorCheck?.password ? (
+        <span
+          style={{ bottom: i18n.language === 'zh' ? '-20px' : '-40px' }}
+          className={style.hint}
+        >
+          {props?.errorCheck?.password}
+        </span>
+      ) : null}
       {props.name === 'password2' && props?.errorCheck?.password2 ? (
         <span
           style={{ bottom: i18n.language === 'zh' ? '-20px' : '-40px' }}
