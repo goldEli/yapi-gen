@@ -38,6 +38,8 @@ const DropStatusArea = styled.div`
   }
 `
 const Issues: React.FC<IssuesProps> = props => {
+  console.log(props, '需求列表的props')
+
   const { issues, groupId } = props
   // const mockData = useRef(Array.from({ length: 10 }))
 

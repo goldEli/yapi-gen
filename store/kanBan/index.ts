@@ -210,7 +210,7 @@ const slice = createSlice({
       state.kanbanInfoByGroup = action.payload
     })
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
-      console.log(action.payload, 'action.payload')
+      console.log(action.payload, 'action.payload改变看板数据')
 
       state.kanbanConfig = action.payload
     })

@@ -32,6 +32,7 @@ declare namespace Model.KanbanConfig {
     project_id?: number
   }
   interface Column {
+    story_count: number
     id: number
     kanban_config_id: number
     name: string

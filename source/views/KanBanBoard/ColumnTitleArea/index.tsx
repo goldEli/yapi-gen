@@ -79,7 +79,6 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
       }
     }, 500)
   }, [ColumnTitleRef.current])
-  console.log(kanbanConfig?.columns, 'kanbanConfig?.columns')
 
   return (
     <ColumnTitleAreaBox ref={refBox}>
@@ -98,19 +97,19 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
           return res
         }, [])
         storyData = [...new Set(storyData.flat())]
-        const num = storyData.length
+
         return (
           <ColumnTitle
             key={item.id}
             ref={ColumnTitleRef}
-            data-num={num}
+            data-num={item.story_count}
             data-max_num={item.max_num}
           >
             <Tooltip title={item.name}>
               <div className="name">{item.name}</div>
             </Tooltip>
-            （{num}）
-            {num > item.max_num && (
+            （{item.story_count}）
+            {item.story_count > item.max_num && (
               <Tooltip title={t('other.maxEd')}>
                 <MaxText>
                   {t('maximum')}：{item.max_num}

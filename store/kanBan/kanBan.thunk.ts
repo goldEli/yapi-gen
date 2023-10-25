@@ -437,21 +437,15 @@ export const getKanbanConfig = createAsyncThunk(
   `${name}/getKanbanConfig`,
   async (params: API.KanbanConfig.GetKanbanConfig.Params) => {
     console.log(params)
-    const res = await services.kanbanConfig.getKanbanConfig(params)
-    return res.data
-
-    // const res = await getNewkanbanConfig({
-    //   ...params,
-    //   id: undefined,
-    //   kanban_config_id: 12,
-    // })
-    // console.log(res)
-
-    // return res.columns.map((i: any) => {
-    //   console.log(i)
-
-    //   return { ...i, stories: [] }
-    // })
+    const res2 = await getNewkanbanConfig({
+      ...params,
+      id: undefined,
+      kanban_config_id: params.id,
+    })
+    console.log(res2, 'new看板配置')
+    // const res = await services.kanbanConfig.getKanbanConfig(params)
+    // console.log(res.data,'第一次获取的看板配置数据');
+    return { ...res2, kk: 1 }
   },
 )
 
@@ -521,13 +515,13 @@ export const getKanbanByGroup = createAsyncThunk(
           // 无分组id
           id: 0,
           name: '',
-          content_txt: '1',
-          columns: res.data,
-          // columns: res_config.columns.map((i: any) => {
-          //   console.log(i)
+          content_txt: '',
+          // columns: res.data,
+          columns: res_config.columns.map((i: any) => {
+            console.log(i)
 
-          //   return { ...i, stories: [] }
-          // }),
+            return { ...i, stories: [] }
+          }),
         },
       ]
     }
@@ -536,15 +530,15 @@ export const getKanbanByGroup = createAsyncThunk(
       group_by: type,
     })
     console.log(myres, 'myres新的分类')
-
+    store.dispatch(setSpinning(false))
     const res = await services.kanban.getKanbanByGroup({
       ...params,
       group_by: type,
     })
-    store.dispatch(setSpinning(false))
+
     console.log(res.data, 'res.data老的分类')
 
-    return res.data
+    return myres
   },
 )
 
