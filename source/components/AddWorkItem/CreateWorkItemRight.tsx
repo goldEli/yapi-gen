@@ -16,6 +16,7 @@ import StateTag from '../StateTag'
 import { PriorityWrap, SeverityWrap } from '../StyleCommon'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import { setAddWorkItemParentList } from '@store/project'
+import useAddUserModal from '@/hooks/useAddUserModal'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -67,6 +68,7 @@ const CreateDemandRight = (props: Props) => {
   const [severity, setSeverity] = useState<any>(0)
   const [isShowFields, setIsShowFields] = useState(false)
   const [searchVal, setSearchVal] = useState<any>('')
+  const { AddUserModalElement, open } = useAddUserModal()
   const {
     projectInfoValues,
     filterParamsModal,
@@ -549,6 +551,21 @@ const CreateDemandRight = (props: Props) => {
               : 'multiple'
           }
           showSearch
+          onFocus={() => {
+            console.log(item.content)
+            if (item.content === 'users_copysend_name') {
+              open({
+                type: 1,
+                people: form.getFieldValue('users_copysend_name'),
+                onConfirm: e => {
+                  console.log(e)
+                  form.setFieldsValue({
+                    users_copysend_name: e.map(i => i.id),
+                  })
+                },
+              })
+            }
+          }}
           placeholder={t('common.pleaseSelect')}
           getPopupContainer={(node: any) => node}
           allowClear
@@ -717,6 +734,7 @@ const CreateDemandRight = (props: Props) => {
 
   return (
     <RightWrap>
+      {AddUserModalElement}
       <Form layout="vertical" form={form} disabled={!props.isCreateDemand}>
         {props?.projectId && props.workStatusList?.list?.length > 0 && (
           <Form.Item
