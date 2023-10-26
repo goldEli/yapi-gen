@@ -114,26 +114,53 @@ export const MainContent = styled.div`
 `
 
 // 左侧侧边栏样式
-export const LogoWrap = styled.div<{ isOpen?: boolean }>`
-  height: ${props => (props.isOpen ? 28 : 68)}px;
-  width: ${props => (props.isOpen ? 152 : 64)}px;
-  background: gray;
-  margin-bottom: ${props => (props.isOpen ? 24 : 16)}px;
-  margin-left: ${props => (props.isOpen ? 12 : 0)}px;
+export const NotOpenLogoWrap = styled.div`
+  height: 68px;
+  width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+  .img {
+    width: 40px;
+    height: 24px;
+  }
+`
+
+export const OpenLogoWrap = styled.div`
+  height: 40px;
+  width: 152px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 0 12px;
+  .logo {
+    width: 28px;
+    height: 28px;
+  }
+  .img {
+    width: 96px;
+    height: 24px;
+    margin-left: 8px;
+  }
 `
 
 export const OtherSystemMenuNotOpen = styled.div`
-  width: 68px;
-  height: 64px;
-  background: var(--neutral-n6-d1);
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   display: flex;
   align-items: center;
+  border-radius: 50%;
+  background: var(--neutral-n6-d1);
   justify-content: center;
 `
 
 export const OtherSystemMenuOpen = styled.div`
-  height: 28px;
+  height: 40px;
   width: 152px;
   border-radius: 8px;
   padding: 0 12px;
@@ -141,6 +168,9 @@ export const OtherSystemMenuOpen = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+  .img {
+    margin-left: 12px;
+  }
 `
 
 export const notOpenSideMenu = css`

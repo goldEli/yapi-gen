@@ -2,7 +2,6 @@
 import { useDispatch, useSelector } from '@store/index'
 import {
   LayoutSide,
-  LogoWrap,
   CollapseWrap,
   CollapseWrapItem,
   notOpenSideMenu,
@@ -18,6 +17,8 @@ import {
   MoreOtherSystemWrap,
   MoreOtherSystemItem,
   MoreOtherPopover,
+  NotOpenLogoWrap,
+  OpenLogoWrap,
 } from '../style'
 import { Badge, Popover, Tooltip } from 'antd'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -132,27 +133,18 @@ const LayoutSideIndex = () => {
 
   return (
     <LayoutSide isOpen={layoutSideCollapse}>
-      {isLogoChange && (
-        <>
-          <MoreOtherPopover
-            content={moreOtherSystem}
-            open
-            placement="bottomLeft"
-            onOpenChange={(state: boolean) =>
-              state ? void 0 : onChangeLogo(false)
-            }
-          >
-            {layoutSideCollapse && (
-              <OtherSystemMenuOpen>
-                <CommonIconFont
-                  type="menu-02"
-                  size={24}
-                  color="var(--neutral-n2)"
-                />
-                <div>其他系统</div>
-              </OtherSystemMenuOpen>
-            )}
-            {!layoutSideCollapse && (
+      {/* 折叠状态下的 */}
+      {!layoutSideCollapse && (
+        <NotOpenLogoWrap>
+          {isLogoChange && (
+            <MoreOtherPopover
+              content={moreOtherSystem}
+              open
+              placement="bottomLeft"
+              onOpenChange={(state: boolean) =>
+                state ? void 0 : onChangeLogo(false)
+              }
+            >
               <OtherSystemMenuNotOpen>
                 <CommonIconFont
                   type="menu-02"
@@ -160,18 +152,67 @@ const LayoutSideIndex = () => {
                   color="var(--neutral-n2)"
                 />
               </OtherSystemMenuNotOpen>
-            )}
-          </MoreOtherPopover>
-          {/* 占位使用 */}
-          <div style={{ width: 60, height: layoutSideCollapse ? 24 : 20 }} />
+            </MoreOtherPopover>
+          )}
+          {!isLogoChange && (
+            <img
+              onMouseEnter={() => onChangeLogo(true)}
+              className="logo"
+              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-40px.svg"
+              alt=""
+            />
+          )}
+          <img
+            className="img"
+            src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-40px.svg"
+            alt=""
+          />
+        </NotOpenLogoWrap>
+      )}
+      {/* 展开的交互 */}
+      {layoutSideCollapse && (
+        <>
+          {isLogoChange && (
+            <MoreOtherPopover
+              content={moreOtherSystem}
+              open
+              placement="bottomLeft"
+              onOpenChange={(state: boolean) =>
+                state ? void 0 : onChangeLogo(false)
+              }
+            >
+              <OtherSystemMenuOpen>
+                <CommonIconFont
+                  type="menu-02"
+                  size={24}
+                  color="var(--neutral-n2)"
+                />
+                <img
+                  className="img"
+                  src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
+                  alt=""
+                />
+              </OtherSystemMenuOpen>
+            </MoreOtherPopover>
+          )}
+          {!isLogoChange && (
+            <OpenLogoWrap onMouseEnter={() => onChangeLogo(true)}>
+              <img
+                className="logo"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-28px.svg"
+                alt=""
+              />
+              <img
+                className="img"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
+                alt=""
+              />
+            </OpenLogoWrap>
+          )}
         </>
       )}
-      {!isLogoChange && (
-        <LogoWrap
-          onMouseEnter={() => onChangeLogo(true)}
-          isOpen={layoutSideCollapse}
-        />
-      )}
+      {/* 占位使用 */}
+      <div style={{ width: 60, height: layoutSideCollapse ? 24 : 16 }} />
       {menuPermission.menus
         ?.filter((k: any) => k.url !== '/AdminManagement')
         .concat(otherMenu)
@@ -246,7 +287,7 @@ const LayoutSideIndex = () => {
       >
         <div className={layoutSideCollapse ? openSideMenu : notOpenSideMenu}>
           <CommonIconFont type="plus" size={24} color="var(--neutral-n2)" />
-          <div>更多</div>
+          <div>{t('more')}</div>
         </div>
       </Popover>
       <CollapseWrap>
