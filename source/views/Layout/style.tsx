@@ -481,7 +481,7 @@ export const HeaderUserInfoWrap = styled.div<{ isActive?: boolean }>`
 
 export const HeaderItemWrap = styled.div<{ isActive?: boolean }>`
   height: 32px;
-  padding: 0 12px;
+  padding: 0 8px;
   display: flex;
   align-items: center;
   gap: 8px;

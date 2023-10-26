@@ -431,7 +431,7 @@ export const RobotButton = styled.div`
   user-select: none;
   display: flex;
   align-items: center;
-  margin-right: 8px;
+  margin-right: 4px;
   .img {
     height: 46px;
   }
