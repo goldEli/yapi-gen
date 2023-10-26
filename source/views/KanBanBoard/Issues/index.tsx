@@ -43,6 +43,7 @@ const Issues: React.FC<IssuesProps> = props => {
 
   const { issues, groupId } = props
   // const mockData = useRef(Array.from({ length: 10 }))
+  console.log(groupId, '分组ID')
 
   const droppableId = useMemo(() => {
     return handleId(groupId, issues.id)
@@ -68,19 +69,16 @@ const Issues: React.FC<IssuesProps> = props => {
     // 跨分组可拖
     // return !!movingStory && movingStory?.columnId !== columnId
   }, [movingStory, columnId, data, groupId, groupType])
-  console.log(movingStory, 'movingStory', groupType, 'groupType')
+
   // const showStateTransitionList = true
   const [mockData, setMockData] = useState<any>([])
   const [page, setPage] = useState(1)
-  const pageSize = 5
-  const currentPage = 1
-  const startIndex = (currentPage - 1) * pageSize
-  const endIndex = currentPage * pageSize
 
   const fetchData = async () => {
     const res = await getNewkanbanStoriesOfPaginate({
       project_id: projectInfo.id,
       kanban_column_id: issues.id,
+
       pagesize: 10,
       page: page,
     })
@@ -90,7 +88,7 @@ const Issues: React.FC<IssuesProps> = props => {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [groupType, groupId])
 
   const dropCardListContent = (
     <DropCardList
@@ -194,40 +192,7 @@ const Issues: React.FC<IssuesProps> = props => {
           >
             {dropCardListContent}
             {issueCardListContent}
-            {/* <FixedSizeList
-              height={600}
-              width={300}
-              itemSize={140}
-              itemCount={issues.stories?.length}
-            >
-              {({ index, style }: any) => {
-                const newStyle = { ...style, zIndex: 1000 }
-                const story = issues.stories[index]
-                const hidden1 =
-                  !!movingStory &&
-                  (groupType === 'users' || groupType === 'category') &&
-                  movingStory?.groupId !== groupId
-                // 如果当前展示状态转换释放区域，需要隐藏卡片
-                const hidden2 = showStateTransitionList
-                const uuid = `${groupId}-${issues.id}-${story.id}`
-                return (
-                  <div style={newStyle}>
-                    <IssueCard
-                      hidden={hidden1 || hidden2}
-                      uuid={uuid}
-                      key={uuid}
-                      item={story}
-                      index={index}
-                      stories={issues.stories}
-                    />
-                  </div>
-                )
-              }}
-            </FixedSizeList> */}
-            {/* {snapshot.isDraggingOver ? (
-              // 用空div占位来触发滚动条刷新页面
-              <div style={{ height: '100vh' }}></div>
-            ) : null} */}
+
             {provided.placeholder}
           </DropArea>
         )

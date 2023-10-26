@@ -171,6 +171,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       <TitleBtn
         onClick={e => {
           e.stopPropagation()
+
           onChange(issuesGroup.id)
         }}
       >
@@ -202,6 +203,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
               />
             )
           }
+
           return (
             <Issues key={column.id} issues={column} groupId={issuesGroup.id} />
           )

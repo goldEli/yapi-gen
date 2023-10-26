@@ -507,8 +507,8 @@ export const getKanbanByGroup = createAsyncThunk(
       const res_config = await getNewkanbanConfig(params)
       console.log(res_config, 'res_config新的配置')
 
-      const res = await services.kanban.getKanban(params)
-      console.log(res.data, 'res.data老的配置')
+      // const res = await services.kanban.getKanban(params)
+      // console.log(res.data, 'res.data老的配置')
       store.dispatch(setSpinning(false))
       return [
         {
@@ -531,12 +531,12 @@ export const getKanbanByGroup = createAsyncThunk(
     })
     console.log(myres, 'myres新的分类')
     store.dispatch(setSpinning(false))
-    const res = await services.kanban.getKanbanByGroup({
-      ...params,
-      group_by: type,
-    })
+    // const res = await services.kanban.getKanbanByGroup({
+    //   ...params,
+    //   group_by: type,
+    // })
 
-    console.log(res.data, 'res.data老的分类')
+    // console.log(res.data, 'res.data老的分类')
 
     return myres
   },
