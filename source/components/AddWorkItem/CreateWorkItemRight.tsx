@@ -543,6 +543,7 @@ const CreateDemandRight = (props: Props) => {
     ) {
       nodeComponent = (
         <CustomSelect
+          open={item.content === 'users_copysend_name' ? false : undefined}
           style={{ width: '100%' }}
           showArrow
           mode={
@@ -552,7 +553,6 @@ const CreateDemandRight = (props: Props) => {
           }
           showSearch
           onFocus={() => {
-            console.log(item.content)
             if (item.content === 'users_copysend_name') {
               open({
                 type: 1,

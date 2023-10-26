@@ -24,7 +24,9 @@ export default forwardRef((props: any, ref: any) => {
   const [border, setBorder] = useState(false)
   const [getMsg, setGetMsg] = useState(1)
   const [time, setTime] = useState(0)
-  const [conutryCode, setConutryCode] = useState(localStorage.areacode || '+86')
+  const [conutryCode, setConutryCode] = useState(
+    sessionStorage.areacode || '+86',
+  )
   const myForm = useRef<any>()
 
   const onKeyChange = (e: any) => {
@@ -55,7 +57,7 @@ export default forwardRef((props: any, ref: any) => {
   const onGetMsg = async (num?: number) => {
     setGetMsg(num)
     if (num === 2) {
-      const a = await props?.onGetMsg(localStorage.areacode || '+86')
+      const a = await props?.onGetMsg(sessionStorage.areacode || '+86')
       console.log(a, '状态机')
       if (a === 1) {
         setTime(60)
@@ -67,28 +69,30 @@ export default forwardRef((props: any, ref: any) => {
   }
 
   useEffect(() => {
-    const savedSeconds = localStorage.getItem('time')
+    const savedSeconds = sessionStorage.getItem('time')
 
     if (time === 0) {
       setGetMsg(1)
-      // localStorage.removeItem('time')
+      // sessionStorage.removeItem('time')
       return
     }
-    const intervalId = setInterval(() => {
+    const intervalId = setTimeout(() => {
       setTime(time - 1)
-      localStorage.setItem('time', time - 1)
+      sessionStorage.setItem('time', time - 1)
     }, 1000)
 
     return () => {
-      clearInterval(intervalId)
-      // localStorage.removeItem('time')
+      sessionStorage
+      clearTimeout(intervalId)
+      // sessionStorage.removeItem('time')
     }
   }, [time])
+
   useEffect(() => {
-    const savedSeconds = localStorage.getItem('time')
+    const savedSeconds = sessionStorage.getItem('time')
     console.log(savedSeconds)
     if (parseInt(savedSeconds) === 0) {
-      localStorage.removeItem('time')
+      sessionStorage.removeItem('time')
     }
     if (savedSeconds) {
       setGetMsg(2)
@@ -99,7 +103,7 @@ export default forwardRef((props: any, ref: any) => {
     const [phoneCode, countryCode] = val.split('/')
 
     setConutryCode(phoneCode)
-    localStorage.areacode = phoneCode
+    sessionStorage.areacode = phoneCode
   }
   const reset = () => {
     setTime(0)
