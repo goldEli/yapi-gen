@@ -50,6 +50,7 @@ const Issues: React.FC<IssuesProps> = props => {
   const mockDataCopy = useRef<any>()
   mockDataCopy.current = issues.stories
   const { movingStory } = useSelector(store => store.kanBan)
+
   const { groupType } = useGroupType()
   const columnId = issues.id
   const { projectInfo } = useSelector(store => store.project)
@@ -67,6 +68,7 @@ const Issues: React.FC<IssuesProps> = props => {
     // 跨分组可拖
     // return !!movingStory && movingStory?.columnId !== columnId
   }, [movingStory, columnId, data, groupId, groupType])
+  console.log(movingStory, 'movingStory', groupType, 'groupType')
   // const showStateTransitionList = true
   const [mockData, setMockData] = useState<any>([])
   const [page, setPage] = useState(1)
@@ -125,7 +127,7 @@ const Issues: React.FC<IssuesProps> = props => {
     const res = await getNewkanbanStoriesOfPaginate({
       project_id: projectInfo.id,
       kanban_column_id: issues.id,
-      pagesize: 10,
+      pagesize: 5,
       page: newPage,
     })
     setTimeout(() => {
@@ -166,7 +168,7 @@ const Issues: React.FC<IssuesProps> = props => {
             key={uuid}
             item={story}
             index={index}
-            stories={issues.stories}
+            stories={mockData}
           />
         )
       })}
