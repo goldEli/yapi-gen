@@ -156,7 +156,7 @@ export const getNewkanbanConfig = async (params: any) => {
 }
 export const getNewkanbanStoriesOfPaginate = async (params: any) => {
   const res = await http.get('/b/project/kanban/storiesOfPaginate', params)
-  return res
+  return res.data
 }
 export const getNewkanbanStoriesOfList = async (params: any) => {
   const res = await http.get('/b/project/kanban/storiesOfList', params)
