@@ -24,6 +24,9 @@ const TreeLine = styled.div`
   }
 `
 const blue_my = css`
+  cursor: pointer;
+  width: 50px;
+  text-align: center;
   &:hover svg {
     color: var(--primary-d1);
   }
@@ -86,13 +89,13 @@ const NewAddShowList = (props: any) => {
                 </div>
 
                 {i.children && i.children.length >= 1 ? (
-                  <span className={blue_my}>
-                    <CommonIconFont
-                      onClick={() =>
-                        i.children && i.children.length >= 1 ? tap(i.id) : null
-                      }
-                      type="right"
-                    />
+                  <span
+                    onClick={() =>
+                      i.children && i.children.length >= 1 ? tap(i.id) : null
+                    }
+                    className={blue_my}
+                  >
+                    <CommonIconFont type="right" />
                   </span>
                 ) : null}
               </TreeLine>
@@ -194,13 +197,13 @@ const NewAddShowList = (props: any) => {
             </div>
 
             {i.children && i.children.length >= 1 ? (
-              <span className={blue_my}>
-                <CommonIconFont
-                  onClick={() =>
-                    i.children && i.children.length >= 1 ? tap(i.id) : null
-                  }
-                  type="right"
-                />
+              <span
+                onClick={() =>
+                  i.children && i.children.length >= 1 ? tap(i.id) : null
+                }
+                className={blue_my}
+              >
+                <CommonIconFont type="right" />
               </span>
             ) : null}
           </TreeLine>
