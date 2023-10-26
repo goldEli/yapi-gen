@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable prefer-regex-literals */
 /* eslint-disable semi */
 /* eslint-disable no-useless-escape */
@@ -73,7 +74,7 @@ const ForgetPassword = (props: FProps) => {
   const [errorMessage, setErrorMessage] = useState('')
   const [focusNumber, setFocusNumber] = useState(0)
   const [form2, setForm2] = useState<any>({
-    phone: '',
+    phone: '' || sessionStorage.getItem('phone'),
     msg: '',
     password: '',
     password2: '',

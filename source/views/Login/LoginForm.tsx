@@ -38,7 +38,7 @@ export default React.memo(
       id: 0,
     })
     const [form2, setForm2] = useState<TForm>({
-      phone: '',
+      phone: '' || sessionStorage.getItem('phone'),
       msg: '',
       code: '',
       captchaId: '',
@@ -517,6 +517,7 @@ export default React.memo(
                         if (form2.phone) {
                           const res = await getMobil(form2.phone, 0, e)
                           if (res.code === 0) {
+                            sessionStorage.setItem('phone', form2.phone)
                             message.success(
                               t('verificationCodeSentSuccessfully'),
                             )
