@@ -139,7 +139,6 @@ export const OtherSystemMenuOpen = styled.div`
   padding: 0 12px;
   background: var(--neutral-n6-d1);
   cursor: pointer;
-  margin-bottom: 24px;
   display: flex;
   align-items: center;
 `

@@ -163,7 +163,7 @@ const LayoutSideIndex = () => {
             )}
           </MoreOtherPopover>
           {/* 占位使用 */}
-          <div style={{ width: 60, height: layoutSideCollapse ? 12 : 20 }} />
+          <div style={{ width: 60, height: layoutSideCollapse ? 24 : 20 }} />
         </>
       )}
       {!isLogoChange && (
