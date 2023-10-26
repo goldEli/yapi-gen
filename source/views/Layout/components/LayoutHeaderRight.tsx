@@ -42,6 +42,8 @@ import KeyBoardDrawer from '@/views/SiteNotifications/components/KeyBoardDrawer/
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
+import QuickMine from './QuickMine'
+import Recently from './Recently'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -499,23 +501,28 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             getPopupContainer={() => document.body}
             overlayClassName="popover_yang"
           >
-            <img
-              height={46}
-              src={
-                language === 'zh'
-                  ? 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/Robot.png'
-                  : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/RobotEn.png'
-              }
-            />
+            <div className="box">
+              <img
+                className="img"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/reportAssistant.png"
+              />
+              <div className="name">{t('dailyAssistant')}</div>
+            </div>
           </Popover>
         </RobotButton>
       ) : null}
 
       <Popover
-        content={helpContent}
+        content={
+          <Recently
+            isVisible={isRecentlyVisible}
+            onClose={() => setIsRecentlyVisible(false)}
+          />
+        }
         open={isRecentlyVisible}
         onOpenChange={setIsRecentlyVisible}
-        placement="bottomLeft"
+        placement="bottomRight"
+        trigger="click"
       >
         <HeaderItemWrap isActive={isRecentlyVisible}>
           <div>{t('recently')}</div>
@@ -524,10 +531,16 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
       </Popover>
 
       <Popover
-        content={helpContent}
+        content={
+          <QuickMine
+            isVisible={isMineVisible}
+            onClose={() => setIsMineVisible(false)}
+          />
+        }
         open={isMineVisible}
         onOpenChange={setIsMineVisible}
         placement="bottomLeft"
+        trigger="click"
       >
         <HeaderItemWrap isActive={isMineVisible}>
           <div>{t('container.mine')}</div>
@@ -540,6 +553,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         open={isHelpVisible}
         onOpenChange={setIsHelpVisible}
         placement="bottomLeft"
+        trigger="click"
       >
         <HeaderItemWrap isActive={isHelpVisible}>
           <div>{t('helpCenter')}</div>
@@ -552,6 +566,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         open={isVisible}
         onOpenChange={onChangeUserPopover}
         placement="bottomRight"
+        trigger="click"
       >
         <HeaderUserInfoWrap isActive={isVisible}>
           <CommonUserAvatar avatar={userInfo.avatar} size="large" />

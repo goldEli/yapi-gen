@@ -281,7 +281,7 @@
   "recent_projects": " recent projects",
   "view_all_projects": " View all projects",
   "have_done": " done",
-  "recently": " recently",
+  "recently": "Recently",
   "last_viewed": " last viewed",
   "recently_created": " Newly created",
   "Check_out_my_work": " Check my work",
@@ -2477,5 +2477,8 @@
   "helpManual": "Help manual",
   "usageFeedback": "Usage feedback",
   "operationShortcutKeys": "Operation shortcut keys",
-  "helpCenter": "Help Center"
+  "helpCenter": "Help Center",
+  "dailyAssistant": "Daily assistant",
+  "daily": "Daily",
+  "task": "Task"
 }

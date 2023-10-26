@@ -432,6 +432,18 @@ export const RobotButton = styled.div`
   padding-top: 10px;
   padding-right: 24px;
   user-select: none;
+  .box {
+    display: flex;
+    align-items: center;
+    .img {
+      height: 46px;
+    }
+    .name {
+      margin-left: 8px;
+      font-size: 14px;
+      color: var(--neutral-n1-d1);
+    }
+  }
 `
 
 export const MenuItemBox = styled.div`

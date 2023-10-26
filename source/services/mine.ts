@@ -554,6 +554,7 @@ export const getMineNoFinishList: any = async (params: any) => {
             copy_send_users: i.copy_send_users,
             class: i.class,
             project: {
+              name: i.project.name,
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
               permissions: i.project.permissions,
@@ -618,6 +619,7 @@ export const getMineNoFinishList: any = async (params: any) => {
             copy_send_users: i.copy_send_users,
             class: i.class,
             project: {
+              name: i.project.name,
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
               permissions: i.project.permissions,
@@ -813,6 +815,7 @@ export const getMineFinishList: any = async (params: any) => {
           copy_send_users: i.copy_send_users,
           class: i.class,
           project: {
+            name: i.project.name,
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
             permissions: i.project.permissions,

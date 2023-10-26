@@ -2477,5 +2477,8 @@
   "helpManual": "帮助手册",
   "usageFeedback": "使用反馈",
   "operationShortcutKeys": "操作快捷键",
-  "helpCenter": "帮助中心"
+  "helpCenter": "帮助中心",
+  "dailyAssistant": "日报助手",
+  "daily": "日报",
+  "task": "任务"
 }
