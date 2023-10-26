@@ -544,6 +544,7 @@ const TableQuickEdit = (props: Props) => {
           props?.defaultText,
           inputRef,
           onBlur,
+          props.keyText,
         )}
 
       {/* 如果是详情或者是表格上可编辑字段 */}
