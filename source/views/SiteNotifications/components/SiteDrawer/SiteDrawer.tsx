@@ -70,8 +70,8 @@ const SiteDrawer = () => {
   const tabsValue = [
     {
       id: '1',
-      // text: `${t('new1')}(${now ?? 0})`,
-      text: `${t('new1')}(2024)`,
+      text: `${t('new1')}(${now ?? 0})`,
+      // text: `${t('new1')}(2024)`,
     },
     {
       id: '4',
