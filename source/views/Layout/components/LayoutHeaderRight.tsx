@@ -490,10 +490,10 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         onConfirm={onToLoginOut}
       />
 
-      {/* 日报机器人 只有项目内部和汇报才有机器人 */}
-      {location.href.includes('/Project/') ||
-      location.href.includes('/Report') ? (
-        <RobotButton id="robotButton">
+      <Space size={4}>
+        {/* 日报机器人 只有项目内部和汇报才有机器人 */}
+        {location.href.includes('/Project/') ||
+        location.href.includes('/Report') ? (
           <Popover
             placement="bottomLeft"
             content={contents}
@@ -501,78 +501,78 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             getPopupContainer={() => document.body}
             overlayClassName="popover_yang"
           >
-            <div className="box">
+            <RobotButton id="robotButton">
               <img
                 className="img"
                 src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/reportAssistant.png"
               />
               <div className="name">{t('dailyAssistant')}</div>
-            </div>
+            </RobotButton>
           </Popover>
-        </RobotButton>
-      ) : null}
+        ) : null}
 
-      <Popover
-        content={
-          <Recently
-            isVisible={isRecentlyVisible}
-            onClose={() => setIsRecentlyVisible(false)}
-          />
-        }
-        open={isRecentlyVisible}
-        onOpenChange={setIsRecentlyVisible}
-        placement="bottomRight"
-        trigger="click"
-      >
-        <HeaderItemWrap isActive={isRecentlyVisible}>
-          <div>{t('recently')}</div>
-          <CommonIconFont type="down" size={16} />
-        </HeaderItemWrap>
-      </Popover>
+        <Popover
+          content={
+            <Recently
+              isVisible={isRecentlyVisible}
+              onClose={() => setIsRecentlyVisible(false)}
+            />
+          }
+          open={isRecentlyVisible}
+          onOpenChange={setIsRecentlyVisible}
+          placement="bottomRight"
+          trigger="click"
+        >
+          <HeaderItemWrap isActive={isRecentlyVisible}>
+            <div>{t('recently')}</div>
+            <CommonIconFont type="down" size={16} />
+          </HeaderItemWrap>
+        </Popover>
 
-      <Popover
-        content={
-          <QuickMine
-            isVisible={isMineVisible}
-            onClose={() => setIsMineVisible(false)}
-          />
-        }
-        open={isMineVisible}
-        onOpenChange={setIsMineVisible}
-        placement="bottomLeft"
-        trigger="click"
-      >
-        <HeaderItemWrap isActive={isMineVisible}>
-          <div>{t('container.mine')}</div>
-          <CommonIconFont type="down" size={16} />
-        </HeaderItemWrap>
-      </Popover>
+        <Popover
+          content={
+            <QuickMine
+              isVisible={isMineVisible}
+              onClose={() => setIsMineVisible(false)}
+            />
+          }
+          open={isMineVisible}
+          onOpenChange={setIsMineVisible}
+          placement="bottomLeft"
+          trigger="click"
+        >
+          <HeaderItemWrap isActive={isMineVisible}>
+            <div>{t('container.mine')}</div>
+            <CommonIconFont type="down" size={16} />
+          </HeaderItemWrap>
+        </Popover>
 
-      <Popover
-        content={helpContent}
-        open={isHelpVisible}
-        onOpenChange={setIsHelpVisible}
-        placement="bottomLeft"
-        trigger="click"
-      >
-        <HeaderItemWrap isActive={isHelpVisible}>
-          <div>{t('helpCenter')}</div>
-          <CommonIconFont type="down" size={16} />
-        </HeaderItemWrap>
-      </Popover>
+        <Popover
+          content={helpContent}
+          open={isHelpVisible}
+          onOpenChange={setIsHelpVisible}
+          placement="bottomLeft"
+          trigger="click"
+        >
+          <HeaderItemWrap isActive={isHelpVisible}>
+            <div>{t('helpCenter')}</div>
+            <CommonIconFont type="down" size={16} />
+          </HeaderItemWrap>
+        </Popover>
 
-      <Popover
-        content={userContent}
-        open={isVisible}
-        onOpenChange={onChangeUserPopover}
-        placement="bottomRight"
-        trigger="click"
-      >
-        <HeaderUserInfoWrap isActive={isVisible}>
-          <CommonUserAvatar avatar={userInfo.avatar} size="large" />
-          <CommonIconFont type="down-icon" size={12} />
-        </HeaderUserInfoWrap>
-      </Popover>
+        <Popover
+          content={userContent}
+          open={isVisible}
+          onOpenChange={onChangeUserPopover}
+          placement="bottomRight"
+          trigger="click"
+        >
+          <HeaderUserInfoWrap isActive={isVisible}>
+            <CommonUserAvatar avatar={userInfo.avatar} size="large" />
+            <CommonIconFont type="down-icon" size={12} />
+          </HeaderUserInfoWrap>
+        </Popover>
+      </Space>
     </LayoutHeaderRightWrap>
   )
 }

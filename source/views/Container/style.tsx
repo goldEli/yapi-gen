@@ -428,21 +428,17 @@ export const WaitingMenu = styled.div`
 
 export const RobotButton = styled.div`
   cursor: pointer;
-  height: 56px;
-  padding-top: 10px;
-  padding-right: 24px;
   user-select: none;
-  .box {
-    display: flex;
-    align-items: center;
-    .img {
-      height: 46px;
-    }
-    .name {
-      margin-left: 8px;
-      font-size: 14px;
-      color: var(--neutral-n1-d1);
-    }
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  .img {
+    height: 46px;
+  }
+  .name {
+    margin-left: 8px;
+    font-size: 14px;
+    color: var(--neutral-n1-d1);
   }
 `
 

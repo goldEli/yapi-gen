@@ -26,20 +26,44 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from '@/components/StyleCommon'
 import { setLayoutSideCollapse } from '@store/global'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { setCurrentMenu } from '@store/user'
+import { setHeaderParmas, setSave } from '@store/performanceInsight'
+import { setProjectInfo } from '@store/project'
+
+interface MorePopoverComponentProps {
+  onClose(): void
+}
 
 // 更多的展示组件
-const MorePopoverComponent = () => {
+const MorePopoverComponent = (props: MorePopoverComponentProps) => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { menuPermission, menuIconList } = useSelector(store => store.user)
+
+  // 点击跳转后台管理
+  const onToAdmin = () => {
+    const resultMenu = menuPermission?.menus?.filter(
+      (i: any) => i.url === '/AdminManagement',
+    )[0]
+    if (resultMenu) {
+      props.onClose()
+      navigate(resultMenu?.children?.[0]?.url)
+      dispatch({
+        type: 'user/setCurrentMenu',
+        payload: resultMenu,
+      })
+    }
+  }
+
   return (
     <MorePopover>
       <MoreTitle>{t('moreApplications')}</MoreTitle>
       <MorePopoverContent>
         {menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement')
           ?.length > 0 && (
-          <MoreItem>
+          <MoreItem onClick={onToAdmin}>
             <CommonIconFont
               size={24}
               color="var(--neutral-n2)"
@@ -70,6 +94,7 @@ const MorePopoverComponent = () => {
 const LayoutSideIndex = () => {
   const [t] = useTranslation()
   const routerPath = useLocation()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { layoutSideCollapse } = useSelector(store => store.global)
   const { currentMenu, menuIconList, menuPermission } = useSelector(
@@ -81,8 +106,8 @@ const LayoutSideIndex = () => {
 
   // 其他的固定菜单
   const otherMenu: any = [
-    { name: '动态', url: '/Trends' },
-    { name: '我的', url: '/Mine' },
+    { name: '动态', url: '/Trends', id: 1 },
+    { name: '我的', url: '/Mine', id: 2 },
   ]
 
   // 其他系统列表
@@ -108,6 +133,51 @@ const LayoutSideIndex = () => {
     }, 100)
   }
 
+  const onChangeCurrentMenu = (item: any) => {
+    // 效能洞察参数
+    dispatch(
+      setHeaderParmas({
+        iterate_ids: [],
+        projectIds: [],
+        users: [],
+        time: {
+          type: 1,
+          time: '',
+        },
+        view: {
+          title: '',
+          value: 0,
+        },
+        period_time: 'one_month',
+      }),
+    )
+    dispatch(setSave(false))
+
+    // 如果有二级菜单的则取第一条
+    let navigateUrl =
+      item.children?.length > 0 ? item.children[0].url : item.url
+
+    // 如果是工作汇报则默认跳转
+    if (item.url === '/Report') {
+      // navigateUrl = `${item.url}/Review`
+    }
+
+    navigate(navigateUrl)
+    const resultMenu = {
+      ...item,
+      ...{
+        icon: menuIconList?.filter((i: any) =>
+          String(item.url).includes(i.key),
+        )[0]?.normal,
+      },
+    }
+    dispatch(setProjectInfo({}))
+    dispatch({
+      type: 'user/setCurrentMenu',
+      payload: resultMenu,
+    })
+  }
+
   const moreOtherSystem = (
     <MoreOtherSystemWrap>
       {otherSystemList?.map((i: any) => (
@@ -124,9 +194,9 @@ const LayoutSideIndex = () => {
   useEffect(() => {
     // 存储当前选中的菜单信息
     if (menuPermission.menus?.length > 0 || routerPath) {
-      let resultMenu = menuPermission?.menus?.filter((i: any) =>
-        routerPath.pathname?.includes(i.url),
-      )[0]
+      let resultMenu = menuPermission?.menus
+        ?.concat(otherMenu)
+        ?.filter((i: any) => routerPath.pathname?.includes(i.url))[0]
       dispatch(setCurrentMenu(resultMenu))
     }
   }, [menuPermission, routerPath])
@@ -169,6 +239,7 @@ const LayoutSideIndex = () => {
           />
         </NotOpenLogoWrap>
       )}
+
       {/* 展开的交互 */}
       {layoutSideCollapse && (
         <>
@@ -211,14 +282,17 @@ const LayoutSideIndex = () => {
           )}
         </>
       )}
+
       {/* 占位使用 */}
       <div style={{ width: 60, height: layoutSideCollapse ? 24 : 16 }} />
+
       {menuPermission.menus
         ?.filter((k: any) => k.url !== '/AdminManagement')
         .concat(otherMenu)
         ?.map((i: any) => (
           <div
             key={i.id}
+            onClick={() => onChangeCurrentMenu(i)}
             className={`${
               layoutSideCollapse ? openSideMenu : notOpenSideMenu
             } ${currentMenu?.url === i.url ? activeSideMenu : ''}`}
@@ -278,11 +352,12 @@ const LayoutSideIndex = () => {
             <div>{i.name}</div>
           </div>
         ))}
+
       <Popover
         placement="right"
         destroyTooltipOnHide
         open={isPopover}
-        content={<MorePopoverComponent />}
+        content={<MorePopoverComponent onClose={() => setIsPopover(false)} />}
         onOpenChange={setIsPopover}
       >
         <div className={layoutSideCollapse ? openSideMenu : notOpenSideMenu}>
@@ -290,6 +365,7 @@ const LayoutSideIndex = () => {
           <div>{t('more')}</div>
         </div>
       </Popover>
+
       <CollapseWrap>
         {layoutSideCollapse && (
           <CollapseWrapItem onClick={onChangeCollapse}>

@@ -150,7 +150,7 @@ export const counterSlice = createSlice({
               {
                 id: 604,
                 name: '任务',
-                url: '',
+                url: '/Statistics/Task',
                 permission: 'b/project',
                 p_menu: '\u9879\u76ee\u7ba1\u7406',
                 status: 1,
@@ -160,7 +160,7 @@ export const counterSlice = createSlice({
               {
                 id: 605,
                 name: '公司',
-                url: '',
+                url: '/Statistics/Company',
                 permission: '',
                 p_menu: '\u9879\u76ee\u7ba1\u7406',
                 status: 1,

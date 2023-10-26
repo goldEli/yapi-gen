@@ -6,6 +6,7 @@ import { Badge, Popover, Spin } from 'antd'
 export const imgBoxCss = css`
   box-sizing: border-box;
 `
+
 export const footerCss = css`
   display: flex;
   justify-content: end;
@@ -87,8 +88,7 @@ export const LayoutSide = styled.div<{ isOpen?: boolean }>`
 `
 
 export const LayoutContent = styled.div<{ isOpen?: boolean }>`
-  width: ${props =>
-    props.isOpen ? 'calc(100% - 200px)' : 'calc(100% - 80px)'};
+  flex: 1;
   transition: 0.3s;
   min-width: ${props =>
     props.isOpen ? 'calc(1440px - 200px)' : 'calc(1440px - 80px)'};
@@ -108,9 +108,11 @@ export const LayoutHeader = styled.div`
   z-index: 198;
 `
 
-export const MainContent = styled.div`
-  width: 100%;
+export const MainContent = styled.div<{ isOpen?: boolean }>`
+  min-width: ${props =>
+    props.isOpen ? 'calc(1440px - 200px)' : 'calc(1440px - 80px)'};
   height: calc(100% - 56px);
+  overflow-x: auto;
 `
 
 // 左侧侧边栏样式
