@@ -128,8 +128,6 @@ function getTypeComponent(
   inputRef?: any,
   onBlur?: any,
 ) {
-  console.log(defaultValue, 'defaultValue')
-
   let child: any = null
   if (params?.attr === 'date') {
     child = (

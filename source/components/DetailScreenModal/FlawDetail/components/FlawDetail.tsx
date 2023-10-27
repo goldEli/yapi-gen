@@ -174,8 +174,6 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
                 }}
                 onChange={(value: string) => (editorRef2.current = value)}
                 onBlur={() => {
-                  console.log('onBlurEditor()')
-
                   onBlurEditor()
                 }}
               />

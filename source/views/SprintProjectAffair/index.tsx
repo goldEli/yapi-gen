@@ -447,8 +447,6 @@ const SprintProjectAffair: React.FC<IProps> = props => {
             <ContentLeft>
               <WrapLeft
                 change={(num: any) => {
-                  console.log(num)
-
                   setWidthRight(num)
                 }}
                 ref={myTreeComponent}

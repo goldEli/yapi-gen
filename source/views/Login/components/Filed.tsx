@@ -17,7 +17,6 @@ import CountryCode from '@/components/CountryCode'
 
 export default forwardRef((props: any, ref: any) => {
   const [t, i18n] = useTranslation()
-  console.log(i18n.language)
 
   const [isFocus, setIsFocus] = useState(false)
   const [bigChar, setBigChar] = useState(false)

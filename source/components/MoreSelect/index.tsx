@@ -99,10 +99,6 @@ const index = (props: any) => {
       mode={props.more ? undefined : 'multiple'}
       allowClear
       getPopupContainer={(triggerNode: any) => {
-        console.log(
-          triggerNode.parentNode.parentNode.parentNode.parentNode.parentNode
-            .parentNode.parentNode,
-        )
         return triggerNode.parentNode.parentNode.parentNode.parentNode
           .parentNode.parentNode.parentNode
       }}

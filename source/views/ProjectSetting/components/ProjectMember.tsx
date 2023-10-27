@@ -236,8 +236,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
   }
 
   const onOperationMember = (item: any, type: string) => {
-    console.log(item)
-
     setOperationItem(item)
     if (type === 'del') {
       open({
@@ -247,7 +245,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
           { name: item.name, pos: item.departmentName },
         ),
         async onConfirm() {
-          console.log(operationItem, '移除成员')
           await confirmProjectHand({ id: item.id, project_id: projectId })
           getList(order, { ...pageObj, page: 1 })
           getMessage({
@@ -785,7 +782,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
                       msg: t('successfullyDeleted') as string,
                       type: 'success',
                     })
-                    console.log('移除成员')
 
                     return Promise.resolve()
                   },

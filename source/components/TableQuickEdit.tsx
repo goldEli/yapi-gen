@@ -302,7 +302,6 @@ const TableQuickEdit = (props: Props) => {
         ?.filter((i: any) => i.key === 'users_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
         .filter((k: any) => k.status === 1)
-      console.log(response)
 
       const arr1 = response
         ?.map((i: any) => ({

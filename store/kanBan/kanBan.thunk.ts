@@ -436,7 +436,6 @@ export const modifyKanbanPeopleGrouping =
 export const getKanbanConfig = createAsyncThunk(
   `${name}/getKanbanConfig`,
   async (params: API.KanbanConfig.GetKanbanConfig.Params) => {
-    console.log(params)
     const res2 = await getNewkanbanConfig({
       ...params,
       id: undefined,
@@ -518,8 +517,6 @@ export const getKanbanByGroup = createAsyncThunk(
           content_txt: '',
           // columns: res.data,
           columns: res_config.columns.map((i: any) => {
-            console.log(i)
-
             return { ...i, stories: [] }
           }),
         },

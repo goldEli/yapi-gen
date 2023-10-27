@@ -186,7 +186,6 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       {<>{groupType === 'users' && delBtn}</>}
     </GroupTitleArea>
   )
-  console.log(issuesGroup, 'issuesGroup')
 
   return (
     <IssuesGroupBox>

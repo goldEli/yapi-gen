@@ -102,8 +102,6 @@ const ForgetPassword = (props: FProps) => {
 
   const onCheckSecret2 = async () => {
     if (!form2.phone) {
-      console.log('f')
-
       setFocusNumber(1)
       setErrorState(true)
       setErrorCheck({
@@ -114,7 +112,6 @@ const ForgetPassword = (props: FProps) => {
   const onCheckSecret3 = async () => {
     if (form2.password && form2.password2) {
       if (form2.password !== form2.password2) {
-        console.log(errorCheck)
         setFocusNumber(2)
         setErrorState(true)
         setErrorCheck({
@@ -122,7 +119,6 @@ const ForgetPassword = (props: FProps) => {
         })
       }
       if (bP !== 3) {
-        console.log(errorCheck)
         setFocusNumber(2)
         setErrorState(true)
         setErrorCheck({
@@ -140,8 +136,6 @@ const ForgetPassword = (props: FProps) => {
     setErrorState(false)
   }
   const login = async () => {
-    console.log('登录')
-
     if (!form2.phone) {
       return
     }
@@ -168,7 +162,6 @@ const ForgetPassword = (props: FProps) => {
     const res = await editPassword(data)
 
     if (res.code === 0) {
-      console.log('成功')
       message.success(t('passwordResetComplete'))
       props.onClose()
       // navigate(`/ProjectManagement/Project`)
@@ -184,16 +177,12 @@ const ForgetPassword = (props: FProps) => {
     }, 200)
   }, [])
   const bP = useMemo(() => {
-    console.log(form2.password)
-
     const strongRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+])[A-Za-z\d~!@#$%^&*()_+]{8,16}$/
     const mediumRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/
     const weakRegex = /^\d+$/
 
     if (form2.password && strongRegex.test(form2.password)) {
-      console.log(1)
-
       return 3
     } else if (form2.password && mediumRegex.test(form2.password)) {
       return 2
@@ -272,7 +261,7 @@ const ForgetPassword = (props: FProps) => {
             setErrorMessage('')
             if (form2.phone) {
               const res = await getMobil(form2.phone, 1, e)
-              console.log(res, 'trs')
+
               if (res.code === 0) {
                 message.success(t('verificationCodeSentSuccessfully'))
               } else {

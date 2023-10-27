@@ -38,7 +38,6 @@ const KanBanBoard: React.FC<IProps> = props => {
   )
   useEffect(() => {
     return () => {
-      console.log('离开')
       dispatch(resetkanbanConfig())
     }
   }, [])

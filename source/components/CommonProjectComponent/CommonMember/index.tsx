@@ -255,8 +255,6 @@ const CommonMember = (props: Props) => {
     }
   }
   const setModalVisibleClick = (data: any) => {
-    console.log(data)
-
     setEditItem(data)
     open({
       title: t('removeEmployee'),

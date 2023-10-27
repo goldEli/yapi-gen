@@ -253,7 +253,6 @@ const Profile = () => {
     const res1 = await getUserFeedList({
       limit: '',
     })
-    console.log(res1.data)
 
     setLineData(res1.data)
     dispatch(setIsUpdateCreate(false))

@@ -24,7 +24,7 @@ const useShowTargetModal = () => {
         project_id,
         id,
       })
-      console.log(result)
+
       setInfo(result.data)
     } catch (error) {
       //
