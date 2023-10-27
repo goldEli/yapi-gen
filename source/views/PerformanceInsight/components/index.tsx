@@ -3,7 +3,7 @@ import PerformanceInsightSide from './PerformanceInsightSide'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import Home from './Home'
-import PerformanceInsightKanBan from '../Kanban'
+// import PerformanceInsightKanBan from '../Kanban'
 
 const PerformanceInsightOverAll = () => {
   const [searchParams] = useSearchParams()
@@ -15,7 +15,7 @@ const PerformanceInsightOverAll = () => {
       notOnly
     >
       {paramsData?.overPageType === 'report' && <Home />}
-      {paramsData?.overPageType === 'kanBan' && <PerformanceInsightKanBan />}
+      {/* {paramsData?.overPageType === 'kanBan' && <PerformanceInsightKanBan />} */}
     </HasSideCommonLayout>
   )
 }

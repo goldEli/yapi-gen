@@ -36,7 +36,7 @@ const Situation = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.general'))
-  const { menuPermission } = useSelector(store => store.user)
+  const { currentMenu } = useSelector(store => store.user)
   const [generalData, setGeneralData] = useState<any>()
   const init = async () => {
     const res = await getGlobalGeneral()
@@ -155,26 +155,15 @@ const Situation = () => {
   if (generalData) {
     return (
       <PermissionWrap
-        auth="/Situation"
-        permission={menuPermission?.menus?.map((i: any) => i.url)}
+        auth="/Statistics/Company"
+        permission={currentMenu?.children?.map((i: any) => i.url)}
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            paddingRight: 4,
-          }}
-        >
-          {' '}
-          <Title>{t('project.companyAll')}</Title>
-          <Wrap>
-            <Project data={generalData?.project} />
-            <Staff data={generalData?.user} />
-            <Need data={generalData?.need} />
-            <Iteration data={generalData?.iterate} />
-          </Wrap>
-        </div>
+        <Wrap>
+          <Project data={generalData?.project} />
+          <Staff data={generalData?.user} />
+          <Need data={generalData?.need} />
+          <Iteration data={generalData?.iterate} />
+        </Wrap>
       </PermissionWrap>
     )
   }

@@ -26,7 +26,7 @@ import {
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useDispatch, useSelector } from '@store/index'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LocaleKeys, changeLanguage } from '@/locals'
 import { getMessage } from '@/components/Message'
@@ -123,6 +123,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
 }
 
 interface LayoutHeaderRightProps {
+  onSetWidth(width: number): void
   onChangeReportAssistantModalObj(value: any): void
 }
 
@@ -130,7 +131,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { userInfo } = useSelector(store => store.user)
+  const { userInfo, isRefresh } = useSelector(store => store.user)
   const { language } = useSelector(store => store.global)
   // 帮助中心展开
   const [isHelpVisible, setIsHelpVisible] = useState(false)
@@ -413,8 +414,16 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     </div>
   )
 
+  useEffect(() => {
+    if (userInfo?.id) {
+      props.onSetWidth(
+        document.getElementById('LayoutHeaderRightWrap')?.clientWidth || 0,
+      )
+    }
+  }, [isRefresh, userInfo])
+
   return (
-    <LayoutHeaderRightWrap>
+    <LayoutHeaderRightWrap id="LayoutHeaderRightWrap">
       <KeyBoardDrawer />
       <SystemFeedback />
       {/* 切换公司 */}

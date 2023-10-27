@@ -255,8 +255,8 @@ const PerformanceInsightKanBan = () => {
 
   return (
     <PermissionWrap
-      auth="b/company/kanban"
-      permission={currentMenu?.children?.map((i: any) => i.permission)}
+      auth="/Statistics/Task"
+      permission={currentMenu?.children?.map((i: any) => i.url)}
     >
       <KanBanFullScreen
         isVisible={isScreenFull}

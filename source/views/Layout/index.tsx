@@ -13,7 +13,7 @@ import FlawDetailDrawer from '@/components/FlawDetailDrawer'
 import DetailScreenModal from '@/components/DetailScreenModal'
 import EmployeeProfileContrast from '@/components/EmployeeProfileContrast'
 import DeleteConfirmGlobalModal from '@/components/DeleteConfirmGlobal'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { login } from '@/services/user'
 import { setAffairsDetailDrawer } from '@store/affairs'
@@ -39,6 +39,7 @@ import ReportAssistantModal from './Report/Review/components/ReportAssistantModa
 import ReportDetailDrawer from './Report/Review/components/ReportDetailDrawer'
 import UserSystemReport from './Report/Review/components/UserSystemReport'
 import ProjectSystemReport from './Report/Review/components/ProjectSystemReport'
+import LayoutSecondaryMenu from './components/LayoutSecondaryMenu'
 
 const LayoutIndex = () => {
   const location = useLocation()
@@ -57,6 +58,9 @@ const LayoutIndex = () => {
   const { projectInfo } = useSelector(store => store.project)
 
   const [isNextVisible, setIsNextVisible] = useState(false)
+  const [leftWidth, setLeftWidth] = useState(0)
+  const [rightWidth, setRightWidth] = useState(0)
+  const [width, setWidth] = useState(0)
 
   const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
     visible: boolean
@@ -160,6 +164,10 @@ const LayoutIndex = () => {
     setIsNextVisible(loginInfo.admin_first_login)
   }, [loginInfo, menuPermission])
 
+  useEffect(() => {
+    setWidth(leftWidth + rightWidth)
+  }, [leftWidth, rightWidth])
+
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
@@ -176,8 +184,10 @@ const LayoutIndex = () => {
                 dispatch(changeFreedVisibleVisible(false))
               }}
             >
-              <LayoutHeaderLeft />
+              <LayoutHeaderLeft onSetWidth={setLeftWidth} />
+              <LayoutSecondaryMenu width={width} />
               <LayoutHeaderRight
+                onSetWidth={setRightWidth}
                 onChangeReportAssistantModalObj={setReportAssistantModalObj}
               />
             </LayoutHeader>

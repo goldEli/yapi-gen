@@ -433,7 +433,7 @@ export const RobotButton = styled.div`
   align-items: center;
   margin-right: 4px;
   .img {
-    height: 46px;
+    height: 24px;
   }
   .name {
     margin-left: 8px;

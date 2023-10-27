@@ -1,11 +1,26 @@
 import { useSelector } from '@store/index'
 import { LayoutHeaderLeftWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
+import { useEffect } from 'react'
 
-const LayoutHeaderLeft = () => {
-  const { currentMenu, menuIconList } = useSelector(store => store.user)
+interface LayoutHeaderLeftProps {
+  onSetWidth(width: number): void
+}
+
+const LayoutHeaderLeft = (props: LayoutHeaderLeftProps) => {
+  const { currentMenu, menuIconList, isRefresh } = useSelector(
+    store => store.user,
+  )
+  useEffect(() => {
+    if (currentMenu?.id) {
+      props.onSetWidth(
+        document.getElementById('LayoutHeaderLeftWrap')?.clientWidth || 0,
+      )
+    }
+  }, [isRefresh, currentMenu])
+
   return (
-    <LayoutHeaderLeftWrap>
+    <LayoutHeaderLeftWrap id="LayoutHeaderLeftWrap">
       <CommonIconFont
         type={
           menuIconList?.filter((k: any) =>

@@ -1,6 +1,6 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Badge, Popover, Spin } from 'antd'
+import { Badge, Popover, Spin, Tabs } from 'antd'
 
 // 引导页
 export const imgBoxCss = css`
@@ -868,4 +868,57 @@ export const SpinWrap = styled(Spin)`
   position: absolute;
   top: 145px;
   width: 100%;
+`
+
+// 二级菜单样式
+export const LayoutMenuWrap = styled(Tabs)<{ width: number }>`
+  max-width: calc(100% - ${props => props.width}px);
+  height: 56px;
+  font-size: 14px;
+  color: var(--neutral-n1-d1);
+  position: relative;
+  .ant-tabs-nav {
+    margin: 0 !important;
+    height: 56px;
+  }
+  .ant-tabs-nav::before {
+    border-bottom: 0;
+  }
+  .ant-tabs-nav-more {
+    width: max-content;
+  }
+  .ant-tabs-content-holder {
+    display: none;
+  }
+  .ant-tabs-dropdown-menu {
+    background-clip: initial;
+  }
+  .ant-tabs-dropdown-menu-item {
+    padding: 0 16px;
+    height: 40px;
+    color: var(--neutral-n2);
+    &:hover {
+      color: var(--neutral-n1-d1);
+      background: var(--hover-d3);
+    }
+  }
+  .ant-tabs-tab {
+    padding: 0;
+  }
+`
+
+export const MoreMenuWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  svg {
+    color: var(--neutral-n3);
+  }
+  &:hover {
+    color: var(--primary-d1) !important;
+    svg {
+      color: var(--primary-d1);
+    }
+  }
 `

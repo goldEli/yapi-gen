@@ -64,7 +64,11 @@ const routes = [
         children: [
           {
             path: 'Task',
-            element: lazy(() => import('@/views/Layout/Statistics')),
+            element: lazy(() => import('@/views/Layout/Statistics/Kanban')),
+          },
+          {
+            path: 'Company',
+            element: lazy(() => import('@/views/Layout/Statistics/Situation')),
           },
         ],
       },
@@ -174,6 +178,10 @@ const routes = [
             ),
           },
         ],
+      },
+      {
+        path: 'ProjectDetail',
+        element: lazy(() => import('@/views/ProjectDetail')),
       },
     ],
   },
