@@ -6,11 +6,12 @@ import { handleId } from '../utils'
 import DropCardList from '../DropCardList'
 import useDropData from '../hooks/useDropData'
 import DropCard from '../DropCard'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import useGroupType from '../hooks/useGroupType'
 import { FixedSizeList } from 'react-window'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { getNewkanbanStoriesOfPaginate } from '@/services/kanban'
+import { setKanbanInfoByGroup } from '@store/kanBan'
 interface IssuesProps {
   issues: Model.KanBan.Column
   groupId: Model.KanbanConfig.Column['id']
@@ -46,7 +47,7 @@ const Issues: React.FC<IssuesProps> = props => {
   }, [groupId, issues.id])
   const mockDataCopy = useRef<any>()
   mockDataCopy.current = issues.stories
-  const { movingStory } = useSelector(store => store.kanBan)
+  const { movingStory, kanbanInfoByGroup } = useSelector(store => store.kanBan)
 
   const { groupType } = useGroupType()
   const columnId = issues.id
@@ -69,7 +70,7 @@ const Issues: React.FC<IssuesProps> = props => {
   // const showStateTransitionList = true
   const [mockData, setMockData] = useState<any>([])
   const [page, setPage] = useState(1)
-
+  const dispatch = useDispatch()
   const checkGroup = () => {
     let obj
     switch (groupType) {
@@ -109,6 +110,38 @@ const Issues: React.FC<IssuesProps> = props => {
   useEffect(() => {
     fetchData()
   }, [groupType, groupId])
+
+  // function findAndReplace(
+  //   groupId: any,
+  //   issuesId: any,
+  //   newStories: any,
+  //   data1: any,
+  // ) {
+  //   console.log(groupId, issuesId, newStories, data1, '原始数据')
+
+  //   let data: any
+  //   data = newStories.map((item: any) => {
+  //     if (item.id === groupId) {
+  //       item.columns = item.columns.map((column: any) => {
+  //         if (column.id === issuesId) {
+  //           column.stories = data1
+  //         }
+  //         return column
+  //       })
+  //     }
+  //     return item
+  //   })
+  //   return data
+  // }
+
+  // useEffect(() => {
+
+  //   dispatch(
+  //     setKanbanInfoByGroup(
+  //       findAndReplace(groupId, issues.id, kanbanInfoByGroup, mockData),
+  //     ),
+  //   )
+  // }, [mockData])
 
   const dropCardListContent = (
     <DropCardList
