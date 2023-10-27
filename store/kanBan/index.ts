@@ -107,6 +107,7 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['kanbanInfoByGroup']>,
     ) {
+      sessionStorage.setItem('kanban', JSON.stringify(action.payload))
       state.kanbanInfoByGroup = action.payload
     },
     // setViewItemConfig(

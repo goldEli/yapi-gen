@@ -13,6 +13,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { getNewkanbanStoriesOfPaginate } from '@/services/kanban'
 import { setKanbanInfoByGroup } from '@store/kanBan'
 import { json } from 'stream/consumers'
+import _ from 'lodash'
 interface IssuesProps {
   issues: Model.KanBan.Column
   groupId: Model.KanbanConfig.Column['id']
@@ -135,12 +136,38 @@ const Issues: React.FC<IssuesProps> = props => {
     return data
   }
 
+  // useEffect(() => {
+  //   if (mockData.length <= 0) {
+  //     return
+  //   }
+  //   const temp = JSON.parse(sessionStorage.getItem('kanban') as any)
+  //   dispatch(
+  //     setKanbanInfoByGroup(findAndReplace(groupId, issues.id, temp, mockData)),
+  //   )
+  // }, [mockData])
+
   useEffect(() => {
-    dispatch(
-      setKanbanInfoByGroup(
-        findAndReplace(groupId, issues.id, kanbanInfoByGroup, mockData),
-      ),
+    if (mockData.length <= 0) {
+      return
+    }
+    const temp: any[] = _.cloneDeep(
+      JSON.parse(sessionStorage.getItem('kanban') as any),
     )
+    const groupIndex = temp?.findIndex((item: any) => item.id === groupId)
+    const columnIndex = (
+      temp?.find((item: any) => item.id === groupId)?.columns ?? []
+    )?.findIndex((item: any) => item.id === issues.id)
+    if (
+      groupIndex !== -1 &&
+      columnIndex !== -1 &&
+      temp &&
+      temp[groupIndex] &&
+      temp[groupIndex].columns &&
+      temp[groupIndex].columns[columnIndex]
+    ) {
+      temp[groupIndex].columns[columnIndex].stories = mockData
+      dispatch(setKanbanInfoByGroup([...temp]))
+    }
   }, [mockData])
 
   const dropCardListContent = (

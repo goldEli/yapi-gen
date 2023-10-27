@@ -509,6 +509,21 @@ export const getKanbanByGroup = createAsyncThunk(
       // const res = await services.kanban.getKanban(params)
       // console.log(res.data, 'res.data老的配置')
       store.dispatch(setSpinning(false))
+      sessionStorage.setItem(
+        'kanban',
+        JSON.stringify([
+          {
+            // 无分组id
+            id: 0,
+            name: '',
+            content_txt: '',
+            // columns: res.data,
+            columns: res_config.columns.map((i: any) => {
+              return { ...i, stories: [] }
+            }),
+          },
+        ]),
+      )
       return [
         {
           // 无分组id
@@ -535,11 +550,6 @@ export const getKanbanByGroup = createAsyncThunk(
     // })
 
     // console.log(res.data, 'res.data老的分类')
-    console.log(
-      store.getState().kanBan?.kanbanConfig?.columns,
-      'store.getState().kanBan?.kanbanConfig?.columns',
-    )
-
     return myres.map((i: any) => {
       return {
         ...i,
