@@ -13,6 +13,7 @@ import styled from '@emotion/styled'
 import { editPassword, getMobil } from '@/views/Login/services'
 import { css } from '@emotion/css'
 import { message } from 'antd'
+import { PHONE_NUMBER_REGEXP } from '@/constants'
 const bv = css`
   :hover {
     text-decoration: underline;
@@ -102,7 +103,7 @@ const ForgetPassword = (props: FProps) => {
   }
 
   const onCheckSecret2 = async () => {
-    if (!form2.phone) {
+    if (!form2.phone || !PHONE_NUMBER_REGEXP.test(form2.phone)) {
       console.log('f')
 
       setFocusNumber(1)

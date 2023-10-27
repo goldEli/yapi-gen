@@ -12,7 +12,7 @@ import { useState, useEffect, useRef } from 'react'
 import { language, TForm, InputMode, systemData } from './login'
 import React from 'react'
 import { getCaptcha, toLogin, checkToken, checkSecret } from './services'
-
+import { PHONE_NUMBER_REGEXP } from '@/constants'
 import IconFont from '@/components/IconFont'
 import ForgetPassword from '@/components/ForgetPassword/ForgetPassword'
 import styled from '@emotion/styled'
@@ -293,15 +293,16 @@ export default React.memo(
     }
 
     const onCheckSecret2 = async () => {
-      if (!form2.phone) {
+      if (!form2.phone || !PHONE_NUMBER_REGEXP.test(form2.phone)) {
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
           phone: t('pleaseEnterAValidPhoneNumber'),
         })
+        console.log('检查', PHONE_NUMBER_REGEXP.test(form2.phone))
         return
       }
-
+      console.log('检查', PHONE_NUMBER_REGEXP.test(form2.phone))
       if (
         form2.phone &&
         form.password &&
@@ -493,7 +494,7 @@ export default React.memo(
                       name="phone"
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
                       value={form2.phone}
-                      label={languageMode.user}
+                      label={t('pleaseEnterPhoneNumber')}
                       type="text"
                       onChangeEvent={handleInputChange}
                       onCheckSecret={onCheckSecret2}
