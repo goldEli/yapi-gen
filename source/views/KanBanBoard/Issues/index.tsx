@@ -12,6 +12,7 @@ import { FixedSizeList } from 'react-window'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { getNewkanbanStoriesOfPaginate } from '@/services/kanban'
 import { setKanbanInfoByGroup } from '@store/kanBan'
+import { json } from 'stream/consumers'
 interface IssuesProps {
   issues: Model.KanBan.Column
   groupId: Model.KanbanConfig.Column['id']
@@ -111,37 +112,36 @@ const Issues: React.FC<IssuesProps> = props => {
     fetchData()
   }, [groupType, groupId])
 
-  // function findAndReplace(
-  //   groupId: any,
-  //   issuesId: any,
-  //   newStories: any,
-  //   data1: any,
-  // ) {
-  //   console.log(groupId, issuesId, newStories, data1, '原始数据')
+  function findAndReplace(
+    groupId: any,
+    issuesId: any,
+    newStories: any,
+    data1: any,
+  ) {
+    console.log(groupId, issuesId, newStories, data1, '原始数据')
+    const cc = JSON.parse(JSON.stringify(newStories))
+    let data: any
+    data = cc.map((item: any) => {
+      if (item.id === groupId) {
+        item.columns = item.columns.map((column: any) => {
+          if (column.id === issuesId) {
+            column.stories = data1
+          }
+          return column
+        })
+      }
+      return item
+    })
+    return data
+  }
 
-  //   let data: any
-  //   data = newStories.map((item: any) => {
-  //     if (item.id === groupId) {
-  //       item.columns = item.columns.map((column: any) => {
-  //         if (column.id === issuesId) {
-  //           column.stories = data1
-  //         }
-  //         return column
-  //       })
-  //     }
-  //     return item
-  //   })
-  //   return data
-  // }
-
-  // useEffect(() => {
-
-  //   dispatch(
-  //     setKanbanInfoByGroup(
-  //       findAndReplace(groupId, issues.id, kanbanInfoByGroup, mockData),
-  //     ),
-  //   )
-  // }, [mockData])
+  useEffect(() => {
+    dispatch(
+      setKanbanInfoByGroup(
+        findAndReplace(groupId, issues.id, kanbanInfoByGroup, mockData),
+      ),
+    )
+  }, [mockData])
 
   const dropCardListContent = (
     <DropCardList
