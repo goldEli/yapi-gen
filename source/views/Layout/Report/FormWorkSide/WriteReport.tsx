@@ -3,7 +3,6 @@ import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
 import InputSearch from './SearchSelect'
 import SupplementaryIntercourseModal from './SupplementaryIntercourse'
-import HandleReport from '@/views/WorkReport/Review/components/HandleReport'
 import styled from '@emotion/styled'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -17,6 +16,7 @@ import { setWriteReportModal } from '@store/workReport'
 import { Spin, Tooltip } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { getMessage } from '@/components/Message'
+import HandleReport from '../Review/components/HandleReport'
 
 interface Props {
   isVisible: boolean

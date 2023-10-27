@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import CommonModal2 from '../CommonModal2'
 import styled from '@emotion/styled'
 import { Checkbox, Form, Input, Select } from 'antd'
-import { LabelTitle } from '@/views/WorkReport/Review/components/style'
 import { Editor } from 'ifunuikit'
 import { uploadFile } from '../AddWorkItem/CreateWorkItemLeft'
 import CommonButton from '../CommonButton'
@@ -11,6 +10,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { changeFreedVisibleVisible } from '@store/feedback'
 import { sendFeedback } from '@/services/sysNotice'
 import { getMessage } from '../Message'
+import { LabelTitle } from '@/views/Layout/Report/Review/components/style'
 
 const { Option } = Select
 const ModalFooter = styled.div({

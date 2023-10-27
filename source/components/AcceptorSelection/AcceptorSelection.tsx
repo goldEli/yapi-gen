@@ -4,7 +4,7 @@
 /* eslint-disable react/prop-types */
 import { Checkbox } from 'antd'
 import { useEffect, useState } from 'react'
-import Addperson from '@/views/WorkReport/Formwork/Addperson'
+import Addperson from '@/views/Layout/Report/Formwork/Addperson'
 import { useTranslation } from 'react-i18next'
 
 const AcceptorSelection = (props: any) => {

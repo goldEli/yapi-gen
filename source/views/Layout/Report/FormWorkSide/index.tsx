@@ -19,7 +19,6 @@ import {
   setTemplateContentConfigs,
   setTemplateName,
 } from '@store/formWork'
-import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { debounce } from 'lodash'
@@ -29,6 +28,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { Tooltip } from 'antd'
 import AddFormWork from './AddFormWork'
+import { aWeekDataList } from '../Formwork/DataList'
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
 `

@@ -3,8 +3,8 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { supplyList } from '@/services/report'
 import NoData from '@/components/NoData'
-import HandleReport from '@/views/WorkReport/Review/components/HandleReport'
 import { useTranslation } from 'react-i18next'
+import HandleReport from '../Review/components/HandleReport'
 
 interface Props {
   isVisible: boolean

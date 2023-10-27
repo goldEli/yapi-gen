@@ -19,15 +19,15 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
+import { getMessage } from '@/components/Message'
 import {
+  RowStyle,
   Col,
   Col2,
-  RowStyle,
   StyleLeft,
   StyleRight,
   Text,
-} from '../WorkReport/Formwork/RightWrap'
-import { getMessage } from '@/components/Message'
+} from '../Layout/Report/Formwork/RightWrap'
 
 const Wrap = styled.div({
   padding: 16,

@@ -35,17 +35,17 @@ import {
 } from './style'
 import { makePy } from './tool'
 import CommonModal2 from '../CommonModal2'
-import {
-  RowStyle,
-  StyleLeft,
-  StyleRight,
-} from '@/views/WorkReport/Formwork/RightWrap'
 import styled from '@emotion/styled'
 import ProjectType from '../ProjectType/ProjectType'
 import ProjectTemplate from '../ProjectTemplate/ProjectTemplate'
 import ProjectChooseSide from '../ProjectChooseSide/ProjectChooseSide'
 import { setProjectInfo } from '@store/project'
 import { getProjectCover } from '@store/cover/thunks'
+import {
+  RowStyle,
+  StyleLeft,
+  StyleRight,
+} from '@/views/Layout/Report/Formwork/RightWrap'
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }

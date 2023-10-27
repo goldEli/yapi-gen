@@ -19,7 +19,6 @@ import {
   setReportContent,
 } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import {
   deleteTemplate,
   upDateTemplate,
@@ -30,6 +29,7 @@ import { useTranslation } from 'react-i18next'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { getMessage } from '@/components/Message'
 import PreviewDialog from './PreviewDialog'
+import { aWeekDataList } from './DataList'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;

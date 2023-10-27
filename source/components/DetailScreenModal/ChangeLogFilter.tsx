@@ -10,7 +10,6 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { css } from '@emotion/css'
 import dayjs from 'dayjs'
-import { endWeekData } from '@/views/WorkReport/Formwork/DataList'
 import moment from 'moment'
 const ClearForm = styled.div({
   display: 'flex',

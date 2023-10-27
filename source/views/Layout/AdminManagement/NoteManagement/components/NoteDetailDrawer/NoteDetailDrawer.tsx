@@ -18,16 +18,13 @@ import {
   ChangeIconGroup,
   UpWrap,
   DownWrap,
-} from '@/views/WorkReport/Review/components/style'
+  Col,
+} from '@/views/Layout/Report/Review/components/style'
 
 import { Content, Title, Text } from './style'
-import {
-  Col,
-  DefalutIcon,
-  NameText,
-} from '@/views/WorkReport/Formwork/Addperson'
 import { getMyAllSysNoticeDetail } from '@/services/sysNotice'
 import { messageDrawer } from '@/views/Layout/Trends/components/SiteDrawer/style'
+import { DefalutIcon, NameText } from '@/views/Layout/Report/Formwork/Addperson'
 
 // 已读未读
 

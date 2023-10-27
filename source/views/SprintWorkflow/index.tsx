@@ -21,13 +21,13 @@ import PermissionWrap from '@/components/PermissionWrap'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 import {
+  RowStyle,
   Col,
   Col2,
-  RowStyle,
   StyleLeft,
   StyleRight,
   Text,
-} from '../WorkReport/Formwork/RightWrap'
+} from '../Layout/Report/Formwork/RightWrap'
 import { getMessage } from '@/components/Message'
 import { reduce } from 'lodash'
 

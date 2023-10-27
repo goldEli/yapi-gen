@@ -9,7 +9,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-constant-binary-expression */
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
-import { LabelTitle } from '@/views/WorkReport/Review/components/style'
+import { LabelTitle } from '@/views/Layout/Report/Review/components/style'
 import { Editor } from 'ifunuikit'
 import { Checkbox, DatePicker, Form, Input, Radio } from 'antd'
 
