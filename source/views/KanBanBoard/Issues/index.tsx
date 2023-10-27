@@ -130,7 +130,7 @@ const Issues: React.FC<IssuesProps> = props => {
   }
   const issueCardListContent = (
     <InfiniteScroll
-      loader={null}
+      loader={<div>Loading...</div>}
       endMessage={
         <p style={{ textAlign: 'center' }}>
           <b>Yay! You have seen it all</b>
