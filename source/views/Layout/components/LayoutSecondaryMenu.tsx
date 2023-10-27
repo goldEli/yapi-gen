@@ -19,7 +19,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
 
   // 点击切换tab
   const handleModeChange = (e: any) => {
-    navigate(items?.filter((i: any) => i.id ?? i.key === Number(e))[0]?.url)
+    navigate(items?.filter((i: any) => i.id === Number(e))[0]?.url)
   }
 
   useEffect(() => {
@@ -29,9 +29,9 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
     } else if (routerPath.pathname.includes('/ProjectDetail')) {
       // 显示项目下的菜单，例需求
       const resultMenu = [
-        // { key: 'map', name: '导图', url: '', isPermisson: true  },
+        // { id: 'map', name: '导图', url: '', isPermisson: true  },
         {
-          key: 'iteration',
+          id: 'iteration',
           name: '迭代',
           url: '',
           isPermisson:
@@ -40,7 +40,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
             ).length > 0,
         },
         {
-          key: 'demand',
+          id: 'demand',
           name: '需求',
           url: '',
           isPermisson:
@@ -49,7 +49,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
             ).length > 0,
         },
         {
-          key: 'defect',
+          id: 'defect',
           name: '缺陷',
           url: '',
           isPermisson:
@@ -58,7 +58,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
             ).length > 0,
         },
         {
-          key: 'affairs',
+          id: 'affairs',
           name: '事务',
           url: '',
           isPermisson:
@@ -67,7 +67,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
             ).length > 0,
         },
         {
-          key: 'sprint',
+          id: 'sprint',
           name: '冲刺',
           url: '',
           isPermisson:
@@ -76,7 +76,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
             ).length > 0,
         },
         {
-          key: 'kanBan',
+          id: 'kanBan',
           name: 'Kanban',
           url: '',
           isPermisson:
@@ -84,11 +84,11 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
               String(i.group_name).includes('Kanban'),
             ).length > 0,
         },
-        // { key: 'gatte', name: '甘特图', url: '', isPermisson: true  },
-        { key: 'workTime', name: '工时', url: '', isPermisson: true },
-        { key: 'report', name: '报表', url: '', isPermisson: true },
+        // { id: 'gatte', name: '甘特图', url: '', isPermisson: true  },
+        { id: 'workTime', name: '工时', url: '', isPermisson: true },
+        { id: 'report', name: '报表', url: '', isPermisson: true },
         {
-          key: 'member',
+          id: 'member',
           name: '成员',
           url: '',
           isPermisson:
@@ -97,7 +97,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
             ).length > 0,
         },
         {
-          key: 'set',
+          id: 'set',
           name: '设置',
           url: '',
           isPermisson:
@@ -129,7 +129,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
       items={items.map((i: any) => {
         return {
           label: i.name,
-          key: i.id ? String(i.id) : i.key,
+          key: String(i.id),
         }
       })}
     />
