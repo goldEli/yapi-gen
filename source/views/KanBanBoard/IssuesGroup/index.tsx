@@ -186,26 +186,36 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       {<>{groupType === 'users' && delBtn}</>}
     </GroupTitleArea>
   )
+  console.log(hidden, 'hidden')
 
   return (
     <IssuesGroupBox>
       {titleArea}
       <DeleteConfirmModal />
+
       <DropAreaList hidden={hidden}>
         {issuesGroup.columns?.map((column, index) => {
           if (groupType === 'priority') {
             return (
-              <IssuesForPriority
-                key={column.id}
-                issues={column}
-                groupId={issuesGroup.id}
-                index={index}
-              />
+              !hidden && (
+                <IssuesForPriority
+                  key={column.id}
+                  issues={column}
+                  groupId={issuesGroup.id}
+                  index={index}
+                />
+              )
             )
           }
 
           return (
-            <Issues key={column.id} issues={column} groupId={issuesGroup.id} />
+            !hidden && (
+              <Issues
+                key={column.id}
+                issues={column}
+                groupId={issuesGroup.id}
+              />
+            )
           )
         })}
       </DropAreaList>
