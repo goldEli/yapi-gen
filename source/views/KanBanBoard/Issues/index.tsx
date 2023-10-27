@@ -39,12 +39,8 @@ const DropStatusArea = styled.div`
   }
 `
 const Issues: React.FC<IssuesProps> = props => {
-  console.log(props, '需求列表的props')
-
   const { issues, groupId } = props
-  // const mockData = useRef(Array.from({ length: 10 }))
-  console.log(groupId, '分组ID')
-
+  console.log(issues, 'props.issues')
   const droppableId = useMemo(() => {
     return handleId(groupId, issues.id)
   }, [groupId, issues.id])
@@ -82,7 +78,7 @@ const Issues: React.FC<IssuesProps> = props => {
       pagesize: 10,
       page: page,
     })
-    console.log(res, '拿到的需求')
+
     setMockData(res.list)
   }
 

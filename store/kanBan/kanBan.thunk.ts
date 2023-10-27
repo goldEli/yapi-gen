@@ -525,6 +525,7 @@ export const getKanbanByGroup = createAsyncThunk(
         },
       ]
     }
+
     const myres = await getNewkanbanGroups({
       ...params,
       group_by: type,
@@ -537,8 +538,25 @@ export const getKanbanByGroup = createAsyncThunk(
     // })
 
     // console.log(res.data, 'res.data老的分类')
+    console.log(
+      store.getState().kanBan?.kanbanConfig?.columns,
+      'store.getState().kanBan?.kanbanConfig?.columns',
+    )
 
-    return myres
+    return myres.map((i: any) => {
+      return {
+        ...i,
+        columns: store
+          .getState()
+          .kanBan?.kanbanConfig?.columns?.map((l: any) => {
+            return {
+              ...l,
+              stories: [],
+            }
+          }),
+        kk: 'feiji',
+      }
+    })
   },
 )
 

@@ -56,6 +56,7 @@ const initialState: SliceState = {
   movingStory: null,
   kanbanConfigList: [],
   kanbanInfo: [],
+
   kanbanInfoByGroup: [],
   modifyStatusModalInfo: {
     visible: false,

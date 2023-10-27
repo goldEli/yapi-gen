@@ -53,10 +53,10 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         return res + n
       }, 0) ?? 0
     if (!showUserRelatedInformation) {
-      return t('count_transaction', { count: storiesNum })
+      return t('count_transaction', { count: issuesGroup.story_count })
     }
     return `${t('count_person', {
-      count: storiesNum,
+      count: issuesGroup.story_count,
     })}`
   }, [issuesGroup, showUserRelatedInformation])
 
@@ -186,13 +186,14 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       {<>{groupType === 'users' && delBtn}</>}
     </GroupTitleArea>
   )
+  console.log(issuesGroup, 'issuesGroup')
 
   return (
     <IssuesGroupBox>
       {titleArea}
       <DeleteConfirmModal />
       <DropAreaList hidden={hidden}>
-        {issuesGroup?.columns?.map((column, index) => {
+        {issuesGroup.columns?.map((column, index) => {
           if (groupType === 'priority') {
             return (
               <IssuesForPriority
