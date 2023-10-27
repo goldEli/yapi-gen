@@ -20,7 +20,6 @@ import { getProjectCover } from '@store/cover/thunks'
 import CreateAProjectForm from '@/components/CreateAProjectForm'
 import CreateIteration from '@/components/CreateIteration'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
-import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
 import UserSystemReport from '../WorkReport/Review/components/UserSystemReport'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
@@ -40,6 +39,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ProjectSystemReport from '../WorkReport/Review/components/ProjectSystemReport'
 import EmployeeProfileContrast from '@/components/EmployeeProfileContrast'
 import ReportAssistantModal from '@/views/WorkReport/Review/components/ReportAssistantModal'
+import SiteDrawer from '../Layout/Trends/components/SiteDrawer/SiteDrawer'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -189,7 +189,7 @@ export const Container = () => {
 
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
-      <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
+      {/* <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         <GlobalStyle />
         <DeleteConfirmGlobalModal />
         <ReportAssistantModal
@@ -243,7 +243,7 @@ export const Container = () => {
         <FlawDetailDrawer />
         <DetailScreenModal />
         <EmployeeProfileContrast />
-      </ConfigProvider>
+      </ConfigProvider> */}
     </KitConfigProvider>
   )
 }

@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
 import UserSystemReport from '../WorkReport/Review/components/UserSystemReport'
 import ProjectSystemReport from '../WorkReport/Review/components/ProjectSystemReport'
-import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import AddWorkItem from '@/components/AddWorkItem'
 import SprintDetailDrawer from '@/components/SprintDetailDrawer'
 import FlawDetailDrawer from '@/components/FlawDetailDrawer'
@@ -39,6 +38,7 @@ import { LayoutContent, LayoutHeader, LayoutWrap, MainContent } from './style'
 import LayoutSideIndex from './components/LayoutSide'
 import LayoutHeaderLeft from './components/LayoutHeaderLeft'
 import LayoutHeaderRight from './components/LayoutHeaderRight'
+import SiteDrawer from './Trends/components/SiteDrawer/SiteDrawer'
 
 const LayoutIndex = () => {
   const location = useLocation()

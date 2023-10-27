@@ -350,6 +350,9 @@ export const MoreOtherSystemItem = styled.div`
 export const LayoutHeaderLeftWrap = styled.div`
   display: flex;
   align-items: center;
+  .anticon {
+    cursor: initial;
+  }
   div {
     font-size: 16px;
     color: var(--neutral-n1-d1);

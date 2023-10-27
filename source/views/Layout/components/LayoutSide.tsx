@@ -104,12 +104,6 @@ const LayoutSideIndex = () => {
   const [isPopover, setIsPopover] = useState(false)
   const [isLogoChange, setIsLogoChange] = useState(false)
 
-  // 其他的固定菜单
-  const otherMenu: any = [
-    { name: '动态', url: '/Trends', id: 1 },
-    { name: '我的', url: '/Mine', id: 2 },
-  ]
-
   // 其他系统列表
   const otherSystemList = [
     { name: 'iFun BI', url: '', icon: 'plus' },
@@ -162,6 +156,16 @@ const LayoutSideIndex = () => {
       // navigateUrl = `${item.url}/Review`
     }
 
+    // 如果是我的则默认跳转我的概况
+    if (item.url === '/Mine') {
+      navigateUrl = `${item.url}/Profile`
+    }
+
+    // 如果是动态则默认跳转全部
+    if (item.url === '/Trends') {
+      navigateUrl = `${item.url}/AllNote/1`
+    }
+
     navigate(navigateUrl)
     const resultMenu = {
       ...item,
@@ -194,9 +198,9 @@ const LayoutSideIndex = () => {
   useEffect(() => {
     // 存储当前选中的菜单信息
     if (menuPermission.menus?.length > 0 || routerPath) {
-      let resultMenu = menuPermission?.menus
-        ?.concat(otherMenu)
-        ?.filter((i: any) => routerPath.pathname?.includes(i.url))[0]
+      let resultMenu = menuPermission?.menus?.filter((i: any) =>
+        routerPath.pathname?.includes(i.url),
+      )[0]
       dispatch(setCurrentMenu(resultMenu))
     }
   }, [menuPermission, routerPath])
@@ -288,7 +292,6 @@ const LayoutSideIndex = () => {
 
       {menuPermission.menus
         ?.filter((k: any) => k.url !== '/AdminManagement')
-        .concat(otherMenu)
         ?.map((i: any) => (
           <div
             key={i.id}

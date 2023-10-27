@@ -3,9 +3,9 @@ import useSetTitle from '@/hooks/useSetTitle'
 import { changeWater, getWater } from '@/services/setting'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
+import { changeWaterStatus } from '@store/waterState'
 import { Switch } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { changeWaterStatus } from '../../../../store/waterState'
 
 const Header = styled.div({
   height: 64,

@@ -27,7 +27,7 @@ import {
   NameText,
 } from '@/views/WorkReport/Formwork/Addperson'
 import { getMyAllSysNoticeDetail } from '@/services/sysNotice'
-import { messageDrawer } from '@/views/SiteNotifications/components/SiteDrawer/style'
+import { messageDrawer } from '@/views/Layout/Trends/components/SiteDrawer/style'
 
 // 已读未读
 

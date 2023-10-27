@@ -1,5 +1,17 @@
+import PermissionWrap from '@/components/PermissionWrap'
+import { useSelector } from '@store/index'
+import { Outlet } from 'react-router-dom'
+
 const AdminManagement = () => {
-  return <div>后台管理</div>
+  const { menuPermission } = useSelector(store => store.user)
+  return (
+    <PermissionWrap
+      auth="/AdminManagement"
+      permission={menuPermission?.menus?.map((i: any) => i.url)}
+    >
+      <Outlet />
+    </PermissionWrap>
+  )
 }
 
 export default AdminManagement

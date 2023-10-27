@@ -261,6 +261,8 @@ export const counterSlice = createSlice({
               },
             ],
           },
+          { name: '动态', url: '/Trends', id: 1 },
+          { name: '我的', url: '/Mine', id: 2 },
         ],
         priority_url: '/Project',
         help_document_path: '',

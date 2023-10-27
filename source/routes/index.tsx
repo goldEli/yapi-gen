@@ -71,61 +71,108 @@ const routes = [
       {
         path: 'Trends',
         element: lazy(() => import('@/views/Layout/Trends')),
+        children: [
+          {
+            path: 'Setting/:id',
+            element: lazy(() => import('../views/Layout/Trends/Setting/index')),
+          },
+          {
+            path: 'Email/:id',
+            element: lazy(() => import('@/views/Layout/Trends/Email/index')),
+          },
+          {
+            path: 'AllNote/:id',
+            element: lazy(
+              () => import('../views/Layout/Trends/AllNotes/index'),
+            ),
+          },
+        ],
       },
       {
         path: 'Mine',
         element: lazy(() => import('@/views/Layout/Mine')),
+        children: [
+          {
+            path: 'Agenda',
+            element: lazy(() => import('@/views/Layout/Mine/Agenda')),
+          },
+          {
+            path: 'Carbon',
+            element: lazy(() => import('@/views/Layout/Mine/Carbon')),
+          },
+          {
+            path: 'Create',
+            element: lazy(() => import('@/views/Layout/Mine/Create')),
+          },
+          {
+            path: 'Finished',
+            element: lazy(() => import('@/views/Layout/Mine/Finished')),
+          },
+          {
+            path: 'Examine',
+            element: lazy(() => import('@/views/Layout/Mine/Examine')),
+          },
+          {
+            path: 'Profile',
+            element: lazy(() => import('@/views/Layout/Mine/Profile')),
+          },
+        ],
       },
       {
         path: '/AdminManagement',
-        element: lazy(() => import('@/views/AdminManagement')),
+        element: lazy(() => import('@/views/Layout/AdminManagement')),
         children: [
           {
             path: 'CompanyInfo',
-            element: lazy(() => import('@/views/AdminManagement')),
+            element: lazy(
+              () => import('@/views/Layout/AdminManagement/CompanyInfo'),
+            ),
           },
-          // {
-          //   path: 'StaffManagement',
-          //   element: lazy(
-          //     () => import('@/views/AdminManagement/StaffManagement'),
-          //   ),
-          // },
-          // {
-          //   path: 'TeamManagement',
-          //   element: lazy(
-          //     () => import('@/views/AdminManagement/TeamManagement'),
-          //   ),
-          // },
-          // {
-          //   path: 'PermissionManagement',
-          //   element: lazy(
-          //     () => import('@/views/AdminManagement/PermissionManagement'),
-          //   ),
-          // },
-          // {
-          //   path: 'WaterMarkManagement',
-          //   element: lazy(
-          //     () => import('@/views/AdminManagement/WaterMarkManagement'),
-          //   ),
-          // },
-          // {
-          //   path: 'NoteManagement',
-          //   element: lazy(
-          //     () => import('@/views/AdminManagement/NoteManagement'),
-          //   ),
-          // },
-          // {
-          //   path: 'OperationManagement',
-          //   element: lazy(
-          //     () => import('@/views/AdminManagement/OperationManagement'),
-          //   ),
-          // },
-          // {
-          //   path: 'LoginManagement',
-          //   element: lazy(
-          //     () => import('@/views/AdminManagement/LoginManagement'),
-          //   ),
-          // },
+          {
+            path: 'StaffManagement',
+            element: lazy(
+              () => import('@/views/Layout/AdminManagement/StaffManagement'),
+            ),
+          },
+          {
+            path: 'TeamManagement',
+            element: lazy(
+              () => import('@/views/Layout/AdminManagement/TeamManagement'),
+            ),
+          },
+          {
+            path: 'PermissionManagement',
+            element: lazy(
+              () =>
+                import('@/views/Layout/AdminManagement/PermissionManagement'),
+            ),
+          },
+          {
+            path: 'WaterMarkManagement',
+            element: lazy(
+              () =>
+                import('@/views/Layout/AdminManagement/WaterMarkManagement'),
+            ),
+          },
+          {
+            path: 'NoteManagement',
+            element: lazy(
+              () => import('@/views/Layout/AdminManagement/NoteManagement'),
+            ),
+          },
+          {
+            path: 'OperationManagement',
+            element: lazy(
+              () =>
+                import('@/views/Layout/AdminManagement/OperationManagement'),
+            ),
+          },
+          {
+            path: 'LoginManagement',
+            element: lazy(
+              () => import('@/views/Layout/AdminManagement/LoginManagement'),
+            ),
+          },
         ],
       },
     ],

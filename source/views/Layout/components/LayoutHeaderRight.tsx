@@ -38,12 +38,12 @@ import { getCompanyList, loginOut, updateCompany } from '@/services/user'
 import { changeKeyBoardVisible } from '@store/SiteNotifications'
 import { changeFreedVisibleVisible } from '@store/feedback'
 import SystemFeedback from '@/components/SystemFeedback/SystemFeedback'
-import KeyBoardDrawer from '@/views/SiteNotifications/components/KeyBoardDrawer/KeyBoardDrawer'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import QuickMine from './QuickMine'
 import Recently from './Recently'
+import KeyBoardDrawer from '../Trends/components/KeyBoardDrawer/KeyBoardDrawer'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()

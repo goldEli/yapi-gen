@@ -36,13 +36,13 @@ import {
 import PaginationBox from '@/components/TablePagination'
 import { getMessage } from '@/components/Message'
 import { getHisProjectCharts } from '@/services/mine'
-import LineAnimation from '@/views/Mine/components/LineAnimation'
-import { BBQdiv, FullScreenDiv } from '@/views/Mine/Profile'
 import CommonIconFont from '@/components/CommonIconFont'
 import FullScreenContainer from '@/views/KanBanBoard/FullScreenContainer'
 import { setFullScreen } from '@store/kanBan'
 import { useFullScreenHandle } from 'react-full-screen'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import LineAnimation from '@/views/Layout/Mine/components/LineAnimation'
+import { FullScreenDiv } from '@/views/Layout/Mine/Profile'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 

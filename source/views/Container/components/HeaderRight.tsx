@@ -34,7 +34,6 @@ import {
   MenuItemBox,
 } from './../style'
 import { getLoginDetail } from '@store/user/user.thunk'
-import SiteNotifications from '@/views/SiteNotifications/SiteNotifications'
 import {
   setCalendarModal,
   setScheduleModal,
@@ -48,7 +47,6 @@ import { setAddWorkItemModal } from '@store/project'
 import SystemFeedback from '@/components/SystemFeedback/SystemFeedback'
 import { changeFreedVisibleVisible } from '@store/feedback'
 import { useNavigate } from 'react-router-dom'
-import KeyBoardDrawer from '@/views/SiteNotifications/components/KeyBoardDrawer/KeyBoardDrawer'
 import { changeKeyBoardVisible, changeVisible } from '@store/SiteNotifications'
 import {
   setCreateIterationParams,
@@ -57,6 +55,8 @@ import {
 import { getIsPermission } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
+import KeyBoardDrawer from '@/views/Layout/Trends/components/KeyBoardDrawer/KeyBoardDrawer'
+import SiteNotifications from '@/views/Layout/Trends/SiteNotifications'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()

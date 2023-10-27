@@ -10,11 +10,6 @@ import { isArray } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
-import {
-  ActiveTab,
-  TabsWrap,
-  TabsWrapItem,
-} from '@/views/SiteNotifications/components/SiteDrawer/style'
 import { useDispatch, useSelector } from '@store/index'
 import { setDemandInfo } from '@store/demand'
 import { setFlawInfo } from '@store/flaw'
@@ -24,6 +19,11 @@ import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import EditExamine from '@/components/EditExamine'
 import NoData from '@/components/NoData'
+import {
+  ActiveTab,
+  TabsWrap,
+  TabsWrapItem,
+} from '@/views/Layout/Trends/components/SiteDrawer/style'
 
 const Container = styled.div<{ local?: string }>`
   width: ${props => (props.local === 'zh' ? '320px' : '400px')};
