@@ -40,7 +40,7 @@ const DropStatusArea = styled.div`
 `
 const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
-  console.log(issues, 'props.issues')
+
   const droppableId = useMemo(() => {
     return handleId(groupId, issues.id)
   }, [groupId, issues.id])
@@ -70,11 +70,36 @@ const Issues: React.FC<IssuesProps> = props => {
   const [mockData, setMockData] = useState<any>([])
   const [page, setPage] = useState(1)
 
+  const checkGroup = () => {
+    let obj
+    switch (groupType) {
+      case 'users':
+        obj = {
+          kanban_group_id: groupId,
+        }
+        break
+      case 'category':
+        obj = {
+          category_id: groupId,
+        }
+        break
+
+      default:
+        'none'
+        // eslint-disable-next-line no-undefined
+        obj = undefined
+        break
+    }
+    return obj
+  }
+
   const fetchData = async () => {
+    console.log(groupType, groupId, '分类分组')
+
     const res = await getNewkanbanStoriesOfPaginate({
       project_id: projectInfo.id,
       kanban_column_id: issues.id,
-
+      search: { ...checkGroup() },
       pagesize: 10,
       page: page,
     })
@@ -130,7 +155,7 @@ const Issues: React.FC<IssuesProps> = props => {
   }
   const issueCardListContent = (
     <InfiniteScroll
-      loader={<div>Loading...</div>}
+      loader={null}
       endMessage={
         <p style={{ textAlign: 'center' }}>
           <b>Yay! You have seen it all</b>
