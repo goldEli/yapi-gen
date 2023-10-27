@@ -60,16 +60,6 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
   const checkGroup = () => {
     let obj
     switch (groupType) {
-      case 'users':
-        obj = {
-          kanban_group_id: groupId,
-        }
-        break
-      case 'category':
-        obj = {
-          category_id: groupId,
-        }
-        break
       case 'priority':
         obj = {
           priority: groupId,
@@ -77,7 +67,6 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
         break
 
       default:
-        'none'
         // eslint-disable-next-line no-undefined
         obj = undefined
         break

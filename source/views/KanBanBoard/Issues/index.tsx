@@ -85,7 +85,6 @@ const Issues: React.FC<IssuesProps> = props => {
         break
 
       default:
-        'none'
         // eslint-disable-next-line no-undefined
         obj = undefined
         break
