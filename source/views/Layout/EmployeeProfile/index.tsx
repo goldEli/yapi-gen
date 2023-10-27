@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import EmployeeProfileReport from './components/EmployeeProfileReport'
 import EmployeeProfileTask from './components/EmployeeProfileTask'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setFilterParamsOverall } from '@store/employeeProfile'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
@@ -25,6 +25,7 @@ const EmployeeProfile = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const { layoutSideCollapse } = useSelector(state => state.global)
   const [leftWidth, setLeftWidth] = useState(320)
   const [endWidth, setEndWidth] = useState(320)
   const [focus, setFocus] = useState(false)
@@ -42,7 +43,7 @@ const EmployeeProfile = () => {
       setFocus(true)
       if (!sideMain.current) return
       sideMain.current.style.transition = '0s'
-      width = e.clientX
+      width = e.clientX - (layoutSideCollapse ? 200 : 80)
       if (width > maxWidth) {
         setLeftWidth(maxWidth)
       } else {

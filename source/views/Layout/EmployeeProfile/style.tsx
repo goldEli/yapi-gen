@@ -4,6 +4,7 @@ import { Checkbox } from 'antd'
 
 export const Wrap = styled.div`
   width: 100%;
+  height: calc(100vh - 56px);
   min-width: 1440px;
   overflow: auto;
 `
