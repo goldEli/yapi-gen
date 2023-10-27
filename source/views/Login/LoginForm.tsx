@@ -495,7 +495,7 @@ export default React.memo(
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
                       value={form2.phone}
                       label={t('pleaseEnterPhoneNumber')}
-                      type="text"
+                      type="number"
                       onChangeEvent={handleInputChange}
                       onCheckSecret={onCheckSecret2}
                       isHighlight={focusNumber === 1 || focusNumber === 4}
