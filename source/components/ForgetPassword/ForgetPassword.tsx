@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable prefer-regex-literals */
 /* eslint-disable semi */
 /* eslint-disable no-useless-escape */
@@ -12,6 +13,7 @@ import styled from '@emotion/styled'
 import { editPassword, getMobil } from '@/views/Login/services'
 import { css } from '@emotion/css'
 import { message } from 'antd'
+import { PHONE_NUMBER_REGEXP } from '@/constants'
 const bv = css`
   :hover {
     text-decoration: underline;
@@ -73,7 +75,7 @@ const ForgetPassword = (props: FProps) => {
   const [errorMessage, setErrorMessage] = useState('')
   const [focusNumber, setFocusNumber] = useState(0)
   const [form2, setForm2] = useState<any>({
-    phone: '',
+    phone: '' || sessionStorage.getItem('phone'),
     msg: '',
     password: '',
     password2: '',
@@ -101,7 +103,7 @@ const ForgetPassword = (props: FProps) => {
   }
 
   const onCheckSecret2 = async () => {
-    if (!form2.phone) {
+    if (!form2.phone || !PHONE_NUMBER_REGEXP.test(form2.phone)) {
       console.log('f')
 
       setFocusNumber(1)
@@ -262,7 +264,7 @@ const ForgetPassword = (props: FProps) => {
           icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
           value={form2.phone}
           label={t('pleaseEnterPhoneNumber')}
-          type="text"
+          type="number"
           onChangeEvent={handleInputChange}
           onCheckSecret={onCheckSecret2}
           isHighlight={focusNumber === 1 || focusNumber === 4}

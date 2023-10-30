@@ -1059,7 +1059,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
           <div
             style={{
               overflow: 'scroll',
-              height: '425px',
+              maxHeight: '425px',
               width: '425px',
               display: 'flex',
               flexWrap: 'wrap',

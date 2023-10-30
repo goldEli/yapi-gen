@@ -181,6 +181,27 @@ const GlobalStyle = () => {
           height: 100%;
         } */
       }
+      .react-viewer-close {
+        background-color: rgba(0, 0, 0, 0.7) !important;
+        right: 150px !important;
+        top: 70px !important;
+        border-radius: 50% !important;
+        height: 56px;
+        opacity: 1 !important;
+        width: 56px;
+        display: flex;
+        border-radius: 12px;
+        align-items: center;
+        justify-content: center;
+
+        ::before {
+          content: '×';
+          font-size: 40px;
+        }
+      }
+      .react-viewer-icon-close {
+        display: none;
+      }
       .info_item_tab_label {
         label {
           width: 100%;
