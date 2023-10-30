@@ -25,1040 +25,943 @@ import {
   ProjectItem,
   ProjectTypeBox,
   ReportItem,
+  LoadingMore,
 } from '../style'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 
-interface RecentlyProps {
-  isVisible: boolean
-  onClose(): void
+interface GroupItemsProps {
+  row: any
+  onClickTask(item: any): void
+  onClickProject(item: any): void
+  onClickReport(item: any): void
+  tabActive: number
+  onChangeData(list: any, key: string): void
+}
+
+const GroupItems = (props: GroupItemsProps) => {
+  const { row, onClickTask, onClickProject, onClickReport, tabActive } = props
+  const [t] = useTranslation()
+  const [page, setPage] = useState(1)
+  // 加载更多的loading
+  const [moreLoading, setMoreLoading] = useState(false)
+  const { language } = useSelector(store => store.global)
+
+  // 点击加载更多
+  const onLoadingMore = async () => {
+    setMoreLoading(true)
+    // 调用更多接口
+    setPage(page + 1)
+    setMoreLoading(false)
+  }
+
+  useEffect(() => {
+    setPage(1)
+  }, [tabActive])
+
+  return (
+    <>
+      {row?.list?.map((i: any) => (
+        <>
+          {tabActive === 2 && (
+            <TaskItem key={i.id}>
+              <div className="left" onClick={() => onClickTask(i)}>
+                <img className="icon" src={i.category_attachment} />
+                <div className="info">
+                  <span className="name">{i.name}</span>
+                  <span className="sub">{i.project.name}</span>
+                </div>
+              </div>
+              <StatusBox
+                style={{
+                  background:
+                    i.status?.is_start === 1 && i.status?.is_end === 2
+                      ? 'var(--primary-d2)'
+                      : i.status?.is_end === 1 && i.status?.is_start === 2
+                      ? 'var(--neutral-n7)'
+                      : i.status?.is_start === 2 && i.status?.is_end === 2
+                      ? 'var(--function-success)'
+                      : '',
+                  color:
+                    i.status?.is_start === 1 && i.status?.is_end === 2
+                      ? 'var(--neutral-n7)'
+                      : i.status?.is_end === 1 && i.status?.is_start === 2
+                      ? 'var(--neutral-n1-d1)'
+                      : i.status?.is_start === 2 && i.status?.is_end === 2
+                      ? 'var(--neutral-n7)'
+                      : '',
+                }}
+              >
+                {i.status?.status?.content}
+              </StatusBox>
+            </TaskItem>
+          )}
+          {tabActive === 1 && (
+            <ProjectItem key={i.id} local={language}>
+              <div className="left" onClick={() => onClickProject(i)}>
+                <img className="icon" src={i.category_attachment} />
+                <div className="info">
+                  <span className="name">{i.name}</span>
+                  <span className="sub">{i.project.name}</span>
+                </div>
+              </div>
+              <ProjectTypeBox type={i.project_type}>
+                {i.project_type === 1 ? t('iteration') : t('sprint2')}
+              </ProjectTypeBox>
+            </ProjectItem>
+          )}
+          {tabActive === 0 && (
+            <ReportItem key={i.id}>
+              <div className="left" onClick={() => onClickReport(i)}>
+                <CommonUserAvatar avatar={i.avatar} size="large" />
+                <div className="info">
+                  <span className="name">{i.name}</span>
+                  <span className="sub">{i.project.name}</span>
+                </div>
+              </div>
+              <div className="right">10-17</div>
+            </ReportItem>
+          )}
+        </>
+      ))}
+      {page * 30 < row?.pager?.total && (
+        <LoadingMore onClick={onLoadingMore}>
+          {moreLoading && (
+            <img
+              width={16}
+              style={{ marginRight: 4 }}
+              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/shareLoading.gif"
+            />
+          )}
+          {t('loadMore')}
+        </LoadingMore>
+      )}
+    </>
+  )
 }
 
 const data: any = {
-  今天: [
-    {
-      id: 1006209,
-      project_id: 375,
-      parent_id: 1006190,
-      iterate_id: 0,
-      user_id: 3,
-      class_id: 0,
-      category_id: 612,
-      name: 'feiji',
-      priority: {
-        id: 11269,
-        name: '\u9ad8',
-        content: '\u9ad8',
-        color: '#FA9746',
-        icon: 'high',
-        identity: 'priority',
-        content_txt: '\u9ad8',
-        group_content_txt: '',
-      },
-      status: {
-        id: 1901,
+  今天: {
+    list: [
+      {
+        id: 1006209,
+        project_id: 375,
+        parent_id: 1006190,
+        iterate_id: 0,
+        user_id: 3,
+        class_id: 0,
         category_id: 612,
+        name: 'feiji',
+        priority: {
+          id: 11269,
+          name: '\u9ad8',
+          content: '\u9ad8',
+          color: '#FA9746',
+          icon: 'high',
+          identity: 'priority',
+          content_txt: '\u9ad8',
+          group_content_txt: '',
+        },
+        status: {
+          id: 1901,
+          category_id: 612,
+          status_id: 11273,
+          is_start: 1,
+          is_end: 2,
+          can_changes_category_status: ['1901', '1902', '1904'],
+          status: {
+            id: 11273,
+            content: '\u89c4\u5212\u4e2d',
+            color: '#FA9746',
+            content_txt: '',
+            group_content_txt: '',
+          },
+        },
+        expected_start_at: null,
+        expected_end_at: null,
+        finish_at: null,
+        story_count: 0,
+        business_value: '',
+        category_status_id: 1901,
+        schedule: 0,
+        custom_field: null,
+        verify_lock: 2,
+        is_handover: null,
+        prefix_key: 2,
+        level_tree: '0,1006190',
+        level: 2,
+        project_type: 1,
+        is_bug: 2,
+        severity: 0,
+        discovery_version: 0,
+        solution: '',
+        sort: 0,
+        created_at: '2023-10-25 14:29:12',
+        updated_at: '2023-10-25 15:15:37',
+        deleted_at: null,
+        iterate_name: null,
+        discovery_version_name: null,
+        user_name: '\u98de\u98de',
+        user_avatar:
+          'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp',
+        class: null,
+        story_prefix_key: '0000000000-2',
+        child_story_count: 0,
+        project: {
+          id: 375,
+          name: '0000000000000000',
+          is_public: 1,
+          member_id: 2945,
+          user_group_id: 1174,
+          user_ismember: true,
+        },
+        is_new: '1',
+        category: '\u9700\u6c42',
+        category_attachment:
+          'https://agile-api.dev.staryuntech.com/attachment/category_icon/folder.png',
+        category_remark: '',
+        work_type: 1,
+        usersInfo: [
+          {
+            id: 3,
+            name: '\u98de\u98de',
+            gender: 2,
+            nickname: '',
+            email: 'yangyi123@ifunmail.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp',
+          },
+          {
+            id: 39,
+            name: ' \u6c6a\u5fd7\u541b',
+            gender: 2,
+            nickname: 'W_wang',
+            email: 'youyi@ifun.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+          },
+          {
+            id: 6,
+            name: '\u9a6c\u6210\u9f99',
+            gender: 1,
+            nickname: '',
+            email: 'machenglong1@ifunmail.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-04-24/68e19872-c04e-44d4-b4c7-9b86bcd0cfd8.png',
+          },
+          {
+            id: 143,
+            name: 'zhangsan',
+            gender: 2,
+            nickname: '\u5f20\u4e09\u4e09',
+            email: 'zhangsan@ifun.com',
+            avatar: '',
+          },
+        ],
+        copy_send_users: [
+          {
+            id: 2,
+            name: '0812',
+            gender: 2,
+            nickname: '',
+            email: 'zub@ifunmail.com',
+            avatar: '',
+          },
+        ],
+        users_name_ids: [3, 39, 6, 143],
+        users_name: '',
+        users_copysend_name_ids: [2],
+        users_copysend_name: '',
         status_id: 11273,
-        is_start: 1,
-        is_end: 2,
-        can_changes_category_status: ['1901', '1902', '1904'],
-        status: {
-          id: 11273,
-          content: '\u89c4\u5212\u4e2d',
-          color: '#FA9746',
-          content_txt: '',
-          group_content_txt: '',
+        content_txt: '\u89c4\u5212\u4e2d',
+        category_config_list: {
+          class_id: 2,
+          created_at: 2,
+          expected_end_at: 2,
+          expected_start_at: 2,
+          finish_at: 2,
+          iterate_id: 2,
+          parent_id: 2,
+          priority: 2,
+          schedule: 2,
+          user_name: 2,
+          copysend: 2,
+          users: 2,
         },
+        parent: {
+          id: 1006190,
+          name: '111111',
+        },
+        is_member: true,
       },
-      expected_start_at: null,
-      expected_end_at: null,
-      finish_at: null,
-      story_count: 0,
-      business_value: '',
-      category_status_id: 1901,
-      schedule: 0,
-      custom_field: null,
-      verify_lock: 2,
-      is_handover: null,
-      prefix_key: 2,
-      level_tree: '0,1006190',
-      level: 2,
-      project_type: 1,
-      is_bug: 2,
-      severity: 0,
-      discovery_version: 0,
-      solution: '',
-      sort: 0,
-      created_at: '2023-10-25 14:29:12',
-      updated_at: '2023-10-25 15:15:37',
-      deleted_at: null,
-      iterate_name: null,
-      discovery_version_name: null,
-      user_name: '\u98de\u98de',
-      user_avatar:
-        'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp',
-      class: null,
-      story_prefix_key: '0000000000-2',
-      child_story_count: 0,
-      project: {
-        id: 375,
-        name: '0000000000000000',
-        is_public: 1,
-        member_id: 2945,
-        user_group_id: 1174,
-        user_ismember: true,
-        permissions: {
-          '\u521b\u5efa\u9700\u6c42': 'b/story/save',
-          '\u5220\u9664\u9700\u6c42': 'b/story/delete',
-          '\u7f16\u8f91\u9700\u6c42': 'b/story/update',
-          '\u9644\u4ef6\u4e0a\u4f20': '',
-          '\u9644\u4ef6\u4e0b\u8f7d': '',
-          '\u9700\u6c42\u7b5b\u9009': 'b/story/get',
-          '\u53c2\u4e0e\u8bc4\u8bba': 'b/flaw/comment',
-          '\u521b\u5efa\u8fed\u4ee3': 'b/iterate/store',
-          '\u5220\u9664\u8fed\u4ee3': 'b/iterate/del',
-          '\u7f16\u8f91\u8fed\u4ee3': 'b/iterate/update',
-          '\u8fed\u4ee3\u72b6\u6001\u66f4\u6539': 'b/iterate/status',
-          '\u8fed\u4ee3\u7b5b\u9009': 'b/iterate/get',
-          '\u6dfb\u52a0\u9879\u76ee\u6210\u5458': 'b/project/member/save',
-          '\u7f16\u8f91\u9879\u76ee\u6210\u5458': 'b/project/member/update',
-          '\u79fb\u9664\u9879\u76ee\u6210\u5458': 'b/project/member/delete',
-          '\u9879\u76ee\u6743\u9650\u7ec4\u8bbe\u7f6e': 'b/project/role',
-          '\u7c7b\u578b\u914d\u7f6e': 'b/project/story_config',
-          '\u67e5\u770b\u6210\u5458\u8be6\u60c5': 'b/project/member/info',
-          '\u5bfc\u5165\u9700\u6c42': 'b/story/import',
-          '\u5206\u7c7b\u7ba1\u7406': 'b/project/flaw/class',
-          '\u5bfc\u51fa\u9700\u6c42': 'b/story/export',
-          '\u8fed\u4ee3\u6210\u679c\u67e5\u770b': 'b/iterate/achieve/info',
-          '\u8fed\u4ee3\u6210\u679c\u7f16\u8f91': 'b/iterate/achieve',
-          '\u6279\u91cf\u64cd\u4f5c': 'b/flaw/batch',
-          '\u9879\u76ee\u901a\u77e5\u914d\u7f6e': 'b/project/notification',
-          '\u521b\u5efa\u7f3a\u9677': 'b/flaw/save',
-          '\u5220\u9664\u7f3a\u9677': 'b/flaw/delete',
-          '\u7f16\u8f91\u7f3a\u9677': 'b/flaw/update',
-          '\u7f3a\u9677\u7b5b\u9009': 'b/flaw/get',
-          '\u5bfc\u5165\u7f3a\u9677': 'b/flaw/import',
-          'Kanban\u914d\u7f6e': 'b/project/kanban',
-          '\u9996\u9875\u914d\u7f6e': 'b/project/home',
-          '\u5bfc\u51fa\u7f3a\u9677': 'b/flaw/export',
-          Kanban: '',
-          '\u65e5\u62a5\u89c4\u5219\u914d\u7f6e': 'b/project/daily_config',
-          '\u5de5\u65f6\u7edf\u8ba1': 'b/story/work_time',
-        },
-      },
-      is_new: '1',
-      category: '\u9700\u6c42',
-      category_attachment:
-        'https://agile-api.dev.staryuntech.com/attachment/category_icon/folder.png',
-      category_remark: '',
-      work_type: 1,
-      usersInfo: [
-        {
-          id: 3,
-          name: '\u98de\u98de',
-          gender: 2,
-          nickname: '',
-          email: 'yangyi123@ifunmail.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp',
-        },
-        {
-          id: 39,
-          name: ' \u6c6a\u5fd7\u541b',
-          gender: 2,
-          nickname: 'W_wang',
-          email: 'youyi@ifun.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
-        },
-        {
-          id: 6,
-          name: '\u9a6c\u6210\u9f99',
-          gender: 1,
-          nickname: '',
-          email: 'machenglong1@ifunmail.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-04-24/68e19872-c04e-44d4-b4c7-9b86bcd0cfd8.png',
-        },
-        {
-          id: 143,
-          name: 'zhangsan',
-          gender: 2,
-          nickname: '\u5f20\u4e09\u4e09',
-          email: 'zhangsan@ifun.com',
-          avatar: '',
-        },
-      ],
-      copy_send_users: [
-        {
-          id: 2,
-          name: '0812',
-          gender: 2,
-          nickname: '',
-          email: 'zub@ifunmail.com',
-          avatar: '',
-        },
-      ],
-      users_name_ids: [3, 39, 6, 143],
-      users_name: '',
-      users_copysend_name_ids: [2],
-      users_copysend_name: '',
-      status_id: 11273,
-      content_txt: '\u89c4\u5212\u4e2d',
-      category_config_list: {
-        class_id: 2,
-        created_at: 2,
-        expected_end_at: 2,
-        expected_start_at: 2,
-        finish_at: 2,
-        iterate_id: 2,
-        parent_id: 2,
-        priority: 2,
-        schedule: 2,
-        user_name: 2,
-        copysend: 2,
-        users: 2,
-      },
-      parent: {
-        id: 1006190,
-        name: '111111',
-      },
-      is_member: true,
-    },
-    {
-      id: 1006158,
-      project_id: 490,
-      parent_id: 0,
-      iterate_id: 0,
-      user_id: 39,
-      class_id: 0,
-      category_id: 677,
-      name: '11111',
-      priority: {
-        id: 0,
-        name: '\u65e0\u4f18\u5148\u7ea7',
-        content_txt: '',
-        group_content_txt: '',
-      },
-      status: {
-        id: 2121,
+      {
+        id: 1006158,
+        project_id: 490,
+        parent_id: 0,
+        iterate_id: 0,
+        user_id: 39,
+        class_id: 0,
         category_id: 677,
-        status_id: 14154,
-        is_start: 1,
-        is_end: 2,
-        can_changes_category_status: ['2121', '2122', '2124'],
-        status: {
-          id: 14154,
-          content: '\u89c4\u5212\u4e2d',
-          color: '#FA9746',
+        name: '11111',
+        priority: {
+          id: 0,
+          name: '\u65e0\u4f18\u5148\u7ea7',
           content_txt: '',
           group_content_txt: '',
         },
-      },
-      expected_start_at: null,
-      expected_end_at: null,
-      finish_at: null,
-      story_count: 0,
-      business_value: '',
-      category_status_id: 2121,
-      schedule: 7,
-      custom_field: null,
-      verify_lock: 2,
-      is_handover: null,
-      prefix_key: 11,
-      level_tree: '0',
-      level: 1,
-      project_type: 1,
-      is_bug: 2,
-      severity: 0,
-      discovery_version: 0,
-      solution: '',
-      sort: 0,
-      created_at: '2023-09-28 11:07:36',
-      updated_at: '2023-10-25 10:23:30',
-      deleted_at: null,
-      iterate_name: null,
-      discovery_version_name: null,
-      user_name: ' \u6c6a\u5fd7\u541b',
-      user_avatar:
-        'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
-      class: null,
-      story_prefix_key: 'DWWCSDD-11',
-      child_story_count: 0,
-      project: {
-        id: 490,
-        name: '\u5927\u6587\u6587\u6d4b\u8bd5\u8fed\u4ee3',
-        is_public: 2,
-        member_id: 1521,
-        user_group_id: 1509,
-        user_ismember: true,
-        permissions: {
-          '\u521b\u5efa\u9700\u6c42': 'b/story/save',
-          '\u5220\u9664\u9700\u6c42': 'b/story/delete',
-          '\u7f16\u8f91\u9700\u6c42': 'b/story/update',
-          '\u9644\u4ef6\u4e0a\u4f20': '',
-          '\u9644\u4ef6\u4e0b\u8f7d': '',
-          '\u9700\u6c42\u7b5b\u9009': 'b/story/get',
-          '\u53c2\u4e0e\u8bc4\u8bba': 'b/flaw/comment',
-          '\u521b\u5efa\u8fed\u4ee3': 'b/iterate/store',
-          '\u5220\u9664\u8fed\u4ee3': 'b/iterate/del',
-          '\u7f16\u8f91\u8fed\u4ee3': 'b/iterate/update',
-          '\u8fed\u4ee3\u72b6\u6001\u66f4\u6539': 'b/iterate/status',
-          '\u8fed\u4ee3\u7b5b\u9009': 'b/iterate/get',
-          '\u6dfb\u52a0\u9879\u76ee\u6210\u5458': 'b/project/member/save',
-          '\u7f16\u8f91\u9879\u76ee\u6210\u5458': 'b/project/member/update',
-          '\u79fb\u9664\u9879\u76ee\u6210\u5458': 'b/project/member/delete',
-          '\u9879\u76ee\u6743\u9650\u7ec4\u8bbe\u7f6e': 'b/project/role',
-          '\u7c7b\u578b\u914d\u7f6e': 'b/project/story_config',
-          '\u67e5\u770b\u6210\u5458\u8be6\u60c5': 'b/project/member/info',
-          '\u5bfc\u5165\u9700\u6c42': 'b/story/import',
-          '\u5206\u7c7b\u7ba1\u7406': 'b/project/flaw/class',
-          '\u5bfc\u51fa\u9700\u6c42': 'b/story/export',
-          '\u8fed\u4ee3\u6210\u679c\u67e5\u770b': 'b/iterate/achieve/info',
-          '\u8fed\u4ee3\u6210\u679c\u7f16\u8f91': 'b/iterate/achieve',
-          '\u6279\u91cf\u64cd\u4f5c': 'b/flaw/batch',
-          '\u9879\u76ee\u901a\u77e5\u914d\u7f6e': 'b/project/notification',
-          '\u521b\u5efa\u7f3a\u9677': 'b/flaw/save',
-          '\u5220\u9664\u7f3a\u9677': 'b/flaw/delete',
-          '\u7f16\u8f91\u7f3a\u9677': 'b/flaw/update',
-          '\u7f3a\u9677\u7b5b\u9009': 'b/flaw/get',
-          '\u5bfc\u5165\u7f3a\u9677': 'b/flaw/import',
-          '\u4e8b\u52a1\u7c7b\u578b\u914d\u7f6e':
-            'b/project/transaction_category',
-          'Kanban\u914d\u7f6e': 'b/project/kanban',
-          '\u9996\u9875\u914d\u7f6e': 'b/project/home',
-          '\u5bfc\u51fa\u7f3a\u9677': 'b/flaw/export',
-          Kanban: '',
-          '\u65e5\u62a5\u89c4\u5219\u914d\u7f6e': 'b/project/daily_config',
-          '\u5de5\u65f6\u7edf\u8ba1': 'b/story/work_time',
+        status: {
+          id: 2121,
+          category_id: 677,
+          status_id: 14154,
+          is_start: 1,
+          is_end: 2,
+          can_changes_category_status: ['2121', '2122', '2124'],
+          status: {
+            id: 14154,
+            content: '\u89c4\u5212\u4e2d',
+            color: '#FA9746',
+            content_txt: '',
+            group_content_txt: '',
+          },
         },
-      },
-      is_new: 2,
-      category: '\u9700\u6c42',
-      category_attachment:
-        'https://agile-api.dev.staryuntech.com/attachment/category_icon/folder.png',
-      category_remark: '',
-      work_type: 1,
-      usersInfo: [
-        {
-          id: 39,
-          name: ' \u6c6a\u5fd7\u541b',
-          gender: 2,
-          nickname: 'W_wang',
-          email: 'youyi@ifun.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        expected_start_at: null,
+        expected_end_at: null,
+        finish_at: null,
+        story_count: 0,
+        business_value: '',
+        category_status_id: 2121,
+        schedule: 7,
+        custom_field: null,
+        verify_lock: 2,
+        is_handover: null,
+        prefix_key: 11,
+        level_tree: '0',
+        level: 1,
+        project_type: 1,
+        is_bug: 2,
+        severity: 0,
+        discovery_version: 0,
+        solution: '',
+        sort: 0,
+        created_at: '2023-09-28 11:07:36',
+        updated_at: '2023-10-25 10:23:30',
+        deleted_at: null,
+        iterate_name: null,
+        discovery_version_name: null,
+        user_name: ' \u6c6a\u5fd7\u541b',
+        user_avatar:
+          'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        class: null,
+        story_prefix_key: 'DWWCSDD-11',
+        child_story_count: 0,
+        project: {
+          id: 490,
+          name: '\u5927\u6587\u6587\u6d4b\u8bd5\u8fed\u4ee3',
+          is_public: 2,
+          member_id: 1521,
+          user_group_id: 1509,
+          user_ismember: true,
         },
-      ],
-      copy_send_users: [],
-      users_name_ids: [39],
-      users_name: '',
-      users_copysend_name_ids: [],
-      users_copysend_name: '',
-      status_id: 14154,
-      content_txt: '\u89c4\u5212\u4e2d',
-      category_config_list: {
-        parent_id: 2,
-        priority: 2,
-        iterate_id: 2,
-        class_id: 2,
-        schedule: 2,
-        user_name: 2,
-        users: 2,
-        copysend: 2,
-        created_at: 2,
-        expected_start_at: 2,
-        expected_end_at: 2,
-        finish_at: 2,
+        is_new: 2,
+        category: '\u9700\u6c42',
+        category_attachment:
+          'https://agile-api.dev.staryuntech.com/attachment/category_icon/folder.png',
+        category_remark: '',
+        work_type: 1,
+        usersInfo: [
+          {
+            id: 39,
+            name: ' \u6c6a\u5fd7\u541b',
+            gender: 2,
+            nickname: 'W_wang',
+            email: 'youyi@ifun.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+          },
+        ],
+        copy_send_users: [],
+        users_name_ids: [39],
+        users_name: '',
+        users_copysend_name_ids: [],
+        users_copysend_name: '',
+        status_id: 14154,
+        content_txt: '\u89c4\u5212\u4e2d',
+        category_config_list: {
+          parent_id: 2,
+          priority: 2,
+          iterate_id: 2,
+          class_id: 2,
+          schedule: 2,
+          user_name: 2,
+          users: 2,
+          copysend: 2,
+          created_at: 2,
+          expected_start_at: 2,
+          expected_end_at: 2,
+          finish_at: 2,
+        },
+        parent: null,
+        is_member: true,
       },
-      parent: null,
-      is_member: true,
+    ],
+    pager: {
+      total: 23,
     },
-  ],
-  昨天: [
-    {
-      id: 1003169,
-      project_id: 490,
-      parent_id: 1006036,
-      iterate_id: 244,
-      user_id: 39,
-      class_id: 0,
-      category_id: 678,
-      name: '\u7b2c\u4e00\u4e2a\u7f3a\u96771',
-      priority: {
-        id: 14149,
-        name: '\u6781\u9ad8',
-        content: '\u6781\u9ad8',
-        color: '#FF5C5E',
-        icon: 'extremely-high',
-        identity: 'priority',
-        content_txt: '\u6781\u9ad8',
-        group_content_txt: '',
-      },
-      status: {
-        id: 2125,
+  },
+  昨天: {
+    list: [
+      {
+        id: 1003169,
+        project_id: 490,
+        parent_id: 1006036,
+        iterate_id: 244,
+        user_id: 39,
+        class_id: 0,
         category_id: 678,
+        name: '\u7b2c\u4e00\u4e2a\u7f3a\u96771',
+        priority: {
+          id: 14149,
+          name: '\u6781\u9ad8',
+          content: '\u6781\u9ad8',
+          color: '#FF5C5E',
+          icon: 'extremely-high',
+          identity: 'priority',
+          content_txt: '\u6781\u9ad8',
+          group_content_txt: '',
+        },
+        status: {
+          id: 2125,
+          category_id: 678,
+          status_id: 14154,
+          is_start: 1,
+          is_end: 2,
+          can_changes_category_status: ['2125', '2126', '2128'],
+          status: {
+            id: 14154,
+            content: '\u89c4\u5212\u4e2d',
+            color: '#FA9746',
+            content_txt: '',
+            group_content_txt: '',
+          },
+        },
+        expected_start_at: '2023-09-19',
+        expected_end_at: '2023-09-28',
+        finish_at: null,
+        story_count: 0,
+        business_value: '',
+        category_status_id: 2125,
+        schedule: 0,
+        custom_field: null,
+        verify_lock: 2,
+        is_handover: null,
+        prefix_key: 2,
+        level_tree: '0,1003168,1003170,1006036',
+        level: 4,
+        project_type: 1,
+        is_bug: 1,
+        severity: {
+          id: 14183,
+          name: '\u81f4\u547d',
+          content: '\u81f4\u547d',
+          color: '#fbeff1',
+          icon: 'deadly',
+          identity: 'severity',
+          content_txt: '',
+          group_content_txt: '',
+        },
+        discovery_version: 244,
+        solution: '',
+        sort: 0,
+        created_at: '2023-07-21 19:07:58',
+        updated_at: '2023-10-18 17:37:19',
+        deleted_at: null,
+        iterate_name: '1',
+        discovery_version_name: '1',
+        user_name: ' \u6c6a\u5fd7\u541b',
+        user_avatar:
+          'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        class: null,
+        story_prefix_key: 'DWWCSDD-2',
+        child_story_count: 0,
+        project: {
+          id: 490,
+          name: '\u5927\u6587\u6587\u6d4b\u8bd5\u8fed\u4ee3',
+          is_public: 2,
+          member_id: 1521,
+          user_group_id: 1509,
+          user_ismember: true,
+        },
+        is_new: 2,
+        category: 'BUG\u7f3a\u9677',
+        category_attachment:
+          'https://agile-api.dev.staryuntech.com/attachment/category_icon/other.png',
+        category_remark: '',
+        work_type: 2,
+        usersInfo: [
+          {
+            id: 79,
+            name: '\u9ec4\u6ce2',
+            gender: 2,
+            nickname: '',
+            email: 'huangbo@dingstartech.com',
+            avatar: '',
+          },
+          {
+            id: 39,
+            name: ' \u6c6a\u5fd7\u541b',
+            gender: 2,
+            nickname: 'W_wang',
+            email: 'youyi@ifun.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+          },
+        ],
+        copy_send_users: [
+          {
+            id: 3,
+            name: '\u98de\u98de',
+            gender: 2,
+            nickname: '',
+            email: 'yangyi123@ifunmail.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp',
+          },
+          {
+            id: 39,
+            name: ' \u6c6a\u5fd7\u541b',
+            gender: 2,
+            nickname: 'W_wang',
+            email: 'youyi@ifun.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+          },
+        ],
+        users_name_ids: [79, 39],
+        users_name: '',
+        users_copysend_name_ids: [3, 39],
+        users_copysend_name: '',
         status_id: 14154,
-        is_start: 1,
-        is_end: 2,
-        can_changes_category_status: ['2125', '2126', '2128'],
-        status: {
-          id: 14154,
-          content: '\u89c4\u5212\u4e2d',
-          color: '#FA9746',
-          content_txt: '',
-          group_content_txt: '',
+        content_txt: '\u89c4\u5212\u4e2d',
+        category_config_list: {
+          parent_id: 2,
+          priority: 2,
+          severity: 2,
+          discovery_version: 2,
+          solution: 2,
+          iterate_id: 2,
+          class_id: 2,
+          schedule: 2,
+          user_name: 2,
+          users: 2,
+          copysend: 2,
+          created_at: 2,
+          expected_start_at: 2,
+          expected_end_at: 2,
+          finish_at: 2,
         },
-      },
-      expected_start_at: '2023-09-19',
-      expected_end_at: '2023-09-28',
-      finish_at: null,
-      story_count: 0,
-      business_value: '',
-      category_status_id: 2125,
-      schedule: 0,
-      custom_field: null,
-      verify_lock: 2,
-      is_handover: null,
-      prefix_key: 2,
-      level_tree: '0,1003168,1003170,1006036',
-      level: 4,
-      project_type: 1,
-      is_bug: 1,
-      severity: {
-        id: 14183,
-        name: '\u81f4\u547d',
-        content: '\u81f4\u547d',
-        color: '#fbeff1',
-        icon: 'deadly',
-        identity: 'severity',
-        content_txt: '',
-        group_content_txt: '',
-      },
-      discovery_version: 244,
-      solution: '',
-      sort: 0,
-      created_at: '2023-07-21 19:07:58',
-      updated_at: '2023-10-18 17:37:19',
-      deleted_at: null,
-      iterate_name: '1',
-      discovery_version_name: '1',
-      user_name: ' \u6c6a\u5fd7\u541b',
-      user_avatar:
-        'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
-      class: null,
-      story_prefix_key: 'DWWCSDD-2',
-      child_story_count: 0,
-      project: {
-        id: 490,
-        name: '\u5927\u6587\u6587\u6d4b\u8bd5\u8fed\u4ee3',
-        is_public: 2,
-        member_id: 1521,
-        user_group_id: 1509,
-        user_ismember: true,
-        permissions: {
-          '\u521b\u5efa\u9700\u6c42': 'b/story/save',
-          '\u5220\u9664\u9700\u6c42': 'b/story/delete',
-          '\u7f16\u8f91\u9700\u6c42': 'b/story/update',
-          '\u9644\u4ef6\u4e0a\u4f20': '',
-          '\u9644\u4ef6\u4e0b\u8f7d': '',
-          '\u9700\u6c42\u7b5b\u9009': 'b/story/get',
-          '\u53c2\u4e0e\u8bc4\u8bba': 'b/flaw/comment',
-          '\u521b\u5efa\u8fed\u4ee3': 'b/iterate/store',
-          '\u5220\u9664\u8fed\u4ee3': 'b/iterate/del',
-          '\u7f16\u8f91\u8fed\u4ee3': 'b/iterate/update',
-          '\u8fed\u4ee3\u72b6\u6001\u66f4\u6539': 'b/iterate/status',
-          '\u8fed\u4ee3\u7b5b\u9009': 'b/iterate/get',
-          '\u6dfb\u52a0\u9879\u76ee\u6210\u5458': 'b/project/member/save',
-          '\u7f16\u8f91\u9879\u76ee\u6210\u5458': 'b/project/member/update',
-          '\u79fb\u9664\u9879\u76ee\u6210\u5458': 'b/project/member/delete',
-          '\u9879\u76ee\u6743\u9650\u7ec4\u8bbe\u7f6e': 'b/project/role',
-          '\u7c7b\u578b\u914d\u7f6e': 'b/project/story_config',
-          '\u67e5\u770b\u6210\u5458\u8be6\u60c5': 'b/project/member/info',
-          '\u5bfc\u5165\u9700\u6c42': 'b/story/import',
-          '\u5206\u7c7b\u7ba1\u7406': 'b/project/flaw/class',
-          '\u5bfc\u51fa\u9700\u6c42': 'b/story/export',
-          '\u8fed\u4ee3\u6210\u679c\u67e5\u770b': 'b/iterate/achieve/info',
-          '\u8fed\u4ee3\u6210\u679c\u7f16\u8f91': 'b/iterate/achieve',
-          '\u6279\u91cf\u64cd\u4f5c': 'b/flaw/batch',
-          '\u9879\u76ee\u901a\u77e5\u914d\u7f6e': 'b/project/notification',
-          '\u521b\u5efa\u7f3a\u9677': 'b/flaw/save',
-          '\u5220\u9664\u7f3a\u9677': 'b/flaw/delete',
-          '\u7f16\u8f91\u7f3a\u9677': 'b/flaw/update',
-          '\u7f3a\u9677\u7b5b\u9009': 'b/flaw/get',
-          '\u5bfc\u5165\u7f3a\u9677': 'b/flaw/import',
-          '\u4e8b\u52a1\u7c7b\u578b\u914d\u7f6e':
-            'b/project/transaction_category',
-          'Kanban\u914d\u7f6e': 'b/project/kanban',
-          '\u9996\u9875\u914d\u7f6e': 'b/project/home',
-          '\u5bfc\u51fa\u7f3a\u9677': 'b/flaw/export',
-          Kanban: '',
-          '\u65e5\u62a5\u89c4\u5219\u914d\u7f6e': 'b/project/daily_config',
-          '\u5de5\u65f6\u7edf\u8ba1': 'b/story/work_time',
+        parent: {
+          id: 1006036,
+          name: '1111111056',
         },
+        is_member: true,
       },
-      is_new: 2,
-      category: 'BUG\u7f3a\u9677',
-      category_attachment:
-        'https://agile-api.dev.staryuntech.com/attachment/category_icon/other.png',
-      category_remark: '',
-      work_type: 2,
-      usersInfo: [
-        {
-          id: 79,
-          name: '\u9ec4\u6ce2',
-          gender: 2,
-          nickname: '',
-          email: 'huangbo@dingstartech.com',
-          avatar: '',
-        },
-        {
-          id: 39,
-          name: ' \u6c6a\u5fd7\u541b',
-          gender: 2,
-          nickname: 'W_wang',
-          email: 'youyi@ifun.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
-        },
-      ],
-      copy_send_users: [
-        {
-          id: 3,
-          name: '\u98de\u98de',
-          gender: 2,
-          nickname: '',
-          email: 'yangyi123@ifunmail.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp',
-        },
-        {
-          id: 39,
-          name: ' \u6c6a\u5fd7\u541b',
-          gender: 2,
-          nickname: 'W_wang',
-          email: 'youyi@ifun.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
-        },
-      ],
-      users_name_ids: [79, 39],
-      users_name: '',
-      users_copysend_name_ids: [3, 39],
-      users_copysend_name: '',
-      status_id: 14154,
-      content_txt: '\u89c4\u5212\u4e2d',
-      category_config_list: {
-        parent_id: 2,
-        priority: 2,
-        severity: 2,
-        discovery_version: 2,
-        solution: 2,
-        iterate_id: 2,
-        class_id: 2,
-        schedule: 2,
-        user_name: 2,
-        users: 2,
-        copysend: 2,
-        created_at: 2,
-        expected_start_at: 2,
-        expected_end_at: 2,
-        finish_at: 2,
-      },
-      parent: {
-        id: 1006036,
-        name: '1111111056',
-      },
-      is_member: true,
-    },
-    {
-      id: 1006195,
-      company_id: 1504303190303051778,
-      project_id: 489,
-      parent_id: 0,
-      iterate_id: 267,
-      user_id: 39,
-      class_id: 0,
-      category_id: 675,
-      name: '121212',
-      priority: {
-        id: 0,
-        name: '\u65e0\u4f18\u5148\u7ea7',
-        content_txt: '',
-        group_content_txt: '',
-      },
-      status: {
-        id: 2115,
+      {
+        id: 1006195,
+        company_id: 1504303190303051778,
+        project_id: 489,
+        parent_id: 0,
+        iterate_id: 267,
+        user_id: 39,
+        class_id: 0,
         category_id: 675,
-        status_id: 14117,
-        is_start: 1,
-        is_end: 2,
-        can_changes_category_status: ['2115', '2116'],
-        status: {
-          id: 14117,
-          company_id: 1504303190303051778,
-          content: '\u89c4\u5212\u4e2d',
-          color: '#FA9746',
+        name: '121212',
+        priority: {
+          id: 0,
+          name: '\u65e0\u4f18\u5148\u7ea7',
           content_txt: '',
           group_content_txt: '',
         },
-      },
-      expected_start_at: null,
-      expected_end_at: null,
-      finish_at: null,
-      story_count: 0,
-      business_value: '',
-      category_status_id: 2115,
-      schedule: 0,
-      custom_field: null,
-      verify_lock: 2,
-      is_handover: null,
-      prefix_key: 5,
-      level_tree: '0',
-      level: 1,
-      project_type: 2,
-      is_bug: 2,
-      severity: 0,
-      discovery_version: 0,
-      solution: '',
-      sort: 0,
-      created_at: '2023-10-16 14:22:31',
-      updated_at: '2023-10-16 14:22:31',
-      deleted_at: null,
-      iterate_name:
-        '\u6d4b\u8bd5\u540d\u79f0\u5f88\u957f\u7684\u540d\u79f0\u554a\u54c8\u54c8\u54c8\u54c8\u7802\u6d46\u5676\u51e0\u5206\u516c\u53f8\u811a\u540e\u8ddf\u526f\u4e66\u8bb0\u611f\u89c9\u662f\u5e72\u7c89111111111111\u7802\u6d46\u501f\u53e4\u8bbd\u4eca',
-      discovery_version_name: null,
-      user_name: ' \u6c6a\u5fd7\u541b',
-      user_avatar:
-        'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
-      class: null,
-      story_prefix_key: 'DWWCC-5',
-      child_story_count: 0,
-      project: {
-        id: 489,
-        name: '\u5927\u6587\u6587\u51b2\u523a',
-        is_public: 2,
-        member_id: 1518,
-        user_group_id: 1506,
-        user_ismember: true,
-        permissions: {
-          '\u9644\u4ef6\u4e0a\u4f20': '',
-          '\u9644\u4ef6\u4e0b\u8f7d': '',
-          '\u6dfb\u52a0\u9879\u76ee\u6210\u5458': 'b/project/member/save',
-          '\u7f16\u8f91\u9879\u76ee\u6210\u5458': 'b/project/member/update',
-          '\u79fb\u9664\u9879\u76ee\u6210\u5458': 'b/project/member/delete',
-          '\u9879\u76ee\u6743\u9650\u7ec4\u8bbe\u7f6e': 'b/project/role',
-          '\u7c7b\u578b\u914d\u7f6e': 'b/project/story_config',
-          '\u67e5\u770b\u6210\u5458\u8be6\u60c5': 'b/project/member/info',
-          '\u5206\u7c7b\u7ba1\u7406': 'b/project/flaw/class',
-          '\u9879\u76ee\u901a\u77e5\u914d\u7f6e': 'b/project/notification',
-          '\u521b\u5efa\u4e8b\u52a1': 'b/transaction/save',
-          '\u5220\u9664\u4e8b\u52a1': 'b/transaction/delete',
-          '\u7f16\u8f91\u4e8b\u52a1': 'b/transaction/update',
-          '\u4e8b\u52a1\u7b5b\u9009': 'b/transaction/get',
-          '\u53c2\u4e0e\u8bc4\u8bba': 'b/flaw/comment',
-          '\u5bfc\u5165\u4e8b\u52a1': 'b/transaction/import',
-          '\u4e8b\u52a1\u5206\u7c7b\u7ba1\u7406': 'b/project/transaction/class',
-          '\u6279\u91cf\u64cd\u4f5c': 'b/flaw/batch',
-          '\u7ba1\u7406\u51b2\u523a': 'b/sprint',
-          '\u4e8b\u52a1\u7c7b\u578b\u914d\u7f6e':
-            'b/project/transaction_category',
-          'Kanban\u914d\u7f6e': 'b/project/kanban',
-          '\u9996\u9875\u914d\u7f6e': 'b/project/home',
-          '\u5bfc\u51fa\u4e8b\u52a1': 'b/transaction/export',
-          Kanban: '',
-          '\u65e5\u62a5\u89c4\u5219\u914d\u7f6e': 'b/project/daily_config',
-          '\u521b\u5efa\u7f3a\u9677': 'b/flaw/save',
-          '\u5220\u9664\u7f3a\u9677': 'b/flaw/delete',
-          '\u7f16\u8f91\u7f3a\u9677': 'b/flaw/update',
-          '\u7f3a\u9677\u7b5b\u9009': 'b/flaw/get',
-          '\u5bfc\u5165\u7f3a\u9677': 'b/flaw/import',
-          '\u5bfc\u51fa\u7f3a\u9677': 'b/flaw/export',
-          '\u5de5\u65f6\u7edf\u8ba1': 'b/story/work_time',
+        status: {
+          id: 2115,
+          category_id: 675,
+          status_id: 14117,
+          is_start: 1,
+          is_end: 2,
+          can_changes_category_status: ['2115', '2116'],
+          status: {
+            id: 14117,
+            company_id: 1504303190303051778,
+            content: '\u89c4\u5212\u4e2d',
+            color: '#FA9746',
+            content_txt: '',
+            group_content_txt: '',
+          },
         },
-      },
-      is_new: 2,
-      category: '\u9700\u6c42',
-      category_attachment:
-        'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
-      category_remark: '',
-      work_type: 4,
-      usersInfo: [
-        {
-          id: 39,
-          name: ' \u6c6a\u5fd7\u541b',
-          gender: 2,
-          nickname: 'W_wang',
-          email: 'youyi@ifun.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        expected_start_at: null,
+        expected_end_at: null,
+        finish_at: null,
+        story_count: 0,
+        business_value: '',
+        category_status_id: 2115,
+        schedule: 0,
+        custom_field: null,
+        verify_lock: 2,
+        is_handover: null,
+        prefix_key: 5,
+        level_tree: '0',
+        level: 1,
+        project_type: 2,
+        is_bug: 2,
+        severity: 0,
+        discovery_version: 0,
+        solution: '',
+        sort: 0,
+        created_at: '2023-10-16 14:22:31',
+        updated_at: '2023-10-16 14:22:31',
+        deleted_at: null,
+        iterate_name:
+          '\u6d4b\u8bd5\u540d\u79f0\u5f88\u957f\u7684\u540d\u79f0\u554a\u54c8\u54c8\u54c8\u54c8\u7802\u6d46\u5676\u51e0\u5206\u516c\u53f8\u811a\u540e\u8ddf\u526f\u4e66\u8bb0\u611f\u89c9\u662f\u5e72\u7c89111111111111\u7802\u6d46\u501f\u53e4\u8bbd\u4eca',
+        discovery_version_name: null,
+        user_name: ' \u6c6a\u5fd7\u541b',
+        user_avatar:
+          'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        class: null,
+        story_prefix_key: 'DWWCC-5',
+        child_story_count: 0,
+        project: {
+          id: 489,
+          name: '\u5927\u6587\u6587\u51b2\u523a',
+          is_public: 2,
+          member_id: 1518,
+          user_group_id: 1506,
+          user_ismember: true,
         },
-      ],
-      copy_send_users: [],
-      users_name_ids: [39],
-      users_name: '',
-      users_copysend_name_ids: [],
-      users_copysend_name: '',
-      status_id: 14117,
-      content_txt: '\u89c4\u5212\u4e2d',
-      category_config_list: {
-        parent_id: 2,
-        priority: 2,
-        iterate_id: 2,
-        class_id: 2,
-        user_name: 2,
-        users: 2,
-        copysend: 2,
-        created_at: 2,
-        expected_start_at: 2,
-        expected_end_at: 2,
-        finish_at: 2,
-        schedule: 2,
+        is_new: 2,
+        category: '\u9700\u6c42',
+        category_attachment:
+          'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
+        category_remark: '',
+        work_type: 4,
+        usersInfo: [
+          {
+            id: 39,
+            name: ' \u6c6a\u5fd7\u541b',
+            gender: 2,
+            nickname: 'W_wang',
+            email: 'youyi@ifun.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+          },
+        ],
+        copy_send_users: [],
+        users_name_ids: [39],
+        users_name: '',
+        users_copysend_name_ids: [],
+        users_copysend_name: '',
+        status_id: 14117,
+        content_txt: '\u89c4\u5212\u4e2d',
+        category_config_list: {
+          parent_id: 2,
+          priority: 2,
+          iterate_id: 2,
+          class_id: 2,
+          user_name: 2,
+          users: 2,
+          copysend: 2,
+          created_at: 2,
+          expected_start_at: 2,
+          expected_end_at: 2,
+          finish_at: 2,
+          schedule: 2,
+        },
+        parent: null,
+        is_member: true,
       },
-      parent: null,
-      is_member: true,
+    ],
+    pager: {
+      total: 32,
     },
-  ],
-  '2023-10-25': [
-    {
-      id: 1003166,
-      company_id: 1504303190303051778,
-      project_id: 489,
-      parent_id: 1003165,
-      iterate_id: 214,
-      user_id: 39,
-      class_id: 0,
-      category_id: 675,
-      name: '\u9700\u6c42',
-      priority: {
-        id: 14114,
-        name: '\u4e2d',
-        content: '\u4e2d',
-        color: '#2877FF',
-        icon: 'middle',
-        identity: 'priority',
-        content_txt: '\u4e2d',
-        group_content_txt: '',
-      },
-      status: {
-        id: 2115,
+  },
+  '2023-10-25': {
+    list: [
+      {
+        id: 1003166,
+        company_id: 1504303190303051778,
+        project_id: 489,
+        parent_id: 1003165,
+        iterate_id: 214,
+        user_id: 39,
+        class_id: 0,
         category_id: 675,
-        status_id: 14117,
-        is_start: 1,
-        is_end: 2,
-        can_changes_category_status: ['2115', '2116'],
-        status: {
-          id: 14117,
-          company_id: 1504303190303051778,
-          content: '\u89c4\u5212\u4e2d',
-          color: '#FA9746',
-          content_txt: '',
+        name: '\u9700\u6c42',
+        priority: {
+          id: 14114,
+          name: '\u4e2d',
+          content: '\u4e2d',
+          color: '#2877FF',
+          icon: 'middle',
+          identity: 'priority',
+          content_txt: '\u4e2d',
           group_content_txt: '',
         },
-      },
-      expected_start_at: null,
-      expected_end_at: null,
-      finish_at: null,
-      story_count: 0,
-      business_value: '',
-      category_status_id: 2115,
-      schedule: 0,
-      custom_field: null,
-      verify_lock: 2,
-      is_handover: null,
-      prefix_key: 2,
-      level_tree: '0,1003165',
-      level: 2,
-      project_type: 2,
-      is_bug: 2,
-      severity: 0,
-      discovery_version: 0,
-      solution: '',
-      sort: 0,
-      created_at: '2023-07-21 18:43:26',
-      updated_at: '2023-10-10 10:42:26',
-      deleted_at: null,
-      iterate_name: '\u65b0\u5efa\u7684\u51b2\u523a1',
-      discovery_version_name: null,
-      user_name: ' \u6c6a\u5fd7\u541b',
-      user_avatar:
-        'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
-      class: null,
-      story_prefix_key: 'DWWCC-2',
-      child_story_count: 0,
-      project: {
-        id: 489,
-        name: '\u5927\u6587\u6587\u51b2\u523a',
-        is_public: 2,
-        member_id: 1518,
-        user_group_id: 1506,
-        user_ismember: true,
-        permissions: {
-          '\u9644\u4ef6\u4e0a\u4f20': '',
-          '\u9644\u4ef6\u4e0b\u8f7d': '',
-          '\u6dfb\u52a0\u9879\u76ee\u6210\u5458': 'b/project/member/save',
-          '\u7f16\u8f91\u9879\u76ee\u6210\u5458': 'b/project/member/update',
-          '\u79fb\u9664\u9879\u76ee\u6210\u5458': 'b/project/member/delete',
-          '\u9879\u76ee\u6743\u9650\u7ec4\u8bbe\u7f6e': 'b/project/role',
-          '\u7c7b\u578b\u914d\u7f6e': 'b/project/story_config',
-          '\u67e5\u770b\u6210\u5458\u8be6\u60c5': 'b/project/member/info',
-          '\u5206\u7c7b\u7ba1\u7406': 'b/project/flaw/class',
-          '\u9879\u76ee\u901a\u77e5\u914d\u7f6e': 'b/project/notification',
-          '\u521b\u5efa\u4e8b\u52a1': 'b/transaction/save',
-          '\u5220\u9664\u4e8b\u52a1': 'b/transaction/delete',
-          '\u7f16\u8f91\u4e8b\u52a1': 'b/transaction/update',
-          '\u4e8b\u52a1\u7b5b\u9009': 'b/transaction/get',
-          '\u53c2\u4e0e\u8bc4\u8bba': 'b/flaw/comment',
-          '\u5bfc\u5165\u4e8b\u52a1': 'b/transaction/import',
-          '\u4e8b\u52a1\u5206\u7c7b\u7ba1\u7406': 'b/project/transaction/class',
-          '\u6279\u91cf\u64cd\u4f5c': 'b/flaw/batch',
-          '\u7ba1\u7406\u51b2\u523a': 'b/sprint',
-          '\u4e8b\u52a1\u7c7b\u578b\u914d\u7f6e':
-            'b/project/transaction_category',
-          'Kanban\u914d\u7f6e': 'b/project/kanban',
-          '\u9996\u9875\u914d\u7f6e': 'b/project/home',
-          '\u5bfc\u51fa\u4e8b\u52a1': 'b/transaction/export',
-          Kanban: '',
-          '\u65e5\u62a5\u89c4\u5219\u914d\u7f6e': 'b/project/daily_config',
-          '\u521b\u5efa\u7f3a\u9677': 'b/flaw/save',
-          '\u5220\u9664\u7f3a\u9677': 'b/flaw/delete',
-          '\u7f16\u8f91\u7f3a\u9677': 'b/flaw/update',
-          '\u7f3a\u9677\u7b5b\u9009': 'b/flaw/get',
-          '\u5bfc\u5165\u7f3a\u9677': 'b/flaw/import',
-          '\u5bfc\u51fa\u7f3a\u9677': 'b/flaw/export',
-          '\u5de5\u65f6\u7edf\u8ba1': 'b/story/work_time',
+        status: {
+          id: 2115,
+          category_id: 675,
+          status_id: 14117,
+          is_start: 1,
+          is_end: 2,
+          can_changes_category_status: ['2115', '2116'],
+          status: {
+            id: 14117,
+            company_id: 1504303190303051778,
+            content: '\u89c4\u5212\u4e2d',
+            color: '#FA9746',
+            content_txt: '',
+            group_content_txt: '',
+          },
         },
-      },
-      is_new: 2,
-      category: '\u9700\u6c42',
-      category_attachment:
-        'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
-      category_remark: '',
-      work_type: 4,
-      usersInfo: [
-        {
-          id: 3,
-          name: '\u98de\u98de',
-          gender: 2,
-          nickname: '',
-          email: 'yangyi123@ifunmail.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp',
+        expected_start_at: null,
+        expected_end_at: null,
+        finish_at: null,
+        story_count: 0,
+        business_value: '',
+        category_status_id: 2115,
+        schedule: 0,
+        custom_field: null,
+        verify_lock: 2,
+        is_handover: null,
+        prefix_key: 2,
+        level_tree: '0,1003165',
+        level: 2,
+        project_type: 2,
+        is_bug: 2,
+        severity: 0,
+        discovery_version: 0,
+        solution: '',
+        sort: 0,
+        created_at: '2023-07-21 18:43:26',
+        updated_at: '2023-10-10 10:42:26',
+        deleted_at: null,
+        iterate_name: '\u65b0\u5efa\u7684\u51b2\u523a1',
+        discovery_version_name: null,
+        user_name: ' \u6c6a\u5fd7\u541b',
+        user_avatar:
+          'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        class: null,
+        story_prefix_key: 'DWWCC-2',
+        child_story_count: 0,
+        project: {
+          id: 489,
+          name: '\u5927\u6587\u6587\u51b2\u523a',
+          is_public: 2,
+          member_id: 1518,
+          user_group_id: 1506,
+          user_ismember: true,
         },
-        {
-          id: 39,
-          name: ' \u6c6a\u5fd7\u541b',
-          gender: 2,
-          nickname: 'W_wang',
-          email: 'youyi@ifun.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        is_new: 2,
+        category: '\u9700\u6c42',
+        category_attachment:
+          'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
+        category_remark: '',
+        work_type: 4,
+        usersInfo: [
+          {
+            id: 3,
+            name: '\u98de\u98de',
+            gender: 2,
+            nickname: '',
+            email: 'yangyi123@ifunmail.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp',
+          },
+          {
+            id: 39,
+            name: ' \u6c6a\u5fd7\u541b',
+            gender: 2,
+            nickname: 'W_wang',
+            email: 'youyi@ifun.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+          },
+        ],
+        copy_send_users: [
+          {
+            id: 39,
+            name: ' \u6c6a\u5fd7\u541b',
+            gender: 2,
+            nickname: 'W_wang',
+            email: 'youyi@ifun.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+          },
+        ],
+        users_name_ids: [3, 39],
+        users_name: '',
+        users_copysend_name_ids: [39],
+        users_copysend_name: '',
+        status_id: 14117,
+        content_txt: '\u89c4\u5212\u4e2d',
+        category_config_list: {
+          parent_id: 2,
+          priority: 2,
+          iterate_id: 2,
+          class_id: 2,
+          user_name: 2,
+          users: 2,
+          copysend: 2,
+          created_at: 2,
+          expected_start_at: 2,
+          expected_end_at: 2,
+          finish_at: 2,
+          schedule: 2,
         },
-      ],
-      copy_send_users: [
-        {
-          id: 39,
-          name: ' \u6c6a\u5fd7\u541b',
-          gender: 2,
-          nickname: 'W_wang',
-          email: 'youyi@ifun.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        parent: {
+          id: 1003165,
+          name: '\u957f\u6545\u4e8b',
         },
-      ],
-      users_name_ids: [3, 39],
-      users_name: '',
-      users_copysend_name_ids: [39],
-      users_copysend_name: '',
-      status_id: 14117,
-      content_txt: '\u89c4\u5212\u4e2d',
-      category_config_list: {
-        parent_id: 2,
-        priority: 2,
-        iterate_id: 2,
-        class_id: 2,
-        user_name: 2,
-        users: 2,
-        copysend: 2,
-        created_at: 2,
-        expected_start_at: 2,
-        expected_end_at: 2,
-        finish_at: 2,
-        schedule: 2,
+        is_member: true,
       },
-      parent: {
-        id: 1003165,
-        name: '\u957f\u6545\u4e8b',
-      },
-      is_member: true,
-    },
-    {
-      id: 1003237,
-      company_id: 1504303190303051778,
-      project_id: 489,
-      parent_id: 1003165,
-      iterate_id: 214,
-      user_id: 39,
-      class_id: 0,
-      category_id: 675,
-      name: '1111155355',
-      priority: {
-        id: 0,
-        name: '\u65e0\u4f18\u5148\u7ea7',
-        content_txt: '',
-        group_content_txt: '',
-      },
-      status: {
-        id: 2115,
+      {
+        id: 1003237,
+        company_id: 1504303190303051778,
+        project_id: 489,
+        parent_id: 1003165,
+        iterate_id: 214,
+        user_id: 39,
+        class_id: 0,
         category_id: 675,
-        status_id: 14117,
-        is_start: 1,
-        is_end: 2,
-        can_changes_category_status: ['2115', '2116'],
-        status: {
-          id: 14117,
-          company_id: 1504303190303051778,
-          content: '\u89c4\u5212\u4e2d',
-          color: '#FA9746',
+        name: '1111155355',
+        priority: {
+          id: 0,
+          name: '\u65e0\u4f18\u5148\u7ea7',
           content_txt: '',
           group_content_txt: '',
         },
-      },
-      expected_start_at: '2023-10-10',
-      expected_end_at: '2023-10-11',
-      finish_at: null,
-      story_count: 0,
-      business_value: '',
-      category_status_id: 2115,
-      schedule: 0,
-      custom_field: null,
-      verify_lock: 2,
-      is_handover: null,
-      prefix_key: 4,
-      level_tree: '0,1003165',
-      level: 2,
-      project_type: 2,
-      is_bug: 2,
-      severity: 0,
-      discovery_version: 0,
-      solution: '',
-      sort: 0,
-      created_at: '2023-08-08 22:55:24',
-      updated_at: '2023-10-10 10:41:13',
-      deleted_at: null,
-      iterate_name: '\u65b0\u5efa\u7684\u51b2\u523a1',
-      discovery_version_name: null,
-      user_name: ' \u6c6a\u5fd7\u541b',
-      user_avatar:
-        'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
-      class: null,
-      story_prefix_key: 'DWWCC-4',
-      child_story_count: 0,
-      project: {
-        id: 489,
-        name: '\u5927\u6587\u6587\u51b2\u523a',
-        is_public: 2,
-        member_id: 1518,
-        user_group_id: 1506,
-        user_ismember: true,
-        permissions: {
-          '\u9644\u4ef6\u4e0a\u4f20': '',
-          '\u9644\u4ef6\u4e0b\u8f7d': '',
-          '\u6dfb\u52a0\u9879\u76ee\u6210\u5458': 'b/project/member/save',
-          '\u7f16\u8f91\u9879\u76ee\u6210\u5458': 'b/project/member/update',
-          '\u79fb\u9664\u9879\u76ee\u6210\u5458': 'b/project/member/delete',
-          '\u9879\u76ee\u6743\u9650\u7ec4\u8bbe\u7f6e': 'b/project/role',
-          '\u7c7b\u578b\u914d\u7f6e': 'b/project/story_config',
-          '\u67e5\u770b\u6210\u5458\u8be6\u60c5': 'b/project/member/info',
-          '\u5206\u7c7b\u7ba1\u7406': 'b/project/flaw/class',
-          '\u9879\u76ee\u901a\u77e5\u914d\u7f6e': 'b/project/notification',
-          '\u521b\u5efa\u4e8b\u52a1': 'b/transaction/save',
-          '\u5220\u9664\u4e8b\u52a1': 'b/transaction/delete',
-          '\u7f16\u8f91\u4e8b\u52a1': 'b/transaction/update',
-          '\u4e8b\u52a1\u7b5b\u9009': 'b/transaction/get',
-          '\u53c2\u4e0e\u8bc4\u8bba': 'b/flaw/comment',
-          '\u5bfc\u5165\u4e8b\u52a1': 'b/transaction/import',
-          '\u4e8b\u52a1\u5206\u7c7b\u7ba1\u7406': 'b/project/transaction/class',
-          '\u6279\u91cf\u64cd\u4f5c': 'b/flaw/batch',
-          '\u7ba1\u7406\u51b2\u523a': 'b/sprint',
-          '\u4e8b\u52a1\u7c7b\u578b\u914d\u7f6e':
-            'b/project/transaction_category',
-          'Kanban\u914d\u7f6e': 'b/project/kanban',
-          '\u9996\u9875\u914d\u7f6e': 'b/project/home',
-          '\u5bfc\u51fa\u4e8b\u52a1': 'b/transaction/export',
-          Kanban: '',
-          '\u65e5\u62a5\u89c4\u5219\u914d\u7f6e': 'b/project/daily_config',
-          '\u521b\u5efa\u7f3a\u9677': 'b/flaw/save',
-          '\u5220\u9664\u7f3a\u9677': 'b/flaw/delete',
-          '\u7f16\u8f91\u7f3a\u9677': 'b/flaw/update',
-          '\u7f3a\u9677\u7b5b\u9009': 'b/flaw/get',
-          '\u5bfc\u5165\u7f3a\u9677': 'b/flaw/import',
-          '\u5bfc\u51fa\u7f3a\u9677': 'b/flaw/export',
-          '\u5de5\u65f6\u7edf\u8ba1': 'b/story/work_time',
+        status: {
+          id: 2115,
+          category_id: 675,
+          status_id: 14117,
+          is_start: 1,
+          is_end: 2,
+          can_changes_category_status: ['2115', '2116'],
+          status: {
+            id: 14117,
+            company_id: 1504303190303051778,
+            content: '\u89c4\u5212\u4e2d',
+            color: '#FA9746',
+            content_txt: '',
+            group_content_txt: '',
+          },
         },
-      },
-      is_new: 2,
-      category: '\u9700\u6c42',
-      category_attachment:
-        'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
-      category_remark: '',
-      work_type: 4,
-      usersInfo: [
-        {
-          id: 39,
-          name: ' \u6c6a\u5fd7\u541b',
-          gender: 2,
-          nickname: 'W_wang',
-          email: 'youyi@ifun.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        expected_start_at: '2023-10-10',
+        expected_end_at: '2023-10-11',
+        finish_at: null,
+        story_count: 0,
+        business_value: '',
+        category_status_id: 2115,
+        schedule: 0,
+        custom_field: null,
+        verify_lock: 2,
+        is_handover: null,
+        prefix_key: 4,
+        level_tree: '0,1003165',
+        level: 2,
+        project_type: 2,
+        is_bug: 2,
+        severity: 0,
+        discovery_version: 0,
+        solution: '',
+        sort: 0,
+        created_at: '2023-08-08 22:55:24',
+        updated_at: '2023-10-10 10:41:13',
+        deleted_at: null,
+        iterate_name: '\u65b0\u5efa\u7684\u51b2\u523a1',
+        discovery_version_name: null,
+        user_name: ' \u6c6a\u5fd7\u541b',
+        user_avatar:
+          'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+        class: null,
+        story_prefix_key: 'DWWCC-4',
+        child_story_count: 0,
+        project: {
+          id: 489,
+          name: '\u5927\u6587\u6587\u51b2\u523a',
+          is_public: 2,
+          member_id: 1518,
+          user_group_id: 1506,
+          user_ismember: true,
         },
-        {
-          id: 6,
-          name: '\u9a6c\u6210\u9f99',
-          gender: 1,
-          nickname: '',
-          email: 'machenglong1@ifunmail.com',
-          avatar:
-            'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-04-24/68e19872-c04e-44d4-b4c7-9b86bcd0cfd8.png',
+        is_new: 2,
+        category: '\u9700\u6c42',
+        category_attachment:
+          'https://agile-api.dev.staryuntech.com/attachment/category_icon/security.png',
+        category_remark: '',
+        work_type: 4,
+        usersInfo: [
+          {
+            id: 39,
+            name: ' \u6c6a\u5fd7\u541b',
+            gender: 2,
+            nickname: 'W_wang',
+            email: 'youyi@ifun.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-01-30/1622381402%281%29.jpg',
+          },
+          {
+            id: 6,
+            name: '\u9a6c\u6210\u9f99',
+            gender: 1,
+            nickname: '',
+            email: 'machenglong1@ifunmail.com',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504303190676344834/2023-04-24/68e19872-c04e-44d4-b4c7-9b86bcd0cfd8.png',
+          },
+          {
+            id: 693,
+            name: '\u9a6c\u4e8c',
+            gender: 1,
+            nickname: '\u9a6c\u4e8c',
+            email: 'dx187028@dingstartech.com',
+            avatar: '',
+          },
+        ],
+        copy_send_users: [],
+        users_name_ids: [39, 6, 693],
+        users_name: '',
+        users_copysend_name_ids: [],
+        users_copysend_name: '',
+        status_id: 14117,
+        content_txt: '\u89c4\u5212\u4e2d',
+        category_config_list: {
+          parent_id: 2,
+          priority: 2,
+          iterate_id: 2,
+          class_id: 2,
+          user_name: 2,
+          users: 2,
+          copysend: 2,
+          created_at: 2,
+          expected_start_at: 2,
+          expected_end_at: 2,
+          finish_at: 2,
+          schedule: 2,
         },
-        {
-          id: 693,
-          name: '\u9a6c\u4e8c',
-          gender: 1,
-          nickname: '\u9a6c\u4e8c',
-          email: 'dx187028@dingstartech.com',
-          avatar: '',
+        parent: {
+          id: 1003165,
+          name: '\u957f\u6545\u4e8b',
         },
-      ],
-      copy_send_users: [],
-      users_name_ids: [39, 6, 693],
-      users_name: '',
-      users_copysend_name_ids: [],
-      users_copysend_name: '',
-      status_id: 14117,
-      content_txt: '\u89c4\u5212\u4e2d',
-      category_config_list: {
-        parent_id: 2,
-        priority: 2,
-        iterate_id: 2,
-        class_id: 2,
-        user_name: 2,
-        users: 2,
-        copysend: 2,
-        created_at: 2,
-        expected_start_at: 2,
-        expected_end_at: 2,
-        finish_at: 2,
-        schedule: 2,
+        is_member: true,
       },
-      parent: {
-        id: 1003165,
-        name: '\u957f\u6545\u4e8b',
-      },
-      is_member: true,
+    ],
+    pager: {
+      total: 12,
     },
-  ],
+  },
+}
+
+interface RecentlyProps {
+  isVisible: boolean
+  onClose(): void
 }
 
 const Recently = (props: RecentlyProps) => {
@@ -1074,12 +977,6 @@ const Recently = (props: RecentlyProps) => {
   const [isSpinning, setIsSpinning] = useState(false)
   //   当前选中的是那个tab
   const [tabActive, setTabActive] = useState(0)
-  //   日报列表
-  const [reportList, setReportList] = useState<any>()
-  //   项目列表
-  const [projectList, setProjectList] = useState<any>()
-  // 任务列表
-  const [taskList, setTaskList] = useState<any>()
 
   //   tab列表
   const tabs = [
@@ -1150,6 +1047,11 @@ const Recently = (props: RecentlyProps) => {
 
   // 日报-点击跳转详情
   const onClickReport = async (item: any) => {
+    //
+  }
+
+  // 更多数据合并
+  const onChangeData = (list: any, key: string) => {
     //
   }
 
@@ -1226,73 +1128,14 @@ const Recently = (props: RecentlyProps) => {
           {Object.keys(data)?.map((k: any) => (
             <ItemWrap key={k}>
               <TimeName>{k}</TimeName>
-              {data[k]?.map((i: any) => (
-                <>
-                  {tabActive === 2 && (
-                    <TaskItem key={i.id}>
-                      <div className="left" onClick={() => onClickTask(i)}>
-                        <img className="icon" src={i.category_attachment} />
-                        <div className="info">
-                          <span className="name">{i.name}</span>
-                          <span className="sub">{i.project.name}</span>
-                        </div>
-                      </div>
-                      <StatusBox
-                        style={{
-                          background:
-                            i.status?.is_start === 1 && i.status?.is_end === 2
-                              ? 'var(--primary-d2)'
-                              : i.status?.is_end === 1 &&
-                                i.status?.is_start === 2
-                              ? 'var(--neutral-n7)'
-                              : i.status?.is_start === 2 &&
-                                i.status?.is_end === 2
-                              ? 'var(--function-success)'
-                              : '',
-                          color:
-                            i.status?.is_start === 1 && i.status?.is_end === 2
-                              ? 'var(--neutral-n7)'
-                              : i.status?.is_end === 1 &&
-                                i.status?.is_start === 2
-                              ? 'var(--neutral-n1-d1)'
-                              : i.status?.is_start === 2 &&
-                                i.status?.is_end === 2
-                              ? 'var(--neutral-n7)'
-                              : '',
-                        }}
-                      >
-                        {i.status?.status?.content}
-                      </StatusBox>
-                    </TaskItem>
-                  )}
-                  {tabActive === 1 && (
-                    <ProjectItem key={i.id} local={language}>
-                      <div className="left" onClick={() => onClickProject(i)}>
-                        <img className="icon" src={i.category_attachment} />
-                        <div className="info">
-                          <span className="name">{i.name}</span>
-                          <span className="sub">{i.project.name}</span>
-                        </div>
-                      </div>
-                      <ProjectTypeBox type={i.project_type}>
-                        {i.project_type === 1 ? t('iteration') : t('sprint2')}
-                      </ProjectTypeBox>
-                    </ProjectItem>
-                  )}
-                  {tabActive === 0 && (
-                    <ReportItem key={i.id}>
-                      <div className="left" onClick={() => onClickReport(i)}>
-                        <CommonUserAvatar avatar={i.avatar} size="large" />
-                        <div className="info">
-                          <span className="name">{i.name}</span>
-                          <span className="sub">{i.project.name}</span>
-                        </div>
-                      </div>
-                      <div className="right">10-17</div>
-                    </ReportItem>
-                  )}
-                </>
-              ))}
+              <GroupItems
+                row={data[k]}
+                onClickTask={onClickTask}
+                onClickProject={onClickProject}
+                onClickReport={onClickReport}
+                tabActive={tabActive}
+                onChangeData={onChangeData}
+              />
             </ItemWrap>
           ))}
         </Spin>

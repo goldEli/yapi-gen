@@ -870,6 +870,15 @@ export const SpinWrap = styled(Spin)`
   width: 100%;
 `
 
+export const LoadingMore = styled.div`
+  margin-top: 8px;
+  text-align: center;
+  width: 100%;
+  font-size: 12px;
+  color: var(--primary-d1);
+  cursor: pointer;
+`
+
 // 二级菜单样式
 export const LayoutMenuWrap = styled(Tabs)<{ width: number }>`
   max-width: calc(100% - ${props => props.width}px);
