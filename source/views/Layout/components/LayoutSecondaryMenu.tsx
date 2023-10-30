@@ -24,9 +24,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
 
   useEffect(() => {
     // 如果有第二级菜单显示
-    if (currentMenu?.children?.length > 0) {
-      setItems([...currentMenu?.children])
-    } else if (routerPath.pathname.includes('/ProjectDetail')) {
+    if (routerPath.pathname.includes('/ProjectDetail')) {
       // 显示项目下的菜单，例需求
       const resultMenu = [
         // { id: 'map', name: '导图', url: '', isPermisson: true  },
@@ -108,6 +106,10 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
       ]
       setItems(resultMenu?.filter((i: any) => i.isPermisson))
       console.log(projectInfo)
+    } else if (routerPath.pathname.includes('/AdminManagement')) {
+      // 菜单
+    } else if (currentMenu?.children?.length > 0) {
+      setItems([...currentMenu?.children])
     } else {
       setItems([])
     }

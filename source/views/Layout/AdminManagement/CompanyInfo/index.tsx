@@ -134,13 +134,13 @@ const CompanyInfo = () => {
               >
                 <CardWrap>
                   <div style={{ fontSize: 32, lineHeight: '44px' }}>
-                    {companyInfo.projectCount}
+                    {companyInfo?.projectCount}
                   </div>
                   <span>{t('setting.currentProject')}</span>
                 </CardWrap>
                 <CardWrap>
                   <div style={{ fontSize: 32, lineHeight: '44px' }}>
-                    {companyInfo.userCount}
+                    {companyInfo?.userCount}
                   </div>
                   <span>{t('setting.companyStaff')}</span>
                 </CardWrap>
