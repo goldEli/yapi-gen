@@ -124,7 +124,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   const [searchValue, setSearchValue] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 30 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [isShowMore, setIsShowMore] = useState(false)
   const [dataSource, setDataSource] =

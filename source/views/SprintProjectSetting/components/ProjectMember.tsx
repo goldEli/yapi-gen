@@ -121,7 +121,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const projectId = paramsData.id
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [batchEditVisible, setBatchEditVisible] = useState(false)

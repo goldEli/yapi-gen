@@ -203,7 +203,7 @@ const Profile = () => {
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
   const [monthIndex, setMonthIndex] = useState<any>(moment().month())
-  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 30 })
   const [total, setTotal] = useState<number>(0)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchParams] = useSearchParams()

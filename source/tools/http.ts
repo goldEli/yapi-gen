@@ -166,7 +166,20 @@ client.config({
         data.code !== 'A0301' &&
         data.code !== 'B0015'
       ) {
-        getMessage({ msg: data.msg ?? data.message, type: 'error' })
+        if (data.code === 'A0203') {
+          const lang = localStorage.getItem('language')
+
+          getMessage({
+            msg:
+              lang === 'zh'
+                ? '账户未登录！即将跳转到登录页...'
+                : 'Account not logged in! Going to the login page...',
+            type: 'error',
+          })
+        } else {
+          getMessage({ msg: data.msg ?? data.message, type: 'error' })
+        }
+
         return Promise.reject()
       }
       return {

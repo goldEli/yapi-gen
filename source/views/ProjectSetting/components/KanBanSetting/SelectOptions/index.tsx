@@ -3,9 +3,8 @@
  * 2. 普通下拉（下拉内容展示与打钩）
  */
 import React, { useMemo, useState } from 'react'
-import { Menu } from 'antd'
+import { Dropdown, Menu } from 'antd'
 import IconFont from '@/components/IconFont'
-import DropDownMenu from '@/components/DropDownMenu'
 import {
   BtnsArea,
   CheckIcon,
@@ -177,11 +176,12 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
 
   return (
     <CustomWrap>
-      <DropDownMenu
-        isVisible={isVisibleFormat}
-        onChangeVisible={setIsVisibleFormat}
-        menu={<Menu items={menuItems} />}
-        isActive
+      <Dropdown
+        open={isVisibleFormat}
+        overlay={<Menu items={menuItems} />}
+        getPopupContainer={node => node}
+        trigger={['hover']}
+        onOpenChange={setIsVisibleFormat}
       >
         <SelectOptionsBox>
           <span>{title}</span>
@@ -190,7 +190,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
             type={isVisibleFormat ? 'up' : 'down'}
           />
         </SelectOptionsBox>
-      </DropDownMenu>
+      </Dropdown>
     </CustomWrap>
   )
 }

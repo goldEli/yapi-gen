@@ -99,7 +99,7 @@ const LoginManagement = () => {
   const [staffList, setStaffList] = useState<any>([])
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [boxMaps, setBoxMaps] = useState<any>()
   const getList = async (pageObjVal?: any, orderVal?: any) => {

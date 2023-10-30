@@ -127,6 +127,7 @@ function getTypeComponent(
   defaultValue?: any,
   inputRef?: any,
   onBlur?: any,
+  text?: string,
 ) {
   let child: any = null
   if (params?.attr === 'date') {
@@ -230,6 +231,7 @@ function getTypeComponent(
     // 之前固定字段的修改
     child = (
       <CustomSelect
+        open={text === 'copysend' ? false : undefined}
         placeholder={params.remarks}
         style={{ width: '100%', minWidth: 192 }}
         showSearch
@@ -263,6 +265,7 @@ function getTypeComponent(
         style={{ width: '100%', minWidth: 192 }}
         showSearch
         showArrow
+        open={text === 'copysend' ? false : undefined}
         optionFilterProp="label"
         allowClear
         value={defaultValue}

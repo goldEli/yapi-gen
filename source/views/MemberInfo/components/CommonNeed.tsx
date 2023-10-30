@@ -284,7 +284,7 @@ const CommonNeed = (props: any) => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 30 })
   const [total, setTotal] = useState<number>(0)
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)

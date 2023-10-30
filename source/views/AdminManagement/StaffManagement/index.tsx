@@ -94,7 +94,7 @@ const StaffManagement = () => {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(20)
+  const [pagesize, setPagesize] = useState<number>(30)
   const [total, setTotal] = useState<number>(0)
   const [keyword, setKeyword] = useState<string>('')
   const [searchGroups, setSearchGroups] = useState<any>({

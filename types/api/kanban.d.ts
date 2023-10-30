@@ -8,7 +8,7 @@ declare namespace API.Kanban {
   namespace GetKanban {
     type Params = SearchParams & {
       project_id: number
-      pagesize: 20
+      pagesize: 30
       page: 0
     }
     type Result = Model.Kanban.Column[]
@@ -42,7 +42,7 @@ declare namespace API.Kanban {
       project_id: number
       // 分组类型，users:用户分组，priority：优先级，category：类别
       group_by: Model.KanBan.GroupType
-      pagesize: 20
+      pagesize: 30
       page: 0
     }
     type Result = Model.KanBan.Group[]

@@ -80,7 +80,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [isSettingState, setIsSettingState] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
   const [searchItems, setSearchItems] = useState<any>({})
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   // 用于控制失焦事件与展开子需求冲突
@@ -351,16 +351,6 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     getList(isGrid, searchItems, pageObj, order)
   }, [key, isGrid, projectId, order, pageObj])
 
-  // useEffect(() => {
-  //   setPageObj({ page: 1, size: 20 })
-  //   setOrder({ value: '', key: '' })
-  //   setKey('')
-  //   setIsGrid(0)
-  //   setSearchVal('')
-  //   setSearchItems({})
-  //   keyValueTree.changeKey('')
-  //   getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
-  // }, [projectId])
   useEffect(() => {
     if (isShowLeft) {
       setWidthRight(myTreeComponent.current.leftWidth)
