@@ -622,7 +622,6 @@ const CreateSchedule = () => {
         open={scheduleModal.visible}
         onClose={onClose}
         destroyOnClose
-        maskClosable={false}
         // mask={false}
         className="drawerRoot"
       >

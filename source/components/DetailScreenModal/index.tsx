@@ -62,7 +62,7 @@ const DetailScreenModal = () => {
       open={visible}
       closable={false}
       title={false}
-      maskClosable={false}
+      maskClosable={userPreferenceConfig.previewModel === 3 ? true : false}
       destroyOnClose
       keyboard={false}
       wrapClassName="vertical-center-modal"

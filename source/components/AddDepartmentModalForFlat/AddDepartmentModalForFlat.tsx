@@ -549,7 +549,6 @@ const AddDepartmentModalForFlat = (props: ModalProps) => {
       closable={false}
       bodyStyle={{ padding: '0 4px 0 0' }}
       width={props?.width || 640}
-      maskClosable={false}
       destroyOnClose
       keyboard={false}
       wrapClassName="vertical-center-modal"

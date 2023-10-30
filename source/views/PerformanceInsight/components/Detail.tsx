@@ -50,7 +50,6 @@ const Detail = (props: Props) => {
         open={props.visible}
         onClose={onCancel}
         destroyOnClose
-        maskClosable={false}
         mask={false}
         getContainer={false}
         className="drawerRoot"

@@ -308,7 +308,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         open={visible}
         onClose={onClose}
         destroyOnClose
-        maskClosable={false}
         // mask={false}
         className="drawerRoot"
       >

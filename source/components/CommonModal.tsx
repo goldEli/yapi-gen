@@ -74,7 +74,6 @@ const CommonModal = (props: CommonModalProps) => {
       closable={false}
       bodyStyle={{ ...props.bodyStyle }}
       width={props?.width || 528}
-      maskClosable={false}
       destroyOnClose
       keyboard={false}
       wrapClassName="vertical-center-modal"

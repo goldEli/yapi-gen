@@ -70,7 +70,6 @@ const ExportSuccess = (props: Props) => {
       bodyStyle={{ padding: '20px 0px 0px 0px' }}
       closable={false}
       width={420}
-      maskClosable={false}
       destroyOnClose
       keyboard={false}
       wrapClassName="vertical-center-modal"
