@@ -12,7 +12,7 @@ import { useState, useEffect, useRef } from 'react'
 import { language, TForm, InputMode, systemData } from './login'
 import React from 'react'
 import { getCaptcha, toLogin, checkToken, checkSecret } from './services'
-
+import { PHONE_NUMBER_REGEXP } from '@/constants'
 import IconFont from '@/components/IconFont'
 import ForgetPassword from '@/components/ForgetPassword/ForgetPassword'
 import styled from '@emotion/styled'
@@ -38,7 +38,7 @@ export default React.memo(
       id: 0,
     })
     const [form2, setForm2] = useState<TForm>({
-      phone: '',
+      phone: '' || sessionStorage.getItem('phone'),
       msg: '',
       code: '',
       captchaId: '',
@@ -285,15 +285,16 @@ export default React.memo(
     }
 
     const onCheckSecret2 = async () => {
-      if (!form2.phone) {
+      if (!form2.phone || !PHONE_NUMBER_REGEXP.test(form2.phone)) {
         setFocusNumber(1)
         setErrorState(true)
         setErrorCheck({
           phone: t('pleaseEnterAValidPhoneNumber'),
         })
+        console.log('检查', PHONE_NUMBER_REGEXP.test(form2.phone))
         return
       }
-
+      console.log('检查', PHONE_NUMBER_REGEXP.test(form2.phone))
       if (
         form2.phone &&
         form.password &&
@@ -484,8 +485,8 @@ export default React.memo(
                       name="phone"
                       icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
                       value={form2.phone}
-                      label={languageMode.user}
-                      type="text"
+                      label={t('pleaseEnterPhoneNumber')}
+                      type="number"
                       onChangeEvent={handleInputChange}
                       onCheckSecret={onCheckSecret2}
                       isHighlight={focusNumber === 1 || focusNumber === 4}
@@ -508,12 +509,18 @@ export default React.memo(
                         if (form2.phone) {
                           const res = await getMobil(form2.phone, 0, e)
                           if (res.code === 0) {
+                            sessionStorage.setItem('phone', form2.phone)
                             message.success(
                               t('verificationCodeSentSuccessfully'),
                             )
                           } else {
                             msgRef.current?.reset()
                             setErrorMessage(res.msg)
+                          }
+                          if (res.code === 0) {
+                            return new Promise(resolve => resolve(1))
+                          } else {
+                            return new Promise(resolve => resolve(2))
                           }
                         }
                       }}

@@ -60,7 +60,7 @@ export const getKanban = async (
   const response = await http.get<any, API.Kanban.GetKanban.Result>(
     'getKanban',
     {
-      pagesize: 20,
+      pagesize: 30,
       page: 0,
       ...params,
     },
@@ -121,7 +121,7 @@ export const getKanbanByGroup = async (
   const response = await http.get<any, API.Kanban.GetKanbanByGroup.Result>(
     'getKanbanByGroup',
     {
-      pagesize: 20,
+      pagesize: 30,
       page: 0,
       ...params,
     },

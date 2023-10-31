@@ -270,9 +270,9 @@ const MyDropdown = (props: any) => {
     const params = {
       userId: userInfo?.id,
       projectId: 0,
-      // verifyStatus: 1,
+      verifyStatus: 1,
       page: verifyPage,
-      pageSize: 7,
+      pageSize: 12,
     }
     const result = await getVerifyUserList(params)
     setIsSpinning(false)
@@ -633,9 +633,9 @@ const MyDropdown = (props: any) => {
     const params = {
       userId: userInfo?.id,
       projectId: 0,
-      // verifyStatus: 1,
+      verifyStatus: 1,
       page: page,
-      pageSize: 7,
+      pageSize: 12,
     }
     const result = await getVerifyUserList(params)
     setVerifyList({

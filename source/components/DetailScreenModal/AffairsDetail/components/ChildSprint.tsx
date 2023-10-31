@@ -62,7 +62,7 @@ const ChildSprint = (
   const [searchValue, setSearchValue] = useState('')
   const { projectInfo, isChangeDetailAffairs, isUpdateAddWorkItem } =
     useSelector(store => store.project)
-  const [pageParams, setPageParams] = useState({ page: 1, pagesize: 20 })
+  const [pageParams, setPageParams] = useState({ page: 1, pagesize: 30 })
   const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   // 下拉数据
   const [selectList, setSelectList] = useState<SelectItem[]>([])
@@ -501,7 +501,7 @@ const ChildSprint = (
           </>
         )}
         {dataSource.total <= 0 && <NoData />}
-        {dataSource.total > 20 && (
+        {dataSource.total > 30 && (
           <PaginationBox
             total={dataSource?.total}
             currentPage={dataSource?.currentPage}

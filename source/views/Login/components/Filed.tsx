@@ -11,7 +11,7 @@ import {
   useImperativeHandle,
 } from 'react'
 import style from './Filed.module.css'
-import { Dropdown } from 'antd'
+import { Dropdown, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CountryCode from '@/components/CountryCode'
 
@@ -23,7 +23,9 @@ export default forwardRef((props: any, ref: any) => {
   const [border, setBorder] = useState(false)
   const [getMsg, setGetMsg] = useState(1)
   const [time, setTime] = useState(0)
-  const [conutryCode, setConutryCode] = useState(localStorage.areacode || '+86')
+  const [conutryCode, setConutryCode] = useState(
+    sessionStorage.areacode || '+86',
+  )
   const myForm = useRef<any>()
 
   const onKeyChange = (e: any) => {
@@ -51,30 +53,56 @@ export default forwardRef((props: any, ref: any) => {
     }
   }
 
-  const onGetMsg = (num?: number) => {
+  const onGetMsg = async (num?: number) => {
     setGetMsg(num)
     if (num === 2) {
-      props?.onGetMsg(localStorage.areacode || '+86')
+      const a = await props?.onGetMsg(sessionStorage.areacode || '+86')
+      console.log(a, '状态机')
+      if (a === 1) {
+        setTime(60)
+      } else {
+        setGetMsg(1)
+        message.error(t('failedToObtainVerificationCode'))
+      }
     }
-    setTime(60)
   }
 
   useEffect(() => {
+    const savedSeconds = sessionStorage.getItem('time')
+
     if (time === 0) {
       setGetMsg(1)
+      // sessionStorage.removeItem('time')
       return
     }
-    const intervalId = setInterval(() => {
+    const intervalId = setTimeout(() => {
       setTime(time - 1)
+      sessionStorage.setItem('time', time - 1)
     }, 1000)
-    return () => clearInterval(intervalId)
+
+    return () => {
+      sessionStorage
+      clearTimeout(intervalId)
+      // sessionStorage.removeItem('time')
+    }
   }, [time])
 
+  useEffect(() => {
+    const savedSeconds = sessionStorage.getItem('time')
+    console.log(savedSeconds)
+    if (parseInt(savedSeconds) === 0) {
+      sessionStorage.removeItem('time')
+    }
+    if (savedSeconds) {
+      setGetMsg(2)
+      setTime(parseInt(savedSeconds))
+    }
+  }, [])
   const onCountryCodeChange = (val: string) => {
     const [phoneCode, countryCode] = val.split('/')
 
     setConutryCode(phoneCode)
-    localStorage.areacode = phoneCode
+    sessionStorage.areacode = phoneCode
   }
   const reset = () => {
     setTime(0)
@@ -183,6 +211,14 @@ export default forwardRef((props: any, ref: any) => {
       ) : null}
       {props.name === 'phone' && props?.errorCheck?.phone ? (
         <span className={style.hint}>{props?.errorCheck?.phone}</span>
+      ) : null}
+      {props.name === 'password' && props?.errorCheck?.password ? (
+        <span
+          style={{ bottom: i18n.language === 'zh' ? '-20px' : '-40px' }}
+          className={style.hint}
+        >
+          {props?.errorCheck?.password}
+        </span>
       ) : null}
       {props.name === 'password2' && props?.errorCheck?.password2 ? (
         <span

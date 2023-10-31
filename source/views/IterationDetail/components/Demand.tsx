@@ -56,7 +56,7 @@ const Demand = (props: DemandProps) => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isSpinning, setIsSpinning] = useState(false)

@@ -50,7 +50,7 @@ const DemandIndex = () => {
   const projectId = paramsData.id
   const [key, setKey] = useState<any>()
   const [isGrid, setIsGrid] = useState(0)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [searchVal, setSearchVal] = useState('')
   const [isShowLeft, setIsShowLeft] = useState(false)
@@ -201,7 +201,7 @@ const DemandIndex = () => {
     getList(isGrid, searchItems, pageObj, order, state, topId)
     // 是编辑需求分类的话，就更新左侧需求分类列表
     if (isClass) {
-      myTreeComponent?.current?.init()
+      myTreeComponent?.current?.init(true)
     }
   }
 
@@ -220,7 +220,7 @@ const DemandIndex = () => {
     await deleteDemand({ projectId, id })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     getList(isGrid, searchItems, pageObj, order)
-    myTreeComponent?.current?.init()
+    myTreeComponent?.current?.init(true)
   }
 
   //   点击删除
@@ -328,14 +328,13 @@ const DemandIndex = () => {
 
   useEffect(() => {
     if (bian.current) {
-      setPageObj({ page: 1, size: 20 })
+      setPageObj({ page: 1, size: 30 })
       setOrder({ value: '', key: '' })
       setKey('')
       setIsGrid(0)
       setSearchVal('')
       setSearchItems({})
       keyValueTree.changeKey('')
-      // getList(0, {}, { page: 1, size: 20 }, { value: '', key: '' })
     }
     bian.current = projectId
   }, [projectId])

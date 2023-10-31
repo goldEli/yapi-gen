@@ -2470,5 +2470,6 @@
   "numberOfTransactions": "Number of transactions",
   "resigned": "Already Removed",
   "working": "",
-  "removedSuccessfully": "Removed successfully"
+  "removedSuccessfully": "Removed successfully",
+  "failedToObtainVerificationCode": "Failed to obtain verification code"
 }

@@ -67,7 +67,7 @@ const CreatePerson = styled.div`
   height: 448px;
 `
 const LeftWrap = styled.div`
-  width: 320px;
+  width: 450px;
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
@@ -76,7 +76,7 @@ const LeftWrap = styled.div`
 `
 
 const Tabs = styled.div`
-  width: 270px;
+  width: 395px;
   height: 24px;
   border-radius: 4px;
   margin-top: 16px;
@@ -89,7 +89,7 @@ const Tabs = styled.div`
     text-align: center;
     height: 24px;
     line-height: 24px;
-    width: 135px;
+    width: 197px;
     color: var(--neutral-n3);
   }
   &:hover {
@@ -120,7 +120,7 @@ const Row = styled.div`
 `
 const RightPerson = styled.div`
   /* overflow: auto; */
-  width: 300px;
+  width: 425px;
   height: 100%;
   padding-left: 24px;
 `
@@ -143,16 +143,16 @@ const Header = styled.div`
   }
 `
 export const ListItem = styled.div`
-  width: 276px;
+  /* width: 276px; */
   height: 36px;
   line-height: 36px;
   border-radius: 6px;
-  padding: 0 16px;
+  padding: 0 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   .del {
-    display: none;
+    display: block;
   }
   & span:first-child {
     width: 24px;
@@ -163,13 +163,9 @@ export const ListItem = styled.div`
   & span:last-child {
     color: var(--primary-d2);
   }
-  &:hover {
-    background: var(--hover-d2);
-    cursor: pointer;
-  }
-  &:hover .del {
-    display: block;
-  }
+
+  background: var(--hover-d2);
+  cursor: pointer;
 `
 const TreeStyle = styled(DirectoryTree)`
   width: 216px;
@@ -909,7 +905,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       title={false}
       closable={false}
       bodyStyle={{ padding: '0 4px 0 0' }}
-      width={props?.width || 640}
+      width={props?.width || 900}
       maskClosable={false}
       destroyOnClose
       keyboard={false}
@@ -937,7 +933,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
             notFoundContent={null}
             showSearch
             autoClearSearchValue
-            style={{ width: 270 }}
+            style={{ width: 395 }}
             // eslint-disable-next-line no-undefined
             value={checkedKeys}
             onSelect={(e: any) => handleChange(e)}
@@ -1064,8 +1060,12 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
           <div
             style={{
               overflow: 'scroll',
-              height: '425px',
-              width: '295px',
+              maxHeight: '425px',
+              width: '425px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 8,
+              padding: '16px 0',
             }}
           >
             {personData.length >= 1
@@ -1079,7 +1079,11 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                     <IconFont
                       className="del"
                       type="close"
-                      style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
+                      style={{
+                        fontSize: 14,
+                        color: 'var(--neutral-n3)',
+                        marginLeft: '5px',
+                      }}
                       onClick={() => delPersonDataList(el)}
                     />
                   </ListItem>

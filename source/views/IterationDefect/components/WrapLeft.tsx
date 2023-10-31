@@ -359,6 +359,7 @@ const WrapLeft = (props: any, ref: any) => {
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
   const { projectInfoValues } = useSelector(store => store.project)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
 
   // 重组为下拉筛选格式
   const computedChildren = (array: any) => {
@@ -496,6 +497,12 @@ const WrapLeft = (props: any, ref: any) => {
       init,
     }
   })
+
+  useEffect(() => {
+    if (isUpdateAddWorkItem) {
+      init(false, false)
+    }
+  }, [isUpdateAddWorkItem])
 
   if (props.isShowLeft) {
     return (

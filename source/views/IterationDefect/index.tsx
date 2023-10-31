@@ -53,7 +53,7 @@ const Index = (props: any) => {
   const [key, setKey] = useState<any>()
   const [searchVal, setSearchVal] = useState('')
   const [searchItems, setSearchItems] = useState<any>({})
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isShowLeft, setIsShowLeft] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
@@ -185,7 +185,7 @@ const Index = (props: any) => {
     getList(searchItems, pageObj, order, state)
     // 是编辑需求分类的话，就更新左侧需求分类列表
     if (isClass) {
-      myTreeComponent?.current?.init()
+      myTreeComponent?.current?.init(true)
     }
   }
 
@@ -223,7 +223,7 @@ const Index = (props: any) => {
     await deleteFlaw({ projectId, id })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     getList(searchItems, pageObj, order)
-    myTreeComponent?.current?.init()
+    myTreeComponent?.current?.init(true)
   }
 
   // 删除弹窗
@@ -251,13 +251,13 @@ const Index = (props: any) => {
   }, [key, order, pageObj])
 
   useEffect(() => {
-    setPageObj({ page: 1, size: 20 })
+    setPageObj({ page: 1, size: 30 })
     setOrder({ value: '', key: '' })
     setKey('')
     setSearchVal('')
     setSearchItems({})
     keyValueTree.changeKey('')
-    getList({}, { page: 1, size: 20 }, { value: '', key: '' })
+    getList({}, { page: 1, size: 30 }, { value: '', key: '' })
   }, [projectId])
 
   useEffect(() => {
