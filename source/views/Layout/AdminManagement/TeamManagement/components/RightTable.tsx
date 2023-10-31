@@ -35,8 +35,11 @@ const PaginationBox = styled.div`
 `
 const TableBox = styled.div`
   width: 100%;
-  height: calc(100% - 160px);
-  overflow-y: auto;
+  height: calc(100% - 140px);
+  overflow: hidden;
+  .ant-spin-container {
+    display: initial !important;
+  }
 `
 const FormStyle = styled(Form)`
   & .ant-form-item {
@@ -289,7 +292,7 @@ const RightTable = () => {
         onRefresh={onFetchMemberList}
         onShowAddMemberModal={() => setAddMemberVisible(true)}
       />
-      <TableBox style={{ overflow: 'hidden', height: '83%' }}>
+      <TableBox>
         <Table
           onUpdateOrderKey={onUpdateOrderKey}
           onEditRow={(row: any, state: string) => {

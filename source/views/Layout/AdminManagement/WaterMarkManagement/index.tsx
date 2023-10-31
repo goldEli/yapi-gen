@@ -81,7 +81,12 @@ const WaterMarkManagement = () => {
         ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
         ?.children?.map((i: any) => i.url)}
     >
-      <div style={{ height: '100%' }}>
+      <div
+        style={{
+          height: 'calc(100vh - 94px)',
+          backgroundColor: 'var(--neutral-white-d1)',
+        }}
+      >
         <Header>
           <span>{t('secure_watermark')}</span>
         </Header>

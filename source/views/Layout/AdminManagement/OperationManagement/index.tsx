@@ -63,7 +63,7 @@ const SearchWrap = styled(Space)({
 
 const Content = styled.div({
   padding: '0px 24px 0px',
-  height: 'calc(100vh - 254px)',
+  height: 'calc(100% - 197px)',
 })
 
 const NewSort = (sortProps: any) => {
@@ -246,7 +246,10 @@ const OperationManagement = () => {
         ?.children?.map((i: any) => i.url)}
     >
       <Form
-        style={{ height: 'calc(100vh -200px)' }}
+        style={{
+          height: 'calc(100vh - 94px)',
+          backgroundColor: 'var(--neutral-white-d1)',
+        }}
         form={form}
         onValuesChange={onValuesChange}
       >
@@ -343,14 +346,13 @@ const OperationManagement = () => {
             noData={<NoData />}
             isSpinning={isSpinning}
           />
-
-          <PaginationBox
-            total={dataList.total}
-            pageSize={dataList.pageSize}
-            currentPage={dataList.currentPage}
-            onChange={onChangePage}
-          />
         </Content>
+        <PaginationBox
+          total={dataList.total}
+          pageSize={dataList.pageSize}
+          currentPage={dataList.currentPage}
+          onChange={onChangePage}
+        />
       </Form>
     </PermissionWrap>
   )

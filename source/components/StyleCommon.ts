@@ -1098,7 +1098,36 @@ const ConfigWrap = styled.div`
   }
 `
 
+const HaveTabsContentWrap = styled.div<{ height?: any }>`
+  width: 100%;
+  height: ${props => props.height ?? 'calc(100vh - 56px)'};
+  background: #f0f0f5;
+  .ant-tabs-nav {
+    padding: 0px 24px;
+    margin: 6px 0 0;
+    .ant-tabs-tab {
+      padding: 5px 16px;
+      margin-left: 8px !important;
+      background: var(--neutral-n9);
+      border: none;
+      font-size: 14px;
+      color: var(--neutral-n2);
+    }
+    .ant-tabs-tab-active {
+      color: var(--primary-d1);
+      background: var(--neutral-white-d1);
+    }
+  }
+  .ant-tabs-nav::before {
+    border-bottom: none;
+  }
+  .ant-tabs-content-holder {
+    display: none;
+  }
+`
+
 export {
+  HaveTabsContentWrap,
   Tag,
   ChartsItem1,
   ChartsItem2,

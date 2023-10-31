@@ -42,7 +42,6 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { confirmHand, restHand } from '@/services/handover'
 import ResizeTable from '@/components/ResizeTable'
-import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
 import { getMessage } from '@/components/Message'
@@ -53,19 +52,6 @@ export const tableWrapP = css`
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-`
-
-const Reset = styled.div`
-  height: 32px;
-  background: var(--hover-d2);
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px 16px 5px 16px;
-  margin-right: 16px;
-  color: var(--neutral-n2);
-  cursor: pointer;
 `
 
 export const DataWrap = styled.div({
@@ -82,6 +68,12 @@ const inputSearch = css`
 
 const settingWrap = css`
   margin: 0 8px;
+`
+
+const StaffManagementWrap = styled.div`
+  height: calc(100vh - 94px);
+  width: 100%;
+  background-color: var(--neutral-white-d1);
 `
 
 const StaffManagement = () => {
@@ -460,168 +452,170 @@ const StaffManagement = () => {
         ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
         ?.children?.map((i: any) => i.url)}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          height: '72px',
-          alignItems: 'center',
-          padding: '0 24px',
-        }}
-      >
+      <StaffManagementWrap>
         <div
           style={{
-            fontSize: '16px',
-            fontFamily: 'SiYuanMedium',
-            color: 'var(--neutral-n1-d1)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            height: '72px',
+            alignItems: 'center',
+            padding: '0 24px',
           }}
         >
-          {t('staff.companyStaff')}
-        </div>
+          <div
+            style={{
+              fontSize: '16px',
+              fontFamily: 'SiYuanMedium',
+              color: 'var(--neutral-n1-d1)',
+            }}
+          >
+            {t('staff.companyStaff')}
+          </div>
 
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div className={inputSearch}>
-            <InputSearch
-              leftIcon
-              width={184}
-              placeholder={t('staff.pleaseKey')}
-              onChangeSearch={onPressEnter}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div className={inputSearch}>
+              <InputSearch
+                leftIcon
+                width={184}
+                placeholder={t('staff.pleaseKey')}
+                onChangeSearch={onPressEnter}
+              />
+            </div>
+
+            <ScreenMinHover
+              label={t('common.search')}
+              icon="filter"
+              onClick={onChangeFilter}
+              isActive={isShow}
+              style={{ margin: '0 8px' }}
             />
-          </div>
 
-          <ScreenMinHover
-            label={t('common.search')}
-            icon="filter"
-            onClick={onChangeFilter}
-            isActive={isShow}
-            style={{ margin: '0 8px' }}
-          />
+            <DividerWrap type="vertical" />
 
-          <DividerWrap type="vertical" />
+            <ScreenMinHover
+              label={t('common.refresh')}
+              icon="sync"
+              onClick={refresh}
+              style={{ marginRight: 8 }}
+            />
 
-          <ScreenMinHover
-            label={t('common.refresh')}
-            icon="sync"
-            onClick={refresh}
-            style={{ marginRight: 8 }}
-          />
-
-          <DividerWrap type="vertical" />
-          <div className={settingWrap}>
-            <DropDownMenu
-              menu={<SetShowField notView onChangeFieldVisible={showModal} />}
-              icon="settings"
-              isVisible={isVisibleFields}
-              onChangeVisible={setIsVisibleFields}
-              isActive={isModalVisible}
-            >
-              <div style={{ whiteSpace: 'nowrap', marginLeft: '8px' }}>
-                {t('common.tableFieldSet')}
-              </div>
-            </DropDownMenu>
+            <DividerWrap type="vertical" />
+            <div className={settingWrap}>
+              <DropDownMenu
+                menu={<SetShowField notView onChangeFieldVisible={showModal} />}
+                icon="settings"
+                isVisible={isVisibleFields}
+                onChangeVisible={setIsVisibleFields}
+                isActive={isModalVisible}
+              >
+                <div style={{ whiteSpace: 'nowrap', marginLeft: '8px' }}>
+                  {t('common.tableFieldSet')}
+                </div>
+              </DropDownMenu>
+            </div>
           </div>
         </div>
-      </div>
-      {isShow ? <SearchList onSearch={onSearch} /> : null}
-      <div
-        style={{
-          height: isShow ? 'calc(100vh - 250px)' : 'calc(100vh - 176px)',
-          overflow: 'auto',
-          padding: '0 24px',
-        }}
-      >
-        {isShow && (
-          <ResizeTable
-            isSpinning={isSpinning}
-            dataWrapNormalHeight="calc(100vh - 250px)"
-            col={selectColum}
-            rowSelection={rowSelection}
-            dataSource={listData}
-            noData={<NoData />}
-          />
-        )}
-        {!isShow && (
-          <ResizeTable
-            isSpinning={isSpinning}
-            dataWrapNormalHeight="calc(100vh - 176px)"
-            col={selectColum}
-            rowSelection={rowSelection}
-            dataSource={listData}
-            noData={<NoData />}
-          />
-        )}
-      </div>
-      <PaginationBox
-        total={total}
-        pageSize={pagesize}
-        currentPage={page}
-        onChange={onChangePage}
-      />
-
-      <OptionalFeld
-        allTitleList={allTitleList}
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        checkList={titleList}
-        checkList2={titleList2}
-        isVisible={isModalVisible}
-        onClose={close2}
-        getCheckList={getCheckList}
-      />
-      <HandOverModal
-        id={editData}
-        confirm={() => getStaffListData()}
-        close={() => setIsVisibleFieldsA(false)}
-        visible={isVisibleFieldsA}
-      />
-      <DeleteConfirm
-        title={t('quitAndHandover')}
-        text={`${editData.name}${t(
-          'currently_not_involved_in_any_projects_confirm_will',
-        )}【${editData.name}】${t('work_handover')}`}
-        onConfirm={onConfirm}
-        onChangeVisible={() => setIsVisibleFieldsB(false)}
-        isVisible={isVisibleFieldsB}
-      />
-      <DeleteConfirm
-        title={t('the_handover_state_is_restored')}
-        text={`${t('confirmation_will')}【${editData.name}】${t(
-          'the_handover_status_of_is_changed_to_the_normal_state',
-        )}`}
-        onConfirm={onConfirm2}
-        onChangeVisible={() => setIsVisibleFieldsC(false)}
-        isVisible={isVisibleFieldsC}
-      />
-      <StaffPersonal
-        data={editData}
-        isVisible={isStaffPersonalVisible}
-        onClose={() => {
-          setIsStaffPersonalVisible(false)
-        }}
-        onConfirm={closeStaffPersonal}
-      />
-      <BatchSetPermGroup
-        isVisible={batchEditVisible}
-        projectState={false}
-        onClose={() => {
-          setBatchEditVisible(false)
-        }}
-        onConfirm={onConfirmBatchEdit}
-      />
-      <BatchAction
-        open={selectedRowKeys.length > 0}
-        onCancel={() => setSelectedRowKeys([])}
-      >
-        <Tooltip
-          placement="top"
-          getPopupContainer={node => node}
-          title={t('common.permissionGroup')}
+        {isShow ? <SearchList onSearch={onSearch} /> : null}
+        <div
+          style={{
+            height: isShow ? 'calc(100% - 194px)' : 'calc(100% - 120px)',
+            overflow: 'auto',
+            padding: '0 24px',
+          }}
         >
-          <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
-            <IconFont type="lock" />
-          </div>
-        </Tooltip>
-      </BatchAction>
+          {isShow && (
+            <ResizeTable
+              isSpinning={isSpinning}
+              dataWrapNormalHeight="100%"
+              col={selectColum}
+              rowSelection={rowSelection}
+              dataSource={listData}
+              noData={<NoData />}
+            />
+          )}
+          {!isShow && (
+            <ResizeTable
+              isSpinning={isSpinning}
+              dataWrapNormalHeight="100%"
+              col={selectColum}
+              rowSelection={rowSelection}
+              dataSource={listData}
+              noData={<NoData />}
+            />
+          )}
+        </div>
+        <PaginationBox
+          total={total}
+          pageSize={pagesize}
+          currentPage={page}
+          onChange={onChangePage}
+        />
+
+        <OptionalFeld
+          allTitleList={allTitleList}
+          plainOptions={plainOptions}
+          plainOptions2={plainOptions2}
+          checkList={titleList}
+          checkList2={titleList2}
+          isVisible={isModalVisible}
+          onClose={close2}
+          getCheckList={getCheckList}
+        />
+        <HandOverModal
+          id={editData}
+          confirm={() => getStaffListData()}
+          close={() => setIsVisibleFieldsA(false)}
+          visible={isVisibleFieldsA}
+        />
+        <DeleteConfirm
+          title={t('quitAndHandover')}
+          text={`${editData.name}${t(
+            'currently_not_involved_in_any_projects_confirm_will',
+          )}【${editData.name}】${t('work_handover')}`}
+          onConfirm={onConfirm}
+          onChangeVisible={() => setIsVisibleFieldsB(false)}
+          isVisible={isVisibleFieldsB}
+        />
+        <DeleteConfirm
+          title={t('the_handover_state_is_restored')}
+          text={`${t('confirmation_will')}【${editData.name}】${t(
+            'the_handover_status_of_is_changed_to_the_normal_state',
+          )}`}
+          onConfirm={onConfirm2}
+          onChangeVisible={() => setIsVisibleFieldsC(false)}
+          isVisible={isVisibleFieldsC}
+        />
+        <StaffPersonal
+          data={editData}
+          isVisible={isStaffPersonalVisible}
+          onClose={() => {
+            setIsStaffPersonalVisible(false)
+          }}
+          onConfirm={closeStaffPersonal}
+        />
+        <BatchSetPermGroup
+          isVisible={batchEditVisible}
+          projectState={false}
+          onClose={() => {
+            setBatchEditVisible(false)
+          }}
+          onConfirm={onConfirmBatchEdit}
+        />
+        <BatchAction
+          open={selectedRowKeys.length > 0}
+          onCancel={() => setSelectedRowKeys([])}
+        >
+          <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title={t('common.permissionGroup')}
+          >
+            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+              <IconFont type="lock" />
+            </div>
+          </Tooltip>
+        </BatchAction>
+      </StaffManagementWrap>
     </PermissionWrap>
   )
 }

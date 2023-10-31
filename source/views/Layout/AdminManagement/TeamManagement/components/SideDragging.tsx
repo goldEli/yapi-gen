@@ -258,7 +258,9 @@ const SliderList = (props: any) => {
 const Sortable = (props: any) => {
   const { list, setList, childStyle } = props
   return (
-    <div style={{ width: '100%' }}>
+    <div
+      style={{ width: '100%', height: 'calc(100% - 120px)', overflow: 'auto' }}
+    >
       {list?.map((child: any, i: number) => (
         <SliderList
           onChangeTeam={(row: any) => props.onChangeTeam(row, child)}

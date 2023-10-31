@@ -10,10 +10,14 @@ import RightTable from './components/RightTable'
 const Wrap = styled.div`
   display: flex;
   width: 100%;
-  height: calc(100vh - 56px);
+  height: calc(100% - 38px);
   overflow-y: hidden;
   overflow-x: hidden;
+  .ant-spin-container {
+    display: flex;
+  }
 `
+
 const TeamManagement = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const { menuPermission } = useSelector(store => store.user)
@@ -25,12 +29,12 @@ const TeamManagement = () => {
         ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
         ?.children?.map((i: any) => i.url)}
     >
-      <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
-        <Wrap>
+      <Wrap>
+        <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
           <LeftSide isSpin={(value: boolean) => setIsSpinning(value)} />
           <RightTable />
-        </Wrap>
-      </Spin>
+        </Spin>
+      </Wrap>
     </PermissionWrap>
   )
 }

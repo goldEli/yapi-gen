@@ -322,8 +322,10 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         </div>
 
         <UserInfoBox>
-          <NameWrap>{userInfo.name}</NameWrap>
-          <PhoneWrap>{userInfo.phone}</PhoneWrap>
+          <NameWrap>
+            {userInfo.name}（{userInfo?.position_name}）
+          </NameWrap>
+          <PhoneWrap>{userInfo?.department_name}</PhoneWrap>
         </UserInfoBox>
       </UserInfoTop>
       <Provider />

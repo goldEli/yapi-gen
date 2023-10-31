@@ -197,11 +197,10 @@ const UploadTitle = styled.div`
   margin-top: 24px;
 `
 
-const Content = styled.div``
-const ButtonBox = styled.div`
-  margin: 0px 20px;
-  margin-bottom: 16px;
+const Content = styled.div`
+  height: 100%;
 `
+
 const Upload = (props: any) => {
   const [t] = useTranslation()
   const [defaultIcon, setDefaultIcon] = useState(true)
@@ -457,7 +456,6 @@ const LeftSide = (props: any) => {
     <LeftSideContainer
       style={{
         position: 'relative',
-
         width: leftWidth,
       }}
     >
