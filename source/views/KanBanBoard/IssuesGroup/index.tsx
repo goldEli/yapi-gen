@@ -8,7 +8,7 @@ import {
   openUserGroupingModel,
   deleteKanbanGroup,
 } from '@store/kanBan/kanBan.thunk'
-import { useDispatch } from '@store/index'
+import { store, useDispatch, useSelector } from '@store/index'
 import {
   DropAreaList,
   GroupTitleArea,
@@ -26,6 +26,10 @@ import useI18n from '@/hooks/useI18n'
 import IssuesForPriority from '../IssuesForPriority'
 import IconFont from '@/components/IconFont'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { getNewstoriesOfGroupFirstPage } from '@/services/kanban'
+import _ from 'lodash'
+import { getProjectIdByUrl } from '@/tools'
+import { setKanbanInfoByGroup } from '@store/kanBan'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
   style?: any
@@ -33,6 +37,9 @@ interface IssuesGroupProps {
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
+  console.log(issuesGroup, 'issuesGroup')
+  const conId = useSelector(store => store.kanBan.kanbanConfig?.id)
+  const { kanbanInfoByGroup } = useSelector(store => store.kanBan)
   const { AddUserModalElement, open } = useAddUserModal()
   const { closeMap, onChange } = useCloseMap()
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -166,6 +173,104 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     )
   }, [showUserRelatedInformation, groupType, issuesGroup])
 
+  const isEmpty = (data: any) => {
+    if (_.isEmpty(data)) {
+      return true
+    }
+    return Object.entries(data).every(([key, value]) => {
+      return _.isEmpty(value)
+    })
+  }
+  function bbh(data: any) {
+    const filteredData: any = {}
+
+    for (const key in data) {
+      if (key.includes('custom')) {
+        filteredData[key] = data[key]
+      }
+    }
+    return filteredData
+  }
+  const checkGroup = () => {
+    let obj
+    switch (groupType) {
+      case 'priority':
+        obj = {
+          priority: issuesGroup.id,
+        }
+        break
+      case 'users':
+        obj = {
+          kanban_group_id: issuesGroup.id,
+        }
+        break
+      case 'category':
+        obj = {
+          category_id: issuesGroup.id,
+        }
+        break
+      default:
+        // eslint-disable-next-line no-undefined
+        obj = undefined
+        break
+    }
+    return obj
+  }
+  function findAndReplace(
+    groupId: any,
+
+    newStories: any,
+    data1: any,
+  ) {
+    console.log(groupId, newStories, data1, '原始数据')
+    const cc = JSON.parse(JSON.stringify(newStories))
+    let data: any
+    data = cc.map((item: any) => {
+      if (item.id === groupId) {
+        item.columns = data1
+      }
+      return item
+    })
+    return data
+  }
+  const add = async () => {
+    const { valueKey, inputKey } = store.getState().view
+    const params = {
+      search: isEmpty(valueKey)
+        ? {
+            all: 1,
+            keyword: inputKey,
+            ...{ ...checkGroup() },
+          }
+        : {
+            ...valueKey,
+            user_id: valueKey.user_name,
+            category_id: valueKey.category,
+            iterate_id: valueKey.iterate_name,
+            custom_field: bbh(valueKey),
+            keyword: inputKey,
+            schedule_start: valueKey?.schedule?.start,
+            schedule_end: valueKey?.schedule?.end,
+            ...{ ...checkGroup() },
+          },
+      project_id: getProjectIdByUrl(),
+      kanban_config_id: conId,
+    }
+
+    const firstRes = await getNewstoriesOfGroupFirstPage(params)
+    console.log(firstRes, '分组请求数据111111111111')
+    dispatch(
+      setKanbanInfoByGroup(
+        findAndReplace(
+          issuesGroup.id,
+
+          kanbanInfoByGroup,
+          firstRes,
+        ),
+      ),
+    )
+  }
+
   const titleArea = !isNoGroup && (
     <GroupTitleArea>
       <TitleBtn
@@ -173,6 +278,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
           e.stopPropagation()
 
           onChange(issuesGroup.id)
+          add()
         }}
       >
         <UpDownBtn isOpen={!hidden} />

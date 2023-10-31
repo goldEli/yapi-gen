@@ -55,7 +55,7 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
       columnId={issues.id}
     />
   )
-  const [mockData, setMockData] = useState<any>([])
+
   const [page, setPage] = useState(1)
 
   const checkGroup = () => {
@@ -74,18 +74,7 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
     }
     return obj
   }
-  const fetchData = async () => {
-    console.log(groupType, groupId, '分类分组')
-    const res = await getNewkanbanStoriesOfPaginate({
-      project_id: projectInfo.id,
-      kanban_column_id: issues.id,
-      search: { ...checkGroup() },
-      pagesize: 10,
-      page: page,
-    })
 
-    setMockData(res.list)
-  }
   function findAndReplace(
     groupId: any,
     issuesId: any,
@@ -109,16 +98,6 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
     return data
   }
 
-  useEffect(() => {
-    dispatch(
-      setKanbanInfoByGroup(
-        findAndReplace(groupId, issues.id, kanbanInfoByGroup, mockData),
-      ),
-    )
-  }, [mockData])
-  useEffect(() => {
-    fetchData()
-  }, [groupType, groupId])
   // const issueCardListContent = issues.stories?.map((story, index) => {
   //   const uuid = `${groupId}-${issues.id}-${story.id}`
   //   // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
@@ -145,32 +124,35 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
     const res = await getNewkanbanStoriesOfPaginate({
       project_id: projectInfo.id,
       kanban_column_id: issues.id,
-      pagesize: 5,
+      search: { ...checkGroup() },
+      pagesize: 10,
       page: newPage,
     })
-    setTimeout(() => {
-      setMockData((k: any) => k.concat(res.list))
-    }, 500)
+    dispatch(
+      setKanbanInfoByGroup(
+        findAndReplace(
+          groupId,
+          issues.id,
+          kanbanInfoByGroup,
+          issues.stories.concat(res.list),
+        ),
+      ),
+    )
   }
   const issueCardListContent = (
     <InfiniteScroll
       loader={null}
-      endMessage={
-        <p style={{ textAlign: 'center' }}>
-          <b>Yay! You have seen it all</b>
-        </p>
-      }
       style={{
         overflowY: 'auto',
         overflowX: 'hidden',
         height: '500px',
       }}
       height="500px"
-      dataLength={mockData.length}
+      dataLength={issues.stories?.length}
       next={fetchMoreData}
-      hasMore={mockData?.length < issues.story_count}
+      hasMore
     >
-      {mockData?.map((story: any, index: any) => {
+      {issues.stories?.map((story, index) => {
         const uuid = `${groupId}-${issues.id}-${story.id}`
         // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
         const hidden1 =
@@ -186,7 +168,7 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
             key={uuid}
             item={story}
             index={index}
-            stories={mockData}
+            stories={issues.stories}
           />
         )
       })}

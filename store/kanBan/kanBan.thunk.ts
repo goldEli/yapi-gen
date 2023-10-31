@@ -26,7 +26,11 @@ import _ from 'lodash'
 import { Options } from '@/components/SelectOptionsNormal'
 import { produce } from 'immer'
 import { ViewItem } from '@/views/ProjectSetting/components/KanBanSetting/SelectOptions'
-import { getNewkanbanConfig, getNewkanbanGroups } from '@/services/kanban'
+import {
+  getNewkanbanConfig,
+  getNewkanbanGroups,
+  getNewstoriesOfGroupFirstPage,
+} from '@/services/kanban'
 
 const name = 'kanBan'
 
@@ -506,24 +510,13 @@ export const getKanbanByGroup = createAsyncThunk(
       const res_config = await getNewkanbanConfig(params)
       console.log(res_config, 'res_config新的配置')
 
+      const firstRes = await getNewstoriesOfGroupFirstPage(params)
+      console.log(firstRes, '第一次')
+
       // const res = await services.kanban.getKanban(params)
       // console.log(res.data, 'res.data老的配置')
       store.dispatch(setSpinning(false))
-      sessionStorage.setItem(
-        'kanban',
-        JSON.stringify([
-          {
-            // 无分组id
-            id: 0,
-            name: '',
-            content_txt: '',
-            // columns: res.data,
-            columns: res_config.columns.map((i: any) => {
-              return { ...i, stories: [] }
-            }),
-          },
-        ]),
-      )
+
       return [
         {
           // 无分组id
@@ -532,7 +525,12 @@ export const getKanbanByGroup = createAsyncThunk(
           content_txt: '',
           // columns: res.data,
           columns: res_config.columns.map((i: any) => {
-            return { ...i, stories: [] }
+            return {
+              ...i,
+              stories: firstRes.filter((k: any) => {
+                return i.id === k.id
+              })[0].stories,
+            }
           }),
         },
       ]
@@ -544,12 +542,12 @@ export const getKanbanByGroup = createAsyncThunk(
     })
     console.log(myres, 'myres新的分类')
     store.dispatch(setSpinning(false))
-    // const res = await services.kanban.getKanbanByGroup({
-    //   ...params,
-    //   group_by: type,
-    // })
+    const res = await services.kanban.getKanbanByGroup({
+      ...params,
+      group_by: type,
+    })
 
-    // console.log(res.data, 'res.data老的分类')
+    console.log(res.data, 'res.data老的分类')
     return myres.map((i: any) => {
       return {
         ...i,
@@ -561,7 +559,6 @@ export const getKanbanByGroup = createAsyncThunk(
               stories: [],
             }
           }),
-        kk: 'feiji',
       }
     })
   },

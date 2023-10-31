@@ -70,7 +70,14 @@ const Issues: React.FC<IssuesProps> = props => {
   }, [movingStory, columnId, data, groupId, groupType])
 
   // const showStateTransitionList = true
-  const [mockData, setMockData] = useState<any>([])
+  const dropCardListContent = (
+    <DropCardList
+      hidden={!showStateTransitionList}
+      list={data}
+      groupId={groupId}
+      columnId={issues.id}
+    />
+  )
   const [page, setPage] = useState(1)
   const dispatch = useDispatch()
   const checkGroup = () => {
@@ -95,24 +102,6 @@ const Issues: React.FC<IssuesProps> = props => {
     return obj
   }
 
-  const fetchData = async () => {
-    console.log(groupType, groupId, '分类分组')
-
-    const res = await getNewkanbanStoriesOfPaginate({
-      project_id: projectInfo.id,
-      kanban_column_id: issues.id,
-      search: { ...checkGroup() },
-      pagesize: 10,
-      page: page,
-    })
-
-    setMockData(res.list)
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [groupType, groupId])
-
   function findAndReplace(
     groupId: any,
     issuesId: any,
@@ -135,49 +124,6 @@ const Issues: React.FC<IssuesProps> = props => {
     })
     return data
   }
-
-  // useEffect(() => {
-  //   if (mockData.length <= 0) {
-  //     return
-  //   }
-  //   const temp = JSON.parse(sessionStorage.getItem('kanban') as any)
-  //   dispatch(
-  //     setKanbanInfoByGroup(findAndReplace(groupId, issues.id, temp, mockData)),
-  //   )
-  // }, [mockData])
-
-  useEffect(() => {
-    if (mockData.length <= 0) {
-      return
-    }
-    const temp: any[] = _.cloneDeep(
-      JSON.parse(sessionStorage.getItem('kanban') as any),
-    )
-    const groupIndex = temp?.findIndex((item: any) => item.id === groupId)
-    const columnIndex = (
-      temp?.find((item: any) => item.id === groupId)?.columns ?? []
-    )?.findIndex((item: any) => item.id === issues.id)
-    if (
-      groupIndex !== -1 &&
-      columnIndex !== -1 &&
-      temp &&
-      temp[groupIndex] &&
-      temp[groupIndex].columns &&
-      temp[groupIndex].columns[columnIndex]
-    ) {
-      temp[groupIndex].columns[columnIndex].stories = mockData
-      dispatch(setKanbanInfoByGroup([...temp]))
-    }
-  }, [mockData])
-
-  const dropCardListContent = (
-    <DropCardList
-      hidden={!showStateTransitionList}
-      list={data}
-      groupId={groupId}
-      columnId={issues.id}
-    />
-  )
 
   // const issueCardListContent = issues.stories?.map((story, index) => {
   //   const uuid = `${groupId}-${issues.id}-${story.id}`
@@ -205,32 +151,37 @@ const Issues: React.FC<IssuesProps> = props => {
     const res = await getNewkanbanStoriesOfPaginate({
       project_id: projectInfo.id,
       kanban_column_id: issues.id,
-      pagesize: 5,
+      search: { ...checkGroup() },
+      pagesize: 10,
       page: newPage,
     })
-    setTimeout(() => {
-      setMockData((k: any) => k.concat(res.list))
-    }, 500)
+    dispatch(
+      setKanbanInfoByGroup(
+        findAndReplace(
+          groupId,
+          issues.id,
+          kanbanInfoByGroup,
+          issues.stories.concat(res.list),
+        ),
+      ),
+    )
   }
+  console.log(issues.story_count, 'issues.story_count')
+
   const issueCardListContent = (
     <InfiniteScroll
       loader={null}
-      endMessage={
-        <p style={{ textAlign: 'center' }}>
-          <b>Yay! You have seen it all</b>
-        </p>
-      }
       style={{
         overflowY: 'auto',
         overflowX: 'hidden',
         height: '500px',
       }}
       height="500px"
-      dataLength={mockData.length}
+      dataLength={issues.stories?.length}
       next={fetchMoreData}
-      hasMore={mockData?.length < issues.story_count}
+      hasMore
     >
-      {mockData?.map((story: any, index: any) => {
+      {issues.stories?.map((story, index) => {
         const uuid = `${groupId}-${issues.id}-${story.id}`
         // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
         const hidden1 =
@@ -246,7 +197,7 @@ const Issues: React.FC<IssuesProps> = props => {
             key={uuid}
             item={story}
             index={index}
-            stories={mockData}
+            stories={issues.stories}
           />
         )
       })}
