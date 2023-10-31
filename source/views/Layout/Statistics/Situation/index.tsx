@@ -25,18 +25,12 @@ const Wrap = styled.div`
   height: calc(100vh - 56px);
   overflow: auto;
 `
-const Title = styled.div`
-  padding: 24px 0 0 24px;
-  color: var(--neutral-n1-d1);
-  font-size: 16px;
-  font-family: siyuanmedium;
-`
 
 const Situation = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.general'))
-  const { currentMenu } = useSelector(store => store.user)
+  const { menuPermission } = useSelector(store => store.user)
   const [generalData, setGeneralData] = useState<any>()
   const init = async () => {
     const res = await getGlobalGeneral()
@@ -155,8 +149,8 @@ const Situation = () => {
   if (generalData) {
     return (
       <PermissionWrap
-        auth="/Statistics/Company"
-        permission={currentMenu?.children?.map((i: any) => i.url)}
+        auth="/Situation"
+        permission={menuPermission?.menus?.map((i: any) => i.url)}
       >
         <Wrap>
           <Project data={generalData?.project} />

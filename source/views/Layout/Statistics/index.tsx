@@ -6,7 +6,7 @@ const Wrap = styled.div`
   height: calc(100vh - 56px);
 `
 
-const Situation = () => {
+const Statistics = () => {
   return (
     <Wrap>
       <Outlet />
@@ -14,4 +14,4 @@ const Situation = () => {
   )
 }
 
-export default Situation
+export default Statistics

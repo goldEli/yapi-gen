@@ -138,28 +138,7 @@ const LayoutIndex = () => {
   useEffect(() => {
     // 如果没带路由则跳转优先路由
     if (location.pathname === '/') {
-      let navigateUrl = menuPermission.priorityUrl
-      let resultChildren: any
-      // 如果是后台管理，则跳转公司信息
-      if (menuPermission.priorityUrl === '/AdminManagement') {
-        resultChildren = menuPermission?.menus?.filter(
-          (i: any) => i.url === '/AdminManagement',
-        )
-      }
-      // 如果是统计，则跳转有权限的
-      if (menuPermission.priorityUrl === '/Statistics') {
-        resultChildren = menuPermission?.menus?.filter(
-          (i: any) => i.url === '/Statistics',
-        )
-      }
-      // 如果是汇报，则跳转有权限的
-      if (menuPermission.priorityUrl === '/Report') {
-        resultChildren = menuPermission?.menus?.filter(
-          (i: any) => i.url === '/Report',
-        )
-      }
-      navigateUrl = resultChildren?.[0]?.url ?? '/Project'
-      navigate(navigateUrl)
+      navigate('/Project')
     }
     setIsNextVisible(loginInfo.admin_first_login)
   }, [loginInfo, menuPermission])

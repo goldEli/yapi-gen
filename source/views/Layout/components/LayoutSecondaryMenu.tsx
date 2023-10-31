@@ -14,7 +14,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
   const navigate = useNavigate()
   const routerPath = useLocation()
   const [items, setItems] = useState<any>([])
-  const { currentMenu } = useSelector(store => store.user)
+  const { currentMenu, menuPermission } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [activeKey, setActiveKey] = useState('')
 
@@ -54,6 +54,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
 
   // 点击切换tab
   const handleModeChange = (e: any) => {
+    setActiveKey(e)
     navigate(items?.filter((i: any) => i.id === Number(e))[0]?.url)
   }
 
@@ -160,12 +161,33 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
         })
         resultItems = side?.filter((i: any) => i.isPermission)
         setItems(resultItems)
+      } else if (routerPath?.pathname.includes('/Statistics')) {
+        const statisticsList = [
+          {
+            name: t('task'),
+            id: 900,
+            url: '/Statistics/Task',
+            isPermission: true,
+          },
+          {
+            name: t('company'),
+            id: 605,
+            url: '/Statistics/Company',
+            isPermission:
+              menuPermission?.menus?.filter((i: any) =>
+                i.url?.includes('/Situation'),
+              )?.length > 0,
+          },
+        ]
+        resultItems = statisticsList?.filter((i: any) => i.isPermission)
+        setItems(resultItems)
       } else if (currentMenu?.children?.length > 0) {
         resultItems = [...currentMenu?.children]
         setItems(resultItems)
       } else {
         setItems([])
       }
+      console.log(resultItems, '=resultItems')
       // 数组中是否包含当期路由
       const currentHavePath = resultItems?.filter((i: any) =>
         routerPath?.pathname?.includes(i.url),
@@ -177,6 +199,8 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
       )
     }
   }, [currentMenu, routerPath])
+
+  console.log(items)
 
   return (
     <LayoutMenuWrap

@@ -254,10 +254,7 @@ const PerformanceInsightKanBan = () => {
   }
 
   return (
-    <PermissionWrap
-      auth="/Statistics/Task"
-      permission={currentMenu?.children?.map((i: any) => i.url)}
-    >
+    <>
       <KanBanFullScreen
         isVisible={isScreenFull}
         onClose={() => setIsScreenFull(false)}
@@ -370,7 +367,7 @@ const PerformanceInsightKanBan = () => {
           )}
         </HaveChangeICon>
       </ContentWrap>
-    </PermissionWrap>
+    </>
   )
 }
 

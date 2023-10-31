@@ -1,7 +1,5 @@
 import { HaveTabsContentWrap } from '@/components/StyleCommon'
 import TabsContent from '@/components/TabsContent'
-import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'

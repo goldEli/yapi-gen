@@ -166,6 +166,11 @@ const LayoutSideIndex = () => {
       navigateUrl = `${item.url}/AllNote/1`
     }
 
+    // 如果是统计则默认跳转
+    if (item.url === '/Statistics') {
+      navigateUrl = `${item.url}/Task`
+    }
+
     navigate(navigateUrl)
     const resultMenu = {
       ...item,
@@ -291,7 +296,9 @@ const LayoutSideIndex = () => {
       <div style={{ width: 60, height: layoutSideCollapse ? 24 : 16 }} />
 
       {menuPermission.menus
-        ?.filter((k: any) => k.url !== '/AdminManagement')
+        ?.filter(
+          (k: any) => k.url !== '/AdminManagement' && k.url !== '/Situation',
+        )
         ?.map((i: any) => (
           <div
             key={i.id}
