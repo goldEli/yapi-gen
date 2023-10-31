@@ -2481,5 +2481,9 @@
   "dailyAssistant": "Daily assistant",
   "daily": "Daily",
   "task": "Task",
-  "loadMore": "Load more"
+  "loadMore": "Load more",
+  "mentionMine": "Mention mine",
+  "readNotification": "Read notification",
+  "unreadNotifications": "Unread notifications",
+  "allNotifications": "All notifications"
 }

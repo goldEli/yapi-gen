@@ -149,13 +149,18 @@ const Index = () => {
   }, [id, all])
 
   return (
-    <div>
+    <div
+      style={{
+        height: 'calc(100% - 38px)',
+        background: 'var(--neutral-white-d1)',
+      }}
+    >
       <AllSideFilter changeUser={changeUser} changeMsg={changeMsg} />
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          margin: '20px 24px',
+          padding: '20px 24px',
           alignItems: 'center',
         }}
       >
@@ -187,7 +192,7 @@ const Index = () => {
           next={() => fetchMoreData(2)}
           style={{
             overflow: 'auto',
-            height: 'calc(100vh - 140px)',
+            height: 'calc(100vh - 166px)',
             padding: '10px 16px',
             paddingRight: '80px',
             display: 'flex',

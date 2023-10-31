@@ -1,71 +1,58 @@
-import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
-import Side from './Side'
-import styled from '@emotion/styled'
+import { HaveTabsContentWrap } from '@/components/StyleCommon'
+import TabsContent from '@/components/TabsContent'
+import { useSelector } from '@store/index'
+import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-const Content = styled.div`
-  height: calc(100vh - 56px);
-  width: 100%;
+const Trends = () => {
+  const [t] = useTranslation()
+  const navigate = useNavigate()
+  const routerPath = useLocation()
+  const [activeKey, setActiveKey] = useState('')
+  const [resultTabList, setResultTabList] = useState<any>([
+    {
+      label: t('allNotifications'),
+      key: '1',
+    },
+    {
+      label: t('unreadNotifications'),
+      key: '2',
+    },
+    {
+      label: t('readNotification'),
+      key: '3',
+    },
+    {
+      label: t('mentionMine'),
+      key: '4',
+    },
+  ])
 
-  display: flex;
-`
+  //   跳转路由
+  const onChangeRouter = (key: any) => {
+    setActiveKey(key)
+    //   拼接三级菜单路由
+    navigate(`/Trends/AllNote/${key}`)
+  }
 
-const dataArray = [
-  {
-    icon: 'question-circle-o',
-    color: '#FF5500',
-    title: 'Senior Product Designer',
-    text: 'Senior Product Designer',
-  },
-  {
-    icon: 'plus-circle-o',
-    color: '#5FC296',
-    title: 'Senior Animator',
-    text: 'Senior Animator',
-  },
-  {
-    icon: 'check-circle-o',
-    color: '#2DB7F5',
-    title: 'Visual Designer',
-    text: 'Visual Designer',
-  },
-  {
-    icon: 'cross-circle-o',
-    color: '#FFAA00',
-    title: 'Computer Engineer',
-    text: 'Computer Engineer',
-  },
-]
-const childrenToRender = dataArray.map((item, i) => {
-  const { icon, color, title, text } = item
+  useEffect(() => {
+    console.log(routerPath)
+    //   获取当前路由的key
+    const currentRouterKey = routerPath?.pathname?.split('/Trends/AllNote/')[1]
+    onChangeRouter(currentRouterKey)
+  }, [])
+
   return (
-    <div key={i} className="list-sort-demo-list">
-      <div className="list-sort-demo-icon"></div>
-      <div className="list-sort-demo-text">
-        <h1>{title}</h1>
-        <p
-          style={{
-            color,
-          }}
-        >
-          {text}
-        </p>
-      </div>
-    </div>
-  )
-})
-
-const Index = () => {
-  const [changeLeft, setChangeLeft] = useState(200)
-  return (
-    <Content>
-      <Side onChangeLeft={setChangeLeft} />
-
-      <div style={{ flex: '1' }}>
-        <Outlet />
-      </div>
-    </Content>
+    <HaveTabsContentWrap>
+      <TabsContent
+        onChangeRouter={onChangeRouter}
+        tabItems={resultTabList}
+        activeKey={activeKey}
+      />
+      <Outlet />
+    </HaveTabsContentWrap>
   )
 }
 
-export default Index
+export default Trends
