@@ -34,26 +34,8 @@ import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import EditExamine from '@/components/EditExamine'
 
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: 'var(--primary-d2)',
-})
-
-const TableBox = styled(Table)({
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-    [ShowWrap.toString()]: {
-      visibility: 'visible',
-    },
-  },
-})
-
 const LoadingSpin = styled(Spin)({
-  minHeight: 300,
+  height: '100%',
   '.ant-spin-container': {
     height: 'initial!important',
   },
@@ -275,7 +257,6 @@ const Need = (props: any) => {
       )}
       <div
         style={{
-          // margin: '0 24px',
           display: 'flex',
           width: 'calc(100% - 48px)',
           justifyContent: 'space-between',
@@ -335,13 +316,13 @@ const Need = (props: any) => {
         <SearchList activeTab={activeTab} onFilterChange={onFilterChange} />
       )}
 
-      <div>
+      <div style={{ height: 'calc(100vh - 295px)' }}>
         <LoadingSpin spinning={isSpin}>
           <div style={{ padding: '0 24px' }}>
             {listData?.list && listData?.list?.length > 0 && (
               <ResizeTable
                 isSpinning={false}
-                dataWrapNormalHeight="calc(100vh - 309px)"
+                dataWrapNormalHeight="calc(100vh - 295px)"
                 col={selectColum}
                 dataSource={listData?.list}
                 noData={<NoData />}

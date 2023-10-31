@@ -253,7 +253,6 @@ const Profile = () => {
     const res1 = await getUserFeedList({
       limit: '',
     })
-    console.log(res1.data)
 
     setLineData(res1.data)
     dispatch(setIsUpdateCreate(false))
@@ -385,11 +384,16 @@ const Profile = () => {
   }
 
   return (
-    <div style={{ overflow: 'auto', height: 'calc(100vh - 109px)' }}>
+    <div
+      style={{
+        overflow: 'auto',
+        height: 'calc(100vh - 94px)',
+        background: 'var(--neutral-white-d1)',
+      }}
+    >
       <div>
         <Head>
           <div>
-            {/* <SecondTitle>{t('mine.basicSurvey')}</SecondTitle> */}
             <InnerWrap>
               <ChartsItem1>
                 <span className={titleNumberCss}>{data?.project_count}</span>

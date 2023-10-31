@@ -9,9 +9,10 @@ import { useSelector } from '@store/index'
 import { getMineProjectList } from '@/services/mine'
 
 const MainWrap = styled.div({
-  height: 'calc(100% - 52px)',
+  height: 'calc(100% - 38px)',
   overflowY: 'scroll',
   padding: '0px  0px',
+  background: 'var(--neutral-white-d1)',
 })
 
 interface Props {
