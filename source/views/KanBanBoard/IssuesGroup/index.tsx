@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import Issues from '../Issues'
 import UpDownBtn from '@/components/UpDownBtn'
 import MultipleAvatar from '@/components/MultipleAvatar'
@@ -278,7 +278,10 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
           e.stopPropagation()
 
           onChange(issuesGroup.id)
-          add()
+          console.log(hidden, 'hidden')
+          if (hidden) {
+            add()
+          }
         }}
       >
         <UpDownBtn isOpen={!hidden} />
