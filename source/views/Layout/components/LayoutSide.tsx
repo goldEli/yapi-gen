@@ -327,7 +327,7 @@ const LayoutSideIndex = () => {
                 color="var(--neutral-n2)"
               />
             )}
-            <div>{i.name}</div>
+            <div>{i.isRegular ? t(i.name) : i.name}</div>
           </div>
         ))}
 

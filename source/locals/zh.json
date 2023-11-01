@@ -966,7 +966,10 @@
     "companyManagement": "公司管理",
     "setting": "设置",
     "notice": "通知",
-    "help": "帮助"
+    "help": "帮助",
+    "members": "人员",
+    "statistics": "统计",
+    "dynamics": "动态"
   },
   "mine": {
     "mineCopySend": "我的抄送",
@@ -2496,5 +2499,12 @@
   "map": "导图",
   "ganttChart": "甘特图",
   "member": "成员",
-  "setUp": "设置"
+  "setUp": "设置",
+  "createProject": "创建项目",
+  "recentlyViewed": "最近查看",
+  "allProjects": "全部项目",
+  "progress": "进行中",
+  "paused": "已暂停",
+  "projectCycle": "项目周期",
+  "iParticipated": "我参与的"
 }

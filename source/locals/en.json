@@ -966,7 +966,10 @@
     "companyManagement": "Company Management",
     "setting": "Settings",
     "notice": "Notice",
-    "help": "Help"
+    "help": "Help",
+    "members": "Members",
+    "statistics": "Statistics",
+    "dynamics": "Dynamics"
   },
   "mine": {
     "mineCopySend": "My CopySend",
@@ -2496,5 +2499,12 @@
   "map": "Map",
   "ganttChart": "Gantt chart",
   "member": "Member",
-  "setUp": "Set up"
+  "setUp": "Set up",
+  "createProject": "Create project",
+  "recentlyViewed": "Recently viewed",
+  "allProjects": "All projects",
+  "progress": "&#39;in progress",
+  "paused": "Paused",
+  "projectCycle": "Project Cycle",
+  "iParticipated": "I participated"
 }
