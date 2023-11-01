@@ -164,7 +164,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
                   confirm: () => {
                     updata({
                       groupId: props.groupId,
-                      columnId: props.story.kanban_column_id,
+                      columnId: props.cid,
                       id: props.story.id,
                     })
                   },

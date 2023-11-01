@@ -484,7 +484,7 @@ export const getKanbanConfig = createAsyncThunk(
     console.log(res2, 'new看板配置')
     // const res = await services.kanbanConfig.getKanbanConfig(params)
     // console.log(res.data,'第一次获取的看板配置数据');
-    return { ...res2, kk: 1 }
+    return res2
   },
 )
 
