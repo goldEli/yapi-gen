@@ -55,7 +55,8 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
   // 点击切换tab
   const handleModeChange = (e: any) => {
     setActiveKey(e)
-    navigate(items?.filter((i: any) => i.id === Number(e))[0]?.url)
+    const url = items?.filter((i: any) => i.id === Number(e))[0]?.url
+    navigate(url === '/Report/Review' ? '/Report/Review/List/1' : url)
   }
 
   useEffect(() => {
@@ -199,8 +200,6 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
       )
     }
   }, [currentMenu, routerPath])
-
-  console.log(items)
 
   return (
     <LayoutMenuWrap

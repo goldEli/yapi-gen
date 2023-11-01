@@ -30,10 +30,13 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { getMessage } from '@/components/Message'
 import PreviewDialog from './PreviewDialog'
 import { aWeekDataList } from './DataList'
+
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
+  background: var(--neutral-white-d1);
+  height: calc(100% - 38px);
 `
 const Title = styled.div`
   padding: 24px;
@@ -392,18 +395,18 @@ const RightFormWork = () => {
     }, 100)
   }, [])
   return (
-    <Spin
-      spinning={isSpinning}
-      indicator={<NewLoadingTransition />}
-      style={{
-        width: '100%',
-        position: 'absolute',
-        transform: 'translate(-50%, -50%)',
-        top: '50%',
-        left: '50%',
-      }}
-    >
-      <RightFormWorkStyle>
+    <RightFormWorkStyle>
+      <Spin
+        spinning={isSpinning}
+        indicator={<NewLoadingTransition />}
+        style={{
+          width: '100%',
+          position: 'absolute',
+          transform: 'translate(-50%, -50%)',
+          top: '50%',
+          left: '50%',
+        }}
+      >
         <Title>{getTitle()}</Title>
         <HeaderOperate>
           <RowStyle>
@@ -492,8 +495,8 @@ const RightFormWork = () => {
           onConfirm={deleteActiveItem}
           onChangeVisible={() => setDelIsVisible(false)}
         />
-      </RightFormWorkStyle>
-    </Spin>
+      </Spin>
+    </RightFormWorkStyle>
   )
 }
 export default RightFormWork

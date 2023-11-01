@@ -153,7 +153,7 @@ const LayoutSideIndex = () => {
 
     // 如果是工作汇报则默认跳转
     if (item.url === '/Report') {
-      // navigateUrl = `${item.url}/Review`
+      navigateUrl = `${item.url}/Review/List/1`
     }
 
     // 如果是我的则默认跳转我的概况

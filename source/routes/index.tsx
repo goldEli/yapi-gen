@@ -47,6 +47,22 @@ const routes = [
             // 汇报
             path: 'Review',
             element: lazy(() => import('@/views/Layout/Report')),
+            children: [
+              {
+                path: 'List/:id',
+                element: lazy(
+                  () => import('@/views/Layout/Report/Review/components/List'),
+                ),
+              },
+            ],
+          },
+          {
+            path: 'Census',
+            element: lazy(() => import('@/views/Layout/Report/Statistics')),
+          },
+          {
+            path: 'Formwork',
+            element: lazy(() => import('@/views/Layout/Report/Formwork')),
           },
         ],
       },

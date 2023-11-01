@@ -2486,5 +2486,7 @@
   "readNotification": "已读通知",
   "unreadNotifications": "未读通知",
   "allNotifications": "全部通知",
-  "company": "公司"
+  "company": "公司",
+  "reportingObjects": "汇报对象",
+  "thereIsADuplicateTemplateName": "已有重复模板名称"
 }

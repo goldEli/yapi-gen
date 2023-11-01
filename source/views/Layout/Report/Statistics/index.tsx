@@ -12,10 +12,6 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import PaginationBox from '@/components/TablePagination'
 import { Space, Spin } from 'antd'
 import SlideTabs from './SlideTabs'
-import PermissionWrap from '@/components/PermissionWrap'
-import { useSelector } from '@store/index'
-import RangePicker from '@/components/RangePicker'
-import moment from 'moment'
 import {
   getStatInfo,
   getStatTempList,
@@ -103,7 +99,6 @@ const CardItem = styled.div({
 })
 const Statistics = () => {
   const [t] = useTranslation()
-  const { currentMenu } = useSelector(store => store.user)
   const [spinning, setSpinning] = useState<boolean>(false)
   const [tabItems, setTabItems] = useState<any[]>([])
   const [userListData, setUserListData] = useState<any>({})
@@ -217,126 +212,95 @@ const Statistics = () => {
     setQueryParams({ page: current, pageSize })
   }
 
-  // const onChangeDate = (values: any) => {
-  //   const startTime = values ? moment(values[0]).format('YYYY-MM-DD') : null
-  //   const endTime = values ? moment(values[1]).format('YYYY-MM-DD') : null
-  //   setQueryParams({ startTime, endTime, pageSize: queryParams.pageSize })
-  // }
-
   const onTabChange = (value: string) => {
     setTabKey(value)
   }
 
-  // const submitDate = useMemo(() => {
-  //   if (queryParams.startTime && queryParams.endTime) {
-  //     return [moment(queryParams.startTime), moment(queryParams.endTime)]
-  //   }
-  //   return null
-  // }, [queryParams])
   return (
-    <PermissionWrap
-      auth="/Report/Statistics"
-      permission={currentMenu?.children?.map((i: any) => i.url)}
-    >
-      <div className={spinWrap}>
-        <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
-          <StyledWrap>
-            <Head>
-              <div className={cardTitle}>
-                <SecondTitle>{t('report.statistics.title')}</SecondTitle>
-                {/* <SelectWrapBedeck>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                {t('report.statistics.submitTime')}
-              </span>
-              <RangePicker
-                isShowQuick
-                dateValue={submitDate}
-                onChange={onChangeDate}
+    <div className={spinWrap}>
+      <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
+        <StyledWrap>
+          <Head>
+            <div className={cardTitle}>
+              <SecondTitle>{t('report.statistics.title')}</SecondTitle>
+            </div>
+            {tabItems.length > 0 && (
+              <SlideTabs
+                activeKey={tabKey}
+                items={tabItems}
+                onChange={onTabChange}
               />
-            </SelectWrapBedeck> */}
-              </div>
-              {tabItems.length > 0 && (
-                <SlideTabs
-                  activeKey={tabKey}
-                  items={tabItems}
-                  onChange={onTabChange}
-                />
-              )}
+            )}
 
-              <>
+            <>
+              <ResizeTable
+                isSpinning={false}
+                dataWrapNormalHeight="100%"
+                col={columns}
+                dataSource={userListData.list}
+                noData={<NoData />}
+              />
+              <PaginationBox
+                currentPage={queryParams?.page}
+                pageSize={queryParams?.pageSize}
+                total={userListData?.pager?.total}
+                onChange={onChangePage}
+              />
+            </>
+          </Head>
+
+          <Center>
+            <CenterRight>
+              <SecondTitle>{t('report.statistics.mine')}</SecondTitle>
+              <CardGroup size={24}>
+                <CardItem
+                  style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}
+                >
+                  <span style={{ marginBottom: 9 }}>
+                    {t('report.statistics.accumulated')}
+                  </span>
+                  <div>{statInfoData.accruing}</div>
+                </CardItem>
+                <CardItem
+                  style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}
+                >
+                  <span style={{ marginBottom: 9 }}>
+                    {t('report.statistics.onTime')}
+                  </span>
+                  <div>{statInfoData.on_time_count}</div>
+                </CardItem>
+                <CardItem
+                  style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}
+                >
+                  <span style={{ marginBottom: 9 }}>
+                    {t('report.statistics.supplementary')}
+                  </span>
+                  <div>{statInfoData.no_payment_count}</div>
+                </CardItem>
+                <CardItem style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}>
+                  <span style={{ marginBottom: 9 }}>
+                    {t('report.statistics.unSubmitted')}
+                  </span>
+                  <div>{statInfoData.cumulative_unsubmit_count}</div>
+                </CardItem>
+              </CardGroup>
+
+              <SecondTitle>{t('report.statistics.templateUsage')}</SecondTitle>
+
+              <div className={rightBottom}>
                 <ResizeTable
                   isSpinning={false}
-                  dataWrapNormalHeight="100%"
-                  col={columns}
-                  dataSource={userListData.list}
+                  dataWrapNormalHeight="calc(100vh - 450px)"
+                  col={usageColumns}
+                  dataSource={usageDataList}
                   noData={<NoData />}
                 />
-                <PaginationBox
-                  currentPage={queryParams?.page}
-                  pageSize={queryParams?.pageSize}
-                  total={userListData?.pager?.total}
-                  onChange={onChangePage}
-                />
-              </>
-            </Head>
-
-            <Center>
-              <CenterRight>
-                <SecondTitle>{t('report.statistics.mine')}</SecondTitle>
-                <CardGroup size={24}>
-                  <CardItem
-                    style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}
-                  >
-                    <span style={{ marginBottom: 9 }}>
-                      {t('report.statistics.accumulated')}
-                    </span>
-                    <div>{statInfoData.accruing}</div>
-                  </CardItem>
-                  <CardItem
-                    style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}
-                  >
-                    <span style={{ marginBottom: 9 }}>
-                      {t('report.statistics.onTime')}
-                    </span>
-                    <div>{statInfoData.on_time_count}</div>
-                  </CardItem>
-                  <CardItem
-                    style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}
-                  >
-                    <span style={{ marginBottom: 9 }}>
-                      {t('report.statistics.supplementary')}
-                    </span>
-                    <div>{statInfoData.no_payment_count}</div>
-                  </CardItem>
-                  <CardItem
-                    style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}
-                  >
-                    <span style={{ marginBottom: 9 }}>
-                      {t('report.statistics.unSubmitted')}
-                    </span>
-                    <div>{statInfoData.cumulative_unsubmit_count}</div>
-                  </CardItem>
-                </CardGroup>
-
-                <SecondTitle>
-                  {t('report.statistics.templateUsage')}
-                </SecondTitle>
-
-                <div className={rightBottom}>
-                  <ResizeTable
-                    isSpinning={false}
-                    dataWrapNormalHeight="calc(100vh - 450px)"
-                    col={usageColumns}
-                    dataSource={usageDataList}
-                    noData={<NoData />}
-                  />
-                </div>
-              </CenterRight>
-            </Center>
-          </StyledWrap>
-        </Spin>
-      </div>
-    </PermissionWrap>
+              </div>
+            </CenterRight>
+          </Center>
+        </StyledWrap>
+      </Spin>
+    </div>
   )
 }
 

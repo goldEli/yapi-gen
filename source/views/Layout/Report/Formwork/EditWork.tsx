@@ -31,11 +31,11 @@ const TitleStyle = styled.div`
 const LeftTabs = styled.div`
   overflow-x: hidden;
   flex: 1;
-  height: calc(100vh - 330px);
-  overflow-y: auto;
+  height: 100%;
+  /* overflow-y: auto; */
 `
 const RightTabs = styled.div`
-  height: calc(100vh - 330px);
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   width: 400px;
@@ -163,7 +163,7 @@ const EditWork = (props: PropsType) => {
     setDataList(templateContentConfigs)
   }, [templateContentConfigs])
   return (
-    <div id="father" style={{ display: 'flex', height: 'calc(100vh -300px)' }}>
+    <div id="father" style={{ display: 'flex', height: 'calc(100vh - 364px)' }}>
       <LeftTabs
         onDragOver={event => {
           event.preventDefault(), event.stopPropagation()
@@ -173,7 +173,7 @@ const EditWork = (props: PropsType) => {
           <span>{t('formWork.content')}</span>
         </TitleStyle>
         <div
-          style={{ height: 'calc(100vh - 370px)' }}
+          style={{ height: 'calc(100% - 22px)', overflowY: 'auto' }}
           onDrop={event => {
             onDrag(event, dataList?.length - 1, true)
           }}

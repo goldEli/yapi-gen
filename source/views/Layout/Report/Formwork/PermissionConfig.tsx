@@ -26,10 +26,11 @@ import { debounce, throttle } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
+
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
   overflow-y: auto;
-  height: calc(100vh - 265px);
+  height: calc(100vh - 300px);
 `
 const TitleText = styled.div`
   font-size: 14px;

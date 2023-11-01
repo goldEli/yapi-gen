@@ -3,13 +3,8 @@ import { Outlet, useLocation, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from '@store/index'
 import { setWriteReportModal } from '@store/workReport'
 import { useTranslation } from 'react-i18next'
-import FormWorkSide from './FormWorkSide'
-import ReviewSide from './ReviewSide'
-import HasSideCommonLayout from '@/components/HasSideCommonLayout'
-import WriteReport from './FormWorkSide/WriteReport'
-// import ProjectDetailSide from '../SprintProjectManagement/ProjectDetailSide'
-// import ProjectDetailSideIteration from '../ProjectManagement/ProjectDetailSide'
 import { getParamsData } from '@/tools'
+import WriteReport from './Formwork/WriteReport'
 
 const WorkReportWrap = styled.div`
   position: relative;
@@ -19,7 +14,6 @@ const WorkReportWrap = styled.div`
 `
 
 const WorkReport = () => {
-  const { pathname } = useLocation()
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { visible: visibleEdit } = useSelector(
@@ -27,8 +21,6 @@ const WorkReport = () => {
   )
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams) || {}
-
-  const { type } = paramsData
 
   return (
     <WorkReportWrap id="dropArea">

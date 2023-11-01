@@ -2486,5 +2486,7 @@
   "readNotification": "Read notification",
   "unreadNotifications": "Unread notifications",
   "allNotifications": "All notifications",
-  "company": "Company"
+  "company": "Company",
+  "reportingObjects": "Reporting objects",
+  "thereIsADuplicateTemplateName": "There is a duplicate template name"
 }

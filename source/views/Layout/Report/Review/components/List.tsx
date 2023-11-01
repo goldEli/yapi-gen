@@ -3,8 +3,13 @@
 import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useParams, useSearchParams } from 'react-router-dom'
-import { SelectWrapBedeck } from '@/components/StyleCommon'
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom'
+import { HaveTabsContentWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import moment from 'moment'
 import RangePicker from '@/components/RangePicker'
 import CustomSelect from '@/components/MoreSelect'
@@ -32,9 +37,14 @@ import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { css } from '@emotion/css'
 import { templateList } from '@/services/formwork'
 import { setIsRefresh } from '@store/user'
+import TabsContent from '@/components/TabsContent'
+import CommonButton from '@/components/CommonButton'
+import { setWriteReportModal } from '@store/workReport'
 
 const listContainer = css`
-  margin: 0 24px;
+  padding: 0 24px;
+  height: calc(100% - 38px);
+  background: var(--neutral-white-d1);
   .high-light-text {
     &:hover {
       color: var(--primary-d2);
@@ -43,12 +53,12 @@ const listContainer = css`
 `
 
 const ListTitle = styled.div`
-  height: 32px;
   background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 0;
+  margin-bottom: 20px;
+  padding-top: 20px;
   .title-text {
     font-size: 16px;
     font-family: SiYuanMedium;
@@ -91,6 +101,7 @@ const defaultPageParam = { page: 1, pagesize: 30 }
 const List = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
   const [total, setTotal] = useState<number>(0)
@@ -112,6 +123,8 @@ const List = () => {
   const { isFresh } = useSelector(state => state.workReport.listUpdate)
   const { isRefresh } = useSelector(state => state.user)
 
+  const [activeKey, setActiveKey] = useState('')
+
   const statusOptions = [
     { label: t('p2.noRead'), value: 1, id: 1 },
     { label: t('p2.haveRead'), value: 2, id: 2 },
@@ -132,20 +145,19 @@ const List = () => {
 
   const menuList = [
     {
-      id: 1,
-      name: t('report.list.review'),
-      path: '/Report/Review/List/1',
-      state: 1,
+      key: '1',
+      label: t('report.list.review'),
+      url: '/Report/Review/List/1',
     },
     {
-      id: 2,
-      name: t('report.list.reviewMe'),
-      path: '/Report/Review/List/2',
+      key: '2',
+      label: t('report.list.reviewMe'),
+      url: '/Report/Review/List/2',
     },
     {
-      id: 3,
-      name: t('report.list.openReview'),
-      path: '/Report/Review/List/3',
+      key: '3',
+      label: t('report.list.openReview'),
+      url: '/Report/Review/List/3',
     },
   ]
 
@@ -449,7 +461,7 @@ const List = () => {
     },
   ]
   const nowPath2 = Number(pathname.split('/')[4]) || ''
-  const title = menuList[(nowPath2 as number) - 1]?.name
+  const title = menuList[(nowPath2 as number) - 1]?.label
 
   const onChangeTime = (type: string, dates: any) => {
     const date = []
@@ -622,6 +634,19 @@ const List = () => {
     setUserOptions(data.map(generateOptions))
   }
 
+  //   跳转路由
+  const onChangeRouter = (key: any) => {
+    const url = menuList?.filter((i: any) => i.key === key)[0]?.url
+    setActiveKey(key)
+    //   拼接三级菜单路由
+    navigate(url)
+  }
+
+  // 写汇报
+  const handleReport = () => {
+    dispatch(setWriteReportModal({ visible: true }))
+  }
+
   useEffect(() => {
     if (id === 1) {
       // 我汇报的
@@ -635,11 +660,13 @@ const List = () => {
       // 公开汇报
       getTemplateForPublicList()
     }
+    setActiveKey(String(id))
   }, [id])
 
   useEffect(() => {
     getUserList()
   }, [])
+
   useEffect(() => {
     if (reportId) {
       dispatch(
@@ -652,108 +679,124 @@ const List = () => {
       )
     }
   }, [reportId])
+
   return (
-    <div className={listContainer}>
-      <ListTitle>
-        <span className="title-text">{title}</span>
-        <Space size={24}>
+    <HaveTabsContentWrap>
+      <TabsContent
+        onChangeRouter={onChangeRouter}
+        tabItems={menuList}
+        activeKey={activeKey}
+      />
+      <div className={listContainer}>
+        <ListTitle>
           <InputSearch
             defaultValue={queryParams.keyword}
             placeholder={t('report.list.search')}
             onChangeSearch={onPressEnter}
             leftIcon
             isReport
+            width={192}
           />
-          <ScreenMinHover
-            style={{ marginLeft: 0 }}
-            label={t('common.refresh')}
-            icon="sync"
-            onClick={getList}
-          />
-        </Space>
-      </ListTitle>
-      <ListHead>
-        <SelectWrapForList id="SelectWrap">
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>
-            {t('report.list.reportType')}
-          </span>
-          <CustomSelect
-            showArrow
-            showSearch
-            style={{ width: 148 }}
-            getPopupContainer={(node: any) => node}
-            allowClear
-            optionFilterProp="label"
-            value={queryParams.report_template_ids}
-            options={repTypeOptions}
-            onChange={onChangeRepType}
-            onConfirm={() => null}
-            placement="bottomRight"
-            width={dropdownMatchSelectWidth}
-          />
-        </SelectWrapForList>
-        {id !== 1 && (id === 2 || id === 3) ? extraSelect : null}
-        <SelectWrapForList>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>
-            {t('report.list.dateReport')}
-          </span>
-          <RangePicker
-            isShowQuick
-            placement="bottomLeft"
-            dateValue={repDate}
-            onChange={date => onChangeTime('report', date)}
-          />
-        </SelectWrapForList>
-        <SelectWrapForList>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>
-            {t('report.list.dateSubmit')}
-          </span>
-          <RangePicker
-            isShowQuick
-            placement="bottomLeft"
-            dateValue={submitDate}
-            onChange={date => onChangeTime('submit', date)}
-          />
-        </SelectWrapForList>
-        <ClearButton onClick={restQuery}>{t('common.clearForm')}</ClearButton>
-      </ListHead>
+          <Space size={24}>
+            <CommonButton
+              type="primary"
+              icon="plus"
+              iconPlacement="left"
+              onClick={handleReport}
+            >
+              {t('report.list.writeReport')}
+            </CommonButton>
+            <ScreenMinHover
+              style={{ marginLeft: 0 }}
+              label={t('common.refresh')}
+              icon="sync"
+              onClick={getList}
+            />
+          </Space>
+        </ListTitle>
+        <ListHead>
+          <SelectWrapForList id="SelectWrap">
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('report.list.reportType')}
+            </span>
+            <CustomSelect
+              showArrow
+              showSearch
+              style={{ width: 148 }}
+              getPopupContainer={(node: any) => node}
+              allowClear
+              optionFilterProp="label"
+              value={queryParams.report_template_ids}
+              options={repTypeOptions}
+              onChange={onChangeRepType}
+              onConfirm={() => null}
+              placement="bottomRight"
+              width={dropdownMatchSelectWidth}
+            />
+          </SelectWrapForList>
+          {id !== 1 && (id === 2 || id === 3) ? extraSelect : null}
+          <SelectWrapForList>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('report.list.dateReport')}
+            </span>
+            <RangePicker
+              isShowQuick
+              placement="bottomLeft"
+              dateValue={repDate}
+              onChange={date => onChangeTime('report', date)}
+            />
+          </SelectWrapForList>
+          <SelectWrapForList>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('report.list.dateSubmit')}
+            </span>
+            <RangePicker
+              isShowQuick
+              placement="bottomLeft"
+              dateValue={submitDate}
+              onChange={date => onChangeTime('submit', date)}
+            />
+          </SelectWrapForList>
+          <ClearButton onClick={restQuery}>{t('common.clearForm')}</ClearButton>
+        </ListHead>
 
-      <Divider style={{ margin: '4px 0px 20px 0px' }} />
-      <ResizeTable
-        isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100vh - 249px)"
-        col={
-          id === 1
-            ? columns?.filter(
-                (item: any) => item.dataIndex !== 'user_copysend_type',
-              )
-            : id === 3
-            ? columns?.filter(
-                (item: any) =>
-                  item.dataIndex && item.dataIndex !== 'user_copysend_type',
-              )
-            : columns?.filter((item: any) => item.dataIndex)
-        }
-        noData={<NoData />}
-        dataSource={listData}
-      />
-
-      {total ? (
-        <PaginationBox
-          total={total}
-          pageSize={pageObj.pagesize}
-          currentPage={pageObj.page}
-          onChange={onChangePage}
+        <Divider style={{ margin: '4px 0px 20px 0px' }} />
+        <ResizeTable
+          isSpinning={isSpinning}
+          dataWrapNormalHeight="calc(100% - 200px)"
+          col={
+            id === 1
+              ? columns?.filter(
+                  (item: any) => item.dataIndex !== 'user_copysend_type',
+                )
+              : id === 3
+              ? columns?.filter(
+                  (item: any) =>
+                    item.dataIndex && item.dataIndex !== 'user_copysend_type',
+                )
+              : columns?.filter((item: any) => item.dataIndex)
+          }
+          noData={<NoData />}
+          dataSource={listData}
         />
-      ) : null}
 
-      <HandleReport
-        editId={editId}
-        visibleEdit={visibleEdit}
-        editClose={() => setVisibleEdit(false)}
-        visibleEditText={t('report.list.modifyReport')}
-      />
-    </div>
+        {total ? (
+          <PaginationBox
+            total={total}
+            pageSize={pageObj.pagesize}
+            currentPage={pageObj.page}
+            onChange={onChangePage}
+          />
+        ) : null}
+
+        <HandleReport
+          editId={editId}
+          visibleEdit={visibleEdit}
+          editClose={() => setVisibleEdit(false)}
+          visibleEditText={t('report.list.modifyReport')}
+        />
+      </div>
+    </HaveTabsContentWrap>
   )
 }
 
