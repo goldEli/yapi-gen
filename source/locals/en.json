@@ -2488,5 +2488,9 @@
   "allNotifications": "All notifications",
   "company": "Company",
   "reportingObjects": "Reporting objects",
-  "thereIsADuplicateTemplateName": "There is a duplicate template name"
+  "thereIsADuplicateTemplateName": "There is a duplicate template name",
+  "createNewTemplate": "Create new template",
+  "notificationSettings": "Notification settings",
+  "notificationItemSettings": "Notification item settings",
+  "settings": "E-Mail settings"
 }

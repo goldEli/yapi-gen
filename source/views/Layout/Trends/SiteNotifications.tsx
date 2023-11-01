@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
 /* eslint-disable complexity */
@@ -30,8 +31,8 @@ import {
 import { useTranslation } from 'react-i18next'
 import { TextChange } from '@/components/TextChange/TextChange'
 import NoteModal from '@/components/NoteModal'
-import { CloseWrap } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
+import styled from '@emotion/styled'
 
 const mcs = css`
   overflow: hidden;
@@ -39,6 +40,11 @@ const mcs = css`
   -webkit-line-clamp: 2; // 显示2行
   -webkit-box-orient: vertical;
   word-break: break-all;
+`
+
+export const FeedBadge = styled(Badge)`
+  position: absolute;
+  right: 12px;
 `
 
 const SiteNotifications = (props: any, ref: any) => {
@@ -50,6 +56,9 @@ const SiteNotifications = (props: any, ref: any) => {
   const dispatch = useDispatch()
   const { isVisible, all } = useSelector(store => store.siteNotifications)
   const isRefresh = useSelector(store => store.user.isRefresh)
+  const { layoutSideCollapse } = useSelector(store => store.global)
+  const { currentMenu, menuIconList } = useSelector(store => store.user)
+
   const init2 = async () => {
     // eslint-disable-next-line no-promise-executor-return
     await new Promise(resolve => setTimeout(resolve, 2000))
@@ -352,11 +361,13 @@ const SiteNotifications = (props: any, ref: any) => {
     init()
     init2()
   }, [isRefresh])
+
   useEffect(() => {
     if (wsData) {
       sendMsg()
     }
   }, [wsData])
+
   useImperativeHandle(
     ref,
     () => {
@@ -369,19 +380,41 @@ const SiteNotifications = (props: any, ref: any) => {
 
   return (
     <>
-      <div
-        style={{
-          cursor: 'pointer',
-        }}
-        onClick={() => {
-          dispatch(changeVisible(!isVisible))
-          dispatch(changeVisibleFilter(false))
-        }}
-      >
+      {!layoutSideCollapse && (
         <Badge size="small" offset={[-2, 1]} count={all}>
-          <CommonIconFont color="var(--neutral-n2)" size={24} type="bell" />
+          <CommonIconFont
+            type={
+              currentMenu?.id === props?.item.id
+                ? menuIconList?.filter((k: any) =>
+                    String(props?.item.url).includes(k.key),
+                  )[0]?.active
+                : menuIconList?.filter((k: any) =>
+                    String(props?.item.url).includes(k.key),
+                  )[0]?.normal
+            }
+            size={24}
+            color="var(--neutral-n2)"
+          />
         </Badge>
-      </div>
+      )}
+      {layoutSideCollapse && (
+        <>
+          <CommonIconFont
+            type={
+              currentMenu?.id === props?.item.id
+                ? menuIconList?.filter((k: any) =>
+                    String(props?.item.url).includes(k.key),
+                  )[0]?.active
+                : menuIconList?.filter((k: any) =>
+                    String(props?.item.url).includes(k.key),
+                  )[0]?.normal
+            }
+            size={24}
+            color="var(--neutral-n2)"
+          />
+          <FeedBadge size="small" offset={[-2, 1]} count={all} />
+        </>
+      )}
       <NoteModal
         onClose={() => setFirst(false)}
         data={first2}

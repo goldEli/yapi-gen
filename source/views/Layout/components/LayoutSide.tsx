@@ -6,7 +6,6 @@ import {
   CollapseWrapItem,
   notOpenSideMenu,
   openSideMenu,
-  FeedBadge,
   MorePopover,
   MoreTitle,
   MorePopoverContent,
@@ -20,9 +19,9 @@ import {
   NotOpenLogoWrap,
   OpenLogoWrap,
 } from '../style'
-import { Badge, Popover, Tooltip } from 'antd'
+import { Popover, Tooltip } from 'antd'
 import CommonIconFont from '@/components/CommonIconFont'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from '@/components/StyleCommon'
 import { setLayoutSideCollapse } from '@store/global'
@@ -30,6 +29,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { setCurrentMenu } from '@store/user'
 import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import { setProjectInfo } from '@store/project'
+import SiteNotifications from '../Trends/SiteNotifications'
+import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
 
 interface MorePopoverComponentProps {
   onClose(): void
@@ -96,6 +97,7 @@ const LayoutSideIndex = () => {
   const routerPath = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const childStateRef = useRef<any>()
   const { layoutSideCollapse } = useSelector(store => store.global)
   const { currentMenu, menuIconList, menuPermission } = useSelector(
     store => store.user,
@@ -163,6 +165,8 @@ const LayoutSideIndex = () => {
 
     // 如果是动态则默认跳转全部
     if (item.url === '/Trends') {
+      dispatch(changeVisible(false))
+      dispatch(changeVisibleFilter(false))
       navigateUrl = `${item.url}/AllNote/1`
     }
 
@@ -307,42 +311,8 @@ const LayoutSideIndex = () => {
               layoutSideCollapse ? openSideMenu : notOpenSideMenu
             } ${currentMenu?.url === i.url ? activeSideMenu : ''}`}
           >
-            {/* 动态并且是折叠状态 */}
-            {i.url === '/Trends' && !layoutSideCollapse && (
-              <Badge size="small" offset={[-2, 1]} count={100}>
-                <CommonIconFont
-                  type={
-                    currentMenu?.id === i.id
-                      ? menuIconList?.filter((k: any) =>
-                          String(i.url).includes(k.key),
-                        )[0]?.active
-                      : menuIconList?.filter((k: any) =>
-                          String(i.url).includes(k.key),
-                        )[0]?.normal
-                  }
-                  size={24}
-                  color="var(--neutral-n2)"
-                />
-              </Badge>
-            )}
-            {/* 状态并且是展开状态 */}
-            {i.url === '/Trends' && layoutSideCollapse && (
-              <>
-                <CommonIconFont
-                  type={
-                    currentMenu?.id === i.id
-                      ? menuIconList?.filter((k: any) =>
-                          String(i.url).includes(k.key),
-                        )[0]?.active
-                      : menuIconList?.filter((k: any) =>
-                          String(i.url).includes(k.key),
-                        )[0]?.normal
-                  }
-                  size={24}
-                  color="var(--neutral-n2)"
-                />
-                <FeedBadge size="small" offset={[-2, 1]} count={100} />
-              </>
+            {i.url === '/Trends' && (
+              <SiteNotifications ref={childStateRef} item={i} />
             )}
             {i.url !== '/Trends' && (
               <CommonIconFont

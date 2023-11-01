@@ -2488,5 +2488,9 @@
   "allNotifications": "全部通知",
   "company": "公司",
   "reportingObjects": "汇报对象",
-  "thereIsADuplicateTemplateName": "已有重复模板名称"
+  "thereIsADuplicateTemplateName": "已有重复模板名称",
+  "createNewTemplate": "新建模板",
+  "notificationSettings": "通知设置",
+  "notificationItemSettings": "通知项设置",
+  "settings": "邮件设置"
 }

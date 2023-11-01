@@ -299,11 +299,6 @@ export const MoreItem = styled.div<{ isDisable?: boolean }>`
   }
 `
 
-export const FeedBadge = styled(Badge)`
-  position: absolute;
-  right: 12px;
-`
-
 export const MoreOtherPopover = styled(Popover)`
   left: 24px;
   top: 56px;

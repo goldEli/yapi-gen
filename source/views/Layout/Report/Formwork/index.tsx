@@ -24,6 +24,7 @@ import { getTemplateList } from '@store/formWork/thunk'
 import { debounce } from 'lodash'
 import { aWeekDataList } from './DataList'
 import { createTemplate, upDateTemplate } from '@/services/formwork'
+import CommonButton from '@/components/CommonButton'
 
 const FormWork = () => {
   const [t]: any = useTranslation()
@@ -388,6 +389,22 @@ const FormWork = () => {
           label: i.name,
         }))}
         activeKey={String(isActive)}
+        tabBarExtraContent={
+          <CommonButton
+            type="primaryText"
+            icon="plus"
+            onClick={() => {
+              if (!editSave && activeItem?.name) {
+                setDelIsVisible(true)
+                setIsOpen(true)
+                return
+              }
+              setIsVisible(true)
+            }}
+          >
+            {t('createNewTemplate')}
+          </CommonButton>
+        }
       />
       <RightFormWork />
     </HaveTabsContentWrap>

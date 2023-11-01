@@ -1,7 +1,17 @@
 import styled from '@emotion/styled'
 
 export const Content = styled.div`
-  padding: 48px 0px;
+  height: calc(100% - 56px);
+  overflow-y: auto;
+`
+
+export const FooterWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 56px;
+  gap: 16px;
+  padding-top: 24px;
 `
 
 export const Content1 = styled.div<{ margin?: number }>`

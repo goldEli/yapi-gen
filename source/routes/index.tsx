@@ -92,14 +92,14 @@ const routes = [
         path: 'Trends',
         element: lazy(() => import('@/views/Layout/Trends')),
         children: [
-          {
-            path: 'Setting/:id',
-            element: lazy(() => import('../views/Layout/Trends/Setting/index')),
-          },
-          {
-            path: 'Email/:id',
-            element: lazy(() => import('@/views/Layout/Trends/Email/index')),
-          },
+          // {
+          //   path: 'Setting/:id',
+          //   element: lazy(() => import('../views/Layout/Trends/Setting/index')),
+          // },
+          // {
+          //   path: 'Email/:id',
+          //   element: lazy(() => import('@/views/Layout/Trends/Email/index')),
+          // },
           {
             path: 'AllNote/:id',
             element: lazy(
