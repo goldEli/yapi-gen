@@ -220,6 +220,8 @@ export const modifyStatus =
     target: Model.KanbanConfig.Status
   }) =>
   async (dispatch: AppDispatch) => {
+    console.log(options, '拖拽后的触发数据')
+
     const { kanbanInfoByGroup, sortByGroupOptions } = store.getState().kanBan
     const { source, target, storyId } = options
     const data = produce(kanbanInfoByGroup, draft => {
@@ -236,7 +238,7 @@ export const modifyStatus =
         []
       targetStories.unshift(removed)
     })
-    dispatch(setKanbanInfoByGroup(data))
+    // dispatch(setKanbanInfoByGroup(data))
     const res = await dispatch(
       getFlowConfig({
         story_id: options.storyId,

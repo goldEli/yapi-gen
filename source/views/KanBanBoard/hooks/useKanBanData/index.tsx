@@ -74,15 +74,16 @@ const useKanBanData = () => {
         result.draggableId,
       )
       // draggableId
-      dispatch(
-        sortStory({
-          groupId,
-          columnId,
-          storyId,
-          startIndex: source.index,
-          destinationIndex: destination.index,
-        }),
-      )
+      //取消排序
+      // dispatch(
+      //   sortStory({
+      //     groupId,
+      //     columnId,
+      //     storyId,
+      //     startIndex: source.index,
+      //     destinationIndex: destination.index,
+      //   }),
+      // )
     }
 
     if (groupType === 'priority') {
