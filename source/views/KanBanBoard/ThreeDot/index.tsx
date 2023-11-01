@@ -17,6 +17,7 @@ import { setKanbanInfoByGroup } from '@store/kanBan'
 interface ThreeDotProps {
   story: Model.KanBan.Story
   groupId?: number
+  cid?: number
 }
 
 const Item = styled.div`
@@ -92,7 +93,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
           deleteStory(
             {
               groupId: props.groupId,
-              columnId: props.story.kanban_column_id,
+              columnId: props.cid,
               id: props.story.id,
             },
             typeNum,
@@ -132,7 +133,6 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
       project_id: getProjectIdByUrl(),
       story_ids: [pp.id],
     })
-    console.log(res, '编辑后获取的需求数据')
 
     dispatch(
       setKanbanInfoByGroup(

@@ -73,7 +73,6 @@ function findAndReplace(groupId: any, issuesId: any, array: any, cId: any) {
           for (let c = 0; c < cc[i].columns[b].stories.length; c++) {
             if (cc[i].columns[b].stories[c].id === issuesId) {
               cc[i].columns[b].stories.splice(c, 1)
-              console.log(cc[i].columns[b].stories[c], 'ff')
             }
           }
         }

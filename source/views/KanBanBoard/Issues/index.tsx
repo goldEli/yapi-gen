@@ -166,7 +166,7 @@ const Issues: React.FC<IssuesProps> = props => {
       ),
     )
   }
-  console.log(issues.story_count, 'issues.story_count')
+  console.log(issues, 'issues.story_count')
 
   const issueCardListContent = (
     <InfiniteScroll
@@ -192,6 +192,7 @@ const Issues: React.FC<IssuesProps> = props => {
         const hidden2 = showStateTransitionList
         return (
           <IssueCard
+            cid={issues.id}
             groupId={groupId}
             hidden={hidden1 || hidden2}
             uuid={uuid}

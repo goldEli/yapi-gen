@@ -163,6 +163,7 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
         const hidden2 = showStateTransitionList
         return (
           <IssueCard
+            cid={issues.id}
             groupId={groupId}
             hidden={hidden1 || hidden2}
             uuid={uuid}
