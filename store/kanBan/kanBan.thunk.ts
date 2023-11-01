@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 /* eslint-disable no-undefined */
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
@@ -44,6 +45,8 @@ export const copyView =
   }
 export const deleteKanbanGroup =
   (params: { id: number }) => async (dispatch: AppDispatch) => {
+    console.log(params, '删除分组这里不用改')
+
     const res = await services.kanban.deleteKanbanGroup({
       ...params,
       project_id: getProjectIdByUrl(),
@@ -60,9 +63,33 @@ export const offFullScreenMode = () => async (dispatch: AppDispatch) => {
   dispatch(setFullScreen(false))
 }
 
+function findAndReplace(groupId: any, issuesId: any, array: any, cId: any) {
+  const cc = JSON.parse(JSON.stringify(array))
+  for (let i = 0; i < cc.length; i++) {
+    console.log(cc[i])
+    if (cc[i].id === groupId) {
+      for (let b = 0; b < cc[i].columns.length; b++) {
+        if (cc[i].columns[b].id === cId) {
+          for (let c = 0; c < cc[i].columns[b].stories.length; c++) {
+            if (cc[i].columns[b].stories[c].id === issuesId) {
+              cc[i].columns[b].stories.splice(c, 1)
+              console.log(cc[i].columns[b].stories[c], 'ff')
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return cc
+}
+
 // 删除story
 export const deleteStory =
-  (params: Pick<API.Kanban.DeleteStory.Params, 'id'>, type: number) =>
+  (
+    params: Pick<API.Kanban.DeleteStory.Params, 'id' | 'groupId' | 'columnId'>,
+    type: number,
+  ) =>
   async (dispatch: AppDispatch) => {
     // 根据类型判断是删除哪种
     if (type === 2) {
@@ -82,7 +109,17 @@ export const deleteStory =
       })
     }
     getMessage({ msg: i18n.t('common.deleteSuccess'), type: 'success' })
-    dispatch(getKanbanByGroup())
+
+    dispatch(
+      setKanbanInfoByGroup(
+        findAndReplace(
+          params.groupId,
+          params.id,
+          store.getState().kanBan.kanbanInfoByGroup,
+          params.columnId,
+        ),
+      ),
+    )
   }
 
 // 获取流转配置

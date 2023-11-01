@@ -13,6 +13,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface ThreeDotProps {
   story: Model.KanBan.Story
+  groupId?: number
 }
 
 const Item = styled.div`
@@ -82,9 +83,13 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
         } else if (projectInfo.projectType === 1 && props.story.is_bug !== 1) {
           typeNum = 1
         }
+        console.log(props, '删除操作的数据')
+
         dispatch(
           deleteStory(
             {
+              groupId: props.groupId,
+              columnId: props.story.kanban_column_id,
               id: props.story.id,
             },
             typeNum,

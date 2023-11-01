@@ -36,12 +36,13 @@ interface IssueCardProps {
   hidden?: boolean
   stories?: any
   style?: any
+  groupId?: number
 }
 
 const IssueCard = (props: IssueCardProps) => {
   const [t] = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
-  const { item, index, stories } = props
+  const { item, index, stories, groupId } = props
   const isDragDisabled = props.item.verify_lock === 1
   const childRef = useRef<any>(null)
   const [openDemandDetail] = useOpenDemandDetail()
@@ -63,7 +64,7 @@ const IssueCard = (props: IssueCardProps) => {
           <TopText>{item.story_prefix_key}</TopText>
         </TopLeft>
         <TopRight>
-          <ThreeDot story={item} />
+          <ThreeDot groupId={groupId} story={item} />
         </TopRight>
       </Top>
       <Middle>

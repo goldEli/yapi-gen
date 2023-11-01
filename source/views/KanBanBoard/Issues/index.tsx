@@ -192,6 +192,7 @@ const Issues: React.FC<IssuesProps> = props => {
         const hidden2 = showStateTransitionList
         return (
           <IssueCard
+            groupId={groupId}
             hidden={hidden1 || hidden2}
             uuid={uuid}
             key={uuid}
