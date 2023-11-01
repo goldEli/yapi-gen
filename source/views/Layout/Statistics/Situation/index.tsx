@@ -30,7 +30,7 @@ const Situation = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.general'))
-  const { menuPermission } = useSelector(store => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const [generalData, setGeneralData] = useState<any>()
   const init = async () => {
     const res = await getGlobalGeneral()
@@ -149,8 +149,8 @@ const Situation = () => {
   if (generalData) {
     return (
       <PermissionWrap
-        auth="/Situation"
-        permission={menuPermission?.menus?.map((i: any) => i.url)}
+        auth="b/company/statistics"
+        permission={userInfo?.company_permissions?.map((i: any) => i.identity)}
       >
         <Wrap>
           <Project data={generalData?.project} />

@@ -14,7 +14,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
   const navigate = useNavigate()
   const routerPath = useLocation()
   const [items, setItems] = useState<any>([])
-  const { currentMenu, menuPermission } = useSelector(store => store.user)
+  const { currentMenu, userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [activeKey, setActiveKey] = useState('')
 
@@ -60,16 +60,16 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
   }
 
   useEffect(() => {
-    if (currentMenu?.id && routerPath?.pathname) {
+    if (currentMenu?.id && routerPath?.pathname && userInfo?.id) {
       let resultItems: any = []
       // 如果有第二级菜单显示
       if (routerPath?.pathname.includes('/ProjectDetail')) {
         // 显示项目下的菜单，例需求
         const resultMenu = [
-          // { id: 'map', name: '导图', url: '', isPermisson: true  },
+          // { id: 'map', name: t('map'), url: '', isPermisson: true  },
           {
             id: 'iteration',
-            name: '迭代',
+            name: t('iteration'),
             url: '',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -78,7 +78,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'demand',
-            name: '需求',
+            name: t('need'),
             url: '',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -87,7 +87,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'defect',
-            name: '缺陷',
+            name: t('defect'),
             url: '',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -96,7 +96,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'affairs',
-            name: '事务',
+            name: t('affairs'),
             url: '',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -105,7 +105,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'sprint',
-            name: '冲刺',
+            name: t('sprint'),
             url: '',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -121,12 +121,17 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
                 String(i.group_name).includes('Kanban'),
               ).length > 0,
           },
-          // { id: 'gatte', name: '甘特图', url: '', isPermisson: true  },
-          { id: 'workTime', name: '工时', url: '', isPermisson: true },
-          { id: 'report', name: '报表', url: '', isPermisson: true },
+          // { id: 'gatte', name: t('ganttChart'), url: '', isPermisson: true  },
+          {
+            id: 'workTime',
+            name: t('workingHours'),
+            url: '',
+            isPermisson: true,
+          },
+          { id: 'report', name: t('report'), url: '', isPermisson: true },
           {
             id: 'member',
-            name: '成员',
+            name: t('member'),
             url: '',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -135,7 +140,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'set',
-            name: '设置',
+            name: t('setUp'),
             url: '',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -175,8 +180,8 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
             id: 605,
             url: '/Statistics/Company',
             isPermission:
-              menuPermission?.menus?.filter((i: any) =>
-                i.url?.includes('/Situation'),
+              userInfo?.company_permissions?.filter((i: any) =>
+                i.identity?.includes('b/company/statistics'),
               )?.length > 0,
           },
         ]
@@ -188,7 +193,6 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
       } else {
         setItems([])
       }
-      console.log(resultItems, '=resultItems')
       // 数组中是否包含当期路由
       const currentHavePath = resultItems?.filter((i: any) =>
         routerPath?.pathname?.includes(i.url),
@@ -199,7 +203,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           : String(resultItems[0]?.id),
       )
     }
-  }, [currentMenu, routerPath])
+  }, [currentMenu, routerPath, userInfo])
 
   return (
     <LayoutMenuWrap

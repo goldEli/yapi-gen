@@ -73,16 +73,6 @@ export const counterSlice = createSlice({
             updated_at: '2023-08-07 23:56:41',
           },
           {
-            id: 605,
-            name: '公司',
-            url: '/Situation',
-            permission: '',
-            p_menu: '\u9879\u76ee\u7ba1\u7406',
-            status: 1,
-            created_at: '-0001-11-30 00:00:00',
-            updated_at: '2023-08-07 23:56:41',
-          },
-          {
             id: 616,
             name: '汇报',
             url: '/Report',

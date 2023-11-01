@@ -300,9 +300,7 @@ const LayoutSideIndex = () => {
       <div style={{ width: 60, height: layoutSideCollapse ? 24 : 16 }} />
 
       {menuPermission.menus
-        ?.filter(
-          (k: any) => k.url !== '/AdminManagement' && k.url !== '/Situation',
-        )
+        ?.filter((k: any) => k.url !== '/AdminManagement')
         ?.map((i: any) => (
           <div
             key={i.id}

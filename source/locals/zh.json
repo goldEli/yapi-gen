@@ -2492,5 +2492,9 @@
   "createNewTemplate": "新建模板",
   "notificationSettings": "通知设置",
   "notificationItemSettings": "通知项设置",
-  "settings": "邮件设置"
+  "settings": "邮件设置",
+  "map": "导图",
+  "ganttChart": "甘特图",
+  "member": "成员",
+  "setUp": "设置"
 }
