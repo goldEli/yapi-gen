@@ -1,15 +1,18 @@
+/* eslint-disable max-depth */
 import React from 'react'
 import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
 import IconFont from '@/components/IconFont'
 import { HoverIcon } from '../IssueCard/styled'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { useDispatch, useSelector } from '@store/index'
+import { store, useDispatch, useSelector } from '@store/index'
 import { deleteStory } from '@store/kanBan/kanBan.thunk'
 import { copyLink, getIsPermission, getProjectIdByUrl } from '@/tools'
-import { setAddWorkItemModal } from '@store/project'
+import { projectSlice, setAddWorkItemModal } from '@store/project'
 import useI18n from '@/hooks/useI18n'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { getNewkanbanStoriesOfList } from '@/services/kanban'
+import { setKanbanInfoByGroup } from '@store/kanBan'
 
 interface ThreeDotProps {
   story: Model.KanBan.Story
@@ -99,7 +102,50 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
       },
     })
   }
+  function findAndReplace(
+    groupId: any,
+    issuesId: any,
+    array: any,
+    cId: any,
+    newData: any,
+  ) {
+    const cc = JSON.parse(JSON.stringify(array))
+    for (let i = 0; i < cc.length; i++) {
+      console.log(cc[i])
+      if (cc[i].id === groupId) {
+        for (let b = 0; b < cc[i].columns.length; b++) {
+          if (cc[i].columns[b].id === cId) {
+            for (let c = 0; c < cc[i].columns[b].stories.length; c++) {
+              if (cc[i].columns[b].stories[c].id === issuesId) {
+                cc[i].columns[b].stories.splice(c, 1, newData)
+              }
+            }
+          }
+        }
+      }
+    }
 
+    return cc
+  }
+  const updata = async (pp: any) => {
+    const res = await getNewkanbanStoriesOfList({
+      project_id: getProjectIdByUrl(),
+      story_ids: [pp.id],
+    })
+    console.log(res, '编辑后获取的需求数据')
+
+    dispatch(
+      setKanbanInfoByGroup(
+        findAndReplace(
+          pp.groupId,
+          pp.id,
+          store.getState().kanBan.kanbanInfoByGroup,
+          pp.columnId,
+          res[0],
+        ),
+      ),
+    )
+  }
   const items = [
     {
       key: '1',
@@ -115,6 +161,13 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
                   editId: props.story.id,
                   projectId: getProjectIdByUrl(),
                   title: t('editorial_affairs'),
+                  confirm: () => {
+                    updata({
+                      groupId: props.groupId,
+                      columnId: props.story.kanban_column_id,
+                      id: props.story.id,
+                    })
+                  },
                 },
               }),
             )

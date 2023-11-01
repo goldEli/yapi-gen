@@ -72,6 +72,7 @@ declare namespace Model.Project {
 
     // 传入的父需求列表-回显
     parentList?: { value: number; label: string }[]
+    confirm?(): void
   }
   interface Category {
     active?: boolean
