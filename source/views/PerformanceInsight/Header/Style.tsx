@@ -291,7 +291,7 @@ export const HeaderRowBox = styled.div`
 export const Back = styled.div`
   width: 84px;
   height: 32px;
-  background: #f6f7f9;
+  background: var(--auxiliary-b4);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -382,7 +382,7 @@ export const TableStyle = styled.div`
 export const Btn1 = styled.div`
   min-width: 60px;
   height: 22px;
-  background: #f6f7f9;
+  background: var(--auxiliary-b4);
   border-radius: 6px;
   font-size: 12px;
   display: flex;

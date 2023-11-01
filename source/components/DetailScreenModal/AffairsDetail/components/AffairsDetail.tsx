@@ -151,24 +151,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
   return (
     <>
       <DeleteConfirmModal />
-      {/* 只有标准事务类型和故障事务类型才有 */}
-      {[4, 5].includes(props.affairsInfo?.work_type) && props.isInfoPage && (
-        <InfoItem style={{ paddingTop: 0 }} isInfoPage={props?.isInfoPage}>
-          <TargetWrap style={{ margin: '0' }}>
-            <span className="icon">
-              <CommonIconFont
-                type="target"
-                size={16}
-                color="var(--function-warning)"
-              />
-            </span>
-            <span>
-              <span className="label">{t('targetInfo')}</span>
-              {props.affairsInfo?.iterate_info || '--'}
-            </span>
-          </TargetWrap>
-        </InfoItem>
-      )}
+
       <div
         style={{
           backgroundColor: '#f5f5f7',

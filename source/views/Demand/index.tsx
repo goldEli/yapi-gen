@@ -201,7 +201,7 @@ const DemandIndex = () => {
     getList(isGrid, searchItems, pageObj, order, state, topId)
     // 是编辑需求分类的话，就更新左侧需求分类列表
     if (isClass) {
-      myTreeComponent?.current?.init()
+      myTreeComponent?.current?.init(true)
     }
   }
 
@@ -220,7 +220,7 @@ const DemandIndex = () => {
     await deleteDemand({ projectId, id })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     getList(isGrid, searchItems, pageObj, order)
-    myTreeComponent?.current?.init()
+    myTreeComponent?.current?.init(true)
   }
 
   //   点击删除

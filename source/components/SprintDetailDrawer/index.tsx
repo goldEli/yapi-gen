@@ -950,28 +950,6 @@ const SprintDetailDrawer = () => {
                 </div>
               )}
 
-              {/* 只有标准事务类型和故障事务类型才有 */}
-              {[4, 5].includes(drawerInfo.work_type) && (
-                <TargetWrap
-                  style={{
-                    backgroundColor: 'white',
-                    padding: '16px 24px',
-                    margin: 0,
-                  }}
-                >
-                  <span className="icon">
-                    <CommonIconFont
-                      type="target"
-                      size={16}
-                      color="var(--function-warning)"
-                    />
-                  </span>
-                  <span>
-                    <span className="label">{t('targetInfo')}</span>
-                    {drawerInfo?.iterate_info || '--'}
-                  </span>
-                </TargetWrap>
-              )}
               {/* 周期、处理人 */}
               <DrawerTopInfo
                 details={drawerInfo}
