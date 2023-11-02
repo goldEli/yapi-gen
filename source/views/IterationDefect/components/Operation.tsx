@@ -81,13 +81,10 @@ export const MoreWrap = styled.div<{ type?: any }>(
     cursor: 'pointer',
   },
   ({ type }) => ({
-    background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
+    background: type ? 'var(--primary-d1)' : 'var(--auxiliary-b4)',
     color: type ? 'var(--neutral-white-d7)' : 'var(--primary-d2)',
     '&: hover': {
-      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    },
-    '&: active': {
-      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
+      background: type ? 'var(--primary-d1)' : 'var(--auxiliary-b5)',
     },
   }),
 )
