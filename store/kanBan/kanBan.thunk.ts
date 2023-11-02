@@ -288,7 +288,9 @@ export const modifyStatus =
 
       return cc
     }
-    const first = async () => {
+
+    const updateColumn = async () => {
+      const cc = JSON.parse(JSON.stringify(kanbanInfoByGroup))
       const res = await getNewkanbanStoriesOfPaginate({
         project_id: getProjectIdByUrl(),
         kanban_column_id: options.columnId,
@@ -296,24 +298,7 @@ export const modifyStatus =
         pagesize: 10,
         page: 1,
       })
-
-      dispatch(
-        setKanbanInfoByGroup(
-          findAndReplace(
-            options.groupId,
-            kanbanInfoByGroup,
-            options.columnId,
-            res.list,
-          ),
-        ),
-      )
-
-      console.log(res, '拖拽后获取的第一个列数据')
-      return 1
-    }
-
-    const two = async () => {
-      const res = await getNewkanbanStoriesOfPaginate({
+      const res2 = await getNewkanbanStoriesOfPaginate({
         project_id: getProjectIdByUrl(),
         kanban_column_id: options.targetColumnId,
         search: { ...checkGroup(options.targetGroupId) },
@@ -321,25 +306,14 @@ export const modifyStatus =
         page: 1,
       })
 
-      dispatch(
-        setKanbanInfoByGroup(
-          findAndReplace(
-            options.targetGroupId,
-            kanbanInfoByGroup,
-            options.targetColumnId,
-            res.list,
-          ),
-        ),
+      const bb = findAndReplace(options.groupId, cc, options.columnId, res.list)
+      const aa = findAndReplace(
+        options.targetGroupId,
+        bb,
+        options.targetColumnId,
+        res2.list,
       )
-      console.log(res, '拖拽后获取的第二个列数据')
-    }
-
-    const updateColumn = async () => {
-      const a = await first()
-
-      if (a === 1) {
-        two()
-      }
+      dispatch(setKanbanInfoByGroup(aa))
     }
     dispatch(
       openModifyStatusModalInfo({
