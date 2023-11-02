@@ -22,33 +22,23 @@ import { getMessage } from '@/components/Message'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import { useDispatch, useSelector } from '@store/index'
 
 interface HeaderFilterProps {
-  isGrid: boolean
-  onChangeGrid(state: boolean): void
-  onChangeParamsUpdate(params: any, isRefresh?: boolean): void
+  filterParamsAll: any
+  onChangeParamsUpdate(params: any): void
 }
 
 const HeaderFilter = (props: HeaderFilterProps) => {
   const [t] = useTranslation()
-
-  //   const [activeType, setActiveType] = useState(1)
+  const dispatch = useDispatch()
+  const { userInfo } = useSelector(store => store.user)
+  const { filterParamsAll, onChangeParamsUpdate } = props
   const [time, setTime] = useState([])
   const [spanMaps, setSpanMaps] = useState<any>()
 
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
-  const [filterParams, setFilterParams] = useState({
-    // 查看类型 例-最近查看
-    type: 1,
-    // 状态
-    status: 1,
-    // 搜索值
-    keyword: '',
-    // 项目周期
-    time: [],
-    //其他的类型
-    otherType: [1, 2, 3],
-  })
+  const [filterParams, setFilterParams] = useState(filterParamsAll)
 
   //   查看项目类型列表
   const typeList = [
@@ -72,7 +62,14 @@ const HeaderFilter = (props: HeaderFilterProps) => {
   // 切换显示类型
   const onClickMenuFormat = (type: boolean) => {
     getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
-    props.onChangeGrid(type)
+    setFilterParams({
+      ...filterParams,
+      isGrid: type,
+      pageObj: {
+        page: 1,
+        size: filterParams?.pageObj.size,
+      },
+    })
     setIsVisibleFormat(false)
   }
 
@@ -84,12 +81,12 @@ const HeaderFilter = (props: HeaderFilterProps) => {
           label: (
             <HasIconMenu
               onClick={() => onClickMenuFormat(false)}
-              isCheck={!props.isGrid}
+              isCheck={!filterParams?.isGrid}
             >
               <span className="label">{t('common.list')}</span>
               <IconFont
                 className="checked"
-                type={props.isGrid ? '' : 'check'}
+                type={filterParams?.isGrid ? '' : 'check'}
               />
             </HasIconMenu>
           ),
@@ -99,12 +96,12 @@ const HeaderFilter = (props: HeaderFilterProps) => {
           label: (
             <HasIconMenu
               onClick={() => onClickMenuFormat(true)}
-              isCheck={props.isGrid}
+              isCheck={filterParams?.isGrid}
             >
               <span className="label">{t('common.thumbnail')}</span>
               <IconFont
                 className="checked"
-                type={props.isGrid ? 'check' : ''}
+                type={filterParams?.isGrid ? 'check' : ''}
               />
             </HasIconMenu>
           ),
@@ -148,7 +145,16 @@ const HeaderFilter = (props: HeaderFilterProps) => {
       keyword: '',
       time: [],
       otherType: [1, 2, 3],
+      pageObj: {
+        page: 1,
+        size: 30,
+      },
     })
+  }
+
+  // 点击创建项目
+  const onCreateProject = () => {
+    dispatch({ type: 'createProject/changeCreateVisible', payload: true })
   }
 
   useLayoutEffect(() => {
@@ -163,7 +169,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
   }, [])
 
   useEffect(() => {
-    props.onChangeParamsUpdate(filterParams)
+    onChangeParamsUpdate(filterParams)
   }, [filterParams])
 
   return (
@@ -181,12 +187,16 @@ const HeaderFilter = (props: HeaderFilterProps) => {
             </StatusItems>
           ))}
         </StatusGroup>
-        <CommonButton type="primary" icon="plus">
-          {t('createProject')}
-        </CommonButton>
+        {(
+          userInfo.company_permissions?.map((i: any) => i.identity) || []
+        ).includes('b/project/save') && (
+          <CommonButton type="primary" icon="plus" onClick={onCreateProject}>
+            {t('createProject')}
+          </CommonButton>
+        )}
       </HeaderTop>
       <HeaderBottom>
-        <FilterLeftWrap size={16}>
+        <FilterLeftWrap>
           <InputSearch
             width={184}
             bgColor="var(--neutral-white-d4)"
@@ -195,7 +205,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
             onChangeSearch={(value: string) => onChangeParams('keyword', value)}
             leftIcon
           />
-          <SelectWrapBedeck key="time">
+          <SelectWrapBedeck>
             <span
               style={{ marginLeft: '12px', fontSize: '14px' }}
               className="time-spanTag"
@@ -204,6 +214,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
               {t('projectCycle')}
             </span>
             <RangePicker
+              width="230px"
               w={spanMaps?.get('time')}
               isShowQuick
               dateValue={time}
@@ -215,20 +226,22 @@ const HeaderFilter = (props: HeaderFilterProps) => {
             value={filterParams.otherType}
             onChange={(values: any) => onChangeParams('otherType', values)}
           />
-          <ResetWrap onClick={onReset}>重置</ResetWrap>
+          <ResetWrap onClick={onReset}>{t('reset')}</ResetWrap>
         </FilterLeftWrap>
         <FilterRightWrap>
           <DropDownMenu
             isVisible={isVisibleFormat}
             onChangeVisible={setIsVisibleFormat}
             menu={menuFormat}
-            icon={props.isGrid ? 'app-store' : 'unorderedlist'}
+            icon={filterParams?.isGrid ? 'app-store' : 'unorderedlist'}
           >
-            <div>{props.isGrid ? t('common.thumbnail') : t('common.list')}</div>
+            <div>
+              {filterParams?.isGrid ? t('common.thumbnail') : t('common.list')}
+            </div>
           </DropDownMenu>
           <DividerWrap type="vertical" />
           <ScreenMinHover
-            onClick={() => props?.onChangeParamsUpdate(filterParams, true)}
+            onClick={() => props?.onChangeParamsUpdate(filterParams)}
             icon="sync"
             label={t('common.refresh')}
           />

@@ -4,7 +4,16 @@ import { Divider, Space } from 'antd'
 // 主体布局样式
 export const ProjectIndexWrap = styled.div`
   padding: 0 24px;
+  height: 100%;
   background: var(--neutral-white-d1);
+`
+
+export const ProjectWrap = styled.div`
+  height: calc(100% - 124px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
 `
 
 // 头部搜索样式
@@ -55,9 +64,10 @@ export const HeaderBottom = styled.div`
   margin-top: 20px;
 `
 
-export const FilterLeftWrap = styled(Space)`
+export const FilterLeftWrap = styled.div`
   display: flex;
   align-items: center;
+  gap: 16px;
   .ant-checkbox-group-item {
     padding: 0 8px;
   }
@@ -85,6 +95,7 @@ export const Wrap = styled.div`
   gap: 24px;
   justify-content: center;
 `
+
 export const Content = styled.div<{ isGrid: boolean }>(
   {
     width: '100%',

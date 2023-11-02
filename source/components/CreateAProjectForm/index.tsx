@@ -122,7 +122,6 @@ const CreateAProjectForm = () => {
   const { createVisible, isEditId, groupId } = useSelector(
     state => state.createProject,
   )
-  const [selectGroupList, setSelectGroupList] = useState<any>([])
   const [selectLeaders, setSelectLeaders] = useState<any>([])
   const [affiliations, setAffiliations] = useState<any>([])
   const [pros, setPros] = useState<any>([])
@@ -220,12 +219,6 @@ const CreateAProjectForm = () => {
   }
 
   const getGroupData = async () => {
-    // 获取项目分组
-    const result = await getGroupList()
-    setSelectGroupList(
-      result?.list?.map((i: any) => ({ label: i.name, value: i.id })),
-    )
-
     // 获取所属
     const result2 = await getAffiliation()
 
@@ -649,7 +642,7 @@ const CreateAProjectForm = () => {
                   <Form.Item
                     label={
                       <div>
-                        <FormTitleSmall text={t('keyboard')} />
+                        <FormTitleSmall text={t('serialNumber')} />
                         <Tooltip
                           overlayStyle={{
                             fontSize: '12px',
@@ -736,21 +729,6 @@ const CreateAProjectForm = () => {
                         </Select.Option>
                       ))}
                     </CustomSelect>
-                  </Form.Item>
-                  <Form.Item
-                    label={<FormTitleSmall text={t('version2.projectGroup')} />}
-                    name="groups"
-                    initialValue={groupId ? [groupId] : undefined}
-                  >
-                    <CustomSelect
-                      placeholder={t('common.pleaseSelect')}
-                      mode="multiple"
-                      options={selectGroupList}
-                      showArrow
-                      showSearch
-                      allowClear
-                      optionFilterProp="label"
-                    />
                   </Form.Item>
                   <Form.Item
                     label={<FormTitleSmall text={t('project_description')} />}

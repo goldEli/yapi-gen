@@ -1,90 +1,55 @@
-/* eslint-disable max-params */
 /* eslint-disable no-undefined */
-import CommonButton from '@/components/CommonButton'
-import CreateActionBar from '@/components/CreateActionBar'
-import DeleteConfirm from '@/components/DeleteConfirm'
-import IconFont from '@/components/IconFont'
-import InputSearch from '@/components/InputSearch'
-import LeftTitle from '@/components/LeftTitle'
+import { useState } from 'react'
+import HeaderFilter from './components/HeaderFilter'
+import { ProjectWrap, ProjectIndexWrap } from './style'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
+import { Spin } from 'antd'
 import MainGrid from '@/components/MainGrid/MainGrid'
 import MainTable from '@/components/MainTable/MainTable'
+import { useTranslation } from 'react-i18next'
 import { getMessage } from '@/components/Message'
-import NewLoadingTransition from '@/components/NewLoadingTransition'
-import PermissionWrap from '@/components/PermissionWrap'
-import useSetTitle from '@/hooks/useSetTitle'
+import { useDispatch, useSelector } from '@store/index'
 import {
   deleteProject,
   getProjectList,
   openProject,
   stopProject,
 } from '@/services/project'
-import { getProjectCover } from '@store/cover/thunks'
-import { changeCreateVisible, onRest } from '@store/create-propject'
-import { useDispatch, useSelector } from '@store/index'
-import { setIsRefreshGroup, onChangeGuideVisible } from '@store/project'
-import { message, Spin } from 'antd'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Content, Wrap } from './style'
-import ProjectSide from './ProjectSide'
-import HasSideCommonLayout from '@/components/HasSideCommonLayout'
+import DeleteConfirm from '@/components/DeleteConfirm'
 import GuideModal from '@/components/GuideModal'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
 
-const ProjectManagementOptimization = () => {
+const ProjectIndex = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { guideVisible } = useSelector(store => store.project)
-  const asyncSetTtile = useSetTitle()
-  asyncSetTtile(t('title.project'))
-
-  const [stepsEnabled, setStepsEnabled] = useState(false)
-  const [initialStep, setInitialStep] = useState(0)
-  const [steps, setSteps] = useState([
-    {
-      element: '.hello',
-      intro: 'Hello step',
-    },
-    {
-      element: '.app-2',
-      intro: (
-        <div
-          style={{
-            color: 'red',
-          }}
-        >
-          feiji
-        </div>
-      ),
-    },
-  ])
-
-  const [isGrid, setIsGrid] = useState(false)
-  const [isStop, setIsStop] = useState(false)
-  const [activeType, setActiveType] = useState(0)
-  const [isHidden, setIsHidden] = useState(false)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
-  const [projectTypes, setProjectTypes] = useState('')
-  const [searchVal, setSearchVal] = useState('')
-  const [isVisible, setIsVisible] = useState(false)
-  const [isDelete, setIsDelete] = useState(false)
-  const [operationDetail, setOperationDetail] = useState<any>({})
-  const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
-  const [groupId, setGroupId] = useState<any>(null)
-  const { userInfo, menuPermission, userPreferenceConfig } = useSelector(
-    store => store.user,
-  )
+  const { userPreferenceConfig } = useSelector(store => store.user)
+  // 缩略图还是列表
   const [isSpinning, setIsSpinning] = useState(false)
-  const [projectList, setProjectList] = useState<any>({
+  const [isVisible, setIsVisible] = useState(false)
+  const [isStop, setIsStop] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
+  // 当前操作的数据
+  const [operationDetail, setOperationDetail] = useState<any>({})
+  const [dataList, setDataList] = useState({
     list: undefined,
   })
-  const isRest = useSelector(state => state.createProject.isRest)
-  const {
-    groupId: storeGid,
-    typeId,
-    groupIdName,
-  } = useSelector(state => state.createProject)
+  // 筛选条件默认值
+  const [filterParams, setFilterParams] = useState({
+    // 查看类型 例-最近查看
+    type: 1,
+    // 状态
+    status: 2,
+    // 搜索值
+    keyword: '',
+    // 项目周期
+    time: [],
+    //其他的类型
+    otherType: [1, 2, 3],
+    pageObj: { page: 1, size: 30 },
+    order: { value: '', key: '' },
+    isGrid: false,
+  })
 
   const inform = [
     {
@@ -102,89 +67,56 @@ const ProjectManagementOptimization = () => {
     },
   ]
 
-  const getList = async (
-    active: number,
-    isTable: boolean,
-    isDisable: boolean,
-    val: string,
-    sortVal: any,
-    pageVal: any,
-    groupIdVal?: any,
-  ) => {
-    setIsSpinning(true)
-    const params: any = {
-      searchValue: val,
-      orderKey: sortVal.key,
-      order: sortVal.value,
-      status: isDisable ? 1 : 0,
-      groupId: groupIdVal,
-      project_types: projectTypes,
+  // 获取数据
+  const getList = async (params: any, notSpin?: boolean) => {
+    setIsSpinning(notSpin ? false : true)
+    const paramsObj: any = {
+      searchValue: params?.keyword,
+      orderKey: params?.order?.key,
+      order: params?.order?.value,
+      status: '',
+      project_types: '',
     }
-    if (isTable) {
-      params.all = true
+    if (params?.isGrid) {
+      paramsObj.all = true
     }
-    if (!isTable) {
-      params.page = pageVal.page
-      params.pageSize = pageVal.size
+    if (!params?.isGrid) {
+      paramsObj.page = 1
+      paramsObj.pageSize = 20
     }
-    if (!groupIdVal) {
-      params.self = active !== 1
-      if (active) {
-        params.isPublic = 1
-      }
-    }
-    const result = await getProjectList(params)
-    setProjectList(result)
+
+    const result = await getProjectList(paramsObj)
+    setDataList(result)
     setIsSpinning(false)
-    dispatch(onRest(false))
   }
 
-  useEffect(() => {
-    getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
-  }, [
-    isHidden,
-    activeType,
-    order,
-    searchVal,
-    isGrid,
-    pageObj,
-    groupId,
-    isRest,
-    projectTypes,
-  ])
-
-  // 更新列表
-  const onUpdate = () => {
-    getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
+  //   筛选条件变化后更新数据 或者是 刷新
+  const onChangeParamsUpdate = (params: any, notSpin?: boolean) => {
+    setFilterParams(params)
+    getList(params, notSpin)
   }
 
-  const onChangeHidden = (hidden: boolean) => {
-    setIsHidden(hidden)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
+  //  修改分页
+  const onChangePageNavigation = (item: any) => {
+    onChangeParamsUpdate({
+      ...filterParams,
+      pageObj: {
+        page: item.page,
+        size: item.size,
+      },
     })
   }
 
-  const onChangeSort = (str: string) => {
-    setOrder({ value: 'asc', key: str })
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
-  }
-
-  const onChangeSearch = (value: string) => {
-    if (searchVal !== value) {
-      setProjectList({
-        list: undefined,
-      })
-      setSearchVal(value)
-      setPageObj({
+  // 修改排序值
+  const onUpdateOrderKey = (item: any) => {
+    onChangeParamsUpdate({
+      ...filterParams,
+      order: item,
+      pageObj: {
         page: 1,
-        size: pageObj.size,
-      })
-    }
+        size: filterParams?.pageObj.size,
+      },
+    })
   }
 
   const onDeleteConfirm = async () => {
@@ -193,8 +125,7 @@ const ProjectManagementOptimization = () => {
       getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       setIsDelete(false)
       setOperationDetail({})
-      onUpdate()
-      dispatch(setIsRefreshGroup(true))
+      onChangeParamsUpdate(filterParams, true)
     } catch (error) {
       //
     }
@@ -214,12 +145,17 @@ const ProjectManagementOptimization = () => {
       })
       setOperationDetail({})
       setIsStop(false)
-      onUpdate()
+      onChangeParamsUpdate(filterParams, true)
     } catch (error) {
       //
     }
   }
 
+  const onStopProject = () => {
+    onEndOrOpen(operationDetail)
+  }
+
+  // 操作更多 例-编辑
   const onChangeOperation = (type: string, item: any, e?: any) => {
     if (e) {
       e.stopPropagation()
@@ -236,176 +172,15 @@ const ProjectManagementOptimization = () => {
     }
   }
 
-  const onStopProject = () => {
-    onEndOrOpen(operationDetail)
-  }
-
-  const onChangeGrid = (val: boolean) => {
-    setIsGrid(val)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
-  }
-
+  // 项目列表点击快捷添加
   const onAddClick = () => {
     dispatch({ type: 'createProject/changeCreateVisible', payload: true })
     setOperationDetail({})
   }
 
-  const onChangePageNavigation = (item: any) => {
-    setPageObj({
-      page: item.page,
-      size: item.size,
-    })
-  }
-
-  const onUpdateOrderKey = (item: any) => {
-    setOrder(item)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
-  }
-
-  const onChangeType = (type: number) => {
-    setActiveType(type)
-    setGroupId(null)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
-  }
-  const onChangeProjectType = (data: any) => {
-    setProjectTypes(data)
-  }
-  // 切换分组查询列表
-  const onChangeGroup = (id: number) => {
-    setGroupId(id)
-    setActiveType(-1)
-  }
-
-  useEffect(() => {
-    if (storeGid) {
-      setGroupId(storeGid)
-      setActiveType(-1)
-    }
-  }, [storeGid])
-
-  useEffect(() => {
-    if (typeId || typeId === 0) {
-      setActiveType(typeId)
-      setGroupId(null)
-    }
-  }, [typeId])
-
   return (
-    <PermissionWrap
-      auth="/Project"
-      permission={menuPermission?.menus?.map((i: any) => i.url)}
-    >
-      {/* <HasSideCommonLayout
-        side={
-          <ProjectSide
-            onAddClick={onAddClick}
-            onChangeType={onChangeType}
-            activeType={activeType}
-            onChangeGroup={onChangeGroup}
-          />
-        }
-      > */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          height: '32px',
-          padding: '20px 24px',
-          marginBottom: '20px',
-        }}
-      >
-        <LeftTitle
-          title={
-            typeId === 0
-              ? t('project.mineJoin')
-              : typeId === 1
-              ? t('project.companyAll')
-              : groupIdName
-          }
-        />
-        <div>
-          <InputSearch
-            width={184}
-            bgColor="var(--neutral-white-d4)"
-            length={12}
-            placeholder={t('other.pleaseNameOrKey')}
-            onChangeSearch={(value: string) => setSearchVal(value)}
-            leftIcon
-          />
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          // justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '32px',
-          padding: '20px 24px',
-        }}
-      >
-        {(
-          userInfo.company_permissions?.map((i: any) => i.identity) || []
-        ).includes('b/project/save') && (
-          <div className="hello">
-            <CommonButton
-              type="primary"
-              onClick={() => dispatch(changeCreateVisible(true))}
-              icon="plus"
-              iconPlacement="left"
-            >
-              {t('common.createProject')}
-            </CommonButton>
-          </div>
-        )}
-
-        <CreateActionBar
-          sort={order.key}
-          isGrid={isGrid}
-          activeType={activeType}
-          onRefresh={onUpdate}
-          onChangeSort={onChangeSort}
-          onChangeFormat={onChangeGrid}
-          onChangeHidden={onChangeHidden}
-          onChangeSearch={onChangeSearch}
-          onChangeProjectType={onChangeProjectType}
-        />
-      </div>
-      <Wrap>
-        <Content isGrid={isGrid}>
-          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
-            {isGrid ? (
-              <MainGrid
-                onChangeVisible={() => setIsVisible(true)}
-                onChangeOperation={onChangeOperation}
-                onAddClear={() => setOperationDetail({})}
-                hasFilter={searchVal.length > 0 || isHidden}
-                projectList={projectList}
-              />
-            ) : (
-              <MainTable
-                onChangeOperation={onChangeOperation}
-                onChangePageNavigation={onChangePageNavigation}
-                onUpdateOrderKey={onUpdateOrderKey}
-                order={order}
-                onAddClick={onAddClick}
-                hasFilter={searchVal.length > 0 || isHidden}
-                projectList={projectList}
-              />
-            )}
-          </Spin>
-        </Content>
-      </Wrap>
-      {/* </HasSideCommonLayout> */}
-
+    <ProjectIndexWrap>
+      {/* 删除项目 */}
       <DeleteConfirm
         text={t('mark.delP')}
         isVisible={isDelete}
@@ -413,6 +188,7 @@ const ProjectManagementOptimization = () => {
         onConfirm={onDeleteConfirm}
       />
 
+      {/* 结束或者和是开启项目 */}
       <DeleteConfirm
         title={t('mark.endP')}
         text={t('common.stopProjectToast', {
@@ -426,7 +202,45 @@ const ProjectManagementOptimization = () => {
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}
       />
-      {userPreferenceConfig?.guidePageConfig?.project_list === 1 && isGrid ? (
+      <HeaderFilter
+        filterParamsAll={filterParams}
+        onChangeParamsUpdate={onChangeParamsUpdate}
+      />
+      <ProjectWrap>
+        <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+          {filterParams?.isGrid ? (
+            <MainGrid
+              onChangeVisible={() => setIsVisible(true)}
+              onChangeOperation={onChangeOperation}
+              onAddClick={onAddClick}
+              hasFilter={
+                filterParams?.keyword?.length > 0 ||
+                filterParams?.time?.length > 0 ||
+                filterParams?.status > 0 ||
+                filterParams?.otherType?.length > 0
+              }
+              projectList={dataList}
+            />
+          ) : (
+            <MainTable
+              onChangeOperation={onChangeOperation}
+              onChangePageNavigation={onChangePageNavigation}
+              onUpdateOrderKey={onUpdateOrderKey}
+              order={filterParams?.order}
+              onAddClick={onAddClick}
+              hasFilter={
+                filterParams?.keyword?.length > 0 ||
+                filterParams?.time?.length > 0 ||
+                filterParams?.status > 0 ||
+                filterParams?.otherType?.length > 0
+              }
+              projectList={dataList}
+            />
+          )}
+        </Spin>
+      </ProjectWrap>
+      {userPreferenceConfig?.guidePageConfig?.project_list === 1 &&
+      filterParams?.isGrid ? (
         <GuideModal
           width={784}
           height={700}
@@ -443,8 +257,8 @@ const ProjectManagementOptimization = () => {
           }}
         />
       ) : null}
-    </PermissionWrap>
+    </ProjectIndexWrap>
   )
 }
 
-export default ProjectManagementOptimization
+export default ProjectIndex

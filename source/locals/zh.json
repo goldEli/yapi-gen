@@ -2506,5 +2506,6 @@
   "progress": "进行中",
   "paused": "已暂停",
   "projectCycle": "项目周期",
-  "iParticipated": "我参与的"
+  "iParticipated": "我参与的",
+  "reset": "重置"
 }

@@ -2506,5 +2506,6 @@
   "progress": "&#39;in progress",
   "paused": "Paused",
   "projectCycle": "Project Cycle",
-  "iParticipated": "I participated"
+  "iParticipated": "I participated",
+  "reset": "Reset"
 }

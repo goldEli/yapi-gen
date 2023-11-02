@@ -37,7 +37,7 @@ const routes = [
     children: [
       {
         path: 'Project',
-        element: lazy(() => import('@/views/Layout/Project/index1')),
+        element: lazy(() => import('@/views/Layout/Project')),
       },
       {
         path: 'Report',

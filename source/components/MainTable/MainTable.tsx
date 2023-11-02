@@ -501,10 +501,10 @@ const MainTable = (props: Props) => {
   }, [])
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <ResizeTable
         isSpinning={false}
-        dataWrapNormalHeight="calc(100vh - 220px)"
+        dataWrapNormalHeight="calc(100% - 48px)"
         col={selectColum}
         dataSource={props.projectList?.list}
         onRow={onTableRow as any}

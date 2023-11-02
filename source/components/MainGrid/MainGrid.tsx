@@ -10,16 +10,15 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDispatch, useSelector } from '@store/index'
-import { AddProject, DataWrap, SpaceWrap, SpaceWrapItem } from './style'
+import { DataWrap, SpaceWrap, SpaceWrapItem } from './style'
 import { changeCreateVisible, setProjectType } from '@store/create-propject'
 import CommonButton from '../CommonButton'
-import IconFont from '../IconFont'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
   onChangeVisible(): void
   projectList: any
-  onAddClear?(): void
+  onAddClick(): void
   // 是否有筛选条件
   hasFilter?: boolean
 }
@@ -76,15 +75,6 @@ const MainGrid = (props: Props) => {
                 </div>
               </SpaceWrapItem>
             ))}
-            {/* {!isPermission && (
-              <AddProject onClick={onAddClick}>
-                <IconFont
-                  style={{ fontSize: 24, marginBottom: 16 }}
-                  type="plus"
-                />
-                <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
-              </AddProject>
-            )} */}
           </SpaceWrap>
         ) : isPermission ? (
           <NoData />

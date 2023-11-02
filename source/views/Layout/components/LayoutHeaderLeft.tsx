@@ -2,12 +2,14 @@ import { useSelector } from '@store/index'
 import { LayoutHeaderLeftWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface LayoutHeaderLeftProps {
   onSetWidth(width: number): void
 }
 
 const LayoutHeaderLeft = (props: LayoutHeaderLeftProps) => {
+  const [t] = useTranslation()
   const { currentMenu, menuIconList, isRefresh } = useSelector(
     store => store.user,
   )
@@ -30,7 +32,9 @@ const LayoutHeaderLeft = (props: LayoutHeaderLeftProps) => {
         size={24}
         color="var(--neutral-n2)"
       />
-      <div>{currentMenu?.name}</div>
+      <div>
+        {currentMenu?.isRegular ? t(currentMenu?.name) : currentMenu?.name}
+      </div>
     </LayoutHeaderLeftWrap>
   )
 }
