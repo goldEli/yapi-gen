@@ -238,6 +238,7 @@ const ForgetPassword = (props: FProps) => {
           marginBottom: '40px',
           alignItems: 'center',
           marginTop: 58,
+          lineHeight: '28px',
         }}
       >
         <span
