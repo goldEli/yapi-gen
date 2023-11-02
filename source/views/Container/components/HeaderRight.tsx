@@ -199,9 +199,7 @@ const HeaderRight = (prop: any) => {
       name: t('agileHelpManual'),
       key: 'question',
       icon: 'question',
-      isPermission: (
-        userInfo.company_permissions?.map((i: any) => i.identity) || []
-      ).includes('b/project/save'),
+      isPermission: true,
     },
     {
       name: t('systemOperationShortcutKeys'),

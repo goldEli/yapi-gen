@@ -689,14 +689,14 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                   if (content.name === 'overdue_tasks') {
                     getMessage({
                       msg: t(
-                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
+                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2',
                       ),
                       type: 'warning',
                     })
                   } else {
                     getMessage({
                       msg: t(
-                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2',
+                        'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
                       ),
                       type: 'warning',
                     })

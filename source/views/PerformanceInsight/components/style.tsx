@@ -158,7 +158,7 @@ export const TableStyle = styled.div`
 export const BtnStyle = styled.div`
   width: 88px;
   height: 32px;
-  background: #f6f7f9;
+  background: var(--auxiliary-b4);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -295,7 +295,7 @@ export const Segm = styled.div`
 export const Btn = styled.div`
   width: 60px;
   height: 22px;
-  background: #f6f7f9;
+  background: var(--auxiliary-b4);
   border-radius: 6px;
   font-size: 12px;
   display: flex;

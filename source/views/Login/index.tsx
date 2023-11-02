@@ -125,7 +125,7 @@ const Page = () => {
     border-radius: 12px 12px 12px 12px;
     border: 1px solid var(--neutral-n6-d1);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
   `
 

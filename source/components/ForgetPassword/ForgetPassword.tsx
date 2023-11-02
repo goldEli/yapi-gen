@@ -235,8 +235,9 @@ const ForgetPassword = (props: FProps) => {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginBottom: '48px',
+          marginBottom: '40px',
           alignItems: 'center',
+          marginTop: 58,
         }}
       >
         <span

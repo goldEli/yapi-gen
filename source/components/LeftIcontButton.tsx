@@ -7,7 +7,7 @@ const Wrap = styled.div<{ danger?: boolean }>`
   align-items: center;
   gap: 6px;
   border-radius: 6px 6px 6px 6px;
-  background: #f6f7f9;
+  background: var(--auxiliary-b4);
   padding: 5px 8px;
   cursor: pointer;
   color: #646566;

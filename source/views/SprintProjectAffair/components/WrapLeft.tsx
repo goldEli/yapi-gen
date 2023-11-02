@@ -533,7 +533,7 @@ const WrapLeft = (props: any, ref: any) => {
   }
   useEffect(() => {
     if (isUpdateAddWorkItem) {
-      init(false, true)
+      init(false, false)
     }
   }, [isUpdateAddWorkItem])
   if (props.isShowLeft) {
