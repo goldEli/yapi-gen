@@ -278,7 +278,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     await updateCompany(companyParams)
     sessionStorage.removeItem('saveRouter')
     setIsChangeCompany(false)
-    // 切换公司后调整到哪里菜单呢？？？？
+    navigate('/Project')
     location.reload()
   }
 
