@@ -1,6 +1,6 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Badge, Popover, Spin, Tabs } from 'antd'
+import { Popover, Spin, Tabs } from 'antd'
 
 // 引导页
 export const imgBoxCss = css`
@@ -547,6 +547,30 @@ export const MenuItemBox = styled.div`
     svg {
       color: var(--neutral-n1-d1);
     }
+  }
+`
+
+export const MineCreate = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+  .icon {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(225deg, #8dd6f6 0%, #7266ff 100%);
+    svg {
+      font-size: 16px;
+      color: var(--auxiliary-text-t1-d1);
+    }
+  }
+  .label {
+    font-size: 14px;
+    color: var(--neutral-n1-d1);
   }
 `
 

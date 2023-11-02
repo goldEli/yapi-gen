@@ -122,6 +122,7 @@ const CreateDemandLeft = (props: Props) => {
 
   // 获取工作流列表
   const getStatusList = async (value: any) => {
+    if (!props.projectId) return
     const result = await getWorkflowList({
       projectId: props.projectId,
       categoryId: value,
@@ -132,6 +133,7 @@ const CreateDemandLeft = (props: Props) => {
 
   // 获取需求类别配置的字段
   const getCategoryField = async (id: any) => {
+    if (!props.projectId) return
     const result = await getCategoryConfigList({
       projectId: props.projectId,
       categoryId: id,

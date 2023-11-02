@@ -22,6 +22,7 @@ import {
   Line,
   Line2,
   MenuItemBox,
+  MineCreate,
 } from '../style'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -44,6 +45,7 @@ import IconFont from '@/components/IconFont'
 import QuickMine from './QuickMine'
 import Recently from './Recently'
 import KeyBoardDrawer from '../Trends/components/KeyBoardDrawer/KeyBoardDrawer'
+import { setAddWorkItemModal } from '@store/project'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -416,6 +418,16 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     </div>
   )
 
+  // 我的模块下-快捷创建
+  const onQuickCreate = () => {
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { isQuickCreate: true },
+      }),
+    )
+  }
+
   useEffect(() => {
     if (userInfo?.id) {
       props.onSetWidth(
@@ -521,6 +533,16 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             </RobotButton>
           </Popover>
         ) : null}
+
+        {/* 我的快捷创建 */}
+        {location.href.includes('/Mine') && (
+          <MineCreate onClick={onQuickCreate}>
+            <div className="icon">
+              <CommonIconFont type="plus" />
+            </div>
+            <div className="label">{t('create')}</div>
+          </MineCreate>
+        )}
 
         <Popover
           content={
