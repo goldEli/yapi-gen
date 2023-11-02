@@ -89,6 +89,9 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    setkanbanConfig(state, action) {
+      state.kanbanConfig = action.payload
+    },
     resetkanbanConfig(state) {
       delete state.kanbanConfig
     },
@@ -221,6 +224,7 @@ const slice = createSlice({
 const kanBan = slice.reducer
 
 export const {
+  setkanbanConfig,
   setSortByGroupOptions,
   setSortByRowAndStatusOptions,
   setSortByView,

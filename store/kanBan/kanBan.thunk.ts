@@ -17,6 +17,7 @@ import {
   setModifyStatusModalInfo,
   setFullScreen,
   setSpinning,
+  setkanbanConfig,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -613,11 +614,10 @@ export const getKanbanByGroup = createAsyncThunk(
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
     }
-
+    const res_config = await getNewkanbanConfig(params)
+    console.log(res_config, 'res_config新的配置')
+    store.dispatch(setkanbanConfig(res_config))
     if (type === 'none') {
-      const res_config = await getNewkanbanConfig(params)
-      console.log(res_config, 'res_config新的配置')
-
       const firstRes = await getNewstoriesOfGroupFirstPage(params)
       console.log(firstRes, '第一次')
 
