@@ -122,6 +122,7 @@ export const deleteStory =
         ),
       ),
     )
+    updateKanbanConfigbig()
   }
 
 // 获取流转配置
@@ -318,6 +319,7 @@ export const modifyStatus =
       )
       dispatch(setKanbanInfoByGroup(aa))
       console.log('克隆')
+      updateKanbanConfigbig()
     }
     dispatch(
       openModifyStatusModalInfo({
@@ -579,6 +581,35 @@ function bbh(data: any) {
   }
   return filteredData
 }
+
+export const updateKanbanConfigbig = async () => {
+  const { valueKey, inputKey } = store.getState().view
+  const { sortByGroupOptions, sortByRowAndStatusOptions } =
+    store.getState().kanBan
+  const params = {
+    search: isEmpty(valueKey)
+      ? {
+          all: 1,
+          keyword: inputKey,
+        }
+      : {
+          ...valueKey,
+          user_id: valueKey.user_name,
+          category_id: valueKey.category,
+          iterate_id: valueKey.iterate_name,
+          custom_field: bbh(valueKey),
+          keyword: inputKey,
+          schedule_start: valueKey?.schedule?.start,
+          schedule_end: valueKey?.schedule?.end,
+        },
+    project_id: getProjectIdByUrl(),
+    kanban_config_id: sortByRowAndStatusOptions?.find(item => item.check)?.key,
+  }
+  const res_config = await getNewkanbanConfig(params)
+  console.log(res_config, '飞机爆炸了')
+  store.dispatch(setkanbanConfig(res_config))
+}
+
 // 获取故事列表（分组）
 export const getKanbanByGroup = createAsyncThunk(
   `${name}/getKanbanByGroup`,

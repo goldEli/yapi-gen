@@ -6,7 +6,7 @@ import IconFont from '@/components/IconFont'
 import { HoverIcon } from '../IssueCard/styled'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { store, useDispatch, useSelector } from '@store/index'
-import { deleteStory } from '@store/kanBan/kanBan.thunk'
+import { deleteStory, updateKanbanConfigbig } from '@store/kanBan/kanBan.thunk'
 import { copyLink, getIsPermission, getProjectIdByUrl } from '@/tools'
 import { projectSlice, setAddWorkItemModal } from '@store/project'
 import useI18n from '@/hooks/useI18n'
@@ -143,6 +143,7 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
         ),
       ),
     )
+    updateKanbanConfigbig()
   }
   const items = [
     {
