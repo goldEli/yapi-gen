@@ -247,7 +247,7 @@ const AddWorkItem = () => {
       await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
     }
     if (params?.confirm) {
-      console.log(params?.confirm(), '这里我想传一个后执行函数')
+      params?.confirm()
     }
   }
 

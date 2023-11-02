@@ -36,6 +36,7 @@ type SliceState = {
     storyId?: Model.KanBan.Story['id']
     info?: Model.Project.CheckStatusItem
     groupId?: Model.KanBan.Group['id']
+    onConfirm?(): void
   }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]
@@ -212,8 +213,6 @@ const slice = createSlice({
       state.kanbanInfoByGroup = action.payload
     })
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
-      console.log(action.payload, 'action.payload改变看板数据')
-
       state.kanbanConfig = action.payload
     })
   },

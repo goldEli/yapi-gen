@@ -551,7 +551,6 @@ const UploadAttach = (props: any, ref: any) => {
             activeIndex={pictureList?.index}
             onClose={() => setPreviewOpen(false)}
             onMaskClick={e => {
-              console.log(e)
               setPreviewOpen(false)
             }}
           />
@@ -640,7 +639,6 @@ const UploadAttach = (props: any, ref: any) => {
           activeIndex={pictureList?.index}
           onClose={() => setPreviewOpen(false)}
           onMaskClick={e => {
-            console.log(e)
             setPreviewOpen(false)
           }}
         />

@@ -81,7 +81,6 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
     newStories: any,
     data1: any,
   ) {
-    console.log(groupId, issuesId, newStories, data1, '原始数据')
     const cc = JSON.parse(JSON.stringify(newStories))
     let data: any
     data = cc.map((item: any) => {

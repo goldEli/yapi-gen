@@ -363,6 +363,9 @@ const StatusModal = (props: StatusModalProps) => {
       verifyId: reviewerValue,
     }
     await props.onChangeStatusConfirm(params)
+    if (props.checkStatusItem.onConfirm) {
+      props.checkStatusItem.onConfirm()
+    }
     onClose()
   }
 

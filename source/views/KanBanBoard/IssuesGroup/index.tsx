@@ -37,7 +37,7 @@ interface IssuesGroupProps {
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
-  console.log(issuesGroup, 'issuesGroup')
+
   const conId = useSelector(store => store.kanBan.kanbanConfig?.id)
   const { kanbanInfoByGroup } = useSelector(store => store.kanBan)
   const { AddUserModalElement, open } = useAddUserModal()
@@ -222,7 +222,6 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     newStories: any,
     data1: any,
   ) {
-    console.log(groupId, newStories, data1, '原始数据')
     const cc = JSON.parse(JSON.stringify(newStories))
     let data: any
     data = cc.map((item: any) => {
@@ -258,7 +257,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     }
 
     const firstRes = await getNewstoriesOfGroupFirstPage(params)
-    console.log(firstRes, '分组请求数据111111111111')
+
     dispatch(
       setKanbanInfoByGroup(
         findAndReplace(
@@ -278,7 +277,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
           e.stopPropagation()
 
           onChange(issuesGroup.id)
-          console.log(hidden, 'hidden')
+
           if (hidden) {
             add()
           }
@@ -295,7 +294,6 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       {<>{groupType === 'users' && delBtn}</>}
     </GroupTitleArea>
   )
-  console.log(hidden, 'hidden')
 
   return (
     <IssuesGroupBox>

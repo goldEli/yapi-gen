@@ -1,3 +1,4 @@
+import { First } from './../../source/views/SiteNotifications/Setting/style'
 /* eslint-disable max-depth */
 /* eslint-disable no-undefined */
 import { createAsyncThunk } from '@reduxjs/toolkit'
@@ -30,8 +31,10 @@ import { ViewItem } from '@/views/ProjectSetting/components/KanBanSetting/Select
 import {
   getNewkanbanConfig,
   getNewkanbanGroups,
+  getNewkanbanStoriesOfPaginate,
   getNewstoriesOfGroupFirstPage,
 } from '@/services/kanban'
+import useGroupType from '@/views/KanBanBoard/hooks/useGroupType'
 
 const name = 'kanBan'
 
@@ -66,7 +69,6 @@ export const offFullScreenMode = () => async (dispatch: AppDispatch) => {
 function findAndReplace(groupId: any, issuesId: any, array: any, cId: any) {
   const cc = JSON.parse(JSON.stringify(array))
   for (let i = 0; i < cc.length; i++) {
-    console.log(cc[i])
     if (cc[i].id === groupId) {
       for (let b = 0; b < cc[i].columns.length; b++) {
         if (cc[i].columns[b].id === cId) {
@@ -154,7 +156,7 @@ export const closeModifyStatusModalInfo =
         visible: false,
       }),
     )
-    dispatch(getKanbanByGroup())
+    // dispatch(getKanbanByGroup())
 
     /**
      * 看板数据更新后，卡片的位置没有更新，手动触发滚动条触发
@@ -220,9 +222,8 @@ export const modifyStatus =
     target: Model.KanbanConfig.Status
   }) =>
   async (dispatch: AppDispatch) => {
-    console.log(options, '拖拽后的触发数据')
-
     const { kanbanInfoByGroup, sortByGroupOptions } = store.getState().kanBan
+    const groupType = sortByGroupOptions?.find(item => item.check)?.key
     const { source, target, storyId } = options
     const data = produce(kanbanInfoByGroup, draft => {
       const stories =
@@ -248,12 +249,113 @@ export const modifyStatus =
         category_status_to_id: target.flow_status_id,
       }),
     )
+    const checkGroup = (groupId: any) => {
+      let obj
+      switch (groupType) {
+        case 'priority':
+          obj = {
+            priority: groupId,
+          }
+          break
+        case 'users':
+          obj = {
+            kanban_group_id: groupId,
+          }
+          break
+        case 'category':
+          obj = {
+            category_id: groupId,
+          }
+          break
+        default:
+          // eslint-disable-next-line no-undefined
+          obj = undefined
+          break
+      }
+      return obj
+    }
+    function findAndReplace(groupId: any, array: any, cId: any, newData: any) {
+      const cc = JSON.parse(JSON.stringify(array))
+      for (let i = 0; i < cc.length; i++) {
+        if (cc[i].id === groupId) {
+          for (let b = 0; b < cc[i].columns.length; b++) {
+            if (cc[i].columns[b].id === cId) {
+              cc[i].columns.stories.splice(b, 1, newData)
+            }
+          }
+        }
+      }
 
+      return cc
+    }
+    const first = async () => {
+      const res = await getNewkanbanStoriesOfPaginate({
+        project_id: getProjectIdByUrl(),
+        kanban_column_id: options.columnId,
+        search: { ...checkGroup(options.groupId) },
+        pagesize: 10,
+        page: 1,
+      })
+      console.log(
+        findAndReplace(
+          options.groupId,
+          kanbanInfoByGroup,
+          options.columnId,
+          res.list,
+        ),
+        'fffffffffffffffffffffffffffffffffffffffffffffffff',
+      )
+
+      dispatch(
+        setKanbanInfoByGroup(
+          findAndReplace(
+            options.groupId,
+            kanbanInfoByGroup,
+            options.columnId,
+            res.list,
+          ),
+        ),
+      )
+
+      console.log(res, '拖拽后获取的第一个列数据')
+      return 1
+    }
+
+    const two = async () => {
+      const res = await getNewkanbanStoriesOfPaginate({
+        project_id: getProjectIdByUrl(),
+        kanban_column_id: options.targetColumnId,
+        search: { ...checkGroup(options.targetGroupId) },
+        pagesize: 10,
+        page: 1,
+      })
+
+      dispatch(
+        setKanbanInfoByGroup(
+          findAndReplace(
+            options.targetGroupId,
+            kanbanInfoByGroup,
+            options.targetColumnId,
+            res.list,
+          ),
+        ),
+      )
+      console.log(res, '拖拽后获取的第二个列数据')
+    }
+
+    const updateColumn = async () => {
+      const a = await first()
+
+      if (a === 1) {
+        two()
+      }
+    }
     dispatch(
       openModifyStatusModalInfo({
         storyId,
         groupId: options?.targetGroupId,
         info: {
+          onConfirm: () => updateColumn(),
           // 可流转的状态列表
           content: target.status_name,
           // 来自id状态名称

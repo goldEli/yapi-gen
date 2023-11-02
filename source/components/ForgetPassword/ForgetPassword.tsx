@@ -114,7 +114,6 @@ const ForgetPassword = (props: FProps) => {
   const onCheckSecret4 = async () => {
     if (form2.password) {
       if (bP !== 3) {
-        console.log(errorCheck)
         setFocusNumber(2)
         setErrorState(true)
         setErrorCheck({

@@ -13,6 +13,7 @@ declare namespace Model.Project {
   }
   interface CheckStatusItem {
     // 可流转的状态列表
+    onConfirm?(): void
     canChange?: string[]
     content: string
     // 处理人 例：'张三;李四'

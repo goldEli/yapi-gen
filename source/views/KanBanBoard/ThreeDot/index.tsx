@@ -87,7 +87,6 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
         } else if (projectInfo.projectType === 1 && props.story.is_bug !== 1) {
           typeNum = 1
         }
-        console.log(props, '删除操作的数据')
 
         dispatch(
           deleteStory(
@@ -112,7 +111,6 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
   ) {
     const cc = JSON.parse(JSON.stringify(array))
     for (let i = 0; i < cc.length; i++) {
-      console.log(cc[i])
       if (cc[i].id === groupId) {
         for (let b = 0; b < cc[i].columns.length; b++) {
           if (cc[i].columns[b].id === cId) {

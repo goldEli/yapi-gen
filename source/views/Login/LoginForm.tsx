@@ -291,10 +291,10 @@ export default React.memo(
         setErrorCheck({
           phone: t('pleaseEnterAValidPhoneNumber'),
         })
-        console.log('检查', PHONE_NUMBER_REGEXP.test(form2.phone))
+
         return
       }
-      console.log('检查', PHONE_NUMBER_REGEXP.test(form2.phone))
+
       if (
         form2.phone &&
         form.password &&
