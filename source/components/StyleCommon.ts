@@ -9,6 +9,19 @@ import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
+const TableActionWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`
+
+const TableActionItem = styled.div<{ isDisable?: boolean }>`
+  font-size: 14px;
+  color: ${props =>
+    props.isDisable ? 'var(--neutral-n4)' : 'var(--primary-d2)'};
+  cursor: ${props => (props.isDisable ? 'no-drop' : 'pointer')};
+`
+
 const HeaderCreate = styled.div`
   height: 28px;
   border-radius: 22px;
@@ -1127,6 +1140,8 @@ const HaveTabsContentWrap = styled.div<{ height?: any }>`
 `
 
 export {
+  TableActionWrap,
+  TableActionItem,
   HaveTabsContentWrap,
   Tag,
   ChartsItem1,

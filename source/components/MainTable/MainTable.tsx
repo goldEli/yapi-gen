@@ -5,15 +5,18 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Menu, Progress } from 'antd'
-import { ClickWrap, HiddenText } from '@/components/StyleCommon'
+import {
+  ListNameWrap,
+  TableActionWrap,
+  TableActionItem,
+} from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { OmitText } from '@star-yun/ui'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useSelector } from '@store/index'
 import PaginationBox from '../TablePagination'
@@ -65,98 +68,6 @@ const ImgWrap = styled.div<{ url?: string }>(
   }),
 )
 
-const MoreContent = (props: any) => {
-  const [t] = useTranslation()
-  const dispatch = useDispatch()
-  const [isVisible, setIsVisible] = useState(false)
-  const { userInfo } = useSelector(store => store.user)
-  const hasEdit = getIsPermission(
-    userInfo?.company_permissions,
-    'b/project/update',
-  )
-  const hasDelete = getIsPermission(
-    userInfo?.company_permissions,
-    'b/project/delete',
-  )
-  const hasStop = getIsPermission(
-    userInfo?.company_permissions,
-    'b/project/stop',
-  )
-  const hasStart = getIsPermission(
-    userInfo?.company_permissions,
-    'b/project/start',
-  )
-
-  const onClickMore = (type: any, item: any, e: any) => {
-    if (e) {
-      e.stopPropagation()
-    }
-    if (type === 'edit') {
-      dispatch(editProject({ visible: true, id: item.id }))
-    } else {
-      props?.onChange(type, item, e)
-    }
-
-    setIsVisible(false)
-
-    //
-  }
-
-  const menu = (record: any) => {
-    const isDel = (
-      userInfo.company_permissions?.map((i: any) => i.identity) || []
-    ).includes('b/project/delete')
-    const isEdit = (
-      userInfo.company_permissions?.map((i: any) => i.identity) || []
-    ).includes('b/project/update')
-    let menuItems = [
-      {
-        isHave: props.record.team_id === 0 ? isEdit : props.isTeam,
-        key: '1',
-        label: (
-          <div onClick={e => onClickMore?.('edit', record, e)}>
-            {t('common.edit')}
-          </div>
-        ),
-      },
-      {
-        isHave: isEdit,
-        key: '2',
-        label: (
-          <div onClick={e => onClickMore?.('end', record, e)}>
-            {record.status === 1 ? t('common.stop') : t('common.open')}
-          </div>
-        ),
-      },
-      {
-        isHave: isDel,
-        key: '3',
-        label: (
-          <div onClick={e => onClickMore?.('delete', record, e)}>
-            {t('common.del')}
-          </div>
-        ),
-      },
-    ]
-
-    return <Menu items={menuItems.filter((i: any) => i.isHave)} />
-  }
-
-  return (
-    <>
-      <MoreDropdown
-        isMoreVisible={isVisible}
-        menu={menu(props?.record)}
-        onChangeVisible={setIsVisible}
-      />
-
-      {!(!hasDelete && !hasEdit && !hasStart && !hasStop) && (
-        <div style={{ width: 16 }} />
-      )}
-    </>
-  )
-}
-
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -178,7 +89,6 @@ const MainTable = (props: Props) => {
     userInfo?.company_permissions,
     'b/project/save',
   )
-
   const hasEdit = getIsPermission(
     userInfo?.company_permissions,
     'b/project/update',
@@ -200,7 +110,7 @@ const MainTable = (props: Props) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  const columns = [
+  const columns1 = [
     {
       dataIndex: 'name',
       title: (
@@ -213,90 +123,30 @@ const MainTable = (props: Props) => {
           {t('common.projectName')}
         </NewSort>
       ),
-      width: 200,
+      width: 348,
       render: (text: string, record: any) => {
         return (
-          <HiddenText>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <ImgWrap url={record.cover} />
-            <ClickWrap isName isClose={record.status === 2}>
-              <OmitText
-                width={160}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
-              >
-                {text}
-              </OmitText>
-            </ClickWrap>
-          </HiddenText>
-        )
-      },
-    },
-    {
-      title: t('keyboard'),
-      dataIndex: 'prefix',
-      width: 160,
-    },
-    {
-      title: t('other.category'),
-      dataIndex: 'project_type',
-      width: 100,
-      render: (text: number) => {
-        return (
-          <div>
-            {/* {text === 1 ? t('iteration') : t('sprint2')}
-            {t('other.project')} */}
-            {text === 1 ? (
+            {record.project_type === 1 ? (
               <Tags type={1}> {t('iteration')}</Tags>
             ) : (
               <Tags type={2}> {t('sprint2')}</Tags>
             )}
+            <ListNameWrap isName isClose={record.status === 2}>
+              <span className="controlMaxWidth">
+                {text}-【{record.prefix}】
+              </span>
+            </ListNameWrap>
           </div>
         )
       },
     },
-    {
-      title: (
-        <NewSort
-          fixedKey="member_count"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('project.projectCount')}
-        </NewSort>
-      ),
-      dataIndex: 'memberCount',
-      width: 100,
-    },
-    // {
-    //   title: (
-    //     <NewSort
-    //       fixedKey="story_count"
-    //       nowKey={props.order.key}
-    //       order={props.order.value}
-    //       onUpdateOrderKey={onUpdateOrderKey}
-    //     >
-    //       {t('project.demandCount')}
-    //     </NewSort>
-    //   ),
-    //   dataIndex: 'storyCount',
-    //   width: 160,
-    // },
-    // {
-    //   title: (
-    //     <NewSort
-    //       fixedKey="iterate_count"
-    //       nowKey={props.order.key}
-    //       order={props.order.value}
-    //       onUpdateOrderKey={onUpdateOrderKey}
-    //     >
-    //       {t('project.iterateCount')}
-    //     </NewSort>
-    //   ),
-    //   dataIndex: 'iterateCount',
-    //   width: 160,
-    // },
     {
       title: (
         <NewSort
@@ -328,6 +178,40 @@ const MainTable = (props: Props) => {
     {
       title: (
         <NewSort
+          fixedKey="expected_start_at"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('common.expectedStart')}
+        </NewSort>
+      ),
+      dataIndex: 'expected_start_at',
+      width: 180,
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
+    },
+    {
+      title: (
+        <NewSort
+          fixedKey="expected_end_at"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('common.expectedEnd')}
+        </NewSort>
+      ),
+      dataIndex: 'expected_end_at',
+      width: 180,
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
+    },
+    {
+      title: (
+        <NewSort
           fixedKey="leader_name"
           nowKey={props.order.key}
           order={props.order.value}
@@ -337,20 +221,6 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'leader_name',
-      width: 100,
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="user_name"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.createName')}
-        </NewSort>
-      ),
-      dataIndex: 'createName',
       width: 100,
     },
     {
@@ -383,87 +253,21 @@ const MainTable = (props: Props) => {
       },
     },
     {
-      title: (
-        <NewSort
-          fixedKey="team_id"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('project_type')}
-        </NewSort>
-      ),
-      dataIndex: 'team_id',
-      width: 100,
-      render: (text: number, record: any) => {
+      title: t('operate'),
+      dataIndex: 'action',
+      width: 200,
+      render: (text: number) => {
         return (
-          <span>
-            {text === 0
-              ? t('enterprise_project2')
-              : t('demandSettingSide.teamProject')}
-          </span>
+          <TableActionWrap>
+            <TableActionItem isDisable={hasStart}>开始</TableActionItem>
+            <TableActionItem isDisable={hasStop}>关闭</TableActionItem>
+            <TableActionItem isDisable={hasEdit}>编辑</TableActionItem>
+            <TableActionItem isDisable={hasDelete}>删除</TableActionItem>
+          </TableActionWrap>
         )
       },
     },
-    {
-      title: (
-        <NewSort
-          fixedKey="created_at"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.createTime')}
-        </NewSort>
-      ),
-      dataIndex: 'createdTime',
-      width: 180,
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="stop_at"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.endTime')}
-        </NewSort>
-      ),
-      dataIndex: 'endTime',
-      width: 180,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
   ]
-
-  const selectColum: any = useMemo(() => {
-    const arr = columns
-
-    const arrList = [
-      {
-        width: 1,
-        render: (text: any, record: any) => {
-          return (
-            <div
-              style={{ display: 'flex', alignItems: 'center', width: '15px' }}
-            >
-              {hasEdit && hasDelete && hasStop && hasStart ? null : (
-                <MoreContent
-                  isTeam={record.isTeam}
-                  onChange={props?.onChangeOperation}
-                  text={text}
-                  record={record}
-                />
-              )}
-            </div>
-          )
-        },
-      },
-    ]
-    return [...arrList, ...arr]
-  }, [columns])
 
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation({ page, size })
@@ -505,7 +309,7 @@ const MainTable = (props: Props) => {
       <ResizeTable
         isSpinning={false}
         dataWrapNormalHeight="calc(100% - 48px)"
-        col={selectColum}
+        col={columns1}
         dataSource={props.projectList?.list}
         onRow={onTableRow as any}
         rowClassName="clickable-row"

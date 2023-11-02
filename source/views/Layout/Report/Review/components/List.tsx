@@ -247,6 +247,7 @@ const List = () => {
       </Sort>
     )
   }
+
   const columns: any[] = [
     {
       width: 400,
@@ -698,6 +699,12 @@ const List = () => {
             width={192}
           />
           <Space size={24}>
+            <ScreenMinHover
+              style={{ marginLeft: 0 }}
+              label={t('common.refresh')}
+              icon="sync"
+              onClick={getList}
+            />
             <CommonButton
               type="primary"
               icon="plus"
@@ -706,12 +713,6 @@ const List = () => {
             >
               {t('report.list.writeReport')}
             </CommonButton>
-            <ScreenMinHover
-              style={{ marginLeft: 0 }}
-              label={t('common.refresh')}
-              icon="sync"
-              onClick={getList}
-            />
           </Space>
         </ListTitle>
         <ListHead>

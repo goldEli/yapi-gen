@@ -38,23 +38,20 @@ const RightFormWorkStyle = styled.div`
   background: var(--neutral-white-d1);
   height: calc(100% - 38px);
 `
-const Title = styled.div`
-  padding: 24px;
-  color: var(--neutral-n1-d1);
-  font-size: 16px;
-  font-family: SiYuanMedium;
-`
+
 const HeaderOperate = styled.div`
-  padding: 0 24px;
-  height: 32px;
+  padding: 20px 24px 0;
+  height: 52px;
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 `
+
 export const RowStyle = styled.div`
   position: relative;
   display: flex;
 `
+
 export const Col2 = styled.div`
   max-width: 200px;
   height: 32px;
@@ -65,6 +62,7 @@ export const Col2 = styled.div`
     cursor: pointer;
   }
 `
+
 export const Col = styled.div`
   max-width: 200px;
   height: 32px;
@@ -379,16 +377,7 @@ const RightFormWork = () => {
       return <CommonButton type="primary"> {t('formWork.save1')}</CommonButton>
     }
   }
-  const getTitle = () => {
-    if (!activeItem?.name && !templateName) {
-      return t('formWork.t1')
-    } else {
-      return templateName || activeItem?.name
-    }
-  }
-  useEffect(() => {
-    getTitle()
-  }, [templateName])
+
   useEffect(() => {
     setTimeout(() => {
       inputRefDom.current?.focus()
@@ -407,7 +396,6 @@ const RightFormWork = () => {
           left: '50%',
         }}
       >
-        <Title>{getTitle()}</Title>
         <HeaderOperate>
           <RowStyle>
             <Col onClick={() => setIsActive(0)}>
@@ -428,10 +416,29 @@ const RightFormWork = () => {
             <CommonButton
               type="light"
               onClick={() => setDelIsVisible(true)}
-              style={{ margin: '0 0px 0 16px' }}
+              style={{ margin: '0 16px 0 16px' }}
             >
               {t('formWork.t6')}
             </CommonButton>
+            {/* 上一步/下一步或者是保存按钮 */}
+            {isActive === 0 ? (
+              <CommonButton
+                type="light"
+                onClick={() => setIsActive(1)}
+                style={{ marginRight: '16px' }}
+              >
+                {t('formWork.t8')}
+              </CommonButton>
+            ) : (
+              <CommonButton
+                type="light"
+                onClick={() => setIsActive(0)}
+                style={{ marginRight: '16px' }}
+              >
+                {t('formWork.t9')}
+              </CommonButton>
+            )}
+            {getBtn()}
           </BtnRight>
         </HeaderOperate>
         {/* 编辑 */}
@@ -457,27 +464,6 @@ const RightFormWork = () => {
         ) : (
           <PermissionConfig back={() => setIsActive(0)} />
         )}
-        {/* 底部保存 */}
-        <BtnRow>
-          {isActive === 0 ? (
-            <CommonButton
-              type="light"
-              onClick={() => setIsActive(1)}
-              style={{ marginRight: '16px' }}
-            >
-              {t('formWork.t8')}
-            </CommonButton>
-          ) : (
-            <CommonButton
-              type="light"
-              onClick={() => setIsActive(0)}
-              style={{ marginRight: '16px' }}
-            >
-              {t('formWork.t9')}
-            </CommonButton>
-          )}
-          <>{getBtn()}</>
-        </BtnRow>
         {/* 预览 */}
         <PreviewDialog
           dataList={[]}

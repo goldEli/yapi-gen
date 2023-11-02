@@ -121,7 +121,7 @@ export const HoverDiv = styled.div`
   }
 `
 export const Tags = styled.span<{ type: number }>`
-  height: 12px;
+  height: 16px;
   background: ${props =>
     props.type === 1
       ? 'linear-gradient(225deg, #8dd2f6 0%, #6688ff 100%)'

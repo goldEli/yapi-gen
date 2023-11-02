@@ -163,7 +163,7 @@ const EditWork = (props: PropsType) => {
     setDataList(templateContentConfigs)
   }, [templateContentConfigs])
   return (
-    <div id="father" style={{ display: 'flex', height: 'calc(100vh - 364px)' }}>
+    <div id="father" style={{ display: 'flex', height: 'calc(100vh - 231px)' }}>
       <LeftTabs
         onDragOver={event => {
           event.preventDefault(), event.stopPropagation()

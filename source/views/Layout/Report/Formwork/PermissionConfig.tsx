@@ -30,7 +30,7 @@ import { css } from '@emotion/css'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
   overflow-y: auto;
-  height: calc(100vh - 300px);
+  height: calc(100vh - 166px);
 `
 const TitleText = styled.div`
   font-size: 14px;
