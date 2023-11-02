@@ -156,7 +156,6 @@ export const closeModifyStatusModalInfo =
         visible: false,
       }),
     )
-    // dispatch(getKanbanByGroup())
 
     /**
      * 看板数据更新后，卡片的位置没有更新，手动触发滚动条触发
@@ -204,7 +203,7 @@ export const saveModifyStatusModalInfo =
 
       if (res && res.code === 0 && res.data) {
         getMessage({ msg: i18n.t('common.operationSuccess'), type: 'success' })
-        // dispatch(getKanbanByGroup())
+
         return 'finish'
       }
     } catch (error) {
@@ -651,13 +650,69 @@ export const getKanbanByGroup = createAsyncThunk(
     })
     console.log(myres, 'myres新的分类')
     store.dispatch(setSpinning(false))
-    const res = await services.kanban.getKanbanByGroup({
+    // const res = await services.kanban.getKanbanByGroup({
+    //   ...params,
+    //   group_by: type,
+    // })
+    // console.log(res.data, 'res.data老的分类')
+    const firstRes2 = await getNewstoriesOfGroupFirstPage({
       ...params,
       group_by: type,
     })
+    console.log(firstRes2, '第一次分类')
 
-    console.log(res.data, 'res.data老的分类')
-    return myres.map((i: any) => {
+    const checkGroup = (id: any) => {
+      let obj
+      switch (type) {
+        case 'priority':
+          obj = {
+            priority: id,
+          }
+          break
+        case 'users':
+          obj = {
+            kanban_group_id: id,
+          }
+          break
+        case 'category':
+          obj = {
+            category_id: id,
+          }
+          break
+        default:
+          // eslint-disable-next-line no-undefined
+          obj = undefined
+          break
+      }
+      return obj
+    }
+    const getGropuStories = async (id: any, cid: any) => {
+      const params2 = {
+        search: {
+          ...valueKey,
+          user_id: valueKey.user_name,
+          category_id: valueKey.category,
+          iterate_id: valueKey.iterate_name,
+          custom_field: bbh(valueKey),
+          keyword: inputKey,
+          schedule_start: valueKey?.schedule?.start,
+          schedule_end: valueKey?.schedule?.end,
+          ...{ ...checkGroup(id) },
+        },
+        kanban_column_id: cid,
+        project_id: getProjectIdByUrl(),
+        pagesize: 10,
+        page: 1,
+      }
+      const firstRes22 = await getNewkanbanStoriesOfPaginate({
+        ...params2,
+        // group_by: type,
+      })
+      console.log(firstRes22, '组数据')
+
+      return firstRes22.list
+    }
+    const cc = myres.map((i: any) => {
       return {
         ...i,
         columns: store
@@ -666,10 +721,12 @@ export const getKanbanByGroup = createAsyncThunk(
             return {
               ...l,
               stories: [],
+              // ck: getGropuStories(i.id, l.id),
             }
           }),
       }
     })
+    return cc
   },
 )
 

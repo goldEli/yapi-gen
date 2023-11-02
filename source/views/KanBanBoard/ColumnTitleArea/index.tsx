@@ -92,7 +92,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
         let storyData = kanbanInfoByGroup?.reduce?.((res: any[], group) => {
           const storiesIds = group.columns
             ?.find(column => column.id === item.id)
-            ?.stories.map(item => item.id) ?? [0]
+            ?.stories?.map(item => item.id) ?? [0]
           res.push(storiesIds)
           return res
         }, [])
