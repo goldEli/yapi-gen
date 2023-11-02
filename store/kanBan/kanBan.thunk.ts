@@ -927,6 +927,7 @@ export const getKanbanConfigList = createAsyncThunk(
 
 // 刷新看板
 export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
+  dispatch(setKanbanInfoByGroup([]))
   const data = store.getState().kanBan.sortByRowAndStatusOptions
   const checked = data?.find(item => item.check)
   if (!checked) {
