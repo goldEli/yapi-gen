@@ -280,7 +280,7 @@ export const modifyStatus =
         if (cc[i].id === groupId) {
           for (let b = 0; b < cc[i].columns.length; b++) {
             if (cc[i].columns[b].id === cId) {
-              cc[i].columns.stories.splice(b, 1, newData)
+              cc[i].columns[b].stories = newData
             }
           }
         }
@@ -296,15 +296,6 @@ export const modifyStatus =
         pagesize: 10,
         page: 1,
       })
-      console.log(
-        findAndReplace(
-          options.groupId,
-          kanbanInfoByGroup,
-          options.columnId,
-          res.list,
-        ),
-        'fffffffffffffffffffffffffffffffffffffffffffffffff',
-      )
 
       dispatch(
         setKanbanInfoByGroup(
