@@ -362,9 +362,6 @@ const SprintProjectSprint: React.FC = () => {
     'b/sprint',
   )
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   const inform = [
     {
       key: 0,
@@ -652,11 +649,9 @@ const SprintProjectSprint: React.FC = () => {
                   </Popover>
                   <div
                     className="line"
-                    style={
-                      isCanEditSprint && !isEnd ? {} : { visibility: 'hidden' }
-                    }
+                    style={isCanEditSprint ? {} : { visibility: 'hidden' }}
                   />
-                  {isEnd ? <div style={{ width: 32 }} /> : null}
+                  {/* {isEnd ? <div style={{ width: 32 }} /> : null} */}
                   {isExpand ? (
                     <Tooltip
                       style={{ display: isExpand ? 'block' : 'none' }}
@@ -691,55 +686,53 @@ const SprintProjectSprint: React.FC = () => {
                 </RightIcon>
               </div>
 
-              {!isEnd && (
-                <div
-                  onClick={() => {
-                    sessionStorage.removeItem('noRefresh')
-                    if (activeKey === 0) {
-                      setSprintModal({
+              <div
+                onClick={() => {
+                  sessionStorage.removeItem('noRefresh')
+                  if (activeKey === 0) {
+                    setSprintModal({
+                      visible: true,
+                      type: 'create',
+                    })
+                  } else {
+                    dispatch(
+                      setAddWorkItemModal({
                         visible: true,
-                        type: 'create',
-                      })
-                    } else {
-                      dispatch(
-                        setAddWorkItemModal({
-                          visible: true,
-                          params: {
-                            type: 3,
-                            title: t('sprint.createTransaction'),
-                            noDataCreate: true,
-                            projectId,
-                          },
-                        }),
-                      )
-                    }
-                  }}
+                        params: {
+                          type: 3,
+                          title: t('sprint.createTransaction'),
+                          noDataCreate: true,
+                          projectId,
+                        },
+                      }),
+                    )
+                  }
+                }}
+                style={{
+                  margin: '0 24px  16px ',
+                  background: '#6688FF',
+                  borderRadius: '6px',
+                  height: '32px',
+                  cursor: 'pointer',
+                  visibility: isCanEditSprint ? 'visible' : 'hidden',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  gap: '8px',
+                }}
+              >
+                <IconFont
                   style={{
-                    margin: '0 24px  16px ',
-                    background: '#6688FF',
-                    borderRadius: '6px',
-                    height: '32px',
-                    cursor: 'pointer',
-                    visibility: isCanEditSprint ? 'visible' : 'hidden',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    gap: '8px',
+                    fontSize: 16,
+                    color: 'var(--neutral-n3) !important',
                   }}
-                >
-                  <IconFont
-                    style={{
-                      fontSize: 16,
-                      color: 'var(--neutral-n3) !important',
-                    }}
-                    type="plus"
-                  />{' '}
-                  {activeKey === 0
-                    ? t('sprint.createSprint')
-                    : t('sprint.createStory')}
-                </div>
-              )}
+                  type="plus"
+                />{' '}
+                {activeKey === 0
+                  ? t('sprint.createSprint')
+                  : t('sprint.createStory')}
+              </div>
 
               <TabItemWrap>
                 <Spin

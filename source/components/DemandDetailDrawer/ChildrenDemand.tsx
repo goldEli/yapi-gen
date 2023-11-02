@@ -74,9 +74,6 @@ const ChildrenDemand = (props: Props, ref: any) => {
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   const columnsChild = [
     {
       title: '',
@@ -395,18 +392,16 @@ const ChildrenDemand = (props: Props, ref: any) => {
                 </CancelText>
               </Space>
             ) : null}
-            {!isEnd && (
-              <Tooltip title={t('addChildRequirement')}>
-                <CloseWrap width={32} height={32}>
-                  <CommonIconFont
-                    type="plus"
-                    size={20}
-                    color="var(--neutral-n2)"
-                    onClick={onCreateChild}
-                  />
-                </CloseWrap>
-              </Tooltip>
-            )}
+            <Tooltip title={t('addChildRequirement')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={onCreateChild}
+                />
+              </CloseWrap>
+            </Tooltip>
           </Space>
         )}
       </LabelWrap>

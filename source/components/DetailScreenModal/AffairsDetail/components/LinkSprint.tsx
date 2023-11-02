@@ -74,8 +74,6 @@ const LinkSprint = (props: {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id ?? projectInfo.id
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
 
   //根据搜索框的值来放的数据
   const [options, setOptions] = useState<any>([])
@@ -470,7 +468,7 @@ const LinkSprint = (props: {
       </CommonModal>
       <LabelWrap>
         <Label>{t('linkAffairs')}</Label>
-        {!isEnd && !props?.isPreview && (
+        {!props?.isPreview && (
           <Tooltip title={t('addLinkTransaction')}>
             <CloseWrap width={32} height={32}>
               <CommonIconFont

@@ -101,9 +101,6 @@ const FlawDetail = () => {
     'b/flaw/update',
   )
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   //   刷新缺陷详情
   const onUpdate = () => {
     dispatch(getFlawInfo({ projectId: params.id, id: flawInfo.id }))
@@ -315,13 +312,6 @@ const FlawDetail = () => {
       key: '4',
     },
   ]
-
-  const onGetMenu = () => {
-    if (isEnd) {
-      return items.splice(3.4)
-    }
-    return items
-  }
 
   // 点击切换类别
   const onClickCategory = async (k: any) => {
@@ -680,7 +670,7 @@ const FlawDetail = () => {
             <DropdownMenu
               placement="bottomRight"
               trigger={['click']}
-              menu={{ items: onGetMenu() }}
+              menu={{ items: items }}
               getPopupContainer={n => n}
             >
               <div>

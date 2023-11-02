@@ -101,14 +101,12 @@ const AddWorkItem = () => {
     const data = await getProjectRecent()
     // 最近的项目id
     const recentId = data[0]?.id
-    // 获取只有开启状态的列表
-    const resultProject = arr?.filter((i: any) => i.status === 1)
     // 最终的列表是否包含最近项目id
-    const hasRecent = resultProject.find((i: any) => i.id === recentId)
+    const hasRecent = arr.find((i: any) => i.id === recentId)
     // 最终的项目id
-    const resultId = hasRecent ? recentId : resultProject[0]?.id
+    const resultId = hasRecent ? recentId : arr[0]?.id
     setProjectId(resultId)
-    setCurrentInfo(hasRecent ? data[0] : resultProject[0])
+    setCurrentInfo(hasRecent ? data[0] : arr[0])
     if (resultId) {
       getInit(resultId)
     }

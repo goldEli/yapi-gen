@@ -173,8 +173,6 @@ const XTable: React.FC<XTableProps> = props => {
   const onVisibleChange = (visible: any) => {
     setIsFilter(visible)
   }
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
 
   const isCanEditSprint = getIsPermission(
     projectInfo?.projectPermissions,
@@ -451,7 +449,7 @@ const XTable: React.FC<XTableProps> = props => {
                 )}
               </div>
             </div>
-            {!isCanEditSprint && !isEnd && (
+            {!isCanEditSprint && (
               <div style={{ display: 'flex', gap: '16px' }}>
                 {data.id === 0 ? (
                   <CommonButton
@@ -475,8 +473,7 @@ const XTable: React.FC<XTableProps> = props => {
                 )}
                 {data.id === 0
                   ? null
-                  : !isCanEditSprint &&
-                    !isEnd && (
+                  : !isCanEditSprint && (
                       <Popover
                         trigger="click"
                         placement="bottomRight"
@@ -522,7 +519,7 @@ const XTable: React.FC<XTableProps> = props => {
           </Tooltip>
         ) : null}
 
-        {!isCanEdit && !isEnd && (
+        {!isCanEdit && (
           <CommonButton
             type="primaryText"
             icon="plus"

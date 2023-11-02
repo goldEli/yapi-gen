@@ -94,9 +94,6 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
     }[]
   >([])
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   //根据搜索框的值来放的数据
   const [options, setOptions] = useState<any>([])
   const isCanEdit =
@@ -707,13 +704,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
     <RelationWrap
       style={{
         padding: props.isDrawer ? '16px 24px' : '16px 24px',
-        // height: props.isDrawer
-        //   ? '100%'
-        //   : isEnd
-        //   ? 'calc(100vh - 192px)'
-        //   : 'calc(100vh - 224px)',
         backgroundColor: 'white',
-        // marginTop: '12px',
       }}
       id="tab_associatedWorkItems"
       className="info_item_tab"

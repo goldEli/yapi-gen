@@ -47,9 +47,6 @@ export const DefectDropdownMenu = (props: Props) => {
     'b/flaw/update',
   )
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   // 复制需求id
   const onCopyId = () => {
     copyLink(
@@ -114,10 +111,6 @@ export const DefectDropdownMenu = (props: Props) => {
     }
     if (hasDel) {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    if (isEnd) {
-      menuItems = menuItems.filter((i: any) => !['1', '2'].includes(i.key))
     }
   }
 

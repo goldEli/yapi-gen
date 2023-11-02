@@ -52,9 +52,6 @@ export const SprintDropdownMenu = (props: Props) => {
     'b/transaction/update',
   )
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   // 复制需求id
   const onCopyId = () => {
     copyLink(
@@ -130,10 +127,6 @@ export const SprintDropdownMenu = (props: Props) => {
     }
     if (hasEdit) {
       menuItems = menuItems.filter((i: any) => i.key !== '3')
-    }
-
-    if (isEnd) {
-      menuItems = menuItems.filter((i: any) => !['1', '2', '3'].includes(i.key))
     }
   }
 

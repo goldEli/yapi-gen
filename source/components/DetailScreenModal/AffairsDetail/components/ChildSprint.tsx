@@ -94,9 +94,6 @@ const ChildSprint = (
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   // 获取子事务列表
   const getList = async (page: { page: number; pagesize: number }) => {
     const response = await getAffairsChildList({
@@ -468,18 +465,16 @@ const ChildSprint = (
                 </CancelText>
               </Space>
             )}
-            {!isEnd && (
-              <Tooltip title={t('addSubtransaction')}>
-                <CloseWrap width={32} height={32}>
-                  <CommonIconFont
-                    type="plus"
-                    size={20}
-                    color="var(--neutral-n2)"
-                    onClick={onCreateChild}
-                  />
-                </CloseWrap>
-              </Tooltip>
-            )}
+            <Tooltip title={t('addSubtransaction')}>
+              <CloseWrap width={32} height={32}>
+                <CommonIconFont
+                  type="plus"
+                  size={20}
+                  color="var(--neutral-n2)"
+                  onClick={onCreateChild}
+                />
+              </CloseWrap>
+            </Tooltip>
           </Space>
         )}
       </LabelWrap>

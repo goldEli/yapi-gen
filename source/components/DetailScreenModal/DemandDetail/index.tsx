@@ -111,9 +111,6 @@ const DemandDetail = () => {
     projectInfo?.projectPermissions,
     'b/story/update',
   )
-  // const [drawerInfo, setDrawerInfo] = useState<any>({})
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
 
   // 关闭弹窗
   const onClose = () => {
@@ -467,13 +464,6 @@ const DemandDetail = () => {
     },
   ]
 
-  const onGetMenu = () => {
-    if (isEnd) {
-      return items.splice(3, 4)
-    }
-    return items
-  }
-
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     setTabActive(value)
@@ -708,7 +698,7 @@ const DemandDetail = () => {
             <DropdownMenu
               placement="bottomRight"
               trigger={['click']}
-              menu={{ items: onGetMenu() }}
+              menu={{ items: items }}
               getPopupContainer={n => n}
             >
               <div>

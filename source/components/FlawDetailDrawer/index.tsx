@@ -136,9 +136,6 @@ const FlawDetailDrawer = () => {
       (i: any) => i.identity === 'b/flaw/update',
     )?.length > 0
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   // 获取项目详情权限
   const getProjectData = async () => {
     const response = await getProjectInfo({
@@ -457,13 +454,6 @@ const FlawDetailDrawer = () => {
     },
   ]
 
-  const onGetMenu = () => {
-    if (isEnd) {
-      return items.splice(3.4)
-    }
-    return items
-  }
-
   const getKeyDown = (e: any) => {
     if (storeAll.getState().flaw.flawDetailDrawer.visible) {
       if (e.keyCode === 38) {
@@ -712,7 +702,7 @@ const FlawDetailDrawer = () => {
                     <DropdownMenu
                       placement="bottomRight"
                       trigger={['click']}
-                      menu={{ items: onGetMenu() }}
+                      menu={{ items: items }}
                       getPopupContainer={n => n}
                     >
                       <div>

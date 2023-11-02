@@ -177,9 +177,6 @@ const SprintDetailDrawer = () => {
     'b/transaction/delete',
   )
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   // 是否审核
   const onExamine = () => {
     getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
@@ -561,9 +558,6 @@ const SprintDetailDrawer = () => {
     }
     if (hasDel) {
       items = items.filter((i: any) => i.key !== '0')
-    }
-    if (isEnd) {
-      items = items.filter((i: any) => !['6', '0', '10'].includes(i.key))
     }
     // 子任务不存在子事务模块
     return drawerInfo.work_type === 6

@@ -140,9 +140,6 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
     }[]
   >([])
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   //根据搜索框的值来放的数据
   const [options, setOptions] = useState<any>([])
   const isCanEdit =
@@ -781,8 +778,6 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
         backgroundColor: 'white',
         height: props.isDrawer
           ? '100%'
-          : isEnd
-          ? 'calc(100vh - 192px)'
           : `calc(${
               userPreferenceConfig.previewModel === 3 ? '80vh' : '100vh'
             } - 224px)`,

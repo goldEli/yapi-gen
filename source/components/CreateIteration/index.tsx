@@ -241,20 +241,18 @@ const CreateIteration = () => {
                 showSearch
                 disabled={createIterationParams.id}
               >
-                {projectList
-                  ?.filter((i: any) => i.status === 1)
-                  ?.map((i: any) => {
-                    return (
-                      <Select.Option value={i.id} key={i.id} label={i.name}>
-                        <MoreOptions
-                          type="project"
-                          name={i.name}
-                          dec={i.dec}
-                          img={i.cover}
-                        />
-                      </Select.Option>
-                    )
-                  })}
+                {projectList?.map((i: any) => {
+                  return (
+                    <Select.Option value={i.id} key={i.id} label={i.name}>
+                      <MoreOptions
+                        type="project"
+                        name={i.name}
+                        dec={i.dec}
+                        img={i.cover}
+                      />
+                    </Select.Option>
+                  )
+                })}
               </CustomSelect>
             </Form.Item>
             <Form.Item

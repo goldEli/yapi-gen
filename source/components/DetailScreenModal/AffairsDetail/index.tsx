@@ -115,9 +115,6 @@ const AffairsDetail = () => {
     'b/transaction/update',
   )
 
-  // 项目是否已经结束
-  const isEnd = projectInfo?.status === 2
-
   // 关闭弹窗
   const onClose = () => {
     dispatch(saveScreenDetailModal({ visible: false, params: {} }))
@@ -279,41 +276,6 @@ const AffairsDetail = () => {
         type: 'divider',
         key: '10',
       },
-      // {
-      //   label: (
-      //     <div onClick={() => onChangeTabsScroll('sprint-attachment')}>
-      //       {t('addAttachments')}
-      //     </div>
-      //   ),
-      //   key: '1',
-      // },
-      // {
-      //   label: (
-      //     <div onClick={() => onChangeTabsScroll('sprint-childSprint')}>
-      //       {t('addChildAffairs')}
-      //     </div>
-      //   ),
-      //   key: '2',
-      // },
-      // {
-      //   label: (
-      //     <div onClick={() => onChangeTabsScroll('sprint-tag')}>
-      //       {t('addTag')}
-      //     </div>
-      //   ),
-      //   key: '3',
-      // },
-      // {
-      //   label: (
-      //     <div onClick={() => onChangeTabsScroll('sprint-linkSprint')}>
-      //       {t('linkAffairs')}
-      //     </div>
-      //   ),
-      //   key: '4',
-      // },
-      // {
-      //   type: 'divider',
-      // },
       {
         label: <div onClick={onToConfig}>{t('configuration')}</div>,
         key: '5',
@@ -324,9 +286,6 @@ const AffairsDetail = () => {
     }
     if (hasDel) {
       items = items.filter((i: any) => i.key !== '0')
-    }
-    if (isEnd) {
-      items = items.filter((i: any) => !['6', '0', '10'].includes(i.key))
     }
     // 子任务不存在子事务模块
     return affairsInfo.work_type === 6
