@@ -36,7 +36,7 @@ interface StatusModalProps {
   // 每条数据
   record?: any
   // 修改状态接口
-  onChangeStatusConfirm(value: any): void
+  onChangeStatusConfirm(value: any): any
   /**
    * 1 迭代 2 冲刺（冲刺里是事务）
    */
@@ -362,8 +362,9 @@ const StatusModal = (props: StatusModalProps) => {
       fields: res,
       verifyId: reviewerValue,
     }
-    await props.onChangeStatusConfirm(params)
-    if (props.checkStatusItem.onConfirm) {
+    const a = await props.onChangeStatusConfirm(params)
+
+    if (props.checkStatusItem.onConfirm && a === 'finish') {
       props.checkStatusItem.onConfirm()
     }
     onClose()

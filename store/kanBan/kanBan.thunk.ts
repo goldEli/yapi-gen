@@ -205,6 +205,7 @@ export const saveModifyStatusModalInfo =
       if (res && res.code === 0 && res.data) {
         getMessage({ msg: i18n.t('common.operationSuccess'), type: 'success' })
         // dispatch(getKanbanByGroup())
+        return 'finish'
       }
     } catch (error) {
       //
@@ -307,13 +308,16 @@ export const modifyStatus =
       })
 
       const bb = findAndReplace(options.groupId, cc, options.columnId, res.list)
+      const zx = JSON.parse(JSON.stringify(bb))
+
       const aa = findAndReplace(
         options.targetGroupId,
-        bb,
+        zx,
         options.targetColumnId,
         res2.list,
       )
       dispatch(setKanbanInfoByGroup(aa))
+      console.log('克隆')
     }
     dispatch(
       openModifyStatusModalInfo({
