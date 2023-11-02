@@ -204,7 +204,7 @@ export const saveModifyStatusModalInfo =
 
       if (res && res.code === 0 && res.data) {
         getMessage({ msg: i18n.t('common.operationSuccess'), type: 'success' })
-        dispatch(getKanbanByGroup())
+        // dispatch(getKanbanByGroup())
       }
     } catch (error) {
       //
