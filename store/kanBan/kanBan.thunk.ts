@@ -655,11 +655,6 @@ export const getKanbanByGroup = createAsyncThunk(
     //   group_by: type,
     // })
     // console.log(res.data, 'res.data老的分类')
-    const firstRes2 = await getNewstoriesOfGroupFirstPage({
-      ...params,
-      group_by: type,
-    })
-    console.log(firstRes2, '第一次分类')
 
     const checkGroup = (id: any) => {
       let obj
@@ -855,6 +850,7 @@ export const updateView =
   }
 
 export const onFilter = () => async (dispatch: AppDispatch) => {
+  dispatch(setKanbanInfoByGroup([]))
   setTimeout(() => {
     dispatch(getKanbanByGroup())
   })

@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import Operation from '../Operation'
 import { useDispatch } from '@store/index'
 import { onFilter } from '@store/kanBan/kanBan.thunk'
+import useCloseMap from '../hooks/useCloseMap'
 
 interface ToolBarProps {}
 
@@ -17,6 +18,7 @@ const ToolBarBox = styled.div`
 
 const ToolBar: React.FC<ToolBarProps> = props => {
   const dispatch = useDispatch()
+  const { closeMap, onChange } = useCloseMap()
   return (
     <ToolBarBox>
       <Operation
