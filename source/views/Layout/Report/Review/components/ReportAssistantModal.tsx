@@ -37,6 +37,7 @@ import {
   LabelTitles,
   LoadingButton,
   TitleTips,
+  NotHaveTaskWrap,
 } from './style'
 import ProjectGroup from './ProjectGroup'
 
@@ -190,15 +191,40 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       return
     }
     let canSubmit = false
+    let notHaveTask = false
     Object.keys(params)?.forEach((k: string) => {
       const tempArr = k.split('+')
       if (tempArr[0] === '4' && params[k]?.length > 0) {
         canSubmit = true
       }
+      if (tempArr[0] === '4' && params[k]?.length <= 0) {
+        notHaveTask = true
+      }
       if (tempArr[0] === '1' && params[k]?.length <= 0) {
         canSubmit = false
       }
     })
+
+    // 如果没有任务关联的需求
+    if (notHaveTask) {
+      open({
+        title: t('p2.toast'),
+        okText: t('confirm'),
+        cancelText: t('cancel'),
+        children: (
+          <NotHaveTaskWrap>
+            <span>{t('yourTaskAssociationNumberIsAndYouCannotSendDaily')}</span>
+            <span>
+              {t('pleaseClickTheAssociatedButtonBelowToQuicklyAddTasks')}
+            </span>
+          </NotHaveTaskWrap>
+        ),
+        onConfirm: () => {
+          return Promise.resolve()
+        },
+      })
+    }
+
     if (!canSubmit) {
       getMessage({
         type: 'warning',
@@ -882,50 +908,6 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             ></ProjectGroup>
           </Form.Item>
         )
-      // return (
-      //   <Form.Item
-      //     label={
-      //       <LabelTitles>
-      //         {content.name_text}：{content?.content?.length}{' '}
-      //         {t('report.list.pieces')}
-      //       </LabelTitles>
-      //     }
-      //     name={`${content.type}+${content.id}+${content.name}`}
-      //   >
-      //     <NewRelatedNeedForProject
-      //       initValue={content?.content}
-      //       data={demandList}
-      //       canSubmit={(arr: any) => {
-      //         const isCan = arr?.every((i: any) =>
-      //           demandList?.map((o: any) => o?.id)?.includes(i?.value),
-      //         )
-      //         if (!isCan) {
-      //           if (content.name === 'overdue_tasks') {
-      //             getMessage({
-      //               msg: t(
-      //                 'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation',
-      //               ),
-      //               type: 'warning',
-      //             })
-      //           } else {
-      //             getMessage({
-      //               msg: t(
-      //                 'thereAreDuplicateTasksInPleaseCancelTheDuplicateAssociation2',
-      //               ),
-      //               type: 'warning',
-      //             })
-      //           }
-      //         }
-      //         return isCan
-      //       }}
-      //       onFilter={() => {
-      //         setFilterDemand()
-      //       }}
-      //       // 是否显示逾期
-      //       isShowOverdue={content?.name === 'overdue_tasks'}
-      //     />
-      //   </Form.Item>
-      // )
       default:
         return <div></div>
     }

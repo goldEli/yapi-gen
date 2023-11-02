@@ -4,6 +4,11 @@ import { Input, Space, Spin } from 'antd'
 import { css } from '@emotion/css'
 import { keyframes } from '@emotion/react'
 
+export const NotHaveTaskWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 export const DetailItem = styled.div`
   display: flex;
   flex-direction: column;

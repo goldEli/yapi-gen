@@ -2508,5 +2508,11 @@
   "projectCycle": "项目周期",
   "iParticipated": "我参与的",
   "reset": "重置",
-  "operate": "操作"
+  "operate": "操作",
+  "theNumberOfTaskAssociationsYouHaveDueTodayIsAndTheDailyReportCannotBe": "您今日截止的任务关联数为0无法发送日报。",
+  "pleaseClickTheAssociatedButtonUnderBelowToQuicklyAdd": "请在下方 “今日截止”处点击 “+关联需求”按钮即可快速添加任务！",
+  "theNumberOfAssociationsForYourTasksDueTodayIsAndTheDailyReportCannotBe": "您今日截止的任务关联数为0无法发送日报",
+  "pleaseClickTheRelatedButtonUnderBelowToQuicklyAdd": "请在下方【今日截止】处点击【+关联需求】按钮即可快速添加任务！",
+  "yourTaskAssociationNumberIsAndYouCannotSendDaily": "您的任务关联数为0无法发送日报",
+  "pleaseClickTheAssociatedButtonBelowToQuicklyAddTasks": "请在下方【今日截止】处点击【+关联需求】按钮即可快速添加任务"
 }
