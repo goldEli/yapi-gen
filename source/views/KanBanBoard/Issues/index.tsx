@@ -6,7 +6,7 @@ import { handleId } from '../utils'
 import DropCardList from '../DropCardList'
 import useDropData from '../hooks/useDropData'
 import DropCard from '../DropCard'
-import { useDispatch, useSelector } from '@store/index'
+import { store, useDispatch, useSelector } from '@store/index'
 import useGroupType from '../hooks/useGroupType'
 import { FixedSizeList } from 'react-window'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -144,15 +144,41 @@ const Issues: React.FC<IssuesProps> = props => {
   //     />
   //   )
   // })
+  function bbh(data: any) {
+    const filteredData: any = {}
+
+    for (const key in data) {
+      if (key.includes('custom')) {
+        filteredData[key] = data[key]
+      }
+    }
+    return filteredData
+  }
+
   const fetchMoreData = async () => {
+    const { valueKey, inputKey } = store.getState().view
     const newPage = page + 1
     setPage(newPage)
-    const res = await getNewkanbanStoriesOfPaginate({
-      project_id: projectInfo.id,
+    const params2 = {
+      search: {
+        ...valueKey,
+        user_id: valueKey.user_name,
+        category_id: valueKey.category,
+        iterate_id: valueKey.iterate_name,
+        custom_field: bbh(valueKey),
+        keyword: inputKey,
+        schedule_start: valueKey?.schedule?.start,
+        schedule_end: valueKey?.schedule?.end,
+        ...{ ...checkGroup() },
+      },
       kanban_column_id: issues.id,
-      search: { ...checkGroup() },
+      project_id: projectInfo.id,
       pagesize: 10,
       page: newPage,
+    }
+
+    const res = await getNewkanbanStoriesOfPaginate({
+      ...params2,
     })
     dispatch(
       setKanbanInfoByGroup(
