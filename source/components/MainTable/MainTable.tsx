@@ -25,6 +25,7 @@ import { editProject } from '@store/create-propject'
 import { useDispatch } from 'react-redux'
 import CommonButton from '../CommonButton'
 import { Tags } from '../ProjectCard/style'
+import DragTable from '../DragTable'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -35,6 +36,7 @@ interface Props {
   onAddClick(): void
   // 是否有筛选条件
   hasFilter?: boolean
+  onChangeProjectList(value: any): void
 }
 
 const StatusWrap = styled.div({
@@ -123,7 +125,7 @@ const MainTable = (props: Props) => {
           {t('common.projectName')}
         </NewSort>
       ),
-      width: 348,
+      width: 520,
       render: (text: string, record: any) => {
         return (
           <div
@@ -159,7 +161,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'progress',
-      width: 150,
+      width: 120,
       render: (text: string) => {
         return (
           <Progress
@@ -187,7 +189,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'expected_start_at',
-      width: 180,
+      width: 100,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -204,7 +206,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'expected_end_at',
-      width: 180,
+      width: 100,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -306,7 +308,17 @@ const MainTable = (props: Props) => {
 
   return (
     <div style={{ height: '100%' }}>
-      <ResizeTable
+      <DragTable
+        columns={columns1}
+        dataSource={{
+          list: props.projectList?.list?.map((i: any) => ({
+            ...i,
+            index: i.id,
+          })),
+        }}
+        onChangeData={props.onChangeProjectList}
+      />
+      {/* <ResizeTable
         isSpinning={false}
         dataWrapNormalHeight="calc(100% - 48px)"
         col={columns1}
@@ -329,7 +341,7 @@ const MainTable = (props: Props) => {
             )}
           </NoData>
         }
-      />
+      /> */}
       <PaginationBox
         total={props.projectList?.total}
         currentPage={props.projectList?.currentPage}

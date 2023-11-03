@@ -235,6 +235,7 @@ const ProjectIndex = () => {
                 filterParams?.otherType?.length > 0
               }
               projectList={dataList}
+              onChangeProjectList={setDataList}
             />
           )}
         </Spin>
