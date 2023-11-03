@@ -55,6 +55,7 @@ export const deleteKanbanGroup =
       ...params,
       project_id: getProjectIdByUrl(),
     })
+    dispatch(setKanbanInfoByGroup([]))
     dispatch(getKanbanByGroup())
     return res
   }
@@ -287,7 +288,6 @@ export const modifyStatus =
           }
         }
       }
-
       return cc
     }
 
@@ -318,7 +318,7 @@ export const modifyStatus =
         res2.list,
       )
       dispatch(setKanbanInfoByGroup(aa))
-      console.log('克隆')
+
       updateKanbanConfigbig()
     }
     dispatch(
@@ -606,7 +606,7 @@ export const updateKanbanConfigbig = async () => {
     kanban_config_id: sortByRowAndStatusOptions?.find(item => item.check)?.key,
   }
   const res_config = await getNewkanbanConfig(params)
-  console.log(res_config, '飞机爆炸了')
+
   store.dispatch(setkanbanConfig(res_config))
 }
 
