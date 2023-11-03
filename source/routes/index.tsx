@@ -216,7 +216,15 @@ const routes = [
       {
         path: 'ProjectDetail',
         element: lazy(() => import('@/views/ProjectDetail')),
-        children: [],
+        children: [
+          {
+            path: 'PrivatePermission',
+            element: lazy(
+              () =>
+                import('@/views/ProjectDetail/components/PrivatePermission'),
+            ),
+          },
+        ],
       },
     ],
   },

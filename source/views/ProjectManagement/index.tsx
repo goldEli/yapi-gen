@@ -71,9 +71,11 @@ const Project = () => {
       setIsShowPage(true)
     }
   }, [paramsData, projectInfo])
+
   useEffect(() => {
     dispatch(saveInputKey(''))
   }, [location.pathname])
+
   useEffect(() => {
     dispatch(setActiveCategory({}))
     dispatch(setCategoryList([]))
