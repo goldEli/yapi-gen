@@ -411,8 +411,7 @@ const DemandTree = (props: Props) => {
   const hasCreate =
     !getIsPermission(projectInfo?.projectPermissions, 'b/story/save') &&
     props.hasId &&
-    props.hasId?.status === 1 &&
-    projectInfo?.status === 1
+    props.hasId?.status === 1
 
   const hasBatch = getIsPermission(
     projectInfo?.projectPermissions,

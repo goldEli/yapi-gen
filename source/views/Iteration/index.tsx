@@ -349,10 +349,6 @@ const Iteration = () => {
     }
   }, [projectInfo])
 
-  useEffect(() => {
-    dispatch(setIterateInfo({}))
-  }, [])
-
   const resultAuth = onComputedPermission(
     currentMenu,
     '/ProjectManagement/Project',

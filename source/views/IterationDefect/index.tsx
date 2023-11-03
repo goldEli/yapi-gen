@@ -202,20 +202,26 @@ const Index = (props: any) => {
       page: 1,
       size: pageObj.size,
     })
+    getList(
+      params,
+      {
+        page: 1,
+        size: pageObj.size,
+      },
+      order,
+    )
   }
 
   // 分页改变
   const onChangePageNavigation = (item: any) => {
     setPageObj(item)
-  }
-
-  const onChangeRow = (topId?: any) => {
-    getList(searchItems, pageObj, order, false)
+    getList(searchItems, item, order)
   }
 
   // 修改排序
   const onChangeOrder = (item: any) => {
     setOrder(item)
+    getList(searchItems, pageObj, item)
   }
 
   // 删除确认事件
@@ -243,22 +249,15 @@ const Index = (props: any) => {
   useEffect(() => {
     if (projectInfo?.id) {
       getShowkey()
+      setPageObj({ page: 1, size: 30 })
+      setOrder({ value: '', key: '' })
+      setKey('')
+      setSearchVal('')
+      setSearchItems({})
+      keyValueTree.changeKey('')
+      getList({}, { page: 1, size: 30 }, { value: '', key: '' })
     }
   }, [projectInfo])
-
-  useEffect(() => {
-    getList(searchItems, pageObj, order)
-  }, [key, order, pageObj])
-
-  useEffect(() => {
-    setPageObj({ page: 1, size: 30 })
-    setOrder({ value: '', key: '' })
-    setKey('')
-    setSearchVal('')
-    setSearchItems({})
-    keyValueTree.changeKey('')
-    getList({}, { page: 1, size: 30 }, { value: '', key: '' })
-  }, [projectId])
 
   useEffect(() => {
     if (isUpdateAddWorkItem) {
@@ -374,7 +373,6 @@ const Index = (props: any) => {
                   data={dataList}
                   onDelete={onDelete}
                   onChangePageNavigation={onChangePageNavigation}
-                  onChangeRow={onChangeRow}
                   onChangeOrder={onChangeOrder}
                   isSpinning={isSpinning}
                   onUpdate={onUpdate}

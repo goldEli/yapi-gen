@@ -33,24 +33,21 @@ const MainGrid = (props: Props) => {
     'b/project/save',
   )
 
-  const onToDetail = (item: any) => {
-    const params = encryptPhp(JSON.stringify({ id: item.id }))
-    dispatch(setProjectType(item.prefix))
-    if (item.projectType === 2) {
-      navigate(
-        `${
-          item.defaultHomeMenu
-            ? item.defaultHomeMenu
-            : '/SprintProjectManagement/Affair'
-        }?data=${params}`,
-      )
-      return
-    }
+  // 点击跳转项目详情
+  const onClickItem = (row: any) => {
+    dispatch(setProjectType(row.prefix))
+    const params = encryptPhp(
+      JSON.stringify({
+        id: row.id,
+        type: row.projectType === 2 ? 'sprint' : 'iteration',
+      }),
+    )
+
     navigate(
       `${
-        item.defaultHomeMenu
-          ? item.defaultHomeMenu
-          : '/ProjectManagement/Demand'
+        row.defaultHomeMenu
+          ? row.defaultHomeMenu
+          : `/ProjectDetail/${row.projectType === 2 ? 'Affair' : 'Demand'}`
       }?data=${params}`,
     )
   }
@@ -65,7 +62,7 @@ const MainGrid = (props: Props) => {
         (props.projectList?.list?.length > 0 ? (
           <SpaceWrap>
             {props.projectList.list?.map((item: any, index: any) => (
-              <SpaceWrapItem key={item.id} onClick={() => onToDetail(item)}>
+              <SpaceWrapItem key={item.id} onClick={() => onClickItem(item)}>
                 <div className={`app-${index}`}>
                   <ProjectCard
                     onChangeOperation={props.onChangeOperation}

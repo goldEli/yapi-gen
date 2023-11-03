@@ -269,7 +269,7 @@ const Operation = (props: Props) => {
         flexDirection: 'column',
       }}
     >
-      {hasImport || projectInfo?.status !== 1 ? null : (
+      {hasImport ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
           <span style={{ marginLeft: 8, whiteSpace: 'nowrap' }}>
@@ -427,7 +427,7 @@ const Operation = (props: Props) => {
           {getIsPermission(
             projectInfo?.projectPermissions,
             'b/transaction/save',
-          ) || projectInfo?.status !== 1 ? null : (
+          ) ? null : (
             <CommonButton
               onClick={() =>
                 dispatch(

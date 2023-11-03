@@ -113,27 +113,6 @@ const CreateIteration = () => {
     } else {
       // getRecentlyList()
     }
-    // // 如果有需求id则获取详情
-    // if (createIterationParams.id) {
-    //   const response = await getIterateInfo({
-    //     projectId: createIterationParams.projectId,
-    //     id: createIterationParams?.id,
-    //   })
-    //   setTimes([
-    //     moment(response.createdTime || response?.startTime || 0),
-    //     moment(response.endTime || 1893427200),
-    //   ])
-    //   form.setFieldsValue({
-    //     info: response?.info,
-    //     iterationName: response.name,
-    //     time: response.endTime
-    //       ? [
-    //           moment(response.createdTime || response?.startTime || 0),
-    //           moment(response.endTime || 1893427200),
-    //         ]
-    //       : null,
-    //   })
-    // }
   }
 
   //   关闭弹窗

@@ -286,7 +286,7 @@ const Operation = (props: Props) => {
         flexDirection: 'column',
       }}
     >
-      {hasImport || projectInfo?.status !== 1 ? null : (
+      {hasImport ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
           <span style={{ marginLeft: 8 }}>{t('newlyAdd.importDemand')}</span>
@@ -407,8 +407,10 @@ const Operation = (props: Props) => {
               <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
-          {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ||
-          projectInfo?.status !== 1 ? null : (
+          {getIsPermission(
+            projectInfo?.projectPermissions,
+            'b/story/save',
+          ) ? null : (
             <Popover
               content={changeStatus}
               placement="bottomLeft"

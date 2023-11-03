@@ -224,6 +224,34 @@ const routes = [
                 import('@/views/ProjectDetail/components/PrivatePermission'),
             ),
           },
+          {
+            path: 'Demand',
+            element: lazy(() => import('@/views/Demand')),
+          },
+          {
+            path: 'Iteration',
+            element: lazy(() => import('@/views/Iteration')),
+          },
+          {
+            path: 'Defect',
+            element: lazy(() => import('@/views/IterationDefect')),
+          },
+          {
+            path: 'Affair',
+            element: lazy(() => import('@/views/SprintProjectAffair')),
+          },
+          {
+            path: 'Sprint',
+            element: lazy(() => import('@/views/SprintProjectSprint')),
+          },
+          {
+            path: 'KanBan',
+            element: lazy(() => import('@/views/KanBanBoard')),
+          },
+          {
+            path: 'WorkHours',
+            element: lazy(() => import('@/views/WorkingHoursStatistics')),
+          },
         ],
       },
     ],
@@ -255,28 +283,8 @@ const routes = [
   //       element: lazy(() => import('@/views/ProjectManagement')),
   //       children: [
   //         {
-  //           path: 'Project',
-  //           element: lazy(() => import('@/views/Project')),
-  //         },
-  //         {
-  //           path: 'Demand',
-  //           element: lazy(() => import('@/views/Demand')),
-  //         },
-  //         {
-  //           path: 'Iteration',
-  //           element: lazy(() => import('@/views/Iteration')),
-  //         },
-  //         {
   //           path: 'IterationDetail',
   //           element: lazy(() => import('@/views/IterationDetail')),
-  //         },
-  //         {
-  //           path: 'KanBan',
-  //           element: lazy(() => import('@/views/KanBanBoard')),
-  //         },
-  //         {
-  //           path: 'Defect',
-  //           element: lazy(() => import('@/views/IterationDefect')),
   //         },
   //         {
   //           path: 'ProjectSetting',
@@ -290,10 +298,6 @@ const routes = [
   //           path: 'WorkFlow',
   //           element: lazy(() => import('@/views/Workflow')),
   //         },
-  //         {
-  //           path: 'WorkHours',
-  //           element: lazy(() => import('@/views/WorkingHoursStatistics')),
-  //         },
   //       ],
   //     },
   //     {
@@ -301,20 +305,8 @@ const routes = [
   //       element: lazy(() => import('@/views/SprintProjectManagement')),
   //       children: [
   //         {
-  //           path: 'KanBan',
-  //           element: lazy(() => import('@/views/KanBanBoard')),
-  //         },
-  //         {
   //           path: 'SprintReport',
   //           element: lazy(() => import('@/views/SprintProjectReport')),
-  //         },
-  //         {
-  //           path: 'Sprint',
-  //           element: lazy(() => import('@/views/SprintProjectSprint')),
-  //         },
-  //         {
-  //           path: 'Affair',
-  //           element: lazy(() => import('@/views/SprintProjectAffair')),
   //         },
   //         {
   //           path: 'Setting',
@@ -327,10 +319,6 @@ const routes = [
   //         {
   //           path: 'WorkFlow',
   //           element: lazy(() => import('@/views/SprintWorkflow')),
-  //         },
-  //         {
-  //           path: 'WorkHours',
-  //           element: lazy(() => import('@/views/WorkingHoursStatistics')),
   //         },
   //       ],
   //     },

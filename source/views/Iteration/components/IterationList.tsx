@@ -132,6 +132,7 @@ const IterationList = (props: IterationListProps) => {
 
   // isUpdateProjectInfoValues：是否需要更新项目下拉数据
   const getList = async (isUpdateProjectInfoValues?: boolean, id?: number) => {
+    console.log(11111111111)
     setIsSpinning(true)
     const values = form.getFieldsValue()
     if (values.startTime) {
@@ -162,8 +163,9 @@ const IterationList = (props: IterationListProps) => {
 
     // 如果删除id是当前选中的 或当前筛选没有当前选中的，则更新列表第一个
     if (
-      id === iterateInfo.id ||
-      result.list.filter((i: any) => i.id === iterateInfo.id)?.length <= 0
+      iterateInfo?.id &&
+      (id === iterateInfo.id ||
+        result.list.filter((i: any) => i.id === iterateInfo.id)?.length <= 0)
     ) {
       dispatch(
         getIterateInfo({
@@ -435,7 +437,7 @@ const IterationList = (props: IterationListProps) => {
     <IterationListBox isShowLeft={props.isShowLeft}>
       <DeleteConfirmModal />
       <TopWrap>
-        {hasAdd || projectInfo?.status !== 1 ? (
+        {hasAdd ? (
           <div />
         ) : (
           <CommonButton type="primary" icon="plus" onClick={onChangeClick}>

@@ -325,7 +325,7 @@ const Flaw = (props: FlawProps) => {
   return (
     <ComputedWrap>
       <DeleteConfirmModal />
-      {!hasCreate && iterateInfo?.status === 1 && projectInfo?.status === 1 && (
+      {!hasCreate && iterateInfo?.status === 1 && (
         <div
           style={{
             padding: '10px 0 0',
@@ -346,7 +346,7 @@ const Flaw = (props: FlawProps) => {
       <ResizeTable
         isSpinning={isSpinning}
         dataWrapNormalHeight={
-          hasCreate || iterateInfo?.status !== 1 || projectInfo?.status !== 1
+          hasCreate || iterateInfo?.status !== 1
             ? 'calc(100% - 48px)'
             : 'calc(100% - 90px)'
         }

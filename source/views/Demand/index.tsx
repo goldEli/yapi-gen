@@ -209,8 +209,11 @@ const DemandIndex = () => {
     getList(isGrid, searchItems, pageObj, order, false, topParentId)
   }
   useEffect(() => {
-    refresh()
+    if (isRefresh) {
+      refresh()
+    }
   }, [isRefresh])
+
   const onChangeRow = (topId?: any) => {
     getList(isGrid, searchItems, pageObj, order, false, topId)
   }

@@ -317,7 +317,7 @@ const Operation = (props: Props) => {
         flexDirection: 'column',
       }}
     >
-      {hasImport || projectInfo?.status !== 1 ? null : (
+      {hasImport ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
           <span style={{ marginLeft: 8 }}>{t('importDefect')}</span>
@@ -494,8 +494,10 @@ const Operation = (props: Props) => {
               <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
-          {getIsPermission(projectInfo?.projectPermissions, 'b/flaw/save') ||
-          projectInfo?.status !== 1 ? null : (
+          {getIsPermission(
+            projectInfo?.projectPermissions,
+            'b/flaw/save',
+          ) ? null : (
             <>
               {(removeNull(projectInfoValues, 'category') || []).filter(
                 (i: any) => i.work_type === 2,

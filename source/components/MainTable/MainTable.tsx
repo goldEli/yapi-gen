@@ -127,6 +127,24 @@ const MainTable = (props: Props) => {
     props.onChangePageNavigation({ page, size })
   }
 
+  // 点击跳转项目详情
+  const onClickItem = (row: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        id: row.id,
+        type: row.projectType === 2 ? 'sprint' : 'iteration',
+      }),
+    )
+
+    navigate(
+      `${
+        row.defaultHomeMenu
+          ? row.defaultHomeMenu
+          : `/ProjectDetail/${row.projectType === 2 ? 'Affair' : 'Demand'}`
+      }?data=${params}`,
+    )
+  }
+
   const columns = [
     {
       dataIndex: 'name',
@@ -156,7 +174,11 @@ const MainTable = (props: Props) => {
               <Tags type={2}> {t('sprint2')}</Tags>
             )}
             <Tooltip title={`${text}-【${record.prefix}】`}>
-              <ListNameWrap isName isClose={record.status === 2}>
+              <ListNameWrap
+                isName
+                isClose={record.status === 2}
+                onClick={() => onClickItem(record)}
+              >
                 <span className="controlMaxWidth">
                   {text}-【{record.prefix}】
                 </span>
@@ -301,37 +323,6 @@ const MainTable = (props: Props) => {
       },
     },
   ]
-
-  const onTableRow = useCallback((row: any) => {
-    return {
-      onClick: () => {
-        const params = encryptPhp(
-          JSON.stringify({
-            id: row.id,
-            type: row.projectType === 2 ? 'sprint' : 'iteration',
-          }),
-        )
-
-        if (row.projectType === 2) {
-          navigate(
-            `${
-              row.defaultHomeMenu
-                ? row.defaultHomeMenu
-                : '/SprintProjectManagement/Affair'
-            }?data=${params}`,
-          )
-          return
-        }
-        navigate(
-          `${
-            row.defaultHomeMenu
-              ? row.defaultHomeMenu
-              : '/ProjectManagement/Demand'
-          }?data=${params}`,
-        )
-      },
-    }
-  }, [])
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {

@@ -403,28 +403,20 @@ const IterationTable = (props: Props) => {
     <Content
       style={{
         height:
-          !hasCreate &&
-          props.hasId &&
-          props.hasId?.status === 1 &&
-          projectInfo?.status === 1
+          !hasCreate && props.hasId && props.hasId?.status === 1
             ? 'calc(100% - 64px)'
             : 'calc(100% - 52px)',
       }}
     >
       <CreateDemandButton
-        hasCreate={
-          !hasCreate &&
-          props.hasId &&
-          props.hasId?.status === 1 &&
-          projectInfo?.status === 1
-        }
+        hasCreate={!hasCreate && props.hasId && props.hasId?.status === 1}
         onCreateDemand={onCreateDemand}
       />
 
       <ResizeTable
         isSpinning={props?.isSpinning}
         dataWrapNormalHeight={
-          hasCreate || props.hasId?.status !== 1 || projectInfo?.status !== 1
+          hasCreate || props.hasId?.status !== 1
             ? 'calc(100% - 28px)'
             : 'calc(100% - 80px)'
         }
