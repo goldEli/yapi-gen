@@ -1,5 +1,7 @@
+import { Outlet } from 'react-router-dom'
+
 const ProjectDetail = () => {
-  return <div>项目详情</div>
+  return <Outlet />
 }
 
 export default ProjectDetail

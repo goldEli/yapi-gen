@@ -92,14 +92,6 @@ const routes = [
         path: 'Trends',
         element: lazy(() => import('@/views/Layout/Trends')),
         children: [
-          // {
-          //   path: 'Setting/:id',
-          //   element: lazy(() => import('../views/Layout/Trends/Setting/index')),
-          // },
-          // {
-          //   path: 'Email/:id',
-          //   element: lazy(() => import('@/views/Layout/Trends/Email/index')),
-          // },
           {
             path: 'AllNote/:id',
             element: lazy(
@@ -224,6 +216,7 @@ const routes = [
       {
         path: 'ProjectDetail',
         element: lazy(() => import('@/views/ProjectDetail')),
+        children: [],
       },
     ],
   },
@@ -246,52 +239,9 @@ const routes = [
   //       element: lazy(() => import('@/views/PerformanceInsight/ChildLevel')),
   //     },
   //     {
-  //       path: '/Situation',
-  //       element: lazy(() => import('@/views/Situation')),
-  //     },
-  //     {
-  //       path: '/CalendarManager',
-  //       element: lazy(() => import('@/views/CalendarPage')),
-  //     },
-  //     {
   //       path: '/ScheduleSearch',
   //       element: lazy(() => import('@/views/ScheduleSearch')),
   //     },
-  //     // {
-  //     //   path: '/Report',
-  //     //   element: lazy(() => import('@/views/WorkReport')),
-  //     //   children: [
-  //     //     {
-  //     //       // 汇报
-  //     //       path: 'Review',
-  //     //       element: lazy(() => import('@/views/WorkReport/Review')),
-  //     //       children: [
-  //     //         {
-  //     //           path: '',
-  //     //           element: <Navigate to="/Report/Review/List/1" />,
-  //     //         },
-  //     //         {
-  //     //           path: 'List/:id',
-  //     //           element: lazy(
-  //     //             () => import('@/views/WorkReport/Review/components/List'),
-  //     //           ),
-  //     //         },
-  //     //       ],
-  //     //     },
-  //     //     {
-  //     //       path: 'Statistics',
-  //     //       element: lazy(() => import('@/views/WorkReport/Statistics')),
-  //     //     },
-  //     //     {
-  //     //       path: 'Formwork',
-  //     //       element: lazy(() => import('@/views/WorkReport/Formwork')),
-  //     //     },
-  //     //     {
-  //     //       path: 'PerformanceInsight',
-  //     //       element: lazy(() => import('@/views/PerformanceInsight')),
-  //     //     },
-  //     //   ],
-  //     // },
   //     {
   //       path: '/ProjectManagement',
   //       element: lazy(() => import('@/views/ProjectManagement')),
@@ -299,36 +249,6 @@ const routes = [
   //         {
   //           path: 'Project',
   //           element: lazy(() => import('@/views/Project')),
-  //         },
-  //         {
-  //           path: 'Mine',
-  //           element: lazy(() => import('@/views/Mine')),
-  //           children: [
-  //             {
-  //               path: 'Agenda',
-  //               element: lazy(() => import('@/views/Mine/Agenda')),
-  //             },
-  //             {
-  //               path: 'Carbon',
-  //               element: lazy(() => import('@/views/Mine/Carbon')),
-  //             },
-  //             {
-  //               path: 'Create',
-  //               element: lazy(() => import('@/views/Mine/Create')),
-  //             },
-  //             {
-  //               path: 'Finished',
-  //               element: lazy(() => import('@/views/Mine/Finished')),
-  //             },
-  //             {
-  //               path: 'Examine',
-  //               element: lazy(() => import('@/views/Mine/Examine')),
-  //             },
-  //             {
-  //               path: 'Profile',
-  //               element: lazy(() => import('@/views/Mine/Profile')),
-  //             },
-  //           ],
   //         },
   //         {
   //           path: 'Demand',
@@ -406,58 +326,7 @@ const routes = [
   //         },
   //       ],
   //     },
-  //     {
-  //       path: '/AdminManagement',
-  //       element: lazy(() => import('@/views/AdminManagement')),
-  //       children: [
-  //         {
-  //           path: 'CompanyInfo',
-  //           element: lazy(() => import('@/views/AdminManagement/CompanyInfo')),
-  //         },
-  //         {
-  //           path: 'StaffManagement',
-  //           element: lazy(
-  //             () => import('@/views/AdminManagement/StaffManagement'),
-  //           ),
-  //         },
-  //         {
-  //           path: 'TeamManagement',
-  //           element: lazy(
-  //             () => import('@/views/AdminManagement/TeamManagement'),
-  //           ),
-  //         },
-  //         {
-  //           path: 'PermissionManagement',
-  //           element: lazy(
-  //             () => import('@/views/AdminManagement/PermissionManagement'),
-  //           ),
-  //         },
-  //         {
-  //           path: 'WaterMarkManagement',
-  //           element: lazy(
-  //             () => import('@/views/AdminManagement/WaterMarkManagement'),
-  //           ),
-  //         },
-  //         {
-  //           path: 'NoteManagement',
-  //           element: lazy(
-  //             () => import('@/views/AdminManagement/NoteManagement'),
-  //           ),
-  //         },
-  //         {
-  //           path: 'OperationManagement',
-  //           element: lazy(
-  //             () => import('@/views/AdminManagement/OperationManagement'),
-  //           ),
-  //         },
-  //         {
-  //           path: 'LoginManagement',
-  //           element: lazy(
-  //             () => import('@/views/AdminManagement/LoginManagement'),
-  //           ),
-  //         },
-  //       ],
-  //     },
+
   //     {
   //       path: 'MemberInfo',
   //       element: lazy(() => import('@/views/MemberInfo')),
@@ -480,34 +349,7 @@ const routes = [
   //         },
   //       ],
   //     },
-  //     {
-  //       path: 'SiteNotifications',
-  //       element: lazy(() => import('@/views/SiteNotifications')),
-  //       children: [
-  //         {
-  //           path: 'Setting/:id',
-  //           element: lazy(
-  //             () => import('../views/SiteNotifications/Setting/index'),
-  //           ),
-  //         },
-  //         {
-  //           path: 'Email/:id',
-  //           element: lazy(
-  //             () => import('@/views/SiteNotifications/Email/index'),
-  //           ),
-  //         },
-  //         {
-  //           path: 'AllNote/:id',
-  //           element: lazy(
-  //             () => import('../views/SiteNotifications/AllNotes/index'),
-  //           ),
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: '/EmployeeProfile',
-  //       element: lazy(() => import('@/views/EmployeeProfile')),
-  //     },
+
   //   ],
   // },
 ]

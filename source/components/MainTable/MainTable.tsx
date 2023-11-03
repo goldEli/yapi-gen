@@ -4,14 +4,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Menu, Progress } from 'antd'
+import { Menu, Progress, Tooltip } from 'antd'
 import {
   ListNameWrap,
   TableActionWrap,
   TableActionItem,
 } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -26,6 +26,7 @@ import { useDispatch } from 'react-redux'
 import CommonButton from '../CommonButton'
 import { Tags } from '../ProjectCard/style'
 import DragTable from '../DragTable'
+import MultipleAvatar from '../MultipleAvatar'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -70,6 +71,12 @@ const ImgWrap = styled.div<{ url?: string }>(
   }),
 )
 
+const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
+  height: ${props => props.height};
+  overflow-x: ${props => (props.srcollState ? 'hidden' : 'auto')};
+  overflow: ${props => (props.srcollState ? 'hidden' : 'auto')};
+`
+
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -87,6 +94,10 @@ const MainTable = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const { userInfo } = useSelector(store => store.user)
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
   const hasCreate = getIsPermission(
     userInfo?.company_permissions,
     'b/project/save',
@@ -112,7 +123,11 @@ const MainTable = (props: Props) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  const columns1 = [
+  const onChangePage = (page: number, size: number) => {
+    props.onChangePageNavigation({ page, size })
+  }
+
+  const columns = [
     {
       dataIndex: 'name',
       title: (
@@ -125,7 +140,7 @@ const MainTable = (props: Props) => {
           {t('common.projectName')}
         </NewSort>
       ),
-      width: 520,
+      width: 480,
       render: (text: string, record: any) => {
         return (
           <div
@@ -140,11 +155,13 @@ const MainTable = (props: Props) => {
             ) : (
               <Tags type={2}> {t('sprint2')}</Tags>
             )}
-            <ListNameWrap isName isClose={record.status === 2}>
-              <span className="controlMaxWidth">
-                {text}-【{record.prefix}】
-              </span>
-            </ListNameWrap>
+            <Tooltip title={`${text}-【${record.prefix}】`}>
+              <ListNameWrap isName isClose={record.status === 2}>
+                <span className="controlMaxWidth">
+                  {text}-【{record.prefix}】
+                </span>
+              </ListNameWrap>
+            </Tooltip>
           </div>
         )
       },
@@ -189,7 +206,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'expected_start_at',
-      width: 100,
+      width: 120,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -206,7 +223,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'expected_end_at',
-      width: 100,
+      width: 120,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -223,7 +240,21 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'leader_name',
-      width: 100,
+      width: 110,
+      render: (text: string, record: any) => {
+        return (
+          <MultipleAvatar
+            max={1}
+            list={[
+              {
+                avatar: '',
+                id: 0,
+                name: text,
+              },
+            ]}
+          />
+        )
+      },
     },
     {
       title: (
@@ -271,10 +302,6 @@ const MainTable = (props: Props) => {
     },
   ]
 
-  const onChangePage = (page: number, size: number) => {
-    props.onChangePageNavigation({ page, size })
-  }
-
   const onTableRow = useCallback((row: any) => {
     return {
       onClick: () => {
@@ -306,26 +333,50 @@ const MainTable = (props: Props) => {
     }
   }, [])
 
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [props.projectList?.list])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
+
   return (
     <div style={{ height: '100%' }}>
-      <DragTable
-        columns={columns1}
-        dataSource={{
-          list: props.projectList?.list?.map((i: any) => ({
-            ...i,
-            index: i.id,
-          })),
-        }}
-        onChangeData={props.onChangeProjectList}
-      />
-      {/* <ResizeTable
-        isSpinning={false}
-        dataWrapNormalHeight="calc(100% - 48px)"
-        col={columns1}
-        dataSource={props.projectList?.list}
-        onRow={onTableRow as any}
-        rowClassName="clickable-row"
-        noData={
+      {!!props.projectList?.list &&
+        (props.projectList?.list?.length > 0 ? (
+          <DataWrap
+            srcollState={false}
+            height="calc(100% - 56px)"
+            ref={dataWrapRef}
+          >
+            <DragTable
+              columns={columns}
+              dataSource={{
+                list: props.projectList?.list?.map((i: any) => ({
+                  ...i,
+                  index: i.id,
+                })),
+              }}
+              onChangeData={(value: any) => {
+                props.onChangeProjectList({
+                  ...props.projectList,
+                  ...value,
+                })
+              }}
+              tableY={tableY}
+            />
+          </DataWrap>
+        ) : (
           <NoData
             subText={hasCreate ? '' : t('version2.noDataCreateProject')}
             haveFilter={props?.hasFilter}
@@ -340,8 +391,8 @@ const MainTable = (props: Props) => {
               </CommonButton>
             )}
           </NoData>
-        }
-      /> */}
+        ))}
+
       <PaginationBox
         total={props.projectList?.total}
         currentPage={props.projectList?.currentPage}

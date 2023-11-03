@@ -1,5 +1,5 @@
+/* eslint-disable no-undefined */
 import { arrayMoveImmutable } from 'array-move'
-import IconFont from '../IconFont'
 import {
   SortableContainer as sortableContainer,
   SortableElement as sortableElement,
@@ -15,6 +15,12 @@ const TableWrap = styled(Table)`
       visibility: visible;
     }
   }
+  .ant-table-thead > tr > th {
+    border-bottom: 0px;
+    font-size: var(--font12);
+    color: var(--neutral-n3);
+    font-family: SiYuanMedium;
+  }
 `
 
 interface DragTableProps {
@@ -23,6 +29,7 @@ interface DragTableProps {
   columns: any
   hasOperation?: any
   showHeader?: boolean
+  tableY?: number
 }
 
 const DragTable = (props: DragTableProps) => {
@@ -91,6 +98,7 @@ const DragTable = (props: DragTableProps) => {
       }}
       scroll={{
         x: 'max-content',
+        y: props?.tableY ?? undefined,
       }}
       tableLayout="auto"
     />
