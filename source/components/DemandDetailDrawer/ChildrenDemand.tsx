@@ -70,7 +70,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
         isOpenScreenDetail: true,
       }),
     )
-    const url = `ProjectManagement/Demand?data=${params}`
+    const url = `ProjectDetail/Demand?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 

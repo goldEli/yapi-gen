@@ -283,7 +283,7 @@ const SprintDetailDrawer = () => {
         changeIds: demandIds,
       }),
     )
-    const url = `SprintProjectManagement/Affair?data=${params}`
+    const url = `ProjectDetail/Affair?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(0))
@@ -464,7 +464,6 @@ const SprintDetailDrawer = () => {
     dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
-        type: 'sprint',
         id: projectInfo.id,
         categoryItem: {
           id: drawerInfo.category,
@@ -472,7 +471,7 @@ const SprintDetailDrawer = () => {
         },
       }),
     )
-    navigate(`/SprintProjectManagement/DemandSetting?data=${params}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
   }
 
   // 提交评论
@@ -637,9 +636,7 @@ const SprintDetailDrawer = () => {
   return (
     <>
       <ShareModal
-        url={`${
-          location.origin
-        }/SprintProjectManagement/Affair?data=${encryptPhp(
+        url={`${location.origin}/ProjectDetail/Affair?data=${encryptPhp(
           JSON.stringify({
             id: projectInfo.id,
             detailId: drawerInfo.id,

@@ -207,7 +207,6 @@ const Profile = () => {
   const [total, setTotal] = useState<number>(0)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchParams] = useSearchParams()
-  const navigate = useNavigate()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId, id } = paramsData
   asyncSetTtile(
@@ -346,15 +345,15 @@ const Profile = () => {
     switch (item.resource_type) {
       case 1:
         params.specialType = 3
-        url = 'ProjectManagement/Demand'
+        url = 'ProjectDetail/Demand'
         break
       case 2:
         params.specialType = 2
-        url = 'ProjectManagement/Defect'
+        url = 'ProjectDetail/Defect'
         break
       case 10:
         params.specialType = 1
-        url = 'SprintProjectManagement/Affair'
+        url = 'ProjectDetail/Affair'
         break
       default:
         break

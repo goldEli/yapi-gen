@@ -267,7 +267,7 @@ const DemandDetailDrawer = () => {
         isOpenScreenDetail: true,
       }),
     )
-    const url = `ProjectManagement/Demand?data=${params}`
+    const url = `ProjectDetail/Demand?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(false))
@@ -445,16 +445,14 @@ const DemandDetailDrawer = () => {
     dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
-        type: 4,
         id: getProjectIdByUrl(),
-        pageIdx: 'DemandDetail',
         categoryItem: {
           id: drawerInfo.category,
           status: drawerInfo.category_status,
         },
       }),
     )
-    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
   }
 
   // 取消审核

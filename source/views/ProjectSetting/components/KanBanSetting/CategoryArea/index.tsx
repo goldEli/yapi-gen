@@ -76,6 +76,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
               JSON.stringify({
                 id: getProjectIdByUrl(),
                 pageIdx: 'work',
+                key: 2,
                 type: type === 1 ? 4 : 'work',
                 // categoryItem: props.data,
                 categoryItem: {
@@ -93,10 +94,12 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
               }),
             )
             if (type === 2) {
-              navigate(`/SprintProjectManagement/WorkFlow?data=${params}`)
+              navigate(
+                `/ProjectDetail/Setting/TypeConfiguration?data=${params}`,
+              )
               return
             }
-            navigate(`/ProjectManagement/WorkFlow?data=${params}`)
+            navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
           }}
         >
           <CommonButton type="light">{t('edit_workflow')}</CommonButton>

@@ -65,9 +65,9 @@ export const TreeContext: any = React.createContext('')
 
 const SprintProjectAffair: React.FC<IProps> = props => {
   const { useKeys } = useKeyPress()
-  useKeys('1', '/SprintProjectManagement/Sprint')
-  useKeys('2', '/SprintProjectManagement/KanBan')
-  useKeys('3', '/Report/PerformanceInsight')
+  useKeys('1', '/ProjectDetail/Sprint')
+  useKeys('2', '/ProjectDetail/KanBan')
+  useKeys('3', '/Report/Performance')
   const dispatch = useDispatch()
   const { currentMenu } = useSelector(store => store.user)
   const titles = useSelector(store => store.view.tapTitles)

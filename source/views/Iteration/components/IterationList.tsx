@@ -384,7 +384,7 @@ const IterationList = (props: IterationListProps) => {
     const params = encryptPhp(
       JSON.stringify({ id: getProjectIdByUrl(), iterateId: item.id }),
     )
-    navigate(`/ProjectManagement/IterationDetail?data=${params}`)
+    navigate(`/ProjectDetail/IterationDetail?data=${params}`)
   }
 
   //   改变状态

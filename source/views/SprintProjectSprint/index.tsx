@@ -303,8 +303,8 @@ const SprintProjectSprint: React.FC = () => {
   ]
   const dispatch = useDispatch()
   const { useKeys } = useKeyPress()
-  useKeys('3', '/Report/PerformanceInsight')
-  useKeys('2', '/SprintProjectManagement/KanBan')
+  useKeys('3', '/Report/Performance')
+  useKeys('2', '/ProjectDetail/KanBan')
   const {
     leftSprintList,
     checkList,

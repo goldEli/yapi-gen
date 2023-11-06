@@ -2,6 +2,66 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Popover, Spin, Tabs } from 'antd'
 
+export const CompanyCard = styled.div<{ isActive?: boolean }>`
+  height: 64px;
+  display: flex;
+  transition: all 0.5s;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+  margin-top: 16px;
+  padding: 0 12px;
+  border: ${props =>
+    props.isActive
+      ? '1px solid transparent'
+      : '1px solid var(--neutral-n6-d2)'};
+  background: ${props =>
+    props.isActive ? 'var(--hover-d2)' : 'var(--neutral-white-d6)'};
+  box-sizing: border-box;
+  cursor: pointer;
+  .info {
+    display: flex;
+    align-items: center;
+    width: 95%;
+    img {
+      border-radius: 4px;
+      width: 40px;
+      height: 40px;
+      margin-right: 8px;
+    }
+    span {
+      font-size: var(--font14);
+      color: var(--neutral-n1-d1);
+      max-width: 83%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+    }
+  }
+  &:hover {
+    box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.07);
+    background: var(--neutral-white-d6);
+    border: 1px solid transparent;
+  }
+`
+
+export const RobotButton = styled.div`
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+  .img {
+    height: 24px;
+  }
+  .name {
+    margin-left: 8px;
+    font-size: 14px;
+    color: var(--neutral-n1-d1);
+  }
+`
+
 // 引导页
 export const imgBoxCss = css`
   box-sizing: border-box;

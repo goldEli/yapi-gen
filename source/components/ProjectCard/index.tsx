@@ -149,54 +149,48 @@ const Index = (props: any) => {
           pageIdx: 'member',
         }),
       )
-      // navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
-      let url = null
-      if (props.item.projectType === 1) {
-        url = '/ProjectManagement/ProjectSetting'
-      } else {
-        url = '/SprintProjectManagement/Setting'
-      }
+      let url = '/ProjectDetail/Setting/ProjectInfo'
       navigate(`${url}?data=${params}`)
     } else if (type === 'demand') {
       if (props.item.projectType === 1) {
         const params = encryptPhp(
           JSON.stringify({ id: props.item.id, type: 'iteration' }),
         )
-        navigate(`/ProjectManagement/Demand?data=${params}`)
+        navigate(`/ProjectDetail/Demand?data=${params}`)
       } else {
         const params = encryptPhp(
           JSON.stringify({ id: props.item.id, type: 'iteration' }),
         )
-        navigate(`/SprintProjectManagement/Affair?data=${params}`)
+        navigate(`/ProjectDetail/Affair?data=${params}`)
       }
     } else if (type === 'interation-2') {
       if (props.item.projectType === 1) {
         const params = encryptPhp(
           JSON.stringify({ id: props.item.id, type: 'iteration' }),
         )
-        navigate(`/ProjectManagement/Iteration?data=${params}`)
+        navigate(`/ProjectDetail/Iteration?data=${params}`)
       } else {
         const params = encryptPhp(
           JSON.stringify({ id: props.item.id, type: 'iteration' }),
         )
-        navigate(`/SprintProjectManagement/Sprint?data=${params}`)
+        navigate(`/ProjectDetail/Sprint?data=${params}`)
       }
     } else if (type === 'timer') {
       const params = encryptPhp(
         JSON.stringify({ id: props.item.id, type: 'iteration' }),
       )
-      navigate(`/SprintProjectManagement/Sprint?data=${params}`)
+      navigate(`/ProjectDetail/Sprint?data=${params}`)
     } else if (type === 'book-open') {
       if (props.item.projectType === 1) {
         const params = encryptPhp(
           JSON.stringify({ id: props.item.id, type: 'iteration' }),
         )
-        navigate(`/ProjectManagement/Demand?data=${params}`)
+        navigate(`/ProjectDetail/Demand?data=${params}`)
       } else {
         const params = encryptPhp(
           JSON.stringify({ id: props.item.id, type: 'iteration' }),
         )
-        navigate(`/SprintProjectManagement/Affair?data=${params}`)
+        navigate(`/ProjectDetail/Affair?data=${params}`)
       }
     }
   }

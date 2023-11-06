@@ -90,7 +90,7 @@ const ChildSprint = (
         isOpenScreenDetail: true,
       }),
     )
-    const url = `SprintProjectManagement/Affair?data=${params}`
+    const url = `ProjectDetail/Affair?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 

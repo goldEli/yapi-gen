@@ -53,15 +53,15 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
     if (projectInfo.projectType === 2) {
       params.specialType = 1
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `SprintProjectManagement/Affair?data=${resultParams}`
+      url = `ProjectDetail/Affair?data=${resultParams}`
     } else if (projectInfo.projectType === 1 && record.is_bug === 1) {
       params.specialType = 2
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Defect?data=${resultParams}`
+      url = `ProjectDetail/Defect?data=${resultParams}`
     } else if (projectInfo.projectType === 1 && record.is_bug !== 1) {
       params.specialType = 3
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Demand?data=${resultParams}`
+      url = `ProjectDetail/Demand?data=${resultParams}`
     }
     text += `【${record.story_prefix_key}-${record.name}】 ${beforeUrl}${url} \n`
     copyLink(text, t('common.copySuccess'), t('common.copyFail'))

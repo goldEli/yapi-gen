@@ -72,15 +72,15 @@ export const useDynamicColumns = (state: any) => {
     if (record.project_type === 2) {
       params.specialType = 1
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `SprintProjectManagement/Affair?data=${resultParams}`
+      url = `ProjectDetail/Affair?data=${resultParams}`
     } else if (record.project_type === 1 && record.is_bug === 1) {
       params.specialType = 2
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Defect?data=${resultParams}`
+      url = `ProjectDetail/Defect?data=${resultParams}`
     } else if (record.project_type === 1 && record.is_bug !== 1) {
       params.specialType = 3
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Demand?data=${resultParams}`
+      url = `ProjectDetail/Demand?data=${resultParams}`
     }
     const newUrl = `${window.origin}${import.meta.env.__URL_HASH__}${url}`
     copyLink(

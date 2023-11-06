@@ -81,7 +81,7 @@ const LongStroyBread = (props: IProps) => {
         specialType: 1,
       }),
     )
-    const url = `/SprintProjectManagement/Affair?data=${params}`
+    const url = `/ProjectDetail/Affair?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${longStroy?.projectPrefix}-${longStroy?.prefixKey}】${text}`,

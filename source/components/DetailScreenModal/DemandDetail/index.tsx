@@ -224,16 +224,14 @@ const DemandDetail = () => {
     onClose()
     const resultParams = encryptPhp(
       JSON.stringify({
-        type: 4,
         id: params.id,
-        pageIdx: 'DemandDetail',
         categoryItem: {
           id: demandInfo.category,
           status: demandInfo.category_status,
         },
       }),
     )
-    navigate(`/ProjectManagement/ProjectSetting?data=${resultParams}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${resultParams}`)
   }
 
   // 确认删除
@@ -283,7 +281,7 @@ const DemandDetail = () => {
         isOpenScreenDetail: true,
       }),
     )
-    const url = `/ProjectManagement/Demand?data=${params}`
+    const url = `/ProjectDetail/Demand?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${demandInfo.projectPrefix}-${demandInfo.prefixKey}】${text}`,
@@ -526,7 +524,7 @@ const DemandDetail = () => {
     <DemandWrap>
       <DeleteConfirmModal />
       <ShareModal
-        url={`${location.origin}/ProjectManagement/Demand?data=${encryptPhp(
+        url={`${location.origin}/ProjectDetail/Demand?data=${encryptPhp(
           JSON.stringify({
             detailId: demandInfo?.id,
             id: projectInfo.id,

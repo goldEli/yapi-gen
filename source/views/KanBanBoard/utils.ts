@@ -32,8 +32,8 @@ export const jumpToKanbanConfig = (navigate: NavigateFunction) => {
     }),
   )
   if (projectType === 2 || !projectType) {
-    navigate(`/SprintProjectManagement/Setting?data=${params}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
   } else {
-    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
   }
 }

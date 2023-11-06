@@ -411,8 +411,6 @@ const SiteDrawer = () => {
                   window.open(
                     `${window.origin}${import.meta.env.__URL_HASH__}${url}`,
                   )
-                  // navigate()
-                  // dispatch(changeVisible(false))
                 }}
               >
                 <span>{t('notificationCenter')}</span>

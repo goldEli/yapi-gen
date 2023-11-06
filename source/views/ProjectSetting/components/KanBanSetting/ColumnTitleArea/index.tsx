@@ -17,7 +17,6 @@ import {
 import { Popover, Space, Tooltip } from 'antd'
 import useIsTextOverflowed from '../hooks/useIsTextOverflowed'
 import useI18n from '@/hooks/useI18n'
-import { ChangeItem, ChangeItems } from '@/views/Container/style'
 import CommonIconFont from '@/components/CommonIconFont'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { deleteColumn, setUnassignStatusList } from '@store/kanbanConfig'
@@ -25,6 +24,32 @@ import { deleteColumn, setUnassignStatusList } from '@store/kanbanConfig'
 interface ColumnTitleAreaProps {
   index: number
 }
+export const ChangeItems = styled.div`
+  padding: 4px 0;
+  border-radius: 6px;
+  background: var(--neutral-white-d6);
+  min-width: 120px;
+`
+
+export const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: SiYuanRegular;
+  height: ${props => props.height || 32}px;
+  cursor: pointer;
+  padding: 0 16px;
+  color: ${props =>
+    props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n2)'};
+  &:hover {
+    color: var(--neutral-n1-d1);
+    background-color: var(--hover-d3);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+`
+
 const ColumnTitle = styled.div`
   flex-shrink: 0;
   width: 302px;

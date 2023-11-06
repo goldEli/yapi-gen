@@ -50,29 +50,9 @@ const MyBreadcrumb = (props: any) => {
     dispatch(setProjectInfo(result))
   }
 
-  return type === 'AdminManagement' ? (
-    <Breadcrumb
-      separator={
-        <CommonIconFont type="right" size={14} color="var(--neutral-n1-d1)" />
-      }
-    >
-      <Breadcrumb.Item>
-        <a
-          style={{ color: 'var(--neutral-n1-d1)' }}
-          onClick={() => navigate('/AdminManagement/StaffManagement')}
-          className={breadStyle}
-        >
-          <span> {t('staff.companyStaff')}</span>
-        </a>
-      </Breadcrumb.Item>
-      <Breadcrumb.Item>
-        <span>
-          {props?.user?.name}
-          {t('details_of')}
-        </span>
-      </Breadcrumb.Item>
-    </Breadcrumb>
-  ) : (
+  console.log(props, '12222222')
+
+  return (
     <Breadcrumb
       separator={
         <CommonIconFont type="right" size={14} color="var(--neutral-n1-d1)" />
@@ -82,7 +62,7 @@ const MyBreadcrumb = (props: any) => {
         <a
           onClick={() => {
             onCloseModal()
-            navigate('/ProjectManagement/Project')
+            navigate('/Project')
           }}
           style={{ color: 'var(--neutral-n1-d1)' }}
           className={breadStyle}
@@ -100,12 +80,12 @@ const MyBreadcrumb = (props: any) => {
               onCloseModal()
               if (projectInfo.projectType === 1) {
                 // 之前需求迭代跳转统一跳到了需求，需要区分迭代是迭代的，需求是需求的
-                location.pathname.includes('/ProjectManagement/Iteration')
-                  ? navigate(`/ProjectManagement/Iteration?data=${params}`)
-                  : navigate(`/ProjectManagement/Demand?data=${params}`)
+                location.pathname.includes('/ProjectDetail/Iteration')
+                  ? navigate(`/ProjectDetail/Iteration?data=${params}`)
+                  : navigate(`/ProjectDetail/Demand?data=${params}`)
                 return
               }
-              navigate(`/SprintProjectManagement/Affair?data=${params}`)
+              navigate(`/ProjectDetail/Affair?data=${params}`)
             }}
           >
             <img
@@ -139,7 +119,7 @@ const MyBreadcrumb = (props: any) => {
                 }),
               )
 
-              navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+              navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
             }}
             className={breadStyle}
             style={{ color: 'var(--neutral-n1-d1)' }}
@@ -148,37 +128,18 @@ const MyBreadcrumb = (props: any) => {
           </a>
         </Breadcrumb.Item>
       ) : null}
-      {location.pathname.includes('ProjectManagement/MemberInfo') && (
+      {location.pathname.includes('/ProjectDetail/Setting/MemberInfo') && (
         <Breadcrumb.Item>
           <a style={{ color: 'var(--neutral-n1-d1)' }} className={breadStyle}>
             <span>{t('project.projectSet') as string}</span>
           </a>
         </Breadcrumb.Item>
       )}
-      {location.pathname.includes('ProjectManagement/WorkFlow') && (
-        <>
-          <Breadcrumb.Item>
-            <a
-              style={{ color: 'var(--neutral-n1-d1)' }}
-              onClick={() => navigate(-1)}
-            >
-              {/* {t('sprintProject.demandSetting') as string} */}
-              {t('newlyAdd.demandSet') as string}
-            </a>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <a style={{ color: 'var(--neutral-n3)' }}>
-              {' '}
-              {t('sprintProject.configureWorkflow') as string}
-            </a>
-          </Breadcrumb.Item>
-        </>
-      )}
-      {location.pathname === '/ProjectManagement/ProjectSetting' &&
+      {location.pathname.includes('/ProjectDetail/Setting/') &&
       props.setName ? (
-        <Breadcrumb.Item> {props.setName}</Breadcrumb.Item>
+        <Breadcrumb.Item>{props.setName}</Breadcrumb.Item>
       ) : null}
-      {location.pathname === '/ProjectManagement/Demand' && props.demand ? (
+      {location.pathname === '/ProjectDetail/Demand' && props.demand ? (
         <Breadcrumb.Item>
           <img
             style={{
@@ -204,7 +165,7 @@ const MyBreadcrumb = (props: any) => {
           </span>
         </Breadcrumb.Item>
       ) : null}
-      {type === 5 ? (
+      {location.pathname.includes('/ProjectDetail/Setting/KanBanSettings') ? (
         <Breadcrumb.Item>
           <span>{t('other.colOrStatus')}</span>
         </Breadcrumb.Item>

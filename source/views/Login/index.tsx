@@ -43,7 +43,7 @@ const Page = () => {
         location.href = newUrl.href
       }
     } else {
-      const urlVal = '/ProjectManagement/Project'
+      const urlVal = '/Project'
       location.href = location.href.includes('localhost')
         ? `http://localhost:8000?ticket=${ticket}&language=${arr[lang]}`
         : `${urlVal}?ticket=${ticket}&language=${arr[lang]}`

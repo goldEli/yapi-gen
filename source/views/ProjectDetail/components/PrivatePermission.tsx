@@ -31,7 +31,7 @@ const PrivatePermission = () => {
 
   // 点击跳转到项目页面
   const onToProject = () => {
-    navigate('/Profile')
+    navigate('/Project')
     dispatch(setProjectInfo({}))
   }
 

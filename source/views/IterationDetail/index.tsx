@@ -166,7 +166,7 @@ const IterationDetail = () => {
     })
     getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
     const params = encryptPhp(JSON.stringify({ id: projectInfo?.id }))
-    navigate(`/ProjectManagement/Iteration?data=${params}`)
+    navigate(`/ProjectDetail/Iteration?data=${params}`)
   }
 
   // 删除

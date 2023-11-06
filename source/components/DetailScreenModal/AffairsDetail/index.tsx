@@ -223,7 +223,6 @@ const AffairsDetail = () => {
     onClose()
     const resultParams = encryptPhp(
       JSON.stringify({
-        type: 'sprint',
         id: params.id,
         categoryItem: {
           id: affairsInfo.category,
@@ -231,7 +230,7 @@ const AffairsDetail = () => {
         },
       }),
     )
-    navigate(`/SprintProjectManagement/DemandSetting?data=${resultParams}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${resultParams}`)
   }
 
   // 标签滚动
@@ -499,9 +498,7 @@ const AffairsDetail = () => {
         )}
       </DeleteConfirm>
       <ShareModal
-        url={`${
-          location.origin
-        }/SprintProjectManagement/Affair?data=${encryptPhp(
+        url={`${location.origin}/ProjectDetail/Affair?data=${encryptPhp(
           JSON.stringify({
             id: projectInfo.id,
             detailId: affairsInfo.id,

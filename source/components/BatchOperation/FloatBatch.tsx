@@ -100,15 +100,15 @@ const FloatBatch = (props: Props) => {
       if (props.type === 3) {
         params.specialType = 1
         const resultParams = encryptPhp(JSON.stringify(params))
-        url = `SprintProjectManagement/Affair?data=${resultParams}`
+        url = `ProjectDetail/Affair?data=${resultParams}`
       } else if (props.type === 2) {
         params.specialType = 2
         const resultParams = encryptPhp(JSON.stringify(params))
-        url = `ProjectManagement/Defect?data=${resultParams}`
+        url = `ProjectDetail/Defect?data=${resultParams}`
       } else if (props.type === 1) {
         params.specialType = 3
         const resultParams = encryptPhp(JSON.stringify(params))
-        url = `ProjectManagement/Demand?data=${resultParams}`
+        url = `ProjectDetail/Demand?data=${resultParams}`
       }
 
       text += `【${element.storyPrefixKey}-${element.name}】 ${beforeUrl}${url} \n`

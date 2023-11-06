@@ -49,16 +49,14 @@ const FlawInfo = () => {
     dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     const params = encryptPhp(
       JSON.stringify({
-        type: 4,
         id: projectInfo?.id,
-        pageIdx: 'DemandDetail',
         categoryItem: {
           id: flawInfo.category,
           status: flawInfo.category_status,
         },
       }),
     )
-    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
   }
   useEffect(() => {
     if (flawInfo?.id) {

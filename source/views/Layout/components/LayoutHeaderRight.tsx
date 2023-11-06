@@ -23,6 +23,8 @@ import {
   Line2,
   MenuItemBox,
   MineCreate,
+  CompanyCard,
+  RobotButton,
 } from '../style'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -34,7 +36,6 @@ import { getMessage } from '@/components/Message'
 import { getLoginDetail } from '@store/user/user.thunk'
 import { setIsRefresh } from '@store/user'
 import CommonModal from '@/components/CommonModal'
-import { CompanyCard, RobotButton } from '@/views/Container/style'
 import { getCompanyList, loginOut, updateCompany } from '@/services/user'
 import { changeKeyBoardVisible } from '@store/SiteNotifications'
 import { changeFreedVisibleVisible } from '@store/feedback'

@@ -129,7 +129,8 @@ const Header = () => {
       JSON.stringify({
         id: projectInfo.id,
         categoryItem: activeCategory,
-        type: 2,
+        type: 'work',
+        key: 2,
       }),
     )
     navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)

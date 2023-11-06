@@ -2514,5 +2514,6 @@
   "theNumberOfAssociationsForYourTasksDueTodayIsAndTheDailyReportCannotBe": "The number of associations for your tasks due today is 0 and the daily report cannot be sent.",
   "pleaseClickTheRelatedButtonUnderBelowToQuicklyAdd": "Please click the [+ Related Requirements] button under [Today’s Deadline] below to quickly add tasks!",
   "yourTaskAssociationNumberIsAndYouCannotSendDaily": "Your task association number is 0 and you cannot send daily reports.",
-  "pleaseClickTheAssociatedButtonBelowToQuicklyAddTasks": "Please click the [+ Associated Requirements] button below [Today’s Deadline] to quickly add tasks"
+  "pleaseClickTheAssociatedButtonBelowToQuicklyAddTasks": "Please click the [+ Associated Requirements] button below [Today’s Deadline] to quickly add tasks",
+  "thisProjectHasNoPermissions": "This project has no permissions"
 }

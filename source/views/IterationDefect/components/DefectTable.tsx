@@ -375,12 +375,10 @@ const DefectTable = (props: Props) => {
     dispatch(setActiveCategory({}))
     const resultParams = encryptPhp(
       JSON.stringify({
-        type: 4,
         id: projectId,
-        pageIdx: 'DemandDetail',
       }),
     )
-    navigate(`/ProjectManagement/ProjectSetting?data=${resultParams}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${resultParams}`)
   }
 
   useEffect(() => {

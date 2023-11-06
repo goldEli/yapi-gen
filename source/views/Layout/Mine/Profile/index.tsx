@@ -342,15 +342,15 @@ const Profile = () => {
     switch (item.resource_type) {
       case 1:
         params.specialType = 3
-        url = 'ProjectManagement/Demand'
+        url = 'ProjectDetail/Demand'
         break
       case 2:
         params.specialType = 2
-        url = 'ProjectManagement/Defect'
+        url = 'ProjectDetail/Defect'
         break
       case 10:
         params.specialType = 1
-        url = 'SprintProjectManagement/Affair'
+        url = 'ProjectDetail/Affair'
         break
       default:
         break
@@ -411,37 +411,27 @@ const Profile = () => {
                   borderLeft: '1px solid var(--neutral-n6-d1)',
                 }}
               ></div>
-              <ChartsItem
-                onClick={() => changeActive('/ProjectManagement/Mine/Carbon')}
-              >
+              <ChartsItem onClick={() => changeActive('/Mine/Carbon')}>
                 <span className={titleNumberCss3}>{data?.abeyance_count}</span>
                 <span className={titleTextCss}>{t('todo_work_items')}</span>
               </ChartsItem>
-              <ChartsItem
-                onClick={() => changeActive('/ProjectManagement/Mine/Finished')}
-              >
+              <ChartsItem onClick={() => changeActive('/Mine/Finished')}>
                 <span className={titleNumberCss3}>{data?.finish_count}</span>
                 <span className={titleTextCss}>
                   {t('completed_work_items')}
                 </span>
               </ChartsItem>
-              <ChartsItem
-                onClick={() => changeActive('/ProjectManagement/Mine/Create')}
-              >
+              <ChartsItem onClick={() => changeActive('/Mine/Create')}>
                 <span className={titleNumberCss3}>{data?.create_count}</span>
                 <span className={titleTextCss}>
                   {t('my_created_work_items')}
                 </span>
               </ChartsItem>
-              <ChartsItem
-                onClick={() => changeActive('/ProjectManagement/Mine/Agenda')}
-              >
+              <ChartsItem onClick={() => changeActive('/Mine/Agenda')}>
                 <span className={titleNumberCss3}>{data?.copy_me_count}</span>
                 <span className={titleTextCss}>{t('cc_to_me_work_items')}</span>
               </ChartsItem>
-              <ChartsItem
-                onClick={() => changeActive('/ProjectManagement/Mine/Examine')}
-              >
+              <ChartsItem onClick={() => changeActive('/Mine/Examine')}>
                 <span className={titleNumberCss3}>{data?.approving_count}</span>
                 <span className={titleTextCss}>
                   {t('pending_approval_work_items')}

@@ -47,7 +47,6 @@ const AffairsBasic = (props: Props) => {
     closeScreenModal()
     const params = encryptPhp(
       JSON.stringify({
-        type: 'sprint',
         id: projectInfo.id,
         categoryItem: {
           id: affairsInfo.category,
@@ -55,7 +54,7 @@ const AffairsBasic = (props: Props) => {
         },
       }),
     )
-    navigate(`/SprintProjectManagement/DemandSetting?data=${params}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
   }
 
   return (

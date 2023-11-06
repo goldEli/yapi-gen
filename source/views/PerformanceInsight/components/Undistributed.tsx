@@ -78,15 +78,15 @@ const DropdownMenu = (props: any) => {
     if (props.record.project_type === 2) {
       params.specialType = 1
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `SprintProjectManagement/Affair?data=${resultParams}`
+      url = `ProjectDetail/Affair?data=${resultParams}`
     } else if (props.record.project_type === 1 && props.record.is_bug === 1) {
       params.specialType = 2
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Defect?data=${resultParams}`
+      url = `ProjectDetail/Defect?data=${resultParams}`
     } else if (props.record.project_type === 1 && props.record.is_bug !== 1) {
       params.specialType = 3
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Demand?data=${resultParams}`
+      url = `ProjectDetail/Demand?data=${resultParams}`
     }
     const newUrl = `${window.origin}${import.meta.env.__URL_HASH__}${url}`
     copyLink(
@@ -332,22 +332,22 @@ const Undistributed = (props: any) => {
       iterateId: record.id,
     }
     if (!record.isCanEdit) {
-      getMessage({ msg: '该项目无权限', type: 'warning' })
+      getMessage({ msg: t('thisProjectHasNoPermissions'), type: 'warning' })
       return
     }
     let url = ''
     if (record.project_type === 2) {
       params.specialType = 1
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `SprintProjectManagement/Affair?data=${resultParams}`
+      url = `ProjectDetail/Affair?data=${resultParams}`
     } else if (record.project_type === 1 && record.is_bug === 1) {
       params.specialType = 2
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Defect?data=${resultParams}`
+      url = `ProjectDetail/Defect?data=${resultParams}`
     } else if (record.project_type === 1 && record.is_bug !== 1) {
       params.specialType = 3
       const resultParams = encryptPhp(JSON.stringify(params))
-      url = `ProjectManagement/Demand?data=${resultParams}`
+      url = `ProjectDetail/Demand?data=${resultParams}`
     }
     const newUrl = `${window.origin}${import.meta.env.__URL_HASH__}${url}`
     copyLink(

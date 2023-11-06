@@ -37,9 +37,9 @@ export const TreeContext: any = React.createContext('')
 
 const DemandIndex = () => {
   const { useKeys } = useKeyPress()
-  useKeys('1', '/ProjectManagement/Iteration')
-  useKeys('2', '/ProjectManagement/KanBan')
-  useKeys('3', '/Report/PerformanceInsight')
+  useKeys('1', '/ProjectDetail/Iteration')
+  useKeys('2', '/ProjectDetail/KanBan')
+  useKeys('3', '/Report/Performance')
   const keyRef = useRef()
   const dispatch = useDispatch()
   const [t] = useTranslation()

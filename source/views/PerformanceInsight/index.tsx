@@ -6,17 +6,13 @@ const PerformanceInsight = () => {
   const projectType = getProjectType()
   useKeys(
     '1',
-    projectType === 1
-      ? '/ProjectManagement/Iteration'
-      : '/SprintProjectManagement/Sprint',
+    projectType === 1 ? '/ProjectDetail/Iteration' : '/ProjectDetail/Sprint',
   )
   useKeys(
     '2',
-    projectType === 1
-      ? '/ProjectManagement/KanBan'
-      : '/SprintProjectManagement/KanBan',
+    projectType === 1 ? '/ProjectDetail/KanBan' : '/ProjectDetail/KanBan',
   )
-  useKeys('5', projectType === 1 ? '/ProjectManagement/Demand' : '')
+  useKeys('5', projectType === 1 ? '/ProjectDetail/Demand' : '')
 
   return (
     <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>

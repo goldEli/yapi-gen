@@ -13,7 +13,7 @@ const TypeConfiguration = () => {
 
   useEffect(() => {
     if (paramsData?.id) {
-      setType(paramsData?.type ?? 1)
+      setType(paramsData?.key ?? 1)
     }
   }, [paramsData])
 

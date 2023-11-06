@@ -74,7 +74,7 @@ export const SprintDropdownMenu = (props: Props) => {
         isOpenScreenDetail: true,
       }),
     )
-    const url = `/SprintProjectManagement/Affair?data=${params}`
+    const url = `/ProjectDetail/Affair?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${props?.record.storyPrefixKey}】${text}`,

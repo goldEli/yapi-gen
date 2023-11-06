@@ -214,16 +214,14 @@ const FlawDetail = () => {
     onClose()
     const resultParams = encryptPhp(
       JSON.stringify({
-        type: 4,
         id: params.id,
-        pageIdx: 'DemandDetail',
         categoryItem: {
           id: flawInfo.category,
           status: flawInfo.category_status,
         },
       }),
     )
-    navigate(`/ProjectManagement/ProjectSetting?data=${resultParams}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${resultParams}`)
     //
   }
 
@@ -274,7 +272,7 @@ const FlawDetail = () => {
         isOpenScreenDetail: true,
       }),
     )
-    const url = `/ProjectManagement/Defect?data=${params}`
+    const url = `/ProjectDetail/Defect?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${flawInfo.projectPrefix}-${flawInfo.prefixKey}】${text}`,
@@ -501,7 +499,7 @@ const FlawDetail = () => {
     <Wrap all={userPreferenceConfig.previewModel === 3}>
       <DeleteConfirmModal />
       <ShareModal
-        url={`${location.origin}/ProjectManagement/Defect?data=${encryptPhp(
+        url={`${location.origin}/ProjectDetail/Defect?data=${encryptPhp(
           JSON.stringify({
             detailId: flawInfo?.id,
             id: projectInfo.id,

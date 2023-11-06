@@ -88,7 +88,7 @@ export const SprintDropdownMenu = (props: Props) => {
         specialType: 1,
       }),
     )
-    const url = `/SprintProjectManagement/Affair?data=${params}`
+    const url = `/ProjectDetail/Affair?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${props.record.story_prefix_key}】${text}`,

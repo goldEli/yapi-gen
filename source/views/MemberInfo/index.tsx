@@ -36,7 +36,6 @@ const Main = styled.div({
 const MemberInfo = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id

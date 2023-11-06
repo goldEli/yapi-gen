@@ -85,11 +85,11 @@ const HisSide = () => {
       )
       const url =
         projectInfo.projectType === 1
-          ? '/ProjectManagement/ProjectSetting'
-          : '/SprintProjectManagement/Setting'
+          ? '/ProjectDetail/Setting/ProjectInfo'
+          : '/ProjectDetail/Setting/ProjectInfo'
       navigate(`${url}?data=${params}`)
     } else {
-      navigate('/AdminManagement/StaffManagement')
+      navigate('/AdminManagement/OrganizationInformation/StaffManagement')
     }
   }
 

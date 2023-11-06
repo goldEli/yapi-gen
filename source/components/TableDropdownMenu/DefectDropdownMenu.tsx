@@ -69,7 +69,7 @@ export const DefectDropdownMenu = (props: Props) => {
         isOpenScreenDetail: true,
       }),
     )
-    const url = `/ProjectManagement/Defect?data=${params}`
+    const url = `/ProjectDetail/Defect?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${props?.record.storyPrefixKey}】${text}`,

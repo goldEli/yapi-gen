@@ -33,10 +33,10 @@ export const TreeContext: any = React.createContext('')
 const Index = (props: any) => {
   const [t] = useTranslation()
   const { useKeys } = useKeyPress()
-  useKeys('1', '/ProjectManagement/Iteration')
-  useKeys('2', '/ProjectManagement/KanBan')
-  useKeys('3', '/Report/PerformanceInsight')
-  useKeys('5', '/ProjectManagement/Demand')
+  useKeys('1', '/ProjectDetail/Iteration')
+  useKeys('2', '/ProjectDetail/KanBan')
+  useKeys('3', '/Report/Performance')
+  useKeys('5', '/ProjectDetail/Demand')
   const keyRef = useRef()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { open: openToast, DeleteConfirmModal: DeleteConfirmModalToast } =
@@ -277,12 +277,10 @@ const Index = (props: any) => {
     dispatch(setActiveCategory({}))
     const resultParams = encryptPhp(
       JSON.stringify({
-        type: 4,
         id: projectInfo?.id,
-        pageIdx: 'DemandDetail',
       }),
     )
-    navigate(`/ProjectManagement/ProjectSetting?data=${resultParams}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${resultParams}`)
   }
 
   // 点击创建缺陷

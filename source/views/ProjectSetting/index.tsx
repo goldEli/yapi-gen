@@ -169,7 +169,7 @@ const Setting = () => {
       <SearchBox>
         <MyBreadcrumb
           setName={
-            resultTabList?.filter((i: any) => i.key === activeKey)[0]?.name
+            resultTabList?.filter((i: any) => i.key === activeKey)[0]?.label
           }
         />
       </SearchBox>

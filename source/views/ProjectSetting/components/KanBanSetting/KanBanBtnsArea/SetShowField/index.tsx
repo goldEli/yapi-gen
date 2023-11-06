@@ -62,7 +62,7 @@ const SetShowField = (props: Props) => {
       label: (
         <div
           onClick={() => {
-            navigate('/SprintProjectManagement/Setting')
+            navigate('/ProjectDetail/Setting')
           }}
         >
           {t('configuration_panel')}

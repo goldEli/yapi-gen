@@ -260,7 +260,7 @@ const StaffManagement = () => {
 
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
-      navigate('/ProjectManagement/Mine/Profile')
+      navigate('/Mine/Profile')
     } else {
       const params = encryptPhp(
         JSON.stringify({

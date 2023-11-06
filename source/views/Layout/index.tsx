@@ -193,7 +193,7 @@ const LayoutIndex = () => {
           }}
           projectId={
             !window.location.href.includes('/Report') ||
-            window.location.href.includes('/Report/PerformanceInsight')
+            window.location.href.includes('/Report/Performance')
               ? projectInfo?.id
               : null
           }

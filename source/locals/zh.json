@@ -2514,5 +2514,6 @@
   "theNumberOfAssociationsForYourTasksDueTodayIsAndTheDailyReportCannotBe": "您今日截止的任务关联数为0无法发送日报",
   "pleaseClickTheRelatedButtonUnderBelowToQuicklyAdd": "请在下方【今日截止】处点击【+关联需求】按钮即可快速添加任务！",
   "yourTaskAssociationNumberIsAndYouCannotSendDaily": "您的任务关联数为0无法发送日报",
-  "pleaseClickTheAssociatedButtonBelowToQuicklyAddTasks": "请在下方【今日截止】处点击【+关联需求】按钮即可快速添加任务"
+  "pleaseClickTheAssociatedButtonBelowToQuicklyAddTasks": "请在下方【今日截止】处点击【+关联需求】按钮即可快速添加任务",
+  "thisProjectHasNoPermissions": "该项目无权限"
 }

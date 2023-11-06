@@ -76,7 +76,7 @@ export const DemandOperationDropdownMenu = (props: Props) => {
       }),
     )
     if (props.record.project_type === 2) {
-      const url = `/SprintProjectManagement/Affair?data=${params}`
+      const url = `/ProjectDetail/Affair?data=${params}`
       text += ` ${beforeUrl}${url} \n`
       copyLink(
         `【${props?.record.storyPrefixKey}】${text}`,
@@ -85,7 +85,7 @@ export const DemandOperationDropdownMenu = (props: Props) => {
       )
       return
     }
-    const url = `/ProjectManagement/Demand?data=${params}`
+    const url = `/ProjectDetail/Demand?data=${params}`
     text += ` ${beforeUrl}${url} \n`
     copyLink(
       `【${props?.record.storyPrefixKey}】${text}`,

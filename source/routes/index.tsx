@@ -1,5 +1,4 @@
 import { useRoutes, Navigate } from 'react-router-dom'
-import { Container } from '@/views/Container'
 import React from 'react'
 import Loading from '@/components/Loading'
 import Login from '@/views/Login'
@@ -30,6 +29,10 @@ const routes = [
   {
     path: 'videoTeachDetail',
     element: <VideoTeachingDetail />,
+  },
+  {
+    path: '/ScheduleSearch',
+    element: lazy(() => import('@/views/ScheduleSearch')),
   },
   {
     path: '',
@@ -263,6 +266,10 @@ const routes = [
             ),
           },
           {
+            path: 'IterationDetail',
+            element: lazy(() => import('@/views/IterationDetail')),
+          },
+          {
             path: 'Setting',
             element: lazy(() => import('@/views/ProjectSetting')),
             children: [
@@ -322,46 +329,6 @@ const routes = [
       },
     ],
   },
-  // {
-  //   path: '',
-  //   element: <Container />,
-  //   children: [
-  //     {
-  //       path: '/ScheduleSearch',
-  //       element: lazy(() => import('@/views/ScheduleSearch')),
-  //     },
-  //     {
-  //       path: '/ProjectManagement',
-  //       element: lazy(() => import('@/views/ProjectManagement')),
-  //       children: [
-  //         {
-  //           path: 'IterationDetail',
-  //           element: lazy(() => import('@/views/IterationDetail')),
-  //         },
-  //         {
-  //           path: 'DemandSetting',
-  //           element: lazy(() => import('@/views/DemandSetting')),
-  //         },
-  //         {
-  //           path: 'WorkFlow',
-  //           element: lazy(() => import('@/views/Workflow')),
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: 'SprintProjectManagement',
-  //       element: lazy(() => import('@/views/SprintProjectManagement')),
-  //       children: [
-  //         {
-  //           path: 'DemandSetting',
-  //           element: lazy(() => import('@/views/SprintProjectDemand')),
-  //         },
-  //         {
-  //           path: 'WorkFlow',
-  //           element: lazy(() => import('@/views/SprintWorkflow')),
-  //         },
-  //       ],
-  //     },
 
   //     {
   //       path: 'MemberInfo',

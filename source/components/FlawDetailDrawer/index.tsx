@@ -195,7 +195,7 @@ const FlawDetailDrawer = () => {
         changeIds: demandIds,
       }),
     )
-    const url = `ProjectManagement/Defect?data=${params}`
+    const url = `ProjectDetail/Defect?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     setTimeout(() => {
       dispatch(setIsUpdateAddWorkItem(0))
@@ -349,16 +349,14 @@ const FlawDetailDrawer = () => {
     dispatch(setActiveCategory({}))
     const params = encryptPhp(
       JSON.stringify({
-        type: 4,
         id: projectInfo.id,
-        pageIdx: 'DemandDetail',
         categoryItem: {
           id: drawerInfo.category,
           status: drawerInfo.category_status,
         },
       }),
     )
-    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
   }
 
   // 确认删除
@@ -415,7 +413,7 @@ const FlawDetailDrawer = () => {
         isOpenScreenDetail: true,
       }),
     )
-    const url = `/ProjectManagement/Defect?data=${params}`
+    const url = `/ProjectDetail/Defect?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
       `【${drawerInfo.projectPrefix}-${drawerInfo.prefixKey}】${text}`,
@@ -606,7 +604,7 @@ const FlawDetailDrawer = () => {
   return (
     <>
       <ShareModal
-        url={`${location.origin}/ProjectManagement/Defect?data=${encryptPhp(
+        url={`${location.origin}/ProjectDetail/Defect?data=${encryptPhp(
           JSON.stringify({
             detailId: drawerInfo?.id,
             id: projectInfo.id,

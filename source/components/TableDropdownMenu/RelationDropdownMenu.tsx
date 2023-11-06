@@ -58,11 +58,11 @@ const RelationDropdownMenu = (props: Props) => {
     )
     let url
     if (props.type === 1) {
-      url = `/SprintProjectManagement/Affair?data=${params}`
+      url = `/ProjectDetail/Affair?data=${params}`
     } else if (props.type === 2) {
-      url = `/ProjectManagement/Defect?data=${params}`
+      url = `/ProjectDetail/Defect?data=${params}`
     } else {
-      url = `/ProjectManagement/Demand?data=${params}`
+      url = `/ProjectDetail/Demand?data=${params}`
     }
     text += `${beforeUrl}${url} \n`
     copyLink(

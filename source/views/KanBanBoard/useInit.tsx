@@ -22,16 +22,12 @@ const useInit = () => {
   const { useKeys } = useKeyPress()
   useKeys(
     '1',
-    projectType === 1
-      ? '/ProjectManagement/Iteration'
-      : '/SprintProjectManagement/Sprint',
+    projectType === 1 ? '/ProjectDetail/Iteration' : '/ProjectDetail/Sprint',
   )
-  useKeys('3', '/Report/PerformanceInsight')
+  useKeys('3', '/Report/Performance')
   useKeys(
     '5',
-    projectType === 1
-      ? '/ProjectManagement/Demand'
-      : '/SprintProjectManagement/Affair',
+    projectType === 1 ? '/ProjectDetail/Demand' : '/ProjectDetail/Affair',
   )
 
   // init

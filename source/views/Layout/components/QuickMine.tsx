@@ -942,7 +942,6 @@ interface QuickMineProps {
 const QuickMine = (props: QuickMineProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive2 = useRef<HTMLDivElement>(null)
   const { isRefresh, userInfo } = useSelector(store => store.user)

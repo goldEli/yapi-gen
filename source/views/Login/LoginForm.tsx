@@ -28,7 +28,6 @@ export default React.memo(
     languageMode: any
   }) => {
     const { dispatch, languageMode } = props
-    const navigate = useNavigate()
     const [form, setForm] = useState<TForm>({
       username: '',
       password: '',
@@ -137,8 +136,6 @@ export default React.memo(
 
           // return
           props.redirect()
-
-          // navigate(`/ProjectManagement/Project`)
         } else {
           setErrorMessage(res.msg)
           setErrorState(true)
@@ -188,8 +185,6 @@ export default React.memo(
 
           // return
           props.redirect()
-
-          // navigate(`/ProjectManagement/Project`)
         } else {
           setErrorMessage(res.msg)
           setErrorState(true)

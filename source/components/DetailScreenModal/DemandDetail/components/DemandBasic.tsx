@@ -46,16 +46,14 @@ const DemandBasic = (props: Props) => {
     dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     const params = encryptPhp(
       JSON.stringify({
-        type: 4,
         id: projectInfo.id,
-        pageIdx: 'DemandDetail',
         categoryItem: {
           id: demandInfo.category,
           status: demandInfo.category_status,
         },
       }),
     )
-    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
   }
 
   const onScrollBottom = () => {

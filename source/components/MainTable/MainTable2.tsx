@@ -5,14 +5,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Menu, Progress } from 'antd'
-
-import { useNavigate } from 'react-router-dom'
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useSelector } from '@store/index'
@@ -20,7 +17,6 @@ import PaginationBox from '../TablePagination'
 import ResizeTable from '../ResizeTable'
 import { editProject } from '@store/create-propject'
 import { useDispatch } from 'react-redux'
-import CommonButton from '../CommonButton'
 import { HiddenText } from '../StyleCommon'
 
 interface Props {
@@ -189,7 +185,6 @@ const NewSort = (sortProps: any) => {
 
 const MainTable = (props: Props) => {
   const [t] = useTranslation()
-  const navigate = useNavigate()
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const { userInfo } = useSelector(store => store.user)
   const hasCreate = getIsPermission(
@@ -476,14 +471,6 @@ const MainTable = (props: Props) => {
     props.onChangePageNavigation({ page, size })
   }
 
-  const onTableRow = useCallback((row: any) => {
-    return {
-      onClick: () => {
-        const params = encryptPhp(JSON.stringify({ id: row.id }))
-        navigate(`/ProjectManagement/Demand?data=${params}`)
-      },
-    }
-  }, [])
   const rowSelection = {
     type: 'radio',
     selectedRowKeys,

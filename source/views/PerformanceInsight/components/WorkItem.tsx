@@ -145,7 +145,7 @@ const Main = (props: UserInfo) => {
           specialType: 1,
         }),
       )
-      const url = `SprintProjectManagement/Affair?data=${params}`
+      const url = `ProjectDetail/Affair?data=${params}`
       window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     } else if (row.project_type === 1 && row.story_type === 2) {
       // 缺陷
@@ -158,7 +158,7 @@ const Main = (props: UserInfo) => {
           specialType: 2,
         }),
       )
-      const url = `ProjectManagement/Defect?data=${params}`
+      const url = `ProjectDetail/Defect?data=${params}`
       window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     } else {
       // 需求
@@ -171,7 +171,7 @@ const Main = (props: UserInfo) => {
           specialType: 3,
         }),
       )
-      const url = `ProjectManagement/Demand?data=${params}`
+      const url = `ProjectDetail/Demand?data=${params}`
       window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     }
   }
