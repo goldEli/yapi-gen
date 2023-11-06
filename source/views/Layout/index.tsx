@@ -111,6 +111,14 @@ const LayoutIndex = () => {
     }
   }
 
+  // 关闭弹窗类
+  const onClose = () => {
+    dispatch(changeCreateVisible(false))
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    closeScreenModal()
+    dispatch(changeFreedVisibleVisible(false))
+  }
+
   useEffect(() => {
     document
       .getElementById('layoutWrap')
@@ -153,16 +161,9 @@ const LayoutIndex = () => {
         <GlobalStyle />
 
         <LayoutWrap id="layoutWrap">
-          <LayoutSideIndex />
+          <LayoutSideIndex onClose={onClose} />
           <LayoutContent isOpen={layoutSideCollapse}>
-            <LayoutHeader
-              onClick={() => {
-                dispatch(changeCreateVisible(false))
-                dispatch(saveScreenDetailModal({ visible: false, params: {} }))
-                closeScreenModal()
-                dispatch(changeFreedVisibleVisible(false))
-              }}
-            >
+            <LayoutHeader onClick={onClose}>
               <LayoutHeaderLeft onSetWidth={setLeftWidth} />
               <LayoutSecondaryMenu width={width} />
               <LayoutHeaderRight

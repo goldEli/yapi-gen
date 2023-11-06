@@ -8,7 +8,6 @@ import { uploadFileByTask } from '@/services/cos'
 import {
   getAffiliation,
   getAffiliationUser,
-  getGroupList,
   getProjectInfoOnly,
 } from '@/services/project'
 import { changeCreateVisible, editProject } from '@store/create-propject'
@@ -39,13 +38,12 @@ import styled from '@emotion/styled'
 import ProjectType from '../ProjectType/ProjectType'
 import ProjectTemplate from '../ProjectTemplate/ProjectTemplate'
 import ProjectChooseSide from '../ProjectChooseSide/ProjectChooseSide'
-import { setProjectInfo } from '@store/project'
-import { getProjectCover } from '@store/cover/thunks'
 import {
   RowStyle,
   StyleLeft,
   StyleRight,
 } from '@/views/Layout/Report/Formwork/RightWrap'
+import { getProjectInfoStore } from '@store/project/project.thunk'
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
@@ -86,18 +84,6 @@ const OpacityDiv = styled.div<{ op: boolean }>`
   pointer-events: ${props => (props.op ? '' : 'none')};
 `
 
-const Side = styled.div<{ op: boolean }>`
-  opacity: ${props => (props.op ? '1' : '0')};
-  width: 320px;
-  position: absolute;
-  left: ${props => (props.op ? '0px' : '-320px')};
-  top: 0;
-  height: 100%;
-  background-color: var(--neutral-n8);
-  transition: all 1s;
-  flex-shrink: 0;
-`
-
 const CreateAProjectForm = () => {
   const covers = useSelector(state => state.cover.covers)
   const [t] = useTranslation()
@@ -134,7 +120,7 @@ const CreateAProjectForm = () => {
   const [type, setType] = useState(0)
   const [model, setModel] = useState<any>(0)
   const [multipleSelectionItems, setMultipleSelectionItems] = useState<any>([])
-  const { projectInfo } = useSelector(state => state.project)
+  const [projectInfo, setProjectInfo] = useState({})
   const { isRefresh } = useSelector(state => state.user)
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2')
@@ -154,13 +140,14 @@ const CreateAProjectForm = () => {
     }
     if (isEditId) {
       dispatch(postEditCreate({ ...pro, ...obj, id: isEditId }))
-      dispatch(setProjectInfo({ ...projectInfo, ...obj, id: isEditId }))
+      setProjectInfo({ ...projectInfo, ...obj, id: isEditId })
       setLeaderId(0)
       return
     }
 
     dispatch(postCreate(obj))
     setLeaderId(0)
+    dispatch(getProjectInfoStore({ projectId: isEditId }))
   }
   const onConfirm = async () => {
     form.submit()
@@ -243,7 +230,7 @@ const CreateAProjectForm = () => {
   //编辑项目逻辑
   const getProjectInfo = async () => {
     const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
-    dispatch(setProjectInfo(res))
+    setProjectInfo(res)
     const res2 = await getAffiliationUser(res.team_id)
 
     setSelectLeaders(
@@ -355,9 +342,6 @@ const CreateAProjectForm = () => {
     setLock(true)
 
     setMyCover('')
-    // return () => {
-    //   dispatch(editProject({ visible: false, id: '' }))
-    // }
     setTimeout(() => {
       inputRefDom.current?.focus()
     }, 100)

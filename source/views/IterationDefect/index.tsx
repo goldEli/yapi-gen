@@ -273,11 +273,6 @@ const Index = (props: any) => {
     }
   }, [])
 
-  const resultAuth = onComputedPermission(
-    currentMenu,
-    '/ProjectManagement/Project',
-  )
-
   const onToastConfirm = () => {
     dispatch(setActiveCategory({}))
     const resultParams = encryptPhp(
@@ -308,13 +303,11 @@ const Index = (props: any) => {
 
   return (
     <PermissionWrap
-      auth={resultAuth ? 'b/flaw/' : '/ProjectManagement/Project'}
+      auth="b/flaw/"
       permission={
-        resultAuth
-          ? isLength
-            ? ['0']
-            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
-          : currentMenu?.children?.map((i: any) => i.url)
+        isLength
+          ? ['0']
+          : projectInfo?.projectPermissions?.map((i: any) => i.identity)
       }
     >
       <DeleteConfirmModalToast />

@@ -11,6 +11,7 @@ import {
   getWorkflowList,
   changeCategoryStatus,
 } from '@/services/project'
+import { setProjectInfoValues } from '@store/project'
 import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -21,7 +22,7 @@ import { storyConfigCategoryList as storyConfigCategoryListApi } from '@/service
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import CommonButton from '@/components/CommonButton'
-import EditCategory from '@/views/ProjectManagement/DemandSettingSide/EditCategory'
+import EditCategory from '../../CategoryLeft/EditCategory'
 
 const HeaderWrap = styled.div`
   height: 66px;
@@ -88,11 +89,11 @@ const Header = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form] = Form.useForm()
-
   const { startUsing, activeCategory, categoryList } = useSelector(
     store => store.category,
   )
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+
   const [checked, setChecked] = useState(startUsing)
   const [isDelete, setIsDelete] = useState(false)
   const [hasDeleteVisible, setHasDeleteVisible] = useState(false)
@@ -103,6 +104,7 @@ const Header = () => {
   })
   // 需求类别侧边栏
   const getList = async () => {
+    console.log(22222222222)
     await dispatch(storyConfigCategoryList({ projectId: projectInfo.id }))
   }
   useEffect(() => {
@@ -126,12 +128,11 @@ const Header = () => {
     const params = encryptPhp(
       JSON.stringify({
         id: projectInfo.id,
-        pageIdx: 'work',
         categoryItem: activeCategory,
-        type: 'work',
+        type: 2,
       }),
     )
-    navigate(`/SprintProjectManagement/WorkFlow?data=${params}`)
+    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
   }
 
   // 编辑
@@ -140,9 +141,7 @@ const Header = () => {
   }
   // 删除逻辑
   const onDelete = async () => {
-    // const res = await dispatch(
-    //   storyConfigCategoryList({ projectId: projectInfo.id }),
-    // )
+    setIsDelete(true)
     const res = await storyConfigCategoryListApi({ projectId: projectInfo.id })
     const data = res.list
     const currentItem = data.find(
@@ -204,11 +203,20 @@ const Header = () => {
   }
   // 开关
   const onChangeOpenState = async (e: boolean) => {
+    const projectInfoValuesData = JSON.parse(JSON.stringify(projectInfoValues))
     await changeCategoryStatus({
       projectId: projectInfo.id,
       id: activeCategory?.id,
       status: e ? 1 : 2,
     })
+    projectInfoValuesData
+      .filter((item: { key: string }) => item.key === 'category')[0]
+      .children.forEach((item: { id: any; status: number }) => {
+        if (item.id === activeCategory.id) {
+          item.status = e ? 1 : 2
+        }
+      })
+    dispatch(setProjectInfoValues(projectInfoValuesData))
     await dispatch(storyConfigCategoryList({ projectId: projectInfo.id }))
     let dataItem = null
     if (e) {

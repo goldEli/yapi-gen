@@ -6,13 +6,10 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { Space } from 'antd'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
-import { getProjectInfo } from '@/services/project'
-import { setProjectInfo } from '@store/project'
 import { editProject } from '@store/create-propject'
 
 const Wrap = styled.div({
@@ -22,7 +19,7 @@ const Wrap = styled.div({
   borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
-  padding: '0px 0 24px 24px',
+  padding: '24px',
 })
 
 const InfoLeft = styled.div({

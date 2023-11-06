@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
-
-import { Radio } from 'antd'
 import { useSelector, useDispatch } from '@store/index'
 import { updateHomeSetting } from '@/services/sprint'
 import { getMessage } from '@/components/Message'
@@ -9,8 +7,9 @@ import { setProjectInfo } from '@store/project/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
+
 const Wrap = styled.div`
-  padding-left: 24px;
+  padding: 24px;
 `
 const Title = styled.div`
   color: var(--neutral-n1-d1);
@@ -44,39 +43,71 @@ const HomeSetting: React.FC<IProps> = props => {
   const { projectInfo } = useSelector(state => state.project)
   const urls = [
     {
-      url: '/ProjectManagement/Demand',
+      url: '/ProjectDetail/Demand',
       name: t('sprintProject.need'),
       color: '#6688FF',
       color2: 'rgba(102,136,255,0.1)',
       icon: 'demand',
     },
     {
-      url: '/ProjectManagement/Iteration',
+      url: '/ProjectDetail/Iteration',
       name: t('sprintProject.iteration'),
       color: '#FA9746',
       color2: ' rgba(250,151,70,0.14)',
       icon: 'interation-2',
     },
     {
-      url: '/ProjectManagement/KanBan',
+      url: '/ProjectDetail/KanBan',
       name: t('sprintProject.kanban'),
       color: '#43BA9A',
       color2: ' rgba(67,186,154,0.1)',
       icon: 'layout',
     },
     {
-      url: '/Report/PerformanceInsight',
+      url: '/ProjectDetail/Performance',
       name: t('sprintProject.report'),
       color: '#A176FB ',
       color2: ' rgba(161,118,251,0.1)',
       icon: 'pie-chart-02',
     },
     {
-      url: '/ProjectManagement/Defect',
+      url: '/ProjectDetail/Defect',
       name: t('sprintProject.defect'),
       color: 'red',
       color2: ' rgba(255,92,94,0.1)',
       icon: 'bug',
+    },
+  ]
+  const urlsSprint = [
+    {
+      url: '/ProjectDetail/Affair',
+      name: t('sprintProject.transactionList'),
+      color: '#6688FF',
+
+      color2: 'rgba(102,136,255,0.1)',
+      icon: 'book-open',
+    },
+
+    {
+      url: '/ProjectDetail/Sprint',
+      name: t('sprintProject.sprint'),
+      color: '#FA9746',
+      color2: ' rgba(250,151,70,0.14)',
+      icon: 'timer',
+    },
+    {
+      url: '/ProjectDetail/KanBan',
+      name: t('sprintProject.kanban'),
+      color: '#43BA9A',
+      color2: ' rgba(67,186,154,0.1)',
+      icon: 'layout',
+    },
+    {
+      url: '/ProjectDetail/Performance',
+      name: t('sprintProject.report'),
+      color: '#A176FB ',
+      color2: ' rgba(161,118,251,0.1)',
+      icon: 'pie-chart-02',
     },
   ]
 
@@ -95,18 +126,23 @@ const HomeSetting: React.FC<IProps> = props => {
   }
   useEffect(() => {
     if (!projectInfo.defaultHomeMenu) {
-      setValue('/ProjectManagement/Demand')
+      setValue(
+        projectInfo?.projectType === 1
+          ? '/ProjectDetail/Demand'
+          : '/ProjectDetail/Affair',
+      )
       return
     }
     setValue(projectInfo.defaultHomeMenu)
   }, [])
+
   return (
     <Wrap>
       <Title>{t('sprintProject.projectHomeConfiguration')}</Title>
       <SubTitle>{t('sprintProject.defineProjectDefaultHomeLocation')}</SubTitle>
       <RadioWrap />
       <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-        {urls.map(item => (
+        {(projectInfo?.projectType === 1 ? urls : urlsSprint).map(item => (
           <div
             className={hov}
             key={item.url}

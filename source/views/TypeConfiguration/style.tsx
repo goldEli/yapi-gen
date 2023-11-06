@@ -2,10 +2,24 @@
 /* eslint-disable camelcase */
 import styled from '@emotion/styled'
 
+export const TypeConfigurationWrap = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`
+
+export const ContentWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: calc(100% - 220px);
+`
+
 export const AllWrap = styled.div`
   display: flex;
   height: 100%;
-  width: 100%;
+  width: 220px;
+  border-right: 1px solid var(--neutral-n6-d1);
 `
 
 export const WrapDetail = styled.div`
@@ -25,7 +39,7 @@ export const WrapSet = styled.div`
 export const SideTop = styled.div`
   display: flex;
   align-items: center;
-  padding: 24px 24px 14px;
+  padding: 24px 24px 16px;
   img {
     width: 32px;
     height: 32px;
@@ -55,6 +69,7 @@ export const SideInfo = styled.div`
 
 export const MenuBox = styled.div`
   height: calc(100% - 150px);
+  overflow-y: scroll;
   overflow-x: hidden;
 `
 
@@ -126,16 +141,13 @@ export const BackStyle = styled.div`
   /* height: 48px; */
   display: flex;
   align-items: center;
-  padding: 0 19px;
-  padding-bottom: 14px;
+  padding: 0 16px;
+  padding-bottom: 16px;
   color: var(--neutral-n3);
   font-size: 12px;
   &:hover {
     cursor: pointer;
     color: var(--primary-d2);
-  }
-  span:last-child {
-    margin-left: 2px;
   }
 `
 export const TitleStyle = styled.div`
@@ -147,7 +159,6 @@ export const TitleStyle = styled.div`
   color: var(--neutral-n3);
   justify-content: space-between;
 `
-
 export const Tabs = styled.div`
   width: 100%;
   display: flex;
@@ -226,7 +237,6 @@ export const AffairTypeHeader = styled.div`
   justify-content: space-between;
   padding: 0px 16px;
   margin-bottom: 4px;
-
   > span {
     padding: 2px;
     &:hover {

@@ -32,10 +32,7 @@ const KanBanBoard: React.FC<IProps> = props => {
   const { projectInfo } = useSelector(store => store.project)
   useInit()
   const { sortByRowAndStatusOptions } = useSelector(store => store.kanBan)
-  const resultAuth = onComputedPermission(
-    currentMenu,
-    '/ProjectManagement/Project',
-  )
+
   useEffect(() => {
     return () => {
       console.log('离开')
@@ -47,19 +44,11 @@ const KanBanBoard: React.FC<IProps> = props => {
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
   return (
     <PermissionWrap
-      auth={
-        resultAuth
-          ? projectInfo.projectType === 2
-            ? 'b/transaction/'
-            : 'b/story/'
-          : '/ProjectManagement/Project'
-      }
+      auth={projectInfo.projectType === 2 ? 'b/transaction/' : 'b/story/'}
       permission={
-        resultAuth
-          ? isLength
-            ? ['0']
-            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
-          : currentMenu?.children?.map((i: any) => i.url)
+        isLength
+          ? ['0']
+          : projectInfo?.projectPermissions?.map((i: any) => i.identity)
       }
     >
       <KanBanBoardBox>

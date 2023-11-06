@@ -5,14 +5,12 @@
 /* eslint-disable new-cap */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import IconFont from '@/components/IconFont'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
-import { Divider, message } from 'antd'
 import { createRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { CategoryWrap, StepBoxWrap } from '@/components/StyleCommon'
+import { CategoryWrap } from '@/components/StyleCommon'
 import StepPageOne from './components/StepPageOne'
 import StepPageTwo from './components/StepPageTwo'
 import { useTranslation } from 'react-i18next'
@@ -23,7 +21,6 @@ import { getMessage } from '@/components/Message'
 import {
   RowStyle,
   Col,
-  Col2,
   StyleLeft,
   StyleRight,
   Text,
@@ -32,7 +29,7 @@ import {
 const Wrap = styled.div({
   padding: 16,
   height: '100%',
-  width: '100%',
+  width: 'calc(100% - 220px)',
   display: 'flex',
   flexDirection: 'column',
 })
@@ -43,14 +40,6 @@ const SetTitleWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   fontSize: 12,
-})
-
-const BackWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  color: 'var(--primary-d2)',
-  fontWeight: 400,
-  cursor: 'pointer',
 })
 
 const ContentWrap = styled.div({
@@ -68,7 +57,6 @@ const LabelWrap = styled.div({
   alignItems: 'center',
   marginBottom: 24,
   span: {
-    // marginLeft: 8,
     fontFamily: 'SiYuanMedium',
     fontSize: 14,
     color: 'var(--neutral-n1-d1)',
@@ -80,76 +68,15 @@ const LabelWrap = styled.div({
   },
 })
 
-const StepWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '24px 0',
-})
-
-const SetBreadcrumb = () => {
-  const [t] = useTranslation()
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const { projectInfo } = useSelector(store => store.project)
-  const paramsData = getParamsData(searchParams)
-  const activeTabs = Number(paramsData.type) || 0
-
-  const onBack = () => {
-    navigate(-1)
-  }
-
-  const onToSet = () => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: activeTabs,
-        id: projectInfo.id,
-        pageIdx: 'main',
-      }),
-    )
-    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
-  }
-
-  return (
-    <SetTitleWrap>
-      <MyBreadcrumb setName={t('sprintProject.configureWorkflow')} />
-      {/* <BackWrap onClick={onBack}>
-        <IconFont type="return" style={{ fontSize: 16, marginRight: 6 }} />
-        <span>{t('newlyAdd.back')}</span>
-      </BackWrap>
-      <Divider type="vertical" style={{ background: 'var(--neutral-n4)' }} />
-      <div
-        style={{ color: 'var(--neutral-n1-d1)', cursor: 'pointer' }}
-        onClick={onToSet}
-      >
-        {t('newlyAdd.demandSet')}
-      </div>
-      <IconFont
-        type="right"
-        style={{ color: 'var(--neutral-n1-d1)', margin: '0 4px' }}
-      />
-      <div style={{ color: 'var(--neutral-n3)' }}>
-        {t('newlyAdd.workflowSet')}
-      </div> */}
-    </SetTitleWrap>
-  )
-}
-
 const Workflow = () => {
   const [t] = useTranslation()
-  const { colorList, projectInfo } = useSelector(store => store.project)
-  const { currentMenu } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
   const [step, setStep] = useState(1)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
 
   const { categoryItem } = paramsData
   const ChildRef: any = createRef()
-  // 计算当前选中下是否有项目管理权限
-  const resultAuth =
-    currentMenu?.children?.filter(
-      (i: any) => i.url === '/ProjectManagement/Project',
-    )?.length > 0
 
   const onChangeStep = (val: number) => {
     if (step === val) {
@@ -171,24 +98,18 @@ const Workflow = () => {
 
   return (
     <PermissionWrap
-      auth={
-        resultAuth ? 'b/project/story_config' : '/ProjectManagement/Project'
-      }
+      auth="b/project/story_config"
       permission={
-        resultAuth
-          ? isLength
-            ? ['0']
-            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
-          : currentMenu?.children?.map((i: any) => i.url)
+        isLength
+          ? ['0']
+          : projectInfo?.projectPermissions?.map((i: any) => i.identity)
       }
     >
       <Wrap>
-        <SetBreadcrumb />
-
         <ContentWrap>
           <LabelWrap>
             <span>{t('newlyAdd.workflowSet')}</span>
-            <CategoryWrap color={categoryItem.color} bgColor={''}>
+            <CategoryWrap color={categoryItem?.color} bgColor={''}>
               <>
                 <img
                   src={categoryItem.attachmentPath}
@@ -213,36 +134,6 @@ const Workflow = () => {
               <StyleRight bgc={step === 2} />
             </Col>
           </RowStyle>
-          {/* <StepWrap>
-            <StepBoxWrap
-              style={{ cursor: 'pointer' }}
-              active={step === 1}
-              onClick={() => onChangeStep(1)}
-            >
-              <div className="border">
-                <div className="circle">1</div>
-              </div>
-              <span>{t('newlyAdd.definitionStatus')}</span>
-            </StepBoxWrap>
-            <div
-              style={{
-                width: 160,
-                height: 1,
-                background: 'var(--neutral-n6-d2)',
-                margin: '0 8px',
-              }}
-            />
-            <StepBoxWrap
-              style={{ cursor: 'pointer' }}
-              active={step === 2}
-              onClick={() => onChangeStep(2)}
-            >
-              <div className="border">
-                <div className="circle">2</div>
-              </div>
-              <span>{t('newlyAdd.reviewSet')}</span>
-            </StepBoxWrap>
-          </StepWrap> */}
           {step === 1 ? (
             <StepPageOne onRef={ChildRef} onChangeStep={onChangeStep} />
           ) : (

@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import KanBan from '../KanBan'
-import useControlScrollPlane from '../hooks/useControlScrollPlane'
 
 interface BoardRightProps {}
 

@@ -29,7 +29,6 @@ import CreateDemandRight from './CreateWorkItemRight'
 import { addAffairs, getAffairsInfo, updateAffairs } from '@/services/affairs'
 import { addFlaw, getFlawInfo, updateFlaw } from '@/services/flaw'
 import moment from 'moment'
-import { storyConfigCategoryList } from '@store/category/thunk'
 
 const ModalFooter = styled.div({
   width: '100%',

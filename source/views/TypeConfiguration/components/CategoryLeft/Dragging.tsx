@@ -5,7 +5,7 @@ import { setActiveCategory } from '@store/category'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useEffect, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MenuItem } from './style'
+import { MenuItem } from '../../style'
 
 const Container = styled.div`
   &:hover {
@@ -146,28 +146,22 @@ const SliderList = (props: any) => {
     >
       <MenuItem
         onClick={() => {
-          const params = encryptPhp(
-            JSON.stringify({
-              id: projectInfo?.id,
-              pageIdx: 'main',
-              type: 'ProjectAffair',
-            }),
-          )
-          location.pathname === '/SprintProjectManagement/WorkFlow' &&
-            navigate(`/SprintProjectManagement/DemandSetting?data=${params}`)
           dispatch(setActiveCategory(props.row)), props.onClick(index)
+          const routerParams = {
+            id: projectInfo?.id,
+            categoryItem: props.row,
+          }
+          navigate(
+            `/ProjectDetail/Setting/TypeConfiguration?data=${encryptPhp(
+              JSON.stringify(routerParams),
+            )}`,
+          )
         }}
         key={children.icon}
         isActive={active}
       >
         {children.active}
-        <img
-          style={{ width: '18px' }}
-          src={
-            children.attachmentPath ||
-            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png'
-          }
-        />
+        <img style={{ width: '18px' }} src={children.attachmentPath} />
         <div>{children.name}</div>
       </MenuItem>
     </Container>
@@ -178,12 +172,12 @@ const Sortable = (props: any) => {
   const { list, setList } = props
   return (
     <div
-    // style={{
-    //   width: '100%',
-    //   height: '87%',
-    //   overflowY: 'auto',
-    //   overflowX: 'hidden',
-    // }}
+      style={{
+        width: '100%',
+        height: '87%',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+      }}
     >
       {list?.map((child: any, i: number) => (
         <SliderList

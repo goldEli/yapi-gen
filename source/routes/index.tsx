@@ -252,6 +252,72 @@ const routes = [
             path: 'WorkHours',
             element: lazy(() => import('@/views/WorkingHoursStatistics')),
           },
+          {
+            path: 'Performance',
+            element: lazy(() => import('@/views/PerformanceInsight')),
+          },
+          {
+            path: 'ChildLevel',
+            element: lazy(
+              () => import('@/views/PerformanceInsight/ChildLevel'),
+            ),
+          },
+          {
+            path: 'Setting',
+            element: lazy(() => import('@/views/ProjectSetting')),
+            children: [
+              {
+                path: 'ProjectInfo',
+                element: lazy(
+                  () => import('@/views/ProjectSetting/components/ProjectInfo'),
+                ),
+              },
+              {
+                path: 'ProjectSet',
+                element: lazy(
+                  () => import('@/views/ProjectSetting/components/ProjectSet'),
+                ),
+              },
+              {
+                path: 'ProjectNote',
+                element: lazy(
+                  () => import('@/views/ProjectSetting/components/ProjectNote'),
+                ),
+              },
+              {
+                path: 'TypeConfiguration',
+                element: lazy(() => import('@/views/TypeConfiguration')),
+              },
+              {
+                path: 'KanBanSettings',
+                element: lazy(
+                  () =>
+                    import('@/views/ProjectSetting/components/KanBanSetting'),
+                ),
+              },
+              {
+                path: 'HomeSettings',
+                element: lazy(
+                  () => import('@/views/ProjectSetting/components/HomeSetting'),
+                ),
+              },
+              {
+                path: 'DailyReportRules',
+                element: lazy(
+                  () =>
+                    import(
+                      '@/views/ProjectSetting/components/DailyReportRules'
+                    ),
+                ),
+              },
+            ],
+          },
+          {
+            path: 'Member',
+            element: lazy(
+              () => import('@/views/ProjectSetting/components/ProjectMember'),
+            ),
+          },
         ],
       },
     ],
@@ -260,20 +326,6 @@ const routes = [
   //   path: '',
   //   element: <Container />,
   //   children: [
-  //     {
-  //       path: 'PrivatePermission',
-  //       element: lazy(
-  //         () => import('@/views/ProjectManagement/PrivatePermission'),
-  //       ),
-  //     },
-  //     {
-  //       path: '/Performance',
-  //       element: lazy(() => import('@/views/PerformanceInsight')),
-  //     },
-  //     {
-  //       path: '/ChildLevel',
-  //       element: lazy(() => import('@/views/PerformanceInsight/ChildLevel')),
-  //     },
   //     {
   //       path: '/ScheduleSearch',
   //       element: lazy(() => import('@/views/ScheduleSearch')),
@@ -285,10 +337,6 @@ const routes = [
   //         {
   //           path: 'IterationDetail',
   //           element: lazy(() => import('@/views/IterationDetail')),
-  //         },
-  //         {
-  //           path: 'ProjectSetting',
-  //           element: lazy(() => import('@/views/ProjectSetting')),
   //         },
   //         {
   //           path: 'DemandSetting',
@@ -304,14 +352,6 @@ const routes = [
   //       path: 'SprintProjectManagement',
   //       element: lazy(() => import('@/views/SprintProjectManagement')),
   //       children: [
-  //         {
-  //           path: 'SprintReport',
-  //           element: lazy(() => import('@/views/SprintProjectReport')),
-  //         },
-  //         {
-  //           path: 'Setting',
-  //           element: lazy(() => import('@/views/SprintProjectSetting')),
-  //         },
   //         {
   //           path: 'DemandSetting',
   //           element: lazy(() => import('@/views/SprintProjectDemand')),

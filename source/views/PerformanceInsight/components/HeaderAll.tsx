@@ -231,7 +231,7 @@ const HeaderAll = (props: HaderProps) => {
           overPageType: paramsData?.overPageType,
         }),
       )
-      navigate(`/Performance?data=${params}`)
+      navigate(`/ProjectDetail/Performance?data=${params}`)
     } else {
       const params = encryptPhp(
         JSON.stringify({
@@ -249,7 +249,7 @@ const HeaderAll = (props: HaderProps) => {
           headerParmas: paramsData.headerParmas,
         }),
       )
-      navigate(`/Report/PerformanceInsight?data=${params}`)
+      navigate(`/ProjectDetail/Performance?data=${params}`)
     }
   }
 

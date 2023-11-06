@@ -92,7 +92,11 @@ const MorePopoverComponent = (props: MorePopoverComponentProps) => {
   )
 }
 
-const LayoutSideIndex = () => {
+interface LayoutSideIndexProps {
+  onClose(): void
+}
+
+const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   const [t] = useTranslation()
   const routerPath = useLocation()
   const navigate = useNavigate()
@@ -215,7 +219,7 @@ const LayoutSideIndex = () => {
   }, [menuPermission, routerPath])
 
   return (
-    <LayoutSide isOpen={layoutSideCollapse}>
+    <LayoutSide isOpen={layoutSideCollapse} onClick={props.onClose}>
       {/* 折叠状态下的 */}
       {!layoutSideCollapse && (
         <NotOpenLogoWrap>

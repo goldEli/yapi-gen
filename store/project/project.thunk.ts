@@ -20,8 +20,15 @@ export const getProjectInfoValuesStore = createAsyncThunk(
   `${name}/getProjectInfoValuesStore`,
   async (params: any) => {
     const res = await services.project.getProjectInfoValues(params)
-    console.log(res)
+    return res
+  },
+)
 
+// 项目信息
+export const getProjectInfoStore = createAsyncThunk(
+  `${name}/getProjectInfo`,
+  async (params: any) => {
+    const res = await services.project.getProjectInfo(params)
     return res
   },
 )

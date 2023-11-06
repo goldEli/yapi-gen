@@ -26,13 +26,14 @@ import { getMessage } from '@/components/Message'
 
 const Warp = styled.div({
   height: '100%',
+  padding: '24px',
 })
 
 const SetMain = styled.div({
   paddingBottom: '0px',
   background: 'white',
   borderRadius: 6,
-  minHeight: '100%',
+  height: '100%',
   width: '100%',
   display: 'flex',
 })
@@ -51,7 +52,7 @@ const SetRight = styled.div({
   flexDirection: 'column',
   marginLeft: 24,
   width: 'calc(100% - 184px)',
-  height: 'calc(100vh - 128px)',
+  height: '100%',
   overflow: 'scroll',
 })
 const Title = styled.div({
@@ -445,8 +446,8 @@ const ProjectSet = () => {
           style={{
             zIndex: 11,
             position: 'absolute',
-            right: '24px',
-            top: '-60px',
+            right: '48px',
+            top: '0px',
           }}
         >
           <CommonButton

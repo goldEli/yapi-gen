@@ -17,11 +17,13 @@ import {
   addStoryConfigCategory,
   updateStoryConfigCategory,
 } from '@/services/project'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { getMessage } from '@/components/Message'
-import { useDispatch } from '@store/index'
+import { useSelector, useDispatch } from '@store/index'
+import { setProjectInfoValues } from '@store/project'
 import { setActiveCategory, setStartUsing } from '@store/category'
 import { storyConfigCategoryList } from '@store/category/thunk'
+import { encryptPhp } from '@/tools/cryptoPhp'
 const FormWrap = styled(Form)({
   '.ant-form-item': {
     margin: '22px 0 0 0',
@@ -49,6 +51,7 @@ interface EditorProps {
 
 const EditorCategory = (props: EditorProps) => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const [path, setPath] = useState<any>('')
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
@@ -57,6 +60,7 @@ const EditorCategory = (props: EditorProps) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [colorList, setColorList] = useState<any>()
   const [hiddenUpload, setHiddenUpload] = useState(false)
+  const { projectInfoValues } = useSelector(store => store.project)
   const dispatch = useDispatch()
   // 图标icon
   const getIconList = async () => {
@@ -114,15 +118,43 @@ const EditorCategory = (props: EditorProps) => {
       }
     } else {
       try {
-        let res = await addStoryConfigCategory({
+        const res = await addStoryConfigCategory({
           ...params,
           work_type: props.workType,
         })
+        const projectInfoValuesData = JSON.parse(
+          JSON.stringify(projectInfoValues),
+        )
+        const data = res.data[0]
+        projectInfoValuesData.forEach(
+          (item: { children: any[]; key: string }) => {
+            if (item.key === 'category') {
+              item.children.push({
+                ...data,
+                content_txt: data.name,
+                content: data.name,
+              })
+            }
+          },
+        )
+
+        dispatch(setProjectInfoValues(projectInfoValuesData))
         getMessage({ msg: t('common.createSuccess'), type: 'success' })
         dispatch(setActiveCategory(res.data[0]))
         await dispatch(storyConfigCategoryList({ projectId: id }))
         dispatch(setStartUsing(false))
         onReset()
+        setTimeout(() => {
+          const routerParams = {
+            id: paramsData.id,
+            categoryItem: res.data[0],
+          }
+          navigate(
+            `/ProjectDetail/Setting/TypeConfiguration?data=${encryptPhp(
+              JSON.stringify(routerParams),
+            )}`,
+          )
+        })
       } catch (error) {
         //
       }
@@ -143,13 +175,14 @@ const EditorCategory = (props: EditorProps) => {
     setPath(val.path)
     state === 1 ? setHiddenUpload(true) : setHiddenUpload(false)
   }
-
   return (
     <CommonModal
       isVisible={props.isVisible}
       title={
         props?.type === 'edit'
-          ? t('other.editCategory')
+          ? props.item.work_type === 1 || props.item.work_type === 2
+            ? t('newlyAdd.editCategory')
+            : t('other.editCategory')
           : t('newlyAdd.createCategory')
       }
       onClose={onClose}

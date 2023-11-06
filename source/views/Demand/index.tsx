@@ -365,22 +365,18 @@ const DemandIndex = () => {
       dispatch(onTapSearchChoose({}))
     }
   }, [])
-  const resultAuth = onComputedPermission(
-    currentMenu,
-    '/ProjectManagement/Project',
-  )
+
   // 判断是否详情回来，并且权限是不是有
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
+
   return (
     <PermissionWrap
-      auth={resultAuth ? 'b/story/' : '/ProjectManagement/Project'}
+      auth="b/story/"
       permission={
-        resultAuth
-          ? isLength
-            ? ['0']
-            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
-          : currentMenu?.children?.map((i: any) => i.url)
+        isLength
+          ? ['0']
+          : projectInfo?.projectPermissions?.map((i: any) => i.identity)
       }
     >
       <DeleteConfirmModal />

@@ -54,8 +54,9 @@ import { updateProjectRole } from '@/services/sprint'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 import { confirmProjectHand, confirmProjectHandAll } from '@/services/handover'
+
 const Wrap = styled.div({
-  padding: '0 24px',
+  padding: '24px 24px 0',
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
@@ -63,11 +64,7 @@ const Wrap = styled.div({
 })
 
 const Header = styled.div({
-  background: 'white',
-  // padding: '0 24px',
-})
-
-const HeaderTop = styled.div({
+  background: 'var(--neutral-white-d1)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -76,35 +73,13 @@ const HeaderTop = styled.div({
 })
 
 const Content = styled.div({
-  // padding: 16,
-  height: 'calc(100% - 32px)',
-})
-
-const FilterWrap = styled(Form)({
-  display: 'flex',
-  minHeight: 64,
-  alignItems: 'center',
-  borderBottom: '1px solid var(--neutral-n6-d1)',
+  height: 'calc(100% - 54px)',
 })
 
 const SearchWrap = styled(Space)({
   display: 'flex',
   alignItems: 'center',
-  minHeight: 64,
-  background: 'white',
   flexWrap: 'wrap',
-})
-
-const NameWrap = styled.span({
-  width: 32,
-  height: 32,
-  borderRadius: '50%',
-  marginRight: 8,
-  textAlign: 'center',
-  lineHeight: '32px',
-  background: '#A4ACF5',
-  color: 'white',
-  // marginLeft: 32,
 })
 
 const NewSort = (sortProps: any) => {
@@ -119,18 +94,8 @@ const NewSort = (sortProps: any) => {
     </Sort>
   )
 }
-const OptionDropTd = styled.div`
-  height: 52px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`
-const selectOptionsIcon = css`
-  color: var(--neutral-n4);
-  margin-left: 10px;
-  cursor: pointer;
-`
-const ProjectMember = (props: { searchValue?: string }) => {
+
+const ProjectMember = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const navigate = useNavigate()
@@ -152,6 +117,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
+  const [searchValue, setSearchValue] = useState('')
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [batchEditVisible, setBatchEditVisible] = useState(false)
@@ -191,7 +157,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       page: pagePrams?.page,
       pageSize: pagePrams?.size,
       ...values,
-      searchValue: props?.searchValue,
+      searchValue: searchValue,
     })
     setMemberList(result)
     setIsSpinning(false)
@@ -226,7 +192,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
 
   useEffect(() => {
     getList(order, { ...pageObj, page: 1 })
-  }, [props?.searchValue])
+  }, [searchValue])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
@@ -527,6 +493,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       },
     },
   ]
+
   // 修改角色权限
   const setProjectClick = async (
     data: Model.Sprint.ProjectSettings,
@@ -553,6 +520,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       // getMessage({ msg: error as string, type: 'error' })
     }
   }
+
   const selectColumns: any = useMemo(() => {
     const initColumns = [
       {
@@ -577,10 +545,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const onChangeValue = () => {
     setOperationItem({})
     setIsAddVisible(!isAddVisible)
-  }
-
-  const onChangeFilter = () => {
-    setIsVisible(!isVisible)
   }
 
   const init = async () => {
@@ -633,6 +597,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       //
     }
   }
+
   const onConfirmBatchEdit = async (roleId: any) => {
     try {
       await batchUpdateMember({
@@ -675,6 +640,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       onUpdate()
     }, 100)
   }
+
   useEffect(() => {
     if (isAddVisible) {
       init()
@@ -796,87 +762,75 @@ const ProjectMember = (props: { searchValue?: string }) => {
         </BatchAction>
 
         <Header>
-          <HeaderTop>
-            <Space size={24}>
-              {!hasAdd && (
-                <CommonButton
-                  type="primary"
-                  icon="plus"
-                  iconPlacement="left"
-                  onClick={onChangeValue}
-                >
-                  {t('project.addMember1')}
-                </CommonButton>
-              )}
-            </Space>
-            <Space size={8}>
-              <ScreenMinHover
-                label={t('common.search')}
-                icon="filter"
-                onClick={onChangeFilter}
-                isActive={!isVisible}
-              />
-              <DividerWrap type="vertical" />
-              <ScreenMinHover
-                label={t('common.refresh')}
-                icon="sync"
-                onClick={refresh}
-              />
-            </Space>
-          </HeaderTop>
-          <FilterWrap
-            hidden={isVisible}
-            form={form}
-            onValuesChange={onValuesChange}
-          >
-            <SearchWrap size={16}>
-              <SelectWrapBedeck>
-                <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                  {t('common.job')}
-                </span>
-                <Form.Item name="searchValue" />
-                <Form.Item name="jobIds" noStyle>
-                  <SelectWrap
-                    showArrow
-                    mode="multiple"
-                    style={{ width: '100%' }}
-                    placeholder={t('common.all')}
-                    showSearch
-                    options={jobList}
-                    optionFilterProp="label"
-                    allowClear
-                  />
-                </Form.Item>
-              </SelectWrapBedeck>
-              <SelectWrapBedeck>
-                <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                  {t('common.permissionGroup')}
-                </span>
-                <Form.Item name="userGroupIds" noStyle>
-                  <SelectWrap
-                    showArrow
-                    mode="multiple"
-                    style={{ width: '100%' }}
-                    placeholder={t('common.all')}
-                    showSearch
-                    options={projectPermission}
-                    optionFilterProp="label"
-                    allowClear
-                  />
-                </Form.Item>
-              </SelectWrapBedeck>
-              <div
-                style={{
-                  color: 'var(--primary-d2)',
-                  fontSize: 15,
-                  cursor: 'pointer',
-                }}
-                onClick={onReset}
+          <SearchWrap size={16}>
+            <InputSearch
+              onChangeSearch={setSearchValue}
+              placeholder={t('project.pleaseNickname')}
+              leftIcon
+            />
+            <SelectWrapBedeck>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('common.job')}
+              </span>
+              <Form.Item name="searchValue" />
+              <Form.Item name="jobIds" noStyle>
+                <SelectWrap
+                  showArrow
+                  mode="multiple"
+                  style={{ width: '100%' }}
+                  placeholder={t('common.all')}
+                  showSearch
+                  options={jobList}
+                  optionFilterProp="label"
+                  allowClear
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+            <SelectWrapBedeck>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('common.permissionGroup')}
+              </span>
+              <Form.Item name="userGroupIds" noStyle>
+                <SelectWrap
+                  showArrow
+                  mode="multiple"
+                  style={{ width: '100%' }}
+                  placeholder={t('common.all')}
+                  showSearch
+                  options={projectPermission}
+                  optionFilterProp="label"
+                  allowClear
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+            <div
+              style={{
+                color: 'var(--primary-d2)',
+                fontSize: 15,
+                cursor: 'pointer',
+              }}
+              onClick={onReset}
+            >
+              {t('common.clearForm')}
+            </div>
+          </SearchWrap>
+          <Space size={16}>
+            <ScreenMinHover
+              label={t('common.refresh')}
+              icon="sync"
+              onClick={refresh}
+            />
+            {!hasAdd && (
+              <CommonButton
+                type="primary"
+                icon="plus"
+                iconPlacement="left"
+                onClick={onChangeValue}
               >
-                {t('common.clearForm')}
-              </div>
-            </SearchWrap>
-          </FilterWrap>
+                {t('project.addMember1')}
+              </CommonButton>
+            )}
+          </Space>
         </Header>
         <Content>
           <ResizeTable

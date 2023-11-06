@@ -150,13 +150,13 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           {
             id: 'report',
             name: t('version2.report'),
-            url: '',
+            url: '/ProjectDetail/Performance',
             isPermisson: true,
           },
           {
             id: 'member',
             name: t('member'),
-            url: '',
+            url: '/ProjectDetail/Member',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
                 String(i.identity).includes('b/project/member'),
@@ -165,7 +165,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           {
             id: 'set',
             name: t('setUp'),
-            url: '',
+            url: '/ProjectDetail/Setting',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
                 String(i.group_name).includes('项目设置'),
@@ -221,9 +221,9 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
         }
       }
       // 数组中是否包含当期路由
-      const currentHavePath = resultItems?.filter((i: any) =>
-        routerPath?.pathname?.includes(i.url),
-      )
+      const currentHavePath = routerPath?.pathname.includes('/ChildLevel')
+        ? resultItems?.filter((i: any) => i.id === 'report')
+        : resultItems?.filter((i: any) => routerPath?.pathname?.includes(i.url))
       setActiveKey(
         currentHavePath?.length > 0
           ? String(currentHavePath[0]?.id)

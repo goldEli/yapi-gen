@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Liu, People, ScaleDiv, Side } from './style'
 import CommonButton from '../CommonButton'
-import { TitleStyle } from '@/views/DemandSetting/components/Main'
 import CommonIconFont from '../CommonIconFont'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { getProjectInfoOnly } from '@/services/project'
 import { useTranslation } from 'react-i18next'
+import { TitleStyle } from '@/views/TypeConfiguration/style'
 
 const ProjectChooseSide = (props: any) => {
   const [t] = useTranslation()

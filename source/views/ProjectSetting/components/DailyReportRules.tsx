@@ -25,6 +25,7 @@ import moment from 'moment'
 import { useSelector } from '@store/index'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { getMessage } from '@/components/Message'
+
 const DailyReportRulesWrap = styled(Form)`
   width: 100%;
   & .ant-form-item {
@@ -435,7 +436,14 @@ const DailyReportRules = () => {
   }, [])
 
   return (
-    <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        overflowY: 'auto',
+        padding: '24px 0 0',
+      }}
+    >
       <PermissionWrap
         auth="b/project/daily_config"
         permission={projectInfo?.projectPermissions?.map(

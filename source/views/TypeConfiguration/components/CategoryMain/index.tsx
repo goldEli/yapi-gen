@@ -8,16 +8,16 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getCategoryConfigList } from '@store/category/thunk'
-import { setCategoryWorkType } from '@store/project'
 import NoData from '@/components/NoData'
-import CommonBreadCrumd from '@/components/CommonBreadcrumd'
+import { setCategoryWorkType } from '@store/project'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { onComputedPermission } from '@/tools'
+import { ContentWrap } from '../../style'
+
 const Wrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  overflow-x: hidden;
+  overflow: hidden;
 `
 const ButtonStyle = styled.div`
   width: 100%;
@@ -28,13 +28,8 @@ const ButtonStyle = styled.div`
   padding: 0 24px;
   background-color: var(--neutral-n10);
 `
-const BreadBox = styled.div`
-  height: 72px;
-  display: flex;
-  align-items: center;
-  padding-left: 24px;
-`
-const DemandSetting = () => {
+
+const CategoryMain = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const [isOperate, setIsOperate] = useState<boolean>(false)
@@ -46,11 +41,7 @@ const DemandSetting = () => {
   const { activeCategory, getCategoryConfigDataList } = useSelector(
     store => store.category,
   )
-  // 计算当前选中下是否有项目管理权限
-  const resultAuth = onComputedPermission(
-    currentMenu,
-    '/ProjectManagement/Project',
-  )
+
   useSelector(store => store.category)
   const save = () => {
     setIsSave(true)
@@ -74,7 +65,7 @@ const DemandSetting = () => {
       : setIsNoData(false)
   }, [getCategoryConfigDataList?.configDataList])
   useEffect(() => {
-    dispatch(setCategoryWorkType(3))
+    dispatch(setCategoryWorkType(1))
   }, [])
 
   // 判断是否详情回来，并且权限是不是有
@@ -82,22 +73,15 @@ const DemandSetting = () => {
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
   return (
     <PermissionWrap
-      auth={
-        resultAuth ? 'b/project/story_config' : '/ProjectManagement/Project'
-      }
+      auth="b/project/story_config"
       permission={
-        resultAuth
-          ? isLength
-            ? ['0']
-            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
-          : currentMenu?.children?.map((i: any) => i.url)
+        isLength
+          ? ['0']
+          : projectInfo?.projectPermissions?.map((i: any) => i.identity)
       }
     >
       {isNoData ? (
-        <>
-          <BreadBox>
-            <CommonBreadCrumd></CommonBreadCrumd>
-          </BreadBox>
+        <ContentWrap>
           <Header />
           {isOperate && (
             <ButtonStyle>
@@ -120,19 +104,18 @@ const DemandSetting = () => {
               onBack={() => {
                 setIsSave(false), setIsOperate(false)
               }}
-              isOperate={isOperate}
             />
-            <CreateField isOperate={isOperate} />
+            <CreateField />
           </Wrap>
-        </>
+        </ContentWrap>
       ) : (
         <NoData
           subText={t('add_the_requirement_state_to_configure_the_workflow')}
         />
       )}
       <DeleteConfirm
-        title={t('sprintProject.confirmCancel')}
         text={t('other.isSave')}
+        title={t('sprintProject.confirmCancel')}
         isVisible={isVisible}
         onChangeVisible={() => {
           onCancel(), setIsVisible(false)
@@ -144,4 +127,4 @@ const DemandSetting = () => {
     </PermissionWrap>
   )
 }
-export default DemandSetting
+export default CategoryMain

@@ -6,12 +6,10 @@ import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import _ from 'lodash'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
-import { storyConfigCategoryList } from '@store/category/thunk'
-import { setCategoryWorkType } from '@store/project'
 import {
   AllWrap,
   MenuBox,
@@ -23,11 +21,15 @@ import {
   AffairTypeWrap,
   AffairTypeHeader,
   AffairTypeText,
-} from './style'
+} from '../../style'
 import Dragging from './Dragging'
-import { setStartUsing, setCategoryList } from '@store/category'
+import { setStartUsing } from '@store/category'
 // eslint-disable-next-line no-duplicate-imports
-import { getCategoryConfigList } from '@store/category/thunk'
+import {
+  getCategoryConfigList,
+  storyConfigCategoryList,
+} from '@store/category/thunk'
+import { setCategoryWorkType } from '@store/project'
 import {
   setActiveCategory,
   setCategoryConfigDataList,
@@ -37,6 +39,7 @@ import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import useCategory from '@/hooks/useCategoryList'
 import { CloseWrap } from '@/components/StyleCommon'
+
 const Tabs = styled.div`
   height: 24px;
   border-radius: 4px;
@@ -74,13 +77,14 @@ const toggleDropDown = css`
   max-height: 30vh;
   transition: all 0.5s;
 `
-const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
+const CategoryList = () => {
   const [t] = useTranslation()
   const { startUsing, categoryList, activeCategory } = useSelector(
     store => store.category,
   )
   const language = window.localStorage.getItem('language')
   const dispatch = useDispatch()
+  const { getTypeCategory } = useCategory()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const paramsType = paramsData?.type
@@ -89,14 +93,11 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [tabsActive, setTabsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [list, setList] = useState<any>()
+  const [affairType, setAffairType] = useState<any>()
   const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
-  const [affairType, setAffairType] = useState<Model.Project.CategoryList[]>([])
-  const [cacheData, setCacheData] = useState<Model.Project.CategoryList[]>()
-  const dragCategoryList = useRef<Model.Project.Category[]>()
-  const [workType, setWorkType] = useState(0)
-  const dragCategoryIds = useRef<number[]>()
-  const { getTypeCategory } = useCategory()
 
+  const [cacheData, setCacheData] = useState<Model.Project.CategoryList[]>()
+  const [workType, setWorkType] = useState(0)
   const tabs = [
     {
       label: t('start_using'),
@@ -131,13 +132,19 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       }))
     }
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
-    const affairTypeData = getTypeCategory(dataItem, 'work_type', 'sprint')
+    const affairTypeData = getTypeCategory(
+      dataItem,
+      'work_type',
+      projectInfo?.projectType === 1 ? 'iteration' : 'sprint',
+    )
     if (!affairTypeData) {
       return
     }
+
     setAffairType(affairTypeData)
     setCacheData(_.cloneDeep(affairTypeData))
   }
+
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
@@ -151,23 +158,19 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
         }),
       ))
   }
+
   useEffect(() => {
     getList()
   }, [])
 
   useEffect(() => {
     if (paramsData?.categoryItem) {
-      dispatch(setStartUsing(paramsData.categoryItem.status === 1))
+      dispatch(setStartUsing(paramsData?.categoryItem.status === 1))
       setTabsActive(paramsData?.categoryItem.status === 1 ? 0 : 1)
-      dispatch(setActiveCategory(paramsData.categoryItem))
-    } else {
-      // dispatch(setActiveCategory({}))
+      dispatch(setActiveCategory(paramsData?.categoryItem))
     }
   }, [paramsData?.categoryItem?.status])
-  //   返回上一页
-  const onGoBack = () => {
-    props.onClick()
-  }
+
   const arrayFlat = (
     array: Model.Project.CategoryList[],
     prevIndex: number,
@@ -197,7 +200,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     const list = getTypeCategory(
       [...CategoryData, ...otherCategoryData],
       'work_type',
-      'sprint',
+      'iteration',
     )
     if (!list) {
       return
@@ -254,6 +257,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     }
     getCategoryConfig(dataItem)
   }, [startUsing, categoryList])
+
   // 切换tab
   const getTabsActive = async (index: any) => {
     let dataItem = null
@@ -269,20 +273,22 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     watchDataList()
   }
 
-  useEffect(() => {
-    if (
-      (projectInfo?.projectPermissions?.length <= 0 ||
-        projectInfo?.projectPermissions?.filter(
-          (i: any) => i.identity === 'b/project/story_config',
-        )?.length <= 0) &&
-      location.hostname === '/SprintProjectManagement/DemandSetting'
-    ) {
-      props.onBack()
-    }
-  }, [projectInfo])
+  //   useEffect(() => {
+  //     if (
+  //       (projectInfo?.projectPermissions?.length <= 0 ||
+  //         projectInfo?.projectPermissions?.filter(
+  //           (i: any) => i.identity === 'b/project/story_config',
+  //         )?.length <= 0) &&
+  //       location.hostname === '/ProjectManagement/DemandSetting'
+  //     ) {
+  //       props.onBack()
+  //     }
+  //   }, [projectInfo])
+
   useEffect(() => {
     watchDataList()
   }, [language])
+
   const updateNode = (child: { name: any }) => {
     setAffairType((prevData: any) => {
       const newData = [...prevData]
@@ -300,20 +306,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   return (
     <AllWrap>
       <WrapSet>
-        <SideTop>
-          <img src={projectInfo?.cover} alt="" />
-          <SideInfo>
-            <div style={{ fontFamily: 'SiYuanMedium' }}>
-              {projectInfo?.name}
-            </div>
-            <span> {t('demandSettingSide.teamProject')} </span>
-          </SideInfo>
-        </SideTop>
-        <BackStyle onClick={onGoBack}>
-          <CommonIconFont type="left-md" onClick={onGoBack} />
-          <span>{t('demandSettingSide.back')}</span>
-        </BackStyle>
-        <Provider />
         <Tabs>
           {tabs.map((el, index) => (
             <span
@@ -325,6 +317,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
             </span>
           ))}
         </Tabs>
+
         <div>
           {affairType?.map(
             (item: Model.Project.CategoryList, index: number) => (
@@ -344,15 +337,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                     />
                     <AffairTypeText>{item.name}</AffairTypeText>
                   </div>
-                  {/* <IconFont
-                    style={{ fontSize: 16, color: 'var(--neutral-n2)' }}
-                    type="plus"
-                    onClick={e => {
-                      e.stopPropagation()
-                      setIsVisible(true)
-                      setWorkType(item.workType)
-                    }}
-                  /> */}
                   <CloseWrap width={24} height={24}>
                     <IconFont
                       style={{ fontSize: 18, color: 'var(--neutral-n2)' }}
@@ -365,6 +349,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                     />
                   </CloseWrap>
                 </AffairTypeHeader>
+
                 <MenuBox
                   className={item.visible ? toggleDropDown : toggleDropUp}
                 >
@@ -379,10 +364,8 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                           categoryId: child.id || 695,
                         }),
                       )
-                      dispatch(setActiveCategory(child))
                       updateNode(child)
                     }}
-                    // TODO
                     onMove={(data: any, prevIndex: number, nextIndex: number) =>
                       onMove(data, prevIndex, nextIndex)
                     }
@@ -404,4 +387,4 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   )
 }
 
-export default ProjectDetailSide
+export default CategoryList

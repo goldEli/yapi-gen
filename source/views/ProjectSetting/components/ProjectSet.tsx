@@ -33,13 +33,14 @@ import { getMessage } from '@/components/Message'
 
 const Warp = styled.div({
   height: '100%',
+  padding: '24px',
 })
 
 const SetMain = styled.div({
   paddingBottom: '0px',
   background: 'white',
   borderRadius: 6,
-  minHeight: '100%',
+  height: '100%',
   width: '100%',
   display: 'flex',
 })
@@ -60,16 +61,7 @@ const SetRight = styled.div({
   marginLeft: 24,
   width: 'calc(100% - 184px)',
 })
-const IconFontStyle = styled(IconFont)({
-  color: 'var(--neutral-n2)',
-  fontSize: '18px',
-  borderRadius: '6px',
-  padding: '5px',
-  '&: hover': {
-    background: 'var(--hover-d1)',
-    cursor: 'pointer',
-  },
-})
+
 const Title = styled.div({
   fontSize: 14,
   fontFamily: 'SiYuanMedium',
@@ -515,28 +507,6 @@ const ProjectSet = () => {
                     />
                   </CloseWrap>
                 </Title>
-                {/* <MenuItems>
-                  {dataList?.map((item: any) => (
-                    <MenuItem
-                      key={item.id}
-                      onClick={() => onChangeTabs(item)}
-                      isActive={item.id === activeDetail.id}
-                    >
-                      <div className="name">{item.name}</div>
-                      <span className="subName">
-                        {item.type === 1
-                          ? t('setting.systemGroup')
-                          : t('setting.customGroup')}
-                      </span>
-                      <MoreDropdown
-                        isHidden={item.type === 1}
-                        isMoreVisible={isMoreVisible}
-                        onChangeVisible={setIsMoreVisible}
-                        menu={menu(item)}
-                      />
-                    </MenuItem>
-                  ))}
-                </MenuItems> */}
                 <MenuItems>
                   <MenuItemsTitle>
                     {t('sprintProject.systemGrouping')}

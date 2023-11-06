@@ -50,7 +50,7 @@ import { getDate, getDateStr } from './Date'
 import { getParamsData } from '@/tools'
 import { getMessage } from '@/components/Message'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
-import PermissionWrap from '@/components/PermissionWrap'
+
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const [t] = useTranslation()
   const { headerParmas } = useSelector(store => store.performanceInsight)
@@ -85,7 +85,7 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
       }),
     )
 
-    navigate(`/ChildLevel?data=${params}`)
+    navigate(`/ProjectDetail/ChildLevel?data=${params}`)
   }
   return (
     <>
@@ -703,262 +703,253 @@ const Home = () => {
   }
 
   return (
-    <PermissionWrap
-      auth={currentMenu?.url === '/ProjectManagement' ? '1' : 'b/efficiency'}
-      permission={
-        currentMenu?.url === '/ProjectManagement'
-          ? ['1']
-          : currentMenu?.children?.map((i: any) => i.permission)
-      }
+    <div
+      style={{
+        overflowY: 'auto',
+        position: 'relative',
+      }}
     >
-      <div
-        style={{
-          overflowY: 'auto',
-          position: 'relative',
-        }}
+      <Spin
+        spinning={loading}
+        indicator={<NewLoadingTransition />}
+        size="large"
       >
-        <Spin
-          spinning={loading}
-          indicator={<NewLoadingTransition />}
-          size="large"
+        {/* 头部组件 */}
+        <Header
+          projectId={projectId}
+          homeType={homeType || 'all'}
+          defalutConfig={defalutConfig?.config}
+          viewDataList={viewDataList}
+          onCreateView={onCreateView}
+          projectViewIds={projectViewIds}
+          iterateViewIds={iterateViewIds}
+          onDelView={onDelView}
+          onChange={onGetOptionValue}
+          onSetDefaulut={onSetDefaulut}
+          onEdit={editViews}
+          value={optionVal}
+        />
+        <div
+          style={{
+            padding: '12px 16px',
+            backgroundColor: '#F8F8FA',
+          }}
         >
-          {/* 头部组件 */}
-          <Header
+          <WorkingStatus
+            newType={paramsData?.newType}
             projectId={projectId}
-            homeType={homeType || 'all'}
-            defalutConfig={defalutConfig?.config}
-            viewDataList={viewDataList}
-            onCreateView={onCreateView}
-            projectViewIds={projectViewIds}
-            iterateViewIds={iterateViewIds}
-            onDelView={onDelView}
-            onChange={onGetOptionValue}
-            onSetDefaulut={onSetDefaulut}
-            onEdit={editViews}
-            value={optionVal}
+            viewType={viewType}
+            homeType={homeType}
+            data={workDataList?.work || []}
+            title={
+              homeType === 'all'
+                ? t('performance.presentSituation')
+                : t('performance.presentSituation1')
+            }
+            time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
+            num={1}
           />
-          <div
-            style={{
-              padding: '12px 16px',
-              backgroundColor: '#F8F8FA',
-            }}
-          >
+          <div style={{ margin: '12px 0' }}>
             <WorkingStatus
-              newType={paramsData?.newType}
-              projectId={projectId}
               viewType={viewType}
+              num={2}
+              projectId={projectId}
               homeType={homeType}
-              data={workDataList?.work || []}
-              title={
-                homeType === 'all'
-                  ? t('performance.presentSituation')
-                  : t('performance.presentSituation1')
-              }
-              time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
-              num={1}
+              data={workDataList?.defect || []}
+              title={t('performance.qPresentSituation')}
+              time={`${workDataList?.start_time} ~ ${workDataList?.end_time}`}
             />
-            <div style={{ margin: '12px 0' }}>
-              <WorkingStatus
-                viewType={viewType}
-                num={2}
-                projectId={projectId}
-                homeType={homeType}
-                data={workDataList?.defect || []}
-                title={t('performance.qPresentSituation')}
-                time={`${workDataList?.start_time} ~ ${workDataList?.end_time}`}
-              />
-            </div>
-            <div style={{ width: '100%', display: 'flex' }}>
-              <div style={{ width: '100%', paddingBottom: '24px' }}>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    gap: '12px',
-                    backgroundColor: '#F8F8FA',
-                    borderRadius: '6px',
+          </div>
+          <div style={{ width: '100%', display: 'flex' }}>
+            <div style={{ width: '100%', paddingBottom: '24px' }}>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  backgroundColor: '#F8F8FA',
+                  borderRadius: '6px',
+                }}
+              >
+                <HightChartMainBar
+                  title={
+                    homeType === 'all'
+                      ? t('performance.title1')
+                      : t('performance.title01')
+                  }
+                  titleType
+                  height={396}
+                  chart={charts1}
+                  onChange={(val: any) => getContrastNewWork(val)}
+                  projectId={projectId}
+                  viewType={viewType}
+                  homeType={homeType}
+                  data={workDataList?.work || []}
+                  time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
+                  num={1}
+                />
+                <HightChartMainLine
+                  projectId={projectId}
+                  chart={charts2}
+                  title={
+                    homeType === 'all'
+                      ? t('performance.title2')
+                      : t('performance.title02')
+                  }
+                  height={396}
+                />
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  marginTop: '12px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  backgroundColor: '#F8F8FA',
+                  borderRadius: '6px',
+                }}
+              >
+                <HightChartMainPie
+                  height={352}
+                  chart={charts3}
+                  titleType={false}
+                  title={
+                    homeType === 'all'
+                      ? t('performance.title3')
+                      : t('performance.title03')
+                  }
+                />
+                {/* 柱状图 */}
+                <HightChartMainBar
+                  titleType={false}
+                  chart={charts4}
+                  height={352}
+                  title={
+                    homeType === 'all'
+                      ? t('performance.title4')
+                      : t('performance.title04')
+                  }
+                  onChange={(val: string) => {
+                    getCompletionRateChart(val)
                   }}
-                >
-                  <HightChartMainBar
-                    title={
-                      homeType === 'all'
-                        ? t('performance.title1')
-                        : t('performance.title01')
-                    }
-                    titleType
-                    height={396}
-                    chart={charts1}
-                    onChange={(val: any) => getContrastNewWork(val)}
-                    projectId={projectId}
-                    viewType={viewType}
-                    homeType={homeType}
-                    data={workDataList?.work || []}
-                    time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
-                    num={1}
-                  />
-                  <HightChartMainLine
-                    projectId={projectId}
-                    chart={charts2}
-                    title={
-                      homeType === 'all'
-                        ? t('performance.title2')
-                        : t('performance.title02')
-                    }
-                    height={396}
-                  />
-                </div>
-                <div
-                  style={{
-                    width: '100%',
-                    marginTop: '12px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    gap: '12px',
-                    backgroundColor: '#F8F8FA',
-                    borderRadius: '6px',
-                  }}
-                >
-                  <HightChartMainPie
-                    height={352}
-                    chart={charts3}
-                    titleType={false}
-                    title={
-                      homeType === 'all'
-                        ? t('performance.title3')
-                        : t('performance.title03')
-                    }
-                  />
-                  {/* 柱状图 */}
-                  <HightChartMainBar
-                    titleType={false}
-                    chart={charts4}
-                    height={352}
-                    title={
-                      homeType === 'all'
-                        ? t('performance.title4')
-                        : t('performance.title04')
-                    }
-                    onChange={(val: string) => {
-                      getCompletionRateChart(val)
-                    }}
-                    projectId={projectId}
-                    viewType={viewType}
-                    homeType={homeType}
-                    data={workDataList?.work || []}
-                    time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
-                    num={1}
-                  />
-                </div>
-                <div
-                  style={{
-                    width: '100%',
-                    marginTop: '12px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    gap: '12px',
-                    backgroundColor: '#F8F8FA',
-                    borderRadius: '6px',
-                  }}
-                >
-                  <HightChartMainSpline
-                    title={t('performance.title5')}
-                    chart={charts5}
-                    height={396}
-                  />
-                  <HightChartMainPie
-                    height={396}
-                    chart={charts6}
-                    titleType
-                    title={t('performance.home9')}
-                    onChange={item => getDefectRatioChart(item.key)}
-                  />
-                </div>
+                  projectId={projectId}
+                  viewType={viewType}
+                  homeType={homeType}
+                  data={workDataList?.work || []}
+                  time={`${workDataList?.start_time} ~ ${workDataList.end_time}`}
+                  num={1}
+                />
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  marginTop: '12px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  backgroundColor: '#F8F8FA',
+                  borderRadius: '6px',
+                }}
+              >
+                <HightChartMainSpline
+                  title={t('performance.title5')}
+                  chart={charts5}
+                  height={396}
+                />
+                <HightChartMainPie
+                  height={396}
+                  chart={charts6}
+                  titleType
+                  title={t('performance.home9')}
+                  onChange={item => getDefectRatioChart(item.key)}
+                />
               </div>
             </div>
-            {/* 保存提示操作 */}
-            {save && viewType !== 2 ? (
-              <DialogMain>
-                <DialogHeader>
-                  <Space size={14}>
-                    <CommonIconFont
-                      type="Warning"
-                      size={20}
-                      color="var(--function-warning)"
-                    />
-                    <span>{t('performance.save1Msg')}</span>
-                  </Space>
-                  <CommonIconFont
-                    onClick={() => dispatch(setSave(false))}
-                    type="close"
-                    size={20}
-                    color="var(--neutral-n2)"
-                  />
-                </DialogHeader>
-                <TextColor>{t('performance.save2Msg')}</TextColor>
-                <div style={{ margin: '8px 0 0 32px' }}>
-                  <SelectMain
-                    onChange={e => {
-                      saveOnchange(e)
-                    }}
-                    placeholder={t('common.pleaseSelect')}
-                    allowClear={false}
-                    value={optionVal}
-                    list={viewDataList?.map(el => ({
-                      name: el.name,
-                      key: Number(el.key),
-                    }))}
-                  />
-                </div>
-                <Footer>
-                  <Space size={6}>
-                    <span
-                      style={{
-                        color: 'var(--auxiliary-text-t2-d1)',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => dispatch(setSave(false))}
-                    >
-                      {t('performance.nosave')}
-                    </span>
-                  </Space>
-                  <Space size={20}>
-                    <CommonButton
-                      type="light"
-                      onClick={() => {
-                        setIsVisible(true)
-                        dispatch(setSave(false))
-                      }}
-                    >
-                      {t('performance.save1')}
-                    </CommonButton>
-                    <CommonButton type="primary" onClick={() => editViews()}>
-                      {t('performance.save')}
-                    </CommonButton>
-                  </Space>
-                </Footer>
-              </DialogMain>
-            ) : null}
           </div>
+          {/* 保存提示操作 */}
+          {save && viewType !== 2 ? (
+            <DialogMain>
+              <DialogHeader>
+                <Space size={14}>
+                  <CommonIconFont
+                    type="Warning"
+                    size={20}
+                    color="var(--function-warning)"
+                  />
+                  <span>{t('performance.save1Msg')}</span>
+                </Space>
+                <CommonIconFont
+                  onClick={() => dispatch(setSave(false))}
+                  type="close"
+                  size={20}
+                  color="var(--neutral-n2)"
+                />
+              </DialogHeader>
+              <TextColor>{t('performance.save2Msg')}</TextColor>
+              <div style={{ margin: '8px 0 0 32px' }}>
+                <SelectMain
+                  onChange={e => {
+                    saveOnchange(e)
+                  }}
+                  placeholder={t('common.pleaseSelect')}
+                  allowClear={false}
+                  value={optionVal}
+                  list={viewDataList?.map(el => ({
+                    name: el.name,
+                    key: Number(el.key),
+                  }))}
+                />
+              </div>
+              <Footer>
+                <Space size={6}>
+                  <span
+                    style={{
+                      color: 'var(--auxiliary-text-t2-d1)',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => dispatch(setSave(false))}
+                  >
+                    {t('performance.nosave')}
+                  </span>
+                </Space>
+                <Space size={20}>
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      setIsVisible(true)
+                      dispatch(setSave(false))
+                    }}
+                  >
+                    {t('performance.save1')}
+                  </CommonButton>
+                  <CommonButton type="primary" onClick={() => editViews()}>
+                    {t('performance.save')}
+                  </CommonButton>
+                </Space>
+              </Footer>
+            </DialogMain>
+          ) : null}
+        </div>
 
-          {/* 新建和编辑视图 1*/}
-          <ViewDialog
-            name=""
-            titleType={{ title: t('performance.saveView'), type: 'add' }}
-            onConfirm={async (value, type) => {
-              try {
-                await onCreateView(value, type, '')
-                setIsVisible(false)
-              } catch (error) {
-                //
-              }
-            }}
-            onClose={() => setIsVisible(false)}
-            isVisible={isVisible}
-          />
-        </Spin>
-      </div>
-    </PermissionWrap>
+        {/* 新建和编辑视图 1*/}
+        <ViewDialog
+          name=""
+          titleType={{ title: t('performance.saveView'), type: 'add' }}
+          onConfirm={async (value, type) => {
+            try {
+              await onCreateView(value, type, '')
+              setIsVisible(false)
+            } catch (error) {
+              //
+            }
+          }}
+          onClose={() => setIsVisible(false)}
+          isVisible={isVisible}
+        />
+      </Spin>
+    </div>
   )
 }
 export default Home

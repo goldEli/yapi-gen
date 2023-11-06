@@ -574,24 +574,16 @@ const SprintProjectSprint: React.FC = () => {
     setIsFilter(visible)
   }
 
-  const resultAuth = onComputedPermission(
-    currentMenu,
-    '/ProjectManagement/Project',
-  )
-  console.log(checkList, 'setCheckList')
-
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
 
   return (
     <PermissionWrap
-      auth={resultAuth ? 'b/transaction/' : '/ProjectManagement/Project'}
+      auth="b/transaction/"
       permission={
-        resultAuth
-          ? isLength
-            ? ['0']
-            : projectInfo?.projectPermissions?.map((i: any) => i.identity)
-          : currentMenu?.children?.map((i: any) => i.url)
+        isLength
+          ? ['0']
+          : projectInfo?.projectPermissions?.map((i: any) => i.identity)
       }
     >
       <div>

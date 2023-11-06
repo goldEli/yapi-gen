@@ -143,7 +143,7 @@ const HightChartMainBar = (
             : t('performance.title07'),
       }),
     )
-    navigate(`/ChildLevel?data=${params}`)
+    navigate(`/ProjectDetail/ChildLevel?data=${params}`)
   }
 
   return (
