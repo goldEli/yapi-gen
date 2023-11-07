@@ -1,5 +1,7 @@
+import { PushConditionsWrap } from '../style'
+
 const PushConditions = () => {
-  return <div>推送条件</div>
+  return <PushConditionsWrap>推送条件</PushConditionsWrap>
 }
 
 export default PushConditions
