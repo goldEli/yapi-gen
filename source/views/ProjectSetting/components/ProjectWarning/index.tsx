@@ -1,5 +1,10 @@
 import React from 'react'
+import PushDate from './components/PushDate'
 
 export default function index() {
-  return <div>index111</div>
+  return (
+    <div>
+      <PushDate></PushDate>
+    </div>
+  )
 }
