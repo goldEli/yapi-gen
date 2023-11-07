@@ -189,6 +189,15 @@ const ProjectDetailSide = () => {
       ).length,
       key: 'ProjectSchedule',
     },
+    {
+      label: '项目预警',
+      icon: (
+        <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
+      ),
+      path: '/SprintProjectManagement/Setting',
+      isPermission: true,
+      key: 'ProjectWarning',
+    },
   ]
   const menuList = [
     {
