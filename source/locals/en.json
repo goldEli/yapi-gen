@@ -2495,5 +2495,14 @@
   "pushThreshold": "Push threshold",
   "whetherToEnable": "Whether to enable",
   "pushConditions": "Push conditions",
-  "riskWarningPushSettings": "Risk warning push settings"
+  "riskWarningPushSettings": "Risk warning push settings",
+  "yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly": "Your project is at risk, please ask relevant personnel to handle it promptly",
+  "iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner": "I am aware of the above project status and will synchronize or handle related matters in a timely manner",
+  "alreadyKnown": "Already known",
+  "taskIsOverdue": "Task is overdue",
+  "bugOverdue": "BUG overdue",
+  "taskIsAboutToExpire": "Task is about to expire",
+  "bugIsAboutToExpire": "BUG is about to expire",
+  "tooManyBugs": "Too many bugs",
+  "toRefresh": "To refresh"
 }

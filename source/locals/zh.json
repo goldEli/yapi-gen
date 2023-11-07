@@ -2495,5 +2495,14 @@
   "pushThreshold": "推送阀值",
   "whetherToEnable": "是否启用",
   "pushConditions": "推送条件",
-  "riskWarningPushSettings": "风险预警推送设置"
+  "riskWarningPushSettings": "风险预警推送设置",
+  "yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly": " 您的项目出现风险，请相关人员及时处理",
+  "iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner": " 我已知晓以上项目情况，并会及时同步或处理相关事宜",
+  "alreadyKnown": "已知晓",
+  "taskIsOverdue": "任务逾期 ",
+  "bugOverdue": "BUG逾期",
+  "taskIsAboutToExpire": "任务即将逾期",
+  "bugIsAboutToExpire": "BUG即将逾期",
+  "tooManyBugs": "BUG数量过多",
+  "toRefresh": "刷新"
 }
