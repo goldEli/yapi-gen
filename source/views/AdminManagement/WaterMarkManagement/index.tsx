@@ -7,6 +7,7 @@ import { Switch } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { changeWaterStatus } from '../../../../store/waterState'
 import useForewarnModal from '@/hooks/useForewarnModal'
+import RightWran from '@/hooks/useRightWran'
 
 const Header = styled.div({
   height: 64,
@@ -55,6 +56,7 @@ const WaterMarkManagement = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.c7'))
   const { ForewarnModal, openForewarnModal } = useForewarnModal()
+
   const { value: checked } = useSelector(store => store.water)
   const { menuPermission } = useSelector(store => store.user)
   const dispatch = useDispatch()
@@ -95,6 +97,7 @@ const WaterMarkManagement = () => {
         >
           1
         </button>
+        <RightWran />
         {ForewarnModal}
         <Content>
           {configList.map(item => (
