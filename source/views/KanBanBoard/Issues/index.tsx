@@ -14,6 +14,7 @@ import { getNewkanbanStoriesOfPaginate } from '@/services/kanban'
 import { setKanbanInfoByGroup } from '@store/kanBan'
 import { json } from 'stream/consumers'
 import _ from 'lodash'
+import NoData from '@/components/NoData'
 interface IssuesProps {
   issues: Model.KanBan.Column
   groupId: Model.KanbanConfig.Column['id']
@@ -28,6 +29,7 @@ export const DropArea = styled.div<{ active?: boolean; minHeight?: number }>`
   width: 302px;
   box-sizing: border-box;
   padding: 16px;
+  padding-right: 0px;
   gap: 8px;
   position: relative;
 `
@@ -227,6 +229,7 @@ const Issues: React.FC<IssuesProps> = props => {
           />
         )
       })}
+      {issues.stories.length < 1 && <NoData />}
     </InfiniteScroll>
   )
 

@@ -12,6 +12,7 @@ import { DropArea } from '../Issues'
 import { getNewkanbanStoriesOfPaginate } from '@/services/kanban'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { setKanbanInfoByGroup } from '@store/kanBan'
+import NoData from '@/components/NoData'
 
 interface IssuesProps {
   issues: Model.KanBan.Column
@@ -198,6 +199,7 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
           />
         )
       })}
+      {issues.stories.length < 1 && <NoData />}
     </InfiniteScroll>
   )
 
