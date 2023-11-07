@@ -23,7 +23,7 @@ import DailyReportRules from '@/views/SprintProjectSetting/components/DailyRepor
 import ProjectWarning from './components/ProjectWarning/index'
 const Wrap = styled.div({
   display: 'flex',
-  height: 'calc(100vh - 130px)',
+  height: 'calc(100vh - 134px)',
 })
 
 const Content = styled.div({
