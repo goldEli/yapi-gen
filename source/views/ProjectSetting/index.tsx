@@ -20,7 +20,7 @@ import { useState, useEffect } from 'react'
 import ProjectNote from './components/ProjectNote'
 import { getProjectRoleList } from '@store/sprint/sprint.thunk'
 import DailyReportRules from '@/views/SprintProjectSetting/components/DailyReportRules'
-import ProjectWarning from './components/ProjectWarning'
+import ProjectWarning from './components/ProjectWarning/index'
 const Wrap = styled.div({
   display: 'flex',
   height: 'calc(100vh - 130px)',
