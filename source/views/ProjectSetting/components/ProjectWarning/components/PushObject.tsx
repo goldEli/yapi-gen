@@ -83,7 +83,7 @@ const PushObject = () => {
                   dispatch(
                     setProjectWarning({
                       ...projectWarning,
-                      pushObject: list
+                      push_obj: list
                         ?.filter(user => user.id !== item.id)
                         ?.map(item => item.id),
                     }),
@@ -100,9 +100,10 @@ const PushObject = () => {
           setVisible(false)
         }}
         onConfirm={data => {
+          console.log('data', data)
           const ids = data.map(item => item.id)
           setList(data)
-          dispatch(setProjectWarning({ ...projectWarning, pushObject: ids }))
+          dispatch(setProjectWarning({ ...projectWarning, push_obj: ids }))
         }}
         type={2}
         projectId={projectId}

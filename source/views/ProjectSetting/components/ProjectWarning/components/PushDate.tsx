@@ -23,18 +23,18 @@ export const PushDateContentDate = styled.div`
 `
 const PushDate = () => {
   const options = [
-    { label: '周一', value: 1 },
-    { label: '周二', value: 2 },
-    { label: '周三', value: 3 },
-    { label: '周四', value: 4 },
-    { label: '周五', value: 5 },
-    { label: '周六', value: 6 },
-    { label: '周日', value: 7 },
-    { label: '是否跳过中国节假日', value: 8 },
+    { label: '周一', value: 0 },
+    { label: '周二', value: 1 },
+    { label: '周三', value: 2 },
+    { label: '周四', value: 3 },
+    { label: '周五', value: 4 },
+    { label: '周六', value: 5 },
+    { label: '周日', value: 6 },
+    { label: '是否跳过中国节假日', value: -1 },
   ]
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
-  const { pushDate } = projectWarning ?? {}
+  const { push_time } = projectWarning ?? {}
 
   return (
     <PushDateBox>
@@ -49,9 +49,10 @@ const PushDate = () => {
               dispatch(
                 setProjectWarning({
                   ...projectWarning,
-                  pushDate: {
-                    ...pushDate,
-                    week: value,
+                  push_time: {
+                    ...push_time,
+                    day: value.filter(item => item !== -1),
+                    is_holiday: value.includes(-1) ? 1 : 0,
                   },
                 }),
               )
@@ -70,12 +71,12 @@ const PushDate = () => {
               dispatch(
                 setProjectWarning({
                   ...projectWarning,
-                  pushDate: {
-                    ...pushDate,
-                    time: [
-                      moment(start_date).format('HH:mm'),
-                      moment(end_date).format('HH:mm'),
-                    ],
+                  push_time: {
+                    ...push_time,
+                    time: {
+                      begin: moment(start_date).format('HH:mm'),
+                      end: moment(end_date).format('HH:mm'),
+                    },
                   },
                 }),
               )
