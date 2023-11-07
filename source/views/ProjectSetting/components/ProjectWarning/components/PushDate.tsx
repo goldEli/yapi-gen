@@ -2,6 +2,10 @@ import React from 'react'
 import SubTitle from './SubTitle'
 import { Checkbox, TimePicker } from 'antd'
 import styled from '@emotion/styled'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectWarning } from '@store/project'
+import dayjs from 'dayjs'
+import moment from 'moment'
 const PushDateBox = styled.div``
 const PushDateContent = styled.div`
   border: 1px solid var(--neutral-n6-d1);
@@ -29,6 +33,10 @@ const PushDate = () => {
     { label: '周日', value: 7 },
     { label: '是否跳过中国节假日', value: 8 },
   ]
+  const dispatch = useDispatch()
+  const { projectWarning } = useSelector(store => store.project)
+  const { pushDate } = projectWarning ?? {}
+
   return (
     <PushDateBox>
       <SubTitle title="推送通知"></SubTitle>
@@ -38,12 +46,46 @@ const PushDate = () => {
           <Checkbox.Group
             options={options}
             defaultValue={['Apple']}
-            onChange={() => {}}
+            onChange={value => {
+              dispatch(
+                setProjectWarning({
+                  ...projectWarning,
+                  pushDate: {
+                    ...pushDate,
+                    week: value,
+                  },
+                }),
+              )
+            }}
           />
         </PushDateContentDate>
         <PushDateContentDate>
           <label className="label-text">时间</label>
-          <TimePicker.RangePicker format="HH:mm" />
+          <TimePicker.RangePicker
+            format="HH:mm"
+            onChange={e => {
+              if (!e) {
+                return
+              }
+              const [start_date, end_date] = e
+              console.log(
+                moment(start_date).format('HH:mm'),
+                moment(end_date).format('HH:mm'),
+              )
+              dispatch(
+                setProjectWarning({
+                  ...projectWarning,
+                  pushDate: {
+                    ...pushDate,
+                    time: [
+                      moment(start_date).format('HH:mm'),
+                      moment(end_date).format('HH:mm'),
+                    ],
+                  },
+                }),
+              )
+            }}
+          />
         </PushDateContentDate>
       </PushDateContent>
     </PushDateBox>

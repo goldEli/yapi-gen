@@ -50,6 +50,7 @@ export interface CounterState {
   drawerCanOperation: any
   tableFilter?: any
   updateProgress: number
+  projectWarning?: any
 }
 
 const initialState: CounterState = {
@@ -103,6 +104,7 @@ const initialState: CounterState = {
   drawerInfo: {},
   drawerCanOperation: {},
   updateProgress: 0,
+  projectWarning: {},
 }
 
 export const projectSlice = createSlice({
@@ -211,6 +213,12 @@ export const projectSlice = createSlice({
     setAddWorkItemParentList: (state: any, action) => {
       state.addWorkItemParentList = action.payload
     },
+    setProjectWarning(
+      state: any,
+      action: PayloadAction<CounterState['projectWarning']>,
+    ) {
+      state.projectWarning = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
@@ -246,6 +254,7 @@ export const {
   setAddWorkItemParentList,
   setDrawerInfo,
   setUpdateProgress,
+  setProjectWarning,
 } = projectSlice.actions
 
 export default projectSlice.reducer
