@@ -20,6 +20,7 @@ import ProjectNote from './components/ProjectNote'
 import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 import { getProjectRoleList } from '@store/sprint/sprint.thunk'
 import DailyReportRules from './components/DailyReportRules'
+import ProjectWarning from '../ProjectSetting/components/ProjectWarning'
 const Wrap = styled.div({
   display: 'flex',
   height: 'calc(100vh - 130px)',
@@ -109,6 +110,15 @@ const Setting = () => {
         name: t('rbgz'),
         icon: 'settings',
         content: <DailyReportRules />,
+        isPermission: true,
+      },
+    ],
+    [
+      'ProjectWarning',
+      {
+        name: '项目预警',
+        icon: 'settings',
+        content: <ProjectWarning />,
         isPermission: true,
       },
     ],
