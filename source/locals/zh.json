@@ -2471,5 +2471,14 @@
   "resigned": "已移除",
   "working": "",
   "removedSuccessfully": "移除成功",
-  "failedToObtainVerificationCode": "验证码获取失败"
+  "failedToObtainVerificationCode": "验证码获取失败",
+  "yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly": " 您的项目出现风险，请相关人员及时处理",
+  "iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner": " 我已知晓以上项目情况，并会及时同步或处理相关事宜",
+  "alreadyKnown": "已知晓",
+  "taskIsOverdue": "任务逾期 ",
+  "bugOverdue": "BUG逾期",
+  "taskIsAboutToExpire": "任务即将逾期",
+  "bugIsAboutToExpire": "BUG即将逾期",
+  "tooManyBugs": "BUG数量过多",
+  "toRefresh": "刷新"
 }
