@@ -18,7 +18,7 @@ const Footer = styled.div`
 `
 
 const Header = styled.div`
-  height: 100px;
+  height: 80px;
   background: linear-gradient(
     0deg,
     rgba(220, 145, 78, 0) 0%,
@@ -110,7 +110,7 @@ const useForewarnModal = () => {
           />{' '}
           {t('yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly')}
         </Header>
-        <div style={{ padding: '16px 24px', paddingBottom: 0 }}>
+        <div style={{ padding: '0px 24px' }}>
           <Tabs
             defaultActiveKey="1"
             onChange={onChange2}

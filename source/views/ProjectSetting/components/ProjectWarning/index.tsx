@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import PreviewImageModal from './components/PreviewImageModal'
 import PushDate from './components/PushDate'
 import PushObject from './components/PushObject'
 import PushConditions from './components/PushConditions'
