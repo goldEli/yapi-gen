@@ -31,14 +31,27 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
 `
+const text = css`
+  display: inline-block;
+  width: 580px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
 const ListBox = styled.div`
   display: flex;
-
+  cursor: pointer;
   flex-direction: column;
   justify-content: center;
   padding: 12px;
   :hover {
     background-color: #f6f7f9;
+  }
+  :hover .tit {
+    /* background-color: #f6f7f9; */
+    text-decoration: underline;
+    color: #6688ff;
+    cursor: pointer;
   }
 `
 const SmallTag = styled.span`
@@ -53,18 +66,7 @@ const SmallTag = styled.span`
   border-radius: 6px 6px 6px 6px;
   margin-right: 8px;
 `
-const text = css`
-  display: inline-block;
-  width: 580px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  :hover {
-    text-decoration: underline;
-    color: #6688ff;
-    cursor: pointer;
-  }
-`
+
 const text2 = css`
   color: #969799;
   :hover {
@@ -108,7 +110,7 @@ const useForewarnModal = () => {
           />{' '}
           {t('yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly')}
         </Header>
-        <div style={{ padding: '16px 24px' }}>
+        <div style={{ padding: '16px 24px', paddingBottom: 0 }}>
           <Tabs
             defaultActiveKey="1"
             onChange={onChange2}
@@ -170,7 +172,7 @@ const useForewarnModal = () => {
                       }}
                     >
                       <SmallTag>进行中</SmallTag>
-                      <span className={text}>
+                      <span className={`tit  ${text}`}>
                         对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...
                       </span>
                       <span
