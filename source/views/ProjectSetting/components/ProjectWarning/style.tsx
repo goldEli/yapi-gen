@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
 
-export const Wrap = styled.div`
+export const ProjectWarningWrap = styled.div`
   display: flex;
 `

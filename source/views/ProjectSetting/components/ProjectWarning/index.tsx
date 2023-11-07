@@ -1,5 +1,5 @@
 import React from 'react'
 
-export default function index() {
+export default function ProjectWarning() {
   return <div>index111</div>
 }
