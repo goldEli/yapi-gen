@@ -14,6 +14,10 @@ export const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0px;
+  z-index: 9;
+  background: #fff;
   .label {
     font-size: 16px;
     color: var(--neutral-n1-d1);

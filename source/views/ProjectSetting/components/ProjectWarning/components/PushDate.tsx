@@ -4,7 +4,6 @@ import { Checkbox, TimePicker } from 'antd'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectWarning } from '@store/project'
-import dayjs from 'dayjs'
 import moment from 'moment'
 const PushDateBox = styled.div``
 const PushDateContent = styled.div`
@@ -68,10 +67,6 @@ const PushDate = () => {
                 return
               }
               const [start_date, end_date] = e
-              console.log(
-                moment(start_date).format('HH:mm'),
-                moment(end_date).format('HH:mm'),
-              )
               dispatch(
                 setProjectWarning({
                   ...projectWarning,

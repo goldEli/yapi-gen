@@ -100,7 +100,6 @@ const PushObject = () => {
           setVisible(false)
         }}
         onConfirm={data => {
-          console.log(data)
           const ids = data.map(item => item.id)
           setList(data)
           dispatch(setProjectWarning({ ...projectWarning, pushObject: ids }))
