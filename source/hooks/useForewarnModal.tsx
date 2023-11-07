@@ -20,7 +20,7 @@ const Footer = styled.div`
 const Header = styled.div`
   height: 100px;
   background: linear-gradient(
-    27deg,
+    0deg,
     rgba(220, 145, 78, 0) 0%,
     rgba(221, 145, 78, 0.2) 100%
   );
@@ -59,6 +59,18 @@ const text = css`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  :hover {
+    text-decoration: underline;
+    color: #6688ff;
+    cursor: pointer;
+  }
+`
+const text2 = css`
+  color: #969799;
+  :hover {
+    color: #6688ff;
+    cursor: pointer;
+  }
 `
 
 const useForewarnModal = () => {
@@ -102,23 +114,23 @@ const useForewarnModal = () => {
             onChange={onChange2}
             items={[
               {
-                label: `${t('taskIsOverdue')}(0)`,
+                label: `${t('taskIsOverdue')}  (0)`,
                 key: '1',
               },
               {
-                label: `${t('bugOverdue')}(0)`,
+                label: `${t('bugOverdue')}  (0)`,
                 key: '2',
               },
               {
-                label: `${t('taskIsAboutToExpire')}(0)`,
+                label: `${t('taskIsAboutToExpire')}  (0)`,
                 key: '3',
               },
               {
-                label: `${t('bugIsAboutToExpire')}(0)`,
+                label: `${t('bugIsAboutToExpire')}  (0)`,
                 key: '4',
               },
               {
-                label: `${t('tooManyBugs')}(0)`,
+                label: `${t('tooManyBugs')}  (0)`,
                 key: '5',
               },
             ]}
@@ -127,9 +139,9 @@ const useForewarnModal = () => {
             <span style={{ color: '#969799', fontSize: 12 }}>
               更新于2023-08-08 11:08:08
             </span>
-            <span>
-              <IconFont style={{ color: '#969799' }} type="sync" />
-              <span style={{ color: '#969799', fontSize: 12 }}>
+            <span className={text2}>
+              <IconFont type="sync" />
+              <span style={{ fontSize: 12, marginLeft: '4px' }}>
                 {t('toRefresh')}
               </span>
             </span>
@@ -145,7 +157,7 @@ const useForewarnModal = () => {
               marginTop: '12px',
             }}
           >
-            {Array(5)
+            {Array(50)
               .fill(1)
               .map((item: any) => {
                 return (
