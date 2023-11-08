@@ -2499,10 +2499,7 @@
   "yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly": "Your project is at risk, please ask relevant personnel to handle it promptly",
   "iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner": "I am aware of the above project status and will synchronize or handle related matters in a timely manner",
   "alreadyKnown": "Already known",
-  "taskIsOverdue": "Task is overdue",
-  "bugOverdue": "BUG overdue",
-  "taskIsAboutToExpire": "Task is about to expire",
-  "bugIsAboutToExpire": "BUG is about to expire",
-  "tooManyBugs": "Too many bugs",
-  "toRefresh": "To refresh"
+  "toRefresh": "To refresh",
+  "strip": "Strip",
+  "theOverdueOrImminentOverdueStatusOfTasksAndBugsCanBePushedToSystemDingtalkAndTextMessagesAtRegularIntervalsBasedOn": "The overdue or imminent overdue status of tasks and bugs can be pushed to system notifications, DingTalk groups, emails, and text messages at regular intervals based on conditions."
 }

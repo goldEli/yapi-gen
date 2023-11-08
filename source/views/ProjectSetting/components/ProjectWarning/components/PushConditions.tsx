@@ -6,12 +6,16 @@ import {
   TableItem,
   TableWrap,
 } from '../style'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
 
 const PushConditions = () => {
   const [t] = useTranslation()
-  const [maxWidth, setMaxWidth] = useState<number>()
+  const { language } = useSelector(store => store.global)
+  // 用于计算英文状态下的宽度
+  const [clientWidth, setClientWidth] = useState(0)
+
   // 文字
   const dataText = [
     {
@@ -84,9 +88,6 @@ const PushConditions = () => {
     },
   ]
 
-  //   计算最大宽度
-  const onComputedWidth = () => {}
-
   //   表格列
   const columns = [
     {
@@ -117,7 +118,12 @@ const PushConditions = () => {
       render: (text: string, record: any) => {
         return (
           <TableItem>
-            <div>
+            <div
+              style={{
+                width:
+                  language === 'zh' ? 170 : clientWidth > 2195 ? 310 : '14vw',
+              }}
+            >
               {
                 dataText?.filter((i: any) => i.type === record.type)[0]
                   ?.conditionSub
@@ -130,7 +136,7 @@ const PushConditions = () => {
               className="input"
               value={record.conditionCount}
             />
-            天
+            {t('sky')}
           </TableItem>
         )
       },
@@ -141,7 +147,12 @@ const PushConditions = () => {
       render: (text: string, record: any) => {
         return (
           <TableItem>
-            <div>
+            <div
+              style={{
+                width:
+                  language === 'zh' ? 116 : clientWidth > 2195 ? 264 : '12vw',
+              }}
+            >
               {
                 dataText?.filter((i: any) => i.type === record.type)[0]
                   ?.thresholdSub
@@ -154,7 +165,7 @@ const PushConditions = () => {
               className="input"
               value={record.thresholdCount}
             />
-            条
+            {t('strip')}
           </TableItem>
         )
       },
@@ -167,6 +178,18 @@ const PushConditions = () => {
       },
     },
   ]
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setClientWidth(document.body.clientWidth)
+    })
+    return () => {
+      window.addEventListener('resize', () => {
+        setClientWidth(document.body.clientWidth)
+      })
+    }
+  }, [])
+
   return (
     <PushConditionsWrap>
       <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
