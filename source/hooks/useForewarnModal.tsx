@@ -3,7 +3,7 @@ import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { changeWaterForewarnStatus } from '@store/Forewarn'
-import { store, useDispatch } from '@store/index'
+import { store, useDispatch, useSelector } from '@store/index'
 import { Checkbox, Divider, Modal, Skeleton, Tabs, Tooltip } from 'antd'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -79,8 +79,9 @@ const text2 = css`
 `
 
 const useForewarnModal = () => {
+  const visible = useSelector(store => store.Forewarn.value)
   const [t] = useTranslation()
-  const [visible, setVisible] = useState(false)
+  const dispatch = useDispatch()
   const [dis, setDis] = useState(false)
   const [nowKey, setNowKey] = useState('1')
 
@@ -118,7 +119,7 @@ const useForewarnModal = () => {
   ])
 
   const openForewarnModal = (options: any) => {
-    setVisible(options.visible)
+    dispatch(changeWaterForewarnStatus(true))
   }
   const onChange2 = (key: string) => {
     console.log(key)
@@ -171,7 +172,7 @@ const useForewarnModal = () => {
       footer={null}
       open={visible}
       onCancel={() => {
-        setVisible(false)
+        dispatch(changeWaterForewarnStatus(false))
       }}
     >
       <div>
