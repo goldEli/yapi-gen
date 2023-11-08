@@ -57,7 +57,6 @@ const PreviewImageModal = (props: PreviewImageProps) => {
           style={{
             fontSize: 40,
             color: 'var(--neutral-white-d1)',
-            background: 'transparent',
             marginLeft: 20,
             position: 'relative',
             top: -22,

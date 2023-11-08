@@ -46,7 +46,7 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
               },
             ]}
           >
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" maxLength={100} />
           </Form.Item>
 
           <Form.Item
