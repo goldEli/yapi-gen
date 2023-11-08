@@ -42,27 +42,25 @@ const PreviewImageModal = (props: PreviewImageProps) => {
     }
   }, [type])
 
-  return (
-    visible && (
-      <PreviewImageModalWrap>
-        {imageHtml}
-        <div
-          className="imgBox"
-          style={{ marginTop: type === 'phone' ? 62 : 53 }}
-          onClick={onClose}
-        >
-          <IconFont
-            style={{
-              fontSize: 40,
-              color: 'var(--neutral-white-d1)',
-              background: 'transparent',
-            }}
-            type="close-solid2"
-          />
-        </div>
-      </PreviewImageModalWrap>
-    )
-  )
+  return visible ? (
+    <PreviewImageModalWrap>
+      {imageHtml}
+      <div
+        className="imgBox"
+        style={{ marginTop: type === 'phone' ? 62 : 53 }}
+        onClick={onClose}
+      >
+        <IconFont
+          style={{
+            fontSize: 40,
+            color: 'var(--neutral-white-d1)',
+            background: 'transparent',
+          }}
+          type="close-solid2"
+        />
+      </div>
+    </PreviewImageModalWrap>
+  ) : null
 }
 
 export default PreviewImageModal

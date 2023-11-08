@@ -110,3 +110,16 @@ export const PreviewImageModalWrap = styled.div`
     margin-left: 20px;
   }
 `
+export const BlueText = styled.span`
+  cursor: pointer;
+  color: var(--primary-d2);
+`
+export const GrayText = styled.span`
+  cursor: pointer;
+  color: var(--neutral-n3);
+  font-size: 12px;
+`
+
+export const DingTalkGroupModalWrap = styled.div`
+  padding: 0px 24px 24px 24px;
+`

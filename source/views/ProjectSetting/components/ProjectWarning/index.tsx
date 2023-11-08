@@ -7,6 +7,7 @@ import { ProjectWarningWrap, Title } from './style'
 import { Space } from 'antd'
 import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
+import PushChannel from './components/PushChannel'
 
 const ProjectWarning = () => {
   const [t] = useTranslation()
@@ -20,6 +21,7 @@ const ProjectWarning = () => {
         </Space>
       </Title>
       <PushConditions />
+      <PushChannel />
       <PushDate></PushDate>
       <PushObject></PushObject>
     </ProjectWarningWrap>
