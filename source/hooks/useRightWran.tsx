@@ -45,15 +45,15 @@ const RightWran = () => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {first && (
+      {first ? (
         <IconFont
           style={{ color: '#FFA14F', fontSize: '18px' }}
           type="right-02"
         />
-      )}
-      {first && (
+      ) : null}
+      {first ? (
         <img style={{ width: '40px', height: '40px' }} src={frnIcon} alt="" />
-      )}
+      ) : null}
       <Badge className="ff" size="small" count={4} showZero />
     </Tag>
   )
