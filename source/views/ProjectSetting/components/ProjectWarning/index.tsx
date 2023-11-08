@@ -9,11 +9,13 @@ import { useTranslation } from 'react-i18next'
 import PushChannel from './components/PushChannel'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectWarning } from '@store/project'
+import NoSettingPage from './components/NoSettingPage'
 
 const ProjectWarning = () => {
   const { projectWarning } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const [t] = useTranslation()
+
   // 保存
   const save = () => {
     console.log(111, projectWarning)
@@ -25,7 +27,9 @@ const ProjectWarning = () => {
       dispatch(setProjectWarning(null))
     }
   }, [])
-  return (
+  return false ? (
+    <NoSettingPage />
+  ) : (
     <ProjectWarningWrap>
       <Title>
         <span className="label">{t('riskWarningPushSettings')}</span>
