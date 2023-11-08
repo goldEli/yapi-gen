@@ -151,7 +151,6 @@ const PushConditions = () => {
                   newData[index]['conditionCount'] = value
                   return newData
                 })
-                updateData()
               }}
             />
             {t('sky')}
@@ -189,7 +188,6 @@ const PushConditions = () => {
                   newData[index]['thresholdCount'] = value
                   return newData
                 })
-                updateData()
               }}
             />
             {t('strip')}
@@ -209,7 +207,6 @@ const PushConditions = () => {
                 newData[index]['is_enable'] = value
                 return newData
               })
-              updateData()
             }}
           />
         )
@@ -235,7 +232,9 @@ const PushConditions = () => {
       })
     }
   }, [])
-
+  useEffect(() => {
+    updateData()
+  }, [data])
   return (
     <PushConditionsWrap>
       <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
