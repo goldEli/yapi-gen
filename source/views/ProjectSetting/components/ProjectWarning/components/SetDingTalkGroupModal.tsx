@@ -3,6 +3,7 @@ import { Form, Input } from 'antd'
 import { DingTalkGroupModalWrap } from '../style'
 import { useEffect } from 'react'
 import { getMessage } from '@/components/Message'
+import { useSelector } from '@store/index'
 
 type SetDingTalkGroupModalProps = {
   isVisible: boolean
@@ -13,6 +14,7 @@ type SetDingTalkGroupModalProps = {
 const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
   const { isVisible, onClose, onConfirm } = props
   const [form] = Form.useForm()
+  const { projectWarning } = useSelector(store => store.project)
 
   const onFinish = () => {
     const value = form.getFieldsValue()
@@ -38,8 +40,11 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
   }
 
   useEffect(() => {
-    if (!isVisible) {
-      form.resetFields()
+    if (isVisible) {
+      form.setFieldsValue(
+        projectWarning?.push_channel?.find?.((k: any) => k.type === 'ding')
+          ?.other_config,
+      )
     }
   }, [isVisible])
   return (

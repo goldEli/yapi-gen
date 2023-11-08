@@ -185,6 +185,10 @@ export const GrayText = styled.span`
   cursor: pointer;
   color: var(--neutral-n3);
   font-size: 12px;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `
 
 export const DingTalkGroupModalWrap = styled.div`

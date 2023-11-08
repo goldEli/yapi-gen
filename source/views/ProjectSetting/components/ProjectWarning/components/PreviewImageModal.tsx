@@ -16,7 +16,8 @@ const PreviewImageModal = (props: PreviewImageProps) => {
         return (
           <img
             src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/warning/dingtalkMessage.png"
-            width={852}
+            height={600}
+            style={{ borderRadius: 6 }}
             alt=""
           />
         )
@@ -24,7 +25,8 @@ const PreviewImageModal = (props: PreviewImageProps) => {
         return (
           <img
             src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/warning/emailMessage.png"
-            width={928}
+            height={600}
+            style={{ borderRadius: 6 }}
             alt=""
           />
         )
@@ -32,7 +34,8 @@ const PreviewImageModal = (props: PreviewImageProps) => {
         return (
           <img
             src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/warning/phoneMessage.png"
-            width={312}
+            height={600}
+            style={{ borderRadius: 6 }}
             alt=""
           />
         )
@@ -40,7 +43,8 @@ const PreviewImageModal = (props: PreviewImageProps) => {
         return (
           <img
             src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/warning/system.jpg"
-            width={784}
+            height={600}
+            style={{ borderRadius: 6 }}
             alt=""
           />
         )
