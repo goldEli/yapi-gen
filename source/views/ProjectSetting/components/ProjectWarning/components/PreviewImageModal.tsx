@@ -5,7 +5,7 @@ import IconFont from '@/components/IconFont'
 
 type PreviewImageProps = {
   visible: boolean
-  type: 'ding' | 'email' | 'phone' | 'system'
+  type: 'ding' | 'email' | 'sms' | 'sys'
   onClose(): void
 }
 const PreviewImageModal = (props: PreviewImageProps) => {
@@ -28,7 +28,7 @@ const PreviewImageModal = (props: PreviewImageProps) => {
             alt=""
           />
         )
-      case 'phone':
+      case 'sms':
         return (
           <img
             src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/warning/phoneMessage.png"
@@ -36,7 +36,7 @@ const PreviewImageModal = (props: PreviewImageProps) => {
             alt=""
           />
         )
-      case 'system':
+      case 'sys':
         return (
           <img
             src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/warning/system.jpg"
