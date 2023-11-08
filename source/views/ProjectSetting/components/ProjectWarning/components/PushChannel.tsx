@@ -7,7 +7,7 @@ import {
   BlueText,
   GrayText,
 } from '../style'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PreviewImageModal from './PreviewImageModal'
 import SetDingTalkGroupModal from './SetDingTalkGroupModal'
@@ -160,6 +160,7 @@ const PushChannel = () => {
       },
     },
   ]
+
   return (
     <PushConditionsWrap>
       <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
@@ -193,6 +194,7 @@ const PushChannel = () => {
             }),
           )
           setData(temp)
+          setVisible(false)
         }}
       />
     </PushConditionsWrap>

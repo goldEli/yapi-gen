@@ -1,6 +1,8 @@
 import CommonModal from '@/components/CommonModal'
 import { Form, Input } from 'antd'
 import { DingTalkGroupModalWrap } from '../style'
+import { useEffect } from 'react'
+import { getMessage } from '@/components/Message'
 
 type SetDingTalkGroupModalProps = {
   isVisible: boolean
@@ -12,12 +14,34 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
   const { isVisible, onClose, onConfirm } = props
   const [form] = Form.useForm()
 
-  const onFinish = async () => {
-    const value = await form.validateFields()
-    if (value) {
+  const onFinish = () => {
+    const value = form.getFieldsValue()
+    if (value.group_name && value.web_hook) {
+      getMessage({
+        type: 'success',
+        msg: '设置成功',
+      })
       onConfirm(value)
+    } else if (!value.group_name && !value.web_hook) {
+      onConfirm(value)
+    } else if (!value.group_name && value.web_hook) {
+      getMessage({
+        type: 'warning',
+        msg: '请填写群名称',
+      })
+    } else if (value.group_name && !value.web_hook) {
+      getMessage({
+        type: 'warning',
+        msg: '请填写钉钉webhook地址',
+      })
     }
   }
+
+  useEffect(() => {
+    if (!isVisible) {
+      form.resetFields()
+    }
+  }, [isVisible])
   return (
     <CommonModal
       width={528}
@@ -33,41 +57,11 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
           wrapperCol={{ span: 24 }}
           autoComplete="off"
         >
-          <Form.Item
-            label="群名称"
-            name="group_name"
-            validateFirst
-            rules={[
-              { required: true, message: '请输入' },
-              {
-                validator(_, value) {
-                  if (value?.trim()) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(new Error('请输入'))
-                },
-              },
-            ]}
-          >
+          <Form.Item label="群名称" name="group_name">
             <Input placeholder="请输入" maxLength={100} />
           </Form.Item>
 
-          <Form.Item
-            label="钉钉webhook地址"
-            name="web_hook"
-            validateFirst
-            rules={[
-              { required: true, message: '请输入' },
-              {
-                validator(_, value) {
-                  if (value?.trim()) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(new Error('请输入'))
-                },
-              },
-            ]}
-          >
+          <Form.Item label="钉钉webhook地址" name="web_hook">
             <Input placeholder="请输入" />
           </Form.Item>
         </Form>

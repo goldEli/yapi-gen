@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import frnIcon from '/iconfrn.png'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { init } from 'i18next'
+import { produce } from 'immer'
 
 const Footer = styled.div`
   height: 80px;
@@ -127,37 +128,39 @@ const useForewarnModal = () => {
     console.log(`checked = ${e.target.checked}`)
     setDis(e.target.checked)
   }
+
   const init = () => {
-    setDatas((olddata: any) => {
-      const item = olddata.find((obj: any) => obj.key === nowKey)
-      if (item) {
-        item.list = item.list.concat(Array(10).fill(0))
-      }
-      return olddata
-    })
+    setDatas(
+      produce((draft: any) => {
+        draft?.forEach((item: any) => {
+          if (item.key === nowKey) {
+            item.list = item.list.concat(Array(2).fill(0))
+          }
+        })
+      }),
+    )
   }
+
+  const fetchMoreData = () => {
+    setDatas(
+      produce((draft: any) => {
+        draft?.forEach((item: any) => {
+          if (item.key === nowKey) {
+            item.list = item.list.concat(Array(2).fill(0))
+          }
+        })
+      }),
+    )
+  }
+  const twoData = useMemo(() => {
+    return datas.find((l: any) => l.key === nowKey)
+  }, [datas, nowKey])
 
   useEffect(() => {
     init()
-  }, [])
+  }, [nowKey])
+  console.log(datas, 'datas数据源')
 
-  const fetchMoreData = () => {
-    setDatas((olddata: any) => {
-      const item = olddata.find((obj: any) => obj.key === nowKey)
-      if (item) {
-        item.list = item.list.concat(Array(10).fill(0))
-      }
-      return olddata
-    })
-    console.log(datas)
-  }
-
-  const twoData = useMemo(() => {
-    return datas.find((f: any) => f.key === nowKey)
-  }, [datas, nowKey])
-
-  console.log(twoData, 'twoData')
-  console.log(datas)
   const ForewarnModal = (
     <Modal
       centered
@@ -212,7 +215,7 @@ const useForewarnModal = () => {
             endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
             hasMore={twoData.list?.length < twoData?.lang}
           >
-            {twoData.list.map((item: any) => {
+            {twoData.list?.map((item: any, index: any) => {
               return (
                 <ListBox key={item}>
                   <div
