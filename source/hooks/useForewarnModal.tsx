@@ -144,10 +144,6 @@ const useForewarnModal = () => {
     }, 10)
   }
 
-  useEffect(() => {
-    init()
-  }, [])
-
   const fetchMoreData = () => {
     setDatas((olddata: any) => {
       const item = olddata.find((obj: any) => obj.key === nowKey)
@@ -165,6 +161,10 @@ const useForewarnModal = () => {
       setIsUpdate(false)
     }
   }, [isUpdate])
+
+  useEffect(() => {
+    init()
+  }, [nowKey])
 
   const ForewarnModal = (
     <Modal
