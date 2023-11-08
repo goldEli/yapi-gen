@@ -81,6 +81,10 @@ const useForewarnModal = () => {
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const [dis, setDis] = useState(false)
+  const [dataList, setDataList] = useState<any>({
+    list: [],
+  })
+  const [isUpdate, setIsUpdate] = useState(false)
   const [nowKey, setNowKey] = useState('1')
 
   const [datas, setDatas] = useState<any>([
@@ -135,11 +139,10 @@ const useForewarnModal = () => {
       }
       return olddata
     })
+    setTimeout(() => {
+      setIsUpdate(true)
+    }, 10)
   }
-
-  useEffect(() => {
-    init()
-  }, [])
 
   const fetchMoreData = () => {
     setDatas((olddata: any) => {
@@ -149,15 +152,20 @@ const useForewarnModal = () => {
       }
       return olddata
     })
-    console.log(datas)
+    setIsUpdate(true)
   }
 
-  const twoData = useMemo(() => {
-    return datas.find((f: any) => f.key === nowKey)
-  }, [datas, nowKey])
+  useEffect(() => {
+    if (isUpdate) {
+      setDataList(datas.find((f: any) => f.key === nowKey))
+      setIsUpdate(false)
+    }
+  }, [isUpdate])
 
-  console.log(twoData, 'twoData')
-  console.log(datas)
+  useEffect(() => {
+    init()
+  }, [nowKey])
+
   const ForewarnModal = (
     <Modal
       centered
@@ -195,7 +203,7 @@ const useForewarnModal = () => {
           </div>
           {/* ---------------------------------- */}
           <InfiniteScroll
-            dataLength={twoData.list?.length}
+            dataLength={dataList.list?.length}
             next={() => fetchMoreData()}
             style={{
               overflow: 'auto',
@@ -210,9 +218,9 @@ const useForewarnModal = () => {
             loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
             scrollableTarget="scrollableDiv"
             endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-            hasMore={twoData.list?.length < twoData?.lang}
+            hasMore={dataList.list?.length < dataList?.lang}
           >
-            {twoData.list.map((item: any) => {
+            {dataList.list?.map((item: any) => {
               return (
                 <ListBox key={item}>
                   <div
