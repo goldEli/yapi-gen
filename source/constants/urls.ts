@@ -557,6 +557,10 @@ const urls = {
   getPerformanceInsightKanBanMembers: '/b/company/kanban/members',
 
   // 项目预警
+  // 保存配置
+  saveWarningConfig: '/b/project/warning_config',
+  // 获取配置列表
+  getWarningConfigInfo: '/b/project/warning_config_info',
 }
 export default urls
 

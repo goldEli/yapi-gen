@@ -1051,3 +1051,13 @@ export const updateFlawPerception = async (params: {
   const response = await http.put<any>('updateFlawPerception', params)
   return response
 }
+// 配置预警
+export const saveWarningConfig = async (params: any) => {
+  const res = await http.post<any>('saveWarningConfig', params)
+}
+// 获取配置列表
+export const getWarningConfigInfo = async (params: any) => {
+  const res = await http.get<any>('getWarningConfigInfo', params)
+  console.log('res----', res)
+  return res.data
+}

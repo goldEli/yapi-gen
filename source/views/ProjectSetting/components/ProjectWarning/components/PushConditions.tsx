@@ -19,39 +19,34 @@ const PushConditions = () => {
   const [maxWidth, setMaxWidth] = useState<number>()
   const [data, setData] = useState<any[]>([
     {
-      conditionCount: 3,
-      thresholdCount: 2,
+      cond_conf: 3,
+      send_conf: 2,
       is_enable: 1,
       type: 'task_soon_expired',
-      description: '',
     },
     {
-      conditionCount: 3,
-      thresholdCount: 2,
+      cond_conf: 3,
+      send_conf: 2,
       is_enable: 1,
       type: 'task_expired',
-      description: '',
     },
     {
-      conditionCount: 3,
-      thresholdCount: 2,
+      cond_conf: 3,
+      send_conf: 2,
       is_enable: 1,
       type: 'bug_soon_expired',
-      description: '',
     },
     {
-      conditionCount: 3,
-      thresholdCount: 2,
+      cond_conf: 3,
+      send_conf: 2,
       is_enable: 2,
       type: 'bug_expired',
-      description: '',
     },
     {
-      conditionCount: 3,
-      thresholdCount: 2,
+      cond_conf: 3,
+      send_conf: 2,
       is_enable: 2,
       type: 'bug_too_many',
-      description: '',
     },
   ])
   // 用于计算英文状态下的宽度
@@ -143,12 +138,11 @@ const PushConditions = () => {
               max={999}
               step={1}
               className="input"
-              value={record.conditionCount}
+              value={record.cond_conf}
               onChange={(value: any) => {
-                console.log(value, data, index)
                 setData((pre: any) => {
                   const newData = _.cloneDeep(pre)
-                  newData[index]['conditionCount'] = value
+                  newData[index].cond_conf = value
                   return newData
                 })
               }}
@@ -180,12 +174,11 @@ const PushConditions = () => {
               max={999}
               step={1}
               className="input"
-              value={record.thresholdCount}
+              value={record.send_conf}
               onChange={(value: any) => {
-                console.log(value, data, index)
                 setData((pre: any) => {
                   const newData = _.cloneDeep(pre)
-                  newData[index]['thresholdCount'] = value
+                  newData[index].send_conf = value
                   return newData
                 })
               }}
@@ -198,13 +191,14 @@ const PushConditions = () => {
     {
       title: t('whetherToEnable'),
       dataIndex: 'is_enable',
-      render: (text: string, record: any, index: number) => {
+      render: (text: number, record: any, index: number) => {
         return (
           <Switch
+            checked={text === 1}
             onChange={value => {
               setData((pre: any) => {
                 const newData = _.cloneDeep(pre)
-                newData[index]['is_enable'] = value
+                newData[index].is_enable = value ? 1 : 2
                 return newData
               })
             }}
@@ -213,6 +207,7 @@ const PushConditions = () => {
       },
     },
   ]
+  // 更新参数值
   const updateData = () => {
     dispatch(
       setProjectWarning({
@@ -235,6 +230,9 @@ const PushConditions = () => {
   useEffect(() => {
     updateData()
   }, [data])
+  useEffect(() => {
+    setData(projectWarning?.push_condition)
+  }, [])
   return (
     <PushConditionsWrap>
       <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>

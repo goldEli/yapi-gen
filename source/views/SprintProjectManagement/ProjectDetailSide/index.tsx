@@ -190,9 +190,13 @@ const ProjectDetailSide = () => {
       key: 'ProjectSchedule',
     },
     {
-      label: '项目预警',
+      label: '项目推送设置',
       icon: (
-        <CommonIconFont color="var(--neutral-n3)" type="log-nor" size={18} />
+        <CommonIconFont
+          color="var(--neutral-n3)"
+          type="forewarning"
+          size={18}
+        />
       ),
       path: '/SprintProjectManagement/Setting',
       isPermission: true,
