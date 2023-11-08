@@ -58,6 +58,7 @@ const ProjectWarning = () => {
             </Space>
           </Title>
           <PushConditions />
+          <PushChannel />
           <PushDate></PushDate>
           <PushObject></PushObject>
         </>
