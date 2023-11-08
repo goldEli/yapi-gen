@@ -1,4 +1,4 @@
-import { Switch } from 'antd'
+import { Switch, Tooltip } from 'antd'
 import {
   PushConditionsWrap,
   SubTitleBox,
@@ -19,30 +19,13 @@ const PushChannel = () => {
   const [imageModalVisible, setImageModalVisible] = useState<boolean>(false)
   const [visible, setVisible] = useState<boolean>(false)
   const [selectRecord, setSelectRecord] = useState<any>({})
-  const [data, setData] = useState([
-    {
-      is_enable: 1,
-      type: 'sys',
-    },
-    {
-      is_enable: 2,
-      type: 'ding',
-      other_config: {
-        group_name: '',
-        web_hook: '',
-      },
-    },
-    {
-      is_enable: 2,
-      type: 'email',
-    },
-    {
-      is_enable: 2,
-      type: 'sms',
-    },
-  ])
+  const [data, setData] = useState<any[]>([])
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
+  useEffect(() => {
+    setData(projectWarning?.push_channel ?? [])
+    console.log(projectWarning?.push_channel)
+  }, [projectWarning])
   // 文字
   const dataText = [
     {
@@ -113,7 +96,22 @@ const PushChannel = () => {
             >
               设置钉钉群
             </BlueText>
-            <GrayText>已配置 iFUN 软件开发</GrayText>
+            {data.find((s: any) => s.type === 'ding')?.other_config
+              ?.group_name ? (
+              <Tooltip
+                title={
+                  data.find((s: any) => s.type === record.type)?.other_config
+                    ?.group_name
+                }
+              >
+                <GrayText>
+                  {
+                    data.find((s: any) => s.type === record.type)?.other_config
+                      ?.group_name
+                  }
+                </GrayText>
+              </Tooltip>
+            ) : null}
           </div>
         ) : (
           <BlueText
@@ -132,30 +130,44 @@ const PushChannel = () => {
       dataIndex: 'is_enable',
       render: (_: string, record: any) => {
         return (
-          <Switch
-            disabled={record.type === 'sys'}
-            checked={
-              data.find((s: any) => s.type === record.type)?.is_enable === 1
+          <Tooltip
+            title={
+              record.type === 'ding' &&
+              !data.find((s: any) => s.type === 'ding')?.other_config
+                ?.group_name
+                ? '请先设置钉钉群'
+                : ''
             }
-            onChange={(val: boolean) => {
-              const temp = data.map((k: any) => {
-                if (k.type === record.type) {
-                  return {
-                    ...k,
-                    is_enable: val ? 1 : 2,
+          >
+            <Switch
+              disabled={
+                record.type === 'sys' ||
+                (record.type === 'ding' &&
+                  !data.find((s: any) => s.type === 'ding')?.other_config
+                    ?.group_name)
+              }
+              checked={
+                data.find((s: any) => s.type === record.type)?.is_enable === 1
+              }
+              onChange={(val: boolean) => {
+                const temp = data.map((k: any) => {
+                  if (k.type === record.type) {
+                    return {
+                      ...k,
+                      is_enable: val ? 1 : 2,
+                    }
                   }
-                }
-                return k
-              })
-              dispatch(
-                setProjectWarning({
-                  ...projectWarning,
-                  push_channel: temp,
-                }),
-              )
-              setData(temp)
-            }}
-          />
+                  return k
+                })
+                dispatch(
+                  setProjectWarning({
+                    ...projectWarning,
+                    push_channel: temp,
+                  }),
+                )
+              }}
+            />
+          </Tooltip>
         )
       },
     },
@@ -183,6 +195,10 @@ const PushChannel = () => {
               return {
                 ...k,
                 other_config,
+                is_enable:
+                  !other_config?.group_name && !other_config?.web_hook
+                    ? 2
+                    : k.is_enable,
               }
             }
             return k
@@ -193,7 +209,6 @@ const PushChannel = () => {
               push_channel: temp,
             }),
           )
-          setData(temp)
           setVisible(false)
         }}
       />
