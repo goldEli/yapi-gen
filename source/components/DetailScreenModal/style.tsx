@@ -1,8 +1,13 @@
 import styled from '@emotion/styled'
 import { Modal } from 'antd'
 
-export const ModalWrap = styled(Modal)<{ all?: boolean }>`
+export const ModalWrap = styled(Modal)<{
+  all?: boolean
+  layoutSideCollapse?: boolean
+}>`
   max-width: ${props => (props.all ? '80vw' : '100vw')};
+  margin-left: ${props =>
+    props.all ? '0' : props.layoutSideCollapse ? '200px' : '80px'};
   .ant-modal-body {
     background-color: var(--neutral-white-d5);
     border-radius: 6px;

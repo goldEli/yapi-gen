@@ -20,6 +20,7 @@ const DetailScreenModal = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { fullScreen } = useSelector(store => store.kanBan)
+  const { layoutSideCollapse } = useSelector(store => store.global)
 
   const detailContent = [
     { specialType: 1, content: <AffairsDetail /> },
@@ -57,6 +58,7 @@ const DetailScreenModal = () => {
 
   return (
     <ModalWrap
+      layoutSideCollapse={layoutSideCollapse}
       all={userPreferenceConfig.previewModel === 3}
       footer={false}
       open={visible}
@@ -74,10 +76,16 @@ const DetailScreenModal = () => {
           : userPreferenceConfig.previewModel === 3
           ? '80vh'
           : 'calc(100vh - 56px)',
-        // minWidth: '1400px',
         marginTop: fullScreen ? 0 : 56,
+        // marginLeft: fullScreen ? 0 : layoutSideCollapse ? 200 : 80,
       }}
-      width="100vw"
+      width={
+        fullScreen
+          ? '100vw'
+          : layoutSideCollapse
+          ? 'calc(100vw - 200px)'
+          : 'calc(100vw - 80px)'
+      }
       zIndex={userPreferenceConfig.previewModel === 3 ? 1000 : 50}
       // 界面全屏时需要挂载到全屏的那个dom元素身上才能显示出来
       getContainer={
