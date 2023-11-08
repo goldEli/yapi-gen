@@ -16,7 +16,6 @@ import {
   getColor,
   getColorWithOpacityPointOne,
 } from '@/components/CalendarManager/utils'
-import { Dot, Time, Title } from '../../ScheduleStrip/styled'
 import ScheduleStripContent from '../../ScheduleStrip/ScheduleStripContent'
 
 interface ScheduleAllDayProps {}

@@ -25,25 +25,7 @@ const DayBox = styled.div`
   align-items: center;
   justify-content: center;
 `
-// const dayActive = css`
-//   border-radius: 50%;
-//   background: var(--primary-d1);
-//   color: var(--neutral-white-d7);
-//   position: relative;
-// `
-// const hasScheduleClass = css`
-//   position: relative;
-//   &::after {
-//     position: absolute;
-//     content: '';
-//     width: 4px;
-//     height: 4px;
-//     background: var(--primary-d1);
-//     bottom: -4px;
-//     left: 11px;
-//     border-radius: 50%;
-//   }
-// `
+
 const dayActive = css`
   border-radius: 50%;
   background: transparent;

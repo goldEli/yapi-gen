@@ -29,7 +29,7 @@ const VideoTeaching = () => {
     )
     setData(data)
   }, [value])
-  const navigate = useNavigate()
+
   return (
     <Wrap>
       <Header time={time}></Header>

@@ -356,7 +356,7 @@ const DndKitTable = (props: any) => {
       specialType: 1,
     }
     const resultParams = encryptPhp(JSON.stringify(params))
-    let url = `SprintProjectManagement/Affair?data=${resultParams}`
+    let url = `ProjectDetail/Affair?data=${resultParams}`
 
     text += `【${row.story_prefix_key}-${row.name}】 ${beforeUrl}${url} \n`
     copyLink(text, t('common.copySuccess'), t('common.copyFail'))

@@ -692,6 +692,7 @@ const FlawDetailDrawer = () => {
 
                     <div>
                       <LeftIcontButton
+                        onClick={onToDetail}
                         icon="full-screen"
                         text={t('openDetails')}
                       />

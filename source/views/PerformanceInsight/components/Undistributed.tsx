@@ -65,7 +65,7 @@ const DropdownMenu = (props: any) => {
   // 复制需求链接
   const onCopyLink = () => {
     if (!props.record.isCanEdit) {
-      getMessage({ msg: '该项目无权限', type: 'warning' })
+      getMessage({ msg: t('thisProjectHasNoPermissions'), type: 'warning' })
       return
     }
     let params: any = {

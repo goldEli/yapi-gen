@@ -239,12 +239,6 @@ const StatusModal = (props: StatusModalProps) => {
     return form1Obj
   }
 
-  // const activeContent =
-  //   props.checkStatusItem.canChange?.filter((i: any) => i.id === active)[0]
-  //     ?.content !== '规划中'
-
-  // const hasDealName = props.checkStatusItem?.dealName === '--'
-
   const valid = () => {
     const str1 = form.getFieldsValue()?.users_name?.join(',')
     const str2 = configData?.originalStatusUserIds?.join(',')

@@ -269,47 +269,7 @@ const CalendarSet = () => {
           <Title>
             <div className="name">{t('calendarManager.schedule_settings')}</div>
           </Title>
-          {/* <Label style={{ marginTop: 8 }}>
-            {t('calendarManager.schedule_color')}
-          </Label>
-          <ScheduleColorWrap size={56}>
-            {colorList.map(
-              (i: {
-                name: string
-                value: number
-                background: string
-                color: string
-              }) => (
-                <div
-                  className="box"
-                  key={i.value}
-                  onClick={() =>
-                    onChangeSet(i.value, 'schedule_color', 'schedule_configs')
-                  }
-                >
-                  <div
-                    className="colorBox"
-                    style={{ background: i.background, color: i.color }}
-                  >
-                    <span>{t('calendarManager.meeting')}</span>
-                    <span>10:00-12:00</span>
-                  </div>
-                  <div className="radio">
-                    <div
-                      className={
-                        formParams?.schedule_configs?.schedule_color === i.value
-                          ? 'active'
-                          : 'normal'
-                      }
-                    >
-                      <div />
-                    </div>
-                    <div className="name">{i.name}</div>
-                  </div>
-                </div>
-              ),
-            )}
-          </ScheduleColorWrap> */}
+
           <Label style={{ marginTop: 8 }}>
             {t('calendarManager.default_duration_of_schedule')}
           </Label>

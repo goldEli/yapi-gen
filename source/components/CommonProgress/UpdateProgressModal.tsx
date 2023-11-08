@@ -60,15 +60,6 @@ const UpdateProgressModal = (props: ProgressPropsType) => {
     if (String(newValue).includes('.')) {
       return
     }
-    // if (newValue < data?.schedule) {
-    //   getMessage({
-    //     type: 'warning',
-    //     msg: t(
-    //       'theProgressThisTimeNeedsToBeGreaterThanTheLastPleaseFillInAgain',
-    //     ),
-    //   })
-    //   return
-    // }
     setInputValue(newValue)
   }
   // 选择附件逻辑处理

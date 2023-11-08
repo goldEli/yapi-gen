@@ -39,41 +39,6 @@ const DayItemBox = styled.div`
   gap: 2px;
 `
 
-const DayBox = styled.div`
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  padding: 0 12px;
-  box-sizing: border-box;
-  .day {
-    font-size: 18px;
-    font-family: SiYuanMedium;
-    color: var(--neutral-n1-d1);
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .currentDay {
-    border: 1px solid var(--primary-d1);
-    color: var(--primary-d1);
-  }
-  .dayActive {
-    color: var(--neutral-white-d7);
-    background: var(--primary-d1);
-  }
-  .daySecondaryColor {
-    color: var(--neutral-n3);
-  }
-  .lunar {
-    font-size: 12px;
-
-    color: var(--neutral-n4);
-  }
-`
-
 const selectedBg = css`
   background-color: var(--neutral-n6-d1);
 `
@@ -152,19 +117,6 @@ const DayItem: React.FC<DayItemProps> = props => {
       onClick={onClick}
       onMouseEnter={onMouseEnter}
     >
-      {/* <DayBox>
-        <span
-          className={classNames('day', {
-            dayActive: isSelected,
-            daySecondaryColor: !info?.is_current_month && !isSelected,
-            currentDay: isCurrent,
-          })}
-        >
-          {day}
-        </span>
-        <span className="lunar">{info?.lunar_day_chinese}</span>
-      </DayBox>
-      <ScheduleList data={info} idx={idx} list={props.list} /> */}
       {props.children}
     </DayItemBox>
   )

@@ -386,25 +386,6 @@ const SiteDrawer = () => {
                 display: 'flex',
               }}
             >
-              {/* <Tooltip title={t('set')}>
-                <CloseWrap
-                  style={{
-                    margin: '0 4px',
-                  }}
-                  onClick={() => {
-                    navigate('/SiteNotifications/Setting/1')
-                    dispatch(changeVisible(false))
-                  }}
-                  width={32}
-                  height={32}
-                >
-                  <IconFont
-                    style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
-                    type="settings"
-                  />
-                </CloseWrap>
-              </Tooltip> */}
-              {/* <Tooltip title={t('new_page')}> */}
               <BlueDiv
                 onClick={() => {
                   const url = 'SiteNotifications/AllNote/1'
