@@ -16,6 +16,7 @@ import NoSettingPage from './components/NoSettingPage'
 import useProjectId from './hooks/useProjectId'
 import { saveWarningConfig } from '@/services/project'
 import { getWarningConfigInfo } from '@store/project/project.thunk'
+import { getMessage } from '@/components/Message'
 const ProjectWarning = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -27,9 +28,28 @@ const ProjectWarning = () => {
 
   // 保存
   const save = async () => {
+    // debugger
+    const { push_condition, push_date, push_obj = [] } = projectWarning
+    const { day = [], time = {} } = push_date ?? {}
+    if (push_condition.some((item: any) => item.is_enable === 2)) {
+      getMessage({ type: 'error', msg: '推送条件至少启用一条' })
+      return
+    }
+
+    if (
+      day.filter((item: any) => item !== -1).length === 0 ||
+      Object.values(time).filter(item => item).length === 0
+    ) {
+      getMessage({
+        type: 'error',
+        msg: '推送时间 周期至少选择一天，且时间必须选择',
+      })
+      return
+    }
     let res = await saveWarningConfig({
       ...projectWarning,
       project_id: projectId,
+      push_obj: push_obj?.map((item: any) => item.id),
     })
     console.log(111, projectWarning, { ...projectWarning, projectId })
   }

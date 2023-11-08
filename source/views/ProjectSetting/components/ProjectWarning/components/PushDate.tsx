@@ -34,7 +34,7 @@ const PushDate = () => {
   ]
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
-  const { push_time } = projectWarning ?? {}
+  const { push_date } = projectWarning ?? {}
 
   return (
     <PushDateBox>
@@ -44,15 +44,15 @@ const PushDate = () => {
           <label className="label-text">周期</label>
           <Checkbox.Group
             options={options}
-            defaultValue={['Apple']}
+            value={push_date?.day ?? []}
             onChange={value => {
               dispatch(
                 setProjectWarning({
                   ...projectWarning,
-                  push_time: {
-                    ...push_time,
-                    day: value.filter(item => item !== -1),
-                    is_holiday: value.includes(-1) ? 1 : 0,
+                  push_date: {
+                    ...push_date,
+                    day: value,
+                    is_holiday: value?.includes(-1) ? 1 : 2,
                   },
                 }),
               )
@@ -63,16 +63,37 @@ const PushDate = () => {
           <label className="label-text">时间</label>
           <TimePicker.RangePicker
             format="HH:mm"
-            onChange={e => {
+            allowClear
+            value={
+              push_date?.time?.begin
+                ? [
+                    moment(push_date?.time?.begin, 'HH:mm'),
+                    moment(push_date?.time?.end, 'HH:mm'),
+                  ]
+                : [null, null]
+            }
+            onChange={(e: any) => {
               if (!e) {
+                dispatch(
+                  setProjectWarning({
+                    ...projectWarning,
+                    push_date: {
+                      ...push_date,
+                      time: {
+                        begin: '',
+                        end: '',
+                      },
+                    },
+                  }),
+                )
                 return
               }
               const [start_date, end_date] = e
               dispatch(
                 setProjectWarning({
                   ...projectWarning,
-                  push_time: {
-                    ...push_time,
+                  push_date: {
+                    ...push_date,
                     time: {
                       begin: moment(start_date).format('HH:mm'),
                       end: moment(end_date).format('HH:mm'),

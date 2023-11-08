@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SubTitle from './SubTitle'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -49,6 +49,10 @@ const PushObject = () => {
   const [usersId, setUsersId] = useState<any>()
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
+  const { push_obj } = projectWarning
+  useEffect(() => {
+    setList(push_obj)
+  }, [])
   return (
     <div>
       <SubTitle title="推送对象"></SubTitle>

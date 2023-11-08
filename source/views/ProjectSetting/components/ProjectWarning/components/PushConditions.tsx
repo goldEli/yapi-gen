@@ -191,13 +191,14 @@ const PushConditions = () => {
     {
       title: t('whetherToEnable'),
       dataIndex: 'is_enable',
-      render: (text: string, record: any, index: number) => {
+      render: (text: number, record: any, index: number) => {
         return (
           <Switch
+            checked={text === 1}
             onChange={value => {
               setData((pre: any) => {
                 const newData = _.cloneDeep(pre)
-                newData[index].is_enable = value
+                newData[index].is_enable = value ? 1 : 2
                 return newData
               })
             }}
@@ -229,6 +230,9 @@ const PushConditions = () => {
   useEffect(() => {
     updateData()
   }, [data])
+  useEffect(() => {
+    setData(projectWarning?.push_condition)
+  }, [])
   return (
     <PushConditionsWrap>
       <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
