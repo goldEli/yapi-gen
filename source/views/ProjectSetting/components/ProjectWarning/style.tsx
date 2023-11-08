@@ -57,7 +57,7 @@ export const PushConditionsContent = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   min-height: 294px;
   border-radius: 6px;
-  padding: 16px 8px;
+  padding: 16px 8px 0;
 `
 
 export const TableWrap = styled(Table)`
@@ -71,7 +71,7 @@ export const TableWrap = styled(Table)`
     font-size: 14px;
   }
   .ant-table-tbody > tr > td {
-    padding: 6px 16px;
+    padding: 8px 16px;
   }
   .ant-table-thead > tr > th {
     height: 32px;
@@ -89,6 +89,70 @@ export const TableItem = styled.div`
     width: 72px;
     height: 32px;
   }
+`
+// 预警卡片
+export const WaringCardWrap = styled.div`
+  border: 1px solid var(--neutral-n6-d1);
+  border-radius: 6px;
+  width: 100%;
+`
+
+export const WaringCardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--neutral-n8);
+  padding: 16px 24px;
+`
+
+export const WaringCardHeaderLeft = styled.div`
+  display: flex;
+  width: calc(100% - 64px);
+  .title {
+    font-size: 16px;
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
+  }
+  .sub {
+    margin-left: 12px;
+    font-size: 12px;
+    color: var(--neutral-n3);
+  }
+`
+
+export const WaringCardContent = styled.div`
+  padding: 24px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+`
+
+export const WaringCardItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  .label {
+    font-size: 14px;
+    color: var(--neutral-n2);
+  }
+  .content {
+    font-size: 14px;
+    color: var(--neutral-n1-d1);
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+  }
+`
+
+export const WaringGoto = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--primary-d1);
+  position: absolute;
+  right: 24px;
+  gap: 8px;
+  cursor: pointer;
 `
 
 export const PushDateBox = styled.div``
@@ -109,9 +173,8 @@ export const PreviewImageModalWrap = styled.div`
   top: 0;
   left: 0;
   .imgBox {
-    align-self: flex-start;
+    display: flex;
     cursor: pointer;
-    margin-left: 20px;
   }
 `
 export const BlueText = styled.span`
