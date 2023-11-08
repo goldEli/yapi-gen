@@ -23,7 +23,7 @@ import DailyReportRules from './components/DailyReportRules'
 import ProjectWarning from '../ProjectSetting/components/ProjectWarning'
 const Wrap = styled.div({
   display: 'flex',
-  height: 'calc(100vh - 130px)',
+  height: 'calc(100vh - 135px)',
 })
 
 const Content = styled.div({

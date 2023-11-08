@@ -2500,6 +2500,8 @@
   "iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner": "I am aware of the above project status and will synchronize or handle related matters in a timely manner",
   "alreadyKnown": "Already known",
   "toRefresh": "To refresh",
+  "strip": "Strip",
+  "theOverdueOrImminentOverdueStatusOfTasksAndBugsCanBePushedToSystemDingtalkAndTextMessagesAtRegularIntervalsBasedOn": "The overdue or imminent overdue status of tasks and bugs can be pushed to system notifications, DingTalk groups, emails, and text messages at regular intervals based on conditions.",
   "pleaseCheckTheBoxesToKnowFirst": "Please check the boxes to know first",
   "expectedToEnd": "Expected to end"
 }

@@ -6,13 +6,14 @@ import {
   TableItem,
   TableWrap,
 } from '../style'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { setProjectWarning } from '@store/project'
 import { useDispatch, useSelector } from '@store/index'
 import _ from 'lodash'
 const PushConditions = () => {
   const [t] = useTranslation()
+  const { language } = useSelector(store => store.global)
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
   const [maxWidth, setMaxWidth] = useState<number>()
@@ -53,6 +54,8 @@ const PushConditions = () => {
       description: '',
     },
   ])
+  // 用于计算英文状态下的宽度
+  const [clientWidth, setClientWidth] = useState(0)
 
   // 文字
   const dataText = [
@@ -93,10 +96,6 @@ const PushConditions = () => {
     },
   ]
   //   数据
-  // const data = []
-
-  //   计算最大宽度
-  const onComputedWidth = () => {}
 
   //   表格列
   const columns = [
@@ -128,7 +127,12 @@ const PushConditions = () => {
       render: (text: string, record: any, index: number) => {
         return (
           <TableItem>
-            <div>
+            <div
+              style={{
+                width:
+                  language === 'zh' ? 170 : clientWidth > 2195 ? 310 : '14vw',
+              }}
+            >
               {
                 dataText?.filter((i: any) => i.type === record.type)[0]
                   ?.conditionSub
@@ -150,7 +154,7 @@ const PushConditions = () => {
                 updateData()
               }}
             />
-            天
+            {t('sky')}
           </TableItem>
         )
       },
@@ -161,7 +165,12 @@ const PushConditions = () => {
       render: (text: string, record: any, index: number) => {
         return (
           <TableItem>
-            <div>
+            <div
+              style={{
+                width:
+                  language === 'zh' ? 116 : clientWidth > 2195 ? 264 : '12vw',
+              }}
+            >
               {
                 dataText?.filter((i: any) => i.type === record.type)[0]
                   ?.thresholdSub
@@ -183,7 +192,7 @@ const PushConditions = () => {
                 updateData()
               }}
             />
-            条
+            {t('strip')}
           </TableItem>
         )
       },
@@ -215,6 +224,18 @@ const PushConditions = () => {
       }),
     )
   }
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setClientWidth(document.body.clientWidth)
+    })
+    return () => {
+      window.addEventListener('resize', () => {
+        setClientWidth(document.body.clientWidth)
+      })
+    }
+  }, [])
+
   return (
     <PushConditionsWrap>
       <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
@@ -226,5 +247,4 @@ const PushConditions = () => {
     </PushConditionsWrap>
   )
 }
-
 export default PushConditions

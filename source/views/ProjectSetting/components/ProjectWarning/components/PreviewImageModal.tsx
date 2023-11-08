@@ -5,12 +5,11 @@ import IconFont from '@/components/IconFont'
 
 type PreviewImageProps = {
   visible: boolean
-  type: 'ding' | 'email' | 'phone'
+  type: 'ding' | 'email' | 'phone' | 'system'
   onClose(): void
 }
 const PreviewImageModal = (props: PreviewImageProps) => {
   const { type, visible, onClose } = props
-
   const imageHtml = useMemo(() => {
     switch (type) {
       case 'ding':
@@ -37,6 +36,14 @@ const PreviewImageModal = (props: PreviewImageProps) => {
             alt=""
           />
         )
+      case 'system':
+        return (
+          <img
+            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/warning/system.jpg"
+            width={784}
+            alt=""
+          />
+        )
       default:
         return null
     }
@@ -44,17 +51,16 @@ const PreviewImageModal = (props: PreviewImageProps) => {
 
   return visible ? (
     <PreviewImageModalWrap>
-      {imageHtml}
-      <div
-        className="imgBox"
-        style={{ marginTop: type === 'phone' ? 62 : 53 }}
-        onClick={onClose}
-      >
+      <div className="imgBox" onClick={onClose}>
+        {imageHtml}
         <IconFont
           style={{
             fontSize: 40,
             color: 'var(--neutral-white-d1)',
             background: 'transparent',
+            marginLeft: 20,
+            position: 'relative',
+            top: -22,
           }}
           type="close-solid2"
         />
