@@ -14,6 +14,10 @@ export const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0px;
+  z-index: 9;
+  background: #fff;
   .label {
     font-size: 16px;
     color: var(--neutral-n1-d1);
@@ -109,4 +113,17 @@ export const PreviewImageModalWrap = styled.div`
     cursor: pointer;
     margin-left: 20px;
   }
+`
+export const BlueText = styled.span`
+  cursor: pointer;
+  color: var(--primary-d2);
+`
+export const GrayText = styled.span`
+  cursor: pointer;
+  color: var(--neutral-n3);
+  font-size: 12px;
+`
+
+export const DingTalkGroupModalWrap = styled.div`
+  padding: 0px 24px 24px 24px;
 `
