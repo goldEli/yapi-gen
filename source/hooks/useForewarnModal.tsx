@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import frnIcon from '/iconfrn.png'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { init } from 'i18next'
+import { produce } from 'immer'
 
 const Footer = styled.div`
   height: 80px;
@@ -81,10 +82,6 @@ const useForewarnModal = () => {
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const [dis, setDis] = useState(false)
-  const [dataList, setDataList] = useState<any>({
-    list: [],
-  })
-  const [isUpdate, setIsUpdate] = useState(false)
   const [nowKey, setNowKey] = useState('1')
 
   const [datas, setDatas] = useState<any>([
@@ -131,40 +128,38 @@ const useForewarnModal = () => {
     console.log(`checked = ${e.target.checked}`)
     setDis(e.target.checked)
   }
+
   const init = () => {
-    setDatas((olddata: any) => {
-      const item = olddata.find((obj: any) => obj.key === nowKey)
-      if (item) {
-        item.list = item.list.concat(Array(10).fill(0))
-      }
-      return olddata
-    })
-    setTimeout(() => {
-      setIsUpdate(true)
-    }, 10)
+    setDatas(
+      produce((draft: any) => {
+        draft?.forEach((item: any) => {
+          if (item.key === nowKey) {
+            item.list = item.list.concat(Array(2).fill(0))
+          }
+        })
+      }),
+    )
   }
 
   const fetchMoreData = () => {
-    setDatas((olddata: any) => {
-      const item = olddata.find((obj: any) => obj.key === nowKey)
-      if (item) {
-        item.list = item.list.concat(Array(10).fill(0))
-      }
-      return olddata
-    })
-    setIsUpdate(true)
+    setDatas(
+      produce((draft: any) => {
+        draft?.forEach((item: any) => {
+          if (item.key === nowKey) {
+            item.list = item.list.concat(Array(2).fill(0))
+          }
+        })
+      }),
+    )
   }
-
-  useEffect(() => {
-    if (isUpdate) {
-      setDataList(datas.find((f: any) => f.key === nowKey))
-      setIsUpdate(false)
-    }
-  }, [isUpdate])
+  const twoData = useMemo(() => {
+    return datas.find((l: any) => l.key === nowKey)
+  }, [datas, nowKey])
 
   useEffect(() => {
     init()
   }, [nowKey])
+  console.log(datas, 'datas数据源')
 
   const ForewarnModal = (
     <Modal
@@ -203,7 +198,7 @@ const useForewarnModal = () => {
           </div>
           {/* ---------------------------------- */}
           <InfiniteScroll
-            dataLength={dataList.list?.length}
+            dataLength={twoData.list?.length}
             next={() => fetchMoreData()}
             style={{
               overflow: 'auto',
@@ -218,9 +213,9 @@ const useForewarnModal = () => {
             loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
             scrollableTarget="scrollableDiv"
             endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-            hasMore={dataList.list?.length < dataList?.lang}
+            hasMore={twoData.list?.length < twoData?.lang}
           >
-            {dataList.list?.map((item: any) => {
+            {twoData.list?.map((item: any, index: any) => {
               return (
                 <ListBox key={item}>
                   <div
