@@ -173,8 +173,20 @@ export const PreviewImageModalWrap = styled.div`
   top: 0;
   left: 0;
   .imgBox {
-    align-self: flex-start;
+    display: flex;
     cursor: pointer;
-    margin-left: 20px;
   }
+`
+export const BlueText = styled.span`
+  cursor: pointer;
+  color: var(--primary-d2);
+`
+export const GrayText = styled.span`
+  cursor: pointer;
+  color: var(--neutral-n3);
+  font-size: 12px;
+`
+
+export const DingTalkGroupModalWrap = styled.div`
+  padding: 0px 24px 24px 24px;
 `

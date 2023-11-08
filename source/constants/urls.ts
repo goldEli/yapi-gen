@@ -555,6 +555,8 @@ const urls = {
   getPerformanceInsightKanBanStatistics: '/b/company/kanban/statistics',
   // 左侧人员数据
   getPerformanceInsightKanBanMembers: '/b/company/kanban/members',
+
+  // 项目预警
 }
 export default urls
 
