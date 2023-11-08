@@ -5,7 +5,7 @@ import { DingTalkGroupModalWrap } from '../style'
 type SetDingTalkGroupModalProps = {
   isVisible: boolean
   onClose(): void
-  onConfirm(): void
+  onConfirm(value: any): void
 }
 
 const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
@@ -14,6 +14,9 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
 
   const onFinish = async () => {
     const value = await form.validateFields()
+    if (value) {
+      onConfirm(value)
+    }
   }
   return (
     <CommonModal
@@ -32,7 +35,7 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
         >
           <Form.Item
             label="群名称"
-            name="username"
+            name="group_name"
             validateFirst
             rules={[
               { required: true, message: '请输入' },
@@ -51,7 +54,7 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
 
           <Form.Item
             label="钉钉webhook地址"
-            name="password"
+            name="web_hook"
             validateFirst
             rules={[
               { required: true, message: '请输入' },

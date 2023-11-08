@@ -4,10 +4,12 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { changeWaterForewarnStatus } from '@store/Forewarn'
 import { store, useDispatch } from '@store/index'
-import { Checkbox, Modal, Tabs, Tooltip } from 'antd'
-import React, { useState } from 'react'
+import { Checkbox, Divider, Modal, Skeleton, Tabs, Tooltip } from 'antd'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import frnIcon from '/iconfrn.png'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { init } from 'i18next'
 
 const Footer = styled.div`
   height: 80px;
@@ -76,19 +78,86 @@ const text2 = css`
 `
 
 const useForewarnModal = () => {
+  const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const [dis, setDis] = useState(false)
-  const [t] = useTranslation()
+  const [nowKey, setNowKey] = useState('1')
+
+  const [datas, setDatas] = useState<any>([
+    {
+      label: `${t('taskIsOverdue')}  (0)`,
+      key: '1',
+      lang: 100,
+      list: [],
+    },
+    {
+      label: `${t('bugOverdue')}  (0)`,
+      key: '2',
+      lang: 100,
+      list: [],
+    },
+    {
+      label: `${t('taskIsAboutToExpire')}  (0)`,
+      key: '3',
+      lang: 100,
+      list: [],
+    },
+    {
+      label: `${t('bugIsAboutToExpire')}  (0)`,
+      key: '4',
+      lang: 100,
+      list: [],
+    },
+    {
+      label: `${t('tooManyBugs')}  (0)`,
+      key: '5',
+      lang: 100,
+      list: [],
+    },
+  ])
+
   const openForewarnModal = (options: any) => {
     setVisible(options.visible)
   }
   const onChange2 = (key: string) => {
     console.log(key)
+    setNowKey(key)
   }
   const onChange = (e: any) => {
     console.log(`checked = ${e.target.checked}`)
     setDis(e.target.checked)
   }
+  const init = () => {
+    setDatas((olddata: any) => {
+      const item = olddata.find((obj: any) => obj.key === nowKey)
+      if (item) {
+        item.list = item.list.concat(Array(10).fill(0))
+      }
+      return olddata
+    })
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
+
+  const fetchMoreData = () => {
+    setDatas((olddata: any) => {
+      const item = olddata.find((obj: any) => obj.key === nowKey)
+      if (item) {
+        item.list = item.list.concat(Array(10).fill(0))
+      }
+      return olddata
+    })
+    console.log(datas)
+  }
+
+  const twoData = useMemo(() => {
+    return datas.find((f: any) => f.key === nowKey)
+  }, [datas, nowKey])
+
+  console.log(twoData, 'twoData')
+  console.log(datas)
   const ForewarnModal = (
     <Modal
       centered
@@ -112,32 +181,7 @@ const useForewarnModal = () => {
           {t('yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly')}
         </Header>
         <div style={{ padding: '0px 24px' }}>
-          <Tabs
-            defaultActiveKey="1"
-            onChange={onChange2}
-            items={[
-              {
-                label: `${t('taskIsOverdue')}  (0)`,
-                key: '1',
-              },
-              {
-                label: `${t('bugOverdue')}  (0)`,
-                key: '2',
-              },
-              {
-                label: `${t('taskIsAboutToExpire')}  (0)`,
-                key: '3',
-              },
-              {
-                label: `${t('bugIsAboutToExpire')}  (0)`,
-                key: '4',
-              },
-              {
-                label: `${t('tooManyBugs')}  (0)`,
-                key: '5',
-              },
-            ]}
-          />
+          <Tabs defaultActiveKey="1" onChange={onChange2} items={datas} />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <span style={{ color: '#969799', fontSize: 12 }}>
               更新于2023-08-08 11:08:08
@@ -150,60 +194,65 @@ const useForewarnModal = () => {
             </span>
           </div>
           {/* ---------------------------------- */}
-          <div
+          <InfiniteScroll
+            dataLength={twoData.list?.length}
+            next={() => fetchMoreData()}
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
+              overflow: 'auto',
               maxHeight: 'calc(100vh - 400px)',
               minHeight: '400px',
-              overflow: 'scroll',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
               marginTop: '12px',
             }}
+            height={document.body.clientHeight - 400}
+            loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+            scrollableTarget="scrollableDiv"
+            endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+            hasMore={twoData.list?.length < twoData?.lang}
           >
-            {Array(50)
-              .fill(1)
-              .map((item: any) => {
-                return (
-                  <ListBox key={item}>
-                    <div
+            {twoData.list.map((item: any) => {
+              return (
+                <ListBox key={item}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    <SmallTag>进行中</SmallTag>
+                    <span className={`tit  ${text}`}>
+                      对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...
+                    </span>
+                    <span
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginBottom: '8px',
+                        color: '#FF5C5E',
+                        marginLeft: '12px',
                       }}
                     >
-                      <SmallTag>进行中</SmallTag>
-                      <span className={`tit  ${text}`}>
-                        对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...
-                      </span>
-                      <span
-                        style={{
-                          color: '#FF5C5E',
-                          marginLeft: '12px',
-                        }}
-                      >
-                        逾期1天
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <span style={{ fontSize: 12, color: '#969799' }}>
-                        {t('handler')}：张三、李四、王二
-                      </span>
-                      <span style={{ fontSize: 12, color: '#969799' }}>
-                        {t('expectedToEnd')}：2021-09-09
-                      </span>
-                    </div>
-                  </ListBox>
-                )
-              })}
-          </div>
+                      逾期1天
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <span style={{ fontSize: 12, color: '#969799' }}>
+                      {t('handler')}：张三、李四、王二
+                    </span>
+                    <span style={{ fontSize: 12, color: '#969799' }}>
+                      {t('expectedToEnd')}：2021-09-09
+                    </span>
+                  </div>
+                </ListBox>
+              )
+            })}
+          </InfiniteScroll>
         </div>
         <Footer>
           <Tooltip
