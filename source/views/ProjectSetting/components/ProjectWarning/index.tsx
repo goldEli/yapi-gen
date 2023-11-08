@@ -13,22 +13,29 @@ import { useDispatch, useSelector } from '@store/index'
 import { setProjectWarning } from '@store/project'
 import WaringCard from './components/WaringCard'
 import NoSettingPage from './components/NoSettingPage'
-
+import useProjectId from './hooks/useProjectId'
+import { saveWarningConfig } from '@/services/project'
+import { getWarningConfigInfo } from '@store/project/project.thunk'
 const ProjectWarning = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { projectWarning } = useSelector(store => store.project)
+  const { projectId } = useProjectId()
   // 从卡片跳转到配置页面
   const [isSetting, setIsSetting] = useState(false)
   const [notSetting, setNotSetting] = useState(true)
 
   // 保存
-  const save = () => {
-    console.log(111, projectWarning)
+  const save = async () => {
+    let res = await saveWarningConfig({
+      ...projectWarning,
+      project_id: projectId,
+    })
+    console.log(111, projectWarning, { ...projectWarning, projectId })
   }
 
   useEffect(() => {
-    dispatch(setProjectWarning({}))
+    dispatch(getWarningConfigInfo({ project_id: projectId }))
     return () => {
       dispatch(setProjectWarning(null))
     }
