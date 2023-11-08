@@ -4,7 +4,7 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { changeWaterForewarnStatus } from '@store/Forewarn'
 import { store, useDispatch } from '@store/index'
-import { Checkbox, Modal, Tabs } from 'antd'
+import { Checkbox, Modal, Tabs, Tooltip } from 'antd'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import frnIcon from '/iconfrn.png'
@@ -77,7 +77,7 @@ const text2 = css`
 
 const useForewarnModal = () => {
   const [visible, setVisible] = useState(false)
-
+  const [dis, setDis] = useState(false)
   const [t] = useTranslation()
   const openForewarnModal = (options: any) => {
     setVisible(options.visible)
@@ -87,6 +87,7 @@ const useForewarnModal = () => {
   }
   const onChange = (e: any) => {
     console.log(`checked = ${e.target.checked}`)
+    setDis(e.target.checked)
   }
   const ForewarnModal = (
     <Modal
@@ -155,6 +156,7 @@ const useForewarnModal = () => {
               flexDirection: 'column',
               gap: 12,
               maxHeight: 'calc(100vh - 400px)',
+              minHeight: '400px',
               overflow: 'scroll',
               marginTop: '12px',
             }}
@@ -192,10 +194,10 @@ const useForewarnModal = () => {
                       }}
                     >
                       <span style={{ fontSize: 12, color: '#969799' }}>
-                        处理人：张三、李四、王二
+                        {t('handler')}：张三、李四、王二
                       </span>
                       <span style={{ fontSize: 12, color: '#969799' }}>
-                        预计结束：2021-09-09
+                        {t('expectedToEnd')}：2021-09-09
                       </span>
                     </div>
                   </ListBox>
@@ -204,14 +206,22 @@ const useForewarnModal = () => {
           </div>
         </div>
         <Footer>
-          <Checkbox onChange={onChange}>
-            <span style={{ fontSize: '12px', color: '#646566' }}>
-              {t(
-                'iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner',
-              )}
-            </span>
-          </Checkbox>
-          <CommonButton type="primary">{t('alreadyKnown')}</CommonButton>
+          <Tooltip
+            placement="topLeft"
+            title={t('pleaseCheckTheBoxesToKnowFirst')}
+          >
+            <Checkbox onChange={onChange}>
+              <span style={{ fontSize: '12px', color: '#646566' }}>
+                {t(
+                  'iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner',
+                )}
+              </span>
+            </Checkbox>
+          </Tooltip>
+
+          <CommonButton isDisable={!dis} type="primary">
+            {t('alreadyKnown')}
+          </CommonButton>
         </Footer>
       </div>
     </Modal>

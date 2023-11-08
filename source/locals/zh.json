@@ -2476,7 +2476,7 @@
   "taskIsAboutToExpire": "任务即将逾期",
   "systemDateDistanceFromExpectedEndDate": "系统日期距离预计结束日期",
   "theNumberOfOverdueTasksExceeds": "逾期任务数超过",
-  "taskIsOverdue": "任务逾期",
+  "taskIsOverdue": "任务逾期 ",
   "tasksAreNotCompletedPastTheExpectedEndDate": "任务超过预计结束日期仍未完成",
   "systemDateIsGreaterThanExpectedEndDate": "系统日期大于预计结束日期",
   "bugIsAboutToExpire": "BUG即将逾期",
@@ -2499,10 +2499,7 @@
   "yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly": " 您的项目出现风险，请相关人员及时处理",
   "iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner": " 我已知晓以上项目情况，并会及时同步或处理相关事宜",
   "alreadyKnown": "已知晓",
-  "taskIsOverdue": "任务逾期 ",
-  "bugOverdue": "BUG逾期",
-  "taskIsAboutToExpire": "任务即将逾期",
-  "bugIsAboutToExpire": "BUG即将逾期",
-  "tooManyBugs": "BUG数量过多",
-  "toRefresh": "刷新"
+  "toRefresh": "刷新",
+  "pleaseCheckTheBoxesToKnowFirst": "请先勾选知晓事宜",
+  "expectedToEnd": "预计结束"
 }
