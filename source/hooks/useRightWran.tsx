@@ -3,8 +3,10 @@ import { Badge } from 'antd'
 import React, { useState } from 'react'
 import frnIcon from '/iconfrn.png'
 import IconFont from '@/components/IconFont'
+import useForewarnModal from './useForewarnModal'
 
 const Tag = styled.div<{ width: boolean }>`
+  z-index: 9;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -31,7 +33,7 @@ const Tag = styled.div<{ width: boolean }>`
 
 const RightWran = () => {
   const [first, setFirst] = useState(false)
-
+  const { ForewarnModal, openForewarnModal } = useForewarnModal()
   const handleMouseEnter = () => {
     setFirst(true)
   }
@@ -41,6 +43,11 @@ const RightWran = () => {
 
   const Right = (
     <Tag
+      onClick={() => {
+        openForewarnModal({
+          visible: true,
+        })
+      }}
       width={first}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

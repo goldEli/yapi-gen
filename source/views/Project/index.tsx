@@ -31,6 +31,7 @@ import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import GuideModal from '@/components/GuideModal'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
+import RightWran from '@/hooks/useRightWran'
 
 const ProjectManagementOptimization = () => {
   const [t] = useTranslation()

@@ -13,6 +13,8 @@ import {
 import { useDispatch, useSelector } from '@store/index'
 import { saveInputKey } from '@store/view'
 import ProjectDetailSide from './ProjectDetailSide'
+import RightWran from '@/hooks/useRightWran'
+import useForewarnModal from '@/hooks/useForewarnModal'
 
 const ProjectWrap = styled.div`
   position: relative;
@@ -23,6 +25,7 @@ const ProjectWrap = styled.div`
 `
 
 const Project = () => {
+  const { ForewarnModal, openForewarnModal } = useForewarnModal()
   const { projectInfo } = useSelector(store => store.project)
   const [isShowPage, setIsShowPage] = useState(false)
   const [searchParams] = useSearchParams()
@@ -81,6 +84,8 @@ const Project = () => {
 
   return (
     <ProjectWrap>
+      <RightWran />
+      {ForewarnModal}
       {isShowPage ? (
         <>
           {path.includes(location.pathname) && (

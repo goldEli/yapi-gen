@@ -88,7 +88,7 @@ const WaterMarkManagement = () => {
         <Header>
           <span>{t('secure_watermark')}</span>
         </Header>
-        <button
+        {/* <button
           onClick={() => {
             openForewarnModal({
               visible: true,
@@ -97,7 +97,7 @@ const WaterMarkManagement = () => {
         >
           1
         </button>
-        <RightWran />
+        <RightWran /> */}
         {ForewarnModal}
         <Content>
           {configList.map(item => (
