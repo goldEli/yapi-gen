@@ -25,13 +25,15 @@ const WaringCard = (props: WaringCardProps) => {
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
   const { projectId } = useProjectId()
+
   const {
     push_date,
     push_condition = [],
     push_channel = [],
     push_obj,
     is_open,
-  } = projectWarning
+  } = projectWarning ?? {}
+
   const { day = [], time = {} } = push_date ?? {}
 
   const weekMaps: mapInterface = {
