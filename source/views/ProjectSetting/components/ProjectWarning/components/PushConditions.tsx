@@ -8,10 +8,52 @@ import {
 } from '../style'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
+import { setProjectWarning } from '@store/project'
+import { useDispatch, useSelector } from '@store/index'
+import _ from 'lodash'
 const PushConditions = () => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
+  const { projectWarning } = useSelector(store => store.project)
   const [maxWidth, setMaxWidth] = useState<number>()
+  const [data, setData] = useState<any[]>([
+    {
+      conditionCount: 3,
+      thresholdCount: 2,
+      is_enable: 1,
+      type: 'task_soon_expired',
+      description: '',
+    },
+    {
+      conditionCount: 3,
+      thresholdCount: 2,
+      is_enable: 1,
+      type: 'task_expired',
+      description: '',
+    },
+    {
+      conditionCount: 3,
+      thresholdCount: 2,
+      is_enable: 1,
+      type: 'bug_soon_expired',
+      description: '',
+    },
+    {
+      conditionCount: 3,
+      thresholdCount: 2,
+      is_enable: 2,
+      type: 'bug_expired',
+      description: '',
+    },
+    {
+      conditionCount: 3,
+      thresholdCount: 2,
+      is_enable: 2,
+      type: 'bug_too_many',
+      description: '',
+    },
+  ])
+
   // 文字
   const dataText = [
     {
@@ -51,38 +93,7 @@ const PushConditions = () => {
     },
   ]
   //   数据
-  const data = [
-    {
-      conditionCount: 3,
-      thresholdCount: 2,
-      isDisable: 1,
-      type: 'task_soon_expired',
-    },
-    {
-      conditionCount: 3,
-      thresholdCount: 2,
-      isDisable: 1,
-      type: 'task_expired',
-    },
-    {
-      conditionCount: 3,
-      thresholdCount: 2,
-      isDisable: 1,
-      type: 'bug_soon_expired',
-    },
-    {
-      conditionCount: 3,
-      thresholdCount: 2,
-      isDisable: 2,
-      type: 'bug_expired',
-    },
-    {
-      conditionCount: 3,
-      thresholdCount: 2,
-      isDisable: 2,
-      type: 'bug_too_many',
-    },
-  ]
+  // const data = []
 
   //   计算最大宽度
   const onComputedWidth = () => {}
@@ -114,7 +125,7 @@ const PushConditions = () => {
     {
       title: t('matterConditions'),
       dataIndex: 'conditionSub',
-      render: (text: string, record: any) => {
+      render: (text: string, record: any, index: number) => {
         return (
           <TableItem>
             <div>
@@ -129,6 +140,15 @@ const PushConditions = () => {
               step={1}
               className="input"
               value={record.conditionCount}
+              onChange={(value: any) => {
+                console.log(value, data, index)
+                setData((pre: any) => {
+                  const newData = _.cloneDeep(pre)
+                  newData[index]['conditionCount'] = value
+                  return newData
+                })
+                updateData()
+              }}
             />
             天
           </TableItem>
@@ -138,7 +158,7 @@ const PushConditions = () => {
     {
       title: t('pushThreshold'),
       dataIndex: 'thresholdSub',
-      render: (text: string, record: any) => {
+      render: (text: string, record: any, index: number) => {
         return (
           <TableItem>
             <div>
@@ -153,6 +173,15 @@ const PushConditions = () => {
               step={1}
               className="input"
               value={record.thresholdCount}
+              onChange={(value: any) => {
+                console.log(value, data, index)
+                setData((pre: any) => {
+                  const newData = _.cloneDeep(pre)
+                  newData[index]['thresholdCount'] = value
+                  return newData
+                })
+                updateData()
+              }}
             />
             条
           </TableItem>
@@ -161,12 +190,31 @@ const PushConditions = () => {
     },
     {
       title: t('whetherToEnable'),
-      dataIndex: 'isDisable',
-      render: (text: string, record: any) => {
-        return <Switch checked={record.isDisable === 1} />
+      dataIndex: 'is_enable',
+      render: (text: string, record: any, index: number) => {
+        return (
+          <Switch
+            onChange={value => {
+              setData((pre: any) => {
+                const newData = _.cloneDeep(pre)
+                newData[index]['is_enable'] = value
+                return newData
+              })
+              updateData()
+            }}
+          />
+        )
       },
     },
   ]
+  const updateData = () => {
+    dispatch(
+      setProjectWarning({
+        ...projectWarning,
+        push_condition: data,
+      }),
+    )
+  }
   return (
     <PushConditionsWrap>
       <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
