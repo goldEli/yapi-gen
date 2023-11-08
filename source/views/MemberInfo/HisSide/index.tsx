@@ -59,7 +59,7 @@ const HisSide = () => {
           type: paramsData?.type,
         }),
       )
-      navigate(`/MemberInfo/${value.path}?data=${params}`)
+      navigate(`/ProjectDetail/MemberInfo/${value.path}?data=${params}`)
     } else {
       const params = encryptPhp(
         JSON.stringify({
@@ -69,12 +69,13 @@ const HisSide = () => {
           type: paramsData?.type,
         }),
       )
-      navigate(`/MemberInfo/${value.path}?data=${params}`)
+      navigate(
+        `/AdminManagement/OrganizationInformation/MemberInfo/${value.path}?data=${params}`,
+      )
     }
   }
 
   const onGoBack = () => {
-    // debuggers
     if (isMember) {
       const params = encryptPhp(
         JSON.stringify({
@@ -83,10 +84,7 @@ const HisSide = () => {
           type: projectInfo.projectType === 1 ? 1 : 'ProjectMember',
         }),
       )
-      const url =
-        projectInfo.projectType === 1
-          ? '/ProjectDetail/Setting/ProjectInfo'
-          : '/ProjectDetail/Setting/ProjectInfo'
+      const url = '/ProjectDetail/Member'
       navigate(`${url}?data=${params}`)
     } else {
       navigate('/AdminManagement/OrganizationInformation/StaffManagement')

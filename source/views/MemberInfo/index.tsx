@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 // 他的模块主页
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -21,17 +22,15 @@ import { setProjectInfo } from '@store/project'
 import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import HisSide from './HisSide'
 
-const Wrap = styled.div<{ isMember?: any }>(
-  {
-    display: 'flex',
-  },
-  ({ isMember }) => ({
-    height: isMember ? 'calc(100vh - 56px)' : '100%',
-  }),
-)
 const Main = styled.div({
   width: '100%',
 })
+
+const MainWrap = styled.div`
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 56px);
+`
 
 const MemberInfo = () => {
   const dispatch = useDispatch()
@@ -75,24 +74,27 @@ const MemberInfo = () => {
           : userInfo?.company_permissions?.map((i: any) => i.identity)
       }
     >
-      <HasSideCommonLayout side={<HisSide />}>
-        <Wrap isMember={isMember}>
+      {isMember && (
+        <div>
+          <div style={{ padding: '20px 24px' }}>
+            <MyBreadcrumb user={{ name: mainInfo?.name }} />
+          </div>
+          <MainWrap>
+            <HisSide />
+            <Main>
+              <Outlet />
+            </Main>
+          </MainWrap>
+        </div>
+      )}
+      {!isMember && (
+        <MainWrap>
+          <HisSide />
           <Main>
-            <div
-              style={{
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                margin: '20px',
-                marginLeft: '24px',
-              }}
-            >
-              <MyBreadcrumb user={{ name: mainInfo?.name }} />
-            </div>
             <Outlet />
           </Main>
-        </Wrap>
-      </HasSideCommonLayout>
+        </MainWrap>
+      )}
     </PermissionWrap>
   )
 }

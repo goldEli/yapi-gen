@@ -221,9 +221,17 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
         }
       }
       // 数组中是否包含当期路由
-      const currentHavePath = routerPath?.pathname.includes('/ChildLevel')
-        ? resultItems?.filter((i: any) => i.id === 'report')
-        : resultItems?.filter((i: any) => routerPath?.pathname?.includes(i.url))
+      let currentHavePath: any
+      if (routerPath?.pathname.includes('/ChildLevel')) {
+        currentHavePath = resultItems?.filter((i: any) => i.id === 'report')
+      } else if (routerPath?.pathname.includes('/ProjectDetail/MemberInfo')) {
+        currentHavePath = resultItems?.filter((i: any) => i.id === 'member')
+      } else {
+        currentHavePath = resultItems?.filter((i: any) =>
+          routerPath?.pathname?.includes(i.url),
+        )
+      }
+
       setActiveKey(
         currentHavePath?.length > 0
           ? String(currentHavePath[0]?.id)

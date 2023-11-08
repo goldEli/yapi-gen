@@ -829,7 +829,7 @@ const CommonNeed = (props: any) => {
         >
           <ResizeTable
             isSpinning={isSpin}
-            dataWrapNormalHeight="calc(100vh - 263px)"
+            dataWrapNormalHeight="calc(100vh - 196px)"
             col={selectColum}
             dataSource={listData?.list}
             noData={<NoData />}
@@ -840,9 +840,8 @@ const CommonNeed = (props: any) => {
       {isMany && (
         <div
           style={{
-            minHeight: isMember ? 'calc(100vh - 130px)' : '',
+            minHeight: isMember ? 'calc(100vh - 196px)' : '',
             textAlign: 'center',
-            lineHeight: isMember ? 'calc(100vh - 130px)' : '',
           }}
         >
           <LoadingSpin spinning={isSpin}>

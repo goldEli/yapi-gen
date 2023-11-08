@@ -107,7 +107,7 @@ const MyBreadcrumb = (props: any) => {
         </Breadcrumb.Item>
       ) : null}
 
-      {type === 4 || type === 'isMember' ? (
+      {type === 4 ? (
         <Breadcrumb.Item>
           <a
             onClick={() => {
@@ -128,13 +128,6 @@ const MyBreadcrumb = (props: any) => {
           </a>
         </Breadcrumb.Item>
       ) : null}
-      {location.pathname.includes('/ProjectDetail/Setting/MemberInfo') && (
-        <Breadcrumb.Item>
-          <a style={{ color: 'var(--neutral-n1-d1)' }} className={breadStyle}>
-            <span>{t('project.projectSet') as string}</span>
-          </a>
-        </Breadcrumb.Item>
-      )}
       {location.pathname.includes('/ProjectDetail/Setting/') &&
       props.setName ? (
         <Breadcrumb.Item>{props.setName}</Breadcrumb.Item>
@@ -156,8 +149,8 @@ const MyBreadcrumb = (props: any) => {
           <span>{props?.demand?.name}</span>
         </Breadcrumb.Item>
       ) : null}
-      {location.pathname.includes('/MemberInfo') ||
-      (location.pathname.includes('MemberInfo/Profile') && props.user) ? (
+      {location.pathname.includes('/ProjectDetail/MemberInfo/') &&
+      props.user ? (
         <Breadcrumb.Item>
           <span>
             {props?.user?.name}

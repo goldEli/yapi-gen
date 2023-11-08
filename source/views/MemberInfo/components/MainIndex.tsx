@@ -11,20 +11,9 @@ import { getParamsData } from '@/tools'
 import { getUserInfoProject } from '@/services/memberInfo'
 
 const MainWrap = styled.div({
-  height: 'calc(100% - 124px)',
+  height: '100%',
   overflow: 'auto',
 })
-
-const Title = styled.div`
-  height: 32px;
-  font-size: 16px;
-  font-family: PingFang SC-Medium, PingFang SC;
-  font-family: siyuanmedium;
-  color: var(--neutral-n1-d1);
-  line-height: 32px;
-  margin: 20px 16px;
-  margin-bottom: 0px;
-`
 
 interface Props {
   title: any
@@ -73,19 +62,16 @@ const MainIndex = (props: Props) => {
         />
       )}
       {!isMember && (
-        <>
-          <Title>{props?.title}</Title>
-          <MainWrap>
-            <MineSwiper data={swiperData} onTap={getProjectId} />
-            <CommonNeed
-              isMember={isMember}
-              id={projectId}
-              title={props?.title}
-              type={props?.type}
-              subTitle={props?.subTitle}
-            />
-          </MainWrap>
-        </>
+        <MainWrap>
+          <MineSwiper data={swiperData} onTap={getProjectId} />
+          <CommonNeed
+            isMember={isMember}
+            id={projectId}
+            title={props?.title}
+            type={props?.type}
+            subTitle={props?.subTitle}
+          />
+        </MainWrap>
       )}
     </>
   )

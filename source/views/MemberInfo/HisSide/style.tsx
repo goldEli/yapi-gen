@@ -5,10 +5,11 @@ const Side = styled.div`
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   box-sizing: border-box;
   padding-top: 24px;
   flex-shrink: 0;
+  width: 220px;
+  border-right: 1px solid var(--neutral-n6-d1);
 `
 const InfoWrap = styled.div({
   display: 'flex',

@@ -270,7 +270,9 @@ const StaffManagement = () => {
           type: 'AdminManagement',
         }),
       )
-      navigate(`/MemberInfo/Profile?data=${params}`)
+      navigate(
+        `/AdminManagement/OrganizationInformation/MemberInfo/Profile?data=${params}`,
+      )
     }
   }
   const onOperationCheckbox = (keys: number[]) => {

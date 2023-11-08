@@ -48,8 +48,6 @@ import { FullScreenDiv } from '@/views/Layout/Mine/Profile'
 
 const Wrap = styled.div`
   padding: 0 24px;
-  height: calc(100vh - 128px);
-  /* overflow: scroll; */
 `
 
 const Mygante = styled(Gantt)`
@@ -430,7 +428,7 @@ const Profile = () => {
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
-    <div style={{ overflow: 'auto', height: 'calc(100vh - 133px)' }}>
+    <div style={{ overflow: 'auto', height: 'calc(100vh - 62px)' }}>
       <Wrap>
         <div>
           <Head>

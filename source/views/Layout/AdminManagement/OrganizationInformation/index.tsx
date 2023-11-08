@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { HaveTabsContentWrap } from '@/components/StyleCommon'
 import TabsContent from '@/components/TabsContent'
 import { useSelector } from '@store/index'
@@ -53,14 +54,20 @@ const OrganizationInformation = () => {
   }, [currentMenu?.id])
 
   return (
-    <HaveTabsContentWrap>
-      <TabsContent
-        onChangeRouter={onChangeRouter}
-        tabItems={resultTabList}
-        activeKey={activeKey}
-      />
-      <Outlet />
-    </HaveTabsContentWrap>
+    <>
+      {routerPath?.pathname?.includes('/MemberInfo') ? (
+        <Outlet />
+      ) : (
+        <HaveTabsContentWrap>
+          <TabsContent
+            onChangeRouter={onChangeRouter}
+            tabItems={resultTabList}
+            activeKey={activeKey}
+          />
+          <Outlet />
+        </HaveTabsContentWrap>
+      )}
+    </>
   )
 }
 
