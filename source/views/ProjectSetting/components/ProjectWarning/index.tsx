@@ -20,7 +20,8 @@ import { getMessage } from '@/components/Message'
 const ProjectWarning = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { projectWarning } = useSelector(store => store.project)
+  const { projectWarning, projectInfo } = useSelector(store => store.project)
+  const { project_warring_info } = projectInfo ?? {}
   const { projectId } = useProjectId()
   // 从卡片跳转到配置页面
   const [isSetting, setIsSetting] = useState(false)
@@ -60,7 +61,9 @@ const ProjectWarning = () => {
       dispatch(setProjectWarning(null))
     }
   }, [])
-
+  useEffect(() => {
+    setNotSetting(() => !project_warring_info)
+  }, [])
   return notSetting ? (
     <NoSettingPage onClose={() => setNotSetting(false)} />
   ) : (
