@@ -397,9 +397,8 @@ const useForewarnModal = () => {
         </div>
         <Footer>
           <Tooltip
-            overlayClassName="tolfeiji"
+            arrowPointAtCenter
             open={first && !dis}
-            // open={1}
             placement="topLeft"
             title={t('pleaseCheckTheBoxesToKnowFirst')}
           >

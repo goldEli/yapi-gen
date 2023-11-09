@@ -497,7 +497,7 @@ const GlobalStyle = () => {
       background: none;
     }
     .tolfeiji {
-      left: 357px !important;
+      /* left: 348px !important; */
     }
     input {
       &::placeholder {
