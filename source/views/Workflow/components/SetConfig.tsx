@@ -382,23 +382,30 @@ const SetConfig = (props: Props) => {
   // 修改默认值、默认值字段 --- 文本
   const onChangeText = (value: any, row: any, type?: any) => {
     const arr = JSON.parse(JSON.stringify(dataSource))
+    console.log(row, '=', value, '111', type)
     if (row.tag) {
+      console.log(1)
       arr.filter((i: any) => i.tag === row.tag)[0].default_value = [
         'date',
         'datetime',
       ].includes(type)
-        ? moment(value).format(
-            type === 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
-          )
+        ? value
+          ? moment(value).format(
+              type === 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
+            )
+          : ''
         : value
     } else {
+      console.log(2)
       arr.filter((i: any) => i.content === row.content)[0].default_value = [
         'date',
         'datetime',
       ].includes(type)
-        ? moment(value).format(
-            type === 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
-          )
+        ? value
+          ? moment(value).format(
+              type === 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
+            )
+          : ''
         : value
     }
     setDataSource(arr)
