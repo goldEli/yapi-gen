@@ -11,6 +11,7 @@ import frnIcon from '/iconfrn.png'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { init } from 'i18next'
 import { produce } from 'immer'
+import { getWarnLlist, getWarnStatistics } from '@/services/forewarn'
 
 const Footer = styled.div`
   height: 80px;
@@ -80,43 +81,13 @@ const text2 = css`
 
 const useForewarnModal = () => {
   const visible = useSelector(store => store.Forewarn.value)
+  const pid = useSelector(store => store.project.projectInfo.id)
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [dis, setDis] = useState(false)
-  const [nowKey, setNowKey] = useState('1')
+  const [nowKey, setNowKey] = useState<any>()
 
-  const [datas, setDatas] = useState<any>([
-    {
-      label: `${t('taskIsOverdue')}  (0)`,
-      key: '1',
-      lang: 100,
-      list: [],
-    },
-    {
-      label: `${t('bugOverdue')}  (0)`,
-      key: '2',
-      lang: 100,
-      list: [],
-    },
-    {
-      label: `${t('taskIsAboutToExpire')}  (0)`,
-      key: '3',
-      lang: 100,
-      list: [],
-    },
-    {
-      label: `${t('bugIsAboutToExpire')}  (0)`,
-      key: '4',
-      lang: 100,
-      list: [],
-    },
-    {
-      label: `${t('tooManyBugs')}  (0)`,
-      key: '5',
-      lang: 100,
-      list: [],
-    },
-  ])
+  const [datas, setDatas] = useState<any>()
 
   const openForewarnModal = (options: any) => {
     dispatch(changeWaterForewarnStatus(true))
@@ -129,13 +100,58 @@ const useForewarnModal = () => {
     console.log(`checked = ${e.target.checked}`)
     setDis(e.target.checked)
   }
+  const format = (key: string) => {
+    let name
+    switch (key) {
+      case 'bug_expired':
+        name = t('bugOverdue')
+        break
+      case 'bug_soon_expired':
+        name = t('bugIsAboutToExpire')
+        break
+      case 'bug_too_many':
+        name = t('tooManyBugs')
+        break
+      case 'task_expired':
+        name = t('taskIsOverdue')
+        break
+      case 'task_soon_expired':
+        name = t('taskIsAboutToExpire')
+        break
 
-  const init = () => {
+      default:
+        break
+    }
+    return name
+  }
+  const getAll = async () => {
+    const res = await getWarnStatistics({ project_id: pid })
+
+    const tabs = Object.keys(res.warning_count).map(key => {
+      return {
+        label: `${format(key)}  (${res.warning_count[key]})`,
+        key: key,
+        lang: res.warning_count[key],
+        list: [],
+        last_id: 0,
+      }
+    })
+
+    setDatas(tabs)
+  }
+
+  const init = async () => {
+    const res = await getWarnLlist({
+      warning_type: nowKey,
+      project_id: pid,
+    })
+    console.log(res, '列数据')
+
     setDatas(
       produce((draft: any) => {
         draft?.forEach((item: any) => {
           if (item.key === nowKey) {
-            item.list = item.list.concat(Array(2).fill(0))
+            item.list = item.list.concat(res.list)
           }
         })
       }),
@@ -143,23 +159,49 @@ const useForewarnModal = () => {
   }
 
   const fetchMoreData = () => {
-    setDatas(
-      produce((draft: any) => {
-        draft?.forEach((item: any) => {
-          if (item.key === nowKey) {
-            item.list = item.list.concat(Array(2).fill(0))
-          }
-        })
-      }),
-    )
+    // setDatas(
+    //   produce((draft: any) => {
+    //     draft?.forEach((item: any) => {
+    //       if (item.key === nowKey) {
+    //         item.list = item.list.concat(Array(2).fill(0))
+    //       }
+    //     })
+    //   }),
+    // )
   }
+
   const twoData = useMemo(() => {
-    return datas.find((l: any) => l.key === nowKey)
+    return datas?.find((l: any) => l.key === nowKey)
   }, [datas, nowKey])
 
   useEffect(() => {
-    init()
-  }, [nowKey])
+    if (visible) {
+      getAll()
+    }
+  }, [visible])
+  useEffect(() => {
+    if (visible) {
+      init()
+    }
+  }, [nowKey, visible])
+
+  const zhuan = (dateStr2: string) => {
+    const dateStr = dateStr2
+    const dateObj = new Date(dateStr)
+    const timestamp = dateObj.getTime()
+
+    // 获取当前时间戳
+    const now = new Date()
+    const nowTimestamp = now.getTime()
+
+    // 比较两个时间戳
+    if (timestamp > nowTimestamp) {
+      console.log('给定的日期晚于当前日期')
+      return t('overdue')
+    } else if (timestamp < nowTimestamp) {
+      return t('remaining')
+    }
+  }
 
   const ForewarnModal = (
     <Modal
@@ -198,7 +240,7 @@ const useForewarnModal = () => {
           </div>
           {/* ---------------------------------- */}
           <InfiniteScroll
-            dataLength={twoData.list?.length}
+            dataLength={twoData?.list?.length || 0}
             next={() => fetchMoreData()}
             style={{
               overflow: 'auto',
@@ -213,9 +255,9 @@ const useForewarnModal = () => {
             loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
             scrollableTarget="scrollableDiv"
             endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-            hasMore={twoData.list?.length < twoData?.lang}
+            hasMore={twoData?.list?.length < twoData?.lang}
           >
-            {twoData.list?.map((item: any, index: any) => {
+            {twoData?.list?.map((item: any, index: any) => {
               return (
                 <ListBox key={item}>
                   <div
@@ -226,16 +268,16 @@ const useForewarnModal = () => {
                     }}
                   >
                     <SmallTag>进行中</SmallTag>
-                    <span className={`tit  ${text}`}>
-                      对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...对已完成设计，优化交互流程和对已完成设计，对已完成设计，对已完成设计，对已完成设...
-                    </span>
+                    <span className={`tit  ${text}`}>{item.name}</span>
                     <span
                       style={{
                         color: '#FF5C5E',
                         marginLeft: '12px',
                       }}
                     >
-                      逾期1天
+                      {zhuan(item.expected_end_at)}
+                      {item.day}
+                      {t('sky')}
                     </span>
                   </div>
                   <div
@@ -246,10 +288,11 @@ const useForewarnModal = () => {
                     }}
                   >
                     <span style={{ fontSize: 12, color: '#969799' }}>
-                      {t('handler')}：张三、李四、王二
+                      {t('handler')}：
+                      {item.user_info.map((o: any) => o.name).join('、')}
                     </span>
                     <span style={{ fontSize: 12, color: '#969799' }}>
-                      {t('expectedToEnd')}：2021-09-09
+                      {t('expectedToEnd')}：{item.expected_end_at}
                     </span>
                   </div>
                 </ListBox>

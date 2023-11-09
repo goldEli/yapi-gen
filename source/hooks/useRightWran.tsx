@@ -13,6 +13,7 @@ const Tag = styled.div<{ width: boolean }>`
   gap: 12px;
   padding-left: 8px;
   position: fixed;
+  bottom: 30%;
   right: 0;
   top: 50%;
   width: ${props => (props.width ? '100px' : '48px')};

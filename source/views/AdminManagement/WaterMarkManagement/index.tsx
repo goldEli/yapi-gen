@@ -55,7 +55,6 @@ const WaterMarkManagement = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.c7'))
-  const { ForewarnModal, openForewarnModal } = useForewarnModal()
 
   const { value: checked } = useSelector(store => store.water)
   const { menuPermission } = useSelector(store => store.user)
@@ -88,17 +87,7 @@ const WaterMarkManagement = () => {
         <Header>
           <span>{t('secure_watermark')}</span>
         </Header>
-        {/* <button
-          onClick={() => {
-            openForewarnModal({
-              visible: true,
-            })
-          }}
-        >
-          1
-        </button>
-        <RightWran /> */}
-        {ForewarnModal}
+
         <Content>
           {configList.map(item => (
             <SwitchWrap key={item.title}>
