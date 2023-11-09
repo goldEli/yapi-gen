@@ -2424,7 +2424,7 @@
   "noPermissionToViewYet": "No permission to view yet",
   "slideOutSide": "Slide out side",
   "fullScreenPreview": "Full screen preview",
-  "preview": "Pop-up preview",
+  "preview": "preview",
   "howToOpenTheDetailsPage": "How to open the details page",
   "pendingReview": "Pending review",
   "priority": "Priority",
@@ -2546,5 +2546,7 @@
   "thereAreNoBugsThatAreAboutToExpire": "There are no bugs that are about to expire",
   "theNumberOfRecentBugsHasNotExceededTheRiskValueYet": "The number of recent BUGs has not exceeded the risk value yet",
   "noRiskyTasksYet": "No risky tasks yet",
-  "thereAreCurrentlyNoTasksThatAreOverdue": "There are currently no tasks that are overdue"
+  "thereAreCurrentlyNoTasksThatAreOverdue": "There are currently no tasks that are overdue",
+  "emailNotification": "Email notification",
+  "previewImage": "preview"
 }

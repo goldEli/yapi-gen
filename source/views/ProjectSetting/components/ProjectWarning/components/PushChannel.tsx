@@ -41,7 +41,7 @@ const PushChannel = () => {
       type: 'ding',
     },
     {
-      name: t('notification'),
+      name: t('emailNotification'),
       sub: t('theAboveInformationWillBePromptedInEmailsOnA'),
       type: 'email',
     },
@@ -88,7 +88,7 @@ const PushChannel = () => {
                 setSelectRecord(record)
               }}
             >
-              {t('preview')}
+              {t('previewImage')}
             </BlueText>
             <BlueText
               style={{ margin: '0px 24px' }}
@@ -122,7 +122,7 @@ const PushChannel = () => {
               setSelectRecord(record)
             }}
           >
-            {t('preview')}
+            {t('previewImage')}
           </BlueText>
         )
       },

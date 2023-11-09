@@ -2424,7 +2424,8 @@
   "noPermissionToViewYet": "暂无权限查看",
   "slideOutSide": "侧边滑出",
   "fullScreenPreview": "全屏预览",
-  "preview": "弹窗预览",
+  "preview": "预览",
+  "previewImage": "预览",
   "howToOpenTheDetailsPage": "详情页打开方式",
   "pendingReview": "待审核",
   "priority": "优先级",
@@ -2546,5 +2547,6 @@
   "thereAreNoBugsThatAreAboutToExpire": "暂无即将逾期的BUG",
   "theNumberOfRecentBugsHasNotExceededTheRiskValueYet": "近期BUG数量暂未超过风险值",
   "noRiskyTasksYet": "暂无有风险的任务",
-  "thereAreCurrentlyNoTasksThatAreOverdue": "暂无即将逾期的任务"
+  "thereAreCurrentlyNoTasksThatAreOverdue": "暂无即将逾期的任务",
+  "emailNotification": "邮件通知"
 }
