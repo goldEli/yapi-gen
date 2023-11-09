@@ -42,7 +42,7 @@ const PreviewImageModal = (props: PreviewImageProps) => {
       case 'sys':
         return (
           <img
-            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/warning/system.jpg"
+            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/warning/system.png"
             height={600}
             style={{ borderRadius: 6 }}
             alt=""
