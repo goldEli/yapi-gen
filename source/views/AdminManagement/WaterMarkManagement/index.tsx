@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from '@store/index'
 import { Switch } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { changeWaterStatus } from '../../../../store/waterState'
-import useForewarnModal from '@/hooks/useForewarnModal'
-import RightWran from '@/hooks/useRightWran'
 
 const Header = styled.div({
   height: 64,

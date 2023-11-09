@@ -85,13 +85,17 @@ const Project = () => {
   return (
     <ProjectWrap>
       {window.location.href.includes('/ProjectManagement/Project') ||
-      window.location.href.includes('/ProjectManagement/Mine') ? null : (
+      window.location.href.includes(
+        '/ProjectManagement/Mine',
+      ) ? null : projectInfo?.project_warring_info?.warring_list_nums ? (
         <RightWran />
-      )}
+      ) : null}
       {window.location.href.includes('/ProjectManagement/Project') ||
       window.location.href.includes('/ProjectManagement/Mine')
         ? null
-        : ForewarnModal}
+        : projectInfo?.project_warring_info?.warring_list_nums
+        ? ForewarnModal
+        : null}
       {isShowPage ? (
         <>
           {path.includes(location.pathname) && (

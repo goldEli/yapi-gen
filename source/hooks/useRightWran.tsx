@@ -37,7 +37,7 @@ const Tag = styled.div<{ width: boolean }>`
 const RightWran = () => {
   const [first, setFirst] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
-  const { ForewarnModal, openForewarnModal } = useForewarnModal()
+  const { openForewarnModal } = useForewarnModal()
   const handleMouseEnter = () => {
     setFirst(true)
   }
@@ -58,7 +58,7 @@ const RightWran = () => {
     >
       {first ? (
         <IconFont
-          style={{ color: '#FFA14F', fontSize: '18px' }}
+          style={{ color: '#FFA14F', fontSize: '18px', visibility: 'hidden' }}
           type="right-02"
         />
       ) : null}

@@ -54,10 +54,16 @@ const PreviewImageModal = (props: PreviewImageProps) => {
   }, [type])
 
   return visible ? (
-    <PreviewImageModalWrap>
-      <div className="imgBox" onClick={onClose}>
+    <PreviewImageModalWrap onClick={onClose}>
+      <div
+        className="imgBox"
+        onClick={e => {
+          e.stopPropagation()
+        }}
+      >
         {imageHtml}
         <IconFont
+          onClick={onClose}
           style={{
             fontSize: 40,
             color: 'var(--neutral-white-d1)',

@@ -76,16 +76,18 @@ const Project: React.FC<IProps> = props => {
           window.location.href.includes('/ProjectManagement/Mine') ||
           window.location.href.includes(
             '/SprintProjectManagement/DemandSetting',
-          ) ? null : (
+          ) ? null : projectInfo?.project_warring_info?.warring_list_nums ? (
             <RightWran />
-          )}
+          ) : null}
           {window.location.href.includes('/SprintProjectManagement/Setting') ||
           window.location.href.includes('/ProjectManagement/Mine') ||
           window.location.href.includes(
             '/SprintProjectManagement/DemandSetting',
           )
             ? null
-            : ForewarnModal}
+            : projectInfo?.project_warring_info?.warring_list_nums
+            ? ForewarnModal
+            : null}
           {path.includes(location.pathname) && (
             <HasSideCommonLayout side={<ProjectDetailSide />}>
               <Outlet />
