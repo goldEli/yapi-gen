@@ -10,11 +10,11 @@ import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
 import PushChannel from './components/PushChannel'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectWarning } from '@store/project'
+import { setProjectInfo, setProjectWarning } from '@store/project'
 import WaringCard from './components/WaringCard'
 import NoSettingPage from './components/NoSettingPage'
 import useProjectId from './hooks/useProjectId'
-import { saveWarningConfig } from '@/services/project'
+import { getProjectInfo, saveWarningConfig } from '@/services/project'
 import { getWarningConfigInfo } from '@store/project/project.thunk'
 import { getMessage } from '@/components/Message'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -30,10 +30,8 @@ const ProjectWarning = () => {
 
   // 保存
   const save = async () => {
-    // debugger
     const { push_condition, push_date, push_obj = [] } = projectWarning
     const { day = [], time = {} } = push_date ?? {}
-    // debugger
     if (push_condition.every((item: any) => item.is_enable === 2)) {
       getMessage({ type: 'error', msg: t('atLeastOnePushConditionIsEnabled') })
       return
