@@ -74,38 +74,34 @@ const PushObject = () => {
           {t('addPushObject')}
         </CommonButton>
         <PushObjectUserBox>
-          {list.length === userTotal || is_all_obj === 1 ? (
-            <span>{t('allMembers')}</span>
-          ) : (
-            list.map(item => (
-              <div className="user" key={item.id}>
-                {item.avatar ? (
-                  <img src={item.avatar} alt="" />
-                ) : (
-                  <img
-                    src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png"
-                    alt=""
-                  />
-                )}
-                <span className="username">{item.name}</span>
-                <CommonIconFont
-                  type="close"
-                  color="var(--neutral-n3)"
-                  onClick={() => {
-                    setList(() => list.filter(user => user.id !== item.id))
-                    dispatch(
-                      setProjectWarning({
-                        ...projectWarning,
-                        push_obj: list
-                          ?.filter(user => user.id !== item.id)
-                          ?.map(item => item.id),
-                      }),
-                    )
-                  }}
-                ></CommonIconFont>
-              </div>
-            ))
-          )}
+          {list.map(item => (
+            <div className="user" key={item.id}>
+              {item.avatar ? (
+                <img src={item.avatar} alt="" />
+              ) : (
+                <img
+                  src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png"
+                  alt=""
+                />
+              )}
+              <span className="username">{item.name}</span>
+              <CommonIconFont
+                type="close"
+                color="var(--neutral-n3)"
+                onClick={() => {
+                  setList(() => list.filter(user => user.id !== item.id))
+                  dispatch(
+                    setProjectWarning({
+                      ...projectWarning,
+                      push_obj: list
+                        ?.filter(user => user.id !== item.id)
+                        ?.map(item => item.id),
+                    }),
+                  )
+                }}
+              ></CommonIconFont>
+            </div>
+          ))}
         </PushObjectUserBox>
       </PushObjectBox>
       <AddDepartmentOrTeamModal
