@@ -7,6 +7,7 @@ import useProjectId from '../hooks/useProjectId'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectWarning } from '@store/project'
+import { useTranslation } from 'react-i18next'
 const PushObjectBox = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   min-height: 64px;
@@ -19,6 +20,8 @@ const PushObjectBox = styled.div`
 const PushObjectUserBox = styled.div`
   display: flex;
   flex-wrap: wrap;
+  min-height: 32px;
+  align-items: center;
   .user {
     display: flex;
     min-width: 104px;
@@ -43,19 +46,21 @@ const PushObjectUserBox = styled.div`
   }
 `
 const PushObject = () => {
+  const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const { projectId } = useProjectId()
   const [list, setList] = useState<any[]>([])
+  const [userTotal, setUserTotal] = useState<number | undefined>()
   const [usersId, setUsersId] = useState<any>()
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
-  const { push_obj } = projectWarning
+  const { push_obj, is_all_obj } = projectWarning
   useEffect(() => {
     setList(push_obj)
   }, [])
   return (
     <div>
-      <SubTitle title="推送对象"></SubTitle>
+      <SubTitle title={t('pushObject')}></SubTitle>
       <PushObjectBox>
         <CommonButton
           type="secondary"
@@ -65,37 +70,42 @@ const PushObject = () => {
             setUsersId(() => list.map(item => item.id))
           }}
         >
-          <CommonIconFont type="plus"></CommonIconFont>添加推送对象
+          <CommonIconFont type="plus"></CommonIconFont>
+          {t('addPushObject')}
         </CommonButton>
         <PushObjectUserBox>
-          {list.map(item => (
-            <div className="user" key={item.id}>
-              {item.avatar ? (
-                <img src={item.avatar} alt="" />
-              ) : (
-                <img
-                  src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png"
-                  alt=""
-                />
-              )}
-              <span className="username">{item.name}</span>
-              <CommonIconFont
-                type="close"
-                color="var(--neutral-n3)"
-                onClick={() => {
-                  setList(() => list.filter(user => user.id !== item.id))
-                  dispatch(
-                    setProjectWarning({
-                      ...projectWarning,
-                      push_obj: list
-                        ?.filter(user => user.id !== item.id)
-                        ?.map(item => item.id),
-                    }),
-                  )
-                }}
-              ></CommonIconFont>
-            </div>
-          ))}
+          {list.length === userTotal || is_all_obj === 1 ? (
+            <span>{t('allMembers')}</span>
+          ) : (
+            list.map(item => (
+              <div className="user" key={item.id}>
+                {item.avatar ? (
+                  <img src={item.avatar} alt="" />
+                ) : (
+                  <img
+                    src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png"
+                    alt=""
+                  />
+                )}
+                <span className="username">{item.name}</span>
+                <CommonIconFont
+                  type="close"
+                  color="var(--neutral-n3)"
+                  onClick={() => {
+                    setList(() => list.filter(user => user.id !== item.id))
+                    dispatch(
+                      setProjectWarning({
+                        ...projectWarning,
+                        push_obj: list
+                          ?.filter(user => user.id !== item.id)
+                          ?.map(item => item.id),
+                      }),
+                    )
+                  }}
+                ></CommonIconFont>
+              </div>
+            ))
+          )}
         </PushObjectUserBox>
       </PushObjectBox>
       <AddDepartmentOrTeamModal
@@ -103,15 +113,16 @@ const PushObject = () => {
         onClose={() => {
           setVisible(false)
         }}
-        onConfirm={data => {
-          console.log('data', data)
-          const ids = data.map(item => item.id)
+        onConfirm={(data, length) => {
+          console.log('data', data, length)
           setList(data)
-          dispatch(setProjectWarning({ ...projectWarning, push_obj: ids }))
+          setUserTotal(length)
+          dispatch(setProjectWarning({ ...projectWarning, push_obj: data }))
         }}
         type={2}
         projectId={projectId}
         users={usersId}
+        title={t('addPushObject')}
       ></AddDepartmentOrTeamModal>
     </div>
   )

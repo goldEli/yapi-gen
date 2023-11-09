@@ -2511,5 +2511,18 @@
   "emailAlert": "邮件提醒",
   "pushTime": "推送时间",
   "methodToInforme": "通知方式",
-  "notifyPersonnel": "通知人员"
+  "notifyPersonnel": "通知人员",
+  "pushObject": "推送对象",
+  "addPushObject": "添加推送对象",
+  "allMembers": "全员",
+  "whetherToSkipChineseHolidays": "是否跳过中国节假日",
+  "pushNotification": "推送通知",
+  "cycle": "周期",
+  "projectPushSettings": "项目推送设置",
+  "atLeastOnePushConditionIsEnabled": "推送条件至少启用一条",
+  "thePushTimePeriodMustBeSelectedAtLeastOneAndTheTimeMustBeSelected": "推送时间 周期至少选择一天，且时间必须选择",
+  "keep": "保存",
+  "goToSettings": "前往设置",
+  "projectMembers": "位项目成员",
+  "moreThanThan": "天以上 / 超过"
 }

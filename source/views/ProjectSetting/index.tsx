@@ -112,7 +112,7 @@ const Setting = () => {
       ).length,
     },
     {
-      name: '项目推送设置',
+      name: t('projectPushSettings'),
       icon: 'settings',
       content: <ProjectWarning />,
       isPermission: true,

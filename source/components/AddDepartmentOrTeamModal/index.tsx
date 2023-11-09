@@ -43,12 +43,13 @@ interface MemberItem {
 interface AddDepartmentModalProps {
   isVisible: boolean
   onClose(): void
-  onConfirm(list: MemberItem[]): void
+  onConfirm(list: MemberItem[], length: number): void
   type: ChooseAddType
   projectId?: number
   users?: number[]
   // 汇报相关查团队的时候需要传参is_report
   is_report?: boolean
+  title?: string
 }
 
 const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
@@ -84,6 +85,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
         ...i,
         type: props.type,
       })),
+      dataList.length,
     )
     onClose()
     props.onClose()
@@ -293,7 +295,9 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
         props.type === 3
           ? t('AddDepartmentOrTeamModal.add_team')
           : props.type === 2
-          ? t('AddDepartmentOrTeamModal.add_members')
+          ? props.title
+            ? props.title
+            : t('AddDepartmentOrTeamModal.add_members')
           : t('AddDepartmentOrTeamModal.add_department')
       }
       onClose={onClose}
