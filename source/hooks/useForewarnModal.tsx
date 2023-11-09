@@ -79,9 +79,16 @@ const text2 = css`
   }
 `
 
+interface ForewarnModalProps {
+  id?: number
+  visible: boolean
+}
+
 const useForewarnModal = () => {
   const visible = useSelector(store => store.Forewarn.value)
+  // const [visible, setVisible] = useState(false)
   const pid = useSelector(store => store.project.projectInfo.id)
+  const [projectId, setProjectId] = useState(0)
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [dis, setDis] = useState(false)
@@ -91,6 +98,8 @@ const useForewarnModal = () => {
 
   const openForewarnModal = (options: any) => {
     dispatch(changeWaterForewarnStatus(true))
+    setProjectId(options?.id)
+    // setVisible(true)
   }
   const onChange2 = (key: string) => {
     console.log(key)
@@ -125,7 +134,7 @@ const useForewarnModal = () => {
     return name
   }
   const getAll = async () => {
-    const res = await getWarnStatistics({ project_id: pid })
+    const res = await getWarnStatistics({ project_id: pid ?? projectId })
 
     const tabs = Object.keys(res.warning_count).map(key => {
       return {
@@ -143,7 +152,7 @@ const useForewarnModal = () => {
   const init = async () => {
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid,
+      project_id: pid ?? projectId,
     })
     console.log(res, '列数据')
 

@@ -28,10 +28,10 @@ const PerformanceInsight = () => {
 
   return (
     <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
-      {paramsData?.isOverAll ? null : <RightWran />}
-      {paramsData?.isOverAll ? null : ForewarnModal}
       {paramsData?.isOverAll && <PerformanceInsightOverAll />}
       {!paramsData?.isOverAll && <Home />}
+      {paramsData?.isOverAll ? null : <RightWran />}
+      {paramsData?.isOverAll ? null : ForewarnModal}
     </div>
   )
 }
