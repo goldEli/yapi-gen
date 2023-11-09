@@ -33,7 +33,7 @@ import NoteModal from '@/components/NoteModal'
 import { CloseWrap } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
 import useForewarnModal from '@/hooks/useForewarnModal'
-import { setProjectInfo } from '@store/project'
+import { setProjectInfo, setProjectWarningModal } from '@store/project'
 
 const mcs = css`
   overflow: hidden;
@@ -379,8 +379,7 @@ const SiteNotifications = (props: any, ref: any) => {
       wsData?.data?.customType === '2207'
     ) {
       // 更新页面小铃铛预警任务数量
-      openForewarnModal({ visible: true })
-
+      dispatch(setProjectWarningModal(true))
       updateWarningCount(wsData?.data)
     } else {
       sendMsg()
