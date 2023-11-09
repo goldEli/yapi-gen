@@ -232,10 +232,6 @@ const DailyReportRules = () => {
           <span />
           <span>{t('msg23')}</span>
         </Row>
-        <Row>
-          <span />
-          <span>{t('msg24')}</span>
-        </Row>
         <Msg>{t('msg25')}</Msg>
         <Row>
           <span />
