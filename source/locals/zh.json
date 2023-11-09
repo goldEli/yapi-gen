@@ -2525,7 +2525,6 @@
   "success": "成功",
   "atLeastOnePushConditionIsEnabled": "推送条件至少启用一条",
   "thePushTimePeriodMustBeSelectedAtLeastOneAndTheTimeMustBeSelected": "推送时间 周期至少选择一天，且时间必须选择",
-  "keep": "保存",
   "goToSettings": "前往设置",
   "projectMembers": "位项目成员",
   "moreThanThan": "天以上 / 超过",
@@ -2542,5 +2541,10 @@
   "operate": "操作",
   "setUpDingtalkGroup": "设置钉钉群",
   "pleaseSetUpADingtalkGroupFirst": "请先设置钉钉群",
-  "pushChannel": "推送渠道"
+  "pushChannel": "推送渠道",
+  "noRiskyBugYet": "暂无有风险的BUG",
+  "thereAreNoBugsThatAreAboutToExpire": "暂无即将逾期的BUG",
+  "theNumberOfRecentBugsHasNotExceededTheRiskValueYet": "近期BUG数量暂未超过风险值",
+  "noRiskyTasksYet": "暂无有风险的任务",
+  "thereAreCurrentlyNoTasksThatAreOverdue": "暂无即将逾期的任务"
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
@@ -24,6 +25,7 @@ import {
   getWarnSave,
   getWarnStatistics,
 } from '@/services/forewarn'
+import NoData from '@/components/NoData'
 
 const Footer = styled.div`
   height: 80px;
@@ -148,6 +150,30 @@ const useForewarnModal = () => {
     }
     return name
   }
+  const format2 = (key: string) => {
+    let name
+    switch (key) {
+      case 'bug_expired':
+        name = t('noRiskyBugYet')
+        break
+      case 'bug_soon_expired':
+        name = t('thereAreNoBugsThatAreAboutToExpire')
+        break
+      case 'bug_too_many':
+        name = t('theNumberOfRecentBugsHasNotExceededTheRiskValueYet')
+        break
+      case 'task_expired':
+        name = t('noRiskyTasksYet')
+        break
+      case 'task_soon_expired':
+        name = t('thereAreCurrentlyNoTasksThatAreOverdue')
+        break
+
+      default:
+        break
+    }
+    return name
+  }
   const getAll = async () => {
     const res = await getWarnStatistics({ project_id: pid })
     setTime(res.update_at)
@@ -157,7 +183,7 @@ const useForewarnModal = () => {
         key: key,
         lang: res.warning_count[key],
         list: [],
-        last_id: 0,
+        last_id: undefined,
       }
     })
 
@@ -235,7 +261,6 @@ const useForewarnModal = () => {
 
     // 比较两个时间戳
     if (timestamp > nowTimestamp) {
-      console.log('给定的日期晚于当前日期')
       return t('overdue')
     } else if (timestamp < nowTimestamp) {
       return t('remaining')
@@ -251,21 +276,6 @@ const useForewarnModal = () => {
       message.success(t('success'))
       dispatch(changeWaterForewarnStatus(false))
     }
-  }
-  const changeColor = (is_end: any, is_start: any) => {
-    if (is_end === 2 && is_start === 2) {
-      return 1
-      // 进行中
-    }
-    if (is_end === 1 && is_start === 2) {
-      return 2
-      // 已结算
-    }
-    if (is_end === 2 && is_start === 1) {
-      return 3
-      // 未开始
-    }
-    return 1
   }
 
   const ForewarnModal = (
@@ -372,6 +382,7 @@ const useForewarnModal = () => {
                 </ListBox>
               )
             })}
+            {twoData?.list.length < 1 && <NoData subText={format2(nowKey)} />}
           </InfiniteScroll>
         </div>
         <Footer>

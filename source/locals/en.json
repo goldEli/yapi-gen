@@ -2525,7 +2525,6 @@
   "success": "Success",
   "atLeastOnePushConditionIsEnabled": "At least one push condition is enabled",
   "thePushTimePeriodMustBeSelectedAtLeastOneAndTheTimeMustBeSelected": "The push time period must be selected at least one day, and the time must be selected",
-  "keep": "Keep",
   "goToSettings": "Go to settings",
   "projectMembers": "Project members",
   "moreThanThan": "More than days / more than",
@@ -2542,5 +2541,10 @@
   "operate": "Operate",
   "setUpDingtalkGroup": "Set up DingTalk group",
   "pleaseSetUpADingtalkGroupFirst": "Please set up a DingTalk group first",
-  "pushChannel": "Push channel"
+  "pushChannel": "Push channel",
+  "noRiskyBugYet": "No risky BUG yet",
+  "thereAreNoBugsThatAreAboutToExpire": "There are no bugs that are about to expire",
+  "theNumberOfRecentBugsHasNotExceededTheRiskValueYet": "The number of recent BUGs has not exceeded the risk value yet",
+  "noRiskyTasksYet": "No risky tasks yet",
+  "thereAreCurrentlyNoTasksThatAreOverdue": "There are currently no tasks that are overdue"
 }
