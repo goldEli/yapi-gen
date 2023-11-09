@@ -115,8 +115,8 @@ const useForewarnModal = () => {
   const [time, setTime] = useState<any>()
 
   const [datas, setDatas] = useState<any>()
-
   const openForewarnModal = (options: any) => {
+    console.log('openForewarnModal---------')
     dispatch(changeWaterForewarnStatus(true))
   }
   const onChange2 = (key: string) => {
@@ -236,6 +236,7 @@ const useForewarnModal = () => {
   }, [datas, nowKey])
 
   useEffect(() => {
+    console.log('visible', visible)
     if (visible) {
       getAll()
     } else {

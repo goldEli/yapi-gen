@@ -67,7 +67,7 @@ const ProjectWarning = () => {
 
   useEffect(() => {
     if (!isSetting) {
-      setNotSetting(!projectInfo?.project_warring_info)
+      setNotSetting(is_init === 1)
     }
   }, [projectWarning])
   const isLength =

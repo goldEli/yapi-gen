@@ -32,6 +32,7 @@ import { TextChange } from '@/components/TextChange/TextChange'
 import NoteModal from '@/components/NoteModal'
 import { CloseWrap } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
+import useForewarnModal from '@/hooks/useForewarnModal'
 
 const mcs = css`
   overflow: hidden;
@@ -51,6 +52,7 @@ const SiteNotifications = (props: any, ref: any) => {
   const dispatch = useDispatch()
   const { isVisible, all } = useSelector(store => store.siteNotifications)
   const isRefresh = useSelector(store => store.user.isRefresh)
+  const { openForewarnModal } = useForewarnModal()
   const init2 = async () => {
     // eslint-disable-next-line no-promise-executor-return
     await new Promise(resolve => setTimeout(resolve, 2000))
@@ -64,6 +66,7 @@ const SiteNotifications = (props: any, ref: any) => {
     dispatch(changeNumber(num))
   }
   const sendMsg = () => {
+    // debugger
     if (wsData.data.customData.noticeStyle === '2') {
       const element: any = document.getElementsByClassName('ant-message')
 
@@ -91,7 +94,7 @@ const SiteNotifications = (props: any, ref: any) => {
         id: wsData.data.msgIds,
       })
     }
-
+    openForewarnModal({ visible: true })
     Notification.requestPermission().then(result => {
       if (result === 'granted') {
         const n: any = new Notification(wsData.data.msgBody.title, {
