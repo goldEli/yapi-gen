@@ -40,6 +40,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ProjectSystemReport from '../WorkReport/Review/components/ProjectSystemReport'
 import EmployeeProfileContrast from '@/components/EmployeeProfileContrast'
 import ReportAssistantModal from '@/views/WorkReport/Review/components/ReportAssistantModal'
+import ProjectWarningModal from '@/components/ProjectWarningModal/ProjectWarningModal'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -243,6 +244,7 @@ export const Container = () => {
         <FlawDetailDrawer />
         <DetailScreenModal />
         <EmployeeProfileContrast />
+        <ProjectWarningModal></ProjectWarningModal>
       </ConfigProvider>
     </KitConfigProvider>
   )

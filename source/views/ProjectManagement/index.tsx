@@ -15,6 +15,7 @@ import { saveInputKey } from '@store/view'
 import ProjectDetailSide from './ProjectDetailSide'
 import RightWran from '@/hooks/useRightWran'
 import useForewarnModal from '@/hooks/useForewarnModal'
+import ProjectWarningModal from '@/components/ProjectWarningModal/ProjectWarningModal'
 
 const ProjectWrap = styled.div`
   position: relative;
@@ -25,7 +26,6 @@ const ProjectWrap = styled.div`
 `
 
 const Project = () => {
-  const { ForewarnModal, openForewarnModal } = useForewarnModal()
   const { projectInfo } = useSelector(store => store.project)
   const [isShowPage, setIsShowPage] = useState(false)
   const [searchParams] = useSearchParams()
@@ -90,12 +90,12 @@ const Project = () => {
       ) ? null : projectInfo?.project_warring_info?.warring_list_nums ? (
         <RightWran />
       ) : null}
-      {window.location.href.includes('/ProjectManagement/Project') ||
-      window.location.href.includes('/ProjectManagement/Mine')
-        ? null
-        : projectInfo?.project_warring_info?.warring_list_nums
-        ? ForewarnModal
-        : null}
+      {/* {window.location.href.includes('/ProjectManagement/Project') ||
+      window.location.href.includes(
+        '/ProjectManagement/Mine',
+      ) ? null : projectInfo?.project_warring_info?.warring_list_nums ? (
+        <ProjectWarningModal></ProjectWarningModal>
+      ) : null} */}
       {isShowPage ? (
         <>
           {path.includes(location.pathname) && (
