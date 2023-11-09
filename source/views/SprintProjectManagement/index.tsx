@@ -13,10 +13,13 @@ import { saveInputKey } from '@store/view'
 import { getParamsData } from '@/tools'
 import { setActiveCategory } from '@store/category/index'
 import { setCategoryList } from '@store/category'
+import RightWran from '@/hooks/useRightWran'
+import useForewarnModal from '@/hooks/useForewarnModal'
 
 interface IProps {}
 
 const Project: React.FC<IProps> = props => {
+  const { ForewarnModal, openForewarnModal } = useForewarnModal()
   const path = [
     '/SprintProjectManagement/KanBan',
     '/SprintProjectManagement/SprintReport',
@@ -69,6 +72,20 @@ const Project: React.FC<IProps> = props => {
     <ProjectWrap>
       {isShowPage ? (
         <>
+          {window.location.href.includes('/SprintProjectManagement/Setting') ||
+          window.location.href.includes('/ProjectManagement/Mine') ||
+          window.location.href.includes(
+            '/SprintProjectManagement/DemandSetting',
+          ) ? null : (
+            <RightWran />
+          )}
+          {window.location.href.includes('/SprintProjectManagement/Setting') ||
+          window.location.href.includes('/ProjectManagement/Mine') ||
+          window.location.href.includes(
+            '/SprintProjectManagement/DemandSetting',
+          )
+            ? null
+            : ForewarnModal}
           {path.includes(location.pathname) && (
             <HasSideCommonLayout side={<ProjectDetailSide />}>
               <Outlet />

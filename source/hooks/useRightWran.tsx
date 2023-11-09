@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
 import { Badge } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import frnIcon from '/iconfrn.png'
 import IconFont from '@/components/IconFont'
 import useForewarnModal from './useForewarnModal'
+import { useSelector } from '@store/index'
 
 const Tag = styled.div<{ width: boolean }>`
   z-index: 9;
@@ -13,6 +14,7 @@ const Tag = styled.div<{ width: boolean }>`
   padding-left: 8px;
   position: fixed;
   right: 0;
+  top: 50%;
   width: ${props => (props.width ? '100px' : '48px')};
   height: 48px;
   border-radius: 24px 0 0 24px;
@@ -33,6 +35,7 @@ const Tag = styled.div<{ width: boolean }>`
 
 const RightWran = () => {
   const [first, setFirst] = useState(false)
+  const { projectInfo } = useSelector(store => store.project)
   const { ForewarnModal, openForewarnModal } = useForewarnModal()
   const handleMouseEnter = () => {
     setFirst(true)
@@ -61,7 +64,12 @@ const RightWran = () => {
       {first ? (
         <img style={{ width: '40px', height: '40px' }} src={frnIcon} alt="" />
       ) : null}
-      <Badge className="ff" size="small" count={4} showZero />
+      <Badge
+        className="ff"
+        size="small"
+        count={projectInfo?.project_warring_info?.warring_count ?? 0}
+        showZero
+      />
     </Tag>
   )
 

@@ -160,7 +160,6 @@ const useForewarnModal = () => {
   useEffect(() => {
     init()
   }, [nowKey])
-  console.log(datas, 'datas数据源')
 
   const ForewarnModal = (
     <Modal
