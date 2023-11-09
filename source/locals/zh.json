@@ -2514,5 +2514,7 @@
   "methodToInforme": "通知方式",
   "notifyPersonnel": "通知人员",
   "projectPushSettings": "项目推送设置",
-  "keep": "保存"
+  "keep": "保存",
+  "updatedOn": " 更新于",
+  "success": "成功"
 }

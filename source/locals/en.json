@@ -2514,5 +2514,7 @@
   "methodToInforme": "Method to informe",
   "notifyPersonnel": "Notify personnel",
   "projectPushSettings": "Project push settings",
-  "keep": "Keep"
+  "keep": "Keep",
+  "updatedOn": "Updated on",
+  "success": "Success"
 }

@@ -4,14 +4,26 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { changeWaterForewarnStatus } from '@store/Forewarn'
 import { store, useDispatch, useSelector } from '@store/index'
-import { Checkbox, Divider, Modal, Skeleton, Tabs, Tooltip } from 'antd'
+import {
+  Checkbox,
+  Divider,
+  Modal,
+  Skeleton,
+  Tabs,
+  Tooltip,
+  message,
+} from 'antd'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import frnIcon from '/iconfrn.png'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { init } from 'i18next'
 import { produce } from 'immer'
-import { getWarnLlist, getWarnStatistics } from '@/services/forewarn'
+import {
+  getWarnLlist,
+  getWarnSave,
+  getWarnStatistics,
+} from '@/services/forewarn'
 
 const Footer = styled.div`
   height: 80px;
@@ -37,7 +49,7 @@ const Header = styled.div`
 `
 const text = css`
   display: inline-block;
-  width: 580px;
+  max-width: 580px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -58,15 +70,27 @@ const ListBox = styled.div`
     cursor: pointer;
   }
 `
-const SmallTag = styled.span`
+const SmallTag = styled.span<{ is_end: number; is_start: number }>`
   display: flex;
+
   align-items: center;
   height: 20px;
   line-height: 20px;
   font-size: 12px;
   padding: 2px 8px;
-  background-color: rgba(67, 186, 154, 0.2);
-  border: 1px solid #43ba9a;
+  background-color: ${props =>
+    props.is_end === 2 && props.is_start === 2
+      ? 'rgba(67,186,154,0.2)'
+      : props.is_end === 1 && props.is_start === 2
+      ? 'rgba(102,136,255,0.2)'
+      : 'rgba(161,118,251,0.2)'};
+  border: 1px solid
+    ${props =>
+      props.is_end === 2 && props.is_start === 2
+        ? '#43BA9A'
+        : props.is_end === 1 && props.is_start === 2
+        ? '#6688FF'
+        : '#A176FB'};
   border-radius: 6px 6px 6px 6px;
   margin-right: 8px;
 `
@@ -86,6 +110,7 @@ const useForewarnModal = () => {
   const dispatch = useDispatch()
   const [dis, setDis] = useState(false)
   const [nowKey, setNowKey] = useState<any>()
+  const [time, setTime] = useState<any>()
 
   const [datas, setDatas] = useState<any>()
 
@@ -93,7 +118,6 @@ const useForewarnModal = () => {
     dispatch(changeWaterForewarnStatus(true))
   }
   const onChange2 = (key: string) => {
-    console.log(key)
     setNowKey(key)
   }
   const onChange = (e: any) => {
@@ -126,7 +150,7 @@ const useForewarnModal = () => {
   }
   const getAll = async () => {
     const res = await getWarnStatistics({ project_id: pid })
-
+    setTime(res.update_at)
     const tabs = Object.keys(res.warning_count).map(key => {
       return {
         label: `${format(key)}  (${res.warning_count[key]})`,
@@ -138,36 +162,47 @@ const useForewarnModal = () => {
     })
 
     setDatas(tabs)
+    setNowKey(tabs[0].key)
   }
 
   const init = async () => {
+    if (twoData?.list.length > 0) {
+      return
+    }
+
     const res = await getWarnLlist({
       warning_type: nowKey,
       project_id: pid,
     })
-    console.log(res, '列数据')
 
     setDatas(
       produce((draft: any) => {
         draft?.forEach((item: any) => {
           if (item.key === nowKey) {
             item.list = item.list.concat(res.list)
+            item.last_id = res.list[res.list.length - 1]?.id
           }
         })
       }),
     )
   }
 
-  const fetchMoreData = () => {
-    // setDatas(
-    //   produce((draft: any) => {
-    //     draft?.forEach((item: any) => {
-    //       if (item.key === nowKey) {
-    //         item.list = item.list.concat(Array(2).fill(0))
-    //       }
-    //     })
-    //   }),
-    // )
+  const fetchMoreData = async () => {
+    const res = await getWarnLlist({
+      warning_type: nowKey,
+      project_id: pid,
+      last_id: twoData.last_id,
+    })
+    setDatas(
+      produce((draft: any) => {
+        draft?.forEach((item: any) => {
+          if (item.key === nowKey) {
+            item.list = item.list.concat(res.list)
+            item.last_id = res.list[res.list.length - 1].id
+          }
+        })
+      }),
+    )
   }
 
   const twoData = useMemo(() => {
@@ -177,13 +212,17 @@ const useForewarnModal = () => {
   useEffect(() => {
     if (visible) {
       getAll()
+    } else {
+      setNowKey('')
+      setDatas([])
     }
   }, [visible])
+
   useEffect(() => {
-    if (visible) {
+    if (nowKey) {
       init()
     }
-  }, [nowKey, visible])
+  }, [nowKey])
 
   const zhuan = (dateStr2: string) => {
     const dateStr = dateStr2
@@ -201,6 +240,32 @@ const useForewarnModal = () => {
     } else if (timestamp < nowTimestamp) {
       return t('remaining')
     }
+  }
+  const confirm = async () => {
+    const res = await getWarnSave({
+      project_id: pid,
+      updated_at: time,
+    })
+
+    if (res.code === 0) {
+      message.success(t('success'))
+      dispatch(changeWaterForewarnStatus(false))
+    }
+  }
+  const changeColor = (is_end: any, is_start: any) => {
+    if (is_end === 2 && is_start === 2) {
+      return 1
+      // 进行中
+    }
+    if (is_end === 1 && is_start === 2) {
+      return 2
+      // 已结算
+    }
+    if (is_end === 2 && is_start === 1) {
+      return 3
+      // 未开始
+    }
+    return 1
   }
 
   const ForewarnModal = (
@@ -229,9 +294,17 @@ const useForewarnModal = () => {
           <Tabs defaultActiveKey="1" onChange={onChange2} items={datas} />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <span style={{ color: '#969799', fontSize: 12 }}>
-              更新于2023-08-08 11:08:08
+              {t('updatedOn')}
+              {time}
             </span>
-            <span className={text2}>
+            <span
+              onClick={() => {
+                setDatas([])
+                setNowKey('')
+                getAll()
+              }}
+              className={text2}
+            >
               <IconFont type="sync" />
               <span style={{ fontSize: 12, marginLeft: '4px' }}>
                 {t('toRefresh')}
@@ -254,7 +327,6 @@ const useForewarnModal = () => {
             height={document.body.clientHeight - 400}
             loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
             scrollableTarget="scrollableDiv"
-            endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
             hasMore={twoData?.list?.length < twoData?.lang}
           >
             {twoData?.list?.map((item: any, index: any) => {
@@ -267,12 +339,14 @@ const useForewarnModal = () => {
                       marginBottom: '8px',
                     }}
                   >
-                    <SmallTag>进行中</SmallTag>
+                    <SmallTag is_end={item.is_end} is_start={item.is_start}>
+                      {item.category_status.status.content}
+                    </SmallTag>
                     <span className={`tit  ${text}`}>{item.name}</span>
                     <span
                       style={{
                         color: '#FF5C5E',
-                        marginLeft: '12px',
+                        marginLeft: 'auto',
                       }}
                     >
                       {zhuan(item.expected_end_at)}
@@ -314,7 +388,7 @@ const useForewarnModal = () => {
             </Checkbox>
           </Tooltip>
 
-          <CommonButton isDisable={!dis} type="primary">
+          <CommonButton isDisable={!dis} onClick={confirm} type="primary">
             {t('alreadyKnown')}
           </CommonButton>
         </Footer>
