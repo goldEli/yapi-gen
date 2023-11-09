@@ -33,6 +33,7 @@ import NoteModal from '@/components/NoteModal'
 import { CloseWrap } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
 import useForewarnModal from '@/hooks/useForewarnModal'
+import { setProjectInfo } from '@store/project'
 
 const mcs = css`
   overflow: hidden;
@@ -66,8 +67,7 @@ const SiteNotifications = (props: any, ref: any) => {
     dispatch(changeNumber(num))
   }
   const sendMsg = () => {
-    // debugger
-    if (wsData.data.customData.noticeStyle === '2') {
+    if (wsData?.data?.customData?.noticeStyle === '2') {
       const element: any = document.getElementsByClassName('ant-message')
 
       message.success({
@@ -86,7 +86,7 @@ const SiteNotifications = (props: any, ref: any) => {
           // dispatch(changeVisible(!isVisible))
         },
       })
-    } else if (wsData.data.customData.noticeStyle === '1') {
+    } else if (wsData?.data?.customData?.noticeStyle === '1') {
       setFirst(true)
       setFirst2({
         customData: wsData.data.customData,
@@ -94,7 +94,6 @@ const SiteNotifications = (props: any, ref: any) => {
         id: wsData.data.msgIds,
       })
     }
-    openForewarnModal({ visible: true })
     Notification.requestPermission().then(result => {
       if (result === 'granted') {
         const n: any = new Notification(wsData.data.msgBody.title, {
@@ -359,24 +358,32 @@ const SiteNotifications = (props: any, ref: any) => {
 
   // 更新页面小铃铛预警任务数量
   const updateWarningCount = (data: any) => {
-    if (data?.customType === 1207 || data?.customType === 2207) {
-      dispatch({
-        ...projectInfo,
-        project_warring_info: {
-          ...(projectInfo.project_warring_info || {}),
-          warring_count: data?.customData?.warring_count,
-          noticeStyle: data?.customData?.noticeStyle,
-          customType: data?.customType,
-        },
-      })
+    if (data?.customType === '1207' || data?.customType === '2207') {
+      dispatch(
+        setProjectInfo({
+          ...projectInfo,
+          project_warring_info: {
+            ...(projectInfo.project_warring_info || {}),
+            warring_count: data?.customData?.warning_count,
+            noticeStyle: data?.customData?.noticeStyle,
+            customType: data?.customType,
+          },
+        }),
+      )
     }
   }
 
   useEffect(() => {
-    if (wsData) {
-      sendMsg()
+    if (
+      wsData?.data?.customType === '1207' ||
+      wsData?.data?.customType === '2207'
+    ) {
       // 更新页面小铃铛预警任务数量
+      openForewarnModal({ visible: true })
+
       updateWarningCount(wsData?.data)
+    } else {
+      sendMsg()
     }
   }, [wsData])
   useImperativeHandle(

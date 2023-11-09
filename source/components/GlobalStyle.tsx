@@ -496,7 +496,9 @@ const GlobalStyle = () => {
     .ant-picker-range .ant-picker-active-bar {
       background: none;
     }
-
+    .tolfeiji {
+      /* left: 348px !important; */
+    }
     input {
       &::placeholder {
         font-size: 14px;

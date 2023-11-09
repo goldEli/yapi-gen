@@ -105,19 +105,28 @@ const text2 = css`
   }
 `
 
+interface ForewarnModalProps {
+  id?: number
+  visible: boolean
+}
+
 const useForewarnModal = () => {
   const visible = useSelector(store => store.Forewarn.value)
+  // const [visible, setVisible] = useState(false)
   const pid = useSelector(store => store.project.projectInfo.id)
+  const [projectId, setProjectId] = useState(0)
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [dis, setDis] = useState(false)
   const [nowKey, setNowKey] = useState<any>()
   const [time, setTime] = useState<any>()
-
+  const [first, setFirst] = useState(false)
   const [datas, setDatas] = useState<any>()
   const openForewarnModal = (options: any) => {
     console.log('openForewarnModal---------')
     dispatch(changeWaterForewarnStatus(true))
+    setProjectId(options?.id)
+    // setVisible(true)
   }
   const onChange2 = (key: string) => {
     setNowKey(key)
@@ -198,7 +207,7 @@ const useForewarnModal = () => {
 
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid,
+      project_id: pid ?? projectId,
     })
 
     setDatas(
@@ -251,6 +260,13 @@ const useForewarnModal = () => {
     }
   }, [nowKey])
 
+  const handleMouseEnter = () => {
+    setFirst(true)
+  }
+  const handleMouseLeave = () => {
+    setFirst(false)
+  }
+
   const zhuan = (dateStr2: string) => {
     const dateStr = dateStr2
     const dateObj = new Date(dateStr)
@@ -274,7 +290,6 @@ const useForewarnModal = () => {
     })
 
     if (res.code === 0) {
-      message.success(t('success'))
       dispatch(changeWaterForewarnStatus(false))
     }
   }
@@ -288,6 +303,8 @@ const useForewarnModal = () => {
       closable={false}
       footer={null}
       open={visible}
+      maskClosable={false}
+      keyboard={false}
       onCancel={() => {
         dispatch(changeWaterForewarnStatus(false))
       }}
@@ -332,7 +349,6 @@ const useForewarnModal = () => {
               minHeight: '400px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px',
               marginTop: '12px',
             }}
             height={document.body.clientHeight - 400}
@@ -358,6 +374,7 @@ const useForewarnModal = () => {
                       style={{
                         color: '#FF5C5E',
                         marginLeft: 'auto',
+                        fontSize: 12,
                       }}
                     >
                       {zhuan(item.expected_end_at)}
@@ -374,7 +391,9 @@ const useForewarnModal = () => {
                   >
                     <span style={{ fontSize: 12, color: '#969799' }}>
                       {t('handler')}：
-                      {item.user_info.map((o: any) => o.name).join('、')}
+                      {item.user_info.length > 1
+                        ? item.user_info.map((o: any) => o.name).join('、')
+                        : '--'}
                     </span>
                     <span style={{ fontSize: 12, color: '#969799' }}>
                       {t('expectedToEnd')}：{item.expected_end_at}
@@ -388,6 +407,8 @@ const useForewarnModal = () => {
         </div>
         <Footer>
           <Tooltip
+            arrowPointAtCenter
+            open={first && !dis}
             placement="topLeft"
             title={t('pleaseCheckTheBoxesToKnowFirst')}
           >
@@ -399,10 +420,11 @@ const useForewarnModal = () => {
               </span>
             </Checkbox>
           </Tooltip>
-
-          <CommonButton isDisable={!dis} onClick={confirm} type="primary">
-            {t('alreadyKnown')}
-          </CommonButton>
+          <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <CommonButton isDisable={!dis} onClick={confirm} type="primary">
+              {t('alreadyKnown')}
+            </CommonButton>
+          </div>
         </Footer>
       </div>
     </Modal>
