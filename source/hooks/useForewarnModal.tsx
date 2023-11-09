@@ -237,7 +237,6 @@ const useForewarnModal = () => {
 
   useEffect(() => {
     if (visible) {
-      console.log('飞机')
       getAll()
     } else {
       setNowKey('')
@@ -294,6 +293,8 @@ const useForewarnModal = () => {
       closable={false}
       footer={null}
       open={visible}
+      maskClosable={false}
+      keyboard={false}
       onCancel={() => {
         dispatch(changeWaterForewarnStatus(false))
       }}
