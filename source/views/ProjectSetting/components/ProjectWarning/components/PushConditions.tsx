@@ -204,7 +204,7 @@ const PushConditions = () => {
   }, [])
   return (
     <PushConditionsWrap>
-      <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
+      <SubTitleBox style={{ margin: '16px 0px 16px 0px' }}>
         {t('pushConditions')}
       </SubTitleBox>
       <PushConditionsContent>

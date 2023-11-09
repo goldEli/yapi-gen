@@ -18,6 +18,7 @@ export const Title = styled.div`
   top: 0px;
   z-index: 9;
   background: #fff;
+  padding-bottom: 8px;
   .label {
     font-size: 16px;
     color: var(--neutral-n1-d1);

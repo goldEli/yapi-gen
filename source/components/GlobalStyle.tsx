@@ -22,13 +22,13 @@ const GlobalStyle = () => {
       --auxiliary-b7: #f8f7f7;
       --auxiliary-b8: #fff0f0;
       --auxiliary-b9: #ffe5e6;
-      --auxiliary-b10: #f9f9fa;
+      --auxiliary-b10: #f3f3f5;
       --auxiliary-text-t1-d1: #ffffff;
       --auxiliary-text-t1-d2: #6688ff;
       --auxiliary-text-t2-d1: #646566;
       --auxiliary-text-t2-d2: #6688ff;
       --auxiliary-text-t3: #ff5c5e;
-      --auxiliary-t4: #d5d6d9;
+      --auxiliary-t4: #bbbdbf;
       // 按钮 --- end
       --primary-d1: #6688ff;
       --hover-d1: #f3f3f5;
@@ -103,7 +103,7 @@ const GlobalStyle = () => {
       --auxiliary-text-t2-d1: #ffffff;
       --auxiliary-text-t2-d2: #ffffff;
       --auxiliary-text-t3: #ff5c5e;
-      --auxiliary-t4: #3d4251;
+      --auxiliary-t4: #bbbdbf;
       // 按钮 --- end
       --primary-d1: #6688ff;
       --hover-d1: #333640;

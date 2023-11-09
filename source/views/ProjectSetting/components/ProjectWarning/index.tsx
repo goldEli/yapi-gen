@@ -65,9 +65,10 @@ const ProjectWarning = () => {
       dispatch(setProjectWarning(null))
     }
   }, [])
+
   useEffect(() => {
     if (!isSetting) {
-      setNotSetting(() => is_init === 1)
+      setNotSetting(!projectInfo?.project_warring_info)
     }
   }, [projectWarning])
   const isLength =
