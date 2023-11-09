@@ -43,6 +43,7 @@ const mcs = css`
 
 const SiteNotifications = (props: any, ref: any) => {
   const { loginInfo } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
   const [first, setFirst] = useState(false)
   const [first2, setFirst2] = useState({})
   const [t] = useTranslation()
@@ -352,9 +353,27 @@ const SiteNotifications = (props: any, ref: any) => {
     init()
     init2()
   }, [isRefresh])
+
+  // 更新页面小铃铛预警任务数量
+  const updateWarningCount = (data: any) => {
+    if (data?.customType === 1207 || data?.customType === 2207) {
+      dispatch({
+        ...projectInfo,
+        project_warring_info: {
+          ...(projectInfo.project_warring_info || {}),
+          warring_count: data?.customData?.warring_count,
+          noticeStyle: data?.customData?.noticeStyle,
+          customType: data?.customType,
+        },
+      })
+    }
+  }
+
   useEffect(() => {
     if (wsData) {
       sendMsg()
+      // 更新页面小铃铛预警任务数量
+      updateWarningCount(wsData?.data)
     }
   }, [wsData])
   useImperativeHandle(

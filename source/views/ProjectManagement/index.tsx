@@ -84,8 +84,14 @@ const Project = () => {
 
   return (
     <ProjectWrap>
-      <RightWran />
-      {ForewarnModal}
+      {window.location.href.includes('/ProjectManagement/Project') ||
+      window.location.href.includes('/ProjectManagement/Mine') ? null : (
+        <RightWran />
+      )}
+      {window.location.href.includes('/ProjectManagement/Project') ||
+      window.location.href.includes('/ProjectManagement/Mine')
+        ? null
+        : ForewarnModal}
       {isShowPage ? (
         <>
           {path.includes(location.pathname) && (

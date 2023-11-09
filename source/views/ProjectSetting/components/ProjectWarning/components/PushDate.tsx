@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectWarning } from '@store/project'
 import moment from 'moment'
+import { useTranslation } from 'react-i18next'
 const PushDateBox = styled.div``
 const PushDateContent = styled.div`
   border: 1px solid var(--neutral-n6-d1);
@@ -22,15 +23,16 @@ export const PushDateContentDate = styled.div`
   }
 `
 const PushDate = () => {
+  const [t] = useTranslation()
   const options = [
-    { label: '周一', value: 0 },
-    { label: '周二', value: 1 },
-    { label: '周三', value: 2 },
-    { label: '周四', value: 3 },
-    { label: '周五', value: 4 },
-    { label: '周六', value: 5 },
-    { label: '周日', value: 6 },
-    { label: '是否跳过中国节假日', value: -1 },
+    { label: t('onMonday'), value: 0 },
+    { label: t('tuesday'), value: 1 },
+    { label: t('wednesday'), value: 2 },
+    { label: t('thursday'), value: 3 },
+    { label: t('friday'), value: 4 },
+    { label: t('saturday'), value: 5 },
+    { label: t('sunday'), value: 6 },
+    { label: t('whetherToSkipChineseHolidays'), value: -1 },
   ]
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
@@ -38,10 +40,10 @@ const PushDate = () => {
 
   return (
     <PushDateBox>
-      <SubTitle title="推送通知"></SubTitle>
+      <SubTitle title={t('pushNotification')}></SubTitle>
       <PushDateContent>
         <PushDateContentDate>
-          <label className="label-text">周期</label>
+          <label className="label-text">{t('cycle')}</label>
           <Checkbox.Group
             options={options}
             value={push_date?.day ?? []}
@@ -60,7 +62,7 @@ const PushDate = () => {
           />
         </PushDateContentDate>
         <PushDateContentDate>
-          <label className="label-text">时间</label>
+          <label className="label-text">{t('time')}</label>
           <TimePicker.RangePicker
             format="HH:mm"
             allowClear

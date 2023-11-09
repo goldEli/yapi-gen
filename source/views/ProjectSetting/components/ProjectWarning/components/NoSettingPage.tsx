@@ -45,11 +45,19 @@ const NoSettingPage = (props: NoSettingPageProps) => {
           alt=""
         />
         <div className="tips">
-          <div>设置预警推送可将任务、BUG的逾期或即将逾期</div>
-          <div>情况按条件定时推送至系统通知、钉钉群、邮件、短信</div>
+          <div>
+            {t(
+              'setUpEarlyWarningPushToNotifyTheOverdueOrUpcomingOverdueTasksAnd',
+            )}
+          </div>
+          <div>
+            {t(
+              'theSituationIsRegularlyPushedToSystemDingtalkAndTextMessagesBasedOn',
+            )}
+          </div>
         </div>
         <CommonButton type="light" onClick={onClose}>
-          前往设置
+          {t('goToSettings')}
         </CommonButton>
       </Box>
     </Wrap>

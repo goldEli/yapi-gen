@@ -46,11 +46,11 @@ const WaringCard = (props: WaringCardProps) => {
     6: t('sunday'),
   }
   const taskType: mapInterface = {
-    task_soon_expired: '任务即将逾期',
-    task_expired: '任务逾期',
-    bug_soon_expired: 'BUG即将逾期',
-    bug_expired: 'BUG逾期',
-    bug_too_many: 'BUG数量过多',
+    task_soon_expired: t('taskIsAboutToExpire'),
+    task_expired: t('taskIsOverdue'),
+    bug_soon_expired: t('bugIsAboutToExpire'),
+    bug_expired: t('bugOverdue'),
+    bug_too_many: t('tooManyBugs'),
   }
   const noticeType: mapInterface = {
     sys: t('systemNotification'),
@@ -139,18 +139,23 @@ const WaringCard = (props: WaringCardProps) => {
           <div className="content">
             {push_condition?.map((item: any) => (
               <span key={item.type}>
-                [{taskType[item.type]}] {item.cond_conf}天以上 / 超过
-                {item.send_conf}条
+                [{taskType[item.type]}] {item.cond_conf}
+                {t('moreThanThan')}
+                {item.send_conf}
+                {t('strip')}
               </span>
             ))}
           </div>
         </WaringCardItem>
         <WaringCardItem style={{ width: '40%', marginTop: 16 }}>
           <div className="label">{t('notifyPersonnel')}：</div>
-          <div className="content">{push_obj?.length}位项目成员</div>
+          <div className="content">
+            {push_obj?.length}
+            {t('projectMembers')}
+          </div>
         </WaringCardItem>
         <WaringGoto onClick={props.onChangeSetting}>
-          <span>前往设置</span>
+          <span>{t('goToSettings')}</span>
           <CommonIconFont type="right" size={16} />
         </WaringGoto>
       </WaringCardContent>

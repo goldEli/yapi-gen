@@ -60,6 +60,11 @@ export const PushConditionsContent = styled.div`
   border-radius: 6px;
   padding: 16px 8px 0;
 `
+export const PushChannelContent = styled.div`
+  border: 1px solid var(--neutral-n6-d1);
+  border-radius: 6px;
+  padding: 16px 8px 0;
+`
 
 export const TableWrap = styled(Table)`
   .ant-table-tbody > tr.ant-table-row:hover > td,
