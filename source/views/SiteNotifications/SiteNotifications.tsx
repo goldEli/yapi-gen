@@ -32,6 +32,7 @@ import { TextChange } from '@/components/TextChange/TextChange'
 import NoteModal from '@/components/NoteModal'
 import { CloseWrap } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
+import { setProjectInfo } from '@store/project'
 
 const mcs = css`
   overflow: hidden;
@@ -357,15 +358,17 @@ const SiteNotifications = (props: any, ref: any) => {
   // 更新页面小铃铛预警任务数量
   const updateWarningCount = (data: any) => {
     if (data?.customType === 1207 || data?.customType === 2207) {
-      dispatch({
-        ...projectInfo,
-        project_warring_info: {
-          ...(projectInfo.project_warring_info || {}),
-          warring_count: data?.customData?.warring_count,
-          noticeStyle: data?.customData?.noticeStyle,
-          customType: data?.customType,
-        },
-      })
+      dispatch(
+        setProjectInfo({
+          ...projectInfo,
+          project_warring_info: {
+            ...(projectInfo.project_warring_info || {}),
+            warring_count: data?.customData?.warring_count,
+            noticeStyle: data?.customData?.noticeStyle,
+            customType: data?.customType,
+          },
+        }),
+      )
     }
   }
 
