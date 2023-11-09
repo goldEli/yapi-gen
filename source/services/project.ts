@@ -251,6 +251,7 @@ export const getProjectInfo: any = async (params: any) => {
     permissionType: response.data.permission_type,
     projectType: response.data.project_type,
     defaultHomeMenu: response.data.default_home_menu,
+    project_warring_info: response.data.project_warring_info,
   }
 }
 

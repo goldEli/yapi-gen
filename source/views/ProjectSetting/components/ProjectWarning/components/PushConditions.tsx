@@ -17,38 +17,7 @@ const PushConditions = () => {
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
   const [maxWidth, setMaxWidth] = useState<number>()
-  const [data, setData] = useState<any[]>([
-    {
-      cond_conf: 3,
-      send_conf: 2,
-      is_enable: 1,
-      type: 'task_soon_expired',
-    },
-    {
-      cond_conf: 3,
-      send_conf: 2,
-      is_enable: 1,
-      type: 'task_expired',
-    },
-    {
-      cond_conf: 3,
-      send_conf: 2,
-      is_enable: 1,
-      type: 'bug_soon_expired',
-    },
-    {
-      cond_conf: 3,
-      send_conf: 2,
-      is_enable: 2,
-      type: 'bug_expired',
-    },
-    {
-      cond_conf: 3,
-      send_conf: 2,
-      is_enable: 2,
-      type: 'bug_too_many',
-    },
-  ])
+  const [data, setData] = useState<any[]>([])
   // 用于计算英文状态下的宽度
   const [clientWidth, setClientWidth] = useState(0)
 
@@ -235,7 +204,7 @@ const PushConditions = () => {
   }, [])
   return (
     <PushConditionsWrap>
-      <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
+      <SubTitleBox style={{ margin: '16px 0px 16px 0px' }}>
         {t('pushConditions')}
       </SubTitleBox>
       <PushConditionsContent>

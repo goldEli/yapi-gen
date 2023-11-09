@@ -18,6 +18,7 @@ export const Title = styled.div`
   top: 0px;
   z-index: 9;
   background: #fff;
+  padding-bottom: 8px;
   .label {
     font-size: 16px;
     color: var(--neutral-n1-d1);
@@ -185,6 +186,10 @@ export const GrayText = styled.span`
   cursor: pointer;
   color: var(--neutral-n3);
   font-size: 12px;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `
 
 export const DingTalkGroupModalWrap = styled.div`
