@@ -3,7 +3,8 @@ import { Badge } from 'antd'
 import { useState } from 'react'
 import frnIcon from '/iconfrn.png'
 import useForewarnModal from './useForewarnModal'
-import { useSelector } from '@store/index'
+import { useSelector, useDispatch } from '@store/index'
+import { setProjectWarningModal } from '@store/project'
 
 const Tag = styled.div<{ width: boolean }>`
   z-index: 9;
@@ -37,6 +38,7 @@ const RightWran = () => {
   const [first, setFirst] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const { openForewarnModal } = useForewarnModal()
+  const dispatch = useDispatch()
   const handleMouseEnter = () => {
     setFirst(true)
   }
@@ -47,9 +49,10 @@ const RightWran = () => {
   const Right = (
     <Tag
       onClick={() => {
-        openForewarnModal({
-          visible: true,
-        })
+        // openForewarnModal({
+        //   visible: true,
+        // })
+        dispatch(setProjectWarningModal(true))
       }}
       width={first}
       onMouseEnter={handleMouseEnter}
