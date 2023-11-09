@@ -113,7 +113,7 @@ const useForewarnModal = () => {
   const [dis, setDis] = useState(false)
   const [nowKey, setNowKey] = useState<any>()
   const [time, setTime] = useState<any>()
-
+  const [first, setFirst] = useState(false)
   const [datas, setDatas] = useState<any>()
 
   const openForewarnModal = (options: any) => {
@@ -237,6 +237,7 @@ const useForewarnModal = () => {
 
   useEffect(() => {
     if (visible) {
+      console.log('飞机')
       getAll()
     } else {
       setNowKey('')
@@ -249,6 +250,13 @@ const useForewarnModal = () => {
       init()
     }
   }, [nowKey])
+
+  const handleMouseEnter = () => {
+    setFirst(true)
+  }
+  const handleMouseLeave = () => {
+    setFirst(false)
+  }
 
   const zhuan = (dateStr2: string) => {
     const dateStr = dateStr2
@@ -331,7 +339,6 @@ const useForewarnModal = () => {
               minHeight: '400px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px',
               marginTop: '12px',
             }}
             height={document.body.clientHeight - 400}
@@ -357,6 +364,7 @@ const useForewarnModal = () => {
                       style={{
                         color: '#FF5C5E',
                         marginLeft: 'auto',
+                        fontSize: 12,
                       }}
                     >
                       {zhuan(item.expected_end_at)}
@@ -373,7 +381,9 @@ const useForewarnModal = () => {
                   >
                     <span style={{ fontSize: 12, color: '#969799' }}>
                       {t('handler')}：
-                      {item.user_info.map((o: any) => o.name).join('、')}
+                      {item.user_info.length > 1
+                        ? item.user_info.map((o: any) => o.name).join('、')
+                        : '--'}
                     </span>
                     <span style={{ fontSize: 12, color: '#969799' }}>
                       {t('expectedToEnd')}：{item.expected_end_at}
@@ -387,6 +397,8 @@ const useForewarnModal = () => {
         </div>
         <Footer>
           <Tooltip
+            arrowPointAtCenter
+            open={first && !dis}
             placement="topLeft"
             title={t('pleaseCheckTheBoxesToKnowFirst')}
           >
@@ -398,10 +410,11 @@ const useForewarnModal = () => {
               </span>
             </Checkbox>
           </Tooltip>
-
-          <CommonButton isDisable={!dis} onClick={confirm} type="primary">
-            {t('alreadyKnown')}
-          </CommonButton>
+          <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <CommonButton isDisable={!dis} onClick={confirm} type="primary">
+              {t('alreadyKnown')}
+            </CommonButton>
+          </div>
         </Footer>
       </div>
     </Modal>
