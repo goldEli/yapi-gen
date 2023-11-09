@@ -21,7 +21,7 @@ const PushObjectUserBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   min-height: 32px;
-  align-items: center;
+  /* align-items: center; */
   .user {
     display: flex;
     min-width: 104px;
@@ -43,6 +43,10 @@ const PushObjectUserBox = styled.div`
     .username {
       margin: 0px 10px 0px 8px;
     }
+    &:hover {
+      background: var(--neutral-white-d4);
+      box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
+    }
   }
 `
 const PushObject = () => {
@@ -62,7 +66,7 @@ const PushObject = () => {
     <div>
       <SubTitle title={t('pushObject')}></SubTitle>
       <PushObjectBox>
-        <CommonButton
+        {/* <CommonButton
           type="secondary"
           style={{ marginRight: '32px' }}
           onClick={() => {
@@ -72,8 +76,19 @@ const PushObject = () => {
         >
           <CommonIconFont type="plus"></CommonIconFont>
           {t('addPushObject')}
-        </CommonButton>
+        </CommonButton> */}
         <PushObjectUserBox>
+          <CommonButton
+            type="secondary"
+            style={{ marginRight: '32px' }}
+            onClick={() => {
+              setVisible(true)
+              setUsersId(() => list.map(item => item.id))
+            }}
+          >
+            <CommonIconFont type="plus"></CommonIconFont>
+            {t('addPushObject')}
+          </CommonButton>
           {list.map(item => (
             <div className="user" key={item.id}>
               {item.avatar ? (
@@ -110,7 +125,6 @@ const PushObject = () => {
           setVisible(false)
         }}
         onConfirm={(data, length) => {
-          console.log('data', data, length)
           setList(data)
           setUserTotal(length)
           dispatch(setProjectWarning({ ...projectWarning, push_obj: data }))
