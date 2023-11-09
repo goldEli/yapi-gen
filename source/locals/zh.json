@@ -2528,5 +2528,16 @@
   "moreThanThan": "天以上 / 超过",
   "setUpEarlyWarningPushToNotifyTheOverdueOrUpcomingOverdueTasksAnd": "设置预警推送可将任务、BUG的逾期或即将逾期",
   "theSituationIsRegularlyPushedToSystemDingtalkAndTextMessagesBasedOn": "情况按条件定时推送至系统通知、钉钉群、邮件、短信",
-  "savedSuccessfully": "保存成功"
+  "savedSuccessfully": "保存成功",
+  "aWindowWillBeDisplayedOnTheHomepageOfEachModuleUnderTheProjectToPromptTheAbove": "会在项目下的每个模块首页进行弹窗提示以上信息",
+  "dingtalkNotifications": "钉钉通知",
+  "aboveInformationWillBePromptedInDingtalkGroupsBasedOn": " '会以项目为单位的钉钉群内提示以上信息",
+  "theAboveInformationWillBePromptedInEmailsOnA": "会以项目为单位的邮件内提示以上信息",
+  "theAboveInformationWillBePromptedInTextMessagesOnA": "会以项目为单位的短信内提示以上信息",
+  "pushType": "推送类型",
+  "pushDescription": "推送描述",
+  "operate": "操作",
+  "setUpDingtalkGroup": "设置钉钉群",
+  "pleaseSetUpADingtalkGroupFirst": "请先设置钉钉群",
+  "pushChannel": "推送渠道"
 }

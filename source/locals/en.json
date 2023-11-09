@@ -2528,5 +2528,16 @@
   "moreThanThan": "More than days/more than",
   "setUpEarlyWarningPushToNotifyTheOverdueOrUpcomingOverdueTasksAnd": "Set up early warning push to notify the overdue or upcoming overdue tasks and bugs.",
   "theSituationIsRegularlyPushedToSystemDingtalkAndTextMessagesBasedOn": "The situation is regularly pushed to system notifications, DingTalk groups, emails, and text messages based on conditions.",
-  "savedSuccessfully": "Saved successfully"
+  "savedSuccessfully": "Saved successfully",
+  "aWindowWillBeDisplayedOnTheHomepageOfEachModuleUnderTheProjectToPromptTheAbove": "A pop-up window will be displayed on the homepage of each module under the project to prompt the above information.",
+  "dingtalkNotifications": "DingTalk notifications",
+  "aboveInformationWillBePromptedInDingtalkGroupsBasedOn": "&#39;The above information will be prompted in DingTalk groups based on projects.",
+  "theAboveInformationWillBePromptedInEmailsOnA": "The above information will be prompted in emails on a project-by-project basis.",
+  "theAboveInformationWillBePromptedInTextMessagesOnA": "The above information will be prompted in text messages on a project-by-project basis.",
+  "pushType": "Push type",
+  "pushDescription": "Push description",
+  "operate": "Operate",
+  "setUpDingtalkGroup": "Set up DingTalk group",
+  "pleaseSetUpADingtalkGroupFirst": "Please set up a DingTalk group first",
+  "pushChannel": "Push channel"
 }
