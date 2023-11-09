@@ -393,11 +393,11 @@ const UserSystemReport = () => {
                         h
                       </span>
                     </Title>
-                    <Msg style={{ marginTop: '8px' }}>
+                    {/* <Msg style={{ marginTop: '8px' }}>
                       {t('report.list.addedYesterday')}：
                       {JSON.parse(item?.pivot?.content ?? null)?.yesterday_add}
                       {t('report.list.pieces')}
-                    </Msg>
+                    </Msg> */}
                     <RowLine>
                       <Msg>
                         {t('report.list.taskProgress')}：
