@@ -2471,5 +2471,8 @@
   "resigned": "已移除",
   "working": "",
   "removedSuccessfully": "移除成功",
-  "failedToObtainVerificationCode": "验证码获取失败"
+  "failedToObtainVerificationCode": "验证码获取失败",
+  "": "工时花费：",
+  "question": "问题",
+  "noneToday": "今日暂无"
 }
