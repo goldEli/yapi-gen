@@ -2,7 +2,7 @@ import { Switch, Tooltip } from 'antd'
 import {
   PushConditionsWrap,
   SubTitleBox,
-  PushConditionsContent,
+  PushChannelContent,
   TableWrap,
   BlueText,
   GrayText,
@@ -29,23 +29,25 @@ const PushChannel = () => {
   // 文字
   const dataText = [
     {
-      name: '系统通知',
-      sub: '会在项目下的每个模块首页进行弹窗提示以上信息',
+      name: t('systemNotification'),
+      sub: t(
+        'aWindowWillBeDisplayedOnTheHomepageOfEachModuleUnderTheProjectToPromptTheAbove',
+      ),
       type: 'sys',
     },
     {
-      name: '钉钉通知',
-      sub: '会以项目为单位的钉钉群内提示以上信息',
+      name: t('dingtalkNotifications'),
+      sub: t('aboveInformationWillBePromptedInDingtalkGroupsBasedOn'),
       type: 'ding',
     },
     {
-      name: '邮件通知',
-      sub: '会以项目为单位的邮件内提示以上信息',
+      name: t('notification'),
+      sub: t('theAboveInformationWillBePromptedInEmailsOnA'),
       type: 'email',
     },
     {
-      name: '短信通知',
-      sub: '会以项目为单位的短信内提示以上信息',
+      name: t('smsNotification'),
+      sub: t('theAboveInformationWillBePromptedInTextMessagesOnA'),
       type: 'sms',
     },
   ]
@@ -53,7 +55,7 @@ const PushChannel = () => {
   //   表格列
   const columns = [
     {
-      title: '推送类型',
+      title: t('pushType'),
       dataIndex: 'type',
       render: (text: string, record: any) => {
         return (
@@ -64,7 +66,7 @@ const PushChannel = () => {
       },
     },
     {
-      title: '推送描述',
+      title: t('pushDescription'),
       dataIndex: 'desc',
       render: (text: string, record: any) => {
         return (
@@ -75,7 +77,7 @@ const PushChannel = () => {
       },
     },
     {
-      title: '操作',
+      title: t('operate'),
       dataIndex: 'operation',
       render: (text: string, record: any) => {
         return record.type === 'ding' ? (
@@ -86,7 +88,7 @@ const PushChannel = () => {
                 setSelectRecord(record)
               }}
             >
-              预览
+              {t('preview')}
             </BlueText>
             <BlueText
               style={{ margin: '0px 24px' }}
@@ -94,7 +96,7 @@ const PushChannel = () => {
                 setVisible(true)
               }}
             >
-              设置钉钉群
+              {t('setUpDingtalkGroup')}
             </BlueText>
             {data.find((s: any) => s.type === 'ding')?.other_config
               ?.group_name ? (
@@ -120,7 +122,7 @@ const PushChannel = () => {
               setSelectRecord(record)
             }}
           >
-            预览
+            {t('preview')}
           </BlueText>
         )
       },
@@ -135,7 +137,7 @@ const PushChannel = () => {
               record.type === 'ding' &&
               !data.find((s: any) => s.type === 'ding')?.other_config
                 ?.group_name
-                ? '请先设置钉钉群'
+                ? t('pleaseSetUpADingtalkGroupFirst')
                 : ''
             }
           >
@@ -176,11 +178,11 @@ const PushChannel = () => {
   return (
     <PushConditionsWrap>
       <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
-        推送渠道
+        {t('pushChannel')}
       </SubTitleBox>
-      <PushConditionsContent>
+      <PushChannelContent>
         <TableWrap dataSource={data} columns={columns} pagination={false} />
-      </PushConditionsContent>
+      </PushChannelContent>
       <PreviewImageModal
         type={selectRecord.type}
         visible={imageModalVisible}

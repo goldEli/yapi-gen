@@ -190,7 +190,7 @@ const ProjectDetailSide = () => {
       key: 'ProjectSchedule',
     },
     {
-      label: '项目推送设置',
+      label: t('projectPushSettings'),
       icon: (
         <CommonIconFont
           color="var(--neutral-n3)"
@@ -199,7 +199,9 @@ const ProjectDetailSide = () => {
         />
       ),
       path: '/SprintProjectManagement/Setting',
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/warning_config'),
+      ).length,
       key: 'ProjectWarning',
     },
   ]

@@ -1059,6 +1059,5 @@ export const saveWarningConfig = async (params: any) => {
 // 获取配置列表
 export const getWarningConfigInfo = async (params: any) => {
   const res = await http.get<any>('getWarningConfigInfo', params)
-  console.log('res----', res)
   return res.data
 }

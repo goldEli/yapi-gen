@@ -10,11 +10,11 @@ import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
 import PushChannel from './components/PushChannel'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectWarning } from '@store/project'
+import { setProjectInfo, setProjectWarning } from '@store/project'
 import WaringCard from './components/WaringCard'
 import NoSettingPage from './components/NoSettingPage'
 import useProjectId from './hooks/useProjectId'
-import { saveWarningConfig } from '@/services/project'
+import { getProjectInfo, saveWarningConfig } from '@/services/project'
 import { getWarningConfigInfo } from '@store/project/project.thunk'
 import { getMessage } from '@/components/Message'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -30,11 +30,10 @@ const ProjectWarning = () => {
 
   // 保存
   const save = async () => {
-    // debugger
     const { push_condition, push_date, push_obj = [] } = projectWarning
     const { day = [], time = {} } = push_date ?? {}
-    if (push_condition.some((item: any) => item.is_enable === 2)) {
-      getMessage({ type: 'error', msg: '推送条件至少启用一条' })
+    if (push_condition.every((item: any) => item.is_enable === 2)) {
+      getMessage({ type: 'error', msg: t('atLeastOnePushConditionIsEnabled') })
       return
     }
 
@@ -44,7 +43,9 @@ const ProjectWarning = () => {
     ) {
       getMessage({
         type: 'error',
-        msg: '推送时间 周期至少选择一天，且时间必须选择',
+        msg: t(
+          'thePushTimePeriodMustBeSelectedAtLeastOneAndTheTimeMustBeSelected',
+        ),
       })
       return
     }
@@ -53,7 +54,8 @@ const ProjectWarning = () => {
       project_id: projectId,
       push_obj: push_obj?.map((item: any) => item.id),
     })
-    console.log(111, projectWarning, { ...projectWarning, projectId })
+    getMessage({ type: 'success', msg: t('savedSuccessfully') })
+    setIsSetting(!isSetting)
   }
 
   useEffect(() => {
@@ -67,12 +69,20 @@ const ProjectWarning = () => {
     if (!isSetting) {
       setNotSetting(!projectInfo?.project_warring_info)
     }
-  }, [projectInfo])
-
+  }, [projectWarning])
+  const isLength =
+    projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
+  if (is_init === void 0) {
+    return <div></div>
+  }
   return (
     <PermissionWrap
       auth="b/project/warning_config"
-      permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
+      permission={
+        isLength
+          ? ['0']
+          : projectInfo?.projectPermissions?.map((i: any) => i.identity)
+      }
     >
       {notSetting ? (
         <NoSettingPage
@@ -104,7 +114,7 @@ const ProjectWarning = () => {
                     {t('cancel')}
                   </CommonButton>
                   <CommonButton type="primary" onClick={save}>
-                    {t('keep')}
+                    {t('common.save')}
                   </CommonButton>
                 </Space>
               </Title>

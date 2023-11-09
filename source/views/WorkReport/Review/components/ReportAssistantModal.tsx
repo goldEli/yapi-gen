@@ -632,11 +632,11 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             name={`${content.type}+${content.id}+${content.name}`}
             initialValue={JSON.parse(content?.content ?? null)?.yesterday_add}
           >
-            <div className="rateText">
+            {/* <div className="rateText">
               {t('report.list.addedYesterday')}：
               {JSON.parse(content?.content ?? null)?.yesterday_add}
               {t('report.list.pieces')}
-            </div>
+            </div> */}
             <div className="rateText">
               <span>
                 {t('report.list.taskProgress')}：{getScheduleData().done}/
@@ -847,11 +847,11 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             name={`${content.type}+${content.id}+${content.name}`}
             initialValue={JSON.parse(content?.content ?? null)?.yesterday_add}
           >
-            <div className="rateText">
+            {/* <div className="rateText">
               {t('report.list.addedYesterday')}：
               {JSON.parse(content?.content ?? null)?.yesterday_add}
               {t('report.list.pieces')}
-            </div>
+            </div> */}
             <div className="rateText">
               <span>
                 {t('report.list.taskProgress')}：{getScheduleData().done}/
