@@ -16,6 +16,7 @@ import styled from '@emotion/styled'
 import { getMessage } from '@/components/Message'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import useForewarnModal from '@/hooks/useForewarnModal'
 
 const tmgCss = css`
   img {
@@ -32,6 +33,7 @@ const CommonUserAvatar2 = styled.img<{ size?: string }>`
 const ContentItem = (props: any) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+  const { openForewarnModal } = useForewarnModal()
   const { send_user, msg_body, create_time, read, id, custom_data } = props.item
   const [choose, setChoose] = useState(false)
   const cha = useSelector(store => store.user.loginInfo.timeDiff)
@@ -107,6 +109,13 @@ const ContentItem = (props: any) => {
     }
   }
 
+  // 点击打开项目预警
+  const onOpenWaring = () => {
+    console.log(11111111)
+    if (!['1207', '2207'].includes(props.item?.custom_type)) return
+    openForewarnModal({ id: Number(props.item?.custom_data?.project_id) })
+  }
+
   return (
     <Wrap
       bor={props.bor}
@@ -122,7 +131,7 @@ const ContentItem = (props: any) => {
           <CommonUserAvatar isBorder avatar={send_user.head} />
         </Badge>
       </div>
-      <HoverWrap style={{ flex: '1' }}>
+      <HoverWrap style={{ flex: '1' }} onClick={onOpenWaring}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Name className={String(read === 1 ? 'read' : 'unread')}>
             {send_user.nickname}
@@ -134,7 +143,7 @@ const ContentItem = (props: any) => {
             </Time2>
           )}
         </div>
-        <div className="msgTitle">
+        <div className="msgTitle 111">
           <div style={{ alignSelf: 'start' }}>
             <CommonUserAvatar avatar={msg_body.optHeader} />
           </div>

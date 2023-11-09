@@ -105,9 +105,16 @@ const text2 = css`
   }
 `
 
+interface ForewarnModalProps {
+  id?: number
+  visible: boolean
+}
+
 const useForewarnModal = () => {
   const visible = useSelector(store => store.Forewarn.value)
+  // const [visible, setVisible] = useState(false)
   const pid = useSelector(store => store.project.projectInfo.id)
+  const [projectId, setProjectId] = useState(0)
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [dis, setDis] = useState(false)
@@ -115,9 +122,11 @@ const useForewarnModal = () => {
   const [time, setTime] = useState<any>()
   const [first, setFirst] = useState(false)
   const [datas, setDatas] = useState<any>()
-
   const openForewarnModal = (options: any) => {
+    console.log('openForewarnModal---------')
     dispatch(changeWaterForewarnStatus(true))
+    setProjectId(options?.id)
+    // setVisible(true)
   }
   const onChange2 = (key: string) => {
     setNowKey(key)
@@ -198,7 +207,7 @@ const useForewarnModal = () => {
 
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid,
+      project_id: pid ?? projectId,
     })
 
     setDatas(
@@ -236,6 +245,7 @@ const useForewarnModal = () => {
   }, [datas, nowKey])
 
   useEffect(() => {
+    console.log('visible', visible)
     if (visible) {
       getAll()
     } else {
@@ -280,7 +290,6 @@ const useForewarnModal = () => {
     })
 
     if (res.code === 0) {
-      message.success(t('success'))
       dispatch(changeWaterForewarnStatus(false))
     }
   }
