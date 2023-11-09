@@ -2503,5 +2503,6 @@
   "strip": "条",
   "theOverdueOrImminentOverdueStatusOfTasksAndBugsCanBePushedToSystemDingtalkAndTextMessagesAtRegularIntervalsBasedOn": "可将任务、BUG的逾期或即将逾期情况按条件定时推送至系统通知、钉钉群、邮件、短信",
   "pleaseCheckTheBoxesToKnowFirst": "请先勾选知晓事宜",
-  "expectedToEnd": "预计结束"
+  "expectedToEnd": "预计结束",
+  "remaining": "剩余"
 }

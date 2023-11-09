@@ -12,6 +12,7 @@ const Tag = styled.div<{ width: boolean }>`
   gap: 12px;
   padding-left: 8px;
   position: fixed;
+  bottom: 30%;
   right: 0;
   width: ${props => (props.width ? '100px' : '48px')};
   height: 48px;
@@ -33,7 +34,7 @@ const Tag = styled.div<{ width: boolean }>`
 
 const RightWran = () => {
   const [first, setFirst] = useState(false)
-  const { ForewarnModal, openForewarnModal } = useForewarnModal()
+  const { openForewarnModal } = useForewarnModal()
   const handleMouseEnter = () => {
     setFirst(true)
   }
