@@ -56,7 +56,8 @@ const ProjectWarning = () => {
       project_id: projectId,
       push_obj: push_obj?.map((item: any) => item.id),
     })
-    console.log(111, projectWarning, { ...projectWarning, projectId })
+    getMessage({ type: 'success', msg: t('savedSuccessfully') })
+    setIsSetting(!isSetting)
   }
 
   useEffect(() => {
