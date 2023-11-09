@@ -281,7 +281,6 @@ const useForewarnModal = () => {
     })
 
     if (res.code === 0) {
-      message.success(t('success'))
       dispatch(changeWaterForewarnStatus(false))
     }
   }
