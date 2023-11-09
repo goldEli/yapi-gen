@@ -2525,7 +2525,7 @@
   "keep": "Keep",
   "goToSettings": "Go to settings",
   "projectMembers": "Project members",
-  "moreThanThan": "More than days/more than",
+  "moreThanThan": "More than days / more than",
   "setUpEarlyWarningPushToNotifyTheOverdueOrUpcomingOverdueTasksAnd": "Set up early warning push to notify the overdue or upcoming overdue tasks and bugs.",
   "theSituationIsRegularlyPushedToSystemDingtalkAndTextMessagesBasedOn": "The situation is regularly pushed to system notifications, DingTalk groups, emails, and text messages based on conditions.",
   "savedSuccessfully": "Saved successfully",
