@@ -213,7 +213,7 @@ const useForewarnModal = () => {
     setDatas(
       produce((draft: any) => {
         draft?.forEach((item: any) => {
-          if (item.key === nowKey) {
+          if (item.key === nowKey && res.list) {
             item.list = item.list.concat(res.list)
             item.last_id = res.list[res.list.length - 1]?.id
           }
@@ -245,7 +245,6 @@ const useForewarnModal = () => {
   }, [datas, nowKey])
 
   useEffect(() => {
-    console.log('visible', visible)
     if (visible) {
       getAll()
     } else {

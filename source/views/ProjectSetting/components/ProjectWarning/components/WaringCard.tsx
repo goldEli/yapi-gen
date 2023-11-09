@@ -110,7 +110,6 @@ const WaringCard = (props: WaringCardProps) => {
               push_obj: push_obj?.map((item: any) => item.id),
               is_open: checked ? 1 : 2,
             })
-
             dispatch(
               setProjectWarning({
                 ...projectWarning,

@@ -54,6 +54,12 @@ const ProjectWarning = () => {
       project_id: projectId,
       push_obj: push_obj?.map((item: any) => item.id),
     })
+    dispatch(
+      setProjectWarning({
+        ...projectWarning,
+        is_init: 2,
+      }),
+    )
     getMessage({ type: 'success', msg: t('savedSuccessfully') })
     setIsSetting(!isSetting)
   }
