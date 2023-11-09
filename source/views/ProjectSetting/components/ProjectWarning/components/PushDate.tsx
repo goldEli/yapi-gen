@@ -6,7 +6,15 @@ import { useDispatch, useSelector } from '@store/index'
 import { setProjectWarning } from '@store/project'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
-const PushDateBox = styled.div``
+const PushDateBox = styled.div`
+  .cus {
+    .ant-picker-time-panel-column
+      > li.ant-picker-time-panel-cell-selected
+      .ant-picker-time-panel-cell-inner {
+      background: var(--hover-d3);
+    }
+  }
+`
 const PushDateContent = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   height: 102px;
@@ -20,6 +28,21 @@ export const PushDateContentDate = styled.div`
     color: var(--neutral-n3);
     font-size: var(--font14);
     margin-right: 48px;
+  }
+
+  .ant-picker-time-panel-column
+    > li.ant-picker-time-panel-cell-selected
+    .ant-picker-time-panel-cell-inner {
+    background: var(--hover-d3);
+    color: var(--primary-d1);
+  }
+  .ant-picker-time-panel-column
+    > li.ant-picker-time-panel-cell
+    .ant-picker-time-panel-cell-inner:hover {
+    background: var(--hover-d3);
+  }
+  .ant-checkbox-group-item {
+    margin-right: 16px;
   }
 `
 const PushDate = () => {
@@ -66,6 +89,7 @@ const PushDate = () => {
           <TimePicker.RangePicker
             format="HH:mm"
             allowClear
+            getPopupContainer={node => node}
             value={
               push_date?.time?.begin
                 ? [
