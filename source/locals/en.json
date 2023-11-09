@@ -2471,5 +2471,8 @@
   "resigned": "Already Removed",
   "working": "",
   "removedSuccessfully": "Removed successfully",
-  "failedToObtainVerificationCode": "Failed to obtain verification code"
+  "failedToObtainVerificationCode": "Failed to obtain verification code",
+  "": "Man-hour cost:",
+  "question": "Question",
+  "noneToday": "None today"
 }
