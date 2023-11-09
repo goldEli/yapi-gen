@@ -10,9 +10,9 @@ import {
 import { Switch } from 'antd'
 import { useSelector, useDispatch } from '@store/index'
 import CommonIconFont from '@/components/CommonIconFont'
-import { saveWarningConfig } from '@/services/project'
+import { getProjectInfo, saveWarningConfig } from '@/services/project'
 import useProjectId from '../hooks/useProjectId'
-import { setProjectWarning } from '@store/project'
+import { setProjectInfo, setProjectWarning } from '@store/project'
 interface WaringCardProps {
   onChangeSetting(): void
 }
@@ -117,6 +117,9 @@ const WaringCard = (props: WaringCardProps) => {
                 is_open: checked ? 1 : 2,
               }),
             )
+            // 如果是未设置的项目设置过了要更新下projectInfo里面的信息
+            const result = await getProjectInfo({ projectId: projectId })
+            dispatch(setProjectInfo(result))
           }}
         />
       </WaringCardHeader>

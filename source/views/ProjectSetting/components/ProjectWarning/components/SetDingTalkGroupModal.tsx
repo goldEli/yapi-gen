@@ -1,7 +1,7 @@
 import CommonModal from '@/components/CommonModal'
 import { Form, Input } from 'antd'
 import { DingTalkGroupModalWrap } from '../style'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { getMessage } from '@/components/Message'
 import { useSelector } from '@store/index'
 
@@ -15,6 +15,7 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
   const { isVisible, onClose, onConfirm } = props
   const [form] = Form.useForm()
   const { projectWarning } = useSelector(store => store.project)
+  const inputRef = useRef<any>()
 
   const onFinish = () => {
     const value = form.getFieldsValue()
@@ -45,6 +46,9 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
         projectWarning?.push_channel?.find?.((k: any) => k.type === 'ding')
           ?.other_config,
       )
+      setTimeout(() => {
+        inputRef?.current?.focus?.()
+      }, 200)
     }
   }, [isVisible])
   return (
@@ -63,7 +67,7 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
           autoComplete="off"
         >
           <Form.Item label="群名称" name="group_name">
-            <Input placeholder="请输入" maxLength={100} />
+            <Input ref={inputRef} placeholder="请输入" maxLength={100} />
           </Form.Item>
 
           <Form.Item label="钉钉webhook地址" name="web_hook">

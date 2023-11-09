@@ -2,7 +2,7 @@ import { Switch, Tooltip } from 'antd'
 import {
   PushConditionsWrap,
   SubTitleBox,
-  PushConditionsContent,
+  PushChannelContent,
   TableWrap,
   BlueText,
   GrayText,
@@ -180,9 +180,9 @@ const PushChannel = () => {
       <SubTitleBox style={{ margin: '24px 0px 16px 0px' }}>
         {t('pushChannel')}
       </SubTitleBox>
-      <PushConditionsContent>
+      <PushChannelContent>
         <TableWrap dataSource={data} columns={columns} pagination={false} />
-      </PushConditionsContent>
+      </PushChannelContent>
       <PreviewImageModal
         type={selectRecord.type}
         visible={imageModalVisible}
