@@ -2511,5 +2511,7 @@
   "emailAlert": "邮件提醒",
   "pushTime": "推送时间",
   "methodToInforme": "通知方式",
-  "notifyPersonnel": "通知人员"
+  "notifyPersonnel": "通知人员",
+  "projectPushSettings": "项目推送设置",
+  "keep": "保存"
 }

@@ -112,18 +112,22 @@ const Setting = () => {
       ).length,
     },
     {
-      name: '项目推送设置',
+      name: t('projectPushSettings'),
       icon: 'settings',
       content: <ProjectWarning />,
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/warning_config'),
+      ).length,
     },
   ]
   useEffect(() => {
     setSearchValue('')
   }, [activeTabs])
+
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))
   }, [])
+
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"

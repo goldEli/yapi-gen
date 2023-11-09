@@ -2511,5 +2511,7 @@
   "emailAlert": "Email alert",
   "pushTime": "Push time",
   "methodToInforme": "Method to informe",
-  "notifyPersonnel": "Notify personnel"
+  "notifyPersonnel": "Notify personnel",
+  "projectPushSettings": "Project push settings",
+  "keep": "Keep"
 }

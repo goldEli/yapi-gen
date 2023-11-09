@@ -17,10 +17,11 @@ import useProjectId from './hooks/useProjectId'
 import { saveWarningConfig } from '@/services/project'
 import { getWarningConfigInfo } from '@store/project/project.thunk'
 import { getMessage } from '@/components/Message'
+import PermissionWrap from '@/components/PermissionWrap'
 const ProjectWarning = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { projectWarning } = useSelector(store => store.project)
+  const { projectWarning, projectInfo } = useSelector(store => store.project)
   const { is_init } = projectWarning ?? {}
   const { projectId } = useProjectId()
   // 从卡片跳转到配置页面
@@ -61,52 +62,61 @@ const ProjectWarning = () => {
       dispatch(setProjectWarning(null))
     }
   }, [])
+
   useEffect(() => {
     if (!isSetting) {
-      setNotSetting(() => is_init === 1)
+      setNotSetting(!projectInfo?.project_warring_info)
     }
-  }, [projectWarning])
-  return notSetting ? (
-    <NoSettingPage
-      onClose={() => {
-        setNotSetting(false)
-        setIsSetting(true)
-      }}
-    />
-  ) : (
-    <ProjectWarningWrap>
-      {!isSetting && (
-        <WaringCard onChangeSetting={() => setIsSetting(!isSetting)} />
+  }, [projectInfo])
+
+  return (
+    <PermissionWrap
+      auth="b/project/warning_config"
+      permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
+    >
+      {notSetting ? (
+        <NoSettingPage
+          onClose={() => {
+            setNotSetting(false)
+            setIsSetting(true)
+          }}
+        />
+      ) : (
+        <ProjectWarningWrap>
+          {!isSetting && (
+            <WaringCard onChangeSetting={() => setIsSetting(!isSetting)} />
+          )}
+          {isSetting && (
+            <>
+              <Title>
+                <span className="label">{t('riskWarningPushSettings')}</span>
+                <Space size={16}>
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      if (is_init === 1) {
+                        setNotSetting(true)
+                      } else {
+                        setIsSetting(!isSetting)
+                      }
+                    }}
+                  >
+                    {t('cancel')}
+                  </CommonButton>
+                  <CommonButton type="primary" onClick={save}>
+                    {t('keep')}
+                  </CommonButton>
+                </Space>
+              </Title>
+              <PushConditions />
+              <PushChannel />
+              <PushDate></PushDate>
+              <PushObject></PushObject>
+            </>
+          )}
+        </ProjectWarningWrap>
       )}
-      {isSetting && (
-        <>
-          <Title>
-            <span className="label">{t('riskWarningPushSettings')}</span>
-            <Space size={16}>
-              <CommonButton
-                type="light"
-                onClick={() => {
-                  if (is_init === 1) {
-                    setNotSetting(true)
-                  } else {
-                    setIsSetting(!isSetting)
-                  }
-                }}
-              >
-                取消
-              </CommonButton>
-              <CommonButton type="primary" onClick={save}>
-                保存
-              </CommonButton>
-            </Space>
-          </Title>
-          <PushConditions />
-          <PushChannel />
-          <PushDate></PushDate>
-          <PushObject></PushObject>
-        </>
-      )}
-    </ProjectWarningWrap>
+    </PermissionWrap>
   )
 }
 
