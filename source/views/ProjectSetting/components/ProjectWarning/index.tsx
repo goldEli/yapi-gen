@@ -62,10 +62,17 @@ const ProjectWarning = () => {
     }
   }, [])
   useEffect(() => {
-    setNotSetting(() => is_init === 1)
+    if (!isSetting) {
+      setNotSetting(() => is_init === 1)
+    }
   }, [projectWarning])
   return notSetting ? (
-    <NoSettingPage onClose={() => setNotSetting(false)} />
+    <NoSettingPage
+      onClose={() => {
+        setNotSetting(false)
+        setIsSetting(true)
+      }}
+    />
   ) : (
     <ProjectWarningWrap>
       {!isSetting && (
@@ -78,7 +85,13 @@ const ProjectWarning = () => {
             <Space size={16}>
               <CommonButton
                 type="light"
-                onClick={() => setIsSetting(!isSetting)}
+                onClick={() => {
+                  if (is_init === 1) {
+                    setNotSetting(true)
+                  } else {
+                    setIsSetting(!isSetting)
+                  }
+                }}
               >
                 取消
               </CommonButton>
