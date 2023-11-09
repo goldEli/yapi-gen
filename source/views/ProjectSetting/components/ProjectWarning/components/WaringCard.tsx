@@ -126,14 +126,17 @@ const WaringCard = (props: WaringCardProps) => {
       <WaringCardContent>
         <WaringCardItem style={{ width: '45%' }}>
           <div className="label">{t('pushTime')}：</div>
-          <div>
+          <div style={{ color: 'var(--neutral-n1-d1)' }}>
             {pushDateLabel()}
             {time.begin}-{time.end}
           </div>
         </WaringCardItem>
         <WaringCardItem style={{ width: '40%' }}>
           <div className="label">
-            {t('methodToInforme')}：<div>{noticeTypeLabel()}</div>
+            {t('methodToInforme')}：
+            <div style={{ color: 'var(--neutral-n1-d1)' }}>
+              {noticeTypeLabel()}
+            </div>
           </div>
           <div className="content"></div>
         </WaringCardItem>

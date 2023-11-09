@@ -2533,7 +2533,7 @@
   "savedSuccessfully": "Saved successfully",
   "aWindowWillBeDisplayedOnTheHomepageOfEachModuleUnderTheProjectToPromptTheAbove": "A pop-up window will be displayed on the homepage of each module under the project to prompt the above information.",
   "dingtalkNotifications": "DingTalk notifications",
-  "aboveInformationWillBePromptedInDingtalkGroupsBasedOn": "&#39;The above information will be prompted in DingTalk groups based on projects.",
+  "aboveInformationWillBePromptedInDingtalkGroupsBasedOn": "The above information will be prompted in DingTalk groups based on projects.",
   "theAboveInformationWillBePromptedInEmailsOnA": "The above information will be prompted in emails on a project-by-project basis.",
   "theAboveInformationWillBePromptedInTextMessagesOnA": "The above information will be prompted in text messages on a project-by-project basis.",
   "pushType": "Push type",

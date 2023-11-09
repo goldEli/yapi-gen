@@ -2533,7 +2533,7 @@
   "savedSuccessfully": "保存成功",
   "aWindowWillBeDisplayedOnTheHomepageOfEachModuleUnderTheProjectToPromptTheAbove": "会在项目下的每个模块首页进行弹窗提示以上信息",
   "dingtalkNotifications": "钉钉通知",
-  "aboveInformationWillBePromptedInDingtalkGroupsBasedOn": " '会以项目为单位的钉钉群内提示以上信息",
+  "aboveInformationWillBePromptedInDingtalkGroupsBasedOn": "会以项目为单位的钉钉群内提示以上信息",
   "theAboveInformationWillBePromptedInEmailsOnA": "会以项目为单位的邮件内提示以上信息",
   "theAboveInformationWillBePromptedInTextMessagesOnA": "会以项目为单位的短信内提示以上信息",
   "pushType": "推送类型",
