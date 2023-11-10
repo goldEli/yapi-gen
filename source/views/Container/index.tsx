@@ -190,9 +190,8 @@ export const Container = () => {
   }, [loginInfo, menuPermission])
   useEffect(() => {
     if (projectInfo?.project_warring_info?.popup_window === 1) {
-      dispatch(setProjectWarningModal(true))
+      dispatch(setProjectWarningModal({ visible: true }))
     }
-    console.log('projectInfo', projectInfo)
   }, [projectInfo])
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>

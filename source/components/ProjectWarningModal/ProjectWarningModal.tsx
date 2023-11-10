@@ -15,6 +15,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
 import { setProjectWarningModal } from '@store/project'
+
 const ProjectWarningModal = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -24,7 +25,7 @@ const ProjectWarningModal = () => {
   const [first, setFirst] = useState(false)
   const [datas, setDatas] = useState<any>()
   const pid = useSelector(store => store.project.projectInfo.id)
-  const { projectWarningModalVisible } = useSelector(store => store.project)
+  const { projectWarningModal } = useSelector(store => store.project)
   const [projectId, setProjectId] = useState(0)
   const onChange2 = (key: string) => {
     setNowKey(key)
@@ -143,13 +144,13 @@ const ProjectWarningModal = () => {
   }, [datas, nowKey])
 
   useEffect(() => {
-    if (projectWarningModalVisible) {
+    if (projectWarningModal?.visible) {
       getAll()
     } else {
       setNowKey('')
       setDatas([])
     }
-  }, [projectWarningModalVisible])
+  }, [projectWarningModal?.visible])
 
   useEffect(() => {
     if (nowKey) {
@@ -187,8 +188,7 @@ const ProjectWarningModal = () => {
     })
 
     if (res.code === 0) {
-      //   dispatch(changeWaterForewarnStatus(false))
-      dispatch(setProjectWarningModal(false))
+      dispatch(setProjectWarningModal({ visible: false }))
     }
   }
   return (
@@ -199,12 +199,9 @@ const ProjectWarningModal = () => {
       title={null}
       closable={false}
       footer={null}
-      open={projectWarningModalVisible}
+      open={projectWarningModal?.visible}
       maskClosable={false}
       keyboard={false}
-      onCancel={() => {
-        // dispatch(changeWaterForewarnStatus(false))
-      }}
     >
       <div>
         <Header>

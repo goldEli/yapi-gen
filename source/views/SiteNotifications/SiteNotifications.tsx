@@ -32,7 +32,6 @@ import { TextChange } from '@/components/TextChange/TextChange'
 import NoteModal from '@/components/NoteModal'
 import { CloseWrap } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
-import useForewarnModal from '@/hooks/useForewarnModal'
 import { setProjectInfo, setProjectWarningModal } from '@store/project'
 
 const mcs = css`
@@ -53,7 +52,6 @@ const SiteNotifications = (props: any, ref: any) => {
   const dispatch = useDispatch()
   const { isVisible, all } = useSelector(store => store.siteNotifications)
   const isRefresh = useSelector(store => store.user.isRefresh)
-  const { openForewarnModal } = useForewarnModal()
   const init2 = async () => {
     // eslint-disable-next-line no-promise-executor-return
     await new Promise(resolve => setTimeout(resolve, 2000))
@@ -379,7 +377,7 @@ const SiteNotifications = (props: any, ref: any) => {
       wsData?.data?.customType === '2207'
     ) {
       // 更新页面小铃铛预警任务数量
-      dispatch(setProjectWarningModal(true))
+      dispatch(setProjectWarningModal({ visible: true }))
       updateWarningCount(wsData?.data)
     } else {
       sendMsg()
