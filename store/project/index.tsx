@@ -55,7 +55,10 @@ export interface CounterState {
   tableFilter?: any
   updateProgress: number
   projectWarning?: any
-  projectWarningModalVisible?: boolean
+  projectWarningModal?: {
+    visible: boolean
+    id?: number
+  }
 }
 
 const initialState: CounterState = {
@@ -226,9 +229,9 @@ export const projectSlice = createSlice({
     },
     setProjectWarningModal(
       state: any,
-      action: PayloadAction<CounterState['projectWarningModalVisible']>,
+      action: PayloadAction<CounterState['projectWarningModal']>,
     ) {
-      state.projectWarningModalVisible = action.payload
+      state.projectWarningModal = action.payload
     },
   },
   extraReducers(builder) {
