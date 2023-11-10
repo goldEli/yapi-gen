@@ -2527,8 +2527,8 @@
   "thePushTimePeriodMustBeSelectedAtLeastOneAndTheTimeMustBeSelected": "The push time period must be selected at least one day, and the time must be selected",
   "goToSettings": "Go to settings",
   "projectMembers": "Project members",
-  "moreThanThan": "More than days / more than",
-  "moreThanThan1": "within the day / more than",
+  "moreThanThan": "{{day}}More than days / more than {{count}}",
+  "moreThanThan1": "{{day}} last the days / more than {{count}}",
   "setUpEarlyWarningPushToNotifyTheOverdueOrUpcomingOverdueTasksAnd": "Set up early warning push to notify the overdue or upcoming overdue tasks and bugs.",
   "theSituationIsRegularlyPushedToSystemDingtalkAndTextMessagesBasedOn": "The situation is regularly pushed to system notifications, DingTalk groups, emails, and text messages based on conditions.",
   "savedSuccessfully": "Saved successfully",
@@ -2559,5 +2559,6 @@
   "dingtalkWebhookAddress": "DingTalk webhook address",
   "whetherToTurnOffRiskWarning": "Whether to turn off risk warning",
   "afterYourProjectMembersWillNotReceiveAnyEarlyWarning": "After closing, your project members will not receive any early warning information.",
-  "inForce": "In force"
+  "inForce": "In force",
+  "confirmClose": "Confirm close"
 }

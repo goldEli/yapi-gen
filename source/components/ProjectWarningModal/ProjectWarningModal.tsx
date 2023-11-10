@@ -358,7 +358,8 @@ const ProjectWarningModal = () => {
                           : '--'}
                       </span>
                       <span style={{ fontSize: 12, color: '#969799' }}>
-                        {t('expectedToEnd')}：{item.expected_end_at}
+                        {t('expectedToEnd')}：
+                        {item.expected_end_at ? item.expected_end_at : '--'}
                       </span>
                     </div>
                   </ListBox>
