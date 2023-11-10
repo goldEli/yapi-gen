@@ -94,7 +94,7 @@ const ProjectWarningModal = () => {
   }
   const getAll = async () => {
     const res = await getWarnStatistics({
-      project_id: pid ?? projectWarningModal?.id,
+      project_id: projectWarningModal?.id ?? pid,
     })
     setTime(res.update_at)
     const tabs = Object.keys(res.warning_count).map(key => {
@@ -118,7 +118,7 @@ const ProjectWarningModal = () => {
 
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid ?? projectWarningModal?.id,
+      project_id: projectWarningModal?.id ?? pid,
     })
 
     setDatas(
@@ -136,7 +136,7 @@ const ProjectWarningModal = () => {
   const fetchMoreData = async () => {
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid ?? projectWarningModal?.id,
+      project_id: projectWarningModal?.id ?? pid,
       last_id: twoData.last_id,
     })
     setDatas(
@@ -196,7 +196,7 @@ const ProjectWarningModal = () => {
 
   const confirm = async () => {
     const res = await getWarnSave({
-      project_id: pid ?? projectWarningModal?.id,
+      project_id: projectWarningModal?.id ?? pid,
       updated_at: time,
     })
 
