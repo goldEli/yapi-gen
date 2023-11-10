@@ -178,18 +178,19 @@ const ProjectWarningModal = () => {
   }
 
   const zhuan = (dateStr2: string) => {
-    const dateStr = dateStr2
-    const dateObj = new Date(dateStr)
-    const timestamp = dateObj.getTime()
+    console.log(dateStr2, 'dateStr2')
 
-    // 获取当前时间戳
-    const now = new Date()
-    const nowTimestamp = now.getTime()
+    let now = new Date()
+    let formattedDate =
+      now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
 
-    // 比较两个时间戳
-    if (timestamp >= nowTimestamp) {
+    console.log(formattedDate)
+    let date1 = new Date(dateStr2)
+    let date2 = new Date(formattedDate)
+
+    if (date1 >= date2) {
       return t('remaining')
-    } else if (timestamp < nowTimestamp) {
+    } else if (date1 < date2) {
       return t('overdue')
     }
   }
