@@ -180,8 +180,9 @@ const WaringCard = (props: WaringCardProps) => {
       </WaringCardContent>
       <DeleteConfirm
         isVisible={isDeleteVisible}
-        title="是否关闭风险预警"
-        text="关闭后你的项目成员将无法收到任何预警信息"
+        title={t('whetherToTurnOffRiskWarning')}
+        text={t('afterYourProjectMembersWillNotReceiveAnyEarlyWarning')}
+        okText={t('confirmClose')}
         onChangeVisible={() => {
           setIsDeleteVisible(false)
         }}

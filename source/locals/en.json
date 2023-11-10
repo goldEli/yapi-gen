@@ -2559,5 +2559,6 @@
   "dingtalkWebhookAddress": "DingTalk webhook address",
   "whetherToTurnOffRiskWarning": "Whether to turn off risk warning",
   "afterYourProjectMembersWillNotReceiveAnyEarlyWarning": "After closing, your project members will not receive any early warning information.",
-  "inForce": "In force"
+  "inForce": "In force",
+  "confirmClose": "Confirm close"
 }
