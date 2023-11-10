@@ -1,5 +1,5 @@
 import { Checkbox, Modal, Skeleton, Tabs, Tooltip } from 'antd'
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Header, Footer, text, ListBox, SmallTag, text2 } from './style'
 import { useSelector, useDispatch } from '@store/index'
 import frnIcon from '/iconfrn.png'
@@ -36,7 +36,7 @@ const ProjectWarningModal = () => {
   const [datas, setDatas] = useState<any>()
   const pid = useSelector(store => store.project.projectInfo.id)
   const { projectWarningModal } = useSelector(store => store.project)
-
+  const timeRef = useRef<NodeJS.Timeout>()
   const onChange2 = (key: string) => {
     setNowKey(key)
   }
@@ -235,6 +235,17 @@ const ProjectWarningModal = () => {
     }
   }
 
+  const updateRefresh = () => {
+    if (timeRef.current) {
+      clearTimeout(timeRef.current)
+    }
+    timeRef.current = setTimeout(() => {
+      setDatas([])
+      setNowKey('')
+      getAll()
+    }, 400)
+  }
+
   return (
     <Modal
       centered
@@ -263,14 +274,7 @@ const ProjectWarningModal = () => {
               {t('updatedOn')}
               {time}
             </span>
-            <span
-              onClick={() => {
-                setDatas([])
-                setNowKey('')
-                getAll()
-              }}
-              className={text2}
-            >
+            <span onClick={updateRefresh} className={text2}>
               <IconFont type="sync" />
               <span style={{ fontSize: 12, marginLeft: '4px' }}>
                 {t('toRefresh')}
