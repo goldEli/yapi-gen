@@ -2263,7 +2263,7 @@
   "updated_progress": "更新了进度",
   "date_of_achievement": "达成日期：",
   "labor_cost_this_time": "工时花费：",
-  "update_instructions": "感悟：",
+  "update_instructions": "问题：",
   "open_more": "展开更多",
   "progressLog": "进度日志",
   "appendix": "附件",
@@ -2279,7 +2279,7 @@
   "actualWorkingHours": "当日实际工时花费（h）",
   "pleaseEnterActualWorkingHours": "请输入实际工时",
   "enterTheActualWorkingHours": " '请输入实际工时",
-  "releaseNotes": "感悟",
+  "releaseNotes": "问题",
   "confirmToDeleteThisGroup": "确认删除该分组",
   "selectItem": "选择项目",
   "addChildRequirement": "添加子需求",
@@ -2369,7 +2369,7 @@
   "cumulativeWorkingHours": "累计工时",
   "addPictures": "添加图片",
   "addVideo": "添加视频",
-  "opinion": "编辑感悟",
+  "opinion": "编辑问题",
   "starMark": "星标",
   "deleteGroup": "删除分组",
   "addProjectGroup": "添加项目组",
@@ -2471,5 +2471,8 @@
   "resigned": "已移除",
   "working": "",
   "removedSuccessfully": "移除成功",
-  "failedToObtainVerificationCode": "验证码获取失败"
+  "failedToObtainVerificationCode": "验证码获取失败",
+  "": "工时花费：",
+  "question": "问题",
+  "noneToday": "今日暂无"
 }
