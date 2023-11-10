@@ -57,8 +57,6 @@ const RightWran = () => {
     String(i.group_name).includes(pathArrayObj[key]),
   ).length
 
-  console.log(key, pathArrayObj[key], isShow, 'xxxx')
-
   if (pathArrayObj[key] && !isShow) {
     return <div></div>
   }
