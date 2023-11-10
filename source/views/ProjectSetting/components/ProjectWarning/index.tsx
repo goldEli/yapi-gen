@@ -20,14 +20,14 @@ import { getMessage } from '@/components/Message'
 import PermissionWrap from '@/components/PermissionWrap'
 const ProjectWarning = () => {
   const dispatch = useDispatch()
+
   const [t] = useTranslation()
   const { projectWarning, projectInfo } = useSelector(store => store.project)
-  const { is_init } = projectWarning ?? {}
+  const { is_init, push_obj } = projectWarning ?? {}
   const { projectId } = useProjectId()
   // 从卡片跳转到配置页面
   const [isSetting, setIsSetting] = useState(false)
   const [notSetting, setNotSetting] = useState(true)
-
   // 保存
   const save = async () => {
     const { push_condition, push_date, push_obj = [] } = projectWarning

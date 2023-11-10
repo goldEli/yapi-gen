@@ -2555,5 +2555,8 @@
   "pleaseFillInTheDingtalkWebhookAddress": "请填写钉钉webhook地址",
   "setUpARiskWarningReceivingGroup": "设置风险预警接收群",
   "groupName": "群名称",
-  "dingtalkWebhookAddress": "钉钉webhook地址"
+  "dingtalkWebhookAddress": "钉钉webhook地址",
+  "whetherToTurnOffRiskWarning": "是否关闭风险预警",
+  "afterYourProjectMembersWillNotReceiveAnyEarlyWarning": "关闭后你的项目成员将无法收到任何预警信息",
+  "inForce": "已生效"
 }
