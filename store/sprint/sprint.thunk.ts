@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
+import { v4 as uuidv4 } from 'uuid'
 
 const name = 'sprint'
 
@@ -35,8 +36,13 @@ export const getLeftSprintList = createAsyncThunk(
 export const getRightSprintList = createAsyncThunk(
   `${name}/getRightSprintList`,
   async (params: API.Sprint.SprintGroupList.Params) => {
+    const tempSprintUniqueId = uuidv4()
+    sessionStorage.setItem('tempSprintUniqueId', tempSprintUniqueId)
     const res = await services.sprint.getSprintGroupList(params)
-    return res
+    if (sessionStorage.getItem('tempSprintUniqueId') === tempSprintUniqueId) {
+      return res
+    }
+    return null
   },
 )
 // 获取所以的长故事列表
@@ -45,7 +51,6 @@ export const getLongStoryList = createAsyncThunk(
   `${name}/getLongStoryList`,
   async (params: API.Sprint.getLongStoryList.Params) => {
     const res = await services.sprint.getLongStroyList(params)
-
     return res.data
   },
 )

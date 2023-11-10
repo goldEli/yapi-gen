@@ -49,6 +49,13 @@ const ProjectWarning = () => {
       })
       return
     }
+    if (push_obj.length === 0) {
+      getMessage({
+        type: 'error',
+        msg: t('selectAtLeastOnePusher'),
+      })
+      return
+    }
     let res = await saveWarningConfig({
       ...projectWarning,
       project_id: projectId,

@@ -16,6 +16,15 @@ import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
 import { setProjectWarningModal } from '@store/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { css } from '@emotion/css'
+
+const text3 = css`
+  display: inline-block;
+  max-width: 580px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
 
 const ProjectWarningModal = () => {
   const dispatch = useDispatch()
@@ -27,7 +36,7 @@ const ProjectWarningModal = () => {
   const [datas, setDatas] = useState<any>()
   const pid = useSelector(store => store.project.projectInfo.id)
   const { projectWarningModal } = useSelector(store => store.project)
-  const [projectId, setProjectId] = useState(0)
+
   const onChange2 = (key: string) => {
     setNowKey(key)
   }
@@ -84,7 +93,9 @@ const ProjectWarningModal = () => {
     return name
   }
   const getAll = async () => {
-    const res = await getWarnStatistics({ project_id: pid })
+    const res = await getWarnStatistics({
+      project_id: pid ?? projectWarningModal?.id,
+    })
     setTime(res.update_at)
     const tabs = Object.keys(res.warning_count).map(key => {
       return {
@@ -107,7 +118,7 @@ const ProjectWarningModal = () => {
 
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid ?? projectId,
+      project_id: pid ?? projectWarningModal?.id,
     })
 
     setDatas(
@@ -125,7 +136,7 @@ const ProjectWarningModal = () => {
   const fetchMoreData = async () => {
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid,
+      project_id: pid ?? projectWarningModal?.id,
       last_id: twoData.last_id,
     })
     setDatas(
@@ -176,16 +187,16 @@ const ProjectWarningModal = () => {
     const nowTimestamp = now.getTime()
 
     // 比较两个时间戳
-    if (timestamp > nowTimestamp) {
-      return t('overdue')
-    } else if (timestamp < nowTimestamp) {
+    if (timestamp >= nowTimestamp) {
       return t('remaining')
+    } else if (timestamp < nowTimestamp) {
+      return t('overdue')
     }
   }
 
   const confirm = async () => {
     const res = await getWarnSave({
-      project_id: pid,
+      project_id: pid ?? projectWarningModal?.id,
       updated_at: time,
     })
 
@@ -321,7 +332,10 @@ const ProjectWarningModal = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <span style={{ fontSize: 12, color: '#969799' }}>
+                    <span
+                      className={text3}
+                      style={{ fontSize: 12, color: '#969799' }}
+                    >
                       {t('handler')}：
                       {item.user_info.length > 1
                         ? item.user_info.map((o: any) => o.name).join('、')
