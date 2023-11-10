@@ -362,6 +362,7 @@ const ProjectWarningModal = () => {
                           fontSize: 12,
                           color: '#969799',
                           whiteSpace: 'nowrap',
+                          marginLeft: 12,
                         }}
                       >
                         {t('expectedToEnd')}：
