@@ -56,6 +56,7 @@ const text = css`
   text-overflow: ellipsis;
   white-space: nowrap;
 `
+
 const ListBox = styled.div`
   display: flex;
   cursor: pointer;
@@ -388,7 +389,9 @@ const useForewarnModal = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <span style={{ fontSize: 12, color: '#969799' }}>
+                    <span
+                      style={{ fontSize: 12, color: '#969799', maxWidth: 200 }}
+                    >
                       {t('handler')}：
                       {item.user_info.length > 1
                         ? item.user_info.map((o: any) => o.name).join('、')
