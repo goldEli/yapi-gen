@@ -93,7 +93,7 @@ const ProjectWarningModal = () => {
     }
     return name
   }
-  const getAll = async () => {
+  const getAll = async (update?: boolean) => {
     setLoading(true)
     const res = await getWarnStatistics({
       project_id: projectWarningModal?.id ?? pid,
@@ -106,17 +106,21 @@ const ProjectWarningModal = () => {
         label: `${format(key)}  (${res.warning_count[key]})`,
         key: key,
         lang: res.warning_count[key],
-        list: [],
+        list: void 0,
         last_id: void 0,
       }
     })
 
     setDatas(tabs)
-    setNowKey(tabs[0].key)
+    if (update) {
+      init(true)
+    } else {
+      setNowKey(tabs[0].key)
+    }
   }
 
-  const init = async () => {
-    if (twoData?.list.length > 0) {
+  const init = async (update?: boolean) => {
+    if (twoData?.list?.length > 0 && !update) {
       return
     }
     setLoading(true)
@@ -131,7 +135,7 @@ const ProjectWarningModal = () => {
       produce((draft: any) => {
         draft?.forEach((item: any) => {
           if (item.key === nowKey) {
-            item.list = item.list.concat(res.list)
+            item.list = (item.list ?? []).concat(res.list)
             item.last_id = res.list[res.list.length - 1]?.id
           }
         })
@@ -151,7 +155,7 @@ const ProjectWarningModal = () => {
     setDatas(
       produce((draft: any) => {
         draft?.forEach((item: any) => {
-          if (item.key === nowKey) {
+          if (item.key === nowKey && res.list) {
             item.list = item.list.concat(res.list)
             item.last_id = res.list[res.list.length - 1].id
           }
@@ -188,8 +192,6 @@ const ProjectWarningModal = () => {
   }
 
   const zhuan = (dateStr2: string) => {
-    console.log(dateStr2, 'dateStr2')
-
     let now = new Date()
     let formattedDate =
       now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
@@ -251,9 +253,7 @@ const ProjectWarningModal = () => {
       clearTimeout(timeRef.current)
     }
     timeRef.current = setTimeout(() => {
-      setDatas([])
-      setNowKey('')
-      getAll()
+      getAll(true)
     }, 400)
   }
 
@@ -280,7 +280,7 @@ const ProjectWarningModal = () => {
             {t('yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly')}
           </Header>
           <div style={{ padding: '0px 24px' }}>
-            <Tabs defaultActiveKey="1" onChange={onChange2} items={datas} />
+            <Tabs activeKey={nowKey} onChange={onChange2} items={datas} />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: '#969799', fontSize: 12 }}>
                 {t('updatedOn')}
@@ -310,7 +310,7 @@ const ProjectWarningModal = () => {
               scrollableTarget="scrollableDiv"
               hasMore={twoData?.list?.length < twoData?.lang}
             >
-              {twoData?.list?.map((item: any, index: any) => {
+              {twoData?.list?.map?.((item: any, index: any) => {
                 return (
                   <ListBox key={item}>
                     <div
@@ -364,7 +364,9 @@ const ProjectWarningModal = () => {
                   </ListBox>
                 )
               })}
-              {twoData?.list.length < 1 && <NoData subText={format2(nowKey)} />}
+              {twoData?.list?.length < 1 && (
+                <NoData subText={format2(nowKey)} />
+              )}
             </InfiniteScroll>
           </div>
           <Footer>
