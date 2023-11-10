@@ -29,7 +29,7 @@ const text3 = css`
 
 const ProjectWarningModal = () => {
   const dispatch = useDispatch()
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const [dis, setDis] = useState(false)
   const [nowKey, setNowKey] = useState<any>()
   const [time, setTime] = useState<any>()
@@ -362,6 +362,7 @@ const ProjectWarningModal = () => {
                           fontSize: 12,
                           color: '#969799',
                           whiteSpace: 'nowrap',
+                          marginLeft: i18n.language === 'en' ? 12 : 0,
                         }}
                       >
                         {t('expectedToEnd')}：
