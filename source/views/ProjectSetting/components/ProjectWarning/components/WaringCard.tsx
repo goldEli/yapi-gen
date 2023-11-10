@@ -79,8 +79,9 @@ const WaringCard = (props: WaringCardProps) => {
         return (
           <span key={index}>
             {noticeType[item.type]}
-            {index !== push_channel?.length - 1 &&
-              (language === 'zh' ? <i>、</i> : <i> / </i>)}
+            {index !==
+              push_channel?.filter((item: any) => item.is_enable === 1).length -
+                1 && (language === 'zh' ? <i>、</i> : <i> / </i>)}
           </span>
         )
       })
