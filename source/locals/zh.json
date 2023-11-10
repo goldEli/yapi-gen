@@ -2488,7 +2488,7 @@
   "theNumberOfOverdueBugsExceeds": "逾期BUG数超过",
   "tooManyBugs": "BUG数量过多",
   "thereAreTooManyBugsInTheProject": "项目出现的BUG太多",
-  "howRecent": "最近多少",
+  "howRecent": "最近",
   "theNumberOfBugsExceeds": "BUG数量超过",
   "matterType": "事项类型",
   "descriptionOfTheMatter": "事项描述",
