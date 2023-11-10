@@ -2549,5 +2549,11 @@
   "thereAreCurrentlyNoTasksThatAreOverdue": "There are currently no tasks that are overdue",
   "emailNotification": "Email notification",
   "previewImage": "preview",
-  "selectAtLeastOnePusher": "Select at least one pusher"
+  "selectAtLeastOnePusher": "Select at least one pusher",
+  "setupSuccessful": "Setup successful",
+  "pleaseFillInTheGroupName": "Please fill in the group name",
+  "pleaseFillInTheDingtalkWebhookAddress": "Please fill in the DingTalk webhook address",
+  "setUpARiskWarningReceivingGroup": "Set up a risk warning receiving group",
+  "groupName": "Group name",
+  "dingtalkWebhookAddress": "DingTalk webhook address"
 }
