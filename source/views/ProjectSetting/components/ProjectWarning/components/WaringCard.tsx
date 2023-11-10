@@ -157,7 +157,9 @@ const WaringCard = (props: WaringCardProps) => {
             {push_condition?.map((item: any) => (
               <span key={item.type}>
                 [{taskType[item.type]}] {item.cond_conf}
-                {t('moreThanThan')}
+                {item.type === 'bug_too_many'
+                  ? t('moreThanThan1')
+                  : t('moreThanThan')}
                 {item.send_conf}
                 {t('strip')}
               </span>
