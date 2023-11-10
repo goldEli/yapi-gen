@@ -357,7 +357,13 @@ const ProjectWarningModal = () => {
                           ? item.user_info.map((o: any) => o.name).join('、')
                           : '--'}
                       </span>
-                      <span style={{ fontSize: 12, color: '#969799' }}>
+                      <span
+                        style={{
+                          fontSize: 12,
+                          color: '#969799',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
                         {t('expectedToEnd')}：
                         {item.expected_end_at ? item.expected_end_at : '--'}
                       </span>
