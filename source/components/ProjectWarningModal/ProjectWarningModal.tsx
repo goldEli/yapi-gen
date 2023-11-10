@@ -1,5 +1,5 @@
 import { Checkbox, Modal, Skeleton, Tabs, Tooltip } from 'antd'
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Header, Footer, text, ListBox, SmallTag, text2 } from './style'
 import { useSelector, useDispatch } from '@store/index'
 import frnIcon from '/iconfrn.png'
@@ -27,6 +27,7 @@ const ProjectWarningModal = () => {
   const pid = useSelector(store => store.project.projectInfo.id)
   const { projectWarningModal } = useSelector(store => store.project)
   const [projectId, setProjectId] = useState(0)
+  const timeRef = useRef<NodeJS.Timeout>()
   const onChange2 = (key: string) => {
     setNowKey(key)
   }
@@ -191,6 +192,18 @@ const ProjectWarningModal = () => {
       dispatch(setProjectWarningModal({ visible: false }))
     }
   }
+
+  const updateRefresh = () => {
+    if (timeRef.current) {
+      clearTimeout(timeRef.current)
+    }
+    timeRef.current = setTimeout(() => {
+      setDatas([])
+      setNowKey('')
+      getAll()
+    }, 400)
+  }
+
   return (
     <Modal
       centered
@@ -209,7 +222,7 @@ const ProjectWarningModal = () => {
             src={frnIcon}
             style={{ width: '64px', height: '62px', marginRight: '24px' }}
             alt=""
-          />{' '}
+          />
           {t('yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly')}
         </Header>
         <div style={{ padding: '0px 24px' }}>
@@ -219,14 +232,7 @@ const ProjectWarningModal = () => {
               {t('updatedOn')}
               {time}
             </span>
-            <span
-              onClick={() => {
-                setDatas([])
-                setNowKey('')
-                getAll()
-              }}
-              className={text2}
-            >
+            <span onClick={updateRefresh} className={text2}>
               <IconFont type="sync" />
               <span style={{ fontSize: 12, marginLeft: '4px' }}>
                 {t('toRefresh')}

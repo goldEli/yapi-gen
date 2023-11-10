@@ -1,4 +1,4 @@
-import { Input, InputNumber, Switch } from 'antd'
+import { InputNumber, Switch } from 'antd'
 import {
   PushConditionsWrap,
   SubTitleBox,
@@ -16,7 +16,6 @@ const PushConditions = () => {
   const { language } = useSelector(store => store.global)
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
-  const [maxWidth, setMaxWidth] = useState<number>()
   const [data, setData] = useState<any[]>([])
   // 用于计算英文状态下的宽度
   const [clientWidth, setClientWidth] = useState(0)
@@ -108,7 +107,8 @@ const PushConditions = () => {
               step={1}
               className="input"
               value={record.cond_conf}
-              onChange={(value: any) => {
+              onChange={(val: any) => {
+                const value = Math.floor(val)
                 setData((pre: any) => {
                   const newData = _.cloneDeep(pre)
                   newData[index].cond_conf = value
