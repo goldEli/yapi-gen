@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import {
+  SwitchLabel,
   WaringCardContent,
   WaringCardHeader,
   WaringCardHeaderLeft,
@@ -13,6 +14,8 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { getProjectInfo, saveWarningConfig } from '@/services/project'
 import useProjectId from '../hooks/useProjectId'
 import { setProjectInfo, setProjectWarning } from '@store/project'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { useState } from 'react'
 interface WaringCardProps {
   onChangeSetting(): void
 }
@@ -25,7 +28,8 @@ const WaringCard = (props: WaringCardProps) => {
   const dispatch = useDispatch()
   const { projectWarning } = useSelector(store => store.project)
   const { projectId } = useProjectId()
-
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false)
+  const [checked, setChecked] = useState(false)
   const {
     push_date,
     push_condition = [],
@@ -79,6 +83,7 @@ const WaringCard = (props: WaringCardProps) => {
       )
     })
   }
+
   return (
     <WaringCardWrap>
       <WaringCardHeader>
@@ -101,9 +106,16 @@ const WaringCard = (props: WaringCardProps) => {
             )}
           </div>
         </WaringCardHeaderLeft>
+        {is_open === 1 ? <SwitchLabel>{t('inForce')}</SwitchLabel> : null}
         <Switch
           checked={is_open === 1}
+          unCheckedChildren=""
           onChange={async checked => {
+            setChecked(checked)
+            if (checked === false) {
+              setIsDeleteVisible(true)
+              return
+            }
             let res = await saveWarningConfig({
               ...projectWarning,
               project_id: projectId,
@@ -164,6 +176,36 @@ const WaringCard = (props: WaringCardProps) => {
           <CommonIconFont type="right" size={16} />
         </WaringGoto>
       </WaringCardContent>
+      <DeleteConfirm
+        isVisible={isDeleteVisible}
+        title="是否关闭风险预警"
+        text="关闭后你的项目成员将无法收到任何预警信息"
+        onChangeVisible={() => {
+          setIsDeleteVisible(false)
+        }}
+        onCancelState
+        onConfirm={async () => {
+          let res = await saveWarningConfig({
+            ...projectWarning,
+            project_id: projectId,
+            push_obj: push_obj?.map((item: any) => item.id),
+            is_open: checked ? 1 : 2,
+          })
+          dispatch(
+            setProjectWarning({
+              ...projectWarning,
+              is_open: checked ? 1 : 2,
+            }),
+          )
+          setIsDeleteVisible(false)
+
+          // 如果是未设置的项目设置过了要更新下projectInfo里面的信息
+          const result = await getProjectInfo({
+            projectId: projectId,
+          })
+          dispatch(setProjectInfo(result))
+        }}
+      ></DeleteConfirm>
     </WaringCardWrap>
   )
 }
