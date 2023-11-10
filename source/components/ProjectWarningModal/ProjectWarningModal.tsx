@@ -1,5 +1,5 @@
 import { Checkbox, Modal, Skeleton, Tabs, Tooltip } from 'antd'
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Header, Footer, text, ListBox, SmallTag, text2 } from './style'
 import { useSelector, useDispatch } from '@store/index'
 import frnIcon from '/iconfrn.png'
@@ -15,6 +15,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
 import { setProjectWarningModal } from '@store/project'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import { css } from '@emotion/css'
 
 const text3 = css`
@@ -35,7 +36,7 @@ const ProjectWarningModal = () => {
   const [datas, setDatas] = useState<any>()
   const pid = useSelector(store => store.project.projectInfo.id)
   const { projectWarningModal } = useSelector(store => store.project)
-  const [projectId, setProjectId] = useState(0)
+  const timeRef = useRef<NodeJS.Timeout>()
   const onChange2 = (key: string) => {
     setNowKey(key)
   }
@@ -92,7 +93,9 @@ const ProjectWarningModal = () => {
     return name
   }
   const getAll = async () => {
-    const res = await getWarnStatistics({ project_id: pid })
+    const res = await getWarnStatistics({
+      project_id: projectWarningModal?.id ?? pid,
+    })
     setTime(res.update_at)
     const tabs = Object.keys(res.warning_count).map(key => {
       return {
@@ -115,7 +118,7 @@ const ProjectWarningModal = () => {
 
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid ?? projectId,
+      project_id: projectWarningModal?.id ?? pid,
     })
 
     setDatas(
@@ -133,7 +136,7 @@ const ProjectWarningModal = () => {
   const fetchMoreData = async () => {
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid,
+      project_id: projectWarningModal?.id ?? pid,
       last_id: twoData.last_id,
     })
     setDatas(
@@ -190,9 +193,10 @@ const ProjectWarningModal = () => {
       return t('overdue')
     }
   }
+
   const confirm = async () => {
     const res = await getWarnSave({
-      project_id: pid,
+      project_id: projectWarningModal?.id ?? pid,
       updated_at: time,
     })
 
@@ -200,6 +204,48 @@ const ProjectWarningModal = () => {
       dispatch(setProjectWarningModal({ visible: false }))
     }
   }
+
+  // 点击跳转任务
+  const onToDetail = (item: any) => {
+    let params: any = {
+      id: item.project_id,
+      detailId: item.id,
+      isOpenScreenDetail: true,
+    }
+    let url
+
+    if (item.project_type === 1 && item.is_bug === 1) {
+      params.specialType = 2
+      url = 'ProjectManagement/Defect'
+    } else if (item.project_type === 1 && item.is_bug !== 1) {
+      params.specialType = 3
+      url = 'ProjectManagement/Demand'
+    } else {
+      params.specialType = 1
+      url = 'SprintProjectManagement/Affair'
+    }
+
+    if (params.specialType) {
+      const resultParams = encryptPhp(JSON.stringify(params))
+      window.open(
+        `${window.origin}${
+          import.meta.env.__URL_HASH__
+        }${url}?data=${resultParams}}`,
+      )
+    }
+  }
+
+  const updateRefresh = () => {
+    if (timeRef.current) {
+      clearTimeout(timeRef.current)
+    }
+    timeRef.current = setTimeout(() => {
+      setDatas([])
+      setNowKey('')
+      getAll()
+    }, 400)
+  }
+
   return (
     <Modal
       centered
@@ -218,7 +264,7 @@ const ProjectWarningModal = () => {
             src={frnIcon}
             style={{ width: '64px', height: '62px', marginRight: '24px' }}
             alt=""
-          />{' '}
+          />
           {t('yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly')}
         </Header>
         <div style={{ padding: '0px 24px' }}>
@@ -228,14 +274,7 @@ const ProjectWarningModal = () => {
               {t('updatedOn')}
               {time}
             </span>
-            <span
-              onClick={() => {
-                setDatas([])
-                setNowKey('')
-                getAll()
-              }}
-              className={text2}
-            >
+            <span onClick={updateRefresh} className={text2}>
               <IconFont type="sync" />
               <span style={{ fontSize: 12, marginLeft: '4px' }}>
                 {t('toRefresh')}
@@ -272,7 +311,12 @@ const ProjectWarningModal = () => {
                     <SmallTag is_end={item.is_end} is_start={item.is_start}>
                       {item.category_status.status.content}
                     </SmallTag>
-                    <span className={`tit  ${text}`}>{item.name}</span>
+                    <span
+                      className={`tit  ${text}`}
+                      onClick={() => onToDetail(item)}
+                    >
+                      {item.name}
+                    </span>
                     <span
                       style={{
                         color: '#FF5C5E',

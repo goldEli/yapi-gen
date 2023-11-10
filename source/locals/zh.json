@@ -2549,5 +2549,11 @@
   "noRiskyTasksYet": "暂无有风险的任务",
   "thereAreCurrentlyNoTasksThatAreOverdue": "暂无即将逾期的任务",
   "emailNotification": "邮件通知",
-  "selectAtLeastOnePusher": "至少选择一个推送人员"
+  "selectAtLeastOnePusher": "至少选择一个推送人员",
+  "setupSuccessful": "设置成功",
+  "pleaseFillInTheGroupName": "请填写群名称",
+  "pleaseFillInTheDingtalkWebhookAddress": "请填写钉钉webhook地址",
+  "setUpARiskWarningReceivingGroup": "设置风险预警接收群",
+  "groupName": "群名称",
+  "dingtalkWebhookAddress": "钉钉webhook地址"
 }
