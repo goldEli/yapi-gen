@@ -382,7 +382,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
 
   return (
     <PermissionWrap
-      auth={resultAuth ? 'b/transaction/' : '/ProjectManagement/Project'}
+      auth={resultAuth ? 'b/transaction' : '/ProjectManagement/Project'}
       permission={
         resultAuth
           ? isLength

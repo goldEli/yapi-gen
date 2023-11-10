@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from '@store/index'
 import { saveInputKey } from '@store/view'
 import ProjectDetailSide from './ProjectDetailSide'
 import RightWran from '@/hooks/useRightWran'
-import ProjectWarningModal from '@/components/ProjectWarningModal/ProjectWarningModal'
 
 const ProjectWrap = styled.div`
   position: relative;
@@ -89,12 +88,6 @@ const Project = () => {
       ) ? null : projectInfo?.project_warring_info?.warring_list_nums ? (
         <RightWran />
       ) : null}
-      {/* {window.location.href.includes('/ProjectManagement/Project') ||
-      window.location.href.includes(
-        '/ProjectManagement/Mine',
-      ) ? null : projectInfo?.project_warring_info?.warring_list_nums ? (
-        <ProjectWarningModal></ProjectWarningModal>
-      ) : null} */}
       {isShowPage ? (
         <>
           {path.includes(location.pathname) && (

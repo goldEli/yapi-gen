@@ -1,6 +1,6 @@
 import Home from './components/Home'
 import useKeyPress from '@/hooks/useKeyPress'
-import { getParamsData, getProjectType } from '@/tools'
+import { getParamsData, getProjectType, onComputedPermission } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import PerformanceInsightOverAll from './components'
 import RightWran from '@/hooks/useRightWran'
@@ -12,6 +12,7 @@ const PerformanceInsight = () => {
   // isOverAll:true是全局效能洞察，overPageType：kanBan/report模块类型
   const paramsData = getParamsData(searchParams)
   const { projectInfo } = useSelector(store => store.project)
+  const { currentMenu } = useSelector(store => store.user)
   useKeys(
     '1',
     projectType === 1
