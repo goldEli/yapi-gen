@@ -170,6 +170,7 @@ const ProjectWarningModal = () => {
     } else {
       setNowKey('')
       setDatas([])
+      setDis(false)
     }
   }, [projectWarningModal?.visible])
 
@@ -372,7 +373,7 @@ const ProjectWarningModal = () => {
               placement="topLeft"
               title={t('pleaseCheckTheBoxesToKnowFirst')}
             >
-              <Checkbox onChange={onChange}>
+              <Checkbox checked={dis} onChange={onChange}>
                 <span style={{ fontSize: '12px', color: '#646566' }}>
                   {t(
                     'iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner',
