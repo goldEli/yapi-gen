@@ -2506,10 +2506,10 @@
   "expectedToEnd": "Expected to end",
   "remaining": "Remaining",
   "systemNotification": "System notification",
-  "dingtalkReminder": "DingTalk reminder",
-  "alert": "&#39;email alert",
+  "dingtalkReminder": "DingTalk notification",
+  "alert": "email notification",
   "smsNotification": "SMS notification",
-  "emailAlert": "Email alert",
+  "emailAlert": "Email notification",
   "pushTime": "Push time",
   "methodToInforme": "Method to informe",
   "notifyPersonnel": "Notify personnel",
@@ -2548,5 +2548,6 @@
   "noRiskyTasksYet": "No risky tasks yet",
   "thereAreCurrentlyNoTasksThatAreOverdue": "There are currently no tasks that are overdue",
   "emailNotification": "Email notification",
-  "previewImage": "preview"
+  "previewImage": "preview",
+  "selectAtLeastOnePusher": "Select at least one pusher"
 }

@@ -14,9 +14,6 @@ import { getParamsData } from '@/tools'
 import { setActiveCategory } from '@store/category/index'
 import { setCategoryList } from '@store/category'
 import RightWran from '@/hooks/useRightWran'
-import ProjectWarningModal from '@/components/ProjectWarningModal/ProjectWarningModal'
-// import useForewarnModal from '@/hooks/useForewarnModal'
-// import
 
 interface IProps {}
 

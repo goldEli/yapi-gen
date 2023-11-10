@@ -4,9 +4,7 @@ import { getParamsData, getProjectType } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import PerformanceInsightOverAll from './components'
 import RightWran from '@/hooks/useRightWran'
-import useForewarnModal from '@/hooks/useForewarnModal'
 import { useSelector } from '@store/index'
-import ProjectWarningModal from '@/components/ProjectWarningModal/ProjectWarningModal'
 const PerformanceInsight = () => {
   const { useKeys } = useKeyPress()
   const projectType = getProjectType()
@@ -34,10 +32,6 @@ const PerformanceInsight = () => {
           ?.warring_list_nums ? (
         <RightWran />
       ) : null}
-      {/* {paramsData?.isOverAll ? null : projectInfo?.project_warring_info
-          ?.warring_list_nums ? (
-        <ProjectWarningModal></ProjectWarningModal>
-      ) : null} */}
       {paramsData?.isOverAll && <PerformanceInsightOverAll />}
       {!paramsData?.isOverAll && <Home />}
     </div>

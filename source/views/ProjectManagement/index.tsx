@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from '@store/index'
 import { saveInputKey } from '@store/view'
 import ProjectDetailSide from './ProjectDetailSide'
 import RightWran from '@/hooks/useRightWran'
-import useForewarnModal from '@/hooks/useForewarnModal'
 import ProjectWarningModal from '@/components/ProjectWarningModal/ProjectWarningModal'
 
 const ProjectWrap = styled.div`

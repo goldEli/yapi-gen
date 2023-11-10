@@ -8,7 +8,7 @@ import { Badge, Checkbox } from 'antd'
 import { useState } from 'react'
 import { About, GrepContent, HoverWrap, Name, Time, Time2, Wrap } from './style'
 import dayjs from 'dayjs'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { css } from '@emotion/css'
 import { Editor } from 'ifunuikit'
 import { useTranslation } from 'react-i18next'
@@ -16,24 +16,12 @@ import styled from '@emotion/styled'
 import { getMessage } from '@/components/Message'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import useForewarnModal from '@/hooks/useForewarnModal'
+import { setProjectWarningModal } from '@store/project'
 
-const tmgCss = css`
-  img {
-    width: 100%;
-    object-fit: contain;
-  }
-`
-const CommonUserAvatar2 = styled.img<{ size?: string }>`
-  border-radius: 50%;
-
-  width: ${props => (props.size === 'large' ? 32 : 24)}px;
-  height: ${props => (props.size === 'large' ? 32 : 24)}px;
-`
 const ContentItem = (props: any) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
-  const { openForewarnModal } = useForewarnModal()
+  const dispatch = useDispatch()
   const { send_user, msg_body, create_time, read, id, custom_data } = props.item
   const [choose, setChoose] = useState(false)
   const cha = useSelector(store => store.user.loginInfo.timeDiff)
@@ -111,9 +99,13 @@ const ContentItem = (props: any) => {
 
   // 点击打开项目预警
   const onOpenWaring = () => {
-    console.log(11111111)
     if (!['1207', '2207'].includes(props.item?.custom_type)) return
-    openForewarnModal({ id: Number(props.item?.custom_data?.project_id) })
+    dispatch(
+      setProjectWarningModal({
+        visible: true,
+        id: Number(props.item?.custom_data?.project_id),
+      }),
+    )
   }
 
   return (
