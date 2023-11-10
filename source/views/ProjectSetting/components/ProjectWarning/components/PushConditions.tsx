@@ -144,7 +144,8 @@ const PushConditions = () => {
               step={1}
               className="input"
               value={record.send_conf}
-              onChange={(value: any) => {
+              onChange={(val: any) => {
+                const value = Math.floor(val)
                 setData((pre: any) => {
                   const newData = _.cloneDeep(pre)
                   newData[index].send_conf = value

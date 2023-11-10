@@ -50,6 +50,7 @@ interface AddDepartmentModalProps {
   // 汇报相关查团队的时候需要传参is_report
   is_report?: boolean
   title?: string
+  projectWarning?: boolean
 }
 
 const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
@@ -265,7 +266,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
     const res = await getProjectMember({
       all: true,
       projectId: props.projectId,
-      kk: 1,
+      kk: props.projectWarning ? 2 : 1,
     })
     setCheckedList(
       res.filter((el: { id: number }) => props.users?.includes(el.id)),
