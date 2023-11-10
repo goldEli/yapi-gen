@@ -1,4 +1,4 @@
-import { Checkbox, Modal, Skeleton, Spin, Tabs, Tooltip } from 'antd'
+import { Checkbox, Modal, Skeleton, Tabs, Tooltip } from 'antd'
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Header, Footer, text, ListBox, SmallTag, text2 } from './style'
 import { useSelector, useDispatch } from '@store/index'
@@ -15,8 +15,8 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
 import { setProjectWarningModal } from '@store/project'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import { css } from '@emotion/css'
-import NewLoadingTransition from '../NewLoadingTransition'
 
 const text3 = css`
   display: inline-block;
@@ -36,13 +36,12 @@ const ProjectWarningModal = () => {
   const [datas, setDatas] = useState<any>()
   const pid = useSelector(store => store.project.projectInfo.id)
   const { projectWarningModal } = useSelector(store => store.project)
-  const [projectId, setProjectId] = useState(0)
   const timeRef = useRef<NodeJS.Timeout>()
-  const [loading, setLoading] = useState(false)
   const onChange2 = (key: string) => {
     setNowKey(key)
   }
   const onChange = (e: any) => {
+    console.log(`checked = ${e.target.checked}`)
     setDis(e.target.checked)
   }
   const format = (key: string) => {
@@ -94,9 +93,8 @@ const ProjectWarningModal = () => {
     return name
   }
   const getAll = async () => {
-    setLoading(true)
-    const res = await getWarnStatistics({ project_id: pid }).finally(() => {
-      setLoading(false)
+    const res = await getWarnStatistics({
+      project_id: projectWarningModal?.id ?? pid,
     })
     setTime(res.update_at)
     const tabs = Object.keys(res.warning_count).map(key => {
@@ -117,12 +115,10 @@ const ProjectWarningModal = () => {
     if (twoData?.list.length > 0) {
       return
     }
-    setLoading(true)
+
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid ?? projectId,
-    }).finally(() => {
-      setLoading(false)
+      project_id: projectWarningModal?.id ?? pid,
     })
 
     setDatas(
@@ -138,13 +134,10 @@ const ProjectWarningModal = () => {
   }
 
   const fetchMoreData = async () => {
-    setLoading(true)
     const res = await getWarnLlist({
       warning_type: nowKey,
-      project_id: pid,
+      project_id: projectWarningModal?.id ?? pid,
       last_id: twoData.last_id,
-    }).finally(() => {
-      setLoading(false)
     })
     setDatas(
       produce((draft: any) => {
@@ -200,14 +193,45 @@ const ProjectWarningModal = () => {
       return t('overdue')
     }
   }
+
   const confirm = async () => {
     const res = await getWarnSave({
-      project_id: pid,
+      project_id: projectWarningModal?.id ?? pid,
       updated_at: time,
     })
 
     if (res.code === 0) {
       dispatch(setProjectWarningModal({ visible: false }))
+    }
+  }
+
+  // 点击跳转任务
+  const onToDetail = (item: any) => {
+    let params: any = {
+      id: item.project_id,
+      detailId: item.id,
+      isOpenScreenDetail: true,
+    }
+    let url
+
+    if (item.project_type === 1 && item.is_bug === 1) {
+      params.specialType = 2
+      url = 'ProjectManagement/Defect'
+    } else if (item.project_type === 1 && item.is_bug !== 1) {
+      params.specialType = 3
+      url = 'ProjectManagement/Demand'
+    } else {
+      params.specialType = 1
+      url = 'SprintProjectManagement/Affair'
+    }
+
+    if (params.specialType) {
+      const resultParams = encryptPhp(JSON.stringify(params))
+      window.open(
+        `${window.origin}${
+          import.meta.env.__URL_HASH__
+        }${url}?data=${resultParams}}`,
+      )
     }
   }
 
@@ -234,125 +258,125 @@ const ProjectWarningModal = () => {
       maskClosable={false}
       keyboard={false}
     >
-      <Spin spinning={loading} indicator={<NewLoadingTransition />}>
-        <div>
-          <Header>
-            <img
-              src={frnIcon}
-              style={{ width: '64px', height: '62px', marginRight: '24px' }}
-              alt=""
-            />
-            {t('yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly')}
-          </Header>
-          <div style={{ padding: '0px 24px' }}>
-            <Tabs defaultActiveKey="1" onChange={onChange2} items={datas} />
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#969799', fontSize: 12 }}>
-                {t('updatedOn')}
-                {time}
+      <div>
+        <Header>
+          <img
+            src={frnIcon}
+            style={{ width: '64px', height: '62px', marginRight: '24px' }}
+            alt=""
+          />
+          {t('yourProjectIsAtPleaseAskRelevantPersonnelToHandleItPromptly')}
+        </Header>
+        <div style={{ padding: '0px 24px' }}>
+          <Tabs defaultActiveKey="1" onChange={onChange2} items={datas} />
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ color: '#969799', fontSize: 12 }}>
+              {t('updatedOn')}
+              {time}
+            </span>
+            <span onClick={updateRefresh} className={text2}>
+              <IconFont type="sync" />
+              <span style={{ fontSize: 12, marginLeft: '4px' }}>
+                {t('toRefresh')}
               </span>
-              <span onClick={updateRefresh} className={text2}>
-                <IconFont type="sync" />
-                <span style={{ fontSize: 12, marginLeft: '4px' }}>
-                  {t('toRefresh')}
-                </span>
-              </span>
-            </div>
-            {/* ---------------------------------- */}
-            <InfiniteScroll
-              dataLength={twoData?.list?.length || 0}
-              next={() => fetchMoreData()}
-              style={{
-                overflow: 'auto',
-                maxHeight: 'calc(100vh - 400px)',
-                minHeight: '400px',
-                display: 'flex',
-                flexDirection: 'column',
-                marginTop: '12px',
-              }}
-              height={document.body.clientHeight - 400}
-              loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-              scrollableTarget="scrollableDiv"
-              hasMore={twoData?.list?.length < twoData?.lang}
-            >
-              {twoData?.list?.map((item: any, index: any) => {
-                return (
-                  <ListBox key={item}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginBottom: '8px',
-                      }}
-                    >
-                      <SmallTag is_end={item.is_end} is_start={item.is_start}>
-                        {item.category_status.status.content}
-                      </SmallTag>
-                      <span className={`tit  ${text}`}>{item.name}</span>
-                      <span
-                        style={{
-                          color: '#FF5C5E',
-                          marginLeft: 'auto',
-                          fontSize: 12,
-                        }}
-                      >
-                        {zhuan(item.expected_end_at)}
-                        {item.day}
-                        {t('sky')}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <span
-                        className={text3}
-                        style={{ fontSize: 12, color: '#969799' }}
-                      >
-                        {t('handler')}：
-                        {item.user_info.length > 1
-                          ? item.user_info.map((o: any) => o.name).join('、')
-                          : '--'}
-                      </span>
-                      <span style={{ fontSize: 12, color: '#969799' }}>
-                        {t('expectedToEnd')}：{item.expected_end_at}
-                      </span>
-                    </div>
-                  </ListBox>
-                )
-              })}
-              {twoData?.list.length < 1 && <NoData subText={format2(nowKey)} />}
-            </InfiniteScroll>
+            </span>
           </div>
-          <Footer>
-            <Tooltip
-              arrowPointAtCenter
-              open={first && !dis}
-              placement="topLeft"
-              title={t('pleaseCheckTheBoxesToKnowFirst')}
-            >
-              <Checkbox onChange={onChange}>
-                <span style={{ fontSize: '12px', color: '#646566' }}>
-                  {t(
-                    'iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner',
-                  )}
-                </span>
-              </Checkbox>
-            </Tooltip>
-            <div
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <CommonButton isDisable={!dis} onClick={confirm} type="primary">
-                {t('alreadyKnown')}
-              </CommonButton>
-            </div>
-          </Footer>
+          {/* ---------------------------------- */}
+          <InfiniteScroll
+            dataLength={twoData?.list?.length || 0}
+            next={() => fetchMoreData()}
+            style={{
+              overflow: 'auto',
+              maxHeight: 'calc(100vh - 400px)',
+              minHeight: '400px',
+              display: 'flex',
+              flexDirection: 'column',
+              marginTop: '12px',
+            }}
+            height={document.body.clientHeight - 400}
+            loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+            scrollableTarget="scrollableDiv"
+            hasMore={twoData?.list?.length < twoData?.lang}
+          >
+            {twoData?.list?.map((item: any, index: any) => {
+              return (
+                <ListBox key={item}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    <SmallTag is_end={item.is_end} is_start={item.is_start}>
+                      {item.category_status.status.content}
+                    </SmallTag>
+                    <span
+                      className={`tit  ${text}`}
+                      onClick={() => onToDetail(item)}
+                    >
+                      {item.name}
+                    </span>
+                    <span
+                      style={{
+                        color: '#FF5C5E',
+                        marginLeft: 'auto',
+                        fontSize: 12,
+                      }}
+                    >
+                      {zhuan(item.expected_end_at)}
+                      {item.day}
+                      {t('sky')}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <span
+                      className={text3}
+                      style={{ fontSize: 12, color: '#969799' }}
+                    >
+                      {t('handler')}：
+                      {item.user_info.length > 1
+                        ? item.user_info.map((o: any) => o.name).join('、')
+                        : '--'}
+                    </span>
+                    <span style={{ fontSize: 12, color: '#969799' }}>
+                      {t('expectedToEnd')}：{item.expected_end_at}
+                    </span>
+                  </div>
+                </ListBox>
+              )
+            })}
+            {twoData?.list.length < 1 && <NoData subText={format2(nowKey)} />}
+          </InfiniteScroll>
         </div>
-      </Spin>
+        <Footer>
+          <Tooltip
+            arrowPointAtCenter
+            open={first && !dis}
+            placement="topLeft"
+            title={t('pleaseCheckTheBoxesToKnowFirst')}
+          >
+            <Checkbox onChange={onChange}>
+              <span style={{ fontSize: '12px', color: '#646566' }}>
+                {t(
+                  'iAmAwareOfTheAboveProjectStatusAndWillSynchronizeOrHandleRelatedMattersInATimelyManner',
+                )}
+              </span>
+            </Checkbox>
+          </Tooltip>
+          <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <CommonButton isDisable={!dis} onClick={confirm} type="primary">
+              {t('alreadyKnown')}
+            </CommonButton>
+          </div>
+        </Footer>
+      </div>
     </Modal>
   )
 }
