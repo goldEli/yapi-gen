@@ -73,15 +73,18 @@ const WaringCard = (props: WaringCardProps) => {
     })
   }
   const noticeTypeLabel = () => {
-    return push_channel?.map((item: any, index: number) => {
-      return (
-        <span key={index}>
-          {noticeType[item.type]}
-          {index !== push_channel?.length - 1 &&
-            (language === 'zh' ? <i>、</i> : <i> / </i>)}
-        </span>
-      )
-    })
+    return push_channel
+      ?.filter((item: any) => item.is_enable === 1)
+      .map((item: any, index: number) => {
+        return (
+          <span key={index}>
+            {noticeType[item.type]}
+            {index !==
+              push_channel?.filter((item: any) => item.is_enable === 1).length -
+                1 && (language === 'zh' ? <i>、</i> : <i> / </i>)}
+          </span>
+        )
+      })
   }
 
   return (
@@ -154,16 +157,24 @@ const WaringCard = (props: WaringCardProps) => {
         <WaringCardItem style={{ width: '45%', marginTop: 16 }}>
           <div className="label">{t('pushConditions')}：</div>
           <div className="content">
-            {push_condition?.map((item: any) => (
-              <span key={item.type}>
-                [{taskType[item.type]}] {item.cond_conf}
-                {item.type === 'bug_too_many'
-                  ? t('moreThanThan1')
-                  : t('moreThanThan')}
-                {item.send_conf}
-                {t('strip')}
-              </span>
-            ))}
+            {push_condition
+              ?.filter((item: any) => item.is_enable === 1)
+              .map((item: any) => (
+                <span key={item.type}>
+                  [{taskType[item.type]}]
+                  {item.type === 'bug_too_many'
+                    ? t('moreThanThan1', {
+                        day: item.cond_conf,
+                        count: item.send_conf,
+                      })
+                    : t('moreThanThan', {
+                        day: item.cond_conf,
+                        count: item.send_conf,
+                      })}
+                  {/* {item.send_conf} */}
+                  {t('strip')}
+                </span>
+              ))}
           </div>
         </WaringCardItem>
         <WaringCardItem style={{ width: '40%', marginTop: 16 }}>
@@ -180,8 +191,9 @@ const WaringCard = (props: WaringCardProps) => {
       </WaringCardContent>
       <DeleteConfirm
         isVisible={isDeleteVisible}
-        title="是否关闭风险预警"
-        text="关闭后你的项目成员将无法收到任何预警信息"
+        title={t('whetherToTurnOffRiskWarning')}
+        text={t('afterYourProjectMembersWillNotReceiveAnyEarlyWarning')}
+        okText={t('confirmClose')}
         onChangeVisible={() => {
           setIsDeleteVisible(false)
         }}

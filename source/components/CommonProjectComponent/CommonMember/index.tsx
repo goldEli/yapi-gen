@@ -268,7 +268,7 @@ const CommonMember = (props: Props) => {
         await confirmProjectHand({ id: data.id, project_id: props.projectId })
         getList()
         getMessage({
-          msg: t('successfullyDeleted') as string,
+          msg: t('removedSuccessfully'),
           type: 'success',
         })
         dispatch(setIsRefresh(!isRefresh))
