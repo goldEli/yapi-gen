@@ -15,6 +15,15 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
 import { setProjectWarningModal } from '@store/project'
+import { css } from '@emotion/css'
+
+const text3 = css`
+  display: inline-block;
+  max-width: 580px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
 
 const ProjectWarningModal = () => {
   const dispatch = useDispatch()
@@ -175,10 +184,10 @@ const ProjectWarningModal = () => {
     const nowTimestamp = now.getTime()
 
     // 比较两个时间戳
-    if (timestamp > nowTimestamp) {
-      return t('overdue')
-    } else if (timestamp < nowTimestamp) {
+    if (timestamp >= nowTimestamp) {
       return t('remaining')
+    } else if (timestamp < nowTimestamp) {
+      return t('overdue')
     }
   }
   const confirm = async () => {
@@ -283,7 +292,10 @@ const ProjectWarningModal = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <span style={{ fontSize: 12, color: '#969799' }}>
+                    <span
+                      className={text3}
+                      style={{ fontSize: 12, color: '#969799' }}
+                    >
                       {t('handler')}：
                       {item.user_info.length > 1
                         ? item.user_info.map((o: any) => o.name).join('、')
