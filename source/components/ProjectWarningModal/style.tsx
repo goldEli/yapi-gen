@@ -57,15 +57,15 @@ export const SmallTag = styled.span<{ is_end: number; is_start: number }>`
     props.is_end === 2 && props.is_start === 2
       ? 'rgba(67,186,154,0.2)'
       : props.is_end === 1 && props.is_start === 2
-      ? 'rgba(102,136,255,0.2)'
-      : 'rgba(161,118,251,0.2)'};
+      ? 'rgba(246,247,249)'
+      : 'rgba(102,136,255,0.2)'};
   border: 1px solid
     ${props =>
       props.is_end === 2 && props.is_start === 2
         ? '#43BA9A'
         : props.is_end === 1 && props.is_start === 2
-        ? '#6688FF'
-        : '#A176FB'};
+        ? '#969799'
+        : '#6688FF'};
   border-radius: 6px 6px 6px 6px;
   margin-right: 8px;
 `
