@@ -341,7 +341,7 @@ const ProjectWarningModal = () => {
                       style={{ fontSize: 12, color: '#969799' }}
                     >
                       {t('handler')}：
-                      {item.user_info.length > 1
+                      {item.user_info.length > 0
                         ? item.user_info.map((o: any) => o.name).join('、')
                         : '--'}
                     </span>
