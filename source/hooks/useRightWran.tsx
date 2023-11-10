@@ -50,12 +50,14 @@ const RightWran = () => {
     '/ProjectManagement/Defect': '缺陷',
     '/SprintProjectManagement/Affair': '事务',
     '/SprintProjectManagement/Sprint': '冲刺',
-    '/SprintProjectManagement/Kanban': 'KanBan',
+    '/SprintProjectManagement/KanBan': 'Kanban',
   }
   const key: string = window.location.pathname
   const isShow = projectInfo?.projectPermissions?.filter((i: any) =>
     String(i.group_name).includes(pathArrayObj[key]),
   ).length
+
+  console.log(key, pathArrayObj[key], isShow, 'xxxx')
 
   if (pathArrayObj[key] && !isShow) {
     return <div></div>
