@@ -86,7 +86,6 @@ const WaringCard = (props: WaringCardProps) => {
         )
       })
   }
-
   return (
     <WaringCardWrap>
       <WaringCardHeader>
