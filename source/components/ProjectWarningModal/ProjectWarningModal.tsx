@@ -226,7 +226,6 @@ const ProjectWarningModal = () => {
       isOpenScreenDetail: true,
     }
     let url
-
     if (item.project_type === 1 && item.is_bug === 1) {
       params.specialType = 2
       url = 'ProjectManagement/Defect'

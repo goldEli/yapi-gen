@@ -61,7 +61,7 @@ const FlawInfo = () => {
     navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
   useEffect(() => {
-    if (flawInfo?.id) {
+    if (flawInfo?.id && projectInfo?.id) {
       dispatch(
         getFlawCommentList({
           projectId: projectInfo?.id,
