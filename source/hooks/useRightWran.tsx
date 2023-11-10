@@ -46,11 +46,11 @@ const RightWran = () => {
   const pathArrayObj: any = {
     '/ProjectManagement/Demand': '需求',
     '/ProjectManagement/Iteration': '迭代',
-    '/ProjectManagement/KanBan': 'KanBan',
+    '/ProjectManagement/KanBan': 'Kanban',
     '/ProjectManagement/Defect': '缺陷',
     '/SprintProjectManagement/Affair': '事务',
     '/SprintProjectManagement/Sprint': '冲刺',
-    '/SprintProjectManagement/KanBan': 'KanBan',
+    '/SprintProjectManagement/Kanban': 'KanBan',
   }
   const key: string = window.location.pathname
   const isShow = projectInfo?.projectPermissions?.filter((i: any) =>
