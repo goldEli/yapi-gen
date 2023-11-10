@@ -133,6 +133,7 @@ const PushObject = () => {
         projectId={projectId}
         users={usersId}
         title={t('addPushObject')}
+        projectWarning
       ></AddDepartmentOrTeamModal>
     </div>
   )
