@@ -217,7 +217,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           await confirmProjectHand({ id: item.id, project_id: projectId })
           getList(order, { ...pageObj, page: 1 })
           getMessage({
-            msg: t('successfullyDeleted') as string,
+            msg: t('removedSuccessfully') as string,
             type: 'success',
           })
           return Promise.resolve()
@@ -739,7 +739,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
                     })
                     getList(order, { ...pageObj, page: 1 })
                     getMessage({
-                      msg: t('successfullyDeleted') as string,
+                      msg: t('removedSuccessfully'),
                       type: 'success',
                     })
                     return Promise.resolve()

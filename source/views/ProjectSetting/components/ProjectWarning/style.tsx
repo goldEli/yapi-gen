@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { Table } from 'antd'
 export const SwitchLabel = styled.div`
   min-width: 60px;
-  color: var(--primary-d1);
+  color: var(--neutral-n2);
 `
 export const ProjectWarningWrap = styled.div`
   display: flex;

@@ -47,7 +47,7 @@ export const ListBox = styled.div`
 `
 export const SmallTag = styled.span<{ is_end: number; is_start: number }>`
   display: flex;
-
+  white-space: nowrap;
   align-items: center;
   height: 20px;
   line-height: 20px;

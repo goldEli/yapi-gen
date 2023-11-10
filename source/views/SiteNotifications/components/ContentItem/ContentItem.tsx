@@ -97,16 +97,16 @@ const ContentItem = (props: any) => {
     }
   }
 
-  // 点击打开项目预警
-  const onOpenWaring = () => {
-    if (!['1207', '2207'].includes(props.item?.custom_type)) return
-    dispatch(
-      setProjectWarningModal({
-        visible: true,
-        id: Number(props.item?.custom_data?.project_id),
-      }),
-    )
-  }
+  // // 点击打开项目预警
+  // const onOpenWaring = () => {
+  //   if (!['1207', '2207'].includes(props.item?.custom_type)) return
+  //   dispatch(
+  //     setProjectWarningModal({
+  //       visible: true,
+  //       id: Number(props.item?.custom_data?.project_id),
+  //     }),
+  //   )
+  // }
 
   return (
     <Wrap
@@ -123,7 +123,8 @@ const ContentItem = (props: any) => {
           <CommonUserAvatar isBorder avatar={send_user.head} />
         </Badge>
       </div>
-      <HoverWrap style={{ flex: '1' }} onClick={onOpenWaring}>
+      {/* onClick={onOpenWaring} */}
+      <HoverWrap style={{ flex: '1' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Name className={String(read === 1 ? 'read' : 'unread')}>
             {send_user.nickname}
