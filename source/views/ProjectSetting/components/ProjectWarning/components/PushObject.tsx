@@ -108,9 +108,7 @@ const PushObject = () => {
                   dispatch(
                     setProjectWarning({
                       ...projectWarning,
-                      push_obj: list
-                        ?.filter(user => user.id !== item.id)
-                        ?.map(item => item.id),
+                      push_obj: list?.filter(user => user.id !== item.id),
                     }),
                   )
                 }}
