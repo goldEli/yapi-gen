@@ -2528,8 +2528,8 @@
   "thePushTimePeriodMustBeSelectedAtLeastOneAndTheTimeMustBeSelected": "推送时间 周期至少选择一天，且时间必须选择",
   "goToSettings": "前往设置",
   "projectMembers": "位项目成员",
-  "moreThanThan": "天以上 / 超过",
-  "moreThanThan1": "天以内 / 超过",
+  "moreThanThan": "{{day}}天以上 / 超过 {{count}}",
+  "moreThanThan1": "最近{{day}}天以内 / 超过 {{count}}",
   "setUpEarlyWarningPushToNotifyTheOverdueOrUpcomingOverdueTasksAnd": "设置预警推送可将任务、BUG的逾期或即将逾期",
   "theSituationIsRegularlyPushedToSystemDingtalkAndTextMessagesBasedOn": "情况按条件定时推送至系统通知、钉钉群、邮件、短信",
   "savedSuccessfully": "保存成功",
@@ -2559,5 +2559,6 @@
   "dingtalkWebhookAddress": "钉钉webhook地址",
   "whetherToTurnOffRiskWarning": "是否关闭风险预警",
   "afterYourProjectMembersWillNotReceiveAnyEarlyWarning": "关闭后你的项目成员将无法收到任何预警信息",
-  "inForce": "已生效"
+  "inForce": "已生效",
+  "confirmClose": "确认关闭"
 }
