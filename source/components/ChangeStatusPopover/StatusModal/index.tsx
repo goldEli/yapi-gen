@@ -25,6 +25,7 @@ import WanderVerify from './Verify'
 import { getProjectMember } from '@/services/project'
 import { getShapeAffairsRight } from '@/services/affairs'
 import { getShapeFlawRight } from '@/services/flaw'
+import { getMessage } from '@/components/Message'
 
 interface StatusModalProps {
   // 弹窗显示状态
@@ -77,9 +78,7 @@ const DateInput = (props: any) => {
         onChange={change}
         style={{ width: '100%' }}
         format="YYYY-MM-DD HH:mm:ss"
-        showTime={{
-          defaultValue: moment('00:00:00', 'HH:mm:ss'),
-        }}
+        showTime
       />
     )
   }
@@ -88,10 +87,7 @@ const DateInput = (props: any) => {
       defaultValue={props.dvalue ? moment(props.dvalue) : ('' as any)}
       onChange={change}
       style={{ width: '100%' }}
-      format="YYYY-MM-DD "
-      showTime={{
-        defaultValue: moment('00:00:00', 'HH:mm:ss'),
-      }}
+      format="YYYY-MM-DD"
     />
   )
 }
@@ -329,7 +325,32 @@ const StatusModal = (props: StatusModalProps) => {
       fromId: props.checkStatusItem.fromId,
       toId: props.checkStatusItem.id,
     })
-    setConfigData(res)
+
+    if (
+      res.fields?.filter((i: any) =>
+        ['expected_start_at', 'expected_end_at'].includes(i.content),
+      )
+    ) {
+      setConfigData({
+        ...res,
+        fields: res.fields?.map((k: any) => ({
+          ...k,
+          ...{
+            true_value:
+              ['expected_start_at', 'expected_end_at'].includes(k.content) &&
+              !k.true_value
+                ? moment(new Date()).format(
+                    k.type === 'datetime'
+                      ? 'YYYY-MM-DD HH:mm:ss'
+                      : 'YYYY-MM-DD',
+                  )
+                : k.true_value,
+          },
+        })),
+      })
+    } else {
+      setConfigData(res)
+    }
     form.setFieldsValue(setValue(res))
   }
 
@@ -349,6 +370,7 @@ const StatusModal = (props: StatusModalProps) => {
       }
     }
     await form.validateFields()
+
     const params = {
       projectId: props?.record?.project_id ?? props?.record?.projectId,
       nId: props?.record?.id,
@@ -356,6 +378,25 @@ const StatusModal = (props: StatusModalProps) => {
       fields: res,
       verifyId: reviewerValue,
     }
+
+    if (
+      new Set([
+        ...new Set(Object.keys(res)),
+        ...new Set(['expected_start_at', 'expected_end_at']),
+      ])?.size > 0 &&
+      res?.expected_start_at &&
+      res?.expected_end_at &&
+      !moment(res.expected_start_at, 'YYYY-MM-DD HH:mm:ss').isBefore(
+        moment(res.expected_end_at, 'YYYY-MM-DD HH:mm:ss'),
+      )
+    ) {
+      getMessage({
+        type: 'warning',
+        msg: t('theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime'),
+      })
+      return
+    }
+
     await props.onChangeStatusConfirm(params)
     onClose()
   }
@@ -371,6 +412,7 @@ const StatusModal = (props: StatusModalProps) => {
       getConfig()
     }
   }, [props.isVisible, props.checkStatusItem])
+
   return (
     <CommonModal
       width={582}

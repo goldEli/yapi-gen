@@ -2586,7 +2586,6 @@
   "theAboveInformationWillBePromptedInTextMessagesOnA": "会以项目为单位的短信内提示以上信息",
   "pushType": "推送类型",
   "pushDescription": "推送描述",
-  "operate": "操作",
   "setUpDingtalkGroup": "设置钉钉群",
   "pleaseSetUpADingtalkGroupFirst": "请先设置钉钉群",
   "pushChannel": "推送渠道",
@@ -2606,5 +2605,6 @@
   "whetherToTurnOffRiskWarning": "是否关闭风险预警",
   "afterYourProjectMembersWillNotReceiveAnyEarlyWarning": "关闭后你的项目成员将无法收到任何预警信息",
   "inForce": "已生效",
-  "confirmClose": "确认关闭"
+  "confirmClose": "确认关闭",
+  "theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime": "预计开始时间不能大于预计结束时间"
 }

@@ -2585,7 +2585,6 @@
   "theAboveInformationWillBePromptedInTextMessagesOnA": "The above information will be prompted in text messages on a project-by-project basis.",
   "pushType": "Push type",
   "pushDescription": "Push description",
-  "operate": "Operate",
   "setUpDingtalkGroup": "Set up DingTalk group",
   "pleaseSetUpADingtalkGroupFirst": "Please set up a DingTalk group first",
   "pushChannel": "Push channel",
@@ -2606,5 +2605,6 @@
   "whetherToTurnOffRiskWarning": "Whether to turn off risk warning",
   "afterYourProjectMembersWillNotReceiveAnyEarlyWarning": "After closing, your project members will not receive any early warning information.",
   "inForce": "In force",
-  "confirmClose": "Confirm close"
+  "confirmClose": "Confirm close",
+  "theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime": "The estimated start time cannot be greater than the estimated end time"
 }
