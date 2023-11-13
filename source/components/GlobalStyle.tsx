@@ -182,21 +182,22 @@ const GlobalStyle = () => {
         } */
       }
       .react-viewer-close {
-        background-color: rgba(0, 0, 0, 0.7) !important;
+        background-color: transparent !important;
         right: 150px !important;
         top: 70px !important;
         border-radius: 50% !important;
-        height: 56px;
+        height: 40px;
         opacity: 1 !important;
-        width: 56px;
+        width: 40px;
         display: flex;
-        border-radius: 12px;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
         align-items: center;
         justify-content: center;
 
         ::before {
           content: '×';
-          font-size: 40px;
+          font-size: 30px;
         }
       }
       .react-viewer-icon-close {
