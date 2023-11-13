@@ -187,7 +187,6 @@ const ProjectIndex = () => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-
       {/* 结束或者和是开启项目 */}
       <DeleteConfirm
         title={t('mark.endP')}

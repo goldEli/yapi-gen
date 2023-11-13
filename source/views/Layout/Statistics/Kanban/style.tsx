@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Checkbox, Modal, Space } from 'antd'
+import { Checkbox, Modal, Space, Tabs, Tree } from 'antd'
 
 // 筛选及统计部分
 export const KanBanHeaderWrap = styled.div`
@@ -534,3 +534,7 @@ export const Toast = styled.div`
     line-height: 40px;
   }
 `
+
+export const TabWrap = styled(Tabs)``
+
+export const TreeWrap = styled(Tree)``
