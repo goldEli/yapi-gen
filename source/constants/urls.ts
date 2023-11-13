@@ -561,6 +561,12 @@ const urls = {
   saveWarningConfig: '/b/project/warning_config',
   // 获取配置列表
   getWarningConfigInfo: '/b/project/warning_config_info',
+  // 获取最近的项目
+  getRecentProject: '/b/user/recent/project',
+  // 获取最近的日报
+  getReportViewLogList: '/b/user/reportViewLogList',
+  // 获取最近的任务
+  getRecentStory: '/b/user/recent/story',
 }
 export default urls
 

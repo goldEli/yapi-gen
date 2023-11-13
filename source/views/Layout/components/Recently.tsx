@@ -29,6 +29,11 @@ import {
 } from '../style'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import {
+  getRecentProject,
+  getRecentStory,
+  getReportViewLogList,
+} from '@/services/project'
 
 interface GroupItemsProps {
   row: any
@@ -969,6 +974,7 @@ const Recently = (props: RecentlyProps) => {
   const dispatch = useDispatch()
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive2 = useRef<HTMLDivElement>(null)
+  const [dataList, setDataList] = useState({})
   const { isRefresh, userInfo } = useSelector(store => store.user)
   const { language } = useSelector(store => store.global)
 
@@ -993,16 +999,28 @@ const Recently = (props: RecentlyProps) => {
   // 获取汇报列表
   const getReportData = async () => {
     //
+    const result = await getReportViewLogList({
+      page: 1,
+      pagesize: 30,
+    })
   }
 
   // 获取项目列表
   const getProjectData = async () => {
     //
+    const result = await getRecentProject({
+      page: 1,
+      pagesize: 30,
+    })
+    setDataList(result.data)
   }
 
   // 获取任务列表
   const getTaskData = async () => {
-    //
+    const result = await getRecentStory({
+      page: 1,
+      pagesize: 30,
+    })
   }
 
   //   获取数据
