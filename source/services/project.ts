@@ -251,6 +251,7 @@ export const getProjectInfo: any = async (params: any) => {
     permissionType: response.data.permission_type,
     projectType: response.data.project_type,
     defaultHomeMenu: response.data.default_home_menu,
+    project_warring_info: response.data.project_warring_info,
   }
 }
 
@@ -1050,4 +1051,13 @@ export const updateFlawPerception = async (params: {
 }) => {
   const response = await http.put<any>('updateFlawPerception', params)
   return response
+}
+// 配置预警
+export const saveWarningConfig = async (params: any) => {
+  const res = await http.post<any>('saveWarningConfig', params)
+}
+// 获取配置列表
+export const getWarningConfigInfo = async (params: any) => {
+  const res = await http.get<any>('getWarningConfigInfo', params)
+  return res.data
 }

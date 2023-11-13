@@ -90,6 +90,7 @@ const WaterMarkManagement = () => {
         <Header>
           <span>{t('secure_watermark')}</span>
         </Header>
+
         <Content>
           {configList.map(item => (
             <SwitchWrap key={item.title}>

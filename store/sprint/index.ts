@@ -87,7 +87,9 @@ const slice = createSlice({
       state.rightLoading = true
     })
     builder.addCase(getRightSprintList.fulfilled, (state, action) => {
-      state.rightSprintList = action.payload
+      if (action.payload !== null) {
+        state.rightSprintList = action.payload
+      }
       state.rightLoading = false
     })
     builder.addCase(getRightSprintList.rejected, state => {

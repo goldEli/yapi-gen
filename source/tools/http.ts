@@ -63,10 +63,6 @@ client.config({
   },
   requestInterceptors: [
     async (options: any) => {
-      const line = window.navigator.onLine
-      if (!line) {
-        location.reload()
-      }
       await isCheckTicket(
         options.url ===
           `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket` ||
@@ -172,8 +168,8 @@ client.config({
           getMessage({
             msg:
               lang === 'zh'
-                ? '账户未登录！即将跳转到登录页...'
-                : 'Account not logged in! Going to the login page...',
+                ? '检测到您没有登录，正在为您跳转到登录页面'
+                : 'We have detected that you are not logged in and are redirecting you to the login page',
             type: 'error',
           })
         } else {

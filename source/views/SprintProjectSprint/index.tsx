@@ -252,24 +252,6 @@ const DragContent = styled.div`
   background: var(--neutral-n8);
 `
 
-const CustomCloseWrap = styled(CloseWrap)`
-  svg {
-    color: var(--neutral-n3);
-  }
-  &:hover {
-    background: var(--hover-d1);
-    svg {
-      color: var(--neutral-n1-d1);
-    }
-  }
-  &:active {
-    background: var(--neutral-n6-d1);
-    svg {
-      color: var(--neutral-n1-d1);
-    }
-  }
-`
-
 const SprintProjectSprint: React.FC = () => {
   const [t] = useTranslation()
   const filterList = [
@@ -405,7 +387,6 @@ const SprintProjectSprint: React.FC = () => {
   }
   const changeSprintTab = () => {
     setIsExpand(true)
-
     sessionStorage.removeItem('noRefresh')
     setActiveKey(0)
     setSearchObject({
@@ -463,17 +444,6 @@ const SprintProjectSprint: React.FC = () => {
   useEffect(() => {
     timer.current && clearTimeout(timer.current)
     timer.current = setTimeout(() => {
-      console.log(
-        searchObject,
-        checkList,
-        activeKey === 1 && searchObject.is_no_creation_long_story === 1,
-        leftSprintList.list.filter((_, idx) => checkList[idx]).map(k => k.id),
-        'checkList',
-      )
-      // if (
-      //   leftSprintList.list.filter((_, idx) => checkList[idx]).map(k => k.id)
-      //     .length > 0
-      // ) {
       dispatch(
         getRightSprintList({
           ...searchObject,
@@ -488,7 +458,6 @@ const SprintProjectSprint: React.FC = () => {
           },
         }),
       )
-      // }
     }, 100)
   }, [searchObject, checkList])
 

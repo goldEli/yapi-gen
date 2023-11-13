@@ -36,9 +36,11 @@ import performanceInsight from './performanceInsight'
 import kanBan from './kanBan'
 import affairs from './affairs'
 import flaw from './flaw'
+import Forewarn from './Forewarn'
 import employeeProfile from './employeeProfile'
 export const store = configureStore({
   reducer: {
+    Forewarn,
     flaw,
     affairs,
     kanBan,

@@ -35,11 +35,13 @@ import LayoutSideIndex from './components/LayoutSide'
 import LayoutHeaderLeft from './components/LayoutHeaderLeft'
 import LayoutHeaderRight from './components/LayoutHeaderRight'
 import SiteDrawer from './Trends/components/SiteDrawer/SiteDrawer'
-import ReportAssistantModal from './Report/Review/components/ReportAssistantModal'
 import ReportDetailDrawer from './Report/Review/components/ReportDetailDrawer'
 import UserSystemReport from './Report/Review/components/UserSystemReport'
-import ProjectSystemReport from './Report/Review/components/ProjectSystemReport'
 import LayoutSecondaryMenu from './components/LayoutSecondaryMenu'
+import ProjectWarningModal from '@/components/ProjectWarningModal/ProjectWarningModal'
+import { setProjectWarningModal } from '@store/project'
+import ReportAssistantModal from './Report/Review/components/ReportAssistantModal'
+import ProjectSystemReport from './Report/Review/components/ProjectSystemReport'
 
 const LayoutIndex = () => {
   const location = useLocation()
@@ -155,6 +157,12 @@ const LayoutIndex = () => {
     setWidth(leftWidth + rightWidth)
   }, [leftWidth, rightWidth])
 
+  useEffect(() => {
+    if (projectInfo?.project_warring_info?.popup_window === 1) {
+      dispatch(setProjectWarningModal({ visible: true }))
+    }
+  }, [projectInfo])
+
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
@@ -212,6 +220,7 @@ const LayoutIndex = () => {
         <FlawDetailDrawer />
         <DetailScreenModal />
         <EmployeeProfileContrast />
+        <ProjectWarningModal />
       </ConfigProvider>
     </KitConfigProvider>
   )

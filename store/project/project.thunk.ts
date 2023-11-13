@@ -39,3 +39,13 @@ export const saveScreenDetailModal =
     dispatch(setIsDetailScreenModal(params))
     dispatch(setAffairsActivity('1'))
   }
+
+// 获取项目预警配置
+export const getWarningConfigInfo = createAsyncThunk(
+  `${name}/getWarningConfigInfo`,
+  async (params: any) => {
+    const res = await services.project.getWarningConfigInfo(params)
+
+    return res
+  },
+)

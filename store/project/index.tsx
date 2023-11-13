@@ -6,6 +6,7 @@ import {
   getParentList,
   getProjectInfoStore,
   getProjectInfoValuesStore,
+  getWarningConfigInfo,
 } from './project.thunk'
 import { setAffairsActivity } from '@store/affairs'
 
@@ -54,6 +55,11 @@ export interface CounterState {
   drawerCanOperation: any
   tableFilter?: any
   updateProgress: number
+  projectWarning?: any
+  projectWarningModal?: {
+    visible: boolean
+    id?: number
+  }
 }
 
 const initialState: CounterState = {
@@ -107,6 +113,7 @@ const initialState: CounterState = {
   drawerInfo: {},
   drawerCanOperation: {},
   updateProgress: 0,
+  projectWarning: {},
 }
 
 export const projectSlice = createSlice({
@@ -215,6 +222,18 @@ export const projectSlice = createSlice({
     setAddWorkItemParentList: (state: any, action) => {
       state.addWorkItemParentList = action.payload
     },
+    setProjectWarning(
+      state: any,
+      action: PayloadAction<CounterState['projectWarning']>,
+    ) {
+      state.projectWarning = action.payload
+    },
+    setProjectWarningModal(
+      state: any,
+      action: PayloadAction<CounterState['projectWarningModal']>,
+    ) {
+      state.projectWarningModal = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
@@ -225,6 +244,9 @@ export const projectSlice = createSlice({
     })
     builder.addCase(getProjectInfoStore.fulfilled, (state, action) => {
       state.projectInfo = action.payload
+    })
+    builder.addCase(getWarningConfigInfo.fulfilled, (state, action) => {
+      state.projectWarning = action.payload
     })
   },
 })
@@ -253,6 +275,8 @@ export const {
   setAddWorkItemParentList,
   setDrawerInfo,
   setUpdateProgress,
+  setProjectWarning,
+  setProjectWarningModal,
 } = projectSlice.actions
 
 export default projectSlice.reducer

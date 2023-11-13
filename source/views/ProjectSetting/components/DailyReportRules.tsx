@@ -121,7 +121,7 @@ const FooterWrap = styled.div`
 `
 const PopoverWrap = styled.div`
   min-width: 310px;
-  height: 326px;
+  height: 376px;
   // background: var(--auxiliary-b5);
   border-radius: 6px;
   padding: 12px 0 12px 12px;
@@ -254,6 +254,12 @@ const DailyReportRules = () => {
         <Row>
           <span />
           <span>{t('msg31')}</span>
+        </Row>
+        <Line />
+        <Msg>{t('question')}</Msg>
+        <Row>
+          <span />
+          <span>{t('noneToday')}</span>
         </Row>
         <Line />
         <Text>{t('msg32')}</Text>
@@ -542,91 +548,6 @@ const DailyReportRules = () => {
           ) : null}
         </ReportWrap>
 
-        {/* <ReportWrap>
-          <HeaderWrap onClick={() => setOpen2(!open2)}>
-            <span>{t('msg11')}</span>
-            <IconFont
-              type={open2 ? 'up' : 'down'}
-              style={{
-                color: ' var(--auxiliary-text-t2-d1)',
-                fontSize: '8',
-                cursor: 'pointer',
-              }}
-            />
-          </HeaderWrap>
-
-          {open2 ? (
-            <DailyReportRulesWrap
-              layout="vertical"
-              form={form2}
-              onValuesChange={onValuesChange}
-            >
-              <Form.Item
-                style={{ marginBottom: 24, marginTop: 16 }}
-                label={t('msg11')}
-                name="is_auto_send"
-                className="check-form"
-                valuePropName="checked"
-                getValueFromEvent={getValueFromEvent2}
-                getValueProps={getValueProps}
-              >
-                <Switch />
-              </Form.Item>
-              <Form.Item
-                label={t('msg12')}
-                name="is_holiday"
-                className="checkBox-form"
-                valuePropName="checked"
-                getValueFromEvent={getValueFromEvent}
-                getValueProps={getValueProps}
-              >
-                <Checkbox disabled={sendDisabled}>{t('msg13')}</Checkbox>
-              </Form.Item>
-              <Form.Item
-                name="day"
-                style={{
-                  marginBottom: '32px',
-                }}
-              >
-                <Checkbox.Group
-                  options={plainOptions()}
-                  disabled={sendDisabled}
-                />
-              </Form.Item>
-              <Form.Item label={t('msg14')} name="reminder_time">
-                <TimePicker
-                  allowClear={false}
-                  style={{ width: 320 }}
-                  format="HH:mm"
-                  disabled={sendDisabled}
-                />
-              </Form.Item>
-              <Form.Item
-                label={t('msg15')}
-                name="is_hand_send"
-                className="checkBox-form"
-                valuePropName="checked"
-                getValueFromEvent={getValueFromEvent}
-                getValueProps={getValueProps}
-              >
-                <Checkbox>{t('msg16')}</Checkbox>
-              </Form.Item>
-              <FooterWrap>
-                <CommonButton
-                  type="light"
-                  style={{ marginRight: '16px' }}
-                  onClick={() => cancel(2)}
-                >
-                  {t('common.cancel')}
-                </CommonButton>
-
-                <CommonButton type="primary" onClick={() => save(2)}>
-                  {t('formWork.save2')}
-                </CommonButton>
-              </FooterWrap>
-            </DailyReportRulesWrap>
-          ) : null}
-        </ReportWrap> */}
         <ReportWrap style={{ marginBottom: 48 }}>
           <HeaderWrap onClick={() => setOpen3(!open3)}>
             <span>{t('xmsc')}</span>

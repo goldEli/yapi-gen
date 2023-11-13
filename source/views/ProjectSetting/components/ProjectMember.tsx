@@ -211,7 +211,6 @@ const ProjectMember = () => {
           { name: item.name, pos: item.departmentName },
         ),
         async onConfirm() {
-          console.log(operationItem, '移除成员')
           await confirmProjectHand({ id: item.id, project_id: projectId })
           getList(order, { ...pageObj, page: 1 })
           getMessage({
@@ -746,10 +745,9 @@ const ProjectMember = () => {
                     })
                     getList(order, { ...pageObj, page: 1 })
                     getMessage({
-                      msg: t('successfullyDeleted') as string,
+                      msg: t('removedSuccessfully'),
                       type: 'success',
                     })
-                    console.log('移除成员')
 
                     return Promise.resolve()
                   },

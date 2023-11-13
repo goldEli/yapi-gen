@@ -26,6 +26,7 @@ import TabsContent from '@/components/TabsContent'
 import DailyReportRules from './components/DailyReportRules'
 import TypeConfiguration from '../TypeConfiguration'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import ProjectWarning from './components/ProjectWarning/index'
 
 const Content = styled.div({
   width: '100%',
@@ -50,7 +51,7 @@ const Setting = () => {
   const { projectInfo } = useSelector(store => store.project)
   const { currentMenu } = useSelector(store => store.user)
   const [resultTabList, setResultTabList] = useState<any>()
-  const [activeKey, setActiveKey] = useState('info')
+  const [activeKey, setActiveKey] = useState<any>('info')
 
   //   跳转路由
   const onChangeRouter = (key: any) => {
@@ -141,6 +142,14 @@ const Setting = () => {
           ).length,
           key: 'ProjectSchedule',
           url: '/ProjectDetail/Setting/DailyReportRules',
+        },
+        {
+          name: t('projectPushSettings'),
+          icon: 'settings',
+          content: <ProjectWarning />,
+          isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+            String(i.identity).includes('b/project/warning_config'),
+          ).length,
         },
       ]
       setResultTabList(list?.filter((i: any) => i.isPermission))
