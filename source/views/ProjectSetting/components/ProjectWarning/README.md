@@ -8,7 +8,7 @@
 "type": 1,
 "description": "bug_description",
 "cond_conf": 3,
-"send_description": "推送阀值描述",
+"send_description": "推送阈值描述",
 "send_conf": 4,
 "is_enable": 0
 },
@@ -16,7 +16,7 @@
 "type": 2,
 "description": "bug_description",
 "cond_conf": 3,
-"send_description": "推送阀值描述",
+"send_description": "推送阈值描述",
 "send_conf": 4,
 "is_enable": 0
 },
@@ -24,7 +24,7 @@
 "type": 3,
 "description": "bug_description",
 "cond_conf": 3,
-"send_description": "推送阀值描述",
+"send_description": "推送阈值描述",
 "send_conf": 4,
 "is_enable": 0
 },
@@ -32,7 +32,7 @@
 "type": 4,
 "description": "bug_description",
 "cond_conf": 3,
-"send_description": "推送阀值描述",
+"send_description": "推送阈值描述",
 "send_conf": 4,
 "is_enable": 0
 },

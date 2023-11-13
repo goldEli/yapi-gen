@@ -328,17 +328,19 @@ const ProjectWarningModal = () => {
                       >
                         {item.name}
                       </span>
-                      <span
-                        style={{
-                          color: '#FF5C5E',
-                          marginLeft: 'auto',
-                          fontSize: 12,
-                        }}
-                      >
-                        {zhuan(item.expected_end_at)}
-                        {item.day}
-                        {t('sky')}
-                      </span>
+                      {Number(item.day) !== 0 && (
+                        <span
+                          style={{
+                            color: '#FF5C5E',
+                            marginLeft: 'auto',
+                            fontSize: 12,
+                          }}
+                        >
+                          {zhuan(item.expected_end_at)}
+                          {item.day}
+                          {t('sky')}
+                        </span>
+                      )}
                     </div>
                     <div
                       style={{
