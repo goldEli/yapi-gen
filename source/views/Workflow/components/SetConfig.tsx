@@ -382,7 +382,6 @@ const SetConfig = (props: Props) => {
   // 修改默认值、默认值字段 --- 文本
   const onChangeText = (value: any, row: any, type?: any) => {
     const arr = JSON.parse(JSON.stringify(dataSource))
-    console.log(row, '=', value, '111', type)
     if (row.tag) {
       console.log(1)
       arr.filter((i: any) => i.tag === row.tag)[0].default_value = [
@@ -396,7 +395,6 @@ const SetConfig = (props: Props) => {
           : ''
         : value
     } else {
-      console.log(2)
       arr.filter((i: any) => i.content === row.content)[0].default_value = [
         'date',
         'datetime',
@@ -424,9 +422,9 @@ const SetConfig = (props: Props) => {
       )
     ) {
       child = (
-        <MoreSelect
+        <CustomSelect
           border
-          style={{ width: 148 }}
+          style={{ width: i18n.language === 'zh' ? 178 : 220 }}
           showArrow
           showSearch
           optionFilterProp="label"
@@ -456,9 +454,9 @@ const SetConfig = (props: Props) => {
       const optionValues =
         optionsType === 'projectMember' ? memberList : staffList
       child = (
-        <MoreSelect
+        <CustomSelect
           border
-          style={{ width: 148 }}
+          style={{ width: i18n.language === 'zh' ? 178 : 220 }}
           showArrow
           showSearch
           optionFilterProp="label"
@@ -477,15 +475,16 @@ const SetConfig = (props: Props) => {
     } else if (['textarea'].includes(defaultObj?.type)) {
       child = (
         <Input.TextArea
-          style={{ width: 148 }}
+          style={{ width: i18n.language === 'zh' ? 178 : 220 }}
           defaultValue={row.default_value}
           onBlur={e => onChangeText(e.target.value, row)}
         />
       )
     } else if (['date', 'datetime'].includes(defaultObj?.type)) {
+      console.log(defaultObj?.type, '=defaultObj?.type')
       child = (
         <DatePicker
-          style={{ width: 148 }}
+          style={{ width: i18n.language === 'zh' ? 178 : 220 }}
           value={row.default_value ? moment(row.default_value) : ('' as any)}
           onChange={date => onChangeText(date, row, defaultObj.type)}
           showTime={defaultObj?.type === 'datetime'}
@@ -494,7 +493,7 @@ const SetConfig = (props: Props) => {
     } else if (['integer', 'number'].includes(defaultObj?.type)) {
       child = (
         <InputNumber
-          style={{ width: 148 }}
+          style={{ width: i18n.language === 'zh' ? 178 : 220 }}
           defaultValue={row.default_value}
           onBlur={value => onChangeText(value, row)}
         />
@@ -502,7 +501,7 @@ const SetConfig = (props: Props) => {
     } else {
       child = (
         <Input
-          style={{ width: 148 }}
+          style={{ width: i18n.language === 'zh' ? 178 : 220 }}
           defaultValue={row.default_value}
           onBlur={e => onChangeText(e.target.value, row)}
         />
@@ -662,7 +661,7 @@ const SetConfig = (props: Props) => {
     {
       title: t('newlyAdd.normalValueOrFields'),
       dataIndex: 'default_value',
-      width: i18n.language === 'zh' ? 170 : 220,
+      width: i18n.language === 'zh' ? 178 : 220,
       render: (text: any, record: any) => <>{getTableCol(record)}</>,
     },
     {

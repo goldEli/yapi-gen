@@ -112,7 +112,7 @@ const Workflow = () => {
             <CategoryWrap color={categoryItem?.color} bgColor={''}>
               <>
                 <img
-                  src={categoryItem.attachmentPath}
+                  src={categoryItem?.attachmentPath}
                   style={{ width: 20, marginRight: 4 }}
                 />
                 {categoryItem.name}
