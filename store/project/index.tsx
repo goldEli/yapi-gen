@@ -2,7 +2,11 @@
 /* eslint-disable no-duplicate-imports */
 // 项目
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { getParentList, getProjectInfoValuesStore } from './project.thunk'
+import {
+  getParentList,
+  getProjectInfoValuesStore,
+  getWarningConfigInfo,
+} from './project.thunk'
 import { setAffairsActivity } from '@store/affairs'
 
 export interface CounterState {
@@ -50,6 +54,11 @@ export interface CounterState {
   drawerCanOperation: any
   tableFilter?: any
   updateProgress: number
+  projectWarning?: any
+  projectWarningModal?: {
+    visible: boolean
+    id?: number
+  }
 }
 
 const initialState: CounterState = {
@@ -103,6 +112,7 @@ const initialState: CounterState = {
   drawerInfo: {},
   drawerCanOperation: {},
   updateProgress: 0,
+  projectWarning: {},
 }
 
 export const projectSlice = createSlice({
@@ -211,6 +221,18 @@ export const projectSlice = createSlice({
     setAddWorkItemParentList: (state: any, action) => {
       state.addWorkItemParentList = action.payload
     },
+    setProjectWarning(
+      state: any,
+      action: PayloadAction<CounterState['projectWarning']>,
+    ) {
+      state.projectWarning = action.payload
+    },
+    setProjectWarningModal(
+      state: any,
+      action: PayloadAction<CounterState['projectWarningModal']>,
+    ) {
+      state.projectWarningModal = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
@@ -218,6 +240,9 @@ export const projectSlice = createSlice({
     })
     builder.addCase(getProjectInfoValuesStore.fulfilled, (state, action) => {
       state.projectInfoValues = action.payload
+    })
+    builder.addCase(getWarningConfigInfo.fulfilled, (state, action) => {
+      state.projectWarning = action.payload
     })
   },
 })
@@ -246,6 +271,8 @@ export const {
   setAddWorkItemParentList,
   setDrawerInfo,
   setUpdateProgress,
+  setProjectWarning,
+  setProjectWarningModal,
 } = projectSlice.actions
 
 export default projectSlice.reducer

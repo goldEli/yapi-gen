@@ -32,6 +32,7 @@ import { TextChange } from '@/components/TextChange/TextChange'
 import NoteModal from '@/components/NoteModal'
 import { CloseWrap } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
+import { setProjectInfo, setProjectWarningModal } from '@store/project'
 
 const mcs = css`
   overflow: hidden;
@@ -43,6 +44,7 @@ const mcs = css`
 
 const SiteNotifications = (props: any, ref: any) => {
   const { loginInfo } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
   const [first, setFirst] = useState(false)
   const [first2, setFirst2] = useState({})
   const [t] = useTranslation()
@@ -63,7 +65,7 @@ const SiteNotifications = (props: any, ref: any) => {
     dispatch(changeNumber(num))
   }
   const sendMsg = () => {
-    if (wsData.data.customData.noticeStyle === '2') {
+    if (wsData?.data?.customData?.noticeStyle === '2') {
       const element: any = document.getElementsByClassName('ant-message')
 
       message.success({
@@ -82,7 +84,7 @@ const SiteNotifications = (props: any, ref: any) => {
           // dispatch(changeVisible(!isVisible))
         },
       })
-    } else if (wsData.data.customData.noticeStyle === '1') {
+    } else if (wsData?.data?.customData?.noticeStyle === '1') {
       setFirst(true)
       setFirst2({
         customData: wsData.data.customData,
@@ -90,7 +92,6 @@ const SiteNotifications = (props: any, ref: any) => {
         id: wsData.data.msgIds,
       })
     }
-
     Notification.requestPermission().then(result => {
       if (result === 'granted') {
         const n: any = new Notification(wsData.data.msgBody.title, {
@@ -352,8 +353,33 @@ const SiteNotifications = (props: any, ref: any) => {
     init()
     init2()
   }, [isRefresh])
+
+  // 更新页面小铃铛预警任务数量
+  const updateWarningCount = (data: any) => {
+    if (data?.customType === '1207' || data?.customType === '2207') {
+      dispatch(
+        setProjectInfo({
+          ...projectInfo,
+          project_warring_info: {
+            ...(projectInfo.project_warring_info || {}),
+            warring_count: data?.customData?.warning_count,
+            noticeStyle: data?.customData?.noticeStyle,
+            customType: data?.customType,
+          },
+        }),
+      )
+    }
+  }
+
   useEffect(() => {
-    if (wsData) {
+    if (
+      wsData?.data?.customType === '1207' ||
+      wsData?.data?.customType === '2207'
+    ) {
+      // 更新页面小铃铛预警任务数量
+      dispatch(setProjectWarningModal({ visible: true }))
+      updateWarningCount(wsData?.data)
+    } else {
       sendMsg()
     }
   }, [wsData])

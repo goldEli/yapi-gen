@@ -58,6 +58,9 @@ const FlawStatus = (props: any) => {
     }
   }
   const init = async () => {
+    if (!props.pid || !props.sid) {
+      return
+    }
     const res2 = await getShapeFlawLeft({
       id: props.pid,
       nId: props.sid,

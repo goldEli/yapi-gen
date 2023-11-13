@@ -13,6 +13,7 @@ import { saveInputKey } from '@store/view'
 import { getParamsData } from '@/tools'
 import { setActiveCategory } from '@store/category/index'
 import { setCategoryList } from '@store/category'
+import RightWran from '@/hooks/useRightWran'
 
 interface IProps {}
 
@@ -69,6 +70,20 @@ const Project: React.FC<IProps> = props => {
     <ProjectWrap>
       {isShowPage ? (
         <>
+          {window.location.href.includes('/SprintProjectManagement/Setting') ||
+          window.location.href.includes('/ProjectManagement/Mine') ||
+          window.location.href.includes(
+            '/SprintProjectManagement/DemandSetting',
+          ) ? null : projectInfo?.project_warring_info?.warring_list_nums ? (
+            <RightWran />
+          ) : null}
+          {/* {window.location.href.includes('/SprintProjectManagement/Setting') ||
+          window.location.href.includes('/ProjectManagement/Mine') ||
+          window.location.href.includes(
+            '/SprintProjectManagement/DemandSetting',
+          ) ? null : projectInfo?.project_warring_info?.warring_list_nums ? (
+            <ProjectWarningModal></ProjectWarningModal>
+          ) : null} */}
           {path.includes(location.pathname) && (
             <HasSideCommonLayout side={<ProjectDetailSide />}>
               <Outlet />

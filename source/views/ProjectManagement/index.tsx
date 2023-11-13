@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from '@store/index'
 import { saveInputKey } from '@store/view'
 import ProjectDetailSide from './ProjectDetailSide'
+import RightWran from '@/hooks/useRightWran'
 
 const ProjectWrap = styled.div`
   position: relative;
@@ -81,6 +82,12 @@ const Project = () => {
 
   return (
     <ProjectWrap>
+      {window.location.href.includes('/ProjectManagement/Project') ||
+      window.location.href.includes(
+        '/ProjectManagement/Mine',
+      ) ? null : projectInfo?.project_warring_info?.warring_list_nums ? (
+        <RightWran />
+      ) : null}
       {isShowPage ? (
         <>
           {path.includes(location.pathname) && (

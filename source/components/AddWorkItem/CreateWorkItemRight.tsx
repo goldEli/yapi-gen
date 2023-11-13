@@ -526,7 +526,6 @@ const CreateDemandRight = (props: Props) => {
     props.onGetParentList(value)
     setSearchVal(value)
   }
-  console.log(projectInfoValues, 'projectInfoValues')
 
   // 返回基本字段
   const getBasicTypeComponent = (item: any) => {

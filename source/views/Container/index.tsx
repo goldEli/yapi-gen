@@ -40,6 +40,8 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ProjectSystemReport from '../WorkReport/Review/components/ProjectSystemReport'
 import EmployeeProfileContrast from '@/components/EmployeeProfileContrast'
 import ReportAssistantModal from '@/views/WorkReport/Review/components/ReportAssistantModal'
+import ProjectWarningModal from '@/components/ProjectWarningModal/ProjectWarningModal'
+import { setProjectWarningModal } from '@store/project'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -186,7 +188,11 @@ export const Container = () => {
     }
     setIsNextVisible(loginInfo.admin_first_login)
   }, [loginInfo, menuPermission])
-
+  useEffect(() => {
+    if (projectInfo?.project_warring_info?.popup_window === 1) {
+      dispatch(setProjectWarningModal({ visible: true }))
+    }
+  }, [projectInfo])
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
@@ -243,6 +249,7 @@ export const Container = () => {
         <FlawDetailDrawer />
         <DetailScreenModal />
         <EmployeeProfileContrast />
+        <ProjectWarningModal></ProjectWarningModal>
       </ConfigProvider>
     </KitConfigProvider>
   )

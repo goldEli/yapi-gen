@@ -416,16 +416,6 @@ const XTable: React.FC<XTableProps> = props => {
                     : ''}
                 </span>
                 {data.id === 0 ? null : (
-                  // <Popover
-                  //   content={
-                  //     <PopoverTargetText>
-                  //       {data.iterate_info || '--'}
-                  //     </PopoverTargetText>
-                  //   }
-                  //   placement="bottom"
-                  //   trigger="click"
-                  // >
-
                   <CommonButton
                     onClick={() => {
                       openTargetModal({
@@ -446,8 +436,6 @@ const XTable: React.FC<XTableProps> = props => {
                     />
                     {t('viewGoals')}
                   </CommonButton>
-
-                  // </Popover>
                 )}
               </div>
             </div>

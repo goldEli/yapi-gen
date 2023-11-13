@@ -20,9 +20,10 @@ import { useState, useEffect } from 'react'
 import ProjectNote from './components/ProjectNote'
 import { getProjectRoleList } from '@store/sprint/sprint.thunk'
 import DailyReportRules from '@/views/SprintProjectSetting/components/DailyReportRules'
+import ProjectWarning from './components/ProjectWarning/index'
 const Wrap = styled.div({
   display: 'flex',
-  height: 'calc(100vh - 130px)',
+  height: 'calc(100vh - 134px)',
 })
 
 const Content = styled.div({
@@ -110,13 +111,23 @@ const Setting = () => {
         String(i.identity).includes('b/project/daily_config'),
       ).length,
     },
+    {
+      name: t('projectPushSettings'),
+      icon: 'settings',
+      content: <ProjectWarning />,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/warning_config'),
+      ).length,
+    },
   ]
   useEffect(() => {
     setSearchValue('')
   }, [activeTabs])
+
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))
   }, [])
+
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"

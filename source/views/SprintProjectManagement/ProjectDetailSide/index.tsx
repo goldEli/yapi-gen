@@ -189,6 +189,21 @@ const ProjectDetailSide = () => {
       ).length,
       key: 'ProjectSchedule',
     },
+    {
+      label: t('projectPushSettings'),
+      icon: (
+        <CommonIconFont
+          color="var(--neutral-n3)"
+          type="forewarning"
+          size={18}
+        />
+      ),
+      path: '/SprintProjectManagement/Setting',
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/warning_config'),
+      ).length,
+      key: 'ProjectWarning',
+    },
   ]
   const menuList = [
     {

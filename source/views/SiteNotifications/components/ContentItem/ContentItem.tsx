@@ -8,7 +8,7 @@ import { Badge, Checkbox } from 'antd'
 import { useState } from 'react'
 import { About, GrepContent, HoverWrap, Name, Time, Time2, Wrap } from './style'
 import dayjs from 'dayjs'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { css } from '@emotion/css'
 import { Editor } from 'ifunuikit'
 import { useTranslation } from 'react-i18next'
@@ -16,22 +16,12 @@ import styled from '@emotion/styled'
 import { getMessage } from '@/components/Message'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { setProjectWarningModal } from '@store/project'
 
-const tmgCss = css`
-  img {
-    width: 100%;
-    object-fit: contain;
-  }
-`
-const CommonUserAvatar2 = styled.img<{ size?: string }>`
-  border-radius: 50%;
-
-  width: ${props => (props.size === 'large' ? 32 : 24)}px;
-  height: ${props => (props.size === 'large' ? 32 : 24)}px;
-`
 const ContentItem = (props: any) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { send_user, msg_body, create_time, read, id, custom_data } = props.item
   const [choose, setChoose] = useState(false)
   const cha = useSelector(store => store.user.loginInfo.timeDiff)
@@ -107,6 +97,17 @@ const ContentItem = (props: any) => {
     }
   }
 
+  // // 点击打开项目预警
+  // const onOpenWaring = () => {
+  //   if (!['1207', '2207'].includes(props.item?.custom_type)) return
+  //   dispatch(
+  //     setProjectWarningModal({
+  //       visible: true,
+  //       id: Number(props.item?.custom_data?.project_id),
+  //     }),
+  //   )
+  // }
+
   return (
     <Wrap
       bor={props.bor}
@@ -122,6 +123,7 @@ const ContentItem = (props: any) => {
           <CommonUserAvatar isBorder avatar={send_user.head} />
         </Badge>
       </div>
+      {/* onClick={onOpenWaring} */}
       <HoverWrap style={{ flex: '1' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Name className={String(read === 1 ? 'read' : 'unread')}>
@@ -134,7 +136,7 @@ const ContentItem = (props: any) => {
             </Time2>
           )}
         </div>
-        <div className="msgTitle">
+        <div className="msgTitle 111">
           <div style={{ alignSelf: 'start' }}>
             <CommonUserAvatar avatar={msg_body.optHeader} />
           </div>

@@ -167,6 +167,7 @@ const ProjectDetailSide = () => {
     'ProjectKanBan',
     'ProjectHome',
     'ProjectSchedule',
+    'ProjectWarning',
   ]
   const sideList = [
     {
@@ -258,6 +259,22 @@ const ProjectDetailSide = () => {
           String(i.identity).includes('b/project/daily_config'),
         ).length > 0,
       key: 'ProjectSchedule',
+    },
+    {
+      label: t('projectPushSettings'),
+      icon: (
+        <CommonIconFont
+          color="var(--neutral-n3)"
+          type="forewarning"
+          size={18}
+        />
+      ),
+      path: '/ProjectManagement/ProjectSetting',
+      isPermission:
+        projectInfo?.projectPermissions?.filter((i: any) =>
+          String(i.identity).includes('b/project/warning_config'),
+        ).length > 0,
+      key: 'ProjectWarning',
     },
   ]
   const getProjectInfoValuesData = async () => {
@@ -378,6 +395,7 @@ const ProjectDetailSide = () => {
       ProjectKanBan: 5,
       ProjectHome: 6,
       ProjectSchedule: 7,
+      ProjectWarning: 8,
     }
     const params = encryptPhp(
       JSON.stringify({
