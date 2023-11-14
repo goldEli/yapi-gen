@@ -111,7 +111,7 @@ const SiteNotifications = (props: any, ref: any) => {
     if (isDesktopDevice) {
       Notification.requestPermission().then(result => {
         if (result === 'granted') {
-          const n: any = new Notification(wsData.data.msgBody.title, {
+          const n: any = new Notification(wsData?.data?.msgBody?.title, {
             body: wsData.data.msgBody.content,
           })
           n.onclick = function () {
