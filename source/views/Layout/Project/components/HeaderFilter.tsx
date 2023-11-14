@@ -40,17 +40,14 @@ const HeaderFilter = (props: HeaderFilterProps) => {
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
   const [filterParams, setFilterParams] = useState(filterParamsAll)
 
-  //   查看项目类型列表
-  const typeList = [
-    { name: t('recentlyViewed'), key: 1, count: 0 },
-    { name: t('allProjects'), key: 2, count: 10 },
-  ]
   //   状态类型列表
   const statusList = [
+    { name: t('recentlyViewed'), key: 5, count: 0 },
+    { name: t('allProjects'), key: 0, count: 10 },
     { name: t('progress'), key: 1, count: 0 },
-    { name: t('hasNotStarted'), key: 2, count: 10 },
+    { name: t('hasNotStarted'), key: 4, count: 10 },
     { name: t('paused'), key: 3, count: 10 },
-    { name: t('completed'), key: 4, count: 10 },
+    { name: t('completed'), key: 2, count: 10 },
   ]
   //   多选状态列表
   const checkTypeList = [
@@ -176,13 +173,12 @@ const HeaderFilter = (props: HeaderFilterProps) => {
     <HeaderFilterWrap>
       <HeaderTop>
         <StatusGroup>
-          {typeList?.map((i: any) => (
-            <StatusItems key={i.key} isActive={i.key === filterParams.type}>
-              {i.name}
-            </StatusItems>
-          ))}
           {statusList?.map((i: any) => (
-            <StatusItems key={i.key} isActive={i.key === filterParams.status}>
+            <StatusItems
+              key={i.key}
+              isActive={i.key === filterParams.status}
+              onClick={() => onChangeParams('status', i.key)}
+            >
               {i.name}
             </StatusItems>
           ))}

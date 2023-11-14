@@ -18,16 +18,28 @@ import { getStaffListAll } from './staff'
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
     search: {
-      project_types: params.project_types,
-      is_my_created: params.is_my_created === 1 ? 1 : undefined,
-      project_type: params.project_type,
-      self: params.self ? 1 : 0,
-      keyword: params.searchValue,
+      // 以前使用到的字段，现可能用不上
       is_public: params?.isPublic ? Number(params.isPublic) : '',
-      status: Number(params.status) || '',
-      all: params.all ? 1 : 0,
-      group: params?.groupId,
+      is_my_created: params.is_my_created === 1 ? 1 : undefined,
       is_clone: params?.is_clone,
+      group: params?.groupId,
+
+      // 搜索值
+      keyword: params?.searchValue,
+      // 是否是用户参与
+      self: params?.project_types.includes(3) ? 1 : 0,
+      // 项目状态
+      status: params.status === 5 ? '' : params.status,
+      // 是否是全部 -- 例查下拉列表
+      all: params.all ? 1 : 0,
+      // 项目类型 迭代1冲刺2
+      project_types: params.project_types?.filter((i: any) => i !== 3),
+      // 项目开始时间
+      expected_start_at: params.time[0] ?? '',
+      // 项目结束时间
+      expected_end_at: params.time[1] ?? '',
+      // 是否是最近查看
+      is_recent: params?.status === 5 ? 1 : 0,
     },
     pagesize: params.pageSize,
     page: params.page,

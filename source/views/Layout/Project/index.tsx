@@ -36,15 +36,13 @@ const ProjectIndex = () => {
   })
   // 筛选条件默认值
   const [filterParams, setFilterParams] = useState({
-    // 查看类型 例-最近查看
-    type: 1,
     // 状态
-    status: 2,
+    status: 0,
     // 搜索值
     keyword: '',
     // 项目周期
     time: [],
-    //其他的类型
+    //其他的类型(迭代，冲刺、我参与的)
     otherType: [1, 2, 3],
     pageObj: { page: 1, size: 30 },
     order: { value: '', key: '' },
@@ -74,15 +72,13 @@ const ProjectIndex = () => {
       searchValue: params?.keyword,
       orderKey: params?.order?.key,
       order: params?.order?.value,
-      status: '',
-      project_types: '',
-    }
-    if (params?.isGrid) {
-      paramsObj.all = true
+      status: params.status,
+      project_types: params.otherType,
+      time: params.time,
     }
     if (!params?.isGrid) {
-      paramsObj.page = 1
-      paramsObj.pageSize = 20
+      paramsObj.page = params.pageObj.page
+      paramsObj.pageSize = params.pageObj.size
     }
 
     const result = await getProjectList(paramsObj)

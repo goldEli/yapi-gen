@@ -34,6 +34,7 @@ export const formatFileSize = (val: number) => {
   return `${String((val / k ** i).toPrecision(3))}${sizes[i]}`
 }
 let cache: { credentials: any } | null = null
+
 const getCosSign = async (): Promise<any> => {
   if (cache && Date.now()) {
     // 如果缓存中存在有效的临时密钥，则直接返回
