@@ -84,7 +84,13 @@ const SiteNotifications = (props: any, ref: any) => {
           // dispatch(changeVisible(!isVisible))
         },
       })
-    } else if (wsData?.data?.customData?.noticeStyle === '1') {
+    } else if (
+      wsData?.data?.customData?.noticeStyle === '1' &&
+      !(
+        wsData?.data?.customType === '1207' ||
+        wsData?.data?.customType === '2207'
+      )
+    ) {
       setFirst(true)
       setFirst2({
         customData: wsData.data.customData,
@@ -373,8 +379,23 @@ const SiteNotifications = (props: any, ref: any) => {
 
   useEffect(() => {
     if (
-      wsData?.data?.customType === '1207' ||
-      wsData?.data?.customType === '2207'
+      (wsData?.data?.customType === '1207' ||
+        wsData?.data?.customType === '2207') &&
+      projectInfo?.id === Number(wsData?.data?.customData?.project_id) &&
+      (window.location.href.includes('/ProjectManagement/') ||
+        window.location.href.includes('/SprintProjectManagement/')) &&
+      !(
+        window.location.href.includes('/SprintProjectManagement/Setting') ||
+        window.location.href.includes('/ProjectManagement/Mine') ||
+        window.location.href.includes(
+          '/SprintProjectManagement/DemandSetting',
+        ) ||
+        window.location.href.includes('/ProjectManagement/Setting') ||
+        window.location.href.includes('/ProjectManagement/Mine') ||
+        window.location.href.includes('/ProjectManagement/DemandSetting') ||
+        window.location.href.includes('/ProjectManagement/Project') ||
+        window.location.href.includes('/SprintProjectManagement/Project')
+      )
     ) {
       // 更新页面小铃铛预警任务数量
       dispatch(setProjectWarningModal({ visible: true }))

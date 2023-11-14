@@ -2496,7 +2496,7 @@
   "matterType": "事项类型",
   "descriptionOfTheMatter": "事项描述",
   "matterConditions": "事项条件",
-  "pushThreshold": "推送阀值",
+  "pushThreshold": "推送阈值",
   "whetherToEnable": "是否启用",
   "pushConditions": "推送条件",
   "riskWarningPushSettings": "风险预警推送设置",
