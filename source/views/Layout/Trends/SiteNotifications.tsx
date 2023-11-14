@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
@@ -60,6 +61,10 @@ const SiteNotifications = (props: any, ref: any) => {
   const isRefresh = useSelector(store => store.user.isRefresh)
   const { layoutSideCollapse } = useSelector(store => store.global)
   const { currentMenu, menuIconList } = useSelector(store => store.user)
+  const isDesktopDevice = /Windows|Macintosh|X11|Android|webOS/i.test(
+    navigator.userAgent,
+  )
+  console.log(isDesktopDevice, 'isDesktopDevice')
 
   const init2 = async () => {
     // eslint-disable-next-line no-promise-executor-return
@@ -73,6 +78,8 @@ const SiteNotifications = (props: any, ref: any) => {
 
     dispatch(changeNumber(num))
   }
+  console.log(navigator.userAgent, 'navigator.userAgent')
+
   const sendMsg = () => {
     if (wsData?.data?.customData?.noticeStyle === '2') {
       const element: any = document.getElementsByClassName('ant-message')
@@ -101,42 +108,44 @@ const SiteNotifications = (props: any, ref: any) => {
         id: wsData.data.msgIds,
       })
     }
-    Notification.requestPermission().then(result => {
-      if (result === 'granted') {
-        const n: any = new Notification(wsData.data.msgBody.title, {
-          body: wsData.data.msgBody.content,
-        })
-        n.onclick = function () {
-          if (wsData.data.customData.linkWebUrl) {
-            // 当点击事件触发，打开指定的url
-            window.open(wsData.data.customData.linkWebUrl)
-          }
-        }
-      } else {
-        notification.open({
-          icon: <CommonIconFont color="#6688FF" size={20} type="bell" />,
-          className: 'notification-my',
-          maxCount: 1,
-          placement: 'bottomLeft',
-          message: (
-            <div style={{ fontFamily: 'SiYuanMedium', marginLeft: '-17px' }}>
-              {wsData.data.msgBody.title}
-            </div>
-          ),
-          description: (
-            <div className={mcs} style={{ marginLeft: '-12px' }}>
-              {wsData.data.msgBody.content}
-            </div>
-          ),
-          onClick: () => {
+    if (isDesktopDevice) {
+      Notification.requestPermission().then(result => {
+        if (result === 'granted') {
+          const n: any = new Notification(wsData.data.msgBody.title, {
+            body: wsData.data.msgBody.content,
+          })
+          n.onclick = function () {
             if (wsData.data.customData.linkWebUrl) {
               // 当点击事件触发，打开指定的url
               window.open(wsData.data.customData.linkWebUrl)
             }
-          },
-        })
-      }
-    })
+          }
+        } else {
+          notification.open({
+            icon: <CommonIconFont color="#6688FF" size={20} type="bell" />,
+            className: 'notification-my',
+            maxCount: 1,
+            placement: 'bottomLeft',
+            message: (
+              <div style={{ fontFamily: 'SiYuanMedium', marginLeft: '-17px' }}>
+                {wsData.data.msgBody.title}
+              </div>
+            ),
+            description: (
+              <div className={mcs} style={{ marginLeft: '-12px' }}>
+                {wsData.data.msgBody.content}
+              </div>
+            ),
+            onClick: () => {
+              if (wsData.data.customData.linkWebUrl) {
+                // 当点击事件触发，打开指定的url
+                window.open(wsData.data.customData.linkWebUrl)
+              }
+            },
+          })
+        }
+      })
+    }
 
     init2()
   }
