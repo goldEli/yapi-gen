@@ -51,7 +51,9 @@ const Issues: React.FC<IssuesProps> = props => {
   }, [groupId, issues.id])
   const mockDataCopy = useRef<any>()
   mockDataCopy.current = issues.stories
-  const { movingStory, kanbanInfoByGroup } = useSelector(store => store.kanBan)
+  const { movingStory, kanbanInfoByGroup, fullScreen } = useSelector(
+    store => store.kanBan,
+  )
 
   const { groupType } = useGroupType()
   const columnId = issues.id
@@ -200,9 +202,16 @@ const Issues: React.FC<IssuesProps> = props => {
       style={{
         overflowY: 'auto',
         overflowX: 'hidden',
-        height: groupType === 'none' ? 'calc( 100vh - 300px)' : '700px',
+        height:
+          groupType === 'none'
+            ? `calc( 100vh - ${fullScreen ? '130px' : '300px'})`
+            : '700px',
       }}
-      height={groupType === 'none' ? 'calc( 100vh - 300px)' : '700px'}
+      height={
+        groupType === 'none'
+          ? `calc( 100vh - ${fullScreen ? '130px' : '300px'})`
+          : '700px'
+      }
       dataLength={issues.stories?.length}
       next={fetchMoreData}
       hasMore
