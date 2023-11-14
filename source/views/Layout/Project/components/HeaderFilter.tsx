@@ -110,6 +110,9 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 
   //   修改参数值
   const onChangeParams = (key: string, value: any) => {
+    if (key === 'keyword' && value === filterParams?.keyword) {
+      return
+    }
     let resultParams: any = {}
     if (key === 'time') {
       resultParams = {

@@ -813,7 +813,8 @@
     "end": "预计结束",
     "tableTotal": "共{{count}}条",
     "openSuccess": "开启成功",
-    "endSuccess": "结束成功",
+    "endSuccess": "关闭成功",
+    "pausedSuccess": "暂停成功",
     "deleteSuccess": "删除成功",
     "createSuccess": "创建成功",
     "editSuccess": "编辑成功",
@@ -908,7 +909,7 @@
     "iterateSurvey": "迭代概况",
     "changeRecord": "变更记录",
     "Closed": "已关闭",
-    "opening1": "已开启",
+    "opening1": "进行中",
     "permission": "权限",
     "pleaseChooseDeal": "请选择处理人",
     "add23": "添加",
@@ -1196,8 +1197,10 @@
     "pleaseKey": "请输入昵称姓名邮箱电话"
   },
   "mark": {
-    "endP": "确认结束该项目？",
-    "delP": "确认删除该项目？",
+    "endP": "是否关闭该项目？",
+    "startP": "是否开始该项目？",
+    "suspendP": "是否暂停该项目？",
+    "delP": "是否删除该项目？",
     "searchP": "搜索项目或项目ID",
     "cd": "确认删除当前评论？",
     "editCom": "输入评论，按Enter快速发布",
@@ -2608,5 +2611,7 @@
   "confirmClose": "确认关闭",
   "theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime": "预计开始时间不能大于预计结束时间",
   "estimatedStartTime": "预计开始时间",
-  "estimatedEndTime": "预计结束时间"
+  "estimatedEndTime": "预计结束时间",
+  "pause": "暂停",
+  "start": "开始"
 }

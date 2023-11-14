@@ -46,6 +46,7 @@ import {
 } from '@/views/Layout/Report/Formwork/RightWrap'
 import { getProjectInfoStore } from '@store/project/project.thunk'
 import CommonButton from '../CommonButton'
+import moment from 'moment'
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
@@ -139,17 +140,23 @@ const CreateAProjectForm = () => {
       project_type: type,
       cover: activeCover,
       ...formData,
+      expected_start_at: formData?.expected_start_at
+        ? moment(formData?.expected_start_at).format('YYYY-MM-DD')
+        : '',
+      expected_end_at: formData?.expected_end_at
+        ? moment(formData?.expected_end_at).format('YYYY-MM-DD')
+        : '',
     }
     if (isEditId) {
-      dispatch(postEditCreate({ ...pro, ...obj, id: isEditId }))
+      await dispatch(postEditCreate({ ...projectInfo, ...obj, id: isEditId }))
       setProjectInfo({ ...projectInfo, ...obj, id: isEditId })
+      dispatch(getProjectInfoStore({ projectId: isEditId }))
       setLeaderId(0)
       return
     }
 
     dispatch(postCreate(obj))
     setLeaderId(0)
-    dispatch(getProjectInfoStore({ projectId: isEditId }))
   }
   const onConfirm = async () => {
     form.submit()
@@ -253,6 +260,10 @@ const CreateAProjectForm = () => {
       isPublic: res.is_public,
       groups: res.groups.map((i: any) => i.id),
       info: res.info,
+      expected_start_at: res.expected_start_at
+        ? moment(res.expected_start_at)
+        : '',
+      expected_end_at: res.expected_end_at ? moment(res.expected_end_at) : '',
     })
     setLeaderId(res.team_id)
     setCanChooseLeader(false)
@@ -316,6 +327,7 @@ const CreateAProjectForm = () => {
       getLeader()
     }
   }, [leaderId, isRefresh])
+
   useEffect(() => {
     if (multipleSelectionItems.length === 1) {
       getProjectInfo2()
@@ -394,6 +406,10 @@ const CreateAProjectForm = () => {
       dex={50}
       isShowMask={false}
       isVisible={createVisible}
+      onClose={() => {
+        dispatch(changeCreateVisible(false))
+        dispatch(editProject({ visible: false, id: '' }))
+      }}
     >
       <div
         style={{

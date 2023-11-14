@@ -4,23 +4,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Menu, Progress, Tooltip } from 'antd'
+import { Progress, Tooltip } from 'antd'
 import {
   ListNameWrap,
   TableActionWrap,
   TableActionItem,
 } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import MoreDropdown from '@/components/MoreDropdown'
 import { useSelector } from '@store/index'
 import PaginationBox from '../TablePagination'
-import ResizeTable from '../ResizeTable'
 import { editProject } from '@store/create-propject'
 import { useDispatch } from 'react-redux'
 import CommonButton from '../CommonButton'
@@ -29,7 +27,7 @@ import DragTable from '../DragTable'
 import MultipleAvatar from '../MultipleAvatar'
 
 interface Props {
-  onChangeOperation(type: string, item: any, e: any): void
+  onChangeOperation(type: string, item: any, e?: any): void
   projectList: any
   onChangePageNavigation(item: any): void
   onUpdateOrderKey(item: any): void
@@ -43,6 +41,9 @@ interface Props {
 const StatusWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
+  width: 'max-content',
+  padding: '0 8px',
+  height: 22,
   div: {
     width: 8,
     height: 8,
@@ -93,6 +94,7 @@ const NewSort = (sortProps: any) => {
 const MainTable = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { userInfo } = useSelector(store => store.user)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
@@ -110,14 +112,9 @@ const MainTable = (props: Props) => {
     userInfo?.company_permissions,
     'b/project/delete',
   )
-  const hasStop = getIsPermission(
-    userInfo?.company_permissions,
-    'b/project/stop',
-  )
-  const hasStart = getIsPermission(
-    userInfo?.company_permissions,
-    'b/project/start',
-  )
+
+  // 当前登录这是否是超级管理员
+  const isSuperAdmin = userInfo?.is_company_super_admin === 1
 
   const onUpdateOrderKey = (key: any, val: any) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -292,17 +289,45 @@ const MainTable = (props: Props) => {
       dataIndex: 'status',
       width: 100,
       render: (text: number) => {
+        const statusArr = [
+          {
+            id: 1,
+            name: t('inProgress'),
+            color: '#43BA9A',
+            bg: 'rgba(67,186,154,0.1)',
+          },
+          {
+            id: 2,
+            name: t('completed'),
+            color: '#A176FB',
+            bg: 'rgba(161,118,251,0.1)',
+          },
+          {
+            id: 3,
+            name: t('paused'),
+            color: '#FA9746',
+            bg: 'rgba(250,151,70,0.1)',
+          },
+          {
+            id: 4,
+            name: t('hasNotStarted'),
+            color: '#6688FF',
+            bg: 'rgba(102,136,255,0.1)',
+          },
+        ]
         return (
-          <StatusWrap>
+          <StatusWrap
+            style={{
+              background: statusArr?.filter((i: any) => i.id === text)[0]?.bg,
+            }}
+          >
             <div
               style={{
-                background:
-                  text === 1 ? 'var(--function-success)' : 'var(--neutral-n4)',
+                background: statusArr?.filter((i: any) => i.id === text)[0]
+                  ?.color,
               }}
             />
-            <span>
-              {text === 1 ? t('common.opening1') : t('common.Closed')}
-            </span>
+            <span>{statusArr?.filter((i: any) => i.id === text)[0]?.name}</span>
           </StatusWrap>
         )
       },
@@ -311,13 +336,50 @@ const MainTable = (props: Props) => {
       title: t('operate'),
       dataIndex: 'action',
       width: 200,
-      render: (text: number) => {
+      render: (text: number, record: any) => {
+        // 是否可以点击关闭
+        const isClose =
+          (!isSuperAdmin && record.leader_id !== userInfo?.id) ||
+          [4, 2].includes(record.status)
+
+        // 是否可以点击开启或暂停
+        const isStartOrpause =
+          (!isSuperAdmin && record.leader_id !== userInfo?.id) ||
+          [4, 2].includes(record.status)
+
         return (
           <TableActionWrap>
-            <TableActionItem isDisable={hasStart}>开始</TableActionItem>
-            <TableActionItem isDisable={hasStop}>关闭</TableActionItem>
-            <TableActionItem isDisable={hasEdit}>编辑</TableActionItem>
-            <TableActionItem isDisable={hasDelete}>删除</TableActionItem>
+            <Tooltip title>
+              <TableActionItem
+                isDisable={!isSuperAdmin && record.leader_id !== userInfo?.id}
+                onClick={() => props.onChangeOperation('', record)}
+              >
+                {record.status === 1 ? t('pause') : t('start')}
+              </TableActionItem>
+            </Tooltip>
+            <Tooltip title>
+              <TableActionItem
+                isDisable={isClose}
+                onClick={() => props.onChangeOperation('close', record)}
+              >
+                {t('closure')}
+              </TableActionItem>
+            </Tooltip>
+
+            <TableActionItem
+              isDisable={hasEdit}
+              onClick={() => {
+                dispatch(editProject({ visible: true, id: record.id }))
+              }}
+            >
+              {t('edit')}
+            </TableActionItem>
+            <TableActionItem
+              isDisable={hasDelete}
+              onClick={() => props.onChangeOperation('delete', record)}
+            >
+              {t('common.del')}
+            </TableActionItem>
           </TableActionWrap>
         )
       },

@@ -16,6 +16,7 @@ const urls = {
   updateProject: '/b/project/update',
   deleteProject: '/b/project/delete',
   openProject: '/b/project/start',
+  suspendProject: '/b/project/suspend',
   stopProject: '/b/project/stop',
   getProjectMember: '/b/project/member/getList',
   addProjectMember: '/b/project/member/save',

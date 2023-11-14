@@ -14,6 +14,7 @@ import {
   getProjectList,
   openProject,
   stopProject,
+  suspendProject,
 } from '@/services/project'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import GuideModal from '@/components/GuideModal'
@@ -26,8 +27,9 @@ const ProjectIndex = () => {
   const { userPreferenceConfig } = useSelector(store => store.user)
   // 缩略图还是列表
   const [isSpinning, setIsSpinning] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
-  const [isStop, setIsStop] = useState(false)
+  // 开始、关闭、暂停的弹窗状态
+  const [isStatusState, setIsStatusState] = useState(false)
+  // 是否删除项目
   const [isDelete, setIsDelete] = useState(false)
   // 当前操作的数据
   const [operationDetail, setOperationDetail] = useState<any>({})
@@ -117,6 +119,7 @@ const ProjectIndex = () => {
     })
   }
 
+  // 删除确认
   const onDeleteConfirm = async () => {
     try {
       await deleteProject({ id: operationDetail.id })
@@ -129,44 +132,46 @@ const ProjectIndex = () => {
     }
   }
 
-  const onEndOrOpen = async (item: any) => {
-    try {
-      if (item.status === 1) {
-        await stopProject({ id: item.id })
-      } else {
-        await openProject({ id: item.id })
-      }
+  // 操作项目
+  const onOperationProject = async () => {
+    // 关闭
+    if (operationDetail?.clickType === 'close') {
+      await stopProject({ id: operationDetail.id })
       getMessage({
-        msg:
-          item.status === 1 ? t('common.endSuccess') : t('common.openSuccess'),
+        msg: t('common.endSuccess'),
         type: 'success',
       })
-      setOperationDetail({})
-      setIsStop(false)
-      onChangeParamsUpdate(filterParams, true)
-    } catch (error) {
-      //
+    } else if (operationDetail.status === 1) {
+      await suspendProject({ id: operationDetail.id })
+      getMessage({
+        msg: t('common.pausedSuccess'),
+        type: 'success',
+      })
+    } else {
+      await openProject({ id: operationDetail.id })
+      getMessage({
+        msg: t('common.openSuccess'),
+        type: 'success',
+      })
     }
+
+    setOperationDetail({})
+    setIsStatusState(false)
+    onChangeParamsUpdate(filterParams, true)
   }
 
-  const onStopProject = () => {
-    onEndOrOpen(operationDetail)
-  }
-
-  // 操作更多 例-编辑
+  // 操作更多 例-开始等
   const onChangeOperation = (type: string, item: any, e?: any) => {
     if (e) {
       e.stopPropagation()
     }
-    setOperationDetail(item)
+    setOperationDetail({ ...item, ...{ clickType: type } })
+    // item.status 1-开启 2-结束 3-已暂停 4-未开启
     if (type === 'delete') {
       setIsDelete(true)
-    } else if (type === 'edit') {
-      setIsVisible(true)
-    } else if (item.status === 1) {
-      setIsStop(true)
     } else {
-      onEndOrOpen(item)
+      // 结束、已暂停状态，则开始项目
+      setIsStatusState(true)
     }
   }
 
@@ -185,19 +190,19 @@ const ProjectIndex = () => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-      {/* 结束或者和是开启项目 */}
+      {/* 关闭或者和是开启、暂停项目 */}
       <DeleteConfirm
-        title={t('mark.endP')}
-        text={t('common.stopProjectToast', {
-          name: operationDetail?.name,
-          name1:
-            operationDetail?.project_type === 2
-              ? t('Transaction_sprint')
-              : t('Requirement_iteration'),
-        })}
-        isVisible={isStop}
-        onChangeVisible={() => setIsStop(!isStop)}
-        onConfirm={onStopProject}
+        title={t('p2.toast')}
+        text={
+          operationDetail?.clickType === 'close'
+            ? t('mark.endP')
+            : operationDetail?.status === 1
+            ? t('mark.suspendP')
+            : t('mark.startP')
+        }
+        isVisible={isStatusState}
+        onChangeVisible={() => setIsStatusState(!isStatusState)}
+        onConfirm={onOperationProject}
       />
       <HeaderFilter
         filterParamsAll={filterParams}
@@ -208,7 +213,6 @@ const ProjectIndex = () => {
         <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
           {filterParams?.isGrid ? (
             <MainGrid
-              onChangeVisible={() => setIsVisible(true)}
               onChangeOperation={onChangeOperation}
               onAddClick={onAddClick}
               hasFilter={
