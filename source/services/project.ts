@@ -1065,17 +1065,17 @@ export const getWarningConfigInfo = async (params: any) => {
 // 获取最近的项目
 export const getRecentProject = async (params: any) => {
   const res = await http.get<any>('getRecentProject', params)
-  return res.data
+  return res
 }
 
 // 获取最近的日报
 export const getReportViewLogList = async (params: any) => {
   const res = await http.get<any>('getReportViewLogList', params)
-  return res.data
+  return res
 }
 
 // 获取最近的任务
 export const getRecentStory = async (params: any) => {
   const res = await http.get<any>('getRecentStory', params)
-  return res.data
+  return res
 }
