@@ -2606,5 +2606,7 @@
   "afterYourProjectMembersWillNotReceiveAnyEarlyWarning": "关闭后你的项目成员将无法收到任何预警信息",
   "inForce": "已生效",
   "confirmClose": "确认关闭",
-  "theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime": "预计开始时间不能大于预计结束时间"
+  "theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime": "预计开始时间不能大于预计结束时间",
+  "estimatedStartTime": "预计开始时间",
+  "estimatedEndTime": "预计结束时间"
 }

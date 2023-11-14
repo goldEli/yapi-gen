@@ -31,7 +31,7 @@ const ProjectIndex = () => {
   const [isDelete, setIsDelete] = useState(false)
   // 当前操作的数据
   const [operationDetail, setOperationDetail] = useState<any>({})
-  const [dataList, setDataList] = useState({
+  const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
   // 筛选条件默认值
@@ -76,7 +76,9 @@ const ProjectIndex = () => {
       project_types: params.otherType,
       time: params.time,
     }
-    if (!params?.isGrid) {
+    if (params?.isGrid) {
+      paramsObj.all = true
+    } else {
       paramsObj.page = params.pageObj.page
       paramsObj.pageSize = params.pageObj.size
     }
@@ -199,6 +201,7 @@ const ProjectIndex = () => {
       />
       <HeaderFilter
         filterParamsAll={filterParams}
+        statistics={dataList?.statistics}
         onChangeParamsUpdate={onChangeParamsUpdate}
       />
       <ProjectWrap>

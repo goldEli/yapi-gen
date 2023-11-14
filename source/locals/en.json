@@ -2606,5 +2606,7 @@
   "afterYourProjectMembersWillNotReceiveAnyEarlyWarning": "After closing, your project members will not receive any early warning information.",
   "inForce": "In force",
   "confirmClose": "Confirm close",
-  "theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime": "The estimated start time cannot be greater than the estimated end time"
+  "theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime": "The estimated start time cannot be greater than the estimated end time",
+  "estimatedStartTime": "Estimated start time",
+  "estimatedEndTime": "Estimated end time"
 }

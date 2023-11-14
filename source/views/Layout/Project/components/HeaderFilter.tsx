@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from '@store/index'
 
 interface HeaderFilterProps {
   filterParamsAll: any
+  statistics: any
   onChangeParamsUpdate(params: any): void
 }
 
@@ -42,12 +43,12 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 
   //   状态类型列表
   const statusList = [
-    { name: t('recentlyViewed'), key: 5, count: 0 },
-    { name: t('allProjects'), key: 0, count: 10 },
-    { name: t('progress'), key: 1, count: 0 },
-    { name: t('hasNotStarted'), key: 4, count: 10 },
-    { name: t('paused'), key: 3, count: 10 },
-    { name: t('completed'), key: 2, count: 10 },
+    { name: t('recentlyViewed'), key: 5, field: '' },
+    { name: t('allProjects'), key: 0, field: 'all' },
+    { name: t('progress'), key: 1, field: 'open' },
+    { name: t('hasNotStarted'), key: 4, field: 'un_open' },
+    { name: t('paused'), key: 3, field: 'suspend' },
+    { name: t('completed'), key: 2, field: 'end' },
   ]
   //   多选状态列表
   const checkTypeList = [
@@ -130,18 +131,18 @@ const HeaderFilter = (props: HeaderFilterProps) => {
     } else {
       resultParams = { ...filterParams, ...{ [key]: value } }
     }
-    console.log(resultParams)
     setFilterParams(resultParams)
   }
 
   //   重置
   const onReset = () => {
+    setTime([])
     setFilterParams({
-      type: 1,
-      status: 1,
+      status: 0,
       keyword: '',
       time: [],
       otherType: [1, 2, 3],
+      order: { value: '', key: '' },
       pageObj: {
         page: 1,
         size: 30,
@@ -180,6 +181,9 @@ const HeaderFilter = (props: HeaderFilterProps) => {
               onClick={() => onChangeParams('status', i.key)}
             >
               {i.name}
+              {props?.statistics?.[i.field]
+                ? `（${props?.statistics?.[i.field]}）`
+                : ''}
             </StatusItems>
           ))}
         </StatusGroup>

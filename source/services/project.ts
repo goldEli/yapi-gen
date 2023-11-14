@@ -39,7 +39,7 @@ export const getProjectList: any = async (params: any) => {
       // 项目结束时间
       expected_end_at: params.time[1] ?? '',
       // 是否是最近查看
-      is_recent: params?.status === 5 ? 1 : 0,
+      is_recent: params?.status === 5 ? 1 : '',
     },
     pagesize: params.pageSize,
     page: params.page,
@@ -48,7 +48,8 @@ export const getProjectList: any = async (params: any) => {
   })
   if (params.all) {
     return {
-      total: response.data.length,
+      statistics: response.data.statistics,
+      total: response.data?.list.length,
       list: response.data?.list?.map((i: any) => ({
         id: i.id,
         status: i.status,
@@ -76,6 +77,7 @@ export const getProjectList: any = async (params: any) => {
     currentPage: params.page,
     pageSize: params.pageSize,
     total: response.data.pager.total,
+    statistics: response.data.statistics,
     list: response.data.list.map((i: any) => ({
       ...i,
       id: i.id,

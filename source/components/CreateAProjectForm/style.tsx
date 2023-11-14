@@ -1,12 +1,20 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import IconFont from '../IconFont'
+
+export const FormFooter = styled.div`
+  position: absolute;
+  bottom: -60px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  right: 0;
+`
 
 export const Wrap = styled.div`
   width: 410px;
   padding-left: 24px;
-  /* max-height: 536px; */
-  /* overflow-y: auto; */
+  max-height: 60vh;
+  overflow-y: auto;
   padding-right: 24px;
 `
 

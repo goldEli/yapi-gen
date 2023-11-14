@@ -13,7 +13,7 @@ import {
 import { changeCreateVisible, editProject } from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
-import { Form, Input, Select, Tooltip, Upload } from 'antd'
+import { DatePicker, Form, Input, Select, Tooltip, Upload } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CustomSelect from '../CustomSelect'
@@ -30,6 +30,7 @@ import {
   CoverAreaImageShade,
   CoverAreaImageWrap,
   CoverAreaWrap,
+  FormFooter,
   Wrap,
 } from './style'
 import { makePy } from './tool'
@@ -44,6 +45,7 @@ import {
   StyleRight,
 } from '@/views/Layout/Report/Formwork/RightWrap'
 import { getProjectInfoStore } from '@store/project/project.thunk'
+import CommonButton from '../CommonButton'
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
@@ -383,21 +385,15 @@ const CreateAProjectForm = () => {
 
   return (
     <CommonModal2
-      noFooter={step !== 3}
+      noFooter
       bodyStyle={{
         height: '100vh',
         minWidth: '1400px',
-      }}
-      onConfirm={onConfirm}
-      onClose={() => {
-        dispatch(changeCreateVisible(false))
-        dispatch(editProject({ visible: false, id: '' }))
       }}
       width="100vw"
       dex={50}
       isShowMask={false}
       isVisible={createVisible}
-      // title={isEditId ? t('edit_item') : t('common.createProject')}
     >
       <div
         style={{
@@ -714,6 +710,26 @@ const CreateAProjectForm = () => {
                       ))}
                     </CustomSelect>
                   </Form.Item>
+
+                  <Form.Item
+                    label={<FormTitleSmall text={t('estimatedStartTime')} />}
+                    name="expected_start_at"
+                  >
+                    <DatePicker
+                      getPopupContainer={node => node}
+                      style={{ width: '100%' }}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    label={<FormTitleSmall text={t('estimatedEndTime')} />}
+                    name="expected_end_at"
+                  >
+                    <DatePicker
+                      getPopupContainer={node => node}
+                      style={{ width: '100%' }}
+                    />
+                  </Form.Item>
+
                   <Form.Item
                     label={<FormTitleSmall text={t('project_description')} />}
                     name="info"
@@ -725,6 +741,22 @@ const CreateAProjectForm = () => {
                   </Form.Item>
                 </Form>
               </Wrap>
+              {step === 3 && (
+                <FormFooter>
+                  <CommonButton
+                    type="light"
+                    onClick={() => {
+                      dispatch(changeCreateVisible(false))
+                      dispatch(editProject({ visible: false, id: '' }))
+                    }}
+                  >
+                    {t('common.cancel')}
+                  </CommonButton>
+                  <CommonButton type="primary" onClick={onConfirm}>
+                    {t('common.confirm')}
+                  </CommonButton>
+                </FormFooter>
+              )}
             </OpacityDiv>
           </div>
         </div>
