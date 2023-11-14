@@ -170,9 +170,9 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
       style={{
         overflowY: 'auto',
         overflowX: 'hidden',
-        height: '500px',
+        height: '700px',
       }}
-      height="500px"
+      height="700px"
       dataLength={issues.stories?.length}
       next={fetchMoreData}
       hasMore

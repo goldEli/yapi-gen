@@ -472,6 +472,7 @@ export const sortStoryServer =
       project_id: getProjectIdByUrl(),
     }
     await services.kanban.modifyKanbanIssueSort(params)
+    dispatch(setKanbanInfoByGroup([]))
     dispatch(getKanbanByGroup())
   }
 

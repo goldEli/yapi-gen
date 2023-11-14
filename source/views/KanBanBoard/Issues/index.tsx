@@ -200,9 +200,9 @@ const Issues: React.FC<IssuesProps> = props => {
       style={{
         overflowY: 'auto',
         overflowX: 'hidden',
-        height: groupType === 'none' ? 'calc( 100vh - 300px)' : '500px',
+        height: groupType === 'none' ? 'calc( 100vh - 300px)' : '700px',
       }}
-      height={groupType === 'none' ? 'calc( 100vh - 300px)' : '500px'}
+      height={groupType === 'none' ? 'calc( 100vh - 300px)' : '700px'}
       dataLength={issues.stories?.length}
       next={fetchMoreData}
       hasMore
