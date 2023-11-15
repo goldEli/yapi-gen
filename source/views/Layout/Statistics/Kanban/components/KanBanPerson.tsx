@@ -13,7 +13,6 @@ import {
   MemberItem,
   FilterProvider,
   FilterOther,
-  TabWrap,
 } from '../style'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from '@/components/StyleCommon'
@@ -22,7 +21,6 @@ import { useEffect, useState } from 'react'
 import { Collapse, Select, Checkbox, Popover } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getPerformanceInsightKanBanMembers } from '@/services/performanceInsight'
-import KanBanByDepartment from './KanBanByDepartment'
 
 interface CollapseHeaderProps {
   item: any
@@ -51,7 +49,7 @@ const CollapseHeader = (props: CollapseHeaderProps) => {
   const [checkAll, setCheckAll] = useState(false)
   // 半选状态
   const [indeterminate, setIndeterminate] = useState(false)
-
+  //
   // 项目权限-勾选
   const onChangeCheckbox = (e: any) => {
     const { checked } = e.target
@@ -225,7 +223,6 @@ const KanBanPerson = (props: KanBanPersonProps) => {
   const [indeterminate, setIndeterminate] = useState(false)
   // 折叠展开key
   const [activeKey, setActiveKey] = useState<any>([])
-
   // 人员更新
   const onUpdate = (value: any, isAll?: boolean) => {
     props.onChangeFilter({
@@ -377,8 +374,33 @@ const KanBanPerson = (props: KanBanPersonProps) => {
       onUpdate(resultUsers)
     }
   }, [props.isUpdate])
-  const projectElement = (
-    <div>
+
+  return (
+    <KanBanPersonWrap>
+      <KanBanPersonHeader>
+        <div className="input">
+          <MoreSelect
+            placeholder={t('searchMembers')}
+            onConfirm={() => null}
+            onChange={onSelectMember}
+            value={selectKeys}
+            renderChildren
+            options={selectList}
+          >
+            {selectList?.map((i: any) => (
+              <Select.Option key={i.id} value={i.id} label={i.name}>
+                {i.name}
+                <span role="img" aria-label={i.id}>
+                  （{i.project_name}）
+                </span>
+              </Select.Option>
+            ))}
+          </MoreSelect>
+        </div>
+        <CloseWrap width={32} height={32} onClick={props.onClose}>
+          <CommonIconFont size={20} type="outdent" />
+        </CloseWrap>
+      </KanBanPersonHeader>
       <CheckboxAll
         checked={checkAll}
         indeterminate={indeterminate}
@@ -437,44 +459,6 @@ const KanBanPerson = (props: KanBanPersonProps) => {
           ))}
         </Collapse>
       </CheckBoxWrap>
-    </div>
-  )
-  return (
-    <KanBanPersonWrap>
-      <KanBanPersonHeader>
-        <div className="input">
-          <MoreSelect
-            placeholder={t('searchMembers')}
-            onConfirm={() => null}
-            onChange={onSelectMember}
-            value={selectKeys}
-            renderChildren
-            options={selectList}
-          >
-            {selectList?.map((i: any) => (
-              <Select.Option key={i.id} value={i.id} label={i.name}>
-                {i.name}
-                <span role="img" aria-label={i.id}>
-                  （{i.project_name}）
-                </span>
-              </Select.Option>
-            ))}
-          </MoreSelect>
-        </div>
-        <CloseWrap width={32} height={32} onClick={props.onClose}>
-          <CommonIconFont size={20} type="outdent" />
-        </CloseWrap>
-      </KanBanPersonHeader>
-      <TabWrap
-        items={[
-          { label: '项目组', key: 'item-1', children: projectElement },
-          {
-            label: '部门',
-            key: 'item-2',
-            children: <KanBanByDepartment></KanBanByDepartment>,
-          },
-        ]}
-      ></TabWrap>
     </KanBanPersonWrap>
   )
 }

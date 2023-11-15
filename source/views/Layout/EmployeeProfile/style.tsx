@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Checkbox } from 'antd'
+import { Checkbox, Tabs, Tree } from 'antd'
 // index
 
 export const Wrap = styled.div`
@@ -205,6 +205,35 @@ export const CheckBoxWrap = styled.div`
   padding-right: 20px;
   .ant-checkbox {
     top: 0px;
+  }
+  .ant-collapse {
+    border: none;
+    border-radius: 0px;
+    background-color: transparent;
+    .ant-collapse-item {
+      border-bottom: none;
+      .ant-collapse-header {
+        padding: 0 0 0 8px;
+        color: initial;
+        height: 40px;
+        margin-top: 4px;
+        align-items: center;
+        color: var(--neutral-n1-d1);
+        &:hover {
+          background: var(--hover-d2);
+        }
+        .ant-collapse-header-text {
+          width: calc(100% - 16px);
+        }
+      }
+      .ant-collapse-content {
+        border: none;
+        .ant-collapse-content-box {
+          max-height: initial;
+          padding: 0;
+        }
+      }
+    }
   }
 `
 
@@ -506,5 +535,62 @@ export const TaskContent = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+`
+export const TabWrap = styled(Tabs)`
+  height: calc(100% - 40px);
+  overflow-y: scroll;
+`
+
+export const TreeWrap = styled(Tree)``
+export const MemberItem = styled.div`
+  height: 40px;
+  padding-left: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background: var(--hover-d2);
+  }
+  .info {
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    width: calc(100% - 24px);
+    .name {
+      margin-left: 8px;
+      font-size: 14px;
+      color: var(--neutral-n1-d1);
+      width: calc(100% - 32px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+`
+export const CollapseHeaderWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 8px;
+  width: 100%;
+  .ant-popover-placement-left,
+  .ant-popover-placement-leftTop,
+  .ant-popover-placement-leftBottom {
+    padding-right: 0;
+  }
+  .left {
+    width: calc(100% - 40px);
+    display: flex;
+    align-items: center;
+    .name {
+      font-family: SiYuanMedium;
+      margin-left: 12px;
+      display: inline-block;
+      width: calc(100% - 28px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 `

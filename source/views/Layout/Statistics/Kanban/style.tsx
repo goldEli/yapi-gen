@@ -534,7 +534,3 @@ export const Toast = styled.div`
     line-height: 40px;
   }
 `
-
-export const TabWrap = styled(Tabs)``
-
-export const TreeWrap = styled(Tree)``

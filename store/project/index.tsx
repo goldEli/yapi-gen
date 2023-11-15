@@ -60,6 +60,7 @@ export interface CounterState {
     visible: boolean
     id?: number
   }
+  statistiDepartment?: any
 }
 
 const initialState: CounterState = {
@@ -114,6 +115,10 @@ const initialState: CounterState = {
   drawerCanOperation: {},
   updateProgress: 0,
   projectWarning: {},
+  statistiDepartment: {
+    expandedKeys: [],
+    list: [],
+  },
 }
 
 export const projectSlice = createSlice({
@@ -234,6 +239,13 @@ export const projectSlice = createSlice({
     ) {
       state.projectWarningModal = action.payload
     },
+    setStatistiDepartment(
+      state: any,
+      action: PayloadAction<CounterState['statistiDepartment']>,
+    ) {
+      console.log(11111, action.payload)
+      state.statistiDepartment = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getParentList.fulfilled, (state, action) => {
@@ -277,6 +289,7 @@ export const {
   setUpdateProgress,
   setProjectWarning,
   setProjectWarningModal,
+  setStatistiDepartment,
 } = projectSlice.actions
 
 export default projectSlice.reducer

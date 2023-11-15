@@ -528,7 +528,8 @@ const urls = {
 
   // 员工概况模块
   // 员工列表
-  getMemberOverviewList: '/b/member_overview/member/list',
+  // getMemberOverviewList: '/b/member_overview/member/list',
+  getMemberOverviewList: '/b/company/kanban/members',
   // 统计
   getMemberOverviewStatistics: '/b/member_overview/statistics',
   // 任务列表

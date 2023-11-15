@@ -5,8 +5,14 @@ import { resolve } from 'path'
 
 // 获取事务详情
 export const getMemberOverviewList = async () => {
-  const response = await http.get<any>('getMemberOverviewList')
-  return response.data.list
+  const response = await http.get<any>('getMemberOverviewList', { type: 1 })
+  const newData = response.data.list
+  for (const item of newData) {
+    for (let user of item.member_list) {
+      user.id = `${item.id}_${user.id}`
+    }
+  }
+  return newData
 }
 
 // 获取统计数据
@@ -23,9 +29,10 @@ export const getMemberOverviewStatistics = async (params: any) => {
 
 // 获取任务数据
 export const getMemberOverviewStoryList = async (params: any) => {
-  const response = await http.get<any>('getMemberOverviewStoryList', {
+  const users = params.user_ids
+  const response = await http.post<any>('getMemberOverviewStoryList', {
     status: params.status,
-    user_ids: params.user_ids?.join(','),
+    users: params.user_ids,
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
     keyword: params.keyword ?? '',
@@ -36,7 +43,7 @@ export const getMemberOverviewStoryList = async (params: any) => {
 
 // 获取更多任务数据
 export const getMemberOverviewMoreStoryList = async (params: any) => {
-  const response = await http.get<any>('getMemberOverviewMoreStoryList', {
+  const response = await http.post<any>('getMemberOverviewMoreStoryList', {
     status: params.status,
     user_id: params.user_id,
     start_time: params.time[0] ?? null,
@@ -74,7 +81,7 @@ export const toggleStar = async (id: any, isStar: any) => {
 
 // 获取汇报数据
 export const getMemberOverviewReportList = async (params: any) => {
-  const response = await http.get<any>('getMemberOverviewReportList', {
+  const response = await http.post<any>('getMemberOverviewReportList', {
     user_ids: params.user_ids || [],
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
@@ -97,8 +104,8 @@ export const getMemberOverviewMoreReportList = async (params: any) => {
 
 // 员工对比报告
 export const getMemberOverviewCompare = async (params: any) => {
-  const response = await http.get<any>('getMemberOverviewCompare', {
-    user_ids: params.user_ids?.join(','),
+  const response = await http.post<any>('getMemberOverviewCompare', {
+    users: params.user_ids,
     start_time: params.time[0] ?? null,
     end_time: params.time[1] ?? null,
   })
