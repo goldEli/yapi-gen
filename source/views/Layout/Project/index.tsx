@@ -15,6 +15,7 @@ import {
   openProject,
   stopProject,
   suspendProject,
+  setProjectSort,
 } from '@/services/project'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import GuideModal from '@/components/GuideModal'
@@ -181,6 +182,17 @@ const ProjectIndex = () => {
     setOperationDetail({})
   }
 
+  // 拖拽列表
+  const onDragDataList = async (arr: any, idx: number) => {
+    setDataList(arr)
+    await setProjectSort({
+      projectId: arr?.list[idx]?.id,
+      sort: idx + 1,
+      page: filterParams.pageObj.page,
+      pageSize: filterParams.pageObj.size,
+    })
+  }
+
   return (
     <ProjectIndexWrap>
       {/* 删除项目 */}
@@ -237,7 +249,7 @@ const ProjectIndex = () => {
                 filterParams?.otherType?.length > 0
               }
               projectList={dataList}
-              onChangeProjectList={setDataList}
+              onChangeProjectList={onDragDataList}
               filterParams={filterParams}
             />
           )}

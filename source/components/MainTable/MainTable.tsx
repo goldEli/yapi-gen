@@ -35,7 +35,7 @@ interface Props {
   onAddClick(): void
   // 是否有筛选条件
   hasFilter?: boolean
-  onChangeProjectList(value: any): void
+  onChangeProjectList(value: any, idx?: number): void
   filterParams?: any
 }
 
@@ -432,11 +432,14 @@ const MainTable = (props: Props) => {
                   index: i.id,
                 })),
               }}
-              onChangeData={(value: any) => {
-                props.onChangeProjectList({
-                  ...props.projectList,
-                  ...value,
-                })
+              onChangeData={(value: any, idx: number) => {
+                props.onChangeProjectList(
+                  {
+                    ...props.projectList,
+                    ...value,
+                  },
+                  idx,
+                )
               }}
               tableY={tableY}
             />
