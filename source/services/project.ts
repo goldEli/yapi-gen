@@ -266,6 +266,7 @@ export const getProjectInfo: any = async (params: any) => {
     projectType: response.data.project_type,
     defaultHomeMenu: response.data.default_home_menu,
     project_warring_info: response.data.project_warring_info,
+    is_company_super_admin: response.data.is_company_super_admin,
   }
 }
 
@@ -282,6 +283,8 @@ export const addProject: any = async (params: any) => {
     model_type: params?.model_type,
     project_type: params?.project_type,
     clone_project_id: params?.clone_project_id,
+    expected_start_at: params?.expected_start_at,
+    expected_end_at: params?.expected_end_at,
   })
   if (res.code === 0) {
     getMessage({ msg: t('common.createSuccess') as string, type: 'success' })
@@ -304,6 +307,8 @@ export const updateProject: any = async (params: any) => {
     model_type: params?.model_type,
     project_type: params?.project_type,
     id: params.id,
+    expected_start_at: params?.expected_start_at,
+    expected_end_at: params?.expected_end_at,
   })
   if (res.code === 0) {
     getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
@@ -327,6 +332,12 @@ export const openProject: any = async (params: any) => {
 
 export const stopProject: any = async (params: any) => {
   await http.put<any>('stopProject', {
+    id: params.id,
+  })
+}
+
+export const suspendProject: any = async (params: any) => {
+  await http.put<any>('suspendProject', {
     id: params.id,
   })
 }
