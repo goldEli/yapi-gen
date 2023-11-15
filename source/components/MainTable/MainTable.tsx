@@ -36,6 +36,7 @@ interface Props {
   // 是否有筛选条件
   hasFilter?: boolean
   onChangeProjectList(value: any): void
+  filterParams?: any
 }
 
 const StatusWrap = styled.div({
@@ -104,10 +105,12 @@ const MainTable = (props: Props) => {
     userInfo?.company_permissions,
     'b/project/save',
   )
+
   const hasEdit = getIsPermission(
     userInfo?.company_permissions,
     'b/project/update',
   )
+
   const hasDelete = getIsPermission(
     userInfo?.company_permissions,
     'b/project/delete',
@@ -337,29 +340,37 @@ const MainTable = (props: Props) => {
       dataIndex: 'action',
       width: 200,
       render: (text: number, record: any) => {
-        // 是否可以点击关闭
-        const isClose =
-          (!isSuperAdmin && record.leader_id !== userInfo?.id) ||
-          [4, 2].includes(record.status)
-
-        // 是否可以点击开启或暂停
-        const isStartOrpause =
-          (!isSuperAdmin && record.leader_id !== userInfo?.id) ||
-          [4, 2].includes(record.status)
+        // 项目负责人或者是超管
+        const isRolePermission =
+          !isSuperAdmin && record.leader_id !== userInfo?.id
 
         return (
           <TableActionWrap>
-            <Tooltip title>
+            <Tooltip
+              title={
+                isRolePermission
+                  ? t('onlyTheProjectLeaderCanCloseTheProject')
+                  : null
+              }
+            >
               <TableActionItem
-                isDisable={!isSuperAdmin && record.leader_id !== userInfo?.id}
+                isDisable={isRolePermission}
                 onClick={() => props.onChangeOperation('', record)}
               >
                 {record.status === 1 ? t('pause') : t('start')}
               </TableActionItem>
             </Tooltip>
-            <Tooltip title>
+            <Tooltip
+              title={
+                isRolePermission
+                  ? t('onlyTheProjectLeaderCanCloseTheProject')
+                  : [4, 2].includes(record.status)
+                  ? t('theProjectCannotBeClosedInTheState')
+                  : null
+              }
+            >
               <TableActionItem
-                isDisable={isClose}
+                isDisable={isRolePermission || [4, 2].includes(record.status)}
                 onClick={() => props.onChangeOperation('close', record)}
               >
                 {t('closure')}
@@ -367,7 +378,7 @@ const MainTable = (props: Props) => {
             </Tooltip>
 
             <TableActionItem
-              isDisable={hasEdit}
+              isDisable={record.team_id === 0 ? hasEdit : record.isTeam}
               onClick={() => {
                 dispatch(editProject({ visible: true, id: record.id }))
               }}
@@ -413,6 +424,7 @@ const MainTable = (props: Props) => {
             ref={dataWrapRef}
           >
             <DragTable
+              filterParams={props.filterParams}
               columns={columns}
               dataSource={{
                 list: props.projectList?.list?.map((i: any) => ({

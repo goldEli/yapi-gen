@@ -342,6 +342,16 @@ export const suspendProject: any = async (params: any) => {
   })
 }
 
+//  项目列表拖拽排序
+export const setProjectSort: any = async (params: any) => {
+  await http.post<any>('setProjectSort', {
+    project_id: Number(params.projectId),
+    sort: params.sort,
+    page: params.page,
+    pagesize: params.pageSize,
+  })
+}
+
 export const getProjectMember: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectMember', {
     search: {

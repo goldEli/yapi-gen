@@ -64,7 +64,6 @@ const SiteNotifications = (props: any, ref: any) => {
   const isDesktopDevice = /Windows|Macintosh|X11|Android|webOS/i.test(
     navigator.userAgent,
   )
-  console.log(isDesktopDevice, 'isDesktopDevice')
 
   const init2 = async () => {
     // eslint-disable-next-line no-promise-executor-return
@@ -78,7 +77,6 @@ const SiteNotifications = (props: any, ref: any) => {
 
     dispatch(changeNumber(num))
   }
-  console.log(navigator.userAgent, 'navigator.userAgent')
 
   const sendMsg = () => {
     if (wsData?.data?.customData?.noticeStyle === '2') {

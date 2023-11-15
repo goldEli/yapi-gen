@@ -2613,5 +2613,7 @@
   "estimatedStartTime": "预计开始时间",
   "estimatedEndTime": "预计结束时间",
   "pause": "暂停",
-  "start": "开始"
+  "start": "开始",
+  "theProjectCannotBeClosedInTheState": "处于未开启/已完成状态不能关闭项目",
+  "onlyTheProjectLeaderCanCloseTheProject": "项目负责人才能关闭项目"
 }

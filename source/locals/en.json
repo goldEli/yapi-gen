@@ -2506,7 +2506,7 @@
   "createProject": "Create project",
   "recentlyViewed": "Recently viewed",
   "allProjects": "All projects",
-  "progress": "&#39;in progress",
+  "progress": "In progress",
   "paused": "Paused",
   "projectCycle": "Project Cycle",
   "iParticipated": "I participated",
@@ -2613,5 +2613,7 @@
   "estimatedStartTime": "Estimated start time",
   "estimatedEndTime": "Estimated end time",
   "pause": "Pause",
-  "start": "Start"
+  "start": "Start",
+  "theProjectCannotBeClosedInTheState": "The project cannot be closed in the unopened/completed state",
+  "onlyTheProjectLeaderCanCloseTheProject": "Only the project leader can close the project"
 }

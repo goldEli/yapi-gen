@@ -238,6 +238,7 @@ const ProjectIndex = () => {
               }
               projectList={dataList}
               onChangeProjectList={setDataList}
+              filterParams={filterParams}
             />
           )}
         </Spin>
