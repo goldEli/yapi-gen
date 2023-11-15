@@ -237,7 +237,7 @@ export const Label = styled.div<{ b?: boolean }>`
   /* margin-bottom: 8px; */
   height: 32px;
   line-height: 32px;
-  ${props =>
+  /* ${props =>
     props.b
       ? ''
       : `::before {
@@ -249,7 +249,7 @@ export const Label = styled.div<{ b?: boolean }>`
     width: 3px;
     height: 16px;
     background: #6688ff;
-  }`}
+  }`} */
 `
 
 export const LabelItem = styled.div`
