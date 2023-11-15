@@ -18,16 +18,28 @@ import { getStaffListAll } from './staff'
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
     search: {
-      project_types: params.project_types,
-      is_my_created: params.is_my_created === 1 ? 1 : undefined,
-      project_type: params.project_type,
-      self: params.self ? 1 : 0,
-      keyword: params.searchValue,
+      // 以前使用到的字段，现可能用不上
       is_public: params?.isPublic ? Number(params.isPublic) : '',
-      status: Number(params.status) || '',
-      all: params.all ? 1 : 0,
-      group: params?.groupId,
+      is_my_created: params.is_my_created === 1 ? 1 : undefined,
       is_clone: params?.is_clone,
+      group: params?.groupId,
+
+      // 搜索值
+      keyword: params?.searchValue,
+      // 是否是用户参与
+      self: params?.project_types?.includes(3) ? 1 : 0,
+      // 项目状态
+      status: params.status === 5 ? '' : params.status,
+      // 是否是全部 -- 例查下拉列表
+      all: params.all ? 1 : 0,
+      // 项目类型 迭代1冲刺2
+      project_types: params?.project_types?.filter((i: any) => i !== 3),
+      // 项目开始时间
+      expected_start_at: params.time?.[0] ?? '',
+      // 项目结束时间
+      expected_end_at: params.time?.[1] ?? '',
+      // 是否是最近查看
+      is_recent: params?.status === 5 ? 1 : '',
     },
     pagesize: params.pageSize,
     page: params.page,
@@ -36,7 +48,8 @@ export const getProjectList: any = async (params: any) => {
   })
   if (params.all) {
     return {
-      total: response.data.length,
+      statistics: response.data.statistics,
+      total: response.data?.list.length,
       list: response.data?.list?.map((i: any) => ({
         id: i.id,
         status: i.status,
@@ -64,6 +77,7 @@ export const getProjectList: any = async (params: any) => {
     currentPage: params.page,
     pageSize: params.pageSize,
     total: response.data.pager.total,
+    statistics: response.data.statistics,
     list: response.data.list.map((i: any) => ({
       ...i,
       id: i.id,
@@ -252,6 +266,7 @@ export const getProjectInfo: any = async (params: any) => {
     projectType: response.data.project_type,
     defaultHomeMenu: response.data.default_home_menu,
     project_warring_info: response.data.project_warring_info,
+    is_company_super_admin: response.data.is_company_super_admin,
   }
 }
 
@@ -268,6 +283,8 @@ export const addProject: any = async (params: any) => {
     model_type: params?.model_type,
     project_type: params?.project_type,
     clone_project_id: params?.clone_project_id,
+    expected_start_at: params?.expected_start_at,
+    expected_end_at: params?.expected_end_at,
   })
   if (res.code === 0) {
     getMessage({ msg: t('common.createSuccess') as string, type: 'success' })
@@ -290,6 +307,8 @@ export const updateProject: any = async (params: any) => {
     model_type: params?.model_type,
     project_type: params?.project_type,
     id: params.id,
+    expected_start_at: params?.expected_start_at,
+    expected_end_at: params?.expected_end_at,
   })
   if (res.code === 0) {
     getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
@@ -314,6 +333,22 @@ export const openProject: any = async (params: any) => {
 export const stopProject: any = async (params: any) => {
   await http.put<any>('stopProject', {
     id: params.id,
+  })
+}
+
+export const suspendProject: any = async (params: any) => {
+  await http.put<any>('suspendProject', {
+    id: params.id,
+  })
+}
+
+//  项目列表拖拽排序
+export const setProjectSort: any = async (params: any) => {
+  await http.post<any>('setProjectSort', {
+    project_id: Number(params.projectId),
+    sort: params.sort,
+    page: params.page,
+    pagesize: params.pageSize,
   })
 }
 
@@ -1065,17 +1100,17 @@ export const getWarningConfigInfo = async (params: any) => {
 // 获取最近的项目
 export const getRecentProject = async (params: any) => {
   const res = await http.get<any>('getRecentProject', params)
-  return res.data
+  return res
 }
 
 // 获取最近的日报
 export const getReportViewLogList = async (params: any) => {
   const res = await http.get<any>('getReportViewLogList', params)
-  return res.data
+  return res
 }
 
 // 获取最近的任务
 export const getRecentStory = async (params: any) => {
   const res = await http.get<any>('getRecentStory', params)
-  return res.data
+  return res
 }

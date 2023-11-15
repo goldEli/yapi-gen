@@ -16,7 +16,6 @@ import CommonButton from '../CommonButton'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
-  onChangeVisible(): void
   projectList: any
   onAddClick(): void
   // 是否有筛选条件

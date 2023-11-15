@@ -813,7 +813,8 @@
     "start": "Expected start",
     "end": "Expected end",
     "openSuccess": "Open the success",
-    "endSuccess": "End of success",
+    "endSuccess": "Successfully closed",
+    "pausedSuccess": "Paused successfully",
     "tableTotal": "Total {{count}}",
     "deleteSuccess": "Successfully deleted",
     "createSuccess": "Created successfully",
@@ -908,7 +909,7 @@
     "iterateSurvey": "Iterate Survey",
     "changeRecord": "Change Record",
     "Closed": "Closed",
-    "opening1": "Opening",
+    "opening1": "Progress",
     "permission": "Permission",
     "pleaseChooseDeal": "Please select a handler",
     "add23": "Add",
@@ -1197,8 +1198,10 @@
     "pleaseKey": "Enter nickname/name/phone/email"
   },
   "mark": {
-    "endP": "Confirmed closure of the project?",
-    "delP": "Want to delete this item?",
+    "endP": "Do you want to close this project?",
+    "startP": "Do you want to start this project?",
+    "suspendP": "Do you want to pause this project?",
+    "delP": "Do you want to delete this item?",
     "searchP": "Project/project ID",
     "cd": "Want to delete current comment?",
     "editCom": "Enter a comment and press Enter to publish quickly",
@@ -2503,7 +2506,7 @@
   "createProject": "Create project",
   "recentlyViewed": "Recently viewed",
   "allProjects": "All projects",
-  "progress": "&#39;in progress",
+  "progress": "In progress",
   "paused": "Paused",
   "projectCycle": "Project Cycle",
   "iParticipated": "I participated",
@@ -2606,5 +2609,11 @@
   "afterYourProjectMembersWillNotReceiveAnyEarlyWarning": "After closing, your project members will not receive any early warning information.",
   "inForce": "In force",
   "confirmClose": "Confirm close",
-  "theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime": "The estimated start time cannot be greater than the estimated end time"
+  "theEstimatedStartTimeCannotBeGreaterThanTheEstimatedEndTime": "The estimated start time cannot be greater than the estimated end time",
+  "estimatedStartTime": "Estimated start time",
+  "estimatedEndTime": "Estimated end time",
+  "pause": "Pause",
+  "start": "Start",
+  "theProjectCannotBeClosedInTheState": "The project cannot be closed in the unopened/completed state",
+  "onlyTheProjectLeaderCanCloseTheProject": "Only the project leader can close the project"
 }

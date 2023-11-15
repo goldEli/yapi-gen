@@ -94,24 +94,31 @@ const Index = (props: any) => {
     const isDel = (
       userInfo.company_permissions?.map((i: any) => i.identity) || []
     ).includes('b/project/delete')
+
     const isEdit = (
       userInfo.company_permissions?.map((i: any) => i.identity) || []
     ).includes('b/project/update')
 
+    // 项目负责人或者是超管
+    const isRolePermission =
+      userInfo?.is_company_super_admin !== 1 &&
+      props.item.leader_id !== userInfo?.id
+
     const items: any = [
+      {
+        key: 'over',
+        label: <span>{props.item.status === 1 ? t('pause') : t('start')}</span>,
+        isHave: isRolePermission,
+      },
+      {
+        key: 'close',
+        label: <span>{t('closure')}</span>,
+        isHave: isRolePermission || [4, 2].includes(props.item.status),
+      },
       {
         key: 'edit',
         label: <span>{t('common.edit')}</span>,
         isHave: props.item.team_id === 0 ? isEdit : props.item.isTeam,
-      },
-      {
-        key: 'over',
-        label: (
-          <span>
-            {props.item.status === 1 ? t('common.stop') : t('common.open')}
-          </span>
-        ),
-        isHave: isEdit,
       },
       {
         key: 'del',
@@ -130,13 +137,14 @@ const Index = (props: any) => {
         dispatch(editProject({ visible: true, id: props.item.id }))
         break
       case 'over':
-        props.onChangeOperation('end', props.item)
+        props.onChangeOperation('', props.item)
         break
       case 'del':
         props.onChangeOperation('delete', props.item)
         break
 
       default:
+        props.onChangeOperation('close', props.item)
         break
     }
   }

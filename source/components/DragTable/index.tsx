@@ -30,6 +30,8 @@ interface DragTableProps {
   hasOperation?: any
   showHeader?: boolean
   tableY?: number
+  // 项目列表判断手柄
+  filterParams?: any
 }
 
 const DragTable = (props: DragTableProps) => {
@@ -73,20 +75,28 @@ const DragTable = (props: DragTableProps) => {
     return <SortableItem index={index} {...restProps} />
   }
 
+  // 仅限所有项目，勾选迭代或冲刺下才能有手柄
+  const hasHandle =
+    props?.filterParams?.status === 0 &&
+    !props?.filterParams?.keyword &&
+    props?.filterParams?.order?.key?.length <= 0 &&
+    props?.filterParams?.time?.length <= 0 &&
+    !props?.filterParams?.otherType?.includes(3)
+
   const dragHandle = {
     width: 30,
     render: () => <DragHandle />,
   }
 
+  const resColumns = hasHandle
+    ? [...(props.hasOperation || []), ...[dragHandle], ...props.columns]
+    : [...(props.hasOperation || []), ...props.columns]
+
   return (
     <TableWrap
       pagination={false}
       dataSource={props.dataSource.list}
-      columns={[
-        ...(props.hasOperation || []),
-        ...[dragHandle],
-        ...props.columns,
-      ]}
+      columns={resColumns}
       rowKey="index"
       sticky
       showHeader={props.showHeader}
