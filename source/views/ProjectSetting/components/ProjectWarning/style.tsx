@@ -59,7 +59,7 @@ export const PushConditionsWrap = styled.div`
 
 export const PushConditionsContent = styled.div`
   border: 1px solid var(--neutral-n6-d1);
-  min-height: 294px;
+  min-height: 242px;
   border-radius: 6px;
   padding: 16px 8px 0;
 `
