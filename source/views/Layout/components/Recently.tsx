@@ -35,6 +35,7 @@ import {
   getReportViewLogList,
 } from '@/services/project'
 import moment from 'moment'
+import _ from 'lodash'
 
 interface GroupItemsProps {
   row: any
@@ -173,6 +174,17 @@ const Recently = (props: RecentlyProps) => {
     },
   ]
 
+  const addMore = (oldData: any, newData: any) => {
+    Object.keys(newData).forEach((i: string) => {
+      if (Object.keys(oldData).includes(i)) {
+        const temp = [...oldData[i], ...newData[i]]
+        oldData[i] = temp
+      } else {
+        oldData[i] = newData[i]
+      }
+    })
+  }
+
   // 获取汇报列表
   const getReportData = async (isInit: boolean, page: number) => {
     setIsSpinning(true)
@@ -182,7 +194,17 @@ const Recently = (props: RecentlyProps) => {
     }).finally(() => {
       setIsSpinning(false)
     })
-    setDataList(result.data)
+    if (isInit) {
+      setDataList(result.data)
+    } else {
+      const oldData = _.cloneDeep(dataList.list)
+      const newData = _.cloneDeep(result.data.list)
+      addMore(oldData, newData)
+      setDataList({
+        pager: result.data.pager,
+        list: oldData,
+      })
+    }
   }
 
   // 获取项目列表
@@ -194,7 +216,17 @@ const Recently = (props: RecentlyProps) => {
     }).finally(() => {
       setIsSpinning(false)
     })
-    setDataList(result.data)
+    if (isInit) {
+      setDataList(result.data)
+    } else {
+      const oldData = _.cloneDeep(dataList.list)
+      const newData = _.cloneDeep(result.data.list)
+      addMore(oldData, newData)
+      setDataList({
+        pager: result.data.pager,
+        list: oldData,
+      })
+    }
   }
 
   // 获取任务列表
@@ -206,7 +238,17 @@ const Recently = (props: RecentlyProps) => {
     }).finally(() => {
       setIsSpinning(false)
     })
-    setDataList(result.data)
+    if (isInit) {
+      setDataList(result.data)
+    } else {
+      const oldData = _.cloneDeep(dataList.list)
+      const newData = _.cloneDeep(result.data.list)
+      addMore(oldData, newData)
+      setDataList({
+        pager: result.data.pager,
+        list: oldData,
+      })
+    }
   }
 
   //   获取数据
@@ -240,7 +282,19 @@ const Recently = (props: RecentlyProps) => {
   }
 
   const fetchMoreData = () => {
-    console.log('xxxxxxxxx')
+    const pages = page + 1
+    setPage(pages)
+    switch (tabActive) {
+      case 2:
+        getTaskData(false, pages)
+        break
+      case 1:
+        getProjectData(false, pages)
+        break
+      case 0:
+        getReportData(false, pages)
+        break
+    }
   }
 
   // 任务-点击跳转详情
@@ -264,6 +318,8 @@ const Recently = (props: RecentlyProps) => {
   }
 
   useEffect(() => {
+    setPage(1)
+    setDataList({})
     props.isVisible && getData()
   }, [props.isVisible, tabActive])
 
@@ -304,6 +360,7 @@ const Recently = (props: RecentlyProps) => {
   useEffect(() => {
     if (props.isVisible) {
       setTabActive(0)
+      setDataList({})
     }
     setTimeout(() => {
       if (tabActive2.current && props.isVisible) {
