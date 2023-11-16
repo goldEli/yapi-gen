@@ -314,7 +314,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
                   },
                 })
                 onComputedCurrent(i, memberStatistics)
-                dispatch(setCurrentClickNumber(currentClickNumber + 1))
+                // dispatch(setCurrentClickNumber(currentClickNumber + 1))
               }}
             >
               <CommonIconFont type={i.type} size={20} />

@@ -32,7 +32,7 @@ import EditExamine from '@/components/EditExamine'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from '@/components/NoData'
 import { Skeleton } from 'antd'
-
+import _ from 'lodash'
 const data: any = {
   今天: {
     list: [
@@ -959,14 +959,10 @@ const QuickMine = (props: QuickMineProps) => {
   const [dataList, setDataList] = useState<any>([])
   // 审核数据
   const [verifyInfo, setVerifyInfo] = useState({})
-  // 待办的分页参数
-  const [upcomingPage, setUpcomingPage] = useState(1)
-  // 待审核的分页参数
-  const [pendingReviewPage, setPendingReviewPage] = useState(1)
-  // 已办的分页参数
-  const [processedPage, setProcessedPage] = useState(1)
+
+  const [page, setPage] = useState(1)
   // 每页加载的个数
-  const [pageSize, setPageSize] = useState(20)
+  const [pageSize, setPageSize] = useState(10)
   //   tab列表
   const tabs = [
     {
@@ -979,41 +975,78 @@ const QuickMine = (props: QuickMineProps) => {
       label: t('have_done'),
     },
   ]
-
+  const addMore = (oldData: any, newData: any) => {
+    Object.keys(newData).forEach((i: string) => {
+      if (Object.keys(oldData).includes(i)) {
+        const temp = [...oldData[i], ...newData[i]]
+        oldData[i] = temp
+      } else {
+        oldData[i] = newData[i]
+      }
+    })
+  }
   // 已办
-  const onGetMineFinishList = async () => {
+  const onGetMineFinishList = async (isInit: boolean, page: number) => {
     setIsSpinning(true)
     const res = await getMineFinishList({
-      page: processedPage,
+      page: page,
       pagesize: pageSize,
     })
-    setDataList(res.list)
+    if (isInit) {
+      setDataList(res)
+    } else {
+      const oldData = _.cloneDeep(dataList.list)
+      const newData = _.cloneDeep(res.list)
+      addMore(oldData, newData)
+      setDataList({
+        pager: res.pager,
+        list: oldData,
+      })
+    }
     setIsSpinning(false)
   }
 
   // 待办
-  const onGetMineNoFinishList = async () => {
+  const onGetMineNoFinishList = async (isInit: boolean, page: number) => {
     setIsSpinning(true)
     const res = await getMineNoFinishList({
-      page: upcomingPage,
+      page: page,
       pagesize: pageSize,
     })
-    // debugger
-    setDataList(res.list)
+    if (isInit) {
+      setDataList(res)
+    } else {
+      const oldData = _.cloneDeep(dataList.list)
+      const newData = _.cloneDeep(res.list)
+      addMore(oldData, newData)
+      setDataList({
+        pager: res.pager,
+        list: oldData,
+      })
+    }
     setIsSpinning(false)
   }
 
   // 获取待审核的列表
-  const getVerifyList = async () => {
+  const getVerifyList = async (isInit?: boolean, page?: number) => {
     setIsSpinning(true)
     const params = {
-      page: pendingReviewPage,
+      page: page,
       pagesize: pageSize,
     }
-    const result = await getVerifyUserList(params)
-    console.log('result---', result)
+    const res = await getVerifyUserList(params)
     setIsSpinning(false)
-    setDataList(result?.list || {})
+    if (isInit) {
+      setDataList(res)
+    } else {
+      const oldData = _.cloneDeep(dataList.list)
+      const newData = _.cloneDeep(res.list)
+      addMore(oldData, newData)
+      setDataList({
+        pager: res.pager,
+        list: oldData,
+      })
+    }
   }
 
   //   获取数据 tabActive 0 待办 1 待审核 2 已办理
@@ -1021,29 +1054,31 @@ const QuickMine = (props: QuickMineProps) => {
     setDataList({})
     switch (tabActive) {
       case 2:
-        onGetMineFinishList()
+        onGetMineFinishList(true, 1)
         break
       case 1:
         // 待审核
-        getVerifyList()
+        getVerifyList(true, 1)
         break
 
       default:
-        onGetMineNoFinishList()
+        onGetMineNoFinishList(true, 1)
         break
     }
   }
   //  tabActive 0 待办 1 待审核 2 已办理
   const fetchMoreData = () => {
+    const pages = page + 1
+    setPage(pages)
     switch (tabActive) {
       case 2:
-        onGetMineFinishList()
+        onGetMineFinishList(false, pages)
         break
       case 1:
-        getVerifyList()
+        getVerifyList(false, pages)
         break
       case 0:
-        onGetMineNoFinishList()
+        onGetMineNoFinishList(false, pages)
         break
     }
   }
@@ -1071,6 +1106,7 @@ const QuickMine = (props: QuickMineProps) => {
   }
 
   useEffect(() => {
+    setPage(1)
     props.isVisible && getData()
   }, [props.isVisible, tabActive])
 
@@ -1161,21 +1197,8 @@ const QuickMine = (props: QuickMineProps) => {
             <ActiveTab ref={tabActive2} />
           </TabsWrap>
         </HeaderWrap>
-        <ContentWrap id="scrollableDiv">
-          <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
-            {/* {Object.keys(dataList)?.map((k: any) => (
-              <ItemWrap key={k}>
-                <TimeName>{k}</TimeName>
-                <GroupItems
-                  row={dataList[k]}
-                  onOpenExamine={onOpenExamine}
-                  onClickItem={onClickItem}
-                  tabActive={tabActive}
-                  onChangeData={onChangeData}
-                />
-              </ItemWrap>
-            ))} */}
-
+        <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
+          <ContentWrap id="scrollableDiv">
             <InfiniteScroll
               dataLength={
                 dataList.list ? Object.values(dataList.list).flat(2).length : 0
@@ -1185,22 +1208,24 @@ const QuickMine = (props: QuickMineProps) => {
               loader={<Skeleton paragraph={{ rows: 1 }} active />}
               scrollableTarget="scrollableDiv"
             >
-              {Object.keys(dataList)?.map((k: any) => (
-                <ItemWrap key={k}>
-                  <TimeName>{k}</TimeName>
-                  <GroupItems
-                    row={dataList[k]}
-                    onOpenExamine={onOpenExamine}
-                    onClickItem={onClickItem}
-                    tabActive={tabActive}
-                    onChangeData={onChangeData}
-                  />
-                </ItemWrap>
-              ))}
+              {dataList.list &&
+                Object.keys(dataList.list)?.map((k: any) => (
+                  <ItemWrap key={k}>
+                    <TimeName>{k}</TimeName>
+                    <GroupItems
+                      row={dataList.list[k]}
+                      onOpenExamine={onOpenExamine}
+                      onClickItem={onClickItem}
+                      tabActive={tabActive}
+                      onChangeData={onChangeData}
+                    />
+                  </ItemWrap>
+                ))}
             </InfiniteScroll>
             {JSON.stringify(data) === '{}' && <NoData />}
-          </SpinWrap>
-        </ContentWrap>
+          </ContentWrap>
+        </SpinWrap>
+
         <Border />
         <Footer onClick={onToMine}>{t('Check_out_my_work')}</Footer>
       </QuickPopover>

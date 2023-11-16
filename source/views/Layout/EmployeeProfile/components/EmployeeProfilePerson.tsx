@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import {
   CheckBoxWrap,
   CheckboxAll,
-  CheckboxLi,
   CollapseHeaderWrap,
   MemberItem,
   PersonWrap,
@@ -21,8 +20,6 @@ import { useSearchParams } from 'react-router-dom'
 import EmployeeDepartment from './EmployeeDepartment'
 import { setStatistiDepartment } from '@store/project'
 import CommonIconFont from '@/components/CommonIconFont'
-import { setPriority } from 'os'
-import { map } from 'lodash'
 
 interface EmployeeProfilePersonProps {
   onChangeFilter(value: any): void
@@ -40,7 +37,6 @@ const CollapseHeader = (props: any) => {
     setUserKeys,
     userKeys,
   } = props
-  const [isVisible, setIsVisible] = useState(false)
   const [projectKey, setProjectKey] = useState<any[]>([])
   // 默认选择全部 - 迭代
   const [normal, setNormal] = useState<any[]>([{ id: 0, projectId: 0 }])
@@ -48,61 +44,14 @@ const CollapseHeader = (props: any) => {
   const [checkAll, setCheckAll] = useState(false)
   // 半选状态
   const [indeterminate, setIndeterminate] = useState(false)
-  const { currentClickNumber } = useSelector(store => store.employeeProfile)
-  //
-  // 项目权限-勾选
-  const onChangeCheckbox = (e: any) => {
-    const { checked } = e.target
-    // 全选的key
-    const resultKeysCheckEd = [
-      ...new Set([
-        ...selectKeys,
-        ...props.item?.member_list?.map((k: any) => k.id),
-      ]),
-    ]
-    // 取消全选的key
-    const resultKeysNotCheckEd = props.selectKeys.filter(
-      (object: any) =>
-        !props.item?.member_list?.some(
-          (otherObject: any) => otherObject.id === object,
-        ),
-    )
-    onChangeSelectKeys(checked ? resultKeysCheckEd : resultKeysNotCheckEd)
-  }
-
+  const { currentClickNumber, filterParamsOverall } = useSelector(
+    store => store.employeeProfile,
+  )
   // 点击名称折叠展开
   const onClickName = () => {
     onChangeKeys(activeKey?.includes(item.id), item.id)
   }
 
-  // 修改选中迭代
-  const onChangeIteration = (
-    id: number,
-    memberList?: any,
-    projectId?: number,
-  ) => {
-    let iterationValues
-    if (id === 0) {
-      iterationValues = [{ id: 0, projectId: 0 }]
-      setNormal(iterationValues)
-    } else {
-      iterationValues = normal
-        ?.map((i: any) => i.projectId)
-        ?.includes(projectId)
-        ? normal?.map((i: any) => i.id)?.includes(id)
-          ? normal?.filter((i: any) => i.id !== id)
-          : [...new Set([...normal, ...[{ id, projectId }]])]?.filter(
-              (i: any) => i.id !== 0,
-            )
-        : [{ id, projectId }]
-      setNormal(iterationValues)
-    }
-    // 向上返回筛选条件
-    props.onChangeIteration(
-      iterationValues,
-      memberList?.map((i: any) => i.id),
-    )
-  }
   // 根据筛选条件选中对应的人分组
   useEffect(() => {
     setNormal(props.filterParams?.iteration ?? [{ id: 0, projectId: 0 }])
@@ -122,8 +71,11 @@ const CollapseHeader = (props: any) => {
   }, [props.selectKeys])
 
   useEffect(() => {
-    if (userKeys?.length === 0 || !userKeys) {
+    if (!userKeys) {
       return
+    }
+    if (userKeys.length === 0) {
+      setProjectKey([])
     }
     for (const key of userKeys) {
       const [project_id] = key.split('_')
@@ -141,7 +93,7 @@ const CollapseHeader = (props: any) => {
     }
   }, [userKeys])
   useEffect(() => {
-    const { user_ids } = props.filterParams ?? {}
+    const { user_ids } = filterParamsOverall ?? {}
     const userKeys = user_ids?.map(
       (item: any) => `${item.project_id}_${item.user_id}`,
     )
@@ -191,8 +143,9 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   // 选中的key
   const [selectKeys, setSelectKeys] = useState<any>([])
   const [searchParams, setSearchParams] = useSearchParams()
-  const { allMemberList, currentKey, filterParamsOverall, currentClickNumber } =
-    useSelector(store => store.employeeProfile)
+  const { allMemberList, currentKey } = useSelector(
+    store => store.employeeProfile,
+  )
   // 获取选中的keys
   const [userKeys, setUserKeys] = useState<any>([])
   // 折叠展开key
@@ -203,50 +156,23 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   // 点击全选
   const onAllChecked = (e: any) => {
     const { checked } = e.target
-    // setSelectKeys(checked ? allMemberList?.map((k: any) => k.id) : [])
     const data = getAllUser(allMemberList)
     setIndeterminate(false)
     setCheckAll(checked)
     setUserKeys(checked ? data?.map((k: any) => k.id) : [])
-    // props.onChangeFilter({
-    //   ...props?.filterParams,
-    //   ...{
-    //     user_ids: checked ? allMemberList?.map((k: any) => k.id) : [],
-    //   },
-    // })
     setSearchParams({})
   }
   // 获取所有的人员
   const getAllUser = (data: any) => {
-    const arry: any = []
-    for (let item of data) {
-      arry.push(...item.member_list)
+    const array: any = []
+    for (const item of data) {
+      for (let i of item.member_list) {
+        i = { ...i, project_name: item.name }
+        array.push(i)
+      }
     }
-    return arry
+    return array
   }
-  // 点击勾选或者取消人员
-  const onItemChecked = (id: number) => {
-    let resultKeys: any = []
-    // 如果勾选中不存在，则添加
-    if (selectKeys?.includes(id)) {
-      resultKeys = selectKeys?.filter((i: number) => i !== id)
-    } else {
-      resultKeys = [...selectKeys, ...[id]]
-    }
-    setSelectKeys(resultKeys)
-    setIndeterminate(
-      resultKeys?.length !== allMemberList?.length && resultKeys?.length !== 0,
-    )
-    setCheckAll(resultKeys?.length === allMemberList?.length)
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...{
-        user_ids: resultKeys,
-      },
-    })
-    setSearchParams({})
-  }
-
   // 打开对比报告
   const onOpenContrast = () => {
     dispatch(setContrastDrawer({ visible: true }))
@@ -255,18 +181,12 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   // 选择人员
   const onSelectMember = (users: any) => {
     const resultUsers = users ?? []
-    setSelectKeys(resultUsers)
+    setUserKeys(resultUsers)
     setIndeterminate(
       resultUsers?.length !== allMemberList?.length &&
         resultUsers?.length !== 0,
     )
     setCheckAll(resultUsers?.length === allMemberList?.length)
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...{
-        user_ids: resultUsers,
-      },
-    })
   }
 
   useEffect(() => {
@@ -404,12 +324,18 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
             onConfirm={() => null}
             onChange={onSelectMember}
             value={userKeys}
-            options={getAllUser(allMemberList)?.map((k: any) => ({
-              label: k.name,
-              value: k.id,
-              id: k.id,
-            }))}
-          />
+            options={getAllUser(allMemberList)}
+            renderChildren
+          >
+            {getAllUser(allMemberList)?.map((i: any) => (
+              <Select.Option key={i.id} value={i.id} label={i.name}>
+                {i.name}
+                <span role="img" aria-label={i.id}>
+                  （{i.project_name}）
+                </span>
+              </Select.Option>
+            ))}
+          </MoreSelect>
         ) : (
           <Select
             placeholder={t('searchMembers')}
@@ -427,9 +353,9 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
           ></Select>
         )}
       </div>
-      <div className="label">
+      {/* <div className="label">
         {currentKey?.name}（{props?.filterParams?.user_ids?.length}）
-      </div>
+      </div> */}
       <TabWrap
         items={[
           { label: '项目组', key: 'project', children: projectEle },

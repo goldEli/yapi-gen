@@ -548,6 +548,10 @@ export const TabWrap = styled(Tabs)`
   .ant-tabs-top > div > .ant-tabs-nav .ant-tabs-ink-bar {
     display: none;
   }
+  .ant-tabs-nav .ant-tabs-nav-wrap,
+  .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+    height: 20px;
+  }
 `
 
 export const TreeWrap = styled(Tree)`
