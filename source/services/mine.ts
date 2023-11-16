@@ -483,34 +483,35 @@ export const updatePriorityStatus: any = async (params: any) => {
 // 获取我的待办列表
 export const getMineNoFinishList: any = async (params: any) => {
   const response = await http.get('getMineNoFinishList', {
-    search: {
-      project_id: params?.projectId,
-      keyword: params?.keyword,
-      category_status_ids: params.searchGroups?.statusId,
-      priority: params.searchGroups?.priorityId,
-      iterate_id: params.searchGroups?.iterateId,
-      tag: params.searchGroups?.tagId,
-      user_id: params.searchGroups?.userId,
-      users_name: params.searchGroups?.usersnameId,
-      users_copysend_name: params.searchGroups?.usersCopysendNameId,
-      created_at: params.searchGroups?.createdAtId,
-      expected_start_at: params.searchGroups?.expectedStartAtId,
-      expected_end_at: params.searchGroups?.expectedendat,
-      updated_at: params.searchGroups?.updatedat,
-      finish_at: params.searchGroups?.finishAt,
-      panel_date: params?.panelDate,
-      all: params?.all,
-      class_ids: params.searchGroups?.class_ids,
-      category_id: params.searchGroups?.category_id,
-      schedule_start: params.searchGroups?.schedule_start,
-      schedule_end: params.searchGroups?.schedule_end,
-      custom_field: params.searchGroups?.custom_field,
-    },
-    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
-    orderkey: params.orderkey,
+    // search: {
+    //   project_id: params?.projectId,
+    //   keyword: params?.keyword,
+    //   category_status_ids: params.searchGroups?.statusId,
+    //   priority: params.searchGroups?.priorityId,
+    //   iterate_id: params.searchGroups?.iterateId,
+    //   tag: params.searchGroups?.tagId,
+    //   user_id: params.searchGroups?.userId,
+    //   users_name: params.searchGroups?.usersnameId,
+    //   users_copysend_name: params.searchGroups?.usersCopysendNameId,
+    //   created_at: params.searchGroups?.createdAtId,
+    //   expected_start_at: params.searchGroups?.expectedStartAtId,
+    //   expected_end_at: params.searchGroups?.expectedendat,
+    //   updated_at: params.searchGroups?.updatedat,
+    //   finish_at: params.searchGroups?.finishAt,
+    //   panel_date: params?.panelDate,
+    //   all: params?.all,
+    //   class_ids: params.searchGroups?.class_ids,
+    //   category_id: params.searchGroups?.category_id,
+    //   schedule_start: params.searchGroups?.schedule_start,
+    //   schedule_end: params.searchGroups?.schedule_end,
+    //   custom_field: params.searchGroups?.custom_field,
+    // },
+    // order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
+    // orderkey: params.orderkey,
     page: params.page,
     pagesize: params.pagesize,
   })
+  return response.data
   if (params?.all) {
     return response.data?.list?.map((k: any) => ({
       status_name: k.status_name,
@@ -751,32 +752,33 @@ export const getMineCreacteList: any = async (params: any) => {
 // 获取我的已办列表
 export const getMineFinishList: any = async (params: any) => {
   const response = await http.get('getMineFinishList', {
-    search: {
-      project_id: params.projectId,
-      keyword: params?.keyword,
-      category_status_ids: params.searchGroups?.statusId,
-      priority: params.searchGroups?.priorityId,
-      iterate_id: params.searchGroups?.iterateId,
-      tag: params.searchGroups?.tagId,
-      user_id: params.searchGroups?.userId,
-      users_name: params.searchGroups?.usersnameId,
-      users_copysend_name: params.searchGroups?.usersCopysendNameId,
-      created_at: params.searchGroups?.createdAtId,
-      expected_start_at: params.searchGroups?.expectedStartAtId,
-      expected_end_at: params.searchGroups?.expectedendat,
-      updated_at: params.searchGroups?.updatedat,
-      finish_at: params.searchGroups?.finishAt,
-      class_ids: params.searchGroups?.class_ids,
-      category_id: params.searchGroups?.category_id,
-      schedule_start: params.searchGroups?.schedule_start,
-      schedule_end: params.searchGroups?.schedule_end,
-      custom_field: params.searchGroups?.custom_field,
-    },
-    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
-    orderkey: params.orderkey,
+    // search: {
+    //   project_id: params.projectId,
+    //   keyword: params?.keyword,
+    //   category_status_ids: params.searchGroups?.statusId,
+    //   priority: params.searchGroups?.priorityId,
+    //   iterate_id: params.searchGroups?.iterateId,
+    //   tag: params.searchGroups?.tagId,
+    //   user_id: params.searchGroups?.userId,
+    //   users_name: params.searchGroups?.usersnameId,
+    //   users_copysend_name: params.searchGroups?.usersCopysendNameId,
+    //   created_at: params.searchGroups?.createdAtId,
+    //   expected_start_at: params.searchGroups?.expectedStartAtId,
+    //   expected_end_at: params.searchGroups?.expectedendat,
+    //   updated_at: params.searchGroups?.updatedat,
+    //   finish_at: params.searchGroups?.finishAt,
+    //   class_ids: params.searchGroups?.class_ids,
+    //   category_id: params.searchGroups?.category_id,
+    //   schedule_start: params.searchGroups?.schedule_start,
+    //   schedule_end: params.searchGroups?.schedule_end,
+    //   custom_field: params.searchGroups?.custom_field,
+    // },
+    // order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
+    // orderkey: params.orderkey,
     page: params.page,
     pagesize: params.pagesize,
   })
+  return response.data
   return {
     list: response.data?.list
       ? response.data?.list?.map((i: any) => ({
@@ -1038,21 +1040,21 @@ export const addQuicklyCreate: any = async (params: any) => {
 
 export const getVerifyUserList: any = async (params: any) => {
   const response: any = await http.get<any>('getVerifyUserList', {
-    search: {
-      project_id: params.projectId,
-      user_id: params.userId,
-      keyword: params.searchValue,
-      verify_status: params.verifyStatus,
-      verify_opinion: params.remark,
-      verify_at: params.verifyTime,
-      created_at: params.time,
-    },
-    pagesize: params.pageSize,
+    // search: {
+    //   project_id: params.projectId,
+    //   user_id: params.userId,
+    //   keyword: params.searchValue,
+    //   verify_status: params.verifyStatus,
+    //   verify_opinion: params.remark,
+    //   verify_at: params.verifyTime,
+    //   created_at: params.time,
+    // },
+    pagesize: params.pagesize,
     page: params.page,
-    orderkey: params.orderKey,
-    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
+    // orderkey: params.orderKey,
+    // order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
   })
-
+  return response.data
   return {
     currentPage: params.page,
     total: response.data.pager.total,

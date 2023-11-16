@@ -21,6 +21,8 @@ import { useSearchParams } from 'react-router-dom'
 import EmployeeDepartment from './EmployeeDepartment'
 import { setStatistiDepartment } from '@store/project'
 import CommonIconFont from '@/components/CommonIconFont'
+import { setPriority } from 'os'
+import { map } from 'lodash'
 
 interface EmployeeProfilePersonProps {
   onChangeFilter(value: any): void
@@ -46,6 +48,7 @@ const CollapseHeader = (props: any) => {
   const [checkAll, setCheckAll] = useState(false)
   // 半选状态
   const [indeterminate, setIndeterminate] = useState(false)
+  const { currentClickNumber } = useSelector(store => store.employeeProfile)
   //
   // 项目权限-勾选
   const onChangeCheckbox = (e: any) => {
@@ -102,8 +105,6 @@ const CollapseHeader = (props: any) => {
   }
   // 根据筛选条件选中对应的人分组
   useEffect(() => {
-    const { user_ids } = props.filterParams
-    // setUserKeys(user_ids)
     setNormal(props.filterParams?.iteration ?? [{ id: 0, projectId: 0 }])
   }, [props.filterParams])
 
@@ -124,16 +125,33 @@ const CollapseHeader = (props: any) => {
     if (userKeys?.length === 0 || !userKeys) {
       return
     }
-
     for (const key of userKeys) {
-      const [project_id, user_id] = key.split('_')
-      const currentProjectUserIds = item.member_list?.filter((item: any) => {
-        const { id } = item
-        const [pro_id, user_id] = id.split('_')
-        return pro_id === project_id
-      })
+      const [project_id] = key.split('_')
+      const currentProjectUserIds = item.member_list
+        ?.filter((item: any) => {
+          const { id } = item
+          const [pro_id] = id.split('_')
+          return pro_id === project_id
+        })
+        ?.map((ele: any) => {
+          const [project_id] = ele.id.split('_')
+          return parseInt(project_id, 10)
+        })
+      setProjectKey(pre => [...pre, ...new Set([...currentProjectUserIds])])
     }
   }, [userKeys])
+  useEffect(() => {
+    const { user_ids } = props.filterParams ?? {}
+    const userKeys = user_ids?.map(
+      (item: any) => `${item.project_id}_${item.user_id}`,
+    )
+    if (!userKeys) {
+      return
+    }
+    const projectKeys = user_ids?.map((item: any) => item.project_id)
+    setUserKeys(userKeys)
+    setProjectKey(projectKeys)
+  }, [currentClickNumber])
   return (
     <CollapseHeaderWrap>
       <div className="left">
@@ -173,9 +191,8 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   // 选中的key
   const [selectKeys, setSelectKeys] = useState<any>([])
   const [searchParams, setSearchParams] = useSearchParams()
-  const { allMemberList, currentKey } = useSelector(
-    store => store.employeeProfile,
-  )
+  const { allMemberList, currentKey, filterParamsOverall, currentClickNumber } =
+    useSelector(store => store.employeeProfile)
   // 获取选中的keys
   const [userKeys, setUserKeys] = useState<any>([])
   // 折叠展开key
@@ -291,53 +308,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       },
     })
   }, [userKeys, expandedKeys])
-  useEffect(() => {
-    const { user_ids } = props.filterParams
-    // setUserKeys(user_ids)
-  }, [props.filterParams])
-  // const projectEle = (
-  //   <div>
-  //     <CheckboxAll
-  //       checked={checkAll}
-  //       indeterminate={indeterminate}
-  //       onClick={onAllChecked}
-  //     >
-  //       {t('selectAll')}
-  //     </CheckboxAll>
-  //     <CheckBoxWrap>
-  //       {allMemberList?.map((i: any) => (
-  //         <CheckboxLi key={i.id}>
-  //           <Checkbox
-  //             checked={selectKeys?.includes(i.id)}
-  //             onClick={() => onItemChecked(i.id)}
-  //           >
-  //             <div className="content">
-  //               <CommonUserAvatar avatar={i.avatar} />
-  //               <div className="nameInfo">{i.name}</div>
-  //             </div>
-  //           </Checkbox>
-  //           {i.member_list?.map((user: any) => {
-  //             return (
-  //               <CheckboxLi key={user.id}>
-  //                 <Checkbox
-  //                   checked={selectKeys?.includes(i.id)}
-  //                   onClick={() => onItemChecked(i.id)}
-  //                 >
-  //                   <div className="content">
-  //                     <CommonUserAvatar avatar={user.avatar} />
-  //                     <div className="nameInfo">
-  //                       {user.name}（{user.position?.name || '--'}）
-  //                     </div>
-  //                   </div>
-  //                 </Checkbox>
-  //               </CheckboxLi>
-  //             )
-  //           })}
-  //         </CheckboxLi>
-  //       ))}
-  //     </CheckBoxWrap>
-  //   </div>
-  // )
+
   // 点击图标展开或折叠
   const onClickIcon = (e: any) => {
     const key = Number(e.panelKey)
@@ -390,6 +361,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
                   <Checkbox
                     checked={userKeys?.includes(i.id)}
                     onChange={e => {
+                      console.log(userKeys)
                       setUserKeys((pre: any) => {
                         if (e.target.checked) {
                           return [...pre, i.id]
@@ -431,7 +403,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
             placeholder={t('searchMembers')}
             onConfirm={() => null}
             onChange={onSelectMember}
-            value={selectKeys}
+            value={userKeys}
             options={getAllUser(allMemberList)?.map((k: any) => ({
               label: k.name,
               value: k.id,

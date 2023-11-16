@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react'
 import { Checkbox } from 'antd'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
-import { setCurrentKey } from '@store/employeeProfile'
+import { setCurrentClickNumber, setCurrentKey } from '@store/employeeProfile'
 import { useTranslation } from 'react-i18next'
 import { getMemberOverviewStatistics } from '@/services/employeeProfile'
 import { useSearchParams } from 'react-router-dom'
@@ -30,7 +30,9 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { currentKey } = useSelector(store => store.employeeProfile)
+  const { currentKey, currentClickNumber } = useSelector(
+    store => store.employeeProfile,
+  )
   const [searchFilterParams, setSearchFilterParams] = useState<any>({
     // 搜索值
     keyword: '',
@@ -184,6 +186,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       ...searchFilterParams,
       time,
     })
+    dispatch(setCurrentClickNumber(currentClickNumber + 1))
   }
 
   //   点击切换搜素条件
@@ -311,6 +314,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
                   },
                 })
                 onComputedCurrent(i, memberStatistics)
+                dispatch(setCurrentClickNumber(currentClickNumber + 1))
               }}
             >
               <CommonIconFont type={i.type} size={20} />

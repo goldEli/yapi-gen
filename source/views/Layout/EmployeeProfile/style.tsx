@@ -540,9 +540,23 @@ export const TaskContent = styled.div`
 export const TabWrap = styled(Tabs)`
   height: calc(100% - 40px);
   overflow-y: scroll;
+  .ant-tabs-nav::before,
+  .ant-tabs-nav::before {
+    border: none;
+  }
+  .ant-tabs-nav .ant-tabs-ink-bar,
+  .ant-tabs-top > div > .ant-tabs-nav .ant-tabs-ink-bar {
+    display: none;
+  }
 `
 
-export const TreeWrap = styled(Tree)``
+export const TreeWrap = styled(Tree)`
+  .ant-tree-treenode {
+    height: 40px;
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
+  }
+`
 export const MemberItem = styled.div`
   height: 40px;
   padding-left: 28px;
