@@ -613,9 +613,6 @@ export const getKanbanConfig = createAsyncThunk(
       id: undefined,
       kanban_config_id: params.id,
     })
-    console.log(res2, 'new看板配置')
-    // const res = await services.kanbanConfig.getKanbanConfig(params)
-    // console.log(res.data,'第一次获取的看板配置数据');
     return res2
   },
 )
@@ -701,6 +698,7 @@ export const getKanbanByGroup = createAsyncThunk(
           },
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
+      pagesize: 20,
     }
     const res_config = await getNewkanbanConfig(params)
     store.dispatch(setkanbanConfig(res_config))

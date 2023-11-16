@@ -253,6 +253,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
           },
       project_id: getProjectIdByUrl(),
       kanban_config_id: conId,
+      pagesize: 20,
     }
 
     const firstRes = await getNewstoriesOfGroupFirstPage(params)
