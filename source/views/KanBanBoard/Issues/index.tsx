@@ -177,7 +177,7 @@ const Issues: React.FC<IssuesProps> = props => {
       },
       kanban_column_id: issues.id,
       project_id: projectInfo.id,
-      pagesize: 10,
+      pagesize: 20,
       page: newPage,
     }
 
