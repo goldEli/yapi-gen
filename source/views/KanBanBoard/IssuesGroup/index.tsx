@@ -50,7 +50,6 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     groupType === 'none'
       ? !!closeMap?.get(issuesGroup.id)
       : !closeMap?.get(issuesGroup.id)
-
   const { t } = useI18n()
 
   const text = useMemo(() => {
@@ -260,12 +259,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
 
     dispatch(
       setKanbanInfoByGroup(
-        findAndReplace(
-          issuesGroup.id,
-
-          kanbanInfoByGroup,
-          firstRes,
-        ),
+        findAndReplace(issuesGroup.id, kanbanInfoByGroup, firstRes),
       ),
     )
   }

@@ -4,6 +4,7 @@ import {
   getKanbanConfig,
   getKanbanConfigList,
   getStoryViewList,
+  updateKanbanByGroup,
 } from './kanBan.thunk'
 import { Options } from '@/components/SelectOptionsNormal'
 import i18next from 'i18next'
@@ -213,6 +214,9 @@ const slice = createSlice({
       state.viewItemConfig = checked?.config
     })
     builder.addCase(getKanbanByGroup.fulfilled, (state, action) => {
+      state.kanbanInfoByGroup = action.payload
+    })
+    builder.addCase(updateKanbanByGroup.fulfilled, (state, action) => {
       state.kanbanInfoByGroup = action.payload
     })
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {

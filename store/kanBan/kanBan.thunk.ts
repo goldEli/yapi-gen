@@ -206,7 +206,9 @@ export const saveModifyStatusModalInfo =
 
       if (res && res.code === 0 && res.data) {
         getMessage({ msg: i18n.t('common.operationSuccess'), type: 'success' })
-
+        setTimeout(() => {
+          dispatch(updateKanbanByGroup())
+        }, 500)
         return 'finish'
       }
     } catch (error) {
@@ -451,6 +453,59 @@ export const updateStoryPriority =
     })
   }
 
+// 更新故事列表（分组）
+export const updateKanbanByGroup = createAsyncThunk(
+  `${name}/updateKanbanByGroup`,
+  async () => {
+    const { valueKey, inputKey } = store.getState().view
+    const { sortByGroupOptions, sortByRowAndStatusOptions } =
+      store.getState().kanBan
+    const type = sortByGroupOptions?.find(item => item.check)?.key
+    const columnId = sortByRowAndStatusOptions?.find(item => item.check)?.key
+    if (!columnId) {
+      return []
+    }
+    if (!type) {
+      return []
+    }
+
+    const params = {
+      search: isEmpty(valueKey)
+        ? {
+            all: 1,
+            keyword: inputKey,
+          }
+        : {
+            ...valueKey,
+            user_id: valueKey.user_name,
+            category_id: valueKey.category,
+            iterate_id: valueKey.iterate_name,
+            custom_field: bbh(valueKey),
+            keyword: inputKey,
+            schedule_start: valueKey?.schedule?.start,
+            schedule_end: valueKey?.schedule?.end,
+          },
+      project_id: getProjectIdByUrl(),
+      kanban_config_id: parseInt(columnId, 10),
+    }
+    const myres = await getNewkanbanGroups({
+      ...params,
+      group_by: type,
+    })
+    store.dispatch(setSpinning(false))
+    const newData = store
+      .getState()
+      .kanBan?.kanbanInfoByGroup?.map((k: any) => {
+        const temp = myres.find((s: any) => s.id === k.id)
+        return {
+          ...temp,
+          columns: k.columns,
+        }
+      })
+    return newData
+  },
+)
+
 // 更新排序同步到服务端
 export const sortStoryServer =
   (
@@ -471,11 +526,12 @@ export const sortStoryServer =
       story_ids: ids,
       project_id: getProjectIdByUrl(),
     }
-    await services.kanban.modifyKanbanIssueSort(params)
-    dispatch(setKanbanInfoByGroup([]))
-    dispatch(getKanbanByGroup())
+    // await services.kanban.modifyKanbanIssueSort(params)
+    // dispatch(setKanbanInfoByGroup([]))
+    // dispatch(getKanbanByGroup())
+    // todo 更新个数
+    dispatch(updateKanbanByGroup())
   }
-
 // 打开分组弹窗
 export const openUserGroupingModel =
   (
@@ -647,12 +703,9 @@ export const getKanbanByGroup = createAsyncThunk(
       kanban_config_id: parseInt(columnId, 10),
     }
     const res_config = await getNewkanbanConfig(params)
-    console.log(res_config, 'res_config新的配置')
     store.dispatch(setkanbanConfig(res_config))
     if (type === 'none') {
       const firstRes = await getNewstoriesOfGroupFirstPage(params)
-      console.log(firstRes, '第一次')
-
       // const res = await services.kanban.getKanban(params)
       // console.log(res.data, 'res.data老的配置')
       store.dispatch(setSpinning(false))
@@ -680,7 +733,6 @@ export const getKanbanByGroup = createAsyncThunk(
       ...params,
       group_by: type,
     })
-    console.log(myres, 'myres新的分类')
     store.dispatch(setSpinning(false))
     // const res = await services.kanban.getKanbanByGroup({
     //   ...params,
@@ -735,8 +787,6 @@ export const getKanbanByGroup = createAsyncThunk(
         ...params2,
         // group_by: type,
       })
-      console.log(firstRes22, '组数据')
-
       return firstRes22.list
     }
     const cc = myres.map((i: any) => {
