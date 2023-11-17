@@ -85,7 +85,12 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
         setParamsData(getParamsData(searchParams))
         // 显示项目下的菜单，例需求
         const resultMenu = [
-          // { id: 'map', name: t('map'), url: '', isPermisson: true  },
+          {
+            id: 'map',
+            name: '导图',
+            url: '/ProjectDetail/Encephalogram',
+            isPermisson: true,
+          },
           {
             id: 'iteration',
             name: t('iteration'),

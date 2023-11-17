@@ -243,6 +243,10 @@ const routes = [
         element: lazy(() => import('@/views/ProjectDetail')),
         children: [
           {
+            path: 'Encephalogram',
+            element: lazy(() => import('@/views/Encephalogram')),
+          },
+          {
             path: 'PrivatePermission',
             element: lazy(
               () =>
