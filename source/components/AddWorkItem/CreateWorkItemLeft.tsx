@@ -428,6 +428,15 @@ const CreateDemandLeft = (props: Props) => {
     if (categoryObj?.id) {
       form.setFieldsValue({
         requiredCategory: categoryObj?.id,
+        info: [2, 5].includes(categoryObj?.work_type)
+          ? `<p>【${t('defectDescription')}】<p></p><p></p><p></p>【${t(
+              'reproSteps',
+            )}】<p></p><p></p><p></p>【${t(
+              'expectedResults',
+            )}】<p></p><p></p><p></p>【${t(
+              'screenshot',
+            )}】<p></p><p></p><p></p>`
+          : ' ',
       })
       getCategoryField(categoryObj?.id)
       getStatusList(categoryObj?.id)
@@ -782,7 +791,7 @@ const CreateDemandLeft = (props: Props) => {
             autoFocus
           />
         </Form.Item>
-        <Form.Item label={<Label b>{t('mine.demandInfo')}</Label>} name="info">
+        <Form.Item label={<Label b>{t('describe')}</Label>} name="info">
           <Editor
             maxHeight="550px"
             minHeight="250px"

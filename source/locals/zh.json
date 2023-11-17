@@ -2619,5 +2619,9 @@
   "personal": "个人",
   "viewAllReport": "查看所有日报",
   "viewAllProject": "查看所有项目",
-  "yesterday": "昨天"
+  "yesterday": "昨天",
+  "defectDescription": "缺陷描述",
+  "reproSteps": "重现步骤",
+  "expectedResults": "预期结果",
+  "screenshot": "截图"
 }

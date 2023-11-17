@@ -2619,5 +2619,9 @@
   "personal": "Personal",
   "viewAllReport": "View all daily reports",
   "viewAllProject": "View all items",
-  "yesterday": "Yesterday"
+  "yesterday": "Yesterday",
+  "defectDescription": "Defect Description",
+  "reproSteps": "Repro steps",
+  "expectedResults": "Expected results",
+  "screenshot": "Screenshot"
 }
