@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import EmployeeProfileHeader from './components/EmployeeProfileHeader'
 import {
   ContentWrap,
@@ -40,6 +40,10 @@ const EmployeeProfile = () => {
   const { currentKey, currentClickNumber } = useSelector(
     store => store.employeeProfile,
   )
+  // filterParams = useMemo(
+  //   () => filterParams,
+  //   [filterParams?.status, filterParams?.time],
+  // )
   // 拖动线条
   const onDragLine = () => {
     let width = sliderRef.current?.clientWidth

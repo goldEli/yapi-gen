@@ -177,7 +177,9 @@ const TaskItem = (props: TaskItemProps) => {
       ...{
         page: newPage,
         user_id: item.id,
-        project_ids: filterParams?.user_ids.map((item: any) => item.project_id),
+        project_ids: filterParams?.user_ids
+          ?.filter((e: any) => e.id === item.id)
+          ?.map((item: any) => item.project_id),
       },
     })
     onChangeData(response, item.id)
@@ -259,6 +261,7 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
 
   useEffect(() => {
     if (props.filterParams?.status) {
+      console.log(11111)
       setDataList({ list: undefined })
       setLoading(true)
       //调用任务接口
