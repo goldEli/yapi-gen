@@ -1,3 +1,4 @@
+import CustomSelect from '@/components/CustomSelect'
 import styled from '@emotion/styled'
 
 export const EncephalogramBox = styled.div`
@@ -26,11 +27,26 @@ export const TypeBox = styled.div`
   border-radius: 4px;
   display: flex;
   justify-content: space-between;
-
 `
 export const Row = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+`
+export const RowTree = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  .rowChild {
+    display: flex;
+    align-items: center;
+    img {
+      width: 32px;
+      height: 32px;
+      margin-left:12px;
+    }
+  }
 `
 
 export const Bgc = styled.div<{ color: string }>(
@@ -46,6 +62,11 @@ export const Text = styled.span`
   font-size: 12px;
   color: var(--neutral-n2);
   margin-left: 4px;
+`
+export const TextTree = styled.span`
+  font-size: 12px;
+  color: var(--neutral-n2);
+  margin-left: 12px;
 `
 export const TypeSelectBox = styled.div`
   background: var(--neutral-white-d1);
@@ -169,3 +190,54 @@ export const TextWrap = styled.div`
   color: var(--neutral-n1-d2);
   padding-bottom: 63px;
 `
+export const CustomSelectWrap = styled(CustomSelect)`
+  min-width: 100px;
+`
+export const RangePickerWrap = styled.div<{ type: boolean }>(
+  {
+    height: '32px',
+    padding: '0 14px',
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+    borderRadius: '6px',
+    color: 'var(--auxiliary-text-t2-d1)',
+    '.ant-picker': {
+      position: 'absolute',
+      left: '0px',
+      background: 'transparent',
+      zIndex: 88,
+    },
+    '.timeText': {
+      position: 'relative',
+      right: '-20px',
+      background: 'transparent',
+      zIndex: 8,
+    },
+    '&:hover': {
+      color: 'var(--auxiliary-text-t2-d2)',
+      '.ant-picker-suffix': {
+        color: 'var(--auxiliary-text-t2-d2)',
+      },
+      cursor: 'pointer',
+    },
+  },
+  ({ type }) => ({
+    '.timeText': {
+      width: type ? '190px' : '52px',
+      color: type
+        ? 'var(--auxiliary-text-t2-d2)'
+        : 'var(--auxiliary-text-t2-d1)',
+    },
+    '.ant-picker .ant-picker-suffix': {
+      color: type
+        ? 'var(--auxiliary-text-t2-d2)'
+        : 'var(--auxiliary-text-t2-d1)',
+    },
+    '.ant-picker-clear': {
+      background: 'transparent',
+    },
+    backgroundColor: type ? 'var(--function-tag5)' : 'var(--auxiliary-b4)',
+  }),
+)
+export const PersonMain = styled.div``

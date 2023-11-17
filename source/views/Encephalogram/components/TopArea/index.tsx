@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TYPE_ENCEPHALOGRAM } from '@/constants'
 import {
   TopAreaBox,
@@ -18,76 +18,66 @@ import {
   CenterWrap,
   TimeWrap,
   TextWrap,
+  CustomSelectWrap,
+  RangePickerWrap,
+  PersonMain,
+  RowTree,
+  TextTree,
 } from '@/views/Encephalogram/styles'
-import CustomSelect from '@/components/CustomSelect'
-import styled from '@emotion/styled'
-import { Popover, Space } from 'antd'
+import { Checkbox, Popover, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
-const CustomSelectWrap = styled(CustomSelect)`
-  min-width: 100px;
-`
-const RangePickerWrap = styled.div<{ type: boolean }>(
+const priorityList = [
   {
-    height: '32px',
-    padding: '0 14px',
-    display: 'flex',
-    alignItems: 'center',
-    position: 'relative',
-    borderRadius: '6px',
-    color: 'var(--auxiliary-text-t2-d1)',
-    '.ant-picker': {
-      position: 'absolute',
-      left: '0px',
-      background: 'transparent',
-      zIndex: 88,
-    },
-    '.timeText':{
-      position: 'relative',
-      right: '-20px',
-      background: 'transparent',
-      zIndex: 8
-    },
-    '&:hover': {
-      color: 'var(--auxiliary-text-t2-d2)',
-      '.ant-picker-suffix':{
-        color: 'var(--auxiliary-text-t2-d2)',
+    label: '12',
+    id:12,
+    children: [
+      {
+        label: '规划中1',
+        id: 2691,
       },
-      cursor: 'pointer'
-    }
+      {
+        label: '规划中2',
+        id: 2693,
+      },
+    ],
   },
-  ({ type }) => ({
-    '.timeText':{
-      width: type ? '190px' : '52px',
-      color: type ? 'var(--auxiliary-text-t2-d2)':'var(--auxiliary-text-t2-d1)'
-    },
-    '.ant-picker .ant-picker-suffix':{
-      color: type ? 'var(--auxiliary-text-t2-d2)':'var(--auxiliary-text-t2-d1)'
-    },
-    '.ant-picker-clear':{
-      background: 'transparent',
-    },
-    backgroundColor:type? 'var(--function-tag5)': 'var(--auxiliary-b4)',
-  }),
-)
-
+  {
+    label: '22',
+    id:77,
+    children: [
+      {
+        label: '规划中14',
+        id: 26922,
+      },
+    ],
+  },
+]
 const TopArea = () => {
-  const [clicked, setClicked] = useState(false)
+  const [clickeMsg, setClickeMsg] = useState(false)
+  const [clickePerson, setClickePerson] = useState(true)
   const [state, setState] = useState([])
   const [date, setDate] = useState<any>(null)
+  const [personData, setPersonData] = useState(priorityList)
+  const value = [2691,2693]
   const onChangeSelect = () => {}
-  const handleClickChange = (open: boolean) => {
-    setClicked(open)
-  }
+  useEffect(() => {
+    const newChild = priorityList.map(el=>({
+      ...el,
+      checked:el.children.length === el.children.filter(item=> value.includes(item.id)).length,
+      children:el.children.map(item=>({...item,checked:value.includes(item.id)}))}
+      ))
+      setPersonData(newChild)
+  }, [])
   const content = () => {
     return (
       <Content>
         <HeaderPopover>
           <span>项目介绍</span>
           <IconFont
-            onClick={() => setClicked(false)}
+            onClick={() => setClickeMsg(false)}
             type="close"
             style={{ color: 'var(--neutral-n2)' }}
           />
@@ -135,28 +125,77 @@ const TopArea = () => {
       </Content>
     )
   }
-  const priorityList = [
-    {
-      label: '12',
-      children: [
-        {
-          label: '规划中',
-          value: 2692,
-          id: 2692,
-        },
-      ],
-    },
-    {
-      label: '22',
-      children: [
-        {
-          label: '规划中1',
-          value: 26922,
-          id: 26922,
-        },
-      ],
-    },
-  ]
+  // 点击父级
+  const onChangeF = (e:any, i:any) => {
+    const newChild:any = personData.map((el:any)=>({
+      ...el,
+      checked:i.id === el.id ? e.target.checked : el.checked,
+      children:i.id === el.id ? el.children.map((item:any)=>({...item,checked:e.target.checked})) : el.children}
+    ))
+    setPersonData(newChild)
+  }
+  // 点击子级
+  const onChangeS=(e:any, i:any)=>{
+    console.log(i.id)
+    const Child:any = personData.map((el:any)=>({
+      ...el,
+      children: el.children.map((item:any)=>({...item,checked:i.id === item.id ? e.target.checked :item.checked}))}
+    ))
+    console.log(Child,'99')
+    const newChild:any = Child.map((el:any)=>({
+      ...el,
+      checked: el.children.length === el.children.filter((item:any)=> item.checked).length
+  }))
+    setPersonData(newChild)
+  }
+  const contentPerson = () => {
+    return (
+      <Content>
+        <HeaderPopover>
+          <span>项目人员</span>
+          <IconFont
+            onClick={() => setClickePerson(false)}
+            type="close"
+            style={{ color: 'var(--neutral-n2)' }}
+          />
+        </HeaderPopover>
+        <PersonMain>
+          {personData.map((el:any) => (
+            <>
+              <RowTree key={el.label}>
+                <div className="rowChild">
+                  <Checkbox
+                    checked={el.checked}
+                    onChange={e => onChangeF(e, el)}
+                  />
+                  <TextTree>
+                    {el.label}-{el.checked ? '1' : '0'}
+                  </TextTree>
+                </div>
+                <IconFont
+                  type="down"
+                  style={{ color: 'var(--auxiliary-text-t2-d1)' }}
+                />
+              </RowTree>
+              <div>
+                {el.children.length >= 1 &&
+                  el.children.map((item:any) => (
+                    <RowTree key={item.label}>
+                      <div className="rowChild">
+                        <Checkbox  onChange={e => onChangeS(e, item)} checked={item.checked} />
+                        <img src="" />
+                        <TextTree>{item.label}</TextTree>
+                      </div>
+                    </RowTree>
+                  ))}
+              </div>
+            </>
+          ))}
+        </PersonMain>
+      </Content>
+    )
+  }
+
   const onClickSearch = (value: any) => {
     console.log(value)
     setState(value || [])
@@ -166,8 +205,8 @@ const TopArea = () => {
       const s = moment(dates[0]).format('YYYY-MM-DD') || ''
       const d = moment(dates[1]).format('YYYY-MM-DD') || ''
       setDate([s, d])
-    }else{
-      // setDate(null)
+    } else {
+      setDate(null)
     }
   }
   return (
@@ -211,18 +250,6 @@ const TopArea = () => {
             onChange={(value: any) => onClickSearch(value)}
             value={state}
           />
-          <Popover
-            onOpenChange={handleClickChange}
-            getPopupContainer={node => node}
-            content={content}
-            trigger="click"
-            open={clicked}
-          >
-            <PopoverBtn onClick={() => setClicked(!clicked)}>
-              <IconFont type="intro" />
-              <span>项目简介</span>
-            </PopoverBtn>
-          </Popover>
           <RangePickerWrap type={date?.length >= 1}>
             <RangePicker
               isShowQuick
@@ -237,6 +264,30 @@ const TopArea = () => {
               <span className="timeText">时间</span>
             )}
           </RangePickerWrap>
+          <Popover
+            onOpenChange={(val: boolean) => setClickeMsg(val)}
+            getPopupContainer={node => node}
+            content={content}
+            trigger="click"
+            open={clickeMsg}
+          >
+            <PopoverBtn onClick={() => setClickeMsg(!clickeMsg)}>
+              <IconFont type="intro" />
+              <span>项目简介</span>
+            </PopoverBtn>
+          </Popover>
+          <Popover
+            onOpenChange={(val: boolean) => setClickePerson(val)}
+            getPopupContainer={node => node}
+            content={contentPerson}
+            trigger="click"
+            open={clickePerson}
+          >
+            <PopoverBtn onClick={() => setClickePerson(!clickePerson)}>
+              <IconFont type="intro" />
+              <span>项目人员</span>
+            </PopoverBtn>
+          </Popover>
         </Space>
       </TypeSelectBox>
     </TopAreaBox>
