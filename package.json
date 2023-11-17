@@ -46,6 +46,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "object-hash": "^3.0.0",
+    "or": "^0.2.0",
     "rc-queue-anim": "^2.0.0",
     "rc-tween-one": "^3.0.6",
     "re-resizable": "^6.9.9",
