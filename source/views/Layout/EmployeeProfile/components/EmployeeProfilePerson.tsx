@@ -20,7 +20,7 @@ import { useSearchParams } from 'react-router-dom'
 import EmployeeDepartment from './EmployeeDepartment'
 import { setStatistiDepartment } from '@store/project'
 import CommonIconFont from '@/components/CommonIconFont'
-
+import _ from 'lodash'
 interface EmployeeProfilePersonProps {
   onChangeFilter(value: any): void
   filterParams: any
@@ -152,7 +152,11 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [activeKey, setActiveKey] = useState<any>([])
   const [tabActiveKey, setTabActiveKey] = useState('project')
   const { statistiDepartment } = useSelector(store => store.project)
-  const { list = [], expandedKeys = [] } = statistiDepartment ?? {}
+  const {
+    list = [],
+    expandedKeys = [],
+    departMentUserKey = [],
+  } = statistiDepartment ?? {}
   // 点击全选
   const onAllChecked = (e: any) => {
     const { checked } = e.target
@@ -281,7 +285,6 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
                   <Checkbox
                     checked={userKeys?.includes(i.id)}
                     onChange={e => {
-                      console.log(userKeys)
                       setUserKeys((pre: any) => {
                         if (e.target.checked) {
                           return [...pre, i.id]
@@ -309,6 +312,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       setStatistiDepartment({
         ...statistiDepartment,
         expandedKeys: key,
+        departMentUserKey: key,
       }),
     )
   }
@@ -337,20 +341,19 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
             ))}
           </MoreSelect>
         ) : (
-          <Select
+          <MoreSelect
             placeholder={t('searchMembers')}
             onChange={onChangeDepartment}
-            value={expandedKeys}
-            options={list}
-            fieldNames={{
-              label: 'name',
-              value: 'id',
-            }}
-            allowClear
-            mode="multiple"
-            showSearch
-            maxTagCount={1}
-          ></Select>
+            value={departMentUserKey}
+            options={_.cloneDeep(list)}
+            renderChildren
+          >
+            {list?.map((i: any) => (
+              <Select.Option key={i.id} value={i.id} label={i.name}>
+                {i.name}
+              </Select.Option>
+            ))}
+          </MoreSelect>
         )}
       </div>
       {/* <div className="label">

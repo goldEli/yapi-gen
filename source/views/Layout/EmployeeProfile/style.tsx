@@ -191,12 +191,15 @@ export const ReportButton = styled.div`
   color: var(--neutral-white-d7);
   font-size: 14px;
   cursor: pointer;
+  z-index: 9999;
 `
 
 export const CheckboxAll = styled(Checkbox)`
-  padding-left: 12px;
+  padding-left: 28px;
 `
-
+export const DepartCheckboxAll = styled(Checkbox)`
+  padding-left: 24px;
+`
 export const CheckBoxWrap = styled.div`
   height: calc(100% - 118px);
   overflow-y: auto;
@@ -539,7 +542,7 @@ export const TaskContent = styled.div`
 `
 export const TabWrap = styled(Tabs)`
   height: calc(100% - 40px);
-  overflow-y: scroll;
+  margin-left: 16px;
   .ant-tabs-nav::before,
   .ant-tabs-nav::before {
     border: none;
@@ -552,13 +555,33 @@ export const TabWrap = styled(Tabs)`
   .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
     height: 20px;
   }
+  .ant-tabs-nav,
+  .ant-tabs > div > .ant-tabs-nav {
+    position: sticky;
+    top: 0px;
+    background: #fff;
+  }
+  .ant-tabs-tabpane,
+  .ant-tabs-content,
+  .ant-tabs-tabpane > div {
+    height: 100%;
+  }
 `
 
 export const TreeWrap = styled(Tree)`
+  height: 100%;
+  overflow-y: scroll;
   .ant-tree-treenode {
     height: 40px;
     color: var(--neutral-n1-d1);
     font-family: SiYuanMedium;
+  }
+  .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
+    background-color: var(--primary-d1);
+    border-color: var(--primary-d1);
+  }
+  .ant-tree-checkbox-inner {
+    border-radius: 4px;
   }
 `
 export const MemberItem = styled.div`

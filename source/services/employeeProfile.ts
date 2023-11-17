@@ -51,6 +51,7 @@ export const getMemberOverviewMoreStoryList = async (params: any) => {
     keyword: params.keyword ?? '',
     is_star: params.isStart ? 1 : 2,
     page: params.page,
+    project_ids: params.project_ids,
   })
   return response.data.list
 }
