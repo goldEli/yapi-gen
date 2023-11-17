@@ -36,8 +36,7 @@ const RangePickerWrap = styled.div<{ type: boolean }>(
     display: 'flex',
     alignItems: 'center',
     position: 'relative',
-    borderRadius: '4px',
-    backgroundColor: 'var(--auxiliary-b4)',
+    borderRadius: '6px',
     color: 'var(--auxiliary-text-t2-d1)',
     '.ant-picker': {
       position: 'absolute',
@@ -66,7 +65,11 @@ const RangePickerWrap = styled.div<{ type: boolean }>(
     },
     '.ant-picker .ant-picker-suffix':{
       color: type ? 'var(--auxiliary-text-t2-d2)':'var(--auxiliary-text-t2-d1)'
-    }
+    },
+    '.ant-picker-clear':{
+      background: 'transparent',
+    },
+    backgroundColor:type? 'var(--function-tag5)': 'var(--auxiliary-b4)',
   }),
 )
 
@@ -164,7 +167,7 @@ const TopArea = () => {
       const d = moment(dates[1]).format('YYYY-MM-DD') || ''
       setDate([s, d])
     }else{
-      setDate(null)
+      // setDate(null)
     }
   }
   return (
