@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import { getDepartmentUserList } from '@/services/setting'
 import { DepartCheckboxAll, TreeWrap } from '../style'
-import _ from 'lodash'
+import _, { set } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { setStatistiDepartment } from '@store/project'
@@ -126,6 +126,11 @@ const EmployeeDepartment = (props: any, ref: any) => {
   useEffect(() => {
     getlist()
   }, [])
+  useEffect(() => {
+    if (expandedKeys?.length === 0 && departMentUserKey?.length === 0) {
+      setChecked(false)
+    }
+  }, [expandedKeys, departMentUserKey])
   useImperativeHandle(ref, () => {
     return {
       usersData,

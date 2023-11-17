@@ -261,7 +261,6 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
 
   useEffect(() => {
     if (props.filterParams?.status) {
-      console.log(11111)
       setDataList({ list: undefined })
       setLoading(true)
       //调用任务接口
