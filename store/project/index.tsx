@@ -243,7 +243,6 @@ export const projectSlice = createSlice({
       state: any,
       action: PayloadAction<CounterState['statistiDepartment']>,
     ) {
-      console.log(11111, action.payload)
       state.statistiDepartment = action.payload
     },
   },
