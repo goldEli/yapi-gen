@@ -196,6 +196,9 @@ const WaringCard = (props: WaringCardProps) => {
         onChangeVisible={() => {
           setIsDeleteVisible(false)
         }}
+        onCancel={() => {
+          setIsDeleteVisible(false)
+        }}
         onCancelState
         onConfirm={async () => {
           let res = await saveWarningConfig({

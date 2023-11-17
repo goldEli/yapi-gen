@@ -35,7 +35,7 @@ export const formatFileSize = (val: number) => {
 }
 let cache: { credentials: any } | null = null
 const getCosSign = async (): Promise<any> => {
-  if (cache && Date.now()) {
+  if (cache && Date.now() / 1000 < Number(cache.credentials.expiredTime)) {
     // 如果缓存中存在有效的临时密钥，则直接返回
     return cache.credentials
   }

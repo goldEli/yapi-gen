@@ -196,7 +196,6 @@ const ProjectWarningModal = () => {
     let formattedDate =
       now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
 
-    console.log(formattedDate)
     let date1 = new Date(dateStr2)
     let date2 = new Date(formattedDate)
 
