@@ -63,13 +63,13 @@ const FormStyle = styled(Form)`
   .ant-select-selection-item {
     color: var(--neutral-n1-d1);
   }
-  & .ant-picker,
-  .ant-select:not(.ant-select-customize-input) .ant-select-selector,
-  .ant-input,
-  .ant-input-number {
-    border: 1px solid var(--neutral-n6-d1) !important;
-    background-color: var(--neutral-white-d4) !important;
-  }
+  // & .ant-picker,
+  // .ant-select:not(.ant-select-customize-input) .ant-select-selector,
+  // .ant-input,
+  // .ant-input-number {
+  //   border: 1px solid var(--neutral-n6-d1) !important;
+  //   background-color: var(--neutral-white-d4) !important;
+  // }
   & .ant-select-item-option-content,
   .ant-select-item,
   .ant-select-item-option,
@@ -83,12 +83,12 @@ const TitleStyle = styled.div`
   font-size: 14px;
   color: var(--neutral-n2);
 `
-const SelectStyle = styled(CustomSelect)`
-  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    border: 1px solid var(--neutral-n6-d1) !important;
-    background-color: var(--neutral-white-d4) !important;
-  }
-`
+// const SelectStyle = styled(CustomSelect)`
+//   .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+//     border: 1px solid var(--neutral-n6-d1) !important;
+//     background-color: var(--neutral-white-d4) !important;
+//   }
+// `
 const PersonStyle = styled.div`
   width: 100%;
   padding: 8px 32px 24px;

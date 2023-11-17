@@ -116,12 +116,12 @@ const SiteNotifications = (props: any, ref: any) => {
       Notification.requestPermission().then(result => {
         if (result === 'granted') {
           const n: any = new Notification(wsData?.data?.msgBody?.title, {
-            body: wsData.data.msgBody.content,
+            body: wsData?.data?.msgBody?.content,
           })
           n.onclick = function () {
             if (wsData.data.customData.linkWebUrl) {
               // 当点击事件触发，打开指定的url
-              window.open(wsData.data.customData.linkWebUrl)
+              window.open(wsData.data?.customData?.linkWebUrl)
             }
           }
         } else {
@@ -137,7 +137,7 @@ const SiteNotifications = (props: any, ref: any) => {
             ),
             description: (
               <div className={mcs} style={{ marginLeft: '-12px' }}>
-                {wsData.data.msgBody.content}
+                {wsData.data?.msgBody?.content}
               </div>
             ),
             onClick: () => {
