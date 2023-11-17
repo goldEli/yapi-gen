@@ -377,8 +377,6 @@ const QuickMine = (props: QuickMineProps) => {
     return false
   }, [dataList])
 
-  console.log(dataList, '=dataList')
-
   return (
     <>
       {isExamineVisible && (

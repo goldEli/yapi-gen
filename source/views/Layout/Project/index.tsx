@@ -1,5 +1,5 @@
 /* eslint-disable no-undefined */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import HeaderFilter from './components/HeaderFilter'
 import { ProjectWrap, ProjectIndexWrap } from './style'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -26,6 +26,7 @@ const ProjectIndex = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { userPreferenceConfig } = useSelector(store => store.user)
+  const { isUpdateProject } = useSelector(store => store.createProject)
   // 缩略图还是列表
   const [isSpinning, setIsSpinning] = useState(false)
   // 开始、关闭、暂停的弹窗状态
@@ -192,6 +193,12 @@ const ProjectIndex = () => {
       pageSize: filterParams.pageObj.size,
     })
   }
+
+  useEffect(() => {
+    if (isUpdateProject) {
+      getList(filterParams, false)
+    }
+  }, [isUpdateProject])
 
   return (
     <ProjectIndexWrap>

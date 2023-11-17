@@ -10,7 +10,11 @@ import {
   getAffiliationUser,
   getProjectInfoOnly,
 } from '@/services/project'
-import { changeCreateVisible, editProject } from '@store/create-propject'
+import {
+  changeCreateVisible,
+  editProject,
+  setIsUpdateProject,
+} from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { DatePicker, Form, Input, Select, Tooltip, Upload } from 'antd'
@@ -108,7 +112,7 @@ const CreateAProjectForm = () => {
   const [leaderId, setLeaderId] = useState<any>(0)
   const [lock, setLock] = useState(true)
   const [canChooseLeader, setCanChooseLeader] = useState(true)
-  const { createVisible, isEditId, groupId } = useSelector(
+  const { createVisible, isEditId, groupId, isUpdateProject } = useSelector(
     state => state.createProject,
   )
   const [selectLeaders, setSelectLeaders] = useState<any>([])

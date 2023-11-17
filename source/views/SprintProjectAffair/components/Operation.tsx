@@ -301,10 +301,10 @@ const Operation = (props: Props) => {
     props?.onChangeIsShowLeft?.()
   }
   useEffect(() => {
-    if (searchChoose && searchChoose.system_view) {
+    if (JSON.stringify(searchChoose) === '{}' && searchChoose.system_view) {
       return
     }
-    if (searchChoose) {
+    if (JSON.stringify(searchChoose) !== '{}') {
       const targetSubjects = filterObj(searchChoose, (grade: any) => {
         return grade !== null
       })

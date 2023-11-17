@@ -235,7 +235,9 @@ const TableFilter = (props: any) => {
   const info = useGetloginInfo()
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
-  const { filterKeys, projectInfoValues } = useSelector(store => store.project)
+  const { filterKeys, projectInfoValues, projectInfo } = useSelector(
+    store => store.project,
+  )
   const dispatch = useDispatch()
   const searchChoose = useSelector(store => store.view.searchChoose)
   const myId = useSelector(store => store.user.loginInfo.id)
@@ -362,6 +364,7 @@ const TableFilter = (props: any) => {
       }
     }
   }, [searchChoose])
+
   useLayoutEffect(() => {
     const map: any = new Map()
     const mapSpan: any = new Map()
@@ -382,6 +385,7 @@ const TableFilter = (props: any) => {
     })
     setSpanMaps(mapSpan)
   }, [props])
+
   // 折叠图标
   const expandIcon = (e: any) => {
     return (
@@ -495,6 +499,8 @@ const TableFilter = (props: any) => {
     }
     return arr2.length >= 1 ? [...arr1, b] : [...arr1]
   }
+
+  // console.log(list, '=12121', projectInfo)
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>

@@ -8,6 +8,10 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setIterateInfo } from '@store/iterate'
+import {
+  getProjectInfoStore,
+  getProjectInfoValuesStore,
+} from '@store/project/project.thunk'
 
 interface LayoutSecondaryMenuProps {
   width: number
@@ -71,6 +75,8 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
     } else if (paramsData?.id) {
       dispatch(setIterateInfo({}))
       const params = encryptPhp(JSON.stringify(paramsData))
+      dispatch(getProjectInfoStore({ projectId: paramsData?.id }))
+      dispatch(getProjectInfoValuesStore({ projectId: paramsData?.id }))
       resultUrl = `${url}?data=${params}`
     } else {
       resultUrl = url
