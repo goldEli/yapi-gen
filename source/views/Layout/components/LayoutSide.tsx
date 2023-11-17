@@ -83,10 +83,10 @@ const MorePopoverComponent = (props: MorePopoverComponentProps) => {
             </div>
           </MoreItem>
         )}
-        <MoreItem isDisable>
+        {/* <MoreItem isDisable>
           <CommonIconFont size={24} type="plus" color="var(--neutral-n2)" />
           <div>禁用</div>
-        </MoreItem>
+        </MoreItem> */}
       </MorePopoverContent>
     </MorePopover>
   )
@@ -112,11 +112,11 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
 
   // 其他系统列表
   const otherSystemList = [
-    { name: 'iFun BI', url: '', icon: 'plus' },
-    { name: 'iFun AI', url: '', icon: 'plus' },
-    { name: 'iFun GM', url: '', icon: 'plus' },
-    { name: 'iFun Mail', url: '', icon: 'plus' },
-    { name: 'iFun OA', url: '', icon: 'plus' },
+    { name: 'iFun BI', url: 'https://bi.ifun.com/', icon: 'plus' },
+    { name: 'iFun AI', url: 'https://iai.ifun.com/', icon: 'plus' },
+    { name: 'iFun GM', url: 'https://gm.ifun.com', icon: 'plus' },
+    { name: 'iFun Mail', url: 'https://imail.ifun.com/', icon: 'plus' },
+    { name: 'iFun OA', url: 'https://oa.ifun.com/', icon: 'plus' },
   ]
 
   // 切换展开折叠
@@ -195,10 +195,15 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
     })
   }
 
+  // 新开页面打开外链
+  const onOpenUrl = (url: string) => {
+    window.open(url)
+  }
+
   const moreOtherSystem = (
     <MoreOtherSystemWrap>
       {otherSystemList?.map((i: any) => (
-        <MoreOtherSystemItem key={i.name}>
+        <MoreOtherSystemItem key={i.name} onClick={() => onOpenUrl(i.url)}>
           <div className="box">
             <CommonIconFont type={i.icon} size={24} />
           </div>
