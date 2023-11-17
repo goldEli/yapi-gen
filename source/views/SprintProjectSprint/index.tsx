@@ -444,6 +444,10 @@ const SprintProjectSprint: React.FC = () => {
   useEffect(() => {
     timer.current && clearTimeout(timer.current)
     timer.current = setTimeout(() => {
+      // if (
+      //   leftSprintList.list.filter((_, idx) => checkList[idx]).map(k => k.id)
+      //     .length > 0
+      // ) {
       dispatch(
         getRightSprintList({
           ...searchObject,

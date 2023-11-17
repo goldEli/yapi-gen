@@ -557,7 +557,6 @@ const CreateDemandRight = (props: Props) => {
                 type: 1,
                 people: form.getFieldValue('users_copysend_name'),
                 onConfirm: e => {
-                  console.log(e)
                   form.setFieldsValue({
                     users_copysend_name: e.map(i => i.id),
                   })

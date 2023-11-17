@@ -62,6 +62,7 @@ const useInit = () => {
         console.error(error)
       }
       await dispatch(getStoryViewList(id))
+
       dispatch(getKanbanByGroup())
     }
     run()

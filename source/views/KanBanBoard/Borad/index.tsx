@@ -42,7 +42,6 @@ const Board = () => {
       id: parseInt(currentColumn?.key, 10) ?? 0,
       project_id: getProjectIdByUrl(),
     }
-    // dispatch(getKanbanByGroup())
     isUpdateAddWorkItem && dispatch(getKanbanConfig(params))
   }, [isUpdateAddWorkItem])
 
@@ -55,7 +54,7 @@ const Board = () => {
       >
         {kanbanConfig?.columns?.length ? <KanBanSortByPerson /> : <NoData />}
         {/* <KanBanSortByPerson /> */}
-        <ControlScrollPlane />
+        {/* <ControlScrollPlane /> */}
       </Container>
     </Spin>
   )

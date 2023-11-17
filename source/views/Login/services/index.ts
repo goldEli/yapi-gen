@@ -26,11 +26,9 @@ export const getMobil = async (
   type: number,
   areaCode: string,
 ) => {
-  console.log(areaCode)
   const match = areaCode.match(/\d+/)
   const number = match ? match[0] : null
 
-  console.log(number)
   const data = await fetch(
     `${API_BASE_URL}/auth/getVerifySMSCode?mobile=${mobile}&type=${type}&areaCode=${number}`,
     {

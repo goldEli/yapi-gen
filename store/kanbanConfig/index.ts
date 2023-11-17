@@ -154,6 +154,7 @@ const slice = createSlice({
         name: action.payload,
         max_num: 100,
         categories,
+        story_count: 0,
       }
       state.columnList.push(list)
     },

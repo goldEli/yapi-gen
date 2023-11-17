@@ -29,7 +29,8 @@ const ModifyStatusModal: React.FC<ModifyStatusModalProps> = props => {
       type={projectInfo.projectType}
       // record={props.record}
       onChangeStatusConfirm={data => {
-        dispatch(saveModifyStatusModalInfo(data))
+        const c = dispatch(saveModifyStatusModalInfo(data))
+        return c
       }}
     />
   )

@@ -635,9 +635,7 @@ const TableFilter = (props: any) => {
                     </span>
                     <Form.Item name={i.key}>
                       <MoreSelect
-                        onFocus={() => {
-                          console.log(123)
-                        }}
+                        onFocus={() => {}}
                         more
                         width={boxMaps?.get(i.key)}
                         onConfirm={confirm}
@@ -749,9 +747,7 @@ const TableFilter = (props: any) => {
                     </span>
                     <Form.Item name={i.key}>
                       <TreeSelect
-                        onFocus={() => {
-                          console.log(123)
-                        }}
+                        onFocus={() => {}}
                         style={{ minWidth: '200px', border: 'none' }}
                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                         treeData={

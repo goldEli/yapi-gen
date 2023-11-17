@@ -4,6 +4,7 @@ import {
   getKanbanConfig,
   getKanbanConfigList,
   getStoryViewList,
+  updateKanbanByGroup,
 } from './kanBan.thunk'
 import { Options } from '@/components/SelectOptionsNormal'
 import i18next from 'i18next'
@@ -36,6 +37,7 @@ type SliceState = {
     storyId?: Model.KanBan.Story['id']
     info?: Model.Project.CheckStatusItem
     groupId?: Model.KanBan.Group['id']
+    onConfirm?(): void
   }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]
@@ -56,6 +58,7 @@ const initialState: SliceState = {
   movingStory: null,
   kanbanConfigList: [],
   kanbanInfo: [],
+
   kanbanInfoByGroup: [],
   modifyStatusModalInfo: {
     visible: false,
@@ -87,6 +90,9 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    setkanbanConfig(state, action) {
+      state.kanbanConfig = action.payload
+    },
     resetkanbanConfig(state) {
       delete state.kanbanConfig
     },
@@ -106,6 +112,7 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['kanbanInfoByGroup']>,
     ) {
+      sessionStorage.setItem('kanban', JSON.stringify(action.payload))
       state.kanbanInfoByGroup = action.payload
     },
     // setViewItemConfig(
@@ -209,9 +216,10 @@ const slice = createSlice({
     builder.addCase(getKanbanByGroup.fulfilled, (state, action) => {
       state.kanbanInfoByGroup = action.payload
     })
+    builder.addCase(updateKanbanByGroup.fulfilled, (state, action) => {
+      state.kanbanInfoByGroup = action.payload
+    })
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
-      console.log(action.payload)
-
       state.kanbanConfig = action.payload
     })
   },
@@ -220,6 +228,7 @@ const slice = createSlice({
 const kanBan = slice.reducer
 
 export const {
+  setkanbanConfig,
   setSortByGroupOptions,
   setSortByRowAndStatusOptions,
   setSortByView,

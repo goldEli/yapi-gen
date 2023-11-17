@@ -17,7 +17,6 @@ import CountryCode from '@/components/CountryCode'
 
 export default forwardRef((props: any, ref: any) => {
   const [t, i18n] = useTranslation()
-  console.log(i18n.language)
 
   const [isFocus, setIsFocus] = useState(false)
   const [bigChar, setBigChar] = useState(false)
@@ -58,7 +57,7 @@ export default forwardRef((props: any, ref: any) => {
     setGetMsg(num)
     if (num === 2) {
       const a = await props?.onGetMsg(sessionStorage.areacode || '+86')
-      console.log(a, '状态机')
+
       if (a === 1) {
         setTime(60)
       } else {
@@ -90,7 +89,7 @@ export default forwardRef((props: any, ref: any) => {
 
   useEffect(() => {
     const savedSeconds = sessionStorage.getItem('time')
-    console.log(savedSeconds)
+
     if (parseInt(savedSeconds) === 0) {
       sessionStorage.removeItem('time')
     }

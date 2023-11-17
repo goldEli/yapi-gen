@@ -116,6 +116,8 @@ declare namespace API.Kanban {
     type Params = {
       id: Model.KanBan.Story['id']
       // 项目id
+      columnId?: number
+      groupId?: number
       project_id: number
     }
     type Result = {
