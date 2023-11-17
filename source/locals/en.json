@@ -2615,5 +2615,9 @@
   "pause": "Pause",
   "start": "Start",
   "theProjectCannotBeClosedInTheState": "The project cannot be closed in the unopened/completed state",
-  "onlyTheProjectLeaderCanCloseTheProject": "Only the project leader can close the project"
+  "onlyTheProjectLeaderCanCloseTheProject": "Only the project leader can close the project",
+  "personal": "Personal",
+  "viewAllReport": "View all daily reports",
+  "viewAllProject": "View all items",
+  "yesterday": "Yesterday"
 }

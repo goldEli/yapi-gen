@@ -31,6 +31,9 @@ export const mineSlice = createSlice({
     setIsUpdateCreate: (state: any, action) => {
       state.isUpdateCreate = action.payload
     },
+    setVerifyInfo: (state: any, action) => {
+      state.verifyInfo = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getAsyncVerifyInfo.fulfilled, (state: any, action: any) => {
@@ -39,6 +42,6 @@ export const mineSlice = createSlice({
   },
 })
 
-export const { setIsUpdateCreate } = mineSlice.actions
+export const { setIsUpdateCreate, setVerifyInfo } = mineSlice.actions
 
 export default mineSlice.reducer

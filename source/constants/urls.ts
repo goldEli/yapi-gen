@@ -90,8 +90,8 @@ const urls = {
   getMineGatte: '/b/user/overview/gantt/chart',
   getUserFeedList: '/b/user/overview/feed',
   getMineNeedList: '/b/user/copysend/story',
-  getMineNoFinishList: '/b/user/abeyance/story_group',
-  getMineFinishList: '/b/user/finish/story_group',
+  getMineNoFinishList: '/b/user/abeyance/story',
+  getMineFinishList: '/b/user/finish/story',
   getMineChartsList: '/b/user/overview/statistics',
   getMineCreacteList: '/b/user/create/story',
   getPriOrStu: '/b/project/getconfig',
@@ -132,7 +132,7 @@ const urls = {
   memberInfoOverviewStatistics: '/b/project/member/info/overview_statistics',
   memberInfoProject: '/b/project/member/info/project',
   getStoryStatusLog: '/b/story/getstatuslog',
-  getVerifyUserList: '/b/user/verify/list/group',
+  getVerifyUserList: '/b/user/verifyuser/list',
   getVerifyList: '/b/user/verify/list',
   updateVerifyOperation: '/b/user/verify/operation',
   getLoadListFields: '/b/story/load_list_fields',
@@ -570,6 +570,12 @@ const urls = {
   getReportViewLogList: '/b/user/reportViewLogList',
   // 获取最近的任务
   getRecentStory: '/b/user/recent/story',
+  // 顶部导航待办接口
+  getMineNoFinishListHeader: '/b/user/abeyance/story_group',
+  // 顶部导航已办接口
+  getMineFinishListHeader: '/b/user/finish/story_group',
+  // 顶部导航待审核接口
+  getVerifyUserListHeader: '/b/user/verify/list/group',
 }
 export default urls
 

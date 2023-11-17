@@ -83,7 +83,7 @@ const Need = (props: any) => {
       searchValue,
       ...filterParams,
       page: item ? item.page : 1,
-      pageSize: item ? item.size : 10,
+      pageSize: item ? item.size : 30,
       order: orderVal.value,
       orderKey: orderVal.key,
     }

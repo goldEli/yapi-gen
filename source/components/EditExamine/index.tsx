@@ -13,12 +13,13 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { useDispatch, useSelector } from '@store/index'
-import { getAsyncVerifyInfo } from '@store/mine'
+import { getAsyncVerifyInfo, setVerifyInfo } from '@store/mine'
 import { updateVerifyOperation } from '@/services/mine'
 import CommonButton from '@/components/CommonButton'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
 import VerifyProcess from '@/components/VerifyProcess'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 const FooterWrap = styled(Space)({
   display: 'flex',
@@ -62,6 +63,7 @@ const EditExamine = (props: Props) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { verifyInfo } = useSelector(store => store.mine)
+  const { isUpdateAddWorkItem } = useSelector(store => store.project)
   const [value, setValue] = useState('')
 
   const getInfo = async () => {
@@ -73,6 +75,7 @@ const EditExamine = (props: Props) => {
   }
 
   useEffect(() => {
+    dispatch(setVerifyInfo({}))
     getInfo()
   }, [])
 
@@ -97,6 +100,8 @@ const EditExamine = (props: Props) => {
       })
       onClose()
       props?.onUpdate()
+      // 用于更新在需求、缺陷、事务更新列表
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
     } catch (error) {
       //
     }

@@ -2615,5 +2615,9 @@
   "pause": "暂停",
   "start": "开始",
   "theProjectCannotBeClosedInTheState": "处于未开启/已完成状态不能关闭项目",
-  "onlyTheProjectLeaderCanCloseTheProject": "项目负责人才能关闭项目"
+  "onlyTheProjectLeaderCanCloseTheProject": "项目负责人才能关闭项目",
+  "personal": "个人",
+  "viewAllReport": "查看所有日报",
+  "viewAllProject": "查看所有项目",
+  "yesterday": "昨天"
 }
