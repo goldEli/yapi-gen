@@ -346,6 +346,7 @@ const routes = [
             element: lazy(
               () => import('@/views/ProjectSetting/components/ProjectMember'),
             ),
+            // children: [],
             // children: [
             //   {
             //     path: 'MemberInfo',
@@ -370,6 +371,10 @@ const routes = [
             //     ],
             //   },
             // ],
+          },
+          {
+            path: 'Department',
+            element: lazy(() => import('@/views/Department')),
           },
           {
             path: 'MemberInfo',

@@ -15,7 +15,16 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { Menu, message, Form, Space, Checkbox, Tooltip, Table } from 'antd'
+import {
+  Menu,
+  message,
+  Form,
+  Space,
+  Checkbox,
+  Tooltip,
+  Table,
+  Popover,
+} from 'antd'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -81,7 +90,22 @@ const SearchWrap = styled(Space)({
   alignItems: 'center',
   flexWrap: 'wrap',
 })
-
+const MoreOperate = styled.div`
+  width: 112px;
+  color: var(--neutral-n2);
+  font-size: var(--font14);
+  padding-left: 16px;
+  box-sizing: border-box;
+  div {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+`
+const LabelText = styled.span`
+  margin-left: 8px;
+`
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -124,6 +148,7 @@ const ProjectMember = () => {
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
+  const [popoverOpen, setPopoverOpen] = useState(false)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
@@ -668,7 +693,31 @@ const ProjectMember = () => {
   // 判断是否详情回来，并且权限是不是有
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
-
+  const content = (
+    <MoreOperate>
+      <div>
+        <CommonIconFont type="apartment02"></CommonIconFont>
+        <LabelText>职位设置</LabelText>
+      </div>
+      <div>
+        <CommonIconFont type="apartment02"></CommonIconFont>
+        <LabelText
+          onClick={() => {
+            console.log(111)
+            const params = encryptPhp(
+              JSON.stringify({
+                id: projectId,
+                type: 'department',
+              }),
+            )
+            navigate(`/ProjectDetail/Department?data=${params}`)
+          }}
+        >
+          部门设置
+        </LabelText>
+      </div>
+    </MoreOperate>
+  )
   return (
     <PermissionWrap
       auth="b/project/member"
@@ -810,7 +859,25 @@ const ProjectMember = () => {
               {t('common.clearForm')}
             </div>
           </SearchWrap>
+
           <Space size={16}>
+            <Popover
+              content={content}
+              placement="bottom"
+              onOpenChange={open => {
+                setPopoverOpen(open)
+              }}
+            >
+              <div>
+                <CommonButton
+                  type="light"
+                  icon={popoverOpen ? 'up' : 'down'}
+                  iconPlacement="right"
+                >
+                  更多操作
+                </CommonButton>
+              </div>
+            </Popover>
             <ScreenMinHover
               label={t('common.refresh')}
               icon="sync"
