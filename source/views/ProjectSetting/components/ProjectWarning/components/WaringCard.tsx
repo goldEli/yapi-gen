@@ -63,14 +63,16 @@ const WaringCard = (props: WaringCardProps) => {
     sms: t('smsNotification'),
   }
   const pushDateLabel = () => {
-    return day?.map((item: any, index: number) => {
-      return (
-        <span key={index}>
-          {weekMaps[item]}
-          {language === 'zh' ? <i>、</i> : <i> / </i>}
-        </span>
-      )
-    })
+    return day
+      ?.filter((e: number) => e !== -1)
+      ?.map((item: any, index: number) => {
+        return (
+          <span key={index}>
+            {weekMaps[item]}
+            {language === 'zh' ? <i>、</i> : <i> / </i>}
+          </span>
+        )
+      })
   }
   const noticeTypeLabel = () => {
     return push_channel
