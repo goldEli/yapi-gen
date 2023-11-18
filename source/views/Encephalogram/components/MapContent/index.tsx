@@ -11,37 +11,35 @@ const MapContent = (props: any) => {
       G6.registerNode(
         'customNode',
         {
-          // jsx: (cfg: any) => {
-          //   const width = Util.getTextSize(cfg.label, 14)[0] + 16
-          //   const color = cfg.color || cfg.style.stroke
-          //   return `
-          //       <group>
-          //         <rect draggable="true" style={{width: ${
-          //           width + 16
-          //         }, height: 40,fill:'#FFF383',textAlign: 'center', }} keyshape>
-          //           <text draggable="true" style={{ fontSize: 14,marginLeft:16 ,marginTop: 10}}>${
-          //             cfg.label
-          //           }</text>
-          //         </rect>
-          //       </group>
-          //     `
-          // },
-          getAnchorPoints() {
+          getAnchorPoints(cfg: any) {
             return [
               [0, 0.5],
               [1, 0.5],
             ]
           },
-          draw: (cfg: any, group: any) => {
+          drawShape: (cfg: any, group: any) => {
             console.log(cfg, group, 'xxxxxx')
-            const content = cfg.label
-            const { fill, color, fontSize, fontWeight, fontFamily } =
-              cfg.style || {}
+            const content = cfg.name
+            const { fill, color, fontSize, fontWeight } = cfg.style || {}
+            if (cfg.depth === 0) {
+              cfg.extra?.forEach((txt: string, index: number) => {
+                group.addShape('text', {
+                  attrs: {
+                    text: txt,
+                    y: 60 + index * 20,
+                    textBaseline: 'middle',
+                    fill: color || '#323233',
+                    fontSize: 12,
+                  },
+                  name: 'text-shape' + index,
+                })
+              })
+            }
             const rect = group.addShape('rect', {
               attrs: {
                 fill,
                 stroke: '#D5D6D9',
-                width: Util.getTextSize(cfg.label, fontSize || 14)[0] + 20,
+                width: Util.getTextSize(cfg.name, fontSize || 14)[0] + 20,
                 height: 40,
               },
               name: 'rect-shape',
@@ -60,9 +58,8 @@ const MapContent = (props: any) => {
               },
               name: 'text-shape',
             })
-
             const hasChildren = cfg.children && cfg.children.length > 0
-            if (hasChildren) {
+            if (hasChildren && cfg.depth !== 0) {
               group.addShape('marker', {
                 attrs: {
                   x: bbox.width - 1.5,
@@ -75,25 +72,16 @@ const MapContent = (props: any) => {
                 name: 'collapse-icon',
               })
             }
-            return group
+            return rect
           },
           update: (cfg, item) => {
             const group = item.getContainer()
             const icon = group.find(e => e.get('name') === 'collapse-icon')
-            icon.attr(
-              'symbol',
-              cfg.collapsed ? G6.Marker.expand : G6.Marker.collapse,
-            )
-          },
-          setState(name, value, item: any) {
-            const keyShape = item.getKeyShape()
-            switch (name) {
-              case 'hover':
-                keyShape.attr({
-                  stroke: '#f00',
-                  fill: '#f00',
-                })
-                break
+            if (icon) {
+              icon.attr(
+                'symbol',
+                cfg.collapsed ? G6.Marker.expand : G6.Marker.collapse,
+              )
             }
           },
         },
@@ -138,7 +126,7 @@ const MapContent = (props: any) => {
         </ul>
             `
           return outDiv
-          // <li>预计工期: ${e.item.getModel().label || e.item.getModel().id}</li>
+          // <li>预计工期: ${e.item.getModel().name || e.item.getModel().id}</li>
         },
       })
       const width = container.scrollWidth
@@ -170,9 +158,6 @@ const MapContent = (props: any) => {
         },
         defaultEdge: {
           type: 'polyline',
-          style: {
-            stroke: '#D5D6D9',
-          },
         },
         layout: {
           type: 'compactBox',
@@ -180,12 +165,26 @@ const MapContent = (props: any) => {
           getId: function getId(d: any) {
             return d.id
           },
+          getHeight: function getHeight() {
+            return 40
+          },
+          getHGap: function getHGap(cfg: any) {
+            return Util.getTextSize(cfg.name, cfg.fontSize || 14)[0] + 20
+          },
+          plugins: [tooltip],
         },
-        plugins: [tooltip],
       })
       const data = {
         id: '1',
-        label: 'SLG框架开发',
+        name: 'SLG框架开发',
+        extra: [
+          '美术组 12天（12天）',
+          '3D设计组 4天（3天）',
+          '服务器组 4天（-）',
+          '客服端组 4天（-）',
+          '客服端组 77天（-）',
+          '客服端组 45天（-）',
+        ],
         style: {
           color: '#323233',
           fontWeight: 500,
@@ -196,7 +195,7 @@ const MapContent = (props: any) => {
         children: [
           {
             id: '11',
-            label: '主分类-英雄',
+            name: '主分类-英雄',
             style: {
               color: '#323233',
               fontWeight: 500,
@@ -207,93 +206,93 @@ const MapContent = (props: any) => {
             children: [
               {
                 id: '111',
-                label: '子分类-等级',
+                name: '子分类-等级',
                 style: {
                   fill: '#FFFFFF',
                 },
                 children: [
                   {
                     id: '111-1',
-                    label: '父级任务-英雄养成',
+                    name: '父级任务-英雄养成',
                     style: {
                       fill: '#FFF383',
                     },
                     children: [
                       {
                         id: '1111-1',
-                        label: '子任务-UE 2.0',
+                        name: '子任务-UE 2.0',
                         style: {
                           fill: '#BBFFBA',
                         },
                         children: [
                           {
                             id: '11111-1',
-                            label: '美术组UED1',
+                            name: '美术组UED1',
                           },
                         ],
                       },
                       {
                         id: '1111-2',
-                        label: '子任务-UE 2.1',
+                        name: '子任务-UE 2.1',
                         style: {
                           fill: '#BBFFBA',
                         },
                         children: [
                           {
                             id: '1111-2-1',
-                            label: '美术组UED2',
+                            name: '美术组UED2',
                           },
                         ],
                       },
                       {
                         id: '1111-3',
-                        label: '子任务-UE 2.2',
+                        name: '子任务-UE 2.2',
                         style: {
                           fill: '#E4D8FF',
                         },
                         children: [
                           {
                             id: '1111-3-1',
-                            label: '美术组UED3',
+                            name: '美术组UED3',
                           },
                         ],
                       },
                       {
                         id: '1111-4',
-                        label: '子任务-UE 2.3',
+                        name: '子任务-UE 2.3',
                         style: {
                           fill: '#FFC8A0',
                         },
                         children: [
                           {
                             id: '1111-4-1',
-                            label: '3D设计组',
+                            name: '3D设计组',
                           },
                         ],
                       },
                       {
                         id: '1111-5',
-                        label: '子任务-UE 2.4',
+                        name: '子任务-UE 2.4',
                         style: {
                           fill: '#E4D8FF',
                         },
                         children: [
                           {
                             id: '1111-5-1',
-                            label: '3D设计组',
+                            name: '3D设计组',
                           },
                         ],
                       },
                       {
                         id: '1111-6',
-                        label: '子任务-UE 2.5',
+                        name: '子任务-UE 2.5',
                         style: {
                           fill: '#FFC8A0',
                         },
                         children: [
                           {
                             id: '1111-6-1',
-                            label: '客户端组',
+                            name: '客户端组',
                           },
                         ],
                       },
@@ -301,14 +300,14 @@ const MapContent = (props: any) => {
                   },
                   {
                     id: '111-2',
-                    label: '父级任务-英雄等级',
+                    name: '父级任务-英雄等级',
                     style: {
                       fill: '#BBFFBA',
                     },
                   },
                   {
                     id: '111-3',
-                    label: '父级任务-英雄主界面',
+                    name: '父级任务-英雄主界面',
                     style: {
                       fill: '#FFC8A0',
                     },
@@ -317,21 +316,21 @@ const MapContent = (props: any) => {
               },
               {
                 id: '112',
-                label: '子分类-天赋',
+                name: '子分类-天赋',
                 style: {
                   fill: '#FFFFFF',
                 },
                 children: [
                   {
                     id: '112-1',
-                    label: '父级任务-天赋-ui2.0',
+                    name: '父级任务-天赋-ui2.0',
                     style: {
                       fill: '#FFF383',
                     },
                   },
                   {
                     id: '112-2',
-                    label: '父级任务-天赋-ue2.0',
+                    name: '父级任务-天赋-ue2.0',
                     style: {
                       fill: '#BBFFBA',
                     },
@@ -340,21 +339,21 @@ const MapContent = (props: any) => {
               },
               {
                 id: '113',
-                label: '子分类-星际',
+                name: '子分类-星际',
                 style: {
                   fill: '#FFFFFF',
                 },
                 children: [
                   {
                     id: '113-1',
-                    label: '父级任务-天赋-ui2.0',
+                    name: '父级任务-天赋-ui2.0',
                     style: {
                       fill: '#BBFFBA',
                     },
                   },
                   {
                     id: '113-2',
-                    label: '父级任务-天赋-ue2.0',
+                    name: '父级任务-天赋-ue2.0',
                     style: {
                       fill: '#E4D8FF',
                     },
@@ -365,7 +364,7 @@ const MapContent = (props: any) => {
           },
           {
             id: '22',
-            label: '副分类-练级',
+            name: '副分类-练级',
             style: {
               color: '#323233',
               fontWeight: 500,
@@ -380,31 +379,12 @@ const MapContent = (props: any) => {
       graph.render()
       graph.fitCenter()
       graph.on('node:mouseenter', (e: any) => {
-        graph.setItemState(e.item, 'hover', true)
+        graph.setItemState(e.item, 'active', true)
       })
 
       graph.on('node:mouseleave', (e: any) => {
-        graph.setItemState(e.item, 'hover', false)
+        graph.setItemState(e.item, 'active', false)
       })
-
-      // graph.on('node:mouseenter', (e: any) => {
-      //   const node = e.item
-      //   graph.updateItem(node, {
-      //     style: {
-      //       stroke: 'rgba(143, 188, 255, 0.7)',
-      //       lineWidth: 3,
-      //     },
-      //   })
-      // })
-      // graph.on('node:mouseleave', (e: any) => {
-      //   const node = e.item
-      //   graph.updateItem(node, {
-      //     style: {
-      //       stroke: '#D5D6D9',
-      //       lineWidth: 3,
-      //     },
-      //   })
-      // })
     }
   }, [])
 

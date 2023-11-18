@@ -27,8 +27,9 @@ export const MapContentBox = styled.div`
 `
 export const TopAreaBox = styled.div`
   width: 100%;
-  height: 108px;
   display: flex;
+  position: absolute;
+  justify-content: center;
 `
 export const TypeBox = styled.div`
   min-width: 312px;
