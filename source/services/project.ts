@@ -70,6 +70,7 @@ export const getProjectList: any = async (params: any) => {
         groupIds: i.groups?.map((k: any) => k.id),
         projectType: i.project_type,
         defaultHomeMenu: i.default_home_menu,
+        leader: i.leader,
       })),
     }
   }

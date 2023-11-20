@@ -237,9 +237,10 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
         <NotOpenLogoWrap>
           {isLogoChange && (
             <MoreOtherPopover
+              // trigger={['hover', 'click']}
               content={moreOtherSystem}
               open
-              placement="bottomLeft"
+              placement="right"
               onOpenChange={(state: boolean) =>
                 state ? void 0 : onChangeLogo(false)
               }
@@ -276,7 +277,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
             <MoreOtherPopover
               content={moreOtherSystem}
               open
-              placement="bottomLeft"
+              placement="right"
               onOpenChange={(state: boolean) =>
                 state ? void 0 : onChangeLogo(false)
               }

@@ -200,8 +200,7 @@ const LayoutIndex = () => {
             })
           }}
           projectId={
-            !window.location.href.includes('/Report') ||
-            window.location.href.includes('/Report/Performance')
+            window.location.href.includes('/ProjectDetail/')
               ? projectInfo?.id
               : null
           }

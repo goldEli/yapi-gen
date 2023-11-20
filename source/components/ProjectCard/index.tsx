@@ -102,7 +102,7 @@ const Index = (props: any) => {
     // 项目负责人或者是超管
     const isRolePermission =
       userInfo?.is_company_super_admin !== 1 &&
-      props.item.leader_id !== userInfo?.id
+      props.item?.leader?.id !== userInfo?.id
 
     const items: any = [
       {
@@ -232,7 +232,7 @@ const Index = (props: any) => {
 
         <CardRightSecond>
           {t('functionary')}
-          {props.item.leaderName}
+          {props.item?.leader?.name}
         </CardRightSecond>
         <CardRightSecond>
           {t('keyM')}

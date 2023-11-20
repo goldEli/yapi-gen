@@ -269,9 +269,9 @@ const MainTable = (props: Props) => {
             max={1}
             list={[
               {
-                avatar: '',
-                id: 0,
-                name: text,
+                avatar: record.leader?.avatar,
+                id: record.leader?.id || 0,
+                name: record.leader?.name,
               },
             ]}
           />
@@ -342,14 +342,14 @@ const MainTable = (props: Props) => {
       render: (text: number, record: any) => {
         // 项目负责人或者是超管
         const isRolePermission =
-          !isSuperAdmin && record.leader_id !== userInfo?.id
+          !isSuperAdmin && record.leader?.id !== userInfo?.id
 
         return (
           <TableActionWrap>
             <Tooltip
               title={
                 isRolePermission
-                  ? t('onlyTheProjectLeaderCanCloseTheProject')
+                  ? t('onlyTheProjectLeaderCanPausestartTheProject')
                   : null
               }
             >

@@ -516,7 +516,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
 
       <Space size={8}>
         {/* 日报机器人 只有项目内部和汇报才有机器人 */}
-        {location.href.includes('/Project/') ||
+        {location.href.includes('/ProjectDetail/') ||
         location.href.includes('/Report') ? (
           <Popover
             placement="bottomLeft"

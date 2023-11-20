@@ -2624,5 +2624,6 @@
   "reproSteps": "Repro steps",
   "expectedResults": "Expected results",
   "screenshot": "Screenshot",
-  "toBeOpened": "To be opened"
+  "toBeOpened": "To be opened",
+  "onlyTheProjectLeaderCanPausestartTheProject": "Only the project leader can start/pause the project"
 }
