@@ -64,7 +64,7 @@ const TopArea = () => {
   const [personData, setPersonData] = useState(priorityList)
   const value = [2691, 2693]
   const [personVal, setPersonVal] = useState(value)
-  const onChangeSelect = () => { }
+  const onChangeSelect = () => {}
   useEffect(() => {
     const newChild = priorityList.map(el => ({
       ...el,
@@ -142,9 +142,9 @@ const TopArea = () => {
       children:
         i.id === el.id
           ? el.children.map((item: any) => ({
-            ...item,
-            checked: e.target.checked,
-          }))
+              ...item,
+              checked: e.target.checked,
+            }))
           : el.children,
     }))
     // 重装数据
@@ -182,8 +182,13 @@ const TopArea = () => {
     }
   }
   // 折叠
-  const foldIcon = (e: { id: number, fold: boolean }) => {
-    setPersonData(personData.map((el: any) => ({ ...el, fold: el.id === e.id ? !el.fold : el.fold })))
+  const foldIcon = (e: { id: number; fold: boolean }) => {
+    setPersonData(
+      personData.map((el: any) => ({
+        ...el,
+        fold: el.id === e.id ? !el.fold : el.fold,
+      })),
+    )
   }
   const contentPerson = () => {
     return (
@@ -205,9 +210,7 @@ const TopArea = () => {
                     checked={el.checked}
                     onChange={e => onChangeF(e, el)}
                   />
-                  <TextTree>
-                    {el.label}
-                  </TextTree>
+                  <TextTree>{el.label}</TextTree>
                 </div>
                 <IconFont
                   onClick={() => foldIcon(el)}
@@ -215,7 +218,12 @@ const TopArea = () => {
                   style={{ color: 'var(--auxiliary-text-t2-d1)' }}
                 />
               </RowTree>
-              <div style={{display: el.fold ? 'none' : 'block',transition: 'all 0.5s'}}>
+              <div
+                style={{
+                  display: el.fold ? 'none' : 'block',
+                  transition: 'all 0.5s',
+                }}
+              >
                 {el.children.length >= 1 &&
                   el.children.map((item: any) => (
                     <RowTree key={item.label}>
