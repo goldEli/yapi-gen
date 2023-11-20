@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { TYPE_ENCEPHALOGRAM } from '@/constants'
 import {
+  TopAreaWrap,
   TopAreaBox,
   TypeBox,
   Row,
@@ -29,7 +30,7 @@ import IconFont from '@/components/IconFont'
 import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
-import { filter } from 'lodash'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
 const priorityList = [
   {
     label: '12',
@@ -339,87 +340,90 @@ const TopArea = () => {
     }
   }
   return (
-    <TopAreaBox>
-      <TypeBox>
-        {TYPE_ENCEPHALOGRAM.map(el => (
-          <Row key={el.color}>
-            <Bgc color={el.color} />
-            <Text>{el.text}</Text>
-          </Row>
-        ))}
-      </TypeBox>
-      <TypeSelectBox className="selectBgc">
-        <Space size={20}>
-          <CustomSelectWrap
-            placeholder={'选择迭代'}
-            showArrow
-            showSearch
-            getPopupContainer={(node: any) => node}
-            allowClear
-            optionFilterProp="label"
-            onChange={onChangeSelect}
-            options={[
-              {
-                label: 1,
-                value: 1,
-              },
-            ]}
-          />
-          <MoreSelect
-            showArrow
-            mode="multiple"
-            selectWidth={100}
-            placeholder={'任务状态'}
-            showSearch
-            optionFilterProp="label"
-            placement="bottomRight"
-            width={200}
-            allowClear
-            options={priorityList}
-            onChange={(value: any) => onClickSearch(value)}
-            value={state}
-          />
-          <RangePickerWrap type={date?.length >= 1}>
-            <RangePicker
-              isShowQuick
-              placement="bottomRight"
-              onChange={dates => onChangeTime(dates)}
+    <TopAreaWrap>
+        <MyBreadcrumb />
+      <TopAreaBox>
+        <TypeBox>
+          {TYPE_ENCEPHALOGRAM.map(el => (
+            <Row key={el.color}>
+              <Bgc color={el.color} />
+              <Text>{el.text}</Text>
+            </Row>
+          ))}
+        </TypeBox>
+        <TypeSelectBox className="selectBgc">
+          <Space size={20}>
+            <CustomSelectWrap
+              placeholder={'选择迭代'}
+              showArrow
+              showSearch
+              getPopupContainer={(node: any) => node}
+              allowClear
+              optionFilterProp="label"
+              onChange={onChangeSelect}
+              options={[
+                {
+                  label: 1,
+                  value: 1,
+                },
+              ]}
             />
-            {date?.length >= 1 ? (
-              <span className="timeText">
-                {date[0]}~{date[1]}
-              </span>
-            ) : (
-              <span className="timeText">时间</span>
-            )}
-          </RangePickerWrap>
-          <Popover
-            onOpenChange={(val: boolean) => setClickeMsg(val)}
-            getPopupContainer={node => node}
-            content={content}
-            trigger="click"
-            open={clickeMsg}
-          >
-            <PopoverBtn onClick={() => setClickeMsg(!clickeMsg)}>
-              <IconFont type="intro" />
-              <span>项目简介</span>
-            </PopoverBtn>
-          </Popover>
-          <Popover
-            onOpenChange={(val: boolean) => setClickePerson(val)}
-            getPopupContainer={node => node}
-            content={contentPerson}
-            trigger="click"
-            open={clickePerson}
-          >
-            <PopoverBtn onClick={() => setClickePerson(!clickePerson)}>
-              <IconFont type="intro" />
-              <span>项目人员</span>
-            </PopoverBtn>
-          </Popover>
-        </Space>
-      </TypeSelectBox>
-    </TopAreaBox>
+            <MoreSelect
+              showArrow
+              mode="multiple"
+              selectWidth={100}
+              placeholder={'任务状态'}
+              showSearch
+              optionFilterProp="label"
+              placement="bottomRight"
+              width={200}
+              allowClear
+              options={priorityList}
+              onChange={(value: any) => onClickSearch(value)}
+              value={state}
+            />
+            <RangePickerWrap type={date?.length >= 1}>
+              <RangePicker
+                isShowQuick
+                placement="bottomRight"
+                onChange={dates => onChangeTime(dates)}
+              />
+              {date?.length >= 1 ? (
+                <span className="timeText">
+                  {date[0]}~{date[1]}
+                </span>
+              ) : (
+                <span className="timeText">时间</span>
+              )}
+            </RangePickerWrap>
+            <Popover
+              onOpenChange={(val: boolean) => setClickeMsg(val)}
+              getPopupContainer={node => node}
+              content={content}
+              trigger="click"
+              open={clickeMsg}
+            >
+              <PopoverBtn onClick={() => setClickeMsg(!clickeMsg)}>
+                <IconFont type="intro" />
+                <span>项目简介</span>
+              </PopoverBtn>
+            </Popover>
+            <Popover
+              onOpenChange={(val: boolean) => setClickePerson(val)}
+              getPopupContainer={node => node}
+              content={contentPerson}
+              trigger="click"
+              open={clickePerson}
+            >
+              <PopoverBtn onClick={() => setClickePerson(!clickePerson)}>
+                <IconFont type="intro" />
+                <span>项目人员</span>
+              </PopoverBtn>
+            </Popover>
+          </Space>
+        </TypeSelectBox>
+      </TopAreaBox>
+    </TopAreaWrap>
   )
 }
 

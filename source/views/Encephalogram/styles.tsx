@@ -25,11 +25,21 @@ export const MapContentBox = styled.div`
   background-repeat: no-repeat;
   background-image: url('https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mind/dotBg.png');
 `
+export const TopAreaWrap = styled.div`
+  width: 100%;
+  height: 108px;
+  display: flex;
+  justify-content: space-between;
+  .ant-breadcrumb{
+    width:20%;
+  }
+`
 export const TopAreaBox = styled.div`
   width: 100%;
   height: 108px;
   display: flex;
   justify-content: flex-end;
+ 
 `
 export const TypeBox = styled.div`
   min-width: 312px;
@@ -268,21 +278,23 @@ export const RangePickerWrap = styled.div<{ type: boolean }>(
 export const PersonMain = styled.div`
   padding-bottom: 12px;
 `
-export const RightWrap = styled.div<{ type: string }>({
-  display: 'flex',
-  alignItems: 'center',
-  height: '44px',
-  background: 'var(--neutral-white-d5)',
-  boxShadow: '0px 0px 15px 6px rgba(0, 0, 0, 0.12)',
-  borderRadius: '4px',
-  '.line': {
-    height: '24px',
-    borderRight: '1px solid #EBECED',
-    marginRight:'20px'
-  }
-
-}, ({ type }) => ({
-  width: type === '1' ? '160px' : '340px',
-  padding: type === '2' ? '0 20px' : ' 4px',
-  marginRight: type === '1' ? '32px' : '0'
-}))
+export const RightWrap = styled.div<{ type: string }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    height: '44px',
+    background: 'var(--neutral-white-d5)',
+    boxShadow: '0px 0px 15px 6px rgba(0, 0, 0, 0.12)',
+    borderRadius: '4px',
+    '.line': {
+      height: '24px',
+      borderRight: '1px solid #EBECED',
+      marginRight: '20px',
+    },
+  },
+  ({ type }) => ({
+    width: type === '1' ? '160px' : '340px',
+    padding: type === '2' ? '0 20px' : ' 4px',
+    marginRight: type === '1' ? '32px' : '0',
+  }),
+)
