@@ -29,6 +29,7 @@ import IconFont from '@/components/IconFont'
 import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
+import { FoldIcon } from '@/components/CalendarManager/styles'
 const priorityList = [
   {
     label: '12',
@@ -62,14 +63,12 @@ const TopArea = () => {
   const [date, setDate] = useState<any>(null)
   const [personData, setPersonData] = useState(priorityList)
   const value = [2691, 2693]
-<<<<<<< HEAD
   const [personVal, setPersonVal] = useState(value)
-=======
->>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
-  const onChangeSelect = () => {}
+  const onChangeSelect = () => { }
   useEffect(() => {
     const newChild = priorityList.map(el => ({
       ...el,
+      fold: true,
       checked:
         el.children.length ===
         el.children.filter(item => value.includes(item.id)).length,
@@ -78,10 +77,7 @@ const TopArea = () => {
         checked: value.includes(item.id),
       })),
     }))
-<<<<<<< HEAD
     setPersonVal([...value])
-=======
->>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
     setPersonData(newChild)
   }, [])
   const content = () => {
@@ -138,11 +134,7 @@ const TopArea = () => {
       </Content>
     )
   }
-<<<<<<< HEAD
   // 点击父级，设置勾选
-=======
-  // 点击父级
->>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
   const onChangeF = (e: any, i: any) => {
     const newChild: any = personData.map((el: any) => ({
       ...el,
@@ -150,15 +142,12 @@ const TopArea = () => {
       children:
         i.id === el.id
           ? el.children.map((item: any) => ({
-              ...item,
-              checked: e.target.checked,
-            }))
+            ...item,
+            checked: e.target.checked,
+          }))
           : el.children,
     }))
-<<<<<<< HEAD
     // 重装数据
-=======
->>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
     setPersonData(newChild)
     let newVal: any = []
     newVal = i.children.map((el: any) => el.id)
@@ -169,15 +158,8 @@ const TopArea = () => {
     }
     setPersonVal([...personVal, ...newVal])
   }
-<<<<<<< HEAD
-  console.log(personVal, 'personVal')
   // 点击子级,设置勾选
   const onChangeS = (e: any, i: any) => {
-=======
-  // 点击子级
-  const onChangeS = (e: any, i: any) => {
-    console.log(i.id)
->>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
     const Child: any = personData.map((el: any) => ({
       ...el,
       children: el.children.map((item: any) => ({
@@ -185,10 +167,6 @@ const TopArea = () => {
         checked: i.id === item.id ? e.target.checked : item.checked,
       })),
     }))
-<<<<<<< HEAD
-=======
-    console.log(Child, '99')
->>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
     const newChild: any = Child.map((el: any) => ({
       ...el,
       checked:
@@ -202,6 +180,10 @@ const TopArea = () => {
     } else {
       setPersonVal(personVal.filter(el => el !== i.id))
     }
+  }
+  // 折叠
+  const foldIcon = (e: { id: number, fold: boolean }) => {
+    setPersonData(personData.map((el: any) => ({ ...el, fold: el.id === e.id ? !el.fold : el.fold })))
   }
   const contentPerson = () => {
     return (
@@ -224,15 +206,16 @@ const TopArea = () => {
                     onChange={e => onChangeF(e, el)}
                   />
                   <TextTree>
-                    {el.label}-{el.checked ? '1' : '0'}
+                    {el.label}
                   </TextTree>
                 </div>
                 <IconFont
-                  type="down"
+                  onClick={() => foldIcon(el)}
+                  type={el.fold ? 'up' : 'down'}
                   style={{ color: 'var(--auxiliary-text-t2-d1)' }}
                 />
               </RowTree>
-              <div>
+              <div style={{display: el.fold ? 'none' : 'block',transition: 'all 0.5s'}}>
                 {el.children.length >= 1 &&
                   el.children.map((item: any) => (
                     <RowTree key={item.label}>
