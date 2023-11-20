@@ -576,6 +576,27 @@ const urls = {
   getMineFinishListHeader: '/b/user/finish/story_group',
   // 顶部导航待审核接口
   getVerifyUserListHeader: '/b/user/verify/list/group',
+
+  /**
+   * 成员 -部门模块
+   */
+  // 获取部门列表
+  getDepartmentList: '/b/project_department/list',
+  // 添加部门
+  addDepartment: '/b/project_department/create',
+  // 编辑部门列表
+  editDepartment: '/b/project_department/update',
+  // 删除部门
+  delDepartment: '/b/project_department/batch',
+
+  // 获取职位列表
+  getPositionList: '/b/project/position/list',
+  // 添加职位
+  addPosition: '/b/project/position/create',
+  // 编辑职位
+  editPosition: '/b/project/position/update',
+  // 删除职位
+  delPosition: '/b/project/position/batch_del',
 }
 export default urls
 

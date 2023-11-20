@@ -4,13 +4,14 @@ import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
-import { getDepartmentList, delDepartment } from '@/services/department'
+import { getPositionList, delPosition } from '@/services/department'
 import {
   Wrap,
   HeaderWrap,
   OperateWrap,
   TableWrap,
   OperateLabelText,
+  SwitchWrap,
 } from './style'
 import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
@@ -18,9 +19,9 @@ import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'
-import { Table, Tooltip } from 'antd'
+import { Table, Tooltip, Switch } from 'antd'
 import { getParamsData } from '@/tools'
-import AddDepartmentModal from './components/AddDepartmentModal'
+import AddPositionModal from './components/AddPositionModal'
 import useProjectId from './hooks/useProjectId'
 import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 import IconFont from '@/components/IconFont'
@@ -64,7 +65,7 @@ const Index = () => {
       project_id: projectId,
       keyword: keyword,
     }
-    const res = await getDepartmentList(params)
+    const res = await getPositionList(params)
     setDataSource(res)
   }
   const rowSelection = {
@@ -90,7 +91,7 @@ const Index = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          部门名称
+          职位名称
         </NewSort>
       ),
       dataIndex: 'name',
@@ -105,7 +106,7 @@ const Index = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          部门简介
+          职位简介
         </NewSort>
       ),
       dataIndex: 'description',
@@ -138,6 +139,23 @@ const Index = () => {
       ),
       dataIndex: 'sort',
       width: 200,
+    },
+    {
+      title: (
+        <NewSort
+          fixedKey="sort"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          启用状态
+        </NewSort>
+      ),
+      dataIndex: 'sort',
+      width: 200,
+      render: () => {
+        return <SwitchWrap></SwitchWrap>
+      },
     },
     {
       title: (
@@ -182,6 +200,7 @@ const Index = () => {
   useEffect(() => {
     _getList()
   }, [keyword])
+
   return (
     <PermissionWrap
       auth="b/flaw/"
@@ -191,7 +210,7 @@ const Index = () => {
           : projectInfo?.projectPermissions?.map((i: any) => i.identity)
       }
     >
-      <AddDepartmentModal
+      <AddPositionModal
         isVisible={visible}
         onClose={() => {
           setVisible(false)
@@ -201,7 +220,7 @@ const Index = () => {
           setVisible(false)
         }}
         rowData={rowData}
-      ></AddDepartmentModal>
+      ></AddPositionModal>
       <Wrap>
         <ProjectCommonOperation
           onInputSearch={() => {}}
@@ -210,7 +229,7 @@ const Index = () => {
         />
         <HeaderWrap>
           <InputSearch
-            placeholder="搜索部门名称"
+            placeholder="搜索职位名称"
             width={184}
             onChangeSearch={(value: string) => {
               console.log(value)
@@ -234,7 +253,7 @@ const Index = () => {
                 setRowData(null)
               }}
             >
-              创建部门
+              创建职位
             </CommonButton>
           </OperateWrap>
         </HeaderWrap>
@@ -274,9 +293,9 @@ const Index = () => {
             onClick={() =>
               open({
                 title: `批量删除（已选中${selectedRowKeys.length}项）`,
-                text: '勾选的部门将被删除，确认删除吗？',
+                text: '勾选的职位将被删除，确认删除吗？',
                 async onConfirm() {
-                  await delDepartment({
+                  await delPosition({
                     ids: selectedRowKeys,
                     project_id: projectId,
                   })

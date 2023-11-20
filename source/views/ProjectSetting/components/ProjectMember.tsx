@@ -696,14 +696,25 @@ const ProjectMember = () => {
   const content = (
     <MoreOperate>
       <div>
-        <CommonIconFont type="apartment02"></CommonIconFont>
-        <LabelText>职位设置</LabelText>
+        <CommonIconFont type="position"></CommonIconFont>
+        <LabelText
+          onClick={() => {
+            const params = encryptPhp(
+              JSON.stringify({
+                id: projectId,
+                type: 'department',
+              }),
+            )
+            navigate(`/ProjectDetail/Position?data=${params}`)
+          }}
+        >
+          职位设置
+        </LabelText>
       </div>
       <div>
         <CommonIconFont type="apartment02"></CommonIconFont>
         <LabelText
           onClick={() => {
-            console.log(111)
             const params = encryptPhp(
               JSON.stringify({
                 id: projectId,

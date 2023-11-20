@@ -377,6 +377,10 @@ const routes = [
             element: lazy(() => import('@/views/Department')),
           },
           {
+            path: 'Position',
+            element: lazy(() => import('@/views/Position')),
+          },
+          {
             path: 'MemberInfo',
             element: lazy(() => import('@/views/MemberInfo')),
             children: [

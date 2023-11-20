@@ -243,7 +243,10 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           ? String(currentHavePath[0]?.id)
           : String(resultItems[0]?.id),
       )
-      if (routerPath?.pathname === '/ProjectDetail/Department') {
+      if (
+        routerPath?.pathname === '/ProjectDetail/Department' ||
+        routerPath?.pathname === '/ProjectDetail/Position'
+      ) {
         setActiveKey('member')
       }
     }

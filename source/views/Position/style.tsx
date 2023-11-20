@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Form } from 'antd'
+import { Form, Switch } from 'antd'
 export const Wrap = styled.div`
   height: 100%;
   width: 100%;
@@ -39,3 +39,5 @@ export const FormWrap = styled(Form)`
     width: 100%;
   }
 `
+
+export const SwitchWrap = styled(Switch)``
