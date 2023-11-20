@@ -32,7 +32,7 @@ import moment from 'moment'
 const priorityList = [
   {
     label: '12',
-    id:12,
+    id: 12,
     children: [
       {
         label: '规划中1',
@@ -46,7 +46,7 @@ const priorityList = [
   },
   {
     label: '22',
-    id:77,
+    id: 77,
     children: [
       {
         label: '规划中14',
@@ -61,15 +61,22 @@ const TopArea = () => {
   const [state, setState] = useState([])
   const [date, setDate] = useState<any>(null)
   const [personData, setPersonData] = useState(priorityList)
-  const value = [2691,2693]
+  const value = [2691, 2693]
+  const [personVal, setPersonVal] = useState(value)
   const onChangeSelect = () => {}
   useEffect(() => {
-    const newChild = priorityList.map(el=>({
+    const newChild = priorityList.map(el => ({
       ...el,
-      checked:el.children.length === el.children.filter(item=> value.includes(item.id)).length,
-      children:el.children.map(item=>({...item,checked:value.includes(item.id)}))}
-      ))
-      setPersonData(newChild)
+      checked:
+        el.children.length ===
+        el.children.filter(item => value.includes(item.id)).length,
+      children: el.children.map(item => ({
+        ...item,
+        checked: value.includes(item.id),
+      })),
+    }))
+    setPersonVal([...value])
+    setPersonData(newChild)
   }, [])
   const content = () => {
     return (
@@ -125,28 +132,53 @@ const TopArea = () => {
       </Content>
     )
   }
-  // 点击父级
-  const onChangeF = (e:any, i:any) => {
-    const newChild:any = personData.map((el:any)=>({
+  // 点击父级，设置勾选
+  const onChangeF = (e: any, i: any) => {
+    const newChild: any = personData.map((el: any) => ({
       ...el,
-      checked:i.id === el.id ? e.target.checked : el.checked,
-      children:i.id === el.id ? el.children.map((item:any)=>({...item,checked:e.target.checked})) : el.children}
-    ))
+      checked: i.id === el.id ? e.target.checked : el.checked,
+      children:
+        i.id === el.id
+          ? el.children.map((item: any) => ({
+              ...item,
+              checked: e.target.checked,
+            }))
+          : el.children,
+    }))
+    // 重装数据
     setPersonData(newChild)
+    let newVal: any = []
+    newVal = i.children.map((el: any) => el.id)
+    const filterData = personVal.filter(el => newVal?.includes(el))
+    if (filterData.length >= 1) {
+      setPersonVal(personVal.filter(el => !newVal?.includes(el)))
+      return
+    }
+    setPersonVal([...personVal, ...newVal])
   }
-  // 点击子级
-  const onChangeS=(e:any, i:any)=>{
-    console.log(i.id)
-    const Child:any = personData.map((el:any)=>({
+  console.log(personVal, 'personVal')
+  // 点击子级,设置勾选
+  const onChangeS = (e: any, i: any) => {
+    const Child: any = personData.map((el: any) => ({
       ...el,
-      children: el.children.map((item:any)=>({...item,checked:i.id === item.id ? e.target.checked :item.checked}))}
-    ))
-    console.log(Child,'99')
-    const newChild:any = Child.map((el:any)=>({
+      children: el.children.map((item: any) => ({
+        ...item,
+        checked: i.id === item.id ? e.target.checked : item.checked,
+      })),
+    }))
+    const newChild: any = Child.map((el: any) => ({
       ...el,
-      checked: el.children.length === el.children.filter((item:any)=> item.checked).length
-  }))
+      checked:
+        el.children.length ===
+        el.children.filter((item: any) => item.checked).length,
+    }))
     setPersonData(newChild)
+    // 组value
+    if (e.target.checked) {
+      setPersonVal([...personVal, i.id])
+    } else {
+      setPersonVal(personVal.filter(el => el !== i.id))
+    }
   }
   const contentPerson = () => {
     return (
@@ -160,7 +192,7 @@ const TopArea = () => {
           />
         </HeaderPopover>
         <PersonMain>
-          {personData.map((el:any) => (
+          {personData.map((el: any) => (
             <>
               <RowTree key={el.label}>
                 <div className="rowChild">
@@ -179,10 +211,13 @@ const TopArea = () => {
               </RowTree>
               <div>
                 {el.children.length >= 1 &&
-                  el.children.map((item:any) => (
+                  el.children.map((item: any) => (
                     <RowTree key={item.label}>
                       <div className="rowChild">
-                        <Checkbox  onChange={e => onChangeS(e, item)} checked={item.checked} />
+                        <Checkbox
+                          onChange={e => onChangeS(e, item)}
+                          checked={item.checked}
+                        />
                         <img src="" />
                         <TextTree>{item.label}</TextTree>
                       </div>
