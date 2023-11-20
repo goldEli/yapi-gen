@@ -387,15 +387,19 @@ const MainTable = (props: Props) => {
 
             <TableActionItem
               isDisable={record.team_id === 0 ? hasEdit : record.isTeam}
-              onClick={() => {
-                dispatch(editProject({ visible: true, id: record.id }))
-              }}
+              onClick={() =>
+                (record.team_id === 0 ? hasEdit : record.isTeam)
+                  ? void 0
+                  : dispatch(editProject({ visible: true, id: record.id }))
+              }
             >
               {t('edit')}
             </TableActionItem>
             <TableActionItem
               isDisable={hasDelete}
-              onClick={() => props.onChangeOperation('delete', record)}
+              onClick={() =>
+                hasDelete ? void 0 : props.onChangeOperation('delete', record)
+              }
             >
               {t('common.del')}
             </TableActionItem>
