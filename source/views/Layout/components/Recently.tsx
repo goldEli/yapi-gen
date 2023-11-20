@@ -371,6 +371,13 @@ const Recently = (props: RecentlyProps) => {
     return time
   }
 
+  // 点击tab切换
+  const onChangeTabActive = (index: number) => {
+    if (index === tabActive) return
+    setTabActive(index)
+    setDataList({})
+  }
+
   useEffect(() => {
     setPage(1)
     setDataList({})
@@ -443,10 +450,7 @@ const Recently = (props: RecentlyProps) => {
         <TabsWrap ref={tabBox}>
           {tabs.map((i: any, index) => (
             <TabsWrapItem
-              onClick={() => {
-                setTabActive(index)
-                setDataList({})
-              }}
+              onClick={() => onChangeTabActive(index)}
               active={tabActive === index}
               key={i.label}
             >

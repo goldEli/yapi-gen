@@ -21,7 +21,7 @@ export const Title = styled.div`
   top: 0px;
   z-index: 9;
   background: #fff;
-  padding-bottom: 8px;
+  padding: 16px 0 8px 0;
   .label {
     font-size: 16px;
     color: var(--neutral-n1-d1);
@@ -104,6 +104,7 @@ export const WaringCardWrap = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   border-radius: 6px;
   width: 100%;
+  margin-top: 16px;
 `
 
 export const WaringCardHeader = styled.div`
