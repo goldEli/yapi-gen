@@ -158,9 +158,9 @@ const TopArea = () => {
     setPersonData(newChild)
     let newVal: any = []
     newVal = i.children.map((el: any) => el.id)
-    const filterData = personVal.filter(el => newVal?.includes(el))
+    const filterData = personVal.filter((el: any) => newVal?.includes(el))
     if (filterData.length >= 1) {
-      setPersonVal(personVal.filter(el => !newVal?.includes(el)))
+      setPersonVal(personVal.filter((el: any) => !newVal?.includes(el)))
       return
     }
     setPersonVal([...personVal, ...newVal])
@@ -185,7 +185,7 @@ const TopArea = () => {
     if (e.target.checked) {
       setPersonVal([...personVal, i.id])
     } else {
-      setPersonVal(personVal.filter(el => el !== i.id))
+      setPersonVal(personVal.filter((el: any) => el !== i.id))
     }
   }
   // 折叠
@@ -209,7 +209,7 @@ const TopArea = () => {
       ...el,
       fold: true,
       len: el.children.length,
-      checked:false,
+      checked: false,
       children: el.children.map(item => ({
         ...item,
         checked: false,

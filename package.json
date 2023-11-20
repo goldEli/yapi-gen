@@ -35,6 +35,8 @@
     "cos-js-sdk-v5": "^1.4.15",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.0",
+    "dexie": "^3.2.4",
+    "dexie-react-hooks": "^1.1.7",
     "dhtmlx-gantt": "^7.1.12",
     "highcharts": "^10.2.0",
     "highcharts-react-official": "^3.2.0",
