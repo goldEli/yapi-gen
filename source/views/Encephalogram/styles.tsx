@@ -26,11 +26,11 @@ export const MapContentBox = styled.div`
 `
 export const TopAreaWrap = styled.div`
   width: 100%;
-  padding:24px;
+  padding: 24px;
   box-sizing: border-box;
   position: absolute;
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: space-between;
   .ant-breadcrumb {
     width: 20%;

@@ -35,3 +35,5 @@ export const buildIntactTree = (arr: any[]) => {
 
   return tree
 }
+
+export const filerMapData = () => {}

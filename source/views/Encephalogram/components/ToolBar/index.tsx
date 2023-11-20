@@ -2,17 +2,52 @@ import { ToolBarBox, RightWrap } from '@/views/Encephalogram/styles'
 import Tabs from '@/components/Tabs'
 import { Space } from 'antd'
 import IconFont from '@/components/IconFont'
-import { useDispatch } from 'react-redux'
 import { setEncephalogramParmas } from '@store/encephalogram'
 import { useEffect } from 'react'
+import html2canvas from 'html2canvas'
+import { getMessage } from '@/components/Message'
+import { useDispatch, useSelector } from '@store/index'
+import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
+
 const ToolBar = () => {
   const dispatch = useDispatch()
-  useEffect(()=>{
-    dispatch(setEncephalogramParmas({activeType:0}))
-  },[])
-  const onChange = (id:number) => {
-    dispatch(setEncephalogramParmas({activeType:id}))
+  const { fullScreen } = useSelector(store => store.kanBan)
+  useEffect(() => {
+    dispatch(setEncephalogramParmas({ activeType: 0 }))
+  }, [])
+  const onChange = (id: number) => {
+    dispatch(setEncephalogramParmas({ activeType: id }))
   }
+
+  const downloadImage = () => {
+    const div: any = document.querySelector('#MapContentMountNode')
+    html2canvas(div, {
+      allowTaint: true,
+      backgroundColor: '#fff',
+      scale: 5,
+      useCORS: true,
+    })
+      .then(canvas => {
+        const imgData = canvas.toDataURL('image/png')
+        const downloadLink = document.createElement('a')
+        downloadLink.href = imgData
+        downloadLink.download = 'exported-png.png'
+        document.body.appendChild(downloadLink)
+        downloadLink.click()
+        document.body.removeChild(downloadLink)
+        getMessage({
+          msg: '导出成功',
+          type: 'success',
+        })
+      })
+      .catch(() => {
+        getMessage({
+          msg: '导出失败',
+          type: 'error',
+        })
+      })
+  }
+
   return (
     <ToolBarBox>
       <RightWrap type="1">
@@ -38,6 +73,13 @@ const ToolBar = () => {
             style={{
               fontSize: 24,
               color: 'var(--neutral-n2)',
+            }}
+            onClick={() => {
+              if (fullScreen) {
+                dispatch(offFullScreenMode())
+              } else {
+                dispatch(onFullScreenMode())
+              }
             }}
           />
           <IconFont
@@ -73,6 +115,7 @@ const ToolBar = () => {
         <IconFont
           type="download"
           style={{ fontSize: 24, color: 'var(--neutral-n2)' }}
+          onClick={downloadImage}
         />
       </RightWrap>
     </ToolBarBox>

@@ -40,6 +40,7 @@
     "dhtmlx-gantt": "^7.1.12",
     "highcharts": "^10.2.0",
     "highcharts-react-official": "^3.2.0",
+    "html2canvas": "^1.4.1",
     "i18next": "^21.9.0",
     "ifunuikit": "^0.0.8",
     "immer": "^10.0.2",

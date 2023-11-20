@@ -571,7 +571,7 @@ const urls = {
   // 获取最近的任务
   getRecentStory: '/b/user/recent/story',
   // 导图
-  getMapList: 'getMapList',
+  getMapList: '/b/project/map',
 }
 export default urls
 
