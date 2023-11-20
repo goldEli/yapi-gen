@@ -31,7 +31,11 @@ import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
-const priorityList = [
+import { useDispatch } from 'react-redux'
+import { setEncephalogramParmas } from '@store/encephalogram'
+import { useSelector } from '@store/index'
+import { getIterateList } from '@/services/iterate'
+const priorityList1 = [
   {
     label: '12',
     id: 12,
@@ -64,16 +68,50 @@ const priorityList = [
 const TopArea = () => {
   const [clickeMsg, setClickeMsg] = useState(false)
   const [clickePerson, setClickePerson] = useState(false)
-  const [state, setState] = useState([])
   const [date, setDate] = useState<any>(null)
-  const [personData, setPersonData] = useState(priorityList)
+  const [personData, setPersonData] = useState(priorityList1)
   const value: any = []
   const [personVal, setPersonVal] = useState(value)
   const [search, setSearch] = useState('')
   const [length, setLength] = useState(0)
-  const onChangeSelect = () => {}
+  const dispatch = useDispatch()
+  // 状态的
+  const [priorityList, setPriorityList] = useState()
+  // 迭代的
+  const [interateList, setInterateList] = useState()
+  const { projectInfoValues, projectInfo } = useSelector(store => store.project)
   useEffect(() => {
-    const newChild = priorityList.map(el => ({
+    // 状态的
+    const list = projectInfoValues
+      .find(item => item.key === 'status')
+      ?.children?.filter((l: any) => l.id > 0)
+    const newData = list?.map((v: { name: any; statuss: any[] }) => ({
+      label: v.name,
+      children: v?.statuss?.map((val: any) => ({
+        label: val.content_txt || val.content,
+        value: val?.pivot?.id,
+        id: val?.pivot?.id,
+      })),
+    }))
+    setPriorityList(newData)
+  }, [projectInfoValues])
+  const getInterateList = async () => {
+    // 获取迭代下拉数据
+    const response = await getIterateList({
+      projectId: projectInfo.id,
+    })
+    setInterateList(
+      response?.list?.map((i: any) => ({
+        label: i.name,
+        value: i.id,
+      })),
+    )
+  }
+  useEffect(() => {
+    // 迭代下拉
+    getInterateList()
+    // 组装项目成员的数据
+    const newChild = priorityList1.map(el => ({
       ...el,
       fold: true,
       len: el.children.length,
@@ -147,7 +185,7 @@ const TopArea = () => {
       </Content>
     )
   }
-  // 点击父级，设置勾选
+  // 点击父级，设置勾选获取value
   const onChangeF = (e: any, i: any) => {
     const newChild: any = personData.map((el: any) => ({
       ...el,
@@ -167,11 +205,21 @@ const TopArea = () => {
     // 组value
     if (e.target.checked) {
       setPersonVal([...personVal, ...newVal])
+      dispatch(
+        setEncephalogramParmas({
+          person: [...personVal, ...newVal]
+        }),
+      )
     } else {
       setPersonVal(personVal.filter((el: any) => !newVal?.includes(el)))
+      dispatch(
+        setEncephalogramParmas({
+          person: personVal.filter((el: any) => !newVal?.includes(el))
+        }),
+      )
     }
   }
-  // 点击子级,设置勾选
+  // 点击子级,设置勾选获取value
   const onChangeS = (e: any, i: any) => {
     const Child: any = personData.map((el: any) => ({
       ...el,
@@ -190,8 +238,14 @@ const TopArea = () => {
     // 组value
     if (e.target.checked) {
       setPersonVal([...personVal, i.id])
+      dispatch(setEncephalogramParmas({
+        person: [...personVal, i.id]
+      }))
     } else {
       setPersonVal(personVal.filter((el: any) => el !== i.id))
+      dispatch(setEncephalogramParmas({
+        person: personVal.filter((el: any) => el !== i.id)
+      }))
     }
   }
   // 折叠
@@ -244,7 +298,7 @@ const TopArea = () => {
   const reset = () => {
     setSearch('')
     setPersonVal([])
-    const newChild = priorityList.map(el => ({
+    const newChild = priorityList1.map(el => ({
       ...el,
       fold: true,
       len: el.children.length,
@@ -269,7 +323,7 @@ const TopArea = () => {
         </HeaderPopover>
         <Input
           value={search}
-          placeholder={'搜索成员姓名'}
+          placeholder="搜索成员姓名"
           onInput={(e: any) => onInput(e)}
         />
         <Row>
@@ -326,19 +380,43 @@ const TopArea = () => {
       </Content>
     )
   }
-
-  const onClickSearch = (value: any) => {
-    setState(value || [])
+  // 选中任务状态
+  const onClickSearch = (value: Array<number>) => {
+    dispatch(
+      setEncephalogramParmas({
+        state: value || [],
+      }),
+    )
   }
+  // 选中迭代
+  const onChangeSelect = (value: Array<number>) => {
+    dispatch(
+      setEncephalogramParmas({
+        iterationVal: value || [],
+      }),
+    )
+  }
+  // 时间选择
   const onChangeTime = (dates: any) => {
     if (dates) {
       const s = moment(dates[0]).format('YYYY-MM-DD') || ''
       const d = moment(dates[1]).format('YYYY-MM-DD') || ''
       setDate([s, d])
+      dispatch(
+        setEncephalogramParmas({
+          time: [s, d],
+        }),
+      )
     } else {
       setDate(null)
+      dispatch(
+        setEncephalogramParmas({
+          time: [],
+        }),
+      )
     }
   }
+
   return (
     <TopAreaWrap>
       <MyBreadcrumb />
@@ -354,25 +432,21 @@ const TopArea = () => {
         <TypeSelectBox className="selectBgc">
           <Space size={20}>
             <CustomSelectWrap
-              placeholder={'选择迭代'}
+              mode="multiple"
+              placeholder="选择迭代"
               showArrow
               showSearch
               getPopupContainer={(node: any) => node}
               allowClear
               optionFilterProp="label"
               onChange={onChangeSelect}
-              options={[
-                {
-                  label: 1,
-                  value: 1,
-                },
-              ]}
+              options={interateList}
             />
             <MoreSelect
               showArrow
               mode="multiple"
               selectWidth={100}
-              placeholder={'任务状态'}
+              placeholder="任务状态"
               showSearch
               optionFilterProp="label"
               placement="bottomRight"
@@ -380,7 +454,6 @@ const TopArea = () => {
               allowClear
               options={priorityList}
               onChange={(value: any) => onClickSearch(value)}
-              value={state}
             />
             <RangePickerWrap type={date?.length >= 1}>
               <RangePicker

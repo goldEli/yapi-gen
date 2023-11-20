@@ -1,12 +1,17 @@
-import React from 'react'
 import { ToolBarBox, RightWrap } from '@/views/Encephalogram/styles'
 import Tabs from '@/components/Tabs'
 import { Space } from 'antd'
 import IconFont from '@/components/IconFont'
-
+import { useDispatch } from 'react-redux'
+import { setEncephalogramParmas } from '@store/encephalogram'
+import { useEffect } from 'react'
 const ToolBar = () => {
-  const onChange = (id: number) => {
-    console.log(id)
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(setEncephalogramParmas({activeType:0}))
+  },[])
+  const onChange = (id:number) => {
+    dispatch(setEncephalogramParmas({activeType:id}))
   }
   return (
     <ToolBarBox>

@@ -50,8 +50,6 @@ const MyBreadcrumb = (props: any) => {
     dispatch(setProjectInfo(result))
   }
 
-  console.log(props, '12222222')
-
   return (
     <Breadcrumb
       separator={
