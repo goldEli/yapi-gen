@@ -38,6 +38,7 @@ import affairs from './affairs'
 import flaw from './flaw'
 import Forewarn from './Forewarn'
 import employeeProfile from './employeeProfile'
+import encephalogram from './encephalogram'
 export const store = configureStore({
   reducer: {
     Forewarn,
@@ -74,6 +75,7 @@ export const store = configureStore({
     freed,
     performanceInsight,
     employeeProfile,
+    encephalogram
   },
 })
 
