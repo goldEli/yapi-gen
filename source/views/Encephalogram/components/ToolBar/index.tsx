@@ -56,7 +56,7 @@ const ToolBar = () => {
           />
           <span>100%</span>
           <IconFont
-            type="close"
+            type="reduce"
             style={{
               fontSize: 24,
               color: 'var(--neutral-n2)',
