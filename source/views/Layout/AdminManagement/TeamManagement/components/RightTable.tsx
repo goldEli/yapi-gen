@@ -83,12 +83,12 @@ const TitleStyle = styled.div`
   font-size: 14px;
   color: var(--neutral-n2);
 `
-// const SelectStyle = styled(CustomSelect)`
-//   .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-//     border: 1px solid var(--neutral-n6-d1) !important;
-//     background-color: var(--neutral-white-d4) !important;
-//   }
-// `
+const SelectStyle = styled(CustomSelect)`
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border: 1px solid var(--neutral-n6-d1) !important;
+    background-color: var(--neutral-white-d4) !important;
+  }
+`
 const PersonStyle = styled.div`
   width: 100%;
   padding: 8px 32px 24px;

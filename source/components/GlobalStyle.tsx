@@ -791,28 +791,29 @@ const GlobalStyle = () => {
       .ant-select-selector,
     input,
     .ant-select-selection-placeholder,
-    .ant-select-arrow{
+    .ant-select-arrow {
       background-color: var(--auxiliary-b4);
       color: var(--auxiliary-text-t2-d1) !important;
-      font-size:14px;
-     border-color:var(--auxiliary-b4);
+      font-size: 14px;
+      border-color: var(--auxiliary-b4);
     }
-    .selectBgc .ant-select-clear .anticon{
+    .selectBgc .ant-select-clear .anticon {
       background-color: var(--auxiliary-b4);
     }
-    .selectBgc .ant-select-open .ant-select-selector{
-      border:1px solid var(--primary-d1) !important;
-      border-radius:6px;
+    .selectBgc .ant-select-open .ant-select-selector {
+      border: 1px solid var(--primary-d1) !important;
+      border-radius: 6px;
     }
-    .selectBgc .ant-select-open .ant-select-selection-placeholder,.selectBgc .ant-select-open .ant-select-arrow{
+    .selectBgc .ant-select-open .ant-select-selection-placeholder,
+    .selectBgc .ant-select-open .ant-select-arrow {
       color: var(--auxiliary-text-t2-d2) !important;
     }
     .selectBgc .ant-picker-input,
     .ant-picker-range-separator {
       display: none;
     }
-    .selectBgc .ant-picker{
-      border:none;
+    .selectBgc .ant-picker {
+      border: none;
     }
     .ant-pagination-item,
     .ant-select-selection-item,

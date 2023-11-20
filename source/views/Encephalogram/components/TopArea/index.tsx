@@ -62,7 +62,10 @@ const TopArea = () => {
   const [date, setDate] = useState<any>(null)
   const [personData, setPersonData] = useState(priorityList)
   const value = [2691, 2693]
+<<<<<<< HEAD
   const [personVal, setPersonVal] = useState(value)
+=======
+>>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
   const onChangeSelect = () => {}
   useEffect(() => {
     const newChild = priorityList.map(el => ({
@@ -75,7 +78,10 @@ const TopArea = () => {
         checked: value.includes(item.id),
       })),
     }))
+<<<<<<< HEAD
     setPersonVal([...value])
+=======
+>>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
     setPersonData(newChild)
   }, [])
   const content = () => {
@@ -132,7 +138,11 @@ const TopArea = () => {
       </Content>
     )
   }
+<<<<<<< HEAD
   // 点击父级，设置勾选
+=======
+  // 点击父级
+>>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
   const onChangeF = (e: any, i: any) => {
     const newChild: any = personData.map((el: any) => ({
       ...el,
@@ -145,7 +155,10 @@ const TopArea = () => {
             }))
           : el.children,
     }))
+<<<<<<< HEAD
     // 重装数据
+=======
+>>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
     setPersonData(newChild)
     let newVal: any = []
     newVal = i.children.map((el: any) => el.id)
@@ -156,9 +169,15 @@ const TopArea = () => {
     }
     setPersonVal([...personVal, ...newVal])
   }
+<<<<<<< HEAD
   console.log(personVal, 'personVal')
   // 点击子级,设置勾选
   const onChangeS = (e: any, i: any) => {
+=======
+  // 点击子级
+  const onChangeS = (e: any, i: any) => {
+    console.log(i.id)
+>>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
     const Child: any = personData.map((el: any) => ({
       ...el,
       children: el.children.map((item: any) => ({
@@ -166,6 +185,10 @@ const TopArea = () => {
         checked: i.id === item.id ? e.target.checked : item.checked,
       })),
     }))
+<<<<<<< HEAD
+=======
+    console.log(Child, '99')
+>>>>>>> 247873cfce9cbab66460a8b1719d472f1d0bd924
     const newChild: any = Child.map((el: any) => ({
       ...el,
       checked:
