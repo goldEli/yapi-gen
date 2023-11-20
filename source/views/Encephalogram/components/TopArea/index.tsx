@@ -29,6 +29,7 @@ import IconFont from '@/components/IconFont'
 import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
+import { filter } from 'lodash'
 const priorityList = [
   {
     label: '12',
@@ -41,6 +42,10 @@ const priorityList = [
       {
         label: '规划中2',
         id: 2693,
+      },
+      {
+        label: '规划中23',
+        id: 2694,
       },
     ],
   },
@@ -57,7 +62,7 @@ const priorityList = [
 ]
 const TopArea = () => {
   const [clickeMsg, setClickeMsg] = useState(false)
-  const [clickePerson, setClickePerson] = useState(true)
+  const [clickePerson, setClickePerson] = useState(false)
   const [state, setState] = useState([])
   const [date, setDate] = useState<any>(null)
   const [personData, setPersonData] = useState(priorityList)
@@ -158,12 +163,12 @@ const TopArea = () => {
     setPersonData(newChild)
     let newVal: any = []
     newVal = i.children.map((el: any) => el.id)
-    const filterData = personVal.filter(el => newVal?.includes(el))
-    if (filterData.length >= 1) {
-      setPersonVal(personVal.filter(el => !newVal?.includes(el)))
-      return
+    // 组value
+    if (e.target.checked) {
+      setPersonVal([...personVal, ...newVal])
+    } else {
+      setPersonVal(personVal.filter((el: any) => !newVal?.includes(el)))
     }
-    setPersonVal([...personVal, ...newVal])
   }
   // 点击子级,设置勾选
   const onChangeS = (e: any, i: any) => {
@@ -185,7 +190,7 @@ const TopArea = () => {
     if (e.target.checked) {
       setPersonVal([...personVal, i.id])
     } else {
-      setPersonVal(personVal.filter(el => el !== i.id))
+      setPersonVal(personVal.filter((el: any) => el !== i.id))
     }
   }
   // 折叠
@@ -199,7 +204,40 @@ const TopArea = () => {
   }
   // 人员搜索
   const onInput = (e: any) => {
-    setSearch(e.target.value)
+    const str: string = e.target.value
+    setPersonVal([])
+    if (!str) {
+      reset()
+      return
+    }
+    setSearch(str)
+    const newData: {
+      label: string
+      id: number
+      fold: boolean
+      len: number
+      checked: boolean
+      children: { label: string; id: number; fold: boolean; checked: boolean }[]
+    }[] = []
+    personData.forEach((el: any) => {
+      if (
+        el.children.filter((item: { label: string | string[] }) =>
+          item.label.includes(str),
+        )?.length >= 1
+      ) {
+        newData.push({
+          id: el.id,
+          label: el.label,
+          fold: false,
+          len: el.len,
+          checked: el.checked,
+          children: el.children.filter((item: { label: string | string[] }) =>
+            item.label.includes(str),
+          ),
+        })
+      }
+    })
+    setPersonData(newData)
   }
   // 重置
   const reset = () => {
@@ -209,7 +247,7 @@ const TopArea = () => {
       ...el,
       fold: true,
       len: el.children.length,
-      checked:false,
+      checked: false,
       children: el.children.map(item => ({
         ...item,
         checked: false,
@@ -267,8 +305,8 @@ const TopArea = () => {
                   transition: 'all 0.5s',
                 }}
               >
-                {el.children.length >= 1 &&
-                  el.children.map((item: any) => (
+                {el.children?.length >= 1 &&
+                  el.children?.map((item: any) => (
                     <RowTree key={item.label}>
                       <div className="rowChild">
                         <Checkbox
@@ -289,7 +327,6 @@ const TopArea = () => {
   }
 
   const onClickSearch = (value: any) => {
-    console.log(value)
     setState(value || [])
   }
   const onChangeTime = (dates: any) => {

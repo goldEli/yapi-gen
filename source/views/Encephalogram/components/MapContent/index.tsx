@@ -33,7 +33,6 @@ const MapContent = (props: any) => {
             ]
           },
           draw: (cfg: any, group: any) => {
-            console.log(cfg, group, 'xxxxxx')
             const content = cfg.label
             const { fill, color, fontSize, fontWeight, fontFamily } =
               cfg.style || {}

@@ -14,7 +14,7 @@ interface LayoutSecondaryMenuProps {
 }
 
 const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
-  const [t] = useTranslation()
+  const [t,i18n] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const routerPath = useLocation()
@@ -77,7 +77,6 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
     }
     navigate(resultUrl)
   }
-
   useEffect(() => {
     let resultItems: any = []
     if (currentMenu?.id && routerPath?.pathname && userInfo?.id) {
@@ -129,7 +128,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'sprint',
-            name: t('sprint2'),
+            // name: i18n.language === 'zh' ? '冲刺' : 'Sprint',
             url: '/ProjectDetail/Sprint',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
