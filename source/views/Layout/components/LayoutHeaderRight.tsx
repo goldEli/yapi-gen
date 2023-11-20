@@ -340,9 +340,9 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             )}
             {i.key !== 0 && (
               <MenuItem key={i.key} onClick={() => onClickMenu(i.key)}>
-                <MenuLeft className="menuLeft">
+                <MenuLeft className="menuLeft" style={{ width: '80%' }}>
                   <CommonIconFont type={i.icon} />
-                  <span>{i.name}</span>
+                  <div>{i.name}</div>
                 </MenuLeft>
                 {i.key === 1 && (
                   <MenuRight>

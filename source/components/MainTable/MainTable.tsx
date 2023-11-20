@@ -355,7 +355,11 @@ const MainTable = (props: Props) => {
             >
               <TableActionItem
                 isDisable={isRolePermission}
-                onClick={() => props.onChangeOperation('', record)}
+                onClick={() =>
+                  isRolePermission
+                    ? void 0
+                    : props.onChangeOperation('', record)
+                }
               >
                 {record.status === 1 ? t('pause') : t('start')}
               </TableActionItem>
@@ -371,7 +375,11 @@ const MainTable = (props: Props) => {
             >
               <TableActionItem
                 isDisable={isRolePermission || [4, 2].includes(record.status)}
-                onClick={() => props.onChangeOperation('close', record)}
+                onClick={() =>
+                  isRolePermission || [4, 2].includes(record.status)
+                    ? void 0
+                    : props.onChangeOperation('close', record)
+                }
               >
                 {t('closure')}
               </TableActionItem>

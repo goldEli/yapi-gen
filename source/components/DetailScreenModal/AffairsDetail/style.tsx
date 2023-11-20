@@ -158,7 +158,7 @@ export const BasicWrap = styled.div<{ a?: boolean; b?: boolean }>`
 `
 
 export const BasicContent = styled.div`
-  height: calc(100% - 48px);
+  height: calc(100% - 65px);
   overflow: auto;
 `
 
@@ -169,7 +169,7 @@ export const BasicFooter = styled.div`
   padding-left: 24px;
   background: var(--neutral-white-d5);
   position: absolute;
-  bottom: 0;
+  bottom: 12px;
   width: 100%;
   .textBox {
     display: flex;

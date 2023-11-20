@@ -339,6 +339,13 @@ const routes = [
                     ),
                 ),
               },
+              {
+                path: 'ProjectWarning',
+                element: lazy(
+                  () =>
+                    import('@/views/ProjectSetting/components/ProjectWarning'),
+                ),
+              },
             ],
           },
           {

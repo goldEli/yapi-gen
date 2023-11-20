@@ -29,7 +29,7 @@
   "person_unread": "person not read",
   "person_read": "Person read",
   "enterprise_project2": "Enterprise Project ",
-  "sprint2": "Sprint ",
+  "sprint2": "Sprint",
   "top": "top",
   "window": "window",
   "send_type": "Send type",
@@ -372,7 +372,7 @@
   "affiliated": "Belong to",
   "please_select_your_affiliation": "Please choose your home",
   "keyboard": "Key",
-  "the_key_is_used_to_distinguish_items_and_is_used_as_a_requirement_number_prefix": "The key is used to distinguish items and is used as a requirement number prefix.",
+  "the_key_is_used_to_distinguish_items_and_is_used_as_a_requirement_number_prefix": "Number is used to distinguish projects and as a prefix for requirement numbers",
   "please_enter_the_key": "Please enter the key",
   "project_leader": "Project Leader",
   "please_select_project_leader": "Please select Project leader",
@@ -2623,5 +2623,6 @@
   "defectDescription": "Defect Description",
   "reproSteps": "Repro steps",
   "expectedResults": "Expected results",
-  "screenshot": "Screenshot"
+  "screenshot": "Screenshot",
+  "toBeOpened": "To be opened"
 }

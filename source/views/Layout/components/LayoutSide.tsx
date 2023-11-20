@@ -112,11 +112,12 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
 
   // 其他系统列表
   const otherSystemList = [
-    { name: 'iFun BI', url: 'https://bi.ifun.com/', icon: 'plus' },
-    { name: 'iFun AI', url: 'https://iai.ifun.com/', icon: 'plus' },
-    { name: 'iFun GM', url: 'https://gm.ifun.com', icon: 'plus' },
-    { name: 'iFun Mail', url: 'https://imail.ifun.com/', icon: 'plus' },
-    { name: 'iFun OA', url: 'https://oa.ifun.com/', icon: 'plus' },
+    { name: 'iFun BI', url: 'https://bi.ifun.com/', icon: 'BI' },
+    { name: 'iFun AI', url: 'https://iai.ifun.com/', icon: 'AI' },
+    { name: 'iFun GM', url: 'https://gm.ifun.com', icon: 'GM' },
+    { name: 'iFun Mail', url: 'https://imail.ifun.com/', icon: 'MI' },
+    { name: 'iFun OA', url: 'https://oa.ifun.com/', icon: 'OA' },
+    { name: t('toBeOpened'), url: '', icon: 'time', disable: true },
   ]
 
   // 切换展开折叠
@@ -203,7 +204,13 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   const moreOtherSystem = (
     <MoreOtherSystemWrap>
       {otherSystemList?.map((i: any) => (
-        <MoreOtherSystemItem key={i.name} onClick={() => onOpenUrl(i.url)}>
+        <MoreOtherSystemItem
+          key={i.name}
+          disable={i.disable}
+          onClick={() => {
+            i.disable ? void 0 : onOpenUrl(i.url)
+          }}
+        >
           <div className="box">
             <CommonIconFont type={i.icon} size={24} />
           </div>

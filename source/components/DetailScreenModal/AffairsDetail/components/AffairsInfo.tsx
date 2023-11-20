@@ -238,10 +238,10 @@ const AffairsInfo = (props: Props) => {
         (userPreferenceConfig.previewModel === 3
           ? affairsInfo?.isExamine
             ? 176
-            : 140
+            : 110
           : affairsInfo?.isExamine
           ? 236
-          : 190) + (document.getElementById('DetailText')?.clientHeight || 25)
+          : 165) + (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
       {/* 子任务不存在子事务模块 */}

@@ -376,14 +376,14 @@ export const MoreOtherSystemWrap = styled.div`
   height: 248px;
 `
 
-export const MoreOtherSystemItem = styled.div`
+export const MoreOtherSystemItem = styled.div<{ disable?: boolean }>`
   width: 88px;
   height: 88px;
   padding: 5px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
+  cursor: ${props => (props.disable ? 'inherit' : 'pointer')};
   .box {
     height: 48px;
     width: 48px;
@@ -392,11 +392,17 @@ export const MoreOtherSystemItem = styled.div`
     align-items: center;
     justify-content: center;
     background: var(--neutral-n7);
+    span {
+      cursor: ${props => (props.disable ? 'inherit' : 'pointer')};
+      color: ${props =>
+        props.disable ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
+    }
   }
   .name {
     margin-top: 8px;
     font-size: 14px;
-    color: var(--neutral-n1-d1);
+    color: ${props =>
+      props.disable ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
     font-family: SiYuanMedium;
   }
 `
@@ -454,6 +460,7 @@ export const PhoneWrap = styled.div`
 
 export const MenuItems = styled.div`
   margin-top: 12px;
+  width: 100%;
 `
 
 export const MenuLeft = styled.div`
@@ -462,6 +469,13 @@ export const MenuLeft = styled.div`
   font-size: var(--font14);
   svg {
     margin-right: 8px;
+  }
+  div {
+    display: inline-block;
+    width: 80%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 `
 
@@ -959,8 +973,8 @@ export const LoadingMore = styled.div`
 `
 
 // 二级菜单样式
-export const LayoutMenuWrap = styled(Tabs)<{ width: number }>`
-  max-width: calc(100% - ${props => props.width}px);
+export const LayoutMenuWrap = styled(Tabs)<{ width?: number }>`
+  /* max-width: calc(100% - ${props => props.width}px); */
   height: 56px;
   font-size: 14px;
   color: var(--neutral-n1-d1);

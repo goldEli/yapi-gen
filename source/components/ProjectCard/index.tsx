@@ -266,11 +266,10 @@ const Index = (props: any) => {
           trigger={['hover']}
           menu={{
             items: getItems(),
-
             onClick,
           }}
           placement="bottomRight"
-          getPopupContainer={(i: any) => i.parentNode}
+          // getPopupContainer={(i: any) => i.parentNode}
         >
           <HoverIcon>
             <IconFont

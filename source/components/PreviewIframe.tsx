@@ -4,6 +4,8 @@ import IconFont from '@/components/IconFont'
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactDOM from 'react-dom'
+import { Modal } from 'antd'
+import CommonIconFont from './CommonIconFont'
 
 const StyleIframe = styled.iframe`
   width: 100%;
@@ -11,35 +13,12 @@ const StyleIframe = styled.iframe`
   border: none;
 `
 const IframeContainer = styled.div`
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  z-index: 99999;
-  width: 100%;
   height: 100%;
-  border: none;
-  background: #ffffffb3;
 `
-const CloseBtn = styled.div`
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 0 0 0 40px;
-  background-color: rgba(0, 0, 0, 1);
-`
+
 const ErrorRender = styled.div`
   text-align: center;
   margin-top: 200px;
-`
-const Text = styled.div`
-  height: 22px;
-  font-size: 14px;
-  font-family: MiSans-Regular, MiSans;
-  font-weight: 400;
-  color: #969799;
-  line-height: 22px;
 `
 
 const LoadingOverlay = styled.div`
@@ -100,6 +79,23 @@ const LoadingOverlay = styled.div`
   }
 `
 
+const ModalWrap = styled(Modal)`
+  width: 80vw;
+  .ant-modal-body {
+    background-color: var(--neutral-white-d5);
+    border-radius: 6px;
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    padding: 0px;
+  }
+`
+
+const ModelClose = styled.div`
+  position: absolute;
+  right: -54px;
+  top: -21px;
+  cursor: pointer;
+`
+
 const PreviewIframe = (props: any) => {
   const [isLoading, setIsLoading] = useState(true)
   const iframeRef = useRef<HTMLIFrameElement>(null)
@@ -134,47 +130,70 @@ const PreviewIframe = (props: any) => {
     }
   }, [])
   return ReactDOM.createPortal(
-    <IframeContainer>
-      {isLoading ? (
-        <LoadingOverlay className="loading-overlay">
-          <div className="dot" />
-          <div className="dot" />
-          <div className="dot" />
-          <div className="dot" />
-          <div className="dot" />
-        </LoadingOverlay>
-      ) : null}
-      <CloseBtn>
-        <IconFont
-          onClick={() => {
-            props?.onClose()
-          }}
-          type="close"
-          style={{
-            fontSize: '25px',
-            color: '#F9FAFC',
-            cursor: 'pointer',
-            margin: '5px 0px 0 10px',
-          }}
+    <ModalWrap
+      wrapClassName="vertical-center-modal"
+      open={props.flag}
+      footer={false}
+      closable={false}
+      title={false}
+      bodyStyle={{
+        height: '80vh',
+      }}
+      width="80vw"
+      onCancel={props?.onClose}
+      maskStyle={{
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      }}
+    >
+      <ModelClose onClick={props?.onClose}>
+        <CommonIconFont
+          type="close-solid2"
+          size={40}
+          color="var(--neutral-white-d1)"
         />
-      </CloseBtn>
-      {!error ? (
-        <StyleIframe ref={iframeRef} src={url} />
-      ) : (
-        <ErrorRender>
+      </ModelClose>
+      <IframeContainer>
+        {isLoading ? (
+          <LoadingOverlay className="loading-overlay">
+            <div className="dot" />
+            <div className="dot" />
+            <div className="dot" />
+            <div className="dot" />
+            <div className="dot" />
+          </LoadingOverlay>
+        ) : null}
+        {/* <CloseBtn>
           <IconFont
-            type="yulanshibai"
+            onClick={() => {
+              props?.onClose()
+            }}
+            type="close"
             style={{
-              fontSize: '300px',
+              fontSize: '25px',
               color: '#F9FAFC',
               cursor: 'pointer',
-              margin: '10px 10px 0 0',
+              margin: '5px 0px 0 10px',
             }}
           />
-          {/* <Text>{t('file.erro3')}</Text> */}
-        </ErrorRender>
-      )}
-    </IframeContainer>,
+        </CloseBtn> */}
+        {!error ? (
+          <StyleIframe ref={iframeRef} src={url} />
+        ) : (
+          <ErrorRender>
+            <IconFont
+              type="yulanshibai"
+              style={{
+                fontSize: '300px',
+                color: '#F9FAFC',
+                cursor: 'pointer',
+                margin: '10px 10px 0 0',
+              }}
+            />
+            {/* <Text>{t('file.erro3')}</Text> */}
+          </ErrorRender>
+        )}
+      </IframeContainer>
+    </ModalWrap>,
     document.body,
   )
 }

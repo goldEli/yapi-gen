@@ -175,17 +175,6 @@ const AddWorkItem = () => {
       dispatch(setIsUpdateStatus(true))
       dispatch(setIsUpdateChangeLog(true))
     } else {
-      let createParams: any = {
-        projectId,
-        ...values,
-      }
-
-      if ([2, 5].includes(work_type) && !createParams.info) {
-        createParams.info =
-          '<p>【缺陷描述】</br></br></br>【重现步骤】</br></br></br>【预期结果】</br></br></br>【截图】</br></br></br></p>'
-      }
-      console.log(createParams)
-      return
       await resultMethod?.create({
         projectId,
         ...values,
