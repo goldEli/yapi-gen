@@ -1,410 +1,317 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { MapContentBox } from '@/views/Encephalogram/styles'
 import G6, { Util } from '@antv/g6'
+import {
+  addTaskForTable,
+  haveProjectData,
+} from '@/views/Encephalogram/until/DbHelper'
+import useProjectId from '@/views/Encephalogram/hook/useProjectId'
+import useMapData from '../../hook/useMapData'
+import init from '@/views/Encephalogram/until/MapFun'
 
 // type MapContentPropsType = {}
 
 const MapContent = (props: any) => {
-  useEffect(() => {
-    const container = document.querySelector('#MapContentMountNode')
-    if (container) {
-      G6.registerNode(
-        'customNode',
-        {
-          // jsx: (cfg: any) => {
-          //   const width = Util.getTextSize(cfg.label, 14)[0] + 16
-          //   const color = cfg.color || cfg.style.stroke
-          //   return `
-          //       <group>
-          //         <rect draggable="true" style={{width: ${
-          //           width + 16
-          //         }, height: 40,fill:'#FFF383',textAlign: 'center', }} keyshape>
-          //           <text draggable="true" style={{ fontSize: 14,marginLeft:16 ,marginTop: 10}}>${
-          //             cfg.label
-          //           }</text>
-          //         </rect>
-          //       </group>
-          //     `
-          // },
-          getAnchorPoints() {
-            return [
-              [0, 0.5],
-              [1, 0.5],
-            ]
-          },
-          draw: (cfg: any, group: any) => {
-            const content = cfg.label
-            const { fill, color, fontSize, fontWeight, fontFamily } =
-              cfg.style || {}
-            const rect = group.addShape('rect', {
-              attrs: {
-                fill,
-                stroke: '#D5D6D9',
-                width: Util.getTextSize(cfg.label, fontSize || 14)[0] + 20,
-                height: 40,
-              },
-              name: 'rect-shape',
-            })
-            const bbox = rect.getBBox()
-            group.addShape('text', {
-              attrs: {
-                text: content,
-                x: 10,
-                y: bbox.height / 2,
-                textBaseline: 'middle',
-                fill: color || '#323233',
-                fontWeight,
-                fontSize: fontSize || 14,
-                fontFamily: 'SiYuanMedium',
-              },
-              name: 'text-shape',
-            })
-
-            const hasChildren = cfg.children && cfg.children.length > 0
-            if (hasChildren) {
-              group.addShape('marker', {
-                attrs: {
-                  x: bbox.width - 1.5,
-                  y: bbox.height / 2,
-                  r: 6,
-                  symbol: cfg.collapsed ? G6.Marker.expand : G6.Marker.collapse,
-                  stroke: '#969799',
-                  lineWidth: 1,
-                },
-                name: 'collapse-icon',
-              })
-            }
-            return group
-          },
-          update: (cfg, item) => {
-            const group = item.getContainer()
-            const icon = group.find(e => e.get('name') === 'collapse-icon')
-            icon.attr(
-              'symbol',
-              cfg.collapsed ? G6.Marker.expand : G6.Marker.collapse,
-            )
-          },
-          setState(name, value, item: any) {
-            const keyShape = item.getKeyShape()
-            switch (name) {
-              case 'hover':
-                keyShape.attr({
-                  stroke: '#f00',
-                  fill: '#f00',
-                })
-                break
-            }
-          },
-        },
-        'rect',
-      )
-      const tooltip = new G6.Tooltip({
-        offsetX: 10,
-        offsetY: 10,
-        itemTypes: ['node'],
-        // 自定义 tooltip 内容
-        getContent: (e: any) => {
-          const outDiv = document.createElement('div')
-          outDiv.style.width = 'fit-content'
-          outDiv.innerHTML = `
-          <ul style="color: #ffffff;list-style: none; margin: 0px;padding:0px">
-          <li style="margin-bottom: 8px">预计工期：25 天</li>
-          <li style="margin-bottom: 8px">实际工期：24天</li>
-          <li style="margin-bottom: 8px">当前进度：30%</li>
-          <li style="display: flex">
-            <div style="white-space: nowrap; margin-right: 8px">处理人：</div>
-            <div style="display: flex; flex-direction: column">
-              <div style="display: flex; font-size: 12px; margin-bottom: 8px;align-items:center">
-                <img
-                  src="https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp"
-                  width="24px"
-                  height="24px"
-                  style="margin-right: 4px;border-radius: 50%"
-                />
-                美术组-UI组长-张三
-              </div>
-              <div style="display: flex; font-size: 12px;align-items:center">
-                <img
-                  src="https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp"
-                  width="24px"
-                  height="24px"
-                  style="margin-right: 4px;border-radius: 50%"
-                />
-                软件大数据组-UI组长-张三
-              </div>
-            </div>
-          </li>
-        </ul>
-            `
-          return outDiv
-          // <li>预计工期: ${e.item.getModel().label || e.item.getModel().id}</li>
-        },
-      })
-      const width = container.scrollWidth
-      const height = container.scrollHeight || 500
-      const graph = new G6.TreeGraph({
-        container: 'MapContentMountNode',
-        width,
-        height,
-        groupByTypes: true,
-        modes: {
-          default: [
-            {
-              type: 'collapse-expand',
-              onChange: (item: any, collapsed: any) => {
-                const data = item.get('model')
-                graph.updateItem(item, {
-                  collapsed,
-                })
-                data.collapsed = collapsed
-                return true
-              },
-            },
-            'drag-canvas',
-            'zoom-canvas',
-          ],
-        },
-        defaultNode: {
-          type: 'customNode',
-        },
-        defaultEdge: {
-          type: 'polyline',
-          style: {
-            stroke: '#D5D6D9',
-          },
-        },
-        layout: {
-          type: 'compactBox',
-          direction: 'LR',
-          getId: function getId(d: any) {
-            return d.id
-          },
-        },
-        plugins: [tooltip],
-      })
-      const data = {
-        id: '1',
-        label: 'SLG框架开发',
-        style: {
-          color: '#323233',
-          fontWeight: 500,
-          fontFamily: 'SiYuanMedium',
-          fontSize: 18,
-          fill: '#FFFFFF',
-        },
+  const { projectId } = useProjectId()
+  const { data } = useMapData()
+  console.log(data, 'datadatadata')
+  const addTask = async () => {
+    const hasId: any = await haveProjectData(projectId)
+    if (!hasId) {
+      addTaskForTable(projectId, {
+        id: 516,
+        name: '分类1',
+        parent_id: 0,
+        project_id: projectId,
         children: [
           {
-            id: '11',
-            label: '主分类-英雄',
-            style: {
-              color: '#323233',
-              fontWeight: 500,
-              fontFamily: 'SiYuanMedium',
-              fontSize: 16,
-              fill: '#FFFFFF',
-            },
+            id: 1002929,
+            story_id: 1002929,
+            name: '个人中心（jxl）',
+            schedule: 100,
+            class_id: 516,
+            iterate_id: 538,
+            project_id: 321,
+            category_status_id: 1643,
+            expected_start_at: '2023-11-08',
+            expected_end_at: '2023-11-30',
+            parent_id: 0,
+            handlers: [
+              {
+                id: 689,
+                name: '蒋晓龙',
+                avatar: '',
+                department_id: '1542006488750587906',
+                job_id: '1542006731630149634',
+                department_name: 'php',
+                position_name: 'php工程师',
+              },
+            ],
+            node_type: 'story',
+            progress_status: 'ended',
+            expect_duration: 17,
+            real_duration: 0,
+            all_iterate_ids: [191, 538],
+            all_category_status_ids: [1822, 1643],
+            all_handler_ids: [689],
+            min_expected_start_at: '2023-10-28',
+            max_expected_end_at: '2023-11-30',
+            children_count: 1,
             children: [
               {
-                id: '111',
-                label: '子分类-等级',
-                style: {
-                  fill: '#FFFFFF',
-                },
-                children: [
+                id: 1003712,
+                story_id: 1003712,
+                name: '测试关联工作项',
+                schedule: 53,
+                class_id: 0,
+                iterate_id: 191,
+                project_id: 321,
+                category_status_id: 1822,
+                expected_start_at: '2023-10-28',
+                expected_end_at: '2023-11-03',
+                parent_id: 1002929,
+                handlers: [
                   {
-                    id: '111-1',
-                    label: '父级任务-英雄养成',
-                    style: {
-                      fill: '#FFF383',
-                    },
-                    children: [
-                      {
-                        id: '1111-1',
-                        label: '子任务-UE 2.0',
-                        style: {
-                          fill: '#BBFFBA',
-                        },
-                        children: [
-                          {
-                            id: '11111-1',
-                            label: '美术组UED1',
-                          },
-                        ],
-                      },
-                      {
-                        id: '1111-2',
-                        label: '子任务-UE 2.1',
-                        style: {
-                          fill: '#BBFFBA',
-                        },
-                        children: [
-                          {
-                            id: '1111-2-1',
-                            label: '美术组UED2',
-                          },
-                        ],
-                      },
-                      {
-                        id: '1111-3',
-                        label: '子任务-UE 2.2',
-                        style: {
-                          fill: '#E4D8FF',
-                        },
-                        children: [
-                          {
-                            id: '1111-3-1',
-                            label: '美术组UED3',
-                          },
-                        ],
-                      },
-                      {
-                        id: '1111-4',
-                        label: '子任务-UE 2.3',
-                        style: {
-                          fill: '#FFC8A0',
-                        },
-                        children: [
-                          {
-                            id: '1111-4-1',
-                            label: '3D设计组',
-                          },
-                        ],
-                      },
-                      {
-                        id: '1111-5',
-                        label: '子任务-UE 2.4',
-                        style: {
-                          fill: '#E4D8FF',
-                        },
-                        children: [
-                          {
-                            id: '1111-5-1',
-                            label: '3D设计组',
-                          },
-                        ],
-                      },
-                      {
-                        id: '1111-6',
-                        label: '子任务-UE 2.5',
-                        style: {
-                          fill: '#FFC8A0',
-                        },
-                        children: [
-                          {
-                            id: '1111-6-1',
-                            label: '客户端组',
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  {
-                    id: '111-2',
-                    label: '父级任务-英雄等级',
-                    style: {
-                      fill: '#BBFFBA',
-                    },
-                  },
-                  {
-                    id: '111-3',
-                    label: '父级任务-英雄主界面',
-                    style: {
-                      fill: '#FFC8A0',
-                    },
+                    id: 689,
+                    name: '蒋晓龙',
+                    avatar: '',
+                    department_id: '1542006488750587906',
+                    job_id: '1542006731630149634',
+                    department_name: 'php',
+                    position_name: 'php工程师',
                   },
                 ],
-              },
-              {
-                id: '112',
-                label: '子分类-天赋',
-                style: {
-                  fill: '#FFFFFF',
-                },
-                children: [
-                  {
-                    id: '112-1',
-                    label: '父级任务-天赋-ui2.0',
-                    style: {
-                      fill: '#FFF383',
-                    },
-                  },
-                  {
-                    id: '112-2',
-                    label: '父级任务-天赋-ue2.0',
-                    style: {
-                      fill: '#BBFFBA',
-                    },
-                  },
-                ],
-              },
-              {
-                id: '113',
-                label: '子分类-星际',
-                style: {
-                  fill: '#FFFFFF',
-                },
-                children: [
-                  {
-                    id: '113-1',
-                    label: '父级任务-天赋-ui2.0',
-                    style: {
-                      fill: '#BBFFBA',
-                    },
-                  },
-                  {
-                    id: '113-2',
-                    label: '父级任务-天赋-ue2.0',
-                    style: {
-                      fill: '#E4D8FF',
-                    },
-                  },
-                ],
+                node_type: 'story',
+                progress_status: 'processing',
+                expect_duration: 5,
+                real_duration: 0,
+                all_iterate_ids: [191],
+                all_category_status_ids: [1822],
+                all_handler_ids: [689],
+                min_expected_start_at: '2023-10-28',
+                max_expected_end_at: '2023-11-03',
+                children_count: 0,
               },
             ],
           },
-          {
-            id: '22',
-            label: '副分类-练级',
-            style: {
-              color: '#323233',
-              fontWeight: 500,
-              fontFamily: 'SiYuanMedium',
-              fontSize: 16,
-              fill: '#FFFFFF',
-            },
-          },
         ],
-      }
-      graph.data(data)
-      graph.render()
-      graph.fitCenter()
-      graph.on('node:mouseenter', (e: any) => {
-        graph.setItemState(e.item, 'hover', true)
       })
-
-      graph.on('node:mouseleave', (e: any) => {
-        graph.setItemState(e.item, 'hover', false)
-      })
-
-      // graph.on('node:mouseenter', (e: any) => {
-      //   const node = e.item
-      //   graph.updateItem(node, {
-      //     style: {
-      //       stroke: 'rgba(143, 188, 255, 0.7)',
-      //       lineWidth: 3,
-      //     },
-      //   })
-      // })
-      // graph.on('node:mouseleave', (e: any) => {
-      //   const node = e.item
-      //   graph.updateItem(node, {
-      //     style: {
-      //       stroke: '#D5D6D9',
-      //       lineWidth: 3,
-      //     },
-      //   })
-      // })
     }
+  }
+
+  useEffect(() => {
+    if (projectId) {
+      addTask()
+    }
+  }, [projectId])
+
+  useEffect(() => {
+    const graph = init()
+    const datas = {
+      id: '1',
+      name: 'SLG框架开发',
+      extra: [
+        '美术组 12天（12天）',
+        '3D设计组 4天（3天）',
+        '服务器组 4天（-）',
+        '客服端组 4天（-）',
+        '客服端组 77天（-）',
+        '客服端组 45天（-）',
+      ],
+      style: {
+        color: '#323233',
+        fontWeight: 500,
+        fontFamily: 'SiYuanMedium',
+        fontSize: 18,
+        fill: '#FFFFFF',
+      },
+      children: [
+        {
+          id: '11',
+          name: '主分类-英雄',
+          style: {
+            color: '#323233',
+            fontWeight: 500,
+            fontFamily: 'SiYuanMedium',
+            fontSize: 16,
+            fill: '#FFFFFF',
+          },
+          children: [
+            {
+              id: '111',
+              name: '子分类-等级',
+              style: {
+                fill: '#FFFFFF',
+              },
+              children: [
+                {
+                  id: '111-1',
+                  name: '父级任务-英雄养成',
+                  style: {
+                    fill: '#FFF383',
+                  },
+                  children: [
+                    {
+                      id: '1111-1',
+                      name: '子任务-UE 2.0',
+                      style: {
+                        fill: '#BBFFBA',
+                      },
+                      children: [
+                        {
+                          id: '11111-1',
+                          name: '美术组UED1',
+                        },
+                      ],
+                    },
+                    {
+                      id: '1111-2',
+                      name: '子任务-UE 2.1',
+                      style: {
+                        fill: '#BBFFBA',
+                      },
+                      children: [
+                        {
+                          id: '1111-2-1',
+                          name: '美术组UED2',
+                        },
+                      ],
+                    },
+                    {
+                      id: '1111-3',
+                      name: '子任务-UE 2.2',
+                      style: {
+                        fill: '#E4D8FF',
+                      },
+                      children: [
+                        {
+                          id: '1111-3-1',
+                          name: '美术组UED3',
+                        },
+                      ],
+                    },
+                    {
+                      id: '1111-4',
+                      name: '子任务-UE 2.3',
+                      style: {
+                        fill: '#FFC8A0',
+                      },
+                      children: [
+                        {
+                          id: '1111-4-1',
+                          name: '3D设计组',
+                        },
+                      ],
+                    },
+                    {
+                      id: '1111-5',
+                      name: '子任务-UE 2.4',
+                      style: {
+                        fill: '#E4D8FF',
+                      },
+                      children: [
+                        {
+                          id: '1111-5-1',
+                          name: '3D设计组',
+                        },
+                      ],
+                    },
+                    {
+                      id: '1111-6',
+                      name: '子任务-UE 2.5',
+                      style: {
+                        fill: '#FFC8A0',
+                      },
+                      children: [
+                        {
+                          id: '1111-6-1',
+                          name: '客户端组',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  id: '111-2',
+                  name: '父级任务-英雄等级',
+                  style: {
+                    fill: '#BBFFBA',
+                  },
+                },
+                {
+                  id: '111-3',
+                  name: '父级任务-英雄主界面',
+                  style: {
+                    fill: '#FFC8A0',
+                  },
+                },
+              ],
+            },
+            {
+              id: '112',
+              name: '子分类-天赋',
+              style: {
+                fill: '#FFFFFF',
+              },
+              children: [
+                {
+                  id: '112-1',
+                  name: '父级任务-天赋-ui2.0',
+                  style: {
+                    fill: '#FFF383',
+                  },
+                },
+                {
+                  id: '112-2',
+                  name: '父级任务-天赋-ue2.0',
+                  style: {
+                    fill: '#BBFFBA',
+                  },
+                },
+              ],
+            },
+            {
+              id: '113',
+              name: '子分类-星际',
+              style: {
+                fill: '#FFFFFF',
+              },
+              children: [
+                {
+                  id: '113-1',
+                  name: '父级任务-天赋-ui2.0',
+                  style: {
+                    fill: '#BBFFBA',
+                  },
+                },
+                {
+                  id: '113-2',
+                  name: '父级任务-天赋-ue2.0',
+                  style: {
+                    fill: '#E4D8FF',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: '22',
+          name: '副分类-练级',
+          style: {
+            color: '#323233',
+            fontWeight: 500,
+            fontFamily: 'SiYuanMedium',
+            fontSize: 16,
+            fill: '#FFFFFF',
+          },
+        },
+      ],
+    }
+
+    graph.data(datas)
+    graph.render()
+    graph.fitCenter()
   }, [])
 
   return <MapContentBox id="MapContentMountNode" />

@@ -72,7 +72,7 @@ const ToolBar = () => {
         </Space>
         <IconFont
           type="download"
-          style={{ fontSize: 24, color: 'var(--neutral-n2)'}}
+          style={{ fontSize: 24, color: 'var(--neutral-n2)' }}
         />
       </RightWrap>
     </ToolBarBox>

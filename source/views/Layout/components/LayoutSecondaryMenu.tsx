@@ -14,7 +14,7 @@ interface LayoutSecondaryMenuProps {
 }
 
 const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
-  const [t,i18n] = useTranslation()
+  const [t, i18n] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const routerPath = useLocation()

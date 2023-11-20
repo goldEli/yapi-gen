@@ -27,19 +27,17 @@ export const MapContentBox = styled.div`
 `
 export const TopAreaWrap = styled.div`
   width: 100%;
-  height: 108px;
+  box-sizing: border-box;
+  position: absolute;
   display: flex;
   justify-content: space-between;
-  .ant-breadcrumb{
-    width:20%;
+  .ant-breadcrumb {
+    width: 20%;
   }
 `
 export const TopAreaBox = styled.div`
-  width: 100%;
-  height: 108px;
   display: flex;
-  justify-content: flex-end;
- 
+  flex: 1;
 `
 export const TypeBox = styled.div`
   min-width: 312px;
