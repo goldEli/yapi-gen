@@ -24,7 +24,7 @@ import {
   RowTree,
   TextTree,
 } from '@/views/Encephalogram/styles'
-import { Checkbox, Popover, Space } from 'antd'
+import { Checkbox, Input, Popover, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
@@ -61,11 +61,16 @@ const TopArea = () => {
   const [state, setState] = useState([])
   const [date, setDate] = useState<any>(null)
   const [personData, setPersonData] = useState(priorityList)
-  const value = [2691, 2693]
+  const value: any = []
+  const [personVal, setPersonVal] = useState(value)
+  const [search, setSearch] = useState('')
+  const [length, setLength] = useState(0)
   const onChangeSelect = () => {}
   useEffect(() => {
     const newChild = priorityList.map(el => ({
       ...el,
+      fold: true,
+      len: el.children.length,
       checked:
         el.children.length ===
         el.children.filter(item => value.includes(item.id)).length,
@@ -74,6 +79,12 @@ const TopArea = () => {
         checked: value.includes(item.id),
       })),
     }))
+    let len = 0
+    newChild.forEach(el => {
+      len += el.len
+    })
+    setLength(len)
+    setPersonVal([...value])
     setPersonData(newChild)
   }, [])
   const content = () => {
@@ -130,7 +141,7 @@ const TopArea = () => {
       </Content>
     )
   }
-  // 点击父级
+  // 点击父级，设置勾选
   const onChangeF = (e: any, i: any) => {
     const newChild: any = personData.map((el: any) => ({
       ...el,
@@ -143,11 +154,19 @@ const TopArea = () => {
             }))
           : el.children,
     }))
+    // 重装数据
     setPersonData(newChild)
+    let newVal: any = []
+    newVal = i.children.map((el: any) => el.id)
+    const filterData = personVal.filter(el => newVal?.includes(el))
+    if (filterData.length >= 1) {
+      setPersonVal(personVal.filter(el => !newVal?.includes(el)))
+      return
+    }
+    setPersonVal([...personVal, ...newVal])
   }
-  // 点击子级
+  // 点击子级,设置勾选
   const onChangeS = (e: any, i: any) => {
-    console.log(i.id)
     const Child: any = personData.map((el: any) => ({
       ...el,
       children: el.children.map((item: any) => ({
@@ -155,12 +174,46 @@ const TopArea = () => {
         checked: i.id === item.id ? e.target.checked : item.checked,
       })),
     }))
-    console.log(Child, '99')
     const newChild: any = Child.map((el: any) => ({
       ...el,
       checked:
         el.children.length ===
         el.children.filter((item: any) => item.checked).length,
+    }))
+    setPersonData(newChild)
+    // 组value
+    if (e.target.checked) {
+      setPersonVal([...personVal, i.id])
+    } else {
+      setPersonVal(personVal.filter(el => el !== i.id))
+    }
+  }
+  // 折叠
+  const foldIcon = (e: { id: number; fold: boolean }) => {
+    setPersonData(
+      personData.map((el: any) => ({
+        ...el,
+        fold: el.id === e.id ? !el.fold : el.fold,
+      })),
+    )
+  }
+  // 人员搜索
+  const onInput = (e: any) => {
+    setSearch(e.target.value)
+  }
+  // 重置
+  const reset = () => {
+    setSearch('')
+    setPersonVal([])
+    const newChild = priorityList.map(el => ({
+      ...el,
+      fold: true,
+      len: el.children.length,
+      checked:false,
+      children: el.children.map(item => ({
+        ...item,
+        checked: false,
+      })),
     }))
     setPersonData(newChild)
   }
@@ -175,6 +228,22 @@ const TopArea = () => {
             style={{ color: 'var(--neutral-n2)' }}
           />
         </HeaderPopover>
+        <Input
+          value={search}
+          placeholder={'搜索成员姓名'}
+          onInput={(e: any) => onInput(e)}
+        />
+        <Row>
+          <div className="text">
+            <span>已选</span>
+            <span>
+              （{personVal.length || 0}/{length}）
+            </span>
+          </div>
+          <div className="text" onClick={reset}>
+            重置
+          </div>
+        </Row>
         <PersonMain>
           {personData.map((el: any) => (
             <>
@@ -184,16 +253,20 @@ const TopArea = () => {
                     checked={el.checked}
                     onChange={e => onChangeF(e, el)}
                   />
-                  <TextTree>
-                    {el.label}-{el.checked ? '1' : '0'}
-                  </TextTree>
+                  <TextTree>{el.label}</TextTree>
                 </div>
                 <IconFont
-                  type="down"
+                  onClick={() => foldIcon(el)}
+                  type={el.fold ? 'up' : 'down'}
                   style={{ color: 'var(--auxiliary-text-t2-d1)' }}
                 />
               </RowTree>
-              <div>
+              <div
+                style={{
+                  display: el.fold ? 'none' : 'block',
+                  transition: 'all 0.5s',
+                }}
+              >
                 {el.children.length >= 1 &&
                   el.children.map((item: any) => (
                     <RowTree key={item.label}>

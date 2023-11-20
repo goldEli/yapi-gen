@@ -45,6 +45,18 @@ export const Row = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  .text{
+    height:30px;
+    line-height:30px;
+    margin-top:4px;
+    font-size:14px;
+    color:var(--neutral-n1-d1);
+
+  }
+  .text:hover{
+    cursor: pointer;
+    color: var(--auxiliary-text-t2-d2);
+  }
 `
 export const RowTree = styled.div`
   display: flex;
@@ -253,4 +265,6 @@ export const RangePickerWrap = styled.div<{ type: boolean }>(
     backgroundColor: type ? 'var(--function-tag5)' : 'var(--auxiliary-b4)',
   }),
 )
-export const PersonMain = styled.div``
+export const PersonMain = styled.div`
+padding-bottom:12px;
+`
