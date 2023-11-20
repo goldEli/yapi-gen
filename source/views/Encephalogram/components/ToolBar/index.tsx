@@ -5,7 +5,7 @@ import { Space } from 'antd'
 import IconFont from '@/components/IconFont'
 
 const ToolBar = () => {
-  const onChange = id => {
+  const onChange = (id:number) => {
     console.log(id)
   }
   return (
