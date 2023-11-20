@@ -24,12 +24,11 @@ import {
   RowTree,
   TextTree,
 } from '@/views/Encephalogram/styles'
-import { Checkbox, Popover, Space } from 'antd'
+import { Checkbox, Input, Popover, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
-import { FoldIcon } from '@/components/CalendarManager/styles'
 const priorityList = [
   {
     label: '12',
@@ -62,13 +61,16 @@ const TopArea = () => {
   const [state, setState] = useState([])
   const [date, setDate] = useState<any>(null)
   const [personData, setPersonData] = useState(priorityList)
-  const value = [2691, 2693]
+  const value: any = []
   const [personVal, setPersonVal] = useState(value)
+  const [search, setSearch] = useState('')
+  const [length, setLength] = useState(0)
   const onChangeSelect = () => {}
   useEffect(() => {
     const newChild = priorityList.map(el => ({
       ...el,
       fold: true,
+      len: el.children.length,
       checked:
         el.children.length ===
         el.children.filter(item => value.includes(item.id)).length,
@@ -77,6 +79,11 @@ const TopArea = () => {
         checked: value.includes(item.id),
       })),
     }))
+    let len = 0
+    newChild.forEach(el => {
+      len += el.len
+    })
+    setLength(len)
     setPersonVal([...value])
     setPersonData(newChild)
   }, [])
@@ -190,6 +197,26 @@ const TopArea = () => {
       })),
     )
   }
+  // 人员搜索
+  const onInput = (e: any) => {
+    setSearch(e.target.value)
+  }
+  // 重置
+  const reset = () => {
+    setSearch('')
+    setPersonVal([])
+    const newChild = priorityList.map(el => ({
+      ...el,
+      fold: true,
+      len: el.children.length,
+      checked:false,
+      children: el.children.map(item => ({
+        ...item,
+        checked: false,
+      })),
+    }))
+    setPersonData(newChild)
+  }
   const contentPerson = () => {
     return (
       <Content>
@@ -201,6 +228,22 @@ const TopArea = () => {
             style={{ color: 'var(--neutral-n2)' }}
           />
         </HeaderPopover>
+        <Input
+          value={search}
+          placeholder={'搜索成员姓名'}
+          onInput={(e: any) => onInput(e)}
+        />
+        <Row>
+          <div className="text">
+            <span>已选</span>
+            <span>
+              （{personVal.length || 0}/{length}）
+            </span>
+          </div>
+          <div className="text" onClick={reset}>
+            重置
+          </div>
+        </Row>
         <PersonMain>
           {personData.map((el: any) => (
             <>
