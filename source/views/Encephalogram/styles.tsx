@@ -25,11 +25,19 @@ export const MapContentBox = styled.div`
   background-repeat: no-repeat;
   background-image: url('https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mind/dotBg.png');
 `
-export const TopAreaBox = styled.div`
+export const TopAreaWrap = styled.div`
   width: 100%;
-  display: flex;
+  box-sizing: border-box;
   position: absolute;
-  justify-content: center;
+  display: flex;
+  justify-content: space-between;
+  .ant-breadcrumb {
+    width: 20%;
+  }
+`
+export const TopAreaBox = styled.div`
+  display: flex;
+  flex: 1;
 `
 export const TypeBox = styled.div`
   min-width: 312px;
@@ -45,15 +53,14 @@ export const Row = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .text{
-    height:30px;
-    line-height:30px;
-    margin-top:4px;
-    font-size:14px;
-    color:var(--neutral-n1-d1);
-
+  .text {
+    height: 30px;
+    line-height: 30px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--neutral-n1-d1);
   }
-  .text:hover{
+  .text:hover {
     cursor: pointer;
     color: var(--auxiliary-text-t2-d2);
   }
@@ -126,7 +133,8 @@ export const HeaderPopover = styled.div`
 export const ToolBarBox = styled.div`
   position: absolute;
   bottom: 20px;
-  left: 0px;
+  right: 20px;
+  display: flex;
 `
 export const MianHeader = styled.div`
   display: flex;
@@ -266,5 +274,25 @@ export const RangePickerWrap = styled.div<{ type: boolean }>(
   }),
 )
 export const PersonMain = styled.div`
-padding-bottom:12px;
+  padding-bottom: 12px;
 `
+export const RightWrap = styled.div<{ type: string }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    height: '44px',
+    background: 'var(--neutral-white-d5)',
+    boxShadow: '0px 0px 15px 6px rgba(0, 0, 0, 0.12)',
+    borderRadius: '4px',
+    '.line': {
+      height: '24px',
+      borderRight: '1px solid #EBECED',
+      marginRight: '20px',
+    },
+  },
+  ({ type }) => ({
+    width: type === '1' ? '160px' : '340px',
+    padding: type === '2' ? '0 20px' : ' 4px',
+    marginRight: type === '1' ? '32px' : '0',
+  }),
+)

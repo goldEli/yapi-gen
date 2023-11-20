@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { TYPE_ENCEPHALOGRAM } from '@/constants'
 import {
+  TopAreaWrap,
   TopAreaBox,
   TypeBox,
   Row,
@@ -29,6 +30,7 @@ import IconFont from '@/components/IconFont'
 import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
 const priorityList = [
   {
     label: '12',
@@ -41,6 +43,10 @@ const priorityList = [
       {
         label: '规划中2',
         id: 2693,
+      },
+      {
+        label: '规划中23',
+        id: 2694,
       },
     ],
   },
@@ -57,7 +63,7 @@ const priorityList = [
 ]
 const TopArea = () => {
   const [clickeMsg, setClickeMsg] = useState(false)
-  const [clickePerson, setClickePerson] = useState(true)
+  const [clickePerson, setClickePerson] = useState(false)
   const [state, setState] = useState([])
   const [date, setDate] = useState<any>(null)
   const [personData, setPersonData] = useState(priorityList)
@@ -158,12 +164,12 @@ const TopArea = () => {
     setPersonData(newChild)
     let newVal: any = []
     newVal = i.children.map((el: any) => el.id)
-    const filterData = personVal.filter((el: any) => newVal?.includes(el))
-    if (filterData.length >= 1) {
+    // 组value
+    if (e.target.checked) {
+      setPersonVal([...personVal, ...newVal])
+    } else {
       setPersonVal(personVal.filter((el: any) => !newVal?.includes(el)))
-      return
     }
-    setPersonVal([...personVal, ...newVal])
   }
   // 点击子级,设置勾选
   const onChangeS = (e: any, i: any) => {
@@ -199,7 +205,40 @@ const TopArea = () => {
   }
   // 人员搜索
   const onInput = (e: any) => {
-    setSearch(e.target.value)
+    const str: string = e.target.value
+    setPersonVal([])
+    if (!str) {
+      reset()
+      return
+    }
+    setSearch(str)
+    const newData: {
+      label: string
+      id: number
+      fold: boolean
+      len: number
+      checked: boolean
+      children: { label: string; id: number; fold: boolean; checked: boolean }[]
+    }[] = []
+    personData.forEach((el: any) => {
+      if (
+        el.children.filter((item: { label: string | string[] }) =>
+          item.label.includes(str),
+        )?.length >= 1
+      ) {
+        newData.push({
+          id: el.id,
+          label: el.label,
+          fold: false,
+          len: el.len,
+          checked: el.checked,
+          children: el.children.filter((item: { label: string | string[] }) =>
+            item.label.includes(str),
+          ),
+        })
+      }
+    })
+    setPersonData(newData)
   }
   // 重置
   const reset = () => {
@@ -267,8 +306,8 @@ const TopArea = () => {
                   transition: 'all 0.5s',
                 }}
               >
-                {el.children.length >= 1 &&
-                  el.children.map((item: any) => (
+                {el.children?.length >= 1 &&
+                  el.children?.map((item: any) => (
                     <RowTree key={item.label}>
                       <div className="rowChild">
                         <Checkbox
@@ -289,7 +328,6 @@ const TopArea = () => {
   }
 
   const onClickSearch = (value: any) => {
-    console.log(value)
     setState(value || [])
   }
   const onChangeTime = (dates: any) => {
@@ -302,87 +340,90 @@ const TopArea = () => {
     }
   }
   return (
-    <TopAreaBox>
-      <TypeBox>
-        {TYPE_ENCEPHALOGRAM.map(el => (
-          <Row key={el.color}>
-            <Bgc color={el.color} />
-            <Text>{el.text}</Text>
-          </Row>
-        ))}
-      </TypeBox>
-      <TypeSelectBox className="selectBgc">
-        <Space size={20}>
-          <CustomSelectWrap
-            placeholder={'选择迭代'}
-            showArrow
-            showSearch
-            getPopupContainer={(node: any) => node}
-            allowClear
-            optionFilterProp="label"
-            onChange={onChangeSelect}
-            options={[
-              {
-                label: 1,
-                value: 1,
-              },
-            ]}
-          />
-          <MoreSelect
-            showArrow
-            mode="multiple"
-            selectWidth={100}
-            placeholder={'任务状态'}
-            showSearch
-            optionFilterProp="label"
-            placement="bottomRight"
-            width={200}
-            allowClear
-            options={priorityList}
-            onChange={(value: any) => onClickSearch(value)}
-            value={state}
-          />
-          <RangePickerWrap type={date?.length >= 1}>
-            <RangePicker
-              isShowQuick
-              placement="bottomRight"
-              onChange={dates => onChangeTime(dates)}
+    <TopAreaWrap>
+      <MyBreadcrumb />
+      <TopAreaBox>
+        <TypeBox>
+          {TYPE_ENCEPHALOGRAM.map(el => (
+            <Row key={el.color}>
+              <Bgc color={el.color} />
+              <Text>{el.text}</Text>
+            </Row>
+          ))}
+        </TypeBox>
+        <TypeSelectBox className="selectBgc">
+          <Space size={20}>
+            <CustomSelectWrap
+              placeholder={'选择迭代'}
+              showArrow
+              showSearch
+              getPopupContainer={(node: any) => node}
+              allowClear
+              optionFilterProp="label"
+              onChange={onChangeSelect}
+              options={[
+                {
+                  label: 1,
+                  value: 1,
+                },
+              ]}
             />
-            {date?.length >= 1 ? (
-              <span className="timeText">
-                {date[0]}~{date[1]}
-              </span>
-            ) : (
-              <span className="timeText">时间</span>
-            )}
-          </RangePickerWrap>
-          <Popover
-            onOpenChange={(val: boolean) => setClickeMsg(val)}
-            getPopupContainer={node => node}
-            content={content}
-            trigger="click"
-            open={clickeMsg}
-          >
-            <PopoverBtn onClick={() => setClickeMsg(!clickeMsg)}>
-              <IconFont type="intro" />
-              <span>项目简介</span>
-            </PopoverBtn>
-          </Popover>
-          <Popover
-            onOpenChange={(val: boolean) => setClickePerson(val)}
-            getPopupContainer={node => node}
-            content={contentPerson}
-            trigger="click"
-            open={clickePerson}
-          >
-            <PopoverBtn onClick={() => setClickePerson(!clickePerson)}>
-              <IconFont type="intro" />
-              <span>项目人员</span>
-            </PopoverBtn>
-          </Popover>
-        </Space>
-      </TypeSelectBox>
-    </TopAreaBox>
+            <MoreSelect
+              showArrow
+              mode="multiple"
+              selectWidth={100}
+              placeholder={'任务状态'}
+              showSearch
+              optionFilterProp="label"
+              placement="bottomRight"
+              width={200}
+              allowClear
+              options={priorityList}
+              onChange={(value: any) => onClickSearch(value)}
+              value={state}
+            />
+            <RangePickerWrap type={date?.length >= 1}>
+              <RangePicker
+                isShowQuick
+                placement="bottomRight"
+                onChange={dates => onChangeTime(dates)}
+              />
+              {date?.length >= 1 ? (
+                <span className="timeText">
+                  {date[0]}~{date[1]}
+                </span>
+              ) : (
+                <span className="timeText">时间</span>
+              )}
+            </RangePickerWrap>
+            <Popover
+              onOpenChange={(val: boolean) => setClickeMsg(val)}
+              getPopupContainer={node => node}
+              content={content}
+              trigger="click"
+              open={clickeMsg}
+            >
+              <PopoverBtn onClick={() => setClickeMsg(!clickeMsg)}>
+                <IconFont type="intro" />
+                <span>项目简介</span>
+              </PopoverBtn>
+            </Popover>
+            <Popover
+              onOpenChange={(val: boolean) => setClickePerson(val)}
+              getPopupContainer={node => node}
+              content={contentPerson}
+              trigger="click"
+              open={clickePerson}
+            >
+              <PopoverBtn onClick={() => setClickePerson(!clickePerson)}>
+                <IconFont type="intro" />
+                <span>项目人员</span>
+              </PopoverBtn>
+            </Popover>
+          </Space>
+        </TypeSelectBox>
+      </TopAreaBox>
+    </TopAreaWrap>
   )
 }
 
