@@ -220,8 +220,8 @@ export const getProjectInfo: any = async (params: any) => {
     )
   }
   return {
-    expected_start_at:response.data.expected_start_at,
-    expected_end_at:response.data.expected_end_at,
+    expected_start_at: response.data.expected_start_at,
+    expected_end_at: response.data.expected_end_at,
     storyCount: response.data.story_count,
     cover: response.data.cover,
     name: response.data.name,

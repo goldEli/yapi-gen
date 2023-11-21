@@ -18,37 +18,37 @@ export const getMapMembers = async (params: any) => {
   // return response.data
   const data = [
     {
-      "id": 1542006488750587906,
-      "name": "php",
-      "members": [
+      id: '1542006488750587906',
+      name: 'php',
+      members: [
         {
-          "id": 6,
-          "name": "马成龙",
-          "department_id": 1542006488750587906
+          id: 6,
+          name: '马成龙',
+          department_id: '1542006488750587906',
         },
         {
-          "id": 693,
-          "name": "马二",
-          "department_id": 1542006488750587906
+          id: 693,
+          name: '马二',
+          department_id: '1542006488750587906',
         },
         {
-          "id": 1438,
-          "name": "董杰",
-          "department_id": 1542006488750587906
-        }
-      ]
+          id: 1438,
+          name: '董杰',
+          department_id: '1542006488750587906',
+        },
+      ],
     },
     {
-      "id": 1666636259793043456,
-      "name": "测试部门主管",
-      "members": [
+      id: 1666636259793043456,
+      name: '测试部门主管',
+      members: [
         {
-          "id": 39,
-          "name": " 汪志君",
-          "department_id": 1666636259793043456
-        }
-      ]
-    }
+          id: 39,
+          name: ' 汪志君',
+          department_id: 1666636259793043456,
+        },
+      ],
+    },
   ]
   return data
 }

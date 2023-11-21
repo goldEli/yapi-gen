@@ -572,7 +572,7 @@ const urls = {
   getRecentStory: '/b/user/recent/story',
   // 导图
   getMapList: '/b/project/map',
-  getMapMembers:'/b/project/map_members'
+  getMapMembers: '/b/project/map_members',
 }
 export default urls
 

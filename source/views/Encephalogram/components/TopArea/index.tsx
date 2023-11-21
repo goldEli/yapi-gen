@@ -46,7 +46,7 @@ const TopArea = () => {
   const [personData, setPersonData] = useState<any>()
   const value: any = []
   const [personVal, setPersonVal] = useState(value)
-  const [dataList,setDataList]= useState<any>()
+  const [dataList, setDataList] = useState<any>()
   const [search, setSearch] = useState('')
   const [length, setLength] = useState(0)
   const [stateVal, setStateVal] = useState([])
@@ -77,14 +77,14 @@ const TopArea = () => {
       project_id: projectInfo.id,
     })
     // 组装项目成员的数据
-    const newChild: any = res.map(el => ({
+    const newChild: any = res.map((el: any) => ({
       ...el,
       fold: true,
       len: el.members.length,
       checked:
         el.members.length ===
-        el.members.filter(item => value.includes(item.id)).length,
-      children: el.members.map(item => ({
+        el.members.filter((item: any) => value.includes(item.id)).length,
+      children: el.members.map((item: any) => ({
         ...item,
         checked: value.includes(item.id),
       })),
@@ -299,8 +299,9 @@ const TopArea = () => {
     }[] = []
     dataList.forEach((el: any) => {
       if (
-        el.children.filter((item: { name: string | string[] }) =>
-          item.name.includes(str) || item.name === str,
+        el.children.filter(
+          (item: { name: string | string[] }) =>
+            item.name.includes(str) || item.name === str,
         )?.length >= 1
       ) {
         newData.push({
