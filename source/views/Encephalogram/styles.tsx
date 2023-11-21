@@ -30,7 +30,7 @@ export const TopAreaWrap = styled.div`
   box-sizing: border-box;
   position: absolute;
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: space-between;
   .ant-breadcrumb {
     width: 20%;

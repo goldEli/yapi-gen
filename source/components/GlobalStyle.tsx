@@ -859,6 +859,7 @@ const GlobalStyle = () => {
       text-align: center;
       background: transparent;
       border-radius: 6px 6px 6px 6px;
+      padding: 0;
     }
     .toolBar .ant-select-single.ant-select-show-arrow .ant-select-selection-item:hover{
       background: var(--auxiliary-b10);

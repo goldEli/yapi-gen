@@ -570,6 +570,8 @@ const urls = {
   getReportViewLogList: '/b/user/reportViewLogList',
   // 获取最近的任务
   getRecentStory: '/b/user/recent/story',
+  // 导图
+  getMapList: '/b/project/map',
 }
 export default urls
 

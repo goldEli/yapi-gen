@@ -154,6 +154,12 @@ const getGraph = () => {
       defaultEdge: {
         type: 'polyline',
       },
+      nodeStateStyles: {
+        hover: {
+          stroke: 'rgba(143,188,255,0.7)',
+          lineWidth: 2,
+        },
+      },
       layout: {
         type: 'compactBox',
         direction: 'LR',
@@ -170,11 +176,13 @@ const getGraph = () => {
       plugins: [tooltip],
     })
 
-    graph.on('node:mouseenter', (e: any) => {
-      graph.setItemState(e.item, 'active', true)
+    graph.on('node:mouseenter', (event: any) => {
+      const { item } = event
+      graph.setItemState(item, 'hover', true)
     })
-    graph.on('node:mouseleave', (e: any) => {
-      graph.setItemState(e.item, 'active', false)
+    graph.on('node:mouseleave', (event: any) => {
+      const { item } = event
+      graph.setItemState(item, 'hover', false)
     })
   }
   return graph
