@@ -45,9 +45,10 @@ const StatusWrap = styled.div({
   width: 'max-content',
   padding: '0 8px',
   height: 22,
+  borderRadius: 2,
   div: {
-    width: 8,
-    height: 8,
+    width: 6,
+    height: 6,
     borderRadius: '50%',
     marginRight: 8,
   },

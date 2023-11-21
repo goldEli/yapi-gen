@@ -51,7 +51,9 @@ export const RobotButton = styled.div`
   user-select: none;
   display: flex;
   align-items: center;
-  margin-right: 4px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 4px;
   .img {
     height: 24px;
   }
@@ -59,6 +61,9 @@ export const RobotButton = styled.div`
     margin-left: 8px;
     font-size: 14px;
     color: var(--neutral-n1-d1);
+  }
+  &:hover {
+    background: var(--active);
   }
 `
 
@@ -974,8 +979,6 @@ export const LoadingMore = styled.div`
 
 // 二级菜单样式
 export const LayoutMenuWrap = styled(Tabs)`
-  /* display: flex;
-  align-items: center; */
   height: 56px;
   font-size: 14px;
   color: var(--neutral-n1-d1);
@@ -983,6 +986,7 @@ export const LayoutMenuWrap = styled(Tabs)`
 
   .ant-tabs-nav-list {
     margin: auto;
+    height: 56px;
   }
   .ant-tabs-nav {
     margin: 0 !important;
@@ -996,6 +1000,9 @@ export const LayoutMenuWrap = styled(Tabs)`
   }
   .ant-tabs-content-holder {
     display: none;
+  }
+  .ant-tabs-tab-active {
+    font-size: 16px;
   }
   .ant-tabs-dropdown-menu {
     background-clip: initial;

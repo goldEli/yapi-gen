@@ -10,7 +10,7 @@ import RightTable from './components/RightTable'
 const Wrap = styled.div`
   display: flex;
   width: 100%;
-  height: calc(100% - 38px);
+  height: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
   .ant-spin-container {

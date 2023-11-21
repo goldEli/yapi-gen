@@ -1126,6 +1126,10 @@ const HaveTabsContentWrap = styled.div<{ height?: any }>`
       font-size: 14px;
       color: var(--neutral-n2);
     }
+    .ant-tabs-tab:hover {
+      background: var(--neutral-white-d1);
+      color: var(--neutral-n1-d1);
+    }
     .ant-tabs-tab-active {
       color: var(--primary-d1);
       background: var(--neutral-white-d1);
@@ -1136,6 +1140,12 @@ const HaveTabsContentWrap = styled.div<{ height?: any }>`
   }
   .ant-tabs-content-holder {
     display: none;
+  }
+  .ant-tabs-tab-btn:focus,
+  .ant-tabs-tab-remove:focus,
+  .ant-tabs-tab-btn:active,
+  .ant-tabs-tab-remove:active {
+    color: var(--neutral-n1-d1);
   }
 `
 
