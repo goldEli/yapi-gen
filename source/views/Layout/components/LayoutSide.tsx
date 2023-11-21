@@ -357,8 +357,20 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
           content={<MorePopoverComponent onClose={() => setIsPopover(false)} />}
           onOpenChange={setIsPopover}
         >
-          <div className={layoutSideCollapse ? openSideMenu : notOpenSideMenu}>
-            <CommonIconFont type="plus" size={24} color="var(--neutral-n2)" />
+          <div
+            className={`${
+              layoutSideCollapse ? openSideMenu : notOpenSideMenu
+            } ${currentMenu?.url === '/AdminManagement' ? activeSideMenu : ''}`}
+          >
+            <CommonIconFont
+              type={
+                currentMenu?.url === '/AdminManagement'
+                  ? 'selections-sel'
+                  : 'selections-nor'
+              }
+              size={24}
+              color="var(--neutral-n2)"
+            />
             <div>{t('more')}</div>
           </div>
         </Popover>
