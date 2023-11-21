@@ -453,7 +453,11 @@ const GlobalStyle = () => {
     .ant-select-item {
       padding: 5px 16px !important;
     }
-
+    .ant-select-item.removeStyle {
+      border-top: 1px solid var(--neutral-n6-d2);
+      padding: 0px !important;
+      margin: 0px 16px;
+    }
     .ant-select-item-option {
       font-weight: inherit;
       color: var(--neutral-n2);
