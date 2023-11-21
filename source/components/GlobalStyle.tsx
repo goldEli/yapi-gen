@@ -1056,8 +1056,14 @@ const GlobalStyle = () => {
       width: 0;
     }
     // 导图
-    #MapContentMountNode canvas {
+    #MapContentMountNode{
       background: #fff;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-image: url('https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mind/dotBg.png');
     }
   `
   return <Global styles={globalCss} />

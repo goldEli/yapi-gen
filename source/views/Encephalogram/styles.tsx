@@ -7,6 +7,7 @@ export const EncephalogramBox = styled.div`
   position: relative;
   cursor: pointer;
   box-sizing: border-box;
+  padding:20px 16px 0px 24px;
   .g6-component-tooltip {
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 6px;
@@ -26,7 +27,6 @@ export const MapContentBox = styled.div`
 `
 export const TopAreaWrap = styled.div`
   width: 100%;
-  padding: 16px 16px 16px 24px;
   box-sizing: border-box;
   position: absolute;
   display: flex;
