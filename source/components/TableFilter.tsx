@@ -9,7 +9,7 @@
 /* eslint-disable complexity */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Form, Popover, Collapse, Input, TreeSelect } from 'antd'
+import { Form, Popover, Collapse, Input, TreeSelect, Select } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
 import { useEffect, useMemo, useState, useLayoutEffect } from 'react'
@@ -39,11 +39,13 @@ const MySpan = styled.div`
   }
 `
 
+const CustomWrap = styled.div`
+  border: 1px solid;
+`
 const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
 })
-
 const SelectWrap = styled.div`
   min-width: 160px;
   .ant-select-selection-placeholder {
@@ -487,8 +489,10 @@ const TableFilter = (props: any) => {
 
   const splitArrayByValue = (arr: any) => {
     let arr1 = arr.filter((x: any) => x.status === 1)
-
-    let arr2 = arr.filter((x: any) => x.status === 2)
+    // 已离职
+    let arr2 = arr
+      .filter((x: any) => x.status === 2)
+      .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
     const a = {
       label: t('working'),
       children: arr1,
@@ -497,6 +501,7 @@ const TableFilter = (props: any) => {
       label: t('resigned'),
       children: arr2,
     }
+    return [...arr1, ...arr2]
     return arr2.length >= 1 ? [...arr1, b] : [...arr1]
   }
 
@@ -565,6 +570,7 @@ const TableFilter = (props: any) => {
                         <MoreSelect
                           onConfirm={confirm}
                           width={boxMaps?.get(i.key)}
+                          renderChildren={i.key === 'users_name'}
                           options={
                             i.key === 'users_name' ||
                             i.key === 'users_copysend_name' ||
@@ -620,7 +626,48 @@ const TableFilter = (props: any) => {
                                   ),
                                 )
                           }
-                        />
+                        >
+                          {i.key === 'users_name'
+                            ? splitArrayByValue(
+                                format(
+                                  deWeight(
+                                    projectInfoValues
+                                      ?.filter(
+                                        (k: any) =>
+                                          k.key ===
+                                          (i.key === 'user_name'
+                                            ? 'users_name'
+                                            : i.key),
+                                      )[0]
+                                      ?.children?.map((v: any) => ({
+                                        ...v,
+                                        label: v.content_txt || v.content,
+                                        value: v.id,
+                                        id: v.id,
+                                      })),
+                                  ),
+                                ),
+                              )?.map((item: any) => {
+                                return (
+                                  <Select.Option
+                                    key={item.id}
+                                    value={item.id}
+                                    label={item.name}
+                                    className={
+                                      item.status === 2 && item.isFirst
+                                        ? 'removeStyle'
+                                        : ''
+                                    }
+                                  >
+                                    {item.name ?? item.content}
+                                    <span>
+                                      {item.status === 1 ? '' : t('removed')}
+                                    </span>
+                                  </Select.Option>
+                                )
+                              })
+                            : []}
+                        </MoreSelect>
                       )}
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>

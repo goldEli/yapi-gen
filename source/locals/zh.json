@@ -2625,5 +2625,6 @@
   "expectedResults": "预期结果",
   "screenshot": "截图",
   "toBeOpened": "待开放",
-  "onlyTheProjectLeaderCanPausestartTheProject": "项目负责人才能开始/暂停项目"
+  "onlyTheProjectLeaderCanPausestartTheProject": "项目负责人才能开始/暂停项目",
+  "removed": "（已移除）"
 }

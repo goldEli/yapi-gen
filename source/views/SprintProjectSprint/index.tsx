@@ -7,7 +7,7 @@ import InputSearch from '@/components/InputSearch'
 import { CloseWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import TabItem from './components/TabItem'
 import IconFont from '@/components/IconFont'
-import { Popover, Spin, Tooltip } from 'antd'
+import { Popover, Spin, Tooltip, Select } from 'antd'
 import CustomSelect from '@/components/MoreSelect'
 import DndKitTable from './components/DndKitTable'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
@@ -36,6 +36,7 @@ import {
   SprintDetailMouseDom,
 } from '@/components/DetailScreenModal/DemandDetail/style'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import { css } from '@emotion/css'
 
 const SearchBox = styled.div`
   display: flex;
@@ -517,6 +518,7 @@ const SprintProjectSprint: React.FC = () => {
 
       return newA
         .map((i: any) => ({
+          ...i,
           id: i.id,
           value: i.value,
           label: `${i.label}（${t('myself')}）`,
@@ -545,6 +547,23 @@ const SprintProjectSprint: React.FC = () => {
 
   const onVisibleChange = (visible: any) => {
     setIsFilter(visible)
+  }
+  const splitArrayByValue = (arr: any) => {
+    let arr1 = arr.filter((x: any) => x.status === 1)
+    // 已离职
+    let arr2 = arr
+      .filter((x: any) => x.status === 2)
+      .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
+    const a = {
+      label: t('working'),
+      children: arr1,
+    }
+    const b = {
+      label: t('resigned'),
+      children: arr2,
+    }
+    return [...arr1, ...arr2]
+    return arr2.length >= 1 ? [...arr1, b] : [...arr1]
   }
 
   const isLength =
@@ -765,8 +784,10 @@ const SprintProjectSprint: React.FC = () => {
                   allowClear
                   optionFilterProp="label"
                   showArrow
+                  popupClassName="aa"
                   showSearch
                   value={searchObject.search?.user_ids}
+                  renderChildren
                   options={format(
                     removeNull(projectInfoValues, 'user_name')?.map(
                       (k: any) => ({
@@ -786,7 +807,34 @@ const SprintProjectSprint: React.FC = () => {
                     })
                   }}
                   onConfirm={() => null}
-                />
+                >
+                  {splitArrayByValue(
+                    format(
+                      removeNull(projectInfoValues, 'user_name')?.map(
+                        (k: any) => ({
+                          ...k,
+                          label: k.content,
+                          id: k.id,
+                          value: k.id,
+                        }),
+                      ),
+                    ),
+                  ).map((item: any) => {
+                    return (
+                      <Select.Option
+                        key={item.id}
+                        value={item.id}
+                        label={item.name}
+                        className={
+                          item.status === 2 && item.isFirst ? 'removeStyle' : ''
+                        }
+                      >
+                        {item.name ?? item.content}
+                        <span>{item.status === 1 ? '' : t('removed')}</span>
+                      </Select.Option>
+                    )
+                  })}
+                </CustomSelect>
               </SelectWrapForList>
               <CategorySelectWrap>
                 <span className="title">{t('sprint.transactionType')}</span>
