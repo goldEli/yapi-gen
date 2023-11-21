@@ -32,8 +32,8 @@ export const jumpToKanbanConfig = (navigate: NavigateFunction) => {
     }),
   )
   if (projectType === 2 || !projectType) {
-    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
+    navigate(`/ProjectDetail/Setting/KanBanSettings?data=${params}`)
   } else {
-    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
+    navigate(`/ProjectDetail/Setting/KanBanSettings?data=${params}`)
   }
 }

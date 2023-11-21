@@ -230,6 +230,12 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
     }
   }, [menuPermission, routerPath])
 
+  console.log(
+    menuPermission,
+    '=menuPermissionmenuPermission',
+    menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement2'),
+  )
+
   return (
     <LayoutSide isOpen={layoutSideCollapse} onClick={props.onClose}>
       {/* 折叠状态下的 */}
@@ -348,18 +354,21 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
           </div>
         ))}
 
-      <Popover
-        placement="right"
-        destroyTooltipOnHide
-        open={isPopover}
-        content={<MorePopoverComponent onClose={() => setIsPopover(false)} />}
-        onOpenChange={setIsPopover}
-      >
-        <div className={layoutSideCollapse ? openSideMenu : notOpenSideMenu}>
-          <CommonIconFont type="plus" size={24} color="var(--neutral-n2)" />
-          <div>{t('more')}</div>
-        </div>
-      </Popover>
+      {menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement')
+        ?.length > 0 && (
+        <Popover
+          placement="right"
+          destroyTooltipOnHide
+          open={isPopover}
+          content={<MorePopoverComponent onClose={() => setIsPopover(false)} />}
+          onOpenChange={setIsPopover}
+        >
+          <div className={layoutSideCollapse ? openSideMenu : notOpenSideMenu}>
+            <CommonIconFont type="plus" size={24} color="var(--neutral-n2)" />
+            <div>{t('more')}</div>
+          </div>
+        </Popover>
+      )}
 
       <CollapseWrap>
         {layoutSideCollapse && (

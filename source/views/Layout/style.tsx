@@ -973,8 +973,9 @@ export const LoadingMore = styled.div`
 `
 
 // 二级菜单样式
-export const LayoutMenuWrap = styled(Tabs)<{ width?: number }>`
-  /* max-width: calc(100% - ${props => props.width}px); */
+export const LayoutMenuWrap = styled(Tabs)`
+  /* display: flex;
+  align-items: center; */
   height: 56px;
   font-size: 14px;
   color: var(--neutral-n1-d1);

@@ -248,11 +248,11 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
 
   return (
     <LayoutMenuWrap
+      style={{ width: `calc(100% - ${props.width + 120}px)` }}
       activeKey={activeKey}
       tabPosition="top"
       getPopupContainer={n => n}
       onChange={handleModeChange}
-      width={props.width + 120}
       moreIcon={
         <MoreMenuWrap>
           <div>{t('more')}</div>
