@@ -51,7 +51,9 @@ export const RobotButton = styled.div`
   user-select: none;
   display: flex;
   align-items: center;
-  margin-right: 4px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 4px;
   .img {
     height: 24px;
   }
@@ -59,6 +61,9 @@ export const RobotButton = styled.div`
     margin-left: 8px;
     font-size: 14px;
     color: var(--neutral-n1-d1);
+  }
+  &:hover {
+    background: var(--active);
   }
 `
 

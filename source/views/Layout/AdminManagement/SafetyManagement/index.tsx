@@ -1,9 +1,16 @@
 import { HaveTabsContentWrap } from '@/components/StyleCommon'
 import TabsContent from '@/components/TabsContent'
+import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+
+const Content = styled.div({
+  width: '100%',
+  height: 'calc(100% - 38px)',
+  background: 'var(--neutral-white-d1)',
+})
 
 const SafetyManagement = () => {
   const [t] = useTranslation()
@@ -65,7 +72,9 @@ const SafetyManagement = () => {
         tabItems={resultTabList}
         activeKey={activeKey}
       />
-      <Outlet />
+      <Content>
+        <Outlet />
+      </Content>
     </HaveTabsContentWrap>
   )
 }
