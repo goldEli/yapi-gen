@@ -157,7 +157,7 @@ const Index = (props: any) => {
           pageIdx: 'member',
         }),
       )
-      let url = '/ProjectDetail/Setting/ProjectInfo'
+      let url = '/ProjectDetail/Member'
       navigate(`${url}?data=${params}`)
     } else if (type === 'demand') {
       if (props.item.projectType === 1) {
@@ -232,11 +232,10 @@ const Index = (props: any) => {
 
         <CardRightSecond>
           {t('functionary')}
-          {props.item?.leader?.name}
+          {props.item?.leaderName}
         </CardRightSecond>
         <CardRightSecond>
-          {t('keyM')}
-          {props.item.prefix}
+          {t('serial_number')}：{props.item.prefix}
         </CardRightSecond>
         <TransformWrap>
           <ProgressWrap>

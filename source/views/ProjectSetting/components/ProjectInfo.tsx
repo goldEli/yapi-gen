@@ -270,7 +270,7 @@ const ProjectInfo = () => {
           </Line>
           <Line>
             <InfoItem>
-              <div>{t('keyboard')}：</div>
+              <div>{t('serial_number')}：</div>
               <span>{projectInfo.prefix || '--'}</span>
             </InfoItem>
             <InfoItem>

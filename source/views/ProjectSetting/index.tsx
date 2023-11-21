@@ -153,7 +153,6 @@ const Setting = () => {
           url: '/ProjectDetail/Setting/ProjectWarning',
         },
       ]
-      console.log(list?.filter((i: any) => i.isPermission))
       setResultTabList(list?.filter((i: any) => i.isPermission))
       //   获取当前路由的key
       const currentRouter = list?.filter(

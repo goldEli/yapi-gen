@@ -230,12 +230,6 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
     }
   }, [menuPermission, routerPath])
 
-  console.log(
-    menuPermission,
-    '=menuPermissionmenuPermission',
-    menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement2'),
-  )
-
   return (
     <LayoutSide isOpen={layoutSideCollapse} onClick={props.onClose}>
       {/* 折叠状态下的 */}
