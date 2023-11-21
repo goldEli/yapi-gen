@@ -94,7 +94,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           // { id: 'map', name: t('map'), url: '', isPermisson: true  },
           {
             id: 'iteration',
-            name: t('iteration'),
+            name: t('sprintProject.iteration'),
             url: '/ProjectDetail/Iteration',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -248,7 +248,9 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
 
   return (
     <LayoutMenuWrap
-      style={{ width: `calc(100% - ${props.width + 120}px)` }}
+      style={{
+        width: props.width ? `calc(100% - ${props.width + 120}px)` : 'auto',
+      }}
       activeKey={activeKey}
       tabPosition="top"
       getPopupContainer={n => n}
