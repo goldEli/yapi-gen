@@ -844,6 +844,38 @@ const GlobalStyle = () => {
       }
       border-color: var(--neutral-n6-d1);
     }
+    .toolBar .ant-select:not(.ant-select-customize-input) .ant-select-selector,
+    input {
+      border: none;
+    }
+    .toolBar
+      .ant-select-single.ant-select-show-arrow
+      .ant-select-selection-search {
+     padding:0;
+    }
+    .toolBar .ant-select-single.ant-select-show-arrow .ant-select-selection-item{
+      width: 51px;
+      height: 32px;
+      text-align: center;
+      background: transparent;
+      border-radius: 6px 6px 6px 6px;
+    }
+    .toolBar .ant-select-single.ant-select-show-arrow .ant-select-selection-item:hover{
+      background: var(--auxiliary-b10);
+    }
+    .toolBar .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+      padding: 0;
+    }
+    .toolBar
+      .ant-select-single:not(.ant-select-customize-input)
+      .ant-select-selector {
+      padding: 0;
+    }
+    // .toolBar .ant-select-selection-item{
+    //   padding:0;
+    //   display:block;
+    //   width:32px;
+    //  }
 
     .ant-select:hover {
       border-color: 1px solid red !important;
