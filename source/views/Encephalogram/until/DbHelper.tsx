@@ -23,7 +23,7 @@ export const haveProjectData = async (id: number) => {
   return pm
 }
 
-export const addTaskForTable = async (id: number, task: any) => {
+export const addTaskForTable = async (id: number, tasks: any) => {
   if (!db.isOpen()) {
     await db.open()
   }
@@ -34,7 +34,7 @@ export const addTaskForTable = async (id: number, task: any) => {
   }
   const table = (db as any).item
   if (table) {
-    table.add(task)
+    table.bulkPut(tasks)
   }
 }
 
