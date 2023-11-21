@@ -370,7 +370,7 @@ const TopArea = () => {
                     checked={el.checked}
                     onChange={e => onChangeF(e, el)}
                   />
-                  <TextTree>{el.name}</TextTree>
+                  <TextTree  onClick={() => foldIcon(el)}>{el.name}</TextTree>
                 </div>
                 <IconFont
                   onClick={() => foldIcon(el)}
@@ -392,10 +392,10 @@ const TopArea = () => {
                           onChange={e => onChangeS(e, item)}
                           checked={item.checked}
                         />
-                        <img src="" />
+                        <img src={item.avatar} />
                         <TextTree>{item.name}</TextTree>
                       </div>
-                      <span className="rowChildtext">职务</span>
+                      <span className="rowChildtext">{item.job_name || '--'}</span>
                     </RowTree>
                   ))}
               </div>

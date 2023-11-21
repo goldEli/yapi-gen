@@ -73,6 +73,7 @@ export const RowTree = styled.div`
   justify-content: space-between;
   height: 40px;
   .rowChild {
+    width:90%;
     display: flex;
     align-items: center;
     img {
@@ -82,6 +83,7 @@ export const RowTree = styled.div`
     }
   }
   .rowChildtext {
+    width:10%;
     font-size: 12px;
     color: var(--neutral-n3);
   }
@@ -101,10 +103,14 @@ export const Text = styled.span`
   color: var(--neutral-n2);
   margin-left: 4px;
 `
-export const TextTree = styled.span`
+export const TextTree = styled.div`
+  width:80%;
   font-size: 12px;
   color: var(--neutral-n2);
   margin-left: 12px;
+  &:hover{
+    cursor: pointer;
+  }
 `
 export const TypeSelectBox = styled.div`
   background: var(--neutral-white-d1);

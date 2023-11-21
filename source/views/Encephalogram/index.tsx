@@ -1,4 +1,3 @@
-import React from 'react'
 import MapContent from './components/MapContent'
 import { EncephalogramBox } from './styles'
 import ToolBar from './components/ToolBar'
