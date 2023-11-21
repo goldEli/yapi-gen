@@ -26,7 +26,7 @@ export const MapContentBox = styled.div`
 `
 export const TopAreaWrap = styled.div`
   width: 100%;
-  padding:16px 16px 16px 24px;
+  padding: 16px 16px 16px 24px;
   box-sizing: border-box;
   position: absolute;
   display: flex;
@@ -79,6 +79,10 @@ export const RowTree = styled.div`
       height: 32px;
       margin-left: 12px;
     }
+  }
+  .rowChildtext {
+    font-size: 12px;
+    color: var(--neutral-n3);
   }
 `
 
@@ -218,11 +222,9 @@ export const TimeWrap = styled.div`
     font-size: 14px;
     color: var(--neutral-n1-d2);
   }
-  .timeRow{
+  .timeRow {
     justify-content: flex-start;
   }
-  
-
 `
 export const TextWrap = styled.div`
   font-size: 14px;

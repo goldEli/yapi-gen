@@ -394,6 +394,7 @@ const TopArea = () => {
                         <img src="" />
                         <TextTree>{item.name}</TextTree>
                       </div>
+                      <span className="rowChildtext">职务</span>
                     </RowTree>
                   ))}
               </div>
