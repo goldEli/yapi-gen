@@ -235,73 +235,76 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       {/* 折叠状态下的 */}
       {!layoutSideCollapse && (
         <NotOpenLogoWrap>
-          {isLogoChange && (
-            <MoreOtherPopover
-              // trigger={['hover']}
-              content={moreOtherSystem}
-              open
-              placement="rightTop"
-              getPopupContainer={n => n}
-              onOpenChange={(state: boolean) =>
-                state ? void 0 : onChangeLogo(false)
-              }
-            >
-              <OtherSystemMenuNotOpen>
-                <CommonIconFont
-                  type="menu-02"
-                  size={24}
-                  color="var(--neutral-n2)"
-                />
-              </OtherSystemMenuNotOpen>
-            </MoreOtherPopover>
-          )}
-          {!isLogoChange && (
-            <img
-              onMouseEnter={() => onChangeLogo(true)}
-              className="logo"
-              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-40px.svg"
-              alt=""
-              onMouseOut={() => {
-                onChangeLogo(false)
+          <MoreOtherPopover
+            content={isLogoChange ? moreOtherSystem : null}
+            open={isLogoChange}
+            placement="rightTop"
+            onOpenChange={(state: boolean) => {
+              onChangeLogo(state)
+            }}
+            getPopupContainer={n => n}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
               }}
-            />
-          )}
-          <img
-            className="img"
-            src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-40px.svg"
-            alt=""
-          />
+            >
+              {isLogoChange ? (
+                <OtherSystemMenuNotOpen>
+                  <CommonIconFont
+                    type="menu-02"
+                    size={24}
+                    color="var(--neutral-n2)"
+                  />
+                </OtherSystemMenuNotOpen>
+              ) : (
+                <img
+                  onMouseEnter={() => onChangeLogo(true)}
+                  className="logo"
+                  src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-40px.svg"
+                  alt=""
+                  onMouseOut={() => {
+                    onChangeLogo(false)
+                  }}
+                />
+              )}
+              <img
+                className="img"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-40px.svg"
+                alt=""
+              />
+            </div>
+          </MoreOtherPopover>
         </NotOpenLogoWrap>
       )}
 
       {/* 展开的交互 */}
       {layoutSideCollapse && (
-        <>
-          {isLogoChange && (
-            <MoreOtherPopover
-              content={moreOtherSystem}
-              open
-              placement="rightBottom"
-              onOpenChange={(state: boolean) =>
-                state ? void 0 : onChangeLogo(false)
-              }
-            >
-              <OtherSystemMenuOpen>
-                <CommonIconFont
-                  type="menu-02"
-                  size={24}
-                  color="var(--neutral-n2)"
-                />
-                <img
-                  className="img"
-                  src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
-                  alt=""
-                />
-              </OtherSystemMenuOpen>
-            </MoreOtherPopover>
-          )}
-          {!isLogoChange && (
-            <OpenLogoWrap onMouseEnter={() => onChangeLogo(true)}>
+        <MoreOtherPopover
+          content={isLogoChange ? moreOtherSystem : null}
+          open={isLogoChange}
+          placement="rightBottom"
+          onOpenChange={(state: boolean) => {
+            onChangeLogo(state)
+          }}
+        >
+          {isLogoChange ? (
+            <OtherSystemMenuOpen>
+              <CommonIconFont
+                type="menu-02"
+                size={24}
+                color="var(--neutral-n2)"
+              />
+              <img
+                className="img"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
+                alt=""
+              />
+            </OtherSystemMenuOpen>
+          ) : (
+            <OpenLogoWrap>
               <img
                 className="logo"
                 src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-28px.svg"
@@ -314,7 +317,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
               />
             </OpenLogoWrap>
           )}
-        </>
+        </MoreOtherPopover>
       )}
 
       {/* 占位使用 */}
