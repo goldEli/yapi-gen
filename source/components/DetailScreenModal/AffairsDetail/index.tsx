@@ -230,7 +230,7 @@ const AffairsDetail = () => {
         },
       }),
     )
-    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${resultParams}`)
+    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${resultParams}`)
   }
 
   // 标签滚动

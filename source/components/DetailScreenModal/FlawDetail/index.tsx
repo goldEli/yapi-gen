@@ -221,7 +221,7 @@ const FlawDetail = () => {
         },
       }),
     )
-    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${resultParams}`)
+    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${resultParams}`)
     //
   }
 

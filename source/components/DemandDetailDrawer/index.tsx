@@ -452,7 +452,7 @@ const DemandDetailDrawer = () => {
         },
       }),
     )
-    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
+    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
   }
 
   // 取消审核

@@ -471,7 +471,7 @@ const SprintDetailDrawer = () => {
         },
       }),
     )
-    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
+    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
   }
 
   // 提交评论
