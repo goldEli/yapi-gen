@@ -8,6 +8,7 @@ export const EncephalogramBox = styled.div`
   cursor: pointer;
   box-sizing: border-box;
   padding:20px 16px 0px 24px;
+  background-color:var(--neutral-white-d1);
   .g6-component-tooltip {
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 6px;
