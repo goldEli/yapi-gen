@@ -65,6 +65,8 @@ const Index = () => {
       keyword: keyword,
     }
     const res = await getDepartmentList(params)
+    setSelectedRowKeys([])
+
     setDataSource(res)
   }
   const rowSelection = {
@@ -164,7 +166,30 @@ const Index = () => {
             >
               编辑
             </OperateLabelText>
-            <OperateLabelText color="var(--primary-d2)">删除</OperateLabelText>
+            <OperateLabelText
+              color="var(--primary-d2)"
+              onClick={() => {
+                open({
+                  title: '删除确认',
+                  text: '确认删除该部门吗？删除后不可恢复',
+                  async onConfirm() {
+                    await delDepartment({
+                      ids: [record.id],
+                      project_id: projectId,
+                    })
+                    _getList()
+                    getMessage({
+                      msg: t('removedSuccessfully'),
+                      type: 'success',
+                    })
+
+                    return Promise.resolve()
+                  },
+                })
+              }}
+            >
+              删除
+            </OperateLabelText>
           </div>
         )
       },

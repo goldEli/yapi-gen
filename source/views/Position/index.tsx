@@ -66,6 +66,7 @@ const Index = () => {
       keyword: keyword,
     }
     const res = await getPositionList(params)
+    setSelectedRowKeys([])
     setDataSource(res)
   }
   const rowSelection = {
@@ -151,10 +152,10 @@ const Index = () => {
           启用状态
         </NewSort>
       ),
-      dataIndex: 'sort',
+      dataIndex: 'status',
       width: 200,
-      render: () => {
-        return <SwitchWrap></SwitchWrap>
+      render: (text: any) => {
+        return <SwitchWrap checked={text === 1}></SwitchWrap>
       },
     },
     {
@@ -182,7 +183,30 @@ const Index = () => {
             >
               编辑
             </OperateLabelText>
-            <OperateLabelText color="var(--primary-d2)">删除</OperateLabelText>
+            <OperateLabelText
+              color="var(--primary-d2)"
+              onClick={() => {
+                open({
+                  title: '删除确认',
+                  text: '确认删除该部门吗？删除后不可恢复',
+                  async onConfirm() {
+                    await delPosition({
+                      ids: [record.id],
+                      project_id: projectId,
+                    })
+                    _getList()
+                    getMessage({
+                      msg: t('removedSuccessfully'),
+                      type: 'success',
+                    })
+
+                    return Promise.resolve()
+                  },
+                })
+              }}
+            >
+              删除
+            </OperateLabelText>
           </div>
         )
       },

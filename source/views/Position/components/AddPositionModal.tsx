@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import CommonModal from '@/components/CommonModal'
-import { Form, Input, InputNumber } from 'antd'
+import { Form, Input, InputNumber, Switch } from 'antd'
 const { TextArea } = Input
 import { FormWrap } from '../style'
 import useProjectId from '../hooks/useProjectId'
@@ -18,10 +18,12 @@ const AddPositionModal = (props: IProps) => {
   const onFinish = async () => {
     const method = rowData ? editPosition : addPosition
     await form.validateFields()
+    const formParams = form.getFieldsValue()
     const params = {
       ...form.getFieldsValue(),
       project_id: projectId,
       id: rowData?.id ?? '',
+      status: formParams.status ? 1 : 2,
     }
     if (!rowData) {
       delete params.id
@@ -29,11 +31,13 @@ const AddPositionModal = (props: IProps) => {
     const res = await method(params)
     form.resetFields()
     onConfirm && onConfirm()
-    console.log('values:', form.getFieldsValue(), res)
   }
   useEffect(() => {
     if (rowData) {
-      form.setFieldsValue(rowData)
+      form.setFieldsValue({
+        ...rowData,
+        status: rowData.status === 1,
+      })
       return
     }
 
@@ -74,6 +78,9 @@ const AddPositionModal = (props: IProps) => {
             placeholder="请输入职位简介最多200字"
             maxLength={200}
           />
+        </Form.Item>
+        <Form.Item label="职位状态" name="status" valuePropName="checked">
+          <Switch></Switch>
         </Form.Item>
       </FormWrap>
     </CommonModal>
