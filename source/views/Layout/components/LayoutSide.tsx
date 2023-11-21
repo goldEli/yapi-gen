@@ -237,7 +237,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
         <NotOpenLogoWrap>
           {isLogoChange && (
             <MoreOtherPopover
-              // trigger={['hover', 'click']}
+              // trigger={['hover']}
               content={moreOtherSystem}
               open
               placement="rightTop"
@@ -261,6 +261,9 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
               className="logo"
               src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-40px.svg"
               alt=""
+              onMouseOut={() => {
+                onChangeLogo(false)
+              }}
             />
           )}
           <img
