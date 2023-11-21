@@ -9,7 +9,7 @@
 /* eslint-disable complexity */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Form, Popover, Collapse, Input, TreeSelect } from 'antd'
+import { Form, Popover, Collapse, Input, TreeSelect, Select } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
 import { useEffect, useMemo, useState, useLayoutEffect } from 'react'
@@ -643,8 +643,10 @@ const TableFilter = (props: any) => {
                                 ),
                               )?.map((item: any) => {
                                 return (
-                                  <CustomWrap
+                                  <Select.Option
                                     key={item.id}
+                                    value={item.id}
+                                    label={item.name}
                                     className={
                                       item.status === 2 && item.isFirst
                                         ? 'removeStyle'
@@ -653,9 +655,9 @@ const TableFilter = (props: any) => {
                                   >
                                     {item.name ?? item.content}
                                     <span>
-                                      {item.status === 1 ? '' : '（已移除）'}
+                                      {item.status === 1 ? '' : t('removed')}
                                     </span>
-                                  </CustomWrap>
+                                  </Select.Option>
                                 )
                               })
                             : []}

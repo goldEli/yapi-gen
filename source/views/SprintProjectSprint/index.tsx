@@ -7,7 +7,7 @@ import InputSearch from '@/components/InputSearch'
 import { CloseWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import TabItem from './components/TabItem'
 import IconFont from '@/components/IconFont'
-import { Popover, Spin, Tooltip } from 'antd'
+import { Popover, Spin, Tooltip, Select } from 'antd'
 import CustomSelect from '@/components/MoreSelect'
 import DndKitTable from './components/DndKitTable'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
@@ -832,15 +832,17 @@ const SprintProjectSprint: React.FC = () => {
                     ),
                   ).map((item: any) => {
                     return (
-                      <div
+                      <Select.Option
                         key={item.id}
+                        value={item.id}
+                        label={item.name}
                         className={
                           item.status === 2 && item.isFirst ? 'removeStyle' : ''
                         }
                       >
-                        {item.label ?? item.content}
-                        <span>{item.status === 1 ? '' : '（已移除）'}</span>
-                      </div>
+                        {item.name ?? item.content}
+                        <span>{item.status === 1 ? '' : t('removed')}</span>
+                      </Select.Option>
                     )
                   })}
                 </CustomSelect>
