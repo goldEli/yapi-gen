@@ -851,9 +851,11 @@ const GlobalStyle = () => {
     .toolBar
       .ant-select-single.ant-select-show-arrow
       .ant-select-selection-search {
-     padding:0;
+      padding: 0;
     }
-    .toolBar .ant-select-single.ant-select-show-arrow .ant-select-selection-item{
+    .toolBar
+      .ant-select-single.ant-select-show-arrow
+      .ant-select-selection-item {
       width: 51px;
       height: 32px;
       text-align: center;
@@ -861,10 +863,14 @@ const GlobalStyle = () => {
       border-radius: 6px 6px 6px 6px;
       padding: 0;
     }
-    .toolBar .ant-select-single.ant-select-show-arrow .ant-select-selection-item:hover{
+    .toolBar
+      .ant-select-single.ant-select-show-arrow
+      .ant-select-selection-item:hover {
       background: var(--auxiliary-b10);
     }
-    .toolBar .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+    .toolBar
+      .ant-select-single.ant-select-show-arrow
+      .ant-select-selection-placeholder {
       padding: 0;
     }
     .toolBar
@@ -1048,6 +1054,10 @@ const GlobalStyle = () => {
     }
     .rowBgc .ant-table-body::-webkit-scrollbar {
       width: 0;
+    }
+    // 导图
+    #MapContentMountNode canvas {
+      background: #fff;
     }
   `
   return <Global styles={globalCss} />

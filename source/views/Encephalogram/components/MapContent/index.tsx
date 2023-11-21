@@ -14,6 +14,7 @@ const MapContent = (props: any) => {
   const { fullScreen } = useSelector(store => store.kanBan)
   const mapRef = useRef<any>(null)
   const { data } = useMapData()
+
   const addTask = async () => {
     const hasId: any = await haveProjectData(projectId)
     if (!hasId) {
@@ -233,24 +234,12 @@ const MapContent = (props: any) => {
 
   useEffect(() => {
     const graph = init()
-
     mapRef.current = graph
     graph.data(datas)
     graph.render()
     graph.fitCenter()
-  }, [])
-  useEffect(() => {
-    if (mapRef.current) {
-      if (fullScreen) {
-        setTimeout(() => {
-          mapRef.current.changeSize(window.innerWidth, window.innerHeight)
-        }, 2000)
-      } else {
-        // mapRef.current.fitCenter()
-        // mapRef.current.render()
-      }
-    }
   }, [fullScreen])
+
   return <MapContentBox id="MapContentMountNode" />
 }
 export default MapContent

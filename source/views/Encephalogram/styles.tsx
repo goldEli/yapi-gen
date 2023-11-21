@@ -26,7 +26,7 @@ export const MapContentBox = styled.div`
 `
 export const TopAreaWrap = styled.div`
   width: 100%;
-  padding:16px 16px 16px 24px;
+  padding: 16px 16px 16px 24px;
   box-sizing: border-box;
   position: absolute;
   display: flex;
@@ -217,6 +217,9 @@ export const TimeWrap = styled.div`
   .timeRow span:nth-child(2) {
     font-size: 14px;
     color: var(--neutral-n1-d2);
+  }
+  .timeRow {
+    justify-content: flex-start;
   }
 `
 export const TextWrap = styled.div`
