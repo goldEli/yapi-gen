@@ -9,7 +9,7 @@ export const haveProjectData = async (id: number) => {
   if (projectTable) {
     pm = new Promise(resolve => {
       projectTable
-        .where('id')
+        .where('projectId')
         .equals(id)
         .count((count: any) => {
           if (count <= 0) {
@@ -30,7 +30,7 @@ export const addTaskForTable = async (id: number, tasks: any) => {
   const hasId: any = await haveProjectData(id)
   const projectTable = (db as any).project
   if (projectTable && !hasId) {
-    projectTable.add({ id })
+    projectTable.add({ projectId: id })
   }
   const table = (db as any).item
   if (table) {
