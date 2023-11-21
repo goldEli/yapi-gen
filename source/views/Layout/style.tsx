@@ -985,10 +985,9 @@ export const LayoutMenuWrap = styled(Tabs)`
   font-size: 14px;
   color: var(--neutral-n1-d1);
   position: relative;
-  .ant-tabs-nav-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+  .ant-tabs-nav-list {
+    margin: auto;
   }
   .ant-tabs-nav {
     margin: 0 !important;
