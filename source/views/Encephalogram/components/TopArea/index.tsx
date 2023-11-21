@@ -35,46 +35,21 @@ import { useDispatch } from 'react-redux'
 import { setEncephalogramParmas } from '@store/encephalogram'
 import { useSelector } from '@store/index'
 import { getIterateList } from '@/services/iterate'
-const priorityList1 = [
-  {
-    label: '12',
-    id: 12,
-    children: [
-      {
-        label: '规划中1',
-        id: 2691,
-      },
-      {
-        label: '规划中2',
-        id: 2693,
-      },
-      {
-        label: '规划中23',
-        id: 2694,
-      },
-    ],
-  },
-  {
-    label: '22',
-    id: 77,
-    children: [
-      {
-        label: '规划中14',
-        id: 26922,
-      },
-    ],
-  },
-]
+import { useTranslation } from 'react-i18next'
+import { getMapMembers } from '@/services/map'
+
 const TopArea = () => {
+  const [t] = useTranslation()
   const [clickeMsg, setClickeMsg] = useState(false)
   const [clickePerson, setClickePerson] = useState(false)
   const [date, setDate] = useState<any>(null)
-  const [personData, setPersonData] = useState(priorityList1)
+  const [personData, setPersonData] = useState<any>()
   const value: any = []
   const [personVal, setPersonVal] = useState(value)
+  const [dataList,setDataList]= useState<any>()
   const [search, setSearch] = useState('')
   const [length, setLength] = useState(0)
-  const [stateVal,setStateVal]= useState([])
+  const [stateVal, setStateVal] = useState([])
   const dispatch = useDispatch()
   // 状态的
   const [priorityList, setPriorityList] = useState()
@@ -96,6 +71,33 @@ const TopArea = () => {
     }))
     setPriorityList(newData)
   }, [projectInfoValues])
+  // 项目人员
+  const getProject = async () => {
+    const res = await getMapMembers({
+      project_id: projectInfo.id,
+    })
+    // 组装项目成员的数据
+    const newChild: any = res.map(el => ({
+      ...el,
+      fold: true,
+      len: el.members.length,
+      checked:
+        el.members.length ===
+        el.members.filter(item => value.includes(item.id)).length,
+      children: el.members.map(item => ({
+        ...item,
+        checked: value.includes(item.id),
+      })),
+    }))
+    let len = 0
+    newChild.forEach((el: { len: number }) => {
+      len += el.len
+    })
+    setLength(len)
+    setPersonVal([...value])
+    setPersonData(newChild)
+    setDataList(newChild)
+  }
   const getInterateList = async () => {
     // 获取迭代下拉数据
     const response = await getIterateList({
@@ -109,30 +111,38 @@ const TopArea = () => {
     )
   }
   useEffect(() => {
+    // 项目人员
+    getProject()
     // 迭代下拉
     getInterateList()
-    // 组装项目成员的数据
-    const newChild = priorityList1.map(el => ({
-      ...el,
-      fold: true,
-      len: el.children.length,
-      checked:
-        el.children.length ===
-        el.children.filter(item => value.includes(item.id)).length,
-      children: el.children.map(item => ({
-        ...item,
-        checked: value.includes(item.id),
-      })),
-    }))
-    let len = 0
-    newChild.forEach(el => {
-      len += el.len
-    })
-    setLength(len)
-    setPersonVal([...value])
-    setPersonData(newChild)
   }, [])
   const content = () => {
+    const statusArr = [
+      {
+        id: 1,
+        name: t('inProgress'),
+        color: '#43BA9A',
+        bg: 'rgba(67,186,154,0.1)',
+      },
+      {
+        id: 2,
+        name: t('completed'),
+        color: '#A176FB',
+        bg: 'rgba(161,118,251,0.1)',
+      },
+      {
+        id: 3,
+        name: t('paused'),
+        color: '#FA9746',
+        bg: 'rgba(250,151,70,0.1)',
+      },
+      {
+        id: 4,
+        name: t('hasNotStarted'),
+        color: '#6688FF',
+        bg: 'rgba(102,136,255,0.1)',
+      },
+    ]
     return (
       <Content>
         <HeaderPopover>
@@ -145,44 +155,52 @@ const TopArea = () => {
         </HeaderPopover>
         <MianHeader>
           <div className="leftWrap">
-            <img src="" />
+            <img src={projectInfo.cover} />
             <HeaderMsg>
-              <Title>title</Title>
-              <Msg>11</Msg>
+              <Title>{projectInfo.name}</Title>
+              <Msg>项目负责人：{projectInfo.leaderName}</Msg>
             </HeaderMsg>
           </div>
-          <Type color="#43BA9A" bgc="rgba(67,186,154,0.1)">
+          <Type
+            color={
+              statusArr?.find((i: any) => i.id === projectInfo.status)?.color ||
+              ''
+            }
+            bgc={
+              statusArr?.find((i: any) => i.id === projectInfo.status)?.bg || ''
+            }
+          >
             <div className="border" />
-            <div>进行中</div>
+            <div>
+              {statusArr?.find((i: any) => i.id === projectInfo.status)?.name}
+            </div>
           </Type>
         </MianHeader>
         <CenterWrap>
           <div className="col">
-            <span>21</span>
-            <span>2</span>
+            <span>{projectInfo.storyCount || 0}</span>
+            <span>任务</span>
           </div>
           <div className="col">
-            <span>12</span>
-            <span>2</span>
+            <span>{projectInfo.iterateCount || 0}</span>
+            <span>冲刺</span>
           </div>
           <div className="col">
-            <span>11</span>
-            <span>2</span>
+            <span>{projectInfo.memberCount || 0}</span>
+            <span>项目成员</span>
           </div>
         </CenterWrap>
         <TimeWrap>
           <Row className="timeRow">
             <span>开始时间：</span>
-            <span>2</span>
+            <span>{projectInfo.expected_start_at || '--'}</span>
           </Row>
           <Row className="timeRow">
             <span>预计结束：</span>
-            <span>2</span>
+            <span>{projectInfo.expected_end_at || '--'}</span>
           </Row>
         </TimeWrap>
-        <TextWrap>
-          我是测结婚dsksk肯定萨克成都市监考老师我是测结婚dsksk肯定萨克成都市监考老师我是测结婚dsksk肯定萨克成都市监考老师我是测结婚dsksk肯定萨克成都市监考老师我是测结婚dsksk肯定萨克成都市监考老师
-        </TextWrap>
+        <TextWrap>{projectInfo.info || '--'}</TextWrap>
       </Content>
     )
   }
@@ -208,14 +226,14 @@ const TopArea = () => {
       setPersonVal([...personVal, ...newVal])
       dispatch(
         setEncephalogramParmas({
-          person: [...personVal, ...newVal]
+          person: [...personVal, ...newVal],
         }),
       )
     } else {
       setPersonVal(personVal.filter((el: any) => !newVal?.includes(el)))
       dispatch(
         setEncephalogramParmas({
-          person: personVal.filter((el: any) => !newVal?.includes(el))
+          person: personVal.filter((el: any) => !newVal?.includes(el)),
         }),
       )
     }
@@ -239,14 +257,18 @@ const TopArea = () => {
     // 组value
     if (e.target.checked) {
       setPersonVal([...personVal, i.id])
-      dispatch(setEncephalogramParmas({
-        person: [...personVal, i.id]
-      }))
+      dispatch(
+        setEncephalogramParmas({
+          person: [...personVal, i.id],
+        }),
+      )
     } else {
       setPersonVal(personVal.filter((el: any) => el !== i.id))
-      dispatch(setEncephalogramParmas({
-        person: personVal.filter((el: any) => el !== i.id)
-      }))
+      dispatch(
+        setEncephalogramParmas({
+          person: personVal.filter((el: any) => el !== i.id),
+        }),
+      )
     }
   }
   // 折叠
@@ -268,27 +290,27 @@ const TopArea = () => {
     }
     setSearch(str)
     const newData: {
-      label: string
+      name: string
       id: number
       fold: boolean
       len: number
       checked: boolean
-      children: { label: string; id: number; fold: boolean; checked: boolean }[]
+      children: { name: string; id: number; fold: boolean; checked: boolean }[]
     }[] = []
-    personData.forEach((el: any) => {
+    dataList.forEach((el: any) => {
       if (
-        el.children.filter((item: { label: string | string[] }) =>
-          item.label.includes(str),
+        el.children.filter((item: { name: string | string[] }) =>
+          item.name.includes(str) || item.name === str,
         )?.length >= 1
       ) {
         newData.push({
           id: el.id,
-          label: el.label,
+          name: el.name,
           fold: false,
           len: el.len,
           checked: el.checked,
-          children: el.children.filter((item: { label: string | string[] }) =>
-            item.label.includes(str),
+          children: el.children.filter((item: { name: string | string[] }) =>
+            item.name.includes(str),
           ),
         })
       }
@@ -296,15 +318,15 @@ const TopArea = () => {
     setPersonData(newData)
   }
   // 重置
-  const reset = () => {
+  const reset = async () => {
     setSearch('')
     setPersonVal([])
-    const newChild = priorityList1.map(el => ({
+    const newChild = dataList.map((el: any) => ({
       ...el,
       fold: true,
-      len: el.children.length,
+      len: el.members.length,
       checked: false,
-      children: el.children.map(item => ({
+      children: el.members.map((item: any) => ({
         ...item,
         checked: false,
       })),
@@ -341,13 +363,13 @@ const TopArea = () => {
         <PersonMain>
           {personData.map((el: any) => (
             <>
-              <RowTree key={el.label}>
+              <RowTree key={el.name}>
                 <div className="rowChild">
                   <Checkbox
                     checked={el.checked}
                     onChange={e => onChangeF(e, el)}
                   />
-                  <TextTree>{el.label}</TextTree>
+                  <TextTree>{el.name}</TextTree>
                 </div>
                 <IconFont
                   onClick={() => foldIcon(el)}
@@ -363,14 +385,14 @@ const TopArea = () => {
               >
                 {el.children?.length >= 1 &&
                   el.children?.map((item: any) => (
-                    <RowTree key={item.label}>
+                    <RowTree key={item.name}>
                       <div className="rowChild">
                         <Checkbox
                           onChange={e => onChangeS(e, item)}
                           checked={item.checked}
                         />
                         <img src="" />
-                        <TextTree>{item.label}</TextTree>
+                        <TextTree>{item.name}</TextTree>
                       </div>
                     </RowTree>
                   ))}

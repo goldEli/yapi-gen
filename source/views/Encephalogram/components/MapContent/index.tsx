@@ -16,7 +16,7 @@ const MapContent = (props: any) => {
   const { fullScreen } = useSelector(store => store.kanBan)
   const mapRef = useRef<any>(null)
   const { data } = useMapData()
-  console.log(data, 'datadatadata')
+
   const addTask = async () => {
     const hasId: any = await haveProjectData(projectId)
     if (!hasId) {

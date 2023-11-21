@@ -218,6 +218,11 @@ export const TimeWrap = styled.div`
     font-size: 14px;
     color: var(--neutral-n1-d2);
   }
+  .timeRow{
+    justify-content: flex-start;
+  }
+  
+
 `
 export const TextWrap = styled.div`
   font-size: 14px;
