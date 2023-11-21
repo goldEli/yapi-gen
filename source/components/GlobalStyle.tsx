@@ -1049,6 +1049,10 @@ const GlobalStyle = () => {
     .rowBgc .ant-table-body::-webkit-scrollbar {
       width: 0;
     }
+    // 导图
+    #MapContentMountNode canvas{
+      background:#fff;
+    }
   `
   return <Global styles={globalCss} />
 }
