@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { MapContentBox } from '@/views/Encephalogram/styles'
-import { haveProjectData } from '@/views/Encephalogram/until/DbHelper'
+import {
+  delTaskForTable,
+  haveProjectData,
+} from '@/views/Encephalogram/until/DbHelper'
 import useProjectId from '@/views/Encephalogram/hook/useProjectId'
 import useMapData from '../../hook/useMapData'
 import init from '@/views/Encephalogram/until/MapFun'
@@ -12,6 +15,7 @@ import { useSelector } from '@store/index'
 const MapContent = (props: any) => {
   const { projectId } = useProjectId()
   const { fullScreen } = useSelector(store => store.kanBan)
+  const { encephalogramParmas } = useSelector(store => store.encephalogram)
   const mapRef = useRef<any>(null)
   const { data } = useMapData()
 
@@ -20,16 +24,29 @@ const MapContent = (props: any) => {
     if (!hasId) {
       await getMapList({
         project_id: projectId,
-        group_by: 'task',
+        group_by: encephalogramParmas.group_by,
       })
     }
+  }
+
+  const refreshData = async () => {
+    await delTaskForTable(projectId)
+    await getMapList({
+      project_id: projectId,
+      group_by: encephalogramParmas.group_by,
+    })
   }
 
   useEffect(() => {
     if (projectId) {
       addTask()
     }
-  }, [projectId])
+  }, [projectId, encephalogramParmas.group_by])
+
+  useEffect(() => {
+    refreshData()
+  }, [encephalogramParmas.group_by])
+
   const datas = {
     id: '1',
     name: 'SLG框架开发',
@@ -235,10 +252,16 @@ const MapContent = (props: any) => {
   useEffect(() => {
     const graph = init()
     mapRef.current = graph
-    graph.data(datas)
+    graph.data({ name: '', style: { fontSize: 18 } })
     graph.render()
-    graph.fitCenter()
-  }, [fullScreen])
+  }, [])
+
+  useEffect(() => {
+    if (data && mapRef.current) {
+      mapRef.current.changeData(data)
+      mapRef.current.fitCenter()
+    }
+  }, [JSON.stringify(data)])
 
   return <MapContentBox id="MapContentMountNode" />
 }

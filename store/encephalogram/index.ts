@@ -2,28 +2,28 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 type SliceState = {
-  encephalogramParmas:{
+  encephalogramParmas: {
     // 迭代
-    iterationVal:Array<number|string>
+    iterationVal: Array<number | string>
     // 任务状态
-    state:Array<number|string>
+    state: Array<number | string>
     // 时间
-    time:Array<number|string>
+    time: Array<number | string>
     // 项目人员
-    person:Array<number|string>
+    person: Array<number | string>
     // 按人员/按任务
-    activeType:number | undefined
+    group_by: string | undefined
   }
 }
 
 const initialState: SliceState = {
   encephalogramParmas: {
-    iterationVal:[],
-    state:[],
-    time:[],
-    person:[],
-    activeType:0
-  }
+    iterationVal: [],
+    state: [],
+    time: [],
+    person: [],
+    group_by: 'user',
+  },
 }
 
 const slice = createSlice({
@@ -31,14 +31,15 @@ const slice = createSlice({
   initialState,
   reducers: {
     setEncephalogramParmas(state, action) {
-      state.encephalogramParmas = { ...state.encephalogramParmas, ...action.payload }
-    }
-  }
+      state.encephalogramParmas = {
+        ...state.encephalogramParmas,
+        ...action.payload,
+      }
+    },
+  },
 })
 
 const encephalogram = slice.reducer
-export const {
-  setEncephalogramParmas,
-} = slice.actions
+export const { setEncephalogramParmas } = slice.actions
 
 export default encephalogram

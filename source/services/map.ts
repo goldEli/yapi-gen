@@ -8,7 +8,11 @@ export const getMapList = async (params: any) => {
   const response = await http.get('getMapList', params)
   // 拆分树，存入indexDB
   if (response.data) {
-    const arr = flattenObjectToArray(response.data)
+    const temp = {
+      ...response.data,
+      project_id: response.data.id,
+    }
+    const arr = flattenObjectToArray(temp)
     addTaskForTable(params.project_id, arr)
   }
   return response.data

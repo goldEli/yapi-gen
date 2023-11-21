@@ -15,13 +15,15 @@ const useMapData = () => {
 
   const data = useMemo(() => {
     if (!allItems) {
-      return {}
+      return null
     }
     return buildIntactTree(allItems)
-  }, [allItems])
-  console.log(data, 'datadatadatadatadatadatadata')
+  }, [JSON.stringify(allItems)])
+
+  console.log(data, 'datatatasss')
+
   return {
-    data: allItems,
+    data: data,
   }
 }
 

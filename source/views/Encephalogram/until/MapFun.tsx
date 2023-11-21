@@ -7,7 +7,7 @@ const getGraph = () => {
     G6.registerNode(
       'customNode',
       {
-        getAnchorPoints(cfg: any) {
+        getAnchorPoints() {
           return [
             [0, 0.5],
             [1, 0.5],
@@ -15,7 +15,7 @@ const getGraph = () => {
         },
         drawShape: (cfg: any, group: any) => {
           const content = cfg.name
-          const { fill, color, fontSize, fontWeight } = cfg.style || {}
+          const { fill, color, fontSize } = cfg.style || {}
           if (cfg.depth === 0) {
             cfg.extra?.forEach((txt: string, index: number) => {
               group.addShape('text', {
@@ -30,11 +30,12 @@ const getGraph = () => {
               })
             })
           }
+          const wd = Util.getTextSize(cfg.name, cfg.style.fontSize)[0] + 30
           const rect = group.addShape('rect', {
             attrs: {
               fill,
               stroke: '#D5D6D9',
-              width: Util.getTextSize(cfg.name, fontSize || 14)[0] + 20,
+              width: wd > 100 ? wd : 100,
               height: 40,
             },
             name: 'rect-shape',
@@ -47,7 +48,7 @@ const getGraph = () => {
               y: bbox.height / 2,
               textBaseline: 'middle',
               fill: color || '#323233',
-              fontWeight,
+              fontWeight: 500,
               fontSize: fontSize || 14,
               fontFamily: 'SiYuanMedium',
             },
@@ -88,36 +89,50 @@ const getGraph = () => {
       itemTypes: ['node'],
       // 自定义 tooltip 内容
       getContent: (e: any) => {
+        const item = e.item.getModel() || {}
+        if (item.node_type === 'project' || item.node_type === 'user') {
+          return ''
+        }
         const outDiv = document.createElement('div')
         outDiv.style.width = 'fit-content'
         outDiv.innerHTML = `
-          <ul style="color: #ffffff;list-style: none; margin: 0px;padding:0px">
-          <li style="margin-bottom: 8px">预计工期：25 天</li>
-          <li style="margin-bottom: 8px">实际工期：24天</li>
-          <li style="margin-bottom: 8px">当前进度：30%</li>
-          <li style="display: flex">
-            <div style="white-space: nowrap; margin-right: 8px">处理人：</div>
-            <div style="display: flex; flex-direction: column">
-              <div style="display: flex; font-size: 12px; margin-bottom: 8px;align-items:center">
-                <img
-                  src="https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp"
-                  width="24px"
-                  height="24px"
-                  style="margin-right: 4px;border-radius: 50%"
-                />
-                美术组-UI组长-张三
-              </div>
-              <div style="display: flex; font-size: 12px;align-items:center">
-                <img
-                  src="https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1551758466375991298/2023-04-27/studios_3.webp"
-                  width="24px"
-                  height="24px"
-                  style="margin-right: 4px;border-radius: 50%"
-                />
-                软件大数据组-UI组长-张三
-              </div>
-            </div>
-          </li>
+          <ul style="color: #ffffff;list-style: none; margin: 0px;padding:0px;min-width:200px">
+          <li style="margin-bottom: 8px">预计工期：${
+            item.expect_duration ?? 0
+          } 天</li>
+          <li style="margin-bottom: 8px">实际工期：${
+            item.real_duration ?? 0
+          } 天</li>
+          <li style="margin-bottom: 8px">当前进度：${item.schedule ?? 0} %</li>
+          ${
+            item?.handlers
+              ? `<li style="display: flex">
+          <div style="white-space: nowrap; margin-right: 8px">处理人：</div>
+          <div style="display: flex; flex-direction: column">
+            ${item?.handlers
+              ?.map?.((k: any) => {
+                return `
+              <div  key=${
+                k.id
+              } style="display: flex; font-size: 12px; margin-bottom: 8px;align-items:center">
+              <img
+                src=${
+                  k.avatar ||
+                  'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png'
+                }
+                width="24px"
+                height="24px"
+                style="margin-right: 4px;border-radius: 50%"
+              />
+              ${k.department_name}-${k.position_name}-${k.name}
+            </div>`
+              })
+              .join('')}
+          </div>
+        </li>`
+              : ''
+          }
+          
         </ul>
             `
         return outDiv
@@ -170,7 +185,8 @@ const getGraph = () => {
           return 40
         },
         getHGap: function getHGap(cfg: any) {
-          return Util.getTextSize(cfg.name, cfg.fontSize || 14)[0] + 20
+          const wd = Util.getTextSize(cfg.name, cfg.style.fontSize)[0] + 20
+          return wd > 100 ? wd : 100
         },
       },
       plugins: [tooltip],
@@ -178,7 +194,11 @@ const getGraph = () => {
 
     graph.on('node:mouseenter', (event: any) => {
       const { item } = event
+      const data = item.getModel()
       graph.setItemState(item, 'hover', true)
+      if (data.node_type === 'project' || data.node_type === 'user') {
+        tooltip.hide()
+      }
     })
     graph.on('node:mouseleave', (event: any) => {
       const { item } = event

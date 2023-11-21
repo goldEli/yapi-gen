@@ -22,10 +22,11 @@ const Btn = styled.div`
   cursor: pointer;
 `
 const SelectWrap = styled(Select)`
-   border:none;
-   text-align: end;
-   background:#fff;
-  & .ant-select-clear ,& .ant-select-arrow{
+  border: none;
+  text-align: end;
+  background: #fff;
+  & .ant-select-clear,
+  & .ant-select-arrow {
     visibility: hidden;
   }
 `
@@ -33,11 +34,10 @@ const ToolBar = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState('50%')
   const { fullScreen } = useSelector(store => store.kanBan)
-  useEffect(() => {
-    dispatch(setEncephalogramParmas({ activeType: 0 }))
-  }, [])
+  const { encephalogramParmas } = useSelector(store => store.encephalogram)
+
   const onChange = (id: number) => {
-    dispatch(setEncephalogramParmas({ activeType: id }))
+    dispatch(setEncephalogramParmas({ group_by: id === 0 ? 'user' : 'task' }))
   }
   const items = [
     {
@@ -73,7 +73,7 @@ const ToolBar = () => {
       value: '200',
     },
   ]
-  const handleChange = (val:string) => {
+  const handleChange = (val: string) => {
     console.log(val)
     setValue(val)
   }
@@ -106,7 +106,7 @@ const ToolBar = () => {
       })
   }
   return (
-    <ToolBarBox className='toolBar'>
+    <ToolBarBox className="toolBar">
       <RightWrap type="1">
         <Tabs
           tabsValue={[
@@ -119,7 +119,7 @@ const ToolBar = () => {
               id: 1,
             },
           ]}
-          active={0}
+          active={encephalogramParmas.group_by === 'user' ? 0 : 1}
           onChange={onChange}
         />
       </RightWrap>
@@ -170,7 +170,7 @@ const ToolBar = () => {
                 .parentNode.parentNode.parentNode
             }}
             optionFilterProp="label"
-            onChange={(val:any)=>handleChange(val)}
+            onChange={(val: any) => handleChange(val)}
             placement="bottomRight"
             dropdownMatchSelectWidth={160}
             menuItemSelectedIcon={
@@ -180,8 +180,8 @@ const ToolBar = () => {
               <>
                 {menu}
                 <Divider style={{ margin: '8px 0' }} />
-                <Btn onClick={()=>handleChange('5%')}>增加5%</Btn>
-                <Btn onClick={()=>handleChange('-5%')}>减小5%</Btn>
+                <Btn onClick={() => handleChange('5%')}>增加5%</Btn>
+                <Btn onClick={() => handleChange('-5%')}>减小5%</Btn>
               </>
             )}
           />
