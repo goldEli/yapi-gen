@@ -304,10 +304,17 @@ export const CollapseWrapItem = styled.div`
   align-items: center;
   padding: 4px 8px;
   cursor: pointer;
+  border-radius: 6px;
+  svg {
+    color: var(--neutral-n2);
+  }
   div {
     font-size: 16px;
     color: var(--neutral-n1-d1);
     margin-left: 8px;
+  }
+  &:hover {
+    background: var(--hover-d1);
   }
 `
 
@@ -377,16 +384,16 @@ export const MoreOtherSystemWrap = styled.div`
   border-radius: 6px;
   border: 2px solid var(--neutral-n6-d2);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 16px;
   width: 348px;
-  height: 248px;
+  /* height: 248px; */
 `
 
 export const MoreOtherSystemItem = styled.div<{ disable?: boolean }>`
   width: 88px;
-  height: 88px;
+  /* height: 88px; */
   padding: 5px 0;
   display: flex;
   flex-direction: column;
@@ -420,6 +427,7 @@ export const MoreOtherSystemItem = styled.div<{ disable?: boolean }>`
     color: ${props =>
       props.disable ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
     font-family: SiYuanMedium;
+    text-align: center;
   }
 `
 
