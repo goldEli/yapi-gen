@@ -150,6 +150,9 @@ export const LayoutSide = styled.div<{ isOpen?: boolean }>`
   align-items: ${props => (props.isOpen ? 'flex-start' : 'center')};
   z-index: 200;
   position: relative;
+  .ant-popover-placement-rightTop {
+    padding-left: 20px !important;
+  }
 `
 
 export const LayoutContent = styled.div<{ isOpen?: boolean }>`
@@ -401,6 +404,14 @@ export const MoreOtherSystemItem = styled.div<{ disable?: boolean }>`
       cursor: ${props => (props.disable ? 'inherit' : 'pointer')};
       color: ${props =>
         props.disable ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
+    }
+  }
+  &:hover {
+    .box {
+      span {
+        color: ${props =>
+          props.disable ? 'var(--neutral-n4)' : 'var(--primary-d1)'};
+      }
     }
   }
   .name {

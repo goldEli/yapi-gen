@@ -240,7 +240,8 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
               // trigger={['hover', 'click']}
               content={moreOtherSystem}
               open
-              placement="right"
+              placement="rightTop"
+              getPopupContainer={n => n}
               onOpenChange={(state: boolean) =>
                 state ? void 0 : onChangeLogo(false)
               }
@@ -277,7 +278,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
             <MoreOtherPopover
               content={moreOtherSystem}
               open
-              placement="right"
+              placement="rightBottom"
               onOpenChange={(state: boolean) =>
                 state ? void 0 : onChangeLogo(false)
               }
