@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { MapContentBox } from '@/views/Encephalogram/styles'
-import G6, { Util } from '@antv/g6'
 import {
-  addTaskForTable,
   haveProjectData,
 } from '@/views/Encephalogram/until/DbHelper'
 import useProjectId from '@/views/Encephalogram/hook/useProjectId'

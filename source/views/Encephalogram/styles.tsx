@@ -26,7 +26,7 @@ export const MapContentBox = styled.div`
 `
 export const TopAreaWrap = styled.div`
   width: 100%;
-  padding: 24px;
+  padding:16px 16px 16px 24px;
   box-sizing: border-box;
   position: absolute;
   display: flex;
@@ -133,8 +133,8 @@ export const HeaderPopover = styled.div`
 `
 export const ToolBarBox = styled.div`
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 16px;
+  right: 16px;
   display: flex;
 `
 export const MianHeader = styled.div`

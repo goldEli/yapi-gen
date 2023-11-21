@@ -74,6 +74,7 @@ const TopArea = () => {
   const [personVal, setPersonVal] = useState(value)
   const [search, setSearch] = useState('')
   const [length, setLength] = useState(0)
+  const [stateVal,setStateVal]= useState([])
   const dispatch = useDispatch()
   // 状态的
   const [priorityList, setPriorityList] = useState()
@@ -381,7 +382,8 @@ const TopArea = () => {
     )
   }
   // 选中任务状态
-  const onClickSearch = (value: Array<number>) => {
+  const onClickSearch = (value: []) => {
+    setStateVal(value || [])
     dispatch(
       setEncephalogramParmas({
         state: value || [],
@@ -451,6 +453,7 @@ const TopArea = () => {
               optionFilterProp="label"
               placement="bottomRight"
               width={200}
+              value={stateVal}
               allowClear
               options={priorityList}
               onChange={(value: any) => onClickSearch(value)}

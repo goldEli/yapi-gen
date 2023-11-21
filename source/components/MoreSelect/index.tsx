@@ -87,7 +87,6 @@ const index = (props: any) => {
         options: prepositionItems,
         fieldNames: { label: 'label', value: 'value', options: 'children' },
       }
-
   return (
     <SelectWrap
       {...selectProps}
@@ -99,10 +98,6 @@ const index = (props: any) => {
       mode={props.more ? undefined : 'multiple'}
       allowClear
       getPopupContainer={(triggerNode: any) => {
-        console.log(
-          triggerNode.parentNode.parentNode.parentNode.parentNode.parentNode
-            .parentNode.parentNode,
-        )
         return triggerNode.parentNode.parentNode.parentNode.parentNode
           .parentNode.parentNode.parentNode
       }}
