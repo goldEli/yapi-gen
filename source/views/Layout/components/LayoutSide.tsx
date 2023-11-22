@@ -388,7 +388,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
           <CollapseWrapItem onClick={onChangeCollapse}>
             <CommonIconFont
               type={layoutSideCollapse ? 'outdent' : 'indent'}
-              size={20}
+              size={24}
             />
             <div>{layoutSideCollapse ? t('fold') : t('expand')}</div>
           </CollapseWrapItem>
@@ -398,7 +398,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
             <CloseWrap width={32} height={32} onClick={onChangeCollapse}>
               <CommonIconFont
                 type={layoutSideCollapse ? 'outdent' : 'indent'}
-                size={20}
+                size={24}
               />
             </CloseWrap>
           </Tooltip>

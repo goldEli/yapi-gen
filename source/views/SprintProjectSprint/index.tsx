@@ -563,7 +563,6 @@ const SprintProjectSprint: React.FC = () => {
       children: arr2,
     }
     return [...arr1, ...arr2]
-    return arr2.length >= 1 ? [...arr1, b] : [...arr1]
   }
 
   const isLength =
