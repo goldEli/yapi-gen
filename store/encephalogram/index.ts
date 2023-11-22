@@ -13,6 +13,8 @@ type SliceState = {
     person: Array<number | string>
     // 按人员/按任务
     group_by: string | undefined
+    // 放大缩小的
+    num:number
   }
 }
 
@@ -23,6 +25,7 @@ const initialState: SliceState = {
     time: [],
     person: [],
     group_by: 'user',
+    num:0
   },
 }
 

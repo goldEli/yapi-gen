@@ -2,12 +2,12 @@ import { ToolBarBox, RightWrap } from '@/views/Encephalogram/styles'
 import Tabs from '@/components/Tabs'
 import { Divider, Select, Space } from 'antd'
 import IconFont from '@/components/IconFont'
-import { setEncephalogramParmas } from '@store/encephalogram'
 import html2canvas from 'html2canvas'
 import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
 import { useEffect, useState } from 'react'
+import { setEncephalogramParmas } from '@store/encephalogram'
 import styled from '@emotion/styled'
 import { CommonIconFont } from '@/components/CommonIconFont'
 const Btn = styled.div`
@@ -32,7 +32,7 @@ const SelectWrap = styled(Select)`
 `
 const ToolBar = () => {
   const dispatch = useDispatch()
-  const [value, setValue] = useState('50%')
+  const [value, setValue] = useState('50')
   const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParmas } = useSelector(store => store.encephalogram)
 
@@ -50,23 +50,23 @@ const ToolBar = () => {
     },
     {
       label: '75%',
-      value: '75%',
+      value: '75',
     },
     {
       label: '100%',
-      value: '100%',
+      value: '100',
     },
     {
       label: '125%',
-      value: '125%',
+      value: '125',
     },
     {
       label: '150%',
-      value: '150%',
+      value: '150',
     },
     {
       label: '175%',
-      value: '175%',
+      value: '175',
     },
     {
       label: '200%',
@@ -75,6 +75,7 @@ const ToolBar = () => {
   ]
   const handleChange = (val: string) => {
     console.log(val)
+    dispatch(setEncephalogramParmas({num:val}))
     setValue(val)
   }
   const downloadImage = () => {
@@ -180,8 +181,8 @@ const ToolBar = () => {
               <>
                 {menu}
                 <Divider style={{ margin: '8px 0' }} />
-                <Btn onClick={() => handleChange('5%')}>增加5%</Btn>
-                <Btn onClick={() => handleChange('-5%')}>减小5%</Btn>
+                <Btn onClick={() => handleChange('5')}>增加5%</Btn>
+                <Btn onClick={() => handleChange('-5')}>减小5%</Btn>
               </>
             )}
           />
