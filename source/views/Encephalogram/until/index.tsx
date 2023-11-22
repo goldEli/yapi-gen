@@ -119,3 +119,30 @@ export const buildIntactTree = (tempArr: any[]) => {
   }
   return tree
 }
+
+const recursiveSupervisorSearch = (
+  array: any[],
+  target: any,
+  result: any[],
+) => {
+  result.push(target.node_key)
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].node_key === target.node_pid) {
+      if (array[i]) {
+        result.push(array[i]?.node_key)
+        recursiveSupervisorSearch(array, array[i], result)
+      }
+    }
+  }
+}
+
+// 根据筛选出来的叶子反推出所有的父节点并去重
+export const findAllParentForTree = (arr: any[], allArr: any[]) => {
+  const result: any[] = []
+  arr.forEach((item: any) => {
+    recursiveSupervisorSearch(allArr, item, result)
+  })
+  return [...new Set(result)].map((key: string) => {
+    return allArr.find((k: any) => k.node_key === key)
+  })
+}

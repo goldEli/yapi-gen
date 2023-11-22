@@ -1,9 +1,13 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import useProjectId from '../useProjectId'
 import { dbs as db } from '@/views/Encephalogram/until/DbHelper'
-import { buildIntactTree } from '@/views/Encephalogram/until'
+import {
+  buildIntactTree,
+  findAllParentForTree,
+} from '@/views/Encephalogram/until'
 import { useMemo } from 'react'
 import { useSelector } from '@store/index'
+import moment from 'moment'
 
 const useMapData = () => {
   const { projectId } = useProjectId()
@@ -26,7 +30,6 @@ const useMapData = () => {
       return null
     }
     const filterItems = allItems.filter((item: any) => {
-      console.log(item, 'itemitemitemitemitemitem')
       if (item.node_type === 'story') {
         let isNeed = true
         if (iterationVal.length) {
@@ -52,7 +55,14 @@ const useMapData = () => {
           }
         }
         if (time.length) {
-          if (state.includes(item.category_status_id)) {
+          if (
+            (item.expected_start_at &&
+              moment(item.expected_start_at).isSameOrAfter(moment(time[0])) &&
+              moment(item.expected_start_at).isSameOrBefore(moment(time[1]))) ||
+            (item.expected_end_at &&
+              moment(item.expected_end_at).isSameOrAfter(moment(time[0])) &&
+              moment(item.expected_end_at).isSameOrBefore(moment(time[1])))
+          ) {
             isNeed = true
           } else {
             return false
@@ -63,6 +73,8 @@ const useMapData = () => {
       return false
     })
     console.log(filterItems, 'filterItemsfilterItemsfilterItemsfilterItems')
+    const tt = findAllParentForTree(filterItems, allItems)
+    console.log('tttttttttttttttttttt', tt)
 
     return buildIntactTree(allItems)
   }, [
