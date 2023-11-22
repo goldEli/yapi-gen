@@ -8,25 +8,42 @@ import { useSelector } from '@store/index'
 const useMapData = () => {
   const { projectId } = useProjectId()
   const { encephalogramParams } = useSelector(store => store.encephalogram)
-  const allItems = useLiveQuery(() => {
+  const { group_by, person, iterationVal, state, time } = encephalogramParams
+  const allItems: any[] = useLiveQuery(() => {
     if (projectId) {
-      return (db as any)[encephalogramParams.group_by]
+      const allList = (db as any)[encephalogramParams.group_by]
         .where({
           project_id: projectId,
         })
         .toArray()
+      return allList
     }
     return []
-  }, [projectId, encephalogramParams.group_by])
+  }, [projectId, group_by])
 
   const data = useMemo(() => {
     if (!allItems) {
       return null
     }
-    return buildIntactTree(allItems)
-  }, [JSON.stringify(allItems)])
+    const filterItems = allItems.filter((item: any) => {
+      console.log(item, 'itemitemitemitemitemitem')
+      if (item.node_type === 'story') {
+        if (iterationVal.includes(item.iterate_id)) {
+          return true
+        }
+      }
+      return false
+    })
+    console.log(filterItems, 'filterItemsfilterItemsfilterItemsfilterItems')
 
-  console.log(data, 'datatatasss')
+    return buildIntactTree(allItems)
+  }, [
+    JSON.stringify(allItems),
+    JSON.stringify(person),
+    JSON.stringify(iterationVal),
+    JSON.stringify(state),
+    JSON.stringify(time),
+  ])
 
   return {
     data: data,
