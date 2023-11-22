@@ -570,9 +570,23 @@ const urls = {
   getReportViewLogList: '/b/user/reportViewLogList',
   // 获取最近的任务
   getRecentStory: '/b/user/recent/story',
-  // 导图
+  /**
+   * 导图相关接口
+   */
   getMapList: '/b/project/map',
   getMapMembers: '/b/project/map_members',
+  // 例外时间列表
+  getExceptionTimeList: '/b/project/work_config/work_dates_list',
+  // 工作时间查询
+  getWorkTimeList: '/b/project/work_config/work_time_config',
+  // 添加例外时间
+  addExceptionTime: '/b/project/work_config/add_work_dates',
+  // 编辑例外时间
+  editExceptionTime: '/b/project/work_config/edit_work_dates',
+  // 删除例外时间
+  delExceptionTime: '/b/project/work_config/del_work_dates',
+  // 编辑工作时间
+  editWorkTime: '/b/project/work_config/set_work_time_config',
 }
 export default urls
 

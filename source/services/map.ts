@@ -56,3 +56,33 @@ export const getMapMembers = async (params: any) => {
   ]
   return data
 }
+// 获取例外时间列表
+export const getExceptionTimeList = async (params: any) => {
+  const response = await http.get('getExceptionTimeList', params)
+  return response
+}
+// 工作时间查询
+export const getWorkTimeList = async (params: any) => {
+  const response = await http.get('getWorkTimeList', params)
+  return response
+}
+// 添加例外时间
+export const addExceptionTime = async (params: any) => {
+  const response = await http.get('addExceptionTime', params)
+  return response
+}
+// 编辑例外时间
+export const editExceptionTime = async (params: any) => {
+  const response = await http.get('editExceptionTime', params)
+  return response
+}
+// 删除例外时间
+export const delExceptionTime = async (params: any) => {
+  const response = await http.get('delExceptionTime', params)
+  return response
+}
+// 编辑工作时间
+export const editWorkTime = async (params: any) => {
+  const response = await http.get('editWorkTime', params)
+  return response
+}
