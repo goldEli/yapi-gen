@@ -126,9 +126,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
         menuPermission.menus?.filter((k: any) => k.url !== '/AdminManagement'),
       )
       setFoldList(
-        menuPermission.menus?.filter(
-          (k: any) => k.url === '/AdminManagement' || [],
-        ),
+        menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement'),
       )
     } else {
       // 删除后台管理
