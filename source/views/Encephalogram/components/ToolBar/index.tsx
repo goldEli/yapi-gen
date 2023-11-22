@@ -34,7 +34,7 @@ const ToolBar = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState('1')
   const { fullScreen } = useSelector(store => store.kanBan)
-  const { encephalogramParmas } = useSelector(store => store.encephalogram)
+  const { encephalogramParams } = useSelector(store => store.encephalogram)
 
   const onChange = (id: number) => {
     dispatch(setEncephalogramParmas({ group_by: id === 0 ? 'user' : 'task' }))
@@ -75,7 +75,7 @@ const ToolBar = () => {
   ]
   const handleChange = (val: string) => {
     console.log(val)
-    dispatch(setEncephalogramParmas({num:val}))
+    dispatch(setEncephalogramParmas({ num: val }))
     setValue(val)
   }
   const downloadImage = () => {
@@ -121,7 +121,7 @@ const ToolBar = () => {
               id: 1,
             },
           ]}
-          active={encephalogramParmas.group_by === 'user' ? 0 : 1}
+          active={encephalogramParams.group_by === 'user' ? 0 : 1}
           onChange={onChange}
         />
       </RightWrap>
@@ -147,6 +147,13 @@ const ToolBar = () => {
               fontSize: 24,
               color: 'var(--neutral-n2)',
               margin: '0 4px',
+            }}
+            onClick={() => {
+              dispatch(
+                setEncephalogramParmas({
+                  refresh: encephalogramParams.refresh + 1,
+                }),
+              )
             }}
           />
           <span className="line" />

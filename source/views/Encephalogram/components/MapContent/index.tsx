@@ -14,40 +14,42 @@ import { useSelector } from '@store/index'
 const MapContent = (props: any) => {
   const { projectId } = useProjectId()
   const { fullScreen } = useSelector(store => store.kanBan)
-  const { encephalogramParmas } = useSelector(store => store.encephalogram)
+  const { encephalogramParams } = useSelector(store => store.encephalogram)
   const mapRef = useRef<any>(null)
   const { data } = useMapData()
 
   const addTask = async () => {
     const hasId: any = await haveHistoryData(
       projectId,
-      encephalogramParmas.group_by,
+      encephalogramParams.group_by,
     )
     if (!hasId) {
       await getMapList({
         project_id: projectId,
-        group_by: encephalogramParmas.group_by,
+        group_by: encephalogramParams.group_by,
       })
     }
   }
 
   const refreshData = async () => {
-    await delTaskForTable(projectId, encephalogramParmas.group_by)
+    await delTaskForTable(projectId, encephalogramParams.group_by)
     await getMapList({
       project_id: projectId,
-      group_by: encephalogramParmas.group_by,
+      group_by: encephalogramParams.group_by,
     })
   }
+
+  useEffect(() => {
+    if (encephalogramParams.refresh > 0) {
+      refreshData()
+    }
+  }, [encephalogramParams.refresh])
 
   useEffect(() => {
     if (projectId) {
       addTask()
     }
-  }, [projectId, encephalogramParmas.group_by])
-
-  useEffect(() => {
-    refreshData()
-  }, [encephalogramParmas.group_by])
+  }, [projectId, encephalogramParams.group_by])
 
   const datas = {
     id: '1',
