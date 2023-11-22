@@ -928,7 +928,17 @@ export const getShapeFlawRight = async (params: any) => {
 
   // 处理人、抄送人
 
-  const filterMemberList = selectData.project_member
+  // const filterMemberList = selectData.project_member
+
+  const selectMember = selectData.project_member.filter(
+    (item: any) => item.status === 1,
+  )
+
+  const removeMember = selectData.project_member
+    .filter((item: any) => item.status === 2)
+    .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
+  const filterMemberList = [...selectMember, ...removeMember]
+  console.log(selectMember, removeMember)
 
   // 分类
 
