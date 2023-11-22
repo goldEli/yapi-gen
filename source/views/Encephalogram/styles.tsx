@@ -87,6 +87,8 @@ export const RowTree = styled.div`
     width:10%;
     font-size: 12px;
     color: var(--neutral-n3);
+    text-align: right;
+    padding-right:2px;
   }
 `
 
