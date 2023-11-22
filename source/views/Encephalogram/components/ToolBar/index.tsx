@@ -34,7 +34,7 @@ const ToolBar = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState('50')
   const { fullScreen } = useSelector(store => store.kanBan)
-  const { encephalogramParmas } = useSelector(store => store.encephalogram)
+  const { encephalogramParams } = useSelector(store => store.encephalogram)
 
   const onChange = (id: number) => {
     dispatch(setEncephalogramParmas({ group_by: id === 0 ? 'user' : 'task' }))
@@ -120,7 +120,7 @@ const ToolBar = () => {
               id: 1,
             },
           ]}
-          active={encephalogramParmas.group_by === 'user' ? 0 : 1}
+          active={encephalogramParams.group_by === 'user' ? 0 : 1}
           onChange={onChange}
         />
       </RightWrap>
@@ -150,7 +150,7 @@ const ToolBar = () => {
             onClick={() => {
               dispatch(
                 setEncephalogramParmas({
-                  refresh: encephalogramParmas.refresh + 1,
+                  refresh: encephalogramParams.refresh + 1,
                 }),
               )
             }}

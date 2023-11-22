@@ -7,17 +7,17 @@ import { useSelector } from '@store/index'
 
 const useMapData = () => {
   const { projectId } = useProjectId()
-  const { encephalogramParmas } = useSelector(store => store.encephalogram)
+  const { encephalogramParams } = useSelector(store => store.encephalogram)
   const allItems = useLiveQuery(() => {
     if (projectId) {
-      return (db as any)[encephalogramParmas.group_by]
+      return (db as any)[encephalogramParams.group_by]
         .where({
           project_id: projectId,
         })
         .toArray()
     }
     return []
-  }, [projectId, encephalogramParmas.group_by])
+  }, [projectId, encephalogramParams.group_by])
 
   const data = useMemo(() => {
     if (!allItems) {
