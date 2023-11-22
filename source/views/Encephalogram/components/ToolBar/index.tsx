@@ -7,7 +7,7 @@ import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
 import { useEffect, useState } from 'react'
-import { setEncephalogramParmas } from '@store/encephalogram'
+import { setEncephalogramParams } from '@store/encephalogram'
 import styled from '@emotion/styled'
 import { CommonIconFont } from '@/components/CommonIconFont'
 import _ from 'lodash'
@@ -38,7 +38,7 @@ const ToolBar = () => {
   const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
   const onChange = (id: number) => {
-    dispatch(setEncephalogramParmas({ group_by: id === 0 ? 'user' : 'task' }))
+    dispatch(setEncephalogramParams({ group_by: id === 0 ? 'user' : 'task' }))
   }
   const items = [
     {
@@ -75,7 +75,7 @@ const ToolBar = () => {
     },
   ]
   const handleChange = (val: number) => {
-    dispatch(setEncephalogramParmas({ num: val }))
+    dispatch(setEncephalogramParams({ num: val }))
     setValue(val)
   }
 
@@ -109,21 +109,21 @@ const ToolBar = () => {
   })
   const handleChangeAdd = () => {
     const val = encephalogramParams.num + 0.05
-    
-    dispatch(setEncephalogramParmas({ num: val}))
-    dispatch(setEncephalogramParmas({ numType: 'click' }))
+
+    dispatch(setEncephalogramParams({ num: val }))
+    dispatch(setEncephalogramParams({ numType: 'click' }))
   }
   const handleChangeReduce = () => {
     const val = encephalogramParams.num - 0.05
-    if(val < 0.2){
+    if (val < 0.2) {
       return
     }
-    dispatch(setEncephalogramParmas({ num: val }))
-    dispatch(setEncephalogramParmas({ numType: 'click' }))
+    dispatch(setEncephalogramParams({ num: val }))
+    dispatch(setEncephalogramParams({ numType: 'click' }))
   }
   const onRefresh = _.debounce(() => {
     dispatch(
-      setEncephalogramParmas({
+      setEncephalogramParams({
         refresh: encephalogramParams.refresh + 1,
       }),
     )

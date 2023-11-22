@@ -30,7 +30,7 @@ const initialState: SliceState = {
     group_by: 'user',
     refresh: 0,
     num: 1,
-    numType: ''
+    numType: '',
   },
 }
 
@@ -38,7 +38,7 @@ const slice = createSlice({
   name: 'encephalogram',
   initialState,
   reducers: {
-    setEncephalogramParmas(state, action) {
+    setEncephalogramParams(state, action) {
       state.encephalogramParams = {
         ...state.encephalogramParams,
         ...action.payload,
@@ -48,6 +48,6 @@ const slice = createSlice({
 })
 
 const encephalogram = slice.reducer
-export const { setEncephalogramParmas } = slice.actions
+export const { setEncephalogramParams } = slice.actions
 
 export default encephalogram

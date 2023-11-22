@@ -8,12 +8,15 @@ import useProjectId from '@/views/Encephalogram/hook/useProjectId'
 import useMapData from '../../hook/useMapData'
 import init from '@/views/Encephalogram/until/MapFun'
 import { getMapList } from '@/services/map'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { type TreeGraph } from '@antv/g6'
+import { setEncephalogramParams } from '@store/encephalogram'
+
 const MapContent = (props: any) => {
   const { projectId } = useProjectId()
   // const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
+  const dispatch = useDispatch()
   const mapRef = useRef<any>(null)
   const mapBoxRef = useRef<HTMLDivElement>(null)
   const { data } = useMapData()
@@ -55,13 +58,31 @@ const MapContent = (props: any) => {
     mapRef.current = graph
     graph.data({ name: '', style: { fontSize: 18 } })
     graph.render()
+    return () => {
+      dispatch(
+        setEncephalogramParams({
+          iterationVal: [],
+          state: [],
+          time: [],
+          person: [],
+          group_by: 'user',
+          refresh: 0,
+          num: 1,
+          numType: '',
+        }),
+      )
+    }
   }, [])
   useEffect(() => {
-    if(encephalogramParams.numType === 'wheel'){
+    if (encephalogramParams.numType === 'wheel') {
       return
     }
-    mapRef.current.zoomTo(Number(encephalogramParams.num), { x: 100, y: 100 }, true)
-  }, [encephalogramParams.num,encephalogramParams.numType])
+    mapRef.current.zoomTo(
+      Number(encephalogramParams.num),
+      { x: 100, y: 100 },
+      true,
+    )
+  }, [encephalogramParams.num, encephalogramParams.numType])
   useEffect(() => {
     if (data && mapRef.current) {
       mapRef.current.changeData(data)

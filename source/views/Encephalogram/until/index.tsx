@@ -1,15 +1,20 @@
 import moment from 'moment'
+import { v4 as uuidv4 } from 'uuid'
 
-export const flattenObjectToArray = (obj: any, array: any[] = []) => {
+export const flattenObjectToArray = (
+  obj: any,
+  group_by: string,
+  array: any[] = [],
+) => {
   if (Array.isArray(obj.children)) {
-    const temp = { ...obj, id: String(obj.id) }
+    const temp = { ...obj, id: String(obj.node_key), group_by, ids: obj.id }
     delete temp.children
     array.push(temp)
     obj.children.forEach((item: any) => {
-      flattenObjectToArray(item, array)
+      flattenObjectToArray(item, group_by, array)
     })
   } else {
-    array.push({ ...obj, id: String(obj.id) })
+    array.push({ ...obj, ids: obj.id, id: String(obj.node_key), group_by })
   }
   return array
 }
@@ -113,9 +118,36 @@ export const buildIntactTree = (tempArr: any[]) => {
     }
     return tree
   }, [])
-
-  if (tree) {
-    return tree[0]
+  arr.forEach((k: any) => {
+    if (
+      k.node_type === 'story' &&
+      k.group_by === 'task' &&
+      idMap[k.node_key] &&
+      !idMap[k.node_key]?.children?.length
+    ) {
+      const item = idMap[k.node_key]
+      const tempArr = item?.handlers?.map((i: any) => {
+        return {
+          ...i,
+          id: uuidv4(),
+          node_key: String(uuidv4()),
+          node_pid: k.node_key,
+          name: `${i.department_name} ${i.position_name} ${i.name}`,
+          project_id: k.project_id,
+          node_type: 'user',
+          style: {
+            fontSize: 14,
+            fill: '#FFFFFF',
+          },
+        }
+      })
+      if (tempArr?.length) {
+        item.children = tempArr
+      }
+    }
+  })
+  if (Array.isArray(tree)) {
+    return tree.find((k: any) => k.node_pid === 0)
   }
   return tree
 }

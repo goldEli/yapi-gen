@@ -1,5 +1,5 @@
 import G6, { Util } from '@antv/g6'
-import { setEncephalogramParmas } from '@store/encephalogram'
+import { setEncephalogramParams } from '@store/encephalogram'
 import { store, useDispatch } from '@store/index'
 
 const getGraph = () => {
@@ -187,15 +187,18 @@ const getGraph = () => {
           return 40
         },
         getHGap: function getHGap(cfg: any) {
-          const wd = Util.getTextSize(cfg.name, cfg.style.fontSize)[0] + 20
+          const wd =
+            Util.getTextSize(cfg.name, cfg.style.fontSize || 14)[0] + 20
           return wd > 100 ? wd : 100
         },
       },
       plugins: [tooltip],
     })
     graph.on('wheel', () => {
-      store.dispatch(setEncephalogramParmas({ numType: 'wheel' }))
-      store.dispatch(setEncephalogramParmas({ num: Number(graph.getZoom().toFixed(2)) }))
+      store.dispatch(setEncephalogramParams({ numType: 'wheel' }))
+      store.dispatch(
+        setEncephalogramParams({ num: Number(graph.getZoom().toFixed(2)) }),
+      )
     })
     graph.on('node:mouseenter', (event: any) => {
       const { item } = event

@@ -12,7 +12,7 @@ export const getMapList = async (params: any) => {
       ...response.data,
       project_id: response.data.id,
     }
-    const arr = flattenObjectToArray(temp)
+    const arr = flattenObjectToArray(temp, params.group_by)
     addTaskForTable(params.project_id, arr, params.group_by)
   }
   return response.data

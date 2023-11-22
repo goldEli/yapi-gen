@@ -25,14 +25,14 @@ import {
   RowTree,
   TextTree,
 } from '@/views/Encephalogram/styles'
-import { Checkbox, Input, Popover, Space,Image } from 'antd'
+import { Checkbox, Input, Popover, Space, Image } from 'antd'
 import IconFont from '@/components/IconFont'
 import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import { useDispatch } from 'react-redux'
-import { setEncephalogramParmas } from '@store/encephalogram'
+import { setEncephalogramParams } from '@store/encephalogram'
 import { useSelector } from '@store/index'
 import { getIterateList } from '@/services/iterate'
 import { useTranslation } from 'react-i18next'
@@ -226,14 +226,14 @@ const TopArea = () => {
     if (e.target.checked) {
       setPersonVal([...personVal, ...newVal])
       dispatch(
-        setEncephalogramParmas({
+        setEncephalogramParams({
           person: [...personVal, ...newVal],
         }),
       )
     } else {
       setPersonVal(personVal.filter((el: any) => !newVal?.includes(el)))
       dispatch(
-        setEncephalogramParmas({
+        setEncephalogramParams({
           person: personVal.filter((el: any) => !newVal?.includes(el)),
         }),
       )
@@ -259,14 +259,14 @@ const TopArea = () => {
     if (e.target.checked) {
       setPersonVal([...personVal, i.id])
       dispatch(
-        setEncephalogramParmas({
+        setEncephalogramParams({
           person: [...personVal, i.id],
         }),
       )
     } else {
       setPersonVal(personVal.filter((el: any) => el !== i.id))
       dispatch(
-        setEncephalogramParmas({
+        setEncephalogramParams({
           person: personVal.filter((el: any) => el !== i.id),
         }),
       )
@@ -335,7 +335,7 @@ const TopArea = () => {
     }))
     setPersonData(newChild)
     dispatch(
-      setEncephalogramParmas({
+      setEncephalogramParams({
         person: [],
       }),
     )
@@ -417,7 +417,7 @@ const TopArea = () => {
   const onClickSearch = (value: []) => {
     setStateVal(value || [])
     dispatch(
-      setEncephalogramParmas({
+      setEncephalogramParams({
         state: value || [],
       }),
     )
@@ -425,7 +425,7 @@ const TopArea = () => {
   // 选中迭代
   const onChangeSelect = (value: Array<number>) => {
     dispatch(
-      setEncephalogramParmas({
+      setEncephalogramParams({
         iterationVal: value || [],
       }),
     )
@@ -439,7 +439,7 @@ const TopArea = () => {
       if (s === '1970-01-01') {
         setDate(null)
         dispatch(
-          setEncephalogramParmas({
+          setEncephalogramParams({
             time: [],
           }),
         )
@@ -447,14 +447,14 @@ const TopArea = () => {
       }
       setDate([s, d])
       dispatch(
-        setEncephalogramParmas({
+        setEncephalogramParams({
           time: [s, d],
         }),
       )
     } else {
       setDate(null)
       dispatch(
-        setEncephalogramParmas({
+        setEncephalogramParams({
           time: [],
         }),
       )
