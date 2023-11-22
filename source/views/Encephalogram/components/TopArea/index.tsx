@@ -435,11 +435,15 @@ const TopArea = () => {
     if (dates) {
       let s = moment(dates[0]).format('YYYY-MM-DD') || ''
       let d = moment(dates[1]).format('YYYY-MM-DD') || ''
-      console.log(s,d)
-      if(s === '1970-01-01'){
-        s = ''
-      }else if(d === '1970-01-01'){
-        d=''
+      console.log(s, d)
+      if (s === '1970-01-01') {
+        setDate(null)
+        dispatch(
+          setEncephalogramParmas({
+            time: [],
+          }),
+        )
+        return
       }
       setDate([s, d])
       dispatch(
