@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/rules-of-hooks */
 import styled from '@emotion/styled'
@@ -51,10 +52,18 @@ const index = (props: any) => {
       })
       .filter((i: any) => i !== undefined)
   }
-
+  const resove = (arry: any, ids: any) => {
+    const data = arry.reduce((acc: any, cur: any) => {
+      const ids = cur.children.map((item: any) => item.id)
+      acc = acc.concat(ids)
+      return acc
+    }, [])
+    return data.filter((item: any) => !ids.includes(item))
+  }
   const invertSelection = () => {
-    const invertSelectionArray = getArrDifference(props.options, props.value)
-    props.onChange(invertSelectionArray)
+    const id = resove(props.options, props.value)
+    // const invertSelectionArray = getArrDifference(props.options, props.value)
+    props.onChange(id)
     props.onConfirm?.(props.id)
   }
 
