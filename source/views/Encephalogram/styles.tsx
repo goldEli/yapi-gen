@@ -7,8 +7,8 @@ export const EncephalogramBox = styled.div`
   position: relative;
   cursor: pointer;
   box-sizing: border-box;
-  padding: 20px 6px 0px 0px;
-  margin-left: 24px;
+  padding: 20px 6px 0px 0px !important;
+  margin-left: 24px !important;
   background-color: var(--neutral-white-d1);
   .g6-component-tooltip {
     background-color: rgba(0, 0, 0, 0.7);
@@ -79,7 +79,7 @@ export const RowTree = styled.div`
   justify-content: space-between;
   height: 40px;
   .rowChild {
-    width: 90%;
+    width: 70%;
     display: flex;
     align-items: center;
     img {
@@ -89,7 +89,7 @@ export const RowTree = styled.div`
     }
   }
   .rowChildtext {
-    width: 10%;
+    width: 20%;
     font-size: 12px;
     color: var(--neutral-n3);
     text-align: right;
@@ -143,6 +143,9 @@ export const PopoverBtn = styled.div`
 export const Content = styled.div`
   padding: 0 24px;
   width: 360px;
+  max-height:680px;
+  overflow-x:hidden;
+  overflow-y: scroll;
 `
 export const HeaderPopover = styled.div`
   display: flex;

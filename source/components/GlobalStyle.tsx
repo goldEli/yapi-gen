@@ -1061,9 +1061,12 @@ const GlobalStyle = () => {
       width: 100%;
       height: 100%;
       cursor: pointer;
-      background-size: 100% 98%;
+      background-size: 100%;
       background-repeat: no-repeat;
       background-image: url('https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mind/dotBg.png');
+    }
+    .fullscreen-enabled .encephalogramBox{
+      padding-left:24px !important;
     }
   `
   return <Global styles={globalCss} />

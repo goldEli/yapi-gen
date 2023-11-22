@@ -25,7 +25,7 @@ import {
   RowTree,
   TextTree,
 } from '@/views/Encephalogram/styles'
-import { Checkbox, Input, Popover, Space } from 'antd'
+import { Checkbox, Input, Popover, Space,Image } from 'antd'
 import IconFont from '@/components/IconFont'
 import MoreSelect from '@/components/MoreSelect'
 import RangePicker from '@/components/RangePicker'
@@ -398,7 +398,7 @@ const TopArea = () => {
                           onChange={e => onChangeS(e, item)}
                           checked={item.checked}
                         />
-                        <img src={item.avatar} />
+                        <Image src={item.avatar} />
                         <TextTree>{item.name}</TextTree>
                       </div>
                       <span className="rowChildtext">
