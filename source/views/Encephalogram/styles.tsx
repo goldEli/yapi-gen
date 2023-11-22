@@ -144,6 +144,7 @@ export const Content = styled.div`
   padding: 0 24px;
   width: 360px;
   max-height:680px;
+  overflow-x:hidden;
   overflow-y: scroll;
 `
 export const HeaderPopover = styled.div`
