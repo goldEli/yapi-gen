@@ -18,6 +18,7 @@ import {
   MoreOtherPopover,
   NotOpenLogoWrap,
   OpenLogoWrap,
+  MenusWrap,
 } from '../style'
 import { Popover, Tooltip } from 'antd'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -34,59 +35,44 @@ import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
 
 interface MorePopoverComponentProps {
   onClose(): void
+  foldList: any
+  onChangeCurrentMenu(row: any): void
 }
 
 // 更多的展示组件
 const MorePopoverComponent = (props: MorePopoverComponentProps) => {
   const [t] = useTranslation()
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { menuPermission, menuIconList } = useSelector(store => store.user)
-
-  // 点击跳转后台管理
-  const onToAdmin = () => {
-    const resultMenu = menuPermission?.menus?.filter(
-      (i: any) => i.url === '/AdminManagement',
-    )[0]
-    if (resultMenu) {
-      props.onClose()
-      navigate(resultMenu?.children?.[0]?.url)
-      dispatch({
-        type: 'user/setCurrentMenu',
-        payload: resultMenu,
-      })
-    }
-  }
+  const { menuIconList, currentMenu } = useSelector(store => store.user)
 
   return (
     <MorePopover>
       <MoreTitle>{t('moreApplications')}</MoreTitle>
       <MorePopoverContent>
-        {menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement')
-          ?.length > 0 && (
-          <MoreItem onClick={onToAdmin}>
+        {props.foldList?.map((i: any) => (
+          <MoreItem
+            onClick={() => {
+              props.onChangeCurrentMenu(i)
+              props.onClose()
+            }}
+            key={i.id}
+            className={currentMenu?.url === i.url ? activeSideMenu : ''}
+          >
             <CommonIconFont
+              type={
+                currentMenu?.id === i.id
+                  ? menuIconList?.filter((k: any) =>
+                      String(i.url).includes(k.key),
+                    )[0]?.active
+                  : menuIconList?.filter((k: any) =>
+                      String(i.url).includes(k.key),
+                    )[0]?.normal
+              }
               size={24}
               color="var(--neutral-n2)"
-              type={
-                menuIconList?.filter((k: any) =>
-                  String('/AdminManagement').includes(k.key),
-                )[0]?.normal
-              }
             />
-            <div>
-              {
-                menuPermission.menus?.filter(
-                  (k: any) => k.url === '/AdminManagement',
-                )[0]?.name
-              }
-            </div>
+            <div>{i.isRegular ? t(i.name) : i.name}</div>
           </MoreItem>
-        )}
-        {/* <MoreItem isDisable>
-          <CommonIconFont size={24} type="plus" color="var(--neutral-n2)" />
-          <div>禁用</div>
-        </MoreItem> */}
+        ))}
       </MorePopoverContent>
     </MorePopover>
   )
@@ -109,6 +95,10 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
 
   const [isPopover, setIsPopover] = useState(false)
   const [isLogoChange, setIsLogoChange] = useState(false)
+  // 正常显示的菜单
+  const [notFoldList, setNotFoldList] = useState([])
+  // 折叠菜单
+  const [foldList, setFoldList] = useState([])
 
   // 其他系统列表
   const otherSystemList = [
@@ -120,10 +110,43 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
     { name: t('toBeOpened'), url: '', icon: 'time', disable: true },
   ]
 
+  // 计算菜单显示
+  const onComputedMenu = (state: boolean, menu: any) => {
+    if (!menu?.length) return
+    // 获取左侧菜单剩余展示菜案高度
+    const clientHeight =
+      (document.getElementById('LayoutSide')?.clientHeight || 0) -
+      (state ? 142 : 160)
+    // 计算菜单显示区域能显示几个菜单
+    const menuNumber = Math.floor(clientHeight / (state ? 48 : 72)) - 1
+
+    // 如果显示条数大于菜单条数，则全部显示除后台管理
+    if (menuNumber > menu?.length) {
+      setNotFoldList(
+        menuPermission.menus?.filter((k: any) => k.url !== '/AdminManagement'),
+      )
+      setFoldList(
+        menuPermission.menus?.filter(
+          (k: any) => k.url === '/AdminManagement' || [],
+        ),
+      )
+    } else {
+      // 删除后台管理
+      const notHave = menu?.filter((k: any) => k.url !== '/AdminManagement')
+      setNotFoldList(notHave.slice(0, menuNumber))
+      setFoldList(
+        notHave
+          .slice(menuNumber, menu?.length - 1)
+          .concat(menu?.filter((k: any) => k.url === '/AdminManagement')),
+      )
+    }
+  }
+
   // 切换展开折叠
   const onChangeCollapse = () => {
     setTimeout(() => {
       dispatch(setLayoutSideCollapse(!layoutSideCollapse))
+      onComputedMenu(!layoutSideCollapse, menuPermission?.menus)
     }, 100)
   }
 
@@ -227,11 +250,16 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
         routerPath.pathname?.includes(i.url),
       )[0]
       dispatch(setCurrentMenu(resultMenu))
+      onComputedMenu(layoutSideCollapse, menuPermission?.menus)
     }
   }, [menuPermission, routerPath])
 
   return (
-    <LayoutSide isOpen={layoutSideCollapse} onClick={props.onClose}>
+    <LayoutSide
+      isOpen={layoutSideCollapse}
+      onClick={props.onClose}
+      id="LayoutSide"
+    >
       {/* 折叠状态下的 */}
       {!layoutSideCollapse && (
         <NotOpenLogoWrap>
@@ -323,9 +351,8 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       {/* 占位使用 */}
       <div style={{ width: 60, height: layoutSideCollapse ? 24 : 16 }} />
 
-      {menuPermission.menus
-        ?.filter((k: any) => k.url !== '/AdminManagement')
-        ?.map((i: any) => (
+      <MenusWrap isOpen={layoutSideCollapse}>
+        {notFoldList?.map((i: any) => (
           <div
             key={i.id}
             onClick={() => onChangeCurrentMenu(i)}
@@ -355,33 +382,45 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
           </div>
         ))}
 
-      {menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement')
-        ?.length > 0 && (
-        <Popover
-          placement="right"
-          destroyTooltipOnHide
-          open={isPopover}
-          content={<MorePopoverComponent onClose={() => setIsPopover(false)} />}
-          onOpenChange={setIsPopover}
-        >
-          <div
-            className={`${
-              layoutSideCollapse ? openSideMenu : notOpenSideMenu
-            } ${currentMenu?.url === '/AdminManagement' ? activeSideMenu : ''}`}
+        {foldList?.length > 0 && (
+          <Popover
+            placement="right"
+            destroyTooltipOnHide
+            open={isPopover}
+            content={
+              <MorePopoverComponent
+                onClose={() => setIsPopover(false)}
+                foldList={foldList}
+                onChangeCurrentMenu={onChangeCurrentMenu}
+              />
+            }
+            onOpenChange={setIsPopover}
           >
-            <CommonIconFont
-              type={
-                currentMenu?.url === '/AdminManagement'
-                  ? 'selections-sel'
-                  : 'selections-nor'
-              }
-              size={24}
-              color="var(--neutral-n2)"
-            />
-            <div>{t('more')}</div>
-          </div>
-        </Popover>
-      )}
+            <div
+              className={`${
+                layoutSideCollapse ? openSideMenu : notOpenSideMenu
+              } ${
+                foldList?.filter((i: any) => i.url === currentMenu?.url)
+                  ?.length > 0
+                  ? activeSideMenu
+                  : ''
+              }`}
+            >
+              <CommonIconFont
+                type={
+                  foldList?.filter((i: any) => i.url === currentMenu?.url)
+                    ?.length > 0
+                    ? 'selections-sel'
+                    : 'selections-nor'
+                }
+                size={24}
+                color="var(--neutral-n2)"
+              />
+              <div>{t('more')}</div>
+            </div>
+          </Popover>
+        )}
+      </MenusWrap>
 
       <CollapseWrap>
         {layoutSideCollapse && (

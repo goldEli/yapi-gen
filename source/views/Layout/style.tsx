@@ -155,6 +155,15 @@ export const LayoutSide = styled.div<{ isOpen?: boolean }>`
   }
 `
 
+export const MenusWrap = styled.div<{ isOpen?: boolean }>`
+  height: ${props =>
+    props.isOpen ? 'calc(100% - 106px)' : 'calc(100% - 124px)'};
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+`
+
 export const LayoutContent = styled.div<{ isOpen?: boolean }>`
   flex: 1;
   transition: 0.3s;
@@ -285,6 +294,7 @@ export const openSideMenu = css`
 
 export const activeSideMenu = css`
   background: var(--selected) !important;
+  border: none !important;
   svg {
     color: var(--primary-d2) !important;
   }
