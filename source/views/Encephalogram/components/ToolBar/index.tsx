@@ -34,7 +34,7 @@ const SelectWrap = styled(Select)`
 `
 const ToolBar = () => {
   const dispatch = useDispatch()
-  const [value, setValue] = useState('50')
+  const [value, setValue] = useState('1')
   const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
   const debounceRef = useRef<any>()
@@ -45,35 +45,35 @@ const ToolBar = () => {
   const items = [
     {
       label: '25%',
-      value: '25',
+      value: '0.2',
     },
     {
       label: '50%',
-      value: '50',
+      value: '0.5',
     },
     {
       label: '75%',
-      value: '75',
+      value: '0.75',
     },
     {
       label: '100%',
-      value: '100',
+      value: '1',
     },
     {
       label: '125%',
-      value: '125',
+      value: '1.25',
     },
     {
       label: '150%',
-      value: '150',
+      value: '1.5',
     },
     {
       label: '175%',
-      value: '175',
+      value: '1.75',
     },
     {
       label: '200%',
-      value: '200',
+      value: '2',
     },
   ]
   const handleChange = (val: string) => {
