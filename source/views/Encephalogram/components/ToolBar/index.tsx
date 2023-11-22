@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { setEncephalogramParmas } from '@store/encephalogram'
 import styled from '@emotion/styled'
 import { CommonIconFont } from '@/components/CommonIconFont'
-import _, { debounce } from 'lodash'
+import _ from 'lodash'
 
 const Btn = styled.div`
   height: 32px;
@@ -116,7 +116,6 @@ const ToolBar = () => {
       return
     }
     setAddReduceVal(val)
-    setValue(`${Math.trunc(val * 100)}%`)
     dispatch(setEncephalogramParmas({ num: val }))
   }
   const handleChangeReduce = () => {
@@ -126,7 +125,7 @@ const ToolBar = () => {
       return
     }
     setAddReduceVal(val)
-    setValue(`${Math.trunc(val * 100)}%`)
+    
     dispatch(setEncephalogramParmas({ num: val }))
   }
   const onRefresh = _.debounce(() => {
@@ -136,7 +135,9 @@ const ToolBar = () => {
       }),
     )
   }, 500)
- 
+  useEffect(() => {
+    setValue(`${Math.trunc(encephalogramParams.num * 100)}%`)
+  }, [encephalogramParams.num])
   return (
     <ToolBarBox className="toolBar">
       <RightWrap type="1">
