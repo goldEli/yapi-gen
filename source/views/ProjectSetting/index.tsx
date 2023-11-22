@@ -8,6 +8,7 @@ import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
 import KanBanSettings from './components/KanBanSetting'
 import HomeSettings from './components/HomeSetting'
+import WorkingTimeConfig from './components/WorkTimeConfig/index'
 import {
   Outlet,
   useLocation,
@@ -150,6 +151,14 @@ const Setting = () => {
           isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
             String(i.identity).includes('b/project/warning_config'),
           ).length,
+        },
+        {
+          label: '工作时间配置',
+          icon: 'settings',
+          content: <WorkingTimeConfig />,
+          isPermission: true,
+          key: 'WorkingTimeConfig',
+          url: '/ProjectDetail/Setting/WorkingTimeConfig',
         },
       ]
       setResultTabList(list?.filter((i: any) => i.isPermission))

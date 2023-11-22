@@ -343,6 +343,15 @@ const routes = [
                     ),
                 ),
               },
+              {
+                path: 'WorkingTimeConfig',
+                element: lazy(
+                  () =>
+                    import(
+                      '@/views/ProjectSetting/components/WorkTimeConfig/EditTable'
+                    ),
+                ),
+              },
             ],
           },
           {
