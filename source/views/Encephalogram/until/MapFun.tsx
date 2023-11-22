@@ -194,6 +194,7 @@ const getGraph = () => {
       plugins: [tooltip],
     })
     graph.on('wheel', () => {
+      store.dispatch(setEncephalogramParmas({ numType: 'wheel' }))
       store.dispatch(setEncephalogramParmas({ num: Number(graph.getZoom().toFixed(2)) }))
     })
     graph.on('node:mouseenter', (event: any) => {

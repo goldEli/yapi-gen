@@ -141,7 +141,7 @@ const RangePicker = (props: Props) => {
           isActive={getIsMatching(5)}
           onClick={() => onClickDate(5)}
         >
-          {t('common.null')}
+          {t('common.null')}11
         </DateQuickWrap>
       </div>
     )

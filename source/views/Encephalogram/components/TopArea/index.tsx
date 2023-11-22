@@ -431,8 +431,14 @@ const TopArea = () => {
   // 时间选择
   const onChangeTime = (dates: any) => {
     if (dates) {
-      const s = moment(dates[0]).format('YYYY-MM-DD') || ''
-      const d = moment(dates[1]).format('YYYY-MM-DD') || ''
+      let s = moment(dates[0]).format('YYYY-MM-DD') || ''
+      let d = moment(dates[1]).format('YYYY-MM-DD') || ''
+      console.log(s,d)
+      if(s === '1970-01-01'){
+        s = ''
+      }else if(d === '1970-01-01'){
+        d=''
+      }
       setDate([s, d])
       dispatch(
         setEncephalogramParmas({

@@ -17,6 +17,7 @@ type SliceState = {
     refresh: number
     // 放大缩小的
     num: number
+    numType: string
   }
 }
 
@@ -29,6 +30,7 @@ const initialState: SliceState = {
     group_by: 'user',
     refresh: 0,
     num: 1,
+    numType: ''
   },
 }
 

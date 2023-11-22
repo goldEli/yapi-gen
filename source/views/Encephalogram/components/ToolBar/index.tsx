@@ -110,10 +110,12 @@ const ToolBar = () => {
   const handleChangeAdd = () => {
     const val = encephalogramParams.num + 0.05
     dispatch(setEncephalogramParmas({ num: (val)?.toFixed(2) }))
+    dispatch(setEncephalogramParmas({ numType: 'click' }))
   }
   const handleChangeReduce = () => {
     const val = encephalogramParams.num - 0.05
     dispatch(setEncephalogramParmas({ num: (val)?.toFixed(2) }))
+    dispatch(setEncephalogramParmas({ numType: 'click' }))
   }
   const onRefresh = _.debounce(() => {
     dispatch(

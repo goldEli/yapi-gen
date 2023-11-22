@@ -259,8 +259,11 @@ const MapContent = (props: any) => {
     graph.render()
   }, [])
   useEffect(() => {
+    if(encephalogramParams.numType === 'wheel'){
+      return
+    }
     mapRef.current.zoomTo(Number(encephalogramParams.num), { x: 100, y: 100 }, true)
-  }, [encephalogramParams.num])
+  }, [encephalogramParams.num,encephalogramParams.numType])
   useEffect(() => {
     if (data && mapRef.current) {
       mapRef.current.changeData(data)
