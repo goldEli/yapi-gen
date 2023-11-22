@@ -179,7 +179,7 @@ const getGraph = () => {
         type: 'compactBox',
         direction: 'LR',
         getId: function getId(d: any) {
-          return d.id
+          return d.node_key
         },
         getHeight: function getHeight() {
           return 40

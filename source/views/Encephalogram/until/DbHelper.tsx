@@ -4,11 +4,11 @@ export const haveHistoryData = async (id: number, group_by: string) => {
   if (!db.isOpen()) {
     await db.open()
   }
-  const table = (db as any).item
+  const table = (db as any)[group_by]
   let pm
   if (table) {
     pm = new Promise(resolve => {
-      table.where({ project_id: id, group_by }).count((count: any) => {
+      table.where({ project_id: id }).count((count: any) => {
         if (count <= 0) {
           resolve(false)
         } else {
@@ -29,7 +29,7 @@ export const addTaskForTable = async (
     await db.open()
   }
   const hasId: any = await haveHistoryData(id, group_by)
-  const table = (db as any).item
+  const table = (db as any)[group_by]
   if (table && !hasId) {
     table.bulkPut(tasks)
   }
@@ -39,9 +39,9 @@ export const delTaskForTable = async (id: number, group_by: string) => {
   if (!db.isOpen()) {
     await db.open()
   }
-  const table = (db as any).item
+  const table = (db as any)[group_by]
   if (table) {
-    await table.where({ project_id: id, group_by }).delete()
+    await table.where({ project_id: id }).delete()
   }
 }
 
