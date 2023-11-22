@@ -7,7 +7,7 @@ import FullScreenBox from './components/FullScreenBox'
 const Encephalogram = () => {
   return (
     <FullScreenBox>
-      <EncephalogramBox>
+      <EncephalogramBox className='encephalogramBox'>
         <TopArea />
         <ToolBar />
         <MapContent />
