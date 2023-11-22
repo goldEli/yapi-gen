@@ -210,7 +210,6 @@ const getGraph = () => {
       const { item } = event
       graph.setItemState(item, 'hover', false)
     })
-    
   }
   return graph
 }

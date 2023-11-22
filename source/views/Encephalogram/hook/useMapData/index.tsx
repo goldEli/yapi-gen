@@ -8,24 +8,70 @@ import { useSelector } from '@store/index'
 const useMapData = () => {
   const { projectId } = useProjectId()
   const { encephalogramParams } = useSelector(store => store.encephalogram)
-  const allItems = useLiveQuery(() => {
+  const { group_by, person, iterationVal, state, time } = encephalogramParams
+  const allItems: any[] = useLiveQuery(() => {
     if (projectId) {
-      return (db as any)[encephalogramParams.group_by]
+      const allList = (db as any)[encephalogramParams.group_by]
         .where({
           project_id: projectId,
         })
         .toArray()
+      return allList
     }
     return []
-  }, [projectId, encephalogramParams.group_by])
+  }, [projectId, group_by])
 
   const data = useMemo(() => {
     if (!allItems) {
       return null
     }
-    return buildIntactTree(allItems)
-  }, [JSON.stringify(allItems)])
+    const filterItems = allItems.filter((item: any) => {
+      console.log(item, 'itemitemitemitemitemitem')
+      if (item.node_type === 'story') {
+        let isNeed = true
+        if (iterationVal.length) {
+          if (iterationVal.includes(item.iterate_id)) {
+            isNeed = true
+          } else {
+            return false
+          }
+        }
+        if (person.length) {
+          const handlers = item?.handlers?.map?.((k: any) => k.id)
+          if (handlers.some((t: any) => person.includes(t))) {
+            isNeed = true
+          } else {
+            return false
+          }
+        }
+        if (state.length) {
+          if (state.includes(item.category_status_id)) {
+            isNeed = true
+          } else {
+            return false
+          }
+        }
+        if (time.length) {
+          if (state.includes(item.category_status_id)) {
+            isNeed = true
+          } else {
+            return false
+          }
+        }
+        return isNeed
+      }
+      return false
+    })
+    console.log(filterItems, 'filterItemsfilterItemsfilterItemsfilterItems')
 
+    return buildIntactTree(allItems)
+  }, [
+    JSON.stringify(allItems),
+    JSON.stringify(person),
+    JSON.stringify(iterationVal),
+    JSON.stringify(state),
+    JSON.stringify(time),
+  ])
 
   return {
     data: data,
