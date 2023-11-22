@@ -297,16 +297,19 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
 
   // 获取头部初始数据
   const getInitDaily = async () => {
-    const result = await initDaily({ type: type === 'project' ? 3 : 2 })
+    const result = await initDaily({
+      type: type === 'project' ? 3 : 2,
+      project_id: currentProject.id,
+    })
     setInitData(result)
   }
 
   useEffect(() => {
-    if (visible) {
+    if (visible && currentProject) {
       getInitDaily()
       getProjectDataList()
     }
-  }, [visible])
+  }, [visible, currentProject])
 
   useEffect(() => {
     if (currentProject) {
