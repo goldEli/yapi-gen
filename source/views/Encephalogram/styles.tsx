@@ -79,7 +79,7 @@ export const RowTree = styled.div`
   justify-content: space-between;
   height: 40px;
   .rowChild {
-    width: 90%;
+    width: 70%;
     display: flex;
     align-items: center;
     img {
@@ -89,7 +89,7 @@ export const RowTree = styled.div`
     }
   }
   .rowChildtext {
-    width: 10%;
+    width: 20%;
     font-size: 12px;
     color: var(--neutral-n3);
     text-align: right;
@@ -143,6 +143,8 @@ export const PopoverBtn = styled.div`
 export const Content = styled.div`
   padding: 0 24px;
   width: 360px;
+  max-height:680px;
+  overflow-y: scroll;
 `
 export const HeaderPopover = styled.div`
   display: flex;
