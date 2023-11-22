@@ -6,11 +6,11 @@ import html2canvas from 'html2canvas'
 import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { setEncephalogramParmas } from '@store/encephalogram'
 import styled from '@emotion/styled'
 import { CommonIconFont } from '@/components/CommonIconFont'
-import _ from 'lodash'
+import _, { debounce } from 'lodash'
 
 const Btn = styled.div`
   height: 32px;
@@ -111,6 +111,7 @@ const ToolBar = () => {
   })
   const handleChangeAdd = () => {
     const val = Number((addReduceVal + 0.05).toFixed(2))
+    console.log(val,'val',addReduceVal)
     if (addReduceVal + 0.05 > 2) {
       return
     }
@@ -119,7 +120,8 @@ const ToolBar = () => {
     dispatch(setEncephalogramParmas({ num: val }))
   }
   const handleChangeReduce = () => {
-    const val = Number((addReduceVal - 0.05).toFixed(2))
+    const val = Number((JSON.parse(JSON.stringify(addReduceVal)) - 0.05).toFixed(2))
+    console.log(val,'val')
     if (val < 0.2) {
       return
     }
@@ -134,6 +136,7 @@ const ToolBar = () => {
       }),
     )
   }, 500)
+ 
   return (
     <ToolBarBox className="toolBar">
       <RightWrap type="1">
@@ -154,21 +157,21 @@ const ToolBar = () => {
       </RightWrap>
       <RightWrap type="2">
         <Space size={16}>
-        <Tooltip placement="top" title={'全屏'}>
-          <IconFont
-            type="fewer-screen"
-            style={{
-              fontSize: 24,
-              color: 'var(--neutral-n2)',
-            }}
-            onClick={() => {
-              if (fullScreen) {
-                dispatch(offFullScreenMode())
-              } else {
-                dispatch(onFullScreenMode())
-              }
-            }}
-          />
+          <Tooltip placement="top" title={'全屏'}>
+            <IconFont
+              type="fewer-screen"
+              style={{
+                fontSize: 24,
+                color: 'var(--neutral-n2)',
+              }}
+              onClick={() => {
+                if (fullScreen) {
+                  dispatch(offFullScreenMode())
+                } else {
+                  dispatch(onFullScreenMode())
+                }
+              }}
+            />
           </Tooltip>
           <Tooltip placement="top" title={'刷新'}>
             <IconFont
@@ -184,16 +187,16 @@ const ToolBar = () => {
           <span className="line" />
         </Space>
         <Space size={10}>
-        <Tooltip placement="top" title={'放大'}>
-          <IconFont
-            onClick={handleChangeAdd}
-            type="zoomin"
-            style={{
-              fontSize: 24,
-              color: 'var(--neutral-n2)',
-              margin: '0 4px',
-            }}
-          />
+          <Tooltip placement="top" title={'放大'}>
+            <IconFont
+              onClick={handleChangeAdd}
+              type="zoomin"
+              style={{
+                fontSize: 24,
+                color: 'var(--neutral-n2)',
+                margin: '0 4px',
+              }}
+            />
           </Tooltip>
           <SelectWrap
             showArrow
@@ -223,15 +226,15 @@ const ToolBar = () => {
             )}
           />
           <Tooltip placement="top" title={'缩小'}>
-          <IconFont
-            onClick={handleChangeReduce}
-            type="reduce"
-            style={{
-              fontSize: 24,
-              color: 'var(--neutral-n2)',
-              margin: '0 4px',
-            }}
-          />
+            <IconFont
+              onClick={handleChangeReduce}
+              type="reduce"
+              style={{
+                fontSize: 24,
+                color: 'var(--neutral-n2)',
+                margin: '0 4px',
+              }}
+            />
           </Tooltip>
           <span className="line" />
         </Space>

@@ -26,7 +26,6 @@ const useMapData = () => {
     return buildIntactTree(allItems)
   }, [JSON.stringify(allItems)])
 
-  console.log(data, 'datatatasss')
 
   return {
     data: data,

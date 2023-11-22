@@ -191,7 +191,10 @@ const getGraph = () => {
       },
       plugins: [tooltip],
     })
-
+    graph.on('wheel', (event: any) => {
+      console.log(1234, 'event',event)
+     
+    })
     graph.on('node:mouseenter', (event: any) => {
       const { item } = event
       const data = item.getModel()
@@ -200,10 +203,12 @@ const getGraph = () => {
         tooltip.hide()
       }
     })
+
     graph.on('node:mouseleave', (event: any) => {
       const { item } = event
       graph.setItemState(item, 'hover', false)
     })
+    
   }
   return graph
 }

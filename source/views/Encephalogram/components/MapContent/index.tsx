@@ -8,7 +8,9 @@ import useProjectId from '@/views/Encephalogram/hook/useProjectId'
 import useMapData from '../../hook/useMapData'
 import init from '@/views/Encephalogram/until/MapFun'
 import { getMapList } from '@/services/map'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setEncephalogramParmas } from '@store/encephalogram'
+import { debounce } from 'lodash'
 // type MapContentPropsType = {}
 
 const MapContent = (props: any) => {
@@ -17,7 +19,7 @@ const MapContent = (props: any) => {
   const { encephalogramParams } = useSelector(store => store.encephalogram)
   const mapRef = useRef<any>(null)
   const { data } = useMapData()
-
+  const dispatch = useDispatch()
   const addTask = async () => {
     const hasId: any = await haveHistoryData(
       projectId,
@@ -259,8 +261,32 @@ const MapContent = (props: any) => {
     graph.data({ name: '', style: { fontSize: 18 } })
     graph.render()
   }, [])
-
+  // useEffect(() => {
+  //   const w = debounce(async(e: any) => {
+  //     if (e.deltaY < 0) {
+  //       e.preventDefault()
+  //       e.stopPropagation()
+  //         console.log(222,encephalogramParams.num )
+  //         const a = encephalogramParams.num + 5
+  //         dispatch(
+  //           setEncephalogramParmas({
+  //             num: a,
+  //           })
+  //         )
+  //     } else {
+  //       e.preventDefault()
+  //       e.stopPropagation()
+  //         console.log(333,encephalogramParams.num)
+  //         dispatch(
+  //           setEncephalogramParmas({
+  //             num: encephalogramParams.num - 0.05,
+  //           }))
+  //     }
+  //   },100)
+  //   window.addEventListener('wheel', w)
+  // }, [])
   useEffect(() => {
+    console.log(encephalogramParams.num,'encephalogramParams.num')
     mapRef.current.zoomTo(Number(encephalogramParams.num), { x: 100, y: 100 }, true)
   }, [encephalogramParams.num])
   useEffect(() => {
