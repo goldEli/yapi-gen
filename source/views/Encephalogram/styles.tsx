@@ -2,7 +2,7 @@ import CustomSelect from '@/components/CustomSelect'
 import styled from '@emotion/styled'
 
 export const EncephalogramBox = styled.div`
-  width: 100%;
+  width: calc(100% - 32px);
   height: 100%;
   position: relative;
   cursor: pointer;
