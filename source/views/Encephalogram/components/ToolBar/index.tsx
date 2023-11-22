@@ -37,7 +37,6 @@ const ToolBar = () => {
   const [value, setValue] = useState<any>(1)
   const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
-  const [addReduceVal, setAddReduceVal] = useState(1)
   const onChange = (id: number) => {
     dispatch(setEncephalogramParmas({ group_by: id === 0 ? 'user' : 'task' }))
   }
@@ -78,7 +77,6 @@ const ToolBar = () => {
   const handleChange = (val: number) => {
     dispatch(setEncephalogramParmas({ num: val }))
     setValue(val)
-    setAddReduceVal(val)
   }
 
   const downloadImage = _.debounce(() => {
@@ -110,23 +108,12 @@ const ToolBar = () => {
       })
   })
   const handleChangeAdd = () => {
-    const val = Number((addReduceVal + 0.05).toFixed(2))
-    console.log(val,'val',addReduceVal)
-    if (addReduceVal + 0.05 > 2) {
-      return
-    }
-    setAddReduceVal(val)
-    dispatch(setEncephalogramParmas({ num: val }))
+    const val = encephalogramParams.num + 0.05
+    dispatch(setEncephalogramParmas({ num: (val)?.toFixed(2) }))
   }
   const handleChangeReduce = () => {
-    const val = Number((JSON.parse(JSON.stringify(addReduceVal)) - 0.05).toFixed(2))
-    console.log(val,'val')
-    if (val < 0.2) {
-      return
-    }
-    setAddReduceVal(val)
-    
-    dispatch(setEncephalogramParmas({ num: val }))
+    const val = encephalogramParams.num - 0.05
+    dispatch(setEncephalogramParmas({ num: (val)?.toFixed(2) }))
   }
   const onRefresh = _.debounce(() => {
     dispatch(
