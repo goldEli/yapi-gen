@@ -1,12 +1,12 @@
 import { ToolBarBox, RightWrap } from '@/views/Encephalogram/styles'
 import Tabs from '@/components/Tabs'
-import { Divider, Select, Space } from 'antd'
+import { Divider, Select, Space, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import html2canvas from 'html2canvas'
 import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { setEncephalogramParmas } from '@store/encephalogram'
 import styled from '@emotion/styled'
 import { CommonIconFont } from '@/components/CommonIconFont'
@@ -154,41 +154,47 @@ const ToolBar = () => {
       </RightWrap>
       <RightWrap type="2">
         <Space size={16}>
-          <IconFont
-            type="fewer-screen"
-            style={{
-              fontSize: 24,
-              color: 'var(--neutral-n2)',
-            }}
-            onClick={() => {
-              if (fullScreen) {
-                dispatch(offFullScreenMode())
-              } else {
-                dispatch(onFullScreenMode())
-              }
-            }}
-          />
-          <IconFont
-            type="sync"
-            style={{
-              fontSize: 24,
-              color: 'var(--neutral-n2)',
-              margin: '0 4px',
-            }}
-            onClick={onRefresh}
-          />
+          <Tooltip placement="top" title={'全屏'}>
+            <IconFont
+              type="fewer-screen"
+              style={{
+                fontSize: 24,
+                color: 'var(--neutral-n2)',
+              }}
+              onClick={() => {
+                if (fullScreen) {
+                  dispatch(offFullScreenMode())
+                } else {
+                  dispatch(onFullScreenMode())
+                }
+              }}
+            />
+          </Tooltip>
+          <Tooltip placement="top" title={'刷新'}>
+            <IconFont
+              type="sync"
+              style={{
+                fontSize: 24,
+                color: 'var(--neutral-n2)',
+                margin: '0 4px',
+              }}
+              onClick={onRefresh}
+            />
+          </Tooltip>
           <span className="line" />
         </Space>
         <Space size={10}>
-          <IconFont
-            onClick={handleChangeAdd}
-            type="zoomin"
-            style={{
-              fontSize: 24,
-              color: 'var(--neutral-n2)',
-              margin: '0 4px',
-            }}
-          />
+          <Tooltip placement="top" title={'放大'}>
+            <IconFont
+              onClick={handleChangeAdd}
+              type="zoomin"
+              style={{
+                fontSize: 24,
+                color: 'var(--neutral-n2)',
+                margin: '0 4px',
+              }}
+            />
+          </Tooltip>
           <SelectWrap
             showArrow
             options={items}
@@ -216,22 +222,26 @@ const ToolBar = () => {
               </>
             )}
           />
-          <IconFont
-            onClick={handleChangeReduce}
-            type="reduce"
-            style={{
-              fontSize: 24,
-              color: 'var(--neutral-n2)',
-              margin: '0 4px',
-            }}
-          />
+          <Tooltip placement="top" title={'缩小'}>
+            <IconFont
+              onClick={handleChangeReduce}
+              type="reduce"
+              style={{
+                fontSize: 24,
+                color: 'var(--neutral-n2)',
+                margin: '0 4px',
+              }}
+            />
+          </Tooltip>
           <span className="line" />
         </Space>
-        <IconFont
-          type="download"
-          style={{ fontSize: 24, color: 'var(--neutral-n2)' }}
-          onClick={downloadImage}
-        />
+        <Tooltip placement="top" title={'下载'}>
+          <IconFont
+            type="download"
+            style={{ fontSize: 24, color: 'var(--neutral-n2)' }}
+            onClick={downloadImage}
+          />
+        </Tooltip>
       </RightWrap>
     </ToolBarBox>
   )

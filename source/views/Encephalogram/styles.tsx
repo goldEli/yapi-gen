@@ -7,12 +7,17 @@ export const EncephalogramBox = styled.div`
   position: relative;
   cursor: pointer;
   box-sizing: border-box;
-  padding:20px 6px 0px 0px;
-  margin-left:24px;
-  background-color:var(--neutral-white-d1);
+  padding: 20px 6px 0px 0px;
+  margin-left: 24px;
+  background-color: var(--neutral-white-d1);
   .g6-component-tooltip {
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 6px;
+  }
+  .fullscreen-enabled & {
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 `
 
@@ -74,7 +79,7 @@ export const RowTree = styled.div`
   justify-content: space-between;
   height: 40px;
   .rowChild {
-    width:90%;
+    width: 90%;
     display: flex;
     align-items: center;
     img {
@@ -84,11 +89,11 @@ export const RowTree = styled.div`
     }
   }
   .rowChildtext {
-    width:10%;
+    width: 10%;
     font-size: 12px;
     color: var(--neutral-n3);
     text-align: right;
-    padding-right:2px;
+    padding-right: 2px;
   }
 `
 
@@ -107,11 +112,11 @@ export const Text = styled.span`
   margin-left: 4px;
 `
 export const TextTree = styled.div`
-  width:80%;
+  width: 80%;
   font-size: 12px;
   color: var(--neutral-n2);
   margin-left: 12px;
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 `
