@@ -1,19 +1,25 @@
 import { DatePicker, Form, Input, InputRef, Table, TimePicker } from 'antd'
-import React, { useEffect, useRef, useState } from 'react'
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { DisableButton, OperationBox, TableBox } from './style'
-// import {
-//   addExtraWorkTimeList,
-//   deleteExtraWorkTimeList,
-//   findExtraWorkTimeList,
-//   updateExtraWorkTimeList,
-// } from '@/services/gantt'
+import {
+  getExceptionTimeList,
+  delExceptionTime,
+  addExceptionTime,
+  editExceptionTime,
+} from '@/services/map'
 import { getMessage } from '@/components/Message'
-// import useProjectId from '../../hooks/useProjectId'
+import useProjectId from '../KanBanSetting/hooks/useProjectId'
 import { useDispatch, useSelector } from '@store/index'
 
 interface Item {
@@ -203,14 +209,13 @@ interface DataType {
 }
 
 type ColumnTypes = Exclude<EditableTableProps['columns'], undefined>
-const EditTable = () => {
+const EditTable = (props: any, ref: any) => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
   const [editingKey, setEditingKey] = useState<number>(0)
   const isEditing = (record: Item) => record.id === editingKey
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
-  // const { projectId } = useProjectId()
-  const { projectId = 604 } = {}
+  const { projectId } = useProjectId()
   const [searchObject, setSearchObject] = useState({
     page: 1,
     pagesize: 5,
@@ -220,23 +225,23 @@ const EditTable = () => {
   const [dataSource, setDataSource] = useState<DataType[]>([])
 
   const handleDelete = async (id: number) => {
-    // const result = await deleteExtraWorkTimeList({
-    //   project_id: projectId,
-    //   id,
-    // })
-    // if (result && result.data) {
-    //   getMessage({
-    //     msg: '删除成功',
-    //     type: 'success',
-    //   })
-    //   getDataList({
-    //     ...searchObject,
-    //     page:
-    //       searchObject.page !== 1 && dataSource.length === 1
-    //         ? searchObject.page - 1
-    //         : searchObject.page,
-    //   })
-    // }
+    const result = await delExceptionTime({
+      project_id: projectId,
+      id,
+    })
+    if (result && result.data) {
+      getMessage({
+        msg: '删除成功',
+        type: 'success',
+      })
+      getDataList({
+        ...searchObject,
+        page:
+          searchObject.page !== 1 && dataSource.length === 1
+            ? searchObject.page - 1
+            : searchObject.page,
+      })
+    }
   }
 
   // 点击编辑按钮
@@ -376,60 +381,60 @@ const EditTable = () => {
 
   // 保存按钮
   const save = async (id: number) => {
-    // try {
-    //   const value = (await form.validateFields()) as Item
-    //   let result: any
-    //   const params = {
-    //     project_id: projectId,
-    //     start_date: moment(value.start_date).format('YYYY-MM-DD'),
-    //     end_date: moment(value.end_date).format('YYYY-MM-DD'),
-    //     name: value.name,
-    //     date_config: {
-    //       morning: {
-    //         begin: moment(value.morning?.[0]).format('HH:mm'),
-    //         end: moment(value.morning?.[1]).format('HH:mm'),
-    //       },
-    //       afternoon: {
-    //         begin: moment(value.afternoon?.[0]).format('HH:mm'),
-    //         end: moment(value.afternoon?.[1]).format('HH:mm'),
-    //       },
-    //       night: {
-    //         begin: value?.night?.length
-    //           ? moment(value.night?.[0]).format('HH:mm')
-    //           : '',
-    //         end: value?.night?.length
-    //           ? moment(value.night?.[1]).format('HH:mm')
-    //           : '',
-    //       },
-    //     },
-    //   }
-    //   if (id === -1) {
-    //     result = await addExtraWorkTimeList(params)
-    //   } else {
-    //     result = await updateExtraWorkTimeList({
-    //       ...params,
-    //       id,
-    //     })
-    //   }
-    //   if (result && result.data) {
-    //     if (id === -1) {
-    //       getMessage({
-    //         msg: '添加成功',
-    //         type: 'success',
-    //       })
-    //     } else {
-    //       getMessage({
-    //         msg: '编辑成功',
-    //         type: 'success',
-    //       })
-    //     }
-    //     setEditingKey(0)
-    //     form.resetFields()
-    //     getDataList(searchObject)
-    //   }
-    // } catch (errInfo) {
-    //   console.log('Validate Failed:', errInfo)
-    // }
+    try {
+      const value = (await form.validateFields()) as Item
+      let result: any
+      const params = {
+        project_id: projectId,
+        start_date: moment(value.start_date).format('YYYY-MM-DD'),
+        end_date: moment(value.end_date).format('YYYY-MM-DD'),
+        name: value.name,
+        date_config: {
+          morning: {
+            begin: moment(value.morning?.[0]).format('HH:mm'),
+            end: moment(value.morning?.[1]).format('HH:mm'),
+          },
+          afternoon: {
+            begin: moment(value.afternoon?.[0]).format('HH:mm'),
+            end: moment(value.afternoon?.[1]).format('HH:mm'),
+          },
+          night: {
+            begin: value?.night?.length
+              ? moment(value.night?.[0]).format('HH:mm')
+              : '',
+            end: value?.night?.length
+              ? moment(value.night?.[1]).format('HH:mm')
+              : '',
+          },
+        },
+      }
+      if (id === -1) {
+        result = await addExceptionTime(params)
+      } else {
+        result = await editExceptionTime({
+          ...params,
+          id,
+        })
+      }
+      if (result && result.data) {
+        if (id === -1) {
+          getMessage({
+            msg: '添加成功',
+            type: 'success',
+          })
+        } else {
+          getMessage({
+            msg: '编辑成功',
+            type: 'success',
+          })
+        }
+        setEditingKey(0)
+        form.resetFields()
+        getDataList(searchObject)
+      }
+    } catch (errInfo) {
+      console.log('Validate Failed:', errInfo)
+    }
   }
 
   const columns = defaultColumns.map(col => {
@@ -465,46 +470,50 @@ const EditTable = () => {
   }
 
   // 获取例外时间表格
-  // const getDataList = async (page: any) => {
-  //   const result = await findExtraWorkTimeList({
-  //     project_id: projectId,
-  //     page: page.page,
-  //     pagesize: page.pagesize,
-  //   })
-  //   if (result && result.data) {
-  //     setDataSource(
-  //       result.data?.list?.map((k: any) => {
-  //         return {
-  //           id: k.id,
-  //           name: k.name,
-  //           start_date: k.start_date,
-  //           end_date: k.end_date,
-  //           morning: [k.date_config?.morning.begin, k.date_config?.morning.end],
-  //           afternoon: [
-  //             k.date_config?.afternoon?.begin,
-  //             k.date_config?.afternoon?.end,
-  //           ],
-  //           night: [k.date_config?.night?.begin, k.date_config?.night?.end],
-  //         }
-  //       }),
-  //     )
-  //     setSearchObject({
-  //       ...result?.data?.pager,
-  //     })
-  //   }
-  // }
+  const getDataList = async (page: any) => {
+    const result = await getExceptionTimeList({
+      project_id: projectId,
+      page: page.page,
+      pagesize: page.pagesize,
+    })
+    if (result && result.data) {
+      setDataSource(
+        result.data?.list?.map((k: any) => {
+          return {
+            id: k.id,
+            name: k.name,
+            start_date: k.start_date,
+            end_date: k.end_date,
+            morning: [k.date_config?.morning.begin, k.date_config?.morning.end],
+            afternoon: [
+              k.date_config?.afternoon?.begin,
+              k.date_config?.afternoon?.end,
+            ],
+            night: [k.date_config?.night?.begin, k.date_config?.night?.end],
+          }
+        }),
+      )
+      setSearchObject({
+        ...result?.data?.pager,
+      })
+    }
+  }
 
   useEffect(() => {
-    // getDataList(searchObject)
+    getDataList(searchObject)
   }, [])
-
+  useImperativeHandle(ref, () => {
+    return {
+      handleAdd,
+    }
+  })
   return (
     <div>
       <DeleteConfirmModal />
-      <AddWrap onClick={handleAdd} hasColor>
+      {/* <AddWrap onClick={handleAdd} hasColor>
         <IconFont type="plus" />
         <div>添加例外</div>
-      </AddWrap>
+      </AddWrap> */}
       {dataSource.length > 0 ? (
         <Form form={form} autoComplete="off">
           <TableBox>
@@ -547,4 +556,4 @@ const EditTable = () => {
   )
 }
 
-export default EditTable
+export default forwardRef(EditTable)

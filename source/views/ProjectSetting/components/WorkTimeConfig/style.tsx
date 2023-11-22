@@ -39,7 +39,48 @@ export const WorkTimeWrap = styled.div`
     }
   }
 `
-
+export const HeaderWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  margin-top: 8px;
+  > div:nth-child(1) {
+    color: var(--neutral-n1-d1);
+    font-size: var(--font16);
+    font-family: SiYuanMedium;
+  }
+  > div:nth-child(2) {
+    display: flex;
+    button {
+      margin-left: 16px;
+    }
+  }
+`
+export const SubtitleWrap = styled.div`
+  color: var(--neutral-n1-d1);
+  font-size: var(--font14);
+  font-family: SiYuanMedium;
+  position: relative;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+  &::after {
+    position: absolute;
+    left: 0px;
+    top: 4;
+    width: 3px;
+    height: 16px;
+    background: var(--primary-d1);
+    content: '';
+  }
+`
+export const OtherDateBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 export const OperationBox = styled.div`
   font-size: 14px;
   color: var(--primary-d2);
