@@ -32,51 +32,51 @@ const SelectWrap = styled(Select)`
 `
 const ToolBar = () => {
   const dispatch = useDispatch()
-  const [value, setValue] = useState('1')
+  const [value, setValue] = useState<any>(1)
   const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
-
+  const [addReduceVal,setAddReduceVal]= useState(1)
   const onChange = (id: number) => {
     dispatch(setEncephalogramParmas({ group_by: id === 0 ? 'user' : 'task' }))
   }
   const items = [
     {
       label: '25%',
-      value: '0.2',
+      value: 0.2,
     },
     {
       label: '50%',
-      value: '0.5',
+      value: 0.5,
     },
     {
       label: '75%',
-      value: '0.75',
+      value: 0.75,
     },
     {
       label: '100%',
-      value: '1',
+      value: 1,
     },
     {
       label: '125%',
-      value: '1.25',
+      value: 1.25,
     },
     {
       label: '150%',
-      value: '1.5',
+      value: 1.5,
     },
     {
       label: '175%',
-      value: '1.75',
+      value: 1.75,
     },
     {
       label: '200%',
-      value: '2',
+      value: 2
     },
   ]
-  const handleChange = (val: string) => {
-    console.log(val)
+  const handleChange = (val: number) => {
     dispatch(setEncephalogramParmas({ num: val }))
     setValue(val)
+    setAddReduceVal(val)
   }
   const downloadImage = () => {
     const div: any = document.querySelector('#MapContentMountNode')
@@ -106,7 +106,24 @@ const ToolBar = () => {
         })
       })
   }
-  
+  const handleChangeAdd=()=>{
+    const val = Number((addReduceVal + 0.05).toFixed(2))
+    if(addReduceVal + 0.05 > 2){
+      return
+    }
+    setAddReduceVal(val)
+    setValue(`${Math.trunc(val*100)}%`)
+   dispatch(setEncephalogramParmas({ num: val }))
+  }
+  const handleChangeReduce=()=>{
+    const val = Number((addReduceVal - 0.05).toFixed(2))
+    if(val < 0.2){
+      return
+    }
+    setAddReduceVal(val)
+    setValue(`${Math.trunc(val*100)}%`)
+    dispatch(setEncephalogramParmas({ num: val }))
+  }
   return (
     <ToolBarBox className="toolBar">
       <RightWrap type="1">
@@ -160,6 +177,7 @@ const ToolBar = () => {
         </Space>
         <Space size={10}>
           <IconFont
+          onClick={handleChangeAdd}
             type="zoomin"
             style={{
               fontSize: 24,
@@ -189,12 +207,13 @@ const ToolBar = () => {
               <>
                 {menu}
                 <Divider style={{ margin: '8px 0' }} />
-                <Btn onClick={() => handleChange('5')}>增加5%</Btn>
-                <Btn onClick={() => handleChange('-5')}>减小5%</Btn>
+                <Btn onClick={handleChangeAdd}>增加5%</Btn>
+                <Btn onClick={handleChangeReduce}>减小5%</Btn>
               </>
             )}
           />
           <IconFont
+           onClick={handleChangeReduce}
             type="reduce"
             style={{
               fontSize: 24,

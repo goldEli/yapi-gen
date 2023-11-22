@@ -261,8 +261,8 @@ const MapContent = (props: any) => {
   }, [])
 
   useEffect(() => {
-    mapRef.current.zoomTo(Number(encephalogramParmas.num), { x: 100, y: 100 }, true)
-  }, [encephalogramParmas.num])
+    mapRef.current.zoomTo(Number(encephalogramParams.num), { x: 100, y: 100 }, true)
+  }, [encephalogramParams.num])
   useEffect(() => {
     if (data && mapRef.current) {
       mapRef.current.changeData(data)
