@@ -11,7 +11,7 @@ import {
   TableActionItem,
 } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState, useCallback } from 'react'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -78,6 +78,15 @@ const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
   height: ${props => props.height};
   overflow-x: ${props => (props.srcollState ? 'hidden' : 'auto')};
   overflow: ${props => (props.srcollState ? 'hidden' : 'auto')};
+  .ant-table-row {
+    cursor: pointer;
+    &:hover {
+      .controlMaxWidth {
+        border-bottom: 1px solid var(--primary-d1);
+        color: var(--primary-d1);
+      }
+    }
+  }
 `
 
 const NewSort = (sortProps: any) => {
@@ -129,21 +138,7 @@ const MainTable = (props: Props) => {
   }
 
   // 点击跳转项目详情
-  const onClickItem = (row: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        id: row.id,
-      }),
-    )
-
-    navigate(
-      `${
-        row.defaultHomeMenu
-          ? row.defaultHomeMenu
-          : `/ProjectDetail/${row.projectType === 2 ? 'Affair' : 'Demand'}`
-      }?data=${params}`,
-    )
-  }
+  const onClickItem = (row: any) => {}
 
   const columns = [
     {
@@ -339,6 +334,7 @@ const MainTable = (props: Props) => {
       title: t('operate'),
       dataIndex: 'action',
       width: 200,
+      fixed: 'right',
       render: (text: number, record: any) => {
         // 项目负责人或者是超管
         const isRolePermission =
@@ -355,11 +351,12 @@ const MainTable = (props: Props) => {
             >
               <TableActionItem
                 isDisable={isRolePermission}
-                onClick={() =>
+                onClick={e => {
+                  e.stopPropagation()
                   isRolePermission
                     ? void 0
                     : props.onChangeOperation('', record)
-                }
+                }}
               >
                 {record.status === 1 ? t('pause') : t('start')}
               </TableActionItem>
@@ -375,11 +372,12 @@ const MainTable = (props: Props) => {
             >
               <TableActionItem
                 isDisable={isRolePermission || [4, 2].includes(record.status)}
-                onClick={() =>
+                onClick={e => {
+                  e.stopPropagation()
                   isRolePermission || [4, 2].includes(record.status)
                     ? void 0
                     : props.onChangeOperation('close', record)
-                }
+                }}
               >
                 {t('closure')}
               </TableActionItem>
@@ -387,19 +385,20 @@ const MainTable = (props: Props) => {
 
             <TableActionItem
               isDisable={record.team_id === 0 ? hasEdit : record.isTeam}
-              onClick={() =>
-                (record.team_id === 0 ? hasEdit : record.isTeam)
-                  ? void 0
-                  : dispatch(editProject({ visible: true, id: record.id }))
-              }
+              onClick={e => {
+                e.stopPropagation()
+                !(record.team_id === 0 ? hasEdit : record.isTeam) &&
+                  dispatch(editProject({ visible: true, id: record.id }))
+              }}
             >
               {t('edit')}
             </TableActionItem>
             <TableActionItem
               isDisable={hasDelete}
-              onClick={() =>
+              onClick={e => {
+                e.stopPropagation()
                 hasDelete ? void 0 : props.onChangeOperation('delete', record)
-              }
+              }}
             >
               {t('common.del')}
             </TableActionItem>
@@ -425,6 +424,26 @@ const MainTable = (props: Props) => {
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
+
+  const onTableRow = useCallback((row: any) => {
+    return {
+      onClick: () => {
+        const params = encryptPhp(
+          JSON.stringify({
+            id: row.id,
+          }),
+        )
+
+        navigate(
+          `${
+            row.defaultHomeMenu
+              ? row.defaultHomeMenu
+              : `/ProjectDetail/${row.projectType === 2 ? 'Affair' : 'Demand'}`
+          }?data=${params}`,
+        )
+      },
+    }
+  }, [])
 
   return (
     <div style={{ height: '100%' }}>
@@ -454,6 +473,7 @@ const MainTable = (props: Props) => {
                 )
               }}
               tableY={tableY}
+              onRow={onTableRow as any}
             />
           </DataWrap>
         ) : (

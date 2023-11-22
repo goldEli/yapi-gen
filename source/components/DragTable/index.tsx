@@ -32,6 +32,7 @@ interface DragTableProps {
   tableY?: number
   // 项目列表判断手柄
   filterParams?: any
+  onRow?(row: any): void
 }
 
 const DragTable = (props: DragTableProps) => {
@@ -111,6 +112,7 @@ const DragTable = (props: DragTableProps) => {
         y: props?.tableY ?? undefined,
       }}
       tableLayout="auto"
+      onRow={props.onRow as any}
     />
   )
 }
