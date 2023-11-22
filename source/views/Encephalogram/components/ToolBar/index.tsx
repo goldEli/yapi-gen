@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas'
 import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { setEncephalogramParmas } from '@store/encephalogram'
 import styled from '@emotion/styled'
 import { CommonIconFont } from '@/components/CommonIconFont'
@@ -37,7 +37,6 @@ const ToolBar = () => {
   const [value, setValue] = useState<any>(1)
   const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
-  const [addReduceVal, setAddReduceVal] = useState(1)
   const onChange = (id: number) => {
     dispatch(setEncephalogramParmas({ group_by: id === 0 ? 'user' : 'task' }))
   }
@@ -78,7 +77,6 @@ const ToolBar = () => {
   const handleChange = (val: number) => {
     dispatch(setEncephalogramParmas({ num: val }))
     setValue(val)
-    setAddReduceVal(val)
   }
 
   const downloadImage = _.debounce(() => {
@@ -110,22 +108,12 @@ const ToolBar = () => {
       })
   })
   const handleChangeAdd = () => {
-    const val = Number((addReduceVal + 0.05).toFixed(2))
-    if (addReduceVal + 0.05 > 2) {
-      return
-    }
-    setAddReduceVal(val)
-    setValue(`${Math.trunc(val * 100)}%`)
-    dispatch(setEncephalogramParmas({ num: val }))
+    const val = encephalogramParams.num + 0.05
+    dispatch(setEncephalogramParmas({ num: val?.toFixed(2) }))
   }
   const handleChangeReduce = () => {
-    const val = Number((addReduceVal - 0.05).toFixed(2))
-    if (val < 0.2) {
-      return
-    }
-    setAddReduceVal(val)
-    setValue(`${Math.trunc(val * 100)}%`)
-    dispatch(setEncephalogramParmas({ num: val }))
+    const val = encephalogramParams.num - 0.05
+    dispatch(setEncephalogramParmas({ num: val?.toFixed(2) }))
   }
   const onRefresh = _.debounce(() => {
     dispatch(
@@ -134,6 +122,9 @@ const ToolBar = () => {
       }),
     )
   }, 500)
+  useEffect(() => {
+    setValue(`${Math.trunc(encephalogramParams.num * 100)}%`)
+  }, [encephalogramParams.num])
   return (
     <ToolBarBox className="toolBar">
       <RightWrap type="1">

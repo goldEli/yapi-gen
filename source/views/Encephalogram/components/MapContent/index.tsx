@@ -9,16 +9,14 @@ import useMapData from '../../hook/useMapData'
 import init from '@/views/Encephalogram/until/MapFun'
 import { getMapList } from '@/services/map'
 import { useSelector } from '@store/index'
-import { TreeGraph } from '@antv/g6'
-
-const MapContent = () => {
+import { type TreeGraph } from '@antv/g6'
+const MapContent = (props: any) => {
   const { projectId } = useProjectId()
-  const { fullScreen } = useSelector(store => store.kanBan)
+  // const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
   const mapRef = useRef<any>(null)
   const mapBoxRef = useRef<HTMLDivElement>(null)
   const { data } = useMapData()
-
   const addTask = async () => {
     const hasId: any = await haveHistoryData(
       projectId,
@@ -58,7 +56,6 @@ const MapContent = () => {
     graph.data({ name: '', style: { fontSize: 18 } })
     graph.render()
   }, [])
-
   useEffect(() => {
     mapRef.current.zoomTo(
       Number(encephalogramParams.num),
@@ -88,6 +85,9 @@ const MapContent = () => {
       return
     }
     observer.current.observe(mapBoxRef.current)
+    return () => {
+      observer.current.disconnect()
+    }
   }, [])
 
   return <MapContentBox ref={mapBoxRef} id="MapContentMountNode" />

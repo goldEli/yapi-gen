@@ -51,6 +51,7 @@ const TopArea = () => {
   const [length, setLength] = useState(0)
   const [stateVal, setStateVal] = useState([])
   const dispatch = useDispatch()
+  const { encephalogramParams } = useSelector(store => store.encephalogram)
   // 状态的
   const [priorityList, setPriorityList] = useState()
   // 迭代的
@@ -333,6 +334,11 @@ const TopArea = () => {
       })),
     }))
     setPersonData(newChild)
+    dispatch(
+      setEncephalogramParmas({
+        person: [],
+      }),
+    )
   }
   const contentPerson = () => {
     return (
@@ -370,7 +376,7 @@ const TopArea = () => {
                     checked={el.checked}
                     onChange={e => onChangeF(e, el)}
                   />
-                  <TextTree  onClick={() => foldIcon(el)}>{el.name}</TextTree>
+                  <TextTree onClick={() => foldIcon(el)}>{el.name}</TextTree>
                 </div>
                 <IconFont
                   onClick={() => foldIcon(el)}
@@ -395,7 +401,9 @@ const TopArea = () => {
                         <img src={item.avatar} />
                         <TextTree>{item.name}</TextTree>
                       </div>
-                      <span className="rowChildtext">{item.job_name || '--'}</span>
+                      <span className="rowChildtext">
+                        {item.job_name || '--'}
+                      </span>
                     </RowTree>
                   ))}
               </div>

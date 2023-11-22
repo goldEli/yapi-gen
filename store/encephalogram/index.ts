@@ -28,7 +28,7 @@ const initialState: SliceState = {
     person: [],
     group_by: 'user',
     refresh: 0,
-    num: 0,
+    num: 1,
   },
 }
 

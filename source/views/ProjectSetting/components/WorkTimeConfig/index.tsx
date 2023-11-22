@@ -1,23 +1,30 @@
-import CommonModal from '@/components/CommonModal'
 import EditTable from './EditTable'
-import { WorkTimeWrap } from './style'
+import { HeaderWrap, OtherDateBox, SubtitleWrap, WorkTimeWrap } from './style'
 import { Checkbox, TimePicker } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import moment from 'moment'
 import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
-
+import CommonButton from '@/components/CommonButton'
+import { getWorkTimeList, editWorkTime } from '@/services/map'
+import useProjectId from '../KanBanSetting/hooks/useProjectId'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import _ from 'lodash'
 type WorkTimeModalProps = {
   isVisible?: boolean
   projectId?: number
 }
 
-const SetWorkTimeModal = (props: any) => {
+const WorkTimeConfig = (props: any) => {
   const dispatch = useDispatch()
+  const { projectId } = useProjectId()
+  const tableRef = useRef<any>()
   const [timeData, setTimeData] = useState<any>({
     config: {},
     day_config: {},
   })
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
+  const [cacheData, setCacheData] = useState<any>()
   const [totalHour, setTotalHour] = useState<number>(0)
   const options = [
     { label: '周一', value: 0 },
@@ -30,13 +37,17 @@ const SetWorkTimeModal = (props: any) => {
   ]
 
   const getTimeData = async () => {
-    // const result = await findWorkTimeConfig({
-    //   project_id: projectId,
-    // })
-    // if (result && result.data) {
-    //   setTimeData(result.data)
-    //   setTotalHour(result.data?.task_time_hours ?? 0)
-    // }
+    const result = await getWorkTimeList({
+      project_id: projectId,
+    })
+    if (result && result.data) {
+      const res = result.data
+      res.config.day = res.config.day.map((item: any) => parseInt(item, 10))
+      res.config.is_holiday = parseInt(res.config.is_holiday, 10)
+      setTimeData(result.data)
+      setCacheData(_.cloneDeep(result.data))
+      setTotalHour(result.data?.task_time_hours ?? 0)
+    }
   }
 
   const totalWorkHours = (arr1: string[], arr2: string[], arr3: string[]) => {
@@ -60,25 +71,24 @@ const SetWorkTimeModal = (props: any) => {
   }
 
   const onConfirm = async () => {
-    // const result = await updateWorkTimeConfig({
-    //   project_id: projectId,
-    //   config: timeData.config,
-    //   day_config: timeData.day_config,
-    //   id: timeData.id,
-    // })
-    // if (result && result.data) {
-    //   getMessage({
-    //     msg: '更改成功',
-    //     type: 'success',
-    //   })
-    // }
+    const result = await editWorkTime({
+      project_id: projectId,
+      config: timeData.config,
+      day_config: timeData.day_config,
+      id: timeData.id,
+    })
+    getTimeData()
+    if (result && result.data) {
+      getMessage({
+        msg: '更改成功',
+        type: 'success',
+      })
+    }
   }
 
-  // useEffect(() => {
-  //   if (isVisible) {
-  //     getTimeData()
-  //   }
-  // }, [isVisible])
+  useEffect(() => {
+    getTimeData()
+  }, [])
 
   const getDisableTime = () => {
     const arr = []
@@ -87,9 +97,37 @@ const SetWorkTimeModal = (props: any) => {
     }
     return arr
   }
-
   return (
     <WorkTimeWrap>
+      <HeaderWrap>
+        <div>工作时间配置</div>
+        <div className="btns">
+          <CommonButton
+            type="light"
+            onClick={() => {
+              if (!_.isEqual(cacheData, timeData)) {
+                open({
+                  title: '确认取消',
+                  cancelText: '放弃保存',
+                  children: <div>当前编辑内容还未保存是否保存？</div>,
+                  onConfirm: async () => {
+                    await onConfirm()
+                  },
+                  onChangeVisible: () => {
+                    setTimeData(cacheData)
+                  },
+                })
+              }
+            }}
+          >
+            取消
+          </CommonButton>
+          <CommonButton type="primary" onClick={onConfirm}>
+            保存
+          </CommonButton>
+        </div>
+      </HeaderWrap>
+      <SubtitleWrap>更改时间</SubtitleWrap>
       <Checkbox
         checked={timeData?.config?.is_holiday === 1}
         onChange={(e: any) => {
@@ -301,11 +339,27 @@ const SetWorkTimeModal = (props: any) => {
           </div>
         </div>
       </div>
+      <OtherDateBox>
+        <SubtitleWrap>例外日期</SubtitleWrap>
+        <div>
+          <CommonButton
+            type="primaryText"
+            icon="plus"
+            onClick={() => {
+              console.log(tableRef.current)
+              tableRef.current?.handleAdd()
+            }}
+          >
+            添加例外
+          </CommonButton>
+        </div>
+      </OtherDateBox>
       <div className="tableBox">
-        <div className="title">例外日期</div>
-        <EditTable />
+        {/* <div className="title"></div> */}
+        <EditTable ref={tableRef} />
       </div>
+      <DeleteConfirmModal></DeleteConfirmModal>
     </WorkTimeWrap>
   )
 }
-export default SetWorkTimeModal
+export default WorkTimeConfig
