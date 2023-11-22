@@ -8,18 +8,15 @@ import useProjectId from '@/views/Encephalogram/hook/useProjectId'
 import useMapData from '../../hook/useMapData'
 import init from '@/views/Encephalogram/until/MapFun'
 import { getMapList } from '@/services/map'
-import { useSelector } from '@store/index'
+import {  useSelector } from '@store/index'
 import { type TreeGraph } from '@antv/g6'
-// type MapContentPropsType = {}
-
 const MapContent = (props: any) => {
   const { projectId } = useProjectId()
-  const { fullScreen } = useSelector(store => store.kanBan)
+  // const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
   const mapRef = useRef<any>(null)
   const mapBoxRef = useRef<HTMLDivElement>(null)
   const { data } = useMapData()
-
   const addTask = async () => {
     const hasId: any = await haveHistoryData(
       projectId,
@@ -261,13 +258,8 @@ const MapContent = (props: any) => {
     graph.data({ name: '', style: { fontSize: 18 } })
     graph.render()
   }, [])
-
   useEffect(() => {
-    mapRef.current.zoomTo(
-      Number(encephalogramParams.num),
-      { x: 100, y: 100 },
-      true,
-    )
+    mapRef.current.zoomTo(Number(encephalogramParams.num), { x: 100, y: 100 }, true)
   }, [encephalogramParams.num])
   useEffect(() => {
     if (data && mapRef.current) {
@@ -291,6 +283,9 @@ const MapContent = (props: any) => {
       return
     }
     observer.current.observe(mapBoxRef.current)
+    return () => {
+      observer.current.disconnect()
+    }
   }, [])
 
   return <MapContentBox ref={mapBoxRef} id="MapContentMountNode" />

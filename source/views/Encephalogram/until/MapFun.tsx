@@ -1,4 +1,6 @@
 import G6, { Util } from '@antv/g6'
+import { setEncephalogramParmas } from '@store/encephalogram'
+import { store, useDispatch } from '@store/index'
 
 const getGraph = () => {
   let graph: any = null
@@ -191,7 +193,9 @@ const getGraph = () => {
       },
       plugins: [tooltip],
     })
-
+    graph.on('wheel', () => {
+      store.dispatch(setEncephalogramParmas({ num: graph.getZoom().toFixed(2) }))
+    })
     graph.on('node:mouseenter', (event: any) => {
       const { item } = event
       const data = item.getModel()
@@ -200,10 +204,12 @@ const getGraph = () => {
         tooltip.hide()
       }
     })
+
     graph.on('node:mouseleave', (event: any) => {
       const { item } = event
       graph.setItemState(item, 'hover', false)
     })
+    
   }
   return graph
 }

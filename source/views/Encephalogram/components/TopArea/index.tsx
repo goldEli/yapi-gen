@@ -51,6 +51,7 @@ const TopArea = () => {
   const [length, setLength] = useState(0)
   const [stateVal, setStateVal] = useState([])
   const dispatch = useDispatch()
+  const { encephalogramParams } = useSelector(store => store.encephalogram)
   // 状态的
   const [priorityList, setPriorityList] = useState()
   // 迭代的
@@ -442,7 +443,7 @@ const TopArea = () => {
       )
     }
   }
-
+ 
   return (
     <TopAreaWrap>
       <MyBreadcrumb />

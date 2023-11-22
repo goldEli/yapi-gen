@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas'
 import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { setEncephalogramParmas } from '@store/encephalogram'
 import styled from '@emotion/styled'
 import { CommonIconFont } from '@/components/CommonIconFont'
@@ -111,20 +111,21 @@ const ToolBar = () => {
   })
   const handleChangeAdd = () => {
     const val = Number((addReduceVal + 0.05).toFixed(2))
+    console.log(val,'val',addReduceVal)
     if (addReduceVal + 0.05 > 2) {
       return
     }
     setAddReduceVal(val)
-    setValue(`${Math.trunc(val * 100)}%`)
     dispatch(setEncephalogramParmas({ num: val }))
   }
   const handleChangeReduce = () => {
-    const val = Number((addReduceVal - 0.05).toFixed(2))
+    const val = Number((JSON.parse(JSON.stringify(addReduceVal)) - 0.05).toFixed(2))
+    console.log(val,'val')
     if (val < 0.2) {
       return
     }
     setAddReduceVal(val)
-    setValue(`${Math.trunc(val * 100)}%`)
+    
     dispatch(setEncephalogramParmas({ num: val }))
   }
   const onRefresh = _.debounce(() => {
@@ -134,6 +135,9 @@ const ToolBar = () => {
       }),
     )
   }, 500)
+  useEffect(() => {
+    setValue(`${Math.trunc(encephalogramParams.num * 100)}%`)
+  }, [encephalogramParams.num])
   return (
     <ToolBarBox className="toolBar">
       <RightWrap type="1">
