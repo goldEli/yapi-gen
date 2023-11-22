@@ -146,6 +146,13 @@ const ToolBar = () => {
               color: 'var(--neutral-n2)',
               margin: '0 4px',
             }}
+            onClick={() => {
+              dispatch(
+                setEncephalogramParmas({
+                  refresh: encephalogramParmas.refresh + 1,
+                }),
+              )
+            }}
           />
           <span className="line" />
         </Space>

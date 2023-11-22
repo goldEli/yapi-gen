@@ -10,10 +10,9 @@ const useMapData = () => {
   const { encephalogramParmas } = useSelector(store => store.encephalogram)
   const allItems = useLiveQuery(() => {
     if (projectId) {
-      return (db as any).item
+      return (db as any)[encephalogramParmas.group_by]
         .where({
           project_id: projectId,
-          group_by: encephalogramParmas.group_by,
         })
         .toArray()
     }

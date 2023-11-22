@@ -13,6 +13,8 @@ type SliceState = {
     person: Array<number | string>
     // 按人员/按任务
     group_by: string
+    // 刷新
+    refresh: number
   }
 }
 
@@ -23,6 +25,7 @@ const initialState: SliceState = {
     time: [],
     person: [],
     group_by: 'user',
+    refresh: 0,
   },
 }
 

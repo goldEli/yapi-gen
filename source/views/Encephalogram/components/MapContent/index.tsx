@@ -41,14 +41,16 @@ const MapContent = (props: any) => {
   }
 
   useEffect(() => {
+    if (encephalogramParmas.refresh > 0) {
+      refreshData()
+    }
+  }, [encephalogramParmas.refresh])
+
+  useEffect(() => {
     if (projectId) {
       addTask()
     }
   }, [projectId, encephalogramParmas.group_by])
-
-  useEffect(() => {
-    refreshData()
-  }, [encephalogramParmas.group_by])
 
   const datas = {
     id: '1',

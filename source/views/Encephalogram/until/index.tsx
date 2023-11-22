@@ -1,19 +1,15 @@
 import moment from 'moment'
 
-export const flattenObjectToArray = (
-  obj: any,
-  group_by: string,
-  array: any[] = [],
-) => {
+export const flattenObjectToArray = (obj: any, array: any[] = []) => {
   if (Array.isArray(obj.children)) {
-    const temp = { ...obj, id: String(obj.id), group_by }
+    const temp = { ...obj, id: String(obj.id) }
     delete temp.children
     array.push(temp)
     obj.children.forEach((item: any) => {
-      flattenObjectToArray(item, group_by, array)
+      flattenObjectToArray(item, array)
     })
   } else {
-    array.push({ ...obj, id: String(obj.id), group_by })
+    array.push({ ...obj, id: String(obj.id) })
   }
   return array
 }
