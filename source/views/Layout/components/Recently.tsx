@@ -215,7 +215,7 @@ const Recently = (props: RecentlyProps) => {
     setIsSpinning(true)
     const result = await getRecentProject({
       page,
-      pagesize: 5,
+      pagesize: 15,
     }).finally(() => {
       setIsSpinning(false)
     })

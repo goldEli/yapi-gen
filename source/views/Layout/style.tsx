@@ -915,7 +915,7 @@ export const ProjectItem = styled.div<{ local?: string }>`
     width: ${props =>
       props.local === 'zh' ? 'calc(100% - 32px)' : 'calc(100% - 56px)'};
     .icon {
-      height: 32px;
+      width: 32px;
       height: 32px;
       border-radius: 4px;
       overflow: hidden;
