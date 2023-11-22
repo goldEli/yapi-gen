@@ -2,12 +2,13 @@ import CustomSelect from '@/components/CustomSelect'
 import styled from '@emotion/styled'
 
 export const EncephalogramBox = styled.div`
-  width: calc(100% - 32px);
+  width: calc(100% - 24px);
   height: 100%;
   position: relative;
   cursor: pointer;
   box-sizing: border-box;
-  padding:20px 16px 0px 24px;
+  padding:20px 6px 0px 0px;
+  margin-left:24px;
   background-color:var(--neutral-white-d1);
   .g6-component-tooltip {
     background-color: rgba(0, 0, 0, 0.7);
